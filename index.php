@@ -4,26 +4,9 @@
     <?php include ('includes\head.php') ?>
 
     <!-- External CSS -->
-    <link rel="stylesheet" href="assets\css\style.css">
-    
-    <style>
-        #section1 {
-            width: 100vw;
-            height: 100vh;
-            background: linear-gradient(
-            rgba(0, 0, 0, 0.7), 
-            rgba(0, 0, 0, 0.7)
-            ), url('assets/images/hero-1.jpg') no-repeat center center !important;
-            background-size: cover;
-            background-attachment: fixed;
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 1;
-    }
-
-    </style>
+    <link rel="stylesheet" href="assets/css/style.css?v=<?php echo time(); ?>">
 </head>
+
 <body>
     <header class="sub-header">
         <div class="container d-inline-flex ps-5">
@@ -36,7 +19,6 @@
         </div>
     </header>
 
-    <!-- TODO: Hover Problem -->
     <!-- Main Header -->
     <header class="header d-flex justify-content-between align-items-center">
         <a href="#" class="logo"><img src="assets\images\logo.png" alt="Logo"></a>
@@ -47,14 +29,53 @@
             <a href="#" class="nav-link">Tours</a>
             <a href="#" class="nav-link">About</a>
             <a href="#" class="nav-link">Contact</a>
-            <a href="#" class="nav-link">Contact</a>
         </nav>
 
-        <button class="btn btn-primary" id="LoginButton">Book Now</button>
+        <div class="d-flex flex-form">
+            <div class="container d-flex flex-row align-items-center" id="translation-container"> 
+                <div class="dropdown">
+                    <div class="circle-image">
+                        <img src="assets/images/your-image.jpg" alt="Profile" class="img-fluid">
+                    </div>
+                </div>
+
+                <div class="ms-0">
+                    <a class="dropdown-toggle ms-2 text-decoration-none text-light" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        ▼
+                    </a>
+
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <li><a class="dropdown-item" href="#">Filipino</a></li>
+                        <li><a class="dropdown-item" href="#">Korean</a></li>
+                        <li><a class="dropdown-item" href="#">Bahasa</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="vl"></div>
+
+            <button class="btn btn-success text-lighter fw-normal py-1 px-2 ms-3 my-1" id="LoginButton">Book Now</button>
+        </div>
     </header>
 
     <!-- Section 1 -->
-    <div class="section" id="section1">
+    <div class="section d-flex justify-content-start align-items-center position-relative" id="section1">
+        <!-- Background Image -->
+        <img src="assets\images\hero-1.jpg" alt="Background" class="background-img">
+
+        <!-- Content -->
+        <div class="hero d-flex flex-column text-light position-relative">
+            <h3>Travel with Satisfaction</h3>
+            <p>Discover your next adventure, one destination at a time.</p>
+            <div class="d-inline-flex flex-row">
+                <button type="button" class="btn btn-secondary">Book Now</button>
+                <button type="button" class="btn btn-outline-secondary p-2 px-3 ms-3 text-light">Learn More</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 2 -->
+    <div class="section" id="section2">
         <!-- <div class="content-wrapper d-flex text-start align-content-start">
             <h1>Welcome to Section 1</h1>
             <p>This is a brief description about the section. Learn more about what we offer below.</p>
@@ -62,8 +83,7 @@
         </div> -->
     </div>
 
-    <!-- Section 2 -->
-    <div class="section" id="section2">
+    <div class="section" id="section3">
         <!-- <div class="content-wrapper d-flex text-start align-content-start">
             <h1>Welcome to Section 1</h1>
             <p>This is a brief description about the section. Learn more about what we offer below.</p>

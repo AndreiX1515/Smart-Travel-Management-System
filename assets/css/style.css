@@ -11,7 +11,7 @@
 body {
     margin: 0;
     padding: 0;
-    position: relative;
+    font-family: "Poppins", sans-serif;
 }
 
 /* Body Background Overlay */
@@ -26,184 +26,18 @@ body::before {
     z-index: 1;
 }
 
-/* Sub-header Style */
-.sub-header {
-    background-color: #0e5237; /* Dark Green */
-    color: white;
-    text-align: center;
-    padding: 10px 55px;
-    font-size: 14px;
-    position: fixed;
-    width: 100%;
-    top: 0;
-    z-index: 100;
-    text-align: left;
-}
-
-.sub-header p {
-    margin: 5px 0px 5px 0px;
-    padding: 0px 50px;
-}
-
-
-.sub-header a {
-    color: white; /* Ensures the text is light for visibility */
-    transition: color 0.3s; /* Smooth transition for hover effect */
-}
-.sub-header a:hover {
-    color: #cce6cc; /* Light color on hover */
-}
-
-/* Main Header */
-.header {
-    position: fixed;
-    top: 40px; /* Adjusted for sub-header height */
-    left: 0;
-    width: 100%;
-
-    padding: 0px 95px;
-    background: rgba(17,17,17, 0.5); /* Semi-transparent background */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    z-index: 99;
-}
-
-/* Logo Style */
-.logo img {
-    aspect-ratio: 16/9;
-    height: 85px;
-    width: 250px;
-    object-fit: contain;
-}
-
-/* Navbar Styles */
-.navbar {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.navbar a {
-    position: relative;
-    font-size: 16px;
-    color: #fff;
-    text-decoration: none;
-    margin-left: 30px;
-    font-weight: 500;
-    transition: color 0.3s ease-in;
-}
-
-.navbar a:hover {
-    color: #fff;
-}
-
-.navbar a:active::after {
-    color: #fff;
-}
-
-
-.navbar a::before {
-    content: '';
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: #fff;
-    transition: width 0.3s ease-in;
-}
-
-.navbar a:hover::before {
-    color: #fff;
-    width: 100%;
-}
-
+/* General Components CSS */
 /* Button Style */
-.btn {
+#btn {
     padding: 10px 20px;
     margin-left: 20px;
     background-color: #fff;
     color: #116530;
     border: none;
-    border-radius: 20px;
     cursor: pointer;
     font-size: 16px;
     font-weight: bold;
     transition: background-color 0.3s ease;
-}
-
-.btn:hover {
-    background-color: #0e5237; /* Darker Green Hover */
-    color: white;
-}
-
-/* Vertical Divider */
-.vl {
-    margin-left: 20px;
-    border-left: 1px solid grey;
-    height: 50px;
-}
-
-/* Section 1 */
-.section {
-    position: relative;
-    min-height: 100vh; /* Adjust to fit the view */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    overflow: hidden;
-}
-
-#section1{
-    position: relative;
-    min-height: 100vh;
-    background-image: url("assets/images/hero-1.jpg") no-repeat center center;
-    background-size: cover;
-
-}
-
-#section2 {
-    background-color: aliceblue;
-
-}
-
-/* Content Wrapper for Text */
-.content-wrapper {
-    position: relative;
-    z-index: 1; /* Keeps content above GIF */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    max-width: 800px;
-    color: white;
-    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
-}
-
-.content-wrapper h1 {
-    font-size: 3rem;
-    font-weight: bold;
-    margin-bottom: 20px;
-}
-
-.content-wrapper p {
-    font-size: 1.25rem;
-    margin-bottom: 30px;
-}
-
-/* Learn More Button in Section 1 */
-button.btn-secondary {
-    background-color: #116530;
-    border: none;
-    padding: 10px 20px;
-    transition: background-color 0.3s ease;
-}
-
-button.btn-secondary:hover {
-    background-color: #0a4228;
 }
 
 /* Responsive Design */
@@ -227,4 +61,245 @@ button.btn-secondary:hover {
     .content-wrapper p {
         font-size: 1rem;
     }
+}
+
+
+/* Header - Start */
+/* Sub-header */
+.sub-header {
+    background-color: #0e5237; /* Dark Green */
+    color: white;
+    text-align: center;
+    padding: 10px 55px;
+    font-size: 14px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 100;
+    text-align: left;
+}
+
+.sub-header p {
+    margin: 5px 0px 5px 0px;
+    padding: 0px 50px;
+}
+
+.sub-header a {
+    color: white; /* Ensures the text is light for visibility */
+    transition: color 0.3s; /* Smooth transition for hover effect */
+}
+
+.sub-header a:hover {
+    color: #cce6cc; /* Light color on hover */
+}
+
+/* Main Header */
+.header {
+    position: fixed;
+    top: 40px; /* Adjusted for sub-header height */
+    left: 0;
+    width: 100%;
+    padding: 0px 95px;
+    background: rgba(17, 17, 17, 0.5); /* Semi-transparent background */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 99;
+}
+
+/* Logo Style */
+.logo img {
+    aspect-ratio: 16/9;
+    height: 85px;
+    width: 250px;
+    object-fit: contain;
+}
+
+/* Navbar Styles - Start */
+.navbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.navbar a {
+    position: relative;
+    font-size: 16px;
+    color: #fff; /* Default color */
+    text-decoration: none;
+    margin-left: 30px;
+    font-weight: 500;
+    transition: color 0.3s ease-in;
+}
+
+.navbar a:hover {
+    color: #cce6cc; /* Change color on hover */
+}
+
+.navbar a:active {
+    color: #fff; /* Keep the color white when clicked */
+}
+
+.navbar a:focus {
+    color: #fff; /* Keep the color white when focused (tabbed) */
+}
+
+.navbar a::before {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #fff;
+    transition: width 0.3s ease-in;
+}
+
+.navbar a:hover::before {
+    width: 100%; /* Line under the link on hover */
+}
+
+/* Navbar Styles - End */
+
+
+/* Header - End */
+
+
+/* Main Content Area */
+/* Section - General */
+.section {
+    position: relative;
+    min-height: 100vh; /* Adjust to fit the view */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    overflow: hidden;
+}
+
+/* Hero Section - Start */
+#section1 {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    overflow: hidden;
+}
+
+/* Background Image */
+.background-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Makes the image fully cover the section */
+    z-index: 0;
+}
+
+
+/* Dark Gradient Overlay - Left to Right (Three Points) */
+#section1::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.4) 50%, rgba(0, 0, 0, 0) 100%); /* Dark to transparent */
+    z-index: 0; /* Overlay is placed above the image */
+}
+
+
+
+
+
+
+.hero {
+    z-index: 3; /* Ensure the content is above the overlay */
+    margin-left: 8%;
+    border: black solid 1px;
+}
+
+.hero h3 {
+    font-size: 3.5rem;
+}
+
+.hero p {
+    font-size: 1.5rem;
+}
+
+/* Hero Section - End */
+
+#section2 {
+    background-color: #0e5237; /* Section 2 background */
+}
+
+
+/* Learn More Button in Section 1 */
+button.btn-secondary {
+    background-color: #116530;
+    border: none;
+    padding: 10px 20px;
+    transition: background-color 0.3s ease;
+}
+
+button.btn-secondary:hover {
+    background-color: #0a4228;
+}
+
+#section2 {
+    background-color: #0e5237; /* Section 2 background */
+}
+
+#section3 {
+    background-color: #084027; /* Section 3 background */
+}
+
+
+/* Styles for the circular image */
+.circle-image {
+    width: 50px; /* Adjust size as needed */
+    height: 50px; /* Adjust size as needed */
+    border-radius: 50%; /* Make it circular */
+    overflow: hidden; /* Ensure the image fits in the circle */
+    border: 2px solid #116530; /* Optional: border color */
+    position: relative;
+}
+
+
+
+.dropdown-toggle::after {
+    display: none; /* Remove default arrow */
+}
+
+.dropdown-menu {
+    min-width: 10px; /* Adjust width as needed */
+}
+
+
+.d-flex.flex-form {
+    justify-content: center; /* Center align the items */
+    align-items: center; /* Vertically align items */
+    margin-top: 5px; /* Adjust as needed for spacing */
+}
+
+#translation-container {
+    margin-right: -50px;
+
+
+}
+
+
+/* Vertical Divider - Optional */
+.vl {
+    border-left: 1px solid grey;
+    height: 50px;
+}
+
+#LoginButton {
+    align-self: center; /* Ensure the button is vertically centered */
+    width: 180px;
+    height: 40px;
 }
