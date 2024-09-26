@@ -40,6 +40,7 @@
 
 
     <div class="container">
+      <form action="OTP-code.php" method="post">
         <!-- <div class="mt-2 mb-3 d-flex justify-content-end">
             <button class="btn btn-primary"><i class="fa-solid fa-plus fa-sm fa-fw mr-2 text-gray-400"></i></button>
         </div> -->
@@ -51,28 +52,28 @@
         <div class="row g-2">
             <div class="col-md-3">
               <div class="form-floating">
-                <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+                <input type="text" class="form-control" id="floatingInput" placeholder="First Name">
                 <label for="floatingInput">First Name <small class="text-danger">*</small></label>
               </div>
             </div>
 
             <div class="col-md-3">
                 <div class="form-floating">
-                  <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+                  <input type="text" class="form-control" id="floatingInput" placeholder="Last Name">
                   <label for="floatingInput">Last Name <small class="text-danger">*</small> </label>
                 </div>
               </div>
 
               <div class="col-md-3">
                 <div class="form-floating">
-                  <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+                  <input type="text" class="form-control" id="floatingInput" placeholder="Middle Name">
                   <label for="floatingInput">Middle Name <small class="text-danger">*</small> </label>
                 </div>
               </div>
 
               <div class="col-md-3">
                 <div class="form-floating">
-                  <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+                  <input type="text" class="form-control" id="floatingInput" placeholder="Suffix">
                   <label for="floatingInput">Suffix <small class="text-secondary fw-lighter">(Optional)</small></label>
                 </div>
               </div>
@@ -81,7 +82,7 @@
         <div class="row g-2 pt-3">
             <div class="col-md-4">
               <div class="form-floating">
-                <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+                <input type="email" class="form-control" id="floatingInput" name="email" placeholder="name@example.com">
                 <label for="floatingInput">Email address</label>
               </div>
             </div>
@@ -98,7 +99,7 @@
 
             <div class="col-md-4">
               <div class="form-floating">
-                <input type="Password" class="form-control" id="floatingInput" placeholder="">
+                <input type="Password" class="form-control" id="floatingInput" name="pass" placeholder="">
                 <label for="floatingInput">Password</label>
               </div>
             </div>
@@ -109,12 +110,13 @@
         <div class="row g-2 pt-3">
           <div class="col-md-12 d-flex justify-content-between">
             <button type="button" id="back-button" class="btn btn-primary px-3">Back</button>
-            <button type="button" id="submit-button" class="btn btn-primary px-3">Submit</button>
+            <button type="submit" id="submit-button" name="register" class="btn btn-primary px-3">Register</button>
           </div>
       </div>
+      </form>
     </div>
 
-    <script>
+    <!-- <script>
         document.getElementById("submit-button").onclick = function () {
           location.href = "OTP.php";
         };
@@ -124,7 +126,7 @@
         };
 
 
-    </script>
+    </script> -->
   
     <!-- Popper CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
