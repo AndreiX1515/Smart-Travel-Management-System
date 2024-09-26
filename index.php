@@ -98,10 +98,13 @@
     </div>
 
     <script>
+
+    // Navbar Button Trigger
         document.getElementById("LoginButton").onclick = function () {
         location.href = "client-login.php";
     };
 
+    // For Language Dropdown
     document.addEventListener("DOMContentLoaded", function() {
     const dropdownItems = document.querySelectorAll('.dropdown-item');
     const languageLabel = document.getElementById('language-label');
@@ -111,14 +114,13 @@
         item.addEventListener('click', function(event) {
             event.preventDefault(); // Prevent default anchor behavior
 
-            // Change the displayed language
-            languageLabel.textContent = this.getAttribute('data-lang');
-            // Change the flag image
-            languageFlag.src = this.getAttribute('data-image');
+                // Change the displayed language
+                languageLabel.textContent = this.getAttribute('data-lang');
+                // Change the flag image
+                languageFlag.src = this.getAttribute('data-image');
+            });
         });
     });
-});
-
 
     </script>
 

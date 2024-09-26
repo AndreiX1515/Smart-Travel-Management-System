@@ -305,6 +305,10 @@ button.btn-secondary:hover {
     width: 25px;
     height: 25px;
     margin-right: 10px;
+    border: 1px solid darkgray; /* Green border */
+    border-radius: 50%; /* Makes the container circular */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Box shadow effect */
+    
 }
 
 .dropdown-item:active {
