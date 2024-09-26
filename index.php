@@ -36,7 +36,6 @@
         </div>
     </header>
 
-
     <!-- TODO: Hover Problem -->
     <!-- Main Header -->
     <header class="header d-flex justify-content-between align-items-center">
