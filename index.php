@@ -32,22 +32,26 @@
         </nav>
 
         <div class="d-flex flex-form">
-            <div class="container d-flex flex-row align-items-center" id="translation-container"> 
+
+            <!-- <label class="text-light">Lang:</label> -->
+            <div class="container dropdown-toggle d-flex flex-row align-items-center" id="translation-container" data-bs-toggle="dropdown" aria-expanded="false"> 
                 <div class="dropdown">
                     <div class="circle-image">
-                        <img src="assets/images/your-image.jpg" alt="Profile" class="img-fluid">
+                        <img id="language-flag" src="assets\images\Flags\english-flag.png" alt="English Flag" class="img-fluid"> <!-- Initial flag image -->
                     </div>
                 </div>
 
-                <div class="ms-0">
-                    <a class="dropdown-toggle ms-2 text-decoration-none text-light" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                        ▼
-                    </a>
+                <label id="language-label" class="text-light ms-2">English</label> <!-- Label for the selected language -->
 
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <li><a class="dropdown-item" href="#">Filipino</a></li>
-                        <li><a class="dropdown-item" href="#">Korean</a></li>
-                        <li><a class="dropdown-item" href="#">Bahasa</a></li>
+                <div class="dropdown-container ms-0">
+                    <!-- <a class="dropdown-toggle ms-1 text-decoration-none text-secondary" type="button" id="dropdownMenuButton" aria-expanded="false">
+                        ▼
+                    </a> -->
+
+                    <ul class="dropdown-menu mt-2" aria-labelledby="dropdownMenuButton">
+                        <li><a class="dropdown-item my-2" href="#" data-lang="English" data-image="assets\images\Flags\english-flag.png"> <img src="assets\images\Flags\english-flag.png" alt=""> English</a></li>
+                        <li><a class="dropdown-item my-2" href="#" data-lang="Korean" data-image="assets\images\Flags\korean-flag.png"> <img src="assets\images\Flags\korean-flag.png" alt=""> Korean</a></li>
+                        <li><a class="dropdown-item my-2" href="#" data-lang="Bahasa" data-image="assets\images\Flags\bahasa-flag.png"> <img src="assets\images\Flags\bahasa-flag.png" alt=""> Bahasa</a></li>
                     </ul>
                 </div>
             </div>
@@ -55,7 +59,9 @@
             <div class="vl"></div>
 
             <button class="btn btn-success text-lighter fw-normal py-1 px-2 ms-3 my-1" id="LoginButton">Book Now</button>
-        </div>
+    </div>
+
+
     </header>
 
     <!-- Section 1 -->
@@ -95,6 +101,25 @@
         document.getElementById("LoginButton").onclick = function () {
         location.href = "client-login.php";
     };
+
+    document.addEventListener("DOMContentLoaded", function() {
+    const dropdownItems = document.querySelectorAll('.dropdown-item');
+    const languageLabel = document.getElementById('language-label');
+    const languageFlag = document.getElementById('language-flag');
+
+    dropdownItems.forEach(item => {
+        item.addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent default anchor behavior
+
+            // Change the displayed language
+            languageLabel.textContent = this.getAttribute('data-lang');
+            // Change the flag image
+            languageFlag.src = this.getAttribute('data-image');
+        });
+    });
+});
+
+
     </script>
 
     <!-- Scripts -->
@@ -102,5 +127,9 @@
 
     <!-- Popper CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+
+
+
+
 </body>
 </html>

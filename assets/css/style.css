@@ -300,3 +300,14 @@ button.btn-secondary:hover {
     width: 180px;
     height: 40px;
 }
+
+.dropdown-container img {
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+}
+
+.dropdown-item:active {
+    background-color: #fff;
+    color: lightgray;
+}
