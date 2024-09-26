@@ -59,7 +59,7 @@ if (isset($_POST['register']))
 
     if ($stmt->execute()) 
     {
-      header("location: email-verification.php?email=" . $email);
+      header("location: OTP.php");
       exit();
     } 
     else 
@@ -71,7 +71,37 @@ if (isset($_POST['register']))
   {
       echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
   }
+}
 
-  
+// OTP.php validate button
+if(isset($_POST['validate']))
+{
+  $otp_code = mysqli_real_escape_string($conn, $_POST['otp']);
+  $sql1 = "SELECT * FROM account WHERE otp = $otp_code";
+  $res1 = mysqli_query($conn, $sql1);
+
+  if(mysqli_num_rows($res1) > 0)
+  {
+    $fetch_data = mysqli_fetch_assoc($res1);
+    $fetch_code = $fetch_data['otp'];
+    $email = $fetch_data['email'];
+    $code = 0;
+    $status = 'verified';
+    $update_otp = "UPDATE account SET otp = $code, status = '$status' WHERE otp = $fetch_code";
+    $update_res = mysqli_query($conn, $update_otp);
+    if($update_res)
+    {
+      header('location: client-login.php');
+      exit();
+    }
+    else
+    {
+      $errors['otp-error'] = "Failed while updating code!";
+    }
+  }
+  else
+  {
+    $errors['otp-error'] = "You've entered incorrect code!";
+  }
 }
 ?>
