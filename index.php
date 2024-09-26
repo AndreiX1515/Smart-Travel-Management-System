@@ -47,7 +47,6 @@
             <a href="#" class="nav-link">Tours</a>
             <a href="#" class="nav-link">About</a>
             <a href="#" class="nav-link">Contact</a>
-            <a href="#" class="nav-link">Contact</a>
         </nav>
 
         <button class="btn btn-primary" id="LoginButton">Book Now</button>
