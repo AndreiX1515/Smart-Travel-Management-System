@@ -31,19 +31,16 @@
 
 <body>
     <div class="navbar">
-        <a href="" class="logo"><img src="assets/images/logo.png" alt="Logo"></a>
+      <a href="" class="logo"><img src="assets/images/logo.png" alt="Logo"></a>
     </div>
     
     <div class="accent d-flex justify-content-center align-items-center">
-        <h1 class="fw-bold">Booking</h1>
+      <h1 class="fw-bold">Booking</h1>
     </div>
 
-    <!-- <div class="mt-2 mb-3 d-flex justify-content-end">
-            <button class="btn btn-primary"><i class="fa-solid fa-plus fa-sm fa-fw mr-2 text-gray-400"></i></button>
-        </div> -->
-
     <div class="container">
-        <div class="card">
+      <form action="bookingform-code.php" method="post">
+      <div class="card">
           <div class="card-header py-3 px-3">
             Personal Information
           </div>
@@ -52,29 +49,85 @@
               <div class="row g-2">
                 <div class="col-md-3">
                   <div class="form-floating">
-                    <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+                    <input type="text" class="form-control" id="floatingInput" name="fname" placeholder="First Name">
                     <label for="floatingInput">First Name <small class="text-danger">*</small></label>
                   </div>
                 </div>
 
                 <div class="col-md-3">
                     <div class="form-floating">
-                      <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+                      <input type="text" class="form-control" id="floatingInput" name="lname" placeholder="Last Name">
                       <label for="floatingInput">Last Name <small class="text-danger">*</small> </label>
                     </div>
                   </div>
 
                   <div class="col-md-3">
                     <div class="form-floating">
-                      <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+                      <input type="text" class="form-control" id="floatingInput" name="mname" placeholder="Middle Name">
                       <label for="floatingInput">Middle Name <small class="text-danger">*</small> </label>
                     </div>
                   </div>
 
                   <div class="col-md-3">
                     <div class="form-floating">
-                      <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com">
+                      <input type="text" class="form-control" id="floatingInput" name="suffix" placeholder="Suffix">
                       <label for="floatingInput">Suffix <small class="text-secondary fw-lighter">(Optional)</small></label>
+                    </div>
+                  </div>
+
+                  <div class="col-md-3">
+                    <div class="form-floating">
+                      <input type="text" class="form-control" id="floatingInput" name="contactNo" placeholder="Contact No">
+                      <label for="floatingInput">Contact No.</label>
+                    </div>
+                  </div>
+
+                  <div class="col-md-3">
+                    <div class="form-floating">
+                      <input type="email" class="form-control" id="floatingInput" name="email" placeholder="Email">
+                      <label for="floatingInput">Email</label>
+                    </div>
+                  </div>
+
+                  <div class="col-md-3">
+                    <div class="form-floating">
+                      <input type="text" class="form-control" id="floatingInput" name="houseNo" placeholder="HouseNo">
+                      <label for="floatingInput">House No. <small class="text-danger">*</small></label>
+                    </div>
+                  </div>
+
+                  <div class="col-md-3">
+                    <div class="form-floating">
+                      <input type="text" class="form-control" id="floatingInput" name="street" placeholder="Street">
+                      <label for="floatingInput">Street</label>
+                    </div>
+                  </div>
+
+                  <div class="col-md-3">
+                    <div class="form-floating">
+                      <input type="text" class="form-control" id="floatingInput" name="subdivision" placeholder="Subdivision">
+                      <label for="floatingInput">Subdivision </label>
+                    </div>
+                  </div>
+
+                  <div class="col-md-3">
+                    <div class="form-floating">
+                      <input type="text" class="form-control" id="floatingInput" name="barangay" placeholder="Barangay">
+                      <label for="floatingInput">Barangay </label>
+                    </div>
+                  </div>
+
+                  <div class="col-md-3">
+                    <div class="form-floating">
+                      <input type="text" class="form-control" id="floatingInput" name="city" placeholder="City">
+                      <label for="floatingInput">City </label>
+                    </div>
+                  </div>
+
+                  <div class="col-md-3">
+                    <div class="form-floating">
+                      <input type="text" class="form-control" id="floatingInput" name="country" placeholder="Country">
+                      <label for="floatingInput">Country </label>
                     </div>
                   </div>
             </div>
@@ -82,15 +135,15 @@
         <div class="row g-2 pt-3">
             <div class="col-md-2">
               <div class="form-floating">
-                <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com">
-                <label for="floatingInput">Age</label>
+                <input type="number" class="form-control" id="floatingInput" name="age" placeholder="age">
+                <label for="floatingInput">Age <small class="text-danger">*</small></label>
               </div>
             </div>
 
             <div class="col-md-3">
               <div class="form-floating">
-                <input type="date" class="form-control" id="floatingInput" placeholder="name@example.com">
-                <label for="floatingInput">Birthdate</label>
+                <input type="date" class="form-control" id="floatingInput" name="birthdate" placeholder="Date of Birthdate">
+                <label for="floatingInput">Birthdate <small class="text-danger">*</small></label>
               </div>
             </div>
 
@@ -98,8 +151,8 @@
              <div class="col-md-4 mb-4 pb-2">
                 <!-- Enhanced Dropdown Component -->
                 <div class="form-outline">
-                    <select id="enhancedDropdown" class="form-select" required>
-                        <option selected disabled>Nationality</option>
+                    <select id="enhancedDropdown" class="form-select" name="nationality">
+                        <option selected disabled>Nationality <small class="text-danger">*</small></option>
                         <option value="PH">Filipino</option>
                         <option value="AF">Afghan</option>
                         <option value="AM">Armenian</option>
@@ -155,8 +208,8 @@
              <div class="col-md-3 mb-4 pb-2">
                 <!-- Enhanced Dropdown Component -->
                 <div class="form-outline">
-                    <select id="enhancedDropdown" class="form-select" required>
-                        <option selected disabled>Gender</option>
+                    <select id="enhancedDropdown" class="form-select" name="gender">
+                        <option selected disabled>Gender <small class="text-danger">*</small></option>
                         <option value="Male">Male</option>
                         <option value="Female">Female</option>
                         <option value="Other">Other</option>
@@ -182,15 +235,15 @@
                   <h5 class="h6 mt-2">Package Name</h5>
                   <!-- Enhanced Dropdown Component -->
                   <div class="form-outline">
-                      <select id="enhancedDropdown" class="form-select" required>
+                      <select id="enhancedDropdown" class="form-select" name="packageName" required>
                           <option selected disabled>Package Name</option>
-                          <option value="Winter">Winter Package</option>
-                          <option value="Spring">Spring Package</option>
-                          <option value="Summer">Summer Package</option>
-                          <option value="Autumn">Autumn Package</option>
-                          <option value="Cherry Blossom">Cherry Blossom Package</option>
-                          <option value="Regular Tour">Regular Tour Package</option>
-                          <option value="Busan Tour">Busan Tour Package</option>
+                          <option value="Winter Tour Package">Winter Tour Package</option>
+                          <option value="Spring Tour Package">Spring Tour Package</option>
+                          <option value="Summer Tour Package">Summer Tour Package</option>
+                          <option value="Autumn Tour Package">Autumn Tour Package</option>
+                          <option value="Cherry Blossom Tour Package">Cherry Blossom Tour Package</option>
+                          <option value="Regular Tour Package">Regular Tour Package</option>
+                          <option value="Busan Tour Package">Busan Tour Package</option>
                       </select>
                     </div>
                 </div>
@@ -201,8 +254,19 @@
                   </div>
                   <!-- Enhanced Dropdown Component -->
                   <div class="form-floating">
-                    <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com">
+                    <input type="text" class="form-control" name="passportNo" id="floatingInput" >
                     <label for="floatingInput">Passport No.</label>
+                  </div>
+                </div>
+
+                <div class="col-md-4 mb-4 pb-2">
+                  <div>
+                    <h5 class="h6 mt-2">Visa Status</h5>
+                  </div>
+                  <!-- Enhanced Dropdown Component -->
+                  <div class="form-floating">
+                    <input type="text" class="form-control" name="visaStatus" id="floatingInput" >
+                    <label for="floatingInput">Visa Status</label>
                   </div>
                 </div>
 
@@ -213,7 +277,7 @@
                   <!-- Enhanced Dropdown Component -->
                   <div class="form-floating">
                   <div class="form-floating">
-                      <input type="date" class="form-control" id="floatingInput" placeholder="name@example.com">
+                      <input type="date" class="form-control" id="floatingInput" >
                       <label for="floatingInput">Flight Date</label>
                    </div>
                   </div>
@@ -224,38 +288,14 @@
           <div class="row g-2 pt-2">
           <div class="col-md-12 d-flex justify-content-between">
             <button type="button" id="back-button" class="btn btn-primary px-3">Back</button>
-            <button type="button" id="submit-button" class="btn btn-primary px-3">Submit</button>
+            <button type="submit" id="submit-button" name="submit" class="btn btn-primary px-3">Submit</button>
           </div>
       </div>
 
-          <!-- <div class="row g-2 pt-3">
-              <div class="col-md-4">
-                <div class="form-floating">
-                  <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-                  <label for="floatingInput">Email address</label>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-floating">
-                  <div class="input-group">
-                    <span class="input-group-text">+63</span>
-                    <input type="text" class="form-control" id="floatingPhone" placeholder="9123456789" pattern="\d*" maxlength="10" required>
-                  </div>
-                  
-                </div>
-                <div class="form-text">Please enter a 10-digit phone number.</div>
-              </div>
-
-              <div class="col-md-4">
-                <div class="form-floating">
-                  <input type="Password" class="form-control" id="floatingInput" placeholder="">
-                  <label for="floatingInput">Password</label>
-                </div>
-              </div>
-            </div> -->
           </div>
         </div>
       </div>
+      </form>
     </div>
 
     <script>
