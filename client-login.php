@@ -47,7 +47,7 @@
       <div class="logo-container">
         <img src="assets\images\logo-tab.png" alt="">
       </div> 
-
+        <h3 class="text-light my-3">Log In</h3>
       <form>
         <!-- <div class="d-flex flex-row align-items-center justify-content-center">
           <p class="lead fw-normal mb-0 me-3">Sign in with</p>

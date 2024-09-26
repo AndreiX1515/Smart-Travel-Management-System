@@ -289,7 +289,7 @@ button.btn-secondary:hover {
     margin-right: -50px;
 }
 
-/* Vertical Divider - Optional */
+/* Vertical Line Divider */
 .vl {
     border-left: 1px solid grey;
     height: 50px;
