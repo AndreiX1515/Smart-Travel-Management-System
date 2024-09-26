@@ -1,0 +1,95 @@
+*{
+    font-family: 'Poppins', sans-serif
+
+}
+
+.container {
+    background: white;
+    border-radius: 5px;
+    width: 1000px; /* Fixed width for better centering */
+}
+
+
+
+.accent {
+    width: 100vw;
+    padding: 100px;
+    margin-bottom: 20px;
+    background-image: linear-gradient(
+        rgba(0, 0, 0, 0.7), 
+        rgba(0, 0, 0, 0.7)
+        ), url('assets/images/hero-1.jpg') !important;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.navbar {
+    background-color: transparent;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.accent h1 {
+    font-family: sans-serif;
+    color: #fff;
+}
+
+.header {
+    position: fixed;
+    top: 30px; /* Adjusted for sub-header height */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 99;
+}
+
+.logo img {
+    aspect-ratio: 16/9;
+    height: 65px; /* Adjust the height as per your logo's design */
+    width: 250px;
+    padding-left: 80px;
+    object-fit: contain;
+} 
+
+.card {
+}
+
+
+.card-header {
+    font-size: 18px;
+    background-color: 
+    
+}
+
+.form-outline {
+    position: relative;
+}
+.form-select {
+    padding-left: 2.5rem; /* Create space for the custom icon */
+    height: 3.5rem;       /* Larger height for a more premium feel */
+    border-radius: 0.5rem; /* Rounded corners for a softer look */
+}
+.form-select:focus {
+    box-shadow: 0 0 0 0.2rem rgba(17, 101, 48, 0.25); /* Custom focus shadow */
+    border-color: #89CFF0; /* Custom border color */
+}
+.form-outline::before {
+    position: absolute;
+    top: 1.2rem; /* Adjust icon placement */
+    left: 0.8rem;
+    font-size: 1.2rem;
+    pointer-events: none; /* Prevent click on the icon */
+}
+.form-label {
+    margin-top: -1.5rem; /* Adjust label position */
+    margin-left: 1rem; /* Space from the left */
+    transition: all 0.2s ease; /* Smooth transition for label */
+    color: #89CFF0; /* Subtle color for label */
+}
+.form-select:focus + .form-label,
+.form-select:not(:placeholder-shown) + .form-label {
+    font-size: 0.85rem; /* Smaller size when focused or not empty */
+    top: -0.5rem; /* Move label up */
+    color: #89CFF0; /* Label color change on focus */
+}
+

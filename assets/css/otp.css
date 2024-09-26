@@ -1,0 +1,112 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f8f9fa;
+    background-color: grey;
+  }
+  .centered-div {
+    width: 100%;
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 20px;
+    position: relative;
+    text-align: center;
+  }
+
+  /* For Logo */
+  .logo-container {
+    position: absolute;
+    top: 50px;
+    left: 80px;
+  }
+
+  .logo {
+    width: 200px;
+    height: auto;
+  }
+
+.card {
+    width: 500px;
+    border: none;
+    height: 400px;
+    /* box-shadow: 0px 5px 20px 0px #d2dae3; */
+    /* z-index: 1; */
+    display: flex;
+    justify-content: center;
+    align-items: center
+}
+
+.card h6 {
+    color: red;
+    font-size: 20px;
+    margin-bottom: 30px;
+}
+
+.inputs input {
+    width: 40px;
+    height: 40px
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0
+}
+
+.card-2 {
+    background-color: #fff;
+    padding: 10px;
+    width: 350px;
+    height: 100px;
+    bottom: -50px;
+    left: 20px;
+    position: absolute;
+    border-radius: 5px
+}
+
+.card-2 .content {
+    margin-top: 50px
+}
+
+.card-2 .content a {
+    color: red
+}
+
+.form-control:focus {
+    box-shadow: none;
+    border: 2px solid red
+}
+
+.validate {
+    border-radius: 20px;
+    height: 40px;
+    background-color: red;
+    border: 1px solid red;
+    width: 140px
+}
+
+/* Back to Homepage button */
+.back-btn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 3; /* Higher z-index than other content */
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    font-size: 16px;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+  }
+  
+  .back-btn:hover {
+    background-color: rgba(255, 255, 255, 0.5);
+  }
