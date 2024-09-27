@@ -49,13 +49,13 @@ if (isset($_POST['register']))
     $mail -> Body = '<p>Your verification code is: <b style="font-size: 30px;">' . $verificationCode . '</b></p>';
     $mail -> send();
     
-    // Hash the password
-    $encryptedPassword = password_hash($pass, PASSWORD_DEFAULT);
+    // Hash the password 
+    // $encryptedPassword = password_hash($pass, PASSWORD_DEFAULT);
 
     // Insert into database using prepared statements
     $sql = "INSERT INTO account (email, password, otp, status) VALUES (?, ?, ?, '')";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param('sss', $email, $encryptedPassword, $verificationCode);
+    $stmt->bind_param('sss', $email, $pass, $verificationCode);
 
     if ($stmt->execute()) 
     {
@@ -108,32 +108,30 @@ if(isset($_POST['validate']))
 // client-login.php login code
 if(isset($_POST['login'])) 
 {
-  $email = $_POST['email'];
-  $pass = $_POST['pass'];
-
-  // Use prepared statements to prevent SQL injection
-  $sql1 = "SELECT * FROM account WHERE email = ? AND status = 'verified'";
-  $stmt = $conn->prepare($sql1);
-  $stmt->bind_param('s', $email); // 's' specifies that $email is a string
-  $stmt->execute();
-  $result = $stmt->get_result();
-
-  // Check if any user exists with the given email
-  if ($result->num_rows > 0) {
-    $row = $result->fetch_assoc();
-    
-    // Verify the hashed password
-    if (password_verify($pass, $row['password'])) {
-      echo "Login Success.";
-      // You can start a session here if needed: session_start();
-      // Store user details in session: $_SESSION['user'] = $row;
-    } else {
-      echo "Wrong password.";
+  if(isset($_POST['login'])) {
+    $email = $_POST['email'];
+    $pass = $_POST['pass'];
+  
+    $sql1 = "Select * from account where email='$email' and password='$pass' and status='verified'";
+    $res1 = mysqli_query($conn, $sql1);
+  
+    if (mysqli_num_rows($res1) > 0) 
+    {
+      if ($row = mysqli_fetch_assoc($res1)) 
+      {
+        echo "login Success.";
+      }
+  
+      else 
+      {
+        echo "Wrong email or password";
+      }
     }
-  } else {
-    echo "No user exists with this email or the account is not verified.";
+  
+    else 
+    {
+      echo "No user exist with this email";
+    }
   }
-
-  $stmt->close();
 }
 ?>
