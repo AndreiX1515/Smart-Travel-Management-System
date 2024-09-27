@@ -119,7 +119,7 @@ if(isset($_POST['login']))
     {
       if ($row = mysqli_fetch_assoc($res1)) 
       {
-        echo "login Success.";
+        header("location: bookingform.php");
       }
   
       else 

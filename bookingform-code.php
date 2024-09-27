@@ -24,6 +24,24 @@ if (isset($_POST['submit']))
   $email = $_POST['email'];
   $contactNo = $_POST['contactNo'];
 
+ /* echo $fname;
+  echo $mname;
+  echo $lname;
+  echo $suffix;
+  echo $houseNo;
+  echo $street;
+  echo $subdivision;
+  echo $barangay;
+  echo $city;
+  echo $country;
+
+  echo $age;
+  echo $birthdate;
+  echo $passportNo;
+  echo $visaStatus;
+  echo $email;
+  echo $contactNo; */
+
   // Assuming you're getting the package name from the form
   $packageName = $_POST['packageName'];
 
@@ -36,10 +54,10 @@ if (isset($_POST['submit']))
   $stmt1 = $conn->prepare($sql1);
 
   // Ensure the parameters match the SQL query
-  $stmt1->bind_param('ssssssssssissssis', 
-    $packageName, $fname, $lname, $mname, $suffix, 
-    $houseNo, $street, $subdivision, $barangay, $city, $country, 
-    $age, $birthdate, $passportNo, $visaStatus, $contactNo, $email);
+  $stmt1->bind_param('sssssssssssisssis', 
+  $packageName, $fname, $lname, $mname, $suffix, 
+  $houseNo, $street, $subdivision, $barangay, $city, $country, 
+  $age, $birthdate, $passportNo, $visaStatus, $contactNo, $email);
 
   // Execute the query
   if ($stmt1->execute()) 
