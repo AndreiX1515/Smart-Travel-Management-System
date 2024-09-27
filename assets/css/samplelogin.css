@@ -9,8 +9,11 @@
 }
 
 html, body {
-    height: 100%; /* Make sure the body takes the full height */
+    height: 100%;
     margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     padding: 0;
     font-family: "Poppins", sans-serif;
 }
@@ -51,50 +54,165 @@ html, body {
 }
 
 .main-container {
-    width: 60%; /* Set the width */
-    height: 80%; /* Set the height */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     padding: 15px;
-    margin: auto; /* Center horizontally */
-    position: absolute; /* Positioning to center vertically */
-    top: 50%; /* Move it down 50% of the viewport height */
-    left: 50%; /* Move it right 50% of the viewport width */
-    transform: translate(-50%, -50%); /* Adjust for the div's own height and width */
-    display: grid; /* Use grid layout */
-    grid-template-columns: repeat(5, 1fr); /* Create 5 equal columns */
-    grid-template-rows: repeat(5, 1fr); /* Create 5 equal rows */
-    grid-column-gap: 0; /* No gap between columns */
-    grid-row-gap: 0; /* No gap between rows */
-    background-color: rgba(255, 255, 255, 0.9); /* Light background color */
-    border-radius: 25px; /* Optional rounded corners */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Box shadow for depth */
+    width: 55%;
+    height: 80%;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* border: 3px solid #116530; Border added */
+    border-radius: 20px;
+    z-index: 2; /* Ensuring it's in front */
+    background-color:whitesmoke; /* Ensuring a solid background */
+    position: relative; /* For z-index to take effect */
 }
 
 .loginform {
-    grid-area: 1 / 1 / 6 / 3; /* Span rows 1 to 5 and columns 1 to 2 */
-    padding: 100px; /* Padding for inner spacing */
+    padding: 0px 25px 20px 20px;
+    background-color: whitesmoke;
+    z-index: 2; /* In front of image */
+    width: 100%;
+    height: 100%;
 }
 
+.logo-container img {
+    width: 85px; /* Adjust the logo size */
+    height: 50px;
+    aspect-ratio: 16/9;
+    object-fit: contain; 
+}
+
+.header-container p {
+    font-size: 12px;
+    font-weight: 500;
+    color: grey;
+}
+
+
+/* Social Icons Section*/
+/* Social Icons Section */
+.social-icons {
+    display: flex;
+    justify-content: center; /* Center the icons */
+    margin: 10px 0;
+}
+
+.social-icons a {
+    color: white; /* Default text color for icons */
+    width: 60px; /* Set width */
+    height: 60px; /* Set height */
+    margin: 0 10px; /* Spacing between icons */
+    border-radius: 50%; /* Circular icons */
+    display: flex;
+    justify-content: center; /* Center icon inside the circle */
+    align-items: center; /* Center icon vertically */
+    text-decoration: none; /* Remove underline */
+}
+
+/* Specific colors for social icons */
+.social-icons a.facebook {
+    background-color: #1877F2; /* Facebook blue */
+}
+
+.social-icons a.google {
+    background: linear-gradient(45deg, 
+    rgb(66, 133, 244), /* Blue */
+    rgb(234, 67, 53), /* Red */
+    rgb(251, 188, 5), /* Yellow */
+    rgb(52, 168, 83) /* Green */
+);
+}
+
+.social-icons a.twitter {
+    background-color: #000; /* Black background for X (Twitter) */
+    color: #fff; /* White icon for X */
+    font-size: 30px; /* Ensure the X icon is also enlarged */
+}
+
+
+/* Divider Section */
+.divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 10px 0;
+}
+
+.divider hr {
+    flex-grow: 1;
+    border: none;
+    height: 1px;
+    background-color: #666; /* Changed to white */
+}
+
+.divider span {
+    margin: 0 10px;
+    color: #666;
+}
+
+
+
+/* image-accent - div */
 .image-accent {
-    grid-area: 1 / 3 / 6 / 6; /* Span rows 1 to 5 and columns 3 to 5 */
-    border: black 2px solid; /* Optional border for visibility */
-    padding: 0; /* Remove padding to allow image to fill the space */
-    margin: 0; /* No margin between divs */
-    display: flex; /* Use flexbox to center the image */
-    justify-content: center; /* Center the image horizontally */
-    align-items: center; /* Center the image vertically */
-    overflow: hidden; /* Hide any overflow */
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+    border-radius: 20px;
+    z-index: 1; /* Behind main-container */
 }
 
 .image-accent img {
-    width: 100%; /* Make the image take the full width of the div */
-    height: 100%; /* Make the image take the full height of the div */
-    object-fit: cover; /* Ensure the image covers the entire area */
+    width: 110%; /* Slightly larger */
+    height: 100%;
+    object-fit: cover;
+    border-radius: 20px;
 }
 
+.loginform h4, .loginform p {
+    margin: 15px 0;
+}
+
+@media (min-width: 768px) {
+    .main-container {
+        flex-wrap: nowrap;
+    }
+
+    .loginform {
+        width: 45%; /* Adjusted width for loginform */
+    }
+
+    .image-accent {
+        width: 55%; /* Slightly larger for image section */
+    }
+}
+
+.fp-container a {
+    font-size: 16px;
+    font-weight: 500;
+    color: rgb(126, 126, 126);
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.fp-container a:hover {
+    text-decoration: underline;
+    font-size: 16px;
+    font-weight: 500;
+    color: lightgrey;
+
+}
+
+
 .loginform img {
-    position: absolute;
+    /* position: absolute;
     top: 15px;
-    left: 20px;
+    left: 20px; */
     aspect-ratio: 16/9;
     border-radius: 50px;
     height: 85px;
@@ -102,3 +220,52 @@ html, body {
     object-fit: contain;
 }
 
+
+/* Bottom-login-container */ 
+.bottom-login-account {
+    margin-top: 20%;
+}
+
+.bottom-login-account p {
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.bottom-login-account a {
+    font-size: 12px;
+    font-weight: 500;
+    color: #555555;
+}
+
+.bottom-login-account a {
+    font-size: 12px;
+    font-weight: 500;
+    color: rgb(255, 32, 32);
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.bottom-login-account a:hover {
+    text-decoration: underline;
+    font-size: 12px;
+    font-weight: 500;
+    color: lightgrey;
+
+}
+
+
+.position-relative {
+    position: relative; /* Ensure the icon can be positioned absolutely */
+}
+
+#togglePassword {
+    cursor: pointer; /* Change cursor to pointer for better UX */
+}
+
+#LoginButton {
+    margin-top: 5%;
+    border-color: #000;
+    background-color: #000;
+    font-weight: 500;
+    font-size: 16px;
+}
