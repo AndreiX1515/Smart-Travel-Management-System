@@ -1,58 +1,116 @@
-*{
-    font-family: 'Poppins', sans-serif
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
+
+* {
+    font-family: 'Poppins', sans-serif; /* Ensure consistent font across the page */
+}
+
+body {
+    margin: 0; /* Remove default body margin */
 }
 
 .container {
-    background: white;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px; /* Padding inside the container */
     width: 1000px; /* Fixed width for better centering */
+    margin-top: 80px; /* Space below the fixed navbar */
 }
 
 .hline { 
     width: 100%;  
-    background: #fff 
+    background: #fff; /* Horizontal line color */
+}
+
+.form-floating .input-group > .form-control, 
+.form-floating .input-group > .form-select {
+    height: calc(3.5rem + 2px); /* Adjusting height for floating label */
+}
+
+.form-floating .input-group-text {
+    border-radius: 0.375rem 0 0 0; /* Rounded corners for input group text */
 }
 
 .accent {
-    width: 100vw;
-    padding: 100px;
-    margin-bottom: 20px;
-    background-image: linear-gradient(
-        rgba(0, 0, 0, 0.7), 
-        rgba(0, 0, 0, 0.7)
-        ), url('assets/images/hero-1.jpg') !important;
-    background-size: cover;
-    background-position: center;
-    position: relative;
+    width: 100vw; /* Full viewport width */
+    height: 30vw; /* Adjust height based on your design */
+    margin-bottom: 20px; /* Space below the div */
+    position: relative; /* For positioning child elements */
+    overflow: hidden; /* Prevents overflow of the image */
+}
+
+.bg-overlay {
+    position: absolute; /* Position it relative to the accent div */
+    top: 0; /* Align to the top */
+    left: 0; /* Align to the left */
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    z-index: 1; /* Ensure it's on top of the background */
+}
+
+.bg-overlay img {
+    width: 100%; /* Make the image fill the overlay */
+    height: 100%; /* Make the image fill the overlay */
+    object-fit: cover; /* Cover the entire div while maintaining aspect ratio */
 }
 
 .navbar {
-    background-color: transparent;
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(34, 34, 34, 0.5); /* Semi-transparent background for the navbar */
+    position: fixed; /* Fix the navbar at the top */
+    top: 0; /* Align to the top */
+    left: 0; /* Align to the left */
+    width: 100%; /* Full width */
+    z-index: 1000; /* Ensure it stays above other content */
+    padding: 10px 20px; /* Padding for better spacing */
+    display: flex; /* Use flexbox for alignment */
+    justify-content: flex-start; /* Align items to the left */
+    align-items: center; /* Center items vertically */
+    transition: top 0.3s; /* Smooth transition for showing/hiding */
+}
+
+.hidden {
+    top: -100px; /* Move navbar out of view */
 }
 
 .accent h1 {
-    font-family: sans-serif;
-    color: #fff;
+    font-family: sans-serif; /* Font style for accent title */
+    color: #fff; /* Title color */
 }
 
 .header {
-    position: fixed;
+    position: fixed; /* Fix header position */
     top: 30px; /* Adjusted for sub-header height */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    z-index: 99;
+    display: flex; /* Flexbox layout for header */
+    justify-content: space-between; /* Space between logo and other elements */
+    align-items: center; /* Center items vertically */
+    z-index: 99; /* Ensure header is on top */
+    width: 100%; /* Full width to cover navbar */
+}
+
+.logo {
+    margin-right: auto; /* Push the logo to the left, separating it from other elements */
 }
 
 .logo img {
-    aspect-ratio: 16/9;
-    height: 65px; /* Adjust the height as per your logo's design */
-    width: 250px;
-    padding-left: 80px;
-    object-fit: contain;
-} 
+    height: 25px; /* Adjust the height as per your logo's design */
+    width: auto; /* Maintain aspect ratio */
+    padding-left: 80px; /* Spacing from the left */
+    object-fit: contain; /* Ensure the logo fits within the set dimensions */
+}
 
+.register-title {
+    text-align: center; /* Center the text */
+    padding: 30px 0px 0px 0px;
+    margin-bottom: -70px;
+}
+
+.register-text{
+    font-size: 1.5rem; /* Adjust size as needed */
+    font-weight: 700;
+    color: #333; /* Color of the text */
+}
+
+.register-title p{
+    text-align: center; /* Center the text */
+    font-size: 12px;
+    font-weight: 500;
+    color: lightgrey;
+}
