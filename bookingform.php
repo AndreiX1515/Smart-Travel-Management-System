@@ -50,7 +50,7 @@
           <button class="add-more-form float-end btn btn-primary">ADD MORE</button>
         </h4>
 
-        <form action="code.php" method="POST">
+        <form action="bookingform-code.php" method="POST">
           <div class="card mt-4 guest-form">
             <div class="card-header">
               <h4>Guest Information</h4>
@@ -69,14 +69,14 @@
                   <div class="col-md-4">
                     <div class="form-group mb-2">
                       <label for="fName">First Name</label>
-                      <input type="text" name="fName[]" class="form-control" required placeholder="Enter First Name">
+                      <input type="text" name="fName[]" class="form-control" placeholder="Enter First Name">
                     </div>
                   </div>
 
                   <div class="col-md-4">
                     <div class="form-group mb-2">
                       <label for="lName">Last Name</label>
-                      <input type="text" name="lName[]" class="form-control" required placeholder="Enter Last Name">
+                      <input type="text" name="lName[]" class="form-control" placeholder="Enter Last Name">
                     </div>
                   </div>
 
@@ -90,7 +90,7 @@
                   <div class="col-md-4">
                     <div class="form-group mb-2">
                       <label for="suffix">Suffix</label>
-                      <select name="suffix[]" class="form-control">
+                      <select id="enhancedDropdown" class="form-select" name="suffix[]">
                         <option value="">Select Suffix</option>
                         <option value="Jr.">Jr.</option>
                         <option value="Sr.">Sr.</option>
@@ -106,14 +106,14 @@
                   <div class="col-md-4">
                     <div class="form-group mb-2">
                       <label for="age">Age</label>
-                      <input type="number" name="age[]" class="form-control" required placeholder="Enter Age">
+                      <input type="number" name="age[]" class="form-control" placeholder="Enter Age">
                     </div>
                   </div>
 
                   <div class="col-md-4">
                     <div class="form-group mb-2">
                       <label for="birthdate">Birthdate</label>
-                      <input type="date" name="birthdate[]" class="form-control" required>
+                      <input type="date" name="birthdate[]" class="form-control">
                     </div>
                   </div>
                 </div>
@@ -125,18 +125,18 @@
                   <div class="col-md-4">
                     <div class="form-group mb-2">
                       <label for="contactNo">Contact No.</label>
-                      <input type="text" name="contactNo[]" class="form-control" required placeholder="Enter Contact No">
+                      <input type="text" name="contactNo[]" class="form-control" placeholder="Enter Contact No">
                     </div>
                   </div>
 
                   <div class="col-md-4">
                     <div class="form-group mb-2">
                       <label for="email">Email</label>
-                      <input type="email" name="email[]" class="form-control" required placeholder="Enter Email Address">
+                      <input type="email" name="email[]" class="form-control" placeholder="Enter Email Address">
                     </div>
                   </div>
                 </div>
-
+                
                 <!-- Address Information Group -->
                 <div class="row mb-3">
                   <h5>Address Information</h5>
@@ -182,7 +182,7 @@
                       <input type="text" name="country[]" class="form-control" required placeholder="Enter Country">
                     </div>
                   </div>
-                </div>
+                </div> 
 
                 <!-- Flight Details Group -->
                 <div class="row mb-3">
@@ -191,14 +191,14 @@
                   <div class="col-md-6">
                     <div class="form-group mb-2">
                       <label for="passportNo">Passport No.</label>
-                      <input type="text" name="passportNo[]" class="form-control" required placeholder="Enter Passport No">
+                      <input type="text" name="passportNo[]" class="form-control" placeholder="Enter Passport No">
                     </div>
                   </div>
 
                   <div class="col-md-6">
                     <div class="form-group mb-2">
                       <label for="visaStatus">Visa Status</label>
-                      <select id="enhancedDropdown" class="form-select" name="visaStatus[]" required>
+                      <select id="enhancedDropdown" class="form-select" name="visaStatus[]">
                         <option selected disabled>Select Visa Status</option>
                         <option value="available">Available</option>
                         <option value="no">No</option>
@@ -209,7 +209,7 @@
                   <div class="col-md-6">
                     <div class="form-group mb-2">
                       <label for="packageName">Package</label>
-                      <select id="enhancedDropdown" class="form-select" name="packageName[]" required>
+                      <select id="enhancedDropdown" class="form-select" name="packageName[]">
                         <option selected disabled>Select Package</option>
                         <option value="Winter Tour Package">Winter Tour Package</option>
                         <option value="Spring Tour Package">Spring Tour Package</option>
@@ -224,15 +224,8 @@
 
                   <div class="col-md-6">
                     <div class="form-group mb-2">
-                      <label for="packagePrice">Package Price</label>
-                      <input type="text" name="packagePrice[]" class="form-control" readonly>
-                    </div>
-                  </div>
-
-                  <div class="col-md-6">
-                    <div class="form-group mb-2">
                       <label for="flightName">Flight</label>
-                      <select id="enhancedDropdown" class="form-select" name="flightName[]" required>
+                      <select id="enhancedDropdown" class="form-select" name="flightName[]">
                         <option selected disabled>Select Flight</option>
                         <option value="MNL - ICN">MNL - ICN</option>
                         <option value="ICN - MNL">ICN - MNL</option>
@@ -242,8 +235,8 @@
 
                   <div class="col-md-6">
                     <div class="form-group mb-2">
-                      <label for="flightPrice">Flight Price</label>
-                      <input type="text" name="flightPrice[]" class="form-control" readonly>
+                      <label for="totalPrice">Total Price</label>
+                      <input type="text" name="totalPrice[]" class="form-control" readonly>
                     </div>
                   </div>
                 </div>
@@ -253,7 +246,7 @@
 
           <div class="paste-new-forms"></div>
 
-          <button type="submit" name="save_multiple_data" class="btn btn-primary mt-3">Book now</button>
+          <button type="submit" name="bookNow" class="btn btn-primary mt-3">Book now</button>
         </form>
       </div>
     </div>
