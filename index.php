@@ -143,7 +143,7 @@
 
         <div class="container-slide">
             <div class="slide">
-                <div class="item" style="background-image: url(../assets\images\1.jpg) !important; background-size: cover; background-position: center;" >
+                <div class="item" style="background-image: url('assets\images\1.JPG') !important; background-size: cover; background-position: center;" >
                 <div class="content">
                     <div class="name">Winter</div>
                     <div class="des">Lorem ipsum dolor, sit amet consectetur adipisicing elit.</div>
