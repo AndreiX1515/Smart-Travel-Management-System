@@ -1,7 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <?php include ('includes\head.php') ?>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Smart Travel</title>
+
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+
+    <!-- Bootstrap CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <!-- Font Awesome Icon Kit CDN -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+    <!-- Favicons -->
+    <link href="assets/images/rsz_logo-tab.png" rel="icon">
+    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
     <!-- External CSS -->
     <link rel="stylesheet" href="assets/css/style.css?v=<?php echo time(); ?>">
@@ -41,7 +56,7 @@
                     </div>
                 </div>
 
-                <label id="language-label" class="text-light ms-2">English</label> <!-- Label for the selected language -->
+                <label id="language-label" class="text-light ms-2">English</label>
 
                 <div class="dropdown-container ms-0">
                     <!-- <a class="dropdown-toggle ms-1 text-decoration-none text-secondary" type="button" id="dropdownMenuButton" aria-expanded="false">
@@ -65,119 +80,131 @@
     </header>
 
     <!-- Section 1 -->
-    <div class="section d-flex justify-content-start align-items-center position-relative" id="section1">
+    <div class="section d-flex" id="section1">
         <!-- Background Image -->
         <img src="assets\images\hero-1.jpg" alt="Background" class="background-img">
 
         <!-- Content -->
-        <div class="hero d-flex flex-column text-light position-relative">
-            <h3>Travel with Satisfaction</h3>
-            <p>Discover your next adventure, one destination at a time.</p>
-            <div class="d-inline-flex flex-row">
+        <div class="hero d-flex flex-column">
+            <h3>Explore Korea with <span>Smart Travel</span></h3>
+            <p class="mb-5">Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
+            <div class="btn-container d-flex flex-row justify-content-center">
                 <button type="button" class="btn btn-secondary">Book Now</button>
                 <button type="button" class="btn btn-outline-secondary p-2 px-3 ms-3 text-light">Learn More</button>
             </div>
         </div>
     </div>
 
-    <!-- Section 2 -->
-    <div class="section" id="section2">
-        <div class="container mt-4">
-            <h2 class="text-start my-5">Tour Packages Offered</h2> <!-- Added Tour Packages Heading -->
+    <div class="section d-flex flex-column" id="section2">
+        <div class="container-header d-flex flex-column text-center">
+            <h3>Why Book with us?</h3>
+            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. </p>
+        </div>
+        
 
-            <div class="row">
-                <!-- Card 1 -->
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="https://via.placeholder.com/300" class="card-img-top" alt="Image 1">
-                        <div class="card-body">
-                            <h5 class="card-title">Winter Tour Package </h5>
-                            <p class="card-text">Experience the magical winter wonderland of Korea! Enjoy thrilling activities such as skiing in Pyeongchang and visiting beautiful ice festivals.</p>
-                            <p>Best Months: December to February.<span></span></p>
-                            <a href="#" class="btn btn-primary">Learn More</a>
-                        </div>
-                    </div>
+        <div class="container-cards d-flex flex-row">
+            <div class="card">
+                <div class="icon">
+                    <i class="fas fa-dollar-sign"></i>
                 </div>
-
-                <!-- Card 2 -->
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="https://via.placeholder.com/300" class="card-img-top" alt="Image 2">
-                        <div class="card-body">
-                            <h5 class="card-title fw-bold">Summer Tour Package</h5>
-                            <p class="card-text">Discover the vibrant summer life in Korea! Relax on stunning beaches, explore lush countryside, and participate in exciting summer festivals.</p>
-                            <p class="fw-bold text-dark">Best Months to Avail: <br> <span class="fw-normal "> December to February.</span></p>
-                            <a href="#" class="btn btn-primary">Go somewhere</a>
-                        </div>
-                    </div>
+                <h4>Affordable Packages</h4>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            </div>
+            <div class="card">
+                <div class="icon">
+                    <i class="fas fa-map-marked-alt"></i>
                 </div>
-
-                <!-- Card 3 -->
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="https://via.placeholder.com/300" class="card-img-top" alt="Image 3">
-                        <div class="card-body">
-                            <h5 class="card-title">Card Title 3</h5>
-                            <p class="card-text">This is a short description of the third card.</p>
-                            <a href="#" class="btn btn-primary">Go somewhere</a>
-                        </div>
-                    </div>
+                <h4>Exclusive Destinations</h4>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            </div>
+            <div class="card">
+                <div class="icon">
+                    <i class="fas fa-plane"></i>
                 </div>
-
-                <!-- Card 4 -->
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="https://via.placeholder.com/300" class="card-img-top" alt="Image 4">
-                        <div class="card-body">
-                            <h5 class="card-title">Card Title 4</h5>
-                            <p class="card-text">This is a short description of the fourth card.</p>
-                            <a href="#" class="btn btn-primary">Go somewhere</a>
-                        </div>
-                    </div>
+                <h4>Convenient Travel</h4>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            </div>
+            <div class="card">
+                <div class="icon">
+                    <i class="fas fa-star"></i>
                 </div>
-
-                <!-- Card 5 -->
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="https://via.placeholder.com/300" class="card-img-top" alt="Image 5">
-                        <div class="card-body">
-                            <h5 class="card-title">Card Title 5</h5>
-                            <p class="card-text">This is a short description of the fifth card.</p>
-                            <a href="#" class="btn btn-primary">Go somewhere</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card 6 -->
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="https://via.placeholder.com/300" class="card-img-top" alt="Image 6">
-                        <div class="card-body">
-                            <h5 class="card-title">Card Title 6</h5>
-                            <p class="card-text">This is a short description of the sixth card.</p>
-                            <a href="#" class="btn btn-primary">Go somewhere</a>
-                        </div>
-                    </div>
-                </div>
+                <h4>Trusted Reviews</h4>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
             </div>
         </div>
     </div>
 
+    <!-- Section 3 -->
     <div class="section" id="section3">
-        <!-- <div class="content-wrapper d-flex text-start align-content-start">
-            <h1>Welcome to Section 1</h1>
-            <p>This is a brief description about the section. Learn more about what we offer below.</p>
-             <button class="btn btn-primary">Learn More</button> 
-        </div> -->
+        <div class="container-header-3">
+            <h3>Our Packages</h3>
+        </div>
+
+
+        <div class="container-slide">
+            <div class="slide">
+                <div class="item" style="background-image: url(../assets\images\1.jpg) !important; background-size: cover; background-position: center;" >
+                <div class="content">
+                    <div class="name">Winter</div>
+                    <div class="des">Lorem ipsum dolor, sit amet consectetur adipisicing elit.</div>
+                    <button class="btn btn-secondary">See More</button>
+                </div>
+            </div>
+
+            <div class="item" style="background-image: url('assets\images\2.jpg');">
+                <div class="content">
+                    <div class="name">Spring</div>
+                    <div class="des">Lorem ipsum dolor, sit amet consectetur adipisicing elit.</div>
+                    <button class="btn btn-secondary">See More</button>
+                </div>
+            </div>
+
+            <div class="item" style="background-image: url('../assets/images/3.jpg');">
+                <div class="content">
+                    <div class="name">Summer</div>
+                    <div class="des">Lorem ipsum dolor, sit amet consectetur adipisicing elit.</div>
+                    <button class="btn btn-secondary">See More</button>
+                </div>
+            </div>
+
+            <div class="item" style="background-image: url('../assets/images/4.jpg');">
+                <div class="content">
+                    <div class="name">Autumn</div>
+                    <div class="des">Lorem ipsum dolor, sit amet consectetur adipisicing elit.</div>
+                    <button class="btn btn-secondary">See More</button>
+                </div>
+            </div>
+
+            <div class="item" style="background-image: url('../assets/images/5.jpg');">
+                <div class="content">
+                    <div class="name">Busan Tour</div>
+                    <div class="des">Lorem ipsum dolor, sit amet consectetur adipisicing elit.</div>
+                    <button class="btn btn-secondary">See More</button>
+                </div>
+            </div>
+
+            <div class="item" style="background-image: url('../assets/images/6.jpg');">
+                <div class="content">
+                    <div class="name">Thailand</div>
+                    <div class="des">Lorem ipsum dolor, sit amet consectetur adipisicing elit.</div>
+                    <button class="btn btn-secondary">See More</button>
+                </div>
+            </div>
+            </div>
+        <div class="button">
+            <button class="prev"><</button>
+            <button class="next">></button>
+        </div>
     </div>
+    
 
     <script>
-
     // Navbar Button Trigger
         document.getElementById("LoginButton").onclick = function () {
         location.href = "client-login.php";
     };
 
+    
     // For Language Dropdown
     document.addEventListener("DOMContentLoaded", function() {
     const dropdownItems = document.querySelectorAll('.dropdown-item');
@@ -195,6 +222,32 @@
             });
         });
     });
+
+
+
+    let next = document.querySelector('.next');
+    let prev = document.querySelector('.prev');
+
+    // Event listener for 'next' button
+    next.addEventListener('click', function(){
+        let items = document.querySelectorAll('.item');
+        document.querySelector('.slide').appendChild(items[0]);
+    });
+
+    // Event listener for 'prev' button
+    prev.addEventListener('click', function(){
+        let items = document.querySelectorAll('.item');
+        document.querySelector('.slide').prepend(items[items.length - 1]);
+    });
+
+    // Automatically click the 'next' button every 3 seconds
+    setInterval(function() {
+        next.click();  // Simulate click on the 'next' button
+    }, 5000);  // 3000ms = 3 seconds
+
+
+
+
 
     </script>
 
