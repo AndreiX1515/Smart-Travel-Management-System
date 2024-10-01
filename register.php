@@ -49,7 +49,7 @@
             <h5>Personal Information</h5>
         </div> -->
 
-        <div class="row g-2">
+        <!-- <div class="row g-2">
             <div class="col-md-3">
               <div class="form-floating">
                 <input type="text" class="form-control" id="floatingInput" placeholder="First Name">
@@ -77,33 +77,33 @@
                   <label for="floatingInput">Suffix <small class="text-secondary fw-lighter">(Optional)</small></label>
                 </div>
               </div>
-        </div>
+        </div> -->
 
         <div class="row g-2 pt-3">
-            <div class="col-md-4">
-              <div class="form-floating">
-                <input type="email" class="form-control" id="floatingInput" name="email" placeholder="name@example.com">
-                <label for="floatingInput">Email address</label>
-              </div>
+          <div class="col-md-4">
+            <div class="form-floating">
+              <input type="email" class="form-control" id="floatingInput" name="email" placeholder="name@example.com">
+              <label for="floatingInput">Email address</label>
             </div>
-            <div class="col-md-4">
-              <div class="form-floating">
-                <div class="input-group">
-                  <span class="input-group-text">+63</span>
-                  <input type="text" class="form-control" id="floatingPhone" placeholder="9123456789" pattern="\d*" maxlength="10" required>
-                </div>
-                
-              </div>
-              <div class="form-text">Please enter a 10-digit phone number.</div>
-            </div>
+          </div>
 
-            <div class="col-md-4">
-              <div class="form-floating">
-                <input type="Password" class="form-control" id="floatingInput" name="pass" placeholder="">
-                <label for="floatingInput">Password</label>
+          <!-- <div class="col-md-4">
+            <div class="form-floating">
+              <div class="input-group">
+                <span class="input-group-text">+63</span>
+                <input type="text" class="form-control" id="floatingPhone" placeholder="9123456789" pattern="\d*" maxlength="10" required>
               </div>
             </div>
 
+            <div class="form-text">Please enter a 10-digit phone number.</div>
+          </div> -->
+
+          <div class="row-md-4">
+            <div class="form-floating">
+              <input type="Password" class="form-control" id="floatingInput" name="pass" placeholder="">
+              <label for="floatingInput">Password</label>
+            </div>
+          </div>
 
         </div>
 
