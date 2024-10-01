@@ -197,65 +197,31 @@
                   </div>
 
                   <div class="col-md-6">
-                    <div class="form-group mb-3">
-                      <label for="origin">Origin</label>
-                      <select class="form-select" id="origin" name="origin[]" required>
-                        <option selected disabled>Select Origin</option>
-                        <?php
-                          $sql1 = mysqli_query($conn, "Select Distinct origin from flight order by origin asc");
-                          while($res1 = mysqli_fetch_array($sql1)) {
-                            ?>
-                            <option value="<?php echo $res1['origin']; ?>"><?php echo $res1['origin']; ?></option>
-                            <?php
-                          }
-                        ?>
-                      </select>
-                    </div>
-                  </div>
+    <div class="form-group mb-3">
+        <label for="origin">Origin</label>
+        <select class="form-select" id="origin" name="origin[]" required>
+            <option selected disabled>Select Origin</option>
+            <?php
+            $sql1 = mysqli_query($conn, "SELECT DISTINCT origin FROM flight ORDER BY origin ASC");
+            while($res1 = mysqli_fetch_array($sql1)) {
+                ?>
+                <option value="<?php echo $res1['origin']; ?>"><?php echo $res1['origin']; ?></option>
+                <?php
+            }
+            ?>
+        </select>
+    </div>
+</div>
 
-                  <!-- <div class="col-md-6">
-                    <div class="form-group mb-2">
-                      <label for="flightName">Flight</label>
-                      <select id="enhancedDropdown" class="form-select" name="flightName[]">
-                        <option selected disabled>Select Flight</option>
-                        <option value="MNL - ICN">MNL - ICN</option>
-                        <option value="ICN - MNL">ICN - MNL</option>
-                      </select>
-                    </div>
-                  </div> -->
+<div class="col-md-6">
+    <div class="form-group mb-3">
+        <label for="outboundFlight">Outbound Flight</label>
+        <select class="form-select" id="outboundFlight" name="outboundFlight[]" required>
+            <option selected disabled>Select Outbound Flight</option>
+        </select>
+    </div>
+</div>
 
-                  <div class="col-md-6">
-                    <div class="form-group mb-3">
-                      <label for="outboundFlight">Outbound Flight</label>
-                      <select class="form-select" id="outboundFlight" name="outboundFlight[]" required>
-                        <option selected disabled>Select Outbound Flight</option>
-                        <?php
-                          $sql1 = mysqli_query($conn, "
-                            SELECT CONCAT(
-                              DATE_FORMAT(flightDepartureDate, '%M %d, %Y'), ' ', 
-                              TIME_FORMAT(flightDepartureTime, '%H:%i'), ' - ', 
-                              DATE_FORMAT(flightArrivalDate, '%M %d, %Y'), ' ', 
-                              TIME_FORMAT(flightArrivalTime, '%H:%i')) AS onboardFlightSched, 
-                              CONCAT(
-                              DATE_FORMAT(returnDepartureDate, '%M %d, %Y'), ' ', 
-                              TIME_FORMAT(returnDepartureTime, '%H:%i'), ' - ', 
-                              DATE_FORMAT(returnArrivalDate, '%M %d, %Y'), ' ', 
-                              TIME_FORMAT(returnArrivalTime, '%H:%i')) AS returnFlightSched 
-                            FROM flight");
-
-                          while($res1 = mysqli_fetch_array($sql1)) 
-                          {
-                            ?>
-                              <option value="<?php echo $res1['onboardFlightSched']; ?>" 
-                                data-return-sched="<?php echo $res1['returnFlightSched']; ?>">
-                                <?php echo $res1['onboardFlightSched']; ?>
-                              </option>
-                            <?php
-                          }
-                        ?>
-                      </select>
-                    </div>
-                  </div>
 
                   <div class="col-md-6">
                     <div class="form-group mb-3">
@@ -270,6 +236,7 @@
                       <input type="text" id="packageName"name="packageName[]" class="form-control" placeholder="Package" readonly>
                     </div>
                   </div>
+
                 </div>
               </div>
             </div>
@@ -298,8 +265,10 @@
         const uniqueId = Date.now();
 
         // Update the unique IDs for the new form's fields
+        newForm.querySelector('#origin').id = 'origin' + uniqueId;
         newForm.querySelector('#outboundFlight').id = 'outboundFlight' + uniqueId;
         newForm.querySelector('#returnFlight').id = 'returnFlight' + uniqueId;
+        newForm.querySelector('#packageName').id = 'packageName' + uniqueId;
 
         // Update the collapse functionality to work for each new card
         newForm.querySelector('.btn-outline-primary').setAttribute('data-bs-target', '#newCard' + uniqueId);
@@ -317,30 +286,98 @@
           newForm.remove();
         });
 
-        // Add event listener to dynamically update the return flight for this specific form
+        // Add event listener to dynamically fetch outbound flights based on selected origin
+        newForm.querySelector('#origin' + uniqueId).addEventListener('change', function() 
+        {
+          const selectedOrigin = this.value;
+          fetchOutboundFlights(selectedOrigin, uniqueId);
+        });
+
+        // Add event listener to dynamically update the return flight and package name for this specific form
         newForm.querySelector('#outboundFlight' + uniqueId).addEventListener('change', function() 
         {
-            // Get the selected option
-            const selectedFlight = this.options[this.selectedIndex];
-            // Get the return flight time from the selected option
-            const returnFlightSched = selectedFlight.getAttribute('data-return-sched');
-            // Set the return flight input value
-            newForm.querySelector('#returnFlight' + uniqueId).value = returnFlightSched;
+          const selectedFlight = this.options[this.selectedIndex];
+          const returnFlightSched = selectedFlight.getAttribute('data-return-sched');
+          newForm.querySelector('#returnFlight' + uniqueId).value = returnFlightSched;
+
+          // Fetch package name using AJAX based on selected flight
+          fetchPackageName(selectedFlight.value, uniqueId);
         });
       });
 
-        // Initial form - set event listener for return flight update
+      // Initial form - set event listener for origin and outbound flight updates
+      document.getElementById('origin').addEventListener('change', function() 
+      {
+        const selectedOrigin = this.value;
+
+        // Clear the outbound and return flight fields when the origin changes
+        document.getElementById('outboundFlight').innerHTML = '<option selected disabled>Select Outbound Flight</option>';
+        document.getElementById('returnFlight').value = '';
+        document.getElementById('packageName').value = '';
+        fetchOutboundFlights(selectedOrigin, "");
+      });
+
       document.getElementById('outboundFlight').addEventListener('change', function() 
       {
         const selectedFlight = this.options[this.selectedIndex];
         const returnFlightSched = selectedFlight.getAttribute('data-return-sched');
         document.getElementById('returnFlight').value = returnFlightSched;
+
+        // Fetch package name using AJAX based on selected flight
+        fetchPackageName(selectedFlight.value, "");
       });
+
+      // AJAX function to fetch outbound flight schedules based on selected origin
+      function fetchOutboundFlights(origin, uniqueId) 
+      {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'fetchSelect.php', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function() 
+        {
+          if (xhr.status === 200) 
+          {
+            const response = JSON.parse(xhr.responseText);
+            const outboundFlightId = uniqueId ? '#outboundFlight' + uniqueId : '#outboundFlight';
+            const outboundFlightSelect = document.querySelector(outboundFlightId);
+            
+            // Clear previous options
+            outboundFlightSelect.innerHTML = '<option selected disabled>Select Outbound Flight</option>';
+            
+            // Populate new options
+            response.forEach(function(flight) 
+            {
+              const option = document.createElement('option');
+              option.value = flight.onboardFlightSched;
+              option.setAttribute('data-return-sched', flight.returnFlightSched);
+              option.textContent = flight.onboardFlightSched;
+              outboundFlightSelect.appendChild(option);
+            });
+            }
+        };
+        xhr.send('origin=' + encodeURIComponent(origin));
+      }
+
+      // AJAX function to fetch the package name based on outbound flight schedule
+      function fetchPackageName(outboundFlightSched, uniqueId) 
+      {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'fetchSelect.php', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function() 
+        {
+          if (xhr.status === 200) 
+          {
+              const response = JSON.parse(xhr.responseText);
+              const packageInputId = uniqueId ? '#packageName' + uniqueId : '#packageName';
+              document.querySelector(packageInputId).value = response.packageName;
+          }
+        };
+        xhr.send('outboundFlight=' + encodeURIComponent(outboundFlightSched));
+      }
     });
 </script>
 
 
-
-  
 </body>
 </html>
