@@ -263,7 +263,7 @@
                     </div>
                   </div>
 
-                  <input type="hidden" id="flightId" name="flightId[]" value="">
+                  <input type="" id="flightId" name="flightId[]" value="">
 
 
                 </div>
@@ -301,6 +301,7 @@
         newForm.querySelector('#outboundFlight').id = 'outboundFlight' + uniqueId;
         newForm.querySelector('#returnFlight').id = 'returnFlight' + uniqueId;
         newForm.querySelector('#packageName').id = 'packageName' + uniqueId;
+        newForm.querySelector('#flightId').id = 'flightId' + uniqueId;
 
         // Set up the collapse functionality
         const collapseId = 'newCard' + uniqueId; // Unique ID for the collapse section
@@ -373,15 +374,15 @@
       });
 
       // AJAX function to fetch outbound flight schedules based on selected origin
-function fetchOutboundFlights(origin, uniqueId) 
-{
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', 'fetchSelect.php', true);
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.onload = function() 
-    {
-        if (xhr.status === 200) 
+      function fetchOutboundFlights(origin, uniqueId) 
+      {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'fetchSelect.php', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function() 
         {
+          if (xhr.status === 200) 
+          {
             const response = JSON.parse(xhr.responseText);
             const outboundFlightId = uniqueId ? '#outboundFlight' + uniqueId : '#outboundFlight';
             const outboundFlightSelect = document.querySelector(outboundFlightId);
@@ -392,27 +393,27 @@ function fetchOutboundFlights(origin, uniqueId)
             // Populate new options with flightId and schedules
             response.forEach(function(flight) 
             {
-                const option = document.createElement('option');
-                option.value = flight.flightId;  // Set flightId as the value
-                option.setAttribute('data-return-sched', flight.returnFlightSched);  // Set return flight schedule in data attribute
-                option.textContent = flight.onboardFlightSched;  // Display onboard flight schedule
-                outboundFlightSelect.appendChild(option);
+              const option = document.createElement('option');
+              option.value = flight.flightId;  // Set flightId as the value
+              option.setAttribute('data-return-sched', flight.returnFlightSched);  // Set return flight schedule in data attribute
+              option.textContent = flight.onboardFlightSched;  // Display onboard flight schedule
+              outboundFlightSelect.appendChild(option);
             });
-        }
-    };
-    xhr.send('origin=' + encodeURIComponent(origin));
-}
+          }
+        };
+        xhr.send('origin=' + encodeURIComponent(origin));
+      }
 
-// AJAX function to fetch the package name based on outbound flight schedule
-function fetchPackageName(outboundFlightId, uniqueId) 
-{
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', 'fetchSelect.php', true);
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.onload = function() 
-    {
-        if (xhr.status === 200) 
+      // AJAX function to fetch the package name based on outbound flight schedule
+      function fetchPackageName(outboundFlightId, uniqueId) 
+      {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'fetchSelect.php', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function() 
         {
+          if (xhr.status === 200) 
+          {
             const response = JSON.parse(xhr.responseText);
             const packageInputId = uniqueId ? '#packageName' + uniqueId : '#packageName';
             document.querySelector(packageInputId).value = response.packageName;
@@ -420,10 +421,10 @@ function fetchPackageName(outboundFlightId, uniqueId)
             // Populate flightId in the form
             const flightIdInputId = uniqueId ? '#flightId' + uniqueId : '#flightId';
             document.querySelector(flightIdInputId).value = outboundFlightId;
-        }
-    };
-    xhr.send('outboundFlight=' + encodeURIComponent(outboundFlightId));
-}
+          }
+        };
+        xhr.send('outboundFlight=' + encodeURIComponent(outboundFlightId));
+      }
     });
 </script>
 

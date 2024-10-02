@@ -77,7 +77,8 @@ if (isset($_POST['bookNow']))
             $flightId);
 
         // Execute the query
-        if (!$stmt1->execute()) {
+        if (!$stmt1->execute()) 
+        {
             $_SESSION['status'] = "Database error on inserting booking for $fName $lName: " . $stmt1->error;
             $conn->rollback();  // Rollback the transaction if there is an error
             header("Location: insert-multiple-data.php");

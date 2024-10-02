@@ -48,29 +48,29 @@ if (isset($_POST['origin']))
 // Check if the outbound flight is set (for fetching the package name based on the flight)
 if (isset($_POST['outboundFlight'])) 
 {
-    $flightId = $_POST['outboundFlight'];  // You will now get the flightId from this POST request
+  $flightId = $_POST['outboundFlight'];  // You will now get the flightId from this POST request
 
-    // Query to get the package name based on the flight ID
-    $sql = "
-        SELECT p.packageName 
-        FROM flight f
-        INNER JOIN package p ON f.packageId = p.packageId
-        WHERE f.flightId = ?";
+  // Query to get the package name based on the flight ID
+  $sql = "
+      SELECT p.packageName 
+      FROM flight f
+      INNER JOIN package p ON f.packageId = p.packageId
+      WHERE f.flightId = ?";
 
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $flightId);
-    $stmt->execute();
-    $result = $stmt->get_result();
+  $stmt = $conn->prepare($sql);
+  $stmt->bind_param("s", $flightId);
+  $stmt->execute();
+  $result = $stmt->get_result();
 
-    if ($row = $result->fetch_assoc()) 
-    {
-        echo json_encode(['packageName' => $row['packageName']]);
-    } 
-    else 
-    {
-        echo json_encode(['packageName' => 'No package found']);
-    }
+  if ($row = $result->fetch_assoc()) 
+  {
+      echo json_encode(['packageName' => $row['packageName']]);
+  } 
+  else 
+  {
+      echo json_encode(['packageName' => 'No package found']);
+  }
 
-    $stmt->close();
+  $stmt->close();
 }
 ?>
