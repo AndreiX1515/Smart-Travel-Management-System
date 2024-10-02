@@ -47,8 +47,13 @@
       <div class="logo-container">
         <img src="assets\images\logo-tab.png" alt="">
       </div> 
+<<<<<<< HEAD
         <h3 class="text-light my-3">Log In</h3>
       <form>
+=======
+
+      <form action="OTP-code.php" method="post">
+>>>>>>> main
         <!-- <div class="d-flex flex-row align-items-center justify-content-center">
           <p class="lead fw-normal mb-0 me-3">Sign in with</p>
 
@@ -67,14 +72,14 @@
 
         <!-- Email input -->
         <div class="form-outline mb-4 mt-3">
-          <input type="email" id="form3Example3" class="form-control form-control-lg"
+          <input type="email" id="form3Example3" name="email" class="form-control form-control-lg"
             placeholder="Enter a valid email address" style="color: white;" />
           <label class="form-label" for="form3Example3" id="loginfield">Email address</label>
         </div>
 
         <!-- Password input with toggle icon -->
         <div class="form-outline mb-3">
-          <input type="password" id="form3Example4" class="form-control form-control-lg"
+          <input type="password" id="form3Example4" name="pass" class="form-control form-control-lg"
             placeholder="Enter password" style="color: white;"/>
           <label class="form-label" for="form3Example4" id="loginfield">Password</label>
           <i class="fas fa-eye toggle-password" id="togglePassword"></i> <!-- Add toggle password icon -->
@@ -91,7 +96,7 @@
         </div>
 
         <div class="text-center mt-4 pt-2">
-          <button type="button" class="btn btn-danger btn-lg"
+          <button type="submit" class="btn btn-danger btn-lg" name="login"
             style="padding-left: 2.5rem; padding-right: 2.5rem; margin-bottom: 10px;">Login</button>
           <p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account? <a href="register.php"
               class="link-danger text-decoration-underline">Register</a></p>
