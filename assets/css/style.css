@@ -243,9 +243,6 @@ body::before {
 }
 
 
-
-
-
 /* Hero Section - End */
 
 #section2 {
@@ -288,9 +285,6 @@ body::before {
 }
 
 
-
-
-
 .card {
     background-color: #f9f9f9; /* Light background for cards */
     border-radius: 10px; /* Rounded corners */
@@ -302,16 +296,8 @@ body::before {
 }
 
 .card .icon {
-    margin-bottom: 10px; /* Space between icon and title */
+    margin-bottom: 10px; 
 }
-
-.card img {
-    width: 50px; /* Icon size */
-    height: 50px; /* Icon size */
-}
-
-
-
 
 
 /* Learn More Button in Section 1 */
@@ -343,7 +329,6 @@ button.btn-secondary:hover {
 }
 
 
-
 .dropdown-toggle::after {
     display: none; /* Remove default arrow */
 }
@@ -351,7 +336,6 @@ button.btn-secondary:hover {
 .dropdown-menu {
     min-width: 10px; /* Adjust width as needed */
 }
-
 
 .d-flex.flex-form {
     justify-content: center; /* Center align the items */
@@ -404,7 +388,6 @@ button.btn-secondary:hover {
     font-size: 24px;
 }
 
-
 .container-slide {
     position: absolute;
     top: 50%;
@@ -415,7 +398,6 @@ button.btn-secondary:hover {
     background-color: transparent;
     z-index: 4; /* Ensure it's below the header */
 }
-
 
 .container-slide .slide .item{
     width: 200px;
@@ -536,5 +518,3 @@ button.btn-secondary:hover {
     background: #ababab;
     color: #fff;
 }
-
-

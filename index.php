@@ -134,7 +134,7 @@
         </div>
     </div>
 
-    <!-- Section 3 -->
+    <!-- Section 3
     <div class="section" id="section3">
         <div class="container-header-3">
             <h3>Our Packages</h3>
@@ -143,7 +143,7 @@
 
         <div class="container-slide">
             <div class="slide">
-                <div class="item" style="background-image: url('assets\images\1.JPG') !important; background-size: cover; background-position: center;" >
+                <div class="item" style="background-image: url('assets\images\1.jpg') !important; background-size: cover; background-position: center;" >
                 <div class="content">
                     <div class="name">Winter</div>
                     <div class="des">Lorem ipsum dolor, sit amet consectetur adipisicing elit.</div>
@@ -159,7 +159,7 @@
                 </div>
             </div>
 
-            <div class="item" style="background-image: url('../assets/images/3.jpg');">
+            <div class="item" style="background-image: url('assets/images/3.jpg');">
                 <div class="content">
                     <div class="name">Summer</div>
                     <div class="des">Lorem ipsum dolor, sit amet consectetur adipisicing elit.</div>
@@ -167,7 +167,7 @@
                 </div>
             </div>
 
-            <div class="item" style="background-image: url('../assets/images/4.jpg');">
+            <div class="item" style="background-image: url('assets/images/4.jpg');">
                 <div class="content">
                     <div class="name">Autumn</div>
                     <div class="des">Lorem ipsum dolor, sit amet consectetur adipisicing elit.</div>
@@ -175,7 +175,7 @@
                 </div>
             </div>
 
-            <div class="item" style="background-image: url('../assets/images/5.jpg');">
+            <div class="item" style="background-image: url('assets/images/5.jpg');">
                 <div class="content">
                     <div class="name">Busan Tour</div>
                     <div class="des">Lorem ipsum dolor, sit amet consectetur adipisicing elit.</div>
@@ -183,7 +183,7 @@
                 </div>
             </div>
 
-            <div class="item" style="background-image: url('../assets/images/6.jpg');">
+            <div class="item" style="background-image: url('assets/images/6.jpg');">
                 <div class="content">
                     <div class="name">Thailand</div>
                     <div class="des">Lorem ipsum dolor, sit amet consectetur adipisicing elit.</div>
@@ -195,7 +195,7 @@
             <button class="prev"><</button>
             <button class="next">></button>
         </div>
-    </div>
+    </div> -->
     
 
     <script>
