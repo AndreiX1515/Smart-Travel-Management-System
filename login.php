@@ -34,7 +34,7 @@
 
 <body>
   <!-- Back to homepage button -->
-  <a href="#" class="back-btn">
+  <a href="index.php" class="back-btn">
     <i class="fas fa-arrow-left"></i> Back to Home Page
   </a>
   
@@ -109,7 +109,7 @@
             <button type="submit" class="btn btn-primary w-100" id="LoginButton">Login</button>
         
             <div class="bottom-login-account mt-3 text-center">
-                <p class="mb-0">Have an account? <a href="sampleregister.html" class="text-decoration-none">Register Now</a></p>
+                <p class="mb-0">Have an account? <a href="register.php" class="text-decoration-none">Register Now</a></p>
             </div>
         </form>
         

@@ -201,7 +201,7 @@
     <script>
     // Navbar Button Trigger
         document.getElementById("LoginButton").onclick = function () {
-        location.href = "client-login.php";
+        location.href = "login.php";
     };
 
     

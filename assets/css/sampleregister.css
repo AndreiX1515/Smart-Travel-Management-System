@@ -21,11 +21,11 @@ html, body {
 .container-background {
     width: 100vw;
     height: 100vh;
-    background-image: linear-gradient(
+    /* background-image: linear-gradient(
       rgba(0, 0, 0, 0.7), 
       rgba(0, 0, 0, 0.7)
     ), url('hero-1.jpg') !important;
-    background-size: cover !important;
+    background-size: cover !important; */
     background-position: center !important;
     position: absolute;
     top: 0;
