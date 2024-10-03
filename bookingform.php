@@ -59,9 +59,32 @@
                 Toggle
               </button>
             </div>
+            <input type="text" name="accId" value="<?php echo $_SESSION['accountId']; ?>">
 
             <div id="cardBodyContent" class="card-body collapse show">
               <div class="main-form mt-3 border-bottom pb-3">
+                <div class="col-md-3">
+                  <div class="form-group mb-3">
+                    <label for="agent">Select Agent</label>
+                    <select class="form-select" id="agentId" name="agentId[]" required>
+                      <option selected disabled>Select Agent</option>
+                      <?php
+                        $sql1 = mysqli_query($conn, "SELECT agentId, 
+                        CONCAT(lName, ', ', fName, 
+                            CASE 
+                              WHEN mName != '' THEN CONCAT(' ', SUBSTRING(mName, 1, 1), '.') 
+                              ELSE '' 
+                            END) AS agentName FROM agent ORDER BY lName ASC");
+                        while($res1 = mysqli_fetch_array($sql1)) 
+                        {
+                          ?>
+                          <option value="<?php echo $res1['agentId']; ?>"><?php echo $res1['agentName']; ?></option>
+                          <?php
+                        }
+                        ?>
+                    </select>
+                  </div>
+                </div>
                 
                 <!-- Personal Information Group -->
                 <div class="row mb-3">
@@ -92,14 +115,14 @@
                     <div class="form-group mb-3">
                       <label for="suffix">Suffix</label>
                       <select class="form-select" name="suffix[]">
-                        <option value="">Select Suffix</option>
+                        <option selected disabled>Select Suffix</option>
                         <option value="Jr.">Jr.</option>
                         <option value="Sr.">Sr.</option>
                         <option value="II">II</option>
                         <option value="III">III</option>
                         <option value="IV">IV</option>
                         <option value="V">V</option>
-                        <option value="None">None</option>
+                        <option value="">None</option>
                       </select>
                     </div>
                   </div>
@@ -263,7 +286,7 @@
                     </div>
                   </div>
 
-                  <input type="" id="flightId" name="flightId[]" value="">
+                  <input type="hidden" id="flightId" name="flightId[]" value="">
 
 
                 </div>
@@ -296,6 +319,7 @@
         console.log(newForm);
 
         // Update the unique IDs for the new form's fields
+        newForm.querySelector('#agentId').id = 'agentId' + uniqueId;
         newForm.querySelector('#sex').id = 'sex' + uniqueId;
         newForm.querySelector('#origin').id = 'origin' + uniqueId;
         newForm.querySelector('#outboundFlight').id = 'outboundFlight' + uniqueId;

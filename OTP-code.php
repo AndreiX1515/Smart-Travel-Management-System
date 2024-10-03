@@ -3,6 +3,7 @@ include "conn.php";
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
+session_start(); // Start the session
 
 require 'vendor/autoload.php';
 
@@ -106,32 +107,34 @@ if(isset($_POST['validate']))
 }
 
 // client-login.php login code
-if(isset($_POST['login'])) 
+if (isset($_POST['login'])) 
 {
-  if(isset($_POST['login'])) {
-    $email = $_POST['email'];
-    $pass = $_POST['pass'];
-  
-    $sql1 = "Select * from account where email='$email' and password='$pass' and status='verified'";
-    $res1 = mysqli_query($conn, $sql1);
-  
-    if (mysqli_num_rows($res1) > 0) 
+  $email = $_POST['email'];
+  $pass = $_POST['pass'];
+
+  // Fetch the user from the database where the email and password match, and the account is verified
+  $sql1 = "SELECT * FROM account WHERE email='$email' AND password='$pass' AND status='verified'";
+  $res1 = mysqli_query($conn, $sql1);
+
+  if (mysqli_num_rows($res1) > 0) 
+  {
+    if ($row = mysqli_fetch_assoc($res1)) 
     {
-      if ($row = mysqli_fetch_assoc($res1)) 
-      {
-        header("location: bookingform.php");
-      }
-  
-      else 
-      {
-        echo "Wrong email or password";
-      }
-    }
-  
+      // Store accountId in the session
+      $_SESSION['accountId'] = $row['accountId'];
+
+      // Redirect the user to the booking form
+      header("Location: bookingform.php");
+      exit();
+    } 
     else 
     {
-      echo "No user exist with this email";
+      echo "Wrong email or password";
     }
+  } 
+  else 
+  {
+    echo "No user exists with this email";
   }
 }
 ?>
