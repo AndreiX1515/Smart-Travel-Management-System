@@ -23,7 +23,7 @@
 </head>
 
 <body>
-    <header class="sub-header">
+    <!-- <header class="sub-header">
         <div class="container d-inline-flex ps-5">
             <a href="tel:+123456789" class="d-flex align-items-center text-decoration-none text-light pe-2">
                 <i class="fa-solid fa-phone pe-2"></i> +123 456 789
@@ -32,27 +32,38 @@
                 <i class="fa-solid fa-envelope ps-2 pe-2"></i> info@example.com
             </a>
         </div>
-    </header>
+    </header> -->
 
     <!-- Main Header -->
     <header class="header d-flex justify-content-between align-items-center">
-        <a href="#" class="logo"><img src="assets\images\logo.png" alt="Logo"></a>
+        <div class="logo">
+            <a href="#" class="logo"><img src="assets\images\SMART LOGO 2 (2).png" alt="Logo"></a>
+        </div>
 
-        <nav class="navbar d-flex">
+        <nav class="navbar d-flex justify-content-end">
             <a href="#" class="nav-link">Home</a>
-            <a href="#" class="nav-link">Destination</a>
-            <a href="#" class="nav-link">Tours</a>
+            <a href="#" class="nav-link">Packages</a>
+            <a href="#" class="nav-link">Hotels</a>
             <a href="#" class="nav-link">About</a>
             <a href="#" class="nav-link">Contact</a>
+            <div class="login-container ms-5">
+
+                <button class="btn btn-success text-lighter fw-normal" id="LoginButton">Book Now</button>
+
+            </div>
         </nav>
+        
+       
 
-        <div class="d-flex flex-form">
+        
 
-            <!-- <label class="text-light">Lang:</label> -->
+        <!-- <div class="d-flex flex-form">
+
+            <!-- <label class="text-light">Lang:</label> 
             <div class="container dropdown-toggle d-flex flex-row align-items-center" id="translation-container" data-bs-toggle="dropdown" aria-expanded="false"> 
-                <div class="dropdown">
+                <!-- <div class="dropdown">
                     <div class="circle-image">
-                        <img id="language-flag" src="assets\images\Flags\english-flag.png" alt="English Flag" class="img-fluid"> <!-- Initial flag image -->
+                        <img id="language-flag" src="assets\images\Flags\english-flag.png" alt="English Flag" class="img-fluid"> <!-- Initial flag image 
                     </div>
                 </div>
 
@@ -61,7 +72,7 @@
                 <div class="dropdown-container ms-0">
                     <!-- <a class="dropdown-toggle ms-1 text-decoration-none text-secondary" type="button" id="dropdownMenuButton" aria-expanded="false">
                         ▼
-                    </a> -->
+                    </a> 
 
                     <ul class="dropdown-menu mt-2" aria-labelledby="dropdownMenuButton">
                         <li><a class="dropdown-item my-2" href="#" data-lang="English" data-image="assets\images\Flags\english-flag.png"> <img src="assets\images\Flags\english-flag.png" alt=""> English</a></li>
@@ -71,10 +82,10 @@
                 </div>
             </div>
 
-            <div class="vl"></div>
+            <div class="vl"></div> 
 
-            <button class="btn btn-success text-lighter fw-normal py-1 px-2 ms-3 my-1" id="LoginButton">Book Now</button>
-    </div>
+            
+    </div> -->
 
 
     </header>

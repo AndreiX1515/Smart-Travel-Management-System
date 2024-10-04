@@ -21,10 +21,10 @@ html, body {
 .container-background {
     width: 100vw;
     height: 100vh;
-    background-image: linear-gradient(
+    /* background-image: linear-gradient(
       rgba(0, 0, 0, 0.7), 
       rgba(0, 0, 0, 0.7)
-    ), url('hero-1.jpg') !important;
+    ), url('hero-1.jpg') !important; */
     background-size: cover !important;
     background-position: center !important;
     position: absolute;
@@ -245,6 +245,30 @@ html, body {
     font-weight: 500;
     font-size: 16px;
 }
+
+/* .message-login {
+    background-color: #f8d7da; /* Light red background 
+    color: #721c24; /* Dark red text 
+    border: 1px solid #f5c6cb; /* Border color 
+    padding: 10px 20px; /* Padding for better spacing 
+    border-radius: 5px; /* Slightly rounded corners 
+    font-size: 16px; /* Adjust the font size 
+    font-weight: 500; /* Slightly bold text 
+    margin-bottom: 20px; /* Space below the banner 
+    display: flex;
+    align-items: center; /* Vertically align content
+    justify-content: space-between; /* Distribute space 
+}
+
+.message-login .close-btn {
+    background: none;
+    border: none;
+    font-size: 18px;
+    color: #721c24; /* Same as text color 
+    cursor: pointer;
+}
+ */
+
 
 /* Media Queries */
 @media (max-width: 900px) {

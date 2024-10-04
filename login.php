@@ -44,7 +44,7 @@
     <!-- Login Form Section -->
     <div class="loginform d-flex flex-column">
         <div class="logo-container text-left">
-            <img src="assets/images/logo.png" alt="Logo">
+            <img src="assets\images\SMART LOGO 2 (2).png" alt="Logo">
         </div>
 
         <div class="header-container d-flex flex-column text-start mt-1">
@@ -56,61 +56,70 @@
             <span class="text-secondary my-2">Other options: </span>
         </div> -->
 
-        <!-- Social Icons -->
+        <!-- Social Icons
         <div class="social-icons">
             <a href="#" class="facebook" style="background-color: #1877F2;"><i class="fab fa-facebook-f"></i></a>
             <a href="#" class="google" style="background-color: #FFF; color: #ff0800;"><i class="fab fa-google"></i></a>
             <a href="#" class="twitter" style="background-color: #000; color: #FFF;"><i class="fa-brands fa-x-twitter"></i></a>
         </div>
 
-        <!-- Divider -->
+        <!-- Divider 
         <div class="divider">
             <hr>
             <span>or</span>
             <hr>
-        </div>
-
+        </div> -->
+ 
         <!-- Login Form -->
-        <form class="mt-0">
-            <div class="mb-3">
+        <form class="mt-5" id="loginForm">
+            <!-- Uncomment this block if you need the username field -->
+            <!-- <div class="mb-3">
                 <div class="form-floating">
-                    <input type="text" class="form-control border-1" id="floatingUsername" placeholder="Username">
+                    <input type="text" class="form-control border-1" id="floatingUsername" name="username" placeholder="Username">
                     <label for="floatingUsername">Username</label>
                 </div>
-            </div>
-        
+            </div> -->
+
+            <!-- Email input field -->
             <div class="mb-3">
                 <div class="form-floating">
-                    <input type="email" class="form-control" id="floatingEmail" placeholder="Email">
+                    <input type="email" class="form-control" id="floatingEmail" name="email" placeholder="Email" required>
                     <label for="floatingEmail">Email</label>
                 </div>
             </div>
-        
+
+            <!-- Password input field -->
             <div class="mb-1 position-relative">
                 <div class="form-floating">
-                    <input type="password" class="form-control" id="floatingPassword" placeholder="Password" aria-describedby="togglePassword">
+                    <input type="password" class="form-control" id="floatingPassword" name="password" placeholder="Password" aria-describedby="togglePassword" required>
                     <label for="floatingPassword">Password</label>
+                    <!-- Toggle password visibility -->
                     <span id="togglePassword" class="position-absolute" style="right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;">
-                        <i class="far fa-eye" id="toggleIcon"></i> <!-- Line type icon for showing password -->
+                        <i class="far fa-eye" id="toggleIcon"></i> <!-- Line type icon for showing/hiding password -->
                     </span>
                 </div>
             </div>
-        
+
+            <!-- Forgot password and Remember me options (uncomment if needed) -->
             <div class="fp-container mb-1 d-flex justify-content-between align-items-center">
                 <div class="form-check">
-                    <!-- Uncomment if needed
-                    <input type="checkbox" class="form-check-input" id="rememberMe">
-                    <label class="form-check-label" for="rememberMe">Remember me</label>
-                    -->
+                    <!-- Uncomment if "Remember Me" is needed -->
+                    <!-- <input type="checkbox" class="form-check-input" id="rememberMe">
+                    <label class="form-check-label" for="rememberMe">Remember me</label> -->
                 </div>
                 <a href="#" class="">Forgot Password?</a>
             </div>
-        
+
+            <!-- Submit Button -->
             <button type="submit" class="btn btn-primary w-100" id="LoginButton">Login</button>
-        
+
+            <!-- Registration link -->
             <div class="bottom-login-account mt-3 text-center">
-                <p class="mb-0">Have an account? <a href="register.php" class="text-decoration-none">Register Now</a></p>
+                <p class="mb-0">Don't have an account? <a href="register.php" class="text-decoration-none">Register Now</a></p>
             </div>
+
+            <!-- Placeholder for login messages (error/success) -->
+            <div id="message-login" class="message-login mt-3"></div>
         </form>
         
 
@@ -122,6 +131,48 @@
         <img src="assets/images/login-accent-image.JPG" alt="Accent Image" class="img-fluid">
     </div>
 </div>
+
+    <script>
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent default form submission
+
+        // Clear previous messages
+        document.getElementById('message-login').innerHTML = '';
+
+        // Create FormData object to gather the form data
+        const formData = new FormData(this);
+
+        // Perform AJAX request
+        fetch('login-process.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Redirect to dashboard or homepage
+                window.location.href = 'dashboard.php';
+            } else {
+                // Show error message
+                document.getElementById('message-login').innerHTML = '<div class="alert alert-danger text-center">' + data.message + '</div>';
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            // Optionally, show a generic error message if there's a problem with the request
+            document.getElementById('message-login').innerHTML = '<div class="alert alert-danger">An error occurred. Please try again later.</div>';
+        });
+    });
+
+    </script>
+
+    <!-- Popper CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+
+    <!-- Main Bootstrap JS CDN-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+
+
 
     <script>
         document.getElementById('togglePassword').addEventListener('click', function () {
