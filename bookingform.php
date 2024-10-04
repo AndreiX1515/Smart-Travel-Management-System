@@ -54,7 +54,6 @@
         </h4>
 
         <form action="bookingform-code.php" method="POST">
-<<<<<<< HEAD
           <div class="form-group mb-3">
             <label for="agent">Select Agent</label>
             <select class="form-select" id="agentId" name="agentId" required>
@@ -85,21 +84,6 @@
               <div class="main-form mt-3 border-bottom pb-3">
                 
                 
-=======
-          <div class="card mt-4 guest-form ">
-          <div class="card-header d-flex flex-row justify-content-between text-center bg-secondary text-white">
-            <h4 class="d-flex flex-row text-center">Guest Information</h4>
-              <div class="d-flex flex-row text-center justify-content-end">
-                <button class="btn btn-sm btn-outline-light py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#cardBodyContent" aria-expanded="true" aria-controls="cardBodyContent">
-                  <i class="fa-solid fa-arrow-down"></i>
-                </button>
-              </div>
-          </div>
-
-
-            <div id="cardBodyContent" class="card-body collapse show">
-              <div class="main-form mt-3 border-bottom pb-3">
->>>>>>> 7b2cfcdbc92639e69b65d8410f9c1d153f326678
                 <!-- Personal Information Group -->
                 <div class="row mb-3">
                   <h5 class="mb-3">Personal Information</h5>
@@ -309,21 +293,9 @@
                     </div>
                   </div>
 
-<<<<<<< HEAD
                   <input type="" id="flightId" name="flightId[]" value="">
 
                 </div>
-=======
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label class="mb-2" for="packageName">Package</label>
-                      <input type="text" id="packageName"name="packageName[]" class="form-control" placeholder="Package" readonly>
-                    </div>
-                  </div>
-
-                  <input type="hidden" id="flightId" name="flightId[]" value="">
-
->>>>>>> 7b2cfcdbc92639e69b65d8410f9c1d153f326678
               </div>
             </div>
           </div>
@@ -341,7 +313,6 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
   <script>
-<<<<<<< HEAD
 $(document).ready(function() {
     // Adding more guest forms dynamically
     $('.add-more-form').click(function() {
@@ -537,168 +508,6 @@ $(document).ready(function() {
         }
     });
 });
-=======
-    document.addEventListener('DOMContentLoaded', function() {
-  const formTemplate = document.querySelector('.guest-form').cloneNode(true);
-  let formCount = 1; // Initialize form counter
-
-  // Add more forms when "Add More" button is clicked
-  document.querySelector('.add-more-form').addEventListener('click', function() 
-  {
-    const newForm = formTemplate.cloneNode(true);
-    const uniqueId = Date.now();
-    formCount++; // Increment form counter for each new form
-
-    // Update the unique IDs for the new form's fields
-    newForm.querySelector('#sex').id = 'sex' + uniqueId;
-    newForm.querySelector('#origin').id = 'origin' + uniqueId;
-    newForm.querySelector('#outboundFlight').id = 'outboundFlight' + uniqueId;
-    newForm.querySelector('#returnFlight').id = 'returnFlight' + uniqueId;
-    newForm.querySelector('#packageName').id = 'packageName' + uniqueId;
-
-    // Set up the collapse functionality
-    const collapseId = 'newCard' + uniqueId; // Unique ID for the collapse section
-    const button = newForm.querySelector('.btn-outline-light'); // The button that toggles collapse
-    const collapseDiv = newForm.querySelector('.collapse');
-
-    if (button && collapseDiv)  {
-      button.setAttribute('data-bs-target', '#' + collapseId); // Correctly point to the collapse div
-      collapseDiv.id = collapseId; // Set the collapse div ID
-      button.setAttribute('aria-controls', collapseId); // Set aria-controls for accessibility
-
-      // Set the button text to indicate which form it belongs to
-      button.textContent = 'Toggle Form ' + formCount; // Update button text
-
-      // Update the header to include the form number
-      const header = newForm.querySelector('.card-header h4');
-      header.innerHTML = `Guest Information - ${formCount}`; // Set dynamic header text
-
-      // Reset classes to not show new forms initially
-      collapseDiv.classList.remove('show'); // Make sure new collapse sections are closed
-
-      // Add the remove button to the new form
-      const removeButtonHTML = '<button class="remove-btn btn btn-danger float-end me-3"><i class="fa-solid fa-trash"></i></button>';
-      
-      // Set the inner HTML to contain only the remove button
-      newForm.querySelector('.card-header .d-flex.justify-content-end').innerHTML = 
-          removeButtonHTML; // Add the remove button only
-
-      // Append the toggle button
-      newForm.querySelector('.card-header .d-flex.justify-content-end').appendChild(button);
-    }
-    else {
-        console.error('Button or collapse div not found in the cloned form.');
-    }
-
-
-    document.querySelector('.paste-new-forms').append(newForm);
-
-    // Add event listener to the remove button
-    newForm.querySelector('.remove-btn').addEventListener('click', function() 
-    {
-      newForm.remove();
-      formCount--; // Decrement form counter when a form is removed
-    });
-
-    // Add event listener to dynamically fetch outbound flights based on selected origin
-    newForm.querySelector('#origin' + uniqueId).addEventListener('change', function() 
-    {
-      const selectedOrigin = this.value;
-      fetchOutboundFlights(selectedOrigin, uniqueId);
-    });
-
-    // Add event listener to dynamically update the return flight and package name for this specific form
-    newForm.querySelector('#outboundFlight' + uniqueId).addEventListener('change', function() 
-    {
-      const selectedFlight = this.options[this.selectedIndex];
-      const returnFlightSched = selectedFlight.getAttribute('data-return-sched');
-      newForm.querySelector('#returnFlight' + uniqueId).value = returnFlightSched;
-
-      // Fetch package name using AJAX based on selected flight
-      fetchPackageName(selectedFlight.value, uniqueId);
-    });
-  });
-
-  // Initial form - set event listener for origin and outbound flight updates
-  document.getElementById('origin').addEventListener('change', function() 
-  {
-    const selectedOrigin = this.value;
-
-    // Clear the outbound and return flight fields when the origin changes
-    document.getElementById('outboundFlight').innerHTML = '<option selected disabled>Select Outbound Flight</option>';
-    document.getElementById('returnFlight').value = '';
-    document.getElementById('packageName').value = '';
-    fetchOutboundFlights(selectedOrigin, "");
-  });
-
-  document.getElementById('outboundFlight').addEventListener('change', function() 
-  {
-    const selectedFlight = this.options[this.selectedIndex];
-    const returnFlightSched = selectedFlight.getAttribute('data-return-sched');
-    document.getElementById('returnFlight').value = returnFlightSched;
-
-    // Fetch package name using AJAX based on selected flight
-    fetchPackageName(selectedFlight.value, "");
-  });
-
-  // AJAX function to fetch outbound flight schedules based on selected origin
-  function fetchOutboundFlights(origin, uniqueId) 
-  {
-      const xhr = new XMLHttpRequest();
-      xhr.open('POST', 'fetchSelect.php', true);
-      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-      xhr.onload = function() 
-      {
-          if (xhr.status === 200) 
-          {
-              const response = JSON.parse(xhr.responseText);
-              const outboundFlightId = uniqueId ? '#outboundFlight' + uniqueId : '#outboundFlight';
-              const outboundFlightSelect = document.querySelector(outboundFlightId);
-              
-              // Clear previous options
-              outboundFlightSelect.innerHTML = '<option selected disabled>Select Outbound Flight</option>';
-              
-              // Populate new options with flightId and schedules
-              response.forEach(function(flight) 
-              {
-                  const option = document.createElement('option');
-                  option.value = flight.flightId;  // Set flightId as the value
-                  option.setAttribute('data-return-sched', flight.returnFlightSched);  // Set return flight schedule in data attribute
-                  option.textContent = flight.onboardFlightSched;  // Display onboard flight schedule
-                  outboundFlightSelect.appendChild(option);
-              });
-          }
-      };
-      xhr.send('origin=' + encodeURIComponent(origin));
-  }
-
-  // AJAX function to fetch the package name based on outbound flight schedule
-  function fetchPackageName(outboundFlightId, uniqueId) 
-  {
-      const xhr = new XMLHttpRequest();
-      xhr.open('POST', 'fetchSelect.php', true);
-      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-      xhr.onload = function() 
-      {
-          if (xhr.status === 200) 
-          {
-              const response = JSON.parse(xhr.responseText);
-              const packageInputId = uniqueId ? '#packageName' + uniqueId : '#packageName';
-              document.querySelector(packageInputId).value = response.packageName;
-              
-              // Populate flightId in the form
-              const flightIdInputId = uniqueId ? '#flightId' + uniqueId : '#flightId';
-              document.querySelector(flightIdInputId).value = outboundFlightId;
-          }
-      };
-      xhr.send('outboundFlight=' + encodeURIComponent(outboundFlightId));
-  }
-});
-
-
-
-
->>>>>>> 7b2cfcdbc92639e69b65d8410f9c1d153f326678
 </script>
 
 
