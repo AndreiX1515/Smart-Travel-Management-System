@@ -1,3 +1,13 @@
+<!-- Things to fix
+    * Navbar Active State going blank
+
+
+
+
+
+
+-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
