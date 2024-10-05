@@ -1,0 +1,338 @@
+/* Import Poppins Font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+    font-family: "Poppins", sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+}
+
+.container-background {
+    width: 100vw;
+    height: 100vh;
+    background-color: grey;
+    /* background-image: linear-gradient(
+      rgba(0, 0, 0, 0.7), 
+      rgba(0, 0, 0, 0.7)
+    ), url('hero-1.jpg') !important;
+    background-size: cover !important; */
+    background-position: center !important;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+/* Back to Homepage button */
+.back-btn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 3; /* Higher z-index than other content */
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    font-size: 16px;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.back-btn:hover {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.main-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 15px;
+    width: 50%;
+    height: 80%;
+    align-items: center;
+    border-radius: 20px;
+    z-index: 2; /* Ensuring it's in front */
+    background-color: whitesmoke; /* Ensuring a solid background */
+    position: relative; /* For z-index to take effect */
+}
+
+
+.loginform {
+    padding: 0px 20px 20px 25px;
+    background-color: whitesmoke;
+    z-index: 2; /* In front of image */
+    width: 100%;
+    height: 100%;
+}
+
+.logo-container img {
+    width: 85px; /* Adjust the logo size */
+    height: 50px;
+    aspect-ratio: 16/9;
+    object-fit: contain; 
+}
+
+/* .form-floating input {
+    padding: 10px 0px;
+} */
+
+
+.header-container p {
+    font-size: 16px;
+    font-weight: 500;
+    color: grey;
+}
+
+.header-container h5,
+.header-container p {
+    margin-bottom: -100px; /* Removes bottom margin from both elements */
+}
+
+
+
+
+
+/* Specific colors for social icons */
+.social-icons a.facebook {
+    background-color: #1877F2; /* Facebook blue */
+}
+
+.social-icons a.google {
+    background: linear-gradient(45deg, 
+    rgb(66, 133, 244), /* Blue */
+    rgb(234, 67, 53), /* Red */
+    rgb(251, 188, 5), /* Yellow */
+    rgb(52, 168, 83) /* Green */
+);
+}
+
+.social-icons a.twitter {
+    background-color: #000; /* Black background for X (Twitter) */
+    color: #fff; /* White icon for X */
+    font-size: 30px; /* Ensure the X icon is also enlarged */
+}
+
+
+/* Divider Section */
+.divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 10px 0;
+}
+
+.divider hr {
+    flex-grow: 1;
+    border: none;
+    height: 1px;
+    background-color: #666; /* Changed to white */
+}
+
+.divider span {
+    margin: 0 10px;
+    color: #666;
+}
+
+/* image-accent - div */
+.image-accent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%; /* Ensure it takes the full height */
+    width: 100%; /* Ensure it takes the full width */
+    border-radius: 20px;
+    position: relative; /* Position context for overlay */
+    overflow: hidden; /* Ensure child elements don't overflow */
+}
+
+
+.image-accent .bg-overlay {
+    position: absolute; /* Positioning the overlay */
+    top: 0;
+    left: 0;
+    width: 100%; /* Full width of the parent */
+    height: 100%; /* Full height of the parent */
+    background-color: rgba(0, 0, 0, 0.3); /* Black with 50% opacity */
+    z-index: 1; /* Overlay on top */
+}
+
+.image-accent img {
+    width: 110%; /* Slightly larger than the parent */
+    height: 100%; /* Full height */
+    object-fit: cover; /* Maintain aspect ratio while covering */
+    border-radius: 20px; /* Match border radius */
+    z-index: 0; /* Image behind the overlay */
+}
+
+
+.loginform h4, .loginform p {
+    margin: 15px 0;
+}
+
+@media (min-width: 768px) {
+    .main-container {
+        flex-wrap: nowrap;
+    }
+
+    .loginform {
+        width: 45%; /* Adjusted width for loginform */
+    }
+
+    .image-accent {
+        width: 55%; /* Slightly larger for image section */
+    }
+}
+
+
+
+
+
+.fp-container a {
+    font-size: 16px;
+    font-weight: 500;
+    color: rgb(126, 126, 126);
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.fp-container a:hover {
+    text-decoration: underline;
+    font-size: 16px;
+    font-weight: 500;
+    color: lightgrey;
+
+}
+
+
+.loginform img {
+    /* position: absolute;
+    top: 15px;
+    left: 20px; */
+    aspect-ratio: 16/9;
+    border-radius: 50px;
+    height: 85px;
+    width: 250px;
+    object-fit: contain;
+}
+
+
+/* Bottom-login-container */ 
+.bottom-login-account {
+    margin-top: 20%;
+}
+
+.bottom-login-account p {
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.bottom-login-account a {
+    font-size: 12px;
+    font-weight: 500;
+    color: #555555;
+}
+
+.bottom-login-account a {
+    font-size: 12px;
+    font-weight: 500;
+    color: rgb(255, 32, 32);
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.bottom-login-account a:hover {
+    text-decoration: underline;
+    font-size: 12px;
+    font-weight: 500;
+    color: lightgrey;
+
+}
+
+
+.position-relative {
+    position: relative; /* Ensure the icon can be positioned absolutely */
+}
+
+#togglePassword {
+    cursor: pointer; /* Change cursor to pointer for better UX */
+}
+
+#LoginButton {
+    border-color: #000;
+    background-color: #000;
+    font-weight: 500;
+    font-size: 16px;
+}
+
+#sendOtpLink {
+    font-size: 1rem;
+    font-weight: 500;
+    white-space: nowrap; /* Prevent wrapping */
+    align-content: center;
+    min-height: 52px;
+    text-align: center; /* Center the text */
+    padding: 5px; /* Adjust padding */
+    transition: color 0.3s ease; /* Smooth transition for color */
+    text-decoration: none;
+    color: #3a3a3a;
+}
+
+#sendOtpLink:hover {
+    color: #0055f3;
+    text-decoration: underline;
+}
+
+
+#sendOtpLink.disabled {
+    color: grey; /* Grey out the text when disabled */
+    pointer-events: none; /* Prevent clicking while disabled */
+}
+
+#otpCountdown {
+    font-size: 0.8rem; /* Countdown text size */
+}
+
+.message {
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.message-1 {
+    width: 100%; /* Full width */
+    font-size: 12px; /* Font size for text */
+    font-weight: 400; /* Text weight */
+    background-color: #f8d7da; /* Light red background for visibility */
+    color: #721c24; /* Dark red text for contrast */
+    padding: 10px; /* Padding for better spacing */
+    border: none; /* No border by default */
+    box-sizing: border-box; /* Ensure padding doesn't affect width */
+    display: none; /* Hidden by default */
+    text-align: center;
+    opacity: 0; /* Initial opacity */
+    transform: translateY(-10px); /* Slide up slightly */
+    transition: opacity 0.5s ease, transform 0.5s ease; /* Transition for opacity and position */
+}
+
+.message-1.show {
+    display: block; /* Show the banner when the "show" class is added */
+    border: 1px solid #f5c6cb; /* Add border when visible */
+    opacity: 1; /* Fully visible */
+    transform: translateY(0); /* Slide to original position */
+}
+
+
+.is-invalid {
+    border: 1px solid red; /* Red border for invalid input */
+}
