@@ -312,42 +312,46 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
   <script>
-$(document).ready(function() {
-    // Adding more guest forms dynamically
-    $('.add-more-form').click(function() {
-        var guestForm = $('.guest-form:first').clone(); // Clone the first guest form
-        var formCount = $('.guest-form').length + 1; // Count the total number of forms
+    $(document).ready(function() 
+    {
+      // Adding more guest forms dynamically
+      $('.add-more-form').click(function() 
+      {
+          var guestForm = $('.guest-form:first').clone(); // Clone the first guest form
+          var formCount = $('.guest-form').length + 1; // Count the total number of forms
 
-        // Reset the values in the cloned form
-        guestForm.find('input').val('');
-        guestForm.find('select').prop('selectedIndex', 0);
-        guestForm.find('.card-body').removeClass('show'); // Collapse the newly added form
+          // Reset the values in the cloned form
+          guestForm.find('input').val('');
+          guestForm.find('select').prop('selectedIndex', 0);
+          guestForm.find('.card-body').removeClass('show'); // Collapse the newly added form
 
-        // Update IDs and names dynamically for each new form
-        guestForm.find('#packageName').attr('id', 'packageName' + formCount).attr('name', 'packageName[' + formCount + ']');
-        guestForm.find('#origin').attr('id', 'origin' + formCount).attr('name', 'origin[' + formCount + ']');
-        guestForm.find('#outboundFlight').attr('id', 'outboundFlight' + formCount).attr('name', 'outboundFlight[' + formCount + ']');
-        guestForm.find('#returnFlight').attr('id', 'returnFlight' + formCount).attr('name', 'returnFlight[' + formCount + ']');
-        guestForm.find('#flightId').attr('id', 'flightId' + formCount).attr('name', 'flightId[]');
+          // Update IDs and names dynamically for each new form
+          guestForm.find('#packageName').attr('id', 'packageName' + formCount).attr('name', 'packageName[' + formCount + ']');
+          guestForm.find('#origin').attr('id', 'origin' + formCount).attr('name', 'origin[' + formCount + ']');
+          guestForm.find('#outboundFlight').attr('id', 'outboundFlight' + formCount).attr('name', 'outboundFlight[' + formCount + ']');
+          guestForm.find('#returnFlight').attr('id', 'returnFlight' + formCount).attr('name', 'returnFlight[' + formCount + ']');
+          guestForm.find('#flightId').attr('id', 'flightId' + formCount).attr('name', 'flightId[]');
 
-        // Change the header for the new guest form
-        guestForm.find('.card-header h4').text('Guest Information ' + formCount);
+          // Change the header for the new guest form
+          guestForm.find('.card-header h4').text('Guest Information ' + formCount);
 
-        // Add the remove button
-        guestForm.find('.remove-guest').remove(); // Ensure no duplicate remove buttons
-        guestForm.append('<button type="button" class="remove-guest btn btn-danger mt-2">Remove Guest</button>');
+          // Add the remove button
+          guestForm.find('.remove-guest').remove(); // Ensure no duplicate remove buttons
+          guestForm.append('<button type="button" class="remove-guest btn btn-danger mt-2">Remove Guest</button>');
 
-        // Add the new form to the container and show it with a slide-down effect
-        guestForm.hide().appendTo('.paste-new-forms').slideDown();
+          // Add the new form to the container and show it with a slide-down effect
+          guestForm.hide().appendTo('.paste-new-forms').slideDown();
 
-        // Reattach the event listeners to the new form
-        reattachEventListeners(formCount);
-    });
+          // Reattach the event listeners to the new form
+          reattachEventListeners(formCount);
+      });
 
-    // Reattach event listeners to the newly added form
-    function reattachEventListeners(formCount) {
-        // When package is selected, populate the origin
-        $('#packageName' + formCount).on('change', function() {
+        // Reattach event listeners to the newly added form
+        function reattachEventListeners(formCount) 
+        {
+          // When package is selected, populate the origin
+          $('#packageName' + formCount).on('change', function() 
+          {
             var packageId = $(this).val();
             var originSelect = $('#origin' + formCount);
             var outboundFlightSelect = $('#outboundFlight' + formCount);
@@ -357,23 +361,28 @@ $(document).ready(function() {
             outboundFlightSelect.html('<option selected disabled>Select Outbound Flight</option>'); // Clear outbound flight field
             returnFlightInput.val(''); // Clear return flight field
 
-            if (packageId) {
-                $.ajax({
-                    url: 'fetchSelect.php',
-                    type: 'POST',
-                    data: {packageId: packageId},
-                    success: function(response) {
-                        originSelect.html(response); // Update the origin dropdown
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Error fetching origins:', error); // Log the error to console
-                    }
-                });
+            if (packageId) 
+            {
+              $.ajax(
+              {
+                url: 'fetchSelect.php',
+                type: 'POST',
+                data: {packageId: packageId},
+                success: function(response) 
+                {
+                  originSelect.html(response); // Update the origin dropdown
+                },
+                error: function(xhr, status, error) 
+                {
+                  console.error('Error fetching origins:', error); // Log the error to console
+                }
+              });
             }
-        });
+          });
 
-        // When origin is selected, populate the outbound flights
-        $('#origin' + formCount).on('change', function() {
+          // When origin is selected, populate the outbound flights
+          $('#origin' + formCount).on('change', function() 
+          {
             var packageId = $('#packageName' + formCount).val();
             var origin = $(this).val();
             var outboundFlightSelect = $('#outboundFlight' + formCount);
@@ -382,136 +391,165 @@ $(document).ready(function() {
             outboundFlightSelect.html('<option selected disabled>Select Outbound Flight</option>'); // Clear outbound flight field
             returnFlightInput.val(''); // Clear return flight field
 
-            if (packageId && origin) {
-                $.ajax({
-                    url: 'fetchOutboundFlight.php',
-                    type: 'POST',
-                    data: {packageId: packageId, origin: origin},
-                    success: function(response) {
-                        outboundFlightSelect.html(response); // Update outbound flights dropdown
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Error fetching outbound flights:', error); // Log the error to console
-                    }
-                });
-            }
-        });
-
-        // When outbound flight is selected, fetch the return flight
-        $('#outboundFlight' + formCount).on('change', function() {
-            var outboundFlight = $(this).val();
-            var returnFlightInput = $('#returnFlight' + formCount);
-            var flightIdInput = $('#flightId' + formCount);
-
-            flightIdInput.val(outboundFlight); // Store flightId in the hidden input field
-            console.log(flightIdInput.val());
-
-            if (outboundFlight) {
-                $.ajax({
-                    url: 'fetchReturnFlight.php',
-                    type: 'POST',
-                    data: {outboundFlight: outboundFlight},
-                    success: function(response) {
-                        returnFlightInput.val(response); // Update return flight input field
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Error fetching return flight:', error); // Log the error to console
-                    }
-                });
-            }
-        });
-    }
-
-    // Initialize the event listeners for the first form
-    reattachEventListeners(1);
-
-    // Remove guest form dynamically
-    $(document).on('click', '.remove-guest', function() {
-        $(this).closest('.guest-form').slideUp(function() {
-            $(this).remove(); // Remove the form after sliding up
-        });
-    });
-
-    // When package is selected, populate the origin
-    $('#packageName').on('change', function() {
-        var packageId = $(this).val();
-
-        $('#origin').html('<option selected disabled>Select Origin</option>'); // Clear origin field
-        $('#outboundFlight').html('<option selected disabled>Select Outbound Flight</option>'); // Clear outbound flight field
-        $('#returnFlight').val(''); // Clear return flight field
-
-        if (packageId) {
-            $.ajax({
-                url: 'fetchSelect.php',
-                type: 'POST',
-                data: {packageId: packageId},
-                success: function(response) {
-                    console.log(response); // Debugging the response
-                    $('#origin').html(response); // Update the origin dropdown
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error fetching origins:', error); // Log the error to console
-                }
-            });
-        } else {
-            $('#origin').html('<option selected disabled>Select Origin</option>');
-        }
-    });
-
-    // When origin is selected, populate the outbound flights
-    $('#origin').on('change', function() {
-        var packageId = $('#packageName').val();
-        var origin = $(this).val();
-
-        $('#outboundFlight').html('<option selected disabled>Select Outbound Flight</option>'); // Clear outbound flight field
-        $('#returnFlight').val(''); // Clear return flight field
-
-        if (packageId && origin) {
-            $.ajax({
+            if (packageId && origin) 
+            {
+              $.ajax(
+              {
                 url: 'fetchOutboundFlight.php',
                 type: 'POST',
                 data: {packageId: packageId, origin: origin},
-                success: function(response) {
-                    console.log(response); // Debugging the response
-                    $('#outboundFlight').html(response); // Update outbound flights dropdown
+                success: function(response) 
+                {
+                  outboundFlightSelect.html(response); // Update outbound flights dropdown
                 },
-                error: function(xhr, status, error) {
-                    console.error('Error fetching outbound flights:', error); // Log the error to console
+                error: function(xhr, status, error) 
+                {
+                  console.error('Error fetching outbound flights:', error); // Log the error to console
                 }
+              });
+            }
+          });
+
+          // When outbound flight is selected, fetch the return flight
+          $('#outboundFlight' + formCount).on('change', function() 
+          {
+              var outboundFlight = $(this).val();
+              var returnFlightInput = $('#returnFlight' + formCount);
+              var flightIdInput = $('#flightId' + formCount);
+
+              flightIdInput.val(outboundFlight); // Store flightId in the hidden input field
+              console.log(flightIdInput.val());
+
+              if (outboundFlight) 
+              {
+                $.ajax(
+                {
+                  url: 'fetchReturnFlight.php',
+                  type: 'POST',
+                  data: {outboundFlight: outboundFlight},
+                  success: function(response) 
+                  {
+                    returnFlightInput.val(response); // Update return flight input field
+                  },
+                  error: function(xhr, status, error) 
+                  {
+                    console.error('Error fetching return flight:', error); // Log the error to console
+                  }
+                });
+              }
+          });
+        }
+
+        // Initialize the event listeners for the first form
+        reattachEventListeners(1);
+
+        // Remove guest form dynamically
+        $(document).on('click', '.remove-guest', function() 
+        {
+          $(this).closest('.guest-form').slideUp(function() 
+          {
+            $(this).remove(); // Remove the form after sliding up
+          });
+        });
+
+        // When package is selected, populate the origin
+        $('#packageName').on('change', function() 
+        {
+          var packageId = $(this).val();
+
+          $('#origin').html('<option selected disabled>Select Origin</option>'); // Clear origin field
+          $('#outboundFlight').html('<option selected disabled>Select Outbound Flight</option>'); // Clear outbound flight field
+          $('#returnFlight').val(''); // Clear return flight field
+
+          if (packageId) 
+          {
+            $.ajax(
+            {
+              url: 'fetchSelect.php',
+              type: 'POST',
+              data: {packageId: packageId},
+              success: function(response) 
+              {
+                console.log(response); // Debugging the response
+                $('#origin').html(response); // Update the origin dropdown
+              },
+              error: function(xhr, status, error) 
+              {
+                console.error('Error fetching origins:', error); // Log the error to console
+              }
             });
-        } else {
+          } 
+          else 
+          {
+            $('#origin').html('<option selected disabled>Select Origin</option>');
+          }
+        });
+
+        // When origin is selected, populate the outbound flights
+        $('#origin').on('change', function() 
+        {
+          var packageId = $('#packageName').val();
+          var origin = $(this).val();
+
+          $('#outboundFlight').html('<option selected disabled>Select Outbound Flight</option>'); // Clear outbound flight field
+          $('#returnFlight').val(''); // Clear return flight field
+
+          if (packageId && origin) 
+          {
+            $.ajax(
+            {
+              url: 'fetchOutboundFlight.php',
+              type: 'POST',
+              data: {packageId: packageId, origin: origin},
+              success: function(response)
+              {
+                console.log(response); // Debugging the response
+                $('#outboundFlight').html(response); // Update outbound flights dropdown
+              },
+              error: function(xhr, status, error) 
+              {
+                console.error('Error fetching outbound flights:', error); // Log the error to console
+              }
+            });
+          } 
+          else 
+          {
             $('#outboundFlight').html('<option selected disabled>Select Outbound Flight</option>');
             $('#returnFlight').val('');
-        }
-    });
+          }
+        });
 
-    // When outbound flight is selected, fetch the return flight
-    $('#outboundFlight').on('change', function() {
-        var outboundFlight = $(this).val();
-        $('#flightId').val(outboundFlight); // Store flightId in the hidden input field
+        // When outbound flight is selected, fetch the return flight
+        $('#outboundFlight').on('change', function() 
+        {
+          var outboundFlight = $(this).val();
+          $('#flightId').val(outboundFlight); // Store flightId in the hidden input field
 
-        if (outboundFlight) {
-            $.ajax({
-                url: 'fetchReturnFlight.php', // Separate PHP file for return flight
-                type: 'POST',
-                data: {outboundFlight: outboundFlight},
-                success: function(response) {
-                    console.log(response); // Debugging the response
-                    $('#returnFlight').val(response); // Update return flight input field
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error fetching return flight:', error); // Log the error to console
-                }
+          if (outboundFlight) 
+          {
+            $.ajax(
+            {
+              url: 'fetchReturnFlight.php', // Separate PHP file for return flight
+              type: 'POST',
+              data: {outboundFlight: outboundFlight},
+              success: function(response) 
+              {
+                console.log(response); // Debugging the response
+                $('#returnFlight').val(response); // Update return flight input field
+              },
+              error: function(xhr, status, error) 
+              {
+                console.error('Error fetching return flight:', error); // Log the error to console
+              }
             });
-        } else {
+          } 
+          else 
+          {
             $('#returnFlight').val('');
-        }
+          }
+        });
     });
-});
-</script>
-
-
-
+  </script>
 
 </body>
 </html>
