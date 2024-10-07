@@ -12,19 +12,29 @@ if (isset($_POST['outboundFlight']))
           TIME_FORMAT(returnDepartureTime, '%H:%i'), ' - ', 
           DATE_FORMAT(returnArrivalDate, '%M %d, %Y'), ' ', 
           TIME_FORMAT(returnArrivalTime, '%H:%i')
-      ) AS returnFlightSched
+      ) AS returnFlightSched, flightPrice
       FROM flight 
       WHERE flightId = '$outboundFlight'");
 
   if (mysqli_num_rows($sql) > 0) 
   {
     $res = mysqli_fetch_array($sql);
-    echo $res['returnFlightSched']; // Output the return flight to populate the field
+    $returnFlightSched = $res['returnFlightSched'];
+    $flightPrice = $res['flightPrice']; // Fetching the flight price
+
+    // Return a JSON response with both return flight schedule and price
+    echo json_encode(array(
+        "returnFlight" => $returnFlightSched,
+        "flightPrice" => $flightPrice
+    ));
   } 
   else 
   {
-    echo 'No Return Flight Available';
+    // Return a JSON response if no return flight is available
+    echo json_encode(array(
+        "returnFlight" => 'No Return Flight Available',
+        "flightPrice" => null // No price available
+    ));
   }
 }
-
 ?>
