@@ -59,19 +59,19 @@ html, body {
     flex-wrap: wrap;
     justify-content: center;
     padding: 15px;
-    width: 50%;
+    width: 55%;
     height: 80%;
     align-items: center;
     border-radius: 20px;
     z-index: 2; /* Ensuring it's in front */
-    background-color: whitesmoke; /* Ensuring a solid background */
+    background-color: white; /* Ensuring a solid background */
     position: relative; /* For z-index to take effect */
 }
 
 
 .loginform {
     padding: 0px 20px 20px 25px;
-    background-color: whitesmoke;
+    background-color: white;
     z-index: 2; /* In front of image */
     width: 100%;
     height: 100%;

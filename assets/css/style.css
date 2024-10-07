@@ -35,7 +35,7 @@ body {
     background-color: #000000; 
     color: white;
     text-align: center;
-    padding: 20px 150px;
+    padding: 20px 220px;
     font-size: 12px;
     position: fixed;
     width: 100%;
@@ -45,7 +45,7 @@ body {
 }
 
 .sub-header p {
-    margin: 5px 0px 5px 0px;
+    /* margin: 5px 0px 5px 0px; */
     padding: 0px 50px;
 }
 
@@ -53,12 +53,13 @@ body {
     font-size: 14px;
     font-weight: 600;
     color: white; /* Ensures the text is light for visibility */
-    transition: color 0.3s; /* Smooth transition for hover effect */
+    /* transition: color 0.3s; Smooth transition for hover effect */
 }
 
 .sub-header a:hover {
     color: #cce6cc; /* Light color on hover */
 }
+
 
 /* Main Header */
 .header {
@@ -105,15 +106,15 @@ body {
 }
 
 .navbar a:hover {
-    color: #707070; /* Change color on hover */
+    color: #00b2f8; /* Change color on hover */
 }
 
 .navbar a:active {
-    color: #fff; /* Keep the color white when clicked */
+    color: #353535; /* Keep the color white when clicked */
 }
 
 .navbar a:focus {
-    color: #fff; /* Keep the color white when focused (tabbed) */
+    color: #525252; /* Keep the color white when focused (tabbed) */
 }
 
 .navbar a::before {
@@ -130,6 +131,28 @@ body {
 .navbar a:hover::before {
     width: 100%; /* Line under the link on hover */
 }
+
+/* Show the dropdown on hover */
+.navbar .dropdown:hover .dropdown-menu {
+    display: block; /* Display the dropdown menu */
+}
+
+.dropdown-menu {
+    margin-top: 0; /* Remove default margin */
+    border-radius: 0;
+    box-shadow: -4px 5px 14px 2px rgba(102,102,102,0.58);
+    -webkit-box-shadow: -4px 5px 14px 2px rgba(102,102,102,0.58);
+    -moz-box-shadow: -4px 5px 14px 2px rgba(102,102,102,0.58);
+}
+
+.dropdown-menu li {
+    padding: 10px 0px;
+
+}
+
+
+
+
 
 /* Header - End */
 
@@ -214,12 +237,12 @@ body {
     z-index: 4;
 }
 
-h1 {
+.slide h1 {
     font-size: 3rem;
     margin-bottom: 20px;
 }
 
-p {
+.slide p {
     font-size: 1.5rem;
     margin-bottom: 30px;
 }
@@ -360,7 +383,7 @@ p {
 
 .container-cards {
     padding: 0px 20px;
-    width: 80%;
+    width: 50%;
 
 }
 
@@ -383,6 +406,26 @@ p {
 .card .icon {
     margin-bottom: 10px; 
 }
+
+
+.card h4 {
+    font-size: 18px;
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /* Learn More Button in Section 1 */
@@ -576,7 +619,7 @@ button.btn-secondary:hover {
     padding: 10px 20px;
     border: none;
     cursor: pointer;
-    animation: aanimate 0.5s 0.6s ease-in-out forwards; /* Reduced duration */;
+    animation: animate 0.5s 0.6s ease-in-out forwards; /* Reduced duration */;
 }
 
 @keyframes animate {

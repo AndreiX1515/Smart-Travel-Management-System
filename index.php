@@ -1,13 +1,3 @@
-<!-- Things to fix
-    * Navbar Active State going blank
-
-
-
-
-
-
--->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,8 +10,8 @@
 </head>
 
 <body>
-    <header class="sub-header d-inline-flex">
-        <div class="container d-inline-flex">
+    <header class="sub-header d-flex">
+        <div class="info-container d-inline-flex flex-row">
             <a href="tel: +123456789" class="d-flex align-items-center text-decoration-none text-light">
                 <i class="fa-solid fa-phone me-2"></i> +123 456 789
             </a>
@@ -38,10 +28,37 @@
         </div>
         <nav class="navbar d-flex justify-content-end">
             <a href="#" class="nav-link">Home</a>
-            <a href="#" class="nav-link">Packages</a>
-            <a href="#" class="nav-link">Hotels</a>
+
+            <!-- Packages Dropdown -->
+            <div class="dropdown">
+                <a href="#" class="nav-link dropdown-toggle" id="packagesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Packages
+                </a>
+                <ul class="dropdown-menu mt-0" aria-labelledby="packagesDropdown">
+                    <li><a class="dropdown-subitem" href="#">Winter</a></li>
+                    <li><a class="dropdown-subitem" href="#">Spring</a></li>
+                    <li><a class="dropdown-subitem" href="#">Summer</a></li>
+                    <li><a class="dropdown-subitem" href="#">Autumn</a></li>
+                    <li><a class="dropdown-subitem" href="#">Seoul</a></li>
+                    <li><a class="dropdown-subitem" href="#">Busan</a></li>
+                </ul>
+            </div>
+
+            <div class="dropdown">
+                <a href="#" class="nav-link dropdown-toggle" id="packagesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Hotel
+                </a>
+                <ul class="dropdown-menu mt-0" aria-labelledby="packagesDropdown">
+                    <li><a class="dropdown-subitem" href="#">Airsky Hotel</a></li>
+                    <li><a class="dropdown-subitem" href="#">Recenz Hotel</a></li>
+                    <li><a class="dropdown-subitem" href="#">Insadong Ibis</a></li>
+                    <li><a class="dropdown-subitem" href="#">Marina Bay</a></li>
+                </ul>
+            </div>
+
             <a href="#" class="nav-link">About</a>
             <a href="#" class="nav-link">Contact</a>
+            
             <div class="login-container ms-5">
                 <button class="btn btn-success text-lighter fw-normal" id="LoginButton">Book Now</button>
             </div>
@@ -182,6 +199,7 @@
                 <h4>Affordable Packages</h4>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
             </div>
+
             <div class="card">
                 <div class="icon">
                     <i class="fas fa-map-marked-alt"></i>
@@ -189,6 +207,7 @@
                 <h4>Exclusive Destinations</h4>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
             </div>
+
             <div class="card">
                 <div class="icon">
                     <i class="fas fa-plane"></i>
@@ -196,6 +215,7 @@
                 <h4>Convenient Travel</h4>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
             </div>
+
             <div class="card">
                 <div class="icon">
                     <i class="fas fa-star"></i>
@@ -203,6 +223,7 @@
                 <h4>Trusted Reviews</h4>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
             </div>
+            
         </div>
     </div>
 

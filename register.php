@@ -1,6 +1,5 @@
 <?php
 session_start(); // Make sure to start the session
-$email = $_SESSION['email'];
 ?>
 
 <!DOCTYPE html>
@@ -128,7 +127,14 @@ $email = $_SESSION['email'];
             
 
             <div class="primary-text mb-4">
-                 Let us know this email belongs to you. Enter the code in the email sent to <br> <span class="fw-bold"> <?php echo $email?> </span>
+                 Let us know this email belongs to you. Enter the code in the email sent to <br> <span class="fw-bold"> 
+                    <?php 
+                        echo $email
+                        
+                    ?> 
+                 
+                
+                </span>
             </div>
 
             <div class="otp-field-container mb-4">
