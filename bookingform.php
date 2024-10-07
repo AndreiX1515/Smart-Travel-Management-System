@@ -307,6 +307,7 @@
           <div class="paste-new-forms"></div>
 
           <div>Total Price: ₱ <span id="displayTotalPrice">0.00</span></div>
+          <div>Total Pax: <span id="displayTotalPax">1</span></div>
           <input type="hidden" id="totalPrice" name="totalPrice">
 
           <button type="submit" name="bookNow" class="btn btn-primary mt-3">Book Now</button>
@@ -352,7 +353,15 @@
 
         // Reattach the event listeners to the new form
         reattachEventListeners(formCount);
+        updateTotalPax();
       });
+
+      function updateTotalPax() 
+      {
+        var totalPax = $('.guest-form').length; // Count the number of guest forms
+        console.log("Total Pax:", totalPax); // Debug: log the total number of passengers
+        $('#displayTotalPax').text(totalPax); // Update the displayed total number of passengers
+      }
 
       // Reattach event listeners to the newly added form
       function reattachEventListeners(formCount) 
@@ -462,7 +471,7 @@
         // Attach the input event to the flight price field for real-time price updates
         $('#flightPrice' + formCount).on('input', function() 
         {
-            calculateTotalPrice(); // Recalculate total price in real time
+          calculateTotalPrice(); // Recalculate total price in real time
         });
       }
 
@@ -475,6 +484,7 @@
         $(this).closest('.guest-form').slideUp(function() 
         {
           $(this).remove(); // Remove the form after sliding up
+          updateTotalPax(); // Update the total pax after removing a form
           calculateTotalPrice(); // Recalculate total price after removing a form
         });
       });
