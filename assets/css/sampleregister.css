@@ -332,6 +332,36 @@ html, body {
     transform: translateY(0); /* Slide to original position */
 }
 
+.message-otp {
+    width: 100%; /* Full width */
+    font-size: 12px; /* Font size for text */
+    font-weight: 400; /* Text weight */
+    background-color: #f8d7da; /* Light red background for visibility */
+    color: #721c24; /* Dark red text for contrast */
+    padding: 10px; /* Padding for better spacing */
+    border: none; /* No border by default */
+    box-sizing: border-box; /* Ensure padding doesn't affect width */
+    display: none; /* Hidden by default */
+    text-align: center;
+    opacity: 0; /* Initial opacity */
+    transform: translateY(-10px); /* Slide up slightly */
+    transition: opacity 0.5s ease, transform 0.5s ease; /* Transition for opacity and position */
+}
+
+.message-otp.show {
+    display: block; /* Show the banner when the "show" class is added */
+    border: 1px solid #f5c6cb; /* Add border when visible */
+    opacity: 1; /* Fully visible */
+    transform: translateY(0); /* Slide to original position */
+}
+
+.email-message.show {
+    display: block; /* Show the banner when the "show" class is added */
+    border: 1px solid #f5c6cb; /* Add border when visible */
+    opacity: 1; /* Fully visible */
+    transform: translateY(0); /* Slide to original position */
+}
+
 
 .is-invalid {
     border: 1px solid red; /* Red border for invalid input */

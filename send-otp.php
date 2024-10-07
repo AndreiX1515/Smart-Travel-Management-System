@@ -17,13 +17,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = isset($_POST['email']) ? $_POST['email'] : '';
     $password = isset($_POST['password']) ? $_POST['password'] : '';
 
-    // Validate the email format
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $response['message'] = "Invalid email format.";
-        echo json_encode($response);
-        exit;
-    }
-
     // Store the values in session variables
     $_SESSION['firstName'] = $firstName;
     $_SESSION['lastName'] = $lastName;

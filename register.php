@@ -1,32 +1,17 @@
-<?php session_start(); ?>
+<?php
+session_start(); // Make sure to start the session
+$email = $_SESSION['email'];
+?>
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>Smart Travel</title>
+    <title>Register</title>
 
-    <meta name="description" content="">
-    <meta name="keywords" content="">
-
-    <!-- Bootstrap CSS CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-
-    <!-- Font Awesome Icon Kit CDN -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
-
-
-    <!-- Favicons -->
-    <link href="assets/images/rsz_logo-tab.png" rel="icon">
-    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    <?php include 'includes/head.php' ?>
 
     <link href="assets/css/sampleregister.css?v=<?php echo time(); ?>" rel="stylesheet">
-
-  <style>
-    
-  </style>
 </head>
 
 <body>
@@ -49,18 +34,14 @@
   
       <!-- Login Form Section -->
       <div class="loginform d-flex flex-column">
-  
             <div class="header-container d-flex flex-column text-start mt-3 mb-3">
                 <h5 class="header h2 fw-bolder mb-0">Register</h5> <!-- Removed margin-bottom -->
                 <p class="h6 sub-header mb-0">The start of your journey with us.</p>
             </div>
-  
-
-        
             <!-- Registration Form -->
             <form class="mt-lg-3" id="registerForm" method="POST" action="register.php">
-            <div class="message-1" id="message-1"> </div>
-                <div class="mb-3">
+                <div class="message-1 mb-2 fw-bold" id="message-1"> </div>
+                <!-- <div class="mb-3">
                     <div class="form-floating">
                         <input type="text" class="form-control" id="floatingFirstName" name="Reg-FirstName" placeholder="First Name" required>
                         <label for="floatingFirstName">First Name<small class="text-danger"> *</small></label>
@@ -79,13 +60,16 @@
                         <input type="text" class="form-control" id="floatingMiddleName" name="Reg-MiddleName" placeholder="Middle Name">
                         <label for="floatingMiddleName">Middle Name</label>
                     </div>
-                </div>
+                </div> -->
 
                 <div class="mb-2">
                     <div class="form-floating">
                         <input type="email" class="form-control" id="floatingEmail" name="Reg-Email" placeholder="Email" required>
                         <label for="floatingEmail">Email <small class="text-danger"> *</small></label>
                     </div>
+
+                <div id="email-message" class="text-danger"></div>
+                 <!-- Message area -->
                 </div>
 
                 <div class="message mt-1 mb-1 d-flex justify-content-start text-danger" id="message-email"></div>
@@ -110,27 +94,27 @@
                     </div>
                 </div>
 
-                <div class="message mt-1 mb-2 d-flex justify-content-start text-danger" id="message-confirmp"></div>
+                <!-- <div class="message mt-1 mb-2 d-flex justify-content-start text-danger" id="message-confirmp"></div> -->
 
                 <div class="mb-3">
-                    <div class="send-otp d-flex flex-row align-items-center">
+                    <!-- <div class="send-otp d-flex flex-row align-items-center">
                         <div class="form-floating me-3 flex-grow-1">
                             <input type="text" class="form-control" id="floatingOtp" name="Reg-OTP" placeholder="Enter OTP">
                             <label for="floatingOtp">OTP</label>
                         </div>
-                        <!-- Send OTP link with countdown -->
+                         Send OTP link with countdown 
                         <a href="#" id="sendOtpLink" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Send OTP <span id="otpCountdown"></span></a>
-                    </div>
+                    </div> -->
                 </div>
-                <button type="submit" class="btn btn-primary w-100" id="verifyOtpButton">Verify OTP</button>
+
+                <button type="submit" class="btn btn-primary w-100" id="SubmitRegButton">Register</button>
+                
             </form>
       </div>
   </div>
-  
-  <!-- Modals -->
 
-   
-    <!-- Modal -->
+    <!-- Modals -->
+    <!-- OTP Modal -->
     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 
     <div class="modal-dialog modal-dialog-centered">
@@ -141,8 +125,10 @@
             </div>
 
         <div class="modal-body p-4">
+            
+
             <div class="primary-text mb-4">
-                 Let us know this email belongs to you. Enter the code in the email sent to <span class="fw-bold"> ********@gmail.com. </span>
+                 Let us know this email belongs to you. Enter the code in the email sent to <br> <span class="fw-bold"> <?php echo $email?> </span>
             </div>
 
             <div class="otp-field-container mb-4">
@@ -155,288 +141,233 @@
 
                 <!-- Send OTP link with countdown -->
                 <a href="#" id="sendOtpLink">Send OTP <span id="otpCountdown"></span></a>
-
+                <div class="message-otp my-2 fw-bold" id="message-otp"> </div>
             </div>
             
         </div>
 
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Edit Contact Info</button>
-            <button type="button" class="btn btn-primary">Submit</button>
+            <button type="button" class="btn btn-primary" id="verifyOtpButton">Submit</button>
         </div>
 
         </div>
     </div>
 </div>
 
-
-
-    <!-- Popper CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-
-    <!-- Main Bootstrap JS CDN-->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <?php include 'includes\scripts.php'; ?>
 
     <script>
-            $(document).ready(function () {
-                $('#sendOtpLink').on('click', function (e) {
-                    e.preventDefault(); // Prevent the default anchor behavior
-                    let emailField = $('#floatingEmail');
-                    let usernameField = $('#floatingUsername');
-                    let passwordField = $('#floatingPassword');
-                    let cpasswordField = $('#floatingPassword2');
-                    let fnameField = $('#floatingFirstName');
-                    let lnameField = $('#floatingLastName');
-                    let mnameField = $('#floatingMiddleName');
-                    let email = emailField.val();
-                    let username = usernameField.val();
-                    let password = passwordField.val();
-                    let cpassword = cpasswordField.val();
-                    let fname = fnameField.val();
-                    let lname = lnameField.val();
-                    let mname = mnameField.val();
-                    console.log(email);
+    $(document).ready(function () {
+        // Check if email is already in use on blur
+        $('#floatingEmail').on('blur', function () {
+            let emailField = $(this);
+            let email = emailField.val();
+            
+            // Clear previous message and reset border
+            $('#message-1').text('').removeClass('show');
+            emailField.css('border', '');
 
-                    // Clear any previous message
-                    $('#message-1').text('');
+            // Email format validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                $('#message-1').text('Please enter a valid email address').addClass('show');
+                emailField.css('border', '1px solid lightcoral');
+                showMessage(); // Call to handle fade out
+                return;
+            }
 
-                    // Email format validation
-                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Simple email regex
-
-                    // Check if email is empty
-                    if (email === '') {
-                        $('#message-1').text('Fields are empty'); // Show message below the email field
-                        emailField.css('border', '1px solid lightcoral'); // Change border to light red
-                        usernameField.css('border', '1px solid lightcoral');
-                        passwordField.css('border', '1px solid lightcoral');
-                        cpasswordField.css('border', '1px solid lightcoral');
-                        fnameField.css('border', '1px solid lightcoral');
-                        lnameField.css('border', '1px solid lightcoral');
-                        mnameField.css('border', '1px solid lightcoral');
-                        return; // Stop further execution
-                    } else if (!emailRegex.test(email)) {
-                        $('#message-1').text('Please enter a valid email address.'); // Show message for invalid email
-                        emailField.css('border', '1px solid lightred'); // Change border to light red
-                        return; // Stop further execution
+            // Check if email is already in use
+            $.ajax({
+                url: 'email-check.php', // Your PHP script to check the email
+                method: 'POST',
+                data: { email: email },
+                dataType: 'json',
+                success: function (response) {
+                    if (response.exists) {
+                        $('#message-1').text('This email is already in use.').addClass('show');
+                        emailField.css('border', '1px solid lightcoral');
+                        showMessage(); // Call to handle fade out
                     } else {
-                        emailField.css('border', ''); // Reset border color if email is valid
+                        // Email is available
+                        emailField.css('border', ''); // Reset border if valid
+                    }
+                },
+                error: function () {
+                    $('#message-1').text('Error checking email. Please try again.').addClass('show'); // Handle error display
+                    showMessage();
+                }
+            });
+        });
+
+        // Registration button click handler
+        $('#SubmitRegButton').on('click', function (e) {
+            e.preventDefault(); // Prevent default behavior
+
+            // Retrieve input field values
+            let emailField = $('#floatingEmail');
+            let email = emailField.val();
+            let passwordField = $('#floatingPassword');
+            let password = passwordField.val();
+            let cpasswordField = $('#floatingPassword2');
+            let cpassword = cpasswordField.val();
+
+            // Clear any previous message and reset borders
+            $('#message-1').text('').removeClass('show');
+            emailField.css('border', '');
+            passwordField.css('border', '');
+            cpasswordField.css('border', '');
+
+            // Validation logic
+            if (!email || !password || !cpassword) {
+                $('#message-1').text('All fields are required').addClass('show');
+                if (!email) emailField.css('border', '1px solid lightcoral');
+                if (!password) passwordField.css('border', '1px solid lightcoral');
+                if (!cpassword) cpasswordField.css('border', '1px solid lightcoral');
+                showMessage(); // Call to handle fade out
+                return;
+            }
+
+            // Email format validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                $('#message-1').text('Please enter a valid email address').addClass('show');
+                emailField.css('border', '1px solid lightcoral');
+                showMessage();
+                return;
+            }
+
+            // Password length validation
+            if (password.length < 8) {
+                $('#message-1').text('Password must be at least 8 characters long').addClass('show');
+                passwordField.css('border', '1px solid lightcoral');
+                showMessage();
+                return;
+            }
+
+            // Check if passwords match
+            if (password !== cpassword) {
+                $('#message-1').text('Passwords do not match').addClass('show');
+                cpasswordField.css('border', '1px solid lightcoral');
+                showMessage();
+                return;
+            }
+
+            // Check if email is already in use before sending OTP
+            $.ajax({
+                url: 'email-check.php', // Your PHP script to check the email
+                method: 'POST',
+                data: { email: email },
+                dataType: 'json',
+                success: function (response) {
+                    if (response.exists) {
+                        $('#message-1').text('This email is already in use.').addClass('show');
+                        emailField.css('border', '1px solid lightcoral');
+                        showMessage(); // Call to handle fade out
+                        return; // Stop further execution if email exists
                     }
 
-                    // Gather form data
-                    const firstName = $('#floatingFirstName').val();
-                    const lastName = $('#floatingLastName').val();
-                    const middleName = $('#floatingMiddleName').val();
-                    const emails = $('#floatingEmail').val();
-                    const passwords = $('#floatingPassword').val();
-
+                    // If email is not in use, proceed to send OTP
                     $.ajax({
                         url: 'send-otp.php',
                         method: 'POST',
                         data: {
-                            firstName: firstName,
-                            lastName: lastName,
-                            middleName: middleName,
-                            email: emails,
-                            password: passwords
+                            email: email,
+                            password: password
                         },
                         dataType: 'json', // Expect a JSON response
                         success: function (response) {
-                            console.log(response.message); // Log the message from the server
-                            $('#message-1').text(response.message).addClass('show'); // Display the message in #message-1
-
-                            // Automatically hide the message after 5 seconds
-                            setTimeout(function () {
-                                $('#message-1').css('opacity', 0); // Start fading out
-                                $('#message-1').removeClass('show'); // Remove show class to hide
-                            }, 5000);
-
-                            // Reset the opacity back to 1 when shown again
-                            setTimeout(function () {
-                                $('#message-1').css('opacity', 1); // Reset opacity for the next message
-                            }, 0);
+                            // Trigger the Bootstrap modal
+                            $('#staticBackdrop').modal('show');
+                            // Handle other response messages here
                         },
                         error: function () {
-                            console.log('Failed to send OTP');
                             $('#message-1').text('Failed to send OTP. Please try again.').addClass('show'); // Handle error display
+                            showMessage();
                         }
                     });
-
-                });
-
-                // Function to start the OTP countdown
-                function startOtpCountdown(linkElement) { // Use linkElement as the parameter
-                    $(linkElement).addClass('disabled'); // Add the disabled class to grey it out
-                    let countdownTime = 10; // Countdown time in seconds
-                    const countdownElement = document.getElementById('otpCountdown');
-
-                    // Show the countdown
-                    countdownElement.textContent = `(${countdownTime})`;
-
-                    const countdownInterval = setInterval(() => {
-                        countdownTime--;
-                        countdownElement.textContent = `(${countdownTime})`;
-
-                        // When countdown reaches 0
-                        if (countdownTime <= 0) {
-                            clearInterval(countdownInterval);
-                            countdownElement.textContent = ''; // Change text when countdown ends
-                            $(linkElement).removeClass('disabled'); // Re-enable the link
-                            $(linkElement).css('pointer-events', 'auto'); // Allow clicking again
-                        }
-                    }, 1000);
-
-                    // Disable clicking the link until countdown is finished
-                    $(linkElement).css('pointer-events', 'none');
+                },
+                error: function () {
+                    $('#message-1').text('Error checking email. Please try again.').addClass('show'); // Handle error display
+                    showMessage();
                 }
-
-
-                $('#verifyOtpButton').on('click', function (e) {
-                    e.preventDefault();
-
-                    // Get the OTP input value
-                    let otp = $('input[name="Reg-OTP"]').val();
-
-                    let formData = {
-                        'Reg-OTP': otp  // The key must match the name attribute in your HTML form field
-                    };
-
-                    // Send OTP for verification
-                    $.post('verify-otp.php', formData, function (response) {
-                        console.log(response); // Log the response for debugging
-                        
-                        // Parse the JSON response
-                        var data = JSON.parse(response);
-                        
-                        // Check if the OTP verification was successful
-                        if (data.success) {
-                            // Redirect to the desired page after successful registration
-                            // window.location.href = 'login.php'; // Change this to your desired URL
-                        } else {
-                            // Show an error message
-                            $('#message-1').text(data.message).addClass('show');
-                        }
-                    }).fail(function () {
-                        // Handle the error when the request fails
-                        $('#message-1').text('Failed to verify OTP. Please try again.').addClass('show');
-                    });
-                });
-
             });
-    </script>
+        });
 
-    <script>
-            // Email Validation on Blur
-        document.addEventListener("DOMContentLoaded", function () {
-            document.getElementById("floatingEmail").addEventListener("blur", function () {
-                const email = this.value.trim();
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                const messageEl = document.getElementById("message-email");
+        // Function to handle message fade out
+        function showMessage() {
+            // Show message, then fade out after 5 seconds
+            setTimeout(function () {
+                $('#message-1').fadeOut(500, function () {
+                    $('#message-1').text('').removeClass('show').show(); // Reset after fade out
+                });
+            }, 5000); // 5 seconds
+        }
 
-                if (email === "") {
-                    messageEl.textContent = "Email is required.";
-                    this.classList.add('is-invalid'); // Add red border class
-                } else if (!emailRegex.test(email)) {
-                    messageEl.textContent = "Invalid email format.";
-                    this.classList.add('is-invalid'); // Add red border class
+        // Function to start the OTP countdown
+        function startOtpCountdown(linkElement) { // Use linkElement as the parameter
+            $(linkElement).addClass('disabled'); // Add the disabled class to grey it out
+            let countdownTime = 10; // Countdown time in seconds
+            const countdownElement = document.getElementById('otpCountdown');
+
+            // Show the countdown
+            countdownElement.textContent = `(${countdownTime})`;
+
+            const countdownInterval = setInterval(() => {
+                countdownTime--;
+                countdownElement.textContent = `(${countdownTime})`;
+
+                // When countdown reaches 0
+                if (countdownTime <= 0) {
+                    clearInterval(countdownInterval);
+                    countdownElement.textContent = ''; // Change text when countdown ends
+                    $(linkElement).removeClass('disabled'); // Re-enable the link
+                    $(linkElement).css('pointer-events', 'auto'); // Allow clicking again
+                }
+            }, 1000);
+
+            // Disable clicking the link until countdown is finished
+            $(linkElement).css('pointer-events', 'none');
+        }
+
+        // OTP verification handler
+        $('#verifyOtpButton').on('click', function (e) {
+            e.preventDefault();
+
+            // Get the OTP input value
+            let otp = $('input[name="Reg-OTP"]').val();
+
+            let formData = {
+                'Reg-OTP': otp  // The key must match the name attribute in your HTML form field
+            };
+
+            // Send OTP for verification
+            $.post('verify-otp.php', formData, function (response) {
+                console.log(response); // Log the response for debugging
+                
+                // Parse the JSON response
+                var data = JSON.parse(response);
+                
+                // Check if the OTP verification was successful
+                if (data.success) {
+                    window.location.href = 'login.php'; // Change this to your desired URL
                 } else {
-                    messageEl.textContent = ""; // Clear error message if valid
-                    this.classList.remove('is-invalid'); // Remove red border class
+                    // Show an error message
+                    $('#message-otp').text(data.message).addClass('show');
                 }
+            }).fail(function () {
+                // Handle the error when the request fails
+                $('#message-otp').text('Failed to verify OTP. Please try again.').addClass('show');
             });
-
-        // Function to display message and handle invalid state
-        function displayValidationMessage(element, message, isValid) {
-            const messageEl = document.getElementById("message-confirmp");
-            messageEl.textContent = message; // Update message
-            if (isValid) {
-                element.style.border = ''; // Reset border if valid
-                messageEl.classList.remove('text-danger'); // Remove red text
-            } else {
-                element.style.border = '1px solid lightcoral'; // Add red border if invalid
-                messageEl.classList.add('text-danger'); // Add red text for invalid message
-            }
-        }
-
-        // Password Validation on Blur
-        document.getElementById("floatingPassword").addEventListener("blur", function () {
-            const password = this.value;
-            const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).{8,}$/;
-
-            if (password === "") {
-                displayValidationMessage(this, "Password is required.", false);
-            } else if (!passwordRegex.test(password)) {
-                displayValidationMessage(this, "Password must be at least 8 characters, with upper and lowercase letters, numbers, and special characters.", false);
-            } else {
-                displayValidationMessage(this, "", true); // Clear message if valid
-            }
-        });
-
-        // Confirm Password Validation on Blur
-        document.getElementById("floatingPassword2").addEventListener("blur", function () {
-            const confirmPassword = this.value;
-            const password = document.getElementById("floatingPassword").value;
-
-            if (confirmPassword === "") {
-                displayValidationMessage(this, "Confirm Password is required.", false);
-            } else if (confirmPassword !== password) {
-                displayValidationMessage(this, "Passwords do not match.", false);
-            } else {
-                displayValidationMessage(this, "", true); // Clear message if valid
-            }
-        });
-
-        // Name Validation Function
-        function validateName(inputElement, isRequired = false) {
-            const name = inputElement.value.trim();
-            const nameRegex = /^[A-Za-zñÑáéíóúÁÉÍÓÚ ]+$/; // Accepts alphabetical characters and spaces, including ñ
-
-            if (isRequired && name === "") {
-                inputElement.classList.add('is-invalid'); // Add red border class for invalid
-                inputElement.classList.remove('is-valid'); // Remove valid class if invalid
-            } else if (!nameRegex.test(name)) {
-                inputElement.classList.add('is-invalid'); // Add red border class for invalid
-                inputElement.classList.remove('is-valid'); // Remove valid class if invalid
-            } else {
-                inputElement.classList.remove('is-invalid'); // Remove red border class
-                inputElement.classList.add('is-valid'); // Add valid class
-            }
-        }
-
-        // First Name Validation on Blur
-        document.getElementById("floatingFirstName").addEventListener("blur", function () {
-            validateName(this, true);
-        });
-
-        // Middle Name Validation on Blur
-        document.getElementById("floatingMiddleName").addEventListener("blur", function () {
-            validateName(this);
-        });
-
-        // Last Name Validation on Blur
-        document.getElementById("floatingLastName").addEventListener("blur", function () {
-            validateName(this, true);
-        });
-
-        // OTP Validation on Blur
-        document.getElementById("floatingOtp").addEventListener("blur", function () {
-            const otp = this.value.trim();
-            const otpRegex = /^\d{4,6}$/;
-            const messageEl = document.getElementById("message-1");
-
-            if (otp === "") {
-                messageEl.textContent = "OTP is required.";
-            } else if (!otpRegex.test(otp)) {
-                messageEl.textContent = "OTP must be 4-6 digits.";
-            } else {
-                messageEl.textContent = ""; // Clear error message if valid
-            }
         });
     });
 
+    </script>
+
+
+    <script>
     // Show Password Toggle
-    document.getElementById('togglePassword').addEventListener('click', function () {
+        document.getElementById('togglePassword').addEventListener('click', function () {
         const passwordField = document.getElementById('floatingPassword');
         const toggleIcon = document.getElementById('toggleIcon');
 

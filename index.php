@@ -1,45 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" name="viewport">
     <title>Smart Travel</title>
 
-    <meta name="description" content="">
-    <meta name="keywords" content="">
-
-    <!-- Bootstrap CSS CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-
-    <!-- Font Awesome Icon Kit CDN -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-
-    <!-- Favicons -->
-    <link href="assets/images/rsz_logo-tab.png" rel="icon">
-    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    <?php include 'includes\head.php' ?>
 
     <!-- External CSS -->
     <link rel="stylesheet" href="assets/css/style.css?v=<?php echo time(); ?>">
 </head>
 
 <body>
-    <!-- <header class="sub-header">
-        <div class="container d-inline-flex ps-5">
-            <a href="tel:+123456789" class="d-flex align-items-center text-decoration-none text-light pe-2">
-                <i class="fa-solid fa-phone pe-2"></i> +123 456 789
+    <header class="sub-header d-inline-flex">
+        <div class="container d-inline-flex">
+            <a href="tel: +123456789" class="d-flex align-items-center text-decoration-none text-light">
+                <i class="fa-solid fa-phone me-2"></i> +123 456 789
             </a>
             <a href="mailto:info@example.com" class="d-flex align-items-center text-decoration-none text-light">
-                <i class="fa-solid fa-envelope ps-2 pe-2"></i> info@example.com
+                <i class="fa-solid fa-envelope ps-4 pe-2"></i> info@example.com
             </a>
         </div>
-    </header> -->
+    </header> 
 
     <!-- Main Header -->
     <header class="header d-flex justify-content-between align-items-center">
         <div class="logo">
             <a href="#" class="logo"><img src="assets\images\SMART LOGO 2 (2).png" alt="Logo"></a>
         </div>
-
         <nav class="navbar d-flex justify-content-end">
             <a href="#" class="nav-link">Home</a>
             <a href="#" class="nav-link">Packages</a>
@@ -47,16 +33,10 @@
             <a href="#" class="nav-link">About</a>
             <a href="#" class="nav-link">Contact</a>
             <div class="login-container ms-5">
-
                 <button class="btn btn-success text-lighter fw-normal" id="LoginButton">Book Now</button>
-
             </div>
         </nav>
         
-       
-
-        
-
         <!-- <div class="d-flex flex-form">
 
             <!-- <label class="text-light">Lang:</label> 
@@ -86,25 +66,96 @@
 
             
     </div> -->
-
-
     </header>
 
     <!-- Section 1 -->
     <div class="section d-flex" id="section1">
         <!-- Background Image -->
-        <img src="assets\images\hero-1.jpg" alt="Background" class="background-img">
+        <img src="assets/images/_RJH6060_1.jpg" alt="Background" class="background-img">
+
+        <!-- Dark Overlay -->
+        
+
+        <div class="hero-slider">
+        <div class="overlay"></div>
+            <div class="slide active" data-background="#ffcccc">
+                <img src="assets/images/hero-1.jpg" alt="Hero Image 1">
+                <div class="content">
+                    <h1>Transfer Service</h1>
+                    <p>Explore your travel with our seamless transfer services.</p>
+                    <a href="#" class="btn">Click Here</a>
+                </div>
+            </div>
+            <div class="slide" data-background="#ccffcc">
+                <img src="assets/images/hero-2.jpg" alt="Hero Image 2">
+                <div class="content">
+                    <h1>Adventure Awaits</h1>
+                    <p>Join us for unforgettable adventures.</p>
+                    <a href="#" class="btn">Discover More</a>
+                </div>
+            </div>
+            <div class="slide" data-background="#ccccff">
+                <img src="assets/images/hero-3.jpg" alt="Hero Image 3">
+                <div class="content">
+                    <h1>Cultural Experiences</h1>
+                    <p>Immerse yourself in local cultures.</p>
+                    <a href="#" class="btn">Learn More</a>
+                </div>
+            </div>
+            <div class="slide" data-background="#ffffcc">
+                <img src="assets/images/hero-4.jpg" alt="Hero Image 4">
+                <div class="content">
+                    <h1>Gourmet Delights</h1>
+                    <p>Savor the flavors of the world.</p>
+                    <a href="#" class="btn">Taste Now</a>
+                </div>
+            </div>
+            <div class="slide" data-background="#ffccff">
+                <img src="assets/images/hero-5.jpg" alt="Hero Image 5">
+                <div class="content">
+                    <h1>Relaxation & Wellness</h1>
+                    <p>Find your peace with us.</p>
+                    <a href="#" class="btn">Join Us</a>
+                </div>
+            </div>
+            <div class="slide" data-background="#ccffff">
+                <img src="assets/images/hero-6.jpg" alt="Hero Image 6">
+                <div class="content">
+                    <h1>Family Fun</h1>
+                    <p>Fun for the whole family!</p>
+                    <a href="#" class="btn">Explore Now</a>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="prev">❮</button>
+                <button class="next">❯</button>
+            </div>
+
+            <div class="pagination">
+                <span class="dot active" data-slide="0"></span>
+                <span class="dot" data-slide="1"></span>
+                <span class="dot" data-slide="2"></span>
+                <span class="dot" data-slide="3"></span>
+                <span class="dot" data-slide="4"></span>
+                <span class="dot" data-slide="5"></span>
+            </div>
+            
+    </div>
+
+
 
         <!-- Content -->
-        <div class="hero d-flex flex-column">
+        <!-- <div class="hero d-flex flex-column">
             <h3>Explore Korea with <span>Smart Travel</span></h3>
             <p class="mb-5">Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
             <div class="btn-container d-flex flex-row justify-content-center">
                 <button type="button" class="btn btn-secondary">Book Now</button>
                 <button type="button" class="btn btn-outline-secondary p-2 px-3 ms-3 text-light">Learn More</button>
             </div>
-        </div>
+        </div> -->
     </div>
+
 
     <div class="section d-flex flex-column" id="section2">
         <div class="container-header d-flex flex-column text-center">
@@ -144,6 +195,22 @@
             </div>
         </div>
     </div>
+
+    <div class="section" id="section3"> 
+
+
+
+
+    </div>
+
+    <div class="section" id="section4"> 
+    
+
+
+
+    </div>
+
+
 
     <!-- Section 3
     <div class="section" id="section3">
@@ -208,6 +275,7 @@
         </div>
     </div> -->
     
+    <?php include 'includes/scripts.php'; ?>   
 
     <script>
     // Navbar Button Trigger
@@ -216,60 +284,81 @@
     };
 
     
-    // For Language Dropdown
-    document.addEventListener("DOMContentLoaded", function() {
-    const dropdownItems = document.querySelectorAll('.dropdown-item');
-    const languageLabel = document.getElementById('language-label');
-    const languageFlag = document.getElementById('language-flag');
+    // // For Language Dropdown
+    // document.addEventListener("DOMContentLoaded", function() {
+    // const dropdownItems = document.querySelectorAll('.dropdown-item');
+    // const languageLabel = document.getElementById('language-label');
+    // const languageFlag = document.getElementById('language-flag');
 
-    dropdownItems.forEach(item => {
-        item.addEventListener('click', function(event) {
-            event.preventDefault(); // Prevent default anchor behavior
+    // dropdownItems.forEach(item => {
+    //     item.addEventListener('click', function(event) {
+    //         event.preventDefault(); // Prevent default anchor behavior
 
-                // Change the displayed language
-                languageLabel.textContent = this.getAttribute('data-lang');
-                // Change the flag image
-                languageFlag.src = this.getAttribute('data-image');
-            });
+    //             // Change the displayed language
+    //             languageLabel.textContent = this.getAttribute('data-lang');
+    //             // Change the flag image
+    //             languageFlag.src = this.getAttribute('data-image');
+    //         });
+    //     });
+    // });
+
+
+
+    $(document).ready(function() {
+        let currentSlide = 0;
+        const slides = $('.slide');
+        const totalSlides = slides.length;
+
+        // Show the first slide
+        slides.eq(currentSlide).addClass('active');
+
+        // Update pagination based on current slide
+        function updatePagination() {
+            $('.dot').removeClass('active');
+            $('.dot').eq(currentSlide).addClass('active');
+        }
+
+        // Initial pagination setup
+        updatePagination();
+
+        // Function to go to the next slide
+        function goToNextSlide() {
+            slides.eq(currentSlide).removeClass('active');
+            currentSlide = (currentSlide + 1) % totalSlides; // Loop to the next slide
+            slides.eq(currentSlide).addClass('active');
+            updatePagination();
+        }
+
+        // Function to go to the previous slide
+        $('.prev').click(function() {
+            slides.eq(currentSlide).removeClass('active');
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides; // Loop to the previous slide
+            slides.eq(currentSlide).addClass('active');
+            updatePagination();
         });
+
+        // Next Button
+        $('.next').click(function() {
+            goToNextSlide();
+        });
+
+        // Pagination Click (Make Dots Clickable)
+        $('.dot').click(function() {
+            const slideIndex = $(this).index(); // Get the index from the clicked dot
+            slides.removeClass('active'); // Hide all slides
+            slides.eq(slideIndex).addClass('active'); // Show the selected slide
+            currentSlide = slideIndex; // Update the current slide
+            updatePagination(); // Update the pagination dots
+        });
+
+        // Automatically go to the next slide every 4 seconds
+        setInterval(function() {
+            goToNextSlide();
+        }, 4000); // 4000 milliseconds = 4 seconds
     });
-
-
-
-    let next = document.querySelector('.next');
-    let prev = document.querySelector('.prev');
-
-    // Event listener for 'next' button
-    next.addEventListener('click', function(){
-        let items = document.querySelectorAll('.item');
-        document.querySelector('.slide').appendChild(items[0]);
-    });
-
-    // Event listener for 'prev' button
-    prev.addEventListener('click', function(){
-        let items = document.querySelectorAll('.item');
-        document.querySelector('.slide').prepend(items[items.length - 1]);
-    });
-
-    // Automatically click the 'next' button every 3 seconds
-    setInterval(function() {
-        next.click();  // Simulate click on the 'next' button
-    }, 5000);  // 3000ms = 3 seconds
-
-
-
 
 
     </script>
 
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Popper CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-
-
-
-
-</body>
+    </body>
 </html>

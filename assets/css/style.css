@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 * {
-    font-family: "Poppins", sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-family: "Poppins", 'Open-sans', sans-serif;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -11,20 +11,8 @@
 body {
     margin: 0;
     padding: 0;
-    font-family: "Poppins", sans-serif;
 }
 
-/* Body Background Overlay */
-body::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    z-index: 1;
-}
 
 /* General Components CSS */
 /* Button Style */
@@ -41,22 +29,20 @@ body::before {
 }
 
 
-
-
 /* Header - Start */
 /* Sub-header */
-/* .sub-header {
-    background-color: #0e5237; 
+.sub-header {
+    background-color: #000000; 
     color: white;
     text-align: center;
-    padding: 10px 65px;
+    padding: 20px 150px;
     font-size: 12px;
     position: fixed;
     width: 100%;
     top: 0;
     z-index: 100;
     text-align: left;
-} */
+}
 
 .sub-header p {
     margin: 5px 0px 5px 0px;
@@ -64,6 +50,8 @@ body::before {
 }
 
 .sub-header a {
+    font-size: 14px;
+    font-weight: 600;
     color: white; /* Ensures the text is light for visibility */
     transition: color 0.3s; /* Smooth transition for hover effect */
 }
@@ -75,10 +63,10 @@ body::before {
 /* Main Header */
 .header {
     position: fixed;
-    top: 0px; /* Adjusted for sub-header height */
+    top: 61px; /* Adjusted for sub-header height */
     left: 0;
     width: 100%;
-    padding: 10px 180px;
+    padding: 10px 220px;
     background: #fbfaf2;
     display: flex;
     gap: 5px;
@@ -108,7 +96,7 @@ body::before {
 
 .navbar a {
     position: relative;
-    font-size: 14px;
+    font-size: 18px;
     color: #252525; /* Default color */
     text-decoration: none;
     margin-left: 30px;
@@ -143,6 +131,9 @@ body::before {
     width: 100%; /* Line under the link on hover */
 }
 
+/* Header - End */
+
+
 /* Section - General */
 .section {
     position: relative;
@@ -156,7 +147,7 @@ body::before {
 /* Hero Section - Start */
 #section1 {
     position: relative;
-    min-height: 100vh;
+    min-height: 80vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -164,16 +155,132 @@ body::before {
     text-align: center;
 }
 
-#section1 h3{
-    font-size: 48px;
-    color: #fff;
-    font-weight: 500;
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(160, 160, 160, 0.6); /* Black with 50% opacity */
+    z-index: 1; /* Keep the overlay above the background */
 }
 
-#section1 p{
-    font-size: 14px;
-    color: #ababab;
+
+.hero-slider {
+    position: relative;
+    overflow: hidden;
+    height: 80vh; /* Set height to 70% of the viewport height */
+    width: 100vw; /* Full width */
+    transition: background-color 0.5s ease; /* Smooth background transition */
+    z-index: 4;
 }
+
+/* Slide transition effect */
+.slide {
+    display: none; /* Hide slides by default */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0; /* Set initial opacity */
+    transition: opacity 3s ease-in-out; /* Smooth transition with ease-in-out */
+}
+
+.slide.active {
+    display: block; /* Show the active slide */
+    opacity: 1; /* Fade in the active slide */
+}
+
+.slide:not(.active) {
+    /* Optional: To ensure non-active slides are hidden properly */
+    pointer-events: none; /* Prevent interaction with non-active slides */
+}
+
+
+.slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Cover the entire area */
+}
+
+.content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    text-align: center;
+    z-index: 4;
+}
+
+h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+p {
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+}
+
+.btn {
+    background-color: #007bff; /* Button color */
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.nav-buttons {
+    position: absolute;
+    top: 50%;
+    left: 0; /* Align left */
+    right: 0; /* Align right */
+    display: flex; /* Use flexbox to align children */
+    justify-content: space-between; /* Distribute space between items */
+    transform: translateY(-50%); /* Center vertically */
+    padding: 0 20px; /* Optional: Add some padding */
+    z-index: 10;
+}
+
+.nav-buttons button{
+    border-radius: 50%;
+    color: #e9e9e9;
+    font-weight: bold;
+    background: transparent;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 34px;
+    border-radius: 50%;
+}
+
+.pagination {
+    text-align: center;
+    z-index: 10;
+    position: absolute; /* Change to absolute */
+    top: 92%; /* Position below the middle */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, 50%); /* Adjust position */
+}
+
+.dot {
+    height: 15px;
+    width: 15px;
+    margin: 0 5px;
+    background-color: white; /* Dot color */
+    border-radius: 50%; /* Make it circular */
+    display: inline-block;
+    opacity: 0.5; /* Slightly transparent */
+    transition: opacity 0.3s ease; /* Smooth transition */
+    cursor: pointer; /* Pointer cursor */
+}
+
+.dot.active {
+    opacity: 1; /* Fully visible for active dot */
+}
+
 
 
 /* Background Image */
@@ -184,7 +291,7 @@ body::before {
     width: 100%;
     height: 100%;
     object-fit: cover; /* Makes the image fully cover the section */
-    z-index: 0;
+    z-index: 1;
 }
 
 /* Dark Gradient Overlay - Left to Right (Three Points) */
@@ -222,13 +329,11 @@ body::before {
     font-size: 1.5rem;
 }
 
-
 /* Hero Section - End */
 
 #section2 {
     background-color: transparent; /* Section 2 background */
-    height: 60vh;
-    width: 100vw;
+    height: 50vh;
     width: auto;
     padding: 0px 20px;
 }
@@ -242,7 +347,7 @@ body::before {
 
 .container-header h3{
     color: #000;
-    font-size: 24px;
+    font-size: 32px;
     font-weight: 600;
     margin-bottom: 20px;
 }
@@ -296,42 +401,58 @@ button.btn-secondary:hover {
     height: 100vh;
     width: auto;
     padding: 0px 20px;
+    border-top: #b6b6b6 0px groove;
+    background-color: #b6b6b6;
 }
 
-/* Styles for the circular image */
+#section4 {
+    height: 100vh;
+    width: auto;
+    padding: 0px 20px;
+    border-top: #b6b6b6 0px groove;
+    background-color: #424242;
+}
+
+
+
+
+
+
+
+/* Styles for the circular image
 .circle-image {
-    width: 40px; /* Adjust size as needed */
-    height: 40px; /* Adjust size as needed */
-    border-radius: 50%; /* Make it circular */
-    overflow: hidden; /* Ensure the image fits in the circle */
-    border: 2px solid #116530; /* Optional: border color */
+    width: 40px; /* Adjust size as needed 
+    height: 40px; /* Adjust size as needed 
+    border-radius: 50%; /* Make it circular 
+    overflow: hidden; /* Ensure the image fits in the circle 
+    border: 2px solid #116530; /* Optional: border color 
     position: relative;
 }
 
 
 .dropdown-toggle::after {
-    display: none; /* Remove default arrow */
+    display: none; /* Remove default arrow
 }
 
 .dropdown-menu {
-    min-width: 10px; /* Adjust width as needed */
+    min-width: 10px; /* Adjust width as needed 
 }
 
 .d-flex.flex-form {
-    justify-content: center; /* Center align the items */
-    align-items: center; /* Vertically align items */
-    margin-top: 5px; /* Adjust as needed for spacing */
+    justify-content: center; /* Center align the items 
+    align-items: center; /* Vertically align items 
+    margin-top: 5px; /* Adjust as needed for spacing
 }
 
 #translation-container {
     margin-right: -50px;
 }
 
-/* Vertical Line Divider */
+/* Vertical Line Divider 
 .vl {
     border-left: 1px solid grey;
     height: 50px;
-}
+} */
 
 #LoginButton {
     align-self: center; /* Ensure the button is vertically centered */
@@ -503,6 +624,10 @@ button.btn-secondary:hover {
 
     .navbar a {
         display: none;
+    }
+
+    .header {
+        padding: 10px 100px;
     }
 
     
