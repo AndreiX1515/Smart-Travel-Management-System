@@ -104,10 +104,10 @@ if (isset($_POST['bookNow']))
         $contactNo = $contactNos[$index] ?? '';
         $sex = $sexes[$index] ?? '';
         $nationality = $nationalities[$index] ?? '';
-        $flightId = $flightIds[$index] ?? null;
+        $flightId = $flightIds[$index];
     
         // Output guest details for debugging
-        echo "Guest $index: <br>";
+        /* echo "Guest $index: <br>";
         echo "First Name: $fName <br>";
         echo "Middle Name: $mName <br>";
         echo "Last Name: $lName <br>";
@@ -126,7 +126,7 @@ if (isset($_POST['bookNow']))
         echo "Contact No: $contactNo <br>";
         echo "Sex: $sex <br>";
         echo "Nationality: $nationality <br>";
-        echo "Flight ID: $flightId <br><br>";
+        echo "Flight ID: $flightId <br><br>"; */
     
         // Bind parameters for each guest entry
         $stmt2->bind_param('sisssssissssssssssss', 

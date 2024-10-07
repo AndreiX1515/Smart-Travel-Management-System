@@ -293,13 +293,12 @@
                     </div>
                   </div>
 
-                  <input type="" id="flightId" name="flightId[]" value="">
+                  <input type="hidden" id="flightId" name="flightId[]" value="">
 
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
           <div class="paste-new-forms"></div>
 
@@ -329,7 +328,7 @@ $(document).ready(function() {
         guestForm.find('#origin').attr('id', 'origin' + formCount).attr('name', 'origin[' + formCount + ']');
         guestForm.find('#outboundFlight').attr('id', 'outboundFlight' + formCount).attr('name', 'outboundFlight[' + formCount + ']');
         guestForm.find('#returnFlight').attr('id', 'returnFlight' + formCount).attr('name', 'returnFlight[' + formCount + ']');
-        guestForm.find('#flightId').attr('id', 'flightId' + formCount).attr('name', 'flightId[' + formCount + ']');
+        guestForm.find('#flightId').attr('id', 'flightId' + formCount).attr('name', 'flightId[]');
 
         // Change the header for the new guest form
         guestForm.find('.card-header h4').text('Guest Information ' + formCount);
@@ -405,6 +404,7 @@ $(document).ready(function() {
             var flightIdInput = $('#flightId' + formCount);
 
             flightIdInput.val(outboundFlight); // Store flightId in the hidden input field
+            console.log(flightIdInput.val());
 
             if (outboundFlight) {
                 $.ajax({
