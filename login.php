@@ -4,10 +4,10 @@
 <head>
     <title>Login</title>
 
-    <?php include 'includes\head.php' ?>
+    <?php include 'includes/head.php' ?>
 
     <!-- External CSS -->
-    <link href="assets/css/samplelogin.css" rel="stylesheet">
+    <link href="assets/css/samplelogin.css?v=<?php echo time(); ?>" rel="stylesheet">
 </head>
 
 
