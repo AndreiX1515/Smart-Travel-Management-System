@@ -60,7 +60,7 @@ if (isset($_POST['bookNow']))
     }
 
     // Bind and execute the booking insertion
-    $accountId = $_SESSION['accountId']; // Assuming the user is logged in
+    $accountId = $_SESSION['accountid']; // Assuming the user is logged in
     $stmt1->bind_param('isiid', $accountId, $transactNo, $agentId, $pax, $totalPrice);
     
     if (!$stmt1->execute()) 

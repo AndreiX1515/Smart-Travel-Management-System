@@ -130,7 +130,7 @@
         .then(data => {
             if (data.success) {
                 // Redirect to dashboard or homepage
-                window.location.href = 'dashboard.php';
+                window.location.href = 'bookingform.php';
             } else {
                 // Show error message
                 document.getElementById('message-login').innerHTML = '<div class="alert alert-danger text-center">' + data.message + '</div>';
