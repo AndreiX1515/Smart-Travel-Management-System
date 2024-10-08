@@ -1,6 +1,10 @@
 <?php 
   session_start(); 
   require "conn.php";
+  
+  ini_set('display_errors', 1);
+  ini_set('display_startup_errors', 1);
+  error_reporting(E_ALL);
 ?>
 
 <!DOCTYPE html>
@@ -78,7 +82,7 @@
                 Toggle
               </button>
             </div>
-            <input type="hidden" name="accId" value="<?php echo $_SESSION['accountId']; ?>">
+            <input type="hidden" name="accId" value="<?php echo $_SESSION['accountid']; ?>">
 
             <div id="cardBodyContent" class="card-body collapse show">
               <div class="main-form mt-3 border-bottom pb-3">
