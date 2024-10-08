@@ -68,7 +68,7 @@ body {
     left: 0;
     width: 100%;
     padding: 10px 220px;
-    background: #fbfaf2;
+    background: #ffffff;
     display: flex;
     gap: 5px;
     justify-content: space-between;
@@ -95,7 +95,7 @@ body {
     
 }
 
-.navbar a {
+.navbar .nav-link {
     position: relative;
     font-size: 18px;
     color: #252525; /* Default color */
@@ -103,21 +103,23 @@ body {
     margin-left: 30px;
     font-weight: 600;
     transition: color 0.3s ease-in;
+
+    padding: 11px 0px;
 }
 
-.navbar a:hover {
+.navbar .nav-link:hover {
     color: #00b2f8; /* Change color on hover */
 }
 
-.navbar a:active {
+.navbar .nav-link:active {
     color: #353535; /* Keep the color white when clicked */
 }
 
-.navbar a:focus {
+.navbar .nav-link:focus {
     color: #525252; /* Keep the color white when focused (tabbed) */
 }
 
-.navbar a::before {
+.navbar .nav-link::before {
     content: '';
     position: absolute;
     top: 100%;
@@ -126,9 +128,10 @@ body {
     height: 1px;
     background: #202020;
     transition: width 0.3s ease-in;
+    margin-top: -10px;
 }
 
-.navbar a:hover::before {
+.navbar .nav-link:hover::before {
     width: 100%; /* Line under the link on hover */
 }
 
@@ -137,18 +140,67 @@ body {
     display: block; /* Display the dropdown menu */
 }
 
+/* Styling for the dropdown items */
+.navbar .dropdown-subitem {
+    position: relative;
+    font-size: 18px;
+    color: #252525; /* Default color */
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease-in;
+}
+
+/* Center the dropdown menu exactly below its associated nav item */
 .dropdown-menu {
-    margin-top: 0; /* Remove default margin */
-    border-radius: 0;
-    box-shadow: -4px 5px 14px 2px rgba(102,102,102,0.58);
-    -webkit-box-shadow: -4px 5px 14px 2px rgba(102,102,102,0.58);
-    -moz-box-shadow: -4px 5px 14px 2px rgba(102,102,102,0.58);
+    width: auto !important; /* Automatically adjust to content width */
+    min-width: 110px !important; /* Set a minimum width for the dropdown */
+    white-space: nowrap; /* Prevent text wrapping */
+    padding: 0; /* Remove extra padding */
+    top: calc(100% + 1px) !important; /* Ensure the dropdown is positioned directly below the navbar with a small gap */
+    left: 30px !important; /* Align the dropdown with the left edge of the parent container */
+    transform: none; /* Remove centering transform */
+    box-shadow: none; /* Optional: Remove shadow */
+    border-radius: 0; /* Optional: Remove border radius for cleaner look */
 }
 
-.dropdown-menu li {
-    padding: 10px 0px;
-
+/* Make sure each dropdown item is centered within the dropdown menu */
+.dropdown-menu .dropdown-subitem {
+    padding: 10px 20px 10px 15px; /* Vertical padding with a bit of horizontal padding */
+    display: flex; /* Use flexbox to center the text */
+    justify-content: left; /* Aligns text to the left */
+    align-items: center; /* Vertically aligns the text */
+    width: 100%; /* Take up the full width of the dropdown menu */
+    text-align: left; /* Align text to the left */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for hover effect */
+    color: #252525; /* Default text color */
 }
+
+/* Hover effect for dropdown items */
+.dropdown-menu .dropdown-subitem:hover {
+    background-color: #f0f0f0; /* Light gray background on hover */
+    color: #007bff; /* Change text color on hover (Bootstrap primary color) */
+}
+
+/* Optional: Change the cursor to pointer on hover */
+.dropdown-menu .dropdown-subitem:hover {
+    cursor: pointer; /* Change cursor to pointer on hover */
+}
+
+/* Adjusting the position of the dropdown within the navbar */
+.navbar .dropdown {
+    position: relative; /* Ensure the dropdown stays within the navbar */
+}
+
+.navbar .dropdown-menu {
+    position: absolute; /* Allow the dropdown to be positioned relative to the nav item */
+}
+
+
+
+
+
+
+
 
 
 
