@@ -303,24 +303,24 @@
 
             <div class="address-wrapper mt-5">
                 <h6 class="text-light">Manila:</h6>
-              <address class="mb-2 text-white">8014 Edith Blvd NE, Albuquerque, New York, United States</address>
-              <p class="mb-2">
+              <address class="mb-2 text-white"> <i class=""> </i> Suite 406, Ermite Center Building 1350 Roxas Blvd., Ermita, Manila, Philippines</address>
+              <!-- <p class="mb-2">
                 <a class="link-light text-decoration-none" href="tel:+15057922430">(505) 792-2430</a>
-              </p>
-              <!-- <p class="mb-0">
-                <a class="link-light text-decoration-none" href="mailto:demo@yourdomain.com">demo@yourdomain.com</a>
               </p> -->
+              <p class="mb-0">
+                <a class="link-light text-decoration-none" href="mailto:smarttravelmanila04@gmail.com">smarttravelmanila04@gmail.com</a>
+              </p>
             </div>
 
             <div class="address-wrapper mt-5">
                 <h6 class="text-light">Korea:</h6>
-              <address class="mb-2 text-white">8014 Edith Blvd NE, Albuquerque, New York, United States</address>
+              <address class="mb-2 text-white">#319, VABIEN 3, 86 Tongil-ro, Jung-gu, Seoul, Korea, 04517</address>
               <p class="mb-2">
-                <a class="link-light text-decoration-none" href="tel:+15057922430">(505) 792-2430</a>
+                <a class="link-light text-decoration-none" href="tel:+15057922430">+82-584-3202</a>
               </p>
-              <!-- <p class="mb-0">
-                <a class="link-light text-decoration-none" href="mailto:demo@yourdomain.com">demo@yourdomain.com</a>
-              </p> -->
+              <p class="mb-0">
+                <a class="link-light text-decoration-none" href="mailto:smarttourkorea@gmail.com">smarttourkorea@gmail.com</a>
+              </p>
             </div>
 
 
