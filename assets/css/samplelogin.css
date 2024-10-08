@@ -269,15 +269,13 @@ html, body {
 
 
 /* Media Queries */
+
+/* Common styles for smaller screens */
 @media (max-width: 900px) {
-    .image-accent {
+    .image-accent,
+    .image-accent img {
         display: none;
     }
-
-    .image-accent img{
-        display: none;
-    }
-
 
     .loginform {
         width: 100%;
@@ -285,9 +283,10 @@ html, body {
     }
 }
 
+/* Styles for screens 768px and below */
 @media (max-width: 768px) {
     .sub-header p {
-        padding: 0px 20px;
+        padding: 0 20px; /* Removed the redundant 'px' for clarity */
     }
 
     .header {
@@ -299,16 +298,15 @@ html, body {
     }
 
     .content-wrapper h1 {
-        font-size: 2rem;
+        font-size: 2rem; /* Maintain the font-size style */
     }
 
     .content-wrapper p {
-        font-size: 1rem;
+        font-size: 1rem; /* Maintain the font-size style */
     }
 
     .loginform {
-        max-width: 100%;
-        padding: 15px;
+        padding: 15px; /* Width already set in the previous media query */
     }
 
     .social-icons a {
@@ -318,6 +316,7 @@ html, body {
     }
 }
 
+/* Styles for screens 1000px and above */
 @media (min-width: 1000px) {
     .main-container {
         flex-wrap: nowrap;
@@ -331,3 +330,4 @@ html, body {
         width: 55%;
     }
 }
+
