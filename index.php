@@ -303,23 +303,23 @@
 
             <div class="address-wrapper mt-5">
                 <h6 class="text-light">Manila:</h6>
-              <address class="mb-2 ms-2 text-white"> <i class="fa-solid fa-location-dot me-2"></i> Suite 406, Ermite Center Building 1350 Roxas Blvd., Ermita, Manila, Philippines</address>
+              <address class="mb-2 text-white"> <i class=""> </i> Suite 406, Ermite Center Building 1350 Roxas Blvd., Ermita, Manila, Philippines</address>
               <!-- <p class="mb-2">
                 <a class="link-light text-decoration-none" href="tel:+15057922430">(505) 792-2430</a>
               </p> -->
               <p class="mb-0">
-                <a class="link-light ms-2 text-decoration-none" href="mailto:smarttravelmanila04@gmail.com"> <i class="fa-solid fa-envelope me-2"></i> smarttravelmanila04@gmail.com</a>
+                <a class="link-light text-decoration-none" href="mailto:smarttravelmanila04@gmail.com">smarttravelmanila04@gmail.com</a>
               </p>
             </div>
 
             <div class="address-wrapper mt-5">
                 <h6 class="text-light">Korea:</h6>
-              <address class="mb-2 ms-2 text-white"> <i class="fa-solid fa-location-dot me-2"></i> #319, VABIEN 3, 86 Tongil-ro, Jung-gu, Seoul, Korea, 04517</address>
+              <address class="mb-2 text-white">#319, VABIEN 3, 86 Tongil-ro, Jung-gu, Seoul, Korea, 04517</address>
               <p class="mb-2">
-                <a class="link-light ms-2 text-decoration-none" href="tel:+15057922430"><i class="fa-solid fa-phone me-2"></i> +82-584-3202</a>
+                <a class="link-light text-decoration-none" href="tel:+15057922430">+82-584-3202</a>
               </p>
               <p class="mb-0">
-                <a class="link-light ms-2 text-decoration-none" href="mailto:smarttourkorea@gmail.com"> <i class="fa-solid fa-envelope me-2"></i> smarttourkorea@gmail.com</a>
+                <a class="link-light text-decoration-none" href="mailto:smarttourkorea@gmail.com">smarttourkorea@gmail.com</a>
               </p>
             </div>
 

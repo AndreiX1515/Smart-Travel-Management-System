@@ -1,13 +1,6 @@
 /* Import Poppins Font */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
-* {
-    font-family: "Poppins", sans-serif;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 html, body {
     height: 100%;
     margin: 0;
@@ -16,14 +9,15 @@ html, body {
     align-items: center;
     padding: 0;
     font-family: "Poppins", sans-serif;
+    box-sizing: border-box;
 }
 
 .container-background {
     width: 100vw;
     height: 100vh;
     background-color: rgb(117, 117, 117);
-    background-size: cover !important;
-    background-position: center !important;
+    background-size: cover;
+    background-position: center;
     position: absolute;
     top: 0;
     left: 0;
@@ -68,7 +62,7 @@ html, body {
 
 .loginform {
     padding: 0px 25px 20px 20px;
-    background-color: fff;
+    background-color: #fff;
     z-index: 2;
     width: 100%;
     height: 100%;
@@ -77,7 +71,7 @@ html, body {
 .logo-container img {
     width: 85px;
     height: 50px;
-    aspect-ratio: 16/9;
+    
     object-fit: contain; 
 }
 
@@ -112,17 +106,17 @@ html, body {
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
 }
 
-.social-icons a.facebook {
+.social-icons .facebook {
     background-color: #1877F2;
 }
 
-.social-icons a.twitter {
+.social-icons .twitter {
     background-color: #000;
     color: #fff;
     font-size: 30px;
 }
 
-.social-icons a.google {
+.social-icons .google {
     background-color: #000;
     color: #fff;
     font-size: 30px;
@@ -200,7 +194,7 @@ html, body {
 }
 
 .loginform img {
-    aspect-ratio: 16/9;
+    
     border-radius: 50px;
     height: 85px;
     width: 250px;
@@ -269,13 +263,15 @@ html, body {
 
 
 /* Media Queries */
-
-/* Common styles for smaller screens */
 @media (max-width: 900px) {
-    .image-accent,
-    .image-accent img {
+    .image-accent {
         display: none;
     }
+
+    .image-accent img{
+        display: none;
+    }
+
 
     .loginform {
         width: 100%;
@@ -283,10 +279,9 @@ html, body {
     }
 }
 
-/* Styles for screens 768px and below */
 @media (max-width: 768px) {
     .sub-header p {
-        padding: 0 20px; /* Removed the redundant 'px' for clarity */
+        padding: 0px 20px;
     }
 
     .header {
@@ -298,15 +293,16 @@ html, body {
     }
 
     .content-wrapper h1 {
-        font-size: 2rem; /* Maintain the font-size style */
+        font-size: 2rem;
     }
 
     .content-wrapper p {
-        font-size: 1rem; /* Maintain the font-size style */
+        font-size: 1rem;
     }
 
     .loginform {
-        padding: 15px; /* Width already set in the previous media query */
+        max-width: 100%;
+        padding: 15px;
     }
 
     .social-icons a {
@@ -316,7 +312,6 @@ html, body {
     }
 }
 
-/* Styles for screens 1000px and above */
 @media (min-width: 1000px) {
     .main-container {
         flex-wrap: nowrap;
@@ -330,4 +325,3 @@ html, body {
         width: 55%;
     }
 }
-
