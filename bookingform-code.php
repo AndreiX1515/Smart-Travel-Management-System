@@ -154,8 +154,8 @@ if (isset($_POST['bookNow']))
     // If no errors, commit the transaction
     $conn->commit();
 
-    $_SESSION['status'] = "All bookings successfully inserted.";
-    header("Location: bookingform.php");
+    // $_SESSION['status'] = "All bookings successfully inserted.";
+    header("Location: payment.php");
     exit(0);
 
     // Close the statements
