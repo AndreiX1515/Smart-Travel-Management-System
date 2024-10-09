@@ -57,7 +57,7 @@
             <a href="#" class="twitter" style="background-color: #000; color: #FFF;"><i class="fa-brands fa-x-twitter"></i></a>
         </div>
 
-        <!-- Divider 
+         Divider 
         <div class="divider">
             <hr>
             <span>or</span>
