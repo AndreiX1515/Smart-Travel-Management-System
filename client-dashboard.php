@@ -85,6 +85,7 @@ $lastName = $_SESSION['last_name'] ?? '';
                         <p class="fw-normal text-secondary"><? echo $email ?></p>
                     </div>
 
+                    <a class="btn btn-primary" href="bookingform.php" role="button">Book Now</a>
                     <button class="btn btn-primary me-2">View Transaction Status</button>
                     <button class="btn btn-primary">Transaction Inquiry</button>
                     

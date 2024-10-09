@@ -1,5 +1,5 @@
 <?php 
-  session_start(); 
+  require 'session_validate.php'; // Include the session validation script 
   require "conn.php";
   
   ini_set('display_errors', 1);
@@ -141,7 +141,7 @@
                 Toggle
               </button>
             </div>
-            <input type="" name="accId" value="<?php echo $_SESSION['accountid']; ?>">
+            <input type="hidden" name="accId" value="<?php echo $_SESSION['accountid']; ?>">
 
             <div id="cardBodyContent" class="card-body collapse show">
               <div class="main-form mt-3 pb-3">
@@ -510,6 +510,24 @@
 
       // Initialize event listeners for the first form
       calculateTotalPrice();
+    });
+  </script>
+
+  <script>
+    let isClosing = false;
+
+    // Detect when the user is trying to leave the page (close the tab or window)
+    window.addEventListener("beforeunload", function (event) {
+        // Show confirmation dialog
+        const confirmationMessage = "All unsaved data will be lost. Do you really want to leave?"; 
+        event.returnValue = confirmationMessage; // For most browsers
+        return confirmationMessage; // For some browsers (deprecated but still supported)
+    });
+
+    // Detect when the tab is being closed
+    window.addEventListener("unload", function () {
+        // User is closing the tab or window
+        navigator.sendBeacon('client-logout.php'); // Attempt to log out the user
     });
   </script>
 
