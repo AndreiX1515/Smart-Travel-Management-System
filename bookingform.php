@@ -53,31 +53,88 @@
           endif;
         ?>
 
-        <h4>Guest Booking Information
+        <h4>Flight Booking
           <button class="add-more-form float-end btn btn-primary"><i class="fa-solid fa-plus"></i></button>
         </h4>
 
         <form action="bookingform-code.php" method="POST">
-          <div class="form-group mb-3">
-            <label for="agent">Select Agent</label>
-            <select class="form-select" id="agentId" name="agentId" required>
-              <option selected disabled>Select Agent</option>
-              <?php
-                $sql1 = mysqli_query($conn, "SELECT agentId, CONCAT(lName, ', ', fName, 
-                  CASE 
-                    WHEN mName != '' THEN CONCAT(' ', SUBSTRING(mName, 1, 1), '.') 
-                    ELSE '' 
-                  END) AS agentName FROM agent ORDER BY lName ASC");
-                while($res1 = mysqli_fetch_array($sql1)) {
-                  echo "<option value='{$res1['agentId']}'>{$res1['agentName']}</option>";
-                }
-              ?>
-            </select>
+          <div class="card">
+            <div class="card-header bg-primary text-white">
+              <h4 class="mb-0">Flight Details</h4>
+            </div>
+            <div class="card-body">
+              <div class="form-group mb-3">
+                <label for="agent">Select Agent</label>
+                <select class="form-select" id="agentId" name="agentId" required>
+                  <option selected disabled>Select Agent</option>
+                  <?php
+                    $sql1 = mysqli_query($conn, "SELECT agentId, CONCAT(lName, ', ', fName, 
+                      CASE 
+                        WHEN mName != '' THEN CONCAT(' ', SUBSTRING(mName, 1, 1), '.') 
+                        ELSE '' 
+                      END) AS agentName FROM agent ORDER BY lName ASC");
+                    while($res1 = mysqli_fetch_array($sql1)) {
+                      echo "<option value='{$res1['agentId']}'>{$res1['agentName']}</option>";
+                    }
+                  ?>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group mb-3">
+                  <label for="packageName">Package</label>
+                  <select class="form-select" id="packageName" name="packageName" required>
+                    <option selected disabled>Select Package</option>
+                    <?php
+                      $sql1 = mysqli_query($conn, "SELECT DISTINCT packageId, packageName FROM package ORDER BY packageName ASC");
+                      while($res1 = mysqli_fetch_array($sql1)) 
+                      {
+                        ?>
+                        <option value="<?php echo $res1['packageId']; ?>"><?php echo $res1['packageName']; ?></option>
+                        <?php
+                      }
+                    ?>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="form-group mb-3">
+                  <label class="mb-2" for="origin">Origin</label>
+                  <select class="form-select" id="origin" name="origin" required>
+                    <option selected disabled>Select Origin</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="form-group mb-3">
+                  <label class="mb-2" for="outboundFlight">Flight Date</label>
+                  <select class="form-select" id="outboundFlight" name="outboundFlight" required>
+                      <option selected disabled>Select Flight Available Dates</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="form-group mb-3">
+                  <input type="hidden" id="returnFlight" name="returnFlight" class="form-control" readonly>
+                </div>
+              </div>
+
+              <label for="">Price: ₱ 
+                <input style="border: none; outline: none;" id="flightPrice" name="flightPrice[]" value="0.00" readonly>
+              </label>
+
+              <input type="hidden" id="flightId" name="flightId[]" value="">
+            </div>
           </div>
+          
+          
 
           <div class="card mt-4 guest-form shadow-sm">
             <div class="card-header bg-primary text-white">
-              <h4 class="mb-0">Guest Information</h4>
+              <h4 class="mb-0">Guest Information 1</h4>
               <button class="btn btn-sm btn-outline-light float-end" type="button" data-bs-toggle="collapse" data-bs-target="#cardBodyContent" aria-expanded="true" aria-controls="cardBodyContent">
                 Toggle
               </button>
@@ -86,7 +143,6 @@
 
             <div id="cardBodyContent" class="card-body collapse show">
               <div class="main-form mt-3 border-bottom pb-3">
-                
                 
                 <!-- Personal Information Group -->
                 <div class="row mb-3">
@@ -254,55 +310,6 @@
                     </div>
                   </div>
 
-                  <div class="col-md-6">
-                    <div class="form-group mb-3">
-                      <label for="packageName">Package</label>
-                      <select class="form-select" id="packageName" name="packageName[]" required>
-                        <option selected disabled>Select Package</option>
-                        <?php
-                          $sql1 = mysqli_query($conn, "SELECT DISTINCT packageId, packageName FROM package ORDER BY packageName ASC");
-                          while($res1 = mysqli_fetch_array($sql1)) 
-                          {
-                            ?>
-                            <option value="<?php echo $res1['packageId']; ?>"><?php echo $res1['packageName']; ?></option>
-                            <?php
-                          }
-                        ?>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div class="col-md-4">
-                    <div class="form-group mb-3">
-                      <label class="mb-2" for="origin">Origin</label>
-                      <select class="form-select" id="origin" name="origin[]" required>
-                        <option selected disabled>Select Origin</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div class="col-md-4">
-                    <div class="form-group mb-3">
-                      <label class="mb-2" for="outboundFlight">Outbound Flight</label>
-                      <select class="form-select" id="outboundFlight" name="outboundFlight[]" required>
-                          <option selected disabled>Select Outbound Flight</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div class="col-md-4">
-                    <div class="form-group mb-3">
-                      <label class="mb-2" for="returnFlight">Return Flight</label>
-                      <input id="returnFlight" name="returnFlight[]" class="form-control" readonly>
-                    </div>
-                  </div>
-
-                  <label for="">Price: ₱ 
-                    <input style="border: none; outline: none;" id="flightPrice" name="flightPrice[]" value="0.00" readonly>
-                  </label>
-
-                  <input type="hidden" id="flightId" name="flightId[]" value="">
-
                 </div>
               </div>
             </div>
@@ -323,291 +330,134 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
   <script>
-    $(document).ready(function() 
-    {
-      // Adding more guest forms dynamically
-      $('.add-more-form').click(function() 
-      {
-        var guestForm = $('.guest-form:first').clone(); // Clone the first guest form
-        var formCount = $('.guest-form').length + 1; // Count the total number of forms
+  $(document).ready(function () {
+    let flightPricePerGuest = 0; // Initialize flight price per guest
 
-        // Reset the values in the cloned form
-        guestForm.find('input').val('');
-        guestForm.find('select').prop('selectedIndex', 0);
-        guestForm.find('.card-body').removeClass('show'); // Collapse the newly added form
+    // Adding more guest forms dynamically
+    $('.add-more-form').click(function () {
+      var guestForm = $('.guest-form:first .personal-info').clone(); // Clone only personal information
+      var formCount = $('.guest-form').length + 1; // Count the total number of forms
 
-        // Update IDs and names dynamically for each new form
-        guestForm.find('#packageName').attr('id', 'packageName' + formCount).attr('name', 'packageName[' + formCount + ']');
-        guestForm.find('#origin').attr('id', 'origin' + formCount).attr('name', 'origin[' + formCount + ']');
-        guestForm.find('#outboundFlight').attr('id', 'outboundFlight' + formCount).attr('name', 'outboundFlight[' + formCount + ']');
-        guestForm.find('#returnFlight').attr('id', 'returnFlight' + formCount).attr('name', 'returnFlight[' + formCount + ']');
-        guestForm.find('#flightId').attr('id', 'flightId' + formCount).attr('name', 'flightId[]');
-        guestForm.find('#flightPrice').attr('id', 'flightPrice' + formCount).attr('name', 'flightPrice[]');
+      // Reset the values in the cloned form
+      guestForm.find('input').val(''); // Reset input fields for personal info
+      guestForm.find('.card-body').removeClass('show'); // Collapse the newly added form
 
-        // Change the header for the new guest form
-        guestForm.find('.card-header h4').text('Guest Information ' + formCount);
+      // Change the header for the new guest form
+      guestForm.find('.card-header h4').text('Guest Information ' + formCount);
 
-        // Add the remove button
-        guestForm.find('.remove-guest').remove(); // Ensure no duplicate remove buttons
-        guestForm.append('<button type="button" class="remove-guest btn btn-danger mt-2">Remove Guest</button>');
+      // Add the remove button
+      guestForm.append('<button type="button" class="remove-guest btn btn-danger mt-2">Remove Guest</button>');
 
-        // Add the new form to the container and show it with a slide-down effect
-        guestForm.hide().appendTo('.paste-new-forms').slideDown();
+      // Add the new form to the container and show it with a slide-down effect
+      guestForm.hide().appendTo('.paste-new-forms').slideDown();
+    });
 
-        // Reattach the event listeners to the new form
-        reattachEventListeners(formCount);
-      });
-
-      // Reattach event listeners to the newly added form
-      function reattachEventListeners(formCount) 
-      {
-        // When package is selected, populate the origin
-        $('#packageName' + formCount).on('change', function() 
-        {
-          var packageId = $(this).val();
-          var originSelect = $('#origin' + formCount);
-          var outboundFlightSelect = $('#outboundFlight' + formCount);
-          var returnFlightInput = $('#returnFlight' + formCount);
-
-          originSelect.html('<option selected disabled>Select Origin</option>'); // Clear origin field
-          outboundFlightSelect.html('<option selected disabled>Select Outbound Flight</option>'); // Clear outbound flight field
-          returnFlightInput.val(''); // Clear return flight field
-
-          if (packageId) 
-          {
-            $.ajax(
-            {
-              url: 'fetchSelect.php',
-              type: 'POST',
-              data: { packageId: packageId },
-              success: function(response) 
-              {
-                originSelect.html(response); // Update the origin dropdown
-              },
-              error: function(xhr, status, error) 
-              {
-                console.error('Error fetching origins:', error); // Log the error to console
-              }
-            });
-          }
-        });
-
-        // When origin is selected, populate the outbound flights
-        $('#origin' + formCount).on('change', function() 
-        {
-          var packageId = $('#packageName' + formCount).val();
-          var origin = $(this).val();
-          var outboundFlightSelect = $('#outboundFlight' + formCount);
-          var returnFlightInput = $('#returnFlight' + formCount);
-
-          outboundFlightSelect.html('<option selected disabled>Select Outbound Flight</option>'); // Clear outbound flight field
-          returnFlightInput.val(''); // Clear return flight field
-
-          if (packageId && origin) 
-          {
-            $.ajax(
-            {
-              url: 'fetchOutboundFlight.php',
-              type: 'POST',
-              data: { packageId: packageId, origin: origin },
-              success: function(response) 
-              {
-                outboundFlightSelect.html(response); // Update outbound flights dropdown
-              },
-              error: function(xhr, status, error) 
-              {
-                console.error('Error fetching outbound flights:', error); // Log the error to console
-              }
-            });
-          }
-        });
-
-        // When outbound flight is selected, fetch the return flight
-        $('#outboundFlight' + formCount).on('change', function() 
-        {
-          var outboundFlight = $(this).val();
-          var flightIdInput = $('#flightId' + formCount);
-          var flightPriceInput = $('#flightPrice' + formCount);
-          var returnFlightInput = $('#returnFlight' + formCount);
-
-          flightIdInput.val(outboundFlight); // Store flightId in the hidden input field
-
-          if (outboundFlight) 
-          {
-            $.ajax(
-            {
-              url: 'fetchReturnFlight.php',
-              type: 'POST',
-              data: { outboundFlight: outboundFlight },
-              success: function(response) 
-              {
-                var data = JSON.parse(response);
-
-                // Update return flight input field with return flight schedule
-                returnFlightInput.val(data.returnFlight);
-
-                // Set the flight price in the flight price input field
-                flightPriceInput.val(data.flightPrice);
-
-                // Log the Flight ID and Price for debugging
-                console.log("Flight ID:", flightIdInput.val(), "Price:", data.flightPrice);
-
-                // Recalculate total price after the flight price is set
-                calculateTotalPrice();
-              },
-              error: function(xhr, status, error) 
-              {
-                console.error('Error fetching return flight:', error); // Log the error to console
-              }
-            });
-          }
-        });
-
-        // Attach the input event to the flight price field for real-time price updates
-        $('#flightPrice' + formCount).on('input', function() 
-        {
-            calculateTotalPrice(); // Recalculate total price in real time
-        });
-      }
-
-      // Initialize the event listeners for the first form
-      reattachEventListeners(1);
-
-      // Remove guest form dynamically
-      $(document).on('click', '.remove-guest', function() 
-      {
-        $(this).closest('.guest-form').slideUp(function() 
-        {
-          $(this).remove(); // Remove the form after sliding up
-          calculateTotalPrice(); // Recalculate total price after removing a form
-        });
-      });
-
-      // Function to calculate the total flight price
-      function calculateTotalPrice() 
-      {
-        var totalPrice = 0;
-
-        // Loop through each flightPrice input and add its value to totalPrice
-        $('input[name^="flightPrice"]').each(function() 
-        {
-          var price = parseFloat($(this).val()) || 0; // Get the price or default to 0 if empty
-          console.log("Current Flight Price:", price); // Debug: log each flight price
-          totalPrice += price;
-        });
-
-        console.log("Total Price:", totalPrice); // Debug: log the total price before updating the field
-
-        // Update the displayed total price in the span
-        $('#displayTotalPrice').text(totalPrice.toFixed(2)); // Display total price with 2 decimal places
-
-        // Store the total price in the hidden input field for form submission
-        $('#totalPrice').val(totalPrice.toFixed(2)); // Make sure the input value is properly set
-      }
-
-      // When package is selected, populate the origin
-      $('#packageName').on('change', function() 
-      {
-        var packageId = $(this).val();
-
-        $('#origin').html('<option selected disabled>Select Origin</option>'); // Clear origin field
-        $('#outboundFlight').html('<option selected disabled>Select Outbound Flight</option>'); // Clear outbound flight field
-        $('#returnFlight').val(''); // Clear return flight field
-
-        if (packageId) 
-        {
-          $.ajax(
-          {
-            url: 'fetchSelect.php',
-            type: 'POST',
-            data: { packageId: packageId },
-            success: function(response) 
-            {
-              console.log(response); // Debugging the response
-              $('#origin').html(response); // Update the origin dropdown
-            },
-            error: function(xhr, status, error) 
-            {
-              console.error('Error fetching origins:', error); // Log the error to console
-            }
-          });
-        } 
-        else 
-        {
-          $('#origin').html('<option selected disabled>Select Origin</option>');
-        }
-      });
-
-      // When origin is selected, populate the outbound flights
-      $('#origin').on('change', function() 
-      {
-        var packageId = $('#packageName').val();
-        var origin = $(this).val();
-
-        $('#outboundFlight').html('<option selected disabled>Select Outbound Flight</option>'); // Clear outbound flight field
-        $('#returnFlight').val(''); // Clear return flight field
-
-        if (packageId && origin) 
-        {
-          $.ajax(
-          {
-            url: 'fetchOutboundFlight.php',
-            type: 'POST',
-            data: { packageId: packageId, origin: origin },
-            success: function(response) 
-            {
-              console.log(response); // Debugging the response
-              $('#outboundFlight').html(response); // Update outbound flights dropdown
-            },
-            error: function(xhr, status, error) 
-            {
-              console.error('Error fetching outbound flights:', error); // Log the error to console
-            }
-          });
-        } 
-        else 
-        {
-          $('#outboundFlight').html('<option selected disabled>Select Outbound Flight</option>');
-          $('#returnFlight').val('');
-        }
-      });
-
-      // When outbound flight is selected, fetch the return flight
-      $('#outboundFlight').on('change', function() 
-      {
-        var outboundFlight = $(this).val();
-        $('#flightId').val(outboundFlight); // Store flightId in the hidden input field
-
-        if (outboundFlight) 
-        {
-          $.ajax(
-          {
-            url: 'fetchReturnFlight.php', // Separate PHP file for return flight
-            type: 'POST',
-            data: { outboundFlight: outboundFlight },
-            success: function(response) 
-            {
-              console.log(response); // Debugging the response
-              var data = JSON.parse(response); // Parse the JSON response
-              $('#returnFlight').val(data.returnFlight); // Update return flight input field
-              $('#flightPrice').val(data.flightPrice); // Update flight price input field
-
-              // Recalculate total price after the flight price is set
-              calculateTotalPrice();
-            },
-            error: function(xhr, status, error) 
-            {
-              console.error('Error fetching return flight:', error); // Log the error to console
-            }
-          });
-        } 
-        else 
-        {
-          $('#returnFlight').val('');
-          $('#flightPrice').val(''); // Clear the flight price if no outbound flight is selected
-        }
+    // Remove guest form dynamically
+    $(document).on('click', '.remove-guest', function () {
+      $(this).closest('.guest-form').slideUp(function () {
+        $(this).remove(); // Remove the form after sliding up
+        calculateTotalPrice(); // Recalculate total price after removing a form
       });
     });
-  </script>
+
+    // Flight selection logic (single selection, applies to all guests)
+    $('#packageName').on('change', function () {
+      var packageId = $(this).val();
+      $('#origin').html('<option selected disabled>Select Origin</option>'); // Clear origin field
+      $('#outboundFlight').html('<option selected disabled>Select Outbound Flight</option>'); // Clear outbound flight field
+      $('#returnFlight').val(''); // Clear return flight field
+
+      if (packageId) {
+        $.ajax({
+          url: 'fetchSelect.php',
+          type: 'POST',
+          data: { packageId: packageId },
+          success: function (response) {
+            console.log(response); // Debugging the response
+            $('#origin').html(response); // Update the origin dropdown
+          },
+          error: function (xhr, status, error) {
+            console.error('Error fetching origins:', error); // Log the error to console
+          }
+        });
+      } else {
+        $('#origin').html('<option selected disabled>Select Origin</option>');
+      }
+    });
+
+    // When origin is selected, populate the outbound flights
+    $('#origin').on('change', function () {
+      var packageId = $('#packageName').val();
+      var origin = $(this).val();
+
+      $('#outboundFlight').html('<option selected disabled>Select Outbound Flight</option>'); // Clear outbound flight field
+      $('#returnFlight').val(''); // Clear return flight field
+
+      if (packageId && origin) {
+        $.ajax({
+          url: 'fetchOutboundFlight.php',
+          type: 'POST',
+          data: { packageId: packageId, origin: origin },
+          success: function (response) {
+            console.log(response); // Debugging the response
+            $('#outboundFlight').html(response); // Update outbound flights dropdown
+          },
+          error: function (xhr, status, error) {
+            console.error('Error fetching outbound flights:', error); // Log the error to console
+          }
+        });
+      } else {
+        $('#outboundFlight').html('<option selected disabled>Select Outbound Flight</option>');
+        $('#returnFlight').val('');
+      }
+    });
+
+    // When outbound flight is selected, fetch the return flight and apply to all guests
+    $('#outboundFlight').on('change', function () {
+      var outboundFlight = $(this).val();
+
+      if (outboundFlight) {
+        $.ajax({
+          url: 'fetchReturnFlight.php', // Separate PHP file for return flight
+          type: 'POST',
+          data: { outboundFlight: outboundFlight },
+          success: function (response) {
+            console.log(response); // Debugging the response
+            var data = JSON.parse(response); // Parse the JSON response
+
+            // Set flight price for each guest based on the selected outbound flight
+            flightPricePerGuest = data.flightPrice; // Set flight price per guest
+            $('input[name^="returnFlight"]').val(data.returnFlight); // Update return flight input field for all guests
+
+            // Recalculate total price after the flight price is set
+            calculateTotalPrice();
+          },
+          error: function (xhr, status, error) {
+            console.error('Error fetching return flight:', error); // Log the error to console
+          }
+        });
+      } else {
+        $('input[name^="returnFlight"]').val(''); // Clear return flight input fields if no outbound flight selected
+      }
+    });
+
+    // Function to calculate the total flight price
+    function calculateTotalPrice() {
+      var totalPrice = flightPricePerGuest * $('.guest-form').length; // Calculate total price based on the number of guests
+
+      console.log("Total Price:", totalPrice); // Debug: log the total price before updating the field
+
+      // Update the displayed total price in the span
+      $('#displayTotalPrice').text(totalPrice.toFixed(2)); // Display total price with 2 decimal places
+
+      // Store the total price in the hidden input field for form submission
+      $('#totalPrice').val(totalPrice.toFixed(2)); // Make sure the input value is properly set
+    }
+
+    // Initialize event listeners for the first form
+    calculateTotalPrice();
+  });
+</script>
+
 </body>
 </html>
