@@ -141,7 +141,7 @@
                 Toggle
               </button>
             </div>
-            <input type="hidden" name="accId" value="<?php echo $_SESSION['accountid']; ?>">
+            <input type="" name="accId" value="<?php echo $_SESSION['accountid']; ?>">
 
             <div id="cardBodyContent" class="card-body collapse show">
               <div class="main-form mt-3 pb-3">
