@@ -26,48 +26,8 @@
         </div>
     </header> 
 
-    <!-- Main Header -->
-    <header class="header d-flex justify-content-between align-items-center">
-        <div class="logo">
-            <a href="#" class="logo"><img src="assets\images\SMART LOGO 2 (2).png" alt="Logo"></a>
-        </div>
-        <nav class="navbar d-flex justify-content-end">
-            <a href="#" class="nav-link">Home</a>
+    <?php include 'navbar.php'; ?>
 
-            <!-- Packages Dropdown -->
-            <div class="dropdown">
-                <a href="#" class="nav-link dropdown-toggle" id="packagesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Packages
-                </a>
-                <ul class="dropdown-menu mt-0" aria-labelledby="packagesDropdown">
-                    <li><a class="dropdown-subitem" href="#">Winter</a></li>
-                    <li><a class="dropdown-subitem" href="#">Spring</a></li>
-                    <li><a class="dropdown-subitem" href="#">Summer</a></li>
-                    <li><a class="dropdown-subitem" href="#">Autumn</a></li>
-                    <li><a class="dropdown-subitem" href="#">Seoul</a></li>
-                    <li><a class="dropdown-subitem" href="#">Busan</a></li>
-                </ul>
-            </div>
-
-            <div class="dropdown">
-                <a href="#" class="nav-link dropdown-toggle" id="packagesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Hotel
-                </a>
-                <ul class="dropdown-menu mt-0" aria-labelledby="packagesDropdown">
-                    <li><a class="dropdown-subitem" href="#">Airsky Hotel</a></li>
-                    <li><a class="dropdown-subitem" href="#">Recenz Hotel</a></li>
-                    <li><a class="dropdown-subitem" href="#">Insadong Ibis</a></li>
-                    <li><a class="dropdown-subitem" href="#">Marina Bay</a></li>
-                </ul>
-            </div>
-
-            <a href="#" class="nav-link">About</a>
-            <a href="#" class="nav-link">Contact</a>
-            
-            <div class="login-container ms-5">
-                <button class="btn btn-success text-lighter fw-normal" id="LoginButton">Book Now</button>
-            </div>
-        </nav>
         
         <!-- <div class="d-flex flex-form">
 
@@ -189,46 +149,58 @@
     </div>
 
 
-    <div class="section d-flex flex-column" id="section2">
-        <div class="container-header d-flex flex-column text-center">
-            <h3>Why Book with us?</h3>
-            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. </p>
-        </div>
-        
-
-        <div class="container-cards d-flex flex-row">
-            <div class="card">
-                <div class="icon">
-                    <i class="fas fa-dollar-sign"></i>
+    <div class="section d-flex flex-column text-center px-4" id="section2">
+        <h2>Why book with us?</h2>
+        <p class="lead text-secondary">We provide affordable and unforgettable travel experiences tailored to your needs.</p>
+        <div class="card-container row mt-5">
+            <div class="col-md-3 mb-4">
+                <div class="card p-3 border-0 shadow text-center"> <!-- Added text-center for card content -->
+                    <div class="card-body">
+                        <div class="icon my-4 text-primary">
+                            <i class="fas fa-plane fa-3x"></i> 
+                        </div>
+                        <h5 class="card-title">Travel Planning Assistance</h5>
+                        <p class="card-text">Our expert team will help you plan every detail of your trip, ensuring a hassle-free and enjoyable experience tailored to your preferences.</p>
+                        <a href="#" class="btn btn-primary">Learn More &rarr;</a>
+                    </div>
                 </div>
-                <h4>Affordable Packages</h4>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
             </div>
-
-            <div class="card">
-                <div class="icon">
-                    <i class="fas fa-map-marked-alt"></i>
+            <div class="col-md-3 mb-4">
+                <div class="card p-3 border-0 shadow text-center">
+                    <div class="card-body">
+                        <div class="icon my-4 text-primary">
+                            <i class="fas fa-map-marker-alt fa-3x"></i> 
+                        </div>
+                        <h5 class="card-title">Local Experience Guides</h5>
+                        <p class="card-text">Discover hidden gems and local hotspots with our knowledgeable guides, providing you with authentic experiences that go beyond typical tourist attractions.</p>
+                        <a href="#" class="btn btn-primary">Learn More &rarr;</a>
+                    </div>
                 </div>
-                <h4>Exclusive Destinations</h4>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
             </div>
-
-            <div class="card">
-                <div class="icon">
-                    <i class="fas fa-plane"></i>
+            <div class="col-md-3 mb-4">
+                <div class="card p-3 border-0 shadow text-center">
+                    <div class="card-body">
+                        <div class="icon my-4 text-primary">
+                            <i class="fas fa-tags fa-3x"></i> 
+                        </div>
+                        <h5 class="card-title">Exclusive Deals and Offers</h5>
+                        <p class="card-text">Take advantage of our exclusive discounts and packages, ensuring you get the best value for your travel adventures. Book now and enjoy special rates for early bookings!</p>
+                        <a href="#" class="btn btn-primary">Learn More &rarr;</a>
+                    </div>
                 </div>
-                <h4>Convenient Travel</h4>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
             </div>
-
-            <div class="card">
-                <div class="icon">
-                    <i class="fas fa-star"></i>
+            <div class="col-md-3 mb-4">
+                <div class="card p-3 border-0 shadow text-center">
+                    <div class="card-body">
+                        <div class="icon my-4 text-primary">
+                            <i class="fas fa-suitcase-rolling fa-3x"></i> 
+                        </div>
+                        <h5 class="card-title">Personalized Travel Experiences</h5>
+                        <p class="card-text">We customize your travel itinerary based on your interests, ensuring a unique and memorable journey tailored just for you. Let us help you explore the world your way!</p>
+                        <a href="#" class="btn btn-primary">Learn More &rarr;</a>
+                    </div>
                 </div>
-                <h4>Trusted Reviews</h4>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
             </div>
-            
         </div>
     </div>
 

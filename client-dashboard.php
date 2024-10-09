@@ -75,7 +75,7 @@
                         <p class="fw-normal text-secondary">deguzmanandreivincent@gmail.com</p>
                     </div>
 
-                    <button class="btn btn-primary me-2">Add Transaction</button>
+                    <button class="btn btn-primary me-2">View Transaction Status</button>
                     <button class="btn btn-primary">Transaction Inquiry</button>
                     
 
