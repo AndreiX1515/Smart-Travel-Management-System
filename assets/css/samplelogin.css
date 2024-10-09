@@ -261,6 +261,19 @@ html, body {
 }
  */
 
+/* CSS to visually disable the button */
+.button-disabled {
+    background-color: #ccc; /* Light gray background */
+    color: #666; /* Darker gray text */
+    pointer-events: none; /* Prevent mouse events */
+    cursor: not-allowed; /* Change cursor to indicate it's disabled */
+}
+
+
+
+
+
+
 
 /* Media Queries */
 @media (max-width: 900px) {
