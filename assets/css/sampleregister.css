@@ -366,3 +366,10 @@ html, body {
 .is-invalid {
     border: 1px solid red; /* Red border for invalid input */
 }
+
+/* Add this CSS to your stylesheet */
+.link-dark {
+    color: #333; /* Set your desired dark color */
+    pointer-events: none; /* Prevent clicks while disabled */
+    text-decoration: none; /* Optionally remove underline */
+}

@@ -124,17 +124,8 @@ session_start(); // Make sure to start the session
             </div>
 
         <div class="modal-body p-4">
-            
-
             <div class="primary-text mb-4">
-                 Let us know this email belongs to you. Enter the code in the email sent to <br> <span class="fw-bold"> 
-                    <?php 
-                        echo $email
-                        
-                    ?> 
-                 
-                
-                </span>
+                 Let us know this email belongs to you. Enter the code in the email sent to your provided email.
             </div>
 
             <div class="otp-field-container mb-4">
@@ -146,8 +137,8 @@ session_start(); // Make sure to start the session
                 </div>
 
                 <!-- Send OTP link with countdown -->
-                <a href="#" id="sendOtpLink">Send OTP <span id="otpCountdown"></span></a>
-                <div class="message-otp my-2 fw-bold" id="message-otp"> </div>
+                <a href="#" id="sendOtpLink-modal">Send OTP <span id="otpCountdown"></span></a>
+                <div class="message-otp mt-2 fw-bold" id="message-otp"> </div>
             </div>
             
         </div>
@@ -161,14 +152,7 @@ session_start(); // Make sure to start the session
     </div>
 </div>
 
-    <!-- Popper CDN -->
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-
-<!-- Main Bootstrap JS CDN-->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
-
-<!-- JQuery JS CDN-->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <?php include 'includes\scripts.php'; ?>
 
     <script>
     $(document).ready(function () {
@@ -315,11 +299,17 @@ session_start(); // Make sure to start the session
                     $('#message-1').text('').removeClass('show').show(); // Reset after fade out
                 });
             }, 5000); // 5 seconds
+
+            setTimeout(function () {
+                $('#message-otp').fadeOut(500, function () {
+                    $('#message-otp').text('').removeClass('show').show(); // Reset after fade out
+                });
+            }, 5000); // 5 seconds
         }
 
         // Function to start the OTP countdown
-        function startOtpCountdown(linkElement) { // Use linkElement as the parameter
-            $(linkElement).addClass('disabled'); // Add the disabled class to grey it out
+        function startOtpCountdown(linkElement) {
+            $(linkElement).addClass('link-dark disabled'); // Add dark class and disabled class to grey it out
             let countdownTime = 10; // Countdown time in seconds
             const countdownElement = document.getElementById('otpCountdown');
 
@@ -333,8 +323,8 @@ session_start(); // Make sure to start the session
                 // When countdown reaches 0
                 if (countdownTime <= 0) {
                     clearInterval(countdownInterval);
-                    countdownElement.textContent = ''; // Change text when countdown ends
-                    $(linkElement).removeClass('disabled'); // Re-enable the link
+                    countdownElement.textContent = ''; // Clear text when countdown ends
+                    $(linkElement).removeClass('link-dark disabled'); // Re-enable the link and remove dark color
                     $(linkElement).css('pointer-events', 'auto'); // Allow clicking again
                 }
             }, 1000);
@@ -343,6 +333,33 @@ session_start(); // Make sure to start the session
             $(linkElement).css('pointer-events', 'none');
         }
 
+        // Event listener for sending OTP
+        $('#sendOtpLink-modal').on('click', function (e) {
+            e.preventDefault(); // Prevent default behavior
+
+            // Start the OTP countdown immediately when the link is clicked
+            startOtpCountdown(this); // Pass the link element
+
+            $.ajax({
+                url: 'send-otp.php',
+                method: 'POST',
+                data: {
+                    email: email,
+                    password: password
+                },
+                dataType: 'json', // Expect a JSON response
+                success: function (response) {
+                    $('#message-otp').text('Another OTP has been sent to your email!').addClass('show');
+                    showMessage();
+                },
+                error: function () {
+                    $('#message-otp').text('Failed to send OTP. Please try again.').addClass('show'); // Handle error display
+                    showMessage();
+                }
+            });
+        });
+
+        
         // OTP verification handler
         $('#verifyOtpButton').on('click', function (e) {
             e.preventDefault();
