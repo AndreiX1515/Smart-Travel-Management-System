@@ -64,15 +64,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Email content
         $mail->isHTML(true);
         $mail->Subject = 'One-Time-Password for Email Verification';
-        $mail->Body = '<div style="font-family: Arial, sans-serif; padding: 20px 0px; background-color: #fff; line-height: 1.6; text-align: left;">
-        
-        <p style="font-size: 1em;">Hello,</p>
+        $mail->Body = '<div style="font-family: Arial, sans-serif; padding: 20px 0px 10px 0px; background-color: #fff; line-height: 1.6; text-align: left;">
+        <img src="https://i.postimg.cc/7hRTGpt1/SMART-LOGO-2-2.png" alt="Smart Travel Logo" style="width: 260px; height: 45px; margin-bottom: 10px;">
+        <p style="font-size: 1em;">Hi,</p>
         <p>Use the One-Time Password (OTP) below to verify your account:</p>
-        <h2 style="padding: 10px; background-color: #333; color: #fff; border-radius: 5px; letter-spacing: 5px; width: 90px;">'. $verificationCode .'</h2>
+        <h2 style="padding: 10px; background-color: #333; color: #fff; border-radius: 5px; letter-spacing: 5px; width: 90px;">'.$verificationCode.'</h2>
         <p>This OTP is valid for 10 minutes. Do not share it with anyone.</p>
-        <p style="font-size: 1.2em;">Thank you,<br/><img src="https://i.postimg.cc/cJfGtwCr/SMART-LOGO-2-2.png" alt="Smart Travel Logo" style="width: 260px; height: 45px; margin-bottom: 20px;"></p>
+        <p style="font-size: 1.2em;">Thank you,<br/></p>
         <hr style="border-top: 1px solid #eee;" />
-        <p style="font-size: 0.9em; color: #999;">If this is not for you, please ignore this email or contact support.</p>
+        <p style="font-size: 0.9em; color: #999;">If this not for you, please ignore this email or contact support.</p>
     </div>';
 
         // Send the email
