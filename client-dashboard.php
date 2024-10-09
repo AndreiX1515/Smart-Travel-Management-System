@@ -1,3 +1,13 @@
+<?php
+require 'session_validate.php'; // Include the session validation script
+
+// Fetch session variables directly
+$email = $_SESSION['email'] ?? ''; // Use null coalescing operator to avoid undefined index
+$firstName = $_SESSION['first_name'] ?? '';
+$lastName = $_SESSION['last_name'] ?? '';
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -52,14 +62,14 @@
                     </div>
 
                     <div class="navbar-profile dropdown" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <span class="text-secondary">De Guzman, Andrei Vincent L.</span>
+                        <span class="text-secondary"><?php echo $lastName.', '.$firstName?></span>
                         <img src="assets\images\profile-user.png" width="40px" height="40px" alt="User Image">
                         <i class="fas fa-chevron-down"></i>
                     </div>
 
                     <ul class="dropdown-menu" aria-labelledby="profileDropdown">
                         <li>
-                            <a class="dropdown-item" href="#" id="logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                            <a class="dropdown-item" href="#" id="logout" data-bs-toggle="modal" data-bs-target="#logoutModal" ><i class="fas fa-sign-out-alt"></i>Logout</a>
                         </li>
                     </ul>
             </nav>
@@ -71,8 +81,8 @@
                 <!-- Main Content Section -->
                 <div class="profile-card ">
                     <div class="profile-info">
-                        <h3>Hi, De Guzman, Andrei Vincent L.</h3>
-                        <p class="fw-normal text-secondary">deguzmanandreivincent@gmail.com</p>
+                        <h3>Hi, <?php echo $lastName.', '.$firstName?></h3>
+                        <p class="fw-normal text-secondary"><? echo $email ?></p>
                     </div>
 
                     <button class="btn btn-primary me-2">View Transaction Status</button>
@@ -106,9 +116,27 @@
 
 
                 </div> -->
+            </div>
+        </div>
+    </div>
 
-                
+    <!-- Modals -->
 
+    <!-- Logout Confirmation Modal -->
+    <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="logoutModalLabel">Confirm Logout</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to logout?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <a href="" class="btn btn-danger" id="logoutButton">Logout</a>
+                </div>
             </div>
         </div>
     </div>
@@ -116,6 +144,27 @@
     <?php include 'includes/scripts.php' ?>
 
     <script>
+        $('#logoutButton').on('click', function (e) {
+
+            // Send AJAX request to handle the logout
+            $.ajax({
+                url: 'client-logout.php', // Your PHP script for logging out
+                method: 'POST',
+                dataType: 'json',
+                success: function (response) {
+                    if (response.status === 'success') {
+                        window.location.href = 'login.php';
+                    }
+                },
+                error: function () {
+                    $('#message-1').text('Error logging out. Please try again.').addClass('show'); // Handle error display
+                    showMessage();
+                }
+            });
+        });
+    </script>
+
+    <!-- <script>
         // JavaScript for toggling sidebar and changing navbar width
         document.getElementById('sidebarToggle').addEventListener('click', function () {
             var sidebar = document.getElementById('sidebar');
@@ -138,7 +187,37 @@
                 toggleIcon.classList.add('fa-times');
             }
         });
+    </script> -->
+
+    <script>
+       let isClosing = false;
+
+        // Detect when the user is trying to leave the page (close the tab or window)
+        window.addEventListener("beforeunload", function (event) {
+            // Show confirmation dialog
+            const confirmationMessage = "All unsaved data will be lost. Do you really want to leave?"; 
+            event.returnValue = confirmationMessage; // For most browsers
+            return confirmationMessage; // For some browsers (deprecated but still supported)
+        });
+
+        // Detect when the tab is being closed
+        window.addEventListener("unload", function () {
+            // User is closing the tab or window
+            navigator.sendBeacon('client-logout.php'); // Attempt to log out the user
+        });
+
     </script>
+
+
+
+
+
+
+
+
+
+
+
 </body>
 
 </html>

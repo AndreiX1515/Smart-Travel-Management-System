@@ -1,3 +1,7 @@
+<?php 
+    session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,6 +12,17 @@
 
     <!-- External CSS -->
     <link href="assets/css/samplelogin.css?v=<?php echo time(); ?>" rel="stylesheet">
+
+    <style>
+        /* CSS to visually disable the button */
+        .button-disabled {
+            background-color: #ccc; /* Light gray background */
+            color: #666; /* Darker gray text */
+            pointer-events: none; /* Prevent mouse events */
+            cursor: not-allowed; /* Change cursor to indicate it's disabled */
+        }
+    </style>
+
 </head>
 
 
@@ -111,13 +126,14 @@
     </div>
 </div>
 
-     <!-- Popper CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-
-    <!-- Main Bootstrap JS CDN-->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+    <?php include 'includes/scripts.php' ?>
 
     <script>
+    const LoginButton = document.getElementById('LoginButton');
+
+   
+
+
     document.getElementById('loginForm').addEventListener('submit', function(event) {
         event.preventDefault(); // Prevent default form submission
 
@@ -136,19 +152,26 @@
         .then(data => {
             if (data.success) {
                 // Redirect to dashboard or homepage
-                window.location.href = 'bookingform.php';
+                window.location.href = 'client-dashboard.php';
             } else {
                 // Show error message
                 document.getElementById('message-login').innerHTML = '<div class="alert alert-danger text-center">' + data.message + '</div>';
+                if (LoginButton) {
+                    // Add CSS class to visually disable the button
+                    LoginButton.classList.add('button-disabled');
+                }
+
             }
         })
         .catch(error => {
             console.error('Error:', error);
             // Optionally, show a generic error message if there's a problem with the request
             document.getElementById('message-login').innerHTML = '<div class="alert alert-danger">An error occurred. Please try again later.</div>';
+
+            // Add CSS class to visually disable the button
+            document.getElementById('loginButton').classList.add('button-disabled');
         });
     });
-
     </script>
 
    
