@@ -60,83 +60,85 @@
         <form action="bookingform-code.php" method="POST">
           <div class="card">
             <div class="card-header bg-primary text-white">
-              <h4 class="mb-0">Flight Details</h4>
+              <h4 class="mb-3">Flight Details</h4>
             </div>
             <div class="card-body">
-              <div class="form-group mb-3">
-                <label for="agent">Select Agent <span class="text-danger fw-bold">*</span></label>
-                <select class="form-select" id="agentId" name="agentId" required>
-                  <option selected disabled>Select Agent</option>
-                  <?php
-                    $sql1 = mysqli_query($conn, "SELECT agentId, CONCAT(lName, ', ', fName, 
-                      CASE 
-                        WHEN mName != '' THEN CONCAT(' ', SUBSTRING(mName, 1, 1), '.') 
-                        ELSE '' 
-                      END) AS agentName FROM agent ORDER BY lName ASC");
-                    while($res1 = mysqli_fetch_array($sql1)) {
-                      echo "<option value='{$res1['agentId']}'>{$res1['agentName']}</option>";
-                    }
-                  ?>
-                </select>
-              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group mb-6">
+                    <label for="agent">Select Agent <span class="text-danger fw-bold">*</span></label>
+                    <select class="form-select" id="agentId" name="agentId" required>
+                      <option selected disabled>Select Agent</option>
+                      <option value="">None</option>
+                      <?php
+                        $sql1 = mysqli_query($conn, "SELECT agentId, CONCAT(lName, ', ', fName, 
+                          CASE 
+                            WHEN mName != '' THEN CONCAT(' ', SUBSTRING(mName, 1, 1), '.') 
+                            ELSE '' 
+                          END) AS agentName FROM agent ORDER BY lName ASC");
+                        while($res1 = mysqli_fetch_array($sql1)) {
+                          echo "<option value='{$res1['agentId']}'>{$res1['agentName']}</option>";
+                        }
+                      ?>
+                    </select>
+                  </div>
+                </div>
 
-              <div class="col-md-6">
-                <div class="form-group mb-3">
-                  <label for="packageName">Package <span class="text-danger fw-bold">*</span></label>
-                  <select class="form-select" id="packageName" name="packageName" required>
-                    <option selected disabled>Select Package</option>
-                    <?php
-                      $sql1 = mysqli_query($conn, "SELECT DISTINCT packageId, packageName FROM package ORDER BY packageName ASC");
-                      while($res1 = mysqli_fetch_array($sql1)) 
-                      {
-                        ?>
-                        <option value="<?php echo $res1['packageId']; ?>"><?php echo $res1['packageName']; ?></option>
-                        <?php
-                      }
-                    ?>
-                  </select>
+                <div class="col-md-6">
+                  <div class="form-group mb-6">
+                    <label for="packageName">Package <span class="text-danger fw-bold">*</span></label>
+                    <select class="form-select" id="packageName" name="packageName" required>
+                      <option selected disabled>Select Package</option>
+                      <?php
+                        $sql1 = mysqli_query($conn, "SELECT DISTINCT packageId, packageName FROM package ORDER BY packageName ASC");
+                        while($res1 = mysqli_fetch_array($sql1)) {
+                          echo "<option value='{$res1['packageId']}'>{$res1['packageName']}</option>";
+                        }
+                      ?>
+                    </select>
+                  </div>
                 </div>
               </div>
 
-              <div class="col-md-4">
-                <div class="form-group mb-3">
-                  <label class="mb-2" for="origin">Origin <span class="text-danger fw-bold">*</span></label>
-                  <select class="form-select" id="origin" name="origin" required>
-                    <option selected disabled>Select Origin</option>
-                  </select>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group mb-6">
+                    <label class="mb-2" for="origin">Origin <span class="text-danger fw-bold">*</span></label>
+                    <select class="form-select" id="origin" name="origin" required>
+                      <option selected disabled>Select Origin</option>
+                    </select>
+                  </div>
                 </div>
-              </div>
 
-              <div class="col-md-4">
-                <div class="form-group mb-3">
-                  <label class="mb-2" for="outboundFlight">Flight Date <span class="text-danger fw-bold">*</span></label>
-                  <select class="form-select" id="outboundFlight" name="outboundFlight" required>
+                <div class="col-md-6">
+                  <div class="form-group mb-6">
+                    <label class="mb-2" for="outboundFlight">Flight Date <span class="text-danger fw-bold">*</span></label>
+                    <select class="form-select" id="outboundFlight" name="outboundFlight" required>
                       <option selected disabled>Select Flight Available Dates</option>
-                  </select>
+                    </select>
+                  </div>
                 </div>
               </div>
 
-              <div class="col-md-4">
-                <div class="form-group mb-3">
-                  <input type="hidden" id="returnFlight" name="returnFlight" class="form-control" readonly>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group mb-6">
+                    <input type="hidden" id="returnFlight" name="returnFlight" class="form-control" readonly>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="form-group mb-6">
+                    <input type="hidden" id="flightId" name="flightId" value="">
+                  </div>
                 </div>
               </div>
-
-              <input type="hidden" id="flightId" name="flightId" value="">
-            </div>
-
-            <div class="card-footer">
-              <h2>
-                <label for="">Price: ₱ 
-                  <input style="border: none; outline: none;" id="flightPrice" name="flightPrice" value="0.00" readonly>
-                </label> 
-              </h2>
             </div>
           </div>
               
           <div class="card mt-4 guest-form shadow-sm">
             <div class="card-header bg-primary text-white">
-              <h4 class="mb-0">Guest Information 1</h4>
+              <h4 class="mb-3 font-weight-bold">Guest Information 1</h4>
               <button class="btn btn-sm btn-outline-light float-end" type="button" data-bs-toggle="collapse" data-bs-target="#cardBodyContent" aria-expanded="true" aria-controls="cardBodyContent">
                 Toggle
               </button>
@@ -148,7 +150,7 @@
                 
                 <!-- Personal Information Group -->
                 <div class="row mb-3">
-                  <h5 class="mb-3">Personal Information</h5>
+                  <h5 class="card-title bg-primary text-white p-3">Personal Information</h5>
 
                   <div class="col-md-3">
                     <div class="form-group mb-3">
@@ -225,11 +227,25 @@
                     </div>
                   </div>
 
+                  <div class="col-md-6">
+                    <div class="form-group mb-3">
+                      <label class="mb-2" for="passportNo">Passport No. <span class="text-danger fw-bold">*</span></label>
+                      <input type="text" name="passportNo[]" class="form-control" placeholder="Enter Passport No" required>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="form-group mb-3">
+                      <label class="mb-2" for="passportExp">Date of Expiration: <span class="text-danger fw-bold">*</span></label>
+                      <input type="date" name="passportExp[]" class="form-control" required>
+                    </div>
+                  </div>
+
                 </div>
 
                 <!-- Contact Information Group -->
                 <div class="row mb-3">
-                  <h5 class="mb-3">Contact Information</h5>
+                  <h5 class="card-title bg-primary text-white p-3">Contact Information</h5>
 
                   <div class="col-md-6">
                     <div class="form-group mb-3">
@@ -248,7 +264,7 @@
                 
                 <!-- Address Information Group -->
                 <div class="row mb-3">
-                  <h5 class="mb-3">Address Information</h5>
+                  <h5 class="card-title bg-primary text-white p-3">Personal Information</h5>
 
                   <div class="col-md-2">
                     <div class="form-group mb-3">
@@ -299,39 +315,21 @@
                   </div>
                 </div>
 
-                <!-- Flight Details Group -->
-                <div class="row mb-3">
-                  <h5 class="mb-3">Flight Information</h5>
-
-                  <div class="col-md-6">
-                    <div class="form-group mb-3">
-                      <label class="mb-2" for="passportNo">Passport No. <span class="text-danger fw-bold">*</span></label>
-                      <input type="text" name="passportNo[]" class="form-control" placeholder="Enter Passport No" required>
-                    </div>
-                  </div>
-
-                  <div class="col-md-6">
-                    <div class="form-group mb-3">
-                      <label class="mb-2" for="passportExp">Date of Expiration: <span class="text-danger fw-bold">*</span></label>
-                      <input type="date" name="passportExp[]" class="form-control" required>
-                    </div>
-                  </div>
-
-                </div>
               </div>
             </div>
           </div>
 
           <div class="paste-new-forms"></div>
 
-          <div class="card ">
-            <div class="card-header">
-              <h1>Total Price: ₱ <span id="displayTotalPrice">0.00</span>
-              </h1>
-            </div>
-            <input type="hidden" id="totalPrice" name="totalPrice">
-            <div class="card-footer">
-              <button type="submit" name="bookNow" class="btn btn-primary mt-3">Book Now</button>
+          <div class="mt-4"> <!-- Adjust the mt-* class for more or less space -->
+            <div class="card mt-5">
+              <div class="card-header">
+                <h1>Total Price: ₱ <span id="displayTotalPrice">0.00</span></h1>
+              </div>
+              <input type="hidden" id="totalPrice" name="totalPrice">
+              <div class="card-footer">
+                <button type="submit" name="bookNow" class="btn btn-primary mt-3">Book Now</button>
+              </div>
             </div>
           </div>
 
@@ -391,7 +389,9 @@
         $('#outboundFlight').html('<option selected disabled>Select Flight Available Dates</option>'); // Clear outbound flight field
         $('#returnFlight').val(''); // Clear return flight field
         $('#flightId').val(''); // Clear Flight Id field
-        $('#flightPrice').val(''); // Clear Flight Price field
+        $('#flightPrice').val('0.00'); // Clear Flight Price field
+        $('#displayTotalPrice').text('0.00'); // Clear Total Price field
+        $('#totalPrice').val(''); // Clear Total Price Input field
 
         if (packageId) 
         {
@@ -426,7 +426,9 @@
         $('#outboundFlight').html('<option selected disabled>Select Flight Available Dates</option>'); // Clear outbound flight field
         $('#returnFlight').val(''); // Clear return flight field
         $('#flightId').val(''); // Clear Flight Id field
-        $('#flightPrice').val(''); // Clear Flight Price field
+        $('#flightPrice').val('0.00'); // Clear Flight Price field
+        $('#displayTotalPrice').text('0.00'); // Clear Total Price field
+        $('#totalPrice').val(''); // Clear Total Price Input field
 
         if (packageId && origin) 
         {
