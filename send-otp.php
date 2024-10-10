@@ -1,6 +1,8 @@
 <?php
 session_start(); // Start the session at the beginning
 include "conn.php";
+
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
@@ -70,8 +72,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <p>Use the One-Time Password (OTP) below to verify your account:</p>
         <h2 style="padding: 10px; background-color: #333; color: #fff; border-radius: 5px; letter-spacing: 5px; width: 90px;">'.$verificationCode.'</h2>
         <p>This OTP is valid for 10 minutes. Do not share it with anyone.</p>
-        <p style="font-size: 1.2em;">Thank you,<br/></p>
-        <hr style="border-top: 1px solid #eee;" />
+        <p style="font-size: 1.2em;">Thank you, <br/> Smart Travel </p>
+        <hr style="border-top: 1px solid #eee;"/>
         <p style="font-size: 0.9em; color: #999;">If this not for you, please ignore this email or contact support.</p>
     </div>';
 

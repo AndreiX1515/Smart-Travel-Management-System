@@ -1,5 +1,9 @@
 <?php
-require 'session_validate.php'; // Include the session validation script
+include 'session_validate.php'; // This will check if the session is valid
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 // Fetch session variables directly
 $email = $_SESSION['email'] ?? ''; // Use null coalescing operator to avoid undefined index
@@ -85,7 +89,7 @@ $lastName = $_SESSION['last_name'] ?? '';
                         <p class="fw-normal text-secondary"><? echo $email ?></p>
                     </div>
 
-                    <a class="btn btn-primary" href="bookingform.php" role="button">Book Now</a>
+                    <a class="btn btn-primary me-2" href="bookingform.php" role="button">Book Now</a>
                     <button class="btn btn-primary me-2">View Transaction Status</button>
                     <button class="btn btn-primary">Transaction Inquiry</button>
                     
@@ -146,7 +150,6 @@ $lastName = $_SESSION['last_name'] ?? '';
 
     <script>
         $('#logoutButton').on('click', function (e) {
-
             // Send AJAX request to handle the logout
             $.ajax({
                 url: 'client-logout.php', // Your PHP script for logging out
@@ -189,26 +192,27 @@ $lastName = $_SESSION['last_name'] ?? '';
             }
         });
     </script> -->
+    <script src="heartbeat.js"></script>
+    
 
-    <script>
-       let isClosing = false;
 
-        // Detect when the user is trying to leave the page (close the tab or window)
-        window.addEventListener("beforeunload", function (event) {
-            // Show confirmation dialog
-            const confirmationMessage = "All unsaved data will be lost. Do you really want to leave?"; 
-            event.returnValue = confirmationMessage; // For most browsers
-            return confirmationMessage; // For some browsers (deprecated but still supported)
-        });
 
-        // Detect when the tab is being closed
-        window.addEventListener("unload", function () {
-            // User is closing the tab or window
-            navigator.sendBeacon('client-logout.php'); // Attempt to log out the user
-        });
 
-    </script>
 
+
+
+
+
+
+
+ 
+
+
+ 
+
+    
+
+   
 
 
 

@@ -1,8 +1,6 @@
 <?php
 session_start();
-
-// Include your database connection
-include 'conn.php'; // Adjust the path as necessary
+include 'conn.php';
 
 if (isset($_SESSION['accountid'])) {
     $session_id = session_id();
@@ -19,7 +17,7 @@ if (isset($_SESSION['accountid'])) {
 session_unset();
 session_destroy();
 
-// Return a JSON response
-echo json_encode(['status' => 'success', 'message' => 'You have been logged out successfully.']);
+// Optionally, return a response (not required for sendBeacon)
+echo json_encode(['status' => 'success', 'message' => 'Session destroyed successfully.']);
 exit;
 ?>
