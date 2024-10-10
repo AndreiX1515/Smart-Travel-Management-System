@@ -135,6 +135,27 @@
 
                   <div class="row">
 
+                  <div class="form-group">
+                    <label for="modeOfPayment">Mode of Payment:</label>
+          
+                    <!-- Radio Buttons for Mode of Payment -->
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="paymentMethod" id="bank" value="bank" onchange="showPaymentDetails(this.value)" required>
+                      <label class="form-check-label" for="bank">Bank Transfer</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="paymentMethod" id="gcash" value="gcash" onchange="showPaymentDetails(this.value)" required>
+                      <label class="form-check-label" for="gcash">GCash</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="paymentMethod" id="creditCard" value="creditCard" onchange="showPaymentDetails(this.value)" required>
+                      <label class="form-check-label" for="creditCard">Credit Card</label>
+                    </div>
+                  </div>
+
+                <!-- Dynamic Payment Details Section -->
+                <div id="paymentDetails" class="mt-4"></div>
+
                     <div class="col-md-6">
                       <div class="form-group mb-6">
                         <input type="hidden" id="returnFlight" name="returnFlight" class="form-control" readonly>
