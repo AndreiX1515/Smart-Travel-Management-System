@@ -329,7 +329,7 @@
               <h1>Total Price: ₱ <span id="displayTotalPrice">0.00</span>
               </h1>
             </div>
-            <input type="hidden" id="totalPrice" name="totalPrice">
+            <input type="" id="totalPrice" name="totalPrice">
             <div class="card-footer">
               <button type="submit" name="bookNow" class="btn btn-primary mt-3">Book Now</button>
             </div>
@@ -389,6 +389,8 @@
         $('#returnFlight').val(''); // Clear return flight field
         $('#flightId').val(''); // Clear Flight Id field
         $('#flightPrice').val(''); // Clear Flight Price field
+        $('#displayTotalPrice').text(''); // Clear Total Price field
+        $('#totalPrice').val(''); // Clear Total Price Input field
 
         if (packageId) 
         {
@@ -424,6 +426,8 @@
         $('#returnFlight').val(''); // Clear return flight field
         $('#flightId').val(''); // Clear Flight Id field
         $('#flightPrice').val(''); // Clear Flight Price field
+        $('#displayTotalPrice').text(''); // Clear Total Price field
+        $('#totalPrice').val(''); // Clear Total Price Input field
 
         if (packageId && origin) 
         {

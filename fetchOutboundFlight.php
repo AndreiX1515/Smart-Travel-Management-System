@@ -12,7 +12,7 @@ if (isset($_POST['packageId']) && isset($_POST['origin']))
            AS onboardFlightSched
       FROM flight 
       WHERE packageId = '$packageId' AND origin = '$origin' 
-      ORDER BY onboardFlightSched ASC");
+      ORDER BY flightDepartureDate ASC");
 
   if (mysqli_num_rows($sql) > 0) 
   {
