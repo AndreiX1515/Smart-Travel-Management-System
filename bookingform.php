@@ -372,8 +372,6 @@
 
 
   <script src="heartbeat.js"></script>
-
-
   <script>
     $(document).ready(function () 
     {

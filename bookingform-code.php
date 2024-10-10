@@ -25,7 +25,7 @@ if (isset($_POST['bookNow']))
     $passportExps = $_POST['passportExp'];  
     $emails = $_POST['email'];  
     $contactNos = $_POST['contactNo'];  
-    $sexes = $_POST['sex'];  
+    $sexes = $_POST['sex'];   
     $nationalities = $_POST['nationality'];  
     $flightIds = $_POST['flightId'];
     $flightPrices = $_POST['flightPrice'];
