@@ -48,5 +48,5 @@ $update_stmt->bind_param("s", $session_id);
 $update_stmt->execute();
 $update_stmt->close();
 
-echo json_encode(['status' => 'active']);
+// echo json_encode(['status' => 'active']);
 ?>
