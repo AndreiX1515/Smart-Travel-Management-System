@@ -35,7 +35,7 @@ body {
     background-color: #000000; 
     color: white;
     text-align: center;
-    padding: 20px 220px;
+    padding: 15px 220px;
     font-size: 12px;
     position: fixed;
     width: 100%;
@@ -64,10 +64,10 @@ body {
 /* Main Header */
 .header {
     position: fixed;
-    top: 61px; /* Adjusted for sub-header height */
+    top: 51px; /* Adjusted for sub-header height */
     left: 0;
     width: 100%;
-    padding: 10px 220px;
+    padding: 5px 220px;
     background: #ffffff;
     display: flex;
     gap: 5px;
@@ -236,7 +236,7 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(160, 160, 160, 0.6); /* Black with 50% opacity */
+    background-color: rgba(48, 48, 48, 0.4); /* Black with 50% opacity */
     z-index: 1; /* Keep the overlay above the background */
 }
 
@@ -244,7 +244,7 @@ body {
 .hero-slider {
     position: relative;
     overflow: hidden;
-    height: 80vh; /* Set height to 70% of the viewport height */
+    height: 100vh; /* Set height to 70% of the viewport height */
     width: 100vw; /* Full width */
     transition: background-color 0.5s ease; /* Smooth background transition */
     z-index: 4;
