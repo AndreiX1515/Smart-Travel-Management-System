@@ -117,3 +117,149 @@ body {
     margin: 10px 65px;
 
 }
+
+
+
+/* For Table */
+
+.excel-table {
+    width: 100%;
+    border-collapse: collapse; /* Collapses borders for a seamless look */
+    font-family: Arial, sans-serif; /* Sets the font family */
+}
+
+.excel-table th, .excel-table td {
+    border: 1px solid #d0d0d0; /* Light grey border for cells */
+    padding: 10px; /* Padding inside cells */
+}
+
+/* Specify widths for each column */
+.excel-table th:nth-child(1),
+.excel-table td:nth-child(1) {
+    width: 5%; /* Width for Transaction Number */
+}
+
+.excel-table th:nth-child(2),
+.excel-table td:nth-child(2) {
+    width: 8%; /* Width for Package Name */
+}
+
+.excel-table th:nth-child(3),
+.excel-table td:nth-child(3) {
+    width: 5%; /* Width for Flight Date */
+}
+
+.excel-table th:nth-child(4),
+.excel-table td:nth-child(4) {
+    width: 2%; /* Width for Total Pax */
+}
+
+.excel-table th:nth-child(5),
+.excel-table td:nth-child(5) {
+    width: 7%; /* Width for Amount To Pay */
+}
+
+.excel-table th:nth-child(6),
+.excel-table td:nth-child(6) {
+    width: 7%; /* Width for Downpayment Total */
+}
+
+.excel-table th:nth-child(7),
+.excel-table td:nth-child(7) {
+    width: 3%; /* Width for Status */
+}
+
+.excel-table th:nth-child(8),
+.excel-table td:nth-child(8) {
+    width: 5%; /* Width for Action */
+}
+
+.excel-table thead {
+    background-color: #f1f1f1; /* Light grey background for header */
+    padding: 20px 0; /* Padding for header cells */
+}
+
+.excel-table th {
+    font-weight: bold; /* Bold text for header */
+    color: #333; /* Dark grey text color for headers */
+    background-color: #e9e9e9; /* Slightly darker grey background for header */
+}
+
+.excel-table tbody {
+    text-align: left; /* Align text to the left in body */
+}
+
+.excel-table tbody tr:hover {
+    background-color: #f0f0f0; /* Light hover effect for rows */
+}
+
+.excel-table .badge {
+    padding: 5px 10px; /* Padding inside badge */
+    border-radius: 12px; /* Rounded corners for badges */
+    font-size: 0.9em; /* Font size for badges */
+    color: #fff; /* White text color for badges */
+}
+
+.action-icons {
+    font-size: 20px; /* Size for action icons */
+    color: black; /* Default color for action icons */
+    display: flex; 
+    align-items: center; /* Align icons vertically */
+    gap: 10px; /* Space between action icons */
+}
+
+.action-icons a {
+    font-size: 16px; /* Font size for action links */
+    color: black; /* Default color for action links */
+}
+
+.edit-icon:hover {
+    color: #007bff; /* Bootstrap primary color for edit on hover */
+}
+
+.delete-icon:hover {
+    color: #dc3545; /* Red on hover for delete */
+}
+
+.view-icon:hover {
+    color: #28a745; /* Green on hover for view */
+}
+
+/* Additional styles for table controls */
+.table-controls {
+    display: flex;
+    justify-content: space-between; /* Space between controls */
+    align-items: center; /* Center vertically */
+    margin-bottom: 15px; /* Spacing below controls */
+}
+
+.search-input {
+    padding: 8px 12px; /* Padding for the search input */
+    border: 1px solid #ccc; /* Border color */
+    border-radius: 4px; /* Rounded corners */
+    font-size: 16px; /* Font size */
+    width: 250px; /* Fixed width */
+}
+
+.sort-dropdown {
+    padding: 8px 12px; /* Padding for dropdown */
+    border: 1px solid #ccc; /* Border color */
+    border-radius: 4px; /* Rounded corners */
+    font-size: 16px; /* Font size */
+    margin-left: 10px; /* Space between elements */
+}
+
+.add-button {
+    padding: 8px 12px; /* Padding for button */
+    background-color: #28a745; /* Bootstrap success color */
+    color: white; /* Text color */
+    border: none; /* No border */
+    border-radius: 4px; /* Rounded corners */
+    font-size: 16px; /* Font size */
+    cursor: pointer; /* Cursor pointer on hover */
+}
+
+.add-button:hover {
+    background-color: #218838; /* Darker green on hover */
+}
+

@@ -23,8 +23,6 @@
 </head>
 <body>
   <div class="container-fluid">
-    <div class="row">
-        
         <nav class="navbar-custom d-flex flex-row justify-content-between" id="navbar">
           <div class="logo">
             <a href="#" class="logo"><img src="assets\images\SMART LOGO 2 (2).png" alt="Logo" width="200px" height="35px"></a>
@@ -44,66 +42,120 @@
         </nav>
             
         <!-- Main content -->
-        <div id="main-content" class="col-md-9 col-lg-10 w-100">
-          <!-- Main Content Section -->
-          <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">Transaction Number</th>
-                <th scope="col">Package Name</th>
-                <th scope="col">Flight Date</th>
-                <th scope="col">Total Pax</th>
-                <th scope="col">Amount To Pay</th>
-                <th scope="col">Downpayment Amount to Pay</th>
-                <th scope="col">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <?php
-                $sql1 = "SELECT Distinct
-                  b.transactNo,
-                  b.pax AS totalPax,
-                  b.totalPrice AS amountToPay,
-                  (1000 * b.pax) AS downpayment, 
-                  p.packageName,
-                  DATE_FORMAT(f.flightDepartureDate, '%M %d, %Y') AS flightDate  -- Format flightDepartureDate
-                    FROM 
-                        booking b
-                    JOIN 
-                        guest g ON b.transactNo = g.transactNo
-                    JOIN 
-                        flight f ON g.flightId = f.flightId
-                    JOIN 
-                        package p ON f.packageId = p.packageId
-                    WHERE 
-                        b.accountId = '$accId'";
+        <div id="main-content" class="col-md-9 col-lg-10 w-100 p-5">
+          <div class="table-responsive">
+              <div class="table-controls mb-4">
+                  <div class="d-flex flex-column">
+                    <label for="" class="mb-2">Search</label>
+                    <input type="text" class="search-input" placeholder="Search..." />
+                  </div>
 
-                $res1 = $conn->query($sql1);
+                  <div class="d-flex flex-column">
+                    <label for="" class="mb-2 ms-2">Package Name</label>
+                    <select class="sort-dropdown">
+                        <option value="">Sort by Package Name</option>
+                        <option value="packageNameAsc">Package Name (A-Z)</option>
+                        <option value="packageNameDesc">Package Name (Z-A)</option>
+                    </select>
+                  </div>
 
-                if ($res1->num_rows > 0) 
-                {
-                  while ($row = $res1->fetch_assoc()) 
-                  {
-                    echo "<tr>
-                            <td>".$row['transactNo']."</td>
-                            <td>".$row['packageName']."</td>
-                            <td>".$row['flightDate']."</td>  <!-- Use the formatted flight date -->
-                            <td>".$row['totalPax']."</td>
-                            <td>₱ ".number_format($row['amountToPay'], 2)."</td>  <!-- Format amountToPay with commas -->
-                            <td>₱ ".number_format($row['downpayment'], 2)."</td>  <!-- Format downpayment with commas -->
-                          </tr>";
-                  }
-                } else 
-                {
-                  echo "<tr><td colspan='6'>No bookings found</td></tr>";
-                }
-              ?>
-              
-            </tbody>
-          </table>
+                  <div class="d-flex flex-column">
+                    <label for="" class="mb-2 ms-2">Package Name</label>
+                    <select class="sort-dropdown">
+                        <option value="">Sort by Package Name</option>
+                        <option value="packageNameAsc">Package Name (A-Z)</option>
+                        <option value="packageNameDesc">Package Name (Z-A)</option>
+                    </select>
+                  </div>
+
+                  <div class="d-flex flex-column">
+                    <label for="" class="mb-2 ms-2">Status</label>
+                    <select class="sort-dropdown">
+                        <option value="">Sort by Status</option>
+                        <option value="StatusCompleted">Completed</option>
+                        <option value="StatusPending">Pending</option>
+                        <option value="StatusOngoing">Ongoing</option>
+                        <option value="StatusTerminated">Terminated</option>
+                    </select>
+                  </div>
+
+                  <div class="d-flex flex-row align-items-end">
+                    <button class="add-button">Add Booking</button>
+                  </div>
+              </div>
+              <table class="table excel-table">
+                  <thead>
+                      <tr>
+                          <th scope="col">Transaction Number</th>
+                          <th scope="col">Package Name</th>
+                          <th scope="col">Flight Date</th>
+                          <th scope="col">Total Pax</th>
+                          <th scope="col">Amount To Pay</th>
+                          <th scope="col">Downpayment Total</th>
+                          <th scope="col">Status</th>
+                          <th scope="col">Action</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <?php
+                      $sql1 = "SELECT Distinct
+                                b.transactNo,
+                                b.pax AS totalPax,
+                                b.totalPrice AS amountToPay,
+                                (1000 * b.pax) AS downpayment, 
+                                p.packageName,
+                                DATE_FORMAT(f.flightDepartureDate, '%M %d, %Y') AS flightDate
+                                  FROM 
+                                      booking b
+                                  JOIN 
+                                      guest g ON b.transactNo = g.transactNo
+                                  JOIN 
+                                      flight f ON g.flightId = f.flightId
+                                  JOIN 
+                                      package p ON f.packageId = p.packageId
+                                  WHERE 
+                                      b.accountId = '$accId'";
+
+                      $res1 = $conn->query($sql1);
+
+                      if ($res1->num_rows > 0) {
+                          while ($row = $res1->fetch_assoc()) {
+                              echo "<tr>
+                                      <td>" . htmlspecialchars($row['transactNo']) . "</td>
+                                      <td>" . htmlspecialchars($row['packageName']) . "</td>
+                                      <td>" . htmlspecialchars($row['flightDate']) . "</td>
+                                      <td>" . htmlspecialchars($row['totalPax']) . "</td>
+                                      <td>₱ " . number_format($row['amountToPay'], 2) . "</td>
+                                      <td>₱ " . number_format($row['downpayment'], 2) . "</td>
+                                      <td>
+                                          <span class='badge rounded-pill bg-success p-2 text-center'>Success</span>
+                                      </td>
+                                      <td>
+                                          <div class='action-icons'>
+                                              <a href='#' class='edit-icon' title='Edit'>
+                                                  <i class='fas fa-edit'></i>
+                                              </a>
+                                              <a href='#' class='delete-icon' title='Delete' style='margin-left: 5px;'>
+                                                  <i class='fas fa-trash-alt'></i>
+                                              </a>
+                                              <a href='#' class='view-icon' title='View' style='margin-left: 5px;'>
+                                                  <i class='fas fa-eye'></i>
+                                              </a>
+                                          </div>
+                                      </td>
+                                  </tr>";
+                          }
+                      } else {
+                          echo "<tr><td colspan='8'>No bookings found</td></tr>";
+                      }
+                      ?>
+                  </tbody>
+              </table>
+          </div>
+
           
         </div>
-    </div>
+    
   </div>
 
   <!-- Logout Confirmation Modal -->
