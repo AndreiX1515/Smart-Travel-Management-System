@@ -414,3 +414,64 @@ hr {
 .back-button i {
     font-size: 20px;                 /* Size of the back arrow icon */
 }
+
+
+/*bank details */
+
+
+.bank-details-container {
+    width: 100%;
+    max-width: 600px; /* Maximum width for better presentation */
+    margin: 20px auto; /* Center the container */
+    padding: 20px;
+    border: 1px solid #d0d0d0; /* Light border */
+    border-radius: 8px; /* Rounded corners */
+    background-color: #f9f9f9; /* Light background */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+h3 {
+    margin-bottom: 15px; /* Spacing below headings */
+    color: #333; /* Heading color */
+}
+
+.bank-detail-row {
+    display: flex; /* Use flexbox for rows */
+    justify-content: space-between; /* Space between columns */
+    padding: 10px 0; /* Padding for better spacing */
+    border-bottom: 1px solid #d0d0d0; /* Divider between rows */
+}
+
+.bank-detail-row:last-child {
+    border-bottom: none; /* No border for last row */
+}
+
+.bank-detail-col {
+    flex: 1; /* Each column takes equal width */
+    margin-right: 15px; /* Spacing between columns */
+}
+
+.bank-detail-col:last-child {
+    margin-right: 0; /* No margin for last column */
+}
+
+label {
+    font-weight: bold; /* Bold labels */
+    color: #555; /* Darker label color */
+}
+
+p {
+    margin: 0; /* Remove margin for paragraphs */
+    color: #444; /* Darker text color */
+}
+
+.attachment {
+    width: 100%; /* Full width for attachment input */
+    height: 30%; /* Set height to about 20% of the container */
+    margin-top: 15px; /* Space above attachment input */
+    padding: 10px; /* Padding for attachment input */
+    border: 1px solid #d0d0d0; /* Light border */
+    border-radius: 4px; /* Slightly rounded corners */
+    background-color: #fff; /* White background */
+    color: #333; /* Dark text color */
+}

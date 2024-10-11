@@ -38,7 +38,7 @@
 
                 <div class="billing-options mt-4" >
                     <!-- GCash Payment Option -->
-                    <div class="billing-card" data-value="monthly">
+                    <!-- <div class="billing-card" data-value="monthly">
                         <div class="radiobutton-container">
                             <input type="radio" name="billing" checked>
                         </div>
@@ -48,7 +48,7 @@
                         </div>
                     </div>
                 
-                    <!-- Maya Payment Option -->
+                    <!-- Maya Payment Option 
                     <div class="billing-card" data-value="yearly">
                         <div class="radiobutton-container">
                             <input type="radio" name="billing">
@@ -59,7 +59,7 @@
                         </div>
                     </div>
                 
-                    <!-- Credit Card Payment Option -->
+                    <!-- Credit Card Payment Option 
                     <div class="billing-card" data-value="credit-card">
                         <div class="radiobutton-container">
                             <input type="radio" name="billing">
@@ -68,7 +68,7 @@
                             <i class="fas fa-credit-card" style="font-size: 52px;"></i>
                             <span>Credit Card</span>
                         </div>
-                    </div>
+                    </div> -->
                 
                     <!-- Bank Transfer Payment Option -->
                     <div class="billing-card" data-value="bank-transfer">
@@ -88,9 +88,42 @@
                 <!-- <div class="header-container d-flex flex-row justify-content-between mb-2">
                     <h4 class="mb-2">Add payment method</h4>
                 </div> -->
+                
+                    <h3>Bank Details</h3>
+                    <div class="bank-detail-row">
+                        <div class="bank-detail-col">
+                            <label for="bank-name">Bank Name:</label>
+                            <p id="bank-name">Banco De Oro (BDO)</p>
+                        </div>
+                        <div class="bank-detail-col">
+                            <label for="account-name">Account Name:</label>
+                            <p id="account-name">Hyung Sub Kim (Nickname: Jed Kim)</p>
+                        </div>
+                    </div>
+                    <div class="bank-detail-row">
+                        <div class="bank-detail-col">
+                            <label for="account-number">Account Number (PH - Peso):</label>
+                            <p id="account-number">00780020352</p>
+                        </div>
+                        <!-- <div class="bank-detail-col">
+                            <label for="swift-code">SWIFT Code:</label>
+                            <p id="swift-code">BOW12345</p>
+                        </div> -->
+                    </div>
 
+                    <div class="bank-detail-row">
+                        <div class="bank-detail-col">
+                            <label for="account-number">Account Number (US - Dollar):</label>
+                            <p id="account-number">10780018789</p>
+                        </div>
+                        <!-- <div class="bank-detail-col">
+                            <label for="swift-code">SWIFT Code:</label>
+                            <p id="swift-code">BOW12345</p>
+                        </div> -->
+                    </div>
                 
-                
+                    <h3 class="mt-4">Attach Screenshot:</h3>
+                    <input type="file" id="attachment" class="attachment" accept="image/*">
             </div>
 
         </div>
