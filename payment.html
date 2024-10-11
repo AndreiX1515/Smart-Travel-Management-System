@@ -23,85 +23,79 @@
 </head>
 
 <body>
+    <a href="#" class="back-button">
+        <i class="fas fa-arrow-left"></i>
+    </a>
+
     <div class="container">
         <div class="subscription">
-            <h4 class="mb-4">Your subscription to the Teams plan</h4>
-    
-            <!-- Add Seats Section -->
-           
-                <div class="section section-1 px-3">
-                    <div class="header-container d-flex flex-row justify-content-between ">
-                        <h4>1. Add seats to your subscription</h4>
-                        <a href="#">Tiered Pricing</a>
-                    </div>
+            <h3 class="ms-3">Payment Details</h3>
 
-                    <div class="seats">
-                        <button class="btn">-</button>
-                        <span class="seats-count">1</span>
-                        <button class="btn">+</button>
-                    </div>
-                </div>
-    
-            <!-- Billing Cycle Section -->
-            <div class="section section-2 px-3">
+            <div class="section section-1 px-3">
                 <div class="header-container d-flex flex-row justify-content-between mb-2">
-                    <h4>Add payment method</h4>
+                    <h4>Choose Payment Method</h4>
                 </div>
 
-                <div class="billing-options">
+                <div class="billing-options mt-4" >
+                    <!-- GCash Payment Option -->
                     <div class="billing-card" data-value="monthly">
                         <div class="radiobutton-container">
                             <input type="radio" name="billing" checked>
                         </div>
                         <div class="payment-logo">
                             <img src="assets/images/GCash Logo/gcash-seeklogo.svg" alt="GCash Logo" width="100" height="80">
-                            <div class="text-container">
-                                <span>Pay with GCash</span>
-                            </div>
+                            <span>Pay with GCash</span>
                         </div>
                     </div>
                 
+                    <!-- Maya Payment Option -->
                     <div class="billing-card" data-value="yearly">
                         <div class="radiobutton-container">
                             <input type="radio" name="billing">
                         </div>
                         <div class="payment-logo">
                             <img src="assets/images/Maya_logo.svg" alt="Maya Logo" width="100" height="80">
-                            <div class="text-container">
-                                <span>Pay with Maya</span>
-                            </div>
+                            <span>Pay with Maya</span>
                         </div>
                     </div>
                 
+                    <!-- Credit Card Payment Option -->
                     <div class="billing-card" data-value="credit-card">
                         <div class="radiobutton-container">
                             <input type="radio" name="billing">
                         </div>
-                        <div class="payment-logo">
-                            <i class="fa-solid fa-credit-card fa-4x"></i>
-                            <div class="text-container">
-                                <span>Credit Card</span>
-                            </div>
+                        <div class="payment-logo" style="margin-top: 10px;">
+                            <i class="fas fa-credit-card" style="font-size: 52px;"></i>
+                            <span>Credit Card</span>
                         </div>
                     </div>
                 
+                    <!-- Bank Transfer Payment Option -->
                     <div class="billing-card" data-value="bank-transfer">
                         <div class="radiobutton-container">
                             <input type="radio" name="billing">
                         </div>
-                        <div class="payment-logo">
-                            <i class="fa-solid fa-money-bill-transfer fa-4x"></i>
-                            <div class="text-container">
-                                <span>Bank Transfer</span>
-                            </div>
+                        <div class="payment-logo" style="margin-top: 10px;">
+                            <i class="fas fa-money-bill-transfer" style="font-size: 52px;"></i>
+                            <span>Bank Transfer</span>
                         </div>
                     </div>
                 </div>
                 
+            </div>
+
+            <div class="section section-1 px-3">
+                <!-- <div class="header-container d-flex flex-row justify-content-between mb-2">
+                    <h4 class="mb-2">Add payment method</h4>
+                </div> -->
+
+                
+                
+            </div>
+
         </div>
-    
             <!-- Add-ons Section -->
-            <div class="section section-3 px-3">
+            <!-- <div class="section section-3 px-3">
                 <div class="header-container d-flex flex-row justify-content-between mb-2">
                     <h4>3. Select add-ons</h4>
                 </div>
@@ -114,10 +108,10 @@
                     </label>
                 </div>
 
-            </div>
+            </div> -->
     
             <!-- Payment Method Section -->
-            <div class="section section-4 px-3">
+            <!-- <div class="section section-4 px-3">
                 <div class="header-container d-flex flex-row justify-content-between mb-2">
                     <h4>4. Add payment method</h4>
                 </div>
@@ -130,15 +124,16 @@
                     </div>
                 </div>
 
-            </div>
-        </div>
+            </div> -->
+       
+
     
         <div class="order-summary">
             <div class="row">
                 <div class="col-sm">
                     <div class="d-flex justify-content-between mb-1">
-                        <p class="mb-0"><strong>Subtotal:</strong></p>
-                        <p class="mb-0">₱ 30000</p>
+                        <p class="mb-0"><strong>Flight Price:</strong></p>
+                        <p class="mb-0">₱ 30,000</p> <!-- Added commas for better readability -->
                     </div>
                 </div>
             </div>
@@ -147,7 +142,7 @@
                 <div class="col-sm">
                     <div class="d-flex justify-content-between mb-1">
                         <p class="mb-0"><strong>Downpayment:</strong></p>
-                        <p class="mb-0">₱ 2000</p>
+                        <p class="mb-0">₱ 2,000</p> <!-- Added commas for better readability -->
                     </div>
                 </div>
             </div>
@@ -155,20 +150,42 @@
             <div class="row">
                 <div class="col-sm">
                     <div class="d-flex justify-content-between mb-1">
-                        <p class="mb-0">₱1000 per pax.</p>
+                        <p class="mb-0">₱ 1,000 per pax.</p> <!-- Added space for better readability -->
                     </div>
                 </div>
             </div>
 
+            <hr>
+
             <div class="row">
                 <div class="col-sm">
                     <div class="d-flex justify-content-between mb-1">
-                        <p class="mb-0"><strong>Subtotal:</strong></p>
-                        <p class="mb-0">₱ 30000</p>
+                        <p class="mb-0"><strong>Total:</strong></p>
+                        <p class="mb-0">₱ 30,000</p> <!-- Added commas for better readability -->
                     </div>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="row mt-4">
+                <div class="col-sm">
+                    <div class="d-flex align-items-left mb-3"> <!-- Align items center for checkbox -->
+                        <input type="checkbox" class="ms-1 me-3"> <!-- Added margin to the checkbox -->
+                            <div class="checkbox-text">
+                                <span>
+                                By clicking this, I agree to Smart Travel <a href="#" class="terms-link">Terms & Conditions</a> and <a href="#" class="privacy-link">Privacy Policy</a>
+                            </span>
+
+                            </div>
+                    </div>
+                    <button class="pay-button">Pay Now</button>
                 </div>
             </div>
         </div>
+
+
+        
     </div> 
 </div>
     
