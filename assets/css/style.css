@@ -244,7 +244,7 @@ body {
 .hero-slider {
     position: relative;
     overflow: hidden;
-    height: 100vh; /* Set height to 70% of the viewport height */
+    height: 80vh; /* Set height to 70% of the viewport height */
     width: 100vw; /* Full width */
     transition: background-color 0.5s ease; /* Smooth background transition */
     z-index: 4;

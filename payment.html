@@ -18,15 +18,170 @@
     <!-- Favicons -->
     <link href="assets/images/rsz_logo-tab.png" rel="icon">
     <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <link rel="stylesheet" href="assets\css\payment.css">
 </head>
 
-
 <body>
+    <div class="container">
+        <div class="subscription">
+            <h4 class="mb-4">Your subscription to the Teams plan</h4>
+    
+            <!-- Add Seats Section -->
+           
+                <div class="section section-1 px-3">
+                    <div class="header-container d-flex flex-row justify-content-between ">
+                        <h4>1. Add seats to your subscription</h4>
+                        <a href="#">Tiered Pricing</a>
+                    </div>
+
+                    <div class="seats">
+                        <button class="btn">-</button>
+                        <span class="seats-count">1</span>
+                        <button class="btn">+</button>
+                    </div>
+                </div>
+    
+            <!-- Billing Cycle Section -->
+            <div class="section section-2 px-3">
+                <div class="header-container d-flex flex-row justify-content-between mb-2">
+                    <h4>Add payment method</h4>
+                </div>
+
+                <div class="billing-options">
+                    <div class="billing-card" data-value="monthly">
+                        <div class="radiobutton-container">
+                            <input type="radio" name="billing" checked>
+                        </div>
+                        <div class="payment-logo">
+                            <img src="assets/images/GCash Logo/gcash-seeklogo.svg" alt="GCash Logo" width="100" height="80">
+                            <div class="text-container">
+                                <span>Pay with GCash</span>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div class="billing-card" data-value="yearly">
+                        <div class="radiobutton-container">
+                            <input type="radio" name="billing">
+                        </div>
+                        <div class="payment-logo">
+                            <img src="assets/images/Maya_logo.svg" alt="Maya Logo" width="100" height="80">
+                            <div class="text-container">
+                                <span>Pay with Maya</span>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div class="billing-card" data-value="credit-card">
+                        <div class="radiobutton-container">
+                            <input type="radio" name="billing">
+                        </div>
+                        <div class="payment-logo">
+                            <i class="fa-solid fa-credit-card fa-4x"></i>
+                            <div class="text-container">
+                                <span>Credit Card</span>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div class="billing-card" data-value="bank-transfer">
+                        <div class="radiobutton-container">
+                            <input type="radio" name="billing">
+                        </div>
+                        <div class="payment-logo">
+                            <i class="fa-solid fa-money-bill-transfer fa-4x"></i>
+                            <div class="text-container">
+                                <span>Bank Transfer</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                
+        
+        </div>
+    
+            <!-- Add-ons Section -->
+            <div class="section section-3 px-3">
+                <div class="header-container d-flex flex-row justify-content-between mb-2">
+                    <h4>3. Select add-ons</h4>
+                </div>
+
+                <div class="addon">
+                    <input type="checkbox" id="sso">
+                    <label for="sso">
+                        SAML single sign-on (SSO) - $3 per seat / month<br>
+                        <span class="addon-desc">A secure way to control access to Calendly and simplify the sign-on process</span>
+                    </label>
+                </div>
+
+            </div>
+    
+            <!-- Payment Method Section -->
+            <div class="section section-4 px-3">
+                <div class="header-container d-flex flex-row justify-content-between mb-2">
+                    <h4>4. Add payment method</h4>
+                </div>
+
+                <div class="payment-method">
+                    <input type="radio" name="payment" checked> Credit card <span class="secure">Secure payment</span><br>
+                    <div class="card-info">
+                        <img src="visa.png" alt="Visa">
+                        <button>Save with link</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    
+        <div class="order-summary">
+            <h2>Order summary</h2>
+            <div class="summary-details">
+                <p><strong>Teams Monthly Subscription</strong></p>
+                <p>1 seat x $20 x 1 month</p>
+                <p>$20 USD</p>
+            </div>
+            <div class="summary-tax">
+                <p>Sales Tax</p>
+                <a href="#">Submit tax-exempt documentation</a>
+                <p>$0 USD</p>
+            </div>
+            <hr>
+            <div class="total-due">
+                <p><strong>Total Due Today</strong></p>
+                <p>$20 USD</p>
+                <p>You’ll be charged this amount every month unless you change or cancel your subscription.</p>
+            </div>
+            <button class="purchase-btn">Purchase</button>
+        </div>
+    </div>
+    
     
 
 
 
+
 </body>
+
+    <script>
+        document.querySelectorAll('.billing-card').forEach(card => {
+            card.addEventListener('click', function() {
+                // Remove "active" class from all billing cards
+                document.querySelectorAll('.billing-card').forEach(item => item.classList.remove('active'));
+                
+                // Add "active" class to the clicked billing card
+                card.classList.add('active');
+                
+                // Check the input radio button within the clicked card
+                card.querySelector('input[type="radio"]').checked = true;
+            });
+        });
+
+
+
+    </script>
+
 
     <!-- Popper CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
