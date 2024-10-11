@@ -140,10 +140,18 @@
             </div>
 
             <div class="card-footer">
+<<<<<<< HEAD
               <h4> <label>Price: ₱ <span id="flightPrice" ></span>
                   <!-- <input style="border: none; outline: none;" id="flightPrice" name="flightPrice" value="0.00" readonly> -->
                 </label> 
               </h4>
+=======
+              <h2>
+                <label for="">Price: ₱ 
+                  <input style="border: none; outline: none;" id="flightPrice" name="flightPrice" value="0.00" readonly>
+                </label> 
+              </h2>
+>>>>>>> 8d65e2bb58a3ee58005f5bccf777efeea6a46653
             </div>
           </div>
 
@@ -249,6 +257,7 @@
                       <input type="text" name="passportNo[]" class="form-control" placeholder="Enter Passport No" required>
                     </div>
                   </div>
+<<<<<<< HEAD
 
                   <div class="col-md-6">
                     <div class="form-group mb-3">
@@ -446,6 +455,113 @@
 </div>
 
   
+=======
+
+                  <div class="col-md-6">
+                    <div class="form-group mb-3">
+                      <label class="mb-2" for="passportExp">Date of Expiration: <span class="text-danger fw-bold">*</span></label>
+                      <input type="date" name="passportExp[]" class="form-control" required>
+                    </div>
+                  </div>
+
+                </div>
+
+                <!-- Contact Information Group -->
+                <div class="row mb-3 ">
+                  <div class="header-container d-flex flex-row w-100 mb-3 ">
+                    <h5 class="card-title bg-primary text-white p-3 w-100">Contact Information</h5>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="form-group mb-3">
+                      <label class="mb-2" for="contactNo">Contact No. <span class="text-danger fw-bold">*</span></label>
+                      <input type="text" name="contactNo[]" class="form-control" placeholder="Enter Contact No" required>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="form-group mb-3">
+                      <label class="mb-2" for="email">Email <span class="text-danger fw-bold">*</span></label>
+                      <input type="email" name="email[]" class="form-control" placeholder="Enter Email Address" required>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Address Information Group -->
+                <div class="row mb-3">
+                  <div class="header-container d-flex flex-row w-100 mb-3">
+                    <h5 class="card-title bg-primary text-white p-3 w-100">Address Information</h5>
+                  </div>
+
+                    <div class="col-md-2">
+                      <div class="form-group mb-3">
+                        <label class="mb-2" for="houseNo">House No. <span class="text-danger fw-bold">*</span></label>
+                        <input type="text" name="houseNo[]" class="form-control" placeholder="Enter House No" required>
+                      </div>
+                    </div>
+
+                    <div class="col-md-3">
+                      <div class="form-group mb-3">
+                        <label class="mb-2" for="street">Street</label>
+                        <input type="text" name="street[]" class="form-control" placeholder="Enter Street (Optional)">
+                      </div>
+                    </div>
+
+                    <div class="col-md-3">
+                      <div class="form-group mb-3">
+                        <label class="mb-2" for="subdivision">Subdivision</label>
+                        <input type="text" name="subdivision[]" class="form-control" placeholder="Enter Subdivision (Optional)">
+                      </div>
+                    </div>
+
+                    <div class="col-md-4">
+                      <div class="form-group mb-3">
+                        <label class="mb-2" for="barangay">Barangay <span class="text-danger fw-bold">*</span></label>
+                        <input type="text" name="barangay[]" class="form-control" placeholder="Enter Barangay" required>
+                      </div>
+                    </div>
+
+                    <div class="col-md-4">
+                      <div class="form-group mb-3">
+                        <label class="mb-2" for="city">City <span class="text-danger fw-bold">*</span></label>
+                        <input type="text" name="city[]" class="form-control" placeholder="Enter City" required>
+                      </div>
+                    </div>
+
+                    <div class="col-md-4">
+                      <div class="form-group mb-3">
+                        <label class="mb-2" for="country">Country <span class="text-danger fw-bold">*</span></label>
+                        <select class="form-select" name="country[]" required>
+                          <option selected disabled>Select Country</option>
+                          <option value="China">China</option>
+                          <option value="Japan">Japan</option>
+                          <option value="Korea">Korea</option>
+                          <option value="Philippines">Philippines</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="paste-new-forms"></div>
+
+            <div class="my-4">
+              <div class="card mt-2 ">
+                <div class="card-header d-flex justify-content-between align-items-center py-4">
+                  <h5 class="align-items-center pt-2 fw-bolder">Total Price: ₱ <span id="displayTotalPrice">0</span></h5>
+                  <button type="submit" name="bookNow" class="btn btn-primary p-2 px-3">Book Now</button>
+                </div>
+                <input type="hidden" id="totalPrice" name="totalPrice">    
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+>>>>>>> 8d65e2bb58a3ee58005f5bccf777efeea6a46653
 
 
   <!-- Bootstrap JS Bundle with Popper -->
@@ -502,9 +618,13 @@
 
           // Add the new form to the container and show it with a slide-down effect
           guestForm.hide().appendTo('.paste-new-forms').slideDown();
+<<<<<<< HEAD
 
           // Initialize event listeners for the first form
            calculateTotalPrice();
+=======
+          calculateTotalPrice();
+>>>>>>> 8d65e2bb58a3ee58005f5bccf777efeea6a46653
       });
 
     
