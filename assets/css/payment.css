@@ -1,6 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
-
-
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
 
 body {
     font-family: 'Roboto', sans-serif;
@@ -17,7 +15,8 @@ body {
     gap: 20px;
 }
 
-.subscription, .order-summary {
+.subscription,
+.order-summary {
     background-color: white;
     border-radius: 10px;
     padding: 20px;
@@ -32,60 +31,64 @@ body {
     flex: 1;
 }
 
+.summary-details p,
+.summary-tax p,
+.total-due p {
+    margin: 5px 0; /* Uniform margin for all paragraphs */
+}
+
+.purchase-btn {
+    width: 100%;
+    max-width: 200px; /* Optional: Set max width for button */
+    background-color: #007bff; /* Button color */
+    color: white; /* Button text color */
+    border: none; /* Remove border */
+    padding: 10px; /* Padding for button */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+.purchase-btn:hover {
+    background-color: #0056b3; /* Darker button color on hover */
+}
 
 .section {
-    margin-bottom: 20px;
+    margin-bottom: 20px; /* Space between sections */
 }
 
-.section-1 {
-    border: 1px solid black;
-    border-radius: 5px;
-    padding: 20px 10px
+.section h4 {
+    font-size: 16px; /* Consistent heading size */
+    font-weight: 700; /* Bold text */
 }
 
-.section-1 h4{
-    font-size: 16px;
-    font-weight: 700;
-}
-
-.section-1 .header-container {
-    margin-bottom: 10px;
+.section-content {
+    border: 1px solid black; /* Uniform border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 20px 10px; /* Padding for content */
 }
 
 .seats {
-    border: 1px solid black;
-    background-color: #eee;
-    border-radius: 10px;    
-    width: 130px;
-    padding: 5px 5px;
-    margin: 0px 0px 5px 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between seats */
 }
 
-.seats span{
-    border: 1px solid black;
-    padding: 0px 15px;
-    background-color: #ffffff;
+.seats .btn {
+    background-color: #eee; /* Button color */
+    border: none; /* Remove border */
+    padding: 5px 10px; /* Padding for buttons */
+    cursor: pointer; /* Pointer cursor on hover */
 }
 
-
-
-
-.section-2 {
-    border: 1px solid black;
-    border-radius: 5px;
-    padding: 20px 10px
+.seats .seats-count {
+    font-weight: bold; /* Bold text for seat count */
 }
 
-.section-2 h4{
-    font-size: 16px;
-    font-weight: 700;
+.addon-desc {
+    font-size: 12px; /* Smaller font size for add-on description */
+    color: gray; /* Gray text color */
 }
-
-.section-2 .header-container {
-    margin-bottom: 10px;
-}
-
-
 
 .billing-options {
     display: flex; /* Display billing cards in a row */
@@ -142,93 +145,6 @@ body {
     font-weight: bold; /* Make save text bold */
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.section-3 {
-    border: 1px solid black;
-    border-radius: 5px;
-    padding: 20px 10px
-}
-
-.section-3 h4{
-    font-size: 16px;
-}
-
-.section-4 {
-    border: 1px solid black;
-    border-radius: 5px;
-    padding: 20px 10px
-}
-
-.section-4 h4{
-    font-size: 16px;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.seats {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.seats .btn {
-    background-color: #eee;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-}
-
-.seats .seats-count {
-    font-weight: bold;
-}
-
-
-
-.addon-desc {
-    font-size: 12px;
-    color: gray;
-}
-
-.payment-method {
-    border-top: 1px solid #ccc;
-    padding-top: 10px;
-}
-
 .card-info {
     display: flex;
     align-items: center;
@@ -236,35 +152,17 @@ body {
 }
 
 .card-info img {
-    height: 30px;
-}
-
-.purchase-btn {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 100%;
-}
-
-.purchase-btn:hover {
-    background-color: #0056b3;
-}
-
-.order-summary h2 {
-    text-align: center;
-}
-
-.summary-details p, .summary-tax p, .total-due p {
-    margin: 5px 0;
+    height: 30px; /* Set height for card images */
 }
 
 hr {
-    border: 0.5px solid #ccc;
+    border: 0.5px solid #ccc; /* Horizontal rule styling */
 }
 
 .total-due p {
-    font-weight: bold;
+    font-weight: bold; /* Bold text for total due */
+}
+
+.order-summary h2 {
+    text-align: center; /* Center-align order summary heading */
 }
