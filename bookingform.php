@@ -60,20 +60,16 @@
 
 
         <form action="bookingform-code.php" method="POST">
-
-        <div class="card">
+          <div class="card">
             <div class="card-header bg-secondary text-white text-light">
               <h4 class="my-2 px-2">Flight Details</h4>
             </div>
 
             <div class="card-body p-4">
-
               <div class="row">
-
                 <div class="col-md-6 mb-3">
                   <div class="form-group mb-6">
                     <label for="agent">Select Agent <span class="text-danger fw-bold">*</span></label>
-
                     <select class="form-select mt-2" id="agentId" name="agentId" required>
                       <option selected disabled>Select Agent</option>
                       <option value="">None</option>
@@ -88,15 +84,12 @@
                         }
                       ?>
                     </select>
-                    
                   </div>
                 </div>
 
                 <div class="col-md-6">
                   <div class="form-group mb-6">
-
                     <label for="packageName">Package <span class="text-danger fw-bold">*</span></label>
-
                     <select class="form-select mt-2" id="packageName" name="packageName" required>
                       <option selected disabled>Select Package</option>
                       <?php
@@ -106,261 +99,257 @@
                         }
                       ?>
                     </select>
-
                   </div>
                 </div>
-
               </div>
 
               <div class="row">
-
-                  <div class="col-md-6">
-                    <div class="form-group mb-6">
-                      <label class="mb-2" for="origin">Origin <span class="text-danger fw-bold">*</span></label>
-                      <select class="form-select" id="origin" name="origin" required>
-                        <option selected disabled>Select Origin</option>
-                      </select>
-                    </div>
-                 </div>
-
-                  <div class="col-md-6">
-                    <div class="form-group mb-6">
-                      <label class="mb-2" for="outboundFlight">Flight Date <span class="text-danger fw-bold">*</span></label>
-                      <select class="form-select" id="outboundFlight" name="outboundFlight" required>
-                        <option selected disabled>Select Flight Available Dates</option>
-                      </select>
-                    </div>
+                <div class="col-md-6">
+                  <div class="form-group mb-6">
+                    <label class="mb-2" for="origin">Origin <span class="text-danger fw-bold">*</span></label>
+                    <select class="form-select" id="origin" name="origin" required>
+                      <option selected disabled>Select Origin</option>
+                    </select>
                   </div>
+                </div>
 
+                <div class="col-md-6">
+                  <div class="form-group mb-6">
+                    <label class="mb-2" for="outboundFlight">Flight Date <span class="text-danger fw-bold">*</span></label>
+                    <select class="form-select" id="outboundFlight" name="outboundFlight" required>
+                      <option selected disabled>Select Flight Available Dates</option>
+                    </select>
+                  </div>
+                </div>
               </div>
 
-                <div class="row">
-
-                  <div class="col-md-6">
-                    <div class="form-group mb-6">
-                      <input type="hidden" id="returnFlight" name="returnFlight" class="form-control" readonly>
-                    </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group mb-6">
+                    <input type="hidden" id="returnFlight" name="returnFlight" class="form-control" readonly>
                   </div>
+                </div>
 
-                  <div class="col-md-6">
-                    <div class="form-group mb-6">
-                      <input type="hidden" id="flightId" name="flightId" value="">
-                    </div>
+                <div class="col-md-6">
+                  <div class="form-group mb-6">
+                    <input type="hidden" id="flightId" name="flightId" value="">
                   </div>
-
+                </div>
               </div>
             </div>
-        </div>
 
-  <!-- Guest Information Card -->
-  <div class="card mt-4 guest-form shadow-sm">
-
-    <div class="card-header bg-secondary text-white">
-        <h4 class="mb-3 font-weight-bold">Guest Information 1</h4>
-        <button class="btn btn-sm btn-outline-light float-end" type="button" data-bs-toggle="collapse" data-bs-target="#cardBodyContent" aria-expanded="true" aria-controls="cardBodyContent">
-          Toggle
-        </button>
-    </div>
-
-    <input type="hidden" name="accId" value="<?php echo $_SESSION['accountid']; ?>">
-
-    <div id="cardBodyContent" class="card-body collapse show">
-      <div class="main-form mt-3">
-        
-        <!-- Personal Information Group -->
-
-        <div class="header-container d-flex flex-row w-100 mb-3">
-          <h5 class="card-title bg-primary text-white p-3 w-100">Personal Information</h5>
-        </div>
-
-        <div class="row mb-3">
-          <div class="col-md-3">
-            <div class="form-group mb-3">
-              <label class="mb-2" for="fName">First Name <span class="text-danger fw-bold">*</span></label>
-              <input type="text" name="fName[]" class="form-control" placeholder="Enter First Name" required>
+            <div class="card-footer">
+              <h2>
+                <label for="">Price: ₱ 
+                  <input style="border: none; outline: none;" id="flightPrice" name="flightPrice" value="0.00" readonly>
+                </label> 
+              </h2>
             </div>
           </div>
 
-          <div class="col-md-3">
-            <div class="form-group mb-3">
-              <label class="mb-2" for="lName">Last Name <span class="text-danger fw-bold">*</span> </label>
-              <input type="text" name="lName[]" class="form-control" placeholder="Enter Last Name" required>
+          <!-- Guest Information Card -->
+          <div class="card mt-4 guest-form shadow-sm">
+            <div class="card-header bg-secondary text-white">
+              <h4 class="mb-3 font-weight-bold">Guest Information 1</h4>
+              <button class="btn btn-sm btn-outline-light float-end" type="button" data-bs-toggle="collapse" data-bs-target="#cardBodyContent" aria-expanded="true" aria-controls="cardBodyContent">
+                Toggle
+              </button>
             </div>
-          </div>
 
-          <div class="col-md-3">
-            <div class="form-group mb-3">
-              <label class="mb-2" for="mName">Middle Name</label>
-              <input type="text" name="mName[]" class="form-control" placeholder="Enter Middle Name (Optional)">
-            </div>
-          </div>
+            <input type="hidden" name="accId" value="<?php echo $_SESSION['accountid']; ?>">
 
-          <div class="col-md-3">
-            <div class="form-group mb-3">
-              <label class="mb-2" for="suffix">Suffix</label>
-              <select class="form-select" name="suffix[]">
-                <option selected disabled>Select Suffix</option>
-                <option value="Jr.">Jr.</option>
-                <option value="Sr.">Sr.</option>
-                <option value="II">II</option>
-                <option value="III">III</option>
-                <option value="IV">IV</option>
-                <option value="V">V</option>
-                <option value="">None</option>
-              </select>
-            </div>
-          </div>
+            <div id="cardBodyContent" class="card-body collapse show">
+              <div class="main-form mt-3">
+                
+                <!-- Personal Information Group -->
+                <div class="header-container d-flex flex-row w-100 mb-3">
+                  <h5 class="card-title bg-primary text-white p-3 w-100">Personal Information</h5>
+                </div>
+
+                <div class="row mb-3">
+                  <div class="col-md-3">
+                    <div class="form-group mb-3">
+                      <label class="mb-2" for="fName">First Name <span class="text-danger fw-bold">*</span></label>
+                      <input type="text" name="fName[]" class="form-control" placeholder="Enter First Name" required>
+                    </div>
+                  </div>
+
+                  <div class="col-md-3">
+                    <div class="form-group mb-3">
+                      <label class="mb-2" for="lName">Last Name <span class="text-danger fw-bold">*</span> </label>
+                      <input type="text" name="lName[]" class="form-control" placeholder="Enter Last Name" required>
+                    </div>
+                  </div>
+
+                  <div class="col-md-3">
+                    <div class="form-group mb-3">
+                      <label class="mb-2" for="mName">Middle Name</label>
+                      <input type="text" name="mName[]" class="form-control" placeholder="Enter Middle Name (Optional)">
+                    </div>
+                  </div>
+
+                  <div class="col-md-3">
+                    <div class="form-group mb-3">
+                      <label class="mb-2" for="suffix">Suffix</label>
+                      <select class="form-select" name="suffix[]">
+                        <option selected disabled>Select Suffix</option>
+                        <option value="Jr.">Jr.</option>
+                        <option value="Sr.">Sr.</option>
+                        <option value="II">II</option>
+                        <option value="III">III</option>
+                        <option value="IV">IV</option>
+                        <option value="V">V</option>
+                        <option value="">None</option>
+                      </select>
+                    </div>
+                  </div>
+                  
+
+                  <div class="col-md-3">
+                    <div class="form-group mb-3">
+                      <label class="mb-2" for="birthdate">Birthdate <span class="text-danger fw-bold">*</span> </label>
+                      <input type="date" name="birthdate[]" class="form-control" required>
+                    </div>
+                  </div>
+
+                  <div class="col-md-3">
+                    <div class="form-group mb-3">
+                      <label class="mb-2" for="age">Age <span class="text-danger fw-bold">*</span> </label>
+                      <input type="number" name="age[]" class="form-control" placeholder="Enter Age" required>
+                    </div>
+                  </div>
+
+                  <div class="col-md-3">
+                    <div class="form-group mb-3">
+                      <label class="mb-2" for="sex">Sex <span class="text-danger fw-bold">*</span> </label>
+                      <select class="form-select" name="sex[]" required>
+                        <option selected disabled>Select Sex</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                      </select>
+                    </div>
+                  </div>
           
+                  <div class="col-md-3">
+                    <div class="form-group mb-3">
+                      <label class="mb-2" for="nationality">Nationality <span class="text-danger fw-bold">*</span> </label>
+                      <select class="form-select" name="nationality[]" required>
+                        <option selected disabled>Select Nationality</option>
+                        <option value="Chinese">Chinese</option>
+                        <option value="Filipino">Filipino</option>
+                        <option value="Japanese">Japanese</option>
+                        <option value="Korean">Korean</option>
+                      </select>
+                    </div>
+                  </div>
 
-          <div class="col-md-3">
-            <div class="form-group mb-3">
-              <label class="mb-2" for="birthdate">Birthdate <span class="text-danger fw-bold">*</span> </label>
-              <input type="date" name="birthdate[]" class="form-control" required>
-            </div>
-          </div>
+                  <div class="col-md-6">
+                    <div class="form-group mb-3">
+                      <label class="mb-2" for="passportNo">Passport No. <span class="text-danger fw-bold">*</span></label>
+                      <input type="text" name="passportNo[]" class="form-control" placeholder="Enter Passport No" required>
+                    </div>
+                  </div>
 
-          <div class="col-md-3">
-            <div class="form-group mb-3">
-              <label class="mb-2" for="age">Age <span class="text-danger fw-bold">*</span> </label>
-              <input type="number" name="age[]" class="form-control" placeholder="Enter Age" required>
-            </div>
-          </div>
+                  <div class="col-md-6">
+                    <div class="form-group mb-3">
+                      <label class="mb-2" for="passportExp">Date of Expiration: <span class="text-danger fw-bold">*</span></label>
+                      <input type="date" name="passportExp[]" class="form-control" required>
+                    </div>
+                  </div>
 
-          <div class="col-md-3">
-            <div class="form-group mb-3">
-              <label class="mb-2" for="sex">Sex <span class="text-danger fw-bold">*</span> </label>
-              <select class="form-select" name="sex[]" required>
-                <option selected disabled>Select Sex</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-              </select>
-            </div>
-          </div>
-  
-          <div class="col-md-3">
-            <div class="form-group mb-3">
-              <label class="mb-2" for="nationality">Nationality <span class="text-danger fw-bold">*</span> </label>
-              <select class="form-select" name="nationality[]" required>
-                <option selected disabled>Select Nationality</option>
-                <option value="Chinese">Chinese</option>
-                <option value="Filipino">Filipino</option>
-                <option value="Japanese">Japanese</option>
-                <option value="Korean">Korean</option>
-              </select>
-            </div>
-          </div>
+                </div>
 
-          <div class="col-md-6">
-            <div class="form-group mb-3">
-              <label class="mb-2" for="passportNo">Passport No. <span class="text-danger fw-bold">*</span></label>
-              <input type="text" name="passportNo[]" class="form-control" placeholder="Enter Passport No" required>
-            </div>
-          </div>
+                <!-- Contact Information Group -->
+                <div class="row mb-3 ">
+                  <div class="header-container d-flex flex-row w-100 mb-3 ">
+                    <h5 class="card-title bg-primary text-white p-3 w-100">Contact Information</h5>
+                  </div>
 
-          <div class="col-md-6">
-            <div class="form-group mb-3">
-              <label class="mb-2" for="passportExp">Date of Expiration: <span class="text-danger fw-bold">*</span></label>
-              <input type="date" name="passportExp[]" class="form-control" required>
-            </div>
-          </div>
+                  <div class="col-md-6">
+                    <div class="form-group mb-3">
+                      <label class="mb-2" for="contactNo">Contact No. <span class="text-danger fw-bold">*</span></label>
+                      <input type="text" name="contactNo[]" class="form-control" placeholder="Enter Contact No" required>
+                    </div>
+                  </div>
 
-        </div>
+                  <div class="col-md-6">
+                    <div class="form-group mb-3">
+                      <label class="mb-2" for="email">Email <span class="text-danger fw-bold">*</span></label>
+                      <input type="email" name="email[]" class="form-control" placeholder="Enter Email Address" required>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Address Information Group -->
+                <div class="row mb-3">
+                  <div class="header-container d-flex flex-row w-100 mb-3">
+                    <h5 class="card-title bg-primary text-white p-3 w-100">Address Information</h5>
+                  </div>
 
-        <!-- Contact Information Group -->
-        <div class="row mb-3 ">
-          <div class="header-container d-flex flex-row w-100 mb-3 ">
-            <h5 class="card-title bg-primary text-white p-3 w-100">Contact Information</h5>
-          </div>
+                    <div class="col-md-2">
+                      <div class="form-group mb-3">
+                        <label class="mb-2" for="houseNo">House No. <span class="text-danger fw-bold">*</span></label>
+                        <input type="text" name="houseNo[]" class="form-control" placeholder="Enter House No" required>
+                      </div>
+                    </div>
 
-          <div class="col-md-6">
-            <div class="form-group mb-3">
-              <label class="mb-2" for="contactNo">Contact No. <span class="text-danger fw-bold">*</span></label>
-              <input type="text" name="contactNo[]" class="form-control" placeholder="Enter Contact No" required>
-            </div>
-          </div>
+                    <div class="col-md-3">
+                      <div class="form-group mb-3">
+                        <label class="mb-2" for="street">Street</label>
+                        <input type="text" name="street[]" class="form-control" placeholder="Enter Street (Optional)">
+                      </div>
+                    </div>
 
-          <div class="col-md-6">
-            <div class="form-group mb-3">
-              <label class="mb-2" for="email">Email <span class="text-danger fw-bold">*</span></label>
-              <input type="email" name="email[]" class="form-control" placeholder="Enter Email Address" required>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Address Information Group -->
-      <div class="row mb-3">
-        <div class="header-container d-flex flex-row w-100 mb-3">
-          <h5 class="card-title bg-primary text-white p-3 w-100">Address Information</h5>
-        </div>
+                    <div class="col-md-3">
+                      <div class="form-group mb-3">
+                        <label class="mb-2" for="subdivision">Subdivision</label>
+                        <input type="text" name="subdivision[]" class="form-control" placeholder="Enter Subdivision (Optional)">
+                      </div>
+                    </div>
 
-          <div class="col-md-2">
-            <div class="form-group mb-3">
-              <label class="mb-2" for="houseNo">House No. <span class="text-danger fw-bold">*</span></label>
-              <input type="text" name="houseNo[]" class="form-control" placeholder="Enter House No" required>
-            </div>
-          </div>
+                    <div class="col-md-4">
+                      <div class="form-group mb-3">
+                        <label class="mb-2" for="barangay">Barangay <span class="text-danger fw-bold">*</span></label>
+                        <input type="text" name="barangay[]" class="form-control" placeholder="Enter Barangay" required>
+                      </div>
+                    </div>
 
-          <div class="col-md-3">
-            <div class="form-group mb-3">
-              <label class="mb-2" for="street">Street</label>
-              <input type="text" name="street[]" class="form-control" placeholder="Enter Street (Optional)">
-            </div>
-          </div>
+                    <div class="col-md-4">
+                      <div class="form-group mb-3">
+                        <label class="mb-2" for="city">City <span class="text-danger fw-bold">*</span></label>
+                        <input type="text" name="city[]" class="form-control" placeholder="Enter City" required>
+                      </div>
+                    </div>
 
-          <div class="col-md-3">
-            <div class="form-group mb-3">
-              <label class="mb-2" for="subdivision">Subdivision</label>
-              <input type="text" name="subdivision[]" class="form-control" placeholder="Enter Subdivision (Optional)">
-            </div>
-          </div>
-
-          <div class="col-md-4">
-            <div class="form-group mb-3">
-              <label class="mb-2" for="barangay">Barangay <span class="text-danger fw-bold">*</span></label>
-              <input type="text" name="barangay[]" class="form-control" placeholder="Enter Barangay" required>
-            </div>
-          </div>
-
-          <div class="col-md-4">
-            <div class="form-group mb-3">
-              <label class="mb-2" for="city">City <span class="text-danger fw-bold">*</span></label>
-              <input type="text" name="city[]" class="form-control" placeholder="Enter City" required>
-            </div>
-          </div>
-
-          <div class="col-md-4">
-            <div class="form-group mb-3">
-              <label class="mb-2" for="country">Country <span class="text-danger fw-bold">*</span></label>
-              <select class="form-select" name="country[]" required>
-                <option selected disabled>Select Country</option>
-                <option value="China">China</option>
-                <option value="Japan">Japan</option>
-                <option value="Korea">Korea</option>
-                <option value="Philippines">Philippines</option>
-              </select>
-            </div>
-          </div>
-      </div>
-      
-    </div>
-  </div>
-</div>
-
-          <div class="paste-new-forms"></div>
-
-          <div class="my-4">
-            <div class="card mt-2 ">
-
-              <div class="card-header d-flex justify-content-between align-items-center py-4">
-                <h5 class="align-items-center pt-2 fw-bolder">Total Price: ₱ <span id="displayTotalPrice">0</span></h5>
-                <button type="submit" name="bookNow" class="btn btn-primary p-2 px-3">Book Now</button>
+                    <div class="col-md-4">
+                      <div class="form-group mb-3">
+                        <label class="mb-2" for="country">Country <span class="text-danger fw-bold">*</span></label>
+                        <select class="form-select" name="country[]" required>
+                          <option selected disabled>Select Country</option>
+                          <option value="China">China</option>
+                          <option value="Japan">Japan</option>
+                          <option value="Korea">Korea</option>
+                          <option value="Philippines">Philippines</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-              
-              <input type="hidden" id="totalPrice" name="totalPrice">
-                        
+            </div>
+
+            <div class="paste-new-forms"></div>
+
+            <div class="my-4">
+              <div class="card mt-2 ">
+                <div class="card-header d-flex justify-content-between align-items-center py-4">
+                  <h5 class="align-items-center pt-2 fw-bolder">Total Price: ₱ <span id="displayTotalPrice">0</span></h5>
+                  <button type="submit" name="bookNow" class="btn btn-primary p-2 px-3">Book Now</button>
+                </div>
+                <input type="hidden" id="totalPrice" name="totalPrice">    
+              </div>
             </div>
           </div>
-
         </form>
       </div>
     </div>
@@ -416,10 +405,9 @@
           // Update the toggle button's data-target attribute
           guestForm.find('.btn[data-bs-toggle="collapse"]').attr('data-bs-target', '#' + uniqueId);
 
-          
-
           // Add the new form to the container and show it with a slide-down effect
           guestForm.hide().appendTo('.paste-new-forms').slideDown();
+          calculateTotalPrice();
       });
 
     
