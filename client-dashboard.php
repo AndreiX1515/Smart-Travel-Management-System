@@ -194,34 +194,6 @@ $accId = $_SESSION['accountid'] ?? '';
         });
     </script> -->
     <script src="heartbeat.js"></script>
-    
-
-
-
-
-
-
-
-
-
-
-
- 
-
-
- 
-
-    
-
-   
-
-
-
-
-
-
-
-
 
 
 </body>
