@@ -609,21 +609,15 @@
               console.log(response); // Debugging the response
               var data = JSON.parse(response); // Parse the JSON response
 
-              // Parse flight price and format it
-              var flightPricePerGuest = parseFloat(data.flightPrice); // Ensure it's a number
+              flightPricePerGuest = parseFloat(data.flightPrice); // Ensure it's a number
 
-              // Format the price to two decimal places with commas
-              var formattedPrice = flightPricePerGuest.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-
-              // Update the flight price display
-              $('#flightPrice').text(formattedPrice);
+              $('#flightPrice').text(flightPricePerGuest.toFixed(2));
 
               // Update the return flight input field for all guests
-              $('input[name^="returnFlight"]').val(data.returnFlight);
+              $('input[name^="returnFlight"]').val(data.returnFlight); 
 
-              // Update the flight price for all guests, ensuring it remains a number for calculations
-              $('input[name^="flightPrice"]').val(flightPricePerGuest);
-
+              // Update the flight price for all guests
+              $('input[name^="flightPrice"]').val(data.flightPrice);
 
               // Update the flight ID for all guests
               $('input[name^="flightId"]').val(data.flightId);
