@@ -12,10 +12,6 @@
   $lastName = $_SESSION['last_name'] ?? '';
   $accId = $_SESSION['accountid'] ?? '';
 
-  ini_set('display_errors', 1);
-  ini_set('display_startup_errors', 1);
-  error_reporting(E_ALL);
-
 ?>
 
 <!DOCTYPE html>
@@ -64,7 +60,7 @@
             </thead>
             <tbody>
               <?php
-                $sql1 = "SELECT 
+                $sql1 = "SELECT Distinct
                   b.transactNo,
                   b.pax AS totalPax,
                   b.totalPrice AS amountToPay,

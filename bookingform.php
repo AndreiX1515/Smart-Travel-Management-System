@@ -140,18 +140,10 @@
             </div>
 
             <div class="card-footer">
-<<<<<<< HEAD
               <h4> <label>Price: ₱ <span id="flightPrice" ></span>
                   <!-- <input style="border: none; outline: none;" id="flightPrice" name="flightPrice" value="0.00" readonly> -->
                 </label> 
               </h4>
-=======
-              <h2>
-                <label for="">Price: ₱ 
-                  <input style="border: none; outline: none;" id="flightPrice" name="flightPrice" value="0.00" readonly>
-                </label> 
-              </h2>
->>>>>>> 8d65e2bb58a3ee58005f5bccf777efeea6a46653
             </div>
           </div>
 
@@ -364,89 +356,89 @@
           <!-- Modal -->
           <div class="modal fade" id="BookingSummaryModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered"> <!-- Added modal-lg for a wider modal -->
-                <div class="modal-content position-relative">
+              <div class="modal-content position-relative">
                     
-                    <button type="button" class="btn-close close-outside" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close close-outside" data-bs-dismiss="modal" aria-label="Close"></button>
                     
-                    <div class="modal-body">
-                        <div class="confirmation-container container">
-                            <!-- Logo Section -->
-                            <div class="row text-center my-4">
-                                <div class="col">
-                                    <img src="assets/images/SMART LOGO 2 (2).png" alt="Trip Image" class="img-fluid" style="max-width: 250px; max-height: 80px;">
-                                </div>
-                            </div>
-
-                            <h4 class="text-left mb-4">Booking Summary</h4>
-
-                            <!-- Transaction and Contact Info -->
-                            <div class="transaction-info row mb-3">
-                                <div class="col-12">
-                                    <div class="d-flex justify-content-between mb-1">
-                                        <p class="mb-0"><strong>Transaction Number:</strong></p>
-                                        <p class="mb-0">72055771948934</p>
-                                    </div>
-
-                                    <div class="d-flex justify-content-between mb-1">
-                                        <p class="mb-0"><strong>Contact Guest Name:</strong></p>
-                                        <p class="mb-0">De Guzman, Andrei Vincent L.</p>
-                                    </div>
-
-                                    <div class="d-flex justify-content-between mb-1">
-                                        <p class="mb-0"><strong>Contact Email:</strong></p>
-                                        <p class="mb-0">deguzmanandreivincent@gmail.com</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <hr>
-
-                            <!-- Hotel/Package Details -->
-                            <div class="row hotel-details mb-3">
-                                <div class="col-12">
-                                    <div class="d-flex justify-content-between mb-1">
-                                        <p class="mb-0"><strong>Package Name:</strong></p>
-                                        <p class="mb-0">Summer Package</p>
-                                    </div>
-
-                                    <div class="d-flex justify-content-between">
-                                        <p class="mb-0"><strong>No. of Guests:</strong></p>
-                                        <p class="mb-0">2</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <hr>
-
-                            <!-- Flight/Origin Details -->
-                            <div class="row mb-3">
-                                <div class="col-12">
-                                    <div class="d-flex justify-content-between mb-1">
-                                        <p class="mb-0"><strong>Origin:</strong></p>
-                                        <p class="mb-0">Manila</p>
-                                    </div>
-
-                                    <div class="d-flex justify-content-between">
-                                        <p class="mb-0"><strong>Flight Date:</strong></p>
-                                        <p class="mb-0">Tue, Jul 2, 11:00 AM</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <hr>
-
-                            <!-- Proceed to Payment -->
-                            <div class="row mt-4">
-                                <div class="col d-flex justify-content-between">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button class="btn btn-primary" name="bookNow">Proceed to Payment</button>
-                                </div>
-                            </div>
-                        </div>
+                <div class="modal-body">
+                  <div class="confirmation-container container">
+                    <!-- Logo Section -->
+                    <div class="row text-center my-4">
+                      <div class="col">
+                        <img src="assets/images/SMART LOGO 2 (2).png" alt="Trip Image" class="img-fluid" style="max-width: 250px; max-height: 80px;">
+                      </div>
                     </div>
+
+                    <h4 class="text-left mb-4">Booking Summary</h4>
+
+                    <!-- Transaction and Contact Info -->
+                    <div class="transaction-info row mb-3">
+                      <div class="col-12">
+                        <div class="d-flex justify-content-between mb-1">
+                          <p class="mb-0"><strong>Transaction Number:</strong></p>
+                          <p class="mb-0">72055771948934</p>
+                        </div>
+
+                        <div class="d-flex justify-content-between mb-1">
+                          <p class="mb-0"><strong>Contact Guest Name:</strong></p>
+                          <p class="mb-0">De Guzman, Andrei Vincent L.</p>
+                        </div>
+
+                        <div class="d-flex justify-content-between mb-1">
+                          <p class="mb-0"><strong>Contact Email:</strong></p>
+                          <p class="mb-0">deguzmanandreivincent@gmail.com</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <hr>
+
+                    <!-- Hotel/Package Details -->
+                    <div class="row hotel-details mb-3">
+                      <div class="col-12">
+                        <div class="d-flex justify-content-between mb-1">
+                          <p class="mb-0"><strong>Package Name:</strong></p>
+                          <p class="mb-0">Summer Package</p>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                          <p class="mb-0"><strong>No. of Guests:</strong></p>
+                          <p class="mb-0">2</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <hr>
+
+                    <!-- Flight/Origin Details -->
+                    <div class="row mb-3">
+                      <div class="col-12">
+                        <div class="d-flex justify-content-between mb-1">
+                          <p class="mb-0"><strong>Origin:</strong></p>
+                          <p class="mb-0">Manila</p>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                          <p class="mb-0"><strong>Flight Date:</strong></p>
+                          <p class="mb-0">Tue, Jul 2, 11:00 AM</p>
+                        </div>
+                      </div>
+                    </div>
+
+                        <hr>
+
+                    <!-- Proceed to Payment -->
+                    <div class="row mt-4">
+                      <div class="col d-flex justify-content-between">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button class="btn btn-primary" name="bookNow">Proceed to Payment</button>
+                      </div>
+                    </div>
+                  </div>
                 </div>
+              </div>
             </div>
-        </div>
+          </div>
 
       </form>
     </div>
@@ -617,17 +609,21 @@
               console.log(response); // Debugging the response
               var data = JSON.parse(response); // Parse the JSON response
 
-              flightPricePerGuest = parseFloat(data.flightPrice); // Ensure it's a number
+              // Parse flight price and format it
+              var flightPricePerGuest = parseFloat(data.flightPrice); // Ensure it's a number
 
-              $('#flightPrice').text(flightPricePerGuest.toFixed(2));
+              // Format the price to two decimal places with commas
+              var formattedPrice = flightPricePerGuest.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+              // Update the flight price display
+              $('#flightPrice').text(formattedPrice);
 
               // Update the return flight input field for all guests
-              $('input[name^="returnFlight"]').val(data.returnFlight); 
+              $('input[name^="returnFlight"]').val(data.returnFlight);
 
-              // Update the flight price for all guests
-              $('input[name^="flightPrice"]').val(data.flightPrice);
+              // Update the flight price for all guests, ensuring it remains a number for calculations
+              $('input[name^="flightPrice"]').val(flightPricePerGuest);
 
-              
 
               // Update the flight ID for all guests
               $('input[name^="flightId"]').val(data.flightId);
