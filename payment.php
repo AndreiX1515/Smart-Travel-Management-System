@@ -39,7 +39,7 @@ $accId = $_SESSION['accountid'] ?? '';
 </head>
 
 <body>
-    <a href="client-dashboard" class="back-button">
+    <a href="client-dashboard.php" class="back-button">
         <i class="fas fa-arrow-left"></i>
     </a>
 
