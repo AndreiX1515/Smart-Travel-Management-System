@@ -62,7 +62,6 @@
 
         <form action="bookingform-code.php" method="POST">
           <div class="card">
-          <div class="card">
             <div class="card-header bg-secondary text-white text-light">
               <h4 class="my-2 px-2">Flight Details</h4>
             </div>
@@ -139,7 +138,14 @@
                 </div>
               </div>
             </div>
-        </div>
+
+            <div class="card-footer">
+              <h4> <label>Price: ₱ <span id="flightPrice" ></span>
+                  <!-- <input style="border: none; outline: none;" id="flightPrice" name="flightPrice" value="0.00" readonly> -->
+                </label> 
+              </h4>
+            </div>
+          </div>
 
           <!-- Guest Information Card -->
           <div class="card mt-4 guest-form shadow-sm">
@@ -334,23 +340,110 @@
 
             <div class="paste-new-forms"></div>
 
-          <div class="my-4">
-            <div class="card mt-2 ">
-
-              <div class="card-header d-flex justify-content-between align-items-center py-4">
-                <h5 class="align-items-center pt-2 fw-bolder">Total Price: ₱ <span id="displayTotalPrice">0</span></h5>
-                <button type="submit" name="bookNow" class="btn btn-primary p-2 px-3">Book Now</button>
+            <div class="my-4">
+              <div class="card mt-2 ">
+                <div class="card-header d-flex justify-content-between align-items-center py-4">
+                  <h5 class="align-items-center pt-2 fw-bolder">Total Price: ₱ <span id="displayTotalPrice">0</span></h5>
+                  <button type="submit"  class="btn btn-primary p-2 px-3" data-bs-toggle="modal" data-bs-target="#BookingSummaryModal">Book Now</button>
+                </div>
+                <input type="hidden" id="totalPrice" name="totalPrice">    
               </div>
-              
-              <input type="hidden" id="totalPrice" name="totalPrice">
-                        
             </div>
           </div>
 
-        </form>
-      </div>
+          <!--  -->
+
+          <!-- Modal -->
+          <div class="modal fade" id="BookingSummaryModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered"> <!-- Added modal-lg for a wider modal -->
+                <div class="modal-content position-relative">
+                    
+                    <button type="button" class="btn-close close-outside" data-bs-dismiss="modal" aria-label="Close"></button>
+                    
+                    <div class="modal-body">
+                        <div class="confirmation-container container">
+                            <!-- Logo Section -->
+                            <div class="row text-center my-4">
+                                <div class="col">
+                                    <img src="assets/images/SMART LOGO 2 (2).png" alt="Trip Image" class="img-fluid" style="max-width: 250px; max-height: 80px;">
+                                </div>
+                            </div>
+
+                            <h4 class="text-left mb-4">Booking Summary</h4>
+
+                            <!-- Transaction and Contact Info -->
+                            <div class="transaction-info row mb-3">
+                                <div class="col-12">
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <p class="mb-0"><strong>Transaction Number:</strong></p>
+                                        <p class="mb-0">72055771948934</p>
+                                    </div>
+
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <p class="mb-0"><strong>Contact Guest Name:</strong></p>
+                                        <p class="mb-0">De Guzman, Andrei Vincent L.</p>
+                                    </div>
+
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <p class="mb-0"><strong>Contact Email:</strong></p>
+                                        <p class="mb-0">deguzmanandreivincent@gmail.com</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <!-- Hotel/Package Details -->
+                            <div class="row hotel-details mb-3">
+                                <div class="col-12">
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <p class="mb-0"><strong>Package Name:</strong></p>
+                                        <p class="mb-0">Summer Package</p>
+                                    </div>
+
+                                    <div class="d-flex justify-content-between">
+                                        <p class="mb-0"><strong>No. of Guests:</strong></p>
+                                        <p class="mb-0">2</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <!-- Flight/Origin Details -->
+                            <div class="row mb-3">
+                                <div class="col-12">
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <p class="mb-0"><strong>Origin:</strong></p>
+                                        <p class="mb-0">Manila</p>
+                                    </div>
+
+                                    <div class="d-flex justify-content-between">
+                                        <p class="mb-0"><strong>Flight Date:</strong></p>
+                                        <p class="mb-0">Tue, Jul 2, 11:00 AM</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <!-- Proceed to Payment -->
+                            <div class="row mt-4">
+                                <div class="col d-flex justify-content-between">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button class="btn btn-primary" name="bookNow">Proceed to Payment</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+      </form>
     </div>
   </div>
+</div>
 
   
 
