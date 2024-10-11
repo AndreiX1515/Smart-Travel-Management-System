@@ -1,3 +1,19 @@
+<?php
+include 'session_validate.php'; // This will check if the session is valid
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+// Fetch session variables directly
+$email = $_SESSION['email'] ?? ''; // Use null coalescing operator to avoid undefined index
+$firstName = $_SESSION['first_name'] ?? '';
+$lastName = $_SESSION['last_name'] ?? '';
+$middleName = $_SESSION['middle_name'] ?? '';
+$accId = $_SESSION['accountid'] ?? '';
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -251,4 +267,5 @@
 
     <!-- JQuery JS CDN-->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="heartbeat.js"></script>
 </html>
