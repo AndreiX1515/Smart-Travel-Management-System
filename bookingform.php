@@ -5,6 +5,13 @@
   ini_set('display_errors', 1);
   ini_set('display_startup_errors', 1);
   error_reporting(E_ALL);
+
+  $email = $_SESSION['email'] ?? '';
+  $firstName = $_SESSION['first_name'] ?? '';
+  $lastName = $_SESSION['last_name'] ?? '';
+  $middleName = $_SESSION['middle_name'] ?? '';
+  // Combine last name, first name, and middle initial
+  $fullName = $lastName . ', ' . $firstName . ($middleName ? ' ' . substr($middleName, 0, 1) . '.' : '');
 ?>
 
 <!DOCTYPE html>
@@ -191,7 +198,7 @@
                   <div class="col-md-3">
                     <div class="form-group mb-3">
                       <label class="mb-2" for="suffix">Suffix</label>
-                      <select class="form-select" name="suffix[]">
+                      <select class="form-control" name="suffix[]">
                         <option selected disabled>Select Suffix</option>
                         <option value="Jr.">Jr.</option>
                         <option value="Sr.">Sr.</option>
@@ -222,7 +229,7 @@
                   <div class="col-md-3">
                     <div class="form-group mb-3">
                       <label class="mb-2" for="sex">Sex <span class="text-danger fw-bold">*</span> </label>
-                      <select class="form-select" name="sex[]" required>
+                      <select class="form-control" name="sex[]" required>
                         <option selected disabled>Select Sex</option>
                         <option value="Male">Male</option>
                         <option value="Female">Female</option>
@@ -233,7 +240,7 @@
                   <div class="col-md-3">
                     <div class="form-group mb-3">
                       <label class="mb-2" for="nationality">Nationality <span class="text-danger fw-bold">*</span> </label>
-                      <select class="form-select" name="nationality[]" required>
+                      <select class="form-control" name="nationality[]" required>
                         <option selected disabled>Select Nationality</option>
                         <option value="Chinese">Chinese</option>
                         <option value="Filipino">Filipino</option>
@@ -324,7 +331,7 @@
                     <div class="col-md-4">
                       <div class="form-group mb-3">
                         <label class="mb-2" for="country">Country <span class="text-danger fw-bold">*</span></label>
-                        <select class="form-select" name="country[]" required>
+                        <select class="form-control" name="country[]" required>
                           <option selected disabled>Select Country</option>
                           <option value="China">China</option>
                           <option value="Japan">Japan</option>
@@ -344,7 +351,7 @@
               <div class="card mt-2 ">
                 <div class="card-header d-flex justify-content-between align-items-center py-4">
                   <h5 class="align-items-center pt-2 fw-bolder">Total Price: ₱ <span id="displayTotalPrice">0</span></h5>
-                  <button type="submit"  class="btn btn-primary p-2 px-3" data-bs-toggle="modal" data-bs-target="#BookingSummaryModal">Book Now</button>
+                  <button type="button" class="btn btn-primary p-2 px-3" data-bs-toggle="modal" data-bs-target="#BookingSummaryModal">Book Now</button>
                 </div>
                 <input type="hidden" id="totalPrice" name="totalPrice">    
               </div>
@@ -374,19 +381,15 @@
                     <!-- Transaction and Contact Info -->
                     <div class="transaction-info row mb-3">
                       <div class="col-12">
-                        <div class="d-flex justify-content-between mb-1">
-                          <p class="mb-0"><strong>Transaction Number:</strong></p>
-                          <p class="mb-0">72055771948934</p>
-                        </div>
 
                         <div class="d-flex justify-content-between mb-1">
                           <p class="mb-0"><strong>Contact Guest Name:</strong></p>
-                          <p class="mb-0">De Guzman, Andrei Vincent L.</p>
+                          <p class="mb-0"><?php echo $fullName ?></p>
                         </div>
 
                         <div class="d-flex justify-content-between mb-1">
                           <p class="mb-0"><strong>Contact Email:</strong></p>
-                          <p class="mb-0">deguzmanandreivincent@gmail.com</p>
+                          <p class="mb-0"><?php echo $email ?></p>
                         </div>
                       </div>
                     </div>
@@ -398,12 +401,12 @@
                       <div class="col-12">
                         <div class="d-flex justify-content-between mb-1">
                           <p class="mb-0"><strong>Package Name:</strong></p>
-                          <p class="mb-0">Summer Package</p>
+                          <p class="mb-0" id="selectedPackage">No Package Selected</p>
                         </div>
 
                         <div class="d-flex justify-content-between">
                           <p class="mb-0"><strong>No. of Guests:</strong></p>
-                          <p class="mb-0">2</p>
+                          <p class="mb-0" id="guestCount">1</p>
                         </div>
                       </div>
                     </div>
@@ -415,12 +418,12 @@
                       <div class="col-12">
                         <div class="d-flex justify-content-between mb-1">
                           <p class="mb-0"><strong>Origin:</strong></p>
-                          <p class="mb-0">Manila</p>
+                          <p class="mb-0" id="selectedOrigin">No Origin Selected</p>
                         </div>
 
                         <div class="d-flex justify-content-between">
                           <p class="mb-0"><strong>Flight Date:</strong></p>
-                          <p class="mb-0">Tue, Jul 2, 11:00 AM</p>
+                          <p class="mb-0" id="selectedDate">No Flight Date Selected</p>
                         </div>
                       </div>
                     </div>
@@ -431,7 +434,7 @@
                     <div class="row mt-4">
                       <div class="col d-flex justify-content-between">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button class="btn btn-primary" name="bookNow">Proceed to Payment</button>
+                        <button type="submit" class="btn btn-primary" name="bookNow">Proceed to Payment</button>
                       </div>
                     </div>
                   </div>
@@ -440,13 +443,10 @@
             </div>
           </div>
 
-      </form>
+        </form>
+      </div>
     </div>
   </div>
-</div>
-
-  
-
 
   <!-- Bootstrap JS Bundle with Popper -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -454,66 +454,70 @@
 
   <script src="heartbeat.js"></script>
 
-
-
   <script>
     $(document).ready(function () 
     {
       let flightPricePerGuest = 0; // Initialize flight price per guest
 
       // Adding more guest forms dynamically
-      $('.add-more-form').click(function () {
-          var guestForm = $('.guest-form:first').clone(); // Clone only personal information
-          var formCount = $('.guest-form').length + 1; // Count the total number of forms
+      $('.add-more-form').click(function () 
+      {
+        var guestForm = $('.guest-form:first').clone(); // Clone only personal information
+        var formCount = $('.guest-form').length + 1; // Count the total number of forms
+        $('#guestCount').text(formCount); // Update the modal with the total number of guests
 
-          // Reset the values in the cloned form
-          guestForm.find('input').val(''); // Reset input fields for personal info
-          guestForm.find('select').prop('selectedIndex', 0); // Reset select fields
-          guestForm.find('.card-body').removeClass('show'); // Collapse the newly added form
+        // Reset the values in the cloned form
+        guestForm.find('input').val(''); // Reset input fields for personal info
+        guestForm.find('select').prop('selectedIndex', 0); // Reset select fields
+        guestForm.find('.card-body').removeClass('show'); // Collapse the newly added form
 
-          // Change the header for the new guest form
-          guestForm.find('.card-header h4').text('Guest Information ' + formCount);
+        // Change the header for the new guest form
+        guestForm.find('.card-header h4').text('Guest Information ' + formCount);
 
-         // Create a remove button
-          const removeButton = $('<button type="button" class="remove-guest btn btn-danger mt-2">Remove Guest</button>');
+        // Create a remove button
+        const removeButton = $('<button type="button" class="remove-guest btn btn-danger mt-2">Remove Guest</button>');
 
-          // Find the toggle button (assuming you have a class for it, e.g., 'toggle-button')
-          const toggleButton = guestForm.find('.toggle-button'); // Replace with the actual selector for your toggle button
+        // Find the toggle button (assuming you have a class for it, e.g., 'toggle-button')
+        const toggleButton = guestForm.find('.toggle-button'); // Replace with the actual selector for your toggle button
 
-          // Append the title in the card header (if not already done)
-          guestForm.find('.card-header h4').text('Guest Information ' + formCount);
+        // Append the title in the card header (if not already done)
+        guestForm.find('.card-header h4').text('Guest Information ' + formCount);
 
-          // Set the card header to use flexbox for layout
-          guestForm.find('.card-header').css('display', 'flex').css('justify-content', 'space-between').css('align-items', 'center');
+        // Set the card header to use flexbox for layout
+        guestForm.find('.card-header').css('display', 'flex').css('justify-content', 'space-between').css('align-items', 'center');
 
-          // Append the toggle button first, then the remove button to keep them close together
-          guestForm.find('.card-header').append(toggleButton, removeButton); // Reverse their positions
+        // Append the toggle button first, then the remove button to keep them close together
+        guestForm.find('.card-header').append(toggleButton, removeButton); // Reverse their positions
 
-          // Remove margin for the remove button to ensure they are close together
-          removeButton.css('margin', '0'); // No margin for closer alignment
-          toggleButton.css('margin', '0'); // Ensure no margin on toggle button
+        // Remove margin for the remove button to ensure they are close together
+        removeButton.css('margin', '0'); // No margin for closer alignment
+        toggleButton.css('margin', '0'); // Ensure no margin on toggle button
 
-          // Generate a unique ID for the card body
-          var uniqueId = 'cardBodyContent' + formCount;
-          guestForm.find('.card-body').attr('id', uniqueId); // Set unique ID for the card body
+        // Generate a unique ID for the card body
+        var uniqueId = 'cardBodyContent' + formCount;
+        guestForm.find('.card-body').attr('id', uniqueId); // Set unique ID for the card body
 
-          // Update the toggle button's data-target attribute
-          guestForm.find('.btn[data-bs-toggle="collapse"]').attr('data-bs-target', '#' + uniqueId);
+        // Update the toggle button's data-target attribute
+        guestForm.find('.btn[data-bs-toggle="collapse"]').attr('data-bs-target', '#' + uniqueId);
 
-          // Add the new form to the container and show it with a slide-down effect
-          guestForm.hide().appendTo('.paste-new-forms').slideDown();
+        // Add the new form to the container and show it with a slide-down effect
+        guestForm.hide().appendTo('.paste-new-forms').slideDown();
 
-          // Initialize event listeners for the first form
-           calculateTotalPrice();
+        // Initialize event listeners for the first form
+          calculateTotalPrice();
       });
 
-    
       // Remove guest form dynamically
       $(document).on('click', '.remove-guest', function () 
       {
         $(this).closest('.guest-form').slideUp(function () 
         {
           $(this).remove(); // Remove the form after sliding up
+          // Recalculate the total number of guest forms
+          var formCount = $('.guest-form').length;
+
+          // Update the modal with the new total number of guests
+          $('#guestCount').text(formCount);
           calculateTotalPrice(); // Recalculate total price after removing a form
         });
       });
@@ -522,6 +526,7 @@
       $('#packageName').on('change', function () 
       {
         var packageId = $(this).val();
+        var selectedPackageName = $("#packageName option:selected").text();
         $('#origin').html('<option selected disabled>Select Origin</option>'); // Clear origin field
         $('#outboundFlight').html('<option selected disabled>Select Flight Available Dates</option>'); // Clear outbound flight field
         $('#returnFlight').val(''); // Clear return flight field
@@ -529,6 +534,9 @@
         $('#flightPrice').val('0.00'); // Clear Flight Price field
         $('#displayTotalPrice').text('0.00'); // Clear Total Price field
         $('#totalPrice').val(''); // Clear Total Price Input field
+
+        // Update the modal with the selected package name
+        $('#selectedPackage').text(selectedPackageName);
 
         if (packageId) 
         {
@@ -559,6 +567,10 @@
       {
         var packageId = $('#packageName').val();
         var origin = $(this).val();
+        var selectedOrigin = $("#origin option:selected").text();
+
+        // Update the modal with the selected origin
+        $('#selectedOrigin').text(selectedOrigin);
 
         $('#outboundFlight').html('<option selected disabled>Select Flight Available Dates</option>'); // Clear outbound flight field
         $('#returnFlight').val(''); // Clear return flight field
@@ -596,6 +608,10 @@
       $('#outboundFlight').on('change', function () 
       {
         var outboundFlight = $(this).val();
+        var selectedFlight = $("#outboundFlight option:selected").text();
+
+        // Update the modal with the selected Flight Date
+        $('#selectedDate').text(selectedFlight);
 
         if (outboundFlight) 
         {
@@ -611,7 +627,11 @@
 
               flightPricePerGuest = parseFloat(data.flightPrice); // Ensure it's a number
 
-              $('#flightPrice').text(flightPricePerGuest.toFixed(2));
+              // Format the price with commas and two decimal places
+      var formattedPrice = flightPricePerGuest.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+// Update the flight price display with the formatted price
+$('#flightPrice').text(formattedPrice);
 
               // Update the return flight input field for all guests
               $('input[name^="returnFlight"]').val(data.returnFlight); 
@@ -644,8 +664,11 @@
 
         console.log("Total Price:", totalPrice); // Debug: log the total price before updating the field
 
-        // Update the displayed total price in the span
-        $('#displayTotalPrice').text(totalPrice.toFixed(2)); // Display total price with 2 decimal places
+        // Format the total price with commas and two decimal places
+  var formattedTotalPrice = totalPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+// Update the displayed total price in the span
+$('#displayTotalPrice').text(formattedTotalPrice);
 
         // Store the total price in the hidden input field for form submission
         $('#totalPrice').val(totalPrice.toFixed(2)); // Make sure the input value is properly set
