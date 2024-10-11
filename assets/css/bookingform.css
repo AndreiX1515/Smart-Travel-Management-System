@@ -7,10 +7,10 @@
 
 }
 
-.container {
+/* .container {
     background: white;
     border-radius: 5px;
-    width: 1000px; /* Fixed width for better centering */
+    width: 1000px; /* Fixed width for better centering 
 }
 
 
@@ -40,20 +40,20 @@
 
 .header {
     position: fixed;
-    top: 30px; /* Adjusted for sub-header height */
+    top: 30px; /* Adjusted for sub-header height 
     display: flex;
     justify-content: space-between;
     align-items: center;
     z-index: 99;
 }
 
-.logo img {
+/* .logo img {
     aspect-ratio: 16/9;
-    height: 65px; /* Adjust the height as per your logo's design */
-    width: 250px;
+    height: 65px; /* Adjust the height as per your logo's design 
+    width: 150px;
     padding-left: 80px;
     object-fit: contain;
-} 
+}  */
 
 
 .card-header {
@@ -91,5 +91,59 @@
     font-size: 0.85rem; /* Smaller size when focused or not empty */
     top: -0.5rem; /* Move label up */
     color: #89CFF0; /* Label color change on focus */
+} */
+
+
+
+
+.confirmation-container img {
+    width: 100px;
+    height: 50px;
 }
 
+
+/* .transaction-info {
+    border: 1px solid #e0e0e0;
+    padding: 10px;
+    margin-top: 20px;
+    border-radius: 8px;
+}
+
+.hotel-details {
+    border: 1px solid #e0e0e0;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 8px;
+} */
+
+hr {
+    border: 1px solid #ccc; /* Light gray line */
+    margin: 10px 0; /* Space above and below the line */
+}
+
+.modal-dialog {
+    position: relative; /* Context for the absolute button */
+}
+
+.close-outside {
+    position: absolute;
+    top: 0px; /* Move above the modal */
+    left: 820px; /* Move to the right of the modal */
+    width: 40px;
+    height: 40px;
+    background-color: #f8f9fa; /* Light gray/white background */
+    border-radius: 50%; /* Circular shape */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ced4da; /* Optional border for clarity */
+    z-index: 1060; /* Make sure it is above other elements */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Shadow effect */
+    cursor: pointer;
+}
+
+.close-outside:before {
+    content: '\00d7'; /* Adds the '×' icon */
+    font-size: 20px;
+    color: #000; /* Color for the '×' symbol */
+}

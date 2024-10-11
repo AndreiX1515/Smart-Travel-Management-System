@@ -21,6 +21,7 @@
 
   <!-- Font Awesome Icon Kit CDN (stable version) -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets\css\bookingform.css">
 
   <title>Flight Booking</title>
   
@@ -139,11 +140,10 @@
             </div>
 
             <div class="card-footer">
-              <h2>
-                <label for="">Price: ₱ 
-                  <input style="border: none; outline: none;" id="flightPrice" name="flightPrice" value="0.00" readonly>
+              <h4> <label>Price: ₱ <span id="flightPrice" ></span>
+                  <!-- <input style="border: none; outline: none;" id="flightPrice" name="flightPrice" value="0.00" readonly> -->
                 </label> 
-              </h2>
+              </h4>
             </div>
           </div>
 
@@ -344,23 +344,118 @@
               <div class="card mt-2 ">
                 <div class="card-header d-flex justify-content-between align-items-center py-4">
                   <h5 class="align-items-center pt-2 fw-bolder">Total Price: ₱ <span id="displayTotalPrice">0</span></h5>
-                  <button type="submit" name="bookNow" class="btn btn-primary p-2 px-3">Book Now</button>
+                  <button type="submit"  class="btn btn-primary p-2 px-3" data-bs-toggle="modal" data-bs-target="#BookingSummaryModal">Book Now</button>
                 </div>
                 <input type="hidden" id="totalPrice" name="totalPrice">    
               </div>
             </div>
           </div>
-        </form>
-      </div>
+
+          <!--  -->
+
+          <!-- Modal -->
+          <div class="modal fade" id="BookingSummaryModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered"> <!-- Added modal-lg for a wider modal -->
+                <div class="modal-content position-relative">
+                    
+                    <button type="button" class="btn-close close-outside" data-bs-dismiss="modal" aria-label="Close"></button>
+                    
+                    <div class="modal-body">
+                        <div class="confirmation-container container">
+                            <!-- Logo Section -->
+                            <div class="row text-center my-4">
+                                <div class="col">
+                                    <img src="assets/images/SMART LOGO 2 (2).png" alt="Trip Image" class="img-fluid" style="max-width: 250px; max-height: 80px;">
+                                </div>
+                            </div>
+
+                            <h4 class="text-left mb-4">Booking Summary</h4>
+
+                            <!-- Transaction and Contact Info -->
+                            <div class="transaction-info row mb-3">
+                                <div class="col-12">
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <p class="mb-0"><strong>Transaction Number:</strong></p>
+                                        <p class="mb-0">72055771948934</p>
+                                    </div>
+
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <p class="mb-0"><strong>Contact Guest Name:</strong></p>
+                                        <p class="mb-0">De Guzman, Andrei Vincent L.</p>
+                                    </div>
+
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <p class="mb-0"><strong>Contact Email:</strong></p>
+                                        <p class="mb-0">deguzmanandreivincent@gmail.com</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <!-- Hotel/Package Details -->
+                            <div class="row hotel-details mb-3">
+                                <div class="col-12">
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <p class="mb-0"><strong>Package Name:</strong></p>
+                                        <p class="mb-0">Summer Package</p>
+                                    </div>
+
+                                    <div class="d-flex justify-content-between">
+                                        <p class="mb-0"><strong>No. of Guests:</strong></p>
+                                        <p class="mb-0">2</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <!-- Flight/Origin Details -->
+                            <div class="row mb-3">
+                                <div class="col-12">
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <p class="mb-0"><strong>Origin:</strong></p>
+                                        <p class="mb-0">Manila</p>
+                                    </div>
+
+                                    <div class="d-flex justify-content-between">
+                                        <p class="mb-0"><strong>Flight Date:</strong></p>
+                                        <p class="mb-0">Tue, Jul 2, 11:00 AM</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <!-- Proceed to Payment -->
+                            <div class="row mt-4">
+                                <div class="col d-flex justify-content-between">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button class="btn btn-primary" name="bookNow">Proceed to Payment</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+      </form>
     </div>
   </div>
+</div>
+
+  
 
 
   <!-- Bootstrap JS Bundle with Popper -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
   <script src="heartbeat.js"></script>
+
+
+
   <script>
     $(document).ready(function () 
     {
@@ -405,10 +500,11 @@
           // Update the toggle button's data-target attribute
           guestForm.find('.btn[data-bs-toggle="collapse"]').attr('data-bs-target', '#' + uniqueId);
 
-          
-
           // Add the new form to the container and show it with a slide-down effect
           guestForm.hide().appendTo('.paste-new-forms').slideDown();
+
+          // Initialize event listeners for the first form
+           calculateTotalPrice();
       });
 
     
@@ -513,14 +609,17 @@
               console.log(response); // Debugging the response
               var data = JSON.parse(response); // Parse the JSON response
 
-              // Set flight price for each guest based on the selected outbound flight
-              flightPricePerGuest = data.flightPrice; // Set flight price per guest
-              
+              flightPricePerGuest = parseFloat(data.flightPrice); // Ensure it's a number
+
+              $('#flightPrice').text(flightPricePerGuest.toFixed(2));
+
               // Update the return flight input field for all guests
               $('input[name^="returnFlight"]').val(data.returnFlight); 
 
               // Update the flight price for all guests
               $('input[name^="flightPrice"]').val(data.flightPrice);
+
+              
 
               // Update the flight ID for all guests
               $('input[name^="flightId"]').val(data.flightId);
