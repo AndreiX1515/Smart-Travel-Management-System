@@ -9,6 +9,7 @@ error_reporting(E_ALL);
 $email = $_SESSION['email'] ?? ''; // Use null coalescing operator to avoid undefined index
 $firstName = $_SESSION['first_name'] ?? '';
 $lastName = $_SESSION['last_name'] ?? '';
+$middleName = $_SESSION['middle_name'] ?? '';
 $accId = $_SESSION['accountid'] ?? '';
 
 ?>
