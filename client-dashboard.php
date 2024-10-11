@@ -9,6 +9,7 @@ error_reporting(E_ALL);
 $email = $_SESSION['email'] ?? ''; // Use null coalescing operator to avoid undefined index
 $firstName = $_SESSION['first_name'] ?? '';
 $lastName = $_SESSION['last_name'] ?? '';
+$accId = $_SESSION['accountid'] ?? '';
 
 ?>
 
@@ -86,11 +87,11 @@ $lastName = $_SESSION['last_name'] ?? '';
                 <div class="profile-card ">
                     <div class="profile-info">
                         <h3>Hi, <?php echo $lastName.', '.$firstName?></h3>
-                        <p class="fw-normal text-secondary"><? echo $email ?></p>
+                        <p class="fw-normal text-secondary"><?php $email ?></p>
                     </div>
 
                     <a class="btn btn-primary me-2" href="bookingform.php" role="button">Book Now</a>
-                    <button class="btn btn-primary me-2">View Transaction Status</button>
+                    <a class="btn btn-primary me-2" href="client-transactionStatus.php" role="button">View Transaction Status</a>
                     <button class="btn btn-primary">Transaction Inquiry</button>
                     
 
