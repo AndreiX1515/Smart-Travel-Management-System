@@ -8,7 +8,7 @@ error_reporting(E_ALL);
 if (isset($_POST['bookNow'])) 
 {
     // Assume that each of these arrays contains multiple entries
-    $agentId = $_POST['agentId'];
+    $agentId = !empty($_POST['agentId']) ? $_POST['agentId'] : NULL;
     $fNames = $_POST['fName'];  
     $mNames = $_POST['mName'];  
     $lNames = $_POST['lName'];  
@@ -25,7 +25,7 @@ if (isset($_POST['bookNow']))
     $passportExps = $_POST['passportExp'];  
     $emails = $_POST['email'];  
     $contactNos = $_POST['contactNo'];  
-    $sexes = $_POST['sex'];  
+    $sexes = $_POST['sex'];   
     $nationalities = $_POST['nationality'];  
     $flightIds = $_POST['flightId'];
     $flightPrices = $_POST['flightPrice'];
