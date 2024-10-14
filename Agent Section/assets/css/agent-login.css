@@ -1,0 +1,118 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
+
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    margin: 0;
+    background-color: #ced4da; /* Light gray background */
+    font-family: 'Roboto', Arial, Helvetica, sans-serif;
+}
+
+.navbar {
+    background-color: #fff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.main-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-container {
+    width: 550px;
+    padding: 30px;
+    border: 1px solid #ced4da;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+    text-align: center;
+    margin: 30px 0;
+}
+
+.logo img {
+    width: 160px;
+    height: 120px;
+    position: relative;
+    top: -30px; /* Offset upwards */
+}
+
+.form-floating input {
+    padding-right: 40px;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.fp-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0 40px;
+}
+
+#LoginButton {
+    padding: 15px;
+    margin-top: 30px;
+}
+
+.message-login {
+    margin-top: 15px;
+}
+
+.form-floating label {
+    padding-left: 15px;
+}
+
+/* Primary button styles */
+.btn-primary {
+    background-color: #007bff;
+    border: none;
+    transition: background-color 0.3s ease;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+/* Link styles */
+.text-decoration-none {
+    color: #007bff;
+}
+
+.text-decoration-none:hover {
+    text-decoration: underline;
+}
+
+/* General form group spacing */
+.form-group, .form-check {
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo-container img {
+    width: 85px;
+    height: 50px;
+    object-fit: contain; 
+}
+
+.header-container p {
+    font-size: 12px;
+    font-weight: 500;
+    color: grey;
+}
