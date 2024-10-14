@@ -610,8 +610,8 @@
         var outboundFlight = $(this).val();
         var selectedFlight = $("#outboundFlight option:selected").text();
 
-        // Update the modal with the selected Flight Date
-        $('#selectedDate').text(selectedFlight);
+        // Extract only the date (everything before "||")
+        var selectedDate = selectedFlight.split(' || ')[0];
 
         if (outboundFlight) 
         {
@@ -628,10 +628,10 @@
               flightPricePerGuest = parseFloat(data.flightPrice); // Ensure it's a number
 
               // Format the price with commas and two decimal places
-      var formattedPrice = flightPricePerGuest.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+              var formattedPrice = flightPricePerGuest.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-// Update the flight price display with the formatted price
-$('#flightPrice').text(formattedPrice);
+              // Update the flight price display with the formatted price
+              $('#flightPrice').text(formattedPrice);
 
               // Update the return flight input field for all guests
               $('input[name^="returnFlight"]').val(data.returnFlight); 
@@ -665,10 +665,10 @@ $('#flightPrice').text(formattedPrice);
         console.log("Total Price:", totalPrice); // Debug: log the total price before updating the field
 
         // Format the total price with commas and two decimal places
-  var formattedTotalPrice = totalPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        var formattedTotalPrice = totalPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-// Update the displayed total price in the span
-$('#displayTotalPrice').text(formattedTotalPrice);
+        // Update the displayed total price in the span
+        $('#displayTotalPrice').text(formattedTotalPrice);
 
         // Store the total price in the hidden input field for form submission
         $('#totalPrice').val(totalPrice.toFixed(2)); // Make sure the input value is properly set
