@@ -156,7 +156,7 @@ error_reporting(E_ALL);
     </div>
 </div>
 
-    <?php include 'includes\scripts.php'; ?>
+    <?php include 'includes/scripts.php'; ?>
 
     <script>
     $(document).ready(function () {
