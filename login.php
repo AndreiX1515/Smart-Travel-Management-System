@@ -28,7 +28,7 @@
 
 <body>
   <!-- Back to homepage button -->
-  <a href="index.php" class="back-btn">
+  <a href="smart-travelkorea.com" class="back-btn">
     <i class="fas fa-arrow-left"></i> Back to Home Page
   </a>
   
