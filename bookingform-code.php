@@ -50,7 +50,7 @@ if (isset($_POST['bookNow']))
     $conn->begin_transaction();
 
     // Prepare the SQL statement for insertion into the booking table
-    $sql1 = "INSERT INTO booking (accountId, transactNo, agentId, pax, totalPrice, bookingDate) VALUES (?, ?, ?, ?, ?, NOW())";
+    $sql1 = "INSERT INTO booking (accountId, transactNo, agentId, pax, totalPrice, status, bookingDate) VALUES (?, ?, ?, ?, ?, ?, 'Pending', NOW())";
     $stmt1 = $conn->prepare($sql1);
 
     // Check if the statement was prepared successfully
@@ -155,6 +155,7 @@ if (isset($_POST['bookNow']))
     $conn->commit();
 
     // $_SESSION['status'] = "All bookings successfully inserted.";
+    $_SESSION['transactNo'] = $transactNo;
     header("Location: payment.php");
     exit(0);
 
