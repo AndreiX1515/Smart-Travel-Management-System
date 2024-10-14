@@ -9,7 +9,7 @@ if (isset($_POST['packageId']) && isset($_POST['origin']))
   // Correct SQL to fetch outbound and return flight schedules
   $sql = mysqli_query($conn, "
       SELECT flightId, DATE_FORMAT(flightDepartureDate, '%M %d, %Y')
-           AS onboardFlightSched
+           AS onboardFlightSched, flightPrice
       FROM flight 
       WHERE packageId = '$packageId' AND origin = '$origin' 
       ORDER BY flightDepartureDate ASC");
@@ -19,7 +19,8 @@ if (isset($_POST['packageId']) && isset($_POST['origin']))
     echo '<option selected disabled>Select Flight Available Dates</option>';
     while ($res = mysqli_fetch_array($sql)) 
     {
-        echo '<option value="' . $res['flightId'] . '">' . $res['onboardFlightSched'] . '</option>';
+      $formattedPrice = number_format($res['flightPrice'], 2);
+      echo '<option value="' . $res['flightId'] . '">' . $res['onboardFlightSched'] . ' Price: ₱ '. $formattedPrice . '</option>';
     }
   } 
   else 
