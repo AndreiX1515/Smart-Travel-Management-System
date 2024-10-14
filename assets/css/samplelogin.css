@@ -271,20 +271,11 @@ html, body {
 
 
 
-
-
-
-
-/* Media Queries */
-@media (max-width: 900px) {
+/* Hide .image-accent when width is 1246px or below */
+@media (max-width: 1246px) {
     .image-accent {
         display: none;
     }
-
-    .image-accent img{
-        display: none;
-    }
-
 
     .loginform {
         width: 100%;
@@ -292,30 +283,31 @@ html, body {
     }
 }
 
+/* Further adjustments for tablets and smartphones */
 @media (max-width: 768px) {
     .sub-header p {
-        padding: 0px 20px;
+        padding: 0 15px;
     }
 
     .header {
-        padding: 5px 50px;
+        padding: 5px 20px;
     }
 
     .navbar a {
-        margin-left: 20px;
+        margin-left: 10px;
     }
 
     .content-wrapper h1 {
-        font-size: 2rem;
+        font-size: 1.8rem;
     }
 
     .content-wrapper p {
-        font-size: 1rem;
+        font-size: 0.9rem;
     }
 
     .loginform {
         max-width: 100%;
-        padding: 15px;
+        padding: 10px;
     }
 
     .social-icons a {
@@ -325,7 +317,8 @@ html, body {
     }
 }
 
-@media (min-width: 1000px) {
+/* Adjust layout for wider screens */
+@media (min-width: 1246px) {
     .main-container {
         flex-wrap: nowrap;
     }
