@@ -126,12 +126,21 @@ body {
     width: 100%;
     border-collapse: collapse; /* Collapses borders for a seamless look */
     font-family: Arial, sans-serif; /* Sets the font family */
+    
 }
 
 .excel-table th, .excel-table td {
     border: 1px solid #d0d0d0; /* Light grey border for cells */
     padding: 10px; /* Padding inside cells */
 }
+
+
+.excel-table td {
+    vertical-align: bottom;
+
+
+}
+
 
 /* Specify widths for each column */
 .excel-table th:nth-child(1),

@@ -197,8 +197,6 @@ html, body {
 
 
 
-
-
 .fp-container a {
     font-size: 16px;
     font-weight: 500;
@@ -257,9 +255,7 @@ html, body {
     font-size: 12px;
     font-weight: 500;
     color: lightgrey;
-
 }
-
 
 .position-relative {
     position: relative; /* Ensure the icon can be positioned absolutely */
@@ -372,4 +368,110 @@ html, body {
     color: #333; /* Set your desired dark color */
     pointer-events: none; /* Prevent clicks while disabled */
     text-decoration: none; /* Optionally remove underline */
+}
+
+/* Media query for screens 1246px and below */
+@media (max-width: 1246px) {
+    .image-accent {
+        display: none;
+    }
+
+    .loginform {
+        width: 100%; /* Adjust login form to full width */
+    }
+
+    .main-container {
+        width: 90%; /* Adjust container width to fit smaller screens */
+        height: auto; /* Ensure container height adjusts based on content */
+    }
+}
+
+/* Media query for screens 768px and below (smartphones) */
+@media (max-width: 768px) {
+    html, body {
+        padding: 10px; /* Add some padding on smaller screens */
+        align-items: center; /* Vertically center the container */
+        justify-content: center;
+        height: 100vh; /* Ensure the body takes full viewport height */
+    }
+
+    .main-container {
+        flex-direction: column; /* Stack items vertically */
+        width: 100%; /* Full width for mobile */
+        padding: 10px; /* Reduce padding */
+        height: auto; /* Let content dictate height */
+        align-items: center; /* Center content horizontally */
+        justify-content: center; /* Center content vertically */
+    }
+
+    .loginform {
+        width: 100%; /* Ensure login form takes full width */
+        padding: 10px; /* Adjust padding for smaller screens */
+    }
+
+    .bottom-login-account p,
+    .bottom-login-account a {
+        font-size: 14px; /* Increase font size for readability */
+    }
+
+    .logo-container img {
+        width: 70px; /* Smaller logo for mobile */
+        height: auto;
+    }
+
+    .back-btn {
+        font-size: 14px; /* Adjust font size of back button */
+    }
+
+    #LoginButton {
+        font-size: 14px; /* Adjust button font size */
+    }
+
+    .fp-container a {
+        font-size: 14px; /* Increase the font size of forgot password link */
+    }
+}
+
+/* Media query for extra small screens (320px) */
+@media (max-width: 320px) {
+    html, body {
+        height: 100vh; /* Ensure body height fills viewport */
+        align-items: center; /* Center items vertically */
+        justify-content: center; /* Center items horizontally */
+    }
+
+    .main-container {
+        width: 95%; /* Ensure container is narrower on extra small screens */
+        padding: 5px; /* Reduce padding for extra small screens */
+        align-items: center; /* Center content horizontally */
+        justify-content: center; /* Center content vertically */
+        height: auto; /* Allow height to adjust based on content */
+    }
+
+    .loginform {
+        width: 100%; /* Full width for login form */
+        padding: 5px; /* Reduce padding */
+    }
+
+    .logo-container img {
+        width: 60px; /* Smaller logo for tiny screens */
+        height: auto;
+    }
+
+    .bottom-login-account p,
+    .bottom-login-account a {
+        font-size: 12px; /* Further adjust font size */
+    }
+
+    #LoginButton {
+        font-size: 12px; /* Smaller font size for buttons */
+    }
+
+    .fp-container a {
+        font-size: 12px; /* Smaller forgot password link */
+    }
+
+    .back-btn {
+        font-size: 12px; /* Adjust back button for tiny screens */
+    }
 }
