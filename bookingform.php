@@ -134,13 +134,13 @@
               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group mb-6">
-                    <input type="" id="returnFlight" name="returnFlight" class="form-control" readonly>
+                    <input type="hidden" id="returnFlight" name="returnFlight" class="form-control" readonly>
                   </div>
                 </div>
 
                 <div class="col-md-6">
                   <div class="form-group mb-6">
-                    <input type="" id="flightId" name="flightId" value="">
+                    <input type="hidden" id="flightId" name="flightId" value="">
                   </div>
                 </div>
               </div>
@@ -353,7 +353,7 @@
                   <h5 class="align-items-center pt-2 fw-bolder">Total Price: ₱ <span id="displayTotalPrice">0</span></h5>
                   <button type="button" class="btn btn-primary p-2 px-3" data-bs-toggle="modal" data-bs-target="#BookingSummaryModal">Book Now</button>
                 </div>
-                <input type="" id="totalPrice" name="totalPrice">    
+                <input type="hidden" id="totalPrice" name="totalPrice">    
               </div>
             </div>
           </div>
