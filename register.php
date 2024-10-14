@@ -201,17 +201,27 @@ error_reporting(E_ALL);
             });
         });
 
+
+        let emailField = $('#floatingEmail');
+        let email = emailField.val();
+        let passwordField = $('#floatingPassword');
+        let password = passwordField.val();
+        let cpasswordField = $('#floatingPassword2');
+        let cpassword = cpasswordField.val();
+
+
+
         // Registration button click handler
         $('#SubmitRegButton').on('click', function (e) {
             e.preventDefault(); // Prevent default behavior
 
-            // Retrieve input field values
-            let emailField = $('#floatingEmail');
-            let email = emailField.val();
-            let passwordField = $('#floatingPassword');
-            let password = passwordField.val();
-            let cpasswordField = $('#floatingPassword2');
-            let cpassword = cpasswordField.val();
+            // // Retrieve input field values
+            // let emailField = $('#floatingEmail');
+            // let email = emailField.val();
+            // let passwordField = $('#floatingPassword');
+            // let password = passwordField.val();
+            // let cpasswordField = $('#floatingPassword2');
+            // let cpassword = cpasswordField.val();
 
             // Clear any previous message and reset borders
             $('#message-1').text('').removeClass('show');
@@ -344,8 +354,7 @@ error_reporting(E_ALL);
             // Start the OTP countdown immediately when the link is clicked
             startOtpCountdown(this); // Pass the link element
 
-            let emailField = $('#floatingEmail');
-            let email = emailField.val();
+            
 
             $.ajax({
                 url: 'send-otp.php',
