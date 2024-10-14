@@ -151,60 +151,88 @@ session_start();
 
 <body>
     <div class="sidebar" id="sidebar">
-        <div class="logo">
-
+        <div class="logo mt-5 mb-5">
+            <!-- <img src="..\assets\images\SMART LOGO 2 (2).png" alt="" width="180" height="35"> -->
         </div>
 
-        <h4>Dashboard</h4>
-        <a href="#">Home</a>
-        <a href="#">Products</a>
-        <a href="#">Analytics</a>
-        <a href="#">Team Settings</a>
-        <div class="section-title">ORGANIZATION</div>
-        <a href="#">Apps & Integrations</a>
-        <a href="#">Perks & Extras</a>
-        <a href="#">Tax Forms</a>
-        <a href="#">Global Payroll</a>
+        <div class="section-title">Dashboard</div>
 
-        
+        <!-- Navigation links with icons -->
+        <a href="#"> <i class="fas fa-home"></i> Home </a>
+        <a href="#"> <i class="fas fa-box"></i> Products </a>
+        <a href="#"> <i class="fas fa-chart-line"></i> Analytics </a>
+        <a href="#"> <i class="fas fa-users-cog"></i> Team Settings </a>
 
+        <div class="section-title">Organization</div>
+
+        <a href="#"> <i class="fas fa-plug"></i> Apps & Integrations </a>
+        <a href="#"> <i class="fas fa-gift"></i> Perks & Extras </a>
+        <a href="#"> <i class="fas fa-file-invoice"></i> Tax Forms </a>
+        <a href="#"> <i class="fas fa-globe"></i> Global Payroll </a>
+
+        <!-- <div class="profile-container d-flex align-items-center mt-auto">
+            <img src="../assets/images/circle.png" alt="Profile" class="profile-image" width="40px" height="40px">
+            <div class="ms-2">
+                <h6 class="m-0">De Guzman, Andrei Vincent</h6>
+                <span class="m-0">Admin</span>
+            </div>
+        </div> -->
     </div>
+
 
     <div class="main-content" id="mainContent">
         <nav class="navbar navbar-expand-lg justify-content-between sticky-top">
-            <div class="container-fluid">
-                <div class="toggle-btn" id="toggleBtn">
-                    <i class="fa-solid fa-bars"></i>
+            <div class="container-fluid d-flex justify-content-between">
+                <div class="nav-start-container d-flex flex-row">
+                    <div class="toggle-btn" id="toggleBtn">
+                        <i class="fa-solid fa-bars"></i>
+                    </div>
+
+                    <a class="navbar-brand" href="#">Dashboard</a>
                 </div>
 
-                <a class="navbar-brand" href="#">Dashboard</a>
-
+                
                 <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button> -->
                 
+                <div class="nav-end-container">
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item dropdown d-flex align-items-center"> <!-- Use flexbox for alignment -->
+                                <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item dropdown d-flex align-items-center"> <!-- Use flexbox for alignment -->
-                            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <div class="profile-container ms-2 me-3"> <!-- Flex container -->
+                                        <h6 class="m-0">De Guzman, Andrei Vincent</h6> <!-- User's Name -->
+                                        <span class="m-0">Admin</span> <!-- User's Position -->
+                                    </div>
 
-                                <img src="../assets/images/circle.png" alt="Profile" class="profile-image me-2" width="40px" height="40px"> 
-                            
-                                <div class="profile-container ms-2 me-3"> <!-- Flex container -->
-                                    <h6 class="m-0">De Guzman, Andrei Vincent</h6> <!-- User's Name -->
-                                    <span class="m-0">Admin</span> <!-- User's Position -->
-                                </div>
-                                
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="#">My Profile</a></li>
-                                <li><a class="dropdown-item" href="#">Settings</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="#">Logout</a></li>
-                            </ul>
-                        </li>
-                    </ul>
+                                    <img src="../assets/images/circle.png" alt="Profile" class="profile-image me-2" width="40px" height="40px"> 
+                                    
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end mt-3" aria-labelledby="navbarDropdown">
+                                    <li>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="fas fa-user me-2"></i> My Profile
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="fas fa-cog me-2"></i> Settings
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">
+                                            <i class="fas fa-sign-out-alt me-2"></i> Logout
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
 
                 
@@ -229,6 +257,30 @@ session_start();
         </div>
     </div>
 
+<<<<<<< HEAD
+=======
+
+    <!-- Logout Confirmation Modal -->
+    <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="logoutModalLabel">Confirm Logout</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to logout?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <a href="" class="btn btn-danger" id="logoutButton">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+>>>>>>> 00a8703d60c9dd233b07bc0f8dc81eb83eb2a70a
     <script>
         const toggleBtn = document.getElementById('toggleBtn');
         const sidebar = document.getElementById('sidebar');
