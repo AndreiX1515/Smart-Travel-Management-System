@@ -146,9 +146,6 @@ session_start();
         .profile-image {
             border-radius: 50%; /* Circular image */
         }
-
-
-
     </style>
 </head>
 
@@ -210,17 +207,27 @@ session_start();
                     </ul>
                 </div>
 
+                
+
 
             </div>
         </nav>
+
+        <div class="table-responsive">
+            <table class="table excel-table">
+                <thead>
+                    <tr>
+                        <th scope="col">Transaction Number</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>testing</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-
-
-
-
-
-
-
 
     <script>
         const toggleBtn = document.getElementById('toggleBtn');
@@ -240,7 +247,6 @@ session_start();
         });
 
     </script>
-
 
     <script>
         document.getElementById('profileButton').addEventListener('click', function () {
@@ -262,8 +268,6 @@ session_start();
             }
 
     </script>
-
-
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>

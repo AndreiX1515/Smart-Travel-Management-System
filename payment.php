@@ -1,3 +1,11 @@
+<?php
+    require "conn.php";
+    session_start();
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -121,9 +129,6 @@
                             <p id="swift-code">BOW12345</p>
                         </div> -->
                     </div>
-                
-                    <h3 class="mt-4">Attach Screenshot:</h3>
-                    <input type="file" id="attachment" class="attachment" accept="image/*">
             </div>
 
         </div>
@@ -165,6 +170,9 @@
             <div class="row">
                 <div class="col-sm">
                     <div class="d-flex justify-content-between mb-1">
+                        <?php
+                            
+                        ?>
                         <p class="mb-0"><strong>Flight Price:</strong></p>
                         <p class="mb-0">₱ 30,000</p> <!-- Added commas for better readability -->
                     </div>
@@ -200,6 +208,10 @@
             </div>
 
             <hr>
+            <input type="text" value="<?php echo $_SESSION['transactNo']; ?>" name="transactNo">
+            <h6 class="mt-4">Attach Proof/Screenshot of transaction:</h6>
+            <input type="file" id="attachment" class="attachment" name="proof" accept="image/*">
+            <hr>
 
             <div class="row mt-4">
                 <div class="col-sm">
@@ -216,9 +228,6 @@
                 </div>
             </div>
         </div>
-
-
-        
     </div> 
 </div>
     
