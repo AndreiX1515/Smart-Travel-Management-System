@@ -12,207 +12,8 @@ session_start();
     <title>Dashboard with Sidebar</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
-    <style>
-        /* Sidebar styles */
-        .sidebar {
-            height: 100vh;
-            width: 250px;
-            background-color: #f8f9fa; /* Background color */
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 1000;
-            padding: 20px;
-            transition: transform 0.3s ease;
-            transform: translateX(-250px); /* Hidden by default */
-        }
-
-        .sidebar.active {
-            transform: translateX(0); /* Show sidebar */
-        }
-
-        /* Toggle button styles */
-        .toggle-btn {
-            display: flex;
-            align-items: center; /* Aligns the icon vertically */
-            cursor: pointer;
-            margin-right: 0px; /* Optional: Add some space to the right */
-            border: none;
-            border-radius: 0 5px 5px 0;
-            width: 40px;
-            height: 40px;
-            color: white;
-            font-size: 20px;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-            z-index: 1100; /* Keep it above the sidebar */
-            color: #000;
-        }
-
-
-
-        .navbar {
-            padding: 10px 20px; /* Adjust as necessary */
-        }
-
-        /* Aligns navbar contents */
-        .navbar-brand {
-            margin-left: 0px; /* Add some space to the left */
-            margin-bottom: 2px;
-        }
-
-        .navbar-toggler {
-            margin-left: auto; /* Ensures the toggler is at the end */
-        }
-
-
-        /* Main content */
-        .main-content {
-            /* margin-left: 0; /* Start with no margin to account for hidden sidebar
-            padding: 20px 30px; */
-            transition: margin-left 0.3s ease;
-            position: relative;
-        }
-
-        .main-content.active {
-            margin-left: 250px; /* Adjusted when sidebar is shown */
-        }
-
-        .sidebar {
-            width: 250px; /* Adjust the width of your sidebar */
-            height: 100%; /* Full height */
-            background-color: #f8f9fa; /* Background color */
-            padding: 20px; /* Padding around the sidebar */
-            position: fixed; /* Keep it fixed to the left */
-            overflow-y: auto; /* Allow scrolling if content is long */
-            display: flex; /* Flexbox for layout */
-            flex-direction: column; /* Column layout */
-        }
-
-        .sidebar h4 {
-            margin-bottom: 20px; /* Space below the heading */
-            font-weight: bold; /* Make the heading bold */
-        }
-
-        .sidebar a {
-            text-decoration: none; /* Remove underline from links */
-            color: #333; /* Text color */
-            display: flex; /* Flexbox for link items */
-            align-items: center; /* Center items vertically */
-            padding: 10px; /* Padding for links */
-            border-radius: 5px; /* Rounded corners */
-            transition: background-color 0.3s; /* Smooth background color transition */
-        }
-
-        .sidebar a:hover {
-            background-color: #e9ecef; /* Change background color on hover */
-        }
-
-        .sidebar i {
-            margin-right: 10px; /* Space between icon and text */
-        }
-
-        .section-title {
-            margin-top: 20px; /* Space above the section title */
-            margin-bottom: 10px; /* Space below the section title */
-            font-weight: bold; /* Make the title bold */
-        }
-
-        .profile-container {
-            display: flex; /* Use flexbox to align items */
-            align-items: center; /* Center items vertically */
-            margin-top: auto; /* Push profile section to the bottom */
-        }
-
-        .profile-image {
-            border-radius: 50%; /* Circular image */
-        }
-
-        .profile-container h6 {
-            font-weight: bold; /* Bold for the name */
-            margin: 0; /* Remove margin */
-        }
-
-        .profile-container span {
-            font-size: 12px; /* Smaller font for position */
-            color: gray; /* Gray color for the position */
-            margin: 0; /* Remove margin */
-        }
-
-
-        /* Additional styles for the sidebar links */
-        .sidebar h3 {
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-        }
-
-        .sidebar a {
-            display: block;
-            padding: 10px;
-            color: #333;
-            text-decoration: none;
-            transition: background-color 0.3s;
-        }
-
-        .sidebar a:hover {
-            background-color: #007bff;
-            color: white;
-        }
-
-        .sidebar .section-title {
-            margin-top: 30px;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
-
-        .sidebar .invite-teammates {
-            margin-top: auto;
-            border-top: 1px solid #eaeaea;
-            padding-top: 20px;
-        }
-
-        /* Navbar styles */
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #ffffff; /* Use your preferred color */
-            padding: 20px; /* Adjust padding as necessary */
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Bottom shadow */
-            z-index: 999; /* Ensure the navbar is above other elements */
-        }
-
-        .nav-item.dropdown {
-            display: flex; /* Make the dropdown a flex container */
-            align-items: center; /* Align items vertically centered */
-        }
-
-        .profile-container {
-            display: flex; /* Use flexbox for the name and position */
-            align-items: start;
-            flex-direction: column; /* Stack name and position vertically */
-            margin-left: 8px; /* Space between image and text */
-        }
-
-        .profile-container h6 {
-            font-weight: bold; /* Bold for the name */
-            margin: 0; /* Remove margin */
-        }
-
-        .profile-container span {
-            font-size: 12px; /* Smaller font for position */
-            color: gray; /* Gray color for the position */
-            margin: 0; /* Remove margin */
-        }
-
-        .profile-image {
-            border-radius: 50%; /* Circular image */
-        }
-
-
-
-    </style>
+    <link rel="stylesheet" href="..\Agent Section\assets\css\agent-dashboard.css">
+    
 </head>
 
 <body>
@@ -224,33 +25,17 @@ session_start();
         <div class="section-title">Dashboard</div>
 
         <!-- Navigation links with icons -->
-        <a href="#">
-            <i class="fas fa-home"></i> Home
-        </a>
-        <a href="#">
-            <i class="fas fa-box"></i> Products
-        </a>
-        <a href="#">
-            <i class="fas fa-chart-line"></i> Analytics
-        </a>
-        <a href="#">
-            <i class="fas fa-users-cog"></i> Team Settings
-        </a>
+        <a href="#"> <i class="fas fa-home"></i> Home </a>
+        <a href="#"> <i class="fas fa-box"></i> Products </a>
+        <a href="#"> <i class="fas fa-chart-line"></i> Analytics </a>
+        <a href="#"> <i class="fas fa-users-cog"></i> Team Settings </a>
 
         <div class="section-title">Organization</div>
 
-        <a href="#">
-            <i class="fas fa-plug"></i> Apps & Integrations
-        </a>
-        <a href="#">
-            <i class="fas fa-gift"></i> Perks & Extras
-        </a>
-        <a href="#">
-            <i class="fas fa-file-invoice"></i> Tax Forms
-        </a>
-        <a href="#">
-            <i class="fas fa-globe"></i> Global Payroll
-        </a>
+        <a href="#"> <i class="fas fa-plug"></i> Apps & Integrations </a>
+        <a href="#"> <i class="fas fa-gift"></i> Perks & Extras </a>
+        <a href="#"> <i class="fas fa-file-invoice"></i> Tax Forms </a>
+        <a href="#"> <i class="fas fa-globe"></i> Global Payroll </a>
 
         <!-- <div class="profile-container d-flex align-items-center mt-auto">
             <img src="../assets/images/circle.png" alt="Profile" class="profile-image" width="40px" height="40px">
@@ -293,10 +78,24 @@ session_start();
                                     
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end mt-3" aria-labelledby="navbarDropdown">
-                                    <li><a class="dropdown-item" href="#">My Profile</a></li>
-                                    <li><a class="dropdown-item" href="#">Settings</a></li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item" href="#">Logout</a></li>
+                                    <li>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="fas fa-user me-2"></i> My Profile
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="fas fa-cog me-2"></i> Settings
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">
+                                            <i class="fas fa-sign-out-alt me-2"></i> Logout
+                                        </a>
+                                    </li>
                                 </ul>
                             </li>
                         </ul>
@@ -309,10 +108,24 @@ session_start();
     </div>
 
 
-
-
-
-
+    <!-- Logout Confirmation Modal -->
+    <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="logoutModalLabel">Confirm Logout</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to logout?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <a href="" class="btn btn-danger" id="logoutButton">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
     <script>
