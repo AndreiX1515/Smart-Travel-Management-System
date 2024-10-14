@@ -28,9 +28,10 @@
 
 <body>
   <!-- Back to homepage button -->
-  <a href="smart-travelkorea.com" class="back-btn">
-    <i class="fas fa-arrow-left"></i> Back to Home Page
-  </a>
+  <a href="https://smart-travelkorea.com" class="back-btn">
+    <i class="fas fa-arrow-left me-2"></i> Back to Home Page
+ </a>
+
   
   <div class="container-background"> </div>
 
