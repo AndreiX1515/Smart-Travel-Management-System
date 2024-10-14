@@ -608,6 +608,7 @@
       $('#outboundFlight').on('change', function () 
       {
         var outboundFlight = $(this).val();
+        var selectedFlight = $("#outboundFlight option:selected").text();
         // Extract only the flight date by splitting at the " || " (delimiter between date and price)
         var selectedDate = selectedFlight.split(' || ')[0].trim();
 
