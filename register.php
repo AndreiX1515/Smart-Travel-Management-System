@@ -1,5 +1,9 @@
 <?php
 session_start(); // Make sure to start the session
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 ?>
 
 <!DOCTYPE html>
@@ -152,7 +156,7 @@ session_start(); // Make sure to start the session
     </div>
 </div>
 
-    <?php include 'includes\scripts.php'; ?>
+    <?php include 'includes/scripts.php'; ?>
 
     <script>
     $(document).ready(function () {
