@@ -1,0 +1,172 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+
+body {
+    background-color: #f8f9fa;
+    margin: 0;
+    font-family: 'Roboto', Arial, sans-serif;
+}
+
+/* Profile section inside the navbar */
+.navbar-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Added gap between image and text */
+    cursor: pointer;
+}
+
+.navbar-profile img {
+    width: 40px; /* Maintain image size */
+    height: 40px;
+    border-radius: 50%;
+}
+
+/* Navbar styles */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff; /* Use your preferred color */
+    padding: 20px 20px 20px 20px; /* Reduced padding for better alignment */
+}
+
+/* Sticky Navbar styles */
+.navbar-custom {
+    background-color: white;
+    border-bottom: 1px solid #eaeaea;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between; /* Space between logo and profile */
+    align-items: center;
+    transition: background-color 0.3s ease; /* Transition effect for background */
+}
+
+/* Profile dropdown styles */
+.profile-dropdown {
+    position: relative;
+}
+
+.dropbtn {
+    background-color: #116530; /* Match the navbar color */
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* Dropdown menu styles */
+.dropdown-menu {
+    display: none; /* Initially hidden */
+    position: absolute; /* Make the dropdown menu absolute */
+    margin-top: 50px; /* Space between the navbar and the dropdown */
+    right: 0; /* Align it to the right of the dropdown toggle */
+    z-index: 1050; /* Ensure it's above other content */
+    background-color: white;
+    min-width: 100px;
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+}
+
+.dropdown-menu a {
+    color: #116530; /* Match the navbar color */
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-menu a:hover {
+    background-color: #f1f1f1;
+}
+
+.profile-dropdown:hover .dropdown-menu {
+    display: block; /* Show when hovered */
+}
+
+/* Sidebar styles */
+.nav-sidebar {
+    height: 100vh;
+    background-color: white;
+    border-right: 1px solid #eaeaea;
+    transition: transform 0.3s ease;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    width: 250px;
+    transform: translateX(-250px); /* Hidden by default */
+}
+
+.expanded-sidebar {
+    transform: translateX(0);
+}
+
+/* Toggle button (tab-like) */
+.toggle-btn {
+    position: absolute;
+    top: 90px;
+    left: 250px; /* Attached like a tab */
+    background-color: #007bff;
+    border: none;
+    border-radius: 0 5px 5px 0;
+    width: 40px;
+    height: 40px;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.3s ease;
+    z-index: 1000; /* Keep it above the sidebar */
+}
+
+/* Main content */
+.main-content {
+    margin-left: 0; /* Start with no margin to account for hidden sidebar */
+    padding: 20px 30px;
+    transition: margin-left 0.3s ease;
+    position: relative;
+    width: calc(100% - 0px); /* Full width minus toggle button */
+    background-color: #eaeaea;
+    height: 100vh;
+}
+
+.expanded-main-content {
+    margin-left: 250px; /* Adjusted when sidebar is shown */
+}
+
+/* Circle image styles */
+.circle-image img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+/* Profile image for smaller screens */
+.profile-pic {
+    width: 20px; 
+    height: 20px;
+    border-radius: 50%;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 10px; /* Adjust navbar padding for smaller screens */
+    }
+    
+    .navbar-profile {
+        gap: 5px; /* Reduce gap between profile text and image */
+    }
+    
+    .toggle-btn {
+        top: 70px; /* Adjust toggle button position for smaller screens */
+    }
+    
+    .main-content {
+        padding: 10px; /* Adjust main content padding for smaller screens */
+    }
+}

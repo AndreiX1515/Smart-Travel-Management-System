@@ -149,11 +149,12 @@
                                 </td>
                               </tr>";
 
-                              // <p><strong>Package Name:</strong> <span id='packageName_" . htmlspecialchars($row['transactNo']) . "'>" . htmlspecialchars($row['packageName']) . "</span></p>
-                              // <p><strong>Flight Date:</strong> <span id='flightDate_" . htmlspecialchars($row['transactNo']) . "'>" . htmlspecialchars($row['flightDate']) . "</span></p>
-                              // <p><strong>Total Pax:</strong> <span id='totalPax_" . htmlspecialchars($row['transactNo']) . "'>" . htmlspecialchars($row['totalPax']) . "</span></p>
-                              // <p><strong>Amount to Pay:</strong> ₱ <span id='amountToPay_" . htmlspecialchars($row['transactNo']) . "'>" . number_format($row['amountToPay'], 2) . "</span></p>
-                              // <p><strong>Downpayment:</strong> ₱ <span id='downpayment_" . htmlspecialchars($row['transactNo']) . "'>" . number_format($row['downpayment'], 2) . "</span></p>
+                        // For Backup - Modal Fields
+                        // <p><strong>Package Name:</strong> <span id='packageName_" . htmlspecialchars($row['transactNo']) . "'>" . htmlspecialchars($row['packageName']) . "</span></p>
+                        // <p><strong>Flight Date:</strong> <span id='flightDate_" . htmlspecialchars($row['transactNo']) . "'>" . htmlspecialchars($row['flightDate']) . "</span></p>
+                        // <p><strong>Total Pax:</strong> <span id='totalPax_" . htmlspecialchars($row['transactNo']) . "'>" . htmlspecialchars($row['totalPax']) . "</span></p>
+                        // <p><strong>Amount to Pay:</strong> ₱ <span id='amountToPay_" . htmlspecialchars($row['transactNo']) . "'>" . number_format($row['amountToPay'], 2) . "</span></p>
+                        // <p><strong>Downpayment:</strong> ₱ <span id='downpayment_" . htmlspecialchars($row['transactNo']) . "'>" . number_format($row['downpayment'], 2) . "</span></p>
 
                         // Modal for the current row
                         echo "<div class='modal fade' id='modal_" . htmlspecialchars($row['transactNo']) . "' tabindex='-1' aria-labelledby='modalLabel_" . htmlspecialchars($row['transactNo']) . "' aria-hidden='true'>
