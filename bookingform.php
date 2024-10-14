@@ -62,7 +62,7 @@
         ?>
 
         <div class="header-container d-flex flex-row align-items-center justify-content-between w-100 my-2 px-3">
-          <h4>Flight Booking</h4>
+          <h4>Booking</h4>
           <button class="add-more-form btn btn-primary"><i class="fa-solid fa-plus"></i></button>
         </div>
 
@@ -70,7 +70,7 @@
         <form action="bookingform-code.php" method="POST">
           <div class="card">
             <div class="card-header bg-secondary text-white text-light">
-              <h4 class="my-2 px-2">Flight Details</h4>
+              <h4 class="my-2 px-2">Flight</h4>
             </div>
 
             <div class="card-body p-4">
@@ -134,13 +134,13 @@
               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group mb-6">
-                    <input type="hidden" id="returnFlight" name="returnFlight" class="form-control" readonly>
+                    <input type="" id="returnFlight" name="returnFlight" class="form-control" readonly>
                   </div>
                 </div>
 
                 <div class="col-md-6">
                   <div class="form-group mb-6">
-                    <input type="hidden" id="flightId" name="flightId" value="">
+                    <input type="" id="flightId" name="flightId" value="">
                   </div>
                 </div>
               </div>
@@ -353,7 +353,7 @@
                   <h5 class="align-items-center pt-2 fw-bolder">Total Price: ₱ <span id="displayTotalPrice">0</span></h5>
                   <button type="button" class="btn btn-primary p-2 px-3" data-bs-toggle="modal" data-bs-target="#BookingSummaryModal">Book Now</button>
                 </div>
-                <input type="hidden" id="totalPrice" name="totalPrice">    
+                <input type="" id="totalPrice" name="totalPrice">    
               </div>
             </div>
           </div>
