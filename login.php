@@ -132,8 +132,6 @@
     <script>
     const LoginButton = document.getElementById('LoginButton');
 
-   
-
 
     document.getElementById('loginForm').addEventListener('submit', function(event) {
         event.preventDefault(); // Prevent default form submission
@@ -154,14 +152,28 @@
             if (data.success) {
                 // Redirect to dashboard or homepage
                 window.location.href = 'client-dashboard.php';
-            } else {
-                // Show error message
-                document.getElementById('message-login').innerHTML = '<div class="alert alert-danger text-center">' + data.message + '</div>';
+            } 
+            
+            else if (data.message === "User not found.") {
+                // Show specific message for user not found
+                document.getElementById('message-login').innerHTML = '<div class="alert alert-warning text-center">User not found. Please check your credentials.</div>';
+                
+            } 
+            
+            else if (data.message === "You are logged in on another device. Please close from other tab or devices then reload before logging in again!") {
+                // Show specific message for user not found
+                document.getElementById('message-login').innerHTML = '<div class="alert alert-warning text-center">User not found. Please check your credentials.</div>';
+
                 if (LoginButton) {
                     // Add CSS class to visually disable the button
                     LoginButton.classList.add('button-disabled');
                 }
-
+                
+            }
+            
+            else {
+                // Show generic error message
+                document.getElementById('message-login').innerHTML = '<div class="alert alert-danger text-center">' + data.message + '</div>';
             }
         })
         .catch(error => {
