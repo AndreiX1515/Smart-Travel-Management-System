@@ -340,6 +340,9 @@ session_start(); // Make sure to start the session
             // Start the OTP countdown immediately when the link is clicked
             startOtpCountdown(this); // Pass the link element
 
+            let emailField = $('#floatingEmail');
+            let email = emailField.val();
+
             $.ajax({
                 url: 'send-otp.php',
                 method: 'POST',
