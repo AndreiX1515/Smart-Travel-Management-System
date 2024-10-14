@@ -20,7 +20,7 @@ if (isset($_POST['packageId']) && isset($_POST['origin']))
     while ($res = mysqli_fetch_array($sql)) 
     {
       $formattedPrice = number_format($res['flightPrice'], 2);
-      echo '<option value="' . $res['flightId'] . '">' . $res['onboardFlightSched'] . ' ||         Price: ₱ '. $formattedPrice . '</option>';
+      echo '<option value="' . $res['flightId'] . '">' . $res['onboardFlightSched'] . ' || Price: ₱ '. $formattedPrice . '</option>';
     }
   } 
   else 
