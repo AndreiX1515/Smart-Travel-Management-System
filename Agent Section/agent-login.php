@@ -1,3 +1,11 @@
+<?php
+    require "../conn.php"; // Move up to the parent directory
+
+    session_start();
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,7 +29,7 @@
             <div class="logo mt-5 mb-5">
                 <img src="..\assets\images\logo-tab.png" alt="" class="logo-image" width="160" height="120">
             </div>
-            <form class="mt-5" id="loginForm">
+            <form class="mt-5" id="loginForm" action="agentLogin-code.php" method="POST">
                 <!-- Username input field -->
                 <div class="mb-3">
                     <div class="form-floating">
@@ -54,7 +62,7 @@
                 <div id="message-login" class="message-login mt-3"></div>
 
                 <!-- Submit Button -->
-                <button type="submit" class="btn btn-primary w-100 p-3 mt-5" id="LoginButton">LOGIN</button>
+                <button type="submit" class="btn btn-primary w-100 p-3 mt-5" id="LoginButton" name="login">LOGIN</button>
             </form>
         </div>
     </main>

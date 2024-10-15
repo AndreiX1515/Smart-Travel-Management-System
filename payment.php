@@ -31,7 +31,7 @@
 </head>
 
 <body>
-    <a href="client-dashboard" class="back-button">
+    <a href="client-dashboard.php" class="back-button">
         <i class="fas fa-arrow-left"></i>
     </a>
 
@@ -89,7 +89,6 @@
                         </div>
                     </div>
                 </div>
-                
             </div>
 
             <div class="section section-1 px-3">
@@ -97,38 +96,38 @@
                     <h4 class="mb-2">Add payment method</h4>
                 </div> -->
                 
-                    <h3>Bank Details</h3>
-                    <div class="bank-detail-row">
-                        <div class="bank-detail-col">
-                            <label for="bank-name">Bank Name:</label>
-                            <p id="bank-name">Banco De Oro (BDO)</p>
-                        </div>
-                        <div class="bank-detail-col">
-                            <label for="account-name">Account Name:</label>
-                            <p id="account-name">Hyung Sub Kim (Nickname: Jed Kim)</p>
-                        </div>
+                <h3>Bank Details</h3>
+                <div class="bank-detail-row">
+                    <div class="bank-detail-col">
+                        <label for="bank-name">Bank Name:</label>
+                        <p id="bank-name">Banco De Oro (BDO)</p>
                     </div>
-                    <div class="bank-detail-row">
-                        <div class="bank-detail-col">
-                            <label for="account-number">Account Number (PH - Peso):</label>
-                            <p id="account-number">00780020352</p>
-                        </div>
-                        <!-- <div class="bank-detail-col">
-                            <label for="swift-code">SWIFT Code:</label>
-                            <p id="swift-code">BOW12345</p>
-                        </div> -->
+                    <div class="bank-detail-col">
+                        <label for="account-name">Account Name:</label>
+                        <p id="account-name">Hyung Sub Kim (Nickname: Jed Kim)</p>
                     </div>
+                </div>
+                <div class="bank-detail-row">
+                    <div class="bank-detail-col">
+                        <label for="account-number">Account Number (PH - Peso):</label>
+                        <p id="account-number">00780020352</p>
+                    </div>
+                    <!-- <div class="bank-detail-col">
+                        <label for="swift-code">SWIFT Code:</label>
+                        <p id="swift-code">BOW12345</p>
+                    </div> -->
+                </div>
 
-                    <div class="bank-detail-row">
-                        <div class="bank-detail-col">
-                            <label for="account-number">Account Number (US - Dollar):</label>
-                            <p id="account-number">10780018789</p>
-                        </div>
-                        <!-- <div class="bank-detail-col">
-                            <label for="swift-code">SWIFT Code:</label>
-                            <p id="swift-code">BOW12345</p>
-                        </div> -->
+                <div class="bank-detail-row">
+                    <div class="bank-detail-col">
+                        <label for="account-number">Account Number (US - Dollar):</label>
+                        <p id="account-number">10780018789</p>
                     </div>
+                    <!-- <div class="bank-detail-col">
+                        <label for="swift-code">SWIFT Code:</label>
+                        <p id="swift-code">BOW12345</p>
+                    </div> -->
+                </div>
             </div>
 
         </div>
@@ -170,15 +169,50 @@
                     <div class="d-flex justify-content-between mb-1">
                         <?php
                             $transactNo = $_SESSION['transactNo'];
-                            $sql1 = mysqli_query($conn, "SELECT * from booking where transactNo = $transactNo");
-                            while($res1 = mysqli_fetch_array($sql1)) 
-                            {
+                            $sql1 = mysqli_query($conn, "
+                                SELECT b.*, DATE_FORMAT(f.flightDepartureDate, '%M %d, %Y') AS onboardFlightSched, p.packageName 
+                                FROM booking b 
+                                JOIN guest g ON b.transactNo = g.transactNo
+                                JOIN flight f ON g.flightId = f.flightId 
+                                JOIN package p ON f.packageId = p.packageId 
+                                WHERE b.transactNo = '$transactNo'
+                            ");
+                            
+                            while ($res1 = mysqli_fetch_array($sql1)) {
                                 $totalPrice = $res1['totalPrice'];
+                                $formattedPrice = number_format($totalPrice, 2); // Format to 2 decimal places
                                 $downpayment = $res1['pax'] * 1000;
+                                $formattedDP = number_format($downpayment, 2); // Format to 2 decimal places
+                            
+                                // Get additional fields
+                                $flightDate = $res1['onboardFlightSched'];
+                                $packageName = $res1['packageName'];
+                                $pax = $res1['pax'];
+                                
+                                // You can now use $flightDate and $packageName as needed
                             }
+                            
                         ?>
-                        <p class="mb-0"><strong>Flight Price:</strong></p>
-                        <p class="mb-0"><?php echo $totalPrice; ?></p> <!-- Added commas for better readability -->
+                        <p class="mb-0"><strong>Package Name:</strong></p>
+                        <p class="mb-0"><?php echo $packageName; ?></p> <!-- Added commas for better readability -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm">
+                    <div class="d-flex justify-content-between mb-1">
+                        <p class="mb-0"><strong>Total Number of Guest:</strong></p>
+                        <p class="mb-0"><?php echo $pax; ?></p> <!-- Added commas for better readability -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm">
+                    <div class="d-flex justify-content-between mb-1">
+                        <p class="mb-0"><strong>Flight Date:</strong></p>
+                        <p class="mb-0"><?php echo $flightDate; ?></p> <!-- Added commas for better readability -->
                     </div>
                 </div>
             </div>
@@ -187,7 +221,7 @@
                 <div class="col-sm">
                     <div class="d-flex justify-content-between mb-1">
                         <p class="mb-0"><strong>Downpayment:</strong></p>
-                        <p class="mb-0"><?php echo $downpayment; ?></p> <!-- Added commas for better readability -->
+                        <p class="mb-0">₱ <?php echo $formattedDP; ?></p> <!-- Added commas for better readability -->
                     </div>
                 </div>
             </div>
@@ -195,7 +229,7 @@
             <div class="row">
                 <div class="col-sm">
                     <div class="d-flex justify-content-between mb-1">
-                        <p class="mb-0">₱ 1,000 per pax.</p> <!-- Added space for better readability -->
+                        <p class="mb-0">₱ 1,000 per Guest.</p> <!-- Added space for better readability -->
                     </div>
                 </div>
             </div>
@@ -206,37 +240,40 @@
                 <div class="col-sm">
                     <div class="d-flex justify-content-between mb-1">
                         <p class="mb-0"><strong>Total:</strong></p>
-                        <p class="mb-0">₱ 30,000</p> <!-- Added commas for better readability -->
+                        <p class="mb-0">₱ <?php echo $formattedPrice; ?></p> <!-- Added commas for better readability -->
                     </div>
                 </div>
             </div>
 
-            <hr>
-            <input type="text" value="<?php echo $_SESSION['transactNo']; ?>" name="transactNo">
-            <h6 class="mt-4">Attach Proof/Screenshot of transaction:</h6>
-            <input type="file" id="attachment" class="attachment" name="proof" accept="image/*">
-            <hr>
+            <form action="payment-code.php" method="POST">
+                <hr>
+                <input type="hidden" value="<?php echo $_SESSION['transactNo']; ?>" name="transactNo">
+                <input type="number" class="form-control" name="downpayment" min="1000" placeholder="Enter Downpayment Amount" required>
+                <h6 class="mt-4">Attach Proof/Screenshot of transaction:</h6>
+                <input type="file" id="attachment" class="attachment" name="proof" accept="image/*" required>
+                <hr>
 
-            <div class="row mt-4">
-                <div class="col-sm">
-                    <div class="d-flex align-items-left mb-3"> <!-- Align items center for checkbox -->
-                        <input type="checkbox" class="ms-1 me-3"> <!-- Added margin to the checkbox -->
+                <div class="row mt-4">
+                    <div class="col-sm">
+                        <div class="d-flex align-items-left mb-3"> <!-- Align items center for checkbox -->
+                            <input type="checkbox" class="ms-1 me-3"> <!-- Added margin to the checkbox -->
                             <div class="checkbox-text">
                                 <span>
-                                By clicking this, I agree to Smart Travel <a href="#" class="terms-link">Terms & Conditions</a> and <a href="#" class="privacy-link">Privacy Policy</a>
-                            </span>
-
+                                By clicking this, I agree to Smart Travel <a href="#" class="terms-link">Terms & Conditions</a> and 
+                                <a href="#" class="privacy-link">Privacy Policy</a>
+                                </span>
                             </div>
+                        </div>
+                        <button type="submit" class="pay-button" name="pay">Pay Now</button>
                     </div>
-                    <button class="pay-button">Pay Now</button>
                 </div>
-            </div>
+            </form>
         </div>
     </div> 
-</div>
     
     
 </body>
+    <script src="heartbeat.js"></script>
     <script>
         document.querySelectorAll('.billing-card').forEach(card => {
             card.addEventListener('click', function() {

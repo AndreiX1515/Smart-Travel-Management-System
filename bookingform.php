@@ -148,7 +148,7 @@
 
             <div class="card-footer">
               <h4> <label>Price: ₱ <span id="flightPrice" ></span>
-                  <!-- <input style="border: none; outline: none;" id="flightPrice" name="flightPrice" value="0.00" readonly> -->
+                  <input type="hidden" id="flightPrice" name="flightPrice" value="0.00" readonly>
                 </label> 
               </h4>
             </div>
