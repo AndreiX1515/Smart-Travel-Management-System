@@ -151,38 +151,44 @@
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                // Redirect to dashboard or homepage
-                window.location.href = 'client-dashboard.php';
-            } 
+                    // Redirect to dashboard or homepage
+                    window.location.href = 'client-dashboard.php';
+                } 
             
-            if (data.message.trim() === "User not found.") {
+            if (data.message && data.message.trim() === "User not found.") {
                 // Show specific message for user not found
-                document.getElementById('message-login').innerHTML = '<div class="alert alert-warning text-center">' + data.message + '</div>';
-                
-                if (LoginButton) {
-                    console.log("Disabling login button for 'User not found.'");
-                    LoginButton.classList.add('button-disabled');  // Disable the login button
-                }
-            } 
-            
-            if (data.message.trim() === "You are logged in on another device. Please close from other tabs or devices then reload before logging in again!") {
-                // Show specific message for logged in on another device
-                document.getElementById('message-login').innerHTML = '<div class="alert alert-warning text-center">' + data.message + '</div>';
-                
-                if (LoginButton) {
-                    console.log("Disabling login button for 'Logged in on another device.'");
-                    LoginButton.classList.add('button-disabled');  // Disable the login button
-                }
-            } 
-            
-            else {
-                // Show generic error message
                 document.getElementById('message-login').innerHTML = '<div class="alert alert-danger text-center">' + data.message + '</div>';
                 
-                if (LoginButton) {
-                    LoginButton.classList.add('button-disabled');  // Disable the login button
-                }
+                return;
+            } 
+
+            if (data.message && data.message.trim() === "Your account is inactive. Please contact support.") {
+                // Show specific message for inactive account
+                document.getElementById('message-login').innerHTML = '<div class="alert alert-warning text-center">' + data.message + '</div>';
+                
+                return;
+            } 
+
+            if (data.message && data.message.trim() === "You are logged in on another device. Please close from other tab or devices then reload before logging in again!") {
+                // Show specific message for logged in on another device
+                document.getElementById('message-login').innerHTML = '<div class="alert alert-danger text-center fw-normal h6">' + data.message + '</div>';
+                
+                console.log("Disabling login button for 'Logged in on another device.'");
+                LoginButton.classList.add('button-disabled');  // Disable the login button
+
+                return;
+                
+                
+            } 
+
+            else {
+                // Fallback for no message or unexpected data structure
+                document.getElementById('message-login').innerHTML = '<div class="alert alert-danger text-center">An unknown error occurred. Please try again.</div>';
+                
+                return;
             }
+
+
         })
         .catch(error => {
             console.error('Error:', error);
