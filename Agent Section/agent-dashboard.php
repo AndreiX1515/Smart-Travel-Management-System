@@ -1,6 +1,11 @@
 <?php
 // Start session
 session_start();
+
+
+date_default_timezone_set('Asia/Taipei'); // Set the timezone to Taipei
+$current_date = date('D, F d, Y'); // Format: "Tue, January 01, 2024"
+
 ?>
 
 <!DOCTYPE html>
@@ -12,14 +17,14 @@ session_start();
     <title>Dashboard with Sidebar</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-    <link rel="stylesheet" href="../Agent Section/assets/css/agent-dashboard.css">
+    <link rel="stylesheet" href="../Agent Section/assets/css/agent-dashboard.css?v=<?php echo time(); ?>">
 </head>
 
 <body>
     <!-- Sidebar Section -->
     <div class="sidebar" id="sidebar">
-        <div class="logo mt-5 mb-5">
-            <!-- Logo can be added here -->
+        <div class="logo mt-3">
+            <img src="..\assets\images\SMART LOGO 2 (2).png" alt="Smart Travel Logo">
         </div>
 
         <div class="section-title">Dashboard</div>
@@ -57,7 +62,7 @@ session_start();
                             <i class="fa-solid fa-bars"></i>
                         </div>
 
-                        <a class="navbar-brand" href="#">Dashboard</a>
+                        <a class="navbar-brand" href="#" style="font-weight: 600;">Dashboard</a>
                     </div>
 
                     <div class="nav-end-container">
@@ -99,80 +104,149 @@ session_start();
             </nav>
         </header>
 
-<<<<<<< HEAD
-        <!-- Main Dashboard Content -->
-        <div class="Dashboard-Cards">
-            <div class="row">
-                <div class="col-md-4 col-xl-2">
-                    <div class="card bg-white order-card">
-                        <div class="card-block">
-                            <h6 class="m-b-20">Pending Transaction:</h6>
-                            <h2 class="text-right mb-4"><span>486</span></h2>
-                            <p class=""><i class="fa-solid fa-arrow-up"></i><span class="f-right">351</span></p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-md-4 col-xl-2">
-                    <div class="card bg-c-green order-card">
-                        <div class="card-block">
-                            <h6 class="m-b-20">Orders Received</h6>
-                            <h2 class="text-right"><span>486</span></h2>
-                            <p class="m-b-0">Completed Orders<span class="f-right">351</span></p>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- <div class="col-md-4 col-xl-2">
-                    <div class="card bg-c-yellow order-card">
-                        <div class="card-block">
-                            <h6 class="m-b-20">Orders Received</h6>
-                            <h2 class="text-right"><i class="fa fa-refresh f-left"></i><span>486</span></h2>
-                            <p class="m-b-0">Completed Orders<span class="f-right">351</span></p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-md-4 col-xl-2">
-                    <div class="card bg-c-pink order-card">
-                        <div class="card-block">
-                            <h6 class="m-b-20">Orders Received</h6>
-                            <h2 class="text-right"><i class="fa fa-credit-card f-left"></i><span>486</span></h2>
-                            <p class="m-b-0">Completed Orders<span class="f-right">351</span></p>
-                        </div>
-                    </div>
-                </div> -->
+
+    <!-- Main Dashboard Content -->
+    <div class="container-wrapper">
+        <div class="info-container d-flex justify-content-between align-items-center">
+            <div class="left-section d-flex align-items-center">
+                <h2 class="info-title">Dashboard</h2>
+                <!-- <div class="date-picker d-flex align-items-center ml-4">
+                    <button class="btn btn-outline-secondary"><i class="fas fa-chevron-left"></i></button>
+                    <span class="date-text mx-2">Monday, 15 October</span>
+                    <button class="btn btn-outline-secondary"><i class="fas fa-chevron-right"></i></button>
+                </div>  -->
             </div>
-        </div>
+
+            <div class="right-section d-flex">
+                <div class="date-time-container">
+                    <h6><?php echo $current_date; ?></h6>
+
+
+                </div>
+
+                <!-- <button class="btn btn-outline-secondary d-flex align-items-center mr-2">
+                    <i class="fas fa-file-alt mr-2"></i> Attendance Report
+                </button>
+                <button class="btn btn-success d-flex align-items-center">
+                    <i class="fas fa-user-plus mr-2"></i> Add Attendance
+                </button> -->
+            </div> 
+        </div> 
+
+      <div class="Dashboard-Cards">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card bg-white order-card">
+                    <div class="card-block">
+                        <div class="header-top d-flex justify-content-between align-items-center mb-4">
+                            <div class="d-flex flex-column">
+                                <h2 class="mt-1">436</h2>
+                                <span>Total Transaction</span>
+                            </div>
+                            <div class="icon-container">
+                                <i class="fa-solid fa-arrow-right fa-2x"></i>
+                            </div>
+                        </div>
+
+                        <div class="bottom-section">
+                            <div class="d-flex flex-column">
+                                <h3>+30.6%</h3>
+                                <p>vs this month</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card bg-white order-card">
+                    <div class="card-block">
+                        <div class="header-top d-flex justify-content-between align-items-center mb-4">
+                            <div class="d-flex flex-column">
+                                <h2 class="mt-1">436</h2>
+                                <span>Total Transaction</span>
+                            </div>
+                            <div class="icon-container">
+                                <i class="fa-solid fa-arrow-right fa-2x"></i>
+                            </div>
+                        </div>
+
+                        <div class="bottom-section">
+                            <div class="d-flex flex-column">
+                                <h3>+30.6%</h3>
+                                <p>vs this month</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card bg-white order-card">
+                    <div class="card-block">
+                        <div class="header-top d-flex justify-content-between align-items-center mb-4">
+                            <div class="d-flex flex-column">
+                                <h2 class="mt-1">436</h2>
+                                <span>Total Transaction</span>
+                            </div>
+                            <div class="icon-container">
+                                <i class="fa-solid fa-arrow-right fa-2x"></i>
+                            </div>
+                        </div>
+
+                        <div class="bottom-section">
+                            <div class="d-flex flex-column">
+                                <h3>+30.6%</h3>
+                                <p>vs this month</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+           <div class="col-md-3">
+                <div class="card bg-white order-card">
+                    <div class="card-block">
+                        <div class="header-top d-flex justify-content-between align-items-center mb-4">
+                            <div class="d-flex flex-column">
+                                <h2 class="mt-1">436</h2>
+                                <span>Total Transaction</span>
+                            </div>
+                            <div class="icon-container">
+                                <i class="fa-solid fa-arrow-right fa-2x"></i>
+                            </div>
+                        </div>
+                        <div class="bottom-section">
+                            <div class="d-flex flex-column">
+                                <h3>+30.6%</h3>
+                                <p>vs this month</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+           </div>
+       </div>
     </div>
 
-=======
-                
+    
+    <div class="div3"> 
 
 
-            </div>
-        </nav>
-
-        <div class="table-responsive">
-            <table class="table excel-table">
-                <thead>
-                    <tr>
-                        <th scope="col">Transaction Number</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>testing</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
     </div>
 
-<<<<<<< HEAD
-=======
 
->>>>>>> 337df311ae94f8caea1a42b94d62f6221d87b64f
+
+        <div class="table-wrapper mt-3 d-flex flex-row justify-content-lg-start">
+            
+        </div>
+
+        <div class="div5"> </div>
+    </div>
+
+
     <!-- Logout Confirmation Modal -->
     <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -192,11 +266,21 @@ session_start();
         </div>
     </div>
 
-<<<<<<< HEAD
-=======
 
->>>>>>> 00a8703d60c9dd233b07bc0f8dc81eb83eb2a70a
->>>>>>> 337df311ae94f8caea1a42b94d62f6221d87b64f
+    <script>
+         function updateDate() {
+            const options = { weekday: 'short', year: 'numeric', month: 'long', day: 'numeric' };
+            const currentDate = new Date().toLocaleDateString('en-US', options);
+            document.getElementById('current-date').textContent = currentDate;
+        }
+
+        // Update the date every second (1000 milliseconds)
+        setInterval(updateDate, 1000);
+
+        updateDate();
+    </script>
+
+
     <script>
         // Toggle sidebar visibility
         const toggleBtn = document.getElementById('toggleBtn');
@@ -216,8 +300,7 @@ session_start();
         });
     </script>
 
-<<<<<<< HEAD
-=======
+
     <script>
         document.getElementById('profileButton').addEventListener('click', function () {
                 const dropdownMenu = document.getElementById('dropdownMenu');
@@ -239,7 +322,6 @@ session_start();
 
     </script>
 
->>>>>>> 337df311ae94f8caea1a42b94d62f6221d87b64f
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 </body>

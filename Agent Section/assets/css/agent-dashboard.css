@@ -1,11 +1,14 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
+* {
+    font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+}
+
 
 body {
     background-color: #f8f9fa;
     margin: 0;
-    font-family: 'Roboto', Arial, sans-serif;
 }
 
 .sidebar {
@@ -72,24 +75,31 @@ body {
     margin-left: 250px; 
 }
 
-.Dashboard-Cards {
-    padding: 30px 40px;
-    color: #000;
-}
-
-
 
 .sidebar {
     width: 250px; /* Adjust the width of your sidebar */
     height: 100%; /* Full height */
     background-color: #f8f9fa; /* Background color */
-    padding: 20px; /* Padding around the sidebar */
+    padding: 20px 15px 20px 25px; /* Padding around the sidebar */
     position: fixed; /* Keep it fixed to the left */
     overflow-y: auto; /* Allow scrolling if content is long */
     display: flex; /* Flexbox for layout */
     flex-direction: column; /* Column layout */
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3); /* Adds a right shadow */
+
+    /* Add right curve border */
+    border-top-right-radius: 35px; /* Curve at the top-right */
+    border-bottom-right-radius: 35px; /* Curve at the bottom-right */
+
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4); /* Optional shadow for depth */
 }
+
+.sidebar img {
+    width: 100%; /* Full width of its container */
+    object-fit: contain; /* Ensures the image fits within the aspect ratio without distortion */
+    padding: 0px 15px 0px 0px;
+
+}
+
 
 .sidebar h4 {
     margin-bottom: 20px; /* Space below the heading */
@@ -115,7 +125,6 @@ body {
 }
 
 .section-title {
-    margin-top: 20px; /* Space above the section title */
     margin-bottom: 10px; /* Space below the section title */
     font-weight: bold; /* Make the title bold */
 }
@@ -178,9 +187,8 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #ffffff; /* Use your preferred color */
+    background-color: transparent; /* Use your preferred color */
     padding: 20px; /* Adjust padding as necessary */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Bottom shadow */
     z-index: 999; /* Ensure the navbar is above other elements */
 }
 
@@ -211,68 +219,169 @@ body {
     border-radius: 50%; /* Circular image */
 }
 
+.container-wrapper {
+    padding: 0px 70px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 1fr 2fr 3fr;
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
 
-.order-card {
-    color: #000000;
 }
 
-.bg-c-blue {
-    background: linear-gradient(45deg,#4099ff,#73b4ff);
+
+/* Container styles */
+.info-container {
+    grid-area: 1 / 1 / 2 / 5;
+    background-color: #f8f9fa; /* Light background */
+    padding: 15px 0px; /* Padding for spacing */
+    border-radius: 10px; /* Rounded corners */
+    /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); Box shadow for depth */
+    margin-bottom: 20px; /* Bottom margin for spacing */
 }
 
-.bg-c-green {
-    background: linear-gradient(45deg,#2ed8b6,#59e0c5);
+
+
+
+
+
+
+
+
+/* Title styles */
+.info-title {
+    font-size: 24px;
+    font-weight: 600;
 }
 
-.bg-c-yellow {
-    background: linear-gradient(45deg,#FFB64D,#ffcb80);
+/* Date picker styles */
+.date-picker .btn {
+    padding: 5px 10px;
+    font-size: 16px;
+    border-radius: 8px;
 }
 
-.bg-c-pink {
-    background: linear-gradient(45deg,#FF5370,#ff869a);
+.date-text {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+/* Right section button styles */
+.right-section .btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 8px;
+}
+
+.btn-success {
+    background-color: #116530; /* Custom green */
+    color: white;
+}
+
+.btn-outline-secondary {
+    color: #6c757d;
+}
+
+
+.Dashboard-Cards {
+    grid-area: 2 / 1 / 3 / 4;
+    color: #000;
 }
 
 
 .card {
-    border-radius: 5px;
+    border-radius: 15px;
     -webkit-box-shadow: 0 1px 2.94px 0.06px rgba(4,26,55,0.16);
     box-shadow: 0 1px 2.94px 0.06px rgba(4,26,55,0.16);
     border: none;
-    margin-bottom: 30px;
     -webkit-transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out;
 }
 
 .card .card-block {
-    padding: 20px 20px;
+    padding: 15px 20px;
 }
 
-.order-card i {
-    font-size: 26px;
+
+.header-top {
+    position: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center; 
 }
 
-.f-left {
-    float: left;
+.header-top .d-flex span{
+    margin-top: -10px;
+    font-size: 14px;
+    font-weight: 400;
+    color: rgb(158, 158, 158);
+
 }
 
-.f-right {
-    float: right;
+.icon-container {
+    align-self: first baseline;
 }
 
-.card:hover {
-    transform: translateY(-5px); /* Lift effect on hover */
+.icon-container .fa-solid {
+    font-size: 20px;
+    padding: 10px;
+    transition: all 0.3s ease; /* Smooth transition effect */
+}
+
+.icon-container .fa-solid:hover {
+    border: 1px solid gainsboro;
+    border-radius: 40px;
+    background-color: #f0f0f0; /* Slight background color change */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Adding a shadow for depth */
+    transform: scale(1); /* Slight scale-up effect on hover */
+}
+
+
+.card-block h2 {
+    font-weight: 500;
+    font-size: 32px;
+    font-weight: bold;
+}
+ 
+.card .bottom-section {
+    position: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    
+}
+
+
+.card .bottom-section h3 {
+    color: #55883B;
+    font-weight: bold;
+    font-size: 24px;
+    width: 100px;
+}
+
+.card .bottom-section p {
+    font-weight: normal;
+    font-size: 16px;
+    margin-top: -10px;
+    margin-right: 10px;
+    font-size: 14px;
+    color: rgb(158, 158, 158);
+}
+
+
+/* .card:hover {
+    transform: translateY(-5px); /* Lift effect on hover 
 }
 
 .card h3 {
-    margin: 0; /* Remove default margin */
-    color: #333; /* Dark text color for headings */
+    margin: 0; /* Remove default margin
+    color: #333; /* Dark text color for headings
 }
 
 .card .number {
-    font-size: 24px; /* Increase font size for numbers */
-    font-weight: bold; /* Bold font for emphasis */
-    color: #007bff; /* Bootstrap primary color for emphasis */
-}
+    font-size: 24px; /* Increase font size for numbers 
+    font-weight: bold; /* Bold font for emphasis 
+    color: #007bff; /* Bootstrap primary color for emphasis 
+} */
 
 /* Optional: Add some responsiveness */
 @media (max-width: 600px) {
@@ -281,15 +390,29 @@ body {
     }
 }
 
+.div3 { 
+    grid-area: 2 / 4 / 3 / 5; 
+    border: 1px solid rgb(216, 216, 216);
+    border-radius: 25px;
+
+    margin-left: 10px;
+}
+
+.table-wrapper {
+    grid-area: 3 / 1 / 4 / 4;
+    border: 1px solid rgb(199, 199, 199);
+    border-radius: 25px;
+    width: 100%;
+
+}
 
 
 
 
-.card-block i {
-    font-size: 10px;
-    border: 1px solid grey;
-    border-radius: 50%;
-    padding: 5px; 
-    color: green;
-    background-color: rgb(86, 255, 86);
+    
+
+.div5 { 
+    grid-area: 3 / 4 / 4 / 5;
+    border: 1px solid black; 
+    margin: 15px 0px 0px 10px;
 }
