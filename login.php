@@ -130,8 +130,8 @@
     <?php include 'includes/scripts.php' ?>
 
     <script>
-    const LoginButton = document.getElementById('LoginButton');
 
+    const LoginButton = document.getElementById('LoginButton');
 
     document.getElementById('loginForm').addEventListener('submit', function(event) {
         event.preventDefault(); // Prevent default form submission
@@ -149,31 +149,43 @@
         })
         .then(response => response.json())
         .then(data => {
+          
+            console.log(data); // Log the entire data object for debugging
+
             if (data.success) {
                 // Redirect to dashboard or homepage
                 window.location.href = 'client-dashboard.php';
-
             } 
             
-            else if (data.message === "User not found.") {
+            else if (data.message.trim() === "User not found.") {
                 // Show specific message for user not found
                 document.getElementById('message-login').innerHTML = '<div class="alert alert-warning text-center">' + data.message + '</div>';
+                
+                if (LoginButton) {
+                    console.log("Disabling login button for 'User not found.'");
+                    LoginButton.classList.add('button-disabled');  // Disable the login button
+                }
             } 
             
-            else if (data.message === "You are logged in on another device. Please close from other tabs or devices then reload before logging in again!") {
+            else if (data.message.trim() === "You are logged in on another device. Please close from other tabs or devices then reload before logging in again!") {
                 // Show specific message for logged in on another device
                 document.getElementById('message-login').innerHTML = '<div class="alert alert-warning text-center">' + data.message + '</div>';
                 
                 if (LoginButton) {
-                    LoginButton.classList.add('button-disabled');
+                    console.log("Disabling login button for 'Logged in on another device.'");
+                    LoginButton.classList.add('button-disabled');  // Disable the login button
                 }
-            } 
-            
-            else {
+            } else {
                 // Show generic error message
                 document.getElementById('message-login').innerHTML = '<div class="alert alert-danger text-center">' + data.message + '</div>';
                 
+                if (LoginButton) {
+                    console.log("Disabling login button for generic error.");
+                    LoginButton.classList.add('button-disabled');  // Disable the login button
+                }
             }
+
+
 
 
         })
