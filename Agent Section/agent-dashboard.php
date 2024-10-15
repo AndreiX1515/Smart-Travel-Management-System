@@ -2,6 +2,13 @@
 // Start session
 require "../conn.php"; // Move up to the parent directory
 session_start();
+
+$agentId = $_SESSION['agentId'];
+$fName = $_SESSION['fName'];
+$lName = $_SESSION['lName'];
+$mName = $_SESSION['mName'];
+
+$fullName = $lName . ', ' . $fName . ($mName ? ' ' . substr($mName, 0, 1) . '.' : '');
 ?>
 
 <!DOCTYPE html>
@@ -67,8 +74,8 @@ session_start();
                                 <li class="nav-item dropdown d-flex align-items-center">
                                     <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         <div class="profile-container ms-2 me-3">
-                                            <h6 class="m-0">De Guzman, Andrei Vincent</h6>
-                                            <span class="m-0">Admin</span>
+                                            <h6 class="m-0"><?php echo $fullName; ?></h6>
+                                            <span class="m-0">Agent</span>
                                         </div>
                                         <img src="../assets/images/circle.png" alt="Profile" class="profile-image me-2" width="40px" height="40px">
                                     </a>
@@ -151,14 +158,83 @@ session_start();
             <thead>
                 <tr>
                     <th scope="col">Transaction Number</th>
+                    <th scope="col">Date Created</th>
+                    <th scope="col">Agent Name</th>
+                    <th scope="col">Contact Person</th>
+                    <th scope="col">Package</th>
+                    <th scope="col">Flight Date</th>
+                    <th scope="col">Pax</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Inquiry/Request</th>
+                    <th scope="col">Status</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>testing</td>
-                </tr>
+                <?php
+                    // Execute the SQL query
+                    $query = "
+                        SELECT 
+                            b.transactNo AS `Transaction Number`,
+                            b.bookingDate AS `Date Created`,
+                            CONCAT(ag.lName, ', ', ag.fName, 
+                                CASE 
+                                    WHEN ag.mName != '' THEN CONCAT(' ', SUBSTRING(ag.mName, 1, 1), '.') 
+                                    ELSE '' 
+                                END) AS `Agent Name`,
+                            g.fName AS `Contact Person`,
+                            p.packageName AS `Package`,
+                            f.flightDepartureDate AS `Flight Date`,
+                            b.pax AS `Pax`,
+                            a.email AS `Email`,
+                            i.details AS `Inquiry/Request`,
+                            b.status AS `Status`
+                        FROM 
+                            booking b
+                        JOIN 
+                            accounts a ON b.accountId = a.accountId
+                        JOIN 
+                            agent ag ON b.agentId = ag.agentId
+                        JOIN 
+                            guest g ON b.transactNo = g.transactNo
+                        JOIN 
+                            flight f ON b.flightId = f.flightId
+                        LEFT JOIN 
+                            inquiry i ON b.transactNo = i.transactNo
+                        LEFT JOIN 
+                            package p ON b.packageId = p.packageId
+                        ORDER BY 
+                            b.bookingDate DESC;";
+
+                    // Run the query and handle results
+                    $result = mysqli_query($conn, $query);
+
+                    // Check for results
+                    if ($result) 
+                    {
+                        while ($row = mysqli_fetch_assoc($result)) 
+                        {
+                            echo "<tr>
+                                <td>{$row['Transaction Number']}</td>
+                                <td>{$row['Date Created']}</td>
+                                <td>{$row['Agent Name']}</td>
+                                <td>{$row['Contact Person']}</td>
+                                <td>{$row['Package']}</td>
+                                <td>{$row['Flight Date']}</td>
+                                <td>{$row['Pax']}</td>
+                                <td>{$row['Email']}</td>
+                                <td>{$row['Inquiry/Request']}</td>
+                                <td>{$row['Status']}</td>
+                            </tr>";
+                        }
+                    } 
+                    else 
+                    {
+                        echo "<tr><td colspan='11'>No bookings found.</td></tr>"; // No results found
+                    }
+                ?>
             </tbody>
         </table>
+
     </div>
 
     <!-- Logout Confirmation Modal -->
@@ -174,7 +250,7 @@ session_start();
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <a href="" class="btn btn-danger" id="logoutButton">Logout</a>
+                    <a href="agent-login.php" class="btn btn-danger" id="logoutButton">Logout</a>
                 </div>
             </div>
         </div>

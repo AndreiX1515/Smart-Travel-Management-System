@@ -31,6 +31,9 @@ if (isset($_POST['login']))
         // Set session variables for logged-in agent
         $_SESSION['agentId'] = $agent['agentId'];
         $_SESSION['username'] = $agent['username'];
+        $_SESSION['fName'] = $agent['fName'];
+        $_SESSION['lName'] = $agent['lName'];
+        $_SESSION['mName'] = $agent['mName'];
         
         // Redirect to the agent dashboard or protected page
         header("Location: agent-dashboard.php");
