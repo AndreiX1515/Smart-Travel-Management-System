@@ -1,5 +1,6 @@
 <?php
 // Start session
+require "../conn.php"; // Move up to the parent directory
 session_start();
 ?>
 
@@ -98,8 +99,6 @@ session_start();
                 </div>
             </nav>
         </header>
-
-<<<<<<< HEAD
         <!-- Main Dashboard Content -->
         <div class="Dashboard-Cards">
             <div class="row">
@@ -145,34 +144,23 @@ session_start();
             </div>
         </div>
     </div>
-
-=======
                 
 
-
-            </div>
-        </nav>
-
-        <div class="table-responsive">
-            <table class="table excel-table">
-                <thead>
-                    <tr>
-                        <th scope="col">Transaction Number</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>testing</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+    <div class="table-responsive">
+        <table class="table excel-table">
+            <thead>
+                <tr>
+                    <th scope="col">Transaction Number</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>testing</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 337df311ae94f8caea1a42b94d62f6221d87b64f
     <!-- Logout Confirmation Modal -->
     <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -192,11 +180,6 @@ session_start();
         </div>
     </div>
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 00a8703d60c9dd233b07bc0f8dc81eb83eb2a70a
->>>>>>> 337df311ae94f8caea1a42b94d62f6221d87b64f
     <script>
         // Toggle sidebar visibility
         const toggleBtn = document.getElementById('toggleBtn');
@@ -216,30 +199,6 @@ session_start();
         });
     </script>
 
-<<<<<<< HEAD
-=======
-    <script>
-        document.getElementById('profileButton').addEventListener('click', function () {
-                const dropdownMenu = document.getElementById('dropdownMenu');
-                dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
-            });
-
-            // Close the dropdown if the user clicks outside of it
-            window.onclick = function(event) {
-                if (!event.target.matches('.dropbtn')) {
-                    const dropdowns = document.getElementsByClassName("dropdown-content");
-                    for (let i = 0; i < dropdowns.length; i++) {
-                        const openDropdown = dropdowns[i];
-                        if (openDropdown.style.display === 'block') {
-                            openDropdown.style.display = 'none';
-                        }
-                    }
-                }
-            }
-
-    </script>
-
->>>>>>> 337df311ae94f8caea1a42b94d62f6221d87b64f
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 </body>
