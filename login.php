@@ -113,7 +113,7 @@
             </div>
 
             <!-- Placeholder for login messages (error/success) -->
-            <div id="message-login" class="message-login mt-3"></div>
+            <div id="message-login" class="message-login mt-3 h6 fw-light fs-6" style="font-size: 8px;"></div>
         </form>
         
 
@@ -153,14 +153,35 @@
             if (data.success) {
                 // Redirect to dashboard or homepage
                 window.location.href = 'client-dashboard.php';
-            } else {
-                // Show error message
-                document.getElementById('message-login').innerHTML = '<div class="alert alert-danger text-center">' + data.message + '</div>';
+            } 
+            
+            if (data.message.trim() === "User not found.") {
+                // Show specific message for user not found
+                document.getElementById('message-login').innerHTML = '<div class="alert alert-warning text-center">' + data.message + '</div>';
+                
                 if (LoginButton) {
-                    // Add CSS class to visually disable the button
-                    LoginButton.classList.add('button-disabled');
+                    console.log("Disabling login button for 'User not found.'");
+                    LoginButton.classList.add('button-disabled');  // Disable the login button
                 }
-
+            } 
+            
+            if (data.message.trim() === "You are logged in on another device. Please close from other tabs or devices then reload before logging in again!") {
+                // Show specific message for logged in on another device
+                document.getElementById('message-login').innerHTML = '<div class="alert alert-warning text-center">' + data.message + '</div>';
+                
+                if (LoginButton) {
+                    console.log("Disabling login button for 'Logged in on another device.'");
+                    LoginButton.classList.add('button-disabled');  // Disable the login button
+                }
+            } 
+            
+            else {
+                // Show generic error message
+                document.getElementById('message-login').innerHTML = '<div class="alert alert-danger text-center">' + data.message + '</div>';
+                
+                if (LoginButton) {
+                    LoginButton.classList.add('button-disabled');  // Disable the login button
+                }
             }
         })
         .catch(error => {

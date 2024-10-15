@@ -238,20 +238,21 @@ html, body {
     font-size: 16px;
 }
 
-/* .message-login {
-    background-color: #f8d7da; /* Light red background 
-    color: #721c24; /* Dark red text 
-    border: 1px solid #f5c6cb; /* Border color 
-    padding: 10px 20px; /* Padding for better spacing 
-    border-radius: 5px; /* Slightly rounded corners 
-    font-size: 16px; /* Adjust the font size 
-    font-weight: 500; /* Slightly bold text 
-    margin-bottom: 20px; /* Space below the banner 
+ /* .message-login {
+    background-color: #f8d7da;
+    color: #721c24; 
+    border: 1px solid #f5c6cb; 
+    padding: 10px 20px; 
+    border-radius: 5px;  
+    font-size: 12px; 
+    font-weight: 500;  
+    margin-bottom: 20px; 
     display: flex;
-    align-items: center; /* Vertically align content
-    justify-content: space-between; /* Distribute space 
-}
+    align-items: center; 
+    justify-content: space-between; 
+} */
 
+/*
 .message-login .close-btn {
     background: none;
     border: none;
