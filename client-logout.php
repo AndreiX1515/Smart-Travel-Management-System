@@ -11,13 +11,13 @@ if (isset($_SESSION['accountid'])) {
     $logout_stmt->bind_param("s", $session_id);
     $logout_stmt->execute();
     $logout_stmt->close();
+    header("location: ./login.php");
+   
 }
 
 // Destroy PHP session
 session_unset();
 session_destroy();
 
-// Optionally, return a response (not required for sendBeacon)
-echo json_encode(['status' => 'success', 'message' => 'Session destroyed successfully.']);
 exit;
 ?>
