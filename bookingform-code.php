@@ -30,6 +30,7 @@ if (isset($_POST['bookNow']))
     $flightIds = $_POST['flightId'];
     $flightPrices = $_POST['flightPrice'];
     $totalPrice = $_POST['totalPrice'];
+    $packageId = $_POST['packageName'];
 
     $pax = count($fNames); // Number of passengers
 
@@ -50,7 +51,8 @@ if (isset($_POST['bookNow']))
     $conn->begin_transaction();
 
     // Prepare the SQL statement for insertion into the booking table
-    $sql1 = "INSERT INTO booking (accountId, transactNo, agentId, pax, totalPrice, status, bookingDate) VALUES (?, ?, ?, ?, ?, ?, 'Pending', NOW())";
+    $sql1 = "INSERT INTO booking (accountId, transactNo, agentId, flightId, packageId, pax, totalPrice, status, bookingDate) VALUES 
+    (?, ?, ?, ?, ?, ?, ?, 'Pending', NOW())";
     $stmt1 = $conn->prepare($sql1);
 
     // Check if the statement was prepared successfully
@@ -64,7 +66,7 @@ if (isset($_POST['bookNow']))
 
     // Bind and execute the booking insertion
     $accountId = $_SESSION['accountid']; // Assuming the user is logged in
-    $stmt1->bind_param('isiid', $accountId, $transactNo, $agentId, $pax, $totalPrice);
+    $stmt1->bind_param('isiiiid', $accountId, $transactNo, $agentId, $flightIds, $packageId, $pax, $totalPrice);
     
     if (!$stmt1->execute()) 
     {
@@ -149,7 +151,6 @@ if (isset($_POST['bookNow']))
             exit(0);
         }
     }
-    
 
     // If no errors, commit the transaction
     $conn->commit();
@@ -162,9 +163,6 @@ if (isset($_POST['bookNow']))
     // Close the statements
 $stmt1->close();
 $stmt2->close();
-
-// Close the database connection
-$conn->close();
 }
 
 
