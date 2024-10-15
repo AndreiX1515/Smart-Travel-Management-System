@@ -163,18 +163,22 @@
                 </div>
 
             </div> -->
-       
-
-    
+         
         <div class="order-summary">
             <div class="row">
                 <div class="col-sm">
                     <div class="d-flex justify-content-between mb-1">
                         <?php
-                            
+                            $transactNo = $_SESSION['transactNo'];
+                            $sql1 = mysqli_query($conn, "SELECT * from booking where transactNo = $transactNo");
+                            while($res1 = mysqli_fetch_array($sql1)) 
+                            {
+                                $totalPrice = $res1['totalPrice'];
+                                $downpayment = $res1['pax'] * 1000;
+                            }
                         ?>
                         <p class="mb-0"><strong>Flight Price:</strong></p>
-                        <p class="mb-0">₱ 30,000</p> <!-- Added commas for better readability -->
+                        <p class="mb-0"><?php echo $totalPrice; ?></p> <!-- Added commas for better readability -->
                     </div>
                 </div>
             </div>
@@ -183,7 +187,7 @@
                 <div class="col-sm">
                     <div class="d-flex justify-content-between mb-1">
                         <p class="mb-0"><strong>Downpayment:</strong></p>
-                        <p class="mb-0">₱ 2,000</p> <!-- Added commas for better readability -->
+                        <p class="mb-0"><?php echo $downpayment; ?></p> <!-- Added commas for better readability -->
                     </div>
                 </div>
             </div>
