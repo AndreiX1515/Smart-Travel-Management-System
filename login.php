@@ -155,21 +155,21 @@
                     window.location.href = 'client-dashboard.php';
                 } 
             
-            if (data.message && data.message.trim() === "User not found.") {
+            else if (data.message && data.message.trim() === "User not found.") {
                 // Show specific message for user not found
                 document.getElementById('message-login').innerHTML = '<div class="alert alert-danger text-center">' + data.message + '</div>';
                 
                 return;
             } 
 
-            if (data.message && data.message.trim() === "Your account is inactive. Please contact support.") {
+            else if (data.message && data.message.trim() === "Your account is inactive. Please contact support.") {
                 // Show specific message for inactive account
                 document.getElementById('message-login').innerHTML = '<div class="alert alert-warning text-center">' + data.message + '</div>';
                 
                 return;
             } 
 
-            if (data.message && data.message.trim() === "You are logged in on another device. Please close from other tab or devices then reload before logging in again!") {
+            else if (data.message && data.message.trim() === "You are logged in on another device. Please close from other tab or devices then reload before logging in again!") {
                 // Show specific message for logged in on another device
                 document.getElementById('message-login').innerHTML = '<div class="alert alert-danger text-center fw-normal h6">' + data.message + '</div>';
                 

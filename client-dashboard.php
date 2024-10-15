@@ -80,7 +80,6 @@ $accId = $_SESSION['accountid'] ?? '';
                     </ul>
             </nav>
  
-            
                 
             <!-- Main content -->
             <div id="main-content" class="col-md-9 col-lg-10 w-100">
@@ -142,33 +141,17 @@ $accId = $_SESSION['accountid'] ?? '';
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <a href="" class="btn btn-danger" id="logoutButton">Logout</a>
+                    
+                    <!-- Logout form -->
+                    <form action="client-logout.php" method="POST">
+                        <button type="submit" class="btn btn-danger">Logout</button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 
     <?php include 'includes/scripts.php' ?>
-
-    <script>
-        $('#logoutButton').on('click', function (e) {
-            // Send AJAX request to handle the logout
-            $.ajax({
-                url: 'client-logout.php', // Your PHP script for logging out
-                method: 'POST',
-                dataType: 'json',
-                success: function (response) {
-                    if (response.status === 'success') {
-                        window.location.href = 'login.php';
-                    }
-                },
-                error: function () {
-                    $('#message-1').text('Error logging out. Please try again.').addClass('show'); // Handle error display
-                    showMessage();
-                }
-            });
-        });
-    </script>
 
     <!-- <script>
         // JavaScript for toggling sidebar and changing navbar width
@@ -194,6 +177,7 @@ $accId = $_SESSION['accountid'] ?? '';
             }
         });
     </script> -->
+    
     <script src="heartbeat.js"></script>
 
 

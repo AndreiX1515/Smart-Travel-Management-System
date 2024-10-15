@@ -22,7 +22,7 @@ if ($session_result->num_rows !== 1) {
     // Session not found, destroy session
     session_unset();
     session_destroy();
-    echo json_encode(['status' => 'expired']);
+    // echo json_encode(['status' => 'expired']);
     exit;
 }
 
