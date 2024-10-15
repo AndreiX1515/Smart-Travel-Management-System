@@ -137,9 +137,6 @@ $accId = $_SESSION['accountid'] ?? '';
                             <p id="swift-code">BOW12345</p>
                         </div> -->
                     </div>
-                
-                    <h3 class="mt-4">Attach Screenshot:</h3>
-                    <input type="file" id="attachment" class="attachment" accept="image/*">
             </div>
 
         </div>
@@ -174,15 +171,22 @@ $accId = $_SESSION['accountid'] ?? '';
                 </div>
 
             </div> -->
-       
-
-    
+         
         <div class="order-summary">
             <div class="row">
                 <div class="col-sm">
                     <div class="d-flex justify-content-between mb-1">
+                        <?php
+                            $transactNo = $_SESSION['transactNo'];
+                            $sql1 = mysqli_query($conn, "SELECT * from booking where transactNo = $transactNo");
+                            while($res1 = mysqli_fetch_array($sql1)) 
+                            {
+                                $totalPrice = $res1['totalPrice'];
+                                $downpayment = $res1['pax'] * 1000;
+                            }
+                        ?>
                         <p class="mb-0"><strong>Flight Price:</strong></p>
-                        <p class="mb-0">₱ 30,000</p> <!-- Added commas for better readability -->
+                        <p class="mb-0"><?php echo $totalPrice; ?></p> <!-- Added commas for better readability -->
                     </div>
                 </div>
             </div>
@@ -191,7 +195,7 @@ $accId = $_SESSION['accountid'] ?? '';
                 <div class="col-sm">
                     <div class="d-flex justify-content-between mb-1">
                         <p class="mb-0"><strong>Downpayment:</strong></p>
-                        <p class="mb-0">₱ 2,000</p> <!-- Added commas for better readability -->
+                        <p class="mb-0"><?php echo $downpayment; ?></p> <!-- Added commas for better readability -->
                     </div>
                 </div>
             </div>
@@ -216,6 +220,10 @@ $accId = $_SESSION['accountid'] ?? '';
             </div>
 
             <hr>
+            <input type="text" value="<?php echo $_SESSION['transactNo']; ?>" name="transactNo">
+            <h6 class="mt-4">Attach Proof/Screenshot of transaction:</h6>
+            <input type="file" id="attachment" class="attachment" name="proof" accept="image/*">
+            <hr>
 
             <div class="row mt-4">
                 <div class="col-sm">
@@ -232,9 +240,6 @@ $accId = $_SESSION['accountid'] ?? '';
                 </div>
             </div>
         </div>
-
-
-        
     </div> 
 </div>
     

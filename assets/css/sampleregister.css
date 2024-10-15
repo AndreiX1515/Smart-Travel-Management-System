@@ -197,8 +197,6 @@ html, body {
 
 
 
-
-
 .fp-container a {
     font-size: 16px;
     font-weight: 500;
@@ -257,9 +255,7 @@ html, body {
     font-size: 12px;
     font-weight: 500;
     color: lightgrey;
-
 }
-
 
 .position-relative {
     position: relative; /* Ensure the icon can be positioned absolutely */

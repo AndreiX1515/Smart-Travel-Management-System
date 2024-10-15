@@ -1,0 +1,295 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+
+body {
+    background-color: #f8f9fa;
+    margin: 0;
+    font-family: 'Roboto', Arial, sans-serif;
+}
+
+.sidebar {
+    height: 100vh;
+    width: 250px;
+    background-color: #f8f9fa; /* Background color */
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    padding: 20px;
+    transition: transform 0.3s ease;
+    transform: translateX(-250px); /* Hidden by default */
+}
+
+.sidebar.active {
+    transform: translateX(0); /* Show sidebar */
+}
+
+/* Toggle button styles */
+.toggle-btn {
+    display: flex;
+    align-items: center; /* Aligns the icon vertically */
+    cursor: pointer;
+    margin-right: 0px; /* Optional: Add some space to the right */
+    border: none;
+    border-radius: 0 5px 5px 0;
+    width: 40px;
+    height: 40px;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    z-index: 1100; /* Keep it above the sidebar */
+    color: #000;
+}
+
+
+
+.navbar {
+    padding: 10px 20px; /* Adjust as necessary */
+}
+
+/* Aligns navbar contents */
+.navbar-brand {
+    margin-left: 0px; /* Add some space to the left */
+    margin-bottom: 2px;
+}
+
+.navbar-toggler {
+    margin-left: auto; /* Ensures the toggler is at the end */
+}
+
+
+/* Main content */
+.main-content {
+    /* margin-left: 0; /* Start with no margin to account for hidden sidebar
+    padding: 20px 30px; */
+    transition: margin-left 0.3s ease;
+    position: relative;
+}
+
+.main-content.active {
+    margin-left: 250px; 
+}
+
+.Dashboard-Cards {
+    padding: 30px 40px;
+    color: #000;
+}
+
+
+
+.sidebar {
+    width: 250px; /* Adjust the width of your sidebar */
+    height: 100%; /* Full height */
+    background-color: #f8f9fa; /* Background color */
+    padding: 20px; /* Padding around the sidebar */
+    position: fixed; /* Keep it fixed to the left */
+    overflow-y: auto; /* Allow scrolling if content is long */
+    display: flex; /* Flexbox for layout */
+    flex-direction: column; /* Column layout */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3); /* Adds a right shadow */
+}
+
+.sidebar h4 {
+    margin-bottom: 20px; /* Space below the heading */
+    font-weight: bold; /* Make the heading bold */
+}
+
+.sidebar a {
+    text-decoration: none; /* Remove underline from links */
+    color: #333; /* Text color */
+    display: flex; /* Flexbox for link items */
+    align-items: center; /* Center items vertically */
+    padding: 10px; /* Padding for links */
+    border-radius: 5px; /* Rounded corners */
+    transition: background-color 0.3s; /* Smooth background color transition */
+}
+
+.sidebar a:hover {
+    background-color: #e9ecef; /* Change background color on hover */
+}
+
+.sidebar i {
+    margin-right: 10px; /* Space between icon and text */
+}
+
+.section-title {
+    margin-top: 20px; /* Space above the section title */
+    margin-bottom: 10px; /* Space below the section title */
+    font-weight: bold; /* Make the title bold */
+}
+
+.profile-container {
+    display: flex; /* Use flexbox to align items */
+    align-items: center; /* Center items vertically */
+    margin-top: auto; /* Push profile section to the bottom */
+}
+
+.profile-image {
+    border-radius: 50%; /* Circular image */
+}
+
+.profile-container h6 {
+    font-weight: bold; /* Bold for the name */
+    margin: 0; /* Remove margin */
+}
+
+.profile-container span {
+    font-size: 12px; /* Smaller font for position */
+    color: gray; /* Gray color for the position */
+    margin: 0; /* Remove margin */
+}
+
+
+/* Additional styles for the sidebar links */
+.sidebar h3 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+.sidebar a {
+    display: block;
+    padding: 10px;
+    color: #333;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.sidebar a:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+.sidebar .section-title {
+    margin-top: 30px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.sidebar .invite-teammates {
+    margin-top: auto;
+    border-top: 1px solid #eaeaea;
+    padding-top: 20px;
+}
+
+/* Navbar styles */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff; /* Use your preferred color */
+    padding: 20px; /* Adjust padding as necessary */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Bottom shadow */
+    z-index: 999; /* Ensure the navbar is above other elements */
+}
+
+.nav-item.dropdown {
+    display: flex; /* Make the dropdown a flex container */
+    align-items: center; /* Align itemsfvertically centered */
+}
+
+.profile-container {
+    display: flex; /* Use flexbox for the name and position */
+    align-items: start;
+    flex-direction: column; /* Stack name and position vertically */
+    margin-left: 8px; /* Space between image and text */
+}
+
+.profile-container h6 {
+    font-weight: bold; /* Bold for the name */
+    margin: 0; /* Remove margin */
+}
+
+.profile-container span {
+    font-size: 12px; /* Smaller font for position */
+    color: gray; /* Gray color for the position */
+    margin: 0; /* Remove margin */
+}
+
+.profile-image {
+    border-radius: 50%; /* Circular image */
+}
+
+
+.order-card {
+    color: #000000;
+}
+
+.bg-c-blue {
+    background: linear-gradient(45deg,#4099ff,#73b4ff);
+}
+
+.bg-c-green {
+    background: linear-gradient(45deg,#2ed8b6,#59e0c5);
+}
+
+.bg-c-yellow {
+    background: linear-gradient(45deg,#FFB64D,#ffcb80);
+}
+
+.bg-c-pink {
+    background: linear-gradient(45deg,#FF5370,#ff869a);
+}
+
+
+.card {
+    border-radius: 5px;
+    -webkit-box-shadow: 0 1px 2.94px 0.06px rgba(4,26,55,0.16);
+    box-shadow: 0 1px 2.94px 0.06px rgba(4,26,55,0.16);
+    border: none;
+    margin-bottom: 30px;
+    -webkit-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+
+.card .card-block {
+    padding: 20px 20px;
+}
+
+.order-card i {
+    font-size: 26px;
+}
+
+.f-left {
+    float: left;
+}
+
+.f-right {
+    float: right;
+}
+
+.card:hover {
+    transform: translateY(-5px); /* Lift effect on hover */
+}
+
+.card h3 {
+    margin: 0; /* Remove default margin */
+    color: #333; /* Dark text color for headings */
+}
+
+.card .number {
+    font-size: 24px; /* Increase font size for numbers */
+    font-weight: bold; /* Bold font for emphasis */
+    color: #007bff; /* Bootstrap primary color for emphasis */
+}
+
+/* Optional: Add some responsiveness */
+@media (max-width: 600px) {
+    .card {
+        min-width: 100px; /* Adjust minimum width for smaller screens */
+    }
+}
+
+
+
+
+
+.card-block i {
+    font-size: 10px;
+    border: 1px solid grey;
+    border-radius: 50%;
+    padding: 5px; 
+    color: green;
+    background-color: rgb(86, 255, 86);
+}
