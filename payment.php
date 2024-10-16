@@ -1,6 +1,6 @@
 <?php
+    include 'session_validate.php';
     require "conn.php";
-    session_start();
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
@@ -178,7 +178,8 @@
                                 WHERE b.transactNo = '$transactNo'
                             ");
                             
-                            while ($res1 = mysqli_fetch_array($sql1)) {
+                            while ($res1 = mysqli_fetch_array($sql1)) 
+                            {
                                 $totalPrice = $res1['totalPrice'];
                                 $formattedPrice = number_format($totalPrice, 2); // Format to 2 decimal places
                                 $downpayment = $res1['pax'] * 1000;
@@ -221,7 +222,7 @@
                 <div class="col-sm">
                     <div class="d-flex justify-content-between mb-1">
                         <p class="mb-0"><strong>Downpayment:</strong></p>
-                        <p class="mb-0">₱ <?php echo $formattedDP; ?></p> <!-- Added commas for better readability -->
+                        <p class="mb-0">Minimum ₱ <?php echo $formattedDP; ?></p> <!-- Added commas for better readability -->
                     </div>
                 </div>
             </div>
@@ -248,7 +249,7 @@
             <form action="payment-code.php" method="POST">
                 <hr>
                 <input type="hidden" value="<?php echo $_SESSION['transactNo']; ?>" name="transactNo">
-                <input type="number" class="form-control" name="downpayment" min="1000" placeholder="Enter Downpayment Amount" required>
+                <input type="number" class="form-control" name="downpayment" min="<?php echo $downpayment; ?>" placeholder="Enter Downpayment Amount" required>
                 <h6 class="mt-4">Attach Proof/Screenshot of transaction:</h6>
                 <input type="file" id="attachment" class="attachment" name="proof" accept="image/*" required>
                 <hr>
