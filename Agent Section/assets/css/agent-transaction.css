@@ -13,22 +13,11 @@ body {
     box-sizing: border-box;
 }
 
-/* Misc */
-.horizontal-line {
- width: 100%; /* Full width */
- height: 1px; /* Line thickness */
- background-color: #ccc; /* Grey color */
- margin: 20px 0; /* Space above and below the line */
-}
-
-
-
-
 /* Sidebar Section */
 .sidebar {
  width: 250px;
  height: 100vh;
- background-color: #ffffff;
+ background-color: #fafafa;
  background: linear-gradient(to bottom, #f8f9fa, #e9ecef); /* Soft gradient */
  padding: 20px 15px 20px 25px;
  position: fixed;
@@ -52,6 +41,8 @@ body {
 .sidebar.active {
  transform: translateX(0); /* Ensure sidebar is shown */
 }
+
+
 
 .sidebar img {
     width: 100%; /* Full width of its container */
@@ -145,9 +136,10 @@ body {
 
 /* Navbar Section */
 .navbar {
-    padding: 10px 50px 10px 20px; /* Adjust as necessary */
+    padding: 10px 20px; /* Adjust as necessary */
     display: flex;
-   
+    justify-content: space-between;
+    align-items: center;
     background-color: transparent; /* Use your preferred color */
     z-index: 999; /* Ensure the navbar is above other elements */
 }
@@ -220,87 +212,33 @@ body {
  margin-left: 250px; /* Add margin to account for visible sidebar */
 }
 
-.container-wrapper {
- padding: 0px 70px;
- display: flex;
- flex-direction: column;
- justify-content: space-between; /* Distributes cards evenly with space in between */
- gap: 10px; /* Adds space between each item */
-}
-
-
-
-
-/* info-container Section */
 .info-container {
-    width: 100%;
-    background-color: #F6F6F6; /* Light background */
-    padding: 15px 0px; /* Padding for spacing */
-    border-radius: 10px; /* Rounded corners */
-    /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); Box shadow for depth */
-    margin-bottom: 10px; /* Bottom margin for spacing */
+ position: flex;
+ justify-content: between;
+ align-items: center;
+ padding: 20px 70px;
 }
 
-
-/* Title styles */
-.info-title {
-    font-size: 24px;
-    font-weight: 600;
-}
-
-/* Date picker styles */
-.date-picker .btn {
-    padding: 5px 10px;
-    font-size: 16px;
-    border-radius: 8px;
-}
-
-.date-text {
-    font-size: 16px;
-    font-weight: 500;
-}
-
-/* Right section button styles */
-.right-section .btn {
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 8px;
-}
-
-.btn-success {
-    background-color: #116530; /* Custom green */
-    color: white;
-}
-
-.btn-outline-secondary {
-    color: #6c757d;
-}
-
-
+/* Dashboard-Cards Section */
 .dashboard-cards {
-    display: flex; /* Flexbox for layout */
-    flex-wrap: wrap; /* Allow wrapping of cards */
-    justify-content: flex-start; /* Align cards to the left */
+    padding: 0px 70px;
 }
 
-.card.order-card {
-    margin: 0; /* Remove margin to minimize space */
-    width: calc(20% - 10px); /* Calculate width for 5 cards with gaps */
-    /* Adjust based on your layout to create space */
-    margin-right: 10px; /* Add right margin for spacing */
+.card {
+    margin: 5px; /* Space between cards */
+    margin-right: 10px;
+    width: 260px; /* Optional max width */
 }
 
-.card.order-card:nth-child(5n) {
-    margin-right: 0; /* Remove margin on the right for every 5th card */
+.order-card {
+ background-color: #fff; /* Background color for the card */
+ border-radius: 8px; /* Rounded corners */
+ box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Shadow for depth */
 }
 
-.card-block {
-    padding: 20px; /* Add padding for card content */
-    background-color: #fff; /* Card background color */
-    border-radius: 8px; /* Rounded corners */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Box shadow for depth */
+.card .card-block {
+    padding: 15px 20px;
 }
-
 
 .header-top {
     position: flex;
@@ -389,139 +327,68 @@ body {
 } */
 
 
-/* Optional: Add some responsiveness */
-@media (max-width: 600px) {
-    .card {
-        min-width: 100px; /* Adjust minimum width for smaller screens */
-    }
+
+.table-container {
+ overflow: hidden; /* Prevent overflow */
+ padding: 20px 70px; /* Padding around the container */
+
 }
 
-
-
-
-.second-row-container {
-   display: flex;
-   flex-direction: row;
-   margin-top: 10px;
-   gap: 20px;
-}
-
-.second-row-container .one {
- width: 60%; /* Set width to 60% */
- height: 40vh; /* Set height to 60% of the viewport height */
- background-color: #fff; /* Card background color */
- border-radius: 8px; /* Rounded corners */
- box-shadow: 0 2px 5px rgba(201, 201, 201, 0.1); /* Box shadow for depth */
- padding: 15px 20px; /* Padding inside the card */
-}
-
-.one .header {
-   margin-bottom: 15px; /* Space below the header */
-   width: 100%; /* Full width for the header title */
-}
-
-.one .header h5{
-   font-weight: 600;
-   font-size: 18px;
-}
-
-.one .body table {
- width: 100%; /* Full width of the container */
- border-collapse: collapse; /* Collapse borders */
-}
-
-.one .body th, .one .body td {
- border: 1px solid #dddddd; /* Border for table cells */
- padding: 8px; /* Padding inside table cells */
- text-align: left; /* Align text to the left */
-}
-
-.one .body th {
- background-color: #f2f2f2; /* Background color for header cells */
- font-weight: bold; /* Bold text for header */
-}
-
-.one .footer {
- margin-top: 15px; /* Space above the footer */
- text-align: right; /* Align button to the right */
-}
-
-.one .btn {
- color: rgb(0, 0, 0); /* Button text color */
- background-color: #f0f0f0; /* Base background color */
- border: none; /* Remove border */
- border-radius: 4px; /* Rounded corners for button */
- text-decoration: none; /* Remove underline */
- display: inline-flex; /* Align items in the button */
- align-items: center; /* Center items vertically */
- transition: background-color 0.3s ease; /* Smooth transition for hover effect */
-}
-
-/* Hover effect */
-.one .btn:hover {
- background-color: #0e4b25; /* Darker shade on hover */
- color: white; /* Change text color on hover */
-}
-
-
-.second-row-container .two {
- width: 40%; /* Set width to 40% */
- height: 40vh; /* Set height to 40% of the viewport height */
- background-color: #fff; /* Card background color */
- border-radius: 8px; /* Rounded corners */
- box-shadow: 0 2px 5px rgba(201, 201, 201, 0.5); /* Box shadow for depth */
- display: flex; /* Flexbox for centering */
+.table-header {
+ display: flex; /* Flexbox for alignment */
+ justify-content: space-between; /* Space between elements */
  align-items: center; /* Center vertically */
- justify-content: center; /* Center horizontally */
- position: relative; /* Position for absolute children */
+ margin-bottom: 10px; /* Margin below the header */
 }
 
-.pie-chart {
- position: relative; /* Positioning context for slices */
+.search-container {
+ flex-grow: 1; /* Allow search container to grow */
+ margin-right: 10px; /* Margin on the right */
+}
+
+.search-container input {
+ width: 20%; /* Full width */
+ padding: 10px; /* Padding inside input */
+ border: 1px solid #e0e0e0; /* Border */
+ border-radius: 5px; /* Rounded corners */
+}
+
+.button-container {
+ margin-left: 10px; /* Margin on the left */
+}
+
+button {
+ padding: 10px 15px; /* Padding inside button */
+ background-color: #007bff; /* Button color */
+ color: white; /* Text color */
+ border: none; /* No border */
+ border-radius: 5px; /* Rounded corners */
+ cursor: pointer; /* Pointer on hover */
+ transition: background-color 0.3s ease; /* Transition for hover */
+}
+
+
+
+
+table {
  width: 100%; /* Full width */
- height: 100%; /* Full height */
- border-radius: 50%; /* Make it circular */
- overflow: hidden; /* Hide overflow */
+ border-collapse: collapse; /* Merge borders */
+ background-color: #ffffff; /* Background color for the table */
 }
 
-.slice {
- position: absolute; /* Absolute positioning */
- width: 50%; /* Half width for the pie slices */
- height: 50%; /* Half height for the pie slices */
- border-radius: 100%; /* Make it circular */
+th, td {
+ padding: 15px; /* Padding for table cells */
+ text-align: left; /* Align text to the left */
+ border-bottom: 1px solid #e0e0e0; /* Subtle border for rows */
 }
 
-.slice-1 {
- background-color: #FF6384; /* Color for slice 1 */
- clip-path: polygon(100% 0, 100% 100%, 50% 50%); /* Shape for slice 1 */
- transform: rotate(0deg); /* Rotate for slice positioning */
+th {
+ background-color: #f8f9fa; /* Light background for header */
+ font-weight: bold; /* Bold font for header */
 }
 
-.slice-2 {
- background-color: #36A2EB; /* Color for slice 2 */
- clip-path: polygon(100% 0, 100% 100%, 50% 50%); /* Shape for slice 2 */
- transform: rotate(90deg); /* Rotate for slice positioning */
+tr:hover {
+ background-color: #f1f1f1; /* Highlight row on hover */
 }
 
-.slice-3 {
- background-color: #FFCE56; /* Color for slice 3 */
- clip-path: polygon(100% 0, 100% 100%, 50% 50%); /* Shape for slice 3 */
- transform: rotate(180deg); /* Rotate for slice positioning */
-}
 
-.slice-4 {
- background-color: #4BC0C0; /* Color for slice 4 */
- clip-path: polygon(100% 0, 100% 100%, 50% 50%); /* Shape for slice 4 */
- transform: rotate(270deg); /* Rotate for slice positioning */
-}
-
-.center-circle {
- position: absolute; /* Center circle on top */
- top: 50%; /* Center vertically */
- left: 50%; /* Center horizontally */
- width: 40%; /* Size of the center circle */
- height: 40%; /* Size of the center circle */
- background-color: #fff; /* Center circle color */
- border-radius: 50%; /* Make it circular */
- transform: translate(-50%, -50%); /* Center it */
-}
