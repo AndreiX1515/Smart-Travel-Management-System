@@ -20,7 +20,7 @@ if (isset($_POST['pay']))
     $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
 
     // Allowed file extensions (you can modify this list as needed)
-    $allowedExtensions = array('jpg', 'jpeg', 'png', 'gif', 'pdf');
+    $allowedExtensions = array('jpg', 'jpeg', 'png', 'PNG', 'gif', 'pdf');
 
     if (in_array($fileExtension, $allowedExtensions)) 
     {
@@ -40,7 +40,7 @@ if (isset($_POST['pay']))
         {
           $_SESSION['status'] = "Booking SQL preparation failed: " . $conn->error;
           $conn->rollback();  // Rollback transaction
-          header("Location: bookingform.php");
+           header("Location: bookingform.php"); // Redirect to display error
           exit(0);
         }
 
@@ -50,37 +50,38 @@ if (isset($_POST['pay']))
         if ($stmt1->execute()) 
         {
           $_SESSION['status'] = "Payment uploaded and saved successfully!";
-          header("Location: bookingform.php");
+           header("Location: bookingform.php"); // Redirect on success
           exit(0);
         } 
         else 
         {
           $_SESSION['status'] = "Database error on payment insert: " . $stmt1->error;
           $conn->rollback();  // Rollback the transaction if there is an error
-          header("Location: bookingform.php");
+          header("Location: bookingform.php"); // Redirect to display error
           exit(0);
         }
       } 
       else 
       {
         $_SESSION['status'] = "File upload failed. Please try again.";
-        header("Location: bookingform.php");
+         header("Location: bookingform.php"); // Redirect to display error
         exit(0);
       }
     } 
     else 
     {
       $_SESSION['status'] = "Invalid file type. Allowed types: " . implode(", ", $allowedExtensions);
-      header("Location: bookingform.php");
+       header("Location: bookingform.php"); // Redirect to display error
       exit(0);
     }
   } 
   else 
   {
     $_SESSION['status'] = "No file uploaded or an error occurred.";
-    header("Location: bookingform.php");
+     header("Location: bookingform.php"); // Redirect to display error
     exit(0);
   }
 }
 
+// After the above code, you can display the error message in the bookingform.php
 ?>

@@ -372,7 +372,7 @@
                   <h5 class="align-items-center pt-2 fw-bolder">Total Price: ₱ <span id="displayTotalPrice">0</span></h5>
                   <button type="button" class="btn btn-primary p-2 px-3" id="bookNowButton">Book Now</button>
                 </div>
-                <input type="" id="totalPrice" name="totalPrice">    
+                <input type="hidden" id="totalPrice" name="totalPrice">    
               </div>
             </div>
           </div>
