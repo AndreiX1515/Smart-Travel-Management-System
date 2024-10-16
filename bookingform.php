@@ -62,15 +62,15 @@
         ?>
 
         <div class="header-container d-flex flex-row align-items-center justify-content-between w-100 my-2 px-3">
-          <h4>Flight Booking</h4>
+          <h4>Booking</h4>
           <button class="add-more-form btn btn-primary"><i class="fa-solid fa-plus"></i></button>
         </div>
 
 
-        <form action="bookingform-code.php" method="POST">
+        <form action="bookingform-code.php" method="POST" id="bookingForm" onsubmit="return validation();">
           <div class="card">
             <div class="card-header bg-secondary text-white text-light">
-              <h4 class="my-2 px-2">Flight Details</h4>
+              <h4 class="my-2 px-2">Details</h4>
             </div>
 
             <div class="card-body p-4">
@@ -92,6 +92,7 @@
                         }
                       ?>
                     </select>
+                    <span id="agentError" class="text-danger"></span> <!-- Error message for agent -->
                   </div>
                 </div>
 
@@ -107,6 +108,7 @@
                         }
                       ?>
                     </select>
+                    <span id="packageError" class="text-danger"></span> <!-- Error message for package -->
                   </div>
                 </div>
               </div>
@@ -118,6 +120,7 @@
                     <select class="form-select" id="origin" name="origin" required>
                       <option selected disabled>Select Origin</option>
                     </select>
+                    <span id="originError" class="text-danger"></span> <!-- Error message for origin -->
                   </div>
                 </div>
 
@@ -127,6 +130,7 @@
                     <select class="form-select" id="outboundFlight" name="outboundFlight" required>
                       <option selected disabled>Select Flight Available Dates</option>
                     </select>
+                    <span id="flightError" class="text-danger"></span> <!-- Error message for outbound flight -->
                   </div>
                 </div>
               </div>
@@ -148,7 +152,7 @@
 
             <div class="card-footer">
               <h4> <label>Price: ₱ <span id="flightPrice" ></span>
-                  <input type="hidden" id="flightPrice" name="flightPrice" value="0.00" readonly>
+                  <!-- <input style="border: none; outline: none;" id="flightPrice" name="flightPrice" value="0.00" readonly> -->
                 </label> 
               </h4>
             </div>
@@ -178,6 +182,7 @@
                     <div class="form-group mb-3">
                       <label class="mb-2" for="fName">First Name <span class="text-danger fw-bold">*</span></label>
                       <input type="text" name="fName[]" class="form-control" placeholder="Enter First Name" required>
+                      <span id="fNameError" class="text-danger"></span> <!-- Error message for First Name -->
                     </div>
                   </div>
 
@@ -185,6 +190,7 @@
                     <div class="form-group mb-3">
                       <label class="mb-2" for="lName">Last Name <span class="text-danger fw-bold">*</span> </label>
                       <input type="text" name="lName[]" class="form-control" placeholder="Enter Last Name" required>
+                      <span id="lNameError" class="text-danger"></span> <!-- Error message for Last Name -->
                     </div>
                   </div>
 
@@ -198,16 +204,17 @@
                   <div class="col-md-3">
                     <div class="form-group mb-3">
                       <label class="mb-2" for="suffix">Suffix</label>
-                      <select class="form-control" name="suffix[]">
+                      <select class="form-control" name="suffix[]" required>
                         <option selected disabled>Select Suffix</option>
+                        <option value="">None</option>
                         <option value="Jr.">Jr.</option>
                         <option value="Sr.">Sr.</option>
                         <option value="II">II</option>
                         <option value="III">III</option>
                         <option value="IV">IV</option>
                         <option value="V">V</option>
-                        <option value="">None</option>
                       </select>
+                      <span id="suffixError" class="text-danger"></span> <!-- Error message for Suffix -->
                     </div>
                   </div>
                   
@@ -216,6 +223,7 @@
                     <div class="form-group mb-3">
                       <label class="mb-2" for="birthdate">Birthdate <span class="text-danger fw-bold">*</span> </label>
                       <input type="date" name="birthdate[]" class="form-control" required>
+                      <span id="birthdateError" class="text-danger"></span> <!-- Error message for Birthdate -->
                     </div>
                   </div>
 
@@ -223,6 +231,7 @@
                     <div class="form-group mb-3">
                       <label class="mb-2" for="age">Age <span class="text-danger fw-bold">*</span> </label>
                       <input type="number" name="age[]" class="form-control" placeholder="Enter Age" required>
+                      <span id="ageError" class="text-danger"></span> <!-- Error message for Age -->
                     </div>
                   </div>
 
@@ -234,6 +243,7 @@
                         <option value="Male">Male</option>
                         <option value="Female">Female</option>
                       </select>
+                      <span id="sexError" class="text-danger"></span> <!-- Error message for Sex -->
                     </div>
                   </div>
           
@@ -247,6 +257,7 @@
                         <option value="Japanese">Japanese</option>
                         <option value="Korean">Korean</option>
                       </select>
+                      <span id="nationalityError" class="text-danger"></span> <!-- Error message for Nationality -->
                     </div>
                   </div>
 
@@ -254,6 +265,7 @@
                     <div class="form-group mb-3">
                       <label class="mb-2" for="passportNo">Passport No. <span class="text-danger fw-bold">*</span></label>
                       <input type="text" name="passportNo[]" class="form-control" placeholder="Enter Passport No" required>
+                      <span id="passportNoError" class="text-danger"></span> <!-- Error message for Passport No -->
                     </div>
                   </div>
 
@@ -261,6 +273,7 @@
                     <div class="form-group mb-3">
                       <label class="mb-2" for="passportExp">Date of Expiration: <span class="text-danger fw-bold">*</span></label>
                       <input type="date" name="passportExp[]" class="form-control" required>
+                      <span id="passportExpError" class="text-danger"></span> <!-- Error message for Passport Exp -->
                     </div>
                   </div>
 
@@ -276,6 +289,7 @@
                     <div class="form-group mb-3">
                       <label class="mb-2" for="contactNo">Contact No. <span class="text-danger fw-bold">*</span></label>
                       <input type="text" name="contactNo[]" class="form-control" placeholder="Enter Contact No" required>
+                      <span id="contactNoError" class="text-danger"></span> <!-- Error message for Contact No -->
                     </div>
                   </div>
 
@@ -283,6 +297,7 @@
                     <div class="form-group mb-3">
                       <label class="mb-2" for="email">Email <span class="text-danger fw-bold">*</span></label>
                       <input type="email" name="email[]" class="form-control" placeholder="Enter Email Address" required>
+                      <span id="emailError" class="text-danger"></span> <!-- Error message for Email -->
                     </div>
                   </div>
                 </div>
@@ -297,6 +312,7 @@
                       <div class="form-group mb-3">
                         <label class="mb-2" for="houseNo">House No. <span class="text-danger fw-bold">*</span></label>
                         <input type="text" name="houseNo[]" class="form-control" placeholder="Enter House No" required>
+                        <span id="houseNoError" class="text-danger"></span> <!-- Error message for House No -->
                       </div>
                     </div>
 
@@ -318,6 +334,7 @@
                       <div class="form-group mb-3">
                         <label class="mb-2" for="barangay">Barangay <span class="text-danger fw-bold">*</span></label>
                         <input type="text" name="barangay[]" class="form-control" placeholder="Enter Barangay" required>
+                        <span id="barangayError" class="text-danger"></span> <!-- Error message for Barangay -->
                       </div>
                     </div>
 
@@ -325,6 +342,7 @@
                       <div class="form-group mb-3">
                         <label class="mb-2" for="city">City <span class="text-danger fw-bold">*</span></label>
                         <input type="text" name="city[]" class="form-control" placeholder="Enter City" required>
+                        <span id="cityError" class="text-danger"></span> <!-- Error message for City -->
                       </div>
                     </div>
 
@@ -338,6 +356,7 @@
                           <option value="Korea">Korea</option>
                           <option value="Philippines">Philippines</option>
                         </select>
+                        <span id="countryError" class="text-danger"></span> <!-- Error message for Country -->
                       </div>
                     </div>
                   </div>
@@ -351,9 +370,9 @@
               <div class="card mt-2 ">
                 <div class="card-header d-flex justify-content-between align-items-center py-4">
                   <h5 class="align-items-center pt-2 fw-bolder">Total Price: ₱ <span id="displayTotalPrice">0</span></h5>
-                  <button type="button" class="btn btn-primary p-2 px-3" data-bs-toggle="modal" data-bs-target="#BookingSummaryModal">Book Now</button>
+                  <button type="button" class="btn btn-primary p-2 px-3" id="bookNowButton">Book Now</button>
                 </div>
-                <input type="hidden" id="totalPrice" name="totalPrice">    
+                <input type="" id="totalPrice" name="totalPrice">    
               </div>
             </div>
           </div>
@@ -609,9 +628,11 @@
       {
         var outboundFlight = $(this).val();
         var selectedFlight = $("#outboundFlight option:selected").text();
+        // Extract only the flight date by splitting at the " || " (delimiter between date and price)
+        var selectedDate = selectedFlight.split(' || ')[0].trim();
 
-        // Update the modal with the selected Flight Date
-        $('#selectedDate').text(selectedFlight);
+        // Update the <p> element with the extracted flight date
+        $('#selectedDate').text(selectedDate);
 
         if (outboundFlight) 
         {
@@ -628,10 +649,10 @@
               flightPricePerGuest = parseFloat(data.flightPrice); // Ensure it's a number
 
               // Format the price with commas and two decimal places
-      var formattedPrice = flightPricePerGuest.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+              var formattedPrice = flightPricePerGuest.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-// Update the flight price display with the formatted price
-$('#flightPrice').text(formattedPrice);
+              // Update the flight price display with the formatted price
+              $('#flightPrice').text(formattedPrice);
 
               // Update the return flight input field for all guests
               $('input[name^="returnFlight"]').val(data.returnFlight); 
@@ -642,8 +663,8 @@ $('#flightPrice').text(formattedPrice);
               // Update the flight ID for all guests
               $('input[name^="flightId"]').val(data.flightId);
 
-              // Recalculate total price after the flight price is set
-              calculateTotalPrice();
+              // // Recalculate total price after the flight price is set
+              // calculateTotalPrice();
             },
             error: function (xhr, status, error) 
             {
@@ -657,7 +678,223 @@ $('#flightPrice').text(formattedPrice);
         }
       });
 
-      // Function to calculate the total flight price
+      // Validation logic for booking
+      $('#bookNowButton').click(function (event) 
+      {
+        event.preventDefault(); // Prevent default form submission
+
+        let isValid = true; // Assume form is valid initially
+
+        // Reset error messages and remove invalid class
+        $('#agentError, #packageError, #originError, #flightError').text('');
+        $('select, input').removeClass('is-invalid'); // Remove invalid class from all fields
+
+        // Check for required fields
+        const agentId = $('#agentId').val();
+        if (!agentId) 
+        {
+          $('#agentError').text('Please Select an Agent.'); // Set error message for agentId
+          $('#agentId').addClass('is-invalid'); // Add invalid class to agentId
+          isValid = false; // Set valid flag to false
+        }
+
+        const packageName = $('#packageName').val();
+        if (!packageName) 
+        {
+          $('#packageError').text('Please Select a Package.'); // Set error message for packageName
+          $('#packageName').addClass('is-invalid'); // Add invalid class to packageName
+          isValid = false; // Set valid flag to false
+        }
+
+        const origin = $('#origin').val();
+        if (!origin) 
+        {
+          $('#originError').text('Please Select an Origin.'); // Set error message for origin
+          $('#origin').addClass('is-invalid'); // Add invalid class to origin
+          isValid = false; // Set valid flag to false
+        }
+
+        const outboundFlight = $('#outboundFlight').val();
+        if (!outboundFlight) 
+        {
+          $('#flightError').text('Please Select Flight Date.'); // Set error message for outboundFlight
+          $('#outboundFlight').addClass('is-invalid'); // Add invalid class to outboundFlight
+          isValid = false; // Set valid flag to false
+        }
+
+        // Check for guest information validation
+        $('.guest-form').each(function (index) 
+        {
+          const firstName = $(this).find('input[name^="fName"]').val();
+          const lastName = $(this).find('input[name^="lName"]').val();
+          const suffix = $(this).find('select[name^="suffix"]').val(); // Check suffix
+          const birthdate = $(this).find('input[name^="birthdate"]').val();
+          const age = $(this).find('input[name^="age"]').val();
+          const sex = $(this).find('select[name^="sex"]').val();
+          const nationality = $(this).find('select[name^="nationality"]').val();
+          const passportNo = $(this).find('input[name^="passportNo"]').val();
+          const passportExp = $(this).find('input[name^="passportExp"]').val();
+          const contactNo = $(this).find('input[name^="contactNo"]').val();
+          const email = $(this).find('input[name^="email"]').val();
+          const houseNo = $(this).find('input[name^="houseNo"]').val();
+          const barangay = $(this).find('input[name^="barangay"]').val();
+          const city = $(this).find('input[name^="city"]').val();
+          const country = $(this).find('select[name^="country"]').val();
+
+          // Check if first name is filled
+          if (firstName === '') 
+          {
+            $(this).find('input[name^="fName"]').addClass('is-invalid');
+            $('#fNameError').text('First name is required.'); // Set error message for first name
+            isValid = false; // Set valid flag to false
+          }
+
+          // Check if last name is filled
+          if (lastName === '') 
+          {
+            $(this).find('input[name^="lName"]').addClass('is-invalid');
+            $('#lNameError').text('Last name is required.'); // Set error message for last name
+            isValid = false; // Set valid flag to false
+          }
+
+          // Check if suffix is selected
+          if (!suffix) 
+          {
+            $(this).find('select[name^="suffix"]').addClass('is-invalid'); // Add invalid class to suffix
+            $('#suffixError').text('Suffix is required.'); // Set error message for suffix
+            isValid = false; // Set valid flag to false
+          }
+
+          // Check if birthdate is filled
+          if (!birthdate) 
+          {
+            $(this).find('input[name^="birthdate"]').addClass('is-invalid');
+            $('#birthdateError').text('Birthdate is required.'); // Set error message for birthdate
+            isValid = false; // Set valid flag to false
+          }
+
+          // Check if age is filled
+          if (age === '') 
+          {
+            $(this).find('input[name^="age"]').addClass('is-invalid');
+            $('#ageError').text('Age is required.'); // Set error message for age
+            isValid = false; // Set valid flag to false
+          }
+
+          // Check if sex is selected
+          if (!sex) 
+          {
+            $(this).find('select[name^="sex"]').addClass('is-invalid');
+            $('#sexError').text('Sex is required.'); // Set error message for sex
+            isValid = false; // Set valid flag to false
+          }
+
+          // Check if nationality is selected
+          if (!nationality) 
+          {
+            $(this).find('select[name^="nationality"]').addClass('is-invalid');
+            $('#nationalityError').text('Nationality is required.'); // Set error message for nationality
+            isValid = false; // Set valid flag to false
+          }
+
+          // Check if passport number is filled
+          if (passportNo === '') 
+          {
+            $(this).find('input[name^="passportNo"]').addClass('is-invalid');
+            $('#passportNoError').text('Passport number is required.'); // Set error message for passport number
+            isValid = false; // Set valid flag to false
+          }
+
+          // Check if passport expiration date is filled
+          if (passportExp === '') 
+          {
+            $(this).find('input[name^="passportExp"]').addClass('is-invalid');
+            $('#passportExpError').text('Passport expiration date is required.'); // Set error message for passport expiration
+            isValid = false; // Set valid flag to false
+          }
+
+          // Check if contact number is filled
+          if (contactNo === '') 
+          {
+            $(this).find('input[name^="contactNo"]').addClass('is-invalid'); // Add invalid class
+            $('#contactNoError').text('Contact number is required.'); // Set error message for contact number
+            isValid = false; // Set valid flag to false
+          }
+
+          // Check if email is filled
+          if (email === '') 
+          {
+            $(this).find('input[name^="email"]').addClass('is-invalid'); // Add invalid class
+            $('#emailError').text('Email is required.'); // Set error message for email
+            isValid = false; // Set valid flag to false
+          }
+
+          // Check if house number is filled
+          if (houseNo === '') 
+          {
+            $(this).find('input[name^="houseNo"]').addClass('is-invalid'); // Add invalid class
+            $('#houseNoError').text('House number is required.'); // Set error message for house number
+            isValid = false; // Set valid flag to false
+          }
+
+          // Check if barangay is filled
+          if (barangay === '') 
+          {
+            $(this).find('input[name^="barangay"]').addClass('is-invalid'); // Add invalid class
+            $('#barangayError').text('Barangay is required.'); // Set error message for barangay
+            isValid = false; // Set valid flag to false
+          }
+
+          // Check if city is filled
+          if (city === '') 
+          {
+            $(this).find('input[name^="city"]').addClass('is-invalid'); // Add invalid class
+            $('#cityError').text('City is required.'); // Set error message for city
+            isValid = false; // Set valid flag to false
+          }
+
+          // Check if country is filled
+          if (!country) 
+          {
+            $(this).find('select[name^="country"]').addClass('is-invalid'); // Add invalid class
+            $('#countryError').text('Country is required.'); // Set error message for country
+            isValid = false; // Set valid flag to false
+          }
+        });
+
+        // If the form is valid, show the booking confirmation modal
+        if (isValid) 
+        {
+          $('#BookingSummaryModal').modal('show'); // Trigger modal display
+        }
+      });
+
+      // Optional: If you want to clear validation errors when the user focuses on the field
+      $('select, input').focus(function () 
+      {
+        $(this).removeClass('is-invalid');
+        $('#agentError').text(''); // Set error message for agentId
+        $('#packageError').text(''); // Set error message for packageName
+        $('#originError').text(''); // Set error message for origin
+        $('#flightError').text(''); // Set error message for Flight Date
+        $('#fNameError').text(''); // Set error message for First Name
+        $('#lNameError').text(''); // Set error message for Last Name
+        $('#suffixError').text(''); // Set error message for Suffix
+        $('#birthdateError').text(''); // Set error message for Birthdate
+        $('#ageError').text(''); // Set error message for Age
+        $('#sexError').text(''); // Set error message for Sex
+        $('#nationalityError').text(''); // Set error message for Nationality
+        $('#passportNoError').text(''); // Set error message for Passport No
+        $('#passportExpError').text(''); // Set error message for Passport Exp
+        $('#contactNoError').text(''); // Set error message for Contact No
+        $('#emailError').text(''); // Set error message for Email
+        $('#houseNoError').text(''); // Set error message for House No
+        $('#barangayError').text(''); // Set error message for Barangay
+        $('#cityError').text(''); // Set error message for City
+        $('#countryError').text(''); // Set error message for Country
+      });
+
+      // Function to calculate the total price
       function calculateTotalPrice() 
       {
         var totalPrice = flightPricePerGuest * $('.guest-form').length; // Calculate total price based on the number of guests
@@ -665,13 +902,100 @@ $('#flightPrice').text(formattedPrice);
         console.log("Total Price:", totalPrice); // Debug: log the total price before updating the field
 
         // Format the total price with commas and two decimal places
-  var formattedTotalPrice = totalPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        var formattedTotalPrice = totalPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-// Update the displayed total price in the span
-$('#displayTotalPrice').text(formattedTotalPrice);
+        // Flag to check if all required fields are filled
+        var allRequiredFieldsFilled = true;
 
-        // Store the total price in the hidden input field for form submission
-        $('#totalPrice').val(totalPrice.toFixed(2)); // Make sure the input value is properly set
+        // Loop through each guest form
+        $('.guest-form').each(function () 
+        {
+          const firstName = $(this).find('input[name^="fName"]').val();
+          const lastName = $(this).find('input[name^="lName"]').val();
+          const suffix = $(this).find('select[name^="suffix"]').val();
+          const birthdate = $(this).find('input[name^="birthdate"]').val();
+          const age = $(this).find('input[name^="age"]').val();
+          const sex = $(this).find('select[name^="sex"]').val();
+          const nationality = $(this).find('select[name^="nationality"]').val();
+          const passportNo = $(this).find('input[name^="passportNo"]').val();
+          const passportExp = $(this).find('input[name^="passportExp"]').val();
+          const contactNo = $(this).find('input[name^="contactNo"]').val();
+          const email = $(this).find('input[name^="email"]').val();
+          const houseNo = $(this).find('input[name^="houseNo"]').val();
+          const barangay = $(this).find('input[name^="barangay"]').val();
+          const city = $(this).find('input[name^="city"]').val();
+          const country = $(this).find('select[name^="country"]').val();
+
+          // Check if any required field is empty
+          if (!firstName || !lastName || !suffix || !birthdate || !age || !sex || !nationality || !passportNo || !passportExp || 
+              !contactNo || !email || !houseNo || !barangay || !city || !country) 
+          {
+            allRequiredFieldsFilled = false; // Set flag to false if any required field is empty
+          }
+        });
+
+        // If all required fields are filled, calculate the total price
+        if (allRequiredFieldsFilled) 
+        {
+          totalPrice = flightPricePerGuest * $('.guest-form').length; // Calculate total price based on the number of guests
+
+          // Update the displayed total price in the span
+          $('#displayTotalPrice').text(formattedTotalPrice);
+
+          // Store the total price in the hidden input field for form submission
+          $('#totalPrice').val(totalPrice.toFixed(2)); // Make sure the input value is properly set
+        } 
+        else 
+        {
+          totalPrice = 0; // Set total price to 0 if any required field is empty
+          // Update the displayed total price in the span
+          $('#displayTotalPrice').text("0.00");
+
+          // Store the total price in the hidden input field for form submission
+          $('#totalPrice').val("0"); // Make sure the input value is properly set
+        }
+      }
+
+      // Automatically update total price when any required field changes
+      $('input[name^="fName"], input[name^="lName"], select[name^="suffix"], input[name^="birthdate"], ' +
+        'input[name^="age"], select[name^="sex"], select[name^="nationality"], input[name^="passportNo"], ' +
+        'input[name^="passportExp"], input[name^="contactNo"], input[name^="email"], input[name^="houseNo"], ' +
+        'input[name^="barangay"], input[name^="city"], select[name^="country"]')
+        .on('input change', function () 
+      {
+        // Flag to check if all fields are filled
+        let allFieldsFilled = true;
+
+        // Loop through each required field to check if any is empty
+        $('input[name^="fName"], input[name^="lName"], select[name^="suffix"], input[name^="birthdate"], ' +
+          'input[name^="age"], select[name^="sex"], select[name^="nationality"], input[name^="passportNo"], ' +
+          'input[name^="passportExp"], input[name^="contactNo"], input[name^="email"], input[name^="houseNo"], ' +
+          'input[name^="barangay"], input[name^="city"], select[name^="country"]').each(function() 
+        {
+          if ($(this).val() === '') 
+          {
+            allFieldsFilled = false; // Set to false if any field is empty
+          }
+        });
+
+        // If all required fields are filled, calculate the total price
+        if (allFieldsFilled) 
+        {
+          calculateTotalPrice();
+        } 
+        else 
+        {
+          // Optional: You can set total price to 0 or display a warning
+          setTotalPriceToZero(); // Implement this function if needed
+        }
+      });
+
+      // Function to set total price to 0
+      function setTotalPriceToZero() 
+      {
+        $('#displayTotalPrice').text('0'); // Reset the value of the input field to 0
+        $('#totalPrice').val('0'); // Reset the value of the input field to 0
+        $('#totalPrice').text('0'); // Reset the value of the input field to 0
       }
 
       // Initialize event listeners for the first form
