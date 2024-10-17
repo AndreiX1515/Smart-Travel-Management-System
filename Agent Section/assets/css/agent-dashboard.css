@@ -260,12 +260,40 @@ body {
     font-weight: 500;
 }
 
+.right-section {
+    justify-content: flex-end; /* Aligns the section to the right */
+}
+
+.date-time-container {
+   gap: 10px; /* Adds space between the date and the icon */
+   padding: 10px;
+   border: 1px solid lightgray;
+   border-radius: 15px;
+   color: #000000;
+   background-color: lightgrey;
+   text-align: baseline;
+}
+
+.date-time-container h6 {
+   margin: 0;
+   font-size: 14px; /* Adjust the font size as needed */
+}
+
+.date-time-container i {
+   font-size: 16px; /* Adjust the icon size if necessary */
+   color: #000; /* Icon color, adjust as needed */
+}
+
+
 /* Right section button styles */
 .right-section .btn {
     padding: 10px 20px;
     font-size: 16px;
     border-radius: 8px;
 }
+
+
+
 
 .btn-success {
     background-color: #116530; /* Custom green */
@@ -284,11 +312,12 @@ body {
 }
 
 .card.order-card {
-    margin: 0; /* Remove margin to minimize space */
-    width: calc(20% - 10px); /* Calculate width for 5 cards with gaps */
-    /* Adjust based on your layout to create space */
-    margin-right: 10px; /* Add right margin for spacing */
+ margin: 0; /* Remove margin to minimize space */
+ width: calc(20% - 10px); /* Calculate width for 5 cards with gaps */
+ aspect-ratio: 1 / .03; /* Adjust aspect ratio as per your needs (1:1.5 is taller than wide) */
+ margin-right: 10px; /* Add right margin for spacing */
 }
+
 
 .card.order-card:nth-child(5n) {
     margin-right: 0; /* Remove margin on the right for every 5th card */
@@ -316,11 +345,10 @@ body {
     
 }
 
-.header-top span i{
+.header-top-container span i{
     font-size: 10px;
 
 }
-
 
 .icon-container {
     align-self: first baseline;
@@ -350,13 +378,40 @@ body {
     position: flex;
     flex-direction: row;
     justify-content: space-between;
-    
 }
 
-.card .bottom-section h5 {
-    font-weight: normal;
-    font-size: 16px;
-    color: rgb(158, 158, 158);
+.trend {
+ display: flex;
+ align-items: center;
+ font-size: 14px;
+}
+
+.trend i {
+ color: #71A814;
+ margin-right: 5px;
+}
+
+.percentage-change {
+ color: #71A814;
+ margin-right: 5px;
+ font-weight: bold;
+}
+
+.comparison-text {
+ margin: 0;
+ font-size: 12px;
+ font-weight: 500;
+ color: #6c757d; /* Gray color similar to the image */
+ display: inline;
+}
+
+.arrow-up i {
+ font-size: 32px;
+ color: rgb(0, 0, 0);
+ position: relative; /* Enable positioning */
+ top: -10px; /* Move slightly upwards */
+ align-items: baseline;
+ transition: color 0.3s ease, top 0.3s ease; /* Smooth transition for hover effect */
 }
 
 .arrow-up i {
@@ -373,31 +428,12 @@ body {
  top: -15px; /* Move further upward on hover */
 }
 
-/* .card:hover {
-    transform: translateY(-5px); /* Lift effect on hover 
-}
-
-.card h3 {
-    margin: 0; /* Remove default margin
-    color: #333; /* Dark text color for headings
-}
-
-.card .number {
-    font-size: 24px; /* Increase font size for numbers 
-    font-weight: bold; /* Bold font for emphasis 
-    color: #007bff; /* Bootstrap primary color for emphasis 
-} */
-
-
 /* Optional: Add some responsiveness */
 @media (max-width: 600px) {
     .card {
         min-width: 100px; /* Adjust minimum width for smaller screens */
     }
 }
-
-
-
 
 .second-row-container {
    display: flex;
@@ -407,39 +443,140 @@ body {
 }
 
 .second-row-container .one {
- width: 60%; /* Set width to 60% */
+ width: 70%; /* Set width to 60% */
  height: 40vh; /* Set height to 60% of the viewport height */
  background-color: #fff; /* Card background color */
  border-radius: 8px; /* Rounded corners */
  box-shadow: 0 2px 5px rgba(201, 201, 201, 0.1); /* Box shadow for depth */
- padding: 15px 20px; /* Padding inside the card */
 }
 
-.one .header {
-   margin-bottom: 15px; /* Space below the header */
-   width: 100%; /* Full width for the header title */
+.one .header { 
+ width: 100%; /* Full width for the header title */
+ padding: 10px 20px;
+ text-align: left;
+ border-bottom: 1px solid #ddd; /* Optional: add border between header and body */
+ 
+ display: flex; /* Enable flexbox */
+ align-items: center; /* Vertically center the content */
 }
 
-.one .header h5{
-   font-weight: 600;
-   font-size: 18px;
+
+.one .body  {
+ position: relative; /* Add this to make the child elements positioned correctly */
+ 
+ width: 100%; /* Adjust as needed */
+ overflow-x: auto;
 }
 
-.one .body table {
- width: 100%; /* Full width of the container */
- border-collapse: collapse; /* Collapse borders */
+.styled-table {
+ width: 100%;
+ border-collapse: collapse;
+ font-size: 0.9em;
+ font-family: sans-serif;
+ min-width: 400px;
+ /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
 }
 
-.one .body th, .one .body td {
- border: 1px solid #dddddd; /* Border for table cells */
- padding: 8px; /* Padding inside table cells */
- text-align: left; /* Align text to the left */
+.styled-table thead tr {
+ /* background-color: #f3f3f3; */
+ color: #333;
+ text-align: left;
+ font-weight: bold;
 }
 
-.one .body th {
- background-color: #f2f2f2; /* Background color for header cells */
- font-weight: bold; /* Bold text for header */
+.styled-table th, .styled-table td {
+ padding: 10px 15px 10px 15px;
 }
+
+.styled-table tbody tr {
+ border-bottom: 1px solid #ddd;
+}
+
+/* .styled-table tbody tr:nth-of-type(even) {
+ background-color: #f9f9f9;
+} */
+
+.styled-table tbody tr:hover {
+ background-color: #f1f1f1;
+}
+
+.styled-table td img {
+ width: 30px; /* Adjust the size of the product image */
+ height: auto;
+ margin-right: 8px;
+ vertical-align: middle;
+}
+
+.styled-table td .payment-status {
+ display: inline-block;
+ width: 10px;
+ height: 10px;
+ border-radius: 50%;
+ margin-right: 8px;
+}
+
+.payment-status.cash {
+ background-color: #71A814; /* Green for Cash */
+}
+
+.payment-status.bank {
+ background-color: #36A2EB; /* Blue for Bank */
+}
+
+.payment-status.card {
+ background-color: #FFCE56; /* Yellow for Card */
+}
+
+
+
+.footer {
+ margin-top: 20px; /* Add some space above the footer */
+ text-align: right; /* Align pagination to the right */
+}
+
+.pagination-container {
+ display: flex; /* Use flex to align pagination elements */
+ justify-content: flex-end; /* Align to the end of the container */
+}
+
+.pagination {
+ display: flex;
+ align-items: center; /* Center items vertically */
+}
+
+.pagination button, .pagination .page-number {
+ padding: 0px 5px; /* Space inside buttons */
+ margin: 0 5px; /* Space between buttons */
+ border: 1px solid #ddd; /* Border style */
+ background-color: #f3f3f3; /* Background color */
+ cursor: pointer; /* Pointer cursor on hover */
+ border-radius: 5px; /* Rounded corners */
+}
+
+.pagination button:hover, .pagination .page-number:hover {
+ background-color: #ddd; /* Change background on hover */
+}
+
+.page-numbers {
+ display: flex;
+ align-items: center; /* Align numbers in the center */
+}
+
+.page-number.active {
+ background-color: #007bff; /* Active page color */
+ color: white; /* Text color for active page */
+ border: none; /* No border for active page */
+}
+
+
+
+
+
+
+
+
+
+
 
 .one .footer {
  margin-top: 15px; /* Space above the footer */
@@ -465,63 +602,46 @@ body {
 
 
 .second-row-container .two {
- width: 40%; /* Set width to 40% */
+ width: 30%; /* Set width to 40% */
  height: 40vh; /* Set height to 40% of the viewport height */
  background-color: #fff; /* Card background color */
  border-radius: 8px; /* Rounded corners */
  box-shadow: 0 2px 5px rgba(201, 201, 201, 0.5); /* Box shadow for depth */
- display: flex; /* Flexbox for centering */
- align-items: center; /* Center vertically */
- justify-content: center; /* Center horizontally */
+ display: flex;
+ flex-direction: column; /* Adjust flex direction to column */
  position: relative; /* Position for absolute children */
 }
 
-.pie-chart {
- position: relative; /* Positioning context for slices */
- width: 100%; /* Full width */
- height: 100%; /* Full height */
- border-radius: 50%; /* Make it circular */
- overflow: hidden; /* Hide overflow */
+.two .header {
+ padding: 10px 15px;
+ text-align: left;
+ border-bottom: 1px solid #ddd; /* Optional: add border between header and body */
 }
 
-.slice {
- position: absolute; /* Absolute positioning */
- width: 50%; /* Half width for the pie slices */
- height: 50%; /* Half height for the pie slices */
- border-radius: 100%; /* Make it circular */
+.two .body {
+ flex-grow: 1; /* Allows body to take remaining space */
+ display: flex; /* Flexbox to center the canvas */
+ align-items: center; /* Center canvas vertically */
+ justify-content: center; /* Center canvas horizontally */
+ padding: 30px;
+ position: relative;
 }
 
-.slice-1 {
- background-color: #FF6384; /* Color for slice 1 */
- clip-path: polygon(100% 0, 100% 100%, 50% 50%); /* Shape for slice 1 */
- transform: rotate(0deg); /* Rotate for slice positioning */
+.two canvas {
+ width: 5%;
+ height: 5%;
+ padding-right: 0; /* Removes any extra padding to the right */
 }
 
-.slice-2 {
- background-color: #36A2EB; /* Color for slice 2 */
- clip-path: polygon(100% 0, 100% 100%, 50% 50%); /* Shape for slice 2 */
- transform: rotate(90deg); /* Rotate for slice positioning */
-}
 
-.slice-3 {
- background-color: #FFCE56; /* Color for slice 3 */
- clip-path: polygon(100% 0, 100% 100%, 50% 50%); /* Shape for slice 3 */
- transform: rotate(180deg); /* Rotate for slice positioning */
-}
 
-.slice-4 {
- background-color: #4BC0C0; /* Color for slice 4 */
- clip-path: polygon(100% 0, 100% 100%, 50% 50%); /* Shape for slice 4 */
- transform: rotate(270deg); /* Rotate for slice positioning */
-}
 
-.center-circle {
- position: absolute; /* Center circle on top */
- top: 50%; /* Center vertically */
- left: 50%; /* Center horizontally */
- width: 40%; /* Size of the center circle */
- height: 40%; /* Size of the center circle */
- background-color: #fff; /* Center circle color */
- border-radius: 50%; /* Make it circular */
- transform: translate(-50%, -50%); /* Center it */
+
+
+
+/* Optional: Add some responsiveness */
+@media (max-width: 600px) {
+ .card {
+     min-width: 100px; /* Adjust minimum width for smaller screens */
+ }
 }
