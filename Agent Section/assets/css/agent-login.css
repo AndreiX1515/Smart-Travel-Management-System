@@ -7,6 +7,8 @@ body {
     margin: 0;
     background-color: #ced4da; /* Light gray background */
     font-family: 'Roboto', Arial, Helvetica, sans-serif;
+    background-image: linear-gradient(to left bottom, #051937, #004d7a, #008793, #00bf72, #a8eb12);
+    
 }
 
 .navbar {
@@ -63,7 +65,7 @@ body {
 
 #LoginButton {
     padding: 15px;
-    margin-top: 30px;
+    margin-top: 10px;
 }
 
 .message-login {

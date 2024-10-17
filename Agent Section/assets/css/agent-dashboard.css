@@ -18,7 +18,7 @@ body {
  width: 100%; /* Full width */
  height: 1px; /* Line thickness */
  background-color: #ccc; /* Grey color */
- margin: 20px 0; /* Space above and below the line */
+ margin: 10px 0; /* Space above and below the line */
 }
 
 
@@ -435,84 +435,114 @@ body {
     }
 }
 
+
+/* Second Row Container */
 .second-row-container {
    display: flex;
    flex-direction: row;
    margin-top: 10px;
    gap: 20px;
+   
 }
 
+/* Second Row Container - Div One */
 .second-row-container .one {
- width: 70%; /* Set width to 60% */
- height: 40vh; /* Set height to 60% of the viewport height */
+ width: 70%; /* Set width to 70% */
+ height: 40vh; /* Set height to 40% of the viewport height */
  background-color: #fff; /* Card background color */
  border-radius: 8px; /* Rounded corners */
- box-shadow: 0 2px 5px rgba(201, 201, 201, 0.1); /* Box shadow for depth */
+ box-shadow: 0 2px 5px rgba(201, 201, 201, 0.1);
 }
 
-.one .header { 
- width: 100%; /* Full width for the header title */
- padding: 10px 20px;
- text-align: left;
- border-bottom: 1px solid #ddd; /* Optional: add border between header and body */
- 
+/* Header styles */
+.one .header {
+ width: 100%; /* Full width for the header */
+ padding: 10px 20px 0px 20px; /* Padding around the header */
+ border-bottom: 1px solid #ddd; /* Border between header and body 
  display: flex; /* Enable flexbox */
- align-items: center; /* Vertically center the content */
+ justify-content: center; /* Center contents horizontally */
+ height: 50px; /* Fixed height for the header */
+ align-items: center;
+}
+
+.one .btn {
+ padding: 8px 12px; /* Adjust padding for better button size */
+ border-radius: 4px; /* Rounded corners for button */
+ text-decoration: none; /* Remove underline */
+ display: flex; /* Align items in the button */
+ align-items: center; /* Center items vertically */
+ justify-content: center; /* Center items horizontally */
+ text-align: center;
+ transition: background-color 0.3s ease, text-decoration 0.3s ease; /* Smooth transition for hover effect */
+ gap: 8px; /* Optional: Add space between icon and text */
+ align-self: first baseline;
+}
+
+/* Optional hover effect for better UX */
+.one .btn:hover {
+ background-color: #0056b3; /* Change background color on hover */
+ color: white; /* Change text color on hover */
+}
+
+.view-booking-container {
+ display: flex; /* Flex display for the button container */
+ align-items: center; /* Center items vertically */
 }
 
 
-.one .body  {
- position: relative; /* Add this to make the child elements positioned correctly */
- 
+.header > div {
+ margin-left: auto; /* Pushes the view booking container to the right */
+}
+
+/* Body styles */
+.one .body {
+ position: relative; /* Add this to make child elements positioned correctly */
  width: 100%; /* Adjust as needed */
- overflow-x: auto;
+ overflow-x: auto; /* Enable horizontal scrolling */
+ padding: 0px 25px;
 }
 
+/* Table styles */
 .styled-table {
- width: 100%;
- border-collapse: collapse;
- font-size: 0.9em;
- font-family: sans-serif;
- min-width: 400px;
- /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
+ width: 100%; /* Full width */
+ border-collapse: collapse; /* Merge borders */
+ font-size: 0.9em; /* Font size */
+ font-family: sans-serif; /* Font family */
+ min-width: 400px; /* Minimum width */
 }
 
 .styled-table thead tr {
- /* background-color: #f3f3f3; */
- color: #333;
- text-align: left;
- font-weight: bold;
+ color: #333; /* Text color for header */
+ text-align: left; /* Left-align text */
+ font-weight: bold; /* Bold text */
 }
 
 .styled-table th, .styled-table td {
- padding: 10px 15px 10px 15px;
+ padding: 10px 15px; /* Padding for table cells */
 }
 
 .styled-table tbody tr {
- border-bottom: 1px solid #ddd;
+ border-bottom: 1px solid #ddd; /* Bottom border for rows */
 }
 
-/* .styled-table tbody tr:nth-of-type(even) {
- background-color: #f9f9f9;
-} */
-
 .styled-table tbody tr:hover {
- background-color: #f1f1f1;
+ background-color: #f1f1f1; /* Highlight on hover */
 }
 
 .styled-table td img {
- width: 30px; /* Adjust the size of the product image */
- height: auto;
- margin-right: 8px;
- vertical-align: middle;
+ width: 30px; /* Size of product image */
+ height: auto; /* Maintain aspect ratio */
+ margin-right: 8px; /* Space after image */
+ vertical-align: middle; /* Align image vertically */
 }
 
+/* Payment status indicators */
 .styled-table td .payment-status {
- display: inline-block;
- width: 10px;
- height: 10px;
- border-radius: 50%;
- margin-right: 8px;
+ display: inline-block; /* Inline block for circle */
+ width: 10px; /* Width for status circle */
+ height: 10px; /* Height for status circle */
+ border-radius: 50%; /* Circle shape */
+ margin-right: 8px; /* Space after circle */
 }
 
 .payment-status.cash {
@@ -527,25 +557,26 @@ body {
  background-color: #FFCE56; /* Yellow for Card */
 }
 
-
-
-.footer {
- margin-top: 20px; /* Add some space above the footer */
- text-align: right; /* Align pagination to the right */
+/* Footer styles */
+.one .footer {
+ margin-top: 15px; /* Space above the footer */
+ text-align: right; /* Align button to the right */
 }
 
+/* Pagination styles */
 .pagination-container {
- display: flex; /* Use flex to align pagination elements */
+ display: flex; /* Flexbox for pagination elements */
  justify-content: flex-end; /* Align to the end of the container */
+ margin-right: 20px; /* Right margin */
 }
 
 .pagination {
- display: flex;
+ display: flex; /* Flexbox for pagination */
  align-items: center; /* Center items vertically */
 }
 
 .pagination button, .pagination .page-number {
- padding: 0px 5px; /* Space inside buttons */
+ padding: 0 5px; /* Space inside buttons */
  margin: 0 5px; /* Space between buttons */
  border: 1px solid #ddd; /* Border style */
  background-color: #f3f3f3; /* Background color */
@@ -553,15 +584,12 @@ body {
  border-radius: 5px; /* Rounded corners */
 }
 
+/* Hover effect for buttons and page numbers */
 .pagination button:hover, .pagination .page-number:hover {
  background-color: #ddd; /* Change background on hover */
 }
 
-.page-numbers {
- display: flex;
- align-items: center; /* Align numbers in the center */
-}
-
+/* Active page number styles */
 .page-number.active {
  background-color: #007bff; /* Active page color */
  color: white; /* Text color for active page */
@@ -571,36 +599,15 @@ body {
 
 
 
-
-
-
-
-
-
-
-.one .footer {
- margin-top: 15px; /* Space above the footer */
- text-align: right; /* Align button to the right */
-}
-
-.one .btn {
- color: rgb(0, 0, 0); /* Button text color */
- background-color: #f0f0f0; /* Base background color */
- border: none; /* Remove border */
- border-radius: 4px; /* Rounded corners for button */
- text-decoration: none; /* Remove underline */
- display: inline-flex; /* Align items in the button */
- align-items: center; /* Center items vertically */
- transition: background-color 0.3s ease; /* Smooth transition for hover effect */
-}
-
-/* Hover effect */
+/* Hover effect for buttons
 .one .btn:hover {
- background-color: #0e4b25; /* Darker shade on hover */
- color: white; /* Change text color on hover */
-}
+ background-color: #0e4b25; /* Darker shade on hover
+ color: white; /* Change text color on hover
+} */
 
 
+
+/* Second Row Container - Div Two */
 .second-row-container .two {
  width: 30%; /* Set width to 40% */
  height: 40vh; /* Set height to 40% of the viewport height */
@@ -613,9 +620,15 @@ body {
 }
 
 .two .header {
- padding: 10px 15px;
+ width: 100%; /* Full width for the header */
+ padding: 10px 20px 0px 20px; /* Padding around the header */
+ border-bottom: 1px solid #ddd; /* Border between header and body 
+ display: flex; /* Enable flexbox */
+ justify-content: center; /* Center contents horizontally */
+ height: 50px; /* Fixed height for the header */
+ align-items: center;
  text-align: left;
- border-bottom: 1px solid #ddd; /* Optional: add border between header and body */
+ 
 }
 
 .two .body {
