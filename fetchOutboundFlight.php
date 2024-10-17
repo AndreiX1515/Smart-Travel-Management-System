@@ -1,23 +1,30 @@
 <?php
 include 'conn.php'; // Ensure you include the correct database connection
 
-if (isset($_POST['packageId']) && isset($_POST['origin'])) 
+
+if (isset($_POST['packageId']) && isset($_POST['origin']) && isset($_POST['month'])) 
 {
   $packageId = $_POST['packageId'];
   $origin = $_POST['origin'];
-
-  // Correct SQL to fetch outbound and return flight schedules
-  $sql = mysqli_query($conn, "
-      SELECT flightId, DATE_FORMAT(flightDepartureDate, '%M %d, %Y')
-           AS onboardFlightSched, flightPrice
+  $month = $_POST['month']; // Get the month in text format (e.g., "October")
+  
+  // SQL to fetch flights where the month matches the selected month
+  $sql = "
+      SELECT flightId, DATE_FORMAT(flightDepartureDate, '%M %d, %Y') AS onboardFlightSched, flightPrice
       FROM flight 
-      WHERE packageId = '$packageId' AND origin = '$origin' 
-      ORDER BY flightDepartureDate ASC");
+      WHERE packageId = '$packageId' 
+      AND origin = '$origin' 
+      AND MONTHNAME(flightDepartureDate) = '$month' 
+      ORDER BY flightDepartureDate ASC";
 
-  if (mysqli_num_rows($sql) > 0) 
-  {
+  // Debugging: Print the SQL query
+  echo $sql;
+  
+  $result = mysqli_query($conn, $sql);
+  
+  if (mysqli_num_rows($result) > 0) {
     echo '<option selected disabled>Select Flight Available Dates</option>';
-    while ($res = mysqli_fetch_array($sql)) 
+    while ($res = mysqli_fetch_array($result)) 
     {
       $formattedPrice = number_format($res['flightPrice'], 2);
       echo '<option value="' . $res['flightId'] . '">' . $res['onboardFlightSched'] . '&nbsp;&nbsp;&nbsp;&nbsp; || &nbsp;&nbsp;&nbsp;&nbsp;'. 'Price: ₱ '. $formattedPrice . '</option>';
@@ -25,7 +32,7 @@ if (isset($_POST['packageId']) && isset($_POST['origin']))
   } 
   else 
   {
-    echo '<option selected disabled>No Outbound Flights Available</option>';
+    echo '<option selected disabled>No Flights Available</option>';
   }
 }
 
