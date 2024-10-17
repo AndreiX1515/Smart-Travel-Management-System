@@ -29,7 +29,7 @@
             <div class="logo mt-5 mb-5">
                 <img src="..\assets\images\logo-tab.png" alt="" class="logo-image" width="160" height="120">
             </div>
-            <form class="mt-5" id="loginForm" action="agentLogin-code.php" method="POST">
+            <form class="mt-3" id="loginForm"  method="POST">
                 <!-- Username input field -->
                 <div class="mb-3">
                     <div class="form-floating">
@@ -50,19 +50,19 @@
                 </div>
 
                 <!-- Forgot password and Remember me options -->
-                <div class="fp-container mt-3 mb-5 d-flex justify-content-between align-items-center">
+                <div class="fp-container mt-3 mb-2 d-flex justify-content-between align-items-center">
                     <div class="form-check">
-                        <input type="checkbox" class="form-check-input me-2 mb-1" id="rememberMe">
-                        <label class="form-check-label" for="rememberMe">Remember me</label> 
+                        <!-- <input type="checkbox" class="form-check-input me-2 mb-1" id="rememberMe">
+                        <label class="form-check-label" for="rememberMe">Remember me</label>  -->
                     </div>
                     <a href="#" class="">Forgot Password?</a>
                 </div>
 
                 <!-- Placeholder for login messages -->
-                <div id="message-login" class="message-login mt-3"></div>
+                <div id="message-login" class="message-login"></div>
 
                 <!-- Submit Button -->
-                <button type="submit" class="btn btn-primary w-100 p-3 mt-5" id="LoginButton" name="login">LOGIN</button>
+                <button type="submit" class="btn btn-primary w-100 p-3" id="LoginButton" name="login">LOGIN</button>
             </form>
         </div>
     </main>
@@ -70,6 +70,49 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>
+
+    <script>
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent default form submission
+
+    // Clear previous messages
+    document.getElementById('message-login').innerHTML = '';
+
+    // Create FormData object to gather the form data
+    const formData = new FormData(this);
+    formData.append('login', '1'); // Add login field to indicate form submission
+
+    // Perform AJAX request
+    fetch('../Agent Section/agentLogin-code.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json()) // Expecting a JSON response
+    .then(data => {
+        if (data.success) {
+            // Redirect to dashboard or homepage
+            window.location.href = '../Agent Section/agent-dashboard.php';
+        } else {
+            // Show error message based on the response
+            document.getElementById('message-login').innerHTML = '<div class="alert alert-danger text-center">' + data.message + '</div>';
+            
+            // If the user is logged in on another device, disable the login button
+            if (data.message && data.message.trim() === "You are logged in on another device. Please close from other tab or devices then reload before logging in again!") {
+                console.log("Disabling login button for 'Logged in on another device.'");
+                document.getElementById('LoginButton').classList.add('button-disabled'); // Disable the login button
+            }
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        // Show a generic error message if there's a problem with the request
+        document.getElementById('message-login').innerHTML = '<div class="alert alert-danger">An error occurred. Please try again later.</div>';
+        // Add CSS class to visually disable the button
+        document.getElementById('LoginButton').classList.add('button-disabled');
+    });
+});
+
+    </script>
 
     <script>
         document.getElementById('togglePassword').addEventListener('click', function () {

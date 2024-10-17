@@ -183,21 +183,19 @@ $current_date = date('D, F d, Y'); // Format: "Tue, January 01, 2024"
              </div>
          </div>
      </div>
-
-
-   
 </div>
-
 
     <div class="second-row-container">
       <div class="one">
-        <div class="header d-flex flex-row justify-content-between align-items-center">
-            <h6>Bookings</h6>
-            <div class="view-booking-container d-flex flex-row">
-                <!-- <span> <a class="btn">View All Bookings <i class="fa-solid fa-arrow-right ms-2"></i></a> </span> -->
-            </div>
-        </div>
-
+        <div class="header d-flex justify-content-between align-items-center justify-content-between">
+           <h6>Bookings</h6>
+           <div class="view-booking-container">
+               <a class="btn">
+                   <i class="fa-solid fa-arrow-right"></i>
+               </a>
+           </div>
+       </div>
+       
         <div class="body mt-4">
             <table class="styled-table" id="transactionTable">
                 <thead>
