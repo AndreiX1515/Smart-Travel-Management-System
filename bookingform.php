@@ -30,6 +30,8 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
   <link rel="stylesheet" href="assets\css\bookingform.css">
 
+  
+
   <title>Flight Booking</title>
   
   <!-- Custom CSS -->
@@ -114,8 +116,8 @@
               </div>
 
               <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group mb-6">
+                <div class="col-md-4">
+                  <div class="form-group mb-4">
                     <label class="mb-2" for="origin">Origin <span class="text-danger fw-bold">*</span></label>
                     <select class="form-select" id="origin" name="origin" required>
                       <option selected disabled>Select Origin</option>
@@ -124,8 +126,29 @@
                   </div>
                 </div>
 
-                <div class="col-md-6">
-                  <div class="form-group mb-6">
+                <div class="col-md-4">
+                  <div class="form-group mb-4">
+                    <label class="mb-2" for="month">Month</label>
+                    <select class="form-select" id="month" name="month">
+                      <option selected disabled>Select Month</option>
+                      <option value="January">January</option>
+                      <option value="February">February</option>
+                      <option value="March">March</option>
+                      <option value="April">April</option>
+                      <option value="May">May</option>
+                      <option value="June">June</option>
+                      <option value="July">July</option>
+                      <option value="August">August</option>
+                      <option value="September">September</option>
+                      <option value="October">October</option>
+                      <option value="November">November</option>
+                      <option value="December">December</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-md-4">
+                  <div class="form-group mb-4">
                     <label class="mb-2" for="outboundFlight">Flight Date <span class="text-danger fw-bold">*</span></label>
                     <select class="form-select" id="outboundFlight" name="outboundFlight" required>
                       <option selected disabled>Select Flight Available Dates</option>
@@ -547,6 +570,7 @@
         var packageId = $(this).val();
         var selectedPackageName = $("#packageName option:selected").text();
         $('#origin').html('<option selected disabled>Select Origin</option>'); // Clear origin field
+        
         $('#outboundFlight').html('<option selected disabled>Select Flight Available Dates</option>'); // Clear outbound flight field
         $('#returnFlight').val(''); // Clear return flight field
         $('#flightId').val(''); // Clear Flight Id field
@@ -582,45 +606,13 @@
       });
 
       // When origin is selected, populate the outbound flights
-      $('#origin').on('change', function () 
-      {
-        var packageId = $('#packageName').val();
-        var origin = $(this).val();
-        var selectedOrigin = $("#origin option:selected").text();
+      $('#origin').on('change', function () {
+          fetchFlights(); // Call the function to fetch flights based on the new origin
+      });
 
-        // Update the modal with the selected origin
-        $('#selectedOrigin').text(selectedOrigin);
-
-        $('#outboundFlight').html('<option selected disabled>Select Flight Available Dates</option>'); // Clear outbound flight field
-        $('#returnFlight').val(''); // Clear return flight field
-        $('#flightId').val(''); // Clear Flight Id field
-        $('#flightPrice').val('0.00'); // Clear Flight Price field
-        $('#displayTotalPrice').text('0.00'); // Clear Total Price field
-        $('#totalPrice').val(''); // Clear Total Price Input field
-
-        if (packageId && origin) 
-        {
-          $.ajax(
-          {
-            url: 'fetchOutboundFlight.php',
-            type: 'POST',
-            data: { packageId: packageId, origin: origin },
-            success: function (response) 
-            {
-              console.log(response); // Debugging the response
-              $('#outboundFlight').html(response); // Update outbound flights dropdown
-            },
-            error: function (xhr, status, error) 
-            {
-              console.error('Error fetching outbound flights:', error); // Log the error to console
-            }
-          });
-        } 
-        else 
-        {
-          $('#outboundFlight').html('<option selected disabled>Select Flight Available Dates</option>');
-          $('#returnFlight').val('');
-        }
+      // When month is selected or changed, re-fetch flights
+      $('#month').on('change', function () {
+          fetchFlights(); // Call the same function to fetch flights based on the new month
       });
 
       // When outbound flight is selected, fetch the return flight and apply to all guests
@@ -894,6 +886,48 @@
         $('#countryError').text(''); // Set error message for Country
       });
 
+      // Function to fetch flights based on packageId, origin, and month
+      function fetchFlights() 
+      {
+          var packageId = $('#packageName').val();
+          var origin = $('#origin').val();
+          var month = $('#month').val(); // Get the selected month (optional)
+          var selectedOrigin = $("#origin option:selected").text();
+
+          // Update the modal with the selected origin
+          $('#selectedOrigin').text(selectedOrigin);
+
+          // Clear outbound flight field
+          $('#outboundFlight').html('<option selected disabled>Select Flight Available Dates</option>');
+          
+          $('#returnFlight').val(''); // Clear return flight field
+          $('#flightId').val(''); // Clear Flight Id field
+          $('#flightPrice').val('0.00'); // Clear Flight Price field
+          $('#displayTotalPrice').text('0.00'); // Clear Total Price field
+          $('#totalPrice').val('0.00'); // Clear Total Price Input field
+
+          if (packageId && origin) 
+          {
+              $.ajax({
+                  url: 'fetchOutboundFlight.php',
+                  type: 'POST',
+                  data: { packageId: packageId, origin: origin, month: month }, // Send packageId, origin, and month (even if empty)
+                  success: function (response) {
+                      console.log(response); // Debugging the response
+                      $('#outboundFlight').html(response); // Update outbound flights dropdown
+                  },
+                  error: function (xhr, status, error) {
+                      console.error('Error fetching outbound flights:', error); // Log the error to console
+                  }
+              });
+          } 
+          else 
+          {
+              $('#outboundFlight').html('<option selected disabled>Select Flight Available Dates</option>');
+              $('#returnFlight').val('');
+          }
+      }
+
       // Function to calculate the total price
       function calculateTotalPrice() 
       {
@@ -952,7 +986,7 @@
           $('#displayTotalPrice').text("0.00");
 
           // Store the total price in the hidden input field for form submission
-          $('#totalPrice').val("0"); // Make sure the input value is properly set
+          $('#totalPrice').val("0.00"); // Make sure the input value is properly set
         }
       }
 
@@ -993,9 +1027,9 @@
       // Function to set total price to 0
       function setTotalPriceToZero() 
       {
-        $('#displayTotalPrice').text('0'); // Reset the value of the input field to 0
-        $('#totalPrice').val('0'); // Reset the value of the input field to 0
-        $('#totalPrice').text('0'); // Reset the value of the input field to 0
+        $('#displayTotalPrice').text('0.00'); // Reset the value of the input field to 0
+        $('#totalPrice').val('0.00'); // Reset the value of the input field to 0
+        $('#totalPrice').text('0.00'); // Reset the value of the input field to 0
       }
 
       // Initialize event listeners for the first form
