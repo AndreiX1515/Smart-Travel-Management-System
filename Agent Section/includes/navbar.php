@@ -7,7 +7,7 @@
                 <i class="fa-solid fa-bars"></i>
             </div>
 
-            <a class="navbar-brand" href="#" style="font-weight: 600;">Dashboard</a>
+            <!-- <a class="navbar-brand" href="#" style="font-weight: 600;">Dashboard</a> -->
         </div>
 
           <div class="nav-end-container">
