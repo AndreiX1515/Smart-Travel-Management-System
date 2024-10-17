@@ -17,7 +17,7 @@
     $conn->begin_transaction();
 
     // Prepare the SQL statement for insertion into the booking table
-    $sql1 = "INSERT INTO inquiry (transactNo, agentId, concern, details) VALUES (?, ?, ?, ?)";
+    $sql1 = "INSERT INTO inquiry (transactNo, agentId, concern, details, date) VALUES (?, ?, ?, ?, NOW())";
     $stmt1 = $conn->prepare($sql1);
 
     // Check if the statement was prepared successfully
@@ -40,12 +40,12 @@
       exit(0);
     }
 
-  // Commit the transaction if everything is successful
-  $conn->commit();
-  $_SESSION['status'] = "Inquiry submitted successfully!";
-  header("Location: client-transactionStatus.php");
-  exit(0);
-}
+    // Commit the transaction if everything is successful
+    $conn->commit();
+    $_SESSION['status'] = "Inquiry submitted successfully!";
+    header("Location: client-transactionStatus.php");
+    exit(0);
+  }
 
 // Close the prepared statement
 $stmt1->close();

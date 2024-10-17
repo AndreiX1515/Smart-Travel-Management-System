@@ -485,7 +485,13 @@
 
   <!-- Bootstrap JS Bundle with Popper -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Bootstrap Select JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0/js/bootstrap-select.min.js"></script>
+
 
   <script src="heartbeat.js"></script>
 
@@ -716,7 +722,7 @@
           const birthdate = $(this).find('input[name^="birthdate"]').val();
           const age = $(this).find('input[name^="age"]').val();
           const sex = $(this).find('select[name^="sex"]').val();
-          const nationality = $(this).find('select[name^="nationality"]').val();
+          const nationality = $(this).find('input[name^="nationality"]').val();
           const passportNo = $(this).find('input[name^="passportNo"]').val();
           const passportExp = $(this).find('input[name^="passportExp"]').val();
           const contactNo = $(this).find('input[name^="contactNo"]').val();
@@ -724,7 +730,7 @@
           const houseNo = $(this).find('input[name^="houseNo"]').val();
           const barangay = $(this).find('input[name^="barangay"]').val();
           const city = $(this).find('input[name^="city"]').val();
-          const country = $(this).find('select[name^="country"]').val();
+          const country = $(this).find('input[name^="country"]').val();
 
           // Check if first name is filled
           if (firstName === '') 
@@ -777,7 +783,7 @@
           // Check if nationality is selected
           if (!nationality) 
           {
-            $(this).find('select[name^="nationality"]').addClass('is-invalid');
+            $(this).find('input[name^="nationality"]').addClass('is-invalid');
             $('#nationalityError').text('Nationality is required.'); // Set error message for nationality
             isValid = false; // Set valid flag to false
           }
@@ -841,7 +847,7 @@
           // Check if country is filled
           if (!country) 
           {
-            $(this).find('select[name^="country"]').addClass('is-invalid'); // Add invalid class
+            $(this).find('input[name^="country"]').addClass('is-invalid'); // Add invalid class
             $('#countryError').text('Country is required.'); // Set error message for country
             isValid = false; // Set valid flag to false
           }
@@ -943,7 +949,7 @@
           const birthdate = $(this).find('input[name^="birthdate"]').val();
           const age = $(this).find('input[name^="age"]').val();
           const sex = $(this).find('select[name^="sex"]').val();
-          const nationality = $(this).find('select[name^="nationality"]').val();
+          const nationality = $(this).find('input[name^="nationality"]').val();
           const passportNo = $(this).find('input[name^="passportNo"]').val();
           const passportExp = $(this).find('input[name^="passportExp"]').val();
           const contactNo = $(this).find('input[name^="contactNo"]').val();
@@ -951,7 +957,7 @@
           const houseNo = $(this).find('input[name^="houseNo"]').val();
           const barangay = $(this).find('input[name^="barangay"]').val();
           const city = $(this).find('input[name^="city"]').val();
-          const country = $(this).find('select[name^="country"]').val();
+          const country = $(this).find('input[name^="country"]').val();
 
           // Check if any required field is empty
           if (!firstName || !lastName || !suffix || !birthdate || !age || !sex || !nationality || !passportNo || !passportExp || 
@@ -985,9 +991,9 @@
 
       // Automatically update total price when any required field changes
       $('input[name^="fName"], input[name^="lName"], select[name^="suffix"], input[name^="birthdate"], ' +
-        'input[name^="age"], select[name^="sex"], select[name^="nationality"], input[name^="passportNo"], ' +
+        'input[name^="age"], select[name^="sex"], input[name^="nationality"], input[name^="passportNo"], ' +
         'input[name^="passportExp"], input[name^="contactNo"], input[name^="email"], input[name^="houseNo"], ' +
-        'input[name^="barangay"], input[name^="city"], select[name^="country"]')
+        'input[name^="barangay"], input[name^="city"], input[name^="country"]')
         .on('input change', function () 
       {
         // Flag to check if all fields are filled
@@ -995,9 +1001,9 @@
 
         // Loop through each required field to check if any is empty
         $('input[name^="fName"], input[name^="lName"], select[name^="suffix"], input[name^="birthdate"], ' +
-          'input[name^="age"], select[name^="sex"], select[name^="nationality"], input[name^="passportNo"], ' +
+          'input[name^="age"], select[name^="sex"], input[name^="nationality"], input[name^="passportNo"], ' +
           'input[name^="passportExp"], input[name^="contactNo"], input[name^="email"], input[name^="houseNo"], ' +
-          'input[name^="barangay"], input[name^="city"], select[name^="country"]').each(function() 
+          'input[name^="barangay"], input[name^="city"], input[name^="country"]').each(function() 
         {
           if ($(this).val() === '') 
           {
