@@ -246,7 +246,7 @@
                 </div>
             </div>
 
-            <form action="payment-code.php" method="POST">
+            <form action="payment-code.php" method="POST" enctype="multipart/form-data">
                 <hr>
                 <input type="hidden" value="<?php echo $_SESSION['transactNo']; ?>" name="transactNo">
                 <input type="number" class="form-control" name="downpayment" min="<?php echo $downpayment; ?>" placeholder="Enter Downpayment Amount" required>
