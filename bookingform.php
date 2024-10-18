@@ -1067,198 +1067,60 @@
         event.preventDefault(); // Prevent default form submission
 
         let isValid = true; // Assume form is valid initially
+        const errors = {
+            agentId: 'Please Select an Agent.',
+            packageName: 'Please Select a Package.',
+            origin: 'Please Select an Origin.',
+            outboundFlight: 'Please Select Flight Date.'
+        };
 
         // Reset error messages and remove invalid class
         $('#agentError, #packageError, #originError, #flightError').text('');
-        $('select, input').removeClass('is-invalid'); // Remove invalid class from all fields
+        $('select, input').removeClass('is-invalid');
 
         // Check for required fields
-        const agentId = $('#agentId').val();
-        if (!agentId) 
-        {
-          $('#agentError').text('Please Select an Agent.'); // Set error message for agentId
-          $('#agentId').addClass('is-invalid'); // Add invalid class to agentId
-          isValid = false; // Set valid flag to false
+        for (const [field, message] of Object.entries(errors)) {
+            if (!$(`#${field}`).val()) {
+                $(`#${field}Error`).text(message); // Set error message
+                $(`#${field}`).addClass('is-invalid'); // Add invalid class
+                isValid = false; // Set valid flag to false
+            }
         }
 
-        const packageName = $('#packageName').val();
-        if (!packageName) 
-        {
-          $('#packageError').text('Please Select a Package.'); // Set error message for packageName
-          $('#packageName').addClass('is-invalid'); // Add invalid class to packageName
-          isValid = false; // Set valid flag to false
-        }
+        // Guest field validation
+        $('.guest-form').each(function () {
+            const guestFields = [
+                { name: 'fName', error: 'First name is required.' },
+                { name: 'lName', error: 'Last name is required.' },
+                { name: 'suffix', error: 'Suffix is required.', isSelect: true },
+                { name: 'birthdate', error: 'Birthdate is required.' },
+                { name: 'age', error: 'Age is required.' },
+                { name: 'sex', error: 'Sex is required.', isSelect: true },
+                { name: 'nationality', error: 'Nationality is required.' },
+                { name: 'passportNo', error: 'Passport number is required.' },
+                { name: 'passportExp', error: 'Passport expiration date is required.' },
+                { name: 'contactNo', error: 'Contact number is required.' },
+                { name: 'email', error: 'Email is required.' },
+                { name: 'addressLine', error: 'Address is required.' },
+                { name: 'city', error: 'City is required.' },
+                { name: 'state', error: 'State is required.' },
+                { name: 'zipCode', error: 'Zip Code is required.' },
+                { name: 'country', error: 'Country is required.' }
+            ];
 
-        const origin = $('#origin').val();
-        if (!origin) 
-        {
-          $('#originError').text('Please Select an Origin.'); // Set error message for origin
-          $('#origin').addClass('is-invalid'); // Add invalid class to origin
-          isValid = false; // Set valid flag to false
-        }
-
-        const outboundFlight = $('#outboundFlight').val();
-        if (!outboundFlight) 
-        {
-          $('#flightError').text('Please Select Flight Date.'); // Set error message for outboundFlight
-          $('#outboundFlight').addClass('is-invalid'); // Add invalid class to outboundFlight
-          isValid = false; // Set valid flag to false
-        }
-
-        // Check for guest information validation
-        $('.guest-form').each(function (index) 
-        {
-          const firstName = $(this).find('input[name^="fName"]').val();
-          const lastName = $(this).find('input[name^="lName"]').val();
-          const suffix = $(this).find('select[name^="suffix"]').val(); // Check suffix
-          const birthdate = $(this).find('input[name^="birthdate"]').val();
-          const age = $(this).find('input[name^="age"]').val();
-          const sex = $(this).find('select[name^="sex"]').val();
-          const nationality = $(this).find('input[name^="nationality"]').val();
-          const passportNo = $(this).find('input[name^="passportNo"]').val();
-          const passportExp = $(this).find('input[name^="passportExp"]').val();
-          const contactNo = $(this).find('input[name^="contactNo"]').val();
-          const email = $(this).find('input[name^="email"]').val();
-          const addressLine1 = $(this).find('input[name^="addressLine"]').val();
-          const city = $(this).find('input[name^="city"]').val();
-          const state = $(this).find('input[name^="state"]').val();
-          const zipCode = $(this).find('input[name^="zipCode"]').val();
-          const country = $(this).find('input[name^="country"]').val();
-
-          // Check if first name is filled
-          if (firstName === '') 
-          {
-            $(this).find('input[name^="fName"]').addClass('is-invalid');
-            $('#fNameError').text('First name is required.'); // Set error message for first name
-            isValid = false; // Set valid flag to false
-          }
-
-          // Check if last name is filled
-          if (lastName === '') 
-          {
-            $(this).find('input[name^="lName"]').addClass('is-invalid');
-            $('#lNameError').text('Last name is required.'); // Set error message for last name
-            isValid = false; // Set valid flag to false
-          }
-
-          // Check if suffix is selected
-          if (!suffix) 
-          {
-            $(this).find('select[name^="suffix"]').addClass('is-invalid'); // Add invalid class to suffix
-            $('#suffixError').text('Suffix is required.'); // Set error message for suffix
-            isValid = false; // Set valid flag to false
-          }
-
-          // Check if birthdate is filled
-          if (!birthdate) 
-          {
-            $(this).find('input[name^="birthdate"]').addClass('is-invalid');
-            $('#birthdateError').text('Birthdate is required.'); // Set error message for birthdate
-            isValid = false; // Set valid flag to false
-          }
-
-          // Check if age is filled
-          if (age === '') 
-          {
-            $(this).find('input[name^="age"]').addClass('is-invalid');
-            $('#ageError').text('Age is required.'); // Set error message for age
-            isValid = false; // Set valid flag to false
-          }
-
-          // Check if sex is selected
-          if (!sex) 
-          {
-            $(this).find('select[name^="sex"]').addClass('is-invalid');
-            $('#sexError').text('Sex is required.'); // Set error message for sex
-            isValid = false; // Set valid flag to false
-          }
-
-          // Check if nationality is selected
-          if (!nationality) 
-          {
-            $(this).find('input[name^="nationality"]').addClass('is-invalid');
-            $('#nationalityError').text('Nationality is required.'); // Set error message for nationality
-            isValid = false; // Set valid flag to false
-          }
-
-          // Check if passport number is filled
-          if (passportNo === '') 
-          {
-            $(this).find('input[name^="passportNo"]').addClass('is-invalid');
-            $('#passportNoError').text('Passport number is required.'); // Set error message for passport number
-            isValid = false; // Set valid flag to false
-          }
-
-          // Check if passport expiration date is filled
-          if (passportExp === '') 
-          {
-            $(this).find('input[name^="passportExp"]').addClass('is-invalid');
-            $('#passportExpError').text('Passport expiration date is required.'); // Set error message for passport expiration
-            isValid = false; // Set valid flag to false
-          }
-
-          // Check if contact number is filled
-          if (contactNo === '') 
-          {
-            $(this).find('input[name^="contactNo"]').addClass('is-invalid'); // Add invalid class
-            $('#contactNoError').text('Contact number is required.'); // Set error message for contact number
-            isValid = false; // Set valid flag to false
-          }
-
-          // Check if email is filled
-          if (email === '') 
-          {
-            $(this).find('input[name^="email"]').addClass('is-invalid'); // Add invalid class
-            $('#emailError').text('Email is required.'); // Set error message for email
-            isValid = false; // Set valid flag to false
-          }
-
-          // Check if address is filled
-          if (addressLine1 === '') 
-          {
-            $(this).find('input[name^="addressLine1"]').addClass('is-invalid'); // Add invalid class
-            $('#addressLine1Error').text('Address is required.'); // Set error message for address
-            isValid = false; // Set valid flag to false
-          }
-
-          // Check if city is filled
-          if (city === '') 
-          {
-            $(this).find('input[name^="city"]').addClass('is-invalid'); // Add invalid class
-            $('#cityError').text('City is required.'); // Set error message for city
-            isValid = false; // Set valid flag to false
-          }
-
-          // Check if state is filled
-          if (state === '') 
-          {
-            $(this).find('input[name^="state"]').addClass('is-invalid'); // Add invalid class
-            $('#stateError').text('state is required.'); // Set error message for state
-            isValid = false; // Set valid flag to false
-          }
-
-          // Check if zipCode is filled
-          if (zipCode === '') 
-          {
-            $(this).find('input[name^="zipCode"]').addClass('is-invalid'); // Add invalid class
-            $('#zipCodeError').text('Zip Code is required.'); // Set error message for Zip Code
-            isValid = false; // Set valid flag to false 
-          }
-
-
-          // Check if country is filled
-          if (!country) 
-          {
-            $(this).find('input[name^="country"]').addClass('is-invalid'); // Add invalid class
-            $('#countryError').text('Country is required.'); // Set error message for country
-            isValid = false; // Set valid flag to false
-          }
+            guestFields.forEach(({ name, error, isSelect }) => {
+                const input = isSelect ? $(this).find(`select[name^="${name}"]`) : $(this).find(`input[name^="${name}"]`);
+                if (!input.val()) {
+                    input.addClass('is-invalid'); // Add invalid class
+                    $(`#${name}Error`).text(error); // Set error message
+                    isValid = false; // Set valid flag to false
+                }
+            });
         });
 
         // If the form is valid, show the booking confirmation modal
-        if (isValid) 
-        {
-          $('#BookingSummaryModal').modal('show'); // Trigger modal display
+        if (isValid) {
+            $('#BookingSummaryModal').modal('show'); // Trigger modal display
         }
       });
 
@@ -1291,43 +1153,46 @@
       // Function to fetch flights based on packageId, origin, and month
       function fetchFlights() 
       {
-          var packageId = $('#packageName').val();
-          var origin = $('#origin').val();
-          var month = $('#month').val(); // Get the selected month (optional)
-          var selectedOrigin = $("#origin option:selected").text();
+        var packageId = $('#packageName').val();
+        var origin = $('#origin').val();
+        var month = $('#month').val(); // Get the selected month (optional)
+        var selectedOrigin = $("#origin option:selected").text();
 
-          // Update the modal with the selected origin
-          $('#selectedOrigin').text(selectedOrigin);
+        // Update the modal with the selected origin
+        $('#selectedOrigin').text(selectedOrigin);
 
-          // Clear outbound flight field
+        // Clear outbound flight field
+        $('#outboundFlight').html('<option selected disabled>Select Flight Available Dates</option>');
+        
+        $('#returnFlight').val(''); // Clear return flight field
+        $('#flightId').val(''); // Clear Flight Id field
+        $('#flightPrice').val('0.00'); // Clear Flight Price field
+        $('#displayTotalPrice').text('0.00'); // Clear Total Price field
+        $('#totalPrice').val('0.00'); // Clear Total Price Input field
+
+        if (packageId && origin) 
+        {
+          $.ajax(
+          {
+            url: 'fetchOutboundFlight.php',
+            type: 'POST',
+            data: { packageId: packageId, origin: origin, month: month }, // Send packageId, origin, and month (even if empty)
+            success: function (response) 
+            {
+              console.log(response); // Debugging the response
+              $('#outboundFlight').html(response); // Update outbound flights dropdown
+            },
+            error: function (xhr, status, error) 
+            {
+              console.error('Error fetching outbound flights:', error); // Log the error to console
+            }
+          });
+        } 
+        else 
+        {
           $('#outboundFlight').html('<option selected disabled>Select Flight Available Dates</option>');
-          
-          $('#returnFlight').val(''); // Clear return flight field
-          $('#flightId').val(''); // Clear Flight Id field
-          $('#flightPrice').val('0.00'); // Clear Flight Price field
-          $('#displayTotalPrice').text('0.00'); // Clear Total Price field
-          $('#totalPrice').val('0.00'); // Clear Total Price Input field
-
-          if (packageId && origin) 
-          {
-              $.ajax({
-                  url: 'fetchOutboundFlight.php',
-                  type: 'POST',
-                  data: { packageId: packageId, origin: origin, month: month }, // Send packageId, origin, and month (even if empty)
-                  success: function (response) {
-                      console.log(response); // Debugging the response
-                      $('#outboundFlight').html(response); // Update outbound flights dropdown
-                  },
-                  error: function (xhr, status, error) {
-                      console.error('Error fetching outbound flights:', error); // Log the error to console
-                  }
-              });
-          } 
-          else 
-          {
-              $('#outboundFlight').html('<option selected disabled>Select Flight Available Dates</option>');
-              $('#returnFlight').val('');
-          }
+          $('#returnFlight').val('');
+        }
       }
 
       // Function to calculate the total price
@@ -1393,38 +1258,20 @@
         }
       }
 
+      // Selector for required fields
+      const requiredFields = 'input[name^="fName"], input[name^="lName"], select[name^="suffix"], ' +
+          'input[name^="birthdate"], input[name^="age"], select[name^="sex"], input[name^="nationality"], ' +
+          'input[name^="passportNo"], input[name^="passportExp"], input[name^="contactNo"], ' +
+          'input[name^="email"], input[name^="addressLine"], input[name^="city"], input[name^="state"], ' +
+          'input[name^="zipCode"], input[name^="country"]';
+
       // Automatically update total price when any required field changes
-      $('input[name^="fName"], input[name^="lName"], select[name^="suffix"], input[name^="birthdate"], ' +
-        'input[name^="age"], select[name^="sex"], input[name^="nationality"], input[name^="passportNo"], ' +
-        'input[name^="passportExp"], input[name^="contactNo"], input[name^="email"], input[name^="addressLine1"], ' +
-        'input[name^="city"], input[name^="state"], input[name^="zipCode"], input[name^="country"]')
-        .on('input change', function () 
-      {
-        // Flag to check if all fields are filled
-        let allFieldsFilled = true;
+      $(document).on('input change', '.guest-form input, .guest-form select', () => {
+          const allFieldsFilled = $('.guest-form').toArray().every(guestForm => {
+              return $(guestForm).find(requiredFields).toArray().every(field => $(field).val() !== '');
+          });
 
-        // Loop through each required field to check if any is empty
-        $('input[name^="fName"], input[name^="lName"], select[name^="suffix"], input[name^="birthdate"], ' +
-          'input[name^="age"], select[name^="sex"], input[name^="nationality"], input[name^="passportNo"], ' +
-          'input[name^="passportExp"], input[name^="contactNo"], input[name^="email"], input[name^="addressLine1"], ' +
-          'input[name^="city"], input[name^="state"], input[name^="zipCode"], input[name^="country"]').each(function() 
-        {
-          if ($(this).val() === '') 
-          {
-            allFieldsFilled = false; // Set to false if any field is empty
-          }
-        });
-
-        // If all required fields are filled, calculate the total price
-        if (allFieldsFilled) 
-        {
-          calculateTotalPrice();
-        } 
-        else 
-        {
-          // Optional: You can set total price to 0 or display a warning
-          setTotalPriceToZero(); // Implement this function if needed
-        }
+          allFieldsFilled ? calculateTotalPrice() : setTotalPriceToZero(); // Call respective functions based on field checks
       });
 
       // Function to set total price to 0
