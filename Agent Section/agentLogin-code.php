@@ -37,11 +37,11 @@ if (isset($_POST['login'])) {
                 $response['success'] = true;
             } else {
                 $response['success'] = false;
-                $response['message'] = "Invalid username or password. Please try again.";
+                $response['message'] = "Incorrect username or password. Please try again.";
             }
         } else {
             $response['success'] = false;
-            $response['message'] = "No account found with that username.";
+            $response['message'] = "Incorrect username or password. Please try again.";
         }
         
         $stmt->close();

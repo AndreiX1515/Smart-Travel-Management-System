@@ -12,37 +12,27 @@ html, body {
     box-sizing: border-box;
 }
 
-.container-background {
-    width: 100vw;
-    height: 100vh;
-    background-color: rgb(44, 44, 44);
-    background-size: cover;
-    background-position: center;
-    position: absolute;
-    top: 0;
-    left: 0;
-   
-}
-
 /* Back to Homepage button */
 .back-btn {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    z-index: 3; /* Higher z-index than other content */
-    background-color: rgba(255, 255, 255, 0.2);
-    padding: 10px 20px;
-    border-radius: 5px;
-    border: none;
-    font-size: 16px;
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
+ position: absolute;
+ top: 20px;
+ left: 20px;
+ z-index: 3; /* Higher z-index than other content */
+ background-color: rgba(0, 0, 0, 0.7); /* Dark background for contrast */
+ padding: 10px 20px;
+ border-radius: 5px;
+ border: none;
+ font-size: 16px;
+ color: white; /* Keep text color white for contrast */
+ text-decoration: none;
+ font-weight: bold;
+ transition: background-color 0.3s ease, transform 0.3s ease; /* Added transition for scaling effect */
+ box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
 }
 
 .back-btn:hover {
-    background-color: rgba(255, 255, 255, 0.5);
+ background-color: rgba(0, 0, 0, 0.8); /* Darker shade on hover */
+ transform: scale(1.05); /* Slightly scale up on hover for emphasis */
 }
 
 .main-container {
@@ -61,15 +51,53 @@ html, body {
 }
 
 .loginform {
-    padding: 0px 25px 20px 20px;
-    background-color: #fff;
-    z-index: 2;
-    width: 100%;
-    height: 100%;
+ padding: 30px; /* Adjusted padding */
+ background-color: rgba(255, 255, 255, 0.9); /* Less transparent for better visibility */
+ z-index: 2;
+ width: 400px; /* Slightly narrower for a more compact design */
+ height: auto; /* Adjust height automatically based on content */
+ margin: 0 auto; /* Center horizontally */
+ border-radius: 10px; /* Slightly larger rounded corners */
+ box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2); /* Deeper shadow for more depth */
+ backdrop-filter: blur(10px); /* Optional: Adds a blur effect to the background */
+ border: 1px solid rgba(0, 0, 0, 0.1); /* Optional: Adds a subtle border */
+}
+
+/* Input fields styling */
+.loginform input {
+ width: 100%; /* Full width for input fields */
+ padding: 12px; /* Increased padding */
+ margin: 10px 0; /* Space between input fields */
+ border: 1px solid #ced4da; /* Border for input fields */
+ border-radius: 5px; /* Rounded corners for input fields */
+ box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* Inner shadow for depth */
+}
+
+/* Button styling */
+.loginform button {
+ background-color: #116530; /* Primary color for the button */
+ color: white; /* Text color */
+ padding: 12px; /* Increased padding */
+ margin-top: 10px; /* Space above the button */
+ border: none; /* Remove border */
+ border-radius: 5px; /* Rounded corners for button */
+ cursor: pointer; /* Pointer on hover */
+ transition: background-color 0.3s ease; /* Smooth transition on hover */
+}
+
+.loginform button:hover {
+ background-color: #0e4e24; /* Darker shade on hover */
+}
+
+/* Optional: Add a title style */
+.loginform h2 {
+ text-align: center; /* Center title */
+ margin-bottom: 20px; /* Space below title */
+ color: #116530; /* Primary color for title */
 }
 
 .logo-container img {
-    width: 85px;
+    width: 85px; 
     height: 50px;
     
     object-fit: contain; 
@@ -184,7 +212,7 @@ html, body {
 .fp-container a {
     font-size: 14px;
     font-weight: 500;
-    color: rgb(126, 126, 126);
+    color: rgb(71, 71, 71);
     cursor: pointer;
     text-decoration: none;
 }
@@ -214,12 +242,12 @@ html, body {
 .bottom-login-account a {
     font-size: 12px;
     font-weight: 500;
-    color: #555555;
+    color: #d11818;
 }
 
 .bottom-login-account a:hover {
     text-decoration: underline;
-    color: lightgrey;
+    color: rgb(151, 46, 46);
 }
 
 .position-relative {
@@ -272,7 +300,7 @@ html, body {
 
 
 
-/* Hide .image-accent when width is 1246px or below */
+/* Hide .image-accent when width is 1246px or below
 @media (max-width: 1246px) {
     .image-accent {
         display: none;
@@ -284,7 +312,7 @@ html, body {
     }
 }
 
-/* Further adjustments for tablets and smartphones */
+/* Further adjustments for tablets and smartphones 
 @media (max-width: 768px) {
     .sub-header p {
         padding: 0 15px;
@@ -318,7 +346,7 @@ html, body {
     }
 }
 
-/* Adjust layout for wider screens */
+/* Adjust layout for wider screens 
 @media (min-width: 1246px) {
     .main-container {
         flex-wrap: nowrap;
@@ -331,4 +359,4 @@ html, body {
     .image-accent {
         width: 55%;
     }
-}
+} */

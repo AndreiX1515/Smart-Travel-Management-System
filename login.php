@@ -21,6 +21,49 @@
             pointer-events: none; /* Prevent mouse events */
             cursor: not-allowed; /* Change cursor to indicate it's disabled */
         }
+
+        .container-background {
+            position: absolute;
+            width: 100vw;
+            height: 100vh;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+        }
+
+        /* Dark overlay */
+        .dark-overlay {
+            position: absolute;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0)); /* Gradient from dark to transparent */
+            z-index: 1; /* Ensure the overlay is above the background images */
+        }
+
+        .background-image {
+            position: absolute;
+            width: 100vw;
+            height: 100vh;
+            background-size: cover;
+            background-position: center;
+            opacity: 0; /* Start with images hidden */
+            animation: BgFade 30s infinite; /* 30 seconds for 6 images */
+            z-index: 0; /* Keep the background images behind the overlay */
+        }
+
+        /* Define each background with its specific timing */
+        .bg1 { background-image: url('assets/images/hero-1.jpg'); animation-delay: 0s; }
+        .bg2 { background-image: url('assets/images/hero-2.jpg'); animation-delay: 5s; }
+        .bg3 { background-image: url('assets/images/hero-3.jpg'); animation-delay: 10s; }
+        .bg4 { background-image: url('assets/images/hero-4.jpg'); animation-delay: 15s; }
+        .bg5 { background-image: url('assets/images/hero-5.jpg'); animation-delay: 20s; }
+        .bg6 { background-image: url('assets/images/hero-6.jpg'); animation-delay: 25s; }
+
+        @keyframes BgFade {
+            0%, 100% { opacity: 0; }   
+            10%, 40% { opacity: 1; }    
+        }
+
     </style>
 
 </head>
@@ -32,48 +75,29 @@
     <i class="fas fa-arrow-left"></i> Back to Home Page
   </a>
   
-  <div class="container-background"> </div>
+  <div class="dark-overlay"></div>
 
-  <div class="main-container">
-    <!-- Login Form Section -->
+  <div class="container-background"> 
+    <div class="background-image bg1"></div>
+    <div class="background-image bg2"></div>
+    <div class="background-image bg3"></div>
+    <div class="background-image bg4"></div>
+    <div class="background-image bg5"></div>
+    <div class="background-image bg6"></div>
+  </div>
+
     <div class="loginform d-flex flex-column">
         <div class="logo-container text-left">
             <img src="assets\images\SMART LOGO 2 (2).png" alt="Logo">
         </div>
 
         <div class="header-container d-flex flex-column text-start mt-1">
-            <h6 class="header h4 fw-bolder">Experience Travel with Us.</h6>
-            <p class="h6 sub-header">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-        </div>
+           <h6 class="header h4 fw-bolder">Experience Travel with Us.</h6>
+           <p class="h6 sub-header">Discover new horizons and create unforgettable memories with our curated travel experiences tailored just for you.</p>
+       </div>
 
-        <!-- <div class="other-options mt-3">
-            <span class="text-secondary my-2">Other options: </span>
-        </div> -->
-
-        <!-- Social Icons
-        <div class="social-icons">
-            <a href="#" class="facebook" style="background-color: #1877F2;"><i class="fab fa-facebook-f"></i></a>
-            <a href="#" class="google" style="background-color: #FFF; color: #ff0800;"><i class="fab fa-google"></i></a>
-            <a href="#" class="twitter" style="background-color: #000; color: #FFF;"><i class="fa-brands fa-x-twitter"></i></a>
-        </div>
-
-         Divider 
-        <div class="divider">
-            <hr>
-            <span>or</span>
-            <hr>
-        </div> -->
- 
         <!-- Login Form -->
         <form class="mt-5" id="loginForm">
-            <!-- Uncomment this block if you need the username field -->
-            <!-- <div class="mb-3">
-                <div class="form-floating">
-                    <input type="text" class="form-control border-1" id="floatingUsername" name="username" placeholder="Username">
-                    <label for="floatingUsername">Username</label>
-                </div>
-            </div> -->
-
             <!-- Email input field -->
             <div class="mb-3">
                 <div class="form-floating">
@@ -85,46 +109,29 @@
             <!-- Password input field -->
             <div class="mb-1 position-relative">
                 <div class="form-floating">
-                    <input type="password" class="form-control" id="floatingPassword" name="password" placeholder="Password" aria-describedby="togglePassword" required>
+                    <input type="password" class="form-control" id="floatingPassword" name="password" placeholder="Password" required>
                     <label for="floatingPassword">Password</label>
-                    <!-- Toggle password visibility -->
                     <span id="togglePassword" class="position-absolute" style="right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;">
-                        <i class="far fa-eye" id="toggleIcon"></i> <!-- Line type icon for showing/hiding password -->
+                        <i class="far fa-eye" id="toggleIcon"></i>
                     </span>
                 </div>
             </div>
 
-            <!-- Forgot password and Remember me options (uncomment if needed) -->
-            <div class="fp-container mb-1 d-flex justify-content-between align-items-center">
-                <div class="form-check">
-                    <!-- Uncomment if "Remember Me" is needed -->
-                    <!-- <input type="checkbox" class="form-check-input" id="rememberMe">
-                    <label class="form-check-label" for="rememberMe">Remember me</label> -->
-                </div>
+            <div class="fp-container mb-1 d-flex justify-content-end align-items-center mt-2">
                 <a href="#" class="">Forgot Password?</a>
             </div>
 
-            <!-- Submit Button -->
             <button type="submit" class="btn btn-primary w-100" id="LoginButton">Login</button>
 
-            <!-- Registration link -->
             <div class="bottom-login-account mt-3 text-center">
                 <p class="mb-0">Don't have an account? <a href="register.php" class="text-decoration-none">Register Now</a></p>
             </div>
 
-            <!-- Placeholder for login messages (error/success) -->
             <div id="message-login" class="message-login mt-3 h6 fw-light fs-6" style="font-size: 8px;"></div>
         </form>
-        
-
     </div>
 
-    <!-- Accent Image Section -->
-    <div class="image-accent position-relative">
-        <div class="bg-overlay"></div>
-        <img src="assets/images/login-accent-image.JPG" alt="Accent Image" class="img-fluid">
-    </div>
-</div>
+
 
     <?php include 'includes/scripts.php' ?>
 

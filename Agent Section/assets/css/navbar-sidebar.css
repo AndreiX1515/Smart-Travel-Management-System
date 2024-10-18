@@ -4,11 +4,186 @@
     font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
 }
 
+/* Sidebar Section */
+.sidebar {
+ width: 250px;
+ height: 100vh;
+ background-color: #ffffff;
+ background: linear-gradient(to bottom, #f8f9fa, #e9ecef); /* Soft gradient */
+ padding: 20px 15px 20px 25px;
+ position: fixed;
+ top: 0;
+ left: 0;
+ z-index: 1000;
+ overflow-y: auto;
+ display: flex;
+ flex-direction: column;
+ border-right: 2px solid #e0e0e0; /* Subtle border for separation */
+ transition: transform 0.3s ease-in-out; /* Smooth transition */
+ transform: translateX(0); /* Visible by default */
+}
 
-body {
-    background-color: #f8f9fa;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+/* Hide the sidebar when the 'hidden' class is applied */
+.sidebar.hidden {
+ transform: translateX(-100%); /* Sidebar hidden off-screen */
+}
+
+/* Optional: If you want to show the sidebar when an 'active' class is applied */
+.sidebar.active {
+ transform: translateX(0); /* Ensure sidebar is shown */
+}
+
+.sidebar img {
+    width: 100%; /* Full width of its container */
+    object-fit: contain; /* Ensures the image fits within the aspect ratio without distortion */
+    padding: 0px 15px 0px 0px;
+
+}
+
+
+.sidebar h4 {
+    margin-bottom: 20px; /* Space below the heading */
+    font-weight: bold; /* Make the heading bold */
+}
+
+.sidebar a {
+    text-decoration: none; /* Remove underline from links */
+    color: #333; /* Text color */
+    display: flex; /* Flexbox for link items */
+    align-items: center; /* Center items vertically */
+    padding: 10px; /* Padding for links */
+    border-radius: 5px; /* Rounded corners */
+    transition: background-color 0.3s; /* Smooth background color transition */
+}
+
+.sidebar a:hover {
+    background-color: #e9ecef; /* Change background color on hover */
+}
+
+.sidebar i {
+    margin-right: 10px; /* Space between icon and text */
+}
+
+.section-title {
+    margin-bottom: 10px; /* Space below the section title */
+    font-weight: bold; /* Make the title bold */
+}
+
+.profile-container {
+    display: flex; /* Use flexbox to align items */
+    align-items: center; /* Center items vertically */
+    margin-top: auto; /* Push profile section to the bottom */
+}
+
+.profile-image {
+    border-radius: 50%; /* Circular image */
+}
+
+.profile-container h6 {
+    font-weight: bold; /* Bold for the name */
+    margin: 0; /* Remove margin */
+}
+
+.profile-container span {
+    font-size: 12px; /* Smaller font for position */
+    color: gray; /* Gray color for the position */
+    margin: 0; /* Remove margin */
+}
+
+
+/* Additional styles for the sidebar links */
+.sidebar h3 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+.sidebar a {
+    display: block;
+    padding: 10px;
+    color: #333;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.sidebar a:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+.sidebar .section-title {
+    margin-top: 30px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.sidebar .invite-teammates {
+    margin-top: auto;
+    border-top: 1px solid #eaeaea;
+    padding-top: 20px;
+}
+
+
+/* Navbar Section */
+.navbar {
+    padding: 10px 50px 10px 20px; /* Adjust as necessary */
+    display: flex;
+   
+    background-color: transparent; /* Use your preferred color */
+    z-index: 999; /* Ensure the navbar is above other elements */
+}
+
+.navbar-brand {
+    margin-left: 0px; /* Add some space to the left */
+    margin-bottom: 2px;
+}
+
+.navbar-toggler {
+    margin-left: auto; /* Ensures the toggler is at the end */
+}
+
+/* Toggle button styles */
+.toggle-btn {
+    display: flex;
+    align-items: center; /* Aligns the icon vertically */
+    cursor: pointer;
+    margin-right: 0px; /* Optional: Add some space to the right */
+    border: none;
+    border-radius: 0 5px 5px 0;
+    width: 40px;
+    height: 40px;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    z-index: 1100; /* Keep it above the sidebar */
+    color: #000;
+}
+
+
+.nav-item.dropdown {
+ display: flex; /* Make the dropdown a flex container */
+ align-items: center; /* Align itemsfvertically centered */
+}
+
+.profile-container {
+ display: flex; /* Use flexbox for the name and position */
+ align-items: start;
+ flex-direction: column; /* Stack name and position vertically */
+ margin-left: 8px; /* Space between image and text */
+}
+
+.profile-container h6 {
+ font-weight: bold; /* Bold for the name */
+ margin: 0; /* Remove margin */
+}
+
+.profile-container span {
+ font-size: 12px; /* Smaller font for position */
+ color: gray; /* Gray color for the position */
+ margin: 0; /* Remove margin */
+}
+
+.profile-image {
+ border-radius: 50%; /* Circular image */
 }
 

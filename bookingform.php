@@ -26,7 +26,6 @@
  
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
 
   <link rel="stylesheet" href="assets\css\bookingform.css?v=<?php echo time(); ?>">
@@ -35,6 +34,12 @@
   
 </head>
 <body>
+
+
+
+
+
+
 
 <div class="container">
   <div class="row">

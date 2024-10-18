@@ -59,7 +59,7 @@ $current_date = date('D, F d, Y'); // Format: "Tue, January 01, 2024"
 
              <div class="bottom-section">
                  <div class="d-flex flex-row justify-content-between">
-                     <div class="trend">
+                     <div class="trend-up">
                         <i class="fas fa-arrow-trend-up"></i>
                         <span class="percentage-change">+30.6%</span>
                         <h5 class="comparison-text">vs. last month</h5>
@@ -85,10 +85,10 @@ $current_date = date('D, F d, Y'); // Format: "Tue, January 01, 2024"
              </div>
 
              <div class="bottom-section">
-                 <div class="d-flex flex-row justify-content-between">
-                     <div class="trend">
-                        <i class="fas fa-arrow-trend-up"></i>
-                        <span class="percentage-change">+30.6%</span>
+                 <div class="d-flex flex-row justify-content-between"> 
+                     <div class="trend-down">
+                        <i class="fa-solid fa-arrow-trend-down"></i>
+                        <span class="percentage-change">-30.6%</span>
                         <h5 class="comparison-text">vs. last month</h5>
                      </div>
 
@@ -100,89 +100,6 @@ $current_date = date('D, F d, Y'); // Format: "Tue, January 01, 2024"
          </div>
      </div>
 
-     <div class="card order-card">
-         <div class="card-block">
-             <div class="header-top d-flex justify-content-between align-items-center mb-2">
-                 <div class="d-flex flex-column">
-                     <div class="header-top-container d-flex flex-row">
-                         <h6>Total Transaction</h6>
-                         <span style="color: #71A814;">+30.6% <i class="fa-solid fa-arrow-up"></i></span>
-                     </div>
-                     <h2 class="mt-1">436</h2>
-                 </div>
-             </div>
-
-             <div class="bottom-section">
-                 <div class="d-flex flex-row justify-content-between">
-                     <div class="trend">
-                        <i class="fas fa-arrow-trend-up"></i>
-                        <span class="percentage-change">+30.6%</span>
-                        <h5 class="comparison-text">vs. last month</h5>
-                     </div>
-
-                     <div class="arrow-up">
-                         <i class="fa-solid fa-square-arrow-up-right"></i>
-                     </div>
-                 </div>
-             </div>
-         </div>
-     </div>
-
-     <div class="card order-card">
-         <div class="card-block">
-             <div class="header-top d-flex justify-content-between align-items-center mb-2">
-                 <div class="d-flex flex-column">
-                     <div class="header-top-container d-flex flex-row">
-                         <h6>Total Transaction</h6>
-                         <span style="color: #71A814;">+30.6% <i class="fa-solid fa-arrow-up"></i></span>
-                     </div>
-                     <h2 class="mt-1">436</h2>
-                 </div>
-             </div>
-
-             <div class="bottom-section">
-                 <div class="d-flex flex-row justify-content-between">
-                     <div class="trend">
-                        <i class="fas fa-arrow-trend-up"></i>
-                        <span class="percentage-change">+30.6%</span>
-                        <h5 class="comparison-text">vs. last month</h5>
-                     </div>
-
-                     <div class="arrow-up">
-                         <i class="fa-solid fa-square-arrow-up-right"></i>
-                     </div>
-                 </div>
-             </div>
-         </div>
-     </div>
-
-     <div class="card order-card">
-         <div class="card-block">
-             <div class="header-top d-flex justify-content-between align-items-center mb-2">
-                 <div class="d-flex flex-column">
-                     <div class="header-top-container d-flex flex-row">
-                         <h6>Total Transaction</h6>
-                         <span style="color: #71A814;">+30.6% <i class="fa-solid fa-arrow-up"></i></span>
-                     </div>
-                     <h2 class="mt-1">436</h2>
-                 </div>
-             </div>
-
-             <div class="bottom-section">
-                 <div class="d-flex flex-row justify-content-between">
-                     <div class="trend">
-                        <i class="fas fa-arrow-trend-up"></i>
-                        <span class="percentage-change">+30.6%</span>
-                        <h5 class="comparison-text">vs. last month</h5>
-                     </div>
-
-                     <div class="arrow-up">
-                         <i class="fa-solid fa-square-arrow-up-right"></i>
-                     </div>
-                 </div>
-             </div>
-         </div>
-     </div>
 </div>
 
     <div class="second-row-container">

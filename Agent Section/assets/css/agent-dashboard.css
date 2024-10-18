@@ -1,13 +1,14 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
 * {
-    font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+ font-family: 'Inter', 'Helvetica Neue', 'Segoe UI', Arial, sans-serif;
 }
 
 
 body {
-    background-color: #F6F6F6;
+    background-color: #F4F4F4;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -22,190 +23,6 @@ body {
 }
 
 
-
-
-/* Sidebar Section */
-.sidebar {
- width: 250px;
- height: 100vh;
- background-color: #ffffff;
- background: linear-gradient(to bottom, #f8f9fa, #e9ecef); /* Soft gradient */
- padding: 20px 15px 20px 25px;
- position: fixed;
- top: 0;
- left: 0;
- z-index: 1000;
- overflow-y: auto;
- display: flex;
- flex-direction: column;
- border-right: 2px solid #e0e0e0; /* Subtle border for separation */
- transition: transform 0.3s ease-in-out; /* Smooth transition */
- transform: translateX(0); /* Visible by default */
-}
-
-/* Hide the sidebar when the 'hidden' class is applied */
-.sidebar.hidden {
- transform: translateX(-100%); /* Sidebar hidden off-screen */
-}
-
-/* Optional: If you want to show the sidebar when an 'active' class is applied */
-.sidebar.active {
- transform: translateX(0); /* Ensure sidebar is shown */
-}
-
-.sidebar img {
-    width: 100%; /* Full width of its container */
-    object-fit: contain; /* Ensures the image fits within the aspect ratio without distortion */
-    padding: 0px 15px 0px 0px;
-
-}
-
-
-.sidebar h4 {
-    margin-bottom: 20px; /* Space below the heading */
-    font-weight: bold; /* Make the heading bold */
-}
-
-.sidebar a {
-    text-decoration: none; /* Remove underline from links */
-    color: #333; /* Text color */
-    display: flex; /* Flexbox for link items */
-    align-items: center; /* Center items vertically */
-    padding: 10px; /* Padding for links */
-    border-radius: 5px; /* Rounded corners */
-    transition: background-color 0.3s; /* Smooth background color transition */
-}
-
-.sidebar a:hover {
-    background-color: #e9ecef; /* Change background color on hover */
-}
-
-.sidebar i {
-    margin-right: 10px; /* Space between icon and text */
-}
-
-.section-title {
-    margin-bottom: 10px; /* Space below the section title */
-    font-weight: bold; /* Make the title bold */
-}
-
-.profile-container {
-    display: flex; /* Use flexbox to align items */
-    align-items: center; /* Center items vertically */
-    margin-top: auto; /* Push profile section to the bottom */
-}
-
-.profile-image {
-    border-radius: 50%; /* Circular image */
-}
-
-.profile-container h6 {
-    font-weight: bold; /* Bold for the name */
-    margin: 0; /* Remove margin */
-}
-
-.profile-container span {
-    font-size: 12px; /* Smaller font for position */
-    color: gray; /* Gray color for the position */
-    margin: 0; /* Remove margin */
-}
-
-
-/* Additional styles for the sidebar links */
-.sidebar h3 {
-    font-size: 1.5rem;
-    margin-bottom: 20px;
-}
-
-.sidebar a {
-    display: block;
-    padding: 10px;
-    color: #333;
-    text-decoration: none;
-    transition: background-color 0.3s;
-}
-
-.sidebar a:hover {
-    background-color: #007bff;
-    color: white;
-}
-
-.sidebar .section-title {
-    margin-top: 30px;
-    margin-bottom: 10px;
-    font-weight: bold;
-}
-
-.sidebar .invite-teammates {
-    margin-top: auto;
-    border-top: 1px solid #eaeaea;
-    padding-top: 20px;
-}
-
-
-/* Navbar Section */
-.navbar {
-    padding: 10px 50px 10px 20px; /* Adjust as necessary */
-    display: flex;
-   
-    background-color: transparent; /* Use your preferred color */
-    z-index: 999; /* Ensure the navbar is above other elements */
-}
-
-.navbar-brand {
-    margin-left: 0px; /* Add some space to the left */
-    margin-bottom: 2px;
-}
-
-.navbar-toggler {
-    margin-left: auto; /* Ensures the toggler is at the end */
-}
-
-/* Toggle button styles */
-.toggle-btn {
-    display: flex;
-    align-items: center; /* Aligns the icon vertically */
-    cursor: pointer;
-    margin-right: 0px; /* Optional: Add some space to the right */
-    border: none;
-    border-radius: 0 5px 5px 0;
-    width: 40px;
-    height: 40px;
-    color: white;
-    font-size: 20px;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-    z-index: 1100; /* Keep it above the sidebar */
-    color: #000;
-}
-
-
-.nav-item.dropdown {
- display: flex; /* Make the dropdown a flex container */
- align-items: center; /* Align itemsfvertically centered */
-}
-
-.profile-container {
- display: flex; /* Use flexbox for the name and position */
- align-items: start;
- flex-direction: column; /* Stack name and position vertically */
- margin-left: 8px; /* Space between image and text */
-}
-
-.profile-container h6 {
- font-weight: bold; /* Bold for the name */
- margin: 0; /* Remove margin */
-}
-
-.profile-container span {
- font-size: 12px; /* Smaller font for position */
- color: gray; /* Gray color for the position */
- margin: 0; /* Remove margin */
-}
-
-.profile-image {
- border-radius: 50%; /* Circular image */
-}
 
 
 /* Main Content Section */
@@ -238,7 +55,6 @@ body {
     padding: 15px 0px; /* Padding for spacing */
     border-radius: 10px; /* Rounded corners */
     /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); Box shadow for depth */
-    margin-bottom: 10px; /* Bottom margin for spacing */
 }
 
 
@@ -316,6 +132,7 @@ body {
  width: calc(20% - 10px); /* Calculate width for 5 cards with gaps */
  aspect-ratio: 1 / .03; /* Adjust aspect ratio as per your needs (1:1.5 is taller than wide) */
  margin-right: 10px; /* Add right margin for spacing */
+ 
 }
 
 
@@ -324,7 +141,7 @@ body {
 }
 
 .card-block {
-    padding: 20px; /* Add padding for card content */
+    padding: 20px 20px 10px 20px; /* Add padding for card content */
     background-color: #fff; /* Card background color */
     border-radius: 8px; /* Rounded corners */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Box shadow for depth */
@@ -380,29 +197,41 @@ body {
     justify-content: space-between;
 }
 
-.trend {
+.trend-up, .trend-down {
  display: flex;
  align-items: center;
  font-size: 14px;
 }
 
-.trend i {
- color: #71A814;
+.trend-up i {
+ color: #32de84;
  margin-right: 5px;
 }
 
-.percentage-change {
- color: #71A814;
+.trend-down i {
+ color: #D22B2B;
+ margin-right: 5px;
+}
+
+.trend-up .percentage-change {
+ color: #32de84;
+ margin-right: 5px;
+ font-weight: bold;
+}
+
+.trend-down .percentage-change {
+ color: #D22B2B;
  margin-right: 5px;
  font-weight: bold;
 }
 
 .comparison-text {
  margin: 0;
- font-size: 12px;
+ font-size: 10px;
  font-weight: 500;
  color: #6c757d; /* Gray color similar to the image */
  display: inline;
+ text-align: first baseline;
 }
 
 .arrow-up i {
@@ -451,7 +280,7 @@ body {
  height: 40vh; /* Set height to 40% of the viewport height */
  background-color: #fff; /* Card background color */
  border-radius: 8px; /* Rounded corners */
- box-shadow: 0 2px 5px rgba(201, 201, 201, 0.1);
+ box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Box shadow for depth */
 }
 
 /* Header styles */
