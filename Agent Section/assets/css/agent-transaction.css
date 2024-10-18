@@ -1,8 +1,9 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
 * {
-    font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+ font-family: 'Inter', 'Helvetica Neue', 'Segoe UI', Arial, sans-serif;
 }
 
 
@@ -12,7 +13,6 @@ body {
     padding: 0;
     box-sizing: border-box;
 }
-
 
 
 /* Main Content Section */
@@ -27,119 +27,214 @@ body {
  margin-left: 250px; /* Add margin to account for visible sidebar */
 }
 
+
+
+/* info-container Section */
 .info-container {
- position: flex;
- justify-content: between;
- align-items: center;
+ width: 100%;
+ background-color: #F6F6F6; /* Light background */
+ padding: 15px 75px; /* Padding for spacing */
+ border-radius: 10px; /* Rounded corners */
+ /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); Box shadow for depth */
+}
+
+/* Title styles */
+.info-title {
+ font-size: 24px;
+ font-weight: 600;
+}
+
+/* Date picker styles */
+.date-picker .btn {
+ padding: 5px 10px;
+ font-size: 16px;
+ border-radius: 8px;
+}
+
+.date-text {
+ font-size: 16px;
+ font-weight: 500;
+}
+
+.right-section {
+ justify-content: flex-end; /* Aligns the section to the right */
+}
+
+.date-time-container {
+gap: 10px; /* Adds space between the date and the icon */
+padding: 10px;
+border: 1px solid lightgray;
+border-radius: 15px;
+color: #000000;
+background-color: lightgrey;
+text-align: baseline;
+}
+
+.date-time-container h6 {
+margin: 0;
+font-size: 14px; /* Adjust the font size as needed */
+}
+
+.date-time-container i {
+font-size: 16px; /* Adjust the icon size if necessary */
+color: #000; /* Icon color, adjust as needed */
+}
+
+
+/* Right section button styles */
+.right-section .btn {
+ padding: 10px 20px;
+ font-size: 16px;
+ border-radius: 8px;
+}
+
+
+
+.dashboard-cards {
+ display: flex; /* Flexbox for layout */
+ flex-wrap: wrap; /* Allow wrapping of cards */
+ justify-content: flex-start; /* Align cards to the left */
  padding: 20px 70px;
 }
 
-/* Dashboard-Cards Section */
-.dashboard-cards {
-    padding: 0px 70px;
+.card.order-card {
+margin: 0; /* Remove margin to minimize space */
+width: calc(20% - 10px); /* Calculate width for 5 cards with gaps */
+aspect-ratio: 1 / .03; /* Adjust aspect ratio as per your needs (1:1.5 is taller than wide) */
+margin-right: 10px; /* Add right margin for spacing */
+
 }
 
-.card {
-    margin: 5px; /* Space between cards */
-    margin-right: 10px;
-    width: 260px; /* Optional max width */
+
+.card.order-card:nth-child(5n) {
+ margin-right: 0; /* Remove margin on the right for every 5th card */
 }
 
-.order-card {
- background-color: #fff; /* Background color for the card */
+.card-block {
+ padding: 20px 20px 10px 20px; /* Add padding for card content */
+ background-color: #fff; /* Card background color */
  border-radius: 8px; /* Rounded corners */
- box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+ box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Box shadow for depth */
 }
 
-.card .card-block {
-    padding: 15px 20px;
-}
 
 .header-top {
-    position: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center; 
+ position: flex;
+ flex-direction: row;
+ justify-content: center;
+ align-items: center; 
 }
 
 .header-top span{
-    margin: 1px 0px 0px 8px;
-    font-size: 12px;
-    font-weight: 400;
-    
+ margin: 1px 0px 0px 8px;
+ font-size: 12px;
+ font-weight: 400;
+ 
 }
 
-.header-top span i{
-    font-size: 10px;
+.header-top-container span i{
+ font-size: 10px;
 
 }
-
 
 .icon-container {
-    align-self: first baseline;
+ align-self: first baseline;
 }
 
 .icon-container .fa-solid {
-    font-size: 20px;
-    padding: 10px;
-    transition: all 0.3s ease; /* Smooth transition effect */
+ font-size: 20px;
+ padding: 10px;
+ transition: all 0.3s ease; /* Smooth transition effect */
 }
 
 .icon-container .fa-solid:hover {
-    border: 1px solid gainsboro;
-    border-radius: 40px;
-    background-color: #f0f0f0; /* Slight background color change */
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Adding a shadow for depth */
-    transform: scale(1); /* Slight scale-up effect on hover */
+ border: 1px solid gainsboro;
+ border-radius: 40px;
+ background-color: #f0f0f0; /* Slight background color change */
+ box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Adding a shadow for depth */
+ transform: scale(1); /* Slight scale-up effect on hover */
 }
 
 .card-block h2 {
-    font-weight: 500;
-    font-size: 32px;
-    font-weight: bold;
-}
- 
-.card .bottom-section {
-    position: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    
+ font-weight: 500;
+ font-size: 32px;
+ font-weight: bold;
 }
 
-.card .bottom-section h5 {
-    font-weight: normal;
-    font-size: 16px;
-    color: rgb(158, 158, 158);
+.card .bottom-section {
+ position: flex;
+ flex-direction: row;
+ justify-content: space-between;
+}
+
+.trend-up, .trend-down {
+display: flex;
+align-items: center;
+font-size: 14px;
+}
+
+.trend-up i {
+color: #32de84;
+margin-right: 5px;
+}
+
+.trend-down i {
+color: #D22B2B;
+margin-right: 5px;
+}
+
+.trend-up .percentage-change {
+color: #32de84;
+margin-right: 5px;
+font-weight: bold;
+}
+
+.trend-down .percentage-change {
+color: #D22B2B;
+margin-right: 5px;
+font-weight: bold;
+}
+
+.comparison-text {
+margin: 0;
+font-size: 10px;
+font-weight: 500;
+color: #6c757d; /* Gray color similar to the image */
+display: inline;
+text-align: first baseline;
 }
 
 .arrow-up i {
- font-size: 32px;
- color: rgb(0, 0, 0);
- position: relative; /* Enable positioning */
- top: -10px; /* Move slightly upwards */
- align-items: baseline;
- transition: color 0.3s ease, top 0.3s ease; /* Smooth transition for hover effect */
+font-size: 32px;
+color: rgb(0, 0, 0);
+position: relative; /* Enable positioning */
+top: -10px; /* Move slightly upwards */
+align-items: baseline;
+transition: color 0.3s ease, top 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.arrow-up i {
+font-size: 32px;
+color: rgb(0, 0, 0);
+position: relative; /* Enable positioning */
+top: -10px; /* Move slightly upwards */
+align-items: baseline;
+transition: color 0.3s ease, top 0.3s ease; /* Smooth transition for hover effect */
 }
 
 .arrow-up i:hover {
- color: rgb(70, 130, 180); /* Change color on hover */
- top: -15px; /* Move further upward on hover */
+color: rgb(70, 130, 180); /* Change color on hover */
+top: -15px; /* Move further upward on hover */
 }
 
-/* .card:hover {
-    transform: translateY(-5px); /* Lift effect on hover 
+/* Optional: Add some responsiveness */
+@media (max-width: 600px) {
+ .card {
+     min-width: 100px; /* Adjust minimum width for smaller screens */
+ }
 }
 
-.card h3 {
-    margin: 0; /* Remove default margin
-    color: #333; /* Dark text color for headings
-}
 
-.card .number {
-    font-size: 24px; /* Increase font size for numbers 
-    font-weight: bold; /* Bold font for emphasis 
-    color: #007bff; /* Bootstrap primary color for emphasis 
-} */
 
 
 .search-bar {
@@ -151,6 +246,7 @@ body {
  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Slightly stronger shadow for depth */
  padding: 12px 20px 20px 20px;
  border-radius: 8px 8px 0 0; /* Rounded corners only at the top */
+ z-index: 10;
 }
 
 .search-input input {
@@ -173,11 +269,67 @@ body {
  outline: none; /* Remove default outline */
 }
 
+/* Filter group container */
 .filter-group {
  display: flex;
- align-items: center; /* Center items vertically */
- gap: 10px;
+ align-items: center;
+ gap: 10px; /* Add space between elements */
 }
+
+/* Enhanced custom select */
+.custom-select {
+ padding: 10px 15px; /* Padding for better space inside select */
+ border: 1px solid #ced4da;
+ border-radius: 5px; /* Rounded corners */
+ font-size: 14px;
+ background-color: #fff;
+ background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"%3E%3Cpolyline points="6 9 12 15 18 9"/%3E%3C/svg%3E');
+ background-repeat: no-repeat;
+ background-position: right 10px center; /* Icon position */
+ background-size: 16px;
+ appearance: none; /* Hide default arrow */
+ -webkit-appearance: none; /* For Safari */
+ -moz-appearance: none; /* For Firefox */
+ cursor: pointer; /* Change cursor to pointer */
+ transition: border-color 0.3s ease; /* Smooth transition for border */
+}
+
+/* Change border color on focus */
+.custom-select:focus {
+ outline: none;
+ border-color: #116530; /* Custom green border on focus */
+}
+
+/* Remove default appearance on Firefox */
+select::-ms-expand {
+ display: none;
+}
+
+/* Search button */
+.search-button {
+ padding: 10px 15px;
+ background-color: #116530; /* Green background for the button */
+ color: #fff;
+ border: none;
+ border-radius: 5px;
+ cursor: pointer;
+ font-size: 14px;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+/* Icon inside the button */
+.search-button i {
+ font-size: 16px;
+}
+
+/* Button hover effect */
+.search-button:hover {
+ background-color: #0d4d28; /* Darker green on hover */
+}
+
 
 .filter-group select {
  padding: 12px; /* Increased padding */
@@ -203,13 +355,13 @@ body {
  font-size: 14px; /* Larger font size for better readability */
  cursor: pointer;
  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transitions */
+ 
 }
 
 .search-button:hover {
  background-color: #375a9b; /* Darker shade on hover */
  transform: scale(1.05); /* Slightly scale up on hover */
 }
-
 
 
  /* Table styles */
@@ -235,12 +387,13 @@ body {
 
 }
 
-
 .show-column select {
   margin-left: 5px;
   padding: 7px;
   border-radius: 10px;
 }
+
+
 
 .td-status-confirmed {
  font-weight: 600; /* Bold text for emphasis */
@@ -342,3 +495,6 @@ body {
 .product-table input[type="checkbox"] {
  cursor: pointer;
 }
+
+
+
