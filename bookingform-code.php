@@ -7,24 +7,25 @@ error_reporting(E_ALL);
 
 if (isset($_POST['bookNow'])) 
 {
-    // Assume that each of these arrays contains multiple entries
+    // Collect input data
     $agentId = !empty($_POST['agentId']) ? $_POST['agentId'] : NULL;
     $fNames = $_POST['fName'];  
     $mNames = $_POST['mName'];  
     $lNames = $_POST['lName'];  
     $suffixes = $_POST['suffix'];  
-    $houseNos = $_POST['houseNo'];  
-    $streets = $_POST['street'];  
-    $subdivisions = $_POST['subdivision'];  
-    $barangays = $_POST['barangay'];  
-    $cities = $_POST['city'];  
+    $addressLines1 = $_POST['addressLine'];  
+    $addressLines2 = $_POST['2ndaddressLine'];
+    $cities = $_POST['city']; 
+    $states = $_POST['state'];  
+    $zipCodes = $_POST['zipCode'];  
     $countries = $_POST['country'];  
     $ages = $_POST['age'];  
     $birthdates = $_POST['birthdate'];  
     $passportNos = $_POST['passportNo'];  
     $passportExps = $_POST['passportExp'];  
     $emails = $_POST['email'];  
-    $contactNos = $_POST['contactNo'];  
+    $contactNos = $_POST['contactNo'];
+    $contactNos2 = $_POST['2ndcontactNo'];  
     $sexes = $_POST['sex'];   
     $nationalities = $_POST['nationality'];  
     $flightIds = $_POST['flightId'];
@@ -78,9 +79,9 @@ if (isset($_POST['bookNow']))
 
     // Prepare the SQL statement for insertion into the guest table
     $sql2 = "INSERT INTO guest (transactNo, flightId, fName, lName, mName, suffix, birthdate, age, sex, nationality, 
-        contactNo, emailAdd, houseNo, street, subdivision, barangay, city, country, passportNo, passportExp)  
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
+    contactNo, contactNo2, emailAdd, addressLine1, addressLine2, city, state, zipCode, country, passportNo, passportExp)  
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    
     $stmt2 = $conn->prepare($sql2);
 
     // Check if the statement was prepared successfully
@@ -97,56 +98,35 @@ if (isset($_POST['bookNow']))
         $mName = $mNames[$index] ?? '';
         $lName = $lNames[$index] ?? '';
         $suffix = $suffixes[$index] ?? '';
-        $houseNo = $houseNos[$index] ?? '';
-        $street = $streets[$index] ?? '';
-        $subdivision = $subdivisions[$index] ?? '';
-        $barangay = $barangays[$index] ?? '';
-        $city = $cities[$index] ?? '';
-        $country = $countries[$index] ?? '';
         $age = $ages[$index] ?? null;
         $birthdate = $birthdates[$index] ?? null;
         $passportNo = $passportNos[$index] ?? '';
         $passportExp = $passportExps[$index] ?? null;
         $email = $emails[$index] ?? '';
         $contactNo = $contactNos[$index] ?? '';
+        $contactNo2 = $contactNos2[$index] ?? '';
         $sex = $sexes[$index] ?? '';
         $nationality = $nationalities[$index] ?? '';
-        // $flightId = $flightIds[$index];
-    
-        // Output guest details for debugging
-        /* echo "Guest $index: <br>";
-        echo "First Name: $fName <br>";
-        echo "Middle Name: $mName <br>";
-        echo "Last Name: $lName <br>";
-        echo "Suffix: $suffix <br>";
-        echo "House No: $houseNo <br>";
-        echo "Street: $street <br>";
-        echo "Subdivision: $subdivision <br>";
-        echo "Barangay: $barangay <br>";
-        echo "City: $city <br>";
-        echo "Country: $country <br>";
-        echo "Age: $age <br>";
-        echo "Birthdate: $birthdate <br>";
-        echo "Passport No: $passportNo <br>";
-        echo "Passport Exp: $passportExp <br>";
-        echo "Email: $email <br>";
-        echo "Contact No: $contactNo <br>";
-        echo "Sex: $sex <br>";
-        echo "Nationality: $nationality <br>";
-        echo "Flight ID: $flightId <br><br>"; */
-    
+        $addressLine1 = $addressLines1[$index] ?? '';
+        $addressLine2 = $addressLines2[$index] ?? '';
+        $city = $cities[$index] ?? '';
+        $state = $states[$index] ?? '';
+        $zipCode = $zipCodes[$index] ?? '';
+        $country = $countries[$index] ?? '';
+
         // Bind parameters for each guest entry
-        $stmt2->bind_param('sisssssissssssssssss', 
+        $stmt2->bind_param('sisssssisssssssssssss', 
             $transactNo, $flightIds, $fName, $lName, $mName, $suffix, 
             $birthdate, $age, $sex, $nationality, 
-            $contactNo, $email, $houseNo, $street, $subdivision, 
-            $barangay, $city, $country, $passportNo, $passportExp);
-    
-        // Execute the query
+            $contactNo, $contactNo2, $email, $addressLine1, $addressLine2, 
+            $city, $state, $zipCode, $country, 
+            $passportNo, $passportExp);
+
+        // Execute the statement for each guest entry
         if (!$stmt2->execute()) 
         {
-            $_SESSION['status'] = "Database error on inserting booking for $fName $lName: " . $stmt2->error;
-            $conn->rollback();  // Rollback the transaction if there is an error
+            $_SESSION['status'] = "Guest insertion failed: " . $stmt2->error;
+            $conn->rollback();  // Rollback transaction
             header("Location: bookingform.php");
             exit(0);
         }
@@ -155,15 +135,13 @@ if (isset($_POST['bookNow']))
     // If no errors, commit the transaction
     $conn->commit();
 
-    // $_SESSION['status'] = "All bookings successfully inserted.";
+    // Store the transaction number in session and redirect
     $_SESSION['transactNo'] = $transactNo;
     header("Location: payment.php");
     exit(0);
-
-    // Close the statements
-$stmt1->close();
-$stmt2->close();
 }
 
-
+// Close the statements
+$stmt1->close();
+$stmt2->close();
 ?>
