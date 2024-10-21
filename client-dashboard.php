@@ -151,8 +151,9 @@ $accId = $_SESSION['accountid'] ?? '';
         </div>
     </div>
 
-    <?php include 'includes/scripts.php' ?>
+    <?php include 'includes/scripts.php'; ?>
 
+    <script src="heartbeat.js"></script>
     <!-- <script>
         // JavaScript for toggling sidebar and changing navbar width
         document.getElementById('sidebarToggle').addEventListener('click', function () {
@@ -178,7 +179,7 @@ $accId = $_SESSION['accountid'] ?? '';
         });
     </script> -->
     
-    <script src="heartbeat.js"></script>
+    
 
 
 </body>

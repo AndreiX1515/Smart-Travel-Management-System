@@ -63,11 +63,8 @@
             0%, 100% { opacity: 0; }   
             10%, 40% { opacity: 1; }    
         }
-
     </style>
-
 </head>
-
 
 <body>
   <!-- Back to homepage button -->
@@ -132,86 +129,110 @@
     </div>
 
 
-
     <?php include 'includes/scripts.php' ?>
 
     <script>
-    const LoginButton = document.getElementById('LoginButton');
+      const LoginButton = document.getElementById('LoginButton');
 
-   
+      document.getElementById('loginForm').addEventListener('submit', function(event) {
+          event.preventDefault(); // Prevent default form submission
+
+          // Clear previous messages
+          document.getElementById('message-login').innerHTML = '';
+
+          // Create FormData object to gather the form data
+          const formData = new FormData(this);
+
+          // Perform AJAX request
+          fetch('login-process.php', {
+              method: 'POST',
+              body: formData
+          })
+          .then(response => response.json())
+          .then(data => {
+              if (data.success) {
+                      // Redirect to dashboard or homepage
+                      window.location.href = 'client-dashboard.php';
+                  } 
+              
+              else if (data.message && data.message.trim() === "User not found.") {
+                  // Show specific message for user not found
+                  document.getElementById('message-login').innerHTML = '<div class="alert alert-danger text-center">' + data.message + ', Click Here if you want to remove your session and reload</div>';
+                  
+                  return;
+              } 
+
+              else if (data.message && data.message.trim() === "Your account is inactive. Please contact support.") {
+                  // Show specific message for inactive account
+                  document.getElementById('message-login').innerHTML = '<div class="alert alert-warning text-center">' + data.message + '</div>';
+                  
+                  return;
+              } 
+
+              else if (data.message && data.message.trim() === "You are logged in on another device. Please close from other tab or devices then reload before logging in again!") {
+                   // Show specific message for logged in on another device
+                   document.getElementById('message-login').innerHTML = 
+                       '<div class="alert alert-danger text-center">' +
+                       data.message + 
+                       ', <a href="#" id="remove-session-link">Click Here</a> if you want to remove your session and reload</div>';
+
+                   // Add an event listener to the link using jQuery
+                   $('#remove-session-link').on('click', function(event) {
+                       event.preventDefault(); // Prevent default anchor click behavior
+                       
+                       // Get the current email value from the input field
+                       const username = $('#floatingEmail').val(); // Get the email value from the input field
+                       
+                       // Logic to remove the session, e.g., AJAX call to server to destroy session
+                       $.ajax({
+                           url: 'clear-session.php', // Your PHP script to clear the session
+                           method: 'POST',
+                           contentType: 'application/json', // Sending JSON data
+                           data: JSON.stringify({ username: username }), // Send the email to clear-session.php
+                           dataType: 'json',
+                           success: function(responseData) {
+                               if (responseData.status === 'success') {
+                                   location.reload(); // Reload the page on successful session removal
+                               } else {
+                                   // Handle any error response if necessary
+                                   console.error('Error removing session:', responseData.message);
+                               }
+                           },
+                           error: function() {
+                               console.error('Error removing session. Please try again.');
+                           }
+                       });
+                   });
+
+                   console.log("Disabling login button for 'Logged in on another device.'");
+                   LoginButton.classList.add('button-disabled'); // Disable the login button
+
+                   return;
+               }
 
 
-    document.getElementById('loginForm').addEventListener('submit', function(event) {
-        event.preventDefault(); // Prevent default form submission
 
-        // Clear previous messages
-        document.getElementById('message-login').innerHTML = '';
-
-        // Create FormData object to gather the form data
-        const formData = new FormData(this);
-
-        // Perform AJAX request
-        fetch('login-process.php', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                    // Redirect to dashboard or homepage
-                    window.location.href = 'client-dashboard.php';
-                } 
-            
-            else if (data.message && data.message.trim() === "User not found.") {
-                // Show specific message for user not found
-                document.getElementById('message-login').innerHTML = '<div class="alert alert-danger text-center">' + data.message + '</div>';
-                
-                return;
-            } 
-
-            else if (data.message && data.message.trim() === "Your account is inactive. Please contact support.") {
-                // Show specific message for inactive account
-                document.getElementById('message-login').innerHTML = '<div class="alert alert-warning text-center">' + data.message + '</div>';
-                
-                return;
-            } 
-
-            else if (data.message && data.message.trim() === "You are logged in on another device. Please close from other tab or devices then reload before logging in again!") {
-                // Show specific message for logged in on another device
-                document.getElementById('message-login').innerHTML = '<div class="alert alert-danger text-center fw-normal h6">' + data.message + '</div>';
-                
-                console.log("Disabling login button for 'Logged in on another device.'");
-                LoginButton.classList.add('button-disabled');  // Disable the login button
-
-                return;
-                
-                
-            } 
-
-            else {
-                // Fallback for no message or unexpected data structure
-                document.getElementById('message-login').innerHTML = '<div class="alert alert-danger text-center">An unknown error occurred. Please try again.</div>';
-                
-                return;
-            }
+              else {
+                  // Fallback for no message or unexpected data structure
+                  document.getElementById('message-login').innerHTML = '<div class="alert alert-danger text-center">An unknown error occurred. Please try again.</div>';
+                  
+                  return;
+              }
 
 
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            // Optionally, show a generic error message if there's a problem with the request
-            document.getElementById('message-login').innerHTML = '<div class="alert alert-danger">An error occurred. Please try again later.</div>';
+          })
+          .catch(error => {
+              console.error('Error:', error);
+              // Optionally, show a generic error message if there's a problem with the request
+              document.getElementById('message-login').innerHTML = '<div class="alert alert-danger">An error occurred. Please try again later.</div>';
 
-            // Add CSS class to visually disable the button
-            document.getElementById('loginButton').classList.add('button-disabled');
-        });
-    });
+              // Add CSS class to visually disable the button
+              document.getElementById('loginButton').classList.add('button-disabled');
+          });
+      });
     </script>
 
    
-
-
-
     <script>
         document.getElementById('togglePassword').addEventListener('click', function () {
             const passwordField = document.getElementById('floatingPassword');

@@ -10,6 +10,7 @@ if (!isset($_SESSION['accountid'])) {
     exit;
 }
 
+
 $session_id = session_id();
 $accountid = $_SESSION['accountid'];
 
