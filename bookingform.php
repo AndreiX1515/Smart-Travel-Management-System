@@ -500,7 +500,7 @@
                     <div class="form-group mb-4">
                       <label class="mb-2" for="contactNo">Contact No. <span class="text-danger fw-bold">*</span></label>
                       <div class="input-group">
-                        <select name="countryCode[]" class="form-select" aria-label="Country Code" required>
+                        <select name="countryCode[]" class="form-select" required>
                           <option disabled selected>Country Code</option>
                           <option value="+93">Afghanistan (+93)</option>
                           <option value="+355">Albania (+355)</option>
@@ -698,7 +698,7 @@
                     <div class="form-group mb-4">
                       <label class="mb-2" for="contactNo2">Other Contact No.</label>
                       <div class="input-group">
-                        <select name="2ndcountryCode[]" class="form-select" aria-label="Country Code" required>
+                        <select name="2ndcountryCode[]" class="form-select" required>
                           <option disabled selected>Country Code</option>
                           <option value="+93">Afghanistan (+93)</option>
                           <option value="+355">Albania (+355)</option>
@@ -1500,7 +1500,8 @@
         }
 
         // Guest field validation
-        $('.guest-form').each(function () {
+        $('.guest-form').each(function () 
+        {
             const guestFields = [
                 { name: 'fName', error: 'First name is required.' },
                 { name: 'lName', error: 'Last name is required.' },
@@ -1511,6 +1512,7 @@
                 { name: 'nationality', error: 'Nationality is required.' },
                 { name: 'passportNo', error: 'Passport number is required.' },
                 { name: 'passportExp', error: 'Passport expiration date is required.' },
+                { name: 'countryCode', error: 'Country Code is required.', isSelect: true }, // Added countryCode validation
                 { name: 'contactNo', error: 'Contact number is required.' },
                 { name: 'email', error: 'Email is required.' },
                 { name: 'addressLine', error: 'Address is required.' },
@@ -1632,6 +1634,7 @@
           const nationality = $(this).find('input[name^="nationality"]').val();
           const passportNo = $(this).find('input[name^="passportNo"]').val();
           const passportExp = $(this).find('input[name^="passportExp"]').val();
+          const countryCode = $(this).find('select[name^="countryCode"]').val();
           const contactNo = $(this).find('input[name^="contactNo"]').val();
           const email = $(this).find('input[name^="email"]').val();
           const addressLine1 = $(this).find('input[name^="addressLine"]').val();
@@ -1642,7 +1645,7 @@
 
           // Check if any required field is empty
           if (!firstName || !lastName || !suffix || !birthdate || !age || !sex || !nationality || !passportNo || !passportExp || 
-              !contactNo || !email || !addressLine1 || !city || !state || !zipCode ||  !country) 
+              !countryCode || !contactNo || !email || !addressLine1 || !city || !state || !zipCode ||  !country) 
           {
             allRequiredFieldsFilled = false; // Set flag to false if any required field is empty
           }
@@ -1673,7 +1676,7 @@
       // Selector for required fields
       const requiredFields = 'input[name^="fName"], input[name^="lName"], select[name^="suffix"], ' +
           'input[name^="birthdate"], input[name^="age"], select[name^="sex"], input[name^="nationality"], ' +
-          'input[name^="passportNo"], input[name^="passportExp"], input[name^="contactNo"], ' +
+          'input[name^="passportNo"], input[name^="passportExp"], select[name^="countryCode"], input[name^="contactNo"], ' +
           'input[name^="email"], input[name^="addressLine"], input[name^="city"], input[name^="state"], ' +
           'input[name^="zipCode"], input[name^="country"]';
 
