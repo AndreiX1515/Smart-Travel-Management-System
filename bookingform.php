@@ -1356,7 +1356,7 @@
           calculateTotalPrice(); // Recalculate total price after removing a form
         });
       });
-
+      
       // Flight selection logic (single selection, applies to all guests)
       $('#packageName').on('change', function () 
       {
@@ -1402,15 +1402,17 @@
       });
 
       // When origin is selected, populate the outbound flights
-      $('#origin').on('change', function () {
-          fetchFlights(); // Call the function to fetch flights based on the new origin
-          // Set month to default value (e.g., the first option)
-          $('#month').prop('selectedIndex', 0); // Adjust index to match the default option if needed
+      $('#origin').on('change', function () 
+      {
+        fetchFlights(); // Call the function to fetch flights based on the new origin
+        // Set month to default value (e.g., the first option)
+        $('#month').prop('selectedIndex', 0); // Adjust index to match the default option if needed
       });
 
       // When month is selected or changed, re-fetch flights
-      $('#month').on('change', function () {
-          fetchFlights(); // Call the same function to fetch flights based on the new month
+      $('#month').on('change', function () 
+      {
+        fetchFlights(); // Call the same function to fetch flights based on the new month
       });
 
       // When outbound flight is selected, fetch the return flight and apply to all guests
