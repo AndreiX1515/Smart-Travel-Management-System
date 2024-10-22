@@ -23,8 +23,10 @@ if (isset($_POST['bookNow']))
     $birthdates = $_POST['birthdate'];  
     $passportNos = $_POST['passportNo'];  
     $passportExps = $_POST['passportExp'];  
-    $emails = $_POST['email'];  
+    $emails = $_POST['email']; 
+    $countryCodes = $_POST['countryCode']; 
     $contactNos = $_POST['contactNo'];
+    $countryCodes2 = $_POST['2ndcountryCode']; 
     $contactNos2 = $_POST['2ndcontactNo'];  
     $sexes = $_POST['sex'];   
     $nationalities = $_POST['nationality'];  
@@ -79,8 +81,8 @@ if (isset($_POST['bookNow']))
 
     // Prepare the SQL statement for insertion into the guest table
     $sql2 = "INSERT INTO guest (transactNo, flightId, fName, lName, mName, suffix, birthdate, age, sex, nationality, 
-    contactNo, contactNo2, emailAdd, addressLine1, addressLine2, city, state, zipCode, country, passportNo, passportExp)  
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    countryCode, contactNo, countryCode2, contactNo2, emailAdd, addressLine1, addressLine2, city, state, zipCode, country, passportNo, passportExp)  
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     
     $stmt2 = $conn->prepare($sql2);
 
@@ -103,7 +105,9 @@ if (isset($_POST['bookNow']))
         $passportNo = $passportNos[$index] ?? '';
         $passportExp = $passportExps[$index] ?? null;
         $email = $emails[$index] ?? '';
+        $countryCode = $countryCodes[$index] ?? '';
         $contactNo = $contactNos[$index] ?? '';
+        $countryCode2 = $countryCodes2[$index] ?? '';
         $contactNo2 = $contactNos2[$index] ?? '';
         $sex = $sexes[$index] ?? '';
         $nationality = $nationalities[$index] ?? '';
@@ -115,10 +119,10 @@ if (isset($_POST['bookNow']))
         $country = $countries[$index] ?? '';
 
         // Bind parameters for each guest entry
-        $stmt2->bind_param('sisssssisssssssssssss', 
+        $stmt2->bind_param('sisssssisssssssssssssss', 
             $transactNo, $flightIds, $fName, $lName, $mName, $suffix, 
-            $birthdate, $age, $sex, $nationality, 
-            $contactNo, $contactNo2, $email, $addressLine1, $addressLine2, 
+            $birthdate, $age, $sex, $nationality, $countryCode, $contactNo, 
+            $countryCode2, $contactNo2, $email, $addressLine1, $addressLine2, 
             $city, $state, $zipCode, $country, 
             $passportNo, $passportExp);
 

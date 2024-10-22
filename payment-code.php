@@ -48,7 +48,7 @@ if (isset($_POST['pay']))
         {
           $_SESSION['status'] = "Booking SQL preparation failed: " . $conn->error;
           $conn->rollback();  // Rollback transaction
-          header("Location: bookingform.php"); // Redirect to display error
+          header("Location: client-dashboard.php"); // Redirect to display error
           exit(0);
         }
 
@@ -58,28 +58,28 @@ if (isset($_POST['pay']))
         if ($stmt1->execute()) 
         {
           $_SESSION['status'] = "Payment uploaded and saved successfully!";
-          header("Location: bookingform.php"); // Redirect on success
+          header("Location: client-dashboard.php"); // Redirect on success
           exit(0);
         } 
         else 
         {
           $_SESSION['status'] = "Database error on payment insert: " . $stmt1->error;
           $conn->rollback();  // Rollback the transaction if there is an error
-          header("Location: bookingform.php"); // Redirect to display error
+          header("Location: client-dashboard.php"); // Redirect to display error
           exit(0);
         }
       } 
       else 
       {
         $_SESSION['status'] = "File upload failed. Please try again.";
-        header("Location: bookingform.php"); // Redirect to display error
+        header("Location: client-dashboard.php"); // Redirect to display error
         exit(0);
       }
     } 
     else 
     {
       $_SESSION['status'] = "Invalid file type. Allowed types: " . implode(", ", $allowedExtensions);
-      header("Location: bookingform.php"); // Redirect to display error
+      header("Location: client-dashboard.php"); // Redirect to display error
       exit(0);
     }
   } 
@@ -94,7 +94,7 @@ if (isset($_POST['pay']))
     {
       $_SESSION['status'] = "No file uploaded or an error occurred.";
     }
-    header("Location: bookingform.php"); // Redirect to display error
+    header("Location: client-dashboard.php"); // Redirect to display error
     exit(0);
   }
 }
