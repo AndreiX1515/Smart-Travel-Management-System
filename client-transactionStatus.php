@@ -1,18 +1,3 @@
-<?php
-  include 'session_validate.php'; // This will check if the session is valid
-  require "conn.php";
-
-  ini_set('display_errors', 1);
-  ini_set('display_startup_errors', 1);
-  error_reporting(E_ALL);
-
-  // Fetch session variables directly
-  $email = $_SESSION['email'] ?? ''; // Use null coalescing operator to avoid undefined index
-  $firstName = $_SESSION['first_name'] ?? '';
-  $lastName = $_SESSION['last_name'] ?? '';
-  $accId = $_SESSION['accountid'] ?? '';
-
-?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -20,42 +5,30 @@
   <title>Client Transaction History</title>
   <?php include 'includes/head.php' ?>
   <link rel="stylesheet" href="assets\css\client-dashboard.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="assets\css\client-navbar.css?v=<?php echo time(); ?>">
 </head>
+
 <body>
+     <?php include 'client-includes\client-navbar.php'; ?>
+
   <div class="container-fluid">
-    <nav class="navbar-custom d-flex flex-row justify-content-between" id="navbar">
-      <div class="logo">
-        <a href="#" class="logo"><img src="assets\images\SMART LOGO 2 (2).png" alt="Logo" width="200px" height="35px"></a>
-      </div>
-
-      <div class="navbar-profile dropdown" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-        <span class="text-secondary"><?php echo $lastName.', '.$firstName?></span>
-        <img src="assets\images\profile-user.png" width="40px" height="40px" alt="User Image">
-        <i class="fas fa-chevron-down"></i>
-      </div>
-
-      <ul class="dropdown-menu" aria-labelledby="profileDropdown">
-        <li>
-          <a class="dropdown-item" href="#" id="logout" data-bs-toggle="modal" data-bs-target="#logoutModal" ><i class="fas fa-sign-out-alt"></i>Logout</a>
-        </li>
-      </ul>
-    </nav>
-            
-    <!-- Main content -->
     <div id="main-content" class="col-md-9 col-lg-10 w-100 p-5">
 
     <?php 
       if(isset($_SESSION['status'])):
     ?>
+
       <div class="alert alert-warning alert-dismissible fade show" role="alert">
         <strong>Hey!</strong> <?= $_SESSION['status']; ?>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
+
     <?php 
       unset($_SESSION['status']);
       endif;
     ?>
-      <div class="table-responsive">
+
+      <div class="table-responsive px-4">
         <div class="table-controls mb-4">
           <div class="d-flex flex-column">
             <label for="" class="mb-2">Search</label>
@@ -105,7 +78,7 @@
               <th scope="col">Amount To Pay</th>
               <th scope="col">Downpayment Total</th>
               <th scope="col">Status</th>
-              <th scope="col">Action</th>
+              <th scope="col"></th>
             </tr>
           </thead>
           <tbody> 
@@ -141,6 +114,33 @@
               {
                 while ($row = $res1->fetch_assoc()) 
                 {
+                  
+                 // For Status Auto Adapt
+                 $status = htmlspecialchars($row['status']); // Get the status from the row
+                 $statusClass = ''; // Variable to hold the class based on status
+             
+                 // Determine the class based on the status value
+                 switch ($status) {
+                     case 'Paid':
+                         $statusClass = 'bg-success'; // Green for paid
+                         break;
+                     case 'Pending':
+                         $statusClass = 'bg-warning'; // Yellow for pending
+                         break;
+                     case 'Overdue':
+                         $statusClass = 'bg-danger'; // Red for overdue
+                         break;
+                     case 'To be confirmed':
+                         $statusClass = 'bg-secondary'; // Grey for to be confirmed
+                         break;
+                     default:
+                         $statusClass = 'bg-light text-dark'; // Default styling for unknown status
+                         break;
+                 }
+                 
+
+
+
                   // Each row's modal
                   echo "<tr>
                           <td>" . htmlspecialchars($row['transactNo']) . "</td>
@@ -149,16 +149,36 @@
                           <td>" . htmlspecialchars($row['totalPax']) . "</td>
                           <td>₱ " . number_format($row['amountToPay'], 2) . "</td>
                           <td>₱ " . number_format($row['downpayment'], 2) . "</td>
-                          <td>". $row['status'] ."</td>
                           <td>
-                            <div class='action-icons'>
-                              <button class='btn btn-primary py-1 px-3' 
+                             <span class='badge rounded-pill ". $statusClass . "'>
+                                 ". $status ."
+                             </span> 
+                         </td>
+
+                          <td>
+                            <div class='dropdown text-center' id='dropdownMenuButton' data-bs-toggle='dropdown' aria-expanded='false' style='cursor: pointer;'>
+                                <i class='fa-solid fa-ellipsis-vertical' style='font-size: 18px;'></i>
+                                <ul class='dropdown-menu' aria-labelledby='dropdownMenuButton'>
+                                    <li><a class='dropdown-item' href='#'  
                                       data-bs-toggle='modal' 
-                                      data-bs-target='#modal_" . htmlspecialchars($row['transactNo']) . "'>
-                                  Inquire
-                              </button>
+                                      data-bs-target='#modal_" . htmlspecialchars($row['transactNo']) . "'
+                                      >Inquire </a>
+                                      </li>
+
+                                    <li><a class='dropdown-item' href='#' 
+                                     data-bs-toggle='modal' 
+                                     data-bs-target='#downpayment_modal_" . htmlspecialchars($row['transactNo']) . "'
+                                     >Pay Downpayment </a>
+                                    </li>
+
+                                    <li><a class='dropdown-item' href='#' 
+                                     data-bs-toggle='modal' 
+                                     data-bs-target='#payment_history_modal_" . htmlspecialchars($row['transactNo']) . "'>Payment History </a>
+                                    </li>
+                                </ul>
                             </div>
-                          </td>
+                        </td>
+
                         </tr>";
 
                           // <p><strong>Package Name:</strong> <span id='packageName_" . htmlspecialchars($row['transactNo']) . "'>" . htmlspecialchars($row['packageName']) . "</span></p>
@@ -167,7 +187,7 @@
                           // <p><strong>Amount to Pay:</strong> ₱ <span id='amountToPay_" . htmlspecialchars($row['transactNo']) . "'>" . number_format($row['amountToPay'], 2) . "</span></p>
                           // <p><strong>Downpayment:</strong> ₱ <span id='downpayment_" . htmlspecialchars($row['transactNo']) . "'>" . number_format($row['downpayment'], 2) . "</span></p>
 
-                    // Modal for the current row
+                    // Modal for Inquiry
                     echo "<div class='modal fade' id='modal_" . htmlspecialchars($row['transactNo']) . "' tabindex='-1' aria-labelledby='modalLabel_" . htmlspecialchars($row['transactNo']) . "' aria-hidden='true'>
                             <div class='modal-dialog modal-dialog-centered'>
                               <div class='modal-content'>
@@ -205,10 +225,82 @@
                               </div>
                             </div>
                           </div>";
-                }
+
+                          // Modal - Downpayment
+                          echo "<div class='modal fade' id='downpayment_modal_" . htmlspecialchars($row['transactNo']) . "' tabindex='-1' aria-labelledby='downpaymentModalLabel_" . htmlspecialchars($row['transactNo']) . "' aria-hidden='true'>
+                             <div class='modal-dialog modal-dialog-centered'>
+                                 <div class='modal-content'>
+                                     <div class='modal-header'>
+                                         <h6 class='h5 modal-title' id='downpaymentModalLabel_" . htmlspecialchars($row['transactNo']) . "'>Downpayment for Transaction " . htmlspecialchars($row['transactNo']) . "</h6>
+                                         <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+                                     </div>
+                                     <form action='downpayment-code.php' method='POST'>
+                                         <div class='modal-body'>
+                                             <p><strong>Transaction No:</strong> <span id='downpaymentTransactNo_" . htmlspecialchars($row['transactNo']) . "'>" . htmlspecialchars($row['transactNo']) . "</span></p>
+                                             <input type='hidden' name='transactNo' value='" . htmlspecialchars($row['transactNo']) . "'>
+                                             <input type='hidden' name='agentId' value='" . $row['agentId'] . "'>
+                                             
+                                             <div class='mb-3'>
+                                                 <label class='form-label'>Downpayment Amount</label>
+                                                 <input type='number' class='form-control' name='downpayment_amount' placeholder='Enter Downpayment Amount' required>
+                                             </div>
+
+                                             <div class='mb-3'>
+                                                 <label class='form-label'>Payment Method</label>
+                                                 <select class='form-select' name='payment_method' required>
+                                                     <option selected disabled>Select Payment Method</option>
+                                                     <option value='Credit Card'>Credit Card</option>
+                                                     <option value='Bank Transfer'>Bank Transfer</option>
+                                                     <option value='PayPal'>PayPal</option>
+                                                 </select>
+                                             </div>
+
+                                             <div class='mb-3'>
+                                                 <label class='form-label'>Additional Notes (optional)</label>
+                                                 <textarea class='form-control' name='downpayment_notes' placeholder='Enter any additional notes' rows='3'></textarea>
+                                             </div>     
+                                         </div>
+                                         <div class='modal-footer'>
+                                             <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Close</button>
+                                             <button type='submit' name='submit_downpayment' class='btn btn-primary'>Submit Downpayment</button>
+                                         </div>
+                                     </form>
+                                 </div>
+                             </div>
+                         </div>";
+
+                         // <p><strong>Transaction No:</strong> " . htmlspecialchars($row['transactNo']) . "</p>
+
+                         // Modal - Payment History
+                         echo "<div class='modal fade' id='payment_history_modal_" . htmlspecialchars($row['transactNo']) . "' tabindex='-1' aria-labelledby='paymentHistoryLabel_" . htmlspecialchars($row['transactNo']) . "' aria-hidden='true'>
+                                 <div class='modal-dialog modal-dialog-centered'>
+                                     <div class='modal-content'>
+                                         <div class='modal-header'>
+                                             <h6 class='h5 modal-title' id='paymentHistoryLabel_" . htmlspecialchars($row['transactNo']) . "'>Payment History for Transaction " . htmlspecialchars($row['transactNo']) . "</h6>
+                                             <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+                                         </div>
+                                         <div class='modal-body'>
+                                             
+
+                                             <div class='mb-3'>
+                                                 <label class='form-label fw-bold'>Payment History</label>
+                                                
+
+
+
+                                             </div>
+                                         </div>
+                                         <div class='modal-footer'>
+                                             <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Close</button>
+                                         </div>
+                                     </div>
+                                 </div>
+                             </div>";
+                          
+                }  
               } 
-              else 
-              {
+
+              else {
                 echo "<tr><td colspan='8'>No bookings found</td></tr>";
               }
             ?>
@@ -217,7 +309,6 @@
       </div>
     </div>
   </div>
-  
   
   <!-- Logout Confirmation Modal -->
   <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
@@ -232,7 +323,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <a href="" class="btn btn-danger" id="logoutButton">Logout</a>
+          <a href="client-logout.php" class="btn btn-danger" id="logoutButton">Logout</a>
         </div>
       </div>
     </div>
@@ -241,8 +332,6 @@
   <?php include 'includes/scripts.php'; ?>
 
   <script src="heartbeat.js"></script>
-
-
 
   <script>
     $('#logoutButton').on('click', function (e) 
@@ -269,4 +358,5 @@
     });
   </script>
 </body>
+
 </html>

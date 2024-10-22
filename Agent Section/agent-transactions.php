@@ -15,7 +15,7 @@ $current_date = date('D, F d, Y'); // Format: "Tue, January 01, 2024"
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-   
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <link rel="stylesheet" href="../Agent Section/assets/css/navbar-sidebar.css?v=<?php echo time(); ?>">
@@ -99,35 +99,70 @@ $current_date = date('D, F d, Y'); // Format: "Tue, January 01, 2024"
              </div>
          </div>
      </div>
-
 </div>
-
-
-<div class="search-bar">
-    <div class="search-input">
-        <input type="text" placeholder="Search">
-    </div>
-    <div class="filter-group">
-      <select class="custom-select">
-          <option>Category</option>
-          <option>All</option>
-      </select>
-      <select class="custom-select">
-          <option>Status</option>
-          <option>All</option>
-      </select>
-      <button class="search-button"><i class="fa-solid fa-magnifying-glass"></i></button>
-   </div>
-</div>
-
-
 
 <div class="table-container">
+  <div class="search-bar">
+      <div class="left-side ps-2">
+        <div class="search-input mb-3">
+            <label for="search">Search</label>
+            <input type="text" id="search" class="form-control mt-2" placeholder="Search">
+        </div>
+      </div>
+
+      <div class="right-side">
+        <div class="filter-group">
+            <div class="filter-field mb-3 d-flex flex-column">
+                <label for="packages">Packages</label>
+                <select id="packages" class="custom-select mt-2">
+                    <option>Packages</option>
+                    <option>All</option>
+                </select>
+            </div>
+
+            <div class="filter-field mb-3 d-flex flex-column">
+                <label for="category">Category</label>
+                <select id="category" class="custom-select mt-2">
+                    <option>Category</option>
+                    <option>All</option>
+                </select>
+            </div>
+
+            <div class="filter-field mb-3 d-flex flex-column">
+                <label for="status">Status</label>
+                <select id="status" class="custom-select mt-2">
+                    <option>Status</option>
+                    <option>All</option>
+                </select>
+            </div>
+
+            <div class="filter-field mb-3 d-flex flex-column">
+                <label for="date-range">Date Range (Start - End)</label>
+                <div class="input-group date-range-picker mt-2">
+                    <input type="date" class="form-control" id="startDate" placeholder="Start date">
+                    <span class="input-group-text">→</span>
+                    <input type="date" class="form-control" id="endDate" placeholder="End date">
+                </div>
+            </div>
+
+            <div class="filter-field d-flex justify-content-center">
+                <button class="search-button mt-3"><i class="fa-solid fa-magnifying-glass"></i></button>
+            </div>
+        </div>
+      </div>
+  </div>
+
+   <hr style="border: 1px solid grey; margin: 5px 0 20px 0;">
+
     <div class="table-actions">
       <div class="show-column">
           <span>Show: </span>
           <select>
-              <option>All Columns</option>
+              <option>10</option>
+              <option>20</option>
+              <option>30</option>
+              <option>All</option>
+              
           </select>
       </div>
 
@@ -172,6 +207,72 @@ $current_date = date('D, F d, Y'); // Format: "Tue, January 01, 2024"
             <td><span class="td-status-confirmed">Confirmed</span></td>
             <td><a class="action-button"><i class="fa-solid fa-pen-to-square"></i></a></td>
         </tr>
+
+        <tr>
+            <td>1</td>
+            <td>John Doe</td>
+            <td>john.doe@example.com</td>
+            <td>(555) 123-4567</td>
+            <td>Summer Package</td>
+            <td>2024-06-01</td>
+            <td>2024-06-15</td>
+            <td>2</td>
+            <td><span class="td-status-confirmed">Confirmed</span></td>
+            <td><a class="action-button"><i class="fa-solid fa-pen-to-square"></i></a></td>
+        </tr>
+
+        <tr>
+            <td>1</td>
+            <td>John Doe</td>
+            <td>john.doe@example.com</td>
+            <td>(555) 123-4567</td>
+            <td>Summer Package</td>
+            <td>2024-06-01</td>
+            <td>2024-06-15</td>
+            <td>2</td>
+            <td><span class="td-status-confirmed">Confirmed</span></td>
+            <td><a class="action-button"><i class="fa-solid fa-pen-to-square"></i></a></td>
+        </tr>
+
+        <tr>
+            <td>1</td>
+            <td>John Doe</td>
+            <td>john.doe@example.com</td>
+            <td>(555) 123-4567</td>
+            <td>Summer Package</td>
+            <td>2024-06-01</td>
+            <td>2024-06-15</td>
+            <td>2</td>
+            <td><span class="td-status-confirmed">Confirmed</span></td>
+            <td><a class="action-button"><i class="fa-solid fa-pen-to-square"></i></a></td>
+        </tr>
+
+        <tr>
+            <td>1</td>
+            <td>John Doe</td>
+            <td>john.doe@example.com</td>
+            <td>(555) 123-4567</td>
+            <td>Summer Package</td>
+            <td>2024-06-01</td>
+            <td>2024-06-15</td>
+            <td>2</td>
+            <td><span class="td-status-confirmed">Confirmed</span></td>
+            <td><a class="action-button"><i class="fa-solid fa-pen-to-square"></i></a></td>
+        </tr>
+
+        <tr>
+            <td>1</td>
+            <td>John Doe</td>
+            <td>john.doe@example.com</td>
+            <td>(555) 123-4567</td>
+            <td>Summer Package</td>
+            <td>2024-06-01</td>
+            <td>2024-06-15</td>
+            <td>2</td>
+            <td><span class="td-status-confirmed">Confirmed</span></td>
+            <td><a class="action-button"><i class="fa-solid fa-pen-to-square"></i></a></td>
+        </tr>
+
         <tr>
             <td>2</td>
             <td>Jane Smith</td>
@@ -283,6 +384,21 @@ $current_date = date('D, F d, Y'); // Format: "Tue, January 01, 2024"
     // Initialize table display on page load
     displayTable(currentPage);
     updatePagination();
+</script>
+
+<script> 
+  const startDate = document.getElementById('startDate');
+  const endDate = document.getElementById('endDate');
+
+  // Prevent selecting an end date earlier than the start date
+  startDate.addEventListener('change', function () {
+      endDate.min = this.value;
+  });
+
+  endDate.addEventListener('change', function () {
+      startDate.max = this.value;
+  });
+
 </script>
 
 
