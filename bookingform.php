@@ -159,12 +159,6 @@
               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group mb-6">
-                    <input type="hidden" id="returnFlight" name="returnFlight" class="form-control" readonly>
-                  </div>
-                </div>
-
-                <div class="col-md-6">
-                  <div class="form-group mb-6">
                     <input type="hidden" id="flightId" name="flightId" value="">
                   </div>
                 </div>
@@ -1376,6 +1370,9 @@
         $('#flightPrice').val('0.00'); // Clear Flight Price field
         $('#displayTotalPrice').text('0.00'); // Clear Total Price field
         $('#totalPrice').val(''); // Clear Total Price Input field
+        // Set month to default value (e.g., the first option)
+        $('#month').prop('selectedIndex', 0); // Adjust index to match the default option if needed
+        
 
         // Update the modal with the selected package name
         $('#selectedPackage').text(selectedPackageName);
@@ -1389,7 +1386,7 @@
             data: { packageId: packageId },
             success: function (response) 
             {
-              console.log(response); // Debugging the response
+              // console.log(response); // Debugging the response
               $('#origin').html(response); // Update the origin dropdown
             },
             error: function (xhr, status, error) 
@@ -1407,6 +1404,8 @@
       // When origin is selected, populate the outbound flights
       $('#origin').on('change', function () {
           fetchFlights(); // Call the function to fetch flights based on the new origin
+          // Set month to default value (e.g., the first option)
+          $('#month').prop('selectedIndex', 0); // Adjust index to match the default option if needed
       });
 
       // When month is selected or changed, re-fetch flights
@@ -1434,7 +1433,7 @@
             data: { outboundFlight: outboundFlight },
             success: function (response) 
             {
-              console.log(response); // Debugging the response
+              // console.log(response); // Debugging the response
               var data = JSON.parse(response); // Parse the JSON response
 
               flightPricePerGuest = parseFloat(data.flightPrice); // Ensure it's a number
@@ -1608,8 +1607,7 @@
 
         // Clear outbound flight field
         $('#outboundFlight').html('<option selected disabled>Select Flight Available Dates</option>');
-        
-        $('#returnFlight').val(''); // Clear return flight field
+
         $('#flightId').val(''); // Clear Flight Id field
         $('#flightPrice').val('0.00'); // Clear Flight Price field
         $('#displayTotalPrice').text('0.00'); // Clear Total Price field
@@ -1624,7 +1622,7 @@
             data: { packageId: packageId, origin: origin, month: month }, // Send packageId, origin, and month (even if empty)
             success: function (response) 
             {
-              console.log(response); // Debugging the response
+              // console.log(response); // Debugging the response
               $('#outboundFlight').html(response); // Update outbound flights dropdown
             },
             error: function (xhr, status, error) 
@@ -1636,7 +1634,6 @@
         else 
         {
           $('#outboundFlight').html('<option selected disabled>Select Flight Available Dates</option>');
-          $('#returnFlight').val('');
         }
       }
 
@@ -1645,7 +1642,7 @@
       {
         var totalPrice = flightPricePerGuest * $('.guest-form').length; // Calculate total price based on the number of guests
 
-        console.log("Total Price:", totalPrice); // Debug: log the total price before updating the field
+        // console.log("Total Price:", totalPrice); // Debug: log the total price before updating the field
 
         // Format the total price with commas and two decimal places
         var formattedTotalPrice = totalPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
