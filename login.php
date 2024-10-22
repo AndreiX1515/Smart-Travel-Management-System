@@ -129,7 +129,7 @@
     </div>
 
 
-    <?php include 'includes/scripts.php' ?>
+    <?php include 'includes\scripts.php' ?>
 
     <script>
       const LoginButton = document.getElementById('LoginButton');

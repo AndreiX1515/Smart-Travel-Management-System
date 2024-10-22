@@ -6,12 +6,67 @@
     <?php include 'includes\head.php' ?>
 
     <link rel="stylesheet" href="https://unpkg.com/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://unpkg.com/bs-brain@2.0.4/utilities/font-size/font-size.css">
-<link rel="stylesheet" href="https://unpkg.com/bs-brain@2.0.4/utilities/margin/margin.css">
-<link rel="stylesheet" href="https://unpkg.com/bs-brain@2.0.4/utilities/padding/padding.css">
+    <link rel="stylesheet" href="https://unpkg.com/bs-brain@2.0.4/utilities/font-size/font-size.css">
+    <link rel="stylesheet" href="https://unpkg.com/bs-brain@2.0.4/utilities/margin/margin.css">
+    <link rel="stylesheet" href="https://unpkg.com/bs-brain@2.0.4/utilities/padding/padding.css">
 
     <!-- External CSS -->
     <link rel="stylesheet" href="assets/css/style.css?v=<?php echo time(); ?>">
+
+    <style>
+        .button-disabled {
+             background-color: #ccc; /* Light gray background */
+             color: #666; /* Darker gray text */
+             pointer-events: none; /* Prevent mouse events */
+             cursor: not-allowed; /* Change cursor to indicate it's disabled */
+         }
+
+         /* Positioning for the background images container */
+         .container-background {
+             position: absolute;
+             width: 100vw;
+             height: 100vh;
+             top: 0;
+             left: 0;
+             overflow: hidden; /* Hide overflow to prevent scrollbars */
+         }
+
+         /* Dark overlay to add contrast to the hero section */
+         .dark-overlay {
+             position: absolute;
+             width: 100vw;
+             height: 100vh;
+             background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0)); /* Gradient from dark to transparent */
+             z-index: 1; /* Ensure the overlay is above the background images */
+         }
+
+         /* Background images settings */
+         .background-image {
+             position: absolute;
+             width: 100vw;
+             height: 100vh;
+             background-size: cover; /* Ensure images cover the entire area */
+             background-position: center; /* Center the images */
+             opacity: 0; /* Start with images hidden */
+             animation: BgFade 30s infinite; /* Loop through images every 30 seconds */
+             z-index: 0; /* Keep the background images behind the overlay */
+         }
+
+         /* Define each background with its specific timing */
+         .bg1 { background-image: url('assets/images/hero-1.jpg'); animation-delay: 0s; }
+         .bg2 { background-image: url('assets/images/hero-2.jpg'); animation-delay: 5s; }
+         .bg3 { background-image: url('assets/images/hero-3.jpg'); animation-delay: 10s; }
+         .bg4 { background-image: url('assets/images/hero-4.jpg'); animation-delay: 15s; }
+         .bg5 { background-image: url('assets/images/hero-5.jpg'); animation-delay: 20s; }
+         .bg6 { background-image: url('assets/images/hero-6.jpg'); animation-delay: 25s; }
+
+         /* Keyframes for fading background images */
+         @keyframes BgFade {
+             0%, 100% { opacity: 0; }   
+             10%, 40% { opacity: 1; }    
+         }
+        </style>
+
 </head>
 
 <body>
@@ -27,46 +82,215 @@
     </header> 
 
     <?php include 'navbar.php'; ?>
-        
-    <!-- <div class="d-flex flex-form">
 
-            <!-- <label class="text-light">Lang:</label> 
-            <div class="container dropdown-toggle d-flex flex-row align-items-center" id="translation-container" data-bs-toggle="dropdown" aria-expanded="false"> 
-                <!-- <div class="dropdown">
-                    <div class="circle-image">
-                        <img id="language-flag" src="assets\images\Flags\english-flag.png" alt="English Flag" class="img-fluid"> <!-- Initial flag image 
-                    </div>
-                </div>
-
-                <label id="language-label" class="text-light ms-2">English</label>
-
-                <div class="dropdown-container ms-0">
-                    <!-- <a class="dropdown-toggle ms-1 text-decoration-none text-secondary" type="button" id="dropdownMenuButton" aria-expanded="false">
-                        ▼
-                    </a> 
-
-                    <ul class="dropdown-menu mt-2" aria-labelledby="dropdownMenuButton">
-                        <li><a class="dropdown-item my-2" href="#" data-lang="English" data-image="assets\images\Flags\english-flag.png"> <img src="assets\images\Flags\english-flag.png" alt=""> English</a></li>
-                        <li><a class="dropdown-item my-2" href="#" data-lang="Korean" data-image="assets\images\Flags\korean-flag.png"> <img src="assets\images\Flags\korean-flag.png" alt=""> Korean</a></li>
-                        <li><a class="dropdown-item my-2" href="#" data-lang="Bahasa" data-image="assets\images\Flags\bahasa-flag.png"> <img src="assets\images\Flags\bahasa-flag.png" alt=""> Bahasa</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="vl"></div> 
-
-            
-    </div> -->
     </header>
 
     <!-- Section 1 -->
     <div class="section d-flex" id="section1">
-        <!-- Background Image -->
-        <!-- <img src="assets/images/_RJH6060_1.jpg" alt="Background" class="background-img"> -->
+        <div class="dark-overlay"></div>
 
-        <!-- Dark Overlay -->
+        <div class="container-background"> 
+          <div class="background-image bg1"></div>
+          <div class="background-image bg2"></div>
+          <div class="background-image bg3"></div>
+          <div class="background-image bg4"></div>
+          <div class="background-image bg5"></div>
+          <div class="background-image bg6"></div>
+        </div>
+
+         <div class="hero d-flex flex-column align-items-center text-center">
+           
+         <h3>Discover the World with <span> Smart Travel</span></h3>
+         <p class="mb-4">Your satisfaction is our top priority. Experience travel like never before!</p>
+
+
+           <!-- 5 Star Review -->
+           <div class="star-rating mb-1 mt-2">
+               <i class="fas fa-star"></i>
+               <i class="fas fa-star"></i>
+               <i class="fas fa-star"></i>
+               <i class="fas fa-star"></i>
+               <i class="fas fa-star-half-alt"></i>
+           </div>
+               <span class="rating-text ms-2 mb-4">(4.5/5 based on 250 reviews)</span>
+
+           <div class="btn-container d-flex flex-row justify-content-center">
+               <button type="button" class="btn btn-secondary">Book Now</button>
+               <button type="button" class="btn btn-outline-secondary p-2 px-3 ms-3 text-light">Learn More</button>
+           </div>
+        </div>
+
+    </div>
+
+    <!-- Activities -->
+    <div class="section d-flex flex-column" id="section2">
+     <div class="section-header">
+        <h2>Explore the Korea</h2>
+     </div>
+
+    <div class="carousel-container">
+        <div class="carousel-wrapper">
+            <div class="carousel-slide active" style="background-image: url('assets/images/hero-1.jpg');">
+                <p>Getting Around in the Philippines</p>
+            </div>
+
+            <div class="carousel-slide" style="background-image: url('assets/images/hero-2.jpg');">
+                <p>Award-winning Destinations</p>
+            </div>
+
+            <div class="carousel-slide" style="background-image: url('assets/images/hero-3.jpg');">
+                <p>BBMG (Bisita, Be My Guest)</p>
+            </div>
+
+            <div class="carousel-slide active" style="background-image: url('assets/images/hero-1.jpg');">
+                <p>Getting Around in the Philippines</p>
+            </div>
+
+            <div class="carousel-slide" style="background-image: url('assets/images/hero-2.jpg');">
+                <p>Award-winning Destinations</p>
+            </div>
+
+            <div class="carousel-slide" style="background-image: url('assets/images/hero-3.jpg');">
+                <p>BBMG (Bisita, Be My Guest)</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="carousel-indicators mb-5">
+        <span class="dot active" onclick="moveToSlide(0)"></span>
+        <span class="dot" onclick="moveToSlide(1)"></span>
+        <span class="dot" onclick="moveToSlide(2)"></span>
+        <span class="dot" onclick="moveToSlide(3)"></span>
+        <span class="dot" onclick="moveToSlide(4)"></span>
+        <span class="dot" onclick="moveToSlide(5)"></span>
+    </div>
+       <button class="carousel-button prev" onclick="moveSlide(-1)">&#10094;</button>
+       <button class="carousel-button next" onclick="moveSlide(1)">&#10095;</button>
+   </div>
+
+
+
+
+    <script> 
+       let currentSlide = 0;
+
+function showSlide(index) {
+    const slides = document.querySelectorAll('.carousel-slide');
+    const totalSlides = slides.length;
+
+    // Ensure the index is within the bounds of the slide array
+    if (index >= totalSlides) {
+        currentSlide = 0; // Loop back to the first slide
+    } else if (index < 0) {
+        currentSlide = totalSlides - 1; // Loop to the last slide
+    } else {
+        currentSlide = index;
+    }
+
+    // Move the carousel wrapper
+    const carouselWrapper = document.querySelector('.carousel-wrapper');
+    carouselWrapper.style.transform = `translateX(-${currentSlide * 800}px)`; // Move the wrapper
+
+    // Update active dot
+    const dots = document.querySelectorAll('.dot');
+    dots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === currentSlide);
+    });
+}
+
+function moveSlide(direction) {
+    showSlide(currentSlide + direction);
+}
+
+function moveToSlide(index) {
+    showSlide(index);
+}
+
+
+
+
+    </script>
+
+
+    <!-- Why book us? -->
+    <div class="section d-flex flex-column text-center px-4 mb-2" id="section3"> 
+      <h2>Why book with us?</h2>
+          <p class="lead text-secondary">We provide affordable and unforgettable travel experiences tailored to your needs.</p>
+          <div class="card-container row mt-3">
+              <div class="col-md-3 mb-4">
+                  <div class="card p-3 border-0 shadow text-center"> <!-- Added text-center for card content -->
+                      <div class="card-body">
+                          <div class="icon my-4 text-primary">
+                              <i class="fas fa-plane fa-3x"></i> 
+                          </div>
+                          <h5 class="card-title">Travel Planning Assistance</h5>
+                          <p class="card-text">Our expert team will help you plan every detail of your trip, ensuring a hassle-free and enjoyable experience tailored to your preferences.</p>
+                          <a href="#" class="btn btn-primary">Learn More &rarr;</a>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-md-3 mb-4">
+                  <div class="card p-3 border-0 shadow text-center">
+                      <div class="card-body">
+                          <div class="icon my-4 text-primary">
+                              <i class="fas fa-map-marker-alt fa-3x"></i> 
+                          </div>
+                          <h5 class="card-title">Local Experience Guides</h5>
+                          <p class="card-text">Discover hidden gems and local hotspots with our knowledgeable guides, providing you with authentic experiences that go beyond typical tourist attractions.</p>
+                          <a href="#" class="btn btn-primary">Learn More &rarr;</a>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-md-3 mb-4">
+                  <div class="card p-3 border-0 shadow text-center">
+                      <div class="card-body">
+                          <div class="icon my-4 text-primary">
+                              <i class="fas fa-tags fa-3x"></i> 
+                          </div>
+                          <h5 class="card-title">Exclusive Deals and Offers</h5>
+                          <p class="card-text">Take advantage of our exclusive discounts and packages, ensuring you get the best value for your travel adventures. Book now and enjoy special rates for early bookings!</p>
+                          <a href="#" class="btn btn-primary">Learn More &rarr;</a>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-md-3 mb-4">
+                  <div class="card p-3 border-0 shadow text-center">
+                      <div class="card-body">
+                          <div class="icon my-4 text-primary">
+                              <i class="fas fa-suitcase-rolling fa-3x"></i> 
+                          </div>
+                          <h5 class="card-title">Personalized Travel Experiences</h5>
+                          <p class="card-text">We customize your travel itinerary based on your interests, ensuring a unique and memorable journey tailored just for you. Let us help you explore the world your way!</p>
+                          <a href="#" class="btn btn-primary">Learn More &rarr;</a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+
+
+    </div>
+
+    <!-- Packages Offered -->
+    <div class="section" id="section4"> 
+       <h2>Packages Offered</h2>
+      
+
+    </div>
+
+     <!-- Packages Offered -->
+     <div class="section" id="section5"> 
+ 
+
+    </div>
+
+
+
+   
+
+
+    <!-- <div class="hero-slider">
         
-        <div class="hero-slider">
         <div class="overlay"></div>
         
             <div class="slide active" data-background="#ffcccc">
@@ -132,94 +356,8 @@
                 <span class="dot" data-slide="5"></span>
             </div>
             
-    </div>
+    </div> -->
 
-
-
-        <!-- Content -->
-        <!-- <div class="hero d-flex flex-column">
-            <h3>Explore Korea with <span>Smart Travel</span></h3>
-            <p class="mb-5">Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
-            <div class="btn-container d-flex flex-row justify-content-center">
-                <button type="button" class="btn btn-secondary">Book Now</button>
-                <button type="button" class="btn btn-outline-secondary p-2 px-3 ms-3 text-light">Learn More</button>
-            </div>
-        </div> -->
-    </div>
-
-
-    <div class="section d-flex flex-column text-center px-4" id="section2">
-        <h2>Why book with us?</h2>
-        <p class="lead text-secondary">We provide affordable and unforgettable travel experiences tailored to your needs.</p>
-        <div class="card-container row mt-5">
-            <div class="col-md-3 mb-4">
-                <div class="card p-3 border-0 shadow text-center"> <!-- Added text-center for card content -->
-                    <div class="card-body">
-                        <div class="icon my-4 text-primary">
-                            <i class="fas fa-plane fa-3x"></i> 
-                        </div>
-                        <h5 class="card-title">Travel Planning Assistance</h5>
-                        <p class="card-text">Our expert team will help you plan every detail of your trip, ensuring a hassle-free and enjoyable experience tailored to your preferences.</p>
-                        <a href="#" class="btn btn-primary">Learn More &rarr;</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 mb-4">
-                <div class="card p-3 border-0 shadow text-center">
-                    <div class="card-body">
-                        <div class="icon my-4 text-primary">
-                            <i class="fas fa-map-marker-alt fa-3x"></i> 
-                        </div>
-                        <h5 class="card-title">Local Experience Guides</h5>
-                        <p class="card-text">Discover hidden gems and local hotspots with our knowledgeable guides, providing you with authentic experiences that go beyond typical tourist attractions.</p>
-                        <a href="#" class="btn btn-primary">Learn More &rarr;</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 mb-4">
-                <div class="card p-3 border-0 shadow text-center">
-                    <div class="card-body">
-                        <div class="icon my-4 text-primary">
-                            <i class="fas fa-tags fa-3x"></i> 
-                        </div>
-                        <h5 class="card-title">Exclusive Deals and Offers</h5>
-                        <p class="card-text">Take advantage of our exclusive discounts and packages, ensuring you get the best value for your travel adventures. Book now and enjoy special rates for early bookings!</p>
-                        <a href="#" class="btn btn-primary">Learn More &rarr;</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 mb-4">
-                <div class="card p-3 border-0 shadow text-center">
-                    <div class="card-body">
-                        <div class="icon my-4 text-primary">
-                            <i class="fas fa-suitcase-rolling fa-3x"></i> 
-                        </div>
-                        <h5 class="card-title">Personalized Travel Experiences</h5>
-                        <p class="card-text">We customize your travel itinerary based on your interests, ensuring a unique and memorable journey tailored just for you. Let us help you explore the world your way!</p>
-                        <a href="#" class="btn btn-primary">Learn More &rarr;</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="section" id="section3"> 
-
-
-
-
-    </div>
-
-    <div class="section" id="section4"> 
-    
-
-
-
-    </div>
-
-
-
-   
   <footer class="footer">
     <section>
       <div class="container-fluid">

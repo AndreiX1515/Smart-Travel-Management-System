@@ -1,17 +1,6 @@
 <?php 
-  include 'session_validate.php';
-  require "conn.php";
-  
-  ini_set('display_errors', 1);
-  ini_set('display_startup_errors', 1);
-  error_reporting(E_ALL);
 
-  $email = $_SESSION['email'] ?? '';
-  $firstName = $_SESSION['first_name'] ?? '';
-  $lastName = $_SESSION['last_name'] ?? '';
-  $middleName = $_SESSION['middle_name'] ?? '';
-  // Combine last name, first name, and middle initial
-  $fullName = $lastName . ', ' . $firstName . ($middleName ? ' ' . substr($middleName, 0, 1) . '.' : '');
+  require "conn.php";
 ?>
 
 <!DOCTYPE html>
@@ -30,6 +19,8 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
   <link rel="stylesheet" href="assets\css\bookingform.css">
 
+  <link rel="stylesheet" href="assets\css\client-navbar.css?v=<?php echo time(); ?>"> 
+ 
   <!-- Include the necessary CSS and JS for intlTelInput -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css">
   
@@ -49,7 +40,11 @@
 </head>
 <body>
 
+  <?php include 'client-includes\client-navbar.php'; ?>
+
   <div class="container">
+
+
     <div class="row">
       <div class="col-md-12">
         <?php 
@@ -150,9 +145,9 @@
                   </div>
                 </div>
 
-                <div class="col-md-6">
-                  <div class="form-group mb-6">
-                    <label class="mb-2" for="outboundFlight">Flight Date <span class="text-danger fw-bold">*</span></label>
+                <div class="col-md-7">
+                  <div class="form-group mb-12">
+                    <label class="mb-2 mt-3" for="outboundFlight">Flight Date <span class="text-danger fw-bold">*</span></label>
                     <select class="form-select" id="outboundFlight" name="outboundFlight" required>
                       <option selected disabled>Select Flight Available Dates</option>
                     </select>
@@ -256,7 +251,7 @@
                   <div class="col-md-3">
                     <div class="form-group mb-3">
                       <label class="mb-2" for="age">Age <span class="text-danger fw-bold">*</span> </label>
-                      <input type="number" name="age[]" class="form-control" placeholder="Age" readonly equired>
+                      <input type="number" name="age[]" class="form-control" placeholder="Age" readonly required>
                       <span id="ageError" class="text-danger"></span> <!-- Error message for Age -->
                     </div>
                   </div>

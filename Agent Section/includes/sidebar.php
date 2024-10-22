@@ -10,6 +10,14 @@
   <div class="section-title">Operational</div>
    <a href="../Agent Section/agent-transactions.php"> <i class="fas fa-box"></i> Transactions </a>
 
+   <div class="section-title">Management</div>
+   <a href="../Agent Section/agent-transactions.php"> <i class="fas fa-box"></i> Client Accounts </a>
+   <a href="../Agent Section/agent-transactions.php"> <i class="fas fa-box"></i> Agent Accounts </a>
+   <a href="../Agent Section/agent-transactions.php"> <i class="fas fa-box"></i> Client Login History </a>
+   <a href="../Agent Section/agent-transactions.php"> <i class="fas fa-box"></i> Agent Login History </a>
+   
+   
+
   <!-- <div class="section-title">Organization</div>
   <a href="#"> <i class="fas fa-plug"></i> Apps & Integrations </a>
   <a href="#"> <i class="fas fa-gift"></i> Perks & Extras </a>
