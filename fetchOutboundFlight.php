@@ -18,7 +18,7 @@ if (isset($_POST['packageId']) && isset($_POST['origin']) && isset($_POST['month
       ORDER BY flightDepartureDate ASC";
 
   // Debugging: Print the SQL query
-  echo $sql;
+  // echo $sql;
   
   $result = mysqli_query($conn, $sql);
   
