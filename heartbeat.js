@@ -1,9 +1,12 @@
+console.log("Ping!");
+
 // heartbeat.js
 let heartbeatInterval = setInterval(() => {
     fetch('heartbeat.php', {
         method: 'POST',
         credentials: 'include'
     })
+
     .then(response => response.json())
     .then(data => {
         if (data.status !== 'OK') {
@@ -15,7 +18,7 @@ let heartbeatInterval = setInterval(() => {
     .catch(error => {
         console.error('Heartbeat error:', error);
     });
-}, 20 * 1000); // Every 20 seconds
+}, 10 * 1000); // Every 20 seconds
 
 // Flags to track user actions
 let isLeaving = false;

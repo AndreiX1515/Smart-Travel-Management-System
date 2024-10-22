@@ -32,45 +32,39 @@ $current_date = date('D, F d, Y'); // Format: "Tue, January 01, 2024"
 
  <!-- First row Div -->
 <div class="info-container d-flex justify-content-between align-items-center">
-  <div class="left-section d-flex align-items-center">
-      <h4 class="info-title">Your Transaction Records</h4>
-      <!-- <div class="date-picker d-flex align-items-center ml-4">
-          <button class="btn btn-outline-secondary"><i class="fas fa-chevron-left"></i></button>
-          <span class="date-text mx-2">Monday, 15 October</span>
-          <button class="btn btn-outline-secondary"><i class="fas fa-chevron-right"></i></button>
-      </div>  -->
-  </div>
+    <div class="left-section d-flex align-items-center">
+        <h2 class="info-title">Transaction Records</h2>
+    </div>
 
-  <div class="right-section d-flex">
-      <div class="date-time-container">
+    <div class="right-section d-flex">
+      <div class="date-time-container d-flex flex-row align-items-center">
           <h6><?php echo $current_date; ?></h6>
+          <i class="fa-solid fa-calendar-days"></i>
       </div>
-
-      <!-- <button class="btn btn-outline-secondary d-flex align-items-center mr-2">
-          <i class="fas fa-file-alt mr-2"></i> Attendance Report
-      </button>
-      <button class="btn btn-success d-flex align-items-center">
-          <i class="fas fa-user-plus mr-2"></i> Add Attendance
-      </button> -->
-  </div> 
-</div> 
+  </div>
+</div>
 
 <!-- Second Row Div -->
 <div class="dashboard-cards d-flex flex-wrap justify-content-between">
      <div class="card order-card">
          <div class="card-block">
-             <div class="header-top d-flex justify-content-between align-items-center mb-4">
+             <div class="header-top d-flex justify-content-between align-items-center mb-2">
                  <div class="d-flex flex-column">
                      <div class="header-top-container d-flex flex-row">
                          <h6>Total Transaction</h6>
-                         <span style="color: #71A814;">+30.6% <i class="fa-solid fa-arrow-up"></i></span>
                      </div>
                      <h2 class="mt-1">436</h2>
                  </div>
              </div>
+
              <div class="bottom-section">
                  <div class="d-flex flex-row justify-content-between">
-                     <h5>vs. last month</h5>
+                     <div class="trend-up">
+                        <i class="fas fa-arrow-trend-up"></i>
+                        <span class="percentage-change">+30.6%</span>
+                        <h5 class="comparison-text">vs. last month</h5>
+                     </div>
+
                      <div class="arrow-up">
                          <i class="fa-solid fa-square-arrow-up-right"></i>
                      </div>
@@ -78,6 +72,34 @@ $current_date = date('D, F d, Y'); // Format: "Tue, January 01, 2024"
              </div>
          </div>
      </div>
+
+     <div class="card order-card">
+         <div class="card-block">
+             <div class="header-top d-flex justify-content-between align-items-center mb-2">
+                 <div class="d-flex flex-column">
+                     <div class="header-top-container d-flex flex-row">
+                         <h6>Total Transaction</h6>
+                     </div>
+                     <h2 class="mt-1">436</h2>
+                 </div>
+             </div>
+
+             <div class="bottom-section">
+                 <div class="d-flex flex-row justify-content-between"> 
+                     <div class="trend-down">
+                        <i class="fa-solid fa-arrow-trend-down"></i>
+                        <span class="percentage-change">-30.6%</span>
+                        <h5 class="comparison-text">vs. last month</h5>
+                     </div>
+
+                     <div class="arrow-up">
+                         <i class="fa-solid fa-square-arrow-up-right"></i>
+                     </div>
+                 </div>
+             </div>
+         </div>
+     </div>
+
 </div>
 
 
@@ -86,16 +108,16 @@ $current_date = date('D, F d, Y'); // Format: "Tue, January 01, 2024"
         <input type="text" placeholder="Search">
     </div>
     <div class="filter-group">
-        <select>
-            <option>Category</option>
-            <option>All</option>
-        </select>
-        <select>
-            <option>Status</option>
-            <option>All</option>
-        </select>
-        <button class="search-button"><i class="fa-solid fa-magnifying-glass"></i></button>
-    </div>
+      <select class="custom-select">
+          <option>Category</option>
+          <option>All</option>
+      </select>
+      <select class="custom-select">
+          <option>Status</option>
+          <option>All</option>
+      </select>
+      <button class="search-button"><i class="fa-solid fa-magnifying-glass"></i></button>
+   </div>
 </div>
 
 
