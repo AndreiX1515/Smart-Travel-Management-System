@@ -8,7 +8,7 @@ error_reporting(E_ALL);
 if (isset($_POST['bookNow'])) 
 {
     // Collect input data
-    $agentId = !empty($_POST['agentId']) ? $_POST['agentId'] : NULL;
+    $agentId = $_POST['agentId'];
     $fNames = $_POST['fName'];  
     $mNames = $_POST['mName'];  
     $lNames = $_POST['lName'];  
@@ -31,9 +31,9 @@ if (isset($_POST['bookNow']))
     $sexes = $_POST['sex'];   
     $nationalities = $_POST['nationality'];  
     $flightIds = $_POST['flightId'];
-    $flightPrices = $_POST['flightPrice'];
     $totalPrice = $_POST['totalPrice'];
     $packageId = $_POST['packageName'];
+    $packagePrice = $_POST['packagePrice'];
 
     $pax = count($fNames); // Number of passengers
 
@@ -49,6 +49,18 @@ if (isset($_POST['bookNow']))
     $newBookingId = ($row && $row['lastBookingId'] !== null) ? $row['lastBookingId'] + 1 : 1;
     $formattedCounter = str_pad($newBookingId, 7, '0', STR_PAD_LEFT);
     $transactNo = 'TRANS-' . $formattedCounter;
+
+    // Check if "Own Flight" is selected (value is 'Null')
+    if ($flightIds === 'Null') 
+    {
+        $flightIds = NULL; // Set flightId to NULL if "Own Flight" is selected
+    }
+
+    // Check if "Own Agent" is selected (value is 'Null')
+    if ($agentId === 'Null') 
+    {
+        $agentId = NULL; // Set agentId to NULL if "Own Agent" is selected
+    }
 
     // Start a transaction
     $conn->begin_transaction();

@@ -80,7 +80,7 @@
                     <label for="agent">Select Agent <span class="text-danger fw-bold">*</span></label>
                     <select class="form-select mt-2" id="agentId" name="agentId" required>
                       <option selected disabled>Select Agent</option>
-                      <option value="Null">None</option>
+                      <option value="">None</option>
                       <?php
                         $sql1 = mysqli_query($conn, "SELECT agentId, CONCAT(lName, ', ', fName, 
                           CASE 
@@ -160,7 +160,6 @@
                 <div class="col-md-6">
                   <div class="form-group mb-6">
                     <input type="hidden" id="flightId" name="flightId" value="">
-                    <input type="hidden" id="packagePrice" name="packagePrice" value="">
                   </div>
                 </div>
               </div>
@@ -1357,7 +1356,7 @@
           calculateTotalPrice(); // Recalculate total price after removing a form
         });
       });
-      
+
       // Flight selection logic (single selection, applies to all guests)
       $('#packageName').on('change', function () 
       {
@@ -1366,11 +1365,14 @@
         $('#origin').html('<option selected disabled>Select Origin</option>'); // Clear origin field
         
         $('#outboundFlight').html('<option selected disabled>Select Flight Available Dates</option>'); // Clear outbound flight field
+        $('#returnFlight').val(''); // Clear return flight field
         $('#flightId').val(''); // Clear Flight Id field
         $('#flightPrice').val('0.00'); // Clear Flight Price field
         $('#displayTotalPrice').text('0.00'); // Clear Total Price field
         $('#totalPrice').val(''); // Clear Total Price Input field
-        $('#month').prop('selectedIndex', 0); // Set month to default value
+        // Set month to default value (e.g., the first option)
+        $('#month').prop('selectedIndex', 0); // Adjust index to match the default option if needed
+        
 
         // Update the modal with the selected package name
         $('#selectedPackage').text(selectedPackageName);
@@ -1384,20 +1386,12 @@
             data: { packageId: packageId },
             success: function (response) 
             {
-                // Parse the JSON response
-                var data = JSON.parse(response);
-
-                // Update the origin dropdown
-                $('#origin').html(data.originOptions); // Use originOptions from the response
-
-                // Update the package price input
-                $('#packagePrice').val(data.packagePrice); // Set the package price value
-
-                // console.log(data); // Optional: For debugging
+              // console.log(response); // Debugging the response
+              $('#origin').html(response); // Update the origin dropdown
             },
             error: function (xhr, status, error) 
             {
-                console.error('Error fetching origins:', error); // Log the error to console
+              console.error('Error fetching origins:', error); // Log the error to console
             }
           });
         } 
@@ -1407,19 +1401,16 @@
         }
       });
 
-
       // When origin is selected, populate the outbound flights
-      $('#origin').on('change', function () 
-      {
-        fetchFlights(); // Call the function to fetch flights based on the new origin
-        // Set month to default value (e.g., the first option)
-        $('#month').prop('selectedIndex', 0); // Adjust index to match the default option if needed
+      $('#origin').on('change', function () {
+          fetchFlights(); // Call the function to fetch flights based on the new origin
+          // Set month to default value (e.g., the first option)
+          $('#month').prop('selectedIndex', 0); // Adjust index to match the default option if needed
       });
 
       // When month is selected or changed, re-fetch flights
-      $('#month').on('change', function () 
-      {
-        fetchFlights(); // Call the same function to fetch flights based on the new month
+      $('#month').on('change', function () {
+          fetchFlights(); // Call the same function to fetch flights based on the new month
       });
 
       // When outbound flight is selected, fetch the return flight and apply to all guests
@@ -1433,24 +1424,8 @@
         // Update the <p> element with the extracted flight date
         $('#selectedDate').text(selectedDate);
 
-        if (outboundFlight === "Null") 
+        if (outboundFlight) 
         {
-            // If outbound flight is "Null", use the package price instead of the flight price
-            var packagePrice = parseFloat($('#packagePrice').val()); // Get the package price value
-            flightPricePerGuest = packagePrice; // Ensure it's a number
-            var formattedPrice = packagePrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-
-            // Update the flight price display with the formatted package price
-            $('#flightPrice').text(formattedPrice);
-
-            // Update the flight price for all guests with the package price
-            $('input[name^="flightPrice"]').val(packagePrice);
-
-            console.log('Outbound flight is null, using package price:', packagePrice);
-        } 
-        else if (outboundFlight) 
-        {
-          // If a valid outbound flight is selected, fetch return flight and flight price
           $.ajax(
           {
             url: 'fetchReturnFlight.php', // Separate PHP file for return flight
@@ -1458,6 +1433,7 @@
             data: { outboundFlight: outboundFlight },
             success: function (response) 
             {
+              // console.log(response); // Debugging the response
               var data = JSON.parse(response); // Parse the JSON response
 
               flightPricePerGuest = parseFloat(data.flightPrice); // Ensure it's a number
@@ -1468,12 +1444,17 @@
               // Update the flight price display with the formatted price
               $('#flightPrice').text(formattedPrice);
 
+              // Update the return flight input field for all guests
+              $('input[name^="returnFlight"]').val(data.returnFlight); 
+
               // Update the flight price for all guests
               $('input[name^="flightPrice"]').val(data.flightPrice);
 
               // Update the flight ID for all guests
               $('input[name^="flightId"]').val(data.flightId);
 
+              // // Recalculate total price after the flight price is set
+              // calculateTotalPrice();
             },
             error: function (xhr, status, error) 
             {
@@ -1483,8 +1464,7 @@
         } 
         else 
         {
-          // If no outbound flight is selected, clear return flight input fields
-          $('input[name^="returnFlight"]').val(''); 
+          $('input[name^="returnFlight"]').val(''); // Clear return flight input fields if no outbound flight selected
         }
       });
 

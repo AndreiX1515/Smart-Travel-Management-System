@@ -24,6 +24,7 @@ if (isset($_POST['packageId']) && isset($_POST['origin']) && isset($_POST['month
   
   if (mysqli_num_rows($result) > 0) {
     echo '<option selected disabled>Select Flight Available Dates</option>';
+    echo '<option value="Null">Own Flight</option>'; // Add "Own Flight" option here
     while ($res = mysqli_fetch_array($result)) 
     {
       $formattedPrice = number_format($res['flightPrice'], 2);
@@ -32,6 +33,7 @@ if (isset($_POST['packageId']) && isset($_POST['origin']) && isset($_POST['month
   } 
   else 
   {
+    echo '<option value="Null">Own Flight</option>'; // Add "Own Flight" option here
     echo '<option selected disabled>No Flights Available</option>';
   }
 }
