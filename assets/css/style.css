@@ -3,12 +3,13 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
-
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
 
 * {
-    font-family: 
-    'Roboto', sans-serif; /* Body text */
+    font-family: 'Montserrat', sans-serif; /* Body text */
+    font-family: 'M PLUS Rounded 1c', sans-serif; /* Headings */
+ 
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -17,21 +18,6 @@
 body {
     margin: 0;
     padding: 0;
-}
-
-
-/* General Components CSS */
-/* Button Style */
-#btn {
-    padding: 10px 20px;
-    margin-left: 20px;
-    background-color: #fff;
-    color: #116530;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
 }
 
 
@@ -195,33 +181,24 @@ body {
 }
 
 
-
-
-
-
-
-
-
-
-
-
 /* Header - End */
 
 
 /* Section - General */
-.section {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    overflow: hidden;
+
+#section1 .section {
+ position: relative;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ color: white;
+ overflow: hidden;
 }
 
 /* Hero Section - Start */
 #section1 {
     position: relative;
-    min-height: 88vh;
+    height: 89vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -248,6 +225,22 @@ body {
     transition: background-color 0.5s ease; /* Smooth background transition */
     z-index: 4;
 }
+
+
+.travel-highlight {
+ font-family: 'Montserrat', sans-serif; /* Body text font */
+ font-size: 1.2rem; /* Font size for better readability */
+ color: #ffffff; /* White color for contrast against a dark background */
+ text-align: center; /* Center alignment */
+ margin: 5px 0; /* Vertical spacing */
+ padding: 10px 20px; /* Padding for more space */
+ border-radius: 8px; /* Rounded corners */
+ text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); /* Slight shadow for emphasis */
+}
+
+
+
+
 
 /* Slide transition effect */
 .slide {
@@ -298,13 +291,7 @@ body {
     margin-bottom: 30px;
 }
 
-.btn {
-    background-color: #007bff; /* Button color */
-    color: white;
-    padding: 10px 20px;
-    text-decoration: none;
-    border-radius: 5px;
-}
+
 
 .nav-buttons {
     position: absolute;
@@ -412,31 +399,119 @@ body {
     font-size: 3.5rem;
 }
 
-.hero h3 span {
-    font-weight: bold;
-    color: #fff;
-    text-shadow: 
-        -1px -1px 0 red,
-        1px -1px 0 red,
-        -1px 1px 0 red,
-        1px 1px 0 red;
-
+.text-pop {
+ font-size: 36px; /* Adjust the size as needed */
+ font-weight: bold;
+ color: #fff; /* Main text color */
+ text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); /* Dark shadow to create depth */
 }
 
-.hero p {
-    font-size: 1.2rem;
+.highlight {
+ color: #ffffff; /* White text for accent */
+ text-shadow: 
+     2px 2px 0 rgba(255, 0, 0, 0.8),  /* Red outline */
+     -2px -2px 0 rgba(255, 0, 0, 0.8), 
+     2px -2px 0 rgba(255, 0, 0, 0.8), 
+     -2px 2px 0 rgba(255, 0, 0, 0.8),
+     0 0 5px rgba(255, 0, 0, 0.6), /* Slight glow effect */
+     3px 3px 2px rgba(0, 0, 0, 0.7); /* Depth shadow effect */
 }
+
+
+.banner {
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ justify-content: center;
+ color: white; /* Text color */
+ padding: 15px 40px; /* Reduced padding for smaller size */
+ border-radius: 15px; /* Rounded corners */
+ text-align: center; /* Center text */
+ position: relative; /* For absolute positioning of button */
+ margin: 5px auto; /* Center the banner horizontally */
+ width: 80%; /* Set width to make it wider */
+ max-width: 600px; /* Maximum width for larger screens */
+ transition: transform 0.3s; /* Smooth transition */
+}
+
+
+.banner:hover {
+ transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+.banner-title {
+ font-size: 25px; /* Font size for title */
+ margin: 0; /* Remove default margin */
+}
+
+.banner-subtitle {
+ font-size: 22px; /* Font size for subtitle */
+ margin: 10px 0; /* Margin for spacing */
+}
+
+.banner-duration {
+ font-size: 20px; /* Font size for duration */
+ font-weight: bold; /* Bold text for emphasis */
+ margin: 10px 0; /* Margin for spacing */
+}
+
+.banner-button {
+ background-color: #ffffff; /* Button background color */
+ color: #116530; /* Button text color */
+ border: none; /* Remove default border */
+ border-radius: 5px; /* Rounded corners */
+ padding: 10px 20px; /* Padding inside the button */
+ font-size: 18px; /* Font size for button */
+ cursor: pointer; /* Cursor pointer on hover */
+ margin-top: 20px; /* Margin for spacing */
+ transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+}
+
+.banner-button:hover {
+ background-color: #116530; /* Darker background on hover */
+ color: white; /* Change text color on hover */
+}
+
+
+
+
 
 /* Hero Section - End */
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #section2 {
  position: relative;
- height: 80vh; /* Ensure the height is adaptive */
+ display: flex;
+ align-items: center;
+ color: white;
+ overflow: hidden;
+ height: 70vh; /* Ensure the height is adaptive */
  width: 100%;
- padding: 50px 70px; /* Adjust padding as needed */
- box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1); /* Even softer dark bottom border box shadow */
- border-bottom: 2px solid rgba(0, 0, 0, 0.05); /* Optional: softer solid dark border */
- background-color: #fff; /* Ensure background color is set */
+ padding: 100px 70px; /* Adjust padding as needed */
+ box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+ border-bottom: 2px solid rgba(0, 0, 0, 0.05); 
+ background-color: #fff; 
+ 
 }
 
 #section2 h2 {
@@ -513,10 +588,6 @@ body {
 }
 
 
-
-
-
-
 /* Learn More Button in Section 1 */
 button.btn-secondary {
     background-color: #116530;
@@ -529,13 +600,26 @@ button.btn-secondary:hover {
     background-color: #0a4228;
 }
 
-#section3 {
-    background-color: transparent; /* Section 2 background */
-    height: 70vh;
-    width: auto;
-    padding: 0px 20px;
-}
 
+
+
+
+
+
+
+/* Section 3 */
+#section3 {
+    background-color: beige; /* Section 2 background */
+    height: 80vh;
+    width: 100%;
+    padding: 40px 70px; /* Adjust padding as needed */
+    position: relative;
+    display: flex;
+    overflow: hidden;
+    align-items: center;
+    color: rgb(0, 0, 0);
+
+}
 
 
 #section3 h2{
@@ -577,8 +661,6 @@ button.btn-secondary:hover {
  text-align: center; /* Center the button link */
 }
 
-
-
 .row {
  justify-content: center; /* Center the cards within the row */
 }
@@ -586,6 +668,115 @@ button.btn-secondary:hover {
 .card-container {
  padding: 0px 200px; /* Adjust side padding */
 }
+
+
+
+/* destionation-slider */
+.destination-slider-container {
+ position: relative;
+ width: 100%;
+ max-width: 1000px;
+ margin: 0 auto;
+}
+
+.destination-slider-header {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 20px;
+
+}
+
+.section-title {
+ text-align: center;
+ font-size: 42px;
+ font-weight: 600;
+ margin-bottom: 20px;
+ color: rgb(34, 34, 34);
+}
+
+.tabs {
+ display: flex;
+ justify-content: center;
+ margin-bottom: 10px;
+ font-weight: bold;
+}
+
+.tab {
+ margin: 0 10px;
+ padding: 5px 10px;
+ cursor: pointer;
+ color: rgb(0, 0, 0);
+ border-bottom: 2px solid transparent;
+ margin-bottom: 20px;
+}
+
+.tab.active {
+ border-bottom: 3px solid rgb(68, 68, 68);
+}
+
+.destination-slider {
+ position: relative;
+ overflow: hidden;
+}
+
+.destination-slider-content {
+ display: flex;
+ transition: transform 0.5s ease-in-out;
+}
+.destination-slider-item {
+ min-width: 100%; /* Ensure each item takes full width */
+ box-sizing: border-box;
+ position: relative;
+}
+
+.destination-slider-item::after {
+ content: '';
+ position: absolute;
+ bottom: 0;
+ left: 0;
+ width: 100%;
+ height: 50%; /* Adjust the height for how much of the image should be covered by the gradient */
+ background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0)); /* Dark gradient at the bottom */
+ border-radius: 10px; /* Match the image border radius */
+}
+
+
+.arrow {
+ position: absolute;
+ top: 50%;
+ transform: translateY(-50%);
+ font-size: 30px;
+ color: white;
+ cursor: pointer;
+}
+
+.left {
+ left: 10px;
+}
+
+.right {
+ right: 10px;
+}
+
+
+.destination-slider-item img {
+ width: 100%;
+ height: 600px; /* Adjusted for compact view */
+ object-fit: cover;
+ border-radius: 10px;
+}
+
+.caption {
+  position: absolute;
+  bottom: 30px;
+  left: 45px;
+  color: white;
+  z-index: 2;
+}
+
+
+
 
 
 #section4 {
@@ -600,6 +791,35 @@ button.btn-secondary:hover {
 #section4 h2 {
  color: #505050; /* Heading color for section 4 */
 }
+
+/* #section4 .container-header {
+   padi
+
+
+} */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -839,3 +1059,21 @@ button.btn-secondary:hover {
         font-size: 1rem;
     }
 }
+
+
+
+
+
+
+#section5 {
+ margin-top: 20px;
+ position: relative;
+ background-color: #717171;
+ height: 80vh; /* Set height for section 4 */
+ display: flex;
+ overflow: hidden; /* Prevent overflow of child elements */
+ text-align: left; /* Align text to the left */
+ align-items: baseline; /* Align items based on their baseline */
+}
+
+
