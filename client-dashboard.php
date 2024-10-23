@@ -24,7 +24,18 @@
                         <p class="fw-normal text-secondary"><?php $email ?></p>
                     </div>
 
-                   
+                    <?php 
+                        if(isset($_SESSION['status'])):
+                        ?>
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            <strong>Hey!</strong> <?= $_SESSION['status']; ?>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        <?php 
+                        unset($_SESSION['status']);
+                        endif;
+                    ?>
+
                     
                     <div class="button-container">
                      <a class="btn btn-primary me-2" href="bookingform.php" role="button">Book Now</a>
