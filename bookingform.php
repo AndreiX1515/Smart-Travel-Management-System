@@ -159,12 +159,6 @@
               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group mb-6">
-                    <input type="hidden" id="returnFlight" name="returnFlight" class="form-control" readonly>
-                  </div>
-                </div>
-
-                <div class="col-md-6">
-                  <div class="form-group mb-6">
                     <input type="hidden" id="flightId" name="flightId" value="">
                   </div>
                 </div>
@@ -217,8 +211,9 @@
 
                   <div class="col-md-3">
                     <div class="form-group mb-3">
-                      <label class="mb-2" for="mName">Middle Name</label>
-                      <input type="text" name="mName[]" class="form-control" placeholder="Enter Middle Name (Optional)">
+                      <label class="mb-2" for="mName">Middle Name <span class="text-danger fw-bold">write N/A if none</span></label>
+                      <input type="text" name="mName[]" class="form-control" placeholder="Enter Middle Name" required>
+                      <span id="mNameError" class="text-danger"></span> <!-- Error message for Middle Name -->
                     </div>
                   </div>
 
@@ -227,7 +222,7 @@
                       <label class="mb-2" for="suffix">Suffix <span class="text-danger fw-bold">*</span></label>
                       <select class="form-control" name="suffix[]" required>
                         <option selected disabled>Select Suffix</option>
-                        <option value=" ">None</option>
+                        <option value="N/A">None</option>
                         <option value="Jr.">Jr.</option>
                         <option value="Sr.">Sr.</option>
                         <option value="II">II</option>
@@ -907,7 +902,7 @@
                       <label class="mb-2" for="addressLine">Address Line 1 <span class="text-danger fw-bold">*</span></label>
                       <input type="text" name="addressLine[]" class="form-control" placeholder="Enter Address Line 1" required>
                       <small class="form-text text-muted">E.g., Street, Barangay</small> <!-- Instruction for Address Line 1 -->
-                      <span id="addressLine1Error" class="text-danger"></span>
+                      <span id="addressLineError" class="text-danger"></span>
                     </div>
                   </div>
 
@@ -1361,7 +1356,7 @@
           calculateTotalPrice(); // Recalculate total price after removing a form
         });
       });
-
+      
       // Flight selection logic (single selection, applies to all guests)
       $('#packageName').on('change', function () 
       {
@@ -1375,6 +1370,9 @@
         $('#flightPrice').val('0.00'); // Clear Flight Price field
         $('#displayTotalPrice').text('0.00'); // Clear Total Price field
         $('#totalPrice').val(''); // Clear Total Price Input field
+        // Set month to default value (e.g., the first option)
+        $('#month').prop('selectedIndex', 0); // Adjust index to match the default option if needed
+        
 
         // Update the modal with the selected package name
         $('#selectedPackage').text(selectedPackageName);
@@ -1388,7 +1386,7 @@
             data: { packageId: packageId },
             success: function (response) 
             {
-              console.log(response); // Debugging the response
+              // console.log(response); // Debugging the response
               $('#origin').html(response); // Update the origin dropdown
             },
             error: function (xhr, status, error) 
@@ -1404,13 +1402,17 @@
       });
 
       // When origin is selected, populate the outbound flights
-      $('#origin').on('change', function () {
-          fetchFlights(); // Call the function to fetch flights based on the new origin
+      $('#origin').on('change', function () 
+      {
+        fetchFlights(); // Call the function to fetch flights based on the new origin
+        // Set month to default value (e.g., the first option)
+        $('#month').prop('selectedIndex', 0); // Adjust index to match the default option if needed
       });
 
       // When month is selected or changed, re-fetch flights
-      $('#month').on('change', function () {
-          fetchFlights(); // Call the same function to fetch flights based on the new month
+      $('#month').on('change', function () 
+      {
+        fetchFlights(); // Call the same function to fetch flights based on the new month
       });
 
       // When outbound flight is selected, fetch the return flight and apply to all guests
@@ -1433,7 +1435,7 @@
             data: { outboundFlight: outboundFlight },
             success: function (response) 
             {
-              console.log(response); // Debugging the response
+              // console.log(response); // Debugging the response
               var data = JSON.parse(response); // Parse the JSON response
 
               flightPricePerGuest = parseFloat(data.flightPrice); // Ensure it's a number
@@ -1485,51 +1487,85 @@
         $('#agentError, #packageError, #originError, #flightError').text('');
         $('select, input').removeClass('is-invalid');
 
+        // Validate agent selection
+        if (!$('#agentId').val()) { // Assuming #agentId is the ID of the agent select element
+            $('#agentError').text(errors.agentId); // Update the agent error message
+            $('#agentId').addClass('is-invalid'); // Add invalid class to the select element
+            isValid = false; // Set valid flag to false
+        }
+
+        // Validate package selection
+        if (!$('#packageName').val()) { // Assuming #packageName is the ID of the package select element
+            $('#packageError').text(errors.packageName); // Update the package error message
+            $('#packageName').addClass('is-invalid'); // Add invalid class to the select element
+            isValid = false; // Set valid flag to false
+        }
+
+        // Validate origin selection
+        if (!$('#origin').val()) { // Assuming #origin is the ID of the origin select element
+            $('#originError').text(errors.origin); // Update the origin error message
+            $('#origin').addClass('is-invalid'); // Add invalid class to the select element
+            isValid = false; // Set valid flag to false
+        }
+
+        // Validate outbound flight selection
+        if (!$('#outboundFlight').val()) { // Assuming #outboundFlight is the ID of the outbound flight select element
+            $('#flightError').text(errors.outboundFlight); // Update the flight error message
+            $('#outboundFlight').addClass('is-invalid'); // Add invalid class to the select element
+            isValid = false; // Set valid flag to false
+        }
+
         // Check for required fields
-        for (const [field, message] of Object.entries(errors)) {
-            if (!$(`#${field}`).val()) {
-                $(`#${field}Error`).text(message); // Set error message
-                $(`#${field}`).addClass('is-invalid'); // Add invalid class
-                isValid = false; // Set valid flag to false
-            }
+        for (const [field, message] of Object.entries(errors)) 
+        {
+          if (!$(`#${field}`).val()) 
+          {
+            $(`#${field}Error`).text(message); // Set error message
+            $(`#${field}`).addClass('is-invalid'); // Add invalid class
+            isValid = false; // Set valid flag to false
+          }
         }
 
         // Guest field validation
         $('.guest-form').each(function () 
         {
-            const guestFields = [
-                { name: 'fName', error: 'First name is required.' },
-                { name: 'lName', error: 'Last name is required.' },
-                { name: 'suffix', error: 'Suffix is required.', isSelect: true },
-                { name: 'birthdate', error: 'Birthdate is required.' },
-                { name: 'age', error: 'Age is required.' },
-                { name: 'sex', error: 'Sex is required.', isSelect: true },
-                { name: 'nationality', error: 'Nationality is required.' },
-                { name: 'passportNo', error: 'Passport number is required.' },
-                { name: 'passportExp', error: 'Passport expiration date is required.' },
-                { name: 'countryCode', error: 'Country Code is required.', isSelect: true }, // Added countryCode validation
-                { name: 'contactNo', error: 'Contact number is required.' },
-                { name: 'email', error: 'Email is required.' },
-                { name: 'addressLine', error: 'Address is required.' },
-                { name: 'city', error: 'City is required.' },
-                { name: 'state', error: 'State is required.' },
-                { name: 'zipCode', error: 'Zip Code is required.' },
-                { name: 'country', error: 'Country is required.' }
-            ];
+          const guestFields = [
+              { name: 'fName', error: 'First name is required.' },
+              { name: 'lName', error: 'Last name is required.' },
+              { name: 'mName', error: 'Middle name is required.' },
+              { name: 'suffix', error: 'Suffix is required.', isSelect: true },
+              { name: 'birthdate', error: 'Birthdate is required.' },
+              { name: 'age', error: 'Age is required.' },
+              { name: 'sex', error: 'Sex is required.', isSelect: true },
+              { name: 'nationality', error: 'Nationality is required.' },
+              { name: 'passportNo', error: 'Passport number is required.' },
+              { name: 'passportExp', error: 'Passport expiration date is required.' },
+              { name: 'countryCode', error: 'Country Code is required.', isSelect: true }, // Added countryCode validation
+              { name: 'contactNo', error: 'Contact number is required.' },
+              { name: 'email', error: 'Email is required.' },
+              { name: 'addressLine', error: 'Address is required.' },
+              { name: 'city', error: 'City is required.' },
+              { name: 'state', error: 'State is required.' },
+              { name: 'zipCode', error: 'Zip Code is required.' },
+              { name: 'country', error: 'Country is required.' }
+          ];
 
-            guestFields.forEach(({ name, error, isSelect }) => {
-                const input = isSelect ? $(this).find(`select[name^="${name}"]`) : $(this).find(`input[name^="${name}"]`);
-                if (!input.val()) {
-                    input.addClass('is-invalid'); // Add invalid class
-                    $(`#${name}Error`).text(error); // Set error message
-                    isValid = false; // Set valid flag to false
-                }
-            });
+          guestFields.forEach(({ name, error, isSelect }) => 
+          {
+            const input = isSelect ? $(this).find(`select[name^="${name}"]`) : $(this).find(`input[name^="${name}"]`);
+            if (!input.val()) 
+            {
+              input.addClass('is-invalid'); // Add invalid class
+              $(`#${name}Error`).text(error); // Set error message
+              isValid = false; // Set valid flag to false
+            }
+          });
         });
 
         // If the form is valid, show the booking confirmation modal
-        if (isValid) {
-            $('#BookingSummaryModal').modal('show'); // Trigger modal display
+        if (isValid) 
+        {
+          $('#BookingSummaryModal').modal('show'); // Trigger modal display
         }
       });
 
@@ -1543,6 +1579,7 @@
         $('#flightError').text(''); // Set error message for Flight Date
         $('#fNameError').text(''); // Set error message for First Name
         $('#lNameError').text(''); // Set error message for Last Name
+        $('#mNameError').text(''); // Set error message for Last Name
         $('#suffixError').text(''); // Set error message for Suffix
         $('#birthdateError').text(''); // Set error message for Birthdate
         $('#ageError').text(''); // Set error message for Age
@@ -1552,7 +1589,7 @@
         $('#passportExpError').text(''); // Set error message for Passport Exp
         $('#contactNoError').text(''); // Set error message for Contact No
         $('#emailError').text(''); // Set error message for Email
-        $('#addressLine1Error').text(''); // Set error message for address
+        $('#addressLineError').text(''); // Set error message for address
         $('#cityError').text(''); // Set error message for City
         $('#stateError').text(''); // Set error message for state
         $('#zipCodeError').text(''); // Set error message for City
@@ -1572,8 +1609,7 @@
 
         // Clear outbound flight field
         $('#outboundFlight').html('<option selected disabled>Select Flight Available Dates</option>');
-        
-        $('#returnFlight').val(''); // Clear return flight field
+
         $('#flightId').val(''); // Clear Flight Id field
         $('#flightPrice').val('0.00'); // Clear Flight Price field
         $('#displayTotalPrice').text('0.00'); // Clear Total Price field
@@ -1588,7 +1624,7 @@
             data: { packageId: packageId, origin: origin, month: month }, // Send packageId, origin, and month (even if empty)
             success: function (response) 
             {
-              console.log(response); // Debugging the response
+              // console.log(response); // Debugging the response
               $('#outboundFlight').html(response); // Update outbound flights dropdown
             },
             error: function (xhr, status, error) 
@@ -1600,7 +1636,6 @@
         else 
         {
           $('#outboundFlight').html('<option selected disabled>Select Flight Available Dates</option>');
-          $('#returnFlight').val('');
         }
       }
 
@@ -1609,7 +1644,7 @@
       {
         var totalPrice = flightPricePerGuest * $('.guest-form').length; // Calculate total price based on the number of guests
 
-        console.log("Total Price:", totalPrice); // Debug: log the total price before updating the field
+        // console.log("Total Price:", totalPrice); // Debug: log the total price before updating the field
 
         // Format the total price with commas and two decimal places
         var formattedTotalPrice = totalPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -1669,19 +1704,21 @@
       }
 
       // Selector for required fields
-      const requiredFields = 'input[name^="fName"], input[name^="lName"], select[name^="suffix"], ' +
+      const requiredFields = 'input[name^="fName"], input[name^="lName"], input[name^="mName"], select[name^="suffix"], ' +
           'input[name^="birthdate"], input[name^="age"], select[name^="sex"], input[name^="nationality"], ' +
           'input[name^="passportNo"], input[name^="passportExp"], select[name^="countryCode"], input[name^="contactNo"], ' +
           'input[name^="email"], input[name^="addressLine"], input[name^="city"], input[name^="state"], ' +
           'input[name^="zipCode"], input[name^="country"]';
 
       // Automatically update total price when any required field changes
-      $(document).on('input change', '.guest-form input, .guest-form select', () => {
-          const allFieldsFilled = $('.guest-form').toArray().every(guestForm => {
-              return $(guestForm).find(requiredFields).toArray().every(field => $(field).val() !== '');
-          });
+      $(document).on('input change', '.guest-form input, .guest-form select', () => 
+      {
+        const allFieldsFilled = $('.guest-form').toArray().every(guestForm => 
+        {
+          return $(guestForm).find(requiredFields).toArray().every(field => $(field).val() !== '');
+        });
 
-          allFieldsFilled ? calculateTotalPrice() : setTotalPriceToZero(); // Call respective functions based on field checks
+        allFieldsFilled ? calculateTotalPrice() : setTotalPriceToZero(); // Call respective functions based on field checks
       });
 
       // Function to set total price to 0
