@@ -100,8 +100,17 @@
 
          <div class="hero d-flex flex-column align-items-center text-center">
            
-         <h3>Discover the World with <span> Smart Travel</span></h3>
-         <p class="mb-4">Your satisfaction is our top priority. Experience travel like never before!</p>
+         <h3 class="text-pop">Discover the World with <span class="highlight">Smart Travel</span></h3>
+
+
+         <p class="mb-2 travel-highlight">Your satisfaction is our top priority. Experience travel like never before!</p>
+
+         <div class="banner" id="banner">
+                 <h2 class="banner-title">
+                     Price Starts at <span style="font-weight: bold;">P34,000.00</span> only<br>
+                     <span style="font-size: 16px; font-weight: normal;">(Tour Package: 5 Days, 4 Nights)</span>
+                 </h2>
+             </div>
 
 
            <!-- 5 Star Review -->
@@ -114,6 +123,10 @@
            </div>
                <span class="rating-text ms-2 mb-4">(4.5/5 based on 250 reviews)</span>
 
+               
+
+
+
            <div class="btn-container d-flex flex-row justify-content-center">
                <button type="button" class="btn btn-secondary">Book Now</button>
                <button type="button" class="btn btn-outline-secondary p-2 px-3 ms-3 text-light">Learn More</button>
@@ -121,100 +134,11 @@
         </div>
 
     </div>
-
-    <!-- Activities -->
-    <div class="section d-flex flex-column" id="section2">
-     <div class="section-header">
-        <h2>Explore the Korea</h2>
-     </div>
-
-    <div class="carousel-container">
-        <div class="carousel-wrapper">
-            <div class="carousel-slide active" style="background-image: url('assets/images/hero-1.jpg');">
-                <p>Getting Around in the Philippines</p>
-            </div>
-
-            <div class="carousel-slide" style="background-image: url('assets/images/hero-2.jpg');">
-                <p>Award-winning Destinations</p>
-            </div>
-
-            <div class="carousel-slide" style="background-image: url('assets/images/hero-3.jpg');">
-                <p>BBMG (Bisita, Be My Guest)</p>
-            </div>
-
-            <div class="carousel-slide active" style="background-image: url('assets/images/hero-1.jpg');">
-                <p>Getting Around in the Philippines</p>
-            </div>
-
-            <div class="carousel-slide" style="background-image: url('assets/images/hero-2.jpg');">
-                <p>Award-winning Destinations</p>
-            </div>
-
-            <div class="carousel-slide" style="background-image: url('assets/images/hero-3.jpg');">
-                <p>BBMG (Bisita, Be My Guest)</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="carousel-indicators mb-5">
-        <span class="dot active" onclick="moveToSlide(0)"></span>
-        <span class="dot" onclick="moveToSlide(1)"></span>
-        <span class="dot" onclick="moveToSlide(2)"></span>
-        <span class="dot" onclick="moveToSlide(3)"></span>
-        <span class="dot" onclick="moveToSlide(4)"></span>
-        <span class="dot" onclick="moveToSlide(5)"></span>
-    </div>
-       <button class="carousel-button prev" onclick="moveSlide(-1)">&#10094;</button>
-       <button class="carousel-button next" onclick="moveSlide(1)">&#10095;</button>
-   </div>
-
-
-
-
-    <script> 
-       let currentSlide = 0;
-
-function showSlide(index) {
-    const slides = document.querySelectorAll('.carousel-slide');
-    const totalSlides = slides.length;
-
-    // Ensure the index is within the bounds of the slide array
-    if (index >= totalSlides) {
-        currentSlide = 0; // Loop back to the first slide
-    } else if (index < 0) {
-        currentSlide = totalSlides - 1; // Loop to the last slide
-    } else {
-        currentSlide = index;
-    }
-
-    // Move the carousel wrapper
-    const carouselWrapper = document.querySelector('.carousel-wrapper');
-    carouselWrapper.style.transform = `translateX(-${currentSlide * 800}px)`; // Move the wrapper
-
-    // Update active dot
-    const dots = document.querySelectorAll('.dot');
-    dots.forEach((dot, i) => {
-        dot.classList.toggle('active', i === currentSlide);
-    });
-}
-
-function moveSlide(direction) {
-    showSlide(currentSlide + direction);
-}
-
-function moveToSlide(index) {
-    showSlide(index);
-}
-
-
-
-
-    </script>
-
-
+    
     <!-- Why book us? -->
-    <div class="section d-flex flex-column text-center px-4 mb-2" id="section3"> 
-      <h2>Why book with us?</h2>
+    
+    <div class="section d-flex flex-column " id="section2">
+    <h2>Why book with us?</h2>
           <p class="lead text-secondary">We provide affordable and unforgettable travel experiences tailored to your needs.</p>
           <div class="card-container row mt-3">
               <div class="col-md-3 mb-4">
@@ -225,7 +149,7 @@ function moveToSlide(index) {
                           </div>
                           <h5 class="card-title">Travel Planning Assistance</h5>
                           <p class="card-text">Our expert team will help you plan every detail of your trip, ensuring a hassle-free and enjoyable experience tailored to your preferences.</p>
-                          <a href="#" class="btn btn-primary">Learn More &rarr;</a>
+                          <a href="#" class="btn btn-primary">Learn More </a>
                       </div>
                   </div>
               </div>
@@ -237,7 +161,7 @@ function moveToSlide(index) {
                           </div>
                           <h5 class="card-title">Local Experience Guides</h5>
                           <p class="card-text">Discover hidden gems and local hotspots with our knowledgeable guides, providing you with authentic experiences that go beyond typical tourist attractions.</p>
-                          <a href="#" class="btn btn-primary">Learn More &rarr;</a>
+                          <a href="#" class="btn btn-primary">Learn More </a>
                       </div>
                   </div>
               </div>
@@ -249,7 +173,7 @@ function moveToSlide(index) {
                           </div>
                           <h5 class="card-title">Exclusive Deals and Offers</h5>
                           <p class="card-text">Take advantage of our exclusive discounts and packages, ensuring you get the best value for your travel adventures. Book now and enjoy special rates for early bookings!</p>
-                          <a href="#" class="btn btn-primary">Learn More &rarr;</a>
+                          <a href="#" class="btn btn-primary">Learn More</a>
                       </div>
                   </div>
               </div>
@@ -261,32 +185,216 @@ function moveToSlide(index) {
                           </div>
                           <h5 class="card-title">Personalized Travel Experiences</h5>
                           <p class="card-text">We customize your travel itinerary based on your interests, ensuring a unique and memorable journey tailored just for you. Let us help you explore the world your way!</p>
-                          <a href="#" class="btn btn-primary">Learn More &rarr;</a>
+                          <a href="#" class="btn btn-primary">Learn More</a>
                       </div>
                   </div>
               </div>
           </div>
-
-
-
     </div>
+
+   
+    <!-- Activities -->
+    <div class="section d-flex flex-column" id="section3"> 
+    <div class="destination-slider-container">
+        <div class="destination-slider-header">
+            <h1 class="section-title">Featured Destinations</h1>
+            <div class="tabs">
+                <span class="tab active" data-region="seoul">Seoul</span>
+                <span class="tab" data-region="busan">Busan</span>
+                <span class="tab" data-region="jeju">Jeju Island</span>
+            </div>
+        </div>
+
+        <div class="destination-slider">
+            <div class="destination-slider-content">
+                <!-- Seoul Destinations -->
+                <div class="destination-slider-item" data-region="seoul">
+                    <img src="assets\images\Places in Korea\Seoul\seoul_tower.jpg" alt="N Seoul Tower">
+                    <div class="caption">
+                        <h3>N Seoul Tower</h3>
+                        <p>Experience panoramic views of the city</p>
+                    </div>
+                </div>
+                <div class="destination-slider-item" data-region="seoul">
+                    <img src="assets\images\Places in Korea\Seoul\gyeongbokgung.jpg" alt="Gyeongbokgung Palace">
+                    <div class="caption">
+                        <h3>Gyeongbokgung Palace</h3>
+                        <p>Discover the rich history of Korea</p>
+                    </div>
+                </div>
+                <div class="destination-slider-item" data-region="seoul">
+                    <img src="assets\images\Places in Korea\Seoul\bukchon_hanok_village.jpg" alt="Bukchon Hanok Village">
+                    <div class="caption">
+                        <h3>Bukchon Hanok Village</h3>
+                        <p>Immerse yourself in traditional Korean culture</p>
+                    </div>
+                </div>
+
+                <!-- Busan Destinations -->
+                <div class="destination-slider-item" data-region="busan">
+                    <img src="assets\images\Places in Korea\Busan\haedong_yonggungsa.jpg" alt="Haedong Yonggungsa Temple">
+                    <div class="caption">
+                        <h3>Haedong Yonggungsa Temple</h3>
+                        <p>A stunning seaside temple</p>
+                    </div>
+                </div>
+                <div class="destination-slider-item" data-region="busan">
+                    <img src="assets\images\Places in Korea\Busan\ghwangan_bridge.jpg" alt="Gwangalli Beach">
+                    <div class="caption">
+                        <h3>Gwangalli Beach</h3>
+                        <p>Enjoy beautiful beaches and nightlife</p>
+                    </div>
+                </div>
+                <div class="destination-slider-item" data-region="busan">
+                    <img src="assets\images\Places in Korea\Busan\jagalchi_market.jpg" alt="Jagalchi Fish Market">
+                    <div class="caption">
+                        <h3>Jagalchi Fish Market</h3>
+                        <p>Sample fresh seafood and local delicacies</p>
+                    </div>
+                </div>
+
+                <!-- Jeju Island Destinations -->
+                <div class="destination-slider-item" data-region="jeju">
+                    <img src="assets\images\Places in Korea\Jeju Island\hallasan.jpg" alt="Hallasan Mountain">
+                    <div class="caption">
+                        <h3>Hallasan Mountain</h3>
+                        <p>Hike to the highest peak in South Korea</p>
+                    </div>
+                </div>
+                <div class="destination-slider-item" data-region="jeju">
+                    <img src="assets/images/Places in Korea/Jeju Island/jeongbang_waterfall.jpg" alt="Jeongbang Waterfall">
+                    <div class="caption">
+                        <h3>Jeongbang Waterfall</h3>
+                        <p>Witness nature's beauty in Jeju</p>
+                    </div>
+                </div>
+                <div class="destination-slider-item" data-region="jeju">
+                    <img src="assets\images\Places in Korea\Jeju Island\seongsan_ilchulbong.jpg" alt="Seongsan Ilchulbong">
+                    <div class="caption">
+                        <h3>Seongsan Ilchulbong</h3>
+                        <p>Catch a breathtaking sunrise at this volcanic peak</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Arrows -->
+            <div class="arrow left">&#10094;</div>
+            <div class="arrow right">&#10095;</div>
+        </div>
+    </div>
+</div>
+
+
+    <script>
+     const destinationSliderContent = document.querySelector('.destination-slider-content');
+     const destinationSliderItems = document.querySelectorAll('.destination-slider-item');
+     const totalItems = destinationSliderItems.length;
+     let currentIndex = 0;
+
+     // Tabs and Arrows
+     const tabs = document.querySelectorAll('.tab');
+     const leftArrow = document.querySelector('.arrow.left');
+     const rightArrow = document.querySelector('.arrow.right');
+
+     // Function to show the current slide
+     function showSlide(index) {
+       const slideWidth = destinationSliderItems[0].offsetWidth;
+       destinationSliderContent.style.transform = `translateX(-${index * slideWidth}px)`;
+       updateActiveTab(destinationSliderItems[index].dataset.region);
+     }
+
+     // Function to update the active tab
+     function updateActiveTab(region) {
+       tabs.forEach(tab => {
+         tab.classList.remove('active');
+         if (tab.dataset.region === region) {
+           tab.classList.add('active');
+         }
+       });
+     }
+
+     // Arrow controls (left/right)
+     rightArrow.addEventListener('click', () => {
+       currentIndex = (currentIndex + 1) % totalItems;
+       showSlide(currentIndex);
+     });
+
+     leftArrow.addEventListener('click', () => {
+       currentIndex = (currentIndex - 1 + totalItems) % totalItems;
+       showSlide(currentIndex);
+     });
+
+     // Auto slider
+     let autoSlideInterval = setInterval(() => {
+       currentIndex = (currentIndex + 1) % totalItems;
+       showSlide(currentIndex);
+     }, 6000);
+
+     // Function to filter items by region and reset the slider to the first item of that region
+     function filterSlidesByRegion(region) {
+       const visibleItems = Array.from(destinationSliderItems).filter(item => item.dataset.region === region);
+       
+       // Update the totalItems to be the count of visible items for the selected region
+       totalVisibleItems = visibleItems.length;
+
+       // Adjust the index if needed
+       if (visibleItems.length > 0) {
+         currentIndex = Array.from(destinationSliderItems).indexOf(visibleItems[0]);
+         showSlide(currentIndex);
+       }
+     }
+
+     // Tab click functionality
+     tabs.forEach(tab => {
+       tab.addEventListener('click', function() {
+         const region = this.dataset.region;
+         
+         // Clear interval for auto-slide when manually clicked
+         clearInterval(autoSlideInterval);
+         
+         // Filter slides based on the selected tab
+         filterSlidesByRegion(region);
+         
+         // Restart auto slider after manual click
+         autoSlideInterval = setInterval(() => {
+           currentIndex = (currentIndex + 1) % totalItems;
+           showSlide(currentIndex);
+         }, 6000);
+       });
+     });
+
+     // Initial setup - show the first slide
+     showSlide(currentIndex);
+
+    </script>
 
     <!-- Packages Offered -->
     <div class="section" id="section4"> 
-       <h2>Packages Offered</h2>
+       <div class="container-header">
+          <h5>Package Offered</h5>
+          <h3>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Magni tenetur dignissimos ab, pariatur, illum asperiores soluta porro eveniet quidem quaerat omnis culpa ratione rem ipsum labore. </h3>
+
+
+       </div>
+
+       <div class="container-body">
+
+
+
+
+       </div>
       
 
     </div>
 
      <!-- Packages Offered -->
      <div class="section" id="section5"> 
- 
+          
+
 
     </div>
 
-
-
-   
+    
 
 
     <!-- <div class="hero-slider">

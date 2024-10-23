@@ -162,6 +162,13 @@
                   return;
               } 
 
+              else if (data.message && data.message.trim() === "Invalid email or password.") {
+                  // Show specific message for user not found
+                  document.getElementById('message-login').innerHTML = '<div class="alert alert-danger text-center">' + data.message + '</div>';
+                  
+                  return;
+              } 
+
               else if (data.message && data.message.trim() === "Your account is inactive. Please contact support.") {
                   // Show specific message for inactive account
                   document.getElementById('message-login').innerHTML = '<div class="alert alert-warning text-center">' + data.message + '</div>';
