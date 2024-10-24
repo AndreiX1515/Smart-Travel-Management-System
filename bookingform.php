@@ -43,8 +43,6 @@
   <?php include 'client-includes\client-navbar.php'; ?>
 
   <div class="container">
-
-
     <div class="row">
       <div class="col-md-12">
         <?php 
@@ -66,7 +64,6 @@
           <button class="add-more-form btn btn-primary"><i class="fa-solid fa-plus"></i></button>
         </div>
 
-
         <form action="bookingform-code.php" method="POST" id="bookingForm" onsubmit="return validation();">
           <div class="card">
             <div class="card-header bg-secondary text-white text-light">
@@ -80,7 +77,7 @@
                     <label for="agent">Select Agent <span class="text-danger fw-bold">*</span></label>
                     <select class="form-select mt-2" id="agentId" name="agentId" required>
                       <option selected disabled>Select Agent</option>
-                      <option value="">None</option>
+                      <option value="Null">None</option>
                       <?php
                         $sql1 = mysqli_query($conn, "SELECT agentId, CONCAT(lName, ', ', fName, 
                           CASE 
@@ -92,7 +89,7 @@
                         }
                       ?>
                     </select>
-                    <span id="agentError" class="text-danger"></span> <!-- Error message for agent -->
+                    <span id="agentIdError" class="text-danger"></span> <!-- Error message for agent -->
                   </div>
                 </div>
 
@@ -108,7 +105,7 @@
                         }
                       ?>
                     </select>
-                    <span id="packageError" class="text-danger"></span> <!-- Error message for package -->
+                    <span id="packageNameError" class="text-danger"></span> <!-- Error message for package -->
                   </div>
                 </div>
               </div>
@@ -151,7 +148,7 @@
                     <select class="form-select" id="outboundFlight" name="outboundFlight" required>
                       <option selected disabled>Select Flight Available Dates</option>
                     </select>
-                    <span id="flightError" class="text-danger"></span> <!-- Error message for outbound flight -->
+                    <span id="outboundFlightError" class="text-danger"></span> <!-- Error message for outbound flight -->
                   </div>
                 </div>
               </div>
@@ -160,6 +157,7 @@
                 <div class="col-md-6">
                   <div class="form-group mb-6">
                     <input type="hidden" id="flightId" name="flightId" value="">
+                    <input type="hidden" id="packagePrice" name="packagePrice" value="">
                   </div>
                 </div>
               </div>
@@ -187,11 +185,12 @@
             <div id="cardBodyContent" class="card-body collapse show">
               <div class="main-form mt-3">
                 
-                <!-- Personal Information Group -->
+                
                 <div class="header-container d-flex flex-row w-100 mb-3">
                   <h5 class="card-title bg-primary text-white p-3 w-100">Personal Information</h5>
                 </div>
 
+                <!-- Personal Information Group -->
                 <div class="row mb-3">
                   <div class="col-md-3">
                     <div class="form-group mb-3">
@@ -1279,7 +1278,7 @@
       }
 
       // Add event listener to birthdate fields to auto-calculate age
-      $(document).on('change', 'input[name^="birthdate"]', function () 
+      $(document).on('change', 'input[name^="birthdate"]', function ()  
       {
         const birthdate = $(this).val(); // Get the birthdate value
         const age = calculateAge(birthdate); // Calculate the age based on birthdate
@@ -1309,14 +1308,30 @@
         // Change the header for the new guest form
         guestForm.find('.card-header h4').text('Guest Information ' + formCount);
 
+        // Update error span IDs by appending the form count
+        guestForm.find('#fNameError').attr('id', 'fNameError' + formCount);
+        guestForm.find('#lNameError').attr('id', 'lNameError' + formCount);
+        guestForm.find('#mNameError').attr('id', 'mNameError' + formCount);
+        guestForm.find('#suffixError').attr('id', 'suffixError' + formCount);
+        guestForm.find('#birthdateError').attr('id', 'birthdateError' + formCount);
+        guestForm.find('#ageError').attr('id', 'ageError' + formCount);
+        guestForm.find('#sexError').attr('id', 'sexError' + formCount);
+        guestForm.find('#nationalityError').attr('id', 'nationalityError' + formCount);
+        guestForm.find('#passportNoError').attr('id', 'passportNoError' + formCount);
+        guestForm.find('#passportExpError').attr('id', 'passportExpError' + formCount);
+        guestForm.find('#contactNoError').attr('id', 'contactNoError' + formCount);
+        guestForm.find('#emailError').attr('id', 'emailError' + formCount);
+        guestForm.find('#addressLineError').attr('id', 'addressLineError' + formCount);
+        guestForm.find('#cityError').attr('id', 'cityError' + formCount);
+        guestForm.find('#stateError').attr('id', 'stateError' + formCount);
+        guestForm.find('#zipCodeError').attr('id', 'zipCodeError' + formCount);
+        guestForm.find('#countryError').attr('id', 'countryError' + formCount);
+
         // Create a remove button
         const removeButton = $('<button type="button" class="remove-guest btn btn-danger mt-2">Remove Guest</button>');
 
         // Find the toggle button (assuming you have a class for it, e.g., 'toggle-button')
         const toggleButton = guestForm.find('.toggle-button'); // Replace with the actual selector for your toggle button
-
-        // Append the title in the card header (if not already done)
-        guestForm.find('.card-header h4').text('Guest Information ' + formCount);
 
         // Set the card header to use flexbox for layout
         guestForm.find('.card-header').css('display', 'flex').css('justify-content', 'space-between').css('align-items', 'center');
@@ -1325,8 +1340,8 @@
         guestForm.find('.card-header').append(toggleButton, removeButton); // Reverse their positions
 
         // Remove margin for the remove button to ensure they are close together
-        removeButton.css('margin', '0'); // No margin for closer alignment
-        toggleButton.css('margin', '0'); // Ensure no margin on toggle button
+        removeButton.css('margin', '0');
+        toggleButton.css('margin', '0');
 
         // Generate a unique ID for the card body
         var uniqueId = 'cardBodyContent' + formCount;
@@ -1365,14 +1380,11 @@
         $('#origin').html('<option selected disabled>Select Origin</option>'); // Clear origin field
         
         $('#outboundFlight').html('<option selected disabled>Select Flight Available Dates</option>'); // Clear outbound flight field
-        $('#returnFlight').val(''); // Clear return flight field
         $('#flightId').val(''); // Clear Flight Id field
         $('#flightPrice').val('0.00'); // Clear Flight Price field
         $('#displayTotalPrice').text('0.00'); // Clear Total Price field
         $('#totalPrice').val(''); // Clear Total Price Input field
-        // Set month to default value (e.g., the first option)
-        $('#month').prop('selectedIndex', 0); // Adjust index to match the default option if needed
-        
+        $('#month').prop('selectedIndex', 0); // Set month to default value
 
         // Update the modal with the selected package name
         $('#selectedPackage').text(selectedPackageName);
@@ -1386,12 +1398,20 @@
             data: { packageId: packageId },
             success: function (response) 
             {
-              // console.log(response); // Debugging the response
-              $('#origin').html(response); // Update the origin dropdown
+                // Parse the JSON response
+                var data = JSON.parse(response);
+
+                // Update the origin dropdown
+                $('#origin').html(data.originOptions); // Use originOptions from the response
+
+                // Update the package price input
+                $('#packagePrice').val(data.packagePrice); // Set the package price value
+
+                // console.log(data); // Optional: For debugging
             },
             error: function (xhr, status, error) 
             {
-              console.error('Error fetching origins:', error); // Log the error to console
+                console.error('Error fetching origins:', error); // Log the error to console
             }
           });
         } 
@@ -1426,8 +1446,24 @@
         // Update the <p> element with the extracted flight date
         $('#selectedDate').text(selectedDate);
 
-        if (outboundFlight) 
+        if (outboundFlight === "Null") 
         {
+            // If outbound flight is "Null", use the package price instead of the flight price
+            var packagePrice = parseFloat($('#packagePrice').val()); // Get the package price value
+            flightPricePerGuest = packagePrice; // Ensure it's a number
+            var formattedPrice = packagePrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+            // Update the flight price display with the formatted package price
+            $('#flightPrice').text(formattedPrice);
+
+            // Update the flight price for all guests with the package price
+            $('input[name^="flightPrice"]').val(packagePrice);
+
+            console.log('Outbound flight is null, using package price:', packagePrice);
+        } 
+        else if (outboundFlight) 
+        {
+          // If a valid outbound flight is selected, fetch return flight and flight price
           $.ajax(
           {
             url: 'fetchReturnFlight.php', // Separate PHP file for return flight
@@ -1435,7 +1471,6 @@
             data: { outboundFlight: outboundFlight },
             success: function (response) 
             {
-              // console.log(response); // Debugging the response
               var data = JSON.parse(response); // Parse the JSON response
 
               flightPricePerGuest = parseFloat(data.flightPrice); // Ensure it's a number
@@ -1446,17 +1481,12 @@
               // Update the flight price display with the formatted price
               $('#flightPrice').text(formattedPrice);
 
-              // Update the return flight input field for all guests
-              $('input[name^="returnFlight"]').val(data.returnFlight); 
-
               // Update the flight price for all guests
               $('input[name^="flightPrice"]').val(data.flightPrice);
 
               // Update the flight ID for all guests
               $('input[name^="flightId"]').val(data.flightId);
 
-              // // Recalculate total price after the flight price is set
-              // calculateTotalPrice();
             },
             error: function (xhr, status, error) 
             {
@@ -1466,7 +1496,8 @@
         } 
         else 
         {
-          $('input[name^="returnFlight"]').val(''); // Clear return flight input fields if no outbound flight selected
+          // If no outbound flight is selected, clear return flight input fields
+          $('input[name^="returnFlight"]').val(''); 
         }
       });
 
@@ -1475,60 +1506,116 @@
       {
         event.preventDefault(); // Prevent default form submission
 
-        let isValid = true; // Assume form is valid initially
-        const errors = {
-            agentId: 'Please Select an Agent.',
-            packageName: 'Please Select a Package.',
-            origin: 'Please Select an Origin.',
-            outboundFlight: 'Please Select Flight Date.'
+        const errors = 
+        {
+          agentId: 'Please Select an Agent.',
+          packageName: 'Please Select a Package.',
+          origin: 'Please Select an Origin.',
+          outboundFlight: 'Please Select Flight Date.'
         };
 
         // Reset error messages and remove invalid class
-        $('#agentError, #packageError, #originError, #flightError').text('');
+        $('#agentIdError, #packageNameError, #originError, #outboundFlightError').text('');
         $('select, input').removeClass('is-invalid');
 
+        let isValid = true; // Initialize isValid flag
+
         // Validate agent selection
-        if (!$('#agentId').val()) { // Assuming #agentId is the ID of the agent select element
-            $('#agentError').text(errors.agentId); // Update the agent error message
-            $('#agentId').addClass('is-invalid'); // Add invalid class to the select element
-            isValid = false; // Set valid flag to false
+        if (!$('#agentId').val()) 
+        { // Assuming #agentId is the ID of the agent select element
+          $('#agentIdError').text(errors.agentId); // Update the agent error message
+          $('#agentId').addClass('is-invalid'); // Add invalid class to the select element
+          isValid = false; // Set valid flag to false
         }
 
         // Validate package selection
-        if (!$('#packageName').val()) { // Assuming #packageName is the ID of the package select element
-            $('#packageError').text(errors.packageName); // Update the package error message
-            $('#packageName').addClass('is-invalid'); // Add invalid class to the select element
-            isValid = false; // Set valid flag to false
+        if (!$('#packageName').val()) 
+        { // Assuming #packageName is the ID of the package select element
+          $('#packageNameError').text(errors.packageName); // Update the package error message
+          $('#packageName').addClass('is-invalid'); // Add invalid class to the select element
+          isValid = false; // Set valid flag to false
         }
 
         // Validate origin selection
-        if (!$('#origin').val()) { // Assuming #origin is the ID of the origin select element
-            $('#originError').text(errors.origin); // Update the origin error message
-            $('#origin').addClass('is-invalid'); // Add invalid class to the select element
-            isValid = false; // Set valid flag to false
+        if (!$('#origin').val()) 
+        { // Assuming #origin is the ID of the origin select element
+          $('#originError').text(errors.origin); // Update the origin error message
+          $('#origin').addClass('is-invalid'); // Add invalid class to the select element
+          isValid = false; // Set valid flag to false
         }
 
         // Validate outbound flight selection
-        if (!$('#outboundFlight').val()) { // Assuming #outboundFlight is the ID of the outbound flight select element
-            $('#flightError').text(errors.outboundFlight); // Update the flight error message
-            $('#outboundFlight').addClass('is-invalid'); // Add invalid class to the select element
-            isValid = false; // Set valid flag to false
+        if (!$('#outboundFlight').val()) 
+        { // Assuming #outboundFlight is the ID of the outbound flight select element
+          $('#outboundFlightError').text(errors.outboundFlight); // Update the flight error message
+          $('#outboundFlight').addClass('is-invalid'); // Add invalid class to the select element
+          isValid = false; // Set valid flag to false
         }
 
-        // Check for required fields
-        for (const [field, message] of Object.entries(errors)) 
+        // Clear error when input field is focused or changed
+        $('#agentId, #packageName, #origin, #outboundFlight').on('focus change', function () 
         {
-          if (!$(`#${field}`).val()) 
+          const errorSpanId = `#${$(this).attr('id')}Error`; // Get corresponding error span ID
+          $(this).removeClass('is-invalid'); // Remove invalid class
+          $(errorSpanId).text(''); // Clear error message
+        });
+
+        // Primary Guest field validation
+        $('.guest-form').each(function (index) 
+        {
+          const guestFormNumber = index; // Get guest form number
+          const guestFields = 
+          [
+            { name: 'fName', error: 'First name is required.' },
+            { name: 'lName', error: 'Last name is required.' },
+            { name: 'mName', error: 'Middle name is required.' },
+            { name: 'suffix', error: 'Suffix is required.', isSelect: true },
+            { name: 'birthdate', error: 'Birthdate is required.' },
+            { name: 'age', error: 'Age is required.' },
+            { name: 'sex', error: 'Sex is required.', isSelect: true },
+            { name: 'nationality', error: 'Nationality is required.' },
+            { name: 'passportNo', error: 'Passport number is required.' },
+            { name: 'passportExp', error: 'Passport expiration date is required.' },
+            { name: 'countryCode', error: 'Country Code is required.', isSelect: true },
+            { name: 'contactNo', error: 'Contact number is required.' },
+            { name: 'email', error: 'Email is required.' },
+            { name: 'addressLine', error: 'Address is required.' },
+            { name: 'city', error: 'City is required.' },
+            { name: 'state', error: 'State is required.' },
+            { name: 'zipCode', error: 'Zip Code is required.' },
+            { name: 'country', error: 'Country is required.' }
+          ];
+
+          // Iterate through the fields to validate
+          guestFields.forEach(({ name, error, isSelect }) => 
           {
-            $(`#${field}Error`).text(message); // Set error message
-            $(`#${field}`).addClass('is-invalid'); // Add invalid class
-            isValid = false; // Set valid flag to false
-          }
-        }
+            // Update ID for the specific guest form (assuming error spans follow this pattern)
+            const errorSpanId = `#${name}Error`;
+            const input = isSelect
+                ? $(this).find(`select[name^="${name}"]`)
+                : $(this).find(`input[name^="${name}"]`);
 
-        // Guest field validation
-        $('.guest-form').each(function () 
+            // Validate if the input/select is empty
+            if (!input.val()) 
+            {
+              input.addClass('is-invalid'); // Add invalid class
+              $(errorSpanId).text(error);   // Set error message dynamically
+              isValid = false;              // Set valid flag to false
+            }
+
+            // Clear error when input field is focused or changed
+            input.on('focus change', function () 
+            {
+              $(this).removeClass('is-invalid'); // Remove invalid class
+              $(errorSpanId).text('');           // Clear error message
+            });
+          });
+        });
+
+        // Cloned Guest field validation
+        $('.guest-form').each(function (index) 
         {
+          const guestFormNumber = index + 1; // Get guest form number
           const guestFields = [
               { name: 'fName', error: 'First name is required.' },
               { name: 'lName', error: 'Last name is required.' },
@@ -1552,13 +1639,23 @@
 
           guestFields.forEach(({ name, error, isSelect }) => 
           {
+            // Update ID for the specific guest form
+            const errorSpanId = `#${name}Error${guestFormNumber}`;
             const input = isSelect ? $(this).find(`select[name^="${name}"]`) : $(this).find(`input[name^="${name}"]`);
+
             if (!input.val()) 
             {
               input.addClass('is-invalid'); // Add invalid class
-              $(`#${name}Error`).text(error); // Set error message
+              $(errorSpanId).text(error); // Set error message dynamically
               isValid = false; // Set valid flag to false
             }
+
+            // Clear error when input field is focused or changed
+            input.on('focus change', function () 
+            {
+              $(this).removeClass('is-invalid'); // Remove invalid class
+              $(errorSpanId).text(''); // Clear error message
+            });
           });
         });
 
@@ -1569,32 +1666,33 @@
         }
       });
 
+
       // Optional: If you want to clear validation errors when the user focuses on the field
-      $('select, input').focus(function () 
-      {
-        $(this).removeClass('is-invalid');
-        $('#agentError').text(''); // Set error message for agentId
-        $('#packageError').text(''); // Set error message for packageName
-        $('#originError').text(''); // Set error message for origin
-        $('#flightError').text(''); // Set error message for Flight Date
-        $('#fNameError').text(''); // Set error message for First Name
-        $('#lNameError').text(''); // Set error message for Last Name
-        $('#mNameError').text(''); // Set error message for Last Name
-        $('#suffixError').text(''); // Set error message for Suffix
-        $('#birthdateError').text(''); // Set error message for Birthdate
-        $('#ageError').text(''); // Set error message for Age
-        $('#sexError').text(''); // Set error message for Sex
-        $('#nationalityError').text(''); // Set error message for Nationality
-        $('#passportNoError').text(''); // Set error message for Passport No
-        $('#passportExpError').text(''); // Set error message for Passport Exp
-        $('#contactNoError').text(''); // Set error message for Contact No
-        $('#emailError').text(''); // Set error message for Email
-        $('#addressLineError').text(''); // Set error message for address
-        $('#cityError').text(''); // Set error message for City
-        $('#stateError').text(''); // Set error message for state
-        $('#zipCodeError').text(''); // Set error message for City
-        $('#countryError').text(''); // Set error message for Country
-      });
+      // $('select, input').focus(function () 
+      // {
+      //   $(this).removeClass('is-invalid');
+      //   $('#agentError').text(''); // Set error message for agentId
+      //   $('#packageError').text(''); // Set error message for packageName
+      //   $('#originError').text(''); // Set error message for origin
+      //   $('#flightError').text(''); // Set error message for Flight Date
+      //   $('#fNameError').text(''); // Set error message for First Name
+      //   $('#lNameError').text(''); // Set error message for Last Name
+      //   $('#mNameError').text(''); // Set error message for Last Name
+      //   $('#suffixError').text(''); // Set error message for Suffix
+      //   $('#birthdateError').text(''); // Set error message for Birthdate
+      //   $('#ageError').text(''); // Set error message for Age
+      //   $('#sexError').text(''); // Set error message for Sex
+      //   $('#nationalityError').text(''); // Set error message for Nationality
+      //   $('#passportNoError').text(''); // Set error message for Passport No
+      //   $('#passportExpError').text(''); // Set error message for Passport Exp
+      //   $('#contactNoError').text(''); // Set error message for Contact No
+      //   $('#emailError').text(''); // Set error message for Email
+      //   $('#addressLineError').text(''); // Set error message for address
+      //   $('#cityError').text(''); // Set error message for City
+      //   $('#stateError').text(''); // Set error message for state
+      //   $('#zipCodeError').text(''); // Set error message for City
+      //   $('#countryError').text(''); // Set error message for Country
+      // });
 
       // Function to fetch flights based on packageId, origin, and month
       function fetchFlights() 

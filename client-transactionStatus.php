@@ -9,7 +9,7 @@
 </head>
 
 <body>
-     <?php include 'client-includes\client-navbar.php'; ?>
+     <?php include 'client-includes/client-navbar.php'; ?>
 
   <div class="container-fluid">
     <div id="main-content" class="col-md-9 col-lg-10 w-100 p-5">
@@ -27,6 +27,8 @@
       unset($_SESSION['status']);
       endif;
     ?>
+
+    <a class="btn btn-primary me-2" href="client-dashboard.php" role="button">Go Back</a>
 
       <div class="table-responsive px-4">
         <div class="table-controls mb-4">
@@ -93,7 +95,7 @@
                     b.transactNo,
                     b.pax AS totalPax,
                     b.totalPrice AS amountToPay,
-                    b.downpaymentAmount as downpayment,
+                    a.amount as downpayment,
                     b.status, b.agentId, 
                     p.packageName,
                     DATE_FORMAT(f.flightDepartureDate, '%M %d, %Y') AS flightDate
@@ -105,6 +107,8 @@
                     flight f ON g.flightId = f.flightId
                 JOIN 
                     package p ON f.packageId = p.packageId
+                JOIN 
+                    payment a ON a.transactNo = b.transactNo
                 WHERE 
                     b.accountId = '$accId'";
 
@@ -285,7 +289,7 @@
                                              <div class='mb-3'>
                                                  <label class='form-label fw-bold'>Payment History</label>
                                                 
-
+                                                
 
 
                                              </div>

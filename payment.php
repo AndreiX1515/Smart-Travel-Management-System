@@ -167,33 +167,34 @@
             <div class="row">
                 <div class="col-sm">
                     <div class="d-flex justify-content-between mb-1">
-                        <?php
-                            $transactNo = $_SESSION['transactNo'];
-                            $sql1 = mysqli_query($conn, "
-                                SELECT b.*, DATE_FORMAT(f.flightDepartureDate, '%M %d, %Y') AS onboardFlightSched, p.packageName 
-                                FROM booking b 
-                                JOIN guest g ON b.transactNo = g.transactNo
-                                JOIN flight f ON g.flightId = f.flightId 
-                                JOIN package p ON f.packageId = p.packageId 
-                                WHERE b.transactNo = '$transactNo'
-                            ");
+                    <?php
+                        $transactNo = $_SESSION['transactNo'];
+                        $sql1 = mysqli_query($conn, "
+                            SELECT b.*, 
+                                IF(f.flightId != 0, DATE_FORMAT(f.flightDepartureDate, '%M %d, %Y'), 'Custom Scheduled Flight') 
+                                AS onboardFlightSched, p.packageName 
+                            FROM booking b 
+                            JOIN guest g ON b.transactNo = g.transactNo
+                            LEFT JOIN flight f ON g.flightId = f.flightId 
+                            LEFT JOIN package p ON b.packageId = p.packageId 
+                            WHERE b.transactNo = '$transactNo'
+                        ");
+                        
+                        while ($res1 = mysqli_fetch_array($sql1)) 
+                        {
+                            $totalPrice = $res1['totalPrice'];
+                            $formattedPrice = number_format($totalPrice, 2); // Format to 2 decimal places
+                            $downpayment = $res1['pax'] * 1000;
+                            $formattedDP = number_format($downpayment, 2); // Format to 2 decimal places
+                        
+                            // Get additional fields
+                            $flightDate = $res1['onboardFlightSched'];
+                            $packageName = $res1['packageName'];
+                            $pax = $res1['pax'];
                             
-                            while ($res1 = mysqli_fetch_array($sql1)) 
-                            {
-                                $totalPrice = $res1['totalPrice'];
-                                $formattedPrice = number_format($totalPrice, 2); // Format to 2 decimal places
-                                $downpayment = $res1['pax'] * 1000;
-                                $formattedDP = number_format($downpayment, 2); // Format to 2 decimal places
-                            
-                                // Get additional fields
-                                $flightDate = $res1['onboardFlightSched'];
-                                $packageName = $res1['packageName'];
-                                $pax = $res1['pax'];
-                                
-                                // You can now use $flightDate and $packageName as needed
-                            }
-                            
-                        ?>
+                            // You can now use $flightDate and $packageName as needed
+                        }
+                    ?>
                         <p class="mb-0"><strong>Package Name:</strong></p>
                         <p class="mb-0"><?php echo $packageName; ?></p> <!-- Added commas for better readability -->
                     </div>
