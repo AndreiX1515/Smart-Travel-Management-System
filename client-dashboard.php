@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    <?php include 'client-includes\client-navbar.php'; ?>
+    <?php include 'client-includes/client-navbar.php'; ?>
 
     <div class="container-fluid">
         <div class="row">

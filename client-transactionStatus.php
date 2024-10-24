@@ -9,7 +9,7 @@
 </head>
 
 <body>
-     <?php include 'client-includes\client-navbar.php'; ?>
+     <?php include 'client-includes/client-navbar.php'; ?>
 
   <div class="container-fluid">
     <div id="main-content" class="col-md-9 col-lg-10 w-100 p-5">
