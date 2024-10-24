@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0" name="viewport">
+
+ <meta name="description" content="">
+ <meta name="keywords" content="">
+
+ <!-- Bootstrap CSS CDN -->
+ <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+ <!-- Font Awesome Icon Kit CDN -->
+ <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
+
+ <!-- Favicons -->
+ <link href="assets/images/rsz_logo-tab.png" rel="icon">
+ <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+ <link rel="stylesheet" href="../Landing Page/style.css">
+</head>
+
+<body>
+ <header>
+  <nav>
+      <div class="logo-container d-flex flex-row g-2">
+          <img src="../assets/images/logo.png" alt="Logo" class="logo">
+      </div>
+
+      <div class="menu-container">
+          <ul class="menu-list d-flex align-items-center"> <!-- Add flex for horizontal alignment -->
+              <li><a href="#home">Home</a></li>
+              <li><a href="#about">About</a></li>
+              <li><a href="#services">Services</a></li>
+              <li><a href="#contact">Contact</a></li>
+
+              <!-- Vertical line between menu items and login button -->
+              <div class="vertical-line"></div>
+
+              <div class="login-btn-container">
+                  <button class="btn btn-primary btn-login">Log in</button>
+              </div>
+          </ul>
+      </div>
+  </nav>
+</header>
+
+
+ <section class="hero">
+  <img src="../assets/images/Hero-M.jpg" alt="Spa Background" class="background-image"> <!-- Background image -->
+  <div class="overlay"></div> <!-- Dark opacity overlay -->
+
+     <div class="section-container">
+         <h1>Discover the World with Smart Travel</h1>
+         <p>Your satisfaction is our top priority. Experience travel like never before!</p>
+         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Soluta veritatis in tenetur doloremque, maiores doloribus officia iste. Dolores.</p>
+         <a href="#learn-more" class="cta-button">Learn More</a>
+     </div>
+ </section>
+
+ <section class="about">
+  
+      <div class="image-accent">
+          <img src="../assets/images/hero-2.JPG" alt="Description of the image">
+      </div>
+
+      <div class="about-content">
+          <div class="content-header">
+              <h3>About <span class="highlight">Smart Travel</span> Tours</h3>
+          </div>
+          <p>
+             Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis dolore omnis nisi id maiores, assumenda officia incidunt hic temporibus tempora illum dolor harum! Possimus quaerat saepe repellat expedita itaque debitis!
+          </p>
+          <p>
+              A small river named Duden flows by their place and supplies it with the necessary regalia. It is a paradisiacal country, in which roasted parts of sentences fly into your mouth.
+          </p>
+          <ul>
+              <li>Even the all-powerful Pointing</li>
+              <li>Behind the word mountains</li>
+              <li>Separated they live in Bookmarks grove</li>
+          </ul>
+      </div>
+
+</section>
+
+<section class="whybook">
+    <h3>Why book with Us?</h3>
+    <hr>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia id corrupti libero porro, unde mollitia minus est at ut animi.</p>
+
+    
+    <div class="cards-container">
+     <!-- Card 1 -->
+     <div class="card">
+         <div class="icon my-4 text-primary">
+             <i class="fas fa-plane fa-3x"></i>
+         </div>
+         <h5 class="card-title">Travel Planning Assistance</h5>
+         <p class="card-text">Our expert team will help you plan every detail of your trip, ensuring a hassle-free and enjoyable experience tailored to your preferences.</p>
+         <a href="#" class="btn btn-primary">Learn More</a>
+     </div>
+
+     <!-- Card 2 -->
+     <div class="card">
+         <div class="icon my-4 text-primary">
+             <i class="fas fa-map-marker-alt fa-3x"></i>
+         </div>
+         <h5 class="card-title">Local Experience Guides</h5>
+         <p class="card-text">Explore new destinations with local experts who will show you the hidden gems and cultural hotspots.</p>
+         <a href="#" class="btn btn-primary">Learn More</a>
+     </div>
+
+     <!-- Card 3 -->
+     <div class="card">
+         <div class="icon my-4 text-primary">
+             <i class="fas fa-tags fa-3x"></i>
+         </div>
+         <h5 class="card-title">Exclusive Deals and Offers</h5>
+         <p class="card-text">Get access to special deals and discounts, available only to our clients for a more budget-friendly journey.</p>
+         <a href="#" class="btn btn-primary">Learn More</a>
+     </div>
+
+     <!-- Card 4 -->
+     <div class="card">
+         <div class="icon my-4 text-primary">
+             <i class="fas fa-user-check fa-3x"></i>
+         </div>
+         <h5 class="card-title">Personalized Travel Experiences</h5>
+         <p class="card-text">Tailor your trip to match your interests and needs with our personalized travel planning services.</p>
+         <a href="#" class="btn btn-primary">Learn More</a>
+     </div>
+   </div>
+</section>
+
+
+<section class="testimonies">
+   <div class="mb-5">
+    <h3>Testimonies</h3>
+     <hr>
+     <p>What our clients says to our services.</p>
+  </div>
+   
+  <div id="carouselExample" class="carousel slide mt-5" data-bs-ride="carousel">
+     <div class="carousel-inner">
+      <div class="carousel-item active">
+          <div class="testimony-content">
+              <img src="https://picsum.photos/100/100?random=1" alt="Client Image" class="client-image">
+              <div class="card-body">
+                  <p class="client-quote">"The travel planning assistance was exceptional! They took care of everything!"</p>
+                  <h5 class="client-name">- Jane Doe</h5>
+              </div>
+          </div>
+      </div>
+      <div class="carousel-item">
+          <div class="testimony-content">
+              <img src="https://picsum.photos/100/100?random=2" alt="Client Image" class="client-image">
+              <div class="card-body">
+                  <p class="client-quote">"Thanks to the local experience guides, I discovered places I would have never found on my own!"</p>
+                  <h5 class="client-name">- John Smith</h5>
+              </div>
+          </div>
+      </div>
+      <div class="carousel-item">
+          <div class="testimony-content">
+              <img src="https://picsum.photos/100/100?random=3" alt="Client Image" class="client-image">
+              <div class="card-body">
+                  <p class="client-quote">"I got amazing deals that saved me a lot of money! Highly recommend!"</p>
+                  <h5 class="client-name">- Emily Johnson</h5>
+              </div>
+          </div>
+      </div>
+      <div class="carousel-item">
+          <div class="testimony-content">
+              <img src="https://picsum.photos/100/100?random=4" alt="Client Image" class="client-image">
+              <div class="card-body">
+                  <p class="client-quote">"The personalized travel experience was top-notch. It truly felt like a vacation tailored just for me!"</p>
+                  <h5 class="client-name">- Michael Brown</h5>
+              </div>
+          </div>
+      </div>
+    </div>
+
+    <div class="btn-container">
+     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+         <span class="visually-hidden">Previous</span>
+     </button>
+     <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+         <span class="carousel-control-next-icon" aria-hidden="true"></span>
+         <span class="visually-hidden">Next</span>
+     </button>
+    </div>
+
+
+
+</div>
+
+
+
+
+</section>
+
+
+
+
+
+
+
+
+</body>
+
+ <script>
+    window.addEventListener('scroll', function() {
+    const header = document.querySelector('header');
+
+    // Check if the user has scrolled down
+    if (window.scrollY > 0) {
+        header.classList.add('scrolled'); // Add the scrolled class
+    } else {
+        header.classList.remove('scrolled'); // Remove the scrolled class
+    }
+});
+
+
+
+
+ </script>
+
+
+ <!-- Popper CDN -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+
+<!-- Main Bootstrap JS CDN-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+
+<!-- JQuery JS CDN-->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</html>

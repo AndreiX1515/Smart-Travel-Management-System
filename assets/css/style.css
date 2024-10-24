@@ -607,19 +607,66 @@ button.btn-secondary:hover {
 
 
 
+
 /* Section 3 */
 #section3 {
-    background-color: beige; /* Section 2 background */
-    height: 80vh;
-    width: 100%;
-    padding: 40px 70px; /* Adjust padding as needed */
-    position: relative;
-    display: flex;
-    overflow: hidden;
-    align-items: center;
-    color: rgb(0, 0, 0);
-
+ position: relative;
+ background-image: linear-gradient(
+    180deg,
+    hsl(240deg 100% 20%) 1%,
+    hsl(268deg 100% 21%) 13%,
+    hsl(282deg 100% 21%) 19%,
+    hsl(295deg 100% 21%) 24%,
+    hsl(306deg 100% 23%) 27%,
+    hsl(314deg 100% 27%) 31%,
+    hsl(321deg 100% 31%) 34%,
+    hsl(326deg 100% 34%) 37%,
+    hsl(330deg 100% 37%) 40%,
+    hsl(334deg 100% 40%) 43%,
+    hsl(337deg 100% 42%) 46%,
+    hsl(340deg 97% 45%) 49%,
+    hsl(350deg 86% 54%) 52%,
+    hsl(359deg 92% 60%) 54%,
+    hsl(7deg 100% 61%) 57%,
+    hsl(15deg 100% 59%) 60%,
+    hsl(22deg 100% 58%) 63%,
+    hsl(28deg 100% 55%) 66%,
+    hsl(34deg 100% 52%) 69%,
+    hsl(39deg 100% 50%) 73%,
+    hsl(43deg 100% 50%) 76%,
+    hsl(47deg 100% 50%) 81%,
+    hsl(51deg 100% 50%) 86%,
+    hsl(55deg 100% 50%) 98%
+  );
+ background-size: cover;
+ background-position: center;
+ background-repeat: no-repeat;
+ background-color: beige;
+ height: 80vh;
+ width: 100%;
+ padding: 40px 70px;
+ display: flex;
+ align-items: center;
+ color: rgb(0, 0, 0);
+ overflow: hidden;
 }
+
+#section3::before {
+ content: '';
+ position: absolute;
+ top: 0;
+ left: 0;
+ height: 100%;
+ width: 100%;
+ background-color: rgba(0, 0, 0, 0.5); /* Dark opacity overlay */
+ z-index: 1; /* Ensure the overlay sits above the background image */
+}
+
+#section3 > * {
+ position: relative;
+ z-index: 2; /* Ensure the content appears above the overlay */
+}
+
 
 
 #section3 h2{
@@ -692,8 +739,13 @@ button.btn-secondary:hover {
  font-size: 42px;
  font-weight: 600;
  margin-bottom: 20px;
- color: rgb(34, 34, 34);
+ color: rgb(255, 255, 255); /* Change to white for better contrast on dark background */
+ text-shadow: 2px 4px 8px rgba(0, 0, 0, 0.7); /* Add a shadow for depth */
+ letter-spacing: 1px; /* Optional: Spacing out the letters slightly */
+ position: relative;
+ z-index: 2; /* Ensure it sits above background overlays */
 }
+
 
 .tabs {
  display: flex;
@@ -704,16 +756,32 @@ button.btn-secondary:hover {
 
 .tab {
  margin: 0 10px;
- padding: 5px 10px;
+ padding: 8px 15px; /* Maintain padding for better clickability */
  cursor: pointer;
- color: rgb(0, 0, 0);
- border-bottom: 2px solid transparent;
+ color: rgb(248, 248, 248); /* Darker text color for contrast on light background */
+ background-color: transparent; /* Transparent background for inactive tabs */
+ border-radius: 8px; /* Rounded corners */
+ box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Softer shadow for inactive tabs */
+ border-bottom: 2px solid transparent; /* No border for inactive tabs */
  margin-bottom: 20px;
+ transition: background-color 0.3s ease, box-shadow 0.3s ease, border-bottom 0.3s ease; /* Smooth transition for hover and active states */
+}
+
+.tab:hover {
+ background-color: rgba(255, 255, 255, 1); /* Solid white background on hover */
+ box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Slightly stronger shadow on hover */
 }
 
 .tab.active {
- border-bottom: 3px solid rgb(68, 68, 68);
+ background-color: rgba(255, 255, 255, 1); /* Solid white for active tab */
+ border-bottom: 3px solid rgb(75, 75, 75); /* Thicker, darker border for active tab */
+ box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2); /* Stronger shadow for active tab */
+ color: rgb(0, 0, 0); /* Darker text color for active tab */
+ font-weight: bold; /* Bold text to highlight active tab */
 }
+
+
+
 
 .destination-slider {
  position: relative;
@@ -745,19 +813,51 @@ button.btn-secondary:hover {
 .arrow {
  position: absolute;
  top: 50%;
- transform: translateY(-50%);
- font-size: 30px;
- color: white;
+ transform: translateY(-50%); /* Center vertically */
+ font-size: 36px; /* Adjusted size */
+ color: #ffffff; /* Arrow color */
  cursor: pointer;
+ transition: transform 0.3s ease, background-color 0.3s ease; /* Smooth transition for scaling effect and background color */
+ background-color: transparent; /* Transparent background */
+ border: 2px solid #929292; /* Suggested border color: Deep Orange */
+ border-radius: 50%; /* Makes the border circular */
+ padding: 5px; /* Padding for the circular effect */
+ width: 60px; /* Button width */
+ height: 60px; /* Button height */
+ display: flex; /* Flexbox for centering */
+ align-items: center; /* Center content vertically */
+ justify-content: center; /* Center content horizontally */
+ box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
 }
 
+.arrow:hover {
+ transform: translateY(-50%) scale(1.1); /* Scale the arrow up on hover */
+ background-color: rgba(255, 87, 34, 0.2); /* Light orange background on hover */
+ color: #464646; /* Arrow color */
+}
+
+
+
 .left {
- left: 10px;
+ left: 5%; /* Adjust positioning for left arrow */
 }
 
 .right {
- right: 10px;
+ right: 5%; /* Adjust positioning for right arrow */
 }
+
+
+
+
+/* Optional: Add hover effect for the circle container */
+.circle-container:hover .arrow {
+ background-color: rgba(255, 255, 255, 1); /* Solid white background on container hover */
+ color: #464646; /* Arrow color */
+}
+
+
+
+
 
 
 .destination-slider-item img {
@@ -776,9 +876,6 @@ button.btn-secondary:hover {
 }
 
 
-
-
-
 #section4 {
  position: relative;
  height: 80vh; /* Set height for section 4 */
@@ -786,17 +883,167 @@ button.btn-secondary:hover {
  overflow: hidden; /* Prevent overflow of child elements */
  text-align: left; /* Align text to the left */
  align-items: baseline; /* Align items based on their baseline */
+ padding: 60px 120px; /* Padding around the section */
 }
 
 #section4 h2 {
  color: #505050; /* Heading color for section 4 */
 }
 
-/* #section4 .container-header {
-   padi
+/* Container header styles */
+#section4 .container-header {
+ display: flex;
+ justify-content: space-between; /* Ensures left and right sides are spaced properly */
+ align-items: flex-start; /* Align the left side's content to the top */
+ width: 100%;
+}
+
+.left-side {
+ padding: 20px 10px 0px 10px; /* Padding around the left side */
+ width: 70%; /* Width for left side */
+}
+
+.left-side h5 {
+ font-size: 22px; /* Font size for heading */
+ font-weight: bold; /* Bold font for heading */
+ color: #116530; /* Color for heading */
+}
+
+.container-header .right-side {
+ padding: 20px; /* Padding around the right side */
+ width: 30%; /* Width for right side */
+ height: 90%;
+ display: flex;
+ justify-content: flex-end; /* Align content to the end horizontally */
+ align-items: flex-end; /* Align content to the bottom vertically */
+}
+
+.circle-buttons {
+ display: flex;
+ gap: 15px; /* Space between buttons */
+}
+
+.circle-btn {
+ border: 2px solid #116530; /* Border color and thickness */
+ border-radius: 50%; /* Makes the button circular */
+ background: transparent; /* Transparent background */
+ cursor: pointer; /* Pointer cursor on hover */
+ font-size: 36px; /* Adjust the size as needed */
+ color: #116530; /* Change this color as desired */
+ width: 60px; /* Button width */
+ height: 60px; /* Button height */
+ display: flex; /* Center the icon */
+ align-items: center; /* Center the icon vertically */
+ justify-content: center; /* Center the icon horizontally */
+ transition: transform 0.2s, background 0.2s; /* Smooth transitions */
+}
+
+.circle-btn:hover {
+ transform: scale(1.1); /* Slightly enlarge the button on hover */
+}
+
+.container-body {
+ padding: 20px 40px; /* Increased left and right padding */
+ width: 100%; /* Full width */
+ height: 100%;
+ display: flex; /* Flexbox for layout */
+ border: 1px solid #ddd; /* Light border for body */
+ border-radius: 8px; /* Rounded corners */
+ background-color: #fff; /* White background for body */
+ transition: transform 0.5s ease; /* Smooth transition for movement */
+}
+
+.carousel-content-wrapper {
+ position: relative; /* Position relative for positioning children */
+ width: 100%; /* Full width for carousel wrapper */
+ height: 100%; /* Full width for carousel wrapper */
+ 
+}
+
+.image-container {
+ height: 500px; /* Set a fixed height for the image container */
+ width: 60%;
+}
+
+.image-container img {
+ width: 100%; /* Make images responsive */
+ height: 100%; /* Set to 100% to fill the container */
+ border-radius: 10px; /* Add some rounding to image corners */
+ object-fit: cover; /* Cover the entire area while maintaining aspect ratio */
+}
+
+.content-container {
+ width: 40%;
+ height: 30%;
+ padding: 20px; /* Padding around the content container */
+ margin: 0 auto; /* Center the content horizontally */
+ /* border-radius: 10px;
+ box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); */
+}
+
+.content-container h3 {
+ font-size: 22px; /* Font size for heading */
+ font-weight: bold; /* Bold font for heading */
+ color: #116530; /* Color for heading */
+ margin-bottom: 15px; /* Space below the heading */
+ text-align: left; /* Center-align the heading */
+ letter-spacing: 1px; /* Spacing between characters */
+ line-height: 1.5; /* Line height for better readability */
+}
+
+.content-container p {
+ font-size: 18px; /* Font size for paragraph text */
+ font-weight: normal; /* Regular weight for paragraph text */
+ color: #333; /* Darker color for the paragraph text */
+ margin-bottom: 20px; /* Space below the paragraph */
+ line-height: 1.8; /* Line height for improved readability */
+ text-align: justify; /* Justify the paragraph text */
+}
+
+.carousel-content {
+   display: flex;
+   flex-direction: row;
+   gap: 10px;
+
+}
 
 
-} */
+.icon-buttons-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding: 10px 0px 10px 0px;
+}
+
+.icon-button {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ced4da;
+    border-radius: 30px;
+    padding: 8px 15px;
+    background-color: #f8f9fa;
+    font-size: 16px;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.icon-button i {
+    margin-right: 8px;
+}
+
+.icon-button:hover {
+    background-color: #e9ecef;
+}
+.book-btn-container {
+   padding: 20px 0px 10px 0px;
+}
+
+.book-btn-container btn{
+   padding: 20px 0px 10px 0px;
+}
+
+
 
 
 
