@@ -10,7 +10,6 @@ header {
  width: 100%;
  z-index: 1000; /* Ensures it stays above other content */
  background-color: rgba(255, 255, 255, 0.0); /* Semi-transparent background */
- box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
  transition: background-color 0.3s ease; /* Smooth transition for background change */
 }
 
@@ -83,7 +82,7 @@ nav {
 
 
 .hero {
- height: 80vh; /* Full viewport height */
+ height: 90vh; /* Full viewport height */
  display: flex; /* Flexbox layout for centering content */
  justify-content: left; /* Center content horizontally */
  align-items: center; /* Center content vertically */
@@ -116,37 +115,51 @@ nav {
 
 
 .section-container {
- position: relative; /* Positioning context for the text */
- z-index: 2; /* Set above the background image */
+ position: relative;
+ z-index: 2;
  padding: 30px 220px;
- display: flex; /* Enable flexbox */
- flex-direction: column; /* Stack items vertically */
- align-items: flex-start; /* Align items to the left */
- text-align: left; /* Align text to the left */
+ display: flex;
+ flex-direction: column;
+ align-items: flex-start;
+ text-align: left;
 }
 
-.section-container h1{
- font-size: 48px; 
- font-weight: 600;
+.section-container h1 {
+ font-size: 48px;
+ font-weight: 700;
+ color: #dddddd; /* White color for high contrast on dark background */
+ margin-bottom: 20px;
+ line-height: 1.2;
+ text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6); /* Adds depth with a soft shadow */
 }
 
+
+.section-container p {
+ font-size: 18px;
+ color: #e0e0e0; /* Lighter color for better contrast on dark background */
+ line-height: 1.6;
+ margin-bottom: 20px;
+ max-width: 600px;
+ text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.5); /* Soft shadow to add depth */
+}
 
 .cta-button {
  display: inline-block;
  margin-top: 20px;
- padding: 10px 20px;
- background-color: #EB1C22; /* Button background color */
- color: rgb(255, 255, 255); /* Button text color */
+ padding: 10px 30px;
+ background-color: #EB1C22;
+ color: #ffffff;
+ font-weight: 600;
+ font-size: 16px;
  text-decoration: none;
  border-radius: 5px;
- transition: background-color 0.3s;
+ transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .cta-button:hover {
- background-color: #eb1c2383; /* Darker shade on hover */
-
+ background-color: #c5171d;
+ transform: scale(1.05); /* Slight scale effect for interactivity */
 }
-
 
 
 
@@ -377,7 +390,7 @@ nav {
 /* Carousel control styles */
 .carousel-control-prev,
 .carousel-control-next {
- background-color: rgba(255, 0, 0, 0.7); /* Semi-transparent red background */
+ color: rgba(255, 0, 0, 0.7); /* Semi-transparent red background */
  border-radius: 50%; /* Rounded buttons */
  width: 40px; /* Width for buttons */
  height: 40px; /* Height for buttons */
@@ -398,3 +411,217 @@ nav {
 .carousel-control-next-icon {
  filter: invert(1); /* Invert color for visibility */
 }
+
+
+
+/* Packages-offered */
+
+.packages-offered {
+ padding: 40px 220px; /* Add padding for the about section */
+ height: 85vh;
+}
+
+.packages-offered-header {
+ display: flex;
+ flex-direction: row;
+}
+
+.packages-offered-header hr {
+ border: 1px groove #FF0000; 
+ width: 10%; 
+
+}
+
+
+
+
+.left-side {
+ padding: 20px 10px 0px 10px; /* Padding around the left side */
+ width: 70%; /* Width for left side */
+ margin-top: 10px;
+ 
+}
+
+.left-side h5 {
+ font-size: 22px; /* Font size for heading */
+ font-weight: bold; /* Bold font for heading */
+ color: #ce1111; /* Color for heading */
+}
+
+
+ .right-side {
+ padding:  20px 10px 0px 20px; /* Padding around the right side */
+ width: 30%; /* Width for right side */
+ height: 150px;
+ display: flex;
+ justify-content: flex-end; /* Align content to the end horizontally */
+ align-items: flex-end; /* Align content to the bottom vertically */
+}
+
+.circle-buttons {
+ display: flex;
+ gap: 15px; /* Space between buttons */
+}
+
+.circle-btn {
+ border: 2px solid #ce1111; /* Border color and thickness */
+ border-radius: 50%; /* Makes the button circular */
+ background: transparent; /* Transparent background */
+ cursor: pointer; /* Pointer cursor on hover */
+ font-size: 28px; /* Adjust the size as needed */
+ color: #ce1111; /* Change this color as desired */
+ width: 50px; /* Button width */
+ height: 50px; /* Button height */
+ display: flex; /* Center the icon */
+ align-items: center; /* Center the icon vertically */
+ justify-content: center; /* Center the icon horizontally */
+ transition: transform 0.2s, background 0.2s; /* Smooth transitions */
+}
+
+.circle-btn:hover {
+ transform: scale(1.1); /* Slightly enlarge the button on hover */
+}
+
+.container-body {
+ padding: 20px 40px; /* Increased left and right padding */
+ width: 100%; /* Full width */
+ height: 100%;
+ display: flex; /* Flexbox for layout */
+ border: 1px solid #ddd; /* Light border for body */
+ border-radius: 8px; /* Rounded corners */
+ background-color: #fff; /* White background for body */
+ transition: transform 0.5s ease; /* Smooth transition for movement */
+}
+
+.carousel-content-wrapper {
+ position: relative; /* Position relative for positioning children */
+ width: 100%; /* Full width for carousel wrapper */
+ height: 100%; /* Full width for carousel wrapper */
+ 
+}
+
+.image-container {
+ height: 500px; /* Set a fixed height for the image container */
+ width: 60%;
+}
+
+.image-container img {
+ width: 100%; /* Make images responsive */
+ height: 100%; /* Set to 100% to fill the container */
+ border-radius: 10px; /* Add some rounding to image corners */
+ object-fit: cover; /* Cover the entire area while maintaining aspect ratio */
+}
+
+.content-container {
+ width: 40%;
+ height: 30%;
+ padding: 20px; /* Padding around the content container */
+ margin: 0 auto; /* Center the content horizontally */
+ /* border-radius: 10px;
+ box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); */
+}
+
+.content-container h3 {
+ font-size: 22px; /* Font size for heading */
+ font-weight: bold; /* Bold font for heading */
+ color: #116530; /* Color for heading */
+ margin-bottom: 15px; /* Space below the heading */
+ text-align: left; /* Center-align the heading */
+ letter-spacing: 1px; /* Spacing between characters */
+ line-height: 1.5; /* Line height for better readability */
+}
+
+.content-container p {
+ font-size: 18px; /* Font size for paragraph text */
+ font-weight: normal; /* Regular weight for paragraph text */
+ color: #333; /* Darker color for the paragraph text */
+ margin-bottom: 20px; /* Space below the paragraph */
+ line-height: 1.8; /* Line height for improved readability */
+ text-align: justify; /* Justify the paragraph text */
+}
+
+.carousel-content {
+   display: flex;
+   flex-direction: row;
+   gap: 10px;
+
+}
+
+
+.icon-buttons-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding: 10px 0px 10px 0px;
+}
+
+.icon-button {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ced4da;
+    border-radius: 30px;
+    padding: 8px 15px;
+    background-color: #f8f9fa;
+    font-size: 16px;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.icon-button i {
+    margin-right: 8px;
+}
+
+.icon-button:hover {
+    background-color: #e9ecef;
+}
+.book-btn-container {
+   padding: 20px 0px 10px 0px;
+}
+
+.book-btn-container btn{
+   padding: 20px 0px 10px 0px;
+}
+
+
+
+.featured-hotels {
+  padding: 50px 220px; 
+  background-color: #f9f9f9; 
+  display: flex;
+  justify-content: center;
+  align-items: first baseline;
+  position: relative; /* Ensure hero section positions correctly */
+  overflow: hidden; /* Prevent overflow */
+  height: 100vh;
+}
+
+.featured-hotels .section-header {
+ display: flex;
+ flex-direction: column;
+ align-items: center; /* Centers contents horizontally */
+ justify-content: center; /* Centers contents vertically */
+}
+
+.featured-hotels h3 {
+ font-size: 36px;
+ color: #FF0000;
+ margin-bottom: 20px;
+ text-align: center; /* Center-aligns text */
+}
+
+.featured-hotels p {
+ font-size: 18px;
+ color: #333333;
+ margin-bottom: 40px;
+ max-width: 800px;
+ text-align: center; /* Center-aligns text */
+}
+
+.featured-hotels hr {
+ border: 1px groove #FF0000;
+ width: 30%;
+ margin: 0px auto 15px auto;
+}
+
+
