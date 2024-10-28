@@ -33,12 +33,14 @@ if (isset($_POST['pay']))
       $uploadFileDir = 'uploads/';
       
       // Create a unique file name using transaction number and current date in mm-dd-yyyy format (no time)
-      $newFileName = $transactNo . '-' . date('m-d-Y') . '.' . $fileExtension; // Updated to exclude time
+      $newFileName = $transactNo . '-' . date('m-d-Y_H-i') . '.' . $fileExtension;
       $destPath = $uploadFileDir . $newFileName; // Updated to use the new file name
 
       // Move the file to the upload directory
       if (move_uploaded_file($fileTmpPath, $destPath)) 
       {
+        // Start a transaction
+        $conn->begin_transaction();
         // Prepare the SQL statement for insertion into the payment table
         $sql1 = "INSERT INTO payment (transactNo, amount, paymentDate, proof) VALUES (?, ?, NOW(), ?)";
         $stmt1 = $conn->prepare($sql1);
