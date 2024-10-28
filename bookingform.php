@@ -156,7 +156,7 @@
               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group mb-6">
-                    <input type="hidden" id="flightId" name="flightId" value="">
+                    <input type="" id="flightId" name="flightId" value="">
                     <input type="hidden" id="packagePrice" name="packagePrice" value="">
                   </div>
                 </div>
@@ -685,9 +685,9 @@
 
                   <div class="col-md-4">
                     <div class="form-group mb-4">
-                      <label class="mb-2" for="contactNo2">Other Contact No.</label>
+                      <label class="mb-2" for="2ndcontactNo">Other Contact No.</label>
                       <div class="input-group">
-                        <select name="2ndcountryCode[]" class="form-select" required>
+                        <select name="2ndcountryCode[]" class="form-select">
                           <option disabled selected>Country Code</option>
                           <option value="+93">Afghanistan (+93)</option>
                           <option value="+355">Albania (+355)</option>
@@ -1459,6 +1459,8 @@
             // Update the flight price for all guests with the package price
             $('input[name^="flightPrice"]').val(packagePrice);
 
+            $('input[name^="flightId"]').val("Null");
+
             console.log('Outbound flight is null, using package price:', packagePrice);
         } 
         else if (outboundFlight) 
@@ -1665,7 +1667,6 @@
           $('#BookingSummaryModal').modal('show'); // Trigger modal display
         }
       });
-
 
       // Optional: If you want to clear validation errors when the user focuses on the field
       // $('select, input').focus(function () 
