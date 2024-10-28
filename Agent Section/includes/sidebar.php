@@ -5,16 +5,23 @@
   </div>
 
   <div class="section-title">Dashboard</div>
-   <a href="../Agent Section/agent-dashboard.php"> <i class="fas fa-home"></i> Home </a>
+<a href="../Agent Section/agent-dashboard.php"> <i class="fas fa-home"></i> Home </a>
 
-  <div class="section-title">Operational</div>
-   <a href="../Agent Section/agent-transactions.php"> <i class="fas fa-box"></i> Transactions </a>
+<div class="section-title">Operational</div>
+<a href="../Agent Section/agent-transactions.php"> <i class="fas fa-exchange-alt"></i> Transactions </a>
 
-   <div class="section-title">Management</div>
-   <a href="../Agent Section/agent-transactions.php"> <i class="fas fa-box"></i> Client Accounts </a>
-   <a href="../Agent Section/agent-transactions.php"> <i class="fas fa-box"></i> Agent Accounts </a>
-   <a href="../Agent Section/agent-transactions.php"> <i class="fas fa-box"></i> Client Login History </a>
-   <a href="../Agent Section/agent-transactions.php"> <i class="fas fa-box"></i> Agent Login History </a>
+<a href="../Agent Section/agent-transactions.php"> <i class="fas fa-exchange-alt"></i> Transactions </a>
+
+<a href="../Agent Section/agent-transactions.php"> <i class="fas fa-exchange-alt"></i> Transactions </a>
+
+<a href="../Agent Section/agent-transactions.php"> <i class="fas fa-exchange-alt"></i> Transactions </a>
+
+<div class="section-title">Management</div>
+<a href="../Agent Section/agent-client-accounts.php"> <i class="fas fa-user-friends"></i> Client Accounts </a>
+<a href="../Agent Section/agent-agent-accounts.php"> <i class="fas fa-users"></i> Agent Accounts </a>
+<a href="../Agent Section/agent-client-login-history.php"> <i class="fas fa-history"></i> Client Login History </a>
+<a href="../Agent Section/agent-agent-login-history.php"> <i class="fas fa-history"></i> Agent Login History </a>
+
    
    
 

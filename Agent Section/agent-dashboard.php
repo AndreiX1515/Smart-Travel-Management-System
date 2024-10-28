@@ -44,169 +44,409 @@ $current_date = date('D, F d, Y'); // Format: "Tue, January 01, 2024"
       </div>
     </div>
 
+     
     <div class="dashboard-cards d-flex flex-wrap justify-content-between">
-     <div class="card order-card">
-         <div class="card-block">
-             <div class="header-top d-flex justify-content-between align-items-center mb-2">
-                 <div class="d-flex flex-column">
-                     <div class="header-top-container d-flex flex-row">
-                         <h6>Total Transaction</h6>
-                     </div>
-                     <h2 class="mt-1">436</h2>
-                 </div>
-             </div>
+   
+    <div class="dashboard-cards-one card">
+        <div class="dcard-header">
+            <div class="header-text">
+               <h3>Transaction Status Count:</h3>
+            </div>
+           
+            <!-- <div class="view-button">
+                <a class="btn">
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div> -->
+        </div>
 
-             <div class="bottom-section">
-                 <div class="d-flex flex-row justify-content-between">
-                     <div class="trend-up">
-                        <i class="fas fa-arrow-trend-up"></i>
-                        <span class="percentage-change">+30.6%</span>
-                        <h5 class="comparison-text">vs. last month</h5>
-                     </div>
+        <div class="dcard-body">
+           <div class="month-transaction">
+               <h3>18</h3>
+               <span class="status-cancelled">CANCELLED</span>
+           </div>
 
-                     <div class="arrow-up">
-                         <i class="fa-solid fa-square-arrow-up-right"></i>
-                     </div>
-                 </div>
-             </div>
-         </div>
-     </div>
+           <div class="vertical-line"></div>
 
-     <div class="card order-card">
-         <div class="card-block">
-             <div class="header-top d-flex justify-content-between align-items-center mb-2">
-                 <div class="d-flex flex-column">
-                     <div class="header-top-container d-flex flex-row">
-                         <h6>Total Transaction</h6>
-                     </div>
-                     <h2 class="mt-1">436</h2>
-                 </div>
-             </div>
+           <div class="month-transaction">
+               <h3>18</h3>
+               <span class="status-unconfirmed">UNCONFIRMED</span>
+           </div>
 
-             <div class="bottom-section">
-                 <div class="d-flex flex-row justify-content-between"> 
-                     <div class="trend-down">
-                        <i class="fa-solid fa-arrow-trend-down"></i>
-                        <span class="percentage-change">-30.6%</span>
-                        <h5 class="comparison-text">vs. last month</h5>
-                     </div>
+           <div class="vertical-line"></div>
 
-                     <div class="arrow-up">
-                         <i class="fa-solid fa-square-arrow-up-right"></i>
-                     </div>
-                 </div>
-             </div>
-         </div>
-     </div>
-
-</div>
-
-    <div class="second-row-container">
-      <div class="one">
-        <div class="header d-flex justify-content-between align-items-center justify-content-between">
-           <h6>Bookings</h6>
-           <div class="view-booking-container">
-               <a class="btn">
-                   <i class="fa-solid fa-arrow-right"></i>
-               </a>
+           <div class="month-transaction">
+               <h3>18</h3>
+               <span class="status-confirmed">CONFIRMED</span>
            </div>
        </div>
-       
-        <div class="body mt-4">
-            <table class="styled-table" id="transactionTable">
-                <thead>
-                    <tr>
-                        <th>Transaction No.</th>
-                        <th>Date of Created</th>
-                        <th>Customer</th>
-                        <th>Downpayment</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>#Inv06562</td>
-                        <td>18 Nov 2023</td>
-                        <td>Henry, Arthur</td>
-                        <td>$25</td>
-                        <td><span class="payment-status cash"></span> Completed</td>
-                    </tr>
-                    <tr>
-                        <td>#Inv03562</td>
-                        <td>18 Nov 2023</td>
-                        <td>Eleanor Pena</td>
-                        <td>$4</td>
-                        <td><span class="payment-status bank"></span> Pending</td>
-                    </tr>
-                    <tr>
-                        <td>#Inv02645</td>
-                        <td>18 Nov 2023</td>
-                        <td>Courtney Henry</td>
-                        <td>$5</td>
-                        <td><span class="payment-status bank"></span> Pending</td>
-                    </tr>
-                    <tr>
-                        <td>#Inv06256</td>
-                        <td>18 Nov 2023</td>
-                        <td>Jane Cooper</td>
-                        <td>$21</td>
-                        <td><span class="payment-status card"></span> Completed</td>
-                    </tr>
-                    <tr>
-                        <td>#Inv06256</td>
-                        <td>18 Nov 2023</td>
-                        <td>Jane Cooper</td>
-                        <td>$15</td>
-                        <td><span class="payment-status cash"></span> Completed</td>
-                    </tr>
-                    <tr>
-                        <td>#Inv06256</td>
-                        <td>18 Nov 2023</td>
-                        <td>Jane Cooper</td>
-                        <td>$15</td>
-                        <td><span class="payment-status cash"></span> Completed</td>
-                    </tr>
-                </tbody>
-            </table>
+     </div>
 
-            <footer class="footer">
-                <div class="pagination-container">
-                    <div id="pagination" class="pagination">
-                        <button id="prevBtn" onclick="changePage(-1)">Previous</button>
-                        <div id="pageNumbers" class="page-numbers">
-                            <span class="page-number active">1</span>
-                            <span class="page-number">2</span>
-                            <span class="page-number">3</span>
-                            <span class="page-number">4</span>
-                        </div>
-                        <button id="nextBtn" onclick="changePage(1)">Next</button>
-                    </div>
-                </div>
-            </footer>
+    <div class="dashboard-cards-two card">
+        <div class="dcard-header">
+            <div class="header-text">
+               <h3>Booking Count:</h3>
+            </div>
+        </div>
+
+        <div class="dcard-body">
+           <div class="month-transaction">
+               <h3>18</h3>
+               <span class="">LAST MONTH</span>
+               <span class="accent">(September)</span>
+           </div>
+
+           <div class="vertical-line"></div>
+
+           <div class="month-transaction">
+               <h3>18</h3>
+               <span class="">THIS MONTH</span>
+               <span class="accent">(October)</span>
+           </div>
+
+           <div class="vertical-line"></div>
+
+           <div class="month-transaction">
+               <h3>18</h3>
+               <span class="">NEXT MONTH</span>
+               <span class="accent">(November)</span>
+           </div>
+       </div>
+
+        <div class="dcard-footer">
+
+
         </div>
     </div>
 
-
-
-    <div class="two">
-      <div class="header d-flex justify-content-between align-items-center justify-content-between">
-             <h6>Seats</h6>
-             <div class="view-booking-container">
-                 <a class="btn">
-                     <!-- <i class="fa-solid fa-arrow-right"></i> -->
-                 </a>
-             </div>
-         </div>
-      <div class="body">
-          <canvas id="myDoughnutChart"></canvas> <!-- Doughnut chart will render here -->
+    <div class="dashboard-cards-three card">
+      <div class="dcard-header">
+          <div class="header-text">
+             <h3>Transaction Count:</h3>
+          </div>
+         
+          <!-- <div class="view-button">
+              <a class="btn">
+                  <i class="fa-solid fa-arrow-right"></i>
+              </a>
+          </div> -->
       </div>
+
+      <div class="dcard-body">
+         
+      </div>
+
+      <div class="dcard-footer">
+
+      </div>
+
+    </div>
+
+    
+
+<div class="dashboard-cards-four card">
+    <div class="dcard-header">
+        <div class="header-text">
+            <h3>Currency Conversion</h3>
+        </div>
+    </div>
+
+    
+    <?php
+// Your API key
+$apiKey = '77dc42e0276c97b3f723a125';
+$timeInterval = 3600; // 1 hour in seconds
+$lastFetchFile = 'last_fetch_time.txt'; // File to store last fetch time
+$exchangeRatesFile = 'exchange_rates.json'; // File to store exchange rates
+
+// Function to fetch the latest conversion rates
+function getExchangeRates($apiKey) {
+    $url = "https://v6.exchangerate-api.com/v6/$apiKey/latest/USD"; // USD as the base currency
+    $response = file_get_contents($url);
+    return json_decode($response, true);
+}
+
+// Check last fetch time
+if (file_exists($lastFetchFile)) {
+    $lastFetchTime = (int)file_get_contents($lastFetchFile);
+
+    // Fetch new rates if last fetch was more than 1 hour ago
+    if (time() - $lastFetchTime >= $timeInterval) {
+        $exchangeRates = getExchangeRates($apiKey);
+        file_put_contents($exchangeRatesFile, json_encode($exchangeRates));
+        file_put_contents($lastFetchFile, time()); // Update last fetch time
+    } else {
+        // Load rates from saved file
+        $exchangeRates = json_decode(file_get_contents($exchangeRatesFile), true);
+    }
+} else {
+    // First run, fetch rates from API
+    $exchangeRates = getExchangeRates($apiKey);
+    file_put_contents($exchangeRatesFile, json_encode($exchangeRates));
+    file_put_contents($lastFetchFile, time()); // Set initial fetch time
+}
+
+// Extract conversion rates or use fallback values
+$usd_to_php = $exchangeRates['conversion_rates']['PHP'] ?? 56.50; // Fallback if not found
+$usd_to_krw = $exchangeRates['conversion_rates']['KRW'] ?? 1320;  // Fallback if not found
+$usd_to_euro = $exchangeRates['conversion_rates']['EUR'] ?? 0.85;  // Fallback if not found
+?>
+
+<div class="dcard-body">
+    <div class="currency-content mt-2">
+        <div class="currency-item">
+            <img src="../assets/images/Flags/english-flag.png" alt="" class="currency-flag">
+            <p class="currency-name">1 USD</p>
+            <p class="conversion-rate">$1.00</p> <!-- Rate of 1 USD to itself -->
+        </div>
+
+        <div>
+            <i class="fa-solid fa-arrow-right-arrow-left"></i>
+        </div>
+
+        <div class="currency-item me-3">
+            <img src="../assets/images/Flags/philippines (2).png" alt="" class="currency-flag">
+            <p class="currency-name">PHP</p>
+            <p class="conversion-rate">₱ <?php echo number_format($usd_to_php, 2); ?></p>
+        </div>
+
+        <div class="currency-item me-3">
+            <img src="../assets/images/Flags/korean-flag.png" alt="" class="currency-flag">
+            <p class="currency-name">WON</p>
+            <p class="conversion-rate">₩ <?php echo number_format($usd_to_krw, 2); ?></p>
+        </div>
+
+        <div class="currency-item">
+            <img src="../assets/images/Flags/european.png" alt="" class="currency-flag">
+            <p class="currency-name">EURO</p>
+            <p class="conversion-rate">€ <?php echo number_format($usd_to_euro, 2); ?></p> 
+        </div>
+    </div>
+</div>
+
+
+ </div>
+  
+</div> 
+
+   <div class="second-row-container">
+     <div class="one">
+       <div class="header d-flex justify-content-between align-items-center">
+          <h6>Unconfirmed Transactions</h6>
+          <div class="view-booking-container">
+              <a class="btn">
+                  <i class="fa-solid fa-arrow-right"></i>
+              </a>
+          </div>
+      </div>
+      
+       <div class="body mt-4">
+           <!-- <table class="styled-table" id="transactionTable">
+               <thead>
+                   <tr>
+                       <th>Transaction No.</th>
+                       <th>Flight Date</th>
+                       <th>Total Pax.</th>
+                       <th>Contact Name</th>
+                       <th>Status</th>
+                   </tr>
+               </thead>
+               <tbody>
+                   <tr>
+                       <td>#Inv06562</td>
+                       <td>18 Nov 2023</td>
+                       <td>Henry, Arthur</td>
+                       <td>$25</td>
+                       <td><span class="payment-status cash"></span> Completed</td>
+                   </tr>
+                   <tr>
+                       <td>#Inv03562</td>
+                       <td>18 Nov 2023</td>
+                       <td>Eleanor Pena</td>
+                       <td>$4</td>
+                       <td><span class="payment-status bank"></span> Pending</td>
+                   </tr>
+                   <tr>
+                       <td>#Inv02645</td>
+                       <td>18 Nov 2023</td>
+                       <td>Courtney Henry</td>
+                       <td>$5</td>
+                       <td><span class="payment-status bank"></span> Pending</td>
+                   </tr>
+                   <tr>
+                       <td>#Inv06256</td>
+                       <td>18 Nov 2023</td>
+                       <td>Jane Cooper</td>
+                       <td>$21</td>
+                       <td><span class="payment-status card"></span> Completed</td>
+                   </tr>
+                   <tr>
+                       <td>#Inv06256</td>
+                       <td>18 Nov 2023</td>
+                       <td>Jane Cooper</td>
+                       <td>$15</td>
+                       <td><span class="payment-status cash"></span> Completed</td>
+                   </tr>
+                   <tr>
+                       <td>#Inv06256</td>
+                       <td>18 Nov 2023</td>
+                       <td>Jane Cooper</td>
+                       <td>$15</td>
+                       <td><span class="payment-status cash"></span> Completed</td>
+                   </tr>
+               </tbody>
+           </table> -->
+
+
+
+           <footer class="footer">
+               <!-- <div class="pagination-container">
+                   <div id="pagination" class="pagination">
+                       <button id="prevBtn" onclick="changePage(-1)">Previous</button>
+                       <div id="pageNumbers" class="page-numbers">
+                           <span class="page-number active">1</span>
+                           <span class="page-number">2</span>
+                           <span class="page-number">3</span>
+                           <span class="page-number">4</span>
+                       </div>
+                       <button id="nextBtn" onclick="changePage(1)">Next</button>
+                   </div>
+               </div> -->
+           </footer>
+       </div>
    </div>
 
 
+
+   <div class="two">
+      <div class="header d-flex justify-content-between align-items-center">
+          <h6>Requests</h6>
+          <div class="view-booking-container">
+              <a class="btn">
+                  <i class="fa-solid fa-arrow-right"></i>
+              </a>
+          </div>
+      </div>
+
+
+     <!-- <div class="header d-flex justify-content-between align-items-center justify-content-between">
+            <h6>Seats</h6>
+            <div class="view-booking-container">
+                <a class="btn">
+                    <!-- <i class="fa-solid fa-arrow-right"></i> 
+                </a>
+            </div>
+        </div>
+        
+     <div class="body">
+         <canvas id="myDoughnutChart"></canvas> <!-- Doughnut chart will render here 
+     </div> -->
   </div>
 
-</div>
 
+ </div>
+
+
+ <div class="confirm-container">
+   <div class="one">
+         <div class="header d-flex justify-content-between align-items-center justify-content-between">
+            <h6>Confirmed Transactions</h6>
+            <div class="view-booking-container">
+                <a class="btn">
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+        
+         <div class="body mt-4">
+             <!-- <table class="styled-table" id="transactionTable">
+                 <thead>
+                     <tr>
+                         <th>Transaction No.</th>
+                         <th>Flight Date</th>
+                         <th>Total Pax.</th>
+                         <th>Contact Name</th>
+                         <th>Status</th>
+                     </tr>
+                 </thead>
+                 <tbody>
+                     <tr>
+                         <td>#Inv06562</td>
+                         <td>18 Nov 2023</td>
+                         <td>Henry, Arthur</td>
+                         <td>$25</td>
+                         <td><span class="payment-status cash"></span> Completed</td>
+                     </tr>
+                     <tr>
+                         <td>#Inv03562</td>
+                         <td>18 Nov 2023</td>
+                         <td>Eleanor Pena</td>
+                         <td>$4</td>
+                         <td><span class="payment-status bank"></span> Pending</td>
+                     </tr>
+                     <tr>
+                         <td>#Inv02645</td>
+                         <td>18 Nov 2023</td>
+                         <td>Courtney Henry</td>
+                         <td>$5</td>
+                         <td><span class="payment-status bank"></span> Pending</td>
+                     </tr>
+                     <tr>
+                         <td>#Inv06256</td>
+                         <td>18 Nov 2023</td>
+                         <td>Jane Cooper</td>
+                         <td>$21</td>
+                         <td><span class="payment-status card"></span> Completed</td>
+                     </tr>
+                     <tr>
+                         <td>#Inv06256</td>
+                         <td>18 Nov 2023</td>
+                         <td>Jane Cooper</td>
+                         <td>$15</td>
+                         <td><span class="payment-status cash"></span> Completed</td>
+                     </tr>
+                     <tr>
+                         <td>#Inv06256</td>
+                         <td>18 Nov 2023</td>
+                         <td>Jane Cooper</td>
+                         <td>$15</td>
+                         <td><span class="payment-status cash"></span> Completed</td>
+                     </tr>
+                 </tbody>
+             </table> -->
+
+
+
+             <footer class="footer">
+                 <!-- <div class="pagination-container">
+                     <div id="pagination" class="pagination">
+                         <button id="prevBtn" onclick="changePage(-1)">Previous</button>
+                         <div id="pageNumbers" class="page-numbers">
+                             <span class="page-number active">1</span>
+                             <span class="page-number">2</span>
+                             <span class="page-number">3</span>
+                             <span class="page-number">4</span>
+                         </div>
+                         <button id="nextBtn" onclick="changePage(1)">Next</button>
+                     </div>
+                 </div> -->
+             </footer>
+         </div>
+     </div>
+
+
+
+
+
+
+ </div>
+
+
+
+
+
+
+ </div>
 </div>
 
 

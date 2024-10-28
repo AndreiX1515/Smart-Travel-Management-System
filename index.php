@@ -277,9 +277,11 @@
                 </div>
             </div>
 
-            <!-- Navigation Arrows -->
-            <div class="arrow left">&#10094;</div>
-            <div class="arrow right">&#10095;</div>
+            <div class="circle-container">
+               <div class="arrow left">&#10094;</div>
+               <div class="arrow right">&#10095;</div>
+            </div>
+            
         </div>
     </div>
 </div>
@@ -368,31 +370,144 @@
 
     </script>
 
-    <!-- Packages Offered -->
-    <div class="section" id="section4"> 
-       <div class="container-header">
-          <h5>Package Offered</h5>
-          <h3>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Magni tenetur dignissimos ab, pariatur, illum asperiores soluta porro eveniet quidem quaerat omnis culpa ratione rem ipsum labore. </h3>
+     <!-- Packages Offered -->
+     <div class="section d-flex flex-column" id="section4"> 
+         <div class="package-container">
+             <div class="container-header d-flex flex-row mb-3">
+                 <div class="left-side me-3">
+                     <h5>Packages Offered</h5>
+                     <h3 class="mt-3">Discover Amazing Destinations</h3>
+                     <p>Experience the world’s top destinations with our tailored travel packages. From vibrant cities to serene landscapes, enjoy guided tours, exclusive deals, and personalized itineraries designed to make your trip unforgettable.</p>
+                 </div>
+                 <div class="right-side"> 
+                     <div class="circle-buttons">
+                         <button type="button" class="circle-btn left" onclick="moveLeft()" data-bs-target="#carouselExampleSlidesOnly" data-bs-slide="prev">
+                             <i class="fa-solid fa-chevron-left"></i>
+                         </button>
+                         <button type="button" class="circle-btn right" onclick="moveRight()" data-bs-target="#carouselExampleSlidesOnly" data-bs-slide="next">
+                             <i class="fa-solid fa-chevron-right"></i>
+                         </button>
+                     </div>
+                 </div>
+             </div>
+
+             <div class="carousel-content-wrapper">
+                 <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+                     <div class="carousel-inner">
+                         <div class="carousel-item active">
+                           <div class="carousel-content">
+                                 <div class="image-container">
+                                     <img src="assets/images/Places in Korea/Jeju Island/jeongbang_waterfall.jpg"  alt="Jeongbang Waterfall">
+                                 </div>
+                                 <div class="content-container">
+                                     <h3>Summer Package</h3>
+                                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem iure nam totam blanditiis necessitatibus doloribus quasi, eius veniam, dicta vero labore vitae quidem. Laboriosam culpa facere porro dolorem iusto repellat..</p>
+
+                                     <div class="icon-buttons-container">
+                                        <div class="icon-button">
+                                            <i class="fas fa-sun"></i> 5 Days
+                                        </div>
+                                        <div class="icon-button">
+                                            <i class="fas fa-calendar-alt"></i> Mar - Oct
+                                        </div>
+                                        <div class="icon-button">
+                                            <i class="fas fa-map-marker-alt"></i> Keflavik Airport
+                                        </div>
+                                        <div class="icon-button">
+                                            <i class="fas fa-clock"></i> Flexible
+                                        </div>
+                                    </div>
+
+                                     <div class="book-btn-container">
+                                         <button class="btn btn-primary px-4 py-2"> Book Now </button>
+                                     </div>
+
+                                 </div>
+                             </div>
+                         </div>
+
+                         <div class="carousel-item">
+                            <div class="carousel-content">
+                               <div class="image-container">
+                                   <img src="assets\images\Places in Korea\Jeju Island\seongsan_ilchulbong.jpg"  alt="Image 2">
+                               </div>
+                               <div class="content-container">
+                                     <h3>Summer Package</h3>
+                                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem iure nam totam blanditiis necessitatibus doloribus quasi, eius veniam, dicta vero labore vitae quidem. Laboriosam culpa facere porro dolorem iusto repellat..</p>
+
+                                     <div class="icon-buttons-container">
+                                        <div class="icon-button">
+                                            <i class="fas fa-sun"></i> 5 Days
+                                        </div>
+                                        <div class="icon-button">
+                                            <i class="fas fa-calendar-alt"></i> Mar - Oct
+                                        </div>
+                                        <div class="icon-button">
+                                            <i class="fas fa-map-marker-alt"></i> Keflavik Airport
+                                        </div>
+                                        <div class="icon-button">
+                                            <i class="fas fa-clock"></i> Flexible
+                                        </div>
+                                    </div>
+
+                                     <div class="book-btn-container">
+                                         <button class="btn btn-primary px-4 py-2"> Book Now </button>
+                                     </div>
+
+                                 </div>
+                             </div>
+                         </div>
+
+                         <div class="carousel-item">
+                           <div class="carousel-content">
+                             <div class="image-container">
+                                 <img src="assets\images\Places in Korea\Jeju Island\hallasan.jpg"  alt="Image 3">
+                             </div>
+                             <div class="content-container">
+                                     <h3>Summer Package</h3>
+                                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem iure nam totam blanditiis necessitatibus doloribus quasi, eius veniam, dicta vero labore vitae quidem. Laboriosam culpa facere porro dolorem iusto repellat..</p>
+
+                                     <div class="icon-buttons-container">
+                                        <div class="icon-button">
+                                            <i class="fas fa-sun"></i> 5 Days
+                                        </div>
+                                        <div class="icon-button">
+                                            <i class="fas fa-calendar-alt"></i> Mar - Oct
+                                        </div>
+                                        <div class="icon-button">
+                                            <i class="fas fa-map-marker-alt"></i> Keflavik Airport
+                                        </div>
+                                        <div class="icon-button">
+                                            <i class="fas fa-clock"></i> Flexible
+                                        </div>
+                                    </div>
+
+                                     <div class="book-btn-container">
+                                         <button class="btn btn-primary px-4 py-2"> Book Now </button>
+                                     </div>
+
+                                 </div>
+                             </div>
+                         </div>
 
 
-       </div>
+                         <!-- Add more carousel items as needed -->
+                     </div>
+                 </div>
+             </div>
 
-       <div class="container-body">
+         </div>
+     </div>
+
+    
 
 
-
-
-       </div>
-      
-
-    </div>
 
      <!-- Packages Offered -->
      <div class="section" id="section5"> 
           
 
-
-    </div>
+     </div>
 
     
 

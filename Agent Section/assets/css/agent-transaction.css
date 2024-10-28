@@ -428,11 +428,11 @@ select::-ms-expand {
  .table-container {
   margin: 0px 50px;
   border: 1px solid #ced4da;
-  padding: 20px 70px;
+  padding: 20px 20px;
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  padding: 15px;
+  width: 65%;
 }
 
 .table-actions {

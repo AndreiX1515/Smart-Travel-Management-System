@@ -22,9 +22,6 @@ body {
  margin: 10px 0; /* Space above and below the line */
 }
 
-
-
-
 /* Main Content Section */
 .main-content {
   margin-left: 0; /* Start with no margin to account for hidden sidebar */
@@ -44,8 +41,6 @@ body {
  justify-content: space-between; /* Distributes cards evenly with space in between */
  gap: 10px; /* Adds space between each item */
 }
-
-
 
 
 /* info-container Section */
@@ -109,8 +104,6 @@ body {
 }
 
 
-
-
 .btn-success {
     background-color: #116530; /* Custom green */
     color: white;
@@ -121,173 +114,221 @@ body {
 }
 
 
+/* Dashboard Cards Container */
 .dashboard-cards {
-    display: flex; /* Flexbox for layout */
-    flex-wrap: wrap; /* Allow wrapping of cards */
-    justify-content: flex-start; /* Align cards to the left */
+ display: flex; /* Flexbox for layout */
+ flex-wrap: wrap; /* Allow wrapping of cards */
+ justify-content: flex-start; /* Align cards to the left */
+ gap: 5px; /* Space between cards */
+ padding: 0px 0px;
+ height: 20vh; /* Increased container height for better card proportion */
 }
 
-.card.order-card {
- margin: 0; /* Remove margin to minimize space */
- width: calc(20% - 10px); /* Calculate width for 5 cards with gaps */
- aspect-ratio: 1 / .03; /* Adjust aspect ratio as per your needs (1:1.5 is taller than wide) */
- margin-right: 10px; /* Add right margin for spacing */
- 
-}
-
-
-.card.order-card:nth-child(5n) {
-    margin-right: 0; /* Remove margin on the right for every 5th card */
-}
-
-.card-block {
-    padding: 20px 20px 10px 20px; /* Add padding for card content */
-    background-color: #fff; /* Card background color */
-    border-radius: 8px; /* Rounded corners */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Box shadow for depth */
-}
-
-
-.header-top {
-    position: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center; 
-}
-
-.header-top span{
-    margin: 1px 0px 0px 8px;
-    font-size: 12px;
-    font-weight: 400;
-    
-}
-
-.header-top-container span i{
-    font-size: 10px;
-
-}
-
-.icon-container {
-    align-self: first baseline;
-}
-
-.icon-container .fa-solid {
-    font-size: 20px;
-    padding: 10px;
-    transition: all 0.3s ease; /* Smooth transition effect */
-}
-
-.icon-container .fa-solid:hover {
-    border: 1px solid gainsboro;
-    border-radius: 40px;
-    background-color: #f0f0f0; /* Slight background color change */
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Adding a shadow for depth */
-    transform: scale(1); /* Slight scale-up effect on hover */
-}
-
-.card-block h2 {
-    font-weight: 500;
-    font-size: 32px;
-    font-weight: bold;
-}
- 
-.card .bottom-section {
-    position: flex;
-    flex-direction: row;
-    justify-content: space-between;
-}
-
-.trend-up, .trend-down {
+.card {
+ background-color: #ffffff;
+ border-radius: 10px;
+ box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
  display: flex;
+ flex-direction: column;
+ width: calc(15% - 15px); /* Responsive width with spacing accounted */
+ height: 100%; /* Card height will match container height */
+}
+
+.dashboard-cards-one {
+ width: calc(30% - 5px); /* Wider card that still aligns with spacing */
+ height: 100%; /* Matches container height */
+}
+
+.dashboard-cards-two {
+ width: calc(30% - 5px); /* Same width calculation as the first card */
+ height: 100%; /* Matches the height of the parent container */
+ background-color: #ffffff; /* White background for the card */
+ border-radius: 10px; /* Rounded corners */
+ box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Soft shadow */
+ display: flex;
+ flex-direction: column; /* Maintain column layout if needed */
+}
+
+.dashboard-cards-four {
+ width: calc(25% - 5px); /* Same width calculation as the first card */
+ height: 100%; /* Matches the height of the parent container */
+ background-color: #ffffff; /* White background for the card */
+ border-radius: 10px; /* Rounded corners */
+ box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Soft shadow */
+ display: flex;
+ flex-direction: column; /* Maintain column layout if needed */
+}
+
+.dcard-header {
+  padding: 15px 20px 15px 20px; 
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dcard-header h3{
+  font-size: 0.8rem;
+  color: #7c7c7c; /* Darker text for better contrast */
+  font-weight: 600;
+}
+
+.view-button a {
+  padding-bottom: 10px;
+}
+
+.dashboard-cards-one .dcard-body {
+ display: flex;
+ flex-direction: row;
+ align-items: center; /* Center items vertically */
+ justify-content: center; /* Center items horizontally */
+ padding: 20px 20px;
+}
+
+.month-transaction {
+ display: flex;
+ flex-direction: column;
+ justify-content: center;
  align-items: center;
- font-size: 14px;
+ padding: 5px 10px; /* Add some padding */
+ width: 120px; /* Set a fixed width or adjust as needed */
+ height: 60px; /* Set a fixed height or adjust as needed */
 }
 
-.trend-up i {
- color: #32de84;
- margin-right: 5px;
+
+.month-transaction h3 {
+ font-size: 26px; /* Increased font size for the number */
+ color: #333; /* Darker text for better contrast */
+ margin: 0 0 10px 0; /* Remove default margin */
 }
 
-.trend-down i {
- color: #D22B2B;
- margin-right: 5px;
+.status-cancelled {
+ font-size: 10px; /* Smaller font size for the label */
+ color: #c9302c; /* Darker red color for cancelled */
+ font-weight: bold; /* Optional: make text bold */
 }
 
-.trend-up .percentage-change {
- color: #32de84;
- margin-right: 5px;
- font-weight: bold;
+.status-unconfirmed {
+ font-size: 10px; /* Smaller font size for the label */
+ color: #ec971f; /* Darker orange color for unconfirmed */
+ font-weight: bold; /* Optional: make text bold */
 }
 
-.trend-down .percentage-change {
- color: #D22B2B;
- margin-right: 5px;
- font-weight: bold;
+.status-confirmed {
+ font-size: 10px; /* Smaller font size for the label */
+ color: #4cae4f; /* Darker green color for confirmed */
+ font-weight: bold; /* Optional: make text bold */
 }
 
-.comparison-text {
- margin: 0;
+.vertical-line {
+ width: 1px;
+ background-color: #ccc;
+ height: 60px; /* Set a fixed height for the line */
+ margin: 0 20px; /* Adjust margin for more spacing */
+}
+
+.dashboard-cards-two .dcard-body {
+ display: flex;
+ flex-direction: row;
+ align-items: center; /* Center items vertically */
+ justify-content: center; /* Center items horizontally */
+ padding: 20px 20px;
+}
+
+.dashboard-cards-two .dcard-body span {
+ font-size: 10px; /* Smaller font size for the label */
+ font-weight: bold; /* Optional: make text bold */
+ color: #acacac;
+}
+
+.dashboard-cards-two .dcard-body .accent {
+ font-size: 8px; /* Smaller font size for the label */
+ font-weight: bold; /* Optional: make text bold */
+ color: #acacac;
+}
+
+
+.dcard-header h3{
+ font-size: 0.8rem;
+ color: #7c7c7c; /* Darker text for better contrast */
+ font-weight: 600;
+}
+
+.dcard-body {
+ display: flex;
+ flex-direction: row;
+ align-items: center; /* Center items horizontally */
+}
+
+.dcard-body .currency-content {
+  padding: 0px 25px;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.currency-item {
+ text-align: center; /* Center the content */
+ border-radius: 10px; /* Rounded corners */
+}
+
+.currency-flag {
+ width: 40px; /* Set flag width */
+ height: 40px; /* Set flag height to match width for perfect circle */
+ border-radius: 50%; /* Make flag circular */
+ object-fit: cover; /* Ensure the image covers the area properly */
+}
+
+.currency-name {
+ font-weight: bold; /* Make currency name bold */
  font-size: 10px;
- font-weight: 500;
- color: #6c757d; /* Gray color similar to the image */
- display: inline;
- text-align: first baseline;
+ margin-top: 10px;
 }
 
-.arrow-up i {
- font-size: 32px;
- color: rgb(0, 0, 0);
- position: relative; /* Enable positioning */
- top: -10px; /* Move slightly upwards */
- align-items: baseline;
- transition: color 0.3s ease, top 0.3s ease; /* Smooth transition for hover effect */
+.conversion-rate {
+ font-size: 12px; /* Smaller font for conversion rates */
+ color: #555; /* Darker color for visibility */
 }
 
-.arrow-up i {
- font-size: 32px;
- color: rgb(0, 0, 0);
- position: relative; /* Enable positioning */
- top: -10px; /* Move slightly upwards */
- align-items: baseline;
- transition: color 0.3s ease, top 0.3s ease; /* Smooth transition for hover effect */
-}
 
-.arrow-up i:hover {
- color: rgb(70, 130, 180); /* Change color on hover */
- top: -15px; /* Move further upward on hover */
-}
 
-/* Optional: Add some responsiveness */
-@media (max-width: 600px) {
-    .card {
-        min-width: 100px; /* Adjust minimum width for smaller screens */
-    }
-}
+
+
+
+
+
+
+
+
+
 
 
 /* Second Row Container */
 .second-row-container {
    display: flex;
    flex-direction: row;
-   margin-top: 10px;
+   margin-top: 5px;
    gap: 20px;
+   position: relative;
+   height: 30vh; /* Set height to 40% of the viewport height */
    
 }
 
 /* Second Row Container - Div One */
 .second-row-container .one {
- width: 70%; /* Set width to 70% */
- height: 40vh; /* Set height to 40% of the viewport height */
+ width: 50%; /* Set width to 70% */
  background-color: #fff; /* Card background color */
  border-radius: 8px; /* Rounded corners */
  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Box shadow for depth */
 }
 
 /* Header styles */
-.one .header {
+.second-row-container .header {
  width: 100%; /* Full width for the header */
  padding: 10px 20px 0px 20px; /* Padding around the header */
- border-bottom: 1px solid #ddd; /* Border between header and body 
  display: flex; /* Enable flexbox */
  justify-content: center; /* Center contents horizontally */
  height: 50px; /* Fixed height for the header */
@@ -295,7 +336,7 @@ body {
 }
 
 .one .btn {
- padding: 8px 12px; /* Adjust padding for better button size */
+ padding: 8px 8px; /* Adjust padding for better button size */
  border-radius: 4px; /* Rounded corners for button */
  text-decoration: none; /* Remove underline */
  display: flex; /* Align items in the button */
@@ -328,7 +369,7 @@ body {
  position: relative; /* Add this to make child elements positioned correctly */
  width: 100%; /* Adjust as needed */
  overflow-x: auto; /* Enable horizontal scrolling */
- padding: 0px 25px;
+ padding: 0px 20px;
 }
 
 /* Table styles */
@@ -347,7 +388,7 @@ body {
 }
 
 .styled-table th, .styled-table td {
- padding: 10px 15px; /* Padding for table cells */
+ padding: 10px 0px; /* Padding for table cells */
 }
 
 .styled-table tbody tr {
@@ -438,8 +479,7 @@ body {
 
 /* Second Row Container - Div Two */
 .second-row-container .two {
- width: 30%; /* Set width to 40% */
- height: 40vh; /* Set height to 40% of the viewport height */
+ width: 50%; /* Set width to 40% */
  background-color: #fff; /* Card background color */
  border-radius: 8px; /* Rounded corners */
  box-shadow: 0 2px 5px rgba(201, 201, 201, 0.5); /* Box shadow for depth */
@@ -451,7 +491,6 @@ body {
 .two .header {
  width: 100%; /* Full width for the header */
  padding: 10px 20px 0px 20px; /* Padding around the header */
- border-bottom: 1px solid #ddd; /* Border between header and body 
  display: flex; /* Enable flexbox */
  justify-content: center; /* Center contents horizontally */
  height: 50px; /* Fixed height for the header */
@@ -474,6 +513,45 @@ body {
  height: 5%;
  padding-right: 0; /* Removes any extra padding to the right */
 }
+
+
+.confirm-container {
+  display: flex;
+  flex-direction: row;
+  margin-top: 5px;
+  gap: 20px;
+  position: relative;
+}
+
+.confirm-container .one {
+ width: 100%; /* Set width to 70% */
+ height: 30vh; /* Set height to 40% of the viewport height */
+ background-color: #fff; /* Card background color */
+ border-radius: 8px; /* Rounded corners */
+ box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Box shadow for depth */
+}
+
+.confirm-container .one .header {
+ font-size: 12px;
+ width: 100%; /* Full width for the header */
+ padding: 10px 20px 0px 20px; /* Padding around the header */
+ /* border-bottom: 1px solid #ddd; /* Border between header and body  */
+ display: flex; /* Enable flexbox */
+ justify-content: center; /* Center contents horizontally */
+ height: 50px; /* Fixed height for the header */
+ align-items: center;
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 
