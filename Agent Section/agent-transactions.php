@@ -46,6 +46,8 @@ $current_date = date('D, F d, Y'); // Format: "Tue, January 01, 2024"
 
 <!-- Second Row Div -->
 <div class="dashboard-cards d-flex flex-wrap justify-content-between">
+
+
      <div class="card order-card">
          <div class="card-block">
              <div class="header-top d-flex justify-content-between align-items-center mb-2">
@@ -85,6 +87,94 @@ $current_date = date('D, F d, Y'); // Format: "Tue, January 01, 2024"
              </div>
 
              <div class="bottom-section">
+                 <div class="d-flex flex-row justify-content-between">
+                     <div class="trend-up">
+                        <i class="fas fa-arrow-trend-up"></i>
+                        <span class="percentage-change">+30.6%</span>
+                        <h5 class="comparison-text">vs. last month</h5>
+                     </div>
+
+                     <div class="arrow-up">
+                         <i class="fa-solid fa-square-arrow-up-right"></i>
+                     </div>
+                 </div>
+             </div>
+         </div>
+     </div>
+
+     <div class="card order-card">
+         <div class="card-block">
+             <div class="header-top d-flex justify-content-between align-items-center mb-2">
+                 <div class="d-flex flex-column">
+                     <div class="header-top-container d-flex flex-row">
+                         <h6>Total Transaction</h6>
+                     </div>
+                     <h2 class="mt-1">436</h2>
+                 </div>
+             </div>
+
+             <div class="bottom-section">
+                 <div class="d-flex flex-row justify-content-between">
+                     <div class="trend-up">
+                        <i class="fas fa-arrow-trend-up"></i>
+                        <span class="percentage-change">+30.6%</span>
+                        <h5 class="comparison-text">vs. last month</h5>
+                     </div>
+
+                     <div class="arrow-up">
+                         <i class="fa-solid fa-square-arrow-up-right"></i>
+                     </div>
+                 </div>
+             </div>
+         </div>
+     </div>
+
+     <div class="card order-card">
+         <div class="card-block">
+             <div class="header-top d-flex justify-content-between align-items-center mb-2">
+                 <div class="d-flex flex-column">
+                     <div class="header-top-container d-flex flex-row">
+                         <h6>Total Transaction</h6>
+                     </div>
+                     <h2 class="mt-1">436</h2>
+                 </div>
+             </div>
+
+             <div class="bottom-section">
+                 <div class="d-flex flex-row justify-content-between">
+                     <div class="trend-up">
+                        <i class="fas fa-arrow-trend-up"></i>
+                        <span class="percentage-change">+30.6%</span>
+                        <h5 class="comparison-text">vs. last month</h5>
+                     </div>
+
+                     <div class="arrow-up">
+                         <i class="fa-solid fa-square-arrow-up-right"></i>
+                     </div>
+                 </div>
+             </div>
+         </div>
+     </div>
+
+
+
+
+
+
+
+
+     <div class="card order-card">
+         <div class="card-block">
+             <div class="header-top d-flex justify-content-between align-items-center mb-2">
+                 <div class="d-flex flex-column">
+                     <div class="header-top-container d-flex flex-row">
+                         <h6>Total Transaction</h6>
+                     </div>
+                     <h2 class="mt-1">436</h2>
+                 </div>
+             </div>
+
+             <div class="bottom-section">
                  <div class="d-flex flex-row justify-content-between"> 
                      <div class="trend-down">
                         <i class="fa-solid fa-arrow-trend-down"></i>
@@ -99,11 +189,14 @@ $current_date = date('D, F d, Y'); // Format: "Tue, January 01, 2024"
              </div>
          </div>
      </div>
+
+
+
 </div>
 
 <div class="table-container">
   <div class="search-bar">
-      <div class="left-side ps-2">
+      <div class="left-side">
         <div class="search-input mb-3">
             <label for="search">Search</label>
             <input type="text" id="search" class="form-control mt-2" placeholder="Search">
@@ -205,7 +298,28 @@ $current_date = date('D, F d, Y'); // Format: "Tue, January 01, 2024"
             <td>2024-06-15</td>
             <td>2</td>
             <td><span class="td-status-confirmed">Confirmed</span></td>
-            <td><a class="action-button"><i class="fa-solid fa-pen-to-square"></i></a></td>
+            <td>
+               <div class='dropdown text-center' id='dropdownMenuButton' data-bs-toggle='dropdown' aria-expanded='false' style='cursor: pointer;'>
+                   <i class='fa-solid fa-ellipsis-vertical' style='font-size: 18px;'></i>
+                   <ul class='dropdown-menu' aria-labelledby='dropdownMenuButton'>
+                    <!-- data-bs-target='#modal_" . htmlspecialchars($row['transactNo']) . "' -->
+                       <li><a class='dropdown-item' href='#'  
+                         data-bs-toggle='modal' >Update Transaction </a>
+                         </li>
+
+                         <!-- data-bs-target='#downpayment_modal_" . htmlspecialchars($row['transactNo']) . "' -->
+                       <li><a class='dropdown-item' href='#' 
+                        data-bs-toggle='modal' >Change Status </a>
+                       </li>
+
+                       <!-- data-bs-target='#payment_history_modal_" . htmlspecialchars($row['transactNo']) . "'>Payment History </a> -->
+                       <li><a class='dropdown-item' href='#' 
+                        data-bs-toggle='modal' >Check Payment History </a>
+                        
+                       </li>
+                   </ul>
+               </div>
+           </td>
         </tr>
 
         <tr>
@@ -218,7 +332,28 @@ $current_date = date('D, F d, Y'); // Format: "Tue, January 01, 2024"
             <td>2024-06-15</td>
             <td>2</td>
             <td><span class="td-status-confirmed">Confirmed</span></td>
-            <td><a class="action-button"><i class="fa-solid fa-pen-to-square"></i></a></td>
+            <td>
+               <div class='dropdown text-center' id='dropdownMenuButton' data-bs-toggle='dropdown' aria-expanded='false' style='cursor: pointer;'>
+                   <i class='fa-solid fa-ellipsis-vertical' style='font-size: 18px;'></i>
+                   <ul class='dropdown-menu' aria-labelledby='dropdownMenuButton'>
+                    <!-- data-bs-target='#modal_" . htmlspecialchars($row['transactNo']) . "' -->
+                       <li><a class='dropdown-item' href='#'  
+                         data-bs-toggle='modal' >Update Transaction </a>
+                         </li>
+
+                         <!-- data-bs-target='#downpayment_modal_" . htmlspecialchars($row['transactNo']) . "' -->
+                       <li><a class='dropdown-item' href='#' 
+                        data-bs-toggle='modal' >Change Status </a>
+                       </li>
+
+                       <!-- data-bs-target='#payment_history_modal_" . htmlspecialchars($row['transactNo']) . "'>Payment History </a> -->
+                       <li><a class='dropdown-item' href='#' 
+                        data-bs-toggle='modal' >Check Payment History </a>
+                        
+                       </li>
+                   </ul>
+               </div>
+           </td>
         </tr>
 
         <tr>
@@ -288,6 +423,13 @@ $current_date = date('D, F d, Y'); // Format: "Tue, January 01, 2024"
     </tbody>
     </table>
 </div>
+
+
+
+
+
+
+
 </div>
 
 <script>
