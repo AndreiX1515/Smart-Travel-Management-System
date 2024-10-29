@@ -83,7 +83,7 @@
               <th scope="col"></th>
             </tr>
           </thead>
-          <tbody> 
+          <tbody>
             <?php
               // data-package='" . htmlspecialchars($row['packageName']) . "'
               // data-flight='" . htmlspecialchars($row['flightDate']) . "'
@@ -118,10 +118,12 @@
               {
                 while ($row = $res1->fetch_assoc()) 
                 {
-                  
                   // For Status Auto Adapt
                   $status = htmlspecialchars($row['status']); // Get the status from the row
                   $statusClass = ''; // Variable to hold the class based on status
+
+                  $_SESSION['transactNo'] = htmlspecialchars($row['transactNo']);
+                  $_SESSION['agentId'] = ($row['agentId']);
               
                   // Determine the class based on the status value
                   switch ($status) 
@@ -178,123 +180,7 @@
                             </div>
                           </td>
                         </tr>";
-
-                          // <p><strong>Package Name:</strong> <span id='packageName_" . htmlspecialchars($row['transactNo']) . "'>" . htmlspecialchars($row['packageName']) . "</span></p>
-                          // <p><strong>Flight Date:</strong> <span id='flightDate_" . htmlspecialchars($row['transactNo']) . "'>" . htmlspecialchars($row['flightDate']) . "</span></p>
-                          // <p><strong>Total Pax:</strong> <span id='totalPax_" . htmlspecialchars($row['transactNo']) . "'>" . htmlspecialchars($row['totalPax']) . "</span></p>
-                          // <p><strong>Amount to Pay:</strong> ₱ <span id='amountToPay_" . htmlspecialchars($row['transactNo']) . "'>" . number_format($row['amountToPay'], 2) . "</span></p>
-                          // <p><strong>Downpayment:</strong> ₱ <span id='downpayment_" . htmlspecialchars($row['transactNo']) . "'>" . number_format($row['downpayment'], 2) . "</span></p>
-
-                    // Modal for Request
-                    echo "<div class='modal fade' id='modal_" . htmlspecialchars($row['transactNo']) . "' tabindex='-1' aria-labelledby='modalLabel_" . htmlspecialchars($row['transactNo']) . "' aria-hidden='true'>
-                            <div class='modal-dialog modal-dialog-centered'>
-                              <div class='modal-content'>
-                                <div class='modal-header'>
-                                  <h6 class='h5 modal-title' id='modalLabel_" . htmlspecialchars($row['transactNo']) . "'>Request for Transaction " . htmlspecialchars($row['transactNo']) . "</h6>
-                                  <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
-                                </div>
-                                <form action='clientTransactionStatus-code.php' method='POST'>
-                                  <div class='modal-body'>
-                                    <p><strong>Transaction No:</strong> <span id='transactNo_" . htmlspecialchars($row['transactNo']) . "'>" . htmlspecialchars($row['transactNo']) . "</span></p>
-                                    <input type='hidden' name='transactNo' value='" . htmlspecialchars($row['transactNo']) . "'>
-                                    <input type='hidden' name='agentId' value='" . $row['agentId'] . "'>
-                                    <div class='mb-3'>
-                                      <select class='form-select mt-2' name='concern' required>
-                                        <option selected disabled>Select Request</option>
-                                        <option value='Additional Baggage'>Additional Baggage</option>
-                                        <option value='Additional Headcount'>Additional Headcount</option>
-                                        <option value='Additional Meal'>Additional Meal</option>
-                                        <option value='Hotel Room'>Hotel Room</option>
-                                        <option value='Package Only'>Package Only</option>
-                                        <option value='Seat Selection'>Seat Selection</option>
-                                        <option value='Visa'>Visa</option>
-                                      </select>
-                                    </div>
-                                    <div class='mb-3'>
-                                      <label class='form-label'>Details</label>
-                                      <textarea class='form-control' name='details' placeholder='Enter Message' rows='4' required></textarea>
-                                    </div>     
-                                  </div>
-                                  <div class='modal-footer'>
-                                    <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Close</button>
-                                    <button type='submit' name='request' class='btn btn-primary'>Send Request</button>
-                                  </div>
-                                </form>
-                              </div>
-                            </div>
-                          </div>";
-
-                          // Modal - Downpayment
-                          echo "<div class='modal fade' id='downpayment_modal_" . htmlspecialchars($row['transactNo']) . "' tabindex='-1' aria-labelledby='downpaymentModalLabel_" . htmlspecialchars($row['transactNo']) . "' aria-hidden='true'>
-                                  <div class='modal-dialog modal-dialog-centered'>
-                                    <div class='modal-content'>
-                                      <div class='modal-header'>
-                                        <h6 class='h5 modal-title' id='downpaymentModalLabel_" . htmlspecialchars($row['transactNo']) . "'>Downpayment for Transaction " . htmlspecialchars($row['transactNo']) . "</h6>
-                                        <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
-                                      </div>
-                                      <form action='clientTransactionStatus-code.php' method='POST' enctype='multipart/form-data'>
-                                        <div class='modal-body'>
-                                          <p><strong>Transaction No:</strong> <span id='downpaymentTransactNo_" . htmlspecialchars($row['transactNo']) . "'>" . htmlspecialchars($row['transactNo']) . "</span></p>
-                                          <input type='hidden' name='transactNo' value='" . htmlspecialchars($row['transactNo']) . "'>
-                                          <input type='hidden' name='agentId' value='" . $row['agentId'] . "'>
-                                          
-                                          <div class='mb-3'>
-                                            <label class='form-label'>Downpayment Amount</label>
-                                            <input type='number' class='form-control' name='amount' placeholder='Enter Downpayment Amount' required>
-                                          </div>
-
-                                          <div class='mb-3'>
-                                            <label class='form-label'>Payment Method</label>
-                                            <select class='form-select' name='paymentMethod' required>
-                                              <option selected disabled>Select Payment Method</option>
-                                              <option value='Credit Card'>Credit Card</option>
-                                              <option value='Bank Transfer'>Bank Transfer</option>
-                                              <option value='PayPal'>PayPal</option>
-                                            </select>
-                                          </div>
-
-                                          <div class='mb-3'>
-                                            <label class='form-label'>Proof of Payment</label>
-                                            <input type='file' class='form-control' name='proof' accept='image/*' placeholder='Enter proof of payment'>
-                                          </div>     
-                                        </div>
-                                        <div class='modal-footer'>
-                                          <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Close</button>
-                                          <button type='submit' name='downpayment' class='btn btn-primary'>Submit Downpayment</button>
-                                        </div>
-                                      </form>
-                                    </div>
-                                  </div>
-                                </div>";
-
-                         // <p><strong>Transaction No:</strong> " . htmlspecialchars($row['transactNo']) . "</p>
-
-                         // Modal - Payment History
-                         echo"<div class='modal fade' id='payment_history_modal_" . htmlspecialchars($row['transactNo']) . "' tabindex='-1' aria-labelledby='paymentHistoryLabel_" . htmlspecialchars($row['transactNo']) . "' aria-hidden='true'>
-                                <div class='modal-dialog modal-dialog-centered'>
-                                  <div class='modal-content'>
-                                    <div class='modal-header'>
-                                      <h6 class='h5 modal-title' id='paymentHistoryLabel_" . htmlspecialchars($row['transactNo']) . "'>Payment History for Transaction " . htmlspecialchars($row['transactNo']) . "</h6>
-                                      <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
-                                    </div>
-                                    <div class='modal-body'>
-                                      <div class='mb-3'>
-                                        <label class='form-label fw-bold'>Payment History</label>
-
-                                      </div>
-                                    </div>
-                                    <div class='modal-footer'>
-                                      <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Close</button>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>"; 
-                }  
-              } 
-
-              else 
-              {
-                echo "<tr><td colspan='8'>No bookings found</td></tr>";
+                }
               }
             ?>
           </tbody>
@@ -321,6 +207,152 @@
       </div>
     </div>
   </div>
+
+  <!--  Modal for Request -->
+  <div class="modal fade" id="modal_<?php echo $_SESSION['transactNo'];?>" tabindex='-1' aria-labelledby="modalLabel_<?php echo $_SESSION['transactNo'];?>" aria-hidden='true'>
+    <div class='modal-dialog modal-dialog-centered'>
+      <div class='modal-content'>
+        <div class='modal-header'>
+          <h6 class='h5 modal-title' id="modal_<?php echo $_SESSION['transactNo'];?>">Request for Transaction <?php echo $_SESSION['transactNo'];?></h6>
+          <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+        </div>
+        <form action='clientTransactionStatus-code.php' method='POST'>
+          <div class='modal-body'>
+            <p><strong>Transaction No:</strong> <span id="transactNo_<?php echo $_SESSION['transactNo'];?>"><?php echo $_SESSION['transactNo'];?></span></p>
+            <input type='hidden' name='transactNo' value=<?php echo $_SESSION['transactNo'];?>>
+            <input type='hidden' name='agentId' value=<?php echo $_SESSION['agentId'];?>>
+            <div class='mb-3'>
+              <select class='form-select mt-2' name='concern' required>
+                <option selected disabled>Select Request</option>
+                <option value='Additional Baggage'>Additional Baggage</option>
+                <option value='Additional Headcount'>Additional Headcount</option>
+                <option value='Additional Meal'>Additional Meal</option>
+                <option value='Hotel Room'>Hotel Room</option>
+                <option value='Package Only'>Package Only</option>
+                <option value='Seat Selection'>Seat Selection</option>
+                <option value='Visa'>Visa</option>
+              </select>
+            </div>
+            <div class='mb-3'>
+              <label class='form-label'>Details</label>
+              <textarea class='form-control' name='details' placeholder='Enter Message' rows='4' required></textarea>
+            </div>     
+          </div>
+          <div class='modal-footer'>
+            <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Close</button>
+            <button type='submit' name='request' class='btn btn-primary'>Send Request</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal - Downpayment -->
+  <div class='modal fade' id="downpayment_modal_<?php echo $_SESSION['transactNo'];?>" tabindex='-1' aria-labelledby="downpaymentModalLabel_<?php echo $_SESSION['transactNo'];?>" aria-hidden='true'>
+    <div class='modal-dialog modal-dialog-centered'>
+      <div class='modal-content'>
+        <div class='modal-header'>
+          <h6 class='h5 modal-title' id="downpaymentModalLabel_<?php echo $_SESSION['transactNo'];?>">Downpayment for Transaction <?php echo $_SESSION['transactNo'];?></h6>
+          <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+        </div>
+        <form action='clientTransactionStatus-code.php' method='POST' enctype='multipart/form-data'>
+          <div class='modal-body'>
+            <p><strong>Transaction No:</strong> <span id="downpaymentTransactNo_<?php echo $_SESSION['transactNo'];?>"><?php echo $_SESSION['transactNo'];?></span></p>
+            <input type='hidden' name='transactNo' value=<?php echo $_SESSION['transactNo'];?>>
+            <input type='hidden' name='agentId' value=<?php echo $_SESSION['agentId'];?>>
+            
+            <div class='mb-3'>
+              <label class='form-label'>Downpayment Amount</label>
+              <input type='number' class='form-control' name='amount' placeholder='Enter Downpayment Amount' required>
+            </div>
+
+            <div class='mb-3'>
+              <label class='form-label'>Payment Method</label>
+              <select class='form-select' name='paymentMethod' required>
+                <option selected disabled>Select Payment Method</option>
+                <option value='Credit Card'>Credit Card</option>
+                <option value='Bank Transfer'>Bank Transfer</option>
+                <option value='PayPal'>PayPal</option>
+              </select>
+            </div>
+
+            <div class='mb-3'>
+              <label class='form-label'>Proof of Payment</label>
+              <input type='file' class='form-control' name='proof' accept='image/*' placeholder='Enter proof of payment'>
+            </div>     
+          </div>
+          <div class='modal-footer'>
+            <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Close</button>
+            <button type='submit' name='downpayment' class='btn btn-primary'>Submit Downpayment</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal - Payment History -->
+  <div class='modal fade' id="payment_history_modal_<?php echo $_SESSION['transactNo'];?>" tabindex='-1' aria-labelledby="paymentHistoryLabel_<?php echo $_SESSION['transactNo'];?>" aria-hidden='true'>
+    <div class='modal-dialog modal-dialog-centered'>
+      <div class='modal-content'>
+        <div class='modal-header'>
+          <h6 class='h5 modal-title' id="paymentHistoryLabel_<?php echo $_SESSION['transactNo'];?>">Payment History for Transaction <?php echo $_SESSION['transactNo'];?></h6>
+          <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+        </div>
+        <div class='modal-body'>
+          <label class='form-label fw-bold'>Payment History</label>
+
+          <table class="table table-striped table-bordered table-hover excel-table">
+            <thead class="table-light">
+              <tr>
+                <th class="text-center col">Date</th>
+                <th class="text-center col">Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php
+                $transactNo = $_SESSION['transactNo'];
+
+                // Query to fetch payment records for the specific transaction number
+                $sql1 = "SELECT 
+                        DATE_FORMAT(paymentDate, '%m-%d-%Y') AS formattedDate, 
+                        DATE_FORMAT(paymentDate, '%h:%i %p') AS formattedTime, 
+                        amount 
+                    FROM payment 
+                    WHERE transactNo = '$transactNo'";
+                $res1 = $conn->query($sql1); // Execute the query
+
+                if ($res1->num_rows > 0) 
+                {
+                  // Loop through the results
+                  while ($row = $res1->fetch_assoc()) 
+                  {
+                    // Fetch the date and amount from the row
+                    $paymentDate = htmlspecialchars($row['formattedDate'])." ".htmlspecialchars($row['formattedTime']);
+                    $paymentAmount = number_format($row['amount'], 2);
+                    ?>
+                      <tr>
+                        <td><?php echo $paymentDate; ?></td>
+                        <td>₱ <?php echo $paymentAmount; ?></td>
+                      </tr>
+                    <?php
+                  }
+                } 
+                else 
+                {
+                  // Handle the case where there are no payments
+                  echo "<tr><td colspan='2' class='text-center'>No payment records found.</td></tr>";
+                }
+              ?>
+            </tbody>
+          </table>
+        </div>
+        <div class='modal-footer'>
+          <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 
   <?php include 'includes/scripts.php'; ?>
 
