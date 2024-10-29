@@ -586,14 +586,14 @@ nav {
 
 
 .featured-hotels {
-  padding: 50px 220px; 
-  background-color: #f9f9f9; 
-  display: flex;
-  justify-content: center;
-  align-items: first baseline;
-  position: relative; /* Ensure hero section positions correctly */
-  overflow: hidden; /* Prevent overflow */
-  height: 100vh;
+ padding: 50px 300px; 
+ background-color: #f9f9f9; 
+ display: flex;
+ flex-direction: column; /* Changed to column for vertical alignment */
+ align-items: center; /* Centers contents horizontally */
+ position: relative; /* Ensure hero section positions correctly */
+ overflow: hidden; /* Prevent overflow */
+ height: 100vh;
 }
 
 .featured-hotels .section-header {
@@ -612,7 +612,7 @@ nav {
 
 .featured-hotels p {
  font-size: 18px;
- color: #333333;
+ color: #494949;
  margin-bottom: 40px;
  max-width: 800px;
  text-align: center; /* Center-aligns text */
@@ -624,4 +624,110 @@ nav {
  margin: 0px auto 15px auto;
 }
 
+.featured-hotels .section-body {
+ display: flex;
+ flex-direction: row; /* Maintain horizontal layout for left and right parts */
+ gap: 20px; /* Increased gap for better spacing */
+ width: 100%;
+ height: 100%;
+}
 
+.section-body .left-part {
+ width: 60%; /* Width of the left part */
+ height: 80%; /* Height of the left part */
+ padding: 20px; /* Added padding for better content spacing */
+ background-color: #f9f9f9; /* Light background color for a clean look */
+ border-radius: 8px; /* Rounded corners for a softer appearance */
+ box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+ position: relative; /* Required for absolute positioning of the overlay */
+ overflow: hidden; /* Hide any overflow from the image */
+}
+
+.background-img {
+ width: 100%; /* Make the image take up the full width of the container */
+ height: 100%; /* Make the image take up the full height of the container */
+ object-fit: cover; /* Maintain aspect ratio while covering the entire area */
+ position: absolute; /* Positioning the image absolutely */
+ top: 0; /* Align to the top of the container */
+ left: 0; /* Align to the left of the container */
+ z-index: 1; /* Ensure the image is behind the overlay */
+}
+
+.left-part .content-overlay {
+ background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(255, 255, 255, 0.1) 80%);
+ color: white; /* Text color */
+ padding: 0px 50px; /* Padding for text */
+ position: absolute; /* Position overlay on top */
+ top: 0; /* Align to top */
+ left: 0; /* Align to left */
+ right: 0; /* Align to right */
+ bottom: 0; /* Align to bottom */
+ display: flex;
+ flex-direction: column; /* Stack h2 and p vertically */
+ justify-content: flex-end; /* Align content to the bottom */
+ align-items: flex-start; /* Align content to the left */
+ text-align: left; /* Align text to the left */
+ z-index: 2; /* Ensure the overlay is above the background image */
+}
+
+.content-overlay p {
+ font-size: 18px;
+ color: #e6e6e6;
+ margin-bottom: 40px;
+ font-weight: 300;
+ max-width: 800px;
+ text-align: left; /* Center-aligns text */
+}
+
+
+
+.section-body .right-part {
+ width: 40%; /* Width of the right part */
+ height: 80%;
+ display: flex;
+ flex-direction: column; /* Ensure top and bottom parts stack vertically */
+ gap: 10px; /* Space between top and bottom parts */
+}
+
+.right-part .top-part,
+.right-part .bottom-part {
+ flex: 1; /* Allow to take up remaining space */
+ position: relative; /* Required for absolute positioning of the overlay */
+ overflow: hidden; /* Hide any overflow from the image */
+ border-radius: 8px; /* Rounded corners for a softer appearance */
+ box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+}
+
+.right-part .top-part .background-img,
+.right-part .bottom-part .background-img {
+ width: 100%; /* Make the image take up the full width of the container */
+ height: 100%; /* Make the image take up the full height of the container */
+ object-fit: cover; /* Maintain aspect ratio while covering the entire area */
+ position: absolute; /* Positioning the image absolutely */
+ top: 0; /* Align to the top of the container */
+ left: 0; /* Align to the left of the container */
+ z-index: 1; /* Ensure the image is behind the overlay */
+}
+
+.right-part .content-overlay {
+ background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(255, 255, 255, 0.1) 80%); /* Darker gradient at the bottom, lighter at the top */ /* Dark gradient at the bottom to light at the top */
+ color: white; /* Text color */
+ padding: 20px 25px; /* Padding for text */
+ position: absolute; /* Position overlay on top */
+ top: 0; /* Align to top */
+ left: 0; /* Align to left */
+ right: 0; /* Align to right */
+ bottom: 0; /* Align to bottom */
+ display: flex;
+ flex-direction: column; /* Stack h3 and p vertically */
+ justify-content: flex-end; /* Align content to the bottom */
+ align-items: flex-start; /* Align content to the left */
+ text-align: left; /* Align text to the left */
+ z-index: 2; /* Ensure the overlay is above the background image */
+}
+
+.right-part .content-overlay h3, 
+.right-part .content-overlay p {
+ font-size: 0.9em; /* Smaller font size for heading and paragraph */
+ margin: 0; /* Remove default margin */
+}

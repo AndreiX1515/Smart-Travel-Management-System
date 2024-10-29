@@ -50,7 +50,7 @@ $current_date = date('D, F d, Y'); // Format: "Tue, January 01, 2024"
     <div class="dashboard-cards-one card">
         <div class="dcard-header">
             <div class="header-text">
-               <h3>Transaction Status Count:</h3>
+               <h3>Transaction Status</h3>
             </div>
            
             <!-- <div class="view-button">
@@ -70,7 +70,7 @@ $current_date = date('D, F d, Y'); // Format: "Tue, January 01, 2024"
 
            <div class="month-transaction">
                <h3>18</h3>
-               <span class="status-unconfirmed">UNCONFIRMED</span>
+               <span class="status-unconfirmed">ON GOING</span>
            </div>
 
            <div class="vertical-line"></div>
@@ -85,7 +85,7 @@ $current_date = date('D, F d, Y'); // Format: "Tue, January 01, 2024"
     <div class="dashboard-cards-two card">
         <div class="dcard-header">
             <div class="header-text">
-               <h3>Booking Count:</h3>
+               <h3>Booking</h3>
             </div>
         </div>
 
@@ -122,7 +122,7 @@ $current_date = date('D, F d, Y'); // Format: "Tue, January 01, 2024"
     <div class="dashboard-cards-three card">
       <div class="dcard-header">
           <div class="header-text">
-             <h3>Transaction Count:</h3>
+             <h3>Pending Request</h3>
           </div>
          
           <!-- <div class="view-button">
@@ -240,80 +240,65 @@ $usd_to_euro = $exchangeRates['conversion_rates']['EUR'] ?? 0.85;  // Fallback i
           </div>
       </div>
       
-       <div class="body mt-4">
-           <!-- <table class="styled-table" id="transactionTable">
-               <thead>
-                   <tr>
-                       <th>Transaction No.</th>
-                       <th>Flight Date</th>
-                       <th>Total Pax.</th>
-                       <th>Contact Name</th>
-                       <th>Status</th>
-                   </tr>
-               </thead>
-               <tbody>
-                   <tr>
-                       <td>#Inv06562</td>
-                       <td>18 Nov 2023</td>
-                       <td>Henry, Arthur</td>
-                       <td>$25</td>
-                       <td><span class="payment-status cash"></span> Completed</td>
-                   </tr>
-                   <tr>
-                       <td>#Inv03562</td>
-                       <td>18 Nov 2023</td>
-                       <td>Eleanor Pena</td>
-                       <td>$4</td>
-                       <td><span class="payment-status bank"></span> Pending</td>
-                   </tr>
-                   <tr>
-                       <td>#Inv02645</td>
-                       <td>18 Nov 2023</td>
-                       <td>Courtney Henry</td>
-                       <td>$5</td>
-                       <td><span class="payment-status bank"></span> Pending</td>
-                   </tr>
-                   <tr>
-                       <td>#Inv06256</td>
-                       <td>18 Nov 2023</td>
-                       <td>Jane Cooper</td>
-                       <td>$21</td>
-                       <td><span class="payment-status card"></span> Completed</td>
-                   </tr>
-                   <tr>
-                       <td>#Inv06256</td>
-                       <td>18 Nov 2023</td>
-                       <td>Jane Cooper</td>
-                       <td>$15</td>
-                       <td><span class="payment-status cash"></span> Completed</td>
-                   </tr>
-                   <tr>
-                       <td>#Inv06256</td>
-                       <td>18 Nov 2023</td>
-                       <td>Jane Cooper</td>
-                       <td>$15</td>
-                       <td><span class="payment-status cash"></span> Completed</td>
-                   </tr>
-               </tbody>
-           </table> -->
+       <div class="body">
+             <table class="unconfirm-table">
+                 <thead>
+                     <tr>
+                         <th>T.N</th>
+                         <th>PACKAGE</th>
+                         <th>FLIGHT DATE</th>
+                         <th>TOTAL PAX.</th>
+                         <th>CONTACT NAME</th>
+                         <th>STATUS</th>
+                     </tr>
+                 </thead>
+                 <tbody>
+                 <tr>
+                    <td>001</td>
+                    <td>Summer Package</td>
+                    <td>2024-11-10</td>
+                    <td>150</td>
+                    <td>John Doe</td>
+                    <td><span class="status confirmed">Confirmed</span></td>
+                </tr>
+                <tr>
+                    <td>002</td>
+                    <td>Summer Package</td>
+                    <td>2024-11-12</td>
+                    <td>75</td>
+                    <td>Jane Smith</td>
+                    <td><span class="status pending">On going</span></td>
+                </tr>
+                <tr>
+                    <td>003</td>
+                    <td>Summer Package</td>
+                    <td>2024-11-15</td>
+                    <td>200</td>
+                    <td>Michael Johnson</td>
+                    <td><span class="status cancelled">Cancelled</span></td>
+                </tr>
+                <tr>
+                    <td>004</td>
+                    <td>Summer Package</td>
+                    <td>2024-11-20</td>
+                    <td>120</td>
+                    <td>Emily Davis</td>
+                    <td><span class="status confirmed">Confirmed</span></td>
+                </tr>
 
+                <tr>
+                    <td>005</td>
+                    <td>Summer Package</td>
+                    <td>2024-11-20</td>
+                    <td>120</td>
+                    <td>Emily Davis</td>
+                    <td><span class="status confirmed">Confirmed</span></td>
+                </tr>
 
-
-           <footer class="footer">
-               <!-- <div class="pagination-container">
-                   <div id="pagination" class="pagination">
-                       <button id="prevBtn" onclick="changePage(-1)">Previous</button>
-                       <div id="pageNumbers" class="page-numbers">
-                           <span class="page-number active">1</span>
-                           <span class="page-number">2</span>
-                           <span class="page-number">3</span>
-                           <span class="page-number">4</span>
-                       </div>
-                       <button id="nextBtn" onclick="changePage(1)">Next</button>
-                   </div>
-               </div> -->
-           </footer>
+                 </tbody>
+             </table>
        </div>
+
    </div>
 
 
@@ -327,6 +312,76 @@ $usd_to_euro = $exchangeRates['conversion_rates']['EUR'] ?? 0.85;  // Fallback i
               </a>
           </div>
       </div>
+
+      <div class="body">
+             <table class="pending-table">
+                 <thead>
+                     <tr>
+                         <th>T.N</th>
+                         <th>PACKAGE</th>
+                         <th>FLIGHT DATE</th>
+                         <th>TOTAL PAX.</th>
+                         <th>CONTACT NAME</th>
+                         <th>STATUS</th>
+                     </tr>
+                 </thead>
+                 <tbody>
+                 <tr>
+                    <td>001</td>
+                    <td>Summer Package</td>
+                    <td>2024-11-10</td>
+                    <td>150</td>
+                    <td>John Doe</td>
+                    <td><span class="status confirmed">Confirmed</span></td>
+                </tr>
+                <tr>
+                    <td>002</td>
+                    <td>Summer Package</td>
+                    <td>2024-11-12</td>
+                    <td>75</td>
+                    <td>Jane Smith</td>
+                    <td><span class="status pending">On going</span></td>
+                </tr>
+                <tr>
+                    <td>003</td>
+                    <td>Summer Package</td>
+                    <td>2024-11-15</td>
+                    <td>200</td>
+                    <td>Michael Johnson</td>
+                    <td><span class="status cancelled">Cancelled</span></td>
+                </tr>
+                <tr>
+                    <td>004</td>
+                    <td>Summer Package</td>
+                    <td>2024-11-20</td>
+                    <td>120</td>
+                    <td>Emily Davis</td>
+                    <td><span class="status confirmed">Confirmed</span></td>
+                </tr>
+
+                <tr>
+                    <td>005</td>
+                    <td>Summer Package</td>
+                    <td>2024-11-20</td>
+                    <td>120</td>
+                    <td>Emily Davis</td>
+                    <td><span class="status confirmed">Confirmed</span></td>
+                </tr>
+
+                 </tbody>
+             </table>
+       </div>
+
+
+
+
+
+
+
+
+
+
+
 
 
      <!-- <div class="header d-flex justify-content-between align-items-center justify-content-between">
@@ -358,79 +413,63 @@ $usd_to_euro = $exchangeRates['conversion_rates']['EUR'] ?? 0.85;  // Fallback i
             </div>
         </div>
         
-         <div class="body mt-4">
-             <!-- <table class="styled-table" id="transactionTable">
+         <div class="body">
+         <table class="confirm-table">
                  <thead>
                      <tr>
-                         <th>Transaction No.</th>
-                         <th>Flight Date</th>
-                         <th>Total Pax.</th>
-                         <th>Contact Name</th>
-                         <th>Status</th>
+                         <th>T.N</th>
+                         <th>PACKAGE</th>
+                         <th>FLIGHT DATE</th>
+                         <th>TOTAL PAX.</th>
+                         <th>CONTACT NAME</th>
+                         <th>STATUS</th>
                      </tr>
                  </thead>
                  <tbody>
-                     <tr>
-                         <td>#Inv06562</td>
-                         <td>18 Nov 2023</td>
-                         <td>Henry, Arthur</td>
-                         <td>$25</td>
-                         <td><span class="payment-status cash"></span> Completed</td>
-                     </tr>
-                     <tr>
-                         <td>#Inv03562</td>
-                         <td>18 Nov 2023</td>
-                         <td>Eleanor Pena</td>
-                         <td>$4</td>
-                         <td><span class="payment-status bank"></span> Pending</td>
-                     </tr>
-                     <tr>
-                         <td>#Inv02645</td>
-                         <td>18 Nov 2023</td>
-                         <td>Courtney Henry</td>
-                         <td>$5</td>
-                         <td><span class="payment-status bank"></span> Pending</td>
-                     </tr>
-                     <tr>
-                         <td>#Inv06256</td>
-                         <td>18 Nov 2023</td>
-                         <td>Jane Cooper</td>
-                         <td>$21</td>
-                         <td><span class="payment-status card"></span> Completed</td>
-                     </tr>
-                     <tr>
-                         <td>#Inv06256</td>
-                         <td>18 Nov 2023</td>
-                         <td>Jane Cooper</td>
-                         <td>$15</td>
-                         <td><span class="payment-status cash"></span> Completed</td>
-                     </tr>
-                     <tr>
-                         <td>#Inv06256</td>
-                         <td>18 Nov 2023</td>
-                         <td>Jane Cooper</td>
-                         <td>$15</td>
-                         <td><span class="payment-status cash"></span> Completed</td>
-                     </tr>
+                 <tr>
+                    <td>001</td>
+                    <td>Summer Package</td>
+                    <td>2024-11-10</td>
+                    <td>150</td>
+                    <td>John Doe</td>
+                    <td><span class="status confirmed">Confirmed</span></td>
+                </tr>
+                <tr>
+                    <td>002</td>
+                    <td>Summer Package</td>
+                    <td>2024-11-12</td>
+                    <td>75</td>
+                    <td>Jane Smith</td>
+                    <td><span class="status pending">On going</span></td>
+                </tr>
+                <tr>
+                    <td>003</td>
+                    <td>Summer Package</td>
+                    <td>2024-11-15</td>
+                    <td>200</td>
+                    <td>Michael Johnson</td>
+                    <td><span class="status cancelled">Cancelled</span></td>
+                </tr>
+                <tr>
+                    <td>004</td>
+                    <td>Summer Package</td>
+                    <td>2024-11-20</td>
+                    <td>120</td>
+                    <td>Emily Davis</td>
+                    <td><span class="status confirmed">Confirmed</span></td>
+                </tr>
+
+                <tr>
+                    <td>005</td>
+                    <td>Summer Package</td>
+                    <td>2024-11-20</td>
+                    <td>120</td>
+                    <td>Emily Davis</td>
+                    <td><span class="status confirmed">Confirmed</span></td>
+                </tr>
+
                  </tbody>
-             </table> -->
-
-
-
-             <footer class="footer">
-                 <!-- <div class="pagination-container">
-                     <div id="pagination" class="pagination">
-                         <button id="prevBtn" onclick="changePage(-1)">Previous</button>
-                         <div id="pageNumbers" class="page-numbers">
-                             <span class="page-number active">1</span>
-                             <span class="page-number">2</span>
-                             <span class="page-number">3</span>
-                             <span class="page-number">4</span>
-                         </div>
-                         <button id="nextBtn" onclick="changePage(1)">Next</button>
-                     </div>
-                 </div> -->
-             </footer>
+             </table>
          </div>
      </div>
 
