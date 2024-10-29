@@ -10,6 +10,8 @@
 <div class="section-title">Operational</div>
 <a href="../Agent Section/agent-transactions.php"> <i class="fas fa-exchange-alt"></i> Transactions </a>
 
+<a href="../Agent Section/agent-addbooking.php"> <i class="fa-solid fa-user-plus"></i> Add Booking </a>
+
 <a href="../Agent Section/agent-transactions.php"> <i class="fas fa-exchange-alt"></i> Transactions </a>
 
 <a href="../Agent Section/agent-transactions.php"> <i class="fas fa-exchange-alt"></i> Transactions </a>
@@ -21,9 +23,6 @@
 <a href="../Agent Section/agent-agent-accounts.php"> <i class="fas fa-users"></i> Agent Accounts </a>
 <a href="../Agent Section/agent-client-login-history.php"> <i class="fas fa-history"></i> Client Login History </a>
 <a href="../Agent Section/agent-agent-login-history.php"> <i class="fas fa-history"></i> Agent Login History </a>
-
-   
-   
 
   <!-- <div class="section-title">Organization</div>
   <a href="#"> <i class="fas fa-plug"></i> Apps & Integrations </a>
