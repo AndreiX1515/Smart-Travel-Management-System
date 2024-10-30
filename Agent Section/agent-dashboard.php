@@ -1,11 +1,9 @@
 <?php
-// Start session
-session_start();
-
-
-date_default_timezone_set('Asia/Taipei'); // Set the timezone to Taipei
-$current_date = date('D, F d, Y'); // Format: "Tue, January 01, 2024"
-
+    // Start session
+    session_start();
+    require "../conn.php";
+    date_default_timezone_set('Asia/Taipei'); // Set the timezone to Taipei
+    $current_date = date('D, F d, Y'); // Format: "Tue, January 01, 2024"
 ?>
 
 <!DOCTYPE html>
@@ -28,6 +26,8 @@ $current_date = date('D, F d, Y'); // Format: "Tue, January 01, 2024"
     <!-- Main Content Section -->
 <div class="main-content" id="mainContent">
      <?php include '../Agent Section/includes/navbar.php' ?>
+
+     
 
 <!-- Main Dashboard Content -->
 <div class="container-wrapper">

@@ -10,7 +10,7 @@
 <div class="section-title">Operational</div>
 <a href="../Agent Section/agent-transactions.php"> <i class="fas fa-exchange-alt"></i> Transactions </a>
 
-<a href="../Agent Section/agent-addbooking.php"> <i class="fa-solid fa-user-plus"></i> Add Booking </a>
+<a href="../Agent Section/agent-addBooking.php"> <i class="fa-solid fa-user-plus"></i> Add Booking </a>
 
 <a href="../Agent Section/agent-transactions.php"> <i class="fas fa-exchange-alt"></i> Transactions </a>
 

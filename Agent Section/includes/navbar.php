@@ -1,3 +1,21 @@
+<?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+require "../conn.php";
+// Fetch session variables directlys
+$agentId = $_SESSION['agentId'];
+$email = $_SESSION['email'] ?? ''; // Use null coalescing operator to avoid undefined index
+$fName = $_SESSION['fName'] ?? '';
+$lName = $_SESSION['lName'] ?? '';
+$mName = $_SESSION['mName'] ?? '';
+// $accId = $_SESSION['accountid'] ?? '';
+$branch = $_SESSION['branch'] ?? '';
+
+$fullName = htmlspecialchars($lName . ', ' . $fName . ($mName ? ' ' . substr($mName, 0, 1) . '.' : ''));
+?>
+
 <header>      
   <nav class="navbar navbar-expand-lg justify-content-between sticky-top">
      <div class="container-fluid d-flex justify-content-between">
@@ -17,8 +35,9 @@
 
                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                        <div class="profile-container ms-2 me-3">
-                           <h6 class="m-0">De Guzman, Andrei Vincent</h6>
-                           <span class="m-0">Admin</span>
+                       <h6 class="m-0">Agent Id <?php echo $agentId; ?></h6>
+                           <h6 class="m-0"><?php echo $fullName; ?></h6>
+                           <span class="m-0"><?php echo $branch; ?></span>
                        </div>
                        <img src="../assets/images/circle.png" alt="Profile" class="profile-image me-2" width="40px" height="40px">
                    </a>
