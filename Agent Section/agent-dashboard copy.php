@@ -32,6 +32,8 @@ $current_date = date('D, F d, Y'); // Format: "Tue, January 01, 2024"
 <!-- Main Dashboard Content -->
 <div class="container-wrapper">
     
+
+     
     <div class="dashboard-cards d-flex flex-wrap justify-content-between">
    
     <div class="dashboard-cards-one card">
@@ -48,49 +50,24 @@ $current_date = date('D, F d, Y'); // Format: "Tue, January 01, 2024"
         </div>
 
         <div class="dcard-body">
-         <div class="month-transaction me-1 ">
-            <div class="logo-container transaction-total">
-                <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
-            </div>
-            <div class="content-container">
-                <h3>100</h3>
-                <p>TOTAL TRANSACTION</p> <!-- Additional description -->
-            </div>
-        </div>
+           <div class="month-transaction">
+               <h3>18</h3>
+               <span class="status-cancelled">CANCELLED</span>
+           </div>
 
-        <div class="month-transaction ">
-            <div class="logo-container transaction-cancelled">
-                <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
-            </div>
-            <div class="content-container">
-                <h3>100</h3>
-                <p>CANCELLED</p> <!-- Additional description -->
-            </div>
-        </div>
+           <div class="vertical-line"></div>
 
-       </div>
+           <div class="month-transaction">
+               <h3>18</h3>
+               <span class="status-unconfirmed">ON GOING</span>
+           </div>
 
-       <div class="dcard-body mt-3">
-         <div class="month-transaction me-1 ">
-            <div class="logo-container transaction-ongoing">
-                <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
-            </div>
-            <div class="content-container">
-                <h3>100</h3>
-                <p>ON GOING</p> <!-- Additional description -->
-            </div>
-        </div>
+           <div class="vertical-line"></div>
 
-        <div class="month-transaction ">
-            <div class="logo-container transaction-confirmed">
-                <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
-            </div>
-            <div class="content-container">
-                <h3>100</h3>
-                <p>CONFIRMED</p> <!-- Additional description -->
-            </div>
-        </div>
-
+           <div class="month-transaction">
+               <h3>18</h3>
+               <span class="status-confirmed">CONFIRMED</span>
+           </div>
        </div>
      </div>
 
@@ -102,111 +79,56 @@ $current_date = date('D, F d, Y'); // Format: "Tue, January 01, 2024"
         </div>
 
         <div class="dcard-body">
-         <div class="month-transaction me-1 ">
-            <div class="logo-container transaction-total">
-                <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
-            </div>
-            <div class="content-container">
-                <h3>100</h3>
-                <p>TOTAL TRANSACTION</p> <!-- Additional description -->
-            </div>
-        </div>
+           <div class="month-transaction">
+               <h3>18</h3>
+               <span class="">LAST MONTH</span>
+               <span class="accent">(September)</span>
+           </div>
 
-        <div class="month-transaction ">
-            <div class="logo-container transaction-cancelled">
-                <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
-            </div>
-            <div class="content-container">
-                <h3>100</h3>
-                <p>CANCELLED</p> <!-- Additional description -->
-            </div>
-        </div>
+           <div class="vertical-line"></div>
 
+           <div class="month-transaction">
+               <h3>18</h3>
+               <span class="">THIS MONTH</span>
+               <span class="accent">(October)</span>
+           </div>
+
+           <div class="vertical-line"></div>
+
+           <div class="month-transaction">
+               <h3>18</h3>
+               <span class="">NEXT MONTH</span>
+               <span class="accent">(November)</span>
+           </div>
        </div>
 
-       <div class="dcard-body mt-3">
-         <div class="month-transaction me-1 ">
-            <div class="logo-container transaction-ongoing">
-                <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
-            </div>
-            <div class="content-container">
-                <h3>100</h3>
-                <p>ON GOING</p> <!-- Additional description -->
-            </div>
-        </div>
+        <div class="dcard-footer">
 
-        <div class="month-transaction ">
-            <div class="logo-container transaction-confirmed">
-                <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
-            </div>
-            <div class="content-container">
-                <h3>100</h3>
-                <p>CONFIRMED</p> <!-- Additional description -->
-            </div>
-        </div>
 
-       </div>
+        </div>
     </div>
-
-
-    
 
     <div class="dashboard-cards-three card">
       <div class="dcard-header">
           <div class="header-text">
-             <h3>On Due</h3>
+             <h3>Pending Request</h3>
           </div>
          
-          
+          <!-- <div class="view-button">
+              <a class="btn">
+                  <i class="fa-solid fa-arrow-right"></i>
+              </a>
+          </div> -->
       </div>
 
       <div class="dcard-body">
-         <div class="month-transaction me-1 ">
-            <div class="logo-container transaction-total">
-                <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
-            </div>
-            <div class="content-container">
-                <h3>100</h3>
-                <p>TOTAL TRANSACTION</p> <!-- Additional description -->
-            </div>
-        </div>
+         
+      </div>
 
-        <div class="month-transaction ">
-            <div class="logo-container transaction-cancelled">
-                <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
-            </div>
-            <div class="content-container">
-                <h3>100</h3>
-                <p>CANCELLED</p> <!-- Additional description -->
-            </div>
-        </div>
+      <div class="dcard-footer">
 
-       </div>
+      </div>
 
-       <div class="dcard-body mt-3">
-         <div class="month-transaction me-1 ">
-            <div class="logo-container transaction-ongoing">
-                <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
-            </div>
-            <div class="content-container">
-                <h3>100</h3>
-                <p>ON GOING</p> <!-- Additional description -->
-            </div>
-        </div>
-
-        <div class="month-transaction ">
-            <div class="logo-container transaction-confirmed">
-                <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
-            </div>
-            <div class="content-container">
-                <h3>100</h3>
-                <p>CONFIRMED</p> <!-- Additional description -->
-            </div>
-        </div>
-
-       </div>
-
-   
     </div>
 
     
