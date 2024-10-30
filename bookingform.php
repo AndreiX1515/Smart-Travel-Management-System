@@ -1,5 +1,4 @@
 <?php 
-
   require "conn.php";
 ?>
 
@@ -142,7 +141,7 @@
                   </div>
                 </div>
 
-                <div class="col-md-7">
+                <div class="col-md-6">
                   <div class="form-group mb-12">
                     <label class="mb-2 mt-3" for="outboundFlight">Flight Date <span class="text-danger fw-bold">*</span></label>
                     <select class="form-select" id="outboundFlight" name="outboundFlight" required>
@@ -156,7 +155,7 @@
               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group mb-6">
-                    <input type="" id="flightId" name="flightId" value="">
+                    <input type="hidden" id="flightId" name="flightId" value="">
                     <input type="hidden" id="packagePrice" name="packagePrice" value="">
                   </div>
                 </div>

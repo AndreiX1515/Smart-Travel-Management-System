@@ -21,7 +21,6 @@
 </i> Transactions </a>
 
 
-
 <a href="../Agent Section/agent-transactions.php"> <i class="fas fa-exchange-alt"></i> Transactions </a>
 
 <a href="../Agent Section/agent-transactions.php"> <i class="fas fa-exchange-alt"></i> Transactions </a>

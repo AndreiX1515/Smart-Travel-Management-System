@@ -32,6 +32,7 @@ if (isset($_POST['login'])) {
                 $_SESSION['fName'] = $agent['fName'];
                 $_SESSION['lName'] = $agent['lName'];
                 $_SESSION['mName'] = $agent['mName'];
+                $_SESSION['branch'] = $agent['branch'];
                 
                 // Prepare success response
                 $response['success'] = true;
