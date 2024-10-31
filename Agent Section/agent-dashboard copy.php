@@ -1,9 +1,11 @@
 <?php
-    // Start session
-    session_start();
-    require "../conn.php";
-    date_default_timezone_set('Asia/Taipei'); // Set the timezone to Taipei
-    $current_date = date('D, F d, Y'); // Format: "Tue, January 01, 2024"
+// Start session
+session_start();
+
+
+date_default_timezone_set('Asia/Taipei'); // Set the timezone to Taipei
+$current_date = date('D, F d, Y'); // Format: "Tue, January 01, 2024"
+
 ?>
 
 <!DOCTYPE html>
@@ -27,11 +29,11 @@
 <div class="main-content" id="mainContent">
      <?php include '../Agent Section/includes/navbar.php' ?>
 
-     
-
 <!-- Main Dashboard Content -->
 <div class="container-wrapper">
     
+
+     
     <div class="dashboard-cards d-flex flex-wrap justify-content-between">
    
     <div class="dashboard-cards-one card">
@@ -48,49 +50,24 @@
         </div>
 
         <div class="dcard-body">
-         <div class="month-transaction me-1 ">
-            <div class="logo-container transaction-total">
-                <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
-            </div>
-            <div class="content-container">
-                <h3>100</h3>
-                <p>TOTAL TRANSACTION</p> <!-- Additional description -->
-            </div>
-        </div>
+           <div class="month-transaction">
+               <h3>18</h3>
+               <span class="status-cancelled">CANCELLED</span>
+           </div>
 
-        <div class="month-transaction ">
-            <div class="logo-container transaction-cancelled">
-                <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
-            </div>
-            <div class="content-container">
-                <h3>100</h3>
-                <p>CANCELLED</p> <!-- Additional description -->
-            </div>
-        </div>
+           <div class="vertical-line"></div>
 
-       </div>
+           <div class="month-transaction">
+               <h3>18</h3>
+               <span class="status-unconfirmed">ON GOING</span>
+           </div>
 
-       <div class="dcard-body mt-3">
-         <div class="month-transaction me-1 ">
-            <div class="logo-container transaction-ongoing">
-                <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
-            </div>
-            <div class="content-container">
-                <h3>100</h3>
-                <p>ON GOING</p> <!-- Additional description -->
-            </div>
-        </div>
+           <div class="vertical-line"></div>
 
-        <div class="month-transaction ">
-            <div class="logo-container transaction-confirmed">
-                <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
-            </div>
-            <div class="content-container">
-                <h3>100</h3>
-                <p>CONFIRMED</p> <!-- Additional description -->
-            </div>
-        </div>
-
+           <div class="month-transaction">
+               <h3>18</h3>
+               <span class="status-confirmed">CONFIRMED</span>
+           </div>
        </div>
      </div>
 
@@ -102,111 +79,56 @@
         </div>
 
         <div class="dcard-body">
-         <div class="month-transaction me-1 ">
-            <div class="logo-container transaction-total">
-                <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
-            </div>
-            <div class="content-container">
-                <h3>100</h3>
-                <p>TOTAL TRANSACTION</p> <!-- Additional description -->
-            </div>
-        </div>
+           <div class="month-transaction">
+               <h3>18</h3>
+               <span class="">LAST MONTH</span>
+               <span class="accent">(September)</span>
+           </div>
 
-        <div class="month-transaction ">
-            <div class="logo-container transaction-cancelled">
-                <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
-            </div>
-            <div class="content-container">
-                <h3>100</h3>
-                <p>CANCELLED</p> <!-- Additional description -->
-            </div>
-        </div>
+           <div class="vertical-line"></div>
 
+           <div class="month-transaction">
+               <h3>18</h3>
+               <span class="">THIS MONTH</span>
+               <span class="accent">(October)</span>
+           </div>
+
+           <div class="vertical-line"></div>
+
+           <div class="month-transaction">
+               <h3>18</h3>
+               <span class="">NEXT MONTH</span>
+               <span class="accent">(November)</span>
+           </div>
        </div>
 
-       <div class="dcard-body mt-3">
-         <div class="month-transaction me-1 ">
-            <div class="logo-container transaction-ongoing">
-                <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
-            </div>
-            <div class="content-container">
-                <h3>100</h3>
-                <p>ON GOING</p> <!-- Additional description -->
-            </div>
-        </div>
+        <div class="dcard-footer">
 
-        <div class="month-transaction ">
-            <div class="logo-container transaction-confirmed">
-                <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
-            </div>
-            <div class="content-container">
-                <h3>100</h3>
-                <p>CONFIRMED</p> <!-- Additional description -->
-            </div>
-        </div>
 
-       </div>
+        </div>
     </div>
-
-
-    
 
     <div class="dashboard-cards-three card">
       <div class="dcard-header">
           <div class="header-text">
-             <h3>On Due</h3>
+             <h3>Pending Request</h3>
           </div>
          
-          
+          <!-- <div class="view-button">
+              <a class="btn">
+                  <i class="fa-solid fa-arrow-right"></i>
+              </a>
+          </div> -->
       </div>
 
       <div class="dcard-body">
-         <div class="month-transaction me-1 ">
-            <div class="logo-container transaction-total">
-                <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
-            </div>
-            <div class="content-container">
-                <h3>100</h3>
-                <p>TOTAL TRANSACTION</p> <!-- Additional description -->
-            </div>
-        </div>
+         
+      </div>
 
-        <div class="month-transaction ">
-            <div class="logo-container transaction-cancelled">
-                <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
-            </div>
-            <div class="content-container">
-                <h3>100</h3>
-                <p>CANCELLED</p> <!-- Additional description -->
-            </div>
-        </div>
+      <div class="dcard-footer">
 
-       </div>
+      </div>
 
-       <div class="dcard-body mt-3">
-         <div class="month-transaction me-1 ">
-            <div class="logo-container transaction-ongoing">
-                <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
-            </div>
-            <div class="content-container">
-                <h3>100</h3>
-                <p>ON GOING</p> <!-- Additional description -->
-            </div>
-        </div>
-
-        <div class="month-transaction ">
-            <div class="logo-container transaction-confirmed">
-                <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
-            </div>
-            <div class="content-container">
-                <h3>100</h3>
-                <p>CONFIRMED</p> <!-- Additional description -->
-            </div>
-        </div>
-
-       </div>
-
-   
     </div>
 
     
@@ -314,65 +236,54 @@ $usd_to_euro = $exchangeRates['conversion_rates']['EUR'] ?? 0.85;  // Fallback i
                          <th>T.N</th>
                          <th>PACKAGE</th>
                          <th>FLIGHT DATE</th>
-                         <th>PAX.</th>
+                         <th>TOTAL PAX.</th>
                          <th>CONTACT NAME</th>
                          <th>STATUS</th>
                      </tr>
                  </thead>
                  <tbody>
-                    <?php
-                        $sql1 = "SELECT
-                                    b.transactNo AS `T.N`,
-                                    p.packageName AS `PACKAGE`,
-                                    CASE 
-                                        WHEN b.flightId IS NULL THEN 'Land Only'
-                                        ELSE DATE_FORMAT(f.flightDepartureDate, '%M %d, %Y')
-                                    END AS `FLIGHT DATE`,
-                                    b.pax AS `TOTAL PAX`,
-                                    CONCAT(
-                                        b.lName, ', ', b.fName, ' ', 
-                                        CASE WHEN b.mName = 'N/A' THEN '' ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ',
-                                        CASE WHEN b.suffix = 'N/A' THEN '' ELSE b.suffix END
-                                    ) AS `CONTACT NAME`,
-                                    b.status AS `STATUS`
-                                FROM 
-                                    booking b
-                                LEFT JOIN 
-                                    flight f ON b.flightId = f.flightId
-                                LEFT JOIN 
-                                    package p ON b.packageId = p.packageId
-                                LEFT JOIN
-                                    agent a ON b.agentId = a.agentId
-                                WHERE 
-                                    b.agentId = 1
-                                ORDER BY 
-                                    b.transactNo DESC";
-            
-                        // Run the query and check for results
-                        $res1 = $conn->query($sql1);
-                        
-                        // Check if there are any results
-                        if ($res1->num_rows > 0) 
-                        {
-                            // Output data for each row
-                            while ($row = $res1->fetch_assoc()) 
-                            {
-                                echo "<tr>
-                                        <td>{$row['T.N']}</td>
-                                        <td>{$row['PACKAGE']}</td>
-                                        <td>{$row['FLIGHT DATE']}</td>
-                                        <td>{$row['TOTAL PAX']}</td>
-                                        <td>{$row['CONTACT NAME']}</td>
-                                        <td>{$row['STATUS']}</td>
-                                     </tr>";
-                            }
-                        } 
-                        else 
-                        {
-                            // If no records found
-                            echo "<tr><td colspan='6'>No bookings found</td></tr>";
-                        }
-                    ?>
+                 <tr>
+                    <td>001</td>
+                    <td>Summer Package</td>
+                    <td>2024-11-10</td>
+                    <td>150</td>
+                    <td>John Doe</td>
+                    <td><span class="status confirmed">Confirmed</span></td>
+                </tr>
+                <tr>
+                    <td>002</td>
+                    <td>Summer Package</td>
+                    <td>2024-11-12</td>
+                    <td>75</td>
+                    <td>Jane Smith</td>
+                    <td><span class="status pending">On going</span></td>
+                </tr>
+                <tr>
+                    <td>003</td>
+                    <td>Summer Package</td>
+                    <td>2024-11-15</td>
+                    <td>200</td>
+                    <td>Michael Johnson</td>
+                    <td><span class="status cancelled">Cancelled</span></td>
+                </tr>
+                <tr>
+                    <td>004</td>
+                    <td>Summer Package</td>
+                    <td>2024-11-20</td>
+                    <td>120</td>
+                    <td>Emily Davis</td>
+                    <td><span class="status confirmed">Confirmed</span></td>
+                </tr>
+
+                <tr>
+                    <td>005</td>
+                    <td>Summer Package</td>
+                    <td>2024-11-20</td>
+                    <td>120</td>
+                    <td>Emily Davis</td>
+                    <td><span class="status confirmed">Confirmed</span></td>
+                </tr>
+
                  </tbody>
              </table>
        </div>
@@ -395,51 +306,72 @@ $usd_to_euro = $exchangeRates['conversion_rates']['EUR'] ?? 0.85;  // Fallback i
              <table class="pending-table">
                  <thead>
                      <tr>
-                        <th>T.N</th>
-                        <th>Request</th>
-                        <th>Date</th>
+                         <th>T.N</th>
+                         <th>PACKAGE</th>
+                         <th>FLIGHT DATE</th>
+                         <th>TOTAL PAX.</th>
+                         <th>CONTACT NAME</th>
+                         <th>STATUS</th>
                      </tr>
                  </thead>
                  <tbody>
-                    <?php
-                        $sql1 = "SELECT 
-                                    r.transactNo AS `T.N`,
-                                    r.concern AS `Request`,
-                                    r.date AS `Date`
-                                FROM 
-                                    request r
-                                JOIN 
-                                    booking b ON r.transactNo = b.transactNo
-                                WHERE 
-                                    b.agentId = '1'  -- Adjust this condition as needed
-                                ORDER BY 
-                                    r.date DESC";  // Order by request date
-            
-                        // Run the query and check for results
-                        $res1 = $conn->query($sql1);
-                        
-                        // Check if there are any results
-                        if ($res1->num_rows > 0) 
-                        {
-                            // Output data for each row
-                            while ($row = $res1->fetch_assoc()) 
-                            {
-                                echo "<tr>
-                                        <td>{$row['T.N']}</td>
-                                        <td>{$row['Request']}</td>
-                                        <td>" . date('F d, Y', strtotime($row['Date'])) . "</td>
-                                      </tr>";
-                            }
-                        } 
-                        else 
-                        {
-                            // If no records found
-                            echo "<tr><td colspan='6'>No bookings found</td></tr>";
-                        }
-                    ?>
+                 <tr>
+                    <td>001</td>
+                    <td>Summer Package</td>
+                    <td>2024-11-10</td>
+                    <td>150</td>
+                    <td>John Doe</td>
+                    <td><span class="status confirmed">Confirmed</span></td>
+                </tr>
+                <tr>
+                    <td>002</td>
+                    <td>Summer Package</td>
+                    <td>2024-11-12</td>
+                    <td>75</td>
+                    <td>Jane Smith</td>
+                    <td><span class="status pending">On going</span></td>
+                </tr>
+                <tr>
+                    <td>003</td>
+                    <td>Summer Package</td>
+                    <td>2024-11-15</td>
+                    <td>200</td>
+                    <td>Michael Johnson</td>
+                    <td><span class="status cancelled">Cancelled</span></td>
+                </tr>
+                <tr>
+                    <td>004</td>
+                    <td>Summer Package</td>
+                    <td>2024-11-20</td>
+                    <td>120</td>
+                    <td>Emily Davis</td>
+                    <td><span class="status confirmed">Confirmed</span></td>
+                </tr>
+
+                <tr>
+                    <td>005</td>
+                    <td>Summer Package</td>
+                    <td>2024-11-20</td>
+                    <td>120</td>
+                    <td>Emily Davis</td>
+                    <td><span class="status confirmed">Confirmed</span></td>
+                </tr>
+
                  </tbody>
              </table>
        </div>
+
+
+
+
+
+
+
+
+
+
+
+
 
      <!-- <div class="header d-flex justify-content-between align-items-center justify-content-between">
             <h6>Seats</h6>

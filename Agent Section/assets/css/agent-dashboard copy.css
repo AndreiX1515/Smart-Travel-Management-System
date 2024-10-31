@@ -101,10 +101,13 @@ body {
  justify-content: flex-start; /* Align cards to the left */
  gap: 5px; /* Space between cards */
  padding: 0px 0px;
- height: 18vh; /* Increased container height for better card proportion */
+ height: 20vh; /* Increased container height for better card proportion */
 }
 
 .card {
+ background-color: #ffffff;
+ border-radius: 10px;
+ box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
  display: flex;
  flex-direction: column;
  width: calc(15% - 15px); /* Responsive width with spacing accounted */
@@ -112,29 +115,14 @@ body {
 }
 
 .dashboard-cards-one {
- width: calc(25% - 5px); /* Wider card that still aligns with spacing */
+ width: calc(30% - 5px); /* Wider card that still aligns with spacing */
  height: 100%; /* Matches container height */
- background-color: #fff; /* Card background color */
- border-radius: 10px; /* Rounded corners */
- box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Soft shadow */
- display: flex;
- flex-direction: column; /* Maintain column layout if needed */
 }
 
 .dashboard-cards-two {
- width: calc(25% - 5px); /* Same width calculation as the first card */
+ width: calc(30% - 5px); /* Same width calculation as the first card */
  height: 100%; /* Matches the height of the parent container */
- background-color: #fff; /* Card background color */
- border-radius: 10px; /* Rounded corners */
- box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Soft shadow */
- display: flex;
- flex-direction: column; /* Maintain column layout if needed */
-}
-
-.dashboard-cards-three {
- width: calc(25% - 5px); /* Same width calculation as the first card */
- height: 100%; /* Matches the height of the parent container */
- background-color: #fff; /* Card background color */
+ background-color: #ffffff; /* White background for the card */
  border-radius: 10px; /* Rounded corners */
  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Soft shadow */
  display: flex;
@@ -144,7 +132,7 @@ body {
 .dashboard-cards-four {
  width: calc(25% - 5px); /* Same width calculation as the first card */
  height: 100%; /* Matches the height of the parent container */
- background-color: #fff; /* Card background color */
+ background-color: #ffffff; /* White background for the card */
  border-radius: 10px; /* Rounded corners */
  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Soft shadow */
  display: flex;
@@ -173,83 +161,26 @@ body {
  display: flex;
  flex-direction: row;
  align-items: center; /* Center items vertically */
- padding: 0px 20px 0px 10px;
+ justify-content: center; /* Center items horizontally */
+ padding: 20px 20px;
 }
 
 .month-transaction {
  display: flex;
  flex-direction: row;
- justify-content: left;
+ justify-content: center;
  align-items: center;
- padding: 10px; /* Increased padding for a more spacious look */
- width: 220px; /* Fixed width */
- height: 65px; /* Fixed height */
- border-radius: 10px;
- transition: background-color 0.3s, transform 0.3s; /* Transition effects */
+ padding: 5px 10px; /* Add some padding */
+ width: 120px; /* Set a fixed width or adjust as needed */
+ height: 60px; /* Set a fixed height or adjust as needed */
 }
 
-.transaction-total {
- background-color: rgb(209, 236, 241); /* Light blue */
- border: 1px solid rgb(12, 84, 96); /* Darker blue for accent */
- box-shadow: 0 1px 3px rgba(12, 84, 96, 0.6); /* Shadow for logo */
-}
-
-.transaction-cancelled {
- background-color: rgb(253, 144, 153); /* Light red */
- border: 1px solid rgb(114, 28, 36); /* Darker red for accent */
- box-shadow: 0 1px 3px rgba(114, 28, 36, 0.4); /* Shadow for logo */
-}
-
-.transaction-ongoing {
- background-color: #fff3cd; /* Light yellow */
- border: 1px solid #856404; /* Darker yellow for accent */
-
-}
-
-.transaction-confirmed {
- background-color: #c3e6cb; /* Light green */
- border: 1px solid #155724; /* Darker green for accent */
-
-}
-
-.month-transaction:hover {
- transform: translateY(-2px); /* Slight lift on hover */
-}
 
 .month-transaction h3 {
  font-size: 26px; /* Increased font size for the number */
  color: #333; /* Darker text for better contrast */
- margin: 0; /* Remove default margin */
- font-weight: bold; /* Bold text for emphasis */
+ margin: 0 0 10px 0; /* Remove default margin */
 }
-
-.logo-container {
- display: flex;
- justify-content: center;
- align-items: center;
- border-radius: 10px; /* Make logo container circular */
- padding: 5px; /* Padding for spacing */
- width: 35px; /* Increased width */
- height: 35px; /* Increased height */
- margin-right: 10px; /* Space between logo and text */
- 
-}
-
-.content-container {
- display: flex;
- flex-direction: column;
- justify-content: center; /* Center text vertically */
- align-items: flex-start; /* Align items to the start */
- padding: 0px 5px; /* Padding for spacing */
- width: 130px; /* Adjusted width for better text alignment */
-}
-
-.content-container p {
- font-size: 10px; /* Text size for additional information */
- color: #666; /* Softer grey for less emphasis */
- margin: 0; /* Remove default margin */
-}
-
 
 .status-cancelled {
  font-size: 10px; /* Smaller font size for the label */
@@ -269,210 +200,33 @@ body {
  font-weight: bold; /* Optional: make text bold */
 }
 
-
-/* Dashboard Card - Two */
+/* .vertical-line {
+ width: 1px;
+ background-color: #ccc;
+ height: 60px; /* Set a fixed height for the line 
+ margin: 0 20px; /* Adjust margin for more spacing 
+} */
 
 .dashboard-cards-two .dcard-body {
  display: flex;
  flex-direction: row;
  align-items: center; /* Center items vertically */
- padding: 0px 20px 0px 10px;
+ justify-content: center; /* Center items horizontally */
+ padding: 20px 20px;
 }
 
-
-
-.dashboard-card-two .month-transaction {
- display: flex;
- flex-direction: row;
- justify-content: left;
- align-items: center;
- padding: 10px; /* Increased padding for a more spacious look */
- width: 220px; /* Fixed width */
- height: 65px; /* Fixed height */
- border-radius: 10px;
- transition: background-color 0.3s, transform 0.3s; /* Transition effects */
-}
-
-.dashboard-card-two .month-transaction:hover {
- transform: translateY(-2px); /* Slight lift on hover */
-}
-
-.dashboard-card-two .transaction-total {
- background-color: rgb(209, 236, 241); /* Light blue */
- border: 1px solid rgb(12, 84, 96); /* Darker blue for accent */
- box-shadow: 0 1px 3px rgba(12, 84, 96, 0.6); /* Shadow for logo */
-}
-
-.dashboard-card-two .transaction-cancelled {
- background-color: rgb(253, 144, 153); /* Light red */
- border: 1px solid rgb(114, 28, 36); /* Darker red for accent */
- box-shadow: 0 1px 3px rgba(114, 28, 36, 0.4); /* Shadow for logo */
-}
-
-.dashboard-card-two .transaction-ongoing {
- background-color: #fff3cd; /* Light yellow */
- border: 1px solid #856404; /* Darker yellow for accent */
-}
-
-.dashboard-card-two .transaction-confirmed {
- background-color: #c3e6cb; /* Light green */
- border: 1px solid #155724; /* Darker green for accent */
-}
-
-.dashboard-card-two .month-transaction h3 {
- font-size: 26px; /* Increased font size for the number */
- color: #333; /* Darker text for better contrast */
- margin: 0; /* Remove default margin */
- font-weight: bold; /* Bold text for emphasis */
-}
-
-.dashboard-card-two .logo-container {
- display: flex;
- justify-content: center;
- align-items: center;
- border-radius: 10px; /* Make logo container circular */
- padding: 5px; /* Padding for spacing */
- width: 50px; /* Increased width */
- height: 50px; /* Increased height */
- margin-right: 10px; /* Space between logo and text */
-}
-
-.dashboard-card-two .content-container {
- display: flex;
- flex-direction: column;
- justify-content: center; /* Center text vertically */
- align-items: flex-start; /* Align items to the start */
- padding: 0px 5px; /* Padding for spacing */
- width: 130px; /* Adjusted width for better text alignment */
-}
-
-.dashboard-card-two .content-container p {
- font-size: 10px; /* Text size for additional information */
- color: #666; /* Softer grey for less emphasis */
- margin: 0; /* Remove default margin */
-}
-
-.dashboard-card-two .status-cancelled {
+.dashboard-cards-two .dcard-body span {
  font-size: 10px; /* Smaller font size for the label */
- color: #c9302c; /* Darker red color for cancelled */
  font-weight: bold; /* Optional: make text bold */
+ color: #acacac;
 }
 
-.dashboard-card-two .status-unconfirmed {
- font-size: 10px; /* Smaller font size for the label */
- color: #ec971f; /* Darker orange color for unconfirmed */
+.dashboard-cards-two .dcard-body .accent {
+ font-size: 8px; /* Smaller font size for the label */
  font-weight: bold; /* Optional: make text bold */
+ color: #acacac;
 }
 
-.dashboard-card-two .status-confirmed {
- font-size: 10px; /* Smaller font size for the label */
- color: #4cae4f; /* Darker green color for confirmed */
- font-weight: bold; /* Optional: make text bold */
-}
-
-
-
-
-
-
-
-/* Dashboard Card - Three */
-
-.dashboard-cards-three .dcard-body {
- display: flex;
- flex-direction: row;
- align-items: center; /* Center items vertically */
- padding: 0px 20px 0px 10px;
-}
-
-.dashboard-cards-three .month-transaction {
- display: flex;
- flex-direction: row;
- justify-content: left;
- align-items: center;
- padding: 10px; /* Increased padding for a more spacious look */
- width: 220px; /* Fixed width */
- height: 65px; /* Fixed height */
- border-radius: 10px;
- transition: background-color 0.3s, transform 0.3s; /* Transition effects */
-}
-
-.dashboard-cards-three .month-transaction:hover {
- transform: translateY(-2px); /* Slight lift on hover */
-}
-
-.dashboard-cards-three .transaction-total {
- background-color: rgb(209, 236, 241); /* Light blue */
- border: 1px solid rgb(12, 84, 96); /* Darker blue for accent */
- box-shadow: 0 1px 3px rgba(12, 84, 96, 0.6); /* Shadow for logo */
-}
-
-.dashboard-cards-three .transaction-cancelled {
- background-color: rgb(253, 144, 153); /* Light red */
- border: 1px solid rgb(114, 28, 36); /* Darker red for accent */
- box-shadow: 0 1px 3px rgba(114, 28, 36, 0.4); /* Shadow for logo */
-}
-
-.dashboard-cards-three .transaction-ongoing {
- background-color: #fff3cd; /* Light yellow */
- border: 1px solid #856404; /* Darker yellow for accent */
-}
-
-.dashboard-cards-three .transaction-confirmed {
- background-color: #c3e6cb; /* Light green */
- border: 1px solid #155724; /* Darker green for accent */
-}
-
-.dashboard-cards-three .month-transaction h3 {
- font-size: 26px; /* Increased font size for the number */
- color: #333; /* Darker text for better contrast */
- margin: 0; /* Remove default margin */
- font-weight: bold; /* Bold text for emphasis */
-}
-
-/* .dashboard-cards-three .logo-container {
- display: flex;
- justify-content: center;
- align-items: center;
- border-radius: 10px; 
- padding: 5px; 
- width: 50px; 
- height: 50px; /
- margin-right: 10px; 
-} */
-
-.dashboard-cards-three .content-container {
- display: flex;
- flex-direction: column;
- justify-content: center; /* Center text vertically */
- align-items: flex-start; /* Align items to the start */
- padding: 0px 5px; /* Padding for spacing */
- width: 130px; /* Adjusted width for better text alignment */
-}
-
-.dashboard-cards-three .content-container p {
- font-size: 10px; /* Text size for additional information */
- color: #666; /* Softer grey for less emphasis */
- margin: 0; /* Remove default margin */
-}
-
-.dashboard-cards-three .status-cancelled {
- font-size: 10px; /* Smaller font size for the label */
- color: #c9302c; /* Darker red color for cancelled */
- font-weight: bold; /* Optional: make text bold */
-}
-
-.dashboard-cards-three .status-unconfirmed {
- font-size: 10px; /* Smaller font size for the label */
- color: #ec971f; /* Darker orange color for unconfirmed */
- font-weight: bold; /* Optional: make text bold */
-}
-
-.dashboard-cards-three .status-confirmed {
- font-size: 10px; /* Smaller font size for the label */
- color: #4cae4f; /* Darker green color for confirmed */
- font-weight: bold; /* Optional: make text bold */
-}
 
 .dcard-header h3{
  font-size: 0.8rem;

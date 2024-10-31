@@ -25,10 +25,17 @@ $fullName = htmlspecialchars($lName . ', ' . $fName . ($mName ? ' ' . substr($mN
                 <i class="fa-solid fa-bars"></i>
             </div>
 
-            <!-- <a class="navbar-brand" href="#" style="font-weight: 600;">Dashboard</a> -->
+            <a class="navbar-brand" id="page-title" style="font-weight: 600;">Dashboard</a> 
         </div>
 
-          <div class="nav-end-container">
+          <div class="nav-end-container d-flex flex-row align">
+
+          <div class="date-time-container d-flex flex-row align-items-center">
+              <h6><?php echo $current_date; ?></h6>
+          </div>
+
+          <div class="vertical-line-navbar"></div> <!-- Vertical Line -->
+
            <div class="collapse navbar-collapse" id="navbarNav">
              <ul class="navbar-nav ms-auto">
                <li class="nav-item dropdown d-flex align-items-center">
@@ -62,7 +69,10 @@ $fullName = htmlspecialchars($lName . ', ' . $fName . ($mName ? ' ' . substr($mN
                          </a>
                      </li>
                   </ul>
+
                 </li>
+
+                
               </ul>
             </div>
           </div>

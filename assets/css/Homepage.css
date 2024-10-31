@@ -1,0 +1,875 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+
+body {
+ margin: 0;
+ font-family: 'Rubik', sans-serif; /* Use the Rubik font */
+}
+
+header {
+ position: fixed; /* Keeps the navbar fixed at the top */
+ width: 100%;
+ z-index: 1000; /* Ensures it stays above other content */
+ background-color: rgba(255, 255, 255, 0.0); /* Semi-transparent background */
+ transition: background-color 0.3s ease; /* Smooth transition for background change */
+}
+
+/* Class to apply when scrolled */
+header.scrolled {
+ background-color: rgba(0, 0, 0, 0.9); /* Dark background when scrolled */
+ box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Stronger shadow */
+}
+
+nav {
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ padding: 20px 220px; /* Padding for the navbar */
+}
+
+.logo-container {
+ display: flex;
+ align-items: center; /* Center logo vertically */
+}
+
+.logo {
+ aspect-ratio: 16/9;
+ height: 60px;
+ width: 180px;
+ object-fit: contain;
+}
+
+.menu-container {
+ display: flex;
+}
+
+.menu-list {
+ list-style: none; /* Remove default list styles */
+ padding: 0; /* Remove default padding */
+ margin: 0; /* Remove default margin */
+ display: flex;
+ flex-direction: row;
+ align-items: center;
+}
+
+.menu-list li {
+ margin: 0 18px; /* Add left and right margin for menu items */
+}
+
+.vertical-line {
+ width: 2px; /* Line thickness */
+ height: 30px; /* Adjust height as needed */
+ background-color: white; /* Line color */
+ margin: 0 25px; /* Add left and right margin around the line */
+}
+
+.menu-list a {
+ text-decoration: none;
+ color: #f5f5f5; /* Text color */
+ font-weight: 500; /* Bold text */
+ position: relative; /* For positioning the hover underline */
+ transition: color 0.3s; /* Smooth color transition */
+}
+
+.menu-list a::after {
+ content: ''; /* Required for pseudo-element */
+ position: absolute;
+ bottom: -4px; /* Position line slightly below the text */
+ left: 0;
+ width: 0; /* Start with no width */
+ height: 2px; /* Line thickness */
+ background-color: #ffffff; /* Line color */
+ transition: width 0.3s ease; /* Smooth width transition */
+}
+
+.menu-list a:hover {
+ color: #ffffff; /* Change color on hover */
+}
+
+.menu-list a:hover::after {
+ width: 100%; /* Expand line width on hover */
+}
+
+.btn-login {
+ padding: 7px 25px;
+ font-size: 16px;
+ font-weight: bold;
+ margin-left: 20px;
+}
+
+
+.hero {
+ height: 90vh; /* Full viewport height */
+ display: flex; /* Flexbox layout for centering content */
+ justify-content: left; /* Center content horizontally */
+ align-items: center; /* Center content vertically */
+ color: white; /* Text color */
+ text-align: center; /* Center text */
+ position: relative; /* Ensure hero section positions correctly */
+ overflow: hidden; /* Prevent overflow */
+}
+
+
+.background-image {
+ position: absolute; /* Position the image behind other content */
+ top: 0;
+ left: 0;
+ width: 100%;
+ height: 100%;
+ object-fit: cover; /* Cover the entire section */
+ z-index: 1; /* Set below the content */
+}
+
+.overlay {
+ position: absolute; /* Position the overlay above the image */
+ top: 0;
+ left: 0;
+ width: 100%;
+ height: 100%;
+ background-color: rgba(0, 0, 0, 0.5); /* Black overlay with 50% opacity */
+ z-index: 2; /* Set above the background image */
+}
+
+
+.section-container {
+ position: relative;
+ z-index: 2;
+ padding: 30px 220px;
+ display: flex;
+ flex-direction: column;
+ align-items: flex-start;
+ text-align: left;
+}
+
+.section-container h1 {
+ font-size: 48px;
+ font-weight: 700;
+ color: #dddddd; /* White color for high contrast on dark background */
+ margin-bottom: 20px;
+ line-height: 1.2;
+ text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6); /* Adds depth with a soft shadow */
+}
+
+.highlight {
+ color: #EB1C22; /* Change color as needed */
+ position: relative; /* Required for shadow effect */
+ transition: transform 0.3s ease, color 0.3s ease; /* Transition for smooth effects */
+ text-shadow: 1px 1px 0 #ffffff, -1px -1px 0 #ffffff, 
+              1px -1px 0 #ffffff, -1px 1px 0 #ffffff; /* White outline */
+}
+
+
+.section-container p {
+ font-size: 16px;
+ font-weight: 500;
+ color: #bebebe; /* Lighter color for better contrast on dark background */
+ line-height: 1.3;
+ margin-bottom: 20px;
+ max-width: 600px;
+ text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.5); /* Soft shadow to add depth */
+}
+
+
+
+
+
+
+.cta-button {
+ display: inline-block;
+ margin-top: 20px;
+ padding: 12px 35px; /* Slightly increased padding for a balanced look */
+ background-color: #EB1C22;
+ color: #ffffff;
+ font-weight: 700; /* Bold for emphasis */
+ font-size: 16px;
+ text-decoration: none;
+ border-radius: 8px; /* More rounded corners for a modern look */
+ box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Soft shadow for depth */
+ transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.cta-button:hover {
+ background-color: #c5171d;
+ transform: scale(1.06); /* Slightly increased scale effect for emphasis */
+ box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+}
+
+.cta-button-outline {
+ display: inline-block;
+ margin-top: 20px;
+ padding: 12px 35px; /* Matching padding for consistency */
+ text-decoration: none;
+ color: #ffffff; /* Aligned text color with border */
+ font-weight: 700;
+ font-size: 16px;
+ border-radius: 8px;
+ transition: text-decoration 0.3s ease, color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.cta-button-outline:hover {
+ color: #ffffff; /* White text for contrast */
+ text-decoration: underline;
+ transform: scale(1);
+ cursor: pointer;
+}
+
+
+
+
+
+
+
+
+/* About Section */
+
+.about {
+ padding: 40px 220px; /* Add padding for the about section */
+ background-color: #f9f9f9; /* Optional: background color */
+ display: flex; /* Use flexbox for layout */
+ position: relative; /* Ensure hero section positions correctly */
+ overflow: hidden; /* Prevent overflow */
+ height: 60vh;
+}
+
+.image-accent {
+ flex: 1; /* Allow the image to take up equal space */
+}
+
+.image-accent img {
+ width: 100%; /* Responsive image */
+ height: auto; /* Maintain aspect ratio */
+ border-radius: 8px; /* Optional: rounded corners */
+}
+
+.about-content {
+ flex: 1; /* Adjust text content width */
+ display: flex; /* Use flexbox for inner content */
+ flex-direction: column; /* Stack content vertically */
+ justify-content: flex-start; /* Align content to the top */
+ padding: 30px;
+ width: 100%;
+}
+
+.content-header h3 {
+ font-size: 2rem; /* Header size */
+ color: #333; /* Header color */
+}
+
+.highlight {
+ color: #ce1111; /* Highlight color for "Christian" */
+}
+
+.about-content p {
+ color: #555; /* Text color for paragraphs */
+ line-height: 1.6; /* Improved line spacing */
+}
+
+.about-content ul {
+ margin-top: 10px; /* Space above the list */
+ list-style-type: disc; /* Style for the list */
+ padding-left: 20px; /* Indentation for the list */
+ color: #555; /* Color for list items */
+}
+
+.about-card-content {
+ display: flex; /* Arrange items in a row */
+ justify-content: left;
+ flex-wrap: wrap; /* Allow wrapping for smaller screens */
+ gap: 40px;
+ padding: 10px 40px;
+}
+
+.card-1 {
+ background-color: #ffffff; /* Background color for the card */
+ border: 1px solid #EB1C22; /* Border color */
+ border-radius: 8px; /* Rounded corners */
+ padding: 40px; /* Padding inside the card */
+ display: flex;
+ flex-direction: column;
+ justify-content: center;
+ align-items: center;
+ text-align: center; /* Center the text */
+ box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+ flex: 1; /* Allow cards to grow */
+ width: 50%; /* Minimum width for cards */
+ height: 150px;
+ transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transition for hover effects */
+}
+
+.card-1:hover {
+ transform: translateY(-5px); /* Slight lift on hover */
+ box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* Increased shadow on hover */
+}
+
+.card-1 h3 {
+ font-size: 24px; /* Font size for the heading */
+ color: #EB1C22; /* Color for the heading */
+ margin: 0; /* Remove default margin */
+}
+
+.card-1 p {
+ font-size: 16px; /* Font size for the paragraph */
+ color: #555555; /* Color for the paragraph */
+}
+
+
+
+
+
+
+
+
+/* Why Book With Us Section */
+.whybook {
+    background-color: #ffffff;
+    padding: 50px 220px;
+    text-align: center;
+    color: #000000;
+    border-bottom: 2px solid #d3d3d3;
+    position: relative; /* Ensure hero section positions correctly */
+    overflow: hidden; /* Prevent overflow */
+}
+
+.whybook h3 {
+    font-size: 36px;
+    color: #FF0000;
+    margin-bottom: 20px;
+}
+
+.whybook p {
+    font-size: 18px;
+    color: #333333;
+    margin-bottom: 40px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.whybook hr {
+    border: 1px groove #FF0000; 
+    width: 10%; 
+    margin: 0px auto 15px auto;
+
+}
+
+
+/* Card Styles */
+.cards-container {
+ display: flex; /* Use flex layout for card alignment */
+ justify-content: center; /* Align the cards to the left */
+ gap: 25px; /* Space between the cards */
+ flex-wrap: wrap; /* Ensure cards wrap on smaller screens */
+ padding: 20px; /* Add padding around the cards */
+ width: 100%; /* Constrain max width for horizontal alignment */
+ margin: 0 auto; /* Center the container itself */
+}
+
+.card {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 330px; /* Fixed width for cards to maintain uniformity */
+  text-align: center; /* Center the content */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.3s ease; /* Smooth hover effect */
+  height: 100%; /* Ensures all cards have the same height */
+  min-height: 400px; /* Adjust this value to set a uniform height */
+}
+
+.card:hover {
+ transform: translateY(-10px); /* Slight lift on hover */
+ box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.card .icon {
+ margin-bottom: 20px;
+}
+
+.card h5 {
+ margin: 20px 0 10px;
+}
+
+.card a {
+ margin-top: auto; /* Push the button to the bottom */
+}
+
+.card .card-title {
+ font-size: 20px;
+ color: #FF0000; /* Red for titles */
+ margin-bottom: 20px;
+}
+
+.card .card-text {
+ font-size: 16px;
+ color: #333333;
+}
+
+.icon i {
+ color: #FF0000; /* Red for icons */
+}
+
+.btn-primary {
+ background-color: #FF0000;
+ border-color: #FF0000;
+ color: #ffffff;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+ .cards-container {
+     flex-direction: column; /* Stack cards vertically on small screens */
+     justify-content: center; /* Center cards on small screens */
+     align-items: center; /* Center align cards */
+ }
+}
+
+
+
+
+/* Testimonies Section */
+
+.testimonies {
+ height: 70vh; /* Set the height of the testimonies section */
+ background-color: #ffffff; /* White background */
+ padding: 50px 500px; /* Adjusted padding for better centering */
+ text-align: center; /* Center-align text */
+ color: #000000; /* Text color */
+ border-bottom: 2px solid #d3d3d3; /* Bottom border */
+ position: relative; /* Ensure proper positioning */
+}
+
+.testimonies h3 {
+ font-size: 36px; /* Larger font size for heading */
+ color: #FF0000; /* Red color for heading */
+ margin-bottom: 20px; /* Space below heading */
+}
+
+.testimonies p {
+ font-size: 18px; /* Font size for paragraph */
+ color: #333333; /* Dark grey color for text */
+ margin-bottom: 40px; /* Space below paragraph */
+ max-width: 800px; /* Max width for better alignment */
+ margin-left: auto; /* Center alignment */
+ margin-right: auto; /* Center alignment */
+}
+
+.testimonies hr {
+ border: 1px groove #FF0000; /* Groove border for the line */
+ width: 10%; /* Width of the line */
+ margin: 0 auto 15px auto; /* Center the line with margin */
+}
+
+.testimonies .header {
+ margin-bottom: 150px;
+}
+
+
+
+.carousel {
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ position: relative; /* For positioning controls */
+}
+
+.testimonies-container {
+ display: flex; /* Use flexbox for alignment */
+ justify-content: center; /* Center the carousel */
+ align-items: center;
+ width: 100%;
+ overflow: hidden; /* Prevent overflow */
+}
+
+.testimonies-container {
+ display: flex; /* Use flexbox for alignment */
+ justify-content: center; /* Center the carousel */
+ align-items: center;
+ width: 100%;
+ overflow: hidden; /* Prevent overflow */
+ box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Add box shadow for depth */
+ border-radius: 10px; /* Optional: Add border-radius for rounded corners */
+}
+
+
+.client-image {
+ width: 100px; /* Set image width */
+ height: 100px; /* Set image height */
+ border-radius: 50%; /* Circular image */
+ margin-bottom: 15px; /* Space below image */
+}
+
+/* Carousel control styles */
+.carousel-control-prev,
+.carousel-control-next {
+ color: rgba(255, 0, 0, 0.7); /* Semi-transparent red background */
+ border-radius: 50%; /* Rounded buttons */
+ width: 40px; /* Width for buttons */
+ height: 40px; /* Height for buttons */
+ top: 50%; /* Center vertically */
+ transform: translateY(-50%); /* Adjust vertical position */
+ z-index: 1; /* Ensure buttons are above other elements */
+}
+
+.carousel-control-prev {
+ left: 10px; /* Adjust as necessary */
+}
+
+.carousel-control-next {
+ right: 10px; /* Adjust as necessary */
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+ filter: invert(1); /* Invert color for visibility */
+}
+
+
+
+/* Packages-offered */
+
+.packages-offered {
+ padding: 40px 220px; /* Add padding for the about section */
+ height: 85vh;
+}
+
+.packages-offered-header {
+ display: flex;
+ flex-direction: row;
+}
+
+.packages-offered-header hr {
+ border: 1px groove #FF0000; 
+ width: 10%; 
+
+}
+
+
+
+
+.left-side {
+ padding: 20px 10px 0px 10px; /* Padding around the left side */
+ width: 70%; /* Width for left side */
+ margin-top: 10px;
+ 
+}
+
+.left-side h5 {
+ font-size: 22px; /* Font size for heading */
+ font-weight: bold; /* Bold font for heading */
+ color: #ce1111; /* Color for heading */
+}
+
+
+ .right-side {
+ padding:  20px 10px 0px 20px; /* Padding around the right side */
+ width: 30%; /* Width for right side */
+ height: 150px;
+ display: flex;
+ justify-content: flex-end; /* Align content to the end horizontally */
+ align-items: flex-end; /* Align content to the bottom vertically */
+}
+
+.circle-buttons {
+ display: flex;
+ gap: 15px; /* Space between buttons */
+}
+
+.circle-btn {
+ border: 2px solid #ce1111; /* Border color and thickness */
+ border-radius: 50%; /* Makes the button circular */
+ background: transparent; /* Transparent background */
+ cursor: pointer; /* Pointer cursor on hover */
+ font-size: 28px; /* Adjust the size as needed */
+ color: #ce1111; /* Change this color as desired */
+ width: 50px; /* Button width */
+ height: 50px; /* Button height */
+ display: flex; /* Center the icon */
+ align-items: center; /* Center the icon vertically */
+ justify-content: center; /* Center the icon horizontally */
+ transition: transform 0.2s, background 0.2s; /* Smooth transitions */
+}
+
+.circle-btn:hover {
+ transform: scale(1.1); /* Slightly enlarge the button on hover */
+}
+
+.container-body {
+ padding: 20px 40px; /* Increased left and right padding */
+ width: 100%; /* Full width */
+ height: 100%;
+ display: flex; /* Flexbox for layout */
+ border: 1px solid #ddd; /* Light border for body */
+ border-radius: 8px; /* Rounded corners */
+ background-color: #fff; /* White background for body */
+ transition: transform 0.5s ease; /* Smooth transition for movement */
+}
+
+.carousel-content-wrapper {
+ position: relative; /* Position relative for positioning children */
+ width: 100%; /* Full width for carousel wrapper */
+ height: 100%; /* Full width for carousel wrapper */
+ 
+}
+
+.image-container {
+ height: 500px; /* Set a fixed height for the image container */
+ width: 60%;
+}
+
+.image-container img {
+ width: 100%; /* Make images responsive */
+ height: 100%; /* Set to 100% to fill the container */
+ border-radius: 10px; /* Add some rounding to image corners */
+ object-fit: cover; /* Cover the entire area while maintaining aspect ratio */
+}
+
+.content-container {
+ width: 40%;
+ height: 30%;
+ padding: 20px; /* Padding around the content container */
+ margin: 0 auto; /* Center the content horizontally */
+ /* border-radius: 10px;
+ box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); */
+}
+
+.content-container h3 {
+ font-size: 22px; /* Font size for heading */
+ font-weight: bold; /* Bold font for heading */
+ color: #116530; /* Color for heading */
+ margin-bottom: 15px; /* Space below the heading */
+ text-align: left; /* Center-align the heading */
+ letter-spacing: 1px; /* Spacing between characters */
+ line-height: 1.5; /* Line height for better readability */
+}
+
+.content-container p {
+ font-size: 18px; /* Font size for paragraph text */
+ font-weight: normal; /* Regular weight for paragraph text */
+ color: #333; /* Darker color for the paragraph text */
+ margin-bottom: 20px; /* Space below the paragraph */
+ line-height: 1.8; /* Line height for improved readability */
+ text-align: justify; /* Justify the paragraph text */
+}
+
+.carousel-content {
+   display: flex;
+   flex-direction: row;
+   gap: 10px;
+
+}
+
+
+.icon-buttons-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding: 10px 0px 10px 0px;
+}
+
+.icon-button {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ced4da;
+    border-radius: 30px;
+    padding: 8px 15px;
+    background-color: #f8f9fa;
+    font-size: 16px;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.icon-button i {
+    margin-right: 8px;
+}
+
+.icon-button:hover {
+    background-color: #e9ecef;
+}
+.book-btn-container {
+   padding: 20px 0px 10px 0px;
+}
+
+.book-btn-container btn{
+   padding: 20px 0px 10px 0px;
+}
+
+
+
+.featured-hotels {
+ padding: 50px 300px; 
+ background-color: #f9f9f9; 
+ display: flex;
+ flex-direction: column; /* Changed to column for vertical alignment */
+ align-items: center; /* Centers contents horizontally */
+ position: relative; /* Ensure hero section positions correctly */
+ overflow: hidden; /* Prevent overflow */
+ height: 200vh;
+}
+
+.featured-hotels .section-header {
+ display: flex;
+ flex-direction: column;
+ align-items: center; /* Centers contents horizontally */
+ justify-content: center; /* Centers contents vertically */
+}
+
+.featured-hotels h3 {
+ font-size: 36px;
+ color: #FF0000;
+ margin-bottom: 20px;
+ text-align: center; /* Center-aligns text */
+}
+
+.featured-hotels p {
+ font-size: 18px;
+ color: #494949;
+ margin-bottom: 40px;
+ max-width: 800px;
+ text-align: center; /* Center-aligns text */
+}
+
+.featured-hotels hr {
+ border: 1px groove #FF0000;
+ width: 30%;
+ margin: 0px auto 15px auto;
+}
+
+.featured-hotels .section-body {
+ display: flex;
+ flex-direction: row; /* Maintain horizontal layout for left and right parts */
+ margin: 10px 0px;
+ gap: 10px; /* Increased gap for better spacing */
+ width: 100%;
+ height: 100%;
+}
+
+.section-body .left-part {
+ width: 60%; /* Width of the left part */
+ height: 100%; /* Height of the left part */
+ padding: 20px; /* Added padding for better content spacing */
+ background-color: #f9f9f9; /* Light background color for a clean look */
+ border-radius: 8px; /* Rounded corners for a softer appearance */
+ box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+ position: relative; /* Required for absolute positioning of the overlay */
+ overflow: hidden; /* Hide any overflow from the image */
+ transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.section-body .left-part:hover {
+ transform: translateY(-5px) scale(1.02); /* Slight lift and scaling on hover */
+ box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* Increased shadow for hover effect */
+ background-color: #f0f0f0; /* Slightly darker background color on hover */
+}
+
+.background-img {
+ width: 100%; /* Make the image take up the full width of the container */
+ height: 100%; /* Make the image take up the full height of the container */
+ object-fit: cover; /* Maintain aspect ratio while covering the entire area */
+ position: absolute; /* Positioning the image absolutely */
+ top: 0; /* Align to the top of the container */
+ left: 0; /* Align to the left of the container */
+ z-index: 1; /* Ensure the image is behind the overlay */
+}
+
+.left-part .content-overlay {
+ background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(255, 255, 255, 0.1) 80%);
+ color: white; /* Text color */
+ padding: 0px 50px; /* Padding for text */
+ position: absolute; /* Position overlay on top */
+ top: 0; /* Align to top */
+ left: 0; /* Align to left */
+ right: 0; /* Align to right */
+ bottom: 0; /* Align to bottom */
+ display: flex;
+ flex-direction: column; /* Stack h2 and p vertically */
+ justify-content: flex-end; /* Align content to the bottom */
+ align-items: flex-start; /* Align content to the left */
+ text-align: left; /* Align text to the left */
+ z-index: 2; /* Ensure the overlay is above the background image */
+}
+
+.content-overlay p {
+ font-size: 18px;
+ color: #e6e6e6;
+ margin-bottom: 40px;
+ font-weight: 300;
+ max-width: 800px;
+ text-align: left; /* Center-aligns text */
+}
+
+
+.section-body .right-part {
+ width: 40%; /* Width of the right part */
+ height: 100%;
+ display: flex;
+ flex-direction: column; /* Ensure top and bottom parts stack vertically */
+ gap: 10px; /* Space between top and bottom parts */
+}
+
+
+.right-part .top-part,
+.right-part .bottom-part {
+    flex: 1; /* Allow to take up remaining space */
+    position: relative; /* Required for absolute positioning of the overlay */
+    overflow: hidden; /* Hide any overflow from the image */
+    border-radius: 8px; /* Rounded corners for a softer appearance */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    transition: transform 0.4s ease, box-shadow 0.4s ease, background-color 0.4s ease, opacity 0.4s ease;
+    background-color: #f9f9f9; /* Light background color */
+}
+
+/* Hover Effect */
+.right-part .top-part:hover,
+.right-part .bottom-part:hover {
+    transform: translateY(-5px) scale(1.03); /* Lift and slight scaling */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* Enhanced shadow for depth */
+    background-color: #f0f0f0; /* Slightly darker background color */
+    opacity: 0.95; /* Slight fade for a smooth effect */
+}
+
+/* Optional shared transition for the entire section */
+.section-body .left-part:hover,
+.section-body .right-part .top-part:hover,
+.section-body .right-part .bottom-part:hover {
+    transform: translateY(-5px) scale(1.02); /* Consistent lift and scaling */
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15); /* Unified shadow */
+    background-color: #f0f0f0; /* Harmonized background color on hover */
+}
+
+
+.right-part .top-part .background-img,
+.right-part .bottom-part .background-img {
+ width: 100%; /* Make the image take up the full width of the container */
+ height: 100%; /* Make the image take up the full height of the container */
+ object-fit: cover; /* Maintain aspect ratio while covering the entire area */
+ position: absolute; /* Positioning the image absolutely */
+ top: 0; /* Align to the top of the container */
+ left: 0; /* Align to the left of the container */
+ z-index: 1; /* Ensure the image is behind the overlay */
+}
+
+.right-part .content-overlay {
+ background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(255, 255, 255, 0.1) 80%); /* Darker gradient at the bottom, lighter at the top */ /* Dark gradient at the bottom to light at the top */
+ color: white; /* Text color */
+ padding: 20px 25px; /* Padding for text */
+ position: absolute; /* Position overlay on top */
+ top: 0; /* Align to top */
+ left: 0; /* Align to left */
+ right: 0; /* Align to right */
+ bottom: 0; /* Align to bottom */
+ display: flex;
+ flex-direction: column; /* Stack h3 and p vertically */
+ justify-content: flex-end; /* Align content to the bottom */
+ align-items: flex-start; /* Align content to the left */
+ text-align: left; /* Align text to the left */
+ z-index: 2; /* Ensure the overlay is above the background image */
+}
+
+.right-part .content-overlay h3, 
+.right-part .content-overlay p {
+ font-size: 0.9em; /* Smaller font size for heading and paragraph */
+ margin: 0; /* Remove default margin */
+}

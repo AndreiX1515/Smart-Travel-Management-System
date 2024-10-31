@@ -4,15 +4,22 @@
       <img src="..\assets\images\SMART LOGO 2 (2).png" alt="Smart Travel Logo">
   </div>
 
-  <div class="section-title">Dashboard</div>
-<a href="../Agent Section/agent-dashboard.php"> <i class="fas fa-home"></i> Home </a>
+<div class="section-title">Dashboard</div>
+
+<a href="../Agent Section/agent-dashboard.php" class="page-button" data-page-name="Dashboard"> <i class="fas fa-home">
+</i> Home </a>
 
 <div class="section-title">Operational</div>
-<a href="../Agent Section/agent-transactions.php"> <i class="fas fa-exchange-alt"></i> Transactions </a>
 
-<a href="../Agent Section/agent-addBooking.php"> <i class="fa-solid fa-user-plus"></i> Add Booking </a>
+<a href="../Agent Section/agent-addbooking.php" class="page-button" data-page-name="Add Booking"> <i class="fa-solid fa-user-plus">
+</i> Add Booking </a>
 
-<a href="../Agent Section/agent-transactions.php"> <i class="fas fa-exchange-alt"></i> Transactions </a>
+<a href="../Agent Section/agent-transactions.php" class="page-button" data-page-name="Transactions"> <i class="fas fa-exchange-alt">
+</i> Transactions </a>
+
+<a href="../Agent Section/agent-transactions.php" class="page-button" data-page-name="Transactions"> <i class="fas fa-exchange-alt">
+</i> Transactions </a>
+
 
 <a href="../Agent Section/agent-transactions.php"> <i class="fas fa-exchange-alt"></i> Transactions </a>
 

@@ -59,18 +59,36 @@ toggleBtn.addEventListener('click', function () {
 
 
 <script>
-  $(document).ready(function() {
-      // Initialize DataTable
-      $('#myTable').DataTable();
+  // Get all buttons
+  // script.js
 
-      // Optional: Search input functionality
-      $('#searchInput').on('keyup', function() {
-          $('#myTable').DataTable().search(this.value).draw();
-      });
+document.addEventListener('DOMContentLoaded', () => {
+    // Check if there's a saved title in local storage
+    const savedTitle = localStorage.getItem('pageTitle');
+    if (savedTitle) {
+        document.getElementById('page-title').textContent = savedTitle;
+    }
 
-      // Add New button functionality (placeholder)
-      $('#addButton').on('click', function() {
-          alert('Add new entry functionality not implemented yet.');
-      });
-  });
+    const buttons = document.querySelectorAll('.page-button');
+
+    buttons.forEach(button => {
+        button.addEventListener('click', (event) => {
+            event.preventDefault();
+            const newPageName = button.getAttribute('data-page-name');
+            document.getElementById('page-title').textContent = newPageName;
+
+            // Save the title to local storage
+            localStorage.setItem('pageTitle', newPageName);
+
+            const newUrl = button.getAttribute('href');
+            setTimeout(() => {
+                window.location.href = newUrl;
+            }, 100);
+        });
+    });
+});
+
+
+
+
 </script>

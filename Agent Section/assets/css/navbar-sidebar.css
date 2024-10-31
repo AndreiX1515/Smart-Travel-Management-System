@@ -123,13 +123,14 @@
 }
 
 
+
 /* Navbar Section */
 .navbar {
-    padding: 10px 30px 10px 20px; /* Adjust as necessary */
-    display: flex;
-   
-    background-color: transparent; /* Use your preferred color */
-    z-index: 999; /* Ensure the navbar is above other elements */
+ padding: 10px 30px 10px 20px; /* Adjust as necessary */
+ display: flex; /* Use flexbox to position items */
+ align-items: center; /* Center items vertically */
+ background-color: transparent; /* Use your preferred color */
+ z-index: 999; /* Ensure the navbar is above other elements */
 }
 
 .navbar-brand {
@@ -187,3 +188,27 @@
  border-radius: 50%; /* Circular image */
 }
 
+.date-time-container {
+ gap: 10px; /* Adds space between the date and the icon */
+ padding: 10px;
+ border-radius: 15px;
+ color: #000000;
+ text-align: baseline;
+}
+
+.date-time-container h6 {
+ margin: 0;
+ font-size: 14px; /* Adjust the font size as needed */
+}
+
+.date-time-container i {
+ font-size: 16px; /* Adjust the icon size if necessary */
+ color: #000; /* Icon color, adjust as needed */
+}
+
+.vertical-line-navbar {
+ width: 1px; /* Line width */
+ background-color: rgb(167, 167, 167); /* Line color */
+ height: 40px; /* Adjust height to fit the navbar */
+ margin: 10px 20px; /* Spacing around the line */
+}
