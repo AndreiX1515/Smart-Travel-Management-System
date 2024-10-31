@@ -4,9 +4,9 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 require "../conn.php";
-// Fetch session variables directlys
+
 $agentId = $_SESSION['agentId'];
-$email = $_SESSION['email'] ?? ''; // Use null coalescing operator to avoid undefined index
+$email = $_SESSION['email'] ?? ''; 
 $fName = $_SESSION['fName'] ?? '';
 $lName = $_SESSION['lName'] ?? '';
 $mName = $_SESSION['mName'] ?? '';
@@ -42,9 +42,8 @@ $fullName = htmlspecialchars($lName . ', ' . $fName . ($mName ? ' ' . substr($mN
 
                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                        <div class="profile-container ms-2 me-3">
-                       <h6 class="m-0">Agent Id <?php echo $agentId; ?></h6>
-                           <h6 class="m-0"><?php echo $fullName; ?></h6>
-                           <span class="m-0"><?php echo $branch; ?></span>
+                           <h6 class="mb-1"><?php echo $fullName; ?></h6> 
+                           <span class="m-0">Branch: <?php echo $branch; ?></span>
                        </div>
                        <img src="../assets/images/circle.png" alt="Profile" class="profile-image me-2" width="40px" height="40px">
                    </a>

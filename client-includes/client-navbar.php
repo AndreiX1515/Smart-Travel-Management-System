@@ -14,6 +14,10 @@ $accId = $_SESSION['accountid'] ?? '';
 
 $fullName = htmlspecialchars($lastName . ', ' . $firstName . ($middleName ? ' ' . substr($middleName, 0, 1) . '.' : ''));
 
+
+
+
+
 ?>
 
 <header>      
