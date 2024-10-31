@@ -44,6 +44,18 @@
         </div>
       </div>
 
+      <?php 
+          if(isset($_SESSION['status'])):
+        ?>
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Hey!</strong> <?= $_SESSION['status']; ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        <?php 
+          unset($_SESSION['status']);
+          endif;
+        ?>
+
       <div class="container">
         <div class="header-container d-flex flex-row align-items-center justify-content-between w-100 my-2 px-3">
           <h4>Booking</h4>
@@ -132,9 +144,9 @@
 
               </div>
 
-              <input type="" id="flightId" name="flightId" value="" placeholder="Flight Id Input">
-              <input type="" id="packagePrice" name="packagePrice" placeholder="Package Price">
-              <input type="" id="" name="flightPrice" placeholder="Flight Price">
+              <input type="hidden" id="flightId" name="flightId" value="" placeholder="Flight Id Input">
+              <input type="hidden" id="packagePrice" name="packagePrice" placeholder="Package Price">
+              <input type="hidden" name="flightPrice" placeholder="Flight Price">
             </div>
 
             <div class="card-footer">
@@ -417,7 +429,7 @@
                 <h5 class="align-items-center pt-2 fw-bolder">Total Price: ₱ <span id="displayTotalPrice">0</span></h5>
                 <button type="button" class="btn btn-primary p-2 px-3" id="bookNowButton">Book Now</button>
               </div>
-              <input type="" id="totalPrice" name="totalPrice" placeholder="Total Price">
+              <input type="hidden" id="totalPrice" name="totalPrice" placeholder="Total Price">
             </div>
           </div>
 

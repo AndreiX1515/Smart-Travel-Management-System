@@ -35,9 +35,9 @@
     $transactNo = 'TRANS-' . $formattedCounter;
 
     // Check if "Own Flight" is selected (value is 'Null')
-    if ($flightIds === 'Null') 
+    if ($flightId === 'Null') 
     {
-      $flightIds = NULL; // Set flightId to NULL if "Own Flight" is selected
+      $flightId = NULL; // Set flightId to NULL if "Own Flight" is selected
     }
 
     // Start a transaction
@@ -59,7 +59,7 @@
     }
 
     // Bind and execute the booking insertion
-    $accountId = $_SESSION['accountid']; // Assuming the user is logged in
+    // $accountId = $_SESSION['accountid']; // Assuming the user is logged in
     $stmt1->bind_param('isiiisssssssid', $agentId, $transactNo, $agentId, $flightId, $packageId, $fName, $lName, $mName, $suffix, 
     $countryCode, $contactNo, $email, $totalPax, $totalPrice);
     
