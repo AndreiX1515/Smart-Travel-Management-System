@@ -318,80 +318,65 @@
                          <th>T.N</th>
                          <th>PACKAGE</th>
                          <th>FLIGHT DATE</th>
-                         <th>TOTAL PAX.</th>
+                         <th>PAX.</th>
                          <th>CONTACT NAME</th>
                          <th>STATUS</th>
                      </tr>
                  </thead>
                  <tbody>
-                 <tr>
-                    <td>001</td>
-                    <td>Summer Package</td>
-                    <td>2024-11-10</td>
-                    <td>150</td>
-                    <td>John Doe</td>
-                    <td>
-                     <span class="status confirmed">
-                       <span class="status-circle"></span>
-                       Confirmed
-                     </span>
-                   
-                   </td>
-                </tr>
-                <tr>
-                    <td>002</td>
-                    <td>Summer Package</td>
-                    <td>2024-11-12</td>
-                    <td>75</td>
-                    <td>Jane Smith</td>
-                    <td>
-                     <span class="status confirmed">
-                    <span class="status-circle"></span>
-                    Confirmed
-                    </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>003</td>
-                    <td>Summer Package</td>
-                    <td>2024-11-15</td>
-                    <td>200</td>
-                    <td>Michael Johnson</td>
-                    <td>
-                <span class="status ongoing">
-                    <span class="status-circle"></span>
-                    Ongoing
-                </span>
-            </td>
-                </tr>
-                <tr>
-                    <td>004</td>
-                    <td>Summer Package</td>
-                    <td>2024-11-20</td>
-                    <td>120</td>
-                    <td>Emily Davis</td>
-                    <td>
-                <span class="status ongoing">
-                    <span class="status-circle"></span>
-                    Ongoing
-                </span>
-            </td>
-                </tr>
-
-                <tr>
-                    <td>005</td>
-                    <td>Summer Package</td>
-                    <td>2024-11-20</td>
-                    <td>120</td>
-                    <td>Emily Davis</td>
-                    <td>
-                <span class="status cancelled">
-                    <span class="status-circle"></span>
-                    Cancelled
-                </span>
-            </td>
-                </tr>
-
+                    <?php
+                        $sql1 = "SELECT
+                                    b.transactNo AS `T.N`,
+                                    p.packageName AS `PACKAGE`,
+                                    CASE 
+                                        WHEN b.flightId IS NULL THEN 'Land Only'
+                                        ELSE DATE_FORMAT(f.flightDepartureDate, '%M %d, %Y')
+                                    END AS `FLIGHT DATE`,
+                                    b.pax AS `TOTAL PAX`,
+                                    CONCAT(
+                                        b.lName, ', ', b.fName, ' ', 
+                                        CASE WHEN b.mName = 'N/A' THEN '' ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ',
+                                        CASE WHEN b.suffix = 'N/A' THEN '' ELSE b.suffix END
+                                    ) AS `CONTACT NAME`,
+                                    b.status AS `STATUS`
+                                FROM 
+                                    booking b
+                                LEFT JOIN 
+                                    flight f ON b.flightId = f.flightId
+                                LEFT JOIN 
+                                    package p ON b.packageId = p.packageId
+                                LEFT JOIN
+                                    agent a ON b.agentId = a.agentId
+                                WHERE 
+                                    b.agentId = 1
+                                ORDER BY 
+                                    b.transactNo DESC";
+            
+                        // Run the query and check for results
+                        $res1 = $conn->query($sql1);
+                        
+                        // Check if there are any results
+                        if ($res1->num_rows > 0) 
+                        {
+                            // Output data for each row
+                            while ($row = $res1->fetch_assoc()) 
+                            {
+                                echo "<tr>
+                                        <td>{$row['T.N']}</td>
+                                        <td>{$row['PACKAGE']}</td>
+                                        <td>{$row['FLIGHT DATE']}</td>
+                                        <td>{$row['TOTAL PAX']}</td>
+                                        <td>{$row['CONTACT NAME']}</td>
+                                        <td>{$row['STATUS']}</td>
+                                     </tr>";
+                            }
+                        } 
+                        else 
+                        {
+                            // If no records found
+                            echo "<tr><td colspan='6'>No bookings found</td></tr>";
+                        }
+                    ?>
                  </tbody>
              </table>
             </div>
@@ -415,22 +400,51 @@
              <table class="pending-table">
                  <thead>
                      <tr>
-                         <th>T.N</th>
-                         <th>PACKAGE</th>
-                         <th>FLIGHT DATE</th>
-                         <th>TOTAL PAX.</th>
-                         <th>CONTACT NAME</th>
-                         <th>STATUS</th>
+                        <th>T.N</th>
+                        <th>Request</th>
+                        <th>Date</th>
                      </tr>
                  </thead>
-                 
+                 <tbody>
+                    <?php
+                        $sql1 = "SELECT 
+                                    r.transactNo AS `T.N`,
+                                    r.concern AS `Request`,
+                                    r.date AS `Date`
+                                FROM 
+                                    request r
+                                JOIN 
+                                    booking b ON r.transactNo = b.transactNo
+                                WHERE 
+                                    b.agentId = '1'  -- Adjust this condition as needed
+                                ORDER BY 
+                                    r.date DESC";  // Order by request date
+            
+                        // Run the query and check for results
+                        $res1 = $conn->query($sql1);
+                        
+                        // Check if there are any results
+                        if ($res1->num_rows > 0) 
+                        {
+                            // Output data for each row
+                            while ($row = $res1->fetch_assoc()) 
+                            {
+                                echo "<tr>
+                                        <td>{$row['T.N']}</td>
+                                        <td>{$row['Request']}</td>
+                                        <td>" . date('F d, Y', strtotime($row['Date'])) . "</td>
+                                      </tr>";
+                            }
+                        } 
+                        else 
+                        {
+                            // If no records found
+                            echo "<tr><td colspan='6'>No bookings found</td></tr>";
+                        }
+                    ?>
+                 </tbody>
              </table>
        </div>
-
-
-
-
-
 
      <!-- <div class="header d-flex justify-content-between align-items-center justify-content-between">
             <h6>Seats</h6>

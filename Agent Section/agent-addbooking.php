@@ -29,8 +29,42 @@
     <div class="main-content" id="mainContent">
       <?php include '../Agent Section/includes/navbar.php' ?>
 
+<<<<<<< HEAD
       <div class="container mt-4">
       
+=======
+      <!-- First row Div -->
+      <div class="info-container d-flex justify-content-between align-items-center">
+        <div class="left-section d-flex align-items-center">
+          <h2 class="info-title">Add Booking</h2>
+        </div>
+
+        <div class="right-section d-flex">
+          <div class="date-time-container d-flex flex-row align-items-center">
+            <h6><?php echo $current_date; ?></h6>
+            <i class="fa-solid fa-calendar-days"></i>
+          </div>
+        </div>
+      </div>
+
+      <?php 
+          if(isset($_SESSION['status'])):
+        ?>
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Hey!</strong> <?= $_SESSION['status']; ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        <?php 
+          unset($_SESSION['status']);
+          endif;
+        ?>
+
+      <div class="container">
+        <div class="header-container d-flex flex-row align-items-center justify-content-between w-100 my-2 px-3">
+          <h4>Booking</h4>
+        </div>
+
+>>>>>>> 9d604626fcad168c557b178f8b5f3b9887252b14
         <form action="agent-addBooking-code.php" method="POST">
           <div class="card">
             <div class="card-header bg-secondary text-white text-light">
@@ -114,9 +148,9 @@
 
               </div>
 
-              <input type="" id="flightId" name="flightId" value="" placeholder="Flight Id Input">
-              <input type="" id="packagePrice" name="packagePrice" placeholder="Package Price">
-              <input type="" id="" name="flightPrice" placeholder="Flight Price">
+              <input type="hidden" id="flightId" name="flightId" value="" placeholder="Flight Id Input">
+              <input type="hidden" id="packagePrice" name="packagePrice" placeholder="Package Price">
+              <input type="hidden" name="flightPrice" placeholder="Flight Price">
             </div>
 
             <div class="card-footer">
@@ -399,7 +433,7 @@
                 <h5 class="align-items-center pt-2 fw-bolder">Total Price: ₱ <span id="displayTotalPrice">0</span></h5>
                 <button type="button" class="btn btn-primary p-2 px-3" id="bookNowButton">Book Now</button>
               </div>
-              <input type="" id="totalPrice" name="totalPrice" placeholder="Total Price">
+              <input type="hidden" id="totalPrice" name="totalPrice" placeholder="Total Price">
             </div>
           </div>
 
