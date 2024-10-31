@@ -29,10 +29,8 @@
     <div class="main-content" id="mainContent">
       <?php include '../Agent Section/includes/navbar.php' ?>
 
-<<<<<<< HEAD
       <div class="container mt-4">
       
-=======
       <!-- First row Div -->
       <div class="info-container d-flex justify-content-between align-items-center">
         <div class="left-section d-flex align-items-center">
@@ -64,7 +62,6 @@
           <h4>Booking</h4>
         </div>
 
->>>>>>> 9d604626fcad168c557b178f8b5f3b9887252b14
         <form action="agent-addBooking-code.php" method="POST">
           <div class="card">
             <div class="card-header bg-secondary text-white text-light">
