@@ -374,18 +374,6 @@ $usd_to_euro = $exchangeRates['conversion_rates']['EUR'] ?? 0.85;  // Fallback i
              </table>
        </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
      <!-- <div class="header d-flex justify-content-between align-items-center justify-content-between">
             <h6>Seats</h6>
             <div class="view-booking-container">
