@@ -1,14 +1,8 @@
-<?php
-  // Start session
-  session_start();
-  date_default_timezone_set('Asia/Taipei'); // Set the timezone to Taipei
-  $current_date = date('D, F d, Y'); // Format: "Tue, January 01, 2024"
-  require "../conn.php";
-?>
+
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+ <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Booking - Agent</title>
@@ -19,16 +13,8 @@
     <link rel="stylesheet" href="../Agent Section/assets/css/navbar-sidebar.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="../Agent Section/assets/css/agent-transaction.css?v=<?php echo time(); ?>">
 
-
-    <style>
-    
-
-
-
-    </style>
-
-    
-  </head>
+ </head>
+ 
   <body>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <?php include '../Agent Section/includes/sidebar.php' ?>
@@ -36,7 +22,7 @@
     <div class="main-content" id="mainContent">
       <?php include '../Agent Section/includes/navbar.php' ?>
 
-      <div class="main-container d-flex flex-row justify-content-lg-start w-75">
+      <div class="main-container d-flex flex-row justify-content-lg-start">
 
         <?php 
             if(isset($_SESSION['status'])):

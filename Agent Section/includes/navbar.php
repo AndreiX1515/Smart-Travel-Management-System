@@ -1,4 +1,6 @@
 <?php
+session_start();
+require "../conn.php";
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -14,6 +16,12 @@ $mName = $_SESSION['mName'] ?? '';
 $branch = $_SESSION['branch'] ?? '';
 
 $fullName = htmlspecialchars($lName . ', ' . $fName . ($mName ? ' ' . substr($mName, 0, 1) . '.' : ''));
+?>
+
+<?php
+// Start session
+date_default_timezone_set('Asia/Taipei'); // Set the timezone to Taipei
+$current_date = date('D, F d, Y'); // Format: "Tue, January 01, 2024"
 ?>
 
 <header>      
