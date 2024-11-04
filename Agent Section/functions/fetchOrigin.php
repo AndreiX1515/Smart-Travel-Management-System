@@ -1,5 +1,5 @@
 <?php
-  require ".../Agent Section/conn.php"; // Ensure you include the correct database connection
+  require "../../conn.php"; // Move up to the parent directory 
 
   if (isset($_POST['packageId'])) 
   {
