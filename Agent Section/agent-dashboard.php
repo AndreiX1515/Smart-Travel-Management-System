@@ -1,9 +1,9 @@
 <?php
-    // Start session
-    session_start();
-    require "../conn.php";
-    date_default_timezone_set('Asia/Taipei'); // Set the timezone to Taipei
-    $current_date = date('D, F d, Y'); // Format: "Tue, January 01, 2024"
+  // Start session
+  session_start();
+  require "../conn.php";
+  date_default_timezone_set('Asia/Taipei'); // Set the timezone to Taipei
+  $current_date = date('D, F d, Y'); // Format: "Tue, January 01, 2024"
 ?>
 
 <!DOCTYPE html>
@@ -318,19 +318,19 @@
                 <tbody>
                   <?php
                     $sql1 = "SELECT
-                                b.transactNo AS `T.N`,
-                                p.packageName AS `PACKAGE`,
-                                CASE 
-                                    WHEN b.flightId IS NULL THEN 'Land Only'
-                                    ELSE DATE_FORMAT(f.flightDepartureDate, '%M %d, %Y')
-                                END AS `FLIGHT DATE`,
-                                b.pax AS `TOTAL PAX`,
-                                CONCAT(
-                                    b.lName, ', ', b.fName, ' ', 
-                                    CASE WHEN b.mName = 'N/A' THEN '' ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ',
-                                    CASE WHEN b.suffix = 'N/A' THEN '' ELSE b.suffix END
-                                ) AS `CONTACT NAME`,
-                                b.status AS `STATUS`
+                              b.transactNo AS `T.N`,
+                              p.packageName AS `PACKAGE`,
+                              CASE 
+                                  WHEN b.flightId IS NULL THEN 'Land Only'
+                                  ELSE DATE_FORMAT(f.flightDepartureDate, '%M %d, %Y')
+                              END AS `FLIGHT DATE`,
+                              b.pax AS `TOTAL PAX`,
+                              CONCAT(
+                                  b.lName, ', ', b.fName, ' ', 
+                                  CASE WHEN b.mName = 'N/A' THEN '' ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ',
+                                  CASE WHEN b.suffix = 'N/A' THEN '' ELSE b.suffix END
+                              ) AS `CONTACT NAME`,
+                              b.status AS `STATUS`
                             FROM 
                                 booking b
                             LEFT JOIN 
