@@ -30,12 +30,10 @@
 
 <div class="main-content" id="mainContent">
 
- <?php include '../Agent Section/includes/navbar.php' ?>
+<?php include '../Agent Section/includes/navbar.php' ?>
 
 <!-- Second Row Div -->
 <div class="dashboard-cards d-flex flex-wrap justify-content-between">
-
-
      <div class="card order-card">
          <div class="card-block">
              <div class="header-top d-flex justify-content-between align-items-center mb-2">

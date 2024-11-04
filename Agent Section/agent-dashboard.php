@@ -86,7 +86,7 @@
               ?>
               <div class="content-container">
                 <h3><?php echo $totalTransactions; ?></h3>
-                <p>CANCELLED TRANSACTION</p> <!-- Additional description -->
+                <p>CANCELLED</p> <!-- Additional description -->
               </div>
             </div>
           </div>
@@ -113,7 +113,7 @@
               ?>
               <div class="content-container">
                 <h3><?php echo $totalTransactions; ?></h3>
-                <p>PENDING TRANSACTION</p> <!-- Additional description -->
+                <p>PENDING</p> <!-- Additional description -->
               </div>
             </div>
 
@@ -138,7 +138,7 @@
               ?>
               <div class="content-container">
                 <h3><?php echo $totalTransactions; ?></h3>
-                <p>CONFIRMED TRANSACTION</p> <!-- Additional description -->
+                <p>CONFIRMED</p> <!-- Additional description -->
               </div>
             </div>
           </div>
@@ -301,9 +301,6 @@
           <div class="header d-flex justify-content-between align-items-center">
             <h6>Unconfirmed Transactions</h6>
             <div class="view-booking-container">
-              <a class="btn">
-                <i class="fa-solid fa-arrow-right"></i>
-              </a>
             </div>
           </div>
           
@@ -383,11 +380,6 @@
         <div class="two">
           <div class="header d-flex justify-content-between align-items-center">
             <h6>Requests</h6>
-            <div class="view-booking-container">
-              <a class="btn">
-                <i class="fa-solid fa-arrow-right"></i>
-              </a>
-            </div>
           </div>
 
           <div class="body">
@@ -441,11 +433,7 @@
         <div class="three">
          <div class="header d-flex justify-content-between align-items-center">
            <h6>Pending Payments</h6>
-           <div class="view-booking-container">
-             <a class="btn">
-               <i class="fa-solid fa-arrow-right"></i>
-             </a>
-           </div>
+           
          </div>
 
          <div class="body">
@@ -508,11 +496,6 @@
         <div class="one">
           <div class="header d-flex justify-content-between align-items-center justify-content-between">
             <h6>Confirmed Transactions</h6>
-            <div class="view-booking-container">
-              <a class="btn">
-                <i class="fa-solid fa-arrow-right"></i>
-              </a>
-            </div>
           </div>
             
           <div class="body">

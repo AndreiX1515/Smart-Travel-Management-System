@@ -16,10 +16,18 @@
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-    <link rel="stylesheet" href="../Agent Section/assets/css/bookingform-agent.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="../Agent Section/assets/css/navbar-sidebar.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="../Agent Section/assets/css/agent-transaction.css?v=<?php echo time(); ?>">
 
+
+    <style>
+    
+
+
+
+    </style>
+
+    
   </head>
   <body>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -28,7 +36,7 @@
     <div class="main-content" id="mainContent">
       <?php include '../Agent Section/includes/navbar.php' ?>
 
-      <div class="container mt-4">
+      <div class="main-container d-flex flex-row justify-content-lg-start w-75">
 
         <?php 
             if(isset($_SESSION['status'])):
@@ -43,14 +51,10 @@
         ?>
 
         <div class="container">
-          <div class="header-container d-flex flex-row align-items-center justify-content-between w-100 my-2 px-3">
-            <h4>Booking</h4>
-          </div>
-
           <form action="../Agent Section/functions/agent-addBooking-code.php" method="POST">
             <div class="card">
               <div class="card-header bg-secondary text-white text-light">
-                <h4 class="my-2 px-2">Details</h4>
+                <h6 class="my-2 px-2">Details</h6>
               </div>
 
               <div class="card-body p-4">
@@ -58,7 +62,7 @@
                   <!-- Package Dropdown -->
                   <div class="col-md-6">
                     <div class="form-group mb-6">
-                      <label for="packageName" class="fs-5">Package <span class="text-danger fw-bold">*</span></label>
+                      <label for="packageName" class="fs-6">Package <span class="text-danger fw-bold">*</span></label>
                       <select class="form-select mt-2 fs-6" id="packageName" name="packageName" required>
                         <option selected disabled>Select Package</option>
                         <?php
@@ -76,7 +80,7 @@
                   <!-- Total Pax Input -->
                   <div class="col-md-6">
                     <div class="form-group mb-6">
-                      <label class="fs-5" for="totalPax">Total Pax <span class="text-danger fw-bold">*</span></label>
+                      <label class="fs-6" for="totalPax">Total Pax <span class="text-danger fw-bold">*</span></label>
                       <input type="number" class="form-control mt-2 fs-6" id="totalPax" name="totalPax" min="1" placeholder="Enter Total Pax" required>
                       <span id="totalPaxError" class="text-danger"></span> <!-- Error message for Total Pax -->
                     </div>
@@ -87,7 +91,7 @@
                   <!-- Origin Dropdown -->
                   <div class="col-md-6">
                     <div class="form-group mb-6">
-                      <label class="mt-3 fs-5" for="origin">Origin <span class="text-danger fw-bold">*</span></label>
+                      <label class="mt-3 fs-6" for="origin">Origin <span class="text-danger fw-bold">*</span></label>
                       <select class="form-select mt-2 fs-6" id="origin" name="origin" required>
                         <option selected disabled>Select Origin</option>
                       </select>
@@ -98,7 +102,7 @@
                   <!-- Month Dropdown -->
                   <div class="col-md-6">
                     <div class="form-group mb-6">
-                      <label class="mt-3 fs-5" for="month">Month</label>
+                      <label class="mt-3 fs-6" for="month">Month</label>
                       <select class="form-select mt-2 fs-6" id="month" name="month">
                         <option selected disabled>Select Month</option>
                         <option value="January">January</option>
@@ -120,7 +124,7 @@
                   <!-- Flight Date Dropdown -->
                   <div class="col-md-6">
                     <div class="form-group mb-6">
-                      <label class="mt-3 fs-5" for="flightDate">Flight Date <span class="text-danger fw-bold">*</span></label>
+                      <label class="mt-3 fs-6" for="flightDate">Flight Date <span class="text-danger fw-bold">*</span></label>
                       <select class="form-select mt-2 fs-6" id="flightDate" name="flightDate" required>
                         <option selected disabled>Select Flight Date</option>
                       </select>
@@ -135,11 +139,12 @@
                 <input type="hidden" name="flightPrice" placeholder="Flight Price">
               </div>
 
-              <div class="card-footer">
-                <h4> 
-                  <label>Price: ₱ <span id="flightPrice" >0.00</span></label> 
-                </h4>
-              </div>
+              <div class="card-footer d-flex justify-content-start align-items-center py-3"> 
+                 <h5>
+                     <label>Price: ₱ <span id="flightPrice">0.00</span></label> 
+                 </h5>
+             </div>
+              
             </div>
 
             <div class="card mt-4">
@@ -153,7 +158,7 @@
                   <!-- First Name Input -->
                   <div class="col-md-3">
                     <div class="form-group mb-3">
-                      <label class="fs-5" for="fName">First Name <span class="text-danger fw-bold">*</span></label>
+                      <label class="fs-6" for="fName">First Name <span class="text-danger fw-bold">*</span></label>
                       <input type="text" name="fName" id="fName" class="form-control mt-2 fs-6" placeholder="Enter First Name" required>
                       <span id="fNameError" class="text-danger"></span> <!-- Error message for First Name -->
                     </div>
@@ -162,7 +167,7 @@
                   <!-- Last Name Input -->
                   <div class="col-md-3">
                     <div class="form-group mb-3">
-                      <label class="fs-5" for="lName">Last Name <span class="text-danger fw-bold">*</span> </label>
+                      <label class="fs-6" for="lName">Last Name <span class="text-danger fw-bold">*</span> </label>
                       <input type="text" name="lName" id="lName" class="form-control mt-2 fs-6" placeholder="Enter Last Name" required>
                       <span id="lNameError" class="text-danger"></span> <!-- Error message for Last Name -->
                     </div>
@@ -171,7 +176,7 @@
                   <!-- Middle Name Input -->
                   <div class="col-md-3">
                     <div class="form-group mb-3">
-                      <label class="fs-5" for="mName">Middle Name <span class="text-danger fw-bold">write N/A if none</span></label>
+                      <label class="fs-6" for="mName">Middle Name <span class="text-danger fw-bold">write N/A if none</span></label>
                       <input type="text" name="mName" id="mName" class="form-control mt-2 fs-6" placeholder="Enter Middle Name" required>
                       <span id="mNameError" class="text-danger"></span> <!-- Error message for Middle Name -->
                     </div>
@@ -180,7 +185,7 @@
                   <!-- Suffix Dropdown -->
                   <div class="col-md-3">
                     <div class="form-group mb-3">
-                      <label class="fs-5" for="suffix">Suffix <span class="text-danger fw-bold">*</span></label>
+                      <label class="fs-6" for="suffix">Suffix <span class="text-danger fw-bold">*</span></label>
                       <select class="form-select mt-2 fs-6" name="suffix" id="suffix" required>
                         <option selected disabled>Select Suffix</option>
                         <option value="N/A">None</option>
@@ -200,7 +205,7 @@
                   <!-- Contact No Input-->
                   <div class="col-md-4">
                     <div class="form-group mb-4">
-                      <label class="fs-5" for="contactNo">Contact No. <span class="text-danger fw-bold">*</span></label>
+                      <label class="fs-6" for="contactNo">Contact No. <span class="text-danger fw-bold">*</span></label>
                       <div class="input-group">
                         <select name="countryCode" id="countryCode" class="form-select mt-2 fs-6" required>
                           <option disabled selected>Country Code</option>
@@ -399,7 +404,7 @@
                   <!-- Email Input -->
                   <div class="col-md-4">
                     <div class="form-group mb-4">
-                      <label class="fs-5" for="email">Email <span class="text-danger fw-bold">*</span></label>
+                      <label class="fs-6" for="email">Email <span class="text-danger fw-bold">*</span></label>
                       <input type="email" name="email" id="email" class="form-control mt-2 fs-6" placeholder="Enter Email Address" required>
                       <span id="emailError" class="text-danger"></span> <!-- Error message for Email -->
                     </div>
@@ -409,9 +414,9 @@
               </div>
             </div>
 
-            <div class="my-4">
-              <div class="card mt-2 ">
-                <div class="card-header d-flex justify-content-between align-items-center py-4">
+            <div class="my-2">
+              <div class="card mt-1 ">
+                <div class="card-header d-flex justify-content-between align-items-center py-3">
                   <h5 class="align-items-center pt-2 fw-bolder">Total Price: ₱ <span id="displayTotalPrice">0</span></h5>
                   <button type="button" class="btn btn-primary p-2 px-3" id="bookNowButton">Book Now</button>
                 </div>
