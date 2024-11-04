@@ -40,20 +40,6 @@ $current_date = date('D, F d, Y'); // Format: "Tue, January 01, 2024"
 
  <?php include '../Agent Section/includes/navbar.php' ?>
 
- <!-- First row Div -->
-<div class="info-container d-flex justify-content-between align-items-center">
-    <div class="left-section d-flex align-items-center">
-        <h2 class="info-title">Transaction Records</h2>
-    </div>
-
-    <div class="right-section d-flex">
-      <div class="date-time-container d-flex flex-row align-items-center">
-          <h6><?php echo $current_date; ?></h6>
-          <i class="fa-solid fa-calendar-days"></i>
-      </div>
-  </div>
-</div>
-
 <!-- Second Row Div -->
 <div class="dashboard-cards d-flex flex-wrap justify-content-between">
 

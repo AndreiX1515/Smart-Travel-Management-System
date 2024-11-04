@@ -31,20 +31,7 @@
 
       <div class="container mt-4">
       
-      <!-- First row Div -->
-      <div class="info-container d-flex justify-content-between align-items-center">
-        <div class="left-section d-flex align-items-center">
-          <h2 class="info-title">Add Booking</h2>
-        </div>
-
-        <div class="right-section d-flex">
-          <div class="date-time-container d-flex flex-row align-items-center">
-            <h6><?php echo $current_date; ?></h6>
-            <i class="fa-solid fa-calendar-days"></i>
-          </div>
-        </div>
-      </div>
-
+  
       <?php 
           if(isset($_SESSION['status'])):
         ?>

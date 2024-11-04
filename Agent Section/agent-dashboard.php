@@ -350,7 +350,7 @@
                                 WHERE 
                                     b.agentId = 1
                                 ORDER BY 
-                                    b.transactNo DESC";
+                                    b.transactNo DESC LIMIT 5";
             
                         // Run the query and check for results
                         $res1 = $conn->query($sql1);
