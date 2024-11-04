@@ -83,7 +83,7 @@
     formData.append('login', '1'); // Add login field to indicate form submission
 
     // Perform AJAX request
-    fetch('../Agent Section/agentLogin-code.php', {
+    fetch('../Agent Section/functions/agentLogin-code.php', {
         method: 'POST',
         body: formData
     })

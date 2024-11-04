@@ -49,7 +49,7 @@
           <h4>Booking</h4>
         </div>
 
-        <form action="agent-addBooking-code.php" method="POST">
+        <form action="../Agent Section/functions/agent-addBooking-code.php" method="POST">
           <div class="card">
             <div class="card-header bg-secondary text-white text-light">
               <h4 class="my-2 px-2">Details</h4>
@@ -528,7 +528,7 @@
           {
             $.ajax(
             {
-              url: 'fetchOrigin.php',
+              url: '../Agent Section/functions/fetchOrigin.php',
               type: 'POST',
               data: { packageId: packageId },
               success: function (response) 
@@ -576,7 +576,7 @@
           {
             $.ajax(
             {
-              url: 'fetchFlightDate.php',
+              url: '../Agent Section/functions/fetchFlightDate.php',
               type: 'POST',
               data: { packageId: packageId, origin: origin}, // Send packageId, origin, and month (even if empty)
               success: function (response) 
@@ -635,7 +635,7 @@
             // If a valid outbound flight is selected, fetch return flight and flight price
             $.ajax(
             {
-              url: 'fetchFlightId.php', // Separate PHP file for return flight
+              url: '../Agent Section/functions/fetchFlightId.php', // Separate PHP file for return flight
               type: 'POST',
               data: { flightDate: flightDate },
               success: function (response) 

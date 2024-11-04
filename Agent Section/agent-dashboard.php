@@ -434,6 +434,9 @@
     </div>
   </div>
 
+  <?php require "../Agent Section/scripts/script.php"; ?>
+
+  <?php require "../Agent Section/includes/scripts.php"; ?>
 
   <!-- Chart.js library 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
@@ -582,10 +585,7 @@
   </script>
 
 
-  <?php require "../Agent Section/scripts/script.php"; ?>
-
-  <?php require "../Agent Section/includes/scripts.php"; ?>
-
+  
 </body>
 
 </html>
