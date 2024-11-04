@@ -30,16 +30,19 @@
     <!-- Main Dashboard Content -->
     <div class="container-wrapper">
     
-     <div class="dashboard-cards d-flex flex-wrap justify-content-between">
+      <!-- Cards Count Total  -->
+      <div class="dashboard-cards d-flex flex-wrap justify-content-between">
 
-      <div class="dashboard-cards-three card">
-         <div class="dcard-header">
+        <div class="dashboard-cards-three card">
+          <div class="dcard-header">
             <div class="header-text">
               <h3>Transaction Status</h3>
             </div>
           </div>
 
+          <!-- Total Transaction, and Canceled Transaction -->
           <div class="dcard-body">
+            <!-- Total Transaction Card -->
             <div class="month-transaction">
               <div class="logo-container transaction-total">
                 <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
@@ -65,6 +68,7 @@
               </div>
             </div>
 
+            <!-- Total Cancelled Transaction -->
             <div class="month-transaction">
               <div class="logo-container transaction-cancelled">
                 <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
@@ -91,10 +95,12 @@
             </div>
           </div>
 
+          <!-- Pending, and Confirmed Transaction -->
           <div class="dcard-body">
+            <!-- Pending Transaction -->
             <div class="month-transaction">
               <div class="logo-container transaction-ongoing">
-               <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
+                <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
               </div>
               <?php
                 // Assuming you already have a connection to your database
@@ -117,6 +123,7 @@
               </div>
             </div>
 
+            <!-- Confirmed Transaction -->
             <div class="month-transaction">
               <div class="logo-container transaction-confirmed">
                 <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
@@ -231,7 +238,7 @@
           <div class="dcard-body">
             <div class="month-transaction">
               <div class="logo-container transaction-ongoing">
-               <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
+                <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
               </div>
               <div class="content-container">
                 <h3>100</h3>
@@ -293,7 +300,6 @@
             </div>
           </div>
         </div>
-        
       </div> 
 
       <div class="second-row-container">
@@ -429,7 +435,6 @@
           </div>
         </div>
 
-
         <div class="three">
          <div class="header d-flex justify-content-between align-items-center">
            <h6>Pending Payments</h6>
@@ -478,17 +483,6 @@
            </table>
          </div>
        </div>
-
-
-
-
-
-
-
-
-
-
-
 
       </div>
 
