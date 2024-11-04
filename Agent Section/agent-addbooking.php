@@ -19,14 +19,6 @@
     <link rel="stylesheet" href="../Agent Section/assets/css/navbar-sidebar.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="../Agent Section/assets/css/agent-transaction.css?v=<?php echo time(); ?>">
 
-
-    <style>
-    
-
-
-
-    </style>
-
     
   </head>
   <body>
@@ -36,18 +28,18 @@
     <div class="main-content" id="mainContent">
       <?php include '../Agent Section/includes/navbar.php' ?>
 
-      <div class="main-container d-flex flex-row justify-content-lg-start w-75">
+      <div class="main-container d-flex flex-row justify-content-lg-start">
 
         <?php 
-            if(isset($_SESSION['status'])):
+          if(isset($_SESSION['status'])):
           ?>
             <div class="alert alert-warning alert-dismissible fade show" role="alert">
               <strong>Hey!</strong> <?= $_SESSION['status']; ?>
               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
           <?php 
-            unset($_SESSION['status']);
-            endif;
+          unset($_SESSION['status']);
+          endif;
         ?>
 
         <div class="container">

@@ -499,7 +499,6 @@
     endDate.addEventListener('change', function () {
         startDate.max = this.value;
     });
-
   </script>
 
   <?php require "../Agent Section/scripts/script.php"; ?>
