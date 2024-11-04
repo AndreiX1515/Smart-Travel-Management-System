@@ -152,8 +152,6 @@
       </div>
 
 
-      
-
       <div class="dashboard-cards-three card">
         <div class="dcard-header">
             <div class="header-text">
@@ -222,7 +220,7 @@
       </div>
 
       
-      <?php
+  <?php
   // Your API key
   $apiKey = '77dc42e0276c97b3f723a125';
   $timeInterval = 3600; // 1 hour in seconds
@@ -497,11 +495,6 @@
 
 
  </div>
-
-
-
-
-
 
  </div>
 </div>
