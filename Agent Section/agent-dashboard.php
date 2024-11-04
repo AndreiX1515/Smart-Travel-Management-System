@@ -27,272 +27,275 @@
 <div class="main-content" id="mainContent">
      <?php include '../Agent Section/includes/navbar.php' ?>
 
-     
-
 <!-- Main Dashboard Content -->
 <div class="container-wrapper">
-    
-    <div class="dashboard-cards d-flex flex-wrap justify-content-between">
-   
-    <div class="dashboard-cards-one card">
-        <div class="dcard-header">
-            <div class="header-text">
-               <h3>Transaction Status</h3>
-            </div>
-           
-            <!-- <div class="view-button">
-                <a class="btn">
-                    <i class="fa-solid fa-arrow-right"></i>
-                </a>
-            </div> -->
-        </div>
-
-        <div class="dcard-body">
-         <div class="month-transaction me-1 ">
-            <div class="logo-container transaction-total">
-                <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
-            </div>
-            <div class="content-container">
-                <h3>100</h3>
-                <p>TOTAL TRANSACTION</p> <!-- Additional description -->
-            </div>
-        </div>
-
-        <div class="month-transaction ">
-            <div class="logo-container transaction-cancelled">
-                <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
-            </div>
-            <div class="content-container">
-                <h3>100</h3>
-                <p>CANCELLED</p> <!-- Additional description -->
-            </div>
-        </div>
-
+       <div class="info-container">
+          <button class="btn btn-primary" href="../Agent Section/agent-addbooking.php"><i class="fa-solid fa-user-plus">
+          </i> Add Booking</button>
        </div>
 
-       <div class="dcard-body mt-3">
-         <div class="month-transaction me-1 ">
-            <div class="logo-container transaction-ongoing">
-                <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
-            </div>
-            <div class="content-container">
-                <h3>100</h3>
-                <p>ON GOING</p> <!-- Additional description -->
-            </div>
-        </div>
 
-        <div class="month-transaction ">
-            <div class="logo-container transaction-confirmed">
-                <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
-            </div>
-            <div class="content-container">
-                <h3>100</h3>
-                <p>CONFIRMED</p> <!-- Additional description -->
-            </div>
-        </div>
+      <div class="dashboard-cards d-flex flex-wrap justify-content-between">
 
-       </div>
-     </div>
-
-    <div class="dashboard-cards-two card">
-        <div class="dcard-header">
-            <div class="header-text">
-               <h3>Booking</h3>
-            </div>
-        </div>
-
-        <div class="dcard-body">
-         <div class="month-transaction me-1 ">
-            <div class="logo-container transaction-total">
-                <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
-            </div>
-            <div class="content-container">
-                <h3>100</h3>
-                <p>TOTAL TRANSACTION</p> <!-- Additional description -->
-            </div>
-        </div>
-
-        <div class="month-transaction ">
-            <div class="logo-container transaction-cancelled">
-                <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
-            </div>
-            <div class="content-container">
-                <h3>100</h3>
-                <p>CANCELLED</p> <!-- Additional description -->
-            </div>
-        </div>
-
-       </div>
-
-       <div class="dcard-body mt-3">
-         <div class="month-transaction me-1 ">
-            <div class="logo-container transaction-ongoing">
-                <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
-            </div>
-            <div class="content-container">
-                <h3>100</h3>
-                <p>ON GOING</p> <!-- Additional description -->
-            </div>
-        </div>
-
-        <div class="month-transaction ">
-            <div class="logo-container transaction-confirmed">
-                <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
-            </div>
-            <div class="content-container">
-                <h3>100</h3>
-                <p>CONFIRMED</p> <!-- Additional description -->
-            </div>
-        </div>
-
-       </div>
-    </div>
-
-
-    
-
-    <div class="dashboard-cards-three card">
-      <div class="dcard-header">
-          <div class="header-text">
-             <h3>On Due</h3>
+      <div class="dashboard-cards-one card">
+          <div class="dcard-header">
+              <div class="header-text">
+                 <h3>Transaction Status</h3>
+              </div>
+             
+              <!-- <div class="view-button">
+                  <a class="btn">
+                      <i class="fa-solid fa-arrow-right"></i>
+                  </a>
+              </div> -->
           </div>
-         
-          
+
+          <div class="dcard-body">
+           <div class="month-transaction me-1 ">
+              <div class="logo-container transaction-total">
+                  <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
+              </div>
+              <div class="content-container">
+                  <h3>100</h3>
+                  <p>TOTAL TRANSACTION</p> <!-- Additional description -->
+              </div>
+          </div>
+
+          <div class="month-transaction ">
+              <div class="logo-container transaction-cancelled">
+                  <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
+              </div>
+              <div class="content-container">
+                  <h3>100</h3>
+                  <p>CANCELLED</p> <!-- Additional description -->
+              </div>
+          </div>
+
+         </div>
+
+         <div class="dcard-body mt-3">
+           <div class="month-transaction me-1 ">
+              <div class="logo-container transaction-ongoing">
+                  <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
+              </div>
+              <div class="content-container">
+                  <h3>100</h3>
+                  <p>ON GOING</p> <!-- Additional description -->
+              </div>
+          </div>
+
+          <div class="month-transaction ">
+              <div class="logo-container transaction-confirmed">
+                  <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
+              </div>
+              <div class="content-container">
+                  <h3>100</h3>
+                  <p>CONFIRMED</p> <!-- Additional description -->
+              </div>
+          </div>
+
+         </div>
+       </div>
+
+      <div class="dashboard-cards-two card">
+          <div class="dcard-header">
+              <div class="header-text">
+                 <h3>Booking</h3>
+              </div>
+          </div>
+
+          <div class="dcard-body">
+           <div class="month-transaction me-1 ">
+              <div class="logo-container transaction-total">
+                  <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
+              </div>
+              <div class="content-container">
+                  <h3>100</h3>
+                  <p>TOTAL TRANSACTION</p> <!-- Additional description -->
+              </div>
+          </div>
+
+          <div class="month-transaction ">
+              <div class="logo-container transaction-cancelled">
+                  <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
+              </div>
+              <div class="content-container">
+                  <h3>100</h3>
+                  <p>CANCELLED</p> <!-- Additional description -->
+              </div>
+          </div>
+
+         </div>
+
+         <div class="dcard-body mt-3">
+           <div class="month-transaction me-1 ">
+              <div class="logo-container transaction-ongoing">
+                  <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
+              </div>
+              <div class="content-container">
+                  <h3>100</h3>
+                  <p>ON GOING</p> <!-- Additional description -->
+              </div>
+          </div>
+
+          <div class="month-transaction ">
+              <div class="logo-container transaction-confirmed">
+                  <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
+              </div>
+              <div class="content-container">
+                  <h3>100</h3>
+                  <p>CONFIRMED</p> <!-- Additional description -->
+              </div>
+          </div>
+
+         </div>
       </div>
 
-      <div class="dcard-body">
-         <div class="month-transaction me-1 ">
-            <div class="logo-container transaction-total">
-                <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
+
+      
+
+      <div class="dashboard-cards-three card">
+        <div class="dcard-header">
+            <div class="header-text">
+               <h3>On Due</h3>
             </div>
-            <div class="content-container">
-                <h3>100</h3>
-                <p>TOTAL TRANSACTION</p> <!-- Additional description -->
-            </div>
+           
+            
         </div>
 
-        <div class="month-transaction ">
-            <div class="logo-container transaction-cancelled">
-                <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
-            </div>
-            <div class="content-container">
-                <h3>100</h3>
-                <p>CANCELLED</p> <!-- Additional description -->
-            </div>
-        </div>
+        <div class="dcard-body">
+           <div class="month-transaction me-1 ">
+              <div class="logo-container transaction-total">
+                  <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
+              </div>
+              <div class="content-container">
+                  <h3>100</h3>
+                  <p>TOTAL TRANSACTION</p> <!-- Additional description -->
+              </div>
+          </div>
 
-       </div>
+          <div class="month-transaction ">
+              <div class="logo-container transaction-cancelled">
+                  <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
+              </div>
+              <div class="content-container">
+                  <h3>100</h3>
+                  <p>CANCELLED</p> <!-- Additional description -->
+              </div>
+          </div>
 
-       <div class="dcard-body mt-3">
-         <div class="month-transaction me-1 ">
-            <div class="logo-container transaction-ongoing">
-                <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
-            </div>
-            <div class="content-container">
-                <h3>100</h3>
-                <p>ON GOING</p> <!-- Additional description -->
-            </div>
-        </div>
+         </div>
 
-        <div class="month-transaction ">
-            <div class="logo-container transaction-confirmed">
-                <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
-            </div>
-            <div class="content-container">
-                <h3>100</h3>
-                <p>CONFIRMED</p> <!-- Additional description -->
-            </div>
-        </div>
+         <div class="dcard-body mt-3">
+           <div class="month-transaction me-1 ">
+              <div class="logo-container transaction-ongoing">
+                  <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
+              </div>
+              <div class="content-container">
+                  <h3>100</h3>
+                  <p>ON GOING</p> <!-- Additional description -->
+              </div>
+          </div>
 
-       </div>
+          <div class="month-transaction ">
+              <div class="logo-container transaction-confirmed">
+                  <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
+              </div>
+              <div class="content-container">
+                  <h3>100</h3>
+                  <p>CONFIRMED</p> <!-- Additional description -->
+              </div>
+          </div>
 
-   
-    </div>
+         </div>
 
-    
+     
+      </div>
 
-<div class="dashboard-cards-four card">
-    <div class="dcard-header">
-        <div class="header-text">
-            <h3>Currency Conversion</h3>
-        </div>
-    </div>
+      
 
-    
-    <?php
-// Your API key
-$apiKey = '77dc42e0276c97b3f723a125';
-$timeInterval = 3600; // 1 hour in seconds
-$lastFetchFile = 'last_fetch_time.txt'; // File to store last fetch time
-$exchangeRatesFile = 'exchange_rates.json'; // File to store exchange rates
+  <div class="dashboard-cards-four card">
+      <div class="dcard-header">
+          <div class="header-text">
+              <h3>Currency Conversion</h3>
+          </div>
+      </div>
 
-// Function to fetch the latest conversion rates
-function getExchangeRates($apiKey) {
-    $url = "https://v6.exchangerate-api.com/v6/$apiKey/latest/USD"; // USD as the base currency
-    $response = file_get_contents($url);
-    return json_decode($response, true);
-}
+      
+      <?php
+  // Your API key
+  $apiKey = '77dc42e0276c97b3f723a125';
+  $timeInterval = 3600; // 1 hour in seconds
+  $lastFetchFile = 'last_fetch_time.txt'; // File to store last fetch time
+  $exchangeRatesFile = 'exchange_rates.json'; // File to store exchange rates
 
-// Check last fetch time
-if (file_exists($lastFetchFile)) {
-    $lastFetchTime = (int)file_get_contents($lastFetchFile);
+  // Function to fetch the latest conversion rates
+  function getExchangeRates($apiKey) {
+      $url = "https://v6.exchangerate-api.com/v6/$apiKey/latest/USD"; // USD as the base currency
+      $response = file_get_contents($url);
+      return json_decode($response, true);
+  }
 
-    // Fetch new rates if last fetch was more than 1 hour ago
-    if (time() - $lastFetchTime >= $timeInterval) {
-        $exchangeRates = getExchangeRates($apiKey);
-        file_put_contents($exchangeRatesFile, json_encode($exchangeRates));
-        file_put_contents($lastFetchFile, time()); // Update last fetch time
-    } else {
-        // Load rates from saved file
-        $exchangeRates = json_decode(file_get_contents($exchangeRatesFile), true);
-    }
-} else {
-    // First run, fetch rates from API
-    $exchangeRates = getExchangeRates($apiKey);
-    file_put_contents($exchangeRatesFile, json_encode($exchangeRates));
-    file_put_contents($lastFetchFile, time()); // Set initial fetch time
-}
+  // Check last fetch time
+  if (file_exists($lastFetchFile)) {
+      $lastFetchTime = (int)file_get_contents($lastFetchFile);
 
-// Extract conversion rates or use fallback values
-$usd_to_php = $exchangeRates['conversion_rates']['PHP'] ?? 56.50; // Fallback if not found
-$usd_to_krw = $exchangeRates['conversion_rates']['KRW'] ?? 1320;  // Fallback if not found
-$usd_to_euro = $exchangeRates['conversion_rates']['EUR'] ?? 0.85;  // Fallback if not found
-?>
+      // Fetch new rates if last fetch was more than 1 hour ago
+      if (time() - $lastFetchTime >= $timeInterval) {
+          $exchangeRates = getExchangeRates($apiKey);
+          file_put_contents($exchangeRatesFile, json_encode($exchangeRates));
+          file_put_contents($lastFetchFile, time()); // Update last fetch time
+      } else {
+          // Load rates from saved file
+          $exchangeRates = json_decode(file_get_contents($exchangeRatesFile), true);
+      }
+  } else {
+      // First run, fetch rates from API
+      $exchangeRates = getExchangeRates($apiKey);
+      file_put_contents($exchangeRatesFile, json_encode($exchangeRates));
+      file_put_contents($lastFetchFile, time()); // Set initial fetch time
+  }
 
-<div class="dcard-body">
-    <div class="currency-content mt-2">
-        <div class="currency-item">
-            <img src="../assets/images/Flags/english-flag.png" alt="" class="currency-flag">
-            <p class="currency-name">1 USD</p>
-            <p class="conversion-rate">$1.00</p> <!-- Rate of 1 USD to itself -->
-        </div>
+  // Extract conversion rates or use fallback values
+  $usd_to_php = $exchangeRates['conversion_rates']['PHP'] ?? 56.50; // Fallback if not found
+  $usd_to_krw = $exchangeRates['conversion_rates']['KRW'] ?? 1320;  // Fallback if not found
+  $usd_to_euro = $exchangeRates['conversion_rates']['EUR'] ?? 0.85;  // Fallback if not found
+  ?>
 
-        <div>
-            <i class="fa-solid fa-arrow-right-arrow-left"></i>
-        </div>
+  <div class="dcard-body">
+      <div class="currency-content mt-2">
+          <div class="currency-item">
+              <img src="../assets/images/Flags/english-flag.png" alt="" class="currency-flag">
+              <p class="currency-name">1 USD</p>
+              <p class="conversion-rate">$1.00</p> <!-- Rate of 1 USD to itself -->
+          </div>
 
-        <div class="currency-item me-3">
-            <img src="../assets/images/Flags/philippines (2).png" alt="" class="currency-flag">
-            <p class="currency-name">PHP</p>
-            <p class="conversion-rate">₱ <?php echo number_format($usd_to_php, 2); ?></p>
-        </div>
+          <div>
+              <i class="fa-solid fa-arrow-right-arrow-left"></i>
+          </div>
 
-        <div class="currency-item me-3">
-            <img src="../assets/images/Flags/korean-flag.png" alt="" class="currency-flag">
-            <p class="currency-name">WON</p>
-            <p class="conversion-rate">₩ <?php echo number_format($usd_to_krw, 2); ?></p>
-        </div>
+          <div class="currency-item me-3">
+              <img src="../assets/images/Flags/philippines (2).png" alt="" class="currency-flag">
+              <p class="currency-name">PHP</p>
+              <p class="conversion-rate">₱ <?php echo number_format($usd_to_php, 2); ?></p>
+          </div>
 
-        <div class="currency-item">
-            <img src="../assets/images/Flags/european.png" alt="" class="currency-flag">
-            <p class="currency-name">EURO</p>
-            <p class="conversion-rate">€ <?php echo number_format($usd_to_euro, 2); ?></p> 
-        </div>
-    </div>
-</div>
+          <div class="currency-item me-3">
+              <img src="../assets/images/Flags/korean-flag.png" alt="" class="currency-flag">
+              <p class="currency-name">WON</p>
+              <p class="conversion-rate">₩ <?php echo number_format($usd_to_krw, 2); ?></p>
+          </div>
+
+          <div class="currency-item">
+              <img src="../assets/images/Flags/european.png" alt="" class="currency-flag">
+              <p class="currency-name">EURO</p>
+              <p class="conversion-rate">€ <?php echo number_format($usd_to_euro, 2); ?></p> 
+          </div>
+      </div>
+  </div>
 
 
- </div>
+   </div>
   
 </div> 
 
@@ -308,6 +311,7 @@ $usd_to_euro = $exchangeRates['conversion_rates']['EUR'] ?? 0.85;  // Fallback i
       </div>
       
        <div class="body">
+        <div class="table-container">
              <table class="unconfirm-table">
                  <thead>
                      <tr>
@@ -375,6 +379,7 @@ $usd_to_euro = $exchangeRates['conversion_rates']['EUR'] ?? 0.85;  // Fallback i
                     ?>
                  </tbody>
              </table>
+            </div>
        </div>
 
    </div>
@@ -482,50 +487,6 @@ $usd_to_euro = $exchangeRates['conversion_rates']['EUR'] ?? 0.85;  // Fallback i
                          <th>STATUS</th>
                      </tr>
                  </thead>
-                 <tbody>
-                 <tr>
-                    <td>001</td>
-                    <td>Summer Package</td>
-                    <td>2024-11-10</td>
-                    <td>150</td>
-                    <td>John Doe</td>
-                    <td><span class="status confirmed">Confirmed</span></td>
-                </tr>
-                <tr>
-                    <td>002</td>
-                    <td>Summer Package</td>
-                    <td>2024-11-12</td>
-                    <td>75</td>
-                    <td>Jane Smith</td>
-                    <td><span class="status pending">On going</span></td>
-                </tr>
-                <tr>
-                    <td>003</td>
-                    <td>Summer Package</td>
-                    <td>2024-11-15</td>
-                    <td>200</td>
-                    <td>Michael Johnson</td>
-                    <td><span class="status cancelled">Cancelled</span></td>
-                </tr>
-                <tr>
-                    <td>004</td>
-                    <td>Summer Package</td>
-                    <td>2024-11-20</td>
-                    <td>120</td>
-                    <td>Emily Davis</td>
-                    <td><span class="status confirmed">Confirmed</span></td>
-                </tr>
-
-                <tr>
-                    <td>005</td>
-                    <td>Summer Package</td>
-                    <td>2024-11-20</td>
-                    <td>120</td>
-                    <td>Emily Davis</td>
-                    <td><span class="status confirmed">Confirmed</span></td>
-                </tr>
-
-                 </tbody>
              </table>
          </div>
      </div>
@@ -546,7 +507,7 @@ $usd_to_euro = $exchangeRates['conversion_rates']['EUR'] ?? 0.85;  // Fallback i
 </div>
 
 
-<!-- Chart.js library -->
+<!-- Chart.js library --
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <!-- Chart.js Data Labels plugin -->

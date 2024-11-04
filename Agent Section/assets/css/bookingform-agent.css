@@ -1,0 +1,151 @@
+/* Import Poppins Font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100..1000&display=swap');
+
+* {
+ font-family: 'Segoe UI', 'Roboto-Flex', Arial, sans-serif;
+}
+
+
+body {
+    background-color: #F6F6F6;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+
+
+.card-header {
+    font-size: 14px;
+}
+
+.form-group label {
+    font-size: 14px;
+}
+
+.form-select {
+  padding-left: 2.5rem; /* Create space for the custom icon */
+  height: 2.3rem;       /* Larger height for a more premium feel */
+  border-radius: 0.5rem; /* Rounded corners for a softer look */
+}
+
+.card-footer h6 {
+   margin-top: 10px; 
+   padding: 0px 10px;
+}
+
+.footer-adjust  {
+   margin-top: 20px;
+}
+
+
+
+.form-outline {
+    position: relative;
+}
+
+.form-select:focus {
+    box-shadow: 0 0 0 0.2rem rgba(17, 101, 48, 0.25); /* Custom focus shadow */
+    border-color: #89CFF0; /* Custom border color */
+}
+
+.form-outline::before {
+    position: absolute;
+    top: 1.2rem; /* Adjust icon placement */
+    left: 0.8rem;
+    font-size: 1.2rem;
+    pointer-events: none; /* Prevent click on the icon */
+}
+
+.form-label {
+    margin-top: -1.5rem; /* Adjust label position */
+    margin-left: 1rem; /* Space from the left */
+    transition: all 0.2s ease; /* Smooth transition for label */
+    color: #89CFF0; /* Subtle color for label */
+}
+
+.form-select:focus + .form-label,
+.form-select:not(:placeholder-shown) + .form-label {
+    font-size: 0.85rem; /* Smaller size when focused or not empty */
+    top: -0.5rem; /* Move label up */
+    color: #89CFF0; /* Label color change on focus */
+} 
+
+
+
+
+.card-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center; /* Align items vertically centered */
+    padding: 10px 20px;
+}
+
+.card-header h6{
+    margin-top: 15px;
+ 
+}
+
+.header-container .card-title{
+    padding: 10px 10px;
+}
+
+
+.main-form {
+   padding: 0;
+}
+
+
+
+.card-body {
+    padding: 0px 0px 0px 0px;
+}
+.main-form .row  {
+    padding: 20px 20px 0px 20px;
+
+
+}
+
+
+
+
+
+.confirmation-container img {
+    width: 100px;
+    height: 50px;
+}
+
+hr {
+    border: 1px solid #ccc; /* Light gray line */
+    margin: 10px 0; /* Space above and below the line */
+}
+
+.modal-dialog {
+    position: relative; /* Context for the absolute button */
+}
+
+.close-outside {
+    position: absolute;
+    top: 0px; /* Move above the modal */
+    left: 820px; /* Move to the right of the modal */
+    width: 40px;
+    height: 40px;
+    background-color: #f8f9fa; /* Light gray/white background */
+    border-radius: 50%; /* Circular shape */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ced4da; /* Optional border for clarity */
+    z-index: 1060; /* Make sure it is above other elements */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Shadow effect */
+    cursor: pointer;
+}
+
+.close-outside:before {
+    content: '\00d7'; /* Adds the '×' icon */
+    font-size: 20px;
+    color: #000; /* Color for the '×' symbol */
+}

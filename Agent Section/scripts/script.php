@@ -59,8 +59,6 @@ toggleBtn.addEventListener('click', function () {
 
 
 <script>
-  // Get all buttons
-  // script.js
 
 document.addEventListener('DOMContentLoaded', () => {
     // Check if there's a saved title in local storage
@@ -83,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const newUrl = button.getAttribute('href');
             setTimeout(() => {
                 window.location.href = newUrl;
-            }, 100);
+            }, 25);
         });
     });
 });

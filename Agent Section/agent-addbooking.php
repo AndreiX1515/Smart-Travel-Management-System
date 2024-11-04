@@ -11,25 +11,26 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Booking</title>
+    <title>Add Booking - Agent</title>
+
     
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="../Agent Section/assets/css/bookingform-agent.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="../Agent Section/assets/css/navbar-sidebar.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="../Agent Section/assets/css/agent-transaction.css?v=<?php echo time(); ?>">
-    <link rel="stylesheet" href="../assets/css/bookingform.css?v=<?php echo time(); ?>">
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
   </head>
+ <body>
 
-  <body>
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <?php include '../Agent Section/includes/sidebar.php' ?>
 
     <div class="main-content" id="mainContent">
       <?php include '../Agent Section/includes/navbar.php' ?>
 
+      <div class="container mt-4">
+      
       <!-- First row Div -->
       <div class="info-container d-flex justify-content-between align-items-center">
         <div class="left-section d-flex align-items-center">

@@ -152,7 +152,7 @@
           .then(data => {
               if (data.success) {
                       // Redirect to dashboard or homepage
-                      window.location.href = 'client-dashboard.php';
+                      window.location.href = 'index.php';
                   } 
               
               else if (data.message && data.message.trim() === "User not found.") {
@@ -179,9 +179,10 @@
               else if (data.message && data.message.trim() === "You are logged in on another device. Please close from other tab or devices then reload before logging in again!") {
                    // Show specific message for logged in on another device
                    document.getElementById('message-login').innerHTML = 
-                       '<div class="alert alert-danger text-center">' +
-                       data.message + 
-                       ', <a href="#" id="remove-session-link">Click Here</a> if you want to remove your session and reload</div>';
+                       `<div class="alert alert-danger text-center">
+                            ${data.message}, <a href="#" id="remove-session-link">Click here</a> if you want to remove your session and reload.
+                        </div>`
+
 
                    // Add an event listener to the link using jQuery
                    $('#remove-session-link').on('click', function(event) {

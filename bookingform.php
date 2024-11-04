@@ -1,6 +1,28 @@
-<?php 
-  require "conn.php";
-?>
+
+
+
+  <?php
+  include 'session_validate.php'; // This will check if the session is valid
+  
+  ini_set('display_errors', 1);
+  ini_set('display_startup_errors', 1);
+  error_reporting(E_ALL);
+  
+  // Fetch session variables directlys
+  $email = $_SESSION['email'] ?? ''; // Use null coalescing operator to avoid undefined index
+  $firstName = $_SESSION['first_name'] ?? '';
+  $lastName = $_SESSION['last_name'] ?? '';
+  $middleName = $_SESSION['middle_name'] ?? '';
+  $accId = $_SESSION['accountid'] ?? '';
+  
+  $fullName = htmlspecialchars($lastName . ', ' . $firstName . ($middleName ? ' ' . substr($middleName, 0, 1) . '.' : ''));
+  
+  
+  
+  
+  
+  ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -39,7 +61,9 @@
 </head>
 <body>
 
-  <?php include 'client-includes\client-navbar.php'; ?>
+  <?php 
+  // include 'client-includes\client-navbar.php'; 
+  ?>
 
   <div class="container">
     <div class="row">
@@ -56,7 +80,7 @@
           endif;
         ?>
 
-        <a class="btn btn-primary me-2" href="client-dashboard.php" role="button">Cancel Booking</a>
+        <!-- <a class="btn btn-primary me-2" href="client-dashboard.php" role="button">Cancel Booking</a> -->
 
         <div class="header-container d-flex flex-row align-items-center justify-content-between w-100 my-2 px-3">
           <h4>Booking</h4>

@@ -1,3 +1,19 @@
+<?php 
+  session_start();
+
+
+?>
+
+
+
+
+
+
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -77,14 +93,43 @@
               <li><a href="#about">About</a></li>
               <li><a href="#services">Services</a></li>
               <li><a href="#contact">Contact</a></li>
-
+          </ul>
               <!-- Vertical line between menu items and login button -->
               <div class="vertical-line"></div>
 
-              <div class="login-btn-container">
-                  <button class="btn btn-primary btn-login" id="LoginButton">Book Now</button>
-              </div>
-          </ul>
+              <div class="login-btn-container mt-1">
+                 <div class="collapse navbar-collapse show" id="navbarNav"> <!-- Add "show" class to make sure it’s visible -->
+                     <ul class="navbar-nav ms-auto">
+                         <?php if (isset($_SESSION['accountid'])): ?>
+                             <!-- Profile Dropdown when Session is Active -->
+                             <li class="nav-item dropdown d-flex align-items-center">
+                                 <a class="nav-link dropdown-toggle text-light d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                     <div class="profile-container ms-2 me-3">
+                                         <!-- <h6 class="mb-1"><?php echo $_SESSION['first_name'] . ' ' . $_SESSION['last_name']; ?></h6> 
+                                         <span class="m-0">Branch: <?php echo $branch; ?></span> -->
+                                     </div>
+                                     <img src="assets/images/user.png" alt="Profile" class="profile-image me-2" width="40px" height="40px">
+                                 </a>
+                                 <ul class="dropdown-menu dropdown-menu-end mt-3" aria-labelledby="navbarDropdown">
+                                     <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i> My Profile</a></li>
+                                     <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i> Transaction History</a></li>
+                                     <li><hr class="dropdown-divider"></li>
+                                     <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
+                                 </ul>
+                             </li>
+                         <?php else: ?>
+
+                             <!-- Show Login Button when No Session is Active -->
+                             <li class="nav-item">
+                                 <button class="btn btn-login" id="LoginButton">LOGIN</button>
+                             </li>
+                         <?php endif; ?>
+                     </ul>
+                 </div>
+             </div>
+
+
+          
       </div>
   </nav>
 </header>
@@ -109,7 +154,12 @@
       <h1>Discover the World with <span class="highlight">Smart Travel</span></h1>
       <p>Your satisfaction is our top priority. Experience travel like never before!</p> 
       <div class="d-flex flex-row gap-3">
-       <a href="#learn-more" class="cta-button">Book Now</a>
+
+
+      <a href="<?php echo isset($_SESSION['accountid']) ? 'bookingform.php' : 'login.php'; ?>" class="cta-button">Book Now</a>
+
+
+
        <a href="#learn-more" class="cta-button-outline">Learn More</a>
       </div>
       
@@ -134,17 +184,19 @@
 
           </div>
 
-        <div class="about-card-content">
-         <div class="card-1">
-             <h3>100+</h3>
-             <p>Passionate Guides</p>
-         </div>
-
-         <div class="card-1">
-             <h3>550K+</h3>
-             <p>Trusted Service Quality</p>
-         </div>
-       </div>
+        <div class="rated-star-container">
+          <!-- 5 Star Review -->
+           <div class="card-2">
+             <div class="star-rating mb-1 mt-2">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star-half-alt"></i>
+              </div>
+                  <span class="rating-text ms-2 mb-4">(4.5/5 based on 250 reviews)</span>
+           </div>
+        </div>
 
        <div class="about-card-content mt-3">
          <div class="card-1">
@@ -158,18 +210,12 @@
          </div>
        </div>
 
-
-
-
-
-        
-        
     </div>
 
 </section>
 
 <section class="whybook">
-    <h3>Why book with Us?</h3>
+    <h3>WHY BOOK WITH US?</h3>
     <hr>
     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia id corrupti libero porro, unde mollitia minus est at ut animi.</p>
 
@@ -220,9 +266,9 @@
 
 <section class="testimonies">
    <div class="mb-lg-3">
-    <h3>Testimonies</h3>
+    <h3>CLIENT TESTIMONIALS</h3>
      <hr>
-     <p>What our clients says to our services.</p>
+     <p>See what our clients have to say about their experiences with us.</p>
   </div>
    
   <div id="carouselExample" class="carousel slide mt-5" data-bs-ride="carousel">
@@ -258,7 +304,21 @@
           <div class="testimony-content">
               <img src="https://picsum.photos/100/100?random=4" alt="Client Image" class="client-image">
               <div class="card-body">
+
+                  <!-- 5 Star Review -->
+                  <div class="card-2">
+                    <div class="star-rating">
+                         <i class="fas fa-star"></i>
+                         <i class="fas fa-star"></i>
+                         <i class="fas fa-star"></i>
+                         <i class="fas fa-star"></i>
+                         <i class="fas fa-star-half-alt"></i>
+                     </div>
+                         <span class="rating-text ms-2 mb-4">(4.5/5)</span>
+                  </div>
+
                   <p class="client-quote">"The personalized travel experience was top-notch. It truly felt like a vacation tailored just for me!"</p>
+
                   <h5 class="client-name">- Michael Brown</h5>
               </div>
           </div>
@@ -772,6 +832,24 @@
 </footer>
 
 
+<!-- Logout Modal -->
+<div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h5 class="modal-title" id="logoutModalLabel">Logout</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to logout?
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <a href="client-logout.php" class="btn btn-danger">Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 

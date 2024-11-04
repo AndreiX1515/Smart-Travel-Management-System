@@ -47,51 +47,15 @@ body {
 .info-container {
     width: 100%;
     background-color: #F6F6F6; /* Light background */
-    padding: 10px 0px; /* Padding for spacing */
     border-radius: 10px; /* Rounded corners */
     /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); Box shadow for depth */
+    height: 5vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    padding: 5px 25px;
 }
 
-
-/* Title styles */
-.info-title {
-    font-size: 24px;
-    font-weight: 600;
-}
-
-/* Date picker styles */
-.date-picker .btn {
-    padding: 5px 10px;
-    font-size: 16px;
-    border-radius: 8px;
-}
-
-.date-text {
-    font-size: 16px;
-    font-weight: 500;
-}
-
-.right-section {
-    justify-content: flex-end; /* Aligns the section to the right */
-}
-
-
-/* Right section button styles */
-.right-section .btn {
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 8px;
-}
-
-
-.btn-success {
-    background-color: #116530; /* Custom green */
-    color: white;
-}
-
-.btn-outline-secondary {
-    color: #6c757d;
-}
 
 
 /* Dashboard Cards Container */
@@ -101,7 +65,7 @@ body {
  justify-content: flex-start; /* Align cards to the left */
  gap: 5px; /* Space between cards */
  padding: 0px 0px;
- height: 18vh; /* Increased container height for better card proportion */
+ height: 20vh; /* Increased container height for better card proportion */
 }
 
 .card {
@@ -249,26 +213,6 @@ body {
  color: #666; /* Softer grey for less emphasis */
  margin: 0; /* Remove default margin */
 }
-
-
-.status-cancelled {
- font-size: 10px; /* Smaller font size for the label */
- color: #c9302c; /* Darker red color for cancelled */
- font-weight: bold; /* Optional: make text bold */
-}
-
-.status-unconfirmed {
- font-size: 10px; /* Smaller font size for the label */
- color: #ec971f; /* Darker orange color for unconfirmed */
- font-weight: bold; /* Optional: make text bold */
-}
-
-.status-confirmed {
- font-size: 10px; /* Smaller font size for the label */
- color: #4cae4f; /* Darker green color for confirmed */
- font-weight: bold; /* Optional: make text bold */
-}
-
 
 /* Dashboard Card - Two */
 
@@ -541,7 +485,7 @@ body {
    margin-top: 5px;
    gap: 10px;
    position: relative;
-   height: 35vh; /* Set height to 40% of the viewport height */
+   height: 32vh; /* Set height to 40% of the viewport height */
    
 }
 
@@ -601,6 +545,38 @@ body {
 }
 
 
+
+
+.status {
+ display: flex; /* Use flex to align circle and text */
+ align-items: center; /* Center items vertically */
+}
+
+.status-circle {
+ width: 10px; /* Size of the circle */
+ height: 10px; /* Size of the circle */
+ border-radius: 50%; /* Make it a circle */
+ margin-right: 5px; /* Space between circle and text */
+}
+
+.cancelled .status-circle {
+ background-color: #c9302c; /* Darker red for cancelled */
+}
+
+ .ongoing .status-circle {
+ background-color: #ec971f; /* Darker orange for unconfirmed */
+}
+
+.confirmed .status-circle {
+ background-color: #4cae4f; /* Darker green for confirmed */
+}
+
+
+
+
+
+
+
 /* Body styles */
 .one .body {
  position: relative; /* Add this to make child elements positioned correctly */
@@ -610,75 +586,58 @@ body {
 
 /* Table styles */
 
+.table-container {
+ width: 100%; /* Make the container full width */
+ padding: 0; /* Padding around the table */
+
+ overflow: auto; /* Allow scrolling if content is too wide */
+}
+
 .unconfirm-table {
  width: 100%;
- overflow: hidden;
- border-collapse: separate;
- border-spacing: 0;
+ border-collapse: collapse; /* Collapse borders for a cleaner look */
  font-family: Arial, sans-serif;
  font-size: 14px;
+ background-color: transparent; /* Keep background transparent */
 }
 
 .unconfirm-table thead {
- padding: 10px 0; /* Adjust padding for header */
- background-color: #ffffff;
+ background-color: #f5f5f5; /* Slightly darker grey for the header */
  text-align: left;
- margin-bottom: 10px; /* Space between thead and tbody */
 }
 
 .unconfirm-table thead th {
- padding: 10px 6px; /* Added padding for headers */
+ padding: 4px 10px; /* Increased padding for headers */
  font-weight: 600;
+ color: #333; /* Darker color for better readability */
+ border-bottom: 2px solid rgba(0, 0, 0, 0.1); /* Soft bottom border */
 }
 
 .unconfirm-table tbody td {
- padding: 10px 6px; /* Increased padding for table data */
+ padding: 10px; /* Standard padding for table data */
+ border-bottom: 1px solid rgba(0, 0, 0, 0.05); /* Light bottom border for separation */
+ color: #555; /* Subtle text color */
 }
 
 .unconfirm-table tbody tr {
- margin: 15px 0; /* Gap between rows */
- border: 1px solid whitesmoke;
- border-radius: 20px; /* Rounded corners for rows */
- background-color: #fff;
+ background-color: transparent; /* Maintain transparency */
+ transition: background-color 0.3s; /* Smooth transition for hover effect */
 }
 
 .unconfirm-table tbody tr:hover {
- background-color: #f9f9f9;
+ background-color: #e6e6e6; /* Light grey background on hover for clarity */
 }
 
 .unconfirm-table tbody tr:first-child {
- border-top-left-radius: 10px;
+ border-top-left-radius: 10px; /* Rounded corners for the first row */
  border-top-right-radius: 10px;
 }
 
 .unconfirm-table tbody tr:last-child {
- border-bottom-left-radius: 10px;
+ border-bottom-left-radius: 10px; /* Rounded corners for the last row */
  border-bottom-right-radius: 10px;
 }
 
-
-.status {         
- padding: 5px 10px;          
- border-radius: 15px;       
- font-weight: 600; 
- color: #fff;             
- font-size: 0.9em; 
- text-align: center; 
- display: inline-block;     
-}
-
-.status.confirmed { 
- background-color: green; 
-} 
-
-.status.pending { 
- background-color: orange;  
-}   
-
-.status.cancelled { 
- background-color: red;   
- color: white; 
-}
 
 
 /* Second Row Container - Div Two */
@@ -711,50 +670,48 @@ body {
 
 .pending-table {
  width: 100%;
- overflow: hidden;
- border-collapse: separate;
- border-spacing: 0;
+ border-collapse: collapse; /* Collapse borders for a cleaner look */
  font-family: Arial, sans-serif;
  font-size: 14px;
+ background-color: transparent; /* Keep background transparent */
 }
 
 .pending-table thead {
- padding: 10px 0; /* Adjust padding for header */
- background-color: #ffffff;
+ background-color: #fff3e0; /* Light orange for the header */
  text-align: left;
- margin-bottom: 10px; /* Space between thead and tbody */
 }
 
 .pending-table thead th {
- padding: 10px 6px; /* Added padding for headers */
+ padding: 4px 10px; /* Increased padding for headers */
  font-weight: 600;
+ color: #333; /* Darker color for better readability */
+ border-bottom: 2px solid rgba(0, 0, 0, 0.1); /* Soft bottom border */
 }
 
 .pending-table tbody td {
- padding: 10px 6px; /* Increased padding for table data */
+ padding: 10px; /* Standard padding for table data */
+ border-bottom: 1px solid rgba(0, 0, 0, 0.05); /* Light bottom border for separation */
+ color: #555; /* Subtle text color */
 }
 
 .pending-table tbody tr {
- margin: 15px 0; /* Gap between rows */
- border: 1px solid whitesmoke;
- border-radius: 20px; /* Rounded corners for rows */
- background-color: #fff;
+ background-color: transparent; /* Maintain transparency */
+ transition: background-color 0.3s; /* Smooth transition for hover effect */
 }
 
 .pending-table tbody tr:hover {
- background-color: #f9f9f9;
+ background-color: #ffe0b2; /* Light orange background on hover for clarity */
 }
 
 .pending-table tbody tr:first-child {
- border-top-left-radius: 10px;
+ border-top-left-radius: 10px; /* Rounded corners for the first row */
  border-top-right-radius: 10px;
 }
 
 .pending-table tbody tr:last-child {
- border-bottom-left-radius: 10px;
+ border-bottom-left-radius: 10px; /* Rounded corners for the last row */
  border-bottom-right-radius: 10px;
 }
-
 
 
 /* .two .body {
@@ -803,52 +760,48 @@ body {
 
 .confirm-table {
  width: 100%;
- overflow: hidden;
- border-collapse: separate;
- border-spacing: 0;
+ border-collapse: collapse; /* Collapse borders for a cleaner look */
  font-family: Arial, sans-serif;
  font-size: 14px;
+ background-color: transparent; /* Keep background transparent */
 }
 
 .confirm-table thead {
- padding: 10px 0; /* Adjust padding for header */
- background-color: #ffffff;
+ background-color: #e0f7fa; /* Light teal for the header */
  text-align: left;
- margin-bottom: 10px; /* Space between thead and tbody */
 }
 
 .confirm-table thead th {
- padding: 10px 6px; /* Added padding for headers */
+ padding: 4px 10px; /* Increased padding for headers */
  font-weight: 600;
+ color: #333; /* Darker color for better readability */
+ border-bottom: 2px solid rgba(0, 0, 0, 0.1); /* Soft bottom border */
 }
 
 .confirm-table tbody td {
- padding: 10px 6px; /* Increased padding for table data */
+ padding: 10px; /* Standard padding for table data */
+ border-bottom: 1px solid rgba(0, 0, 0, 0.05); /* Light bottom border for separation */
+ color: #555; /* Subtle text color */
 }
 
 .confirm-table tbody tr {
- margin: 15px 0; /* Gap between rows */
- border: 1px solid whitesmoke;
- border-radius: 20px; /* Rounded corners for rows */
- background-color: #fff;
+ background-color: transparent; /* Maintain transparency */
+ transition: background-color 0.3s; /* Smooth transition for hover effect */
 }
 
 .confirm-table tbody tr:hover {
- background-color: #f9f9f9;
+ background-color: #b2ebf2; /* Light teal background on hover for clarity */
 }
 
 .confirm-table tbody tr:first-child {
- border-top-left-radius: 10px;
+ border-top-left-radius: 10px; /* Rounded corners for the first row */
  border-top-right-radius: 10px;
 }
 
 .confirm-table tbody tr:last-child {
- border-bottom-left-radius: 10px;
+ border-bottom-left-radius: 10px; /* Rounded corners for the last row */
  border-bottom-right-radius: 10px;
 }
-
-
-
 
 
 
