@@ -8,12 +8,11 @@
 
 
 body {
-    background-color: #F6F6F6;
+    background-color: #F4F4F4;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-
 
 /* Main Content Section */
 .main-content {
@@ -398,10 +397,6 @@ select::-ms-expand {
  padding: 0 10px;
  color: #000;
 }
-
-
-
-
 
  /* Table styles */
  .table-container {

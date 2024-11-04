@@ -29,28 +29,18 @@
 
     <!-- Main Dashboard Content -->
     <div class="container-wrapper">
-      <div class="info-container">
-          <button class="btn btn-primary" href="../Agent Section/agent-addbooking.php"><i class="fa-solid fa-user-plus">
-          </i> Add Booking</button>
-      </div>
+    
+     <div class="dashboard-cards d-flex flex-wrap justify-content-between">
 
-      <div class="dashboard-cards d-flex flex-wrap justify-content-between">
-        <div class="dashboard-cards-three card">
-          <div class="dcard-header">
+      <div class="dashboard-cards-three card">
+         <div class="dcard-header">
             <div class="header-text">
               <h3>Transaction Status</h3>
             </div>
-          
-            <!-- <div class="view-button">
-                <a class="btn">
-                  <i class="fa-solid fa-arrow-right"></i>
-                </a>
-            </div> -->
           </div>
 
           <div class="dcard-body">
-            <!-- Total Transaction -->
-            <div class="month-transaction me-1 ">
+            <div class="month-transaction">
               <div class="logo-container transaction-total">
                 <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
               </div>
@@ -75,8 +65,7 @@
               </div>
             </div>
 
-            <!-- Total Cancelled Transaction -->
-            <div class="month-transaction ">
+            <div class="month-transaction">
               <div class="logo-container transaction-cancelled">
                 <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
               </div>
@@ -102,11 +91,10 @@
             </div>
           </div>
 
-          <div class="dcard-body mt-3">
-            <!-- Total Pending Transaction -->
-            <div class="month-transaction me-1 ">
+          <div class="dcard-body">
+            <div class="month-transaction">
               <div class="logo-container transaction-ongoing">
-                <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
+               <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
               </div>
               <?php
                 // Assuming you already have a connection to your database
@@ -129,8 +117,7 @@
               </div>
             </div>
 
-            <!-- Total Confirmed Transaction -->
-            <div class="month-transaction ">
+            <div class="month-transaction">
               <div class="logo-container transaction-confirmed">
                 <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
               </div>
@@ -155,6 +142,7 @@
               </div>
             </div>
           </div>
+
         </div>
 
         <div class="dashboard-cards-two card">
@@ -165,7 +153,7 @@
           </div>
 
           <div class="dcard-body">
-            <div class="month-transaction me-1 ">
+            <div class="month-transaction">
               <div class="logo-container transaction-total">
                 <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
               </div>
@@ -175,7 +163,7 @@
               </div>
             </div>
 
-            <div class="month-transaction ">
+            <div class="month-transaction">
               <div class="logo-container transaction-cancelled">
                 <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
               </div>
@@ -186,8 +174,8 @@
             </div>
           </div>
 
-          <div class="dcard-body mt-3">
-            <div class="month-transaction me-1 ">
+          <div class="dcard-body">
+            <div class="month-transaction">
               <div class="logo-container transaction-ongoing">
                 <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
               </div>
@@ -197,7 +185,7 @@
               </div>
             </div>
 
-            <div class="month-transaction ">
+            <div class="month-transaction">
               <div class="logo-container transaction-confirmed">
                 <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
               </div>
@@ -207,6 +195,8 @@
               </div>
             </div>
           </div>
+
+          
         </div>
 
         <div class="dashboard-cards-three card">
@@ -217,7 +207,7 @@
           </div>
 
           <div class="dcard-body">
-            <div class="month-transaction me-1 ">
+            <div class="month-transaction">
               <div class="logo-container transaction-total">
                 <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
               </div>
@@ -227,7 +217,7 @@
               </div>
             </div>
 
-            <div class="month-transaction ">
+            <div class="month-transaction">
               <div class="logo-container transaction-cancelled">
                 <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
               </div>
@@ -238,10 +228,10 @@
             </div>
           </div>
 
-          <div class="dcard-body mt-3">
-            <div class="month-transaction me-1 ">
+          <div class="dcard-body">
+            <div class="month-transaction">
               <div class="logo-container transaction-ongoing">
-                <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
+               <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
               </div>
               <div class="content-container">
                 <h3>100</h3>
@@ -249,7 +239,7 @@
               </div>
             </div>
 
-            <div class="month-transaction ">
+            <div class="month-transaction">
               <div class="logo-container transaction-confirmed">
                 <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
               </div>
@@ -259,6 +249,7 @@
               </div>
             </div>
           </div>
+
         </div>
 
         <div class="dashboard-cards-four card">
@@ -399,7 +390,7 @@
           </div>
 
           <div class="body">
-            <table class="pending-table">
+            <table class="request-table">
               <thead>
                 <tr>
                   <th>T.N</th>
@@ -421,14 +412,11 @@
                               b.agentId = $agentId
                           ORDER BY 
                               r.date DESC";  // Order by request date
-      
-                  // Run the query and check for results
+
                   $res1 = $conn->query($sql1);
                     
-                  // Check if there are any results
                   if ($res1->num_rows > 0) 
                   {
-                    // Output data for each row
                     while ($row = $res1->fetch_assoc()) 
                     {
                       echo "<tr>
@@ -440,27 +428,79 @@
                   } 
                   else 
                   {
-                    // If no records found
                     echo "<tr><td colspan='6'>No bookings found</td></tr>";
                   }
                 ?>
               </tbody>
             </table>
           </div>
-
-          <!-- <div class="header d-flex justify-content-between align-items-center justify-content-between">
-            <h6>Seats</h6>
-            <div class="view-booking-container">
-              <a class="btn">
-                <i class="fa-solid fa-arrow-right"></i> 
-              </a>
-            </div>
-          </div>
-              
-          <div class="body">
-            <canvas id="myDoughnutChart"></canvas>  Doughnut chart will render here 
-          </div> -->
         </div>
+
+
+        <div class="three">
+         <div class="header d-flex justify-content-between align-items-center">
+           <h6>Pending Payments</h6>
+           <div class="view-booking-container">
+             <a class="btn">
+               <i class="fa-solid fa-arrow-right"></i>
+             </a>
+           </div>
+         </div>
+
+         <div class="body">
+           <table class="pending-payment-table">
+             <thead>
+               <tr>
+                 <th>Transaction No</th>
+                 <th>Request</th>
+                 <th>Date</th>
+               </tr>
+             </thead>
+             <tbody>
+               <?php
+                 $sql2 = "SELECT 
+                             r.transactNo AS `Transaction No`,
+                             r.concern AS `Request`,
+                             r.date AS `Date`
+                         FROM 
+                             request r
+                         JOIN 
+                             booking b ON r.transactNo = b.transactNo
+                         WHERE 
+                             b.agentId = '1' AND b.status = 'completed' -- Adjust conditions as needed
+                         ORDER BY 
+                             r.date DESC";
+
+                 $res2 = $conn->query($sql2);
+                 
+                 if ($res2->num_rows > 0) {
+                   while ($row = $res2->fetch_assoc()) {
+                     echo "<tr>
+                             <td>{$row['Transaction No']}</td>
+                             <td>{$row['Request']}</td>
+                             <td>" . date('F d, Y', strtotime($row['Date'])) . "</td>
+                           </tr>";
+                   }
+                 } else {
+                   echo "<tr><td colspan='3'>No completed payments found</td></tr>";
+                 }
+               ?>
+             </tbody>
+           </table>
+         </div>
+       </div>
+
+
+
+
+
+
+
+
+
+
+
+
       </div>
 
       <div class="confirm-container">
