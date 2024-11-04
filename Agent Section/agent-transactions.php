@@ -316,7 +316,7 @@
             <th>Contact Person Email</th>
             <th>Contact Person Phone Number</th>
             <th>Package Name</th>
-            <th>Transaction Date</th>
+            <th>Booking Date</th>
             <th>Flight Date</th>
             <th>Total Pax</th>
             <th>Status</th>
