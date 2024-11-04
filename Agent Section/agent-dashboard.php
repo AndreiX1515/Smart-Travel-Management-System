@@ -34,7 +34,6 @@
           </i> Add Booking</button>
       </div>
 
-
       <div class="dashboard-cards d-flex flex-wrap justify-content-between">
         <div class="dashboard-cards-three card">
           <div class="dcard-header">
@@ -539,7 +538,7 @@
                   else 
                   {
                     // If no records found
-                    echo "<tr><td colspan='6'>No Confirmed Transactions found</td></tr>";
+                    echo "<tr><td colspan='6' style='text-align: center;'>No Confirmed Transactions found</td></tr>";
                   }
                 ?>
               </tbody>
