@@ -409,9 +409,9 @@
           <div class="header d-flex justify-content-between align-items-center justify-content-between">
             <h6>Confirmed Transactions</h6>
             <div class="view-booking-container">
-              [<a class="btn">
+              <a class="btn">
                 <i class="fa-solid fa-arrow-right"></i>
-              </a>]
+              </a>
             </div>
           </div>
             
