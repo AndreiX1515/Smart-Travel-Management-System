@@ -12,7 +12,7 @@
     $mName = $_POST['mName'];  
     $lName = $_POST['lName'];  
     $suffix = $_POST['suffix'];
-    $countryCode = $_POST['countryCode'];
+    $countryCode = $_POST['countryCode']; 
     $contactNo = $_POST['contactNo'];
     $email = $_POST['email'];
     $packageId = $_POST['packageName'];
