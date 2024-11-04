@@ -311,7 +311,7 @@
         <thead>
           <tr>
             <!-- <th><input type="checkbox"></th> -->
-            <th>ID</th>
+            <th>T.N</th>
             <th>Contact Person Name</th>
             <th>Contact Person Email</th>
             <th>Contact Person Phone Number</th>
@@ -320,7 +320,7 @@
             <th>Flight Date</th>
             <th>Total Pax</th>
             <th>Status</th>
-            <th></th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -328,7 +328,7 @@
             $sql1 = "SELECT
                   b.transactNo AS `T.N`,
                   p.packageName AS `PACKAGE`,
-                  b.bookingDate AS `TRANSACTION DATE`,  -- Assuming you have a transactionDate field
+                  DATE_FORMAT(b.bookingDate, '%M %d, %Y %h:%i %p') AS `TRANSACTION DATE`,  -- Format as mm-dd-yy hh:mm with abbreviated month
                   CASE 
                       WHEN b.flightId IS NULL THEN 'Land Only'
                       ELSE DATE_FORMAT(f.flightDepartureDate, '%M %d, %Y')
@@ -374,6 +374,9 @@
                         <td>{$row['FLIGHT DATE']}</td>
                         <td>{$row['TOTAL PAX']}</td>
                         <td>{$row['STATUS']}</td>
+                        <td>
+
+                        </td>
                       </tr>";
               }
             } 
