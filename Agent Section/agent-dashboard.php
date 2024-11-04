@@ -44,8 +44,23 @@
               <div class="logo-container transaction-total">
                 <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
               </div>
+              <?php
+                // Assuming you already have a connection to your database
+                $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking where agentId = $agentId";
+                $result = mysqli_query($conn, $totalTransactionsQuery);
+
+                if ($result) 
+                {
+                  $row = mysqli_fetch_assoc($result);
+                  $totalTransactions = $row['total'];
+                } 
+                else 
+                {
+                  $totalTransactions = 0; // default to 0 if query fails
+                }
+              ?>
               <div class="content-container">
-                <h3>100</h3>
+                <h3><?php echo $totalTransactions; ?></h3>
                 <p>TOTAL TRANSACTION</p> <!-- Additional description -->
               </div>
             </div>
@@ -54,9 +69,24 @@
               <div class="logo-container transaction-cancelled">
                 <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
               </div>
+              <?php
+                // Assuming you already have a connection to your database
+                $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking where status='Cancelled' and agentId = $agentId";
+                $result = mysqli_query($conn, $totalTransactionsQuery);
+
+                if ($result) 
+                {
+                  $row = mysqli_fetch_assoc($result);
+                  $totalTransactions = $row['total'];
+                } 
+                else 
+                {
+                  $totalTransactions = 0; // default to 0 if query fails
+                }
+              ?>
               <div class="content-container">
-                <h3>100</h3>
-                <p>CANCELLED</p> <!-- Additional description -->
+                <h3><?php echo $totalTransactions; ?></h3>
+                <p>CANCELLED TRANSACTION</p> <!-- Additional description -->
               </div>
             </div>
           </div>
@@ -66,9 +96,24 @@
               <div class="logo-container transaction-ongoing">
                <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
               </div>
+              <?php
+                // Assuming you already have a connection to your database
+                $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking where status='Pending' and agentId = $agentId";
+                $result = mysqli_query($conn, $totalTransactionsQuery);
+
+                if ($result) 
+                {
+                  $row = mysqli_fetch_assoc($result);
+                  $totalTransactions = $row['total'];
+                } 
+                else 
+                {
+                  $totalTransactions = 0; // default to 0 if query fails
+                }
+              ?>
               <div class="content-container">
-                <h3>100</h3>
-                <p>ON GOING</p> <!-- Additional description -->
+                <h3><?php echo $totalTransactions; ?></h3>
+                <p>PENDING TRANSACTION</p> <!-- Additional description -->
               </div>
             </div>
 
@@ -76,9 +121,24 @@
               <div class="logo-container transaction-confirmed">
                 <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
               </div>
+              <?php
+                // Assuming you already have a connection to your database
+                $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking where status='Confirmed' and agentId = $agentId";
+                $result = mysqli_query($conn, $totalTransactionsQuery);
+
+                if ($result) 
+                {
+                  $row = mysqli_fetch_assoc($result);
+                  $totalTransactions = $row['total'];
+                } 
+                else 
+                {
+                  $totalTransactions = 0; // default to 0 if query fails
+                }
+              ?>
               <div class="content-container">
-                <h3>100</h3>
-                <p>CONFIRMED</p> <!-- Additional description -->
+                <h3><?php echo $totalTransactions; ?></h3>
+                <p>CONFIRMED TRANSACTION</p> <!-- Additional description -->
               </div>
             </div>
           </div>
@@ -117,7 +177,7 @@
           <div class="dcard-body">
             <div class="month-transaction">
               <div class="logo-container transaction-ongoing">
-               <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
+                <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
               </div>
               <div class="content-container">
                 <h3>100</h3>
@@ -192,8 +252,6 @@
 
         </div>
 
-        
-
         <div class="dashboard-cards-four card">
           <div class="dcard-header">
             <div class="header-text">
@@ -235,7 +293,7 @@
             </div>
           </div>
         </div>
-      
+        
       </div> 
 
       <div class="second-row-container">
@@ -287,7 +345,7 @@
                             LEFT JOIN
                                 agent a ON b.agentId = a.agentId
                             WHERE 
-                                b.agentId = 1
+                                b.agentId = $agentId and status='Pending'
                             ORDER BY 
                                 b.transactNo DESC LIMIT 5";
           
@@ -352,7 +410,7 @@
                           JOIN 
                               booking b ON r.transactNo = b.transactNo
                           WHERE 
-                              b.agentId = '1'  -- Adjust this condition as needed
+                              b.agentId = $agentId
                           ORDER BY 
                               r.date DESC";  // Order by request date
 
@@ -469,6 +527,61 @@
                   <th>STATUS</th>
                 </tr>
               </thead>
+              <tbody>
+                <?php
+                  $sql1 = "SELECT
+                            b.transactNo AS `T.N`,
+                            p.packageName AS `PACKAGE`,
+                            CASE 
+                                WHEN b.flightId IS NULL THEN 'Land Only'
+                                ELSE DATE_FORMAT(f.flightDepartureDate, '%M %d, %Y')
+                            END AS `FLIGHT DATE`,
+                            b.pax AS `TOTAL PAX`,
+                            CONCAT(
+                                b.lName, ', ', b.fName, ' ', 
+                                CASE WHEN b.mName = 'N/A' THEN '' ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ',
+                                CASE WHEN b.suffix = 'N/A' THEN '' ELSE b.suffix END
+                            ) AS `CONTACT NAME`,
+                            b.status AS `STATUS`
+                          FROM 
+                              booking b
+                          LEFT JOIN 
+                              flight f ON b.flightId = f.flightId
+                          LEFT JOIN 
+                              package p ON b.packageId = p.packageId
+                          LEFT JOIN
+                              agent a ON b.agentId = a.agentId
+                          WHERE 
+                              b.agentId = $agentId and status='Confirmed'
+                          ORDER BY 
+                              b.transactNo DESC LIMIT 5";
+        
+                  // Run the query and check for results
+                  $res1 = $conn->query($sql1);
+                    
+                  // Check if there are any results
+                  if ($res1->num_rows > 0) 
+                  {
+                    // Output data for each row
+                    while ($row = $res1->fetch_assoc()) 
+                    {
+                      echo "<tr>
+                              <td>{$row['T.N']}</td>
+                              <td>{$row['PACKAGE']}</td>
+                              <td>{$row['FLIGHT DATE']}</td>
+                              <td>{$row['TOTAL PAX']}</td>
+                              <td>{$row['CONTACT NAME']}</td>
+                              <td>{$row['STATUS']}</td>
+                          </tr>";
+                    }
+                  } 
+                  else 
+                  {
+                    // If no records found
+                    echo "<tr><td colspan='6' style='text-align: center;'>No Confirmed Transactions found</td></tr>";
+                  }
+                ?>
+              </tbody>
             </table>
           </div>
         </div>
