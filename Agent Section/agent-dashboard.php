@@ -97,7 +97,7 @@
               ?>
               <div class="content-container">
                 <h3><?php echo $totalTransactions; ?></h3>
-                <p>CANCELLED TRANSACTION</p> <!-- Additional description -->
+                <p>CANCELLED</p> <!-- Additional description -->
               </div>
             </div>
           </div>
@@ -125,7 +125,7 @@
               ?>
               <div class="content-container">
                 <h3><?php echo $totalTransactions; ?></h3>
-                <p>PENDING TRANSACTION</p> <!-- Additional description -->
+                <p>PENDING</p> <!-- Additional description -->
               </div>
             </div>
 
@@ -151,7 +151,7 @@
               ?>
               <div class="content-container">
                 <h3><?php echo $totalTransactions; ?></h3>
-                <p>CONFIRMED TRANSACTION</p> <!-- Additional description -->
+                <p>CONFIRMED</p> <!-- Additional description -->
               </div>
             </div>
           </div>
@@ -302,7 +302,6 @@
             </div>
           </div>
         </div>
-        
       </div> 
 
       <div class="second-row-container">
