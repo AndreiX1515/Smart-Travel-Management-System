@@ -6,11 +6,10 @@
 
 /* Sidebar Section */
 .sidebar {
- width: 250px;
+ width: 220px;
  height: 100vh;
- background-color: #ffffff;
- background: linear-gradient(to bottom, #f8f9fa, #e9ecef); /* Soft gradient */
- padding: 20px 15px 20px 25px;
+ background: #ffffff; /* Clean white background */
+ padding: 20px 15px;
  position: fixed;
  top: 0;
  left: 0;
@@ -18,120 +17,133 @@
  overflow-y: auto;
  display: flex;
  flex-direction: column;
- border-right: 2px solid #e0e0e0; /* Subtle border for separation */
- transition: transform 0.3s ease-in-out; /* Smooth transition */
- transform: translateX(0); /* Visible by default */
+ border-right: 1px solid #e0e0e0; /* Soft border for separation */
+ box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05); /* Light shadow for depth */
+ transition: transform 0.3s ease-in-out;
+ transform: translateX(0);
 }
 
-/* Hide the sidebar when the 'hidden' class is applied */
 .sidebar.hidden {
- transform: translateX(-100%); /* Sidebar hidden off-screen */
-}
-
-/* Optional: If you want to show the sidebar when an 'active' class is applied */
-.sidebar.active {
- transform: translateX(0); /* Ensure sidebar is shown */
+ transform: translateX(-100%);
 }
 
 .sidebar img {
-    width: 100%; /* Full width of its container */
-    object-fit: contain; /* Ensures the image fits within the aspect ratio without distortion */
-    padding: 0px 15px 0px 0px;
-
+ width: 100%;
+ object-fit: contain;
+ padding-bottom: 15px; /* Adjusted padding for cleaner spacing */
 }
 
-
-.sidebar h4 {
-    margin-bottom: 20px; /* Space below the heading */
-    font-weight: bold; /* Make the heading bold */
+.sidebar h4, .sidebar h3 {
+ font-size: 1.2rem;
+ font-weight: 600;
+ color: #333;
+ margin-bottom: 12px; /* Space below headings */
+ padding-left: 5px;
 }
 
 .sidebar a {
-    text-decoration: none; /* Remove underline from links */
-    color: #333; /* Text color */
-    display: flex; /* Flexbox for link items */
-    align-items: center; /* Center items vertically */
-    padding: 10px; /* Padding for links */
-    border-radius: 5px; /* Rounded corners */
-    transition: background-color 0.3s; /* Smooth background color transition */
+ display: flex;
+ align-items: center;
+ padding: 8px 12px;
+ border-radius: 6px;
+ color: #495057; /* Neutral dark-gray text */
+ text-decoration: none;
+ font-size: 0.95rem;
+ transition: background-color 0.2s ease, color 0.2s ease;
 }
 
+
 .sidebar a:hover {
-    background-color: #e9ecef; /* Change background color on hover */
+ background-color: #f0f2f5; /* Subtle hover background */
+ color: #007bff; /* Professional blue color on hover */
+}
+
+/* Sidebar Add Booking Button */
+.sidebar .add-booking {
+ padding: 8px 12px;
+ border-radius: 6px;
+ color: #ffffff; /* White text for contrast */
+ background-color: #007bff; /* Primary blue background */
+ text-decoration: none;
+ font-size: 0.95rem;
+ font-weight: 600; /* Slightly bolder text */
+ text-align: center;
+ transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.sidebar .add-booking i {
+ color: #ffffff; /* White icon color */
+ margin-right: 8px; /* Space between icon and text */
+}
+
+.sidebar .add-booking:hover {
+ background-color: #0056b3;
+ color: #e9ecef;
 }
 
 .sidebar i {
-    margin-right: 10px; /* Space between icon and text */
-}
-
-.section-title {
-    margin-bottom: 10px; /* Space below the section title */
-    font-weight: bold; /* Make the title bold */
-}
-
-.profile-container {
-    display: flex; /* Use flexbox to align items */
-    align-items: center; /* Center items vertically */
-    margin-top: auto; /* Push profile section to the bottom */
-    line-height: 1.3;
-}
-
-.profile-image {
-    border-radius: 50%; /* Circular image */
-}
-
-.profile-container h6 {
-    font-weight: bold; /* Bold for the name */
-    margin: 0; /* Remove margin */
-}
-
-.profile-container span {
-    font-size: 12px; /* Smaller font for position */
-    color: gray; /* Gray color for the position */
-    margin: 0; /* Remove margin */
-}
-
-
-/* Additional styles for the sidebar links */
-.sidebar h3 {
-    font-size: 1.5rem;
-    margin-bottom: 20px;
-}
-
-.sidebar a {
-    display: block;
-    padding: 10px;
-    color: #333;
-    text-decoration: none;
-    transition: background-color 0.3s;
-}
-
-.sidebar a:hover {
-    background-color: #007bff;
-    color: white;
+ margin-right: 8px;
+ color: #6c757d; /* Muted icon color */
 }
 
 .sidebar .section-title {
-    margin-top: 30px;
-    margin-bottom: 10px;
-    font-weight: bold;
+ margin: 30px 0 10px;
+ font-size: 0.85rem;
+ color: #6c757d; /* Muted section title */
+ font-weight: 500;
+ text-transform: uppercase;
+ letter-spacing: 0.5px;
 }
 
 .sidebar .invite-teammates {
-    margin-top: auto;
-    border-top: 1px solid #eaeaea;
-    padding-top: 20px;
+ margin-top: auto;
+ border-top: 1px solid #eaeaea;
+ padding-top: 15px;
+}
+
+.profile-container {
+ display: flex;
+ margin-top: auto;
+
+}
+
+.profile-image {
+ width: 30px;
+ height: 30px;
+ align-self: center;
+ border-radius: 50%;
+ margin-right: 10px;
+ object-fit: cover;
+}
+
+.fas {
+  font-size: 14px;
+  align-items: center;
+
+
+}
+.profile-container h6 {
+ font-weight: 600;
+ font-size: 0.95rem;
+ color: #333;
+ margin: 0;
+}
+
+.profile-container span {
+ font-size: 0.85rem;
+ color: #6c757d;
 }
 
 
 
 /* Navbar Section */
 .navbar {
- padding: 10px 30px 10px 20px; /* Adjust as necessary */
+ padding: 5px 25px 5px 0px; /* Adjust as necessary */
  display: flex; /* Use flexbox to position items */
  align-items: center; /* Center items vertically */
  background-color: transparent; /* Use your preferred color */
  z-index: 999; /* Ensure the navbar is above other elements */
+ margin-bottom: 10px;
 }
 
 .navbar-brand {

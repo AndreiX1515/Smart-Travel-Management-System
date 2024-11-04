@@ -21,11 +21,11 @@ $fullName = htmlspecialchars($lName . ', ' . $fName . ($mName ? ' ' . substr($mN
      <div class="container-fluid d-flex justify-content-between">
         <div class="nav-start-container d-flex flex-row">
             <!-- Toggle button for the sidebar -->
-            <div class="toggle-btn" id="toggleBtn">
+            <!-- <div class="toggle-btn" id="toggleBtn">
                 <i class="fa-solid fa-bars"></i>
-            </div>
+            </div> -->
 
-            <a class="navbar-brand" id="page-title" style="font-weight: 600;">Dashboard</a> 
+            <a class="navbar-brand" id="page-title" style="font-weight: 500;"></a> 
         </div>
 
           <div class="nav-end-container d-flex flex-row align">
