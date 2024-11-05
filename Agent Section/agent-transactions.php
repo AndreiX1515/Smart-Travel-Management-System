@@ -1,12 +1,7 @@
 <?php
-  // Start session
-  session_start();
-  require "../conn.php";
-  date_default_timezone_set('Asia/Taipei'); // Set the timezone to Taipei
-  $current_date = date('D, F d, Y'); // Format: "Tue, January 01, 2024"
-  // Start session
-  date_default_timezone_set('Asia/Taipei'); // Set the timezone to Taipei
-  $current_date = date('D, F d, Y'); // Format: "Tue, January 01, 2024"
+
+
+ 
 ?>
 
 <!DOCTYPE html>
@@ -28,209 +23,18 @@
 
   <div class="main-content" id="mainContent">
 
-    <?php include '../Agent Section/includes/navbar.php' ?>
+    <?php 
+    
+    include '../Agent Section/includes/navbar.php';
+    require "../conn.php";
+    date_default_timezone_set('Asia/Taipei'); // Set the timezone to Taipei
+    $current_date = date('D, F d, Y'); // Format: "Tue, January 01, 2024"
+    // Start session
+    date_default_timezone_set('Asia/Taipei'); // Set the timezone to Taipei
+    $current_date = date('D, F d, Y'); // Format: "Tue, January 01, 2024"
+    ?>
 
-    <!-- Second Row Div -->
-    <div class="dashboard-cards d-flex flex-wrap justify-content-between">
-      <!-- Total Transaction Card -->
-      <div class="card order-card">
-        <div class="card-block">
-          <div class="header-top d-flex justify-content-between align-items-center mb-2">
-            <div class="d-flex flex-column">
-              <div class="header-top-container d-flex flex-row">
-                <h6>Total Transaction</h6>
-              </div>
-              <?php
-                // Assuming you already have a connection to your database
-                $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking where agentId = '$agentId'";
-                $result = mysqli_query($conn, $totalTransactionsQuery);
-
-                if ($result) 
-                {
-                  $row = mysqli_fetch_assoc($result);
-                  $totalTransactions = $row['total'];
-                } 
-                else 
-                {
-                  $totalTransactions = 0; // default to 0 if query fails
-                }
-              ?>
-              <h2 class="mt-1"><?php echo $totalTransactions; ?></h2>
-            </div>
-          </div>
-
-          <div class="bottom-section">
-            <div class="d-flex flex-row justify-content-between">
-              <div class="trend-up">
-                <i class="fas fa-arrow-trend-up"></i>
-                <span class="percentage-change">+30.6%</span>
-                <h5 class="comparison-text">vs. last month</h5>
-              </div>
-
-              <div class="arrow-up">
-                <i class="fa-solid fa-square-arrow-up-right"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Total Cancelled Transaction -->
-      <div class="card order-card">
-        <div class="card-block">
-          <div class="header-top d-flex justify-content-between align-items-center mb-2">
-            <div class="d-flex flex-column">
-              <div class="header-top-container d-flex flex-row">
-                <h6>Cancelled Transaction</h6>
-              </div>
-              <?php
-                // Assuming you already have a connection to your database
-                $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking where status='Cancelled' and agentId = '$agentId'";
-                $result = mysqli_query($conn, $totalTransactionsQuery);
-
-                if ($result) 
-                {
-                  $row = mysqli_fetch_assoc($result);
-                  $totalTransactions = $row['total'];
-                } 
-                else 
-                {
-                  $totalTransactions = 0; // default to 0 if query fails
-                }
-              ?>
-              <h2 class="mt-1"><?php echo $totalTransactions; ?></h2>
-            </div>
-          </div>
-
-          <div class="bottom-section">
-            <div class="d-flex flex-row justify-content-between">
-              <div class="trend-up">
-                <i class="fas fa-arrow-trend-up"></i>
-                <span class="percentage-change">+30.6%</span>
-                <h5 class="comparison-text">vs. last month</h5>
-              </div>
-
-              <div class="arrow-up">
-                <i class="fa-solid fa-square-arrow-up-right"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Total Pending Transaction -->
-      <div class="card order-card">
-        <div class="card-block">
-          <div class="header-top d-flex justify-content-between align-items-center mb-2">
-            <div class="d-flex flex-column">
-              <div class="header-top-container d-flex flex-row">
-                <h6>Pending Transaction</h6>
-              </div>
-              <?php
-                // Assuming you already have a connection to your database
-                $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking where status='Pending' and agentId = '$agentId'";
-                $result = mysqli_query($conn, $totalTransactionsQuery);
-
-                if ($result) 
-                {
-                  $row = mysqli_fetch_assoc($result);
-                  $totalTransactions = $row['total'];
-                } 
-                else 
-                {
-                  $totalTransactions = 0; // default to 0 if query fails
-                }
-              ?>
-              <h2 class="mt-1"><?php echo $totalTransactions; ?></h2>
-            </div>
-          </div>
-
-          <div class="bottom-section">
-            <div class="d-flex flex-row justify-content-between">
-              <div class="trend-up">
-                <i class="fas fa-arrow-trend-up"></i>
-                <span class="percentage-change">+30.6%</span>
-                <h5 class="comparison-text">vs. last month</h5>
-              </div>
-
-              <div class="arrow-up">
-                <i class="fa-solid fa-square-arrow-up-right"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Total Confirmed Transaction -->
-      <div class="card order-card">
-        <div class="card-block">
-          <div class="header-top d-flex justify-content-between align-items-center mb-2">
-            <div class="d-flex flex-column">
-              <div class="header-top-container d-flex flex-row">
-                <h6>Confirmed Transaction</h6>
-              </div>
-              <?php
-                // Assuming you already have a connection to your database
-                $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking where status='Confirmed' and agentId = '$agentId'";
-                $result = mysqli_query($conn, $totalTransactionsQuery);
-
-                if ($result) 
-                {
-                  $row = mysqli_fetch_assoc($result);
-                  $totalTransactions = $row['total'];
-                } 
-                else 
-                {
-                  $totalTransactions = 0; // default to 0 if query fails
-                }
-              ?>
-              <h2 class="mt-1"><?php echo $totalTransactions; ?></h2>
-            </div>
-          </div>
-
-          <div class="bottom-section">
-            <div class="d-flex flex-row justify-content-between">
-              <div class="trend-up">
-                <i class="fas fa-arrow-trend-up"></i>
-                <span class="percentage-change">+30.6%</span>
-                <h5 class="comparison-text">vs. last month</h5>
-              </div>
-
-              <div class="arrow-up">
-                <i class="fa-solid fa-square-arrow-up-right"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- <div class="card order-card">
-        <div class="card-block">
-          <div class="header-top d-flex justify-content-between align-items-center mb-2">
-            <div class="d-flex flex-column">
-              <div class="header-top-container d-flex flex-row">
-                <h6>Total Transaction</h6>
-              </div>
-              <h2 class="mt-1">436</h2>
-            </div>
-          </div>
-
-          <div class="bottom-section">
-            <div class="d-flex flex-row justify-content-between"> 
-              <div class="trend-down">
-                <i class="fa-solid fa-arrow-trend-down"></i>
-                <span class="percentage-change">-30.6%</span>
-                <h5 class="comparison-text">vs. last month</h5>
-              </div>
-
-              <div class="arrow-up">
-                <i class="fa-solid fa-square-arrow-up-right"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> -->
-    </div>
+   
 
     <div class="table-container">
       <div class="search-bar">
@@ -391,102 +195,7 @@
     </div>
   </div>
 
-  <script>
-      let currentPage = 3;  // Set to the current page
-      const rowsPerPage = 5;
-
-      const data = [
-          { id: 1077620, shipify: '17713', date: '22 Jan 2020', status: 'Pending', customer: 'Ahmed', email: 'ahmed.123@mail.com', country: 'Australia', shipping: 'Australian Post API', source: 'ShopifyAU', orderType: 'Customer' },
-          // Add more rows as needed
-      ];
-
-      function displayTable(page) {
-          const tableContainer = document.getElementById('table-content');
-          tableContainer.innerHTML = '';
-
-          const start = (page - 1) * rowsPerPage;
-          const end = page * rowsPerPage;
-          const paginatedItems = data.slice(start, end);
-
-          let tableHTML = `
-              <table class="product-table">
-                  <thead>
-                      <tr>
-                          <th><input type="checkbox"></th>
-                          <th>ID</th>
-                          <th>SHIPIFY #</th>
-                          <th>DATE</th>
-                          <th>STATUS</th>
-                          <th>CUSTOMER</th>
-                          <th>EMAIL</th>
-                          <th>COUNTRY</th>
-                          <th>SHIPPING</th>
-                          <th>SOURCE</th>
-                          <th>ORDER TYPE</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-          `;
-
-          paginatedItems.forEach(item => {
-              tableHTML += `
-                  <tr>
-                      <td><input type="checkbox"></td>
-                      <td>${item.id}</td>
-                      <td>${item.shipify}</td>
-                      <td>${item.date}</td>
-                      <td>${item.status}</td>
-                      <td>${item.customer}</td>
-                      <td>${item.email}</td>
-                      <td>${item.country}</td>
-                      <td>${item.shipping}</td>
-                      <td>${item.source}</td>
-                      <td>${item.orderType}</td>
-                  </tr>
-              `;
-          });
-
-          tableHTML += '</tbody></table>';
-          tableContainer.innerHTML = tableHTML;
-      }
-
-      function goToPage(page) {
-          currentPage = page;
-          displayTable(page);
-          updatePagination();
-      }
-
-      function prevPage() {
-          if (currentPage > 1) {
-              currentPage--;
-              displayTable(currentPage);
-              updatePagination();
-          }
-      }
-
-      function nextPage() {
-          if (currentPage < 10) {  // Assuming 10 pages for now
-              currentPage++;
-              displayTable(currentPage);
-              updatePagination();
-          }
-      }
-
-      function updatePagination() {
-          const pageNumbers = document.querySelectorAll('.pagination-number');
-          pageNumbers.forEach(button => {
-              button.classList.remove('active');
-              if (parseInt(button.textContent) === currentPage) {
-                  button.classList.add('active');
-              }
-          });
-      }
-
-      // Initialize table display on page load
-      displayTable(currentPage);
-      updatePagination();
-  </script>
-
+ 
   <script> 
     const startDate = document.getElementById('startDate');
     const endDate = document.getElementById('endDate');
