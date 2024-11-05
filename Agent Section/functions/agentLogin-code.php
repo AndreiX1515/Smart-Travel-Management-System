@@ -14,25 +14,35 @@ if (isset($_POST['login'])) {
     // Check if username and password are provided
     if (!empty($username) && !empty($password)) {
         // Prepare the SQL query to fetch the agent's details
-        $sql = "SELECT * FROM agent WHERE username = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param('s', $username); // Bind the username as a string
-        $stmt->execute();
-        $result = $stmt->get_result();
+        $sql1 = "SELECT * FROM accounts WHERE email = ? and accountType = 'agent'";
+        $stmt1 = $conn->prepare($sql1);
+        $stmt1->bind_param('s', $username); // Bind the username as a string
+        $stmt1->execute();
+        $result1 = $stmt1->get_result();
         
-        if ($result->num_rows > 0) {
+        if ($result1->num_rows > 0) {
             // Fetch the agent's row
-            $agent = $result->fetch_assoc();
+            $user = $result1->fetch_assoc();
             
             // Directly compare the plain text password (not recommended for production)
-            if ($password === $agent['password']) {
-                
-                $_SESSION['agentId'] = $agent['agentId'];
-                $_SESSION['username'] = $agent['username'];
-                $_SESSION['fName'] = $agent['fName'];
-                $_SESSION['lName'] = $agent['lName'];
-                $_SESSION['mName'] = $agent['mName'];
-                $_SESSION['branch'] = $agent['branch'];
+            if ($password === $user['password']) {
+
+                // Fetch additional agent details using the accountId
+                $sql2 = "SELECT * FROM agent WHERE accountId = ?";
+                $stmt2 = $conn->prepare($sql2);
+                $stmt2->bind_param('i', $user['accountId']); // Bind accountId as an integer
+                $stmt2->execute();
+                $agentResult = $stmt2->get_result();
+
+                if ($agentResult->num_rows > 0) 
+                {
+                    $agent = $agentResult->fetch_assoc();
+                    $_SESSION['agentId'] = $agent['agentId'];
+                    $_SESSION['fName'] = $agent['fName'];
+                    $_SESSION['mName'] = $agent['mName'];
+                    $_SESSION['lName'] = $agent['lName'];
+                    $_SESSION['branch'] = $agent['branch'];
+                }
                 
                 // Prepare success response
                 $response['success'] = true;
@@ -45,7 +55,7 @@ if (isset($_POST['login'])) {
             $response['message'] = "Incorrect username or password. Please try again.";
         }
         
-        $stmt->close();
+        $stmt1->close();
     } else {
         $response['success'] = false;
         $response['message'] = "Please fill in both fields.";
