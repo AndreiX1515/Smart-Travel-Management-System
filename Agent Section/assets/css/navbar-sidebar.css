@@ -38,7 +38,7 @@ body {
  width: 220px;
  height: 100vh;
  background: #ffffff; /* Clean white background */
- padding: 5px 15px 20px 15px;
+ padding: 10px 15px 20px 15px;
  position: fixed;
  top: 0;
  left: 0;
@@ -167,7 +167,7 @@ body {
 
 /* Navbar Section */
 .navbar {
- padding: 5px 25px 5px 0px; /* Adjust as necessary */
+ padding: 10px 25px 5px 0px; /* Adjust as necessary */
  display: flex; /* Use flexbox to position items */
  align-items: center; /* Center items vertically */
  background-color: transparent; /* Use your preferred color */
