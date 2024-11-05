@@ -5,6 +5,7 @@ error_reporting(E_ALL);
 
 require "../conn.php";
 
+$accountId = $_SESSION['accountId'];
 $agentId = $_SESSION['agentId'];
 // $email = $_SESSION['email'] ?? ''; 
 $fName = $_SESSION['fName'] ?? '';
@@ -44,7 +45,7 @@ $fullName = htmlspecialchars($lName . ', ' . $fName . ($mName ? ' ' . substr($mN
                        <div class="profile-container ms-2 me-3">
                            <h6 class="mb-1"><?php echo $fullName; ?></h6> 
                            <span class="m-0">Branch: <?php echo $branch; ?></span>
-                           <span class="m-0">Agent Id: <?php echo $agentId; ?></span>
+                           <!-- <span class="m-0">Agent Id: <?php echo $agentId; ?></span> -->
                        </div>
                        <img src="../assets/images/circle.png" alt="Profile" class="profile-image me-2" width="40px" height="40px">
                    </a>

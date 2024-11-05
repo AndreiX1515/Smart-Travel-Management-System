@@ -37,6 +37,7 @@ if (isset($_POST['login'])) {
                 if ($agentResult->num_rows > 0) 
                 {
                     $agent = $agentResult->fetch_assoc();
+                    $_SESSION['accountId'] = $agent['accountId'];
                     $_SESSION['agentId'] = $agent['agentId'];
                     $_SESSION['fName'] = $agent['fName'];
                     $_SESSION['mName'] = $agent['mName'];

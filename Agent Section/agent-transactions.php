@@ -42,7 +42,7 @@
               </div>
               <?php
                 // Assuming you already have a connection to your database
-                $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking where agentId = $agentId";
+                $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking where agentId = '$agentId'";
                 $result = mysqli_query($conn, $totalTransactionsQuery);
 
                 if ($result) 
@@ -85,7 +85,7 @@
               </div>
               <?php
                 // Assuming you already have a connection to your database
-                $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking where status='Cancelled' and agentId = $agentId";
+                $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking where status='Cancelled' and agentId = '$agentId'";
                 $result = mysqli_query($conn, $totalTransactionsQuery);
 
                 if ($result) 
@@ -128,7 +128,7 @@
               </div>
               <?php
                 // Assuming you already have a connection to your database
-                $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking where status='Pending' and agentId = $agentId";
+                $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking where status='Pending' and agentId = '$agentId'";
                 $result = mysqli_query($conn, $totalTransactionsQuery);
 
                 if ($result) 
@@ -171,7 +171,7 @@
               </div>
               <?php
                 // Assuming you already have a connection to your database
-                $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking where status='Confirmed' and agentId = $agentId";
+                $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking where status='Confirmed' and agentId = '$agentId'";
                 $result = mysqli_query($conn, $totalTransactionsQuery);
 
                 if ($result) 
@@ -351,7 +351,7 @@
                 LEFT JOIN
                   agent a ON b.agentId = a.agentId
                 WHERE 
-                  b.agentId = $agentId AND b.status = 'Pending'
+                  b.agentId = '$agentId' AND b.status = 'Pending'
                 ORDER BY 
                   b.transactNo DESC LIMIT 10";
  
