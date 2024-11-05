@@ -49,7 +49,7 @@
               </div>
               <?php
                 // Assuming you already have a connection to your database
-                $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking where agentId = $agentId";
+                $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking where agentId = '$agentId'";
                 $result = mysqli_query($conn, $totalTransactionsQuery);
 
                 if ($result) 
@@ -75,7 +75,7 @@
               </div>
               <?php
                 // Assuming you already have a connection to your database
-                $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking where status='Cancelled' and agentId = $agentId";
+                $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking where status='Cancelled' and agentId = '$agentId'";
                 $result = mysqli_query($conn, $totalTransactionsQuery);
 
                 if ($result) 
@@ -104,7 +104,7 @@
               </div>
               <?php
                 // Assuming you already have a connection to your database
-                $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking where status='Pending' and agentId = $agentId";
+                $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking where status='Pending' and agentId = '$agentId'";
                 $result = mysqli_query($conn, $totalTransactionsQuery);
 
                 if ($result) 
@@ -130,7 +130,7 @@
               </div>
               <?php
                 // Assuming you already have a connection to your database
-                $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking where status='Confirmed' and agentId = $agentId";
+                $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking where status='Confirmed' and agentId = '$agentId'";
                 $result = mysqli_query($conn, $totalTransactionsQuery);
 
                 if ($result) 
@@ -348,7 +348,7 @@
                             LEFT JOIN
                                 agent a ON b.agentId = a.agentId
                             WHERE 
-                                b.agentId = $agentId and status='Pending'
+                                b.agentId = '$agentId' and status='Pending'
                             ORDER BY 
                                 b.transactNo DESC LIMIT 5";
           
@@ -374,7 +374,7 @@
                     else 
                     {
                       // If no records found
-                      echo "<tr><td colspan='6'>No bookings found</td></tr>";
+                      echo "<tr><td colspan='6' style='text-align: center;'>No bookings found</td></tr>";
                     }
                   ?>
                 </tbody>
@@ -402,15 +402,15 @@
                   $sql1 = "SELECT 
                               r.transactNo AS `T.N`,
                               r.concern AS `Request`,
-                              r.date AS `Date`
+                              r.requestDate AS `Date`
                           FROM 
                               request r
                           JOIN 
                               booking b ON r.transactNo = b.transactNo
                           WHERE 
-                              b.agentId = $agentId
+                              b.agentId = '$agentId'
                           ORDER BY 
-                              r.date DESC";  // Order by request date
+                              r.requestDate DESC";  // Order by request date
 
                   $res1 = $conn->query($sql1);
                     
@@ -427,7 +427,7 @@
                   } 
                   else 
                   {
-                    echo "<tr><td colspan='6'>No bookings found</td></tr>";
+                    echo "<tr><td colspan='6' style='text-align: center;'>No Request found</td></tr>";
                   }
                 ?>
               </tbody>
@@ -455,7 +455,7 @@
                  $sql2 = "SELECT 
                              r.transactNo AS `Transaction No`,
                              r.concern AS `Request`,
-                             r.date AS `Date`
+                             r.requestDate AS `Date`
                          FROM 
                              request r
                          JOIN 
@@ -463,7 +463,7 @@
                          WHERE 
                              b.agentId = '1' AND b.status = 'completed' -- Adjust conditions as needed
                          ORDER BY 
-                             r.date DESC";
+                             r.requestDate DESC";
 
                  $res2 = $conn->query($sql2);
                  
@@ -475,8 +475,8 @@
                              <td>" . date('F d, Y', strtotime($row['Date'])) . "</td>
                            </tr>";
                    }
-                 } else {
-                   echo "<tr><td colspan='3'>No completed payments found</td></tr>";
+                 } else {  
+                   echo "<tr><td colspan='3' style='text-align: center;'>No payments found</td></tr>";
                  }
                ?>
              </tbody>
@@ -529,7 +529,7 @@
                           LEFT JOIN
                               agent a ON b.agentId = a.agentId
                           WHERE 
-                              b.agentId = $agentId and status='Confirmed'
+                              b.agentId = '$agentId' and status='Confirmed'
                           ORDER BY 
                               b.transactNo DESC LIMIT 5";
         
