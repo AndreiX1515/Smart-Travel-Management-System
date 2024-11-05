@@ -1,6 +1,5 @@
 <?php
   // Start session
-  session_start();
   require "../conn.php";
   date_default_timezone_set('Asia/Taipei'); // Set the timezone to Taipei
   $current_date = date('D, F d, Y'); // Format: "Tue, January 01, 2024"
