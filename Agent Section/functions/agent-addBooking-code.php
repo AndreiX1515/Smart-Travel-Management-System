@@ -7,6 +7,7 @@
 
   if (isset($_POST['bookNow'])) 
   {
+    $accountId = $_SESSION['accountId'];
     $agentId = $_SESSION['agentId'];
     $fName = $_POST['fName'];  
     $mName = $_POST['mName'];  
@@ -31,8 +32,8 @@
 
     $row = $result->fetch_assoc();
     $newBookingId = ($row && $row['lastBookingId'] !== null) ? $row['lastBookingId'] + 1 : 1;
-    $formattedCounter = str_pad($newBookingId, 7, '0', STR_PAD_LEFT);
-    $transactNo = 'TRANS-' . $formattedCounter;
+    $formattedCounter = str_pad($newBookingId, 6, '0', STR_PAD_LEFT);
+    $transactNo = $agentId. '-' . $formattedCounter;
 
     // Check if "Own Flight" is selected (value is 'Null')
     if ($flightId === 'Null') 
@@ -60,7 +61,7 @@
 
     // Bind and execute the booking insertion
     // $accountId = $_SESSION['accountid']; // Assuming the user is logged in
-    $stmt1->bind_param('isiiisssssssid', $agentId, $transactNo, $agentId, $flightId, $packageId, $fName, $lName, $mName, $suffix, 
+    $stmt1->bind_param('issiisssssssid', $accountId, $transactNo, $agentId, $flightId, $packageId, $fName, $lName, $mName, $suffix, 
     $countryCode, $contactNo, $email, $totalPax, $totalPrice);
     
     if (!$stmt1->execute()) 
