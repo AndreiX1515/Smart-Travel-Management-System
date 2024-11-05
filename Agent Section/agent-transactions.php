@@ -307,11 +307,6 @@
     </div>
 </div>
 
-
-
-
-
-
 <?php require "../Agent Section/scripts/script.php"; ?>
 <?php require "../Agent Section/includes/scripts.php"; ?>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -397,8 +392,6 @@ function updateBooking() {
 }
 
 </script>
-
-
 
 
    
