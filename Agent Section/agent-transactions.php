@@ -244,62 +244,111 @@
 
 <!-- Modal for Update Booking -->
 <div class="modal fade" id="updateBookingModal" tabindex="-1" aria-labelledby="updateBookingModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header border-0">
                 <h5 class="modal-title" id="updateBookingModalLabel">Update Booking</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <!-- Display the transaction ID -->
-                <div class="mb-3">
-                    <label for="transactionId" class="form-label">Transaction ID</label>
-                    <span id="transactionId" class="form-control-plaintext"></span>
-                </div>
+
+               <div class="mb-4 d-flex align-items-center w-100">
+                  <h6 class="mb-0">Transaction ID:</h6>
+                  <span id="transactionId" class="ms-2"></span>
+              </div>
+
+
+
                 <!-- Form for updating booking details -->
                 <form id="updateBookingForm" method="POST">
-                    <input type="hidden" name="transaction_number" value="">
+                 <input type="hidden" name="transaction_number" value="">
 
-                    <div class="mb-3">
-                        <label for="contactName" class="form-label">First Name</label>
-                        <input type="text" class="form-control" id="contactName" name="fName" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="contactIName" class="form-label">Initial Name</label>
-                        <input type="text" class="form-control" id="contactIName" name="IName">
-                    </div>
-                    <div class="mb-3">
-                        <label for="contactMName" class="form-label">Middle Name</label>
-                        <input type="text" class="form-control" id="contactMName" name="mName">
-                    </div>
-                    <div class="mb-3">
-                        <label for="contactSuffix" class="form-label">Suffix</label>
-                        <input type="text" class="form-control" id="contactSuffix" name="suffix">
-                    </div>
-                    <div class="mb-3">
-                        <label for="countryCode" class="form-label">Country Code</label>
-                        <input type="text" class="form-control" id="countryCode" name="countryCode">
-                    </div>
-                    <div class="mb-3">
-                        <label for="contactPhone" class="form-label">Contact Phone</label>
-                        <input type="text" class="form-control" id="contactPhone" name="contactNo" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="contactEmail" class="form-label">Contact Email</label>
-                        <input type="email" class="form-control" id="contactEmail" name="email" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="totalPax" class="form-label">Total Pax</label>
-                        <input type="number" class="form-control" id="totalPax" name="pax" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="totalPrice" class="form-label">Total Price</label>
-                        <input type="text" class="form-control" id="totalPrice" name="totalPrice">
-                    </div>
-                    <!-- Additional fields can be added here -->
-                </form>
+                 <h6 class="fw-bold">Personal Information:</h6>
+
+                 <div class="row mt-2">
+                   <div class="col-md-3 mb-3">
+                     <label for="contactName" class="form-label">First Name</label>
+                     <input type="text" class="form-control" id="contactName" name="fName" required>
+                   </div>
+                   <div class="col-md-3 mb-3">
+                     <label for="contactLName" class="form-label">Last Name</label>
+                     <input type="text" class="form-control" id="contactIName" name="IName">
+                   </div>
+                   <div class="col-md-3 mb-3">
+                     <label for="contactMName" class="form-label">Middle Name</label>
+                     <input type="text" class="form-control" id="contactMName" name="mName">
+                   </div>
+                   <div class="col-md-3 mb-3">
+                    <label for="contactSuffix" class="form-label">Suffix</label>
+                    <select class="form-control" id="contactSuffix" name="suffix">
+                        <option value="Jr.">Jr.</option>
+                        <option value="Sr.">Sr.</option>
+                        <option value="III">III</option>
+                        <option value="IV">IV</option>
+                        <option value="V">V</option>
+                        <option value="N/A">N/A</option>
+                        <!-- Add more options as needed -->
+                    </select>
+                </div>
+                 </div>
+
+                 <div class="row">
+                   
+                 </div>
+
+                 <div class="row">
+                   <div class="col-md-2 mb-3">
+                     <label for="countryCode" class="form-label">Country Code</label>
+                     <input type="text" class="form-control" id="countryCode" name="countryCode">
+                   </div>
+                   <div class="col-md-4 mb-3">
+                     <label for="contactPhone" class="form-label">Contact Phone</label>
+                     <input type="text" class="form-control" id="contactPhone" name="contactNo" required>
+                   </div>
+                   <div class="col-md-6 mb-3">
+                     <label for="contactEmail" class="form-label">Contact Email</label>
+                     <input type="email" class="form-control" id="contactEmail" name="email" required>
+                   </div>
+                 </div>
+
+                 <h6 class="fw-bold my-2">Booking Information:</h6>
+
+                 <div class="row">
+                   <div class="col-md-2 mb-2">
+                     <label for="totalPax" class="form-label">Total Pax</label>
+                     <input type="number" class="form-control" id="totalPax" name="pax" required>
+                     
+                   </div>
+                   <div class="col-md-5 mb-3">
+                      <label for="flightDetails" class="form-label">Flight Details</label>
+                      <input type="text" class="form-control" id="flightDetails" name="flightDetails" required>
+                  </div>
+                  <div class="col-md-5 mb-3">
+                    <label for="package" class="form-label">Package</label>
+                    <select class="form-control" id="package" name="package">
+                        <option value="Summer">Summer</option>
+                        <option value="Autumn">Autumn</option>
+                        <option value="Winter">Winter</option>
+                        <option value="Spring">Spring</option>
+                        <option value="Cherry Blossom">Cherry Blossom</option>
+                        <!-- Add more options as needed -->
+                    </select>
+                </div>
+
+
+                 </div>
+
+                 <div class="row">
+                   <div class="col-md-6 mb-3">
+                     <label for="totalPrice" class="form-label">Total Price</label>
+                     <input type="text" class="form-control" id="totalPrice" name="totalPrice" readonly>
+
+                   </div>
+                 </div>
+               </form>
+
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer border-0">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary" onclick="updateBooking()">Update</button>
             </div>
@@ -307,7 +356,6 @@
     </div>
 </div>
 
-<?php require "../Agent Section/scripts/script.php"; ?>
 <?php require "../Agent Section/includes/scripts.php"; ?>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -374,7 +422,11 @@ function fetchBookingDetails(transactionId) {
             document.getElementById('contactPhone').value = data.booking.contactNo;
             document.getElementById('contactEmail').value = data.booking.email;
             document.getElementById('totalPax').value = data.booking.pax;
+
+            document.getElementById('flightDetails').value = "";
             document.getElementById('totalPrice').value = data.booking.totalPrice;
+
+            document.getElementById('package').value = "";
         } else {
             console.error('Error fetching booking details:', data.message);
         }

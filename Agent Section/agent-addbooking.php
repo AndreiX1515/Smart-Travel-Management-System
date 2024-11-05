@@ -494,7 +494,6 @@
       </div>
     </div>
 
-    <?php require "../Agent Section/scripts/script.php"; ?>
     <?php require "../Agent Section/includes/scripts.php"; ?>
 
     <script>
