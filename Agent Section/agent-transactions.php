@@ -188,13 +188,33 @@
                               <h5 class='modal-title' id='requestModalLabel{$transactNo}'>Request for Transaction #{$transactNo}</h5>
                               <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
                             </div>
-                            <div class='modal-body'>
-                              <!-- Form or content for request -->
-                            </div>
-                            <div class='modal-footer'>
-                              <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Close</button>
-                              <button type='button' class='btn btn-primary'>Submit Request</button>
-                            </div>
+                            <form action='clientTransactionStatus-code.php' method='POST'>
+                              <div class='modal-body'>
+                                <p><strong>Transaction No:</strong> <span id='transactNo{$transactNo}'>{$transactNo}</span></p>
+                                <input type='' name='transactNo' value={$transactNo}>
+                                <input type='' name='agentId' value={$agentId}>
+                                <div class='mb-3'>
+                                  <select class='form-select mt-2' name='concern' required>
+                                    <option selected disabled>Select Request</option>
+                                    <option value='Additional Baggage'>Additional Baggage</option>
+                                    <option value='Additional Headcount'>Additional Headcount</option>
+                                    <option value='Additional Meal'>Additional Meal</option>
+                                    <option value='Hotel Room'>Hotel Room</option>
+                                    <option value='Package Only'>Package Only</option>
+                                    <option value='Seat Selection'>Seat Selection</option>
+                                    <option value='Visa'>Visa</option>
+                                  </select>
+                                </div>
+                                <div class='mb-3'>
+                                  <label class='form-label'>Details</label>
+                                  <textarea class='form-control' name='details' placeholder='Enter Message' rows='4' required></textarea>
+                                </div>     
+                              </div>
+                              <div class='modal-footer'>
+                                <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Close</button>
+                                <button type='submit' name='request' class='btn btn-primary'>Send Request</button>
+                              </div>
+                            </form>
                           </div>
                         </div>
                       </div>";
