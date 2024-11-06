@@ -202,9 +202,9 @@
                             <form action='../Agent Section/functions/agent-transactionRequest-code.php' method='POST'>
                               <div class='modal-body'>
                                 <p><strong>Transaction No:</strong> <span id='transactNo{$transactNo}'>{$transactNo}</span></p>
-                                <input type='' name='transactNo' value={$transactNo}>
-                                <input type='' name='agentId' value={$agentId}>
-                                <input type='' name='accountId' value={$accountId}>
+                                <input type='hidden' name='transactNo' value={$transactNo}>
+                                <input type='hidden' name='agentId' value={$agentId}>
+                                <input type='hidden' name='accountId' value={$accountId}>
                                 <div class='mb-3'>
                                   <select class='form-select mt-2' name='concern' required>
                                     <option selected disabled>Select Request</option>
@@ -240,13 +240,45 @@
                               <h5 class='modal-title' id='paymentModalLabel{$transactNo}'>Payment for Transaction #{$transactNo}</h5>
                               <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
                             </div>
-                            <div class='modal-body'>
-                              <!-- Form or content for payment processing -->
-                            </div>
-                            <div class='modal-footer'>
-                              <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Close</button>
-                              <button type='button' class='btn btn-primary'>Proceed with Payment</button>
-                            </div>
+                            <form action='../Agent Section/functions/agent-transactionPayment-code.php' method='POST' enctype='multipart/form-data'>
+                              <div class='modal-body'>
+                                <input type='hidden' name='transactNo' value={$transactNo}>
+                                <input type='hidden' name='accountId' value=$accountId>
+
+                                <div class='mb-3'>
+                                  <label class='form-label'>Payment for:</label>
+                                  <select class='form-select' name='paymentTitle' required>
+                                    <option selected disabled>Select Payment Title</option>
+                                    <option value='Package Payment'>Package Payment</option>
+                                    <option value='Request Payment'>Request Payment</option>
+                                  </select>
+                                </div>
+
+                                <div class='mb-3'>
+                                  <label class='form-label'>Payment Type</label>
+                                  <select class='form-select' name='paymentType' required>
+                                    <option selected disabled>Select Payment Type</option>
+                                    <option value='Downpayment'>Downpayment</option>
+                                    <option value='Partial Paymen'>Partial Payment</option>
+                                    <option value='Full Payment'>Full Payment</option>
+                                  </select>
+                                </div>
+
+                                <div class='mb-3'>
+                                  <label class='form-label'>Payment Amount</label>
+                                  <input type='number' class='form-control' name='amount' placeholder='Enter payment Amount' required>
+                                </div>
+
+                                <div class='mb-3'>
+                                  <label class='form-label'>Proof of Payment</label>
+                                  <input type='file' class='form-control' name='proof' accept='image/*' placeholder='Enter proof of payment'>
+                                </div>     
+                              </div>
+                              <div class='modal-footer'>
+                                <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Close</button>
+                                <button type='submit' name='payment' class='btn btn-primary'>Submit payment</button>
+                              </div>
+                            </form>
                           </div>
                         </div>
                       </div>";
