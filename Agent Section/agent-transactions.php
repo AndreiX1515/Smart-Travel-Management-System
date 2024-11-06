@@ -74,6 +74,17 @@
 
         <!-- <hr style="border: 1px solid grey; margin: 5px 0 20px 0;"> -->
 
+        <?php 
+          if(isset($_SESSION['status'])):
+        ?>
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Hey!</strong> <?= $_SESSION['status']; ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        <?php 
+          unset($_SESSION['status']);
+          endif;
+        ?>
         <div class="table-actions">
           <div class="show-column">
             <span>Show: </span>
@@ -188,11 +199,12 @@
                               <h5 class='modal-title' id='requestModalLabel{$transactNo}'>Request for Transaction #{$transactNo}</h5>
                               <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
                             </div>
-                            <form action='clientTransactionStatus-code.php' method='POST'>
+                            <form action='../Agent Section/functions/agent-transactionRequest-code.php' method='POST'>
                               <div class='modal-body'>
                                 <p><strong>Transaction No:</strong> <span id='transactNo{$transactNo}'>{$transactNo}</span></p>
                                 <input type='' name='transactNo' value={$transactNo}>
                                 <input type='' name='agentId' value={$agentId}>
+                                <input type='' name='accountId' value={$accountId}>
                                 <div class='mb-3'>
                                   <select class='form-select mt-2' name='concern' required>
                                     <option selected disabled>Select Request</option>
