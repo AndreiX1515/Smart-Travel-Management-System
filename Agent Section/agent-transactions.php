@@ -225,8 +225,6 @@
                 echo "<tr><td colspan='10'>No bookings found</td></tr>";
               }
             ?>
-
-
           </tbody>
         </table>
 
@@ -353,7 +351,7 @@
       // Use AJAX to send the transaction number to the server
       $.ajax(
       {
-        url: '../Agent Section/functions/addGuests.php', // The PHP file that will handle the session setting
+        url: '../Agent Section/functions/agent-addGuests.php', // The PHP file that will handle the session setting
         type: 'POST',
         data: { transaction_number: transactionNumber },
         success: function(response) 
@@ -404,25 +402,29 @@
         body: JSON.stringify({ transaction_id: transactionId }),
       })
 
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            // Populate fields with the fetched data
-            document.getElementById('contactName').value = data.booking.fName;
-            document.getElementById('contactIName').value = data.booking.lName;
-            document.getElementById('contactMName').value = data.booking.mName;
-            document.getElementById('contactSuffix').value = data.booking.suffix;
-            document.getElementById('countryCode').value = data.booking.countryCode;
-            document.getElementById('contactPhone').value = data.booking.contactNo;
-            document.getElementById('contactEmail').value = data.booking.email;
-            document.getElementById('totalPax').value = data.booking.pax;
+      .then(response => response.json())
+      .then(data => 
+      {
+        if (data.success) 
+        {
+          // Populate fields with the fetched data
+          document.getElementById('contactName').value = data.booking.fName;
+          document.getElementById('contactIName').value = data.booking.lName;
+          document.getElementById('contactMName').value = data.booking.mName;
+          document.getElementById('contactSuffix').value = data.booking.suffix;
+          document.getElementById('countryCode').value = data.booking.countryCode;
+          document.getElementById('contactPhone').value = data.booking.contactNo;
+          document.getElementById('contactEmail').value = data.booking.email;
+          document.getElementById('totalPax').value = data.booking.pax;
 
-            document.getElementById('flightDetails').value = "";
-            document.getElementById('totalPrice').value = data.booking.totalPrice;
+          document.getElementById('flightDetails').value = "";
+          document.getElementById('totalPrice').value = data.booking.totalPrice;
 
-            document.getElementById('package').value = "";
-        } else {
-            console.error('Error fetching booking details:', data.message);
+          document.getElementById('package').value = "";
+        } 
+        else 
+        {
+          console.error('Error fetching booking details:', data.message);
         }
       })
       .catch(error => 
