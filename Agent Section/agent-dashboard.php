@@ -432,7 +432,7 @@
 
         <div class="three">
          <div class="header d-flex justify-content-between align-items-center">
-           <h6>Pending Payments</h6>
+           <h6>Payment Approvals</h6>
            
          </div>
 
