@@ -112,7 +112,6 @@
             </tr>
           </thead>
           <tbody>
-
             <?php
               $sql1 = "SELECT
                   b.transactNo AS `T.N`,
@@ -167,7 +166,8 @@
                                 <i class='fas fa-ellipsis-v'></i>
                               </button>
                               <ul class='dropdown-menu'>
-                                  <li><a class='dropdown-item' href='#' onclick='fetchTransaction(\"{$row['T.N']}\")'>Add Guests Information</a></li>
+                                  <li><a class='dropdown-item' href='#' onclick='addGuestInfo(\"{$row['T.N']}\")'>Add Guests Information</a></li>
+                                  <li><a class='dropdown-item' href='#' onclick='showGuestInfo(\"{$row['T.N']}\")'>Show Guest Information</a></li>
                                   <li> <a class='dropdown-item' href='#' data-bs-toggle='modal' data-bs-target='#updateBookingModal' data-transaction-id='{$row['T.N']}'>
                                     Update Booking </a> 
                                   </li>
@@ -343,15 +343,15 @@
 
   <?php require "../Agent Section/includes/scripts.php"; ?>
 
-  <!-- Add Guest Function -->
+  <!-- Add Guest Info, and Show Guest Info Function -->
   <script>
-    function fetchTransaction(transactionNumber) 
+    function addGuestInfo(transactionNumber) 
     {
       console.log("Transaction Number: ", transactionNumber); // Debug line
       // Use AJAX to send the transaction number to the server
       $.ajax(
       {
-        url: '../Agent Section/functions/agent-addGuests.php', // The PHP file that will handle the session setting
+        url: '../Agent Section/functions/fetchTransactNo.php', // The PHP file that will handle the session setting
         type: 'POST',
         data: { transaction_number: transactionNumber },
         success: function(response) 
@@ -359,6 +359,28 @@
           console.log("Response: ", response); // Debug line
           // Redirect to the next page after setting the session
           window.location.href = '../Agent Section/agent-addGuest.php'; // Redirect to your next page
+        },
+        error: function(xhr, status, error) 
+        {
+          console.error("AJAX Error: " + status + " " + error); // Enhanced error logging
+        }
+      });
+    }
+
+    function showGuestInfo(transactionNumber) 
+    {
+      console.log("Transaction Number: ", transactionNumber); // Debug line
+      // Use AJAX to send the transaction number to the server
+      $.ajax(
+      {
+        url: '../Agent Section/functions/fetchTransactNo.php', // The PHP file that will handle the session setting
+        type: 'POST',
+        data: { transaction_number: transactionNumber },
+        success: function(response) 
+        {
+          console.log("Response: ", response); // Debug line
+          // Redirect to the next page after setting the session
+          window.location.href = '../Agent Section/agent-showGuest.php'; // Redirect to your next page
         },
         error: function(xhr, status, error) 
         {

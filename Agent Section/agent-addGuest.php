@@ -1,6 +1,3 @@
-<?php
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -81,7 +78,7 @@
             </div>
             <div id="cardBodyContent<?php echo $i; ?>" class="collapse show">
               <div class="card-body">
-                <input type="text" name="transactNo" value=<?php echo $transactionNumber; ?>>
+                <input type="hidden" name="transactNo" value=<?php echo $transactionNumber; ?>>
                 <!-- Guest Personal Information -->
                 <div class="header-container d-flex flex-row w-100 mb-3 ">
                   <h5 class="card-title bg-primary text-white p-3 w-100">Personal Information</h5>
@@ -1120,7 +1117,6 @@
       }
     });
   </script>
-
 
 </body>
 </html>
