@@ -49,38 +49,18 @@
       <table class="product-table">
         <thead>
           <tr>
-            <th>Guest Id</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Middle Name</th>
-            <th>Suffix</th>
-            <th>Birthdate</th>
-            <th>Age</th>
-            <th>Sex</th>
-            <th>Nationality</th>
-            <th>Contact No</th>
-            <th>Other Contact No</th>
-            <th>Email</th>
-            <th>Address</th>
-            <th>Passport No</th>
-            <th>Passport Exp</th>
-            <th>Visa Status</th>
+            <th>Request Id</th>
+            <th>Request Title</th>
+            <th>Request Details</th>
+            <th>Request Date</th>
+            <th>Status</th>
             <th></th>
           </tr>
         </thead>
         <tbody>
           <?php
-            $sql1= "SELECT *, DATE_FORMAT(birthdate, '%M %d, %Y') AS birthdate, CONCAT(countryCode, contactNo) AS contactNo,
-                    CASE 
-                      WHEN countryCode2 IS NULL OR contactNo2 IS NULL THEN 'N/A'
-                      ELSE CONCAT(countryCode2, contactNo2)
-                    END AS contactNo2, CONCAT(addressLine1, ', ', 
-                    CASE 
-                      WHEN addressLine2 IS NOT NULL AND addressLine2 != '' THEN CONCAT(addressLine2, ', ') 
-                      ELSE '' 
-                    END, city, ', ', state, ', ', zipcode, ', ', country) AS address
-                    FROM guest 
-                    WHERE transactNo = '$transactionNumber'";
+            $sql1= "SELECT *, DATE_FORMAT(requestDate, '%M %d, %Y %h:%i %p') AS requestDate
+                    FROM request WHERE transactNo = '$transactionNumber'";
 
             $res1 = $conn->query($sql1);
 
@@ -89,28 +69,17 @@
               while ($row = $res1->fetch_assoc()) 
               {
                 echo "<tr>
-                        <td>{$row['guestId']}</td>
-                        <td>{$row['fName']}</td>
-                        <td>{$row['lName']}</td>
-                        <td>{$row['mName']}</td>
-                        <td>{$row['suffix']}</td>
-                        <td>{$row['birthdate']}</td>
-                        <td>{$row['age']}</td>
-                        <td>{$row['sex']}</td>
-                        <td>{$row['nationality']}</td>
-                        <td>{$row['contactNo']}</td>
-                        <td>{$row['contactNo2']}</td>
-                        <td>{$row['emailAdd']}</td>
-                        <td>{$row['address']}</td>
-                        <td>{$row['passportNo']}</td>
-                        <td>{$row['passportExp']}</td>
-                        <td>{$row['visaStatus']}</td>
+                        <td>{$row['requestId']}</td>
+                        <td>{$row['concern']}</td>
+                        <td>{$row['details']}</td>
+                        <td>{$row['requestDate']}</td>
+                        <td>{$row['requestStatus']}</td>
                       </tr>";
               }
             } 
             else 
             {
-              echo "<tr><td colspan='10'>No Guest found</td></tr>";
+              echo "<tr><td colspan='10'>No Payment Found</td></tr>";
             }
           ?>
         </tbody>
