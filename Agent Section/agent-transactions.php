@@ -112,7 +112,6 @@
             </tr>
           </thead>
           <tbody>
-
             <?php
               $sql1 = "SELECT
                   b.transactNo AS `T.N`,
@@ -167,7 +166,8 @@
                                 <i class='fas fa-ellipsis-v'></i>
                               </button>
                               <ul class='dropdown-menu'>
-                                  <li><a class='dropdown-item' href='#' onclick='fetchTransaction(\"{$row['T.N']}\")'>Add Guests Information</a></li>
+                                  <li><a class='dropdown-item' href='#' onclick='addGuestInfo(\"{$row['T.N']}\")'>Add Guests Information</a></li>
+                                  <li><a class='dropdown-item' href='#' onclick='showGuestInfo(\"{$row['T.N']}\")'>Show Guest Information</a></li>
                                   <li> <a class='dropdown-item' href='#' data-bs-toggle='modal' data-bs-target='#updateBookingModal' data-transaction-id='{$row['T.N']}'>
                                     Update Booking </a> 
                                   </li>
@@ -225,8 +225,6 @@
                 echo "<tr><td colspan='10'>No bookings found</td></tr>";
               }
             ?>
-
-
           </tbody>
         </table>
 
@@ -265,19 +263,19 @@
             <div class="row mt-2">
               <div class="col-md-3 mb-3">
                 <label for="contactName" class="form-label">First Name</label>
-                <input type="text" class="form-control" id="contactName" name="fName" required>
+                <input type="text" class="form-control" id="fName" name="fName" required>
               </div>
               <div class="col-md-3 mb-3">
                 <label for="contactLName" class="form-label">Last Name</label>
-                <input type="text" class="form-control" id="contactIName" name="IName">
+                <input type="text" class="form-control" id="lName" name="IName">
               </div>
               <div class="col-md-3 mb-3">
                 <label for="contactMName" class="form-label">Middle Name</label>
-                <input type="text" class="form-control" id="contactMName" name="mName">
+                <input type="text" class="form-control" id="mName" name="mName">
               </div>
               <div class="col-md-3 mb-3">
                 <label for="contactSuffix" class="form-label">Suffix</label>
-                <select class="form-control" id="contactSuffix" name="suffix">
+                <select class="form-control" id="suffix" name="suffix">
                   <option value="Jr.">Jr.</option>
                   <option value="Sr.">Sr.</option>
                   <option value="III">III</option>
@@ -292,43 +290,267 @@
             <div class="row">
               <div class="col-md-2 mb-3">
                 <label for="countryCode" class="form-label">Country Code</label>
-                <input type="text" class="form-control" id="countryCode" name="countryCode">
+                <!-- <input type="text" class="form-control" id="countryCode" name="countryCode"> -->
+                <select name="countryCode" id="countryCode" class="form-select" required>
+                  <option disabled selected>Country Code</option>
+                  <option value="+93">Afghanistan (+93)</option>
+                  <option value="+355">Albania (+355)</option>
+                  <option value="+213">Algeria (+213)</option>
+                  <option value="+376">Andorra (+376)</option>
+                  <option value="+244">Angola (+244)</option>
+                  <option value="+1-268">Antigua and Barbuda (+1-268)</option>
+                  <option value="+54">Argentina (+54)</option>
+                  <option value="+374">Armenia (+374)</option>
+                  <option value="+61">Australia (+61)</option>
+                  <option value="+43">Austria (+43)</option>
+                  <option value="+994">Azerbaijan (+994)</option>
+                  <option value="+1-242">Bahamas (+1-242)</option>
+                  <option value="+973">Bahrain (+973)</option>
+                  <option value="+880">Bangladesh (+880)</option>
+                  <option value="+1-246">Barbados (+1-246)</option>
+                  <option value="+375">Belarus (+375)</option>
+                  <option value="+32">Belgium (+32)</option>
+                  <option value="+501">Belize (+501)</option>
+                  <option value="+229">Benin (+229)</option>
+                  <option value="+975">Bhutan (+975)</option>
+                  <option value="+591">Bolivia (+591)</option>
+                  <option value="+387">Bosnia and Herzegovina (+387)</option>
+                  <option value="+267">Botswana (+267)</option>
+                  <option value="+55">Brazil (+55)</option>
+                  <option value="+673">Brunei (+673)</option>
+                  <option value="+359">Bulgaria (+359)</option>
+                  <option value="+226">Burkina Faso (+226)</option>
+                  <option value="+257">Burundi (+257)</option>
+                  <option value="+238">Cabo Verde (+238)</option>
+                  <option value="+855">Cambodia (+855)</option>
+                  <option value="+237">Cameroon (+237)</option>
+                  <option value="+1">Canada (+1)</option>
+                  <option value="+236">Central African Republic (+236)</option>
+                  <option value="+235">Chad (+235)</option>
+                  <option value="+56">Chile (+56)</option>
+                  <option value="+86">China (+86)</option>
+                  <option value="+57">Colombia (+57)</option>
+                  <option value="+269">Comoros (+269)</option>
+                  <option value="+243">Congo, Democratic Republic of the (+243)</option>
+                  <option value="+242">Congo, Republic of the (+242)</option>
+                  <option value="+506">Costa Rica (+506)</option>
+                  <option value="+385">Croatia (+385)</option>
+                  <option value="+53">Cuba (+53)</option>
+                  <option value="+357">Cyprus (+357)</option>
+                  <option value="+420">Czech Republic (+420)</option>
+                  <option value="+45">🇩🇰 Denmark (+45)</option>
+                  <option value="+253">🇩🇯 Djibouti (+253)</option>
+                  <option value="+1-767">🇩🇲 Dominica (+1-767)</option>
+                  <option value="+1-809">🇩🇴 Dominican Republic (+1-809)</option>
+                  <option value="+593">Ecuador (+593)</option>
+                  <option value="+20">Egypt (+20)</option>
+                  <option value="+503">El Salvador (+503)</option>
+                  <option value="+240">Equatorial Guinea (+240)</option>
+                  <option value="+291">Eritrea (+291)</option>
+                  <option value="+372">Estonia (+372)</option>
+                  <option value="+268">Eswatini (+268)</option>
+                  <option value="+251">Ethiopia (+251)</option>
+                  <option value="+679">Fiji (+679)</option>
+                  <option value="+358">Finland (+358)</option>
+                  <option value="+33">France (+33)</option>
+                  <option value="+241">Gabon (+241)</option>
+                  <option value="+220">Gambia (+220)</option>
+                  <option value="+995">Georgia (+995)</option>
+                  <option value="+49">Germany (+49)</option>
+                  <option value="+233">Ghana (+233)</option>
+                  <option value="+30">Greece (+30)</option>
+                  <option value="+1-473">Grenada (+1-473)</option>
+                  <option value="+502">Guatemala (+502)</option>
+                  <option value="+224">Guinea (+224)</option>
+                  <option value="+245">Guinea-Bissau (+245)</option>
+                  <option value="+592">Guyana (+592)</option>
+                  <option value="+509">Haiti (+509)</option>
+                  <option value="+504">Honduras (+504)</option>
+                  <option value="+36">Hungary (+36)</option>
+                  <option value="+354">Iceland (+354)</option>
+                  <option value="+91">India (+91)</option>
+                  <option value="+62">Indonesia (+62)</option>
+                  <option value="+98">Iran (+98)</option>
+                  <option value="+964">Iraq (+964)</option>
+                  <option value="+353">Ireland (+353)</option>
+                  <option value="+972">Israel (+972)</option>
+                  <option value="+39">Italy (+39)</option>
+                  <option value="+225">Ivory Coast (+225)</option>
+                  <option value="+81">Japan (+81)</option>
+                  <option value="+962">Jordan (+962)</option>
+                  <option value="+7">Kazakhstan (+7)</option>
+                  <option value="+254">Kenya (+254)</option>
+                  <option value="+686">Kiribati (+686)</option>
+                  <option value="+965">Kuwait (+965)</option>
+                  <option value="+996">Kyrgyzstan (+996)</option>
+                  <option value="+856">Laos (+856)</option>
+                  <option value="+371">Latvia (+371)</option>
+                  <option value="+961">Lebanon (+961)</option>
+                  <option value="+266">Lesotho (+266)</option>
+                  <option value="+231">Liberia (+231)</option>
+                  <option value="+218">Libya (+218)</option>
+                  <option value="+423">Liechtenstein (+423)</option>
+                  <option value="+370">Lithuania (+370)</option>
+                  <option value="+352">Luxembourg (+352)</option>
+                  <option value="+261">Madagascar (+261)</option>
+                  <option value="+265">Malawi (+265)</option>
+                  <option value="+60">Malaysia (+60)</option>
+                  <option value="+960">Maldives (+960)</option>
+                  <option value="+223">Mali (+223)</option>
+                  <option value="+356">Malta (+356)</option>
+                  <option value="+692">Marshall Islands (+692)</option>
+                  <option value="+596">Martinique (+596)</option>
+                  <option value="+222">Morocco (+222)</option>
+                  <option value="+258">Mozambique (+258)</option>
+                  <option value="+95">Myanmar (+95)</option>
+                  <option value="+264">Namibia (+264)</option>
+                  <option value="+674">Nauru (+674)</option>
+                  <option value="+977">Nepal (+977)</option>
+                  <option value="+31">Netherlands (+31)</option>
+                  <option value="+599">Netherlands Antilles (+599)</option>
+                  <option value="+64">New Zealand (+64)</option>
+                  <option value="+505">Nicaragua (+505)</option>
+                  <option value="+227">Niger (+227)</option>
+                  <option value="+234">Nigeria (+234)</option>
+                  <option value="+683">Niue (+683)</option>
+                  <option value="+672">Norfolk Island (+672)</option>
+                  <option value="+850">North Korea (+850)</option>
+                  <option value="+1-670">Northern Mariana Islands (+1-670)</option>
+                  <option value="+47">Norway (+47)</option>
+                  <option value="+968">Oman (+968)</option>
+                  <option value="+92">Pakistan (+92)</option>
+                  <option value="+680">Palau (+680)</option>
+                  <option value="+507">Panama (+507)</option>
+                  <option value="+675">Papua New Guinea (+675)</option>
+                  <option value="+595">Paraguay (+595)</option>
+                  <option value="+51">Peru (+51)</option>
+                  <option value="+63">Philippines (+63)</option>
+                  <option value="+48">Poland (+48)</option>
+                  <option value="+351">Portugal (+351)</option>
+                  <option value="+974">Qatar (+974)</option>
+                  <option value="+40">Romania (+40)</option>
+                  <option value="+7">Russia (+7)</option>
+                  <option value="+250">Rwanda (+250)</option>
+                  <option value="+508">Saint Barthélemy (+508)</option>
+                  <option value="+1-869">Saint Kitts and Nevis (+1-869)</option>
+                  <option value="+1-758">Saint Lucia (+1-758)</option>
+                  <option value="+590">Saint Martin (+590)</option>
+                  <option value="+1-345">Cayman Islands (+1-345)</option>
+                  <option value="+239">São Tomé and Príncipe (+239)</option>
+                  <option value="+966">Saudi Arabia (+966)</option>
+                  <option value="+221">Senegal (+221)</option>
+                  <option value="+381">Serbia (+381)</option>
+                  <option value="+248">Seychelles (+248)</option>
+                  <option value="+232">Sierra Leone (+232)</option>
+                  <option value="+65">Singapore (+65)</option>
+                  <option value="+421">Slovakia (+421)</option>
+                  <option value="+386">Slovenia (+386)</option>
+                  <option value="+677">Solomon Islands (+677)</option>
+                  <option value="+252">Somalia (+252)</option>
+                  <option value="+27">South Africa (+27)</option>
+                  <option value="+82">South Korea (+82)</option>
+                  <option value="+211">South Sudan (+211)</option>
+                  <option value="+34">Spain (+34)</option>
+                  <option value="+94">Sri Lanka (+94)</option>
+                  <option value="+249">Sudan (+249)</option>
+                  <option value="+597">Suriname (+597)</option>
+                  <option value="+268">Swaziland (+268)</option>
+                  <option value="+46">Sweden (+46)</option>
+                  <option value="+41">Switzerland (+41)</option>
+                  <option value="+963">Syria (+963)</option>
+                  <option value="+886">Taiwan (+886)</option>
+                  <option value="+992">Tajikistan (+992)</option>
+                  <option value="+255">Tanzania (+255)</option>
+                  <option value="+66">Thailand (+66)</option>
+                  <option value="+670">Timor-Leste (+670)</option>
+                  <option value="+228">Togo (+228)</option>
+                  <option value="+676">Tonga (+676)</option>
+                  <option value="+1-868">Trinidad and Tobago (+1-868)</option>
+                  <option value="+216">Tunisia (+216)</option>
+                  <option value="+90">Turkey (+90)</option>
+                  <option value="+993">Turkmenistan (+993)</option>
+                  <option value="+1-649">Turks and Caicos Islands (+1-649)</option>
+                  <option value="+688">Vanuatu (+688)</option>
+                  <option value="+39">Vatican City (+39)</option>
+                  <option value="+58">Venezuela (+58)</option>
+                  <option value="+84">Vietnam (+84)</option>
+                  <option value="+681">Wallis and Futuna (+681)</option>
+                  <option value="+967">Yemen (+967)</option>
+                  <option value="+260">Zambia (+260)</option>
+                  <option value="+263">Zimbabwe (+263)</option>
+                </select>
               </div>
               <div class="col-md-4 mb-3">
                 <label for="contactPhone" class="form-label">Contact Phone</label>
-                <input type="text" class="form-control" id="contactPhone" name="contactNo" required>
+                <input type="tel" class="form-control" id="contactNo" name="contactNo" placeholder="Contact Number" required>
+                <!-- <input type="text" class="form-control" id="contactPhone" name="contactNo" required> -->
               </div>
               <div class="col-md-6 mb-3">
                 <label for="contactEmail" class="form-label">Contact Email</label>
-                <input type="email" class="form-control" id="contactEmail" name="email" required>
+                <input type="email" class="form-control" id="email" name="email" required>
               </div>
             </div>
 
             <h6 class="fw-bold my-2">Booking Information:</h6>
 
             <div class="row">
-              <div class="col-md-2 mb-2">
-                <label for="totalPax" class="form-label">Total Pax</label>
-                <input type="number" class="form-control" id="totalPax" name="pax" required>
-              </div>
-              <div class="col-md-5 mb-3">
-                <label for="flightDetails" class="form-label">Flight Details</label>
-                <input type="text" class="form-control" id="flightDetails" name="flightDetails" required>
-              </div>
-              <div class="col-md-5 mb-3">
+              <div class="col-md-6 mb-2">
                 <label for="package" class="form-label">Package</label>
-                <select class="form-control" id="package" name="package">
-                  <option value="Summer">Summer</option>
-                  <option value="Autumn">Autumn</option>
-                  <option value="Winter">Winter</option>
-                  <option value="Spring">Spring</option>
-                  <option value="Cherry Blossom">Cherry Blossom</option>
+                <select class="form-control" id="packageId" name="packageId" required>
+                  <option selected disabled>Select Package</option>
+                  <?php
+                    $sql1 = mysqli_query($conn, "SELECT DISTINCT packageId, packageName FROM package ORDER BY packageName ASC");
+                    while($res1 = mysqli_fetch_array($sql1)) 
+                    {
+                      echo "<option value='{$res1['packageId']}'>{$res1['packageName']}</option>";
+                    }
+                  ?>
                 </select>
+              </div>
+              <div class="col-md-6 mb-2">
+                <label for="totalPax" class="form-label">Total Pax</label>
+                <input type="number" class="form-control" id="pax" name="pax" required>
               </div>
             </div>
 
             <div class="row">
               <div class="col-md-6 mb-3">
+                <label for="origin" class="form-label">Origin</label>
+                <select class="form-control" id="origin" name="origin" required>
+                  <?php
+                    $sql1 = mysqli_query($conn, "SELECT DISTINCT origin FROM flight ORDER BY origin ASC");
+                    while($res1 = mysqli_fetch_array($sql1)) 
+                    {
+                      echo "<option value='{$res1['origin']}'>{$res1['origin']}</option>";
+                    }
+                  ?>
+                </select>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                    <div class="form-group mb-6">
+                      <label for="flightDate">Flight Date <span class="text-danger fw-bold">*</span></label>
+                      <select class="form-select mt-2 fs-6" id="flightDate" name="flightDate" required>
+                      <?php
+                        $sql1 = mysqli_query($conn, "SELECT flightId, DATE_FORMAT(flightDepartureDate, '%M %d, %Y') AS flightDate, flightPrice
+                                              FROM flight ORDER BY flightDate ASC");
+                        while($res1 = mysqli_fetch_array($sql1)) 
+                        {
+                          $formattedPrice = number_format($res1['flightPrice'], 2);
+                          echo '<option value="' . $res1['flightId'] . '">' . $res1['flightDate'] . '&nbsp;&nbsp;&nbsp;&nbsp; || &nbsp;&nbsp;&nbsp;&nbsp;'. 'Package Price: ₱ '. $formattedPrice . '</option>';
+                        }
+                      ?>
+                      </select>
+                      <span id="flightDateError" class="text-danger"></span> <!-- Error message for outbound flight -->
+                    </div>
+                  </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <input type="" id="flightId" name="flightId" value="" placeholder="Flight Id Input">
+                <input type="" id="packagePrice" name="packagePrice" placeholder="Package Price">
+                <input type="" name="flightPrice" placeholder="Flight Price">
                 <label for="totalPrice" class="form-label">Total Price</label>
                 <input type="text" class="form-control" id="totalPrice" name="totalPrice" readonly>
               </div>
@@ -345,15 +567,15 @@
 
   <?php require "../Agent Section/includes/scripts.php"; ?>
 
-  <!-- Add Guest Function -->
+  <!-- Add Guest Info, and Show Guest Info Function -->
   <script>
-    function fetchTransaction(transactionNumber) 
+    function addGuestInfo(transactionNumber) 
     {
       console.log("Transaction Number: ", transactionNumber); // Debug line
       // Use AJAX to send the transaction number to the server
       $.ajax(
       {
-        url: '../Agent Section/functions/addGuests.php', // The PHP file that will handle the session setting
+        url: '../Agent Section/functions/fetchTransactNo.php', // The PHP file that will handle the session setting
         type: 'POST',
         data: { transaction_number: transactionNumber },
         success: function(response) 
@@ -361,6 +583,28 @@
           console.log("Response: ", response); // Debug line
           // Redirect to the next page after setting the session
           window.location.href = '../Agent Section/agent-addGuest.php'; // Redirect to your next page
+        },
+        error: function(xhr, status, error) 
+        {
+          console.error("AJAX Error: " + status + " " + error); // Enhanced error logging
+        }
+      });
+    }
+
+    function showGuestInfo(transactionNumber) 
+    {
+      console.log("Transaction Number: ", transactionNumber); // Debug line
+      // Use AJAX to send the transaction number to the server
+      $.ajax(
+      {
+        url: '../Agent Section/functions/fetchTransactNo.php', // The PHP file that will handle the session setting
+        type: 'POST',
+        data: { transaction_number: transactionNumber },
+        success: function(response) 
+        {
+          console.log("Response: ", response); // Debug line
+          // Redirect to the next page after setting the session
+          window.location.href = '../Agent Section/agent-showGuest.php'; // Redirect to your next page
         },
         error: function(xhr, status, error) 
         {
@@ -390,6 +634,51 @@
         fetchBookingDetails(transactionId);
       });
     });
+    
+    $(document).ready(function ()
+    {
+      // Fetching Origin once Package was Selected
+      $('#packageName').on('change', function () 
+      {
+        var packageId = $(this).val();
+        var selectedPackageName = $("#packageName option:selected").text();
+        $('#origin').html('<option selected disabled>Select Origin</option>'); // Clear origin field
+        $('#flightDate').html('<option selected disabled>Select Flight Date</option>'); // Clear Flight Date field
+        $('#flightId').val(''); // Clear Flight Id field
+        // $('#flightPrice').text('0.00'); // Clear Flight Price field
+
+        if (packageId) 
+        {
+          $.ajax(
+          {
+            url: '../Agent Section/functions/fetchOrigin.php',
+            type: 'POST',
+            data: { packageId: packageId },
+            success: function (response) 
+            {
+              // Parse the JSON response
+              var data = JSON.parse(response);
+
+              // Update the origin dropdown
+              $('#origin').html(data.originOptions); // Use originOptions from the response
+
+              // Update the package price input
+              $('#packagePrice').val(data.packagePrice); // Set the package price value
+
+              // console.log(data); // Optional: For debugging
+            },
+            error: function (xhr, status, error) 
+            {
+              console.error('Error fetching origins:', error); // Log the error to console
+            }
+          });
+        } 
+        else 
+        {
+          $('#origin').html('<option selected disabled>Select Origin</option>');
+        }
+      });
+    });
 
     function fetchBookingDetails(transactionId) 
     {
@@ -404,25 +693,30 @@
         body: JSON.stringify({ transaction_id: transactionId }),
       })
 
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            // Populate fields with the fetched data
-            document.getElementById('contactName').value = data.booking.fName;
-            document.getElementById('contactIName').value = data.booking.lName;
-            document.getElementById('contactMName').value = data.booking.mName;
-            document.getElementById('contactSuffix').value = data.booking.suffix;
-            document.getElementById('countryCode').value = data.booking.countryCode;
-            document.getElementById('contactPhone').value = data.booking.contactNo;
-            document.getElementById('contactEmail').value = data.booking.email;
-            document.getElementById('totalPax').value = data.booking.pax;
+      .then(response => response.json())
+      .then(data => 
+      {
+        if (data.success) 
+        {
+          // Populate fields with the fetched data
+          document.getElementById('fName').value = data.booking.fName;
+          document.getElementById('lName').value = data.booking.lName;
+          document.getElementById('mName').value = data.booking.mName;
+          document.getElementById('suffix').value = data.booking.suffix;
+          document.getElementById('countryCode').value = data.booking.countryCode;
+          document.getElementById('contactNo').value = data.booking.contactNo;
+          document.getElementById('email').value = data.booking.email;
+          document.getElementById('pax').value = data.booking.pax;
 
-            document.getElementById('flightDetails').value = "";
-            document.getElementById('totalPrice').value = data.booking.totalPrice;
-
-            document.getElementById('package').value = "";
-        } else {
-            console.error('Error fetching booking details:', data.message);
+          document.getElementById('packageId').value = data.booking.packageId;
+          document.getElementById('origin').value = data.booking.origin;
+          document.getElementById('flightId').value = data.booking.flightId;
+          document.getElementById('flightDate').value = data.booking.flightId;
+          document.getElementById('totalPrice').value = data.booking.totalPrice;
+        } 
+        else 
+        {
+          console.error('Error fetching booking details:', data.message);
         }
       })
       .catch(error => 
