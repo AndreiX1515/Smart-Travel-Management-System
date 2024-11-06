@@ -14,8 +14,7 @@ body {
   flex-direction: column;
   gap: 10px;
   background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  
   box-sizing: border-box;
  }
  
@@ -103,6 +102,9 @@ body {
  
  /* Table container styling */
  .table-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   flex: 1;
   border: 1px solid #ced4da;
   padding: 20px;
@@ -253,7 +255,7 @@ body {
   align-items: center;
   padding: 10px;
   border-top: 1px solid #ddd;
-  margin-top: 15px;
+  margin-top: auto;
  }
  
  .total-records {

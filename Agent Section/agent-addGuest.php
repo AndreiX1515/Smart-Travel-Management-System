@@ -43,11 +43,9 @@
       unset($_SESSION['status']);
       endif;
     ?>
-    <div class="content-wrapper">
-      <h6>Transaction No: <?php echo $transactionNumber ?></h6>
 
-      <!-- PHP to fetch the pax count -->
-      <?php
+    <!-- PHP to fetch the pax count -->
+    <?php
         // Assuming you have a MySQLi connection instance $conn
         $stmt = $conn->prepare("SELECT * FROM booking WHERE transactNo = ?");
         $stmt->bind_param("s", $transactionNumber);
@@ -64,25 +62,33 @@
         $stmt->close();
       ?>
 
-      <h6>Total Pax: <?php echo $_SESSION['pax']; ?></h6>
 
+    <div class="content-wrapper bg-transparent px-5 pt-2">
+       <div class="d-flex flex-row gap-5">
+         <h6 class="fw-bold">Transaction No: <span class="fw-normal"><?php echo $transactionNumber ?></span></h6>
+         <h6 class="fw-bold">Total Pax: <span class="fw-normal"><?php echo $_SESSION['pax']; ?></span></h6>
+      </div>
+     
       <!-- Dynamically generate Guest Information Cards based on pax -->
       <form action="../Agent Section/functions/agent-addGuest-code.php" method="POST">
         <?php for ($i = 1; $i <= $_SESSION['pax']; $i++): ?>
-          <div class="card mt-4 guest-form shadow-sm">
-            <div class="card-header bg-secondary text-white">
-              <h4 class="mb-3 font-weight-bold">Guest Information <?php echo $i; ?></h4>
+          <div class="card guest-form shadow-sm mb-3">
+            <div class="card-header bg-secondary text-white d-flex flex-row justify-content-between align-items-center">
+              <h5 class="font-weight-bold mt-1">Guest Information <?php echo $i; ?></h5>
               <button class="btn btn-sm btn-outline-light float-end" type="button" data-bs-toggle="collapse" data-bs-target="#cardBodyContent<?php echo $i; ?>" aria-expanded="false" aria-controls="cardBodyContent<?php echo $i; ?>">
                 Toggle
               </button>
             </div>
+
             <div id="cardBodyContent<?php echo $i; ?>" class="collapse show">
-              <div class="card-body">
+              <div class="card-body px-5">
                 <input type="hidden" name="transactNo" value=<?php echo $transactionNumber; ?>>
                 <!-- Guest Personal Information -->
+                
                 <div class="header-container d-flex flex-row w-100 mb-3 ">
                   <h5 class="card-title bg-primary text-white p-3 w-100">Personal Information</h5>
                 </div>
+
                 <!--Guest Name Input Fields-->
                 <div class="row mb-3">
                   <div class="col-md-3">
@@ -1047,8 +1053,10 @@
               </div>
             </div>
           </div>
+
         <?php endfor; ?>
-        <div class="card-footer">
+
+        <div class="card-footer d-flex justify-content-end mb-5 my-3">
           <button type="submit" class="btn btn-primary" name="addGuestInformation">Add Guest Information</button>
         </div>
       </form>   
