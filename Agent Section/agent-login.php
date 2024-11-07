@@ -73,14 +73,14 @@
 
     <script>
     document.getElementById('loginForm').addEventListener('submit', function(event) {
-    event.preventDefault(); // Prevent default form submission
+      event.preventDefault(); // Prevent default form submission
 
-    // Clear previous messages
-    document.getElementById('message-login').innerHTML = '';
+      // Clear previous messages
+      document.getElementById('message-login').innerHTML = '';
 
-    // Create FormData object to gather the form data
-    const formData = new FormData(this);
-    formData.append('login', '1'); // Add login field to indicate form submission
+      // Create FormData object to gather the form data
+      const formData = new FormData(this);
+      formData.append('login', '1'); // Add login field to indicate form submission
 
     // Perform AJAX request
     fetch('../Agent Section/functions/agentLogin-code.php', {

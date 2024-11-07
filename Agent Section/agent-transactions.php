@@ -613,14 +613,36 @@
             </div>
 
             <div class="row">
-              <div class="col-md-6 mb-3">
+              <div class="col-md-2 mb-3">
                 <input type="" id="flightId" name="flightId" value="" placeholder="Flight Id Input">
+              </div>
+
+              <div class="col-md-2 mb-3">
+              
                 <input type="" id="packagePrice" name="packagePrice" placeholder="Package Price">
+              </div>
+
+              <div class="col-md-2 mb-3">
                 <input type="" name="flightPrice" placeholder="Flight Price">
+
+              </div>
+
+             
+            </div>
+
+            <div class="row">
+              
+
+              <div class="col-md-3 mb-3">
                 <label for="totalPrice" class="form-label">Total Price</label>
                 <input type="text" class="form-control" id="totalPrice" name="totalPrice" readonly>
               </div>
             </div>
+
+
+
+
+
           </form>
         </div>
         <div class="modal-footer border-0">

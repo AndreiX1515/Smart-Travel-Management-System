@@ -1,0 +1,90 @@
+<?php
+session_start(); // Start the session at the beginning
+include "../../conn.php"; // Include your database connection
+
+// PHPMailer library for sending email
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
+require '../../vendor/autoload.php'; // Make sure to include PHPMailer autoloader
+
+$response = []; // Initialize response array to store messages
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Get the form field from the POST request
+    $email = isset($_POST['email']) ? $_POST['email'] : ''; // Email address
+
+    // Check if email is empty or invalid
+    if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $response['success'] = false;
+        $response['message'] = 'Invalid email address.';
+        echo json_encode($response);
+        exit;
+    }
+
+    // Store the email in session
+    $_SESSION['email'] = $email;
+
+    // Function to generate a verification code
+    function generateVerificationCode() {
+        return substr(number_format(time() * rand(), 0, '', ''), 0, 6); // 6-digit OTP
+    }
+
+    // Check if OTP is already set or not
+    if (empty($_SESSION['otp'])) {
+        // Generate new OTP if none exists
+        $verificationCode = generateVerificationCode();
+        $_SESSION['otp'] = $verificationCode;
+    } else {
+        // Clear the existing OTP and generate a new one
+        unset($_SESSION['otp']);
+        $verificationCode = generateVerificationCode();
+        $_SESSION['otp'] = $verificationCode;
+    }
+
+    // Initialize PHPMailer to send OTP via email
+    $mail = new PHPMailer(true);
+    try {
+        // SMTP configuration
+        $mail->SMTPDebug = 0; // Set to 2 for detailed debug output
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com'; // Use your email host
+        $mail->SMTPAuth = true;
+        $mail->Username = 'no.repyltesting@gmail.com'; // Your SMTP username (email)
+        $mail->Password = 'ufrf wclh fuqy zawp'; // Your SMTP password
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = 587;
+
+        // Set sender and recipient
+        $mail->setFrom('no.repyltesting@gmail.com', 'Smart Travel');
+        $mail->addAddress($email, "Recipient");
+
+        // Set email content
+        $mail->isHTML(true);
+        $mail->Subject = 'Agent One-Time-Password Verification for Password Change';
+        $mail->Body = '<div style="font-family: Arial, sans-serif; padding: 20px 0px 10px 0px; background-color: #fff; line-height: 1.6; text-align: left;">
+            <img src="https://i.postimg.cc/7hRTGpt1/SMART-LOGO-2-2.png" alt="Smart Travel Logo" style="width: 260px; height: 45px; margin-bottom: 10px;">
+            <p style="font-size: 1em;">Hi,</p>
+            <p>Here is your OTP needed for password change:</p>
+            <h2 style="padding: 10px; background-color: #333; color: #fff; border-radius: 5px; letter-spacing: 5px; width: 90px;">'.$verificationCode.'</h2>
+            <p>This OTP is valid for 10 minutes. Do not share it with anyone.</p>
+            <p style="font-size: 1.2em;">Thank you, <br/> Smart Travel </p>
+            <hr style="border-top: 1px solid #eee;"/>
+            <p style="font-size: 0.9em; color: #999;">If this is not for you, please ignore this email or contact support.</p>
+        </div>';
+
+
+        // Send the email
+        $mail->send();
+        $response['success'] = true;
+        $response['message'] = 'OTP has been sent to your email address.';
+    } catch (Exception $e) {
+        $response['success'] = false;
+        $response['message'] = "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+    }
+
+    // Return the response as JSON
+    echo json_encode($response);
+}
+?>
