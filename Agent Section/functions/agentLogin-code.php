@@ -42,7 +42,7 @@ if (isset($_POST['login'])) {
                     $_SESSION['fName'] = $agent['fName'];
                     $_SESSION['mName'] = $agent['mName'];
                     $_SESSION['lName'] = $agent['lName'];
-                    $_SESSION['branch'] = $agent['branch'];
+                    $_SESSION['branchId'] = $agent['branchId'];
                 }
                 
                 // Prepare success response
