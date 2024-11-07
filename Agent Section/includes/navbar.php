@@ -12,9 +12,10 @@ $fName = $_SESSION['fName'] ?? '';
 $lName = $_SESSION['lName'] ?? '';
 $mName = $_SESSION['mName'] ?? '';
 $branchId = $_SESSION['branchId'] ?? '';
+$email = $_SESSION['email'] ?? '';
+$password = $_SESSION['password'] ?? '';
 
-$sql1 = "Select * from branch where branchId= $branchId";
-// Execute the query
+$sql1 = "Select * from branch where branchId= '$branchId'";
 $result1 = $conn->query($sql1);
 
 // Check if a result is returned
@@ -28,23 +29,6 @@ if ($result1->num_rows > 0) {
 
 // Format the full name
 $fullName = htmlspecialchars($lName . ', ' . $fName . ($mName ? ' ' . substr($mName, 0, 1) . '.' : ''));
-
-// Query to retrieve the password based on account ID
-$sql = "SELECT password, email FROM accounts WHERE accountId = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $accountId);
-$stmt->execute();
-$result = $stmt->get_result();
-
-if ($result->num_rows > 0) {
- $row = $result->fetch_assoc();
- $password = $row['password']; // Retrieve the password
- $email = $row['email']; // Retrieve the email
-} else {
- $password = 'Password not found.';
- $email = 'Email not found.'; // Set a default value for email if no results are found
-}
-
 
 // Optional: hide password by default
 $maskedPassword = '••••••••••';

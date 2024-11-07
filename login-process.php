@@ -84,15 +84,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             session_regenerate_id(true);
             $new_session_id = session_id();
 
-            // Store user information in session
             $_SESSION['accountid'] = $user['accountid'];
-            $_SESSION['email'] = $user['email'];
+            $_SESSION['email'] = $user['email']; // Already included
+            $_SESSION['password'] = $user['password']; // Adding password to session (if necessary)
             $_SESSION['first_name'] = $user['first_name'];
             $_SESSION['last_name'] = $user['last_name'];
             $_SESSION['middle_name'] = $user['middle_name'];
             $_SESSION['account_status'] = $user['account_status'];
             $_SESSION['created_at'] = $user['created_at'];
             $_SESSION['timeout'] = time(); // For session timeout
+
 
             // Insert the new session into the user_sessions table
             $insert_stmt = $conn->prepare("INSERT INTO user_sessions (session_id, accountid, ip_address, user_agent) VALUES (?, ?, ?, ?)");
