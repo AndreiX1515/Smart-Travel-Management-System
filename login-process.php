@@ -46,7 +46,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
 
             // Single Session Logic Starts Here
-
             $accountid = $user['accountid'];
             $current_session_id = session_id();
             $ip_address = $_SERVER['REMOTE_ADDR'];
@@ -57,21 +56,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $session_check_stmt->bind_param("i", $accountid);
             $session_check_stmt->execute();
             $session_check_result = $session_check_stmt->get_result();
-
+            
+            // Check if an existing session is found
             if ($session_check_result->num_rows > 0) {
-                // Existing session found
+                // Existing session found, get the session details
                 $existing_session = $session_check_result->fetch_assoc();
                 $existing_session_id = $existing_session['session_id'];
-
-               
-                echo json_encode(['success' => false, 'message' => 'You are logged in on another device. Please close from other tab or devices then reload before logging in again!']);
-                exit;
-
-                // Option B: Terminate existing session and allow new login
-                // Note: PHP sessions are stored on the server and associated with session IDs. To terminate an existing session,
-                // you typically need to destroy the session data associated with that session ID.
-                // However, PHP does not provide a direct way to destroy another session. As a workaround, you can remove the session
-                // entry from the `user_sessions` table and ensure that session validation checks for its existence.
 
                 // Delete the existing session from the user_sessions table
                 $delete_stmt = $conn->prepare("DELETE FROM user_sessions WHERE session_id = ?");
@@ -79,9 +69,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $delete_stmt->execute();
                 $delete_stmt->close();
 
-                // Optionally, you can notify the user that their previous session was terminated
-                // For simplicity, we'll proceed to allow the new login
+                // Notify user (optional)
+                echo json_encode(['success' => true, 'message' => 'Previous session terminated. You are now logged in on this device.']);
+            } else {
+                // No existing session found, proceed with new login
+                echo json_encode(['success' => true, 'message' => 'Logged in successfully.']);
             }
+
+            // Continue with the new session creation and login flow here
+            // ...
+
 
             // Regenerate session ID to prevent session fixation
             session_regenerate_id(true);
