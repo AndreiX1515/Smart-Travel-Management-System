@@ -161,6 +161,7 @@
                 while ($row = $res1->fetch_assoc()) 
                 {
                   $transactNo = $row['T.N'];
+                  $pax = $row['TOTAL PAX'];
                   echo "<tr>
                           <td>{$transactNo}</td>
                           <td>{$row['CONTACT NAME']}</td>
@@ -218,6 +219,10 @@
                                     <option value='Seat Selection'>Seat Selection</option>
                                     <option value='Visa'>Visa</option>
                                   </select>
+                                </div>
+                                <div class='mb-3'>
+                                  <label class='form-label'>Pax</label>
+                                  <input type='number' class='form-control' name='pax' placeholder='Enter pax' min='1' max='{$pax}' required></input>
                                 </div>
                                 <div class='mb-3'>
                                   <label class='form-label'>Details</label>
