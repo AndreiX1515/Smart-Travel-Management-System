@@ -392,18 +392,20 @@
               <tbody>
                 <?php
                   $sql1 = "SELECT 
-                              r.transactNo AS `T.N`,
-                              r.concern AS `Request`,
-                              r.requestDate AS `Date`
-                          FROM 
-                              request r
-                          JOIN 
-                              booking b ON r.transactNo = b.transactNo
-                          WHERE 
-                              b.agentId = '$agentId'
-                          ORDER BY 
-                              r.requestDate DESC";  // Order by request date
-
+                                r.transactNo AS `T.N`,
+                                c.concernTitle AS `Request`,
+                                DATE_FORMAT(r.requestDate, '%M-%d-%Y %h:%i:%s %p') AS `Date`
+                            FROM 
+                                request r
+                            JOIN 
+                                booking b ON r.transactNo = b.transactNo
+                            JOIN 
+                                concern c ON r.concernId = c.concernId
+                            WHERE 
+                                b.agentId = '$agentId'
+                            ORDER BY 
+                                r.requestDate DESC";  // Order by request date
+      
                   $res1 = $conn->query($sql1);
                     
                   if ($res1->num_rows > 0) 
@@ -445,18 +447,21 @@
              <tbody>
                <?php
                  $sql2 = "SELECT 
-                             r.transactNo AS `Transaction No`,
-                             r.concern AS `Request`,
-                             r.requestDate AS `Date`
-                         FROM 
-                             request r
-                         JOIN 
-                             booking b ON r.transactNo = b.transactNo
-                         WHERE 
-                             b.agentId = '1' AND b.status = 'completed' -- Adjust conditions as needed
-                         ORDER BY 
-                             r.requestDate DESC";
-
+                            p.transactNo AS `Transaction No`,
+                            p.paymentTitle AS `Payment Title`,
+                            CONCAT('$', FORMAT(p.amount, 2)) AS `Amount`,  -- Format the amount as a currency with two decimal places
+                            DATE_FORMAT(p.paymentDate, '%M-%d-%Y %h:%i:%s %p') AS `Date`,  -- Format the date as specified
+                            p.paymentType AS `Payment Type`,
+                            p.paymentStatus AS `Status`
+                          FROM 
+                            payment p
+                          JOIN 
+                            booking b ON p.transactNo = b.transactNo
+                          WHERE 
+                            b.agentId = '$agentId' AND b.status = 'Pending'  -- Adjust conditions as needed
+                          ORDER BY 
+                            p.paymentDate DESC";  // Order by payment date
+     
                  $res2 = $conn->query($sql2);
                  
                  if ($res2->num_rows > 0) {

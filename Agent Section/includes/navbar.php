@@ -11,7 +11,20 @@ $agentId = $_SESSION['agentId'];
 $fName = $_SESSION['fName'] ?? '';
 $lName = $_SESSION['lName'] ?? '';
 $mName = $_SESSION['mName'] ?? '';
-$branch = $_SESSION['branch'] ?? '';
+$branchId = $_SESSION['branchId'] ?? '';
+
+$sql1 = "Select * from branch where branchId= $branchId";
+// Execute the query
+$result1 = $conn->query($sql1);
+
+// Check if a result is returned
+if ($result1->num_rows > 0) {
+    // Fetch the branchName
+    $row = $result1->fetch_assoc();
+    $branchName = $row['branchName'];
+} else {
+    $branchName = "No Branch";
+}
 
 // Format the full name
 $fullName = htmlspecialchars($lName . ', ' . $fName . ($mName ? ' ' . substr($mName, 0, 1) . '.' : ''));
@@ -70,7 +83,7 @@ $current_date = date('D, F d, Y'); // Format: "Tue, January 01, 2024"
                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                        <div class="profile-container ms-2 me-3">
                            <h6 class="mb-1"><?php echo $fullName; ?></h6> 
-                           <span class="m-0">Branch: <?php echo $branch; ?></span>
+                           <span class="m-0">Branch: <?php echo $branchName; ?></span>
                            <!-- <span class="m-0">Agent Id: <?php echo $agentId; ?></span> -->
                        </div>
                        <img src="../assets/images/circle.png" alt="Profile" class="profile-image me-2" width="40px" height="40px">
