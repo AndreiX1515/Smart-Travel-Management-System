@@ -63,6 +63,15 @@ if (isset($_POST['login'])) {
                     $_SESSION['mName'] = $agent['mName'];
                     $_SESSION['lName'] = $agent['lName'];
                     $_SESSION['branchId'] = $agent['branchId'];
+                    $_SESSION['timeout'] = time();
+
+                    $insert_stmt = $conn->prepare("INSERT INTO user_sessions (session_id, accountid, ip_address, user_agent) VALUES (?, ?, ?, ?)");
+                    $insert_stmt->bind_param("siss", $new_session_id, $accountId, $ip_address, $user_agent);
+                    $insert_stmt->execute();
+                    $insert_stmt->close();
+
+                    $response['success'] = true;
+                    
                 }
             } else {
                 $response['success'] = false;
