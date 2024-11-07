@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
   <link rel="stylesheet" href="../Agent Section/assets/css/agent-transaction.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="../Agent Section/assets/css/navbar-sidebar.css?v=<?php echo time(); ?>">
+
 </head>
 
 <body>
@@ -109,16 +110,16 @@
         <table class="product-table">
           <thead>
             <tr>
-              <th>ID</th>
-              <th>Contact Person Name</th>
-              <th>Contact Person Email</th>
-              <th>Contact Person Phone Number</th>
-              <th>Package Name</th>
-              <th>Booking Date</th>
-              <th>Flight Date</th>
-              <th>Total Pax</th>
-              <th>Status</th>
-              <th></th>
+                <th>ID</th>
+                <th>Contact Person Name</th>
+                <th>Contact Person Email</th>
+                <th>Contact Person Phone Number</th>
+                <th>Package Name</th>
+                <th>Booking Date</th>
+                <th>Flight Date</th>
+                <th>Total Pax</th>
+                <th>Status</th>
+                <th></th>
             </tr>
           </thead>
           <tbody>
@@ -160,7 +161,7 @@
                 while ($row = $res1->fetch_assoc()) 
                 {
                   $transactNo = $row['T.N'];
-                  $pax = $row['pax'];
+                  $pax = $row['TOTAL PAX'];
                   echo "<tr>
                           <td>{$transactNo}</td>
                           <td>{$row['CONTACT NAME']}</td>
@@ -177,15 +178,15 @@
                                 <i class='fas fa-ellipsis-v'></i>
                               </button>
                               <ul class='dropdown-menu'>
-                                <li> <a class='dropdown-item' href='#' data-bs-toggle='modal' data-bs-target='#updateBookingModal' data-transaction-id='{$row['T.N']}'>
-                                  Update Booking </a> 
-                                </li>
-                                <li><a class='dropdown-item' href='#' onclick='addGuestInfo(\"{$row['T.N']}\")'>Add Guests Information</a></li>
-                                <li><a class='dropdown-item' href='#' onclick='showGuestInfo(\"{$row['T.N']}\")'>Show Guest Information</a></li>
-                                <li><a class='dropdown-item' href='#' data-bs-toggle='modal' data-bs-target='#requestModal{$transactNo}'>Add Request</a></li>
-                                <li><a class='dropdown-item' href='#' onclick='showRequestHistory(\"{$row['T.N']}\")'>Show Request History</a></li>
-                                <li><a class='dropdown-item' href='#' data-bs-toggle='modal' data-bs-target='#paymentModal{$transactNo}'>Add Payment</a></li>
-                                <li><a class='dropdown-item' href='#' onclick='showPaymentHistory(\"{$row['T.N']}\")'>Show Payment History</a></li>
+                                  <li> <a class='dropdown-item' href='#' data-bs-toggle='modal' data-bs-target='#updateBookingModal' data-transaction-id='{$row['T.N']}'>
+                                    Update Booking </a> 
+                                  </li>
+                                  <li><a class='dropdown-item' href='#' onclick='addGuestInfo(\"{$row['T.N']}\")'>Add Guests Information</a></li>
+                                  <li><a class='dropdown-item' href='#' onclick='showGuestInfo(\"{$row['T.N']}\")'>Show Guest Information</a></li>
+                                  <li><a class='dropdown-item' href='#' data-bs-toggle='modal' data-bs-target='#requestModal{$transactNo}'>Add Request</a></li>
+                                  <li><a class='dropdown-item' href='#' onclick='showRequestHistory(\"{$row['T.N']}\")'>Show Request History</a></li>
+                                  <li><a class='dropdown-item' href='#' data-bs-toggle='modal' data-bs-target='#paymentModal{$transactNo}'>Add Payment</a></li>
+                                  <li><a class='dropdown-item' href='#' onclick='showPaymentHistory(\"{$row['T.N']}\")'>Show Payment History</a></li>
                                 </ul>
                             </div>
                           </td>
