@@ -276,10 +276,20 @@
                                   <input type='number' class='form-control' name='amount' placeholder='Enter payment Amount' required>
                                 </div>
 
-                                <div class='mb-3'>
-                                  <label class='form-label'>Proof of Payment</label>
-                                  <input type='file' class='form-control' name='proof' accept='image/*' placeholder='Enter proof of payment'>
-                                </div>     
+                               <div class='mb-3'>
+                                 <label class='form-label'>Proof of Payment</label>
+                                 <!-- Drag-and-drop area -->
+                                 <div id='dropZone' 
+                                      class='drop-zone border border-primary rounded p-3 text-center'
+                                      ondragover='event.preventDefault();' 
+                                      ondrop='handleDrop(event);'>
+                                   <p>Drag and drop files here or click to select files</p>
+                                   <input type='file' id='fileInput' class='form-control d-none' name='proofs[]' accept='image/*,application/pdf' multiple onchange='handleFiles(this.files)'>
+                                 </div>
+                                 <!-- List of file names -->
+                                 <ul id='fileList' class='list-unstyled mt-2'></ul>
+                               </div>
+
                               </div>
                               <div class='modal-footer'>
                                 <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Close</button>
@@ -298,6 +308,64 @@
             ?>
           </tbody>
         </table>
+
+        <script>
+           const maxFiles = 5;
+           const maxFileSize = 4 * 1024 * 1024; // 4MB
+           let selectedFiles = [];
+
+           // Trigger file input when clicking on the drop zone
+           document.getElementById("dropZone").addEventListener("click", () => {
+             document.getElementById("fileInput").click();
+           });
+
+           // Handle file drop event
+           function handleDrop(event) {
+             event.preventDefault();
+             handleFiles(event.dataTransfer.files);
+           }
+
+           // Function to handle selected files
+           function handleFiles(files) {
+             const fileList = document.getElementById("fileList");
+
+             // Check for maximum file limit
+             if (selectedFiles.length + files.length > maxFiles) {
+               alert(`You can upload a maximum of ${maxFiles} files.`);
+               return;
+             }
+
+             Array.from(files).forEach(file => {
+               // Check for individual file size limit
+               if (file.size > maxFileSize) {
+                 alert(`File ${file.name} exceeds the 4MB limit and won't be added.`);
+               } else {
+                 selectedFiles.push(file);
+
+                 // Display file name in the list
+                 const listItem = document.createElement("li");
+                 listItem.textContent = `${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`;
+                 fileList.appendChild(listItem);
+               }
+             });
+
+             // Update the actual file input with the selected files
+             const dataTransfer = new DataTransfer();
+             selectedFiles.forEach(file => dataTransfer.items.add(file));
+             document.getElementById("fileInput").files = dataTransfer.files;
+           }
+         </script>
+
+         <style>
+           .drop-zone {
+             cursor: pointer;
+             background-color: #f8f9fa;
+             min-height: 100px;
+             display: flex;
+             align-items: center;
+             justify-content: center;
+           }
+         </style>
 
         <div class="table-footer border-0">
           <div class="total-records">Total Records: <?php echo $res1->num_rows; ?></div>

@@ -1,108 +1,92 @@
 <?php
-  session_start();
-  ini_set('display_errors', 1);
-  ini_set('display_startup_errors', 1);
-  error_reporting(E_ALL);
-  require "../../conn.php"; // Move up to the parent directory
+session_start();
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+require "../../conn.php"; // Move up to the parent directory
 
-  if (isset($_POST['payment'])) 
-  {
+if (isset($_POST['payment'])) {
     $transactNo = $_POST['transactNo'];
     $accountId = $_POST['accountId'];
     $paymentTitle = $_POST['paymentTitle'];
     $paymentType = $_POST['paymentType'];
     $amount = $_POST['amount'];
-    $proof = $_POST['proof'];
 
-    // Check if a file was uploaded
-    if (isset($_FILES['proof']) && $_FILES['proof']['error'] == 0) 
-    {
-      // Debugging: Print file upload details
-      echo "<pre>";
-      print_r($_FILES['proof']); // Debugging line
-      echo "</pre>";
+    // Set the timezone (replace 'Asia/Taipei' with your preferred timezone if needed)
+    date_default_timezone_set('Asia/Taipei');
+    $paymentDate = (new DateTime())->format('Y-m-d H:i:s'); // Current date and time
 
-      $fileTmpPath = $_FILES['proof']['tmp_name'];
-      $fileSize = $_FILES['proof']['size'];
-      $fileType = $_FILES['proof']['type'];
-      $fileExtension = strtolower(pathinfo($_FILES['proof']['name'], PATHINFO_EXTENSION));
+    if (isset($_FILES['proofs']) && count($_FILES['proofs']['name']) > 0) {
+        $uploadDir = "../../uploads/{$transactNo}/";
+        $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'pdf'];
+        $maxFileSize = 4 * 1024 * 1024; // 4MB per file
+        $uploadedFiles = []; // Array to store file paths
 
-      // Allowed file extensions (you can modify this list as needed)
-      $allowedExtensions = array('jpg', 'jpeg', 'png', 'gif', 'pdf');
-
-      if (in_array($fileExtension, $allowedExtensions)) 
-      {
-        // Define the directory where the file will be uploaded
-        $uploadFileDir = '../../uploads/';
-        
-        // Create a unique file name using transaction number and current date in mm-dd-yyyy format (no time)
-        $newFileName = $transactNo . '-' . date('m-d-Y_H-i') . '.' . $fileExtension;
-        $destPath = $uploadFileDir . $newFileName; // Updated to use the new file name
-
-        // Move the file to the upload directory
-        if (move_uploaded_file($fileTmpPath, $destPath)) 
-        {
-          // Start a transaction
-          $conn->begin_transaction();
-          // Prepare the SQL statement for insertion into the payment table
-          $sql1 = "INSERT INTO payment (transactNo, accountId, paymentTitle, paymentType, amount, proof, paymentDate, paymentStatus) 
-                    VALUES (?, ?, ?, ?, ?, ?, NOW(), 'Pending')";
-          $stmt1 = $conn->prepare($sql1);
-
-          // Check if the statement was prepared successfully
-          if (!$stmt1) 
-          {
-            $_SESSION['status'] = "Booking SQL preparation failed: " . $conn->error;
-            $conn->rollback();  // Rollback transaction
-            header("Location: ../agent-transactions.php");
-            exit(0);
-          }
-
-          // Bind and execute the payment insertion
-          $stmt1->bind_param('sissis', $transactNo, $accountId, $paymentTitle, $paymentType, $amount, $destPath);
-          
-          if ($stmt1->execute()) 
-          {
-            $conn->commit();
-            $_SESSION['status'] = "Payment uploaded and saved successfully!";
-            header("Location: ../agent-transactions.php");
-            exit(0);
-          } 
-          else 
-          {
-            $_SESSION['status'] = "Database error on payment insert: " . $stmt1->error;
-            $conn->rollback();  // Rollback the transaction if there is an error
-            header("Location: ../agent-transactions.php");
-            exit(0);
-          }
-        } 
-        else 
-        {
-          $_SESSION['status'] = "File upload failed. Please try again.";
-          header("Location: ../agent-transactions.php");
-          exit(0);
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0777, true);
         }
-      } 
-      else 
-      {
-        $_SESSION['status'] = "Invalid file type. Allowed types: " . implode(", ", $allowedExtensions);
+
+        foreach ($_FILES['proofs']['name'] as $key => $fileName) {
+            $fileTmpPath = $_FILES['proofs']['tmp_name'][$key];
+            $fileSize = $_FILES['proofs']['size'][$key];
+            $fileType = $_FILES['proofs']['type'][$key];
+            $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+
+            if (in_array($fileExtension, $allowedExtensions) && $fileSize <= $maxFileSize && $_FILES['proofs']['error'][$key] === UPLOAD_ERR_OK) {
+                $newFileName = $transactNo . '-' . date('m-d-Y_H-i') . '-' . uniqid() . '.' . $fileExtension;
+                $destPath = $uploadDir . $newFileName;
+
+                if (move_uploaded_file($fileTmpPath, $destPath)) {
+                    $uploadedFiles[] = $destPath;
+                } else {
+                    $_SESSION['status'] = "Failed to upload file: $fileName";
+                    header("Location: ../agent-transactions.php");
+                    exit(0);
+                }
+            } else {
+                $_SESSION['status'] = "File $fileName is invalid or exceeds size limit of 4MB.";
+                header("Location: ../agent-transactions.php");
+                exit(0);
+            }
+        }
+
+        if (!empty($uploadedFiles)) {
+            $conn->begin_transaction();
+            $filePathsSerialized = serialize($uploadedFiles);
+
+            $sql = "INSERT INTO payment (transactNo, accountId, paymentTitle, paymentType, amount, proof, paymentDate, paymentStatus) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, 'Pending')";
+            $stmt = $conn->prepare($sql);
+
+            if (!$stmt) {
+                $_SESSION['status'] = "Booking SQL preparation failed: " . $conn->error;
+                $conn->rollback();
+                header("Location: ../agent-transactions.php");
+                exit(0);
+            }
+
+            $stmt->bind_param('sissdss', $transactNo, $accountId, $paymentTitle, $paymentType, $amount, $filePathsSerialized, $paymentDate);
+
+            if ($stmt->execute()) {
+                $conn->commit();
+                $_SESSION['status'] = "Payment and proof files uploaded successfully!";
+                header("Location: ../agent-transactions.php");
+                exit(0);
+            } else {
+                $_SESSION['status'] = "Database error on payment insert: " . $stmt->error;
+                $conn->rollback();
+                header("Location: ../agent-transactions.php");
+                exit(0);
+            }
+        } else {
+            $_SESSION['status'] = "No valid files uploaded.";
+            header("Location: ../agent-transactions.php");
+            exit(0);
+        }
+    } else {
+        $_SESSION['status'] = "Proof of payment files are required.";
         header("Location: ../agent-transactions.php");
         exit(0);
-      }
-    } 
-    else 
-    {
-      // Debugging: Check for file upload errors
-      if (isset($_FILES['proof']['error'])) 
-      {
-        $_SESSION['status'] = "File upload error: " . $_FILES['proof']['error'];
-      } 
-      else 
-      {
-        $_SESSION['status'] = "No file uploaded or an error occurred.";
-      }
-      header("Location: ../agent-transactions.php");
-      exit(0);
     }
-  }
+}
 ?>
