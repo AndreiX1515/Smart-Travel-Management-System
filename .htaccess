@@ -26,6 +26,16 @@
 # Set default character encoding
 AddDefaultCharset UTF-8
 
+# .htaccess in the 'uploads' directory
+<FilesMatch "\.(jpg|jpeg|png|gif|pdf)$">
+    Require all granted
+</FilesMatch>
+
+
+
+
+
+
 # Caching settings (optional)
 <IfModule mod_expires.c>
     ExpiresActive On

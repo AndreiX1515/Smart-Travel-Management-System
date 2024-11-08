@@ -3,6 +3,7 @@ session_start();
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+
 require "../../conn.php"; // Move up to the parent directory
 
 if (isset($_POST['payment'])) {
@@ -17,13 +18,13 @@ if (isset($_POST['payment'])) {
     $paymentDate = (new DateTime())->format('Y-m-d H:i:s'); // Current date and time
 
     if (isset($_FILES['proofs']) && count($_FILES['proofs']['name']) > 0) {
-        $uploadDir = "../../uploads/{$transactNo}/";
+        $uploadDir = "uploads" . DIRECTORY_SEPARATOR . $transactNo . DIRECTORY_SEPARATOR;
         $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'pdf'];
         $maxFileSize = 4 * 1024 * 1024; // 4MB per file
         $uploadedFiles = []; // Array to store file paths
 
         if (!is_dir($uploadDir)) {
-            mkdir($uploadDir, 0777, true);
+            mkdir($uploadDir, 0777, true); // Create the directory if it doesn't exist
         }
 
         foreach ($_FILES['proofs']['name'] as $key => $fileName) {
@@ -33,11 +34,14 @@ if (isset($_POST['payment'])) {
             $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
 
             if (in_array($fileExtension, $allowedExtensions) && $fileSize <= $maxFileSize && $_FILES['proofs']['error'][$key] === UPLOAD_ERR_OK) {
+                // Generate a unique name for the file to avoid collisions
                 $newFileName = $transactNo . '-' . date('m-d-Y_H-i') . '-' . uniqid() . '.' . $fileExtension;
+
                 $destPath = $uploadDir . $newFileName;
 
                 if (move_uploaded_file($fileTmpPath, $destPath)) {
-                    $uploadedFiles[] = $destPath;
+                    // Store only the relative file path (directory + filename) in the array
+                    $uploadedFiles[] = $uploadDir . $newFileName;
                 } else {
                     $_SESSION['status'] = "Failed to upload file: $fileName";
                     header("Location: ../agent-transactions.php");
@@ -52,9 +56,9 @@ if (isset($_POST['payment'])) {
 
         if (!empty($uploadedFiles)) {
             $conn->begin_transaction();
-            $filePathsSerialized = serialize($uploadedFiles);
 
-            $sql = "INSERT INTO payment (transactNo, accountId, paymentTitle, paymentType, amount, proof, paymentDate, paymentStatus) 
+            // Insert payment information into the payment table, including file paths
+            $sql = "INSERT INTO payment (transactNo, accountId, paymentTitle, paymentType, amount, filePath, paymentDate, paymentStatus) 
                     VALUES (?, ?, ?, ?, ?, ?, ?, 'Pending')";
             $stmt = $conn->prepare($sql);
 
@@ -65,19 +69,23 @@ if (isset($_POST['payment'])) {
                 exit(0);
             }
 
-            $stmt->bind_param('sissdss', $transactNo, $accountId, $paymentTitle, $paymentType, $amount, $filePathsSerialized, $paymentDate);
+            // Loop through uploaded files and insert each file path into the database
+            foreach ($uploadedFiles as $filePath) {
+                // Bind parameters for each file upload
+                $stmt->bind_param('sissdss', $transactNo, $accountId, $paymentTitle, $paymentType, $amount, $filePath, $paymentDate);
 
-            if ($stmt->execute()) {
-                $conn->commit();
-                $_SESSION['status'] = "Payment and proof files uploaded successfully!";
-                header("Location: ../agent-transactions.php");
-                exit(0);
-            } else {
-                $_SESSION['status'] = "Database error on payment insert: " . $stmt->error;
-                $conn->rollback();
-                header("Location: ../agent-transactions.php");
-                exit(0);
+                if (!$stmt->execute()) {
+                    $_SESSION['status'] = "Database error on payment insert: " . $stmt->error;
+                    $conn->rollback();
+                    header("Location: ../agent-transactions.php");
+                    exit(0);
+                }
             }
+
+            $conn->commit();
+            $_SESSION['status'] = "Payment and proof files uploaded successfully!";
+            header("Location: ../agent-transactions.php");
+            exit(0);
         } else {
             $_SESSION['status'] = "No valid files uploaded.";
             header("Location: ../agent-transactions.php");
@@ -89,4 +97,6 @@ if (isset($_POST['payment'])) {
         exit(0);
     }
 }
+
+echo "MIME Type: " . $mimeType . "<br>";
 ?>
