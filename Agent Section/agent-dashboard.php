@@ -440,7 +440,9 @@
              <thead>
                <tr>
                  <th>Transaction No</th>
-                 <th>Request</th>
+                 <th>Payment Title</th>
+                 <th>Payment Type</th>
+                 <th>Payment Amount</th>
                  <th>Date</th>
                </tr>
              </thead>
@@ -449,7 +451,7 @@
                  $sql2 = "SELECT 
                             p.transactNo AS `Transaction No`,
                             p.paymentTitle AS `Payment Title`,
-                            CONCAT('$', FORMAT(p.amount, 2)) AS `Amount`,  -- Format the amount as a currency with two decimal places
+                            CONCAT(FORMAT(p.amount, 2)) AS `Amount`,  -- Format the amount as a currency with two decimal places
                             DATE_FORMAT(p.paymentDate, '%M-%d-%Y %h:%i:%s %p') AS `Date`,  -- Format the date as specified
                             p.paymentType AS `Payment Type`,
                             p.paymentStatus AS `Status`
@@ -468,7 +470,9 @@
                    while ($row = $res2->fetch_assoc()) {
                      echo "<tr>
                              <td>{$row['Transaction No']}</td>
-                             <td>{$row['Request']}</td>
+                             <td>{$row['Payment Title']}</td>
+                             <td>{$row['Payment Type']}</td>
+                             <td>₱ {$row['Amount']}</td>
                              <td>" . date('F d, Y', strtotime($row['Date'])) . "</td>
                            </tr>";
                    }
