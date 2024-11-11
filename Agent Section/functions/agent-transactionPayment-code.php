@@ -59,7 +59,7 @@ if (isset($_POST['payment'])) {
 
             // Insert payment information into the payment table, including file paths
             $sql = "INSERT INTO payment (transactNo, accountId, paymentTitle, paymentType, amount, filePath, paymentDate, paymentStatus) 
-                    VALUES (?, ?, ?, ?, ?, ?, ?, 'Pending')";
+                    VALUES (?, ?, ?, ?, ?, ?, ?, 'Submitted')";
             $stmt = $conn->prepare($sql);
 
             if (!$stmt) {
