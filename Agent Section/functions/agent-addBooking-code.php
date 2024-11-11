@@ -33,7 +33,7 @@
     $row = $result->fetch_assoc();
     $newBookingId = ($row && $row['lastBookingId'] !== null) ? $row['lastBookingId'] + 1 : 1;
     $formattedCounter = str_pad($newBookingId, 6, '0', STR_PAD_LEFT);
-    $transactNo = $agentId. '-' . $formattedCounter;
+    $transactNo = $agentId . '-' . $formattedCounter;
 
     // Check if "Own Flight" is selected (value is 'Null')
     if ($flightId === 'Null') 
@@ -50,7 +50,6 @@
     (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Pending', NOW())";
     $stmt1 = $conn->prepare($sql1);
 
-    // Check if the statement was prepared successfully
     if (!$stmt1) 
     {
       $_SESSION['status'] = "Booking SQL preparation failed: " . $conn->error;
@@ -60,7 +59,6 @@
     }
 
     // Bind and execute the booking insertion
-    // $accountId = $_SESSION['accountid']; // Assuming the user is logged in
     $stmt1->bind_param('issiisssssssid', $accountId, $transactNo, $agentId, $flightId, $packageId, $fName, $lName, $mName, $suffix, 
     $countryCode, $contactNo, $email, $totalPax, $totalPrice);
     
@@ -72,6 +70,32 @@
       exit(0);
     }
 
+    // If flightId is NULL, insert into the clientFlight table
+    if (is_null($flightId)) 
+    {
+      // Prepare the SQL statement for insertion into the clientFlight table
+      $sql2 = "INSERT INTO clientflight (transactNo) VALUES (?)";
+      $stmt2 = $conn->prepare($sql2);
+
+      if (!$stmt2) 
+      {
+        $_SESSION['status'] = "Client Flight SQL preparation failed: " . $conn->error;
+        $conn->rollback();  // Rollback transaction
+        header("Location: ../agent-addBooking.php");
+        exit(0);
+      }
+
+      $stmt2->bind_param('s', $transactNo);
+
+      if (!$stmt2->execute()) 
+      {
+        $_SESSION['status'] = "Database error on client flight insert: " . $stmt2->error;
+        $conn->rollback();  // Rollback transaction
+        header("Location: ../agent-addBooking.php");
+        exit(0);
+      }
+    }
+
     // If no errors, commit the transaction
     $conn->commit();
 
@@ -80,5 +104,4 @@
     header("Location: ../agent-addBooking.php");
     exit(0);
   }
-
 ?>

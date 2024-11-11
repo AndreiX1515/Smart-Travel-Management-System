@@ -178,65 +178,29 @@
                                 <i class='fas fa-ellipsis-v'></i>
                               </button>
                               <ul class='dropdown-menu'>
-                                  <li> <a class='dropdown-item' href='#' data-bs-toggle='modal' data-bs-target='#updateBookingModal' data-transaction-id='{$row['T.N']}'>
-                                    Update Booking </a> 
-                                  </li>
-                                  <li><a class='dropdown-item' href='#' onclick='addGuestInfo(\"{$row['T.N']}\")'>Add Guests Information</a></li>
-                                  <li><a class='dropdown-item' href='#' onclick='showGuestInfo(\"{$row['T.N']}\")'>Show Guest Information</a></li>
-                                  <li><a class='dropdown-item' href='#' data-bs-toggle='modal' data-bs-target='#requestModal{$transactNo}'>Add Request</a></li>
-                                  <li><a class='dropdown-item' href='#' onclick='showRequestHistory(\"{$row['T.N']}\")'>Show Request History</a></li>
-                                  <li><a class='dropdown-item' href='#' data-bs-toggle='modal' data-bs-target='#paymentModal{$transactNo}'>Add Payment</a></li>
-                                  <li><a class='dropdown-item' href='#' onclick='showPaymentHistory(\"{$row['T.N']}\")'>Show Payment History</a></li>
-                                </ul>
+                                <li> <a class='dropdown-item' href='#' data-bs-toggle='modal' data-bs-target='#updateBookingModal' data-transaction-id='{$row['T.N']}'>
+                                  Update Booking </a> 
+                                </li>
+                                <li><a class='dropdown-item' href='#' onclick='addGuestInfo(\"{$row['T.N']}\")'>Add Guests Information</a></li>
+                                <li><a class='dropdown-item' href='#' onclick='showGuestInfo(\"{$row['T.N']}\")'>Show Guest Information</a></li>
+                                <li> <a class='dropdown-item' href='#' data-bs-toggle='modal' data-bs-target='#requestModal' data-transaction-id='{$row['T.N']}'>
+                                  Add Request </a> 
+                                </li>
+                                <li><a class='dropdown-item' href='#' onclick='showRequestHistory(\"{$row['T.N']}\")'>Show Request History</a></li>
+                                <li><a class='dropdown-item' href='#' data-bs-toggle='modal' data-bs-target='#paymentModal{$transactNo}'>Add Payment</a></li>
+                                <li><a class='dropdown-item' href='#' onclick='showPaymentHistory(\"{$row['T.N']}\")'>Show Payment History</a></li>";
+                        
+                                // Add the conditional button if FLIGHT DATE is "Land Only"
+                                if ($row['FLIGHT DATE'] === "Land Only") 
+                                {
+                                  echo "<li>
+                                          <a class='dropdown-item' href='#' onclick='showLandOnlyDetails(\"{$row['T.N']}\")'>Show Land Only Details</a>
+                                        </li>";
+                                }
+                        echo "</ul>
                             </div>
                           </td>
                         </tr>";
-
-                  
-                    // Modal for Request
-                    echo "
-                      <div class='modal fade' id='requestModal{$transactNo}' tabindex='-1' aria-labelledby='requestModalLabel{$transactNo}' aria-hidden='true'>
-                        <div class='modal-dialog'>
-                          <div class='modal-content'>
-                            <div class='modal-header'>
-                              <h5 class='modal-title' id='requestModalLabel{$transactNo}'>Request for Transaction #{$transactNo}</h5>
-                              <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
-                            </div>
-                            <form action='../Agent Section/functions/agent-transactionRequest-code.php' method='POST'>
-                              <div class='modal-body'>
-                                <p><strong>Transaction No:</strong> <span id='transactNo{$transactNo}'>{$transactNo}</span></p>
-                                <input type='hidden' name='transactNo' value={$transactNo}>
-                                <input type='hidden' name='agentId' value={$agentId}>
-                                <input type='hidden' name='accountId' value={$accountId}>
-                                <div class='mb-3'>
-                                  <select class='form-select mt-2' name='concern' required>
-                                    <option selected disabled>Select Request</option>
-                                    <option value='Additional Baggage'>Additional Baggage</option>
-                                    <option value='Additional Headcount'>Additional Headcount</option>
-                                    <option value='Additional Meal'>Additional Meal</option>
-                                    <option value='Hotel Room'>Hotel Room</option>
-                                    <option value='Package Only'>Package Only</option>
-                                    <option value='Seat Selection'>Seat Selection</option>
-                                    <option value='Visa'>Visa</option>
-                                  </select>
-                                </div>
-                                <div class='mb-3'>
-                                  <label class='form-label'>Pax</label>
-                                  <input type='number' class='form-control' name='pax' placeholder='Enter pax' min='1' max='{$pax}' required></input>
-                                </div>
-                                <div class='mb-3'>
-                                  <label class='form-label'>Details</label>
-                                  <textarea class='form-control' name='details' placeholder='Enter Message' rows='4' required></textarea>
-                                </div>     
-                              </div>
-                              <div class='modal-footer'>
-                                <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Close</button>
-                                <button type='submit' name='request' class='btn btn-primary'>Send Request</button>
-                              </div>
-                            </form>
-                          </div>
-                        </div>
-                      </div>";
 
                     // Modal for Payment
                     echo "
@@ -309,6 +273,71 @@
         </div>
       </div>
 
+    </div>
+  </div>
+
+  <!-- Modal for Request -->
+  <div class="modal fade" id="requestModal" tabindex="-1" aria-labelledby="requestModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="requestModalLabel">Request for Transaction</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form action="../Agent Section/functions/agent-transactionRequest-code.php" method="POST" id="requestForm">
+          <div class="modal-body">
+            <!-- Transaction Number Display -->
+            <p><strong>Transaction No:</strong> <span id="requestTransactionId"></span></p>
+
+            <!-- Hidden Input Fields -->
+            <input type="hidden" name="transaction_number" id="transactionNumberInput">
+            <input type="hidden" name="agentId" value="<?php echo $agentId; ?>">
+            <input type="hidden" name="accountId" value="<?php echo $accountId; ?>">
+
+            <!-- Request Type Selection -->
+            <div class="mb-3">
+              <select class="form-select mt-2" name="concern" id="concern" required>
+                <option selected disabled>Select Request</option>
+                <?php
+                  $sql1 = mysqli_query($conn, "SELECT DISTINCT concernId, concernTitle FROM concern ORDER BY concernTitle ASC");
+                  while($res1 = mysqli_fetch_array($sql1)) 
+                  {
+                    echo "<option value='{$res1['concernId']}'>{$res1['concernTitle']}</option>";
+                  }
+                ?>
+              </select>
+            </div>
+
+            <!-- Request Details Selection -->
+            <div class="mb-3" id="additionalSelectContainer" style="display: none;">
+              
+              <select class="form-select mt-2" name="requestDetails" id="requestDetails" required>
+                <option selected disabled>Select Specific Detail</option>
+              </select>
+              <label>₱ <input type="text" id="price" name="price" value="0.00" style="border: none; background: transparent; padding: 5px 10px; font-size: 14px; display: inline-block; width: auto;" readonly></label>
+            </div>
+
+            <!-- Pax Input -->
+            <div class="mb-3">
+              <label class="form-label">Pax</label>
+              <input type="number" class="form-control" id="paxRequest" name="pax" placeholder="Enter pax" min="1" required>
+            </div>
+
+            <!-- Details Input -->
+            <div class="mb-3">
+              <label class="form-label">Details</label>
+              <textarea class="form-control" name="details" placeholder="Enter Specific Message" rows="4"></textarea>
+            </div>
+
+            <label>₱ <span id="displayTotalPrice"></span></label>
+            <input type="hidden" name="totalPrice" id="TotalPrice" value="0.00" style="border: none; background: transparent; padding: 5px 10px; font-size: 14px; display: inline-block; width: auto;" readonly>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" name="request" class="btn btn-primary">Send Request</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 
@@ -770,6 +799,30 @@
         // Fetch booking details based on the transaction ID
         fetchBookingDetails(transactionId);
       });
+
+      // Handle the 'requestModal' for inserting a new request
+      const requestModal = document.getElementById('requestModal');
+      requestModal.addEventListener('show.bs.modal', function (event) 
+      {
+        const button = event.relatedTarget; // Button that triggered the modal
+        const transactionId = button.getAttribute('data-transaction-id'); // Fetch transaction ID
+
+        // Reset the form to clear any previous data
+        const form = document.getElementById('requestForm');
+        form.reset();
+
+        // Hide the 'additionalSelectContainer'
+        document.getElementById('additionalSelectContainer').style.display = 'none';
+
+        // Populate the hidden input field specific to the request form
+        document.querySelector('#requestForm input[name="transaction_number"]').value = transactionId;
+
+        // Display the transaction ID in the modal
+        document.getElementById('requestTransactionId').textContent = transactionId;
+
+        // No need to fetch existing details; the modal is for inserting a new request
+        fetchPaxForRequestModal(transactionId);
+      });
     });
     
     $(document).ready(function ()
@@ -815,6 +868,116 @@
           $('#origin').html('<option selected disabled>Select Origin</option>');
         }
       });
+
+      // Fetching Additional Details once Request Type is Selected
+      $('#concern').on('change', function () 
+      {
+        var concernId = $(this).val();  // Get the selected concern ID
+        $('#requestDetails').html('<option selected disabled>Select Specific Detail</option>'); // Clear request details field
+        $('#price').val(''); // Clear request details field
+
+        // Debugging: Log the selected concernId
+        console.log("Selected concernId: ", concernId);
+
+        // Hide the additional details select container initially
+        $('#additionalSelectContainer').hide();
+        
+        // Clear previous options
+        $('#additionalDetails').html('<option selected disabled>Select Additional Detail</option>');
+
+        if (concernId) 
+        {
+          // Debugging: Log the concernId being sent to the server
+          console.log("Sending concernId to server: ", concernId);
+
+          $.ajax(
+          {
+            url: '../Agent Section/functions/fetchConcernDetails.php',  // Your server-side script to fetch additional details
+            type: 'POST',
+            data: { concernId: concernId },  // Send the concernId as a parameter
+            success: function (response) 
+            {
+              // Debugging: Log the raw response from the server
+              console.log("Server response: ", response);
+
+              // Parse the JSON response
+              try 
+              {
+                var data = JSON.parse(response);
+
+                // Debugging: Log the parsed data
+                console.log("Parsed response data: ", data);
+
+                // Show the additional select container once data is available
+                $('#additionalSelectContainer').show();
+
+                // Populate the additional details select dropdown
+                if (Array.isArray(data.detailsData)) {
+                  data.detailsData.forEach(function (item) 
+                  {
+                    var option = $('<option>').val(item.id).text(item.title).data('price', item.price);  // Create an option element
+                    $('#requestDetails').append(option);  // Append the option to the additionalDetails dropdown
+                  });
+                } 
+                else 
+                {
+                  console.error("Error: detailsData is not an array");
+                }
+              } catch (e) 
+              {
+                // Handle any JSON parsing errors
+                console.error("Error parsing JSON response: ", e);
+              }
+            },
+            error: function (xhr, status, error) 
+            {
+              // Debugging: Log any AJAX error
+              console.error("Error fetching additional details:", error);
+              console.log("AJAX error details: ", xhr, status);
+            }
+          });
+        } 
+        else 
+        {
+          // If no valid concern ID is selected, reset the additional details dropdown
+          $('#additionalSelectContainer').hide();
+          $('#additionalDetails').html('<option selected disabled>Select Additional Detail</option>');
+        }
+      });
+
+      // When an additional detail is selected, update the price input field
+      $('#requestDetails').on('change', function () 
+      {
+        // Get the selected option's price
+        var selectedOption = $(this).find('option:selected');
+        var price = selectedOption.data('price');  // Retrieve the price from the selected option
+
+        // Update the price input field with the selected price
+        $('#price').val(price);  // Set the price value in the input field
+
+        // Perform the calculation with the 'pax' input
+        calculateTotalPrice();
+      });
+
+      // When the 'pax' input value changes, recalculate the total price
+      $('#paxRequest').on('input', function () 
+      {
+        calculateTotalPrice();
+      });
+
+      // Function to calculate the total price
+      function calculateTotalPrice() 
+      {
+        var price = parseFloat($('#price').val().replace(/,/g, '')) || 0; // Remove commas for calculation
+        var pax = parseInt($('#paxRequest').val()) || 0; // Get the pax, default to 0 if NaN
+
+        // Calculate the total price
+        var totalPrice = pax * price;
+
+        $('#displayTotalPrice').text(formatNumberWithCommas(totalPrice.toFixed(2))); // Update the input field with the calculated total price
+        // Update the price input field or display the total price wherever needed
+        $('#TotalPrice').val(totalPrice.toFixed(2)); // Update the input field with the calculated total price
+      }
     });
 
     function fetchBookingDetails(transactionId) 
@@ -862,12 +1025,48 @@
       });
     }
 
+    // Function to fetch pax for the request modal
+    function fetchPaxForRequestModal(transactionId) 
+    {
+      fetch('../Agent Section/functions/getBookingDetails.php', 
+      {
+        method: 'POST',
+        headers: 
+        {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ transaction_id: transactionId }),
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) 
+        {
+          // Populate only the pax field with the fetched data
+          document.querySelector('input[name="pax"]').setAttribute('max', data.booking.pax);
+        } 
+        else 
+        {
+          console.error('Error fetching booking details:', data.message);
+        }
+      })
+      .catch(error => 
+      {
+        console.error('Fetch error:', error);
+      });
+    }
+
     function updateBooking() 
     {
       const form = document.getElementById('updateBookingForm');
       const formData = new FormData(form);
       // Implement AJAX call to update booking...
       console.log("Updating booking with data:", formData);
+    }
+
+    // Helper function to format numbers with commas
+    function formatNumberWithCommas(num) 
+    {
+      return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
   </script>
 
