@@ -60,32 +60,31 @@
           </tr>
         </thead>
         <tbody>
-          <?php
-            $sql1= "SELECT *, FORMAT(amount, 2) AS amount, DATE_FORMAT(paymentDate, '%M %d, %Y %h:%i %p') AS paymentDate
-                    FROM payment WHERE transactNo = '$transactionNumber'";
+        <?php
+           $sql1 = "SELECT *, FORMAT(amount, 2) AS amount, DATE_FORMAT(paymentDate, '%M %d, %Y %h:%i %p') AS paymentDate 
+                    FROM payment 
+                    WHERE transactNo = '$transactionNumber'";
 
-            $res1 = $conn->query($sql1);
+           $res1 = $conn->query($sql1);
 
-            if ($res1->num_rows > 0) 
-            {
-              while ($row = $res1->fetch_assoc()) 
-              {
-                echo "<tr>
-                        <td>{$row['paymentId']}</td>
-                        <td>{$row['paymentTitle']}</td>
-                        <td>{$row['paymentType']}</td>
-                        <td>₱ {$row['amount']}</td>
-                        <td>{$row['proof']}</td>
-                        <td>{$row['paymentDate']}</td>
-                        <td>{$row['paymentStatus']}</td>
-                      </tr>";
-              }
-            } 
-            else 
-            {
-              echo "<tr><td colspan='10'>No Payment Found</td></tr>";
-            }
-          ?>
+           if ($res1->num_rows > 0) {
+               while ($row = $res1->fetch_assoc()) {
+                   echo "<tr>
+                           <td>{$row['paymentId']}</td>
+                           <td>{$row['paymentTitle']}</td>
+                           <td>{$row['paymentType']}</td>
+                           <td>₱ {$row['amount']}</td>
+                           <td><a href='functions/view-file.php?file=" . urlencode($row['filePath']) . "' target='_blank'>View File</a></td>
+                           <td>{$row['paymentDate']}</td>
+                           <td>{$row['paymentStatus']}</td>
+                         </tr>";
+               }
+           } else {
+               echo "<tr><td colspan='7'>No Payment Found</td></tr>";
+           }
+           ?>
+
+
         </tbody>
       </table>
     </div>
