@@ -7,17 +7,21 @@
 
   if (isset($_POST['request'])) 
   {
-    $transactNo = $_POST['transactNo'];
+    $transactNo = $_POST['transaction_number'];
     $accountId = $_POST['accountId'];
     $concern = $_POST['concern'];
+    $requestDetails = $_POST['requestDetails'];
+    $pax = $_POST['pax'];
     $details = $_POST['details'];
+    $amount = $_POST['totalPrice'];
 
     // Start the transaction
     $conn->begin_transaction();
 
     // Prepare the SQL statement
-    $stmt = $conn->prepare("INSERT INTO request (transactNo, accountId, concern, details, requestDate) VALUES (?, ?, ?, ?, Now())");
-    $stmt->bind_param("siss", $transactNo, $accountId, $concern, $details);
+    $stmt = $conn->prepare("INSERT INTO request (transactNo, accountId, concernId, concernDetailsId, pax, details, requestCost, requestDate, requestStatus) 
+                    VALUES(?, ?, ?, ?, ?, ?, ?, Now(), 'Pending')");
+    $stmt->bind_param("siiiisd", $transactNo, $accountId, $concern, $requestDetails, $pax, $details, $amount);
 
     // Execute the statement
     if ($stmt->execute()) 
