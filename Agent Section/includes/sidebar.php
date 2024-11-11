@@ -17,6 +17,14 @@
 <a href="../Agent Section/agent-transactions.php" class="page-button" data-page-name="Transactions"> <i class="fas fa-exchange-alt">
 </i> Transactions </a>
 
+<a href="../Agent Section/agent-itenerary.php" class="page-button" data-page-name="Itenerary"> <i class="fas fa-exchange-alt">
+</i> Itenerary </a>
+
+<a href="../Agent Section/agent-ticket.php" class="page-button" data-page-name="Ticket"> <i class="fas fa-exchange-alt">
+</i> Ticket </a>
+
+<a href="../Agent Section/agent-soa.php" class="page-button" data-page-name="SOA"> <i class="fas fa-exchange-alt">
+</i> SOA </a>
 
 <div class="section-title">Management</div>
 <a href="../Agent Section/agent-client-accounts.php"> <i class="fas fa-user-friends"></i> Client Accounts </a>
