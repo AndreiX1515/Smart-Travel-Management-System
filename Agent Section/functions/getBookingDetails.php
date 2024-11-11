@@ -8,11 +8,7 @@
   $transaction_id = $input['transaction_id'];
 
   // Prepare the SQL statement
-  $stmt = $conn->prepare("SELECT booking.*, flight.origin
-    FROM booking
-    JOIN flight ON booking.flightId = flight.flightId
-    WHERE booking.transactNo = ?
-");
+  $stmt = $conn->prepare("SELECT * FROM booking WHERE transactNo = ?");
   $stmt->bind_param("s", $transaction_id);
   $stmt->execute();
   $result = $stmt->get_result();

@@ -453,13 +453,14 @@
           <h5 class="modal-title" id="updateBookingModalLabel">Update Booking</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body">
-          <div class="mb-4 d-flex align-items-center w-100">
-            <h6 class="mb-0">Transaction ID:</h6>
-            <span id="transactionId" class="ms-2"></span>
-          </div>
-          <!-- Form for updating booking details -->
-          <form id="updateBookingForm" method="POST">
+        <!-- Form for updating booking details -->
+        <form action="../Agent Section/functions/agent-transactionUpdateBooking-code.php" id="updateBookingForm" method="POST">
+          <div class="modal-body">
+            <div class="mb-4 d-flex align-items-center w-100">
+              <h6 class="mb-0">Transaction ID:</h6>
+              <span id="transactionId" class="ms-2"></span>
+            </div>
+
             <input type="hidden" name="transaction_number" value="">
 
             <h6 class="fw-bold">Personal Information:</h6>
@@ -471,7 +472,7 @@
               </div>
               <div class="col-md-3 mb-3">
                 <label for="contactLName" class="form-label">Last Name</label>
-                <input type="text" class="form-control" id="lName" name="IName">
+                <input type="text" class="form-control" id="lName" name="lName">
               </div>
               <div class="col-md-3 mb-3">
                 <label for="contactMName" class="form-label">Middle Name</label>
@@ -694,99 +695,13 @@
                 <input type="email" class="form-control" id="email" name="email" required>
               </div>
             </div>
-
-            <h6 class="fw-bold my-2">Booking Information:</h6>
-
-            <div class="row">
-              <div class="col-md-6 mb-2">
-                <label for="package" class="form-label">Package</label>
-                <select class="form-control" id="packageId" name="packageId" required>
-                  <option selected disabled>Select Package</option>
-                  <?php
-                    $sql1 = mysqli_query($conn, "SELECT DISTINCT packageId, packageName FROM package ORDER BY packageName ASC");
-                    while($res1 = mysqli_fetch_array($sql1)) 
-                    {
-                      echo "<option value='{$res1['packageId']}'>{$res1['packageName']}</option>";
-                    }
-                  ?>
-                </select>
-              </div>
-              <div class="col-md-6 mb-2">
-                <label for="totalPax" class="form-label">Total Pax</label>
-                <input type="number" class="form-control" id="pax" name="pax" required>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-md-6 mb-3">
-                <label for="origin" class="form-label">Origin</label>
-                <select class="form-control" id="origin" name="origin" required>
-                  <?php
-                    $sql1 = mysqli_query($conn, "SELECT DISTINCT origin FROM flight ORDER BY origin ASC");
-                    while($res1 = mysqli_fetch_array($sql1)) 
-                    {
-                      echo "<option value='{$res1['origin']}'>{$res1['origin']}</option>";
-                    }
-                  ?>
-                </select>
-              </div>
-
-              <div class="col-md-6 mb-3">
-                    <div class="form-group mb-6">
-                      <label for="flightDate">Flight Date <span class="text-danger fw-bold">*</span></label>
-                      <select class="form-select mt-2 fs-6" id="flightDate" name="flightDate" required>
-                      <?php
-                        $sql1 = mysqli_query($conn, "SELECT flightId, DATE_FORMAT(flightDepartureDate, '%M %d, %Y') AS flightDate, flightPrice
-                                              FROM flight ORDER BY flightDate ASC");
-                        while($res1 = mysqli_fetch_array($sql1)) 
-                        {
-                          $formattedPrice = number_format($res1['flightPrice'], 2);
-                          echo '<option value="' . $res1['flightId'] . '">' . $res1['flightDate'] . '&nbsp;&nbsp;&nbsp;&nbsp; || &nbsp;&nbsp;&nbsp;&nbsp;'. 'Package Price: ₱ '. $formattedPrice . '</option>';
-                        }
-                      ?>
-                      </select>
-                      <span id="flightDateError" class="text-danger"></span> <!-- Error message for outbound flight -->
-                    </div>
-                  </div>
-            </div>
-
-            <div class="row">
-              <div class="col-md-2 mb-3">
-                <input type="" id="flightId" name="flightId" value="" placeholder="Flight Id Input">
-              </div>
-
-              <div class="col-md-2 mb-3">
-              
-                <input type="" id="packagePrice" name="packagePrice" placeholder="Package Price">
-              </div>
-
-              <div class="col-md-2 mb-3">
-                <input type="" name="flightPrice" placeholder="Flight Price">
-
-              </div>
-
-             
-            </div>
-
-            <div class="row">
-              
-
-              <div class="col-md-3 mb-3">
-                <label for="totalPrice" class="form-label">Total Price</label>
-                <input type="text" class="form-control" id="totalPrice" name="totalPrice" readonly>
-              </div>
-            </div>
-
-
-
-
-
-          </form>
-        </div>
-        <div class="modal-footer border-0">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" onclick="updateBooking()">Update</button>
-        </div>
+          
+          </div>
+          <div class="modal-footer border-0">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary" name="updateBooking">Update</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
@@ -931,47 +846,6 @@
     
     $(document).ready(function ()
     {
-      // Fetching Origin once Package was Selected
-      $('#packageName').on('change', function () 
-      {
-        var packageId = $(this).val();
-        var selectedPackageName = $("#packageName option:selected").text();
-        $('#origin').html('<option selected disabled>Select Origin</option>'); // Clear origin field
-        $('#flightDate').html('<option selected disabled>Select Flight Date</option>'); // Clear Flight Date field
-        $('#flightId').val(''); // Clear Flight Id field
-        // $('#flightPrice').text('0.00'); // Clear Flight Price field
-
-        if (packageId) 
-        {
-          $.ajax(
-          {
-            url: '../Agent Section/functions/fetchOrigin.php',
-            type: 'POST',
-            data: { packageId: packageId },
-            success: function (response) 
-            {
-              // Parse the JSON response
-              var data = JSON.parse(response);
-
-              // Update the origin dropdown
-              $('#origin').html(data.originOptions); // Use originOptions from the response
-
-              // Update the package price input
-              $('#packagePrice').val(data.packagePrice); // Set the package price value
-
-              // console.log(data); // Optional: For debugging
-            },
-            error: function (xhr, status, error) 
-            {
-              console.error('Error fetching origins:', error); // Log the error to console
-            }
-          });
-        } 
-        else 
-        {
-          $('#origin').html('<option selected disabled>Select Origin</option>');
-        }
-      });
 
       // Fetching Additional Details once Request Type is Selected
       $('#concern').on('change', function () 
@@ -1111,12 +985,6 @@
           document.getElementById('contactNo').value = data.booking.contactNo;
           document.getElementById('email').value = data.booking.email;
           document.getElementById('pax').value = data.booking.pax;
-
-          document.getElementById('packageId').value = data.booking.packageId;
-          document.getElementById('origin').value = data.booking.origin;
-          document.getElementById('flightId').value = data.booking.flightId;
-          document.getElementById('flightDate').value = data.booking.flightId;
-          document.getElementById('totalPrice').value = data.booking.totalPrice;
         } 
         else 
         {
