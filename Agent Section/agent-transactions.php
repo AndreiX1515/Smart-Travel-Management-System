@@ -243,16 +243,12 @@
 
                                       <div class='mb-3'>
                                           <label class='form-label'>Proof of Payment</label>
-                                          <!-- Drag-and-drop area -->
-                                          <div id='dropZone{$transactNo}' 
-                                               class='drop-zone border border-primary rounded p-3 text-center'
-                                               ondragover='event.preventDefault();' 
-                                               ondrop='handleDrop(event, {$transactNo});'>
-                                              <p>Drag and drop files here or click to select files</p>
-                                              <input type='file' id='fileInput{$transactNo}' class='form-control d-none' name='proofs[]' accept='image/*,application/pdf' multiple onchange='handleFiles(this.files, {$transactNo})'>
+                                          <div class='mb-3'>
+                                              <input type='file' id='fileInput' . $transactNo . '\' class='form-control' name='proofs[]' accept='image/*,application/pdf\' multiple>
                                           </div>
                                           <!-- List of file names -->
-                                          <ul id='fileList{$transactNo}' class='list-unstyled mt-2'></ul>
+                                          <ul id='fileList' . $transactNo . '\' class='list-unstyled mt-2'></ul>
+
                                       </div>
 
                                       <div class='modal-footer'>
@@ -263,74 +259,8 @@
                               </form>
                           </div>
                       </div>
-                  </div>
-";
+                  </div>";
 
-                    // Modal for Payment
-                    echo "
-                      <div class='modal fade' id='paymentModal<?php echo $transactNo; ?>' tabindex='-1' aria-labelledby='paymentModalLabel<?php echo $transactNo; ?>' aria-hidden='true'>
-                       <div class='modal-dialog'>
-                           <div class='modal-content'>
-                               <div class='modal-header'>
-                                   <h5 class='modal-title' id='paymentModalLabel<?php echo $transactNo; ?>'>Payment for Transaction #<?php echo $transactNo; ?></h5>
-                                   <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
-                               </div>
-                               <form action='../Agent Section/functions/agent-transactionPayment-code.php' method='POST' enctype='multipart/form-data'>
-                                   <div class='modal-body'>
-                                       <input type='hidden' name='transactNo' value='<?php echo $transactNo; ?>'>
-                                       <input type='hidden' name='accountId' value='<?php echo $accountId; ?>'>
-
-                                       <div class='mb-3'>
-                                           <label class='form-label'>Payment for:</label>
-                                           <select class='form-select' name='paymentTitle' required>
-                                               <option selected disabled>Select Payment Title</option>
-                                               <option value='Package Payment'>Package Payment</option>
-                                               <option value='Request Payment'>Request Payment</option>
-                                           </select>
-                                       </div>
-
-                                       <div class='mb-3'>
-                                           <label class='form-label'>Payment Type</label>
-                                           <select class='form-select' name='paymentType' required>
-                                               <option selected disabled>Select Payment Type</option>
-                                               <option value='Downpayment'>Downpayment</option>
-                                               <option value='Partial Payment'>Partial Payment</option>
-                                               <option value='Full Payment'>Full Payment</option>
-                                           </select>
-                                       </div>
-
-                                       <div class='mb-3'>
-                                           <label class='form-label'>Payment Amount</label>
-                                           <input type='number' class='form-control' name='amount' placeholder='Enter payment Amount' required>
-                                       </div>
-
-                                       <div class='mb-3'>
-                                         <label class='form-label'>Proof of Payment</label>
-                                         <!-- Drag-and-drop area -->
-                                         <div id='dropZone<?php echo htmlspecialchars($transactNo); ?>' 
-                                              class='drop-zone border border-primary rounded p-3 text-center'
-                                              ondragover='event.preventDefault();' 
-                                              ondrop='handleDrop(event, <?php echo $transactNo; ?>);'>
-                                             <p>Drag and drop files here or click to select files</p>
-                                             <input type='file' id='fileInput<?php echo htmlspecialchars($transactNo); ?>' 
-                                                    class='form-control d-none' name='proofs[]' 
-                                                    accept='image/*,application/pdf' multiple 
-                                                    onchange='handleFiles(this.files, <?php echo $transactNo; ?>)'>
-                                         </div>
-                                         <!-- List of file names -->
-                                         <ul id='fileList<?php echo htmlspecialchars($transactNo);?>' class='list-unstyled mt-2'></ul>
-                                     </div>
-
-
-                                       <div class='modal-footer'>
-                                           <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Close</button>
-                                           <button type='submit' name='payment' class='btn btn-primary'>Submit payment</button>
-                                       </div>
-                                   </form>
-                               </div>
-                           </div>
-                       </div>
-                   </div>";
                 }
               } 
               else 
