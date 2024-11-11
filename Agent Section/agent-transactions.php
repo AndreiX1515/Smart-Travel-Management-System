@@ -203,10 +203,10 @@
                         </tr>";
 
                   
-                    // Modal for Request
+                    // Modal for Payment
                     echo "
                       <div class='modal fade' id='paymentModal{$transactNo}' tabindex='-1' aria-labelledby='paymentModalLabel{$transactNo}' aria-hidden='true'>
-                      <div class='modal-dialog'>
+                        <div class='modal-dialog'>
                           <div class='modal-content'>
                               <div class='modal-header'>
                                   <h5 class='modal-title' id='paymentModalLabel{$transactNo}'>Payment for Transaction #{$transactNo}</h5>
@@ -258,8 +258,8 @@
                                   </div>
                               </form>
                           </div>
-                      </div>
-                  </div>";
+                        </div>
+                      </div>";
 
                 }
               } 
@@ -272,36 +272,44 @@
         </table>
 
         <script>
-            
-    const maxFiles = 5;
-    const maxFileSize = 4 * 1024 * 1024; // 4MB
-    let selectedFiles = {};
+          const maxFiles = 5;
+          const maxFileSize = 4 * 1024 * 1024; // 4MB
+          let selectedFiles = {};
 
-    document.querySelectorAll('.drop-zone').forEach(dropZone => {
-        dropZone.addEventListener("click", function() {
-            const transactNo = this.id.replace('dropZone', ''); // Extract transactNo
-            document.getElementById('fileInput' + transactNo).click();
-        });
-    });
+          document.querySelectorAll('.drop-zone').forEach(dropZone => 
+          {
+            dropZone.addEventListener("click", function() 
+            {
+              const transactNo = this.id.replace('dropZone', ''); // Extract transactNo
+              document.getElementById('fileInput' + transactNo).click();
+            });
+          });
 
-    function handleDrop(event, transactNo) {
-        event.preventDefault();
-        handleFiles(event.dataTransfer.files, transactNo);
-    }
+          function handleDrop(event, transactNo) 
+          {
+            event.preventDefault();
+            handleFiles(event.dataTransfer.files, transactNo);
+          }
 
-    function handleFiles(files, transactNo) {
-        const fileList = document.getElementById("fileList" + transactNo);
-        selectedFiles[transactNo] = selectedFiles[transactNo] || [];
+          function handleFiles(files, transactNo) 
+          {
+            const fileList = document.getElementById("fileList" + transactNo);
+            selectedFiles[transactNo] = selectedFiles[transactNo] || [];
 
-        if (selectedFiles[transactNo].length + files.length > maxFiles) {
-            alert(`You can upload a maximum of ${maxFiles} files.`);
-            return;
-        }
+            if (selectedFiles[transactNo].length + files.length > maxFiles) 
+            {
+              alert(`You can upload a maximum of ${maxFiles} files.`);
+              return;
+            }
 
-        Array.from(files).forEach(file => {
-            if (file.size > maxFileSize) {
+            Array.from(files).forEach(file => 
+            {
+              if (file.size > maxFileSize) 
+              {
                 alert(`File ${file.name} exceeds the 4MB limit and won't be added.`);
-            } else {
+              } 
+              else 
+              {
                 selectedFiles[transactNo].push(file);
 
                 // Debugging: Log the file and the selectedFiles array
@@ -321,51 +329,56 @@
 
                 listItem.appendChild(removeButton);
                 fileList.appendChild(listItem);
+              }
+            });
+
+            updateFileInput(transactNo);
+          }
+
+          function removeFile(file, transactNo) 
+          {
+            const index = selectedFiles[transactNo].indexOf(file);
+            if (index > -1) 
+            {
+              selectedFiles[transactNo].splice(index, 1); // Remove file from selectedFiles
             }
-        });
 
-        updateFileInput(transactNo);
-    }
+            // Remove the list item from the DOM
+            const fileList = document.getElementById("fileList" + transactNo);
+            const listItem = fileList.querySelector(`li:contains('${file.name}')`);
+            if (listItem) 
+            {
+              fileList.removeChild(listItem);
+            }
 
-    function removeFile(file, transactNo) {
-        const index = selectedFiles[transactNo].indexOf(file);
-        if (index > -1) {
-            selectedFiles[transactNo].splice(index, 1); // Remove file from selectedFiles
-        }
+            updateFileInput(transactNo);
+          }
 
-        // Remove the list item from the DOM
-        const fileList = document.getElementById("fileList" + transactNo);
-        const listItem = fileList.querySelector(`li:contains('${file.name}')`);
-        if (listItem) {
-            fileList.removeChild(listItem);
-        }
+          function updateFileInput(transactNo) 
+          {
+            const dataTransfer = new DataTransfer();
+            selectedFiles[transactNo].forEach(file => dataTransfer.items.add(file));
 
-        updateFileInput(transactNo);
-    }
+            const fileInput = document.getElementById('fileInput' + transactNo);
+            fileInput.files = dataTransfer.files;
 
-    function updateFileInput(transactNo) {
-        const dataTransfer = new DataTransfer();
-        selectedFiles[transactNo].forEach(file => dataTransfer.items.add(file));
+            // Debugging: Log updated file input
+            console.log(fileInput.files);
+          }
 
-        const fileInput = document.getElementById('fileInput' + transactNo);
-        fileInput.files = dataTransfer.files;
+        </script>
 
-        // Debugging: Log updated file input
-        console.log(fileInput.files);
-    }
-
-         </script>
-
-         <style>
-           .drop-zone {
-             cursor: pointer;
-             background-color: #f8f9fa;
-             min-height: 100px;
-             display: flex;
-             align-items: center;
-             justify-content: center;
-           }
-         </style>
+        <style>
+          .drop-zone 
+          {
+            cursor: pointer;
+            background-color: #f8f9fa;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+        </style>
 
         <div class="table-footer border-0">
           <div class="total-records">Total Records: <?php echo $res1->num_rows; ?></div>
@@ -414,11 +427,10 @@
 
             <!-- Request Details Selection -->
             <div class="mb-3" id="additionalSelectContainer" style="display: none;">
-              
               <select class="form-select mt-2" name="requestDetails" id="requestDetails" required>
                 <option selected disabled>Select Specific Detail</option>
               </select>
-              <label>₱ <input type="text" id="price" name="price" value="0.00" style="border: none; background: transparent; padding: 5px 10px; font-size: 14px; display: inline-block; width: auto;" readonly></label>
+              <label value="0.00">₱ <input type="text" id="price" name="price" value="0.00" style="border: none; background: transparent; padding: 5px 10px; font-size: 14px; display: inline-block; width: auto;" readonly></label>
             </div>
 
             <!-- Pax Input -->
@@ -433,7 +445,7 @@
               <textarea class="form-control" name="details" placeholder="Enter Specific Message" rows="4"></textarea>
             </div>
 
-            <label>₱ <span id="displayTotalPrice"></span></label>
+            <label>₱ <span id="displayTotalPrice">0.00</span></label>
             <input type="hidden" name="totalPrice" id="TotalPrice" value="0.00" style="border: none; background: transparent; padding: 5px 10px; font-size: 14px; display: inline-block; width: auto;" readonly>
           </div>
           <div class="modal-footer">
@@ -799,7 +811,6 @@
     }
   </script>
 
-
   <script>
     document.addEventListener('DOMContentLoaded', function () 
     {
@@ -1027,6 +1038,14 @@
       });
     }
 
+    function validateMaxValue(input) 
+    {
+      const max = parseInt(input.getAttribute("max"));
+      if (parseInt(input.value) > max) {
+        input.value = max; // Set the value to the max if it exceeds
+      }
+    }
+
     function updateBooking() 
     {
       const form = document.getElementById('updateBookingForm');
@@ -1040,9 +1059,9 @@
     {
       return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
+
+    
   </script>
 
-
-   
 </body>
 </html>
