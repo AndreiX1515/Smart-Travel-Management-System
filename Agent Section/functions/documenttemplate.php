@@ -130,7 +130,7 @@ $pdf->addItineraryHeader();  // Add itinerary header row
 
 // Add multiple days dynamically
 $pdf->day('01', 'INCHEON', "- Arrival at Incheon Airport (5j188 17:35-22:55)\n- Meeting and greeting English speaking Guide\n- Transfer to Hotel", 'Snack');
-$pdf->day('02', 'GANGWON', "- Morning breakfast\n- Explore Gangwon\n- Visit local attractions", 'Lunch');
+$pdf->day('02', 'GANGWON', "- Morning breakfast\n- Explore Gangwon\n- Visit local attractions\n\n\n\n\n", 'Lunch');
 $pdf->day('03', 'SEOUL', "- Morning sightseeing tour\n- Free time in Seoul", 'Dinner');
 $pdf->day('04', 'SEOUL', "- Visit Gyeongbokgung Palace\n- Explore Bukchon Hanok Village\n- Korean BBQ lunch", 'Breakfast and Dinner');
 $pdf->day('05', 'SEOUL', "- Free day for shopping\n- Optional: Namsan Seoul Tower visit\n- Departure in the evening", 'Breakfast and Lunch');

@@ -736,7 +736,7 @@ body {
 
 /* Second Row Container - Div Two */
 .second-row-container .two {
- width: 30%; /* Set width to 40% */
+ width: 25%; /* Set width to 40% */
  background-color: #fff; /* Card background color */
  border-radius: 8px; /* Rounded corners */
  box-shadow: 0 2px 5px rgba(201, 201, 201, 0.5); /* Box shadow for depth */
@@ -812,7 +812,7 @@ body {
 
 /* Third Row Container - Div Three */
 .second-row-container .three {
- width: 30%; /* Set width to 30% */
+ width: 40%; /* Set width to 30% */
  background-color: #fff; /* Card background color */
  border-radius: 8px; /* Rounded corners */
  box-shadow: 0 2px 5px rgba(201, 201, 201, 0.5); /* Box shadow for depth */
@@ -842,7 +842,7 @@ body {
  width: 100%;
  border-collapse: collapse;
  font-family: Arial, sans-serif;
- font-size: 14px;
+ font-size: 12px;
  background-color: transparent;
 }
 

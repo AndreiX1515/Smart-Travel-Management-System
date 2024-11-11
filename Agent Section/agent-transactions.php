@@ -195,109 +195,132 @@
                   
                     // Modal for Request
                     echo "
-                      <div class='modal fade' id='requestModal{$transactNo}' tabindex='-1' aria-labelledby='requestModalLabel{$transactNo}' aria-hidden='true'>
-                        <div class='modal-dialog'>
+                      <div class='modal fade' id='paymentModal{$transactNo}' tabindex='-1' aria-labelledby='paymentModalLabel{$transactNo}' aria-hidden='true'>
+                      <div class='modal-dialog'>
                           <div class='modal-content'>
-                            <div class='modal-header'>
-                              <h5 class='modal-title' id='requestModalLabel{$transactNo}'>Request for Transaction #{$transactNo}</h5>
-                              <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
-                            </div>
-                            <form action='../Agent Section/functions/agent-transactionRequest-code.php' method='POST'>
-                              <div class='modal-body'>
-                                <p><strong>Transaction No:</strong> <span id='transactNo{$transactNo}'>{$transactNo}</span></p>
-                                <input type='hidden' name='transactNo' value={$transactNo}>
-                                <input type='hidden' name='agentId' value={$agentId}>
-                                <input type='hidden' name='accountId' value={$accountId}>
-                                <div class='mb-3'>
-                                  <select class='form-select mt-2' name='concern' required>
-                                    <option selected disabled>Select Request</option>
-                                    <option value='Additional Baggage'>Additional Baggage</option>
-                                    <option value='Additional Headcount'>Additional Headcount</option>
-                                    <option value='Additional Meal'>Additional Meal</option>
-                                    <option value='Hotel Room'>Hotel Room</option>
-                                    <option value='Package Only'>Package Only</option>
-                                    <option value='Seat Selection'>Seat Selection</option>
-                                    <option value='Visa'>Visa</option>
-                                  </select>
-                                </div>
-                                <div class='mb-3'>
-                                  <label class='form-label'>Pax</label>
-                                  <input type='number' class='form-control' name='pax' placeholder='Enter pax' min='1' max='{$pax}' required></input>
-                                </div>
-                                <div class='mb-3'>
-                                  <label class='form-label'>Details</label>
-                                  <textarea class='form-control' name='details' placeholder='Enter Message' rows='4' required></textarea>
-                                </div>     
+                              <div class='modal-header'>
+                                  <h5 class='modal-title' id='paymentModalLabel{$transactNo}'>Payment for Transaction #{$transactNo}</h5>
+                                  <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
                               </div>
-                              <div class='modal-footer'>
-                                <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Close</button>
-                                <button type='submit' name='request' class='btn btn-primary'>Send Request</button>
-                              </div>
-                            </form>
+                              <form action='../Agent Section/functions/agent-transactionPayment-code.php' method='POST' enctype='multipart/form-data'>
+                                  <div class='modal-body'>
+                                      <input type='hidden' name='transactNo' value='{$transactNo}'>
+                                      <input type='hidden' name='accountId' value='{$accountId}'>
+
+                                      <div class='mb-3'>
+                                          <label class='form-label'>Payment for:</label>
+                                          <select class='form-select' name='paymentTitle' required>
+                                              <option selected disabled>Select Payment Title</option>
+                                              <option value='Package Payment'>Package Payment</option>
+                                              <option value='Request Payment'>Request Payment</option>
+                                          </select>
+                                      </div>
+
+                                      <div class='mb-3'>
+                                          <label class='form-label'>Payment Type</label>
+                                          <select class='form-select' name='paymentType' required>
+                                              <option selected disabled>Select Payment Type</option>
+                                              <option value='Downpayment'>Downpayment</option>
+                                              <option value='Partial Payment'>Partial Payment</option>
+                                              <option value='Full Payment'>Full Payment</option>
+                                          </select>
+                                      </div>
+
+                                      <div class='mb-3'>
+                                          <label class='form-label'>Payment Amount</label>
+                                          <input type='number' class='form-control' name='amount' placeholder='Enter payment Amount' required>
+                                      </div>
+
+                                      <div class='mb-3'>
+                                          <label class='form-label'>Proof of Payment</label>
+                                          <!-- Drag-and-drop area -->
+                                          <div id='dropZone{$transactNo}' 
+                                               class='drop-zone border border-primary rounded p-3 text-center'
+                                               ondragover='event.preventDefault();' 
+                                               ondrop='handleDrop(event, {$transactNo});'>
+                                              <p>Drag and drop files here or click to select files</p>
+                                              <input type='file' id='fileInput{$transactNo}' class='form-control d-none' name='proofs[]' accept='image/*,application/pdf' multiple onchange='handleFiles(this.files, {$transactNo})'>
+                                          </div>
+                                          <!-- List of file names -->
+                                          <ul id='fileList{$transactNo}' class='list-unstyled mt-2'></ul>
+                                      </div>
+
+                                      <div class='modal-footer'>
+                                          <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Close</button>
+                                          <button type='submit' name='payment' class='btn btn-primary'>Submit payment</button>
+                                      </div>
+                                  </div>
+                              </form>
                           </div>
-                        </div>
-                      </div>";
+                      </div>
+                  </div>
+";
 
                     // Modal for Payment
                     echo "
-                      <div class='modal fade' id='paymentModal{$transactNo}' tabindex='-1' aria-labelledby='paymentModalLabel{$transactNo}' aria-hidden='true'>
-                        <div class='modal-dialog'>
-                          <div class='modal-content'>
-                            <div class='modal-header'>
-                              <h5 class='modal-title' id='paymentModalLabel{$transactNo}'>Payment for Transaction #{$transactNo}</h5>
-                              <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
-                            </div>
-                            <form action='../Agent Section/functions/agent-transactionPayment-code.php' method='POST' enctype='multipart/form-data'>
-                              <div class='modal-body'>
-                                <input type='hidden' name='transactNo' value={$transactNo}>
-                                <input type='hidden' name='accountId' value=$accountId>
+                      <div class='modal fade' id='paymentModal<?php echo $transactNo; ?>' tabindex='-1' aria-labelledby='paymentModalLabel<?php echo $transactNo; ?>' aria-hidden='true'>
+                       <div class='modal-dialog'>
+                           <div class='modal-content'>
+                               <div class='modal-header'>
+                                   <h5 class='modal-title' id='paymentModalLabel<?php echo $transactNo; ?>'>Payment for Transaction #<?php echo $transactNo; ?></h5>
+                                   <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+                               </div>
+                               <form action='../Agent Section/functions/agent-transactionPayment-code.php' method='POST' enctype='multipart/form-data'>
+                                   <div class='modal-body'>
+                                       <input type='hidden' name='transactNo' value='<?php echo $transactNo; ?>'>
+                                       <input type='hidden' name='accountId' value='<?php echo $accountId; ?>'>
 
-                                <div class='mb-3'>
-                                  <label class='form-label'>Payment for:</label>
-                                  <select class='form-select' name='paymentTitle' required>
-                                    <option selected disabled>Select Payment Title</option>
-                                    <option value='Package Payment'>Package Payment</option>
-                                    <option value='Request Payment'>Request Payment</option>
-                                  </select>
-                                </div>
+                                       <div class='mb-3'>
+                                           <label class='form-label'>Payment for:</label>
+                                           <select class='form-select' name='paymentTitle' required>
+                                               <option selected disabled>Select Payment Title</option>
+                                               <option value='Package Payment'>Package Payment</option>
+                                               <option value='Request Payment'>Request Payment</option>
+                                           </select>
+                                       </div>
 
-                                <div class='mb-3'>
-                                  <label class='form-label'>Payment Type</label>
-                                  <select class='form-select' name='paymentType' required>
-                                    <option selected disabled>Select Payment Type</option>
-                                    <option value='Downpayment'>Downpayment</option>
-                                    <option value='Partial Paymen'>Partial Payment</option>
-                                    <option value='Full Payment'>Full Payment</option>
-                                  </select>
-                                </div>
+                                       <div class='mb-3'>
+                                           <label class='form-label'>Payment Type</label>
+                                           <select class='form-select' name='paymentType' required>
+                                               <option selected disabled>Select Payment Type</option>
+                                               <option value='Downpayment'>Downpayment</option>
+                                               <option value='Partial Payment'>Partial Payment</option>
+                                               <option value='Full Payment'>Full Payment</option>
+                                           </select>
+                                       </div>
 
-                                <div class='mb-3'>
-                                  <label class='form-label'>Payment Amount</label>
-                                  <input type='number' class='form-control' name='amount' placeholder='Enter payment Amount' required>
-                                </div>
+                                       <div class='mb-3'>
+                                           <label class='form-label'>Payment Amount</label>
+                                           <input type='number' class='form-control' name='amount' placeholder='Enter payment Amount' required>
+                                       </div>
 
-                               <div class='mb-3'>
-                                  <label class='form-label'>Proof of Payment</label>
-                                  <!-- Drag-and-drop area -->
-                                  <div id='dropZone' 
-                                       class='drop-zone border border-primary rounded p-3 text-center'
-                                       ondragover='event.preventDefault();' 
-                                       ondrop='handleDrop(event);'>
-                                      <p>Drag and drop files here or click to select files</p>
-                                      <input type='file' id='fileInput' class='form-control d-none' name='proofs[]' accept='image/*,application/pdf' multiple onchange='handleFiles(this.files)'>
-                                  </div>
-                                  <!-- List of file names -->
-                                  <ul id='fileList' class='list-unstyled mt-2'></ul>
-                              </div>
+                                       <div class='mb-3'>
+                                         <label class='form-label'>Proof of Payment</label>
+                                         <!-- Drag-and-drop area -->
+                                         <div id='dropZone<?php echo htmlspecialchars($transactNo); ?>' 
+                                              class='drop-zone border border-primary rounded p-3 text-center'
+                                              ondragover='event.preventDefault();' 
+                                              ondrop='handleDrop(event, <?php echo $transactNo; ?>);'>
+                                             <p>Drag and drop files here or click to select files</p>
+                                             <input type='file' id='fileInput<?php echo htmlspecialchars($transactNo); ?>' 
+                                                    class='form-control d-none' name='proofs[]' 
+                                                    accept='image/*,application/pdf' multiple 
+                                                    onchange='handleFiles(this.files, <?php echo $transactNo; ?>)'>
+                                         </div>
+                                         <!-- List of file names -->
+                                         <ul id='fileList<?php echo htmlspecialchars($transactNo);?>' class='list-unstyled mt-2'></ul>
+                                     </div>
 
-                              <div class='modal-footer'>
-                                <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Close</button>
-                                <button type='submit' name='payment' class='btn btn-primary'>Submit payment</button>
-                              </div>
-                            </form>
-                          </div>
-                        </div>
-                      </div>";
+
+                                       <div class='modal-footer'>
+                                           <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Close</button>
+                                           <button type='submit' name='payment' class='btn btn-primary'>Submit payment</button>
+                                       </div>
+                                   </form>
+                               </div>
+                           </div>
+                       </div>
+                   </div>";
                 }
               } 
               else 
@@ -309,60 +332,87 @@
         </table>
 
         <script>
-           const maxFiles = 5;
-const maxFileSize = 4 * 1024 * 1024; // 4MB
-let selectedFiles = [];
+            
+    const maxFiles = 5;
+    const maxFileSize = 4 * 1024 * 1024; // 4MB
+    let selectedFiles = {};
 
-// Trigger file input when clicking on the drop zone
-document.getElementById("dropZone").addEventListener("click", () => {
-    document.getElementById('fileInput').click(); // Trigger click on hidden input
-});
-
-// Handle file drop event
-function handleDrop(event) {
-    event.preventDefault();
-    handleFiles(event.dataTransfer.files);
-}
-
-// Function to handle selected files
-function handleFiles(files) {
-    const fileList = document.getElementById("fileList");
-
-    // Check for maximum file limit
-    if (selectedFiles.length + files.length > maxFiles) {
-        alert(`You can upload a maximum of ${maxFiles} files.`);
-        return;
-    }
-
-    Array.from(files).forEach(file => {
-        // Check for individual file size limit
-        if (file.size > maxFileSize) {
-            alert(`File ${file.name} exceeds the 4MB limit and won't be added.`);
-        } else {
-            selectedFiles.push(file);
-
-            // Display file name in the list
-            const listItem = document.createElement("li");
-            listItem.textContent = `${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`;
-            fileList.appendChild(listItem);
-        }
+    document.querySelectorAll('.drop-zone').forEach(dropZone => {
+        dropZone.addEventListener("click", function() {
+            const transactNo = this.id.replace('dropZone', ''); // Extract transactNo
+            document.getElementById('fileInput' + transactNo).click();
+        });
     });
 
-    // Update the actual file input with the selected files
-    updateFileInput();
-}
+    function handleDrop(event, transactNo) {
+        event.preventDefault();
+        handleFiles(event.dataTransfer.files, transactNo);
+    }
 
-// Function to update the file input with the selected files
-function updateFileInput() {
-    const dataTransfer = new DataTransfer();
-    selectedFiles.forEach(file => dataTransfer.items.add(file));
+    function handleFiles(files, transactNo) {
+        const fileList = document.getElementById("fileList" + transactNo);
+        selectedFiles[transactNo] = selectedFiles[transactNo] || [];
 
-    // Update the actual file input with the selected files
-    const fileInput = document.getElementById('fileInput');
-    fileInput.files = dataTransfer.files; // Update the file input with the selected files
-}
+        if (selectedFiles[transactNo].length + files.length > maxFiles) {
+            alert(`You can upload a maximum of ${maxFiles} files.`);
+            return;
+        }
 
+        Array.from(files).forEach(file => {
+            if (file.size > maxFileSize) {
+                alert(`File ${file.name} exceeds the 4MB limit and won't be added.`);
+            } else {
+                selectedFiles[transactNo].push(file);
 
+                // Debugging: Log the file and the selectedFiles array
+                console.log(`File added: ${file.name}, Size: ${(file.size / 1024 / 1024).toFixed(2)} MB`);
+                console.log(selectedFiles[transactNo]);
+
+                // Create a list item for the file
+                const listItem = document.createElement("li");
+                listItem.classList.add("file-item");
+                listItem.textContent = `${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`;
+
+                // Add remove button
+                const removeButton = document.createElement("button");
+                removeButton.textContent = "Remove";
+                removeButton.classList.add("btn", "btn-danger", "btn-sm", "ml-2");
+                removeButton.onclick = () => removeFile(file, transactNo);
+
+                listItem.appendChild(removeButton);
+                fileList.appendChild(listItem);
+            }
+        });
+
+        updateFileInput(transactNo);
+    }
+
+    function removeFile(file, transactNo) {
+        const index = selectedFiles[transactNo].indexOf(file);
+        if (index > -1) {
+            selectedFiles[transactNo].splice(index, 1); // Remove file from selectedFiles
+        }
+
+        // Remove the list item from the DOM
+        const fileList = document.getElementById("fileList" + transactNo);
+        const listItem = fileList.querySelector(`li:contains('${file.name}')`);
+        if (listItem) {
+            fileList.removeChild(listItem);
+        }
+
+        updateFileInput(transactNo);
+    }
+
+    function updateFileInput(transactNo) {
+        const dataTransfer = new DataTransfer();
+        selectedFiles[transactNo].forEach(file => dataTransfer.items.add(file));
+
+        const fileInput = document.getElementById('fileInput' + transactNo);
+        fileInput.files = dataTransfer.files;
+
+        // Debugging: Log updated file input
+        console.log(fileInput.files);
+    }
 
          </script>
 
