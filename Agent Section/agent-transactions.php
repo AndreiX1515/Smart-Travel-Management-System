@@ -208,55 +208,54 @@
                       <div class='modal fade' id='paymentModal{$transactNo}' tabindex='-1' aria-labelledby='paymentModalLabel{$transactNo}' aria-hidden='true'>
                         <div class='modal-dialog'>
                           <div class='modal-content'>
-                              <div class='modal-header'>
-                                  <h5 class='modal-title' id='paymentModalLabel{$transactNo}'>Payment for Transaction #{$transactNo}</h5>
-                                  <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
-                              </div>
-                              <form action='../Agent Section/functions/agent-transactionPayment-code.php' method='POST' enctype='multipart/form-data'>
-                                  <div class='modal-body'>
-                                      <input type='hidden' name='transactNo' value='{$transactNo}'>
-                                      <input type='hidden' name='accountId' value='{$accountId}'>
+                            <div class='modal-header'>
+                              <h5 class='modal-title' id='paymentModalLabel{$transactNo}'>Payment for Transaction #{$transactNo}</h5>
+                              <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+                            </div>
+                            <form action='../Agent Section/functions/agent-transactionPayment-code.php' method='POST' enctype='multipart/form-data'>
+                              <div class='modal-body'>
+                                <input type='hidden' name='transactNo' value='{$transactNo}'>
+                                <input type='hidden' name='accountId' value='{$accountId}'>
 
-                                      <div class='mb-3'>
-                                          <label class='form-label'>Payment for:</label>
-                                          <select class='form-select' name='paymentTitle' required>
-                                              <option selected disabled>Select Payment Title</option>
-                                              <option value='Package Payment'>Package Payment</option>
-                                              <option value='Request Payment'>Request Payment</option>
-                                          </select>
-                                      </div>
+                                <div class='mb-3'>
+                                  <label class='form-label'>Payment for:</label>
+                                  <select class='form-select' name='paymentTitle' required>
+                                    <option selected disabled>Select Payment Title</option>
+                                    <option value='Package Payment'>Package Payment</option>
+                                    <option value='Request Payment'>Request Payment</option>
+                                  </select>
+                                </div>
 
-                                      <div class='mb-3'>
-                                          <label class='form-label'>Payment Type</label>
-                                          <select class='form-select' name='paymentType' required>
-                                              <option selected disabled>Select Payment Type</option>
-                                              <option value='Downpayment'>Downpayment</option>
-                                              <option value='Partial Payment'>Partial Payment</option>
-                                              <option value='Full Payment'>Full Payment</option>
-                                          </select>
-                                      </div>
+                                <div class='mb-3'>
+                                  <label class='form-label'>Payment Type</label>
+                                  <select class='form-select' name='paymentType' required>
+                                    <option selected disabled>Select Payment Type</option>
+                                    <option value='Downpayment'>Downpayment</option>
+                                    <option value='Partial Payment'>Partial Payment</option>
+                                    <option value='Full Payment'>Full Payment</option>
+                                  </select>
+                                </div>
 
-                                      <div class='mb-3'>
-                                          <label class='form-label'>Payment Amount</label>
-                                          <input type='number' class='form-control' name='amount' placeholder='Enter payment Amount' required>
-                                      </div>
+                                <div class='mb-3'>
+                                  <label class='form-label'>Payment Amount</label>
+                                  <input type='number' class='form-control' name='amount' placeholder='Enter payment Amount' required>
+                                </div>
 
-                                      <div class='mb-3'>
-                                          <label class='form-label'>Proof of Payment</label>
-                                          <div class='mb-3'>
-                                              <input type='file' id='fileInput' . $transactNo . '\' class='form-control' name='proofs[]' accept='image/*,application/pdf\' multiple>
-                                          </div>
-                                          <!-- List of file names -->
-                                          <ul id='fileList' . $transactNo . '\' class='list-unstyled mt-2'></ul>
-
-                                      </div>
-
-                                      <div class='modal-footer'>
-                                          <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Close</button>
-                                          <button type='submit' name='payment' class='btn btn-primary'>Submit payment</button>
-                                      </div>
+                                <div class='mb-3'>
+                                  <label class='form-label'>Proof of Payment</label>
+                                  <div class='mb-3'>
+                                    <input type='file' id='fileInput' . $transactNo . '\' class='form-control' name='proofs[]' accept='image/*,application/pdf\' multiple>
                                   </div>
-                              </form>
+                                  <!-- List of file names -->
+                                  <ul id='fileList' . $transactNo . '\' class='list-unstyled mt-2'></ul>
+                                </div>
+
+                                <div class='modal-footer'>
+                                  <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Close</button>
+                                  <button type='submit' name='payment' class='btn btn-primary'>Submit payment</button>
+                                </div>
+                              </div>
+                            </form>
                           </div>
                         </div>
                       </div>";
@@ -857,7 +856,6 @@
     
     $(document).ready(function ()
     {
-
       // Fetching Additional Details once Request Type is Selected
       $('#concern').on('change', function () 
       {
@@ -966,7 +964,7 @@
         $('#displayTotalPrice').text(formatNumberWithCommas(totalPrice.toFixed(2))); // Update the input field with the calculated total price
         // Update the price input field or display the total price wherever needed
         $('#TotalPrice').val(totalPrice.toFixed(2)); // Update the input field with the calculated total price
-      }
+      } 
     });
 
     function fetchBookingDetails(transactionId) 
@@ -1008,24 +1006,34 @@
       });
     }
 
+    // Add an event listener to the input field to validate as the user types
+    document.getElementById('paxRequest').addEventListener('input', function() 
+    {
+      validateMaxValue(this);
+    });
+
     // Function to fetch pax for the request modal
     function fetchPaxForRequestModal(transactionId) 
     {
       fetch('../Agent Section/functions/getBookingDetails.php', 
       {
         method: 'POST',
-        headers: 
-        {
+        headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ transaction_id: transactionId }),
       })
       .then(response => response.json())
-      .then(data => {
+      .then(data => 
+      {
         if (data.success) 
         {
           // Populate only the pax field with the fetched data
-          document.querySelector('input[name="pax"]').setAttribute('max', data.booking.pax);
+          const paxInput = document.querySelector('input[name="pax"]');
+          paxInput.setAttribute('max', data.booking.pax);
+          
+          // Ensure the current value is valid in case it exceeds the max
+          validateMaxValue(paxInput);
         } 
         else 
         {
@@ -1038,10 +1046,14 @@
       });
     }
 
+    // Function to validate the max value of the input
     function validateMaxValue(input) 
     {
       const max = parseInt(input.getAttribute("max"));
-      if (parseInt(input.value) > max) {
+      const currentValue = parseInt(input.value);
+      
+      if (currentValue > max) 
+      {
         input.value = max; // Set the value to the max if it exceeds
       }
     }
