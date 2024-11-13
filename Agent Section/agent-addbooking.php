@@ -67,6 +67,7 @@
                   <div class="col-md-6">
                     <div class="form-group mb-6">
                       <label class="fs-6" for="totalPax">Total Pax <span class="text-danger fw-bold">*</span></label>
+                      <label id="maxSeats"></label>
                       <input type="number" class="form-control mt-2 fs-6" id="totalPax" name="totalPax" min="1" placeholder="Enter Total Pax" required>
                       <span id="totalPaxError" class="text-danger"></span> <!-- Error message for Total Pax -->
                     </div>
@@ -520,6 +521,7 @@
           $('#flightDate').html('<option selected disabled>Select Flight Date</option>'); // Clear Flight Date field
           $('#flightId').val(''); // Clear Flight Id field
           $('#flightPrice').text('0.00'); // Clear Flight Price field
+          $('#maxSeats').text(''); // Clear Max Seat field
 
           // Update the modal with the selected package name
           $('#selectedPackage').text(selectedPackageName);
@@ -571,6 +573,7 @@
           $('#flightDate').html('<option selected disabled>Select Flight Date</option>'); // Clear Flight Date field
           $('#flightId').val(''); // Clear Flight Id field
           $('#flightPrice').text('0.00'); // Clear Flight Price field
+          $('#maxSeats').text(''); // Clear Max Seat field
 
           if (packageId && origin) 
           {
@@ -608,6 +611,7 @@
           $('#flightDate').html('<option selected disabled>Select Flight Date</option>');
           $('#flightId').val('');  // Clear Flight Id field
           $('#flightPrice').val('0.00'); // Clear Flight Price field
+          $('#maxSeats').text(''); // Clear Max Seat field
 
           if (packageId && origin && selectedYear) 
           {
@@ -650,6 +654,7 @@
           $('#flightId').val('');  // Clear Flight Id field
           $('#flightPrice').text('0.00'); // Clear Flight Price field
           $('#flightPrice').val('0.00'); // Clear Flight Price field
+          $('#maxSeats').text(''); // Clear Max Seat field
 
           if (packageId && origin && selectedYear && selectedMonth) 
           {
@@ -708,6 +713,9 @@
 
             $('input[name="flightId"]').val("Null");
 
+            // Manually trigger the change event on #flightId
+            $('#flightId').trigger('change');
+
             // Format total price with commas
             $('#displayTotalPrice').text(formatNumberWithCommas(totalPrice.toFixed(2))); // Display total price
             $('#totalPrice').val(totalPrice.toFixed(2)); // Set hidden input value
@@ -737,6 +745,9 @@
                 // Update the flight ID 
                 $('input[name="flightId"]').val(data.flightId);
 
+                // Manually trigger the change event on #flightId
+                $('#flightId').trigger('change');
+
                 const totalPax = parseInt($('#totalPax').val()) || 0;
                 const totalPrice = flightPrice * totalPax;
 
@@ -755,6 +766,65 @@
           {
             // If no Flight Date is selected, clear return flight input fields
             console.error('Error fetching Flight Date:', error); // Log the error to console
+          }
+        });
+
+        // Fetching Available Flight Seats based on the AgentId and FlightId
+        $('#flightId').on('change', function() 
+        {
+          // Get the input value
+          var flightId = $(this).val();
+
+          // Perform an AJAX request if the flight ID is not empty
+          if (flightId !== '') 
+          {
+            $.ajax(
+            {
+              url: '../Agent Section/functions/fetchMaxSeatsPerAgent.php', // Replace with your server-side script URL
+              method: 'POST',
+              data: { flightId: flightId }, // Send the flightId to the server
+              dataType: 'json', // Specify that we're expecting JSON response
+              success: function(response) 
+              {
+                if (response.flightId !== null) 
+                {
+                  // Extract the maxSeats from the response and display it
+                  var maxSeats = response.maxSeats;
+                  $('#maxSeats').text('Available Seats for this Flight: ' + maxSeats);
+                  // Set the max attribute of the totalPax input dynamically
+                  $('#totalPax').attr('max', maxSeats);
+
+                  // Check if the current value of totalPax exceeds maxSeats, if so, reset to maxSeats
+                  var currentPax = $('#totalPax').val();
+                  if (currentPax > maxSeats) 
+                  {
+                    $('#totalPax').val(maxSeats); // Set the value to the maxSeats if it exceeds
+                  } 
+                } 
+                else 
+                {
+                  // Handle the case where no flight information is found
+                  $('#maxSeats').text('Available Seats for this Flight: N/A');
+                }
+              },
+              error: function(xhr, status, error) {
+                // Log any errors
+                console.error('AJAX Error:', error);
+              }
+            });
+          }
+        });
+
+        // Ensure that if the user manually enters a number greater than the max, it's automatically corrected
+        $('#totalPax').on('input', function() 
+        {
+          var maxSeats = $(this).attr('max');
+          var currentPax = $(this).val();
+
+          // If the current value exceeds maxSeats, reset to maxSeats
+          if (parseInt(currentPax) > parseInt(maxSeats)) 
+          {
+            $(this).val(maxSeats); // Reset to the max value
           }
         });
 
@@ -863,8 +933,7 @@
           return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
         
-      }); 
-      
+      });   
     </script>
 
   </body>
