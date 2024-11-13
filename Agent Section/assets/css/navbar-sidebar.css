@@ -34,12 +34,13 @@ body {
  margin-left: 250px; /* Add margin to account for visible sidebar */
 }
 
-/* Sidebar Section */
+
+/* Sidebar styling */
 .sidebar {
  width: 220px;
  height: 100vh;
  background: #ffffff; /* Clean white background */
- padding: 0px 15px 20px 15px;
+ padding: 0px 15px 20px;
  position: fixed;
  top: 0;
  left: 0;
@@ -50,27 +51,66 @@ body {
  border-right: 1px solid #e0e0e0; /* Soft border for separation */
  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05); /* Light shadow for depth */
  transition: transform 0.3s ease-in-out;
- transform: translateX(0);
 }
 
 .sidebar.hidden {
  transform: translateX(-100%);
 }
 
+/* Sidebar Logo */
 .sidebar img {
  width: 100%;
  object-fit: contain;
- padding: 15px 30px 15px 15px; /* Adjusted padding for cleaner spacing */
+ padding: 15px 30px 15px 15px;
 }
 
-.sidebar h4, .sidebar h3 {
- font-size: 1.2rem;
- font-weight: 600;
- color: #333;
- margin-bottom: 12px; /* Space below headings */
- padding-left: 5px;
+/* Dashboard Title */
+.dashboard-title {
+ font-size: 0.85rem;
+ color: #6c757d; /* Muted section title */
+ font-weight: 500;
+ text-transform: uppercase;
+ letter-spacing: 0.5px;
+ margin: 15px 30px 0px 0px;
+ cursor: pointer;
+ padding: 10px;
+ transition: background-color 0.2s ease;
 }
 
+/* Section Titles */
+.sidebar .section-title {
+ font-size: 0.85rem;
+ color: #6c757d; /* Muted section title */
+ font-weight: 500;
+ text-transform: uppercase;
+ letter-spacing: 0.5px;
+ margin: 30px 0 5px;
+ cursor: pointer;
+ padding: 10px;
+ display: flex;
+ justify-content: space-between; /* Align chevron on the right */
+ align-items: center;
+ transition: background-color 0.2s ease;
+}
+
+.sidebar .section-title:hover {
+ background-color: #f0f2f5; /* Subtle hover background */
+ color: #007bff; /* Professional blue color on hover */
+}
+
+/* Chevron Icon */
+.chevron-icon {
+ transition: transform 0.3s ease; /* Smooth rotation for the chevron */
+}
+
+.sidebar .section-title .chevron-icon {
+ font-size: 0.9rem;
+ color: #6c757d; /* Default chevron color */
+}
+
+
+
+/* Links inside the Sidebar */
 .sidebar a {
  display: flex;
  align-items: center;
@@ -82,28 +122,51 @@ body {
  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-
 .sidebar a:hover {
  background-color: #f0f2f5; /* Subtle hover background */
  color: #007bff; /* Professional blue color on hover */
 }
 
-/* Sidebar Add Booking Button */
-.sidebar .add-booking {
- padding: 8px 12px;
+/* .submenu {
+ background-color: #b1b0ac;
+ border-radius: 15px;
+ padding: 10px;
+
+} */
+
+
+.sidebar .submenu.open + .section-title .chevron-icon {
+ transform: rotate(180deg); /* Rotate the chevron when submenu is open */
+}
+
+/* Links inside Submenu */
+.sidebar .submenu a {
+ display: flex;
+ align-items: left;
+ padding: 8px 15px;
  border-radius: 6px;
- color: #ffffff; /* White text for contrast */
- background-color: #007bff; /* Primary blue background */
+ color: #495057; /* Neutral dark-gray text */
  text-decoration: none;
  font-size: 0.95rem;
- font-weight: 600; /* Slightly bolder text */
- text-align: center;
  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.sidebar .add-booking i {
- color: #ffffff; /* White icon color */
- margin-right: 8px; /* Space between icon and text */
+.sidebar .submenu a:hover {
+ background-color: #f0f2f5; /* Subtle hover background */
+ color: #007bff; /* Professional blue color on hover */
+}
+
+/* Add Booking Button */
+.sidebar .add-booking {
+ padding: 8px 12px;
+ border-radius: 6px;
+ color: #ffffff;
+ background-color: #007bff;
+ text-decoration: none;
+ font-size: 0.95rem;
+ font-weight: 600;
+ text-align: center;
+ transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .sidebar .add-booking:hover {
@@ -111,68 +174,50 @@ body {
  color: #e9ecef;
 }
 
+.sidebar .add-booking i {
+ color: #ffffff;
+ margin-right: 8px;
+}
+
+
 .sidebar i {
  margin-right: 8px;
- color: #6c757d; /* Muted icon color */
-}
-
-.sidebar .section-title {
- margin: 30px 0 10px;
- font-size: 0.85rem;
- color: #6c757d; /* Muted section title */
- font-weight: 500;
- text-transform: uppercase;
- letter-spacing: 0.5px;
-}
-
-.sidebar .invite-teammates {
- margin-top: auto;
- border-top: 1px solid #eaeaea;
- padding-top: 15px;
-}
-
-.profile-container {
- display: flex;
- margin-top: auto;
-
-}
-
-.profile-image {
- width: 30px;
- height: 30px;
- align-self: center;
- border-radius: 50%;
- margin-right: 10px;
- object-fit: cover;
-}
-
-.fas {
-  font-size: 14px;
-  align-items: center;
-
-
-}
-.profile-container h6 {
- font-weight: 600;
- font-size: 0.95rem;
- color: #333;
- margin: 0;
-}
-
-.profile-container span {
- font-size: 0.85rem;
  color: #6c757d;
 }
+
+
+.sidebar .submenu {
+ display: none;
+ padding-left: 7px;
+ transition: max-height 0.3s ease-in-out, opacity 0.3s ease;
+}
+
+.sidebar .submenu.open {
+ display: block;
+ animation: slideDown 0.3s ease-in-out;
+}
+
+@keyframes slideDown {
+ from {
+   max-height: 0;
+   opacity: 0;
+ }
+ to {
+   max-height: 500px;
+   opacity: 1;
+ }
+}
+
 
 
 
 /* Navbar Section */
 .navbar {
- padding: 10px 25px 5px 0px; /* Adjust as necessary */
- display: flex; /* Use flexbox to position items */
- align-items: center; /* Center items vertically */
- background-color: transparent; /* Use your preferred color */
- z-index: 999; /* Ensure the navbar is above other elements */
+ padding: 10px 25px 5px 0px; 
+ display: flex;
+ align-items: center; 
+ background-color: transparent;
+ z-index: 999; 
  margin-bottom: 10px;
  position: relative;
 }
@@ -255,4 +300,30 @@ body {
  background-color: rgb(167, 167, 167); /* Line color */
  height: 40px; /* Adjust height to fit the navbar */
  margin: 10px 20px; /* Spacing around the line */
+}
+
+/* Profile Section */
+.profile-container {
+ display: flex;
+ margin-top: auto;
+}
+
+.profile-image {
+ width: 30px;
+ height: 30px;
+ border-radius: 50%;
+ margin-right: 10px;
+ object-fit: cover;
+}
+
+.profile-container h6 {
+ font-weight: 600;
+ font-size: 0.95rem;
+ color: #333;
+ margin: 0;
+}
+
+.profile-container span {
+ font-size: 0.85rem;
+ color: #6c757d;
 }

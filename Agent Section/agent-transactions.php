@@ -85,27 +85,7 @@
           unset($_SESSION['status']);
           endif;
         ?>
-        <div class="table-actions">
-          <div class="show-column">
-            <span>Show: </span>
-            <select>
-              <option>10</option>
-              <option>20</option>
-              <option>30</option>
-              <option>All</option>
-            </select>
-          </div>
-
-            <!-- <div class="pagination">
-              <button id="prev-page" class="pagination-button" onclick="prevPage()">&#8249;</button>
-              <button class="pagination-number" onclick="goToPage(1)">1</button>
-              <button class="pagination-number" onclick="goToPage(2)">2</button>
-              <button id="page-info" class="pagination-number active">3</button>
-              <span class="pagination-ellipsis">...</span>
-              <button class="pagination-number" onclick="goToPage(10)">10</button>
-              <button id="next-page" class="pagination-button" onclick="nextPage()">&#8250;</button>
-            </div> -->
-        </div>
+        
 
         <table class="product-table">
           <thead>
@@ -162,6 +142,25 @@
                 {
                   $transactNo = $row['T.N'];
                   $pax = $row['TOTAL PAX'];
+
+                  $status = isset($row['STATUS']) ? $row['STATUS'] : 'Unknown';
+                  $statusClass = '';
+
+                  switch ($status) {
+                      case 'Active':
+                          $statusClass = 'bg-success text-white'; // Green background, white text
+                          break;
+                      case 'Inactive':
+                          $statusClass = 'bg-danger text-white'; // Red background, white text
+                          break;
+                      case 'Pending':
+                          $statusClass = 'bg-warning text-dark'; // Yellow background, dark text
+                          break;
+                      default:
+                          $statusClass = 'bg-secondary text-white'; // Gray background, white text for unknown status
+                          break;
+                  }
+
                   echo "<tr>
                           <td>{$transactNo}</td>
                           <td>{$row['CONTACT NAME']}</td>
@@ -171,7 +170,11 @@
                           <td>{$row['TRANSACTION DATE']}</td>
                           <td>{$row['FLIGHT DATE']}</td>
                           <td>{$row['TOTAL PAX']}</td>
-                          <td>{$row['STATUS']}</td>
+                          <td>
+                           <span class='badge p-2 rounded-pill {$statusClass} '>
+                               {$status}
+                           </span>
+                         </td>
                           <td>
                             <div class='dropdown'>
                               <button class='btn btn-link p-0 text-secondary' type='button' data-bs-toggle='dropdown' aria-expanded='false'>
@@ -197,10 +200,10 @@
                                           <a class='dropdown-item' href='#' onclick='showLandOnlyDetails(\"{$row['T.N']}\")'>Show Land Only Details</a>
                                         </li>";
                                 }
-                        echo "</ul>
-                            </div>
-                          </td>
-                        </tr>";
+                   echo "</ul>
+                       </div>
+                     </td>
+                   </tr>";
 
                   
                     // Modal for Request
@@ -271,8 +274,8 @@
           </tbody>
         </table>
 
-        <script>
-            
+    <script>
+      
     const maxFiles = 5;
     const maxFileSize = 4 * 1024 * 1024; // 4MB
     let selectedFiles = {};
@@ -777,10 +780,6 @@
               </div>
             </div>
 
-
-
-
-
           </form>
         </div>
         <div class="modal-footer border-0">
@@ -1174,7 +1173,5 @@
     }
   </script>
 
-
-   
 </body>
 </html>
