@@ -1,5 +1,5 @@
 body {
-  background-color: #F4F4F4;
+  background-color: transparent;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -13,7 +13,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  background-color: #ffffff;
+  background-color: transparent;
   
   box-sizing: border-box;
  }
