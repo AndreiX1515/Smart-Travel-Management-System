@@ -6,7 +6,6 @@
  font-family: 'Inter', 'Helvetica Neue', 'Segoe UI', Arial, sans-serif;
 }
 
-
 body {
     background-color: #F4F4F4;
     margin: 0;
@@ -209,6 +208,7 @@ body {
 }
 
 .content-container p {
+ font-size: .4rem;
  font-size: 10px; /* Text size for additional information */
  color: #666; /* Softer grey for less emphasis */
  margin: 0; /* Remove default margin */
@@ -480,26 +480,6 @@ body {
     font-weight: bold;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 .dcard-body {
  display: flex;
  flex-direction: row;
@@ -540,8 +520,6 @@ body {
  font-size: 12px; /* Smaller font for conversion rates */
  color: #555; /* Darker color for visibility */
 }
-
-
 
 /* Second Row Container */
 .second-row-container {
@@ -605,8 +583,6 @@ body {
  font-size: 14px;
  font-weight: 600;
  color: #585858;
-
-
 }
 
 .status {
@@ -730,9 +706,6 @@ body {
  border-bottom-left-radius: 10px; /* Rounded corners for the last row */
  border-bottom-right-radius: 10px;
 }
-
-
-
 
 /* Second Row Container - Div Two */
 .second-row-container .two {
@@ -885,63 +858,6 @@ body {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* .two .body {
- flex-grow: 1; 
- display: flex; 
- align-items: center; 
- justify-content: center; 
- padding: 30px;
- position: relative;
-}
-
-.two canvas {
- width: 5%;
- height: 5%;
- padding-right: 0; /* Removes any extra padding to the right 
-} */
-
-
 .confirm-container {
   display: flex;
   flex-direction: row;
@@ -1015,24 +931,186 @@ body {
  border-bottom-right-radius: 10px;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* Optional: Add some responsiveness */
 @media (max-width: 600px) {
  .card {
      min-width: 100px; /* Adjust minimum width for smaller screens */
  }
 }
+
+
+
+
+/* Full HD or larger (1920px width and height) */
+@media screen and (min-width: 1920px) and (min-height: 1080px) {
+ .dashboard-cards {
+   gap: 10px; /* Increased gap for better spacing */
+ }
+
+ .card {
+   width: calc(15% - 15px); /* Responsive width with spacing accounted */
+ }
+
+ .dashboard-cards-one,
+ .dashboard-cards-two,
+ .dashboard-cards-three,
+ .dashboard-cards-four {
+   width: calc(25% - 5px); /* Maintain wider card width */
+ }
+}
+
+/* HD screens (1280px width or 720px height) */
+@media screen and (max-width: 1280px) and (max-height: 720px) {
+ .dashboard-cards {
+   gap: 8px; /* Slightly smaller gap */
+ }
+
+ .card {
+   width: calc(20% - 8px); /* Adjust width for smaller screens */
+ }
+
+ .dashboard-cards-one,
+ .dashboard-cards-two,
+ .dashboard-cards-three,
+ .dashboard-cards-four {
+   width: calc(30% - 8px); /* Adjust card width */
+ }
+}
+
+/* XGA screens (1024px width or 768px height) */
+@media screen and (max-width: 1024px) and (max-height: 768px) {
+ .dashboard-cards {
+   gap: 5px; /* Reduce gap */
+   height: auto; /* Let container adjust height based on content */
+ }
+
+ .card {
+   width: calc(33.33% - 10px); /* Display 3 cards per row */
+ }
+
+ .dashboard-cards-one,
+ .dashboard-cards-two,
+ .dashboard-cards-three,
+ .dashboard-cards-four {
+   width: calc(33.33% - 10px); /* Cards occupy 1/3 of container width */
+ }
+}
+
+/* Portrait tablets (768px width or 1024px height) */
+@media screen and (max-width: 768px) and (max-height: 1024px) {
+ .dashboard-cards {
+   gap: 5px; /* Tighten the gap for smaller screens */
+   flex-direction: column; /* Stack cards vertically */
+ }
+
+ .card {
+   width: 100%; /* Full width cards */
+   margin-bottom: 10px; /* Add space between stacked cards */
+ }
+
+ .dashboard-cards-one,
+ .dashboard-cards-two,
+ .dashboard-cards-three,
+ .dashboard-cards-four {
+   width: 100%; /* Full width cards in vertical stack */
+ }
+
+ .dcard-header h3 {
+   font-size: 1.2rem; /* Larger font size for better readability */
+ }
+}
+
+/* Small tablets or large phones (600px width or height) */
+@media screen and (max-width: 600px) and (max-height: 800px) {
+ .dcard-header h3 {
+   font-size: 1rem; /* Decrease header font size */
+ }
+
+ .month-transaction h3 {
+   font-size: 20px; /* Adjust transaction number font size */
+ }
+
+ .card {
+   width: 100%; /* Full-width cards */
+ }
+
+ .dashboard-cards-one,
+ .dashboard-cards-two,
+ .dashboard-cards-three,
+ .dashboard-cards-four {
+   width: 100%; /* Ensure all cards take full width */
+ }
+}
+
+/* Small phone (480px width or height) */
+@media screen and (max-width: 480px) and (max-height: 640px) {
+ .dcard-header h3 {
+   font-size: 0.9rem; /* Smaller font size for header */
+ }
+
+ .month-transaction h3 {
+   font-size: 18px; /* Adjust number size */
+ }
+
+ .card {
+   width: 100%; /* Cards fill the width of the container */
+ }
+
+ .dashboard-cards-one,
+ .dashboard-cards-two,
+ .dashboard-cards-three,
+ .dashboard-cards-four {
+   width: 100%; /* Cards adjust to full width on very small screens */
+ }
+
+ .logo-container {
+   width: 30px; /* Reduce logo size */
+   height: 30px; /* Same reduction for logo */
+ }
+
+ .content-container {
+   width: 100%; /* Ensure content fits on smaller screens */
+ }
+}
+
+/* Very small phone (320px width or height) */
+@media screen and (max-width: 320px) and (max-height: 480px) {
+ .dcard-header h3 {
+   font-size: 0.8rem; /* Further reduce header font size */
+ }
+
+ .month-transaction h3 {
+   font-size: 16px; /* Smaller transaction numbers */
+ }
+
+ .card {
+   width: 100%; /* Full width cards */
+ }
+
+ .dashboard-cards-one,
+ .dashboard-cards-two,
+ .dashboard-cards-three,
+ .dashboard-cards-four {
+   width: 100%; /* Cards occupy full width */
+ }
+
+ .logo-container {
+   width: 25px; /* Minimized logo size */
+   height: 25px; /* Matching height reduction */
+ }
+
+ .content-container {
+   width: 100%; /* Ensure content is responsive */
+ }
+}
+
+
+
+
+
+
+
+
+
+
+
