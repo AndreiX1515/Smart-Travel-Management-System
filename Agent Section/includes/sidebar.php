@@ -15,9 +15,25 @@
 
   <div class="submenu" id="operational-submenu">
     <a href="../Agent Section/agent-transactions.php" class="page-button" data-page-name="Transactions">
-      <i class="fas fa-exchange-alt"></i> Transactions
+      <i class="fas fa-file-invoice"></i> Transactions
     </a>
-  </div>
+
+    <a href="../Agent Section/agent-itenerary.php" class="page-button" data-page-name="Itinerary">
+      <i class="fas fa-map"></i> Itinerary
+    </a>
+
+    <a href="../Agent Section/agent-soa.php" class="page-button" data-page-name="Statement of Accounts (SOA)">
+      <i class="fas fa-file-invoice-dollar"></i> Statement of Accounts
+    </a>
+
+    <a href="../Agent Section/agent-ticket.php" class="page-button" data-page-name="Ticket">
+      <i class="fas fa-ticket"></i> Ticket
+    </a>
+
+    <a href="../Agent Section/agent-transactions.php" class="page-button" data-page-name="Voucher">
+      <i class="fas fa-gift"></i> Voucher
+    </a>
+</div>
 
   <div class="section-title" onclick="toggleSubMenu('management-submenu')">
     Management <span class="chevron-icon fas fa-chevron-down"></span>
@@ -92,11 +108,4 @@ function toggleSubMenu(submenuId) {
 
 
 
-
-
-
-<script>
-sidebar.classList.remove('hidden');
-mainContent.classList.add('active');
-</script>
 
