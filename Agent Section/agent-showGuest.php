@@ -112,6 +112,26 @@
                         <td>{$row['passportNo']}</td>
                         <td>{$row['passportExp']}</td>
                         <td>{$row['visaStatus']}</td>
+                        <td>
+                          <div class='dropdown'>
+                            <button class='btn btn-link p-0 text-secondary' type='button' data-bs-toggle='dropdown' aria-expanded='false'>
+                              <i class='fas fa-ellipsis-v'></i>
+                            </button>
+                            <ul class='dropdown-menu'>
+                              <li> <a class='dropdown-item' href='#' data-bs-toggle='modal' data-bs-target='#updateBookingModal' data-transaction-id='{$row['guestId']}'>
+                                Update Booking </a> 
+                              </li>
+                              <li><a class='dropdown-item' href='#' onclick='addGuestInfo(\"{$row['guestId']}\")'>Attach Passport</a></li>
+                              <li><a class='dropdown-item' href='#' onclick='showGuestInfo(\"{$row['guestId']}\")'>Show Guest Information</a></li>
+                              <li> <a class='dropdown-item' href='#' data-bs-toggle='modal' data-bs-target='#requestModal' data-transaction-id='{$row['guestId']}'>
+                                Add Request </a> 
+                              </li>
+                              <li><a class='dropdown-item' href='#' onclick='showRequestHistory(\"{$row['guestId']}\")'>Show Request History</a></li>
+                              <li><a class='dropdown-item' href='#' data-bs-toggle='modal' data-bs-target='#paymentModal'>Add Payment</a></li>
+                              <li><a class='dropdown-item' href='#' onclick='showPaymentHistory(\"{$row['guestId']}\")'>Show Payment History</a></li>
+                            </ul>
+                          </div>
+                        </td>
                       </tr>";
               }
             } else {
@@ -128,85 +148,86 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
   <!-- Attach Visa Requirements Modal -->
-<div class="modal fade" id="visaModal" tabindex="-1" aria-labelledby="visaModalLabel" aria-hidden="true">
+  <div class="modal fade" id="visaModal" tabindex="-1" aria-labelledby="visaModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h6 class="modal-title" id="visaModalLabel">
-                    Visa Requirements for Transaction No: <?php echo htmlspecialchars($_SESSION['transaction_number'] ?? ''); ?>
-                </h6>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-
-            <form action="../Agent Section/functions/agent-addVisaRequirements-code.php" method="POST" enctype="multipart/form-data">
-                <div class="modal-body">
-                    <!-- Hidden input for transaction number -->
-                    <input type="hidden" name="transaction_number" value="<?php echo htmlspecialchars($_SESSION['transaction_number'] ?? ''); ?>">
-
-                    <?php
-                    // Assuming you have a database connection established
-                    $transactionNumber = $_SESSION['transaction_number'] ?? '';
-                    $query1 = "SELECT guestId, CONCAT(
-                        lName, ', ', fName, ' ', 
-                        CASE WHEN mName = 'N/A' THEN '' ELSE CONCAT(SUBSTRING(mName, 1, 1), '.') END, ' ',
-                        CASE WHEN suffix = 'N/A' THEN '' ELSE suffix END
-                    ) AS `FULLNAME` FROM guest WHERE transactNo = '$transactionNumber'";
-
-                    // Execute the query
-                    $res1 = mysqli_query($conn, $query1);
-
-                    if ($res1) {
-                        // Count the number of guests
-                        $guestCount = mysqli_num_rows($res1);
-
-                        // Display the name and guestId for each guest inside input fields
-                        while ($row = mysqli_fetch_assoc($res1)) {
-                            $guestId = $row['guestId'];
-                            $name = $row['FULLNAME'];
-
-                            // Create input fields for each guest
-                            echo "<div class='mb-3'>";
-                            echo "<label for='guest-$guestId' class='form-label'>Guest ID: $guestId</label>";
-                            echo "<input type='text' class='form-control' id='guest-$guestId' name='guestIds[]' value='$guestId' readonly>";
-
-                            echo "<label for='name-$guestId' class='form-label'>Name</label>";
-                            echo "<input type='text' class='form-control' id='name-$guestId' name='guestNames[]' value='$name' readonly>";
-
-                            echo "<h6 class='form-label'>Visa Requirements</h6>";
-
-                            echo "<label for='passport-$guestId' class='form-label'>Passport</label>";
-                            echo "<input type='file' class='form-control' id='passport-$guestId' name='passports[]' />";
-
-                            echo "<label for='permit-$guestId' class='form-label'>Permit</label>";
-
-                            echo "<input type='file' class='form-control' id='permit-$guestId' name='permits[]' />";
-
-                            echo "<label for='validId-$guestId' class='form-label'>Valid Id</label>";
-
-                            echo "<input type='file' class='form-control' id='validId-$guestId' name='validIds[]' />";
-
-                            echo "<label for='certificate-$guestId' class='form-label'>Certificate</label>";
-                            echo "<input type='file' class='form-control' id='certificate-$guestId' name='certificates[]' />";
-
-                            echo "<label for='guaranteedLetter-$guestId' class='form-label'>Guaranteed Letter</label>";
-                            echo "<input type='file' class='form-control' id='guaranteedLetter-$guestId' name='guaranteedLetters[]' />";
-                            echo "</div>";
-                        }
-                    } else {
-                        echo "<p>Error: " . mysqli_error($conn) . "</p>";
-                    }
-                    ?>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" name="attachVisaRequirements" class="btn btn-primary">Submit</button>
-                </div>
-
-            </form>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h6 class="modal-title" id="visaModalLabel">
+            Visa Requirements for Transaction No: <?php echo htmlspecialchars($_SESSION['transaction_number'] ?? ''); ?>
+          </h6>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
+
+        <form action="../Agent Section/functions/agent-addVisaRequirements-code.php" method="POST" enctype="multipart/form-data">
+          <div class="modal-body">
+            <!-- Hidden input for transaction number -->
+            <input type="hidden" name="transaction_number" value="<?php echo htmlspecialchars($_SESSION['transaction_number'] ?? ''); ?>">
+            <?php
+              // Assuming you have a database connection established
+              $transactionNumber = $_SESSION['transaction_number'] ?? '';
+              $query1 = "SELECT guestId, CONCAT(
+                  lName, ', ', fName, ' ', 
+                  CASE WHEN mName = 'N/A' THEN '' ELSE CONCAT(SUBSTRING(mName, 1, 1), '.') END, ' ',
+                  CASE WHEN suffix = 'N/A' THEN '' ELSE suffix END) AS `FULLNAME` FROM guest WHERE transactNo = '$transactionNumber'";
+
+              // Execute the query
+              $res1 = mysqli_query($conn, $query1);
+
+              if ($res1) 
+              {
+                // Count the number of guests
+                $guestCount = mysqli_num_rows($res1);
+
+                // Display the name and guestId for each guest inside input fields
+                while ($row = mysqli_fetch_assoc($res1)) 
+                {
+                  $guestId = $row['guestId'];
+                  $name = $row['FULLNAME'];
+
+                  // Create input fields for each guest
+                  echo "<div class='mb-3'>";
+                  echo "<label for='guest-$guestId' class='form-label'>Guest ID: $guestId</label>";
+                  echo "<input type='text' class='form-control' id='guest-$guestId' name='guestIds[]' value='$guestId' readonly>";
+
+                  echo "<label for='name-$guestId' class='form-label'>Name</label>";
+                  echo "<input type='text' class='form-control' id='name-$guestId' name='guestNames[]' value='$name' readonly>";
+
+                  echo "<h6 class='form-label'>Visa Requirements</h6>";
+
+                  echo "<label for='passport-$guestId' class='form-label'>Passport</label>";
+                  echo "<input type='file' class='form-control' id='passport-$guestId' name='passports[]' multiple />";
+
+                  echo "<label for='permit-$guestId' class='form-label'>Permit</label>";
+
+                  echo "<input type='file' class='form-control' id='permit-$guestId' name='permits[]' />";
+
+                  echo "<label for='validId-$guestId' class='form-label'>Valid Id</label>";
+
+                  echo "<input type='file' class='form-control' id='validId-$guestId' name='validIds[]' />";
+
+                  echo "<label for='certificate-$guestId' class='form-label'>Certificate</label>";
+                  echo "<input type='file' class='form-control' id='certificate-$guestId' name='certificates[]' />";
+
+                  echo "<label for='guaranteedLetter-$guestId' class='form-label'>Guaranteed Letter</label>";
+                  echo "<input type='file' class='form-control' id='guaranteedLetter-$guestId' name='guaranteedLetters[]' />";
+                  echo "</div>";
+                }
+              } 
+              else 
+              {
+                echo "<p>Error: " . mysqli_error($conn) . "</p>";
+              }
+            ?>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" name="attachVisaRequirements" class="btn btn-primary">Submit</button>
+          </div>
+        </form>
+      </div>
     </div>
-</div>
+  </div>
 
 
  </body>
