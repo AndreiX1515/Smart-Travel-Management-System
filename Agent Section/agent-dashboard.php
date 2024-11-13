@@ -28,7 +28,7 @@
         <div class="dashboard-cards-three card">
           <div class="dcard-header">
             <div class="header-text">
-              <h3>Transaction Status</h3>
+              <h3>Current Transaction Status</h3>
             </div>
           </div>
 
@@ -147,7 +147,7 @@
         <div class="dashboard-cards-two card">
           <div class="dcard-header">
             <div class="header-text">
-              <h3>Booking</h3>
+              <h3>Transaction History</h3>
             </div>
           </div>
 
@@ -157,8 +157,21 @@
                 <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
               </div>
               <div class="content-container">
-                <h3>100</h3>
-                <p>TOTAL TRANSACTION</p> <!-- Additional description -->
+                <?php
+                  // Get the current month
+                  $currentMonth = date('m');
+                  $currentYear = date('Y');
+
+                  // Past Transactions: -1 month from the current month
+                  $pastTransactionsQuery = "SELECT COUNT(*) AS total FROM booking 
+                                            WHERE agentId = '$agentId' 
+                                            AND MONTH(bookingDate) = MONTH(DATE_SUB(CURDATE(), INTERVAL 1 MONTH)) 
+                                            AND YEAR(bookingDate) = '$currentYear'";
+                  $pastResult = mysqli_query($conn, $pastTransactionsQuery);
+                  $pastTransactions = $pastResult ? mysqli_fetch_assoc($pastResult)['total'] : 0;
+                ?>
+                <h3><?php echo $pastTransactions; ?></h3>
+                <p>PAST TRANSACTION</p> <!-- Additional description -->
               </div>
             </div>
 
@@ -167,8 +180,17 @@
                 <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
               </div>
               <div class="content-container">
-                <h3>100</h3>
-                <p>CANCELLED</p> <!-- Additional description -->
+                <?php
+                  // Current Transactions: transactions in the current month
+                  $currentTransactionsQuery = "SELECT COUNT(*) AS total FROM booking 
+                                                WHERE agentId = '$agentId' 
+                                                AND MONTH(bookingDate) = '$currentMonth' 
+                                                AND YEAR(bookingDate) = '$currentYear'";
+                  $currentResult = mysqli_query($conn, $currentTransactionsQuery);
+                  $currentTransactions = $currentResult ? mysqli_fetch_assoc($currentResult)['total'] : 0;
+                ?>
+                <h3><?php echo $currentTransactions; ?></h3>
+                <p>CURRENT TRANSACTION</p> <!-- Additional description -->
               </div>
             </div>
           </div>
@@ -179,7 +201,16 @@
                 <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
               </div>
               <div class="content-container">
-                <h3>100</h3>
+                <?php
+                  // Future Transactions: +1 month from the current month
+                  $futureTransactionsQuery = "SELECT COUNT(*) AS total FROM booking 
+                                              WHERE agentId = '$agentId' 
+                                              AND MONTH(bookingDate) = MONTH(DATE_ADD(CURDATE(), INTERVAL 1 MONTH)) 
+                                              AND YEAR(bookingDate) = '$currentYear'";
+                  $futureResult = mysqli_query($conn, $futureTransactionsQuery);
+                  $futureTransactions = $futureResult ? mysqli_fetch_assoc($futureResult)['total'] : 0;
+                ?>
+                <h3><?php echo $futureTransactions; ?></h3>
                 <p>ON GOING</p> <!-- Additional description -->
               </div>
             </div>
@@ -189,7 +220,27 @@
                 <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
               </div>
               <div class="content-container">
-                <h3>100</h3>
+                <?php
+                  // Calculate the future month and year for "Future More Transactions"
+                  $futureMonth = $currentMonth + 2;
+                  $futureYear = $currentYear;
+                  // Adjust the year if the future month exceeds December
+                  if ($futureMonth > 12) 
+                  {
+                    $futureMonth -= 12;
+                    $futureYear += 1;
+                  }
+
+                  // Future More Transactions: Current month +2 and beyond
+                  $futureMoreTransactionsQuery = "SELECT COUNT(*) AS total FROM booking 
+                                                WHERE agentId = '$agentId' 
+                                                AND (YEAR(bookingDate) > '$futureYear' 
+                                                    OR (YEAR(bookingDate) = '$futureYear' 
+                                                        AND MONTH(bookingDate) >= '$futureMonth'))";
+                  $futureMoreResult = mysqli_query($conn, $futureMoreTransactionsQuery);
+                  $futureMoreTransactions = $futureMoreResult ? mysqli_fetch_assoc($futureMoreResult)['total'] : 0;
+                ?>
+                <h3><?php echo $futureMoreTransactions; ?></h3>
                 <p>CONFIRMED</p> <!-- Additional description -->
               </div>
             </div>
@@ -387,6 +438,7 @@
                   <th>T.N</th>
                   <th>Request</th>
                   <th>Date</th>
+                  <th>Status</th>
                 </tr>
               </thead>
               <tbody>
@@ -394,7 +446,8 @@
                   $sql1 = "SELECT 
                                 r.transactNo AS `T.N`,
                                 c.concernTitle AS `Request`,
-                                DATE_FORMAT(r.requestDate, '%M-%d-%Y %h:%i:%s %p') AS `Date`
+                                DATE_FORMAT(r.requestDate, '%M-%d-%Y %h:%i:%s %p') AS `Date`,
+                                r.requestStatus as status
                             FROM 
                                 request r
                             JOIN 
@@ -416,6 +469,7 @@
                               <td>{$row['T.N']}</td>
                               <td>{$row['Request']}</td>
                               <td>" . date('F d, Y', strtotime($row['Date'])) . "</td>
+                              <td>{$row['status']}</td>
                             </tr>";
                     }
                   } 
@@ -431,7 +485,7 @@
 
         <div class="three">
          <div class="header d-flex justify-content-between align-items-center">
-           <h6>Payment Approvals</h6>
+           <h6>Payment</h6>
            
          </div>
 
@@ -444,6 +498,7 @@
                  <th>Payment Type</th>
                  <th>Payment Amount</th>
                  <th>Date</th>
+                 <th>Status</th>
                </tr>
              </thead>
              <tbody>
@@ -460,7 +515,7 @@
                           JOIN 
                             booking b ON p.transactNo = b.transactNo
                           WHERE 
-                            b.agentId = '$agentId' AND b.status = 'Pending'  -- Adjust conditions as needed
+                            b.agentId = '$agentId' AND b.status = 'Submitted'  -- Adjust conditions as needed
                           ORDER BY 
                             p.paymentDate DESC";  // Order by payment date
      
@@ -474,6 +529,7 @@
                              <td>{$row['Payment Type']}</td>
                              <td>₱ {$row['Amount']}</td>
                              <td>" . date('F d, Y', strtotime($row['Date'])) . "</td>
+                             <td>{$row['Status']}</td>
                            </tr>";
                    }
                  } else {  

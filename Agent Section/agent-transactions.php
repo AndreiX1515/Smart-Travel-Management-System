@@ -5,7 +5,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard</title>
+  <title>Transactions</title>
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
@@ -206,63 +206,62 @@
                    </tr>";
 
                   
-                    // Modal for Request
+                    // Modal for Payment
                     echo "
                       <div class='modal fade' id='paymentModal{$transactNo}' tabindex='-1' aria-labelledby='paymentModalLabel{$transactNo}' aria-hidden='true'>
-                      <div class='modal-dialog'>
+                        <div class='modal-dialog'>
                           <div class='modal-content'>
-                              <div class='modal-header'>
-                                  <h5 class='modal-title' id='paymentModalLabel{$transactNo}'>Payment for Transaction #{$transactNo}</h5>
-                                  <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
-                              </div>
-                              <form action='../Agent Section/functions/agent-transactionPayment-code.php' method='POST' enctype='multipart/form-data'>
-                                  <div class='modal-body'>
-                                      <input type='hidden' name='transactNo' value='{$transactNo}'>
-                                      <input type='hidden' name='accountId' value='{$accountId}'>
+                            <div class='modal-header'>
+                              <h5 class='modal-title' id='paymentModalLabel{$transactNo}'>Payment for Transaction #{$transactNo}</h5>
+                              <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+                            </div>
+                            <form action='../Agent Section/functions/agent-transactionPayment-code.php' method='POST' enctype='multipart/form-data'>
+                              <div class='modal-body'>
+                                <input type='hidden' name='transactNo' value='{$transactNo}'>
+                                <input type='hidden' name='accountId' value='{$accountId}'>
 
-                                      <div class='mb-3'>
-                                          <label class='form-label'>Payment for:</label>
-                                          <select class='form-select' name='paymentTitle' required>
-                                              <option selected disabled>Select Payment Title</option>
-                                              <option value='Package Payment'>Package Payment</option>
-                                              <option value='Request Payment'>Request Payment</option>
-                                          </select>
-                                      </div>
+                                <div class='mb-3'>
+                                  <label class='form-label'>Payment for:</label>
+                                  <select class='form-select' name='paymentTitle' required>
+                                    <option selected disabled>Select Payment Title</option>
+                                    <option value='Package Payment'>Package Payment</option>
+                                    <option value='Request Payment'>Request Payment</option>
+                                  </select>
+                                </div>
 
-                                      <div class='mb-3'>
-                                          <label class='form-label'>Payment Type</label>
-                                          <select class='form-select' name='paymentType' required>
-                                              <option selected disabled>Select Payment Type</option>
-                                              <option value='Downpayment'>Downpayment</option>
-                                              <option value='Partial Payment'>Partial Payment</option>
-                                              <option value='Full Payment'>Full Payment</option>
-                                          </select>
-                                      </div>
+                                <div class='mb-3'>
+                                  <label class='form-label'>Payment Type</label>
+                                  <select class='form-select' name='paymentType' required>
+                                    <option selected disabled>Select Payment Type</option>
+                                    <option value='Downpayment'>Downpayment</option>
+                                    <option value='Partial Payment'>Partial Payment</option>
+                                    <option value='Full Payment'>Full Payment</option>
+                                  </select>
+                                </div>
 
-                                      <div class='mb-3'>
-                                          <label class='form-label'>Payment Amount</label>
-                                          <input type='number' class='form-control' name='amount' placeholder='Enter payment Amount' required>
-                                      </div>
+                                <div class='mb-3'>
+                                  <label class='form-label'>Payment Amount</label>
+                                  <input type='number' class='form-control' name='amount' placeholder='Enter payment Amount' required>
+                                </div>
 
-                                      <div class='mb-3'>
-                                          <label class='form-label'>Proof of Payment</label>
-                                          <div class='mb-3'>
-                                              <input type='file' id='fileInput' . $transactNo . '\' class='form-control' name='proofs[]' accept='image/*,application/pdf\' multiple>
-                                          </div>
-                                          <!-- List of file names -->
-                                          <ul id='fileList' . $transactNo . '\' class='list-unstyled mt-2'></ul>
-
-                                      </div>
-
-                                      <div class='modal-footer'>
-                                          <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Close</button>
-                                          <button type='submit' name='payment' class='btn btn-primary'>Submit payment</button>
-                                      </div>
+                                <div class='mb-3'>
+                                  <label class='form-label'>Proof of Payment</label>
+                                  <div class='mb-3'>
+                                    <input type='file' id='fileInput' . $transactNo . '\' class='form-control' name='proofs[]' accept='image/*,application/pdf\' multiple>
                                   </div>
-                              </form>
+                                  <!-- List of file names -->
+                                  <ul id='fileList' . $transactNo . '\' class='list-unstyled mt-2'></ul>
+                                </div>
+
+                                <div class='modal-footer'>
+                                  <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Close</button>
+                                  <button type='submit' name='payment' class='btn btn-primary'>Submit payment</button>
+                                </div>
+                              </div>
+                            </form>
                           </div>
-                      </div>
-                  </div>";
+                        </div>
+                      </div>";
 
                 }
               } 
@@ -274,37 +273,45 @@
           </tbody>
         </table>
 
-    <script>
-      
-    const maxFiles = 5;
-    const maxFileSize = 4 * 1024 * 1024; // 4MB
-    let selectedFiles = {};
+        <script>
+          const maxFiles = 5;
+          const maxFileSize = 4 * 1024 * 1024; // 4MB
+          let selectedFiles = {};
 
-    document.querySelectorAll('.drop-zone').forEach(dropZone => {
-        dropZone.addEventListener("click", function() {
-            const transactNo = this.id.replace('dropZone', ''); // Extract transactNo
-            document.getElementById('fileInput' + transactNo).click();
-        });
-    });
+          document.querySelectorAll('.drop-zone').forEach(dropZone => 
+          {
+            dropZone.addEventListener("click", function() 
+            {
+              const transactNo = this.id.replace('dropZone', ''); // Extract transactNo
+              document.getElementById('fileInput' + transactNo).click();
+            });
+          });
 
-    function handleDrop(event, transactNo) {
-        event.preventDefault();
-        handleFiles(event.dataTransfer.files, transactNo);
-    }
+          function handleDrop(event, transactNo) 
+          {
+            event.preventDefault();
+            handleFiles(event.dataTransfer.files, transactNo);
+          }
 
-    function handleFiles(files, transactNo) {
-        const fileList = document.getElementById("fileList" + transactNo);
-        selectedFiles[transactNo] = selectedFiles[transactNo] || [];
+          function handleFiles(files, transactNo) 
+          {
+            const fileList = document.getElementById("fileList" + transactNo);
+            selectedFiles[transactNo] = selectedFiles[transactNo] || [];
 
-        if (selectedFiles[transactNo].length + files.length > maxFiles) {
-            alert(`You can upload a maximum of ${maxFiles} files.`);
-            return;
-        }
+            if (selectedFiles[transactNo].length + files.length > maxFiles) 
+            {
+              alert(`You can upload a maximum of ${maxFiles} files.`);
+              return;
+            }
 
-        Array.from(files).forEach(file => {
-            if (file.size > maxFileSize) {
+            Array.from(files).forEach(file => 
+            {
+              if (file.size > maxFileSize) 
+              {
                 alert(`File ${file.name} exceeds the 4MB limit and won't be added.`);
-            } else {
+              } 
+              else 
+              {
                 selectedFiles[transactNo].push(file);
 
                 // Debugging: Log the file and the selectedFiles array
@@ -324,51 +331,56 @@
 
                 listItem.appendChild(removeButton);
                 fileList.appendChild(listItem);
+              }
+            });
+
+            updateFileInput(transactNo);
+          }
+
+          function removeFile(file, transactNo) 
+          {
+            const index = selectedFiles[transactNo].indexOf(file);
+            if (index > -1) 
+            {
+              selectedFiles[transactNo].splice(index, 1); // Remove file from selectedFiles
             }
-        });
 
-        updateFileInput(transactNo);
-    }
+            // Remove the list item from the DOM
+            const fileList = document.getElementById("fileList" + transactNo);
+            const listItem = fileList.querySelector(`li:contains('${file.name}')`);
+            if (listItem) 
+            {
+              fileList.removeChild(listItem);
+            }
 
-    function removeFile(file, transactNo) {
-        const index = selectedFiles[transactNo].indexOf(file);
-        if (index > -1) {
-            selectedFiles[transactNo].splice(index, 1); // Remove file from selectedFiles
-        }
+            updateFileInput(transactNo);
+          }
 
-        // Remove the list item from the DOM
-        const fileList = document.getElementById("fileList" + transactNo);
-        const listItem = fileList.querySelector(`li:contains('${file.name}')`);
-        if (listItem) {
-            fileList.removeChild(listItem);
-        }
+          function updateFileInput(transactNo) 
+          {
+            const dataTransfer = new DataTransfer();
+            selectedFiles[transactNo].forEach(file => dataTransfer.items.add(file));
 
-        updateFileInput(transactNo);
-    }
+            const fileInput = document.getElementById('fileInput' + transactNo);
+            fileInput.files = dataTransfer.files;
 
-    function updateFileInput(transactNo) {
-        const dataTransfer = new DataTransfer();
-        selectedFiles[transactNo].forEach(file => dataTransfer.items.add(file));
+            // Debugging: Log updated file input
+            console.log(fileInput.files);
+          }
 
-        const fileInput = document.getElementById('fileInput' + transactNo);
-        fileInput.files = dataTransfer.files;
+        </script>
 
-        // Debugging: Log updated file input
-        console.log(fileInput.files);
-    }
-
-         </script>
-
-         <style>
-           .drop-zone {
-             cursor: pointer;
-             background-color: #f8f9fa;
-             min-height: 100px;
-             display: flex;
-             align-items: center;
-             justify-content: center;
-           }
-         </style>
+        <style>
+          .drop-zone 
+          {
+            cursor: pointer;
+            background-color: #f8f9fa;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+        </style>
 
         <div class="table-footer border-0">
           <div class="total-records">Total Records: <?php echo $res1->num_rows; ?></div>
@@ -417,11 +429,10 @@
 
             <!-- Request Details Selection -->
             <div class="mb-3" id="additionalSelectContainer" style="display: none;">
-              
               <select class="form-select mt-2" name="requestDetails" id="requestDetails" required>
                 <option selected disabled>Select Specific Detail</option>
               </select>
-              <label>₱ <input type="text" id="price" name="price" value="0.00" style="border: none; background: transparent; padding: 5px 10px; font-size: 14px; display: inline-block; width: auto;" readonly></label>
+              <label value="0.00">₱ <input type="text" id="price" name="price" value="0.00" style="border: none; background: transparent; padding: 5px 10px; font-size: 14px; display: inline-block; width: auto;" readonly></label>
             </div>
 
             <!-- Pax Input -->
@@ -436,7 +447,7 @@
               <textarea class="form-control" name="details" placeholder="Enter Specific Message" rows="4"></textarea>
             </div>
 
-            <label>₱ <span id="displayTotalPrice"></span></label>
+            <label>₱ <span id="displayTotalPrice">0.00</span></label>
             <input type="hidden" name="totalPrice" id="TotalPrice" value="0.00" style="border: none; background: transparent; padding: 5px 10px; font-size: 14px; display: inline-block; width: auto;" readonly>
           </div>
           <div class="modal-footer">
@@ -456,13 +467,14 @@
           <h5 class="modal-title" id="updateBookingModalLabel">Update Booking</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body">
-          <div class="mb-4 d-flex align-items-center w-100">
-            <h6 class="mb-0">Transaction ID:</h6>
-            <span id="transactionId" class="ms-2"></span>
-          </div>
-          <!-- Form for updating booking details -->
-          <form id="updateBookingForm" method="POST">
+        <!-- Form for updating booking details -->
+        <form action="../Agent Section/functions/agent-transactionUpdateBooking-code.php" id="updateBookingForm" method="POST">
+          <div class="modal-body">
+            <div class="mb-4 d-flex align-items-center w-100">
+              <h6 class="mb-0">Transaction ID:</h6>
+              <span id="transactionId" class="ms-2"></span>
+            </div>
+
             <input type="hidden" name="transaction_number" value="">
 
             <h6 class="fw-bold">Personal Information:</h6>
@@ -474,7 +486,7 @@
               </div>
               <div class="col-md-3 mb-3">
                 <label for="contactLName" class="form-label">Last Name</label>
-                <input type="text" class="form-control" id="lName" name="IName">
+                <input type="text" class="form-control" id="lName" name="lName">
               </div>
               <div class="col-md-3 mb-3">
                 <label for="contactMName" class="form-label">Middle Name</label>
@@ -697,95 +709,13 @@
                 <input type="email" class="form-control" id="email" name="email" required>
               </div>
             </div>
-
-            <h6 class="fw-bold my-2">Booking Information:</h6>
-
-            <div class="row">
-              <div class="col-md-6 mb-2">
-                <label for="package" class="form-label">Package</label>
-                <select class="form-control" id="packageId" name="packageId" required>
-                  <option selected disabled>Select Package</option>
-                  <?php
-                    $sql1 = mysqli_query($conn, "SELECT DISTINCT packageId, packageName FROM package ORDER BY packageName ASC");
-                    while($res1 = mysqli_fetch_array($sql1)) 
-                    {
-                      echo "<option value='{$res1['packageId']}'>{$res1['packageName']}</option>";
-                    }
-                  ?>
-                </select>
-              </div>
-              <div class="col-md-6 mb-2">
-                <label for="totalPax" class="form-label">Total Pax</label>
-                <input type="number" class="form-control" id="pax" name="pax" required>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-md-6 mb-3">
-                <label for="origin" class="form-label">Origin</label>
-                <select class="form-control" id="origin" name="origin" required>
-                  <?php
-                    $sql1 = mysqli_query($conn, "SELECT DISTINCT origin FROM flight ORDER BY origin ASC");
-                    while($res1 = mysqli_fetch_array($sql1)) 
-                    {
-                      echo "<option value='{$res1['origin']}'>{$res1['origin']}</option>";
-                    }
-                  ?>
-                </select>
-              </div>
-
-              <div class="col-md-6 mb-3">
-                    <div class="form-group mb-6">
-                      <label for="flightDate">Flight Date <span class="text-danger fw-bold">*</span></label>
-                      <select class="form-select mt-2 fs-6" id="flightDate" name="flightDate" required>
-                      <?php
-                        $sql1 = mysqli_query($conn, "SELECT flightId, DATE_FORMAT(flightDepartureDate, '%M %d, %Y') AS flightDate, flightPrice
-                                              FROM flight ORDER BY flightDate ASC");
-                        while($res1 = mysqli_fetch_array($sql1)) 
-                        {
-                          $formattedPrice = number_format($res1['flightPrice'], 2);
-                          echo '<option value="' . $res1['flightId'] . '">' . $res1['flightDate'] . '&nbsp;&nbsp;&nbsp;&nbsp; || &nbsp;&nbsp;&nbsp;&nbsp;'. 'Package Price: ₱ '. $formattedPrice . '</option>';
-                        }
-                      ?>
-                      </select>
-                      <span id="flightDateError" class="text-danger"></span> <!-- Error message for outbound flight -->
-                    </div>
-                  </div>
-            </div>
-
-            <div class="row">
-              <div class="col-md-2 mb-3">
-                <input type="" id="flightId" name="flightId" value="" placeholder="Flight Id Input">
-              </div>
-
-              <div class="col-md-2 mb-3">
-              
-                <input type="" id="packagePrice" name="packagePrice" placeholder="Package Price">
-              </div>
-
-              <div class="col-md-2 mb-3">
-                <input type="" name="flightPrice" placeholder="Flight Price">
-
-              </div>
-
-             
-            </div>
-
-            <div class="row">
-              
-
-              <div class="col-md-3 mb-3">
-                <label for="totalPrice" class="form-label">Total Price</label>
-                <input type="text" class="form-control" id="totalPrice" name="totalPrice" readonly>
-              </div>
-            </div>
-
-          </form>
-        </div>
-        <div class="modal-footer border-0">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" onclick="updateBooking()">Update</button>
-        </div>
+          
+          </div>
+          <div class="modal-footer border-0">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary" name="updateBooking">Update</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
@@ -883,7 +813,6 @@
     }
   </script>
 
-
   <script>
     document.addEventListener('DOMContentLoaded', function () 
     {
@@ -930,48 +859,6 @@
     
     $(document).ready(function ()
     {
-      // Fetching Origin once Package was Selected
-      $('#packageName').on('change', function () 
-      {
-        var packageId = $(this).val();
-        var selectedPackageName = $("#packageName option:selected").text();
-        $('#origin').html('<option selected disabled>Select Origin</option>'); // Clear origin field
-        $('#flightDate').html('<option selected disabled>Select Flight Date</option>'); // Clear Flight Date field
-        $('#flightId').val(''); // Clear Flight Id field
-        // $('#flightPrice').text('0.00'); // Clear Flight Price field
-
-        if (packageId) 
-        {
-          $.ajax(
-          {
-            url: '../Agent Section/functions/fetchOrigin.php',
-            type: 'POST',
-            data: { packageId: packageId },
-            success: function (response) 
-            {
-              // Parse the JSON response
-              var data = JSON.parse(response);
-
-              // Update the origin dropdown
-              $('#origin').html(data.originOptions); // Use originOptions from the response
-
-              // Update the package price input
-              $('#packagePrice').val(data.packagePrice); // Set the package price value
-
-              // console.log(data); // Optional: For debugging
-            },
-            error: function (xhr, status, error) 
-            {
-              console.error('Error fetching origins:', error); // Log the error to console
-            }
-          });
-        } 
-        else 
-        {
-          $('#origin').html('<option selected disabled>Select Origin</option>');
-        }
-      });
-
       // Fetching Additional Details once Request Type is Selected
       $('#concern').on('change', function () 
       {
@@ -1080,7 +967,7 @@
         $('#displayTotalPrice').text(formatNumberWithCommas(totalPrice.toFixed(2))); // Update the input field with the calculated total price
         // Update the price input field or display the total price wherever needed
         $('#TotalPrice').val(totalPrice.toFixed(2)); // Update the input field with the calculated total price
-      }
+      } 
     });
 
     function fetchBookingDetails(transactionId) 
@@ -1110,12 +997,6 @@
           document.getElementById('contactNo').value = data.booking.contactNo;
           document.getElementById('email').value = data.booking.email;
           document.getElementById('pax').value = data.booking.pax;
-
-          document.getElementById('packageId').value = data.booking.packageId;
-          document.getElementById('origin').value = data.booking.origin;
-          document.getElementById('flightId').value = data.booking.flightId;
-          document.getElementById('flightDate').value = data.booking.flightId;
-          document.getElementById('totalPrice').value = data.booking.totalPrice;
         } 
         else 
         {
@@ -1128,24 +1009,34 @@
       });
     }
 
+    // Add an event listener to the input field to validate as the user types
+    document.getElementById('paxRequest').addEventListener('input', function() 
+    {
+      validateMaxValue(this);
+    });
+
     // Function to fetch pax for the request modal
     function fetchPaxForRequestModal(transactionId) 
     {
       fetch('../Agent Section/functions/getBookingDetails.php', 
       {
         method: 'POST',
-        headers: 
-        {
+        headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ transaction_id: transactionId }),
       })
       .then(response => response.json())
-      .then(data => {
+      .then(data => 
+      {
         if (data.success) 
         {
           // Populate only the pax field with the fetched data
-          document.querySelector('input[name="pax"]').setAttribute('max', data.booking.pax);
+          const paxInput = document.querySelector('input[name="pax"]');
+          paxInput.setAttribute('max', data.booking.pax);
+          
+          // Ensure the current value is valid in case it exceeds the max
+          validateMaxValue(paxInput);
         } 
         else 
         {
@@ -1156,6 +1047,18 @@
       {
         console.error('Fetch error:', error);
       });
+    }
+
+    // Function to validate the max value of the input
+    function validateMaxValue(input) 
+    {
+      const max = parseInt(input.getAttribute("max"));
+      const currentValue = parseInt(input.value);
+      
+      if (currentValue > max) 
+      {
+        input.value = max; // Set the value to the max if it exceeds
+      }
     }
 
     function updateBooking() 
@@ -1171,6 +1074,8 @@
     {
       return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
+
+    
   </script>
 
 </body>

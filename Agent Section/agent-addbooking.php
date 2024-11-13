@@ -40,7 +40,7 @@
           <form action="../Agent Section/functions/agent-addBooking-code.php" method="POST">
             <div class="card">
               <div class="card-header bg-secondary text-white text-light">
-                <h6 class="my-2 px-2">Details</h6>
+                <h4 class="my-2 px-2">Details</h4>
               </div>
 
               <div class="card-body p-4">
@@ -85,11 +85,22 @@
                     </div>
                   </div>
 
+                  <!-- Year Dropdown -->
+                  <div class="col-md-6">
+                    <div class="form-group mb-6">
+                      <label class="mt-3 fs-6" for="year">Year <span class="text-danger fw-bold">*</span></label>
+                      <select class="form-select mt-2 fs-6" id="year" name="year" required>
+                        <option selected disabled>Select Year</option>
+                        
+                      </select>
+                    </div>
+                  </div>
+
                   <!-- Month Dropdown -->
                   <div class="col-md-6">
                     <div class="form-group mb-6">
-                      <label class="mt-3 fs-6" for="month">Month</label>
-                      <select class="form-select mt-2 fs-6" id="month" name="month">
+                      <label class="mt-3 fs-6" for="month">Month <span class="text-danger fw-bold">*</span></label>
+                      <select class="form-select mt-2 fs-6" id="month" name="month" required>
                         <option selected disabled>Select Month</option>
                         <option value="January">January</option>
                         <option value="February">February</option>
@@ -139,7 +150,6 @@
               </div>
 
               <div class="card-body p-4">
-
                 <div class="row mb-3">
                   <!-- First Name Input -->
                   <div class="col-md-3">
@@ -505,6 +515,8 @@
           var packageId = $(this).val();
           var selectedPackageName = $("#packageName option:selected").text();
           $('#origin').html('<option selected disabled>Select Origin</option>'); // Clear origin field
+          $('#year').html('<option selected disabled>Select Year</option>'); // Clear year field
+          $('#month').html('<option selected disabled>Select Month</option>'); // Clear month field
           $('#flightDate').html('<option selected disabled>Select Flight Date</option>'); // Clear Flight Date field
           $('#flightId').val(''); // Clear Flight Id field
           $('#flightPrice').text('0.00'); // Clear Flight Price field
@@ -544,7 +556,7 @@
           }
         });
 
-        // Fetching Flight Dates once origin was Selected
+        // Fetching Distinct Year once origin was Selected
         $('#origin').on('change', function () 
         {
           var packageId = $('#packageName').val();
@@ -554,27 +566,111 @@
           // Update the modal with the selected origin
           $('#selectedOrigin').text(selectedOrigin);
 
-          // Clear outbound flight field
-          $('#flightDate').html('<option selected disabled>Select Flight Date</option>');
-
+          $('#year').html('<option selected disabled>Select Year</option>'); // Clear year field
+          $('#month').html('<option selected disabled>Select Month</option>'); // Clear month field
+          $('#flightDate').html('<option selected disabled>Select Flight Date</option>'); // Clear Flight Date field
           $('#flightId').val(''); // Clear Flight Id field
-          $('#flightPrice').val('0.00'); // Clear Flight Price field
+          $('#flightPrice').text('0.00'); // Clear Flight Price field
 
           if (packageId && origin) 
           {
             $.ajax(
             {
-              url: '../Agent Section/functions/fetchFlightDate.php',
+              url: '../Agent Section/functions/fetchYear.php',
               type: 'POST',
-              data: { packageId: packageId, origin: origin}, // Send packageId, origin, and month (even if empty)
+              data: { packageId: packageId, origin: origin}, // Send packageId, origin
               success: function (response) 
               {
                 // console.log(response); // Debugging the response
-                $('#flightDate').html(response); // Update outbound flights dropdown
+                $('#year').html(response); // Update year dropdown with the fetched years
               },
               error: function (xhr, status, error) 
               {
-                console.error('Error fetching outbound flights:', error); // Log the error to console
+                console.error('Error fetching year:', error); // Log the error to console
+              }
+            });
+          } 
+          else 
+          {
+            $('#year').html('<option selected disabled>Select Year</option>');
+          }
+        });
+
+        // Fetching Distinct Month once year depending on the package and origin was Selected
+        $('#year').on('change', function () 
+        {
+          var packageId = $('#packageName').val();
+          var origin = $('#origin').val();
+          var selectedYear = $('#year').val();  // Get the selected year
+
+          // Clear month and flight fields
+          $('#month').html('<option selected disabled>Select Month</option>');
+          $('#flightDate').html('<option selected disabled>Select Flight Date</option>');
+          $('#flightId').val('');  // Clear Flight Id field
+          $('#flightPrice').val('0.00'); // Clear Flight Price field
+
+          if (packageId && origin && selectedYear) 
+          {
+            $.ajax(
+            {
+              url: '../Agent Section/functions/fetchMonth.php',  // PHP file to fetch distinct months
+              type: 'POST',
+              data: {
+                packageId: packageId,
+                origin: origin,
+                year: selectedYear  // Send the selected year to fetch relevant months
+              },
+              success: function (response) 
+              {
+                // Update month dropdown with the fetched distinct months
+                $('#month').html(response);
+              },
+              error: function (xhr, status, error) 
+              {
+                console.error('Error fetching months:', error);  // Log the error to the console
+              }
+            });
+          } 
+          else 
+          {
+            $('#month').html('<option selected disabled>Select Month</option>');
+          }
+        });
+
+        // Fetching Flight Date based on the package, origin, year, and month
+        $('#month').on('change', function () 
+        {
+          var packageId = $('#packageName').val();
+          var origin = $('#origin').val();
+          var selectedYear = $('#year').val();  // Get the selected year
+          var selectedMonth = $('#month').val();  // Get the selected month
+
+          // Clear flight fields
+          $('#flightDate').html('<option selected disabled>Select Flight Date</option>');
+          $('#flightId').val('');  // Clear Flight Id field
+          $('#flightPrice').text('0.00'); // Clear Flight Price field
+          $('#flightPrice').val('0.00'); // Clear Flight Price field
+
+          if (packageId && origin && selectedYear && selectedMonth) 
+          {
+            $.ajax(
+            {
+              url: '../Agent Section/functions/fetchFlightDate.php',  // PHP file to fetch flight dates
+              type: 'POST',
+              data: {
+                packageId: packageId,
+                origin: origin,
+                year: selectedYear,
+                month: selectedMonth  // Send the selected month to fetch relevant flight dates
+              },
+              success: function (response) 
+              {
+                // Update flight date dropdown with the fetched flight dates
+                $('#flightDate').html(response);
+              },
+              error: function (xhr, status, error) 
+              {
+                console.error('Error fetching flight dates:', error);  // Log the error to the console
               }
             });
           } 
