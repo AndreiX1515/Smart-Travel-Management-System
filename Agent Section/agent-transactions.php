@@ -20,8 +20,8 @@
   <div class="main-content" id="mainContent">
     <?php include '../Agent Section/includes/navbar.php'; ?>
 
-    <div class="content-wrapper d-flex flex-column">
-      <div class="table-container">
+    <div class="content-wrapper-transact d-flex flex-column">
+      <div class="table-container p-3">
         <div class="search-bar">
           <div class="left-side">
             <div class="search-input mb-3">

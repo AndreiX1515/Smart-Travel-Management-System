@@ -52,6 +52,7 @@
         data-transaction-id="<?= $transactionNumber ?>">Add Request</button>
 
       </div>
+      <div class="table-container p-3">
        <table class="product-table">
          <thead>
           <tr>
@@ -90,6 +91,7 @@
           ?>
         </tbody>
       </table>
+      </div>
     </div>
   </div>
 

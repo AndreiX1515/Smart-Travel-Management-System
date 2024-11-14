@@ -8,7 +8,21 @@ body {
  
  /* Main content wrapper */
  .content-wrapper {
-  height: 85vh;
+  height: 35vh;
+  width: 95%;
+  margin: 0px 40px 0px 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: transparent;
+  
+  box-sizing: border-box;
+ }
+
+ /* Main content wrapper */
+ .content-wrapper-transact {
+  height: 90vh;
+  width: 95%;
   margin: 0px 40px 0px 15px;
   display: flex;
   flex-direction: column;
@@ -108,7 +122,7 @@ body {
   flex: 1;
   border: 1px solid #ced4da;
   padding: 20px;
-  background-color: #fff;
+  background-color: transparent;
   border-radius: 8px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   overflow-y: auto;

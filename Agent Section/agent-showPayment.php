@@ -53,12 +53,8 @@
          <!-- Trigger Button -->
          <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#paymentModal<?= $transactionNumber ?>"
         data-transact-no="<?= $transactionNumber ?>" data-account-id="<?= $accountId ?>">Add Payment</button>
-
-
-
-
-       </div>
-
+     </div>
+     <div class="table-container p-3">
       <table class="product-table">
         <thead>
           <tr>
@@ -73,6 +69,7 @@
           </tr>
         </thead>
         <tbody>
+
         <?php
            $sql1 = "SELECT *, FORMAT(amount, 2) AS amount, DATE_FORMAT(paymentDate, '%M %d, %Y %h:%i %p') AS paymentDate 
                     FROM payment 
@@ -87,8 +84,10 @@
                            <td>{$row['paymentTitle']}</td>
                            <td>{$row['paymentType']}</td>
                            <td>₱ {$row['amount']}</td>
-                           <td><a href='functions/view-file.php?file=" . urlencode($row['filePath']) . "' target='_blank'>View File</a> 
-                           <a href='functions/download.php?file=" . urlencode($row['filePath']) . "' target='_blank'>Download File</a> </td>
+                           <td>
+                               <a href='functions/view-file.php?file=" . urlencode($row['filePath']) . "' target='_blank'>View File</a> 
+                               <a href='functions/download.php?file=" . urlencode($row['filePath']) . "' target='_blank'>Download File</a> 
+                           </td>
                            <td>{$row['paymentDate']}</td>
                            <td>{$row['paymentStatus']}</td>
                          </tr>";
@@ -98,15 +97,13 @@
            }
            ?>
 
-
         </tbody>
       </table>
     </div>
-
+    </div>
   </div>
 
   <?php require "../Agent Section/includes/scripts.php"; ?>
-
 
 
 <!-- Modal -->
@@ -165,6 +162,7 @@
     </div>
 </div>
 
+
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     // Target all buttons that trigger a modal
@@ -188,7 +186,6 @@
         });
     });
 });
-
 </script>
 
 <script>
