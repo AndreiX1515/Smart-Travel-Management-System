@@ -69,7 +69,7 @@
                 // Output data for each row
                 while ($row = $res1->fetch_assoc()) {
                     echo "
-                        <tr onclick=\"window.location='agent-transactionDetails.php?transactNo=" . htmlspecialchars($row['T.N']) . "'\">
+                        <tr>
                             <td>" . htmlspecialchars($row['T.N']) . "</td>
                             <td>" . htmlspecialchars($row['PACKAGE']) . "</td>
                             <td>" . htmlspecialchars($row['FLIGHT DATE']) . "</td>
