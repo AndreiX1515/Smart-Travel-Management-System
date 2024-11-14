@@ -20,13 +20,23 @@
     <?php 
       include '../Agent Section/includes/navbar.php'; 
       
+     
+      
+      
+      // Check if 'transaction_number' exists in the session
       if (isset($_SESSION['transaction_number'])) {
-        $transactionNumber = $_SESSION['transaction_number'];
-      } 
-      else {
-        echo "No transaction number found.";
+          $transactionNumber = $_SESSION['transaction_number'];
+      } else {
+          echo "No transaction number found in the session.<br>";
       }
-    ?>
+
+      // Check if 'id' is passed in the URL
+      if (isset($_GET['id'])) {
+       $transactionNumber = htmlspecialchars($_GET['id']);
+      } 
+      
+      ?>
+    
 
     <?php if(isset($_SESSION['status'])): ?>
       <div class="alert alert-warning alert-dismissible fade show" role="alert">
