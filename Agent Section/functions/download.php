@@ -45,8 +45,11 @@ if (isset($_GET['file'])) {
             header("Content-Type: application/octet-stream"); // Default for other files
         }
 
-        // Set inline display for supported file types
-        header("Content-Disposition: inline; filename=\"" . basename($fullPath) . "\"");
+        // Set the Content-Disposition to attachment for file download
+        header("Content-Disposition: attachment; filename=\"" . basename($fullPath) . "\"");
+
+        // Set the Content-Length for the file (optional, but it can improve performance)
+        header("Content-Length: " . filesize($fullPath));
 
         // Output the file contents
         readfile($fullPath);

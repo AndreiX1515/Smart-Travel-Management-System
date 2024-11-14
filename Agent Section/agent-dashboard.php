@@ -356,11 +356,11 @@
           
           <div class="body">
             <div class="table-container">
-              <table class="unconfirm-table">
+              <table class="unconfirm-table" style="font-size: 10px;">
                 <thead>
                   <tr>
-                    <th>T.N</th>
-                    <th>PACKAGE</th>
+                    <th>TRANSACTION NO.</th>
+                    <th>PACKAGE</th> 
                     <th>FLIGHT DATE</th>
                     <th>PAX.</th>
                     <th>CONTACT NAME</th>
@@ -435,13 +435,13 @@
           </div>
 
           <div class="body">
-            <table class="request-table">
-              <thead>
+            <table class="request-table" >
+              <thead style="font-size: 10px;">
                 <tr>
-                  <th>Transaction No.</th>
-                  <th>Request</th>
-                  <th>Date</th>
-                  <th>Status</th>
+                  <th>TRANSACTION NO.</th>
+                  <th>REQUEST</th>
+                  <th>DATE</th>
+                  <th>STATUS</th>
                 </tr>
               </thead>
               <tbody>
@@ -494,14 +494,14 @@
 
          <div class="body">
            <table class="pending-payment-table">
-             <thead>
+             <thead style="font-size: 10px;">
                <tr>
-                 <th>Transaction No.</th>
-                 <th>Payment Title</th>
-                 <th>Payment Type</th>
-                 <th>Payment Amount</th>
-                 <th>Date</th>
-                 <th>Status</th>
+                 <th>TRANSACTION NO.</th>
+                 <th>PAYMENT TITLE</th>
+                 <th>PAYMENT TYPE</th>
+                 <th>PAYMENT AMOUNT</th>
+                 <th>DATE</th>
+                 <th>STATUS</th>
                </tr>
              </thead>
              <tbody>
@@ -554,9 +554,9 @@
             
           <div class="body">
             <table class="confirm-table">
-              <thead>
+              <thead style="font-size: 10px;">
                 <tr>
-                  <th>Transaction No.</th>
+                  <th>TRANSACTION NO.</th>
                   <th>PACKAGE</th>
                   <th>FLIGHT DATE</th>
                   <th>TOTAL PAX.</th>

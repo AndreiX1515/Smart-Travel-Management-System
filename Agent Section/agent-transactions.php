@@ -20,8 +20,8 @@
   <div class="main-content" id="mainContent">
     <?php include '../Agent Section/includes/navbar.php'; ?>
 
-    <div class="content-wrapper d-flex flex-column">
-      <div class="table-container">
+    <div class="content-wrapper-transact d-flex flex-column">
+      <div class="table-container p-3">
         <div class="search-bar">
           <div class="left-side">
             <div class="search-input mb-3">
@@ -154,11 +154,10 @@
                           $statusClass = 'bg-danger text-white'; // Red background, white text
                           break;
                       case 'Pending':
-                          $statusClass = 'bg-warning text-dark'; // Yellow background, dark text
+                          $statusClass = 'bg-warning text-dark'; 
                           break;
                       default:
-                          $statusClass = 'bg-secondary text-white'; // Gray background, white text for unknown status
-                          break;
+                          $statusClass = 'bg-secondary text-white'; 
                   }
 
                   echo "<tr>
@@ -177,20 +176,18 @@
                          </td>
                           <td>
                             <div class='dropdown'>
-                              <button class='btn btn-link p-0 text-secondary' type='button' data-bs-toggle='dropdown' aria-expanded='false'>
-                                <i class='fas fa-ellipsis-v'></i>
+                              <button class='btn btn-link p-0 text-dark' type='button' data-bs-toggle='dropdown' aria-expanded='false'>
+                                <i class='fas fa-ellipsis-v fs-5'></i>
                               </button>
                               <ul class='dropdown-menu'>
                                 <li> <a class='dropdown-item' href='#' data-bs-toggle='modal' data-bs-target='#updateBookingModal' data-transaction-id='{$row['T.N']}'>
                                   Update Booking </a> 
                                 </li>
-                                <li><a class='dropdown-item' href='#' onclick='addGuestInfo(\"{$row['T.N']}\")'>Add Guests Information</a></li>
+                                
                                 <li><a class='dropdown-item' href='#' onclick='showGuestInfo(\"{$row['T.N']}\")'>Show Guest Information</a></li>
-                                <li> <a class='dropdown-item' href='#' data-bs-toggle='modal' data-bs-target='#requestModal' data-transaction-id='{$row['T.N']}'>
-                                  Add Request </a> 
-                                </li>
+                                
                                 <li><a class='dropdown-item' href='#' onclick='showRequestHistory(\"{$row['T.N']}\")'>Show Request History</a></li>
-                                <li><a class='dropdown-item' href='#' data-bs-toggle='modal' data-bs-target='#paymentModal{$transactNo}'>Add Payment</a></li>
+                                
                                 <li><a class='dropdown-item' href='#' onclick='showPaymentHistory(\"{$row['T.N']}\")'>Show Payment History</a></li>";
                         
                                 // Add the conditional button if FLIGHT DATE is "Land Only"
@@ -204,65 +201,6 @@
                        </div>
                      </td>
                    </tr>";
-
-                  
-                    // Modal for Payment
-                    echo "
-                      <div class='modal fade' id='paymentModal{$transactNo}' tabindex='-1' aria-labelledby='paymentModalLabel{$transactNo}' aria-hidden='true'>
-                        <div class='modal-dialog'>
-                          <div class='modal-content'>
-                            <div class='modal-header'>
-                              <h5 class='modal-title' id='paymentModalLabel{$transactNo}'>Payment for Transaction #{$transactNo}</h5>
-                              <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
-                            </div>
-                            <form action='../Agent Section/functions/agent-transactionPayment-code.php' method='POST' enctype='multipart/form-data'>
-                              <div class='modal-body'>
-                                <input type='hidden' name='transactNo' value='{$transactNo}'>
-                                <input type='hidden' name='accountId' value='{$accountId}'>
-
-                                <div class='mb-3'>
-                                  <label class='form-label'>Payment for:</label>
-                                  <select class='form-select' name='paymentTitle' required>
-                                    <option selected disabled>Select Payment Title</option>
-                                    <option value='Package Payment'>Package Payment</option>
-                                    <option value='Request Payment'>Request Payment</option>
-                                  </select>
-                                </div>
-
-                                <div class='mb-3'>
-                                  <label class='form-label'>Payment Type</label>
-                                  <select class='form-select' name='paymentType' required>
-                                    <option selected disabled>Select Payment Type</option>
-                                    <option value='Downpayment'>Downpayment</option>
-                                    <option value='Partial Payment'>Partial Payment</option>
-                                    <option value='Full Payment'>Full Payment</option>
-                                  </select>
-                                </div>
-
-                                <div class='mb-3'>
-                                  <label class='form-label'>Payment Amount</label>
-                                  <input type='number' class='form-control' name='amount' placeholder='Enter payment Amount' required>
-                                </div>
-
-                                <div class='mb-3'>
-                                  <label class='form-label'>Proof of Payment</label>
-                                  <div class='mb-3'>
-                                    <input type='file' id='fileInput' . $transactNo . '\' class='form-control' name='proofs[]' accept='image/*,application/pdf\' multiple>
-                                  </div>
-                                  <!-- List of file names -->
-                                  <ul id='fileList' . $transactNo . '\' class='list-unstyled mt-2'></ul>
-                                </div>
-
-                                <div class='modal-footer'>
-                                  <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Close</button>
-                                  <button type='submit' name='payment' class='btn btn-primary'>Submit payment</button>
-                                </div>
-                              </div>
-                            </form>
-                          </div>
-                        </div>
-                      </div>";
-
                 }
               } 
               else 
@@ -272,189 +210,6 @@
             ?>
           </tbody>
         </table>
-
-        <script>
-          const maxFiles = 5;
-          const maxFileSize = 4 * 1024 * 1024; // 4MB
-          let selectedFiles = {};
-
-          document.querySelectorAll('.drop-zone').forEach(dropZone => 
-          {
-            dropZone.addEventListener("click", function() 
-            {
-              const transactNo = this.id.replace('dropZone', ''); // Extract transactNo
-              document.getElementById('fileInput' + transactNo).click();
-            });
-          });
-
-          function handleDrop(event, transactNo) 
-          {
-            event.preventDefault();
-            handleFiles(event.dataTransfer.files, transactNo);
-          }
-
-          function handleFiles(files, transactNo) 
-          {
-            const fileList = document.getElementById("fileList" + transactNo);
-            selectedFiles[transactNo] = selectedFiles[transactNo] || [];
-
-            if (selectedFiles[transactNo].length + files.length > maxFiles) 
-            {
-              alert(`You can upload a maximum of ${maxFiles} files.`);
-              return;
-            }
-
-            Array.from(files).forEach(file => 
-            {
-              if (file.size > maxFileSize) 
-              {
-                alert(`File ${file.name} exceeds the 4MB limit and won't be added.`);
-              } 
-              else 
-              {
-                selectedFiles[transactNo].push(file);
-
-                // Debugging: Log the file and the selectedFiles array
-                console.log(`File added: ${file.name}, Size: ${(file.size / 1024 / 1024).toFixed(2)} MB`);
-                console.log(selectedFiles[transactNo]);
-
-                // Create a list item for the file
-                const listItem = document.createElement("li");
-                listItem.classList.add("file-item");
-                listItem.textContent = `${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`;
-
-                // Add remove button
-                const removeButton = document.createElement("button");
-                removeButton.textContent = "Remove";
-                removeButton.classList.add("btn", "btn-danger", "btn-sm", "ml-2");
-                removeButton.onclick = () => removeFile(file, transactNo);
-
-                listItem.appendChild(removeButton);
-                fileList.appendChild(listItem);
-              }
-            });
-
-            updateFileInput(transactNo);
-          }
-
-          function removeFile(file, transactNo) 
-          {
-            const index = selectedFiles[transactNo].indexOf(file);
-            if (index > -1) 
-            {
-              selectedFiles[transactNo].splice(index, 1); // Remove file from selectedFiles
-            }
-
-            // Remove the list item from the DOM
-            const fileList = document.getElementById("fileList" + transactNo);
-            const listItem = fileList.querySelector(`li:contains('${file.name}')`);
-            if (listItem) 
-            {
-              fileList.removeChild(listItem);
-            }
-
-            updateFileInput(transactNo);
-          }
-
-          function updateFileInput(transactNo) 
-          {
-            const dataTransfer = new DataTransfer();
-            selectedFiles[transactNo].forEach(file => dataTransfer.items.add(file));
-
-            const fileInput = document.getElementById('fileInput' + transactNo);
-            fileInput.files = dataTransfer.files;
-
-            // Debugging: Log updated file input
-            console.log(fileInput.files);
-          }
-
-        </script>
-
-        <style>
-          .drop-zone 
-          {
-            cursor: pointer;
-            background-color: #f8f9fa;
-            min-height: 100px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-          }
-        </style>
-
-        <div class="table-footer border-0">
-          <div class="total-records">Total Records: <?php echo $res1->num_rows; ?></div>
-          <div class="footer-pagination">
-            <button class="pagination-button" onclick="prevPage()">&#8249; Prev</button>
-            <span>Page 1 of 10</span>
-            <button class="pagination-button" onclick="nextPage()">Next &#8250;</button>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- Modal for Request -->
-  <div class="modal fade" id="requestModal" tabindex="-1" aria-labelledby="requestModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="requestModalLabel">Request for Transaction</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <form action="../Agent Section/functions/agent-transactionRequest-code.php" method="POST" id="requestForm">
-          <div class="modal-body">
-            <!-- Transaction Number Display -->
-            <p><strong>Transaction No:</strong> <span id="requestTransactionId"></span></p>
-
-            <!-- Hidden Input Fields -->
-            <input type="hidden" name="transaction_number" id="transactionNumberInput">
-            <input type="hidden" name="agentId" value="<?php echo $agentId; ?>">
-            <input type="hidden" name="accountId" value="<?php echo $accountId; ?>">
-
-            <!-- Request Type Selection -->
-            <div class="mb-3">
-              <select class="form-select mt-2" name="concern" id="concern" required>
-                <option selected disabled>Select Request</option>
-                <?php
-                  $sql1 = mysqli_query($conn, "SELECT DISTINCT concernId, concernTitle FROM concern ORDER BY concernTitle ASC");
-                  while($res1 = mysqli_fetch_array($sql1)) 
-                  {
-                    echo "<option value='{$res1['concernId']}'>{$res1['concernTitle']}</option>";
-                  }
-                ?>
-              </select>
-            </div>
-
-            <!-- Request Details Selection -->
-            <div class="mb-3" id="additionalSelectContainer" style="display: none;">
-              <select class="form-select mt-2" name="requestDetails" id="requestDetails" required>
-                <option selected disabled>Select Specific Detail</option>
-              </select>
-              <label value="0.00">₱ <input type="text" id="price" name="price" value="0.00" style="border: none; background: transparent; padding: 5px 10px; font-size: 14px; display: inline-block; width: auto;" readonly></label>
-            </div>
-
-            <!-- Pax Input -->
-            <div class="mb-3">
-              <label class="form-label">Pax</label>
-              <input type="number" class="form-control" id="paxRequest" name="pax" placeholder="Enter pax" min="1" required>
-            </div>
-
-            <!-- Details Input -->
-            <div class="mb-3">
-              <label class="form-label">Details</label>
-              <textarea class="form-control" name="details" placeholder="Enter Specific Message" rows="4"></textarea>
-            </div>
-
-            <label>₱ <span id="displayTotalPrice">0.00</span></label>
-            <input type="hidden" name="totalPrice" id="TotalPrice" value="0.00" style="border: none; background: transparent; padding: 5px 10px; font-size: 14px; display: inline-block; width: auto;" readonly>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="submit" name="request" class="btn btn-primary">Send Request</button>
-          </div>
-        </form>
       </div>
     </div>
   </div>
@@ -722,7 +477,6 @@
 
   <?php require "../Agent Section/includes/scripts.php"; ?>
 
-  <!-- Add Guest Info, Show Guest Info Function, Show Request History, and Show Payment History -->
   <script>
     function addGuestInfo(transactionNumber) 
     {
@@ -813,6 +567,8 @@
     }
   </script>
 
+
+
   <script>
     document.addEventListener('DOMContentLoaded', function () 
     {
@@ -832,29 +588,6 @@
         fetchBookingDetails(transactionId);
       });
 
-      // Handle the 'requestModal' for inserting a new request
-      const requestModal = document.getElementById('requestModal');
-      requestModal.addEventListener('show.bs.modal', function (event) 
-      {
-        const button = event.relatedTarget; // Button that triggered the modal
-        const transactionId = button.getAttribute('data-transaction-id'); // Fetch transaction ID
-
-        // Reset the form to clear any previous data
-        const form = document.getElementById('requestForm');
-        form.reset();
-
-        // Hide the 'additionalSelectContainer'
-        document.getElementById('additionalSelectContainer').style.display = 'none';
-
-        // Populate the hidden input field specific to the request form
-        document.querySelector('#requestForm input[name="transaction_number"]').value = transactionId;
-
-        // Display the transaction ID in the modal
-        document.getElementById('requestTransactionId').textContent = transactionId;
-
-        // No need to fetch existing details; the modal is for inserting a new request
-        fetchPaxForRequestModal(transactionId);
-      });
     });
     
     $(document).ready(function ()
@@ -1015,52 +748,7 @@
       validateMaxValue(this);
     });
 
-    // Function to fetch pax for the request modal
-    function fetchPaxForRequestModal(transactionId) 
-    {
-      fetch('../Agent Section/functions/getBookingDetails.php', 
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ transaction_id: transactionId }),
-      })
-      .then(response => response.json())
-      .then(data => 
-      {
-        if (data.success) 
-        {
-          // Populate only the pax field with the fetched data
-          const paxInput = document.querySelector('input[name="pax"]');
-          paxInput.setAttribute('max', data.booking.pax);
-          
-          // Ensure the current value is valid in case it exceeds the max
-          validateMaxValue(paxInput);
-        } 
-        else 
-        {
-          console.error('Error fetching booking details:', data.message);
-        }
-      })
-      .catch(error => 
-      {
-        console.error('Fetch error:', error);
-      });
-    }
-
-    // Function to validate the max value of the input
-    function validateMaxValue(input) 
-    {
-      const max = parseInt(input.getAttribute("max"));
-      const currentValue = parseInt(input.value);
-      
-      if (currentValue > max) 
-      {
-        input.value = max; // Set the value to the max if it exceeds
-      }
-    }
-
+    
     function updateBooking() 
     {
       const form = document.getElementById('updateBookingForm');
@@ -1074,9 +762,19 @@
     {
       return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
-
-    
   </script>
+
+
+
+
+
+
+
+
+
+
+
+
 
 </body>
 </html>
