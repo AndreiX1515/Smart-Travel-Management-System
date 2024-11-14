@@ -44,107 +44,96 @@
         <div class="row g-3 mb-3">
           <label for="" class="fw-bold ">Transaction Information: </label>
 
+          <?php
+            $query1 = "Select * from booking where transactionNo = '$transactionNumber'";
+            $result1 = $conn->query($query1);
+
+            if ($result1->num_rows > 0) 
+            {
+              // output data of each row
+              while($row1 = $result->fetch_assoc()) {
+                echo "id: " . $row1["id"]. " - Name: " . $row["firstname"]. " " . $row["lastname"]. "<br>";
+              }
+            } else {
+              echo "0 results";
+            }
+          ?>
+
           <div class="col-md-2">
-             <label for="transactNo" class="form-label">Transaction No</label>
-             <input type="text" class="form-control" id="transactNo" name="transactNo" value="<?php echo $transactionNumber ?>" readonly>
-         </div>
+            <label for="transactNo" class="form-label">Transaction No: <?php echo $transactionNumber ?></label>
+          </div>
 
-         <div class="col-md-2">
-             <label for="bookingId" class="form-label">Booking ID</label>
-             <input type="text" class="form-control" id="bookingId" name="bookingId" readonly>
-         </div>
 
-         <div class="col-md-2">
-             <label for="accountId" class="form-label">Account ID</label>
-             <input type="text" class="form-control" id="accountId" name="accountId" readonly>
-         </div>
-       
-         <div class="col-md-2">
-             <label for="agentId" class="form-label">Agent ID</label>
-             <input type="text" class="form-control" id="agentId" name="agentId">
-         </div>
+          <div class="col-md-2">
+            <label for="packageId" class="form-label">Package ID</label>
+            <input type="text" class="form-control" id="packageId" name="packageId">
+          </div>
 
-         <div class="col-md-2">
-             <label for="flightId" class="form-label">Flight ID</label>
-             <input type="text" class="form-control" id="flightId" name="flightId">
-         </div>
-
-         <div class="col-md-2">
-             <label for="packageId" class="form-label">Package ID</label>
-             <input type="text" class="form-control" id="packageId" name="packageId">
-         </div>
-
-         <div class="col-md-2">
+          <div class="col-md-2">
             <label for="pax" class="form-label">Pax</label>
             <input type="number" class="form-control" id="pax" name="pax">
-        </div>
+          </div>
         
-        <div class="col-md-2">
+          <div class="col-md-2">
             <label for="bookingDate" class="form-label">Booking Date</label>
             <input type="text" class="form-control" id="bookingDate" name="bookingDate">
-        </div>
+          </div>
 
-        <div class="col-md-2">
-                <label for="totalPrice" class="form-label">Total Price</label>
-                <input type="number" step="0.01" class="form-control" id="totalPrice" name="totalPrice">
-            </div>
+          <div class="col-md-2">
+            <label for="totalPrice" class="form-label">Total Price</label>
+            <input type="number" step="0.01" class="form-control" id="totalPrice" name="totalPrice">
+          </div>
 
-        <div class="col-md-2">
+          <div class="col-md-2">
             <label for="status" class="form-label">Status</label>
             <input type="number" step="0.01" class="form-control" id="totalPrice" name="Status">
-        </div>
-
+          </div>
         </div>
 
         <div class="row g-3">
-            <label for="" class="fw-bold ">Contact Person Information: </label>
-             
-            <div class="col-md-4">
-                <label for="fName" class="form-label">Name</label>
-                <input type="text" class="form-control" id="fName" name="fName">
-            </div>
-
-            <div class="col-md-3">
-                <label for="contactNo" class="form-label">Contact No</label>
-                <input type="text" class="form-control" id="contactNo" name="contactNo">
-            </div>
-
-            <div class="col-md-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" name="email">
-            </div>
+          <label for="" class="fw-bold ">Contact Person Information: </label>
             
+          <div class="col-md-4">
+            <label for="fName" class="form-label">Name</label>
+            <input type="text" class="form-control" id="fName" name="fName">
+          </div>
 
-            
+          <div class="col-md-3">
+            <label for="contactNo" class="form-label">Contact No</label>
+            <input type="text" class="form-control" id="contactNo" name="contactNo">
+          </div>
+
+          <div class="col-md-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" name="email">
+          </div>
         </div>
-       </div>
-       
+      </div>
     
+      <ul class="nav nav-tabs mt-3" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Guest Information</button>
+        </li>
 
-     <ul class="nav nav-tabs mt-3" id="myTab" role="tablist">
-      <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Guest Information</button>
-      </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Request History</button>
+        </li>
 
-      <li class="nav-item" role="presentation">
-        <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Request History</button>
-      </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">Payment History</button>
+        </li>
 
-      <li class="nav-item" role="presentation">
-        <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">Payment History</button>
-      </li>
+        <!-- <li class="nav-item" role="presentation">
+          <button class="nav-link" id="disabled-tab" data-bs-toggle="tab" data-bs-target="#disabled-tab-pane" type="button" role="tab" aria-controls="disabled-tab-pane" aria-selected="false" disabled>Disabled</button>
+        </li> -->
+      </ul>
 
-      <!-- <li class="nav-item" role="presentation">
-        <button class="nav-link" id="disabled-tab" data-bs-toggle="tab" data-bs-target="#disabled-tab-pane" type="button" role="tab" aria-controls="disabled-tab-pane" aria-selected="false" disabled>Disabled</button>
-      </li> -->
-    </ul>
+      <div class="tab-content" id="myTabContent">
+        <!-- Guest Table -->
+        <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
 
-    <div class="tab-content" id="myTabContent">
-      <!-- Guest Table -->
-      <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
-
-      <div class="tab-wrapper">
-         <div class="d-flex justify-content-end align-items-center p-3 mt-2">
+          <div class="tab-wrapper">
+            <div class="d-flex justify-content-end align-items-center p-3 mt-2">
               <div class="d-flex justify-content-end gap-2">
                 <button type="button" class="btn btn-primary">
                   View Guest Files
@@ -153,9 +142,9 @@
                   Attach Visa Requirements
                 </button>
               </div>
-          </div>
+            </div>
 
-          <div class="table-container p-3">
+            <div class="table-container p-3">
               <table class="product-table">
                 <thead>
                   <tr>
@@ -175,10 +164,8 @@
                     <th>PASSPORT NO.</th>
                     <th>PASSPORT EXP.</th>
                     <th>VISA STATUS</th>
-                    
                   </tr>
                 </thead>
-
                 <tbody>
                   <?php
                     $sql1= "SELECT *, DATE_FORMAT(birthdate, '%M %d, %Y') AS birthdate, CONCAT(countryCode, contactNo) AS contactNo,
@@ -195,8 +182,10 @@
 
                     $res1 = $conn->query($sql1);
 
-                    if ($res1->num_rows > 0) {
-                      while ($row = $res1->fetch_assoc()) {
+                    if ($res1->num_rows > 0) 
+                    {
+                      while ($row = $res1->fetch_assoc()) 
+                      {
                         echo "<tr>
                                 <td>{$row['guestId']}</td>
                                 <td>{$row['fName']}</td>
@@ -216,224 +205,221 @@
                                 <td>{$row['visaStatus']}</td>
                               </tr>";
                       }
-                    } else {
-                     echo "<tr><td colspan='100' style='text-align: center;'>No Guest found</td></tr>";
-
+                    } 
+                    else 
+                    {
+                      echo "<tr><td colspan='100' style='text-align: center;'>No Guest found</td></tr>";
                     }
                   ?>
                 </tbody>
-             </table>
-           </div>
-        </div>
-      </div>
-
-
-      <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
-       <!-- Request Table -->
-       <div class="tab-wrapper">
-        <div class="d-flex justify-content-end align-items-center p-3 mt-2">
-        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#requestModal" 
-        data-transaction-id="<?= $transactionNumber ?>">Add Request</button>
-        
-        </div>
-        <div class="table-container p-3">
-       <table class="product-table">
-         <thead>
-          <tr>
-            <th>Request Id</th>
-            <th>Request Title</th>
-            <th>Request Details</th>
-            <th>Request Date</th>
-            <th>Status</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php
-            $sql1= "SELECT *, DATE_FORMAT(requestDate, '%M %d, %Y %h:%i %p') AS requestDate
-                    FROM request WHERE transactNo = '$transactionNumber'";
-
-            $res1 = $conn->query($sql1);
-
-            if ($res1->num_rows > 0) 
-            {
-              while ($row = $res1->fetch_assoc()) 
-              {
-                echo "<tr>
-                        <td>{$row['requestId']}</td>
-                        <td>{$row['concern']}</td>
-                        <td>{$row['details']}</td>
-                        <td>{$row['requestDate']}</td>
-                        <td>{$row['requestStatus']}</td>
-                      </tr>";
-              }
-            } 
-            else 
-            {
-              echo "<tr><td colspan='10'>No Payment Found</td></tr>";
-            }
-          ?>
-        </tbody>
-      </table>
-      </div>
-
-       </div>
-
-      </div>
-
-
-       <!-- Payment History Table -->
-      <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
-        <div class="tab-wrapper">
-          <div div class="d-flex justify-content-end align-items-center p-3 mt-2">
-          <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#paymentModal<?= $transactionNumber ?>"
-          data-transact-no="<?= $transactionNumber ?>" data-account-id="<?= $accountId ?>">Add Payment</button>
-
+              </table>
+            </div>
           </div>
+        </div>
 
-          <div class="table-container p-3">
-      <table class="product-table">
-        <thead>
-          <tr>
-            <th>Payment Id</th>
-            <th>Payment Title</th>
-            <th>Payment Type</th>
-            <th>Amount</th>
-            <th>Proof of Payment</th>
-            <th>Payment Date</th>
-            <th>Payment Status</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
+        <!-- Request Table -->
+        <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+          <div class="tab-wrapper">
+            <div class="d-flex justify-content-end align-items-center p-3 mt-2">
+              <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#requestModal" 
+              data-transaction-id="<?= $transactionNumber ?>">Add Request</button>
+            </div>
+            <div class="table-container p-3">
+              <table class="product-table">
+                <thead>
+                  <tr>
+                    <th>Request Id</th>
+                    <th>Request Title</th>
+                    <th>Request Details</th>
+                    <th>Request Date</th>
+                    <th>Status</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php
+                    $sql1= "SELECT *, DATE_FORMAT(requestDate, '%M %d, %Y %h:%i %p') AS requestDate
+                            FROM request WHERE transactNo = '$transactionNumber'";
 
-        <?php
-           $sql1 = "SELECT *, FORMAT(amount, 2) AS amount, DATE_FORMAT(paymentDate, '%M %d, %Y %h:%i %p') AS paymentDate 
-                    FROM payment 
-                    WHERE transactNo = '$transactionNumber'";
+                    $res1 = $conn->query($sql1);
 
-           $res1 = $conn->query($sql1);
+                    if ($res1->num_rows > 0) 
+                    {
+                      while ($row = $res1->fetch_assoc()) 
+                      {
+                        echo "<tr>
+                                <td>{$row['requestId']}</td>
+                                <td>{$row['concern']}</td>
+                                <td>{$row['details']}</td>
+                                <td>{$row['requestDate']}</td>
+                                <td>{$row['requestStatus']}</td>
+                              </tr>";
+                      }
+                    } 
+                    else 
+                    {
+                      echo "<tr><td colspan='10'>No Payment Found</td></tr>";
+                    }
+                  ?>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
 
-           if ($res1->num_rows > 0) {
-               while ($row = $res1->fetch_assoc()) {
-                   echo "<tr>
-                           <td>{$row['paymentId']}</td>
-                           <td>{$row['paymentTitle']}</td>
-                           <td>{$row['paymentType']}</td>
-                           <td>₱ {$row['amount']}</td>
-                           <td>
-                               <a href='functions/view-file.php?file=" . urlencode($row['filePath']) . "' target='_blank'>View File</a> 
-                               <a href='functions/download.php?file=" . urlencode($row['filePath']) . "' target='_blank'>Download File</a> 
-                           </td>
-                           <td>{$row['paymentDate']}</td>
-                           <td>{$row['paymentStatus']}</td>
-                         </tr>";
-               }
-           } else {
-               echo "<tr><td colspan='7'>No Payment Found</td></tr>";
-           }
-           ?>
+        <!-- Payment History Table -->
+        <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
+          <div class="tab-wrapper">
+            <div div class="d-flex justify-content-end align-items-center p-3 mt-2">
+              <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#paymentModal<?= $transactionNumber ?>"
+              data-transact-no="<?= $transactionNumber ?>" data-account-id="<?= $accountId ?>">Add Payment</button>
+            </div>
 
-        </tbody>
-      </table>
-     </div>
+            <div class="table-container p-3">
+              <table class="product-table">
+                <thead>
+                  <tr>
+                    <th>Payment Id</th>
+                    <th>Payment Title</th>
+                    <th>Payment Type</th>
+                    <th>Amount</th>
+                    <th>Proof of Payment</th>
+                    <th>Payment Date</th>
+                    <th>Payment Status</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php
+                    $sql1 = "SELECT *, FORMAT(amount, 2) AS amount, DATE_FORMAT(paymentDate, '%M %d, %Y %h:%i %p') AS paymentDate 
+                              FROM payment 
+                              WHERE transactNo = '$transactionNumber'";
+
+                    $res1 = $conn->query($sql1);
+
+                    if ($res1->num_rows > 0) 
+                    {
+                      while ($row = $res1->fetch_assoc())
+                        {
+                          echo "<tr>
+                                  <td>{$row['paymentId']}</td>
+                                  <td>{$row['paymentTitle']}</td>
+                                  <td>{$row['paymentType']}</td>
+                                  <td>₱ {$row['amount']}</td>
+                                  <td>
+                                      <a href='functions/view-file.php?file=" . urlencode($row['filePath']) . "' target='_blank'>View File</a> 
+                                      <a href='functions/download.php?file=" . urlencode($row['filePath']) . "' target='_blank'>Download File</a> 
+                                  </td>
+                                  <td>{$row['paymentDate']}</td>
+                                  <td>{$row['paymentStatus']}</td>
+                                </tr>";
+                      }
+                    } 
+                    else 
+                    {
+                      echo "<tr><td colspan='7'>No Payment Found</td></tr>";
+                    }
+                  ?>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-   </div>
-
   </div>
- </div>
-</div>
 
 
   <?php require "../Agent Section/includes/scripts.php"; ?>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
 
   <!-- Attach Visa Requirements Modal -->
-<div class="modal fade" id="visaModal" tabindex="-1" aria-labelledby="visaModalLabel" aria-hidden="true">
+  <div class="modal fade" id="visaModal" tabindex="-1" aria-labelledby="visaModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h6 class="modal-title" id="visaModalLabel">
-                    Visa Requirements for Transaction No: <?php echo htmlspecialchars($_SESSION['transaction_number'] ?? ''); ?>
-                </h6>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-
-            <form action="../Agent Section/functions/agent-addVisaRequirements-code.php" method="POST" enctype="multipart/form-data">
-                <div class="modal-body">
-                    <!-- Hidden input for transaction number -->
-                    <input type="hidden" name="transaction_number" value="<?php echo htmlspecialchars($_SESSION['transaction_number'] ?? ''); ?>">
-
-                    <?php
-                    // Assuming you have a database connection established
-                    $transactionNumber = $_SESSION['transaction_number'] ?? '';
-                    $query1 = "SELECT guestId, CONCAT(
-                        lName, ', ', fName, ' ', 
-                        CASE WHEN mName = 'N/A' THEN '' ELSE CONCAT(SUBSTRING(mName, 1, 1), '.') END, ' ',
-                        CASE WHEN suffix = 'N/A' THEN '' ELSE suffix END
-                    ) AS `FULLNAME` FROM guest WHERE transactNo = '$transactionNumber'";
-
-                    // Execute the query
-                    $res1 = mysqli_query($conn, $query1);
-
-                    if ($res1) {
-                        // Count the number of guests
-                        $guestCount = mysqli_num_rows($res1);
-
-                        // Display the name and guestId for each guest inside input fields
-                        while ($row = mysqli_fetch_assoc($res1)) {
-                            $guestId = $row['guestId'];
-                            $name = $row['FULLNAME'];
-
-                            // Create input fields for each guest
-                            echo "<div class='mb-3'>";
-                            echo "<label for='guest-$guestId' class='form-label'>Guest ID: $guestId</label>";
-                            echo "<input type='text' class='form-control' id='guest-$guestId' name='guestIds[]' value='$guestId' readonly>";
-
-                            echo "<label for='name-$guestId' class='form-label'>Name</label>";
-                            echo "<input type='text' class='form-control' id='name-$guestId' name='guestNames[]' value='$name' readonly>";
-
-                            echo "<h6 class='form-label'>Visa Requirements</h6>";
-
-                            echo "<label for='passport-$guestId' class='form-label'>Passport</label>";
-                            echo "<input type='file' class='form-control' id='passport-$guestId' name='passports[]' />";
-
-                            echo "<label for='permit-$guestId' class='form-label'>Permit</label>";
-
-                            echo "<input type='file' class='form-control' id='permit-$guestId' name='permits[]' />";
-
-                            echo "<label for='validId-$guestId' class='form-label'>Valid Id</label>";
-
-                            echo "<input type='file' class='form-control' id='validId-$guestId' name='validIds[]' />";
-
-                            echo "<label for='certificate-$guestId' class='form-label'>Certificate</label>";
-                            echo "<input type='file' class='form-control' id='certificate-$guestId' name='certificates[]' />";
-
-                            echo "<label for='guaranteedLetter-$guestId' class='form-label'>Guaranteed Letter</label>";
-                            echo "<input type='file' class='form-control' id='guaranteedLetter-$guestId' name='guaranteedLetters[]' />";
-                            echo "</div>";
-                        }
-                    } else {
-                        echo "<p>Error: " . mysqli_error($conn) . "</p>";
-                    }
-                    ?>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" name="attachVisaRequirements" class="btn btn-primary">Submit</button>
-                </div>
-
-            </form>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h6 class="modal-title" id="visaModalLabel">
+              Visa Requirements for Transaction No: <?php echo htmlspecialchars($_SESSION['transaction_number'] ?? ''); ?>
+          </h6>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
+
+        <form action="../Agent Section/functions/agent-addVisaRequirements-code.php" method="POST" enctype="multipart/form-data">
+          <div class="modal-body">
+            <!-- Hidden input for transaction number -->
+            <input type="hidden" name="transaction_number" value="<?php echo htmlspecialchars($_SESSION['transaction_number'] ?? ''); ?>">
+            <?php
+              // Assuming you have a database connection established
+              $transactionNumber = $_SESSION['transaction_number'] ?? '';
+              $query1 = "SELECT guestId, CONCAT(
+                  lName, ', ', fName, ' ', 
+                  CASE WHEN mName = 'N/A' THEN '' ELSE CONCAT(SUBSTRING(mName, 1, 1), '.') END, ' ',
+                  CASE WHEN suffix = 'N/A' THEN '' ELSE suffix END
+              ) AS `FULLNAME` FROM guest WHERE transactNo = '$transactionNumber'";
+
+              // Execute the query
+              $res1 = mysqli_query($conn, $query1);
+
+              if ($res1) 
+              {
+                // Count the number of guests
+                $guestCount = mysqli_num_rows($res1);
+
+                // Display the name and guestId for each guest inside input fields
+                while ($row = mysqli_fetch_assoc($res1)) 
+                {
+                  $guestId = $row['guestId'];
+                  $name = $row['FULLNAME'];
+
+                  // Create input fields for each guest
+                  echo "<div class='mb-3'>";
+                  echo "<label for='guest-$guestId' class='form-label'>Guest ID: $guestId</label>";
+                  echo "<input type='text' class='form-control' id='guest-$guestId' name='guestIds[]' value='$guestId' readonly>";
+
+                  echo "<label for='name-$guestId' class='form-label'>Name</label>";
+                  echo "<input type='text' class='form-control' id='name-$guestId' name='guestNames[]' value='$name' readonly>";
+
+                  echo "<h6 class='form-label'>Visa Requirements</h6>";
+
+                  echo "<label for='passport-$guestId' class='form-label'>Passport</label>";
+                  echo "<input type='file' class='form-control' id='passport-$guestId' name='passports[]' />";
+
+                  echo "<label for='permit-$guestId' class='form-label'>Permit</label>";
+
+                  echo "<input type='file' class='form-control' id='permit-$guestId' name='permits[]' />";
+
+                  echo "<label for='validId-$guestId' class='form-label'>Valid Id</label>";
+
+                  echo "<input type='file' class='form-control' id='validId-$guestId' name='validIds[]' />";
+
+                  echo "<label for='certificate-$guestId' class='form-label'>Certificate</label>";
+                  echo "<input type='file' class='form-control' id='certificate-$guestId' name='certificates[]' />";
+
+                  echo "<label for='guaranteedLetter-$guestId' class='form-label'>Guaranteed Letter</label>";
+                  echo "<input type='file' class='form-control' id='guaranteedLetter-$guestId' name='guaranteedLetters[]' />";
+                  echo "</div>";
+                }
+              } 
+              else 
+              {
+                echo "<p>Error: " . mysqli_error($conn) . "</p>";
+              }
+            ?>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" name="attachVisaRequirements" class="btn btn-primary">Submit</button>
+          </div>
+        </form>
+      </div>
     </div>
-</div>
+  </div>
 
 
-<!-- FOR REQUEST SECTION -->
+  <!-- FOR REQUEST SECTION -->
 
-<!-- Modal for Request -->
-<div class="modal fade" id="requestModal" tabindex="-1" aria-labelledby="requestModalLabel" aria-hidden="true">
+  <!-- Modal for Request -->
+  <div class="modal fade" id="requestModal" tabindex="-1" aria-labelledby="requestModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -497,45 +483,50 @@
   </div>
 
   <script>
-document.addEventListener('DOMContentLoaded', function () {
-  // Get the modal element
-  const requestModal = document.getElementById('requestModal');
+    document.addEventListener('DOMContentLoaded', function () 
+    {
+      // Get the modal element
+      const requestModal = document.getElementById('requestModal');
 
-  if (requestModal) {
-    // Add event listener for when the modal is shown
-    requestModal.addEventListener('show.bs.modal', function (event) {
-      const button = event.relatedTarget; // Button that triggered the modal
+      if (requestModal) 
+      {
+        // Add event listener for when the modal is shown
+        requestModal.addEventListener('show.bs.modal', function (event) 
+        {
+          const button = event.relatedTarget; // Button that triggered the modal
 
-      if (button) {
-        const transactionId = button.getAttribute('data-transaction-id'); // Fetch transaction ID
+          if (button) 
+          {
+            const transactionId = button.getAttribute('data-transaction-id'); // Fetch transaction ID
 
-        // Reset the form to clear any previous data
-        const form = document.getElementById('requestForm');
-        if (form) form.reset();
+            // Reset the form to clear any previous data
+            const form = document.getElementById('requestForm');
+            if (form) form.reset();
 
-        // Hide the 'additionalSelectContainer' if it exists
-        const additionalSelectContainer = document.getElementById('additionalSelectContainer');
-        if (additionalSelectContainer) additionalSelectContainer.style.display = 'none';
+            // Hide the 'additionalSelectContainer' if it exists
+            const additionalSelectContainer = document.getElementById('additionalSelectContainer');
+            if (additionalSelectContainer) additionalSelectContainer.style.display = 'none';
 
-        // Populate the hidden input field specific to the request form
-        const transactionInput = document.querySelector('#requestForm input[name="transaction_number"]');
-        if (transactionInput) transactionInput.value = transactionId;
+            // Populate the hidden input field specific to the request form
+            const transactionInput = document.querySelector('#requestForm input[name="transaction_number"]');
+            if (transactionInput) transactionInput.value = transactionId;
 
-        // Display the transaction ID in the modal
-        const transactionIdDisplay = document.getElementById('requestTransactionId');
-        if (transactionIdDisplay) transactionIdDisplay.textContent = transactionId;
+            // Display the transaction ID in the modal
+            const transactionIdDisplay = document.getElementById('requestTransactionId');
+            if (transactionIdDisplay) transactionIdDisplay.textContent = transactionId;
 
-        // Call the function to fetch Pax for the transaction ID
-        if (typeof fetchPaxForRequestModal === 'function') {
-          fetchPaxForRequestModal(transactionId);
-        }
+            // Call the function to fetch Pax for the transaction ID
+            if (typeof fetchPaxForRequestModal === 'function') 
+            {
+              fetchPaxForRequestModal(transactionId);
+            }
+          }
+        });
       }
     });
-  }
-});
 
-// Function to fetch pax for the request modal
-function fetchPaxForRequestModal(transactionId) 
+    // Function to fetch pax for the request modal
+    function fetchPaxForRequestModal(transactionId) 
     {
       fetch('../Agent Section/functions/getBookingDetails.php', 
       {
@@ -579,220 +570,201 @@ function fetchPaxForRequestModal(transactionId)
         input.value = max; // Set the value to the max if it exceeds
       }
     }
-
   </script>
 
 
+  <!-- FOR PAYMENT SECTION -->
 
-
-
-
-
-
-<!-- FOR PAYMENT SECTION -->
-
-<!-- Modal -->
-<div class="modal fade" id="paymentModal<?= $transactionNumber ?>" tabindex="-1" aria-labelledby="paymentModalLabel<?= $transactionNumber ?>" aria-hidden="true">
+  <!-- Modal -->
+  <div class="modal fade" id="paymentModal<?= $transactionNumber ?>" tabindex="-1" aria-labelledby="paymentModalLabel<?= $transactionNumber ?>" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="paymentModalLabel<?= $transactionNumber ?>">Payment for Transaction #<?= $transactionNumber ?></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form action="../Agent Section/functions/agent-transactionPayment-code.php" method="POST" enctype="multipart/form-data">
-                <div class="modal-body">
-                    <input type="hidden" name="transactionNumber" value="<?= $transactionNumber ?>">
-                    <input type="hidden" name="accountId" value="<?= $accountId ?>">
+      <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="paymentModalLabel<?= $transactionNumber ?>">Payment for Transaction #<?= $transactionNumber ?></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form action="../Agent Section/functions/agent-transactionPayment-code.php" method="POST" enctype="multipart/form-data">
+            <div class="modal-body">
+              <input type="hidden" name="transactionNumber" value="<?= $transactionNumber ?>">
+              <input type="hidden" name="accountId" value="<?= $accountId ?>">
 
-                    <div class="mb-3">
-                        <label class="form-label">Payment for:</label>
-                        <select class="form-select" name="paymentTitle" required>
-                            <option selected disabled>Select Payment Title</option>
-                            <option value="Package Payment">Package Payment</option>
-                            <option value="Request Payment">Request Payment</option>
-                        </select>
-                    </div>
+              <div class="mb-3">
+                <label class="form-label">Payment for:</label>
+                <select class="form-select" name="paymentTitle" required>
+                  <option selected disabled>Select Payment Title</option>
+                  <option value="Package Payment">Package Payment</option>
+                  <option value="Request Payment">Request Payment</option>
+                </select>
+              </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Payment Type</label>
-                        <select class="form-select" name="paymentType" required>
-                            <option selected disabled>Select Payment Type</option>
-                            <option value="Downpayment">Downpayment</option>
-                            <option value="Partial Payment">Partial Payment</option>
-                            <option value="Full Payment">Full Payment</option>
-                        </select>
-                    </div>
+              <div class="mb-3">
+                <label class="form-label">Payment Type</label>
+                <select class="form-select" name="paymentType" required>
+                  <option selected disabled>Select Payment Type</option>
+                  <option value="Downpayment">Downpayment</option>
+                  <option value="Partial Payment">Partial Payment</option>
+                  <option value="Full Payment">Full Payment</option>
+                </select>
+              </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Payment Amount</label>
-                        <input type="number" class="form-control" name="amount" placeholder="Enter payment Amount" required>
-                    </div>
+              <div class="mb-3">
+                <label class="form-label">Payment Amount</label>
+                <input type="number" class="form-control" name="amount" placeholder="Enter payment Amount" required>
+              </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Proof of Payment</label>
-                        <div class="mb-3">
-                            <input type="file" class="form-control" name="proofs[]" accept="image/*,application/pdf" multiple>
-                        </div>
-                        <!-- List of file names -->
-                        <ul id="fileList<?= $transactionNumber ?>" class="list-unstyled mt-2"></ul>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" name="payment" class="btn btn-primary">Submit payment</button>
-                    </div>
+              <div class="mb-3">
+                <label class="form-label">Proof of Payment</label>
+                <div class="mb-3">
+                  <input type="file" class="form-control" name="proofs[]" accept="image/*,application/pdf" multiple>
                 </div>
-            </form>
-        </div>
+                <!-- List of file names -->
+                <ul id="fileList<?= $transactionNumber ?>" class="list-unstyled mt-2"></ul>
+              </div>
+
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" name="payment" class="btn btn-primary">Submit payment</button>
+              </div>
+            </div>
+          </form>
+      </div>
     </div>
-</div>
+  </div>
 
 
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    // Target all buttons that trigger a modal
-    const paymentModals = document.querySelectorAll('[data-bs-toggle="modal"]');
-    
-    paymentModals.forEach(button => {
-        button.addEventListener('click', function () {
-            const transactionNumber = button.getAttribute('data-transact-no');
-            const accountId = button.getAttribute('data-account-id');
+  <script>
+    document.addEventListener('DOMContentLoaded', function () 
+    {
+      // Target all buttons that trigger a modal
+      const paymentModals = document.querySelectorAll('[data-bs-toggle="modal"]');
+      
+      paymentModals.forEach(button => 
+      {
+        button.addEventListener('click', function () 
+        {
+          const transactionNumber = button.getAttribute('data-transact-no');
+          const accountId = button.getAttribute('data-account-id');
 
-            // Target the modal associated with this transaction
-            const modal = document.getElementById(`paymentModal${transactionNumber}`);
+          // Target the modal associated with this transaction
+          const modal = document.getElementById(`paymentModal${transactionNumber}`);
 
-            // Set the hidden input fields with the correct transaction data
-            modal.querySelector('[name="transactionNumber"]').value = transactionNumber;
-            modal.querySelector('[name="accountId"]').value = accountId;
+          // Set the hidden input fields with the correct transaction data
+          modal.querySelector('[name="transactionNumber"]').value = transactionNumber;
+          modal.querySelector('[name="accountId"]').value = accountId;
 
-            // Show the modal
-            const bootstrapModal = new bootstrap.Modal(modal);
-            bootstrapModal.show();
+          // Show the modal
+          const bootstrapModal = new bootstrap.Modal(modal);
+          bootstrapModal.show();
         });
+      });
     });
-});
-</script>
+  </script>
 
-<script>
-   const maxFiles = 5;
-   const maxFileSize = 4 * 1024 * 1024; // 4MB
-   let selectedFiles = {};
+  <script>
+    const maxFiles = 5;
+    const maxFileSize = 4 * 1024 * 1024; // 4MB
+    let selectedFiles = {};
 
-   document.querySelectorAll('.drop-zone').forEach(dropZone => 
-   {
-     dropZone.addEventListener("click", function() 
-     {
-       const transactNo = this.id.replace('dropZone', ''); // Extract transactNo
-       document.getElementById('fileInput' + transactNo).click();
-     });
-   });
+    document.querySelectorAll('.drop-zone').forEach(dropZone => 
+    {
+      dropZone.addEventListener("click", function() 
+      {
+        const transactNo = this.id.replace('dropZone', ''); // Extract transactNo
+        document.getElementById('fileInput' + transactNo).click();
+      });
+    });
 
-   function handleDrop(event, transactNo) 
-   {
-     event.preventDefault();
-     handleFiles(event.dataTransfer.files, transactNo);
-   }
+    function handleDrop(event, transactNo) 
+    {
+      event.preventDefault();
+      handleFiles(event.dataTransfer.files, transactNo);
+    }
 
-   function handleFiles(files, transactNo) 
-   {
-     const fileList = document.getElementById("fileList" + transactNo);
-     selectedFiles[transactNo] = selectedFiles[transactNo] || [];
+    function handleFiles(files, transactNo) 
+    {
+      const fileList = document.getElementById("fileList" + transactNo);
+      selectedFiles[transactNo] = selectedFiles[transactNo] || [];
 
-     if (selectedFiles[transactNo].length + files.length > maxFiles) 
-     {
-       alert(`You can upload a maximum of ${maxFiles} files.`);
-       return;
-     }
+      if (selectedFiles[transactNo].length + files.length > maxFiles) 
+      {
+        alert(`You can upload a maximum of ${maxFiles} files.`);
+        return;
+      }
 
-     Array.from(files).forEach(file => 
-     {
-       if (file.size > maxFileSize) 
-       {
-         alert(`File ${file.name} exceeds the 4MB limit and won't be added.`);
-       } 
-       else 
-       {
-         selectedFiles[transactNo].push(file);
+      Array.from(files).forEach(file => 
+      {
+        if (file.size > maxFileSize) 
+        {
+          alert(`File ${file.name} exceeds the 4MB limit and won't be added.`);
+        } 
+        else 
+        {
+          selectedFiles[transactNo].push(file);
 
-         // Debugging: Log the file and the selectedFiles array
-         console.log(`File added: ${file.name}, Size: ${(file.size / 1024 / 1024).toFixed(2)} MB`);
-         console.log(selectedFiles[transactNo]);
+          // Debugging: Log the file and the selectedFiles array
+          console.log(`File added: ${file.name}, Size: ${(file.size / 1024 / 1024).toFixed(2)} MB`);
+          console.log(selectedFiles[transactNo]);
 
-         // Create a list item for the file
-         const listItem = document.createElement("li");
-         listItem.classList.add("file-item");
-         listItem.textContent = `${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`;
+          // Create a list item for the file
+          const listItem = document.createElement("li");
+          listItem.classList.add("file-item");
+          listItem.textContent = `${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`;
 
-         // Add remove button
-         const removeButton = document.createElement("button");
-         removeButton.textContent = "Remove";
-         removeButton.classList.add("btn", "btn-danger", "btn-sm", "ml-2");
-         removeButton.onclick = () => removeFile(file, transactNo);
+          // Add remove button
+          const removeButton = document.createElement("button");
+          removeButton.textContent = "Remove";
+          removeButton.classList.add("btn", "btn-danger", "btn-sm", "ml-2");
+          removeButton.onclick = () => removeFile(file, transactNo);
 
-         listItem.appendChild(removeButton);
-         fileList.appendChild(listItem);
-       }
-     });
+          listItem.appendChild(removeButton);
+          fileList.appendChild(listItem);
+        }
+      });
 
-     updateFileInput(transactNo);
-   }
+      updateFileInput(transactNo);
+    }
 
-   function removeFile(file, transactNo) 
-   {
-     const index = selectedFiles[transactNo].indexOf(file);
-     if (index > -1) 
-     {
-       selectedFiles[transactNo].splice(index, 1); // Remove file from selectedFiles
-     }
+    function removeFile(file, transactNo) 
+    {
+      const index = selectedFiles[transactNo].indexOf(file);
+      if (index > -1) 
+      {
+        selectedFiles[transactNo].splice(index, 1); // Remove file from selectedFiles
+      }
 
-     // Remove the list item from the DOM
-     const fileList = document.getElementById("fileList" + transactNo);
-     const listItem = fileList.querySelector(`li:contains('${file.name}')`);
-     if (listItem) 
-     {
-       fileList.removeChild(listItem);
-     }
+      // Remove the list item from the DOM
+      const fileList = document.getElementById("fileList" + transactNo);
+      const listItem = fileList.querySelector(`li:contains('${file.name}')`);
+      if (listItem) 
+      {
+        fileList.removeChild(listItem);
+      }
 
-     updateFileInput(transactNo);
-   }
+      updateFileInput(transactNo);
+    }
 
-   function updateFileInput(transactNo) 
-   {
-     const dataTransfer = new DataTransfer();
-     selectedFiles[transactNo].forEach(file => dataTransfer.items.add(file));
+    function updateFileInput(transactNo) 
+    {
+      const dataTransfer = new DataTransfer();
+      selectedFiles[transactNo].forEach(file => dataTransfer.items.add(file));
 
-     const fileInput = document.getElementById('fileInput' + transactNo);
-     fileInput.files = dataTransfer.files;
+      const fileInput = document.getElementById('fileInput' + transactNo);
+      fileInput.files = dataTransfer.files;
 
-     // Debugging: Log updated file input
-     console.log(fileInput.files);
-   }
-
+      // Debugging: Log updated file input
+      console.log(fileInput.files);
+    }
  </script>
 
- <style>
-   .drop-zone {
-     cursor: pointer;
-     background-color: #f8f9fa;
-     min-height: 100px;
-     display: flex;
-     align-items: center;
-     justify-content: center;
-   }
- </style>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  <style>
+    .drop-zone {
+      cursor: pointer;
+      background-color: #f8f9fa;
+      min-height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
  </body>
 </html>
