@@ -370,7 +370,7 @@
                 <tbody>
                   <?php
                     $sql1 = "SELECT
-                              b.transactNo AS `transactNo`,
+                              b.transactNo AS `T.N`,
                               p.packageName AS `PACKAGE`,
                               CASE 
                                   WHEN b.flightId IS NULL THEN 'Land Only'
@@ -405,10 +405,10 @@
                       // Output data for each row
                       while ($row = $res1->fetch_assoc()) 
                       {
-                        $_SESSION['transactNo'] = $row['transactNo'];
+                        $_SESSION['T.N'] = $row['T.N'];
                         echo "
-                            <tr onclick=\"window.location='agent-unconfirmedTransactionDetails.php?transactNo=" . htmlspecialchars($_SESSION['transactNo']) . "'\">
-                              <td>" . htmlspecialchars($row['transactNo']) . "</td>
+                            <tr onclick=\"window.location='agent-unconfirmedTransactionDetails.php?transactNo=" . htmlspecialchars($_SESSION['T.N']) . "'\">
+                              <td>" . htmlspecialchars($row['T.N']) . "</td>
                               <td>" . htmlspecialchars($row['PACKAGE']) . "</td>
                               <td>" . htmlspecialchars($row['FLIGHT DATE']) . "</td>
                               <td>" . htmlspecialchars($row['TOTAL PAX']) . "</td>
@@ -416,8 +416,7 @@
                               <td>" . htmlspecialchars($row['STATUS']) . "</td>
                             </tr>";
                       }
-                    }
-
+                    } 
                     else 
                     {
                       // If no records found
@@ -447,7 +446,6 @@
               </thead>
               <tbody>
                 <?php
-                  $_SESSION['T.N'] = Null;
                   $sql1 = "SELECT 
                                 r.transactNo AS `T.N`,
                                 c.concernTitle AS `Request`,
@@ -460,7 +458,7 @@
                             JOIN 
                                 concern c ON r.concernId = c.concernId
                             WHERE 
-                                b.agentId = '$agentId' 
+                                b.agentId = '$agentId'
                             ORDER BY 
                                 r.requestDate DESC";  // Order by request date
       
@@ -470,8 +468,7 @@
                   {
                     while ($row = $res1->fetch_assoc()) 
                     {
-                      $_SESSION['T.N'] = $row['T.N'];
-                      echo "<tr onclick=\"window.location='agent-request.php?transactNo=" . htmlspecialchars($_SESSION['T.N']) . "'\">
+                      echo "<tr>
                               <td>{$row['T.N']}</td>
                               <td>{$row['Request']}</td>
                               <td>" . date('F d, Y', strtotime($row['Date'])) . "</td>
