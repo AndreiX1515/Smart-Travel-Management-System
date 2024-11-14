@@ -818,13 +818,14 @@
         // Ensure that if the user manually enters a number greater than the max, it's automatically corrected
         $('#totalPax').on('input', function() 
         {
-          var maxSeats = $(this).attr('max');
-          var currentPax = $(this).val();
+          var maxSeats = parseInt($(this).attr('max'));
+          var currentPax = parseInt($(this).val());
 
-          // If the current value exceeds maxSeats, reset to maxSeats
-          if (parseInt(currentPax) > parseInt(maxSeats)) 
-          {
+          // If currentPax is greater than maxSeats or less than 1, adjust the value
+          if (currentPax > maxSeats) {
             $(this).val(maxSeats); // Reset to the max value
+          } else if (currentPax < 1 || isNaN(currentPax)) {
+            $(this).val(1); // Reset to 1 if the value is less than 1 or not a number
           }
         });
 
@@ -878,6 +879,15 @@
           validateField('#countryCode', 'countryCode');
           validateField('#contactNo', 'contactNo');
           validateField('#email', 'email');
+
+          // Additional check for totalPax to ensure it is not 0
+          const totalPax = parseInt($('#totalPax').val());
+          if (totalPax === 0 || isNaN(totalPax)) 
+          {
+            $('#totalPaxError').text('Total Pax cannot be 0. Please enter a valid number.');
+            $('#totalPax').addClass('is-invalid');
+            isValid = false;
+          }
 
           // Clear error messages when inputs are focused or changed
           $('select, input').on('focus change', function () 
