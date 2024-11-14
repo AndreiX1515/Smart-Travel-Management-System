@@ -405,9 +405,8 @@
                       // Output data for each row
                       while ($row = $res1->fetch_assoc()) 
                       {
-                        $_SESSION['T.N'] = $row['T.N'];
                         echo "
-                            <tr onclick=\"window.location='agent-unconfirmedTransactionDetails.php?transactNo=" . htmlspecialchars($_SESSION['T.N']) . "'\">
+                              <tr data-url='agent-showGuest.php?id=" . htmlspecialchars($row['T.N']) . "'>
                               <td>" . htmlspecialchars($row['T.N']) . "</td>
                               <td>" . htmlspecialchars($row['PACKAGE']) . "</td>
                               <td>" . htmlspecialchars($row['FLIGHT DATE']) . "</td>
@@ -628,6 +627,31 @@
 
 
   <?php require "../Agent Section/includes/scripts.php"; ?>
+
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll("tr[data-url]").forEach(function(row) {
+        row.addEventListener("click", function() {
+            window.location.href = row.getAttribute("data-url");
+        });
+    });
+});
+
+
+
+
+        // Add event listener to each row for redirection
+        const rows = document.querySelectorAll("tr[data-url]");
+        
+        rows.forEach(row => {
+            row.addEventListener("click", function() {
+                const url = row.getAttribute("data-url");
+                window.location.href = url; // Redirect to the specified URL
+            });
+        });
+    </script>
+
 
   <!-- Chart.js library 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
