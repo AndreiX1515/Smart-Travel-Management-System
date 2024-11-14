@@ -130,7 +130,7 @@
               LEFT JOIN
                   agent a ON b.agentId = a.agentId
               WHERE 
-                  b.agentId = '$agentId' AND b.status = 'Pending'
+                  b.agentId = '$agentId' 
               ORDER BY 
                   b.transactNo DESC LIMIT 10";
 
@@ -147,11 +147,11 @@
                   $statusClass = '';
 
                   switch ($status) {
-                      case 'Active':
-                          $statusClass = 'bg-success text-white'; 
+                      case 'Confirmed':
+                          $statusClass = 'bg-success text-white'; // Green background, white text
                           break;
-                      case 'Inactive':
-                          $statusClass = 'bg-danger text-white'; 
+                      case 'Cancelled':
+                          $statusClass = 'bg-danger text-white'; // Red background, white text
                           break;
                       case 'Pending':
                           $statusClass = 'bg-warning text-dark'; 

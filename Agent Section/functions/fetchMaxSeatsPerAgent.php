@@ -13,11 +13,13 @@
                 agentflightseats.agentId,
                 agentflightseats.flightId,
                 agentflightseats.maxSeats,
-                agentflightseats.maxSeats - (SELECT SUM(pax) 
-                                            FROM booking 
-                                            WHERE booking.flightId = agentflightseats.flightId 
-                                            AND booking.agentId = agentflightseats.agentId 
-                                            AND booking.status = 'Confirmed') AS availableSeats
+                GREATEST(
+                    agentflightseats.maxSeats - (SELECT IFNULL(SUM(pax), 0) 
+                                                FROM booking 
+                                                WHERE booking.flightId = agentflightseats.flightId 
+                                                AND booking.agentId = agentflightseats.agentId 
+                                                AND booking.status = 'Confirmed'), 0
+                ) AS availableSeats
               FROM agentflightseats
               WHERE agentflightseats.agentId = ? 
               AND agentflightseats.flightId = ?";
@@ -34,16 +36,16 @@
 
       // Return a JSON response
       echo json_encode(array(
-        "flightId" => $flightId,
-        "maxSeats" => $maxSeats
+          "flightId" => $flightId,
+          "maxSeats" => $maxSeats
       ));
     } 
     else 
     {
       // No data found
       echo json_encode(array(
-        "flightId" => null,
-        "maxSeats" => null
+          "flightId" => null,
+          "maxSeats" => null
       ));
     }
     $stmt->close(); // Close the statement
@@ -53,8 +55,8 @@
   {
     // If required data is missing, return null values
     echo json_encode(array(
-      "flightId" => null,
-      "maxSeats" => null
+        "flightId" => null,
+        "maxSeats" => null
     ));
   }
 ?>

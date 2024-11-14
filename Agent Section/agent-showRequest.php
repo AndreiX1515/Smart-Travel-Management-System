@@ -66,28 +66,29 @@
         </thead>
         <tbody>
           <?php
-            $sql1= "SELECT *, DATE_FORMAT(requestDate, '%M %d, %Y %h:%i %p') AS requestDate
-                    FROM request WHERE transactNo = '$transactionNumber'";
+            $sql1 = "SELECT request.requestId, concern.concernTitle, concerndetails.details, 
+            DATE_FORMAT(request.requestDate, '%M %d, %Y %h:%i %p') AS formattedRequestDate, 
+            request.requestStatus
+           FROM request
+           JOIN concern ON request.concernId = concern.concernId
+           JOIN concerndetails ON request.concernDetailsId = concerndetails.concernDetailsId
+           WHERE request.transactNo = '$transactionNumber'";
 
-            $res1 = $conn->query($sql1);
+  $res1 = $conn->query($sql1);
 
-            if ($res1->num_rows > 0) 
-            {
-              while ($row = $res1->fetch_assoc()) 
-              {
-                echo "<tr>
-                        <td>{$row['requestId']}</td>
-                        <td>{$row['concern']}</td>
-                        <td>{$row['details']}</td>
-                        <td>{$row['requestDate']}</td>
-                        <td>{$row['requestStatus']}</td>
-                      </tr>";
-              }
-            } 
-            else 
-            {
-              echo "<tr><td colspan='10'>No Payment Found</td></tr>";
-            }
+  if ($res1->num_rows > 0) {
+    while ($row = $res1->fetch_assoc()) {
+      echo "<tr>
+              <td>{$row['requestId']}</td>
+              <td>{$row['concernTitle']}</td>
+              <td>{$row['details']}</td>
+              <td>{$row['formattedRequestDate']}</td>
+              <td>{$row['requestStatus']}</td>
+            </tr>";
+    }
+  } else {
+    echo "<tr><td colspan='6'>No Payment Found</td></tr>";
+  }
           ?>
         </tbody>
       </table>

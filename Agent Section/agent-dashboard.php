@@ -405,13 +405,15 @@
                       // Output data for each row
                       while ($row = $res1->fetch_assoc()) 
                       {
-                        echo "<tr>
-                                <td>{$row['T.N']}</td>
-                                <td>{$row['PACKAGE']}</td>
-                                <td>{$row['FLIGHT DATE']}</td>
-                                <td>{$row['TOTAL PAX']}</td>
-                                <td>{$row['CONTACT NAME']}</td>
-                                <td>{$row['STATUS']}</td>
+                        $_SESSION['T.N'] = $row['T.N'];
+                        echo "
+                            <tr onclick=\"window.location='agent-unconfirmedTransactionDetails.php?transactNo=" . htmlspecialchars($_SESSION['T.N']) . "'\">
+                              <td>" . htmlspecialchars($row['T.N']) . "</td>
+                              <td>" . htmlspecialchars($row['PACKAGE']) . "</td>
+                              <td>" . htmlspecialchars($row['FLIGHT DATE']) . "</td>
+                              <td>" . htmlspecialchars($row['TOTAL PAX']) . "</td>
+                              <td>" . htmlspecialchars($row['CONTACT NAME']) . "</td>
+                              <td>" . htmlspecialchars($row['STATUS']) . "</td>
                             </tr>";
                       }
                     } 
