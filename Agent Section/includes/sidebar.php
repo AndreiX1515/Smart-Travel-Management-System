@@ -3,7 +3,7 @@
       <img src="..\assets\images\SMART LOGO 2 (2).png" alt="Smart Travel Logo">
   </div>
 
-  <div class="dashboard-title">Dashboard</div>
+  <div class="dashboard-title">Menu</div>
    <a href="../Agent Section/agent-dashboard.php" class="page-button" data-page-name="Dashboard"> <i class="fas fa-home">
    </i> Home </a>
    <a href="../Agent Section/agent-addbooking.php" class="page-button add-booking" data-page-name="Add Booking"> <i class="fa-solid fa-user-plus">

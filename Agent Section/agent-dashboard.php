@@ -436,7 +436,7 @@
             <table class="request-table">
               <thead>
                 <tr>
-                  <th>T.N</th>
+                  <th>Transaction No.</th>
                   <th>Request</th>
                   <th>Date</th>
                   <th>Status</th>
@@ -494,7 +494,7 @@
            <table class="pending-payment-table">
              <thead>
                <tr>
-                 <th>Transaction No</th>
+                 <th>Transaction No.</th>
                  <th>Payment Title</th>
                  <th>Payment Type</th>
                  <th>Payment Amount</th>
@@ -554,7 +554,7 @@
             <table class="confirm-table">
               <thead>
                 <tr>
-                  <th>T.N</th>
+                  <th>Transaction No.</th>
                   <th>PACKAGE</th>
                   <th>FLIGHT DATE</th>
                   <th>TOTAL PAX.</th>
