@@ -44,12 +44,12 @@ if (isset($_POST['payment'])) {
                     $uploadedFiles[] = $uploadDir . $newFileName;
                 } else {
                     $_SESSION['status'] = "Failed to upload file: $fileName";
-                    header("Location: ../agent-showPayment.php");
+                    header("Location: ../agent-showGuest.php?id=" . htmlspecialchars($transactNo));
                     exit(0);
                 }
             } else {
                 $_SESSION['status'] = "File $fileName is invalid or exceeds size limit of 4MB.";
-                header("Location: ../agent-showPayment.php");
+                header("Location: ../agent-showGuest.php?id=" . htmlspecialchars($transactNo));
                 exit(0);
             }
         }
@@ -65,7 +65,7 @@ if (isset($_POST['payment'])) {
             if (!$stmt) {
                 $_SESSION['status'] = "Booking SQL preparation failed: " . $conn->error;
                 $conn->rollback();
-                header("Location: ../agent-showPayment.php");
+                header("Location: ../agent-showGuest.php?id=" . htmlspecialchars($transactNo));
                 exit(0);
             }
 
@@ -77,23 +77,23 @@ if (isset($_POST['payment'])) {
                 if (!$stmt->execute()) {
                     $_SESSION['status'] = "Database error on payment insert: " . $stmt->error;
                     $conn->rollback();
-                    header("Location: ../agent-showPayment.php");
+                    header("Location: ../agent-showGuest.php?id=" . htmlspecialchars($transactNo));
                     exit(0);
                 }
             }
 
             $conn->commit();
             $_SESSION['status'] = "Payment and proof files uploaded successfully!";
-            header("Location: ../agent-showPayment.php");
+            header("Location: ../agent-showGuest.php?id=" . htmlspecialchars($transactNo));
             exit(0);
         } else {
             $_SESSION['status'] = "No valid files uploaded.";
-            header("Location: ../agent-showPayment.php");
+            header("Location: ../agent-showGuest.php?id=" . htmlspecialchars($transactNo));
             exit(0);
         }
     } else {
         $_SESSION['status'] = "Proof of payment files are required.";
-        header("Location: ../agent-showPayment.php");
+        header("Location: ../agent-showGuest.php?id=" . htmlspecialchars($transactNo));
         exit(0);
     }
 }

@@ -19,19 +19,17 @@
   <div class="main-content" id="mainContent">
     <?php 
       include '../Agent Section/includes/navbar.php'; 
-      
-     
-      
-      
-      // Check if 'transaction_number' exists in the session
-      if (isset($_SESSION['transaction_number'])) {
-          $transactionNumber = $_SESSION['transaction_number'];
-      } else {
-          echo "No transaction number found in the session.<br>";
-      }
+
+      // // Check if 'transaction_number' exists in the session
+      // if (isset($_SESSION['transaction_number'])) {
+      //     $transactionNumber = $_SESSION['transaction_number'];
+      // } else {
+      //     echo "No transaction number found in the session.<br>";
+      // }
 
       // Check if 'id' is passed in the URL
-      if (isset($_GET['id'])) {
+      if (isset($_GET['id'])) 
+      {
        $transactionNumber = htmlspecialchars($_GET['id']);
       } 
       
@@ -44,28 +42,29 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
 
-    <?php 
-      unset($_SESSION['status']);
-      endif;
+      <?php 
+        unset($_SESSION['status']);
+        endif;
     ?>
 
     <div class="content-wrapper">
-     <div class="w-100 border-1 ">
+      <div class="w-100 border-1 ">
         <div class="row g-3 mb-3">
-
           <?php
-            $query1 = "Select booking.*, package.packageName, flight.flightDepartureDate  from booking 
-                        join package on booking.packageId = package.packageId
-                        Join flight on booking.flightId = flight.flightId
-                        where transactNo = '$transactionNumber'";
+            $query1 = "SELECT booking.*, package.packageName, flight.flightDepartureDate 
+                        FROM booking 
+                        JOIN package ON booking.packageId = package.packageId
+                        LEFT JOIN flight ON booking.flightId = flight.flightId
+                        WHERE transactNo = '$transactionNumber'";
+
             $result1 = $conn->query($query1);
 
             if ($result1->num_rows > 0) 
             {
-              // output data of each row
+              // Output data of each row
               while ($row1 = $result1->fetch_assoc()) 
               {
-                $transactNo = $row1['transactNo'];
+                $transactNum = $row1['transactNo'];
                 $fName = $row1['fName'];
                 $mName = $row1['mName'];
                 $lName = $row1['lName'];
@@ -77,41 +76,43 @@
                 $flightDate = $row1['flightDepartureDate'];
                 $pax = $row1['pax'];
                 $status = $row1['status'];
+                $flightId = $row1['flightId']; // Fetch flightId
 
                 // Construct the full name using the conditions for middle name and suffix
                 $fullName = $lName . ", " . $fName . " " . 
                             ($suffix !== 'N/A' ? $suffix . " " : "") .  // Add space after suffix only if it's not 'N/A'
                             ($mName !== 'N/A' ? substr($mName, 0, 1) . ". " : "");  // Add middle initial with dot only if it's not 'N/A'
                 $contactNo = $countryCode . $contact;
-                
 
+                // Check if flightId is NULL and set flightDate accordingly
+                if (is_null($flightId)) 
+                {
+                  $flightDate = "Land Package Only";
+                }
+
+                ?>
+                <!-- For adjustment lay out -->
+                <label class="fw-bold">Transaction Information: </label>
+                <label class="form-label">Transaction No: <?php echo htmlspecialchars($transactNum); ?></label>
+                <label class="form-label">Total Pax: <?php echo htmlspecialchars($pax); ?></label>  
+                <label class="form-label">Package: <?php echo htmlspecialchars($packageName); ?></label>
+                <label class="form-label">Flight Date: <?php echo htmlspecialchars($flightDate); ?></label>
+                <label class="form-label">Status: <?php echo htmlspecialchars($status); ?></label>
+
+                <div class="row g-3">
+                  <label class="fw-bold">Contact Person Information: </label>  
+                  <label class="form-label">Contact Person: <?php echo htmlspecialchars($fullName); ?></label>
+                  <label class="form-label">Contact No: <?php echo htmlspecialchars($contactNo); ?></label>
+                  <label class="form-label">Email: <?php echo htmlspecialchars($email); ?></label>
+                </div>
+                <?php
               }
-            } 
-            else 
+            } else 
             {
               echo "0 results";
             }
           ?>
-
-          <label for="" class="fw-bold ">Transaction Information: </label>
-          <label class="form-label">Transaction No: <?php echo $transactNo ?></label>
-          <label class="form-label">Total Pax: <?php echo $pax ?></label>  
-          <label class="form-label">Package: <?php echo $packageName ?></label>
-          <label class="form-label">Flight Date: <?php echo $flightDate ?></label>
-          <label class="form-label">Status: <?php echo $status ?></label>
-
-          <!-- <div class="col-md-2">
-            
-          </div> -->
-
-        </div>
-
-        <div class="row g-3">
-          <label class="fw-bold ">Contact Person Information: </label>  
-          <label class="form-label">Contact Person: <?php echo $fullName ?></label>
-          <label class="form-label">Contact No: <?php echo $contactNo ?></label>
-          <label class="form-label">Email: <?php echo $email ?></label>
-        </div>
+        </div>  
       </div>
     
       <ul class="nav nav-tabs mt-3" id="myTab" role="tablist">
@@ -134,7 +135,11 @@
 
       <div class="tab-content" id="myTabContent">
         <!-- Guest Table -->
-        <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+        <?php include 'agent-guestTable.php'; ?>
+        <?php include 'agent-requestTable.php'; ?>
+        <?php include 'agent-paymentTable.php'; ?>
+
+        <!-- <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
           <div class="tab-wrapper">
             <div class="d-flex justify-content-end align-items-center p-3 mt-2">
               <div class="d-flex justify-content-end gap-2">
@@ -143,7 +148,7 @@
                   $query2 = "SELECT COUNT(guest.transactNo) AS guest_count, booking.pax 
                             FROM guest 
                             JOIN booking ON guest.transactNo = booking.transactNo 
-                            WHERE guest.transactNo = '$transactNo'";
+                            WHERE guest.transactNo = '$transactionNumber'";
 
                   $result2 = $conn->query($query2);
 
@@ -248,10 +253,10 @@
               </table>
             </div>
           </div>
-        </div>
+        </div> -->
 
         <!-- Request Table -->
-        <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+        <!-- <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
           <div class="tab-wrapper">
             <div class="d-flex justify-content-end align-items-center p-3 mt-2">
               <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#requestModal" 
@@ -298,10 +303,10 @@
               </table>
             </div>
           </div>
-        </div>
+        </div> -->
 
         <!-- Payment History Table -->
-        <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
+        <!-- <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
           <div class="tab-wrapper">
             <div div class="d-flex justify-content-end align-items-center p-3 mt-2">
               <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#paymentModal<?= $transactionNumber ?>"
@@ -357,7 +362,7 @@
               </table>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
@@ -367,7 +372,7 @@
   <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
 
   <!-- Attach Visa Requirements Modal -->
-  <div class="modal fade" id="visaModal" tabindex="-1" aria-labelledby="visaModalLabel" aria-hidden="true">
+  <!-- <div class="modal fade" id="visaModal" tabindex="-1" aria-labelledby="visaModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -379,7 +384,7 @@
 
         <form action="../Agent Section/functions/agent-addVisaRequirements-code.php" method="POST" enctype="multipart/form-data">
           <div class="modal-body">
-            <!-- Hidden input for transaction number -->
+             Hidden input for transaction number 
             <input type="hidden" name="transaction_number" value="<?php echo htmlspecialchars($_SESSION['transaction_number'] ?? ''); ?>">
             <?php
               // Assuming you have a database connection established
@@ -446,13 +451,13 @@
         </form>
       </div>
     </div>
-  </div>
+  </div> -->
 
 
   <!-- FOR REQUEST SECTION -->
 
   <!-- Modal for Request -->
-  <div class="modal fade" id="requestModal" tabindex="-1" aria-labelledby="requestModalLabel" aria-hidden="true">
+  <!-- <div class="modal fade" id="requestModal" tabindex="-1" aria-labelledby="requestModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -461,15 +466,12 @@
         </div>
         <form action="../Agent Section/functions/agent-transactionRequest-code.php" method="POST" id="requestForm">
           <div class="modal-body">
-            <!-- Transaction Number Display -->
             <p><strong>Transaction No:</strong> <span id="requestTransactionId"></span></p>
 
-            <!-- Hidden Input Fields -->
             <input type="hidden" name="transaction_number" id="transactionNumberInput">
             <input type="hidden" name="agentId" value="<?php echo $agentId; ?>">
             <input type="hidden" name="accountId" value="<?php echo $accountId; ?>">
 
-            <!-- Request Type Selection -->
             <div class="mb-3">
               <select class="form-select mt-2" name="concern" id="concern" required>
                 <option selected disabled>Select Request</option>
@@ -483,7 +485,6 @@
               </select>
             </div>
 
-            <!-- Request Details Selection -->
             <div class="mb-3" id="additionalSelectContainer" style="display: none;">
               <select class="form-select mt-2" name="requestDetails" id="requestDetails" required>
                 <option selected disabled>Select Specific Detail</option>
@@ -491,13 +492,11 @@
               <label value="0.00">₱ <input type="text" id="price" name="price" value="0.00" style="border: none; background: transparent; padding: 5px 10px; font-size: 14px; display: inline-block; width: auto;" readonly></label>
             </div>
 
-            <!-- Pax Input -->
             <div class="mb-3">
               <label class="form-label">Pax</label>
               <input type="number" class="form-control" id="paxRequest" name="pax" placeholder="Enter pax" min="1" required>
             </div>
 
-            <!-- Details Input -->
             <div class="mb-3">
               <label class="form-label">Details</label>
               <textarea class="form-control" name="details" placeholder="Enter Specific Message" rows="4"></textarea>
@@ -513,9 +512,9 @@
         </form>
       </div>
     </div>
-  </div>
+  </div>-->
 
-  <script>
+  <!-- <script>
     document.addEventListener('DOMContentLoaded', function () 
     {
       // Get the modal element
@@ -603,13 +602,13 @@
         input.value = max; // Set the value to the max if it exceeds
       }
     }
-  </script>
+  </script>  -->
 
 
   <!-- FOR PAYMENT SECTION -->
 
   <!-- Modal -->
-  <div class="modal fade" id="paymentModal<?= $transactionNumber ?>" tabindex="-1" aria-labelledby="paymentModalLabel<?= $transactionNumber ?>" aria-hidden="true">
+  <!-- <div class="modal fade" id="paymentModal<?= $transactionNumber ?>" tabindex="-1" aria-labelledby="paymentModalLabel<?= $transactionNumber ?>" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
           <div class="modal-header">
@@ -650,7 +649,6 @@
                 <div class="mb-3">
                   <input type="file" class="form-control" name="proofs[]" accept="image/*,application/pdf" multiple>
                 </div>
-                <!-- List of file names -->
                 <ul id="fileList<?= $transactionNumber ?>" class="list-unstyled mt-2"></ul>
               </div>
 
@@ -787,7 +785,7 @@
       // Debugging: Log updated file input
       console.log(fileInput.files);
     }
- </script>
+ </script> -->
 
   <style>
     .drop-zone {
