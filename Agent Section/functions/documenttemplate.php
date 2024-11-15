@@ -5,36 +5,65 @@ class PDF extends TCPDF {
     // Page header
     public function Header() {
         // Add logo
-        $this->Image('../../assets/images/SMART LOGO 2 (2).jpg', 45, 7, 105, 15); // Adjust 'logo.png' path, position, and size as needed
+        $this->Image('../../assets/images/SMART LOGO 2 (2).jpg', 45, 5, 105, 15); // Adjust 'logo.png' path, position, and size as needed
         $this->Ln(25); // Adds 10mm of vertical space
 
-        // Set font for header
-        $this->SetFont('Helvetica', 'B', 14);
-        
-        // Header lines
-        $this->SetFont('Helvetica', 'B', 10);
-        $this->Cell(15, 0, 'TO :', 0, 0, 'L');
-        $this->Cell(60, 0, 'TRAVEL', 0, 0, 'L');
-        $this->Cell(30, 0, 'ATTN :', 0, 0, 'L');
-        $this->Cell(30, 0, '', 0, 1, 'L');
+        $this->SetFont('Helvetica', 'B', 8);
+        $this->SetY($this->GetY() + 2); // Set the Y position for the line, adjust if needed
+        $this->SetTextColor(255, 0, 0); // Set text color to red (RGB: 255, 0, 0)
+        $this->Cell(173, 0, '**Subject to Change w/o prior notice based on local Situiation**', 0, 0, 'L');
+        $this->SetTextColor(0, 0, 0); 
+        $this->Cell(5, 0, 'TN: 1029365', 0, 0, 'L');
 
-        $this->Cell(15, 10, 'FROM :', 0, 0, 'L');
-        $this->Cell(60, 10, 'JED KIM', 0, 0, 'L');
-        $this->Cell(15, 10, 'DATE :', 0, 0, 'L');
-        $this->Cell(30, 10, 'NOV. 24, 2024', 0, 1, 'L');
-
-        // Main title
-        $this->SetFont('Helvetica', 'B', 12);
-        $this->Cell(0, 12, 'KOREA AUTUMN WITH MT. SORAK 5D/4N', 1, 1, 'C');
 
         $this->Ln(3); // Adds 10mm of vertical space
 
+        $this->SetY($this->GetY() + 2); // Set the Y position for the line, adjust if needed
+        $this->Line(10, $this->GetY(), 200, $this->GetY()); // Draw a line from x=10 to x=200 at the current Y position
+
+        $this->Ln(1); // Adds 10mm of vertical space
+
+        // Header lines
+        $this->SetFont('Helvetica', 'B', 8);
+        $this->Cell(15, 0, 'TO :', 0, 0, 'L');
+        $this->Cell(100, 0, 'TRAVEL', 0, 0, 'L');
+        $this->Cell(80, 0, 'ATTN :', 0, 0, 'L');
+        $this->Cell(30, 0, '', 0, 1, 'L');
+
+        $this->Cell(15, 5, 'FROM :', 0, 0, 'L');
+        $this->Cell(100, 5, 'JED KIM', 0, 0, 'L');
+        $this->Cell(15, 5, 'DATE :', 0, 0, 'L');
+        $this->Cell(30, 5, '', 0, 1, 'L');
+
+        $this->SetY($this->GetY() + 1); // Set the Y position for the line, adjust if needed
+        $this->Line(10, $this->GetY(), 200, $this->GetY()); // Draw a line from x=10 to x=200 at the current Y position
+
+        $this->Ln(3); // Adds 10mm of vertical space
+
+        // Main title
+        $this->SetFont('Helvetica', 'B', 16);
+        $this->Cell(0, 7, 'WINTER', 'LRT', 1, 'C');
+        $this->SetFont('Helvetica', 'B', 10);
+        $this->Cell(0, 7, 'KOREA TOUR 5 DAYS & 4 NIGHTS', 'LRB', 1, 'C');
+
         // Set up columns for periods and hotel info
         $this->SetFont('Helvetica', 'B', 9);
-        $this->Cell(40, 6, 'PERIODS', 1, 0, 'C');
-        $this->Cell(70, 6, '10, OCT. 2024 - 15, NOV. 2024', 1, 0, 'C');
-        $this->Cell(20, 6, 'GUIDE:', 1, 0, 'C');
-        $this->Cell(60, 6, 'Sample Text', 1, 1, 'C');
+
+        // Create a vertical "HOTEL" cell spanning multiple rows
+        $this->SetXY(10, 59.5);  // Adjust the X and Y position if needed
+        $this->Cell(40, 10, 'PERIODS', 'LRB', 0, 'C', false);  // Borders on all sides, center-aligned text
+        $this->Cell(70, 10, '10, OCT. 2024 - 15, NOV. 2024', 'B', 0, 'C');
+
+
+
+
+        $this->Cell(20, 10, 'GUIDE:', 'LB', 0, 'C');
+        $this->Cell(60, 5, 'Mikey Lee', 'LB', 1, 'C');
+
+
+        $this->SetXY(140, 64.5);  // Adjust the X and Y position if needed
+        $this->Cell(60, 5, '82(0)-324-3746', 1, 1, 'C');
+
     }
 
     // Add hotel info table
@@ -42,21 +71,20 @@ class PDF extends TCPDF {
         $this->SetFont('Helvetica', 'B', 10);
 
         // Create a vertical "HOTEL" cell spanning multiple rows
-        $this->SetXY(10, 60);  // Adjust the X and Y position if needed
+        $this->SetXY(10, 69.5);  // Adjust the X and Y position if needed
         $this->Cell(40, 15, 'HOTEL', 'LRB', 0, 'C', false);  // Borders on all sides, center-aligned text
 
         $this->SetFont('Helvetica', 'B', 10);
-        // Create the horizontal cells for cities and their corresponding hotels
-        $this->SetXY(50, 60.5);  // Adjust the Y to align the cells properly
+        $this->SetXY(50, 70);  // Adjust the Y to align the cells properly
         // Create the cells for the cities (Incheon, Gangwon, Seoul)
         $this->Cell(30, 4, 'INCHEON', 'LRB', 0, 'C');
         $this->Cell(120, 4, '   Air Sky Hotel', 'LRB', 1, 'L');
 
-        $this->SetXY(50, 65.5);  // Adjust the Y to align the cells properly
+        $this->SetXY(50, 75);  // Adjust the Y to align the cells properly
         $this->Cell(30, 4, 'GANGWON', 'LRB', 0, 'C');
         $this->Cell(120, 4, '   Centrum Hotel', 'LRB', 1, 'L');
 
-        $this->SetXY(50, 70.5); // Adjust the Y position after the city names
+        $this->SetXY(50, 80); // Adjust the Y position after the city names
         $this->Cell(30, 4, 'SEOUL', 'LRB', 0, 'C');
         $this->Cell(120, 4, '   Bernoui Hotel', 'LRB', 1, 'L');
     }
@@ -128,11 +156,11 @@ $pdf->AddPage();
 $pdf->addHotelInfoTable();  // Add hotel info table
 $pdf->addItineraryHeader();  // Add itinerary header row
 
-// Add multiple days dynamically
+// // Add multiple days dynamically
 $pdf->day('1st', 'INCHEON', "Arrival at Incheon Airport (5j188 17:35-22:55)\nMeeting and greeting English speaking Guide\nTransfer to Hotel", 'Snack');
-$pdf->day('2nd', 'GANGWON', "Morning breakfast\nExplore Gangwon\nVisit local attractions\n\n\n\n\n", 'Lunch');
-$pdf->day('3rd', 'SEOUL', "Morning sightseeing tour\nFree time in Seoul", 'Dinner');
-$pdf->day('4th', 'SEOUL', "Visit Gyeongbokgung Palace\nExplore Bukchon Hanok Village\nKorean BBQ lunch", 'Breakfast and Dinner');
+// $pdf->day('2nd', 'GANGWON', "Morning breakfast\nExplore Gangwon\nVisit local attractions\n\n\n\n\n", 'Lunch');
+// $pdf->day('3rd', 'SEOUL', "Morning sightseeing tour\nFree time in Seoul", 'Dinner');
+// $pdf->day('4th', 'SEOUL', "Visit Gyeongbokgung Palace\nExplore Bukchon Hanok Village\nKorean BBQ lunch", 'Breakfast and Dinner');
 $pdf->day('5th', 'SEOUL', "Free day for shopping\nOptional: Namsan Seoul Tower visit\nDeparture in the evening", 'Breakfast and Lunch');
 
 // Output the generated PDF
