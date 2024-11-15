@@ -52,71 +52,65 @@
     <div class="content-wrapper">
      <div class="w-100 border-1 ">
         <div class="row g-3 mb-3">
-          <label for="" class="fw-bold ">Transaction Information: </label>
 
           <?php
-            $query1 = "Select * from booking where transactionNo = '$transactionNumber'";
+            $query1 = "Select booking.*, package.packageName, flight.flightDepartureDate  from booking 
+                        join package on booking.packageId = package.packageId
+                        Join flight on booking.flightId = flight.flightId
+                        where transactNo = '$transactionNumber'";
             $result1 = $conn->query($query1);
 
             if ($result1->num_rows > 0) 
             {
               // output data of each row
-              while($row1 = $result->fetch_assoc()) {
-                echo "id: " . $row1["id"]. " - Name: " . $row["firstname"]. " " . $row["lastname"]. "<br>";
+              while ($row1 = $result1->fetch_assoc()) 
+              {
+                $transactNo = $row1['transactNo'];
+                $fName = $row1['fName'];
+                $mName = $row1['mName'];
+                $lName = $row1['lName'];
+                $suffix = $row1['suffix'];
+                $countryCode = $row1['countryCode'];
+                $contact = $row1['contactNo'];
+                $email = $row1['email'];
+                $packageName = $row1['packageName'];
+                $flightDate = $row1['flightDepartureDate'];
+                $pax = $row1['pax'];
+                $status = $row1['status'];
+
+                // Construct the full name using the conditions for middle name and suffix
+                $fullName = $lName . ", " . $fName . " " . 
+                            ($suffix !== 'N/A' ? $suffix . " " : "") .  // Add space after suffix only if it's not 'N/A'
+                            ($mName !== 'N/A' ? substr($mName, 0, 1) . ". " : "");  // Add middle initial with dot only if it's not 'N/A'
+                $contactNo = $countryCode . $contact;
+                
+
               }
-            } else {
+            } 
+            else 
+            {
               echo "0 results";
             }
           ?>
 
-          <div class="col-md-2">
-            <label for="transactNo" class="form-label">Transaction No: <?php echo $transactionNumber ?></label>
-          </div>
+          <label for="" class="fw-bold ">Transaction Information: </label>
+          <label class="form-label">Transaction No: <?php echo $transactNo ?></label>
+          <label class="form-label">Total Pax: <?php echo $pax ?></label>  
+          <label class="form-label">Package: <?php echo $packageName ?></label>
+          <label class="form-label">Flight Date: <?php echo $flightDate ?></label>
+          <label class="form-label">Status: <?php echo $status ?></label>
 
+          <!-- <div class="col-md-2">
+            
+          </div> -->
 
-          <div class="col-md-2">
-            <label for="packageId" class="form-label">Package ID</label>
-            <input type="text" class="form-control" id="packageId" name="packageId">
-          </div>
-
-          <div class="col-md-2">
-            <label for="pax" class="form-label">Pax</label>
-            <input type="number" class="form-control" id="pax" name="pax">
-          </div>
-        
-          <div class="col-md-2">
-            <label for="bookingDate" class="form-label">Booking Date</label>
-            <input type="text" class="form-control" id="bookingDate" name="bookingDate">
-          </div>
-
-          <div class="col-md-2">
-            <label for="totalPrice" class="form-label">Total Price</label>
-            <input type="number" step="0.01" class="form-control" id="totalPrice" name="totalPrice">
-          </div>
-
-          <div class="col-md-2">
-            <label for="status" class="form-label">Status</label>
-            <input type="number" step="0.01" class="form-control" id="totalPrice" name="Status">
-          </div>
         </div>
 
         <div class="row g-3">
-          <label for="" class="fw-bold ">Contact Person Information: </label>
-            
-          <div class="col-md-4">
-            <label for="fName" class="form-label">Name</label>
-            <input type="text" class="form-control" id="fName" name="fName">
-          </div>
-
-          <div class="col-md-3">
-            <label for="contactNo" class="form-label">Contact No</label>
-            <input type="text" class="form-control" id="contactNo" name="contactNo">
-          </div>
-
-          <div class="col-md-3">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" id="email" name="email">
-          </div>
+          <label class="fw-bold ">Contact Person Information: </label>  
+          <label class="form-label">Contact Person: <?php echo $fullName ?></label>
+          <label class="form-label">Contact No: <?php echo $contactNo ?></label>
+          <label class="form-label">Email: <?php echo $email ?></label>
         </div>
       </div>
     
@@ -141,10 +135,39 @@
       <div class="tab-content" id="myTabContent">
         <!-- Guest Table -->
         <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
-
           <div class="tab-wrapper">
             <div class="d-flex justify-content-end align-items-center p-3 mt-2">
               <div class="d-flex justify-content-end gap-2">
+                <?php
+                  // Run the query to get guest count and pax
+                  $query2 = "SELECT COUNT(guest.transactNo) AS guest_count, booking.pax 
+                            FROM guest 
+                            JOIN booking ON guest.transactNo = booking.transactNo 
+                            WHERE guest.transactNo = '$transactNo'";
+
+                  $result2 = $conn->query($query2);
+
+                  // Initialize guest_count and pax variables
+                  $guest_count = 0;
+                  $pax = 0;
+
+                  // Check if the query returned results
+                  if ($result2->num_rows > 0) {
+                      // Fetch the result
+                      $row2 = $result2->fetch_assoc();
+                      $guest_count = $row2['guest_count'];
+                      $pax = $row2['pax'];
+                  }
+
+                  // Check if guest_count equals pax
+                  $disable_button = ($guest_count >= $pax) ? 'disabled' : ''; 
+                ?>
+
+                <button type="button" class="btn btn-primary" 
+                        <?php echo $disable_button; ?> 
+                        onclick="if (!this.disabled) { window.location.href = 'agent-addGuest.php'; }">
+                  Add Guest Information
+                </button>
                 <button type="button" class="btn btn-primary">
                   View Guest Files
                 </button>
