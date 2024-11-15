@@ -33,6 +33,7 @@
       // Check if 'id' is passed in the URL
       if (isset($_GET['id'])) {
        $transactionNumber = htmlspecialchars($_GET['id']);
+       
       } 
       
       ?>
@@ -54,7 +55,7 @@
         <div class="row g-3 mb-3">
 
           <?php
-            $query1 = "Select booking.*, package.packageName, flight.flightDepartureDate  from booking 
+            $query1 = "Select booking.*, package.packageName, flight.flightDepartureDate from booking 
                         join package on booking.packageId = package.packageId
                         Join flight on booking.flightId = flight.flightId
                         where transactNo = '$transactionNumber'";
@@ -84,7 +85,7 @@
                             ($mName !== 'N/A' ? substr($mName, 0, 1) . ". " : "");  // Add middle initial with dot only if it's not 'N/A'
                 $contactNo = $countryCode . $contact;
                 
-
+                
               }
             } 
             else 

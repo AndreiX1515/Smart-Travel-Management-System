@@ -4,66 +4,62 @@ require_once('../../assets/tcpdf/tcpdf.php');  // Ensure you have the correct TC
 class PDF extends TCPDF {
     // Page header
     public function Header() {
-        // Add logo
-        $this->Image('../../assets/images/SMART LOGO 2 (2).jpg', 45, 5, 105, 15); // Adjust 'logo.png' path, position, and size as needed
-        $this->Ln(25); // Adds 10mm of vertical space
+        if ($this->getPage() == 1) {  // Check if it's the first page
+            // Add logo
+            $this->Image('../../assets/images/SMART LOGO 2 (2).jpg', 45, 5, 105, 15); // Adjust 'logo.png' path, position, and size as needed
+            $this->Ln(25); // Adds 10mm of vertical space
 
-        $this->SetFont('Helvetica', 'B', 8);
-        $this->SetY($this->GetY() + 2); // Set the Y position for the line, adjust if needed
-        $this->SetTextColor(255, 0, 0); // Set text color to red (RGB: 255, 0, 0)
-        $this->Cell(173, 0, '**Subject to Change w/o prior notice based on local Situiation**', 0, 0, 'L');
-        $this->SetTextColor(0, 0, 0); 
-        $this->Cell(5, 0, 'TN: 1029365', 0, 0, 'L');
+            $this->SetFont('Helvetica', 'B', 8);
+            $this->SetY($this->GetY() + 2); // Set the Y position for the line, adjust if needed
+            $this->SetTextColor(255, 0, 0); // Set text color to red (RGB: 255, 0, 0)
+            $this->Cell(173, 0, '**Subject to Change w/o prior notice based on local Situiation**', 0, 0, 'L');
+            $this->SetTextColor(0, 0, 0); 
+            $this->Cell(5, 0, 'TN: 1029365', 0, 0, 'L');
 
+            $this->Ln(3); // Adds 10mm of vertical space
 
-        $this->Ln(3); // Adds 10mm of vertical space
+            $this->SetY($this->GetY() + 2); // Set the Y position for the line, adjust if needed
+            $this->Line(10, $this->GetY(), 200, $this->GetY()); // Draw a line from x=10 to x=200 at the current Y position
 
-        $this->SetY($this->GetY() + 2); // Set the Y position for the line, adjust if needed
-        $this->Line(10, $this->GetY(), 200, $this->GetY()); // Draw a line from x=10 to x=200 at the current Y position
+            $this->Ln(1); // Adds 10mm of vertical space
 
-        $this->Ln(1); // Adds 10mm of vertical space
+            // Header lines
+            $this->SetFont('Helvetica', 'B', 8);
+            $this->Cell(15, 0, 'TO :', 0, 0, 'L');
+            $this->Cell(100, 0, 'TRAVEL', 0, 0, 'L');
+            $this->Cell(80, 0, 'ATTN :', 0, 0, 'L');
+            $this->Cell(30, 0, '', 0, 1, 'L');
 
-        // Header lines
-        $this->SetFont('Helvetica', 'B', 8);
-        $this->Cell(15, 0, 'TO :', 0, 0, 'L');
-        $this->Cell(100, 0, 'TRAVEL', 0, 0, 'L');
-        $this->Cell(80, 0, 'ATTN :', 0, 0, 'L');
-        $this->Cell(30, 0, '', 0, 1, 'L');
+            $this->Cell(15, 5, 'FROM :', 0, 0, 'L');
+            $this->Cell(100, 5, 'JED KIM', 0, 0, 'L');
+            $this->Cell(15, 5, 'DATE :', 0, 0, 'L');
+            $this->Cell(30, 5, '', 0, 1, 'L');
 
-        $this->Cell(15, 5, 'FROM :', 0, 0, 'L');
-        $this->Cell(100, 5, 'JED KIM', 0, 0, 'L');
-        $this->Cell(15, 5, 'DATE :', 0, 0, 'L');
-        $this->Cell(30, 5, '', 0, 1, 'L');
+            $this->SetY($this->GetY() + 1); // Set the Y position for the line, adjust if needed
+            $this->Line(10, $this->GetY(), 200, $this->GetY()); // Draw a line from x=10 to x=200 at the current Y position
 
-        $this->SetY($this->GetY() + 1); // Set the Y position for the line, adjust if needed
-        $this->Line(10, $this->GetY(), 200, $this->GetY()); // Draw a line from x=10 to x=200 at the current Y position
+            $this->Ln(3); // Adds 10mm of vertical space
 
-        $this->Ln(3); // Adds 10mm of vertical space
+            // Main title
+            $this->SetFont('Helvetica', 'B', 16);
+            $this->Cell(0, 7, 'WINTER', 'LRT', 1, 'C');
+            $this->SetFont('Helvetica', 'B', 10);
+            $this->Cell(0, 7, 'KOREA TOUR 5 DAYS & 4 NIGHTS', 'LRB', 1, 'C');
 
-        // Main title
-        $this->SetFont('Helvetica', 'B', 16);
-        $this->Cell(0, 7, 'WINTER', 'LRT', 1, 'C');
-        $this->SetFont('Helvetica', 'B', 10);
-        $this->Cell(0, 7, 'KOREA TOUR 5 DAYS & 4 NIGHTS', 'LRB', 1, 'C');
+            // Set up columns for periods and hotel info
+            $this->SetFont('Helvetica', 'B', 9);
 
-        // Set up columns for periods and hotel info
-        $this->SetFont('Helvetica', 'B', 9);
+            // Create a vertical "HOTEL" cell spanning multiple rows
+            $this->SetXY(10, 59.5);  // Adjust the X and Y position if needed
+            $this->Cell(40, 10, 'PERIODS', 'LRB', 0, 'C', false);  // Borders on all sides, center-aligned text
+            $this->Cell(70, 10, '10, OCT. 2024 - 15, NOV. 2024', 'B', 0, 'C');
 
-        // Create a vertical "HOTEL" cell spanning multiple rows
-        $this->SetXY(10, 59.5);  // Adjust the X and Y position if needed
-        $this->Cell(40, 10, 'PERIODS', 'LRB', 0, 'C', false);  // Borders on all sides, center-aligned text
-        $this->Cell(70, 10, '10, OCT. 2024 - 15, NOV. 2024', 'B', 0, 'C');
+            $this->Cell(20, 10, 'GUIDE:', 'LB', 0, 'C');
+            $this->Cell(60, 5, 'Mikey Lee', 'LRB', 1, 'C');
 
-
-
-
-        $this->Cell(20, 10, 'GUIDE:', 'LB', 0, 'C');
-        $this->Cell(60, 5, 'Mikey Lee', 'LB', 1, 'C');
-
-
-        $this->SetXY(140, 64.5);  // Adjust the X and Y position if needed
-        $this->Cell(60, 5, '82(0)-324-3746', 1, 1, 'C');
-
+            $this->SetXY(140, 64.5);  // Adjust the X and Y position if needed
+            $this->Cell(60, 5, '82(0)-324-3746', 1, 1, 'C');
+        }
     }
 
     // Add hotel info table
@@ -91,78 +87,276 @@ class PDF extends TCPDF {
 
     // Add itinerary header
     public function addItineraryHeader() {
-        $this->SetFont('Helvetica', 'B', 10);
+        if ($this->getPage() == 1) {  // Only show this header on the first page
+            $this->SetFont('Helvetica', 'B', 10);
 
-        // Add some space after the hotel info table (to prevent overlap)
-        $this->Ln(2);  // Adds a 10mm space before starting the itinerary header
+            // Add some space after the hotel info table (to prevent overlap)
+            $this->Ln(2);
 
-        // Set the X and Y for the header
-        $this->SetXY(10, $this->GetY());  // Set starting position for the header row based on current Y
+            // Set the X and Y for the header
+            $this->SetXY(10, $this->GetY());
 
-        $this->Cell(15, 7, 'DAY', 1, 0, 'C');
-        $this->Cell(25, 7, 'AREA', 1, 0, 'C');
-        $this->Cell(90, 7, 'ITINERARY', 1, 0, 'C');
-        $this->Cell(60, 7, 'MEAL PLAN', 1, 1, 'C');
+            // Define the widths for each column
+            $dayWidth = 13;
+            $areaWidth = 18;
+            $itineraryWidth = 124;
+            $mealPlanWidth = 35; // Adjusted width for Meal Plan
+
+            // Render header cells
+            $this->Cell($dayWidth, 7, 'DAY', 1, 0, 'C');
+            $this->Cell($areaWidth, 7, 'AREA', 1, 0, 'C');
+            $this->Cell($itineraryWidth, 7, 'ITINERARY', 1, 0, 'C');
+            $this->Cell($mealPlanWidth, 7, 'MEAL PLAN', 1, 1, 'C');
+        }
     }
 
-    // Main function to add a day-specific itinerary row dynamically
-    public function day($day, $area, $itineraryContent, $mealPlan) {
-        // Call helper function to add the row for each day
-        $this->addItineraryRow($day, $area, $itineraryContent, $mealPlan);
-    }
+     public function day($daysData) {
+      $yPosition = $this->GetY();  // Start from the current Y position (Day 1)
+  
+      // Loop through all provided days and add itinerary and meal plan for each day
+      foreach ($daysData as $index => $dayData) {
+          // If it's Day 2, reset the Y position to Day 1's Y position
+          if ($index > 0) {
+              $this->SetY($yPosition);  // Reset Y position to the starting Y position of Day 1
+          }
+  
+          // Call the function to add the itinerary row
+          $this->addItineraryRow(
+              $dayData['day'], 
+              $dayData['area'], 
+              $dayData['itinerary'], 
+              $dayData['mealPlan'], 
+              $yPosition, 
+              $dayData['itineraryHeight']
+          );
+          
+          // Update Y position after each day's content
+          $yPosition = $this->GetY() + 10;
+      }
+  }
+  
+  // Modify the addItineraryRow function to accept dynamic Y position
+  private function addItineraryRow($day, $area, $itineraryContents, $mealPlan, $yPosition, $itineraryHeight) {
+      // Ensure the itinerary content is an array
+      if (!is_array($itineraryContents)) {
+          $itineraryContents = [$itineraryContents];
+      }
+  
+      // Ensure there are at least 10 rows in itinerary content (pad if necessary)
+      $itineraryContents = array_pad($itineraryContents, 10, '');
+  
+      // Ensure mealPlan has exactly 6 elements
+      if (!is_array($mealPlan)) {
+          $mealPlan = explode(',', $mealPlan);
+      }
+      $mealPlan = array_pad($mealPlan, 6, '');
+  
+      // Call helper function to add the row for each day
+      $this->addDayItinerary($day, $area, $itineraryContents, $mealPlan, $yPosition, $itineraryHeight);
+  }
+  
+  // Helper function to add each day's itinerary to the PDF
+  private function addDayItinerary($day, $area, $itineraryContents, $mealPlan, $yPosition, $itineraryHeight) {
+      $this->SetFont('Helvetica', '', 9.5);
+      $this->SetCellPadding(3);
+  
+      // Set dynamic line height for the itinerary rows
+      $lineHeight = $itineraryHeight / 10;
+  
+      // Set initial Y position dynamically
+      $this->SetY($yPosition);
+  
+      // Render Day and Area columns (leftmost columns for the day and area)
+      $this->SetXY(10, $yPosition);
+      $this->Cell(13, ($itineraryHeight + 5.2), $day, 1, 0, 'C');
+  
+      // Convert the area to MultiCell (with height and width retention)
+      // Calculate the total height of the cell and the Y position
+   $cellHeight = $itineraryHeight + 5.2;
+   $availableHeight = $cellHeight;  // No need to subtract from anything if you start at $yPosition
 
-    // Function to add a row of itinerary details with consistent height
-    private function addItineraryRow($day, $area, $itineraryContent, $mealPlan) {
-        $this->SetFont('Helvetica', '', 10);
-        $this->SetCellPadding(3);
+   // Calculate the vertical offset for centering
+   $centeredYPosition = $yPosition + (($availableHeight - $cellHeight) / 2);
 
-        // Save the initial Y position to ensure row alignment
-        $initialY = $this->GetY();
+   // Now set the Y position for the centered content
+   $this->SetXY(23, $centeredYPosition);
 
-        // Calculate itinerary content height
-        $this->SetXY(50, $initialY); // Temporary position for measuring only
-        $this->MultiCell(90, 10, $itineraryContent, 1, 'L');
-        $itineraryHeight = $this->GetY() - $initialY;
+   // Add the MultiCell content, center-aligned
+   $this->MultiCell(18, $cellHeight, $area, 1, 'C');
 
-        // Reset to initial Y for meal plan measurement
-        $this->SetXY(140, $initialY);
-        $this->MultiCell(60, 10, $mealPlan, 1, 'L');
-        $mealPlanHeight = $this->GetY() - $initialY;
+     
+      // Render Itinerary content vertically, row by row
+      $this->SetXY(41, $yPosition);
+      $this->Cell(124, $lineHeight, $itineraryContents[0], 'LR', 0, 'L');
+  
+      $this->SetXY(41, $this->GetY() + $lineHeight);
+      $this->Cell(124, $lineHeight, $itineraryContents[1], 'LR', 0, 'L');
+  
+      $this->SetXY(41, $this->GetY() + $lineHeight);
+      $this->Cell(124, $lineHeight, $itineraryContents[2], 'LR', 0, 'L');
+  
+      $this->SetXY(41, $this->GetY() + $lineHeight);
+      $this->Cell(124, $lineHeight, $itineraryContents[3], 'LR', 0, 'L');
+  
+      $this->SetXY(41, $this->GetY() + $lineHeight);
+      $this->Cell(124, $lineHeight, $itineraryContents[4], 'LR', 0, 'L');
+  
+      $this->SetXY(41, $this->GetY() + $lineHeight);
+      $this->Cell(124, $lineHeight, $itineraryContents[5], 'LR', 0, 'L');
+  
+      $this->SetXY(41, $this->GetY() + $lineHeight);
+      $this->Cell(124, $lineHeight, $itineraryContents[6], 'LR', 0, 'L');
+  
+      $this->SetXY(41, $this->GetY() + $lineHeight);
+      $this->Cell(124, $lineHeight, $itineraryContents[7], 'LR', 0, 'L');
+  
+      $this->SetXY(41, $this->GetY() + $lineHeight);
+      $this->Cell(124, $lineHeight, $itineraryContents[8], 'LR', 0, 'L');
 
-        // Determine the maximum height required for this row
-        $maxHeight = max(10, $itineraryHeight, $mealPlanHeight); // Minimum cell height is 10
 
-        // Render Day and Area cells with maxHeight
-        $this->SetXY(10, $initialY);
-        $this->Cell(15, $maxHeight, $day, 1, 0, 'C'); // Day cell
-        $this->Cell(25, $maxHeight, $area, 1, 0, 'C'); // Area cell
+      $hotel1= "Air Sky Hotel";
+      $hotel2= "Emporium Hotel";
 
-        // Render Itinerary cell with vertical alignment within maxHeight
-        $this->SetXY(50, $initialY);
-        $this->MultiCell(90, $maxHeight, $itineraryContent, 1, 'L');
+    
+      $this->SetXY(41, $this->GetY() + $lineHeight);
+      $this->Cell(30, 3, 'HOTEL:', 'TB', 0, 'L'); // Bottom border on last line
+      $this->Cell(35, 3, $hotel1, 'TB', 0, 'L'); // Bottom border on last line
+      $this->Cell(25, 3, 'OR', 'TB', 0, 'L'); // Bottom border on last line
+      $this->Cell(34, 5,  $hotel2, 'TB', 0, 'L'); // Bottom border on last line
+  
+      // Render Meal Plan content with 6 rows
+      $mealPlanHeight = ($itineraryHeight / 6) + .670; // Height for each individual row
+  
+      $this->SetXY(165, $yPosition);
+      $this->Cell(35, $mealPlanHeight, "Breakfast", 'LRT', 0, 'C');
+  
+      $this->SetXY(165, $this->GetY() + $mealPlanHeight);
+      $this->Cell(35, $mealPlanHeight, $mealPlan[0], 'LR', 0, 'C');
+  
+      $this->SetXY(165, $this->GetY() + $mealPlanHeight);
+      $this->Cell(35, $mealPlanHeight, "Lunch", 'LR', 0, 'C');
+  
+      $this->SetXY(165, $this->GetY() + $mealPlanHeight);
+      $this->Cell(35, $mealPlanHeight, $mealPlan[1], 'LR', 0, 'C');
+  
+      $this->SetXY(165, $this->GetY() + $mealPlanHeight);
+      $this->Cell(35, $mealPlanHeight, "Dinner", 'LR', 0, 'C');
+  
+      $this->SetXY(165, $this->GetY() + $mealPlanHeight);
+      $this->Cell(35, $mealPlanHeight, $mealPlan[2], 'LRB', 0, 'C');
+  }
+ 
+  
 
-        // Render Meal Plan cell with vertical alignment within maxHeight
-        $this->SetXY(140, $initialY);
-        $this->MultiCell(60, $maxHeight, $mealPlan, 1, 'L');
-
-        // Move Y down by maxHeight to start the next row
-        $this->SetY($initialY + $maxHeight);
-    }
 }
-
-// Usage example
-$pdf = new PDF('P', 'mm', 'A4');
+// Create a new PDF instance and add pages as needed
+$pdf = new PDF();
 $pdf->AddPage();
-$pdf->addHotelInfoTable();  // Add hotel info table
-$pdf->addItineraryHeader();  // Add itinerary header row
+$pdf->addHotelInfoTable();
+$pdf->addItineraryHeader();
 
-// // Add multiple days dynamically
-$pdf->day('1st', 'INCHEON', "Arrival at Incheon Airport (5j188 17:35-22:55)\nMeeting and greeting English speaking Guide\nTransfer to Hotel", 'Snack');
-// $pdf->day('2nd', 'GANGWON', "Morning breakfast\nExplore Gangwon\nVisit local attractions\n\n\n\n\n", 'Lunch');
-// $pdf->day('3rd', 'SEOUL', "Morning sightseeing tour\nFree time in Seoul", 'Dinner');
-// $pdf->day('4th', 'SEOUL', "Visit Gyeongbokgung Palace\nExplore Bukchon Hanok Village\nKorean BBQ lunch", 'Breakfast and Dinner');
-$pdf->day('5th', 'SEOUL', "Free day for shopping\nOptional: Namsan Seoul Tower visit\nDeparture in the evening", 'Breakfast and Lunch');
+// Set heights for itinerary and meal plans
+$lineHeight = 4;
+$itineraryHeight = 6 * $lineHeight;  // Height for 10 itinerary rows
+$mealPlanHeight = 6 * $lineHeight; // Height for 6 rows in meal plan
 
-// Output the generated PDF
-$pdf->Output();
+$daysData = [
+ [
+     'day' => 1, 
+     'area' => 'Seoul', 
+     'itinerary' => [
+         'Arrive at Incheon Airport, transfer to the hotel.',
+         'Check-in and freshen up at the hotel.',
+         'Explore the hotel surroundings or relax.',
+         'Welcome dinner at a local restaurant featuring Korean cuisine.',
+         'Transfer to Incheon Airport for Departure.',
+         'Shopping for Korean Food & Souvenir.',
+         'Check-in and freshen up at the hotel.',
+         'Explore the hotel surroundings or relax.',
+         '',  // Empty item for flexibility
+         'Transfer to Incheon Airport for Departure.',
+         'Shopping for Korean Food & Souvenir.',
+     ], 
+     'mealPlan' => ['Hotel B/F', 'BBQ Chicken', 'Korean Chinese Food'],
+     'itineraryHeight' => 50
+ ],
+ [
+     'day' => 2,
+     'area' => 'Busan',
+     'itinerary' => [
+         'Arrive at Busan, transfer to the hotel.',
+         'Check-in and freshen up at the hotel.',
+         'Explore Haeundae Beach.',
+         'Lunch at a famous seafood restaurant.',
+         'Visit the Gamcheon Culture Village.',
+         'Dinner at a traditional Korean BBQ restaurant.',
+         'Evening stroll along Gwangalli Beach.',
+         '',  // Empty item for flexibility
+         'Rest at the hotel after a full day.',
+         'Prepare for the next day\'s activities.'
+     ],
+     'mealPlan' => ['Hotel B/F', 'Seafood Lunch', 'Korean BBQ Dinner'],
+     'itineraryHeight' => 50
+ ],
+ [
+     'day' => 3,
+     'area' => 'Jeju Island',
+     'itinerary' => [
+         'Arrive at Jeju Airport, transfer to the hotel.',
+         'Visit Hallasan National Park.',
+         'Lunch at a local Jeju restaurant.',
+         'Explore the Jeju Loveland sculpture park.',
+         'Dinner at a Jeju-style seafood restaurant.',
+         'Evening at leisure to explore the local area.',
+         '',  // Empty item for flexibility
+         'Rest at the hotel.',
+         'Prepare for tomorrow\'s tour.'
+     ],
+     'mealPlan' => ['Hotel B/F', 'Local Jeju Cuisine', 'Seafood Dinner'],
+     'itineraryHeight' => 50
+ ],
+ [
+     'day' => 4,
+     'area' => 'Seoul',
+     'itinerary' => [
+         'Return to Seoul from Jeju.',
+         'Visit Gyeongbokgung Palace.',
+         'Lunch at a Korean traditional restaurant.',
+         'Explore Bukchon Hanok Village.',
+         'Shop in Myeongdong.',
+         'Farewell dinner at a premium Korean restaurant.',
+         'Evening transfer to the airport.',
+         '',  // Empty item for flexibility
+         'Final preparations for departure.',
+         'Shopping for last-minute souvenirs.'
+     ],
+     'mealPlan' => ['Hotel B/F', 'Korean Traditional Lunch', 'Farewell Dinner'],
+     'itineraryHeight' => 50
+ ],
+ [
+     'day' => 5,
+     'area' => 'Incheon',
+     'itinerary' => [
+         'Arrive in Incheon, transfer to the hotel.',
+         'Relax at the hotel or visit the local market.',
+         'Lunch at a traditional Korean restaurant in Incheon.',
+         'Explore the Incheon Chinatown.',
+         'Dinner at a local Korean restaurant specializing in seafood.',
+         'Night stroll at Songdo Central Park.',
+         '',  // Empty item for flexibility
+         'Rest at the hotel.',
+         'Prepare for departure the following day.'
+     ],
+     'mealPlan' => ['Hotel B/F', 'Incheon Lunch', 'Seafood Dinner'],
+     'itineraryHeight' => 50
+ ]
+];
+
+
+
+$pdf->day($daysData);
+
+
+
+$pdf->Output('itinerary.pdf', 'I');
 ?>
