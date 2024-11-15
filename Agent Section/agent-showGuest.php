@@ -31,6 +31,7 @@
       if (isset($_GET['id'])) 
       {
        $transactionNumber = htmlspecialchars($_GET['id']);
+       
       } 
       
       ?>
