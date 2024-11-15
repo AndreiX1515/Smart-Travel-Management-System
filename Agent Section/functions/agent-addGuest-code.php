@@ -64,31 +64,6 @@
       $zipCode = $zipCodes[$index];
       $country = $countries[$index];
 
-      // Debugging: Echo all the values for this iteration
-      echo "Debugging insert for guest $index:<br>";
-      echo "transactNo: $transactNo<br>";
-      echo "fName: $fName<br>";
-      echo "lName: $lName<br>";
-      echo "mName: $mName<br>";
-      echo "suffix: $suffix<br>";
-      echo "birthdate: $birthdate<br>";
-      echo "age: $age<br>";
-      echo "sex: $sex<br>";
-      echo "nationality: $nationality<br>";
-      echo "passportNo: $passportNo<br>";
-      echo "passportExp: $passportExp<br>";
-      echo "countryCode1: $countryCode1<br>";
-      echo "contactNo1: $contactNo1<br>";
-      echo "countryCode2: $countryCode2<br>";
-      echo "contactNo2: $contactNo2<br>";
-      echo "email: $email<br>";
-      echo "addressLine1: $addressLine1<br>";
-      echo "addressLine2: $addressLine2<br>";
-      echo "city: $city<br>";
-      echo "state: $state<br>";
-      echo "zipCode: $zipCode<br>";
-      echo "country: $country<br><br>";
-
       // Bind parameters using 'ssssssisssssssssssssss', adjusting for the correct data types
       $stmt->bind_param("ssssssisssssssssssssss", 
         $transactNo, $fName, $lName, $mName, $suffix, 
@@ -103,7 +78,7 @@
         // Rollback the transaction if any error occurs
         $_SESSION['status'] = "Guest insertion failed: " . $stmt->error;
         $conn->rollback();  // Rollback transaction
-        header("Location: ../agent-addGuest.php");
+        header("Location: ../agent-showGuest.php?id=" . htmlspecialchars($transactNo));
         exit(0);
       }
     }
@@ -112,8 +87,8 @@
     $conn->commit();
 
     // Commit the transaction if all inserts succeed
-     $_SESSION['status'] = "Guest Information Uploaded Successfully";
-     header("Location: ../agent-addGuest.php");
-     exit(0);
+    $_SESSION['status'] = "Guest Information Uploaded Successfully";
+    header("Location: ../agent-showGuest.php?id=" . htmlspecialchars($transactNo));
+    exit(0);
   }
 ?>
