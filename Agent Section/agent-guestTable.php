@@ -1,6 +1,9 @@
 <?php
   // Check if 'id' is passed in the URL
-  require "../conn.php";
+  if (isset($_GET['id'])) 
+  {
+    $transactionNumber = htmlspecialchars($_GET['id']);
+  } 
 ?>
 
 <!-- Guest Table -->
@@ -45,7 +48,7 @@
           <!-- Add Guest Button -->
           <button type="button" class="btn btn-primary" 
                 <?php echo $disable_button; ?> 
-                onclick="if (!this.disabled) { window.location.href = 'agent-guestTable.php'; }">
+                onclick="if (!this.disabled) { window.location.href = 'agent-addGuest.php'; }">
             Add Guest Information
           </button>
 
