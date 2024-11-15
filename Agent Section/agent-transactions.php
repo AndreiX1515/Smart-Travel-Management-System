@@ -160,7 +160,7 @@
                           $statusClass = 'bg-secondary text-white'; 
                   }
 
-                  echo "<tr>
+                  echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($transactNo) . "'>
                           <td>{$transactNo}</td>
                           <td>{$row['CONTACT NAME']}</td>
                           <td>{$row['CONTACT EMAIL']}</td>
@@ -476,6 +476,31 @@
   </div>
 
   <?php require "../Agent Section/includes/scripts.php"; ?>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+       document.querySelectorAll("tr[data-url]").forEach(function(row) {
+           row.addEventListener("click", function() {
+               window.location.href = row.getAttribute("data-url");
+           });
+       });
+   });
+
+  // Add event listener to each row for redirection
+  const rows = document.querySelectorAll("tr[data-url]");
+  
+  rows.forEach(row => {
+      row.addEventListener("click", function() {
+          const url = row.getAttribute("data-url");
+          window.location.href = url; // Redirect to the specified URL
+      });
+  });
+</script>
+
+
+
+
+
 
   <script>
     function addGuestInfo(transactionNumber) 
