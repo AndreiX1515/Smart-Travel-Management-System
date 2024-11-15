@@ -1,10 +1,3 @@
-<?php
-  // Check if 'id' is passed in the URL
-  if (isset($_GET['id'])) 
-  {
-    $transactionNumber = htmlspecialchars($_GET['id']);
-  } 
-?>
 
 <!-- Guest Table -->
 <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
