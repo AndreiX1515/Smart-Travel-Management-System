@@ -9,6 +9,7 @@
           if (isset($_GET['id'])) 
           {
             $transactionNumber = htmlspecialchars($_GET['id']);
+            $_SESSION['transaction_number'] = $transactionNumber;
           }
 
           // Run the query to get guest count and pax
@@ -36,14 +37,14 @@
 
           // Determine whether to disable the button
           $disable_button = ($guest_count >= $pax) ? 'disabled' : ''; // Disable if guest_count >= pax
-          ?>
+        ?>
 
-          <!-- Add Guest Button -->
-          <button type="button" class="btn btn-primary" 
-                <?php echo $disable_button; ?> 
-                onclick="if (!this.disabled) { window.location.href = 'agent-addGuest.php'; }">
-            Add Guest Information
-          </button>
+        <!-- Add Guest Button -->
+        <button type="button" class="btn btn-primary" 
+              <?php echo $disable_button; ?> 
+              onclick="if (!this.disabled) { window.location.href = 'agent-addGuest.php'; }">
+          Add Guest Information
+        </button>
 
         <button type="button" class="btn btn-primary">
           View Guest Files
@@ -208,3 +209,7 @@
     </div>
   </div>
 </div>
+
+<script>
+
+</script>

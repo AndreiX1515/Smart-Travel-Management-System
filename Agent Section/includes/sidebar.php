@@ -23,7 +23,7 @@
     </a>
 
     <a href="../Agent Section/agent-soa.php" class="page-button" data-page-name="Statement of Accounts (SOA)">
-      <i class="fas fa-file-invoice-dollar"></i> Statement of Accounts
+      <i class="fas fa-file-invoice-dollar"></i> SoA
     </a>
 
     <a href="../Agent Section/agent-ticket.php" class="page-button" data-page-name="Ticket">
