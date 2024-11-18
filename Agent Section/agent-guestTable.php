@@ -167,32 +167,48 @@
                 $name = $row['FULLNAME'];
 
                 // Create input fields for each guest
-                echo "<div class='mb-3'>";
-                echo "<label for='guest-$guestId' class='form-label'>Guest ID: $guestId</label>";
-                echo "<input type='text' class='form-control' id='guest-$guestId' name='guestIds[]' value='$guestId' readonly>";
+                echo "<div class='mb-4'>"; // Main container with margin bottom
+                echo "<input type='hidden' class='form-control' id='guest-$guestId' name='guestIds[]' value='$guestId' readonly>";
 
-                echo "<label for='name-$guestId' class='form-label'>Name</label>";
+                echo "<div class='mb-3'>"; // Container for Guest Name
+                echo "<label for='name-$guestId' class='form-label'>Guest Name:</label>";
                 echo "<input type='text' class='form-control' id='name-$guestId' name='guestNames[]' value='$name' readonly>";
-
-                echo "<h6 class='form-label'>Visa Requirements</h6>";
-
-                echo "<label for='passport-$guestId' class='form-label'>Passport</label>";
-                echo "<input type='file' class='form-control' id='passport-$guestId' name='passports[]' />";
-
-                echo "<label for='permit-$guestId' class='form-label'>Permit</label>";
-
-                echo "<input type='file' class='form-control' id='permit-$guestId' name='permits[]' />";
-
-                echo "<label for='validId-$guestId' class='form-label'>Valid Id</label>";
-
-                echo "<input type='file' class='form-control' id='validId-$guestId' name='validIds[]' />";
-
-                echo "<label for='certificate-$guestId' class='form-label'>Certificate</label>";
-                echo "<input type='file' class='form-control' id='certificate-$guestId' name='certificates[]' />";
-
-                echo "<label for='guaranteedLetter-$guestId' class='form-label'>Guaranteed Letter</label>";
-                echo "<input type='file' class='form-control' id='guaranteedLetter-$guestId' name='guaranteedLetters[]' />";
                 echo "</div>";
+
+                echo "<h5 class='form-label mt-4'>Visa Requirements</h5>"; // Header with top margin
+
+                // Passport field
+                echo "<div class='mb-3'>";
+                echo "<label for='passport-$guestId' class='form-label'>Passport:</label>";
+                echo "<input type='file' class='form-control' id='passport-$guestId' name='passports[]'>";
+                echo "</div>";
+
+                // Permit field
+                echo "<div class='mb-3'>";
+                echo "<label for='permit-$guestId' class='form-label'>Permit:</label>";
+                echo "<input type='file' class='form-control' id='permit-$guestId' name='permits[]'>";
+                echo "</div>";
+
+                // Valid ID field
+                echo "<div class='mb-3'>";
+                echo "<label for='validId-$guestId' class='form-label'>Valid ID:</label>";
+                echo "<input type='file' class='form-control' id='validId-$guestId' name='validIds[]'>";
+                echo "</div>";
+
+                // Certificate field
+                echo "<div class='mb-3'>";
+                echo "<label for='certificate-$guestId' class='form-label'>Certificate:</label>";
+                echo "<input type='file' class='form-control' id='certificate-$guestId' name='certificates[]'>";
+                echo "</div>";
+
+                // Guaranteed Letter field
+                echo "<div class='mb-3'>";
+                echo "<label for='guaranteedLetter-$guestId' class='form-label'>Guaranteed Letter:</label>";
+                echo "<input type='file' class='form-control' id='guaranteedLetter-$guestId' name='guaranteedLetters[]'>";
+                echo "</div>";
+
+                echo "</div>"; // End of main container
+
               }
             } 
             else 
