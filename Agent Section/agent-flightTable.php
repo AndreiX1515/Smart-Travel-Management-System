@@ -6,7 +6,7 @@
   } 
 ?>
 
-<div class="tab-pane fade show active" id="flight-tab-pane" role="tabpanel" aria-labelledby="flight-tab" tabindex="0">
+<div class="tab-pane fade" id="flight-tab-pane" role="tabpanel" aria-labelledby="flight-tab" tabindex="0">
   <div class="tab-wrapper">
     <div div class="d-flex justify-content-end align-items-center p-3 mt-2">
       <div class="d-flex justify-content-end gap-2">
