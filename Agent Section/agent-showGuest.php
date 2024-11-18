@@ -92,19 +92,22 @@
                 }
 
                 ?>
-                <!-- For adjustment lay out -->
-                <label class="fw-bold">Transaction Information: </label>
-                <label class="form-label">Transaction No: <?php echo htmlspecialchars($transactNum); ?></label>
-                <label class="form-label">Total Pax: <?php echo htmlspecialchars($pax); ?></label>  
-                <label class="form-label">Package: <?php echo htmlspecialchars($packageName); ?></label>
-                <label class="form-label">Flight Date: <?php echo htmlspecialchars($flightDate); ?></label>
-                <label class="form-label">Status: <?php echo htmlspecialchars($status); ?></label>
+                <!-- Transaction Information -->
+                <div class="mb-3">
+                  <h5 class="fw-bold">Transaction Information:</h5>
+                  <p class="mb-1"><strong>Transaction No:</strong> <?php echo htmlspecialchars($transactNum); ?></p>
+                  <p class="mb-1"><strong>Total Pax:</strong> <?php echo htmlspecialchars($pax); ?></p>
+                  <p class="mb-1"><strong>Package:</strong> <?php echo htmlspecialchars($packageName); ?></p>
+                  <p class="mb-1"><strong>Flight Date:</strong> <?php echo htmlspecialchars($flightDate); ?></p>
+                  <p class="mb-1"><strong>Status:</strong> <?php echo htmlspecialchars($status); ?></p>
+                </div>
 
-                <div class="row g-3">
-                  <label class="fw-bold">Contact Person Information: </label>  
-                  <label class="form-label">Contact Person: <?php echo htmlspecialchars($fullName); ?></label>
-                  <label class="form-label">Contact No: <?php echo htmlspecialchars($contactNo); ?></label>
-                  <label class="form-label">Email: <?php echo htmlspecialchars($email); ?></label>
+                <!-- Contact Person Information -->
+                <div class="mb-3">
+                  <h5 class="fw-bold">Contact Person Information:</h5>
+                  <p class="mb-1"><strong>Contact Person:</strong> <?php echo htmlspecialchars($fullName); ?></p>
+                  <p class="mb-1"><strong>Contact No:</strong> <?php echo htmlspecialchars($contactNo); ?></p>
+                  <p class="mb-1"><strong>Email:</strong> <?php echo htmlspecialchars($email); ?></p>
                 </div>
                 <?php
               }
