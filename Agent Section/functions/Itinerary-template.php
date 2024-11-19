@@ -12,11 +12,11 @@ class PDF extends TCPDF {
             $this->SetFont('Helvetica', 'B', 6);
             $this->SetY($this->GetY() - 4); // Set the Y position for the line, adjust if needed
             $this->SetTextColor(255, 0, 0); // Set text color to red (RGB: 255, 0, 0)
-            $this->Cell(173, 0, '**Subject to change w/o prior notice based on local Situiation**', 0, 0, 'L');
+            $this->Cell(170, 0, '**Subject to change w/o prior notice based on local Situiation**', 0, 0, 'L');
             $this->SetTextColor(0, 0, 0); 
             $this->Cell(5, 0, 'TN: 1029365', 0, 0, 'L');
 
-            $this->Ln(3); // Adds 10mm of vertical space
+            $this->Ln(2); // Adds 10mm of vertical space
 
             $this->SetY($this->GetY() + 2); // Set the Y position for the line, adjust if needed
             $this->Line(10, $this->GetY(), 200, $this->GetY()); // Draw a line from x=10 to x=200 at the current Y position
@@ -53,14 +53,14 @@ class PDF extends TCPDF {
             $this->SetFont('Helvetica', 'B', 9);
 
             // Create a vertical "HOTEL" cell spanning multiple rows
-            $this->SetXY(10, 48.5);  // Adjust the X and Y position if needed
+            $this->SetXY(10, 47.3);  // Adjust the X and Y position if needed
             $this->Cell(40, 8, 'PERIODS', 'LRB', 0, 'C', false);  // Borders on all sides, center-aligned text
             $this->Cell(70, 8, '10, OCT. 2024 - 15, NOV. 2024', 'B', 0, 'C');
 
             $this->Cell(20, 8, 'GUIDE:', 'LB', 0, 'C');
             $this->Cell(60, 4, 'Mikey Lee', 'LRB', 1, 'C');
 
-            $this->SetXY(140, 52.5);  // Adjust the X and Y position if needed
+            $this->SetXY(140, 51.25);  // Adjust the X and Y position if needed
             $this->Cell(60, 4, '82(0)-324-3746', 'LRB', 1, 'C');
         }
     }
@@ -73,20 +73,20 @@ class PDF extends TCPDF {
         $this->SetTextColor(0,0,0);        // Text color
 
         // Create a vertical "HOTEL" cell spanning multiple rows
-        $this->SetXY(10, 57);  // Adjust the X and Y position if needed
+        $this->SetXY(10, 55.4);  // Adjust the X and Y position if needed
         $this->Cell(40, 15, 'HOTEL', 'LRB', 0, 'C', true);  // Borders on all sides, center-aligned text
 
         $this->SetFont('Helvetica', 'B', 10);
-        $this->SetXY(50, 57);  // Adjust the Y to align the cells properly
+        $this->SetXY(50, 55.4);  // Adjust the Y to align the cells properly
         // Create the cells for the cities (Incheon, Gangwon, Seoul)
         $this->Cell(30, 5, 'INCHEON', 'LRB', 0, 'C', true);
         $this->Cell(120, 5, '   Air Sky Hotel', 'LRB', 1, 'L', true);
 
-        $this->SetXY(50, 62);  // Adjust the Y to align the cells properly
+        $this->SetXY(50, 60.4);  // Adjust the Y to align the cells properly
         $this->Cell(30, 5, 'GANGWON', 'LRB', 0, 'C', true);
         $this->Cell(120, 5, '   Centrum Hotel', 'LRB', 1, 'L', true);
 
-        $this->SetXY(50, 67); // Adjust the Y position after the city names
+        $this->SetXY(50, 65.4); // Adjust the Y position after the city names
         $this->Cell(30, 5, 'SEOUL', 'LRB', 0, 'C', true);
         $this->Cell(120, 5, '   Bernoui Hotel', 'LRB', 1, 'L', true);
     }
