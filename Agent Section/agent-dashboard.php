@@ -172,7 +172,7 @@
                   $pastTransactions = $pastResult ? mysqli_fetch_assoc($pastResult)['total'] : 0;
                 ?>
                 <h3><?php echo $pastTransactions; ?></h3>
-                <p>PAST TRANSACTION</p> <!-- Additional description -->
+                <p>PAST</p> <!-- Additional description -->
               </div>
             </div>
 
@@ -191,7 +191,7 @@
                   $currentTransactions = $currentResult ? mysqli_fetch_assoc($currentResult)['total'] : 0;
                 ?>
                 <h3><?php echo $currentTransactions; ?></h3>
-                <p>CURRENT TRANSACTION</p> <!-- Additional description -->
+                <p>CURRENT</p> <!-- Additional description -->
               </div>
             </div>
           </div>
@@ -286,7 +286,7 @@
                   }
                 ?>
                 <h3><?php echo $bookingsDueIn5Days; ?></h3>
-                <p>5 Days Due</p> <!-- Additional description -->
+                <p>5 DAYS DUE</p> <!-- Additional description -->
               </div>
             </div>
 
@@ -318,7 +318,7 @@
                   }
                 ?>
                 <h3><?php echo $bookingsDueIn10Days; ?></h3>
-                <p>10 Days Due</p> <!-- Additional description -->
+                <p>10 DAYS DUE</p> <!-- Additional description -->
               </div>
             </div>
           </div>
@@ -351,7 +351,7 @@
                   }
                 ?>
                 <h3><?php echo $bookingsDueIn20Days; ?></h3>
-                <p>20 Days Due</p> <!-- Additional description -->
+                <p>20 DAYS DUE</p> <!-- Additional description -->
               </div>
             </div>
 
@@ -382,7 +382,7 @@
                   }
                 ?>
                 <h3><?php echo $bookingsDueIn30Days; ?></h3>
-                <p>30 Days Due</p> <!-- Additional description -->
+                <p>30 DAYS DUE</p> <!-- Additional description -->
               </div>
             </div>
           </div>
