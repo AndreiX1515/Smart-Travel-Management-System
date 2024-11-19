@@ -12,7 +12,7 @@ class PDF extends TCPDF {
             $this->SetFont('Helvetica', 'B', 8);
             $this->SetY($this->GetY() + 2); // Set the Y position for the line, adjust if needed
             $this->SetTextColor(255, 0, 0); // Set text color to red (RGB: 255, 0, 0)
-            $this->Cell(173, 0, '**Subject to Change w/o prior notice based on local Situiation**', 0, 0, 'L');
+            $this->Cell(173, 0, '**Subject to hange w/o prior notice based on local Situiation**', 0, 0, 'L');
             $this->SetTextColor(0, 0, 0); 
             $this->Cell(5, 0, 'TN: 1029365', 0, 0, 'L');
 
@@ -298,58 +298,6 @@ $daysData = [
      'mealPlan' => ['Hotel B/F', 'Seafood Lunch', 'Korean BBQ Dinner'],
      'itineraryHeight' => 50
  ],
- [
-     'day' => 3,
-     'area' => 'Jeju Island',
-     'itinerary' => [
-         'Arrive at Jeju Airport, transfer to the hotel.',
-         'Visit Hallasan National Park.',
-         'Lunch at a local Jeju restaurant.',
-         'Explore the Jeju Loveland sculpture park.',
-         'Dinner at a Jeju-style seafood restaurant.',
-         'Evening at leisure to explore the local area.',
-         '',  // Empty item for flexibility
-         'Rest at the hotel.',
-         'Prepare for tomorrow\'s tour.'
-     ],
-     'mealPlan' => ['Hotel B/F', 'Local Jeju Cuisine', 'Seafood Dinner'],
-     'itineraryHeight' => 50
- ],
- [
-     'day' => 4,
-     'area' => 'Seoul',
-     'itinerary' => [
-         'Return to Seoul from Jeju.',
-         'Visit Gyeongbokgung Palace.',
-         'Lunch at a Korean traditional restaurant.',
-         'Explore Bukchon Hanok Village.',
-         'Shop in Myeongdong.',
-         'Farewell dinner at a premium Korean restaurant.',
-         'Evening transfer to the airport.',
-         '',  // Empty item for flexibility
-         'Final preparations for departure.',
-         'Shopping for last-minute souvenirs.'
-     ],
-     'mealPlan' => ['Hotel B/F', 'Korean Traditional Lunch', 'Farewell Dinner'],
-     'itineraryHeight' => 50
- ],
- [
-     'day' => 5,
-     'area' => 'Incheon',
-     'itinerary' => [
-         'Arrive in Incheon, transfer to the hotel.',
-         'Relax at the hotel or visit the local market.',
-         'Lunch at a traditional Korean restaurant in Incheon.',
-         'Explore the Incheon Chinatown.',
-         'Dinner at a local Korean restaurant specializing in seafood.',
-         'Night stroll at Songdo Central Park.',
-         '',  // Empty item for flexibility
-         'Rest at the hotel.',
-         'Prepare for departure the following day.'
-     ],
-     'mealPlan' => ['Hotel B/F', 'Incheon Lunch', 'Seafood Dinner'],
-     'itineraryHeight' => 50
- ]
 ];
 
 
