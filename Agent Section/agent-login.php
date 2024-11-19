@@ -34,7 +34,7 @@
                 <div class="mb-3">
                     <div class="form-floating">
                         <input type="text" class="form-control border-1" id="floatingUsername" name="username" placeholder="Username" required>
-                        <label for="floatingUsername">Username</label>
+                        <label for="floatingUsername">Enter Agent Id or Employee Id</label>
                     </div>
                 </div>
 
