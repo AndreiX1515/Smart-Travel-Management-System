@@ -126,15 +126,18 @@
                       <select class="form-select mt-2 fs-6" id="flightDate" name="flightDate" required>
                         <option selected disabled>Select Flight Date</option>
                       </select>
+                      <input type="checkbox" id="land" name="land" value="Land Only">
+                      <label for="land"> Land Only</label><br>
                       <span id="flightDateError" class="text-danger"></span> <!-- Error message for outbound flight -->
                     </div>
                   </div>
 
                 </div>
 
-                <input type="hidden" id="flightId" name="flightId" value="" placeholder="Flight Id Input">
-                <input type="hidden" id="packagePrice" name="packagePrice" placeholder="Package Price">
-                <input type="hidden" name="flightPrice" placeholder="Flight Price">
+                <input type="" id="flightId" name="flightId" value="" placeholder="Flight Id Input">
+                <input type="" id="packagePrice" name="packagePrice" placeholder="Package Price">
+                <input type="" name="flightPrice" placeholder="Flight Price">
+  
               </div>
 
               <div class="card-footer d-flex justify-content-start align-items-center py-3"> 
@@ -142,8 +145,12 @@
                   <label>Price: ₱ <span id="flightPrice">0.00</span></label> 
                 </h5>
               </div>
+
               
+
             </div>
+
+            
 
             <div class="card mt-4">
               <div class="card-header bg-secondary text-white text-light">
@@ -417,7 +424,7 @@
                   <h5 class="align-items-center pt-2 fw-bolder">Total Price: ₱ <span id="displayTotalPrice">0</span></h5>
                   <button type="button" class="btn btn-primary p-2 px-3" id="bookNowButton">Book Now</button>
                 </div>
-                <input type="hidden" id="totalPrice" name="totalPrice" placeholder="Total Price">
+                <input type="" id="totalPrice" name="totalPrice" placeholder="Total Price">
               </div>
             </div>
 
@@ -925,16 +932,68 @@
           }
         });
 
-        // Automatically recalculate total price when flightPrice or totalPax changes
+        // Automatically recalculate total price when flightDate or totalPax changes
         $('#flightDate, #totalPax').on('input change', function () 
         {
-          const flightPrice = parseFloat($('#flightPrice').text().replace(/,/g, '')) || 0; // Remove commas for calculation
-          const totalPax = parseInt($('#totalPax').val()) || 0;
-          const totalPrice = flightPrice * totalPax;
+          updateTotalPrice(); // Recalculate total price
+        });
 
-          // Format total price with commas
-          $('#displayTotalPrice').text(formatNumberWithCommas(totalPrice.toFixed(2))); // Display total price
-          $('#totalPrice').val(totalPrice.toFixed(2)); // Set hidden input value
+        // Recalculate total price when "land" checkbox is toggled
+        document.getElementById('land').addEventListener('change', function() 
+        {
+          updateTotalPrice(); // Recalculate total price when land is checked/unchecked
+        });
+
+        // Function to update total price calculation
+        function updateTotalPrice() 
+        {
+          let totalPrice = 0;
+          const isLandChecked = document.getElementById('land').checked;
+          const totalPax = parseInt($('#totalPax').val()) || 0; // Get total passengers
+
+          // If the "land" checkbox is checked, use the package price
+          if (isLandChecked) 
+          {
+            const packagePriceField = document.getElementById('packagePrice');
+            if (packagePriceField) 
+            {
+              totalPrice = parseFloat(packagePriceField.value) || 0; // Use package price, default to 0 if invalid
+              totalPrice *= totalPax; // Multiply by total passengers
+            }
+          } 
+          else 
+          {
+            // If "land" is unchecked, use the flight price
+            const flightPriceSpan = document.getElementById('flightPrice');
+            if (flightPriceSpan) 
+            {
+              const flightPrice = parseFloat(flightPriceSpan.innerText.replace(/,/g, '').replace('₱', '').trim()) || 0; // Extract value
+              totalPrice = flightPrice * totalPax; // Calculate total price
+            }
+          }
+
+          // Format and update the total price display
+          const displayTotalPriceElement = document.getElementById('displayTotalPrice');
+          if (displayTotalPriceElement) 
+          {
+            displayTotalPriceElement.innerText = formatNumberWithCommas(totalPrice.toFixed(2)); // Format with commas
+          }
+
+          // Update the totalPrice hidden input field
+          const totalPriceField = document.getElementById('totalPrice');
+          if (totalPriceField) 
+          {
+            totalPriceField.value = totalPrice.toFixed(2); // Set value with 2 decimal places
+          }
+        }
+
+        // Optional: Listen for changes in pax fields
+        document.querySelectorAll('.pax').forEach((element) => 
+        {
+          element.addEventListener('input', function() 
+          {
+            updateTotalPrice(); // Recalculate when pax value changes
+          });
         });
 
         // Helper function to format numbers with commas
@@ -942,8 +1001,13 @@
         {
           return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
-        
-      });   
+
+        // Initial call to set total price on page load
+        updateTotalPrice();
+
+      });
+
+      
     </script>
 
   </body>

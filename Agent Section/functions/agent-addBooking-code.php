@@ -20,6 +20,7 @@
     $flightId = $_POST['flightDate'];
     $totalPax = $_POST['totalPax'];
     $totalPrice = $_POST['totalPrice'];
+    $bookingType = isset($_POST['land']) ? 'Land' : 'Package';
 
     // Get the last bookingId and increment it for the new transaction
     $result = $conn->query("SELECT MAX(bookingId) AS lastBookingId FROM booking");
@@ -46,8 +47,8 @@
 
     // Prepare the SQL statement for insertion into the booking table
     $sql1 = "INSERT INTO booking (accountId, transactNo, agentId, flightId, packageId, fName, lName, mName, suffix, countryCode, contactNo, 
-    email, pax, totalPrice, status, bookingDate) VALUES 
-    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Pending', NOW())";
+    email, pax, totalPrice, bookingType, status, bookingDate) VALUES 
+    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Pending', NOW())";
     $stmt1 = $conn->prepare($sql1);
 
     if (!$stmt1) 
@@ -59,8 +60,8 @@
     }
 
     // Bind and execute the booking insertion
-    $stmt1->bind_param('issiisssssssid', $accountId, $transactNo, $agentId, $flightId, $packageId, $fName, $lName, $mName, $suffix, 
-    $countryCode, $contactNo, $email, $totalPax, $totalPrice);
+    $stmt1->bind_param('issiisssssssids', $accountId, $transactNo, $agentId, $flightId, $packageId, $fName, $lName, $mName, $suffix, 
+    $countryCode, $contactNo, $email, $totalPax, $totalPrice, $bookingType);
     
     if (!$stmt1->execute()) 
     {
@@ -71,30 +72,30 @@
     }
 
     // If flightId is NULL, insert into the clientFlight table
-    if (is_null($flightId)) 
-    {
-      // Prepare the SQL statement for insertion into the clientFlight table
-      $sql2 = "INSERT INTO clientflight (transactNo) VALUES (?)";
-      $stmt2 = $conn->prepare($sql2);
+    // if (is_null($flightId)) 
+    // {
+    //   // Prepare the SQL statement for insertion into the clientFlight table
+    //   $sql2 = "INSERT INTO clientflight (transactNo) VALUES (?)";
+    //   $stmt2 = $conn->prepare($sql2);
 
-      if (!$stmt2) 
-      {
-        $_SESSION['status'] = "Client Flight SQL preparation failed: " . $conn->error;
-        $conn->rollback();  // Rollback transaction
-        header("Location: ../agent-addBooking.php");
-        exit(0);
-      }
+    //   if (!$stmt2) 
+    //   {
+    //     $_SESSION['status'] = "Client Flight SQL preparation failed: " . $conn->error;
+    //     $conn->rollback();  // Rollback transaction
+    //     header("Location: ../agent-addBooking.php");
+    //     exit(0);
+    //   }
 
-      $stmt2->bind_param('s', $transactNo);
+    //   $stmt2->bind_param('s', $transactNo);
 
-      if (!$stmt2->execute()) 
-      {
-        $_SESSION['status'] = "Database error on client flight insert: " . $stmt2->error;
-        $conn->rollback();  // Rollback transaction
-        header("Location: ../agent-addBooking.php");
-        exit(0);
-      }
-    }
+    //   if (!$stmt2->execute()) 
+    //   {
+    //     $_SESSION['status'] = "Database error on client flight insert: " . $stmt2->error;
+    //     $conn->rollback();  // Rollback transaction
+    //     header("Location: ../agent-addBooking.php");
+    //     exit(0);
+    //   }
+    // }
 
     // If no errors, commit the transaction
     $conn->commit();

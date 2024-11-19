@@ -26,7 +26,6 @@
     if (mysqli_num_rows($result) > 0) 
     {
       echo '<option selected disabled>Select Flight Date</option>';
-      echo '<option value="Null">Custom Flight</option>'; // Add "Custom Flight" option
       while ($res = mysqli_fetch_array($result)) 
       {
         // Format the flight price to two decimal places
@@ -39,7 +38,6 @@
     else 
     {
       // Add "Custom Flight" option when no flights are available
-      echo '<option value="Null">Custom Flight</option>';
       echo '<option selected disabled>No Flights Available</option>';
     }
   }
