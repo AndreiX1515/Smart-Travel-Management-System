@@ -129,6 +129,15 @@
           <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">Payment History</button>
         </li>
 
+        <?php
+          if (is_null($flightId)) 
+          {?>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="flight-tab" data-bs-toggle="tab" data-bs-target="#flight-tab-pane" type="button" role="tab" aria-controls="flight-tab-pane" aria-selected="false">Flight Details</button>
+            </li>
+          <?php }
+        ?>
+
         <!-- <li class="nav-item" role="presentation">
           <button class="nav-link" id="disabled-tab" data-bs-toggle="tab" data-bs-target="#disabled-tab-pane" type="button" role="tab" aria-controls="disabled-tab-pane" aria-selected="false" disabled>Disabled</button>
         </li> -->
@@ -139,6 +148,7 @@
         <?php include 'agent-guestTable.php'; ?>
         <?php include 'agent-requestTable.php'; ?>
         <?php include 'agent-paymentTable.php'; ?>
+        <?php include 'agent-flightTable.php'; ?>
 
         <!-- <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
           <div class="tab-wrapper">

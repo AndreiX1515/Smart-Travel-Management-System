@@ -258,45 +258,129 @@
           </div>
 
           <div class="dcard-body">
+            <!-- Due on 5 Days -->
             <div class="month-transaction">
               <div class="logo-container transaction-total">
                 <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
               </div>
               <div class="content-container">
-                <h3>100</h3>
-                <p>TOTAL TRANSACTION</p> <!-- Additional description -->
+                <?php
+                  // Assuming $conn is your database connection
+                  $days5Query = "SELECT COUNT(*) AS `bookingsDueIn5Days` 
+                                FROM booking b 
+                                JOIN flight f ON b.flightId = f.flightId
+                                WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) = 5";
+
+                  $result = $conn->query($days5Query);
+
+                  // Check if the query returned a result
+                  if ($result->num_rows > 0) 
+                  {
+                    $row = $result->fetch_assoc();
+                    $bookingsDueIn5Days = $row['bookingsDueIn5Days'];
+                  } 
+                  else 
+                  {
+                    $bookingsDueIn5Days = 0;  // Default to 0 if no records found
+                  }
+                ?>
+                <h3><?php echo $bookingsDueIn5Days; ?></h3>
+                <p>5 Days Due</p> <!-- Additional description -->
               </div>
             </div>
 
+            <!-- Due on 10 Days -->
             <div class="month-transaction">
               <div class="logo-container transaction-cancelled">
                 <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
               </div>
               <div class="content-container">
-                <h3>100</h3>
-                <p>CANCELLED</p> <!-- Additional description -->
+                <?php
+                  // Assuming $conn is your database connection
+                  $days10Query = "SELECT COUNT(*) AS `bookingsDueIn10Days` 
+                                FROM booking b 
+                                JOIN flight f ON b.flightId = f.flightId
+                                WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) = 10";
+
+                  $result = $conn->query($days10Query);
+
+                  // Check if the query returned a result
+                  if ($result->num_rows > 0) 
+                  {
+                    $row = $result->fetch_assoc();
+                    $bookingsDueIn10Days = $row['bookingsDueIn10Days'];
+                  } 
+                  else 
+                  {
+                    $bookingsDueIn10Days = 0;  // Default to 0 if no records found
+                  }
+                ?>
+                <h3><?php echo $bookingsDueIn10Days; ?></h3>
+                <p>10 Days Due</p> <!-- Additional description -->
               </div>
             </div>
           </div>
 
           <div class="dcard-body">
+            <!-- Due on 20 Days -->
             <div class="month-transaction">
               <div class="logo-container transaction-ongoing">
                 <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
               </div>
               <div class="content-container">
-                <h3>100</h3>
-                <p>ON GOING</p> <!-- Additional description -->
+                <?php
+                  // Assuming $conn is your database connection
+                  $days20Query = "SELECT COUNT(*) AS `bookingsDueIn20Days` 
+                                FROM booking b 
+                                JOIN flight f ON b.flightId = f.flightId
+                                WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) = 20";
+
+                  $result = $conn->query($days20Query);
+
+                  // Check if the query returned a result
+                  if ($result->num_rows > 0) 
+                  {
+                    $row = $result->fetch_assoc();
+                    $bookingsDueIn20Days = $row['bookingsDueIn20Days'];
+                  } 
+                  else 
+                  {
+                    $bookingsDueIn20Days = 0;  // Default to 0 if no records found
+                  }
+                ?>
+                <h3><?php echo $bookingsDueIn20Days; ?></h3>
+                <p>20 Days Due</p> <!-- Additional description -->
               </div>
             </div>
 
+            <!-- Due on 30 Days -->
             <div class="month-transaction">
               <div class="logo-container transaction-confirmed">
                 <i class="fas fa-calendar-alt"></i> <!-- Example icon for logo -->
               </div>
               <div class="content-container">
-                <h3>100</h3>
-                <p>CONFIRMED</p> <!-- Additional description -->
+                <?php
+                  // Assuming $conn is your database connection
+                  $days30Query = "SELECT COUNT(*) AS `bookingsDueIn30Days` 
+                                FROM booking b 
+                                JOIN flight f ON b.flightId = f.flightId
+                                WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) = 30";
+
+                  $result = $conn->query($days30Query);
+
+                  // Check if the query returned a result
+                  if ($result->num_rows > 0) 
+                  {
+                    $row = $result->fetch_assoc();
+                    $bookingsDueIn30Days = $row['bookingsDueIn30Days'];
+                  } 
+                  else 
+                  {
+                    $bookingsDueIn30Days = 0;  // Default to 0 if no records found
+                  }
+                ?>
+                <h3><?php echo $bookingsDueIn30Days; ?></h3>
+                <p>30 Days Due</p> <!-- Additional description -->
               </div>
             </div>
           </div>
@@ -374,7 +458,7 @@
                               p.packageName AS `PACKAGE`,
                               CASE 
                                   WHEN b.flightId IS NULL THEN 'Land Only'
-                                  ELSE DATE_FORMAT(f.flightDepartureDate, '%M %d, %Y')
+                                  ELSE CONCAT(DATE_FORMAT(f.flightDepartureDate, '%M %d, %Y'), ' ', DATE_FORMAT(f.flightDepartureTime, '%h:%i %p'))
                               END AS `FLIGHT DATE`,
                               b.pax AS `TOTAL PAX`,
                               CONCAT(
@@ -406,7 +490,7 @@
                       while ($row = $res1->fetch_assoc()) 
                       {
                         echo "
-                              <tr data-url='agent-showGuest.php?id=" . htmlspecialchars($row['T.N']) . "'>
+                            <tr data-url='agent-showGuest.php?id=" . htmlspecialchars($row['T.N']) . "'>
                               <td>" . htmlspecialchars($row['T.N']) . "</td>
                               <td>" . htmlspecialchars($row['PACKAGE']) . "</td>
                               <td>" . htmlspecialchars($row['FLIGHT DATE']) . "</td>
@@ -448,8 +532,8 @@
                   $sql1 = "SELECT 
                                 r.transactNo AS `T.N`,
                                 c.concernTitle AS `Request`,
-                                DATE_FORMAT(r.requestDate, '%M-%d-%Y %h:%i:%s %p') AS `Date`,
-                                r.requestStatus as status
+                                DATE_FORMAT(r.requestDate, '%M-%d-%Y %h:%i %p') AS `Date`,
+                                r.requestStatus as status, b.agentId
                             FROM 
                                 request r
                             JOIN 
@@ -457,9 +541,9 @@
                             JOIN 
                                 concern c ON r.concernId = c.concernId
                             WHERE 
-                                b.agentId = '$agentId'
+                                b.agentId = '$agentId' and status = 'Pending'
                             ORDER BY 
-                                r.requestDate DESC";  // Order by request date
+                                r.requestDate DESC LIMIT 5";  // Order by request date
       
                   $res1 = $conn->query($sql1);
                     
@@ -467,10 +551,10 @@
                   {
                     while ($row = $res1->fetch_assoc()) 
                     {
-                      echo "<tr>
+                      echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($row['T.N']) . "'>
                               <td>{$row['T.N']}</td>
                               <td>{$row['Request']}</td>
-                              <td>" . date('F d, Y', strtotime($row['Date'])) . "</td>
+                              <td>{$row['Date']}</td>
                               <td>{$row['status']}</td>
                             </tr>";
                     }
@@ -509,28 +593,28 @@
                             p.transactNo AS `Transaction No`,
                             p.paymentTitle AS `Payment Title`,
                             CONCAT(FORMAT(p.amount, 2)) AS `Amount`,  -- Format the amount as a currency with two decimal places
-                            DATE_FORMAT(p.paymentDate, '%M-%d-%Y %h:%i:%s %p') AS `Date`,  -- Format the date as specified
+                            DATE_FORMAT(p.paymentDate, '%M %d, %Y %h:%i %p') AS `Date`,  -- Format the date as specified
                             p.paymentType AS `Payment Type`,
-                            p.paymentStatus AS `Status`
+                            p.paymentStatus AS `Status`, b.agentId
                           FROM 
                             payment p
                           JOIN 
                             booking b ON p.transactNo = b.transactNo
                           WHERE 
-                            b.agentId = '$agentId' AND b.status = 'Submitted'  -- Adjust conditions as needed
+                            b.agentId = '$agentId' and Status = 'Pending'  -- Adjust conditions as needed
                           ORDER BY 
-                            p.paymentDate DESC";  // Order by payment date
+                            p.paymentDate DESC LIMIT 5";  // Order by payment date
      
                  $res2 = $conn->query($sql2);
                  
                  if ($res2->num_rows > 0) {
                    while ($row = $res2->fetch_assoc()) {
-                     echo "<tr>
+                     echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($row['Transaction No']) . "'>
                              <td>{$row['Transaction No']}</td>
                              <td>{$row['Payment Title']}</td>
                              <td>{$row['Payment Type']}</td>
                              <td>₱ {$row['Amount']}</td>
-                             <td>" . date('F d, Y', strtotime($row['Date'])) . "</td>
+                             <td> {$row['Date']} </td>
                              <td>{$row['Status']}</td>
                            </tr>";
                    }
@@ -601,14 +685,14 @@
                     // Output data for each row
                     while ($row = $res1->fetch_assoc()) 
                     {
-                      echo "<tr>
+                      echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($row['T.N']) . "'>
                               <td>{$row['T.N']}</td>
                               <td>{$row['PACKAGE']}</td>
                               <td>{$row['FLIGHT DATE']}</td>
                               <td>{$row['TOTAL PAX']}</td>
                               <td>{$row['CONTACT NAME']}</td>
                               <td>{$row['STATUS']}</td>
-                          </tr>";
+                            </tr>";
                     }
                   } 
                   else 
