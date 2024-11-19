@@ -132,11 +132,18 @@
                     </div>
                   </div>
 
+                  <!-- Flight Details Input -->
+                  <div class="col-md-12" id="flightDetailsContainer" style="display: none;">
+                    <div class="form-group mb-6">
+                      <label class="mt-3 fs-6" for="flightDetails">Flight Details for Package Only</label>
+                      <textarea class="form-control mt-2 fs-6" id="flightDetails" name="flightDetails" placeholder="Input Flight Details Here"></textarea>
+                    </div>
+                  </div>
                 </div>
 
-                <input type="" id="flightId" name="flightId" value="" placeholder="Flight Id Input">
-                <input type="" id="packagePrice" name="packagePrice" placeholder="Package Price">
-                <input type="" name="flightPrice" placeholder="Flight Price">
+                <input type="hidden" id="flightId" name="flightId" value="" placeholder="Flight Id Input">
+                <input type="hidden" id="packagePrice" name="packagePrice" placeholder="Package Price">
+                <input type="hidden" name="flightPrice" id="flightPricee" placeholder="Flight Price">
   
               </div>
 
@@ -145,9 +152,6 @@
                   <label>Price: ₱ <span id="flightPrice">0.00</span></label> 
                 </h5>
               </div>
-
-              
-
             </div>
 
             
@@ -424,7 +428,7 @@
                   <h5 class="align-items-center pt-2 fw-bolder">Total Price: ₱ <span id="displayTotalPrice">0</span></h5>
                   <button type="button" class="btn btn-primary p-2 px-3" id="bookNowButton">Book Now</button>
                 </div>
-                <input type="" id="totalPrice" name="totalPrice" placeholder="Total Price">
+                <input type="hidden" id="totalPrice" name="totalPrice" placeholder="Total Price">
               </div>
             </div>
 
@@ -748,6 +752,7 @@
 
                 // Update the flight price display with the formatted price
                 $('#flightPrice').text(formattedPrice);
+                $('#flightPricee').val(formattedPrice);
 
                 // Update the flight ID 
                 $('input[name="flightId"]').val(data.flightId);
@@ -948,27 +953,43 @@
         function updateTotalPrice() 
         {
           let totalPrice = 0;
-          const isLandChecked = document.getElementById('land').checked;
-          const totalPax = parseInt($('#totalPax').val()) || 0; // Get total passengers
+          const isLandChecked = document.getElementById('land').checked; // Check if "land" checkbox is checked
+          const totalPax = parseInt($('#totalPax').val()) || 0; // Get total passengers, default to 0 if invalid
 
-          // If the "land" checkbox is checked, use the package price
           if (isLandChecked) 
           {
+            // If the "land" checkbox is checked, use the package price
+            flightDetailsContainer.style.display = 'block'; // Show when checked
             const packagePriceField = document.getElementById('packagePrice');
             if (packagePriceField) 
             {
-              totalPrice = parseFloat(packagePriceField.value) || 0; // Use package price, default to 0 if invalid
-              totalPrice *= totalPax; // Multiply by total passengers
+              const packagePrice = parseFloat(packagePriceField.value) || 0; // Use package price, default to 0 if invalid
+              totalPrice = packagePrice * totalPax; // Multiply by total passengers
+
+              // Update the display to show the package price per pax
+              const flightPriceSpan = document.getElementById('flightPrice');
+              if (flightPriceSpan) 
+              {
+                const formattedPackagePrice = `${formatNumberWithCommas(packagePrice.toFixed(2))}`;
+                flightPriceSpan.innerText = formattedPackagePrice; // Show package price per pax
+              }
             }
           } 
           else 
           {
-            // If "land" is unchecked, use the flight price
+            // If "land" is unchecked, use the original flight price from the hidden input
             const flightPriceSpan = document.getElementById('flightPrice');
-            if (flightPriceSpan) 
+            const flightPriceField = $('#flightPricee'); // Hidden input field using jQuery
+            flightDetailsContainer.style.display = 'none'; // Show when checked
+            if (flightPriceSpan && flightPriceField.length) 
             {
-              const flightPrice = parseFloat(flightPriceSpan.innerText.replace(/,/g, '').replace('₱', '').trim()) || 0; // Extract value
-              totalPrice = flightPrice * totalPax; // Calculate total price
+              const originalFlightPrice = parseFloat(
+                flightPriceField.val().replace(/,/g, '').replace('₱', '').trim()
+              ) || 0; // Retrieve and parse the original flight price
+              totalPrice = originalFlightPrice * totalPax; // Calculate total price using original flight price
+
+              const formattedOriginalPrice = `${formatNumberWithCommas(originalFlightPrice.toFixed(2))}`;
+              flightPriceSpan.innerText = formattedOriginalPrice; // Show original flight price
             }
           }
 
@@ -976,7 +997,7 @@
           const displayTotalPriceElement = document.getElementById('displayTotalPrice');
           if (displayTotalPriceElement) 
           {
-            displayTotalPriceElement.innerText = formatNumberWithCommas(totalPrice.toFixed(2)); // Format with commas
+            displayTotalPriceElement.innerText = `${formatNumberWithCommas(totalPrice.toFixed(2))}`; // Format with commas
           }
 
           // Update the totalPrice hidden input field

@@ -21,6 +21,7 @@
     $totalPax = $_POST['totalPax'];
     $totalPrice = $_POST['totalPrice'];
     $bookingType = isset($_POST['land']) ? 'Land' : 'Package';
+    $flightDetails = ($bookingType === 'Land') ? $_POST['flightDetails'] : NULL;
 
     // Get the last bookingId and increment it for the new transaction
     $result = $conn->query("SELECT MAX(bookingId) AS lastBookingId FROM booking");
@@ -47,8 +48,8 @@
 
     // Prepare the SQL statement for insertion into the booking table
     $sql1 = "INSERT INTO booking (accountId, transactNo, agentId, flightId, packageId, fName, lName, mName, suffix, countryCode, contactNo, 
-    email, pax, totalPrice, bookingType, status, bookingDate) VALUES 
-    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Pending', NOW())";
+    email, pax, totalPrice, bookingType, flightDetails, status, bookingDate) VALUES 
+    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Pending', NOW())";
     $stmt1 = $conn->prepare($sql1);
 
     if (!$stmt1) 
@@ -60,8 +61,8 @@
     }
 
     // Bind and execute the booking insertion
-    $stmt1->bind_param('issiisssssssids', $accountId, $transactNo, $agentId, $flightId, $packageId, $fName, $lName, $mName, $suffix, 
-    $countryCode, $contactNo, $email, $totalPax, $totalPrice, $bookingType);
+    $stmt1->bind_param('issiisssssssidss', $accountId, $transactNo, $agentId, $flightId, $packageId, $fName, $lName, $mName, $suffix, 
+    $countryCode, $contactNo, $email, $totalPax, $totalPrice, $bookingType, $flightDetails);
     
     if (!$stmt1->execute()) 
     {
