@@ -269,7 +269,8 @@
                   $days5Query = "SELECT COUNT(*) AS `bookingsDueIn5Days` 
                                 FROM booking b 
                                 JOIN flight f ON b.flightId = f.flightId
-                                WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) = 5";
+                                WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) <= 5 
+                                  AND DATEDIFF(f.flightDepartureDate, CURDATE()) >= 0";
 
                   $result = $conn->query($days5Query);
 
@@ -288,6 +289,7 @@
                 <p>5 Days Due</p> <!-- Additional description -->
               </div>
             </div>
+
 
             <!-- Due on 10 Days -->
             <div class="month-transaction">
@@ -433,7 +435,7 @@
       <div class="second-row-container">
         <div class="one">
           <div class="header d-flex justify-content-between align-items-center">
-            <h6>Unconfirmed Transactions</h6>
+            <h6>Transactions</h6>
             <div class="view-booking-container">
             </div>
           </div>
@@ -448,7 +450,6 @@
                     <th>FLIGHT DATE</th>
                     <th>PAX.</th>
                     <th>CONTACT NAME</th>
-                    <th>STATUS</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -496,7 +497,6 @@
                               <td>" . htmlspecialchars($row['FLIGHT DATE']) . "</td>
                               <td>" . htmlspecialchars($row['TOTAL PAX']) . "</td>
                               <td>" . htmlspecialchars($row['CONTACT NAME']) . "</td>
-                              <td>" . htmlspecialchars($row['STATUS']) . "</td>
                             </tr>";
                       }
                     } 
@@ -572,7 +572,6 @@
         <div class="three">
          <div class="header d-flex justify-content-between align-items-center">
            <h6>Payment</h6>
-           
          </div>
 
          <div class="body">
