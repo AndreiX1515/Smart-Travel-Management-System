@@ -136,7 +136,7 @@
 
                 <input type="" id="flightId" name="flightId" value="" placeholder="Flight Id Input">
                 <input type="" id="packagePrice" name="packagePrice" placeholder="Package Price">
-                <input type="" name="flightPrice" placeholder="Flight Price">
+                <input type="" name="flightPrice" id="flightPricee" placeholder="Flight Price">
   
               </div>
 
@@ -748,6 +748,7 @@
 
                 // Update the flight price display with the formatted price
                 $('#flightPrice').text(formattedPrice);
+                $('#flightPricee').val(formattedPrice);
 
                 // Update the flight ID 
                 $('input[name="flightId"]').val(data.flightId);
@@ -948,27 +949,41 @@
         function updateTotalPrice() 
         {
           let totalPrice = 0;
-          const isLandChecked = document.getElementById('land').checked;
-          const totalPax = parseInt($('#totalPax').val()) || 0; // Get total passengers
+          const isLandChecked = document.getElementById('land').checked; // Check if "land" checkbox is checked
+          const totalPax = parseInt($('#totalPax').val()) || 0; // Get total passengers, default to 0 if invalid
 
-          // If the "land" checkbox is checked, use the package price
           if (isLandChecked) 
           {
+            // If the "land" checkbox is checked, use the package price
             const packagePriceField = document.getElementById('packagePrice');
             if (packagePriceField) 
             {
-              totalPrice = parseFloat(packagePriceField.value) || 0; // Use package price, default to 0 if invalid
-              totalPrice *= totalPax; // Multiply by total passengers
+              const packagePrice = parseFloat(packagePriceField.value) || 0; // Use package price, default to 0 if invalid
+              totalPrice = packagePrice * totalPax; // Multiply by total passengers
+
+              // Update the display to show the package price per pax
+              const flightPriceSpan = document.getElementById('flightPrice');
+              if (flightPriceSpan) 
+              {
+                const formattedPackagePrice = `${formatNumberWithCommas(packagePrice.toFixed(2))}`;
+                flightPriceSpan.innerText = formattedPackagePrice; // Show package price per pax
+              }
             }
           } 
           else 
           {
-            // If "land" is unchecked, use the flight price
+            // If "land" is unchecked, use the original flight price from the hidden input
             const flightPriceSpan = document.getElementById('flightPrice');
-            if (flightPriceSpan) 
+            const flightPriceField = $('#flightPricee'); // Hidden input field using jQuery
+            if (flightPriceSpan && flightPriceField.length) 
             {
-              const flightPrice = parseFloat(flightPriceSpan.innerText.replace(/,/g, '').replace('₱', '').trim()) || 0; // Extract value
-              totalPrice = flightPrice * totalPax; // Calculate total price
+              const originalFlightPrice = parseFloat(
+                flightPriceField.val().replace(/,/g, '').replace('₱', '').trim()
+              ) || 0; // Retrieve and parse the original flight price
+              totalPrice = originalFlightPrice * totalPax; // Calculate total price using original flight price
+
+              const formattedOriginalPrice = `${formatNumberWithCommas(originalFlightPrice.toFixed(2))}`;
+              flightPriceSpan.innerText = formattedOriginalPrice; // Show original flight price
             }
           }
 
@@ -976,7 +991,7 @@
           const displayTotalPriceElement = document.getElementById('displayTotalPrice');
           if (displayTotalPriceElement) 
           {
-            displayTotalPriceElement.innerText = formatNumberWithCommas(totalPrice.toFixed(2)); // Format with commas
+            displayTotalPriceElement.innerText = `${formatNumberWithCommas(totalPrice.toFixed(2))}`; // Format with commas
           }
 
           // Update the totalPrice hidden input field
