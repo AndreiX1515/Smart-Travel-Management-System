@@ -80,7 +80,7 @@
 
             <div class="mb-3">
               <label class="form-label">Payment for:</label>
-              <select class="form-select" name="paymentTitle" required>
+              <select class="form-select" id="paymentTitle" name="paymentTitle" required>
                 <option selected disabled>Select Payment Title</option>
                 <option value="Package Payment">Package Payment</option>
                 <option value="Request Payment">Request Payment</option>
@@ -97,9 +97,11 @@
               </select>
             </div>
 
+            <div id="amountDisplay">Total Amount Left: ₱ <span id="amountValue">0.00 </span> <span id="amountStatus"></span></div>
+
             <div class="mb-3">
               <label class="form-label">Payment Amount</label>
-              <input type="number" class="form-control" name="amount" placeholder="Enter payment Amount" required>
+              <input type="number" step="0.01" class="form-control" id="paymentAmount" name="amount" placeholder="Enter payment Amount" required>
             </div>
 
             <div class="mb-3">
@@ -245,3 +247,105 @@
     console.log(fileInput.files);
   }
 </script>
+
+<script>
+  $(document).ready(function() 
+  {
+    $('#paymentTitle').on('change', function() 
+    {
+      var paymentTitle = $(this).val(); // Get the selected payment title
+      var transactionNumber = $('input[name="transactionNumber"]').val(); // Get the transaction number
+
+      // Clear previous amount display
+      $('#amountValue').text('0.00');
+      $('#amountStatus').text(''); // Reset any status message (e.g., "Fully Paid")
+
+      if (paymentTitle) 
+      {
+        // Make the AJAX request
+        $.ajax(
+        {
+          url: '../Agent Section/functions/fetchPaymentBalance.php',  // Your server-side script
+          type: 'POST',
+          data: { 
+            paymentTitle: paymentTitle, 
+            transactionNumber: transactionNumber  // Send both paymentTitle and transactionNumber as parameters
+          },
+          success: function(response) 
+          {
+            // Check if the response is a valid JSON
+            var data = null;
+            try {
+              data = JSON.parse(response); // Try parsing the JSON
+            } catch (e) {
+              console.error("Error parsing JSON response: ", e);
+              $('#amountValue').text('0.00'); // Fallback value if response is not valid JSON
+              return;
+            }
+
+            // Check if the data contains amountLeft and it's a valid number
+            if (data && typeof data.amountLeft !== 'undefined') 
+            {
+              var amountLeft = parseFloat(data.amountLeft); // Convert to float if it's a string
+              if (!isNaN(amountLeft)) 
+              {
+                // Update the amount display with the fetched value, formatted with commas
+                $('#amountValue').text(amountLeft.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+
+                // Set the max value of the payment amount input to the amountLeft
+                $('#paymentAmount').attr('max', amountLeft.toFixed(2));
+
+                // Check if fully paid
+                if (amountLeft === 0) 
+                {
+                  $('#amountStatus').text('Fully Paid');  // Display 'Fully Paid' message
+                  // Disable input if fully paid
+                  $('#paymentAmount').prop('disabled', true);
+                } 
+                else 
+                {
+                  $('#paymentAmount').prop('disabled', false);
+                }
+
+                // Check if the entered amount exceeds the max amount
+                $('input[name="amount"]').on('input', function() 
+                {
+                  var enteredAmount = parseFloat($(this).val()); // Get the entered amount
+                  if (enteredAmount > amountLeft) 
+                  {
+                    // If it's over, set the input value to the max amount
+                    $(this).val(amountLeft.toFixed(2)); // Set the value to the max amount, keeping two decimal places
+                  }
+                });
+
+              } 
+              else 
+              {
+                console.error("Error: amountLeft is not a valid number");
+                $('#amountValue').text('0.00'); // Fallback value
+              }
+            } 
+            else 
+            {
+              console.error("Error: amountLeft is undefined in the response");
+              $('#amountValue').text('0.00'); // Fallback value
+            }
+          },
+          error: function(xhr, status, error) 
+          {
+            console.error("Error fetching amount details:", error);
+            $('#amountValue').text('0.00'); // Fallback value
+            $('#amountStatus').text('Error retrieving payment status');  // Display error message
+          }
+        });
+      } 
+      else 
+      {
+        // If no valid payment title is selected, reset the amount display
+        $('#amountValue').text('0.00');
+        $('#amountStatus').text('');
+      }
+    });
+  });
+</script>
+

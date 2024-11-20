@@ -107,11 +107,8 @@
               $sql1 = "SELECT
                   b.transactNo AS `T.N`,
                   p.packageName AS `PACKAGE`,
-                  b.bookingDate AS `TRANSACTION DATE`,
-                  CASE 
-                      WHEN b.flightId IS NULL THEN 'Land Only'
-                      ELSE DATE_FORMAT(f.flightDepartureDate, '%M %d, %Y')
-                  END AS `FLIGHT DATE`,
+                  b.bookingDate AS `TRANSACTION DATE`, b.bookingType as bookingType,
+                  DATE_FORMAT(f.flightDepartureDate, '%M %d, %Y') AS `FLIGHT DATE`,
                   b.pax AS `TOTAL PAX`,
                   CONCAT(
                       b.lName, ', ', b.fName, ' ', 
@@ -191,7 +188,7 @@
                                 <li><a class='dropdown-item' href='#' onclick='showPaymentHistory(\"{$row['T.N']}\")'>Show Payment History</a></li>";
                         
                                 // Add the conditional button if FLIGHT DATE is "Land Only"
-                                if ($row['FLIGHT DATE'] === "Land Only") 
+                                if ($row['bookingType'] == "Land") 
                                 {
                                   echo "<li>
                                           <a class='dropdown-item' href='#' onclick='showLandOnlyDetails(\"{$row['T.N']}\")'>Show Land Only Details</a>
