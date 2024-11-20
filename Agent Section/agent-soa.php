@@ -28,6 +28,7 @@
           <th>TransactNo</th>
           <th>Contents</th>
           <th>Pax</th>
+          <th>Booking Type</th>
           <th>Package Price</th>
           <th>Total Request Cost</th>
           <th>Total Amount to be paid</th>
@@ -39,11 +40,12 @@
       <tbody>
         <?php
           // Query to select all records from the booking table
+          $agentId = $_SESSION['agentId'];
           $query = "SELECT b.transactNo, b.flightId, b.pax, b.totalPrice AS packagePrice, 
                       CONCAT(DATE_FORMAT(f.flightDepartureDate, '%M %d, %Y'), ' - ', DATE_FORMAT(f.returnDepartureDate, '%M %d, %Y')) AS FlightDate,
                       IFNULL(req.totalRequestCost, 0) AS totalRequestCost,
                       IFNULL(paid.totalPaidAmount, 0) AS totalPaidAmount,
-                      b.status AS bookingStatus, 
+                      b.status AS bookingStatus, b.bookingType,
                       (b.totalPrice + IFNULL(req.totalRequestCost, 0)) AS TotalCost
                     FROM 
                       booking b
@@ -55,7 +57,7 @@
                         (SELECT transactNo, SUM(requestCost) AS totalRequestCost FROM request
                         WHERE requestStatus = 'Confirmed' GROUP BY transactNo) req ON b.transactNo = req.transactNo
                     WHERE 
-                        b.status = 'Confirmed'";
+                        b.status = 'Confirmed' and b.agentId = '$agentId'";
 
           $result = $conn->query($query); // Execute the query
 
@@ -76,6 +78,7 @@
               echo "<td>" . htmlspecialchars($row['transactNo']) . "</td>"; // TransactNo
               echo "<td>" . htmlspecialchars($row['FlightDate']) . "</td>"; // Contents (Flight Date Range)
               echo "<td>" . htmlspecialchars($row['pax']) . "</td>"; // Pax (Number of Passengers)
+              echo "<td>" . $row['bookingType'] . "</td>"; // Booking Type 
               echo "<td>₱ " . number_format($row['packagePrice'], 2) . "</td>"; // Price (Flight Price)
               echo "<td>₱ " . number_format($row['totalRequestCost'], 2) . "</td>"; // Total Request Cost
               echo "<td>₱ " . number_format($totalAmountToBePaid, 2) . "</td>"; // Total Amount to be paid (Total Price + Request Cost)
