@@ -1,0 +1,228 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+* {
+ font-family: 'Inter', 'Helvetica Neue', 'Segoe UI', Arial, sans-serif;
+}
+
+
+body {
+    background-color: #F4F4F4;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Sidebar Styling */
+.sidebar {
+ position: absolute;
+ top: 0; /* Adjusted to align with the top of the page */
+ left: 0;
+ height: 100vh; /* Ensure the sidebar takes up the full height */
+ width: 80px; /* Sidebar width when collapsed */
+ background-color: #343A40;
+ transition: width 0.3s ease;
+ overflow: hidden;
+ display: flex;
+ flex-direction: column;
+ z-index: 1030; /* Ensure the sidebar is above the content */
+}
+
+/* Expand the sidebar on hover */
+.sidebar:hover {
+ width: 220px; /* Sidebar width when hovered (expanded) */
+}
+
+/* Sidebar items (icons and labels) */
+.sidebar .nav-item {
+ width: 100%;
+ padding-top: 10px; /* Space to move items lower */
+}
+
+.sidebar .icon {
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ height: 50px;
+ width: 50px; /* Icon container size */
+ color: white;
+ font-size: 20px; /* Smaller icon size */
+ transition: 0.3s;
+ padding: 10px; /* Reduced padding */
+}
+
+.sidebar .label {
+ display: none;
+ margin-left: 10px;
+ color: white;
+ font-size: 16px;
+ transition: 0.3s;
+}
+
+/* Show labels when sidebar is hovered */
+.sidebar:hover .label {
+ display: inline-block;
+}
+
+/* Sidebar links */
+.sidebar .nav-link {
+ display: flex;
+ align-items: center;
+ color: white;
+ text-decoration: none;
+ padding: 8px 10px; /* Adjusted top and bottom padding */
+ transition: background-color 0.3s ease;
+}
+
+/* Change background color when hovering over links */
+.sidebar .nav-link:hover {
+ background-color: #495057;
+}
+
+/* Ensure text and icon transition smoothly */
+.sidebar .nav-link .icon,
+.sidebar .nav-link .label {
+ transition: all 0.3s ease;
+}
+
+/* Push logout to the bottom */
+.sidebar .logout {
+ margin-top: auto; /* Push logout to the bottom */
+}
+
+/* Profile Section */
+.profile-section {
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ padding: 15px;
+ background-color: transparent;
+ border-radius: 5px;
+ margin: 10px;
+}
+
+/* Change profile section background when sidebar is hovered */
+.sidebar:hover .profile-section {
+ background-color: #495057; /* Background color when sidebar is hovered */
+}
+
+.profile-left {
+ display: flex;
+ flex-direction: column;
+ color: white;
+}
+
+.profile-left .name {
+ font-size: 18px;
+ font-weight: bold;
+}
+
+.profile-left .position {
+ font-size: 14px;
+}
+
+/* Profile Icon */
+.profile-icon {
+ font-size: 2rem;
+ color: white;
+ background-color: transparent; /* Remove background when sidebar is unhovered */
+}
+
+/* Ensure profile icon is only visible when sidebar is hovered */
+.sidebar:not(:hover) .profile-icon {
+ background-color: transparent; /* Remove background when sidebar is unhovered */
+ color: white; /* Ensure the icon's color remains visible */
+ font-size: 1.5rem; /* Smaller icon size when unhovered */
+}
+
+.sidebar:hover .profile-icon {
+ background-color: #495057; /* Background appears when sidebar is hovered */
+ font-size: 2rem; /* Larger icon size when sidebar is hovered */
+}
+
+/* Navbar styling inside main content */
+.navbar-custom {
+ background-color: #343A40; /* Dark background for navbar */
+ height: 7vh;
+ margin-left: 0; /* Adjusted to be inside the main content */
+ color: rgb(255, 255, 255);
+ transition: margin-left 0.3s ease; /* Smooth transition for margin-left */
+}
+
+/* Profile icon in navbar */
+.profile-dropdown .dropdown-toggle::after {
+ display: none; /* Remove default dropdown icon */
+}
+
+/* Adjust the profile icon size */
+.profile-icon {
+ font-size: 1.5rem;
+ color: rgb(255, 255, 255);
+}
+
+/* Ensure dropdown doesn't overflow */
+.dropdown-menu-end {
+ left: auto;
+ right: 0;
+}
+
+/* Adjust the dropdown to stay within screen bounds */
+.dropdown-menu {
+ max-width: 300px;
+ overflow: hidden;
+ text-overflow: ellipsis;
+}
+
+/* Smart Travel label styling */
+.smart-travel {
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ height: 60px;
+ width: 100%;
+ color: white;
+ font-size: 20px;
+ font-weight: bold;
+ margin-top: 10px;
+}
+
+/* Main container for table */
+.main-container {
+ margin-left: 80px; /* Ensures the table is positioned next to the sidebar */
+ padding-top: 0px; /* Adjust for the fixed navbar */
+ height: 100vh;
+ position: relative; /* Ensure navbar is inside this container */
+}
+
+.table-container {
+ width: 100%;
+ height: 30%;
+ overflow-y: auto;
+}
+
+table {
+ width: 100%;
+ height: 100%;
+ border-collapse: collapse;
+}
+
+th, td {
+ border: 1px solid #ddd;
+ padding: 10px;
+ text-align: left;
+}
+
+th {
+ background-color: #f4f4f4;
+}
+
+/* Always show the profile icon */
+.profile-icon-visible {
+ display: block !important;
+}
+
+/* Hide profile details when sidebar is collapsed */
+.sidebar:not(:hover) .profile-left {
+ display: none;
+}
