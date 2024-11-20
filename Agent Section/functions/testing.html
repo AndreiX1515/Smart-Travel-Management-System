@@ -12,90 +12,643 @@
 
 <!-- Sidebar -->
 <div class="sidebar">
-    <div class="logo">
-        <a class="nav-link" href="#">
-            <div class="icon">
-             <!-- <i class="fa-solid fa-house"></i> -->
-            </div> 
-        </a>
-    </div>
+  <div class="logo">
+    <a class="nav-link" href="#">
+     <div class="icon">
+         <img src="../../assets/images/logo-tab.png" alt="Logo" class="sidebar-logo"> 
+         <span class="fw-bold">SMART TRAVEL</span>
+     </div> 
+    </a>
+ </div>
 
-    <ul class="nav flex-column">
-        <li class="nav-item">
-            <a class="nav-link" href="#">
-                <div class="icon"><i class="fa-solid fa-house"></i></div> <!-- Home Icon -->
-                <span class="label">Home</span>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">
-                <div class="icon"><i class="fa-solid fa-user"></i></div> <!-- User Icon -->
-                <span class="label">Profile</span>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">
-                <div class="icon"><i class="fa-solid fa-cogs"></i></div> <!-- Settings Icon -->
-                <span class="label">Settings</span>
-            </a>
-        </li>
-    </ul>
+ <ul class="nav flex-column">
+     <li class="nav-item">
+         <a class="nav-link" href="#">
+             <div class="icon"><i class="fa-solid fa-house"></i></div> <!-- Home Icon -->
+             <span class="label">Dashboard</span>
+         </a>
+     </li>
+     <li class="nav-item add-booking">
+         <a class="nav-link" href="#">
+             <div class="icon"><i class="fa-solid fa-user"></i></div> <!-- User Icon -->
+             <span class="label">Add Booking</span>
+         </a>
+     </li>
+     
+     <!-- Manage Bookings Dropdown -->
+     <li class="nav-item dropdown">
+         <a class="nav-link" href="#" id="manageBookingDropdown" role="button" data-bs-toggle="collapse" data-bs-target="#manageBookingMenu" aria-expanded="false" aria-controls="manageBookingMenu">
+             <div class="icon"><i class="fa-solid fa-cogs"></i></div>
+             <span class="label">Manage Bookings</span>
+         </a>
+         <div class="collapse" id="manageBookingMenu">
+             <ul class="nav flex-column ms-3">
+                 <li class="nav-item">
+                     <a class="nav-link" href="#">Transactions</a>
+                 </li>
+                 <li class="nav-item">
+                     <a class="nav-link" href="#">Edit Booking</a>
+                 </li>
+                 <li class="nav-item">
+                     <a class="nav-link" href="#">Cancel Booking</a>
+                 </li>
+             </ul>
+         </div>
+     </li>
+ </ul>
 
-    <!-- Logout button at the bottom, outside the <ul> -->
-    <div class="logout">
-        <div class="profile-section">
-            <div class="profile-left">
-                <div class="name">John Doe</div>
-                <div class="position">Administrator</div>
-            </div>
-            <div class="profile-icon profile-icon-visible">
-                <i class="fa-solid fa-user-circle"></i>
-            </div>
-        </div>
+ <!-- Logout button at the bottom, outside the <ul> -->
+ <div class="logout">
+     <div class="profile-section">
+         <div class="profile-left">
+             <div class="name">John Doe</div>
+             <div class="position">Administrator</div>
+         </div>
+         <div class="profile-icon profile-icon-visible">
+             <i class="fa-solid fa-user-circle"></i>
+         </div>
+     </div>
 
-        <a class="nav-link" href="#">
-           <div class="icon"><i class="fas fa-eye"></i></div> <!-- Logout Icon -->
-           <span class="label">View Password</span>
-        </a>
-        
-        <a class="nav-link" href="#">
-           <div class="icon"><i class="fa-solid fa-right-from-bracket"></i></div> <!-- Logout Icon -->
-           <span class="label">Logout</span>
-        </a>
-    </div>
+     <a class="nav-link" href="#">
+        <div class="icon"><i class="fas fa-eye"></i></div> <!-- View Password Icon -->
+        <span class="label">View Password</span>
+     </a>
+     
+     <a class="nav-link" href="#">
+        <div class="icon"><i class="fa-solid fa-right-from-bracket"></i></div> <!-- Logout Icon -->
+        <span class="label">Logout</span>
+     </a>
+ </div>
 </div>
+
+
+
 
 <!-- Main Container -->
 <div class="main-container">
-    <nav class="navbar navbar-expand-lg navbar-custom">
-        <div class="container-fluid mx-3">
-            <a class="navbar-brand text-white fw-bold" href="#">Dashboard</a>
+   <nav class="navbar navbar-expand-lg navbar-custom">
+       <div class="container-fluid mx-3">
+           <a class="navbar-brand text-white fw-bold" href="#">Dashboard</a>
 
-            <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+           <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+               <span class="navbar-toggler-icon"></span>
+           </button>
 
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle profile-dropdown" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fa-solid fa-user-circle profile-icon"></i>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">My Profile</a></li>
-                            <li><a class="dropdown-item" href="#">Settings</a></li>
-                            <li><a class="dropdown-item" href="#">Logout</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div> -->
+           <div class="collapse navbar-collapse" id="navbarNav">
+               <ul class="navbar-nav ms-auto">
+                   <li class="nav-item dropdown">
+                       <a class="nav-link dropdown-toggle profile-dropdown" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                           <i class="fa-solid fa-user-circle profile-icon"></i>
+                       </a>
+                       <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                           <li><a class="dropdown-item" href="#">My Profile</a></li>
+                           <li><a class="dropdown-item" href="#">Settings</a></li>
+                           <li><a class="dropdown-item" href="#">Logout</a></li>
+                       </ul>
+                   </li>
+               </ul>
+           </div> -->
+       </div>
+   </nav>
+
+   <div class="main-content">
+    <div class="counts-wrapper">
+
+      <!-- CARD 1 -->
+      <div class="card">
+        <div class="header">
+            <h6 class="text-secondary fw-600">Current Transaction</h6>
         </div>
-    </nav>
+    
+        <div class="card-content px-3">
+          <div class="row">
+            <div class="col-md-5 d-flex flex-row">
+                <div class="card-icon icon-blue">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <div class="side-content d-flex flex-column">
+                    <h5>0</h5>
+                    <p>TOTAL TRANSACTIONS</p>
+                </div>
+            </div>
+       
+           <div class="col-md-5 d-flex flex-row">
+               <div class="card-icon icon-green">
+                 <i class="fas fa-check-circle"></i>
+               </div>
+               <div class="side-content d-flex flex-column">
+                   <h5>0</h5>
+                   <p>COMPLETED</p>
+               </div>
+           </div>
+         </div>
 
+         <div class="row">
+           <div class="col-md-5 d-flex flex-row">
+               <div class="card-icon icon-yellow">
+                 <i class="fas fa-exclamation-triangle"></i>
+               </div>
+               <div class="side-content d-flex flex-column">
+                   <h5>0</h5>
+                   <p>PENDING</p>
+               </div>
+           </div>
+      
+          <div class="col-md-5 d-flex flex-row">
+              <div class="card-icon icon-red">
+                <i class="fas fa-times-circle"></i>
+              </div>
+              <div class="side-content d-flex flex-column">
+                  <h5>0</h5>
+                  <p>CANCELLED</p>
+              </div>
+          </div>
+        </div>
+      
+       </div>
+    </div>
+  
+    <!-- CARD 2 -->
+    <div class="card">
+     <div class="header">
+         <h6 class="text-secondary fw-600">Transaction History</h6>
+     </div>
+ 
+     <div class="card-content px-3">
+       <div class="row">
+         <div class="col-md-5 d-flex flex-row">
+             <div class="card-icon icon-blue">
+                 <i class="fas fa-calendar-alt"></i>
+             </div>
+             <div class="side-content d-flex flex-column">
+                 <h5>0</h5>
+                 <p>PAST</p>
+             </div>
+         </div>
+    
+        <div class="col-md-5 d-flex flex-row">
+            <div class="card-icon icon-gray">
+              <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="side-content d-flex flex-column">
+                <h5>0</h5>
+                <p>CURRENT</p>
+            </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-5 d-flex flex-row">
+            <div class="card-icon icon-yellow">
+              <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <div class="side-content d-flex flex-column">
+                <h5>0</h5>
+                <p>ON GOING</p>
+            </div>
+        </div>
+   
+       <div class="col-md-5 d-flex flex-row">
+           <div class="card-icon icon-green">
+             <i class="fas fa-times-circle"></i>
+           </div>
+           <div class="side-content d-flex flex-column">
+               <h5>0</h5>
+               <p>CONFIRMED</p>
+           </div>
+       </div>
+     </div>
+   
+    </div>
+   </div>
+
+   <!-- CARD 3 -->
+   <div class="card">
+    <div class="header">
+        <h6 class="text-secondary fw-600">On Due</h6>
+    </div>
+
+    <div class="card-content px-3">
+      <div class="row">
+        <div class="col-md-5 d-flex flex-row">
+            <div class="card-icon icon-blue">
+                <i class="fas fa-calendar-alt"></i>
+            </div>
+            <div class="side-content d-flex flex-column">
+                <h5>0</h5>
+                <p>5 DAYS</p>
+            </div>
+        </div>
+   
+       <div class="col-md-5 d-flex flex-row">
+           <div class="card-icon icon-green">
+             <i class="fas fa-check-circle"></i>
+           </div>
+           <div class="side-content d-flex flex-column">
+               <h5>0</h5>
+               <p>10 DAYS</p>
+           </div>
+       </div>
+     </div>
+
+      <div class="row">
+        <div class="col-md-5 d-flex flex-row">
+            <div class="card-icon icon-yellow">
+              <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <div class="side-content d-flex flex-column">
+                <h5>0</h5>
+                <p>15 DAYS</p>
+            </div>
+        </div>
+   
+       <div class="col-md-5 d-flex flex-row">
+           <div class="card-icon icon-red">
+             <i class="fas fa-times-circle"></i>
+           </div>
+           <div class="side-content d-flex flex-column">
+               <h5>0</h5>
+               <p>30 DAYS</p>
+           </div>
+       </div>
+     </div>
+   
+    </div>
+ </div>
+
+  <!-- CARD 4 -->
+  <div class="card">
+   <div class="header p-3">
+    <h6 class="text-black">Daily Currency Conversion</h6>
+   </div>
+
+
+
+
+  </div>
+</div>
+ 
+<div class="header-wrapper">
+   <div class="price-table-wrapper">
+      <div class="header p-3">
+           <h6 class="text-black">Price</h6>
+     </div>
+
+     <!-- <div class="price-table-container">
+        <table class="price-table">
+         <thead>
+             <tr>
+                 <th>Wholesale Price</th>
+                 <th>Retail Price</th>
+                 <th>Land Arrangement</th>
+             </tr>
+         </thead>
+         <tbody>
+             <tr>
+                 <td>Basic</td>
+                 <td>$19.99</td>
+                 <td>5 Features</td>
+             </tr>
+             <tr>
+                 <td>Standard</td>
+                 <td>$49.99</td>
+                 <td>10 Features</td>
+             </tr>
+             <tr>
+                 <td>Premium</td>
+                 <td>$99.99</td>
+                 <td>Unlimited Features</td>
+             </tr>
+         </tbody>
+     </table>
+  </div> -->
+
+ </div>
+
+
+  <div class="pending-wrapper">
+    <div class="header p-3">
+     <h6 class="text-black">Pending Request</h6>
+    </div>
+
+
+  </div>
+
+  <div class="Payment-wrapper">
+    <div class="header p-3">
+     <h6 class="text-black">Payment</h6>
+    </div>
+  </div>
+</div>
+
+     
+<div class="main-table-wrapper-one">
+  <div class="table-info-container">
+    <div class="header p-3 d-flex flex-row justify-content-between align-items-center">
+      <h6 class="text-black">Flights</h6>
+
+      <div class="end-part">
+       <div class="legend-guides">
+
+
+       </div>
+
+       <button class="btn btn-primary btn-sm">Reload</button>
+
+      </div>
+    </div>
+
+    <div class="info-table-container">
+     <table class="info-table">
+      <thead>
+          <tr>
+              <th rowspan="2">Team OP</th>
+              <th rowspan="2">Origin</th>
+              <th colspan="2">Flight Date</th> <!-- Flight Date columns -->
+              <th rowspan="2">Flight Seat</th>
+              <th rowspan="2">Available Seat</th>
+              <th rowspan="2">Additional Seats</th>
+              <th rowspan="2">Air + Land</th>
+              <th rowspan="2">Land Only</th>
+              <th rowspan="2">Wholesale Price</th>
+              <th rowspan="2">Retail Price</th>
+              <th rowspan="2">Land Arrangment</th>
+
+              <th colspan="2" data-bs-toggle="tooltip" title="A1">A1</th> <!-- A1 columns -->
+              <th colspan="2" data-bs-toggle="tooltip" title="A2">A2</th> <!-- A2 columns -->
+              <th colspan="2" data-bs-toggle="tooltip" title="A3">A3</th> <!-- A3 columns -->
+              <th colspan="2" data-bs-toggle="tooltip" title="A4">A4</th> <!-- A4 columns -->
+              <th colspan="2" data-bs-toggle="tooltip" title="A5">A5</th> <!-- A5 columns -->
+              <th colspan="2" data-bs-toggle="tooltip" title="A6">A6</th> <!-- A6 columns -->
+              <th colspan="2" data-bs-toggle="tooltip" title="A7">A7</th> <!-- A7 columns -->
+              <th colspan="2" data-bs-toggle="tooltip" title="A8">A8</th> <!-- A8 columns -->
+              <th colspan="2" data-bs-toggle="tooltip" title="A9">A9</th> <!-- A9 columns -->
+              <th colspan="2" data-bs-toggle="tooltip" title="A10">A10</th> <!-- A10 columns -->
+
+          </tr>
+          <tr>
+              <th>Start</th>
+              <th>End</th>
+              <!-- A1, A2, A3, A4, A5, A6, A7 Sub Headers -->
+              <th>A.L</th>
+              <th>L.O</th>
+
+              <th>A.L</th>
+              <th>L.O</th>
+
+              <th>A.L</th>
+              <th>L.O</th>
+
+              <th>A.L</th>
+              <th>L.O</th>
+
+              <th>A.L</th>
+              <th>L.O</th>
+
+              <th>A.L</th>
+              <th>L.O</th>
+
+              <th>A.L</th>
+              <th>L.O</th>
+
+              <th>A.L</th>
+              <th>L.O</th>
+
+              <th>A.L</th>
+              <th>L.O</th>
+
+              <th>A.L</th>
+              <th>L.O</th>
+          </tr>
+      </thead>
+      <tbody>
+         <tr>
+             <td>Anna</td>
+             <td>Manila</td>
+             <td>2024. 12. 4</td>
+             <td>2024. 12. 4</td>
+             <td>2</td>
+             <td>1</td>
+             <td>15</td> <!-- Random number for A.L1 -->
+             <td>8</td>  <!-- Random number for L.O1 -->
+             <td>20</td> <!-- Random number for A.L2 -->
+
+             <td>P28,734.88</td>
+             <td>P28,734.88</td>
+             <td>P28,734.88</td>
+
+            
+             <td>12</td> <!-- Random number for L.O2 -->
+             <td>30</td> <!-- Random number for A.L3 -->
+             <td>18</td> <!-- Random number for L.O3 -->
+             <td>22</td> <!-- Random number for A.L4 -->
+             <td>14</td> <!-- Random number for L.O4 -->
+             <td>35</td> <!-- Random number for A.L5 -->
+             <td>28</td> <!-- Random number for L.O5 -->
+             <td>40</td> <!-- Random number for A.L6 -->
+             <td>33</td> <!-- Random number for L.O6 -->
+             <td>50</td> <!-- Random number for A.L7 -->
+             <td>42</td> <!-- Random number for L.O7 -->
+             <td>28</td> <!-- Random number for L.O5 -->
+             <td>40</td> <!-- Random number for A.L6 -->
+             <td>33</td> <!-- Random number for L.O6 -->
+             <td>33</td> <!-- Random number for L.O6 -->
+             <td>50</td> <!-- Random number for A.L7 -->
+             <td>42</td> <!-- Random number for L.O7 -->
+             <td>28</td> <!-- Random number for L.O5 -->
+             <td>40</td> <!-- Random number for A.L6 -->
+             <td>33</td> <!-- Random number for L.O6 -->
+         </tr>
+
+         <tr>
+          <td>Anna</td>
+          <td>Manila</td>
+          <td>2024. 12. 4</td>
+          <td>2024. 12. 4</td>
+          <td>2</td>
+          <td>1</td>
+          <td>15</td> <!-- Random number for A.L1 -->
+          <td>8</td>  <!-- Random number for L.O1 -->
+          <td>20</td> <!-- Random number for A.L2 -->
+
+          <td>P28,734.88</td>
+          <td>P28,734.88</td>
+          <td>P28,734.88</td>
+
+         
+          <td>12</td> <!-- Random number for L.O2 -->
+          <td>30</td> <!-- Random number for A.L3 -->
+          <td>18</td> <!-- Random number for L.O3 -->
+          <td>22</td> <!-- Random number for A.L4 -->
+          <td>14</td> <!-- Random number for L.O4 -->
+          <td>35</td> <!-- Random number for A.L5 -->
+          <td>28</td> <!-- Random number for L.O5 -->
+          <td>40</td> <!-- Random number for A.L6 -->
+          <td>33</td> <!-- Random number for L.O6 -->
+          <td>50</td> <!-- Random number for A.L7 -->
+          <td>42</td> <!-- Random number for L.O7 -->
+          <td>28</td> <!-- Random number for L.O5 -->
+          <td>40</td> <!-- Random number for A.L6 -->
+          <td>33</td> <!-- Random number for L.O6 -->
+          <td>33</td> <!-- Random number for L.O6 -->
+          <td>50</td> <!-- Random number for A.L7 -->
+          <td>42</td> <!-- Random number for L.O7 -->
+          <td>28</td> <!-- Random number for L.O5 -->
+          <td>40</td> <!-- Random number for A.L6 -->
+          <td>33</td> <!-- Random number for L.O6 -->
+      </tr>
+
+      <tr>
+       <td>Anna</td>
+       <td>Manila</td>
+       <td>2024. 12. 4</td>
+       <td>2024. 12. 4</td>
+       <td>2</td>
+       <td>1</td>
+       <td>15</td> <!-- Random number for A.L1 -->
+       <td>8</td>  <!-- Random number for L.O1 -->
+       <td>20</td> <!-- Random number for A.L2 -->
+
+       <td>P28,734.88</td>
+       <td>P28,734.88</td>
+       <td>P28,734.88</td>
+
+      
+       <td>12</td> <!-- Random number for L.O2 -->
+       <td>30</td> <!-- Random number for A.L3 -->
+       <td>18</td> <!-- Random number for L.O3 -->
+       <td>22</td> <!-- Random number for A.L4 -->
+       <td>14</td> <!-- Random number for L.O4 -->
+       <td>35</td> <!-- Random number for A.L5 -->
+       <td>28</td> <!-- Random number for L.O5 -->
+       <td>40</td> <!-- Random number for A.L6 -->
+       <td>33</td> <!-- Random number for L.O6 -->
+       <td>50</td> <!-- Random number for A.L7 -->
+       <td>42</td> <!-- Random number for L.O7 -->
+       <td>28</td> <!-- Random number for L.O5 -->
+       <td>40</td> <!-- Random number for A.L6 -->
+       <td>33</td> <!-- Random number for L.O6 -->
+       <td>33</td> <!-- Random number for L.O6 -->
+       <td>50</td> <!-- Random number for A.L7 -->
+       <td>42</td> <!-- Random number for L.O7 -->
+       <td>28</td> <!-- Random number for L.O5 -->
+       <td>40</td> <!-- Random number for A.L6 -->
+       <td>33</td> <!-- Random number for L.O6 -->
+   </tr>
+
+   <tr>
+    <td>Anna</td>
+    <td>Manila</td>
+    <td>2024. 12. 4</td>
+    <td>2024. 12. 4</td>
+    <td>2</td>
+    <td>1</td>
+    <td>15</td> <!-- Random number for A.L1 -->
+    <td>8</td>  <!-- Random number for L.O1 -->
+    <td>20</td> <!-- Random number for A.L2 -->
+
+    <td>P28,734.88</td>
+    <td>P28,734.88</td>
+    <td>P28,734.88</td>
 
    
+    <td>12</td> <!-- Random number for L.O2 -->
+    <td>30</td> <!-- Random number for A.L3 -->
+    <td>18</td> <!-- Random number for L.O3 -->
+    <td>22</td> <!-- Random number for A.L4 -->
+    <td>14</td> <!-- Random number for L.O4 -->
+    <td>35</td> <!-- Random number for A.L5 -->
+    <td>28</td> <!-- Random number for L.O5 -->
+    <td>40</td> <!-- Random number for A.L6 -->
+    <td>33</td> <!-- Random number for L.O6 -->
+    <td>50</td> <!-- Random number for A.L7 -->
+    <td>42</td> <!-- Random number for L.O7 -->
+    <td>28</td> <!-- Random number for L.O5 -->
+    <td>40</td> <!-- Random number for A.L6 -->
+    <td>33</td> <!-- Random number for L.O6 -->
+    <td>33</td> <!-- Random number for L.O6 -->
+    <td>50</td> <!-- Random number for A.L7 -->
+    <td>42</td> <!-- Random number for L.O7 -->
+    <td>28</td> <!-- Random number for L.O5 -->
+    <td>40</td> <!-- Random number for A.L6 -->
+    <td>33</td> <!-- Random number for L.O6 -->
+</tr>
+
+<tr>
+ <td>Anna</td>
+ <td>Manila</td>
+ <td>2024. 12. 4</td>
+ <td>2024. 12. 4</td>
+ <td>2</td>
+ <td>1</td>
+ <td>15</td> <!-- Random number for A.L1 -->
+ <td>8</td>  <!-- Random number for L.O1 -->
+ <td>20</td> <!-- Random number for A.L2 -->
+
+ <td>P28,734.88</td>
+ <td>P28,734.88</td>
+ <td>P28,734.88</td>
+
+
+ <td>12</td> <!-- Random number for L.O2 -->
+ <td>30</td> <!-- Random number for A.L3 -->
+ <td>18</td> <!-- Random number for L.O3 -->
+ <td>22</td> <!-- Random number for A.L4 -->
+ <td>14</td> <!-- Random number for L.O4 -->
+ <td>35</td> <!-- Random number for A.L5 -->
+ <td>28</td> <!-- Random number for L.O5 -->
+ <td>40</td> <!-- Random number for A.L6 -->
+ <td>33</td> <!-- Random number for L.O6 -->
+ <td>50</td> <!-- Random number for A.L7 -->
+ <td>42</td> <!-- Random number for L.O7 -->
+ <td>28</td> <!-- Random number for L.O5 -->
+ <td>40</td> <!-- Random number for A.L6 -->
+ <td>33</td> <!-- Random number for L.O6 -->
+ <td>33</td> <!-- Random number for L.O6 -->
+ <td>50</td> <!-- Random number for A.L7 -->
+ <td>42</td> <!-- Random number for L.O7 -->
+ <td>28</td> <!-- Random number for L.O5 -->
+ <td>40</td> <!-- Random number for A.L6 -->
+ <td>33</td> <!-- Random number for L.O6 -->
+</tr>
+
+      </tbody>
+  </table>
+  
+  
+ </div>
+ 
+
+
+     
+  </div>
+</div>
+
+   <!-- <div class="main-table-wrapper-two">
+     <div class="table-counts-container">
+       <div class="header p-3">
+         <h6 class="text-black">Count Per Flight</h6>
+
+       </div>
+
+     </div>
+  </div> -->
+ </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Bootstrap 5.3 tooltip initialization -->
+<script>
+ // Enable tooltips for all elements with the 'data-bs-toggle="tooltip"' attribute
+ document.addEventListener('DOMContentLoaded', function () {
+     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+         return new bootstrap.Tooltip(tooltipTriggerEl);
+     });
+ });
+</script>
+
+
 </body>
 </html>
