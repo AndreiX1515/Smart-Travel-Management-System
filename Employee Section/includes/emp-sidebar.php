@@ -10,14 +10,14 @@
 
  <ul class="nav flex-column">
      <li class="nav-item">
-         <a class="nav-link" href="#">
+         <a class="nav-link" href="../Employee Section/emp-dashboard.php">
              <div class="icon"><i class="fa-solid fa-house"></i></div> <!-- Home Icon -->
              <span class="label">Dashboard</span>
          </a> 
      </li>
      <li class="nav-item add-booking">
          <a class="nav-link" href="#">
-             <div class="icon"><i class="fa-solid fa-user"></i></div> <!-- User Icon -->
+             <div class="icon"><i class="fa-solid fa-user-plus"></i></i></div> <!-- User Icon -->
              <span class="label">Add Booking</span>
          </a>
      </li>

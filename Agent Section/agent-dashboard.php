@@ -503,7 +503,7 @@
                     else 
                     {
                       // If no records found
-                      echo "<tr><td colspan='6' style='text-align: center;'>No bookings found</td></tr>";
+                      echo "<tr><td colspan='12' style='text-align: center;'>No bookings as of the moment</td></tr>";
                     }
                   ?>
                 </tbody>
@@ -561,7 +561,7 @@
                   } 
                   else 
                   {
-                    echo "<tr><td colspan='6' style='text-align: center;'>No Request found</td></tr>";
+                    echo "<tr><td colspan='6' style='text-align: center;'>No Request found as of the moment</td></tr>";
                   }
                 ?>
               </tbody>
@@ -618,7 +618,7 @@
                            </tr>";
                    }
                  } else {  
-                   echo "<tr><td colspan='3' style='text-align: center;'>No payments found</td></tr>";
+                   echo "<tr><td colspan='12' style='text-align: center;'>No payments found as of the moment</td></tr>";
                  }
                ?>
              </tbody>
@@ -697,7 +697,7 @@
                   else 
                   {
                     // If no records found
-                    echo "<tr><td colspan='6' style='text-align: center;'>No Confirmed Transactions found</td></tr>";
+                    echo "<tr><td colspan='12' style='text-align: center;'>No Confirmed Transactions as of the moment</td></tr>";
                   }
                 ?>
               </tbody>

@@ -21,11 +21,11 @@
       include '../Agent Section/includes/navbar.php'; 
 
       // // Check if 'transaction_number' exists in the session
-      // if (isset($_SESSION['transaction_number'])) {
-      //     $transactionNumber = $_SESSION['transaction_number'];
-      // } else {
-      //     echo "No transaction number found in the session.<br>";
-      // }
+      if (isset($_SESSION['transaction_number'])) {
+          $transactionNumber = $_SESSION['transaction_number'];
+      } else {
+          echo "No transaction number found in the session.<br>";
+      }
 
       // Check if 'id' is passed in the URL
       if (isset($_GET['id'])) 
@@ -155,12 +155,14 @@
         </li>
 
         <?php
-          if (is_null($flightId)) 
-          {?>
-            <li class="nav-item" role="presentation">
-              <button class="nav-link" id="flight-tab" data-bs-toggle="tab" data-bs-target="#flight-tab-pane" type="button" role="tab" aria-controls="flight-tab-pane" aria-selected="false">Flight Details</button>
-            </li>
-          <?php }
+          //  if (is_null($flightId)) 
+          // {
+         ?>
+           <!-- <li class="nav-item" role="presentation">
+          <button class="nav-link" id="flight-tab" data-bs-toggle="tab" data-bs-target="#flight-tab-pane" type="button" role="tab" aria-controls="flight-tab-pane" aria-selected="false">Flight Details</button>
+           </li> -->
+          <?php 
+          // }
         ?>
 
         <!-- <li class="nav-item" role="presentation">
@@ -173,7 +175,9 @@
         <?php include 'agent-guestTable.php'; ?>
         <?php include 'agent-requestTable.php'; ?>
         <?php include 'agent-paymentTable.php'; ?>
-        <?php include 'agent-flightTable.php'; ?>
+        <?php 
+        // include 'agent-flightTable.php'; 
+        ?>
 
         <!-- <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
           <div class="tab-wrapper">
