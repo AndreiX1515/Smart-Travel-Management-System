@@ -147,7 +147,7 @@
                   <div class="col-md-3">
                     <div class="form-group mb-3">
                       <label class="mb-2" for="age">Age <span class="text-danger fw-bold">*</span> </label>
-                      <input type="number" name="age[]" class="form-control" placeholder="Age" readonly required>
+                      <input type="number" name="age[]" class="form-control" placeholder="Age" readonly>
                       <span id="ageError" class="text-danger"></span> <!-- Error message for Age -->
                     </div>
                   </div>
