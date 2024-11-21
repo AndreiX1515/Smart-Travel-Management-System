@@ -23,20 +23,18 @@
       <?php include '../Agent Section/includes/navbar.php' ?>
 
       <div class="main-container d-flex flex-row justify-content-lg-start">
-
-        <?php 
-          if(isset($_SESSION['status'])):
-          ?>
-            <div class="alert alert-warning alert-dismissible fade show" role="alert">
-              <strong>Hey!</strong> <?= $_SESSION['status']; ?>
-              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-          <?php 
-          unset($_SESSION['status']);
-          endif;
-        ?>
-
         <div class="container">
+         <?php 
+           if(isset($_SESSION['status'])):
+           ?>
+             <div class="alert alert-success alert-dismissible fade show" role="alert">
+               <strong></strong> <?= $_SESSION['status']; ?>
+               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+             </div>
+           <?php 
+           unset($_SESSION['status']);
+           endif;
+         ?>
           <form action="../Agent Section/functions/agent-addBooking-code.php" method="POST">
             <div class="card">
               <div class="card-header bg-secondary text-white text-light">

@@ -195,7 +195,6 @@ document.getElementById('togglePasswordBtn').addEventListener('click', function(
 
 
 <script>
-
    $(document).ready(function () {
     // Handle OTP Send Button
     $('#sendOtpBtn').click(function () {
@@ -366,20 +365,11 @@ $.ajax({
             .css('background-color', '#f8d7da')
             .css('color', 'red')
             .show();
-    }
-});
-
-
-
-
-
+     }
+   });
   });
 });
-
-
 </script>
-
-
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
@@ -392,12 +382,11 @@ $.ajax({
     const buttons = document.querySelectorAll('.page-button');
 
     buttons.forEach(button => {
-        button.addEventListener('click', (event) => {
+            button.addEventListener('click', (event) => {
             event.preventDefault();
             const newPageName = button.getAttribute('data-page-name');
             document.getElementById('page-title').textContent = newPageName;
 
-            // Save the title to local storage
             localStorage.setItem('pageTitle', newPageName);
 
             const newUrl = button.getAttribute('href');
@@ -407,7 +396,4 @@ $.ajax({
         });
     });
 });
-
-
-
 </script>
