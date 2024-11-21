@@ -129,7 +129,7 @@ if (isset($_POST['attachVisaRequirements'])) {
     }
 
     echo "Visa requirements have been successfully uploaded.";
-    header("Location: ../agent-showGuest.php");
+    header("Location: ../agent-showGuest.php?id=" . htmlspecialchars($transactNo));
     exit();
 }
 ?>
