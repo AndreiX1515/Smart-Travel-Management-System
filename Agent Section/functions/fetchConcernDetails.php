@@ -6,7 +6,7 @@
     $concernId = $_POST['concernId'];
 
     // Fetch distinct details and their prices based on the selected concernId
-    $sql = mysqli_query($conn, "SELECT concernDetailsId, details, price FROM concernDetails WHERE concernId = '$concernId' ORDER BY details ASC");
+    $sql = mysqli_query($conn, "SELECT concernDetailsId, details, price FROM concerndetails WHERE concernId = '$concernId' ORDER BY details ASC");
 
     $detailsOptions = '<option selected disabled>Select Detail</option>'; // Default option
 
