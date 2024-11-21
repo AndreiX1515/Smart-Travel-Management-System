@@ -66,6 +66,7 @@
                     <div class="form-group mb-6">
                       <label class="fs-6" for="totalPax">Total Pax <span class="text-danger fw-bold">*</span></label>
                       <label id="maxSeats"></label>
+                      <label id="availSeats"></label>
                       <input type="number" class="form-control mt-2 fs-6" id="totalPax" name="totalPax" min="1" placeholder="Enter Total Pax" required>
                       <span id="totalPaxError" class="text-danger"></span> <!-- Error message for Total Pax -->
                     </div>

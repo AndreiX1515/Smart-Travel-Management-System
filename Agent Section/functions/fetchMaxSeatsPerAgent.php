@@ -24,7 +24,7 @@
               WHERE agentflightseats.agentId = ? 
               AND agentflightseats.flightId = ?";
     $stmt = $conn->prepare($query);
-    $stmt->bind_param("ii", $agentId, $flightId); // Bind parameters to prevent SQL injection
+    $stmt->bind_param("si", $agentId, $flightId); // Bind parameters to prevent SQL injection
     $stmt->execute();
     $result = $stmt->get_result();
 
