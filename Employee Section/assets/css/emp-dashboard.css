@@ -14,170 +14,141 @@ body {
     box-sizing: border-box;
 }
 
+
 /* Sidebar Styling */
 .sidebar {
  position: fixed;
- top: 0; /* Adjusted to align with the top of the page */
+ top: 0;
  left: 0;
- height: 100vh; /* Ensure the sidebar takes up the full height */
- width: 80px; /* Sidebar width when collapsed */
+ height: 100vh;
+ width: 80px;
  background-color: #343A40;
- transition: width 0.3s ease;
+ transition: width 0.3s ease; /* Smoothly change sidebar width */
  overflow: hidden;
  display: flex;
  flex-direction: column;
- z-index: 1030; /* Ensure the sidebar is above the content */
+ z-index: 1030;
 }
 
-/* Expand the sidebar on hover */
 .sidebar:hover {
- width: 220px; /* Sidebar width when hovered (expanded) */
+ width: 250px;
 }
 
-/* Sidebar items (icons and labels) */
+/* Sidebar items */
 .sidebar .nav-item {
  width: 100%;
- padding-top: 0px; /* Space to move items lower */
-}
-
-.sidebar .icon {
- display: flex;
- justify-content: center;
- align-items: center;
- height: 50px;
- width: 50px; /* Icon container size */
- color: white;
- font-size: 20px; /* Smaller icon size */
- transition: 0.3s;
- padding: 10px; /* Reduced padding */
-}
-
-.sidebar .label {
- display: none;
- margin-left: 10px;
- color: white;
- font-size: 16px;
- transition: 0.3s;
-}
-
-/* Show labels when sidebar is hovered */
-.sidebar:hover .label {
- display: inline-block;
 }
 
 /* Sidebar links */
 .sidebar .nav-link {
  display: flex;
- align-items: center;
+ align-items: center; /* Keep icons and text vertically aligned */
+ justify-content: flex-start;
  color: white;
  text-decoration: none;
- padding: 8px 10px; /* Adjusted top and bottom padding */
- transition: background-color 0.3s ease;
+ padding: 5px 25px; /* Adjust top and bottom padding here */
+ white-space: nowrap;
+ overflow: hidden;
+ text-overflow: ellipsis;
+ transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for hover effects */
 }
 
-/* Change background color when hovering over links */
 .sidebar .nav-link:hover {
  background-color: #495057;
 }
 
-/* Ensure text and icon transition smoothly */
-.sidebar .nav-link .icon,
-.sidebar .nav-link .label {
- transition: all 0.3s ease;
+/* Sidebar icons */
+.sidebar .icon {
+ display: flex;
+ justify-content: center; /* Center icons horizontally */
+ align-items: center; /* Center icons vertically */
+ height: 50px;
+ width: 50px;
+ color: white;
+ font-size: 20px;
+ transition: transform 0.3s ease, color 0.3s ease; /* Smooth icon transition */
 }
 
+/* Sidebar labels */
+.sidebar .label {
+ opacity: 0; /* Initially hidden using opacity for smooth transitions */
+ margin-left: 10px;
+ font-size: 16px;
+ color: white;
+ transition: opacity 0.3s ease, margin-left 0.3s ease; /* Smoothly show/hide labels */
+}
+
+.sidebar:hover .label {
+ opacity: 1;
+ margin-left: 5px;
+}
 
 /* Sidebar logo styling */
-.sidebar .logo .icon {
+.sidebar-logo-section {
  display: flex;
  align-items: center;
- justify-content: flex-start; /* Align text and icon properly */
- padding: 10px 15px; /* Add padding similar to other nav items */
- color: #fff; /* White text color */
- transition: 0.3s;
- width: 100%; /* Ensure it fills the sidebar width */
- white-space: nowrap; /* Prevent text from wrapping */
-}
-
-/* Style for the logo image */
-.sidebar .logo .icon img.sidebar-logo {
- width: 40px;  /* Logo width */
- height: 40px; /* Logo height */
- object-fit: contain; /* Ensure logo doesn't stretch */
- margin-right: 10px;  /* Space between logo and text */
- transition: opacity 0.3s ease; /* Smooth opacity transition */
-}
-
-/* Initially hide the text */
-.sidebar .logo .icon span {
- display: none;
- font-size: 14px; /* Font size matching the other labels */
- font-weight: normal; /* Normal font weight */
- color: white; /* White text color */
- transition: opacity 0.3s ease; /* Smooth opacity transition */
-}
-
-/* When sidebar is hovered, show text */
-.sidebar:hover .logo .icon span {
- display: inline-block; /* Make text visible */
- opacity: 1; /* Ensure text is fully visible */
- margin-left: 0px; /* Space between logo and text */
- font-size: 14px; /* Font size matching other labels */
-}
-
-/* Hover effect for the logo (same behavior as other items) */
-.sidebar .logo .icon:hover {
- background-color: #495057; /* Match the hover background of other items */
- color: white; /* Keep text color white */
-}
-
-/* Hover effect for the logo text */
-.sidebar .logo .icon:hover span {
- opacity: 1; /* Ensure the text is visible when hovered */
-}
-
-/* Hover effect for the logo icon */
-.sidebar .logo .icon:hover img.sidebar-logo {
- opacity: 1; /* Ensure logo icon is visible */
-}
-
-
-
-.sidebar .nav-item .nav-link {
- display: flex;
- align-items: center;
- padding: 10px 15px;
- text-decoration: none;
- color: #fff;  /* Default text color */
-}
-
-/* Hover effect for other nav items */
-.sidebar .nav-item .nav-link:hover {
- background-color: #6c757d;  /* Change background color on hover */
- color: white;  /* Ensure text remains white on hover */
-}
-
-/* Optional: Apply smooth transition for hover effect */
-.sidebar .nav-item .nav-link {
- transition: all 0.3s ease;
-}
-
-/* Adjust for long text in nav items (ellipsis) */
-.sidebar .nav-item .nav-link {
+ justify-content: flex-start;
+ color: white;
+ width: 100%;
  white-space: nowrap;
- overflow: hidden;
- text-overflow: ellipsis;
+ margin-bottom: 15px;
+}
+
+.sidebar-logo-section .logo-link {
+ display: flex;
+ align-items: center;
+ justify-content: flex-start;
+ text-decoration: none;
+ color: white;
+ padding-left: 28px; /* Initial padding */
+ padding-top: 20px; /* Initial padding */
+ transition: transform 0.3s ease; /* Smooth transition for translateX */
+}
+
+.sidebar-logo-section .logo-link:hover {
+ background-color: #343A40;
+ cursor: context-menu;
+}
+
+/* Move the logo link to the right when the sidebar is hovered */
+.sidebar:hover .sidebar-logo-section .logo-link {
+ transform: translateX(8px); /* Move 8px to the right */
 }
 
 
+/* New logo content style */
+.sidebar-logo-section .logo-content {
+ display: flex;
+ align-items: center;
+ justify-content: flex-start;
+ gap: 10px;
+ width: 100%;
+}
 
+.sidebar-logo-section .sidebar-logo {
+ width: 35px;
+ height: 35px;
+ margin-left: -5px;
+ object-fit: contain;
+}
 
+/* Logo text behavior */
+.sidebar-logo-section .logo-content span {
+ opacity: 0; /* Initially hidden */
+ font-size: 14px;
+ font-weight: normal;
+ color: white;
+ transition: opacity 0.3s ease; /* Smoothly show text */
+}
 
-
+/* Show the logo text on hover */
+.sidebar:hover .sidebar-logo-section .logo-content span {
+ opacity: 1;
+}
 
 /* Push logout to the bottom */
 .sidebar .logout {
- margin-top: auto; /* Push logout to the bottom */
+ margin-top: auto;
 }
 
 /* Profile Section */
@@ -186,20 +157,24 @@ body {
  justify-content: space-between;
  align-items: center;
  padding: 15px;
- background-color: transparent;
- border-radius: 5px;
  margin: 10px;
+ border-radius: 5px;
 }
 
-/* Change profile section background when sidebar is hovered */
 .sidebar:hover .profile-section {
- background-color: #495057; /* Background color when sidebar is hovered */
+ background-color: #495057;
 }
 
 .profile-left {
  display: flex;
  flex-direction: column;
  color: white;
+ opacity: 0; /* Initially hidden */
+ transition: opacity 0.3s ease; /* Smoothly show profile details */
+}
+
+.sidebar:hover .profile-left {
+ opacity: 1;
 }
 
 .profile-left .name {
@@ -211,76 +186,69 @@ body {
  font-size: 14px;
 }
 
-/* Profile Icon */
 .profile-icon {
- font-size: 2rem;
+ font-size: 1.5rem;
  color: white;
- background-color: transparent; /* Remove background when sidebar is unhovered */
+ background-color: transparent;
+ transition: none;
 }
 
-/* Ensure profile icon is only visible when sidebar is hovered */
-.sidebar:not(:hover) .profile-icon {
- background-color: transparent; /* Remove background when sidebar is unhovered */
- color: white; /* Ensure the icon's color remains visible */
- font-size: 1.5rem; /* Smaller icon size when unhovered */
-}
-
-.sidebar:hover .profile-icon {
- background-color: #495057; /* Background appears when sidebar is hovered */
- font-size: 2rem; /* Larger icon size when sidebar is hovered */
-}
-
-
-/* 1. Dropdown Toggle Styling */
+/* Dropdown Styling */
 .sidebar .nav-item .dropdown-toggle {
  display: flex;
  align-items: center;
  justify-content: space-between;
- font-size: 14px; /* Adjust font size for consistency */
+ font-size: 14px;
  padding: 10px 15px;
  cursor: pointer;
 }
 
-/* 2. Adjust Padding for Dropdown Items in Sidebar */
-.sidebar .nav-item .nav-link {
- padding: 10px 15px;
- font-size: 14px; /* Ensure consistent font size */
-}
-
-/* 3. Style for the Collapsed Dropdown Menu */
 .sidebar .collapse {
- background-color: #495057; /* Dark background for dropdown */
- display: none; /* Hide dropdown by default */
+ background-color: #495057;
+ display: none;
 }
 
-/* 4. Show dropdown menu on hover */
 .sidebar .nav-item.dropdown:hover .collapse {
- display: block; /* Show dropdown when parent item is hovered */
+ display: block;
 }
 
-/* 5. Styling for Dropdown Links */
 .sidebar .collapse .nav-link {
  color: white;
- padding-left: 20px; /* Indentation for dropdown items */
- font-size: 14px; /* Consistent font size */
+ padding: 10px 35px 10px 20px;
 }
 
-/* 6. Hover Effect for Dropdown Links */
 .sidebar .collapse .nav-link:hover {
- background-color: #6c757d; /* Darker hover effect */
+ background-color: #6c757d;
 }
 
-/* 7. Handle Text Overflow for Sidebar Items */
-.sidebar .nav-item .nav-link {
- white-space: nowrap; /* Prevent text from wrapping */
- overflow: hidden; /* Hide overflowing text */
- text-overflow: ellipsis; /* Add ellipsis to overflowed text */
+/* Profile icon in navbar */
+.profile-dropdown .dropdown-toggle::after {
+ display: none; /* Remove default dropdown icon */
 }
 
-/* Optional: Add a custom transition for smoother dropdown show/hide effect */
-.sidebar .collapse {
- transition: all 0.3s ease-in-out; /* Smooth transition for dropdown */
+/* Adjust the profile icon size */
+.profile-icon {
+ font-size: 1.5rem;
+ color: rgb(255, 255, 255);
 }
+
+/* Ensure dropdown doesn't overflow */
+.dropdown-menu-end {
+ left: auto;
+ right: 0;
+}
+
+/* Adjust the dropdown to stay within screen bounds */
+.dropdown-menu {
+ max-width: 300px;
+ overflow: hidden;
+ text-overflow: ellipsis;
+}
+
+
+
+
+
 
 /* Hide profile details when sidebar is collapsed */
 .sidebar:not(:hover) .profile-left {
@@ -310,42 +278,7 @@ body {
 
 
 
-/* Profile icon in navbar */
-.profile-dropdown .dropdown-toggle::after {
- display: none; /* Remove default dropdown icon */
-}
 
-/* Adjust the profile icon size */
-.profile-icon {
- font-size: 1.5rem;
- color: rgb(255, 255, 255);
-}
-
-/* Ensure dropdown doesn't overflow */
-.dropdown-menu-end {
- left: auto;
- right: 0;
-}
-
-/* Adjust the dropdown to stay within screen bounds */
-.dropdown-menu {
- max-width: 300px;
- overflow: hidden;
- text-overflow: ellipsis;
-}
-
-/* Smart Travel label styling */
-.smart-travel {
- display: flex;
- justify-content: center;
- align-items: center;
- height: 60px;
- width: 100%;
- color: white;
- font-size: 20px;
- font-weight: bold;
- margin-top: 10px;
-}
 
 /* Main container for table */
 .main-container {

@@ -3,113 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sidebar with Navbar and Profile Dropdown</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet"> <!-- Font Awesome 6.6 -->
-    <link rel="stylesheet" href="../../Agent Section/assets/css/agent-dashboard-2.css">
+    <title>Employee - Dashboard</title>
+    <?php include '../Employee Section/includes/emp-head.php' ?>
+    <link rel="stylesheet" href="../Employee Section/assets/css/emp-dashboard.css?v=<?php echo time(); ?>">
 </head>
 <body>
 
-<!-- Sidebar -->
-<div class="sidebar">
-  <div class="logo">
-    <a class="nav-link" href="#">
-     <div class="icon">
-         <img src="../../assets/images/logo-tab.png" alt="Logo" class="sidebar-logo"> 
-         <span class="fw-bold">SMART TRAVEL</span>
-     </div> 
-    </a>
- </div>
 
- <ul class="nav flex-column">
-     <li class="nav-item">
-         <a class="nav-link" href="#">
-             <div class="icon"><i class="fa-solid fa-house"></i></div> <!-- Home Icon -->
-             <span class="label">Dashboard</span>
-         </a>
-     </li>
-     <li class="nav-item add-booking">
-         <a class="nav-link" href="#">
-             <div class="icon"><i class="fa-solid fa-user"></i></div> <!-- User Icon -->
-             <span class="label">Add Booking</span>
-         </a>
-     </li>
-     
-     <!-- Manage Bookings Dropdown -->
-     <li class="nav-item dropdown">
-         <a class="nav-link" href="#" id="manageBookingDropdown" role="button" data-bs-toggle="collapse" data-bs-target="#manageBookingMenu" aria-expanded="false" aria-controls="manageBookingMenu">
-             <div class="icon"><i class="fa-solid fa-cogs"></i></div>
-             <span class="label">Manage Bookings</span>
-         </a>
-         <div class="collapse" id="manageBookingMenu">
-             <ul class="nav flex-column ms-3">
-                 <li class="nav-item">
-                     <a class="nav-link" href="#">Transactions</a>
-                 </li>
-                 <li class="nav-item">
-                     <a class="nav-link" href="#">Edit Booking</a>
-                 </li>
-                 <li class="nav-item">
-                     <a class="nav-link" href="#">Cancel Booking</a>
-                 </li>
-             </ul>
-         </div>
-     </li>
- </ul>
-
- <!-- Logout button at the bottom, outside the <ul> -->
- <div class="logout">
-     <div class="profile-section">
-         <div class="profile-left">
-             <div class="name">John Doe</div>
-             <div class="position">Administrator</div>
-         </div>
-         <div class="profile-icon profile-icon-visible">
-             <i class="fa-solid fa-user-circle"></i>
-         </div>
-     </div>
-
-     <a class="nav-link" href="#">
-        <div class="icon"><i class="fas fa-eye"></i></div> <!-- View Password Icon -->
-        <span class="label">View Password</span>
-     </a>
-     
-     <a class="nav-link" href="#">
-        <div class="icon"><i class="fa-solid fa-right-from-bracket"></i></div> <!-- Logout Icon -->
-        <span class="label">Logout</span>
-     </a>
- </div>
-</div>
-
-
-
+<?php include '../Employee Section/includes/emp-sidebar.php' ?>
 
 <!-- Main Container -->
 <div class="main-container">
-   <nav class="navbar navbar-expand-lg navbar-custom">
-       <div class="container-fluid mx-3">
-           <a class="navbar-brand text-white fw-bold" href="#">Dashboard</a>
-
-           <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-               <span class="navbar-toggler-icon"></span>
-           </button>
-
-           <div class="collapse navbar-collapse" id="navbarNav">
-               <ul class="navbar-nav ms-auto">
-                   <li class="nav-item dropdown">
-                       <a class="nav-link dropdown-toggle profile-dropdown" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                           <i class="fa-solid fa-user-circle profile-icon"></i>
-                       </a>
-                       <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                           <li><a class="dropdown-item" href="#">My Profile</a></li>
-                           <li><a class="dropdown-item" href="#">Settings</a></li>
-                           <li><a class="dropdown-item" href="#">Logout</a></li>
-                       </ul>
-                   </li>
-               </ul>
-           </div> -->
-       </div>
-   </nav>
+   <?php include '../Employee Section/includes/emp-navbar.php' ?>
 
    <div class="main-content">
     <div class="counts-wrapper">
@@ -353,7 +258,7 @@
 
        </div>
 
-       <button class="btn btn-primary btn-sm">Reload</button>
+       <button class="btn btn-primary btn-sm"><i class="fa-solid fa-arrows-rotate"></i></button>
 
       </div>
     </div>
@@ -362,17 +267,17 @@
      <table class="info-table">
       <thead>
           <tr>
-              <th rowspan="2">Team OP</th>
-              <th rowspan="2">Origin</th>
-              <th colspan="2">Flight Date</th> <!-- Flight Date columns -->
-              <th rowspan="2">Flight Seat</th>
-              <th rowspan="2">Available Seat</th>
-              <th rowspan="2">Additional Seats</th>
-              <th rowspan="2">Air + Land</th>
-              <th rowspan="2">Land Only</th>
-              <th rowspan="2">Wholesale Price</th>
-              <th rowspan="2">Retail Price</th>
-              <th rowspan="2">Land Arrangment</th>
+              <th rowspan="2">TEAM OP</th>
+              <th rowspan="2">ORIGIN</th>
+              <th colspan="2">FLIGHT DATE</th> <!-- Flight Date columns -->
+              <th rowspan="2">FLIGHT SEAT</th>
+              <th rowspan="2" style="font-size: 10px;">AVAILABLE SEATS</th>
+              <th rowspan="2" style="font-size: 10px;">ADDITIONAL SEATS</th>
+              <th rowspan="2">AIR + LAND</th>
+              <th rowspan="2">LAND ONLY</th>
+              <th rowspan="2">WHOLESALE PRICE</th>
+              <th rowspan="2">RETAIL PRICE</th>
+              <th rowspan="2">LAND ARRANGEMENT</th>
 
               <th colspan="2" data-bs-toggle="tooltip" title="A1">A1</th> <!-- A1 columns -->
               <th colspan="2" data-bs-toggle="tooltip" title="A2">A2</th> <!-- A2 columns -->
@@ -636,18 +541,7 @@
  </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-
-<!-- Bootstrap 5.3 tooltip initialization -->
-<script>
- // Enable tooltips for all elements with the 'data-bs-toggle="tooltip"' attribute
- document.addEventListener('DOMContentLoaded', function () {
-     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-         return new bootstrap.Tooltip(tooltipTriggerEl);
-     });
- });
-</script>
+<?php include '../Employee Section/includes/emp-scripts.php' ?>
 
 
 </body>

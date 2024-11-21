@@ -1,0 +1,77 @@
+<div class="sidebar">
+  <div class="sidebar-logo-section">
+    <a class="nav-link logo-link" href="#">
+        <div class="logo-content">
+            <img src="../assets/images/logo-tab.png" alt="Logo" class="sidebar-logo">
+            <span class="fw-bold">SMART TRAVEL</span>
+        </div>
+    </a>
+</div>
+
+ <ul class="nav flex-column">
+     <li class="nav-item">
+         <a class="nav-link" href="#">
+             <div class="icon"><i class="fa-solid fa-house"></i></div> <!-- Home Icon -->
+             <span class="label">Dashboard</span>
+         </a> 
+     </li>
+     <li class="nav-item add-booking">
+         <a class="nav-link" href="#">
+             <div class="icon"><i class="fa-solid fa-user"></i></div> <!-- User Icon -->
+             <span class="label">Add Booking</span>
+         </a>
+     </li>
+     
+     <!-- Manage Bookings Dropdown -->
+     <li class="nav-item dropdown">
+         <a class="nav-link" href="#" id="manageBookingDropdown" role="button" data-bs-toggle="collapse" data-bs-target="#manageBookingMenu" aria-expanded="false" aria-controls="manageBookingMenu">
+             <div class="icon"><i class="fa-solid fa-cogs"></i></div>
+             <span class="label" >Operationals</span>
+         </a>
+         <div class="collapse" id="manageBookingMenu">
+             <ul class="nav flex-column ms-3">
+                 <li class="nav-item"> 
+                     <a class="nav-link" href="../Employee Section/emp-transaction.php">Transactions</a>
+                 </li>
+                 <li class="nav-item">
+                     <a class="nav-link" href="#">Itinerary</a>
+                 </li>
+                 <li class="nav-item">
+                     <a class="nav-link" href="#">SOA</a>
+                 </li>
+                 <li class="nav-item">
+                     <a class="nav-link" href="#">Ticket</a>
+                 </li>
+                 <li class="nav-item">
+                     <a class="nav-link" href="#">Vouchers</a>
+                 </li>
+             </ul>
+         </div>
+     </li>
+ </ul>
+
+ 
+
+ <!-- Logout button at the bottom, outside the <ul> -->
+ <div class="logout">
+     <div class="profile-section">
+         <div class="profile-left">
+             <div class="name">John Doe</div>
+             <div class="position">Administrator</div>
+         </div>
+         <div class="profile-icon profile-icon-visible">
+             <i class="fa-solid fa-user-circle"></i>
+         </div>
+     </div>
+
+     <a class="nav-link" href="#">
+        <div class="icon"><i class="fas fa-eye"></i></div> <!-- View Password Icon -->
+        <span class="label">View Password</span>
+     </a>
+     
+     <a class="nav-link" href="#">
+        <div class="icon"><i class="fa-solid fa-right-from-bracket"></i></div> <!-- Logout Icon -->
+        <span class="label">Logout</span>
+     </a>
+ </div>
+</div>
