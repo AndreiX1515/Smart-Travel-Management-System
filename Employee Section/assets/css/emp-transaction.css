@@ -1,35 +1,35 @@
 /* Table Container Styling */
 .table-container {
- width: 100%;
- height: 100vh;
- display: flex;
- flex-direction: column;
- padding: 20px; /* Adds some padding around the container */
+  width: 100%;
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  padding: 10px; /* Adds some padding around the container */
 }
 
 /* Table Header Styling */
 .table-container .table-header {
- width: 100%;
- margin-bottom: -12px;
- height: 9vh; /* Adjust height as needed */
- border-radius: 10px 10px 0 0; /* Top-left and top-right corners rounded */
- box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Soft shadow effect */
- background-color: #83838385; /* White background */
- display: flex;
- justify-content: space-between; /* Space between header components */
- align-items: center;
- padding: 5px 15px 5px 15px;
+  width: 100%;
+  margin-bottom: -7px;
+  height: 9vh; /* Adjust height as needed */
+  border-radius: 10px 10px 0 0; /* Top-left and top-right corners rounded */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Soft shadow effect */
+  background-color: #f8f9fa; /* White background */
+  display: flex;
+  justify-content: space-between; /* Space between header components */
+  align-items: center;
+  padding: 5px 15px 5px 15px;
 }
 
 /* Table Wrapper Styling */
 .table-wrapper {
- width: 100%;
- height: calc(77vh - 10px); /* Adjusted to fit the container */
- border-radius: 10px; /* Rounded corners */
- box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Soft shadow effect */
- background-color: #ffffff; /* White background */
- overflow-y: auto; /* Vertical scroll for content */
- overflow-x: auto; /* Horizontal scroll for responsiveness */
+  width: 100%;
+  height: calc(80vh - 10px); /* Adjusted to fit the container */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Soft shadow effect */
+  background-color: #ffffff; /* White background */
+  overflow-y: auto; /* Vertical scroll for content */
+  overflow-x: auto; /* Horizontal scroll for responsiveness */
 }
 
 /* Table Styling */
@@ -38,62 +38,84 @@
  border-collapse: collapse; /* Remove gaps between cells */
  font-family: Arial, sans-serif;
  font-size: 14px;
+ border-top: 2px solid #dee2e6; /* Add top border */
 }
+
 
 /* Table Header (Thead) Styling */
 .table-wrapper thead th {
- background-color: #f8f9fa; /* Light gray for the header */
- color: #333; /* Text color */
- font-weight: bold;
- text-align: left;
- padding: 15px 15px;
- border-bottom: 2px solid #dee2e6;
+  background-color: #f8f9fa; /* Light gray for the header */
+  color: #333; /* Text color */
+  font-weight: bold;
+  text-align: left;
+  padding: 15px 15px;
+  border-bottom: 2px solid #dee2e6;
 }
 
 /* Table Row Styling */
 .table-wrapper tbody tr {
- border-bottom: 1px solid #dee2e6;
+  border-bottom: 1px solid #dee2e6;
 }
 
 .table-wrapper tbody tr:last-child {
- border-bottom: none; /* Remove the bottom border for the last row */
+  border-bottom: none; /* Remove the bottom border for the last row */
 }
 
 .table-wrapper td {
- padding: 12px 15px;
- color: #333;
- vertical-align: middle;
+  padding: 12px 15px;
+  color: #333;
+  vertical-align: middle;
 }
+
+/* Table Row Hover Effect */
+.table-wrapper tbody tr:hover {
+ background-color: #f5f5f5; /* Light gray background on row hover */
+ cursor: pointer; /* Pointer cursor for interactivity */
+ transition: background-color 0.3s ease; /* Smooth hover transition */
+}
+
+
 
 /* Status Badge Styling */
 .status {
- display: inline-block;
- padding: 5px 10px;
- font-size: 12px;
- border-radius: 20px;
- font-weight: bold;
- text-align: center;
+  display: inline-block;
+  padding: 5px 10px;
+  font-size: 12px;
+  border-radius: 20px;
+  font-weight: bold;
+  text-align: center;
 }
 
 .status-confirmed {
- background-color: #28a745; /* Green for Confirmed */
- color: #ffffff;
+  background-color: #28a745; /* Green for Confirmed */
+  color: #ffffff;
 }
 
 .status-pending {
- background-color: #ffc107; /* Yellow for Pending */
- color: #ffffff;
+  background-color: #ffc107; /* Yellow for Pending */
+  color: #ffffff;
 }
 
 .status-cancelled {
- background-color: #dc3545; /* Red for Cancelled */
- color: #ffffff;
+  background-color: #dc3545; /* Red for Cancelled */
+  color: #ffffff;
 }
 
 /* Action Menu (Three Dots) */
 .action-menu {
- cursor: pointer;
- font-size: 18px;
- color: #333;
- text-align: center;
+  cursor: pointer;
+  font-size: 18px;
+  color: #333;
+  text-align: center;
 }
+
+
+
+
+
+
+
+
+
+
+

@@ -26,3 +26,40 @@
         });
     });
 </script>
+
+<!-- <script>
+    document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll("tr[data-url]").forEach(function(row) {
+        row.addEventListener("click", function() {
+            window.location.href = row.getAttribute("data-url");
+        });
+    });
+});
+
+    // Add event listener to each row for redirection
+    const rows = document.querySelectorAll("tr[data-url]");
+    
+    rows.forEach(row => {
+        row.addEventListener("click", function() {
+            const url = row.getAttribute("data-url");
+            window.location.href = url; // Redirect to the specified URL
+        });
+    });
+</script> -->
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const rows = document.querySelectorAll(".table-wrapper tbody tr");
+
+  rows.forEach((row) => {
+    row.addEventListener("click", () => {
+      const targetUrl = row.getAttribute("data-href");
+      if (targetUrl) {
+        window.location.href = targetUrl; // Redirects to the target URL
+      }
+    });
+  });
+});
+
+
+</script>

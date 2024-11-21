@@ -38,7 +38,6 @@
          </ul>
       </div> -->
 
-
   <div class="table-header">
     <div class="header-left">
       <input
@@ -47,11 +46,11 @@
         style="padding: 8px; border-radius: 5px; border: 1px solid #ccc;"
       />
     </div>
-    <div class="header-right">
+    <!-- <div class="header-right">
       <button style="padding: 8px 12px; border-radius: 5px; border: none; background-color: #116530; color: #ffffff;">
         Add New
       </button>
-    </div>
+    </div> -->
   </div>
 
   
@@ -71,7 +70,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
+
+        <tr data-href="emp-transactionInfo.php?id=A002-000015">
           <td>A002-000015</td>
           <td>Martinez, David D.</td>
           <td>davidmartinez@email.com</td>
@@ -81,9 +81,10 @@
           <td>December 21, 2024</td>
           <td>2</td>
           <td><span class="status status-confirmed">Confirmed</span></td>
- 
         </tr>
-        <tr>
+
+
+        <tr data-href="emp-transactionInfo.php?id=A002-000015">
           <td>A002-000014</td>
           <td>Davis, Emily C. III</td>
           <td>emilydavis@email.com</td>
@@ -109,13 +110,6 @@
 
    </div>
 </div>
-
-
-
-
-
-
-
 
 
 <?php include '../Employee Section/includes/emp-scripts.php' ?>
