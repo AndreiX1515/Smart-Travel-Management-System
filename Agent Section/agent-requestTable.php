@@ -130,24 +130,62 @@
     const requestModal = document.getElementById('requestModal');
     if (requestModal) 
     {
-      requestModal.addEventListener('show.bs.modal', function(event) 
+      requestModal.addEventListener('show.bs.modal', function (event) 
       {
         const button = event.relatedTarget;
         if (button) 
         {
           const transactionId = button.getAttribute('data-transaction-id');
+
+          // Reset the form and hide additional selects
           const form = document.getElementById('requestForm');
           if (form) form.reset();
           const additionalSelectContainer = document.getElementById('additionalSelectContainer');
           if (additionalSelectContainer) additionalSelectContainer.style.display = 'none';
+
+          // Set transaction number in the form and modal display
           const transactionInput = document.querySelector('#requestForm input[name="transaction_number"]');
           if (transactionInput) transactionInput.value = transactionId;
           const transactionIdDisplay = document.getElementById('requestTransactionId');
           if (transactionIdDisplay) transactionIdDisplay.textContent = transactionId;
-          if (typeof fetchPaxForRequestModal === 'function') fetchPaxForRequestModal(transactionId);
+
+          // Fetch pax for the given transaction ID
+          $.ajax(
+          {
+            url: '../Agent Section/functions/fetchPaxPerBooking.php', // Replace with the correct server-side script URL
+            type: 'POST',
+            data: { transactNo: transactionId },
+            success: function (response) {
+              try {
+                const data = JSON.parse(response);
+                if (data && data.pax) 
+                {
+                  const maxPax = parseInt(data.pax, 10);
+                  const paxRequestInput = document.getElementById('paxRequest');
+                  if (paxRequestInput) {
+                    paxRequestInput.setAttribute('max', maxPax); // Set max attribute
+                    paxRequestInput.setAttribute('placeholder', `Enter pax (max ${maxPax})`); // Update placeholder
+                  }
+                } else {
+                  console.error('No pax data received.');
+                }
+              } catch (error) {
+                console.error('Error parsing pax response:', error);
+              }
+            },
+            error: function (xhr, status, error) {
+              console.error('Error fetching pax data:', error);
+            }
+          });
+
+          // Optional: Fetch other related data (if needed)
+          if (typeof fetchPaxForRequestModal === 'function') {
+            fetchPaxForRequestModal(transactionId);
+          }
         }
       });
     }
+
 
     $(document).ready(function() 
     {
