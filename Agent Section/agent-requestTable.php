@@ -132,6 +132,7 @@
     {
       requestModal.addEventListener('show.bs.modal', function (event) 
       {
+        requestModal.setAttribute('aria-hidden', 'false'); // Remove hidden status
         const button = event.relatedTarget;
         if (button) 
         {
@@ -183,6 +184,11 @@
             fetchPaxForRequestModal(transactionId);
           }
         }
+      });
+
+      requestModal.addEventListener('hide.bs.modal', function () 
+      {
+        requestModal.setAttribute('aria-hidden', 'true'); // Reapply hidden status
       });
     }
 
