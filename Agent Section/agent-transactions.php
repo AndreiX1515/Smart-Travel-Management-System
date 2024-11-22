@@ -116,7 +116,7 @@
                       CASE WHEN b.suffix = 'N/A' THEN '' ELSE b.suffix END
                   ) AS `CONTACT NAME`,
                   b.email AS `CONTACT EMAIL`,
-                  CONCAT(b.countryCode, b.contactNo) AS `CONTACT PHONE`,
+                  CONCAT(b.countryCode, ' ', b.contactNo) AS `CONTACT PHONE`,
                   b.status AS `STATUS`
               FROM 
                   booking b
