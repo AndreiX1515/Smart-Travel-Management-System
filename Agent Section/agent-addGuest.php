@@ -65,9 +65,9 @@
 
 
     <div class="content-wrapper bg-transparent px-5 pt-2">
-       <div class="d-flex flex-row gap-5">
-         <h6 class="fw-bold">Transaction No: <span class="fw-normal"><?php echo $transactionNumber ?></span></h6>
-         <h6 class="fw-bold">Total Pax: <span class="fw-normal"><?php echo $_SESSION['pax']; ?></span></h6>
+      <div class="d-flex flex-row gap-5">
+        <h6 class="fw-bold">Transaction No: <span class="fw-normal"><?php echo $transactionNumber ?></span></h6>
+        <h6 class="fw-bold">Total Pax: <span class="fw-normal"><?php echo $_SESSION['pax']; ?></span></h6>
       </div>
      
       <!-- Dynamically generate Guest Information Cards based on pax -->
@@ -1058,7 +1058,7 @@
         <?php endfor; ?>
 
         <div class="card-footer d-flex justify-content-end mb-5 my-3">
-          <button type="submit" class="btn btn-primary" name="addGuestInformation">Add Guest Information</button>
+          <button type="submit" class="btn btn-primary" name="addGuestInformation">Save Guest Information</button>
         </div>
       </form>   
     </div>
