@@ -97,7 +97,7 @@
             {
               while ($row = $res1->fetch_assoc()) 
               {
-                echo "<tr>
+                echo "<tr data-url='agent-updateGuestInfo.php?id=" . $row['guestId'] . "'>
                         <td>{$row['guestId']}</td>
                         <td>{$row['fName']}</td>
                         <td>{$row['lName']}</td>
@@ -226,6 +226,29 @@
   </div>
 </div>
 
-<script>
+<?php require "../Agent Section/includes/scripts.php"; ?>
 
-</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() 
+  {
+    document.querySelectorAll("tr[data-url]").forEach(function(row) 
+    {
+      row.addEventListener("click", function() 
+      {
+        window.location.href = row.getAttribute("data-url");
+      });
+    });
+  });
+  // Add event listener to each row for redirection
+  const rows = document.querySelectorAll("tr[data-url]");
+  
+  rows.forEach(row => 
+  {
+    row.addEventListener("click", function() 
+    {
+      const url = row.getAttribute("data-url");
+      window.location.href = url; // Redirect to the specified URL
+    });
+  });
+  </script>

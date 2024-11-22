@@ -20,7 +20,7 @@
 
     // Prepare the SQL statement
     $stmt = $conn->prepare("INSERT INTO request (transactNo, accountId, concernId, concernDetailsId, pax, details, requestCost, requestDate, requestStatus) 
-                    VALUES(?, ?, ?, ?, ?, ?, ?, Now(), 'Pending')");
+                    VALUES(?, ?, ?, ?, ?, ?, ?, Now(), 'Submitted')");
     $stmt->bind_param("siiiisd", $transactNo, $accountId, $concern, $requestDetails, $pax, $details, $amount);
 
     // Execute the statement
