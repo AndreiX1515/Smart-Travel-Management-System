@@ -533,7 +533,7 @@
                                 r.transactNo AS `T.N`,
                                 c.concernTitle AS `Request`,
                                 DATE_FORMAT(r.requestDate, '%M-%d-%Y %h:%i %p') AS `Date`,
-                                r.requestStatus as status, b.agentId
+                                r.requestStatus, b.agentId
                             FROM 
                                 request r
                             JOIN 
@@ -541,7 +541,7 @@
                             JOIN 
                                 concern c ON r.concernId = c.concernId
                             WHERE 
-                                b.agentId = '$agentId' and status = 'Pending'
+                                b.agentId = '$agentId' and r.requestStatus = 'Submitted'
                             ORDER BY 
                                 r.requestDate DESC LIMIT 5";  // Order by request date
       
@@ -555,7 +555,7 @@
                               <td>{$row['T.N']}</td>
                               <td>{$row['Request']}</td>
                               <td>{$row['Date']}</td>
-                              <td>{$row['status']}</td>
+                              <td>{$row['requestStatus']}</td>
                             </tr>";
                     }
                   } 
@@ -594,13 +594,13 @@
                             CONCAT(FORMAT(p.amount, 2)) AS `Amount`,  -- Format the amount as a currency with two decimal places
                             DATE_FORMAT(p.paymentDate, '%M %d, %Y %h:%i %p') AS `Date`,  -- Format the date as specified
                             p.paymentType AS `Payment Type`,
-                            p.paymentStatus AS `Status`, b.agentId
+                            p.paymentStatus, b.agentId
                           FROM 
                             payment p
                           JOIN 
                             booking b ON p.transactNo = b.transactNo
                           WHERE 
-                            b.agentId = '$agentId' and Status = 'Pending'  -- Adjust conditions as needed
+                            b.agentId = '$agentId' and p.paymentStatus = 'Submitted'  -- Adjust conditions as needed
                           ORDER BY 
                             p.paymentDate DESC LIMIT 5";  // Order by payment date
      
@@ -614,7 +614,7 @@
                              <td>{$row['Payment Type']}</td>
                              <td>₱ {$row['Amount']}</td>
                              <td> {$row['Date']} </td>
-                             <td>{$row['Status']}</td>
+                             <td>{$row['paymentStatus']}</td>
                            </tr>";
                    }
                  } else {  
