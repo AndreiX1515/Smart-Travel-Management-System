@@ -2,7 +2,9 @@
   <div class="sidebar-logo-section">
     <a class="nav-link logo-link" href="#">
         <div class="logo-content">
-            <img src="../assets/images/logo-tab.png" alt="Logo" class="sidebar-logo">
+          <div class="logo-backdrop">
+             <img src="../assets/images/logo-tab.png" alt="Logo" class="sidebar-logo">
+          </div>
             <span class="fw-bold">SMART TRAVEL</span>
         </div>
     </a>
@@ -15,12 +17,14 @@
             <span class="label">Dashboard</span>
         </a> 
     </li>
+    
     <li class="nav-item add-booking">
         <a class="nav-link page-button" href="#" data-page-name="Add Booking">
             <div class="icon"><i class="fa-solid fa-user-plus"></i></div> <!-- User Icon -->
             <span class="label">Add Booking</span>
         </a>
     </li>
+
     <!-- Manage Bookings Dropdown -->
     <li class="nav-item dropdown">
         <a class="nav-link page-button" href="#" id="manageBookingDropdown" role="button" data-bs-toggle="collapse" data-bs-target="#manageBookingMenu" aria-expanded="false" aria-controls="manageBookingMenu" data-page-name="Operationals">

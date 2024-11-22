@@ -185,12 +185,10 @@
 
   <!-- CARD 4 -->
   <div class="card">
-   <div class="header p-3">
-    <h6 class="text-black">Daily Currency Conversion</h6>
+   <div class="header p-3 d-flex justify-content-between align-items-center">
+    <h6 class="text-secondary">Daily Currency Conversion</h6>
+    <a href="" style="font-size: 12px; text-decoration: none;">View History</a>
    </div>
-
-
-
 
   </div>
 </div>
@@ -198,7 +196,7 @@
 <div class="header-wrapper">
    <div class="price-table-wrapper">
       <div class="header p-3">
-           <h6 class="text-black">Price</h6>
+           <h6 class="text-secondary">Price</h6>
      </div>
 
      <!-- <div class="price-table-container">
@@ -235,7 +233,7 @@
 
   <div class="pending-wrapper">
     <div class="header p-3">
-     <h6 class="text-black">Pending Request</h6>
+     <h6 class="text-secondary">Pending Request</h6>
     </div>
 
 
@@ -243,7 +241,7 @@
 
   <div class="Payment-wrapper">
     <div class="header p-3">
-     <h6 class="text-black">Payment</h6>
+     <h6 class="text-secondary">Payment</h6>
     </div>
   </div>
 </div>
@@ -252,7 +250,7 @@
 <div class="main-table-wrapper-one">
   <div class="table-info-container">
     <div class="header p-3 d-flex flex-row justify-content-between align-items-center">
-      <h6 class="text-black">Flights</h6>
+      <h6 class="text-secondary">Flights</h6>
 
       <div class="end-part">
        <div class="legend-guides">

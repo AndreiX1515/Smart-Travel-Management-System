@@ -1,6 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
+
+
 * {
  font-family: 'Inter', 'Helvetica Neue', 'Segoe UI', Arial, sans-serif;
 }
@@ -52,8 +54,23 @@ body {
  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for hover effects */
 }
 
+/* Change background color on hover */
 .sidebar .nav-link:hover {
  background-color: #495057;
+}
+
+/* Add red background specifically for the "Add Booking" link */
+.nav-item.add-booking .nav-link {
+ background-color: rgba(255, 0, 0, 0.781); /* Red background fill */
+ color: white; /* White text and icon color */
+ border-radius: 5px; /* Optional: round corners */
+ transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for hover effects */
+ margin: 5px; /* Add margin around the "Add Booking" button */
+}
+
+/* Change the background color on hover for "Add Booking" link */
+.nav-item.add-booking .nav-link:hover {
+ background-color: rgba(139, 0, 0, 0.651); /* Darker red on hover */
 }
 
 /* Sidebar icons */
@@ -67,6 +84,20 @@ body {
  font-size: 20px;
  transition: transform 0.3s ease, color 0.3s ease; /* Smooth icon transition */
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* Sidebar labels */
 .sidebar .label {
@@ -271,5 +302,5 @@ body {
 }
 
 .main-content  {
-   padding: 10px;
+   padding: 20px;
 }
