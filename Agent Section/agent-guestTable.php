@@ -79,10 +79,10 @@
         </thead>
         <tbody>
           <?php
-            $sql1= "SELECT *, DATE_FORMAT(birthdate, '%M %d, %Y') AS birthdate, CONCAT(countryCode, contactNo) AS contactNo,
+            $sql1= "SELECT *, DATE_FORMAT(birthdate, '%M %d, %Y') AS birthdate, CONCAT(countryCode, ' ', contactNo) AS contactNo,
                     CASE 
                       WHEN countryCode2 IS NULL OR contactNo2 IS NULL THEN 'N/A'
-                      ELSE CONCAT(countryCode2, contactNo2)
+                      ELSE CONCAT(countryCode2, ' ', contactNo2)
                     END AS contactNo2, CONCAT(addressLine1, ', ', 
                     CASE 
                       WHEN addressLine2 IS NOT NULL AND addressLine2 != '' THEN CONCAT(addressLine2, ', ') 
