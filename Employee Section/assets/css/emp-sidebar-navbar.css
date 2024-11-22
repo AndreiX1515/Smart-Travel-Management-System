@@ -1,20 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
-
-
 * {
  font-family: 'Inter', 'Helvetica Neue', 'Segoe UI', Arial, sans-serif;
 }
 
 
 body {
-    background-color: #F4F4F4;
+    background-color: rgba(255, 255, 255, 0.137);
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-
 
 /* Sidebar Styling */
 .sidebar {
@@ -22,7 +19,7 @@ body {
  top: 0;
  left: 0;
  height: 100vh;
- width: 80px;
+ width: 70px;
  background-color: #343A40;
  transition: width 0.3s ease; /* Smoothly change sidebar width */
  overflow: hidden;
@@ -32,7 +29,7 @@ body {
 }
 
 .sidebar:hover {
- width: 250px;
+ width: 220px;
 }
 
 /* Sidebar items */
@@ -47,7 +44,7 @@ body {
  justify-content: flex-start;
  color: white;
  text-decoration: none;
- padding: 5px 25px; /* Adjust top and bottom padding here */
+ padding: 5px 20px; /* Adjust top and bottom padding here */
  white-space: nowrap;
  overflow: hidden;
  text-overflow: ellipsis;
@@ -84,20 +81,6 @@ body {
  font-size: 20px;
  transition: transform 0.3s ease, color 0.3s ease; /* Smooth icon transition */
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /* Sidebar labels */
 .sidebar .label {
@@ -142,7 +125,7 @@ body {
 
 /* Move the logo link to the right when the sidebar is hovered */
 .sidebar:hover .sidebar-logo-section .logo-link {
- transform: translateX(8px); /* Move 8px to the right */
+ transform: translateX(12px); /* Move 8px to the right */
 }
 
 
@@ -158,7 +141,7 @@ body {
 .sidebar-logo-section .sidebar-logo {
  width: 35px;
  height: 35px;
- margin-left: -5px;
+ margin-left: -10px;
  object-fit: contain;
 }
 
@@ -221,6 +204,7 @@ body {
  color: white;
  background-color: transparent;
  transition: none;
+ margin-left: -5px;
 }
 
 /* Dropdown Styling */
@@ -238,18 +222,31 @@ body {
  display: none;
 }
 
+
 .sidebar .nav-item.dropdown:hover .collapse {
  display: block;
 }
 
 .sidebar .collapse .nav-link {
  color: white;
- padding: 10px 35px 10px 20px;
+ padding: 10px 5px 10px 35px;
+ position: relative; /* Needed for pseudo-element positioning */
 }
 
 .sidebar .collapse .nav-link:hover {
  background-color: #6c757d;
 }
+
+.sidebar .collapse .nav-link:hover::before {
+ content: '';
+ position: absolute;
+ top: 0;
+ left: 0;
+ height: 100%;
+ width: 5px; /* Width of the red accent */
+ background-color: red; /* Red accent */
+}
+
 
 /* Profile icon in navbar */
 .profile-dropdown .dropdown-toggle::after {
@@ -275,32 +272,38 @@ body {
  text-overflow: ellipsis;
 }
 
-
 /* Hide profile details when sidebar is collapsed */
 .sidebar:not(:hover) .profile-left {
  display: none;
 }
 
-/* Navbar styling inside main content */
 .navbar-custom {
- position: sticky; /* Makes the navbar sticky */
- top: 0; /* Sticks to the top of the container or viewport */
- z-index: 1020; /* Ensures it stays above other elements */
- background-color: #343A40; /* Dark background for navbar */
+ position: sticky; 
+ top: 0; 
+ z-index: 1020; 
+ background-color: transparent; 
  height: 6vh;
- margin-left: 0; /* Adjusted to be inside the main content */
- color: rgb(255, 255, 255);
- transition: margin-left 0.3s ease; /* Smooth transition for margin-left */
+ margin-left: 0;
+ margin-bottom: 10px; 
+ color: rgba(177, 177, 177, 0.774);
+ transition: margin-left 0.3s ease; 
+ border-bottom: .5px solid #ccc; 
+}
+
+.navbar-custom .navbar-brand {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 10px 0px;
 }
 
 /* Main container for table */
 .main-container {
  margin-left: 80px; /* Ensures the table is positioned next to the sidebar */
- padding-top: 0px; /* Adjust for the fixed navbar */
  height: 100vh;
  position: relative; /* Ensure navbar is inside this container */
+ background-color: rgba(245, 246, 248, 0.137);
 }
 
 .main-content  {
-   padding: 20px;
+   padding: 5px 20px 20px 20px;
 }

@@ -4,19 +4,24 @@
   </div>
 
   <div class="dashboard-title">Menu</div>
-   <a href="../Agent Section/agent-dashboard.php" class="page-button" data-page-name="Dashboard"> <i class="fas fa-home">
+   <a href="../Agent Section/agent-dashboard.php" class="page-button my-0" data-page-name="Dashboard"> <i class="fas fa-home">
    </i> Home </a>
-   <a href="../Agent Section/agent-addbooking.php" class="page-button add-booking" data-page-name="Add Booking"> <i class="fa-solid fa-user-plus">
+   
+   <a href="../Agent Section/agent-addbooking.php" class="page-button add-booking my-0" data-page-name="Add Booking"> <i class="fa-solid fa-user-plus">
    </i> Add Booking </a>
+  
+   <a href="../Agent Section/agent-transactions.php" class="page-button my-0" data-page-name="Transactions">
+      <i class="fas fa-file-invoice"></i> Transactions
+   </a>
 
    <div class="section-title" onclick="toggleSubMenu('operational-submenu')">
-      Operational <span class="chevron-icon fas fa-chevron-down"></span>
+      Reports <span class="chevron-icon fas fa-chevron-down"></span>
   </div>
 
   <div class="submenu" id="operational-submenu">
-    <a href="../Agent Section/agent-transactions.php" class="page-button" data-page-name="Transactions">
+    <!-- <a href="../Agent Section/agent-transactions.php" class="page-button" data-page-name="Transactions">
       <i class="fas fa-file-invoice"></i> Transactions
-    </a>
+    </a> -->
 
     <a href="../Agent Section/agent-itenerary.php" class="page-button" data-page-name="Itinerary">
       <i class="fas fa-map"></i> Itinerary
@@ -35,9 +40,10 @@
     </a>
 </div>
 
-  <div class="section-title" onclick="toggleSubMenu('management-submenu')">
+  <!-- <div class="section-title" onclick="toggleSubMenu('management-submenu')">
     Management <span class="chevron-icon fas fa-chevron-down"></span>
   </div>
+
     <div class="submenu" id="management-submenu">
       <a href="../Agent Section/agent-client-accounts.php">
         <i class="fas fa-user-friends"></i> Client Accounts
@@ -51,7 +57,8 @@
       <a href="../Agent Section/agent-agent-login-history.php">
         <i class="fas fa-history"></i> Agent Login History
       </a>
-    </div>
+    </div> -->
+
 </div>
 
 <script>

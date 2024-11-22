@@ -15,14 +15,14 @@
 <?php include '../Employee Section/includes/emp-sidebar.php' ?>
 
 <!-- Main Container -->
-<div class="main-container">
+<div class="main-container bg-body">
    <?php include '../Employee Section/includes/emp-navbar.php' ?>
 
    <div class="main-content">
     <div class="counts-wrapper">
 
       <!-- CARD 1 -->
-      <div class="card">
+      <div class="card border-0">
         <div class="header">
             <h6 class="text-secondary fw-600">Current Transaction</h6>
         </div>
@@ -76,7 +76,7 @@
     </div>
   
     <!-- CARD 2 -->
-    <div class="card">
+    <div class="card border-0">
      <div class="header">
          <h6 class="text-secondary fw-600">Transaction History</h6>
      </div>
@@ -130,7 +130,7 @@
    </div>
 
    <!-- CARD 3 -->
-   <div class="card">
+   <div class="card border-0">
     <div class="header">
         <h6 class="text-secondary fw-600">On Due</h6>
     </div>
@@ -184,11 +184,31 @@
  </div>
 
   <!-- CARD 4 -->
-  <div class="card">
-   <div class="header p-3 d-flex justify-content-between align-items-center">
+  <div class="card border-0">
+   <div class="header d-flex justify-content-between align-items-center mb-2">
     <h6 class="text-secondary">Daily Currency Conversion</h6>
     <a href="" style="font-size: 12px; text-decoration: none;">View History</a>
    </div>
+
+   <div class="card-body-currency">
+    <div class="currency-cards">
+        <div class="currency-card">USD</div>
+
+        <div class="icon-wrapper">
+            <i class="fas fa-exchange-alt"></i>
+        </div>
+
+        <div class="currency-card">PHP</div>
+        <div class="currency-card">KOR</div>
+        <div class="currency-card">EUR</div>
+    </div>
+</div>
+
+   
+   
+
+
+
 
   </div>
 </div>
@@ -233,7 +253,7 @@
 
   <div class="pending-wrapper">
     <div class="header p-3">
-     <h6 class="text-secondary">Pending Request</h6>
+     <h6 class="text-secondary">Requests</h6>
     </div>
 
 
@@ -241,8 +261,15 @@
 
   <div class="Payment-wrapper">
     <div class="header p-3">
-     <h6 class="text-secondary">Payment</h6>
+      <h6 class="text-secondary">Payment</h6>
     </div>
+
+    <div class="table-container">
+
+
+
+    </div>
+    
   </div>
 </div>
 

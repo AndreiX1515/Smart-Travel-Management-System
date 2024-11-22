@@ -11,7 +11,7 @@
  flex-direction: row;
  gap: 5px; /* Gap between cards */
  width: 100%;
- height: 18vh;
+ height: 15vh;
  margin-bottom: 10px;
 }
 
@@ -19,18 +19,14 @@
  flex: 1; 
  background-color: #ffffff; 
  display: flex;
- border: 1px solid #ced4da; 
- border-radius: 10px; 
- box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
  font-size: 1rem;
  font-weight: bold;
  color: #333;
- transition: transform 0.3s ease, box-shadow 0.3s ease;
+
 }
 
-
 .card .header {
-  padding: 20px 20px 5px 20px;
+  padding: 10px 20px 5px 10px;
   color: #4c4f52;
 }
 
@@ -42,23 +38,28 @@
 }
 
 .card-content .col-md-5 {
+ margin-top: 5px;
  display: flex;
  flex-direction: row;
- align-items: center; 
- justify-content: flex-start; 
- flex: 1; 
- padding: 10px 15px; 
- transition: transform 0.2s ease, box-shadow 0.2s ease; 
+ align-items: center;
+ justify-content: flex-start;
+ flex: 1;
+ padding: 5px 10px; /* Reduced padding */
+ transition: transform 0.2s ease, box-shadow 0.2s ease;
+ box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Added box shadow */
+ border-radius: 8px; /* Optional: Slight rounding for a softer look */
+ background-color: #fff; /* Optional: Ensure the shadow is visible */
 }
 
+
 .card-icon {
- font-size: 18px;
- margin-right: 15px;
+ font-size: 14px; /* Smaller icon font size */
+ margin-right: 10px; /* Reduced margin */
  display: flex;
  align-items: center;
  justify-content: center;
- width: 40px;
- height: 40px;
+ width: 30px; /* Smaller width */
+ height: 30px; /* Smaller height */
  border-radius: 30%;
  color: #ffffff; /* Default icon color */
 }
@@ -85,7 +86,7 @@
 }
 
 .icon-gray {
- background-color: gray; /* Red background */
+ background-color: gray; /* Gray background */
 }
 
 .side-content {
@@ -95,18 +96,71 @@
 }
 
 .side-content h5 {
- font-size: 26px; /* Font size for the number */
+ font-size: 20px; /* Reduced font size for the number */
  font-weight: bold;
  margin: 0;
  color: #3a3535;
 }
 
 .side-content p {
- font-size: 12px; /* Smaller font size for description */
+ font-size: 10px; /* Smaller font size for description */
  font-weight: bold;
  color: #747b85; /* Lighter gray for the description */
  margin: 0;
 }
+
+
+
+
+/* Card 4 */
+/* Card Body */
+.card-body-currency {
+ width: 100%;
+ height: auto; /* Adjust to fit the content */
+ padding: 0px 10px;
+}
+
+/* Currency Cards Container */
+.currency-cards {
+ display: flex;
+ flex-direction: row; /* Arrange cards horizontally */
+ gap: 20px; /* Spacing between cards */
+ justify-content: left; /* Align cards to the left */
+ align-items: center; /* Vertically center the cards */
+}
+
+/* Individual Currency Card */
+.currency-card {
+ width: 80px; /* Fixed width */
+ height: 100px; /* Fixed height */
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ border-radius: 8px; /* Slight rounding for aesthetic */
+ background-color: white;
+ box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle box shadow */
+ font-size: 16px;
+ font-weight: bold;
+ color: #333; /* Text color */
+ transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth hover effect */
+}
+
+/* Icon Wrapper */
+.icon-wrapper {
+ width: 40px; /* Match the size proportionately */
+ height: 40px;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ background-color: white;
+ border-radius: 50%; /* Make it a circular icon */
+ box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle box shadow */
+ font-size: 18px; /* Icon size */
+ color: #495057;; /* Icon color */
+ transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth hover effect */
+}
+
+
 
 
 .main-content .header-wrapper {
