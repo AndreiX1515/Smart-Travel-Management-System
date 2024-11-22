@@ -804,7 +804,7 @@
                   <div class="col-md-4">
                     <div class="form-group mb-3">
                       <label class="mb-2" for="state">State/Province/Region <span class="text-danger fw-bold">*</span></label>
-                      <input type="text" name="state[]" class="form-control" placeholder="Enter State/Province/Region" value="<?php echo $row['state']; ?>" required>
+                      <input type="text" name="state" class="form-control" placeholder="Enter State/Province/Region" value="<?php echo $row['state']; ?>" required>
                       <span id="stateError" class="text-danger"></span> <!-- Error message for State -->
                     </div>
                   </div>
