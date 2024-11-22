@@ -16,20 +16,22 @@
 
 <!-- Main Container -->
 <div class="main-container">
-   <?php include '../Employee Section/includes/emp-navbar.php' ?>
+    <nav class="navbar navbar-expand-lg navbar-custom mt-2">
+         <div class="back-button-wrapper py-3 px-4">
+            <button class="back-button" onclick="window.location.href='../Employee Section/emp-transaction.php';">
+                 <i class="fas fa-arrow-left"></i>
+             </button>
+
+             <div class="title">
+                <h1>TRANSACTION ID: A002-5485478</h1>
+             </div>
+
+            <!-- Navbar items and functionality can be added here -->
+        </div>
+    </nav>
 
    <div class="main-content">
     <div class="header">
-     <div class="back-button-wrapper">
-         <button class="back-button" onclick="window.location.href='../Employee Section/emp-transaction.php';">
-             <i class="fas fa-arrow-left"></i>
-         </button>
-
-         <div class="title">
-            <h1>TRANSACTION ID: A002-5485478</h1>
-         </div>
-     </div>
-     
      <div class="status-wrapper">
          <!-- <span class="status">Pending</span>
          <span class="date">March, 2024</span>
@@ -43,12 +45,11 @@
       <div class="transaction-info-wrapper">
         <div class="card-header py-2 mb-2">
            <h6>Transaction Information</h6>
-
         </div>
 
 
         <div class="row g-3 mb-1">
-             <div class="col-md-5 mb-2 d-flex flex-column gap-1">
+             <div class="col-md-5 mb-2 me-4 d-flex flex-column gap-1">
                  <p><strong>Transaction No:</strong> 12345678</p>
                  <p><strong>Total Pax:</strong> 4</p>
                  <p><strong>Package:</strong> Premium Package</p>
@@ -69,14 +70,170 @@
       </div>
 
       <div class="guest-info-table-wrapper">
-        <div class="card-header py-2 mb-2">
+        <div class="card-header px-2 py-1">
            <h6>Guest Informations</h6>
-
         </div>
 
+         <div class="guest-table-wrapper ">
+           <table class="table-stripped">
+             <thead>
+               <tr>
+                 <th>ID</th>
+                 <th>Contact Name</th>
+                 <th>Birthdate</th>
+                 <th>Sex</th>
+                 <th>Nationality</th>
+                 <th>Other Contact</th>
+                 <th>Email</th>
+                 <th>Address</th>
+                 <th>Passport No.</th>
+                 <th>Passport Exp.</th>
+                 <th>Visa Status</th>
+               </tr>
+             </thead>
+             <tbody>
+               <tr>
+                 <td>A001-000101</td>
+                 <td>John Doe</td>
+                 <td>1990-05-14</td>
+                 <td>Male</td>
+                 <td>American</td>
+                 <td>+1234567890</td>
+                 <td>johndoe@email.com</td>
+                 <td>123 Main St, New York, NY</td>
+                 <td>P123456789</td>
+                 <td>2030-04-10</td>
+                 <td>
+                   <span class="status status-confirmed">
+                     <span class="status-dot"></span> Confirmed
+                   </span>
+                 </td>
+               </tr>
+               <tr>
+                 <td>A001-000102</td>
+                 <td>Jane Smith</td>
+                 <td>1985-11-22</td>
+                 <td>Female</td>
+                 <td>Canadian</td>
+                 <td>+9876543210</td>
+                 <td>janesmith@email.com</td>
+                 <td>456 Elm St, Toronto, ON</td>
+                 <td>P987654321</td>
+                 <td>2028-08-15</td>
+                 <td>
+                   <span class="status status-confirmed">
+                     <span class="status-dot"></span> Confirmed
+                   </span>
+                 </td>
+               </tr>
+               <tr>
+                 <td>A001-000103</td>
+                 <td>Michael Brown</td>
+                 <td>1992-07-09</td>
+                 <td>Male</td>
+                 <td>British</td>
+                 <td>+441234567890</td>
+                 <td>michaelbrown@email.com</td>
+                 <td>789 Pine St, London, UK</td>
+                 <td>P112233445</td>
+                 <td>2027-12-31</td>
+                 <td>
+                   <span class="status status-confirmed">
+                     <span class="status-dot"></span> Confirmed
+                   </span>
+                 </td>
+               </tr>
+               <tr>
+                 <td>A001-000104</td>
+                 <td>Emily Davis</td>
+                 <td>1997-03-18</td>
+                 <td>Female</td>
+                 <td>Australian</td>
+                 <td>+61412345678</td>
+                 <td>emilydavis@email.com</td>
+                 <td>12 Queen St, Sydney, AUS</td>
+                 <td>P223344556</td>
+                 <td>2026-06-20</td>
+                 <td>
+                   <span class="status status-confirmed">
+                     <span class="status-dot"></span> Confirmed
+                   </span>
+                 </td>
+               </tr>
+               <tr>
+                 <td>A001-000105</td>
+                 <td>Chris Johnson</td>
+                 <td>1988-01-25</td>
+                 <td>Male</td>
+                 <td>Filipino</td>
+                 <td>+639171234567</td>
+                 <td>chrisjohnson@email.com</td>
+                 <td>89 Rizal St, Manila, PH</td>
+                 <td>P334455667</td>
+                 <td>2031-02-11</td>
+                 <td>
+                   <span class="status status-confirmed">
+                     <span class="status-dot"></span> Confirmed
+                   </span>
+                 </td>
+               </tr>
 
+               <tr>
+                 <td>A001-000105</td>
+                 <td>Chris Johnson</td>
+                 <td>1988-01-25</td>
+                 <td>Male</td>
+                 <td>Filipino</td>
+                 <td>+639171234567</td>
+                 <td>chrisjohnson@email.com</td>
+                 <td>89 Rizal St, Manila, PH</td>
+                 <td>P334455667</td>
+                 <td>2031-02-11</td>
+                 <td>
+                   <span class="status status-confirmed">
+                     <span class="status-dot"></span> Confirmed
+                   </span>
+                 </td>
+               </tr>
 
+               <tr>
+                 <td>A001-000105</td>
+                 <td>Chris Johnson</td>
+                 <td>1988-01-25</td>
+                 <td>Male</td>
+                 <td>Filipino</td>
+                 <td>+639171234567</td>
+                 <td>chrisjohnson@email.com</td>
+                 <td>89 Rizal St, Manila, PH</td>
+                 <td>P334455667</td>
+                 <td>2031-02-11</td>
+                 <td>
+                   <span class="status status-confirmed">
+                     <span class="status-dot"></span> Confirmed
+                   </span>
+                 </td>
+               </tr>
 
+               <tr>
+                 <td>A001-000105</td>
+                 <td>Chris Johnson</td>
+                 <td>1988-01-25</td>
+                 <td>Male</td>
+                 <td>Filipino</td>
+                 <td>+639171234567</td>
+                 <td>chrisjohnson@email.com</td>
+                 <td>89 Rizal St, Manila, PH</td>
+                 <td>P334455667</td>
+                 <td>2031-02-11</td>
+                 <td>
+                   <span class="status status-confirmed">
+                     <span class="status-dot"></span> Confirmed
+                   </span>
+                 </td>
+               </tr>
+             </tbody>
+           </table>
+         </div>
 
       </div>
    </div>

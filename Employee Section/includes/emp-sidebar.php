@@ -32,24 +32,25 @@
             <span class="label">Operationals</span>
         </a>
         <div class="collapse" id="manageBookingMenu">
-            <ul class="nav flex-column ms-3">
-                <li class="nav-item"> 
-                    <a class="nav-link page-button" href="../Employee Section/emp-transaction.php" data-page-name="Transactions">Transactions</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link page-button" href="#" data-page-name="Itinerary">Itinerary</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link page-button" href="#" data-page-name="SOA">SOA</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link page-button" href="#" data-page-name="Ticket">Ticket</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link page-button" href="#" data-page-name="Vouchers">Vouchers</a>
-                </li>
-            </ul>
-        </div>
+           <ul class="nav flex-column ms-3">
+               <li class="nav-item"> 
+                   <a class="nav-link page-button" href="../Employee Section/emp-transaction.php" data-page-name="Transactions">Transactions</a>
+               </li>
+               <li class="nav-item">
+                   <a class="nav-link page-button" href="#" data-page-name="Itinerary">Itinerary</a>
+               </li>
+               <li class="nav-item">
+                   <a class="nav-link page-button" href="#" data-page-name="SOA">SOA</a>
+               </li>
+               <li class="nav-item">
+                   <a class="nav-link page-button" href="#" data-page-name="Ticket">Ticket</a>
+               </li>
+               <li class="nav-item">
+                   <a class="nav-link page-button" href="#" data-page-name="Vouchers">Vouchers</a>
+               </li>
+           </ul>
+       </div>
+
     </li>
 </ul>
 
