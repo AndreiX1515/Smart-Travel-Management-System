@@ -7,25 +7,25 @@
 ?>
 
 <!-- Payment History Table -->
-<div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
+<div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">
   <div class="tab-wrapper">
-    <div div class="d-flex justify-content-end align-items-center p-3 mt-2">
+    <div div class="d-flex justify-content-end align-items-center p-3">
       <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#paymentModal<?= $transactionNumber ?>"
       data-transact-no="<?= $transactionNumber ?>" data-account-id="<?= $accountId ?>">Add Payment</button>
     </div>
 
-    <div class="table-container p-3">
+    <div class="table-container">
       <table class="product-table">
         <thead>
           <tr>
-            <th>Payment Id</th>
-            <th>Payment Title</th>
-            <th>Payment Type</th>
-            <th>Amount</th>
-            <th>Proof of Payment</th>
-            <th>Payment Date</th>
-            <th>Payment Status</th>
-            <th></th>
+          <th>PAYMENT ID</th>
+          <th>PAYMENT TITLE</th>
+          <th>PAYMENT TYPE</th>
+          <th>AMOUNT</th>
+          <th>PROOF OF PAYMENT</th>
+          <th>PAYMENT DATE</th>
+          <th>PAYMENT STATUS</th>
+
           </tr>
         </thead>
         <tbody>
@@ -40,6 +40,31 @@
             {
               while ($row = $res1->fetch_assoc())
                 {
+                  // Fetch the payment status from the database
+                  $status = $row['paymentStatus'];
+                  
+                  // Assign a corresponding Bootstrap badge class based on the status
+                  $badgeClass = '';
+
+                  switch($status) {
+                      case 'Submitted':
+                          $badgeClass = 'bg-primary'; // Blue for Submitted
+                          break;
+                      case 'Pending':
+                          $badgeClass = 'bg-warning'; // Yellow for Pending
+                          break;
+                      case 'Approved':
+                          $badgeClass = 'bg-success'; // Green for Approved
+                          break;
+                      case 'Rejected':
+                          $badgeClass = 'bg-danger'; // Red for Rejected
+                          break;
+                      default:
+                          $badgeClass = 'bg-secondary'; // Gray for unknown statuses
+                          break;
+                  }
+
+
                   echo "<tr>
                           <td>{$row['paymentId']}</td>
                           <td>{$row['paymentTitle']}</td>
@@ -50,13 +75,15 @@
                               <a href='functions/download.php?file=" . urlencode($row['filePath']) . "' target='_blank'>Download File</a> 
                           </td>
                           <td>{$row['paymentDate']}</td>
-                          <td>{$row['paymentStatus']}</td>
+                          <td>
+                              <span class='badge rounded-pill {$badgeClass} py-2'> {$status} </span>
+                          </td>
                         </tr>";
               }
             } 
             else 
             {
-              echo "<tr><td colspan='7'>No Payment Found</td></tr>";
+             echo "<tr><td colspan='7' style='text-align: center;'>No Payment Found</td></tr>";
             }
           ?>
         </tbody>

@@ -21,7 +21,7 @@
     <?php include '../Agent Section/includes/navbar.php'; ?>
 
     <div class="content-wrapper-transact d-flex flex-column">
-      <div class="table-container p-3">
+      <div class="table-container">
         <div class="search-bar">
           <div class="left-side">
             <div class="search-input mb-3">
@@ -99,7 +99,7 @@
                 <th>Flight Date</th>
                 <th>Total Pax</th>
                 <th>Status</th>
-                <th></th>
+         
             </tr>
           </thead>
           <tbody>
@@ -165,38 +165,12 @@
                           <td>{$row['PACKAGE']}</td>
                           <td>{$row['TRANSACTION DATE']}</td>
                           <td>{$row['FLIGHT DATE']}</td>
-                          <td>{$row['TOTAL PAX']}</td>
+                          <td style='text-align: center; font-weight: bold;'>{$row['TOTAL PAX']}</td>
                           <td>
                            <span class='badge p-2 rounded-pill {$statusClass} '>
                                {$status}
                            </span>
                          </td>
-                          <td>
-                            <div class='dropdown'>
-                              <button class='btn btn-link p-0 text-dark' type='button' data-bs-toggle='dropdown' aria-expanded='false'>
-                                <i class='fas fa-ellipsis-v fs-5'></i>
-                              </button>
-                              <ul class='dropdown-menu'>
-                                <li> <a class='dropdown-item' href='#' data-bs-toggle='modal' data-bs-target='#updateBookingModal' data-transaction-id='{$row['T.N']}'>
-                                  Update Booking </a> 
-                                </li>
-                                
-                                <li><a class='dropdown-item' href='#' onclick='showGuestInfo(\"{$row['T.N']}\")'>Show Guest Information</a></li>
-                                
-                                <li><a class='dropdown-item' href='#' onclick='showRequestHistory(\"{$row['T.N']}\")'>Show Request History</a></li>
-                                
-                                <li><a class='dropdown-item' href='#' onclick='showPaymentHistory(\"{$row['T.N']}\")'>Show Payment History</a></li>";
-                        
-                                // Add the conditional button if FLIGHT DATE is "Land Only"
-                                if ($row['bookingType'] == "Land") 
-                                {
-                                  echo "<li>
-                                          <a class='dropdown-item' href='#' onclick='showLandOnlyDetails(\"{$row['T.N']}\")'>Show Land Only Details</a>
-                                        </li>";
-                                }
-                   echo "</ul>
-                       </div>
-                     </td>
                    </tr>";
                 }
               } 

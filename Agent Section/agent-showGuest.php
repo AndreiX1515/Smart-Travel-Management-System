@@ -112,18 +112,16 @@
            ?>
 
     <div class="content-wrapper">
-      <div class="header w-50 border-1 ">
+      <div class="header border-1 ">
         <div class="row g-3 mb-1">
              <h5 class="fw-bold">Transaction Information: </h5>
              <div class="col-md-5 mb-2 d-flex flex-column gap-1">
-               <p class=""><strong>Transaction No:</strong> <?php echo htmlspecialchars($transactNum); ?></p>
-               <p class=""><strong>Total Pax:</strong> <?php echo htmlspecialchars($pax); ?></p>
-               <p class=""><strong>Package:</strong> <?php echo htmlspecialchars($packageName); ?></p>
-               <p class=""><strong>Flight Date:</strong> <?php echo htmlspecialchars($flightDate); ?></p>
-               <p class=""> <strong>Status:</strong> <span class="badge rounded-pill <?php echo $statusClass; ?>"> <?php echo htmlspecialchars($status); ?>  </span>  
-              
-              
-              </p>
+                <p class=""><strong>Transaction No:</strong> <?php echo htmlspecialchars($transactNum); ?></p>
+                <p class=""><strong>Total Pax:</strong> <?php echo htmlspecialchars($pax); ?></p>
+                <p class=""><strong>Package:</strong> <?php echo htmlspecialchars($packageName); ?></p>
+                <p class=""><strong>Flight Date:</strong> <?php echo htmlspecialchars($flightDate); ?></p>
+                <p class=""> <strong>Status:</strong> <span class="badge rounded-pill <?php echo $statusClass; ?>"> <?php echo htmlspecialchars($status); ?>  </span>  
+               </p>
              </div>
 
              <div class="col-md-5 mb-3 d-flex flex-column gap-1">
@@ -140,52 +138,51 @@
           ?>
         </div>  
       </div>
-    
-      <ul class="nav nav-tabs mt-3" id="myTab" role="tablist">
-        <li class="nav-item" role="presentation">
-          <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Guest Information</button>
-        </li>
 
-        <li class="nav-item" role="presentation">
-          <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Request History</button>
-        </li>
+      <hr style="border: 1px solid #ccc; width: 100%; margin: 5px 0;">
 
-        <li class="nav-item" role="presentation">
-          <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">Payment History</button>
-        </li>
 
-        <?php
-          //  if (is_null($flightId)) 
-          // {
-         ?>
-           <!-- <li class="nav-item" role="presentation">
-          <button class="nav-link" id="flight-tab" data-bs-toggle="tab" data-bs-target="#flight-tab-pane" type="button" role="tab" aria-controls="flight-tab-pane" aria-selected="false">Flight Details</button>
-           </li> -->
-          <?php 
-          // }
-        ?>
+      <ul class="nav nav-pills" id="pills-tab" role="tablist">
+       <li class="nav-item" role="presentation">
+         <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Guest Information</button>
+       </li>
 
-        <!-- <li class="nav-item" role="presentation">
-          <button class="nav-link" id="disabled-tab" data-bs-toggle="tab" data-bs-target="#disabled-tab-pane" type="button" role="tab" aria-controls="disabled-tab-pane" aria-selected="false" disabled>Disabled</button>
-        </li> -->
-      </ul>
+       <li class="nav-item" role="presentation">
+         <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Request History</button>
+       </li>
 
-      <?php require "../Agent Section/includes/scripts.php"; ?>
-      
-      <div class="tab-content" id="myTabContent">
-        <!-- Guest Table -->
-        <?php include 'agent-guestTable.php'; ?>
-        <?php include 'agent-requestTable.php'; ?>
-        <?php include 'agent-paymentTable.php'; ?>
-        
-        <?php 
-        // include 'agent-flightTable.php'; 
-        ?>
+       <li class="nav-item" role="presentation">
+         <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Payment History</button>
+       </li>
 
-      </div>
+       <?php
+         // Uncomment if needed
+         // if (is_null($flightId)) {
+       ?>
+       <!-- 
+       <li class="nav-item" role="presentation">
+         <button class="nav-link" id="pills-flight-tab" data-bs-toggle="pill" data-bs-target="#pills-flight" type="button" role="tab" aria-controls="pills-flight" aria-selected="false">Flight Details</button>
+       </li>
+       -->
+       <?php
+         // }
+       ?>
+    </ul>
+
+    <div class="tab-content" id="pills-tabContent">
+       <!-- Guest Table -->
+       <?php include 'agent-guestTable.php'; ?>
+       <?php include 'agent-requestTable.php'; ?>
+       <?php include 'agent-paymentTable.php'; ?>
+       
+       <?php 
+       // include 'agent-flightTable.php'; 
+       ?>   
+
     </div>
-  </div>
+   </div>
+ </div>
 
-
+    <?php require "../Agent Section/includes/scripts.php"; ?>         
  </body>
 </html>

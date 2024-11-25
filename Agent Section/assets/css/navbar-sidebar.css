@@ -35,11 +35,14 @@ body {
 }
 
 
+
+
+
 /* Sidebar styling */
 .sidebar {
  width: 220px;
  height: 100vh;
- background: #F5F5F5; /* Clean white background */
+ background-color: #343a40; /* Dark background for sidebar */
  padding: 0px 15px 20px;
  position: fixed;
  top: 0;
@@ -48,8 +51,8 @@ body {
  overflow-y: auto;
  display: flex;
  flex-direction: column;
- border-right: 1px solid #e0e0e0; /* Soft border for separation */
- box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05); /* Light shadow for depth */
+ border-right: 1px solid #444; /* Subtle dark border */
+ box-shadow: 2px 0 8px rgba(0, 0, 0, 0.3); /* Darker shadow for depth */
  transition: transform 0.3s ease-in-out;
 }
 
@@ -67,7 +70,7 @@ body {
 /* Dashboard Title */
 .dashboard-title {
  font-size: 0.85rem;
- color: #6c757d; /* Muted section title */
+ color: #adb5bd; /* Lighter gray text for muted titles */
  font-weight: 500;
  text-transform: uppercase;
  letter-spacing: 0.5px;
@@ -80,7 +83,7 @@ body {
 /* Section Titles */
 .sidebar .section-title {
  font-size: 0.85rem;
- color: #6c757d; /* Muted section title */
+ color: #adb5bd; /* Lighter gray text for section titles */
  font-weight: 500;
  text-transform: uppercase;
  letter-spacing: 0.5px;
@@ -88,27 +91,25 @@ body {
  cursor: pointer;
  padding: 10px;
  display: flex;
- justify-content: space-between; /* Align chevron on the right */
+ justify-content: space-between;
  align-items: center;
  transition: background-color 0.2s ease;
 }
 
 .sidebar .section-title:hover {
- background-color: #f0f2f5; /* Subtle hover background */
- color: #007bff; /* Professional blue color on hover */
+ background-color: #495057; /* Darker background on hover */
+ color: #ffffff; /* White text on hover */
 }
 
 /* Chevron Icon */
 .chevron-icon {
- transition: transform 0.3s ease; /* Smooth rotation for the chevron */
+ transition: transform 0.3s ease;
 }
 
 .sidebar .section-title .chevron-icon {
  font-size: 0.9rem;
- color: #6c757d; /* Default chevron color */
+ color: #adb5bd; /* Default chevron color */
 }
-
-
 
 /* Links inside the Sidebar */
 .sidebar a {
@@ -116,25 +117,18 @@ body {
  align-items: center;
  padding: 10px 12px;
  border-radius: 6px;
- color: #495057; /* Neutral dark-gray text */
+ color: #e9ecef; /* Light color for links */
  text-decoration: none;
  font-size: 0.95rem;
  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .sidebar a:hover {
- background-color: #f0f2f5; /* Subtle hover background */
- color: #007bff; /* Professional blue color on hover */
+ background-color: #495057; /* Darker background on hover */
+ color: #ffffff; /* White text on hover */
 }
 
-/* .submenu {
- background-color: #b1b0ac;
- border-radius: 15px;
- padding: 10px;
-
-} */
-
-
+/* Submenu styles */
 .sidebar .submenu.open + .section-title .chevron-icon {
  transform: rotate(180deg); /* Rotate the chevron when submenu is open */
 }
@@ -145,23 +139,24 @@ body {
  align-items: left;
  padding: 8px 15px;
  border-radius: 6px;
- color: #495057; /* Neutral dark-gray text */
+ color: #e9ecef; /* Light color for submenu links */
  text-decoration: none;
  font-size: 0.95rem;
  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .sidebar .submenu a:hover {
- background-color: #f0f2f5; /* Subtle hover background */
- color: #007bff; /* Professional blue color on hover */
+ background-color: #495057; /* Darker background on hover */
+ color: #ffffff; /* White text on hover */
 }
 
 /* Add Booking Button */
 .sidebar .add-booking {
- padding: 8px 12px;
+ 
+ padding: 6px 12px;
  border-radius: 6px;
  color: #ffffff;
- background-color: #007bff;
+ background-color: #ff0015; /* Blue background */
  text-decoration: none;
  font-size: 0.95rem;
  font-weight: 600;
@@ -170,8 +165,8 @@ body {
 }
 
 .sidebar .add-booking:hover {
- background-color: #0056b3;
- color: #e9ecef;
+ background-color: #b3001e; /* Darker blue on hover */
+ color: #e9ecef; /* Light text on hover */
 }
 
 .sidebar .add-booking i {
@@ -179,13 +174,13 @@ body {
  margin-right: 8px;
 }
 
-
+/* Icon styles */
 .sidebar i {
  margin-right: 8px;
- color: #6c757d;
+ color: #adb5bd; /* Lighter gray icons */
 }
 
-
+/* Submenu visibility */
 .sidebar .submenu {
  display: none;
  padding-left: 7px;
@@ -196,6 +191,7 @@ body {
  display: block;
  animation: slideDown 0.3s ease-in-out;
 }
+
 
 @keyframes slideDown {
  from {
@@ -209,6 +205,20 @@ body {
 }
 
 
+
+
+/* Dashboard Title */
+.dashboard-title {
+ font-size: 0.85rem;
+ color: #6c757d; /* Muted section title */
+ font-weight: 500;
+ text-transform: uppercase;
+ letter-spacing: 0.5px;
+ margin: 15px 30px 0px 0px;
+ cursor: pointer;
+ padding: 10px;
+ transition: background-color 0.2s ease;
+}
 
 
 /* Navbar Section */

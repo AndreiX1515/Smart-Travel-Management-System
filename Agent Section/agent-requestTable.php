@@ -7,22 +7,20 @@
 ?>
 
 <!-- Request Table -->
-<div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
-  <div class="tab-wrapper">
-    <div class="d-flex justify-content-end align-items-center p-3 mt-2">
+<div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
+    <div class="d-flex justify-content-end align-items-center p-3">
       <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#requestModal" 
       data-transaction-id="<?= $transactionNumber ?>">Add Request</button>
     </div>
-    <div class="table-container p-3">
+    <div class="table-container">
       <table class="product-table">
         <thead>
           <tr>
-            <th>Request Id</th>
-            <th>Request Title</th>
-            <th>Request Details</th>
-            <th>Request Date</th>
-            <th>Status</th>
-            <th></th>
+            <th>REQUEST ID</th>
+            <th>REQUEST TITLE</th>
+            <th>REQUEST DETAILS</th>
+            <th>REQUEST DATE</th>
+            <th>STATUS</th>
           </tr>
         </thead>
         <tbody>
@@ -41,18 +39,44 @@
             {
               while ($row = $res1->fetch_assoc()) 
               {
+               // Fetch the status from the database
+                $status = $row['requestStatus'];
+                
+                // Assign a corresponding Bootstrap badge class based on the status
+                $badgeClass = '';
+
+                switch($status) {
+                    case 'Confirmed':
+                        $badgeClass = 'bg-success'; // Green for Active
+                        break;
+                    case 'Suspended':
+                        $badgeClass = 'bg-secondary'; // Gray for Inactive
+                        break;
+                    case 'Pending':
+                        $badgeClass = 'bg-warning text-dark'; // Yellow for Pending
+                        break;
+                    case 'Cancelled':
+                        $badgeClass = 'bg-danger'; // Red for Suspended
+                        break;
+                    default:
+                        $badgeClass = 'bg-info'; // Blue for any other status
+                        break;
+                }
+    
                 echo "<tr>
                         <td>{$row['requestId']}</td>
                         <td>{$row['concernTitle']}</td>
                         <td>{$row['details']}</td>
                         <td>{$row['formattedRequestDate']}</td>
-                        <td>{$row['requestStatus']}</td>
+                        <td>
+                            <span class='badge rounded-pill {$badgeClass} py-2'> {$status} </span>
+                        </td>
                       </tr>";
               }
             }
             else 
             {
-              echo "<tr><td colspan='10'>No Payment Found</td></tr>";
+              echo "<tr><td colspan='100' style='text-align: center;'>No Payment Found</td></tr>";
             }
           ?>
         </tbody>

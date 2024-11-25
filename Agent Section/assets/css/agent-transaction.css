@@ -15,7 +15,6 @@ body {
   flex-direction: column;
   gap: 10px;
   background-color: transparent;
-  
   box-sizing: border-box;
  }
 
@@ -23,7 +22,7 @@ body {
  .content-wrapper-transact {
   height: 90vh;
   width: 95%;
-  margin: 0px 40px 0px 15px;
+  margin: 0px 10px 0px 10px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -120,11 +119,8 @@ body {
   flex-direction: column;
   height: 100%;
   flex: 1;
-  border: 1px solid #ced4da;
-  padding: 20px;
+  padding: 5px;
   background-color: transparent;
-  border-radius: 8px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   overflow-y: auto;
   box-sizing: border-box;
  }
@@ -155,16 +151,29 @@ body {
   margin-top: 15px;
  }
  
- .product-table th,
  .product-table td {
-  padding: 12px;
+  padding: 10px;
   text-align: left;
   border-bottom: 1px solid #ddd;
   font-size: 0.9em;
- }
- 
+}
+
+.product-table tr {
+ transition: background-color 0.3s, color 0.3s; /* Smooth hover effect */
+}
+
+
+.product-table tr:hover {
+ background-color: #f2f2f2; /* Light grey background on hover */
+ color: #000000; /* Match hover color scheme */
+ cursor: pointer; /* Changes the cursor to a pointer */
+}
+
  .product-table th {
   background-color: #f8f9fa;
+  border-bottom: 1px solid #ddd;
+  padding: 9px;
+  font-size: 0.8em;
  }
  
  .product-table input[type="checkbox"] {
