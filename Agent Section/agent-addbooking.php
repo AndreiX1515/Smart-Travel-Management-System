@@ -148,7 +148,7 @@
 
               <div class="card-footer d-flex justify-content-start align-items-center py-3"> 
                 <h5>
-                  <label>Price: ₱ <span id="flightPrice">0.00</span></label> 
+                  <label style="display: none;">Price: ₱ <span id="flightPrice">0.00</span></label> 
                 </h5>
               </div>
             </div>

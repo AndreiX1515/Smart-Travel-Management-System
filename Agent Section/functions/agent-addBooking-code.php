@@ -28,7 +28,7 @@
     if (!$result) 
     {
       $_SESSION['status'] = "Error fetching last booking ID: " . $conn->error;
-      header("Location: agent-addBooking.php");
+      header("Location: ../agent-addBooking.php");
       exit(0);
     }
 
@@ -56,7 +56,7 @@
     {
       $_SESSION['status'] = "Booking SQL preparation failed: " . $conn->error;
       $conn->rollback();  // Rollback transaction
-      header("Location: agent-addBooking.php");
+      header("Location: ../agent-addbooking.php");
       exit(0);
     }
 
@@ -68,7 +68,7 @@
     {
       $_SESSION['status'] = "Database error on booking insert: " . $stmt1->error;
       $conn->rollback();  // Rollback the transaction if there is an error
-      header("Location: ../agent-addBooking.php");
+      header("Location: ../agent-addbooking.php");
       exit(0);
     }
 
@@ -103,7 +103,7 @@
 
     // Optionally redirect or provide a success message
     $_SESSION['status'] = "Booking successful!";
-    header("Location: ../agent-addBooking.php");
+    header("Location: ../agent-addbooking.php");
     exit(0);
   }
 ?>
