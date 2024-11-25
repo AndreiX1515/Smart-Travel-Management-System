@@ -71,12 +71,11 @@
               </div>
           </div>
         </div>
-      
-       </div>
+      </div>
     </div>
   
     <!-- CARD 2 -->
-    <div class="card border-0">
+    <div class="card border-0" >
      <div class="header">
          <h6 class="text-secondary fw-600">Transaction History</h6>
      </div>
@@ -192,15 +191,46 @@
 
    <div class="card-body-currency">
     <div class="currency-cards">
-        <div class="currency-card">USD</div>
+      <div class="currency-card">
+          <div class="flag-icon-wrapper">
+              <img src="../assets/images/Flags/english-flag.png" alt="">
+              <h6>USD</h6>
+
+              <h6>$1</h6>
+          </div>
+      </div>
 
         <div class="icon-wrapper">
             <i class="fas fa-exchange-alt"></i>
         </div>
 
-        <div class="currency-card">PHP</div>
-        <div class="currency-card">KOR</div>
-        <div class="currency-card">EUR</div>
+        <div class="currency-card">
+          <div class="flag-icon-wrapper">
+              <img src="../assets/images/Flags/philippines (2).png" alt="">
+              <h6>PHP</h6>
+
+              <h6>$1</h6>
+          </div>
+        </div>
+
+        <div class="currency-card">
+          <div class="flag-icon-wrapper">
+              <img src="../assets/images/Flags/korean-flag.png" alt="">
+              <h6>KOR</h6>
+
+              <h6>$1</h6>
+          </div>
+        </div>
+
+
+        <div class="currency-card">
+           <div class="flag-icon-wrapper">
+              <img src="../assets/images/Flags/european.png" alt="">
+              <h6>EUR</h6>
+
+              <h6>$1</h6>
+          </div>
+        </div>
     </div>
 </div>
 
