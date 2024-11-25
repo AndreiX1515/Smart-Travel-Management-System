@@ -70,6 +70,23 @@ body {
  background-color: rgba(139, 0, 0, 0.651); /* Darker red on hover */
 }
 
+
+/* Add red background specifically for the "Add Booking" link */
+.nav-item.transaction .icon {
+ margin-left: 3.5px;
+}
+
+
+.nav-item.dropdown .icon {
+ margin-left: 3.5px;
+}
+
+
+
+
+
+
+
 /* Sidebar icons */
 .sidebar .icon {
  display: flex;

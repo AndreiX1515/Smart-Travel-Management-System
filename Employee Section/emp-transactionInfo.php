@@ -105,7 +105,7 @@
                  <td>2030-04-10</td>
                  <td>
                    <span class="status status-confirmed">
-                     <span class="status-dot"></span> Confirmed
+                     <span class=""></span> Confirmed
                    </span>
                  </td>
                </tr>
@@ -122,7 +122,7 @@
                  <td>2028-08-15</td>
                  <td>
                    <span class="status status-confirmed">
-                     <span class="status-dot"></span> Confirmed
+                     <span class=""></span> Confirmed
                    </span>
                  </td>
                </tr>
@@ -139,7 +139,7 @@
                  <td>2027-12-31</td>
                  <td>
                    <span class="status status-confirmed">
-                     <span class="status-dot"></span> Confirmed
+                     <span class=""></span> Confirmed
                    </span>
                  </td>
                </tr>
@@ -156,7 +156,7 @@
                  <td>2026-06-20</td>
                  <td>
                    <span class="status status-confirmed">
-                     <span class="status-dot"></span> Confirmed
+                     <span class=""></span> Confirmed
                    </span>
                  </td>
                </tr>
@@ -173,25 +173,7 @@
                  <td>2031-02-11</td>
                  <td>
                    <span class="status status-confirmed">
-                     <span class="status-dot"></span> Confirmed
-                   </span>
-                 </td>
-               </tr>
-
-               <tr>
-                 <td>A001-000105</td>
-                 <td>Chris Johnson</td>
-                 <td>1988-01-25</td>
-                 <td>Male</td>
-                 <td>Filipino</td>
-                 <td>+639171234567</td>
-                 <td>chrisjohnson@email.com</td>
-                 <td>89 Rizal St, Manila, PH</td>
-                 <td>P334455667</td>
-                 <td>2031-02-11</td>
-                 <td>
-                   <span class="status status-confirmed">
-                     <span class="status-dot"></span> Confirmed
+                     <span class=""></span> Confirmed
                    </span>
                  </td>
                </tr>
@@ -209,7 +191,7 @@
                  <td>2031-02-11</td>
                  <td>
                    <span class="status status-confirmed">
-                     <span class="status-dot"></span> Confirmed
+                     <span class=""></span> Confirmed
                    </span>
                  </td>
                </tr>
@@ -227,7 +209,25 @@
                  <td>2031-02-11</td>
                  <td>
                    <span class="status status-confirmed">
-                     <span class="status-dot"></span> Confirmed
+                     <span class=""></span> Confirmed
+                   </span>
+                 </td>
+               </tr>
+
+               <tr>
+                 <td>A001-000105</td>
+                 <td>Chris Johnson</td>
+                 <td>1988-01-25</td>
+                 <td>Male</td>
+                 <td>Filipino</td>
+                 <td>+639171234567</td>
+                 <td>chrisjohnson@email.com</td>
+                 <td>89 Rizal St, Manila, PH</td>
+                 <td>P334455667</td>
+                 <td>2031-02-11</td>
+                 <td>
+                   <span class="status status-confirmed">
+                     <span class=""></span> Confirmed
                    </span>
                  </td>
                </tr>

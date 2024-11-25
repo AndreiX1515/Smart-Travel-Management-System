@@ -241,7 +241,11 @@
  text-align: left;
  padding: 4px 10px; /* Reduced padding for compactness */
  border-bottom: 2px solid #dee2e6;
+ position: sticky; /* Make header sticky */
+ top: 0; /* Stick to the top */
+ z-index: 10; /* Ensure it's above the table content */
 }
+
 
 /* Adjust column widths for the table header and cells */
 .guest-table-wrapper thead th,
@@ -250,7 +254,7 @@
  overflow: hidden; /* Prevent content from overflowing */
  text-overflow: ellipsis; /* Add ellipsis (...) for long content */
  white-space: nowrap; /* Prevent text from wrapping */
- padding: 4px 10px; /* Reduced padding for compactness */
+ padding: 8.5px 10px; /* Reduced padding for compactness */
 }
 
 /* Guest Table Row Styling */
@@ -274,14 +278,47 @@
  transition: background-color 0.3s ease; /* Smooth hover transition */
 }
 
-/* General Status Styles */
+/* Pending Status Example */
+.status-pending {
+ background-color: #ffc107; /* Yellow for pending */
+ color: #212529; /* Dark text for contrast */
+}
+
+.status-pending .status-dot {
+ background-color: #ffc107; /* Yellow dot */
+}
+
+/* Rejected Status Example */
+.status-rejected {
+ background-color: #dc3545; /* Red for rejected */
+ color: #ffffff; /* White text for contrast */
+}
+
+.status-rejected .status-dot {
+ background-color: #dc3545; /* Red dot */
+}
+
+/* Confirmed Status */
+.status-confirmed {
+ background-color: #28a745; /* Green for confirmed */
+ color: #ffffff; /* White text for contrast */
+}
+
+/* Confirmed Status */
+.status-confirmed .status-dot {
+ background-color: #28a745; /* Green dot */
+ border-radius: 50%; /* Circular dot */
+ border: 2px solid #1c7430; /* Darker green border for better contrast */
+ box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); /* Subtle shadow to make it pop */
+}
+
+
+/* General Status Styling */
 .status {
  display: inline-flex; /* Align dot and text */
  align-items: center; /* Center align dot and text */
  font-size: 8px; /* Adjust font size */
  font-weight: 500; /* Slightly bold text */
- color: #1a1a1a; /* Default text color */
- background-color: #f8f9fa; /* Light background for badge effect */
  padding: 4px 8px; /* Add padding around the badge */
  border-radius: 20px; /* Rounded badge */
  border: 1px solid #ddd; /* Optional: Light border for better visibility */
@@ -293,20 +330,9 @@
  height: 6px; /* Smaller dot size */
  border-radius: 50%; /* Circular dot */
  margin-right: 5px; /* Space between dot and text */
- background-color: #28a745; /* Green for confirmed */
 }
 
-/* Pending Status Example */
-.status-pending .status-dot {
- background-color: #ffc107; /* Yellow for pending */
-}
-
-/* Rejected Status Example */
-.status-rejected .status-dot {
- background-color: #dc3545; /* Red for rejected */
-}
-
-/* Confirmed Status */
-.status-confirmed .status-dot {
- background-color: #28a745; /* Green for confirmed */
+/* Optional: Make the text larger or adjust as needed */
+.status p {
+ font-size: 0.9rem; /* Increase font size for readability */
 }

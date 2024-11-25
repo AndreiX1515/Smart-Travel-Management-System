@@ -19,23 +19,27 @@
     </li>
     
     <li class="nav-item add-booking">
-        <a class="nav-link page-button" href="#" data-page-name="Add Booking">
+        <a class="nav-link page-button" href="" data-page-name="Add Booking">
             <div class="icon"><i class="fa-solid fa-user-plus"></i></div> <!-- User Icon -->
             <span class="label">Add Booking</span>
         </a>
     </li>
 
+    <li class="nav-item transaction"> 
+        <a class="nav-link page-button" href="../Employee Section/emp-transaction.php" data-page-name="Transactions">
+            <div class="icon"><i class="fa-solid fa-arrow-right-arrow-left"></i></div> <!-- User Icon -->
+            <span class="label">Transactions</span>
+        </a>
+     </li>
+
     <!-- Manage Bookings Dropdown -->
     <li class="nav-item dropdown">
         <a class="nav-link page-button" href="#" id="manageBookingDropdown" role="button" data-bs-toggle="collapse" data-bs-target="#manageBookingMenu" aria-expanded="false" aria-controls="manageBookingMenu" data-page-name="Operationals">
-            <div class="icon"><i class="fa-solid fa-cogs"></i></div>
-            <span class="label">Operationals</span>
+            <div class="icon"><i class="fa-regular fa-file"></i></i></div>
+            <span class="label">Reports</span>
         </a>
         <div class="collapse" id="manageBookingMenu">
            <ul class="nav flex-column ms-3">
-               <li class="nav-item"> 
-                   <a class="nav-link page-button" href="../Employee Section/emp-transaction.php" data-page-name="Transactions">Transactions</a>
-               </li>
                <li class="nav-item">
                    <a class="nav-link page-button" href="#" data-page-name="Itinerary">Itinerary</a>
                </li>

@@ -1,8 +1,8 @@
 
 <!-- Guest Table -->
-<div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+<div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
   <div class="tab-wrapper">
-    <div class="d-flex justify-content-end align-items-center p-3 mt-2">
+    <div class="d-flex justify-content-end align-items-center p-3">
       <div class="d-flex justify-content-end gap-2">
         <?php
           // Check if 'id' is passed in the URL
@@ -55,15 +55,12 @@
       </div>
     </div>
 
-    <div class="table-container p-3">
+    <div class="table-container">
       <table class="product-table">
         <thead>
           <tr>
             <th>GUEST ID</th>
-            <th>FIRST NAME</th>
-            <th>LAST NAME</th>
-            <th>MIDDLE NAME</th>
-            <th>SUFFIX</th>
+            <th>NAME</th>
             <th>BIRTHDATE</th>
             <th>AGE</th>
             <th>SEX</th>
@@ -95,27 +92,45 @@
 
             if ($res1->num_rows > 0) 
             {
-              while ($row = $res1->fetch_assoc()) 
-              {
-                echo "<tr data-url='agent-updateGuestInfo.php?id=" . $row['guestId'] . "'>
-                        <td>{$row['guestId']}</td>
-                        <td>{$row['fName']}</td>
-                        <td>{$row['lName']}</td>
-                        <td>{$row['mName']}</td>
-                        <td>{$row['suffix']}</td>
-                        <td>{$row['birthdate']}</td>
-                        <td>{$row['age']}</td>
-                        <td>{$row['sex']}</td>
-                        <td>{$row['nationality']}</td>
-                        <td>{$row['contactNo']}</td>
-                        <td>{$row['contactNo2']}</td>
-                        <td>{$row['emailAdd']}</td>
-                        <td>{$row['address']}</td>
-                        <td>{$row['passportNo']}</td>
-                        <td>{$row['passportExp']}</td>
+               while ($row = $res1->fetch_assoc()) {
+                // Define the full name variable with suffix
+                // Define the full name without suffix first
+                $fullName = $row['fName'] . ' ' . $row['mName'] . ' ' . $row['lName'];
+
+                // Append suffix only if it is not "N/A"
+                if (!empty($row['suffix']) && $row['suffix'] !== 'N/A') {
+                    $fullName .= ' ' . $row['suffix']; // Append suffix if it exists and is not "N/A"
+                }
+            
+                // Escape values for safety
+                $guestId = htmlspecialchars($row['guestId']);
+                $birthdate = htmlspecialchars($row['birthdate']);
+                $age = htmlspecialchars($row['age']);
+                $sex = htmlspecialchars($row['sex']);
+                $nationality = htmlspecialchars($row['nationality']);
+                $contactNo = htmlspecialchars($row['contactNo']);
+                $contactNo2 = htmlspecialchars($row['contactNo2']);
+                $emailAdd = htmlspecialchars($row['emailAdd']);
+                $address = htmlspecialchars($row['address']);
+                $passportNo = htmlspecialchars($row['passportNo']);
+                $passportExp = htmlspecialchars($row['passportExp']);
+
+                echo "<tr data-url='agent-updateGuestInfo.php?id={$guestId}'>
+                        <td>{$guestId}</td>
+                        <td>{$fullName}</td>
+                        <td>{$birthdate}</td>
+                        <td>{$age}</td>
+                        <td>{$sex}</td>
+                        <td>{$nationality}</td>
+                        <td>{$contactNo}</td>
+                        <td>{$contactNo2}</td>
+                        <td>{$emailAdd}</td>
+                        <td>{$address}</td>
+                        <td>{$passportNo}</td>
+                        <td>{$passportExp}</td>
                         <td>{$row['visaStatus']}</td>
                       </tr>";
-              }
+            }
             } 
             else 
             {

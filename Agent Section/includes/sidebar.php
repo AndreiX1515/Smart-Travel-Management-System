@@ -1,6 +1,6 @@
 <div class="sidebar" id="sidebar">
   <div class="logo mt-3">
-      <img src="..\assets\images\SMART LOGO 2 (2).png" alt="Smart Travel Logo">
+      <img src="..\assets\images\logo.png" alt="Smart Travel Logo">
   </div>
 
   <div class="dashboard-title">Menu</div>
