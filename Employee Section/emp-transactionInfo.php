@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sidebar with Navbar and Profile Dropdown</title>
+    <title>Transactions</title>
     <?php include '../Employee Section/includes/emp-head.php' ?>
     <link rel="stylesheet" href="../Employee Section/assets/css/emp-transactionInfo.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="../Employee Section/assets/css/emp-sidebar-navbar.css?v=<?php echo time(); ?>">
@@ -239,7 +239,7 @@
    </div>
 
    <div class="nav-pills-wrapper">
-      <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+      <ul class="nav nav-pills " id="pills-tab" role="tablist">
         <li class="nav-item" role="presentation">
           <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Request History</button>
         </li>
@@ -256,36 +256,12 @@
    </div>
 
 
+    <div class="tab-content" id="pills-tabContent">
+       <?php include '../Employee Section/emp-requestHistory.php' ?>
 
-   
-   <div class="tab-content" id="pills-tabContent">
-     <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
-
-
-     </div>
-
-     <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
-
-
-
-     </div>
-
-
-     <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">
-
-
-
-
-     </div>
-
-     <div class="tab-pane fade" id="pills-disabled" role="tabpanel" aria-labelledby="pills-disabled-tab" tabindex="0">
-
-
-
-
-     </div>
-   </div>
-   
+     
+    </div>
+ 
   </div>
 </div>
 

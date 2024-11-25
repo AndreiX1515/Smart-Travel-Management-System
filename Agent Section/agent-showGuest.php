@@ -111,33 +111,55 @@
 
            ?>
 
-    <div class="content-wrapper">
-      <div class="header border-1 ">
-        <div class="row g-3 mb-1">
-             <h5 class="fw-bold">Transaction Information: </h5>
-             <div class="col-md-5 mb-2 d-flex flex-column gap-1">
-                <p class=""><strong>Transaction No:</strong> <?php echo htmlspecialchars($transactNum); ?></p>
-                <p class=""><strong>Total Pax:</strong> <?php echo htmlspecialchars($pax); ?></p>
-                <p class=""><strong>Package:</strong> <?php echo htmlspecialchars($packageName); ?></p>
-                <p class=""><strong>Flight Date:</strong> <?php echo htmlspecialchars($flightDate); ?></p>
-                <p class=""> <strong>Status:</strong> <span class="badge rounded-pill <?php echo $statusClass; ?>"> <?php echo htmlspecialchars($status); ?>  </span>  
-               </p>
-             </div>
+     <div class="content-wrapper">
+       <div class="header">
+         <div class="transaction-info">
+           <div class="row g-3 mb-1">
+              <!-- <h5 class="fw-bold">Transaction Information: </h5> -->
+              <div class="col-md-5 mb-2 d-flex flex-column gap-1">
+                 <p class=""><strong>Transaction No:</strong> <?php echo htmlspecialchars($transactNum); ?></p>
+                 <p class=""><strong>Total Pax:</strong> <?php echo htmlspecialchars($pax); ?></p>
+                 <p class=""><strong>Package:</strong> <?php echo htmlspecialchars($packageName); ?></p>
+                 <p class=""><strong>Flight Date:</strong> <?php echo htmlspecialchars($flightDate); ?></p>
+                 <p class=""><strong>Status:</strong> <span class="badge rounded-pill <?php echo $statusClass; ?>"> 
+                  <?php echo htmlspecialchars($status); ?> </span> </p>
+              </div>
 
-             <div class="col-md-5 mb-3 d-flex flex-column gap-1">
-               <p class=""><strong>Contact Person:</strong> <?php echo htmlspecialchars($fullName); ?></p>
-               <p class=""><strong>Contact No:</strong> <?php echo htmlspecialchars($contactNo); ?></p>
-               <p class=""><strong>Email:</strong> <?php echo htmlspecialchars($email); ?></p>
-             </div>
-                <?php
-              }
-            } else 
-            {
-              echo "0 results";
-            }
-          ?>
-        </div>  
-      </div>
+              <div class="col-md-5 mb-3 d-flex flex-column gap-1">
+                <p class=""><strong>Contact Person:</strong> <?php echo htmlspecialchars($fullName); ?></p>
+                <p class=""><strong>Contact No:</strong> <?php echo htmlspecialchars($contactNo); ?></p>
+                <p class=""><strong>Email:</strong> <?php echo htmlspecialchars($email); ?></p>
+              </div>
+
+             <?php
+             }
+
+             } else {
+               echo "0 results";
+             }
+           ?>
+         </div> 
+
+         <hr style="border: 1px solid #ccc; width: 100%; margin: 5px 0;">
+
+         <div class="transaction-info-footer d-flex justify-content-end">
+             <button class="btn btn-danger btn-sm mt-2">Cancel Transaction</button>
+
+
+         </div>
+       </div>
+      
+        <div class="table-wrapper">
+
+
+
+
+       </div>
+      
+        
+    </div>
+
+      
 
       <hr style="border: 1px solid #ccc; width: 100%; margin: 5px 0;">
 

@@ -82,7 +82,6 @@
 }
 
 
-
 /* First-part-wrapper */
 .first-part-wrapper {
  display: flex; /* Use flexbox for layout */
@@ -91,7 +90,6 @@
  margin-left: 5px;
  margin-right: 15px;
 }
-
 
 
 /* Transaction Info - 40% of the width */
@@ -124,19 +122,7 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+/* Guest Info Table*/
 /* Guest Info Table - 60% of the width */
 .guest-info-table-wrapper {
  width: 70%;
@@ -147,79 +133,12 @@
  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Optional shadow for effect */
 }
 
-
-
-
-
-.nav-pills-wrapper {
- margin: 15px 15px 0px 15px;
- width: 100%; /* Full width */
- padding: 10px 0px;
- height: 6vh;
-}
-
-
-/* Style for the nav-item to make them pill-shaped */
-.nav-pills .nav-item {
- margin-right: 10px; /* Space between items */
-}
-
-/* Style for the nav-link to create the pill effect */
-.nav-pills .nav-link {
- border-radius: 50px; /* Makes the pill rounded */
- padding: 10px 20px; /* Add padding for a wider pill */
- font-size: 14px; /* Font size adjustment */
- color: #495057; /* Default text color */
- background-color: #f8f9fa; /* Background color of the pill */
- border: 1px solid #ddd; /* Border color */
- transition: background-color 0.3s, color 0.3s; 
- font-weight: bolder;
-}
-
-/* Active pill (selected item) styling */
-.nav-pills .nav-link.active {
- color: #fff; /* Text color when active */
- background-color: #007bff; /* Background color when active */
- border-color: #007bff; /* Border color when active */
-}
-
-/* Hover effect for the pills */
-.nav-pills .nav-link:hover {
- color: #007bff; /* Text color on hover */
- background-color: #f1f1f1; /* Light background on hover */
- border-color: #ccc; /* Border color on hover */
-}
-
-
-/* Tab Content Styling */
-.tab-content {
- margin: 10px 10px 10px 0px; /* 20px horizontal margin, 10px vertical margin */
- background-color: #fff; /* Ensure content area has a white background */
- border-radius: 8px; /* Optional rounded corners */
- box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Optional shadow for effect */
- height: 40vh;
- padding: 10px 0px; /* Add padding to the tab content */
- border-radius: 5px; /* Optional: make tab content corners rounded */
-}
-
-/* Additional styling for the tabs if needed */
-.tab-pane {
- border-radius: 5px; /* Optional: make tab content corners rounded */
- order: 1px solid black;
- padding: 10px 0px; /* 20px horizontal margin, 10px vertical margin */
-}
-
-
-
-
-
 .guest-table-wrapper {
  width: 100%;
- height: 230px; /* Set a fixed height for vertical scroll */
+ padding: 0px 8px;
+ height: 265px; /* Set a fixed height for vertical scroll */
  overflow-y: auto; /* Enable vertical scroll */
  overflow-x: auto; /* Enable horizontal scroll */
- border: 1px solid #dee2e6; /* Optional: border for clarity */
- border-radius: 5px;
  -webkit-overflow-scrolling: touch; /* For smooth scrolling on iOS */
 }
 
@@ -236,7 +155,7 @@
 .guest-table-wrapper thead th {
  background-color: #747474; /* Light gray for the header */
  color: #ffffff; /* Text color */
- font-size: 9px; /* Smaller font size */
+ font-size: 12px; /* Smaller font size */
  font-weight: 600;
  text-align: left;
  padding: 4px 10px; /* Reduced padding for compactness */
@@ -336,3 +255,182 @@
 .status p {
  font-size: 0.9rem; /* Increase font size for readability */
 }
+
+
+/* Request History Table */
+.request-table-wrapper {
+ width: 100%;
+ padding: 0px 25px;
+ height: 475px; /* Set a fixed height for vertical scroll */
+ overflow-y: auto; /* Enable vertical scroll */
+ overflow-x: auto; /* Enable horizontal scroll */
+ -webkit-overflow-scrolling: touch; /* For smooth scrolling on iOS */
+}
+
+/* Request Table Styling */
+.request-table-wrapper table {
+ width: 100%; /* Ensure the table takes up the full width */
+ border-collapse: collapse; /* Remove gaps between cells */
+ font-size: 14px; /* Smaller font size for compact display */
+ min-width: 1000px; /* Minimum width for horizontal scrolling (can be adjusted) */
+ table-layout: fixed; /* Prevent wrapping and make table cells take up equal space */
+}
+
+/* Request Table Header (Thead) Styling */
+.request-table-wrapper thead th {
+ background-color: #747474; /* Light gray for the header */
+ color: #ffffff; /* Text color */
+ font-size: 12px; /* Smaller font size */
+ font-weight: 600;
+ text-align: left;
+ padding: 4px 4px; /* Reduced padding for compactness */
+ border-bottom: 2px solid #dee2e6;
+ position: sticky; /* Make header sticky */
+ top: 0; /* Stick to the top */
+ z-index: 10; /* Ensure it's above the table content */
+}
+
+/* Adjust column widths for the table header and cells */
+.request-table-wrapper thead th,
+.request-table-wrapper tbody td {
+ width: auto; /* Default width for dynamic adjustment */
+ overflow: hidden; /* Prevent content from overflowing */
+ text-overflow: ellipsis; /* Add ellipsis (...) for long content */
+ white-space: nowrap; /* Prevent text from wrapping */
+ padding: 8.5px 10px; /* Reduced padding for compactness */
+}
+
+/* Request Table Row Styling */
+.request-table-wrapper tbody tr {
+ border-bottom: 1px solid #dee2e6;
+}
+
+.request-table-wrapper tbody tr:last-child {
+ border-bottom: none; /* Remove the bottom border for the last row */
+}
+
+.request-table-wrapper td {
+ color: #333;
+ vertical-align: middle;
+}
+
+/* Request Table Row Hover Effect */
+.request-table-wrapper tbody tr:hover {
+ background-color: #f5f5f5; /* Light gray background on row hover */
+ cursor: pointer; /* Pointer cursor for interactivity */
+ transition: background-color 0.3s ease; /* Smooth hover transition */
+}
+
+/* Pending Status Example */
+.status-pending {
+ background-color: #ffc107; /* Yellow for pending */
+ color: #212529; /* Dark text for contrast */
+}
+
+
+/* Rejected Status Example */
+.status-rejected {
+ background-color: #dc3545; /* Red for rejected */
+ color: #ffffff; /* White text for contrast */
+}
+
+
+/* Confirmed Status */
+.status-confirmed {
+ background-color: #28a745; /* Green for confirmed */
+ color: #ffffff; /* White text for contrast */
+}
+
+/* General Status Styling */
+.status {
+ display: inline-flex; /* Align dot and text */
+ align-items: center; /* Center align dot and text */
+ font-size: 12px; /* Adjust font size */
+ font-weight: 500; /* Slightly bold text */
+ padding: 6px 14px; /* Add padding around the badge */
+ border-radius: 20px; /* Rounded badge */
+ border: 1px solid #ddd; /* Optional: Light border for better visibility */
+}
+
+/* Dot Styles */
+.status-dot {
+ width: 6px; /* Smaller dot size */
+ height: 6px; /* Smaller dot size */
+ border-radius: 50%; /* Circular dot */
+ margin-right: 5px; /* Space between dot and text */
+}
+
+/* Optional: Make the text larger or adjust as needed */
+.status p {
+ font-size: 0.9rem; /* Increase font size for readability */
+}
+
+
+
+
+
+
+
+
+.nav-pills-wrapper {
+ margin: 15px 15px 0px 15px;
+ width: 100%; /* Full width */
+ padding: 10px 0px;
+ height: 6vh;
+}
+
+
+/* Style for the nav-item to make them pill-shaped */
+.nav-pills .nav-item {
+ margin-right: 10px; /* Space between items */
+}
+
+/* Style for the nav-link to create the pill effect */
+.nav-pills .nav-link {
+ border-radius: 50px; /* Makes the pill rounded */
+ padding: 10px 20px; /* Add padding for a wider pill */
+ font-size: 14px; /* Font size adjustment */
+ color: #495057; /* Default text color */
+ background-color: #f8f9fa; /* Background color of the pill */
+ border: 1px solid #ddd; /* Border color */
+ transition: background-color 0.3s, color 0.3s; 
+ font-weight: bolder;
+}
+
+/* Active pill (selected item) styling */
+.nav-pills .nav-link.active {
+ color: #fff; /* Text color when active */
+ background-color: #007bff; /* Background color when active */
+ border-color: #007bff; /* Border color when active */
+}
+
+/* Hover effect for the pills */
+.nav-pills .nav-link:hover {
+ color: #007bff; /* Text color on hover */
+ background-color: #f1f1f1; /* Light background on hover */
+ border-color: #ccc; /* Border color on hover */
+}
+
+
+/* Tab Content Styling */
+.tab-content {
+ margin: 10px 10px 10px 0px; /* 20px horizontal margin, 10px vertical margin */
+ background-color: #fff; /* Ensure content area has a white background */
+ border-radius: 8px; /* Optional rounded corners */
+ box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Optional shadow for effect */
+ height: 50vh;
+ padding: 10px 0px; /* Add padding to the tab content */
+ border-radius: 5px; /* Optional: make tab content corners rounded */
+}
+
+/* Additional styling for the tabs if needed */
+.tab-pane {
+ border-radius: 5px; /* Optional: make tab content corners rounded */
+ order: 1px solid black;
+ padding: 10px 0px; /* 20px horizontal margin, 10px vertical margin */
+}
+
+
+
+
+
