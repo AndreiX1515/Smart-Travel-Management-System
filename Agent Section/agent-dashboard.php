@@ -441,8 +441,8 @@
           </div>
           
           <div class="body">
-            <div class="table-container">
-              <table class="unconfirm-table" style="font-size: 10px;">
+            <div class="table-container" style="max-height: 400px; overflow-y: auto; border: 1px solid #ccc;">
+              <table class="unconfirm-table table table-bordered" style="font-size: 10px; width: 100%;">
                 <thead>
                   <tr>
                     <th>TRANSACTION NO.</th>
@@ -450,6 +450,7 @@
                     <th>FLIGHT DATE</th>
                     <th>PAX.</th>
                     <th>CONTACT NAME</th>
+                    <th>STATUS</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -477,9 +478,9 @@
                             LEFT JOIN
                                 agent a ON b.agentId = a.agentId
                             WHERE 
-                                b.agentId = '$agentId' and status='Pending'
+                                b.agentId = '$agentId'
                             ORDER BY 
-                                b.transactNo DESC LIMIT 5";
+                                b.transactNo DESC";
           
                     // Run the query and check for results
                     $res1 = $conn->query($sql1);
@@ -497,6 +498,7 @@
                               <td>" . htmlspecialchars($row['FLIGHT DATE']) . "</td>
                               <td>" . htmlspecialchars($row['TOTAL PAX']) . "</td>
                               <td>" . htmlspecialchars($row['CONTACT NAME']) . "</td>
+                              <td>" . $row['STATUS'] . "</td>
                             </tr>";
                       }
                     } 
@@ -518,54 +520,56 @@
           </div>
 
           <div class="body">
-            <table class="request-table" >
-              <thead style="font-size: 10px;">
-                <tr>
-                  <th>TRANSACTION NO.</th>
-                  <th>REQUEST</th>
-                  <th>DATE</th>
-                  <th>STATUS</th>
-                </tr>
-              </thead>
-              <tbody>
-                <?php
-                  $sql1 = "SELECT 
-                                r.transactNo AS `T.N`,
-                                c.concernTitle AS `Request`,
-                                DATE_FORMAT(r.requestDate, '%M-%d-%Y %h:%i %p') AS `Date`,
-                                r.requestStatus, b.agentId
-                            FROM 
-                                request r
-                            JOIN 
-                                booking b ON r.transactNo = b.transactNo
-                            JOIN 
-                                concern c ON r.concernId = c.concernId
-                            WHERE 
-                                b.agentId = '$agentId' and r.requestStatus = 'Submitted'
-                            ORDER BY 
-                                r.requestDate DESC LIMIT 5";  // Order by request date
-      
-                  $res1 = $conn->query($sql1);
-                    
-                  if ($res1->num_rows > 0) 
-                  {
-                    while ($row = $res1->fetch_assoc()) 
+            <div class="table-container" style="max-height: 400px; overflow-y: auto; border: 1px solid #ccc;">
+              <table class="request-table table table-bordered" style="font-size: 10px; width: 100%;">
+                <thead style="font-size: 10px;">
+                  <tr>
+                    <th>TRANSACTION NO.</th>
+                    <th>REQUEST</th>
+                    <th>DATE</th>
+                    <th>STATUS</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php
+                    $sql1 = "SELECT 
+                                  r.transactNo AS `T.N`,
+                                  c.concernTitle AS `Request`,
+                                  DATE_FORMAT(r.requestDate, '%M-%d-%Y %h:%i %p') AS `Date`,
+                                  r.requestStatus, b.agentId
+                              FROM 
+                                  request r
+                              JOIN 
+                                  booking b ON r.transactNo = b.transactNo
+                              JOIN 
+                                  concern c ON r.concernId = c.concernId
+                              WHERE 
+                                  b.agentId = '$agentId' and r.requestStatus = 'Submitted'
+                              ORDER BY 
+                                  r.requestDate DESC";  // Order by request date
+        
+                    $res1 = $conn->query($sql1);
+                      
+                    if ($res1->num_rows > 0) 
                     {
-                      echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($row['T.N']) . "'>
-                              <td>{$row['T.N']}</td>
-                              <td>{$row['Request']}</td>
-                              <td>{$row['Date']}</td>
-                              <td>{$row['requestStatus']}</td>
-                            </tr>";
+                      while ($row = $res1->fetch_assoc()) 
+                      {
+                        echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($row['T.N']) . "'>
+                                <td>{$row['T.N']}</td>
+                                <td>{$row['Request']}</td>
+                                <td>{$row['Date']}</td>
+                                <td>{$row['requestStatus']}</td>
+                              </tr>";
+                      }
+                    } 
+                    else 
+                    {
+                      echo "<tr><td colspan='6' style='text-align: center;'>No Request found as of the moment</td></tr>";
                     }
-                  } 
-                  else 
-                  {
-                    echo "<tr><td colspan='6' style='text-align: center;'>No Request found as of the moment</td></tr>";
-                  }
-                ?>
-              </tbody>
-            </table>
+                  ?>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
 
@@ -575,20 +579,21 @@
          </div>
 
          <div class="body">
-           <table class="pending-payment-table">
-             <thead style="font-size: 10px;">
-               <tr>
-                 <th>TRANSACTION NO.</th>
-                 <th>PAYMENT TITLE</th>
-                 <th>PAYMENT TYPE</th>
-                 <th>PAYMENT AMOUNT</th>
-                 <th>DATE</th>
-                 <th>STATUS</th>
-               </tr>
-             </thead>
-             <tbody>
-               <?php
-                 $sql2 = "SELECT 
+          <div class="table-container" style="max-height: 400px; overflow-y: auto; border: 1px solid #ccc;">
+            <table class="pending-payment-table table table-bordered" style="font-size: 10px; width: 100%;">
+              <thead style="font-size: 10px;">
+                <tr>
+                  <th>TRANSACTION NO.</th>
+                  <th>PAYMENT TITLE</th>
+                  <th>PAYMENT TYPE</th>
+                  <th>PAYMENT AMOUNT</th>
+                  <th>DATE</th>
+                  <th>STATUS</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php
+                  $sql2 = "SELECT 
                             p.transactNo AS `Transaction No`,
                             p.paymentTitle AS `Payment Title`,
                             CONCAT(FORMAT(p.amount, 2)) AS `Amount`,  -- Format the amount as a currency with two decimal places
@@ -602,29 +607,30 @@
                           WHERE 
                             b.agentId = '$agentId' and p.paymentStatus = 'Submitted'  -- Adjust conditions as needed
                           ORDER BY 
-                            p.paymentDate DESC LIMIT 5";  // Order by payment date
-     
-                 $res2 = $conn->query($sql2);
-                 
-                 if ($res2->num_rows > 0) {
-                   while ($row = $res2->fetch_assoc()) {
-                     echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($row['Transaction No']) . "'>
-                             <td>{$row['Transaction No']}</td>
-                             <td>{$row['Payment Title']}</td>
-                             <td>{$row['Payment Type']}</td>
-                             <td>₱ {$row['Amount']}</td>
-                             <td> {$row['Date']} </td>
-                             <td>{$row['paymentStatus']}</td>
-                           </tr>";
-                   }
-                 } else {  
-                   echo "<tr><td colspan='12' style='text-align: center;'>No payments found as of the moment</td></tr>";
-                 }
-               ?>
-             </tbody>
-           </table>
+                            p.paymentDate DESC";  // Order by payment date
+      
+                  $res2 = $conn->query($sql2);
+                  
+                  if ($res2->num_rows > 0) {
+                    while ($row = $res2->fetch_assoc()) {
+                      echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($row['Transaction No']) . "'>
+                              <td>{$row['Transaction No']}</td>
+                              <td>{$row['Payment Title']}</td>
+                              <td>{$row['Payment Type']}</td>
+                              <td>₱ {$row['Amount']}</td>
+                              <td> {$row['Date']} </td>
+                              <td>{$row['paymentStatus']}</td>
+                            </tr>";
+                    }
+                  } else {  
+                    echo "<tr><td colspan='12' style='text-align: center;'>No payments found as of the moment</td></tr>";
+                  }
+                ?>
+              </tbody>
+            </table>
+          </div>
          </div>
-       </div>
+        </div>
 
       </div>
 
@@ -635,73 +641,75 @@
           </div>
             
           <div class="body">
-            <table class="confirm-table">
-              <thead style="font-size: 10px;">
-                <tr>
-                  <th>TRANSACTION NO.</th>
-                  <th>PACKAGE</th>
-                  <th>FLIGHT DATE</th>
-                  <th>TOTAL PAX.</th>
-                  <th>CONTACT NAME</th>
-                  <th>STATUS</th>
-                </tr>
-              </thead>
-              <tbody>
-                <?php
-                  $sql1 = "SELECT
-                            b.transactNo AS `T.N`,
-                            p.packageName AS `PACKAGE`,
-                            CASE 
-                                WHEN b.flightId IS NULL THEN 'Land Only'
-                                ELSE DATE_FORMAT(f.flightDepartureDate, '%M %d, %Y')
-                            END AS `FLIGHT DATE`,
-                            b.pax AS `TOTAL PAX`,
-                            CONCAT(
-                                b.lName, ', ', b.fName, ' ', 
-                                CASE WHEN b.mName = 'N/A' THEN '' ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ',
-                                CASE WHEN b.suffix = 'N/A' THEN '' ELSE b.suffix END
-                            ) AS `CONTACT NAME`,
-                            b.status AS `STATUS`
-                          FROM 
-                              booking b
-                          LEFT JOIN 
-                              flight f ON b.flightId = f.flightId
-                          LEFT JOIN 
-                              package p ON b.packageId = p.packageId
-                          LEFT JOIN
-                              agent a ON b.agentId = a.agentId
-                          WHERE 
-                              b.agentId = '$agentId' and status='Confirmed'
-                          ORDER BY 
-                              b.transactNo DESC LIMIT 5";
-        
-                  // Run the query and check for results
-                  $res1 = $conn->query($sql1);
-                    
-                  // Check if there are any results
-                  if ($res1->num_rows > 0) 
-                  {
-                    // Output data for each row
-                    while ($row = $res1->fetch_assoc()) 
+            <div class="table-container" style="max-height: 400px; overflow-y: auto; border: 1px solid #ccc;">
+              <table class="confirm-table table table-bordered" style="font-size: 10px; width: 100%;">
+                <thead style="font-size: 10px;">
+                  <tr>
+                    <th>TRANSACTION NO.</th>
+                    <th>PACKAGE</th>
+                    <th>FLIGHT DATE</th>
+                    <th>TOTAL PAX.</th>
+                    <th>CONTACT NAME</th>
+                    <th>STATUS</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php
+                    $sql1 = "SELECT
+                              b.transactNo AS `T.N`,
+                              p.packageName AS `PACKAGE`,
+                              CASE 
+                                  WHEN b.flightId IS NULL THEN 'Land Only'
+                                  ELSE DATE_FORMAT(f.flightDepartureDate, '%M %d, %Y')
+                              END AS `FLIGHT DATE`,
+                              b.pax AS `TOTAL PAX`,
+                              CONCAT(
+                                  b.lName, ', ', b.fName, ' ', 
+                                  CASE WHEN b.mName = 'N/A' THEN '' ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ',
+                                  CASE WHEN b.suffix = 'N/A' THEN '' ELSE b.suffix END
+                              ) AS `CONTACT NAME`,
+                              b.status AS `STATUS`
+                            FROM 
+                                booking b
+                            LEFT JOIN 
+                                flight f ON b.flightId = f.flightId
+                            LEFT JOIN 
+                                package p ON b.packageId = p.packageId
+                            LEFT JOIN
+                                agent a ON b.agentId = a.agentId
+                            WHERE 
+                                b.agentId = '$agentId' and status='Confirmed'
+                            ORDER BY 
+                                b.transactNo DESC LIMIT 5";
+          
+                    // Run the query and check for results
+                    $res1 = $conn->query($sql1);
+                      
+                    // Check if there are any results
+                    if ($res1->num_rows > 0) 
                     {
-                      echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($row['T.N']) . "'>
-                              <td>{$row['T.N']}</td>
-                              <td>{$row['PACKAGE']}</td>
-                              <td>{$row['FLIGHT DATE']}</td>
-                              <td>{$row['TOTAL PAX']}</td>
-                              <td>{$row['CONTACT NAME']}</td>
-                              <td>{$row['STATUS']}</td>
-                            </tr>";
+                      // Output data for each row
+                      while ($row = $res1->fetch_assoc()) 
+                      {
+                        echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($row['T.N']) . "'>
+                                <td>{$row['T.N']}</td>
+                                <td>{$row['PACKAGE']}</td>
+                                <td>{$row['FLIGHT DATE']}</td>
+                                <td>{$row['TOTAL PAX']}</td>
+                                <td>{$row['CONTACT NAME']}</td>
+                                <td>{$row['STATUS']}</td>
+                              </tr>";
+                      }
+                    } 
+                    else 
+                    {
+                      // If no records found
+                      echo "<tr><td colspan='12' style='text-align: center;'>No Confirmed Transactions as of the moment</td></tr>";
                     }
-                  } 
-                  else 
-                  {
-                    // If no records found
-                    echo "<tr><td colspan='12' style='text-align: center;'>No Confirmed Transactions as of the moment</td></tr>";
-                  }
-                ?>
-              </tbody>
-            </table>
+                  ?>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
