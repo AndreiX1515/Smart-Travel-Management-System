@@ -20,56 +20,95 @@ body {
 
  .header {
   display: flex;
-  flex-direction: column;
-  width: 40%; /* Keep the same width */
-  height: 85%; /* Keep the same height */
-  flex: 1;
-  padding: 15px; /* Reduce padding to make it smaller */
-  border: 1px solid #e9edf0;
+  flex-direction: row;
+  gap: 10px;
+  width: 100%; /* Keep the same width */
+  height: 30vh;
   background-color: transparent;
   border-radius: 8px;
   box-sizing: border-box;
 }
 
-.header .row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px; /* Reduced gap between columns */
+
+.transaction-info {
+ display: flex;
+ flex-direction: column;
+ width: 40%; 
+ padding: 15px; 
+ border: 1px solid #e9edf0;
+ background-color: transparent;
+ border-radius: 8px;
+ box-sizing: border-box;
 }
 
-.header .col-md-5 {
-  flex: 1;
-  min-width: 180px; /* Prevents the columns from becoming too narrow */
+.transaction-info .row {
+ display: flex;
+ flex-wrap: wrap;
+ gap: 8px; /* Reduced gap between columns */
 }
 
-.header p {
-  font-size: 0.9em; /* Reduced font size for smaller components */
-  margin-bottom: 4px; /* Reduced margin between paragraphs */
+.transaction-info .col-md-5 {
+ flex: 1;
+ min-width: 180px; /* Prevents the columns from becoming too narrow */
 }
 
-.header h5 {
-  font-size: 1em; /* Slightly smaller heading */
-  margin-bottom: 8px; /* Reduced space below the header */
+.transaction-info p {
+ font-size: 0.9em; /* Reduced font size for smaller components */
+ margin-bottom: 4px; /* Reduced margin between paragraphs */
 }
 
-.badge {
-  font-size: 0.8em; /* Smaller badge font size */
-  padding: 3px 8px; /* Reduced padding for a smaller badge */
+.transaction-info h5 {
+ font-size: 1em; /* Slightly smaller heading */
+ margin-bottom: 8px; /* Reduced space below the header */
+}
+
+.transaction-info .badge {
+ font-size: 0.8em; /* Smaller badge font size */
+ padding: 3px 8px; /* Reduced padding for a smaller badge */
 }
 
 @media (max-width: 768px) {
-  .header {
-    padding: 10px; /* Further reduce padding on small screens */
-  }
+ .transaction-info {
+   padding: 10px; /* Further reduce padding on small screens */
+ }
 
-  .header h5 {
-    font-size: 1em; /* Adjust heading size for smaller screens */
-  }
+ .transaction-info h5 {
+   font-size: 1em; /* Adjust heading size for smaller screens */
+ }
 
-  .header p {
-    font-size: 0.8em; /* Further reduce paragraph font size on small screens */
-  }
+ .transaction-info p {
+   font-size: 0.8em; /* Further reduce paragraph font size on small screens */
+ }
 }
+
+
+
+
+
+
+.table-wrapper {
+ display: flex;
+ flex-direction: column;
+ width: 60%; 
+ border: 1px solid #e9edf0;
+ background-color: transparent;
+ border-radius: 8px;
+ box-sizing: border-box;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
  /* Main content wrapper */
