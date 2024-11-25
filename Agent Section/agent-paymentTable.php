@@ -50,14 +50,8 @@
                       case 'Submitted':
                           $badgeClass = 'bg-primary'; // Blue for Submitted
                           break;
-                      case 'Pending':
-                          $badgeClass = 'bg-warning'; // Yellow for Pending
-                          break;
                       case 'Approved':
                           $badgeClass = 'bg-success'; // Green for Approved
-                          break;
-                      case 'Rejected':
-                          $badgeClass = 'bg-danger'; // Red for Rejected
                           break;
                       default:
                           $badgeClass = 'bg-secondary'; // Gray for unknown statuses
@@ -103,50 +97,43 @@
       <form action="../Agent Section/functions/agent-transactionPayment-code.php" method="POST" enctype="multipart/form-data">
         <div class="modal-body">
           <!-- Hidden Inputs -->
-          <input type="hidden" name="transactionNumber" value="<?= $transactionNumber ?>">
-          <input type="hidden" name="accountId" value="<?= $accountId ?>">
+          <input type="" name="transactionNumber" value="<?= $transactionNumber ?>">
+          <input type="" name="accountId" value="<?= $accountId ?>">
 
-          <!-- Payment Title -->
-          <div class="mb-3">
-            <label class="form-label" for="paymentTitle<?= $transactionNumber ?>">Payment for:</label>
-            <select class="form-select" id="paymentTitle<?= $transactionNumber ?>" name="paymentTitle" required>
-              <option selected disabled>Select Payment Title</option>
-              <option value="Package Payment">Package Payment</option>
-              <option value="Request Payment">Request Payment</option>
-            </select>
-          </div>
+            <div class="mb-3">
+              <label class="form-label">Payment for:</label>
+              <select class="form-select" id="paymentTitle" name="paymentTitle" required>
+                <option selected disabled>Select Payment Title</option>
+                <option value="Package Payment">Package Payment</option>
+                <option value="Request Payment">Request Payment</option>
+              </select>
+            </div>
 
-          <!-- Payment Type -->
-          <div class="mb-3">
-            <label class="form-label" for="paymentType<?= $transactionNumber ?>">Payment Type</label>
-            <select class="form-select" id="paymentType<?= $transactionNumber ?>" name="paymentType" required>
-              <option selected disabled>Select Payment Type</option>
-              <option value="Downpayment">Downpayment</option>
-              <option value="Partial Payment">Partial Payment</option>
-              <option value="Full Payment">Full Payment</option>
-            </select>
-          </div>
+            <div class="mb-3">
+              <label class="form-label">Payment Type</label>
+              <select class="form-select" name="paymentType" required>
+                <option selected disabled>Select Payment Type</option>
+                <option value="Downpayment">Downpayment</option>
+                <option value="Partial Payment">Partial Payment</option>
+                <option value="Full Payment">Full Payment</option>
+              </select>
+            </div>
 
-          <!-- Amount Display -->
-          <div id="amountDisplay<?= $transactionNumber ?>">
-            <p>Total Amount Left: ₱ <span id="amountValue<?= $transactionNumber ?>">0.00</span></p>
-            <span id="amountStatus<?= $transactionNumber ?>"></span>
-            <span id="requestAmountStatus<?= $transactionNumber ?>"></span>
-          </div>
+            <div id="amountDisplay">Total Amount Left: ₱ <span id="amountValue">0.00 </span> <span id="amountStatus"></span> <span id="requestAmountStatus"></span></div>
 
-          <!-- Payment Amount -->
-          <div class="mb-3">
-            <label class="form-label" for="paymentAmount<?= $transactionNumber ?>">Payment Amount</label>
-            <input type="number" step="0.01" class="form-control" id="paymentAmount<?= $transactionNumber ?>" name="amount" placeholder="Enter payment amount" min="1" required>
-          </div>
+            <div class="mb-3">
+              <label class="form-label">Payment Amount</label>
+              <input type="number" step="0.01" class="form-control" id="paymentAmount" name="amount" placeholder="Enter payment Amount" min = "1" required>
+            </div>
 
-          <!-- Proof of Payment -->
-          <div class="mb-3">
-            <label class="form-label" for="proofs<?= $transactionNumber ?>">Proof of Payment</label>
-            <input type="file" class="form-control" id="proofs<?= $transactionNumber ?>" name="proofs[]" accept="image/*,application/pdf" multiple>
-            <ul id="fileList<?= $transactionNumber ?>" class="list-unstyled mt-2"></ul>
-          </div>
-        </div>
+            <div class="mb-3">
+              <label class="form-label">Proof of Payment</label>
+              <div class="mb-3">
+                <input type="file" class="form-control" name="proofs[]" accept="image/*,application/pdf" multiple>
+              </div>
+              <!-- List of file names -->
+              <ul id="fileList<?= $transactionNumber ?>" class="list-unstyled mt-2"></ul>
+            </div>
 
         <!-- Modal Footer -->
         <div class="modal-footer">
