@@ -47,47 +47,58 @@
 
     <!-- PHP to fetch the pax count -->
     <?php
-        // Assuming you have a MySQLi connection instance $conn
-        $stmt = $conn->prepare("SELECT * FROM booking WHERE transactNo = ?");
-        $stmt->bind_param("s", $transactionNumber);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        $pax = 0; // Default value if no result is found
-
-        if ($row = $result->fetch_assoc()) 
-        {
-          $_SESSION['pax'] = $row['pax'];
-        }
-
-        $stmt->close();
-      ?>
-
+      $stmt = $conn->prepare("SELECT * FROM booking WHERE transactNo = ?");
+      $stmt->bind_param("s", $transactionNumber);
+      $stmt->execute();
+      $result = $stmt->get_result();
+    
+      $pax = 0; // Default value if no result is found
+      if ($row = $result->fetch_assoc()) {
+        $_SESSION['pax'] = $row['pax']; // Store the total pax in the session
+      }
+    
+      // Fetch the count of existing guests
+      $stmt = $conn->prepare("SELECT COUNT(*) FROM guest WHERE transactNo = ?");
+      $stmt->bind_param("s", $transactionNumber);
+      $stmt->execute();
+      $result = $stmt->get_result();
+      $guestCount = $result->fetch_row()[0]; // Get the number of guests already added
+      $stmt->close();
+    
+      // Calculate Available Pax
+      $availablePax = $_SESSION['pax'] - $guestCount;
+    ?>
 
     <div class="content-wrapper bg-transparent px-5 pt-2">
       <div class="d-flex flex-row gap-5">
         <h6 class="fw-bold">Transaction No: <span class="fw-normal"><?php echo $transactionNumber ?></span></h6>
         <h6 class="fw-bold">Total Pax: <span class="fw-normal"><?php echo $_SESSION['pax']; ?></span></h6>
+        <h6 class="fw-bold">Available Pax: <span class="fw-normal"><?php echo $availablePax; ?></span></h6>
+        <button id="addGuestFormButton" type="button" class="btn btn-primary">Add Guest Information Form</button>
       </div>
-     
+
       <!-- Dynamically generate Guest Information Cards based on pax -->
       <form action="../Agent Section/functions/agent-addGuest-code.php" method="POST">
-        <?php for ($i = 1; $i <= $_SESSION['pax']; $i++): ?>
+        <input type="hidden" name="transactNo" value="<?php echo $transactionNumber; ?>">
+        <!-- Guest Forms Container -->
+        <div id="guestFormsContainer">
+          <!-- Default initial form -->
           <div class="card guest-form shadow-sm mb-3">
             <div class="card-header bg-secondary text-white d-flex flex-row justify-content-between align-items-center">
-              <h5 class="font-weight-bold mt-1">Guest Information <?php echo $i; ?></h5>
-              <button class="btn btn-sm btn-outline-light float-end" type="button" data-bs-toggle="collapse" data-bs-target="#cardBodyContent<?php echo $i; ?>" aria-expanded="false" aria-controls="cardBodyContent<?php echo $i; ?>">
+              <h5 class="font-weight-bold mt-1">Guest Information 1</h5>
+              <button class="btn btn-sm btn-outline-light float-end" type="button" data-bs-toggle="collapse" data-bs-target="#cardBodyContent1" aria-expanded="false" aria-controls="cardBodyContent1">
                 Toggle
               </button>
+              <!-- <button class="btn btn-sm btn-danger deleteGuestFormButton ms-2" type="button">Delete</button> -->
             </div>
 
-            <div id="cardBodyContent<?php echo $i; ?>" class="collapse show">
+            <div id="cardBodyContent1" class="collapse show">
               <div class="card-body px-5">
-                <input type="hidden" name="transactNo" value=<?php echo $transactionNumber; ?>>
-                <!-- Guest Personal Information -->
                 
-                <div class="header-container d-flex flex-row w-100 mb-3 ">
-                  <h5 class="card-title bg-primary text-white p-3 w-100">Personal Information</h5>
+
+                <!-- Guest Personal Information -->
+                <div class="header-container d-flex flex-row w-100 mb-3">
+                  <h5 class="card-title bg-primary text-white p-3 w-100 personal-info-header">Personal Information</h5>
                 </div>
 
                 <!--Guest Name Input Fields-->
@@ -385,8 +396,8 @@
                 </div>
 
                 <!-- Guest Contact Information -->
-                <div class="header-container d-flex flex-row w-100 mb-3 ">
-                  <h5 class="card-title bg-primary text-white p-3 w-100">Contact Information</h5>
+                <div class="header-container d-flex flex-row w-100 mb-3">
+                  <h5 class="card-title bg-primary text-white p-3 w-100 contact-info-header">Contact Information</h5>
                 </div>
 
                 <div class="row">
@@ -725,7 +736,7 @@
                           <option value="+675">Papua New Guinea (+675)</option>
                           <option value="+595">Paraguay (+595)</option>
                           <option value="+51">Peru (+51)</option>
-                          <option value="+63" selected>Philippines (+63)</option>
+                          <option value="+63">Philippines (+63)</option>
                           <option value="+48">Poland (+48)</option>
                           <option value="+351">Portugal (+351)</option>
                           <option value="+974">Qatar (+974)</option>
@@ -794,9 +805,9 @@
                   </div>
                 </div>
 
-                <!--  Guest Address Information -->
+                <!-- Guest Address Information -->
                 <div class="header-container d-flex flex-row w-100 mb-3">
-                  <h5 class="card-title bg-primary text-white p-3 w-100">Address Information</h5>
+                  <h5 class="card-title bg-primary text-white p-3 w-100 address-info-header">Address Information</h5>
                 </div>
 
                 <div class="row">
@@ -1051,14 +1062,14 @@
                     </div>
                   </div>
                 </div>
+                
               </div>
             </div>
           </div>
-
-        <?php endfor; ?>
+        </div>
 
         <div class="card-footer d-flex justify-content-end mb-5 my-3">
-          <button type="submit" class="btn btn-primary" name="addGuestInformation">Save Guest Information</button>
+          <button type="submit" class="btn btn-primary" id="addGuest" name="addGuestInformation">Save Guest Information</button>
         </div>
       </form>   
     </div>
@@ -1068,6 +1079,235 @@
   <?php require "../Agent Section/includes/scripts.php"; ?>
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <script>
+    $(document).ready(function () 
+    {
+      // Validation logic for booking
+      $('#addGuest').click(function (event) 
+      {
+        event.preventDefault(); // Prevent default form submission
+
+        let isValid = true; // Initialize isValid flag
+
+        // Primary Guest field validation
+        $('.guest-form').each(function (index) 
+        {
+          const guestFormNumber = index; // Get guest form number
+          const guestFields = 
+          [
+            { name: 'fName', error: 'First name is required.' },
+            { name: 'lName', error: 'Last name is required.' },
+            { name: 'mName', error: 'Middle name is required.' },
+            { name: 'suffix', error: 'Suffix is required.', isSelect: true },
+            { name: 'birthdate', error: 'Birthdate is required.' },
+            { name: 'age', error: 'Age is required.' },
+            { name: 'sex', error: 'Sex is required.', isSelect: true },
+            { name: 'nationality', error: 'Nationality is required.' },
+            { name: 'passportNo', error: 'Passport number is required.' },
+            { name: 'passportExp', error: 'Passport expiration date is required.' },
+            { name: 'countryCode', error: 'Country Code is required.', isSelect: true },
+            { name: 'contactNo', error: 'Contact number is required.' },
+            { name: 'email', error: 'Email is required.' },
+            { name: 'addressLine', error: 'Address is required.' },
+            { name: 'city', error: 'City is required.' },
+            { name: 'state', error: 'State is required.' },
+            { name: 'zipCode', error: 'Zip Code is required.' },
+            { name: 'country', error: 'Country is required.' }
+          ];
+
+          // Iterate through the fields to validate
+          guestFields.forEach(({ name, error, isSelect }) => 
+          {
+            // Update ID for the specific guest form (assuming error spans follow this pattern)
+            const errorSpanId = `#${name}Error`;
+            const input = isSelect
+                ? $(this).find(`select[name^="${name}"]`)
+                : $(this).find(`input[name^="${name}"]`);
+
+            // Validate if the input/select is empty
+            if (!input.val()) 
+            {
+              input.addClass('is-invalid'); // Add invalid class
+              $(errorSpanId).text(error);   // Set error message dynamically
+              isValid = false;              // Set valid flag to false
+            }
+
+            // Clear error when input field is focused or changed
+            input.on('focus change', function () 
+            {
+              $(this).removeClass('is-invalid'); // Remove invalid class
+              $(errorSpanId).text('');           // Clear error message
+            });
+          });
+        });
+
+        // Cloned Guest field validation
+        $('.guest-form').each(function (index) 
+        {
+          const guestFormNumber = index + 1; // Get guest form number
+          const guestFields = [
+              { name: 'fName', error: 'First name is required.' },
+              { name: 'lName', error: 'Last name is required.' },
+              { name: 'mName', error: 'Middle name is required.' },
+              { name: 'suffix', error: 'Suffix is required.', isSelect: true },
+              { name: 'birthdate', error: 'Birthdate is required.' },
+              { name: 'age', error: 'Age is required.' },
+              { name: 'sex', error: 'Sex is required.', isSelect: true },
+              { name: 'nationality', error: 'Nationality is required.' },
+              { name: 'passportNo', error: 'Passport number is required.' },
+              { name: 'passportExp', error: 'Passport expiration date is required.' },
+              { name: 'countryCode', error: 'Country Code is required.', isSelect: true }, // Added countryCode validation
+              { name: 'contactNo', error: 'Contact number is required.' },
+              { name: 'email', error: 'Email is required.' },
+              { name: 'addressLine', error: 'Address is required.' },
+              { name: 'city', error: 'City is required.' },
+              { name: 'state', error: 'State is required.' },
+              { name: 'zipCode', error: 'Zip Code is required.' },
+              { name: 'country', error: 'Country is required.' }
+          ];
+
+          guestFields.forEach(({ name, error, isSelect }) => 
+          {
+            // Update ID for the specific guest form
+            // const errorSpanId = `#${name}Error${guestFormNumber}`;
+            const input = isSelect ? $(this).find(`select[name^="${name}"]`) : $(this).find(`input[name^="${name}"]`);
+
+            if (!input.val()) 
+            {
+              input.addClass('is-invalid'); // Add invalid class
+              $(errorSpanId).text(error); // Set error message dynamically
+              isValid = false; // Set valid flag to false
+            }
+
+            // Clear error when input field is focused or changed
+            input.on('focus change', function () 
+            {
+              $(this).removeClass('is-invalid'); // Remove invalid class
+              $(errorSpanId).text(''); // Clear error message
+            });
+          });
+        });
+
+        // If the form is valid, submit the form
+        if (isValid) 
+        {
+          $('form').submit(); // Submit the form
+        }
+      });
+    });
+  </script>
+
+  <script>
+    $(document).ready(function () 
+    {
+      var maxPax = <?php echo $availablePax; ?>; // Passing maxPax value from PHP to JS
+
+      // Add a new guest form
+      $('#addGuestFormButton').on('click', function () 
+      {
+        const guestFormsContainer = $('#guestFormsContainer');
+        const existingForms = $('.guest-form');
+        const currentCount = existingForms.length;
+
+        if (currentCount < maxPax) 
+        {
+          // Clone the first form
+          const newForm = existingForms.first().clone();
+          const newIndex = currentCount + 1;
+
+          // Update IDs and Labels in the cloned form
+          newForm.find('h5').text(`Guest Information ${newIndex}`);
+          const collapsible = newForm.find('[data-bs-target]');
+          const collapsibleContent = newForm.find('.collapse');
+
+          collapsible.attr('data-bs-target', `#cardBodyContent${newIndex}`);
+          collapsibleContent.attr('id', `cardBodyContent${newIndex}`);
+
+          // Reset form values
+          newForm.find('input').val(''); // Clear input values
+          newForm.find('.error-message').text(''); // Clear error messages
+
+          // Update error IDs in the new form
+          newForm.find('.error-message').each(function () {
+            const baseId = $(this).attr('id').replace(/\d+$/, ''); // Strip existing index
+            $(this).attr('id', `${baseId}${newIndex}`); // Append new index
+          });
+
+          // Ensure the delete button is present only in the cloned forms
+          const cardHeader = newForm.find('.card-header');
+          let deleteButton = cardHeader.find('.deleteGuestFormButton');
+
+          // Only create the delete button if it's not the first (main) form
+          if (deleteButton.length === 0) 
+          {
+            deleteButton = $('<button>', 
+            {
+              class: 'btn btn-sm btn-danger deleteGuestFormButton ms-2',
+              type: 'button',
+              text: 'Delete',
+            });
+
+            // Append the delete button after the "Toggle" button
+            cardHeader.append(deleteButton);
+          }
+
+          // Append the new form to the container
+          guestFormsContainer.append(newForm);
+          renumberForms(); // Renumber the remaining forms
+        } 
+        else 
+        {
+          alert(`You can only add up to ${maxPax} guest forms.`);
+        }
+      });
+
+      // Delete a guest form
+      $(document).on('click', '.deleteGuestFormButton', function () 
+      {
+        $(this).closest('.guest-form').slideUp(function () 
+        {
+          $(this).remove(); // Remove the form
+          renumberForms(); // Renumber the remaining forms
+        });
+      });
+
+      // Function to renumber forms
+      function renumberForms() 
+      {
+        $('.guest-form').each(function (index) 
+        {
+          const formIndex = index + 1;
+
+          // Update the main guest form header (Guest Information 1, 2, etc.)
+          $(this).find('.font-weight-bold.mt-1').text(`Guest Information ${formIndex}`);
+
+          // Update the "Personal Information" header
+          $(this).find('.personal-info-header').text(`Personal Information ${formIndex}`);
+          
+          // Update the "Contact Information" header
+          $(this).find('.contact-info-header').text(`Contact Information ${formIndex}`);
+          
+          // Update the "Address Information" header
+          $(this).find('.address-info-header').text(`Address Information ${formIndex}`);
+          
+          // Update collapsible elements
+          const collapsible = $(this).find('[data-bs-target]');
+          const collapsibleContent = $(this).find('.collapse');
+
+          // Update error IDs dynamically
+          $(this).find('.error-message').each(function () 
+          {
+            const baseId = $(this).attr('id').replace(/\d+$/, ''); // Strip existing index
+            $(this).attr('id', `${baseId}${formIndex}`); // Append updated index
+          });
+          
+          collapsible.attr('data-bs-target', `#cardBodyContent${formIndex}`);
+          collapsibleContent.attr('id', `cardBodyContent${formIndex}`);
+        });
+      }
+    });
+  </script>
 
   <script>
     $(document).ready(function () 
