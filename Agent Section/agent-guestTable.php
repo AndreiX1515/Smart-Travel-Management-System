@@ -46,9 +46,9 @@
           Add Guest Information
         </button>
 
-        <button type="button" class="btn btn-primary">
+        <!-- <button type="button" class="btn btn-primary">
           View Guest Files
-        </button>
+        </button> -->
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#visaModal">
           Attach Visa Requirements
         </button>
