@@ -51,9 +51,21 @@
                            <a href='functions/view-file.php?file=" . urlencode($row['passport']) . "' target='_blank'>View File</a> 
                            <a href='functions/download.php?file=" . urlencode($row['passport']) . "' target='_blank'>Download File</a> 
                          </td>
-                         <td>{$row['permit']}</td>
-                         <td>{$row['validId']}</td>
-                         <td>{$row['certificate']}</td>
+
+                         <td>
+                           <a href='functions/view-file.php?file=" . urlencode($row['permit']) . "' target='_blank'>View File</a> 
+                           <a href='functions/download.php?file=" . urlencode($row['permit']) . "' target='_blank'>Download File</a> 
+                         </td>
+
+                         <td>
+                           <a href='functions/view-file.php?file=" . urlencode($row['validId']) . "' target='_blank'>View File</a> 
+                           <a href='functions/download.php?file=" . urlencode($row['validId']) . "' target='_blank'>Download File</a> 
+                         </td>
+
+                         <td>
+                           <a href='functions/view-file.php?file=" . urlencode($row['certificate']) . "' target='_blank'>View File</a> 
+                           <a href='functions/download.php?file=" . urlencode($row['certificate']) . "' target='_blank'>Download File</a> 
+                         </td>
                        </tr>";
                }
              } else {
