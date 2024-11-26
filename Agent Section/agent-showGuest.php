@@ -111,6 +111,7 @@
           }
           ?>
 
+      <button type="button" class="btn btn-secondary" onclick="window.location.href='agent-transactions.php'">Back</button>
      <div class="content-wrapper">
        <div class="header">
          <div class="transaction-info">
@@ -168,6 +169,10 @@
        </li>
 
        <li class="nav-item" role="presentation">
+         <button class="nav-link" id="pills-visa-tab" data-bs-toggle="pill" data-bs-target="#pills-visa" type="button" role="tab" aria-controls="pills-visa" aria-selected="false">Visa Requirements</button>
+       </li>
+
+       <li class="nav-item" role="presentation">
          <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Request History</button>
        </li>
 
@@ -192,6 +197,7 @@
     <div class="tab-content" id="pills-tabContent">
        <!-- Guest Table -->
        <?php include 'agent-guestTable.php'; ?>
+       <?php include 'agent-showVisa.php'; ?>
        <?php include 'agent-requestTable.php'; ?>
        <?php include 'agent-paymentTable.php'; ?>
        

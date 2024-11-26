@@ -69,6 +69,7 @@
       $availablePax = $_SESSION['pax'] - $guestCount;
     ?>
 
+    <button type="button" class="btn btn-secondary" onclick="window.location.href='agent-showGuest.php?id=<?php echo htmlspecialchars($transactionNumber); ?>'">Back</button>
     <div class="content-wrapper bg-transparent px-5 pt-2">
       <div class="d-flex flex-row gap-5">
         <h6 class="fw-bold">Transaction No: <span class="fw-normal"><?php echo $transactionNumber ?></span></h6>
