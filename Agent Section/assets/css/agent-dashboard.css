@@ -654,7 +654,7 @@ body {
 }
 
 .unconfirm-table thead {
- background-color: #f5f5f5; /* Slightly darker grey for the header */
+ background-color: #858585; /* Slightly darker grey for the header */
  text-align: left;
 }
 
@@ -789,7 +789,7 @@ body {
 .request-table thead th {
  padding: 6px 12px; /* Adjusted padding for headers */
  font-weight: 600; /* Bold header text */
- color: #333; /* Darker color for better readability */
+ color: #4e4949; /* Darker color for better readability */
  border-bottom: 2px solid rgba(0, 0, 0, 0.1); /* Soft bottom border */
 }
 
@@ -827,7 +827,7 @@ body {
 
 /* Third Row Container - Div Three */
 .second-row-container .three {
- width: 35%; /* Set width to 30% */
+ width: 34%; /* Set width to 30% */
  background-color: #fff; /* Card background color */
  border-radius: 8px; /* Rounded corners */
  box-shadow: 0 2px 5px rgba(201, 201, 201, 0.5); /* Box shadow for depth */

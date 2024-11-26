@@ -97,8 +97,8 @@
       <form action="../Agent Section/functions/agent-transactionPayment-code.php" method="POST" enctype="multipart/form-data">
         <div class="modal-body">
           <!-- Hidden Inputs -->
-          <input type="" name="transactionNumber" value="<?= $transactionNumber ?>">
-          <input type="" name="accountId" value="<?= $accountId ?>">
+          <input type="hidden" name="transactionNumber" value="<?= $transactionNumber ?>">
+          <input type="hidden" name="accountId" value="<?= $accountId ?>">
 
             <div class="mb-3">
               <label class="form-label">Payment for:</label>

@@ -67,7 +67,7 @@
                         <td>{$row['details']}</td>
                         <td>{$row['formattedRequestDate']}</td>
                         <td>
-                          <span class='badge rounded-pill {$badgeClass}'>{$status}</span>
+                          <span class='badge rounded-pill {$badgeClass} p-2'>{$status}</span>
                         </td>
                       </tr>";
               }
