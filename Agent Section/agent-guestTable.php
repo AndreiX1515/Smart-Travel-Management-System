@@ -14,11 +14,13 @@
 
           // Run the query to get guest count and pax
           $query2 = "SELECT 
-                        COALESCE(COUNT(guest.transactNo), 0) AS guest_count, 
-                        COALESCE(booking.pax, 0) AS pax 
-                      FROM booking 
-                      LEFT JOIN guest ON guest.transactNo = booking.transactNo 
-                      WHERE booking.transactNo = '$transactionNumber'";
+                        COALESCE(COUNT(g.transactNo), 0) AS guest_count, 
+                        COALESCE(COUNT(v.transactNo), 0) AS visa_count,
+                        COALESCE(b.pax, 0) AS pax 
+                      FROM booking b
+                      LEFT JOIN guest g ON g.transactNo = b.transactNo 
+                      LEFT JOIN visarequirements v ON v.transactNo = b.transactNo
+                      WHERE b.transactNo = '$transactionNumber'";
 
           $result2 = $conn->query($query2);
 
@@ -32,11 +34,13 @@
             // Fetch the result
             $row2 = $result2->fetch_assoc();
             $guest_count = $row2['guest_count'];
+            $visa_count = $row2['visa_count'];
             $pax = $row2['pax'];
           }
 
           // Determine whether to disable the button
           $disable_button = ($guest_count >= $pax) ? 'disabled' : ''; // Disable if guest_count >= pax
+          $disable_button2 = ($guest_count < $pax || $visa_count >= $pax) ? 'disabled' : ''; // Disable if guest_count >= pax
         ?>
 
         <!-- Add Guest Button -->
@@ -49,7 +53,12 @@
         <!-- <button type="button" class="btn btn-primary">
           View Guest Files
         </button> -->
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#visaModal">
+        <button type="button" class="btn btn-primary" 
+                data-bs-toggle="modal" 
+                <?php echo $disable_button2; ?>
+                <?php if (empty($disable_button2)) : ?>
+                  data-bs-target="#visaModal"
+                <?php endif; ?>>
           Attach Visa Requirements
         </button>
       </div>
