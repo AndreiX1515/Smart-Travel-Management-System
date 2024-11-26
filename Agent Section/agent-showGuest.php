@@ -48,68 +48,68 @@
         endif;
     ?>
 
-     <?php
-       $query1 = "SELECT booking.*, package.packageName, flight.flightDepartureDate 
-                   FROM booking 
-                   JOIN package ON booking.packageId = package.packageId
-                   LEFT JOIN flight ON booking.flightId = flight.flightId
-                   WHERE transactNo = '$transactionNumber'";
+    <?php
+      $query1 = "SELECT booking.*, package.packageName, flight.flightDepartureDate 
+                  FROM booking 
+                  JOIN package ON booking.packageId = package.packageId
+                  LEFT JOIN flight ON booking.flightId = flight.flightId
+                  WHERE transactNo = '$transactionNumber'";
 
-       $result1 = $conn->query($query1);
+      $result1 = $conn->query($query1);
 
-       if ($result1->num_rows > 0) 
-       {
-         // Output data of each row
-         while ($row1 = $result1->fetch_assoc()) 
-         {
-           $transactNum = $row1['transactNo'];
-           $fName = $row1['fName'];
-           $mName = $row1['mName'];
-           $lName = $row1['lName'];
-           $suffix = $row1['suffix'];
-           $countryCode = $row1['countryCode'];
-           $contact = $row1['contactNo'];
-           $email = $row1['email'];
-           $packageName = $row1['packageName'];
-           $flightDate = $row1['flightDepartureDate'];
-           $pax = $row1['pax'];
-           $status = $row1['status'];
-           $flightId = $row1['flightId']; // Fetch flightId
+      if ($result1->num_rows > 0) 
+      {
+        // Output data of each row
+        while ($row1 = $result1->fetch_assoc()) 
+        {
+          $transactNum = $row1['transactNo'];
+          $fName = $row1['fName'];
+          $mName = $row1['mName'];
+          $lName = $row1['lName'];
+          $suffix = $row1['suffix'];
+          $countryCode = $row1['countryCode'];
+          $contact = $row1['contactNo'];
+          $email = $row1['email'];
+          $packageName = $row1['packageName'];
+          $flightDate = $row1['flightDepartureDate'];
+          $pax = $row1['pax'];
+          $status = $row1['status'];
+          $flightId = $row1['flightId']; // Fetch flightId
 
-           // Construct the full name using the conditions for middle name and suffix
-           $fullName = $lName . ", " . $fName . " " . 
-                       ($suffix !== 'N/A' ? $suffix . " " : "") .  // Add space after suffix only if it's not 'N/A'
-                       ($mName !== 'N/A' ? substr($mName, 0, 1) . ". " : "");  // Add middle initial with dot only if it's not 'N/A'
-           $contactNo = $countryCode . $contact;
+          // Construct the full name using the conditions for middle name and suffix
+          $fullName = $lName . ", " . $fName . " " . 
+                      ($suffix !== 'N/A' ? $suffix . " " : "") .  // Add space after suffix only if it's not 'N/A'
+                      ($mName !== 'N/A' ? substr($mName, 0, 1) . ". " : "");  // Add middle initial with dot only if it's not 'N/A'
+          $contactNo = $countryCode . $contact;
 
-           // Check if flightId is NULL and set flightDate accordingly
-           if (is_null($flightId)) 
-           {
-             $flightDate = "Land Package Only";
-           }
+          // Check if flightId is NULL and set flightDate accordingly
+          if (is_null($flightId)) 
+          {
+            $flightDate = "Land Package Only";
+          }
 
-           $status = isset($row1['status']) ? $row1['status'] : 'Unknown';
+          $status = isset($row1['status']) ? $row1['status'] : 'Unknown';
 
-           // Initialize an empty class string
-           $statusClass = '';
+          // Initialize an empty class string
+          $statusClass = '';
 
-           // Assign classes based on the status value using switch
-           switch ($status) {
-               case 'Confirmed':
-                   $statusClass = 'bg-success text-white'; // Green background, white text
-                   break;
-               case 'Cancelled':
-                   $statusClass = 'bg-danger text-white'; // Red background, white text
-                   break;
-               case 'Pending':
-                   $statusClass = 'bg-warning text-dark'; // Yellow background, dark text
-                   break;
-               default:
-                   $statusClass = 'bg-secondary text-white'; // Gray background, white text
-                   break;
-           }
-
-           ?>
+          // Assign classes based on the status value using switch
+          switch ($status) 
+          {
+            case 'Confirmed':
+                $statusClass = 'bg-success text-white'; // Green background, white text
+                break;
+            case 'Cancelled':
+                $statusClass = 'bg-danger text-white'; // Red background, white text
+                break;
+            case 'Pending':
+                $statusClass = 'bg-warning text-dark'; // Yellow background, dark text
+                break;
+            default:
+                $statusClass = 'bg-secondary text-white'; // Gray background, white text
+                break;
+          }
+          ?>
 
      <div class="content-wrapper">
        <div class="header">
@@ -140,11 +140,11 @@
            ?>
          </div> 
 
-         <div class="transaction-info-footer d-flex justify-content-end">
-             <button class="btn btn-danger btn-sm mt-2">Cancel Transaction</button>
-
-
-         </div>
+          <div class="transaction-info-footer d-flex justify-content-end">
+            <button class="btn btn-danger btn-sm mt-2" data-bs-toggle="modal" data-bs-target="#cancelTransactionModal">
+              Cancel Transaction
+            </button>
+          </div>
        </div>
       
         <div class="table-wrapper">
@@ -202,6 +202,28 @@
     </div>
    </div>
  </div>
+
+ <!-- Cancel Transaction Modal -->
+<div class="modal fade" id="cancelTransactionModal" tabindex="-1" aria-labelledby="cancelTransactionModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="cancelTransactionModalLabel">Confirm Cancellation</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="../Agent Section/functions/agent-cancelTransact-code.php" method="POST">
+        <div class="modal-body">
+          Are you sure you want to cancel this transaction? This action cannot be undone.
+          <input type="hidden" name="updateTransactNo" value="<?php echo htmlspecialchars($transactNum); ?>">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" name="cancelTransact" class="btn btn-danger">Confirm Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 
     <?php require "../Agent Section/includes/scripts.php"; ?>         
  </body>

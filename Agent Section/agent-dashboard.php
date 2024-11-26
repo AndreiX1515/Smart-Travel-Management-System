@@ -450,6 +450,7 @@
                     <th>FLIGHT DATE</th>
                     <th>PAX.</th>
                     <th>CONTACT NAME</th>
+                    <th>BOOKING TYPE</th>
                     <th>STATUS</th>
                   </tr>
                 </thead>
@@ -457,7 +458,7 @@
                   <?php
                     $sql1 = "SELECT
                               b.transactNo AS `T.N`,
-                              p.packageName AS `PACKAGE`,
+                              p.packageName AS `PACKAGE`, b.bookingType as bookingType,
                               CASE 
                                   WHEN b.flightId IS NULL THEN 'Land Only'
                                   ELSE CONCAT(DATE_FORMAT(f.flightDepartureDate, '%M %d, %Y'), ' ', DATE_FORMAT(f.flightDepartureTime, '%h:%i %p'))
@@ -498,6 +499,7 @@
                               <td>" . htmlspecialchars($row['FLIGHT DATE']) . "</td>
                               <td>" . htmlspecialchars($row['TOTAL PAX']) . "</td>
                               <td>" . htmlspecialchars($row['CONTACT NAME']) . "</td>
+                              <td>" . $row['bookingType'] . "</td>
                               <td>" . $row['STATUS'] . "</td>
                             </tr>";
                       }
