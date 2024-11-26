@@ -13,76 +13,59 @@
       data-transaction-id="<?= $transactionNumber ?>">Add Request</button> -->
     </div>
     <div class="table-container">
-      <table class="product-table">
-        <thead>
-          <tr>
-            <th>Guest Id</th>
-            <th>Guest Name</th>
-            <th>Passport</th>
-            <th>Permit</th>
-            <th>Valid Id</th>
-            <th>Certificate</th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php
-            $sql1 = "Select g.guestId, v.*, CONCAT(g.fName, ' ', 
-                    IF(g.mName = 'N/A' OR g.mName IS NULL, '', CONCAT(SUBSTRING(g.mName, 1, 1), '. ')),
-                    g.lName, 
-                    IF(g.suffix = 'N/A' OR g.suffix IS NULL, '', CONCAT(' ', g.suffix))) AS guestName from guest g 
-            join visarequirements v on g.transactNo = v.transactNo
-            where g.transactNo = '$transactionNumber'";
+    <table class="product-table">
+         <thead>
+           <tr>
+             <th>Guest Id</th>
+             <th>Guest Name</th>
+             <th>Passport</th>
+             <th>Permit</th>
+             <th>Valid Id</th>
+             <th>Certificate</th>
+           </tr>
+         </thead>
+         <tbody>
+           <?php
+             $sql1 = "SELECT g.guestId, 
+                             CONCAT(g.fName, ' ', 
+                                    IF(g.mName = 'N/A' OR g.mName IS NULL, '', CONCAT(SUBSTRING(g.mName, 1, 1), '. ')),
+                                    g.lName, 
+                                    IF(g.suffix = 'N/A' OR g.suffix IS NULL, '', CONCAT(' ', g.suffix))) AS guestName,
+                             GROUP_CONCAT(v.passport) AS passport,
+                             GROUP_CONCAT(v.permit) AS permit,
+                             GROUP_CONCAT(v.validId) AS validId,
+                             GROUP_CONCAT(v.certificate) AS certificate
+                       FROM guest g
+                       JOIN visarequirements v ON g.transactNo = v.transactNo
+                       WHERE g.transactNo = '$transactionNumber'
+                       GROUP BY g.guestId";
 
-            $res1 = $conn->query($sql1);
+             $res1 = $conn->query($sql1);
 
-            if ($res1->num_rows > 0) 
-            {
-              while ($row = $res1->fetch_assoc()) 
-              {
-               
-                //  // Fetch the status from the database
-                //  $status = $row['requestStatus']; // Ensure 'requestStatus' exists in the database row
+             if ($res1->num_rows > 0) {
+               while ($row = $res1->fetch_assoc()) {
+                 echo "<tr>
+                         <td>{$row['guestId']}</td>
+                         <td>{$row['guestName']}</td>
+                         <td>
+                           <a href='functions/view-file.php?file=" . urlencode($row['passport']) . "' target='_blank'>View File</a> 
+                           <a href='functions/download.php?file=" . urlencode($row['passport']) . "' target='_blank'>Download File</a> 
+                         </td>
+                         <td>{$row['permit']}</td>
+                         <td>{$row['validId']}</td>
+                         <td>{$row['certificate']}</td>
+                       </tr>";
+               }
+             } else {
+               echo "<tr><td colspan='6' style='text-align: center;'>No Visa Status </td></tr>";
+             }
+           ?>
+         </tbody>
+       </table>
 
-                //  // Assign a corresponding Bootstrap badge class based on the status
-                //  $badgeClass = '';
 
-                //  switch ($status) {
-                //      case 'Confirmed':
-                //          $badgeClass = 'text-bg-success'; // Green for Confirmed
-                //          break;
-                //      case 'Submitted':
-                //          $badgeClass = 'text-bg-secondary'; // Gray for Submitted
-                //          break;
-                //      case 'Rejected':
-                //          $badgeClass = 'text-bg-danger'; // Red for Rejected
-                //          break;
-                //      default:
-                //          $badgeClass = 'text-bg-info'; // Blue for any other status
-                //          break;
-                //  }
-    
-                echo "<tr>
-                        <td>{$row['guestId']}</td>
-                        <td>{$row['guestName']}</td>
-                        <td>
-                              <a href='functions/view-file.php?file=" . urlencode($row['passport']) . "' target='_blank'>View File</a> 
-                              <a href='functions/download.php?file=" . urlencode($row['passport']) . "' target='_blank'>Download File</a> 
-                          </td>
-                        <td>{$row['permit']}</td>
-                        <td>{$row['validId']}</td>
-                        <td>{$row['certificate']}</td>
-                      </tr>";
-              }
-            }
-            else 
-            {
-              echo "<tr><td colspan='100' style='text-align: center;'>No Payment Found</td></tr>";
-            }
-          ?>
-        </tbody>
-      </table>
     </div>
   </div>
-</div>
+
 
 
