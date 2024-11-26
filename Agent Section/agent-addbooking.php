@@ -532,6 +532,8 @@
           $('#flightId').val(''); // Clear Flight Id field
           $('#flightPrice').text('0.00'); // Clear Flight Price field
           $('#maxSeats').text(''); // Clear Max Seat field
+          $('#displayTotalPrice').text("0.00"); // Display total price
+          $('#totalPrice').val("0.00"); // Set hidden input value
 
           // Update the modal with the selected package name
           $('#selectedPackage').text(selectedPackageName);
