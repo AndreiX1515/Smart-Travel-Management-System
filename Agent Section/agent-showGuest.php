@@ -140,8 +140,6 @@
            ?>
          </div> 
 
-         <hr style="border: 1px solid #ccc; width: 100%; margin: 5px 0;">
-
          <div class="transaction-info-footer d-flex justify-content-end">
              <button class="btn btn-danger btn-sm mt-2">Cancel Transaction</button>
 

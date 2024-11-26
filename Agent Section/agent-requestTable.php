@@ -39,29 +39,27 @@
             {
               while ($row = $res1->fetch_assoc()) 
               {
-               // Fetch the status from the database
-                $status = $row['requestStatus'];
-                
-                // Assign a corresponding Bootstrap badge class based on the status
-                $badgeClass = '';
+               
+                 // Fetch the status from the database
+                 $status = $row['requestStatus']; // Ensure 'requestStatus' exists in the database row
 
-                switch($status) {
-                    case 'Confirmed':
-                        $badgeClass = 'bg-success'; // Green for Active
-                        break;
-                    case 'Suspended':
-                        $badgeClass = 'bg-secondary'; // Gray for Inactive
-                        break;
-                    case 'Pending':
-                        $badgeClass = 'bg-warning text-dark'; // Yellow for Pending
-                        break;
-                    case 'Cancelled':
-                        $badgeClass = 'bg-danger'; // Red for Suspended
-                        break;
-                    default:
-                        $badgeClass = 'bg-info'; // Blue for any other status
-                        break;
-                }
+                 // Assign a corresponding Bootstrap badge class based on the status
+                 $badgeClass = '';
+
+                 switch ($status) {
+                     case 'Confirmed':
+                         $badgeClass = 'text-bg-success'; // Green for Confirmed
+                         break;
+                     case 'Submitted':
+                         $badgeClass = 'text-bg-secondary'; // Gray for Submitted
+                         break;
+                     case 'Rejected':
+                         $badgeClass = 'text-bg-danger'; // Red for Rejected
+                         break;
+                     default:
+                         $badgeClass = 'text-bg-info'; // Blue for any other status
+                         break;
+                 }
     
                 echo "<tr>
                         <td>{$row['requestId']}</td>
@@ -69,7 +67,7 @@
                         <td>{$row['details']}</td>
                         <td>{$row['formattedRequestDate']}</td>
                         <td>
-                            <span class='badge rounded-pill {$badgeClass} py-2'> {$status} </span>
+                          <span class='badge rounded-pill {$badgeClass}'>{$status}</span>
                         </td>
                       </tr>";
               }

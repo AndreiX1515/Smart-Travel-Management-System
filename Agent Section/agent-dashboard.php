@@ -441,8 +441,8 @@
           </div>
           
           <div class="body">
-            <div class="table-container" style="max-height: 400px; overflow-y: auto; border: 1px solid #ccc;">
-              <table class="unconfirm-table table table-bordered" style="font-size: 10px; width: 100%;">
+            <div class="table-container" style="max-height: 315px;">
+              <table class="unconfirm-table py-2">
                 <thead>
                   <tr>
                     <th>TRANSACTION NO.</th>
@@ -520,9 +520,9 @@
           </div>
 
           <div class="body">
-            <div class="table-container" style="max-height: 400px; overflow-y: auto; border: 1px solid #ccc;">
-              <table class="request-table table table-bordered" style="font-size: 10px; width: 100%;">
-                <thead style="font-size: 10px;">
+            <div class="table-container" style="max-height: 400px;">
+              <table class="request-table">
+                <thead>
                   <tr>
                     <th>TRANSACTION NO.</th>
                     <th>REQUEST</th>
@@ -579,9 +579,9 @@
          </div>
 
          <div class="body">
-          <div class="table-container" style="max-height: 400px; overflow-y: auto; border: 1px solid #ccc;">
-            <table class="pending-payment-table table table-bordered" style="font-size: 10px; width: 100%;">
-              <thead style="font-size: 10px;">
+          <div class="table-container">
+            <table class="pending-payment-table">
+              <thead>
                 <tr>
                   <th>TRANSACTION NO.</th>
                   <th>PAYMENT TITLE</th>
@@ -641,9 +641,9 @@
           </div>
             
           <div class="body">
-            <div class="table-container" style="max-height: 400px; overflow-y: auto; border: 1px solid #ccc;">
-              <table class="confirm-table table table-bordered" style="font-size: 10px; width: 100%;">
-                <thead style="font-size: 10px;">
+            <div class="table-container" style="max-height: 400px;">
+              <table class="confirm-table">
+                <thead style="font-size: 12px;">
                   <tr>
                     <th>TRANSACTION NO.</th>
                     <th>PACKAGE</th>

@@ -482,24 +482,6 @@ body {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 .dcard-body {
  display: flex;
  flex-direction: row;
@@ -650,13 +632,25 @@ body {
 }
 
 
+
+
+
+
+/* Unconfirm Table Container for Scrollability */
+.unconfirm-table-container {
+ width: 100%;
+ overflow-x: auto; /* Enable horizontal scrolling */
+ margin-top: 10px; /* Add space above the table */
+}
+
 /* Unconfirm Table */
 .unconfirm-table {
  width: 100%;
  border-collapse: collapse; /* Collapse borders for a cleaner look */
  font-family: Arial, sans-serif;
- font-size: 10px;
+ font-size: 12px; /* Slightly increased font size for readability */
  background-color: transparent; /* Keep background transparent */
+ white-space: nowrap; /* Prevent word wrapping */
 }
 
 .unconfirm-table thead {
@@ -665,19 +659,19 @@ body {
 }
 
 .unconfirm-table thead th {
- padding: 2px 10px; /* Increased padding for headers */
+ padding: 4px 12px; /* Adjusted padding for compactness */
  font-weight: 600;
  color: #333; /* Darker color for better readability */
  border-bottom: 2px solid rgba(0, 0, 0, 0.1); /* Soft bottom border */
 }
 
 .unconfirm-table tbody td {
- padding: 10px; /* Standard padding for table data */
+ padding: 8px 12px; /* Reduced padding for table data */
  border-bottom: 1px solid rgba(0, 0, 0, 0.05); /* Light bottom border for separation */
  color: #555; /* Subtle text color */
  height: 50px; /* Set a fixed height for each table cell */
  vertical-align: middle; /* Center content vertically */
- font-size: 12px;
+ font-size: 12px; /* Consistent font size for table content */
 }
 
 /* Adjust column widths */
@@ -689,7 +683,6 @@ body {
 .unconfirm-table thead th:nth-child(2),
 .unconfirm-table tbody td:nth-child(2) {
  width: 20%; /* Column for Package */
-
 }
 
 .unconfirm-table thead th:nth-child(3),
@@ -699,7 +692,7 @@ body {
 
 .unconfirm-table thead th:nth-child(4),
 .unconfirm-table tbody td:nth-child(4) {
- width: 2%; /* Column for Total Pax */
+ width: 5%; /* Adjusted for Total Pax */
 }
 
 .unconfirm-table thead th:nth-child(5),
@@ -734,6 +727,8 @@ body {
 
 
 
+
+
 /* Second Row Container - Div Two */
 .second-row-container .two {
  width: 25%; /* Set width to 40% */
@@ -762,13 +757,28 @@ body {
  
 }
 
+
+
+
+
+
+
+
+/* Request Table Container for Scrollability */
+.request-table-container {
+ width: 100%;
+ overflow-x: auto; /* Enable horizontal scrolling */
+ margin-top: 10px; /* Add space above the table */
+}
+
 /* Request Table */
 .request-table {
  width: 100%;
  border-collapse: collapse; /* Collapse borders for a cleaner look */
  font-family: Arial, sans-serif;
- font-size: 12px;
+ font-size: 12px; /* Consistent font size for table content */
  background-color: transparent; /* Keep background transparent */
+ white-space: nowrap; /* Prevent word wrapping */
 }
 
 .request-table thead {
@@ -777,16 +787,18 @@ body {
 }
 
 .request-table thead th {
- padding: 4px 10px; /* Increased padding for headers */
- font-weight: 600;
+ padding: 6px 12px; /* Adjusted padding for headers */
+ font-weight: 600; /* Bold header text */
  color: #333; /* Darker color for better readability */
  border-bottom: 2px solid rgba(0, 0, 0, 0.1); /* Soft bottom border */
 }
 
 .request-table tbody td {
- padding: 6px 10px; /* Standard padding for table data */
+ padding: 8px 12px; /* Adjusted padding for table data */
  border-bottom: 1px solid rgba(0, 0, 0, 0.05); /* Light bottom border for separation */
  color: #555; /* Subtle text color */
+ height: 50px; /* Fixed row height for consistency */
+ vertical-align: middle; /* Center text vertically */
 }
 
 .request-table tbody tr {
@@ -810,9 +822,12 @@ body {
 
 
 
+
+
+
 /* Third Row Container - Div Three */
 .second-row-container .three {
- width: 40%; /* Set width to 30% */
+ width: 35%; /* Set width to 30% */
  background-color: #fff; /* Card background color */
  border-radius: 8px; /* Rounded corners */
  box-shadow: 0 2px 5px rgba(201, 201, 201, 0.5); /* Box shadow for depth */
@@ -837,13 +852,31 @@ body {
  text-align: left;
 }
 
+
+
+
+
+
+
+
+
+
+/* Pending Payment Table Container */
+.table-container {
+ width: 100%; /* Restrict container width */
+ overflow-x: auto; /* Enable horizontal scrolling */
+ margin-bottom: 20px; /* Optional spacing below the table */
+ display: block; /* Ensure block layout for container */
+}
+
 /* Pending Payment Table */
 .pending-payment-table {
- width: 100%;
- border-collapse: collapse;
+ width: 100%; /* Allow table to scale within container */
+ border-collapse: collapse; /* Collapse borders for cleaner look */
  font-family: Arial, sans-serif;
  font-size: 12px;
  background-color: transparent;
+ white-space: nowrap; /* Prevent word wrapping */
 }
 
 .pending-payment-table thead {
@@ -852,27 +885,28 @@ body {
 }
 
 .pending-payment-table thead th {
- padding: 4px 10px;
- font-weight: 600;
- color: #333;
- border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+ padding: 6px 10px; /* Adjusted padding for headers */
+ font-weight: 600; /* Bold text for headers */
+ color: #333; /* Darker text for readability */
+ border-bottom: 2px solid rgba(0, 0, 0, 0.1); /* Soft bottom border */
 }
 
 .pending-payment-table tbody td {
- padding: 6px 10px;
- border-bottom: 1px solid rgba(0, 0, 0, 0.05);
- color: #555;
+ padding: 8px 10px; /* Adjusted padding for rows */
+ border-bottom: 1px solid rgba(0, 0, 0, 0.05); /* Light bottom border for row separation */
+ color: #555; /* Subtle text color */
 }
 
 .pending-payment-table tbody tr {
- background-color: transparent;
- transition: background-color 0.3s;
+ background-color: transparent; /* Transparent background */
+ transition: background-color 0.3s; /* Smooth transition for hover */
 }
 
 .pending-payment-table tbody tr:hover {
  background-color: #b2ebf2; /* Light blue background on hover */
 }
 
+/* Optional: Rounded corners for the first and last rows */
 .pending-payment-table tbody tr:first-child {
  border-top-left-radius: 10px;
  border-top-right-radius: 10px;
@@ -883,77 +917,31 @@ body {
  border-bottom-right-radius: 10px;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* .two .body {
- flex-grow: 1; 
- display: flex; 
- align-items: center; 
- justify-content: center; 
- padding: 30px;
- position: relative;
+/* Optional: Remove side borders for aesthetics */
+.pending-payment-table td,
+.pending-payment-table th {
+ border-left: none;
+ border-right: none;
 }
 
-.two canvas {
- width: 5%;
- height: 5%;
- padding-right: 0; /* Removes any extra padding to the right 
-} */
 
 
+
+
+
+/* Confirm Container */
 .confirm-container {
-  display: flex;
-  flex-direction: row;
-  margin-top: 5px;
-  gap: 20px;
-  position: relative;
-  height: 35vh;
+ display: flex;
+ flex-direction: row;
+ margin-top: 5px;
+ gap: 15px; /* Reduced gap between elements */
+ position: relative;
+ height: 35vh;
 }
 
 .confirm-container .one {
- width: 100%; /* Set width to 70% */
- height: 32vh; /* Set height to 40% of the viewport height */
+ width: 100%; /* Full width for the card */
+ height: 32vh; /* Adjusted height */
  background-color: #fff; /* Card background color */
  border-radius: 8px; /* Rounded corners */
  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Box shadow for depth */
@@ -962,20 +950,27 @@ body {
 .confirm-container .one .header {
  font-size: 12px;
  width: 100%; /* Full width for the header */
- padding: 10px 20px 0px 20px; /* Padding around the header */
- /* border-bottom: 1px solid #ddd; /* Border between header and body  */
+ padding: 8px 14px 0px 14px; /* Adjusted padding for compactness */
  display: flex; /* Enable flexbox */
  justify-content: center; /* Center contents horizontally */
  height: 50px; /* Fixed height for the header */
  align-items: center;
 }
 
+/* Confirm Table */
+.confirm-table-container {
+ width: 100%;
+ overflow-x: auto; /* Enable horizontal scrolling for the table */
+ margin-top: 10px; /* Spacing between card and table */
+}
+
 .confirm-table {
  width: 100%;
  border-collapse: collapse; /* Collapse borders for a cleaner look */
  font-family: Arial, sans-serif;
- font-size: 14px;
+ font-size: 13px; /* Slightly smaller font size */
  background-color: transparent; /* Keep background transparent */
+ white-space: nowrap; /* Prevent word wrapping */
 }
 
 .confirm-table thead {
@@ -984,14 +979,14 @@ body {
 }
 
 .confirm-table thead th {
- padding: 4px 10px; /* Increased padding for headers */
+ padding: 6px 12px; /* Reduced padding for headers */
  font-weight: 600;
  color: #333; /* Darker color for better readability */
  border-bottom: 2px solid rgba(0, 0, 0, 0.1); /* Soft bottom border */
 }
 
 .confirm-table tbody td {
- padding: 10px; /* Standard padding for table data */
+ padding: 8px 12px; /* Reduced padding for rows */
  border-bottom: 1px solid rgba(0, 0, 0, 0.05); /* Light bottom border for separation */
  color: #555; /* Subtle text color */
 }
@@ -1014,16 +1009,6 @@ body {
  border-bottom-left-radius: 10px; /* Rounded corners for the last row */
  border-bottom-right-radius: 10px;
 }
-
-
-
-
-
-
-
-
-
-
 
 
 
