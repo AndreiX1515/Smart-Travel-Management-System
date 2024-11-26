@@ -1081,7 +1081,7 @@
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-  <script>
+  <!-- <script>
     $(document).ready(function () 
     {
       // Validation logic for booking
@@ -1193,11 +1193,16 @@
         // If the form is valid, submit the form
         if (isValid) 
         {
-          $('form').submit(); // Submit the form
+          console.log("Form is valid. Submitting...");
+          $('#guestForm').submit(); // Submit the form with ID #guestForm
+        } 
+        else 
+        {
+          console.log("Form is invalid. Fix errors before submitting.");
         }
       });
     });
-  </script>
+  </script> -->
 
   <script>
     $(document).ready(function () 
