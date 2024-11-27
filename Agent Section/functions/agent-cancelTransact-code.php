@@ -9,12 +9,13 @@
   {
     // Get the transaction number from the form
     $transactNo = $_POST['updateTransactNo'];
+    $reason = $_POST['reason'];
 
     // Begin transaction
     $conn->begin_transaction();
 
     // Prepare the SQL query to update the status
-    $sql = "UPDATE booking SET status = 'Cancelled' WHERE transactNo = ?";
+    $sql = "UPDATE booking SET status = 'Cancelled',  remarks = ? WHERE transactNo = ?";
 
     // Use a prepared statement to prevent SQL injection
     $stmt = $conn->prepare($sql);
@@ -22,7 +23,7 @@
     if ($stmt) 
     {
       // Bind the transaction number to the statement
-      $stmt->bind_param('s', $transactNo);
+      $stmt->bind_param('ss', $reason, $transactNo);
 
       // Execute the statement
       if ($stmt->execute()) 
