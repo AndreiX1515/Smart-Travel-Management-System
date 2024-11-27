@@ -154,8 +154,6 @@
               </div>
             </div>
 
-            
-
             <div class="card mt-4">
               <div class="card-header bg-secondary text-white text-light">
                 <h4 class="my-2 px-2">Contact Person Details</h4>
