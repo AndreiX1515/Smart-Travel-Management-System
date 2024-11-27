@@ -81,8 +81,8 @@
                       <label class="mt-3 fs-6" for="year">Year <span class="text-danger fw-bold">*</span></label>
                       <select class="form-select mt-2 fs-6" id="year" name="year" required>
                         <option selected disabled>Select Year</option>
-                        
                       </select>
+                      <span id="yearError" class="text-danger"></span> <!-- Error message for year -->
                     </div>
                   </div>
 
@@ -105,6 +105,7 @@
                         <option value="November">November</option>
                         <option value="December">December</option>
                       </select>
+                      <span id="monthError" class="text-danger"></span> <!-- Error message for month -->
                     </div>
                   </div>
 
@@ -809,6 +810,8 @@
             packageName: 'Please Select a Package.',
             totalPax: 'Please Enter Total Pax.',
             origin: 'Please Select Origin',
+            year: 'Please Select Year',
+            month: 'Please Select Month',
             flightDate: 'Please Select Flight Date.',
             fName: 'Please Enter First Name',
             lName: 'Please Enter Last Name',
@@ -841,6 +844,8 @@
           validateField('#packageName', 'packageName');
           validateField('#totalPax', 'totalPax');
           validateField('#origin', 'origin');
+          validateField('#year', 'year');
+          validateField('#month', 'month');
           validateField('#flightDate', 'flightDate');
           validateField('#fName', 'fName');
           validateField('#lName', 'lName');
