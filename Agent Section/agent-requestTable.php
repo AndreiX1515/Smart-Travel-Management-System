@@ -25,13 +25,13 @@
         </thead>
         <tbody>
           <?php
-            $sql1 = "SELECT request.requestId, concern.concernTitle, concerndetails.details, 
-                        DATE_FORMAT(request.requestDate, '%M %d, %Y %h:%i %p') AS formattedRequestDate, 
-                        request.requestStatus
-                      FROM request
-                      JOIN concern ON request.concernId = concern.concernId
-                      JOIN concerndetails ON request.concernDetailsId = concerndetails.concernDetailsId
-                      WHERE request.transactNo = '$transactionNumber'";
+            $sql1 = "SELECT request.requestId, concern.concernTitle, concerndetails.details, request.customRequest,
+                      DATE_FORMAT(request.requestDate, '%M %d, %Y %h:%i %p') AS formattedRequestDate, 
+                      request.requestStatus
+                  FROM request
+                  LEFT JOIN concern ON request.concernId = concern.concernId
+                  LEFT JOIN concerndetails ON request.concernDetailsId = concerndetails.concernDetailsId
+                  WHERE request.transactNo = '$transactionNumber'";
 
             $res1 = $conn->query($sql1);
 
@@ -39,42 +39,45 @@
             {
               while ($row = $res1->fetch_assoc()) 
               {
-               
-                 // Fetch the status from the database
-                 $status = $row['requestStatus']; // Ensure 'requestStatus' exists in the database row
-
-                 // Assign a corresponding Bootstrap badge class based on the status
-                 $badgeClass = '';
-
-                 switch ($status) {
-                     case 'Confirmed':
-                         $badgeClass = 'text-bg-success'; // Green for Confirmed
-                         break;
-                     case 'Submitted':
-                         $badgeClass = 'text-bg-secondary'; // Gray for Submitted
-                         break;
-                     case 'Rejected':
-                         $badgeClass = 'text-bg-danger'; // Red for Rejected
-                         break;
-                     default:
-                         $badgeClass = 'text-bg-info'; // Blue for any other status
-                         break;
-                 }
-    
+                // Fetch the status from the database
+                $status = $row['requestStatus']; // Ensure 'requestStatus' exists in the database row
+        
+                // Assign a corresponding Bootstrap badge class based on the status
+                $badgeClass = '';
+                switch ($status) 
+                {
+                  case 'Confirmed':
+                      $badgeClass = 'text-bg-success'; // Green for Confirmed
+                      break;
+                  case 'Submitted':
+                      $badgeClass = 'text-bg-secondary'; // Gray for Submitted
+                      break;
+                  case 'Rejected':
+                      $badgeClass = 'text-bg-danger'; // Red for Rejected
+                      break;
+                  default:
+                      $badgeClass = 'text-bg-info'; // Blue for any other status
+                      break;
+                }
+          
+                // Handle custom requests by checking if concernTitle or details are NULL
+                $title = $row['concernTitle'] ?? 'Custom Request';
+                $details = $row['details'] ?? $row['customRequest'];
+        
                 echo "<tr>
                         <td>{$row['requestId']}</td>
-                        <td>{$row['concernTitle']}</td>
-                        <td>{$row['details']}</td>
+                        <td>{$title}</td>
+                        <td>{$details}</td>
                         <td>{$row['formattedRequestDate']}</td>
                         <td>
                           <span class='badge rounded-pill {$badgeClass} p-2'>{$status}</span>
                         </td>
                       </tr>";
               }
-            }
+            } 
             else 
             {
-              echo "<tr><td colspan='100' style='text-align: center;'>No Payment Found</td></tr>";
+              echo "<tr><td colspan='100' style='text-align: center;'>No Requests Found</td></tr>";
             }
           ?>
         </tbody>
@@ -111,7 +114,17 @@
                   echo "<option value='{$res1['concernId']}'>{$res1['concernTitle']}</option>";
                 }
               ?>
+              <option value="Others">Others</option>
             </select>
+          </div>
+
+          <!-- Custom Request Input for "Others" -->
+          <div class="mb-3" id="otherInputContainer" style="display: none;">
+            <label for="customDescription">Description:</label>
+            <input type="text" class="form-control" id="customDescription" name="customDescription" placeholder="Enter request description">
+            
+            <label for="customAmount" class="mt-2">Amount (₱):</label>
+            <input type="number" step="0.01" class="form-control" id="customAmount" name="customAmount" placeholder="Enter amount per pax">
           </div>
 
           <!-- Request Details Selection -->
@@ -214,18 +227,31 @@
       });
     }
 
-
     $(document).ready(function() 
     {
+      // Handle selection of "concern" (Request Type)
       $('#concern').on('change', function() 
       {
-        var concernId = $(this).val();
-        $('#requestDetails').html('<option selected disabled>Select Specific Detail</option>');
-        $('#price').val('');
-        $('#additionalSelectContainer').hide();
-        $('#additionalDetails').html('<option selected disabled>Select Additional Detail</option>');
-        if (concernId) 
+        const concernId = $(this).val();
+        const additionalSelectContainer = $('#additionalSelectContainer');
+        const otherInputContainer = $('#otherInputContainer');
+        const requestDetails = $('#requestDetails');
+        const priceInput = $('#price');
+
+        // Reset all fields and containers
+        requestDetails.html('<option selected disabled>Select Specific Detail</option>');
+        priceInput.val('');
+        additionalSelectContainer.hide();
+        otherInputContainer.hide();
+
+        if (concernId === 'Others') 
         {
+          // Show custom input fields for "Others"
+          otherInputContainer.show();
+        } 
+        else if (concernId) 
+        {
+          // Fetch request details dynamically for selected concern
           $.ajax(
           {
             url: '../Agent Section/functions/fetchConcernDetails.php',
@@ -233,67 +259,71 @@
             data: { concernId: concernId },
             success: function(response) 
             {
-              try 
-              {
-                var data = JSON.parse(response);
-                $('#additionalSelectContainer').show();
-                if (Array.isArray(data.detailsData)) {
+              try {
+                const data = JSON.parse(response);
+                additionalSelectContainer.show();
+                if (Array.isArray(data.detailsData)) 
+                {
                   data.detailsData.forEach(function(item) 
                   {
-                    var option = $('<option>').val(item.id).text(item.title).data('price', item.price);
-                    $('#requestDetails').append(option);
+                    const option = $('<option>')
+                      .val(item.id)
+                      .text(item.title)
+                      .data('price', item.price);
+                    requestDetails.append(option);
                   });
                 }
               } 
               catch (e) 
               {
-                console.error("Error parsing JSON response: ", e);
+                console.error('Error parsing JSON response:', e);
               }
             },
             error: function(xhr, status, error) 
             {
-              console.error("Error fetching additional details:", error);
+              console.error('Error fetching additional details:', error);
             }
           });
-        } 
-        else 
-        {
-          $('#additionalSelectContainer').hide();
-          $('#additionalDetails').html('<option selected disabled>Select Additional Detail</option>');
         }
       });
 
+      // Update price when selecting request details
       $('#requestDetails').on('change', function() 
       {
-        var price = $(this).find('option:selected').data('price');
+        const price = $(this).find('option:selected').data('price');
         $('#price').val(price);
         calculateTotalPrice();
       });
 
-      $('#paxRequest').on('input', function() 
+      // Update total price dynamically based on pax
+      $('#paxRequest, #customAmount').on('input', function() 
       {
         calculateTotalPrice();
       });
 
       function calculateTotalPrice() 
       {
-        var price = parseFloat($('#price').val().replace(/,/g, '')) || 0;
-        var pax = parseInt($('#paxRequest').val()) || 0;
-        var totalPrice = pax * price;
+        let price = parseFloat($('#price').val().replace(/,/g, '')) || 0;
+
+        // Use custom amount if "Others" is selected
+        if ($('#concern').val() === 'Others') {
+          price = parseFloat($('#customAmount').val()) || 0;
+        }
+
+        const pax = parseInt($('#paxRequest').val()) || 0;
+        const totalPrice = pax * price;
+
+        // Update display fields
         $('#displayTotalPrice').text(formatNumberWithCommas(totalPrice.toFixed(2)));
         $('#TotalPrice').val(totalPrice.toFixed(2));
       }
 
-      document.getElementById('paxRequest').addEventListener('input', function() 
-      {
-        validateMaxValue(this);
-      });
-
       function formatNumberWithCommas(num) 
       {
-        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
       }
 
+      // Fetch maximum pax dynamically
       function fetchPaxForRequestModal(transactionId) 
       {
         fetch('../Agent Section/functions/getBookingDetails.php', 
@@ -302,32 +332,33 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ transaction_id: transactionId })
         })
-        .then(response => response.json())
-        .then(data => 
-        {
-          if (data.success) 
+          .then(response => response.json())
+          .then(data => {
+            if (data.success) 
+            {
+              const paxInput = document.querySelector('input[name="pax"]');
+              paxInput.setAttribute('max', data.booking.pax);
+              validateMaxValue(paxInput);
+            } 
+            else 
+            {
+              console.error('Error fetching booking details:', data.message);
+            }
+          })
+          .catch(error => 
           {
-            const paxInput = document.querySelector('input[name="pax"]');
-            paxInput.setAttribute('max', data.booking.pax);
-            validateMaxValue(paxInput);
-          } 
-          else 
-          {
-            console.error('Error fetching booking details:', data.message);
-          }
-        })
-        .catch(error => 
-        {
-          console.error('Fetch error:', error);
-        });
+            console.error('Fetch error:', error);
+          });
       }
 
+      // Validate maximum pax value
       function validateMaxValue(input) 
       {
-        const max = parseInt(input.getAttribute("max"));
+        const max = parseInt(input.getAttribute('max'));
         const currentValue = parseInt(input.value);
         if (currentValue > max) input.value = max;
       }
     });
+
   });
 </script>
