@@ -61,30 +61,20 @@
                     </div>
                   </div>
 
-                  <!-- Total Pax Input -->
-                  <div class="col-md-6">
-                    <div class="form-group mb-6">
-                      <label class="fs-6" for="totalPax">Total Pax <span class="text-danger fw-bold">*</span></label>
-                      <label id="maxSeats"></label>
-                      <label id="availSeats"></label>
-                      <input type="number" class="form-control mt-2 fs-6" id="totalPax" name="totalPax" min="1" placeholder="Enter Total Pax" required>
-                      <span id="totalPaxError" class="text-danger"></span> <!-- Error message for Total Pax -->
-                    </div>
-                  </div>
-                </div>
-
-                <div class="row">
                   <!-- Origin Dropdown -->
                   <div class="col-md-6">
                     <div class="form-group mb-6">
-                      <label class="mt-3 fs-6" for="origin">Origin <span class="text-danger fw-bold">*</span></label>
+                      <label class="fs-6 fs-6" for="origin">Origin <span class="text-danger fw-bold">*</span></label>
                       <select class="form-select mt-2 fs-6" id="origin" name="origin" required>
                         <option selected disabled>Select Origin</option>
                       </select>
                       <span id="originError" class="text-danger"></span> <!-- Error message for origin -->
                     </div>
                   </div>
+                </div>
 
+                <div class="row">
+                  
                   <!-- Year Dropdown -->
                   <div class="col-md-6">
                     <div class="form-group mb-6">
@@ -128,6 +118,17 @@
                       <input type="checkbox" id="land" name="land" value="Land Only">
                       <label for="land"> Land Only</label><br>
                       <span id="flightDateError" class="text-danger"></span> <!-- Error message for outbound flight -->
+                    </div>
+                  </div>
+
+                  <!-- Total Pax Input -->
+                  <div class="col-md-6">
+                    <div class="form-group mb-6">
+                      <label class="mt-3 fs-6" for="totalPax">Total Pax <span class="text-danger fw-bold">*</span></label>
+                      <label id="maxSeats"></label>
+                      <label id="availSeats"></label>
+                      <input type="number" class="form-control mt-2 fs-6" id="totalPax" name="totalPax" min="1" placeholder="Enter Total Pax" required>
+                      <span id="totalPaxError" class="text-danger"></span> <!-- Error message for Total Pax -->
                     </div>
                   </div>
 
@@ -782,51 +783,9 @@
           }
         });
 
-        // Fetching Available Flight Seats based on the AgentId and FlightId
-        $('#flightId').on('change', function() 
-        {
-          // Get the input value
-          var flightId = $(this).val();
-
-          // Perform an AJAX request if the flight ID is not empty
-          if (flightId !== '') 
-          {
-            $.ajax(
-            {
-              url: '../Agent Section/functions/fetchMaxSeatsPerAgent.php', // Replace with your server-side script URL
-              method: 'POST',
-              data: { flightId: flightId }, // Send the flightId to the server
-              dataType: 'json', // Specify that we're expecting JSON response
-              success: function(response) 
-              {
-                if (response.flightId !== null) 
-                {
-                  // Extract the maxSeats from the response and display it
-                  var maxSeats = response.maxSeats;
-                  $('#maxSeats').text('Available Seats for this Flight: ' + maxSeats);
-                  // Set the max attribute of the totalPax input dynamically
-                  $('#totalPax').attr('max', maxSeats);
-
-                  // Check if the current value of totalPax exceeds maxSeats, if so, reset to maxSeats
-                  var currentPax = $('#totalPax').val();
-                  if (currentPax > maxSeats) 
-                  {
-                    $('#totalPax').val(maxSeats); // Set the value to the maxSeats if it exceeds
-                  } 
-                } 
-                else 
-                {
-                  // Handle the case where no flight information is found
-                  $('#maxSeats').text('Available Seats for this Flight: N/A');
-                }
-              },
-              error: function(xhr, status, error) {
-                // Log any errors
-                console.error('AJAX Error:', error);
-              }
-            });
-          }
-        });
+        // Event listeners
+        $('#flightId').on('change', updateTotalPaxMax); // Trigger on flight change
+        $('#land').on('change', updateTotalPaxMax);    // Trigger on "Land Only" checkbox toggle
 
         // Ensure that if the user manually enters a number greater than the max, it's automatically corrected
         $('#totalPax').on('input', function() 
@@ -918,6 +877,7 @@
             let middleName = $('#mName').val();
             let suffix = $('#suffix').val();
             let email = $('#email').val();
+            let totalPax =$('#totalPax').val();
 
             // Set suffix and middle name to an empty string if they are "N/A"
             suffix = suffix === "N/A" ? "" : suffix;
@@ -933,6 +893,8 @@
             $('#contactPersonName').text(fullName);
             // Set the email in the email paragraph
             $('#contactPersonEmail').text(email);
+            // Set the email in the email paragraph
+            $('#guestCount').text(totalPax);
 
             $('#BookingSummaryModal').modal('show'); // Trigger modal display
           }
@@ -1022,6 +984,71 @@
         function formatNumberWithCommas(num) 
         {
           return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        function updateTotalPaxMax() 
+        {
+          // Get the input values
+          var flightId = $('#flightId').val();
+          var isLandOnlyChecked = $('#land').is(':checked');
+
+          if (flightId !== '') 
+          {
+            // Perform an AJAX request to fetch seat information
+            $.ajax(
+            {
+              url: '../Agent Section/functions/fetchMaxSeatsPerAgent.php', // Replace with your server-side script URL
+              method: 'POST',
+              data: { flightId: flightId }, // Send the flightId to the server
+              dataType: 'json', // Specify that we're expecting JSON response
+              success: function(response) 
+              {
+                if (response.flightId !== null) 
+                {
+                  // Extract the maxSeats from the response
+                  var maxSeats = response.maxSeats;
+
+                  if (!isLandOnlyChecked) 
+                  {
+                    // If "Land Only" is not checked, dynamically update the max attribute
+                    $('#totalPax').attr('max', maxSeats);
+
+                    // Check if the current value of totalPax exceeds maxSeats, reset to maxSeats if needed
+                    var currentPax = $('#totalPax').val();
+                    if (currentPax > maxSeats) 
+                    {
+                      $('#totalPax').val(maxSeats); // Adjust the value
+                    }
+
+                    // Display the available seats
+                    $('#maxSeats').text('Available Seats for this Flight: ' + maxSeats);
+                  } 
+                  else 
+                  {
+                    // If "Land Only" is checked, set a default max value and clear the display
+                    $('#totalPax').attr('max', 999); // Example max value, adjust as needed
+                    $('#maxSeats').text(' ');
+                  }
+                } 
+                else 
+                {
+                  // Handle the case where no flight information is found
+                  $('#maxSeats').text('Available Seats for this Flight: N/A');
+                }
+              },
+              error: function(xhr, status, error) 
+              {
+                // Log any errors
+                console.error('AJAX Error:', error);
+              }
+            });
+          } 
+          else 
+          {
+              // Reset if no flight ID is selected
+              $('#totalPax').removeAttr('max');
+              $('#maxSeats').text('Available Seats for this Flight: N/A');
+          }
         }
 
         // Initial call to set total price on page load
