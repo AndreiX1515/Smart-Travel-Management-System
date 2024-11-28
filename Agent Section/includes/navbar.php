@@ -5,11 +5,11 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-$accountId = $_SESSION['accountId'];
-$agentId = $_SESSION['agentId'];
-$fName = $_SESSION['fName'] ?? '';
-$lName = $_SESSION['lName'] ?? '';
-$mName = $_SESSION['mName'] ?? '';
+$accountId = $_SESSION['agent_accountId'];
+$agentId = $_SESSION['agent_agentId'];
+$fName =  $_SESSION['agent_fName'] ?? '';
+$lName = $_SESSION['agent_lName'] ?? '';
+$mName = $_SESSION['agent_mName'] ?? '';
 $branchId = $_SESSION['branchId'] ?? '';
 $email = $_SESSION['email'] ?? '';
 $password = $_SESSION['password'] ?? '';
