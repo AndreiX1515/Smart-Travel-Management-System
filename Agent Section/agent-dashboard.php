@@ -659,74 +659,72 @@
                   </tr>
                 </thead>
                 <tbody>
-                <?php
-    // Query to select all records from the booking table
-    $agentId = $_SESSION['agent_agentId'];
-    $query = "SELECT 
-                b.transactNo, 
-                b.flightId, 
-                b.pax, 
-                b.totalPrice AS packagePrice, 
-                CONCAT(DATE_FORMAT(f.flightDepartureDate, '%M %d, %Y'), ' - ', DATE_FORMAT(f.returnDepartureDate, '%M %d, %Y')) AS FlightDate,
-                p.packageName AS packageName, 
-                CONCAT(
-                    b.lName, ', ', b.fName, ' ', 
-                    CASE WHEN b.mName = 'N/A' THEN '' ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ',
-                    CASE WHEN b.suffix = 'N/A' THEN '' ELSE b.suffix END
-                ) AS contactName, 
-                IFNULL(req.totalRequestCost, 0) AS totalRequestCost,
-                IFNULL(paid.totalPaidAmount, 0) AS totalPaidAmount,
-                b.status AS bookingStatus, 
-                b.bookingType,
-                (b.totalPrice + IFNULL(req.totalRequestCost, 0)) AS TotalCost
-              FROM 
-                booking b
-              JOIN flight f ON b.flightId = f.flightId
-              LEFT JOIN 
-                package p ON b.packageId = p.packageId
-              LEFT JOIN 
-                (SELECT transactNo, SUM(amount) AS totalPaidAmount FROM payment
-                  WHERE paymentStatus = 'Approved' GROUP BY transactNo) paid ON b.transactNo = paid.transactNo
-              LEFT JOIN 
-                (SELECT transactNo, SUM(requestCost) AS totalRequestCost FROM request
-                  WHERE requestStatus = 'Confirmed' GROUP BY transactNo) req ON b.transactNo = req.transactNo
-              WHERE 
-                b.status = 'Confirmed' and b.agentId = '$agentId'";
+                  <?php
+                    // Query to select all records from the booking table
+                    $agentId = $_SESSION['agent_agentId'];
+                    $query = "SELECT 
+                                b.transactNo, 
+                                b.flightId, 
+                                b.pax, 
+                                b.totalPrice AS packagePrice, 
+                                CONCAT(DATE_FORMAT(f.flightDepartureDate, '%M %d, %Y'), ' - ', DATE_FORMAT(f.returnDepartureDate, '%M %d, %Y')) AS FlightDate,
+                                p.packageName AS packageName, 
+                                CONCAT(
+                                    b.lName, ', ', b.fName, ' ', 
+                                    CASE WHEN b.mName = 'N/A' THEN '' ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ',
+                                    CASE WHEN b.suffix = 'N/A' THEN '' ELSE b.suffix END
+                                ) AS contactName, 
+                                IFNULL(req.totalRequestCost, 0) AS totalRequestCost,
+                                IFNULL(paid.totalPaidAmount, 0) AS totalPaidAmount,
+                                b.status AS bookingStatus, 
+                                b.bookingType,
+                                (b.totalPrice + IFNULL(req.totalRequestCost, 0)) AS TotalCost
+                              FROM 
+                                booking b
+                              JOIN flight f ON b.flightId = f.flightId
+                              LEFT JOIN 
+                                package p ON b.packageId = p.packageId
+                              LEFT JOIN 
+                                (SELECT transactNo, SUM(amount) AS totalPaidAmount FROM payment
+                                  WHERE paymentStatus = 'Approved' GROUP BY transactNo) paid ON b.transactNo = paid.transactNo
+                              LEFT JOIN 
+                                (SELECT transactNo, SUM(requestCost) AS totalRequestCost FROM request
+                                  WHERE requestStatus = 'Confirmed' GROUP BY transactNo) req ON b.transactNo = req.transactNo
+                              WHERE 
+                                b.status = 'Confirmed' and b.agentId = '$agentId'";
 
-    $result = $conn->query($query); // Execute the query
+                    $result = $conn->query($query); // Execute the query
 
-    // Check if there are results and populate the table
-    if ($result && $result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
+                    // Check if there are results and populate the table
+                    if ($result && $result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
 
-            // Calculate Balance
-            $totalAmountPaid = $row['totalPaidAmount'];
-            $totalAmountToBePaid = $row['packagePrice'] + $row['totalRequestCost']; // Total price + total request cost
-            $balance = $totalAmountToBePaid - $totalAmountPaid; // Balance calculation
+                            // Calculate Balance
+                            $totalAmountPaid = $row['totalPaidAmount'];
+                            $totalAmountToBePaid = $row['packagePrice'] + $row['totalRequestCost']; // Total price + total request cost
+                            $balance = $totalAmountToBePaid - $totalAmountPaid; // Balance calculation
 
-            // Determine if fully paid or not
-            $status = ($totalAmountPaid == $totalAmountToBePaid) ? 'Fully Paid' : 'Not Paid';
+                            // Determine if fully paid or not
+                            $status = ($totalAmountPaid == $totalAmountToBePaid) ? 'Fully Paid' : 'Not Paid';
 
-            // Display table row
-            echo "<tr>";
-            echo "<td>" . htmlspecialchars($row['transactNo']) . "</td>"; // TransactNo
-            echo "<td>" . htmlspecialchars($row['packageName']) . "</td>"; // Package Name
-            echo "<td>" . htmlspecialchars($row['FlightDate']) . "</td>"; // Flight Date Range
-            echo "<td>" . htmlspecialchars($row['pax']) . "</td>"; // Pax (Number of Passengers)
-            echo "<td>" . htmlspecialchars($row['contactName']) . "</td>"; // Contact Name
-            echo "<td>" . $row['bookingType'] . "</td>"; // Booking Type 
-            echo "<td>₱ " . number_format($totalAmountPaid, 2) . "</td>"; // Total Amount Paid
-            echo "<td>₱ " . number_format($balance, 2) . "</td>"; // Balance (Amount to be paid - Amount paid)
-            echo "<td>" . htmlspecialchars($row['bookingStatus']) . "</td>"; // Status (Fully Paid or Not Paid)
-            echo "</tr>";
-        }
-    } else {
-        // Display a message if no records are found
-        echo "<tr><td colspan='12'>No records found.</td></tr>";
-    }
-?>
-
-
+                            // Display table row
+                            echo "<tr>";
+                            echo "<td>" . htmlspecialchars($row['transactNo']) . "</td>"; // TransactNo
+                            echo "<td>" . htmlspecialchars($row['packageName']) . "</td>"; // Package Name
+                            echo "<td>" . htmlspecialchars($row['FlightDate']) . "</td>"; // Flight Date Range
+                            echo "<td>" . htmlspecialchars($row['pax']) . "</td>"; // Pax (Number of Passengers)
+                            echo "<td>" . htmlspecialchars($row['contactName']) . "</td>"; // Contact Name
+                            echo "<td>" . $row['bookingType'] . "</td>"; // Booking Type 
+                            echo "<td>₱ " . number_format($totalAmountPaid, 2) . "</td>"; // Total Amount Paid
+                            echo "<td>₱ " . number_format($balance, 2) . "</td>"; // Balance (Amount to be paid - Amount paid)
+                            echo "<td>" . htmlspecialchars($row['bookingStatus']) . "</td>"; // Status (Fully Paid or Not Paid)
+                            echo "</tr>";
+                        }
+                    } else {
+                        // Display a message if no records are found
+                        echo "<tr><td colspan='12'>No records found.</td></tr>";
+                    }
+                  ?>
                 </tbody>
               </table>
             </div>
