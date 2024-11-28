@@ -205,7 +205,7 @@
  flex-direction: row;
  gap: 10px;
  width: 100%;
- height: 25vh;
+ height: 30vh;
  margin-bottom: 10px;
 }
 
@@ -281,27 +281,9 @@
 
 
 
-/* .price-table tbody td:first-child {
- font-weight: bold; /* Emphasize the first column 
- color: #116530; /* Green accent for first column 
-} */
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 .pending-wrapper {
  width: 60%;
- height: auto;
  display: flex;
  flex-direction: column;
  gap: 5px;
@@ -312,6 +294,76 @@
 
 
 
+/* Request Table */
+.request-wrapper {
+ width: 40%;
+ border: 1px solid #ced4da; /* Light border for the card */
+ border-radius: 10px; /* Rounded corners */
+ box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for elevation */
+ background-color: #ffffff; /* White background to stand out */
+}
+
+.request-table-container {
+ overflow-x: auto; /* Enable horizontal scrolling for small screens */
+ padding: 0px 15px; /* Consistent padding for the container */
+ width: 100%; /* Ensure it takes up the full width of its parent */
+ box-sizing: border-box; /* Include padding and border in width calculation */
+}
+
+.request-table {
+ width: 100%; /* Full width table */
+ border-collapse: collapse; /* Remove gaps between table borders */
+ font-family: Arial, sans-serif;
+ font-size: 14px;
+ text-align: left;
+}
+
+.request-table th {
+ padding: 4px 10px; /* Add space inside table cells */
+ border-bottom: 1px solid #e0e0e0; /* Subtle divider between rows */
+ background-color: #f8f9fa; /* Light grey for header */
+ font-size: 10px; /* Smaller font size for header */
+ font-weight: bold;
+ text-align: left;
+ white-space: nowrap; /* Disable word wrapping */
+}
+
+.request-table tr:nth-child(even) {
+ background-color: #f9f9f9; /* Subtle alternating row colors */
+}
+
+.request-table td {
+ color: #495057; /* Neutral text color */
+ padding: 6px 8px; /* Add padding inside cells */
+ text-align: left;
+ white-space: nowrap; /* Disable word wrapping */
+ overflow: hidden; /* Prevent content from spilling out */
+ text-overflow: ellipsis; /* Add "..." for overflowing content */
+}
+
+.request-table .status {
+ font-weight: bold;
+ border-radius: 4px;
+ padding: 5px 10px;
+ display: inline-block;
+ text-align: center;
+ white-space: nowrap; /* Disable word wrapping */
+}
+
+.request-table .status.all-right {
+ background-color: #d4edda; /* Green background for "All right" */
+ color: #155724; /* Dark green text */
+}
+
+.request-table .status.add {
+ background-color: #fff3cd; /* Yellow background for "Add" */
+ color: #856404; /* Dark yellow text */
+}
+
+.request-table .status.reduce {
+ background-color: #f8d7da; /* Red background for "Reduce" */
+ color: #721c24; /* Dark red text */
+}
 
 
 
@@ -319,7 +371,9 @@
 
 
 
-.pending-wrapper {
+
+/* Payment Card */
+.payment-wrapper {
  width: 40%;
  height: auto;
  border: 1px solid #ced4da; /* Light border for the card */
@@ -328,15 +382,88 @@
  background-color: #ffffff; /* White background to stand out */
 }
 
-
-.Payment-wrapper {
- width: 40%;
- height: auto;
+.payment-table-wrapper {
+ width: 100%; /* Full width of the container */
  border: 1px solid #ced4da; /* Light border for the card */
  border-radius: 10px; /* Rounded corners */
- box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
- background-color: #ffffff; /* White background to stand out */
+ box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for elevation */
+ background-color: #ffffff; /* White background for contrast */
+ padding: 20px; /* Space around the content */
+ margin-top: 20px; /* Add spacing from other elements */
 }
+
+.payment-table-container {
+ overflow-x: auto; /* Enable horizontal scrolling for small screens */
+ padding: 0px 15px; /* Consistent padding for the container */
+ width: 100%; /* Ensure it takes up the full width of its parent */
+ box-sizing: border-box; /* Include padding and border in width calculation */
+}
+
+.payment-table {
+ width: 100%; /* Full width table */
+ height: 200px;
+ border-collapse: collapse; /* Remove gaps between table borders */
+ font-family: Arial, sans-serif;
+ font-size: 12px;
+ text-align: left;
+}
+
+.payment-table th {
+ padding: 4px 10px; /* Add space inside table cells */
+ border-bottom: 1px solid #e0e0e0; /* Subtle divider between rows */
+ background-color: #f8f9fa; /* Light grey for header */
+ font-size: 10px; /* Smaller font size for header */
+ font-weight: bold;
+ text-align: left;
+ white-space: nowrap; /* Disable word wrapping */
+}
+
+.payment-table tr:nth-child(even) {
+ background-color: #f9f9f9; /* Subtle alternating row colors */
+}
+
+.payment-table td {
+ color: #495057; /* Neutral text color */
+ padding: 6px 8px; /* Add padding inside cells */
+ text-align: left;
+ white-space: nowrap; /* Disable word wrapping */
+ overflow: hidden; /* Prevent content from spilling out */
+ text-overflow: ellipsis; /* Add "..." for overflowing content */
+}
+
+.payment-table .status {
+ font-weight: bold;
+ border-radius: 4px;
+ padding: 5px 10px;
+ display: inline-block;
+ text-align: center;
+ white-space: nowrap; /* Disable word wrapping */
+}
+
+.payment-table .status.all-right {
+ background-color: #d4edda; /* Green background for "All right" */
+ color: #155724; /* Dark green text */
+}
+
+.payment-table .status.add {
+ background-color: #fff3cd; /* Yellow background for "Add" */
+ color: #856404; /* Dark yellow text */
+}
+
+.payment-table .status.reduce {
+ background-color: #f8d7da; /* Red background for "Reduce" */
+ color: #721c24; /* Dark red text */
+}
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -350,17 +477,17 @@
  display: flex;
  flex-direction: row;
  width: 100%;
- height: 50vh;
+ height: 45vh;
  /* margin-bottom: 10px; */
  border-radius: 8px;
  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
- background-color: #f5f5f5; /* Slightly darker shade for variation */
+ background-color: #ffffff; /* Slightly darker shade for variation */
 }
 
 
 /* Container for the info table */
 .info-table-container {
- max-height: 400px;   /* Adjust this value based on your container height */
+ max-height: 360px;   /* Adjust this value based on your container height */
  overflow-y: auto;     /* Enable vertical scrolling if content exceeds the height */
  overflow-x: auto;     /* Enable horizontal scrolling if needed */
  width: 100%;          /* Ensure the container spans the full width */
@@ -411,7 +538,7 @@
 
 /* Table data cell styling */
 .info-table td {
- padding: 8px 12px;    /* Padding for better readability */
+ padding: 10px 12px;    /* Padding for better readability */
  border: 1px solid #ccc;  /* Add borders between cells */
  text-align: center;
  font-size: 12px;

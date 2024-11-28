@@ -288,13 +288,13 @@
  </div>
 
 
-  <div class="pending-wrapper">
+  <div class="request-wrapper">
     <div class="header p-3">
       <h6 class="text-secondary">Requests</h6>
     </div>
 
-    <div class="table-container">
-      <table class="info-table">
+    <div class="request-table-container">
+      <table class="request-table">
         <thead>
           <tr>
             <th>TRANSACTION NO.</th>
@@ -323,15 +323,33 @@
               
             if ($res1->num_rows > 0) 
             {
-              while ($row = $res1->fetch_assoc()) 
-              {
+               while ($row = $res1->fetch_assoc()) {
+                
+                $statusClass = '';
+                switch ($row['requestStatus']) {
+                    case 'Confirmed':
+                        $statusClass = 'badge bg-success'; // Green pill for "Approved"
+                        break;
+                    case 'Submitted':
+                        $statusClass = 'badge bg-primary'; // Yellow pill for "Pending"
+                        break;
+                    case 'Rejected':
+                        $statusClass = 'badge bg-danger'; // Red pill for "Rejected"
+                        break;
+                    default:
+                        $statusClass = 'badge bg-secondary'; // Grey pill for unknown statuses
+                        break;
+                }
+            
+                // Echo table row with dynamically styled pills
                 echo "<tr>
                         <td>{$row['T.N']}</td>
                         <td>{$row['Request']}</td>
                         <td>{$row['Date']}</td>
-                        <td>{$row['requestStatus']}</td>
+                        <td><span class='{$statusClass}'>{$row['requestStatus']}</span></td>
                       </tr>";
-              }
+            }
+          
             } 
             else 
             {
@@ -343,20 +361,20 @@
     </div>
   </div>
 
-  <div class="Payment-wrapper">
+  <div class="payment-wrapper">
     <div class="header p-3">
       <h6 class="text-secondary">Payment</h6>
     </div>
 
-    <div class="table-container">
-      <table class="info-table">
+    <div class="payment-table-container px-3">
+      <table class="payment-table">
         <thead>
           <tr>
             <th>TRANSACTION NO.</th>
             <th>PAYMENT TITLE</th>
             <th>PAYMENT TYPE</th>
             <th>PAYMENT AMOUNT</th>
-            <th>DATE</th>
+            <th>DATE</th> 
             <th>STATUS</th>
           </tr>
         </thead>
@@ -379,16 +397,35 @@
             $res2 = $conn->query($sql2);
             
             if ($res2->num_rows > 0) {
-              while ($row = $res2->fetch_assoc()) {
-                echo "<tr'>
+               while ($row = $res2->fetch_assoc()) {
+                // Map paymentStatus to Bootstrap pill classes
+                $statusClass = '';
+                switch ($row['paymentStatus']) {
+                    case 'Approved':
+                        $statusClass = 'badge bg-success text-light'; // Green pill for "Paid"
+                        break;
+                    case 'Pending':
+                        $statusClass = 'badge bg-warning text-dark'; // Yellow pill for "Pending"
+                        break;
+                    case 'Submitted':
+                        $statusClass = 'badge bg-primary text-light'; // Red pill for "Failed"
+                        break;
+                    default:
+                        $statusClass = 'badge bg-secondary'; // Grey pill for unknown statuses
+                        break;
+                }
+            
+                // Echo table row with dynamically styled pills
+                echo "<tr>
                         <td>{$row['Transaction No']}</td>
                         <td>{$row['Payment Title']}</td>
                         <td>{$row['Payment Type']}</td>
                         <td>₱ {$row['Amount']}</td>
-                        <td> {$row['Date']} </td>
-                        <td>{$row['paymentStatus']}</td>
+                        <td>{$row['Date']}</td>
+                        <td><span class='{$statusClass}'>{$row['paymentStatus']}</span></td>
                       </tr>";
-              }
+            }
+          
             } else {  
               echo "<tr><td colspan='12' style='text-align: center;'>No payments found as of the moment</td></tr>";
             }
