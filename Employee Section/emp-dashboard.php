@@ -290,10 +290,57 @@
 
   <div class="pending-wrapper">
     <div class="header p-3">
-     <h6 class="text-secondary">Requests</h6>
+      <h6 class="text-secondary">Requests</h6>
     </div>
 
+    <div class="table-container">
+      <table class="info-table">
+        <thead>
+          <tr>
+            <th>TRANSACTION NO.</th>
+            <th>REQUEST</th>
+            <th>DATE</th>
+            <th>STATUS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php
+            $sql1 = "SELECT 
+                          r.transactNo AS `T.N`,
+                          c.concernTitle AS `Request`,
+                          DATE_FORMAT(r.requestDate, '%M %d, %Y') AS `Date`,
+                          r.requestStatus, b.agentId
+                      FROM 
+                          request r
+                      JOIN 
+                          booking b ON r.transactNo = b.transactNo
+                      JOIN 
+                          concern c ON r.concernId = c.concernId
+                      ORDER BY 
+                          r.requestDate DESC";  // Order by request date
 
+            $res1 = $conn->query($sql1);
+              
+            if ($res1->num_rows > 0) 
+            {
+              while ($row = $res1->fetch_assoc()) 
+              {
+                echo "<tr>
+                        <td>{$row['T.N']}</td>
+                        <td>{$row['Request']}</td>
+                        <td>{$row['Date']}</td>
+                        <td>{$row['requestStatus']}</td>
+                      </tr>";
+              }
+            } 
+            else 
+            {
+              echo "<tr><td colspan='6' style='text-align: center;'>No Request found as of the moment</td></tr>";
+            }
+          ?>
+        </tbody>
+      </table>
+    </div>
   </div>
 
   <div class="Payment-wrapper">
@@ -302,7 +349,52 @@
     </div>
 
     <div class="table-container">
+      <table class="info-table">
+        <thead>
+          <tr>
+            <th>TRANSACTION NO.</th>
+            <th>PAYMENT TITLE</th>
+            <th>PAYMENT TYPE</th>
+            <th>PAYMENT AMOUNT</th>
+            <th>DATE</th>
+            <th>STATUS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php
+            $sql2 = "SELECT 
+                      p.transactNo AS `Transaction No`,
+                      p.paymentTitle AS `Payment Title`,
+                      CONCAT(FORMAT(p.amount, 2)) AS `Amount`,  -- Format the amount as a currency with two decimal places
+                      DATE_FORMAT(p.paymentDate, '%M %d, %Y') AS `Date`,  -- Format the date as specified
+                      p.paymentType AS `Payment Type`,
+                      p.paymentStatus, b.agentId
+                    FROM 
+                      payment p
+                    JOIN 
+                      booking b ON p.transactNo = b.transactNo
+                    ORDER BY 
+                      p.paymentDate DESC";  // Order by payment date
 
+            $res2 = $conn->query($sql2);
+            
+            if ($res2->num_rows > 0) {
+              while ($row = $res2->fetch_assoc()) {
+                echo "<tr'>
+                        <td>{$row['Transaction No']}</td>
+                        <td>{$row['Payment Title']}</td>
+                        <td>{$row['Payment Type']}</td>
+                        <td>₱ {$row['Amount']}</td>
+                        <td> {$row['Date']} </td>
+                        <td>{$row['paymentStatus']}</td>
+                      </tr>";
+              }
+            } else {  
+              echo "<tr><td colspan='12' style='text-align: center;'>No payments found as of the moment</td></tr>";
+            }
+          ?>
+        </tbody>
+      </table>
 
 
     </div>
