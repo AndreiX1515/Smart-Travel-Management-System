@@ -18,19 +18,18 @@
       <table class="product-table">
         <thead>
           <tr>
-          <th>PAYMENT ID</th>
-          <th>PAYMENT TITLE</th>
-          <th>PAYMENT TYPE</th>
-          <th>AMOUNT</th>
-          <th>PROOF OF PAYMENT</th>
-          <th>PAYMENT DATE</th>
-          <th>PAYMENT STATUS</th>
-
+            <th>PAYMENT ID</th>
+            <th>PAYMENT TITLE</th>
+            <th>PAYMENT TYPE</th>
+            <th>AMOUNT</th>
+            <th>PROOF OF PAYMENT</th>
+            <th>PAYMENT DATE</th>
+            <th>PAYMENT STATUS</th>
           </tr>
         </thead>
         <tbody>
           <?php
-            $sql1 = "SELECT *, FORMAT(amount, 2) AS amount, DATE_FORMAT(paymentDate, '%M %d, %Y %h:%i %p') AS paymentDate 
+            $sql1 = "SELECT *, FORMAT(amount, 2) AS amount, DATE_FORMAT(paymentDate, '%M %d, %Y') AS paymentDate 
                       FROM payment 
                       WHERE transactNo = '$transactionNumber'";
 
