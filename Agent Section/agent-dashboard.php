@@ -643,7 +643,7 @@
           </div>
             
           <div class="body">
-            <div class="table-container" style="max-height: 400px;">
+            <div class="confirm-table-container">
               <table class="confirm-table">
                 <thead style="font-size: 12px;">
                   <tr>

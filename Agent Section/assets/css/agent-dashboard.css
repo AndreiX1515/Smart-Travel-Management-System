@@ -929,6 +929,7 @@ body {
 
 
 
+
 /* Confirm Container */
 .confirm-container {
  display: flex;
@@ -936,7 +937,7 @@ body {
  margin-top: 5px;
  gap: 15px; /* Reduced gap between elements */
  position: relative;
- height: 35vh;
+ height: 35vh; /* Fixed height for the container */
 }
 
 .confirm-container .one {
@@ -957,13 +958,24 @@ body {
  align-items: center;
 }
 
-/* Confirm Table */
+
+
+
+/* Confirm Table Container */
 .confirm-table-container {
  width: 100%;
- overflow-x: auto; /* Enable horizontal scrolling for the table */
+ height: 250px; /* Fixed height for the container */
  margin-top: 10px; /* Spacing between card and table */
+ overflow: hidden; /* Disable horizontal overflow */
+ display: block; /* Ensure it takes up block space */
+ position: relative;
+ max-height: 30vh; /* Set a maximum height for vertical scrolling */
+ overflow-y: auto; /* Enable vertical scrolling if content overflows */
+ overflow-x: auto; /* Enable horizontal scrolling if content overflows */
+ -webkit-overflow-scrolling: touch; /* Smooth scrolling for mobile devices */
 }
 
+/* Confirm Table */
 .confirm-table {
  width: 100%;
  border-collapse: collapse; /* Collapse borders for a cleaner look */
@@ -971,13 +983,22 @@ body {
  font-size: 13px; /* Slightly smaller font size */
  background-color: transparent; /* Keep background transparent */
  white-space: nowrap; /* Prevent word wrapping */
+ table-layout: auto; /* Allow table to automatically adjust column widths */
+ overflow-x: auto; /* Enable horizontal scrolling for the table */
+ overflow-y: hidden; /* Disable vertical overflow on the table itself */
 }
 
+
+/* Table Header Styling */
 .confirm-table thead {
  background-color: #e0f7fa; /* Light teal for the header */
  text-align: left;
+ position: sticky; /* Make the header sticky */
+ top: 0; /* Stick to the top of the container when scrolling */
+ z-index: 1; /* Ensure the header stays on top of the table content */
 }
 
+/* Table Header Cells */
 .confirm-table thead th {
  padding: 6px 12px; /* Reduced padding for headers */
  font-weight: 600;
@@ -985,21 +1006,28 @@ body {
  border-bottom: 2px solid rgba(0, 0, 0, 0.1); /* Soft bottom border */
 }
 
+
+/* Table Body Styling */
 .confirm-table tbody td {
  padding: 8px 12px; /* Reduced padding for rows */
  border-bottom: 1px solid rgba(0, 0, 0, 0.05); /* Light bottom border for separation */
  color: #555; /* Subtle text color */
+ width: auto; /* Allow columns to adjust their widths automatically */
 }
 
+/* Ensure Rows Span the Full Width */
 .confirm-table tbody tr {
  background-color: transparent; /* Maintain transparency */
  transition: background-color 0.3s; /* Smooth transition for hover effect */
+ display: table-row;
+ width: 100%; /* Make sure the row spans the full width of the table */
 }
 
 .confirm-table tbody tr:hover {
  background-color: #b2ebf2; /* Light teal background on hover for clarity */
 }
 
+/* Rounded Corners for First and Last Row */
 .confirm-table tbody tr:first-child {
  border-top-left-radius: 10px; /* Rounded corners for the first row */
  border-top-right-radius: 10px;
