@@ -717,7 +717,7 @@
                             $status = ($totalAmountPaid == $totalAmountToBePaid) ? 'Fully Paid' : 'Not Paid';
 
                             // Display table row
-                            echo "<tr>";
+                            echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($row['transactNo']) . "'>";
                             echo "<td>" . htmlspecialchars($row['transactNo']) . "</td>"; // TransactNo
                             echo "<td>" . htmlspecialchars($row['packageName']) . "</td>"; // Package Name
                             echo "<td>" . htmlspecialchars($row['FlightDate']) . "</td>"; // Flight Date Range
