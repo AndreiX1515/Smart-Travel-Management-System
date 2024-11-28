@@ -507,8 +507,8 @@
             while ($row = $result->fetch_assoc()) 
             {
               $agentColumns .= 
-                  'SUM(CASE WHEN b.agentId = "' . $row['agentId'] . '" AND b.bookingType = "Package" THEN b.pax ELSE 0 END) AS `' . $row['agentId'] . '_AL`, ' .
-                  'SUM(CASE WHEN b.agentId = "' . $row['agentId'] . '" AND b.bookingType = "Land" THEN b.pax ELSE 0 END) AS `' . $row['agentId'] . '_LO`, ';
+                  'SUM(CASE WHEN b.agentId = "' . $row['agentId'] . '" AND b.bookingType = "Package" and b.status = "Confirmed" THEN b.pax ELSE 0 END) AS `' . $row['agentId'] . '_AL`, ' .
+                  'SUM(CASE WHEN b.agentId = "' . $row['agentId'] . '" AND b.bookingType = "Land" and b.status = "Confirmed" THEN b.pax ELSE 0 END) AS `' . $row['agentId'] . '_LO`, ';
             }
 
             // Remove the trailing comma
