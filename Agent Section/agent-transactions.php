@@ -107,8 +107,8 @@
               $sql1 = "SELECT
                   b.transactNo AS `T.N`,
                   p.packageName AS `PACKAGE`,
-                  DATE_FORMAT(b.bookingDate, '%M %d, %Y') AS `TRANSACTION DATE`, b.bookingType as bookingType,
-                  DATE_FORMAT(f.flightDepartureDate, '%M %d, %Y') AS `FLIGHT DATE`,
+                  DATE_FORMAT(b.bookingDate, '%m-%d-%Y') AS `TRANSACTION DATE`, b.bookingType as bookingType,
+                  DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y') AS `FLIGHT DATE`,
                   b.pax AS `TOTAL PAX`,
                   CONCAT(
                       b.lName, ', ', b.fName, ' ', 

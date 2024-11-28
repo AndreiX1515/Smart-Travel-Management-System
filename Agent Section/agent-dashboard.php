@@ -461,7 +461,7 @@
                               p.packageName AS `PACKAGE`, b.bookingType as bookingType,
                               CASE 
                                   WHEN b.flightId IS NULL THEN 'Land Only'
-                                  ELSE CONCAT(DATE_FORMAT(f.flightDepartureDate, '%M %d, %Y'), ' ', DATE_FORMAT(f.flightDepartureTime, '%h:%i %p'))
+                                  ELSE CONCAT(DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y'), ' ', DATE_FORMAT(f.flightDepartureTime, '%h:%i %p'))
                               END AS `FLIGHT DATE`,
                               b.pax AS `TOTAL PAX`,
                               CONCAT(
@@ -535,11 +535,11 @@
                 <tbody>
                   <?php
                     $sql1 = "SELECT 
-                                r.requestId AS `T.N`, 
+                                r.transactNo AS `T.N`, 
                                 c.concernTitle AS `Request`,
                                 cd.details AS `Details`,
                                 r.customRequest AS `CustomRequest`,
-                                DATE_FORMAT(r.requestDate, '%M %d, %Y') AS `Date`, 
+                                DATE_FORMAT(r.requestDate, '%m-%d-%Y') AS `Date`, 
                                 r.requestStatus AS `Status`, 
                                 b.transactNo
                             FROM 
@@ -608,7 +608,7 @@
                             p.transactNo AS `Transaction No`,
                             p.paymentTitle AS `Payment Title`,
                             CONCAT(FORMAT(p.amount, 2)) AS `Amount`,  -- Format the amount as a currency with two decimal places
-                            DATE_FORMAT(p.paymentDate, '%M %d, %Y') AS `Date`,  -- Format the date as specified
+                            DATE_FORMAT(p.paymentDate, '%m-%d-%Y') AS `Date`,  -- Format the date as specified
                             p.paymentType AS `Payment Type`,
                             p.paymentStatus, b.agentId
                           FROM 
@@ -676,7 +676,7 @@
                                 b.flightId, 
                                 b.pax, 
                                 b.totalPrice AS packagePrice, 
-                                CONCAT(DATE_FORMAT(f.flightDepartureDate, '%M %d, %Y'), ' - ', DATE_FORMAT(f.returnDepartureDate, '%M %d, %Y')) AS FlightDate,
+                                CONCAT(DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y'), ' - ', DATE_FORMAT(f.returnDepartureDate, '%m-%d-%Y')) AS FlightDate,
                                 p.packageName AS packageName, 
                                 CONCAT(
                                     b.lName, ', ', b.fName, ' ', 

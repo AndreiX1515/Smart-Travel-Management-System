@@ -26,7 +26,7 @@
         <tbody>
           <?php
             $sql1 = "SELECT request.requestId, concern.concernTitle, concerndetails.details, request.customRequest,
-                      DATE_FORMAT(request.requestDate, '%M %d, %Y') AS formattedRequestDate, 
+                      DATE_FORMAT(request.requestDate, '%m-%d-%Y') AS formattedRequestDate, 
                       request.requestStatus
                   FROM request
                   LEFT JOIN concern ON request.concernId = concern.concernId

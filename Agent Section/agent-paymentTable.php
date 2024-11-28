@@ -29,7 +29,7 @@
         </thead>
         <tbody>
           <?php
-            $sql1 = "SELECT *, FORMAT(amount, 2) AS amount, DATE_FORMAT(paymentDate, '%M %d, %Y') AS paymentDate 
+            $sql1 = "SELECT *, FORMAT(amount, 2) AS amount, DATE_FORMAT(paymentDate, '%m-%d-%Y') AS paymentDate 
                       FROM payment 
                       WHERE transactNo = '$transactionNumber'";
 
