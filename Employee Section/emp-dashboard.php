@@ -11,7 +11,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Employee - Dashboard</title>
-    <?php include '../Employee Section/includes/emp-head.php' ?>
+    <?php include '../Employee Section/includes/emp-head.php'?>
     <link rel="stylesheet" href="../Employee Section/assets/css/emp-dashboard.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="../Employee Section/assets/css/emp-sidebar-navbar.css?v=<?php echo time(); ?>">
     
@@ -589,21 +589,13 @@
         </tbody>
       </table>
   
-    </div>
-  </div>
-</div>
-
-   <!-- <div class="main-table-wrapper-two">
-     <div class="table-counts-container">
-       <div class="header p-3">
-         <h6 class="text-black">Count Per Flight</h6>
-
        </div>
-
      </div>
-  </div> -->
+   </div>
+
  </div>
 </div>
+
 
 <?php include '../Employee Section/includes/emp-scripts.php' ?>
 

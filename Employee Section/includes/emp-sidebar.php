@@ -103,11 +103,56 @@ $position = htmlspecialchars(strtoupper($agentId));
       <span class="label">View Password</span>
    </a>
    
-   <a class="nav-link" href="#">
-      <div class="icon"><i class="fa-solid fa-right-from-bracket"></i></div> <!-- Logout Icon -->
-      <span class="label">Logout</span>
-   </a>
+   <!-- Logout Button (Triggers Modal) -->
+   <a class="nav-link" href="#" id="logout-link" data-bs-toggle="modal" data-bs-target="#logoutModal">
+        <div class="icon"><i class="fa-solid fa-right-from-bracket"></i></div> <!-- Logout Icon -->
+        <span class="label">Logout</span>
+    </a>
   </div>
 </div>
 
 
+
+ <!-- Logout Modal -->
+ <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="logoutModalLabel">Logout Confirmation</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Are you sure you want to logout?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-danger" id="confirmLogout">Yes, Logout</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <script>
+    $(document).ready(function() {
+        // Trigger logout
+        $('#confirmLogout').click(function() {
+            $.ajax({
+                url: '../Agent Section/functions/agent-logout.php',
+                type: 'POST',
+                success: function(response) {
+                    if (response.trim() === 'success') {
+                        // Redirect to the login page
+                        window.location.href = '../Agent Section/agent-login.php';
+                    } else {
+                        alert('Logout failed. Please try again.');
+                    }
+                },
+                error: function() {
+                    alert('An error occurred. Please try again.');
+                }
+            });
+        });
+    });
+</script>

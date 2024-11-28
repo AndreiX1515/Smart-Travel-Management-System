@@ -1,20 +1,21 @@
-<!-- Bootstrap 5.3 CSS -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://unpkg.com/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- FontAwesome for Icons -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+<!-- Font Awesome for Icons -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
 
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<!-- Bootstrap 5.3 JS Bundle (includes Popper.js) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
 <!-- DataTables CSS -->
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/datatables.net-dt/css/jquery.dataTables.min.css">
 
 <!-- DataTables JS -->
 <script type="text/javascript" charset="utf8" src="https://cdn.jsdelivr.net/npm/datatables.net/js/jquery.dataTables.min.js"></script>
+
+
+
 
 <!-- Bootstrap 5.3 Tooltip Initialization -->
 <script>
@@ -27,25 +28,6 @@
     });
 </script>
 
-<!-- <script>
-    document.addEventListener("DOMContentLoaded", function() {
-    document.querySelectorAll("tr[data-url]").forEach(function(row) {
-        row.addEventListener("click", function() {
-            window.location.href = row.getAttribute("data-url");
-        });
-    });
-});
-
-    // Add event listener to each row for redirection
-    const rows = document.querySelectorAll("tr[data-url]");
-    
-    rows.forEach(row => {
-        row.addEventListener("click", function() {
-            const url = row.getAttribute("data-url");
-            window.location.href = url; // Redirect to the specified URL
-        });
-    });
-</script> -->
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
