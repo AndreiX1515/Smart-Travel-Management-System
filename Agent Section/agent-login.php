@@ -72,45 +72,64 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>
 
     <script>
-    document.getElementById('loginForm').addEventListener('submit', function(event) {
-      event.preventDefault(); // Prevent default form submission
+    $(document).ready(function() {
+       $('#loginForm').on('submit', function(event) {
+           event.preventDefault(); // Prevent default form submission
+           
+           // Clear previous messages
+           $('#message-login').html('');
 
-      // Clear previous messages
-      document.getElementById('message-login').innerHTML = '';
+           // Gather form data
+           const formData = new FormData(this);
+           formData.append('login', '1'); // Add login field to indicate form submission
 
-      // Create FormData object to gather the form data
-      const formData = new FormData(this);
-      formData.append('login', '1'); // Add login field to indicate form submission
+           // Perform AJAX request
+           $.ajax({
+               url: '../Agent Section/functions/agentLogin-code.php',
+               type: 'POST',
+               data: formData,
+               processData: false,
+               contentType: false,
+               dataType: 'json', // Expecting JSON response
+               success: function(data) {
+                   if (data.success) {
+                       console.log(data.accountType);
+                       if (data.accountType === 'agent') {
+                           // Redirect to agent dashboard
+                           window.location.href = '../Agent Section/agent-dashboard.php';
+                       } else if (data.accountType === 'employee') {
+                           // Redirect to employee dashboard
+                           window.location.href = '../Employee Section/emp-dashboard.php';
+                       } else {
+                           // Handle unknown account type
+                           alert('Unknown account type. Please contact support.');
+                       }
+                   } else {
+                       // Show error message based on the response
+                       $('#message-login').html(
+                           `<div class="alert alert-danger text-center">${data.message}</div>`
+                       );
 
-    // Perform AJAX request
-    fetch('../Agent Section/functions/agentLogin-code.php', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json()) // Expecting a JSON response
-    .then(data => {
-        if (data.success) {
-            // Redirect to dashboard or homepage
-            window.location.href = '../Agent Section/agent-dashboard.php';
-        } else {
-            // Show error message based on the response
-            document.getElementById('message-login').innerHTML = '<div class="alert alert-danger text-center">' + data.message + '</div>';
-            
-            // If the user is logged in on another device, disable the login button
-            if (data.message && data.message.trim() === "You are logged in on another device. Please close from other tab or devices then reload before logging in again!") {
-                console.log("Disabling login button for 'Logged in on another device.'");
-                document.getElementById('LoginButton').classList.add('button-disabled'); // Disable the login button
-            }
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        // Show a generic error message if there's a problem with the request
-        document.getElementById('message-login').innerHTML = '<div class="alert alert-danger">An error occurred. Please try again later.</div>';
-        // Add CSS class to visually disable the button
-        document.getElementById('LoginButton').classList.add('button-disabled');
-    });
-});
+                       // If the user is logged in on another device, disable the login button
+                       if (data.message && 
+                           data.message.trim() === "You are logged in on another device. Please close from other tab or devices then reload before logging in again!") {
+                           console.log("Disabling login button for 'Logged in on another device.'");
+                           $('#LoginButton').addClass('button-disabled'); // Disable the login button
+                       }
+                   }
+               },
+               error: function(xhr, status, error) {
+                   console.error('Error:', error);
+                   // Show a generic error message if there's a problem with the request
+                   $('#message-login').html(
+                       '<div class="alert alert-danger">An error occurred. Please try again later.</div>'
+                   );
+                   // Add CSS class to visually disable the button
+                   $('#LoginButton').addClass('button-disabled');
+               }
+           });
+       });
+   });
 
     </script>
 

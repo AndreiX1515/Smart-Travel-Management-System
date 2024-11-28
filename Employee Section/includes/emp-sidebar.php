@@ -58,17 +58,44 @@
     </li>
 </ul>
 
+<?php
+require "../conn.php";
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+// Initialize variables
+$accountId = $_SESSION['employee_accountId'] ?? '';
+$agentId = $_SESSION['agentId'] ?? '';
+$firstName =  $_SESSION['employee_fName'] ?? '';
+$lastName =  $_SESSION['employee_lName'] ?? '';
+$middleName = $_SESSION['employee_mName'] ?? '';  // Middle name is optional
+$email = $_SESSION['email'] ?? '';
+$password = $_SESSION['password'] ?? '';
+$userType = $_SESSION['employee_userType'] ?? '';  // Assuming user type is part of the session
+
+
+// Format the full name: Get the first letter of the middle name and place it at the end
+$middleNameInitial = $middleName ? substr($middleName, 0, 1) . '.' : ''; // First initial of middle name
+$fullName = htmlspecialchars($firstName . ' ' . $middleNameInitial . ' ' . $lastName);  // Full name with middle name initial at the end
+
+// Position or role (assuming userType and accountType are available)
+$position = htmlspecialchars(strtoupper($agentId));
+?>
   <!-- Logout button at the bottom, outside the <ul> -->
   <div class="logout">
    <div class="profile-section">
        <div class="profile-left">
-           <div class="name">John Doe</div>
-           <div class="position">Administrator</div>
+           <!-- Display Full Name and Position -->
+           <div class="name"><?php echo $fullName; ?></div>
+           <div class="position"><?php echo $position; ?></div>
        </div>
+
        <div class="profile-icon profile-icon-visible">
            <i class="fa-solid fa-user-circle"></i>
        </div>
+
    </div>
 
    <a class="nav-link" href="#">
