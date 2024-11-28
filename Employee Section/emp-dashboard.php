@@ -330,7 +330,7 @@
                     case 'Confirmed':
                         $statusClass = 'badge bg-success'; // Green pill for "Approved"
                         break;
-                    case 'Submitted':
+                    case 'Pending':
                         $statusClass = 'badge bg-primary'; // Yellow pill for "Pending"
                         break;
                     case 'Rejected':
