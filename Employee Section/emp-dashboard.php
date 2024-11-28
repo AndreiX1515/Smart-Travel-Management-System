@@ -1,10 +1,10 @@
 <?php
-session_start();
-require "../conn.php";
+  session_start();
+  ini_set('display_errors', 1);
+  ini_set('display_startup_errors', 1);
+  error_reporting(E_ALL);
+  require "../conn.php"; // Move up to the parent directory
 ?>
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -328,268 +328,139 @@ require "../conn.php";
     </div>
 
     <div class="info-table-container">
-     <table class="info-table">
-      <thead>
+      <table class="info-table">
+        <thead>
           <tr>
-              <th rowspan="2">TEAM OP</th>
-              <th rowspan="2">ORIGIN</th>
-              <th colspan="2">FLIGHT DATE</th> <!-- Flight Date columns -->
-              <th rowspan="2">FLIGHT SEAT</th>
-              <th rowspan="2" style="font-size: 10px;">AVAILABLE SEATS</th>
-              <th rowspan="2" style="font-size: 10px;">ADDITIONAL SEATS</th>
-              <th rowspan="2">AIR + LAND</th>
-              <th rowspan="2">LAND ONLY</th>
-              <th rowspan="2">WHOLESALE PRICE</th>
-              <th rowspan="2">RETAIL PRICE</th>
-              <th rowspan="2">LAND ARRANGEMENT</th>
+            <th rowspan="2">TEAM OP</th>
+            <th rowspan="2">ORIGIN</th>
+            <th colspan="2">FLIGHT DATE</th> <!-- Flight Date columns -->
+            <th rowspan="2">FLIGHT SEAT</th>
+            <th rowspan="2" style="font-size: 10px;">AVAILABLE SEATS</th>
+            <th rowspan="2" style="font-size: 10px;">ADDITIONAL SEATS</th>
+            <th rowspan="2">AIR + LAND</th>
+            <th rowspan="2">LAND ONLY</th>
+            <th rowspan="2">WHOLESALE PRICE</th>
+            <th rowspan="2">RETAIL PRICE</th>
+            <th rowspan="2">LAND ARRANGEMENT</th>
 
-              <th colspan="2" data-bs-toggle="tooltip" title="A1">A1</th> <!-- A1 columns -->
-              <th colspan="2" data-bs-toggle="tooltip" title="A2">A2</th> <!-- A2 columns -->
-              <th colspan="2" data-bs-toggle="tooltip" title="A3">A3</th> <!-- A3 columns -->
-              <th colspan="2" data-bs-toggle="tooltip" title="A4">A4</th> <!-- A4 columns -->
-              <th colspan="2" data-bs-toggle="tooltip" title="A5">A5</th> <!-- A5 columns -->
-              <th colspan="2" data-bs-toggle="tooltip" title="A6">A6</th> <!-- A6 columns -->
-              <th colspan="2" data-bs-toggle="tooltip" title="A7">A7</th> <!-- A7 columns -->
-              <th colspan="2" data-bs-toggle="tooltip" title="A8">A8</th> <!-- A8 columns -->
-              <th colspan="2" data-bs-toggle="tooltip" title="A9">A9</th> <!-- A9 columns -->
-              <th colspan="2" data-bs-toggle="tooltip" title="A10">A10</th> <!-- A10 columns -->
-
+            <!-- Dynamic headers for agent columns -->
+            <?php
+              // Fetch agent columns headers dynamically
+              $sql = "SELECT DISTINCT agentId FROM booking WHERE agentId IS NOT NULL AND agentId != ''";
+              $result = $conn->query($sql);
+              while ($row = $result->fetch_assoc()) 
+              {
+                echo '<th colspan="2" data-bs-toggle="tooltip" title="' . $row['agentId'] . '">' . $row['agentId'] . '</th>';
+              }
+            ?>
           </tr>
           <tr>
-              <th>Start</th>
-              <th>End</th>
-              <!-- A1, A2, A3, A4, A5, A6, A7 Sub Headers -->
-              <th>A.L</th>
-              <th>L.O</th>
-
-              <th>A.L</th>
-              <th>L.O</th>
-
-              <th>A.L</th>
-              <th>L.O</th>
-
-              <th>A.L</th>
-              <th>L.O</th>
-
-              <th>A.L</th>
-              <th>L.O</th>
-
-              <th>A.L</th>
-              <th>L.O</th>
-
-              <th>A.L</th>
-              <th>L.O</th>
-
-              <th>A.L</th>
-              <th>L.O</th>
-
-              <th>A.L</th>
-              <th>L.O</th>
-
-              <th>A.L</th>
-              <th>L.O</th>
+            <th>Start</th>
+            <th>End</th>
+            <!-- A1, A2, A3, A4, A5, A6, A7 Sub Headers -->
+            <!-- Dynamic sub-headers for agent columns -->
+            <?php
+              $result = $conn->query($sql);
+              while ($row = $result->fetch_assoc()) 
+              {
+                echo '<th>A.L</th><th>L.O</th>';
+              }
+            ?>
           </tr>
-      </thead>
-      <tbody>
-         <tr>
-             <td>Anna</td>
-             <td>Manila</td>
-             <td>2024. 12. 4</td>
-             <td>2024. 12. 4</td>
-             <td>2</td>
-             <td>1</td>
-             <td>15</td> <!-- Random number for A.L1 -->
-             <td>8</td>  <!-- Random number for L.O1 -->
-             <td>20</td> <!-- Random number for A.L2 -->
+        </thead>
+        <tbody>
+          <?php
+            // Step 1: Dynamically generate agent columns
+            $sql = "SELECT DISTINCT agentId FROM booking WHERE agentId IS NOT NULL AND agentId != ''";
+            $result = $conn->query($sql);
 
-             <td>P28,734.88</td>
-             <td>P28,734.88</td>
-             <td>P28,734.88</td>
+            $agentColumns = '';
+            while ($row = $result->fetch_assoc()) 
+            {
+              $agentColumns .= 
+                  'SUM(CASE WHEN b.agentId = "' . $row['agentId'] . '" AND b.bookingType = "Package" THEN b.pax ELSE 0 END) AS `' . $row['agentId'] . '_AL`, ' .
+                  'SUM(CASE WHEN b.agentId = "' . $row['agentId'] . '" AND b.bookingType = "Land" THEN b.pax ELSE 0 END) AS `' . $row['agentId'] . '_LO`, ';
+            }
 
-            
-             <td>12</td> <!-- Random number for L.O2 -->
-             <td>30</td> <!-- Random number for A.L3 -->
-             <td>18</td> <!-- Random number for L.O3 -->
-             <td>22</td> <!-- Random number for A.L4 -->
-             <td>14</td> <!-- Random number for L.O4 -->
-             <td>35</td> <!-- Random number for A.L5 -->
-             <td>28</td> <!-- Random number for L.O5 -->
-             <td>40</td> <!-- Random number for A.L6 -->
-             <td>33</td> <!-- Random number for L.O6 -->
-             <td>50</td> <!-- Random number for A.L7 -->
-             <td>42</td> <!-- Random number for L.O7 -->
-             <td>28</td> <!-- Random number for L.O5 -->
-             <td>40</td> <!-- Random number for A.L6 -->
-             <td>33</td> <!-- Random number for L.O6 -->
-             <td>33</td> <!-- Random number for L.O6 -->
-             <td>50</td> <!-- Random number for A.L7 -->
-             <td>42</td> <!-- Random number for L.O7 -->
-             <td>28</td> <!-- Random number for L.O5 -->
-             <td>40</td> <!-- Random number for A.L6 -->
-             <td>33</td> <!-- Random number for L.O6 -->
-         </tr>
+            // Remove the trailing comma
+            $agentColumns = rtrim($agentColumns, ', ');
 
-         <tr>
-          <td>Anna</td>
-          <td>Manila</td>
-          <td>2024. 12. 4</td>
-          <td>2024. 12. 4</td>
-          <td>2</td>
-          <td>1</td>
-          <td>15</td> <!-- Random number for A.L1 -->
-          <td>8</td>  <!-- Random number for L.O1 -->
-          <td>20</td> <!-- Random number for A.L2 -->
+            // Step 2: Construct the full SQL query
+            $sql = "
+                SELECT 
+                    CONCAT(e.lName, ', ', e.fName, 
+                        IF(e.mName IS NOT NULL AND e.mName != '', CONCAT(' ', LEFT(e.mName, 1)), '')) AS TeamOP,
+                    f.origin, 
+                    f.flightDepartureDate AS Start, 
+                    f.returnDepartureDate AS End, 
+                    f.availSeats AS FlightSeat, 
+                    (f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0)) AS AvailSeats, 
+                    IF(
+                        (f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0)) < 0, 
+                        ABS(f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0)), 
+                        0
+                    ) AS AdditionalSeats,
+                    SUM(CASE WHEN b.bookingType = 'Package' AND b.status = 'Confirmed' THEN b.pax ELSE 0 END) AS `Air+Land`,
+                    SUM(CASE WHEN b.bookingType = 'Land' AND b.status = 'Confirmed' THEN b.pax ELSE 0 END) AS `LandOnly`,
+                    f.wholesalePrice AS WholesalePrice, 
+                    f.flightPrice AS RetailPrice, 
+                    p.packagePrice AS LandArrangement, 
+                    $agentColumns
+                FROM 
+                    employee e 
+                JOIN 
+                    flight f ON f.employeeId = e.employeeId
+                LEFT JOIN 
+                    booking b ON b.flightId = f.flightId
+                LEFT JOIN 
+                    package p ON f.packageId = p.packageId
+                GROUP BY 
+                    f.flightId
+            ";
 
-          <td>P28,734.88</td>
-          <td>P28,734.88</td>
-          <td>P28,734.88</td>
+            // Step 3: Execute the query
+            $result = $conn->query($sql);
 
-         
-          <td>12</td> <!-- Random number for L.O2 -->
-          <td>30</td> <!-- Random number for A.L3 -->
-          <td>18</td> <!-- Random number for L.O3 -->
-          <td>22</td> <!-- Random number for A.L4 -->
-          <td>14</td> <!-- Random number for L.O4 -->
-          <td>35</td> <!-- Random number for A.L5 -->
-          <td>28</td> <!-- Random number for L.O5 -->
-          <td>40</td> <!-- Random number for A.L6 -->
-          <td>33</td> <!-- Random number for L.O6 -->
-          <td>50</td> <!-- Random number for A.L7 -->
-          <td>42</td> <!-- Random number for L.O7 -->
-          <td>28</td> <!-- Random number for L.O5 -->
-          <td>40</td> <!-- Random number for A.L6 -->
-          <td>33</td> <!-- Random number for L.O6 -->
-          <td>33</td> <!-- Random number for L.O6 -->
-          <td>50</td> <!-- Random number for A.L7 -->
-          <td>42</td> <!-- Random number for L.O7 -->
-          <td>28</td> <!-- Random number for L.O5 -->
-          <td>40</td> <!-- Random number for A.L6 -->
-          <td>33</td> <!-- Random number for L.O6 -->
-      </tr>
+            // Step 4: Display the results in HTML table
+            if ($result->num_rows > 0) 
+            {
+              while ($row = $result->fetch_assoc()) 
+              {
+                echo '<tr>';
+                echo '<td>' . $row['TeamOP'] . '</td>';
+                echo '<td>' . $row['origin'] . '</td>';
+                echo '<td>' . $row['Start'] . '</td>';
+                echo '<td>' . $row['End'] . '</td>';
+                echo '<td>' . $row['FlightSeat'] . '</td>';
+                echo '<td>' . $row['AvailSeats'] . '</td>';
+                echo '<td>' . $row['AdditionalSeats'] . '</td>';
+                echo '<td>' . $row['Air+Land'] . '</td>';
+                echo '<td>' . $row['LandOnly'] . '</td>';
+                echo '<td>' . $row['WholesalePrice'] . '</td>';
+                echo '<td>' . $row['RetailPrice'] . '</td>';
+                echo '<td>' . $row['LandArrangement'] . '</td>';
 
-      <tr>
-       <td>Anna</td>
-       <td>Manila</td>
-       <td>2024. 12. 4</td>
-       <td>2024. 12. 4</td>
-       <td>2</td>
-       <td>1</td>
-       <td>15</td> <!-- Random number for A.L1 -->
-       <td>8</td>  <!-- Random number for L.O1 -->
-       <td>20</td> <!-- Random number for A.L2 -->
-
-       <td>P28,734.88</td>
-       <td>P28,734.88</td>
-       <td>P28,734.88</td>
-
-      
-       <td>12</td> <!-- Random number for L.O2 -->
-       <td>30</td> <!-- Random number for A.L3 -->
-       <td>18</td> <!-- Random number for L.O3 -->
-       <td>22</td> <!-- Random number for A.L4 -->
-       <td>14</td> <!-- Random number for L.O4 -->
-       <td>35</td> <!-- Random number for A.L5 -->
-       <td>28</td> <!-- Random number for L.O5 -->
-       <td>40</td> <!-- Random number for A.L6 -->
-       <td>33</td> <!-- Random number for L.O6 -->
-       <td>50</td> <!-- Random number for A.L7 -->
-       <td>42</td> <!-- Random number for L.O7 -->
-       <td>28</td> <!-- Random number for L.O5 -->
-       <td>40</td> <!-- Random number for A.L6 -->
-       <td>33</td> <!-- Random number for L.O6 -->
-       <td>33</td> <!-- Random number for L.O6 -->
-       <td>50</td> <!-- Random number for A.L7 -->
-       <td>42</td> <!-- Random number for L.O7 -->
-       <td>28</td> <!-- Random number for L.O5 -->
-       <td>40</td> <!-- Random number for A.L6 -->
-       <td>33</td> <!-- Random number for L.O6 -->
-   </tr>
-
-   <tr>
-    <td>Anna</td>
-    <td>Manila</td>
-    <td>2024. 12. 4</td>
-    <td>2024. 12. 4</td>
-    <td>2</td>
-    <td>1</td>
-    <td>15</td> <!-- Random number for A.L1 -->
-    <td>8</td>  <!-- Random number for L.O1 -->
-    <td>20</td> <!-- Random number for A.L2 -->
-
-    <td>P28,734.88</td>
-    <td>P28,734.88</td>
-    <td>P28,734.88</td>
-
-   
-    <td>12</td> <!-- Random number for L.O2 -->
-    <td>30</td> <!-- Random number for A.L3 -->
-    <td>18</td> <!-- Random number for L.O3 -->
-    <td>22</td> <!-- Random number for A.L4 -->
-    <td>14</td> <!-- Random number for L.O4 -->
-    <td>35</td> <!-- Random number for A.L5 -->
-    <td>28</td> <!-- Random number for L.O5 -->
-    <td>40</td> <!-- Random number for A.L6 -->
-    <td>33</td> <!-- Random number for L.O6 -->
-    <td>50</td> <!-- Random number for A.L7 -->
-    <td>42</td> <!-- Random number for L.O7 -->
-    <td>28</td> <!-- Random number for L.O5 -->
-    <td>40</td> <!-- Random number for A.L6 -->
-    <td>33</td> <!-- Random number for L.O6 -->
-    <td>33</td> <!-- Random number for L.O6 -->
-    <td>50</td> <!-- Random number for A.L7 -->
-    <td>42</td> <!-- Random number for L.O7 -->
-    <td>28</td> <!-- Random number for L.O5 -->
-    <td>40</td> <!-- Random number for A.L6 -->
-    <td>33</td> <!-- Random number for L.O6 -->
-</tr>
-
-<tr>
- <td>Anna</td>
- <td>Manila</td>
- <td>2024. 12. 4</td>
- <td>2024. 12. 4</td>
- <td>2</td>
- <td>1</td>
- <td>15</td> <!-- Random number for A.L1 -->
- <td>8</td>  <!-- Random number for L.O1 -->
- <td>20</td> <!-- Random number for A.L2 -->
-
- <td>P28,734.88</td>
- <td>P28,734.88</td>
- <td>P28,734.88</td>
-
-
- <td>12</td> <!-- Random number for L.O2 -->
- <td>30</td> <!-- Random number for A.L3 -->
- <td>18</td> <!-- Random number for L.O3 -->
- <td>22</td> <!-- Random number for A.L4 -->
- <td>14</td> <!-- Random number for L.O4 -->
- <td>35</td> <!-- Random number for A.L5 -->
- <td>28</td> <!-- Random number for L.O5 -->
- <td>40</td> <!-- Random number for A.L6 -->
- <td>33</td> <!-- Random number for L.O6 -->
- <td>50</td> <!-- Random number for A.L7 -->
- <td>42</td> <!-- Random number for L.O7 -->
- <td>28</td> <!-- Random number for L.O5 -->
- <td>40</td> <!-- Random number for A.L6 -->
- <td>33</td> <!-- Random number for L.O6 -->
- <td>33</td> <!-- Random number for L.O6 -->
- <td>50</td> <!-- Random number for A.L7 -->
- <td>42</td> <!-- Random number for L.O7 -->
- <td>28</td> <!-- Random number for L.O5 -->
- <td>40</td> <!-- Random number for A.L6 -->
- <td>33</td> <!-- Random number for L.O6 -->
-</tr>
-
-      </tbody>
-  </table>
+                // Dynamically populate agent columns
+                foreach ($row as $key => $value) 
+                {
+                  if (strpos($key, '_AL') !== false || strpos($key, '_LO') !== false) 
+                  {
+                    echo '<td>' . $value . '</td>';
+                  }
+                }
+                
+                echo '</tr>';
+              }
+            } 
+            else 
+            {
+              echo "No records found.";
+            }
+          ?>
+        </tbody>
+      </table>
   
-  
- </div>
- 
-
-
-     
+    </div>
   </div>
 </div>
 

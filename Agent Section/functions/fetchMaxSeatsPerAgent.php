@@ -45,7 +45,7 @@
       // No data found
       echo json_encode(array(
           "flightId" => null,
-          "maxSeats" => null
+          "availableSeats" => null
       ));
     }
     $stmt->close(); // Close the statement
@@ -56,7 +56,7 @@
     // If required data is missing, return null values
     echo json_encode(array(
         "flightId" => null,
-        "maxSeats" => null
+        "availableSeats" => null
     ));
   }
 ?>
