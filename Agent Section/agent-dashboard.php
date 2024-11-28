@@ -461,7 +461,7 @@
                               p.packageName AS `PACKAGE`, b.bookingType as bookingType,
                               CASE 
                                   WHEN b.flightId IS NULL THEN 'Land Only'
-                                  ELSE CONCAT(DATE_FORMAT(f.flightDepartureDate, '%M %d, %Y'), ' ', DATE_FORMAT(f.flightDepartureTime, '%h:%i %p'))
+                                  ELSE CONCAT(DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y'), ' ', DATE_FORMAT(f.flightDepartureTime, '%h:%i %p'))
                               END AS `FLIGHT DATE`,
                               b.pax AS `TOTAL PAX`,
                               CONCAT(
@@ -535,38 +535,47 @@
                 <tbody>
                   <?php
                     $sql1 = "SELECT 
-                                  r.transactNo AS `T.N`,
-                                  c.concernTitle AS `Request`,
-                                  DATE_FORMAT(r.requestDate, '%M %d, %Y') AS `Date`,
-                                  r.requestStatus, b.agentId
-                              FROM 
-                                  request r
-                              JOIN 
-                                  booking b ON r.transactNo = b.transactNo
-                              JOIN 
-                                  concern c ON r.concernId = c.concernId
-                              WHERE 
-                                  b.agentId = '$agentId' and r.requestStatus = 'Submitted'
-                              ORDER BY 
-                                  r.requestDate DESC";  // Order by request date
-        
+                                r.transactNo AS `T.N`, 
+                                c.concernTitle AS `Request`,
+                                cd.details AS `Details`,
+                                r.customRequest AS `CustomRequest`,
+                                DATE_FORMAT(r.requestDate, '%m-%d-%Y') AS `Date`, 
+                                r.requestStatus AS `Status`, 
+                                b.transactNo
+                            FROM 
+                                request r
+                            LEFT JOIN 
+                                booking b ON r.transactNo = b.transactNo
+                            LEFT JOIN 
+                                concern c ON r.concernId = c.concernId
+                            LEFT JOIN 
+                                concerndetails cd ON r.concernDetailsId = cd.concernDetailsId
+                            WHERE 
+                                b.agentId = '$agentId' AND r.requestStatus = 'Submitted'
+                            ORDER BY 
+                                r.requestDate DESC";
+
                     $res1 = $conn->query($sql1);
-                      
-                    if ($res1->num_rows > 0) 
+
+                    if ($res1 && $res1->num_rows > 0) 
                     {
                       while ($row = $res1->fetch_assoc()) 
                       {
+                        // Handle custom request fallback logic
+                        $title = $row['Request'] ?? 'Custom Request'; // Use 'Custom Request' if `Request` is NULL
+                        $details = $row['Details'] ?? $row['CustomRequest']; // Use `CustomRequest` if `Details` is NULL
+
                         echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($row['T.N']) . "'>
-                                <td>{$row['T.N']}</td>
-                                <td>{$row['Request']}</td>
-                                <td>{$row['Date']}</td>
-                                <td>{$row['requestStatus']}</td>
+                                <td>" . htmlspecialchars($row['transactNo']) . "</td> <!-- Transaction No -->
+                                <td>" . htmlspecialchars($title) . "</td> <!-- Request -->
+                                <td>" . htmlspecialchars($row['Date']) . "</td> <!-- Date -->
+                                <td>" . htmlspecialchars($row['Status']) . "</td> <!-- Status -->
                               </tr>";
                       }
                     } 
                     else 
                     {
-                      echo "<tr><td colspan='6' style='text-align: center;'>No Request found as of the moment</td></tr>";
+                      echo "<tr><td colspan='4' style='text-align: center;'>No Requests found as of the moment</td></tr>";
                     }
                   ?>
                 </tbody>
@@ -599,7 +608,7 @@
                             p.transactNo AS `Transaction No`,
                             p.paymentTitle AS `Payment Title`,
                             CONCAT(FORMAT(p.amount, 2)) AS `Amount`,  -- Format the amount as a currency with two decimal places
-                            DATE_FORMAT(p.paymentDate, '%M %d, %Y') AS `Date`,  -- Format the date as specified
+                            DATE_FORMAT(p.paymentDate, '%m-%d-%Y') AS `Date`,  -- Format the date as specified
                             p.paymentType AS `Payment Type`,
                             p.paymentStatus, b.agentId
                           FROM 
@@ -667,7 +676,7 @@
                                 b.flightId, 
                                 b.pax, 
                                 b.totalPrice AS packagePrice, 
-                                CONCAT(DATE_FORMAT(f.flightDepartureDate, '%M %d, %Y'), ' - ', DATE_FORMAT(f.returnDepartureDate, '%M %d, %Y')) AS FlightDate,
+                                CONCAT(DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y'), ' - ', DATE_FORMAT(f.returnDepartureDate, '%m-%d-%Y')) AS FlightDate,
                                 p.packageName AS packageName, 
                                 CONCAT(
                                     b.lName, ', ', b.fName, ' ', 
@@ -708,7 +717,7 @@
                             $status = ($totalAmountPaid == $totalAmountToBePaid) ? 'Fully Paid' : 'Not Paid';
 
                             // Display table row
-                            echo "<tr>";
+                            echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($row['transactNo']) . "'>";
                             echo "<td>" . htmlspecialchars($row['transactNo']) . "</td>"; // TransactNo
                             echo "<td>" . htmlspecialchars($row['packageName']) . "</td>"; // Package Name
                             echo "<td>" . htmlspecialchars($row['FlightDate']) . "</td>"; // Flight Date Range
