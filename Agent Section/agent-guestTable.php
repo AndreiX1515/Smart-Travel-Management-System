@@ -40,7 +40,7 @@
 
           // Determine whether to disable the button
           $disable_button = ($guest_count >= $pax) ? 'disabled' : ''; // Disable if guest_count >= pax
-          $disable_button2 = ($guest_count < $pax || $visa_count >= $pax) ? 'disabled' : ''; // Disable if guest_count >= pax
+          $disable_button2 = ($guest_count = 0 || $visa_count >= $pax) ? 'disabled' : ''; // Disable if guest_count >= pax
         ?>
 
         <!-- Add Guest Button -->

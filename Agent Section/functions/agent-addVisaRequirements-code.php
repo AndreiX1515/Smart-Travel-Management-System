@@ -10,7 +10,7 @@ if (isset($_POST['attachVisaRequirements'])) {
 
     // Retrieve transaction number and agent ID from session or form
     $transactNo = $_POST['transaction_number'] ?? $_SESSION['transaction_number'] ?? null;
-    $agentId = $_SESSION['agentId'] ?? null;
+    $agentId = $_SESSION['agent_agentId'] ?? null;
 
     if (!$transactNo || !$agentId) {
         echo "Transaction number or Agent ID is missing.";
