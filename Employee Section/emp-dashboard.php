@@ -329,7 +329,7 @@
 
     <div class="info-table-container">
       <table class="info-table">
-        <thead>
+        <thead class="border-2">
           <tr>
             <th rowspan="2">TEAM OP</th>
             <th rowspan="2">ORIGIN</th>
@@ -354,9 +354,9 @@
               }
             ?>
           </tr>
-          <tr>
-            <th>Start</th>
-            <th>End</th>
+          <tr style="top: -8px">
+            <th>START</th>
+            <th>END</th>
             <!-- A1, A2, A3, A4, A5, A6, A7 Sub Headers -->
             <!-- Dynamic sub-headers for agent columns -->
             <?php
