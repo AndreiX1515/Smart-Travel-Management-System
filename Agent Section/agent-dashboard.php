@@ -661,7 +661,7 @@
                 <tbody>
                 <?php
     // Query to select all records from the booking table
-    $agentId = $_SESSION['agentId'];
+    $agentId = $_SESSION['agent_agentId'];
     $query = "SELECT 
                 b.transactNo, 
                 b.flightId, 
