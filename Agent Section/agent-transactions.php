@@ -107,7 +107,7 @@
               $sql1 = "SELECT
                   b.transactNo AS `T.N`,
                   p.packageName AS `PACKAGE`,
-                  b.bookingDate AS `TRANSACTION DATE`, b.bookingType as bookingType,
+                  DATE_FORMAT(b.bookingDate, '%M %d, %Y') AS `TRANSACTION DATE`, b.bookingType as bookingType,
                   DATE_FORMAT(f.flightDepartureDate, '%M %d, %Y') AS `FLIGHT DATE`,
                   b.pax AS `TOTAL PAX`,
                   CONCAT(
@@ -129,7 +129,7 @@
               WHERE 
                   b.agentId = '$agentId' 
               ORDER BY 
-                  b.transactNo DESC LIMIT 10";
+                  b.transactNo DESC";
 
               $res1 = $conn->query($sql1);
 

@@ -74,6 +74,7 @@
           $flightDate = $row1['flightDepartureDate'];
           $pax = $row1['pax'];
           $status = $row1['status'];
+          $price = $row1['totalPrice'];
           $flightId = $row1['flightId']; // Fetch flightId
 
           // Construct the full name using the conditions for middle name and suffix
@@ -130,6 +131,7 @@
                 <p class=""><strong>Contact Person:</strong> <?php echo htmlspecialchars($fullName); ?></p>
                 <p class=""><strong>Contact No:</strong> <?php echo htmlspecialchars($contactNo); ?></p>
                 <p class=""><strong>Email:</strong> <?php echo htmlspecialchars($email); ?></p>
+                <p class=""><strong>Price:</strong>₱ <?php echo number_format((float)$price, 2); ?></p>
               </div>
 
              <?php

@@ -41,7 +41,7 @@
         <tbody>
           <?php
             // Query to select all records from the booking table
-            $agentId = $_SESSION['agentId'];
+            $agentId = $_SESSION['agent_agentId'];
             $query = "SELECT b.transactNo, b.flightId, b.pax, b.totalPrice AS packagePrice, 
                         CONCAT(DATE_FORMAT(f.flightDepartureDate, '%M %d, %Y'), ' - ', DATE_FORMAT(f.returnDepartureDate, '%M %d, %Y')) AS FlightDate,
                         IFNULL(req.totalRequestCost, 0) AS totalRequestCost,
