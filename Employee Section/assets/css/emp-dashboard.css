@@ -401,7 +401,7 @@
 
 .payment-table-container {
  overflow-x: auto; /* Enable horizontal scrolling for small screens */
- padding: 0px 15px; /* Consistent padding for the container */
+ padding: 0px 10px; /* Consistent padding for the container */
  width: 100%; /* Ensure it takes up the full width of its parent */
  max-height: 280px; /* Maximum height for the table container */
  height: auto; /* Allow the container's height to adjust based on content */
@@ -409,6 +409,7 @@
 
 .payment-table {
  width: 100%; /* Full width table */
+ padding: 0px 10px; /* Consistent padding for the container */
  height: 320px; /* Allow the table height to adjust based on content */
  font-family: Arial, sans-serif;
  font-size: 12px;
