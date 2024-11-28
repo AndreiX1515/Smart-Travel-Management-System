@@ -145,6 +145,7 @@
                 <input type="hidden" id="flightId" name="flightId" value="" placeholder="Flight Id Input">
                 <input type="hidden" id="packagePrice" name="packagePrice" placeholder="Package Price">
                 <input type="hidden" name="flightPrice" id="flightPricee" placeholder="Flight Price">
+                <input type="hidden" name="agentId" id="agentId" value="<?php echo $_SESSION['agent_agentId']; ?>" placeholder="Agent Id">
   
               </div>
 
@@ -993,6 +994,7 @@
         {
           // Get the input values
           var flightId = $('#flightId').val();
+          var agentId = $('#agentId').val();
           var isLandOnlyChecked = $('#land').is(':checked');
 
           if (flightId !== '') 
@@ -1002,7 +1004,7 @@
             {
               url: '../Agent Section/functions/fetchMaxSeatsPerAgent.php', // Replace with your server-side script URL
               method: 'POST',
-              data: { flightId: flightId }, // Send the flightId to the server
+              data: { flightId: flightId, agentId: agentId }, // Send the flightId to the server
               dataType: 'json', // Specify that we're expecting JSON response
               success: function(response) 
               {
@@ -1021,6 +1023,7 @@
                     if (currentPax > maxSeats) 
                     {
                       $('#totalPax').val(maxSeats); // Adjust the value
+                      console.log(maxSeats);
                     }
 
                     // Display the available seats

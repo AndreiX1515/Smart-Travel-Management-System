@@ -717,7 +717,7 @@
             echo "<td>" . $row['bookingType'] . "</td>"; // Booking Type 
             echo "<td>₱ " . number_format($totalAmountPaid, 2) . "</td>"; // Total Amount Paid
             echo "<td>₱ " . number_format($balance, 2) . "</td>"; // Balance (Amount to be paid - Amount paid)
-            echo "<td>" . htmlspecialchars($status) . "</td>"; // Status (Fully Paid or Not Paid)
+            echo "<td>" . htmlspecialchars($row['bookingStatus']) . "</td>"; // Status (Fully Paid or Not Paid)
             echo "</tr>";
         }
     } else {
