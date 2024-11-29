@@ -67,7 +67,7 @@ error_reporting(E_ALL);
 
 // Initialize variables
 $accountId = $_SESSION['employee_accountId'] ?? '';
-$agentId = $_SESSION['agentId'] ?? '';
+$agentId = $_SESSION['employee_employeeId'] ?? '';
 $firstName =  $_SESSION['employee_fName'] ?? '';
 $lastName =  $_SESSION['employee_lName'] ?? '';
 $middleName = $_SESSION['employee_mName'] ?? '';  // Middle name is optional
@@ -89,7 +89,7 @@ $position = htmlspecialchars(strtoupper($agentId));
        <div class="profile-left">
            <!-- Display Full Name and Position -->
            <div class="name"><?php echo $fullName; ?></div>
-           <div class="position"><?php echo $position; ?></div>
+           <div class="position">EMP ID: <?php echo $position; ?></div>
        </div>
 
        <div class="profile-icon profile-icon-visible">
