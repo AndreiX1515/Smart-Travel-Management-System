@@ -23,49 +23,53 @@
 
 <!-- Main Container -->
 <div class="main-container bg-body">
-   <?php include '../Employee Section/includes/emp-navbar.php' ?>
+  <?php include '../Employee Section/includes/emp-navbar.php' ?>
 
-   <div class="main-content">
+  <div class="main-content">
+    <!-- Cards Count 1st Row -->
     <div class="counts-wrapper">
-      <!-- CARD 1 -->
+      <!-- CARD 1 - Current Transactions -->
       <div class="card border-0">
         <div class="header">
-            <h6 class="text-secondary fw-600">Current Transaction</h6>
+          <h6 class="text-secondary fw-600">Current Transaction</h6>
         </div>
     
         <div class="card-content px-3">
+          <!-- Total and Confirmed Transaction Count -->
           <div class="row">
+            <!-- Total Transaction Count -->
             <div class="col-md-5 d-flex flex-row">
-                <div class="card-icon icon-blue">
-                    <i class="fas fa-calendar-alt"></i> 
-                </div>
-                <div class="side-content d-flex flex-column">
-                  <?php
-                    // Assuming you already have a connection to your database
-                    $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking WHERE MONTH(bookingDate) = MONTH(CURRENT_DATE()) 
-                                                AND YEAR(bookingDate) = YEAR(CURRENT_DATE())";
-                    $result = mysqli_query($conn, $totalTransactionsQuery);
+              <div class="card-icon icon-blue">
+                <i class="fas fa-calendar-alt"></i> 
+              </div>
+              <div class="side-content d-flex flex-column">
+                <?php
+                  // Assuming you already have a connection to your database
+                  $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking WHERE MONTH(bookingDate) = MONTH(CURRENT_DATE()) 
+                                              AND YEAR(bookingDate) = YEAR(CURRENT_DATE())";
+                  $result = mysqli_query($conn, $totalTransactionsQuery);
 
-                    if ($result) 
-                    {
-                      $row = mysqli_fetch_assoc($result);
-                      $totalTransactions = $row['total'];
-                    } 
-                    else 
-                    {
-                      $totalTransactions = 0; // default to 0 if query fails
-                    }
-                  ?>
-                  <h5><?php echo $totalTransactions;?></h5>
-                  <p>TOTAL TRANSACTIONS</p>
-                </div>
+                  if ($result) 
+                  {
+                    $row = mysqli_fetch_assoc($result);
+                    $totalTransactions = $row['total'];
+                  } 
+                  else 
+                  {
+                    $totalTransactions = 0; // default to 0 if query fails
+                  }
+                ?>
+                <h5><?php echo $totalTransactions;?></h5>
+                <p>TOTAL TRANSACTIONS</p>
+              </div>
             </div>
        
-           <div class="col-md-5 d-flex flex-row">
-               <div class="card-icon icon-green">
-                 <i class="fas fa-check-circle"></i>
-               </div>
-               <div class="side-content d-flex flex-column">
+            <!-- Confirmed Transaction Count -->
+            <div class="col-md-5 d-flex flex-row">
+              <div class="card-icon icon-green">
+                <i class="fas fa-check-circle"></i>
+              </div>
+              <div class="side-content d-flex flex-column">
                 <?php
                   // Assuming you already have a connection to your database
                   $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking WHERE MONTH(bookingDate) = MONTH(CURRENT_DATE()) 
@@ -82,18 +86,19 @@
                     $totalTransactions = 0; // default to 0 if query fails
                   }
                 ?>
-                   <h5><?php echo $totalTransactions; ?></h5>
-                   <p>COMPLETED</p>
-               </div>
-           </div>
-         </div>
+                <h5><?php echo $totalTransactions; ?></h5>
+                <p>CONFIRMED</p>
+              </div>
+            </div>
+          </div>
 
-         <div class="row">
-           <div class="col-md-5 d-flex flex-row">
-               <div class="card-icon icon-yellow">
-                 <i class="fas fa-exclamation-triangle"></i>
-               </div>
-               <div class="side-content d-flex flex-column">
+          <div class="row">
+            <!-- Pending Transaction Count -->
+            <div class="col-md-5 d-flex flex-row">
+              <div class="card-icon icon-yellow">
+                <i class="fas fa-exclamation-triangle"></i>
+              </div>
+              <div class="side-content d-flex flex-column">
                 <?php
                   // Assuming you already have a connection to your database
                   $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking WHERE MONTH(bookingDate) = MONTH(CURRENT_DATE()) 
@@ -110,12 +115,13 @@
                     $totalTransactions = 0; // default to 0 if query fails
                   }
                 ?>
-                   <h5><?php echo $totalTransactions; ?></h5>
-                   <p>PENDING</p>
-               </div>
-           </div>
+                <h5><?php echo $totalTransactions; ?></h5>
+                <p>PENDING</p>
+              </div>
+            </div>
       
-          <div class="col-md-5 d-flex flex-row">
+            <!-- Cancelled Transaction Count -->
+            <div class="col-md-5 d-flex flex-row">
               <div class="card-icon icon-red">
                 <i class="fas fa-times-circle"></i>
               </div>
@@ -136,121 +142,215 @@
                     $totalTransactions = 0; // default to 0 if query fails
                   }
                 ?>
-                  <h5><?php echo $totalTransactions; ?></h5>
-                  <p>CANCELLED</p>
+                <h5><?php echo $totalTransactions; ?></h5>
+                <p>CANCELLED</p>
               </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
   
-    <!-- CARD 2 -->
-    <div class="card border-0" >
-     <div class="header">
+      <!-- CARD 2 -->
+      <div class="card border-0" >
+        <div class="header">
          <h6 class="text-secondary fw-600">Transaction History</h6>
-     </div>
+        </div>
  
-     <div class="card-content px-3">
-       <div class="row">
-         <div class="col-md-5 d-flex flex-row">
-             <div class="card-icon icon-blue">
-                 <i class="fas fa-calendar-alt"></i>
-             </div>
-             <div class="side-content d-flex flex-column">
-                 <h5>0</h5>
-                 <p>PAST</p>
-             </div>
-         </div>
+        <div class="card-content px-3">
+          <div class="row">
+            <div class="col-md-5 d-flex flex-row">
+              <div class="card-icon icon-blue">
+                  <i class="fas fa-calendar-alt"></i>
+              </div>
+              <div class="side-content d-flex flex-column">
+                  <h5>0</h5>
+                  <p>PAST</p>
+              </div>
+            </div>
     
-        <div class="col-md-5 d-flex flex-row">
-            <div class="card-icon icon-gray">
-              <i class="fas fa-check-circle"></i>
+            <div class="col-md-5 d-flex flex-row">
+                <div class="card-icon icon-gray">
+                  <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="side-content d-flex flex-column">
+                    <h5>0</h5>
+                    <p>CURRENT</p>
+                </div>
             </div>
-            <div class="side-content d-flex flex-column">
+          </div>
+
+          <div class="row">
+            <div class="col-md-5 d-flex flex-row">
+              <div class="card-icon icon-yellow">
+                <i class="fas fa-exclamation-triangle"></i>
+              </div>
+              <div class="side-content d-flex flex-column">
                 <h5>0</h5>
-                <p>CURRENT</p>
+                <p>ON GOING</p>
+              </div>
             </div>
+   
+            <div class="col-md-5 d-flex flex-row">
+              <div class="card-icon icon-green">
+                <i class="fas fa-times-circle"></i>
+              </div>
+              <div class="side-content d-flex flex-column">
+                <h5>0</h5>
+                <p>CONFIRMED</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div class="row">
-        <div class="col-md-5 d-flex flex-row">
-            <div class="card-icon icon-yellow">
-              <i class="fas fa-exclamation-triangle"></i>
-            </div>
-            <div class="side-content d-flex flex-column">
-                <h5>0</h5>
-                <p>ON GOING</p>
-            </div>
+      <!-- CARD 3 - On Due -->
+      <div class="card border-0">
+        <div class="header">
+          <h6 class="text-secondary fw-600">On Due</h6>
         </div>
-   
-       <div class="col-md-5 d-flex flex-row">
-           <div class="card-icon icon-green">
-             <i class="fas fa-times-circle"></i>
-           </div>
-           <div class="side-content d-flex flex-column">
-               <h5>0</h5>
-               <p>CONFIRMED</p>
-           </div>
-       </div>
-     </div>
-   
-    </div>
-   </div>
 
-   <!-- CARD 3 -->
-   <div class="card border-0">
-    <div class="header">
-        <h6 class="text-secondary fw-600">On Due</h6>
-    </div>
-
-    <div class="card-content px-3">
-      <div class="row">
-        <div class="col-md-5 d-flex flex-row">
-            <div class="card-icon icon-blue">
+        <div class="card-content px-3">
+          <!-- 5 Days and 10 Days Due Count -->
+          <div class="row">
+            <!-- 5 Days Due Count -->
+            <div class="col-md-5 d-flex flex-row">
+              <div class="card-icon icon-blue">
                 <i class="fas fa-calendar-alt"></i>
-            </div>
-            <div class="side-content d-flex flex-column">
-                <h5>0</h5>
-                <p>5 DAYS</p>
-            </div>
-        </div>
-   
-       <div class="col-md-5 d-flex flex-row">
-           <div class="card-icon icon-green">
-             <i class="fas fa-check-circle"></i>
-           </div>
-           <div class="side-content d-flex flex-column">
-               <h5>0</h5>
-               <p>10 DAYS</p>
-           </div>
-       </div>
-     </div>
+              </div>
+              <div class="side-content d-flex flex-column">
+                <?php
+                  // Assuming $conn is your database connection
+                  $days5Query = "SELECT COUNT(*) AS `bookingsDueIn5Days` FROM booking b 
+                                  JOIN flight f ON b.flightId = f.flightId
+                                  LEFT JOIN (SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) 
+                                    AS totalPaid FROM payment GROUP BY transactNo) p ON b.transactNo = p.transactNo
+                                WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) <= 5 AND DATEDIFF(f.flightDepartureDate, CURDATE()) >= 0
+                                  AND (b.totalPrice > IFNULL(p.totalPaid, 0)) and b.status='Confirmed'";
 
-      <div class="row">
-        <div class="col-md-5 d-flex flex-row">
-            <div class="card-icon icon-yellow">
-              <i class="fas fa-exclamation-triangle"></i>
+                  $result = $conn->query($days5Query);
+
+                  // Check if the query returned a result
+                  if ($result->num_rows > 0) 
+                  {
+                    $row = $result->fetch_assoc();
+                    $bookingsDueIn5Days = $row['bookingsDueIn5Days'];
+                  } 
+                  else 
+                  {
+                    $bookingsDueIn5Days = 0;  // Default to 0 if no records found
+                  }
+                ?>
+                <h5><?php echo $bookingsDueIn5Days; ?></h5>
+                <p>5 DAYS</p>
+              </div>
             </div>
-            <div class="side-content d-flex flex-column">
-                <h5>0</h5>
+   
+            <!-- 10 Days Due Count -->
+            <div class="col-md-5 d-flex flex-row">
+              <div class="card-icon icon-green">
+                <i class="fas fa-check-circle"></i>
+              </div>
+              <div class="side-content d-flex flex-column">
+                <?php
+                  // Assuming $conn is your database connection
+                  $days10Query = "SELECT COUNT(*) AS bookingsDueIn10Days FROM booking b
+                                    JOIN flight f ON b.flightId = f.flightId
+                                    LEFT JOIN (SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) 
+                                    AS totalPaid FROM payment GROUP BY transactNo) p ON b.transactNo = p.transactNo
+                                  WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) BETWEEN 0 AND 10
+                                    AND (b.totalPrice > IFNULL(p.totalPaid, 0)) and b.status='Confirmed'";
+
+                  $result = $conn->query($days10Query);
+
+                  // Check if the query returned a result
+                  if ($result->num_rows > 0) 
+                  {
+                    $row = $result->fetch_assoc();
+                    $bookingsDueIn10Days = $row['bookingsDueIn10Days'];
+                  } 
+                  else 
+                  {
+                    $bookingsDueIn10Days = 0;  // Default to 0 if no records found
+                  }
+                ?>
+                <h5><?php echo $bookingsDueIn10Days; ?></h5>
+                <p>10 DAYS</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 20 Days and 30 Days Due Count -->
+          <div class="row">
+            <!-- 20 Days Due Count -->
+            <div class="col-md-5 d-flex flex-row">
+              <div class="card-icon icon-yellow">
+                <i class="fas fa-exclamation-triangle"></i>
+              </div>
+              <div class="side-content d-flex flex-column">
+                <?php
+                  // Assuming $conn is your database connection
+                  $days20Query = "SELECT COUNT(*) AS `bookingsDueIn20Days` FROM booking b 
+                                  JOIN flight f ON b.flightId = f.flightId
+                                  LEFT JOIN (SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) 
+                                            AS totalPaid FROM payment GROUP BY transactNo) p 
+                                  ON b.transactNo = p.transactNo
+                                  WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) BETWEEN 10 AND 20
+                                    AND (b.totalPrice > IFNULL(p.totalPaid, 0)) and b.status='Confirmed'";
+
+                  $result = $conn->query($days20Query);
+
+                  // Check if the query returned a result
+                  if ($result->num_rows > 0) 
+                  {
+                    $row = $result->fetch_assoc();
+                    $bookingsDueIn20Days = $row['bookingsDueIn20Days'];
+                  } 
+                  else 
+                  {
+                    $bookingsDueIn20Days = 0;  // Default to 0 if no records found
+                  }
+                ?>
+                <h5><?php echo $bookingsDueIn20Days; ?></h5>
                 <p>15 DAYS</p>
+              </div>
             </div>
+      
+            <!-- 30 Days Due Count -->
+            <div class="col-md-5 d-flex flex-row">
+              <div class="card-icon icon-red">
+                <i class="fas fa-times-circle"></i>
+              </div>
+              <div class="side-content d-flex flex-column">
+                <?php
+                  // Assuming $conn is your database connection
+                  $days30Query = "SELECT COUNT(*) AS `bookingsDueIn30Days` FROM booking b 
+                                    JOIN flight f ON b.flightId = f.flightId
+                                    LEFT JOIN (SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) 
+                                    AS totalPaid FROM payment GROUP BY transactNo) p ON b.transactNo = p.transactNo
+                                  WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) BETWEEN 20 AND 30
+                                    AND (b.totalPrice > IFNULL(p.totalPaid, 0)) AND b.agentId = '$agentId' AND b.status = 'Confirmed'";
+
+                  $result = $conn->query($days30Query);
+
+                  // Check if the query returned a result
+                  if ($result->num_rows > 0) 
+                  {
+                    $row = $result->fetch_assoc();
+                    $bookingsDueIn30Days = $row['bookingsDueIn30Days'];
+                  } 
+                  else 
+                  {
+                    $bookingsDueIn30Days = 0;  // Default to 0 if no records found
+                  }
+                ?>
+                <h5><?php echo $bookingsDueIn30Days; ?></h5>
+                <p>30 DAYS</p>
+              </div>
+            </div>
+          </div>
+      
         </div>
-   
-       <div class="col-md-5 d-flex flex-row">
-           <div class="card-icon icon-red">
-             <i class="fas fa-times-circle"></i>
-           </div>
-           <div class="side-content d-flex flex-column">
-               <h5>0</h5>
-               <p>30 DAYS</p>
-           </div>
-       </div>
-     </div>
-   
-    </div>
- </div>
+      </div>
 
   <!-- CARD 4 -->
   <div class="card border-0">
