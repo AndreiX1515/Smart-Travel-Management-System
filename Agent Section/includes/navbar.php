@@ -10,7 +10,7 @@ $agentId = $_SESSION['agent_agentId'];
 $fName =  $_SESSION['agent_fName'] ?? '';
 $lName = $_SESSION['agent_lName'] ?? '';
 $mName = $_SESSION['agent_mName'] ?? '';
-$branchId = $_SESSION['branchId'] ?? '';
+$branchId = $_SESSION['agent_branchId'] ?? '';
 $email = $_SESSION['email'] ?? '';
 $password = $_SESSION['password'] ?? '';
 
@@ -65,9 +65,9 @@ $current_date = date('D, F d, Y'); // Format: "Tue, January 01, 2024"
 
                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                        <div class="profile-container ms-2 me-3">
-                           <h6 class="mb-1"><?php echo $fullName; ?></h6> 
+                           <h6 class="mb-1"><?php echo $fullName; ?></h6>
                            <span class="m-0">Branch: <?php echo $branchName; ?></span>
-                           <!-- <span class="m-0">Agent Id: <?php echo $agentId; ?></span> -->
+                           <span class="m-0">Agent ID: <?php echo $agentId; ?></span>
                        </div>
                        <img src="../assets/images/circle.png" alt="Profile" class="profile-image me-2" width="40px" height="40px">
                    </a>

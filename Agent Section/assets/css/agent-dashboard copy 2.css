@@ -35,7 +35,7 @@ body {
 }
 
 .container-wrapper {
- padding: 0px 50px 0px 5px;
+ padding: 0px 50px 0px 15px;
  display: flex;
  flex-direction: column;
  justify-content: space-between; /* Distributes cards evenly with space in between */
@@ -45,48 +45,20 @@ body {
 
 /* info-container Section */
 .info-container {
-  width: 100%;
-  background-color: #F6F6F6; /* Light background */
-  border-radius: 10px; /* Rounded corners */
-  /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); Box shadow for depth */
-  height: 5vh;
-  display: flex;
-  flex-direction: row;
-  justify-content: end;
-  padding: 5px 25px;
+    width: 100%;
+    background-color: #F6F6F6; /* Light background */
+    border-radius: 10px; /* Rounded corners */
+    /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); Box shadow for depth */
+    height: 5vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    padding: 5px 25px;
 }
 
 
-.header-counts {
- width: 100%;
- padding: 10px 0px 10px 5px ;
-}
 
-
-.header-counts h6 {
- margin: 0; /* Removes default margin */
- text-align: left;
- color: rgba(0, 0, 0, 0.3); /* Sets the text color with reduced opacity */
- font-size: .8rem; /* Adjusts font size */
- font-weight: bold;
- letter-spacing: 0.5px; /* Adds slight spacing between letters */
-}
-
-.white-pill {
- display: inline-block; /* Makes the pill fit its content */
- padding: 6px 20px 6px 10px; /* Adjust padding for pill shape */
- font-size: .8rem; /* Matches the font size */
- font-weight: 400; /* Sets font weight */
- color: rgba(0, 0, 0, 0.9); /* Slightly darker text color for visibility */
- background-color: #ffffff; /* White background for the pill */
- border-radius: 0 50px 50px 0; /* Removes left border radius */
- box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
- letter-spacing: 0.5px; /* Adds slight spacing between letters */
- text-align: left; /* Aligns content to the left */
- transition: box-shadow 0.3s ease, transform 0.2s ease; /* Smooth hover and active effects */
-}
-
-
+/* Dashboard Cards Container */
 .dashboard-cards {
  display: flex; /* Flexbox for layout */
  flex-wrap: wrap; /* Allow wrapping of cards */
@@ -96,225 +68,460 @@ body {
  height: 15vh; /* Increased container height for better card proportion */
 }
 
-.counts-wrapper {
- display: flex;
- flex-direction: row;
- gap: 5px; /* Gap between cards */
- width: 100%;
- height: 15vh;
- margin-bottom: 10px;
-}
-
-.counts-wrapper .card {
- flex: 1; 
- background-color: #ffffff; 
- display: flex;
- font-size: 1rem;
- font-weight: bold;
- color: #333;
-
-}
-
-.counts-wrapper .card {
- background-color: #F6F6F6;
-}
-
-.card .header {
-  padding: 10px 20px 5px 10px;
-  color: #4c4f52;
-}
-
-
-.row {
- display: flex;
- flex-direction: row;
- gap: 10px;
-}
-
-.card-content .col-md-5 {
- margin-top: 5px;
- display: flex;
- flex-direction: row;
- align-items: center;
- justify-content: flex-start;
- flex: 1;
- padding: 5px 10px; /* Reduced padding */
- transition: transform 0.2s ease, box-shadow 0.2s ease;
- box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Added box shadow */
- border-radius: 8px; /* Optional: Slight rounding for a softer look */
- background-color: #fff; /* Optional: Ensure the shadow is visible */
-}
-
-
-.card-icon {
- font-size: 14px; /* Smaller icon font size */
- margin-right: 10px; /* Reduced margin */
- display: flex;
- align-items: center;
- justify-content: center;
- width: 30px; /* Smaller width */
- height: 30px; /* Smaller height */
- border-radius: 30%;
- color: #ffffff; /* Default icon color */
-}
-
-/* Blue Icon for Total Transactions */
-.icon-blue {
- background-color: #17a2b8; /* Light blue background */
-}
-
-/* Green Icon for Completed Transactions */
-.icon-green {
- background-color: #28a745; /* Green background */
-}
-
-/* Yellow Icon for Pending Transactions */
-.icon-yellow {
- background-color: #ffc107; /* Yellow background */
- color: #333; /* Darker color for contrast */
-}
-
-/* Red Icon for Cancelled Transactions */
-.icon-red {
- background-color: #dc3545; /* Red background */
-}
-
-.icon-gray {
- background-color: gray; /* Gray background */
-}
-
-.side-content {
+.card {
  display: flex;
  flex-direction: column;
- justify-content: center; /* Center align the text vertically */
+ width: calc(15% - 15px); /* Responsive width with spacing accounted */
+ height: 100%; /* Card height will match container height */
 }
 
-.side-content h5 {
- font-size: 20px; /* Reduced font size for the number */
- font-weight: bold;
- margin: 0;
- color: #3a3535;
-}
-
-.side-content p {
- font-size: 10px; /* Smaller font size for description */
- font-weight: bold;
- color: #747b85; /* Lighter gray for the description */
- margin: 0;
-}
-
-
-
-
-/* Card 4 */
-.card-body-currency {
- width: 100%;
- height: auto; /* Adjust to fit the content */
- padding: 0px 10px;
-}
-/* Currency Cards Container */
-.currency-cards {
+.dashboard-cards-one {
+ width: calc(25% - 5px); /* Wider card that still aligns with spacing */
+ height: 100%; /* Matches container height */
+ background-color: #fff; /* Card background color */
+ border-radius: 10px; /* Rounded corners */
+ box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Soft shadow */
  display: flex;
- flex-direction: row; /* Arrange cards horizontally */
- gap: 10px; /* Spacing between cards */
- justify-content: left; /* Align cards to the left */
- align-items: center; /* Vertically center the cards */
+ flex-direction: column; /* Maintain column layout if needed */
 }
 
-/* Individual Currency Card */
-.currency-card {
- width: 140px; /* Fixed width */
- height: 100px; /* Fixed height */
- padding: 15px; /* Added padding to the inside of the card */
+.dashboard-cards-two {
+ width: calc(25% - 5px); /* Same width calculation as the first card */
+ height: 100%; /* Matches the height of the parent container */
+ background-color: #fff; /* Card background color */
+ border-radius: 10px; /* Rounded corners */
+ box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Soft shadow */
  display: flex;
- flex-direction: column;
+ flex-direction: column; /* Maintain column layout if needed */
+}
+
+.dashboard-cards-three {
+ width: calc(25% - 5px); /* Same width calculation as the first card */
+ height: 100%; /* Matches the height of the parent container */
+ background-color: #fff; /* Card background color */
+ border-radius: 10px; /* Rounded corners */
+ box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Soft shadow */
+ display: flex;
+ flex-direction: column; /* Maintain column layout if needed */
+}
+
+.dashboard-cards-four {
+ width: calc(25% - 5px); /* Same width calculation as the first card */
+ height: 100%; /* Matches the height of the parent container */
+ background-color: #fff; /* Card background color */
+ border-radius: 10px; /* Rounded corners */
+ box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Soft shadow */
+ display: flex;
+ flex-direction: column; /* Maintain column layout if needed */
+}
+
+.dcard-header {
+  padding: 15px 20px 0px 20px; 
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dcard-header h3{
+  font-size: 0.7rem;
+  color: #7c7c7c; /* Darker text for better contrast */
+  font-weight: 600;
+}
+
+.view-button a {
+  padding-bottom: 10px;
+}
+
+.dashboard-cards-one .dcard-body {
+ display: flex;
+ flex-direction: row;
+ align-items: center; /* Center items vertically */
+ padding: 0px 20px 0px 10px;
+}
+
+.dcard-body .month-transaction {
+ display: flex;
+ flex-direction: row;
+ justify-content: left;
  align-items: center;
+ padding: 0px 10px ; /* Increased padding for a more spacious look */
+ width: 220px; /* Fixed width */
+ height: 50px; /* Fixed height */
+ border-radius: 10px;
+ transition: background-color 0.3s, transform 0.3s; /* Transition effects */
+}
+
+.transaction-total {
+ background-color: rgb(209, 236, 241); /* Light blue */
+ border: 1px solid rgb(12, 84, 96); /* Darker blue for accent */
+ box-shadow: 0 1px 3px rgba(12, 84, 96, 0.6); /* Shadow for logo */
+}
+
+.transaction-cancelled {
+ background-color: rgb(253, 144, 153); /* Light red */
+ border: 1px solid rgb(114, 28, 36); /* Darker red for accent */
+ box-shadow: 0 1px 3px rgba(114, 28, 36, 0.4); /* Shadow for logo */
+}
+
+.transaction-ongoing {
+ background-color: #fff3cd; /* Light yellow */
+ border: 1px solid #856404; /* Darker yellow for accent */
+
+}
+
+.transaction-confirmed {
+ background-color: #c3e6cb; /* Light green */
+ border: 1px solid #155724; /* Darker green for accent */
+
+}
+
+.month-transaction:hover {
+ transform: translateY(-2px); /* Slight lift on hover */
+}
+
+.month-transaction h3 {
+ font-size: 26px; /* Increased font size for the number */
+ color: #333; /* Darker text for better contrast */
+ margin: 0; /* Remove default margin */
+ font-weight: bold; /* Bold text for emphasis */
+}
+
+.logo-container {
+ display: flex;
  justify-content: center;
- border-radius: 8px; /* Slight rounding for aesthetic */
- background-color: white;
- box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Subtle box shadow */
- font-size: 16px;
- font-weight: bold;
- color: #333; /* Text color */
- transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth hover effect */
-}
-
-/* Flag Icon Wrapper */
-.currency-card .flag-icon-wrapper {
- display: flex;
- flex-direction: column;
  align-items: center;
- padding: 10px 0px 5px 0px;
- /* margin: 10px 5px 10px 5px; Adjusted margins to ensure consistent spacing */
-}
-
-/* Flag Icon Styling */
-.currency-card .flag-icon-wrapper img {
- width: 25px;
- height: 25px;
-}
-
-/* Currency Label Styling */
-.currency-card .flag-icon-wrapper h6 {
- margin-top: 5px;
- font-size: 12px;
- font-weight: 500;
-}
-
-
-
-
-
-
-.pill-button {
- display: inline-block; /* Makes it behave like a button */
- padding: 4px 15px; /* Adds padding for better button appearance */
- font-size: 10px; /* Sets the font size */
- color: #000; /* Black text color */
- background-color: #ffffff; /* White background */
- text-decoration: none; /* Removes underline from the link */
- border-radius: 30px; /* Gives it a pill shape */
- text-align: center; /* Centers the text */
- border: 1px solid #b9adad; /* Light border to match the background */
- transition: background-color 0.3s ease, transform 0.2s ease, border-color 0.3s ease; /* Smooth transition for hover effects */
-}
-
-
-.pill-button:hover {
- background-color: #f1f1f1; /* Light grey background on hover */
- border-color: #3b413d; /* Change border color on hover */
-}
-
-
-.pill-button:active {
- transform: translateY(0); /* Resets the transform on click */
- background-color: #e0e0e0; /* Slightly darker background on click */
-}
-
-
-
-/* Icon Wrapper */
-.icon-wrapper {
- width: 40px; /* Match the size proportionately */
- height: 40px;
- display: flex;
- align-items: center;
- justify-content: center;
- background-color: transparent;
+ border-radius: 10px; /* Make logo container circular */
+ padding: 5px; /* Padding for spacing */
+ width: 35px; /* Increased width */
+ height: 35px; /* Increased height */
+ margin-right: 10px; /* Space between logo and text */
  
- font-size: 18px; /* Icon size */
- color: #495057;; /* Icon color */
- transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth hover effect */
+}
+
+.content-container {
+ display: flex;
+ flex-direction: column;
+ justify-content: center; /* Center text vertically */
+ align-items: flex-start; /* Align items to the start */
+ padding: 0px 5px; /* Padding for spacing */
+ width: 130px; /* Adjusted width for better text alignment */
+}
+
+.content-container p {
+ font-size: 10px; /* Text size for additional information */
+ color: #666; /* Softer grey for less emphasis */
+ margin: 0; /* Remove default margin */
+}
+
+/* Dashboard Card - Two */
+
+.dashboard-cards-two .dcard-body {
+ display: flex;
+ flex-direction: row;
+ align-items: center; /* Center items vertically */
+ padding: 0px 20px 0px 10px;
+}
+
+.dashboard-card-two .month-transaction {
+ display: flex;
+ flex-direction: row;
+ justify-content: left;
+ align-items: center;
+ padding: 10px; /* Increased padding for a more spacious look */
+ width: 220px; /* Fixed width */
+ height: 50px; /* Fixed height */
+ border-radius: 10px;
+ transition: background-color 0.3s, transform 0.3s; /* Transition effects */
+}
+
+
+.dashboard-card-two .month-transaction:hover {
+ transform: translateY(-2px); /* Slight lift on hover */
+}
+
+.dashboard-card-two .transaction-total {
+ background-color: rgb(209, 236, 241); /* Light blue */
+ border: 1px solid rgb(12, 84, 96); /* Darker blue for accent */
+ box-shadow: 0 1px 3px rgba(12, 84, 96, 0.6); /* Shadow for logo */
+}
+
+.dashboard-card-two .transaction-cancelled {
+ background-color: rgb(253, 144, 153); /* Light red */
+ border: 1px solid rgb(114, 28, 36); /* Darker red for accent */
+ box-shadow: 0 1px 3px rgba(114, 28, 36, 0.4); /* Shadow for logo */
+}
+
+.dashboard-card-two .transaction-ongoing {
+ background-color: #fff3cd; /* Light yellow */
+ border: 1px solid #856404; /* Darker yellow for accent */
+}
+
+.dashboard-card-two .transaction-confirmed {
+ background-color: #c3e6cb; /* Light green */
+ border: 1px solid #155724; /* Darker green for accent */
+}
+
+.dashboard-card-two .month-transaction h3 {
+ font-size: 26px; /* Increased font size for the number */
+ color: #333; /* Darker text for better contrast */
+ margin: 0; /* Remove default margin */
+ font-weight: bold; /* Bold text for emphasis */
+}
+
+.dashboard-card-two .logo-container {
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ border-radius: 10px; /* Make logo container circular */
+ padding: 5px; /* Padding for spacing */
+ width: 50px; /* Increased width */
+ height: 50px; /* Increased height */
+ margin-right: 10px; /* Space between logo and text */
+}
+
+.dashboard-card-two .content-container {
+ display: flex;
+ flex-direction: column;
+ justify-content: center; /* Center text vertically */
+ align-items: flex-start; /* Align items to the start */
+ padding: 0px 5px; /* Padding for spacing */
+ width: 130px; /* Adjusted width for better text alignment */
+}
+
+.dashboard-card-two .content-container p {
+ font-size: 10px; /* Text size for additional information */
+ color: #666; /* Softer grey for less emphasis */
+ margin: 0; /* Remove default margin */
+}
+
+.dashboard-card-two .status-cancelled {
+ font-size: 10px; /* Smaller font size for the label */
+ color: #c9302c; /* Darker red color for cancelled */
+ font-weight: bold; /* Optional: make text bold */
+}
+
+.dashboard-card-two .status-unconfirmed {
+ font-size: 10px; /* Smaller font size for the label */
+ color: #ec971f; /* Darker orange color for unconfirmed */
+ font-weight: bold; /* Optional: make text bold */
+}
+
+.dashboard-card-two .status-confirmed {
+ font-size: 10px; /* Smaller font size for the label */
+ color: #4cae4f; /* Darker green color for confirmed */
+ font-weight: bold; /* Optional: make text bold */
 }
 
 
 
+/* Dashboard Card - Three */
+.dashboard-cards-three .dcard-body {
+ display: flex;
+ flex-direction: row;
+ align-items: center; /* Center items vertically */
+ padding: 0px 20px 0px 10px;
+}
+
+.dashboard-cards-three .month-transaction {
+ display: flex;
+ flex-direction: row;
+ justify-content: left;
+ align-items: center;
+ padding: 10px; /* Increased padding for a more spacious look */
+ width: 220px; /* Fixed width */
+ height: 65px; /* Fixed height */
+ border-radius: 10px;
+ transition: background-color 0.3s, transform 0.3s; /* Transition effects */
+}
+
+.dashboard-cards-three .month-transaction:hover {
+ transform: translateY(-2px); /* Slight lift on hover */
+}
+
+.dashboard-cards-three .transaction-total {
+ background-color: rgb(209, 236, 241); /* Light blue */
+ border: 1px solid rgb(12, 84, 96); /* Darker blue for accent */
+ box-shadow: 0 1px 3px rgba(12, 84, 96, 0.6); /* Shadow for logo */
+}
+
+.dashboard-cards-three .transaction-cancelled {
+ background-color: rgb(253, 144, 153); /* Light red */
+ border: 1px solid rgb(114, 28, 36); /* Darker red for accent */
+ box-shadow: 0 1px 3px rgba(114, 28, 36, 0.4); /* Shadow for logo */
+}
+
+.dashboard-cards-three .transaction-ongoing {
+ background-color: #fff3cd; /* Light yellow */
+ border: 1px solid #856404; /* Darker yellow for accent */
+}
+
+.dashboard-cards-three .transaction-confirmed {
+ background-color: #c3e6cb; /* Light green */
+ border: 1px solid #155724; /* Darker green for accent */
+}
+
+.dashboard-cards-three .month-transaction h3 {
+ font-size: 26px; /* Increased font size for the number */
+ color: #333; /* Darker text for better contrast */
+ margin: 0; /* Remove default margin */
+ font-weight: bold; /* Bold text for emphasis */
+}
+
+.dashboard-cards-three .content-container {
+ display: flex;
+ flex-direction: column;
+ justify-content: center; /* Center text vertically */
+ align-items: flex-start; /* Align items to the start */
+ padding: 0px 5px; /* Padding for spacing */
+ width: 130px; /* Adjusted width for better text alignment */
+}
+
+.dashboard-cards-three .content-container p {
+ font-size: 10px; /* Text size for additional information */
+ color: #666; /* Softer grey for less emphasis */
+ margin: 0; /* Remove default margin */
+}
+
+.dashboard-cards-three .status-cancelled {
+ font-size: 10px; /* Smaller font size for the label */
+ color: #c9302c; /* Darker red color for cancelled */
+ font-weight: bold; /* Optional: make text bold */
+}
+
+.dashboard-cards-three .status-unconfirmed {
+ font-size: 10px; /* Smaller font size for the label */
+ color: #ec971f; /* Darker orange color for unconfirmed */
+ font-weight: bold; /* Optional: make text bold */
+}
+
+.dashboard-cards-three .status-confirmed {
+ font-size: 10px; /* Smaller font size for the label */
+ color: #4cae4f; /* Darker green color for confirmed */
+ font-weight: bold; /* Optional: make text bold */
+}
+
+.dcard-header h3{
+ font-size: 0.8rem;
+ color: #7c7c7c; /* Darker text for better contrast */
+ font-weight: 600;
+}
+
+/* Dashboard Cards - Common Styles */
+.dashboard-cards-one .dcard-body,
+.dashboard-cards-two .dcard-body,
+.dashboard-cards-three .dcard-body {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0px 20px 0px 10px;
+}
+
+.dashboard-cards-one .month-transaction,
+.dashboard-cards-two .month-transaction,
+.dashboard-cards-three .month-transaction {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+    padding: 10px;
+    width: 220px;
+    height: 50px;
+    border-radius: 10px;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.dashboard-cards-one .month-transaction:hover,
+.dashboard-cards-two .month-transaction:hover,
+.dashboard-cards-three .month-transaction:hover {
+    transform: translateY(-2px);
+}
+
+/* Transaction Status Backgrounds and Borders */
+
+.dashboard-cards-one .transaction-total,
+.dashboard-cards-two .transaction-total,
+.dashboard-cards-three .transaction-total {
+    background-color: rgb(209, 236, 241);
+    border: 1px solid rgb(12, 84, 96);
+    box-shadow: 0 1px 3px rgba(12, 84, 96, 0.6);
+}
+
+.dashboard-cards-one .transaction-cancelled,
+.dashboard-cards-two .transaction-cancelled,
+.dashboard-cards-three .transaction-cancelled {
+    background-color: rgb(253, 144, 153);
+    border: 1px solid rgb(114, 28, 36);
+    box-shadow: 0 1px 3px rgba(114, 28, 36, 0.4);
+}
+
+.dashboard-cards-one .transaction-ongoing,
+.dashboard-cards-two .transaction-ongoing,
+.dashboard-cards-three .transaction-ongoing {
+    background-color: #fff3cd;
+    border: 1px solid #856404;
+}
+
+.dashboard-cards-one .transaction-confirmed,
+.dashboard-cards-two .transaction-confirmed,
+.dashboard-cards-three .transaction-confirmed {
+    background-color: #c3e6cb;
+    border: 1px solid #155724;
+}
+
+/* Heading Style */
+
+.dashboard-cards-one .month-transaction h3,
+.dashboard-cards-two .month-transaction h3,
+.dashboard-cards-three .month-transaction h3 {
+    font-size: 26px;
+    color: #333;
+    margin: 0;
+    font-weight: bold;
+}
 
 
 
+.dcard-body {
+ display: flex;
+ flex-direction: row;
+ align-items: center; /* Center items horizontally */
+}
 
+.dcard-body .currency-content {
+  padding: 0px 25px;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
 
+}
 
+.currency-item {
+ text-align: center; /* Center the content */
+ border-radius: 10px; /* Rounded corners */
+}
+
+.currency-flag {
+ width: 40px; /* Set flag width */
+ height: 40px; /* Set flag height to match width for perfect circle */
+ border-radius: 50%; /* Make flag circular */
+ object-fit: cover; /* Ensure the image covers the area properly */
+}
+
+.currency-name {
+ font-weight: bold; 
+ margin-top: 10px; /* Make currency name bold */
+ font-size: 10px;
+
+}
+
+.conversion-rate {
+ margin-top: -10px;
+ font-size: 12px; /* Smaller font for conversion rates */
+ color: #555; /* Darker color for visibility */
+}
 
 
 
@@ -447,14 +654,9 @@ body {
 }
 
 .unconfirm-table thead {
- background-color: #4FFFB0; /* Slightly darker grey for the header */
+ background-color: #858585; /* Slightly darker grey for the header */
  text-align: left;
- position: sticky; /* Make the header sticky */
- top: 0; /* Stick to the top of the container when scrolling */
- z-index: 1; /* Ensure the header stays on top of the table content */
 }
-
-
 
 .unconfirm-table thead th {
  padding: 4px 12px; /* Adjusted padding for compactness */
@@ -723,6 +925,11 @@ body {
 }
 
 
+
+
+
+
+
 /* Confirm Container */
 .confirm-container {
  display: flex;
@@ -730,7 +937,7 @@ body {
  margin-top: 5px;
  gap: 15px; /* Reduced gap between elements */
  position: relative;
- height: 34vh; /* Fixed height for the container */
+ height: 35vh; /* Fixed height for the container */
 }
 
 .confirm-container .one {
@@ -752,10 +959,13 @@ body {
 }
 
 
+
+
 /* Confirm Table Container */
 .confirm-table-container {
  width: 100%;
  height: 250px; /* Fixed height for the container */
+ margin-top: 10px; /* Spacing between card and table */
  overflow: hidden; /* Disable horizontal overflow */
  display: block; /* Ensure it takes up block space */
  position: relative;
@@ -770,7 +980,7 @@ body {
  width: 100%;
  border-collapse: collapse; /* Collapse borders for a cleaner look */
  font-family: Arial, sans-serif;
- font-size: 12px; /* Slightly smaller font size */
+ font-size: 13px; /* Slightly smaller font size */
  background-color: transparent; /* Keep background transparent */
  white-space: nowrap; /* Prevent word wrapping */
  table-layout: auto; /* Allow table to automatically adjust column widths */

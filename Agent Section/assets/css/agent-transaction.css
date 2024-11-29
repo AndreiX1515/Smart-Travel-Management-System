@@ -140,23 +140,17 @@ body {
   box-sizing: border-box;
  }
  
- /* Disable sorting on specific columns (e.g., columns 1 and 2) */
+/* Disable sorting on columns 1 through 8 */
 table.dataTable th:nth-child(1),
-table.dataTable th:nth-child(2) {
+table.dataTable th:nth-child(2),
+table.dataTable th:nth-child(3),
+table.dataTable th:nth-child(4),
+table.dataTable th:nth-child(5),
+table.dataTable th:nth-child(6),
+table.dataTable th:nth-child(7),
+table.dataTable th:nth-child(8) {
     pointer-events: none;  /* Disables the ability to click (i.e., sort) */
     user-select: none; /* Prevents selection of text in the header */
-}
-
-/* Disable sorting on Package Name column (5th column) */
-table.dataTable th:nth-child(5) {
-    pointer-events: none;
-    user-select: none;
-}
-
-/* Disable sorting on Status column (8th column) */
-table.dataTable th:nth-child(8) {
-    pointer-events: none;
-    user-select: none;
 }
 
 
@@ -202,6 +196,12 @@ table.dataTable th:nth-child(8) {
 
 .product-table tr {
  transition: background-color 0.3s, color 0.3s; /* Smooth hover effect */
+}
+
+.product-table th {
+ padding: 15px 10px;
+ text-align: left;
+ 
 }
 
 

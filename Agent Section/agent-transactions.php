@@ -503,6 +503,7 @@ $(document).ready(function () {
         ],
         autoWidth: false,
         scrollX: true, // Enables horizontal scrolling if necessary
+        order: [[0, 'desc']]
     });
 
     // Search Function

@@ -27,7 +27,6 @@
 
    <div class="main-content">
     <div class="counts-wrapper">
-
       <!-- CARD 1 -->
       <div class="card border-0">
         <div class="header">
@@ -38,7 +37,7 @@
           <div class="row">
             <div class="col-md-5 d-flex flex-row">
                 <div class="card-icon icon-blue">
-                    <i class="fas fa-calendar-alt"></i>
+                    <i class="fas fa-calendar-alt"></i> 
                 </div>
                 <div class="side-content d-flex flex-column">
                   <?php
