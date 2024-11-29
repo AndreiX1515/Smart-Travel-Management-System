@@ -90,68 +90,75 @@
      <table class="">
        <thead>
          <tr>
-           <th>ID</th>
-           <th>Contact Person Name</th>
-           <th>Contact Person Email</th>
-           <th>Contact Person Phone Number</th>
+           <th>Transact No</th>
            <th>Package Name</th>
-           <th>Booking Date</th>
            <th>Flight Date</th>
+           <th>Booking Date</th>
            <th>Total Pax</th>
+           <th>Package Price</th>
+           <th>Request Cost</th>
+           <th>Amount to be paid</th>
+           <th>Amount Paid</th>
+           <th>Remaining Balance</th>
            <th>Status</th>
          </tr>
        </thead>
        <tbody>
+        <?php
+          // SQL query
+          $sql = "SELECT b.transactNo, CONCAT(f.flightDepartureDate, ' - ', f.returnDepartureDate) AS FlightDate, 
+                          p.packageName AS PackageName, b.bookingDate AS BookingDate, b.pax AS TotalPax, b.totalPrice AS PackagePrice, 
+                          SUM(CASE WHEN r.requestStatus = 'Confirmed' THEN r.requestCost ELSE 0 END) AS RequestCost,
+                          (b.totalPrice + SUM(CASE WHEN r.requestStatus = 'Confirmed' THEN r.requestCost ELSE 0 END)) AS AmountToPaid,
+                          SUM(CASE WHEN y.paymentStatus = 'Approved' THEN y.amount ELSE 0 END) AS AmountPaid,
+                          ((b.totalPrice + SUM(CASE WHEN r.requestStatus = 'Confirmed' THEN r.requestCost ELSE 0 END)) - 
+                          SUM(CASE WHEN y.paymentStatus = 'Approved' THEN y.amount ELSE 0 END)) AS Balance
+                  FROM 
+                    booking b
+                  JOIN 
+                    flight f ON f.flightId = b.flightId
+                  JOIN 
+                    package p ON p.packageId = b.packageId
+                  LEFT JOIN 
+                    request r ON r.transactNo = b.transactNo
+                  LEFT JOIN 
+                    payment y ON y.transactNo = b.transactNo
+                  GROUP BY 
+                    b.transactNo, f.flightDepartureDate, p.packageName, b.totalPrice, b.bookingDate, b.pax";
 
-         <tr data-href="emp-transactionInfo.php?id=A002-000015">
-           <td>A002-000015</td>
-           <td>Martinez, David D.</td>
-           <td>davidmartinez@email.com</td>
-           <td>+639201234571</td>
-           <td>Autumn Tour Package</td>
-           <td>2024-11-24 00:00:00</td>
-           <td>December 21, 2024</td>
-           <td>2</td>
-           <td>
-             <span class="status status-confirmed">
-               <span class="status-dot"></span> Confirmed
-             </span>
-           </td>
-         </tr>
+          // Execute the query
+          $result = $conn->query($sql);
 
+          // Check if there are results
+          if ($result->num_rows > 0) 
+          {
+            while ($row = $result->fetch_assoc()) 
+            {
+              // Determine the status based on Balance
+              $status = ($row['Balance'] <= 0) ? 'Fully Paid' : 'Pending';
 
-         <tr data-href="emp-transactionInfo.php?id=A002-000015">
-           <td>A002-000014</td>
-           <td>Davis, Emily C. III</td>
-           <td>emilydavis@email.com</td>
-           <td>+639191234570</td>
-           <td>Cherry Blossom Tour Package</td>
-           <td>2024-11-23 00:00:00</td>
-           <td>December 14, 2024</td>
-           <td>1</td>
-           <td>
-             <span class="status status-confirmed">
-               <span class="status-dot"></span> Confirmed
-             </span>
-           </td>
-         </tr>
-
-         <tr data-href="emp-transactionInfo.php?id=A002-000015">
-           <td>A002-000014</td>
-           <td>Davis, Emily C. III</td>
-           <td>emilydavis@email.com</td>
-           <td>+639191234570</td>
-           <td>Cherry Blossom Tour Package</td>
-           <td>2024-11-23 00:00:00</td>
-           <td>December 14, 2024</td>
-           <td>1</td>
-           <td>
-             <span class="status status-confirmed">
-               <span class="status-dot"></span> Confirmed
-             </span>
-           </td>
-         </tr>
-
+              // Output each row as a table row
+              echo "<tr>";
+              echo "<td>" . htmlspecialchars($row['transactNo']) . "</td>";
+              echo "<td>" . htmlspecialchars($row['PackageName']) . "</td>";
+              echo "<td>" . htmlspecialchars($row['FlightDate']) . "</td>";
+              echo "<td>" . htmlspecialchars($row['BookingDate']) . "</td>";
+              echo "<td>" . htmlspecialchars($row['TotalPax']) . "</td>";
+              echo "<td>₱ " . number_format($row['PackagePrice'], 2) . "</td>";
+              echo "<td>₱ " . number_format($row['RequestCost'], 2) . "</td>";
+              echo "<td>₱ " . number_format($row['AmountToPaid'], 2) . "</td>";
+              echo "<td>₱ " . number_format($row['AmountPaid'], 2) . "</td>";
+              echo "<td>₱ " . number_format(max($row['Balance'], 0), 2) . "</td>"; // Ensure Balance doesn't go negative
+              echo "<td>" . htmlspecialchars($status) . "</td>";
+              echo "</tr>";
+            }
+          } 
+          else 
+          {
+            echo "<tr><td colspan='11' style='text-align: center;'>No records found.</td></tr>";
+          }
+        ?>
+        
        </tbody>
      </table>
    </div>
