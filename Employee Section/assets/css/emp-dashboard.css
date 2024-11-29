@@ -1,6 +1,6 @@
 .main-content .header h6 {
  margin: 0; /* Removes default margin */
- color: rgba(190, 190, 190, 0.3); /* Sets the text color with reduced opacity */
+
  font-size: 1rem; /* Adjusts font size */
  font-weight: 400;
  letter-spacing: 0.5px; /* Adds slight spacing between letters */
@@ -499,6 +499,63 @@
 }
 
 
+.header {
+ display: flex;
+ flex-direction: row;
+ justify-content: space-between; /* Distribute space evenly between sections */
+ align-items: center;
+}
+
+
+.legend-guides {
+  display: flex;
+  flex-direction: row;
+  gap: 15px; /* Adjusted gap for balanced spacing */
+  justify-content: start; /* Align items to the left */
+  align-items: center;
+  flex-wrap: wrap; /* Allow wrapping if there are many items */
+  margin: 10px 0;
+  padding: 0;
+}
+
+.legend-item-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 8px; /* Space between the color circle and text */
+}
+
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.legend-text {
+  color: black; /* Specifically target h6 and set text color to black */
+}
+
+.color-circle {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Ensure the refresh button is spaced appropriately */
+.refresh-button-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; /* Position button to the right */
+}
+
+
+
 
 
 /* Table styles */
@@ -512,7 +569,6 @@
  font-family: Arial, sans-serif;
  font-size: 12px;
  background-color: #fff;
- color: #333;
  text-align: center;
  box-sizing: border-box; /* Prevents overflow with border box sizing */
 }

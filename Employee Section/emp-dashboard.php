@@ -509,20 +509,57 @@
      
 <div class="main-table-wrapper-one">
   <div class="table-info-container">
-    <div class="header p-3 d-flex flex-row justify-content-between align-items-center">
-      <h6 class="text-secondary">Flights</h6>
+     <div class="header p-3 d-flex flex-row justify-content-between align-items-center">
 
-      <div class="end-part">
-       <div class="legend-guides">
+     <div class="start-section">
+        <h6 class="">Flights</h6>
+     </div>
 
-
+     <div class="end-section d-flex align-items-center gap-3">
+       <div class="legend-guides d-flex flex-row gap-3">
+         <div class="legend-item-wrapper">
+           <div class="legend-item">
+             <span class="color-circle" style="background-color: #FF0000;"></span> <!-- Red -->
+             <h6 class="legend-text">A01</h6>
+           </div>
+         </div>
+         <div class="legend-item-wrapper">
+           <div class="legend-item">
+             <span class="color-circle" style="background-color: #00FF00;"></span> <!-- Green -->
+             <h6 class="legend-text">A02</h6>
+           </div>
+         </div>
+         <div class="legend-item-wrapper">
+           <div class="legend-item">
+             <span class="color-circle" style="background-color: #0000FF; color: black;"></span> <!-- Blue -->
+             <h6 class="legend-text">A03</h6>
+           </div>
+         </div>
+         <div class="legend-item-wrapper">
+           <div class="legend-item">
+             <span class="color-circle" style="background-color: #FFFF00;"></span> <!-- Yellow -->
+             <h6 class="legend-text">A04</h6>
+           </div>
+         </div>
+         <div class="legend-item-wrapper">
+           <div class="legend-item">
+             <span class="color-circle" style="background-color: #FF00FF;"></span> <!-- Magenta -->
+             <h6 class="legend-text">A05</h6>
+           </div>
+         </div>
        </div>
 
-       <button class="btn btn-primary btn-sm"><i class="fa-solid fa-arrows-rotate"></i></button>
+       <div class="refresh-button-wrapper">
+        <button class="btn btn-primary btn-sm"><i class="fa-solid fa-arrows-rotate"></i></button>
+       </div>
+     </div>
 
-      </div>
-    </div>
+     
 
+     </div>
+
+
+    
     <div class="info-table-container">
       <table class="info-table">
         <thead class="border-2">
