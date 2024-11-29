@@ -42,7 +42,8 @@
               </div>
               <?php
                 // Assuming you already have a connection to your database
-                $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking where agentId = '$agentId'";
+                $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking where agentId = '$agentId' and 
+                                              MONTH(bookingDate) = MONTH(CURRENT_DATE()) AND YEAR(bookingDate) = YEAR(CURRENT_DATE())";
                 $result = mysqli_query($conn, $totalTransactionsQuery);
 
                 if ($result) 
@@ -68,7 +69,8 @@
               </div>
               <?php
                 // Assuming you already have a connection to your database
-                $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking where status='Cancelled' and agentId = '$agentId'";
+                $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking where status='Cancelled' and agentId = '$agentId'
+                                          and MONTH(bookingDate) = MONTH(CURRENT_DATE()) AND YEAR(bookingDate) = YEAR(CURRENT_DATE())";
                 $result = mysqli_query($conn, $totalTransactionsQuery);
 
                 if ($result) 
@@ -97,7 +99,8 @@
               </div>
               <?php
                 // Assuming you already have a connection to your database
-                $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking where status='Pending' and agentId = '$agentId'";
+                $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking where status='Pending' and agentId = '$agentId'
+                                            and MONTH(bookingDate) = MONTH(CURRENT_DATE()) AND YEAR(bookingDate) = YEAR(CURRENT_DATE())";
                 $result = mysqli_query($conn, $totalTransactionsQuery);
 
                 if ($result) 
@@ -123,7 +126,8 @@
               </div>
               <?php
                 // Assuming you already have a connection to your database
-                $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking where status='Confirmed' and agentId = '$agentId'";
+                $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking where status='Confirmed' and agentId = '$agentId'
+                                            and MONTH(bookingDate) = MONTH(CURRENT_DATE()) AND YEAR(bookingDate) = YEAR(CURRENT_DATE())";
                 $result = mysqli_query($conn, $totalTransactionsQuery);
 
                 if ($result) 
@@ -266,11 +270,12 @@
               <div class="content-container">
                 <?php
                   // Assuming $conn is your database connection
-                  $days5Query = "SELECT COUNT(*) AS `bookingsDueIn5Days` 
-                                FROM booking b 
-                                JOIN flight f ON b.flightId = f.flightId
-                                WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) <= 5 
-                                  AND DATEDIFF(f.flightDepartureDate, CURDATE()) >= 0";
+                  $days5Query = "SELECT COUNT(*) AS `bookingsDueIn5Days` FROM booking b 
+                                  JOIN flight f ON b.flightId = f.flightId
+                                  LEFT JOIN (SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) 
+                                    AS totalPaid FROM payment GROUP BY transactNo) p ON b.transactNo = p.transactNo
+                                WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) <= 5 AND DATEDIFF(f.flightDepartureDate, CURDATE()) >= 0
+                                  AND (b.totalPrice > IFNULL(p.totalPaid, 0)) and b.agentId='$agentId' and b.status='Confirmed'";
 
                   $result = $conn->query($days5Query);
 
@@ -299,10 +304,12 @@
               <div class="content-container">
                 <?php
                   // Assuming $conn is your database connection
-                  $days10Query = "SELECT COUNT(*) AS `bookingsDueIn10Days` 
-                                FROM booking b 
-                                JOIN flight f ON b.flightId = f.flightId
-                                WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) = 10";
+                  $days10Query = "SELECT COUNT(*) AS bookingsDueIn10Days FROM booking b
+                                    JOIN flight f ON b.flightId = f.flightId
+                                    LEFT JOIN (SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) 
+                                    AS totalPaid FROM payment GROUP BY transactNo) p ON b.transactNo = p.transactNo
+                                  WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) BETWEEN 0 AND 10
+                                    AND (b.totalPrice > IFNULL(p.totalPaid, 0)) AND b.agentId = '$agentId' and b.status='Confirmed'";
 
                   $result = $conn->query($days10Query);
 
@@ -332,10 +339,13 @@
               <div class="content-container">
                 <?php
                   // Assuming $conn is your database connection
-                  $days20Query = "SELECT COUNT(*) AS `bookingsDueIn20Days` 
-                                FROM booking b 
-                                JOIN flight f ON b.flightId = f.flightId
-                                WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) = 20";
+                  $days20Query = "SELECT COUNT(*) AS `bookingsDueIn20Days` FROM booking b 
+                                  JOIN flight f ON b.flightId = f.flightId
+                                  LEFT JOIN (SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) 
+                                            AS totalPaid FROM payment GROUP BY transactNo) p 
+                                  ON b.transactNo = p.transactNo
+                                  WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) BETWEEN 10 AND 20
+                                    AND (b.totalPrice > IFNULL(p.totalPaid, 0)) AND b.agentId = '$agentId' and b.status='Confirmed'";
 
                   $result = $conn->query($days20Query);
 
@@ -363,10 +373,12 @@
               <div class="content-container">
                 <?php
                   // Assuming $conn is your database connection
-                  $days30Query = "SELECT COUNT(*) AS `bookingsDueIn30Days` 
-                                FROM booking b 
-                                JOIN flight f ON b.flightId = f.flightId
-                                WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) = 30";
+                  $days30Query = "SELECT COUNT(*) AS `bookingsDueIn30Days` FROM booking b 
+                                    JOIN flight f ON b.flightId = f.flightId
+                                    LEFT JOIN (SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) 
+                                    AS totalPaid FROM payment GROUP BY transactNo) p ON b.transactNo = p.transactNo
+                                  WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) BETWEEN 20 AND 30
+                                    AND (b.totalPrice > IFNULL(p.totalPaid, 0)) AND b.agentId = '$agentId' AND b.status = 'Confirmed'";
 
                   $result = $conn->query($days30Query);
 
