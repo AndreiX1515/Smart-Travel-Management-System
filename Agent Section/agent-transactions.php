@@ -9,6 +9,9 @@
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+
+  <?php include '../Agent Section/includes/head.php' ?>
   <link rel="stylesheet" href="../Agent Section/assets/css/agent-transaction.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="../Agent Section/assets/css/navbar-sidebar.css?v=<?php echo time(); ?>">
 
@@ -25,7 +28,7 @@
         <div class="search-bar">
           <div class="left-side">
             <div class="search-input mb-3">
-              <label for="search">Search</label>
+              <label for="search">General Search</label>
               <input type="text" id="search" class="form-control mt-2" placeholder="Search">
             </div>
           </div>
@@ -35,38 +38,47 @@
               <div class="filter-field mb-3 d-flex flex-column">
                 <label for="packages">Packages</label>
                 <select id="packages" class="custom-select mt-2">
-                  <option>Packages</option>
-                  <option>All</option>
-                </select>
-              </div>
-
-              <div class="filter-field mb-3 d-flex flex-column">
-                <label for="category">Category</label>
-                <select id="category" class="custom-select mt-2">
-                  <option>Category</option>
-                  <option>All</option>
-                </select>
+                   <option value="">All</option>
+                   <option value="Autumn Tour Package">Autumn Tour Package</option>
+                   <option value="Summer Tour Package">Summer Tour Package</option>
+                   <option value="Spring Tour Package">Spring Tour Package</option>
+                   <option value="Winter Tour Package">Winter Tour Package</option>
+                   <option value="Regular Tour Package">Regular Tour Package</option>
+                   <option value="Busan Tour Package">Busan Tour Package</option>
+               </select>
               </div>
 
               <div class="filter-field mb-3 d-flex flex-column">
                 <label for="status">Status</label>
+                <!-- Status Select -->
                 <select id="status" class="custom-select mt-2">
-                  <option>Status</option>
-                  <option>All</option>
-                </select>
+                   <option value="">All</option>
+                   <option value="Pending">Pending</option>
+                   <option value="Confirmed">Confirmed</option>
+                   <option value="Cancelled">Cancelled</option>
+               </select>
               </div>
 
               <div class="filter-field mb-3 d-flex flex-column">
-                <label for="date-range">Date Range (Start - End)</label>
+                <label for="date-range">Booking Date (Start - End)</label>
                 <div class="input-group date-range-picker mt-2">
-                  <input type="date" class="form-control" id="startDate" placeholder="Start date">
-                  <span class="input-group-text">→</span>
-                  <input type="date" class="form-control" id="endDate" placeholder="End date">
+                    <input type="date" class="form-control" id="bookingStartDate" placeholder="Start Date">
+                    <span class="input-group-text">→</span>
+                    <input type="date" class="form-control" id="bookingEndDate" placeholder="End Date">
+                </div>
+              </div>
+
+              <div class="filter-field mb-3 d-flex flex-column">
+                <label for="date-range">Flight Date (Start - End)</label>
+                <div class="input-group date-range-picker mt-2">
+                    <input type="date" class="form-control" id="flightStartDate" placeholder="Flight Start Date">
+                    <span class="input-group-text">→</span>
+                    <input type="date" class="form-control" id="flightEndDate" placeholder="Flight End Date">
                 </div>
               </div>
 
               <div class="filter-field d-flex justify-content-center">
-                <button class="search-button mt-3"><i class="fa-solid fa-magnifying-glass"></i></button>
+                <button id="clearSorting" class="btn btn-danger mt-3"> <i class="fas fa-xmark"></i></button>
               </div>
             </div>
           </div>
@@ -86,8 +98,7 @@
           endif;
         ?>
         
-
-        <table class="product-table">
+        <table id="product-table" class="product-table" style="width:100%">
           <thead>
             <tr>
                 <th>ID</th>
@@ -165,7 +176,9 @@
                           <td>{$row['PACKAGE']}</td>
                           <td>{$row['TRANSACTION DATE']}</td>
                           <td>{$row['FLIGHT DATE']}</td>
-                          <td style='text-align: center; font-weight: bold;'>{$row['TOTAL PAX']}</td>
+                          <td style='text-align: left; font-weight: bold;'>
+                              {$row['TOTAL PAX']}
+                          </td>
                           <td>
                            <span class='badge p-2 rounded-pill {$statusClass} '>
                                {$status}
@@ -447,6 +460,170 @@
   </div>
 
   <?php require "../Agent Section/includes/scripts.php"; ?>
+
+
+
+<script>
+  document.addEventListener("scroll", function () {
+  const searchBar = document.querySelector(".search-bar");
+  const scrollPosition = window.scrollY;
+
+  // Add or remove the upward adjustment class based on scroll position
+  if (scrollPosition > 70) { // Adjust the threshold as needed
+    searchBar.classList.add("scrolled-upward");
+  } else {
+    searchBar.classList.remove("scrolled-upward");
+  }
+});
+</script>
+
+
+
+<script>
+$(document).ready(function () {
+     const settings = {
+        searchBar: true,        // Toggle search bar visibility
+        dateRangePicker: true,  // Toggle date range picker
+        pagination: true,       // Toggle pagination visibility
+        pageInfo: true          // Toggle page information visibility
+    };
+
+    const table = $('#product-table').DataTable({
+        dom: 'rtip', // Removes search and length dropdown from default UI
+        columnDefs: [
+            { width: '10%', targets: 0 }, // ID
+            { width: '15%', targets: 1 }, // Contact Person Name
+            { width: '15%', targets: 2 }, // Contact Person Email
+            { width: '15%', targets: 3 }, // Contact Person Phone Number
+            { width: '15%', targets: 4 }, // Package Name
+            { width: '10%', targets: 5 }, // Booking Date
+            { width: '10%', targets: 6 }, // Flight Date
+            { width: '5%', targets: 7 },  // Total Pax
+            { width: '5%', targets: 8 }   // Status
+        ],
+        autoWidth: false,
+        scrollX: true, // Enables horizontal scrolling if necessary
+    });
+
+    // Search Function
+    $('#search').on('keyup', function () {
+        table.search(this.value).draw(); // Trigger table redraw on search input
+    });
+
+    // Status Sorting
+    $('#status').on('change', function () {
+        var selectedStatus = $(this).val(); // Get selected status
+        if (selectedStatus === 'All') {
+            table.column(8).search('').draw(); // Show all statuses if 'All' is selected
+        } else {
+            table.column(8).search(selectedStatus).draw(); // Filter by selected status
+        }
+    });
+
+    // Packages Sorting
+    $('#packages').on('change', function () {
+        const selectedPackage = $(this).val();
+
+        // If "All" or the placeholder (empty value) is selected, show all rows
+        if (selectedPackage === "All" || selectedPackage === "") {
+            table.column(4).search('').draw();  // Reset filter on Package column (index 4)
+        } else {
+            table.column(4).search(selectedPackage).draw(); // Filter by selected package name (Package column index 4)
+        }
+
+        // Disable the placeholder when an option is selected
+        if (selectedPackage) {
+            $('#packages option:first').prop('disabled', true); // Disable placeholder
+        } else {
+            $('#packages option:first').prop('disabled', false); // Enable placeholder if no selection
+        }
+    });
+
+    // Flight Date Start-End Sorting
+    $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+        const flightStartDate = $('#flightStartDate').val();
+        const flightEndDate = $('#flightEndDate').val();
+        const flightDate = data[6]; // Assuming Flight Date is in column index 6 (0-based)
+
+        // Check if the Flight Date falls within the selected range
+        if (
+            (flightStartDate === '' || new Date(flightDate) >= new Date(flightStartDate)) &&
+            (flightEndDate === '' || new Date(flightDate) <= new Date(flightEndDate))
+        ) {
+            return true;
+        }
+        return false;
+    });
+
+    // Redraw table when date range changes
+    $('#flightStartDate, #flightEndDate').on('change', function () {
+        table.draw();
+    });
+
+    // Booking Date Start-End Sorting
+    $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+        const bookingStartDate = $('#bookingStartDate').val();
+        const bookingEndDate = $('#bookingEndDate').val();
+        const bookingDate = data[5]; // Assuming Booking Date is in column index 5 (0-based)
+
+        // Check if the Booking Date falls within the selected range
+        if (
+            (bookingStartDate === '' || new Date(bookingDate) >= new Date(bookingStartDate)) &&
+            (bookingEndDate === '' || new Date(bookingDate) <= new Date(bookingEndDate))
+        ) {
+            return true;
+        }
+        return false;
+    });
+
+    // Redraw table when date range changes
+    $('#bookingStartDate, #bookingEndDate').on('change', function () {
+        table.draw();
+    });
+
+    // Clear Sorting and Filters
+    $('#clearSorting').on('click', function () {
+        // Reset the sorting order to the default (original order)
+        table.order([]).draw(); // Clears the sorting
+
+        // Reset search input field
+        $('#search').val('');  // Clear the search input
+        table.search('').draw(); // Clear the table search filter
+
+        // Reset the status dropdown to "All" with value ""
+        $('#status').val('').change(); // Set the status dropdown to an empty value
+        table.column(8).search('').draw(); // Clear the status filter (using empty string)
+
+        // Reset the packages dropdown to "All" with value ""
+        $('#packages').val('').change(); // Set the packages dropdown to an empty value
+        table.column(4).search('').draw(); // Clear the package filter (using empty string)
+
+        // Reset date range filters
+        $('#flightStartDate').val('');
+        $('#flightEndDate').val('');
+        $('#bookingStartDate').val('');
+        $('#bookingEndDate').val('');
+
+        // Redraw the table
+        table.draw();
+    });
+
+    
+
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
