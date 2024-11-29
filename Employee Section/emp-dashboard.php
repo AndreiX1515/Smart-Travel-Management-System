@@ -523,7 +523,9 @@
                     f.flightDepartureDate AS Start, 
                     f.returnDepartureDate AS End, 
                     f.availSeats AS FlightSeat, 
-                    (f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0)) AS AvailSeats, 
+                    GREATEST(
+                              (f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package' 
+                              THEN b.pax ELSE 0 END), 0)),0) AS AvailSeats, 
                     IF(
                         (f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0)) < 0, 
                         ABS(f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0)), 
@@ -565,9 +567,9 @@
                 echo '<td>' . $row['AdditionalSeats'] . '</td>';
                 echo '<td>' . $row['Air+Land'] . '</td>';
                 echo '<td>' . $row['LandOnly'] . '</td>';
-                echo '<td>' . $row['WholesalePrice'] . '</td>';
-                echo '<td>' . $row['RetailPrice'] . '</td>';
-                echo '<td>' . $row['LandArrangement'] . '</td>';
+                echo '<td>₱ ' . $row['WholesalePrice'] . '</td>';
+                echo '<td>₱ ' . $row['RetailPrice'] . '</td>';
+                echo '<td>₱ ' . $row['LandArrangement'] . '</td>';
 
                 // Dynamically populate agent columns
                 foreach ($row as $key => $value) 
