@@ -41,8 +41,24 @@
                     <i class="fas fa-calendar-alt"></i>
                 </div>
                 <div class="side-content d-flex flex-column">
-                    <h5>0</h5>
-                    <p>TOTAL TRANSACTIONS</p>
+                  <?php
+                    // Assuming you already have a connection to your database
+                    $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking WHERE MONTH(bookingDate) = MONTH(CURRENT_DATE()) 
+                                                AND YEAR(bookingDate) = YEAR(CURRENT_DATE())";
+                    $result = mysqli_query($conn, $totalTransactionsQuery);
+
+                    if ($result) 
+                    {
+                      $row = mysqli_fetch_assoc($result);
+                      $totalTransactions = $row['total'];
+                    } 
+                    else 
+                    {
+                      $totalTransactions = 0; // default to 0 if query fails
+                    }
+                  ?>
+                  <h5><?php echo $totalTransactions;?></h5>
+                  <p>TOTAL TRANSACTIONS</p>
                 </div>
             </div>
        
@@ -51,7 +67,23 @@
                  <i class="fas fa-check-circle"></i>
                </div>
                <div class="side-content d-flex flex-column">
-                   <h5>0</h5>
+                <?php
+                  // Assuming you already have a connection to your database
+                  $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking WHERE MONTH(bookingDate) = MONTH(CURRENT_DATE()) 
+                                              AND YEAR(bookingDate) = YEAR(CURRENT_DATE()) AND status = 'Confirmed'";
+                  $result = mysqli_query($conn, $totalTransactionsQuery);
+
+                  if ($result) 
+                  {
+                    $row = mysqli_fetch_assoc($result);
+                    $totalTransactions = $row['total'];
+                  } 
+                  else 
+                  {
+                    $totalTransactions = 0; // default to 0 if query fails
+                  }
+                ?>
+                   <h5><?php echo $totalTransactions; ?></h5>
                    <p>COMPLETED</p>
                </div>
            </div>
@@ -63,7 +95,23 @@
                  <i class="fas fa-exclamation-triangle"></i>
                </div>
                <div class="side-content d-flex flex-column">
-                   <h5>0</h5>
+                <?php
+                  // Assuming you already have a connection to your database
+                  $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking WHERE MONTH(bookingDate) = MONTH(CURRENT_DATE()) 
+                                              AND YEAR(bookingDate) = YEAR(CURRENT_DATE()) AND status = 'Pending'";
+                  $result = mysqli_query($conn, $totalTransactionsQuery);
+
+                  if ($result) 
+                  {
+                    $row = mysqli_fetch_assoc($result);
+                    $totalTransactions = $row['total'];
+                  } 
+                  else 
+                  {
+                    $totalTransactions = 0; // default to 0 if query fails
+                  }
+                ?>
+                   <h5><?php echo $totalTransactions; ?></h5>
                    <p>PENDING</p>
                </div>
            </div>
@@ -73,7 +121,23 @@
                 <i class="fas fa-times-circle"></i>
               </div>
               <div class="side-content d-flex flex-column">
-                  <h5>0</h5>
+                <?php
+                  // Assuming you already have a connection to your database
+                  $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking WHERE MONTH(bookingDate) = MONTH(CURRENT_DATE()) 
+                                              AND YEAR(bookingDate) = YEAR(CURRENT_DATE()) AND status = 'Cancelled'";
+                  $result = mysqli_query($conn, $totalTransactionsQuery);
+
+                  if ($result) 
+                  {
+                    $row = mysqli_fetch_assoc($result);
+                    $totalTransactions = $row['total'];
+                  } 
+                  else 
+                  {
+                    $totalTransactions = 0; // default to 0 if query fails
+                  }
+                ?>
+                  <h5><?php echo $totalTransactions; ?></h5>
                   <p>CANCELLED</p>
               </div>
           </div>
@@ -308,7 +372,7 @@
             $sql1 = "SELECT 
                           r.transactNo AS `T.N`,
                           c.concernTitle AS `Request`,
-                          DATE_FORMAT(r.requestDate, '%M %d, %Y') AS `Date`,
+                          DATE_FORMAT(r.requestDate, '%m.%d.%Y') AS `Date`,
                           r.requestStatus, b.agentId
                       FROM 
                           request r
@@ -316,6 +380,8 @@
                           booking b ON r.transactNo = b.transactNo
                       JOIN 
                           concern c ON r.concernId = c.concernId
+                      WHERE 
+                        r.requestStatus = 'Submitted'
                       ORDER BY 
                           r.requestDate DESC";  // Order by request date
 
@@ -384,13 +450,15 @@
                       p.transactNo AS `Transaction No`,
                       p.paymentTitle AS `Payment Title`,
                       CONCAT(FORMAT(p.amount, 2)) AS `Amount`,  -- Format the amount as a currency with two decimal places
-                      DATE_FORMAT(p.paymentDate, '%M %d, %Y') AS `Date`,  -- Format the date as specified
+                      DATE_FORMAT(p.paymentDate, '%m.%d.%Y') AS `Date`,  -- Format the date as specified
                       p.paymentType AS `Payment Type`,
                       p.paymentStatus, b.agentId
                     FROM 
                       payment p
                     JOIN 
                       booking b ON p.transactNo = b.transactNo
+                    WHERE 
+                      p.paymentStatus = 'Submitted'
                     ORDER BY 
                       p.paymentDate DESC";  // Order by payment date
 
