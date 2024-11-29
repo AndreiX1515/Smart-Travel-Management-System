@@ -278,9 +278,11 @@ body {
 }
 
 .profile-container span {
- font-size: 12px; /* Smaller font for position */
+ font-size: 8px; /* Smaller font for position */
  color: gray; /* Gray color for the position */
  margin: 0; /* Remove margin */
+ font-weight: 500; /* Lighter font weight for thinner text */
+ line-height: 1; /* Reduce line height to make the text more compact */
 }
 
 .profile-image {
@@ -309,7 +311,7 @@ body {
  width: 1px; /* Line width */
  background-color: rgb(167, 167, 167); /* Line color */
  height: 40px; /* Adjust height to fit the navbar */
- margin: 10px 20px; /* Spacing around the line */
+ margin: 10px 10px; /* Spacing around the line */
 }
 
 /* Profile Section */
