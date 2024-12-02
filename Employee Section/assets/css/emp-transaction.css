@@ -56,41 +56,6 @@
 }
 
 
-
-/* Styling for table-subheader */
-.table-subheader {
- padding: 18px 15px; /* Reduced padding */
-}
-
-/* Button style adjustments */
-.table-subheader .btn-outline-secondary {
- border-radius: 20px; /* Rounded corners for buttons */
- padding: 5px 12px; /* Smaller padding */
- font-size: 12px; /* Smaller font size */
-}
-
-/* Flex container for spacing between elements */
-.table-subheader .d-flex {
- justify-content: space-between; /* Space between buttons */
- align-items: center; /* Center elements vertically */
-}
-
-/* Customize the dropdown toggle */
-.table-subheader .dropdown-toggle::after {
- margin-left: 6px; /* Adjust space between text and icon */
-}
-
-/* Add space between buttons */
-.table-subheader .btn + .btn {
- margin-left: 8px; /* Reduced space between buttons */
-}
-
-/* Icon spacing */
-.table-subheader .fas {
- margin-right: 6px; /* Less space between icon and text */
-}
-
-
 /* Smaller dropdown container */
 .table-container .dropdown-menu {
  font-size: 12px; /* Smaller font size */
@@ -118,10 +83,6 @@
  overflow-x: auto; /* Horizontal scroll for responsiveness */
 }
 
-
-
-
-
 /* Table Styling */
 .table-wrapper table {
  width: 100%;
@@ -130,9 +91,6 @@
  font-size: 14px;
  border-top: 2px solid #dee2e6; /* Add top border */
 }
-
-
-
 
 /* Table Header (Thead) Styling */
 .table-wrapper thead th {
@@ -152,9 +110,6 @@
 .has-border-top {
  border-top: 3px solid #000000; /* 3px black border on top */
 }
-
-
-
 
 /* Table Row Styling */
 .table-wrapper tbody tr {
@@ -187,141 +142,119 @@
 
 
 
-/* Table Subheader */
+
+
+
+
+/* Styling for table-subheader */
 .table-subheader {
- background-color: #f9f9f9;
- border-bottom: 1px solid #e0e0e0;
  display: flex;
- justify-content: space-between; /* Centering items horizontally */
+ flex-wrap: nowrap;
  align-items: center;
- gap: 20px; /* Added gap between components */
- flex-wrap: wrap; /* Allows wrapping for small screens */
- padding: 15px;
+ gap: 10px;
+ padding: 10px 15px; /* Adjusted padding for spacing */
 }
 
-/* Search Wrapper */
-.search-wrapper {
- position: relative;
- width: 20%; /* Adjust width as needed */
- max-width: 300px; /* Optional: Limit the width for better responsiveness */
+/* Adjust individual divs within the subheader */
+.table-subheader > div {
+ flex: 1;
+ min-width: 150px;
 }
 
-/* Input field styling */
-.search-input {
+/* Reduce width for dropdown-wrapper and filter-wrapper */
+.dropdown-wrapper,
+.filter-wrapper {
+ flex: 0 0 150px; /* Fixed width for dropdown and filter */
+ max-width: 150px;
+}
+
+/* Input styles for consistency */
+.search-wrapper input,
+.flight-dateRange-wrapper input,
+.booking-dateRange-wrapper input {
  width: 100%;
- padding-right: 35px; /* Space for the clear button inside the input */
- padding-left: 10px;
- height: 35px; /* Standard height for input fields */
- font-size: 16px;
- border: 1px solid #ced4da;
- border-radius: 5px;
+ height: 36px;
+ padding: 5px 10px;
+ border: 1px solid #ccc;
+ border-radius: 4px;
+ box-sizing: border-box;
 }
 
-/* Clear button styling (inside input) */
+/* Adjust flight and booking date ranges */
+.flight-dateRange-wrapper .d-flex,
+.booking-dateRange-wrapper .d-flex {
+ gap: 5px;
+ flex-wrap: nowrap;
+}
+
+.flight-dateRange-wrapper input,
+.booking-dateRange-wrapper input {
+ width: calc(50% - 5px); /* Compact width adjustment */
+}
+
+/* Adjust spacing for inline elements */
+span {
+ font-size: 14px;
+ line-height: 36px;
+}
+
+/* Clear button styling */
 .clear-button {
  position: absolute;
- right: 10px; /* Align inside the input field */
  top: 50%;
+ right: 10px;
  transform: translateY(-50%);
- border: none;
  background: transparent;
- color: #6c757d;
- cursor: pointer;
- font-size: 16px;
- display: none; /* Hidden by default */
-}
-
-.clear-button:hover {
- color: #dc3545; /* Highlight color */
-}
-
-/* Search Input Hover and Focus */
-.search-wrapper .search-input:hover,
-.search-wrapper .search-input:focus {
- border-color: #116530;
-}
-
-/* Dropdown Menu Styling */
-.dropdown .dropdown-toggle {
- display: flex;
- align-items: center;
- padding: 8px 15px;
- font-size: 14px;
- border-radius: 5px;
- background-color: #fff;
- border: 1px solid #ced4da;
- color: #495057;
-}
-
-.dropdown .dropdown-toggle:hover {
- background-color: #116530;
- color: white;
-}
-
-.dropdown .dropdown-menu {
- border-radius: 5px;
- box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-/* Clear Filters Button */
-.clear-button-wrapper {
- margin-left: 20px;
-}
-
-#clearFiltersButton {
- background-color: #dc3545;
- color: white;
- font-size: 14px;
- padding: 8px 15px;
- border-radius: 5px;
  border: none;
- display: flex;
- align-items: center;
+ cursor: pointer;
 }
 
-#clearFiltersButton:hover {
- background-color: #c82333;
+.clear-button i {
+ color: #999;
+ font-size: 16px;
 }
 
-#clearFiltersButton i {
- margin-right: 5px;
+/* Button styles */
+.table-subheader .btn-outline-secondary {
+ border-radius: 20px; /* Rounded corners */
+ padding: 5px 12px; /* Compact padding */
+ font-size: 12px; /* Smaller font */
+ width: 100%; /* Ensure buttons fit within containers */
+ height: 36px; /* Consistent button height */
 }
 
-/* Dropdowns Section - Flexbox */
-.dropdowns {
- display: flex;
- gap: 15px;
- flex-wrap: wrap; /* Ensures flexibility and responsiveness */
- justify-content: flex-start;
- align-items: center;
+/* Space between buttons */
+.table-subheader .btn + .btn {
+ margin-left: 8px; /* Reduced margin */
 }
 
-/* For better alignment and spacing of date range inputs */
-.flight-dateRange-wrapper,
-.booking-dateRange-wrapper {
- flex: 1 1 200px; /* Flexibility and responsive behavior */
- max-width: 250px;
+/* Dropdown icon adjustment */
+.table-subheader .dropdown-toggle::after {
+ margin-left: 6px; /* Adjusted spacing */
 }
 
-/* Adjustments for smaller screen sizes */
+/* Responsive design adjustments */
 @media (max-width: 768px) {
  .table-subheader {
-     flex-direction: column;
-     align-items: flex-start;
+     flex-wrap: wrap;
  }
- .search-wrapper {
-     width: 100%;
+
+ .table-subheader > div {
+     flex: 1 1 100%; /* Full-width stacking on smaller screens */
  }
- .clear-button-wrapper {
-     margin-left: 0;
-     margin-top: 10px;
+
+ .flight-dateRange-wrapper input,
+ .booking-dateRange-wrapper input {
+     width: 100%; /* Full-width inputs for smaller screens */
  }
- .dropdowns {
-     width: 100%;
-     flex-direction: column;
-     align-items: flex-start;
+
+ .dropdown-wrapper,
+ .filter-wrapper {
+     flex: 1 1 100%; /* Full-width dropdowns on small screens */
+     max-width: none;
  }
 }
+
 
 
 
