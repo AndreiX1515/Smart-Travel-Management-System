@@ -138,6 +138,7 @@
         <table class="">
           <thead>
             <tr>
+              <th>Request Id</th>
               <th>Transact No</th>
               <th>Agent Name</th>
               <th>Request Title</th>
@@ -205,6 +206,7 @@
                   $details = $row['RequestDetails'] ?? $row['customRequest'];
 
                   echo "<tr>
+                          <td>{$row['requestId']}</td>
                           <td>{$row['TransactNo']}</td>
                           <td>{$row['AgentName']}</td>
                           <td>{$title}</td>

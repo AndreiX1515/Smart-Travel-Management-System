@@ -92,6 +92,7 @@
             </div>
           </div>
 
+          <!-- Pending, and Cancelled Transaction Count -->
           <div class="row">
             <!-- Pending Transaction Count -->
             <div class="col-md-5 d-flex flex-row">
@@ -299,516 +300,496 @@
         </div>
       </div>
 
-  <!-- CARD 2 -->
-  <div class="card border-0" >
-    <div class="header">
-     <h6 class="text-secondary fw-600">Total Payment</h6>
-    </div>
-
-    <div class="card-content px-3">
-      <div class="row">
-        <div class="col-md-5 d-flex flex-row totalpayment">
-          <div class="card-icon icon-blue">
-              <i class="fas fa-calendar-alt"></i>
-          </div>
-          <div class="side-content d-flex flex-column">
-              <h5>0</h5>
-              <p>PAST MONTH</p>
-          </div>
+      <!-- CARD 3 - Total Payment -->
+      <div class="card border-0" >
+        <div class="header">
+          <h6 class="text-secondary fw-600">Total Payment</h6>
         </div>
 
-        <div class="col-md-5 d-flex flex-row">
-            <div class="card-icon icon-gray">
-              <i class="fas fa-check-circle"></i>
+        <div class="card-content px-3">
+          <div class="row">
+            <div class="col-md-5 d-flex flex-row totalpayment">
+              <div class="card-icon icon-blue">
+                <i class="fas fa-calendar-alt"></i>
+              </div>
+              <div class="side-content d-flex flex-column">
+                <?php
+                  // Query for total payments in the past month
+                  $pastMonthQuery = "SELECT IFNULL(SUM(amount), 0) AS totalPastMonth 
+                  FROM payment WHERE paymentStatus = 'Approved' 
+                  AND MONTH(paymentDate) = MONTH(CURDATE() - INTERVAL 1 MONTH)
+                  AND YEAR(paymentDate) = YEAR(CURDATE() - INTERVAL 1 MONTH)";
+
+                  $pastMonthResult = $conn->query($pastMonthQuery);
+                  $pastMonthTotal = ($pastMonthResult->num_rows > 0) ? number_format($pastMonthResult->fetch_assoc()['totalPastMonth'], 2) : '0.00';
+                ?>
+                <h5>₱ <?php echo $pastMonthTotal; ?></h5>
+                <p>PAST MONTH</p>
+              </div>
             </div>
-            <div class="side-content d-flex flex-column">
-                <h5>0</h5>
-                <p style="font-size: 9.5px;">CURRENT MONTH (December)</p>
+
+            <div class="col-md-5 d-flex flex-row">
+              <div class="card-icon icon-gray">
+                <i class="fas fa-check-circle"></i>
+              </div>
+              <div class="side-content d-flex flex-column">
+                <?php
+                  // Query for total payments in the current month
+                  $currentMonthQuery = "SELECT IFNULL(SUM(amount), 0) AS totalCurrentMonth 
+                  FROM payment WHERE paymentStatus = 'Approved' 
+                  AND MONTH(paymentDate) = MONTH(CURDATE()) 
+                  AND YEAR(paymentDate) = YEAR(CURDATE())";
+
+                  $currentMonthResult = $conn->query($currentMonthQuery);
+                  $currentMonthTotal = ($currentMonthResult->num_rows > 0) ? number_format($currentMonthResult->fetch_assoc()['totalCurrentMonth'], 2) : 0;
+                ?>
+                <h5>₱ <?php echo $currentMonthTotal; ?></h5>
+                <p>CURRENT MONTH</p>
+              </div>
             </div>
+          </div>
         </div>
       </div>
 
-      <!-- <div class="row">
-        <div class="col-md-5 d-flex flex-row">
-          <div class="card-icon icon-yellow">
-            <i class="fas fa-exclamation-triangle"></i>
-          </div>
-          <div class="side-content d-flex flex-column">
-            <h5>0</h5>
-            <p>ON GOING</p>
-          </div>
+      <!-- CARD 4 - Money Convertion -->
+      <div class="card border-0">
+        <div class="header d-flex justify-content-between align-items-center mb-2">
+          <h6 class="text-secondary">Daily Currency Conversion</h6>
+          <a href="" style="font-size: 12px; text-decoration: none;">View History</a>
         </div>
 
-        <div class="col-md-5 d-flex flex-row">
-          <div class="card-icon icon-green">
-            <i class="fas fa-times-circle"></i>
-          </div>
-          <div class="side-content d-flex flex-column">
-            <h5>0</h5>
-            <p>CONFIRMED</p>
+        <div class="card-body-currency">
+          <div class="currency-cards">
+            <div class="currency-card">
+              <div class="flag-icon-wrapper">
+                <img src="../assets/images/Flags/english-flag.png" alt="">
+                <h6>USD</h6>
+                <h6>$1</h6>
+              </div>
+            </div>
+
+            <div class="icon-wrapper">
+              <i class="fas fa-exchange-alt"></i>
+            </div>
+
+            <div class="currency-card">
+              <div class="flag-icon-wrapper">
+                <img src="../assets/images/Flags/philippines (2).png" alt="">
+                <h6>PHP</h6>
+
+                <h6>$1</h6>
+              </div>
+            </div>
+
+            <div class="currency-card">
+              <div class="flag-icon-wrapper">
+                <img src="../assets/images/Flags/korean-flag.png" alt="">
+                <h6>KOR</h6>
+
+                <h6>$1</h6>
+              </div>
+            </div>
+
+            <div class="currency-card">
+              <div class="flag-icon-wrapper">
+                <img src="../assets/images/Flags/european.png" alt="">
+                <h6>EUR</h6>
+
+                <h6>$1</h6>
+              </div>
+            </div>
           </div>
         </div>
-      </div> -->
-    </div>
-  </div>
-
-
-
-  <!-- CARD 4 -->
-  <div class="card border-0">
-   <div class="header d-flex justify-content-between align-items-center mb-2">
-    <h6 class="text-secondary">Daily Currency Conversion</h6>
-    <a href="" style="font-size: 12px; text-decoration: none;">View History</a>
-   </div>
-
-   <div class="card-body-currency">
-    <div class="currency-cards">
-      <div class="currency-card">
-          <div class="flag-icon-wrapper">
-              <img src="../assets/images/Flags/english-flag.png" alt="">
-              <h6>USD</h6>
-
-              <h6>$1</h6>
-          </div>
       </div>
-
-        <div class="icon-wrapper">
-            <i class="fas fa-exchange-alt"></i>
-        </div>
-
-        <div class="currency-card">
-          <div class="flag-icon-wrapper">
-              <img src="../assets/images/Flags/philippines (2).png" alt="">
-              <h6>PHP</h6>
-
-              <h6>$1</h6>
-          </div>
-        </div>
-
-        <div class="currency-card">
-          <div class="flag-icon-wrapper">
-              <img src="../assets/images/Flags/korean-flag.png" alt="">
-              <h6>KOR</h6>
-
-              <h6>$1</h6>
-          </div>
-        </div>
-
-
-        <div class="currency-card">
-           <div class="flag-icon-wrapper">
-              <img src="../assets/images/Flags/european.png" alt="">
-              <h6>EUR</h6>
-
-              <h6>$1</h6>
-          </div>
-        </div>
     </div>
-</div>
-
-   
-   
-
-
-
-
-  </div>
-</div>
  
-<div class="header-wrapper">
-   <div class="price-table-wrapper">
-      <div class="header p-3">
-           <h6 class="text-secondary">Price</h6>
-     </div>
+    <div class="header-wrapper">
+      <div class="price-table-wrapper">
+        <div class="header p-3">
+        <h6 class="text-secondary">Price</h6>
+        </div>
 
-     <!-- <div class="price-table-container">
-        <table class="price-table">
-         <thead>
-             <tr>
-                 <th>Wholesale Price</th>
-                 <th>Retail Price</th>
-                 <th>Land Arrangement</th>
-             </tr>
-         </thead>
-         <tbody>
-             <tr>
-                 <td>Basic</td>
-                 <td>$19.99</td>
-                 <td>5 Features</td>
-             </tr>
-             <tr>
-                 <td>Standard</td>
-                 <td>$49.99</td>
-                 <td>10 Features</td>
-             </tr>
-             <tr>
-                 <td>Premium</td>
-                 <td>$99.99</td>
-                 <td>Unlimited Features</td>
-             </tr>
-         </tbody>
-     </table>
-  </div> -->
+        <div class="price-table-container">
+          <table class="price-table">
+            <thead>
+              <tr>
+                <th>Wholesale Price</th>
+                <th>Retail Price</th>
+                <th>Land Arrangement</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Basic</td>
+                <td>$19.99</td>
+                <td>5 Features</td>
+              </tr>
+              <tr>
+                <td>Standard</td>
+                <td>$49.99</td>
+                <td>10 Features</td>
+              </tr>
+              <tr>
+                <td>Premium</td>
+                <td>$99.99</td>
+                <td>Unlimited Features</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
 
- </div>
+      <div class="request-wrapper">
+        <div class="header p-3">
+          <h6 class="text-secondary">Requests</h6>
+        </div>
 
+        <div class="request-table-container">
+          <table class="request-table">
+            <thead>
+              <tr>
+                <th>AGENT NAME</th>
+                <th>REQUEST</th>
+                <th>DATE</th>
+                <th>STATUS</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php
+                $sql1 = "SELECT 
+                              r.transactNo AS `T.N`,
+                              c.concernTitle AS `Request`,
+                              DATE_FORMAT(r.requestDate, '%m.%d.%Y') AS `Date`,
+                              r.requestStatus, b.agentId,
+                              CONCAT(a.lName, ', ', a.fName, 
+                                  IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1)), '')) AS agentName
+                          FROM 
+                              request r
+                          JOIN 
+                              booking b ON r.transactNo = b.transactNo
+                          JOIN 
+                              concern c ON r.concernId = c.concernId
+                          JOIN
+                              agent a ON b.agentId = a.agentId
+                          WHERE 
+                            r.requestStatus = 'Submitted'
+                          ORDER BY 
+                              r.requestDate DESC";  // Order by request date
 
-  <div class="request-wrapper">
-    <div class="header p-3">
-      <h6 class="text-secondary">Requests</h6>
-    </div>
-
-    <div class="request-table-container">
-      <table class="request-table">
-        <thead>
-          <tr>
-            <th>AGENT NAME</th>
-            <th>REQUEST</th>
-            <th>DATE</th>
-            <th>STATUS</th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php
-            $sql1 = "SELECT 
-                          r.transactNo AS `T.N`,
-                          c.concernTitle AS `Request`,
-                          DATE_FORMAT(r.requestDate, '%m.%d.%Y') AS `Date`,
-                          r.requestStatus, b.agentId,
-                          CONCAT(a.lName, ', ', a.fName, 
-                              IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1)), '')) AS agentName
-                      FROM 
-                          request r
-                      JOIN 
-                          booking b ON r.transactNo = b.transactNo
-                      JOIN 
-                          concern c ON r.concernId = c.concernId
-                      JOIN
-                          agent a ON b.agentId = a.agentId
-                      WHERE 
-                        r.requestStatus = 'Submitted'
-                      ORDER BY 
-                          r.requestDate DESC";  // Order by request date
-
-            $res1 = $conn->query($sql1);
-              
-            if ($res1->num_rows > 0) 
-            {
-               while ($row = $res1->fetch_assoc()) {
-                
-                $statusClass = '';
-                switch ($row['requestStatus']) {
-                    case 'Confirmed':
-                        $statusClass = 'badge bg-success'; // Green pill for "Approved"
-                        break;
-                    case 'Pending':
-                        $statusClass = 'badge bg-primary'; // Yellow pill for "Pending"
-                        break;
-                    case 'Rejected':
-                        $statusClass = 'badge bg-danger'; // Red pill for "Rejected"
-                        break;
-                    default:
-                        $statusClass = 'badge bg-secondary'; // Grey pill for unknown statuses
-                        break;
-                }
-            
-                // Echo table row with dynamically styled pills
-                echo "<tr>
-                        <td>{$row['agentName']}</td>
-                        <td>{$row['Request']}</td>
-                        <td>{$row['Date']}</td>
-                        <td><span class='{$statusClass}'>{$row['requestStatus']}</span></td>
-                      </tr>";
-            }
-          
-            } 
-            else 
-            {
-              echo "<tr><td colspan='6' style='text-align: center;'>No Request found as of the moment</td></tr>";
-            }
-          ?>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <div class="payment-wrapper">
-    <div class="header p-3">
-      <h6 class="text-secondary">Payment</h6>
-    </div>
-
-    <div class="payment-table-container px-3">
-      <table class="payment-table">
-        <thead>
-          <tr>
-            <th>AGENT NAME</th>
-            <th>PAYMENT TITLE</th>
-            <th>PAYMENT TYPE</th>
-            <th>PAYMENT AMOUNT</th>
-            <th>DATE</th> 
-            <th>STATUS</th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php
-            $sql2 = "SELECT 
-                      p.transactNo AS `Transaction No`,
-                      p.paymentTitle AS `Payment Title`,
-                      CONCAT(FORMAT(p.amount, 2)) AS `Amount`,  -- Format the amount as a currency with two decimal places
-                      DATE_FORMAT(p.paymentDate, '%m.%d.%Y') AS `Date`,  -- Format the date as specified
-                      p.paymentType AS `Payment Type`,
-                      p.paymentStatus, b.agentId,
-                      CONCAT(a.lName, ', ', a.fName, 
-                              IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1)), '')) AS agentName
-                    FROM 
-                      payment p
-                    JOIN 
-                      booking b ON p.transactNo = b.transactNo
-                    JOIN
-                        agent a ON b.agentId = a.agentId
-                    WHERE 
-                      p.paymentStatus = 'Submitted'
-                    ORDER BY 
-                      p.paymentDate DESC";  // Order by payment date
-
-            $res2 = $conn->query($sql2);
-            
-            if ($res2->num_rows > 0) {
-               while ($row = $res2->fetch_assoc()) {
-                // Map paymentStatus to Bootstrap pill classes
-                $statusClass = '';
-                switch ($row['paymentStatus']) {
-                    case 'Approved':
-                        $statusClass = 'badge bg-success text-light'; // Green pill for "Paid"
-                        break;
-                    case 'Pending':
-                        $statusClass = 'badge bg-warning text-dark'; // Yellow pill for "Pending"
-                        break;
-                    case 'Submitted':
-                        $statusClass = 'badge bg-primary text-light'; // Red pill for "Failed"
-                        break;
-                    default:
-                        $statusClass = 'badge bg-secondary'; // Grey pill for unknown statuses
-                        break;
-                }
-            
-                // Echo table row with dynamically styled pills
-                echo "<tr>
-                        <td>{$row['agentName']}</td>
-                        <td>{$row['Payment Title']}</td>
-                        <td>{$row['Payment Type']}</td>
-                        <td>₱ {$row['Amount']}</td>
-                        <td>{$row['Date']}</td>
-                        <td><span class='{$statusClass}'>{$row['paymentStatus']}</span></td>
-                      </tr>";
-            }
-          
-            } else {  
-              echo "<tr><td colspan='12' style='text-align: center;'>No payments found as of the moment</td></tr>";
-            }
-          ?>
-        </tbody>
-      </table>
-
-
-    </div>
-    
-  </div>
-</div>
-
-     
-<div class="main-table-wrapper-one">
-  <div class="table-info-container">
-     <div class="header p-3 d-flex flex-row justify-content-between align-items-center">
-
-     <div class="start-section">
-        <h6 class="">Flights</h6>
-     </div>
-
-     <div class="end-section d-flex align-items-center gap-3">
-       <div class="legend-guides d-flex flex-row gap-3">
-         <div class="legend-item-wrapper">
-           <div class="legend-item">
-             <span class="color-circle" style="background-color: #FF0000;"></span> <!-- Red -->
-             <h6 class="legend-text">A01</h6>
-           </div>
-         </div>
-         <div class="legend-item-wrapper">
-           <div class="legend-item">
-             <span class="color-circle" style="background-color: #00FF00;"></span> <!-- Green -->
-             <h6 class="legend-text">A02</h6>
-           </div>
-         </div>
-         <div class="legend-item-wrapper">
-           <div class="legend-item">
-             <span class="color-circle" style="background-color: #0000FF; color: black;"></span> <!-- Blue -->
-             <h6 class="legend-text">A03</h6>
-           </div>
-         </div>
-         <div class="legend-item-wrapper">
-           <div class="legend-item">
-             <span class="color-circle" style="background-color: #FFFF00;"></span> <!-- Yellow -->
-             <h6 class="legend-text">A04</h6>
-           </div>
-         </div>
-         <div class="legend-item-wrapper">
-           <div class="legend-item">
-             <span class="color-circle" style="background-color: #FF00FF;"></span> <!-- Magenta -->
-             <h6 class="legend-text">A05</h6>
-           </div>
-         </div>
-       </div>
-
-       <div class="refresh-button-wrapper">
-        <button class="btn btn-primary btn-sm"><i class="fa-solid fa-arrows-rotate"></i></button>
-       </div>
-     </div>
-
-     
-
-     </div>
-
-
-    
-    <div class="info-table-container">
-      <table class="info-table">
-        <thead class="border-2">
-          <tr>
-            <th rowspan="2">TEAM OP</th>
-            <th rowspan="2">ORIGIN</th>
-            <th colspan="2">FLIGHT DATE</th> <!-- Flight Date columns -->
-            <th rowspan="2">FLIGHT SEAT</th>
-            <th rowspan="2" style="font-size: 10px;">AVAILABLE SEATS</th>
-            <th rowspan="2" style="font-size: 10px;">ADDITIONAL SEATS</th>
-            <th rowspan="2">AIR + LAND</th>
-            <th rowspan="2">LAND ONLY</th>
-            <th rowspan="2">WHOLESALE PRICE</th>
-            <th rowspan="2">RETAIL PRICE</th>
-            <th rowspan="2">LAND ARRANGEMENT</th>
-
-            <!-- Dynamic headers for agent columns -->
-            <?php
-              // Fetch agent columns headers dynamically
-              $sql = "SELECT DISTINCT agentId FROM booking WHERE agentId IS NOT NULL AND agentId != ''";
-              $result = $conn->query($sql);
-              while ($row = $result->fetch_assoc()) 
-              {
-                echo '<th colspan="2" data-bs-toggle="tooltip" title="' . $row['agentId'] . '">' . $row['agentId'] . '</th>';
-              }
-            ?>
-          </tr>
-          <tr style="top: -8px">
-            <th>START</th>
-            <th>END</th>
-            <!-- A1, A2, A3, A4, A5, A6, A7 Sub Headers -->
-            <!-- Dynamic sub-headers for agent columns -->
-            <?php
-              $result = $conn->query($sql);
-              while ($row = $result->fetch_assoc()) 
-              {
-                echo '<th>A.L</th><th>L.O</th>';
-              }
-            ?>
-          </tr>
-        </thead>
-        <tbody>
-          <?php
-            // Step 1: Dynamically generate agent columns
-            $sql = "SELECT DISTINCT agentId FROM booking WHERE agentId IS NOT NULL AND agentId != ''";
-            $result = $conn->query($sql);
-
-            $agentColumns = '';
-            while ($row = $result->fetch_assoc()) 
-            {
-              $agentColumns .= 
-                  'SUM(CASE WHEN b.agentId = "' . $row['agentId'] . '" AND b.bookingType = "Package" and b.status = "Confirmed" THEN b.pax ELSE 0 END) AS `' . $row['agentId'] . '_AL`, ' .
-                  'SUM(CASE WHEN b.agentId = "' . $row['agentId'] . '" AND b.bookingType = "Land" and b.status = "Confirmed" THEN b.pax ELSE 0 END) AS `' . $row['agentId'] . '_LO`, ';
-            }
-
-            // Remove the trailing comma
-            $agentColumns = rtrim($agentColumns, ', ');
-
-            // Step 2: Construct the full SQL query
-            $sql = "
-                SELECT 
-                    CONCAT(e.lName, ', ', e.fName, 
-                        IF(e.mName IS NOT NULL AND e.mName != '', CONCAT(' ', LEFT(e.mName, 1)), '')) AS TeamOP,
-                    f.origin, 
-                    f.flightDepartureDate AS Start, 
-                    f.returnDepartureDate AS End, 
-                    f.availSeats AS FlightSeat, 
-                    GREATEST(
-                              (f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package' 
-                              THEN b.pax ELSE 0 END), 0)),0) AS AvailSeats, 
-                    IF(
-                        (f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0)) < 0, 
-                        ABS(f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0)), 
-                        0) AS AdditionalSeats,
-                    SUM(CASE WHEN b.bookingType = 'Package' AND b.status = 'Confirmed' THEN b.pax ELSE 0 END) AS `Air+Land`,
-                    SUM(CASE WHEN b.bookingType = 'Land' AND b.status = 'Confirmed' THEN b.pax ELSE 0 END) AS `LandOnly`,
-                    f.wholesalePrice AS WholesalePrice, 
-                    f.flightPrice AS RetailPrice, 
-                    p.packagePrice AS LandArrangement, 
-                    $agentColumns
-                FROM 
-                    employee e 
-                JOIN 
-                    flight f ON f.employeeId = e.employeeId
-                LEFT JOIN 
-                    booking b ON b.flightId = f.flightId
-                LEFT JOIN 
-                    package p ON f.packageId = p.packageId
-                WHERE f.flightDepartureDate >= CURDATE()
-                GROUP BY 
-                    f.flightId";
-
-            // Step 3: Execute the query
-            $result = $conn->query($sql);
-
-            // Step 4: Display the results in HTML table
-            if ($result->num_rows > 0) 
-            {
-              while ($row = $result->fetch_assoc()) 
-              {
-                echo '<tr>';
-                echo '<td>' . $row['TeamOP'] . '</td>';
-                echo '<td>' . $row['origin'] . '</td>';
-                echo '<td>' . $row['Start'] . '</td>';
-                echo '<td>' . $row['End'] . '</td>';
-                echo '<td>' . $row['FlightSeat'] . '</td>';
-                echo '<td>' . $row['AvailSeats'] . '</td>';
-                echo '<td>' . $row['AdditionalSeats'] . '</td>';
-                echo '<td>' . $row['Air+Land'] . '</td>';
-                echo '<td>' . $row['LandOnly'] . '</td>';
-                echo '<td>₱ ' . $row['WholesalePrice'] . '</td>';
-                echo '<td>₱ ' . $row['RetailPrice'] . '</td>';
-                echo '<td>₱ ' . $row['LandArrangement'] . '</td>';
-
-                // Dynamically populate agent columns
-                foreach ($row as $key => $value) 
+                $res1 = $conn->query($sql1);
+                  
+                if ($res1->num_rows > 0) 
                 {
-                  if (strpos($key, '_AL') !== false || strpos($key, '_LO') !== false) 
-                  {
-                    echo '<td>' . $value . '</td>';
-                  }
-                }
+                  while ($row = $res1->fetch_assoc()) {
+                    
+                    $statusClass = '';
+                    switch ($row['requestStatus']) {
+                        case 'Confirmed':
+                            $statusClass = 'badge bg-success'; // Green pill for "Approved"
+                            break;
+                        case 'Pending':
+                            $statusClass = 'badge bg-primary'; // Yellow pill for "Pending"
+                            break;
+                        case 'Rejected':
+                            $statusClass = 'badge bg-danger'; // Red pill for "Rejected"
+                            break;
+                        default:
+                            $statusClass = 'badge bg-secondary'; // Grey pill for unknown statuses
+                            break;
+                    }
                 
-                echo '</tr>';
-              }
-            } 
-            else 
-            {
-              echo "No records found.";
-            }
-          ?>
-        </tbody>
-      </table>
-  
-       </div>
-     </div>
-   </div>
+                    // Echo table row with dynamically styled pills
+                    echo "<tr>
+                            <td>{$row['agentName']}</td>
+                            <td>{$row['Request']}</td>
+                            <td>{$row['Date']}</td>
+                            <td><span class='{$statusClass}'>{$row['requestStatus']}</span></td>
+                          </tr>";
+                }
+              
+                } 
+                else 
+                {
+                  echo "<tr><td colspan='6' style='text-align: center;'>No Request found as of the moment</td></tr>";
+                }
+              ?>
+            </tbody>
+          </table>
+        </div>
+      </div>
 
- </div>
+      <div class="payment-wrapper">
+        <div class="header p-3">
+          <h6 class="text-secondary">Payment</h6>
+        </div>
+
+        <div class="payment-table-container px-3">
+          <table class="payment-table">
+            <thead>
+              <tr>
+                <th>AGENT NAME</th>
+                <th>PAYMENT TITLE</th>
+                <th>PAYMENT TYPE</th>
+                <th>PAYMENT AMOUNT</th>
+                <th>DATE</th> 
+                <th>STATUS</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php
+                $sql2 = "SELECT 
+                          p.transactNo AS `Transaction No`,
+                          p.paymentTitle AS `Payment Title`,
+                          CONCAT(FORMAT(p.amount, 2)) AS `Amount`,  -- Format the amount as a currency with two decimal places
+                          DATE_FORMAT(p.paymentDate, '%m.%d.%Y') AS `Date`,  -- Format the date as specified
+                          p.paymentType AS `Payment Type`,
+                          p.paymentStatus, b.agentId,
+                          CONCAT(a.lName, ', ', a.fName, 
+                                  IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1)), '')) AS agentName
+                        FROM 
+                          payment p
+                        JOIN 
+                          booking b ON p.transactNo = b.transactNo
+                        JOIN
+                            agent a ON b.agentId = a.agentId
+                        WHERE 
+                          p.paymentStatus = 'Submitted'
+                        ORDER BY 
+                          p.paymentDate DESC";  // Order by payment date
+
+                $res2 = $conn->query($sql2);
+                
+                if ($res2->num_rows > 0) {
+                  while ($row = $res2->fetch_assoc()) {
+                    // Map paymentStatus to Bootstrap pill classes
+                    $statusClass = '';
+                    switch ($row['paymentStatus']) {
+                        case 'Approved':
+                            $statusClass = 'badge bg-success text-light'; // Green pill for "Paid"
+                            break;
+                        case 'Pending':
+                            $statusClass = 'badge bg-warning text-dark'; // Yellow pill for "Pending"
+                            break;
+                        case 'Submitted':
+                            $statusClass = 'badge bg-primary text-light'; // Red pill for "Failed"
+                            break;
+                        default:
+                            $statusClass = 'badge bg-secondary'; // Grey pill for unknown statuses
+                            break;
+                    }
+                
+                    // Echo table row with dynamically styled pills
+                    echo "<tr>
+                            <td>{$row['agentName']}</td>
+                            <td>{$row['Payment Title']}</td>
+                            <td>{$row['Payment Type']}</td>
+                            <td>₱ {$row['Amount']}</td>
+                            <td>{$row['Date']}</td>
+                            <td><span class='{$statusClass}'>{$row['paymentStatus']}</span></td>
+                          </tr>";
+                }
+              
+                } else {  
+                  echo "<tr><td colspan='12' style='text-align: center;'>No payments found as of the moment</td></tr>";
+                }
+              ?>
+            </tbody>
+          </table>
+
+
+        </div>
+        
+      </div>
+    </div>
+
+    <div class="main-table-wrapper-one">
+      <div class="table-info-container">
+        <div class="header p-3 d-flex flex-row justify-content-between align-items-center">
+
+          <div class="start-section">
+            <h6 class="">Flights</h6>
+          </div>
+
+          <div class="end-section d-flex align-items-center gap-3">
+            <div class="legend-guides d-flex flex-row gap-3">
+              <div class="legend-item-wrapper">
+                <div class="legend-item">
+                  <span class="color-circle" style="background-color: #FF0000;"></span> <!-- Red -->
+                  <h6 class="legend-text">A01</h6>
+                </div>
+              </div>
+              <div class="legend-item-wrapper">
+                <div class="legend-item">
+                  <span class="color-circle" style="background-color: #00FF00;"></span> <!-- Green -->
+                  <h6 class="legend-text">A02</h6>
+                </div>
+              </div>
+              <div class="legend-item-wrapper">
+                <div class="legend-item">
+                  <span class="color-circle" style="background-color: #0000FF; color: black;"></span> <!-- Blue -->
+                  <h6 class="legend-text">A03</h6>
+                </div>
+              </div>
+              <div class="legend-item-wrapper">
+                <div class="legend-item">
+                  <span class="color-circle" style="background-color: #FFFF00;"></span> <!-- Yellow -->
+                  <h6 class="legend-text">A04</h6>
+                </div>
+              </div>
+              <div class="legend-item-wrapper">
+                <div class="legend-item">
+                  <span class="color-circle" style="background-color: #FF00FF;"></span> <!-- Magenta -->
+                  <h6 class="legend-text">A05</h6>
+                </div>
+              </div>
+            </div>
+
+            <div class="refresh-button-wrapper">
+              <button class="btn btn-primary btn-sm"><i class="fa-solid fa-arrows-rotate"></i></button>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="info-table-container">
+          <table class="info-table">
+            <thead class="border-2">
+              <tr>
+                <th rowspan="2">TEAM OP</th>
+                <th rowspan="2">ORIGIN</th>
+                <th colspan="2">FLIGHT DATE</th> <!-- Flight Date columns -->
+                <th rowspan="2">FLIGHT SEAT</th>
+                <th rowspan="2" style="font-size: 10px;">AVAILABLE SEATS</th>
+                <th rowspan="2" style="font-size: 10px;">ADDITIONAL SEATS</th>
+                <th rowspan="2">AIR + LAND</th>
+                <th rowspan="2">LAND ONLY</th>
+                <th rowspan="2">WHOLESALE PRICE</th>
+                <th rowspan="2">RETAIL PRICE</th>
+                <th rowspan="2">LAND ARRANGEMENT</th>
+
+                <!-- Dynamic headers for agent columns -->
+                <?php
+                  // Fetch agent columns headers dynamically
+                  $sql = "SELECT DISTINCT agentId FROM booking WHERE agentId IS NOT NULL AND agentId != ''";
+                  $result = $conn->query($sql);
+                  while ($row = $result->fetch_assoc()) 
+                  {
+                    echo '<th colspan="2" data-bs-toggle="tooltip" title="' . $row['agentId'] . '">' . $row['agentId'] . '</th>';
+                  }
+                ?>
+              </tr>
+              <tr style="top: -8px">
+                <th>START</th>
+                <th>END</th>
+                <!-- A1, A2, A3, A4, A5, A6, A7 Sub Headers -->
+                <!-- Dynamic sub-headers for agent columns -->
+                <?php
+                  $result = $conn->query($sql);
+                  while ($row = $result->fetch_assoc()) 
+                  {
+                    echo '<th>A.L</th><th>L.O</th>';
+                  }
+                ?>
+              </tr>
+            </thead>
+            <tbody>
+              <?php
+                // Step 1: Dynamically generate agent columns
+                $sql = "SELECT DISTINCT agentId FROM booking WHERE agentId IS NOT NULL AND agentId != ''";
+                $result = $conn->query($sql);
+
+                $agentColumns = '';
+                while ($row = $result->fetch_assoc()) 
+                {
+                  $agentColumns .= 
+                      'SUM(CASE WHEN b.agentId = "' . $row['agentId'] . '" AND b.bookingType = "Package" and b.status = "Confirmed" THEN b.pax ELSE 0 END) AS `' . $row['agentId'] . '_AL`, ' .
+                      'SUM(CASE WHEN b.agentId = "' . $row['agentId'] . '" AND b.bookingType = "Land" and b.status = "Confirmed" THEN b.pax ELSE 0 END) AS `' . $row['agentId'] . '_LO`, ';
+                }
+
+                // Remove the trailing comma
+                $agentColumns = rtrim($agentColumns, ', ');
+
+                // Step 2: Construct the full SQL query
+                $sql = "
+                    SELECT 
+                        CONCAT(e.lName, ', ', e.fName, 
+                            IF(e.mName IS NOT NULL AND e.mName != '', CONCAT(' ', LEFT(e.mName, 1)), '')) AS TeamOP,
+                        f.origin, 
+                        f.flightDepartureDate AS Start, 
+                        f.returnDepartureDate AS End, 
+                        f.availSeats AS FlightSeat, 
+                        GREATEST(
+                                  (f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package' 
+                                  THEN b.pax ELSE 0 END), 0)),0) AS AvailSeats, 
+                        IF(
+                            (f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0)) < 0, 
+                            ABS(f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0)), 
+                            0) AS AdditionalSeats,
+                        SUM(CASE WHEN b.bookingType = 'Package' AND b.status = 'Confirmed' THEN b.pax ELSE 0 END) AS `Air+Land`,
+                        SUM(CASE WHEN b.bookingType = 'Land' AND b.status = 'Confirmed' THEN b.pax ELSE 0 END) AS `LandOnly`,
+                        f.wholesalePrice AS WholesalePrice, 
+                        f.flightPrice AS RetailPrice, 
+                        p.packagePrice AS LandArrangement, 
+                        $agentColumns
+                    FROM 
+                        employee e 
+                    JOIN 
+                        flight f ON f.employeeId = e.employeeId
+                    LEFT JOIN 
+                        booking b ON b.flightId = f.flightId
+                    LEFT JOIN 
+                        package p ON f.packageId = p.packageId
+                    WHERE f.flightDepartureDate >= CURDATE()
+                    GROUP BY 
+                        f.flightId";
+
+                // Step 3: Execute the query
+                $result = $conn->query($sql);
+
+                // Step 4: Display the results in HTML table
+                if ($result->num_rows > 0) 
+                {
+                  while ($row = $result->fetch_assoc()) 
+                  {
+                    echo '<tr>';
+                    echo '<td>' . $row['TeamOP'] . '</td>';
+                    echo '<td>' . $row['origin'] . '</td>';
+                    echo '<td>' . $row['Start'] . '</td>';
+                    echo '<td>' . $row['End'] . '</td>';
+                    echo '<td>' . $row['FlightSeat'] . '</td>';
+                    echo '<td>' . $row['AvailSeats'] . '</td>';
+                    echo '<td>' . $row['AdditionalSeats'] . '</td>';
+                    echo '<td>' . $row['Air+Land'] . '</td>';
+                    echo '<td>' . $row['LandOnly'] . '</td>';
+                    echo '<td>₱ ' . $row['WholesalePrice'] . '</td>';
+                    echo '<td>₱ ' . $row['RetailPrice'] . '</td>';
+                    echo '<td>₱ ' . $row['LandArrangement'] . '</td>';
+
+                    // Dynamically populate agent columns
+                    foreach ($row as $key => $value) 
+                    {
+                      if (strpos($key, '_AL') !== false || strpos($key, '_LO') !== false) 
+                      {
+                        echo '<td>' . $value . '</td>';
+                      }
+                    }
+                    
+                    echo '</tr>';
+                  }
+                } 
+                else 
+                {
+                  echo "No records found.";
+                }
+              ?>
+            </tbody>
+          </table>
+      
+        </div>
+      </div>
+    </div>
+
+  </div>
 </div>
 
 

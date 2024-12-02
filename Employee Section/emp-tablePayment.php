@@ -138,6 +138,7 @@
         <table class="">
           <thead>
             <tr>
+              <th>Payment Id</th>
               <th>Transact No</th>
               <th>Agent Name</th>
               <th>PAYMENT TITLE</th>
@@ -189,6 +190,7 @@
             
                   // Output table row
                   echo "<tr>
+                          <td>{$row['paymentId']}</td>
                           <td>{$row['transactNo']}</td>
                           <td>{$row['agentName']}</td>
                           <td>{$row['paymentTitle']}</td>
