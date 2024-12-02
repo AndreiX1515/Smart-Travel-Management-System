@@ -20,96 +20,94 @@
    
   <div class="main-content">
    <div class="table-container">
-     <div class="table-subheader d-flex gap-4">
-     <!-- Search Section -->
-     <div class="search-wrapper position-relative">
-         <label for="tableSearchInput" class="mb-1">Search:</label>
-         <input
-             type="text"
-             id="tableSearchInput"
-             placeholder="Search..."
-             class="form-control search-input mt-2"
-             oninput="toggleClearButton(this)"
-         />
-         <button
-             type="button"
-             class="clear-button"
-             onclick="clearInput(this)"
-             style="display: none;"
-         >
-             <i class="fas fa-times"></i>
-         </button>
-     </div>
+      <div class="table-subheader d-flex gap-4 justify-content-between">
+       <!-- Search Section -->
+       <div class="search-wrapper position-relative">
+           <label for="tableSearchInput" class="mb-1">Search:</label>
+           <input
+               type="text"
+               id="tableSearchInput"
+               placeholder="Search..."
+               class="form-control search-input mt-2"
+               oninput="toggleClearButton(this)"
+           />
+           <button
+               type="button"
+               class="clear-button"
+               onclick="clearInput(this)"
+               style="display: none;"
+           >
+               <i class="fas fa-times"></i>
+           </button>
+       </div>
 
-     <!-- Dropdowns Section -->
-     <div class="dropdowns d-flex flex-column">
-         <label for="itemsPerPageDropdown" class="mb-1">Show Entries</label>
-         <div class="dropdown">
-             <button
-                 class="btn btn-outline-secondary dropdown-toggle"
-                 type="button"
-                 id="itemsPerPageDropdown"
-                 data-bs-toggle="dropdown"
-                 aria-expanded="false"
-             >
-                 All
-             </button>
-             <ul class="dropdown-menu" aria-labelledby="itemsPerPageDropdown">
-                 <li><a class="dropdown-item" href="#" data-page-size="5">5</a></li>
-                 <li><a class="dropdown-item" href="#" data-page-size="10">10</a></li>
-                 <li><a class="dropdown-item" href="#" data-page-size="50">50</a></li>
-                 <li><a class="dropdown-item" href="#" data-page-size="100">100</a></li>
-             </ul>
-         </div>
-     </div>
+       <!-- Dropdowns Section -->
+       <div class="dropdown">
+           <label for="itemsPerPageDropdown" class="mb-1">Show Entries</label>
+           <div class="dropdown">
+               <button
+                   class="btn btn-outline-secondary dropdown-toggle"
+                   type="button"
+                   id="itemsPerPageDropdown"
+                   data-bs-toggle="dropdown"
+                   aria-expanded="false"
+               >
+                   All
+               </button>
+               <ul class="dropdown-menu" aria-labelledby="itemsPerPageDropdown">
+                   <li><a class="dropdown-item" href="#" data-page-size="5">5</a></li>
+                   <li><a class="dropdown-item" href="#" data-page-size="10">10</a></li>
+                   <li><a class="dropdown-item" href="#" data-page-size="50">50</a></li>
+                   <li><a class="dropdown-item" href="#" data-page-size="100">100</a></li>
+               </ul>
+           </div>
+       </div>
 
-     <!-- Flight Date Range Picker -->
-     <div class="flight-dateRange-wrapper">
-         <label for="flightStartDate" class="mb-2">Flight Date</label>
-         <div class="d-flex align-items-center">
-             <input type="date" class="form-control me-2" id="flightStartDate" placeholder="Start Date">
-             <span class="mx-2">to</span>
-             <input type="date" class="form-control ms-2" id="flightEndDate" placeholder="End Date">
-         </div>
-     </div>
+       <!-- Flight Date Range Picker -->
+       <div class="flight-dateRange-wrapper">
+           <label for="flightStartDate" class="mb-1">Flight Date</label>
+           <div class="d-flex align-items-center">
+               <input type="date" class="form-control me-2" id="flightStartDate">
+               <span class="mx-2">to</span>
+               <input type="date" class="form-control ms-2" id="flightEndDate">
+           </div>
+       </div>
 
-     <!-- Booking Date Range Picker -->
-     <div class="booking-dateRange-wrapper">
-         <label for="bookingStartDate" class="mb-2">Booking Date</label>
-         <div class="d-flex align-items-center">
-             <input type="date" class="form-control me-2" id="bookingStartDate" placeholder="Start Date">
-             <span class="mx-2">to</span>
-             <input type="date" class="form-control ms-2" id="bookingEndDate" placeholder="End Date">
-         </div>
-     </div>
+       <!-- Booking Date Range Picker -->
+       <div class="booking-dateRange-wrapper">
+           <label for="bookingStartDate" class="mb-1">Booking Date</label>
+           <div class="d-flex align-items-center">
+               <input type="date" class="form-control me-2" id="bookingStartDate">
+               <span class="mx-2">to</span>
+               <input type="date" class="form-control ms-2" id="bookingEndDate">
+           </div>
+       </div>
 
-     <!-- Filter Dropdown -->
-     <div class="dropdown">
-         <button
-             class="btn btn-outline-secondary dropdown-toggle"
-             type="button"
-             id="filterDropdown"
-             data-bs-toggle="dropdown"
-             aria-expanded="false"
-         >
-             Filter Options
-         </button>
-         <ul class="dropdown-menu" aria-labelledby="filterDropdown">
-             <li><a class="dropdown-item" href="#">Status</a></li>
-             <li><a class="dropdown-item" href="#">Category</a></li>
-             <li><a class="dropdown-item" href="#">Priority</a></li>
-             <li><a class="dropdown-item" href="#">Custom Filter</a></li>
-         </ul>
-     </div>
-
-     <!-- Clear Filters Button -->
-     <div class="clear-button-wrapper">
-         <button class="btn btn-danger" id="clearFiltersButton">
-             <i class="fa-solid fa-circle-xmark"></i> Clear Filters
-         </button>
-     </div>
-  </div>
-
+       <!-- Filter Dropdown -->
+       <div class="filter-wrapper">
+           <label for="filterDropdown" class="mb-1">Filter Options</label>
+           <div class="dropdown">
+               <button
+                   class="btn btn-outline-secondary dropdown-toggle"
+                   type="button"
+                   id="filterDropdown"
+                   data-bs-toggle="dropdown"
+                   aria-expanded="false"
+               >
+                   Filter Options
+               </button>
+               <ul class="dropdown-menu" aria-labelledby="filterDropdown">
+                   <li><a class="dropdown-item" href="#">Status</a></li>
+                   <li><a class="dropdown-item" href="#">Category</a></li>
+                   <li><a class="dropdown-item" href="#">Priority</a></li>
+                   <li><a class="dropdown-item" href="#">Custom Filter</a></li>
+               </ul>
+           </div>
+           <button class="btn btn-danger mt-2" id="clearFiltersButton">
+               <i class="fa-solid fa-circle-xmark"></i> Clear Filters
+           </button>
+       </div>
+   </div>
 
 
 
@@ -205,7 +203,7 @@
                    
 
                    // Output each row as a table row
-                   echo "<tr>";
+                   echo "<tr data-url='emp-transactionInfo.php?id=" . htmlspecialchars($row['transactNo']) . "'>";
                    echo "<td>" . htmlspecialchars($row['transactNo']) . "</td>";
                    echo "<td>" . htmlspecialchars($row['PackageName']) . "</td>";
                    echo "<td>" . htmlspecialchars($row['FlightDate']) . "</td>";
@@ -313,9 +311,6 @@
   }
 </style>
 
-
-
-
 <script> 
 let lastScrollTop = 0; // Keeps track of the last scroll position
 const header = document.querySelector('.table-wrapper thead');
@@ -337,6 +332,40 @@ window.addEventListener('scroll', function() {
 });
 
 </script>
+
+ <!-- Clickable rows script -->
+ <script>
+    document.addEventListener("DOMContentLoaded", function() 
+    {
+      document.querySelectorAll("tr[data-url]").forEach(function(row) 
+      {
+        row.addEventListener("click", function() 
+        {
+          window.location.href = row.getAttribute("data-url");
+        });
+      });
+    });
+    // Add event listener to each row for redirection
+    const rows = document.querySelectorAll("tr[data-url]");
+    
+    rows.forEach(row => 
+    {
+      row.addEventListener("click", function() 
+      {
+        const url = row.getAttribute("data-url");
+        window.location.href = url; // Redirect to the specified URL
+      });
+    });
+  </script>
+
+
+
+
+
+
+
+
+
 
 <?php include '../Employee Section/includes/emp-scripts.php' ?>
 

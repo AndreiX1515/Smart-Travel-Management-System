@@ -1,3 +1,13 @@
+<?php 
+if (isset($_GET['id'])) {
+ // Sanitize the input to prevent XSS attacks
+ $transactionId = htmlspecialchars($_GET['id']);
+
+}
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,7 +33,7 @@
              </button>
 
              <div class="title">
-                <h1>TRANSACTION ID: A002-5485478</h1>
+                <h1>TRANSACTION ID: <?php echo $transactionId; ?></h1>
              </div>
 
             <!-- Navbar items and functionality can be added here -->
