@@ -145,7 +145,7 @@
             </thead>
             <tbody>
              <?php
-               // SQL query
+               // SQL query for SOA
                $sql = "SELECT b.transactNo, CONCAT(f.flightDepartureDate, ' - ', f.returnDepartureDate) AS FlightDate, 
                                p.packageName AS PackageName, b.bookingDate AS BookingDate, b.pax AS TotalPax, b.totalPrice AS PackagePrice, 
                                SUM(CASE WHEN r.requestStatus = 'Confirmed' THEN r.requestCost ELSE 0 END) AS RequestCost,
