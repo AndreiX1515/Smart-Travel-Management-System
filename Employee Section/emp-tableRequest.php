@@ -153,40 +153,37 @@
           <tbody>
             <?php
               $sql1 = "SELECT r.requestId, r.transactNo AS `TransactNo`,
-                  CONCAT(a.lName, ', ', a.fName, 
-                      IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1), '.'), '')) AS AgentName,
-                  c.concernTitle AS `RequestTitle`, cd.details AS `RequestDetails`, b.pax AS `TotalPax`,
-                  (b.totalPrice + IFNULL(SUM(CASE WHEN p.paymentStatus = 'Approved' THEN p.amount ELSE 0 END), 0)) AS `TotalAmount`,
-                  r.customRequest as customRequest, r.details as details, DATE_FORMAT(r.requestDate, '%m-%d-%Y') AS `RequestDate`, 
-                  r.requestStatus AS `Status`
-              FROM 
-                  request r
-              LEFT JOIN 
-                  concern c ON r.concernId = c.concernId
-              LEFT JOIN 
-                  concerndetails cd ON r.concernDetailsId = cd.concernDetailsId
-              LEFT JOIN 
-                  booking b ON r.transactNo = b.transactNo
-              LEFT JOIN 
-                  payment p ON b.transactNo = p.transactNo
-              LEFT JOIN 
-                  agent a ON b.agentId = a.agentId
-              WHERE
-                r.requestStatus = 'Submitted'
-              GROUP BY 
-                  r.requestId";
+                          CONCAT(a.lName, ', ', a.fName, 
+                              IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1), '.'), '')) AS AgentName,
+                          c.concernTitle AS `RequestTitle`, cd.details AS `RequestDetails`, b.pax AS `TotalPax`,
+                          (b.totalPrice + IFNULL(SUM(CASE WHEN p.paymentStatus = 'Approved' THEN p.amount ELSE 0 END), 0)) AS `TotalAmount`,
+                          r.customRequest as customRequest, r.details as details, DATE_FORMAT(r.requestDate, '%m-%d-%Y') AS `RequestDate`, 
+                          r.requestStatus AS `Status`
+                      FROM 
+                          request r
+                      LEFT JOIN 
+                          concern c ON r.concernId = c.concernId
+                      LEFT JOIN 
+                          concerndetails cd ON r.concernDetailsId = cd.concernDetailsId
+                      LEFT JOIN 
+                          booking b ON r.transactNo = b.transactNo
+                      LEFT JOIN 
+                          payment p ON b.transactNo = p.transactNo
+                      LEFT JOIN 
+                          agent a ON b.agentId = a.agentId
+                      WHERE
+                        r.requestStatus = 'Submitted'
+                      GROUP BY 
+                          r.requestId";
 
               $res1 = $conn->query($sql1);
 
-              if ($res1->num_rows > 0) 
-              {
-                while ($row = $res1->fetch_assoc()) 
-                {
+              if ($res1->num_rows > 0) {
+                while ($row = $res1->fetch_assoc()) {
                   // Determine the badge class based on the status
                   $status = $row['Status'];
                   $badgeClass = '';
-                  switch ($status) 
-                  {
+                  switch ($status) {
                     case 'Confirmed':
                         $badgeClass = 'text-bg-success'; // Green for Confirmed
                         break;
@@ -205,7 +202,8 @@
                   $title = $row['RequestTitle'] ?? 'Custom Request';
                   $details = $row['RequestDetails'] ?? $row['customRequest'];
 
-                  echo "<tr>
+                  // Output table row with data-transactno attribute
+                  echo "<tr class='request-row' data-transactno='{$row['TransactNo']}'>
                           <td>{$row['requestId']}</td>
                           <td>{$row['TransactNo']}</td>
                           <td>{$row['AgentName']}</td>
@@ -220,10 +218,8 @@
                           </td>
                         </tr>";
                 }
-              } 
-              else 
-              {
-                echo "<tr><td colspan='8' style='text-align: center;'>No Requests Found</td></tr>";
+              } else {
+                echo "<tr><td colspan='9' style='text-align: center;'>No Requests Found</td></tr>";
               }
             ?>
           </tbody>
@@ -234,6 +230,46 @@
   </div>
 </div>
 
+<!-- Modal Structure -->
+<div class="modal fade" id="transactionModal" tabindex="-1" aria-labelledby="transactionModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="transactionModalLabel">Transaction Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p><strong>Transaction ID:</strong> <span id="transactionId"></span></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Wait for the DOM to be fully loaded
+document.addEventListener('DOMContentLoaded', function() {
+    // Get all the rows with the class 'request-row'
+    const rows = document.querySelectorAll('.request-row');
+    
+    rows.forEach(row => {
+        // Add click event listener to each row
+        row.addEventListener('click', function() {
+            // Get the transaction number (data attribute)
+            const transactNo = row.getAttribute('data-transactno');
+            
+            // Set the transaction number in the modal
+            document.getElementById('transactionId').textContent = transactNo;
+            
+            // Show the modal (using Bootstrap modal)
+            const modal = new bootstrap.Modal(document.getElementById('transactionModal'));
+            modal.show();
+        });
+    });
+});
+</script>
 
 <?php include '../Employee Section/includes/emp-scripts.php' ?>
 

@@ -20,160 +20,323 @@
    
   <div class="main-content">
    <div class="table-container">
-     <!-- <div class="table-tabs">
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
-           <li class="nav-item" role="presentation">
-             <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Home</button>
-           </li>
-           <li class="nav-item" role="presentation">
-             <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Profile</button>
-           </li>
-           <li class="nav-item" role="presentation">
-             <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">Contact</button>
-           </li>
-           <li class="nav-item" role="presentation">
-             <button class="nav-link" id="disabled-tab" data-bs-toggle="tab" data-bs-target="#disabled-tab-pane" type="button" role="tab" aria-controls="disabled-tab-pane" aria-selected="false" disabled>Disabled</button>
-           </li>
-         </ul>
-      </div> -->
-
-      <div class="table-header">
-       <div class="header-left">
+     <div class="table-subheader d-flex gap-4">
+     <!-- Search Section -->
+     <div class="search-wrapper position-relative">
+         <label for="tableSearchInput" class="mb-1">Search:</label>
          <input
-           type="text"
-           placeholder="Search..."
-           class="search-input"
+             type="text"
+             id="tableSearchInput"
+             placeholder="Search..."
+             class="form-control search-input mt-2"
+             oninput="toggleClearButton(this)"
          />
-         <button class="btn-search">
-           <i class="fas fa-search"></i>
+         <button
+             type="button"
+             class="clear-button"
+             onclick="clearInput(this)"
+             style="display: none;"
+         >
+             <i class="fas fa-times"></i>
          </button>
-       </div>
+     </div>
 
+     <!-- Dropdowns Section -->
+     <div class="dropdowns d-flex flex-column">
+         <label for="itemsPerPageDropdown" class="mb-1">Show Entries</label>
+         <div class="dropdown">
+             <button
+                 class="btn btn-outline-secondary dropdown-toggle"
+                 type="button"
+                 id="itemsPerPageDropdown"
+                 data-bs-toggle="dropdown"
+                 aria-expanded="false"
+             >
+                 All
+             </button>
+             <ul class="dropdown-menu" aria-labelledby="itemsPerPageDropdown">
+                 <li><a class="dropdown-item" href="#" data-page-size="5">5</a></li>
+                 <li><a class="dropdown-item" href="#" data-page-size="10">10</a></li>
+                 <li><a class="dropdown-item" href="#" data-page-size="50">50</a></li>
+                 <li><a class="dropdown-item" href="#" data-page-size="100">100</a></li>
+             </ul>
+         </div>
+     </div>
 
-    <!-- <div class="header-right">
-      
-    </div>  -->
-    
+     <!-- Flight Date Range Picker -->
+     <div class="flight-dateRange-wrapper">
+         <label for="flightStartDate" class="mb-2">Flight Date</label>
+         <div class="d-flex align-items-center">
+             <input type="date" class="form-control me-2" id="flightStartDate" placeholder="Start Date">
+             <span class="mx-2">to</span>
+             <input type="date" class="form-control ms-2" id="flightEndDate" placeholder="End Date">
+         </div>
+     </div>
+
+     <!-- Booking Date Range Picker -->
+     <div class="booking-dateRange-wrapper">
+         <label for="bookingStartDate" class="mb-2">Booking Date</label>
+         <div class="d-flex align-items-center">
+             <input type="date" class="form-control me-2" id="bookingStartDate" placeholder="Start Date">
+             <span class="mx-2">to</span>
+             <input type="date" class="form-control ms-2" id="bookingEndDate" placeholder="End Date">
+         </div>
+     </div>
+
+     <!-- Filter Dropdown -->
+     <div class="dropdown">
+         <button
+             class="btn btn-outline-secondary dropdown-toggle"
+             type="button"
+             id="filterDropdown"
+             data-bs-toggle="dropdown"
+             aria-expanded="false"
+         >
+             Filter Options
+         </button>
+         <ul class="dropdown-menu" aria-labelledby="filterDropdown">
+             <li><a class="dropdown-item" href="#">Status</a></li>
+             <li><a class="dropdown-item" href="#">Category</a></li>
+             <li><a class="dropdown-item" href="#">Priority</a></li>
+             <li><a class="dropdown-item" href="#">Custom Filter</a></li>
+         </ul>
+     </div>
+
+     <!-- Clear Filters Button -->
+     <div class="clear-button-wrapper">
+         <button class="btn btn-danger" id="clearFiltersButton">
+             <i class="fa-solid fa-circle-xmark"></i> Clear Filters
+         </button>
+     </div>
   </div>
 
-    <div class="table-subheader ">
-      <div class="d-flex justify-content-between align-items-center">
-          <!-- Dropdown Button -->
-          <div class="dropdown">
-              <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                  All
-              </button>
-              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <li><a class="dropdown-item" href="#">5</a></li>
-                <li><a class="dropdown-item" href="#">10</a></li>
-                <li><a class="dropdown-item" href="#">50</a></li>
-                <li><a class="dropdown-item" href="#">100</a></li>
-              </ul>
-          </div>
 
-          <!-- Date Range, Filter, Add New Column Buttons -->
-          <div>
-              <button class="btn btn-outline-secondary me-2">
-                  <i class="fas fa-calendar-alt"></i> Date Range
-              </button>
-              <button class="btn btn-outline-secondary me-2">
-                  <i class="fas fa-filter"></i> Filter
-              </button>
-              <!-- <button class="btn btn-outline-secondary">
-                  <i class="fas fa-plus"></i> Add new column
-              </button> -->
-          </div>
-      </div>
-  </div>
 
-   <div class="table-wrapper">
-     <table class="">
-       <thead>
-         <tr>
-           <th>Transact No</th>
-           <th>Package Name</th>
-           <th>Flight Date</th>
-           <th>Booking Date</th>
-           <th>Total Pax</th>
-           <th>Package Price</th>
-           <th>Request Cost</th>
-           <th>Amount to be paid</th>
-           <th>Amount Paid</th>
-           <th>Remaining Balance</th>
-           <th>Status</th>
-         </tr>
-       </thead>
-       <tbody>
-        <?php
-          // SQL query
-          $sql = "SELECT b.transactNo, CONCAT(f.flightDepartureDate, ' - ', f.returnDepartureDate) AS FlightDate, 
-                          p.packageName AS PackageName, b.bookingDate AS BookingDate, b.pax AS TotalPax, b.totalPrice AS PackagePrice, 
-                          SUM(CASE WHEN r.requestStatus = 'Confirmed' THEN r.requestCost ELSE 0 END) AS RequestCost,
-                          (b.totalPrice + SUM(CASE WHEN r.requestStatus = 'Confirmed' THEN r.requestCost ELSE 0 END)) AS AmountToPaid,
-                          SUM(CASE WHEN y.paymentStatus = 'Approved' THEN y.amount ELSE 0 END) AS AmountPaid,
-                          ((b.totalPrice + SUM(CASE WHEN r.requestStatus = 'Confirmed' THEN r.requestCost ELSE 0 END)) - 
-                          SUM(CASE WHEN y.paymentStatus = 'Approved' THEN y.amount ELSE 0 END)) AS Balance
-                  FROM 
-                    booking b
-                  JOIN 
-                    flight f ON f.flightId = b.flightId
-                  JOIN 
-                    package p ON p.packageId = b.packageId
-                  LEFT JOIN 
-                    request r ON r.transactNo = b.transactNo
-                  LEFT JOIN 
-                    payment y ON y.transactNo = b.transactNo
-                  GROUP BY 
-                    b.transactNo, f.flightDepartureDate, p.packageName, b.totalPrice, b.bookingDate, b.pax";
 
-          // Execute the query
-          $result = $conn->query($sql);
+      <script>
+        function toggleClearButton(input) {
+          const clearButton = input.nextElementSibling; // Get the button next to the input
+          clearButton.style.display = input.value ? "block" : "none";
+        }
 
-          // Check if there are results
-          if ($result->num_rows > 0) 
-          {
-            while ($row = $result->fetch_assoc()) 
-            {
-              // Determine the status based on Balance
-              $status = ($row['Balance'] <= 0) ? 'Fully Paid' : 'Pending';
+        // Clear the input field
+        function clearInput(button) {
+          const input = button.previousElementSibling; // Get the input field before the button
+          input.value = "";
+          button.style.display = "none"; // Hide the clear button
+          input.focus(); // Refocus on the input
+        }
+      </script>
 
-              // Output each row as a table row
-              echo "<tr>";
-              echo "<td>" . htmlspecialchars($row['transactNo']) . "</td>";
-              echo "<td>" . htmlspecialchars($row['PackageName']) . "</td>";
-              echo "<td>" . htmlspecialchars($row['FlightDate']) . "</td>";
-              echo "<td>" . htmlspecialchars($row['BookingDate']) . "</td>";
-              echo "<td>" . htmlspecialchars($row['TotalPax']) . "</td>";
-              echo "<td>₱ " . number_format($row['PackagePrice'], 2) . "</td>";
-              echo "<td>₱ " . number_format($row['RequestCost'], 2) . "</td>";
-              echo "<td>₱ " . number_format($row['AmountToPaid'], 2) . "</td>";
-              echo "<td>₱ " . number_format($row['AmountPaid'], 2) . "</td>";
-              echo "<td>₱ " . number_format(max($row['Balance'], 0), 2) . "</td>"; // Ensure Balance doesn't go negative
-              echo "<td>" . htmlspecialchars($status) . "</td>";
-              echo "</tr>";
-            }
-          } 
-          else 
-          {
-            echo "<tr><td colspan='11' style='text-align: center;'>No records found.</td></tr>";
-          }
-        ?>
-        
-       </tbody>
-     </table>
+        <div class="table-wrapper">
+          <table class="table-transaction">
+            <thead>
+              <tr>
+                <th>Transact No</th>
+                <th>Package Name</th>
+                <th>Flight Date</th>
+                <th>Booking Date</th>
+                <th>Total Pax</th>
+                <th>Package Price</th>
+                <th>Request Cost</th>
+                <th>Amount to be paid</th>
+                <th>Amount Paid</th>
+                <th>Remaining Balance</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+             <?php
+               // SQL query
+               $sql = "SELECT b.transactNo, CONCAT(f.flightDepartureDate, ' - ', f.returnDepartureDate) AS FlightDate, 
+                               p.packageName AS PackageName, b.bookingDate AS BookingDate, b.pax AS TotalPax, b.totalPrice AS PackagePrice, 
+                               SUM(CASE WHEN r.requestStatus = 'Confirmed' THEN r.requestCost ELSE 0 END) AS RequestCost,
+                               (b.totalPrice + SUM(CASE WHEN r.requestStatus = 'Confirmed' THEN r.requestCost ELSE 0 END)) AS AmountToPaid,
+                               SUM(CASE WHEN y.paymentStatus = 'Approved' THEN y.amount ELSE 0 END) AS AmountPaid,
+                               ((b.totalPrice + SUM(CASE WHEN r.requestStatus = 'Confirmed' THEN r.requestCost ELSE 0 END)) - 
+                               SUM(CASE WHEN y.paymentStatus = 'Approved' THEN y.amount ELSE 0 END)) AS Balance
+                       FROM 
+                         booking b
+                       JOIN 
+                         flight f ON f.flightId = b.flightId
+                       JOIN 
+                         package p ON p.packageId = b.packageId
+                       LEFT JOIN 
+                         request r ON r.transactNo = b.transactNo
+                       LEFT JOIN 
+                         payment y ON y.transactNo = b.transactNo
+                       GROUP BY 
+                         b.transactNo, f.flightDepartureDate, p.packageName, b.totalPrice, b.bookingDate, b.pax";
+
+               // Execute the query
+               $result = $conn->query($sql);
+
+               // Check if there are results
+               if ($result->num_rows > 0) 
+               {
+                 while ($row = $result->fetch_assoc()) 
+                 {
+
+                  // Determine the status based on the balance
+                   $status = ($row['Balance'] <= 0) ? 'Fully Paid' : 'Pending';
+
+                   // Assign the appropriate badge class based on the status
+                   $statusClass = '';
+                   switch ($status) {
+                       case 'Active':
+                           $statusClass = 'badge bg-success'; // Green pill for "Active"
+                           break;
+                       case 'Pending':
+                           $statusClass = 'badge bg-warning text-dark'; // Yellow pill for "Pending"
+                           break;
+                       case 'Inactive':
+                           $statusClass = 'badge bg-secondary'; // Grey pill for "Inactive"
+                           break;
+                       case 'To be confirmed':
+                           $statusClass = 'badge bg-info text-dark'; // Blue pill for "To be confirmed"
+                           break;
+                       case 'Fully Paid':
+                           $statusClass = 'badge bg-success'; // Green pill for "Fully Paid"
+                           break;
+                       default:
+                           $statusClass = 'badge bg-dark'; // Dark pill for unknown statuses
+                           break;
+                   }
+                   
+
+                   // Output each row as a table row
+                   echo "<tr>";
+                   echo "<td>" . htmlspecialchars($row['transactNo']) . "</td>";
+                   echo "<td>" . htmlspecialchars($row['PackageName']) . "</td>";
+                   echo "<td>" . htmlspecialchars($row['FlightDate']) . "</td>";
+                   echo "<td>" . htmlspecialchars($row['BookingDate']) . "</td>";
+                   echo "<td class='text-center fw-bold'>" . htmlspecialchars($row['TotalPax']) . "</td>";
+                   echo "<td>₱ " . number_format($row['PackagePrice'], 2) . "</td>";
+                   echo "<td>₱ " . number_format($row['RequestCost'], 2) . "</td>";
+                   echo "<td>₱ " . number_format($row['AmountToPaid'], 2) . "</td>";
+                   echo "<td>₱ " . number_format($row['AmountPaid'], 2) . "</td>";
+                   echo "<td>₱ " . number_format(max($row['Balance'], 0), 2) . "</td>"; // Ensure Balance doesn't go negative
+                   echo "<td><span class='{$statusClass} py-2'>{$status}</span></td>";
+                   echo "</tr>";
+                 }
+               } 
+               else 
+               {
+                 echo "<tr><td colspan='11' style='text-align: center;'>No records found.</td></tr>";
+               }
+             ?>
+             
+            </tbody>
+          </table>
+        </div>
+     </div>
+
+
    </div>
 </div>
 
-<!-- <div class="tab-content" id="myTabContent">
-  <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">...</div>
-  <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">...</div>
-  <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">...</div>
-  <div class="tab-pane fade" id="disabled-tab-pane" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">...</div>
-</div> -->
+<script>
+    $(document).ready(function() {
+  // Initialize DataTable with column width adjustments
+  var table = $('.table-transaction').DataTable({
+    paging: true, // Enable paging
+    searching: true, // Enable search
+    ordering: true, // Enable sorting
+    info: true, // Display info (e.g., "Showing 1 to 10 of 100 entries")
+    columnDefs: [
+      { width: '10%', targets: 0 }, // Transact No
+      { width: '15%', targets: 1 }, // Package Name
+      { width: '10%', targets: 2 }, // Flight Date
+      { width: '10%', targets: 3 }, // Booking Date
+      { width: '5%', targets: 4 }, // Total Pax
+      { width: '10%', targets: 5 }, // Package Price
+      { width: '10%', targets: 6 }, // Request Cost
+      { width: '10%', targets: 7 }, // Amount to be paid
+      { width: '10%', targets: 8 }, // Amount Paid
+      { width: '10%', targets: 9 }, // Remaining Balance
+      { width: '10%', targets: 10 } // Status
+    ]
+  });
 
-   </div>
-</div>
+  // Custom search functionality
+  $('#tableSearchInput').on('input', function() {
+    table.search(this.value).draw();
+  });
 
+  // Handle custom "Items per Page" dropdown
+  $('#itemsPerPageDropdown .dropdown-item').on('click', function() {
+    var pageSize = $(this).data('page-size');
+    table.page.len(pageSize).draw();
+  });
+
+  // Handle Flight Date Range Filtering
+  $('#flightStartDate, #flightEndDate').on('change', function() {
+    var flightStartDate = $('#flightStartDate').val();
+    var flightEndDate = $('#flightEndDate').val();
+    if (flightStartDate && flightEndDate) {
+      // Custom filtering logic for flight date range
+      table.column(2).search(flightStartDate + ' to ' + flightEndDate).draw();
+    }
+  });
+
+  // Handle Booking Date Range Filtering
+  $('#bookingStartDate, #bookingEndDate').on('change', function() {
+    var bookingStartDate = $('#bookingStartDate').val();
+    var bookingEndDate = $('#bookingEndDate').val();
+    if (bookingStartDate && bookingEndDate) {
+      // Custom filtering logic for booking date range
+      table.column(3).search(bookingStartDate + ' to ' + bookingEndDate).draw();
+    }
+  });
+
+  // Clear filters functionality
+  $('#clearFiltersButton').on('click', function() {
+    $('#flightStartDate').val('');
+    $('#flightEndDate').val('');
+    $('#bookingStartDate').val('');
+    $('#bookingEndDate').val('');
+    $('#tableSearchInput').val('');
+    table.search('').columns().search('').draw();
+  });
+});
+</script>
+
+
+<style>
+
+  .dataTables_length {
+    display: none;
+  }
+
+  .dataTables_filter {
+    display: none;
+  }
+</style>
+
+
+
+
+<script> 
+let lastScrollTop = 0; // Keeps track of the last scroll position
+const header = document.querySelector('.table-wrapper thead');
+
+window.addEventListener('scroll', function() {
+  let currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+  if (currentScrollTop > lastScrollTop) {
+    // Scrolling down
+    header.classList.add('has-border-top'); // Add the border-top
+    header.style.transform = 'translateY(-5px)'; // Adjust upwards slightly
+  } else {
+    // Scrolling up
+    header.classList.remove('has-border-top'); // Remove the border-top
+    header.style.transform = 'translateY(0)'; // Reset to original position
+  }
+
+  lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop; // Prevent negative scroll position
+});
+
+</script>
 
 <?php include '../Employee Section/includes/emp-scripts.php' ?>
 

@@ -39,13 +39,22 @@
 
       <div class="table-subheader d-flex align-items-center justify-content-between p-3 border-bottom bg-light">
         <!-- Search -->
-        <div class="search-wrapper d-flex align-items-center">
-          <input
-            type="text"
-            placeholder="Search..."
-            class="form-control search-input me-2"
-          />
-        </div>
+        <div class="search-wrapper position-relative">
+           <input
+             type="text"
+             placeholder="Search..."
+             class="form-control search-input"
+             oninput="toggleClearButton(this)"
+           />
+           <button 
+             type="button"
+             class="clear-button"
+             onclick="clearInput(this)"
+             style="display: none;"
+           >
+             <i class="fas fa-times"></i>
+           </button>
+         </div>
 
         <!-- Dropdowns -->
         <div class="dropdowns d-flex align-items-center gap-3">
@@ -132,10 +141,27 @@
         </div>
       </div>
 
+      <script>
+ 
+       function toggleClearButton(input) {
+         const clearButton = input.nextElementSibling; // Get the button next to the input
+         clearButton.style.display = input.value ? "block" : "none";
+       }
+
+       // Clear the input field
+       function clearInput(button) {
+         const input = button.previousElementSibling; // Get the input field before the button
+         input.value = "";
+         button.style.display = "none"; // Hide the clear button
+         input.focus(); // Refocus on the input
+       }
+
+      </script>
+
 
 
       <div class="table-wrapper">
-        <table class="">
+       <table class="">
           <thead>
             <tr>
               <th>Payment Id</th>
@@ -152,31 +178,28 @@
           <tbody>
             <?php
               $sql1 = "SELECT p.paymentId, p.transactNo, 
-                            CONCAT(a.lName, ', ', a.fName, 
-                                IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1), '.'), '')) AS agentName, 
-                            p.paymentTitle, p.paymentType, FORMAT(p.amount, 2) AS amount, 
-                            p.filePath, DATE_FORMAT(p.paymentDate, '%m-%d-%Y') AS paymentDate, p.paymentStatus
-                        FROM 
-                            payment p
-                        LEFT JOIN 
-                            booking b ON p.transactNo = b.transactNo
-                        LEFT JOIN 
-                            agent a ON b.agentId = a.agentId
-                        WHERE
-                            p.paymentStatus = 'Submitted'";
-           
+                              CONCAT(a.lName, ', ', a.fName, 
+                                  IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1), '.'), '')) AS agentName, 
+                              p.paymentTitle, p.paymentType, FORMAT(p.amount, 2) AS amount, 
+                              p.filePath, DATE_FORMAT(p.paymentDate, '%m-%d-%Y') AS paymentDate, p.paymentStatus
+                          FROM 
+                              payment p
+                          LEFT JOIN 
+                              booking b ON p.transactNo = b.transactNo
+                          LEFT JOIN 
+                              agent a ON b.agentId = a.agentId
+                          WHERE
+                              p.paymentStatus = 'Submitted'";
+
               $res1 = $conn->query($sql1);
-              
-              if ($res1->num_rows > 0) 
-              {
-                while ($row = $res1->fetch_assoc()) 
-                {
+
+              if ($res1->num_rows > 0) {
+                while ($row = $res1->fetch_assoc()) {
                   // Determine the badge class for the payment status
                   $status = $row['paymentStatus'];
                   $badgeClass = '';
                   
-                  switch ($status) 
-                  {
+                  switch ($status) {
                     case 'Submitted':
                       $badgeClass = 'bg-primary'; // Blue for Submitted
                       break;
@@ -187,9 +210,9 @@
                       $badgeClass = 'bg-secondary'; // Gray for unknown statuses
                       break;
                   }
-            
-                  // Output table row
-                  echo "<tr>
+
+                  // Output table row with data-transactno attribute
+                  echo "<tr class='transaction-row' data-transactno='{$row['transactNo']}'>
                           <td>{$row['paymentId']}</td>
                           <td>{$row['transactNo']}</td>
                           <td>{$row['agentName']}</td>
@@ -206,9 +229,7 @@
                           </td>
                         </tr>";
                 }
-              } 
-              else 
-              {
+              } else {
                 echo "<tr><td colspan='8' style='text-align: center;'>No Payments Found</td></tr>";
               }
             ?>
@@ -220,6 +241,49 @@
   </div>
 </div>
 
+
+<!-- Modal Structure -->
+<div class="modal fade" id="transactionModal" tabindex="-1" aria-labelledby="transactionModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="transactionModalLabel">Transaction Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p><strong>Transaction ID:</strong> <span id="transactionId"></span></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Wait for the DOM to be fully loaded
+document.addEventListener('DOMContentLoaded', function() {
+    // Get all the rows with the class 'transaction-row'
+    const rows = document.querySelectorAll('.transaction-row');
+    
+    rows.forEach(row => {
+        // Add click event listener to each row
+        row.addEventListener('click', function() {
+            // Get the transaction number (data attribute)
+            const transactNo = row.getAttribute('data-transactno');
+            
+            // Set the transaction number in the modal
+            document.getElementById('transactionId').textContent = transactNo;
+            
+            // Show the modal (using Bootstrap modal)
+            const modal = new bootstrap.Modal(document.getElementById('transactionModal'));
+            modal.show();
+        });
+    });
+});
+
+
+</script>
 
 <?php include '../Employee Section/includes/emp-scripts.php' ?>
 

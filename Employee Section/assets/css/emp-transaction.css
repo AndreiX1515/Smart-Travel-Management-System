@@ -7,10 +7,6 @@
   padding: 10px 20px 10px 10px; /* Adds some padding around the container */
 }
 
-
-
-
-
 /* Table Header Styling */
 .table-container .table-header {
  width: 100%;
@@ -58,13 +54,6 @@
 .table-container .table-header .header-left .btn-search:hover {
  background-color: #0056b3; /* Darker blue on hover */
 }
-
-
-
-
-
-
-
 
 
 
@@ -123,14 +112,13 @@
 
 /* Table Wrapper Styling */
 .table-wrapper {
-  width: 100%;
-  height: calc(80vh - 10px); /* Adjusted to fit the container */
-  /* border-radius: 10px; 
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); 
-  background-color: #ffffff;  */
-  overflow-y: auto; /* Vertical scroll for content */
-  overflow-x: auto; /* Horizontal scroll for responsiveness */
+ width: 100%;
+ height: calc(80vh - 10px); /* Adjusted to fit the container */
+ overflow-y: auto; /* Vertical scroll for content */
+ overflow-x: auto; /* Horizontal scroll for responsiveness */
 }
+
+
 
 
 
@@ -144,15 +132,29 @@
 }
 
 
+
+
 /* Table Header (Thead) Styling */
 .table-wrapper thead th {
-  background-color: #747474; /* Light gray for the header */
-  color: #ffffff; /* Text color */
-  font-weight: 600;
-  text-align: left;
-  padding: 7px 15px;
-  border-bottom: 2px solid #dee2e6;
+ background-color: #747474; /* Light gray for the header */
+ color: #ffffff; /* Text color */
+ font-weight: 600;
+ text-align: left;
+ padding: 7px 15px;
+ border-bottom: 2px solid #dee2e6;
+ position: sticky; /* Make the header sticky */
+ top: 0; /* Stick the header to the top */
+ z-index: 1; /* Ensure the header stays above other content when scrolling */
+ transition: transform 0.3s ease, border-top 0.3s ease; /* Smooth transition for transform and border-top */
 }
+
+/* Additional class for top border */
+.has-border-top {
+ border-top: 3px solid #000000; /* 3px black border on top */
+}
+
+
+
 
 /* Table Row Styling */
 .table-wrapper tbody tr {
@@ -176,46 +178,150 @@
  transition: background-color 0.3s ease; /* Smooth hover transition */
 }
 
-/* General status styles */
-.status {
- display: inline-flex; /* Align dot and text */
- align-items: center; /* Center align dot and text */
- font-size: 12px; /* Adjust font size */
- font-weight: 500; /* Slightly bold text */
- color: #1a1a1a; /* Default text color */
- background-color: #f8f9fa; /* Light background for badge effect */
- padding: 5px 10px; /* Add padding around the badge */
- border-radius: 20px; /* Rounded badge */
- border: 1px solid #ddd; /* Optional: Light border for better visibility */
+
+
+
+
+
+
+
+
+
+/* Table Subheader */
+.table-subheader {
+ background-color: #f9f9f9;
+ border-bottom: 1px solid #e0e0e0;
+ display: flex;
+ justify-content: space-between; /* Centering items horizontally */
+ align-items: center;
+ gap: 20px; /* Added gap between components */
+ flex-wrap: wrap; /* Allows wrapping for small screens */
+ padding: 15px;
 }
 
-/* Dot styles */
-.status-dot {
- width: 8px;
- height: 8px;
- border-radius: 50%; /* Circular dot */
- margin-right: 8px; /* Space between dot and text */
- background-color: #28a745; /* Green for confirmed */
+/* Search Wrapper */
+.search-wrapper {
+ position: relative;
+ width: 20%; /* Adjust width as needed */
+ max-width: 300px; /* Optional: Limit the width for better responsiveness */
 }
 
-/* Pending status example */
-.status-pending .status-dot {
- background-color: #ffc107; /* Yellow for pending */
+/* Input field styling */
+.search-input {
+ width: 100%;
+ padding-right: 35px; /* Space for the clear button inside the input */
+ padding-left: 10px;
+ height: 35px; /* Standard height for input fields */
+ font-size: 16px;
+ border: 1px solid #ced4da;
+ border-radius: 5px;
 }
 
-/* Rejected status example */
-.status-rejected .status-dot {
- background-color: #dc3545; /* Red for rejected */
+/* Clear button styling (inside input) */
+.clear-button {
+ position: absolute;
+ right: 10px; /* Align inside the input field */
+ top: 50%;
+ transform: translateY(-50%);
+ border: none;
+ background: transparent;
+ color: #6c757d;
+ cursor: pointer;
+ font-size: 16px;
+ display: none; /* Hidden by default */
 }
 
-/* Confirmed status */
-.status-confirmed .status-dot {
- background-color: #28a745; /* Green for confirmed */
+.clear-button:hover {
+ color: #dc3545; /* Highlight color */
 }
 
+/* Search Input Hover and Focus */
+.search-wrapper .search-input:hover,
+.search-wrapper .search-input:focus {
+ border-color: #116530;
+}
 
+/* Dropdown Menu Styling */
+.dropdown .dropdown-toggle {
+ display: flex;
+ align-items: center;
+ padding: 8px 15px;
+ font-size: 14px;
+ border-radius: 5px;
+ background-color: #fff;
+ border: 1px solid #ced4da;
+ color: #495057;
+}
 
+.dropdown .dropdown-toggle:hover {
+ background-color: #116530;
+ color: white;
+}
 
+.dropdown .dropdown-menu {
+ border-radius: 5px;
+ box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Clear Filters Button */
+.clear-button-wrapper {
+ margin-left: 20px;
+}
+
+#clearFiltersButton {
+ background-color: #dc3545;
+ color: white;
+ font-size: 14px;
+ padding: 8px 15px;
+ border-radius: 5px;
+ border: none;
+ display: flex;
+ align-items: center;
+}
+
+#clearFiltersButton:hover {
+ background-color: #c82333;
+}
+
+#clearFiltersButton i {
+ margin-right: 5px;
+}
+
+/* Dropdowns Section - Flexbox */
+.dropdowns {
+ display: flex;
+ gap: 15px;
+ flex-wrap: wrap; /* Ensures flexibility and responsiveness */
+ justify-content: flex-start;
+ align-items: center;
+}
+
+/* For better alignment and spacing of date range inputs */
+.flight-dateRange-wrapper,
+.booking-dateRange-wrapper {
+ flex: 1 1 200px; /* Flexibility and responsive behavior */
+ max-width: 250px;
+}
+
+/* Adjustments for smaller screen sizes */
+@media (max-width: 768px) {
+ .table-subheader {
+     flex-direction: column;
+     align-items: flex-start;
+ }
+ .search-wrapper {
+     width: 100%;
+ }
+ .clear-button-wrapper {
+     margin-left: 0;
+     margin-top: 10px;
+ }
+ .dropdowns {
+     width: 100%;
+     flex-direction: column;
+     align-items: flex-start;
+ }
+}
 
 
 
