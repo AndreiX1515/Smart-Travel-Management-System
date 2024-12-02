@@ -13,10 +13,10 @@
 
 <!-- Main Container -->
 <div class="main-container">
-   <?php include '../Employee Section/includes/emp-navbar.php' ?>
+  <?php include '../Employee Section/includes/emp-navbar.php' ?>
 
-   <div class="main-content">
-      <div class="table-container">
+  <div class="main-content">
+    <div class="table-container">
          <!-- <div class="table-header">
            <div class="header-left">
               <div class="table-tabs">
@@ -37,7 +37,7 @@
             </div> -->
        
 
-     <div class="table-subheader d-flex align-items-center justify-content-between p-3 border-bottom bg-light">
+      <div class="table-subheader d-flex align-items-center justify-content-between p-3 border-bottom bg-light">
         <!-- Search -->
         <div class="search-wrapper d-flex align-items-center">
           <input
@@ -130,8 +130,6 @@
            </button>
           </div>
         </div>
-
-       
       </div>
 
 
@@ -141,26 +139,82 @@
           <thead>
             <tr>
               <th>Transact No</th>
-              <th>Package Name</th>
-              <th>Flight Date</th>
-              <th>Booking Date</th>
-              <th>Total Pax</th>
-              <th>Package Price</th>
-              <th>Request Cost</th>
-              <th>Amount to be paid</th>
-              <th>Amount Paid</th>
-              <th>Remaining Balance</th>
-              <th>Status</th>
+              <th>Agent Name</th>
+              <th>PAYMENT TITLE</th>
+              <th>PAYMENT TYPE</th>
+              <th>AMOUNT</th>
+              <th>PROOF OF PAYMENT</th>
+              <th>PAYMENT DATE</th>
+              <th>PAYMENT STATUS</th>
             </tr>
           </thead>
           <tbody>
+            <?php
+              $sql1 = "SELECT p.paymentId, p.transactNo, 
+                            CONCAT(a.lName, ', ', a.fName, 
+                                IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1), '.'), '')) AS agentName, 
+                            p.paymentTitle, p.paymentType, FORMAT(p.amount, 2) AS amount, 
+                            p.filePath, DATE_FORMAT(p.paymentDate, '%m-%d-%Y') AS paymentDate, p.paymentStatus
+                        FROM 
+                            payment p
+                        LEFT JOIN 
+                            booking b ON p.transactNo = b.transactNo
+                        LEFT JOIN 
+                            agent a ON b.agentId = a.agentId
+                        WHERE
+                            p.paymentStatus = 'Submitted'";
            
+              $res1 = $conn->query($sql1);
+              
+              if ($res1->num_rows > 0) 
+              {
+                while ($row = $res1->fetch_assoc()) 
+                {
+                  // Determine the badge class for the payment status
+                  $status = $row['paymentStatus'];
+                  $badgeClass = '';
+                  
+                  switch ($status) 
+                  {
+                    case 'Submitted':
+                      $badgeClass = 'bg-primary'; // Blue for Submitted
+                      break;
+                    case 'Approved':
+                      $badgeClass = 'bg-success'; // Green for Approved
+                      break;
+                    default:
+                      $badgeClass = 'bg-secondary'; // Gray for unknown statuses
+                      break;
+                  }
+            
+                  // Output table row
+                  echo "<tr>
+                          <td>{$row['transactNo']}</td>
+                          <td>{$row['agentName']}</td>
+                          <td>{$row['paymentTitle']}</td>
+                          <td>{$row['paymentType']}</td>
+                          <td>₱ {$row['amount']}</td>
+                          <td>
+                              <a href='functions/view-file.php?file=" . urlencode($row['filePath']) . "' target='_blank'>View File</a> 
+                              <a href='functions/download.php?file=" . urlencode($row['filePath']) . "' target='_blank'>Download File</a>
+                          </td>
+                          <td>{$row['paymentDate']}</td>
+                          <td>
+                              <span class='badge rounded-pill {$badgeClass} py-2'> {$status} </span>
+                          </td>
+                        </tr>";
+                }
+              } 
+              else 
+              {
+                echo "<tr><td colspan='8' style='text-align: center;'>No Payments Found</td></tr>";
+              }
+            ?>
           </tbody>
+        </table>
+      </div>
 
-      </table>
-     </div>
-
-   </div>
+    </div>
   </div>
 </div>
 
