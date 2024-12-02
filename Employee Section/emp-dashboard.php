@@ -460,7 +460,7 @@
       <table class="request-table">
         <thead>
           <tr>
-            <th>TRANSACTION NO.</th>
+            <th>AGENT NAME</th>
             <th>REQUEST</th>
             <th>DATE</th>
             <th>STATUS</th>
@@ -472,13 +472,17 @@
                           r.transactNo AS `T.N`,
                           c.concernTitle AS `Request`,
                           DATE_FORMAT(r.requestDate, '%m.%d.%Y') AS `Date`,
-                          r.requestStatus, b.agentId
+                          r.requestStatus, b.agentId,
+                          CONCAT(a.lName, ', ', a.fName, 
+                              IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1)), '')) AS agentName
                       FROM 
                           request r
                       JOIN 
                           booking b ON r.transactNo = b.transactNo
                       JOIN 
                           concern c ON r.concernId = c.concernId
+                      JOIN
+                          agent a ON b.agentId = a.agentId
                       WHERE 
                         r.requestStatus = 'Submitted'
                       ORDER BY 
@@ -508,7 +512,7 @@
             
                 // Echo table row with dynamically styled pills
                 echo "<tr>
-                        <td>{$row['T.N']}</td>
+                        <td>{$row['agentName']}</td>
                         <td>{$row['Request']}</td>
                         <td>{$row['Date']}</td>
                         <td><span class='{$statusClass}'>{$row['requestStatus']}</span></td>
@@ -535,7 +539,7 @@
       <table class="payment-table">
         <thead>
           <tr>
-            <th>TRANSACTION NO.</th>
+            <th>AGENT NAME</th>
             <th>PAYMENT TITLE</th>
             <th>PAYMENT TYPE</th>
             <th>PAYMENT AMOUNT</th>
@@ -551,11 +555,15 @@
                       CONCAT(FORMAT(p.amount, 2)) AS `Amount`,  -- Format the amount as a currency with two decimal places
                       DATE_FORMAT(p.paymentDate, '%m.%d.%Y') AS `Date`,  -- Format the date as specified
                       p.paymentType AS `Payment Type`,
-                      p.paymentStatus, b.agentId
+                      p.paymentStatus, b.agentId,
+                      CONCAT(a.lName, ', ', a.fName, 
+                              IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1)), '')) AS agentName
                     FROM 
                       payment p
                     JOIN 
                       booking b ON p.transactNo = b.transactNo
+                    JOIN
+                        agent a ON b.agentId = a.agentId
                     WHERE 
                       p.paymentStatus = 'Submitted'
                     ORDER BY 
@@ -584,7 +592,7 @@
             
                 // Echo table row with dynamically styled pills
                 echo "<tr>
-                        <td>{$row['Transaction No']}</td>
+                        <td>{$row['agentName']}</td>
                         <td>{$row['Payment Title']}</td>
                         <td>{$row['Payment Type']}</td>
                         <td>₱ {$row['Amount']}</td>
@@ -733,8 +741,7 @@
                     IF(
                         (f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0)) < 0, 
                         ABS(f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0)), 
-                        0
-                    ) AS AdditionalSeats,
+                        0) AS AdditionalSeats,
                     SUM(CASE WHEN b.bookingType = 'Package' AND b.status = 'Confirmed' THEN b.pax ELSE 0 END) AS `Air+Land`,
                     SUM(CASE WHEN b.bookingType = 'Land' AND b.status = 'Confirmed' THEN b.pax ELSE 0 END) AS `LandOnly`,
                     f.wholesalePrice AS WholesalePrice, 
@@ -749,9 +756,9 @@
                     booking b ON b.flightId = f.flightId
                 LEFT JOIN 
                     package p ON f.packageId = p.packageId
+                WHERE f.flightDepartureDate >= CURDATE()
                 GROUP BY 
-                    f.flightId
-            ";
+                    f.flightId";
 
             // Step 3: Execute the query
             $result = $conn->query($sql);
