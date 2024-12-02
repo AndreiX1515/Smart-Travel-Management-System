@@ -9,12 +9,19 @@
   {
     $paymentId = $_POST['paymentId'];
     $paymentStatus = $_POST['paymentStatus'];
+    $paymentRemarks = $_POST['paymentRemarks'];
 
     // Start a transaction
     $conn->begin_transaction();
 
+    // Set remarks to NULL if empty
+    if (empty($paymentRemarks)) 
+    {
+      $paymentRemarks = NULL;
+    }
+
     // Prepare the SQL statement for updating the request status
-    $sql1 = "UPDATE payment SET paymentStatus = ? WHERE paymentId = ?";
+    $sql1 = "UPDATE payment SET paymentStatus = ?, paymentRemarks = ? WHERE paymentId = ?";
     $stmt1 = $conn->prepare($sql1);
 
     if (!$stmt1) 
@@ -26,7 +33,7 @@
     }
 
     // Bind parameters and execute the update
-    $stmt1->bind_param('si', $paymentStatus, $paymentId);
+    $stmt1->bind_param('ssi', $paymentStatus, $paymentRemarks, $paymentId);
     
     if (!$stmt1->execute()) 
     {

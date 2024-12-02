@@ -9,12 +9,19 @@
   {
     $requestId = $_POST['requestId'];
     $requestStatus = $_POST['requestStatus'];
+    $requestRemarks = $_POST['requestRemarks'];
 
     // Start a transaction
     $conn->begin_transaction();
 
+    // Set remarks to NULL if empty
+    if (empty($requestRemarks)) 
+    {
+      $requestRemarks = NULL;
+    }
+
     // Prepare the SQL statement for updating the request status
-    $sql1 = "UPDATE request SET requestStatus = ? WHERE requestId = ?";
+    $sql1 = "UPDATE request SET requestStatus = ?, requestRemarks = ? WHERE requestId = ?";
     $stmt1 = $conn->prepare($sql1);
 
     if (!$stmt1) 
@@ -26,7 +33,7 @@
     }
 
     // Bind parameters and execute the update
-    $stmt1->bind_param('si', $requestStatus, $requestId);
+    $stmt1->bind_param('ssi', $requestStatus, $requestRemarks, $requestId);
     
     if (!$stmt1->execute()) 
     {
