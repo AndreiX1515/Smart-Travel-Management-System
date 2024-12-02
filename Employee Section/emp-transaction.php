@@ -20,93 +20,97 @@
    
   <div class="main-content">
    <div class="table-container">
-      <div class="table-subheader d-flex gap-4 justify-content-between">
-       <!-- Search Section -->
-       <div class="search-wrapper position-relative">
-           <label for="tableSearchInput" class="mb-1">Search:</label>
-           <input
-               type="text"
-               id="tableSearchInput"
-               placeholder="Search..."
-               class="form-control search-input mt-2"
-               oninput="toggleClearButton(this)"
-           />
-           <button
-               type="button"
-               class="clear-button"
-               onclick="clearInput(this)"
-               style="display: none;"
-           >
-               <i class="fas fa-times"></i>
-           </button>
-       </div>
 
-       <!-- Dropdowns Section -->
-       <div class="dropdown">
-           <label for="itemsPerPageDropdown" class="mb-1">Show Entries</label>
-           <div class="dropdown">
-               <button
-                   class="btn btn-outline-secondary dropdown-toggle"
-                   type="button"
-                   id="itemsPerPageDropdown"
-                   data-bs-toggle="dropdown"
-                   aria-expanded="false"
-               >
-                   All
-               </button>
-               <ul class="dropdown-menu" aria-labelledby="itemsPerPageDropdown">
-                   <li><a class="dropdown-item" href="#" data-page-size="5">5</a></li>
-                   <li><a class="dropdown-item" href="#" data-page-size="10">10</a></li>
-                   <li><a class="dropdown-item" href="#" data-page-size="50">50</a></li>
-                   <li><a class="dropdown-item" href="#" data-page-size="100">100</a></li>
-               </ul>
-           </div>
-       </div>
+      <div class="table-subheader">
+         <!-- Search Section -->
+         <div class="search-wrapper position-relative d-flex flex-column">
+             <label for="tableSearchInput" class="text-left">Search:</label>
+             <input
+                 type="text"
+                 id="tableSearchInput"
+                 placeholder="Search..."
+                 class="form-control search-input"
+                 oninput="toggleClearButton(this)"
+             />
+             <button
+                 type="button"
+                 class="clear-button"
+                 onclick="clearInput(this)"
+                 style="display: none;"
+             >
+                 <i class="fas fa-times"></i>
+             </button>
+         </div>
 
-       <!-- Flight Date Range Picker -->
-       <div class="flight-dateRange-wrapper">
-           <label for="flightStartDate" class="mb-1">Flight Date</label>
-           <div class="d-flex align-items-center">
-               <input type="date" class="form-control me-2" id="flightStartDate">
-               <span class="mx-2">to</span>
-               <input type="date" class="form-control ms-2" id="flightEndDate">
+           <!-- Dropdowns Section -->
+           <div class="show-entries-wrapper">
+              <label for="itemsPerPageDropdown" class="">Show Entries</label>
+              <div class="dropdown">
+                  <button
+                      class="btn btn-outline-secondary dropdown-toggle"
+                      type="button"
+                      id="itemsPerPageDropdown"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                  >
+                      All
+                  </button>
+                  <ul class="dropdown-menu" aria-labelledby="itemsPerPageDropdown">
+                      <li><a class="dropdown-item" href="#" data-page-size="5">All</a></li>
+                      <li><a class="dropdown-item" href="#" data-page-size="10">10</a></li>
+                      <li><a class="dropdown-item" href="#" data-page-size="50">50</a></li>
+                      <li><a class="dropdown-item" href="#" data-page-size="100">100</a></li>
+                  </ul>
+              </div>
            </div>
-       </div>
 
-       <!-- Booking Date Range Picker -->
-       <div class="booking-dateRange-wrapper">
-           <label for="bookingStartDate" class="mb-1">Booking Date</label>
-           <div class="d-flex align-items-center">
-               <input type="date" class="form-control me-2" id="bookingStartDate">
-               <span class="mx-2">to</span>
-               <input type="date" class="form-control ms-2" id="bookingEndDate">
-           </div>
-       </div>
+           <!-- Filter Dropdown -->
+           <div class="filter-wrapper">
+               <label for="filterDropdown" class="">Filter Options</label>
+               <div class="dropdown">
+                   <button
+                       class="btn btn-outline-secondary dropdown-toggle"
+                       type="button"
+                       id="filterDropdown"
+                       data-bs-toggle="dropdown"
+                       aria-expanded="false"
+                   >
+                       Filter Options
+                   </button>
+                   <ul class="dropdown-menu" aria-labelledby="filterDropdown">
+                       <li><a class="dropdown-item" href="#">Status</a></li>
+                       <li><a class="dropdown-item" href="#">Package name (A-Z)</a></li>
+                   </ul>
+               </div>
+          </div>
+      
 
-       <!-- Filter Dropdown -->
-       <div class="filter-wrapper">
-           <label for="filterDropdown" class="mb-1">Filter Options</label>
-           <div class="dropdown">
-               <button
-                   class="btn btn-outline-secondary dropdown-toggle"
-                   type="button"
-                   id="filterDropdown"
-                   data-bs-toggle="dropdown"
-                   aria-expanded="false"
-               >
-                   Filter Options
-               </button>
-               <ul class="dropdown-menu" aria-labelledby="filterDropdown">
-                   <li><a class="dropdown-item" href="#">Status</a></li>
-                   <li><a class="dropdown-item" href="#">Category</a></li>
-                   <li><a class="dropdown-item" href="#">Priority</a></li>
-                   <li><a class="dropdown-item" href="#">Custom Filter</a></li>
-               </ul>
-           </div>
-           <button class="btn btn-danger mt-2" id="clearFiltersButton">
+
+         <!-- Flight Date Range Picker -->
+         <div class="flight-dateRange-wrapper">
+             <label for="flightStartDate" class="">Flight Date</label>
+             <div class="d-flex align-items-center">
+                 <input type="date" class="form-control" id="flightStartDate">
+                 <span class="mx-2">to</span>
+                 <input type="date" class="form-control" id="flightEndDate">
+             </div>
+         </div>
+
+         <!-- Booking Date Range Picker -->
+         <div class="booking-dateRange-wrapper">
+             <label for="bookingStartDate" class="">Booking Date</label>
+             <div class="d-flex align-items-center">
+                 <input type="date" class="form-control" id="bookingStartDate">
+                 <span class="mx-2">to</span>
+                 <input type="date" class="form-control" id="bookingEndDate">
+             </div>
+         </div>
+
+         <div class="button-wrapper">
+           <button class="btn btn-danger" id="clearFiltersButton">
                <i class="fa-solid fa-circle-xmark"></i> Clear Filters
            </button>
-       </div>
+        </div>
    </div>
 
 
@@ -146,7 +150,7 @@
             <tbody>
              <?php
                // SQL query
-               $sql = "SELECT b.transactNo, CONCAT(f.flightDepartureDate, ' - ', f.returnDepartureDate) AS FlightDate, 
+               $sql = "SELECT b.transactNo, CONCAT(f.flightDepartureDate, ' | ', f.returnDepartureDate) AS FlightDate, 
                                p.packageName AS PackageName, b.bookingDate AS BookingDate, b.pax AS TotalPax, b.totalPrice AS PackagePrice, 
                                SUM(CASE WHEN r.requestStatus = 'Confirmed' THEN r.requestCost ELSE 0 END) AS RequestCost,
                                (b.totalPrice + SUM(CASE WHEN r.requestStatus = 'Confirmed' THEN r.requestCost ELSE 0 END)) AS AmountToPaid,
@@ -244,7 +248,7 @@
     columnDefs: [
       { width: '10%', targets: 0 }, // Transact No
       { width: '15%', targets: 1 }, // Package Name
-      { width: '10%', targets: 2 }, // Flight Date
+      { width: '15%', targets: 2 }, // Flight Date
       { width: '10%', targets: 3 }, // Booking Date
       { width: '5%', targets: 4 }, // Total Pax
       { width: '10%', targets: 5 }, // Package Price

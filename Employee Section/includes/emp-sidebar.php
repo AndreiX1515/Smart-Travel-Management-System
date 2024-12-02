@@ -32,6 +32,13 @@
         </a>
      </li>
 
+     <li class="nav-item transaction"> 
+        <a class="nav-link page-button" href="../Employee Section/emp-tablePending.php" data-page-name="Booking">
+            <div class="icon"><i class="fas fa-calendar-check"></i></div> <!-- User Icon -->
+            <span class="label">Booking</span>
+        </a>
+     </li>
+
 
     <!-- For Approvals Dropdown -->
     <li class="nav-item dropdown">

@@ -33,29 +33,6 @@
  width: 180px; /* Adjust width as needed */
 }
 
-/* Style for the search button */
-.table-container .table-header .header-left .btn-search {
- font-size: 12px;
- padding: 12px 12px;
- height: 38px;
- display: flex;
- align-items: center;
- background-color: #007bff; /* Primary button color */
- color: white; /* White icon color */
- border: none; /* Remove default border */
- border-radius: 5px;
-}
-
-.table-container .table-header .header-left .btn-search i {
- font-size: 14px; /* Icon size */
-}
-
-/* Optional hover effect for the button */
-.table-container .table-header .header-left .btn-search:hover {
- background-color: #0056b3; /* Darker blue on hover */
-}
-
-
 /* Smaller dropdown container */
 .table-container .dropdown-menu {
  font-size: 12px; /* Smaller font size */
@@ -78,7 +55,7 @@
 /* Table Wrapper Styling */
 .table-wrapper {
  width: 100%;
- height: calc(80vh - 10px); /* Adjusted to fit the container */
+ height: calc(90vh - 10px); /* Adjusted to fit the container */
  overflow-y: auto; /* Vertical scroll for content */
  overflow-x: auto; /* Horizontal scroll for responsiveness */
 }
@@ -140,120 +117,84 @@
 
 
 
-
-
-
-
-
-
 /* Styling for table-subheader */
 .table-subheader {
+ width: 100%;
  display: flex;
- flex-wrap: nowrap;
- align-items: center;
- gap: 10px;
- padding: 10px 15px; /* Adjusted padding for spacing */
+ align-items: center; /* Align items vertically */
+ justify-content: space-between; /* Space out items evenly */
+ gap: 15px; /* Consistent spacing */
+ padding: 15px 20px; /* Balanced padding */
+ background-color: #f9f9f9; /* Light neutral background */
+ border: 1px solid #e0e0e0; /* Subtle border */
+ border-radius: 6px; /* Smooth corners */
 }
 
-/* Adjust individual divs within the subheader */
-.table-subheader > div {
- flex: 1;
- min-width: 150px;
+/* Wrapper labels */
+.table-subheader label {
+ margin-bottom: 10px; /* Remove unnecessary spacing */
+ font-weight: bold;
+ font-size: 14px; /* Standard font size */
+ color: #333; /* Neutral text color */
 }
 
-/* Reduce width for dropdown-wrapper and filter-wrapper */
-.dropdown-wrapper,
-.filter-wrapper {
- flex: 0 0 150px; /* Fixed width for dropdown and filter */
- max-width: 150px;
+
+/* Search wrapper */
+.search-wrapper input {
+ width: 250px; /* Fixed width for consistency */
+ height: 36px; /* Consistent height */
+ padding: 5px 12px; /* Balanced padding */
+ border: 1px solid #ddd; /* Light border */
+ border-radius: 4px; /* Subtle rounded corners */
+ box-sizing: border-box;
 }
 
-/* Input styles for consistency */
-.search-wrapper input,
+/* Show entries and filter wrappers */
+.show-entries-wrapper, .filter-wrapper {
+ display: flex;
+ flex-direction: column;
+ flex-shrink: 0; /* Prevent shrinking */
+ width: auto; /* Adjust width to content */
+}
+
+/* Date range inputs */
 .flight-dateRange-wrapper input,
 .booking-dateRange-wrapper input {
- width: 100%;
+ width: 160px; /* Fixed width for inputs */
  height: 36px;
  padding: 5px 10px;
- border: 1px solid #ccc;
+ border: 1px solid #ddd;
  border-radius: 4px;
  box-sizing: border-box;
 }
 
-/* Adjust flight and booking date ranges */
-.flight-dateRange-wrapper .d-flex,
-.booking-dateRange-wrapper .d-flex {
- gap: 5px;
- flex-wrap: nowrap;
-}
-
-.flight-dateRange-wrapper input,
-.booking-dateRange-wrapper input {
- width: calc(50% - 5px); /* Compact width adjustment */
-}
-
-/* Adjust spacing for inline elements */
+/* Inline text adjustments */
 span {
  font-size: 14px;
  line-height: 36px;
+ color: #555; /* Softer text color */
+ margin-right: 10px; /* Space after spans */
 }
 
 /* Clear button styling */
 .clear-button {
- position: absolute;
- top: 50%;
- right: 10px;
- transform: translateY(-50%);
- background: transparent;
+ background: none;
  border: none;
  cursor: pointer;
+ display: flex;
+ align-items: center;
+ justify-content: center;
 }
 
 .clear-button i {
- color: #999;
+ color: #888; /* Subtle icon color */
  font-size: 16px;
 }
 
-/* Button styles */
-.table-subheader .btn-outline-secondary {
- border-radius: 20px; /* Rounded corners */
- padding: 5px 12px; /* Compact padding */
- font-size: 12px; /* Smaller font */
- width: 100%; /* Ensure buttons fit within containers */
- height: 36px; /* Consistent button height */
-}
 
-/* Space between buttons */
-.table-subheader .btn + .btn {
- margin-left: 8px; /* Reduced margin */
-}
 
-/* Dropdown icon adjustment */
-.table-subheader .dropdown-toggle::after {
- margin-left: 6px; /* Adjusted spacing */
-}
 
-/* Responsive design adjustments */
-@media (max-width: 768px) {
- .table-subheader {
-     flex-wrap: wrap;
- }
 
- .table-subheader > div {
-     flex: 1 1 100%; /* Full-width stacking on smaller screens */
- }
-
- .flight-dateRange-wrapper input,
- .booking-dateRange-wrapper input {
-     width: 100%; /* Full-width inputs for smaller screens */
- }
-
- .dropdown-wrapper,
- .filter-wrapper {
-     flex: 1 1 100%; /* Full-width dropdowns on small screens */
-     max-width: none;
- }
-}
 
 
 
