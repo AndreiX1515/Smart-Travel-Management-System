@@ -13,8 +13,9 @@
    <a href="../Agent Section/agent-transactions.php" class="page-button my-0" data-page-name="Transactions">
       <i class="fas fa-file-invoice"></i> Transactions
    </a>
+   
 
-   <div class="section-title" onclick="toggleSubMenu('operational-submenu')">
+  <div class="section-title" onclick="toggleSubMenu('operational-submenu')">
       Reports <span class="chevron-icon fas fa-chevron-down"></span>
   </div>
 

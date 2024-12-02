@@ -32,7 +32,27 @@
         </a>
      </li>
 
-    <!-- Manage Bookings Dropdown -->
+
+    <!-- For Approvals Dropdown -->
+    <li class="nav-item dropdown">
+        <a class="nav-link page-button" href="#" id="manageBookingDropdown" role="button" data-bs-toggle="collapse" data-bs-target="#manageBookingMenu" aria-expanded="false" aria-controls="manageBookingMenu" data-page-name="Operationals">
+            <div class="icon"><i class="fa-solid fa-thumbs-up"></i></i></i></div>
+            <span class="label">For Approvals</span>
+        </a>
+        <div class="collapse" id="manageBookingMenu">
+           <ul class="nav flex-column ms-3">
+               <li class="nav-item">
+                   <a class="nav-link page-button" href="../Employee Section/emp-tableRequest.php" data-page-name="For Approvals - Request">Request</a>
+               </li>
+               <li class="nav-item">
+                   <a class="nav-link page-button" href="../Employee Section/emp-tablePayment.php" data-page-name="For Approvals - Payment">Payment</a>
+               </li>
+           </ul>
+       </div>
+    </li>
+
+
+    <!-- Reports Dropdown -->
     <li class="nav-item dropdown">
         <a class="nav-link page-button" href="#" id="manageBookingDropdown" role="button" data-bs-toggle="collapse" data-bs-target="#manageBookingMenu" aria-expanded="false" aria-controls="manageBookingMenu" data-page-name="Operationals">
             <div class="icon"><i class="fa-regular fa-file"></i></i></div>
@@ -56,6 +76,8 @@
        </div>
 
     </li>
+
+
 </ul>
 
 <?php

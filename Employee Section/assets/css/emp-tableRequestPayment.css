@@ -1,0 +1,269 @@
+/* Table Container Styling */
+.table-container {
+  width: 100%;
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 20px 10px 10px; /* Adds some padding around the container */
+}
+
+
+
+
+
+/* Table Header Styling */
+.table-container .table-header {
+ width: 100%;
+ height: 5vh; /* Adjust height as needed */
+ display: flex;
+ justify-content: end; /* Space between header components */
+ align-items: center;
+ padding: 5px 0px 5px 15px;
+}
+
+/* Flexbox for the left section (Search input and button) */
+.table-container .table-header .header-left {
+ display: flex;
+ align-items: center; /* Vertically center the input and button */
+ gap: 8px; /* Space between the input and the button */
+}
+
+/* Style for the search input field */
+.table-container .table-header .header-left .search-input {
+ padding: 10px 14px;
+ font-size: 12px;
+ border-radius: 5px;
+ border: 1px solid #ccc;
+ width: 180px; /* Adjust width as needed */
+}
+
+/* Style for the search button */
+.table-container .table-header .header-left .btn-search {
+ font-size: 12px;
+ padding: 12px 12px;
+ height: 38px;
+ display: flex;
+ align-items: center;
+ background-color: #007bff; /* Primary button color */
+ color: white; /* White icon color */
+ border: none; /* Remove default border */
+ border-radius: 5px;
+}
+
+.table-container .table-header .header-left .btn-search i {
+ font-size: 14px; /* Icon size */
+}
+
+/* Optional hover effect for the button */
+.table-container .table-header .header-left .btn-search:hover {
+ background-color: #0056b3; /* Darker blue on hover */
+}
+
+
+/* Styling for table-subheader */
+.table-subheader {
+ padding: 18px 15px; /* Reduced padding */
+}
+
+/* Button style adjustments */
+.table-subheader .btn-outline-secondary {
+ border-radius: 20px; /* Rounded corners for buttons */
+ padding: 5px 12px; /* Smaller padding */
+ font-size: 12px; /* Smaller font size */
+}
+
+/* Flex container for spacing between elements */
+.table-subheader .d-flex {
+ justify-content: space-between; /* Space between buttons */
+ align-items: center; /* Center elements vertically */
+}
+
+/* Customize the dropdown toggle */
+.table-subheader .dropdown-toggle::after {
+ margin-left: 6px; /* Adjust space between text and icon */
+}
+
+/* Add space between buttons */
+.table-subheader .btn + .btn {
+ margin-left: 8px; /* Reduced space between buttons */
+}
+
+/* Icon spacing */
+.table-subheader .fas {
+ margin-right: 6px; /* Less space between icon and text */
+}
+
+
+/* Smaller dropdown container */
+.table-container .dropdown-menu {
+ font-size: 12px; /* Smaller font size */
+ padding: 5px; /* Reduce padding for compact design */
+ width: 10px; /* Adjust width for a smaller container */
+ text-align: left; /* Align text for better presentation */
+}
+
+/* Styling for dropdown items */
+.table-container .dropdown-menu .dropdown-item {
+ padding: 5px; /* Reduce item padding */
+}
+
+/* Optional: Add hover effect for better UI */
+.table-container .dropdown-menu .dropdown-item:hover {
+ background-color: #e9ecef; /* Light gray on hover */
+ color: #007bff; /* Highlight text color */
+}
+
+/* Table Wrapper Styling */
+.table-wrapper {
+  width: 100%;
+  height: calc(80vh - 10px); /* Adjusted to fit the container */
+  /* border-radius: 10px; 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); 
+  background-color: #ffffff;  */
+  overflow-y: auto; /* Vertical scroll for content */
+  overflow-x: auto; /* Horizontal scroll for responsiveness */
+}
+
+
+
+/* Table Styling */
+.table-wrapper table {
+ width: 100%;
+ border-collapse: collapse; /* Remove gaps between cells */
+ font-family: Arial, sans-serif;
+ font-size: 14px;
+ border-top: 2px solid #dee2e6; /* Add top border */
+}
+
+
+/* Table Header (Thead) Styling */
+.table-wrapper thead th {
+  background-color: #747474; /* Light gray for the header */
+  color: #ffffff; /* Text color */
+  font-weight: 600;
+  text-align: left;
+  padding: 7px 15px;
+  border-bottom: 2px solid #dee2e6;
+}
+
+/* Table Row Styling */
+.table-wrapper tbody tr {
+  border-bottom: 1px solid #dee2e6;
+}
+
+.table-wrapper tbody tr:last-child {
+  border-bottom: none; /* Remove the bottom border for the last row */
+}
+
+.table-wrapper td {
+  padding: 7px 15px;
+  color: #333;
+  vertical-align: middle;
+}
+
+/* Table Row Hover Effect */
+.table-wrapper tbody tr:hover {
+ background-color: #f5f5f5; /* Light gray background on row hover */
+ cursor: pointer; /* Pointer cursor for interactivity */
+ transition: background-color 0.3s ease; /* Smooth hover transition */
+}
+
+/* General status styles */
+.status {
+ display: inline-flex; /* Align dot and text */
+ align-items: center; /* Center align dot and text */
+ font-size: 12px; /* Adjust font size */
+ font-weight: 500; /* Slightly bold text */
+ color: #1a1a1a; /* Default text color */
+ background-color: #f8f9fa; /* Light background for badge effect */
+ padding: 5px 10px; /* Add padding around the badge */
+ border-radius: 20px; /* Rounded badge */
+ border: 1px solid #ddd; /* Optional: Light border for better visibility */
+}
+
+/* Dot styles */
+.status-dot {
+ width: 8px;
+ height: 8px;
+ border-radius: 50%; /* Circular dot */
+ margin-right: 8px; /* Space between dot and text */
+ background-color: #28a745; /* Green for confirmed */
+}
+
+/* Pending status example */
+.status-pending .status-dot {
+ background-color: #ffc107; /* Yellow for pending */
+}
+
+/* Rejected status example */
+.status-rejected .status-dot {
+ background-color: #dc3545; /* Red for rejected */
+}
+
+/* Confirmed status */
+.status-confirmed .status-dot {
+ background-color: #28a745; /* Green for confirmed */
+}
+
+
+
+
+
+
+
+
+
+
+
+.table-subheader {
+ background-color: #f9f9f9;
+ border-bottom: 1px solid #e0e0e0;
+}
+
+.search-wrapper .search-input {
+ width: 200px;
+ border: 1px solid #ced4da;
+ border-radius: 5px;
+ padding: 5px 10px;
+}
+
+.search-wrapper .btn {
+ background-color: #116530;
+ color: #ffffff;
+ border: none;
+ border-radius: 5px;
+}
+
+.search-wrapper .btn:hover {
+ background-color: #0d4a29;
+}
+
+.dropdown .dropdown-toggle {
+ border-radius: 5px;
+}
+
+.dropdown .dropdown-menu {
+ border-radius: 5px;
+ box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.dropdowns .dropdown {
+ margin-right: 10px;
+}
+
+.dropdowns .dropdown .dropdown-item:hover {
+ background-color: #116530;
+ color: white;
+}
+
+
+
+
+
+
+
+
+
+
+
+
