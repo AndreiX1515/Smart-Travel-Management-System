@@ -255,12 +255,21 @@
           <input type="text" id="paymentIdInput" name="paymentId">
           
           <!-- Request Status Section -->
-          <div class="mb-3">
-            <label for="paymentStatus" class="form-label"><strong>Request Status:</strong></label>
+          <div class="mb-4">
+            <!-- Request Status Dropdown -->
+            <label for="paymentStatus" class="form-label fw-bold">Request Status:</label>
             <select id="paymentStatus" name="paymentStatus" class="form-select">
-                <option selected disabled>Select Option</option>
-                <option value="Confirmed">Approved</option>
+              <option selected disabled>Select Option</option>
+              <option value="Approved">Approved</option>
+              <option value="Rejected">Rejected</option>
             </select>
+          </div>
+
+          <div class="mb-4">
+            <!-- Remarks Input -->
+            <label for="paymentRemarks" class="form-label fw-bold">Remarks:</label>
+            <input type="text" id="paymentRemarks" name="paymentRemarks" class="form-control" 
+            placeholder="Enter remarks or additional comments here">
           </div>
         </div>
         <div class="modal-footer">

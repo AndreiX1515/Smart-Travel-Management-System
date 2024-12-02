@@ -246,10 +246,17 @@
           <div class="mb-3">
             <label for="requestStatus" class="form-label"><strong>Request Status:</strong></label>
             <select id="requestStatus" name="requestStatus" class="form-select">
-                <option selected disabled>Select Option</option>
-                <option value="Confirmed">Confirmed</option>
-                <option value="Rejected">Reject</option>
+              <option selected disabled>Select Option</option>
+              <option value="Confirmed">Confirmed</option>
+              <option value="Rejected">Reject</option>
             </select>
+          </div>
+
+          <div class="mb-4">
+            <!-- Remarks Input -->
+            <label for="requestRemarks" class="form-label fw-bold">Remarks:</label>
+            <input type="text" id="requestRemarks" name="requestRemarks" class="form-control" 
+            placeholder="Enter remarks or additional comments here">
           </div>
         </div>
         <div class="modal-footer">
