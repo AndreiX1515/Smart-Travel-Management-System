@@ -55,6 +55,20 @@
  background-color: #fff; /* Optional: Ensure the shadow is visible */
 }
 
+.totalpayment{
+ margin-top: 5px;
+ height: 105px;
+ display: flex;
+ flex-direction: row;
+ align-items: center;
+ justify-content: flex-start;
+ flex: 1;
+ padding: 5px 10px; /* Reduced padding */
+ transition: transform 0.2s ease, box-shadow 0.2s ease;
+ box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Added box shadow */
+ border-radius: 8px; /* Optional: Slight rounding for a softer look */
+ background-color: #fff; /* Optional: Ensure the shadow is visible */
+}
 
 .card-icon {
  font-size: 14px; /* Smaller icon font size */

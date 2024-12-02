@@ -150,60 +150,7 @@
         </div>
       </div>
   
-      <!-- CARD 2 -->
-      <div class="card border-0" >
-        <div class="header">
-         <h6 class="text-secondary fw-600">Transaction History</h6>
-        </div>
- 
-        <div class="card-content px-3">
-          <div class="row">
-            <div class="col-md-5 d-flex flex-row">
-              <div class="card-icon icon-blue">
-                  <i class="fas fa-calendar-alt"></i>
-              </div>
-              <div class="side-content d-flex flex-column">
-                  <h5>0</h5>
-                  <p>PAST</p>
-              </div>
-            </div>
-    
-            <div class="col-md-5 d-flex flex-row">
-                <div class="card-icon icon-gray">
-                  <i class="fas fa-check-circle"></i>
-                </div>
-                <div class="side-content d-flex flex-column">
-                    <h5>0</h5>
-                    <p>CURRENT</p>
-                </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-5 d-flex flex-row">
-              <div class="card-icon icon-yellow">
-                <i class="fas fa-exclamation-triangle"></i>
-              </div>
-              <div class="side-content d-flex flex-column">
-                <h5>0</h5>
-                <p>ON GOING</p>
-              </div>
-            </div>
-   
-            <div class="col-md-5 d-flex flex-row">
-              <div class="card-icon icon-green">
-                <i class="fas fa-times-circle"></i>
-              </div>
-              <div class="side-content d-flex flex-column">
-                <h5>0</h5>
-                <p>CONFIRMED</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- CARD 3 - On Due -->
+      <!-- CARD 2 - On Due -->
       <div class="card border-0">
         <div class="header">
           <h6 class="text-secondary fw-600">On Due</h6>
@@ -351,6 +298,61 @@
       
         </div>
       </div>
+
+  <!-- CARD 2 -->
+  <div class="card border-0" >
+    <div class="header">
+     <h6 class="text-secondary fw-600">Total Payment</h6>
+    </div>
+
+    <div class="card-content px-3">
+      <div class="row">
+        <div class="col-md-5 d-flex flex-row totalpayment">
+          <div class="card-icon icon-blue">
+              <i class="fas fa-calendar-alt"></i>
+          </div>
+          <div class="side-content d-flex flex-column">
+              <h5>0</h5>
+              <p>PAST MONTH</p>
+          </div>
+        </div>
+
+        <div class="col-md-5 d-flex flex-row">
+            <div class="card-icon icon-gray">
+              <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="side-content d-flex flex-column">
+                <h5>0</h5>
+                <p style="font-size: 9.5px;">CURRENT MONTH (December)</p>
+            </div>
+        </div>
+      </div>
+
+      <!-- <div class="row">
+        <div class="col-md-5 d-flex flex-row">
+          <div class="card-icon icon-yellow">
+            <i class="fas fa-exclamation-triangle"></i>
+          </div>
+          <div class="side-content d-flex flex-column">
+            <h5>0</h5>
+            <p>ON GOING</p>
+          </div>
+        </div>
+
+        <div class="col-md-5 d-flex flex-row">
+          <div class="card-icon icon-green">
+            <i class="fas fa-times-circle"></i>
+          </div>
+          <div class="side-content d-flex flex-column">
+            <h5>0</h5>
+            <p>CONFIRMED</p>
+          </div>
+        </div>
+      </div> -->
+    </div>
+  </div>
+
+
 
   <!-- CARD 4 -->
   <div class="card border-0">
