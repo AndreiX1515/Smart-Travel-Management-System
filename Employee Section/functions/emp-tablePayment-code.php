@@ -1,0 +1,47 @@
+<?php
+  session_start();
+  ini_set('display_errors', 1);
+  ini_set('display_startup_errors', 1);
+  error_reporting(E_ALL);
+  require "../../conn.php"; // Move up to the parent directory
+
+  if (isset($_POST['updatePaymentStatus'])) 
+  {
+    $paymentId = $_POST['paymentId'];
+    $paymentStatus = $_POST['paymentStatus'];
+
+    // Start a transaction
+    $conn->begin_transaction();
+
+    // Prepare the SQL statement for updating the request status
+    $sql1 = "UPDATE payment SET paymentStatus = ? WHERE paymentId = ?";
+    $stmt1 = $conn->prepare($sql1);
+
+    if (!$stmt1) 
+    {
+      $_SESSION['status'] = "SQL preparation failed: " . $conn->error;
+      $conn->rollback();  // Rollback transaction if the preparation fails
+      header("Location: ../emp-tablePayment.php");
+      exit(0);
+    }
+
+    // Bind parameters and execute the update
+    $stmt1->bind_param('si', $paymentStatus, $paymentId);
+    
+    if (!$stmt1->execute()) 
+    {
+      $_SESSION['status'] = "Database error: " . $stmt1->error;
+      $conn->rollback();  // Rollback the transaction on failure
+      header("Location: ../emp-tablePayment.php");
+      exit(0);
+    }
+
+    // Commit the transaction if no errors
+    $conn->commit();
+
+    // Set a success message and redirect
+    $_SESSION['status'] = "Payment status updated to: " . $requestStatus;
+    header("Location: ../emp-tablePayment.php");
+    exit(0);
+  }
+?>

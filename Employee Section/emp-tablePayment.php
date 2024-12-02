@@ -212,7 +212,7 @@
                   }
 
                   // Output table row with data-transactno attribute
-                  echo "<tr class='transaction-row' data-transactno='{$row['transactNo']}'>
+                  echo "<tr class='transaction-row' data-paymentId='{$row['paymentId']}'>
                           <td>{$row['paymentId']}</td>
                           <td>{$row['transactNo']}</td>
                           <td>{$row['agentName']}</td>
@@ -242,7 +242,7 @@
 </div>
 
 
-<!-- Modal Structure -->
+<!-- Payment Status Modal-->
 <div class="modal fade" id="transactionModal" tabindex="-1" aria-labelledby="transactionModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -250,39 +250,52 @@
         <h5 class="modal-title" id="transactionModalLabel">Transaction Details</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-        <p><strong>Transaction ID:</strong> <span id="transactionId"></span></p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      </div>
+      <form action="../Employee Section/functions/emp-tablePayment-code.php" method="POST">
+        <div class="modal-body">
+          <input type="text" id="paymentIdInput" name="paymentId">
+          
+          <!-- Request Status Section -->
+          <div class="mb-3">
+            <label for="paymentStatus" class="form-label"><strong>Request Status:</strong></label>
+            <select id="paymentStatus" name="paymentStatus" class="form-select">
+                <option selected disabled>Select Option</option>
+                <option value="Confirmed">Approved</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" name="updatePaymentStatus" class="btn btn-primary">Update Status</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
 
 <script>
   // Wait for the DOM to be fully loaded
-document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('DOMContentLoaded', function() 
+  {
     // Get all the rows with the class 'transaction-row'
     const rows = document.querySelectorAll('.transaction-row');
     
-    rows.forEach(row => {
-        // Add click event listener to each row
-        row.addEventListener('click', function() {
-            // Get the transaction number (data attribute)
-            const transactNo = row.getAttribute('data-transactno');
-            
-            // Set the transaction number in the modal
-            document.getElementById('transactionId').textContent = transactNo;
-            
-            // Show the modal (using Bootstrap modal)
-            const modal = new bootstrap.Modal(document.getElementById('transactionModal'));
-            modal.show();
-        });
+    rows.forEach(row => 
+    {
+      // Add click event listener to each row
+      row.addEventListener('click', function() 
+      {
+        // Get the transaction number (data attribute)
+        const paymentId = row.getAttribute('data-paymentId');
+        
+        // Set the transaction number in the modal
+        document.getElementById('paymentIdInput').value = paymentId;
+        
+        // Show the modal (using Bootstrap modal)
+        const modal = new bootstrap.Modal(document.getElementById('transactionModal'));
+        modal.show();
+      });
     });
-});
-
-
+  });
 </script>
 
 <?php include '../Employee Section/includes/emp-scripts.php' ?>
