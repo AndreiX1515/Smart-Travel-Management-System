@@ -187,6 +187,10 @@
                     case 'Approved':
                       $badgeClass = 'bg-success'; // Green for Approved
                       break;
+                   case 'Rejected':
+                    $badgeClass = 'bg-warning text-light'; // Red for Rejected
+                    break;
+
                     default:
                       $badgeClass = 'bg-secondary'; // Gray for unknown statuses
                       break;

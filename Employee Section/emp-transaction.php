@@ -84,8 +84,6 @@
                </div>
           </div>
       
-
-
          <!-- Flight Date Range Picker -->
          <div class="flight-dateRange-wrapper">
              <label for="flightStartDate" class="">Flight Date</label>
@@ -197,7 +195,7 @@
                        case 'To be confirmed':
                            $statusClass = 'badge bg-info text-dark'; // Blue pill for "To be confirmed"
                            break;
-                       case 'Fully Paid':
+                      case 'Fully Paid':
                            $statusClass = 'badge bg-success'; // Green pill for "Fully Paid"
                            break;
                        default:
