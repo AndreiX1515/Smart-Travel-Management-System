@@ -145,73 +145,83 @@
        <table class="">
           <thead>
             <tr>
-              <th>Payment Id</th>
               <th>Transact No</th>
               <th>Agent Name</th>
-              <th>PAYMENT TITLE</th>
-              <th>PAYMENT TYPE</th>
-              <th>AMOUNT</th>
-              <th>PROOF OF PAYMENT</th>
-              <th>PAYMENT DATE</th>
-              <th>PAYMENT STATUS</th>
+              <th>Package Name</th>
+              <th>Booking Date</th>
+              <th>Flight Date</th>
+              <th>Total Pax</th>
+              <th>Status</th>
             </tr>
           </thead>
           <tbody>
             <?php
-              $sql1 = "SELECT p.paymentId, p.transactNo, 
-                              CONCAT(a.lName, ', ', a.fName, 
-                                  IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1), '.'), '')) AS agentName, 
-                              p.paymentTitle, p.paymentType, FORMAT(p.amount, 2) AS amount, 
-                              p.filePath, DATE_FORMAT(p.paymentDate, '%m-%d-%Y') AS paymentDate, p.paymentStatus
-                          FROM 
-                              payment p
-                          LEFT JOIN 
-                              booking b ON p.transactNo = b.transactNo
-                          LEFT JOIN 
-                              agent a ON b.agentId = a.agentId
-                          WHERE
-                              p.paymentStatus = 'Submitted'";
+              $sql1 = "SELECT b.transactNo AS `T.N`,
+                            CONCAT(a.lName, ', ', a.fName, 
+                                  IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1)), '')) AS agentName,
+                            p.packageName AS `PACKAGE`, DATE_FORMAT(b.bookingDate, '%m-%d-%Y') AS `BOOKING DATE`,
+                            DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y') AS `FLIGHT DATE`,
+                            b.pax AS `TOTAL PAX`, b.status AS `STATUS`
+                        FROM 
+                            booking b
+                        LEFT JOIN 
+                            flight f ON b.flightId = f.flightId
+                        LEFT JOIN 
+                            package p ON b.packageId = p.packageId
+                        LEFT JOIN
+                            agent a ON b.agentId = a.agentId
+                        WHERE 
+                            b.status = 'Pending' 
+                        ORDER BY 
+                            b.transactNo DESC";
 
               $res1 = $conn->query($sql1);
 
-              if ($res1->num_rows > 0) {
-                while ($row = $res1->fetch_assoc()) {
-                  // Determine the badge class for the payment status
-                  $status = $row['paymentStatus'];
-                  $badgeClass = '';
+              if ($res1->num_rows > 0) 
+              {
+                while ($row = $res1->fetch_assoc()) 
+                {
+                  $transactNo = $row['T.N'];
+                  $agentName = $row['agentName'];
+                  $package = $row['PACKAGE'];
+                  $bookingDate = $row['BOOKING DATE'];
+                  $flightDate = $row['FLIGHT DATE'];
+                  $totalPax = $row['TOTAL PAX'];
+                  $status = $row['STATUS'];
                   
-                  switch ($status) {
-                    case 'Submitted':
-                      $badgeClass = 'bg-primary'; // Blue for Submitted
+                  // Determine status class
+                  $statusClass = '';
+                  switch ($status) 
+                  {
+                    case 'Confirmed':
+                      $statusClass = 'bg-success text-white'; // Green
                       break;
-                    case 'Approved':
-                      $badgeClass = 'bg-success'; // Green for Approved
+                    case 'Cancelled':
+                      $statusClass = 'bg-danger text-white'; // Red
+                      break;
+                    case 'Pending':
+                      $statusClass = 'bg-warning text-dark'; // Yellow
                       break;
                     default:
-                      $badgeClass = 'bg-secondary'; // Gray for unknown statuses
-                      break;
+                      $statusClass = 'bg-secondary text-white'; // Gray
                   }
 
-                  // Output table row with data-transactno attribute
-                  echo "<tr class='transaction-row' data-paymentId='{$row['paymentId']}'>
-                          <td>{$row['paymentId']}</td>
-                          <td>{$row['transactNo']}</td>
-                          <td>{$row['agentName']}</td>
-                          <td>{$row['paymentTitle']}</td>
-                          <td>{$row['paymentType']}</td>
-                          <td>₱ {$row['amount']}</td>
+                  echo "<tr class='transaction-row' data-transactNo='{$transactNo}'>
+                          <td>{$transactNo}</td>
+                          <td>{$agentName}</td>
+                          <td>{$package}</td>
+                          <td>{$bookingDate}</td>
+                          <td>{$flightDate}</td>
+                          <td>{$totalPax}</td>
                           <td>
-                              <a href='functions/view-file.php?file=" . urlencode($row['filePath']) . "' target='_blank'>View File</a> 
-                              <a href='functions/download.php?file=" . urlencode($row['filePath']) . "' target='_blank'>Download File</a>
-                          </td>
-                          <td>{$row['paymentDate']}</td>
-                          <td>
-                              <span class='badge rounded-pill {$badgeClass} py-2'> {$status} </span>
+                            <span class='badge p-2 rounded-pill {$statusClass}'>{$status}</span>
                           </td>
                         </tr>";
                 }
-              } else {
-                echo "<tr><td colspan='8' style='text-align: center;'>No Payments Found</td></tr>";
+              }
+              else 
+              {
+                echo "<tr><td colspan='10'>No bookings found</td></tr>";
               }
             ?>
           </tbody>
@@ -223,7 +233,7 @@
 </div>
 
 
-<!-- Payment Status Modal-->
+<!-- Booking Status Modal-->
 <div class="modal fade" id="transactionModal" tabindex="-1" aria-labelledby="transactionModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -231,23 +241,30 @@
         <h5 class="modal-title" id="transactionModalLabel">Transaction Details</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <form action="../Employee Section/functions/emp-tablePayment-code.php" method="POST">
+      <form action="../Employee Section/functions/emp-tablePending-code.php" method="POST">
         <div class="modal-body">
-          <input type="text" id="paymentIdInput" name="paymentId">
+          <input type="text" id="transactNoInput" name="transactNo">
           
           <!-- Request Status Section -->
           <div class="mb-3">
-            <label for="paymentStatus" class="form-label"><strong>Booking</strong></label>
-            <select id="paymentStatus" name="paymentStatus" class="form-select">
-                <option selected disabled>Select Option</option>
-                <option value="Confirmed">Approved</option>
-                <option value="Reject">Reject</option>
+            <label for="bookingStatus" class="form-label"><strong>Booking Status:</strong></label>
+            <select id="bookingStatus" name="bookingStatus" class="form-select">
+              <option selected disabled>Select Option</option>
+              <option value="Confirmed">Approved</option>
+              <option value="Reject">Reject</option>
             </select>
+          </div>
+
+          <div class="mb-4">
+            <!-- Remarks Input -->
+            <label for="bookingRemarks" class="form-label fw-bold">Remarks:</label>
+            <input type="text" id="bookingRemarks" name="bookingRemarks" class="form-control" 
+            placeholder="Enter remarks or additional comments here">
           </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="submit" name="updatePaymentStatus" class="btn btn-primary">Update Status</button>
+          <button type="submit" name="updateBookingStatus" class="btn btn-primary">Update Status</button>
         </div>
       </form>
     </div>
@@ -267,10 +284,10 @@
       row.addEventListener('click', function() 
       {
         // Get the transaction number (data attribute)
-        const paymentId = row.getAttribute('data-paymentId');
+        const transactNo = row.getAttribute('data-transactNo');
         
         // Set the transaction number in the modal
-        document.getElementById('paymentIdInput').value = paymentId;
+        document.getElementById('transactNoInput').value = transactNo;
         
         // Show the modal (using Bootstrap modal)
         const modal = new bootstrap.Modal(document.getElementById('transactionModal'));
