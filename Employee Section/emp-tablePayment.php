@@ -39,13 +39,22 @@
 
      <div class="table-subheader d-flex align-items-center justify-content-between p-3 border-bottom bg-light">
         <!-- Search -->
-        <div class="search-wrapper d-flex align-items-center">
-          <input
-            type="text"
-            placeholder="Search..."
-            class="form-control search-input me-2"
-          />
-        </div>
+        <div class="search-wrapper position-relative">
+           <input
+             type="text"
+             placeholder="Search..."
+             class="form-control search-input"
+             oninput="toggleClearButton(this)"
+           />
+           <button 
+             type="button"
+             class="clear-button"
+             onclick="clearInput(this)"
+             style="display: none;"
+           >
+             <i class="fas fa-times"></i>
+           </button>
+         </div>
 
         <!-- Dropdowns -->
         <div class="dropdowns d-flex align-items-center gap-3">
@@ -130,9 +139,24 @@
            </button>
           </div>
         </div>
-
-       
       </div>
+
+      <script>
+ 
+       function toggleClearButton(input) {
+         const clearButton = input.nextElementSibling; // Get the button next to the input
+         clearButton.style.display = input.value ? "block" : "none";
+       }
+
+       // Clear the input field
+       function clearInput(button) {
+         const input = button.previousElementSibling; // Get the input field before the button
+         input.value = "";
+         button.style.display = "none"; // Hide the clear button
+         input.focus(); // Refocus on the input
+       }
+
+      </script>
 
 
 
