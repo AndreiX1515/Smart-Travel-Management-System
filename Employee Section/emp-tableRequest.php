@@ -1,3 +1,5 @@
+<?php  session_start(); ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -235,12 +237,12 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="transactionModalLabel">Transaction Details</h5>
+        <h5 class="modal-title">Transaction Details - ID: <span id="transactionModalLabel"> </span> </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <form action="../Employee Section/functions/emp-tableRequest-code.php" method="POST">
         <div class="modal-body">
-          <input type="text" id="requestIdInput" name="requestId">
+          <input type="hidden" id="requestIdInput" name="requestId">
           
           <!-- Request Status Section -->
           <div class="mb-3">
@@ -268,6 +270,66 @@
   </div>
 </div>
 
+
+<?php
+// Fetch the status from the session
+$statusMessage = isset($_SESSION['status']) ? $_SESSION['status'] : '';
+
+// Set default toast color, and check if status is "Submitted", "Confirmed", or "Rejected"
+$toastColor = 'text-bg-primary'; // Default color
+
+// Check for specific status messages and set the appropriate toast color
+if (isset($_SESSION['status'])) {
+    if (strpos($_SESSION['status'], 'Cancelled') !== false) {
+        // Change to red for "Cancelled" status
+        $toastColor = 'text-bg-danger';
+    } elseif (strpos($_SESSION['status'], 'Submitted') !== false) {
+        // Blue color for "Submitted" status
+        $toastColor = 'text-bg-secondary';
+    } elseif (strpos($_SESSION['status'], 'Confirmed') !== false) {
+        // Green color for "Confirmed" status
+        $toastColor = 'text-bg-success';
+    } elseif (strpos($_SESSION['status'], 'Rejected') !== false) {
+        // Red color for "Rejected" status
+        $toastColor = 'text-bg-danger';
+    }
+} elseif (isset($_SESSION['toastColor'])) {
+    // Use session-defined toast color if available
+    $toastColor = $_SESSION['toastColor'];
+}
+
+
+if (!empty($statusMessage)) {
+    // You can use this status message in a toast or somewhere else
+    echo '<div class="toast-container position-fixed top-0 end-0 p-3">
+            <div id="statusToast" class="toast align-items-center ' . $toastColor . ' border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        ' . htmlspecialchars($statusMessage) . '
+                    </div>
+                    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+          </div>';
+    
+    // After displaying the status message, unset session variables
+    unset($_SESSION['status']);
+    unset($_SESSION['toastColor']);
+}
+?>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Automatically display the toast if it exists
+    const toastElement = document.getElementById('statusToast');
+    if (toastElement) {
+      const toast = new bootstrap.Toast(toastElement);
+      toast.show();
+    }
+  });
+</script>
+
+
 <script>
   // Wait for the DOM to be fully loaded
   document.addEventListener('DOMContentLoaded', function() 
@@ -285,6 +347,7 @@
         
         // Set the requestId in both the <span> and <input> fields
         document.getElementById('requestIdInput').value = requestId;
+        document.getElementById('transactionModalLabel').textContent = requestId;
         
         // Show the modal (using Bootstrap modal)
         const modal = new bootstrap.Modal(document.getElementById('transactionModal'));

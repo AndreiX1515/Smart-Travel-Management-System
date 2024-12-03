@@ -1,3 +1,5 @@
+<?php session_start(); ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -202,10 +204,6 @@
                     case 'Pending':
                       $statusClass = 'bg-warning text-dark'; // Yellow
                       break;
-                   case 'Rejected':
-                    $badgeClass = 'bg-warning text-light'; // Red for Rejected
-                    break;
-
                     default:
                       $statusClass = 'bg-secondary text-white'; // Gray
                   }
@@ -241,13 +239,14 @@
 <div class="modal fade" id="transactionModal" tabindex="-1" aria-labelledby="transactionModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="transactionModalLabel">Transaction Details</h5>
+      <div class="modal-header d-flex flex-row gap-1">
+        <h5 class="modal-title" id="transactionModalTitle">Transaction Details - <span id="transactionModalLabel"></span> </h5>
+        
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <form action="../Employee Section/functions/emp-tablePending-code.php" method="POST">
         <div class="modal-body">
-          <input type="text" id="transactNoInput" name="transactNo">
+          <input type="hidden" id="transactNoInput" name="transactNo">
           
           <!-- Request Status Section -->
           <div class="mb-3">
@@ -255,7 +254,7 @@
             <select id="bookingStatus" name="bookingStatus" class="form-select">
               <option selected disabled>Select Option</option>
               <option value="Confirmed">Approved</option>
-              <option value="Reject">Reject</option>
+              <option value="Cancelled">Reject</option>
             </select>
           </div>
 
@@ -275,23 +274,71 @@
   </div>
 </div>
 
+<?php
+// Fetch the status from the session
+$statusMessage = isset($_SESSION['status']) ? $_SESSION['status'] : '';
+
+// Set default toast color, and check if status is "Cancelled"
+$toastColor = 'text-bg-primary'; // Default color
+if (isset($_SESSION['status']) && strpos($_SESSION['status'], 'Cancelled') !== false) {
+    $toastColor = 'text-bg-danger'; // Change to red for "Cancelled" status
+} elseif (isset($_SESSION['toastColor'])) {
+    $toastColor = $_SESSION['toastColor']; // Use session-defined toast color
+}
+
+// Debugging output (you can remove these in production)
+echo 'Session ID: ' . session_id();  // Check if session ID is being generated
+echo 'Session Status: ' . $_SESSION['status']; // Show session status for debugging
+
+// Display the session status message if available
+if (!empty($statusMessage)) {
+    // You can use this status message in a toast or somewhere else
+    echo '<div class="toast-container position-fixed top-0 end-0 p-3">
+            <div id="statusToast" class="toast align-items-center ' . $toastColor . ' border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        ' . htmlspecialchars($statusMessage) . '
+                    </div>
+                    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+          </div>';
+    
+    // After displaying the status message, unset session variables
+    unset($_SESSION['status']);
+    unset($_SESSION['toastColor']);
+}
+?>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Automatically display the toast if it exists
+    const toastElement = document.getElementById('statusToast');
+    if (toastElement) {
+      const toast = new bootstrap.Toast(toastElement);
+      toast.show();
+    }
+  });
+</script>
+
+
 <script>
   // Wait for the DOM to be fully loaded
-  document.addEventListener('DOMContentLoaded', function() 
-  {
+  document.addEventListener('DOMContentLoaded', function () {
     // Get all the rows with the class 'transaction-row'
     const rows = document.querySelectorAll('.transaction-row');
     
-    rows.forEach(row => 
-    {
+    rows.forEach(row => {
       // Add click event listener to each row
-      row.addEventListener('click', function() 
-      {
+      row.addEventListener('click', function () {
         // Get the transaction number (data attribute)
         const transactNo = row.getAttribute('data-transactNo');
         
         // Set the transaction number in the modal
         document.getElementById('transactNoInput').value = transactNo;
+
+        // Update the span content for the transaction number in the modal title
+        document.getElementById('transactionModalLabel').textContent = transactNo;
         
         // Show the modal (using Bootstrap modal)
         const modal = new bootstrap.Modal(document.getElementById('transactionModal'));
@@ -302,7 +349,6 @@
 </script>
 
 <?php include '../Employee Section/includes/emp-scripts.php' ?>
-
 
 </body>
 </html>

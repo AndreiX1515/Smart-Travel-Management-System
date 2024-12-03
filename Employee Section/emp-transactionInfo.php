@@ -1,4 +1,9 @@
+
+
 <?php 
+
+session_start();
+
 if (isset($_GET['id'])) {
  // Sanitize the input to prevent XSS attacks
  $transactionId = htmlspecialchars($_GET['id']);
