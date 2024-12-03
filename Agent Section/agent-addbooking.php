@@ -1015,16 +1015,16 @@
 
                   if (!isLandOnlyChecked) 
                   {
-                    // // If "Land Only" is not checked, dynamically update the max attribute
-                    // $('#totalPax').attr('max', maxSeats);
+                    // If "Land Only" is not checked, dynamically update the max attribute
+                    $('#totalPax').attr('max', maxSeats);
 
-                    // // Check if the current value of totalPax exceeds maxSeats, reset to maxSeats if needed
-                    // var currentPax = $('#totalPax').val();
-                    // if (currentPax > maxSeats) 
-                    // {
-                    //   $('#totalPax').val(maxSeats); // Adjust the value
-                    //   console.log(maxSeats);
-                    // }
+                    // Check if the current value of totalPax exceeds maxSeats, reset to maxSeats if needed
+                    var currentPax = $('#totalPax').val();
+                    if (currentPax > maxSeats) 
+                    {
+                      $('#totalPax').val(maxSeats); // Adjust the value
+                      console.log(maxSeats);
+                    }
 
                     // Display the available seats
                     $('#maxSeats').text('Available Seats for this Flight: ' + maxSeats);
