@@ -27,7 +27,6 @@
     if (!$stmt1) 
     {
       $_SESSION['status'] = "SQL preparation failed: " . $conn->error;
-      $_SESSION['toastColor'] = 'text-bg-danger'; // Red color for error
       $conn->rollback();  // Rollback transaction if the preparation fails
       header("Location: ../emp-tablePayment.php");
       exit(0);
@@ -39,7 +38,6 @@
     if (!$stmt1->execute()) 
     {
       $_SESSION['status'] = "Database error: " . $stmt1->error;
-      $_SESSION['toastColor'] = 'text-bg-danger'; // Red color for error
       $conn->rollback();  // Rollback the transaction on failure
       header("Location: ../emp-tablePayment.php");
       exit(0);
@@ -49,8 +47,7 @@
     $conn->commit();
 
     // Set a success message and redirect
-    $_SESSION['status'] = $paymentId . " - status successfully updated to: " . $paymentStatus;
-    $_SESSION['toastColor'] = 'text-bg-success'; // Green color for success
+    $_SESSION['status'] = "Payment status updated to: " . $requestStatus;
     header("Location: ../emp-tablePayment.php");
     exit(0);
   }
