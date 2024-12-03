@@ -654,7 +654,7 @@
                 <!-- Dynamic headers for agent columns -->
                 <?php
                   // Fetch agent columns headers dynamically
-                  $sql = "SELECT DISTINCT agentId FROM booking WHERE agentId IS NOT NULL AND agentId != ''";
+                  $sql = "SELECT DISTINCT agentId FROM agent WHERE agentId IS NOT NULL AND agentId != ''";
                   $result = $conn->query($sql);
                   while ($row = $result->fetch_assoc()) 
                   {
@@ -679,7 +679,7 @@
             <tbody>
               <?php
                 // Step 1: Dynamically generate agent columns
-                $sql = "SELECT DISTINCT agentId FROM booking WHERE agentId IS NOT NULL AND agentId != ''";
+                $sql = "SELECT DISTINCT agentId FROM agent WHERE agentId IS NOT NULL AND agentId != ''";
                 $result = $conn->query($sql);
 
                 $agentColumns = '';
