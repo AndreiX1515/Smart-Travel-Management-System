@@ -116,7 +116,7 @@
                       <select class="form-select mt-2 fs-6" id="flightDate" name="flightDate" required>
                         <option selected disabled>Select Flight Date</option>
                       </select>
-                      <input type="checkbox" id="land" name="land" value="Land Only">
+                      <input type="checkbox" id="land" name="land" value="Land Only" class="mt-3">
                       <label for="land"> Land Only</label><br>
                       <span id="flightDateError" class="text-danger"></span> <!-- Error message for outbound flight -->
                     </div>
