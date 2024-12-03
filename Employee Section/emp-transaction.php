@@ -132,7 +132,7 @@
 
         <div class="table-wrapper">
           <table class="table-transaction">
-            <thead>
+          <thead>
               <tr>
                 <th>Transact No</th>
                 <th>Package Name</th>
@@ -141,7 +141,7 @@
                 <th>Total Pax</th>
                 <th>Package Price</th>
                 <th>Request Cost</th>
-                <th>Amount to be paid</th>
+                <th>Amount to be Paid</th>
                 <th>Amount Paid</th>
                 <th>Remaining Balance</th>
                 <th>Status</th>
@@ -238,27 +238,29 @@
 </div>
 
 <script>
-    $(document).ready(function() {
-  // Initialize DataTable with column width adjustments
-  var table = $('.table-transaction').DataTable({
-    paging: true, // Enable paging
-    searching: true, // Enable search
-    ordering: true, // Enable sorting
-    info: true, // Display info (e.g., "Showing 1 to 10 of 100 entries")
-    columnDefs: [
-      { width: '10%', targets: 0 }, // Transact No
-      { width: '15%', targets: 1 }, // Package Name
-      { width: '15%', targets: 2 }, // Flight Date
-      { width: '10%', targets: 3 }, // Booking Date
-      { width: '5%', targets: 4 }, // Total Pax
-      { width: '10%', targets: 5 }, // Package Price
-      { width: '10%', targets: 6 }, // Request Cost
-      { width: '10%', targets: 7 }, // Amount to be paid
-      { width: '10%', targets: 8 }, // Amount Paid
-      { width: '10%', targets: 9 }, // Remaining Balance
-      { width: '10%', targets: 10 } // Status
-    ]
-  });
+  $(document).ready(function() {
+    $('.table-transaction').DataTable({
+        paging: true,
+        searching: true,
+        ordering: true,
+        info: true,
+        columnDefs: [
+            { width: '10%', targets: 0 }, // Transact No
+            { width: '15%', targets: 1 }, // Package Name
+            { width: '15%', targets: 2 }, // Flight Date
+            { width: '10%', targets: 3 }, // Booking Date
+            { width: '5%', targets: 4 },  // Total Pax
+            { width: '10%', targets: 5 }, // Package Price
+            { width: '10%', targets: 6 }, // Request Cost
+            { width: '10%', targets: 7 }, // Amount to be Paid
+            { width: '10%', targets: 8 }, // Amount Paid
+            { width: '10%', targets: 9 }, // Remaining Balance
+            { width: '10%', targets: 10 } // Status
+        ],
+        language: {
+            emptyTable: "No records available"
+        }
+    });
 
   // Custom search functionality
   $('#tableSearchInput').on('input', function() {

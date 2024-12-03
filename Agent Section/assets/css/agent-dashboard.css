@@ -730,7 +730,7 @@ body {
  margin-top: 5px;
  gap: 15px; /* Reduced gap between elements */
  position: relative;
- height: 34vh; /* Fixed height for the container */
+ height: 33vh; /* Fixed height for the container */
 }
 
 .confirm-container .one {

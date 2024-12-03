@@ -413,27 +413,11 @@
           <table class="price-table">
             <thead>
               <tr>
-                <th>Wholesale Price</th>
-                <th>Retail Price</th>
-                <th>Land Arrangement</th>
+              
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Basic</td>
-                <td>$19.99</td>
-                <td>5 Features</td>
-              </tr>
-              <tr>
-                <td>Standard</td>
-                <td>$49.99</td>
-                <td>10 Features</td>
-              </tr>
-              <tr>
-                <td>Premium</td>
-                <td>$99.99</td>
-                <td>Unlimited Features</td>
-              </tr>
+             
             </tbody>
           </table>
         </div>
