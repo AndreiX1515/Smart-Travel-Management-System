@@ -98,7 +98,7 @@
           endif;
         ?>
         
-        <table id="product-table" class="product-table" style="width:100%">
+        <table id="" class="product-table" style="width:100%">
           <thead>
             <tr>
                 <th>ID</th>
@@ -110,6 +110,7 @@
                 <th>Flight Date</th>
                 <th>Total Pax</th>
                 <th>Status</th>
+                <th></th>
          
             </tr>
           </thead>

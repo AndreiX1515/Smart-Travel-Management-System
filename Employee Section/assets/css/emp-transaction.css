@@ -62,7 +62,7 @@
 
 /* Table Styling */
 .table-wrapper table {
- width: 100%;
+ width: 99%;
  border-collapse: collapse; /* Remove gaps between cells */
  font-family: Arial, sans-serif;
  font-size: 14px;
@@ -124,10 +124,10 @@
  align-items: center; /* Align items vertically */
  justify-content: space-between; /* Space out items evenly */
  gap: 15px; /* Consistent spacing */
- padding: 15px 20px; /* Balanced padding */
- background-color: #f9f9f9; /* Light neutral background */
- border: 1px solid #e0e0e0; /* Subtle border */
- border-radius: 6px; /* Smooth corners */
+ padding: 15px 20px 15px 0px; /* Balanced padding */
+ /* background-color: #f9f9f9; /* Light neutral background
+ border: 1px solid #e0e0e0; 
+ border-radius: 6px;  */
 }
 
 /* Wrapper labels */

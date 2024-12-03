@@ -132,20 +132,20 @@
 
         <div class="table-wrapper">
           <table class="table-transaction">
-            <thead>
-              <tr>
-                <th>Transact No</th>
-                <th>Package Name</th>
-                <th>Flight Date</th>
-                <th>Booking Date</th>
-                <th>Total Pax</th>
-                <th>Package Price</th>
-                <th>Request Cost</th>
-                <th>Amount to be paid</th>
-                <th>Amount Paid</th>
-                <th>Remaining Balance</th>
-                <th>Status</th>
-              </tr>
+          <thead>
+             <tr>
+               <th>Transact No</th>
+               <th>Package Name</th>
+               <th>Flight Date</th>
+               <th>Booking Date</th>
+               <th>Total Pax</th>
+               <th>Package Price</th>
+               <th>Request Cost</th>
+               <th>Amount to be Paid</th>
+               <th>Amount Paid</th>
+               <th>Remaining Balance</th>
+               <th>Status</th>
+             </tr>
             </thead>
             <tbody>
              <?php
@@ -222,10 +222,7 @@
                    echo "</tr>";
                  }
                } 
-               else 
-               {
-                 echo "<tr><td colspan='11' style='text-align: center;'>No records found.</td></tr>";
-               }
+               
              ?>
              
             </tbody>
@@ -238,69 +235,70 @@
 </div>
 
 <script>
-    $(document).ready(function() {
-  // Initialize DataTable with column width adjustments
-  var table = $('.table-transaction').DataTable({
-    paging: true, // Enable paging
-    searching: true, // Enable search
-    ordering: true, // Enable sorting
-    info: true, // Display info (e.g., "Showing 1 to 10 of 100 entries")
-    columnDefs: [
-      { width: '10%', targets: 0 }, // Transact No
-      { width: '15%', targets: 1 }, // Package Name
-      { width: '15%', targets: 2 }, // Flight Date
-      { width: '10%', targets: 3 }, // Booking Date
-      { width: '5%', targets: 4 }, // Total Pax
-      { width: '10%', targets: 5 }, // Package Price
-      { width: '10%', targets: 6 }, // Request Cost
-      { width: '10%', targets: 7 }, // Amount to be paid
-      { width: '10%', targets: 8 }, // Amount Paid
-      { width: '10%', targets: 9 }, // Remaining Balance
-      { width: '10%', targets: 10 } // Status
-    ]
-  });
+  $(document).ready(function() {
+    var table = $('.table-transaction').DataTable({
+        paging: true,
+        searching: true,
+        ordering: true,
+        info: true,
+        columnDefs: [
+            { width: '10%', targets: 0 }, // Transact No
+            { width: '13%', targets: 1 }, // Package Name
+            { width: '13%', targets: 2 }, // Flight Date
+            { width: '10%', targets: 3 }, // Booking Date
+            { width: '5%', targets: 4 },  // Total Pax
+            { width: '10%', targets: 5 }, // Package Price
+            { width: '10%', targets: 6 }, // Request Cost
+            { width: '10%', targets: 7 }, // Amount to be Paid
+            { width: '10%', targets: 8 }, // Amount Paid
+            { width: '10%', targets: 9 }, // Remaining Balance
+            { width: '7%', targets: 10 } // Status
+        ],
+        language: {
+            emptyTable: "No records available"
+        }
+    });
 
-  // Custom search functionality
-  $('#tableSearchInput').on('input', function() {
-    table.search(this.value).draw();
-  });
+    // Custom search functionality
+    $('#tableSearchInput').on('input', function() {
+        table.search(this.value).draw();
+    });
 
-  // Handle custom "Items per Page" dropdown
-  $('#itemsPerPageDropdown .dropdown-item').on('click', function() {
-    var pageSize = $(this).data('page-size');
-    table.page.len(pageSize).draw();
-  });
+    // Handle custom "Items per Page" dropdown
+    $('#itemsPerPageDropdown .dropdown-item').on('click', function() {
+        var pageSize = $(this).data('page-size');
+        table.page.len(pageSize).draw();
+    });
 
-  // Handle Flight Date Range Filtering
-  $('#flightStartDate, #flightEndDate').on('change', function() {
-    var flightStartDate = $('#flightStartDate').val();
-    var flightEndDate = $('#flightEndDate').val();
-    if (flightStartDate && flightEndDate) {
-      // Custom filtering logic for flight date range
-      table.column(2).search(flightStartDate + ' to ' + flightEndDate).draw();
-    }
-  });
+    // Handle Flight Date Range Filtering
+    $('#flightStartDate, #flightEndDate').on('change', function() {
+        var flightStartDate = $('#flightStartDate').val();
+        var flightEndDate = $('#flightEndDate').val();
+        if (flightStartDate && flightEndDate) {
+            table.column(2).search(flightStartDate + ' to ' + flightEndDate).draw();
+        }
+    });
 
-  // Handle Booking Date Range Filtering
-  $('#bookingStartDate, #bookingEndDate').on('change', function() {
-    var bookingStartDate = $('#bookingStartDate').val();
-    var bookingEndDate = $('#bookingEndDate').val();
-    if (bookingStartDate && bookingEndDate) {
-      // Custom filtering logic for booking date range
-      table.column(3).search(bookingStartDate + ' to ' + bookingEndDate).draw();
-    }
-  });
+    // Handle Booking Date Range Filtering
+    $('#bookingStartDate, #bookingEndDate').on('change', function() {
+        var bookingStartDate = $('#bookingStartDate').val();
+        var bookingEndDate = $('#bookingEndDate').val();
+        if (bookingStartDate && bookingEndDate) {
+            table.column(3).search(bookingStartDate + ' to ' + bookingEndDate).draw();
+        }
+    });
 
-  // Clear filters functionality
-  $('#clearFiltersButton').on('click', function() {
-    $('#flightStartDate').val('');
-    $('#flightEndDate').val('');
-    $('#bookingStartDate').val('');
-    $('#bookingEndDate').val('');
-    $('#tableSearchInput').val('');
-    table.search('').columns().search('').draw();
-  });
+    // Clear filters functionality
+    $('#clearFiltersButton').on('click', function() {
+        $('#flightStartDate').val('');
+        $('#flightEndDate').val('');
+        $('#bookingStartDate').val('');
+        $('#bookingEndDate').val('');
+        $('#tableSearchInput').val('');
+        table.search('').columns().search('').draw();
+    });
 });
+
 </script>
 
 
