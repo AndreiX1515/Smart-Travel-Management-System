@@ -106,7 +106,7 @@
 
     // Optionally redirect or provide a success message
     $_SESSION['status'] = "Booking successful!";
-    header("Location: ../agent-addbooking.php");
+    header("Location: ../agent-addBookingPayment.php?id=" . htmlspecialchars($transactNo));
     exit(0);
   }
 ?>
