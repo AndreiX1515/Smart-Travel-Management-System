@@ -403,13 +403,15 @@
     </div>
  
     <div class="navTabs-wrapper">
-      <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+      <ul class="nav nav-pills my-3" id="pills-tab" role="tablist">
        <li class="nav-item" role="presentation">
-         <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Payment and Requests</button>
-       </li>
+          <button class="nav-link active" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Flight Seat Tracker</button>
+        </li>
+
        <li class="nav-item" role="presentation">
-         <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Flights</button>
+         <button class="nav-link " id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Payment and Requests</button>
        </li>
+       
        <!-- <li class="nav-item" role="presentation">
          <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Contact</button>
        </li>
@@ -420,7 +422,231 @@
     </div>
 
     <div class="tab-content" id="pills-tabContent">
-      <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
+
+    <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
+        <div class="main-table-wrapper-one">
+          <div class="table-info-container">
+            <div class="header p-3 d-flex flex-row justify-content-between align-items-center">
+
+              <div class="start-section">
+                <h6 class="">Flight Seat Tracker</h6>
+              </div>
+
+              <div class="end-section d-flex align-items-center gap-3">
+                <div class="legend-guides d-flex flex-row gap-3">
+                  <div class="legend-item-wrapper">
+                    <div class="legend-item">
+                      <span class="color-circle" style="background-color: #ADD8E6;"></span> <!-- Red -->
+                      <h6 class="legend-text">A01</h6>
+                    </div>
+                  </div>
+                  <div class="legend-item-wrapper">
+                    <div class="legend-item">
+                      <span class="color-circle" style="background-color: #98FB98;"></span> <!-- Green -->
+                      <h6 class="legend-text">A02</h6>
+                    </div>
+                  </div>
+                  <div class="legend-item-wrapper">
+                    <div class="legend-item">
+                      <span class="color-circle" style="background-color: #FFFFCC; color: black;"></span> <!-- Blue -->
+                      <h6 class="legend-text">A03</h6>
+                    </div>
+                  </div>
+                  <div class="legend-item-wrapper">
+                    <div class="legend-item">
+                      <span class="color-circle" style="background-color: #E6E6FA;"></span> <!-- Yellow -->
+                      <h6 class="legend-text">A04</h6>
+                    </div>
+                  </div>
+                  <div class="legend-item-wrapper">
+                    <div class="legend-item">
+                      <span class="color-circle" style="background-color: #FFDAB9;"></span> <!-- Magenta -->
+                      <h6 class="legend-text">A05</h6>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="refresh-button-wrapper">
+                  <button class="btn btn-primary btn-sm"><i class="fa-solid fa-arrows-rotate"></i></button>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="info-table-container">
+              <table class="info-table">
+                <thead class="border-2">
+                  <tr>
+                    <th rowspan="2">TEAM OP</th>
+                    <th rowspan="2">ORIGIN</th>
+                    <th colspan="2">FLIGHT DATE</th> <!-- Flight Date columns -->
+                    <th rowspan="2">FLIGHT SEAT</th>
+                    <th rowspan="2" style="font-size: 10px;">AVAILABLE SEATS</th>
+                    <th rowspan="2" style="font-size: 10px;">ADDITIONAL SEATS</th>
+                    <th rowspan="2">AIR + LAND</th>
+                    <th rowspan="2">LAND ONLY</th>
+                    <th rowspan="2">WHOLESALE PRICE</th>
+                    <th rowspan="2">RETAIL PRICE</th>
+                    <th rowspan="2">LAND ARRANGEMENT</th>
+
+                    <!-- Dynamic headers for agent columns -->
+                    <?php
+                    // Define an array of colors to style the <th> elements
+                    $colors = ['#ADD8E6', '#98FB98', '#FFFFCC', '#E6E6FA', '#FFDAB9']; // Extend this array as needed
+
+                    // Fetch agent column headers dynamically
+                    $sql = "SELECT DISTINCT agentId FROM agent WHERE agentId IS NOT NULL AND agentId != ''";
+                    $result = $conn->query($sql);
+
+                    // Initialize a counter for cycling through the color array
+                    $colorIndex = 0;
+
+                    while ($row = $result->fetch_assoc()) 
+                    {
+                        // Get the current color based on the index and loop through the color array
+                        $color = $colors[$colorIndex % count($colors)];
+                        
+                        // Output the <th> element with the inline style for background color
+                        echo '<th colspan="2" data-bs-toggle="tooltip" title="' . $row['agentId'] . '" style="background-color: ' . $color . ';">' . $row['agentId'] . '</th>';
+                        
+                        // Increment the color index for the next iteration
+                        $colorIndex++;
+                    }
+                    ?>
+
+
+                  </tr>
+                  <tr style="top: -8px">
+                    <th>START</th>
+                    <th>END</th>
+                    <!-- A1, A2, A3, A4, A5, A6, A7 Sub Headers -->
+                    <!-- Dynamic sub-headers for agent columns -->
+                    <?php
+                    // Define the same array of colors to style the <th> elements
+                    $colors = ['#ADD8E6', '#98FB98', '#FFFFCC', '#E6E6FA', '#FFDAB9']; // Extend this array as needed
+
+                    // Fetch agent column headers dynamically
+                    $sql = "SELECT DISTINCT agentId FROM agent WHERE agentId IS NOT NULL AND agentId != ''";
+                    $result = $conn->query($sql);
+
+                    // Initialize a counter for cycling through the color array
+                    $colorIndex = 0;
+
+                    while ($row = $result->fetch_assoc()) 
+                    {
+                        // Get the current color based on the index and loop through the color array
+                        $color = $colors[$colorIndex % count($colors)];
+                        
+                        // Output the <th> elements with the inline style for background color
+                        echo '<th style="background-color: ' . $color . ';">A.L</th>';
+                        echo '<th style="background-color: ' . $color . ';">L.O</th>';
+                        
+                        // Increment the color index for the next iteration
+                        $colorIndex++;
+                    }
+                    ?>
+
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php
+                    $sql = "SELECT DISTINCT agentId FROM agent WHERE agentId IS NOT NULL AND agentId != ''";
+                    $result = $conn->query($sql);
+
+                    $agentColumns = '';
+                    while ($row = $result->fetch_assoc()) 
+                    {
+                      $agentColumns .= 
+                          'SUM(CASE WHEN b.agentId = "' . $row['agentId'] . '" AND b.bookingType = "Package" and b.status = "Confirmed" THEN b.pax ELSE 0 END) AS `' . $row['agentId'] . '_AL`, ' .
+                          'SUM(CASE WHEN b.agentId = "' . $row['agentId'] . '" AND b.bookingType = "Land" and b.status = "Confirmed" THEN b.pax ELSE 0 END) AS `' . $row['agentId'] . '_LO`, ';
+                    }
+
+             
+                    $agentColumns = rtrim($agentColumns, ', ');
+
+                    $sql = "
+                    SELECT 
+                        CONCAT(e.lName, ', ', e.fName, 
+                            IF(e.mName IS NOT NULL AND e.mName != '', CONCAT(' ', LEFT(e.mName, 1)), '')) AS TeamOP,
+                        f.origin, 
+                        f.flightDepartureDate AS Start, 
+                        f.returnDepartureDate AS End, 
+                        f.availSeats AS FlightSeat, 
+                        GREATEST(
+                                  (f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package' 
+                                  THEN b.pax ELSE 0 END), 0)),0) AS AvailSeats, 
+                        IF(
+                            (f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0)) < 0, 
+                            ABS(f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0)), 
+                            0) AS AdditionalSeats,
+                        SUM(CASE WHEN b.bookingType = 'Package' AND b.status = 'Confirmed' THEN b.pax ELSE 0 END) AS `Air+Land`,
+                        SUM(CASE WHEN b.bookingType = 'Land' AND b.status = 'Confirmed' THEN b.pax ELSE 0 END) AS `LandOnly`,
+                        f.wholesalePrice AS WholesalePrice, 
+                        f.flightPrice AS RetailPrice, 
+                        p.packagePrice AS LandArrangement, 
+                        $agentColumns
+                    FROM 
+                        employee e 
+                    JOIN 
+                        flight f ON f.employeeId = e.employeeId
+                    LEFT JOIN 
+                        booking b ON b.flightId = f.flightId
+                    LEFT JOIN 
+                        package p ON f.packageId = p.packageId
+                    WHERE f.flightDepartureDate >= CURDATE()
+                    GROUP BY 
+                        f.flightId";
+
+                    // Step 3: Execute the query
+                    $result = $conn->query($sql);
+
+                    // Step 4: Display the results in HTML table
+                    if ($result->num_rows > 0) 
+                    {
+                      while ($row = $result->fetch_assoc()) 
+                      {
+                        echo '<tr>';
+                        echo '<td>' . $row['TeamOP'] . '</td>';
+                        echo '<td>' . $row['origin'] . '</td>';
+                        echo '<td>' . $row['Start'] . '</td>';
+                        echo '<td>' . $row['End'] . '</td>';
+                        echo '<td>' . $row['FlightSeat'] . '</td>';
+                        echo '<td>' . $row['AvailSeats'] . '</td>';
+                        echo '<td>' . $row['AdditionalSeats'] . '</td>';
+                        echo '<td>' . $row['Air+Land'] . '</td>';
+                        echo '<td>' . $row['LandOnly'] . '</td>';
+                        echo '<td>₱ ' . $row['WholesalePrice'] . '</td>';
+                        echo '<td>₱ ' . $row['RetailPrice'] . '</td>';
+                        echo '<td>₱ ' . $row['LandArrangement'] . '</td>';
+
+                        // Dynamically populate agent columns
+                       foreach ($row as $key => $value) 
+                       {
+                           if (strpos($key, '_AL') !== false || strpos($key, '_LO') !== false) 
+                           {
+                               // Check the value and set font weight accordingly
+                               $fontWeight = ($value >= 1) ? 'bolder' : 'normal';
+                               echo '<td style="font-weight: ' . $fontWeight . ';">' . $value . '</td>';
+                           }
+                       }
+
+                       echo '</tr>';
+                      }
+                    } 
+                    else 
+                    {
+                      echo "No records found.";
+                    }
+                  ?>
+                </tbody>
+              </table>
+          
+            </div>
+          </div>
+        </div>            
+      </div>
+
+      <div class="tab-pane fade " id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
         <div class="header-wrapper">
           <div class="price-table-wrapper">
             <div class="header p-3">
@@ -606,236 +832,7 @@
       </div>
 
       <!-- Flights Table -->
-      <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
-        <div class="main-table-wrapper-one">
-          <div class="table-info-container">
-            <div class="header p-3 d-flex flex-row justify-content-between align-items-center">
-
-              <div class="start-section">
-                <h6 class="">Flights</h6>
-              </div>
-
-              <div class="end-section d-flex align-items-center gap-3">
-                <div class="legend-guides d-flex flex-row gap-3">
-                  <div class="legend-item-wrapper">
-                    <div class="legend-item">
-                      <span class="color-circle" style="background-color: #ADD8E6;"></span> <!-- Red -->
-                      <h6 class="legend-text">A01</h6>
-                    </div>
-                  </div>
-                  <div class="legend-item-wrapper">
-                    <div class="legend-item">
-                      <span class="color-circle" style="background-color: #98FB98;"></span> <!-- Green -->
-                      <h6 class="legend-text">A02</h6>
-                    </div>
-                  </div>
-                  <div class="legend-item-wrapper">
-                    <div class="legend-item">
-                      <span class="color-circle" style="background-color: #FFFFCC; color: black;"></span> <!-- Blue -->
-                      <h6 class="legend-text">A03</h6>
-                    </div>
-                  </div>
-                  <div class="legend-item-wrapper">
-                    <div class="legend-item">
-                      <span class="color-circle" style="background-color: #E6E6FA;"></span> <!-- Yellow -->
-                      <h6 class="legend-text">A04</h6>
-                    </div>
-                  </div>
-                  <div class="legend-item-wrapper">
-                    <div class="legend-item">
-                      <span class="color-circle" style="background-color: #FFDAB9;"></span> <!-- Magenta -->
-                      <h6 class="legend-text">A05</h6>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="refresh-button-wrapper">
-                  <button class="btn btn-primary btn-sm"><i class="fa-solid fa-arrows-rotate"></i></button>
-                </div>
-              </div>
-
-            </div>
-
-            <div class="info-table-container">
-              <table class="info-table">
-                <thead class="border-2">
-                  <tr>
-                    <th rowspan="2">TEAM OP</th>
-                    <th rowspan="2">ORIGIN</th>
-                    <th colspan="2">FLIGHT DATE</th> <!-- Flight Date columns -->
-                    <th rowspan="2">FLIGHT SEAT</th>
-                    <th rowspan="2" style="font-size: 10px;">AVAILABLE SEATS</th>
-                    <th rowspan="2" style="font-size: 10px;">ADDITIONAL SEATS</th>
-                    <th rowspan="2">AIR + LAND</th>
-                    <th rowspan="2">LAND ONLY</th>
-                    <th rowspan="2">WHOLESALE PRICE</th>
-                    <th rowspan="2">RETAIL PRICE</th>
-                    <th rowspan="2">LAND ARRANGEMENT</th>
-
-                    <!-- Dynamic headers for agent columns -->
-                    <?php
-                    // Define an array of colors to style the <th> elements
-                    $colors = ['#ADD8E6', '#98FB98', '#FFFFCC', '#E6E6FA', '#FFDAB9']; // Extend this array as needed
-
-                    // Fetch agent column headers dynamically
-                    $sql = "SELECT DISTINCT agentId FROM agent WHERE agentId IS NOT NULL AND agentId != ''";
-                    $result = $conn->query($sql);
-
-                    // Initialize a counter for cycling through the color array
-                    $colorIndex = 0;
-
-                    while ($row = $result->fetch_assoc()) 
-                    {
-                        // Get the current color based on the index and loop through the color array
-                        $color = $colors[$colorIndex % count($colors)];
-                        
-                        // Output the <th> element with the inline style for background color
-                        echo '<th colspan="2" data-bs-toggle="tooltip" title="' . $row['agentId'] . '" style="background-color: ' . $color . ';">' . $row['agentId'] . '</th>';
-                        
-                        // Increment the color index for the next iteration
-                        $colorIndex++;
-                    }
-                    ?>
-
-
-                  </tr>
-                  <tr style="top: -8px">
-                    <th>START</th>
-                    <th>END</th>
-                    <!-- A1, A2, A3, A4, A5, A6, A7 Sub Headers -->
-                    <!-- Dynamic sub-headers for agent columns -->
-                    <?php
-                    // Define the same array of colors to style the <th> elements
-                    $colors = ['#ADD8E6', '#98FB98', '#FFFFCC', '#E6E6FA', '#FFDAB9']; // Extend this array as needed
-
-                    // Fetch agent column headers dynamically
-                    $sql = "SELECT DISTINCT agentId FROM agent WHERE agentId IS NOT NULL AND agentId != ''";
-                    $result = $conn->query($sql);
-
-                    // Initialize a counter for cycling through the color array
-                    $colorIndex = 0;
-
-                    while ($row = $result->fetch_assoc()) 
-                    {
-                        // Get the current color based on the index and loop through the color array
-                        $color = $colors[$colorIndex % count($colors)];
-                        
-                        // Output the <th> elements with the inline style for background color
-                        echo '<th style="background-color: ' . $color . ';">A.L</th>';
-                        echo '<th style="background-color: ' . $color . ';">L.O</th>';
-                        
-                        // Increment the color index for the next iteration
-                        $colorIndex++;
-                    }
-                    ?>
-
-                  </tr>
-                </thead>
-                <tbody>
-                  <?php
-                    // Step 1: Dynamically generate agent columns
-                    $sql = "SELECT DISTINCT agentId FROM agent WHERE agentId IS NOT NULL AND agentId != ''";
-                    $result = $conn->query($sql);
-
-                    $agentColumns = '';
-                    while ($row = $result->fetch_assoc()) 
-                    {
-                      $agentColumns .= 
-                          'SUM(CASE WHEN b.agentId = "' . $row['agentId'] . '" AND b.bookingType = "Package" and b.status = "Confirmed" THEN b.pax ELSE 0 END) AS `' . $row['agentId'] . '_AL`, ' .
-                          'SUM(CASE WHEN b.agentId = "' . $row['agentId'] . '" AND b.bookingType = "Land" and b.status = "Confirmed" THEN b.pax ELSE 0 END) AS `' . $row['agentId'] . '_LO`, ';
-                    }
-
-                    // Remove the trailing comma
-                    $agentColumns = rtrim($agentColumns, ', ');
-
-                    // Step 2: Construct the full SQL query
-                    $sql = "
-                        SELECT 
-                            CONCAT(e.lName, ', ', e.fName, 
-                                IF(e.mName IS NOT NULL AND e.mName != '', CONCAT(' ', LEFT(e.mName, 1)), '')) AS TeamOP,
-                            f.origin, 
-                            f.flightDepartureDate AS Start, 
-                            f.returnDepartureDate AS End, 
-                            f.availSeats AS FlightSeat, 
-                            GREATEST(
-                                      (f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package' 
-                                      THEN b.pax ELSE 0 END), 0)),0) AS AvailSeats, 
-                            IF(
-                                (f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0)) < 0, 
-                                ABS(f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0)), 
-                                0) AS AdditionalSeats,
-                            SUM(CASE WHEN b.bookingType = 'Package' AND b.status = 'Confirmed' THEN b.pax ELSE 0 END) AS `Air+Land`,
-                            SUM(CASE WHEN b.bookingType = 'Land' AND b.status = 'Confirmed' THEN b.pax ELSE 0 END) AS `LandOnly`,
-                            f.wholesalePrice AS WholesalePrice, 
-                            f.flightPrice AS RetailPrice, 
-                            p.packagePrice AS LandArrangement, 
-                            $agentColumns
-                        FROM 
-                            employee e 
-                        JOIN 
-                            flight f ON f.employeeId = e.employeeId
-                        LEFT JOIN 
-                            booking b ON b.flightId = f.flightId
-                        LEFT JOIN 
-                            package p ON f.packageId = p.packageId
-                        WHERE f.flightDepartureDate >= CURDATE()
-                        GROUP BY 
-                            f.flightId";
-
-                    // Step 3: Execute the query
-                    $result = $conn->query($sql);
-
-                    // Step 4: Display the results in HTML table
-                    if ($result->num_rows > 0) 
-                    {
-                      while ($row = $result->fetch_assoc()) 
-                      {
-                        echo '<tr>';
-                        echo '<td>' . $row['TeamOP'] . '</td>';
-                        echo '<td>' . $row['origin'] . '</td>';
-                        echo '<td>' . $row['Start'] . '</td>';
-                        echo '<td>' . $row['End'] . '</td>';
-                        echo '<td>' . $row['FlightSeat'] . '</td>';
-                        echo '<td>' . $row['AvailSeats'] . '</td>';
-                        echo '<td>' . $row['AdditionalSeats'] . '</td>';
-                        echo '<td>' . $row['Air+Land'] . '</td>';
-                        echo '<td>' . $row['LandOnly'] . '</td>';
-                        echo '<td>₱ ' . $row['WholesalePrice'] . '</td>';
-                        echo '<td>₱ ' . $row['RetailPrice'] . '</td>';
-                        echo '<td>₱ ' . $row['LandArrangement'] . '</td>';
-
-                        // Dynamically populate agent columns
-                        foreach ($row as $key => $value) 
-                        {
-                          if (strpos($key, '_AL') !== false || strpos($key, '_LO') !== false) 
-                          {
-                            echo '<td>' . $value . '</td>';
-                          }
-                        }
-                        
-                        echo '</tr>';
-                      }
-                    } 
-                    else 
-                    {
-                      echo "No records found.";
-                    }
-                  ?>
-                </tbody>
-              </table>
-          
-            </div>
-          </div>
-        </div>            
-
-
-
-
-
-
-
-
-      </div>
+      
 
       <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">...</div>
 

@@ -32,14 +32,14 @@
           class="form-control search-input"
           oninput="toggleClearButton(this)"
         />
-        <button
+        <!-- <button
           type="button"
           class="clear-button"
           onclick="clearInput(this)"
           style="display: none;"
         >
           <i class="fas fa-times"></i>
-        </button>
+        </button> -->
       </div>
     
        <div class="left-side-wrapper pt-2">
@@ -66,7 +66,7 @@
 
        <!-- Filter Dropdown -->
        <div class="filter-wrapper">
-        <label for="filterDropdown" class="">Filter Options</label>
+        <label for="filterDropdown" class="">Status</label>
         <div class="dropdown mt-2">
             <button
                 class="btn btn-outline-secondary dropdown-toggle"
@@ -75,7 +75,7 @@
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
             >
-                Filter Options
+                Status
             </button>
             <ul class="dropdown-menu" aria-labelledby="filterDropdown">
                 <li><a class="dropdown-item" href="#">Status</a></li>
@@ -85,28 +85,28 @@
       </div>
      
       <!-- Flight Date Range Picker -->
-      <div class="flight-dateRange-wrapper">
-       <label for="flightStartDate" class="">Flight Date</label>
+     <div class="flight-dateRange-wrapper">
+       <label for="flightStartDate" class="">Flight Date (Departure)</label>
        <div class="d-flex align-items-center">
-           <input type="date" class="form-control" id="flightStartDate">
-           <span class="mx-2">to</span>
-           <input type="date" class="form-control" id="flightEndDate">
+         <input type="date" class="form-control" id="flightStartDate">
+         <span class="mx-2">to</span>
+         <input type="date" class="form-control" id="flightEndDate">
        </div>
-      </div>
+     </div>
 
-      <!-- Booking Date Range Picker -->
-       <div class="booking-dateRange-wrapper">
-        <label for="bookingStartDate" class="">Booking Date</label>
-        <div class="d-flex align-items-center">
-            <input type="date" class="form-control" id="bookingStartDate">
-            <span class="mx-2">to</span>
-            <input type="date" class="form-control" id="bookingEndDate">
-        </div>
-      </div>
+     <!-- Booking Date Range Picker -->
+     <div class="booking-dateRange-wrapper">
+       <label for="bookingStartDate" class="">Booking Date</label>
+       <div class="d-flex align-items-center">
+         <input type="date" class="form-control" id="bookingStartDate">
+         <span class="mx-2">to</span>
+         <input type="date" class="form-control" id="bookingEndDate">
+       </div>
+     </div>
 
       <div class="button-wrapper mt-4">
        <button class="btn btn-outline-secondary mt-2" id="clearFiltersButton">
-            Clear Filters
+            Clear Filters and Search
        </button>
      </div>
 
@@ -125,20 +125,24 @@
    <div class="table-wrapper">
      <table class="table-transaction table-striped">
      <thead>
-        <tr>
-          <th>Transact No</th>
-          <th>Package Name</th>
-          <th>Flight Date</th>
-          <th>Booking Date</th>
-          <th>Total Pax</th>
-          <th>Package Price</th>
-          <th>Request Cost</th>
-          <th>Amount to be Paid</th>
-          <th>Amount Paid</th>
-          <th>Remaining Balance</th>
-          <th>Status</th>
-        </tr>
-       </thead>
+       <tr>
+         <th rowspan="2">Transact No</th>
+         <th rowspan="2">Package Name</th>
+         <th colspan="2" class="text-center">Flight Date</th>
+         <th rowspan="2">Booking Date</th>
+         <th rowspan="2">Total Pax</th>
+         <th rowspan="2">Package Price</th>
+         <th rowspan="2">Request Cost</th>
+         <th rowspan="2">Amount to be Paid</th>
+         <th rowspan="2">Amount Paid</th>
+         <th rowspan="2">Remaining Balance</th>
+         <th rowspan="2">Status</th>
+       </tr>
+       <tr>
+         <th>Departure</th>
+         <th>Return</th>
+       </tr>
+     </thead>
        <tbody>
         <?php
           // SQL query for SOA
@@ -205,7 +209,8 @@
               echo "<td>" . htmlspecialchars($row['transactNo']) . "</td>";
               echo "<td>" . htmlspecialchars($row['PackageName']) . "</td>";
               // echo "<td>" . htmlspecialchars($row['FlightDate']) . "</td>";
-              echo "<td> D: " . htmlspecialchars($row['departureDate']) . ' <br> R: ' . htmlspecialchars($row['returnDate']) ."</td>";
+              echo "<td>" . htmlspecialchars($row['departureDate']) . "</td>";
+              echo "<td>" . htmlspecialchars($row['returnDate']) ."</td>";
               echo "<td>" . htmlspecialchars($row['BookingDate']) . "</td>";
               echo "<td class=' fw-bold'>" . htmlspecialchars($row['TotalPax']) . "</td>";
               echo "<td>₱ " . number_format($row['PackagePrice'], 2) . "</td>";
@@ -264,23 +269,85 @@
         table.page.len(pageSize).draw();
     });
 
-    // Handle Flight Date Range Filtering
-    $('#flightStartDate, #flightEndDate').on('change', function() {
-        var flightStartDate = $('#flightStartDate').val();
-        var flightEndDate = $('#flightEndDate').val();
-        if (flightStartDate && flightEndDate) {
-            table.column(2).search(flightStartDate + ' to ' + flightEndDate).draw();
+    // Flight Date Range Sorting (only for Departure)
+    $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+        const flightStartDate = $('#flightStartDate').val(); // Flight Start Date
+        const flightEndDate = $('#flightEndDate').val(); // Flight End Date
+        const departureDate = data[2]; // Assuming Flight Date is in column index 2 (Departure Date)
+
+        const departure = departureDate ? new Date(departureDate) : null;
+        const startDate = flightStartDate ? new Date(flightStartDate) : null;
+        const endDate = flightEndDate ? new Date(flightEndDate) : null;
+
+        // Departure Date filtering logic
+        if (
+            (!startDate || (departure && departure >= startDate)) &&
+            (!endDate || (departure && departure <= endDate))
+        ) {
+            return true; // Row matches Departure Date filter
         }
+        return false; // Otherwise, hide this row
     });
 
-    // Handle Booking Date Range Filtering
-    $('#bookingStartDate, #bookingEndDate').on('change', function() {
-        var bookingStartDate = $('#bookingStartDate').val();
-        var bookingEndDate = $('#bookingEndDate').val();
-        if (bookingStartDate && bookingEndDate) {
-            table.column(3).search(bookingStartDate + ' to ' + bookingEndDate).draw();
-        }
+    // Handle Flight Date Range Filtering on change
+    $('#flightStartDate, #flightEndDate').on('change', function() {
+        // Redraw table to apply flight date filters
+        table.draw();
     });
+
+    // Handle Flight Date Range Filtering on change
+    $('#flightStartDate, #flightEndDate').on('change', function() {
+        // Redraw table to apply flight date filters
+        table.draw();
+    });
+
+    // Booking Date Range Sorting
+    $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+        const bookingStartDate = $('#bookingStartDate').val(); // Booking Start Date
+        const bookingEndDate = $('#bookingEndDate').val(); // Booking End Date
+        const bookingDate = data[4]; // Assuming Booking Date is in column index 4
+
+        const booking = bookingDate ? new Date(bookingDate) : null;
+        const startDate = bookingStartDate ? new Date(bookingStartDate) : null;
+        const endDate = bookingEndDate ? new Date(bookingEndDate) : null;
+
+        // Booking Date filtering logic
+        if (
+            (!startDate || (booking && booking >= startDate)) &&
+            (!endDate || (booking && booking <= endDate))
+        ) {
+            return true; // Row matches Booking Date filter
+        }
+        return false; // Otherwise, hide this row
+    });
+
+    // Handle Booking Date Range Filtering on change
+    $('#bookingStartDate, #bookingEndDate').on('change', function() {
+        // Redraw table to apply booking date filters
+        table.draw();
+    });
+
+    // Clear all filters functionality
+    $('#clearFiltersButton').on('click', function() {
+        $('#tableSearchInput').val('');
+        $('#flightStartDate').val('');
+        $('#flightEndDate').val('');
+        $('#bookingStartDate').val('');
+        $('#bookingEndDate').val('');
+        $('#itemsPerPageDropdown .dropdown-item').removeClass('active');
+        table.search('').draw();
+        table.page.len(10).draw();
+    });
+});
+
+    // // Handle Booking Date Range Filtering
+    // $('#bookingStartDate, #bookingEndDate').on('change', function() {
+    //     var bookingStartDate = $('#bookingStartDate').val();
+    //     var bookingEndDate = $('#bookingEndDate').val();
+    //     if (bookingStartDate && bookingEndDate) {
+    //         table.column(4).search(bookingStartDate + ' to ' + bookingEndDate).draw();
+    //     }
+    // });
 
     // Clear filters functionality
     $('#clearFiltersButton').on('click', function() {
@@ -291,7 +358,6 @@
         $('#tableSearchInput').val('');
         table.search('').columns().search('').draw(); // Reset the search and clear column filters
     });
-});
 
 // Toggle clear button visibility
 function toggleClearButton(input) {

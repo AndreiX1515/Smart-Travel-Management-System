@@ -122,7 +122,7 @@ $position = htmlspecialchars(strtoupper($empId));
               <?php echo $fullName; ?>
           </div>
 
-           <div class="empid fw-bold" style="font-size: 14px;">EMP ID: <span class="fw-normal"><?php echo $empId; ?></span></div>
+           <div class="empid fw-bold text-light" style="font-size: 14px;">EMP ID: <span class="fw-normal text-light"><?php echo $empId; ?></span></div>
        </div>
 
        <div class="profile-icon profile-icon-visible">

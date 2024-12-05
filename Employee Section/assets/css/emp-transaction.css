@@ -53,7 +53,7 @@
  cursor: pointer;
  position: absolute;
  right: 15px; /* Position the clear button to the right */
- top: 7%;
+ top: 14%;
  transform: translateY(-50%); /* Vertically center the button */
  display: none; /* Initially hidden */
  color: #888; /* Subtle icon color */
