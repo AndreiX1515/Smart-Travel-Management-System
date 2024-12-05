@@ -10,6 +10,10 @@
     // Get the transaction number from the form
     $transactNo = $_POST['updateTransactNo'];
     $reason = $_POST['reason'];
+    $accountId = $_SESSION['agent_accountId'];
+
+    // Set the session variable for the current user in MySQL
+    $conn->query("SET @current_user_id = $accountId");
 
     // Begin transaction
     $conn->begin_transaction();
