@@ -7,9 +7,13 @@ require "../../conn.php"; // Move up to the parent directory
 
 if (isset($_POST['updateBookingStatus'])) 
 {
+    $accountId = $_SESSION['employee_accountId'];
     $transactNo = $_POST['transactNo'];
     $bookingStatus = $_POST['bookingStatus'];
     $bookingRemarks = $_POST['bookingRemarks'];
+
+    // Set the session variable for the current user in MySQL
+    $conn->query("SET @current_user_id = $accountId");
 
     // Start a transaction
     $conn->begin_transaction();
