@@ -172,8 +172,8 @@
                             package p ON b.packageId = p.packageId
                         LEFT JOIN
                             agent a ON b.agentId = a.agentId
-                        WHERE 
-                            b.status = 'Pending' 
+                        -- WHERE 
+                        --     b.status = 'Pending' 
                         ORDER BY 
                             b.transactNo DESC";
 
@@ -198,7 +198,7 @@
                     case 'Confirmed':
                       $statusClass = 'bg-success text-white'; // Green
                       break;
-                    case 'Cancelled':
+                    case 'Reject':
                       $statusClass = 'bg-danger text-white'; // Red
                       break;
                     case 'Pending':
@@ -254,7 +254,7 @@
             <select id="bookingStatus" name="bookingStatus" class="form-select">
               <option selected disabled>Select Option</option>
               <option value="Confirmed">Approved</option>
-              <option value="Cancelled">Reject</option>
+              <option value="Reject">Reject</option>
             </select>
           </div>
 
