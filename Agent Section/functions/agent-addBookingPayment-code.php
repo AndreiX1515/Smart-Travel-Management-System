@@ -16,6 +16,9 @@ if (isset($_POST['pay']))
     date_default_timezone_set('Asia/Taipei');
     $paymentDate = (new DateTime())->format('Y-m-d H:i:s'); // Current date and time
 
+    // Set the session variable for the current user in MySQL
+    $conn->query("SET @current_user_id = $accountId");
+
     if (isset($_FILES['proofs']) && count($_FILES['proofs']['name']) > 0) 
     {
       $uploadDir = "uploads" . DIRECTORY_SEPARATOR . $transactNo . DIRECTORY_SEPARATOR;
