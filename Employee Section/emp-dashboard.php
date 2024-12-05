@@ -275,7 +275,7 @@
                                     LEFT JOIN (SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) 
                                     AS totalPaid FROM payment GROUP BY transactNo) p ON b.transactNo = p.transactNo
                                   WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) BETWEEN 20 AND 30
-                                    AND (b.totalPrice > IFNULL(p.totalPaid, 0)) AND b.agentId = '$agentId' AND b.status = 'Confirmed'";
+                                    AND (b.totalPrice > IFNULL(p.totalPaid, 0)) AND b.status = 'Confirmed'";
 
                   $result = $conn->query($days30Query);
 

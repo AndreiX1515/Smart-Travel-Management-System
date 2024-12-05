@@ -14,6 +14,7 @@
 
     // Set the session variable for the current user in MySQL
     $conn->query("SET @current_user_id = $accountId");
+    
     // Start a transaction
     $conn->begin_transaction();
 
