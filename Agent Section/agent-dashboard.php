@@ -21,7 +21,7 @@
     <div class="container-wrapper">
       <!-- Cards First Row -->
       <div class="counts-wrapper">
-        <!-- CARD 1 -->
+        <!-- CARD 1 Current Transaction Counts-->
         <div class="card border-0">
           <div class="header-counts">
             <h6 class="text-secondary white-pill">Current Transaction</h6>
@@ -671,7 +671,7 @@
                                 (SELECT transactNo, SUM(requestCost) AS totalRequestCost FROM request
                                   WHERE requestStatus = 'Confirmed' GROUP BY transactNo) req ON b.transactNo = req.transactNo
                               WHERE 
-                                b.status = 'Confirmed' and b.agentId = '$agentId'";
+                                b.status = 'Confirmed' and b.agentId = '$agentId' and f.flightDepartureDate >= CURDATE()";
 
                     $result = $conn->query($query); // Execute the query
 
