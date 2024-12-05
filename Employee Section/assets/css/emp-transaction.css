@@ -4,166 +4,39 @@
   height: 90vh;
   display: flex;
   flex-direction: column;
-  padding: 10px 20px 10px 10px; /* Adds some padding around the container */
+  padding: 0px 20px 0px 10px; /* Adds some padding around the container */
 }
 
 /* Table Header Styling */
-.table-container .table-header {
- width: 100%;
- height: 5vh; /* Adjust height as needed */
- display: flex;
- justify-content: end; /* Space between header components */
- align-items: center;
- padding: 5px 0px 5px 15px;
-}
-
-/* Flexbox for the left section (Search input and button) */
-.table-container .table-header .header-left {
- display: flex;
- align-items: center; /* Vertically center the input and button */
- gap: 8px; /* Space between the input and the button */
-}
-
-/* Style for the search input field */
-.table-container .table-header .header-left .search-input {
- padding: 10px 14px;
- font-size: 12px;
- border-radius: 5px;
- border: 1px solid #ccc;
- width: 180px; /* Adjust width as needed */
-}
-
-/* Smaller dropdown container */
-.table-container .dropdown-menu {
- font-size: 12px; /* Smaller font size */
- padding: 5px; /* Reduce padding for compact design */
- width: 10px; /* Adjust width for a smaller container */
- text-align: left; /* Align text for better presentation */
-}
-
-/* Styling for dropdown items */
-.table-container .dropdown-menu .dropdown-item {
- padding: 5px; /* Reduce item padding */
-}
-
-/* Optional: Add hover effect for better UI */
-.table-container .dropdown-menu .dropdown-item:hover {
- background-color: #e9ecef; /* Light gray on hover */
- color: #007bff; /* Highlight text color */
-}
-
-
-.table-subheader2 {
- width: 100%;
- display: flex;
- flex-direction: row;
- justify-content: space-between; /* Center the content horizontally */
- align-items: center; /* Center the content vertically */
- border-top: 1px black solid;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* Table Wrapper Styling */
-.table-wrapper {
- width: 100%;
- height: calc(90vh - 10px); /* Adjusted to fit the container */
- overflow-y: auto; /* Vertical scroll for content */
- overflow-x: auto; /* Horizontal scroll for responsiveness */
-}
-
-/* Table Styling */
-.table-wrapper table {
- width: 100%;
- border-collapse: collapse; /* Remove gaps between cells */
- font-family: Arial, sans-serif;
- font-size: 14px;
- border-top: 2px solid #dee2e6; /* Add top border */
-}
-
-/* Table Header (Thead) Styling */
-.table-wrapper thead th {
- background-color: #747474; /* Light gray for the header */
- color: #ffffff; /* Text color */
- font-weight: 600;
- text-align: left;
- padding: 7px 15px;
- border-bottom: 2px solid #dee2e6;
- position: sticky; /* Make the header sticky */
- top: 0; /* Stick the header to the top */
- z-index: 1; /* Ensure the header stays above other content when scrolling */
- transition: transform 0.3s ease, border-top 0.3s ease; /* Smooth transition for transform and border-top */
-}
-
-/* Additional class for top border */
-.has-border-top {
- border-top: 3px solid #000000; /* 3px black border on top */
-}
-
-/* Table Row Styling */
-.table-wrapper tbody tr {
-  border-bottom: 1px solid #dee2e6;
-}
-
-.table-wrapper tbody tr:last-child {
-  border-bottom: none; /* Remove the bottom border for the last row */
-}
-
-.table-wrapper td {
-  padding: 7px 15px;
-  color: #333;
-  vertical-align: middle;
-}
-
-/* Table Row Hover Effect */
-.table-wrapper tbody tr:hover {
- background-color: #f5f5f5; /* Light gray background on row hover */
- cursor: pointer; /* Pointer cursor for interactivity */
- transition: background-color 0.3s ease; /* Smooth hover transition */
-}
-
-
-
-
-
-
-
-
-/* Styling for table-subheader */
 .table-subheader {
  width: 100%;
  display: flex;
- align-items: center; /* Align items vertically */
+ flex-direction: row;
  justify-content: space-between; /* Space out items evenly */
- gap: 15px; /* Consistent spacing */
- padding: 15px 20px 15px 0px; /* Balanced padding */
- /* background-color: #f9f9f9; /* Light neutral background
- border: 1px solid #e0e0e0; 
- border-radius: 6px;  */
+ align-items: center;
+ padding: 5px 0px; /* Adjusted padding for consistency */
+ gap: 15px; /* Consistent spacing between elements */
 }
 
 /* Wrapper labels */
-.table-subheader label {
- margin-bottom: 10px; /* Remove unnecessary spacing */
+.table-subheader label,
+.table-subheader .search-label {
+ margin-bottom: 3px; /* Remove unnecessary spacing */
  font-weight: bold;
  font-size: 14px; /* Standard font size */
  color: #333; /* Neutral text color */
+ text-align: left;
 }
 
+/* Search input and button section */
+.search-wrapper {
+ position: relative;
+ display: flex;
+ flex-direction: column;
+ gap: 5px; /* Space between input and button */
+}
 
-/* Search wrapper */
+/* Search input */
 .search-wrapper input {
  width: 250px; /* Fixed width for consistency */
  height: 36px; /* Consistent height */
@@ -173,12 +46,115 @@
  box-sizing: border-box;
 }
 
+/* Clear button inside the input field */
+.clear-button {
+ background: none;
+ border: none;
+ cursor: pointer;
+ position: absolute;
+ right: 15px; /* Position the clear button to the right */
+ top: 7%;
+ transform: translateY(-50%); /* Vertically center the button */
+ display: none; /* Initially hidden */
+ color: #888; /* Subtle icon color */
+ font-size: 16px; /* Font size for the icon */
+ padding: 0; /* Ensure no padding */
+ align-items: center;
+ justify-content: center;
+}
+
+/* For the icon inside the button */
+.clear-button i {
+ color: inherit; /* Inherit color from the parent */
+}
+
+/* Left side wrapper for dropdowns and date pickers */
+.left-side-wrapper {
+ display: flex;
+ gap: 20px; /* Reduced gap for better alignment */
+ align-items: center; /* Vertically align items */
+}
+
+/* Dropdown and button styling */
+.dropdown {
+ display: flex;
+ flex-direction: column;
+ gap: 5px;
+}
+
+.dropdown-toggle {
+ padding: 8px 14px; /* Consistent padding for a larger clickable area */
+ font-size: 13px; /* Slightly smaller font size for uniformity */
+ text-align: center;
+ width: 130px; /* Fixed width for uniform dropdown button */
+}
+
+.dropdown-menu {
+ font-size: 12px;
+ padding: 8px;
+ width: 180px; /* Uniform width for dropdown */
+}
+
+.dropdown-item {
+ padding: 6px 10px; /* Adjusted padding for consistency */
+}
+
+/* Hover effect for dropdown items */
+.dropdown-item:hover {
+ background-color: #e9ecef;
+ color: #007bff;
+}
+
+/* Date range picker section */
+.flight-dateRange-wrapper,
+.booking-dateRange-wrapper {
+ display: flex;
+ flex-direction: column;
+ gap: 8px; /* Adjusted gap for better spacing */
+}
+
+.d-flex {
+ display: flex;
+ align-items: center;
+ gap: 8px; /* Consistent gap between date inputs */
+}
+
+.form-control {
+ padding: 8px 12px; /* Consistent padding for form inputs */
+ font-size: 14px; /* Slightly larger font size for better readability */
+ border-radius: 5px;
+ border: 1px solid #ccc;
+ width: 130px; /* Uniform width for date input fields */
+}
+
+/* Button for clearing filters */
+.button-wrapper {
+ display: flex;
+ justify-content: flex-start;
+ margin-top: 15px; /* Adjusted margin for spacing */
+}
+
+.btn-outline-secondary {
+ padding: 8px 15px; /* Adjusted padding for a balanced button size */
+ font-size: 14px;
+ border-radius: 5px;
+}
+
 /* Show entries and filter wrappers */
-.show-entries-wrapper, .filter-wrapper {
+.show-entries-wrapper,
+.filter-wrapper {
  display: flex;
  flex-direction: column;
  flex-shrink: 0; /* Prevent shrinking */
  width: auto; /* Adjust width to content */
+}
+
+/* Vertical line */
+.vertical-line {
+ border-left: 1px solid #ccc; /* Vertical line with light gray color */
+ height: 40px; /* Adjust height as needed */
+
+ align-self: last baseline; /* Vertically center the line */
 }
 
 /* Date range inputs */
@@ -200,20 +176,88 @@ span {
  margin-right: 10px; /* Space after spans */
 }
 
-/* Clear button styling */
-.clear-button {
- background: none;
- border: none;
- cursor: pointer;
- display: flex;
- align-items: center;
- justify-content: center;
+
+
+
+
+/* Table Wrapper Styling */
+.table-wrapper {
+ width: 100%;
+ height: calc(90vh - 10px); /* Adjusted to fit the container */
+ overflow: hidden; /* Prevent any overflow */
+ border-radius: 5px; /* Added rounded corners for aesthetics */
 }
 
-.clear-button i {
- color: #888; /* Subtle icon color */
- font-size: 16px;
+/* Table Styling */
+.table-wrapper table {
+ width: 100%;
+ border-collapse: collapse; /* Remove gaps between cells */
+ font-family: Arial, sans-serif;
+ font-size: 12px; /* Consistent font size for readability */
 }
+
+/* Table Header (Thead) Styling */
+.table-wrapper thead th {
+ background-color: #747474; /* Light gray for the header */
+ color: #ffffff; /* Text color */
+ font-weight: 500;
+ text-align: left;
+ padding: 10px; /* Uniform padding for header cells */
+ border-bottom: 2px solid #dee2e6;
+ position: sticky; /* Make the header sticky */
+ top: 0; /* Stick the header to the top */
+ z-index: 1; /* Ensure the header stays above other content when scrolling */
+ text-transform: uppercase; /* Added to make header text more consistent */
+}
+
+/* Additional class for top border */
+.has-border-top {
+ border-top: 3px solid #000000; /* 3px black border on top */
+}
+
+/* Table Row Styling */
+.table-wrapper tbody tr {
+ border-bottom: 1px solid #dee2e6;
+}
+
+.table-wrapper tbody tr:last-child {
+ border-bottom: none; /* Remove the bottom border for the last row */
+}
+
+.table-wrapper td {
+ padding: 10px; /* Increased padding for uniformity */
+ color: #333;
+ vertical-align: middle;
+ font-size: .8rem;
+}
+
+/* Table Row Hover Effect */
+.table-wrapper tbody tr:hover {
+ background-color: #f5f5f5; /* Light gray background on row hover */
+ cursor: pointer; /* Pointer cursor for interactivity */
+ transition: background-color 0.3s ease; /* Smooth hover transition */
+}
+
+/* Ensure all columns have equal width
+.table-wrapper th, .table-wrapper td {
+ width: 10%; /* Ensure all columns share equal space 
+} */
+
+/* Responsive table: make the table scrollable on small screens */
+@media (max-width: 768px) {
+ .table-wrapper {
+   height: auto; /* Allow height to adjust for smaller screens */
+ }
+ .table-wrapper table {
+   width: 100%;
+   display: block;
+   overflow-x: auto; /* Allow horizontal scrolling on small screens */
+ }
+ .table-wrapper td, .table-wrapper th {
+   padding: 8px 12px; /* Adjust padding on smaller screens */
+ }
+}
+
 
 
 

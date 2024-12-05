@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <link rel="stylesheet" href="../Agent Section/assets/css/navbar-sidebar.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="../Agent Section/assets/css/agent-transaction.css?v=<?php echo time(); ?>">
-
+    <link rel="stylesheet" href="../Agent Section/assets/css/agent-payment.css?v=<?php echo time(); ?>">
  </head>
  
   <body>
@@ -22,9 +22,7 @@
     <div class="main-content" id="mainContent">
       <?php include '../Agent Section/includes/navbar.php' ?>
 
-      <a href="agent-addbooking.php" class="back-button">
-        <i class="fas fa-arrow-left"></i>
-      </a>
+      
 
       <?php
         // Check if 'id' is passed in the URL
@@ -35,6 +33,11 @@
       ?>
 
       <div class="container">
+       
+        <a href="agent-addbooking.php" class="back-button">
+          <i class="fas fa-arrow-left"></i>
+        </a>
+
         <div class="subscription">
           <h3 class="ms-3">Payment Details</h3>
 
@@ -87,11 +90,11 @@
          
         <div class="order-summary">
           <?php
-            $packageName = "N/A"; // Default value
-            $pax = 0;             // Default value
-            $flightDate = "N/A";  // Default value
-            $formattedDP = "0.00"; // Default value
-            $formattedPrice = "0.00"; // Default value
+            $packageName = "N/A"; 
+            $pax = 0;             
+            $flightDate = "N/A";  
+            $formattedDP = "0.00"; 
+            $formattedPrice = "0.00"; 
           
             $sql1 = mysqli_query($conn, "SELECT b.pax, b.totalPrice,
                     IF(f.flightId != 0, DATE_FORMAT(f.flightDepartureDate, '%M %d, %Y'), 'Custom Scheduled Flight') 

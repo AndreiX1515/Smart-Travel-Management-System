@@ -437,18 +437,18 @@
               <div class="modal-dialog modal-lg modal-dialog-centered"> <!-- Added modal-lg for a wider modal -->
                 <div class="modal-content position-relative">
                       
-                  <button type="button" class="btn-close close-outside" data-bs-dismiss="modal" aria-label="Close"></button>
+                  <button type="button" class="btn-close close-outside p-4" data-bs-dismiss="modal" aria-label="Close"></button>
                       
                   <div class="modal-body">
                     <div class="confirmation-container container">
                       <!-- Logo Section -->
-                      <div class="row text-center my-4">
+                      <div class="row d-flex justify-content-center align-items-center text-center mb-3 mt-2">
                         <div class="col">
-                          <img src="assets/images/SMART LOGO 2 (2).png" alt="Trip Image" class="img-fluid" style="max-width: 250px; max-height: 80px;">
+                          <img src="../assets/images/SMART LOGO 2 (2).png" alt="Trip Image" class="img-fluid" style="max-width: 250px; max-height: 80px;">
                         </div>
                       </div>
 
-                      <h4 class="text-left mb-4">Booking Summary</h4>
+                      <h5 class="text-left mb-4">BOOKING SUMMARY</h5>
                       <!-- Transaction and Contact Info -->
                       <div class="transaction-info row mb-3">
                         <div class="col-12">

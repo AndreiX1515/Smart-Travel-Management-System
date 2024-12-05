@@ -22,80 +22,9 @@
    
   <div class="main-content">
    <div class="table-container">
-     <div class="table-subheader">
-
-        <!-- Dropdowns Section -->
-        <div class="show-entries-wrapper">
-           <label for="itemsPerPageDropdown" class="">Show Entries</label>
-           <div class="dropdown">
-               <button
-                   class="btn btn-outline-secondary dropdown-toggle"
-                   type="button"
-                   id="itemsPerPageDropdown"
-                   data-bs-toggle="dropdown"
-                   aria-expanded="false"
-               >
-                   All
-               </button>
-               <ul class="dropdown-menu" aria-labelledby="itemsPerPageDropdown">
-                   <li><a class="dropdown-item" href="#" data-page-size="5">All</a></li>
-                   <li><a class="dropdown-item" href="#" data-page-size="10">10</a></li>
-                   <li><a class="dropdown-item" href="#" data-page-size="50">50</a></li>
-                   <li><a class="dropdown-item" href="#" data-page-size="100">100</a></li>
-               </ul>
-           </div>
-        </div>
-
-       <!-- Filter Dropdown -->
-       <div class="filter-wrapper">
-           <label for="filterDropdown" class="">Filter Options</label>
-           <div class="dropdown">
-               <button
-                   class="btn btn-outline-secondary dropdown-toggle"
-                   type="button"
-                   id="filterDropdown"
-                   data-bs-toggle="dropdown"
-                   aria-expanded="false"
-               >
-                   Filter Options
-               </button>
-               <ul class="dropdown-menu" aria-labelledby="filterDropdown">
-                   <li><a class="dropdown-item" href="#">Status</a></li>
-                   <li><a class="dropdown-item" href="#">Package name (A-Z)</a></li>
-               </ul>
-           </div>
-      </div>
-     
-      <!-- Flight Date Range Picker -->
-      <div class="flight-dateRange-wrapper">
-          <label for="flightStartDate" class="">Flight Date</label>
-          <div class="d-flex align-items-center">
-              <input type="date" class="form-control" id="flightStartDate">
-              <span class="mx-2">to</span>
-              <input type="date" class="form-control" id="flightEndDate">
-          </div>
-      </div>
-
-      <!-- Booking Date Range Picker -->
-      <div class="booking-dateRange-wrapper">
-          <label for="bookingStartDate" class="">Booking Date</label>
-          <div class="d-flex align-items-center">
-              <input type="date" class="form-control" id="bookingStartDate">
-              <span class="mx-2">to</span>
-              <input type="date" class="form-control" id="bookingEndDate">
-          </div>
-      </div>
-
-      <div class="button-wrapper">
-        <button class="btn btn-danger" id="clearFiltersButton">
-            <i class="fa-solid fa-circle-xmark"></i> Clear Filters
-        </button>
-     </div>
-   </div>
-
-   <div class="table-subheader2 my-3">
-      <!-- Search Section -->
-      <div class="search-wrapper position-relative d-flex flex-column mb-2 mt-3">
+    <div class="table-subheader">
+      <div class="search-wrapper position-relative d-flex flex-column align-items-start mb-2 mt-3">
+        <label for="search-label" class="search-label">Search:</label>
         <input
           type="text"
           id="tableSearchInput"
@@ -112,32 +41,89 @@
           <i class="fas fa-times"></i>
         </button>
       </div>
+    
+       <div class="left-side-wrapper pt-2">
+        <div class="show-entries-wrapper">
+          <label for="itemsPerPageDropdown" class="">Show Entries</label>
+          <div class="dropdown mt-2">
+              <button
+                  class="btn btn-outline-secondary dropdown-toggle"
+                  type="button"
+                  id="itemsPerPageDropdown"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+              >
+                  All
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="itemsPerPageDropdown">
+                  <li><a class="dropdown-item" href="#" data-page-size="5">All</a></li>
+                  <li><a class="dropdown-item" href="#" data-page-size="10">10</a></li>
+                  <li><a class="dropdown-item" href="#" data-page-size="50">50</a></li>
+                  <li><a class="dropdown-item" href="#" data-page-size="100">100</a></li>
+              </ul>
+          </div>
+         </div>
 
-      <div class="button-wrapper mt-2">
-        <button class="btn btn-danger" id="clearFiltersButton">
-            <i class="fa-solid fa-circle-xmark"></i> Clear Filters
-        </button>
+       <!-- Filter Dropdown -->
+       <div class="filter-wrapper">
+        <label for="filterDropdown" class="">Filter Options</label>
+        <div class="dropdown mt-2">
+            <button
+                class="btn btn-outline-secondary dropdown-toggle"
+                type="button"
+                id="filterDropdown"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+            >
+                Filter Options
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="filterDropdown">
+                <li><a class="dropdown-item" href="#">Status</a></li>
+                <li><a class="dropdown-item" href="#">Package name (A-Z)</a></li>
+            </ul>
+        </div>
+      </div>
+     
+      <!-- Flight Date Range Picker -->
+      <div class="flight-dateRange-wrapper">
+       <label for="flightStartDate" class="">Flight Date</label>
+       <div class="d-flex align-items-center">
+           <input type="date" class="form-control" id="flightStartDate">
+           <span class="mx-2">to</span>
+           <input type="date" class="form-control" id="flightEndDate">
+       </div>
+      </div>
+
+      <!-- Booking Date Range Picker -->
+       <div class="booking-dateRange-wrapper">
+        <label for="bookingStartDate" class="">Booking Date</label>
+        <div class="d-flex align-items-center">
+            <input type="date" class="form-control" id="bookingStartDate">
+            <span class="mx-2">to</span>
+            <input type="date" class="form-control" id="bookingEndDate">
+        </div>
+      </div>
+
+      <div class="button-wrapper mt-4">
+       <button class="btn btn-outline-secondary mt-2" id="clearFiltersButton">
+            Clear Filters
+       </button>
+     </div>
+
+     <div class="vertical-line"></div> <!-- Vertical line -->
+     
+     <div class="button-wrapper">
+       <button class="btn btn-primary mt-3" id="clearFiltersButton">
+       <i class="fa-solid fa-user-plus"></i> Add Booking
+       </button>
      </div>
 
     </div>
+   </div>
 
-   <script>
-     function toggleClearButton(input) {
-       const clearButton = input.nextElementSibling; // Get the button next to the input
-       clearButton.style.display = input.value ? "block" : "none";
-     }
-
-     // Clear the input field
-     function clearInput(button) {
-       const input = button.previousElementSibling; // Get the input field before the button
-       input.value = "";
-       button.style.display = "none"; // Hide the clear button
-       input.focus(); // Refocus on the input
-     }
-   </script>
 
    <div class="table-wrapper">
-     <table class="table-transaction">
+     <table class="table-transaction table-striped">
      <thead>
         <tr>
           <th>Transact No</th>
@@ -156,7 +142,7 @@
        <tbody>
         <?php
           // SQL query for SOA
-          $sql = "SELECT b.transactNo, CONCAT(f.flightDepartureDate, ' - ', f.returnDepartureDate) AS FlightDate, 
+          $sql = "SELECT b.transactNo, f.flightDepartureDate as departureDate, f.returnDepartureDate as returnDate, CONCAT(f.flightDepartureDate, ' | ', f.returnDepartureDate) AS FlightDate, 
                           p.packageName AS PackageName, b.bookingDate AS BookingDate, b.pax AS TotalPax, b.totalPrice AS PackagePrice, 
                           SUM(CASE WHEN r.requestStatus = 'Confirmed' THEN r.requestCost ELSE 0 END) AS RequestCost,
                           (b.totalPrice + SUM(CASE WHEN r.requestStatus = 'Confirmed' THEN r.requestCost ELSE 0 END)) AS AmountToPaid,
@@ -174,7 +160,9 @@
                   LEFT JOIN 
                     payment y ON y.transactNo = b.transactNo
                   GROUP BY 
-                    b.transactNo, f.flightDepartureDate, p.packageName, b.totalPrice, b.bookingDate, b.pax";
+                    b.transactNo, f.flightDepartureDate, p.packageName, b.totalPrice, b.bookingDate, b.pax
+                  ORDER BY 
+                    b.bookingDate ASC";
 
           // Execute the query
           $result = $conn->query($sql);
@@ -216,15 +204,16 @@
               echo "<tr data-url='emp-transactionInfo.php?id=" . htmlspecialchars($row['transactNo']) . "'>";
               echo "<td>" . htmlspecialchars($row['transactNo']) . "</td>";
               echo "<td>" . htmlspecialchars($row['PackageName']) . "</td>";
-              echo "<td>" . htmlspecialchars($row['FlightDate']) . "</td>";
+              // echo "<td>" . htmlspecialchars($row['FlightDate']) . "</td>";
+              echo "<td> D: " . htmlspecialchars($row['departureDate']) . ' <br> R: ' . htmlspecialchars($row['returnDate']) ."</td>";
               echo "<td>" . htmlspecialchars($row['BookingDate']) . "</td>";
-              echo "<td class='text-center fw-bold'>" . htmlspecialchars($row['TotalPax']) . "</td>";
+              echo "<td class=' fw-bold'>" . htmlspecialchars($row['TotalPax']) . "</td>";
               echo "<td>₱ " . number_format($row['PackagePrice'], 2) . "</td>";
               echo "<td>₱ " . number_format($row['RequestCost'], 2) . "</td>";
               echo "<td>₱ " . number_format($row['AmountToPaid'], 2) . "</td>";
               echo "<td>₱ " . number_format($row['AmountPaid'], 2) . "</td>";
               echo "<td>₱ " . number_format(max($row['Balance'], 0), 2) . "</td>"; // Ensure Balance doesn't go negative
-              echo "<td><span class='{$statusClass} py-2'>{$status}</span></td>";
+              echo "<td class='text-center'><span class='{$statusClass} py-2'>{$status}</span></td>";
               echo "</tr>";
             }
           } 
@@ -247,20 +236,20 @@
         ordering: true,
         info: true,
         columnDefs: [
-            { width: '10%', targets: 0 }, // Transact No
-            { width: '13%', targets: 1 }, // Package Name
-            { width: '13%', targets: 2 }, // Flight Date
-            { width: '10%', targets: 3 }, // Booking Date
+            { width: '8%', targets: 0 }, // Transact No
+            { width: '14%', targets: 1 }, // Package Name
+            { width: '8%', targets: 2 }, // Flight Date
+            { width: '6%', targets: 3 }, // Booking Date
             { width: '5%', targets: 4 },  // Total Pax
-            { width: '10%', targets: 5 }, // Package Price
-            { width: '10%', targets: 6 }, // Request Cost
-            { width: '10%', targets: 7 }, // Amount to be Paid
-            { width: '10%', targets: 8 }, // Amount Paid
-            { width: '10%', targets: 9 }, // Remaining Balance
-            { width: '7%', targets: 10 } // Status
+            { width: '8%', targets: 5 }, // Package Price
+            { width: '8%', targets: 6 }, // Request Cost
+            { width: '8%', targets: 7 }, // Amount to be Paid
+            { width: '8%', targets: 8 }, // Amount Paid
+            { width: '8%', targets: 9 }, // Remaining Balance
+            { width: '5%', targets: 10 } // Status
         ],
         language: {
-            emptyTable: "No records available"
+            emptyTable: "NO RECORDS AVAILABLE"
         }
     });
 
@@ -300,11 +289,29 @@
         $('#bookingStartDate').val('');
         $('#bookingEndDate').val('');
         $('#tableSearchInput').val('');
-        table.search('').columns().search('').draw();
+        table.search('').columns().search('').draw(); // Reset the search and clear column filters
     });
 });
 
+// Toggle clear button visibility
+function toggleClearButton(input) {
+    const clearButton = input.nextElementSibling; // Get the button next to the input
+    clearButton.style.display = input.value ? "block" : "none";
+}
+
+// Clear the input field and reset search when clicked (same as clearFiltersButton)
+function clearInput(button) {
+    const input = button.previousElementSibling; // Get the input field before the button
+    input.value = ''; // Clear the input field
+    button.style.display = 'none'; // Hide the clear button
+    input.focus(); // Refocus on the input field
+
+    // Reset the DataTable search and column filters, similar to clearFiltersButton
+    table.search('').columns().search('').draw(); // Reset DataTable search and column filters
+}
+
 </script>
+
 
 
 <style>
