@@ -38,7 +38,8 @@
                 <div class="side-content d-flex flex-column">
                   <?php
                     // Assuming you already have a connection to your database
-                    $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking where agentId = '$agentId' and 
+                    $accountId = $_SESSION['agent_accountId'];
+                    $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking where accountId = '$accountId' and 
                                                   MONTH(bookingDate) = MONTH(CURRENT_DATE()) AND YEAR(bookingDate) = YEAR(CURRENT_DATE())";
                     $result = mysqli_query($conn, $totalTransactionsQuery);
 
@@ -65,7 +66,8 @@
                 <div class="side-content d-flex flex-column">
                   <?php
                     // Assuming you already have a connection to your database
-                    $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking where status='Confirmed' and agentId = '$agentId'
+                    $accountId = $_SESSION['agent_accountId'];
+                    $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking where status='Confirmed' and accountId = '$accountId'
                                                 and MONTH(bookingDate) = MONTH(CURRENT_DATE()) AND YEAR(bookingDate) = YEAR(CURRENT_DATE())";
                     $result = mysqli_query($conn, $totalTransactionsQuery);
 
@@ -95,7 +97,8 @@
                 <div class="side-content d-flex flex-column">
                   <?php
                     // Assuming you already have a connection to your database
-                    $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking where status='Pending' and agentId = '$agentId'
+                    $accountId = $_SESSION['agent_accountId'];
+                    $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking where status='Pending' and accountId = '$accountId'
                                                 and MONTH(bookingDate) = MONTH(CURRENT_DATE()) AND YEAR(bookingDate) = YEAR(CURRENT_DATE())";
                     $result = mysqli_query($conn, $totalTransactionsQuery);
 
@@ -122,7 +125,8 @@
                 <div class="side-content d-flex flex-column">
                   <?php
                     // Assuming you already have a connection to your database
-                    $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking where status='Cancelled' and agentId = '$agentId'
+                    $accountId = $_SESSION['agent_accountId'];
+                    $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking where status='Cancelled' and accountId = '$accountId'
                                               and MONTH(bookingDate) = MONTH(CURRENT_DATE()) AND YEAR(bookingDate) = YEAR(CURRENT_DATE())";
                     $result = mysqli_query($conn, $totalTransactionsQuery);
 
@@ -143,61 +147,8 @@
             </div>
           </div>
         </div>
-    
-        <!-- CARD 2 -->
-        <div class="card border-0" >
-          <div class="header-counts">
-            <h6 class="text-secondary white-pill">Transaction History</h6>
-          </div>
-    
-          <div class="card-content px-3">
-            <div class="row">
-              <div class="col-md-5 d-flex flex-row">
-                <div class="card-icon icon-blue">
-                <i class="fas fa-calendar-alt"></i>
-              </div>
-                <div class="side-content d-flex flex-column">
-                  <h5>0</h5>
-                  <p>PAST</p>
-                </div>
-              </div>
-        
-              <div class="col-md-5 d-flex flex-row">
-                <div class="card-icon icon-gray">
-                  <i class="fas fa-check-circle"></i>
-                </div>
-                <div class="side-content d-flex flex-column">
-                    <h5>0</h5>
-                    <p>CURRENT</p>
-                </div>
-              </div>
-            </div>
 
-            <div class="row">
-              <div class="col-md-5 d-flex flex-row">
-                  <div class="card-icon icon-yellow">
-                    <i class="fas fa-exclamation-triangle"></i>
-                  </div>
-                  <div class="side-content d-flex flex-column">
-                      <h5>0</h5>
-                      <p>ON GOING</p>
-                  </div>
-              </div>
-        
-              <div class="col-md-5 d-flex flex-row">
-                  <div class="card-icon icon-green">
-                    <i class="fas fa-times-circle"></i>
-                  </div>
-                  <div class="side-content d-flex flex-column">
-                      <h5>0</h5>
-                      <p>CONFIRMED</p>
-                  </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- CARD 3 -->
+        <!-- CARD 2 - On Due -->
         <div class="card border-0">
           <div class="header-counts">
             <h6 class="text-secondary white-pill">On Due</h6>
@@ -213,12 +164,13 @@
                 <div class="side-content d-flex flex-column">
                   <?php
                     // Assuming $conn is your database connection
+                    $accountId = $_SESSION['agent_accountId'];
                     $days5Query = "SELECT COUNT(*) AS `bookingsDueIn5Days` FROM booking b 
                                     JOIN flight f ON b.flightId = f.flightId
                                     LEFT JOIN (SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) 
                                       AS totalPaid FROM payment GROUP BY transactNo) p ON b.transactNo = p.transactNo
                                   WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) <= 5 AND DATEDIFF(f.flightDepartureDate, CURDATE()) >= 0
-                                    AND (b.totalPrice > IFNULL(p.totalPaid, 0)) and b.agentId='$agentId' and b.status='Confirmed'";
+                                    AND (b.totalPrice > IFNULL(p.totalPaid, 0)) and b.accountId = '$accountId' and b.status='Confirmed'";
 
                     $result = $conn->query($days5Query);
 
@@ -246,12 +198,13 @@
                 <div class="side-content d-flex flex-column">
                   <?php
                     // Assuming $conn is your database connection
+                    $accountId = $_SESSION['agent_accountId'];
                     $days10Query = "SELECT COUNT(*) AS bookingsDueIn10Days FROM booking b
                                       JOIN flight f ON b.flightId = f.flightId
                                       LEFT JOIN (SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) 
                                       AS totalPaid FROM payment GROUP BY transactNo) p ON b.transactNo = p.transactNo
                                     WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) BETWEEN 0 AND 10
-                                      AND (b.totalPrice > IFNULL(p.totalPaid, 0)) AND b.agentId = '$agentId' and b.status='Confirmed'";
+                                      AND (b.totalPrice > IFNULL(p.totalPaid, 0)) AND b.accountId = '$accountId' and b.status='Confirmed'";
 
                     $result = $conn->query($days10Query);
 
@@ -281,13 +234,14 @@
                 <div class="side-content d-flex flex-column">
                   <?php
                     // Assuming $conn is your database connection
+                    $accountId = $_SESSION['agent_accountId'];
                     $days20Query = "SELECT COUNT(*) AS `bookingsDueIn20Days` FROM booking b 
                                     JOIN flight f ON b.flightId = f.flightId
                                     LEFT JOIN (SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) 
                                               AS totalPaid FROM payment GROUP BY transactNo) p 
                                     ON b.transactNo = p.transactNo
                                     WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) BETWEEN 10 AND 20
-                                      AND (b.totalPrice > IFNULL(p.totalPaid, 0)) AND b.agentId = '$agentId' and b.status='Confirmed'";
+                                      AND (b.totalPrice > IFNULL(p.totalPaid, 0)) AND b.accountId = '$accountId' and b.status='Confirmed'";
 
                     $result = $conn->query($days20Query);
 
@@ -315,12 +269,13 @@
                 <div class="side-content d-flex flex-column">
                   <?php
                     // Assuming $conn is your database connection
+                    $accountId = $_SESSION['agent_accountId'];
                     $days30Query = "SELECT COUNT(*) AS `bookingsDueIn30Days` FROM booking b 
                                       JOIN flight f ON b.flightId = f.flightId
                                       LEFT JOIN (SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) 
                                       AS totalPaid FROM payment GROUP BY transactNo) p ON b.transactNo = p.transactNo
                                     WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) BETWEEN 20 AND 30
-                                      AND (b.totalPrice > IFNULL(p.totalPaid, 0)) AND b.agentId = '$agentId' AND b.status = 'Confirmed'";
+                                      AND (b.totalPrice > IFNULL(p.totalPaid, 0)) AND b.accountId = '$accountId' AND b.status = 'Confirmed'";
 
                     $result = $conn->query($days30Query);
 
@@ -341,6 +296,61 @@
               </div>
             </div>
         
+          </div>
+        </div>
+    
+        <!-- CARD 3 - Total Payment -->
+        <div class="card border-0" >
+          <div class="header">
+            <h6 class="text-secondary fw-600">Total Payment</h6>
+          </div>
+
+          <div class="card-content px-3">
+            <div class="row">
+              <div class="col-md-5 d-flex flex-row totalpayment">
+                <div class="card-icon icon-blue">
+                  <i class="fas fa-calendar-alt"></i>
+                </div>
+                <div class="side-content d-flex flex-column">
+                  <?php
+                    // Query for total payments in the past month
+                    $accountId = $_SESSION['agent_accountId'];
+
+                    $pastMonthQuery = "SELECT IFNULL(SUM(amount), 0) AS totalPastMonth 
+                    FROM payment WHERE accountId = '$accountId' AND paymentStatus = 'Approved' 
+                    AND MONTH(paymentDate) = MONTH(CURDATE() - INTERVAL 1 MONTH)
+                    AND YEAR(paymentDate) = YEAR(CURDATE() - INTERVAL 1 MONTH)";
+
+                    $pastMonthResult = $conn->query($pastMonthQuery);
+                    $pastMonthTotal = ($pastMonthResult->num_rows > 0) ? number_format($pastMonthResult->fetch_assoc()['totalPastMonth'], 2) : '0.00';
+                  ?>
+                  <h5>₱ <?php echo $pastMonthTotal; ?></h5>
+                  <p>PAST MONTH</p>
+                </div>
+              </div>
+
+              <div class="col-md-5 d-flex flex-row">
+                <div class="card-icon icon-gray">
+                  <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="side-content d-flex flex-column">
+                  <?php
+                    // Query for total payments in the current month
+                    $accountId = $_SESSION['agent_accountId'];
+
+                    $currentMonthQuery = "SELECT IFNULL(SUM(amount), 0) AS totalCurrentMonth 
+                    FROM payment WHERE accountId = '$accountId' AND paymentStatus = 'Approved' 
+                    AND MONTH(paymentDate) = MONTH(CURDATE()) 
+                    AND YEAR(paymentDate) = YEAR(CURDATE())";
+
+                    $currentMonthResult = $conn->query($currentMonthQuery);
+                    $currentMonthTotal = ($currentMonthResult->num_rows > 0) ? number_format($currentMonthResult->fetch_assoc()['totalCurrentMonth'], 2) : 0;
+                  ?>
+                  <h5>₱ <?php echo $currentMonthTotal; ?></h5>
+                  <p>CURRENT MONTH</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -641,7 +651,7 @@
                 <tbody>
                   <?php
                     // Query to select all records from the booking table
-                    $agentId = $_SESSION['agent_agentId'];
+                    $accountId = $_SESSION['agent_accountId'];
                     $query = "SELECT 
                                 b.transactNo, 
                                 b.flightId, 
@@ -671,7 +681,7 @@
                                 (SELECT transactNo, SUM(requestCost) AS totalRequestCost FROM request
                                   WHERE requestStatus = 'Confirmed' GROUP BY transactNo) req ON b.transactNo = req.transactNo
                               WHERE 
-                                b.status = 'Confirmed' and b.agentId = '$agentId' and f.flightDepartureDate >= CURDATE()";
+                                b.status = 'Confirmed' and b.accountId = '$accountId' and f.flightDepartureDate >= CURDATE()";
 
                     $result = $conn->query($query); // Execute the query
 
