@@ -52,6 +52,30 @@
  color: #007bff; /* Highlight text color */
 }
 
+
+.table-subheader2 {
+ width: 100%;
+ display: flex;
+ flex-direction: row;
+ justify-content: space-between; /* Center the content horizontally */
+ align-items: center; /* Center the content vertically */
+ border-top: 1px black solid;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Table Wrapper Styling */
 .table-wrapper {
  width: 100%;
@@ -62,7 +86,7 @@
 
 /* Table Styling */
 .table-wrapper table {
- width: 99%;
+ width: 100%;
  border-collapse: collapse; /* Remove gaps between cells */
  font-family: Arial, sans-serif;
  font-size: 14px;

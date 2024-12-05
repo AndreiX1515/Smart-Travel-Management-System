@@ -194,7 +194,7 @@ function manageEmployeeSession($accountId, $userData, $userType, $additionalFiel
     $_SESSION['employee_fName'] = $userData['fName'] ?? '';
     $_SESSION['employee_mName'] = $userData['mName'] ?? '';
     $_SESSION['employee_lName'] = $userData['lName'] ?? '';
-    $_SESSION['employee_employeeId'] = $userData['employee_id'] ?? '';  
+    $_SESSION['employee_employeeId'] = $userData['employeeId'] ?? '';  
     $_SESSION['employee_accountId'] = $accountId;
     $_SESSION['employee_position'] = $userData['position'] ?? '';  
     $_SESSION['employee_timeout'] = time();

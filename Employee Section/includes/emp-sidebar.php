@@ -116,9 +116,13 @@ $position = htmlspecialchars(strtoupper($agentId));
   <div class="logout">
    <div class="profile-section">
        <div class="profile-left">
+
            <!-- Display Full Name and Position -->
-           <div class="name"><?php echo $fullName; ?></div>
-           <div class="position">EMP ID: <?php echo $position; ?></div>
+           <div class="name" style="font-size: <?php echo (strlen($fullName) >= 13) ? '15px' : '17px'; ?>;">
+              <?php echo $fullName; ?>
+          </div>
+
+           <div class="empid fw-bold" style="font-size: 14px;">EMP ID: <span class="fw-normal"><?php echo $agentId; ?></span></div>
        </div>
 
        <div class="profile-icon profile-icon-visible">
