@@ -96,7 +96,7 @@ error_reporting(E_ALL);
 
 // Initialize variables
 $accountId = $_SESSION['employee_accountId'] ?? '';
-$agentId = $_SESSION['employee_employeeId'] ?? '';
+$empId = $_SESSION['employee_employeeId'] ?? '';
 $firstName =  $_SESSION['employee_fName'] ?? '';
 $lastName =  $_SESSION['employee_lName'] ?? '';
 $middleName = $_SESSION['employee_mName'] ?? '';  // Middle name is optional
@@ -110,7 +110,7 @@ $middleNameInitial = $middleName ? substr($middleName, 0, 1) . '.' : ''; // Firs
 $fullName = htmlspecialchars($firstName . ' ' . $middleNameInitial . ' ' . $lastName);  // Full name with middle name initial at the end
 
 // Position or role (assuming userType and accountType are available)
-$position = htmlspecialchars(strtoupper($agentId));
+$position = htmlspecialchars(strtoupper($empId));
 ?>
   <!-- Logout button at the bottom, outside the <ul> -->
   <div class="logout">
@@ -122,7 +122,7 @@ $position = htmlspecialchars(strtoupper($agentId));
               <?php echo $fullName; ?>
           </div>
 
-           <div class="empid fw-bold" style="font-size: 14px;">EMP ID: <span class="fw-normal"><?php echo $agentId; ?></span></div>
+           <div class="empid fw-bold" style="font-size: 14px;">EMP ID: <span class="fw-normal"><?php echo $empId; ?></span></div>
        </div>
 
        <div class="profile-icon profile-icon-visible">
