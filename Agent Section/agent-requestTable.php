@@ -139,6 +139,7 @@
           <div class="mb-3">
             <label class="form-label">Pax</label>
             <input type="number" class="form-control" id="paxRequest" name="pax" placeholder="Enter pax" min="1" required>
+            <input type="hidden" class="form-control" id="maxSeats">
           </div>
 
           <!-- Details Input -->
@@ -300,6 +301,19 @@
       {
         calculateTotalPrice();
       });
+      // Ensure that if the user manually enters a number greater than the max, it's automatically corrected
+      $('#paxRequest').on('input', function() 
+      {
+        var maxSeats = parseInt($(this).attr('max'));
+        var currentPax = parseInt($(this).val());
+
+        // If currentPax is greater than maxSeats or less than 1, adjust the value
+        if (currentPax > maxSeats) {
+          $(this).val(maxSeats); // Reset to the max value
+        } else if (currentPax < 1 || isNaN(currentPax)) {
+          $(this).val(1); // Reset to 1 if the value is less than 1 or not a number
+        }
+      });
 
       function calculateTotalPrice() 
       {
@@ -337,6 +351,7 @@
             if (data.success) 
             {
               const paxInput = document.querySelector('input[name="pax"]');
+              var maxSeats = data.booking.pax;
               paxInput.setAttribute('max', data.booking.pax);
               validateMaxValue(paxInput);
             } 

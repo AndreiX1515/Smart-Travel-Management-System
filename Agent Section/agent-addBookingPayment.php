@@ -184,7 +184,7 @@
             <hr>
             <input type="hidden" value="<?php echo $_SESSION['agent_accountId']; ?>" name="agentAccountId">
             <input type="hidden" value="<?php echo $transactionNumber; ?>" name="transactNo">
-            <input type="number" class="form-control" name="downpayment" min="<?php echo $downpayment; ?>" placeholder="Enter Downpayment Amount" required>
+            <input type="number" class="form-control" name="downpayment" step="0.01" min="<?php echo $downpayment; ?>" max="<?php echo $totalPrice; ?>" placeholder="Enter Downpayment Amount" required>
             <h6 class="mt-4">Attach Proof/Screenshot of transaction:</h6>
             <input type="file" id="attachment" class="attachment" name="proofs[]" accept="image/*" required>
             <hr>

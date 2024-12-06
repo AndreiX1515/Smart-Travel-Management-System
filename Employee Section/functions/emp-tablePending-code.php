@@ -7,56 +7,56 @@ require "../../conn.php"; // Move up to the parent directory
 
 if (isset($_POST['updateBookingStatus'])) 
 {
-    $accountId = $_SESSION['employee_accountId'];
-    $transactNo = $_POST['transactNo'];
-    $bookingStatus = $_POST['bookingStatus'];
-    $bookingRemarks = $_POST['bookingRemarks'];
+  $accountId = $_SESSION['employee_accountId'];
+  $transactNo = $_POST['transactNo'];
+  $bookingStatus = $_POST['bookingStatus'];
+  $bookingRemarks = $_POST['bookingRemarks'];
 
-    // Set the session variable for the current user in MySQL
-    $conn->query("SET @current_user_id = $accountId");
+  // Set the session variable for the current user in MySQL
+  $conn->query("SET @current_user_id = $accountId");
 
-    // Start a transaction
-    $conn->begin_transaction();
+  // Start a transaction
+  $conn->begin_transaction();
 
-    // Set remarks to NULL if empty
-    if (empty($bookingRemarks)) 
-    {
-        $bookingRemarks = NULL;
-    }
+  // Set remarks to NULL if empty
+  if (empty($bookingRemarks)) 
+  {
+    $bookingRemarks = NULL;
+  }
 
-    // Prepare the SQL statement for updating the request status
-    $sql1 = "UPDATE booking SET status = ?, remarks = ? WHERE transactNo = ?";
-    $stmt1 = $conn->prepare($sql1);
+  // Prepare the SQL statement for updating the request status
+  $sql1 = "UPDATE booking SET status = ?, remarks = ? WHERE transactNo = ?";
+  $stmt1 = $conn->prepare($sql1);
 
-    if (!$stmt1) 
-    {
-        $_SESSION['status'] = "SQL preparation failed: " . $conn->error;
-        $_SESSION['toastColor'] = 'text-bg-danger'; // Red for errors
-        $conn->rollback();  // Rollback transaction if the preparation fails
-        header("Location: ../emp-tablePending.php");
-        exit(0);
-    }
-
-    // Bind parameters and execute the update
-    $stmt1->bind_param('sss', $bookingStatus, $bookingRemarks, $transactNo);
-    
-    if (!$stmt1->execute()) 
-    {
-        $_SESSION['status'] = "Database error: " . $stmt1->error;
-        $_SESSION['toastColor'] = 'text-bg-danger'; // Red for errors
-        $conn->rollback();  // Rollback the transaction on failure
-        header("Location: ../emp-tablePending.php");
-        exit(0);
-    }
-
-    // Commit the transaction if no errors
-    $conn->commit();
-
-    // Set a success message and toast color
-    $_SESSION['status'] = $transactNo . " - status successfully updated to: " . $bookingStatus;
-
-    $_SESSION['toastColor'] = 'text-bg-success'; // Green for success
+  if (!$stmt1) 
+  {
+    $_SESSION['status'] = "SQL preparation failed: " . $conn->error;
+    $_SESSION['toastColor'] = 'text-bg-danger'; // Red for errors
+    $conn->rollback();  // Rollback transaction if the preparation fails
     header("Location: ../emp-tablePending.php");
     exit(0);
+  }
+
+  // Bind parameters and execute the update
+  $stmt1->bind_param('sss', $bookingStatus, $bookingRemarks, $transactNo);
+  
+  if (!$stmt1->execute()) 
+  {
+    $_SESSION['status'] = "Database error: " . $stmt1->error;
+    $_SESSION['toastColor'] = 'text-bg-danger'; // Red for errors
+    $conn->rollback();  // Rollback the transaction on failure
+    header("Location: ../emp-tablePending.php");
+    exit(0);
+  }
+
+  // Commit the transaction if no errors
+  $conn->commit();
+
+  // Set a success message and toast color
+  $_SESSION['status'] = $transactNo . " - status successfully updated to: " . $bookingStatus;
+
+  $_SESSION['toastColor'] = 'text-bg-success'; // Green for success
+  header("Location: ../emp-tablePending.php");
+  exit(0);
 }
 ?>

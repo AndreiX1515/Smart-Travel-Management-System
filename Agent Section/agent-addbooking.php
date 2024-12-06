@@ -52,7 +52,7 @@
                         <?php
                           $sql1 = mysqli_query($conn, "SELECT DISTINCT packageId, packageName FROM package ORDER BY packageName ASC");
                           while($res1 = mysqli_fetch_array($sql1)) 
-                          {
+                          { 
                             echo "<option value='{$res1['packageId']}'>{$res1['packageName']}</option>";
                           }
                         ?>
@@ -426,6 +426,7 @@
               <div class="card mt-1 ">
                 <div class="card-header d-flex justify-content-between align-items-center py-3">
                   <h5 class="align-items-center pt-2 fw-bolder">Total Price: ₱ <span id="displayTotalPrice">0</span></h5>
+                  <strong id="errorMessage" class="text-danger"></strong>
                   <button type="button" class="btn btn-primary p-2 px-3" id="bookNowButton">Book Now</button>
                 </div>
                 <input type="hidden" id="totalPrice" name="totalPrice" placeholder="Total Price">
@@ -806,8 +807,7 @@
         {
           event.preventDefault(); // Prevent default form submission
 
-          const errors = 
-          {
+          const errors = {
             packageName: 'Please Select a Package.',
             totalPax: 'Please Enter Total Pax.',
             origin: 'Please Select Origin',
@@ -828,6 +828,12 @@
           $('select, input').removeClass('is-invalid');
 
           let isValid = true; // Initialize isValid flag
+          // Extract the numeric value from the label's text
+          let totalSeatsText = $('#availSeats').text();
+          let totalSeats = parseInt(totalSeatsText.replace(/\D/g, '')) || 0;  // Replace all non-digit characters and parse the number
+          let landOnly = $('#land').prop('checked');
+
+          console.log(totalSeats);
 
           // Validation function
           const validateField = (selector, errorMsgKey) => 
@@ -835,7 +841,7 @@
             const fieldValue = $(selector).val();
             if (!fieldValue) 
             {
-              $(selector + 'Error').text(errors[errorMsgKey]); // Update error message
+              $(`${selector}Error`).text(errors[errorMsgKey]); // Update error message
               $(selector).addClass('is-invalid'); // Add invalid class
               isValid = false; // Set valid flag to false
             }
@@ -868,24 +874,24 @@
           // Clear error messages when inputs are focused or changed
           $('select, input').on('focus change', function () 
           {
-            const errorSpanId = '#' + $(this).attr('id') + 'Error';
+            const errorSpanId = `#${$(this).attr('id')}Error`;
             $(this).removeClass('is-invalid'); // Remove invalid class
-            $(errorSpanId).text('');           // Clear error message
+            $(errorSpanId).text(''); // Clear error message
+            $('#errorMessage').text(''); // Show error message in the UI
           });
 
-          // Check if the form is valid before showing the modal
+          // Combined validation for Land Only or Seat availability
           if (isValid) 
           {
-            const firstName = $('#fName').val();
-            const lastName = $('#lName').val();
-            let middleName = $('#mName').val();
-            let suffix = $('#suffix').val();
-            let email = $('#email').val();
-            let totalPax =$('#totalPax').val();
+            const firstName = $('#fName').val().trim();
+            const lastName = $('#lName').val().trim();
+            let middleName = $('#mName').val().trim() || '';
+            let suffix = $('#suffix').val().trim() || '';
+            let email = $('#email').val().trim();
 
             // Set suffix and middle name to an empty string if they are "N/A"
-            suffix = suffix === "N/A" ? "" : suffix;
-            middleName = middleName === "N/A" ? "" : middleName;
+            suffix = suffix === 'N/A' ? '' : suffix;
+            middleName = middleName === 'N/A' ? '' : middleName;
 
             // Format middle name to the first letter followed by a dot, if not empty
             middleName = middleName ? middleName.charAt(0) + '.' : '';
@@ -893,16 +899,39 @@
             // Concatenate to full name in the desired format
             const fullName = `${lastName}, ${firstName} ${suffix} ${middleName}`;
 
-            // Set the full name in the contactPersonName paragraph
-            $('#contactPersonName').text(fullName);
-            // Set the email in the email paragraph
-            $('#contactPersonEmail').text(email);
-            // Set the email in the email paragraph
-            $('#guestCount').text(totalPax);
+            // Check if "Land Only" is selected
+            if ($('#land').prop('checked')) 
+            {
+              // Set the full name and email, and trigger modal
+              $('#contactPersonName').text(fullName);
+              $('#contactPersonEmail').text(email);
+              $('#guestCount').text(totalPax);
+              $('#BookingSummaryModal').modal('show'); // Trigger modal display
+            } 
+            else if (totalPax > totalSeats) 
+            {
+              // If land only is not selected, check for seat availability
+              $('#errorMessage').text('The Available Seats are not enough.'); // Show error message in the UI
+            } 
+            else 
+            {
+              // Set the full name in the contactPersonName paragraph
+              $('#contactPersonName').text(fullName);
+              // Set the email in the email paragraph
+              $('#contactPersonEmail').text(email);
+              // Set the total number of guests in the guestCount paragraph
+              $('#guestCount').text(totalPax);
 
-            $('#BookingSummaryModal').modal('show'); // Trigger modal display
+              $('#BookingSummaryModal').modal('show'); // Trigger modal display
+            }
+          } 
+          else 
+          {
+            $('#errorMessage').text('Validation failed or no seats available.'); // Show error message in the UI
+            console.error('Validation failed or no seats available.');
           }
         });
+
 
         // Automatically recalculate total price when flightDate or totalPax changes
         $('#flightDate, #totalPax').on('input change', function () 
@@ -1012,6 +1041,7 @@
                 {
                   // Extract the maxSeats from the response
                   var maxSeats = response.maxSeats;
+                  var totalSeats = response.totalSeatsLeft;
 
                   if (!isLandOnlyChecked) 
                   {
@@ -1023,17 +1053,20 @@
                     if (currentPax > maxSeats) 
                     {
                       $('#totalPax').val(maxSeats); // Adjust the value
-                      console.log(maxSeats);
+                      console.log('Pax left: ' + maxSeats);
+                      console.log('Seats left: ' + totalSeats);
                     }
 
                     // Display the available seats
-                    $('#maxSeats').text('Available Seats for this Flight: ' + maxSeats);
+                    $('#maxSeats').text('Agent-Specific Available Seats for this Flight: ' + maxSeats);
+                    $('#availSeats').text('Total Remaining Seats for this Flight: ' + totalSeats);
                   } 
                   else 
                   {
                     // If "Land Only" is checked, set a default max value and clear the display
                     $('#totalPax').attr('max', 999); // Example max value, adjust as needed
                     $('#maxSeats').text(' ');
+                    $('#availSeats').text(' ');
                   }
                 } 
                 else 

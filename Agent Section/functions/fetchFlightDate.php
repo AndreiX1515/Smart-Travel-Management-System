@@ -15,7 +15,8 @@
         WHERE packageId = '$packageId' 
         AND origin = '$origin' 
         AND YEAR(flightDepartureDate) = '$year' 
-        AND MONTH(flightDepartureDate) = '$month' 
+        AND MONTH(flightDepartureDate) = '$month'
+        AND flightDepartureDate >= CURDATE()
         ORDER BY flightDepartureDate ASC";
 
     // Debugging: Print the SQL query (optional)
