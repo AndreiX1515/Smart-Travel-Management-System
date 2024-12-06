@@ -565,19 +565,20 @@
                     $agentColumns = rtrim($agentColumns, ', ');
 
                     $sql = "
-                    SELECT 
-                        CONCAT(e.lName, ', ', e.fName, 
+                    SELECT CONCAT(e.lName, ', ', e.fName, 
                             IF(e.mName IS NOT NULL AND e.mName != '', CONCAT(' ', LEFT(e.mName, 1)), '')) AS TeamOP,
                         f.origin, 
                         f.flightDepartureDate AS Start, 
                         f.returnDepartureDate AS End, 
                         f.availSeats AS FlightSeat, 
                         GREATEST(
-                                  (f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package' 
-                                  THEN b.pax ELSE 0 END), 0)),0) AS AvailSeats, 
+                            (f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package' 
+                            THEN b.pax ELSE 0 END), 0)), 0) AS AvailSeats, 
                         IF(
-                            (f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0)) < 0, 
-                            ABS(f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0)), 
+                            (f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package' 
+                            THEN b.pax ELSE 0 END), 0)) < 0, 
+                            ABS(f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package' 
+                            THEN b.pax ELSE 0 END), 0)), 
                             0) AS AdditionalSeats,
                         SUM(CASE WHEN b.bookingType = 'Package' AND b.status = 'Confirmed' THEN b.pax ELSE 0 END) AS `Air+Land`,
                         SUM(CASE WHEN b.bookingType = 'Land' AND b.status = 'Confirmed' THEN b.pax ELSE 0 END) AS `LandOnly`,
@@ -593,9 +594,13 @@
                         booking b ON b.flightId = f.flightId
                     LEFT JOIN 
                         package p ON f.packageId = p.packageId
-                    WHERE f.flightDepartureDate >= CURDATE()
+                    WHERE 
+                        f.flightDepartureDate >= CURDATE()
                     GROUP BY 
-                        f.flightId";
+                        f.flightId, e.lName, e.fName, e.mName, f.origin, f.flightDepartureDate, f.returnDepartureDate, f.availSeats, 
+                        f.wholesalePrice, f.flightPrice, p.packagePrice
+                    ORDER BY 
+                        f.flightDepartureDate";
 
                     // Step 3: Execute the query
                     $result = $conn->query($sql);
