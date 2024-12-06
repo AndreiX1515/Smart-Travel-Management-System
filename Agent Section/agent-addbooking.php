@@ -1012,6 +1012,7 @@
                 {
                   // Extract the maxSeats from the response
                   var maxSeats = response.maxSeats;
+                  var totalSeats = response.totalSeatsLeft;
 
                   if (!isLandOnlyChecked) 
                   {
@@ -1028,6 +1029,7 @@
 
                     // Display the available seats
                     $('#maxSeats').text('Available Seats for this Flight: ' + maxSeats);
+                    $('#availSeats').text('Total Seats Available left for this Flight: ' + totalSeats);
                   } 
                   else 
                   {
