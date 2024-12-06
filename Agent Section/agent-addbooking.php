@@ -1028,8 +1028,8 @@
                     }
 
                     // Display the available seats
-                    $('#maxSeats').text('Available Seats for this Flight: ' + maxSeats);
-                    $('#availSeats').text('Total Seats Available left for this Flight: ' + totalSeats);
+                    $('#maxSeats').text('Agent-Specific Available Seats for this Flight: ' + maxSeats);
+                    $('#availSeats').text('Total Remaining Seats for this Flight: ' + totalSeats);
                   } 
                   else 
                   {
