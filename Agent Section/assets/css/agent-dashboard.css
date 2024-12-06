@@ -424,12 +424,16 @@ body {
  overflow: auto; /* Allow scrolling if content is too wide */
 }
 
+.totalpayment {
+  height: 103px;
+
+
+}
 
 
 
 
-
-/* Unconfirm Table Container for Scrollability */
+/* Unconfirm Table Container for Scrollability */ 
 .unconfirm-table-container {
  width: 100%;
  overflow-x: auto; /* Enable horizontal scrolling */
