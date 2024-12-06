@@ -15,6 +15,7 @@
                     FROM booking 
                     WHERE booking.flightId = flight.flightId 
                     AND booking.status = 'Confirmed'
+                    AND booking.bookingType = 'Package'
                 ), 0) AS totalSeatsLeft, -- Dynamically calculate remaining seats
                 agentflightseats.flightSeatId,
                 agentflightseats.agentId,
@@ -24,7 +25,8 @@
                                                 FROM booking 
                                                 WHERE booking.flightId = agentflightseats.flightId 
                                                 AND booking.agentId = agentflightseats.agentId 
-                                                AND booking.status = 'Confirmed'), 0
+                                                AND booking.status = 'Confirmed'
+                                                AND booking.bookingType = 'Package'), 0
                 ) AS availableSeats
               FROM agentflightseats
               JOIN flight ON flight.flightId = agentflightseats.flightId

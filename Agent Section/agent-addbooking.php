@@ -142,7 +142,7 @@
                   </div>
                 </div>
 
-                <input type="" id="flightId" name="flightId" value="" placeholder="Flight Id Input">
+                <input type="hidden" id="flightId" name="flightId" value="" placeholder="Flight Id Input">
                 <input type="hidden" id="packagePrice" name="packagePrice" placeholder="Package Price">
                 <input type="hidden" name="flightPrice" id="flightPricee" placeholder="Flight Price">
                 <input type="hidden" name="agentId" id="agentId" value="<?php echo $_SESSION['agent_agentId']; ?>" placeholder="Agent Id">
@@ -831,6 +831,7 @@
           // Extract the numeric value from the label's text
           let totalSeatsText = $('#availSeats').text();
           let totalSeats = parseInt(totalSeatsText.replace(/\D/g, '')) || 0;  // Replace all non-digit characters and parse the number
+          let landOnly = $('#land').prop('checked');
 
           console.log(totalSeats);
 
@@ -879,15 +880,14 @@
             $('#errorMessage').text(''); // Show error message in the UI
           });
 
-          // Check if the form is valid before showing the modal
-          if (isValid && totalSeats > 0) 
+          // Combined validation for Land Only or Seat availability
+          if (isValid) 
           {
             const firstName = $('#fName').val().trim();
             const lastName = $('#lName').val().trim();
             let middleName = $('#mName').val().trim() || '';
             let suffix = $('#suffix').val().trim() || '';
             let email = $('#email').val().trim();
-            let totalPax = parseInt($('#totalPax').val());
 
             // Set suffix and middle name to an empty string if they are "N/A"
             suffix = suffix === 'N/A' ? '' : suffix;
@@ -899,11 +899,21 @@
             // Concatenate to full name in the desired format
             const fullName = `${lastName}, ${firstName} ${suffix} ${middleName}`;
 
-            if (totalPax > totalSeats)
+            // Check if "Land Only" is selected
+            if ($('#land').prop('checked')) 
             {
+              // Set the full name and email, and trigger modal
+              $('#contactPersonName').text(fullName);
+              $('#contactPersonEmail').text(email);
+              $('#guestCount').text(totalPax);
+              $('#BookingSummaryModal').modal('show'); // Trigger modal display
+            } 
+            else if (totalPax > totalSeats) 
+            {
+              // If land only is not selected, check for seat availability
               $('#errorMessage').text('The Available Seats are not enough.'); // Show error message in the UI
-            }
-            else
+            } 
+            else 
             {
               // Set the full name in the contactPersonName paragraph
               $('#contactPersonName').text(fullName);
