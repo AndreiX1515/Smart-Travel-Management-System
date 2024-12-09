@@ -912,6 +912,7 @@
             {
               // If land only is not selected, check for seat availability
               $('#errorMessage').text('The Available Seats are not enough.'); // Show error message in the UI
+              alert('The Available Seats are not enough.'); // Show error message as an alert
             } 
             else 
             {
