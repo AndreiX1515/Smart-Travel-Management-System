@@ -302,7 +302,7 @@
         <!-- CARD 3 - Total Payment -->
         <div class="card border-0" >
           <div class="header-counts">
-            <h6 class="text-secondary fw-600 white-pill">Total Payment</h6>
+            <h6 class="text-secondary fw-600 white-pill">Total Sales</h6>
           </div>
 
           <div class="card-content px-3">
