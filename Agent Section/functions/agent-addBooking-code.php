@@ -9,6 +9,7 @@
   {
     $accountId = $_SESSION['agent_accountId'];
     $agentId = $_SESSION['agent_agentId'];
+    $agentCode = $_SESSION['agent_agentCode'];
     $fName = $_POST['fName'];  
     $mName = $_POST['mName'];  
     $lName = $_POST['lName'];  
@@ -35,7 +36,7 @@
     $row = $result->fetch_assoc();
     $newBookingId = ($row && $row['lastBookingId'] !== null) ? $row['lastBookingId'] + 1 : 1;
     $formattedCounter = str_pad($newBookingId, 6, '0', STR_PAD_LEFT);
-    $transactNo = $agentId . '-' . $formattedCounter;
+    $transactNo = $agentCode . '-' . $formattedCounter;
 
     // Check if "Own Flight" is selected (value is 'Null')
     if ($flightId === 'Null') 

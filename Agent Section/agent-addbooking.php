@@ -142,6 +142,7 @@
                   </div>
                 </div>
 
+                <input type="hidden" id="agentCode" name="agentCode" value="<?php echo $_SESSION['agent_agentCode'];; ?>" placeholder="agentCode Input">
                 <input type="hidden" id="flightId" name="flightId" value="" placeholder="Flight Id Input">
                 <input type="hidden" id="packagePrice" name="packagePrice" placeholder="Package Price">
                 <input type="hidden" name="flightPrice" id="flightPricee" placeholder="Flight Price">

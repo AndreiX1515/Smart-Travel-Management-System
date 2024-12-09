@@ -7,6 +7,7 @@ error_reporting(E_ALL);
 
 $accountId = $_SESSION['agent_accountId'];
 $agentId = $_SESSION['agent_agentId'];
+$agentCode = $_SESSION['agent_agentCode'];
 $fName =  $_SESSION['agent_fName'] ?? '';
 $lName = $_SESSION['agent_lName'] ?? '';
 $mName = $_SESSION['agent_mName'] ?? '';
