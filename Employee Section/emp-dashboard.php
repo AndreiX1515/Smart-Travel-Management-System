@@ -204,7 +204,7 @@
                                     JOIN flight f ON b.flightId = f.flightId
                                     LEFT JOIN (SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) 
                                     AS totalPaid FROM payment GROUP BY transactNo) p ON b.transactNo = p.transactNo
-                                  WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) BETWEEN 0 AND 10
+                                  WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) BETWEEN 6 AND 10
                                     AND (b.totalPrice > IFNULL(p.totalPaid, 0)) and b.status='Confirmed'";
 
                   $result = $conn->query($days10Query);

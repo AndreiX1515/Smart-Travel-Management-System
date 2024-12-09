@@ -51,9 +51,9 @@
     $conn->begin_transaction();
 
     // Prepare the SQL statement for insertion into the booking table
-    $sql1 = "INSERT INTO booking (accountId, transactNo, agentId, flightId, packageId, fName, lName, mName, suffix, countryCode, contactNo, 
-    email, pax, totalPrice, bookingType, flightDetails, status, bookingDate) VALUES 
-    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Pending', NOW())";
+    $sql1 = "INSERT INTO booking (accountId, transactNo, agentId, agentCode, flightId, packageId, fName, lName, mName, suffix, countryCode, 
+    contactNo, email, pax, totalPrice, bookingType, flightDetails, status, bookingDate) VALUES 
+    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Pending', NOW())";
     $stmt1 = $conn->prepare($sql1);
 
     if (!$stmt1) 
@@ -65,8 +65,8 @@
     }
 
     // Bind and execute the booking insertion
-    $stmt1->bind_param('issiisssssssidss', $accountId, $transactNo, $agentId, $flightId, $packageId, $fName, $lName, $mName, $suffix, 
-    $countryCode, $contactNo, $email, $totalPax, $totalPrice, $bookingType, $flightDetails);
+    $stmt1->bind_param('isssiisssssssidss', $accountId, $transactNo, $agentId, $agentCode, $flightId, $packageId, $fName, $lName, $mName, 
+    $suffix, $countryCode, $contactNo, $email, $totalPax, $totalPrice, $bookingType, $flightDetails);
     
     if (!$stmt1->execute()) 
     {
