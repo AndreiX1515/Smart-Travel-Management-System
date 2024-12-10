@@ -164,128 +164,131 @@
 
 
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
+  document.addEventListener('DOMContentLoaded', function () 
+  {
     // Target all buttons that trigger a modal
     const paymentModals = document.querySelectorAll('[data-bs-toggle="modal"]');
     
-    paymentModals.forEach(button => {
-        button.addEventListener('click', function () {
-            const transactionNumber = button.getAttribute('data-transact-no');
-            const accountId = button.getAttribute('data-account-id');
+    paymentModals.forEach(button => 
+    {
+      button.addEventListener('click', function () 
+      {
+        const transactionNumber = button.getAttribute('data-transact-no');
+        const accountId = button.getAttribute('data-account-id');
 
-            // Target the modal associated with this transaction
-            const modal = document.getElementById(`paymentModal${transactionNumber}`);
+        // Target the modal associated with this transaction
+        const modal = document.getElementById(`paymentModal${transactionNumber}`);
 
-            // Set the hidden input fields with the correct transaction data
-            modal.querySelector('[name="transactionNumber"]').value = transactionNumber;
-            modal.querySelector('[name="accountId"]').value = accountId;
+        // Set the hidden input fields with the correct transaction data
+        modal.querySelector('[name="transactionNumber"]').value = transactionNumber;
+        modal.querySelector('[name="accountId"]').value = accountId;
 
-            // Show the modal
-            const bootstrapModal = new bootstrap.Modal(modal);
-            bootstrapModal.show();
-        });
+        // Show the modal
+        const bootstrapModal = new bootstrap.Modal(modal);
+        bootstrapModal.show();
+      });
     });
-});
+  });
 </script>
 
 <script>
-   const maxFiles = 5;
-   const maxFileSize = 4 * 1024 * 1024; // 4MB
-   let selectedFiles = {};
+  const maxFiles = 5;
+  const maxFileSize = 4 * 1024 * 1024; // 4MB
+  let selectedFiles = {};
 
-   document.querySelectorAll('.drop-zone').forEach(dropZone => 
-   {
-     dropZone.addEventListener("click", function() 
-     {
-       const transactNo = this.id.replace('dropZone', ''); // Extract transactNo
-       document.getElementById('fileInput' + transactNo).click();
-     });
-   });
+  document.querySelectorAll('.drop-zone').forEach(dropZone => 
+  {
+    dropZone.addEventListener("click", function() 
+    {
+      const transactNo = this.id.replace('dropZone', ''); // Extract transactNo
+      document.getElementById('fileInput' + transactNo).click();
+    });
+  });
 
-   function handleDrop(event, transactNo) 
-   {
-     event.preventDefault();
-     handleFiles(event.dataTransfer.files, transactNo);
-   }
+  function handleDrop(event, transactNo) 
+  {
+    event.preventDefault();
+    handleFiles(event.dataTransfer.files, transactNo);
+  }
 
-   function handleFiles(files, transactNo) 
-   {
-     const fileList = document.getElementById("fileList" + transactNo);
-     selectedFiles[transactNo] = selectedFiles[transactNo] || [];
+  function handleFiles(files, transactNo) 
+  {
+    const fileList = document.getElementById("fileList" + transactNo);
+    selectedFiles[transactNo] = selectedFiles[transactNo] || [];
 
-     if (selectedFiles[transactNo].length + files.length > maxFiles) 
-     {
-       alert(`You can upload a maximum of ${maxFiles} files.`);
-       return;
-     }
+    if (selectedFiles[transactNo].length + files.length > maxFiles) 
+    {
+      alert(`You can upload a maximum of ${maxFiles} files.`);
+      return;
+    }
 
-     Array.from(files).forEach(file => 
-     {
-       if (file.size > maxFileSize) 
-       {
-         alert(`File ${file.name} exceeds the 4MB limit and won't be added.`);
-       } 
-       else 
-       {
-         selectedFiles[transactNo].push(file);
+    Array.from(files).forEach(file => 
+    {
+      if (file.size > maxFileSize) 
+      {
+        alert(`File ${file.name} exceeds the 4MB limit and won't be added.`);
+      } 
+      else 
+      {
+        selectedFiles[transactNo].push(file);
 
-         // Debugging: Log the file and the selectedFiles array
-         console.log(`File added: ${file.name}, Size: ${(file.size / 1024 / 1024).toFixed(2)} MB`);
-         console.log(selectedFiles[transactNo]);
+        // Debugging: Log the file and the selectedFiles array
+        console.log(`File added: ${file.name}, Size: ${(file.size / 1024 / 1024).toFixed(2)} MB`);
+        console.log(selectedFiles[transactNo]);
 
-         // Create a list item for the file
-         const listItem = document.createElement("li");
-         listItem.classList.add("file-item");
-         listItem.textContent = `${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`;
+        // Create a list item for the file
+        const listItem = document.createElement("li");
+        listItem.classList.add("file-item");
+        listItem.textContent = `${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`;
 
-         // Add remove button
-         const removeButton = document.createElement("button");
-         removeButton.textContent = "Remove";
-         removeButton.classList.add("btn", "btn-danger", "btn-sm", "ml-2");
-         removeButton.onclick = () => removeFile(file, transactNo);
+        // Add remove button
+        const removeButton = document.createElement("button");
+        removeButton.textContent = "Remove";
+        removeButton.classList.add("btn", "btn-danger", "btn-sm", "ml-2");
+        removeButton.onclick = () => removeFile(file, transactNo);
 
-         listItem.appendChild(removeButton);
-         fileList.appendChild(listItem);
-       }
-     });
+        listItem.appendChild(removeButton);
+        fileList.appendChild(listItem);
+      }
+    });
 
-     updateFileInput(transactNo);
-   }
+    updateFileInput(transactNo);
+  }
 
-   function removeFile(file, transactNo) 
-   {
-     const index = selectedFiles[transactNo].indexOf(file);
-     if (index > -1) 
-     {
-       selectedFiles[transactNo].splice(index, 1); // Remove file from selectedFiles
-     }
+  function removeFile(file, transactNo) 
+  {
+    const index = selectedFiles[transactNo].indexOf(file);
+    if (index > -1) 
+    {
+      selectedFiles[transactNo].splice(index, 1); // Remove file from selectedFiles
+    }
 
-     // Remove the list item from the DOM
-     const fileList = document.getElementById("fileList" + transactNo);
-     const listItem = fileList.querySelector(`li:contains('${file.name}')`);
-     if (listItem) 
-     {
-       fileList.removeChild(listItem);
-     }
+    // Remove the list item from the DOM
+    const fileList = document.getElementById("fileList" + transactNo);
+    const listItem = fileList.querySelector(`li:contains('${file.name}')`);
+    if (listItem) 
+    {
+      fileList.removeChild(listItem);
+    }
 
-     updateFileInput(transactNo);
-   }
+    updateFileInput(transactNo);
+  }
 
-   function updateFileInput(transactNo) 
-   {
-     const dataTransfer = new DataTransfer();
-     selectedFiles[transactNo].forEach(file => dataTransfer.items.add(file));
+  function updateFileInput(transactNo) 
+  {
+    const dataTransfer = new DataTransfer();
+    selectedFiles[transactNo].forEach(file => dataTransfer.items.add(file));
 
-     const fileInput = document.getElementById('fileInput' + transactNo);
-     fileInput.files = dataTransfer.files;
+    const fileInput = document.getElementById('fileInput' + transactNo);
+    fileInput.files = dataTransfer.files;
 
-     // Debugging: Log updated file input
-     console.log(fileInput.files);
-   }
+    // Debugging: Log updated file input
+    console.log(fileInput.files);
+  }
 
- </script>
+</script>
 
- <style>
+<style>
    .drop-zone 
    {
      cursor: pointer;
@@ -295,7 +298,7 @@
      align-items: center;
      justify-content: center;
    }
- </style>
+</style>
 
 </body>
 </html>
