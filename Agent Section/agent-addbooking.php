@@ -535,8 +535,10 @@
           $('#flightId').val(''); // Clear Flight Id field
           $('#flightPrice').text('0.00'); // Clear Flight Price field
           $('#maxSeats').text(''); // Clear Max Seat field
+          $('#availSeats').text(''); // Clear Avail Seats field
           $('#displayTotalPrice').text("0.00"); // Display total price
           $('#totalPrice').val("0.00"); // Set hidden input value
+          $('#totalPax').val("Enter Total Pax"); // Set Total Pax value
 
           // Update the modal with the selected package name
           $('#selectedPackage').text(selectedPackageName);
@@ -589,6 +591,10 @@
           $('#flightId').val(''); // Clear Flight Id field
           $('#flightPrice').text('0.00'); // Clear Flight Price field
           $('#maxSeats').text(''); // Clear Max Seat field
+          $('#availSeats').text(''); // Clear Avail Seats field
+          $('#displayTotalPrice').text("0.00"); // Display total price
+          $('#totalPrice').val("0.00"); // Set hidden input value
+          $('#totalPax').val("Enter Total Pax"); // Set Total Pax value
 
           if (packageId && origin) 
           {
@@ -627,6 +633,10 @@
           $('#flightId').val('');  // Clear Flight Id field
           $('#flightPrice').val('0.00'); // Clear Flight Price field
           $('#maxSeats').text(''); // Clear Max Seat field
+          $('#availSeats').text(''); // Clear Avail Seats field
+          $('#displayTotalPrice').text("0.00"); // Display total price
+          $('#totalPrice').val("0.00"); // Set hidden input value
+          $('#totalPax').val("Enter Total Pax"); // Set Total Pax value
 
           if (packageId && origin && selectedYear) 
           {
@@ -670,6 +680,10 @@
           $('#flightPrice').text('0.00'); // Clear Flight Price field
           $('#flightPrice').val('0.00'); // Clear Flight Price field
           $('#maxSeats').text(''); // Clear Max Seat field
+          $('#availSeats').text(''); // Clear Avail Seats field
+          $('#displayTotalPrice').text("0.00"); // Display total price
+          $('#totalPrice').val("0.00"); // Set hidden input value
+          $('#totalPax').val("Enter Total Pax"); // Set Total Pax value
 
           if (packageId && origin && selectedYear && selectedMonth) 
           {
