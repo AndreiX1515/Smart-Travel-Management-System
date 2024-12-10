@@ -137,6 +137,8 @@ function manageAgentSession($accountId, $userData, $userType, $additionalFields)
     $_SESSION['agent_mName'] = $userData['mName'] ?? '';
     $_SESSION['agent_lName'] = $userData['lName'] ?? '';
     $_SESSION['agent_agentId'] = $userData['agentId'] ?? '';  // Added agent_id to session
+    $_SESSION['agent_agentCode'] = $userData['agentCode'] ?? '';  // Added agent_Code to session
+    $_SESSION['agent_agentRole'] = $userData['agentRole'] ?? '';  // Added agent_agentRole to session
     $_SESSION['agent_branchId'] = $userData['branchId'] ?? '';  // Added branch_id to session
     $_SESSION['agent_timeout'] = time();
 

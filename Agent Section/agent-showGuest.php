@@ -131,7 +131,7 @@
                 <p class=""><strong>Contact Person:</strong> <?php echo htmlspecialchars($fullName); ?></p>
                 <p class=""><strong>Contact No:</strong> <?php echo htmlspecialchars($contactNo); ?></p>
                 <p class=""><strong>Email:</strong> <?php echo htmlspecialchars($email); ?></p>
-                <p class=""><strong>Price:</strong>₱ <?php echo number_format((float)$price, 2); ?></p>
+                <p class=""><strong>Price: ₱ <?php echo number_format((float)$price, 2); ?></strong> </p>
               </div>
 
              <?php
@@ -143,11 +143,15 @@
            ?>
          </div> 
 
-          <div class="transaction-info-footer d-flex justify-content-end">
-            <button class="btn btn-danger btn-sm mt-2" data-bs-toggle="modal" data-bs-target="#cancelTransactionModal">
+        <div class="transaction-info-footer d-flex justify-content-end">
+          <button class="btn btn-danger btn-sm mt-2 me-2" data-bs-toggle="modal" data-bs-target="#cancelTransactionModal">
               Cancel Transaction
-            </button>
-          </div>
+          </button>
+          <button class="btn btn-primary btn-sm mt-2 me-2" data-bs-toggle="modal" data-bs-target="#paymentModal<?= $transactNum ?>"
+              data-transact-no="<?= $transactNum ?>" data-account-id="<?= $accountId ?>">Add Payment</button>
+          <button class="btn btn-primary btn-sm mt-2 me-2" data-bs-toggle="modal" data-bs-target="#requestModal" 
+              data-transaction-id="<?= $transactionNumber ?>">Add Request</button>
+        </div>
        </div>
       
         <div class="table-wrapper">
@@ -211,7 +215,7 @@
    </div>
  </div>
 
- <!-- Cancel Transaction Modal -->
+<!-- Cancel Transaction Modal -->
 <div class="modal fade" id="cancelTransactionModal" tabindex="-1" aria-labelledby="cancelTransactionModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -245,6 +249,9 @@
   </div>
 </div>
 
-    <?php require "../Agent Section/includes/scripts.php"; ?>         
+
+
+<?php require "../Agent Section/includes/scripts.php"; ?>
+
  </body>
 </html>

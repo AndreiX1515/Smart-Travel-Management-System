@@ -86,6 +86,8 @@
   </div>
 </div>
 
+<?php include '../Agent Section/functions/exchange-rate.php'?>
+
 <div class="modal fade" id="requestModal" tabindex="-1" aria-labelledby="requestModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -114,9 +116,27 @@
                   echo "<option value='{$res1['concernId']}'>{$res1['concernTitle']}</option>";
                 }
               ?>
+              <!-- <option value="Infant">Infant</option> -->
               <option value="Others">Others</option>
             </select>
           </div>
+
+          <!-- Custom Request Input for "Additional Headcount" -->
+          <div class="mb-3" id="additonalHeadcountContainer" style="display: none;">
+            
+            <label for="headcountCustomAmount" class="mt-2">Amount (₱):</label>
+            <input type="number" step="0.01" class="form-control" id="headcountCustomAmount" name="headcountCustomAmount" 
+            placeholder="Enter amount per pax">
+          </div>
+
+          <!-- Custom Request Input for "Infant"
+          <div class="mb-3" id="infantContainer" style="display: none;">
+            <label for="infantDescription">Description:</label>
+            <input type="text" class="form-control" id="infantDescription" name="infantDescription" placeholder="Enter request description">
+            
+            <label for="infantAmount" class="mt-2">Amount (₱):</label>
+            <input type="number" step="0.01" class="form-control" id="infantAmount" name="infantAmount" placeholder="Enter amount per pax">
+          </div> -->
 
           <!-- Custom Request Input for "Others" -->
           <div class="mb-3" id="otherInputContainer" style="display: none;">
@@ -236,6 +256,8 @@
         const concernId = $(this).val();
         const additionalSelectContainer = $('#additionalSelectContainer');
         const otherInputContainer = $('#otherInputContainer');
+        const additonalHeadcountContainer = $('#additonalHeadcountContainer');
+        // const infantContainer = $('#infantContainer');
         const requestDetails = $('#requestDetails');
         const priceInput = $('#price');
 
@@ -244,12 +266,22 @@
         priceInput.val('');
         additionalSelectContainer.hide();
         otherInputContainer.hide();
+        additonalHeadcountContainer.hide();
+        // infantContainer.hide();
 
         if (concernId === 'Others') 
         {
           // Show custom input fields for "Others"
           otherInputContainer.show();
         } 
+        // else if (concernId === 'Infant')
+        // {
+        //   infantContainer.show();
+        // }
+        else if (concernId === '3')
+        {
+          additonalHeadcountContainer.show();
+        }
         else if (concernId) 
         {
           // Fetch request details dynamically for selected concern
@@ -291,13 +323,23 @@
       // Update price when selecting request details
       $('#requestDetails').on('change', function() 
       {
-        const price = $(this).find('option:selected').data('price');
-        $('#price').val(price);
-        calculateTotalPrice();
+        const selectedOption = $(this).find('option:selected');
+        let price = selectedOption.data('price'); // Get the price from the selected option
+
+        // Apply special logic for specific request details
+        if (this.value === '23') 
+        {
+          const usdToPhp = <?php echo json_encode(number_format($usd_to_php, 2, '.', '')); ?>; // Use PHP to pass the conversion rate
+          price = price * parseFloat(usdToPhp); // Apply multiplier if the selected value is '23'
+        }
+
+        $('#price').val(price); // Update the price input field
+        calculateTotalPrice(); // Recalculate the total price
       });
 
+
       // Update total price dynamically based on pax
-      $('#paxRequest, #customAmount').on('input', function() 
+      $('#paxRequest, #customAmount, #headcountCustomAmount').on('input', function() 
       {
         calculateTotalPrice();
       });
@@ -320,8 +362,19 @@
         let price = parseFloat($('#price').val().replace(/,/g, '')) || 0;
 
         // Use custom amount if "Others" is selected
-        if ($('#concern').val() === 'Others') {
+        if ($('#concern').val() === 'Others') 
+        {
           price = parseFloat($('#customAmount').val()) || 0;
+        }
+
+        // if ($('#concern').val() === 'Infant') 
+        // {
+        //   price = parseFloat($('#infantAmount').val()) || 0;
+        // }
+
+        if ($('#concern').val() === '3') 
+        {
+          price = parseFloat($('#headcountCustomAmount').val()) || 0;
         }
 
         const pax = parseInt($('#paxRequest').val()) || 0;

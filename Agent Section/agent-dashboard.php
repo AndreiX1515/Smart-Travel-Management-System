@@ -44,10 +44,33 @@ session_start();
                 </div>
                 <div class="side-content d-flex flex-column">
                   <?php
-                    // Assuming you already have a connection to your database
+                    // Get session variables
                     $accountId = $_SESSION['agent_accountId'];
                     $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking where accountId = '$accountId' and MONTH(bookingDate) = MONTH(CURRENT_DATE()) AND YEAR(bookingDate) = YEAR(CURRENT_DATE())"; $result = mysqli_query($conn, $totalTransactionsQuery);
+                    $agentId = $_SESSION['agent_agentId'];
+                    $agentCode = $_SESSION['agent_agentCode'];
+                    $agentRole = $_SESSION['agent_agentRole'];
 
+                    // Determine which query to run based on the agent's role
+                    if ($agentRole != 'Head Agent') 
+                    {
+                      // Query for non-Head Agent, use accountId
+                      $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking 
+                                                WHERE accountId = '$accountId' AND MONTH(bookingDate) = MONTH(CURRENT_DATE()) 
+                                                AND YEAR(bookingDate) = YEAR(CURRENT_DATE())";
+                    } 
+                    else 
+                    {
+                      // Query for Head Agent, use agentCode
+                      $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking 
+                                                WHERE agentCode = '$agentCode' AND MONTH(bookingDate) = MONTH(CURRENT_DATE()) 
+                                                AND YEAR(bookingDate) = YEAR(CURRENT_DATE())";
+                    }
+
+                    // Execute the query
+                    $result = mysqli_query($conn, $totalTransactionsQuery);
+
+                    // Check if the query was successful and fetch the result
                     if ($result) 
                     {
                       $row = mysqli_fetch_assoc($result);
@@ -55,9 +78,9 @@ session_start();
                     } 
                     else 
                     {
-                      $totalTransactions = 0; // default to 0 if query fails
+                      $totalTransactions = 0; // Default to 0 if query fails
                     }
-                  ?>
+                    ?>
                   <h5><?php echo $totalTransactions; ?></h5>
                   <p>TOTAL</p>
                 </div>
@@ -70,11 +93,35 @@ session_start();
                 </div>
                 <div class="side-content d-flex flex-column">
                   <?php
-                    // Assuming you already have a connection to your database
+                    // Get session variables
                     $accountId = $_SESSION['agent_accountId'];
                     $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking where status='Confirmed' and accountId = '$accountId' and MONTH(bookingDate) = MONTH(CURRENT_DATE()) AND YEAR(bookingDate) = YEAR(CURRENT_DATE())";
+                    
+                    $agentCode = $_SESSION['agent_agentCode'];
+                    $agentRole = $_SESSION['agent_agentRole'];
+
+                    // Determine which query to run based on the agent's role
+                    if ($agentRole != 'Head Agent') 
+                    {
+                      // Query for non-Head Agent, use accountId
+                      $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking 
+                                                WHERE status = 'Confirmed' AND accountId = '$accountId' 
+                                                AND MONTH(bookingDate) = MONTH(CURRENT_DATE()) 
+                                                AND YEAR(bookingDate) = YEAR(CURRENT_DATE())";
+                    } 
+                    else 
+                    {
+                      // Query for Head Agent, use agentCode
+                      $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking 
+                                                WHERE status = 'Confirmed' AND agentCode = '$agentCode' 
+                                                AND MONTH(bookingDate) = MONTH(CURRENT_DATE()) 
+                                                AND YEAR(bookingDate) = YEAR(CURRENT_DATE())";
+                    }
+
+                    // Execute the query
                     $result = mysqli_query($conn, $totalTransactionsQuery);
 
+                    // Check if the query was successful and fetch the result
                     if ($result) 
                     {
                       $row = mysqli_fetch_assoc($result);
@@ -82,7 +129,7 @@ session_start();
                     } 
                     else 
                     {
-                      $totalTransactions = 0; // default to 0 if query fails
+                      $totalTransactions = 0; // Default to 0 if query fails
                     }
                   ?>
                   <h5><?php echo $totalTransactions; ?></h5>
@@ -100,12 +147,33 @@ session_start();
                 </div>
                 <div class="side-content d-flex flex-column">
                   <?php
-                    // Assuming you already have a connection to your database
+                    // Get session variables
                     $accountId = $_SESSION['agent_accountId'];
-                    $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking where status='Pending' and accountId = '$accountId'
-                                                and MONTH(bookingDate) = MONTH(CURRENT_DATE()) AND YEAR(bookingDate) = YEAR(CURRENT_DATE())";
+                    $agentCode = $_SESSION['agent_agentCode'];
+                    $agentRole = $_SESSION['agent_agentRole'];
+
+                    // Determine which query to run based on the agent's role
+                    if ($agentRole != 'Head Agent') 
+                    {
+                      // Query for non-Head Agent, use accountId
+                      $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking 
+                                                WHERE status = 'Pending' AND accountId = '$accountId' 
+                                                AND MONTH(bookingDate) = MONTH(CURRENT_DATE()) 
+                                                AND YEAR(bookingDate) = YEAR(CURRENT_DATE())";
+                    } 
+                    else 
+                    {
+                      // Query for Head Agent, use agentCode
+                      $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking 
+                                                WHERE status = 'Pending' AND agentCode = '$agentCode' 
+                                                AND MONTH(bookingDate) = MONTH(CURRENT_DATE()) 
+                                                AND YEAR(bookingDate) = YEAR(CURRENT_DATE())";
+                    }
+
+                    // Execute the query
                     $result = mysqli_query($conn, $totalTransactionsQuery);
 
+                    // Check if the query was successful and fetch the result
                     if ($result) 
                     {
                       $row = mysqli_fetch_assoc($result);
@@ -113,7 +181,7 @@ session_start();
                     } 
                     else 
                     {
-                      $totalTransactions = 0; // default to 0 if query fails
+                      $totalTransactions = 0; // Default to 0 if query fails
                     }
                   ?>
                   <h5><?php echo $totalTransactions; ?></h5>
@@ -128,12 +196,33 @@ session_start();
                 </div>
                 <div class="side-content d-flex flex-column">
                   <?php
-                    // Assuming you already have a connection to your database
+                    // Get session variables
                     $accountId = $_SESSION['agent_accountId'];
-                    $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking where status='Cancelled' and accountId = '$accountId'
-                                              and MONTH(bookingDate) = MONTH(CURRENT_DATE()) AND YEAR(bookingDate) = YEAR(CURRENT_DATE())";
+                    $agentCode = $_SESSION['agent_agentCode'];
+                    $agentRole = $_SESSION['agent_agentRole'];
+
+                    // Determine which query to run based on the agent's role
+                    if ($agentRole != 'Head Agent') 
+                    {
+                      // Query for non-Head Agent, use accountId
+                      $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking 
+                                                WHERE status = 'Cancelled' AND accountId = '$accountId' 
+                                                AND MONTH(bookingDate) = MONTH(CURRENT_DATE()) 
+                                                AND YEAR(bookingDate) = YEAR(CURRENT_DATE())";
+                    } 
+                    else 
+                    {
+                      // Query for Head Agent, use agentCode
+                      $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking 
+                                                WHERE status = 'Cancelled' AND agentCode = '$agentCode' 
+                                                AND MONTH(bookingDate) = MONTH(CURRENT_DATE()) 
+                                                AND YEAR(bookingDate) = YEAR(CURRENT_DATE())";
+                    }
+
+                    // Execute the query
                     $result = mysqli_query($conn, $totalTransactionsQuery);
 
+                    // Check if the query was successful and fetch the result
                     if ($result) 
                     {
                       $row = mysqli_fetch_assoc($result);
@@ -141,7 +230,7 @@ session_start();
                     } 
                     else 
                     {
-                      $totalTransactions = 0; // default to 0 if query fails
+                      $totalTransactions = 0; // Default to 0 if query fails
                     }
                   ?>
                   <h5><?php echo $totalTransactions; ?></h5>
@@ -167,15 +256,38 @@ session_start();
                 </div>
                 <div class="side-content d-flex flex-column">
                   <?php
-                    // Assuming $conn is your database connection
+                    // Get session variables
                     $accountId = $_SESSION['agent_accountId'];
-                    $days5Query = "SELECT COUNT(*) AS `bookingsDueIn5Days` FROM booking b 
+                    $agentCode = $_SESSION['agent_agentCode'];
+                    $agentRole = $_SESSION['agent_agentRole'];
+
+                    // Determine which query to run based on the agent's role
+                    if ($agentRole != 'Head Agent') 
+                    {
+                      // Query for non-Head Agent, use accountId
+                      $days5Query = "SELECT COUNT(*) AS `bookingsDueIn5Days` FROM booking b 
                                     JOIN flight f ON b.flightId = f.flightId
                                     LEFT JOIN (SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) 
-                                      AS totalPaid FROM payment GROUP BY transactNo) p ON b.transactNo = p.transactNo
-                                  WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) <= 5 AND DATEDIFF(f.flightDepartureDate, CURDATE()) >= 0
-                                    AND (b.totalPrice > IFNULL(p.totalPaid, 0)) and b.accountId = '$accountId' and b.status='Confirmed'";
+                                                AS totalPaid FROM payment GROUP BY transactNo) p ON b.transactNo = p.transactNo
+                                    WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) <= 5 
+                                    AND DATEDIFF(f.flightDepartureDate, CURDATE()) >= 0
+                                    AND (b.totalPrice > IFNULL(p.totalPaid, 0)) AND b.accountId = '$accountId' 
+                                    AND b.status = 'Confirmed'";
+                    } 
+                    else 
+                    {
+                      // Query for Head Agent, use agentCode
+                      $days5Query = "SELECT COUNT(*) AS `bookingsDueIn5Days` FROM booking b 
+                                    JOIN flight f ON b.flightId = f.flightId
+                                    LEFT JOIN (SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) 
+                                                AS totalPaid FROM payment GROUP BY transactNo) p ON b.transactNo = p.transactNo
+                                    WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) <= 5 
+                                    AND DATEDIFF(f.flightDepartureDate, CURDATE()) >= 0
+                                    AND (b.totalPrice > IFNULL(p.totalPaid, 0)) AND b.agentCode = '$agentCode' 
+                                    AND b.status = 'Confirmed'";
+                    }
 
+                    // Execute the query
                     $result = $conn->query($days5Query);
 
                     // Check if the query returned a result
@@ -188,7 +300,7 @@ session_start();
                     {
                       $bookingsDueIn5Days = 0;  // Default to 0 if no records found
                     }
-                  ?>
+                    ?>
                   <h5><?php echo $bookingsDueIn5Days; ?></h5>
                   <p>5 DAYS</p>
                 </div>
@@ -201,15 +313,36 @@ session_start();
                 </div>
                 <div class="side-content d-flex flex-column">
                   <?php
-                    // Assuming $conn is your database connection
+                    // Assuming you already have a connection to your database
                     $accountId = $_SESSION['agent_accountId'];
-                    $days10Query = "SELECT COUNT(*) AS bookingsDueIn10Days FROM booking b
+                    $agentCode = $_SESSION['agent_agentCode'];
+                    $agentRole = $_SESSION['agent_agentRole'];
+
+                    // Determine which query to run based on the agent's role
+                    if ($agentRole != 'Head Agent') 
+                    {
+                      // Query for non-Head Agent, use accountId
+                      $days10Query = "SELECT COUNT(*) AS bookingsDueIn10Days FROM booking b
                                       JOIN flight f ON b.flightId = f.flightId
                                       LEFT JOIN (SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) 
-                                      AS totalPaid FROM payment GROUP BY transactNo) p ON b.transactNo = p.transactNo
-                                    WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) BETWEEN 0 AND 10
-                                      AND (b.totalPrice > IFNULL(p.totalPaid, 0)) AND b.accountId = '$accountId' and b.status='Confirmed'";
+                                                AS totalPaid FROM payment GROUP BY transactNo) p ON b.transactNo = p.transactNo
+                                      WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) BETWEEN 6 AND 10
+                                      AND (b.totalPrice > IFNULL(p.totalPaid, 0)) AND b.accountId = '$accountId' 
+                                      AND b.status = 'Confirmed'";
+                    } 
+                    else 
+                    {
+                      // Query for Head Agent, use agentCode
+                      $days10Query = "SELECT COUNT(*) AS bookingsDueIn10Days FROM booking b
+                                      JOIN flight f ON b.flightId = f.flightId
+                                      LEFT JOIN (SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) 
+                                                AS totalPaid FROM payment GROUP BY transactNo) p ON b.transactNo = p.transactNo
+                                      WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) BETWEEN 6 AND 10
+                                      AND (b.totalPrice > IFNULL(p.totalPaid, 0)) AND b.agentCode = '$agentCode' 
+                                      AND b.status = 'Confirmed'";
+                    }
 
+                    // Execute the query
                     $result = $conn->query($days10Query);
 
                     // Check if the query returned a result
@@ -223,6 +356,7 @@ session_start();
                       $bookingsDueIn10Days = 0;  // Default to 0 if no records found
                     }
                   ?>
+
                   <h5><?php echo $bookingsDueIn10Days; ?></h5>
                   <p>10 DAYS</p>
                 </div>
@@ -237,16 +371,38 @@ session_start();
                 </div>
                 <div class="side-content d-flex flex-column">
                   <?php
-                    // Assuming $conn is your database connection
+                    // Assuming you already have a connection to your database
                     $accountId = $_SESSION['agent_accountId'];
-                    $days20Query = "SELECT COUNT(*) AS `bookingsDueIn20Days` FROM booking b 
-                                    JOIN flight f ON b.flightId = f.flightId
-                                    LEFT JOIN (SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) 
-                                              AS totalPaid FROM payment GROUP BY transactNo) p 
-                                    ON b.transactNo = p.transactNo
-                                    WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) BETWEEN 10 AND 20
-                                      AND (b.totalPrice > IFNULL(p.totalPaid, 0)) AND b.accountId = '$accountId' and b.status='Confirmed'";
+                    $agentCode = $_SESSION['agent_agentCode'];
+                    $agentRole = $_SESSION['agent_agentRole'];
 
+                    // Determine which query to run based on the agent's role
+                    if ($agentRole != 'Head Agent') 
+                    {
+                      // Query for non-Head Agent, use accountId
+                      $days20Query = "SELECT COUNT(*) AS bookingsDueIn20Days FROM booking b 
+                                      JOIN flight f ON b.flightId = f.flightId
+                                      LEFT JOIN (SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) 
+                                                AS totalPaid FROM payment GROUP BY transactNo) p 
+                                      ON b.transactNo = p.transactNo
+                                      WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) BETWEEN 10 AND 20
+                                      AND (b.totalPrice > IFNULL(p.totalPaid, 0)) AND b.accountId = '$accountId' 
+                                      AND b.status = 'Confirmed'";
+                    } 
+                    else 
+                    {
+                      // Query for Head Agent, use agentCode
+                      $days20Query = "SELECT COUNT(*) AS bookingsDueIn20Days FROM booking b 
+                                      JOIN flight f ON b.flightId = f.flightId
+                                      LEFT JOIN (SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) 
+                                                AS totalPaid FROM payment GROUP BY transactNo) p 
+                                      ON b.transactNo = p.transactNo
+                                      WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) BETWEEN 10 AND 20
+                                      AND (b.totalPrice > IFNULL(p.totalPaid, 0)) AND b.agentCode = '$agentCode' 
+                                      AND b.status = 'Confirmed'";
+                    }
+
+                    // Execute the query
                     $result = $conn->query($days20Query);
 
                     // Check if the query returned a result
@@ -260,6 +416,7 @@ session_start();
                       $bookingsDueIn20Days = 0;  // Default to 0 if no records found
                     }
                   ?>
+
                   <h5><?php echo $bookingsDueIn20Days; ?></h5>
                   <p>20 DAYS</p>
                 </div>
@@ -272,15 +429,39 @@ session_start();
                 </div>
                 <div class="side-content d-flex flex-column">
                   <?php
-                    // Assuming $conn is your database connection
+                    // Assuming you already have a connection to your database
                     $accountId = $_SESSION['agent_accountId'];
-                    $days30Query = "SELECT COUNT(*) AS `bookingsDueIn30Days` FROM booking b 
+                    $agentCode = $_SESSION['agent_agentCode'];
+                    $agentRole = $_SESSION['agent_agentRole'];
+
+                    // Determine which query to run based on the agent's role
+                    if ($agentRole != 'Head Agent') 
+                    {
+                      // Query for non-Head Agent, use accountId
+                      $days30Query = "SELECT COUNT(*) AS bookingsDueIn30Days FROM booking b 
                                       JOIN flight f ON b.flightId = f.flightId
                                       LEFT JOIN (SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) 
-                                      AS totalPaid FROM payment GROUP BY transactNo) p ON b.transactNo = p.transactNo
-                                    WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) BETWEEN 20 AND 30
-                                      AND (b.totalPrice > IFNULL(p.totalPaid, 0)) AND b.accountId = '$accountId' AND b.status = 'Confirmed'";
+                                                AS totalPaid FROM payment GROUP BY transactNo) p 
+                                      ON b.transactNo = p.transactNo
+                                      WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) BETWEEN 20 AND 30
+                                      AND (b.totalPrice > IFNULL(p.totalPaid, 0)) AND b.accountId = '$accountId' 
+                                      AND b.status = 'Confirmed'";
+                    } 
+                    else 
+                    {
+                      // Query for Head Agent, use agentCode
+                      $days30Query = "SELECT COUNT(*) AS bookingsDueIn30Days FROM booking b 
+                                      JOIN flight f ON b.flightId = f.flightId
+                                      LEFT JOIN (SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) 
+                                                AS totalPaid FROM payment GROUP BY transactNo) p 
+                                      ON b.transactNo = p.transactNo
+                                      WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) BETWEEN 20 AND 30
+                                      AND (b.totalPrice > IFNULL(p.totalPaid, 0)) 
+                                      AND b.agentCode = '$agentCode' 
+                                      AND b.status = 'Confirmed'";
+                    }
 
+                    // Execute the query
                     $result = $conn->query($days30Query);
 
                     // Check if the query returned a result
@@ -294,6 +475,7 @@ session_start();
                       $bookingsDueIn30Days = 0;  // Default to 0 if no records found
                     }
                   ?>
+
                   <h5><?php echo $bookingsDueIn30Days; ?></h5>
                   <p>30 DAYS</p>
                 </div>
@@ -344,6 +526,84 @@ session_start();
                 <div class="side-content d-flex flex-column">
                  
                   <h5 class="month-sales">₱ <?php echo $currentMonthTotal; ?></h5>
+                  <?php
+                    // Assuming you already have a connection to your database
+                    $accountId = $_SESSION['agent_accountId'];
+                    $agentCode = $_SESSION['agent_agentCode'];
+                    $agentRole = $_SESSION['agent_agentRole'];
+
+                    // Determine which query to run based on the agent's role
+                    if ($agentRole != 'Head Agent') 
+                    {
+                      // Query for non-Head Agent, use accountId in the payment table
+                      $pastMonthQuery = "SELECT IFNULL(SUM(amount), 0) AS totalPastMonth FROM payment p
+                                          JOIN booking b ON p.transactNo = b.transactNo
+                                          WHERE b.accountId = '$accountId' AND p.paymentStatus = 'Approved' 
+                                          AND MONTH(p.paymentDate) = MONTH(CURDATE() - INTERVAL 1 MONTH)
+                                          AND YEAR(p.paymentDate) = YEAR(CURDATE() - INTERVAL 1 MONTH)";
+                    } 
+                    else 
+                    {
+                      // Query for Head Agent, filter payments related to the agentCode in the booking table
+                      $pastMonthQuery = "SELECT IFNULL(SUM(amount), 0) AS totalPastMonth FROM payment p
+                                          JOIN booking b ON p.transactNo = b.transactNo
+                                          WHERE b.agentCode = '$agentCode' AND p.paymentStatus = 'Approved' 
+                                          AND MONTH(p.paymentDate) = MONTH(CURDATE() - INTERVAL 1 MONTH)
+                                          AND YEAR(p.paymentDate) = YEAR(CURDATE() - INTERVAL 1 MONTH)";
+                    }
+
+                    // Execute the query
+                    $pastMonthResult = $conn->query($pastMonthQuery);
+
+                    // Check if the query returned a result
+                    $pastMonthTotal = ($pastMonthResult->num_rows > 0) 
+                        ? number_format($pastMonthResult->fetch_assoc()['totalPastMonth'], 2) 
+                        : '0.00';
+                  ?>
+                  <h5>₱ <?php echo $pastMonthTotal; ?></h5>
+                  <p>PAST MONTH</p>
+                </div>
+              </div>
+
+              <!-- Current Month Sales -->
+              <div class="col-md-5 d-flex flex-row">
+                <div class="card-icon icon-gray">
+                  <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="side-content d-flex flex-column">
+                  <?php
+                    // Assuming you already have a connection to your database
+                    $accountId = $_SESSION['agent_accountId'];
+                    $agentCode = $_SESSION['agent_agentCode'];
+                    $agentRole = $_SESSION['agent_agentRole'];
+
+                    // Determine which query to run based on the agent's role
+                    if ($agentRole != 'Head Agent') 
+                    {
+                      // Query for non-Head Agent, use accountId in the payment table
+                      $currentMonthQuery = "SELECT IFNULL(SUM(amount), 0) AS totalCurrentMonth FROM payment p
+                                          JOIN booking b ON p.transactNo = b.transactNo
+                                          WHERE b.accountId = '$accountId' AND p.paymentStatus = 'Approved' 
+                                          AND MONTH(p.paymentDate) = MONTH(CURDATE()) AND YEAR(p.paymentDate) = YEAR(CURDATE())";
+                    } 
+                    else 
+                    {
+                      // Query for Head Agent, filter payments related to the agentCode in the booking table
+                      $currentMonthQuery = "SELECT IFNULL(SUM(amount), 0) AS totalCurrentMonth FROM payment p
+                                          JOIN booking b ON p.transactNo = b.transactNo
+                                          WHERE b.agentCode = '$agentCode'  AND p.paymentStatus = 'Approved' 
+                                          AND MONTH(p.paymentDate) = MONTH(CURDATE()) AND YEAR(p.paymentDate) = YEAR(CURDATE())";
+                    }
+
+                    // Execute the query
+                    $currentMonthResult = $conn->query($currentMonthQuery);
+
+                    // Check if the query returned a result
+                    $currentMonthTotal = ($currentMonthResult->num_rows > 0) 
+                        ? number_format($currentMonthResult->fetch_assoc()['totalCurrentMonth'], 2) 
+                        : 0;
+                  ?>
+                  <h5>₱ <?php echo $currentMonthTotal; ?></h5>
                   <p>CURRENT MONTH</p>
                 </div>
               </div>
@@ -647,7 +907,7 @@ session_start();
         <!-- Transactions table -->
         <div class="one">
           <div class="header d-flex justify-content-between align-items-center">
-            <h6>Transactions</h6>
+            <h6>Pending</h6>
             <div class="view-booking-container">
             </div>
           </div>
@@ -688,7 +948,7 @@ session_start();
                             LEFT JOIN
                                 agent a ON b.agentId = a.agentId
                             WHERE 
-                                b.agentId = '$agentId'
+                                b.agentId = '$agentId' and b.status = 'Pending'
                             ORDER BY 
                                 b.transactNo DESC";
           
@@ -893,10 +1153,132 @@ session_start();
 
       </div>
 
+      <!-- Confirmed Transactions Third Row -->
+      <div class="confirm-container">
+        <div class="one">
+          <div class="header ms-2 d-flex justify-content-between align-items-center justify-content-between">
+            <h6>Confirmed Transactions</h6>
+          </div>
+            
+          <div class="body">
+            <div class="confirm-table-container">
+              <table class="confirm-table">
+                <thead style="font-size: 12px;">
+                  <tr>
+                    <th>TRANSACTION NO.</th>
+                    <th>PACKAGE</th>
+                    <th>FLIGHT DATE</th>
+                    <th>TOTAL PAX.</th>
+                    <th>CONTACT NAME</th>
+                    <th>BOOKING TYPE</th>
+                    <th>AMOUNT PAID</th>
+                    <th>BALANCE</th>
+                    <th>STATUS</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php
+                    // Get session variables
+                    $accountId = $_SESSION['agent_accountId'];
+                    $agentId = $_SESSION['agent_agentId'];
+                    $agentCode = $_SESSION['agent_agentCode'];
+                    $agentRole = $_SESSION['agent_agentRole'];
 
+                    // Check if the agent is a Head Agent or not
+                    if ($agentRole != 'Head Agent') 
+                    {
+                      // Query for non-Head Agent, use accountId
+                      $query = "SELECT b.transactNo, b.flightId, b.pax, b.totalPrice AS packagePrice, 
+                                  CONCAT(DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y'), ' - ', 
+                                  DATE_FORMAT(f.returnDepartureDate, '%m-%d-%Y')) AS FlightDate, p.packageName AS packageName, 
+                                  CONCAT(b.lName, ', ', b.fName, ' ', 
+                                      CASE WHEN b.mName = 'N/A' THEN '' ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ',
+                                      CASE WHEN b.suffix = 'N/A' THEN '' ELSE b.suffix END) AS contactName, 
+                                  IFNULL(req.totalRequestCost, 0) AS totalRequestCost,
+                                  IFNULL(paid.totalPaidAmount, 0) AS totalPaidAmount,
+                                  b.status AS bookingStatus, b.bookingType, (b.totalPrice + IFNULL(req.totalRequestCost, 0)) AS TotalCost
+                                FROM 
+                                  booking b
+                                JOIN flight f ON b.flightId = f.flightId
+                                LEFT JOIN 
+                                  package p ON b.packageId = p.packageId
+                                LEFT JOIN 
+                                  (SELECT transactNo, SUM(amount) AS totalPaidAmount FROM payment
+                                    WHERE paymentStatus = 'Approved' GROUP BY transactNo) paid ON b.transactNo = paid.transactNo
+                                LEFT JOIN 
+                                  (SELECT transactNo, SUM(requestCost) AS totalRequestCost FROM request
+                                    WHERE requestStatus = 'Confirmed' GROUP BY transactNo) req ON b.transactNo = req.transactNo
+                                WHERE 
+                                  b.status = 'Confirmed' AND b.accountId = '$accountId' AND f.flightDepartureDate >= CURDATE()";
+                    } 
+                    else 
+                    {
+                      // Query for Head Agent, use agentCode
+                      $query = "SELECT b.transactNo, b.flightId, b.pax, b.totalPrice AS packagePrice, 
+                                  CONCAT(DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y'), ' - ', 
+                                  DATE_FORMAT(f.returnDepartureDate, '%m-%d-%Y')) AS FlightDate, p.packageName AS packageName, 
+                                  CONCAT(b.lName, ', ', b.fName, ' ', 
+                                      CASE WHEN b.mName = 'N/A' THEN '' ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ',
+                                      CASE WHEN b.suffix = 'N/A' THEN '' ELSE b.suffix END) AS contactName, 
+                                  IFNULL(req.totalRequestCost, 0) AS totalRequestCost,
+                                  IFNULL(paid.totalPaidAmount, 0) AS totalPaidAmount,
+                                  b.status AS bookingStatus, b.bookingType, (b.totalPrice + IFNULL(req.totalRequestCost, 0)) AS TotalCost
+                                FROM 
+                                  booking b
+                                JOIN flight f ON b.flightId = f.flightId
+                                LEFT JOIN 
+                                  package p ON b.packageId = p.packageId
+                                LEFT JOIN 
+                                  (SELECT transactNo, SUM(amount) AS totalPaidAmount FROM payment
+                                    WHERE paymentStatus = 'Approved' GROUP BY transactNo) paid ON b.transactNo = paid.transactNo
+                                LEFT JOIN 
+                                  (SELECT transactNo, SUM(requestCost) AS totalRequestCost FROM request
+                                    WHERE requestStatus = 'Confirmed' GROUP BY transactNo) req ON b.transactNo = req.transactNo
+                                WHERE 
+                                  b.status = 'Confirmed' AND b.agentCode = '$agentCode' AND f.flightDepartureDate >= CURDATE()";
+                    }
 
+                    // Execute the query
+                    $result = $conn->query($query);
 
+                    // Check if there are results and populate the table
+                    if ($result && $result->num_rows > 0) 
+                    {
+                      while ($row = $result->fetch_assoc()) 
+                      {
+                        // Calculate Balance
+                        $totalAmountPaid = $row['totalPaidAmount'];
+                        $totalAmountToBePaid = $row['packagePrice'] + $row['totalRequestCost']; // Total price + total request cost
+                        $balance = $totalAmountToBePaid - $totalAmountPaid; // Balance calculation
 
+                        // Determine if fully paid or not
+                        $status = ($totalAmountPaid == $totalAmountToBePaid) ? 'Fully Paid' : 'Not Paid';
+
+                        // Display table row
+                        echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($row['transactNo']) . "'>";
+                        echo "<td>" . htmlspecialchars(substr($row['transactNo'], 5)) . "</td>"; // TransactNo
+                        echo "<td>" . htmlspecialchars($row['packageName']) . "</td>"; // Package Name
+                        echo "<td>" . htmlspecialchars($row['FlightDate']) . "</td>"; // Flight Date Range
+                        echo "<td>" . htmlspecialchars($row['pax']) . "</td>"; // Pax (Number of Passengers)
+                        echo "<td>" . htmlspecialchars($row['contactName']) . "</td>"; // Contact Name
+                        echo "<td>" . $row['bookingType'] . "</td>"; // Booking Type 
+                        echo "<td>₱ " . number_format($totalAmountPaid, 2) . "</td>"; // Total Amount Paid
+                        echo "<td>₱ " . number_format($balance, 2) . "</td>"; // Balance (Amount to be paid - Amount paid)
+                        echo "<td>" . htmlspecialchars($row['bookingStatus']) . "</td>"; // Status (Fully Paid or Not Paid)
+                        echo "</tr>";
+                      }
+                    } 
+                    else 
+                    {
+                      // Display a message if no records are found
+                      echo "<tr><td colspan='12'>No records found.</td></tr>";
+                    }
+                  ?>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
 
 

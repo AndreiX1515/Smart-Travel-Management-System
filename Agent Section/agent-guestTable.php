@@ -54,12 +54,12 @@
           View Guest Files
         </button> -->
         <button type="button" class="btn btn-primary" 
-                data-bs-toggle="modal" 
-                <?php echo $disable_button2; ?>
-                <?php if (empty($disable_button2)) : ?>
-                  data-bs-target="#visaModal"
-                <?php endif; ?>>
-          Attach Visa Requirements
+          data-bs-toggle="modal" 
+          <?php echo $disable_button2; ?> 
+          <?php if (empty($disable_button2)) : ?>
+            data-bs-target="#visaModal"
+          <?php endif; ?>>
+        Attach Visa Requirements
         </button>
       </div>
     </div>
@@ -101,16 +101,18 @@
 
             if ($res1->num_rows > 0) 
             {
-               while ($row = $res1->fetch_assoc()) {
+              while ($row = $res1->fetch_assoc()) 
+              {
                 // Define the full name variable with suffix
                 // Define the full name without suffix first
                 $fullName = $row['fName'] . ' ' . $row['mName'] . ' ' . $row['lName'];
 
                 // Append suffix only if it is not "N/A"
-                if (!empty($row['suffix']) && $row['suffix'] !== 'N/A') {
-                    $fullName .= ' ' . $row['suffix']; // Append suffix if it exists and is not "N/A"
+                if (!empty($row['suffix']) && $row['suffix'] !== 'N/A') 
+                {
+                  $fullName .= ' ' . $row['suffix']; // Append suffix if it exists and is not "N/A"
                 }
-            
+              
                 // Escape values for safety
                 $guestId = htmlspecialchars($row['guestId']);
                 $birthdate = htmlspecialchars($row['birthdate']);
@@ -139,7 +141,7 @@
                         <td>{$passportExp}</td>
                         <td>{$row['visaStatus']}</td>
                       </tr>";
-            }
+              }
             } 
             else 
             {
@@ -158,7 +160,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h6 class="modal-title" id="visaModalLabel">
-            Visa Requirements for Transaction No: <?php echo htmlspecialchars($_SESSION['transaction_number'] ?? ''); ?>
+          Visa Requirements for Transaction No: <?php echo htmlspecialchars($_SESSION['transaction_number'] ?? ''); ?>
         </h6>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
@@ -167,79 +169,40 @@
         <div class="modal-body">
           <!-- Hidden input for transaction number -->
           <input type="hidden" name="transaction_number" value="<?php echo htmlspecialchars($_SESSION['transaction_number'] ?? ''); ?>">
-          <?php
-            // Assuming you have a database connection established
-            $transactionNumber = $_SESSION['transaction_number'] ?? '';
-            $query1 = "SELECT guestId, CONCAT(
-                lName, ', ', fName, ' ', 
-                CASE WHEN mName = 'N/A' THEN '' ELSE CONCAT(SUBSTRING(mName, 1, 1), '.') END, ' ',
-                CASE WHEN suffix = 'N/A' THEN '' ELSE suffix END
-            ) AS `FULLNAME` FROM guest WHERE transactNo = '$transactionNumber'";
-
-            // Execute the query
-            $res1 = mysqli_query($conn, $query1);
-
-            if ($res1) 
-            {
-              // Count the number of guests
-              $guestCount = mysqli_num_rows($res1);
-
-              // Display the name and guestId for each guest inside input fields
-              while ($row = mysqli_fetch_assoc($res1)) 
-              {
-                $guestId = $row['guestId'];
-                $name = $row['FULLNAME'];
-
-                // Create input fields for each guest
-                echo "<div class='mb-4'>"; // Main container with margin bottom
-                echo "<input type='hidden' class='form-control' id='guest-$guestId' name='guestIds[]' value='$guestId' readonly>";
-
-                echo "<div class='mb-3'>"; // Container for Guest Name
-                echo "<label for='name-$guestId' class='form-label'>Guest Name:</label>";
-                echo "<input type='text' class='form-control' id='name-$guestId' name='guestNames[]' value='$name' readonly>";
-                echo "</div>";
-
-                echo "<h5 class='form-label mt-4'>Visa Requirements</h5>"; // Header with top margin
-
-                // Passport field
-                echo "<div class='mb-3'>";
-                echo "<label for='passport-$guestId' class='form-label'>Passport:</label>";
-                echo "<input type='file' class='form-control' id='passport-$guestId' name='passports[]'>";
-                echo "</div>";
-
-                // Permit field
-                echo "<div class='mb-3'>";
-                echo "<label for='permit-$guestId' class='form-label'>Permit:</label>";
-                echo "<input type='file' class='form-control' id='permit-$guestId' name='permits[]'>";
-                echo "</div>";
-
-                // Valid ID field
-                echo "<div class='mb-3'>";
-                echo "<label for='validId-$guestId' class='form-label'>Valid ID:</label>";
-                echo "<input type='file' class='form-control' id='validId-$guestId' name='validIds[]'>";
-                echo "</div>";
-
-                // Certificate field
-                echo "<div class='mb-3'>";
-                echo "<label for='certificate-$guestId' class='form-label'>Certificate:</label>";
-                echo "<input type='file' class='form-control' id='certificate-$guestId' name='certificates[]'>";
-                echo "</div>";
-
-                // Guaranteed Letter field
-                echo "<div class='mb-3'>";
-                echo "<label for='guaranteedLetter-$guestId' class='form-label'>Guaranteed Letter:</label>";
-                echo "<input type='file' class='form-control' id='guaranteedLetter-$guestId' name='guaranteedLetters[]'>";
-                echo "</div>";
-
-                echo "</div>"; // End of main container
-
-              }
-            } 
-            else 
-            {
-              echo "<p>Error: " . mysqli_error($conn) . "</p>";
-            }
-          ?>
+          
+          <!-- Container for all guests' visa requirements -->
+          <div id="allGuestFields">
+            <div class="mb-4">
+              <label for="guestSelect" class="form-label">Select Guest:</label>
+              <select class="form-select" id="guestSelect" onchange="addGuestFields(this.value)">
+              <option selected disabled>-- Select Guest --</option>
+              <?php
+                if ($res1) 
+                {
+                  $transactionNumber = $_SESSION['transaction_number'] ?? '';
+                  $query1 = "SELECT g.guestId, CONCAT(g.lName, ', ', g.fName, ' ', 
+                                    CASE WHEN g.suffix = 'N/A' THEN '' ELSE g.suffix END, ' ',
+                                    CASE WHEN g.mName = 'N/A' THEN '' ELSE CONCAT(SUBSTRING(g.mName, 1, 1), '.') END) AS FULLNAME 
+                            FROM guest g
+                            LEFT JOIN visarequirements v ON g.guestId = v.guestId
+                            WHERE g.transactNo = '$transactionNumber'
+                            AND v.guestId IS NULL";
+                  $res1 = mysqli_query($conn, $query1);
+                  while ($row = mysqli_fetch_assoc($res1)) 
+                  {
+                    $guestId = $row['guestId'];
+                    $fullName = $row['FULLNAME'];
+                    echo "<option value='$guestId'>$fullName</option>";
+                  }
+                }
+                else 
+                {
+                  echo "<option value=''>No guests available</option>";
+                }
+              ?>
+            </select>
+            </div>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -252,6 +215,124 @@
 
 <?php require "../Agent Section/includes/scripts.php"; ?>
 
+
+<script>
+  let guestCounter = 0;
+
+  function addGuestFields(guestId = "") 
+  {
+    const allGuestFieldsContainer = document.getElementById("allGuestFields");
+    const guestSelect = document.getElementById("guestSelect");
+
+    // Increment counter for unique IDs
+    guestCounter++;
+
+    // Fetch the guest name from the selected ID
+    const guestName = getGuestNameById(guestId);
+
+    // Generate a new guest field block
+    const guestFieldsHTML = `
+      <div id="guestFields-${guestCounter}" class="guest-fields">
+        <h5 class="form-label mt-4">
+          Visa Requirements for Guest: ${guestName}
+        </h5>
+        
+        <!-- Guest Name Display (Read-Only) -->
+        <div class="mb-3">
+          <label for="guestName-${guestCounter}" class="form-label">Guest Name:</label>
+          <input type="text" class="form-control" id="guestName-${guestCounter}" name="guestNames[]" 
+            value="${guestName}" readonly>
+        </div>
+        
+        <input type="hidden" name="guestIds[]" value="${guestId}">
+        
+        <!-- Visa Fields -->
+        <div class="mb-3">
+          <label for="passport-${guestCounter}" class="form-label">Passport:</label>
+          <input type="file" class="form-control" id="passport-${guestCounter}" name="passports[]">
+        </div>
+        <div class="mb-3">
+          <label for="permit-${guestCounter}" class="form-label">Permit:</label>
+          <input type="file" class="form-control" id="permit-${guestCounter}" name="permits[]">
+        </div>
+        <div class="mb-3">
+          <label for="validId-${guestCounter}" class="form-label">Valid ID:</label>
+          <input type="file" class="form-control" id="validId-${guestCounter}" name="validIds[]">
+        </div>
+        <div class="mb-3">
+          <label for="certificate-${guestCounter}" class="form-label">Certificate:</label>
+          <input type="file" class="form-control" id="certificate-${guestCounter}" name="certificates[]">
+        </div>
+        <div class="mb-3">
+          <label for="guaranteedLetter-${guestCounter}" class="form-label">Guaranteed Letter:</label>
+          <input type="file" class="form-control" id="guaranteedLetter-${guestCounter}" name="guaranteedLetters[]">
+        </div>
+        
+        <!-- Remove Button -->
+        <button type="button" class="btn btn-danger" onclick="removeGuestFields(${guestCounter}, '${guestId}')">Remove</button>
+        <hr>
+      </div>`;
+
+    // Append the new guest fields to the container
+    allGuestFieldsContainer.insertAdjacentHTML("beforeend", guestFieldsHTML);
+
+    // Disable the selected guest in the dropdown
+    disableSelectedGuest(guestId);
+  }
+
+  function getGuestNameById(guestId) 
+  {
+    const guestSelect = document.getElementById("guestSelect");
+    const options = guestSelect.options;
+
+    // Loop through the options to find the guest name based on guestId
+    for (let i = 0; i < options.length; i++) 
+    {
+      if (options[i].value == guestId) 
+      {
+        return options[i].text;
+      }
+    }
+
+    return '';  // Return empty if no match is found
+  }
+
+  function removeGuestFields(counter, guestId) 
+  {
+    const guestFields = document.getElementById(`guestFields-${counter}`);
+    if (guestFields) {
+      guestFields.remove();
+    }
+
+    // Re-enable the removed guest in the select dropdown
+    enableGuestInSelect(guestId);
+  }
+
+  function disableSelectedGuest(guestId) 
+  {
+    const guestSelect = document.getElementById("guestSelect");
+    const options = guestSelect.options;
+    for (let i = 0; i < options.length; i++) {
+      if (options[i].value == guestId) {
+        options[i].disabled = true;
+        break;
+      }
+    }
+  }
+
+  function enableGuestInSelect(guestId) 
+  {
+    const guestSelect = document.getElementById("guestSelect");
+    const options = guestSelect.options;
+    for (let i = 0; i < options.length; i++) {
+      if (options[i].value == guestId) {
+        options[i].disabled = false;
+        break;
+      }
+    }
+  }
+
+</script>
 
 <script>
   document.addEventListener("DOMContentLoaded", function() 

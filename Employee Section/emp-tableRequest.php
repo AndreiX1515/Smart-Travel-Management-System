@@ -158,7 +158,7 @@
                           CONCAT(a.lName, ', ', a.fName, 
                               IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1), '.'), '')) AS AgentName,
                           c.concernTitle AS `RequestTitle`, cd.details AS `RequestDetails`, b.pax AS `TotalPax`,
-                          (b.totalPrice + IFNULL(SUM(CASE WHEN p.paymentStatus = 'Approved' THEN p.amount ELSE 0 END), 0)) AS `TotalAmount`,
+                          r.requestCost as requestCost,
                           r.customRequest as customRequest, r.details as details, DATE_FORMAT(r.requestDate, '%m-%d-%Y') AS `RequestDate`, 
                           r.requestStatus AS `Status`
                       FROM 
@@ -213,7 +213,7 @@
                           <td>{$details}</td>
                           <td>{$row['details']}</td>
                           <td>{$row['TotalPax']}</td>
-                          <td>{$row['TotalAmount']}</td>
+                          <td>{$row['requestCost']}</td>
                           <td>{$row['RequestDate']}</td>
                           <td>
                             <span class='badge rounded-pill {$badgeClass} p-2'>{$status}</span>

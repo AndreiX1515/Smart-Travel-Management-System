@@ -118,7 +118,7 @@
               </select>
             </div>
 
-            <div id="amountDisplay">Total Amount Left: ₱ <span id="amountValue">0.00 </span> <span id="amountStatus"></span> <span id="requestAmountStatus"></span></div>
+            <div id="amountDisplay">Balance: ₱ <span id="amountValue">0.00 </span> <span id="amountStatus"></span> <span id="requestAmountStatus"></span></div>
 
             <div class="mb-3">
               <label class="form-label">Payment Amount</label>

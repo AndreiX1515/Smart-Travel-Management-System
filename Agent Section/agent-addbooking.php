@@ -142,6 +142,7 @@
                   </div>
                 </div>
 
+                <input type="hidden" id="agentCode" name="agentCode" value="<?php echo $_SESSION['agent_agentCode'];; ?>" placeholder="agentCode Input">
                 <input type="hidden" id="flightId" name="flightId" value="" placeholder="Flight Id Input">
                 <input type="hidden" id="packagePrice" name="packagePrice" placeholder="Package Price">
                 <input type="hidden" name="flightPrice" id="flightPricee" placeholder="Flight Price">
@@ -534,8 +535,10 @@
           $('#flightId').val(''); // Clear Flight Id field
           $('#flightPrice').text('0.00'); // Clear Flight Price field
           $('#maxSeats').text(''); // Clear Max Seat field
+          $('#availSeats').text(''); // Clear Avail Seats field
           $('#displayTotalPrice').text("0.00"); // Display total price
           $('#totalPrice').val("0.00"); // Set hidden input value
+          $('#totalPax').val("Enter Total Pax"); // Set Total Pax value
 
           // Update the modal with the selected package name
           $('#selectedPackage').text(selectedPackageName);
@@ -588,6 +591,10 @@
           $('#flightId').val(''); // Clear Flight Id field
           $('#flightPrice').text('0.00'); // Clear Flight Price field
           $('#maxSeats').text(''); // Clear Max Seat field
+          $('#availSeats').text(''); // Clear Avail Seats field
+          $('#displayTotalPrice').text("0.00"); // Display total price
+          $('#totalPrice').val("0.00"); // Set hidden input value
+          $('#totalPax').val("Enter Total Pax"); // Set Total Pax value
 
           if (packageId && origin) 
           {
@@ -626,6 +633,10 @@
           $('#flightId').val('');  // Clear Flight Id field
           $('#flightPrice').val('0.00'); // Clear Flight Price field
           $('#maxSeats').text(''); // Clear Max Seat field
+          $('#availSeats').text(''); // Clear Avail Seats field
+          $('#displayTotalPrice').text("0.00"); // Display total price
+          $('#totalPrice').val("0.00"); // Set hidden input value
+          $('#totalPax').val("Enter Total Pax"); // Set Total Pax value
 
           if (packageId && origin && selectedYear) 
           {
@@ -669,6 +680,10 @@
           $('#flightPrice').text('0.00'); // Clear Flight Price field
           $('#flightPrice').val('0.00'); // Clear Flight Price field
           $('#maxSeats').text(''); // Clear Max Seat field
+          $('#availSeats').text(''); // Clear Avail Seats field
+          $('#displayTotalPrice').text("0.00"); // Display total price
+          $('#totalPrice').val("0.00"); // Set hidden input value
+          $('#totalPax').val("Enter Total Pax"); // Set Total Pax value
 
           if (packageId && origin && selectedYear && selectedMonth) 
           {
@@ -912,6 +927,7 @@
             {
               // If land only is not selected, check for seat availability
               $('#errorMessage').text('The Available Seats are not enough.'); // Show error message in the UI
+              alert('The Available Seats are not enough.'); // Show error message as an alert
             } 
             else 
             {

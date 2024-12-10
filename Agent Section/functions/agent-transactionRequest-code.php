@@ -15,6 +15,9 @@
     $details = $_POST['details'];
     $customDescription = $_POST['customDescription'];
     $customAmount = $_POST['customAmount'];
+    $headcountCustomAmount = $_POST['headcountCustomAmount'];
+    // $infantDescription = $_POST['infantDescription'];
+    // $infantDescription = $_POST['infantDescription'];
     $amount = $_POST['totalPrice'];
 
     // Set the session variable for the current user in MySQL
@@ -33,24 +36,56 @@
       // Execute the statement
       if ($stmt->execute()) 
       {
-      // Commit the transaction if everything is successful
-      $conn->commit();
-      $_SESSION['status'] = "Request submitted successfully!";
-      header("Location: ../agent-showGuest.php?id=" . htmlspecialchars($transactNo));
-      exit(0);
+        // Commit the transaction if everything is successful
+        $conn->commit();
+        $_SESSION['status'] = "Request submitted successfully!";
+        header("Location: ../agent-showGuest.php?id=" . htmlspecialchars($transactNo));
+        exit(0);
       } 
       else 
       {
-      // Rollback the transaction if there's an error
-      $_SESSION['status'] = "Database error on request insert: " . $stmt->error;
-      $conn->rollback();  // Rollback the transaction if there is an error
-      header("Location: ../agent-showGuest.php?id=" . htmlspecialchars($transactNo));
-      exit(0);
+        // Rollback the transaction if there's an error
+        $_SESSION['status'] = "Database error on request insert: " . $stmt->error;
+        $conn->rollback();  // Rollback the transaction if there is an error
+        header("Location: ../agent-showGuest.php?id=" . htmlspecialchars($transactNo));
+        exit(0);
       }
 
       // Close the statement
       $stmt->close();
     }
+
+    // else if ($concern == '3')
+    // {
+    //   // Prepare the SQL statement
+    //   $stmt = $conn->prepare("INSERT INTO request (transactNo, accountId, concernId, concernDetailsId, pax, details, requestCost, 
+    //   customRequest, customAmount, requestDate, requestStatus) VALUES(?, ?, ?, Null, ?, ?, ?, Null, Null, Now(), 'Submitted')");
+    //   $stmt->bind_param("siiiisd", $transactNo, $accountId, $concern, $requestDetails, $pax, $details, $amount);
+
+    //   // Execute the statement
+    //   if ($stmt->execute()) 
+    //   {
+    //     // Commit the transaction if everything is successful
+    //     $conn->commit();
+    //     $_SESSION['status'] = "Request submitted successfully!";
+    //     header("Location: ../agent-showGuest.php?id=" . htmlspecialchars($transactNo));
+    //     exit(0);
+    //   } 
+    //   else 
+    //   {
+    //     // Rollback the transaction if there's an error
+    //     $_SESSION['status'] = "Database error on request insert: " . $stmt->error;
+    //     $conn->rollback();  // Rollback the transaction if there is an error
+    //     header("Location: ../agent-showGuest.php?id=" . htmlspecialchars($transactNo));
+    //     exit(0);
+    //   }
+
+    //   // Close the statement
+    //   $stmt->close();
+
+    //   // Close the connection
+    //   $conn->close();
+    // }
 
     else 
     {
@@ -62,19 +97,19 @@
       // Execute the statement
       if ($stmt->execute()) 
       {
-      // Commit the transaction if everything is successful
-      $conn->commit();
-      $_SESSION['status'] = "Request submitted successfully!";
-      header("Location: ../agent-showGuest.php?id=" . htmlspecialchars($transactNo));
-      exit(0);
+        // Commit the transaction if everything is successful
+        $conn->commit();
+        $_SESSION['status'] = "Request submitted successfully!";
+        header("Location: ../agent-showGuest.php?id=" . htmlspecialchars($transactNo));
+        exit(0);
       } 
       else 
       {
-      // Rollback the transaction if there's an error
-      $_SESSION['status'] = "Database error on request insert: " . $stmt->error;
-      $conn->rollback();  // Rollback the transaction if there is an error
-      header("Location: ../agent-showGuest.php?id=" . htmlspecialchars($transactNo));
-      exit(0);
+        // Rollback the transaction if there's an error
+        $_SESSION['status'] = "Database error on request insert: " . $stmt->error;
+        $conn->rollback();  // Rollback the transaction if there is an error
+        header("Location: ../agent-showGuest.php?id=" . htmlspecialchars($transactNo));
+        exit(0);
       }
 
       // Close the statement
