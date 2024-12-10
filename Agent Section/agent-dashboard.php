@@ -483,6 +483,7 @@
 
           <div class="card-content px-3">
             <div class="row">
+              <!-- Past Month Sales -->
               <div class="col-md-5 d-flex flex-row totalpayment">
                 <div class="card-icon icon-blue">
                   <i class="fas fa-calendar-alt"></i>
@@ -527,6 +528,7 @@
                 </div>
               </div>
 
+              <!-- Current Month Sales -->
               <div class="col-md-5 d-flex flex-row">
                 <div class="card-icon icon-gray">
                   <i class="fas fa-check-circle"></i>

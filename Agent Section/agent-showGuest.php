@@ -149,7 +149,7 @@
           </button>
           <button class="btn btn-primary btn-sm mt-2 me-2" data-bs-toggle="modal" data-bs-target="#paymentModal<?= $transactNum ?>"
               data-transact-no="<?= $transactNum ?>" data-account-id="<?= $accountId ?>">Add Payment</button>
-          <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#requestModal" 
+          <button class="btn btn-primary btn-sm mt-2 me-2" data-bs-toggle="modal" data-bs-target="#requestModal" 
               data-transaction-id="<?= $transactionNumber ?>">Add Request</button>
         </div>
        </div>
