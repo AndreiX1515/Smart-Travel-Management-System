@@ -5,7 +5,20 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
+
+
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+
+
+
+
+
+
+
+
+
 
 
 <!-- Bootstrap 5.3 Tooltip Initialization -->
@@ -33,6 +46,4 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
-
-
 </script>

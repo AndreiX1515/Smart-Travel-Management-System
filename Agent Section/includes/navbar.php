@@ -1,6 +1,8 @@
 <?php
 require "../conn.php";
 
+include "../Agent Section/includes/breadcrumbs.php";
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -46,12 +48,9 @@ $current_date = date('D, F d, Y'); // Format: "Tue, January 01, 2024"
   <nav class="navbar navbar-expand-lg justify-content-between sticky-top">
      <div class="container-fluid d-flex justify-content-between">
         <div class="nav-start-container d-flex flex-row">
-            <!-- Toggle button for the sidebar -->
-            <!-- <div class="toggle-btn" id="toggleBtn">
-                <i class="fa-solid fa-bars"></i>
-            </div> -->
-
             <a class="navbar-brand" id="page-title" style="font-weight: 500;"></a> 
+
+            
         </div>
 
           <div class="nav-end-container d-flex flex-row align">

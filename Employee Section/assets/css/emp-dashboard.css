@@ -518,7 +518,7 @@
 }
 
 .info-table-container {
- height: 60vh;
+ height: 61.5vh;
 
 
 }
@@ -585,7 +585,7 @@
 /* Table styles */
 .info-table {
  width: 100%;    
- height: 62vh;       
+ height: 63vh;       
  overflow-y: auto;       
  border-collapse: collapse; 
  table-layout: fixed;    
@@ -598,6 +598,8 @@
 
 /* Makes the entire thead sticky */
 .info-table thead {
+ font-size: 1rem;
+ font-weight: bold;
  position: sticky;            /* Makes the entire header row sticky */
  top: -8px;                   /* Moves the header a bit upward (adjust as needed) */
  background-color: #f8f9fa;   /* Lighter background for headers */
@@ -606,12 +608,21 @@
  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Adds a shadow for separation from tbody */
 }
 
+.agentTHead {
+ font-size: 1rem;
+ font-weight: bold;
+
+}
+
+
+
+
 /* Ensure header cells have proper background */
 .info-table th {
  padding: 8px 12px;           /* Add padding for better readability */
  border: 1px solid #ccc;      /* Add borders between cells */
- font-weight: bold;
- font-size: 12px;
+ font-weight: 600;
+ font-size: 1rem;
  text-align: center;
  background-color: #f8f9fa;   /* Ensures header cells have consistent background */
  position: relative;           /* Ensures proper stacking context */
@@ -623,7 +634,7 @@
  padding: 10px 12px;    /* Padding for better readability */
  border: 1px solid #ccc;  /* Add borders between cells */
  text-align: center;
- font-size: 12px;
+ font-size: 14px;
  word-wrap: break-word;    /* Ensure text breaks within cells */
 }
 

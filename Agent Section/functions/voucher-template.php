@@ -76,6 +76,7 @@ public function VoucherHeader() {
  $this->SetFillColor(255, 255, 255); // White background
  $this->SetTextColor(0, 0, 0); // Black text color
 
+ $this->SetFont('Helvetica', 'B', 10);
  // Render header cells
  $this->Cell($col1, 7, '', 1, 0, 'C', true);  // Empty cell
  $this->Cell($col2, 7, 'DATE', 1, 0, 'C', true);
@@ -100,73 +101,150 @@ public function TourConditionFirst($data3) {
  $col3 = 15; // Width for remaining empty space
 
  // Row 1
- $this->Cell($col1, 45, $data3[0]['hotel'], 1, 0, 'C'); // Hotel
+ $this->Cell($col1, 90, $data3[0]['hotel'], 1, 0, 'C'); // Hotel
  $this->Cell($col2, 45, $data3[0]['date_range'], 1, 0, 'C'); // Start Date to End Date
- $this->Cell($col3, 45, '1', 1, 1, 'C'); // Empty space
+ $this->Cell($col3, 45, '1N', 1, 1, 'C'); // Empty space
 
- // Row 2
- $this->Cell($col1, 45, $data3[1]['hotel'], 1, 0, 'C'); // Hotel
+ 
+ $this->SetXY(35, 138);
  $this->Cell($col2, 45, $data3[1]['date_range'], 1, 0, 'C'); // Start Date to End Date
- $this->Cell($col3, 45, '2', 1, 1, 'C'); // Empty space
+
+ $this->Cell($col3, 45, '2N', 1, 1, 'C'); // Empty space
 
 }
 
 public function TourConditionSecond($data2) {
- $this->SetFont('Helvetica', '', 10);
 
- // Set initial position
- $this->SetXY(90, 93); 
+// First set
+$this->SetFont('Helvetica', 'B', 11);
 
- // First row
- $this->Cell(30, 30, $data2[0]['city'], 1, 0, 'C');
- $this->Cell(80, 15, $data2[0]['hotel'], 1, 1, 'C'); 
- $this->SetXY(120, 108);
- $this->Cell(80, 15, $data2[0]['hotel2'], 1, 1, 'C'); 
+$this->SetXY(90, 93);                                    
+$this->Cell(30, 30, $data2[0]['city'], 1, 0, 'C');
 
- // Second row
- $this->SetXY(90, 123);
- $this->Cell(30, 30, $data2[1]['city'], 1, 0, 'C');
- $this->Cell(80, 15, $data2[1]['hotel'], 1, 1, 'C'); 
- $this->SetXY(120, 138);
- $this->Cell(80, 15, $data2[1]['hotel2'], 1, 1, 'C'); 
+$this->SetFont('Helvetica', '', 12);
+$this->SetCellPadding(1, 20, 1, 20); 
+$this->Cell(80, 9, $data2[0]['hotel'], 'LR', 1, 'C'); 
 
- // Third row
- $this->SetXY(90, 153);
- $this->Cell(30, 30, $data2[2]['city'], 1, 0, 'C');
- $this->Cell(80, 15, $data2[2]['hotel'], 1, 1, 'C'); 
- $this->SetXY(120, 168);
- $this->Cell(80, 15, $data2[2]['hotel2'], 1, 1, 'C'); 
+$this->SetFont('Helvetica', '', 8.5);
+$this->SetCellPadding(1, 20, 1, 20); // Set padding for the cell
+$this->SetXY(120, 100); // Set the position for the MultiCell
+$this->MultiCell(80, 7.5, $data2[0]['address'], 'LR', 'C'); // Center the text
 
- // You can keep adding more rows as needed by following the pattern above
+$this->SetFont('Helvetica', '', 9);
+$this->SetXY(120, 106); // Set the position for the MultiCell
+$this->MultiCell(80, 6, "TEL: " . $data2[0]['telephone'], 'LR', 'C'); 
+
+$this->SetTextColor(0, 0, 255);
+$this->SetFont('Helvetica', 'U', 8.5);
+
+$this->SetXY(120, 112);
+$this->Cell(80, 11, $data2[0]['hotelLink'], 1, 1, 'C');
+
+$this->SetTextColor(0, 0, 0);
+$this->SetFont('Helvetica', '', 8.5);
+
+
+
+
+// Second set
+$this->SetFont('Helvetica', 'B', 11);
+$this->SetXY(90, 123);  // Adjusted Y position for second set
+$this->Cell(30, 30, $data2[1]['city'], 1, 0, 'C');
+
+$this->SetFont('Helvetica', '', 12);
+$this->SetCellPadding(1, 20, 1, 20); 
+$this->Cell(80, 9, $data2[1]['hotel'], 'LR', 1, 'C'); 
+
+$this->SetFont('Helvetica', '', 8.5);
+$this->SetCellPadding(1, 20, 1, 20); // Set padding for the cell
+$this->SetXY(120, 130); // Set the position for the MultiCell
+$this->MultiCell(80, 7.5, $data2[1]['address'], 'LR', 'C'); // Center the text
+
+$this->SetFont('Helvetica', '', 9);
+$this->SetXY(120, 136); // Set the position for the MultiCell
+$this->MultiCell(80, 6, "TEL: " . $data2[1]['telephone'], 'LR', 'C'); 
+
+$this->SetTextColor(0, 0, 255);
+$this->SetFont('Helvetica', 'U', 8.5);
+
+$this->SetXY(120, 142);
+$this->Cell(80, 11, $data2[1]['hotelLink'], 1, 1, 'C');
+
+$this->SetTextColor(0, 0, 0);
+$this->SetFont('Helvetica', '', 8.5);
+
+
+
+
+
+// Third set
+$this->SetFont('Helvetica', 'B', 11);
+$this->SetXY(90, 153);  // Adjusted Y position for third set
+$this->Cell(30, 30, $data2[2]['city'], 1, 0, 'C');
+
+$this->SetFont('Helvetica', '', 12);
+$this->SetCellPadding(1, 20, 1, 20); 
+$this->Cell(80, 9, $data2[2]['hotel'], 'LR', 1, 'C'); 
+
+$this->SetFont('Helvetica', '', 8.5);
+$this->SetCellPadding(1, 20, 1, 20); // Set padding for the cell
+$this->SetXY(120, 160); // Set the position for the MultiCell
+$this->MultiCell(80, 7.5, $data2[2]['address'], 'LR', 'C'); // Center the text
+
+$this->SetFont('Helvetica', '', 9);
+$this->SetXY(120, 166); // Set the position for the MultiCell
+$this->MultiCell(80, 6, "TEL: " . $data2[2]['telephone'], 'LR', 'C'); 
+
+$this->SetTextColor(0, 0, 255);
+$this->SetFont('Helvetica', 'U', 8.5);
+
+$this->SetXY(120, 172);
+$this->Cell(80, 11, $data2[2]['hotelLink'], 1, 1, 'C');
+
+$this->SetTextColor(0, 0, 0);
+$this->SetFont('Helvetica', '', 8.5);
+
 }
 
 
 
-public function TourConditionThird() {
+public function TourConditionThird($FlightData, $guideMeeting) {
  $this->SetFont('Helvetica', '', 10);
  $col1 = 25; 
  $col2 = 165; 
 
- $this->SetFont('Helvetica', 'B', 8);
- $this->SetXY(10, 183); 
- $this->Cell($col1, 15, 'TOUR GUIDE', 1, 0, 'C');  
+$this->SetFont('Helvetica', 'B', 8);
+$this->SetXY(10, 183); 
+$this->Cell($col1, 15, 'TOUR GUIDE', 1, 0, 'C');  
 
- $this->SetFont('Helvetica', '', 10);
- $this->SetXY(35, 183); 
- $this->MultiCell($col2, 15, '', 1, 'C'); 
+$tourGuide = 'Mr. Mikey Lee (+82-10-4789-1157)';
 
- $this->SetFont('Helvetica', 'B', 8);
- $this->SetXY(10, 198); 
- $this->Cell($col1, 20, 'AIR SCHEDULE', 1, 0, 'C'); 
+$this->SetFont('Helvetica', 'B', 10);
+$this->SetXY(35, 183);
+
+$this->SetCellPadding(3, 10, 3, 10); 
 
 
- $this->SetFont('Helvetica', '', 10);
+$this->MultiCell($col2, 15, $tourGuide, 1, 'C', 0, 1);
 
- $this->SetXY(35, 198); 
- $this->Cell($col2, 10, '     Arrival: ', 1, 1, 'L'); 
+$this->SetFont('Helvetica', 'B', 8);
+$this->SetXY(10, 198); 
+$this->Cell($col1, 20, 'AIR SCHEDULE', 1, 0, 'C'); 
 
- $this->SetXY(35, 208); 
- $this->Cell($col2, 10, '     Departure: ', 1, 1, 'L'); 
+
+// Set font and adjust position for the Arrival and Departure labels
+$this->SetFont('Helvetica', 'B', 11);
+
+// Set font and adjust position for the labels and data
+$this->SetFont('Helvetica', 'B', 10);
+
+// Departure Information
+$this->SetXY(35, 197.5); 
+$this->Cell($col2, 10, "         Departure: " . $FlightData[0]['deptDate'] . ' ' . $FlightData[0]['flight_id'] . ' ' . $FlightData[0]['origin'] . ' (' . $FlightData[0]['time'] . ')', 'LRB', 0, 'L');
+
+// Arrival Information
+$this->SetXY(35, 208); 
+$this->Cell($col2, 10, "         Arrival: " . $FlightData[1]['arrivalDate'] . ' ' . $FlightData[1]['flight_id'] . ' ' . $FlightData[1]['origin'] . ' (' . $FlightData[1]['time'] . ')', 'LR', 0, 'L');
 
 
  $this->SetFont('Helvetica', 'B', 8);
@@ -174,57 +252,122 @@ public function TourConditionThird() {
  $this->Cell($col1, 20, 'GUIDE MEETING', 1, 0, 'C'); 
 
 
+ // Set font and position for the MultiCell
  $this->SetFont('Helvetica', '', 10);
- $this->SetXY(35, 218); 
- $this->MultiCell($col2, 20, '', 1, 'C'); 
+ $this->SetXY(35, 218); // Adjust the Y position accordingly
+
+ // Prepare the meeting details with bold 'Date' and normal text for others
+ $meetingDetails = "Date: ";
+ $this->SetFont('Helvetica', 'B', 10); // Set font to bold for "Date"
+ $meetingDetails .= $guideMeeting[0]['date'] . " "; // Add the date in bold
+ $this->SetFont('Helvetica', '', 10); // Reset font back to normal for the rest
+ $meetingDetails .= "Time: " . $guideMeeting[0]['time'] . " "; // Add time (normal)
+ $meetingDetails .= "Airport: " . $guideMeeting[0]['airport']; // Add airport (normal)
+
+ // Output the meeting details horizontally in one MultiCell, centered
+ $this->MultiCell($col2, 20, $meetingDetails, 1, 'C');
+
+
 
 
  $this->SetFont('Helvetica', 'B', 8);
- $this->SetXY(10, 238); 
- $this->Cell($col1, 15, 'INCLUDE', 1, 0, 'C'); 
+ $this->SetXY(10, 236.5); 
+ $this->Cell($col1, 20, 'INCLUDE', 'LR', 0, 'C'); 
 
 
- $this->SetFont('Helvetica', '', 10);
+ $this->SetFont('Helvetica', '', 9.5);
  $this->SetXY(35, 238); 
-
- $this->MultiCell($col2, 15, 
+ $this->MultiCell($col2, 18.5, 
  'Hotel (4 nights with twin or triple sharing)
   Meals (4 times Lunch, 3 Times Dinner)
-  (Coach, Van), Admission as the Itinerary, English guide etc.', 1, 'C'); 
+ (Coach, Van), Admission as the Itinerary, English guide etc.', 1, 'C'); 
+
 
  $this->SetFont('Helvetica', 'B', 8);
- $this->SetXY(10, 253); 
+ $this->SetXY(10, 256.5); 
  $this->Cell($col1, 10, 'EXCLUDE', 1, 0, 'C'); 
 
- $this->SetFont('Helvetica', '', 10);
- $this->SetXY(35, 253); 
- $this->MultiCell($col2, 10, 'Guide Tip $25 per person', 1, 'C');
+
+ $this->SetFont('Helvetica', '', 9);
+ $this->SetXY(35, 256.5); 
+ $this->MultiCell($col2, 11, 'Guide Tip $25 per person', 'LR', 'C');
+
 
  $this->SetFont('Helvetica', 'B', 8);
- $this->SetXY(10, 263); 
- $this->Cell($col1, 10, 'REMARKS', 1, 0, 'C'); 
+ $this->SetXY(10, 266.5); 
+ $this->Cell($col1, 10, 'REMARKS', 1, 0, 'C'); // Center-align the title
 
- $this->SetFont('Helvetica', '', 10);
- $this->SetXY(35, 263); 
+ $this->SetFont('Helvetica', '', 9);
+ $this->SetXY(35, 266.5); 
+ $this->SetFillColor(255, 255, 0);  // Yellow background color
+ $this->SetTextColor(255, 0, 0);   // Red text color
+ $this->SetCellPadding(2, 8, 2, 8); // Padding around the text
 
+ $this->SetFont('Helvetica', 'B', 10);
+ // Justify the text content, center-aligned within the cell
+ $this->MultiCell($col2, 10, '** It will be subject to change as the local situation **', 1, 'C', true);
 
-
- $this->SetFillColor(255,255,0); 
- $this->SetTextColor(255, 0, 0); 
-
- // Add MultiCell with fill color and text color
- $this->MultiCell($col2, 10, 'It will be subject to change as the local situation', 1, 'C', true); // 'true' for fill
-
+ 
 }            
 }
 
-// Example data to pass into TourConditionSecond
-$data2 = [
- ['city' => 'City1', 'hotel' => 'Hotel1', 'hotel2' => 'Hotel2'],
- ['city' => 'City2', 'hotel' => 'Hotel3', 'hotel2' => 'Hotel4'],
- ['city' => 'City3', 'hotel' => 'Hotel5', 'hotel2' => 'Hotel6'],
- // Add more cities and hotels as needed
+
+// Voucher First Part
+$data3 = [
+ ['hotel' => 'HOTEL', 'date_range' => '01/01/2024 - 01/05/2024'],
+ ['hotel' => '', 'date_range' => '01/06/2024 - 01/10/2024'],
 ];
+
+
+// Voucher Second Part
+$data2 = [
+ // Set 1
+ [
+     'city' => 'Seoul', 
+     'hotel' => 'AIR SKY HOTEL', 
+     'address' => '31, Eunhasu-ro 29 beon-gil, Jung-gu, Incheon, Korea', 
+     'telephone' => '963254125', 
+     'hotelLink' => 'https://www.hotelairsky.co.kr'
+ ],
+
+ // Set 2
+ [
+     'city' => 'Busan', 
+     'hotel' => 'Busan Grand Hotel', 
+     'address' => '123, Haeundae-ro, Haeundae-gu, Busan, Korea', 
+     'telephone' => '0512345678', 
+     'hotelLink' => 'https://www.busangrandhotel.com'
+ ],
+
+ // Set 3
+ [
+     'city' => 'Jeju', 
+     'hotel' => 'Jeju Beach Resort', 
+     'address' => '12, Seobendong-ro, Seogwipo-si, Jeju, Korea', 
+     'telephone' => '0649876543', 
+     'hotelLink' => 'https://www.jejubeachresort.com'
+ ]
+];
+
+// Data array for Flight Departure and Arrival
+$FlightData = [
+ ['deptDate' => 'Sep 12', 
+ 'flight_id' => 'PR468', 
+ 'origin' => 'MNL - ICN', 
+ 'time' => '14:10-19:25'],
+
+ ['arrivalDate' => 'Sep 16', 
+ 'flight_id' => 'PR469', 
+ 'origin' => 'ICN - MNL', 
+ 'time' => '20:25-23:30']
+];
+
+
+// Define the guide meeting information
+$guideMeeting = [
+ ['date' => 'Sept 12, 2024', 'time' => '20:00', 'airport' => 'Incheon Airport (Terminal 1)'],
+];
+
 
 // Create a new PDF instance and add pages as needed
 $pdf = new PDF();
@@ -235,21 +378,13 @@ $pdf->SetMargins(10, 10, 10); // Adjust to provide consistent spacing
 // Add a page and headers
 $pdf->AddPage();
 $pdf->VoucherHeader();
-
-$data3 = [
- ['hotel' => 'Hotel A', 'date_range' => '01/01/2024 - 01/05/2024'],
- ['hotel' => 'Hotel B', 'date_range' => '01/06/2024 - 01/10/2024'],
-];
-
-
 $pdf->TourConditionFirst($data3);
-
 // Call the TourConditionSecond function with the $data2 array
 $pdf->TourConditionSecond($data2);
 
-// Call any other necessary functions like TourConditionThird
-$pdf->TourConditionThird();
 
+
+$pdf->TourConditionThird($FlightData, $guideMeeting);
 // Output the PDF
 $pdf->Output('itinerary-Winter.pdf', 'I');
 

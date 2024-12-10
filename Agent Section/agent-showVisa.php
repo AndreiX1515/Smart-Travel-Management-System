@@ -16,12 +16,12 @@
     <table class="product-table">
          <thead>
            <tr>
-             <th>Guest Id</th>
-             <th>Guest Name</th>
-             <th>Passport</th>
-             <th>Permit</th>
-             <th>Valid Id</th>
-             <th>Certificate</th>
+             <th>GUEST ID</th>
+             <th>GUEST NAME</th>
+             <th>PASSPORT</th>
+             <th>PERMIT</th>
+             <th>VALID ID</th>
+             <th>CERTIFICATE</th>
            </tr>
          </thead>
          <tbody>

@@ -302,51 +302,63 @@
       <!-- CARD 3 - Total Payment -->
       <div class="card border-0" >
         <div class="header">
-          <h6 class="text-secondary fw-600">Total Payment</h6>
+          <h6 class="text-secondary fw-600">Total Sales</h6>
         </div>
 
+        <?php
+          // Query for total payments in the past month
+          $pastMonthQuery = "SELECT IFNULL(SUM(amount), 0) AS totalPastMonth 
+          FROM payment WHERE paymentStatus = 'Approved' 
+          AND MONTH(paymentDate) = MONTH(CURDATE() - INTERVAL 1 MONTH)
+          AND YEAR(paymentDate) = YEAR(CURDATE() - INTERVAL 1 MONTH)";
+
+          $pastMonthResult = $conn->query($pastMonthQuery);
+          $pastMonthTotal = ($pastMonthResult->num_rows > 0) ? number_format($pastMonthResult->fetch_assoc()['totalPastMonth'], 2) : '0.00';
+        ?>
+
+        <?php
+          // Query for total payments in the current month
+          $currentMonthQuery = "SELECT IFNULL(SUM(amount), 0) AS totalCurrentMonth 
+          FROM payment WHERE paymentStatus = 'Approved' 
+          AND MONTH(paymentDate) = MONTH(CURDATE()) 
+          AND YEAR(paymentDate) = YEAR(CURDATE())";
+
+          $currentMonthResult = $conn->query($currentMonthQuery);
+          $currentMonthTotal = ($currentMonthResult->num_rows > 0) ? number_format($currentMonthResult->fetch_assoc()['totalCurrentMonth'], 2) : 0;
+        ?>
+
+
         <div class="card-content px-3">
-          <div class="row">
-            <div class="col-md-5 d-flex flex-row totalpayment">
-              <div class="card-icon icon-blue">
-                <i class="fas fa-calendar-alt"></i>
+        <div class="row">
+              <div class="col-md-5 d-flex flex-row total-sales">
+                <div class="card-icon icon-blue">
+                  <i class="fas fa-calendar-alt"></i>
+                </div>
+                <div class="side-content d-flex flex-column">
+                 
+                  <h5 class="month-sales">₱ <?php echo $currentMonthTotal; ?></h5>
+                  <p>CURRENT MONTH</p>
+                </div>
               </div>
-              <div class="side-content d-flex flex-column">
-                <?php
-                  // Query for total payments in the past month
-                  $pastMonthQuery = "SELECT IFNULL(SUM(amount), 0) AS totalPastMonth 
-                  FROM payment WHERE paymentStatus = 'Approved' 
-                  AND MONTH(paymentDate) = MONTH(CURDATE() - INTERVAL 1 MONTH)
-                  AND YEAR(paymentDate) = YEAR(CURDATE() - INTERVAL 1 MONTH)";
 
-                  $pastMonthResult = $conn->query($pastMonthQuery);
-                  $pastMonthTotal = ($pastMonthResult->num_rows > 0) ? number_format($pastMonthResult->fetch_assoc()['totalPastMonth'], 2) : '0.00';
-                ?>
-                <h5>₱ <?php echo $pastMonthTotal; ?></h5>
-                <p>PAST MONTH</p>
-              </div>
+            
             </div>
 
-            <div class="col-md-5 d-flex flex-row">
-              <div class="card-icon icon-gray">
-                <i class="fas fa-check-circle"></i>
-              </div>
-              <div class="side-content d-flex flex-column">
-                <?php
-                  // Query for total payments in the current month
-                  $currentMonthQuery = "SELECT IFNULL(SUM(amount), 0) AS totalCurrentMonth 
-                  FROM payment WHERE paymentStatus = 'Approved' 
-                  AND MONTH(paymentDate) = MONTH(CURDATE()) 
-                  AND YEAR(paymentDate) = YEAR(CURDATE())";
+            <div class="row">
+              <div class="col-md-5 d-flex flex-row total-sales">
+                <div class="card-icon icon-red">
+                  <i class="fas fa-calendar-alt"></i>
+                </div>
+                <div class="side-content d-flex flex-column">
+                  
+                  <h5 class="month-sales">₱ <?php echo $pastMonthTotal; ?></h5>
+                  <p>PAST MONTH</p>
 
-                  $currentMonthResult = $conn->query($currentMonthQuery);
-                  $currentMonthTotal = ($currentMonthResult->num_rows > 0) ? number_format($currentMonthResult->fetch_assoc()['totalCurrentMonth'], 2) : 0;
-                ?>
-                <h5>₱ <?php echo $currentMonthTotal; ?></h5>
-                <p>CURRENT MONTH</p>
+                </div>
               </div>
             </div>
-          </div>
+            
+          
         </div>
       </div>
 
@@ -611,7 +623,7 @@
                       while ($row = $result->fetch_assoc()) 
                       {
                         echo '<tr>';
-                        echo '<td>' . $row['TeamOP'] . '</td>';
+                        echo '<td class="fw-bold">' . $row['TeamOP'] . '</td>';
                         echo '<td>' . $row['origin'] . '</td>';
                         echo '<td>' . $row['Start'] . '</td>';
                         echo '<td>' . $row['End'] . '</td>';
@@ -625,17 +637,23 @@
                         echo '<td>₱ ' . $row['LandArrangement'] . '</td>';
 
                         // Dynamically populate agent columns
-                       foreach ($row as $key => $value) 
+                      // Dynamically populate agent columns
+                   foreach ($row as $key => $value) 
+                   {
+                       $colors = ['#ADD8E6', '#98FB98', '#FFFFCC', '#E6E6FA', '#FFDAB9']; // Color array
+                       if (strpos($key, '_AL') !== false || strpos($key, '_LO') !== false) 
                        {
-                           if (strpos($key, '_AL') !== false || strpos($key, '_LO') !== false) 
-                           {
-                               // Check the value and set font weight accordingly
-                               $fontWeight = ($value >= 1) ? 'bolder' : 'normal';
-                               echo '<td style="font-weight: ' . $fontWeight . ';">' . $value . '</td>';
-                           }
-                       }
+                           // Determine font weight
+                           $fontWeight = ($value >= 1) ? 'bolder' : 'normal';
 
-                       echo '</tr>';
+                           // Get the background color by cycling through the color array
+                           $colorIndex = array_search($key, array_keys($row)) % count($colors); // Cycle through the color array
+                           $backgroundColor = $colors[$colorIndex];
+
+                           echo '<td style="font-weight: ' . $fontWeight . '; background-color: ' . $backgroundColor . ';">' . $value . '</td>';
+                       }
+                   }
+                   echo '</tr>';
                       }
                     } 
                     else 
