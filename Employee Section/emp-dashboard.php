@@ -495,7 +495,7 @@
                     $colors = ['#ADD8E6', '#98FB98', '#FFFFCC', '#E6E6FA', '#FFDAB9']; // Extend this array as needed
 
                     // Fetch agent column headers dynamically
-                    $sql = "SELECT DISTINCT agentId FROM agent WHERE agentId IS NOT NULL AND agentId != ''";
+                    $sql = "SELECT DISTINCT agentCode FROM agent WHERE agentCode IS NOT NULL AND agentCode != ''";
                     $result = $conn->query($sql);
 
                     // Initialize a counter for cycling through the color array
@@ -507,7 +507,7 @@
                         $color = $colors[$colorIndex % count($colors)];
                         
                         // Output the <th> element with the inline style for background color
-                        echo '<th colspan="2" data-bs-toggle="tooltip" title="' . $row['agentId'] . '" style="background-color: ' . $color . ';">' . $row['agentId'] . '</th>';
+                        echo '<th colspan="2" data-bs-toggle="tooltip" title="' . $row['agentCode'] . '" style="background-color: ' . $color . ';">' . $row['agentCode'] . '</th>';
                         
                         // Increment the color index for the next iteration
                         $colorIndex++;
@@ -526,7 +526,7 @@
                     $colors = ['#ADD8E6', '#98FB98', '#FFFFCC', '#E6E6FA', '#FFDAB9']; // Extend this array as needed
 
                     // Fetch agent column headers dynamically
-                    $sql = "SELECT DISTINCT agentId FROM agent WHERE agentId IS NOT NULL AND agentId != ''";
+                    $sql = "SELECT DISTINCT agentCode FROM agent WHERE agentCode IS NOT NULL AND agentCode != ''";
                     $result = $conn->query($sql);
 
                     // Initialize a counter for cycling through the color array
@@ -550,15 +550,15 @@
                 </thead>
                 <tbody>
                   <?php
-                    $sql = "SELECT DISTINCT agentId FROM agent WHERE agentId IS NOT NULL AND agentId != ''";
+                    $sql = "SELECT DISTINCT agentCode FROM agent WHERE agentCode IS NOT NULL AND agentCode != ''";
                     $result = $conn->query($sql);
 
                     $agentColumns = '';
                     while ($row = $result->fetch_assoc()) 
                     {
                       $agentColumns .= 
-                          'SUM(CASE WHEN b.agentId = "' . $row['agentId'] . '" AND b.bookingType = "Package" and b.status = "Confirmed" THEN b.pax ELSE 0 END) AS `' . $row['agentId'] . '_AL`, ' .
-                          'SUM(CASE WHEN b.agentId = "' . $row['agentId'] . '" AND b.bookingType = "Land" and b.status = "Confirmed" THEN b.pax ELSE 0 END) AS `' . $row['agentId'] . '_LO`, ';
+                          'SUM(CASE WHEN b.agentCode = "' . $row['agentCode'] . '" AND b.bookingType = "Package" and b.status = "Confirmed" THEN b.pax ELSE 0 END) AS `' . $row['agentCode'] . '_AL`, ' .
+                          'SUM(CASE WHEN b.agentCode = "' . $row['agentCode'] . '" AND b.bookingType = "Land" and b.status = "Confirmed" THEN b.pax ELSE 0 END) AS `' . $row['agentCode'] . '_LO`, ';
                     }
 
              

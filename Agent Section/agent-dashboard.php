@@ -24,7 +24,7 @@
         <!-- CARD 1 Current Transaction Counts-->
         <div class="card border-0">
           <div class="header-counts">
-            <h6 class="text-secondary white-pill">Current Transaction</h6>
+            <h6 class="text-secondary white-pill">Total Transaction</h6>
           </div>
       
           <div class="card-content px-3">
@@ -628,7 +628,7 @@
         <!-- Transactions table -->
         <div class="one">
           <div class="header d-flex justify-content-between align-items-center">
-            <h6>Transactions</h6>
+            <h6>Pending</h6>
             <div class="view-booking-container">
             </div>
           </div>
@@ -672,7 +672,7 @@
                             LEFT JOIN
                                 agent a ON b.agentId = a.agentId
                             WHERE 
-                                b.agentId = '$agentId'
+                                b.agentId = '$agentId' and b.status = 'Pending'
                             ORDER BY 
                                 b.transactNo DESC";
           
