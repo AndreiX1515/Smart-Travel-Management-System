@@ -632,28 +632,29 @@
                         echo '<td>' . $row['AdditionalSeats'] . '</td>';
                         echo '<td>' . $row['Air+Land'] . '</td>';
                         echo '<td>' . $row['LandOnly'] . '</td>';
-                        echo '<td>₱ ' . $row['WholesalePrice'] . '</td>';
-                        echo '<td>₱ ' . $row['RetailPrice'] . '</td>';
-                        echo '<td>₱ ' . $row['LandArrangement'] . '</td>';
+                        echo '<td>₱ ' . number_format($row['WholesalePrice'], 2) . '</td>';
+                        echo '<td>₱ ' . number_format($row['RetailPrice'], 2) . '</td>';
+                        echo '<td>₱ ' . number_format($row['LandArrangement'], 2) . '</td>';
+
 
                         // Dynamically populate agent columns
-                      // Dynamically populate agent columns
-                   foreach ($row as $key => $value) 
-                   {
-                       $colors = ['#ADD8E6', '#98FB98', '#FFFFCC', '#E6E6FA', '#FFDAB9']; // Color array
-                       if (strpos($key, '_AL') !== false || strpos($key, '_LO') !== false) 
-                       {
-                           // Determine font weight
-                           $fontWeight = ($value >= 1) ? 'bolder' : 'normal';
+                        // Dynamically populate agent columns
+                        foreach ($row as $key => $value) 
+                        {
+                          $colors = ['#ADD8E6', '#98FB98', '#FFFFCC', '#E6E6FA', '#FFDAB9']; // Color array
+                          if (strpos($key, '_AL') !== false || strpos($key, '_LO') !== false) 
+                          {
+                              // Determine font weight
+                              $fontWeight = ($value >= 1) ? 'bolder' : 'normal';
 
-                           // Get the background color by cycling through the color array
-                           $colorIndex = array_search($key, array_keys($row)) % count($colors); // Cycle through the color array
-                           $backgroundColor = $colors[$colorIndex];
+                              // Get the background color by cycling through the color array
+                              $colorIndex = array_search($key, array_keys($row)) % count($colors); // Cycle through the color array
+                              $backgroundColor = $colors[$colorIndex];
 
-                           echo '<td style="font-weight: ' . $fontWeight . '; background-color: ' . $backgroundColor . ';">' . $value . '</td>';
-                       }
-                   }
-                   echo '</tr>';
+                              echo '<td style="font-weight: ' . $fontWeight . '; background-color: ' . $backgroundColor . ';">' . $value . '</td>';
+                          }
+                        }
+                        echo '</tr>';
                       }
                     } 
                     else 
