@@ -122,28 +122,28 @@
    </div>
 
 
-   <div class="table-wrapper">
-     <table class="table-transaction table-striped">
-     <thead>
-       <tr>
-         <th rowspan="2">Transact No</th>
-         <th rowspan="2">Package Name</th>
-         <th colspan="2" class="text-center">Flight Date</th>
-         <th rowspan="2">Booking Date</th>
-         <th rowspan="2">Total Pax</th>
-         <th rowspan="2">Package Price</th>
-         <th rowspan="2">Request Cost</th>
-         <th rowspan="2">Amount to be Paid</th>
-         <th rowspan="2">Amount Paid</th>
-         <th rowspan="2">Remaining Balance</th>
-         <th rowspan="2">Status</th>
-       </tr>
-       <tr>
-         <th>Departure</th>
-         <th>Return</th>
-       </tr>
-     </thead>
-       <tbody>
+  <div class="table-wrapper">
+    <table class="table-transaction table-striped">
+      <thead>
+        <tr>
+          <th rowspan="2">Transact No</th>
+          <th rowspan="2">Package Name</th>
+          <th colspan="2" class="text-center">Flight Date</th>
+          <th rowspan="2">Booking Date</th>
+          <th rowspan="2">Total Pax</th>
+          <th rowspan="2">Package Price</th>
+          <th rowspan="2">Request Cost</th>
+          <th rowspan="2">Amount to be Paid</th>
+          <th rowspan="2">Amount Paid</th>
+          <th rowspan="2">Remaining Balance</th>
+          <th rowspan="2">Payment Status</th>
+        </tr>
+        <tr>
+          <th>Departure</th>
+          <th>Return</th>
+        </tr>
+      </thead>
+      <tbody>
         <?php
           // SQL query for SOA
           $sql = "SELECT b.transactNo, f.flightDepartureDate as departureDate, f.returnDepartureDate as returnDate, CONCAT(f.flightDepartureDate, ' | ', f.returnDepartureDate) AS FlightDate, 
@@ -177,8 +177,8 @@
             while ($row = $result->fetch_assoc()) 
             {
 
-             // Determine the status based on the balance
-              $status = ($row['Balance'] <= 0) ? 'Fully Paid' : 'Pending';
+              // Determine the status based on the balance
+              $status = ($row['Balance'] <= 0) ? 'Fully Paid' : 'Partially Paid';
 
               // Assign the appropriate badge class based on the status
               $statusClass = '';
@@ -186,7 +186,7 @@
                   case 'Active':
                       $statusClass = 'badge bg-success'; // Green pill for "Active"
                       break;
-                  case 'Pending':
+                  case 'Partially Paid':
                       $statusClass = 'badge bg-warning text-dark'; // Yellow pill for "Pending"
                       break;
                   case 'Inactive':
@@ -195,7 +195,7 @@
                   case 'To be confirmed':
                       $statusClass = 'badge bg-info text-dark'; // Blue pill for "To be confirmed"
                       break;
-                 case 'Fully Paid':
+                  case 'Fully Paid':
                       $statusClass = 'badge bg-success'; // Green pill for "Fully Paid"
                       break;
                   default:
@@ -218,16 +218,15 @@
               echo "<td>₱ " . number_format($row['AmountToPaid'], 2) . "</td>";
               echo "<td>₱ " . number_format($row['AmountPaid'], 2) . "</td>";
               echo "<td>₱ " . number_format(max($row['Balance'], 0), 2) . "</td>"; // Ensure Balance doesn't go negative
-              echo "<td class='text-center'><span class='{$statusClass} py-2'>{$status}</span></td>";
+              echo "<td ><span class='{$statusClass} py-2'>{$status}</span></td>";
               echo "</tr>";
             }
           } 
           
         ?>
-        
-       </tbody>
-     </table>
-   </div>
+      </tbody>
+    </table>
+  </div>
   </div>
 
  </div>
