@@ -94,9 +94,9 @@ $current_date = date('D, F d, Y'); // Format: "Tue, January 01, 2024"
                 </li>
 
                 
-              </ul>
-            </div>
+            </ul>
           </div>
+        </div>
       </div>
   </nav>
 </header>

@@ -519,51 +519,6 @@ session_start();
 
           <div class="card-content px-3">
             <div class="row">
-              <div class="col-md-5 d-flex flex-row total-sales">
-                <div class="card-icon icon-blue">
-                  <i class="fas fa-calendar-alt"></i>
-                </div>
-                <div class="side-content d-flex flex-column">
-                 
-                  <h5 class="month-sales">₱ <?php echo $currentMonthTotal; ?></h5>
-                  <?php
-                    // Assuming you already have a connection to your database
-                    $accountId = $_SESSION['agent_accountId'];
-                    $agentCode = $_SESSION['agent_agentCode'];
-                    $agentRole = $_SESSION['agent_agentRole'];
-
-                    // Determine which query to run based on the agent's role
-                    if ($agentRole != 'Head Agent') 
-                    {
-                      // Query for non-Head Agent, use accountId in the payment table
-                      $pastMonthQuery = "SELECT IFNULL(SUM(amount), 0) AS totalPastMonth FROM payment p
-                                          JOIN booking b ON p.transactNo = b.transactNo
-                                          WHERE b.accountId = '$accountId' AND p.paymentStatus = 'Approved' 
-                                          AND MONTH(p.paymentDate) = MONTH(CURDATE() - INTERVAL 1 MONTH)
-                                          AND YEAR(p.paymentDate) = YEAR(CURDATE() - INTERVAL 1 MONTH)";
-                    } 
-                    else 
-                    {
-                      // Query for Head Agent, filter payments related to the agentCode in the booking table
-                      $pastMonthQuery = "SELECT IFNULL(SUM(amount), 0) AS totalPastMonth FROM payment p
-                                          JOIN booking b ON p.transactNo = b.transactNo
-                                          WHERE b.agentCode = '$agentCode' AND p.paymentStatus = 'Approved' 
-                                          AND MONTH(p.paymentDate) = MONTH(CURDATE() - INTERVAL 1 MONTH)
-                                          AND YEAR(p.paymentDate) = YEAR(CURDATE() - INTERVAL 1 MONTH)";
-                    }
-
-                    // Execute the query
-                    $pastMonthResult = $conn->query($pastMonthQuery);
-
-                    // Check if the query returned a result
-                    $pastMonthTotal = ($pastMonthResult->num_rows > 0) 
-                        ? number_format($pastMonthResult->fetch_assoc()['totalPastMonth'], 2) 
-                        : '0.00';
-                  ?>
-                  <h5>₱ <?php echo $pastMonthTotal; ?></h5>
-                  <p>PAST MONTH</p>
-                </div>
-              </div>
 
               <!-- Current Month Sales -->
               <div class="col-md-5 d-flex flex-row">
@@ -618,9 +573,48 @@ session_start();
                 </div>
                 <div class="side-content d-flex flex-column">
                   
-                  <h5 class="month-sales">₱ <?php echo $pastMonthTotal; ?></h5>
-                  <p>PAST MONTH</p>
+                <!-- <h5 class="month-sales">
+                 ₱ 
+                 <!-- <?php 
+                 // echo $currentMonthTotal; 
+                 ?> -->
+                </h5> 
+                  <?php
+                    // Assuming you already have a connection to your database
+                    $accountId = $_SESSION['agent_accountId'];
+                    $agentCode = $_SESSION['agent_agentCode'];
+                    $agentRole = $_SESSION['agent_agentRole'];
 
+                    // Determine which query to run based on the agent's role
+                    if ($agentRole != 'Head Agent') 
+                    {
+                      // Query for non-Head Agent, use accountId in the payment table
+                      $pastMonthQuery = "SELECT IFNULL(SUM(amount), 0) AS totalPastMonth FROM payment p
+                                          JOIN booking b ON p.transactNo = b.transactNo
+                                          WHERE b.accountId = '$accountId' AND p.paymentStatus = 'Approved' 
+                                          AND MONTH(p.paymentDate) = MONTH(CURDATE() - INTERVAL 1 MONTH)
+                                          AND YEAR(p.paymentDate) = YEAR(CURDATE() - INTERVAL 1 MONTH)";
+                    } 
+                    else 
+                    {
+                      // Query for Head Agent, filter payments related to the agentCode in the booking table
+                      $pastMonthQuery = "SELECT IFNULL(SUM(amount), 0) AS totalPastMonth FROM payment p
+                                          JOIN booking b ON p.transactNo = b.transactNo
+                                          WHERE b.agentCode = '$agentCode' AND p.paymentStatus = 'Approved' 
+                                          AND MONTH(p.paymentDate) = MONTH(CURDATE() - INTERVAL 1 MONTH)
+                                          AND YEAR(p.paymentDate) = YEAR(CURDATE() - INTERVAL 1 MONTH)";
+                    }
+
+                    // Execute the query
+                    $pastMonthResult = $conn->query($pastMonthQuery);
+
+                    // Check if the query returned a result
+                    $pastMonthTotal = ($pastMonthResult->num_rows > 0) 
+                        ? number_format($pastMonthResult->fetch_assoc()['totalPastMonth'], 2) 
+                        : '0.00';
+                  ?>
+                  <h5>₱ <?php echo $pastMonthTotal; ?></h5>
+                  <p>PAST MONTH</p>
                 </div>
               </div>
             </div>
@@ -711,7 +705,7 @@ session_start();
                <h6>Confirmed Transactions</h6>
              </div> -->
                
-             <div class="body-flight">
+         
                <div class="confirm-table-container-flight">
                <table class="info-table">
                 <thead class="border-2">
@@ -720,8 +714,8 @@ session_start();
                     <th rowspan="2">ORIGIN</th>
                     <th colspan="2">FLIGHT DATE</th> <!-- Flight Date columns -->
                     <th rowspan="2">FLIGHT SEAT</th>
-                    <th rowspan="2" style="font-size: 10px;">AVAILABLE SEATS</th>
-                    <th rowspan="2" style="font-size: 10px;">ADDITIONAL SEATS</th>
+                    <th rowspan="2" style="font-size: 12px;">AVAILABLE SEATS</th>
+                    <th rowspan="2" style="font-size: 12px;">ADDITIONAL SEATS</th>
                     <th rowspan="2">AIR + LAND</th>
                     <th rowspan="2">LAND ONLY</th>
                     <th rowspan="2">WHOLESALE PRICE</th>
@@ -890,7 +884,6 @@ session_start();
                   ?>
                 </tbody>
               </table>
-               </div>
              </div>
            </div>
          </div>
@@ -901,190 +894,188 @@ session_start();
 
 
       <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
-      
-
-      <div class="second-row-container mt-2">
-        <!-- Transactions table -->
-        <div class="one">
-          <div class="header d-flex justify-content-between align-items-center">
-            <h6>Pending</h6>
-            <div class="view-booking-container">
+        <div class="second-row-container mt-2">
+          <!-- Transactions table -->
+          <div class="one">
+            <div class="header d-flex justify-content-between align-items-center">
+              <h6>Pending</h6>
+              <div class="view-booking-container">
+              </div>
             </div>
-          </div>
-        
-          <div class="body">
-            <div class="table-container" style="max-height: 315px;">
-              <table class="unconfirm-table py-2">
-                <thead>
-                  <tr>
-                    <th>NO.</th>
-                    <th>INFORMATION</th> 
-                    <th>CONTACT NAME</th>
-                    <th>STATUS</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <?php
-                    $sql1 = "SELECT
-                              b.transactNo AS `T.N`,
-                              p.packageName AS `PACKAGE`, b.bookingType as bookingType,
-                              CASE 
-                                  WHEN b.flightId IS NULL THEN 'Land Only'
-                                  ELSE CONCAT(DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y'), ' ', DATE_FORMAT(f.flightDepartureTime, '%h:%i %p'))
-                              END AS `FLIGHT DATE`,
-                              b.pax AS `TOTAL PAX`,
-                              CONCAT(
-                                  b.lName, ', ', b.fName, ' ', 
-                                  CASE WHEN b.mName = 'N/A' THEN '' ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ',
-                                  CASE WHEN b.suffix = 'N/A' THEN '' ELSE b.suffix END
-                              ) AS `CONTACT NAME`,
-                              b.status AS `STATUS`
-                            FROM 
-                                booking b
-                            LEFT JOIN 
-                                flight f ON b.flightId = f.flightId
-                            LEFT JOIN 
-                                package p ON b.packageId = p.packageId
-                            LEFT JOIN
-                                agent a ON b.agentId = a.agentId
-                            WHERE 
-                                b.agentId = '$agentId' and b.status = 'Pending'
-                            ORDER BY 
-                                b.transactNo DESC";
           
-                    // Run the query and check for results
-                    $res1 = $conn->query($sql1);
-                      
-                    // Check if there are any results
-                    if ($res1->num_rows > 0) 
-                    {
-                      // Output data for each row
-                      while ($row = $res1->fetch_assoc()) 
+            <div class="body">
+              <div class="table-container" style="max-height: 315px;">
+                <table class="unconfirm-table py-2">
+                  <thead>
+                    <tr>
+                      <th>NO.</th>
+                      <th>INFORMATION</th> 
+                      <th>CONTACT NAME</th>
+                      <th>STATUS</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php
+                      $sql1 = "SELECT
+                                b.transactNo AS `T.N`,
+                                p.packageName AS `PACKAGE`, b.bookingType as bookingType,
+                                CASE 
+                                    WHEN b.flightId IS NULL THEN 'Land Only'
+                                    ELSE CONCAT(DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y'), ' ', DATE_FORMAT(f.flightDepartureTime, '%h:%i %p'))
+                                END AS `FLIGHT DATE`,
+                                b.pax AS `TOTAL PAX`,
+                                CONCAT(
+                                    b.lName, ', ', b.fName, ' ', 
+                                    CASE WHEN b.mName = 'N/A' THEN '' ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ',
+                                    CASE WHEN b.suffix = 'N/A' THEN '' ELSE b.suffix END
+                                ) AS `CONTACT NAME`,
+                                b.status AS `STATUS`
+                              FROM 
+                                  booking b
+                              LEFT JOIN 
+                                  flight f ON b.flightId = f.flightId
+                              LEFT JOIN 
+                                  package p ON b.packageId = p.packageId
+                              LEFT JOIN
+                                  agent a ON b.agentId = a.agentId
+                              WHERE 
+                                  b.agentId = '$agentId' and b.status = 'Pending'
+                              ORDER BY 
+                                  b.transactNo DESC";
+            
+                      // Run the query and check for results
+                      $res1 = $conn->query($sql1);
+                        
+                      // Check if there are any results
+                      if ($res1->num_rows > 0) 
                       {
+                        // Output data for each row
+                        while ($row = $res1->fetch_assoc()) 
+                        {
 
-                     
-                       $status = htmlspecialchars($row['STATUS']);
-                       $badgeClass = '';
-                   
-                       // Assign badge classes based on status
-                       switch ($status) {
-                           case 'Confirmed':
-                               $badgeClass = 'bg-success'; // Green
-                               break;
-                           case 'Cancelled':
-                               $badgeClass = 'bg-secondary'; // Gray
-                               break;
-                           case 'Pending':
-                               $badgeClass = 'bg-warning'; // Yellow
-                               break;
-                           case 'Reject':
-                               $badgeClass = 'bg-danger'; // Red
-                               break;
-                           default:
-                               $badgeClass = 'bg-info'; // Blue for other statuses
-                               break;
-                       }
-                     
-
-                       echo "
-                       <tr data-url='agent-showGuest.php?id=" . htmlspecialchars($row['T.N']) . "'>
-                           <td>" . htmlspecialchars(substr($row['T.N'], 5)) . "</td>
-                           <td> 
-                              <div class='td-content d-flex flex-column align-items-left'>
-                                 <h6>Package: <span>" . htmlspecialchars($row['PACKAGE']) . "</span></h6>
-                                 <h6>Flight Date: <span>" . htmlspecialchars($row['FLIGHT DATE']) . "</span></h6>
-                                 <h6>Total Pax: <span>" . htmlspecialchars($row['TOTAL PAX']) . "</span></h6>
-                                 <h6>Booking Type: <span>" . htmlspecialchars($row['bookingType']) . "</span></h6>
-                             </div>
-
-                           </td>
-                           <td>" . strtoupper(htmlspecialchars($row['CONTACT NAME'])) . "</td>
-                           <td> <span class='badge " . $badgeClass . " p-2'>" . $status . "</span> </td>
-                       </tr>";
                        
-                      }
-                    } 
-                    else 
-                    {
-                      // If no records found
-                      echo "<tr><td colspan='8' style='text-align: left;'>No bookings as of the moment</td></tr>";
-                    }
-                  ?>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
+                         $status = htmlspecialchars($row['STATUS']);
+                         $badgeClass = '';
+                     
+                         // Assign badge classes based on status
+                         switch ($status) {
+                             case 'Confirmed':
+                                 $badgeClass = 'bg-success'; // Green
+                                 break;
+                             case 'Cancelled':
+                                 $badgeClass = 'bg-secondary'; // Gray
+                                 break;
+                             case 'Pending':
+                                 $badgeClass = 'bg-warning'; // Yellow
+                                 break;
+                             case 'Reject':
+                                 $badgeClass = 'bg-danger'; // Red
+                                 break;
+                             default:
+                                 $badgeClass = 'bg-info'; // Blue for other statuses
+                                 break;
+                         }
+                       
 
-        <!-- Requests table -->
-        <div class="two">
-          <div class="header d-flex justify-content-between align-items-center">
-            <h6>Requests</h6>
-          </div>
+                         echo "
+                         <tr data-url='agent-showGuest.php?id=" . htmlspecialchars($row['T.N']) . "'>
+                             <td>" . htmlspecialchars(substr($row['T.N'], 5)) . "</td>
+                             <td> 
+                                <div class='td-content d-flex flex-column align-items-left'>
+                                   <h6>Package: <span>" . htmlspecialchars($row['PACKAGE']) . "</span></h6>
+                                   <h6>Flight Date: <span>" . htmlspecialchars($row['FLIGHT DATE']) . "</span></h6>
+                                   <h6>Total Pax: <span>" . htmlspecialchars($row['TOTAL PAX']) . "</span></h6>
+                                   <h6>Booking Type: <span>" . htmlspecialchars($row['bookingType']) . "</span></h6>
+                               </div>
 
-          <div class="body">
-            <div class="table-container" style="max-height: 400px;">
-              <table class="request-table">
-                <thead>
-                  <tr>
-                    <th>TRANSACTION NO.</th>
-                    <th>REQUEST</th>
-                    <th>DATE</th>
-                    <th>STATUS</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <?php
-                    $sql1 = "SELECT 
-                                r.transactNo AS `T.N`, 
-                                c.concernTitle AS `Request`,
-                                cd.details AS `Details`,
-                                r.customRequest AS `CustomRequest`,
-                                DATE_FORMAT(r.requestDate, '%m-%d-%Y') AS `Date`, 
-                                r.requestStatus AS `Status`, 
-                                b.transactNo
-                            FROM 
-                                request r
-                            LEFT JOIN 
-                                booking b ON r.transactNo = b.transactNo
-                            LEFT JOIN 
-                                concern c ON r.concernId = c.concernId
-                            LEFT JOIN 
-                                concerndetails cd ON r.concernDetailsId = cd.concernDetailsId
-                            WHERE 
-                                b.agentId = '$agentId' AND r.requestStatus = 'Submitted'
-                            ORDER BY 
-                                r.requestDate DESC";
-
-                    $res1 = $conn->query($sql1);
-
-                    if ($res1 && $res1->num_rows > 0) 
-                    {
-                      while ($row = $res1->fetch_assoc()) 
+                             </td>
+                             <td>" . strtoupper(htmlspecialchars($row['CONTACT NAME'])) . "</td>
+                             <td> <span class='badge " . $badgeClass . " p-2'>" . $status . "</span> </td>
+                         </tr>";
+                         
+                        }
+                      } 
+                      else 
                       {
-                        // Handle custom request fallback logic
-                        $title = $row['Request'] ?? 'Custom Request'; // Use 'Custom Request' if `Request` is NULL
-                        $details = $row['Details'] ?? $row['CustomRequest']; // Use `CustomRequest` if `Details` is NULL
-
-                        echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($row['T.N']) . "'>
-                                <td>" . htmlspecialchars(substr($row['transactNo'], 5)) . "</td> <!-- Transaction No -->
-                                <td>" . htmlspecialchars($title) . "</td> <!-- Request -->
-                                <td>" . htmlspecialchars($row['Date']) . "</td> <!-- Date -->
-                                <td>" . htmlspecialchars($row['Status']) . "</td> <!-- Status -->
-                              </tr>";
+                        // If no records found
+                        echo "<tr><td colspan='8' style='text-align: left;'>No bookings as of the moment</td></tr>";
                       }
-                    } 
-                    else 
-                    {
-                      echo "<tr><td colspan='4.5' style='text-align: left;'>No requests at the moment.</td></tr>";
-                    }
-                  ?>
-                </tbody>
-              </table>
+                    ?>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Requests table -->
+          <div class="two">
+            <div class="header d-flex justify-content-between align-items-center">
+              <h6>Requests</h6>
+            </div>
+
+            <div class="body">
+              <div class="table-container" style="max-height: 400px;">
+                <table class="request-table">
+                  <thead>
+                    <tr>
+                      <th>TRANSACTION NO.</th>
+                      <th>REQUEST</th>
+                      <th>DATE</th>
+                      <th>STATUS</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php
+                      $sql1 = "SELECT 
+                                  r.transactNo AS `T.N`, 
+                                  c.concernTitle AS `Request`,
+                                  cd.details AS `Details`,
+                                  r.customRequest AS `CustomRequest`,
+                                  DATE_FORMAT(r.requestDate, '%m-%d-%Y') AS `Date`, 
+                                  r.requestStatus AS `Status`, 
+                                  b.transactNo
+                              FROM 
+                                  request r
+                              LEFT JOIN 
+                                  booking b ON r.transactNo = b.transactNo
+                              LEFT JOIN 
+                                  concern c ON r.concernId = c.concernId
+                              LEFT JOIN 
+                                  concerndetails cd ON r.concernDetailsId = cd.concernDetailsId
+                              WHERE 
+                                  b.agentId = '$agentId' AND r.requestStatus = 'Submitted'
+                              ORDER BY 
+                                  r.requestDate DESC";
+
+                      $res1 = $conn->query($sql1);
+
+                      if ($res1 && $res1->num_rows > 0) 
+                      {
+                        while ($row = $res1->fetch_assoc()) 
+                        {
+                          // Handle custom request fallback logic
+                          $title = $row['Request'] ?? 'Custom Request'; // Use 'Custom Request' if `Request` is NULL
+                          $details = $row['Details'] ?? $row['CustomRequest']; // Use `CustomRequest` if `Details` is NULL
+
+                          echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($row['T.N']) . "'>
+                                  <td>" . htmlspecialchars(substr($row['transactNo'], 5)) . "</td> <!-- Transaction No -->
+                                  <td>" . htmlspecialchars($title) . "</td> <!-- Request -->
+                                  <td>" . htmlspecialchars($row['Date']) . "</td> <!-- Date -->
+                                  <td>" . htmlspecialchars($row['Status']) . "</td> <!-- Status -->
+                                </tr>";
+                        }
+                      } 
+                      else 
+                      {
+                        echo "<tr><td colspan='4.5' style='text-align: left;'>No requests at the moment.</td></tr>";
+                      }
+                    ?>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
       <div class="three-wrapper">
         <!-- Payment table -->
@@ -1153,133 +1144,7 @@ session_start();
 
       </div>
 
-      <!-- Confirmed Transactions Third Row -->
-      <div class="confirm-container">
-        <div class="one">
-          <div class="header ms-2 d-flex justify-content-between align-items-center justify-content-between">
-            <h6>Confirmed Transactions</h6>
-          </div>
-            
-          <div class="body">
-            <div class="confirm-table-container">
-              <table class="confirm-table">
-                <thead style="font-size: 12px;">
-                  <tr>
-                    <th>TRANSACTION NO.</th>
-                    <th>PACKAGE</th>
-                    <th>FLIGHT DATE</th>
-                    <th>TOTAL PAX.</th>
-                    <th>CONTACT NAME</th>
-                    <th>BOOKING TYPE</th>
-                    <th>AMOUNT PAID</th>
-                    <th>BALANCE</th>
-                    <th>STATUS</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <?php
-                    // Get session variables
-                    $accountId = $_SESSION['agent_accountId'];
-                    $agentId = $_SESSION['agent_agentId'];
-                    $agentCode = $_SESSION['agent_agentCode'];
-                    $agentRole = $_SESSION['agent_agentRole'];
-
-                    // Check if the agent is a Head Agent or not
-                    if ($agentRole != 'Head Agent') 
-                    {
-                      // Query for non-Head Agent, use accountId
-                      $query = "SELECT b.transactNo, b.flightId, b.pax, b.totalPrice AS packagePrice, 
-                                  CONCAT(DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y'), ' - ', 
-                                  DATE_FORMAT(f.returnDepartureDate, '%m-%d-%Y')) AS FlightDate, p.packageName AS packageName, 
-                                  CONCAT(b.lName, ', ', b.fName, ' ', 
-                                      CASE WHEN b.mName = 'N/A' THEN '' ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ',
-                                      CASE WHEN b.suffix = 'N/A' THEN '' ELSE b.suffix END) AS contactName, 
-                                  IFNULL(req.totalRequestCost, 0) AS totalRequestCost,
-                                  IFNULL(paid.totalPaidAmount, 0) AS totalPaidAmount,
-                                  b.status AS bookingStatus, b.bookingType, (b.totalPrice + IFNULL(req.totalRequestCost, 0)) AS TotalCost
-                                FROM 
-                                  booking b
-                                JOIN flight f ON b.flightId = f.flightId
-                                LEFT JOIN 
-                                  package p ON b.packageId = p.packageId
-                                LEFT JOIN 
-                                  (SELECT transactNo, SUM(amount) AS totalPaidAmount FROM payment
-                                    WHERE paymentStatus = 'Approved' GROUP BY transactNo) paid ON b.transactNo = paid.transactNo
-                                LEFT JOIN 
-                                  (SELECT transactNo, SUM(requestCost) AS totalRequestCost FROM request
-                                    WHERE requestStatus = 'Confirmed' GROUP BY transactNo) req ON b.transactNo = req.transactNo
-                                WHERE 
-                                  b.status = 'Confirmed' AND b.accountId = '$accountId' AND f.flightDepartureDate >= CURDATE()";
-                    } 
-                    else 
-                    {
-                      // Query for Head Agent, use agentCode
-                      $query = "SELECT b.transactNo, b.flightId, b.pax, b.totalPrice AS packagePrice, 
-                                  CONCAT(DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y'), ' - ', 
-                                  DATE_FORMAT(f.returnDepartureDate, '%m-%d-%Y')) AS FlightDate, p.packageName AS packageName, 
-                                  CONCAT(b.lName, ', ', b.fName, ' ', 
-                                      CASE WHEN b.mName = 'N/A' THEN '' ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ',
-                                      CASE WHEN b.suffix = 'N/A' THEN '' ELSE b.suffix END) AS contactName, 
-                                  IFNULL(req.totalRequestCost, 0) AS totalRequestCost,
-                                  IFNULL(paid.totalPaidAmount, 0) AS totalPaidAmount,
-                                  b.status AS bookingStatus, b.bookingType, (b.totalPrice + IFNULL(req.totalRequestCost, 0)) AS TotalCost
-                                FROM 
-                                  booking b
-                                JOIN flight f ON b.flightId = f.flightId
-                                LEFT JOIN 
-                                  package p ON b.packageId = p.packageId
-                                LEFT JOIN 
-                                  (SELECT transactNo, SUM(amount) AS totalPaidAmount FROM payment
-                                    WHERE paymentStatus = 'Approved' GROUP BY transactNo) paid ON b.transactNo = paid.transactNo
-                                LEFT JOIN 
-                                  (SELECT transactNo, SUM(requestCost) AS totalRequestCost FROM request
-                                    WHERE requestStatus = 'Confirmed' GROUP BY transactNo) req ON b.transactNo = req.transactNo
-                                WHERE 
-                                  b.status = 'Confirmed' AND b.agentCode = '$agentCode' AND f.flightDepartureDate >= CURDATE()";
-                    }
-
-                    // Execute the query
-                    $result = $conn->query($query);
-
-                    // Check if there are results and populate the table
-                    if ($result && $result->num_rows > 0) 
-                    {
-                      while ($row = $result->fetch_assoc()) 
-                      {
-                        // Calculate Balance
-                        $totalAmountPaid = $row['totalPaidAmount'];
-                        $totalAmountToBePaid = $row['packagePrice'] + $row['totalRequestCost']; // Total price + total request cost
-                        $balance = $totalAmountToBePaid - $totalAmountPaid; // Balance calculation
-
-                        // Determine if fully paid or not
-                        $status = ($totalAmountPaid == $totalAmountToBePaid) ? 'Fully Paid' : 'Not Paid';
-
-                        // Display table row
-                        echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($row['transactNo']) . "'>";
-                        echo "<td>" . htmlspecialchars(substr($row['transactNo'], 5)) . "</td>"; // TransactNo
-                        echo "<td>" . htmlspecialchars($row['packageName']) . "</td>"; // Package Name
-                        echo "<td>" . htmlspecialchars($row['FlightDate']) . "</td>"; // Flight Date Range
-                        echo "<td>" . htmlspecialchars($row['pax']) . "</td>"; // Pax (Number of Passengers)
-                        echo "<td>" . htmlspecialchars($row['contactName']) . "</td>"; // Contact Name
-                        echo "<td>" . $row['bookingType'] . "</td>"; // Booking Type 
-                        echo "<td>₱ " . number_format($totalAmountPaid, 2) . "</td>"; // Total Amount Paid
-                        echo "<td>₱ " . number_format($balance, 2) . "</td>"; // Balance (Amount to be paid - Amount paid)
-                        echo "<td>" . htmlspecialchars($row['bookingStatus']) . "</td>"; // Status (Fully Paid or Not Paid)
-                        echo "</tr>";
-                      }
-                    } 
-                    else 
-                    {
-                      // Display a message if no records are found
-                      echo "<tr><td colspan='12'>No records found.</td></tr>";
-                    }
-                  ?>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
+      
 
 
 
@@ -1287,7 +1152,6 @@ session_start();
 
 
       <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">
-        <!-- Confirmed Transactions Third Row -->
          <div class="confirm-container">
            <div class="one">
              <div class="header ms-2 d-flex justify-content-between align-items-center justify-content-between">
@@ -1384,16 +1248,9 @@ session_start();
              </div>
            </div>
          </div>
-
-
-
-
       </div>
-
-
+  
       <div class="tab-pane fade" id="pills-disabled" role="tabpanel" aria-labelledby="pills-disabled-tab" tabindex="0">
-
-
 
 
 
