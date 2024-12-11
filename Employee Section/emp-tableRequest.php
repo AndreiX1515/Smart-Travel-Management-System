@@ -247,10 +247,23 @@
           <!-- Request Status Section -->
           <div class="mb-3">
             <label for="requestStatus" class="form-label"><strong>Request Status:</strong></label>
-            <select id="requestStatus" name="requestStatus" class="form-select">
+            <select id="requestStatus" name="requestStatus" class="form-select" required>
               <option selected disabled>Select Option</option>
               <option value="Confirmed">Confirmed</option>
               <option value="Rejected">Reject</option>
+            </select>
+          </div>
+
+          <!-- Handling Fee -->
+          <div class="mb-3">
+            <label for="requestHandlingFee" class="form-label"><strong>Handling Fee:</strong></label>
+            <select id="requestHandlingFee" name="requestHandlingFee" class="form-select">
+              <option selected value="0">No Handling Fee</option>
+              <option value="100">₱ 100</option>
+              <option value="200">₱ 200</option>
+              <option value="300">₱ 300</option>
+              <option value="400">₱ 400</option>
+              <option value="500">₱ 500</option>
             </select>
           </div>
 

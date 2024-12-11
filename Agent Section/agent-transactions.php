@@ -141,7 +141,6 @@ include '../Agent Section/includes/breadcrumbs.php';
                 <th>Flight Date</th>
                 <th>Total Pax</th>
                 <th>Status</th>
-         
             </tr>
           </thead>
           <tbody>
@@ -204,8 +203,8 @@ include '../Agent Section/includes/breadcrumbs.php';
                           <td>{$row['CONTACT NAME']}</td>
                           <td> 
                             <div class='d-flex flex-column'>
-                                <span><strong>Email: </strong>" . $row['CONTACT EMAIL'] ." </span>
-                                <span><strong>Contact Number: </strong> " . $row['CONTACT PHONE'] ."</span>
+                              <span><strong>Email: </strong>" . $row['CONTACT EMAIL'] ." </span>
+                              <span><strong>Contact Number: </strong> " . $row['CONTACT PHONE'] ."</span>
                             </div>
                           </td>
  
