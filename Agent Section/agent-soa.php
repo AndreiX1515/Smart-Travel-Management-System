@@ -195,10 +195,8 @@
                 $agentId = $_SESSION['agent_agentId'];
 
                 // Query to fetch the booking and commission data
-                $query = "
-                    SELECT 
-                        b.transactNo,
-                        CONCAT(DATE_FORMAT(f.flightDepartureDate, '%M %d, %Y'), ' - ', DATE_FORMAT(f.returnDepartureDate, '%M %d, %Y')) AS flightDate,
+                $query = "SELECT b.transactNo, CONCAT(DATE_FORMAT(f.flightDepartureDate, '%M %d, %Y'), ' - ', 
+                            DATE_FORMAT(f.returnDepartureDate, '%M %d, %Y')) AS flightDate,
                         p.packageName AS package,
                         b.bookingType,
                         b.totalPrice,
