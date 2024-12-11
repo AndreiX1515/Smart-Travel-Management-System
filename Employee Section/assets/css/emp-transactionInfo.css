@@ -136,7 +136,7 @@
 .guest-table-wrapper {
  width: 100%;
  padding: 0px 8px;
- height: 265px; /* Set a fixed height for vertical scroll */
+ height: 230px; /* Set a fixed height for vertical scroll */
  overflow-y: auto; /* Enable vertical scroll */
  overflow-x: auto; /* Enable horizontal scroll */
  -webkit-overflow-scrolling: touch; /* For smooth scrolling on iOS */
@@ -158,7 +158,7 @@
  font-size: 12px; /* Smaller font size */
  font-weight: 600;
  text-align: left;
- padding: 4px 10px; /* Reduced padding for compactness */
+ padding: 3px 8px; /* Reduced padding for compactness */
  border-bottom: 2px solid #dee2e6;
  position: sticky; /* Make header sticky */
  top: 0; /* Stick to the top */
@@ -196,6 +196,11 @@
  cursor: pointer; /* Pointer cursor for interactivity */
  transition: background-color 0.3s ease; /* Smooth hover transition */
 }
+
+
+
+
+
 
 /* Pending Status Example */
 .status-pending {

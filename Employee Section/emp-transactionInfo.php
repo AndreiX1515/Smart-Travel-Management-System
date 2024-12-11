@@ -90,20 +90,20 @@ if (isset($_GET['id'])) {
         </div>
 
          <div class="guest-table-wrapper ">
-           <table class="table-stripped">
+           <table class="guest-table table-stripped">
              <thead>
                <tr>
                  <th>ID</th>
-                 <th>Contact Name</th>
-                 <th>Birthdate</th>
-                 <th>Sex</th>
-                 <th>Nationality</th>
-                 <th>Other Contact</th>
-                 <th>Email</th>
-                 <th>Address</th>
-                 <th>Passport No.</th>
-                 <th>Passport Exp.</th>
-                 <th>Visa Status</th>
+                 <th>CONTACT NAME</th>
+                 <th>BIRTHDATE</th>
+                 <th>SEX</th>
+                 <th>NATIONALITY</th>
+                 <th>OTHER CONTACT</th>
+                 <th>EMAIL</th>
+                 <th>ADDRESS</th>
+                 <th>PASSPORT NO.</th>
+                 <th>PASSPORT EXP.</th>
+                 <th>VISA STATUS</th>
                </tr>
              </thead>
              <tbody>
