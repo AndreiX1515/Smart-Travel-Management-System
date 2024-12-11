@@ -333,6 +333,8 @@ body {
  gap: 15px; /* Reduced gap between elements */
  position: relative;
  height: 65vh; /* Fixed height for the container */
+ overflow-x: auto; /* Enable horizontal scrolling */
+ overflow-y: auto; /* Enable vertical scrolling */
 }
 
 /* Card Container Styling */
@@ -342,27 +344,33 @@ body {
  background-color: #fff; /* Card background color */
  border-radius: 8px; /* Rounded corners */
  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Box shadow for depth */
+ overflow: hidden; /* Prevent overflow issues inside the card */
 }
 
-/* Body styles */
- .one .body-flight {
- position: relative; /* Add this to make child elements positioned correctly */
- width: 100%; /* Adjust as needed */
- padding: 0px 0px;
+/* Confirm Table Container */
+.confirm-table-container-flight {
+ width: 100%;
+ height: 65vh; /* Fixed height for the container */
+ overflow-x: auto; /* Enable horizontal scrolling */
+ overflow-y: auto; /* Enable vertical scrolling */
+ position: relative;
 }
 
+/* Info Table */
 .info-table {
- width: 100%;    
- height: 400px;  /* Set a specific height for the table, can be adjusted as needed */
- overflow-y: auto;  /* Allow vertical scrolling */
- border-collapse: collapse; 
- table-layout: fixed;  /* Ensure consistent column width */
+ width: 100%;
+ height: 400px; /* Adjust table height as needed */
+ overflow-y: auto; /* Allow vertical scrolling */
+ overflow-x: auto; /* Allow horizontal scrolling */
+ border-collapse: collapse;
  font-family: Arial, sans-serif;
  font-size: 12px;
  background-color: #fff;
  text-align: center;
  box-sizing: border-box;
 }
+
+
 
 /* Confirm Table Container */
 .confirm-table-container-flight {
@@ -373,114 +381,116 @@ body {
  position: relative;
  overflow-y: auto; /* Enable vertical scrolling if content overflows */
  overflow-x: auto; /* Enable horizontal scrolling if content overflows */
- -webkit-overflow-scrolling: touch; /* Smooth scrolling for mobile devices */
 }
 
 
 
 
+/* Confirm Table Container */
+.confirm-table-container-flight {
+ width: 100%;
+ height: 65vh; /* Fixed height for the container */
+ overflow-x: auto; /* Enable horizontal scrolling */
+ overflow-y: auto; /* Enable vertical scrolling */
+ display: block; /* Ensure it takes up block space */
+ position: relative;
+}
+
 /* Optional: Add padding and borders to table cells for better visibility */
 .info-table td, .info-table th {
  padding: 8px 12px;
  border: 1px solid #ddd; /* Light border for table cells */
+ box-sizing: border-box; /* Prevents overflow */
+ white-space: nowrap; /* Prevents text wrapping for a cleaner look */
 }
 
 /* Makes the entire thead sticky */
 .info-table thead {
  font-size: 16px;
  font-weight: bold;
- position: sticky;            /* Makes the entire header row sticky */
- top: -8px;                   /* Moves the header a bit upward (adjust as needed) */
- background-color: #f8f9fa;   /* Lighter background for headers */
- z-index: 2;                  /* Ensures the header stays above table rows */
- border-top: 1px solid #ccc;  /* Adds a border on top for separation */
+ position: sticky; /* Makes the entire header row sticky */
+ top: 0; /* Keeps header at the top */
+ background-color: #f8f9fa; /* Lighter background for headers */
+ z-index: 2; /* Ensures the header stays above table rows */
+ border-top: 1px solid #ccc; /* Adds a border on top for separation */
  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Adds a shadow for separation from tbody */
 }
 
-.agentTHead {
- font-size: 1rem;
- font-weight: bold;
-
-}
-
-
-
-
-/* Ensure header cells have proper background */
+/* Header-specific styles */
 .info-table th {
- padding: 8px 12px;           /* Add padding for better readability */
- border: 1px solid #ccc;      /* Add borders between cells */
  font-weight: 600;
  font-size: 1rem;
  text-align: center;
- background-color: #f8f9fa;   /* Ensures header cells have consistent background */
- position: relative;           /* Ensures proper stacking context */
- z-index: 3;                  /* Ensures header cells stay above tbody content */
+ background-color: #f8f9fa; /* Consistent header background */
+ position: relative; /* Ensures proper stacking context */
+ z-index: 3; /* Ensures header cells stay above tbody content */
+ word-wrap: break-word; /* Allow word wrapping */
+ white-space: normal; /* Allow normal text wrapping instead of nowrap */
+ padding: 10px; /* Add padding for readability */
 }
+
 
 /* Table data cell styling */
 .info-table td {
- padding: 10px 12px;    /* Padding for better readability */
- border: 1px solid #ccc;  /* Add borders between cells */
+ padding: 10px 12px; /* Padding for better readability */
+ border: 1px solid #ccc; /* Add borders between cells */
  text-align: center;
  font-size: 14px;
- word-wrap: break-word;    /* Ensure text breaks within cells */
+ word-wrap: break-word; /* Ensure text breaks within cells */
+ white-space: nowrap; /* Prevent wrapping for readability */
 }
 
 /* Row hover effect */
 .info-table tbody tr:hover {
- background-color: #f1f1f1;  /* Light hover effect */
+ background-color: #f1f1f1; /* Light hover effect */
  cursor: pointer;
 }
 
-/* Adjust column widths for the first 12 columns */
-.info-table th:nth-child(1), .info-table td:nth-child(1) { width: 8%; }
-.info-table th:nth-child(2), .info-table td:nth-child(2) { width: 5%; }
-.info-table th:nth-child(3), .info-table td:nth-child(3) { width: 10%; }
-.info-table th:nth-child(4), .info-table td:nth-child(4) { width: 4%; }
-.info-table th:nth-child(5), .info-table td:nth-child(5) { width: 4%; }
-.info-table th:nth-child(6), .info-table td:nth-child(6) { width: 4%; }
-.info-table th:nth-child(7), .info-table td:nth-child(7) { width: 4%; }
-.info-table th:nth-child(8), .info-table td:nth-child(8) { width: 4%; }
-.info-table th:nth-child(9), .info-table td:nth-child(9) { width: 6%; }
-.info-table th:nth-child(10), .info-table td:nth-child(10) { width: 6%; }
-.info-table th:nth-child(11), .info-table td:nth-child(11) { width: 8%; }
+/* Adjust column widths for the first 11 columns */
+.info-table th:nth-child(1), .info-table td:nth-child(1) { width: 10%; }
+.info-table th:nth-child(2), .info-table td:nth-child(2) { width: 10%; }
+.info-table th:nth-child(3), .info-table td:nth-child(3) { width: 15%; }
+.info-table th:nth-child(4), .info-table td:nth-child(4) { width: 10%; }
+.info-table th:nth-child(5), .info-table td:nth-child(5) { width: 10%; }
+.info-table th:nth-child(6), .info-table td:nth-child(6) { width: 10%; }
+.info-table th:nth-child(7), .info-table td:nth-child(7) { width: 10%; }
+.info-table th:nth-child(8), .info-table td:nth-child(8) { width: 10%; }
+.info-table th:nth-child(9), .info-table td:nth-child(9) { width: 10%; }
+.info-table th:nth-child(10), .info-table td:nth-child(10) { width: 10%; }
+.info-table th:nth-child(11), .info-table td:nth-child(11) { width: 10%; }
 
-/* Adjust columns 12 to 29 (A1-A7) with width set to 4% */
-.info-table th:nth-child(12), .info-table td:nth-child(12),
-.info-table th:nth-child(13), .info-table td:nth-child(13),
-.info-table th:nth-child(14), .info-table td:nth-child(14),
-.info-table th:nth-child(15), .info-table td:nth-child(15),
-.info-table th:nth-child(16), .info-table td:nth-child(16),
-.info-table th:nth-child(17), .info-table td:nth-child(17),
-.info-table th:nth-child(18), .info-table td:nth-child(18),
-.info-table th:nth-child(19), .info-table td:nth-child(19),
-.info-table th:nth-child(20), .info-table td:nth-child(20),
-.info-table th:nth-child(21), .info-table td:nth-child(21),
-.info-table th:nth-child(22), .info-table td:nth-child(22), 
-.info-table th:nth-child(23), .info-table td:nth-child(23), 
-.info-table th:nth-child(24), .info-table td:nth-child(24), 
-.info-table th:nth-child(25), .info-table td:nth-child(25), 
-.info-table th:nth-child(26), .info-table td:nth-child(26),
-.info-table th:nth-child(27), .info-table td:nth-child(27),
-.info-table th:nth-child(28), .info-table td:nth-child(28),
-.info-table th:nth-child(29), .info-table td:nth-child(29) {
- width: 4%; /* Adjusted width for columns 12 to 29 */
-}
-
-/* Prevent overflow by using box-sizing */
-.info-table th, .info-table td {
- box-sizing: border-box;  /* Prevents overflow */
+/* Adjust columns 12 and beyond with width set to 6% */
+.info-table th:nth-child(n+12),
+.info-table td:nth-child(n+12) {
+ width: 10%; /* Adjusted width for columns 12 and beyond */
 }
 
 /* Hover effect for table headers */
 .info-table th:hover {
- background-color: #f1f1f1;  /* Slight hover effect on header */
+ background-color: #f1f1f1; /* Slight hover effect on header */
  cursor: pointer;
 }
 
+/* Ensure table container wrapper has overflow enabled */
+.info-table-wrapper {
+ display: block; /* Ensure block-level container */
+ overflow-x: auto; /* Enable horizontal scrolling */
+ -webkit-overflow-scrolling: touch; /* Smooth scrolling on mobile devices */
+}
 
+/* Adjust width for container in case of excessive content */
+.info-table-wrapper {
+ width: 100%; /* Ensure it spans the full container */
+}
 
+/* Responsive behavior */
+@media (max-width: 768px) {
+ .info-table th,
+ .info-table td {
+     font-size: 12px; /* Smaller font size for small screens */
+     padding: 6px 8px; /* Reduced padding */
+ }
+}
 
 
 
