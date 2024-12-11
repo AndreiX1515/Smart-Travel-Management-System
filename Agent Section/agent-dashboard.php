@@ -680,12 +680,12 @@ session_start();
                         <th rowspan="2">ORIGIN</th>
                         <th colspan="2">FLIGHT DATE</th> <!-- Flight Date columns -->
                         <th rowspan="2">FLIGHT SEAT</th>
-                        <th rowspan="2" style="font-size: 10px;">AVAILABLE SEATS</th>
-                        <th rowspan="2" style="font-size: 10px;">ADDITIONAL SEATS</th>
+                        <th rowspan="2">AVAILABLE SEATS</th>
+                        <th rowspan="2">ADDITIONAL SEATS</th>
                         <th rowspan="2">AIR + LAND</th>
                         <th rowspan="2">LAND ONLY</th>
                         <th rowspan="2">WHOLESALE PRICE</th>
-                        <th rowspan="2">RETAIL PRICE</th>
+                        <th rowspan="2">RETAIL PRICE</th> 
                         <th rowspan="2">LAND PRICE</th>
                       </tr>
                       <tr style="top: -8px">
@@ -760,11 +760,11 @@ session_start();
                               echo '<td>' . $row['origin'] . '</td>';
                               echo '<td>' . $row['Start'] . '</td>';
                               echo '<td>' . $row['End'] . '</td>';
-                              echo '<td>' . $row['FlightSeat'] . '</td>';
-                              echo '<td>' . $row['AvailSeats'] . '</td>';
-                              echo '<td>' . $row['AdditionalSeats'] . '</td>';
-                              echo '<td>' . $row['Air+Land'] . '</td>';
-                              echo '<td>' . $row['LandOnly'] . '</td>';
+                              echo '<td class="fw-bold">' . $row['FlightSeat'] . '</td>';
+                              echo '<td class="fw-bold">' . $row['AvailSeats'] . '</td>';
+                              echo '<td class="fw-bolder">' . $row['AdditionalSeats'] . '</td>';
+                              echo '<td class="fw-bolder">' . $row['Air+Land'] . '</td>';
+                              echo '<td class="fw-bolder">' . $row['LandOnly'] . '</td>';
                               echo '<td>₱ ' . $row['WholesalePrice'] . '</td>';
                               echo '<td>₱ ' . $row['RetailPrice'] . '</td>';
                               echo '<td>₱ ' . $row['LandArrangement'] . '</td>';

@@ -299,7 +299,10 @@ body {
  }
  
  
- /* Table styling */
+
+
+
+/* Transaction Table */
  .product-table {
   width: 100%;
   border-collapse: collapse;
@@ -307,64 +310,36 @@ body {
  }
  
  .product-table td {
-  padding: 10px;
+  padding: 5px 10px;
   text-align: left;
   border-bottom: 1px solid #ddd;
   font-size: 0.9em;
-  white-space: nowrap; /* Prevents text wrapping */
+  white-space: nowrap;
 }
 
 .product-table tr {
- transition: background-color 0.3s, color 0.3s; /* Smooth hover effect */
+ transition: background-color 0.3s, color 0.3s;
 }
 
 .product-table th {
- padding: 15px 10px;
+ padding: 5px 10px;
  text-align: left;
 }
 
 .product-table tr:hover {
- background-color: #f2f2f2; /* Light grey background on hover */
- color: #000000; /* Match hover color scheme */
- cursor: pointer; /* Changes the cursor to a pointer */
+ background-color: #f2f2f2;
+ color: #000000;
+ cursor: pointer;
 }
 
 .product-table th {
  position: sticky; /* Makes the table header sticky */
- top: 0; /* Keeps the header at the top of the table or parent container */
- z-index: 0; /* Ensures the header stays above table rows */
- background-color: #f8f9fa; /* Solid background to prevent transparency */
+ top: 0; 
+ z-index: 0; 
+ background-color: #f8f9fa; 
  border-bottom: 1px solid #ddd;
  padding: 9px;
  font-size: 0.8em;
  text-align: left;
 }
 
- .product-table input[type="checkbox"] {
-  cursor: pointer;
- }
- 
- 
- 
-
-
- /* Table status badges */
- .td-status-confirmed {
-  font-weight: 600;
-  color: #fff;
-  background-color: green;
-  padding: 5px 10px;
-  border-radius: 15px;
-  text-align: center;
-  display: inline-block;
- }
- 
- .td-status-pending {
-  font-weight: 600;
-  color: #fff;
-  background-color: orange;
-  padding: 5px 10px;
-  border-radius: 15px;
-  text-align: center;
-  display: inline-block;
- }
