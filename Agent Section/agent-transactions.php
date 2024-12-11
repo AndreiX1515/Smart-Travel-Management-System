@@ -130,13 +130,12 @@ include '../Agent Section/includes/breadcrumbs.php';
           endif;
         ?>
         
-        <table id="product-table" class="product-table mt-3" style="width:100%">
+        <table id="product-table" class="product-table mt-2" style="width:100%">
           <thead>
             <tr>
                 <th>ID</th>
-                <th>Contact Person Name</th>
-                <th>Contact Person Email</th>
-                <th>Contact Person Phone Number</th>
+                <th>Contact Person Info</th>
+                <th>Contact Person Contact Details</th>
                 <th>Package Name</th>
                 <th>Booking Date</th>
                 <th>Flight Date</th>
@@ -203,12 +202,17 @@ include '../Agent Section/includes/breadcrumbs.php';
                   echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($transactNo) . "'>
                           <td>{$transactNo}</td>
                           <td>{$row['CONTACT NAME']}</td>
-                          <td>{$row['CONTACT EMAIL']}</td>
-                          <td>{$row['CONTACT PHONE']}</td>
+                          <td> 
+                            <div class='d-flex flex-column'>
+                                <span><strong>Email: </strong>" . $row['CONTACT EMAIL'] ." </span>
+                                <span><strong>Contact Number: </strong> " . $row['CONTACT PHONE'] ."</span>
+                            </div>
+                          </td>
+ 
                           <td>{$row['PACKAGE']}</td>
                           <td>{$row['TRANSACTION DATE']}</td>
                           <td>{$row['FLIGHT DATE']}</td>
-                          <td style='text-align: left; font-weight: bold;'>
+                          <td style='text-align: center; font-weight: bold;'>
                               {$row['TOTAL PAX']}
                           </td>
                           <td>
@@ -493,7 +497,7 @@ include '../Agent Section/includes/breadcrumbs.php';
 
 
 
-
+  <?php require "../Agent Section/includes/scripts.php"; ?>
 
 <script>
   document.addEventListener("scroll", function () {
@@ -545,15 +549,24 @@ $(document).ready(function () {
     const table = $('#product-table').DataTable({
         dom: 'rtip',
         columnDefs: [
-            { width: '10%', targets: 0 }, // ID
-            { width: '15%', targets: 1 }, // Contact Person Name
-            { width: '15%', targets: 2 }, // Contact Person Email
-            { width: '15%', targets: 3 }, // Contact Person Phone Number
-            { width: '15%', targets: 4 }, // Package Name
-            { width: '10%', targets: 5 }, // Booking Date
-            { width: '10%', targets: 6 }, // Flight Date
-            { width: '5%', targets: 7 },  // Total Pax
-            { width: '5%', targets: 8 }   // Status
+            // { width: '7%', targets: 0 }, // ID
+            // { width: '10%', targets: 1 }, // Contact Person Name
+            // { width: '10%', targets: 2 }, // Contact Person Email
+            // { width: '10%', targets: 3 }, // Contact Person Phone Number
+            // { width: '10%', targets: 4 }, // Package Name
+            // { width: '10%', targets: 5 }, // Booking Date
+            // { width: '10%', targets: 6 }, // Flight Date
+            // { width: '5%', targets: 7 },  // Total Pax
+            // { width: '3%', targets: 8 }   // Status
+
+            { width: '7%',  targets: 0 }, // ID
+            { width: '10%', targets: 1 }, // Contact Person Name
+            { width: '10%', targets: 2 }, // Package Name
+            { width: '10%', targets: 3 }, // Package Name
+            { width: '10%', targets: 4 }, // Booking Date
+            { width: '10%', targets: 5 }, // Flight Date
+            { width: '5%',  targets: 6 },  // Total Pax
+            { width: '3%',  targets: 7 }   // Status
         ],
         autoWidth: false,
         scrollX: true,
@@ -602,7 +615,7 @@ $(document).ready(function () {
     $.fn.dataTable.ext.search.push(function (settings, data) {
         const flightStartDate = $('#FlightStartDate').val();
         const flightEndDate = $('#FlightEndDate').val();
-        const flightDate = data[6]; // Flight Date is in column index 6
+        const flightDate = data[5]; // Flight Date is in column index 6
         return isDateInRange(flightStartDate, flightEndDate, flightDate);
     });
 
@@ -610,7 +623,7 @@ $(document).ready(function () {
     $.fn.dataTable.ext.search.push(function (settings, data) {
         const bookingStartDate = $('#BookingStartDate').val();
         const bookingEndDate = $('#BookingEndDate').val();
-        const bookingDate = data[5]; // Booking Date is in column index 5
+        const bookingDate = data[4]; // Booking Date is in column index 5
         return isDateInRange(bookingStartDate, bookingEndDate, bookingDate);
     });
 
@@ -950,17 +963,5 @@ $(document).ready(function () {
     }
   </script>
 
-
-<?php require "../Agent Section/includes/scripts.php"; ?>
-
-
-
-
-
-
-
-
-
-
-</body>
+  </body>
 </html>
