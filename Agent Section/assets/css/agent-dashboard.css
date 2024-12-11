@@ -222,30 +222,30 @@ body {
 /* Card 4 */
 .card-body-currency {
  width: 100%;
- height: auto; /* Adjust to fit the content */
  padding: 0px 10px;
 }
+
 /* Currency Cards Container */
 .currency-cards {
  display: flex;
  flex-direction: row; /* Arrange cards horizontally */
- gap: 6px; /* Spacing between cards */
+ gap: 5px; /* Spacing between cards */
  justify-content: left; /* Align cards to the left */
  align-items: center; /* Vertically center the cards */
 }
 
 /* Individual Currency Card */
 .currency-card {
- width: 140px; /* Fixed width */
- height: 110px; /* Fixed height */
- padding: 8px; /* Added padding to the inside of the card */
+ width: 140px;
+ height: 10.5vh;
+ padding: 0px; 
  display: flex;
  flex-direction: column;
  align-items: center;
  justify-content: center;
- border-radius: 8px; /* Slight rounding for aesthetic */
+ border-radius: 8px; 
  background-color: white;
- box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Subtle box shadow */
+ box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); 
  font-size: 16px;
  font-weight: bold;
  color: #333; /* Text color */
@@ -257,7 +257,7 @@ body {
  display: flex;
  flex-direction: column;
  align-items: center;
- padding: 3% 5px;
+ padding: 10px 5px;
  /* margin: 10px 5px 10px 5px; Adjusted margins to ensure consistent spacing */
 }
 
@@ -267,12 +267,21 @@ body {
  height: 25px;
 }
 
-.currency-text-wrapper {
+
+.flag-icon-wrapper h6{
+  font-size: 12px;
+
+ 
+}
+
+.currency-text-wrapper h5{
  margin-top: 5px;
- font-size: 12px;
- font-weight: bolder;
+ font-size: 14px;
+ font-weight: bold;
  white-space: nowrap; /* Prevent word wrapping */
 }
+
+
 
 
 
@@ -898,12 +907,12 @@ body {
 
 /* Pending Payment Table */
 .pending-payment-table {
- width: 100%; /* Allow table to scale within container */
- border-collapse: collapse; /* Collapse borders for cleaner look */
+ width: 100%; 
+ border-collapse: collapse; 
  font-family: Arial, sans-serif;
  font-size: 14px;
  background-color: transparent;
- white-space: nowrap; /* Prevent word wrapping */
+ white-space: nowrap;
 }
 
 .pending-payment-table thead {
@@ -913,7 +922,7 @@ body {
 
 .pending-payment-table thead th {
  padding: 6px 10px; /* Adjusted padding for headers */
- font-weight: 600; /* Bold text for headers */
+ font-weight: bold; /* Bold text for headers */
  color: #333; /* Darker text for readability */
  border-bottom: 2px solid rgba(0, 0, 0, 0.1); /* Soft bottom border */
 }
