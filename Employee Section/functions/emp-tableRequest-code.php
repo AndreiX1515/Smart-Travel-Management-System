@@ -11,6 +11,7 @@
     $requestStatus = $_POST['requestStatus'];
     $requestRemarks = $_POST['requestRemarks'];
     $accountId = $_SESSION['employee_accountId'];
+    $requestHandlingFee = $_POST['requestHandlingFee'];
 
     // Set the session variable for the current user in MySQL
     $conn->query("SET @current_user_id = $accountId");
@@ -25,7 +26,7 @@
     }
 
     // Prepare the SQL statement for updating the request status
-    $sql1 = "UPDATE request SET requestStatus = ?, requestRemarks = ? WHERE requestId = ?";
+    $sql1 = "UPDATE request SET requestStatus = ?, requestRemarks = ?, handlingFee = ? WHERE requestId = ?";
     $stmt1 = $conn->prepare($sql1);
 
     if (!$stmt1) 
@@ -38,7 +39,7 @@
     }
 
     // Bind parameters and execute the update
-    $stmt1->bind_param('ssi', $requestStatus, $requestRemarks, $requestId);
+    $stmt1->bind_param('ssdi', $requestStatus, $requestRemarks, $requestHandlingFee, $requestId);
     
     if (!$stmt1->execute()) 
     {

@@ -141,51 +141,126 @@ include '../Agent Section/includes/breadcrumbs.php';
                 <th>Flight Date</th>
                 <th>Total Pax</th>
                 <th>Status</th>
-         
             </tr>
           </thead>
           <tbody>
             <?php
-              $sql1 = "SELECT
-                  b.transactNo AS `T.N`,
-                  p.packageName AS `PACKAGE`,
-                  DATE_FORMAT(b.bookingDate, '%m-%d-%Y') AS `TRANSACTION DATE`, b.bookingType as bookingType,
-                  DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y') AS `FLIGHT DATE`,
-                  b.pax AS `TOTAL PAX`,
-                  CONCAT(
-                      b.lName, ', ', b.fName, ' ', 
-                      CASE WHEN b.mName = 'N/A' THEN '' ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ',
-                      CASE WHEN b.suffix = 'N/A' THEN '' ELSE b.suffix END
-                  ) AS `CONTACT NAME`,
-                  b.email AS `CONTACT EMAIL`,
-                  CONCAT(b.countryCode, ' ', b.contactNo) AS `CONTACT PHONE`,
-                  b.status AS `STATUS`
-              FROM 
-                  booking b
-              LEFT JOIN 
-                  flight f ON b.flightId = f.flightId
-              LEFT JOIN 
-                  package p ON b.packageId = p.packageId
-              LEFT JOIN
-                  agent a ON b.agentId = a.agentId
-              WHERE 
-                  b.agentId = '$agentId' 
-              ORDER BY 
-                  b.transactNo DESC";
-
-              $res1 = $conn->query($sql1);
-
-              if ($res1->num_rows > 0) 
+              $agentRole = $_SESSION['agent_agentRole'];
+              $agentCode = $_SESSION['agent_agentCode'];
+              $accountId = $_SESSION['agent_accountId'];
+              if ($agentRole != 'Head Agent')
               {
-                while ($row = $res1->fetch_assoc()) 
+                $sql1 = "SELECT b.transactNo AS `T.N`, p.packageName AS `PACKAGE`,
+                          DATE_FORMAT(b.bookingDate, '%m-%d-%Y') AS `TRANSACTION DATE`, b.bookingType as bookingType,
+                          DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y') AS `FLIGHT DATE`, b.pax AS `TOTAL PAX`,
+                          CONCAT(b.lName, ', ', b.fName, ' ', CASE WHEN b.mName = 'N/A' THEN '' 
+                            ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ', CASE WHEN b.suffix = 'N/A' THEN '' 
+                            ELSE b.suffix END) AS `CONTACT NAME`,
+                          b.email AS `CONTACT EMAIL`, CONCAT(b.countryCode, ' ', b.contactNo) AS `CONTACT PHONE`, b.status AS `STATUS`
+                      FROM 
+                          booking b
+                      LEFT JOIN 
+                          flight f ON b.flightId = f.flightId
+                      LEFT JOIN 
+                          package p ON b.packageId = p.packageId
+                      LEFT JOIN
+                          agent a ON b.agentId = a.agentId
+                      WHERE 
+                          b.agentId = '$agentId' 
+                      ORDER BY 
+                          b.transactNo DESC";
+
+                $res1 = $conn->query($sql1);
+
+                if ($res1->num_rows > 0) 
                 {
-                  $transactNo = $row['T.N'];
-                  $pax = $row['TOTAL PAX'];
+                  while ($row = $res1->fetch_assoc()) 
+                  {
+                    $transactNo = $row['T.N'];
+                    $pax = $row['TOTAL PAX'];
 
-                  $status = isset($row['STATUS']) ? $row['STATUS'] : 'Unknown';
-                  $statusClass = '';
+                    $status = isset($row['STATUS']) ? $row['STATUS'] : 'Unknown';
+                    $statusClass = '';
 
-                  switch ($status) {
+                    switch ($status) {
+                        case 'Confirmed':
+                            $statusClass = 'bg-success text-white'; // Green background, white text
+                            break;
+                        case 'Cancelled':
+                            $statusClass = 'bg-danger text-white'; // Red background, white text
+                            break;
+                        case 'Pending':
+                            $statusClass = 'bg-warning text-dark'; 
+                            break;
+                        default:
+                            $statusClass = 'bg-secondary text-white'; 
+                    }
+
+                    echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($transactNo) . "'>
+                            <td>{$transactNo}</td>
+                            <td>{$row['CONTACT NAME']}</td>
+                            <td> 
+                              <div class='d-flex flex-column'>
+                                <span><strong>Email: </strong>" . $row['CONTACT EMAIL'] ." </span>
+                                <span><strong>Contact Number: </strong> " . $row['CONTACT PHONE'] ."</span>
+                              </div>
+                            </td>
+  
+                            <td>{$row['PACKAGE']}</td>
+                            <td>{$row['TRANSACTION DATE']}</td>
+                            <td>{$row['FLIGHT DATE']}</td>
+                            <td style='text-align: center; font-weight: bold;'>
+                                {$row['TOTAL PAX']}
+                            </td>
+                            <td>
+                            <span class='badge p-2 rounded-pill {$statusClass} '>
+                                {$status}
+                            </span>
+                          </td>
+                    </tr>";
+                  }
+                } 
+                else 
+                {
+                  echo "<tr><td colspan='10'>No bookings found</td></tr>";
+                }
+              }
+              else
+              {
+                $sql1 = "SELECT b.transactNo AS `T.N`, p.packageName AS `PACKAGE`, 
+                            DATE_FORMAT(b.bookingDate, '%m-%d-%Y') AS `TRANSACTION DATE`, b.bookingType as bookingType,
+                            DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y') AS `FLIGHT DATE`,
+                            b.pax AS `TOTAL PAX`, CONCAT(b.lName, ', ', b.fName, ' ', CASE WHEN b.mName = 'N/A' 
+                            THEN '' ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ', CASE WHEN b.suffix = 'N/A' THEN '' 
+                            ELSE b.suffix END) AS `CONTACT NAME`, b.email AS `CONTACT EMAIL`,
+                            CONCAT(b.countryCode, ' ', b.contactNo) AS `CONTACT PHONE`, b.status AS `STATUS`
+                          FROM 
+                              booking b
+                          LEFT JOIN 
+                              flight f ON b.flightId = f.flightId
+                          LEFT JOIN 
+                              package p ON b.packageId = p.packageId
+                          LEFT JOIN
+                              agent a ON b.agentId = a.agentId
+                          WHERE 
+                              b.agentCode = '$agentCode' 
+                          ORDER BY 
+                              b.transactNo DESC";
+
+                $res1 = $conn->query($sql1);
+
+                if ($res1->num_rows > 0) 
+                {
+                  while ($row = $res1->fetch_assoc()) 
+                  {
+                    $transactNo = $row['T.N'];
+                    $pax = $row['TOTAL PAX'];
+
+                    $status = isset($row['STATUS']) ? $row['STATUS'] : 'Unknown';
+                    $statusClass = '';
+
+                    switch ($status) 
+                    {
                       case 'Confirmed':
                           $statusClass = 'bg-success text-white'; // Green background, white text
                           break;
@@ -197,36 +272,38 @@ include '../Agent Section/includes/breadcrumbs.php';
                           break;
                       default:
                           $statusClass = 'bg-secondary text-white'; 
-                  }
+                    }
 
-                  echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($transactNo) . "'>
-                          <td>{$transactNo}</td>
-                          <td>{$row['CONTACT NAME']}</td>
-                          <td> 
-                            <div class='d-flex flex-column'>
+                    echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($transactNo) . "'>
+                            <td>{$transactNo}</td>
+                            <td>{$row['CONTACT NAME']}</td>
+                            <td> 
+                              <div class='d-flex flex-column'>
                                 <span><strong>Email: </strong>" . $row['CONTACT EMAIL'] ." </span>
                                 <span><strong>Contact Number: </strong> " . $row['CONTACT PHONE'] ."</span>
-                            </div>
+                              </div>
+                            </td>
+  
+                            <td>{$row['PACKAGE']}</td>
+                            <td>{$row['TRANSACTION DATE']}</td>
+                            <td>{$row['FLIGHT DATE']}</td>
+                            <td style='text-align: center; font-weight: bold;'>
+                                {$row['TOTAL PAX']}
+                            </td>
+                            <td>
+                            <span class='badge p-2 rounded-pill {$statusClass} '>
+                                {$status}
+                            </span>
                           </td>
- 
-                          <td>{$row['PACKAGE']}</td>
-                          <td>{$row['TRANSACTION DATE']}</td>
-                          <td>{$row['FLIGHT DATE']}</td>
-                          <td style='text-align: center; font-weight: bold;'>
-                              {$row['TOTAL PAX']}
-                          </td>
-                          <td>
-                           <span class='badge p-2 rounded-pill {$statusClass} '>
-                               {$status}
-                           </span>
-                         </td>
-                   </tr>";
+                    </tr>";
+                  }
+                } 
+                else 
+                {
+                  echo "<tr><td colspan='10'>No bookings found</td></tr>";
                 }
-              } 
-              else 
-              {
-                echo "<tr><td colspan='10'>No bookings found</td></tr>";
               }
+              
             ?>
           </tbody>
         </table>
@@ -561,7 +638,7 @@ $(document).ready(function () {
 
             { width: '7%',  targets: 0 }, // ID
             { width: '10%', targets: 1 }, // Contact Person Name
-            { width: '10%', targets: 2 }, // Package Name
+            { width: '10%', targets: 2 }, // Contact Person Details
             { width: '10%', targets: 3 }, // Package Name
             { width: '10%', targets: 4 }, // Booking Date
             { width: '10%', targets: 5 }, // Flight Date

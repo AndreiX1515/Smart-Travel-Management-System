@@ -172,8 +172,8 @@
                             package p ON b.packageId = p.packageId
                         LEFT JOIN
                             agent a ON b.agentId = a.agentId
-                        -- WHERE 
-                        --     b.status = 'Pending' 
+                        WHERE 
+                            b.status = 'Pending' 
                         ORDER BY 
                             b.transactNo DESC";
 
