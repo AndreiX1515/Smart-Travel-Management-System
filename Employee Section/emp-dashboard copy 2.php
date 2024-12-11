@@ -14,7 +14,7 @@
     <?php include '../Employee Section/includes/emp-head.php'?>
     <link rel="stylesheet" href="../Employee Section/assets/css/emp-dashboard.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="../Employee Section/assets/css/emp-sidebar-navbar.css?v=<?php echo time(); ?>">
-   
+    
 </head>
 <body>
 
@@ -434,9 +434,59 @@
     </div>
 
     <div class="tab-content" id="pills-tabContent">
-      <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
-        <div class="info-table-container" style="overflow-x: auto;">
-           <table class="info-table" id="info-table">
+
+    <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
+        <div class="main-table-wrapper-one">
+          <div class="table-info-container">
+            <div class="header p-3 d-flex flex-row justify-content-between align-items-center">
+
+              <div class="start-section">
+                <h6 class="">Flight Seat Tracker</h6>
+              </div>
+
+              <div class="end-section d-flex align-items-center gap-3">
+                <div class="legend-guides d-flex flex-row gap-3">
+                  <div class="legend-item-wrapper">
+                    <div class="legend-item">
+                      <span class="color-circle" style="background-color: #ADD8E6;"></span> <!-- Red -->
+                      <h6 class="legend-text">A01</h6>
+                    </div>
+                  </div>
+                  <div class="legend-item-wrapper">
+                    <div class="legend-item">
+                      <span class="color-circle" style="background-color: #98FB98;"></span> <!-- Green -->
+                      <h6 class="legend-text">A02</h6>
+                    </div>
+                  </div>
+                  <div class="legend-item-wrapper">
+                    <div class="legend-item">
+                      <span class="color-circle" style="background-color: #FFFFCC; color: black;"></span> <!-- Blue -->
+                      <h6 class="legend-text">A03</h6>
+                    </div>
+                  </div>
+                  <div class="legend-item-wrapper">
+                    <div class="legend-item">
+                      <span class="color-circle" style="background-color: #E6E6FA;"></span> <!-- Yellow -->
+                      <h6 class="legend-text">A04</h6>
+                    </div>
+                  </div>
+                  <div class="legend-item-wrapper">
+                    <div class="legend-item">
+                      <span class="color-circle" style="background-color: #FFDAB9;"></span> <!-- Magenta -->
+                      <h6 class="legend-text">A05</h6>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="refresh-button-wrapper">
+                  <button class="btn btn-primary btn-sm"><i class="fa-solid fa-arrows-rotate"></i></button>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="info-table-container">
+              <table class="info-table">
                 <thead class="border-2">
                   <tr>
                     <th rowspan="2">TEAM OP</th>
@@ -457,7 +507,7 @@
                     $colors = ['#ADD8E6', '#98FB98', '#FFFFCC', '#E6E6FA', '#FFDAB9']; // Extend this array as needed
 
                     // Fetch agent column headers dynamically
-                    $sql = "SELECT DISTINCT agentCode FROM agent WHERE agentCode IS NOT NULL AND agentCode != ''";
+                    $sql = "SELECT DISTINCT agentId FROM agent WHERE agentId IS NOT NULL AND agentId != ''";
                     $result = $conn->query($sql);
 
                     // Initialize a counter for cycling through the color array
@@ -469,7 +519,7 @@
                         $color = $colors[$colorIndex % count($colors)];
                         
                         // Output the <th> element with the inline style for background color
-                        echo '<th colspan="2" data-bs-toggle="tooltip" title="' . $row['agentCode'] . '" style="background-color: ' . $color . ';">' . $row['agentCode'] . '</th>';
+                        echo '<th colspan="2" data-bs-toggle="tooltip" title="' . $row['agentId'] . '" style="background-color: ' . $color . ';">' . $row['agentId'] . '</th>';
                         
                         // Increment the color index for the next iteration
                         $colorIndex++;
@@ -478,7 +528,7 @@
 
 
                   </tr>
-                  <tr style="top: -10px">
+                  <tr style="top: -8px">
                     <th>START</th>
                     <th>END</th>
                     <!-- A1, A2, A3, A4, A5, A6, A7 Sub Headers -->
@@ -488,7 +538,7 @@
                     $colors = ['#ADD8E6', '#98FB98', '#FFFFCC', '#E6E6FA', '#FFDAB9']; // Extend this array as needed
 
                     // Fetch agent column headers dynamically
-                    $sql = "SELECT DISTINCT agentCode FROM agent WHERE agentCode IS NOT NULL AND agentCode != ''";
+                    $sql = "SELECT DISTINCT agentId FROM agent WHERE agentId IS NOT NULL AND agentId != ''";
                     $result = $conn->query($sql);
 
                     // Initialize a counter for cycling through the color array
@@ -512,15 +562,15 @@
                 </thead>
                 <tbody>
                   <?php
-                    $sql = "SELECT DISTINCT agentCode FROM agent WHERE agentCode IS NOT NULL AND agentCode != ''";
+                    $sql = "SELECT DISTINCT agentId FROM agent WHERE agentId IS NOT NULL AND agentId != ''";
                     $result = $conn->query($sql);
 
                     $agentColumns = '';
                     while ($row = $result->fetch_assoc()) 
                     {
                       $agentColumns .= 
-                          'SUM(CASE WHEN b.agentCode = "' . $row['agentCode'] . '" AND b.bookingType = "Package" and b.status = "Confirmed" THEN b.pax ELSE 0 END) AS `' . $row['agentCode'] . '_AL`, ' .
-                          'SUM(CASE WHEN b.agentCode = "' . $row['agentCode'] . '" AND b.bookingType = "Land" and b.status = "Confirmed" THEN b.pax ELSE 0 END) AS `' . $row['agentCode'] . '_LO`, ';
+                          'SUM(CASE WHEN b.agentId = "' . $row['agentId'] . '" AND b.bookingType = "Package" and b.status = "Confirmed" THEN b.pax ELSE 0 END) AS `' . $row['agentId'] . '_AL`, ' .
+                          'SUM(CASE WHEN b.agentId = "' . $row['agentId'] . '" AND b.bookingType = "Land" and b.status = "Confirmed" THEN b.pax ELSE 0 END) AS `' . $row['agentId'] . '_LO`, ';
                     }
 
              
@@ -613,10 +663,85 @@
                   ?>
                 </tbody>
               </table>
-       
-         </div>
-   </div>           
+          
+            </div>
+          </div>
+        </div>            
+      </div>
 
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+const tableContainer = document.querySelector('.info-table-container');
+const table = document.querySelector('.info-table');
+
+// Sync the fixed columns with the scroll position
+tableContainer.addEventListener('scroll', function() {
+const scrollLeft = tableContainer.scrollLeft;
+
+// Adjust the position of the fixed columns
+const fixedColumns = document.querySelectorAll('.info-table th:nth-child(-n+11), .info-table td:nth-child(-n+11)');
+fixedColumns.forEach(column => {
+column.style.transform = `translateX(${scrollLeft}px)`;
+});
+});
+});
+</script>
+
+<script>
+$(document).ready(function() {
+
+$(".info-table").freezeTable();
+
+$(".table-scrollable").freezeTable({
+  'scrollable': true,
+});
+
+$('#table-modal').one('shown.bs.modal', function (e) {
+
+  $(this).find(".table-modal").freezeTable({
+    'container': '#table-modal.modal',
+  });
+});
+
+$(".table-columns-only").freezeTable({
+  'freezeHead': false,
+});
+
+$(".table-head-only").freezeTable({
+  'freezeColumn': false,
+});
+
+// 2 Columns to be fixed
+$(".table-multi-columns").freezeTable({
+  'columnNum' : 2,
+});
+
+// Shadow enabled
+$(".table-shadow").freezeTable({
+  'shadow' : true,
+});
+
+// Customized styles
+$(".table-wrap-styles").freezeTable({
+  'headWrapStyles': {'box-shadow': '0px 9px 10px -5px rgba(159, 159, 160, 0.8)'},
+});
+
+$(".table-with-scrollbar").freezeTable({
+  'scrollBar': true,
+});
+
+// Freeze Column(s) Keep
+$(".table-column-keep").freezeTable({
+  'columnNum' : 2,
+  'columnKeep' : true,
+});
+});
+</script>
+
+
+
+</script>
+      
 
       <div class="tab-pane fade " id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
         <div class="header-wrapper">
@@ -660,7 +785,7 @@
                                   r.transactNo AS `T.N`,
                                   c.concernTitle AS `Request`,
                                   DATE_FORMAT(r.requestDate, '%m.%d.%Y') AS `Date`,
-                                  r.requestStatus, b.agentCode,
+                                  r.requestStatus, b.agentId,
                                   CONCAT(a.lName, ', ', a.fName, 
                                       IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1)), '')) AS agentName
                               FROM 
@@ -670,7 +795,7 @@
                               JOIN 
                                   concern c ON r.concernId = c.concernId
                               JOIN
-                                  agent a ON b.agentCode = a.agentCode
+                                  agent a ON b.agentId = a.agentId
                               WHERE 
                                 r.requestStatus = 'Submitted'
                               ORDER BY 
@@ -743,7 +868,7 @@
                               CONCAT(FORMAT(p.amount, 2)) AS `Amount`,  -- Format the amount as a currency with two decimal places
                               DATE_FORMAT(p.paymentDate, '%m.%d.%Y') AS `Date`,  -- Format the date as specified
                               p.paymentType AS `Payment Type`,
-                              p.paymentStatus, b.agentCode,
+                              p.paymentStatus, b.agentId,
                               CONCAT(a.lName, ', ', a.fName, 
                                       IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1)), '')) AS agentName
                             FROM 
@@ -751,7 +876,7 @@
                             JOIN 
                               booking b ON p.transactNo = b.transactNo
                             JOIN
-                                agent a ON b.agentCode = a.agentCode
+                                agent a ON b.agentId = a.agentId
                             WHERE 
                               p.paymentStatus = 'Submitted'
                             ORDER BY 
@@ -814,65 +939,9 @@
   </div>
 </div>
 
-
-
-
-
+<script src="../Employee Section/assets/js/js/freeze-table.js"></script>
+<?php include '../Employee Section/includes/emp-scripts.php' ?>
 
 
 </body>
-
-
-<?php include '../Employee Section/includes/emp-scripts.php' ?>
-
-<!-- <script src="../Employee Section/assets/dist/js/freeze-table.js"></script> -->
-
-
-
-
-
-<script>
-$(document).ready(function() {
-    var table = $('.info-table').DataTable({
-        scrollX: true, // Enable horizontal scrolling
-        scrollY: '570px', // Adjust the height of the table for vertical scrolling
-        paging: false, // Disable pagination
-        searching: false, // Disable search box
-        info: false, // Disable the table information (e.g., "Showing 1 to 10 of 50 entries")
-        fixedColumns: {
-            leftColumns: 12 // Freeze the first 12 columns
-        },
-        dom: 'rt<"bottom"flp>', // Template approach to hide unnecessary components
-        columnDefs: [
-            { targets: 0, width: '10%' },
-            { targets: 1, width: '10%' },
-            { targets: 2, width: '20%' },
-            { targets: 3, width: '20%' },
-            { targets: 4, width: '10%' },
-            { targets: 5, width: '10%' },
-            { targets: 6, width: '10%' },
-            { targets: 7, width: '10%' },
-            { targets: 8, width: '10%' },
-            { targets: 9, width: '12%' },
-            { targets: 10, width: '12%' },
-            { targets: 11, width: '12%' },
-            { targets: '_all', width: '10%' } // Apply width for columns 12 and beyond
-        ],
-        ordering: false, // Disable sorting on all columns
-    });
-
-    // Add event listener for row selection (click event)
-    $('.info-table tbody').on('click', 'tr', function() {
-        // Remove the 'selected' class from all rows
-        $('.info-table tbody tr').removeClass('selected');
-        
-        // Add the 'selected' class to the clicked row
-        $(this).addClass('selected');
-    });
-});
-
-
-</script>
-
-
 </html>

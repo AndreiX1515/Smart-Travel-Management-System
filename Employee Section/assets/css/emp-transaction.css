@@ -14,9 +14,14 @@
  flex-direction: row;
  justify-content: space-between; /* Space out items evenly */
  align-items: center;
- padding: 5px 0px; /* Adjusted padding for consistency */
+ padding: 10px 10px; /* Adjusted padding for consistency */
  gap: 15px; /* Consistent spacing between elements */
+ margin-bottom: 10px;
+ border: 1px solid #ddd; /* Light border for the subheader */
+ border-radius: 8px; /* Slight rounding for the corners */
+ box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow around the subheader */
 }
+
 
 /* Wrapper labels */
 .table-subheader label,
@@ -202,7 +207,7 @@ span {
  color: #ffffff; /* Text color */
  font-weight: 500;
  text-align: left;
- padding: 10px; /* Uniform padding for header cells */
+ padding: 10px 30px; /* Uniform padding for header cells */
  border-bottom: 2px solid #dee2e6;
  position: sticky; /* Make the header sticky */
  top: 0; /* Stick the header to the top */
@@ -237,6 +242,21 @@ span {
  cursor: pointer; /* Pointer cursor for interactivity */
  transition: background-color 0.3s ease; /* Smooth hover transition */
 }
+
+th:nth-child(1), td:nth-child(1) { width: 10%; } /* Transact No */
+th:nth-child(2), td:nth-child(2) { width: 12.5%; } /* Package Name */
+th:nth-child(3), td:nth-child(3) { width: 6.67%; } /* Flight Date (Start) */
+th:nth-child(4), td:nth-child(4) { width: 6.67%; } /* Flight Date (End) */
+th:nth-child(5), td:nth-child(5) { width: 10%; } /* Booking Date */
+th:nth-child(6), td:nth-child(6) { width: 5%; } /* Total Pax */
+th:nth-child(7), td:nth-child(7) { width: 8.33%; } /* Package Price */
+th:nth-child(8), td:nth-child(8) { width: 8.33%; } /* Request Cost */
+th:nth-child(9), td:nth-child(9) { width: 10%; } /* Amount to be Paid */
+th:nth-child(10), td:nth-child(10) { width: 8.33%; } /* Amount Paid */
+th:nth-child(11), td:nth-child(11) { width: 10%; } /* Remaining Balance */
+th:nth-child(12), td:nth-child(12) { width: 12.5%; } /* Payment Status */
+
+
 
 /* Ensure all columns have equal width
 .table-wrapper th, .table-wrapper td {
