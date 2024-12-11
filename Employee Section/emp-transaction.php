@@ -127,16 +127,13 @@
       <thead>
         <tr>
           <th rowspan="2">Transact No</th>
+          <th rowspan="2">Agent Name</th>
           <th rowspan="2">Package Name</th>
           <th colspan="2" class="text-center">Flight Date</th>
           <th rowspan="2">Booking Date</th>
           <th rowspan="2">Total Pax</th>
           <th rowspan="2">Package Price</th>
-          <th rowspan="2">Request Cost</th>
-          <th rowspan="2">Amount to be Paid</th>
-          <th rowspan="2">Amount Paid</th>
-          <th rowspan="2">Remaining Balance</th>
-          <th rowspan="2">Payment Status</th>
+          <th rowspan="2">Status</th>
         </tr>
         <tr>
           <th>Departure</th>
@@ -146,25 +143,18 @@
       <tbody>
         <?php
           // SQL query for SOA
-          $sql = "SELECT b.transactNo, f.flightDepartureDate as departureDate, f.returnDepartureDate as returnDate, CONCAT(f.flightDepartureDate, ' | ', f.returnDepartureDate) AS FlightDate, 
-                          p.packageName AS PackageName, b.bookingDate AS BookingDate, b.pax AS TotalPax, b.totalPrice AS PackagePrice, 
-                          SUM(CASE WHEN r.requestStatus = 'Confirmed' THEN r.requestCost ELSE 0 END) AS RequestCost,
-                          (b.totalPrice + SUM(CASE WHEN r.requestStatus = 'Confirmed' THEN r.requestCost ELSE 0 END)) AS AmountToPaid,
-                          SUM(CASE WHEN y.paymentStatus = 'Approved' THEN y.amount ELSE 0 END) AS AmountPaid,
-                          ((b.totalPrice + SUM(CASE WHEN r.requestStatus = 'Confirmed' THEN r.requestCost ELSE 0 END)) - 
-                          SUM(CASE WHEN y.paymentStatus = 'Approved' THEN y.amount ELSE 0 END)) AS Balance
+          $sql = "SELECT b.transactNo, f.flightDepartureDate as departureDate, f.returnDepartureDate as returnDate, b.status as bookingStatus,
+                      CONCAT(f.flightDepartureDate, ' | ', f.returnDepartureDate) AS FlightDate, p.packageName AS PackageName, 
+                      b.bookingDate AS BookingDate, b.pax AS TotalPax, b.totalPrice AS PackagePrice, 
+                      CONCAT(a.lName, ', ', a.fName, ' ', IFNULL(CONCAT(SUBSTRING(a.mName, 1, 1), '.'), '')) AS agentName
                   FROM 
                     booking b
                   JOIN 
                     flight f ON f.flightId = b.flightId
                   JOIN 
                     package p ON p.packageId = b.packageId
-                  LEFT JOIN 
-                    request r ON r.transactNo = b.transactNo
-                  LEFT JOIN 
-                    payment y ON y.transactNo = b.transactNo
-                  GROUP BY 
-                    b.transactNo, f.flightDepartureDate, p.packageName, b.totalPrice, b.bookingDate, b.pax
+                  JOIN
+                    agent a ON a.agentId = b.agentId
                   ORDER BY 
                     b.bookingDate ASC";
 
@@ -176,37 +166,11 @@
           {
             while ($row = $result->fetch_assoc()) 
             {
-
-              // Determine the status based on the balance
-              $status = ($row['Balance'] <= 0) ? 'Fully Paid' : 'Partially Paid';
-
-              // Assign the appropriate badge class based on the status
-              $statusClass = '';
-              switch ($status) {
-                  case 'Active':
-                      $statusClass = 'badge bg-success'; // Green pill for "Active"
-                      break;
-                  case 'Partially Paid':
-                      $statusClass = 'badge bg-warning text-dark'; // Yellow pill for "Pending"
-                      break;
-                  case 'Inactive':
-                      $statusClass = 'badge bg-secondary'; // Grey pill for "Inactive"
-                      break;
-                  case 'To be confirmed':
-                      $statusClass = 'badge bg-info text-dark'; // Blue pill for "To be confirmed"
-                      break;
-                  case 'Fully Paid':
-                      $statusClass = 'badge bg-success'; // Green pill for "Fully Paid"
-                      break;
-                  default:
-                      $statusClass = 'badge bg-dark'; // Dark pill for unknown statuses
-                      break;
-              }
               
-
               // Output each row as a table row
               echo "<tr data-url='emp-transactionInfo.php?id=" . htmlspecialchars($row['transactNo']) . "'>";
               echo "<td>" . htmlspecialchars($row['transactNo']) . "</td>";
+              echo "<td>" . htmlspecialchars($row['agentName']) . "</td>";
               echo "<td>" . htmlspecialchars($row['PackageName']) . "</td>";
               // echo "<td>" . htmlspecialchars($row['FlightDate']) . "</td>";
               echo "<td>" . htmlspecialchars($row['departureDate']) . "</td>";
@@ -214,11 +178,7 @@
               echo "<td>" . htmlspecialchars($row['BookingDate']) . "</td>";
               echo "<td class=' fw-bold'>" . htmlspecialchars($row['TotalPax']) . "</td>";
               echo "<td>₱ " . number_format($row['PackagePrice'], 2) . "</td>";
-              echo "<td>₱ " . number_format($row['RequestCost'], 2) . "</td>";
-              echo "<td>₱ " . number_format($row['AmountToPaid'], 2) . "</td>";
-              echo "<td>₱ " . number_format($row['AmountPaid'], 2) . "</td>";
-              echo "<td>₱ " . number_format(max($row['Balance'], 0), 2) . "</td>"; // Ensure Balance doesn't go negative
-              echo "<td ><span class='{$statusClass} py-2'>{$status}</span></td>";
+              echo "<td>" . htmlspecialchars($row['bookingStatus']) . "</td>";
               echo "</tr>";
             }
           } 
@@ -241,16 +201,13 @@
         info: true,
         columnDefs: [
             { width: '8%', targets: 0 }, // Transact No
-            { width: '14%', targets: 1 }, // Package Name
-            { width: '8%', targets: 2 }, // Flight Date
-            { width: '6%', targets: 3 }, // Booking Date
-            { width: '5%', targets: 4 },  // Total Pax
-            { width: '8%', targets: 5 }, // Package Price
-            { width: '8%', targets: 6 }, // Request Cost
-            { width: '8%', targets: 7 }, // Amount to be Paid
-            { width: '8%', targets: 8 }, // Amount Paid
-            { width: '8%', targets: 9 }, // Remaining Balance
-            { width: '5%', targets: 10 } // Status
+            { width: '14%', targets: 1 }, // Transact No
+            { width: '14%', targets: 2 }, // Package Name
+            { width: '8%', targets: 3 }, // Flight Date
+            { width: '6%', targets: 4 }, // Booking Date
+            { width: '5%', targets: 5 },  // Total Pax
+            { width: '8%', targets: 6 }, // Package Price
+            { width: '10%', targets: 7 }, // Package Price
         ],
         language: {
             emptyTable: "NO RECORDS AVAILABLE"
