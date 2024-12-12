@@ -129,7 +129,7 @@ include '../Agent Section/includes/breadcrumbs.php';
           endif;
         ?>
         
-        <table id="product-table" class="product-table mt-2" style="width:100%">
+        <table id="product-table" class="product-table mt-2">
           <thead>
             <tr>
                 <th>Transaction ID</th>
@@ -622,22 +622,23 @@ include '../Agent Section/includes/breadcrumbs.php';
 
 <script>
 $(document).ready(function () {
-    const table = $('#product-table').DataTable({
+      const table = $('#product-table').DataTable({
         dom: 'rtip',
         columnDefs: [
-            { width: '7%',  targets: 0 }, // ID
-            { width: '10%', targets: 1 }, // Contact Person Name
-            { width: '10%', targets: 2 }, // Contact Person Details
-            { width: '10%', targets: 3 }, // Package Name
-            { width: '10%', targets: 4 }, // Booking Date
-            { width: '10%', targets: 5 }, // Flight Date
-            { width: '5%',  targets: 6 },  // Total Pax
-            { width: '3%',  targets: 7 }   // Status
+            { width: '10%', targets: 0 }, // ID
+            { width: '15%', targets: 1 }, // Contact Person Name
+            { width: '15%', targets: 2 }, // Contact Person Details
+            { width: '15%', targets: 3 }, // Package Name
+            { width: '15%', targets: 4 }, // Booking Date
+            { width: '15%', targets: 5 }, // Flight Date
+            { width: '10%', targets: 6 }, // Total Pax
+            { width: '5%',  targets: 7 }  // Status
         ],
-        autoWidth: false,
-        scrollX: true,
-        order: [[0, 'desc']]
+        order: [[0, 'desc']],
+        scrollX: false, // Disable horizontal scrolling
+        autoWidth: false, // Disable automatic column width calculation
     });
+
 
     // Search Functionality
     $('#search').on('keyup', function () {

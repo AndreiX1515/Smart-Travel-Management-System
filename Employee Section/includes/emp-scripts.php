@@ -1,9 +1,5 @@
-<!-- Stylesheets -->
-<!-- Font Awesome for Icons -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
 
-<!-- DataTables FixedColumns CSS -->
-<link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/3.3.0/css/fixedColumns.dataTables.min.css">
+
 
 <!-- Scripts -->
 <!-- jQuery Core (required by jQuery UI and DataTables) -->
