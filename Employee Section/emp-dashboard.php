@@ -573,7 +573,7 @@
                       while ($row = $result->fetch_assoc()) 
                       {
                         echo '<tr>';
-                        echo '<td class="fw-bold">' . $row['TeamOP'] . '</td>';
+                        echo '<td class="fw-bold" style="font-size; 14px">' . $row['TeamOP'] . '</td>';
                         echo '<td>' . $row['origin'] . '</td>';
                         echo '<td>' . $row['Start'] . '</td>';
                         echo '<td>' . $row['End'] . '</td>';
@@ -586,8 +586,7 @@
                         echo '<td>₱ ' . number_format($row['RetailPrice'], 2) . '</td>';
                         echo '<td>₱ ' . number_format($row['LandArrangement'], 2) . '</td>';
 
-                        // Dynamically populate agent columns
-                      // Dynamically populate agent columns
+                  
                    foreach ($row as $key => $value) 
                    {
                        $colors = ['#ADD8E6', '#98FB98', '#FFFFCC', '#E6E6FA', '#FFDAB9']; // Color array
@@ -615,7 +614,7 @@
               </table>
        
          </div>
-   </div>           
+    </div>           
 
 
       <div class="tab-pane fade " id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
@@ -803,12 +802,10 @@
         </div>
       </div>
 
-      <!-- Flights Table -->
-      
 
       <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0"></div>
-
-     <div class="tab-pane fade" id="pills-disabled" role="tabpanel" aria-labelledby="pills-disabled-tab" tabindex="0"></div>
+      <div class="tab-pane fade" id="pills-disabled" role="tabpanel" aria-labelledby="pills-disabled-tab" tabindex="0"></div>
+    
     </div>
 
   </div>
@@ -843,21 +840,7 @@ $(document).ready(function() {
             leftColumns: 12 // Freeze the first 12 columns
         },
         dom: 'rt<"bottom"flp>', // Template approach to hide unnecessary components
-        columnDefs: [
-            { targets: 0, width: '10%' },
-            { targets: 1, width: '10%' },
-            { targets: 2, width: '20%' },
-            { targets: 3, width: '20%' },
-            { targets: 4, width: '10%' },
-            { targets: 5, width: '10%' },
-            { targets: 6, width: '10%' },
-            { targets: 7, width: '10%' },
-            { targets: 8, width: '10%' },
-            { targets: 9, width: '12%' },
-            { targets: 10, width: '12%' },
-            { targets: 11, width: '12%' },
-            { targets: '_all', width: '10%' } // Apply width for columns 12 and beyond
-        ],
+        
         ordering: false, // Disable sorting on all columns
     });
 

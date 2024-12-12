@@ -609,33 +609,48 @@ div.dataTables_wrapper thead {
  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Light shadow for the header */
 }
 
-/* Table Header Cells */
+/* General header styling for all columns */
 div.dataTables_wrapper thead th {
- padding: 8px 12px; /* Adjust padding to make the header smaller, ensure padding is balanced */
- text-align: center; /* Center-align the header text */
-
+  padding: 8px 0px; /* Default padding for uniformity */
+  text-align: center; /* Center-align the header text */
 }
 
 /* Table Body Cells */
 div.dataTables_wrapper td {
- padding: 10px 12px;
- border: 1px solid #ccc;
- text-align: center;
- font-size: 14px;
- white-space: nowrap;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  text-align: center;
+  font-size: 14px;
+  white-space: nowrap;
+ }
+ 
+ 
+/* Table Body Cells */
+div.dataTables_wrapper td {
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  text-align: center;
+  font-size: 14px;
+  white-space: nowrap;
 }
 
-/* Table Rows Hover Effect */
-.info-table tbody tr:hover {
- background-color: #f1f1f1; /* Light background color on hover */
- cursor: pointer; /* Change cursor to pointer to indicate interactivity */
+/* Table Rows Hover Effect for DataTables */
+div.dataTables_wrapper tbody tr:hover,
+div.dataTables_wrapper .dataTable tr:hover {
+  background-color: #f1f1f1; /* Light background color on hover */
+  cursor: pointer; /* Change cursor to pointer to indicate interactivity */
 }
 
-/* Selected Row Background Color */
-.info-table tbody tr.selected {
- background-color: #dcdcdc; /* Change background color for the selected row */
- color: #333; /* Ensure text color is readable */
+/* Selected Row Background Color for DataTables */
+div.dataTables_wrapper tbody tr.selected,
+div.dataTables_wrapper .dataTable tr.selected {
+  background-color: #dcdcdc; /* Change background color for the selected row */
+  color: #333; /* Ensure text color is readable */
 }
+
+
+
+
 
 /* Table Body Cells */
 div.dataTables_wrapper td {
@@ -658,24 +673,66 @@ div.dataTables_wrapper td {
 }
 
 
-/* Adjust column widths for the first 11 columns */
-.info-table th:nth-child(1), .info-table td:nth-child(1) { width: 15%; }
-.info-table th:nth-child(2), .info-table td:nth-child(2) { width: 15%; }
-.info-table th:nth-child(3), .info-table td:nth-child(3) { width: 20%; }
-.info-table th:nth-child(4), .info-table td:nth-child(4) { width: 25%; }
-.info-table th:nth-child(5), .info-table td:nth-child(5) { width: 8%; }
-.info-table th:nth-child(6), .info-table td:nth-child(6) { width: 8%; }
-.info-table th:nth-child(7), .info-table td:nth-child(7) { width: 8%; }
-.info-table th:nth-child(8), .info-table td:nth-child(8) { width: 8%; }
-.info-table th:nth-child(9), .info-table td:nth-child(9) { width: 8%; }
-.info-table th:nth-child(10), .info-table td:nth-child(10) { width: 12%; }
-.info-table th:nth-child(11), .info-table td:nth-child(11) { width: 12%; }
-.info-table th:nth-child(12), .info-table td:nth-child(12) { width: 12%; }
+/* Adjust column widths for the first 12 columns in DataTables */
+div.dataTables_wrapper thead th:nth-child(1), 
+div.dataTables_wrapper tbody td:nth-child(1) { 
+  width: 5%; 
+}
 
+div.dataTables_wrapper thead th:nth-child(2), 
+div.dataTables_wrapper tbody td:nth-child(2) { 
+  width: 4%; 
+}
 
-.info-table th:nth-child(n+12),
-.info-table td:nth-child(n+12) {
- width: 10%;
+div.dataTables_wrapper thead th:nth-child(3), 
+div.dataTables_wrapper tbody td:nth-child(3) { 
+  width: 16%; 
+}
+
+div.dataTables_wrapper thead th:nth-child(4), 
+div.dataTables_wrapper tbody td:nth-child(4) { 
+  width: 5%; 
+}
+
+div.dataTables_wrapper thead th:nth-child(5), 
+div.dataTables_wrapper tbody td:nth-child(5) { 
+  width: 5%; 
+}
+
+div.dataTables_wrapper thead th:nth-child(6), 
+div.dataTables_wrapper tbody td:nth-child(6) { 
+  width: 5%; 
+}
+
+div.dataTables_wrapper thead th:nth-child(7), 
+div.dataTables_wrapper tbody td:nth-child(7) { 
+  width: 5%; 
+}
+
+div.dataTables_wrapper thead th:nth-child(8), 
+div.dataTables_wrapper tbody td:nth-child(8) { 
+  width: 5%; 
+}
+
+div.dataTables_wrapper thead th:nth-child(9), 
+div.dataTables_wrapper tbody td:nth-child(9) { 
+  width: 5%; 
+}
+
+div.dataTables_wrapper thead th:nth-child(10), 
+div.dataTables_wrapper tbody td:nth-child(10) { 
+  width: 7%; 
+}
+
+div.dataTables_wrapper thead th:nth-child(11), 
+div.dataTables_wrapper tbody td:nth-child(11) { 
+  width: 5%; 
+}
+
+/* Adjust column widths for additional columns beyond the 12th */
+div.dataTables_wrapper thead th:nth-child(n+12), 
+div.dataTables_wrapper tbody td:nth-child(n+12) { 
+  width: 10%; 
 }
 
 
