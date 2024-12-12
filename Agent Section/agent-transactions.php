@@ -133,7 +133,7 @@ include '../Agent Section/includes/breadcrumbs.php';
         <table id="product-table" class="product-table mt-2" style="width:100%">
           <thead>
             <tr>
-                <th>ID</th>
+                <th>Transaction ID</th>
                 <th>Contact Person Info</th>
                 <th>Contact Person Contact Details</th>
                 <th>Package Name</th>
@@ -626,16 +626,6 @@ $(document).ready(function () {
     const table = $('#product-table').DataTable({
         dom: 'rtip',
         columnDefs: [
-            // { width: '7%', targets: 0 }, // ID
-            // { width: '10%', targets: 1 }, // Contact Person Name
-            // { width: '10%', targets: 2 }, // Contact Person Email
-            // { width: '10%', targets: 3 }, // Contact Person Phone Number
-            // { width: '10%', targets: 4 }, // Package Name
-            // { width: '10%', targets: 5 }, // Booking Date
-            // { width: '10%', targets: 6 }, // Flight Date
-            // { width: '5%', targets: 7 },  // Total Pax
-            // { width: '3%', targets: 8 }   // Status
-
             { width: '7%',  targets: 0 }, // ID
             { width: '10%', targets: 1 }, // Contact Person Name
             { width: '10%', targets: 2 }, // Contact Person Details
