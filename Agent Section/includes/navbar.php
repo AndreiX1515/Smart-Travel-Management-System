@@ -114,7 +114,7 @@ $current_date = date('D, F d, Y'); // Format: "Tue, January 01, 2024"
      </div>
      <div class="modal-footer">
          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-         <a href="../Agent Section/agent-login.php" class="btn btn-danger" id="logoutButton">Logout</a>
+         <a href="../Agent Section/agentLogin.php" class="btn btn-danger" id="logoutButton">Logout</a>
      </div>
    </div>
  </div>
