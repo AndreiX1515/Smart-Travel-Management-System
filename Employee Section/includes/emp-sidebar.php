@@ -184,7 +184,7 @@ $position = htmlspecialchars(strtoupper($empId));
                 success: function(response) {
                     if (response.trim() === 'success') {
                         // Redirect to the login page
-                        window.location.href = '../Agent Section/agent-login.php';
+                        window.location.href = '../Agent Section/agentLogin.php';
                     } else {
                         alert('Logout failed. Please try again.');
                     }

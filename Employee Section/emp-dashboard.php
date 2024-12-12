@@ -582,9 +582,9 @@
                         echo '<td>' . $row['AdditionalSeats'] . '</td>';
                         echo '<td>' . $row['Air+Land'] . '</td>';
                         echo '<td>' . $row['LandOnly'] . '</td>';
-                        echo '<td>₱ ' . $row['WholesalePrice'] . '</td>';
-                        echo '<td>₱ ' . $row['RetailPrice'] . '</td>';
-                        echo '<td>₱ ' . $row['LandArrangement'] . '</td>';
+                        echo '<td>₱ ' . number_format($row['WholesalePrice'], 2) . '</td>';
+                        echo '<td>₱ ' . number_format($row['RetailPrice'], 2) . '</td>';
+                        echo '<td>₱ ' . number_format($row['LandArrangement'], 2) . '</td>';
 
                         // Dynamically populate agent columns
                       // Dynamically populate agent columns
