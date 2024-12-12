@@ -68,13 +68,8 @@
        <div class="filter-wrapper">
         <label for="filterDropdown" class="">Status</label>
         <div class="dropdown mt-2">
-            <button
-                class="btn btn-outline-secondary dropdown-toggle"
-                type="button"
-                id="filterDropdown"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-            >
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="filterDropdown" data-bs-toggle="dropdown"
+                aria-expanded="false">
                 Status
             </button>
             <ul class="dropdown-menu" aria-labelledby="filterDropdown">
@@ -145,7 +140,7 @@
           // SQL query for SOA
           $sql = "SELECT b.transactNo, f.flightDepartureDate as departureDate, f.returnDepartureDate as returnDate, b.status as bookingStatus,
                       CONCAT(f.flightDepartureDate, ' | ', f.returnDepartureDate) AS FlightDate, p.packageName AS PackageName, 
-                      b.bookingDate AS BookingDate, b.pax AS TotalPax, b.totalPrice AS PackagePrice, 
+                      DATE_FORMAT(b.bookingDate, '%m.%d.%Y') AS BookingDate, b.pax AS TotalPax, b.totalPrice AS PackagePrice, 
                       CONCAT(a.lName, ', ', a.fName, ' ', IFNULL(CONCAT(SUBSTRING(a.mName, 1, 1), '.'), '')) AS agentName
                   FROM 
                     booking b
