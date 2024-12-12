@@ -331,13 +331,9 @@ function clearInput(button) {
     // Reset the DataTable search and column filters, similar to clearFiltersButton
     table.search('').columns().search('').draw(); // Reset DataTable search and column filters
 }
-
 </script>
 
-
-
 <style>
-
   .dataTables_length {
     display: none;
   }
@@ -394,17 +390,7 @@ window.addEventListener('scroll', function() {
     });
   </script>
 
-
-
-
-
-
-
-
-
-
 <?php include '../Employee Section/includes/emp-scripts.php' ?>
-
 
 </body>
 </html>

@@ -251,12 +251,6 @@ th:nth-child(5), td:nth-child(5) { width: 10%; } /* Booking Date */
 th:nth-child(6), td:nth-child(6) { width: 5%; } 
 th:nth-child(7), td:nth-child(7) { width: 8.33%; } 
 th:nth-child(8), td:nth-child(8) { width: 8.33%; } 
-th:nth-child(9), td:nth-child(9) { width: 10%; } 
-th:nth-child(10), td:nth-child(10) { width: 8.33%; } 
-th:nth-child(11), td:nth-child(11) { width: 10%; } /* Remaining Balance */
-th:nth-child(12), td:nth-child(12) { width: 12.5%; } /* Payment Status */
-
-
 
 /* Ensure all columns have equal width
 .table-wrapper th, .table-wrapper td {
@@ -264,19 +258,18 @@ th:nth-child(12), td:nth-child(12) { width: 12.5%; } /* Payment Status */
 } */
 
 /* Responsive table: make the table scrollable on small screens */
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
  .table-wrapper {
-   height: auto; /* Allow height to adjust for smaller screens */
+   height: auto;
  }
  .table-wrapper table {
    width: 100%;
    display: block;
-   overflow-x: auto; /* Allow horizontal scrolling on small screens */
+   overflow-x: auto; 
  }
  .table-wrapper td, .table-wrapper th {
-   padding: 8px 12px; /* Adjust padding on smaller screens */
- }
-}
+   padding: 8px 12px;
+} */
 
 
 
