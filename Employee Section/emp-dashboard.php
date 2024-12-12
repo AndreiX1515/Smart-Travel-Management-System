@@ -610,28 +610,106 @@
               </table>
        
          </div>
-    </div>           
+      </div>           
 
 
       <div class="tab-pane fade " id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
+
         <div class="header-wrapper">
-          <div class="price-table-wrapper">
-            <div class="header p-3">
-            <h6 class="text-secondary">Price</h6>
+          <div class="table-wrapper price-table">
+            <div class="table-header">
+                <h6 class="text-secondary">Price</h6>
             </div>
 
-            <div class="price-table-container">
-              <table class="price-table">
+            <div class="table-container">
+              <table class="">
                 <thead>
                   <tr>
-                  
+                    <th>Transact No</th>
+                    <th>Agent Name</th>
+                    <th>Package Name</th>
+                    <th>Flight Date</th>
+                    <th>Booking Date</th>
+                    <th>Total Pax</th>
+                    <th>Package Price</th>
+                    <th>Status</th>
                   </tr>
                 </thead>
                 <tbody>
-                
+                  <tr>
+                    <td>001</td>
+                    <td>John Doe</td>
+                    <td>Premium Tour</td>
+                    <td>2024-12-20</td>
+                    <td>2024-12-05</td>
+                    <td>4</td>
+                    <td>$1000</td>
+                    <td><span class="badge rounded-pill bg-warning text-dark">Pending</span></td>
+                  </tr>
+                  <tr>
+                    <td>002</td>
+                    <td>Jane Smith</td>
+                    <td>Adventure Trip</td>
+                    <td>2024-12-22</td>
+                    <td>2024-12-07</td>
+                    <td>2</td>
+                    <td>$800</td>
+                    <td><span class="badge rounded-pill bg-success text-white">Confirmed</span></td>
+                  </tr>
+                  <tr>
+                    <td>003</td>
+                    <td>Alex Johnson</td>
+                    <td>Beach Escape</td>
+                    <td>2024-12-25</td>
+                    <td>2024-12-10</td>
+                    <td>5</td>
+                    <td>$1200</td>
+                    <td><span class="badge rounded-pill bg-danger text-white">Cancelled</span></td>
+                  </tr>
+                  <tr>
+                    <td>004</td>
+                    <td>Mary Lee</td>
+                    <td>Cultural Tour</td>
+                    <td>2024-12-28</td>
+                    <td>2024-12-12</td>
+                    <td>3</td>
+                    <td>$900</td>
+                    <td><span class="badge rounded-pill bg-secondary text-white">Reject</span></td>
+                  </tr>
+                  <tr>
+                    <td>004</td>
+                    <td>Mary Lee</td>
+                    <td>Cultural Tour</td>
+                    <td>2024-12-28</td>
+                    <td>2024-12-12</td>
+                    <td>3</td>
+                    <td>$900</td>
+                    <td><span class="badge rounded-pill bg-secondary text-white">Reject</span></td>
+                  </tr>
+                  <tr>
+                    <td>004</td>
+                    <td>Mary Lee</td>
+                    <td>Cultural Tour</td>
+                    <td>2024-12-28</td>
+                    <td>2024-12-12</td>
+                    <td>3</td>
+                    <td>$900</td>
+                    <td><span class="badge rounded-pill bg-secondary text-white">Reject</span></td>
+                  </tr>
+                  <tr>
+                    <td>004</td>
+                    <td>Mary Lee</td>
+                    <td>Cultural Tour</td>
+                    <td>2024-12-28</td>
+                    <td>2024-12-12</td>
+                    <td>3</td>
+                    <td>$900</td>
+                    <td><span class="badge rounded-pill bg-secondary text-white">Reject</span></td>
+                  </tr>
                 </tbody>
               </table>
             </div>
+
           </div>
 
           <div class="request-wrapper">
@@ -711,6 +789,7 @@
                 </tbody>
               </table>
             </div>
+
           </div>
 
           <div class="payment-wrapper">
@@ -790,12 +869,178 @@
                   ?>
                 </tbody>
               </table>
-
-
             </div>
-            
+
           </div>
+
+
+
         </div>
+
+        <div class="confirm-container">
+            <div class="one">
+              <div class="header d-flex justify-content-between align-items-center">
+                <h6 class="white-pill">Confirmed Transactions</h6>
+              </div>
+                
+              <div class="body">
+                <div class="table-container confirm-table-container">
+                  <table class="confirm-table">
+                    <thead>
+                      <tr>
+                        <th>TRANSACTION NO.</th>
+                        <th>PACKAGE</th>
+                        <th>FLIGHT DATE</th>
+                        <th>TOTAL PAX.</th>
+                        <th>CONTACT NAME</th>
+                        <th>BOOKING TYPE</th>
+                        <th>AMOUNT PAID</th>
+                        <th>BALANCE</th>
+                        <th>STATUS</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <?php
+                        // Assuming you already have a connection to your database
+                        $accountId = $_SESSION['agent_accountId'];
+                        $agentCode = $_SESSION['agent_agentCode'];
+                        $agentRole = $_SESSION['agent_agentRole'];
+
+                        if ($agentRole != 'Head Agent') 
+                        {
+                          // Query to select all records from the booking table
+                          $query = "SELECT b.transactNo, b.flightId, b.pax, b.totalPrice AS packagePrice, 
+                                      CONCAT(DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y'), ' - ', DATE_FORMAT(f.returnDepartureDate, 
+                                      '%m-%d-%Y')) AS FlightDate, p.packageName AS packageName, 
+                                      CONCAT(b.lName, ', ', b.fName, ' ', 
+                                          CASE WHEN b.mName = 'N/A' THEN '' ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ',
+                                          CASE WHEN b.suffix = 'N/A' THEN '' ELSE b.suffix END) AS contactName, 
+                                      IFNULL(req.totalRequestCost, 0) AS totalRequestCost, IFNULL(paid.totalPaidAmount, 0) AS totalPaidAmount,
+                                      b.status AS bookingStatus, b.bookingType, (b.totalPrice + IFNULL(req.totalRequestCost, 0)) AS TotalCost
+                                    FROM 
+                                      booking b
+                                    JOIN flight f ON b.flightId = f.flightId
+                                    LEFT JOIN 
+                                      package p ON b.packageId = p.packageId
+                                    LEFT JOIN 
+                                      (SELECT transactNo, SUM(amount) AS totalPaidAmount FROM payment
+                                        WHERE paymentStatus = 'Approved' GROUP BY transactNo) paid ON b.transactNo = paid.transactNo
+                                    LEFT JOIN 
+                                      (SELECT transactNo, SUM(requestCost) AS totalRequestCost FROM request
+                                        WHERE requestStatus = 'Confirmed' GROUP BY transactNo) req ON b.transactNo = req.transactNo
+                                    WHERE 
+                                      b.status = 'Confirmed' and b.accountId = '$accountId' and f.flightDepartureDate >= CURDATE()";
+
+                          $result = $conn->query($query); // Execute the query
+
+                          // Check if there are results and populate the table
+                          if ($result && $result->num_rows > 0) 
+                          {
+                            while ($row = $result->fetch_assoc()) 
+                            {
+                              // Calculate Balance
+                              $totalAmountPaid = $row['totalPaidAmount'];
+                              $totalAmountToBePaid = $row['packagePrice'] + $row['totalRequestCost']; // Total price + total request cost
+                              $balance = $totalAmountToBePaid - $totalAmountPaid; // Balance calculation
+
+                              // Determine if fully paid or not
+                              $status = ($totalAmountPaid == $totalAmountToBePaid) ? 'Fully Paid' : 'Not Paid';
+
+                          
+                              // Display table row
+                              echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($row['transactNo']) . "'>";
+                              echo "<td>" . htmlspecialchars(substr($row['transactNo'], 5)) . "</td>"; // TransactNo
+                              echo "<td>" . htmlspecialchars($row['packageName']) . "</td>"; // Package Name
+                              echo "<td>" . htmlspecialchars($row['FlightDate']) . "</td>"; // Flight Date Range
+                              echo "<td>" . htmlspecialchars($row['pax']) . "</td>"; // Pax (Number of Passengers)
+                              echo "<td>" . htmlspecialchars($row['contactName']) . "</td>"; // Contact Name
+                              echo "<td>" . $row['bookingType'] . "</td>"; // Booking Type 
+                              echo "<td>₱ " . number_format($totalAmountPaid, 2) . "</td>"; // Total Amount Paid
+                              echo "<td>₱ " . number_format($balance, 2) . "</td>"; // Balance (Amount to be paid - Amount paid)
+                              echo "<td>" . htmlspecialchars($row['bookingStatus']) . "</td>"; // Status (Fully Paid or Not Paid)
+                              echo "</tr>";
+                            }
+                          } 
+                          else 
+                          {
+                            // Display a message if no records are found
+                            echo "<tr><td colspan='12'>No records found.</td></tr>";
+                          }
+                        }
+                        else
+                        {
+                          {
+                            // Query to select all records from the booking table
+                            $query = "SELECT b.transactNo, b.flightId, b.pax, b.totalPrice AS packagePrice, 
+                                        CONCAT(DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y'), ' - ', DATE_FORMAT(f.returnDepartureDate, 
+                                        '%m-%d-%Y')) AS FlightDate, p.packageName AS packageName, 
+                                        CONCAT(b.lName, ', ', b.fName, ' ', 
+                                            CASE WHEN b.mName = 'N/A' THEN '' ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ',
+                                            CASE WHEN b.suffix = 'N/A' THEN '' ELSE b.suffix END) AS contactName, 
+                                        IFNULL(req.totalRequestCost, 0) AS totalRequestCost, IFNULL(paid.totalPaidAmount, 0) AS totalPaidAmount,
+                                        b.status AS bookingStatus, b.bookingType, (b.totalPrice + IFNULL(req.totalRequestCost, 0)) AS TotalCost
+                                      FROM 
+                                        booking b
+                                      JOIN flight f ON b.flightId = f.flightId
+                                      LEFT JOIN 
+                                        package p ON b.packageId = p.packageId
+                                      LEFT JOIN 
+                                        (SELECT transactNo, SUM(amount) AS totalPaidAmount FROM payment
+                                          WHERE paymentStatus = 'Approved' GROUP BY transactNo) paid ON b.transactNo = paid.transactNo
+                                      LEFT JOIN 
+                                        (SELECT transactNo, SUM(requestCost) AS totalRequestCost FROM request
+                                          WHERE requestStatus = 'Confirmed' GROUP BY transactNo) req ON b.transactNo = req.transactNo
+                                      WHERE 
+                                        b.status = 'Confirmed' and b.agentCode = '$agentCode' and f.flightDepartureDate >= CURDATE()";
+
+                            $result = $conn->query($query); // Execute the query
+
+                            // Check if there are results and populate the table
+                            if ($result && $result->num_rows > 0) 
+                            {
+                              while ($row = $result->fetch_assoc()) 
+                              {
+                                // Calculate Balance
+                                $totalAmountPaid = $row['totalPaidAmount'];
+                                $totalAmountToBePaid = $row['packagePrice'] + $row['totalRequestCost']; // Total price + total request cost
+                                $balance = $totalAmountToBePaid - $totalAmountPaid; // Balance calculation
+
+                                // Determine if fully paid or not
+                                $status = ($totalAmountPaid == $totalAmountToBePaid) ? 'Fully Paid' : 'Not Paid';
+
+                            
+                                // Display table row
+                                echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($row['transactNo']) . "'>";
+                                echo "<td>" . htmlspecialchars(substr($row['transactNo'], 5)) . "</td>"; // TransactNo
+                                echo "<td>" . htmlspecialchars($row['packageName']) . "</td>"; // Package Name
+                                echo "<td>" . htmlspecialchars($row['FlightDate']) . "</td>"; // Flight Date Range
+                                echo "<td>" . htmlspecialchars($row['pax']) . "</td>"; // Pax (Number of Passengers)
+                                echo "<td>" . htmlspecialchars($row['contactName']) . "</td>"; // Contact Name
+                                echo "<td>" . $row['bookingType'] . "</td>"; // Booking Type 
+                                echo "<td>₱ " . number_format($totalAmountPaid, 2) . "</td>"; // Total Amount Paid
+                                echo "<td>₱ " . number_format($balance, 2) . "</td>"; // Balance (Amount to be paid - Amount paid)
+                                echo "<td>" . htmlspecialchars($row['bookingStatus']) . "</td>"; // Status (Fully Paid or Not Paid)
+                                echo "</tr>";
+                              }
+                            } 
+                            else 
+                            {
+                              // Display a message if no records are found
+                              echo "<tr><td colspan='12'>No records found.</td></tr>";
+                            }
+                          }
+                        }
+                        
+                      ?>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
       </div>
 
 

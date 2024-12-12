@@ -117,9 +117,6 @@
  margin: 0;
 }
 
-
-
-
 /* Card 4 */
 .card-body-currency {
  width: 100%;
@@ -175,8 +172,6 @@
  font-weight: 500;
 }
 
-
-
 /* Icon Wrapper */
 .icon-wrapper {
  width: 40px; /* Match the size proportionately */
@@ -192,9 +187,6 @@
  transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth hover effect */
 }
 
-
-
-
 .main-content .header-wrapper {
  display: flex;
  flex-direction: row;
@@ -202,7 +194,151 @@
  width: 100%;
  height: 35vh;
  margin-bottom: 10px;
+ font-family: Arial, sans-serif; /* Clean font */
 }
+
+
+
+
+
+
+
+.table-wrapper {
+  height: auto;
+  border: 1px solid black;
+  width: 33.33%; /* Full width of parent */
+  border-collapse: collapse; /* Remove cell gaps */
+  font-size: 14px; /* Readable font size */
+  color: #333; /* Neutral text color */
+  text-align: left; /* Align text to the left */
+  overflow: hidden; /* Keep corners neat */
+}
+ 
+/* General Table Header Styling */
+.table-header {
+  padding: 15px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start; /* Align header items to the left */
+  justify-content: space-between; /* Space items evenly */
+}
+
+/* Table Container Styling */
+.table-container {
+  overflow-x: auto; /* Enable horizontal scrolling if content overflows */
+  max-width: 100%; /* Ensure it takes full width but doesn't overflow */
+  min-height: 250px; /* Set a minimum height for the container */
+  height: auto; /* Automatically adjust based on content */
+  border: 1px solid black; /* Border for visual clarity */
+}
+
+/* Table Styling */
+.table-container table {
+  width: 100%; /* Full width of parent */
+  border-collapse: collapse; /* Remove cell gaps */
+  font-size: 12px; /* Readable font size */
+  color: #333; /* Neutral text color */
+  text-align: left; /* Align text to the left */
+  border-radius: 10px; /* Rounded corners */
+  overflow: hidden; /* Keep corners neat */
+  table-layout: auto; /* Allows columns to adjust according to content */
+}
+
+/* Table Row Styling */
+.table-container tbody tr {
+  border-bottom: 1px solid #dee2e6;
+}
+
+.table-container tbody tr:last-child {
+  border-bottom: none; /* Remove bottom border for the last row */
+}
+
+/* Table Cell and Header Styling */
+.table-container td, .table-container th {
+  padding: 10px; /* Padding for uniformity */
+  color: #333;
+  vertical-align: middle;
+  font-size: 0.9rem;
+  text-align: left; /* Align text to the left */
+  white-space: nowrap; /* Disable word wrap */
+}
+
+/* Table Header (Thead) Styling */
+.table-container thead th {
+  background-color: #747474; /* Light gray for the header */
+  color: #ffffff; /* Text color */
+  font-weight: 500;
+  text-align: left;
+  padding: 10px 30px; /* Uniform padding for header cells */
+  border-bottom: 2px solid #dee2e6;
+  position: sticky; /* Make the header sticky */
+  top: 0; /* Stick the header to the top */
+  z-index: 1; /* Ensure the header stays above other content when scrolling */
+  text-transform: uppercase; /* Added to make header text more consistent */
+}
+
+/* Table Row Hover Effect */
+.table-container tbody tr:hover {
+  background-color: #f5f5f5; /* Light gray background on row hover */
+  cursor: pointer; /* Pointer cursor for interactivity */
+  transition: background-color 0.3s ease; /* Smooth hover transition */
+}
+
+/* Additional class for top border */
+.has-border-top {
+  border-top: 3px solid #000000; /* 3px black border on top */
+}
+
+
+
+
+
+
+
+
+
+
+ .price-table thead {
+  background-color: #f8f9fa; /* Light gray header */
+  font-weight: bold; /* Bold header text */
+  text-transform: uppercase; /* Uppercase for header */
+  color: #555; /* Softer header color */
+ }
+ 
+ .price-table thead th {
+  padding: 5px 15px; /* Increased header cell padding */
+  border-bottom: 1px solid #e9ecef; /* Divider between header and body */
+  font-size: 12px;
+ }
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 .price-table-wrapper {
  width: 40%;
@@ -802,6 +938,109 @@ th {
  display: block !important;
 }
 
+
+
+
+/* Confirm Table Container */
+.confirm-container {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  position: relative;
+  height: 30vh;
+  margin-top: 5px;
+  box-sizing: border-box;
+ }
+ 
+ .confirm-container .one {
+  width: 100%; /* Full width for the card */
+  height: 30vh; /* Adjusted height */
+ }
+ 
+ .confirm-container .one .header {
+  width: 100%;
+  padding: 10px 0px; 
+  display: flex; 
+  justify-content: center; 
+  height: 50px; 
+  align-items: center;
+  font-weight: bold;
+ }
+
+ .confirm-container h6 {
+  font-weight: bold;
+ }
+ 
+ 
+ /* Confirm Table Container */
+ .confirm-table-container {
+  width: 100%;
+  overflow: hidden; 
+  display: block; 
+  position: relative;
+  overflow-y: auto; 
+  overflow-x: auto; 
+  -webkit-overflow-scrolling: touch;
+  background-color: transparent;
+ }
+ 
+ .confirm-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  background-color: transparent;
+  white-space: nowrap;
+  table-layout: auto;
+  overflow-x: auto;
+  overflow-y: hidden;
+  border-radius: 10px;
+  overflow: hidden; 
+ }
+
+.confirm-table thead {
+  background-color: #00defc;
+  text-align: left;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.confirm-table thead th {
+  font-size: 14px;
+  padding: 4px 14px;
+  font-weight: bold;
+  color: #333;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+.confirm-table tbody td {
+  padding: 8px 14px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  color: #555;
+  height: 50px;
+}
+
+.confirm-table tbody tr {
+  background-color: transparent;
+  transition: background-color 0.3s;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.confirm-table tbody tr:hover {
+  background-color: #b2ebf2;
+}
+
+.confirm-table tbody tr:first-child {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.confirm-table tbody tr:last-child {
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
 
 
 

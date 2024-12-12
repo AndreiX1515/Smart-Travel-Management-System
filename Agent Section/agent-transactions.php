@@ -654,7 +654,7 @@ $(document).ready(function () {
     // Package Filter
     $('#packages').on('change', function () {
         const selectedPackage = $(this).val();
-        table.column(4).search(selectedPackage || '').draw();
+        table.column(3).search(selectedPackage || '').draw();
     });
 
     // Initialize Datepickers

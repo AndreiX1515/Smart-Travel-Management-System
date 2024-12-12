@@ -167,6 +167,28 @@
             while ($row = $result->fetch_assoc()) 
             {
               
+              $status = htmlspecialchars($row['bookingStatus']);
+              $statusClass = ""; // Default class
+
+              // Determine the class based on the status value
+              switch($status) {
+                  case "Pending":
+                      $statusClass = "bg-warning text-dark"; // Yellow pill for Pending
+                      break;
+                  case "Confirmed":
+                      $statusClass = "bg-success text-white"; // Green pill for Confirmed
+                      break;
+                  case "Cancelled":
+                      $statusClass = "bg-danger text-white"; // Red pill for Cancelled
+                      break;
+                  case "Reject":
+                      $statusClass = "bg-secondary text-white"; // Grey pill for Reject
+                      break;
+                  default:
+                      $statusClass = "bg-secondary text-white"; // Default case for unknown statuses
+                      break;
+              }
+
               // Output each row as a table row
               echo "<tr data-url='emp-transactionInfo.php?id=" . htmlspecialchars($row['transactNo']) . "'>";
               echo "<td>" . htmlspecialchars($row['transactNo']) . "</td>";
@@ -176,9 +198,9 @@
               echo "<td>" . htmlspecialchars($row['departureDate']) . "</td>";
               echo "<td>" . htmlspecialchars($row['returnDate']) ."</td>";
               echo "<td>" . htmlspecialchars($row['BookingDate']) . "</td>";
-              echo "<td class=' fw-bold'>" . htmlspecialchars($row['TotalPax']) . "</td>";
+              echo "<td class='fw-bold ps-3'>" . htmlspecialchars($row['TotalPax']) . "</td>";
               echo "<td>₱ " . number_format($row['PackagePrice'], 2) . "</td>";
-              echo "<td>" . htmlspecialchars($row['bookingStatus']) . "</td>";
+              echo "<td> <span class='badge rounded-pill $statusClass p-2'>" . $status . "</span></td>";
               echo "</tr>";
             }
           } 
@@ -199,16 +221,6 @@
         searching: true,
         ordering: true,
         info: true,
-        columnDefs: [
-            { width: '8%', targets: 0 }, // Transact No
-            { width: '14%', targets: 1 }, // Transact No
-            { width: '14%', targets: 2 }, // Package Name
-            { width: '8%', targets: 3 }, // Flight Date
-            { width: '6%', targets: 4 }, // Booking Date
-            { width: '5%', targets: 5 },  // Total Pax
-            { width: '8%', targets: 6 }, // Package Price
-            { width: '10%', targets: 7 }, // Package Price
-        ],
         language: {
             emptyTable: "NO RECORDS AVAILABLE"
         }

@@ -195,66 +195,67 @@ span {
 
 /* Table Styling */
 .table-wrapper table {
- width: 100%;
- border-collapse: collapse; /* Remove gaps between cells */
- font-family: Arial, sans-serif;
- font-size: 12px; /* Consistent font size for readability */
+  width: 100%;
+  border-collapse: collapse; /* Remove gaps between cells */
+  font-family: Arial, sans-serif;
+  font-size: 12px; /* Consistent font size for readability */
 }
 
 /* Table Header (Thead) Styling */
 .table-wrapper thead th {
- background-color: #747474; /* Light gray for the header */
- color: #ffffff; /* Text color */
- font-weight: 500;
- text-align: left;
- padding: 10px 30px; /* Uniform padding for header cells */
- border-bottom: 2px solid #dee2e6;
- position: sticky; /* Make the header sticky */
- top: 0; /* Stick the header to the top */
- z-index: 1; /* Ensure the header stays above other content when scrolling */
- text-transform: uppercase; /* Added to make header text more consistent */
+  background-color: #747474; /* Light gray for the header */
+  color: #ffffff; /* Text color */
+  font-weight: bolder;
+  text-align: left;
+  font-size: .8rem;
+  padding: 10px 30px; /* Uniform padding for header cells */
+  border-bottom: 2px solid #dee2e6;
+  position: sticky; /* Make the header sticky */
+  top: 0; /* Stick the header to the top */
+  z-index: 1; /* Ensure the header stays above other content when scrolling */
+  text-transform: uppercase; /* Added to make header text more consistent */
 }
 
 /* Additional class for top border */
 .has-border-top {
- border-top: 3px solid #000000; /* 3px black border on top */
+  border-top: 3px solid #000000; /* 3px black border on top */
 }
 
 /* Table Row Styling */
 .table-wrapper tbody tr {
- border-bottom: 1px solid #dee2e6;
+  border-bottom: 1px solid #dee2e6;
+  padding: 25px 10px; /* Increased padding for uniformity */
 }
 
 .table-wrapper tbody tr:last-child {
- border-bottom: none; /* Remove the bottom border for the last row */
+  border-bottom: none; /* Remove the bottom border for the last row */
 }
 
 .table-wrapper td {
- padding: 10px; /* Increased padding for uniformity */
- color: #333;
- vertical-align: middle;
- font-size: .8rem;
+  padding: 25px 10px; /* Increased padding for uniformity */
+  color: #333;
+  vertical-align: middle;
+  font-size: .9rem;
+  font-weight: bold;
 }
 
 /* Table Row Hover Effect */
 .table-wrapper tbody tr:hover {
- background-color: #f5f5f5; /* Light gray background on row hover */
- cursor: pointer; /* Pointer cursor for interactivity */
- transition: background-color 0.3s ease; /* Smooth hover transition */
+  background-color: #f5f5f5; /* Light gray background on row hover */
+  cursor: pointer; /* Pointer cursor for interactivity */
+  transition: background-color 0.3s ease; /* Smooth hover transition */
 }
 
-th:nth-child(1), td:nth-child(1) { width: 10%; } /* Transact No */
-th:nth-child(2), td:nth-child(2) { width: 12.5%; } /* Package Name */
-th:nth-child(3), td:nth-child(3) { width: 6.67%; } /* Flight Date (Start) */
-th:nth-child(4), td:nth-child(4) { width: 6.67%; } /* Flight Date (End) */
-th:nth-child(5), td:nth-child(5) { width: 10%; } /* Booking Date */
-th:nth-child(6), td:nth-child(6) { width: 5%; } 
-th:nth-child(7), td:nth-child(7) { width: 8.33%; } 
-th:nth-child(8), td:nth-child(8) { width: 8.33%; } 
-th:nth-child(9), td:nth-child(9) { width: 10%; } 
-th:nth-child(10), td:nth-child(10) { width: 8.33%; } 
-th:nth-child(11), td:nth-child(11) { width: 10%; } /* Remaining Balance */
-th:nth-child(12), td:nth-child(12) { width: 12.5%; } /* Payment Status */
+/* Column Width Adjustments */
+th:nth-child(1), td:nth-child(1) { width: 10%; }    /* Transact No */
+th:nth-child(2), td:nth-child(2) { width: 13%; }    /* Agent Name */
+th:nth-child(3), td:nth-child(3) { width: 15%; }    /* Package Name */
+th:nth-child(4), td:nth-child(4), th:nth-child(5), td:nth-child(5) { width: 12.5%; }  /* Flight Date (colspan=2) */
+th:nth-child(6), td:nth-child(6) { width: 13%; }    /* Booking Date */
+th:nth-child(7), td:nth-child(7) { width: 5%; }     /* Total Pax */
+th:nth-child(8), td:nth-child(8) { width: 10%; }    /* Package Price */
+th:nth-child(9), td:nth-child(9) { width: 8%; }     /* Status */
+
 
 
 
