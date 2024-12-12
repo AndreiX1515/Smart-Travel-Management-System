@@ -236,8 +236,6 @@ body {
  pointer-events: none;
 }
 
-
-
  .date-range-picker {
   display: flex;
   gap: 5px;
@@ -254,8 +252,6 @@ body {
  } */
  
 
-
-
  /* Table container styling */
  .table-container {
   display: flex;
@@ -268,7 +264,7 @@ body {
   box-sizing: border-box;
  }
  
- /* Disable sorting on columns 1 through 8 */
+ /* Disable sorting on columns 1 through 8
  table.dataTable th:nth-child(1),
  table.dataTable th:nth-child(2),
  table.dataTable th:nth-child(3),
@@ -277,9 +273,9 @@ body {
  table.dataTable th:nth-child(6),
  table.dataTable th:nth-child(7),
  table.dataTable th:nth-child(8) {
-     pointer-events: none;  /* Disables the ability to click (i.e., sort) */
-     user-select: none; /* Prevents selection of text in the header */
- }
+     pointer-events: none;  
+     user-select: none; 
+ } */
 
  .table-actions {
   display: flex;

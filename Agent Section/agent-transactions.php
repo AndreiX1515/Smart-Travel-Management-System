@@ -14,7 +14,6 @@ include '../Agent Section/includes/breadcrumbs.php';
 
   <?php include '../Agent Section/includes/head.php' ?>
   <link rel="stylesheet" href="../Agent Section/assets/css/agent-transaction.css?v=<?php echo time(); ?>">
-  <link rel="stylesheet" href="../Agent Section/assets/css/breadcrumbs.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="../Agent Section/assets/css/navbar-sidebar.css?v=<?php echo time(); ?>">
 
 </head>
