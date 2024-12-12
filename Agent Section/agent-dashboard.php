@@ -762,7 +762,7 @@ session_start();
                                     </div>
 
                                   </td>
-                                  <td>" . strtoupper(htmlspecialchars($row['CONTACT NAME'])) . "</td>
+                                  <td>" .htmlspecialchars($row['CONTACT NAME']) . "</td>
                                   <td> <span class='badge " . $badgeClass . " p-2'>" . $status . "</span> </td>
                               </tr>";
                             }
@@ -840,7 +840,7 @@ session_start();
                                     </div>
 
                                   </td>
-                                  <td>" . strtoupper(htmlspecialchars($row['CONTACT NAME'])) . "</td>
+                                  <td>" . htmlspecialchars($row['CONTACT NAME']) . "</td>
                                   <td> <span class='badge " . $badgeClass . " p-2'>" . $status . "</span> </td>
                               </tr>";
                             }
