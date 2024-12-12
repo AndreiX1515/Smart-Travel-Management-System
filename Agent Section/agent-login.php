@@ -150,7 +150,4 @@
         });
     </script>
 </body>
-
-<?php include '../Agent Section/includes/scripts.php'; ?>
-
 </html>
