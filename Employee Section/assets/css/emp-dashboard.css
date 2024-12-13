@@ -28,7 +28,7 @@
 }
 
 .card .header {
-  padding: 10px 20px 5px 10px;
+  padding: 10px 10px 10px 10px;
   color: #4c4f52;
 }
 
@@ -114,107 +114,125 @@
  margin: 0;
 }
 
+
+
 /* Card 4 */
 .card-body-currency {
- width: 100%;
- height: auto; /* Adjust to fit the content */
- padding: 0px 10px;
-}
-/* Currency Cards Container */
-.currency-cards {
- display: flex;
- flex-direction: row; /* Arrange cards horizontally */
- gap: 20px; /* Spacing between cards */
- justify-content: left; /* Align cards to the left */
- align-items: center; /* Vertically center the cards */
-}
+  width: 100%;
+  padding: 0px 10px;
+ }
+ 
+ /* Currency Cards Container */
+ .currency-cards {
+  display: flex;
+  flex-direction: row; /* Arrange cards horizontally */
+  gap: 5px; /* Spacing between cards */
+  justify-content: left; /* Align cards to the left */
+  align-items: center; /* Vertically center the cards */
+ }
+ 
+ /* Individual Currency Card */
+ .currency-card {
+  width: 140px;
+  height: 10.5vh;
+  padding: 0px; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px; 
+  background-color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); 
+  font-size: 16px;
+  font-weight: bold;
+  color: #333; /* Text color */
+  transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth hover effect */
+ }
+ 
+ /* Flag Icon Wrapper */
+ .currency-card .flag-icon-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 5px;
+  /* margin: 10px 5px 10px 5px; Adjusted margins to ensure consistent spacing */
+ }
+ 
+ /* Flag Icon Styling */
+ .currency-card .flag-icon-wrapper img {
+  width: 25px;
+  height: 25px;
+ }
+ 
+ .flag-icon-wrapper h6{
+   font-size: 12px;
+ }
+ 
+ .currency-text-wrapper h5{
+  margin-top: 5px;
+  font-size: 14px;
+  font-weight: bold;
+  white-space: nowrap; /* Prevent word wrapping */
+ }
+ 
+ .pill-button {
+  display: inline-block; /* Makes it behave like a button */
+  padding: 4px 15px; /* Adds padding for better button appearance */
+  font-size: 10px; /* Sets the font size */
+  color: #000; /* Black text color */
+  background-color: #ffffff; /* White background */
+  text-decoration: none; /* Removes underline from the link */
+  border-radius: 30px; /* Gives it a pill shape */
+  text-align: center; /* Centers the text */
+  border: 1px solid #b9adad; /* Light border to match the background */
+  transition: background-color 0.3s ease, transform 0.2s ease, border-color 0.3s ease; /* Smooth transition for hover effects */
+ }
+ 
+ 
+ .pill-button:hover {
+  background-color: #f1f1f1; /* Light grey background on hover */
+  border-color: #3b413d; /* Change border color on hover */
+ }
+ 
+ 
+ .pill-button:active {
+  transform: translateY(0); /* Resets the transform on click */
+  background-color: #e0e0e0; /* Slightly darker background on click */
+ }
+ 
+ /* Icon Wrapper */
+ .icon-wrapper {
+  width: 40px; /* Match the size proportionately */
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  font-size: 18px; /* Icon size */
+  color: #495057;; /* Icon color */
+  transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth hover effect */
+ }
+ 
 
-/* Individual Currency Card */
-.currency-card {
- width: 80px; /* Fixed width */
- height: 100px; /* Fixed height */
- padding: 15px; /* Added padding to the inside of the card */
- display: flex;
- flex-direction: column;
- align-items: center;
- justify-content: center;
- border-radius: 8px; /* Slight rounding for aesthetic */
- background-color: white;
- box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Subtle box shadow */
- font-size: 16px;
- font-weight: bold;
- color: #333; /* Text color */
- transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth hover effect */
-}
-
-/* Flag Icon Wrapper */
-.currency-card .flag-icon-wrapper {
- display: flex;
- flex-direction: column;
- align-items: center;
- padding: 10px 0px 5px 0px;
- margin: 10px 5px 10px 5px; /* Adjusted margins to ensure consistent spacing */
-}
-
-/* Flag Icon Styling */
-.currency-card .flag-icon-wrapper img {
- width: 25px;
- height: 25px;
-}
-
-/* Currency Label Styling */
-.currency-card .flag-icon-wrapper h6 {
- margin-top: 5px;
- font-size: 12px;
- font-weight: 500;
-}
-
-/* Icon Wrapper */
-.icon-wrapper {
- width: 40px; /* Match the size proportionately */
- height: 40px;
- display: flex;
- align-items: center;
- justify-content: center;
- background-color: white;
- border-radius: 50%; /* Make it a circular icon */
- box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle box shadow */
- font-size: 18px; /* Icon size */
- color: #495057;; /* Icon color */
- transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth hover effect */
-}
 
 .header-wrapper {
  display: flex;
  flex-direction: row;
  gap: 10px;
  width: 100%;
- height: 35vh;
+ height: 30vh;
  margin-bottom: 5px;
 }
 
 .navTabs-wrapper {
   width: 100%;
   padding: 0px;
-  margin-top: 10px;
+  margin: 20px 0px;
 }
 
 .navTabs-wrapper .nav-pills {
   margin: 10px 0px;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -237,7 +255,6 @@
   flex-direction: row;
   align-items: center;
   justify-content: start;
-
   font-weight: bold;
   color: #000000;
   flex-shrink: 0;
@@ -245,7 +262,6 @@
 
 .table-header h6 {
   font-size: 16px;
-  
 }
 
 .table-container {
@@ -255,7 +271,6 @@
   overflow-y: auto;
   overflow-x: auto;
   display: block;
-  border: 1px solid black;
 }
 
 .table-container .table {
@@ -276,7 +291,6 @@
   top: 0;
   z-index: 1;
 }
-
 
 .table thead th {
   background-color: #747474;
@@ -301,27 +315,18 @@
   border-bottom: 1px solid #dee2e6;
 }
 
-.table-container tbody tr:first-child {
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-}
-
-.table-container tbody tr:last-child {
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
-}
-
-.table-container tbody tr:hover {
-  background-color: #b2ebf2;
-  cursor: pointer;
+/* ============================ */
+/* Row Hover Effect Styles */
+/* ============================ */
+.table tbody tr:hover {
+  background-color: #b2ebf2; /* Highlight row on hover */
+  cursor: pointer; /* Show pointer cursor to indicate interactivity */
 }
 
 /* Add Border Top Class */
 .has-border-top {
   border-top: 3px solid #000000;
 }
-
-
 
 
 /* ==========================================*/
@@ -386,58 +391,69 @@
 
 /* ============================================= */
 /* Request Table */
-
+/* Wrapper for the Request Table */
 .request-wrapper {
- width: 50%;
- border: 1px solid black;
+  width: 50%;
 }
 
-
-/* Request Table */
+/* Container for the Request Table */
 .request-table-container {
- width: 100%; 
- max-height: 280px; 
- height: auto; 
- overflow-x: auto; 
- overflow-y: auto; 
- box-sizing: border-box; 
- padding-right: 25px;
+  width: 100%; 
+  max-height: 280px; 
+  height: auto; 
+  overflow-x: auto; 
+  overflow-y: auto; 
+  box-sizing: border-box; 
+  padding-right: 25px;
 }
 
+/* Main Request Table */
 .request-table {
- width: 100%; 
- height: auto; 
- border-collapse: collapse; 
- font-family: Arial, sans-serif;
- font-size: 14px;
- text-align: left;
+  width: 100%; 
+  height: auto; 
+  border-collapse: collapse; 
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  text-align: left;
+  background-color: transparent; /* Ensure background is clear */
 }
 
-
+/* Table Header (th) and Body Cells (td) */
 .request-table th,
 .request-table td {
- padding: 4px 10px; /* Add space inside table cells */
- text-align: left;
- white-space: nowrap; /* Disable word wrapping */
- overflow: hidden; /* Prevent content from spilling out */
- text-overflow: ellipsis; /* Add "..." for overflowing content */
+  padding: 6px 14px; /* Added more padding for better spacing */
+  text-align: left;
+  white-space: nowrap; /* Prevent content from wrapping */
+  overflow: hidden; /* Hide overflowed content */
+  text-overflow: ellipsis; /* Add "..." for overflowing content */
 }
 
+/* Table Header (th) Styles */
 .request-table th {
- border-bottom: 1px solid #e0e0e0; /* Subtle divider between rows */
- background-color: #f8f9fa; /* Light grey for header */
- font-size: 10px; /* Smaller font size for header */
- font-weight: bold;
+  border-bottom: 2px solid #e0e0e0; /* Subtle border to separate the header */
+  background-color: #f8f9fa; /* Light grey background for header */
+  font-size: 10px; /* Slightly larger font size for better readability */
+  font-weight: bold;
 }
 
+/* Even Row Styles */
 .request-table tr:nth-child(even) {
- background-color: #f9f9f9; /* Subtle alternating row colors */
+  background-color: #f9f9f9; /* Light alternating row color */
 }
 
+/* Table Data (td) Styles */
 .request-table td {
- color: #495057; /* Neutral text color */
- padding: 6px 8px; /* Add padding inside cells */
+  color: #495057; /* Neutral text color for better readability */
 }
+
+/* Row Hover Effects */
+.request-table tr:hover {
+  background-color: #e9ecef; /* Highlight row on hover */
+  transition: background-color 0.3s ease-in-out; /* Smooth transition effect */
+}
+
+
+
 
 
 
@@ -445,30 +461,24 @@
 /* ======================================================== */
 /* Payment Card */
 
-.payment-table-wrapper {
- width: 100%;
- border: 1px solid #ced4da;
-}
-
 .payment-table-container {
- overflow-x: auto; 
- width: 100%; 
- max-height: 280px; 
- height: auto;
- padding-right: 25px;
+  overflow-x: auto; 
+  width: 100%; 
+  max-height: 280px; 
+  height: auto;
+  padding-right: 25px;
 }
 
 .payment-wrapper {
- width: 50%;
- height: auto;
- border: 1px solid black;
+  width: 50%;
+  height: auto;
 }
 
 .payment-table-container {
- overflow-x: auto; 
- width: 100%; 
- max-height: 280px;
- height: auto; 
+  overflow-x: auto; 
+  width: 100%; 
+  max-height: 280px;
+  height: auto; 
 }
 
 .payment-table {
@@ -482,135 +492,166 @@
   overflow-y: hidden;
 }
 
+/* ============================ */
+/* Table Header Styles */
+/* ============================ */
 .payment-table th {
- padding: 4px 10px;
- border-bottom: 1px solid #e0e0e0; 
- background-color: #f8f9fa;
- font-size: 10px;
- font-weight: bold;
- text-align: left;
- white-space: nowrap;
- position: sticky;
- top: 0; 
- z-index: 1; 
-}
-
-.payment-table tr:nth-child(even) {
- background-color: #f9f9f9; 
-}
-
-.payment-table td {
- color: #495057; 
- padding: 6px 8px; 
- text-align: left;
- white-space: nowrap; 
- overflow: hidden; 
- text-overflow: ellipsis; 
-}
-
-
-
-
-/* ==================================== */
-/* Confirm Table Container */
-.confirm-container {
-  display: flex;
-  flex-direction: row;
-  gap: 8px;
-  position: relative;
-  height: 30vh;
-  margin-top: 5px;
-  box-sizing: border-box;
-  border: 1px solid black;
- }
- 
- .confirm-container .one {
-  width: 100%; /* Full width for the card */
-  height: 30vh; /* Adjusted height */
- }
- 
- .confirm-container .one .header {
-  width: 100%;
-  padding: 10px 0px; 
-  display: flex; 
-  justify-content: center; 
-  height: 50px; 
-  align-items: center;
+  padding: 6px 14px; /* Improved padding for top and bottom */
+  border-bottom: 1px solid #e0e0e0; 
+  background-color: #f8f9fa;
+  font-size: 10px;
   font-weight: bold;
- }
-
- .confirm-container h6 {
-  font-weight: bold;
- }
- 
- 
- /* Confirm Table Container */
- .confirm-table-container {
-  width: 100%;
-  overflow: hidden; 
-  display: block; 
-  position: relative;
-  overflow-y: auto; 
-  overflow-x: auto; 
-  -webkit-overflow-scrolling: touch;
-  background-color: transparent;
-  padding-right: 25px;
- }
- 
- .confirm-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 14px;
-  background-color: transparent;
-  white-space: nowrap;
-  table-layout: auto;
-  overflow-x: auto;
-  overflow-y: hidden;
- }
-
-.confirm-table thead {
-  background-color: #00defc;
   text-align: left;
+  white-space: nowrap;
   position: sticky;
-  top: 0;
-  z-index: 1;
+  top: 0; 
+  z-index: 1; 
 }
 
-.confirm-table thead th {
-  font-size: 14px;
-  padding: 4px 14px;
-  font-weight: bold;
-  color: #333;
-  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+/* ============================ */
+/* Even Row Styles */
+/* ============================ */
+.payment-table tr:nth-child(even) {
+  background-color: #f9f9f9; 
 }
 
-.confirm-table tbody td {
-  padding: 8px 14px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-  color: #555;
-  height: 50px;
+/* ============================ */
+/* Table Body Styles */
+/* ============================ */
+.payment-table td {
+  color: #495057; 
+  padding: 8px 14px; /* Improved padding for top and bottom */
+  text-align: left;
+  white-space: nowrap; 
+  overflow: hidden; 
+  text-overflow: ellipsis; 
 }
 
-.confirm-table tbody tr {
-  background-color: transparent;
-  transition: background-color 0.3s;
-  font-size: 14px;
-  font-weight: bold;
+/* ============================ */
+/* Row Hover Effect Styles */
+/* ============================ */
+.payment-table tr:hover {
+  background-color: #e9ecef; /* Highlight row on hover */
+  transition: background-color 0.3s ease-in-out; /* Smooth transition effect */
 }
 
-.confirm-table tbody tr:hover {
-  background-color: #b2ebf2;
-}
 
-.confirm-table tbody tr:first-child {
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-}
 
-.confirm-table tbody tr:last-child {
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
-}
+
+
+
+
+/* ============================
+   Confirm Container
+   ============================ */
+   .confirm-container {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    position: relative;
+    height: 25vh;
+    margin-top: 5px;
+    box-sizing: border-box;
+  }
+  
+  .confirm-container .one {
+    width: 100%;
+    height: 25vh;
+  }
+  
+  .confirm-container .one .header {
+    width: 100%;
+    padding: 10px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    font-weight: bold;
+  }
+  
+  /* ============================
+     Heading Styles
+     ============================ */
+  .confirm-container h6 {
+    font-weight: bold;
+  }
+  
+  /* ============================
+     Confirm Table Container
+     ============================ */
+
+     
+  .confirm-table-container {
+    width: 100%;
+    overflow: hidden;
+    display: block;
+    position: relative;
+    overflow-y: auto;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    background-color: transparent;
+    padding-right: 25px;
+  }
+  
+  /* ============================
+     Confirm Table Styles
+     ============================ */
+  .confirm-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    background-color: transparent;
+    white-space: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+  
+  /* ============================
+     Table Header Styles
+     ============================ */
+  .confirm-table thead {
+    background-color: #00defc;
+    text-align: left;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+  
+  .confirm-table thead th {
+    font-size: 14px;
+    padding: 4px 14px;
+    font-weight: bold;
+    color: #333;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+  }
+  
+  /* ============================
+     Table Body Styles
+     ============================ */
+  .confirm-table tbody td {
+    padding: 8px 14px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    color: #555;
+    height: 50px;
+  }
+  
+  .confirm-table tbody tr {
+    background-color: transparent;
+    transition: background-color 0.3s;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 8px 14px; /* Improved padding for top and bottom of rows */
+  }
+  
+  /* ============================
+     Row Hover Effect
+     ============================ */
+  .confirm-table tbody tr:hover {
+    background-color: #b2ebf2;
+    cursor: pointer;
+  }
+  
+
 
 
 
@@ -663,17 +704,6 @@
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
 /*/* Info Table Container */
 .info-table-container {
  display: flex;
@@ -687,7 +717,7 @@
 /* Info Table */
 .info-table {
  width: 100%;
- height: 80px;
+ height: 75px;
  overflow-y: auto;
  overflow-x: auto;
  border-collapse: collapse;
@@ -696,7 +726,8 @@
  background-color: #fff;
  text-align: center;
  box-sizing: border-box;
- table-layout: fixed;
+ table-layout: fixed; /* Ensures column widths are respected */
+ margin-top: 15px;
 }
 
 /* Info Table Wrapper */
@@ -713,14 +744,15 @@ div.dataTables_wrapper thead {
   background-color: #f8f9fa; 
   color: #333; 
   z-index: 2;
-  border-bottom: 1px solid #e0e0e0; 
+  border-bottom: 2px solid #e0e0e0; 
 }
 
 
 div.dataTables_wrapper thead th {
   padding: 10px 0;
   text-align: center;
-  border: .5px solid grey;
+  border-right: 1px solid grey;
+  border-left: 1px solid grey;
   font-weight: 600;
   background-color: transparent;
   white-space: normal;
@@ -782,7 +814,7 @@ div.dataTables_wrapper tbody td:nth-child(1) {
 
 div.dataTables_wrapper thead th:nth-child(2), 
 div.dataTables_wrapper tbody td:nth-child(2) { 
-  width: 4%; 
+  width: 5%; 
 }
 
 div.dataTables_wrapper thead th:nth-child(3), 
@@ -820,26 +852,11 @@ div.dataTables_wrapper tbody td:nth-child(9) {
   width: 5%; 
 }
 
-div.dataTables_wrapper thead th:nth-child(10), 
-div.dataTables_wrapper tbody td:nth-child(10) { 
-  width: 7%; 
-}
-
-div.dataTables_wrapper thead th:nth-child(11), 
-div.dataTables_wrapper tbody td:nth-child(11) { 
-  width: 5%; 
-}
-
 /* Adjust column widths for additional columns beyond the 12th */
-div.dataTables_wrapper thead th:nth-child(n+12), 
-div.dataTables_wrapper tbody td:nth-child(n+12) { 
+div.dataTables_wrapper thead th:nth-child(n+10), 
+div.dataTables_wrapper tbody td:nth-child(n+10) { 
   width: 10%; 
 }
-
-
-
-
-
 
 
 

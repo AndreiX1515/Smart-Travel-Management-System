@@ -72,12 +72,14 @@
         </a>
         <div class="collapse" id="manageBookingMenu">
            <ul class="nav flex-column ms-3">
-               <li class="nav-item">
-                   <a class="nav-link page-button" href="../Agent Section/functions/Itinerary-template.php" data-page-name="Itinerary">Itinerary</a>
-               </li>
-               <li class="nav-item">
-                   <a class="nav-link page-button" href="../Agent Section/functions/voucher-template.php" data-page-name="Voucher">Voucher</a>
-               </li>
+                <li class="nav-item">
+                    <a class="nav-link page-button open-new-tab" href="#" data-page-name="Itinerary" data-url="../Agent Section/functions/Itinerary-template.php">Itinerary</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link page-button open-new-tab" href="#" data-page-name="Voucher" data-url="../Agent Section/functions/voucher-template.php">Voucher</a>
+                </li>
+
+
                <li class="nav-item">
                    <a class="nav-link page-button" href="#" data-page-name="Ticket">Ticket</a>
                </li>
@@ -193,4 +195,20 @@ $position = htmlspecialchars(strtoupper($empId));
             });
         });
     });
+</script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // Add event listeners only to links with the "open-new-tab" class
+    document.querySelectorAll(".open-new-tab").forEach(function(button) {
+        button.addEventListener("click", function(event) {
+            event.preventDefault(); // Prevent the default link behavior
+            const url = button.getAttribute("data-url"); // Get the URL from the data-url attribute
+            window.open(url, '_blank'); // Open the URL in a new tab
+        });
+    });
+});
+
+
 </script>

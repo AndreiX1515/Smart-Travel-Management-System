@@ -362,56 +362,66 @@
         </div>
       </div>
 
-      <!-- CARD 4 - Money Convertion -->
+      <?php include '../Agent Section/functions/exchange-rate.php'?>
+
+      <!-- CARD 4 -->
       <div class="card border-0">
-        <div class="header d-flex justify-content-between align-items-center mb-2">
-          <h6 class="text-secondary">Daily Currency Conversion</h6>
-          <a href="" style="font-size: 12px; text-decoration: none;">View History</a>
-        </div>
+          <div class="header d-flex justify-content-between align-items-center">
+            <h6 class="white-pill">Daily Currency Conversion</h6>
+            <a href="" class="pill-button">View History</a>
+          </div>
 
-        <div class="card-body-currency">
-          <div class="currency-cards">
-            <div class="currency-card">
-              <div class="flag-icon-wrapper">
-                <img src="../assets/images/Flags/english-flag.png" alt="">
-                <h6>USD</h6>
-                <h6>$1</h6>
+          <div class="card-body-currency">
+            <div class="currency-cards">
+              <div class="currency-card">
+                <div class="flag-icon-wrapper">
+                  <img src="../assets/images/Flags/english-flag.png" alt="">
+                  <h6 class="mt-2">USD</h6>
+                  <div class="currency-text-wrapper">
+                    <h5>$ 1</h5>
+                  </div>
+                </div>
               </div>
-            </div>
 
-            <div class="icon-wrapper">
-              <i class="fas fa-exchange-alt"></i>
-            </div>
-
-            <div class="currency-card">
-              <div class="flag-icon-wrapper">
-                <img src="../assets/images/Flags/philippines (2).png" alt="">
-                <h6>PHP</h6>
-
-                <h6>$1</h6>
+              <div class="icon-wrapper mx-2">
+                <i class="fas fa-exchange-alt"></i>
               </div>
-            </div>
 
-            <div class="currency-card">
-              <div class="flag-icon-wrapper">
-                <img src="../assets/images/Flags/korean-flag.png" alt="">
-                <h6>KOR</h6>
-
-                <h6>$1</h6>
+              <div class="currency-card">
+                <div class="flag-icon-wrapper">
+                  <img src="../assets/images/Flags/philippines (2).png" alt="">
+                  <h6 class="mt-2">PHP</h6>
+                  <div class="currency-text-wrapper">
+                   <h5>₱ <?php echo number_format($usd_to_php, 2); ?></h5>
+                  </div>
+                </div>
               </div>
-            </div>
 
-            <div class="currency-card">
-              <div class="flag-icon-wrapper">
-                <img src="../assets/images/Flags/european.png" alt="">
-                <h6>EUR</h6>
-
-                <h6>$1</h6>
+              <div class="currency-card">
+                <div class="flag-icon-wrapper">
+                  <img src="../assets/images/Flags/korean-flag.png" alt="">
+                  <h6 class="mt-2">KOR</h6>
+                  <div class="currency-text-wrapper">
+                    <h5>₩ <?php echo number_format($usd_to_krw, 0); ?></h5>
+                  </div>
+                </div>
               </div>
-            </div>
+
+              <!-- <div class="currency-card">
+                <div class="flag-icon-wrapper">
+                  <img src="../assets/images/Flags/european.png" alt="">
+                   <h6 class="mt-2">EUR</h6>
+                   <div class="currency-text-wrapper">
+                    <h6>€ 
+                     <?php 
+                     // echo number_format($usd_to_euro, 2); 
+                     ?></h6>
+                  </div>
+                </div>
+              </div> -->
+            </div> 
           </div>
         </div>
-      </div>
     </div>
  
     <div class="navTabs-wrapper">
@@ -449,7 +459,7 @@
                     <th rowspan="2">LAND ONLY</th>
                     <th rowspan="2">WHOLESALE PRICE</th>
                     <th rowspan="2">RETAIL PRICE</th>
-                    <th rowspan="2">LAND ARRANGEMENT PRICE</th>
+                    <th rowspan="2" style="font-size: 10px; padding: 0px 5px">LAND ARRANGEMENT PRICE</th>
 
                     <!-- Dynamic headers for agent columns -->
                     <?php
@@ -579,7 +589,7 @@
                         echo '<td>' . $row['LandOnly'] . '</td>';
                         echo '<td>₱ ' . number_format($row['WholesalePrice'], 2) . '</td>';
                         echo '<td>₱ ' . number_format($row['RetailPrice'], 2) . '</td>';
-                        echo '<td>₱ ' . number_format($row['LandArrangement'], 2) . '</td>';
+                        echo '<td style="padding: 0px 5px" >₱ ' . number_format($row['LandArrangement'], 2) . '</td>';
 
                   
                    foreach ($row as $key => $value) 
@@ -613,7 +623,7 @@
 
       <div class="tab-pane fade " id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
 
-        <d class="header-wrapper">
+        <div class="header-wrapper">
           <!-- <div class="table-wrapper price-table-wrapper">
             <div class="table-header">
                 <h6 class="text-secondary">Price</h6>
@@ -743,7 +753,7 @@
             </div>
 
             <div class="payment-table-container">
-              <table class="table payment-table">
+              <table class="payment-table table ">
                 <thead>
                   <tr>
                     <th>AGENT NAME</th>
@@ -815,7 +825,7 @@
 
 
 
-        </d iv>
+        </div>
 
         <div class="confirm-container">
             <div class="one">
@@ -838,42 +848,62 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <?php
-                        $query1 = "SELECT b.*, f.flightDepartureDate AS Start, p.packageName,
+                    <?php
+                      $query1 = "SELECT b.*, f.flightDepartureDate AS Start, p.packageName,
                                         f.returnDepartureDate AS End, CONCAT(a.lName, ', ', a.fName, 
                                         IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1)), '')) AS agentName
-                                    FROM booking b 
-                                    JOIN agent a ON b.agentId = a.agentId
-                                    JOIN flight f ON b.flightId = f.flightId
-                                    JOIN package p ON b.packageId = p.packageId
-                                    WHERE status = 'Confirmed'";
+                                  FROM booking b 
+                                  JOIN agent a ON b.agentId = a.agentId
+                                  JOIN flight f ON b.flightId = f.flightId
+                                  JOIN package p ON b.packageId = p.packageId
+                                  WHERE status = 'Confirmed'";
 
-                        $result = $conn->query($query1);
+                      $result = $conn->query($query1);
 
-                        // Check if the query returned any results
-                        if ($result && $result->num_rows > 0) 
-                        {
-                          // Fetch each row as an associative array and display in the table
-                          while ($row = $result->fetch_assoc()) 
-                          {
-                            echo "<tr>
-                                    <td>{$row['transactNo']}</td>
-                                    <td>{$row['agentName']}</td>
-                                    <td>{$row['packageName']}</td>
-                                    <td>{$row['Start']}</td>
-                                    <td>{$row['pax']}</td>
-                                    <td>{$row['bookingType']}</td>
-                                    <td>{$row['status']}</td>
-                                  </tr>";
-                          }
-                        } 
-                        else 
-                        {
-                          // No records found
-                          echo "<tr><td colspan='7'>No confirmed bookings found.</td></tr>";
-                        }
+                      // Check if the query returned any results
+                      if ($result && $result->num_rows > 0) {
                         
+                        while ($row = $result->fetch_assoc()) {
+                          // Assuming $row['status'] contains the status value
+                          $status = $row['status'];
+
+                          // Define the pill status class based on the status value
+                          switch ($status) {
+                              case 'Confirmed':
+                                  $pillClass = 'bg-success';
+                                  break;
+                              case 'Cancelled':
+                                  $pillClass = 'bg-danger';
+                                  break;
+                              case 'Pending':
+                                  $pillClass = 'bg-warning';
+                                  break;
+                              case 'Rejected':
+                                  $pillClass = 'bg-info';
+                                  break;
+                              default:
+                                  $pillClass = 'bg-secondary';
+                                  break;
+                          }
+
+                          echo "<tr>
+                                  <td>{$row['transactNo']}</td>
+                                  <td>{$row['agentName']}</td>
+                                  <td>{$row['packageName']}</td>
+                                  <td>{$row['Start']}</td>
+                                  <td>{$row['pax']}</td>
+                                  <td>{$row['bookingType']}</td>
+                                  <td>
+                                    <span class='badge {$pillClass} rounded-pill p-2'>{$status}</span>
+                                  </td>
+                                </tr>";
+                        }
+                      } else {
+                        // No records found
+                        echo "<tr><td colspan='7'>No confirmed bookings found.</td></tr>";
+                      }
                       ?>
+
                     </tbody>
                   </table>
                 </div>
@@ -915,12 +945,12 @@
 $(document).ready(function() {
     var table = $('.info-table').DataTable({
         scrollX: true,
-        scrollY: '570px',
+        scrollY: '540px',
         paging: false,
         searching: false,
         info: false,
         fixedColumns: {
-            leftColumns: 12 // Freeze the first 12 columns
+            leftColumns: 11 // Freeze the first 12 columns
         },
         dom: 'rt<"bottom"flp>',
         ordering: false, // Disable sorting on all columns
