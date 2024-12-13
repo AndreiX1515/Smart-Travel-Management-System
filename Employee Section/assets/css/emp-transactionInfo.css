@@ -265,7 +265,7 @@
 /* Request History Table */
 .request-table-wrapper {
  width: 100%;
- padding: 0px 25px;
+ padding: 0px 15px;
  height: 475px; /* Set a fixed height for vertical scroll */
  overflow-y: auto; /* Enable vertical scroll */
  overflow-x: auto; /* Enable horizontal scroll */
@@ -439,3 +439,15 @@
 
 
 
+
+
+
+/* Add Ons */
+.no-requests-container {
+    text-align: left;    /* Aligns text to the left */
+    padding: 8px 16px;   /* Optional: Adjust padding to match your table cells */
+    border: 1px solid #ccc; /* Optional: Adds a border to match table styling */
+    font-family: Arial, sans-serif; /* Optional: Consistent font styling */
+    font-size: 14px; /* Optional: Adjust font size to match table content */
+    white-space: nowrap; /* Prevents text wrapping */
+}

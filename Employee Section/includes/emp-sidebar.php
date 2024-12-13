@@ -73,16 +73,16 @@
         <div class="collapse" id="manageBookingMenu">
            <ul class="nav flex-column ms-3">
                <li class="nav-item">
-                   <a class="nav-link page-button" href="#" data-page-name="Itinerary">Itinerary</a>
+                   <a class="nav-link page-button" href="../Agent Section/functions/Itinerary-template.php" data-page-name="Itinerary">Itinerary</a>
                </li>
                <li class="nav-item">
-                   <a class="nav-link page-button" href="#" data-page-name="SOA">SOA</a>
+                   <a class="nav-link page-button" href="../Agent Section/functions/voucher-template.php" data-page-name="Voucher">Voucher</a>
                </li>
                <li class="nav-item">
                    <a class="nav-link page-button" href="#" data-page-name="Ticket">Ticket</a>
                </li>
                <li class="nav-item">
-                   <a class="nav-link page-button" href="#" data-page-name="Vouchers">Vouchers</a>
+                   <a class="nav-link page-button" href="#" data-page-name="SOA">SOA</a>
                </li>
            </ul>
        </div>

@@ -415,7 +415,7 @@
     </div>
  
     <div class="navTabs-wrapper">
-      <ul class="nav nav-pills my-3" id="pills-tab" role="tablist">
+      <ul class="nav nav-pills" id="pills-tab" role="tablist">
        <li class="nav-item" role="presentation">
           <button class="nav-link active" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Flight Seat Tracker</button>
         </li>
@@ -435,6 +435,7 @@
 
     <div class="tab-content" id="pills-tabContent">
       <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
+
         <div class="info-table-container" style="overflow-x: auto;">
            <table class="info-table" id="info-table">
                 <thead class="border-2">
@@ -443,8 +444,8 @@
                     <th rowspan="2">ORIGIN</th>
                     <th colspan="2">FLIGHT DATE</th> <!-- Flight Date columns -->
                     <th rowspan="2">FLIGHT SEAT</th>
-                    <th rowspan="2" style="font-size: 10px;">AVAILABLE SEATS</th>
-                    <th rowspan="2" style="font-size: 10px;">ADDITIONAL SEATS</th>
+                    <th rowspan="2">AVAILABLE SEATS</th>
+                    <th rowspan="2">ADDITIONAL SEATS</th>
                     <th rowspan="2">AIR + LAND</th>
                     <th rowspan="2">LAND ONLY</th>
                     <th rowspan="2">WHOLESALE PRICE</th>
@@ -612,17 +613,16 @@
          </div>
       </div>           
 
-
       <div class="tab-pane fade " id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
 
-        <div class="header-wrapper">
-          <div class="table-wrapper price-table">
+        <d class="header-wrapper">
+          <!-- <div class="table-wrapper price-table-wrapper">
             <div class="table-header">
                 <h6 class="text-secondary">Price</h6>
             </div>
 
             <div class="table-container">
-              <table class="">
+              <table class="table price-table">
                 <thead>
                   <tr>
                     <th>Transact No</th>
@@ -666,59 +666,19 @@
                     <td>$1200</td>
                     <td><span class="badge rounded-pill bg-danger text-white">Cancelled</span></td>
                   </tr>
-                  <tr>
-                    <td>004</td>
-                    <td>Mary Lee</td>
-                    <td>Cultural Tour</td>
-                    <td>2024-12-28</td>
-                    <td>2024-12-12</td>
-                    <td>3</td>
-                    <td>$900</td>
-                    <td><span class="badge rounded-pill bg-secondary text-white">Reject</span></td>
-                  </tr>
-                  <tr>
-                    <td>004</td>
-                    <td>Mary Lee</td>
-                    <td>Cultural Tour</td>
-                    <td>2024-12-28</td>
-                    <td>2024-12-12</td>
-                    <td>3</td>
-                    <td>$900</td>
-                    <td><span class="badge rounded-pill bg-secondary text-white">Reject</span></td>
-                  </tr>
-                  <tr>
-                    <td>004</td>
-                    <td>Mary Lee</td>
-                    <td>Cultural Tour</td>
-                    <td>2024-12-28</td>
-                    <td>2024-12-12</td>
-                    <td>3</td>
-                    <td>$900</td>
-                    <td><span class="badge rounded-pill bg-secondary text-white">Reject</span></td>
-                  </tr>
-                  <tr>
-                    <td>004</td>
-                    <td>Mary Lee</td>
-                    <td>Cultural Tour</td>
-                    <td>2024-12-28</td>
-                    <td>2024-12-12</td>
-                    <td>3</td>
-                    <td>$900</td>
-                    <td><span class="badge rounded-pill bg-secondary text-white">Reject</span></td>
-                  </tr>
                 </tbody>
               </table>
             </div>
 
-          </div>
+          </div> -->
 
           <div class="request-wrapper">
-            <div class="header p-3">
+            <div class="table-header">
               <h6 class="text-secondary">Requests</h6>
             </div>
 
             <div class="request-table-container">
-              <table class="request-table">
+              <table class="table request-table">
                 <thead>
                   <tr>
                     <th>AGENT NAME</th>
@@ -793,12 +753,12 @@
           </div>
 
           <div class="payment-wrapper">
-            <div class="header p-3">
+            <div class="table-header">
               <h6 class="text-secondary">Payment</h6>
             </div>
 
-            <div class="payment-table-container px-3">
-              <table class="payment-table">
+            <div class="payment-table-container">
+              <table class="table payment-table">
                 <thead>
                   <tr>
                     <th>AGENT NAME</th>
@@ -875,7 +835,7 @@
 
 
 
-        </div>
+        </d iv>
 
         <div class="confirm-container">
             <div class="one">
@@ -1072,22 +1032,20 @@
 <script>
 $(document).ready(function() {
     var table = $('.info-table').DataTable({
-        scrollX: true, // Enable horizontal scrolling
-        scrollY: '570px', // Adjust the height of the table for vertical scrolling
-        paging: false, // Disable pagination
-        searching: false, // Disable search box
-        info: false, // Disable the table information (e.g., "Showing 1 to 10 of 50 entries")
+        scrollX: true,
+        scrollY: '570px',
+        paging: false,
+        searching: false,
+        info: false,
         fixedColumns: {
             leftColumns: 12 // Freeze the first 12 columns
         },
-        dom: 'rt<"bottom"flp>', // Template approach to hide unnecessary components
-        
+        dom: 'rt<"bottom"flp>',
         ordering: false, // Disable sorting on all columns
     });
 
     // Add event listener for row selection (click event)
     $('.info-table tbody').on('click', 'tr', function() {
-        // Remove the 'selected' class from all rows
         $('.info-table tbody tr').removeClass('selected');
         
         // Add the 'selected' class to the clicked row
