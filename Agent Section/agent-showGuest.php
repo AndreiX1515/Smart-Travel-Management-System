@@ -115,7 +115,7 @@
           }
           ?>
 
-      <button type="button" class="btn btn-secondary" onclick="window.location.href='agent-transactions.php'">Back</button>
+    <button type="button" class="btn btn-secondary" onclick="window.location.href='agent-transactions.php'">Back</button>
      <div class="content-wrapper">
        <div class="header">
          <div class="transaction-info">
