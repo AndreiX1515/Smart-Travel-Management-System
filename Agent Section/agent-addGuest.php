@@ -158,7 +158,7 @@
 
                   <div class="col-md-3">
                     <div class="form-group mb-3">
-                      <label class="mb-2" for="age">Age <span class="text-danger fw-bold">*</span> </label>
+                      <label class="mb-2" for="age">Age <span class="text-danger fw-bold">*</span> <span id="infant"></span></label>
                       <input type="number" name="age[]" class="form-control" placeholder="Age" readonly>
                       <span id="ageError" class="text-danger"></span> <!-- Error message for Age -->
                     </div>
@@ -180,198 +180,7 @@
                     <div class="form-group mb-3">
                       <label class="mb-2" for="nationality">Nationality <span class="text-danger fw-bold">*</span> </label>
                       <input type="text" class="form-control" name="nationality[]" list="nationality" placeholder="Enter Nationality" required>
-                      <datalist id="nationality">
-                        <option value="Afghan">Afghan</option>
-                        <option value="Albanian">Albanian</option>
-                        <option value="Algerian">Algerian</option>
-                        <option value="American">American</option>
-                        <option value="Andorran">Andorran</option>
-                        <option value="Angolan">Angolan</option>
-                        <option value="Antiguan">Antiguan</option>
-                        <option value="Argentine">Argentine</option>
-                        <option value="Armenian">Armenian</option>
-                        <option value="Australian">Australian</option>
-                        <option value="Austrian">Austrian</option>
-                        <option value="Azerbaijani">Azerbaijani</option>
-                        <option value="Bahaman">Bahaman</option>
-                        <option value="Bahraini">Bahraini</option>
-                        <option value="Bangladeshi">Bangladeshi</option>
-                        <option value="Barbadian">Barbadian</option>
-                        <option value="Bashkir">Bashkir</option>
-                        <option value="Belarusian">Belarusian</option>
-                        <option value="Belgian">Belgian</option>
-                        <option value="Belizean">Belizean</option>
-                        <option value="Beninese">Beninese</option>
-                        <option value="Bhutanese">Bhutanese</option>
-                        <option value="Bolivian">Bolivian</option>
-                        <option value="Bosnian">Bosnian</option>
-                        <option value="Brazilian">Brazilian</option>
-                        <option value="Bruneian">Bruneian</option>
-                        <option value="Bulgarian">Bulgarian</option>
-                        <option value="Burkinabe">Burkinabe</option>
-                        <option value="Burundian">Burundian</option>
-                        <option value="Cabo Verdean">Cabo Verdean</option>
-                        <option value="Cambodian">Cambodian</option>
-                        <option value="Cameroonian">Cameroonian</option>
-                        <option value="Canadian">Canadian</option>
-                        <option value="Central African">Central African</option>
-                        <option value="Chadian">Chadian</option>
-                        <option value="Chilean">Chilean</option>
-                        <option value="Chinese">Chinese</option>
-                        <option value="Colombian">Colombian</option>
-                        <option value="Comoran">Comoran</option>
-                        <option value="Congolese">Congolese</option>
-                        <option value="Costa Rican">Costa Rican</option>
-                        <option value="Croatian">Croatian</option>
-                        <option value="Cuban">Cuban</option>
-                        <option value="Cypriot">Cypriot</option>
-                        <option value="Czech">Czech</option>
-                        <option value="Danish">Danish</option>
-                        <option value="Djiboutian">Djiboutian</option>
-                        <option value="Dominican">Dominican</option>
-                        <option value="Dutch">Dutch</option>
-                        <option value="East Timorese">East Timorese</option>
-                        <option value="Ecuadorean">Ecuadorean</option>
-                        <option value="Egyptian">Egyptian</option>
-                        <option value="Emirati">Emirati</option>
-                        <option value="Equatorial Guinean">Equatorial Guinean</option>
-                        <option value="Eritrean">Eritrean</option>
-                        <option value="Estonian">Estonian</option>
-                        <option value="Eswatini">Eswatini</option>
-                        <option value="Ethiopian">Ethiopian</option>
-                        <option value="Fijian">Fijian</option>
-                        <option value="Filipino">Filipino</option>
-                        <option value="Finnish">Finnish</option>
-                        <option value="French">French</option>
-                        <option value="Gabonese">Gabonese</option>
-                        <option value="Gambian">Gambian</option>
-                        <option value="Georgian">Georgian</option>
-                        <option value="German">German</option>
-                        <option value="Ghanaian">Ghanaian</option>
-                        <option value="Greek">Greek</option>
-                        <option value="Grenadian">Grenadian</option>
-                        <option value="Guatemalan">Guatemalan</option>
-                        <option value="Guinea-Bissauan">Guinea-Bissauan</option>
-                        <option value="Guinean">Guinean</option>
-                        <option value="Guyanese">Guyanese</option>
-                        <option value="Haitian">Haitian</option>
-                        <option value="Honduran">Honduran</option>
-                        <option value="Hungarian">Hungarian</option>
-                        <option value="Icelander">Icelander</option>
-                        <option value="Indian">Indian</option>
-                        <option value="Indonesian">Indonesian</option>
-                        <option value="Iranian">Iranian</option>
-                        <option value="Iraqi">Iraqi</option>
-                        <option value="Irish">Irish</option>
-                        <option value="Israeli">Israeli</option>
-                        <option value="Italian">Italian</option>
-                        <option value="Ivorian">Ivorian</option>
-                        <option value="Jamaican">Jamaican</option>
-                        <option value="Japanese">Japanese</option>
-                        <option value="Jordanian">Jordanian</option>
-                        <option value="Kazakhstani">Kazakhstani</option>
-                        <option value="Kenyan">Kenyan</option>
-                        <option value="Kuwaiti">Kuwaiti</option>
-                        <option value="Kyrgyz">Kyrgyz</option>
-                        <option value="Laotian">Laotian</option>
-                        <option value="Latvian">Latvian</option>
-                        <option value="Lebanese">Lebanese</option>
-                        <option value="Liberian">Liberian</option>
-                        <option value="Libyan">Libyan</option>
-                        <option value="Liechtenstein citizen">Liechtenstein citizen</option>
-                        <option value="Lithuanian">Lithuanian</option>
-                        <option value="Luxembourger">Luxembourger</option>
-                        <option value="Malagasy">Malagasy</option>
-                        <option value="Malawian">Malawian</option>
-                        <option value="Malaysian">Malaysian</option>
-                        <option value="Maldivian">Maldivian</option>
-                        <option value="Malian">Malian</option>
-                        <option value="Maltese">Maltese</option>
-                        <option value="Marshallese">Marshallese</option>
-                        <option value="Mauritanian">Mauritanian</option>
-                        <option value="Mauritian">Mauritian</option>
-                        <option value="Mexican">Mexican</option>
-                        <option value="Micronesian">Micronesian</option>
-                        <option value="Moldovan">Moldovan</option>
-                        <option value="Monacan">Monacan</option>
-                        <option value="Mongolian">Mongolian</option>
-                        <option value="Montenegrin">Montenegrin</option>
-                        <option value="Moroccan">Moroccan</option>
-                        <option value="Mozambican">Mozambican</option>
-                        <option value="Myanmar">Myanmar</option>
-                        <option value="Namibian">Namibian</option>
-                        <option value="Nauruan">Nauruan</option>
-                        <option value="Nepali">Nepali</option>
-                        <option value="New Zealander">New Zealander</option>
-                        <option value="Nicaraguan">Nicaraguan</option>
-                        <option value="Nigerien">Nigerien</option>
-                        <option value="Nigerian">Nigerian</option>
-                        <option value="North Korean">North Korean</option>
-                        <option value="North Macedonian">North Macedonian</option>
-                        <option value="Norwegian">Norwegian</option>
-                        <option value="Omani">Omani</option>
-                        <option value="Pakistani">Pakistani</option>
-                        <option value="Palauan">Palauan</option>
-                        <option value="Panamanian">Panamanian</option>
-                        <option value="Papua New Guinean">Papua New Guinean</option>
-                        <option value="Paraguayan">Paraguayan</option>
-                        <option value="Peruvian">Peruvian</option>
-                        <option value="Polish">Polish</option>
-                        <option value="Portuguese">Portuguese</option>
-                        <option value="Qatari">Qatari</option>
-                        <option value="Romanian">Romanian</option>
-                        <option value="Russian">Russian</option>
-                        <option value="Rwandan">Rwandan</option>
-                        <option value="Saint Kitts">Saint Kitts</option>
-                        <option value="and Nevis">and Nevis</option>
-                        <option value="Saint Lucian">Saint Lucian</option>
-                        <option value="Salvadoran">Salvadoran</option>
-                        <option value="Samoan">Samoan</option>
-                        <option value="San Marinese">San Marinese</option>
-                        <option value="Sao Tomean">Sao Tomean</option>
-                        <option value="Saudi Arabian">Saudi Arabian</option>
-                        <option value="Scottish">Scottish</option>
-                        <option value="Senegalese">Senegalese</option>
-                        <option value="Serbian">Serbian</option>
-                        <option value="Seychellois">Seychellois</option>
-                        <option value="Sierra Leonean">Sierra Leonean</option>
-                        <option value="Singaporean">Singaporean</option>
-                        <option value="Slovak">Slovak</option>
-                        <option value="Slovenian">Slovenian</option>
-                        <option value="Solomon Islander">Solomon Islander</option>
-                        <option value="Somali">Somali</option>
-                        <option value="South African">South African</option>
-                        <option value="South Korean">South Korean</option>
-                        <option value="Spanish">Spanish</option>
-                        <option value="Sri Lankan">Sri Lankan</option>
-                        <option value="Sudanese">Sudanese</option>
-                        <option value="Surinamese">Surinamese</option>
-                        <option value="Swedish">Swedish</option>
-                        <option value="Swiss">Swiss</option>
-                        <option value="Syrian">Syrian</option>
-                        <option value="Taiwanese">Taiwanese</option>
-                        <option value="Tajik">Tajik</option>
-                        <option value="Tanzanian">Tanzanian</option>
-                        <option value="Thai">Thai</option>
-                        <option value="Togolese">Togolese</option>
-                        <option value="Tongan">Tongan</option>
-                        <option value="Trinidadian">Trinidadian</option>
-                        <option value="Tobagonian">Tobagonian</option>
-                        <option value="Tunisian">Tunisian</option>
-                        <option value="Turkish">Turkish</option>
-                        <option value="Turkmen">Turkmen</option>
-                        <option value="Tuvaluan">Tuvaluan</option>
-                        <option value="Ugandan">Ugandan</option>
-                        <option value="Ukrainian">Ukrainian</option>
-                        <option value="Uruguayan">Uruguayan</option>
-                        <option value="Uzbek">Uzbek</option>
-                        <option value="Venezuelan">Venezuelan</option>
-                        <option value="Vietnamese">Vietnamese</option>
-                        <option value="Welsh">Welsh</option>
-                        <option value="Yemeni">Yemeni</option>
-                        <option value="Zambian">Zambian</option>
-                        <option value="Zimbabwean">Zimbabwean</option>
-                      </datalist>
+                        <datalist id="nationality"></datalist>
                       <span id="nationalityError" class="text-danger"></span> <!-- Error message for Nationality -->
                     </div>
                   </div>
@@ -389,7 +198,7 @@
 
                   <div class="col-md-6">
                     <div class="form-group mb-3">
-                      <label class="mb-2" for="passportExp">Date of Expiration: <span class="text-danger fw-bold">*</span></label>
+                      <label class="mb-2" for="passportExp">Date of Expiration: <span class="text-danger fw-bold">*</span> <span id="expPassport" class="text-danger">Expired</span></label>
                       <input type="date" name="passportExp[]" class="form-control" required>
                       <span id="passportExpError" class="text-danger"></span> <!-- Error message for Passport Exp -->
                     </div>
@@ -1204,115 +1013,198 @@
     });
   </script> -->
 
-  <script>
-    $(document).ready(function () 
+    <script>
+      // List of nationalities
+      const nationalities = [
+        "Afghan", "Albanian", "Algerian", "American", "Andorran", "Angolan", "Antiguan",
+        "Argentine", "Armenian", "Australian", "Austrian", "Azerbaijani", "Bahaman", "Bahraini",
+        "Bangladeshi", "Barbadian", "Bashkir", "Belarusian", "Belgian", "Belizean", "Beninese",
+        "Bhutanese", "Bolivian", "Bosnian", "Brazilian", "Bruneian", "Bulgarian", "Burkinabe",
+        "Burundian", "Cabo Verdean", "Cambodian", "Cameroonian", "Canadian", "Central African",
+        "Chadian", "Chilean", "Chinese", "Colombian", "Comoran", "Congolese", "Costa Rican",
+        "Croatian", "Cuban", "Cypriot", "Czech", "Danish", "Djiboutian", "Dominican", "Dutch",
+        "East Timorese", "Ecuadorean", "Egyptian", "Emirati", "Equatorial Guinean", "Eritrean",
+        "Estonian", "Eswatini", "Ethiopian", "Fijian", "Filipino", "Finnish", "French", "Gabonese",
+        "Gambian", "Georgian", "German", "Ghanaian", "Greek", "Grenadian", "Guatemalan",
+        "Guinea-Bissauan", "Guinean", "Guyanese", "Haitian", "Honduran", "Hungarian", "Icelander",
+        "Indian", "Indonesian", "Iranian", "Iraqi", "Irish", "Israeli", "Italian", "Ivorian",
+        "Jamaican", "Japanese", "Jordanian", "Kazakhstani", "Kenyan", "Kuwaiti", "Kyrgyz", "Laotian",
+        "Latvian", "Lebanese", "Liberian", "Libyan", "Liechtenstein citizen", "Lithuanian",
+        "Luxembourger", "Malagasy", "Malawian", "Malaysian", "Maldivian", "Malian", "Maltese",
+        "Marshallese", "Mauritanian", "Mauritian", "Mexican", "Micronesian", "Moldovan", "Monacan",
+        "Mongolian", "Montenegrin", "Moroccan", "Mozambican", "Myanmar", "Namibian", "Nauruan",
+        "Nepali", "New Zealander", "Nicaraguan", "Nigerien", "Nigerian", "North Korean",
+        "North Macedonian", "Norwegian", "Omani", "Pakistani", "Palauan", "Panamanian",
+        "Papua New Guinean", "Paraguayan", "Peruvian", "Polish", "Portuguese", "Qatari", "Romanian",
+        "Russian", "Rwandan", "Saint Kitts", "and Nevis", "Saint Lucian", "Salvadoran", "Samoan",
+        "San Marinese", "Sao Tomean", "Saudi Arabian", "Scottish", "Senegalese", "Serbian",
+        "Seychellois", "Sierra Leonean", "Singaporean", "Slovak", "Slovenian", "Solomon Islander",
+        "Somali", "South African", "South Korean", "Spanish", "Sri Lankan", "Sudanese", "Surinamese",
+        "Swedish", "Swiss", "Syrian", "Taiwanese", "Tajik", "Tanzanian", "Thai", "Togolese",
+        "Tongan", "Trinidadian", "Tobagonian", "Tunisian", "Turkish", "Turkmen", "Tuvaluan",
+        "Ugandan", "Ukrainian", "Uruguayan", "Uzbek", "Venezuelan", "Vietnamese", "Welsh", "Yemeni",
+        "Zambian", "Zimbabwean"
+      ];
+
+    // Populate the datalist
+    const datalist = document.getElementById("nationality");
+    nationalities.forEach(nationality => 
     {
-      var maxPax = <?php echo $availablePax; ?>; // Passing maxPax value from PHP to JS
-
-      // Add a new guest form
-      $('#addGuestFormButton').on('click', function () 
-      {
-        const guestFormsContainer = $('#guestFormsContainer');
-        const existingForms = $('.guest-form');
-        const currentCount = existingForms.length;
-
-        if (currentCount < maxPax) 
-        {
-          // Clone the first form
-          const newForm = existingForms.first().clone();
-          const newIndex = currentCount + 1;
-
-          // Update IDs and Labels in the cloned form
-          newForm.find('h5').text(`Guest Information ${newIndex}`);
-          const collapsible = newForm.find('[data-bs-target]');
-          const collapsibleContent = newForm.find('.collapse');
-
-          collapsible.attr('data-bs-target', `#cardBodyContent${newIndex}`);
-          collapsibleContent.attr('id', `cardBodyContent${newIndex}`);
-
-          // Reset form values
-          newForm.find('input').val(''); // Clear input values
-          newForm.find('.error-message').text(''); // Clear error messages
-
-          // Update error IDs in the new form
-          newForm.find('.error-message').each(function () {
-            const baseId = $(this).attr('id').replace(/\d+$/, ''); // Strip existing index
-            $(this).attr('id', `${baseId}${newIndex}`); // Append new index
-          });
-
-          // Ensure the delete button is present only in the cloned forms
-          const cardHeader = newForm.find('.card-header');
-          let deleteButton = cardHeader.find('.deleteGuestFormButton');
-
-          // Only create the delete button if it's not the first (main) form
-          if (deleteButton.length === 0) 
-          {
-            deleteButton = $('<button>', 
-            {
-              class: 'btn btn-sm btn-danger deleteGuestFormButton ms-2',
-              type: 'button',
-              text: 'Delete',
-            });
-
-            // Append the delete button after the "Toggle" button
-            cardHeader.append(deleteButton);
-          }
-
-          // Append the new form to the container
-          guestFormsContainer.append(newForm);
-          renumberForms(); // Renumber the remaining forms
-        } 
-        else 
-        {
-          alert(`You can only add up to ${maxPax} guest forms.`);
-        }
-      });
-
-      // Delete a guest form
-      $(document).on('click', '.deleteGuestFormButton', function () 
-      {
-        $(this).closest('.guest-form').slideUp(function () 
-        {
-          $(this).remove(); // Remove the form
-          renumberForms(); // Renumber the remaining forms
-        });
-      });
-
-      // Function to renumber forms
-      function renumberForms() 
-      {
-        $('.guest-form').each(function (index) 
-        {
-          const formIndex = index + 1;
-
-          // Update the main guest form header (Guest Information 1, 2, etc.)
-          $(this).find('.font-weight-bold.mt-1').text(`Guest Information ${formIndex}`);
-
-          // Update the "Personal Information" header
-          $(this).find('.personal-info-header').text(`Personal Information ${formIndex}`);
-          
-          // Update the "Contact Information" header
-          $(this).find('.contact-info-header').text(`Contact Information ${formIndex}`);
-          
-          // Update the "Address Information" header
-          $(this).find('.address-info-header').text(`Address Information ${formIndex}`);
-          
-          // Update collapsible elements
-          const collapsible = $(this).find('[data-bs-target]');
-          const collapsibleContent = $(this).find('.collapse');
-
-          // Update error IDs dynamically
-          $(this).find('.error-message').each(function () 
-          {
-            const baseId = $(this).attr('id').replace(/\d+$/, ''); // Strip existing index
-            $(this).attr('id', `${baseId}${formIndex}`); // Append updated index
-          });
-          
-          collapsible.attr('data-bs-target', `#cardBodyContent${formIndex}`);
-          collapsibleContent.attr('id', `cardBodyContent${formIndex}`);
-        });
-      }
+      const option = document.createElement("option");
+      option.value = nationality;
+      datalist.appendChild(option);
     });
+  </script>
+
+  <script>
+    $(document).ready(function () {
+  var maxPax = <?php echo $availablePax; ?>; // Passing maxPax value from PHP to JS
+
+  // Add a new guest form
+  $('#addGuestFormButton').on('click', function () {
+    const guestFormsContainer = $('#guestFormsContainer');
+    const existingForms = $('.guest-form');
+    const currentCount = existingForms.length;
+
+    if (currentCount < maxPax) {
+      // Clone the first form
+      const newForm = existingForms.first().clone();
+      const newIndex = currentCount + 1;
+
+      // Update IDs and Labels in the cloned form
+      newForm.find('h5').text(`Guest Information ${newIndex}`);
+      const collapsible = newForm.find('[data-bs-target]');
+      const collapsibleContent = newForm.find('.collapse');
+
+      collapsible.attr('data-bs-target', `#cardBodyContent${newIndex}`);
+      collapsibleContent.attr('id', `cardBodyContent${newIndex}`);
+
+      // Reset form values
+      newForm.find('input').val(''); // Clear input values
+      newForm.find('.error-message').text(''); // Clear error messages
+
+      // Dynamically update span IDs and reset their content
+      newForm.find('span[id]').each(function () {
+        const baseId = $(this).attr('id').replace(/\d+$/, ''); // Remove existing numeric suffix
+        $(this).attr('id', `${baseId}${newIndex}`).text(''); // Add new index and clear content
+      });
+
+      // Ensure the delete button is present only in the cloned forms
+      const cardHeader = newForm.find('.card-header');
+      let deleteButton = cardHeader.find('.deleteGuestFormButton');
+
+      if (deleteButton.length === 0) {
+        deleteButton = $('<button>', {
+          class: 'btn btn-sm btn-danger deleteGuestFormButton ms-2',
+          type: 'button',
+          text: 'Delete',
+        });
+        cardHeader.append(deleteButton);
+      }
+
+      // Append the new form to the container
+      guestFormsContainer.append(newForm);
+      renumberForms(); // Renumber the remaining forms
+    } else {
+      alert(`You can only add up to ${maxPax} guest forms.`);
+    }
+  });
+
+  // Delete a guest form
+  $(document).on('click', '.deleteGuestFormButton', function () {
+    $(this).closest('.guest-form').slideUp(function () {
+      $(this).remove(); // Remove the form
+      renumberForms(); // Renumber the remaining forms
+    });
+  });
+
+  // Function to renumber forms
+  function renumberForms() {
+    $('.guest-form').each(function (index) {
+      const formIndex = index + 1;
+
+      // Update the main guest form header (Guest Information 1, 2, etc.)
+      $(this).find('.font-weight-bold.mt-1').text(`Guest Information ${formIndex}`);
+
+      // Update section headers dynamically
+      $(this).find('.personal-info-header').text(`Personal Information ${formIndex}`);
+      $(this).find('.contact-info-header').text(`Contact Information ${formIndex}`);
+      $(this).find('.address-info-header').text(`Address Information ${formIndex}`);
+
+      // Update collapsible elements
+      const collapsible = $(this).find('[data-bs-target]');
+      const collapsibleContent = $(this).find('.collapse');
+
+      // Update error IDs dynamically
+      $(this).find('.error-message').each(function () {
+        const baseId = $(this).attr('id').replace(/\d+$/, ''); // Strip existing index
+        $(this).attr('id', `${baseId}${formIndex}`); // Append updated index
+      });
+
+      // Update span IDs dynamically
+      $(this).find('span[id]').each(function () {
+        const baseId = $(this).attr('id').replace(/\d+$/, ''); // Remove existing numeric suffix
+        $(this).attr('id', `${baseId}${formIndex}`).text(''); // Clear and append updated index
+      });
+
+      collapsible.attr('data-bs-target', `#cardBodyContent${formIndex}`);
+      collapsibleContent.attr('id', `cardBodyContent${formIndex}`);
+    });
+  }
+
+  // Event listener for birthdate field
+  $(document).on('change', 'input[name^="birthdate"]', function () {
+    const birthdate = $(this).val();
+
+    // Make sure the birthdate is in a valid format (YYYY-MM-DD)
+    if (isValidDate(birthdate)) {
+      const age = calculateAge(birthdate); // Calculate age
+
+      // Update the age field and handle infant text
+      const parentCard = $(this).closest('.card-body');
+      parentCard.find('input[name^="age"]').val(age > 0 ? age : 0);
+
+      const infantSpan = parentCard.find('span[id^="infant"]');
+      if (age === 0) {
+        infantSpan.text('Infant'); // Display "Infant" for age 0
+      } else {
+        infantSpan.text(''); // Clear if not an infant
+      }
+
+    } else {
+      // Clear invalid fields
+      $(this).closest('.card-body').find('input[name^="age"]').val('');
+      $(this).closest('.card-body').find('span[id^="infant"]').text('');
+    }
+  });
+
+  // Function to calculate age from birthdate
+  function calculateAge(birthdate) {
+    const birthDateObj = new Date(birthdate); // Convert birthdate string into Date object
+    const today = new Date();
+    let age = today.getFullYear() - birthDateObj.getFullYear();
+
+    // Adjust if the birthday hasn't occurred yet this year
+    const monthDiff = today.getMonth() - birthDateObj.getMonth();
+    const dayDiff = today.getDate() - birthDateObj.getDate();
+    if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+      age--;
+    }
+
+    return age < 1 ? 0 : age; // Return 0 if less than 1 year old
+  }
+
+  // Function to check if date is valid
+  function isValidDate(dateString) {
+    const regex = /^\d{4}-\d{2}-\d{2}$/; // Check format YYYY-MM-DD
+    if (!regex.test(dateString)) return false;
+
+    const dateObj = new Date(dateString);
+    return !isNaN(dateObj.getTime()); // Check if date is valid
+  }
+});
+
+
   </script>
 
   <script>
@@ -1328,19 +1220,35 @@
         {
           const age = calculateAge(birthdate); // Calculate the age based on birthdate
 
-          if (!isNaN(age) && age > 0) 
+          // Update the age field in the same form that contains the birthdate field
+          const ageField = $(this).closest('.card-body').find('input[name^="age"]');
+          const infantSpan = $('#infant'); // Target the span for infants
+
+          if (!isNaN(age) && age >= 0) 
           {
-            // Update the age field in the same form that contains the birthdate field
-            $(this).closest('.card-body').find('input[name^="age"]').val(age); 
+            // Display age (0 for infants)
+            ageField.val(age);
+
+            // If age is 0, display "Infant" in the span
+            if (age === 0) 
+            {
+              infantSpan.text('Infant');
+            } 
+            else 
+            {
+              infantSpan.text(''); // Clear the text if not an infant
+            }
           } 
           else 
           {
-            $(this).closest('.card-body').find('input[name^="age"]').val(''); // Clear the age field if invalid
+            ageField.val(''); // Clear the age field if invalid
+            infantSpan.text(''); // Clear the span text if invalid
           }
         } 
         else 
         {
           $(this).closest('.card-body').find('input[name^="age"]').val(''); // Clear the age field if date is invalid
+          $('#infant').text(''); // Clear the span text if date is invalid
         }
       });
 
@@ -1349,6 +1257,7 @@
       {
         const birthDateObj = new Date(birthdate); // Convert the birthdate string into a Date object
         const today = new Date(); // Get the current date
+
         let age = today.getFullYear() - birthDateObj.getFullYear(); // Calculate age by year difference
 
         // Adjust the age if the birthday hasn't occurred yet this year
@@ -1360,6 +1269,12 @@
           age--; // Reduce age if the birthdate hasn't occurred yet this year
         }
 
+        // If the age is less than 1 year, consider it an infant (age 0)
+        if (age < 1) 
+        {
+          age = 0;
+        }
+
         return age;
       }
 
@@ -1368,8 +1283,16 @@
       {
         // Check if the date is in the format YYYY-MM-DD
         const regex = /^\d{4}-\d{2}-\d{2}$/;
-        return regex.test(dateString);
+        if (!regex.test(dateString)) 
+        {
+          return false;
+        }
+
+        // Check if the date is a real calendar date
+        const dateObj = new Date(dateString);
+        return dateObj instanceof Date && !isNaN(dateObj.getTime());
       }
+
     });
   </script>
 
