@@ -893,23 +893,23 @@
                                   <td>{$row['Start']}</td>
                                   <td>{$row['pax']}</td>
                                   <td>{$row['bookingType']}</td>
-                                  <td>
-                                    <span class='badge {$pillClass} rounded-pill p-2'>{$status}</span>
-                                  </td>
+                                  <td>{$row['status']}</td>
                                 </tr>";
                         }
-                      } else {
+                      } 
+                      else 
+                      {
                         // No records found
                         echo "<tr><td colspan='7'>No confirmed bookings found.</td></tr>";
                       }
-                      ?>
-
-                    </tbody>
-                  </table>
-                </div>
+                      
+                    ?>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
+        </div>
 
 
 
