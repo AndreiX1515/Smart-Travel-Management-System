@@ -789,68 +789,68 @@
         </div>
 
         <div class="confirm-container">
-            <div class="one">
-              <div class="header d-flex justify-content-between align-items-center">
-                <h6 class="white-pill">Confirmed Transactions</h6>
-              </div>
-                
-              <div class="body">
-                <div class="table-container confirm-table-container">
-                  <table class="confirm-table">
-                    <thead>
-                      <tr>
-                        <th>TRANSACTION NO.</th>
-                        <th>AGENT NAME</th>
-                        <th>PACKAGE</th>
-                        <th>FLIGHT DATE</th>
-                        <th>TOTAL PAX.</th>
-                        <th>BOOKING TYPE</th>
-                        <th>STATUS</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <?php
-                        $query1 = "SELECT b.*, f.flightDepartureDate AS Start, p.packageName,
-                                        f.returnDepartureDate AS End, CONCAT(a.lName, ', ', a.fName, 
-                                        IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1)), '')) AS agentName
-                                    FROM booking b 
-                                    JOIN agent a ON b.agentId = a.agentId
-                                    JOIN flight f ON b.flightId = f.flightId
-                                    JOIN package p ON b.packageId = p.packageId
-                                    WHERE status = 'Confirmed'";
+          <div class="one">
+            <div class="header d-flex justify-content-between align-items-center">
+              <h6 class="white-pill">Confirmed Transactions</h6>
+            </div>
+              
+            <div class="body">
+              <div class="table-container confirm-table-container">
+                <table class="confirm-table">
+                  <thead>
+                    <tr>
+                      <th>TRANSACTION NO.</th>
+                      <th>AGENT NAME</th>
+                      <th>PACKAGE</th>
+                      <th>FLIGHT DATE</th>
+                      <th>TOTAL PAX.</th>
+                      <th>BOOKING TYPE</th>
+                      <th>STATUS</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php
+                      $query1 = "SELECT b.*, f.flightDepartureDate AS Start, p.packageName,
+                                      f.returnDepartureDate AS End, CONCAT(a.lName, ', ', a.fName, 
+                                      IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1)), '')) AS agentName
+                                  FROM booking b 
+                                  JOIN agent a ON b.agentId = a.agentId
+                                  JOIN flight f ON b.flightId = f.flightId
+                                  JOIN package p ON b.packageId = p.packageId
+                                  WHERE status = 'Confirmed'";
 
-                        $result = $conn->query($query1);
+                      $result = $conn->query($query1);
 
-                        // Check if the query returned any results
-                        if ($result && $result->num_rows > 0) 
+                      // Check if the query returned any results
+                      if ($result && $result->num_rows > 0) 
+                      {
+                        // Fetch each row as an associative array and display in the table
+                        while ($row = $result->fetch_assoc()) 
                         {
-                          // Fetch each row as an associative array and display in the table
-                          while ($row = $result->fetch_assoc()) 
-                          {
-                            echo "<tr>
-                                    <td>{$row['transactNo']}</td>
-                                    <td>{$row['agentName']}</td>
-                                    <td>{$row['packageName']}</td>
-                                    <td>{$row['Start']}</td>
-                                    <td>{$row['pax']}</td>
-                                    <td>{$row['bookingType']}</td>
-                                    <td>{$row['status']}</td>
-                                  </tr>";
-                          }
-                        } 
-                        else 
-                        {
-                          // No records found
-                          echo "<tr><td colspan='7'>No confirmed bookings found.</td></tr>";
+                          echo "<tr>
+                                  <td>{$row['transactNo']}</td>
+                                  <td>{$row['agentName']}</td>
+                                  <td>{$row['packageName']}</td>
+                                  <td>{$row['Start']}</td>
+                                  <td>{$row['pax']}</td>
+                                  <td>{$row['bookingType']}</td>
+                                  <td>{$row['status']}</td>
+                                </tr>";
                         }
-                        
-                      ?>
-                    </tbody>
-                  </table>
-                </div>
+                      } 
+                      else 
+                      {
+                        // No records found
+                        echo "<tr><td colspan='7'>No confirmed bookings found.</td></tr>";
+                      }
+                      
+                    ?>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
+        </div>
 
 
 

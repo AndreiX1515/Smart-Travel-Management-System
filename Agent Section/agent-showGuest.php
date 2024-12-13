@@ -25,10 +25,10 @@
       {
         $transactionNumber = $_SESSION['transaction_number'];
       } 
-      else 
-      {
-        echo "No transaction number found in the session.<br>";
-      }
+      // else 
+      // {
+      //   echo "No transaction number found in the session.<br>";
+      // }
 
       // Check if 'id' is passed in the URL
       if (isset($_GET['id'])) 

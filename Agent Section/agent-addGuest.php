@@ -53,8 +53,20 @@
       $result = $stmt->get_result();
     
       $pax = 0; // Default value if no result is found
-      if ($row = $result->fetch_assoc()) {
+      if ($row = $result->fetch_assoc()) 
+      {
         $_SESSION['pax'] = $row['pax']; // Store the total pax in the session
+        $flightId = $row['flightId'];
+      }
+
+      $stmt1 = $conn->prepare("SELECT * FROM flight WHERE flightId = ?");
+      $stmt1->bind_param("i", $flightId);
+      $stmt1->execute();
+      $result1 = $stmt1->get_result();
+
+      if ($row1 = $result1->fetch_assoc()) 
+      {
+        $flightdate = $row1['flightDepartureDate'];
       }
     
       // Fetch the count of existing guests
@@ -75,6 +87,7 @@
         <h6 class="fw-bold">Transaction No: <span class="fw-normal"><?php echo $transactionNumber ?></span></h6>
         <h6 class="fw-bold">Total Pax: <span class="fw-normal"><?php echo $_SESSION['pax']; ?></span></h6>
         <h6 class="fw-bold">Available Pax: <span class="fw-normal"><?php echo $availablePax; ?></span></h6>
+        <h6 class="fw-bold">Flight Date: <span class="fw-normal"><?php echo $flightdate; ?></span></h6>
         <button id="addGuestFormButton" type="button" class="btn btn-primary">Add Guest Information Form</button>
       </div>
 
@@ -672,202 +685,7 @@
                     <div class="form-group mb-3">
                       <label class="mb-2" for="country">Country <span class="text-danger fw-bold">*</span></label>
                       <input type="text" name="country[]" class="form-control" list="countries" placeholder="Enter Country" required>
-                      <datalist id="countries">
-                        <option value="Afghanistan">Afghanistan</option>
-                        <option value="Albania">Albania</option>
-                        <option value="Algeria">Algeria</option>
-                        <option value="Andorra">Andorra</option>
-                        <option value="Angola">Angola</option>
-                        <option value="Antigua">Antigua</option>
-                        <option value="Barbuda">Barbuda</option>
-                        <option value="Argentina">Argentina</option>
-                        <option value="Armenia">Armenia</option>
-                        <option value="Australia">Australia</option>
-                        <option value="Austria">Austria</option>
-                        <option value="Azerbaijan">Azerbaijan</option>
-                        <option value="Bahamas">Bahamas</option>
-                        <option value="Bahrain">Bahrain</option>
-                        <option value="Bangladesh">Bangladesh</option>
-                        <option value="Barbados">Barbados</option>
-                        <option value="Belarus">Belarus</option>
-                        <option value="Belgium">Belgium</option>
-                        <option value="Belize">Belize</option>
-                        <option value="Benin">Benin</option>
-                        <option value="Bhutan">Bhutan</option>
-                        <option value="Bolivia">Bolivia</option>
-                        <option value="Bosnia">Bosnia</option>
-                        <option value="Herzegovina">Herzegovina</option>
-                        <option value="Botswana">Botswana</option>
-                        <option value="Brazil">Brazil</option>
-                        <option value="Brunei">Brunei</option>
-                        <option value="Bulgaria">Bulgaria</option>
-                        <option value="Burkina Faso">Burkina Faso</option>
-                        <option value="Burundi">Burundi</option>
-                        <option value="Cabo Verde">Cabo Verde</option>
-                        <option value="Cambodia">Cambodia</option>
-                        <option value="Cameroon">Cameroon</option>
-                        <option value="Canada">Canada</option>
-                        <option value="Central African Republic">Central African Republic</option>
-                        <option value="Chad">Chad</option>
-                        <option value="Chile">Chile</option>
-                        <option value="China">China</option>
-                        <option value="Colombia">Colombia</option>
-                        <option value="Comoros">Comoros</option>
-                        <option value="Congo">Congo</option>
-                        <option value="Costa Rica">Costa Rica</option>
-                        <option value="Croatia">Croatia</option>
-                        <option value="Cuba">Cuba</option>
-                        <option value="Cyprus">Cyprus</option>
-                        <option value="Czech Republic">Czech Republic</option>
-                        <option value="Denmark">Denmark</option>
-                        <option value="Djibouti">Djibouti</option>
-                        <option value="Dominica">Dominica</option>
-                        <option value="Dominican Republic">Dominican Republic</option>
-                        <option value="Ecuador">Ecuador</option>
-                        <option value="Egypt">Egypt</option>
-                        <option value="El Salvador">El Salvador</option>
-                        <option value="Equatorial Guinea">Equatorial Guinea</option>
-                        <option value="Eritrea">Eritrea</option>
-                        <option value="Estonia">Estonia</option>
-                        <option value="Eswatini">Eswatini</option>
-                        <option value="Ethiopia">Ethiopia</option>
-                        <option value="Fiji">Fiji</option>
-                        <option value="Finland">Finland</option>
-                        <option value="France">France</option>
-                        <option value="Gabon">Gabon</option>
-                        <option value="Gambia">Gambia</option>
-                        <option value="Georgia">Georgia</option>
-                        <option value="Germany">Germany</option>
-                        <option value="Ghana">Ghana</option>
-                        <option value="Greece">Greece</option>
-                        <option value="Grenada">Grenada</option>
-                        <option value="Guatemala">Guatemala</option>
-                        <option value="Guinea">Guinea</option>
-                        <option value="Guinea-Bissau">Guinea-Bissau</option>
-                        <option value="Guyana">Guyana</option>
-                        <option value="Haiti">Haiti</option>
-                        <option value="Honduras">Honduras</option>
-                        <option value="Hungary">Hungary</option>
-                        <option value="Iceland">Iceland</option>
-                        <option value="India">India</option>
-                        <option value="Indonesia">Indonesia</option>
-                        <option value="Iran">Iran</option>
-                        <option value="Iraq">Iraq</option>
-                        <option value="Ireland">Ireland</option>
-                        <option value="Israel">Israel</option>
-                        <option value="Italy">Italy</option>
-                        <option value="Jamaica">Jamaica</option>
-                        <option value="Japan">Japan</option>
-                        <option value="Jordan">Jordan</option>
-                        <option value="Kazakhstan">Kazakhstan</option>
-                        <option value="Kenya">Kenya</option>
-                        <option value="Kiribati">Kiribati</option>
-                        <option value="Kuwait">Kuwait</option>
-                        <option value="Kyrgyzstan">Kyrgyzstan</option>
-                        <option value="Laos">Laos</option>
-                        <option value="Latvia">Latvia</option>
-                        <option value="Lebanon">Lebanon</option>
-                        <option value="Lesotho">Lesotho</option>
-                        <option value="Liberia">Liberia</option>
-                        <option value="Libya">Libya</option>
-                        <option value="Liechtenstein">Liechtenstein</option>
-                        <option value="Lithuania">Lithuania</option>
-                        <option value="Luxembourg">Luxembourg</option>
-                        <option value="Madagascar">Madagascar</option>
-                        <option value="Malawi">Malawi</option>
-                        <option value="Malaysia">Malaysia</option>
-                        <option value="Maldives">Maldives</option>
-                        <option value="Mali">Mali</option>
-                        <option value="Malta">Malta</option>
-                        <option value="Marshall Islands">Marshall Islands</option>
-                        <option value="Mauritania">Mauritania</option>
-                        <option value="Mauritius">Mauritius</option>
-                        <option value="Mexico">Mexico</option>
-                        <option value="Micronesia">Micronesia</option>
-                        <option value="Moldova">Moldova</option>
-                        <option value="Monaco">Monaco</option>
-                        <option value="Mongolia">Mongolia</option>
-                        <option value="Montenegro">Montenegro</option>
-                        <option value="Morocco">Morocco</option>
-                        <option value="Mozambique">Mozambique</option>
-                        <option value="Myanmar">Myanmar</option>
-                        <option value="Namibia">Namibia</option>
-                        <option value="Nauru">Nauru</option>
-                        <option value="Nepal">Nepal</option>
-                        <option value="Netherlands">Netherlands</option>
-                        <option value="New Zealand">New Zealand</option>
-                        <option value="Nicaragua">Nicaragua</option>
-                        <option value="Niger">Niger</option>
-                        <option value="Nigeria">Nigeria</option>
-                        <option value="North Macedonia">North Macedonia</option>
-                        <option value="Norway">Norway</option>
-                        <option value="Oman">Oman</option>
-                        <option value="Pakistan">Pakistan</option>
-                        <option value="Palau">Palau</option>
-                        <option value="Panama">Panama</option>
-                        <option value="Papua New Guinea">Papua New Guinea</option>
-                        <option value="Paraguay">Paraguay</option>
-                        <option value="Peru">Peru</option>
-                        <option value="Philippines">Philippines</option>
-                        <option value="Poland">Poland</option>
-                        <option value="Portugal">Portugal</option>
-                        <option value="Qatar">Qatar</option>
-                        <option value="Romania">Romania</option>
-                        <option value="Russia">Russia</option>
-                        <option value="Rwanda">Rwanda</option>
-                        <option value="Saint Kitts">Saint Kitts</option>
-                        <option value="Saint Nevis">Saint Nevis</option>
-                        <option value="Saint Vincent">Saint Vincent</option>
-                        <option value="Grenadines">Grenadines</option>
-                        <option value="Sao Tome">Sao Tome</option>
-                        <option value="Principe">Principe</option>
-                        <option value="Saudi Arabia">Saudi Arabia</option>
-                        <option value="Senegal">Senegal</option>
-                        <option value="Serbia">Serbia</option>
-                        <option value="Seychelles">Seychelles</option>
-                        <option value="Sierra Leone">Sierra Leone</option>
-                        <option value="Singapore">Singapore</option>
-                        <option value="Slovakia">Slovakia</option>
-                        <option value="Slovenia">Slovenia</option>
-                        <option value="Solomon Islands">Solomon Islands</option>
-                        <option value="Somalia">Somalia</option>
-                        <option value="South Africa">South Africa</option>
-                        <option value="South Korea">South Korea</option>
-                        <option value="South Sudan">South Sudan</option>
-                        <option value="Spain">Spain</option>
-                        <option value="Sri Lanka">Sri Lanka</option>
-                        <option value="Sudan">Sudan</option>
-                        <option value="Suriname">Suriname</option>
-                        <option value="Sweden">Sweden</option>
-                        <option value="Switzerland">Switzerland</option>
-                        <option value="Syria">Syria</option>
-                        <option value="Tajikistan">Tajikistan</option>
-                        <option value="Tanzania">Tanzania</option>
-                        <option value="Thailand">Thailand</option>
-                        <option value="Timor-Leste">Timor-Leste</option>
-                        <option value="Togo">Togo</option>
-                        <option value="Tonga">Tonga</option>
-                        <option value="Trinidad">Trinidad</option>
-                        <option value="Tobago">Tobago</option>
-                        <option value="Tunisia">Tunisia</option>
-                        <option value="Turkey">Turkey</option>
-                        <option value="Turkmenistan">Turkmenistan</option>
-                        <option value="Tuvalu">Tuvalu</option>
-                        <option value="Uganda">Uganda</option>
-                        <option value="Ukraine">Ukraine</option>
-                        <option value="United Arab Emirates">United Arab Emirates</option>
-                        <option value="United Kingdom">United Kingdom</option>
-                        <option value="United States">United States</option>
-                        <option value="Uruguay">Uruguay</option>
-                        <option value="Uzbekistan">Uzbekistan</option>
-                        <option value="Vanuatu">Vanuatu</option>
-                        <option value="Vatican City">Vatican City</option>
-                        <option value="Venezuela">Venezuela</option>
-                        <option value="Vietnam">Vietnam</option>
-                        <option value="Yemen">Yemen</option>
-                        <option value="Zambia">Zambia</option>
-                        <option value="Zimbabwe">Zimbabwe</option>
-                      </datalist>
+                      <datalist id="countries"></datalist>
                       <span id="countryError" class="text-danger"></span> <!-- Error message for Country -->
                     </div>
                   </div>
@@ -1013,38 +831,38 @@
     });
   </script> -->
 
-    <script>
-      // List of nationalities
-      const nationalities = [
-        "Afghan", "Albanian", "Algerian", "American", "Andorran", "Angolan", "Antiguan",
-        "Argentine", "Armenian", "Australian", "Austrian", "Azerbaijani", "Bahaman", "Bahraini",
-        "Bangladeshi", "Barbadian", "Bashkir", "Belarusian", "Belgian", "Belizean", "Beninese",
-        "Bhutanese", "Bolivian", "Bosnian", "Brazilian", "Bruneian", "Bulgarian", "Burkinabe",
-        "Burundian", "Cabo Verdean", "Cambodian", "Cameroonian", "Canadian", "Central African",
-        "Chadian", "Chilean", "Chinese", "Colombian", "Comoran", "Congolese", "Costa Rican",
-        "Croatian", "Cuban", "Cypriot", "Czech", "Danish", "Djiboutian", "Dominican", "Dutch",
-        "East Timorese", "Ecuadorean", "Egyptian", "Emirati", "Equatorial Guinean", "Eritrean",
-        "Estonian", "Eswatini", "Ethiopian", "Fijian", "Filipino", "Finnish", "French", "Gabonese",
-        "Gambian", "Georgian", "German", "Ghanaian", "Greek", "Grenadian", "Guatemalan",
-        "Guinea-Bissauan", "Guinean", "Guyanese", "Haitian", "Honduran", "Hungarian", "Icelander",
-        "Indian", "Indonesian", "Iranian", "Iraqi", "Irish", "Israeli", "Italian", "Ivorian",
-        "Jamaican", "Japanese", "Jordanian", "Kazakhstani", "Kenyan", "Kuwaiti", "Kyrgyz", "Laotian",
-        "Latvian", "Lebanese", "Liberian", "Libyan", "Liechtenstein citizen", "Lithuanian",
-        "Luxembourger", "Malagasy", "Malawian", "Malaysian", "Maldivian", "Malian", "Maltese",
-        "Marshallese", "Mauritanian", "Mauritian", "Mexican", "Micronesian", "Moldovan", "Monacan",
-        "Mongolian", "Montenegrin", "Moroccan", "Mozambican", "Myanmar", "Namibian", "Nauruan",
-        "Nepali", "New Zealander", "Nicaraguan", "Nigerien", "Nigerian", "North Korean",
-        "North Macedonian", "Norwegian", "Omani", "Pakistani", "Palauan", "Panamanian",
-        "Papua New Guinean", "Paraguayan", "Peruvian", "Polish", "Portuguese", "Qatari", "Romanian",
-        "Russian", "Rwandan", "Saint Kitts", "and Nevis", "Saint Lucian", "Salvadoran", "Samoan",
-        "San Marinese", "Sao Tomean", "Saudi Arabian", "Scottish", "Senegalese", "Serbian",
-        "Seychellois", "Sierra Leonean", "Singaporean", "Slovak", "Slovenian", "Solomon Islander",
-        "Somali", "South African", "South Korean", "Spanish", "Sri Lankan", "Sudanese", "Surinamese",
-        "Swedish", "Swiss", "Syrian", "Taiwanese", "Tajik", "Tanzanian", "Thai", "Togolese",
-        "Tongan", "Trinidadian", "Tobagonian", "Tunisian", "Turkish", "Turkmen", "Tuvaluan",
-        "Ugandan", "Ukrainian", "Uruguayan", "Uzbek", "Venezuelan", "Vietnamese", "Welsh", "Yemeni",
-        "Zambian", "Zimbabwean"
-      ];
+  <script>
+    // List of nationalities
+    const nationalities = [
+      "Afghan", "Albanian", "Algerian", "American", "Andorran", "Angolan", "Antiguan",
+      "Argentine", "Armenian", "Australian", "Austrian", "Azerbaijani", "Bahaman", "Bahraini",
+      "Bangladeshi", "Barbadian", "Bashkir", "Belarusian", "Belgian", "Belizean", "Beninese",
+      "Bhutanese", "Bolivian", "Bosnian", "Brazilian", "Bruneian", "Bulgarian", "Burkinabe",
+      "Burundian", "Cabo Verdean", "Cambodian", "Cameroonian", "Canadian", "Central African",
+      "Chadian", "Chilean", "Chinese", "Colombian", "Comoran", "Congolese", "Costa Rican",
+      "Croatian", "Cuban", "Cypriot", "Czech", "Danish", "Djiboutian", "Dominican", "Dutch",
+      "East Timorese", "Ecuadorean", "Egyptian", "Emirati", "Equatorial Guinean", "Eritrean",
+      "Estonian", "Eswatini", "Ethiopian", "Fijian", "Filipino", "Finnish", "French", "Gabonese",
+      "Gambian", "Georgian", "German", "Ghanaian", "Greek", "Grenadian", "Guatemalan",
+      "Guinea-Bissauan", "Guinean", "Guyanese", "Haitian", "Honduran", "Hungarian", "Icelander",
+      "Indian", "Indonesian", "Iranian", "Iraqi", "Irish", "Israeli", "Italian", "Ivorian",
+      "Jamaican", "Japanese", "Jordanian", "Kazakhstani", "Kenyan", "Kuwaiti", "Kyrgyz", "Laotian",
+      "Latvian", "Lebanese", "Liberian", "Libyan", "Liechtenstein citizen", "Lithuanian",
+      "Luxembourger", "Malagasy", "Malawian", "Malaysian", "Maldivian", "Malian", "Maltese",
+      "Marshallese", "Mauritanian", "Mauritian", "Mexican", "Micronesian", "Moldovan", "Monacan",
+      "Mongolian", "Montenegrin", "Moroccan", "Mozambican", "Myanmar", "Namibian", "Nauruan",
+      "Nepali", "New Zealander", "Nicaraguan", "Nigerien", "Nigerian", "North Korean",
+      "North Macedonian", "Norwegian", "Omani", "Pakistani", "Palauan", "Panamanian",
+      "Papua New Guinean", "Paraguayan", "Peruvian", "Polish", "Portuguese", "Qatari", "Romanian",
+      "Russian", "Rwandan", "Saint Kitts", "and Nevis", "Saint Lucian", "Salvadoran", "Samoan",
+      "San Marinese", "Sao Tomean", "Saudi Arabian", "Scottish", "Senegalese", "Serbian",
+      "Seychellois", "Sierra Leonean", "Singaporean", "Slovak", "Slovenian", "Solomon Islander",
+      "Somali", "South African", "South Korean", "Spanish", "Sri Lankan", "Sudanese", "Surinamese",
+      "Swedish", "Swiss", "Syrian", "Taiwanese", "Tajik", "Tanzanian", "Thai", "Togolese",
+      "Tongan", "Trinidadian", "Tobagonian", "Tunisian", "Turkish", "Turkmen", "Tuvaluan",
+      "Ugandan", "Ukrainian", "Uruguayan", "Uzbek", "Venezuelan", "Vietnamese", "Welsh", "Yemeni",
+      "Zambian", "Zimbabwean"
+    ];
 
     // Populate the datalist
     const datalist = document.getElementById("nationality");
@@ -1057,153 +875,208 @@
   </script>
 
   <script>
-    $(document).ready(function () {
-  var maxPax = <?php echo $availablePax; ?>; // Passing maxPax value from PHP to JS
+    const countries = [
+      "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua", "Barbuda", 
+      "Argentina", "Armenia", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", 
+      "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bhutan", 
+      "Bolivia", "Bosnia", "Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria", 
+      "Burkina Faso", "Burundi", "Cabo Verde", "Cambodia", "Cameroon", "Canada", 
+      "Central African Republic", "Chad", "Chile", "China", "Colombia", "Comoros", 
+      "Congo", "Costa Rica", "Croatia", "Cuba", "Cyprus", "Czech Republic", "Denmark", 
+      "Djibouti", "Dominica", "Dominican Republic", "Ecuador", "Egypt", "El Salvador", 
+      "Equatorial Guinea", "Eritrea", "Estonia", "Eswatini", "Ethiopia", "Fiji", 
+      "Finland", "France", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Greece", 
+      "Grenada", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Honduras", 
+      "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel", 
+      "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati", 
+      "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", 
+      "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Madagascar", "Malawi", 
+      "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Mauritania", 
+      "Mauritius", "Mexico", "Micronesia", "Moldova", "Monaco", "Mongolia", 
+      "Montenegro", "Morocco", "Mozambique", "Myanmar", "Namibia", "Nauru", "Nepal", 
+      "Netherlands", "New Zealand", "Nicaragua", "Niger", "Nigeria", "North Macedonia", 
+      "Norway", "Oman", "Pakistan", "Palau", "Panama", "Papua New Guinea", "Paraguay", 
+      "Peru", "Philippines", "Poland", "Portugal", "Qatar", "Romania", "Russia", 
+      "Rwanda", "Saint Kitts", "Saint Nevis", "Saint Vincent", "Grenadines", 
+      "Sao Tome", "Principe", "Saudi Arabia", "Senegal", "Serbia", "Seychelles", 
+      "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", 
+      "Somalia", "South Africa", "South Korea", "South Sudan", "Spain", "Sri Lanka", 
+      "Sudan", "Suriname", "Sweden", "Switzerland", "Syria", "Tajikistan", "Tanzania", 
+      "Thailand", "Timor-Leste", "Togo", "Tonga", "Trinidad", "Tobago", "Tunisia", 
+      "Turkey", "Turkmenistan", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", 
+      "United Kingdom", "United States", "Uruguay", "Uzbekistan", "Vanuatu", 
+      "Vatican City", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe"
+    ];
 
-  // Add a new guest form
-  $('#addGuestFormButton').on('click', function () {
-    const guestFormsContainer = $('#guestFormsContainer');
-    const existingForms = $('.guest-form');
-    const currentCount = existingForms.length;
+    const datalist1 = document.getElementById('countries');
+    countries.forEach(country => {
+      const option = document.createElement('option');
+      option.value = country;
+      datalist1.appendChild(option);
+    });
+  </script>
 
-    if (currentCount < maxPax) {
-      // Clone the first form
-      const newForm = existingForms.first().clone();
-      const newIndex = currentCount + 1;
+  <script>
+    $(document).ready(function () 
+    {
+      var maxPax = <?php echo $availablePax; ?>; // Passing maxPax value from PHP to JS
 
-      // Update IDs and Labels in the cloned form
-      newForm.find('h5').text(`Guest Information ${newIndex}`);
-      const collapsible = newForm.find('[data-bs-target]');
-      const collapsibleContent = newForm.find('.collapse');
+      // Add a new guest form
+      $('#addGuestFormButton').on('click', function () 
+      {
+        const guestFormsContainer = $('#guestFormsContainer');
+        const existingForms = $('.guest-form');
+        const currentCount = existingForms.length;
 
-      collapsible.attr('data-bs-target', `#cardBodyContent${newIndex}`);
-      collapsibleContent.attr('id', `cardBodyContent${newIndex}`);
+        if (currentCount < maxPax) {
+          // Clone the first form
+          const newForm = existingForms.first().clone();
+          const newIndex = currentCount + 1;
 
-      // Reset form values
-      newForm.find('input').val(''); // Clear input values
-      newForm.find('.error-message').text(''); // Clear error messages
+          // Update IDs and Labels in the cloned form
+          newForm.find('h5').text(`Guest Information ${newIndex}`);
+          const collapsible = newForm.find('[data-bs-target]');
+          const collapsibleContent = newForm.find('.collapse');
 
-      // Dynamically update span IDs and reset their content
-      newForm.find('span[id]').each(function () {
-        const baseId = $(this).attr('id').replace(/\d+$/, ''); // Remove existing numeric suffix
-        $(this).attr('id', `${baseId}${newIndex}`).text(''); // Add new index and clear content
+          collapsible.attr('data-bs-target', `#cardBodyContent${newIndex}`);
+          collapsibleContent.attr('id', `cardBodyContent${newIndex}`);
+
+          // Reset form values
+          newForm.find('input').val(''); // Clear input values
+          newForm.find('.error-message').text(''); // Clear error messages
+
+          // Dynamically update span IDs and reset their content
+          newForm.find('span[id]').each(function () {
+            const baseId = $(this).attr('id').replace(/\d+$/, ''); // Remove existing numeric suffix
+            $(this).attr('id', `${baseId}${newIndex}`).text(''); // Add new index and clear content
+          });
+
+          // Ensure the delete button is present only in the cloned forms
+          const cardHeader = newForm.find('.card-header');
+          let deleteButton = cardHeader.find('.deleteGuestFormButton');
+
+          if (deleteButton.length === 0) {
+            deleteButton = $('<button>', {
+              class: 'btn btn-sm btn-danger deleteGuestFormButton ms-2',
+              type: 'button',
+              text: 'Delete',
+            });
+            cardHeader.append(deleteButton);
+          }
+
+          // Append the new form to the container
+          guestFormsContainer.append(newForm);
+          renumberForms(); // Renumber the remaining forms
+        } else {
+          alert(`You can only add up to ${maxPax} guest forms.`);
+        }
       });
 
-      // Ensure the delete button is present only in the cloned forms
-      const cardHeader = newForm.find('.card-header');
-      let deleteButton = cardHeader.find('.deleteGuestFormButton');
-
-      if (deleteButton.length === 0) {
-        deleteButton = $('<button>', {
-          class: 'btn btn-sm btn-danger deleteGuestFormButton ms-2',
-          type: 'button',
-          text: 'Delete',
+      // Delete a guest form
+      $(document).on('click', '.deleteGuestFormButton', function () 
+      {
+        $(this).closest('.guest-form').slideUp(function () {
+          $(this).remove(); // Remove the form
+          renumberForms(); // Renumber the remaining forms
         });
-        cardHeader.append(deleteButton);
-      }
-
-      // Append the new form to the container
-      guestFormsContainer.append(newForm);
-      renumberForms(); // Renumber the remaining forms
-    } else {
-      alert(`You can only add up to ${maxPax} guest forms.`);
-    }
-  });
-
-  // Delete a guest form
-  $(document).on('click', '.deleteGuestFormButton', function () {
-    $(this).closest('.guest-form').slideUp(function () {
-      $(this).remove(); // Remove the form
-      renumberForms(); // Renumber the remaining forms
-    });
-  });
-
-  // Function to renumber forms
-  function renumberForms() {
-    $('.guest-form').each(function (index) {
-      const formIndex = index + 1;
-
-      // Update the main guest form header (Guest Information 1, 2, etc.)
-      $(this).find('.font-weight-bold.mt-1').text(`Guest Information ${formIndex}`);
-
-      // Update section headers dynamically
-      $(this).find('.personal-info-header').text(`Personal Information ${formIndex}`);
-      $(this).find('.contact-info-header').text(`Contact Information ${formIndex}`);
-      $(this).find('.address-info-header').text(`Address Information ${formIndex}`);
-
-      // Update collapsible elements
-      const collapsible = $(this).find('[data-bs-target]');
-      const collapsibleContent = $(this).find('.collapse');
-
-      // Update error IDs dynamically
-      $(this).find('.error-message').each(function () {
-        const baseId = $(this).attr('id').replace(/\d+$/, ''); // Strip existing index
-        $(this).attr('id', `${baseId}${formIndex}`); // Append updated index
       });
 
-      // Update span IDs dynamically
-      $(this).find('span[id]').each(function () {
-        const baseId = $(this).attr('id').replace(/\d+$/, ''); // Remove existing numeric suffix
-        $(this).attr('id', `${baseId}${formIndex}`).text(''); // Clear and append updated index
-      });
+      // Function to renumber forms
+      function renumberForms() 
+      {
+        $('.guest-form').each(function (index) 
+        {
+          const formIndex = index + 1;
 
-      collapsible.attr('data-bs-target', `#cardBodyContent${formIndex}`);
-      collapsibleContent.attr('id', `cardBodyContent${formIndex}`);
-    });
-  }
+          // Update the main guest form header (Guest Information 1, 2, etc.)
+          $(this).find('.font-weight-bold.mt-1').text(`Guest Information ${formIndex}`);
 
-  // Event listener for birthdate field
-  $(document).on('change', 'input[name^="birthdate"]', function () {
-    const birthdate = $(this).val();
+          // Update section headers dynamically
+          $(this).find('.personal-info-header').text(`Personal Information ${formIndex}`);
+          $(this).find('.contact-info-header').text(`Contact Information ${formIndex}`);
+          $(this).find('.address-info-header').text(`Address Information ${formIndex}`);
 
-    // Make sure the birthdate is in a valid format (YYYY-MM-DD)
-    if (isValidDate(birthdate)) {
-      const age = calculateAge(birthdate); // Calculate age
+          // Update collapsible elements
+          const collapsible = $(this).find('[data-bs-target]');
+          const collapsibleContent = $(this).find('.collapse');
 
-      // Update the age field and handle infant text
-      const parentCard = $(this).closest('.card-body');
-      parentCard.find('input[name^="age"]').val(age > 0 ? age : 0);
+          // Update error IDs dynamically
+          $(this).find('.error-message').each(function () {
+            const baseId = $(this).attr('id').replace(/\d+$/, ''); // Strip existing index
+            $(this).attr('id', `${baseId}${formIndex}`); // Append updated index
+          });
 
-      const infantSpan = parentCard.find('span[id^="infant"]');
-      if (age === 0) {
-        infantSpan.text('Infant'); // Display "Infant" for age 0
-      } else {
-        infantSpan.text(''); // Clear if not an infant
+          // Update span IDs dynamically
+          $(this).find('span[id]').each(function () {
+            const baseId = $(this).attr('id').replace(/\d+$/, ''); // Remove existing numeric suffix
+            $(this).attr('id', `${baseId}${formIndex}`).text(''); // Clear and append updated index
+          });
+
+          collapsible.attr('data-bs-target', `#cardBodyContent${formIndex}`);
+          collapsibleContent.attr('id', `cardBodyContent${formIndex}`);
+        });
       }
 
-    } else {
-      // Clear invalid fields
-      $(this).closest('.card-body').find('input[name^="age"]').val('');
-      $(this).closest('.card-body').find('span[id^="infant"]').text('');
-    }
-  });
+      // Event listener for birthdate field
+      $(document).on('change', 'input[name^="birthdate"]', function () 
+      {
+        const birthdate = $(this).val();
 
-  // Function to calculate age from birthdate
-  function calculateAge(birthdate) {
-    const birthDateObj = new Date(birthdate); // Convert birthdate string into Date object
-    const today = new Date();
-    let age = today.getFullYear() - birthDateObj.getFullYear();
+        // Make sure the birthdate is in a valid format (YYYY-MM-DD)
+        if (isValidDate(birthdate)) 
+        {
+          const age = calculateAge(birthdate); // Calculate age
 
-    // Adjust if the birthday hasn't occurred yet this year
-    const monthDiff = today.getMonth() - birthDateObj.getMonth();
-    const dayDiff = today.getDate() - birthDateObj.getDate();
-    if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
-      age--;
-    }
+          // Update the age field and handle infant text
+          const parentCard = $(this).closest('.card-body');
+          parentCard.find('input[name^="age"]').val(age > 0 ? age : 0);
 
-    return age < 1 ? 0 : age; // Return 0 if less than 1 year old
-  }
+          const infantSpan = parentCard.find('span[id^="infant"]');
+          if (age === 0) 
+          {
+            infantSpan.text('Infant'); // Display "Infant" for age 0
+          } 
+          else 
+          {
+            infantSpan.text(''); // Clear if not an infant
+          }
 
-  // Function to check if date is valid
-  function isValidDate(dateString) {
-    const regex = /^\d{4}-\d{2}-\d{2}$/; // Check format YYYY-MM-DD
-    if (!regex.test(dateString)) return false;
+        } 
+        else 
+        {
+          // Clear invalid fields
+          $(this).closest('.card-body').find('input[name^="age"]').val('');
+          $(this).closest('.card-body').find('span[id^="infant"]').text('');
+        }
+      });
 
-    const dateObj = new Date(dateString);
-    return !isNaN(dateObj.getTime()); // Check if date is valid
-  }
-});
+      // Function to calculate age from birthdate
+      function calculateAge(birthdate) 
+      {
+        const birthDateObj = new Date(birthdate); // Convert birthdate string into Date object
+        const today = new Date();
+        let age = today.getFullYear() - birthDateObj.getFullYear();
 
+        // Adjust if the birthday hasn't occurred yet this year
+        const monthDiff = today.getMonth() - birthDateObj.getMonth();
+        const dayDiff = today.getDate() - birthDateObj.getDate();
+        if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+          age--;
+        }
+
+        return age < 1 ? 0 : age; // Return 0 if less than 1 year old
+      }
+
+      // Function to check if date is valid
+      function isValidDate(dateString) 
+      {
+        const regex = /^\d{4}-\d{2}-\d{2}$/; // Check format YYYY-MM-DD
+        if (!regex.test(dateString)) return false;
+
+        const dateObj = new Date(dateString);
+        return !isNaN(dateObj.getTime()); // Check if date is valid
+      }
+    });
 
   </script>
 
