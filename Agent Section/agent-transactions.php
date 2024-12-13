@@ -274,27 +274,24 @@ include '../Agent Section/includes/breadcrumbs.php';
                     }
 
                     echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($transactNo) . "'>
-                            <td>{$transactNo}</td>
-                            <td>{$row['CONTACT NAME']}</td>
-                            <td> 
-                              <div class='d-flex flex-column'>
-                                <span><strong>Email: </strong>" . $row['CONTACT EMAIL'] ." </span>
-                                <span><strong>Contact Number: </strong> " . $row['CONTACT PHONE'] ."</span>
-                              </div>
-                            </td>
-  
-                            <td>{$row['PACKAGE']}</td>
-                            <td>{$row['TRANSACTION DATE']}</td>
-                            <td>{$row['FLIGHT DATE']}</td>
-                            <td style='text-align: center; font-weight: bold;'>
-                                {$row['TOTAL PAX']}
-                            </td>
-                            <td>
-                            <span class='badge p-2 rounded-pill {$statusClass} '>
-                                {$status}
-                            </span>
-                          </td>
-                    </tr>";
+                        <td>{$transactNo}</td>
+                        <td>{$row['CONTACT NAME']}</td>
+                        <td>
+                          <div class='d-flex flex-column'>
+                            <span><strong>Email: </strong>" . $row['CONTACT EMAIL'] ."</span>
+                            <span><strong>Contact Number: </strong>" . $row['CONTACT PHONE'] ."</span>
+                          </div>
+                        </td>
+                        <td>{$row['PACKAGE']}</td>
+                        <td>{$row['TRANSACTION DATE']}</td>
+                        <td>{$row['FLIGHT DATE']}</td>
+                        <td style='text-align: center; font-weight: bold;'>{$row['TOTAL PAX']}</td>
+                        <td>
+                          <span class='badge p-2 rounded-pill {$statusClass}'>
+                            {$status}
+                          </span>
+                        </td>
+                      </tr>";
                   }
                 } 
                 else 
@@ -719,23 +716,32 @@ $(document).ready(function () {
 
 
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-       document.querySelectorAll("tr[data-url]").forEach(function(row) {
-           row.addEventListener("click", function() {
-               window.location.href = row.getAttribute("data-url");
-           });
-       });
-   });
+  document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll("tr[data-url]").forEach(function(row) {
+        row.addEventListener("click", function() {
+            const transactionNumber = row.getAttribute("data-url").split('=')[1]; // Extract transaction number from the URL
 
-  // Add event listener to each row for redirection
-  const rows = document.querySelectorAll("tr[data-url]");
-  
-  rows.forEach(row => {
-      row.addEventListener("click", function() {
-          const url = row.getAttribute("data-url");
-          window.location.href = url; // Redirect to the specified URL
-      });
-  });
+            console.log("Transaction Number: ", transactionNumber); // Debugging line
+
+            // Use AJAX to send the transaction number to the server
+            $.ajax({
+                url: '../Agent Section/functions/fetchTransactNo.php', // The PHP file to handle the session setting
+                type: 'POST',
+                data: { transaction_number: transactionNumber },
+                success: function(response) {
+                    console.log("Response: ", response); // Debugging line
+
+                    // Redirect to the next page after successfully setting the session
+                    window.location.href = row.getAttribute("data-url"); // Use the original URL stored in data-url attribute
+                },
+                error: function(xhr, status, error) {
+                    console.error("AJAX Error: " + status + " " + error); // Enhanced error logging
+                }
+            });
+        });
+    });
+});
+
 </script>
 
 

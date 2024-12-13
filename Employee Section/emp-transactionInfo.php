@@ -156,117 +156,117 @@
 
         <div class="guest-table-wrapper ">
           <table class="table-stripped">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Contact Name</th>
-                <th>Birthdate</th>
-                <th>Age</th>
-                <th>Sex</th>
-                <th>Nationality</th>
-                <th>ContactNo</th>
-                <th>Other Contact</th>
-                <th>Email</th>
-                <th>Address</th>
-                <th>Passport No.</th>
-                <th>Passport Exp.</th>
-                <th>Visa Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <?php
-                $sql1= "SELECT *, DATE_FORMAT(birthdate, '%M %d, %Y') AS birthdate, CONCAT(countryCode, ' ', contactNo) AS contactNo,
-                        CASE 
-                          WHEN countryCode2 IS NULL OR contactNo2 IS NULL THEN 'N/A'
-                          ELSE CONCAT(countryCode2, ' ', contactNo2)
-                        END AS contactNo2, CONCAT(addressLine1, ', ', 
-                        CASE 
-                          WHEN addressLine2 IS NOT NULL AND addressLine2 != '' THEN CONCAT(addressLine2, ', ') 
-                          ELSE '' 
-                        END, city, ', ', state, ', ', zipcode, ', ', country) AS address
-                        FROM guest 
-                        WHERE transactNo = '$transactNum'";
-    
-                $res1 = $conn->query($sql1);
-    
-                if ($res1->num_rows > 0) 
-                {
-                  while ($row = $res1->fetch_assoc()) 
-                  {
-                    // Define the full name variable with suffix
-                    // Define the full name without suffix first
-                    $fullName = $row['fName'] . ' ' . $row['mName'] . ' ' . $row['lName'];
-    
-                    // Append suffix only if it is not "N/A"
-                    if (!empty($row['suffix']) && $row['suffix'] !== 'N/A') 
-                    {
-                      $fullName .= ' ' . $row['suffix']; // Append suffix if it exists and is not "N/A"
-                    }
-                  
-                    // Escape values for safety
-                    $guestId = htmlspecialchars($row['guestId']);
-                    $birthdate = htmlspecialchars($row['birthdate']);
-                    $age = htmlspecialchars($row['age']);
-                    $sex = htmlspecialchars($row['sex']);
-                    $nationality = htmlspecialchars($row['nationality']);
-                    $contactNo = htmlspecialchars($row['contactNo']);
-                    $contactNo2 = htmlspecialchars($row['contactNo2']);
-                    $emailAdd = htmlspecialchars($row['emailAdd']);
-                    $address = htmlspecialchars($row['address']);
-                    $passportNo = htmlspecialchars($row['passportNo']);
-                    $passportExp = htmlspecialchars($row['passportExp']);
-    
-                    echo "<tr'>
-                            <td>{$guestId}</td>
-                            <td>{$fullName}</td>
-                            <td>{$birthdate}</td>
-                            <td>{$age}</td>
-                            <td>{$sex}</td>
-                            <td>{$nationality}</td>
-                            <td>{$contactNo}</td>
-                            <td>{$contactNo2}</td>
-                            <td>{$emailAdd}</td>
-                            <td>{$address}</td>
-                            <td>{$passportNo}</td>
-                            <td>{$passportExp}</td>
-                            <td>{$row['visaStatus']}</td>
-                          </tr>";
+          <?php
+          $sql1 = "SELECT *, DATE_FORMAT(birthdate, '%M %d, %Y') AS birthdate, CONCAT(countryCode, ' ', contactNo) AS contactNo,
+                      CASE 
+                        WHEN countryCode2 IS NULL OR contactNo2 IS NULL THEN 'N/A'
+                        ELSE CONCAT(countryCode2, ' ', contactNo2)
+                      END AS contactNo2, CONCAT(addressLine1, ', ', 
+                      CASE 
+                        WHEN addressLine2 IS NOT NULL AND addressLine2 != '' THEN CONCAT(addressLine2, ', ') 
+                        ELSE '' 
+                      END, city, ', ', state, ', ', zipcode, ', ', country) AS address
+                      FROM guest 
+                      WHERE transactNo = '$transactNum'";
+
+          $res1 = $conn->query($sql1);
+
+          if ($res1->num_rows > 0) {
+              // Only display the table header if rows exist
+              echo "
+              <thead>
+                  <tr>
+                      <th>ID</th>
+                      <th>Contact Name</th>
+                      <th>Birthdate</th>
+                      <th>Age</th>
+                      <th>Sex</th>
+                      <th>Nationality</th>
+                      <th>Contact No</th>
+                      <th>Other Contact</th>
+                      <th>Email</th>
+                      <th>Address</th>
+                      <th>Passport No.</th>
+                      <th>Passport Exp.</th>
+                      <th>Visa Status</th>
+                  </tr>
+              </thead>
+              <tbody>";
+              while ($row = $res1->fetch_assoc()) {
+                  $fullName = $row['fName'] . ' ' . $row['mName'] . ' ' . $row['lName'];
+                  if (!empty($row['suffix']) && $row['suffix'] !== 'N/A') {
+                      $fullName .= ' ' . $row['suffix'];
                   }
-                } 
-                else 
-                {
-                  echo "<tr><td colspan='100' style='text-align: center;'>No Guest found</td></tr>";
-                }
-              ?>
-            </tbody>
-          </table>
-        </div>
 
+                  $guestId = htmlspecialchars($row['guestId']);
+                  $birthdate = htmlspecialchars($row['birthdate']);
+                  $age = htmlspecialchars($row['age']);
+                  $sex = htmlspecialchars($row['sex']);
+                  $nationality = htmlspecialchars($row['nationality']);
+                  $contactNo = htmlspecialchars($row['contactNo']);
+                  $contactNo2 = htmlspecialchars($row['contactNo2']);
+                  $emailAdd = htmlspecialchars($row['emailAdd']);
+                  $address = htmlspecialchars($row['address']);
+                  $passportNo = htmlspecialchars($row['passportNo']);
+                  $passportExp = htmlspecialchars($row['passportExp']);
+
+                  echo "
+                  <tr>
+                      <td>{$guestId}</td>
+                      <td>{$fullName}</td>
+                      <td>{$birthdate}</td>
+                      <td>{$age}</td>
+                      <td>{$sex}</td>
+                      <td>{$nationality}</td>
+                      <td>{$contactNo}</td>
+                      <td>{$contactNo2}</td>
+                      <td>{$emailAdd}</td>
+                      <td>{$address}</td>
+                      <td>{$passportNo}</td>
+                      <td>{$passportExp}</td>
+                      <td>{$row['visaStatus']}</td>
+                  </tr>";
+              }
+              echo "</tbody>";
+          } else {
+              // Hide the table header and display a message
+              echo "
+              <thead style='display: none;'></thead>
+              <tbody>
+                  <tr style='display: none;'></tr> <!-- Ensures no empty table rows -->
+              </tbody>
+              <div class='no-requests-container'>
+                  <span>No Guest Found</span>
+              </div>";
+          }
+          ?>
+        </table>
       </div>
-    </div>
 
-    <div class="nav-pills-wrapper">
-      <ul class="nav nav-pills " id="pills-tab" role="tablist">
-        <li class="nav-item" role="presentation">
-          <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Request History</button>
-        </li>
-        <li class="nav-item" role="presentation">
-          <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Payment History</button>
-        </li>
-        <!-- <li class="nav-item" role="presentation">
-          <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Contact</button>
-        </li> -->
-        <!-- <li class="nav-item" role="presentation">
-          <button class="nav-link" id="pills-disabled-tab" data-bs-toggle="pill" data-bs-target="#pills-disabled" type="button" role="tab" aria-controls="pills-disabled" aria-selected="false" disabled>Disabled</button>
-        </li> -->
-      </ul>
     </div>
+  </div>
 
+  <div class="nav-pills-wrapper">
+    <ul class="nav nav-pills " id="pills-tab" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Request History</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Payment History</button>
+      </li>
+      <!-- <li class="nav-item" role="presentation">
+        <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Contact</button>
+      </li> -->
+      <!-- <li class="nav-item" role="presentation">
+        <button class="nav-link" id="pills-disabled-tab" data-bs-toggle="pill" data-bs-target="#pills-disabled" type="button" role="tab" aria-controls="pills-disabled" aria-selected="false" disabled>Disabled</button>
+      </li> -->
+    </ul>
+  </div>
 
-    <div class="tab-content" id="pills-tabContent">
-      <?php include '../Employee Section/emp-transactionRequestHistory.php' ?>
-      <?php include '../Employee Section/emp-transactionPaymentHistory.php' ?>
-    </div>
+  <div class="tab-content" id="pills-tabContent">
+    <?php include '../Employee Section/emp-transactionRequestHistory.php' ?>
+    <?php include '../Employee Section/emp-transactionPaymentHistory.php' ?>
+  </div>
  
   </div>
 </div>
