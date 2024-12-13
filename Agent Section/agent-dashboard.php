@@ -1204,7 +1204,7 @@ session_start();
                                         (SELECT transactNo, SUM(requestCost) AS totalRequestCost FROM request
                                           WHERE requestStatus = 'Confirmed' GROUP BY transactNo) req ON b.transactNo = req.transactNo
                                       WHERE 
-                                        b.status = 'Confirmed' and b.agentCode = '$agentCode' and f.flightDepartureDate >= CURDATE()";
+                                        b.status = 'Confirmed' and b.agentCode = '$agentCode'";
 
                             $result = $conn->query($query); // Execute the query
 
@@ -1267,7 +1267,7 @@ session_start();
                           <!-- <th rowspan="2">TEAM OP</th> -->
                           <th rowspan="2">ORIGIN</th>
                           <th colspan="2">FLIGHT DATE</th> <!-- Flight Date columns -->
-                          <th rowspan="2">FLIGHT SEAT</th>
+                          <!-- <th rowspan="2">FLIGHT SEAT</th> -->
                           <th rowspan="2">AVAILABLE SEATS</th>
                           <th rowspan="2">ADDITIONAL SEATS</th>
                           <!-- <th rowspan="2">AIR + LAND</th>
@@ -1348,7 +1348,7 @@ session_start();
                                 echo '<td>' . $row['origin'] . '</td>';
                                 echo '<td>' . $row['Start'] . '</td>';
                                 echo '<td>' . $row['End'] . '</td>';
-                                echo '<td class="fw-bold">' . $row['FlightSeat'] . '</td>';
+                                // echo '<td class="fw-bold">' . $row['FlightSeat'] . '</td>';
                                 echo '<td class="fw-bold">' . $row['AvailSeats'] . '</td>';
                                 echo '<td class="fw-bolder">' . $row['AdditionalSeats'] . '</td>';
                                 // echo '<td class="fw-bolder">' . $row['Air+Land'] . '</td>';
