@@ -811,7 +811,7 @@
                     <tbody>
                       <?php
                         $query1 = "SELECT b.*, f.flightDepartureDate AS Start, p.packageName,
-                              f.returnDepartureDate AS End, CONCAT(a.lName, ', ', a.fName, 
+                                        f.returnDepartureDate AS End, CONCAT(a.lName, ', ', a.fName, 
                                         IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1)), '')) AS agentName
                                     FROM booking b 
                                     JOIN agent a ON b.agentId = a.agentId
