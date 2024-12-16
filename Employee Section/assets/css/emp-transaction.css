@@ -224,7 +224,7 @@ span {
 /* Table Row Styling */
 .table-wrapper tbody tr {
   border-bottom: 1px solid #dee2e6;
-  padding: 25px 10px; /* Increased padding for uniformity */
+  padding: 10px 10px; /* Increased padding for uniformity */
 }
 
 .table-wrapper tbody tr:last-child {
@@ -232,7 +232,7 @@ span {
 }
 
 .table-wrapper td {
-  padding: 25px 10px; /* Increased padding for uniformity */
+  padding: 10px 10px; /* Increased padding for uniformity */
   color: #333;
   vertical-align: middle;
   font-size: .9rem;
@@ -258,25 +258,6 @@ th:nth-child(9), td:nth-child(9) { width: 8%; }     /* Status */
 
 
 
-
-/* Ensure all columns have equal width
-.table-wrapper th, .table-wrapper td {
- width: 10%; /* Ensure all columns share equal space 
-} */
-
-/* Responsive table: make the table scrollable on small screens */
-/* @media (max-width: 768px) {
- .table-wrapper {
-   height: auto;
- }
- .table-wrapper table {
-   width: 100%;
-   display: block;
-   overflow-x: auto; 
- }
- .table-wrapper td, .table-wrapper th {
-   padding: 8px 12px;
-} */
 
 
 

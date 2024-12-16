@@ -12,7 +12,7 @@
 
 <ul class="nav flex-column">
     <li class="nav-item">
-        <a class="nav-link page-button" href="../Employee Section/emp-dashboard.php" data-page-name="Dashboard">
+        <a class="nav-link page-button" href="../SuperAdmin/admin-dashboard.php" data-page-name="Dashboard">
             <div class="icon"><i class="fa-solid fa-house"></i></div> <!-- Home Icon -->
             <span class="label">Dashboard</span>
         </a> 
