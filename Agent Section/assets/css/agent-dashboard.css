@@ -336,24 +336,28 @@ body {
   justify-content: start;
 }
 
-/* For Tabs */
+/* Active Tab Styling */
 .nav-pills .nav-link.active {
   background-color: #1F75FE !important; /* Active tab background color */
-  border-color: #1F75FE;
+  border-color: #1F75FE; /* Border color for active tab */
+  color: white; /* Active tab text color */
 }
 
-/* Change text color of non-active tabs to dark */
+/* Non-active Tab Styling */
 .nav-pills .nav-link {
   color: rgb(0, 0, 0); /* Non-active tab text color */
   font-weight: 600;
   margin-right: 20px; /* Gap between each tab */
+  background-color: transparent; /* Transparent background for non-active tabs */
+  border: 1px solid #ccc; /* Light border for non-active tabs */
+  border-radius: 15px;
 }
 
-/* Ensure non-active tabs have no background color change */
+/* Hover Effect for Non-active Tabs */
 .nav-pills .nav-link:not(.active):hover {
   background-color: #f1f1f1; /* Hover effect for non-active tabs */
+  border-color: #aaa; /* Border color on hover for non-active tabs */
 }
-
 
 
 
@@ -997,16 +1001,6 @@ border-bottom-right-radius: 10px;
      padding: 6px 8px; /* Reduced padding */
  }
 }
-
-
-
-
-
-
-
-
-
-
 
 
 /* Optional: Add some responsiveness */
