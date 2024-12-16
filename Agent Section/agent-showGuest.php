@@ -1,4 +1,13 @@
-<?php session_start(); ?>
+<?php 
+
+session_start(); 
+
+require "../conn.php";
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,8 +16,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard</title>
 
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <?php include '../Agent Section/includes/head.php'; ?>
   <link rel="stylesheet" href="../Agent Section/assets/css/agent-showguest.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="../Agent Section/assets/css/navbar-sidebar.css?v=<?php echo time(); ?>">
 </head>
@@ -17,28 +25,117 @@
   <?php include '../Agent Section/includes/sidebar.php'; ?>
 
   <div class="main-content" id="mainContent">
-    <?php 
-      include '../Agent Section/includes/navbar.php'; 
+  <?php  
+    $accountId = $_SESSION['agent_accountId'];
+    $agentId = $_SESSION['agent_agentId'];
+    $agentCode = $_SESSION['agent_agentCode'];
+    $agentRole = $_SESSION['agent_agentRole'];
+    $agentType = $_SESSION['agent_agentType'];
+    $fName =  $_SESSION['agent_fName'] ?? '';
+    $lName = $_SESSION['agent_lName'] ?? '';
+    $mName = $_SESSION['agent_mName'] ?? '';
+    $branchId = $_SESSION['agent_branchId'] ?? '';
+    $email = $_SESSION['email'] ?? '';
+    $password = $_SESSION['password'] ?? '';
 
-      // // Check if 'transaction_number' exists in the session
+    $sql1 = "Select * from branch where branchId= '$branchId'";
+    $result1 = $conn->query($sql1);
+
+    // Check if a result is returned
+    if ($result1->num_rows > 0) {
+        // Fetch the branchName
+        $row = $result1->fetch_assoc();
+        $branchName = $row['branchName'];
+    } else {
+        $branchName = "No Branch";
+    }
+
+    // Format the full name
+    $fullName = htmlspecialchars($lName . ', ' . $fName . ($mName ? ' ' . substr($mName, 0, 1) . '.' : ''));
+
+    // Optional: hide password by default
+    $maskedPassword = '••••••••••';
+    ?>
+
+    <?php
+    date_default_timezone_set('Asia/Taipei');
+    $current_date = date('D, F d, Y');
+
+    ?>
+
+    <?php 
       if (isset($_SESSION['transaction_number'])) 
       {
         $transactionNumber = $_SESSION['transaction_number'];
       } 
-      // else 
-      // {
-      //   echo "No transaction number found in the session.<br>";
-      // }
-
-      // Check if 'id' is passed in the URL
+     
       if (isset($_GET['id'])) 
       {
        $transactionNumber = htmlspecialchars($_GET['id']);
-       
       } 
-      
-      ?>
-    
+    ?>
+
+    <header>      
+      <nav class="navbar navbar-expand-lg justify-content-between sticky-top">
+        <div class="container-fluid d-flex justify-content-between">
+            <div class="nav-start-container d-flex flex-row">
+              <button class="back-button" onclick="window.location.href='../Agent Section/agent-transactions.php';">
+                  <i class="fas fa-arrow-left"></i>
+              </button>
+
+               <h6>Transaction: <span><?php echo $transactionNumber; ?> </span></h6>
+            </div>
+
+              <div class="nav-end-container d-flex flex-row align">
+
+              <div class="date-time-container d-flex flex-row align-items-center">
+                  <h6><?php echo $current_date; ?></h6>
+              </div>
+
+              <div class="vertical-line-navbar"></div> <!-- Vertical Line -->
+
+              <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                  <li class="nav-item dropdown d-flex align-items-center">
+
+                      <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          <div class="profile-container ms-2 me-3">
+                              <h6 class="mb-1"><?php echo $fullName; ?></h6>
+                              <span class="m-0">Branch: <?php echo $branchName; ?></span>
+                              <span class="m-0">Agent ID: <?php echo $agentId; ?></span>
+                          </div>
+                          <img src="../assets/images/circle.png" alt="Profile" class="profile-image me-2" width="40px" height="40px">
+                      </a>
+
+                      <ul class="dropdown-menu dropdown-menu-end mt-3" aria-labelledby="navbarDropdown">
+                        <li>
+                          <a class="dropdown-item" href="#" style="font-size: 14px;" data-bs-toggle="modal" data-bs-target="#viewPasswordModal">
+                            <i class="fas fa-user me-2"></i> View Password
+                          </a>
+                        </li>
+
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal" style="font-size: 14px;">
+                                <i class="fas fa-sign-out-alt me-2"></i> Logout
+                            </a>
+                        </li>
+                      </ul>
+
+                    </li>
+
+                    
+                </ul>
+              </div>
+            </div>
+          </div>
+      </nav>
+    </header>
+
+    <?php include '../Agent Section/includes/logoutViewPassModal.php'; ?>
+
 
     <?php if(isset($_SESSION['status'])): ?>
       <div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -113,64 +210,61 @@
                 $statusClass = 'bg-secondary text-white'; // Gray background, white text
                 break;
           }
-          ?>
+    ?>
 
-    <button type="button" class="btn btn-secondary" onclick="window.location.href='agent-transactions.php'">Back</button>
+
      <div class="content-wrapper">
-       <div class="header">
-         <div class="transaction-info">
-           <div class="row g-3 mb-1">
-              <!-- <h5 class="fw-bold">Transaction Information: </h5> -->
-              <div class="col-md-5 mb-2 d-flex flex-column gap-1">
-                 <p class=""><strong>Transaction No:</strong> <?php echo htmlspecialchars($transactNum); ?></p>
-                 <p class=""><strong>Total Pax:</strong> <?php echo htmlspecialchars($pax); ?></p>
-                 <p class=""><strong>Package:</strong> <?php echo htmlspecialchars($packageName); ?></p>
-                 <p class=""><strong>Flight Date:</strong> <?php echo htmlspecialchars($flightDate); ?></p>
-                 <p class=""><strong>Status:</strong> <span class="badge rounded-pill <?php echo $statusClass; ?>"> 
-                  <?php echo htmlspecialchars($status); ?> </span> </p>
+        <div class="header">
+
+          <div class="transaction-info">
+              <div class="row g-3">
+                <h5 class="fw-bold">Transaction Information: </h5>
+                <div class="col-md-5 mb-2 d-flex flex-column gap-1">
+                    <p class=""><strong>Transaction No:</strong> <?php echo htmlspecialchars($transactNum); ?></p>
+                    <p class=""><strong>Total Pax:</strong> <?php echo htmlspecialchars($pax); ?></p>
+                    <p class=""><strong>Package:</strong> <?php echo htmlspecialchars($packageName); ?></p>
+                    <p class=""><strong>Flight Date:</strong> <?php echo htmlspecialchars($flightDate); ?></p>
+                    <p class=""><strong>Status:</strong> <span class="badge rounded-pill <?php echo $statusClass; ?>"> 
+                    <?php echo htmlspecialchars($status); ?> </span> </p>
+                </div>
+
+                <div class="col-md-5 mb-3 d-flex flex-column gap-1">
+                  <p class=""><strong>Contact Person:</strong> <?php echo htmlspecialchars($fullName); ?></p>
+                  <p class=""><strong>Contact No:</strong> <?php echo htmlspecialchars($contactNo); ?></p>
+                  <p class=""><strong>Email:</strong> <?php echo htmlspecialchars($email); ?></p>
+                  <p class=""><strong>Price: ₱ <?php echo number_format((float)$price, 2); ?></strong> </p>
+                </div>
+
+                <?php
+                }
+
+                } else {
+                  echo "0 results";
+                }
+              ?>
+              </div> 
+
+              <div class="transaction-info-footer d-flex justify-content-end">
+                <button class="btn btn-danger btn-sm mt-2 me-2" data-bs-toggle="modal" data-bs-target="#cancelTransactionModal">
+                    Cancel Transaction
+                </button>
+                <button class="btn btn-primary btn-sm mt-2 me-2" data-bs-toggle="modal" data-bs-target="#paymentModal<?= $transactNum ?>"
+                    data-transact-no="<?= $transactNum ?>" data-account-id="<?= $accountId ?>">Add Payment</button>
+                <button class="btn btn-primary btn-sm mt-2 me-2" data-bs-toggle="modal" data-bs-target="#requestModal" 
+                    data-transaction-id="<?= $transactionNumber ?>">Add Request</button>
               </div>
-
-              <div class="col-md-5 mb-3 d-flex flex-column gap-1">
-                <p class=""><strong>Contact Person:</strong> <?php echo htmlspecialchars($fullName); ?></p>
-                <p class=""><strong>Contact No:</strong> <?php echo htmlspecialchars($contactNo); ?></p>
-                <p class=""><strong>Email:</strong> <?php echo htmlspecialchars($email); ?></p>
-                <p class=""><strong>Price: ₱ <?php echo number_format((float)$price, 2); ?></strong> </p>
-              </div>
-
-             <?php
-             }
-
-             } else {
-               echo "0 results";
-             }
-           ?>
-         </div> 
-
-        <div class="transaction-info-footer d-flex justify-content-end">
-          <button class="btn btn-danger btn-sm mt-2 me-2" data-bs-toggle="modal" data-bs-target="#cancelTransactionModal">
-              Cancel Transaction
-          </button>
-          <button class="btn btn-primary btn-sm mt-2 me-2" data-bs-toggle="modal" data-bs-target="#paymentModal<?= $transactNum ?>"
-              data-transact-no="<?= $transactNum ?>" data-account-id="<?= $accountId ?>">Add Payment</button>
-          <button class="btn btn-primary btn-sm mt-2 me-2" data-bs-toggle="modal" data-bs-target="#requestModal" 
-              data-transaction-id="<?= $transactionNumber ?>">Add Request</button>
         </div>
-       </div>
-      
+        
         <div class="table-wrapper">
 
 
 
 
-       </div>
-      
+        </div>
         
-    </div>
-
-      
+      </div>
 
       <hr style="border: 1px solid #ccc; width: 100%; margin: 5px 0;">
-
 
       <ul class="nav nav-pills" id="pills-tab" role="tablist">
        <li class="nav-item" role="presentation">
@@ -189,18 +283,6 @@
          <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Payment History</button>
        </li>
 
-       <?php
-         // Uncomment if needed
-         // if (is_null($flightId)) {
-       ?>
-       <!-- 
-       <li class="nav-item" role="presentation">
-         <button class="nav-link" id="pills-flight-tab" data-bs-toggle="pill" data-bs-target="#pills-flight" type="button" role="tab" aria-controls="pills-flight" aria-selected="false">Flight Details</button>
-       </li>
-       -->
-       <?php
-         // }
-       ?>
     </ul>
 
     <div class="tab-content" id="pills-tabContent">

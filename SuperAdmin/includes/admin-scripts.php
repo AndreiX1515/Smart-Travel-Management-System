@@ -1,11 +1,11 @@
-<!-- Bootstrap Bundle (includes Popper.js) -->
-<script src="https://unpkg.com/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
 <!-- jQuery Core (required by jQuery UI and DataTables) -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <!-- jQuery UI (depends on jQuery) -->
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+<!-- Bootstrap Bundle (includes Popper.js) -->
+<script src="https://unpkg.com/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <!-- DataTables JS (requires jQuery) -->
 <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>

@@ -211,15 +211,17 @@
 
 <script>
   $(document).ready(function() {
-    var table = $('.table-transaction').DataTable({
-        paging: true,
-        searching: true,
-        ordering: true,
-        info: true,
-        language: {
-            emptyTable: "NO RECORDS AVAILABLE"
-        }
-    });
+      var table = $('.table-transaction').DataTable({
+      paging: true,
+      searching: true,
+      ordering: true,
+      info: true,
+      pageLength: 12, // Set the number of rows per page
+      language: {
+          emptyTable: "No Transaction Records Available"
+      }
+  });
+
 
     // Custom search functionality
     $('#tableSearchInput').on('input', function() {

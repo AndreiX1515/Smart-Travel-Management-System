@@ -1,484 +1,519 @@
 .main-content .header h6 {
- margin: 0; /* Removes default margin */
- font-size: 1rem; /* Adjusts font size */
- font-weight: 400;
- letter-spacing: 0.5px; /* Adds slight spacing between letters */
-}
-
-.main-content .counts-wrapper {
- display: flex;
- flex-direction: row;
- gap: 5px; /* Gap between cards */
- width: 100%;
- height: 15vh;
- margin-bottom: 20px;
-}
-
-.main-content .counts-wrapper .card {
- flex: 1; 
- background-color: #ffffff; 
- display: flex;
- font-size: 1rem;
- font-weight: bold;
- color: #333;
-}
-
-.counts-wrapper .card {
- background-color: #343A40;
-}
-
-.card .header {
-  padding: 10px 10px 10px 10px;
-  color: #4c4f52;
-}
-
-
-.row {
- display: flex;
- flex-direction: row;
- gap: 10px;
-}
-
-.card-content .col-md-5 {
- margin-top: 5px;
- display: flex;
- flex-direction: row;
- align-items: center;
- justify-content: flex-start;
- flex: 1;
- padding: 5px 10px; /* Reduced padding */
- transition: transform 0.2s ease, box-shadow 0.2s ease;
- box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Added box shadow */
- border-radius: 8px; /* Optional: Slight rounding for a softer look */
- background-color: #fff; /* Optional: Ensure the shadow is visible */
-}
-
-.totalpayment{
- height: 105px;
-}
-
-.card-icon {
- font-size: 14px; /* Smaller icon font size */
- margin-right: 10px; /* Reduced margin */
- display: flex;
- align-items: center;
- justify-content: center;
- width: 30px; /* Smaller width */
- height: 30px; /* Smaller height */
- border-radius: 30%;
- color: #ffffff; /* Default icon color */
-}
-
-/* Blue Icon for Total Transactions */
-.icon-blue {
- background-color: #17a2b8; /* Light blue background */
-}
-
-/* Green Icon for Completed Transactions */
-.icon-green {
- background-color: #28a745; /* Green background */
-}
-
-/* Yellow Icon for Pending Transactions */
-.icon-yellow {
- background-color: #ffc107; /* Yellow background */
- color: #333; /* Darker color for contrast */
-}
-
-/* Red Icon for Cancelled Transactions */
-.icon-red {
- background-color: #dc3545; /* Red background */
-}
-
-.icon-gray {
- background-color: gray; /* Gray background */
-}
-
-.side-content {
- display: flex;
- flex-direction: column;
- justify-content: center; /* Center align the text vertically */
-}
-
-.side-content h5 {
- font-size: 20px; /* Reduced font size for the number */
- font-weight: bold;
- margin: 0;
- color: #3a3535;
-}
-
-.side-content p {
- font-size: 10px; /* Smaller font size for description */
- font-weight: bold;
- color: #747b85; /* Lighter gray for the description */
- margin: 0;
-}
-
-
-
-/* Card 4 */
-.card-body-currency {
+  margin: 0; /* Removes default margin */
+  font-size: 1rem; /* Adjusts font size */
+  font-weight: 400;
+  letter-spacing: 0.5px; /* Adds slight spacing between letters */
+ }
+ 
+ .main-content .counts-wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 5px; /* Gap between cards */
   width: 100%;
-  padding: 0px 10px;
+  height: 15vh;
+  margin-bottom: 20px;
  }
  
- /* Currency Cards Container */
- .currency-cards {
+ .main-content .counts-wrapper .card {
+  flex: 1; 
+  background-color: #ffffff; 
   display: flex;
-  flex-direction: row; /* Arrange cards horizontally */
-  gap: 5px; /* Spacing between cards */
-  justify-content: left; /* Align cards to the left */
-  align-items: center; /* Vertically center the cards */
- }
- 
- /* Individual Currency Card */
- .currency-card {
-  width: 140px;
-  height: 10.5vh;
-  padding: 0px; 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  border-radius: 8px; 
-  background-color: white;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); 
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: bold;
-  color: #333; /* Text color */
-  transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth hover effect */
+  color: #333;
  }
  
- /* Flag Icon Wrapper */
- .currency-card .flag-icon-wrapper {
+ 
+ .header-counts {
+   width: 100%;
+   padding: 10px 0px 10px 5px;
+  }
+  
+  
+  .header-counts h6 {
+   margin: 0; /* Removes default margin */
+   text-align: left;
+   color: rgb(255, 255, 255); /* Sets the text color with reduced opacity */
+   font-size: .9rem; /* Adjusts font size */
+   font-weight: bold;
+   letter-spacing: 0.5px; /* Adds slight spacing between letters */
+  }
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ .white-pill {
+   display: inline-block; 
+   padding: 5px 20px 5px 10px;
+   font-size: .7rem;
+   font-weight: bold; 
+   color: rgb(255, 255, 255);
+   background-color: #1F75FE; 
+   border-radius: 0 50px 50px 0; 
+   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+   letter-spacing: 0.5px; 
+   text-align: left; 
+   transition: box-shadow 0.3s ease, transform 0.2s ease; 
+  }
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ .counts-wrapper .card {
+  background-color: #343A40;
+ }
+ 
+ .card .header {
+   padding: 0px 10px 0px 10px;
+   color: #4c4f52;
+ }
+ 
+ 
+ .row {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 10px 5px;
-  /* margin: 10px 5px 10px 5px; Adjusted margins to ensure consistent spacing */
+  flex-direction: row;
+  gap: 10px;
  }
  
- /* Flag Icon Styling */
- .currency-card .flag-icon-wrapper img {
-  width: 25px;
-  height: 25px;
- }
- 
- .flag-icon-wrapper h6{
-   font-size: 12px;
- }
- 
- .currency-text-wrapper h5{
+ .card-content .col-md-5 {
   margin-top: 5px;
-  font-size: 14px;
-  font-weight: bold;
-  white-space: nowrap; /* Prevent word wrapping */
- }
- 
- .pill-button {
-  display: inline-block; /* Makes it behave like a button */
-  padding: 4px 15px; /* Adds padding for better button appearance */
-  font-size: 10px; /* Sets the font size */
-  color: #000; /* Black text color */
-  background-color: #ffffff; /* White background */
-  text-decoration: none; /* Removes underline from the link */
-  border-radius: 30px; /* Gives it a pill shape */
-  text-align: center; /* Centers the text */
-  border: 1px solid #b9adad; /* Light border to match the background */
-  transition: background-color 0.3s ease, transform 0.2s ease, border-color 0.3s ease; /* Smooth transition for hover effects */
- }
- 
- 
- .pill-button:hover {
-  background-color: #f1f1f1; /* Light grey background on hover */
-  border-color: #3b413d; /* Change border color on hover */
- }
- 
- 
- .pill-button:active {
-  transform: translateY(0); /* Resets the transform on click */
-  background-color: #e0e0e0; /* Slightly darker background on click */
- }
- 
- /* Icon Wrapper */
- .icon-wrapper {
-  width: 40px; /* Match the size proportionately */
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: transparent;
-  font-size: 18px; /* Icon size */
-  color: #495057;; /* Icon color */
-  transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth hover effect */
- }
- 
-
-
-.header-wrapper {
- display: flex;
- flex-direction: row;
- gap: 10px;
- width: 100%;
- height: 30vh;
- margin-bottom: 5px;
-}
-
-.navTabs-wrapper {
-  width: 100%;
-  padding: 0px;
-  margin: 20px 0px;
-}
-
-.navTabs-wrapper .nav-pills {
-  margin: 10px 0px;
-}
-
-
-
-
-/* =======================================*/
-/* General Table CSS*/
-
-.table-wrapper {
-  height: 100%;
-  font-size: 14px;
-  color: #000000;
-  text-align: left;
-  display: flex;
-  flex-direction: column;
-}
-
-.table-header {
-  padding: 0px 0px 10px 0px;
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: start;
+  justify-content: flex-start;
+  flex: 1;
+  padding: 5px 10px; /* Reduced padding */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Added box shadow */
+  border-radius: 8px; /* Optional: Slight rounding for a softer look */
+  background-color: #fff; /* Optional: Ensure the shadow is visible */
+ }
+ 
+ .totalpayment{
+  height: 105px;
+ }
+ 
+ .card-icon {
+  font-size: 14px; /* Smaller icon font size */
+  margin-right: 10px; /* Reduced margin */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px; /* Smaller width */
+  height: 30px; /* Smaller height */
+  border-radius: 30%;
+  color: #ffffff; /* Default icon color */
+ }
+ 
+ /* Blue Icon for Total Transactions */
+ .icon-blue {
+  background-color: #17a2b8; /* Light blue background */
+ }
+ 
+ /* Green Icon for Completed Transactions */
+ .icon-green {
+  background-color: #28a745; /* Green background */
+ }
+ 
+ /* Yellow Icon for Pending Transactions */
+ .icon-yellow {
+  background-color: #ffc107; /* Yellow background */
+  color: #333; /* Darker color for contrast */
+ }
+ 
+ /* Red Icon for Cancelled Transactions */
+ .icon-red {
+  background-color: #dc3545; /* Red background */
+ }
+ 
+ .icon-gray {
+  background-color: gray; /* Gray background */
+ }
+ 
+ .side-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center align the text vertically */
+ }
+ 
+ .side-content h5 {
+  font-size: 20px; /* Reduced font size for the number */
   font-weight: bold;
-  color: #000000;
-  flex-shrink: 0;
-}
-
-.table-header h6 {
-  font-size: 16px;
-}
-
-.table-container {
-  padding-right: 10px;
-  width: 100%;
-  flex-grow: 1;
-  overflow-y: auto;
-  overflow-x: auto;
-  display: block;
-}
-
-.table-container .table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 14px;
-  background-color: transparent;
-  white-space: nowrap;
-  table-layout: auto;
-  overflow-x: auto;
-  overflow-y: hidden;
-}
-
-.table thead {
-  background-color: #00defc;
-  text-align: left;
-  position: sticky;
-  top: 0;
-  z-index: 1;
-}
-
-.table thead th {
-  background-color: #747474;
-  color: #ffffff;
-  font-weight: 500;
-  text-align: left;
-  padding: 10px 15px;
-  border-bottom: 2px solid #dee2e6;
-  position: sticky;
-  top: 0;
-  z-index: 1;
-  text-transform: uppercase;
-}
-
-.table tbody td,
-.table tbody th {
-  color: #333;
-  vertical-align: middle;
-  font-size: 0.9rem;
-  padding: 4px 12px;
-  white-space: nowrap;
-  border-bottom: 1px solid #dee2e6;
-}
-
-/* ============================ */
-/* Row Hover Effect Styles */
-/* ============================ */
-.table tbody tr:hover {
-  background-color: #b2ebf2; /* Highlight row on hover */
-  cursor: pointer; /* Show pointer cursor to indicate interactivity */
-}
-
-/* Add Border Top Class */
-.has-border-top {
-  border-top: 3px solid #000000;
-}
-
-
-/* ==========================================*/
-/* Price table CSS */
-
-/* General Styles */
-.price-table-wrapper {
-  width: 33.33%; /* Full width of the parent */
-}
-
-/* Header Styles */
-.price-table thead {
-  background-color: #f8f9fa; /* Light gray header */
-  font-weight: bold; /* Bold header text */
-  text-transform: uppercase; /* Uppercase for header */
-  color: #555; /* Softer header color */
-}
-
-
-/* Column Width Adjustments */
-.price-table thead th:nth-child(1),
-.price-table tbody td:nth-child(1) {
-  width: 5%; /* Transact No */
-}
-
-.price-table thead th:nth-child(2),
-.price-table tbody td:nth-child(2) {
-  width: 20%; /* Agent Name */
-}
-
-.price-table thead th:nth-child(3),
-.price-table tbody td:nth-child(3) {
-  width: 25%; /* Package Name */
-}
-
-.price-table thead th:nth-child(4),
-.price-table tbody td:nth-child(4) {
-  width: 15%; /* Flight Date */
-}
-
-.price-table thead th:nth-child(5),
-.price-table tbody td:nth-child(5) {
-  width: 15%; /* Booking Date */
-}
-
-.price-table thead th:nth-child(6),
-.price-table tbody td:nth-child(6) {
-  width: 10%; /* Total Pax */
-}
-
-.price-table thead th:nth-child(7),
-.price-table tbody td:nth-child(7) {
-  width: 15%; /* Package Price */
-}
-
-.price-table thead th:nth-child(8),
-.price-table tbody td:nth-child(8) {
-  width: 10%; /* Status */
-}
-
-
-
-/* ============================================= */
-/* Request Table */
-/* Wrapper for the Request Table */
-.request-wrapper {
-  width: 50%;
-}
-
-/* Container for the Request Table */
-.request-table-container {
-  width: 100%; 
-  max-height: 280px; 
-  height: auto; 
-  overflow-x: auto; 
-  overflow-y: auto; 
-  box-sizing: border-box; 
-  padding-right: 25px;
-}
-
-/* Main Request Table */
-.request-table {
-  width: 100%; 
-  height: auto; 
-  border-collapse: collapse; 
-  font-family: Arial, sans-serif;
-  font-size: 14px;
-  text-align: left;
-  background-color: transparent; /* Ensure background is clear */
-}
-
-/* Table Header (th) and Body Cells (td) */
-.request-table th,
-.request-table td {
-  padding: 6px 14px; /* Added more padding for better spacing */
-  text-align: left;
-  white-space: nowrap; /* Prevent content from wrapping */
-  overflow: hidden; /* Hide overflowed content */
-  text-overflow: ellipsis; /* Add "..." for overflowing content */
-}
-
-/* Table Header (th) Styles */
-.request-table th {
-  border-bottom: 2px solid #e0e0e0; /* Subtle border to separate the header */
-  background-color: #f8f9fa; /* Light grey background for header */
-  font-size: 10px; /* Slightly larger font size for better readability */
+  margin: 0;
+  color: #3a3535;
+ }
+ 
+ .side-content p {
+  font-size: 10px; /* Smaller font size for description */
   font-weight: bold;
-}
-
-/* Even Row Styles */
-.request-table tr:nth-child(even) {
-  background-color: #f9f9f9; /* Light alternating row color */
-}
-
-/* Table Data (td) Styles */
-.request-table td {
-  color: #495057; /* Neutral text color for better readability */
-}
-
-/* Row Hover Effects */
-.request-table tr:hover {
-  background-color: #e9ecef; /* Highlight row on hover */
-  transition: background-color 0.3s ease-in-out; /* Smooth transition effect */
-}
-
-
-
-
-
-
-
+  color: #747b85; /* Lighter gray for the description */
+  margin: 0;
+ }
+ 
+ 
+ 
+ /* Card 4 */
+ .card-body-currency {
+   width: 100%;
+   padding: 0px 10px;
+  }
+  
+  /* Currency Cards Container */
+  .currency-cards {
+   display: flex;
+   flex-direction: row; /* Arrange cards horizontally */
+   gap: 5px; /* Spacing between cards */
+   justify-content: left; /* Align cards to the left */
+   align-items: center; /* Vertically center the cards */
+  }
+  
+  /* Individual Currency Card */
+  .currency-card {
+   width: 140px;
+   height: 10.5vh;
+   padding: 0px; 
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
+   border-radius: 8px; 
+   background-color: white;
+   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); 
+   font-size: 16px;
+   font-weight: bold;
+   color: #333; /* Text color */
+   transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth hover effect */
+  }
+  
+  /* Flag Icon Wrapper */
+  .currency-card .flag-icon-wrapper {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   padding: 10px 5px;
+   /* margin: 10px 5px 10px 5px; Adjusted margins to ensure consistent spacing */
+  }
+  
+  /* Flag Icon Styling */
+  .currency-card .flag-icon-wrapper img {
+   width: 25px;
+   height: 25px;
+  }
+  
+  .flag-icon-wrapper h6{
+    font-size: 12px;
+  }
+  
+  .currency-text-wrapper h5{
+   margin-top: 5px;
+   font-size: 14px;
+   font-weight: bold;
+   white-space: nowrap; /* Prevent word wrapping */
+  }
+  
+  .pill-button {
+   display: inline-block; /* Makes it behave like a button */
+   padding: 4px 15px; /* Adds padding for better button appearance */
+   font-size: 10px; /* Sets the font size */
+   color: #000; /* Black text color */
+   background-color: #ffffff; /* White background */
+   text-decoration: none; /* Removes underline from the link */
+   border-radius: 30px; /* Gives it a pill shape */
+   text-align: center; /* Centers the text */
+   border: 1px solid #b9adad; /* Light border to match the background */
+   transition: background-color 0.3s ease, transform 0.2s ease, border-color 0.3s ease; /* Smooth transition for hover effects */
+  }
+  
+  
+  .pill-button:hover {
+   background-color: #f1f1f1; /* Light grey background on hover */
+   border-color: #3b413d; /* Change border color on hover */
+  }
+  
+  
+  .pill-button:active {
+   transform: translateY(0); /* Resets the transform on click */
+   background-color: #e0e0e0; /* Slightly darker background on click */
+  }
+  
+  /* Icon Wrapper */
+  .icon-wrapper {
+   width: 40px; /* Match the size proportionately */
+   height: 40px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   background-color: transparent;
+   font-size: 18px; /* Icon size */
+   color: #495057;; /* Icon color */
+   transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth hover effect */
+  }
+  
+ 
+ 
+ .header-wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  width: 100%;
+  height: 30vh;
+  margin-bottom: 5px;
+ }
+ 
+ .navTabs-wrapper {
+   width: 100%;
+   padding: 0px;
+   margin: 20px 0px;
+ }
+ 
+ .navTabs-wrapper .nav-pills {
+   margin: 10px 0px;
+ }
+ 
+ 
+ 
+ 
+ /* =======================================*/
+ /* General Table CSS*/
+ 
+ .table-wrapper {
+   height: 100%;
+   font-size: 14px;
+   color: #000000;
+   text-align: left;
+   display: flex;
+   flex-direction: column;
+ }
+ 
+ .table-header {
+   padding: 0px 0px 10px 0px;
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+   justify-content: start;
+   font-weight: bold;
+   color: #000000;
+   flex-shrink: 0;
+ }
+ 
+ .table-header h6 {
+   font-size: 16px;
+ }
+ 
+ .table-container {
+   padding-right: 10px;
+   width: 100%;
+   flex-grow: 1;
+   overflow-y: auto;
+   overflow-x: auto;
+   display: block;
+ }
+ 
+ .table-container .table {
+   width: 100%;
+   border-collapse: collapse;
+   font-size: 14px;
+   background-color: transparent;
+   white-space: nowrap;
+   table-layout: auto;
+   overflow-x: auto;
+   overflow-y: hidden;
+ }
+ 
+ .table thead {
+   background-color: #00defc;
+   text-align: left;
+   position: sticky;
+   top: 0;
+   z-index: 1;
+ }
+ 
+ .table thead th {
+   background-color: #747474;
+   color: #ffffff;
+   font-weight: 500;
+   text-align: left;
+   padding: 10px 15px;
+   border-bottom: 2px solid #dee2e6;
+   position: sticky;
+   top: 0;
+   z-index: 1;
+   text-transform: uppercase;
+ }
+ 
+ .table tbody td,
+ .table tbody th {
+   color: #333;
+   vertical-align: middle;
+   font-size: 0.9rem;
+   padding: 4px 12px;
+   white-space: nowrap;
+   border-bottom: 1px solid #dee2e6;
+ }
+ 
+ /* ============================ */
+ /* Row Hover Effect Styles */
+ /* ============================ */
+ .table tbody tr:hover {
+   background-color: #b2ebf2; /* Highlight row on hover */
+   cursor: pointer; /* Show pointer cursor to indicate interactivity */
+ }
+ 
+ /* Add Border Top Class */
+ .has-border-top {
+   border-top: 3px solid #000000;
+ }
+ 
+ 
+ /* ==========================================*/
+ /* Price table CSS */
+ 
+ /* General Styles */
+ .price-table-wrapper {
+   width: 33.33%; /* Full width of the parent */
+ }
+ 
+ /* Header Styles */
+ .price-table thead {
+   background-color: #f8f9fa; /* Light gray header */
+   font-weight: bold; /* Bold header text */
+   text-transform: uppercase; /* Uppercase for header */
+   color: #555; /* Softer header color */
+ }
+ 
+ 
+ /* Column Width Adjustments */
+ .price-table thead th:nth-child(1),
+ .price-table tbody td:nth-child(1) {
+   width: 5%; /* Transact No */
+ }
+ 
+ .price-table thead th:nth-child(2),
+ .price-table tbody td:nth-child(2) {
+   width: 20%; /* Agent Name */
+ }
+ 
+ .price-table thead th:nth-child(3),
+ .price-table tbody td:nth-child(3) {
+   width: 25%; /* Package Name */
+ }
+ 
+ .price-table thead th:nth-child(4),
+ .price-table tbody td:nth-child(4) {
+   width: 15%; /* Flight Date */
+ }
+ 
+ .price-table thead th:nth-child(5),
+ .price-table tbody td:nth-child(5) {
+   width: 15%; /* Booking Date */
+ }
+ 
+ .price-table thead th:nth-child(6),
+ .price-table tbody td:nth-child(6) {
+   width: 10%; /* Total Pax */
+ }
+ 
+ .price-table thead th:nth-child(7),
+ .price-table tbody td:nth-child(7) {
+   width: 15%; /* Package Price */
+ }
+ 
+ .price-table thead th:nth-child(8),
+ .price-table tbody td:nth-child(8) {
+   width: 10%; /* Status */
+ }
+ 
+ 
+ 
+ /* ============================================= */
+ /* Request Table */
+ /* Wrapper for the Request Table */
+ .request-wrapper {
+   width: 50%;
+ }
+ 
+ /* Container for the Request Table */
+ .request-table-container {
+   width: 100%; 
+   max-height: 280px; 
+   height: auto; 
+   overflow-x: auto; 
+   overflow-y: auto; 
+   box-sizing: border-box; 
+   padding-right: 25px;
+ }
+ 
+ /* Main Request Table */
+ .request-table {
+   width: 100%; 
+   height: auto; 
+   border-collapse: collapse; 
+   font-family: Arial, sans-serif;
+   font-size: 14px;
+   text-align: left;
+   background-color: transparent; /* Ensure background is clear */
+ }
+ 
+ /* Table Header (th) and Body Cells (td) */
+ .request-table th,
+ .request-table td {
+   padding: 6px 14px; /* Added more padding for better spacing */
+   text-align: left;
+   white-space: nowrap; /* Prevent content from wrapping */
+   overflow: hidden; /* Hide overflowed content */
+   text-overflow: ellipsis; /* Add "..." for overflowing content */
+ }
+ 
+ /* Table Header (th) Styles */
+ .request-table th {
+   border-bottom: 2px solid #e0e0e0; /* Subtle border to separate the header */
+   background-color: #f8f9fa; /* Light grey background for header */
+   font-size: 10px; /* Slightly larger font size for better readability */
+   font-weight: bold;
+ }
+ 
+ /* Even Row Styles */
+ .request-table tr:nth-child(even) {
+   background-color: #f9f9f9; /* Light alternating row color */
+ }
+ 
+ /* Table Data (td) Styles */
+ .request-table td {
+   color: #495057; /* Neutral text color for better readability */
+ }
+ 
+ /* Row Hover Effects */
+ .request-table tr:hover {
+   background-color: #e9ecef; /* Highlight row on hover */
+   transition: background-color 0.3s ease-in-out; /* Smooth transition effect */
+ }
+ 
+ 
+ 
+ 
+ 
+ 
+ 
 /* ======================================================== */
-/* Payment Card */
+/* Payment Table Styles */
 
 .payment-table-container {
-  overflow-x: auto; 
-  width: 100%; 
-  max-height: 280px; 
-  height: auto;
-  padding-right: 25px;
+  overflow-x: auto;
+  overflow-y: auto; /* Ensure vertical scrolling for long content */
+  width: 100%;
+  max-height: 240px;
+  padding-right: 10px;
 }
 
 .payment-wrapper {
   width: 50%;
   height: auto;
-}
-
-.payment-table-container {
-  overflow-x: auto; 
-  width: 100%; 
-  max-height: 280px;
-  height: auto; 
 }
 
 .payment-table {
@@ -488,43 +523,41 @@
   background-color: transparent;
   white-space: nowrap;
   table-layout: auto;
-  overflow-x: auto;
-  overflow-y: hidden;
 }
 
 /* ============================ */
 /* Table Header Styles */
 /* ============================ */
 .payment-table th {
-  padding: 6px 14px; /* Improved padding for top and bottom */
-  border-bottom: 1px solid #e0e0e0; 
+  padding: 6px 14px; /* Improved padding */
+  border-bottom: 1px solid #e0e0e0;
   background-color: #f8f9fa;
   font-size: 10px;
   font-weight: bold;
   text-align: left;
-  white-space: nowrap;
   position: sticky;
-  top: 0; 
-  z-index: 1; 
+  top: 0; /* Sticky header */
+  z-index: 2; /* Ensure header stays above body */
+  white-space: nowrap;
 }
 
 /* ============================ */
 /* Even Row Styles */
 /* ============================ */
 .payment-table tr:nth-child(even) {
-  background-color: #f9f9f9; 
+  background-color: #f9f9f9;
 }
 
 /* ============================ */
 /* Table Body Styles */
 /* ============================ */
 .payment-table td {
-  color: #495057; 
-  padding: 8px 14px; /* Improved padding for top and bottom */
+  color: #495057;
+  padding: 8px 14px; /* Improved padding */
   text-align: left;
-  white-space: nowrap; 
-  overflow: hidden; 
-  text-overflow: ellipsis; 
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* ============================ */
@@ -535,335 +568,319 @@
   transition: background-color 0.3s ease-in-out; /* Smooth transition effect */
 }
 
-
-
-
-
-
-
+ 
+ 
+ 
+ 
+ 
+ 
+ 
 /* ============================
    Confirm Container
-   ============================ */
-   .confirm-container {
-    display: flex;
-    flex-direction: row;
-    gap: 8px;
-    position: relative;
-    height: 25vh;
-    margin-top: 5px;
-    box-sizing: border-box;
-  }
-  
-  .confirm-container .one {
-    width: 100%;
-    height: 25vh;
-  }
-  
-  .confirm-container .one .header {
-    width: 100%;
-    padding: 10px 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 50px;
-    font-weight: bold;
-  }
-  
-  /* ============================
-     Heading Styles
-     ============================ */
-  .confirm-container h6 {
-    font-weight: bold;
-  }
-  
-  /* ============================
-     Confirm Table Container
-     ============================ */
-
-     
-  .confirm-table-container {
-    width: 100%;
-    overflow: hidden;
-    display: block;
-    position: relative;
-    overflow-y: auto;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    background-color: transparent;
-    padding-right: 25px;
-  }
-  
-  /* ============================
-     Confirm Table Styles
-     ============================ */
-  .confirm-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 14px;
-    background-color: transparent;
-    white-space: nowrap;
-    overflow-x: auto;
-    overflow-y: hidden;
-  }
-  
-  /* ============================
-     Table Header Styles
-     ============================ */
-  .confirm-table thead {
-    background-color: #00defc;
-    text-align: left;
-    position: sticky;
-    top: 0;
-    z-index: 1;
-  }
-  
-  .confirm-table thead th {
-    font-size: 14px;
-    padding: 4px 14px;
-    font-weight: bold;
-    color: #333;
-    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
-  }
-  
-  /* ============================
-     Table Body Styles
-     ============================ */
-  .confirm-table tbody td {
-    padding: 8px 14px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-    color: #555;
-    height: 50px;
-  }
-  
-  .confirm-table tbody tr {
-    background-color: transparent;
-    transition: background-color 0.3s;
-    font-size: 12px;
-    font-weight: bold;
-    padding: 8px 14px; /* Improved padding for top and bottom of rows */
-  }
-  
-  /* ============================
-     Row Hover Effect
-     ============================ */
-  .confirm-table tbody tr:hover {
-    background-color: #b2ebf2;
-    cursor: pointer;
-  }
-  
-
-
-
-
-
-.legend-guides {
+============================ */
+.confirm-container {
   display: flex;
   flex-direction: row;
-  gap: 15px; /* Adjusted gap for balanced spacing */
-  justify-content: start; /* Align items to the left */
-  align-items: center;
-  flex-wrap: wrap; /* Allow wrapping if there are many items */
-  margin: 10px 0;
-  padding: 0;
+  gap: 8px;
+  position: relative;
+  height: 275px; /* Increased height for better visibility */
+  margin-top: 5px;
+  box-sizing: border-box;
 }
 
-.legend-item-wrapper {
+.confirm-container .one {
+  width: 100%;
+  height: 100%; /* Full height of the container */
+}
+
+.confirm-container .one .header {
+  width: 100%;
+  padding: 10px 0;
   display: flex;
-  flex-direction: row;
-  align-items: center;
   justify-content: center;
-  gap: 8px; /* Space between the color circle and text */
-}
-
-.legend-item {
-  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  gap: 10px;
-  font-size: 12px;
-  font-weight: 500;
+  height: 50px; /* Fixed height for the header */
 }
 
-.legend-text {
-  color: black; /* Specifically target h6 and set text color to black */
+/* ============================
+   Confirm Table Container
+============================ */
+.confirm-table-container {
+  width: 100%;
+  height: 275px; /* Dynamic height excluding header */
+  overflow-x: auto; /* Horizontal scrolling */
+  overflow-y: auto; /* Vertical scrolling for table rows */
+  -webkit-overflow-scrolling: touch;
+  background-color: transparent;
+  padding-right: 10px;
+  box-sizing: border-box; /* Ensure padding is included in dimensions */
 }
 
-.color-circle {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  display: inline-block;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+/* ============================
+   Confirm Table Styles
+============================ */
+.confirm-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  background-color: transparent;
+  white-space: nowrap;
+  table-layout: auto; /* Improved layout for responsiveness */
+  height: 275px;
 }
 
-/* Ensure the refresh button is spaced appropriately */
-.refresh-button-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end; /* Position button to the right */
+/* ============================
+   Table Header Styles
+============================ */
+.confirm-table thead {
+  background-color: #00defc;
+  text-align: left;
+  position: sticky; /* Sticky header */
+  top: 0;
+  z-index: 2; /* Ensures header stays above other content */
 }
 
-
-/*/* Info Table Container */
-.info-table-container {
- display: flex;
- flex-direction: row;
- margin-top: 5px;
- gap: 15px; /* Reduced gap between elements */
- position: relative;
- height: 70vh; /* Fixed height for the container */
+.confirm-table thead th {
+  font-size: 14px;
+  padding: 6px 14px;
+  font-weight: bold;
+  color: #333;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
 }
 
-/* Info Table */
-.info-table {
- width: 100%;
- height: 75px;
- overflow-y: auto;
- overflow-x: auto;
- border-collapse: collapse;
- font-family: Arial, sans-serif;
- font-size: 12px;
- background-color: #fff;
- text-align: center;
- box-sizing: border-box;
- table-layout: fixed; /* Ensures column widths are respected */
- margin-top: 15px;
+/* ============================
+   Table Body Styles
+============================ */
+.confirm-table tbody td {
+  padding: 8px 14px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  color: #555;
+  text-overflow: ellipsis; /* Handle long text gracefully */
+  overflow: hidden;
 }
 
-/* Info Table Wrapper */
-div.dataTables_wrapper {
- width: 100%;
- overflow-x: auto; /* Enable horizontal scrolling */
-}
-
-
-div.dataTables_wrapper thead {
-  padding: 8px 12px;
+.confirm-table tbody tr {
+  background-color: transparent;
+  transition: background-color 0.3s ease-in-out; /* Smooth hover effect */
   font-size: 12px;
   font-weight: bold;
-  background-color: #f8f9fa; 
-  color: #333; 
-  z-index: 2;
-  border-bottom: 2px solid #e0e0e0; 
 }
 
-
-div.dataTables_wrapper thead th {
-  padding: 10px 0;
-  text-align: center;
-  border-right: 1px solid grey;
-  border-left: 1px solid grey;
-  font-weight: 600;
-  background-color: transparent;
-  white-space: normal;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
+/* ============================
+   Row Hover Effect
+============================ */
+.confirm-table tbody tr:hover {
+  background-color: #b2ebf2; /* Row hover background color */
+  cursor: pointer;
 }
 
-
-div.dataTables_wrapper td {
-  padding: 10px 12px;
-  border: 1px solid #ccc;
-  text-align: center;
-  font-size: 14px;
-  white-space: nowrap;
+ 
+ 
+ 
+ 
+ .legend-guides {
+   display: flex;
+   flex-direction: row;
+   gap: 15px; /* Adjusted gap for balanced spacing */
+   justify-content: start; /* Align items to the left */
+   align-items: center;
+   flex-wrap: wrap; /* Allow wrapping if there are many items */
+   margin: 10px 0;
+   padding: 0;
+ }
+ 
+ .legend-item-wrapper {
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+   justify-content: center;
+   gap: 8px; /* Space between the color circle and text */
+ }
+ 
+ .legend-item {
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   gap: 10px;
+   font-size: 12px;
+   font-weight: 500;
+ }
+ 
+ .legend-text {
+   color: black; /* Specifically target h6 and set text color to black */
+ }
+ 
+ .color-circle {
+   width: 12px;
+   height: 12px;
+   border-radius: 50%;
+   display: inline-block;
+   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+ }
+ 
+ /* Ensure the refresh button is spaced appropriately */
+ .refresh-button-wrapper {
+   display: flex;
+   align-items: center;
+   justify-content: flex-end; /* Position button to the right */
  }
  
  
-
-/* Table Rows Hover Effect for DataTables */
-div.dataTables_wrapper tbody tr:hover,
-div.dataTables_wrapper .dataTable tr:hover {
-  background-color: #f1f1f1; /* Light background color on hover */
-  cursor: pointer; /* Change cursor to pointer to indicate interactivity */
-}
-
-/* Selected Row Background Color for DataTables */
-div.dataTables_wrapper tbody tr.selected,
-div.dataTables_wrapper .dataTable tr.selected {
-  background-color: #dcdcdc; /* Change background color for the selected row */
-  color: #333; /* Ensure text color is readable */
-}
-
-/* Table Body Cells */
-div.dataTables_wrapper td {
- padding: 10px 12px;
- border: 1px solid #ccc;
- text-align: center;
- font-size: 14px;
- white-space: nowrap;
- transition: background-color 0.3s ease; /* Smooth transition for hover effect */
-}
-
-
-/* Freeze first 11 columns */
-.info-table th:nth-child(-n+11),
-.info-table td:nth-child(-n+11) {
- position: sticky;
- left: 0;
- background-color: #f8f9fa; /* Light background for sticky columns */
- z-index: 10; /* Ensure it stays on top of the other columns */
-}
-
-
-/* Adjust column widths for the first 12 columns in DataTables */
-div.dataTables_wrapper thead th:nth-child(1), 
-div.dataTables_wrapper tbody td:nth-child(1) { 
-  width: 5%; 
-}
-
-div.dataTables_wrapper thead th:nth-child(2), 
-div.dataTables_wrapper tbody td:nth-child(2) { 
-  width: 5%; 
-}
-
-div.dataTables_wrapper thead th:nth-child(3), 
-div.dataTables_wrapper tbody td:nth-child(3) { 
-  width: 16%; 
-}
-
-div.dataTables_wrapper thead th:nth-child(4), 
-div.dataTables_wrapper tbody td:nth-child(4) { 
-  width: 5%; 
-}
-
-div.dataTables_wrapper thead th:nth-child(5), 
-div.dataTables_wrapper tbody td:nth-child(5) { 
-  width: 5%; 
-}
-
-div.dataTables_wrapper thead th:nth-child(6), 
-div.dataTables_wrapper tbody td:nth-child(6) { 
-  width: 5%; 
-}
-
-div.dataTables_wrapper thead th:nth-child(7), 
-div.dataTables_wrapper tbody td:nth-child(7) { 
-  width: 5%; 
-}
-
-div.dataTables_wrapper thead th:nth-child(8), 
-div.dataTables_wrapper tbody td:nth-child(8) { 
-  width: 5%; 
-}
-
-div.dataTables_wrapper thead th:nth-child(9), 
-div.dataTables_wrapper tbody td:nth-child(9) { 
-  width: 5%; 
-}
-
-/* Adjust column widths for additional columns beyond the 12th */
-div.dataTables_wrapper thead th:nth-child(n+10), 
-div.dataTables_wrapper tbody td:nth-child(n+10) { 
-  width: 10%; 
-}
-
-
-
-
-
-/* Always show the profile icon */
-.profile-icon-visible {
-  display: block !important;
+ 
+ 
+ 
+ 
+ /* Info Table Container */
+ .info-table-container {
+   display: flex;
+   flex-direction: row;
+   margin-top: 5px;
+   gap: 15px; /* Reduced gap between elements */
+   position: relative;
+   height: 68vh; /* Fixed height for the container */
+   border: 1px solid black;
+   padding: 0px 0px 0px 0px;
  }
  
+ /* Info Table */
+ .info-table {
+   width: 100%;
+   overflow-x: auto; /* Enable horizontal scrolling */
+   border-collapse: collapse;
+   font-family: Arial, sans-serif;
+   font-size: 12px;
+   background-color: #fff;
+   text-align: center;
+   box-sizing: border-box;
+   table-layout: fixed; /* Ensures column widths are respected */
+   margin-top: 15px;
+ }
+ 
+ /* Info Table Wrapper */
+ div.dataTables_wrapper {
+   width: 100%;
+   overflow-x: auto; /* Enable horizontal scrolling */
+ }
+ 
+ /* Table Header */
+ div.dataTables_wrapper thead {
+   padding: 8px 12px;
+   font-size: 12px;
+   font-weight: bold;
+   background-color: #f8f9fa; 
+   color: #333; 
+   z-index: 2;
+   border-bottom: 2px solid #e0e0e0; 
+ }
+ 
+ div.dataTables_wrapper thead th {
+   padding: 10px 0;
+   text-align: center;
+   border-right: 1px solid grey;
+   border-left: 1px solid grey;
+   font-weight: 600;
+   background-color: transparent;
+   white-space: normal;
+   word-wrap: break-word;
+   overflow-wrap: break-word;
+ }
+ 
+ /* Table Body Cells */
+ div.dataTables_wrapper td {
+   padding: 10px 12px;
+   border: 1px solid #ccc;
+   text-align: center;
+   font-size: 14px;
+   white-space: nowrap;
+   transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+ }
+ 
+ /* Table Rows Hover Effect for DataTables */
+ div.dataTables_wrapper tbody tr:hover,
+ div.dataTables_wrapper .dataTable tr:hover {
+   background-color: #f1f1f1; /* Light background color on hover */
+   cursor: pointer; /* Change cursor to pointer to indicate interactivity */
+ }
+ 
+ /* Selected Row Background Color for DataTables */
+ div.dataTables_wrapper tbody tr.selected,
+ div.dataTables_wrapper .dataTable tr.selected {
+   background-color: #dcdcdc; /* Change background color for the selected row */
+   color: #333; /* Ensure text color is readable */
+ }
+ 
+ /* Sticky Columns */
+ .info-table th:nth-child(-n+11),
+ .info-table td:nth-child(-n+11) {
+   position: sticky;
+   left: 0;
+   background-color: #f8f9fa; /* Light background for sticky columns */
+   z-index: 10; /* Ensure it stays on top of the other columns */
+   box-shadow: inset -1px 0 #ccc; /* Subtle divider for clarity */
+ }
+ 
+ /* Adjust Scroll Behavior */
+ div.dataTables_wrapper tbody {
+   overflow-y: visible; /* Prevent vertical scrolling in the body */
+ }
+ 
+ /* Adjust column widths for the first 12 columns in DataTables */
+ div.dataTables_wrapper thead th:nth-child(1), 
+ div.dataTables_wrapper tbody td:nth-child(1) { 
+   width: 5%; 
+ }
+ 
+ div.dataTables_wrapper thead th:nth-child(2), 
+ div.dataTables_wrapper tbody td:nth-child(2) { 
+   width: 5%; 
+ }
+ 
+ div.dataTables_wrapper thead th:nth-child(3), 
+ div.dataTables_wrapper tbody td:nth-child(3) { 
+   width: 16%; 
+ }
+ 
+ div.dataTables_wrapper thead th:nth-child(4), 
+ div.dataTables_wrapper tbody td:nth-child(4) { 
+   width: 5%; 
+ }
+ 
+ div.dataTables_wrapper thead th:nth-child(5), 
+ div.dataTables_wrapper tbody td:nth-child(5) { 
+   width: 5%; 
+ }
+ 
+ div.dataTables_wrapper thead th:nth-child(6), 
+ div.dataTables_wrapper tbody td:nth-child(6) { 
+   width: 5%; 
+ }
+ 
+ div.dataTables_wrapper thead th:nth-child(7), 
+ div.dataTables_wrapper tbody td:nth-child(7) { 
+   width: 5%; 
+ }
+ 
+ div.dataTables_wrapper thead th:nth-child(8), 
+ div.dataTables_wrapper tbody td:nth-child(8) { 
+   width: 5%; 
+ }
+ 
+ div.dataTables_wrapper thead th:nth-child(9), 
+ div.dataTables_wrapper tbody td:nth-child(9) { 
+   width: 5%; 
+ }
+ 
+ /* Adjust column widths for additional columns beyond the 12th */
+ div.dataTables_wrapper thead th:nth-child(n+10), 
+ div.dataTables_wrapper tbody td:nth-child(n+10) { 
+   width: 10%; 
+ }
+ 
+ 
+ 
+
+ /* Always show the profile icon */
+ .profile-icon-visible {
+   display: block !important;
+  }
+  

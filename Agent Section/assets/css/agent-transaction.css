@@ -29,13 +29,19 @@ body {
 }
  
 
+.table-header {
+  border: 1px solid #ced4da; /* Optional border color */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Box shadow for a subtle effect */
+  padding: 5px 0px 10px 0px;
+  background-color: #f8f9fa; /* Optional background color */
+  border-radius: 5px; /* Optional rounded corners */
+ }
+ 
 .sorting-wrapper {
  display: flex;
- flex-direction: row;
  justify-content: space-between;
- align-items: baseline;
- padding: 0px 5px; /* Top, right, bottom (0px), left */
- 
+ padding: 0px 0px; /* Top, right, bottom (0px), left */
+
 }
 
 .sorting-wrapper label {
@@ -43,40 +49,99 @@ body {
  font-weight: 600;
 }
 
+
+.dropdown-sorting-wrapper {
+  display: flex;
+  gap: 15px;
+  justify-content: last baseline;
+}
+
+
+
+.flightbooking-wrapper {
+  display: flex;
+  justify-content: end;
+  width: 55%;
+  gap: 25px;
+  padding: 15px 15px 15px 0px;
+
+
+}
+
+.flightbooking-wrapper input {
+  width: 150px;
+  height: 35px;
+}
+
+.flightbooking-wrapper input:hover {
+  cursor: pointer;
+}
+
+.date-range-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.date-range-inputs-wrapper {
+  display: flex;
+  margin: 5px 0px;
+  gap: 15px;
+  align-items: last baseline;
+}
+
+
+
+
+.filter-field {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  margin-left: 10px;
+}
+
+#clearSorting {
+  font-size: 12px;
+  padding: 8px 10px;
+  align-self: center;
+}
+
+
+
 .datepicker {
- padding: 4px 10px;
- border: 1px solid #ced4da;
- border-radius: 5px;
- font-size: 14px;
- z-index: 10;
+  padding: 4px 10px;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  font-size: 14px;
+  z-index: 10;
 }
-
+ 
 .datepicker:focus {
- border-color: #116530; /* Match your preferred color */
- box-shadow: 0 0 4px rgba(17, 101, 48, 0.4);
+  border-color: #116530; /* Match your preferred color */
+  box-shadow: 0 0 4px rgba(17, 101, 48, 0.4);
 }
-
-
+ 
+ 
 .datepicker-wrapper:hover{
- cursor: pointer;
+  cursor: pointer;
 }
-
+ 
 .select-wrapper {
- position: relative;
- width: 100%;
+  position: relative;
+  width: 100%;
 }
 
 .select-wrapper::after {
- content: "\25BC"; 
- position: absolute;
- top: 50%;
- right: 10px;
- transform: translateY(-50%);
- font-size: 16px;
- color: #555;
- pointer-events: none; 
+  content: "\25BC"; 
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  font-size: 16px;
+  color: #555;
+  pointer-events: none; 
 }
-
+ 
 .custom-select, 
 .filter-group select {
   appearance: none; 
@@ -93,19 +158,7 @@ body {
   transition: border-color 0.3s ease;
 }
 
-.table-header {
- border: 1px solid #ced4da; /* Optional border color */
- box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Box shadow for a subtle effect */
- padding: 10px;
- background-color: #f8f9fa; /* Optional background color */
- border-radius: 5px; /* Optional rounded corners */
-}
-
-
-
-
-
- .search-bar {
+.search-bar {
   position: sticky;
   top: 0;
   transform: translateY(0);
@@ -113,12 +166,18 @@ body {
   display: flex;
   justify-content: space-between;
   gap: 10px;
-  align-items: center;
-  padding: 12px 0;
+  align-items: last baseline;
+  padding: 5px 10px;
   border-radius: 8px 8px 0 0;
   z-index: 0;
+}
+
+.right-side {
+  font-size: 14px;
+  font-weight: 500;
   
 }
+
 
 .search-bar.scrolled-upward {
   transform: translateY(-30px); /* Adjusts position slightly upward */
@@ -127,17 +186,17 @@ body {
  
  .search-input {
   flex-grow: 2;
-  min-width: 150px;
+  width: 250px;
  }
- 
- .search-input input {
+  
+  .search-input input {
   width: 100%;
   padding: 8px 12px;
-  border: 1px solid #ced4da;
+  border: 1px solid #d3d6d8;
   border-radius: 6px;
   font-size: 14px;
   color: #333;
-  background-color: #f8f9fa;
+  background-color: #ffffff;
   transition: border-color 0.3s ease;
  }
  
@@ -149,108 +208,20 @@ body {
   border-color: #4e73df;
   outline: none;
  }
- 
- /* Filter group container
- .filter-group {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-grow: 1;
- }
- 
- 
- 
- .custom-select:focus,
- .filter-group select:hover {
-  border-color: #116530;
- } */
- 
- /* Search button */
- /* .search-button {
-  padding: 10px 15px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s ease;
- }
- 
- .search-button i {
-  font-size: 16px;
- }
- 
- .search-button:hover {
-  background-color: #0056b3;
- }
 
 
 
 
-.date-range-picker {
- display: flex;
- align-items: center;
- gap: 10px; 
-}
-
-
-.date-range-picker .form-control {
- flex: 1; 
- padding: 8px 12px; 
- font-size: 14px;
- border: 1px solid #ced4da;
- border-radius: 4px;
- background-color: #fff;
- box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
- transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-
-.date-range-picker .input-group-text {
- display: flex;
- align-items: center;
- justify-content: center;
- padding: 0 12px;
- font-weight: bold;
- font-size: 16px;
- color: #116530; 
- background-color: #fff;
-}
-
-
-.date-range-picker .form-control:focus {
- border-color: #116530; 
- box-shadow: 0 0 
-}
 
 
 
-.calendar-icon {
- position: absolute;
- top: 50%;
- right: 10px;
- transform: translateY(-50%);
- font-size: 20px;
- color: #116530;
- pointer-events: none;
-}
 
- .date-range-picker {
-  display: flex;
-  gap: 5px;
-  align-items: center;
-  flex-grow: 1;
-  min-width: 250px;
- }
- 
- 
- .input-group-text {
-  background-color: transparent;
-  padding: 0 10px;
-  color: #000;
- } */
- 
+
+
+
+
+
+
 
  /* Table container styling */
  .table-container {
@@ -305,6 +276,16 @@ body {
   table-layout: fixed; /* Make all columns relative to each other */
 }
 
+
+.product-table th {
+  position: sticky; /* Keep header fixed during scrolling */
+  top: 0;
+  z-index: 1; /* Ensure header is on top */
+  background-color: #e6e6e6; /* Light background for headers */
+  font-weight: bold;
+}
+
+
 .product-table th,
 .product-table td {
   padding: 10px; /* Unified padding for consistency */
@@ -314,13 +295,7 @@ body {
   white-space: nowrap; /* Prevent text wrapping */
 }
 
-.product-table th {
-  position: sticky; /* Keep header fixed during scrolling */
-  top: 0;
-  z-index: 1; /* Ensure header is on top */
-  background-color: #f8f9fa; /* Light background for headers */
-  font-weight: bold;
-}
+
 
 .product-table tr {
   transition: background-color 0.3s, color 0.3s;
@@ -330,4 +305,49 @@ body {
   background-color: #f2f2f2; /* Subtle hover effect */
   color: #000; /* Ensure hover text color contrast */
   cursor: pointer;
+}
+
+/* Customize DataTable pagination for smaller design */
+.dataTables_paginate {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.dataTables_paginate .paginate_button {
+  padding: 3px 6px; /* Reduced padding */
+  margin: 0 3px; /* Reduced margin */
+  background-color: #007bff;
+  color: white;
+  border-radius: 3px; /* Smaller border radius */
+  font-size: 14px; /* Smaller font size */
+  border: none;
+  cursor: pointer;
+}
+
+.dataTables_paginate .paginate_button:hover {
+  background-color: #0056b3;
+}
+
+.dataTables_paginate .paginate_button.disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.dataTables_length select {
+  padding: 3px;
+  font-size: 12px; /* Smaller font size */
+  border-radius: 3px; /* Smaller border radius */
+}
+
+/* Hide the 'Show entries' text but keep the dropdown visible */
+.dataTables_length label {
+  display: none; /* Hide the 'Show entries' text */
+}
+
+.dataTables_length select {
+  font-size: 12px; /* Adjust font size for the dropdown */
+  padding: 3px; /* Adjust padding for a more compact look */
+}
+.dataTables_info {
+  display: none;
 }
