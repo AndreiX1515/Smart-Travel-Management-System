@@ -25,70 +25,70 @@ include '../Agent Section/includes/breadcrumbs.php';
     <?php include '../Agent Section/includes/navbar.php'; ?>
 
     <div class="content-wrapper-transact d-flex flex-column">
-      <div class="table-container">
+     
 
         <div class="table-header">
          <div class="sorting-wrapper">
-           <div class="d-flex flex-row gap-3">
-             <div class="filter-field mb-3 d-flex flex-column">
-               <label for="packages">Packages:</label>
-               <div class="select-wrapper mt-2">
-                 <select id="packages" class="custom-select">
-                   <option value="">All</option>
-                   <option value="Autumn Tour Package">Autumn Tour</option>
-                   <option value="Summer Tour Package">Summer Tour</option>
-                   <option value="Spring Tour Package">Spring Tour</option>
-                   <option value="Winter Tour Package">Winter Tour</option>
-                   <option value="Regular Tour Package">Regular Tour</option>
-                   <option value="Busan Tour Package">Busan Tour</option>
-                 </select>
-               </div>
-             </div>
 
-             <div class="filter-field mb-3 d-flex flex-column">
-               <label for="status">Status:</label>
-               <div class="select-wrapper mt-2">
-                 <select id="status" class="custom-select">
-                   <option value="">All</option>
-                   <option value="Pending">Pending</option>
-                   <option value="Confirmed">Confirmed</option>
-                   <option value="Cancelled">Cancelled</option>
-                 </select>
-               </div>
-             </div>
+           <div class="dropdown-sorting-wrapper">
+              <div class="filter-field mb-3 d-flex flex-column">
+                <label for="packages">Packages:</label>
+                <div class="select-wrapper mt-2">
+                  <select id="packages" class="custom-select">
+                    <option value="">All</option>
+                    <option value="Autumn Tour Package">Autumn Tour</option>
+                    <option value="Summer Tour Package">Summer Tour</option>
+                    <option value="Spring Tour Package">Spring Tour</option>
+                    <option value="Winter Tour Package">Winter Tour</option>
+                    <option value="Regular Tour Package">Regular Tour</option>
+                    <option value="Busan Tour Package">Busan Tour</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="filter-field mb-3 d-flex flex-column">
+                <label for="status">Status:</label>
+                <div class="select-wrapper mt-2">
+                  <select id="status" class="custom-select">
+                    <option value="">All</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Confirmed">Confirmed</option>
+                    <option value="Cancelled">Cancelled</option>
+                  </select>
+                </div>
+              </div>
            </div>
 
-           <div class="fligtbooking-wrapper d-flex flex-row gap-2">
+           <div class="flightbooking-wrapper d-flex flex-row ">
 
-             <div class="mb-3 d-flex flex-column">
+             <div class="date-range-wrapper">
                <div class="label-wrapper">
                  <label for="status">Booking Date (Start - End):</label>
                </div>
-               <div class="mt-2 d-flex flex-row gap-2">
-                 <input type="text" class="datepicker" id="BookingStartDate" placeholder="Select Start Date">
-                 <span class=" fw-bold"> → </span>
-                 <input type="text" class="datepicker" id="BookingEndDate" placeholder="Select End Date">
+               <div class="date-range-inputs-wrapper">
+                 <input type="text" class="datepicker" id="BookingStartDate" placeholder="Start Date">
+                 <span class="fw-bolder"> <i class="fa-solid fa-arrow-right"></i> </span>
+                 <input type="text" class="datepicker" id="BookingEndDate" placeholder="End Date">
                </div>
              </div>
 
-             <div class="mb-3 d-flex flex-column">
+             <div class="date-range-wrapper">
                <div class="label-wrapper">
                  <label for="status">Flight Date (Start - End):</label>
                </div>
-               <div class="mt-2 d-flex flex-row gap-2">
-                 <input type="text" class="datepicker" id="FlightStartDate" placeholder="Select Start Date">
-                 <span class=" fw-bold"> → </span>
-                 <input type="text" class="datepicker" id="FlightEndDate" placeholder="Select End Date">
+               <div class="date-range-inputs-wrapper">
+                 <input type="text" class="datepicker" id="FlightStartDate" placeholder="Start Date">
+                 <span class="fw-bold"> <i class="fa-solid fa-arrow-right"> </i> </span>
+                 <input type="text" class="datepicker" id="FlightEndDate" placeholder="End Date">
                </div>
              </div>
 
             
-             <div class="filter-field d-flex align-center" style="display: flex; justify-content: center;align-items: center; margin-top: 10px; margin-left: 10px;">
-               <button id="clearSorting" class="btn btn-secondary btn-sm clearFilters" style="font-size: 12px; padding: 8px 10px; align-self: center">
-                 <i class="fas fa-xmark"></i> Clear Filters
-               </button>
-             </div>
-
+             <div class="filter-field d-flex align-center">
+              <button id="clearSorting" class="btn btn-secondary btn-sm clearFilters">
+                 Clear Filters
+              </button>
+            </div>
 
            </div>
          </div>
@@ -97,7 +97,7 @@ include '../Agent Section/includes/breadcrumbs.php';
            <div class="left-side">
              <div class="search-input">
                <label for="status">Search:</label>
-               <input type="text" id="search" class="form-control mt-2" placeholder="Search">
+               <input type="text" id="search" class="form-control mt-1" placeholder="Search">
              </div>
            </div>
 
@@ -115,6 +115,7 @@ include '../Agent Section/includes/breadcrumbs.php';
          </div>
        </div>
 
+       <div class="table-container">
         <!-- <hr style="border: 1px solid grey; margin: 5px 0 20px 0;"> -->
 
         <?php 
@@ -299,7 +300,13 @@ include '../Agent Section/includes/breadcrumbs.php';
                   echo "<tr><td colspan='10'>No bookings found</td></tr>";
                 }
               }
-              
+
+              if ($res1) {
+                $res1->free();
+              }
+
+
+              $conn->close();
             ?>
           </tbody>
         </table>
@@ -570,8 +577,7 @@ include '../Agent Section/includes/breadcrumbs.php';
 
 
 
-  <?php require "../Agent Section/includes/scripts.php"; ?>
-
+<!-- JQuery Datapicker -->
 <script>
   document.addEventListener("scroll", function () {
   const searchBar = document.querySelector(".search-bar");
@@ -615,8 +621,10 @@ include '../Agent Section/includes/breadcrumbs.php';
     });
   } );
 </script>
+<!-- ############################################## -->
 
 
+<!-- DataTables #product-table -->
 <script>
 $(document).ready(function () {
       const table = $('#product-table').DataTable({
@@ -632,10 +640,10 @@ $(document).ready(function () {
             { width: '5%',  targets: 7 }  // Status
         ],
         order: [[0, 'desc']],
-        scrollX: false, // Disable horizontal scrolling
-        autoWidth: false, // Disable automatic column width calculation
+        scrollX: false,
+        autoWidth: false,
+        pageLength: 8, // Limit the number of rows per page to 8
     });
-
 
     // Search Functionality
     $('#search').on('keyup', function () {
@@ -660,7 +668,7 @@ $(document).ready(function () {
         $(field).datepicker({
             changeMonth: true,
             changeYear: true,
-            dateFormat: 'yy-mm-dd' // Ensure matching format
+            dateFormat: 'yy-mm-dd'
         }).on('focus', (e) => {
             e.preventDefault();
         });
@@ -679,7 +687,7 @@ $(document).ready(function () {
     $.fn.dataTable.ext.search.push(function (settings, data) {
         const flightStartDate = $('#FlightStartDate').val();
         const flightEndDate = $('#FlightEndDate').val();
-        const flightDate = data[5]; // Flight Date is in column index 6
+        const flightDate = data[5];
         return isDateInRange(flightStartDate, flightEndDate, flightDate);
     });
 
@@ -687,7 +695,7 @@ $(document).ready(function () {
     $.fn.dataTable.ext.search.push(function (settings, data) {
         const bookingStartDate = $('#BookingStartDate').val();
         const bookingEndDate = $('#BookingEndDate').val();
-        const bookingDate = data[4]; // Booking Date is in column index 5
+        const bookingDate = data[4];
         return isDateInRange(bookingStartDate, bookingEndDate, bookingDate);
     });
 
@@ -711,10 +719,11 @@ $(document).ready(function () {
         table.draw();
     });
 });
-
 </script>
 
 
+
+<!-- Row Click Selection JS -->
 <script>
   document.addEventListener("DOMContentLoaded", function() {
     document.querySelectorAll("tr[data-url]").forEach(function(row) {
@@ -740,301 +749,281 @@ $(document).ready(function () {
             });
         });
     });
-});
-
+  });
 </script>
 
 
 
 
-
-
-  <script>
-    function addGuestInfo(transactionNumber) 
+<script>
+function addGuestInfo(transactionNumber) {
+  console.log("Transaction Number: ", transactionNumber); // Debug line (To Remove in Prod)
+  $.ajax(
+  {
+    url: '../Agent Section/functions/fetchTransactNo.php', // The PHP file that will handle the session setting
+    type: 'POST',
+    data: { transaction_number: transactionNumber },
+    success: function(response) 
     {
-      console.log("Transaction Number: ", transactionNumber); // Debug line
-      // Use AJAX to send the transaction number to the server
-      $.ajax(
-      {
-        url: '../Agent Section/functions/fetchTransactNo.php', // The PHP file that will handle the session setting
-        type: 'POST',
-        data: { transaction_number: transactionNumber },
-        success: function(response) 
-        {
-          console.log("Response: ", response); // Debug line
-          // Redirect to the next page after setting the session
-          window.location.href = '../Agent Section/agent-addGuest.php'; // Redirect to your next page
-        },
-        error: function(xhr, status, error) 
-        {
-          console.error("AJAX Error: " + status + " " + error); // Enhanced error logging
-        }
-      });
+      console.log("Response: ", response); // Debug line (To Remove in Prod)
+      window.location.href = '../Agent Section/agent-addGuest.php'; // Redirect to your next page
+    },
+    error: function(xhr, status, error) 
+    {
+      console.error("AJAX Error: " + status + " " + error); // Enhanced error logging
     }
+  });
+}
 
-    function showGuestInfo(transactionNumber) 
+
+function showGuestInfo(transactionNumber) {
+  console.log("Transaction Number: ", transactionNumber); // Debug line
+  // Use AJAX to send the transaction number to the server
+  $.ajax(
+  {
+    url: '../Agent Section/functions/fetchTransactNo.php', // The PHP file that will handle the session setting
+    type: 'POST',
+    data: { transaction_number: transactionNumber },
+    success: function(response) 
     {
-      console.log("Transaction Number: ", transactionNumber); // Debug line
-      // Use AJAX to send the transaction number to the server
-      $.ajax(
-      {
-        url: '../Agent Section/functions/fetchTransactNo.php', // The PHP file that will handle the session setting
-        type: 'POST',
-        data: { transaction_number: transactionNumber },
-        success: function(response) 
-        {
-          console.log("Response: ", response); // Debug line
-          // Redirect to the next page after setting the session
-          window.location.href = '../Agent Section/agent-showGuest.php'; // Redirect to your next page
-        },
-        error: function(xhr, status, error) 
-        {
-          console.error("AJAX Error: " + status + " " + error); // Enhanced error logging
-        }
-      });
+      console.log("Response: ", response); // Debug line
+      // Redirect to the next page after setting the session
+      window.location.href = '../Agent Section/agent-showGuest.php'; // Redirect to your next page
+    },
+    error: function(xhr, status, error) 
+    {
+      console.error("AJAX Error: " + status + " " + error); // Enhanced error logging
     }
+  });
+}
 
-    function showRequestHistory(transactionNumber) 
+
+
+function showRequestHistory(transactionNumber)  {
+  console.log("Transaction Number: ", transactionNumber); // Debug line (To Remove in Prod)
+  // Use AJAX to send the transaction number to the server
+  $.ajax(
+  {
+    url: '../Agent Section/functions/fetchTransactNo.php', // The PHP file that will handle the session setting
+    type: 'POST',
+    data: { transaction_number: transactionNumber },
+    success: function(response) 
     {
-      console.log("Transaction Number: ", transactionNumber); // Debug line
-      // Use AJAX to send the transaction number to the server
-      $.ajax(
-      {
-        url: '../Agent Section/functions/fetchTransactNo.php', // The PHP file that will handle the session setting
-        type: 'POST',
-        data: { transaction_number: transactionNumber },
-        success: function(response) 
-        {
-          console.log("Response: ", response); // Debug line
-          // Redirect to the next page after setting the session
-          window.location.href = '../Agent Section/agent-showRequest.php'; // Redirect to your next page
-        },
-        error: function(xhr, status, error) 
-        {
-          console.error("AJAX Error: " + status + " " + error); // Enhanced error logging
-        }
-      });
+      console.log("Response: ", response); // Debug line
+      // Redirect to the next page after setting the session
+      window.location.href = '../Agent Section/agent-showRequest.php'; // Redirect to your next page
+    },
+    error: function(xhr, status, error) 
+    {
+      console.error("AJAX Error: " + status + " " + error); // Enhanced error logging
     }
+  });
+}
 
-    function showPaymentHistory(transactionNumber) 
+
+function showPaymentHistory(transactionNumber) {
+  console.log("Transaction Number: ", transactionNumber); // Debug line (To Remove in Prod)
+  
+  $.ajax(
+  {
+    url: '../Agent Section/functions/fetchTransactNo.php', // The PHP file that will handle the session setting
+    type: 'POST',
+    data: { transaction_number: transactionNumber },
+    success: function(response) 
     {
-      console.log("Transaction Number: ", transactionNumber); // Debug line
-      // Use AJAX to send the transaction number to the server
-      $.ajax(
-      {
-        url: '../Agent Section/functions/fetchTransactNo.php', // The PHP file that will handle the session setting
-        type: 'POST',
-        data: { transaction_number: transactionNumber },
-        success: function(response) 
-        {
-          console.log("Response: ", response); // Debug line
-          // Redirect to the next page after setting the session
-          window.location.href = '../Agent Section/agent-showPayment.php'; // Redirect to your next page
-        },
-        error: function(xhr, status, error) 
-        {
-          console.error("AJAX Error: " + status + " " + error); // Enhanced error logging
-        }
-      });
+      console.log("Response: ", response); // Debug line
+      // Redirect to the next page after setting the session
+      window.location.href = '../Agent Section/agent-showPayment.php'; // Redirect to your next page
+    },
+    error: function(xhr, status, error) 
+    {
+      console.error("AJAX Error: " + status + " " + error); // Enhanced error logging
     }
-  </script>
+  });
+}
+</script>
 
 
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function () 
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const updateBookingModal = document.getElementById('updateBookingModal');
+  updateBookingModal.addEventListener('show.bs.modal', function (event) 
+  {
+    const button = event.relatedTarget; // Button that triggered the modal
+    const transactionId = button.getAttribute('data-transaction-id'); // Fetch transaction ID
+
+    // Populate the hidden input field with the transaction ID
+    document.querySelector('#updateBookingForm input[name="transaction_number"]').value = transactionId;
+
+    // Display the transaction ID in the modal
+    document.getElementById('transactionId').textContent = transactionId;
+
+    // Fetch booking details based on the transaction ID
+    fetchBookingDetails(transactionId);
+  });
+});
+
+$(document).ready(function () {
+  $('#concern').on('change', function () {
+  var concernId = $(this).val();  // Get the selected concern ID
+  $('#requestDetails').html('<option selected disabled>Select Specific Detail</option>'); // Clear request details field
+  $('#price').val(''); // Clear request details field
+
+  // Debugging: Log the selected concernId
+  console.log("Selected concernId: ", concernId);
+
+  // Hide the additional details select container initially
+  $('#additionalSelectContainer').hide();
+
+  // Clear previous options
+  $('#additionalDetails').html('<option selected disabled>Select Additional Detail</option>');
+
+  if (concernId) 
+  {
+    // Debugging: Log the concernId being sent to the server
+    console.log("Sending concernId to server: ", concernId);
+
+    $.ajax(
     {
-      const updateBookingModal = document.getElementById('updateBookingModal');
-      updateBookingModal.addEventListener('show.bs.modal', function (event) 
+      url: '../Agent Section/functions/fetchConcernDetails.php',  // Your server-side script to fetch additional details
+      type: 'POST',
+      data: { concernId: concernId },  // Send the concernId as a parameter
+      success: function (response) 
       {
-        const button = event.relatedTarget; // Button that triggered the modal
-        const transactionId = button.getAttribute('data-transaction-id'); // Fetch transaction ID
+        // Debugging: Log the raw response from the server
+        console.log("Server response: ", response);
 
-        // Populate the hidden input field with the transaction ID
-        document.querySelector('#updateBookingForm input[name="transaction_number"]').value = transactionId;
-
-        // Display the transaction ID in the modal
-        document.getElementById('transactionId').textContent = transactionId;
-
-        // Fetch booking details based on the transaction ID
-        fetchBookingDetails(transactionId);
-      });
-
-    });
-    
-    $(document).ready(function ()
-    {
-      // Fetching Additional Details once Request Type is Selected
-      $('#concern').on('change', function () 
-      {
-        var concernId = $(this).val();  // Get the selected concern ID
-        $('#requestDetails').html('<option selected disabled>Select Specific Detail</option>'); // Clear request details field
-        $('#price').val(''); // Clear request details field
-
-        // Debugging: Log the selected concernId
-        console.log("Selected concernId: ", concernId);
-
-        // Hide the additional details select container initially
-        $('#additionalSelectContainer').hide();
-        
-        // Clear previous options
-        $('#additionalDetails').html('<option selected disabled>Select Additional Detail</option>');
-
-        if (concernId) 
+        // Parse the JSON response
+        try 
         {
-          // Debugging: Log the concernId being sent to the server
-          console.log("Sending concernId to server: ", concernId);
+          var data = JSON.parse(response);
 
-          $.ajax(
+          // Debugging: Log the parsed data
+          console.log("Parsed response data: ", data);
+
+          // Show the additional select container once data is available
+          $('#additionalSelectContainer').show();
+
+          // Populate the additional details select dropdown
+          if (Array.isArray(data.detailsData)) {
+            data.detailsData.forEach(function (item) 
+            {
+              var option = $('<option>').val(item.id).text(item.title).data('price', item.price);  // Create an option element
+              $('#requestDetails').append(option);  // Append the option to the additionalDetails dropdown
+            });
+          } 
+          else 
           {
-            url: '../Agent Section/functions/fetchConcernDetails.php',  // Your server-side script to fetch additional details
-            type: 'POST',
-            data: { concernId: concernId },  // Send the concernId as a parameter
-            success: function (response) 
-            {
-              // Debugging: Log the raw response from the server
-              console.log("Server response: ", response);
-
-              // Parse the JSON response
-              try 
-              {
-                var data = JSON.parse(response);
-
-                // Debugging: Log the parsed data
-                console.log("Parsed response data: ", data);
-
-                // Show the additional select container once data is available
-                $('#additionalSelectContainer').show();
-
-                // Populate the additional details select dropdown
-                if (Array.isArray(data.detailsData)) {
-                  data.detailsData.forEach(function (item) 
-                  {
-                    var option = $('<option>').val(item.id).text(item.title).data('price', item.price);  // Create an option element
-                    $('#requestDetails').append(option);  // Append the option to the additionalDetails dropdown
-                  });
-                } 
-                else 
-                {
-                  console.error("Error: detailsData is not an array");
-                }
-              } catch (e) 
-              {
-                // Handle any JSON parsing errors
-                console.error("Error parsing JSON response: ", e);
-              }
-            },
-            error: function (xhr, status, error) 
-            {
-              // Debugging: Log any AJAX error
-              console.error("Error fetching additional details:", error);
-              console.log("AJAX error details: ", xhr, status);
-            }
-          });
-        } 
-        else 
+            console.error("Error: detailsData is not an array");
+          }
+        } catch (e) 
         {
-          // If no valid concern ID is selected, reset the additional details dropdown
-          $('#additionalSelectContainer').hide();
-          $('#additionalDetails').html('<option selected disabled>Select Additional Detail</option>');
+          // Handle any JSON parsing errors
+          console.error("Error parsing JSON response: ", e);
         }
-      });
-
-      // When an additional detail is selected, update the price input field
-      $('#requestDetails').on('change', function () 
+      },
+      error: function (xhr, status, error) 
       {
-        // Get the selected option's price
-        var selectedOption = $(this).find('option:selected');
-        var price = selectedOption.data('price');  // Retrieve the price from the selected option
-
-        // Update the price input field with the selected price
-        $('#price').val(price);  // Set the price value in the input field
-
-        // Perform the calculation with the 'pax' input
-        calculateTotalPrice();
-      });
-
-      // When the 'pax' input value changes, recalculate the total price
-      $('#paxRequest').on('input', function () 
-      {
-        calculateTotalPrice();
-      });
-
-      // Function to calculate the total price
-      function calculateTotalPrice() 
-      {
-        var price = parseFloat($('#price').val().replace(/,/g, '')) || 0; // Remove commas for calculation
-        var pax = parseInt($('#paxRequest').val()) || 0; // Get the pax, default to 0 if NaN
-
-        // Calculate the total price
-        var totalPrice = pax * price;
-
-        $('#displayTotalPrice').text(formatNumberWithCommas(totalPrice.toFixed(2))); // Update the input field with the calculated total price
-        // Update the price input field or display the total price wherever needed
-        $('#TotalPrice').val(totalPrice.toFixed(2)); // Update the input field with the calculated total price
-      } 
+        // Debugging: Log any AJAX error
+        console.error("Error fetching additional details:", error);
+        console.log("AJAX error details: ", xhr, status);
+      }
     });
+  } 
+  else 
+  {
+    // If no valid concern ID is selected, reset the additional details dropdown
+    $('#additionalSelectContainer').hide();
+    $('#additionalDetails').html('<option selected disabled>Select Additional Detail</option>');
+  }
+  });
 
-    function fetchBookingDetails(transactionId) 
+  $('#requestDetails').on('change', function () {
+  // Get the selected option's price
+  var selectedOption = $(this).find('option:selected');
+  var price = selectedOption.data('price');  // Retrieve the price from the selected option
+
+  // Update the price input field with the selected price
+  $('#price').val(price);  // Set the price value in the input field
+
+  // Perform the calculation with the 'pax' input
+  calculateTotalPrice();
+  });
+
+  $('#paxRequest').on('input', function () {
+  calculateTotalPrice();
+  });
+
+  function calculateTotalPrice() {
+    var price = parseFloat($('#price').val().replace(/,/g, '')) || 0; // Remove commas for calculation
+    var pax = parseInt($('#paxRequest').val()) || 0; // Get the pax, default to 0 if NaN
+
+    // Calculate the total price
+    var totalPrice = pax * price;
+
+    $('#displayTotalPrice').text(formatNumberWithCommas(totalPrice.toFixed(2))); // Update the input field with the calculated total price
+    // Update the price input field or display the total price wherever needed
+    $('#TotalPrice').val(totalPrice.toFixed(2)); // Update the input field with the calculated total price
+  } 
+});
+
+
+function fetchBookingDetails(transactionId) {
+  fetch('../Agent Section/functions/getBookingDetails.php', {
+    method: 'POST',
+    headers: 
     {
-      // Use Fetch API to get booking details
-      fetch('../Agent Section/functions/getBookingDetails.php', 
-      {
-        method: 'POST',
-        headers: 
-        {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ transaction_id: transactionId }),
-      })
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ transaction_id: transactionId }),
+  })
 
-      .then(response => response.json())
-      .then(data => 
-      {
-        if (data.success) 
-        {
-          // Populate fields with the fetched data
-          document.getElementById('fName').value = data.booking.fName;
-          document.getElementById('lName').value = data.booking.lName;
-          document.getElementById('mName').value = data.booking.mName;
-          document.getElementById('suffix').value = data.booking.suffix;
-          document.getElementById('countryCode').value = data.booking.countryCode;
-          document.getElementById('contactNo').value = data.booking.contactNo;
-          document.getElementById('email').value = data.booking.email;
-          document.getElementById('pax').value = data.booking.pax;
-        } 
-        else 
-        {
-          console.error('Error fetching booking details:', data.message);
-        }
-      })
-      .catch(error => 
-      {
-        console.error('Fetch error:', error);
-      });
+  .then(response => response.json())
+  .then(data => 
+  {
+    if (data.success) 
+    {
+      // Populate fields with the fetched data
+      document.getElementById('fName').value = data.booking.fName;
+      document.getElementById('lName').value = data.booking.lName;
+      document.getElementById('mName').value = data.booking.mName;
+      document.getElementById('suffix').value = data.booking.suffix;
+      document.getElementById('countryCode').value = data.booking.countryCode;
+      document.getElementById('contactNo').value = data.booking.contactNo;
+      document.getElementById('email').value = data.booking.email;
+      document.getElementById('pax').value = data.booking.pax;
+    } 
+    else 
+    {
+      console.error('Error fetching booking details:', data.message);
     }
+  })
+  .catch(error => 
+  {
+    console.error('Fetch error:', error);
+  });
+}
 
-    // Add an event listener to the input field to validate as the user types
-    document.getElementById('paxRequest').addEventListener('input', function() 
-    {
-      validateMaxValue(this);
-    });
 
-    
-    function updateBooking() 
-    {
-      const form = document.getElementById('updateBookingForm');
-      const formData = new FormData(form);
-      // Implement AJAX call to update booking...
-      console.log("Updating booking with data:", formData);
-    }
+document.getElementById('paxRequest').addEventListener('input', function() {
+  validateMaxValue(this);
+});
 
-    // Helper function to format numbers with commas
-    function formatNumberWithCommas(num) 
-    {
-      return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    }
-  </script>
+function updateBooking() {
+  const form = document.getElementById('updateBookingForm');
+  const formData = new FormData(form);
+  // Implement AJAX call to update booking...
+  console.log("Updating booking with data:", formData);
+}
+
+function formatNumberWithCommas(num) {
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+</script>
+
+<?php require "../Agent Section/includes/scripts.php"; ?>
 
   </body>
 </html>

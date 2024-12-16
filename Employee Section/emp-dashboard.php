@@ -373,6 +373,8 @@
 
           <div class="card-body-currency">
             <div class="currency-cards">
+
+              <!-- USD CARD -->
               <div class="currency-card">
                 <div class="flag-icon-wrapper">
                   <img src="../assets/images/Flags/english-flag.png" alt="">
@@ -387,6 +389,7 @@
                 <i class="fas fa-exchange-alt"></i>
               </div>
 
+              <!-- PHP CARD -->
               <div class="currency-card">
                 <div class="flag-icon-wrapper">
                   <img src="../assets/images/Flags/philippines (2).png" alt="">
@@ -397,6 +400,7 @@
                 </div>
               </div>
 
+              <!-- KOR CARD -->
               <div class="currency-card">
                 <div class="flag-icon-wrapper">
                   <img src="../assets/images/Flags/korean-flag.png" alt="">
@@ -407,45 +411,36 @@
                 </div>
               </div>
 
-              <!-- <div class="currency-card">
-                <div class="flag-icon-wrapper">
-                  <img src="../assets/images/Flags/european.png" alt="">
-                   <h6 class="mt-2">EUR</h6>
-                   <div class="currency-text-wrapper">
-                    <h6>€ 
-                     <?php 
-                     // echo number_format($usd_to_euro, 2); 
-                     ?></h6>
-                  </div>
-                </div>
-              </div> -->
             </div> 
           </div>
+
         </div>
     </div>
  
     <div class="navTabs-wrapper">
       <ul class="nav nav-pills" id="pills-tab" role="tablist">
-       <li class="nav-item" role="presentation">
+        <li class="nav-item" role="presentation">
           <button class="nav-link active" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Flight Seat Tracker</button>
         </li>
 
-       <li class="nav-item" role="presentation">
-         <button class="nav-link " id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Payment and Requests</button>
-       </li>
-       
-       <!-- <li class="nav-item" role="presentation">
-         <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Contact</button>
-       </li>
-       <li class="nav-item" role="presentation">
-         <button class="nav-link" id="pills-disabled-tab" data-bs-toggle="pill" data-bs-target="#pills-disabled" type="button" role="tab" aria-controls="pills-disabled" aria-selected="false" disabled>Disabled</button>
-       </li> -->
-     </ul>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link " id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Payment and Requests Table</button>
+        </li>
+        
+        <!-- <li class="nav-item" role="presentation">
+          <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Contact</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="pills-disabled-tab" data-bs-toggle="pill" data-bs-target="#pills-disabled" type="button" role="tab" aria-controls="pills-disabled" aria-selected="false" disabled>Disabled</button>
+        </li> -->
+      </ul>
     </div>
 
+    <!-- Flight Seat Tracker Tab -->
     <div class="tab-content" id="pills-tabContent">
       <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
 
+      <!-- Flight Seat Tracker Table -->
         <div class="info-table-container" style="overflow-x: auto;">
            <table class="info-table" id="info-table">
                 <thead class="border-2">
@@ -617,10 +612,11 @@
                   ?>
                 </tbody>
               </table>
-       
-         </div>
+        </div>
+
       </div>           
 
+      <!-- Payment and Requests Table -->
       <div class="tab-pane fade " id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
 
         <div class="header-wrapper">
@@ -671,6 +667,7 @@
 
           </div> -->
 
+          <!-- Request Table -->
           <div class="request-wrapper">
             <div class="table-header">
               <h6 class="text-secondary">Requests</h6>
@@ -740,6 +737,14 @@
                     {
                       echo "<tr><td colspan='6' style='text-align: center; font-size: 10px;'>NO CURRENT REQUEST AS OF THE MOMENT</td></tr>";
                     }
+
+                    if ($res1 ) {
+                      $res1->free();
+                    }
+
+
+                    $conn->close();
+
                   ?>
                 </tbody>
               </table>
@@ -747,6 +752,7 @@
 
           </div>
 
+          <!-- Payment Table -->
           <div class="payment-wrapper">
             <div class="table-header">
               <h6 class="text-secondary">Payment</h6>
@@ -816,6 +822,14 @@
                     } else {  
                       echo "<tr><td colspan='12' style='text-align: center; font-size: 10px;'>NO CURRENT PAYMENTS AS OF THE MOMENT</td></tr>";
                     }
+
+                    if ($res2) {
+                      $res2->free();
+                    }
+
+
+                    $conn->close();
+
                   ?>
                 </tbody>
               </table>
@@ -823,10 +837,9 @@
 
           </div>
 
-
-
         </div>
 
+        <!-- Confirmed Transaction Tables -->
         <div class="confirm-container">
             <div class="one">
               <div class="header d-flex justify-content-between align-items-center">
@@ -903,6 +916,14 @@
                         echo "<tr><td colspan='7'>No confirmed bookings found.</td></tr>";
                       }
                       
+                      if ($result) {
+                        $result->free();
+                      }
+
+
+                      $conn->close();
+
+
                     ?>
                   </tbody>
                 </table>
@@ -910,8 +931,6 @@
             </div>
           </div>
         </div>
-
-
 
       </div>
 

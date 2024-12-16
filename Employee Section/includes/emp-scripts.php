@@ -1,7 +1,3 @@
-
-
-
-<!-- Scripts -->
 <!-- jQuery Core (required by jQuery UI and DataTables) -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -19,9 +15,6 @@
 
 <!-- DataTables FixedHeader JS (requires DataTables) -->
 <script src="https://cdn.datatables.net/fixedheader/3.2.0/js/dataTables.fixedHeader.min.js"></script>
-
-
-
 
 
 <script>
