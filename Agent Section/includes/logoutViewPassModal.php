@@ -19,62 +19,58 @@
 
 <!-- View Password Modal -->
 <div class="modal fade" id="viewPasswordModal" tabindex="-1" aria-labelledby="viewPasswordModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="viewPasswordModalLabel">Manage Password</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="viewPasswordModalLabel">Manage Password</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">
+          <!-- Password Display Section -->
+          <div class="password-header d-flex align-items-center justify-content-between mb-3">
+            <p class="mb-0 me-3">Your password is: <span id="passwordText"><?= htmlspecialchars($maskedPassword); ?></span></p>
+            <button type="button" class="btn btn-outline-secondary" id="togglePasswordBtn">
+              <i class="fas fa-eye" id="toggleIcon"></i>
+            </button>
+          </div>
+
+          <hr class="mt-3 mb-4">
+
+          <h6 class="fw-bold mb-3">Change Password:</h6>
+          <!-- Change Password Fields -->
+          <form id="changePasswordForm" action="path_to_handle_password_change.php" method="POST">
+
+          <div class="mb-3">
+            <label for="newPassword" class="form-label">New Password</label>
+            <input type="password" class="form-control" id="newPassword" name="newPassword" required>
+          </div>
+          <div class="mb-3">
+            <label for="confirmNewPassword" class="form-label">Confirm New Password</label>
+            <input type="password" class="form-control" id="confirmNewPassword" name="confirmNewPassword" required>
+          </div>
+          <div class="mb-3 d-flex justify-content-between align-items-center">
+            <div class="w-75">
+              <label for="otp" class="form-label">OTP</label>
+              <input type="text" class="form-control" id="otp" name="otp" required>
+            </div>
+            <button type="button" class="btn btn-outline-primary" id="sendOtpBtn" style="margin-top: 30px;">Send OTP</button>
+          </div>
+
+          <!-- Message Alert Div with Red Border and Light Red Background -->
+          <div id="messageAlert" style="display:none; padding: 10px; margin: 15px 0; border: 1px solid red; background-color: #f8d7da; color: red; border-radius: 5px;">
+          </div>
+
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit disabled" class="btn btn-primary" id="changePasswordBtn" style="margin-right: -15px;">Change Password</button>
+          </div>
+        </form>
       </div>
-
-       <div class="modal-body">
-         <!-- Password Display Section -->
-         <div class="password-header d-flex align-items-center justify-content-between mb-3">
-           <p class="mb-0 me-3">Your password is: <span id="passwordText"><?= htmlspecialchars($maskedPassword); ?></span></p>
-           <button type="button" class="btn btn-outline-secondary" id="togglePasswordBtn">
-             <i class="fas fa-eye" id="toggleIcon"></i>
-           </button>
-         </div>
-
-         <hr class="mt-3 mb-4">
-
-         <h6 class="fw-bold mb-3">Change Password:</h6>
-         <!-- Change Password Fields -->
-         <form id="changePasswordForm" action="path_to_handle_password_change.php" method="POST">
-
-         <div class="mb-3">
-           <label for="newPassword" class="form-label">New Password</label>
-           <input type="password" class="form-control" id="newPassword" name="newPassword" required>
-         </div>
-         <div class="mb-3">
-           <label for="confirmNewPassword" class="form-label">Confirm New Password</label>
-           <input type="password" class="form-control" id="confirmNewPassword" name="confirmNewPassword" required>
-         </div>
-         <div class="mb-3 d-flex justify-content-between align-items-center">
-           <div class="w-75">
-             <label for="otp" class="form-label">OTP</label>
-             <input type="text" class="form-control" id="otp" name="otp" required>
-           </div>
-           <button type="button" class="btn btn-outline-primary" id="sendOtpBtn" style="margin-top: 30px;">Send OTP</button>
-         </div>
-
-         <!-- Message Alert Div with Red Border and Light Red Background -->
-         <div id="messageAlert" style="display:none; padding: 10px; margin: 15px 0; border: 1px solid red; background-color: #f8d7da; color: red; border-radius: 5px;">
-         </div>
-
-
-         <div class="modal-footer">
-           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-           <button type="submit disabled" class="btn btn-primary" id="changePasswordBtn" style="margin-right: -15px;">Change Password</button>
-         </div>
-       </form>
     </div>
   </div>
 </div>
-</div>
-
-<!-- jQuery CDN -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 
 <script>
 document.getElementById('togglePasswordBtn').addEventListener('click', function() {

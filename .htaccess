@@ -48,3 +48,58 @@ AddDefaultCharset UTF-8
     ExpiresByType application/javascript "access plus 1 month"
     ExpiresByType application/x-javascript "access plus 1 month"
 </IfModule>
+
+
+
+# --Force HTTPS ALWAYS (For Future Usage)
+
+
+# # Enable URL rewriting
+# <IfModule mod_rewrite.c>
+#     RewriteEngine On
+    
+#     # Force HTTPS (Redirect HTTP to HTTPS)
+#     RewriteCond %{HTTPS} off
+#     RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+#     # Redirect www to non-www (optional)
+#     RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+#     RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
+
+#     # Redirect index.php to root (optional)
+#     RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s/index\.php [NC]
+#     RewriteRule ^index\.php(.*)$ /$1 [R=301,L]
+
+#     # Custom 404 error page
+#     ErrorDocument 404 /404.html
+
+#     # Block access to sensitive files (e.g., .env, .ini, etc.)
+#     <FilesMatch "\.(env|ini|log)$">
+#         Order Allow,Deny
+#         Deny from all
+#     </FilesMatch>
+
+#     # Prevent directory listing
+#     Options -Indexes
+# </IfModule>
+
+# # Set default character encoding
+# AddDefaultCharset UTF-8
+
+# # .htaccess in the 'uploads' directory
+# <FilesMatch "\.(jpg|jpeg|png|gif|pdf)$">
+#     Require all granted
+# </FilesMatch>
+
+# # Caching settings (optional)
+# <IfModule mod_expires.c>
+#     ExpiresActive On
+#     ExpiresDefault "access plus 1 month"
+#     ExpiresByType image/jpg "access plus 1 year"
+#     ExpiresByType image/jpeg "access plus 1 year"
+#     ExpiresByType image/gif "access plus 1 year"
+#     ExpiresByType image/png "access plus 1 year"
+#     ExpiresByType text/css "access plus 1 month"
+#     ExpiresByType application/javascript "access plus 1 month"
+#     ExpiresByType application/x-javascript "access plus 1 month"
+# </IfModule>

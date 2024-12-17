@@ -96,7 +96,7 @@
     </div>
   </div>
 
-  <?php require "../Agent Section/includes/scripts.php"; ?>
+
   
   <!-- Modal for Request -->
   <div class="modal fade" id="requestModal" tabindex="-1" aria-labelledby="requestModalLabel" aria-hidden="true">
@@ -189,7 +189,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Display the transaction ID in the modal
         const transactionIdDisplay = document.getElementById('requestTransactionId');
-        if (transactionIdDisplay) transactionIdDisplay.textContent = transactionId;
+        if (transactionIdDisplay) {
+            transactionIdDisplay.textContent = transactionId;
+        } else {
+            console.warn('Element with ID "requestTransactionId" not found.');
+        }
+
 
         // Call the function to fetch Pax for the transaction ID
         if (typeof fetchPaxForRequestModal === 'function') {
@@ -249,6 +254,7 @@ function fetchPaxForRequestModal(transactionId)
 
   </script>
 
+<?php require "../Agent Section/includes/scripts.php"; ?>
 
 </body>
 </html>

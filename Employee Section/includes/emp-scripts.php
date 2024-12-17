@@ -20,8 +20,6 @@
         onerror="console.error('Failed to load DataTables FixedHeader.')"></script>
 
 
-
-
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         // Enable tooltips for all elements with the 'data-bs-toggle="tooltip"' attribute

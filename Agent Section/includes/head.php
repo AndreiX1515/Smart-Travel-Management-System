@@ -12,3 +12,9 @@
 
 <!-- DataTables Responsive (CSS) - Optional, only needed if you're using responsive tables -->
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
+
+<!-- jQuery (Latest version, as required by DataTables) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- jQuery UI (For Datepicker, etc.) -->
+<script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>

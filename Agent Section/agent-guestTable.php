@@ -213,9 +213,6 @@
   </div>
 </div>
 
-<?php require "../Agent Section/includes/scripts.php"; ?>
-
-
 <script>
   let guestCounter = 0;
 
