@@ -42,9 +42,6 @@
  
  
  
- 
- 
- 
  .white-pill {
    display: inline-block; 
    padding: 5px 20px 5px 10px;
@@ -58,11 +55,6 @@
    text-align: left; 
    transition: box-shadow 0.3s ease, transform 0.2s ease; 
   }
- 
- 
- 
- 
- 
  
  
  .counts-wrapper .card {
@@ -267,14 +259,44 @@
  }
  
  .navTabs-wrapper {
-   width: 100%;
-   padding: 0px;
-   margin: 20px 0px;
- }
- 
- .navTabs-wrapper .nav-pills {
-   margin: 10px 0px;
- }
+  width: 100%;
+  padding: 0px;
+  margin: 20px 0px;
+  display: flex; /* Make the container a flexbox */
+  gap: 10px; /* Added gap between each nav item */
+}
+
+.nav-pills {
+  display: flex; /* Ensure the nav-pills are in a row */
+  padding: 0; /* Remove default padding */
+  margin-right: 15px; /* Remove default margin */
+  list-style-type: none; /* Remove bullet points */
+}
+
+.nav-item {
+  margin-right: 10px; /* Added gap between nav items */
+}
+
+.navTabs-wrapper .nav-link {
+  border: 1px solid rgba(0, 0, 0, 0.2); /* Border outline for nav links */
+  background-color: transparent; /* Transparent background */
+  padding: 8px 14px; 
+  transition: all 0.3s ease; 
+  border-radius: 15px;
+  color: black;
+}
+
+.navTabs-wrapper .nav-link:hover {
+  border-color: #007bff; /* Change border color on hover */
+  background-color: rgba(0, 123, 255, 0.1); /* Add slight blue background on hover */
+}
+
+.navTabs-wrapper .nav-link.active {
+  border-color: #007bff; /* Border color for active tab */
+  background-color: #007bff; /* Background color for active tab */
+  color: white; /* Change text color for active tab */
+}
+
  
  
  

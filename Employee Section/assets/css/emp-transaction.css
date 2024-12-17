@@ -216,6 +216,7 @@ span {
   text-transform: uppercase; /* Added to make header text more consistent */
 }
 
+
 /* Additional class for top border */
 .has-border-top {
   border-top: 3px solid #000000; /* 3px black border on top */
