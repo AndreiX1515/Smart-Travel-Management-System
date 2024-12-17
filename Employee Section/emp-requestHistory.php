@@ -1,94 +1,247 @@
-<div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
 
-  <div class="card-header px-4 py-2">
-     <h6>Request History</h6>
-  </div>
+<?php 
+session_start(); 
+?>
 
-  <div class="request-table-wrapper">
-      <table class="request-table">
-      <thead>
-        <tr>
-          <th>REQUEST ID</th>
-          <th>REQUEST TITLE</th>
-          <th>REQUEST DETAILS</th>
-          <th>REQUEST DATE</th>
-          <th>STATUS</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>REQ001</td>
-          <td>System Update</td>
-          <td>Update server software to the latest version.</td>
-          <td>2024-11-20</td>
-          <td><span class="status status-pending"><span class=""></span>Pending</span></td>
-        </tr>
-        <tr>
-          <td>REQ002</td>
-          <td>Data Backup</td>
-          <td>Perform a full backup of all user data.</td>
-          <td>2024-11-18</td>
-          <td><span class="status status-confirmed"><span class=""></span>Confirmed</span></td>
-        </tr>
-        <tr>
-          <td>REQ003</td>
-          <td>Account Deletion</td>
-          <td>Remove inactive accounts older than one year.</td>
-          <td>2024-11-15</td>
-          <td><span class="status status-rejected"><span class=""></span>Rejected</span></td>
-        </tr>
-        <tr>
-          <td>REQ004</td>
-          <td>Feature Request</td>
-          <td>Add dark mode to the web application.</td>
-          <td>2024-11-10</td>
-          <td><span class="status status-confirmed"><span class=""></span>Confirmed</span></td>
-        </tr>
-        <tr>
-          <td>REQ005</td>
-          <td>Bug Report</td>
-          <td>Fix login issue on mobile devices.</td>
-          <td>2024-11-08</td>
-          <td><span class="status status-pending"><span class=""></span>Pending</span></td>
-        </tr>
-        <tr>
-          <td>REQ001</td>
-          <td>System Update</td>
-          <td>Update server software to the latest version.</td>
-          <td>2024-11-20</td>
-          <td><span class="status status-pending"><span class=""></span>Pending</span></td>
-        </tr>
-        <tr>
-          <td>REQ002</td>
-          <td>Data Backup</td>
-          <td>Perform a full backup of all user data.</td>
-          <td>2024-11-18</td>
-          <td><span class="status status-confirmed"><span class=""></span>Confirmed</span></td>
-        </tr>
-        <tr>
-          <td>REQ003</td>
-          <td>Account Deletion</td>
-          <td>Remove inactive accounts older than one year.</td>
-          <td>2024-11-15</td>
-          <td><span class="status status-rejected"><span class=""></span>Rejected</span></td>
-        </tr>
-        <tr>
-          <td>REQ004</td>
-          <td>Feature Request</td>
-          <td>Add dark mode to the web application.</td>
-          <td>2024-11-10</td>
-          <td><span class="status status-confirmed"><span class=""></span>Confirmed</span></td>
-        </tr>
-        <tr>
-          <td>REQ005</td>
-          <td>Bug Report</td>
-          <td>Fix login issue on mobile devices.</td>
-          <td>2024-11-08</td>
-          <td><span class="status status-pending"><span class=""></span>Pending</span></td>
-        </tr>
-      </tbody>
-    </table>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee - Transactions</title>
+    <?php include '../Employee Section/includes/emp-head.php' ?>
+    <link rel="stylesheet" href="../Employee Section/assets/css/emp-dashboard.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="../Employee Section/assets/css/emp-tableRequestPayment.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="../Employee Section/assets/css/emp-sidebar-navbar.css?v=<?php echo time(); ?>">
+</head>
+<body>
 
-  </div>
+<?php include '../Employee Section/includes/emp-sidebar.php' ?>
 
+<!-- Main Container -->
+<div class="main-container">
+   <?php include '../Employee Section/includes/emp-navbar.php' ?>
+
+   <div class="main-content">
+        <div class="table-container">
+            <div class="table-subheader d-flex align-items-center justify-content-between p-3 border-bottom bg-light">
+                <!-- Search -->
+                <div class="search-wrapper position-relative">
+                    <input
+                    type="text"
+                    placeholder="Search..."
+                    class="form-control search-input"
+                    oninput="toggleClearButton(this)"
+                    />
+                    <button 
+                    type="button"
+                    class="clear-button"
+                    onclick="clearInput(this)"
+                    style="display: none;"
+                    >
+                    <i class="fas fa-times"></i>
+                    </button>
+                </div>
+    
+            <!-- Dropdowns -->
+            <div class="dropdowns d-flex align-items-center gap-3">
+                <!-- Items per Page Dropdown -->
+                <div class="dropdown">
+                <button
+                    class="btn btn-outline-secondary dropdown-toggle"
+                    type="button"
+                    id="itemsPerPageDropdown"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                >
+                    Items per Page
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="itemsPerPageDropdown">
+                    <li><a class="dropdown-item" href="#">5</a></li>
+                    <li><a class="dropdown-item" href="#">10</a></li>
+                    <li><a class="dropdown-item" href="#">50</a></li>
+                    <li><a class="dropdown-item" href="#">100</a></li>
+                </ul>
+                </div>
+    
+                <!-- Date Range Dropdown -->
+                <div class="dropdown">
+                <button
+                    class="btn btn-outline-secondary dropdown-toggle"
+                    type="button"
+                    id="dateRangeDropdown"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                >
+                    Date Range
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dateRangeDropdown">
+                    <li><a class="dropdown-item" href="#">Today</a></li>
+                    <li><a class="dropdown-item" href="#">This Week</a></li>
+                    <li><a class="dropdown-item" href="#">This Month</a></li>
+                    <li><a class="dropdown-item" href="#">Custom Range</a></li>
+                </ul>
+                </div>
+    
+                <!-- Filter Options Dropdown -->
+                <div class="dropdown">
+                <button
+                    class="btn btn-outline-secondary dropdown-toggle"
+                    type="button"
+                    id="filterDropdown"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                >
+                    Filter Options
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="filterDropdown">
+                    <li><a class="dropdown-item" href="#">Status</a></li>
+                    <li><a class="dropdown-item" href="#">Category</a></li>
+                    <li><a class="dropdown-item" href="#">Priority</a></li>
+                    <li><a class="dropdown-item" href="#">Custom Filter</a></li>
+                </ul>
+                </div>
+    
+                <!-- Export Options Dropdown -->
+                <div class="dropdown">
+                <button
+                    class="btn btn-outline-secondary dropdown-toggle"
+                    type="button"
+                    id="exportDropdown"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                >
+                    Export
+                </button>
+                <!-- <ul class="dropdown-menu" aria-labelledby="exportDropdown">
+                    <li><a class="dropdown-item" href="#">Export as CSV</a></li>
+                    <li><a class="dropdown-item" href="#">Export as Excel</a></li>
+                    <li><a class="dropdown-item" href="#">Export as PDF</a></li>
+                </ul> -->
+                </div>
+    
+                <div class="clear-button-wrapper">
+                <button class="btn btn-danger">
+                    <i class="fa-solid fa-circle-xmark"></i>
+                </button>
+                </div>
+            </div>
+                </div>
+        
+                <script>
+        
+                function toggleClearButton(input) {
+                const clearButton = input.nextElementSibling; // Get the button next to the input
+                clearButton.style.display = input.value ? "block" : "none";
+                }
+        
+                // Clear the input field
+                function clearInput(button) {
+                const input = button.previousElementSibling; // Get the input field before the button
+                input.value = "";
+                button.style.display = "none"; // Hide the clear button
+                input.focus(); // Refocus on the input
+                }
+        
+                </script>
+        
+        
+        
+                <div class="table-wrapper">
+                <table class="">
+                    <thead>
+                    <tr>
+                        <th>Transact No</th>
+                        <th>Agent Name</th>
+                        <th>Package Name</th>
+                        <th>Booking Date</th>
+                        <th>Flight Date</th>
+                        <th>Total Pax</th>
+                        <th>Status</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                        $sql1 = "SELECT b.transactNo AS `T.N`,
+                                    CONCAT(a.lName, ', ', a.fName, 
+                                            IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1)), '')) AS agentName,
+                                    p.packageName AS `PACKAGE`, DATE_FORMAT(b.bookingDate, '%m-%d-%Y') AS `BOOKING DATE`,
+                                    DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y') AS `FLIGHT DATE`,
+                                    b.pax AS `TOTAL PAX`, b.status AS `STATUS`
+                                FROM 
+                                    booking b
+                                LEFT JOIN 
+                                    flight f ON b.flightId = f.flightId
+                                LEFT JOIN 
+                                    package p ON b.packageId = p.packageId
+                                LEFT JOIN
+                                    agent a ON b.agentId = a.agentId
+                                WHERE 
+                                    b.status = 'Pending' 
+                                ORDER BY 
+                                    b.transactNo DESC";
+        
+                        $res1 = $conn->query($sql1);
+        
+                        if ($res1->num_rows > 0) 
+                        {
+                        while ($row = $res1->fetch_assoc()) 
+                        {
+                            $transactNo = $row['T.N'];
+                            $agentName = $row['agentName'];
+                            $package = $row['PACKAGE'];
+                            $bookingDate = $row['BOOKING DATE'];
+                            $flightDate = $row['FLIGHT DATE'];
+                            $totalPax = $row['TOTAL PAX'];
+                            $status = $row['STATUS'];
+                            
+                            // Determine status class
+                            $statusClass = '';
+                            switch ($status) 
+                            {
+                            case 'Confirmed':
+                                $statusClass = 'bg-success text-white'; // Green
+                                break;
+                            case 'Reject':
+                                $statusClass = 'bg-danger text-white'; // Red
+                                break;
+                            case 'Pending':
+                                $statusClass = 'bg-warning text-dark'; // Yellow
+                                break;
+                            default:
+                                $statusClass = 'bg-secondary text-white'; // Gray
+                            }
+        
+                            echo "<tr class='transaction-row' data-transactNo='{$transactNo}'>
+                                    <td>{$transactNo}</td>
+                                    <td>{$agentName}</td>
+                                    <td>{$package}</td>
+                                    <td>{$bookingDate}</td>
+                                    <td>{$flightDate}</td>
+                                    <td>{$totalPax}</td>
+                                    <td>
+                                    <span class='badge p-2 rounded-pill {$statusClass}'>{$status}</span>
+                                    </td>
+                                </tr>";
+                        }
+                        }
+                        else 
+                        {
+                        echo "<tr><td colspan='10'>No bookings found</td></tr>";
+                        }
+                    ?>
+                    </tbody>
+                </table>
+                </div>
+        
+            </div>
+            
+   </div>
 </div>
+
+
+
+<?php include '../Employee Section/includes/emp-scripts.php' ?>
+
+</body>
+</html>
