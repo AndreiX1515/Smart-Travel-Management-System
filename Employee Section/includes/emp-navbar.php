@@ -1,8 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-custom">
     <div class="container-fluid mx-3">
         <a class="navbar-brand" id="page-title" href="#"></a>
-
-        <!-- Navbar items and functionality can be added here -->
     </div>
 </nav>
 
@@ -30,5 +28,5 @@
             }, 25);
         });
     });
-});
+  });
 </script>
