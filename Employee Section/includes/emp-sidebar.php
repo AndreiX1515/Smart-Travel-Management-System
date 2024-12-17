@@ -32,6 +32,13 @@
             </a>
         </li>
 
+        <li class="nav-item transaction"> 
+            <a class="nav-link page-button" href="../Employee Section/emp-RequestHistory.php" data-page-name="Request History">
+                <div class="icon"><i class="fas fa-history"></i></div>
+                <span class="label">Request History</span>
+            </a>
+        </li>
+
         
 
 
@@ -55,7 +62,6 @@
                 </li>
                 <li class="nav-item">
                         <a class="nav-link page-button" href="../Employee Section/emp-tablePayment.php" data-page-name="For Approvals - Payment">
-                        
                             Payment
                         </a>
                 </li>
