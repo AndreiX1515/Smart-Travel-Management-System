@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Employee - Transactions</title>
     <?php include '../Employee Section/includes/emp-head.php' ?>
-    <link rel="stylesheet" href="../Employee Section/assets/css/emp-dashboard.css?v=<?php echo time(); ?>">
+				<link rel="stylesheet" href="../Employee Section/assets/css/emp-tableRequestPayment.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="../Employee Section/assets/css/emp-sidebar-navbar.css?v=<?php echo time(); ?>">
 </head>
 <body>
@@ -143,6 +143,47 @@
 </div>
 
 
+<script>
+			// DOM Elements
+			const toggleButton = document.getElementById('toggleButton');
+			const closeButton = document.getElementById('closeButton');
+			const hiddenDiv = document.getElementById('hiddenDiv');
+
+			// Toggle the hidden div and button text with an icon
+			toggleButton.addEventListener('click', function () {
+							if (hiddenDiv.style.display === 'none' || hiddenDiv.style.display === '') {
+											hiddenDiv.style.display = 'block';
+											toggleButton.innerHTML = '<i class="fas fa-times"></i> Close'; // Add "Close" icon and text
+							} else {
+											hiddenDiv.style.display = 'none';
+											toggleButton.innerHTML = ' <i class="fas fa-filter"></i> Filters'; // Add "Filters" icon and text
+							}
+			});
+
+			// Close the hidden div and reset the button text with an icon
+			closeButton.addEventListener('click', function () {
+							hiddenDiv.style.display = 'none';
+							toggleButton.innerHTML = '<i class="fas fa-filter"></i> Filters'; // Reset to "Filters" icon and text
+			});
+</script>
+
+
+
+
+<script>
+function toggleClearButton(input) {
+    const clearButton = input.nextElementSibling; // Get the button next to the input
+    clearButton.style.display = input.value ? "block" : "none";
+}
+
+// Clear the input field
+function clearInput(button) {
+    const input = button.previousElementSibling; // Get the input field before the button
+    input.value = "";
+    button.style.display = "none"; // Hide the clear button
+    input.focus(); // Refocus on the input
+}
+</script>
 
 
 
