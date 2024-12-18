@@ -45,8 +45,46 @@
       $_SESSION['status'] = "Database error: " . $stmt1->error;
       $_SESSION['toastColor'] = 'text-bg-danger'; // Red color for error
       $conn->rollback();  // Rollback the transaction on failure
+      $stmt1->close();
       header("Location: ../emp-tablePayment.php");
       exit(0);
+    }
+
+    // Close the first statement
+    $stmt1->close();
+
+    // Now call the stored procedure to update the booking status if payment is Approved
+    if ($paymentStatus === 'Approved') 
+    {
+      // Prepare the stored procedure call
+      $sql2 = "CALL update_booking_status(?, ?)";
+      $stmt2 = $conn->prepare($sql2);
+
+      if (!$stmt2) 
+      {
+        $_SESSION['status'] = "Stored procedure preparation failed: " . $conn->error;
+        $_SESSION['toastColor'] = 'text-bg-danger'; // Red color for error
+        $conn->rollback();  // Rollback transaction if the procedure preparation fails
+        header("Location: ../emp-tablePayment.php");
+        exit(0);
+      }
+
+      // Bind the parameters for paymentId and accountId
+      $stmt2->bind_param('ii', $paymentId, $accountId);
+      
+      // Execute the stored procedure
+      if (!$stmt2->execute()) 
+      {
+        $_SESSION['status'] = "Stored procedure execution failed: " . $stmt2->error;
+        $_SESSION['toastColor'] = 'text-bg-danger'; // Red color for error
+        $conn->rollback();  // Rollback the transaction on failure
+        $stmt2->close();
+        header("Location: ../emp-tablePayment.php");
+        exit(0);
+      }
+
+      // Close the second statement
+      $stmt2->close();
     }
 
     // Commit the transaction if no errors
