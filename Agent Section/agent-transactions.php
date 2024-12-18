@@ -137,7 +137,7 @@ include '../Agent Section/includes/breadcrumbs.php';
                 <th>Contact Person Info</th>
                 <th>Contact Person Contact Details</th>
                 <th>Package Name</th>
-                <th>Booking Date</th>
+                <th>Transaction Date</th>
                 <th>Flight Date</th>
                 <th>Total Pax</th>
                 <th>Status</th>
@@ -213,17 +213,14 @@ include '../Agent Section/includes/breadcrumbs.php';
                                 {$row['TOTAL PAX']}
                             </td>
                             <td>
-                            <span class='badge p-2 rounded-pill {$statusClass} '>
-                                {$status}
-                            </span>
-                          </td>
+                              <span class='badge p-2 rounded-pill {$statusClass} '>
+                                  {$status}
+                              </span>
+                           </td>
                     </tr>";
                   }
                 } 
-                else 
-                {
-                  echo "<tr><td colspan='10'>No bookings found</td></tr>";
-                }
+              
               }
               else
               {
@@ -639,6 +636,9 @@ $(document).ready(function () {
             { width: '10%', targets: 6 }, // Total Pax
             { width: '5%',  targets: 7 }  // Status
         ],
+        language: {
+            emptyTable: "No Transaction Records Available"
+        },
         order: [[0, 'desc']],
         scrollX: false,
         autoWidth: false,

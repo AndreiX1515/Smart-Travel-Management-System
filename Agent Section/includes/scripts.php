@@ -4,22 +4,7 @@
 <!-- DataTables (Core JS) -->
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
-<script>
-    // Check if Bootstrap and DataTables are loaded correctly
-    document.addEventListener('DOMContentLoaded', function () {
-        if (typeof bootstrap !== 'undefined') {
-            console.log('Bootstrap 5 is working!');
-        } else {
-            console.log('Bootstrap 5 failed to load.');
-        }
 
-        if (typeof $.fn.dataTable !== 'undefined') {
-            console.log('DataTables is working!');
-        } else {
-            console.log('DataTables failed to load.');
-        }
-    });
-</script>
 
 
 

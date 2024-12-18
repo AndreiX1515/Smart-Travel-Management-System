@@ -39,6 +39,13 @@
 								</a>
 				</li>
 
+				<li class="nav-item transaction"> 
+								<a class="nav-link page-button" href="../Employee Section/emp-FlightSeatHistory.php" data-page-name="Flight Seat History">
+												<div class="icon"><i class="fas fa-plane"></i></div>
+												<span class="label" style="font-size: 14px;">Flight Seat History</span>
+								</a>
+				</li>
+
 				<!-- For Approvals Dropdown -->
 					<li class="nav-item dropdown">
 								<a class="nav-link page-button" href="#" id="manageBookingDropdown" role="button" data-bs-toggle="collapse" data-bs-target="#manageBookingMenu" aria-expanded="false" aria-controls="manageBookingMenu" data-page-name="Operationals">

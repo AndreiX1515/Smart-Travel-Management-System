@@ -21,100 +21,64 @@
    
   <div class="main-content">
    <div class="table-container">
+
     <div class="table-subheader">
-      <div class="search-wrapper position-relative d-flex flex-column align-items-start mb-2 mt-3">
-        <label for="search-label" class="search-label">Search:</label>
-        <input
-          type="text"
-          id="tableSearchInput"
-          placeholder="Search..."
-          class="form-control search-input"
-          oninput="toggleClearButton(this)"
-        />
-        <!-- <button
-          type="button"
-          class="clear-button"
-          onclick="clearInput(this)"
-          style="display: none;"
-        >
-          <i class="fas fa-times"></i>
-        </button> -->
-      </div>
-    
-       <div class="left-side-wrapper pt-2">
-        <div class="show-entries-wrapper">
-          <label for="itemsPerPageDropdown" class="">Show Entries</label>
-          <div class="dropdown mt-2">
-              <button
-                  class="btn btn-outline-secondary dropdown-toggle"
-                  type="button"
-                  id="itemsPerPageDropdown"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-              >
-                  All
-              </button>
-              <ul class="dropdown-menu" aria-labelledby="itemsPerPageDropdown">
-                  <li><a class="dropdown-item" href="#" data-page-size="5">All</a></li>
-                  <li><a class="dropdown-item" href="#" data-page-size="10">10</a></li>
-                  <li><a class="dropdown-item" href="#" data-page-size="50">50</a></li>
-                  <li><a class="dropdown-item" href="#" data-page-size="100">100</a></li>
-              </ul>
+      <div class="left-side-wrapper mt-2">
+        <div class="d-flex flex-row gap-3">
+          <div class="filter-wrapper">
+            <label for="" class="" style="margin-bottom: 11px;">Status</label>
+            <select id="statusDropdown" class="status-dropdown">
+                <option value="Pending">Pending</option>
+                <option value="Confirmed">Confirmed</option>
+                <option value="Cancelled">Cancelled</option>
+            </select>
           </div>
-         </div>
 
-       <!-- Filter Dropdown -->
-       <div class="filter-wrapper">
-        <label for="filterDropdown" class="">Status</label>
-        <div class="dropdown mt-2">
-            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="filterDropdown" data-bs-toggle="dropdown"
-                aria-expanded="false">
-                Status
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="filterDropdown">
-                <li><a class="dropdown-item" href="#">Status</a></li>
-                <li><a class="dropdown-item" href="#">Package name (A-Z)</a></li>
-            </ul>
+          <div class="flight-dateRange-wrapper">
+            <label for="" class="">Flight Date (Departure)</label>
+            <div class="flight-field-wrapper">
+              <input type="date" class="form-control" id="flightStartDate">
+              <span class="mx-2">to</span>
+              <input type="date" class="form-control" id="flightEndDate">
+            </div>
+          </div>
+
+          <!-- Booking Date Range Picker -->
+          <div class="booking-dateRange-wrapper">
+            <label for="bookingStartDate" class="">Booking Date</label>
+            <div class="d-flex align-items-center">
+              <input type="date" class="form-control" id="bookingStartDate">
+              <span class="mx-2">to</span>
+              <input type="date" class="form-control" id="bookingEndDate">
+            </div>
+          </div>
         </div>
+
+        <div class="button-wrappers">
+            <button class="btn btn-outline-secondary" id="clearFiltersButton">
+                  Clear Filters
+            </button>
+
+            <button class="btn btn-primary" id="clearFiltersButton">
+            <i class="fa-solid fa-user-plus"></i> Add Booking
+            </button>
+        </div>
+
       </div>
-     
-      <!-- Flight Date Range Picker -->
-     <div class="flight-dateRange-wrapper">
-       <label for="flightStartDate" class="">Flight Date (Departure)</label>
-       <div class="d-flex align-items-center">
-         <input type="date" class="form-control" id="flightStartDate">
-         <span class="mx-2">to</span>
-         <input type="date" class="form-control" id="flightEndDate">
-       </div>
-     </div>
 
-     <!-- Booking Date Range Picker -->
-     <div class="booking-dateRange-wrapper">
-       <label for="bookingStartDate" class="">Booking Date</label>
-       <div class="d-flex align-items-center">
-         <input type="date" class="form-control" id="bookingStartDate">
-         <span class="mx-2">to</span>
-         <input type="date" class="form-control" id="bookingEndDate">
-       </div>
-     </div>
+      <div class="search-wrapper">
+        <label for="tableSearchInput" class="search-label">Search:</label>
 
-      <div class="button-wrapper mt-4">
-       <button class="btn btn-outline-secondary mt-2" id="clearFiltersButton">
-            Clear Filters and Search
-       </button>
-     </div>
+        <input type="text" id="tableSearchInput" placeholder="Search..." class="form-control search-input" oninput="toggleClearButton(this)"/>
 
-     <div class="vertical-line"></div> <!-- Vertical line -->
-     
-     <div class="button-wrapper">
-       <button class="btn btn-primary mt-3" id="clearFiltersButton">
-       <i class="fa-solid fa-user-plus"></i> Add Booking
-       </button>
-     </div>
+        <button type="button" class="clear-button" onclick="clearInput(this)">
+          <i class="fas fa-times"></i>
+        </button>
 
-    </div>
-   </div>
+      </div>
 
+
+  </div>
 
   <div class="table-wrapper">
     <table class="table-transaction table-striped">
@@ -208,18 +172,25 @@
  </div>
 </div>
 
+<!-- Table Transaction DataTables and Sorting Functions -->
 <script>
-  $(document).ready(function() {
-      var table = $('.table-transaction').DataTable({
-      paging: true,
-      searching: true,
-      ordering: true,
-      info: true,
-      pageLength: 12, // Set the number of rows per page
-      language: {
-          emptyTable: "No Transaction Records Available"
-      }
-  });
+ $(document).ready(function() {
+  var table = $('.table-transaction').DataTable({
+        paging: true,
+        searching: true,
+        ordering: true,
+        info: true,
+        pageLength: 12, // Set the number of rows per page
+        language: {
+            emptyTable: "No Transaction Records Available"
+        },
+        dom: '<"top"f>rt<"bottom"p><"clear">', // Custom DOM layout to display only the table and pagination
+        initComplete: function () {
+            // Hide the entries (info) and search section on initialization
+            $(".dataTables_info").hide(); // Hides the entries (e.g., "Showing 1 to 10 of 100 entries")
+            $(".dataTables_filter").hide(); // Hides the search field
+        }
+    });
 
 
     // Custom search functionality
@@ -302,7 +273,7 @@
         table.search('').draw();
         table.page.len(10).draw();
     });
-});
+  });
 
     // // Handle Booking Date Range Filtering
     // $('#bookingStartDate, #bookingEndDate').on('change', function() {
@@ -323,58 +294,50 @@
         table.search('').columns().search('').draw(); // Reset the search and clear column filters
     });
 
-// Toggle clear button visibility
-function toggleClearButton(input) {
-    const clearButton = input.nextElementSibling; // Get the button next to the input
-    clearButton.style.display = input.value ? "block" : "none";
-}
+    // Toggle clear button visibility
+    function toggleClearButton(input) {
+        const clearButton = input.nextElementSibling; // Get the button next to the input
+        clearButton.style.display = input.value ? "block" : "none";
+    }
 
-// Clear the input field and reset search when clicked (same as clearFiltersButton)
-function clearInput(button) {
-    const input = button.previousElementSibling; // Get the input field before the button
-    input.value = ''; // Clear the input field
-    button.style.display = 'none'; // Hide the clear button
-    input.focus(); // Refocus on the input field
+    // Clear the input field and reset search when clicked (same as clearFiltersButton)
+    function clearInput(button) {
+        const input = button.previousElementSibling; // Get the input field before the button
+        input.value = ''; // Clear the input field
+        button.style.display = 'none'; // Hide the clear button
+        input.focus(); // Refocus on the input field
 
-    // Reset the DataTable search and column filters, similar to clearFiltersButton
-    table.search('').columns().search('').draw(); // Reset DataTable search and column filters
-}
+        // Reset the DataTable search and column filters, similar to clearFiltersButton
+        table.search('').columns().search('').draw(); // Reset DataTable search and column filters
+    }
 </script>
 
-<style>
-  .dataTables_length {
-    display: none;
-  }
 
-  .dataTables_filter {
-    display: none;
-  }
-</style>
-
+<!-- Table Head  -->
 <script> 
-let lastScrollTop = 0; // Keeps track of the last scroll position
-const header = document.querySelector('.table-wrapper thead');
+  let lastScrollTop = 0;
+  const header = document.querySelector('.table-wrapper thead');
 
-window.addEventListener('scroll', function() {
-  let currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  window.addEventListener('scroll', function() {
+    let currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-  if (currentScrollTop > lastScrollTop) {
-    // Scrolling down
-    header.classList.add('has-border-top'); // Add the border-top
-    header.style.transform = 'translateY(-5px)'; // Adjust upwards slightly
-  } else {
-    // Scrolling up
-    header.classList.remove('has-border-top'); // Remove the border-top
-    header.style.transform = 'translateY(0)'; // Reset to original position
-  }
+    if (currentScrollTop > lastScrollTop) {
+      // Scrolling down
+      header.classList.add('has-border-top'); // Add the border-top
+      header.style.transform = 'translateY(-5px)'; // Adjust upwards slightly
+    } else {
+      // Scrolling up
+      header.classList.remove('has-border-top'); // Remove the border-top
+      header.style.transform = 'translateY(0)'; // Reset to original position
+    }
 
-  lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop; // Prevent negative scroll position
-});
-
+    lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop; // Prevent negative scroll position
+  });
 </script>
 
- <!-- Clickable rows script -->
- <script>
+
+<!-- Clickable table rows script -->
+<script>
     document.addEventListener("DOMContentLoaded", function() 
     {
       document.querySelectorAll("tr[data-url]").forEach(function(row) 
@@ -396,7 +359,8 @@ window.addEventListener('scroll', function() {
         window.location.href = url; // Redirect to the specified URL
       });
     });
-  </script>
+</script>
+
 
 <?php include '../Employee Section/includes/emp-scripts.php' ?>
 

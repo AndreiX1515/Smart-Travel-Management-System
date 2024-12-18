@@ -11,10 +11,10 @@
 .table-subheader {
  width: 100%;
  display: flex;
- flex-direction: row;
+ flex-direction: column;
  justify-content: space-between; /* Space out items evenly */
- align-items: center;
- padding: 10px 10px; /* Adjusted padding for consistency */
+ align-items: left;
+ padding: 0px 10px 5px 10px; /* Adjusted padding for consistency */
  gap: 15px; /* Consistent spacing between elements */
  margin-bottom: 10px;
  border: 1px solid #ddd; /* Light border for the subheader */
@@ -26,163 +26,262 @@
 /* Wrapper labels */
 .table-subheader label,
 .table-subheader .search-label {
- margin-bottom: 3px; /* Remove unnecessary spacing */
+ margin-bottom: 8px; /* Remove unnecessary spacing */
  font-weight: bold;
  font-size: 14px; /* Standard font size */
  color: #333; /* Neutral text color */
  text-align: left;
 }
 
-/* Search input and button section */
-.search-wrapper {
- position: relative;
- display: flex;
- flex-direction: column;
- gap: 5px; /* Space between input and button */
+
+/* General Wrapper */
+.filter-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: auto;
+  align-items: last baseline;
 }
 
-/* Search input */
-.search-wrapper input {
- width: 250px; /* Fixed width for consistency */
- height: 36px; /* Consistent height */
- padding: 5px 12px; /* Balanced padding */
- border: 1px solid #ddd; /* Light border */
- border-radius: 4px; /* Subtle rounded corners */
- box-sizing: border-box;
+/* Status Dropdown */
+.status-dropdown, .date-range-wrapper input, .form-control {
+  width: 150px;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  font-size: 14px;
+  color: #333;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Clear button inside the input field */
-.clear-button {
- background: none;
- border: none;
- cursor: pointer;
- position: absolute;
- right: 15px; /* Position the clear button to the right */
- top: 14%;
- transform: translateY(-50%); /* Vertically center the button */
- display: none; /* Initially hidden */
- color: #888; /* Subtle icon color */
- font-size: 16px; /* Font size for the icon */
- padding: 0; /* Ensure no padding */
- align-items: center;
- justify-content: center;
+.status-dropdown:focus, .date-range-wrapper input:focus, .form-control:focus {
+  outline: none;
+  border-color: #116530;
+  box-shadow: 0 0 4px rgba(17, 101, 48, 0.3);
 }
 
-/* For the icon inside the button */
-.clear-button i {
- color: inherit; /* Inherit color from the parent */
+.status-dropdown:hover, .date-range-wrapper input:hover, .form-control:hover {
+  border-color: #bbb;
 }
 
-/* Left side wrapper for dropdowns and date pickers */
+/* Vertical Line */
+.vertical-line {
+  border-left: 1px solid #ccc;
+  height: 40px;
+  align-self: flex-end;
+}
+
+/* Left Side Wrapper */
 .left-side-wrapper {
- display: flex;
- gap: 20px; /* Reduced gap for better alignment */
- align-items: center; /* Vertically align items */
+  display: flex;
+  gap: 16px;
+  align-items: last baseline;
+  justify-content: space-between;
 }
 
-/* Dropdown and button styling */
-.dropdown {
- display: flex;
- flex-direction: column;
- gap: 5px;
+/* Date Range Wrapper */
+.date-range-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-.dropdown-toggle {
- padding: 8px 14px; /* Consistent padding for a larger clickable area */
- font-size: 13px; /* Slightly smaller font size for uniformity */
- text-align: center;
- width: 130px; /* Fixed width for uniform dropdown button */
+/* Inline Text */
+span {
+  font-size: 14px;
+  color: #666;
+  margin-right: 8px;
 }
 
-.dropdown-menu {
- font-size: 12px;
- padding: 8px;
- width: 180px; /* Uniform width for dropdown */
+/* Flight Field Wrapper */
+.flight-field-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.dropdown-item {
- padding: 6px 10px; /* Adjusted padding for consistency */
-}
-
-/* Hover effect for dropdown items */
-.dropdown-item:hover {
- background-color: #e9ecef;
- color: #007bff;
-}
-
-/* Date range picker section */
-.flight-dateRange-wrapper,
-.booking-dateRange-wrapper {
- display: flex;
- flex-direction: column;
- gap: 8px; /* Adjusted gap for better spacing */
-}
-
-.d-flex {
- display: flex;
- align-items: center;
- gap: 8px; /* Consistent gap between date inputs */
-}
-
-.form-control {
- padding: 8px 12px; /* Consistent padding for form inputs */
- font-size: 14px; /* Slightly larger font size for better readability */
- border-radius: 5px;
- border: 1px solid #ccc;
- width: 130px; /* Uniform width for date input fields */
-}
-
-/* Button for clearing filters */
-.button-wrapper {
- display: flex;
- justify-content: flex-start;
- margin-top: 15px; /* Adjusted margin for spacing */
+/* Button Wrapper */
+.button-wrappers {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
 }
 
 .btn-outline-secondary {
- padding: 8px 15px; /* Adjusted padding for a balanced button size */
- font-size: 14px;
- border-radius: 5px;
+  padding: 8px 15px;
+  font-size: 14px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: transparent;
+  color: #333;
+  cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-/* Show entries and filter wrappers */
-.show-entries-wrapper,
-.filter-wrapper {
- display: flex;
- flex-direction: column;
- flex-shrink: 0; /* Prevent shrinking */
- width: auto; /* Adjust width to content */
+.btn-outline-secondary:hover {
+  background-color: #f2f2f2;
+  border-color: #bbb;
 }
 
-/* Vertical line */
-.vertical-line {
- border-left: 1px solid #ccc; /* Vertical line with light gray color */
- height: 40px; /* Adjust height as needed */
-
- align-self: last baseline; /* Vertically center the line */
+/* Dropdown */
+.dropdown {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-/* Date range inputs */
-.flight-dateRange-wrapper input,
-.booking-dateRange-wrapper input {
- width: 160px; /* Fixed width for inputs */
- height: 36px;
- padding: 5px 10px;
- border: 1px solid #ddd;
- border-radius: 4px;
- box-sizing: border-box;
+.dropdown-toggle {
+  padding: 10px 16px;
+  font-size: 14px;
+  text-align: center;
+  width: 150px;
+  background-color: #f2f2f2;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  color: #333;
+  cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-/* Inline text adjustments */
-span {
- font-size: 14px;
- line-height: 36px;
- color: #555; /* Softer text color */
- margin-right: 10px; /* Space after spans */
+.dropdown-toggle:hover {
+  background-color: #e0e0e0;
+  border-color: #bbb;
+}
+
+.dropdown-toggle:active {
+  background-color: #d6d6d6;
+  border-color: #aaa;
+}
+
+.dropdown-menu {
+  font-size: 14px;
+  padding: 10px;
+  width: 200px;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-item {
+  padding: 8px 12px;
+  color: #333;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.dropdown-item:hover {
+  background-color: #e9ecef;
+  color: #116530;
 }
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Search input - 2nd Part Div*/
+/* Search Wrapper */
+.search-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* Uniform spacing between label, input, and button */
+  align-items: flex-start;
+  margin: 5px 0; /* Top and bottom margins for spacing */
+}
+
+/* Search Label */
+.search-label {
+  font-size: 14px;
+  font-weight: 600; /* Semi-bold for better emphasis */
+  color: #333; /* Neutral color for readability */
+}
+
+/* Search Input */
+.search-input {
+  width: 100%;
+  width: 300px;
+  max-width: 300px; /* Constrain width for consistency */
+  padding: 8px 12px; /* Comfortable padding */
+  border: 1px solid #ccc; /* Light border for clean design */
+  border-radius: 5px; /* Subtle rounded corners */
+  font-size: 14px; /* Clear and readable text size */
+  box-sizing: border-box;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth hover and focus effects */
+}
+
+.search-input:focus {
+  border-color: #116530; /* Green highlight */
+  box-shadow: 0 0 5px rgba(17, 101, 48, 0.3); /* Subtle focus glow */
+  outline: none; /* Remove default outline */
+}
+
+/* Clear Button */
+.clear-button {
+  position: absolute;
+  top: 50%; /* Center vertically */
+  right: 12px; /* Align with input padding */
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: none; /* Hidden by default */
+  padding: 0; /* No extra padding */
+}
+
+.clear-button i {
+  font-size: 16px; /* Larger icon for accessibility */
+  color: #888; /* Neutral icon color */
+  transition: color 0.3s ease; /* Smooth hover effect */
+}
+
+.clear-button:hover i {
+  color: #116530; /* Green on hover */
+}
+
+
+
+
+
+
+
+
+
+/* ============================== */
 
 
 /* Table Wrapper Styling */

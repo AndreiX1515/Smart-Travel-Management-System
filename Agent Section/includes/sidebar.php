@@ -13,7 +13,12 @@
    <a href="../Agent Section/agent-transactions.php" class="page-button my-0" data-page-name="Transactions">
       <i class="fas fa-file-invoice"></i> Transactions
    </a>
+
+   <a href="../Agent Section/agent-FIT.php" class="page-button my-0" data-page-name="F.I.T">
+      <i class="fas fa-file-invoice"></i> F.I.T
+   </a>
    
+
 
   <div class="section-title" onclick="toggleSubMenu('operational-submenu')">
       Reports <span class="chevron-icon fas fa-chevron-down"></span>
