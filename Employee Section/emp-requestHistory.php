@@ -1,18 +1,18 @@
 
 <?php 
-session_start(); 
+	session_start(); 
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Employee - Transactions</title>
-    <?php include '../Employee Section/includes/emp-head.php' ?>
-    <link rel="stylesheet" href="../Employee Section/assets/css/emp-dashboard.css?v=<?php echo time(); ?>">
-    <link rel="stylesheet" href="../Employee Section/assets/css/emp-tableRequestPayment.css?v=<?php echo time(); ?>">
-    <link rel="stylesheet" href="../Employee Section/assets/css/emp-sidebar-navbar.css?v=<?php echo time(); ?>">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Employee - Transactions</title>
+	<?php include '../Employee Section/includes/emp-head.php' ?>
+	<link rel="stylesheet" href="../Employee Section/assets/css/emp-dashboard.css?v=<?php echo time(); ?>">
+	<link rel="stylesheet" href="../Employee Section/assets/css/emp-tableRequestPayment.css?v=<?php echo time(); ?>">
+	<link rel="stylesheet" href="../Employee Section/assets/css/emp-sidebar-navbar.css?v=<?php echo time(); ?>">
 </head>
 <body>
 
@@ -20,7 +20,7 @@ session_start();
 
 <!-- Main Container -->
 <div class="main-container">
-   <?php include '../Employee Section/includes/emp-navbar.php' ?>
+  <?php include '../Employee Section/includes/emp-navbar.php' ?>
 
    <div class="main-content">
         <div class="table-container">

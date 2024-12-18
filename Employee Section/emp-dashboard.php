@@ -665,7 +665,7 @@
                               JOIN 
                                   concern c ON r.concernId = c.concernId
                               JOIN
-                                  agent a ON b.agentCode = a.agentCode
+                                  agent a ON b.agentId = a.agentId
                               WHERE 
                                 r.requestStatus = 'Submitted'
                               ORDER BY 
@@ -744,7 +744,7 @@
                             JOIN 
                               booking b ON p.transactNo = b.transactNo
                             JOIN
-                                agent a ON b.agentCode = a.agentCode
+                                agent a ON b.agentId = a.agentId
                             WHERE 
                               p.paymentStatus = 'Submitted'
                             ORDER BY 
