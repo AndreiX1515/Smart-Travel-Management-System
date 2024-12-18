@@ -214,6 +214,38 @@
 </div>
 
 
+<script>
+    // DOM Elements
+    const toggleButton = document.getElementById('toggleButton');
+    const closeButton = document.getElementById('closeButton');
+    const hiddenDiv = document.getElementById('hiddenDiv');
+
+    // Show the hidden div
+    toggleButton.addEventListener('click', function () {
+        hiddenDiv.style.display = 'block';
+    });
+
+    // Hide the hidden div
+    closeButton.addEventListener('click', function () {
+        hiddenDiv.style.display = 'none';
+    });
+</script>
+
+
+<script>
+function toggleClearButton(input) {
+    const clearButton = input.nextElementSibling; // Get the button next to the input
+    clearButton.style.display = input.value ? "block" : "none";
+}
+
+// Clear the input field
+function clearInput(button) {
+    const input = button.previousElementSibling; // Get the input field before the button
+    input.value = "";
+    button.style.display = "none"; // Hide the clear button
+    input.focus(); // Refocus on the input
+}
+</script>
 
 <?php include '../Employee Section/includes/emp-scripts.php' ?>
 

@@ -13,3 +13,13 @@
 
 <!-- DataTables FixedColumns CSS -->
 <link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/3.3.0/css/fixedColumns.dataTables.min.css">
+
+<!-- jQuery Core (required by jQuery UI and DataTables) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" 
+        onload="console.log('jQuery loaded successfully.')"
+        onerror="console.error('Failed to load jQuery.')"></script>
+
+<!-- jQuery UI (depends on jQuery) -->
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" 
+        onload="console.log('jQuery UI loaded successfully.')"
+        onerror="console.error('Failed to load jQuery UI.')"></script>

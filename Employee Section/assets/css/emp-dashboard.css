@@ -750,86 +750,100 @@
  
  
  
- 
- 
+
  /* Info Table Container */
  .info-table-container {
    display: flex;
    flex-direction: row;
-   margin-top: 5px;
-   gap: 15px; /* Reduced gap between elements */
    position: relative;
-   height: 68vh; /* Fixed height for the container */
-   border: 1px solid black;
+   height: 72vh; /* Fixed height for the container */
    padding: 0px 0px 0px 0px;
  }
  
- /* Info Table */
  .info-table {
-   width: 100%;
-   overflow-x: auto; /* Enable horizontal scrolling */
-   border-collapse: collapse;
-   font-family: Arial, sans-serif;
-   font-size: 12px;
-   background-color: #fff;
-   text-align: center;
-   box-sizing: border-box;
-   table-layout: fixed; /* Ensures column widths are respected */
-   margin-top: 15px;
- }
- 
- /* Info Table Wrapper */
- div.dataTables_wrapper {
-   width: 100%;
-   overflow-x: auto; /* Enable horizontal scrolling */
- }
- 
- /* Table Header */
- div.dataTables_wrapper thead {
-   padding: 8px 12px;
-   font-size: 12px;
-   font-weight: bold;
-   background-color: #f8f9fa; 
-   color: #333; 
-   z-index: 2;
-   border-bottom: 2px solid #e0e0e0; 
- }
- 
- div.dataTables_wrapper thead th {
-   padding: 10px 0;
-   text-align: center;
-   border-right: 1px solid grey;
-   border-left: 1px solid grey;
-   font-weight: 600;
-   background-color: transparent;
-   white-space: normal;
-   word-wrap: break-word;
-   overflow-wrap: break-word;
- }
- 
- /* Table Body Cells */
- div.dataTables_wrapper td {
-   padding: 10px 12px;
-   border: 1px solid #ccc;
-   text-align: center;
-   font-size: 14px;
-   white-space: nowrap;
-   transition: background-color 0.3s ease; /* Smooth transition for hover effect */
- }
- 
- /* Table Rows Hover Effect for DataTables */
- div.dataTables_wrapper tbody tr:hover,
- div.dataTables_wrapper .dataTable tr:hover {
-   background-color: #f1f1f1; /* Light background color on hover */
-   cursor: pointer; /* Change cursor to pointer to indicate interactivity */
- }
- 
- /* Selected Row Background Color for DataTables */
- div.dataTables_wrapper tbody tr.selected,
- div.dataTables_wrapper .dataTable tr.selected {
-   background-color: #dcdcdc; /* Change background color for the selected row */
-   color: #333; /* Ensure text color is readable */
- }
+  width: 100%;
+  overflow-x: auto; 
+  border-collapse: collapse;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  background-color: #fff;
+  text-align: center;
+  box-sizing: border-box;
+  table-layout: fixed;
+  margin-top: 15px;
+}
+
+div.dataTables_wrapper {
+  width: 100%;
+  overflow-x: auto;
+  margin-bottom: 20px;
+}
+
+div.dataTables_wrapper thead {
+  font-size: 12px;
+  font-weight: bold;
+  background-color: #f8f9fa;
+  color: #333;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+div.dataTables_wrapper thead th {
+  padding: 12px 8px;
+  text-align: center;
+  font-weight: 600;
+  border-right: 1px solid #e6e6e6;
+  background-color: #f8f9fa;
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+div.dataTables_wrapper td {
+  padding: 10px 12px;
+  border: 1px solid #e6e6e6;
+  text-align: center;
+  font-size: 14px;
+  color: #555;
+  white-space: nowrap;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+div.dataTables_wrapper tbody tr:hover,
+div.dataTables_wrapper .dataTable tr:hover {
+  background-color: #f9f9f9;
+  color: #000;
+  cursor: pointer;
+}
+
+div.dataTables_wrapper tbody tr.selected,
+div.dataTables_wrapper .dataTable tr.selected {
+  background-color: #e6f7ff;
+  color: #333;
+}
+
+div.dataTables_wrapper thead th:last-child,
+div.dataTables_wrapper td:last-child {
+  border-right: none;
+}
+
+div.dataTables_wrapper thead th:first-child,
+div.dataTables_wrapper td:first-child {
+  border-left: none;
+  border-radius: 8px 0 0 8px;
+}
+
+div.dataTables_wrapper tbody tr:last-child td {
+  border-bottom: none;
+}
+
+div.dataTables_wrapper thead th:nth-child(-n+11),
+div.dataTables_wrapper td:nth-child(-n+11) {
+  position: sticky;
+  left: 0;
+  background-color: #f8f9fa;
+  z-index: 10;
+  box-shadow: inset -1px 0 #ccc;
+}
  
  /* Sticky Columns */
  .info-table th:nth-child(-n+11),
@@ -906,3 +920,140 @@
    display: block !important;
   }
   
+
+
+
+  /* Info Table
+ .info-table {
+  width: 100%;
+  overflow-x: auto; 
+  border-collapse: collapse;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  background-color: #fff;
+  text-align: center;
+  box-sizing: border-box;
+  table-layout: fixed;
+  margin-top: 15px;
+}
+
+
+div.dataTables_wrapper {
+  width: 100%;
+  overflow-x: auto; 
+}
+
+
+div.dataTables_wrapper thead {
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: bold;
+  background-color: #f8f9fa; 
+  color: #333; 
+  z-index: 2;
+  border-bottom: 2px solid #e0e0e0; 
+}
+
+div.dataTables_wrapper thead th {
+  padding: 10px 0;
+  text-align: center;
+  border-right: 1px solid grey;
+  border-left: 1px solid grey;
+  font-weight: 600;
+  background-color: transparent;
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+
+div.dataTables_wrapper td {
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  text-align: center;
+  font-size: 14px;
+  white-space: nowrap;
+  transition: background-color 0.3s ease; 
+}
+
+
+div.dataTables_wrapper tbody tr:hover,
+div.dataTables_wrapper .dataTable tr:hover {
+  background-color: #f1f1f1;
+  cursor: pointer;
+}
+
+
+div.dataTables_wrapper tbody tr.selected,
+div.dataTables_wrapper .dataTable tr.selected {
+  background-color: #dcdcdc; 
+  color: #333; 
+}
+
+
+.info-table th:nth-child(-n+11),
+.info-table td:nth-child(-n+11) {
+  position: sticky;
+  left: 0;
+  background-color: #f8f9fa; 
+  z-index: 10;
+  box-shadow: inset -1px 0 #ccc; 
+}
+
+
+div.dataTables_wrapper tbody {
+  overflow-y: visible; 
+}
+
+
+div.dataTables_wrapper thead th:nth-child(1), 
+div.dataTables_wrapper tbody td:nth-child(1) { 
+  width: 5%; 
+}
+
+div.dataTables_wrapper thead th:nth-child(2), 
+div.dataTables_wrapper tbody td:nth-child(2) { 
+  width: 5%; 
+}
+
+div.dataTables_wrapper thead th:nth-child(3), 
+div.dataTables_wrapper tbody td:nth-child(3) { 
+  width: 16%; 
+}
+
+div.dataTables_wrapper thead th:nth-child(4), 
+div.dataTables_wrapper tbody td:nth-child(4) { 
+  width: 5%; 
+}
+
+div.dataTables_wrapper thead th:nth-child(5), 
+div.dataTables_wrapper tbody td:nth-child(5) { 
+  width: 5%; 
+}
+
+div.dataTables_wrapper thead th:nth-child(6), 
+div.dataTables_wrapper tbody td:nth-child(6) { 
+  width: 5%; 
+}
+
+div.dataTables_wrapper thead th:nth-child(7), 
+div.dataTables_wrapper tbody td:nth-child(7) { 
+  width: 5%; 
+}
+
+div.dataTables_wrapper thead th:nth-child(8), 
+div.dataTables_wrapper tbody td:nth-child(8) { 
+  width: 5%; 
+}
+
+div.dataTables_wrapper thead th:nth-child(9), 
+div.dataTables_wrapper tbody td:nth-child(9) { 
+  width: 5%; 
+}
+
+
+div.dataTables_wrapper thead th:nth-child(n+10), 
+div.dataTables_wrapper tbody td:nth-child(n+10) { 
+  width: 10%; 
+} */
+
