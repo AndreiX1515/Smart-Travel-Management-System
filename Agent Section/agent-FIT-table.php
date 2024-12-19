@@ -115,100 +115,98 @@ include '../Agent Section/includes/breadcrumbs.php';
 
       <div class="table-container">
         <table id="product-table" class="product-table mt-2">
-            <thead>
-                <tr>
-                    <th>Transaction ID</th>
-                    <th>Contact Person Info</th>
-                    <th>Contact Person Contact Details</th>
-                    <th>Package Name</th>
-                    <th>Transaction Date</th>
-                    <th>Flight Date</th>
-                    <th>Total Pax</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                $agentCode = $_SESSION['agent_agentCode'];
-                $agentId = $_SESSION['agent_accountId'];
+          <thead>
+            <tr>
+              <th>Transaction No</th>
+              <th>Contact Person Info</th>
+              <th>Contact Person Contact Details</th>
+              <th>Package Name</th>
+              <th>No. of Nights</th>
+              <th>Name of Hotel</th>
+              <th>Trip</th>
+              <th>Start Date</th>
+              <th>Return Date</th>
+              <th>Total Pax</th>
+              <th>Price</th>
+              <th>Transaction Date</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php
+              $agentCode = $_SESSION['agent_agentCode'];
+              $agentId = $_SESSION['agent_accountId'];
 
-                $sql1 = "SELECT b.transactNo AS `T.N`, p.packageName AS `PACKAGE`, 
-                            DATE_FORMAT(b.bookingDate, '%m-%d-%Y') AS `TRANSACTION DATE`, b.bookingType as bookingType,
-                            DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y') AS `FLIGHT DATE`,
-                            b.pax AS `TOTAL PAX`, CONCAT(b.lName, ', ', b.fName, ' ', CASE WHEN b.mName = 'N/A' 
-                            THEN '' ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ', CASE WHEN b.suffix = 'N/A' THEN '' 
-                            ELSE b.suffix END) AS `CONTACT NAME`, b.email AS `CONTACT EMAIL`,
-                            CONCAT(b.countryCode, ' ', b.contactNo) AS `CONTACT PHONE`, b.status AS `STATUS`
-                        FROM 
-                            booking b
-                        LEFT JOIN 
-                            flight f ON b.flightId = f.flightId
-                        LEFT JOIN 
-                            package p ON b.packageId = p.packageId
-                        LEFT JOIN
-                            agent a ON b.agentId = a.agentId
-                        WHERE 
-                            b.agentCode = '$agentCode' 
-                        ORDER BY 
-                            b.transactNo DESC";
+              $sql1 = "SELECT transactionNo AS `T.N`, packageName AS `PACKAGE`, pax AS `TOTAL PAX`, nights, hotel, trip, startDate, 
+                          returnDate, phpPrice, usdPrice, bookingDate as `TRANSACTION DATE`, status as `STATUS`,
+                          CONCAT(lName, ', ', fName, ' ', CASE WHEN mName = 'N/A' THEN '' 
+                            ELSE CONCAT(SUBSTRING(mName, 1, 1), '.') END, ' ', CASE WHEN suffix = 'N/A' THEN '' 
+                            ELSE suffix END) AS `CONTACT NAME`, email as `CONTACT EMAIL`, 
+                          CONCAT(countryCode, ' ', contactNo) AS `CONTACT PHONE` 
+                            from fit";
 
-                $res1 = $conn->query($sql1);
+              $res1 = $conn->query($sql1);
 
-                if ($res1->num_rows > 0) {
-                    while ($row = $res1->fetch_assoc()) {
-                        $transactNo = $row['T.N'];
-                        $pax = $row['TOTAL PAX'];
+              if ($res1->num_rows > 0) 
+              {
+                while ($row = $res1->fetch_assoc()) 
+                {
+                  $transactNo = $row['T.N'];
+                  $pax = $row['TOTAL PAX'];
 
-                        $status = isset($row['STATUS']) ? $row['STATUS'] : 'Unknown';
-                        $statusClass = '';
+                  $status = isset($row['STATUS']) ? $row['STATUS'] : 'Unknown';
+                  $statusClass = '';
 
-                        switch ($status) {
-                            case 'Confirmed':
-                                $statusClass = 'bg-success text-white'; // Green background, white text
-                                break;
-                            case 'Cancelled':
-                                $statusClass = 'bg-danger text-white'; // Red background, white text
-                                break;
-                            case 'Pending':
-                                $statusClass = 'bg-warning text-dark'; 
-                                break;
-                            default:
-                                $statusClass = 'bg-secondary text-white'; 
-                        }
+                  switch ($status) 
+                  {
+                    case 'Confirmed':
+                        $statusClass = 'bg-success text-white'; // Green background, white text
+                        break;
+                    case 'Cancelled':
+                        $statusClass = 'bg-danger text-white'; // Red background, white text
+                        break;
+                    case 'Pending':
+                        $statusClass = 'bg-warning text-dark'; 
+                        break;
+                    default:
+                        $statusClass = 'bg-secondary text-white'; 
+                  }
 
-                        echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($transactNo) . "'>
-                                <td>{$transactNo}</td>
-                                <td>{$row['CONTACT NAME']}</td>
-                                <td>
-                                    <div class='d-flex flex-column'>
-                                        <span><strong>Email: </strong>" . $row['CONTACT EMAIL'] ."</span>
-                                        <span><strong>Contact Number: </strong>" . $row['CONTACT PHONE'] ."</span>
-                                    </div>
-                                </td>
-                                <td>{$row['PACKAGE']}</td>
-                                <td>{$row['TRANSACTION DATE']}</td>
-                                <td>{$row['FLIGHT DATE']}</td>
-                                <td style='text-align: center; font-weight: bold;'>{$row['TOTAL PAX']}</td>
-                                <td>
-                                    <span class='badge p-2 rounded-pill {$statusClass}'>
-                                        {$status}
-                                    </span>
-                                </td>
-                            </tr>";
-                    }
-                } else {
-                    echo "<tr><td colspan='8'>No bookings found</td></tr>";
+                  echo "<tr>
+                          <td>{$transactNo}</td>
+                          <td>{$row['CONTACT NAME']}</td>
+                          <td>
+                            <div class='d-flex flex-column'>
+                              <span><strong>Email: </strong>" . $row['CONTACT EMAIL'] ."</span>
+                              <span><strong>Contact Number: </strong>" . $row['CONTACT PHONE'] ."</span>
+                            </div>
+                          </td>
+                          <td>{$row['PACKAGE']}</td>
+                          <td>{$row['nights']}</td>
+                          <td>{$row['hotel']}</td>
+                          <td>{$row['trip']}</td>
+                          <td>{$row['startDate']}</td>
+                          <td>{$row['returnDate']}</td>
+                          <td style='text-align: center; font-weight: bold;'>{$row['TOTAL PAX']}</td>
+                          <td>{$row['phpPrice']}</td>
+                          <td>{$row['TRANSACTION DATE']}</td>
+                          <td>
+                            <span class='badge p-2 rounded-pill {$statusClass}'>
+                              {$status}
+                            </span>
+                          </td>
+                      </tr>";
                 }
-
-                if ($res1) {
-                    $res1->free();
-                }
-
-                $conn->close();
-                ?>
-            </tbody>
+              } 
+              else 
+              {
+                echo "<tr><td colspan='8'>No bookings found</td></tr>";
+              }
+              $conn->close();
+            ?>
+          </tbody>
         </table>
-</div>
+      </div>
 
     </div>
   </div>

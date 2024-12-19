@@ -77,8 +77,8 @@ include '../Agent Section/includes/breadcrumbs.php';
                   <label for="hotels" class="fs-6">Hotels <span class="text-danger fw-bold">*</span></label>
                   <select class="form-select mt-2 fs-6" id="hotels" name="hotels" required>
                     <option selected disabled>Select Hotel</option>
-                    <option value="Smart Hotel" data-price="80">Smart Hotel - $80/night</option>
-                    <option value="Marina Bay Hotel" data-price="100">Marina Bay Hotel - $100/night</option>
+                    <option value="Smart Hotel" data-price="80">Smart Hotel - $80/night + $20 on Friday & Saturday</option>
+                    <option value="Marina Bay Hotel" data-price="100">Marina Bay Hotel - $100/night + $20 on Friday & Saturday</option>
                   </select>
                   <span id="hotelsError" class="text-danger"></span>
                 </div>
@@ -417,6 +417,84 @@ include '../Agent Section/includes/breadcrumbs.php';
           <!-- <input type="" class="form-control mt-2 fs-6" id="totalCost" name="totalCost" readonly> -->
         </div>
 
+        <!-- Booking Summary Modal -->
+        <div class="modal fade" id="BookingSummaryModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg modal-dialog-centered"> <!-- Added modal-lg for a wider modal -->
+            <div class="modal-content position-relative">
+                  
+              <button type="button" class="btn-close close-outside p-4" data-bs-dismiss="modal" aria-label="Close"></button>
+                  
+              <div class="modal-body">
+                <div class="confirmation-container container">
+                  <!-- Logo Section -->
+                  <div class="row d-flex justify-content-center align-items-center text-center mb-3 mt-2">
+                    <div class="col">
+                      <img src="../assets/images/SMART LOGO 2 (2).png" alt="Trip Image" class="img-fluid" style="max-width: 250px; max-height: 80px;">
+                    </div>
+                  </div>
+
+                  <h5 class="text-left mb-4">BOOKING SUMMARY</h5>
+                  <!-- Transaction and Contact Info -->
+                  <div class="transaction-info row mb-3">
+                    <div class="col-12">
+
+                      <div class="d-flex justify-content-between mb-1">
+                        <p class="mb-0"><strong>Contact Guest Name:</strong></p>
+                        <p class="mb-0" id="contactPersonName">Sample Name</p>
+                      </div>
+
+                      <div class="d-flex justify-content-between mb-1">
+                        <p class="mb-0"><strong>Contact Email:</strong></p>
+                        <p class="mb-0" id="contactPersonEmail">Sample Email</p>
+                      </div>
+                    </div>
+                  </div>
+                  <hr>
+
+                  <!-- Package Details -->
+                  <div class="row hotel-details mb-3">
+                    <div class="col-12">
+                      <div class="d-flex justify-content-between mb-1">
+                        <p class="mb-0"><strong>Package Name:</strong></p>
+                        <p class="mb-0" id="selectedPackage">No Package Selected</p>
+                      </div>
+
+                      <div class="d-flex justify-content-between">
+                        <p class="mb-0"><strong>No. of Guests:</strong></p>
+                        <p class="mb-0" id="guestCount">1</p>
+                      </div>
+                    </div>
+                  </div>
+                  <hr>
+
+                  <!-- Flight/Origin Details -->
+                  <div class="row mb-3">
+                    <div class="col-12">
+                      <div class="d-flex justify-content-between mb-1">
+                        <p class="mb-0"><strong>Origin:</strong></p>
+                        <p class="mb-0" id="selectedOrigin">No Origin Selected</p>
+                      </div>
+
+                      <div class="d-flex justify-content-between">
+                        <p class="mb-0"><strong>Flight Date:</strong></p>
+                        <p class="mb-0" id="selectedDate">No Flight Date Selected</p>
+                      </div>
+                    </div>
+                  </div>
+                  <hr>
+
+                  <!-- Proceed to Payment -->
+                  <div class="row mt-4">
+                    <div class="col d-flex justify-content-between">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-primary" name="bookNow">Proceed to Payment</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </form>
     </div>
   </div>
