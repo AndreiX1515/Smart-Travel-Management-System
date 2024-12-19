@@ -16,7 +16,7 @@ $accId = $_SESSION['accountId'] ?? '';
 
 
 
-  <?php
+
   include 'session_validate.php'; // This will check if the session is valid
   
   ini_set('display_errors', 1);
