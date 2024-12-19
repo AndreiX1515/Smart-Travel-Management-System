@@ -47,6 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($result->num_rows > 0) {
         // Fetch user data
         $user = $result->fetch_assoc();
+        $_SESSION['accountId'] = $user['accountId'];
     
         // Verify the password (plain-text password verification)
         if ($password === trim($user['password']) && $accountType === trim($user['accountType'])) {

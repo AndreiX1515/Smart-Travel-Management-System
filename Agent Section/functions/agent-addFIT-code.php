@@ -28,6 +28,20 @@
     $contactNo = $_POST['contactNo'];
     $email = $_POST['email'];
 
+    // Get the last bookingId and increment it for the new transaction
+    $result = $conn->query("SELECT MAX(bookingId) AS lastBookingId FROM booking");
+    if (!$result) 
+    {
+      $_SESSION['status'] = "Error fetching last booking ID: " . $conn->error;
+      header("Location: ../agent-addBooking.php");
+      exit(0);
+    }
+
+    $row = $result->fetch_assoc();
+    $newBookingId = ($row && $row['lastBookingId'] !== null) ? $row['lastBookingId'] + 1 : 1;
+    $formattedCounter = str_pad($newBookingId, 6, '0', STR_PAD_LEFT);
+    $transactNo = $agentCode . '-' . $formattedCounter;
+
     // Set the session variable for the current user in MySQL
     $conn->query("SET @current_user_id = $accountId");
 
@@ -35,9 +49,9 @@
     $conn->begin_transaction();
 
     // Prepare the SQL statement for insertion into the booking table
-    $sql1 = "INSERT INTO fit (accountId, agentId, agentCode, packageName, nights, hotel, trip, startDate, returnDate, pax, 
-    phpPrice, usdPrice, fName, mName, lName, suffix, countryCode, contactNo, email, bookingDate, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?,
-    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), 'Pending')";
+    $sql1 = "INSERT INTO fit (transactionNo, accountId, agentId, agentCode, packageName, nights, hotel, trip, startDate, returnDate, 
+    pax, phpPrice, usdPrice, fName, mName, lName, suffix, countryCode, contactNo, email, bookingDate, status) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), 'Pending')";
     $stmt1 = $conn->prepare($sql1);
 
     if (!$stmt1) 
@@ -49,8 +63,8 @@
     }
 
     // Bind and execute the booking insertion
-    $stmt1->bind_param('isssissssiddsssssss', $accountId, $agentId, $agentCode, $packageName, $nights, $hotels, $trip, $dayPicker, 
-    $returnDate, $pax, $totalCostPHP, $totalCostUSD, $fName, $mName, $lName, $suffix, $countryCode, $contactNo, $email);
+    $stmt1->bind_param('sisssissssiddsssssss', $transactNo, $accountId, $agentId, $agentCode, $packageName, $nights, $hotels, $trip, 
+    $dayPicker, $returnDate, $pax, $totalCostPHP, $totalCostUSD, $fName, $mName, $lName, $suffix, $countryCode, $contactNo, $email);
     
     if (!$stmt1->execute()) 
     {
