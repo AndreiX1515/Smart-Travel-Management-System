@@ -1,27 +1,22 @@
+<?php
+// include 'session_validate.php'; // This will check if the session is valid
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+// Fetch session variables directlys
+// $email = $_SESSION['email'] ?? ''; // Use null coalescing operator to avoid undefined index
+// $firstName = $_SESSION['first_name'] ?? '';
+// $lastName = $_SESSION['last_name'] ?? '';
+// $middleName = $_SESSION['middle_name'] ?? '';
+$accId = $_SESSION['accountId'] ?? '';
+
+// $fullName = htmlspecialchars($lastName . ', ' . $firstName . ($middleName ? ' ' . substr($middleName, 0, 1) . '.' : ''));
 
 
-
-  <?php
-  // include 'session_validate.php'; // This will check if the session is valid
-  
-  ini_set('display_errors', 1);
-  ini_set('display_startup_errors', 1);
-  error_reporting(E_ALL);
-  
-  // Fetch session variables directlys
-  $email = $_SESSION['email'] ?? ''; // Use null coalescing operator to avoid undefined index
-  $firstName = $_SESSION['first_name'] ?? '';
-  $lastName = $_SESSION['last_name'] ?? '';
-  $middleName = $_SESSION['middle_name'] ?? '';
-  $accId = $_SESSION['accountid'] ?? '';
-  
-  $fullName = htmlspecialchars($lastName . ', ' . $firstName . ($middleName ? ' ' . substr($middleName, 0, 1) . '.' : ''));
-  
-  
-  
-  
-  
-  ?>
+require 'conn.php';
+?>
 
 
 <!DOCTYPE html>
@@ -100,7 +95,7 @@
                     <label for="agent">Select Agent <span class="text-danger fw-bold">*</span></label>
                     <select class="form-select mt-2" id="agentId" name="agentId" required>
                       <option selected disabled>Select Agent</option>
-                      <option value="Null">None</option>
+                      <!-- <option value="Null">None</option> -->
                       <?php
                         $sql1 = mysqli_query($conn, "SELECT agentId, CONCAT(lName, ', ', fName, 
                           CASE 
@@ -710,7 +705,7 @@
                     <div class="form-group mb-4">
                       <label class="mb-2" for="2ndcontactNo">Other Contact No.</label>
                       <div class="input-group">
-                        <select name="2ndcountryCode[]" class="form-select">
+                        <select name="2ndCountryCode[]" class="form-select">
                           <option disabled selected>Country Code</option>
                           <option value="+93">Afghanistan (+93)</option>
                           <option value="+355">Albania (+355)</option>
@@ -1209,7 +1204,7 @@
                   <div class="transaction-info row mb-3">
                     <div class="col-12">
 
-                      <div class="d-flex justify-content-between mb-1">
+                      <!-- <div class="d-flex justify-content-between mb-1">
                         <p class="mb-0"><strong>Contact Guest Name:</strong></p>
                         <p class="mb-0"><?php echo $fullName ?></p>
                       </div>
@@ -1217,7 +1212,7 @@
                       <div class="d-flex justify-content-between mb-1">
                         <p class="mb-0"><strong>Contact Email:</strong></p>
                         <p class="mb-0"><?php echo $email ?></p>
-                      </div>
+                      </div> -->
                     </div>
                   </div>
 

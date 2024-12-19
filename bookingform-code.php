@@ -26,7 +26,7 @@ if (isset($_POST['bookNow']))
     $emails = $_POST['email']; 
     $countryCodes = $_POST['countryCode']; 
     $contactNos = $_POST['contactNo'];
-    $countryCodes2 = $_POST['2ndcountryCode']; 
+    // $countryCodes2 = $_POST['2ndCountryCode']; 
     $contactNos2 = $_POST['2ndcontactNo'];  
     $sexes = $_POST['sex'];   
     $nationalities = $_POST['nationality'];  
@@ -80,7 +80,7 @@ if (isset($_POST['bookNow']))
     }
 
     // Bind and execute the booking insertion
-    $accountId = $_SESSION['accountid']; // Assuming the user is logged in
+    $accountId = $_SESSION['accountId']; // Assuming the user is logged in
     $stmt1->bind_param('isiiiid', $accountId, $transactNo, $agentId, $flightIds, $packageId, $pax, $totalPrice);
     
     if (!$stmt1->execute()) 
