@@ -129,115 +129,85 @@
     </div>
 
 
-    <?php include 'includes\scripts.php' ?>
+
 
     <script>
-      const LoginButton = document.getElementById('LoginButton');
+     const LoginButton = document.getElementById('LoginButton'); // Ensure this matches the button ID
 
-      document.getElementById('loginForm').addEventListener('submit', function(event) {
-          event.preventDefault(); // Prevent default form submission
+document.getElementById('loginForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent default form submission
 
-          // Clear previous messages
-          document.getElementById('message-login').innerHTML = '';
+    // Clear previous messages
+    document.getElementById('message-login').innerHTML = '';
 
-          // Create FormData object to gather the form data
-          const formData = new FormData(this);
+    // Create FormData object to gather the form data
+    const formData = new FormData(this);
 
-          // Perform AJAX request
-          fetch('login-process.php', {
-              method: 'POST',
-              body: formData
-          })
-          .then(response => response.json())
-          .then(data => {
-              if (data.success) {
-                      // Redirect to dashboard or homepage
-                      window.location.href = 'index.php';
-                  } 
-              
-              else if (data.message && data.message.trim() === "User not found.") {
-                  // Show specific message for user not found
-                  document.getElementById('message-login').innerHTML = '<div class="alert alert-danger text-center">' + data.message + ', Click Here if you want to remove your session and reload</div>';
-                  
-                  return;
-              } 
+    // Log form data to the console for debugging
+    for (let [key, value] of formData.entries()) {
+        console.log(key + ': ' + value);  // Log each field for debugging
+    }
 
-              else if (data.message && data.message.trim() === "Invalid email or password.") {
-                  // Show specific message for user not found
-                  document.getElementById('message-login').innerHTML = '<div class="alert alert-danger text-center">' + data.message + '</div>';
-                  
-                  return;
-              } 
+    // Perform AJAX request
+    fetch('login-process.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        // Log the full response object for debugging
+        console.log('Response:', response);
 
-              else if (data.message && data.message.trim() === "Your account is inactive. Please contact support.") {
-                  // Show specific message for inactive account
-                  document.getElementById('message-login').innerHTML = '<div class="alert alert-warning text-center">' + data.message + '</div>';
-                  
-                  return;
-              } 
+        // Ensure response is JSON
+        if (!response.ok) {
+            throw new Error('Network response was not ok. Status: ' + response.status);
+        }
 
-              else if (data.message && data.message.trim() === "You are logged in on another device. Please close from other tab or devices then reload before logging in again!") {
-                   // Show specific message for logged in on another device
-                   document.getElementById('message-login').innerHTML = 
-                       `<div class="alert alert-danger text-center">
-                            ${data.message}, <a href="#" id="remove-session-link">Click here</a> if you want to remove your session and reload.
-                        </div>`
+        return response.json();  // Parse JSON response
+    })
+    .then(data => {
+        console.log('Data:', data);  // Log the data to verify its content
 
+        if (data.success) {
+            // Redirect to dashboard or homepage
+            window.location.href = 'index.php';
+        } else if (data.message && data.message.trim() === "User not found.") {
+            // Show specific message for user not found
+            document.getElementById('message-login').innerHTML = '<div class="alert alert-danger text-center">' + data.message + '</div>';
+        } else if (data.message && data.message.trim() === "Invalid email or password.") {
+            // Show specific message for invalid credentials
+            document.getElementById('message-login').innerHTML = '<div class="alert alert-danger text-center">' + data.message + '</div>';
+        } else if (data.message && data.message.trim() === "Your account is inactive. Please contact support.") {
+            // Show specific message for inactive account
+            document.getElementById('message-login').innerHTML = '<div class="alert alert-warning text-center">' + data.message + '</div>';
+        } else {
+            // Fallback for unexpected responses
+            document.getElementById('message-login').innerHTML = '<div class="alert alert-danger text-center">An unexpected error occurred. Please try again.</div>';
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
 
-                   // Add an event listener to the link using jQuery
-                   $('#remove-session-link').on('click', function(event) {
-                       event.preventDefault(); // Prevent default anchor click behavior
-                       
-                       // Get the current email value from the input field
-                       const username = $('#floatingEmail').val(); // Get the email value from the input field
-                       
-                       // Logic to remove the session, e.g., AJAX call to server to destroy session
-                       $.ajax({
-                           url: 'clear-session.php', // Your PHP script to clear the session
-                           method: 'POST',
-                           contentType: 'application/json', // Sending JSON data
-                           data: JSON.stringify({ username: username }), // Send the email to clear-session.php
-                           dataType: 'json',
-                           success: function(responseData) {
-                               if (responseData.status === 'success') {
-                                   location.reload(); // Reload the page on successful session removal
-                               } else {
-                                   // Handle any error response if necessary
-                                   console.error('Error removing session:', responseData.message);
-                               }
-                           },
-                           error: function() {
-                               console.error('Error removing session. Please try again.');
-                           }
-                       });
-                   });
+        // Check for network errors
+        if (error.message.includes('Network')) {
+            document.getElementById('message-login').innerHTML = '<div class="alert alert-danger text-center">Network error. Please check your internet connection and try again.</div>';
+        }
+        // Check for response JSON parsing errors
+        else if (error.message.includes('Unexpected token')) {
+            document.getElementById('message-login').innerHTML = '<div class="alert alert-danger text-center">Server response was invalid. Please try again later.</div>';
+        }
+        // General error handling
+        else {
+            document.getElementById('message-login').innerHTML = '<div class="alert alert-danger text-center">An error occurred. Please try again later.</div>';
+        }
 
-                   console.log("Disabling login button for 'Logged in on another device.'");
-                   LoginButton.classList.add('button-disabled'); // Disable the login button
-
-                   return;
-               }
+        // Add CSS class to visually disable the button to prevent repeated clicks
+        if (LoginButton) {
+            LoginButton.classList.add('button-disabled');
+        }
+    });
+});
 
 
-
-              else {
-                  // Fallback for no message or unexpected data structure
-                  document.getElementById('message-login').innerHTML = '<div class="alert alert-danger text-center">An unknown error occurred. Please try again.</div>';
-                  
-                  return;
-              }
-
-
-          })
-          .catch(error => {
-              console.error('Error:', error);
-              // Optionally, show a generic error message if there's a problem with the request
-              document.getElementById('message-login').innerHTML = '<div class="alert alert-danger">An error occurred. Please try again later.</div>';
-
-              // Add CSS class to visually disable the button
-              document.getElementById('loginButton').classList.add('button-disabled');
-          });
-      });
     </script>
 
    
@@ -258,7 +228,7 @@
         });
     </script>
 
-
-
+<?php include 'includes\scripts.php' ?>
+    
     </body>
 </html>

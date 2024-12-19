@@ -1,8 +1,19 @@
 <?php
 session_start(); // Start session to store user data
 
+// Disable error reporting (for production)
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+header('Content-Type: application/json');
+
 // Include your database connection
 include 'conn.php'; // Adjust this to match your actual database connection
+
+// Clean any previous output
+ob_clean(); 
+flush(); 
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = trim($_POST['email']);
@@ -25,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt = $conn->prepare("SELECT * FROM accounts WHERE email = ?");
     
     if (!$stmt) {
-        echo json_encode(['success' => false, 'message' => 'Database query error: ' . $conn->error]);
+        echo json_encode(['success' => false, 'message' => 'Database query error: ' . json_encode($conn->error)]); // Error handling for database query
         exit;
     }
     
@@ -37,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Fetch user data
         $user = $result->fetch_assoc();
     
-        // Verify the password (plaintext comparison)
+        // Verify the password (plain-text password verification)
         if ($password === trim($user['password']) && $accountType === trim($user['accountType'])) {
             
             if ($user['accountStatus'] !== 'active') {
@@ -59,6 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             
             // Check if an existing session is found
             if ($session_check_result->num_rows > 0) {
+                echo json_encode(['success' => true, 'message' => 'Logged in successfully.']);
                 // Existing session found, get the session details
                 $existing_session = $session_check_result->fetch_assoc();
                 $existing_session_id = $existing_session['session_id'];
@@ -81,14 +93,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             $_SESSION['accountid'] = $user['accountid'];
             $_SESSION['email'] = $user['email']; // Already included
-            $_SESSION['password'] = $user['password']; // Adding password to session (if necessary)
-            // $_SESSION['first_name'] = $user['first_name'];
-            // $_SESSION['last_name'] = $user['last_name'];
-            // $_SESSION['middle_name'] = $user['middle_name'];
             $_SESSION['accountStatus'] = $user['accountStatus'];
             $_SESSION['createdAt'] = $user['createdAt'];
             $_SESSION['timeout'] = time(); // For session timeout
-
 
             // Insert the new session into the user_sessions table
             $insert_stmt = $conn->prepare("INSERT INTO user_sessions (session_id, accountid, ip_address, user_agent) VALUES (?, ?, ?, ?)");
@@ -99,7 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Return success response
             echo json_encode(['success' => true]);
         } else {
-            // Invalid password
+            // Invalid password or account type mismatch
             echo json_encode(['success' => false, 'message' => 'Invalid email or password.']);
         }
     } else {
@@ -109,5 +116,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Close statement
     $stmt->close();
+
+    // Check for JSON encoding issues
+    if (json_last_error() !== JSON_ERROR_NONE) {
+        echo json_encode(['success' => false, 'message' => 'JSON encoding error: ' . json_last_error_msg()]);
+    }
 }
 ?>
