@@ -13,7 +13,7 @@ include '../Agent Section/includes/breadcrumbs.php';
   <title>Transactions</title>
 
   <?php include '../Agent Section/includes/head.php' ?>
-  <link rel="stylesheet" href="../Agent Section/assets/css/agent-transaction.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="../Agent Section/assets/css/agent-FIT.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="../Agent Section/assets/css/navbar-sidebar.css?v=<?php echo time(); ?>">
 
 </head>
@@ -174,22 +174,34 @@ include '../Agent Section/includes/breadcrumbs.php';
 
                   echo "<tr>
                           <td>{$transactNo}</td>
+                          
                           <td>{$row['CONTACT NAME']}</td>
+
                           <td>
                             <div class='d-flex flex-column'>
                               <span><strong>Email: </strong>" . $row['CONTACT EMAIL'] ."</span>
                               <span><strong>Contact Number: </strong>" . $row['CONTACT PHONE'] ."</span>
                             </div>
                           </td>
+                          
                           <td>{$row['PACKAGE']}</td>
+
                           <td>{$row['nights']}</td>
+
                           <td>{$row['hotel']}</td>
+
                           <td>{$row['trip']}</td>
+
                           <td>{$row['startDate']}</td>
+
                           <td>{$row['returnDate']}</td>
+
                           <td style='text-align: center; font-weight: bold;'>{$row['TOTAL PAX']}</td>
+
                           <td>{$row['phpPrice']}</td>
+
                           <td>{$row['TRANSACTION DATE']}</td>
+
                           <td>
                             <span class='badge p-2 rounded-pill {$statusClass}'>
                               {$status}
@@ -215,16 +227,22 @@ include '../Agent Section/includes/breadcrumbs.php';
 <script>
 $(document).ready(function () {
       const table = $('#product-table').DataTable({
-        dom: 'rtip',
+        dom: 'rti',
         columnDefs: [
             { width: '10%', targets: 0 }, // ID
-            { width: '15%', targets: 1 }, // Contact Person Name
+            { width: '30%', targets: 1 }, // Contact Person Name
             { width: '20%', targets: 2 }, // Contact Person Details
             { width: '15%', targets: 3 }, // Package Name
             { width: '12%', targets: 4 }, // Booking Date
             { width: '13%', targets: 5 }, // Flight Date
             { width: '10%', targets: 6 }, // Total Pax
-            { width: '5%',  targets: 7 }  // Status
+            { width: '5%',  targets: 7 },  // Status
+            { width: '15%', targets: 8 }, // Package Name
+            { width: '12%', targets: 9 }, // Booking Date
+            { width: '13%', targets: 10 }, // Flight Date
+            { width: '10%', targets: 11 }, // Total Pax
+            { width: '5%',  targets: 12 },  // Status
+            { width: '5%',  targets: 12 }  // Status
         ],
         language: {
             emptyTable: "No Transaction Records Available"
