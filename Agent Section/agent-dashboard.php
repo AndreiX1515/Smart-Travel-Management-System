@@ -653,6 +653,9 @@ session_start();
         <li class="nav-item" role="presentation">
           <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Flight Seats Tracker</button>
         </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">F.I.T</button>
+        </li>
         <!-- <li class="nav-item" role="presentation">
           <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Confirmed</button>
         </li> -->
@@ -1303,126 +1306,126 @@ session_start();
 
       </div>
 
-    <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
+     <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
 
       <div class="flight-seat-container">
-            <div class="one">
-                
-              <div class="body-flight">
-                <div class="confirm-table-container-flight">
-                  <table class="info-table">
-                    <thead class="border-2">
-                      <tr>
-                        <!-- <th rowspan="2">TEAM OP</th> -->
-                        <th rowspan="2">ORIGIN</th>
-                        <th colspan="2">FLIGHT DATE</th> <!-- Flight Date columns -->
-                        <!-- <th rowspan="2">FLIGHT SEAT</th> -->
-                        <th rowspan="2">AVAILABLE SEATS</th>
-                        <th rowspan="2">ADDITIONAL SEATS</th>
-                        <!-- <th rowspan="2">AIR + LAND</th>
-                        <th rowspan="2">LAND ONLY</th>
-                        <th rowspan="2">WHOLESALE PRICE</th>
-                        <th rowspan="2">RETAIL PRICE</th> 
-                        <th rowspan="2">LAND PRICE</th> -->
-                      </tr>
-                      <tr style="top: -8px">
-                        <th>START</th>
-                        <th>END</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <?php
-                        $sql = "SELECT DISTINCT agentCode FROM agent WHERE agentCode IS NOT NULL AND agentCode != ''";
-                        $result = $conn->query($sql);
+        <div class="one">
+            
+          <div class="body-flight">
+            <div class="confirm-table-container-flight">
+              <table class="info-table">
+                <thead class="border-2">
+                  <tr>
+                    <!-- <th rowspan="2">TEAM OP</th> -->
+                    <th rowspan="2">ORIGIN</th>
+                    <th colspan="2">FLIGHT DATE</th> <!-- Flight Date columns -->
+                    <!-- <th rowspan="2">FLIGHT SEAT</th> -->
+                    <th rowspan="2">AVAILABLE SEATS</th>
+                    <th rowspan="2">ADDITIONAL SEATS</th>
+                    <!-- <th rowspan="2">AIR + LAND</th>
+                    <th rowspan="2">LAND ONLY</th>
+                    <th rowspan="2">WHOLESALE PRICE</th>
+                    <th rowspan="2">RETAIL PRICE</th> 
+                    <th rowspan="2">LAND PRICE</th> -->
+                  </tr>
+                  <tr style="top: -8px">
+                    <th>START</th>
+                    <th>END</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php
+                    $sql = "SELECT DISTINCT agentCode FROM agent WHERE agentCode IS NOT NULL AND agentCode != ''";
+                    $result = $conn->query($sql);
 
-                        $agentColumns = '';
-                        while ($row = $result->fetch_assoc()) 
-                        {
-                          $agentColumns .= 
-                              'SUM(CASE WHEN b.agentCode = "' . $row['agentCode'] . '" AND b.bookingType = "Package" and b.status = "Confirmed" THEN b.pax ELSE 0 END) AS `' . $row['agentCode'] . '_AL`, ' .
-                              'SUM(CASE WHEN b.agentCode = "' . $row['agentCode'] . '" AND b.bookingType = "Land" and b.status = "Confirmed" THEN b.pax ELSE 0 END) AS `' . $row['agentCode'] . '_LO`, ';
-                        }
+                    $agentColumns = '';
+                    while ($row = $result->fetch_assoc()) 
+                    {
+                      $agentColumns .= 
+                          'SUM(CASE WHEN b.agentCode = "' . $row['agentCode'] . '" AND b.bookingType = "Package" and b.status = "Confirmed" THEN b.pax ELSE 0 END) AS `' . $row['agentCode'] . '_AL`, ' .
+                          'SUM(CASE WHEN b.agentCode = "' . $row['agentCode'] . '" AND b.bookingType = "Land" and b.status = "Confirmed" THEN b.pax ELSE 0 END) AS `' . $row['agentCode'] . '_LO`, ';
+                    }
 
-                  
-                        $agentColumns = rtrim($agentColumns, ', ');
+              
+                    $agentColumns = rtrim($agentColumns, ', ');
 
-                        $sql = "
-                        SELECT CONCAT(e.lName, ', ', e.fName, 
-                                IF(e.mName IS NOT NULL AND e.mName != '', CONCAT(' ', LEFT(e.mName, 1)), '')) AS TeamOP,
-                            f.origin, 
-                            f.flightDepartureDate AS Start, 
-                            f.returnDepartureDate AS End, 
-                            f.availSeats AS FlightSeat, 
-                            GREATEST(
-                                (f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package' 
-                                THEN b.pax ELSE 0 END), 0)), 0) AS AvailSeats, 
-                            IF(
-                                (f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package' 
-                                THEN b.pax ELSE 0 END), 0)) < 0, 
-                                ABS(f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package' 
-                                THEN b.pax ELSE 0 END), 0)), 
-                                0) AS AdditionalSeats,
-                            SUM(CASE WHEN b.bookingType = 'Package' AND b.status = 'Confirmed' THEN b.pax ELSE 0 END) AS `Air+Land`,
-                            SUM(CASE WHEN b.bookingType = 'Land' AND b.status = 'Confirmed' THEN b.pax ELSE 0 END) AS `LandOnly`,
-                            f.wholesalePrice AS WholesalePrice, 
-                            f.flightPrice AS RetailPrice, 
-                            p.packagePrice AS LandArrangement, 
-                            $agentColumns
-                        FROM 
-                            employee e 
-                        JOIN 
-                            flight f ON f.employeeId = e.employeeId
-                        LEFT JOIN 
-                            booking b ON b.flightId = f.flightId
-                        LEFT JOIN 
-                            package p ON f.packageId = p.packageId
-                        WHERE 
-                            f.flightDepartureDate >= CURDATE()
-                        GROUP BY 
-                            f.flightId, e.lName, e.fName, e.mName, f.origin, f.flightDepartureDate, f.returnDepartureDate, f.availSeats, 
-                            f.wholesalePrice, f.flightPrice, p.packagePrice
-                        ORDER BY 
-                            f.flightDepartureDate";
+                    $sql = "
+                    SELECT CONCAT(e.lName, ', ', e.fName, 
+                            IF(e.mName IS NOT NULL AND e.mName != '', CONCAT(' ', LEFT(e.mName, 1)), '')) AS TeamOP,
+                        f.origin, 
+                        f.flightDepartureDate AS Start, 
+                        f.returnDepartureDate AS End, 
+                        f.availSeats AS FlightSeat, 
+                        GREATEST(
+                            (f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package' 
+                            THEN b.pax ELSE 0 END), 0)), 0) AS AvailSeats, 
+                        IF(
+                            (f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package' 
+                            THEN b.pax ELSE 0 END), 0)) < 0, 
+                            ABS(f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package' 
+                            THEN b.pax ELSE 0 END), 0)), 
+                            0) AS AdditionalSeats,
+                        SUM(CASE WHEN b.bookingType = 'Package' AND b.status = 'Confirmed' THEN b.pax ELSE 0 END) AS `Air+Land`,
+                        SUM(CASE WHEN b.bookingType = 'Land' AND b.status = 'Confirmed' THEN b.pax ELSE 0 END) AS `LandOnly`,
+                        f.wholesalePrice AS WholesalePrice, 
+                        f.flightPrice AS RetailPrice, 
+                        p.packagePrice AS LandArrangement, 
+                        $agentColumns
+                    FROM 
+                        employee e 
+                    JOIN 
+                        flight f ON f.employeeId = e.employeeId
+                    LEFT JOIN 
+                        booking b ON b.flightId = f.flightId
+                    LEFT JOIN 
+                        package p ON f.packageId = p.packageId
+                    WHERE 
+                        f.flightDepartureDate >= CURDATE()
+                    GROUP BY 
+                        f.flightId, e.lName, e.fName, e.mName, f.origin, f.flightDepartureDate, f.returnDepartureDate, f.availSeats, 
+                        f.wholesalePrice, f.flightPrice, p.packagePrice
+                    ORDER BY 
+                        f.flightDepartureDate";
 
-                        // Step 3: Execute the query
-                        $result = $conn->query($sql);
+                    // Step 3: Execute the query
+                    $result = $conn->query($sql);
 
-                        // Step 4: Display the results in HTML table
-                        if ($result->num_rows > 0) 
-                        {
-                          while ($row = $result->fetch_assoc()) 
-                          {
-                            echo '<tr>';
-                              // echo '<td class="fw-bold">' . $row['TeamOP'] . '</td>';
-                              echo '<td>' . $row['origin'] . '</td>';
-                              echo '<td>' . $row['Start'] . '</td>';
-                              echo '<td>' . $row['End'] . '</td>';
-                              // echo '<td class="fw-bold">' . $row['FlightSeat'] . '</td>';
-                              echo '<td class="fw-bold">' . $row['AvailSeats'] . '</td>';
-                              echo '<td class="fw-bolder">' . $row['AdditionalSeats'] . '</td>';
-                              // echo '<td class="fw-bolder">' . $row['Air+Land'] . '</td>';
-                              // echo '<td class="fw-bolder">' . $row['LandOnly'] . '</td>';
-                              // echo '<td>₱ ' . number_format($row['WholesalePrice'], 2) . '</td>';
-                              // echo '<td>₱ ' . number_format($row['RetailPrice'], 2) . '</td>';
-                              // echo '<td>₱ ' . number_format($row['LandArrangement'], 2) . '</td>';
-                            echo '</tr>';
-                          }
-                        } 
-                        else 
-                        {
-                          echo "No records found.";
-                        }
-                      ?>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
+                    // Step 4: Display the results in HTML table
+                    if ($result->num_rows > 0) 
+                    {
+                      while ($row = $result->fetch_assoc()) 
+                      {
+                        echo '<tr>';
+                          // echo '<td class="fw-bold">' . $row['TeamOP'] . '</td>';
+                          echo '<td>' . $row['origin'] . '</td>';
+                          echo '<td>' . $row['Start'] . '</td>';
+                          echo '<td>' . $row['End'] . '</td>';
+                          // echo '<td class="fw-bold">' . $row['FlightSeat'] . '</td>';
+                          echo '<td class="fw-bold">' . $row['AvailSeats'] . '</td>';
+                          echo '<td class="fw-bolder">' . $row['AdditionalSeats'] . '</td>';
+                          // echo '<td class="fw-bolder">' . $row['Air+Land'] . '</td>';
+                          // echo '<td class="fw-bolder">' . $row['LandOnly'] . '</td>';
+                          // echo '<td>₱ ' . number_format($row['WholesalePrice'], 2) . '</td>';
+                          // echo '<td>₱ ' . number_format($row['RetailPrice'], 2) . '</td>';
+                          // echo '<td>₱ ' . number_format($row['LandArrangement'], 2) . '</td>';
+                        echo '</tr>';
+                      }
+                    } 
+                    else 
+                    {
+                      echo "No records found.";
+                    }
+                  ?>
+                </tbody>
+              </table>
             </div>
+          </div>
         </div>
       </div>
 
-      <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
+     </div>
 
+    <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
       <div class="flight-seat-container">
             <div class="one">
               <div class="body-flight">
@@ -1536,13 +1539,181 @@ session_start();
               </div>
             </div>
         </div>
-        
-        
-      </div>
+  
+    </div>
 
-      <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">
-      </div>
-        
+    <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">
+      <!-- Confirmed Table -->
+      <div class="confirm-container">
+          <div class="one">
+            <div class="header d-flex justify-content-between align-items-center">
+              <h6 class="white-pill">F.I.T</h6>
+            </div>
+              
+            <div class="body">
+              <div class="confirm-table-container">
+                <table class="confirm-table">
+                  <thead>
+                    <tr>
+                      <th>TRANSACTION NO.</th>
+                      <th>PACKAGE</th>
+                      <th>FLIGHT DATE</th>
+                      <th>TOTAL PAX.</th>
+                      <th>CONTACT NAME</th>
+                      <th>BOOKING TYPE</th>
+                      <th>AMOUNT PAID</th>
+                      <th>BALANCE</th>
+                      <th>STATUS</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php
+                      // Assuming you already have a connection to your database
+                      $accountId = $_SESSION['agent_accountId'];
+                      $agentCode = $_SESSION['agent_agentCode'];
+                      $agentRole = $_SESSION['agent_agentRole'];
+
+                      if ($agentRole != 'Head Agent') 
+                      {
+                        // Query to select all records from the booking table
+                        $query = "SELECT b.transactNo, b.flightId, b.pax, b.totalPrice AS packagePrice, 
+                                    CONCAT(DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y'), ' - ', DATE_FORMAT(f.returnDepartureDate, 
+                                    '%m-%d-%Y')) AS FlightDate, p.packageName AS packageName, 
+                                    CONCAT(b.lName, ', ', b.fName, ' ', 
+                                        CASE WHEN b.mName = 'N/A' THEN '' ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ',
+                                        CASE WHEN b.suffix = 'N/A' THEN '' ELSE b.suffix END) AS contactName, 
+                                    IFNULL(req.totalRequestCost, 0) AS totalRequestCost, IFNULL(paid.totalPaidAmount, 0) AS totalPaidAmount,
+                                    b.status AS bookingStatus, b.bookingType, (b.totalPrice + IFNULL(req.totalRequestCost, 0)) AS TotalCost
+                                  FROM 
+                                    booking b
+                                  JOIN flight f ON b.flightId = f.flightId
+                                  LEFT JOIN 
+                                    package p ON b.packageId = p.packageId
+                                  LEFT JOIN 
+                                    (SELECT transactNo, SUM(amount) AS totalPaidAmount FROM payment
+                                      WHERE paymentStatus = 'Approved' GROUP BY transactNo) paid ON b.transactNo = paid.transactNo
+                                  LEFT JOIN 
+                                    (SELECT transactNo, SUM(requestCost) AS totalRequestCost FROM request
+                                      WHERE requestStatus = 'Confirmed' GROUP BY transactNo) req ON b.transactNo = req.transactNo
+                                  WHERE 
+                                    b.status = 'Confirmed' and b.accountId = '$accountId' and f.flightDepartureDate >= CURDATE()";
+
+                        $result = $conn->query($query); // Execute the query
+
+                        // Check if there are results and populate the table
+                        if ($result && $result->num_rows > 0) 
+                        {
+                          while ($row = $result->fetch_assoc()) 
+                          {
+                            // Calculate Balance
+                            $totalAmountPaid = $row['totalPaidAmount'];
+                            $totalAmountToBePaid = $row['packagePrice'] + $row['totalRequestCost']; // Total price + total request cost
+                            $balance = $totalAmountToBePaid - $totalAmountPaid; // Balance calculation
+
+                            // Determine if fully paid or not
+                            $status = ($totalAmountPaid == $totalAmountToBePaid) ? 'Fully Paid' : 'Not Paid';
+
+                        
+                            // Display table row
+                            echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($row['transactNo']) . "'>";
+                            echo "<td>" . htmlspecialchars(substr($row['transactNo'], 5)) . "</td>"; // TransactNo
+                            echo "<td>" . htmlspecialchars($row['packageName']) . "</td>"; // Package Name
+                            echo "<td>" . htmlspecialchars($row['FlightDate']) . "</td>"; // Flight Date Range
+                            echo "<td>" . htmlspecialchars($row['pax']) . "</td>"; // Pax (Number of Passengers)
+                            echo "<td>" . htmlspecialchars($row['contactName']) . "</td>"; // Contact Name
+                            echo "<td>" . $row['bookingType'] . "</td>"; // Booking Type 
+                            echo "<td>₱ " . number_format($totalAmountPaid, 2) . "</td>"; // Total Amount Paid
+                            echo "<td>₱ " . number_format($balance, 2) . "</td>"; // Balance (Amount to be paid - Amount paid)
+                            echo "<td>" . htmlspecialchars($row['bookingStatus']) . "</td>"; // Status (Fully Paid or Not Paid)
+                            echo "</tr>";
+                          }
+                        } 
+                        else 
+                        {
+                          // Display a message if no records are found
+                          echo "<tr><td colspan='12'>No records found.</td></tr>";
+                        }
+                      }
+                      else
+                      {
+                        {
+                          // Query to select all records from the booking table
+                          $query = "SELECT b.transactNo, b.flightId, b.pax, b.totalPrice AS packagePrice, 
+                                      CONCAT(DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y'), ' - ', DATE_FORMAT(f.returnDepartureDate, 
+                                      '%m-%d-%Y')) AS FlightDate, p.packageName AS packageName, 
+                                      CONCAT(b.lName, ', ', b.fName, ' ', 
+                                          CASE WHEN b.mName = 'N/A' THEN '' ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ',
+                                          CASE WHEN b.suffix = 'N/A' THEN '' ELSE b.suffix END) AS contactName, 
+                                      IFNULL(req.totalRequestCost, 0) AS totalRequestCost, IFNULL(paid.totalPaidAmount, 0) AS totalPaidAmount,
+                                      b.status AS bookingStatus, b.bookingType, (b.totalPrice + IFNULL(req.totalRequestCost, 0)) AS TotalCost
+                                    FROM 
+                                      booking b
+                                    JOIN flight f ON b.flightId = f.flightId
+                                    LEFT JOIN 
+                                      package p ON b.packageId = p.packageId
+                                    LEFT JOIN 
+                                      (SELECT transactNo, SUM(amount) AS totalPaidAmount FROM payment
+                                        WHERE paymentStatus = 'Approved' GROUP BY transactNo) paid ON b.transactNo = paid.transactNo
+                                    LEFT JOIN 
+                                      (SELECT transactNo, SUM(requestCost) AS totalRequestCost FROM request
+                                        WHERE requestStatus = 'Confirmed' GROUP BY transactNo) req ON b.transactNo = req.transactNo
+                                    WHERE 
+                                      b.status = 'Confirmed' and b.agentCode = '$agentCode'";
+
+                          $result = $conn->query($query); // Execute the query
+
+                          // Check if there are results and populate the table
+                          if ($result && $result->num_rows > 0) 
+                          {
+                            while ($row = $result->fetch_assoc()) 
+                            {
+                              // Calculate Balance
+                              $totalAmountPaid = $row['totalPaidAmount'];
+                              $totalAmountToBePaid = $row['packagePrice'] + $row['totalRequestCost']; // Total price + total request cost
+                              $balance = $totalAmountToBePaid - $totalAmountPaid; // Balance calculation
+
+                              // Determine if fully paid or not
+                              $status = ($totalAmountPaid == $totalAmountToBePaid) ? 'Fully Paid' : 'Not Paid';
+
+                          
+                              // Display table row
+                              echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($row['transactNo']) . "'>";
+                              echo "<td>" . htmlspecialchars(substr($row['transactNo'], 5)) . "</td>"; // TransactNo
+                              echo "<td>" . htmlspecialchars($row['packageName']) . "</td>"; // Package Name
+                              echo "<td>" . htmlspecialchars($row['FlightDate']) . "</td>"; // Flight Date Range
+                              echo "<td>" . htmlspecialchars($row['pax']) . "</td>"; // Pax (Number of Passengers)
+                              echo "<td>" . htmlspecialchars($row['contactName']) . "</td>"; // Contact Name
+                              echo "<td>" . $row['bookingType'] . "</td>"; // Booking Type 
+                              echo "<td>₱ " . number_format($totalAmountPaid, 2) . "</td>"; // Total Amount Paid
+                              echo "<td>₱ " . number_format($balance, 2) . "</td>"; // Balance (Amount to be paid - Amount paid)
+                              echo "<td>" . htmlspecialchars($row['bookingStatus']) . "</td>"; // Status (Fully Paid or Not Paid)
+                              echo "</tr>";
+                            }
+                          } 
+                          else 
+                          {
+                            // Display a message if no records are found
+                            echo "<tr><td colspan='12'>No records found.</td></tr>";
+                          }
+                        }
+                      }
+                      
+                    ?>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+    </div>
+
+    <!-- <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">
+    </div> -->
+
+    
+
   </div>
 
  </div>

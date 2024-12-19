@@ -15,8 +15,28 @@ $accId = $_SESSION['accountId'] ?? '';
 // $fullName = htmlspecialchars($lastName . ', ' . $firstName . ($middleName ? ' ' . substr($middleName, 0, 1) . '.' : ''));
 
 
-require 'conn.php';
-?>
+
+
+  include 'session_validate.php'; // This will check if the session is valid
+  
+  ini_set('display_errors', 1);
+  ini_set('display_startup_errors', 1);
+  error_reporting(E_ALL);
+  
+  // Fetch session variables directlys
+  $email = $_SESSION['email'] ?? ''; // Use null coalescing operator to avoid undefined index
+  $firstName = $_SESSION['first_name'] ?? '';
+  $lastName = $_SESSION['last_name'] ?? '';
+  $middleName = $_SESSION['middle_name'] ?? '';
+  $accId = $_SESSION['accountid'] ?? '';
+  
+  $fullName = htmlspecialchars($lastName . ', ' . $firstName . ($middleName ? ' ' . substr($middleName, 0, 1) . '.' : ''));
+  
+  
+  
+  
+  
+  ?>
 
 
 <!DOCTYPE html>

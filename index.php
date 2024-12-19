@@ -1,16 +1,6 @@
 <?php 
   session_start();
-
-
 ?>
-
-
-
-
-
-
-
-
 
 
 
@@ -156,7 +146,7 @@
       <div class="d-flex flex-row gap-3">
 
 
-      <a href="bookingform.php" class="cta-button">Book Now</a>
+      <a href="<?php echo isset($_SESSION['accountid']) ? 'bookingform.php' : 'login.php'; ?>" class="cta-button">Book Now</a>
 
 
 
