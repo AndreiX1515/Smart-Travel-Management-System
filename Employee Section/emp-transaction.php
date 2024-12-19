@@ -147,6 +147,13 @@
                       break;
               }
 
+              $departureDate = $row['departureDate'];
+              $returnDate = $row['returnDate'];
+
+              // Format the dates for display (e.g., "January 1, 2000")
+              $formattedDepartureDate = (new DateTime($departureDate))->format('F j, Y');
+              $formattedReturnDate = (new DateTime($returnDate))->format('F j, Y');
+
               // Output each row as a table row
               echo "<tr data-url='emp-transactionInfo.php?id=" . htmlspecialchars($row['transactNo']) . "'>";
               echo "<td>" . htmlspecialchars($row['transactNo']) . "</td>";
@@ -154,7 +161,7 @@
               echo "<td>" . htmlspecialchars($row['PackageName']) . "</td>";
               // echo "<td>" . htmlspecialchars($row['FlightDate']) . "</td>";
               echo "<td>" . htmlspecialchars($row['departureDate']) . "</td>";
-              echo "<td>" . htmlspecialchars($row['returnDate']) ."</td>";
+              echo "<td>" . htmlspecialchars($row['returnDate']) . "</td>";
               echo "<td>" . htmlspecialchars($row['BookingDate']) . "</td>";
               echo "<td class='fw-bold ps-3'>" . htmlspecialchars($row['TotalPax']) . "</td>";
               echo "<td>₱ " . number_format($row['PackagePrice'], 2) . "</td>";
@@ -176,65 +183,67 @@
 <script>
  $(document).ready(function() {
   var table = $('.table-transaction').DataTable({
-        paging: true,
-        searching: true,
-        ordering: true,
-        info: true,
-        pageLength: 12, // Set the number of rows per page
-        language: {
-            emptyTable: "No Transaction Records Available"
-        },
-        dom: '<"top"f>rt<"bottom"p><"clear">', // Custom DOM layout to display only the table and pagination
-        initComplete: function () {
-            // Hide the entries (info) and search section on initialization
-            $(".dataTables_info").hide(); // Hides the entries (e.g., "Showing 1 to 10 of 100 entries")
-            $(".dataTables_filter").hide(); // Hides the search field
+    paging: true,
+    searching: true,
+    ordering: true,
+    info: true,
+    pageLength: 12, // Set the number of rows per page
+    language: {
+        emptyTable: "No Transaction Records Available"
+    },
+    dom: '<"top"f>rt<"bottom"p><"clear">', // Custom DOM layout to display only the table and pagination
+    initComplete: function () {
+        $(".dataTables_info").hide(); // Hide the entries (e.g., "Showing 1 to 10 of 100 entries")
+        $(".dataTables_filter").hide(); // Hide the search field
+    },
+    columnDefs: [
+        {
+            // Assuming the flight date is in the fourth column (index 3)
+            targets: 3, // Change this index to your flight date column
+            render: function(data, type, row) {
+                var date = new Date(data); // Convert numeric value (timestamp) to Date object
+
+                if (type === 'display' || type === 'filter') {
+                    // Return the formatted date as YYYY/MM/DD
+                    var year = date.getFullYear();
+                    var month = (date.getMonth() + 1).toString().padStart(2, '0');
+                    var day = date.getDate().toString().padStart(2, '0');
+                    return year + '/' + month + '/' + day; // YYYY/MM/DD
+                }
+
+                // For sorting, return the raw numeric value (timestamp) so DataTables can sort it correctly
+                return data;
+            }
         }
-    });
+    ]
+  });
+
+  // Function to filter the table by date range
+  function filterByFlightDate() {
+    var startDate = $('#flightStartDate').val();
+    var endDate = $('#flightEndDate').val();
+
+    // Convert start and end dates to timestamps (numeric values) to ensure the filter works properly
+    var startTimestamp = new Date(startDate).getTime();
+    var endTimestamp = new Date(endDate).getTime();
+
+    // Apply the date filter to the DataTable using raw timestamp values
+    table.column(3).search(function(settings, data, dataIndex) {
+      var rowDate = new Date(data).getTime(); // Convert each row's date to timestamp
+      return rowDate >= startTimestamp && rowDate <= endTimestamp;
+    }).draw(); // Redraw the table after applying the filter
+  }
+
+  // Event listeners to trigger the filter when the user selects dates
+  $('#flightStartDate, #flightEndDate').on('change', function() {
+    filterByFlightDate();
+  });
+
+  // Optional: Apply sorting by flight date after applying the filter
+  table.order([3, 'asc']).draw();  // Assuming the flight date column is at index 3
+});
 
 
-    // Custom search functionality
-    $('#tableSearchInput').on('input', function() {
-        table.search(this.value).draw();
-    });
-
-    // Handle custom "Items per Page" dropdown
-    $('#itemsPerPageDropdown .dropdown-item').on('click', function() {
-        var pageSize = $(this).data('page-size');
-        table.page.len(pageSize).draw();
-    });
-
-    // Flight Date Range Sorting (only for Departure)
-    $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
-        const flightStartDate = $('#flightStartDate').val(); // Flight Start Date
-        const flightEndDate = $('#flightEndDate').val(); // Flight End Date
-        const departureDate = data[2]; // Assuming Flight Date is in column index 2 (Departure Date)
-
-        const departure = departureDate ? new Date(departureDate) : null;
-        const startDate = flightStartDate ? new Date(flightStartDate) : null;
-        const endDate = flightEndDate ? new Date(flightEndDate) : null;
-
-        // Departure Date filtering logic
-        if (
-            (!startDate || (departure && departure >= startDate)) &&
-            (!endDate || (departure && departure <= endDate))
-        ) {
-            return true; // Row matches Departure Date filter
-        }
-        return false; // Otherwise, hide this row
-    });
-
-    // Handle Flight Date Range Filtering on change
-    $('#flightStartDate, #flightEndDate').on('change', function() {
-        // Redraw table to apply flight date filters
-        table.draw();
-    });
-
-    // Handle Flight Date Range Filtering on change
-    $('#flightStartDate, #flightEndDate').on('change', function() {
-        // Redraw table to apply flight date filters
-        table.draw();
-    });
 
     // Booking Date Range Sorting
     $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
@@ -262,6 +271,28 @@
         table.draw();
     });
 
+
+     // Handle custom "Items per Page" dropdown
+     $('#itemsPerPageDropdown .dropdown-item').on('click', function() {
+        var pageSize = $(this).data('page-size');
+        table.page.len(pageSize).draw();
+    });
+
+    // Function to filter the table by date range
+    function filterByFlightDate() {
+        var startDate = $('#flightStartDate').val();
+        var endDate = $('#flightEndDate').val();
+
+        // Apply the date filter to the DataTable
+        table.column(3).search(startDate + ' to ' + endDate).draw(); // assuming flight date is in column 1 (adjust as needed)
+    }
+
+
+    // Custom search functionality
+    $('#tableSearchInput').on('input', function() {
+        table.search(this.value).draw();
+    });
+
     // Clear all filters functionality
     $('#clearFiltersButton').on('click', function() {
         $('#tableSearchInput').val('');
@@ -273,7 +304,7 @@
         table.search('').draw();
         table.page.len(10).draw();
     });
-  });
+
 
     // // Handle Booking Date Range Filtering
     // $('#bookingStartDate, #bookingEndDate').on('change', function() {

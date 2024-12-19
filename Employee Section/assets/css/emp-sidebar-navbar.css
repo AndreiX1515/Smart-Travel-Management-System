@@ -139,6 +139,7 @@ body {
 .sidebar-logo-section .logo-link:hover {
  background-color: #343A40;
  cursor: context-menu;
+ 
 }
 
 /* Move the logo link to the right when the sidebar is hovered */

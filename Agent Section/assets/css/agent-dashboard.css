@@ -24,30 +24,29 @@ body {
 
 /* Main Content Section */
 .main-content {
-  margin-left: 0; /* Start with no margin to account for hidden sidebar */
-  transition: margin-left 0.5s ease; /* Smooth transition for margin */
-  position: relative; /* Keep it relative for positioning */
+  margin-left: 0;
+  transition: margin-left 0.5s ease; 
+  position: relative;
 }
 
 /* Adjust margin when the sidebar is active */
 .main-content.active {
- margin-left: 250px; /* Add margin to account for visible sidebar */
+ margin-left: 225px;
 }
 
 .container-wrapper {
  padding: 0px 50px 0px 5px;
  display: flex;
  flex-direction: column;
- justify-content: space-between; /* Distributes cards evenly with space in between */
- gap: 10px; /* Adds space between each item */
+ justify-content: space-between; 
+ gap: 10px;
 }
 
 /* info-container Section */
 .info-container {
   width: 100%;
-  background-color: #F6F6F6; /* Light background */
-  border-radius: 10px; /* Rounded corners */
-  /* box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1); Box shadow for depth */
+  background-color: #F6F6F6; 
+  border-radius: 10px; 
   height: 5vh;
   display: flex;
   flex-direction: row;
@@ -111,8 +110,8 @@ body {
  font-size: 1rem;
  font-weight: bold;
  color: #333;
-
 }
+
 
 .counts-wrapper .card {
  background-color: #F6F6F6;
@@ -139,7 +138,7 @@ body {
  align-items: center;
  justify-content: flex-start;
  flex: 1;
- padding: 5px 10px; /* Reduced padding */
+ padding: 0px 10px; /* Reduced padding */
  transition: transform 0.2s ease, box-shadow 0.2s ease;
  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Added box shadow */
  border-radius: 8px; /* Optional: Slight rounding for a softer look */
@@ -151,40 +150,40 @@ body {
 }
 
 .card-icon {
- font-size: 14px; /* Smaller icon font size */
- margin-right: 10px; /* Reduced margin */
+ font-size: 14px;
+ margin-right: 10px;
  display: flex;
  align-items: center;
  justify-content: center;
- width: 30px; /* Smaller width */
- height: 30px; /* Smaller height */
+ width: 30px;
+ height: 30px;
  border-radius: 30%;
- color: #ffffff; /* Default icon color */
+ color: #ffffff;
 }
 
 /* Blue Icon for Total Transactions */
 .icon-blue {
- background-color: #17a2b8; /* Light blue background */
+ background-color: #17a2b8;
 }
 
 /* Green Icon for Completed Transactions */
 .icon-green {
- background-color: #28a745; /* Green background */
+ background-color: #28a745;
 }
 
 /* Yellow Icon for Pending Transactions */
 .icon-yellow {
- background-color: #ffc107; /* Yellow background */
- color: #333; /* Darker color for contrast */
+ background-color: #ffc107;
+ color: #333;
 }
 
 /* Red Icon for Cancelled Transactions */
 .icon-red {
- background-color: #dc3545; /* Red background */
+ background-color: #dc3545;
 }
 
 .icon-gray {
- background-color: gray; /* Gray background */
+ background-color: gray;
 }
 
 .side-content {
@@ -194,17 +193,18 @@ body {
 }
 
 .side-content h5 {
- font-size: 20px; /* Reduced font size for the number */
+ font-size: 24px; /* Reduced font size for the number */
  font-weight: bolder;
  margin: 0;
  color: #3a3535;
+ margin-bottom: -5px;
 }
 
 .side-content p {
  font-size: 10px; /* Smaller font size for description */
  font-weight: bold;
  color: #747b85; /* Lighter gray for the description */
- margin: 0;
+ margin-bottom: 0;
 }
 
 .side-content .month-sales {
@@ -233,7 +233,7 @@ body {
 .currency-card {
  width: 140px;
  height: 10.5vh;
- padding: 0px; 
+ padding: 5px 0px 0px 0px; 
  display: flex;
  flex-direction: column;
  align-items: center;
@@ -262,11 +262,15 @@ body {
  height: 25px;
 }
 
+.header-currency {
+  margin-bottom: 5px;
+}
+
+
+
 
 .flag-icon-wrapper h6{
   font-size: 12px;
-
- 
 }
 
 .currency-text-wrapper h5{
@@ -329,11 +333,11 @@ body {
 
 /* Tabs Container */
 .tabs-wrapper {
-  padding: 8px 0px;
+  padding: 0;
   width: 100%;
-  margin-top: 5px;
   display: flex;
   justify-content: start;
+  margin: 10px 0px 0px 0px;
 }
 
 /* Active Tab Styling */
@@ -360,10 +364,6 @@ body {
 }
 
 
-
-
-
-
 /* Second Row Container */
 .second-row-container {
   display: flex;
@@ -379,6 +379,14 @@ body {
   width: 33.33%;
   background-color: transparent;
   padding-bottom: 5px;
+}
+
+/* Body styles */
+.second-row-container .body {
+  position: relative; 
+  width: 100%;
+  height: auto;
+  color: #fff;
 }
 
 
@@ -426,85 +434,80 @@ body {
 }
 
 
-/* Body styles */
-.one .body {
-  position: relative; 
-  width: 100%;
-  background-color: #fff;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
-  height: 85%;
-}
 
 
-/* Table styles */
-.table-container {
-  width: 100%; 
-  padding: 0; 
-  overflow: auto; 
-}
 
 
-/* Unconfirm Table Container for Scrollability */ 
+
+/* Container for Scrollable Unconfirm Table */
 .unconfirm-table-container {
   width: 33.33%;
-  overflow-x: auto;
-  margin-top: 10px; 
+  overflow-x: auto; 
+  overflow-y: auto; 
+  height: 27vh; 
+  max-height: 30vh; 
+  color: #fff;
 }
 
-
-/* Unconfirm Table */
+/* Unconfirm Table Styles */
 .unconfirm-table {
   width: 100%;
   border-collapse: collapse;
   font-family: Arial, sans-serif;
-  font-size: 14px;
-  background-color: transparent;
-  white-space: nowrap;
+  font-size: 12px;
+  white-space: nowrap; 
 }
 
 .unconfirm-table thead {
   background-color: #4FFFB0;
   text-align: left;
-  position: sticky; 
+  position: sticky;
   top: 0;
   z-index: 1;
 }
 
-
-.td-content {
-  gap: -20px;
-}
-
-.td-content h6 {
-  margin: 2px 0;
-  font-size: 14px;
-  font-weight: bold;
-}
-
-.td-content h6 span {
-  font-weight: 500;
-}
-
-
 .unconfirm-table thead th {
-  padding: 4px 14px;
-  font-weight: bolder;
+  padding: 6px 6px;
+  font-weight: 600;
   color: #333;
   border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+  font-size: 12px; 
 }
 
 .unconfirm-table tbody td {
-  padding: 8px 14px;
+  padding: 10px 6px; 
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   color: #555;
-  height: 50px;
+  vertical-align: middle; 
 }
 
 .unconfirm-table tbody tr {
   background-color: transparent;
   transition: background-color 0.3s;
-  font-size: 14px;
+}
+
+.td-content {
+  display: flex; /* Flexbox for alignment */
+  flex-direction: column; /* Stack content vertically */
+  gap: 2px; /* Consistent gap */
+}
+
+.td-content h6 {
+  margin: 0;
+  font-size: 14px; /* Reduced for compact view */
   font-weight: bold;
+}
+
+.td-content h6 span {
+  font-weight: 500;
+  font-size: 14px; /* Smaller text for additional details */
+}
+
+/* Adjust row height */
+.unconfirm-table tbody tr {
+  font-size: 12px;
+  font-weight: normal;
+  height: 40px; /* Reduced height for compact design */
 }
 
 
@@ -590,18 +593,20 @@ position: relative;
 
 
 .request-table-container {
-  width: 100%;
+  width: 33.33%;
   overflow-x: auto; 
-  margin-top: 10px; 
+  overflow-y: auto; 
+  height: 27vh; 
+  max-height: 30vh; 
+  color: #fff;
 }
 
 /* Request Table */
 .request-table {
   width: 100%;
-  border-collapse: collapse; 
+  border-collapse: collapse;
   font-family: Arial, sans-serif;
-  font-size: 12px; 
-  background-color: transparent; 
+  font-size: 12px;
   white-space: nowrap; 
 }
 
@@ -612,7 +617,7 @@ position: relative;
 
 .request-table thead th {
   font-size: 14px;
-  padding: 4px 14px;
+  padding: 4px 10px 4px 5px; 
   font-weight: bold;
   color: #333;
   border-bottom: 2px solid rgba(0, 0, 0, 0.1);
@@ -626,26 +631,25 @@ height: 50px;
 }
 
 .request-table tbody tr {
-background-color: transparent;
-transition: background-color 0.3s;
-font-size: 14px;
-font-weight: bold;
+  background-color: transparent;
+  transition: background-color 0.3s;
+  font-size: 14px;
+  font-weight: bold;
 }
 
 .request-table tbody tr:hover {
-background-color: #ffe0b2; /* Light orange background on hover for clarity */
+  background-color: #ffe0b2; 
 }
 
 .request-table tbody tr:first-child {
-border-top-left-radius: 10px; /* Rounded corners for the first row */
-border-top-right-radius: 10px;
+  border-top-left-radius: 10px; 
+  border-top-right-radius: 10px;
 }
 
 .request-table tbody tr:last-child {
-border-bottom-left-radius: 10px; /* Rounded corners for the last row */
-border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px; 
+  border-bottom-right-radius: 10px;
 }
-
 
 
 /* Third Row Container - Div Three */
@@ -673,51 +677,52 @@ border-bottom-right-radius: 10px;
   height: 85%;
 }
 
-
-
-/* Pending Payment Table Container */
-.table-container {
-  width: 100%; 
+.pending-payment-container {
+  width: 33.33%;
   overflow-x: auto; 
-  margin-bottom: 20px; 
-  display: block;
+  overflow-y: auto; 
+  height: 27vh; 
+  max-height: 30vh; 
+  color: #fff;
 }
 
 /* Pending Payment Table */
 .pending-payment-table {
-  width: 100%; 
-  border-collapse: collapse; 
+  width: 100%;
+  border-collapse: collapse;
   font-family: Arial, sans-serif;
-  font-size: 14px;
-  background-color: transparent;
-  white-space: nowrap;
+  font-size: 12px;
+  white-space: nowrap; 
 }
 
 .pending-payment-table thead {
-  background-color: #e0f7fa;
+  background-color: #4FFFB0;
   text-align: left;
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 
 .pending-payment-table thead th {
-  font-size: 14px;
-  padding: 4px 14px;
+  font-size: 12px; 
+  padding: 4px 10px 4px 5px; 
   font-weight: bold;
   color: #333;
-  border-bottom: 2px solid rgba(0, 0, 0, 0.1); 
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
 }
 
 .pending-payment-table tbody td {
-  padding: 8px 14px;
+  padding: 10px 6px; 
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   color: #555;
-  height: 50px;
+  vertical-align: middle; 
 }
 
 .pending-payment-table tbody tr {
   background-color: transparent; 
   transition: background-color 0.3s;
   font-size: 14px;
-  font-weight: bold;
+  font-weight: 600;
 }
 
 .pending-payment-table tbody tr:hover {
@@ -840,6 +845,26 @@ border-bottom-right-radius: 10px;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
 }
+
+
+
+
+/* Table styles */
+.table-container {
+  width: 100%;
+  padding: 0;
+  overflow-x: auto;
+  margin-bottom: 20px;
+  display: block;
+}
+
+
+
+
+
+
+
+
 
 
 

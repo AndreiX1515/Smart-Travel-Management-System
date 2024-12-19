@@ -208,6 +208,74 @@
 
 
 
+/* Ensure the wrapper occupies the full height of the table row */
+.viewdownloadfile-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: center;
+  height: 100%;
+  text-align: center;
+  gap: 10px;
+}
+
+/* Minimalist grey button design */
+.viewdownloadfile-wrapper a {
+  display: inline-block;
+  padding: 8px 12px;
+  font-size: 14px;
+  color: #fff;
+
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+  text-align: center;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+.btn-view {
+  background-color: #777676;
+}
+
+
+.btn-download {
+  background-color: #0088ff;
+}
+
+
+
+
+
+
+.viewdownloadfile-wrapper a:hover {
+  background-color: #5a6268;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.viewdownloadfile-wrapper a:active {
+  background-color: #545b62;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -140,7 +140,6 @@
         <table class="">
           <thead>
             <tr>
-              <th>Request Id</th>
               <th>Transact No</th>
               <th>Agent Name</th>
               <th>Request Title</th>
@@ -149,7 +148,6 @@
               <th>Total Pax</th>
               <th>Total Amount</th>
               <th>Request Date</th>
-              <th>Status</th>
             </tr>
           </thead>
           <tbody>
@@ -206,7 +204,6 @@
 
                   // Output table row with data-transactno attribute
                   echo "<tr class='request-row' data-requestId='{$row['requestId']}'>
-                          <td>{$row['requestId']}</td>
                           <td>{$row['TransactNo']}</td>
                           <td>{$row['AgentName']}</td>
                           <td>{$title}</td>
@@ -215,9 +212,6 @@
                           <td>{$row['TotalPax']}</td>
                           <td>{$row['requestCost']}</td>
                           <td>{$row['RequestDate']}</td>
-                          <td>
-                            <span class='badge rounded-pill {$badgeClass} p-2'>{$status}</span>
-                          </td>
                         </tr>";
                 }
               } else {
