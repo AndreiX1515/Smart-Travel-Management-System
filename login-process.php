@@ -7,38 +7,37 @@ include 'conn.php'; // Adjust this to match your actual database connection
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = trim($_POST['email']);
     $password = trim($_POST['password']);
-
+    
     // Validation: Check if fields are empty
     if (empty($email) || empty($password)) {
         echo json_encode(['success' => false, 'message' => 'Please fill in both fields.']);
         exit;
     }
-
+    
     // Validation: Check for valid email format
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         echo json_encode(['success' => false, 'message' => 'Please provide a valid email address.']);
         exit;
     }
-
+    
     // Query the database for the user based on email
     $stmt = $conn->prepare("SELECT * FROM accounts WHERE email = ?");
-
+    
     if (!$stmt) {
         echo json_encode(['success' => false, 'message' => 'Database query error: ' . $conn->error]);
         exit;
     }
-
+    
     $stmt->bind_param("s", $email);
     $stmt->execute();
     $result = $stmt->get_result();
-
+    
     if ($result->num_rows > 0) {
         // Fetch user data
         $user = $result->fetch_assoc();
-
-        // Verify the password using md5 (Note: MD5 is not recommended for password hashing. Consider using password_hash)
-        if (md5($password) === trim($user['upassword'])) {
-            // Check if account is active
+    
+        // Verify the password (plaintext comparison)
+        if ($password === trim($user['upassword'])) {
             
             if ($user['account_status'] !== 'active') {
                 echo json_encode(['success' => false, 'message' => 'Your account is inactive. Please contact support.']);
