@@ -77,8 +77,8 @@ include '../Agent Section/includes/breadcrumbs.php';
                   <label for="hotels" class="fs-6">Hotels <span class="text-danger fw-bold">*</span></label>
                   <select class="form-select mt-2 fs-6" id="hotels" name="hotels" required>
                     <option selected disabled>Select Hotel</option>
-                    <option value="Smart Hotel" data-price="80">Smart Hotel - $80/night</option>
-                    <option value="Marina Bay Hotel" data-price="100">Marina Bay Hotel - $100/night</option>
+                    <option value="Smart Hotel" data-price="80">Smart Hotel - $80/night + $20 on Friday & Saturday</option>
+                    <option value="Marina Bay Hotel" data-price="100">Marina Bay Hotel - $100/night + $20 on Friday & Saturday</option>
                   </select>
                   <span id="hotelsError" class="text-danger"></span>
                 </div>
@@ -410,11 +410,90 @@ include '../Agent Section/includes/breadcrumbs.php';
 
         <div class="card mt-1 ">
           <div class="card-header d-flex justify-content-between align-items-center py-3">
-            <button type="submit" class="btn btn-primary p-2 px-3" name="bookNow">Book Now</button>
+            <button type="submit" class="btn btn-primary" name="bookNow">Book Now</button>
           </div>
-          <input type="" id="totalCostUSD" name="totalCostUSD" placeholder="Total Price USD">
-          <input type="" id="totalCostPHP" name="totalCostPHP" placeholder="Total Price PHP">
+          <input type="hidden" id="totalCostUSD" name="totalCostUSD" placeholder="Total Price USD">
+          <input type="hidden" id="totalCostPHP" name="totalCostPHP" placeholder="Total Price PHP">
           <!-- <input type="" class="form-control mt-2 fs-6" id="totalCost" name="totalCost" readonly> -->
+        </div>
+
+        <!-- Booking Summary Modal -->
+        <div class="modal fade" id="BookingSummaryModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg modal-dialog-centered"> <!-- Added modal-lg for a wider modal -->
+            <div class="modal-content position-relative">
+                  
+              <button type="button" class="btn-close close-outside p-4" data-bs-dismiss="modal" aria-label="Close"></button>
+                  
+              <div class="modal-body">
+                <div class="confirmation-container container">
+                  <!-- Logo Section -->
+                  <div class="row d-flex justify-content-center align-items-center text-center mb-3 mt-2">
+                    <div class="col">
+                      <img src="../assets/images/SMART LOGO 2 (2).png" alt="Trip Image" class="img-fluid" style="max-width: 250px; max-height: 80px;">
+                    </div>
+                  </div>
+
+                  <h5 class="text-left mb-4">BOOKING SUMMARY</h5>
+                  <!-- Transaction and Contact Info -->
+                  <div class="transaction-info row mb-3">
+                    <div class="col-12">
+
+                      <div class="d-flex justify-content-between mb-1">
+                        <p class="mb-0"><strong>Contact Guest Name:</strong></p>
+                        <p class="mb-0" id="contactPersonName">Sample Name</p>
+                      </div>
+
+                      <div class="d-flex justify-content-between mb-1">
+                        <p class="mb-0"><strong>Contact Email:</strong></p>
+                        <p class="mb-0" id="contactPersonEmail">Sample Email</p>
+                      </div>
+                    </div>
+                  </div>
+                  <hr>
+
+                  <!-- Package Details -->
+                  <div class="row hotel-details mb-3">
+                    <div class="col-12">
+                      <div class="d-flex justify-content-between mb-1">
+                        <p class="mb-0"><strong>Package Name:</strong></p>
+                        <p class="mb-0" id="selectedPackage">No Package Selected</p>
+                      </div>
+
+                      <div class="d-flex justify-content-between">
+                        <p class="mb-0"><strong>No. of Guests:</strong></p>
+                        <p class="mb-0" id="guestCount">1</p>
+                      </div>
+                    </div>
+                  </div>
+                  <hr>
+
+                  <!-- Flight/Origin Details -->
+                  <div class="row mb-3">
+                    <div class="col-12">
+                      <div class="d-flex justify-content-between mb-1">
+                        <p class="mb-0"><strong>Origin:</strong></p>
+                        <p class="mb-0" id="selectedOrigin">No Origin Selected</p>
+                      </div>
+
+                      <div class="d-flex justify-content-between">
+                        <p class="mb-0"><strong>Flight Date:</strong></p>
+                        <p class="mb-0" id="selectedDate">No Flight Date Selected</p>
+                      </div>
+                    </div>
+                  </div>
+                  <hr>
+
+                  <!-- Proceed to Payment -->
+                  <div class="row mt-4">
+                    <div class="col d-flex justify-content-between">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-primary" name="bookNow">Proceed to Payment</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </form>
     </div>
@@ -439,57 +518,61 @@ include '../Agent Section/includes/breadcrumbs.php';
     const usdToPhp = parseFloat(<?php echo json_encode(number_format($usd_to_php, 2, '.', '')); ?>) || 1.00;
 
     // Function to calculate the return date and total cost
-    function calculateDetails() {
-        const selectedDate = new Date(dayPicker.value); // Get the selected start date
-        const nights = parseInt(nightsSelect.value, 10); // Get the number of nights
-        const selectedHotelOption = hotelsSelect.options[hotelsSelect.selectedIndex];
-        const baseHotelCost = parseInt(selectedHotelOption.getAttribute('data-price'), 10); // Get hotel price
-        const selectedTripOption = tripSelect.options[tripSelect.selectedIndex];
-        const tripCost = parseInt(selectedTripOption.getAttribute('data-price'), 10); // Get trip price
-        const pax = Math.max(parseInt(paxRequestInput.value, 10) || 1, 1); // Get pax (minimum 1)
+    function calculateDetails() 
+    {
+      const selectedDate = new Date(dayPicker.value); // Get the selected start date
+      const nights = parseInt(nightsSelect.value, 10); // Get the number of nights
+      const selectedHotelOption = hotelsSelect.options[hotelsSelect.selectedIndex];
+      const baseHotelCost = parseInt(selectedHotelOption.getAttribute('data-price'), 10); // Get hotel price
+      const selectedTripOption = tripSelect.options[tripSelect.selectedIndex];
+      const tripCost = parseInt(selectedTripOption.getAttribute('data-price'), 10); // Get trip price
+      const pax = Math.max(parseInt(paxRequestInput.value, 10) || 1, 1); // Get pax (minimum 1)
 
-        // Validate inputs
-        if (isNaN(selectedDate) || isNaN(nights) || isNaN(baseHotelCost) || isNaN(tripCost)) {
-            returnDateInput.value = ''; 
-            totalCostInputPHP.value = ''; 
-            totalCostInputUSD.value = '';
-            totalPriceSpan.textContent = '0.00'; 
-            totalPricePhpSpan.textContent = '0.00'; 
-            return;
+      // Validate inputs
+      if (isNaN(selectedDate) || isNaN(nights) || isNaN(baseHotelCost) || isNaN(tripCost)) 
+      {
+        returnDateInput.value = ''; 
+        totalCostInputPHP.value = ''; 
+        totalCostInputUSD.value = '';
+        totalPriceSpan.textContent = '0.00'; 
+        totalPricePhpSpan.textContent = '0.00'; 
+        return;
+      }
+
+      // Calculate return date
+      const returnDate = new Date(selectedDate);
+      returnDate.setDate(selectedDate.getDate() + nights);
+      returnDateInput.value = returnDate.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+
+      // Calculate total hotel cost with weekend surcharge
+      let totalHotelCost = 0;
+      const tempDate = new Date(selectedDate);
+
+      for (let i = 0; i < nights; i++) 
+      {
+        const dayOfWeek = tempDate.getDay(); // 0 = Sunday, ..., 6 = Saturday
+        let dailyCost = baseHotelCost;
+
+        if (dayOfWeek === 5 || dayOfWeek === 6) 
+        {
+          dailyCost += 20; // Weekend surcharge
         }
 
-        // Calculate return date
-        const returnDate = new Date(selectedDate);
-        returnDate.setDate(selectedDate.getDate() + nights);
-        returnDateInput.value = returnDate.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+        totalHotelCost += dailyCost;
+        tempDate.setDate(tempDate.getDate() + 1);
+      }
 
-        // Calculate total hotel cost with weekend surcharge
-        let totalHotelCost = 0;
-        const tempDate = new Date(selectedDate);
+      // Pax surcharge calculation
+      const paxSurcharge = pax > 2 ? (pax - 2) * 50 : 0;
 
-        for (let i = 0; i < nights; i++) {
-            const dayOfWeek = tempDate.getDay(); // 0 = Sunday, ..., 6 = Saturday
-            let dailyCost = baseHotelCost;
+      // Calculate total cost
+      const totalCost = totalHotelCost + tripCost + paxSurcharge;
 
-            if (dayOfWeek === 5 || dayOfWeek === 6) {
-                dailyCost += 20; // Weekend surcharge
-            }
-
-            totalHotelCost += dailyCost;
-            tempDate.setDate(tempDate.getDate() + 1);
-        }
-
-        // Pax surcharge calculation
-        const paxSurcharge = pax > 2 ? (pax - 2) * 50 : 0;
-
-        // Calculate total cost
-        const totalCost = totalHotelCost + tripCost + paxSurcharge;
-
-        // Update input and spans
-        totalCostInputPHP.value = (totalCost * usdToPhp).toFixed(2); // In PHP
-        totalCostInputUSD.value = totalCost.toFixed(2); // In USD
-        totalPriceSpan.textContent = totalCost.toFixed(2); // In USD
-        totalPricePhpSpan.textContent = (totalCost * usdToPhp).toLocaleString('en-PH', { minimumFractionDigits: 2 });
+      // Update input and spans
+      totalCostInputPHP.value = (totalCost * usdToPhp).toFixed(2); // In PHP
+      totalCostInputUSD.value = totalCost.toFixed(2); // In USD
+      totalPriceSpan.textContent = totalCost.toFixed(2); // In USD
+      totalPricePhpSpan.textContent = (totalCost * usdToPhp).toLocaleString('en-PH', { minimumFractionDigits: 2 });
     }
 
     // Add event listeners
@@ -499,6 +582,53 @@ include '../Agent Section/includes/breadcrumbs.php';
     tripSelect.addEventListener('change', calculateDetails); // Trip select change event
     paxRequestInput.addEventListener('input', calculateDetails);
   </script>
+
+  <!-- <script>
+    $(document).ready(function ()
+    {
+      // Book Now Button Click Event
+      $('#bookNowButton').click(function (event) 
+      {
+        event.preventDefault(); // Prevent default form submission
+
+        const errors = {
+          packageName: 'Please Select a Package.',
+          totalPax: 'Please Enter Total Pax.',
+          origin: 'Please Select Origin',
+          year: 'Please Select Year',
+          month: 'Please Select Month',
+          flightDate: 'Please Select Flight Date.',
+          fName: 'Please Enter First Name',
+          lName: 'Please Enter Last Name',
+          mName: 'Please Enter Middle Name',
+          suffix: 'Please Select Suffix',
+          countryCode: 'Please Select Country Code',
+          contactNo: 'Please Enter Contact No',
+          email: 'Please Enter Email'
+        };
+        
+        // Reset error messages and remove invalid class
+        $('span[id$="Error"]').text('');
+        $('select, input').removeClass('is-invalid');
+
+        const firstName = $('#fName').val().trim();
+        const lastName = $('#lName').val().trim();
+        let middleName = $('#mName').val().trim() || '';
+        let suffix = $('#suffix').val().trim() || '';
+        let email = $('#email').val().trim();
+
+        // Set suffix and middle name to an empty string if they are "N/A"
+        suffix = suffix === 'N/A' ? '' : suffix;
+        middleName = middleName === 'N/A' ? '' : middleName;
+
+        // Format middle name to the first letter followed by a dot, if not empty
+        middleName = middleName ? middleName.charAt(0) + '.' : '';
+
+        // Concatenate to full name in the desired format
+        const fullName = `${lastName}, ${firstName} ${suffix} ${middleName}`;
+      });
+    });
+  </script> -->
 
 
 

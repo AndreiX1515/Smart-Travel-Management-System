@@ -29,7 +29,7 @@
     $email = $_POST['email'];
 
     // Get the last bookingId and increment it for the new transaction
-    $result = $conn->query("SELECT MAX(bookingId) AS lastBookingId FROM booking");
+    $result = $conn->query("SELECT MAX(bookingId) AS lastBookingId FROM fit");
     if (!$result) 
     {
       $_SESSION['status'] = "Error fetching last booking ID: " . $conn->error;
