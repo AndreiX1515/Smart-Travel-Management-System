@@ -35,7 +35,7 @@ body {
 }
 
 .container-wrapper {
- padding: 0px 50px 0px 5px;
+ padding: 0px 30px 0px 5px;
  display: flex;
  flex-direction: column;
  justify-content: space-between; 
@@ -85,22 +85,15 @@ body {
 }
 
 
-.dashboard-cards {
- display: flex; /* Flexbox for layout */
- flex-wrap: wrap; /* Allow wrapping of cards */
- justify-content: flex-start; /* Align cards to the left */
- gap: 5px; /* Space between cards */
- padding: 0px 0px;
- height: 15vh; /* Increased container height for better card proportion */
-}
+
 
 .counts-wrapper {
  display: flex;
  flex-direction: row;
  gap: 5px; /* Gap between cards */
  width: 100%;
- height: 15vh;
- margin-bottom: 10px;
+ height: 17vh;
+ border: 1px black solid;
 }
 
 .counts-wrapper .card {
@@ -194,7 +187,7 @@ body {
 
 .side-content h5 {
  font-size: 24px; /* Reduced font size for the number */
- font-weight: bolder;
+ font-weight: bold;
  margin: 0;
  color: #3a3535;
  margin-bottom: -5px;
@@ -337,7 +330,7 @@ body {
   width: 100%;
   display: flex;
   justify-content: start;
-  margin: 10px 0px 0px 0px;
+  border: 1px solid black;
 }
 
 /* Active Tab Styling */
@@ -371,6 +364,7 @@ body {
   gap: 8px;
   position: relative;
   height: 32.5vh;
+  border: 1px solid black;
 }
 
 
@@ -467,8 +461,8 @@ body {
 }
 
 .unconfirm-table thead th {
-  padding: 6px 6px;
-  font-weight: 600;
+  padding: 4px 6px 4px 6px; 
+  font-weight: bold;
   color: #333;
   border-bottom: 2px solid rgba(0, 0, 0, 0.1);
   font-size: 12px; 
@@ -484,6 +478,8 @@ body {
 .unconfirm-table tbody tr {
   background-color: transparent;
   transition: background-color 0.3s;
+  font-size: 14px;
+  font-weight: bold;
 }
 
 .td-content {
@@ -616,18 +612,18 @@ position: relative;
 }
 
 .request-table thead th {
-  font-size: 14px;
-  padding: 4px 10px 4px 5px; 
+  padding: 4px 6px 4px 6px; 
   font-weight: bold;
   color: #333;
   border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+  font-size: 12px; 
 }
 
 .request-table tbody td {
-padding: 8px 14px;
-border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-color: #555;
-height: 50px;
+  padding: 10px 6px; 
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  color: #555;
+  vertical-align: middle; 
 }
 
 .request-table tbody tr {
@@ -759,6 +755,7 @@ height: 50px;
   position: relative;
   height: 30vh;
   margin-top: 5px;
+  border: 1px solid black;
  }
  
  .confirm-container .one {

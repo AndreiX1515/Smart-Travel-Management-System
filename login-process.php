@@ -75,11 +75,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 echo json_encode(['success' => true, 'message' => 'Logged in successfully.']);
             }
 
-            // Continue with the new session creation and login flow here
-            // ...
-
-
-            // Regenerate session ID to prevent session fixation
             session_regenerate_id(true);
             $new_session_id = session_id();
 
