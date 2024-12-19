@@ -69,6 +69,12 @@
 																							Payment
 																			</a>
 															</li>
+
+															<li class="nav-item">
+																			<a class="nav-link page-button" href="../Employee Section/emp-tableFIT.php" data-page-name="For Approvals - F.I.T">
+																							F.I.T
+																			</a>
+															</li>
 											</ul>
 							</div>
 				</li>

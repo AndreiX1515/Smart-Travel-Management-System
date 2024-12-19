@@ -17,6 +17,10 @@
    <a href="../Agent Section/agent-FIT.php" class="page-button my-0" data-page-name="F.I.T">
       <i class="fas fa-file-invoice"></i> F.I.T
    </a>
+
+   <a href="../Agent Section/agent-FIT-table.php" class="page-button my-0" data-page-name="F.I.T - View Table" style="font-size: 14px;">
+      <i class="fas fa-file-invoice"></i> F.I.T - View Table
+   </a>
    
 
 

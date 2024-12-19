@@ -70,8 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             
             // Check if an existing session is found
             if ($session_check_result->num_rows > 0) {
-                echo json_encode(['success' => true, 'message' => 'Logged in successfully.']);
-                // Existing session found, get the session details
+                // Existing session found, terminate it
                 $existing_session = $session_check_result->fetch_assoc();
                 $existing_session_id = $existing_session['session_id'];
 
@@ -81,31 +80,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $delete_stmt->execute();
                 $delete_stmt->close();
 
-                // // Notify user (optional)
-                // echo json_encode(['success' => true, 'message' => 'Previous session terminated. You are now logged in on this device']);
-            } else {
-                // No existing session found, proceed with new login
-                echo json_encode(['success' => true, 'message' => 'Logged in successfully']);
+
+                echo json_encode(['success' => true, 'message' => 'Previous session terminated. You are now logged in on this device']);
             }
 
+            // Start a new session for the user
+            $_SESSION['accountid'] = $user['accountId'];
+            $_SESSION['email'] = $user['email'];
+            $_SESSION['accountStatus'] = $user['accountStatus'];
+            $_SESSION['createdAt'] = $user['createdAt'];
+            $_SESSION['timeout'] = time(); // For session timeout
 
+            // Insert the new session into the user_sessions table
+            $new_session_id = session_id();
+            $insert_stmt = $conn->prepare("INSERT INTO user_sessions (session_id, accountid, ip_address, user_agent) VALUES (?, ?, ?, ?)");
+            $insert_stmt->bind_param("siss", $new_session_id, $accountid, $ip_address, $user_agent);
+            $insert_stmt->execute();
+            $insert_stmt->close();
 
-
-
-            // $_SESSION['accountid'] = $user['accountId'];
-            // $_SESSION['email'] = $user['email']; // Already included
-            // $_SESSION['accountStatus'] = $user['accountStatus'];
-            // $_SESSION['createdAt'] = $user['createdAt'];
-            // $_SESSION['timeout'] = time(); // For session timeout
-
-            // // Insert the new session into the user_sessions table
-            // $insert_stmt = $conn->prepare("INSERT INTO user_sessions (session_id, accountid, ip_address, user_agent) VALUES (?, ?, ?, ?)");
-            // $insert_stmt->bind_param("siss", $new_session_id, $accountid, $ip_address, $user_agent);
-            // $insert_stmt->execute();
-            // $insert_stmt->close();
-
-            // // Return success response
-            // echo json_encode(['success' => true]);
+            // Return success response
+            echo json_encode(['success' => true, 'message' => 'Logged in successfully']);
         } else {
             // Invalid password or account type mismatch
             echo json_encode(['success' => false, 'message' => 'Invalid email or password.']);

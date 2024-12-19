@@ -2,7 +2,7 @@
 
 
   <?php
-  // include 'session_validate.php'; // This will check if the session is valid
+  include 'session_validate.php'; // This will check if the session is valid
   
   ini_set('display_errors', 1);
   ini_set('display_startup_errors', 1);
