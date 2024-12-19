@@ -157,7 +157,7 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
         // Log the full response object for debugging
         console.log('Response:', response);
 
-        // Ensure response is JSON
+        // Ensure response is OK, if not throw a response error
         if (!response.ok) {
             throw new Error('Network response was not ok. Status: ' + response.status);
         }
@@ -184,28 +184,9 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
             document.getElementById('message-login').innerHTML = '<div class="alert alert-danger text-center">An unexpected error occurred. Please try again.</div>';
         }
     })
-    .catch(error => {
-        console.error('Error:', error);
-
-        // Check for network errors
-        if (error.message.includes('Network')) {
-            document.getElementById('message-login').innerHTML = '<div class="alert alert-danger text-center">Network error. Please check your internet connection and try again.</div>';
-        }
-        // Check for response JSON parsing errors
-        else if (error.message.includes('Unexpected token')) {
-            document.getElementById('message-login').innerHTML = '<div class="alert alert-danger text-center">Server response was invalid. Please try again later.</div>';
-        }
-        // General error handling
-        else {
-            document.getElementById('message-login').innerHTML = '<div class="alert alert-danger text-center">An error occurred. Please try again later.</div>';
-        }
-
-        // Add CSS class to visually disable the button to prevent repeated clicks
-        if (LoginButton) {
-            LoginButton.classList.add('button-disabled');
-        }
-    });
+   
 });
+
 
 
     </script>

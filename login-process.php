@@ -22,13 +22,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
     // Validation: Check if fields are empty
     if (empty($email) || empty($password)) {
-        echo json_encode(['success' => false, 'message' => 'Please fill in both fields.']);
+        echo json_encode(['success' => false, 'message' => 'Please fill in both fields']);
         exit;
     }
     
     // Validation: Check for valid email format
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        echo json_encode(['success' => false, 'message' => 'Please provide a valid email address.']);
+        echo json_encode(['success' => false, 'message' => 'Please provide a valid email address']);
         exit;
     }
     
@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($password === trim($user['password']) && $accountType === trim($user['accountType'])) {
             
             if ($user['accountStatus'] !== 'active') {
-                echo json_encode(['success' => false, 'message' => 'Your account is inactive. Please contact support.']);
+                echo json_encode(['success' => false, 'message' => 'Your account is inactive. Please contact support']);
                 exit;
             }
 
@@ -81,30 +81,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $delete_stmt->execute();
                 $delete_stmt->close();
 
-                // Notify user (optional)
-                echo json_encode(['success' => true, 'message' => 'Previous session terminated. You are now logged in on this device.']);
+                // // Notify user (optional)
+                // echo json_encode(['success' => true, 'message' => 'Previous session terminated. You are now logged in on this device']);
             } else {
                 // No existing session found, proceed with new login
-                echo json_encode(['success' => true, 'message' => 'Logged in successfully.']);
+                echo json_encode(['success' => true, 'message' => 'Logged in successfully']);
             }
 
-            session_regenerate_id(true);
-            $new_session_id = session_id();
 
-            $_SESSION['accountid'] = $user['accountid'];
-            $_SESSION['email'] = $user['email']; // Already included
-            $_SESSION['accountStatus'] = $user['accountStatus'];
-            $_SESSION['createdAt'] = $user['createdAt'];
-            $_SESSION['timeout'] = time(); // For session timeout
 
-            // Insert the new session into the user_sessions table
-            $insert_stmt = $conn->prepare("INSERT INTO user_sessions (session_id, accountid, ip_address, user_agent) VALUES (?, ?, ?, ?)");
-            $insert_stmt->bind_param("siss", $new_session_id, $accountid, $ip_address, $user_agent);
-            $insert_stmt->execute();
-            $insert_stmt->close();
 
-            // Return success response
-            echo json_encode(['success' => true]);
+
+            // $_SESSION['accountid'] = $user['accountId'];
+            // $_SESSION['email'] = $user['email']; // Already included
+            // $_SESSION['accountStatus'] = $user['accountStatus'];
+            // $_SESSION['createdAt'] = $user['createdAt'];
+            // $_SESSION['timeout'] = time(); // For session timeout
+
+            // // Insert the new session into the user_sessions table
+            // $insert_stmt = $conn->prepare("INSERT INTO user_sessions (session_id, accountid, ip_address, user_agent) VALUES (?, ?, ?, ?)");
+            // $insert_stmt->bind_param("siss", $new_session_id, $accountid, $ip_address, $user_agent);
+            // $insert_stmt->execute();
+            // $insert_stmt->close();
+
+            // // Return success response
+            // echo json_encode(['success' => true]);
         } else {
             // Invalid password or account type mismatch
             echo json_encode(['success' => false, 'message' => 'Invalid email or password.']);
