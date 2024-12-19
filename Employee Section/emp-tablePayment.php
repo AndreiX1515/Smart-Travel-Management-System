@@ -166,15 +166,13 @@
        <table class="">
           <thead>
             <tr>
-              <th>Payment Id</th>
-              <th>Transact No</th>
-              <th>Agent Name</th>
+              <th>TRANSACT NO.</th>
+              <th>AGENT NAME</th>
               <th>PAYMENT TITLE</th>
               <th>PAYMENT TYPE</th>
               <th>AMOUNT</th>
               <th>PROOF OF PAYMENT</th>
               <th>PAYMENT DATE</th>
-              <th>PAYMENT STATUS</th>
             </tr>
           </thead>
           <tbody>
@@ -197,38 +195,66 @@
 
               if ($res1->num_rows > 0) {
                 while ($row = $res1->fetch_assoc()) {
-                  // Determine the badge class for the payment status
-                  $status = $row['paymentStatus'];
-                  $badgeClass = '';
+                  // // Determine the badge class for the payment status
+                  // $status = $row['paymentStatus'];
+                  // $badgeClass = '';
                   
-                  switch ($status) {
-                    case 'Submitted':
-                      $badgeClass = 'bg-primary'; // Blue for Submitted
-                      break;
-                    case 'Approved':
-                      $badgeClass = 'bg-success'; // Green for Approved
-                      break;
-                    default:
-                      $badgeClass = 'bg-secondary'; // Gray for unknown statuses
-                      break;
+                  // switch ($status) {
+                  //   case 'Submitted':
+                  //     $badgeClass = 'bg-primary'; // Blue for Submitted
+                  //     break;
+                  //   case 'Approved':
+                  //     $badgeClass = 'bg-success'; // Green for Approved
+                  //     break;
+                  //   default:
+                  //     $badgeClass = 'bg-secondary'; // Gray for unknown statuses
+                  //     break;
+                  // }
+
+
+                  $paymentTypeClass = '';
+                  $paymentTypeValue = $row['paymentType'];
+
+                  // Assign classes based on the payment type
+                  if ($paymentTypeValue === 'Partial Payment') {
+                      $paymentTypeClass = 'badge bg-warning text-dark';
+                  } elseif ($paymentTypeValue === 'Full Payment') {
+                      $paymentTypeClass = 'badge bg-success';
+                  } else {
+                      $paymentTypeClass = 'badge bg-secondary';
                   }
+
+                  // Fetch the raw date (e.g., "2000-01-01")
+                  $rawPaymentDate = $row['paymentDate'];
+
+                  // Create a DateTime object and format the date to "January 1, 2000"
+                  $date = new DateTime($rawPaymentDate);
+                  $formattedDate = $date->format('F j, Y');
+
 
                   // Output table row with data-transactno attribute
                   echo "<tr class='transaction-row' data-paymentId='{$row['paymentId']}'>
-                          <td>{$row['paymentId']}</td>
                           <td>{$row['transactNo']}</td>
                           <td>{$row['agentName']}</td>
                           <td>{$row['paymentTitle']}</td>
-                          <td>{$row['paymentType']}</td>
+                          <td><span class='$paymentTypeClass p-2'>$paymentTypeValue</span></td>
                           <td>₱ {$row['amount']}</td>
-                          <td>
-                              <a href='../Agent Section/functions/view-file.php?file=" . urlencode($row['filePath']) . "' target='_blank'>View File</a> 
-                              <a href='../Agent Section/functions/download.php?file=" . urlencode($row['filePath']) . "' target='_blank'>Download File</a>
+                          <td class='viewdownloadfile-wrapper'>
+                              <a class='btn-view' href='../Agent Section/functions/view-file.php?file=" . urlencode($row['filePath']) . "' target='_blank'>
+                                  <i class='fas fa-eye'></i> View File
+                              </a>
+                              <br />
+                              <a class='btn-download' href='../Agent Section/functions/download.php?file=" . urlencode($row['filePath']) . "' target='_blank'>
+                                  <i class='fas fa-download'></i> Download File
+                              </a>
                           </td>
-                          <td>{$row['paymentDate']}</td>
+
+
                           <td>
-                              <span class='badge rounded-pill {$badgeClass} py-2'> {$status} </span>
+                            <span class='raw-date' style='display:none;'>$rawPaymentDate</span>
+                            $formattedDate
                           </td>
+                     
                         </tr>";
                 }
               } else {
@@ -326,7 +352,21 @@ if (!empty($statusMessage)) {
   });
 </script>
 
+<script>
+  document.querySelectorAll('.viewdownloadfile-wrapper a').forEach((link) => {
+    link.addEventListener('click', (event) => {
+        if (link.textContent.trim() === 'View File') {
+            // Close the modal
+            const modal = document.getElementById('transactionModal');
+            const bootstrapModal = bootstrap.Modal.getInstance(modal); // Get the active modal instance
+            if (bootstrapModal) {
+                bootstrapModal.hide(); // Close the modal
+            }
+        }
+    });
+});
 
+</script>
 
 
 <script>

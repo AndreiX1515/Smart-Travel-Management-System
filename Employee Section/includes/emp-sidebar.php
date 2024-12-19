@@ -18,12 +18,12 @@
 								</a> 
 				</li>
         
-				<li class="nav-item add-booking">
+				<!-- <li class="nav-item add-booking">
 								<a class="nav-link page-button" href="" data-page-name="Add Booking">
-												<div class="icon"><i class="fa-solid fa-user-plus"></i></div> <!-- User Icon -->
+												<div class="icon"><i class="fa-solid fa-user-plus"></i></div> 
 												<span class="label">Add Booking</span>
 								</a>
-				</li>
+				</li> -->
 
 				<li class="nav-item transaction"> 
 								<a class="nav-link page-button" href="../Employee Section/emp-transaction.php" data-page-name="Transactions">
@@ -61,7 +61,7 @@
 															</li> -->
 															<li class="nav-item">
 																			<a class="nav-link page-button" href="../Employee Section/emp-tableRequest.php" data-page-name="For Approvals - Request">
-																											Request
+																						 Request
 																			</a>
 															</li>
 															<li class="nav-item">

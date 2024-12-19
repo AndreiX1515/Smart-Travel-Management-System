@@ -27,10 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $lastName = $_SESSION['lastName'] ?? '';
         $middleName = $_SESSION['middleName'] ?? '';
         $email = $_SESSION['email'] ?? '';
-        $password = mb_convert_encoding(trim($_SESSION['password'] ?? ''), 'UTF-8');
-
-        // Hash the password using MD5
-        $hashedPassword = md5($password); 
+        $password = trim($_SESSION['password'] ?? '');
 
         // Additional fields
         $account_status = 'active'; // Default to active
@@ -39,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // Insert data into the database using a prepared statement
         $stmt = $conn->prepare("INSERT INTO accounts (first_name, last_name, middle_name, email, upassword, account_status, otp, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("ssssssss", $firstName, $lastName, $middleName, $email, $hashedPassword, $account_status, $otp, $created_at);
+        $stmt->bind_param("ssssssss", $firstName, $lastName, $middleName, $email, $Password, $account_status, $otp, $created_at);
 
         if ($stmt->execute()) {
             // Clear session variables after successful registration
