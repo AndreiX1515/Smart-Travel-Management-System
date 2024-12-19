@@ -7,6 +7,7 @@ include 'conn.php'; // Adjust this to match your actual database connection
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = trim($_POST['email']);
     $password = trim($_POST['password']);
+    $accountType = 'guest';
     
     // Validation: Check if fields are empty
     if (empty($email) || empty($password)) {
@@ -37,15 +38,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $user = $result->fetch_assoc();
     
         // Verify the password (plaintext comparison)
-        if ($password === trim($user['upassword'])) {
+        if ($password === trim($user['password']) && $accountType === trim($user['accountType'])) {
             
-            if ($user['account_status'] !== 'active') {
+            if ($user['accountStatus'] !== 'active') {
                 echo json_encode(['success' => false, 'message' => 'Your account is inactive. Please contact support.']);
                 exit;
             }
 
             // Single Session Logic Starts Here
-            $accountid = $user['accountid'];
+            $accountid = $user['accountId'];
             $current_session_id = session_id();
             $ip_address = $_SERVER['REMOTE_ADDR'];
             $user_agent = $_SERVER['HTTP_USER_AGENT'];
@@ -81,11 +82,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['accountid'] = $user['accountid'];
             $_SESSION['email'] = $user['email']; // Already included
             $_SESSION['password'] = $user['password']; // Adding password to session (if necessary)
-            $_SESSION['first_name'] = $user['first_name'];
-            $_SESSION['last_name'] = $user['last_name'];
-            $_SESSION['middle_name'] = $user['middle_name'];
-            $_SESSION['account_status'] = $user['account_status'];
-            $_SESSION['created_at'] = $user['created_at'];
+            // $_SESSION['first_name'] = $user['first_name'];
+            // $_SESSION['last_name'] = $user['last_name'];
+            // $_SESSION['middle_name'] = $user['middle_name'];
+            $_SESSION['accountStatus'] = $user['accountStatus'];
+            $_SESSION['createdAt'] = $user['createdAt'];
             $_SESSION['timeout'] = time(); // For session timeout
 
 

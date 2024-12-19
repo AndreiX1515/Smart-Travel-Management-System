@@ -35,13 +35,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $created_at = date('Y-m-d H:i:s'); // Current timestamp
 
         // Insert data into the database using a prepared statement
-        $stmt = $conn->prepare("INSERT INTO accounts (first_name, last_name, middle_name, email, upassword, account_status, otp, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("ssssssss", $firstName, $lastName, $middleName, $email, $Password, $account_status, $otp, $created_at);
+        $stmt = $conn->prepare("INSERT INTO accounts (email, password, otp, accountStatus, accountType, createdAt) VALUES 
+                        (?, ?, ?, ?, 'guest', NOW())");
+        $stmt->bind_param("ssis", $email, $password, $otp, $account_status);
 
         if ($stmt->execute()) {
             // Clear session variables after successful registration
             unset($_SESSION['Reg-FirstName'], $_SESSION['Reg-LastName'], $_SESSION['Reg-MiddleName'], $_SESSION['Reg-Email'], $_SESSION['Reg-Password'], $_SESSION['otp']);
-            jsonResponse(true, 'Registration successful!' . $hashedPassword);
+            jsonResponse(true, 'Registration successful!' . $password);
         } else {
             jsonResponse(false, "Error: " . $stmt->error);
         }
