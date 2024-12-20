@@ -1,6 +1,6 @@
 <?php 
 session_start(); // Start the session
-require '../conn.php'; // Your database connection
+require '../../conn.php'; // Your database connection
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Common function to output JSON response

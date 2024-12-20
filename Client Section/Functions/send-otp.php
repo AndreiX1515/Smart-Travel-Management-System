@@ -1,13 +1,13 @@
 <?php
 session_start(); // Start the session at the beginning
-include "conn.php";
+include "../../conn.php";
 
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
-require 'vendor/autoload.php';
+require '../../vendor/autoload.php';
 
 $response = []; // Initialize response array to store messages
 
