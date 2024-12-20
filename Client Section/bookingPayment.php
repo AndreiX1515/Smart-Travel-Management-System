@@ -1,6 +1,6 @@
 <?php
   // include 'session_validate.php';
-  require "conn.php";
+  require "../conn.php";
   ini_set('display_errors', 1);
   ini_set('display_startup_errors', 1);
   error_reporting(E_ALL);
@@ -189,7 +189,7 @@
           </div>
         </div>
         
-        <form action="bookingPayment-code.php" method="POST" enctype="multipart/form-data">
+        <form action="../Client Section/Functions/bookingPayment-code.php" method="POST" enctype="multipart/form-data">
           <hr>
           <input type="" value="<?php echo $accId; ?>" name="agentAccountId">
           <input type="hidden" value="<?php echo $transactionNumber; ?>" name="transactNo">

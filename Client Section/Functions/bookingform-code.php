@@ -1,5 +1,5 @@
 <?php
-require "../conn.php";
+require "../../conn.php";
 session_start();
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -60,7 +60,7 @@ if (isset($_POST['bookNow']))
 	{
 		$_SESSION['status'] = "Booking SQL preparation failed: " . $conn->error;
 		$conn->rollback();  // Rollback transaction
-		header("Location: bookingform.php");
+		header("Location: ../bookingform.php");
 		exit(0);
 	}
 
@@ -72,7 +72,7 @@ if (isset($_POST['bookNow']))
 	{
 		$_SESSION['status'] = "Database error on booking insert: " . $stmt1->error;
 		$conn->rollback();  // Rollback the transaction if there is an error
-		header("Location: bookingform.php");
+		header("Location: ../bookingform.php");
 		exit(0);
 	}
 
@@ -81,7 +81,7 @@ if (isset($_POST['bookNow']))
 
 	// Optionally redirect or provide a success message
 	$_SESSION['status'] = "Booking successful!";
-	header("Location: bookingPayment.php?id=" . htmlspecialchars($transactNo));
+	header("Location: ../bookingPayment.php?id=" . htmlspecialchars($transactNo));
 	exit(0);
 }
 

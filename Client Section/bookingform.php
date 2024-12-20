@@ -82,7 +82,7 @@
           <!-- <button class="add-more-form btn btn-primary"><i class="fa-solid fa-plus"></i></button> -->
         </div>
 
-        <form action="bookingform-code.php" method="POST">
+        <form action="../Client Section/Functions/bookingform-code.php" method="POST">
           <div class="card">
             <div class="card-header bg-secondary text-white text-light">
               <h4 class="my-2 px-2">Details</h4>
@@ -212,7 +212,6 @@
                 </div>
               </div>
 
-              <input type="hidden" id="agentCode" name="agentCode" value="<?php echo $_SESSION['agent_agentCode'];; ?>" placeholder="agentCode Input">
               <input type="hidden" id="flightId" name="flightId" value="" placeholder="Flight Id Input">
               <input type="hidden" id="packagePrice" name="packagePrice" placeholder="Package Price">
               <input type="hidden" name="flightPrice" id="flightPricee" placeholder="Flight Price">
@@ -604,25 +603,25 @@
 
         // Reset dependent fields
         // $('#packageName').html('<option selected disabled>Select Package</option>');
-        // $('#origin').html('<option selected disabled>Select Origin</option>');
-        // $('#year').html('<option selected disabled>Select Year</option>');
-        // $('#month').html('<option selected disabled>Select Month</option>');
-        // $('#flightDate').html('<option selected disabled>Select Flight Date</option>');
-        // $('#flightId').val('');
-        // $('#flightPrice').text('0.00');
-        // $('#maxSeats').text('');
-        // $('#availSeats').text('');
-        // $('#displayTotalPrice').text('0.00');
-        // $('#totalPrice').val('0.00');
-        // $('#totalPax').val('');
-        // $('#totalPax').attr('placeholder', 'Enter Total Pax');
+        $('#origin').html('<option selected disabled>Select Origin</option>');
+        $('#year').html('<option selected disabled>Select Year</option>');
+        $('#month').html('<option selected disabled>Select Month</option>');
+        $('#flightDate').html('<option selected disabled>Select Flight Date</option>');
+        $('#flightId').val('');
+        $('#flightPrice').text('0.00');
+        $('#maxSeats').text('');
+        $('#availSeats').text('');
+        $('#displayTotalPrice').text('0.00');
+        $('#totalPrice').val('0.00');
+        $('#totalPax').val('');
+        $('#totalPax').attr('placeholder', 'Enter Total Pax');
 
         if (agentId) 
         {
           // Make an AJAX request to fetch agent code
           $.ajax(
           {
-            url: 'Agent Section/functions/fetchAgentCode.php',
+            url: '../Agent Section/functions/fetchAgentCode.php',
             type: 'POST',
             data: { agentId: agentId },
             success: function (response) 
@@ -674,7 +673,7 @@
         {
           $.ajax(
           {
-            url: 'Agent Section/functions/fetchOrigin.php',
+            url: '../Agent Section/functions/fetchOrigin.php',
             type: 'POST',
             data: { packageId: packageId },
             success: function (response) 
@@ -727,7 +726,7 @@
         {
           $.ajax(
           {
-            url: 'Agent Section/functions/fetchYear.php',
+            url: '../Agent Section/functions/fetchYear.php',
             type: 'POST',
             data: { packageId: packageId, origin: origin}, // Send packageId, origin
             success: function (response) 
@@ -769,7 +768,7 @@
         {
           $.ajax(
           {
-            url: 'Agent Section/functions/fetchMonth.php',  // PHP file to fetch distinct months
+            url: '../Agent Section/functions/fetchMonth.php',  // PHP file to fetch distinct months
             type: 'POST',
             data: {
               packageId: packageId,
@@ -816,7 +815,7 @@
         {
           $.ajax(
           {
-            url: 'Agent Section/functions/fetchFlightDate.php',  // PHP file to fetch flight dates
+            url: '../Agent Section/functions/fetchFlightDate.php',  // PHP file to fetch flight dates
             type: 'POST',
             data: {
               packageId: packageId,
@@ -883,7 +882,7 @@
           // If a valid outbound flight is selected, fetch return flight and flight price
           $.ajax(
           {
-            url: 'Agent Section/functions/fetchFlightId.php', // Separate PHP file for return flight
+            url: '../Agent Section/functions/fetchFlightId.php', // Separate PHP file for return flight
             type: 'POST',
             data: { flightDate: flightDate },
             success: function (response) 
