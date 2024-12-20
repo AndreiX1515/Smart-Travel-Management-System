@@ -121,7 +121,7 @@
             <button type="submit" class="btn btn-primary w-100" id="LoginButton">Login</button>
 
             <div class="bottom-login-account mt-3 text-center">
-                <p class="mb-0">Don't have an account? <a href="register.php" class="text-decoration-none">Register Now</a></p>
+                <p class="mb-0">Don't have an account? <a href="../Client Section/register.php" class="text-decoration-none">Register Now</a></p>
             </div>
 
             <div id="message-login" class="message-login mt-3 h6 fw-light fs-6" style="font-size: 8px;"></div>
