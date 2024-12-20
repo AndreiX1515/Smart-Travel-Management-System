@@ -17,7 +17,7 @@
   $accId = $_SESSION['accountId'] ?? '';
   
   // $fullName = htmlspecialchars($lastName . ', ' . $firstName . ($middleName ? ' ' . substr($middleName, 0, 1) . '.' : ''));
-  ?>
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -79,16 +79,39 @@
 
         <div class="header-container d-flex flex-row align-items-center justify-content-between w-100 my-2 px-3">
           <h4>Booking</h4>
-          <button class="add-more-form btn btn-primary"><i class="fa-solid fa-plus"></i></button>
+          <!-- <button class="add-more-form btn btn-primary"><i class="fa-solid fa-plus"></i></button> -->
         </div>
 
-        <form action="../Agent Section/functions/agent-addBooking-code.php" method="POST">
+        <form action="bookingform-code.php" method="POST">
           <div class="card">
             <div class="card-header bg-secondary text-white text-light">
               <h4 class="my-2 px-2">Details</h4>
             </div>
 
             <div class="card-body p-4">
+
+              <div class="row">
+                <!-- Agent Dropdown -->
+                <div class="col-md-12">
+                  <label for="agentId" class="fs-6">Select Agent: <span class="text-danger fw-bold">*</span></label>
+                  <select class="form-select mt-2 fs-6" id="agentId" name="agentId" required>
+                    <option selected disabled>Select Agent</option>
+                    <?php
+                      $sql1 = mysqli_query($conn, "SELECT agentId, CONCAT(lName, ', ', fName, CASE WHEN mName IS NULL OR mName = 'N/A' 
+                                                    THEN '' ELSE CONCAT(' ', LEFT(mName, 1), '.') END) AS agentName FROM agent 
+                                                    ORDER BY agentName ASC");
+                                      
+                      while ($res1 = mysqli_fetch_assoc($sql1)) 
+                      { 
+                        echo "<option value='" . $res1['agentId'] . "'>" . $res1['agentName'] . "</option>";
+                      }
+                    ?>
+                  </select>
+                  <input type="hidden" id="agentCode" name="agentCode" placeholder="Agent Code">
+                  <span id="agentError" class="text-danger"></span> <!-- Error message for package -->
+                </div>
+              </div>
+
               <div class="row">
                 <!-- Package Dropdown -->
                 <div class="col-md-6">
@@ -574,6 +597,59 @@
   <script>
     $(document).ready(function ()
     {
+      // Fetching Agent Code once an agent is selected
+      $('#agentId').on('change', function () 
+      {
+        var agentId = $(this).val(); // Get the selected agentId
+
+        // Reset dependent fields
+        // $('#packageName').html('<option selected disabled>Select Package</option>');
+        // $('#origin').html('<option selected disabled>Select Origin</option>');
+        // $('#year').html('<option selected disabled>Select Year</option>');
+        // $('#month').html('<option selected disabled>Select Month</option>');
+        // $('#flightDate').html('<option selected disabled>Select Flight Date</option>');
+        // $('#flightId').val('');
+        // $('#flightPrice').text('0.00');
+        // $('#maxSeats').text('');
+        // $('#availSeats').text('');
+        // $('#displayTotalPrice').text('0.00');
+        // $('#totalPrice').val('0.00');
+        // $('#totalPax').val('');
+        // $('#totalPax').attr('placeholder', 'Enter Total Pax');
+
+        if (agentId) 
+        {
+          // Make an AJAX request to fetch agent code
+          $.ajax(
+          {
+            url: 'Agent Section/functions/fetchAgentCode.php',
+            type: 'POST',
+            data: { agentId: agentId },
+            success: function (response) 
+            {
+              try 
+              {
+                // Parse the JSON response
+                var data = JSON.parse(response);
+
+                // Update the agentCode input field
+                $('#agentCode').val(data.agentCode || ''); // Set agent code or clear if empty
+              } catch (e) 
+              {
+                console.error('Error parsing JSON response:', e);
+              }
+            },
+            error: function (xhr, status, error) {
+                console.error('Error fetching agent code:', error);
+            }
+          });
+        } 
+        else 
+        {
+          $('#agentCode').val(''); // Clear the agentCode input field if no agent is selected
+        }
+      });
+
       // Fetching Origin once Package was Selected
       $('#packageName').on('change', function () 
       {
@@ -851,8 +927,8 @@
       });
 
       // Event listeners
-      $('#flightId').on('change', updateTotalPaxMax); // Trigger on flight change
-      $('#land').on('change', updateTotalPaxMax);    // Trigger on "Land Only" checkbox toggle
+      // $('#flightId').on('change', updateTotalPaxMax); // Trigger on flight change
+      // $('#land').on('change', updateTotalPaxMax);    // Trigger on "Land Only" checkbox toggle
 
       // Ensure that if the user manually enters a number greater than the max, it's automatically corrected
       $('#totalPax').on('input', function() 
@@ -974,12 +1050,12 @@
             $('#guestCount').text(totalPax);
             $('#BookingSummaryModal').modal('show'); // Trigger modal display
           } 
-          else if (totalPax > totalSeats) 
-          {
-            // If land only is not selected, check for seat availability
-            $('#errorMessage').text('The Available Seats are not enough.'); // Show error message in the UI
-            alert('The Available Seats are not enough.'); // Show error message as an alert
-          } 
+          // else if (totalPax > totalSeats) 
+          // {
+          //   // If land only is not selected, check for seat availability
+          //   $('#errorMessage').text('The Available Seats are not enough.'); // Show error message in the UI
+          //   alert('The Available Seats are not enough.'); // Show error message as an alert
+          // } 
           else 
           {
             // Set the full name in the contactPersonName paragraph
@@ -998,7 +1074,6 @@
           console.error('Validation failed or no seats available.');
         }
       });
-
 
       // Automatically recalculate total price when flightDate or totalPax changes
       $('#flightDate, #totalPax').on('input change', function () 
@@ -1086,76 +1161,76 @@
         return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       }
 
-      function updateTotalPaxMax() 
-      {
-        // Get the input values
-        var flightId = $('#flightId').val();
-        var agentId = $('#agentId').val();
-        var isLandOnlyChecked = $('#land').is(':checked');
+      // function updateTotalPaxMax() 
+      // {
+      //   // Get the input values
+      //   var flightId = $('#flightId').val();
+      //   var agentId = $('#agentId').val();
+      //   var isLandOnlyChecked = $('#land').is(':checked');
 
-        if (flightId !== '') 
-        {
-          // Perform an AJAX request to fetch seat information
-          $.ajax(
-          {
-            url: 'Agent Section/functions/fetchMaxSeatsPerAgent.php', // Replace with your server-side script URL
-            method: 'POST',
-            data: { flightId: flightId, agentId: agentId }, // Send the flightId to the server
-            dataType: 'json', // Specify that we're expecting JSON response
-            success: function(response) 
-            {
-              if (response.flightId !== null) 
-              {
-                // Extract the maxSeats from the response
-                var maxSeats = response.maxSeats;
-                var totalSeats = response.totalSeatsLeft;
+      //   if (flightId !== '') 
+      //   {
+      //     // Perform an AJAX request to fetch seat information
+      //     $.ajax(
+      //     {
+      //       url: 'Agent Section/functions/fetchMaxSeatsPerAgent.php', // Replace with your server-side script URL
+      //       method: 'POST',
+      //       data: { flightId: flightId, agentId: agentId }, // Send the flightId to the server
+      //       dataType: 'json', // Specify that we're expecting JSON response
+      //       success: function(response) 
+      //       {
+      //         if (response.flightId !== null) 
+      //         {
+      //           // Extract the maxSeats from the response
+      //           var maxSeats = response.maxSeats;
+      //           var totalSeats = response.totalSeatsLeft;
 
-                if (!isLandOnlyChecked) 
-                {
-                  // If "Land Only" is not checked, dynamically update the max attribute
-                  $('#totalPax').attr('max', maxSeats);
+      //           if (!isLandOnlyChecked) 
+      //           {
+      //             // If "Land Only" is not checked, dynamically update the max attribute
+      //             $('#totalPax').attr('max', maxSeats);
 
-                  // Check if the current value of totalPax exceeds maxSeats, reset to maxSeats if needed
-                  var currentPax = $('#totalPax').val();
-                  if (currentPax > maxSeats) 
-                  {
-                    $('#totalPax').val(maxSeats); // Adjust the value
-                    console.log('Pax left: ' + maxSeats);
-                    console.log('Seats left: ' + totalSeats);
-                  }
+      //             // Check if the current value of totalPax exceeds maxSeats, reset to maxSeats if needed
+      //             var currentPax = $('#totalPax').val();
+      //             if (currentPax > maxSeats) 
+      //             {
+      //               $('#totalPax').val(maxSeats); // Adjust the value
+      //               console.log('Pax left: ' + maxSeats);
+      //               console.log('Seats left: ' + totalSeats);
+      //             }
 
-                  // Display the available seats
-                  $('#maxSeats').text('Agent-Specific Available Seats for this Flight: ' + maxSeats);
-                  $('#availSeats').text('Total Remaining Seats for this Flight: ' + totalSeats);
-                } 
-                else 
-                {
-                  // If "Land Only" is checked, set a default max value and clear the display
-                  $('#totalPax').attr('max', 999); // Example max value, adjust as needed
-                  $('#maxSeats').text(' ');
-                  $('#availSeats').text(' ');
-                }
-              } 
-              else 
-              {
-                // Handle the case where no flight information is found
-                $('#maxSeats').text('Available Seats for this Flight: N/A');
-              }
-            },
-            error: function(xhr, status, error) 
-            {
-              // Log any errors
-              console.error('AJAX Error:', error);
-            }
-          });
-        } 
-        else 
-        {
-            // Reset if no flight ID is selected
-            $('#totalPax').removeAttr('max');
-            $('#maxSeats').text('Available Seats for this Flight: N/A');
-        }
-      }
+      //             // Display the available seats
+      //             $('#maxSeats').text('Agent-Specific Available Seats for this Flight: ' + maxSeats);
+      //             $('#availSeats').text('Total Remaining Seats for this Flight: ' + totalSeats);
+      //           } 
+      //           else 
+      //           {
+      //             // If "Land Only" is checked, set a default max value and clear the display
+      //             $('#totalPax').attr('max', 999); // Example max value, adjust as needed
+      //             $('#maxSeats').text(' ');
+      //             $('#availSeats').text(' ');
+      //           }
+      //         } 
+      //         else 
+      //         {
+      //           // Handle the case where no flight information is found
+      //           $('#maxSeats').text('Available Seats for this Flight: N/A');
+      //         }
+      //       },
+      //       error: function(xhr, status, error) 
+      //       {
+      //         // Log any errors
+      //         console.error('AJAX Error:', error);
+      //       }
+      //     });
+      //   } 
+      //   else 
+      //   {
+      //       // Reset if no flight ID is selected
+      //       $('#totalPax').removeAttr('max');
+      //       $('#maxSeats').text('Available Seats for this Flight: N/A');
+      //   }
+      // }
 
       // Initial call to set total price on page load
       updateTotalPrice();
