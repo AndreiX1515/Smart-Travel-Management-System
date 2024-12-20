@@ -83,6 +83,9 @@
               <li><a href="#about">About</a></li>
               <li><a href="#services">Services</a></li>
               <li><a href="#contact">Contact</a></li>
+              <?php if (isset($_SESSION['accountId'])): ?>
+                  <li><a href="../Client Section/client-transactionHistory.php">Transaction History</a></li>
+              <?php endif; ?>
           </ul>
               <!-- Vertical line between menu items and login button -->
               <div class="vertical-line"></div>
