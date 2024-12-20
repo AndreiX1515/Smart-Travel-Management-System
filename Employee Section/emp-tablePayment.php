@@ -224,14 +224,19 @@
                       $paymentTypeClass = 'badge bg-secondary';
                   }
 
+
                   // Fetch the raw date (e.g., "2000-01-01")
                   $rawPaymentDate = $row['paymentDate'];
-
-                  // Create a DateTime object and format the date to "January 1, 2000"
-                  $date = new DateTime($rawPaymentDate);
-                  $formattedDate = $date->format('F j, Y');
-
-
+                  
+                  try {
+                      // Create a DateTime object and format the date to "January 1, 2000"
+                      $date = new DateTime($rawPaymentDate);
+                      $formattedDate = $date->format('F j, Y');
+                  } catch (Exception $e) {
+                      // Handle the exception if the date is invalid
+                      $formattedDate = 'Invalid date';
+                  }
+                  
                   // Output table row with data-transactno attribute
                   echo "<tr class='transaction-row' data-paymentId='{$row['paymentId']}'>
                           <td>{$row['transactNo']}</td>
@@ -248,14 +253,11 @@
                                   <i class='fas fa-download'></i> Download File
                               </a>
                           </td>
-
-
                           <td>
-                            <span class='raw-date' style='display:none;'>$rawPaymentDate</span>
-                            $formattedDate
+                              <span class='raw-date' style='display:none;'>$rawPaymentDate</span>
+                              $formattedDate
                           </td>
-                     
-                        </tr>";
+                      </tr>";
                 }
               } else {
                 echo "<tr><td colspan='8' style='text-align: center;'>No Payments Found</td></tr>";

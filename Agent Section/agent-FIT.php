@@ -48,7 +48,7 @@ include '../Agent Section/includes/breadcrumbs.php';
           <div class="card-body p-4">
             <div class="row">
               <div class="col-md-6">
-                <div class="form-group mb-6">
+                <div class="form-group mb-3">
                   <label for="packageName" class="fs-6">Package <span class="text-danger fw-bold">*</span></label>
                   <select class="form-select mt-2 fs-6" id="packageName" name="packageName" required>
                     <option selected disabled>Select Package</option>
@@ -59,7 +59,7 @@ include '../Agent Section/includes/breadcrumbs.php';
               </div>
 
               <div class="col-md-6">
-                <div class="form-group mb-6">
+                <div class="form-group mb-3">
                   <label for="nights" class="fs-6">No. of Nights <span class="text-danger fw-bold">*</span></label>
                   <select class="form-select mt-2 fs-6" id="nights" name="nights" required>
                     <option selected disabled>Select No. of Nights</option>
@@ -73,7 +73,7 @@ include '../Agent Section/includes/breadcrumbs.php';
 
             <div class="row">
               <div class="col-md-6">
-                <div class="form-group mb-6">
+                <div class="form-group mb-3">
                   <label for="hotels" class="fs-6">Hotels <span class="text-danger fw-bold">*</span></label>
                   <select class="form-select mt-2 fs-6" id="hotels" name="hotels" required>
                     <option selected disabled>Select Hotel</option>
@@ -99,15 +99,15 @@ include '../Agent Section/includes/breadcrumbs.php';
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group mb-6">
-                  <label for="dayPicker" class="fs-6">Select Day<span class="text-danger fw-bold">*</span></label>
+                  <label for="dayPicker" class="fs-6">Select Day <span class="text-danger fw-bold">*</span></label>
                   <input type="date" class="form-control mt-2 fs-6" id="dayPicker" name="dayPicker" required>
                   <span id="packageNameError" class="text-danger"></span> <!-- Error message for package -->
                 </div>
               </div>
 
               <div class="col-md-6">
-                <div class="form-group mb-6">
-                  <label for="returnDate" class="fs-6">Return Date<span class="text-danger fw-bold">*</span></label>
+                <div class="form-group mb-3">
+                  <label for="returnDate" class="fs-6">Return Date <span class="text-danger fw-bold">*</span></label>
                   <input type="date" class="form-control mt-2 fs-6" id="returnDate" name="returnDate" readonly>
                   <span id="packageNameError" class="text-danger"></span> <!-- Error message for package -->
                 </div>
@@ -115,32 +115,46 @@ include '../Agent Section/includes/breadcrumbs.php';
             </div>
 
             <div class="row">
-              <label class="form-label">Pax<span class="text-danger fw-bold">*</span></label>
-              <input type="number" class="form-control" id="paxRequest" name="pax" placeholder="Enter pax" min="1" required>
+              <div class="col-md-2">
+                <label class="form-label">Pax <span class="text-danger fw-bold">*</span></label>
+                <input type="number" class="form-control" id="paxRequest" name="pax" placeholder="Enter pax" min="1" required>
+              </div>
             </div>
           </div>
 
           
-          <div class="card-footer d-flex justify-content-start align-items-center py-3">
-            <div class="row w-100">
-              <div class="col-12">
-                <h5>
-                  <label>
-                    Price: $ <span id="totalPrice">0.00</span>
-                  </label>
-                </h5>
-                
-              </div>
-              <div class="col-12">
-                <h5>
-                  <label>
-                    Price in PHP: ₱ <span id="totalPricePhp">0.00</span>
-                  </label>
-                </h5>
-              </div>
+          <div class="card-footer d-flex flex-column  py-3">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5 style="font-size: 1.25rem; font-weight: bold; color: #333;">
+                        <label>
+                            Price: $ <span id="totalPrice" style="font-weight: bold;">0.00</span>
+                        </label>
+                    </h5>
+                </div>
+
+                <div class="col-md-6">
+                    <h5 style="font-size: 1.25rem; font-weight: bold; color: #333;">
+                        <label>
+                            Current USD to PHP Conversion: $1 = ₱ <?php echo $usd_to_php; ?>
+                        </label>
+                    </h5>
+                </div>
             </div>
-          </div>
+
+            <div class="row">
+                <div class="col-6">
+                    <h5 style="font-size: 1.25rem; font-weight: bold; color: #333;">
+                        <label>
+                            Price in PHP: ₱ <span id="totalPricePhp" style=" font-weight: bold;">0.00</span>
+                        </label>
+                    </h5>
+                </div>
+            </div>
         </div>
+
+
+      </div>
 
         <div class="card mt-4">
           <div class="card-header bg-secondary text-white text-light">

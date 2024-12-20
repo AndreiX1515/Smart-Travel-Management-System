@@ -4,7 +4,7 @@ include 'conn.php'; // Include your database connection
 
 $inactive = 1800; // 30 minutes
 
-if (!isset($_SESSION['accountid'])) {
+if (!isset($_SESSION['accountId'])) {
     header("Location: login.php?message=Please log in."); // Redirect with message
     echo json_encode(['status' => 'expired']);
     exit;
@@ -12,7 +12,7 @@ if (!isset($_SESSION['accountid'])) {
 
 
 $session_id = session_id();
-$accountid = $_SESSION['accountid'];
+$accountid = $_SESSION['accountId'];
 
 $session_stmt = $conn->prepare("SELECT * FROM user_sessions WHERE session_id = ? AND accountid = ?");
 $session_stmt->bind_param("si", $session_id, $accountid);

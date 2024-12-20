@@ -677,7 +677,7 @@ session_start();
         
           <div class="body">
             <div class="table-container unconfirm-table-container">
-              <table class="unconfirm-table py-2">
+              <table class="unconfirm-table">
                 <thead>
                   <tr>
                     <th>NO.</th>
@@ -876,7 +876,7 @@ session_start();
             </div>
 
             <div class="body">
-              <div class="table-container">
+              <div class="table-container request-table-container">
                 <table class="request-table">
                   <thead>
                     <tr>
@@ -1036,22 +1036,22 @@ session_start();
                             echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($row['Transaction No']) . "'>
                                     <td>{$rowTrans}</td>
 
-																																				<td> 
-																																						<div class='td-content d-flex flex-column align-items-left'>
-																																									<h6>Title: <span>" . htmlspecialchars($row['Payment Title']) . "</span></h6>
-																																									<h6>Type: <span>" . htmlspecialchars($row['Payment Type']) . "</span></h6>
-																																					</div>
-																																			</td>
+                                <td> 
+                                      <div class='td-content d-flex flex-column align-items-left'>
+                                            <h6>Title: <span>" . htmlspecialchars($row['Payment Title']) . "</span></h6>
+                                            <h6>Type: <span>" . htmlspecialchars($row['Payment Type']) . "</span></h6>
+                                    </div>
+                                </td>
 
-																																			<td> 
-																																						<div class='td-content d-flex flex-column align-items-left'>
-																																									<h6>Amount: <span>₱ " . htmlspecialchars($row['Amount']) . "</span></h6>
-																																									<h6>Date Submitted: <span>" . htmlspecialchars($row['Date']) . "</span></h6>
-																																					</div>
-																																			</td>
-																																		
-                                    <td>{$row['paymentStatus']}</td>
-                                  </tr>";
+                                <td> 
+                                      <div class='td-content d-flex flex-column align-items-left'>
+                                            <h6>Amount: <span>₱ " . htmlspecialchars($row['Amount']) . "</span></h6>
+                                            <h6>Date Submitted: <span>" . htmlspecialchars($row['Date']) . "</span></h6>
+                                    </div>
+                                </td>
+                                                              
+                              <td>{$row['paymentStatus']}</td>
+                            </tr>";
                           }
                         } 
                         else 
@@ -1103,26 +1103,26 @@ session_start();
                             echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($row['Transaction No']) . "'>
                                     <td>{$rowTrans}</td>
 
-																																				<td> 
-																																						<div class='td-content d-flex flex-column align-items-left'>
-																																									<h6>Title: <span>" . htmlspecialchars($row['Payment Title']) . "</span></h6>
-																																									<h6>Type: <span>" . htmlspecialchars($row['Payment Type']) . "</span></h6>
-																																					</div>
-																																			</td>
+                            <td> 
+                                <div class='td-content d-flex flex-column align-items-left'>
+                                      <h6>Title: <span>" . htmlspecialchars($row['Payment Title']) . "</span></h6>
+                                      <h6>Type: <span>" . htmlspecialchars($row['Payment Type']) . "</span></h6>
+                              </div>
+                          </td>
 
-																																			<td> 
-																																						<div class='td-content d-flex flex-column align-items-left'>
-																																									<h6>Amount: <span>₱ " . htmlspecialchars($row['Amount']) . "</span></h6>
-																																									<h6>Date Submitted: <span>" . htmlspecialchars($row['Date']) . "</span></h6>
-																																					</div>
-																																			</td>
+                          <td> 
+                                <div class='td-content d-flex flex-column align-items-left'>
+                                      <h6>Amount: <span>₱ " . htmlspecialchars($row['Amount']) . "</span></h6>
+                                      <h6>Date Submitted: <span>" . htmlspecialchars($row['Date']) . "</span></h6>
+                              </div>
+                          </td>
 																																		
-                                    <td>
-																																					<span class='<?php echo $badgeClass; ?> p-2'>
-																																							{$row['paymentStatus']}
-																																					</span>
-																																				</td>
-                                  </tr>";
+                              <td>
+                                  <span class='<?php echo $badgeClass; ?> p-2'>
+                                      {$row['paymentStatus']}
+                                  </span>
+                                </td>
+                            </tr>";
                           }
                         } 
                         else 
