@@ -1,6 +1,6 @@
 <?php
-  include 'session_validate.php'; // This will check if the session is valid
-  require "conn.php";
+  include '../Client Section/Functions/session_validate.php'; // This will check if the session is valid
+  require "../conn.php";
 
   ini_set('display_errors', 1);
   ini_set('display_startup_errors', 1);
@@ -144,7 +144,7 @@
       {
         $_SESSION['status'] = "No file uploaded or an error occurred.";
       }
-      header("Location: client-transactionStatus.php"); // Redirect to display error
+      header("Location: ../Client Section/Functions/clientTransactionStatus-code.php"); // Redirect to display error
       exit(0);
     }
   }

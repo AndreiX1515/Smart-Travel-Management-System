@@ -1,6 +1,6 @@
 <?php
   // include 'session_validate.php'; // This will check if the session is valid
-  require 'conn.php';
+  require '../conn.php';
   
   session_start();
 
@@ -592,7 +592,7 @@
   <script src="heartbeat.js"></script> -->
 
   <!-- Bootstrap 5.3.0 Bundle (Includes Popper.js for Bootstrap components) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
   <script>
     $(document).ready(function ()
