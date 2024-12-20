@@ -545,7 +545,7 @@ include '../Agent Section/includes/breadcrumbs.php';
     tripSelect.addEventListener('change', calculateDetails);
     paxRequestInput.addEventListener('input', calculateDetails);
     roomsInput.addEventListener('input', calculateDetails);
-</script>
+  </script>
 
 
 
