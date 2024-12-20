@@ -90,7 +90,7 @@
               <div class="login-btn-container mt-1">
                  <div class="collapse navbar-collapse show" id="navbarNav"> <!-- Add "show" class to make sure it’s visible -->
                      <ul class="navbar-nav ms-auto">
-                         <?php if (isset($_SESSION['accountid'])): ?>
+                         <?php if (isset($_SESSION['accountId'])): ?>
                              <!-- Profile Dropdown when Session is Active -->
                              <li class="nav-item dropdown d-flex align-items-center">
                                  <a class="nav-link dropdown-toggle text-light d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -146,7 +146,7 @@
       <div class="d-flex flex-row gap-3">
 
 
-      <a href="<?php echo isset($_SESSION['accountid']) ? 'bookingform.php' : 'login.php'; ?>" class="cta-button">Book Now</a>
+      <a href="<?php echo isset($_SESSION['accountId']) ? 'bookingform.php' : 'login.php'; ?>" class="cta-button">Book Now</a>
 
 
 

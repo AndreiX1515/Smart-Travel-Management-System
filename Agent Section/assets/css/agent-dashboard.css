@@ -93,7 +93,6 @@ body {
  gap: 5px; /* Gap between cards */
  width: 100%;
  height: 17vh;
- border: 1px black solid;
 }
 
 .counts-wrapper .card {
@@ -330,7 +329,6 @@ body {
   width: 100%;
   display: flex;
   justify-content: start;
-  border: 1px solid black;
 }
 
 /* Active Tab Styling */
@@ -364,7 +362,6 @@ body {
   gap: 8px;
   position: relative;
   height: 32.5vh;
-  border: 1px solid black;
 }
 
 
@@ -391,6 +388,7 @@ body {
   justify-content: center; 
   height: 50px; 
   align-items: center;
+  border: 1px solid black;
 }
 
 .one .btn {
@@ -440,7 +438,8 @@ body {
   overflow-y: auto; 
   height: 27vh; 
   max-height: 30vh; 
-  color: #fff;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Unconfirm Table Styles */
@@ -451,6 +450,7 @@ body {
   font-size: 12px;
   white-space: nowrap; 
 }
+
 
 .unconfirm-table thead {
   background-color: #4FFFB0;
@@ -749,18 +749,20 @@ position: relative;
 
 /* Confirm Container */
 .confirm-container {
+  width: 100%;
   display: flex;
   flex-direction: row;
   gap: 8px;
   position: relative;
   height: 30vh;
   margin-top: 5px;
-  border: 1px solid black;
+  
  }
  
  .confirm-container .one {
   width: 100%; /* Full width for the card */
   height: 30vh; /* Adjusted height */
+  
  }
  
  .confirm-container .one .header {
@@ -776,12 +778,14 @@ position: relative;
  /* Confirm Table Container */
  .confirm-table-container {
   width: 100%;
-  display: block; 
+  height: 27vh; 
+
   position: relative;
   overflow-y: auto; 
   overflow-x: auto; 
   -webkit-overflow-scrolling: touch;
-  background-color: transparent;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
  }
  
  .confirm-table {
@@ -789,13 +793,10 @@ position: relative;
   border-collapse: collapse;
   font-family: Arial, sans-serif;
   font-size: 14px;
-  background-color: transparent;
   white-space: nowrap;
-  table-layout: auto;
   overflow-x: auto;
   overflow-y: auto;
   border-radius: 10px;
-  overflow: hidden; 
  }
 
 .confirm-table thead {
@@ -815,7 +816,7 @@ position: relative;
 }
 
 .confirm-table tbody td {
-  padding: 8px 14px;
+  padding: 6px 14px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   color: #555;
   height: 50px;
@@ -852,6 +853,7 @@ position: relative;
   overflow-x: auto;
   margin-bottom: 20px;
   display: block;
+  
 }
 
 

@@ -48,7 +48,7 @@ include '../Agent Section/includes/breadcrumbs.php';
           <div class="card-body p-4">
             <div class="row">
               <div class="col-md-6">
-                <div class="form-group mb-6">
+                <div class="form-group mb-3">
                   <label for="packageName" class="fs-6">Package <span class="text-danger fw-bold">*</span></label>
                   <select class="form-select mt-2 fs-6" id="packageName" name="packageName" required>
                     <option selected disabled>Select Package</option>
@@ -59,7 +59,7 @@ include '../Agent Section/includes/breadcrumbs.php';
               </div>
 
               <div class="col-md-6">
-                <div class="form-group mb-6">
+                <div class="form-group mb-3">
                   <label for="nights" class="fs-6">No. of Nights <span class="text-danger fw-bold">*</span></label>
                   <select class="form-select mt-2 fs-6" id="nights" name="nights" required>
                     <option selected disabled>Select No. of Nights</option>
@@ -73,7 +73,7 @@ include '../Agent Section/includes/breadcrumbs.php';
 
             <div class="row">
               <div class="col-md-6">
-                <div class="form-group mb-6">
+                <div class="form-group mb-3">
                   <label for="hotels" class="fs-6">Hotels <span class="text-danger fw-bold">*</span></label>
                   <select class="form-select mt-2 fs-6" id="hotels" name="hotels" required>
                     <option selected disabled>Select Hotel</option>
@@ -99,15 +99,15 @@ include '../Agent Section/includes/breadcrumbs.php';
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group mb-6">
-                  <label for="dayPicker" class="fs-6">Select Day<span class="text-danger fw-bold">*</span></label>
+                  <label for="dayPicker" class="fs-6">Select Day <span class="text-danger fw-bold">*</span></label>
                   <input type="date" class="form-control mt-2 fs-6" id="dayPicker" name="dayPicker" required>
                   <span id="packageNameError" class="text-danger"></span> <!-- Error message for package -->
                 </div>
               </div>
 
               <div class="col-md-6">
-                <div class="form-group mb-6">
-                  <label for="returnDate" class="fs-6">Return Date<span class="text-danger fw-bold">*</span></label>
+                <div class="form-group mb-3">
+                  <label for="returnDate" class="fs-6">Return Date <span class="text-danger fw-bold">*</span></label>
                   <input type="date" class="form-control mt-2 fs-6" id="returnDate" name="returnDate" readonly>
                   <span id="packageNameError" class="text-danger"></span> <!-- Error message for package -->
                 </div>
@@ -159,8 +159,10 @@ include '../Agent Section/includes/breadcrumbs.php';
                 </h5>
               </div>
             </div>
-          </div>
         </div>
+
+
+      </div>
 
         <div class="card mt-4">
           <div class="card-header bg-secondary text-white text-light">
