@@ -172,6 +172,8 @@
 
               if ($res1->num_rows > 0) {
                 while ($row = $res1->fetch_assoc()) {
+                
+
 
                   $paymentTypeClass = '';
                   $paymentTypeValue = $row['paymentType'];
