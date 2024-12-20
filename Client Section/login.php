@@ -8,10 +8,10 @@
 <head>
     <title>Login</title>
 
-    <?php include 'includes/head.php' ?>
+    <?php include '../Client Section/Includes/head.php' ?>
 
     <!-- External CSS -->
-    <link href="assets/css/samplelogin.css?v=<?php echo time(); ?>" rel="stylesheet">
+    <link href="../Client Section/assets/css/samplelogin.css?v=<?php echo time(); ?>" rel="stylesheet">
 
     <style>
         /* CSS to visually disable the button */
@@ -132,60 +132,60 @@
 
 
     <script>
-     const LoginButton = document.getElementById('LoginButton'); // Ensure this matches the button ID
+    const LoginButton = document.getElementById('LoginButton'); // Ensure this matches the button ID
 
-document.getElementById('loginForm').addEventListener('submit', function(event) {
-    event.preventDefault(); // Prevent default form submission
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent default form submission
 
-    // Clear previous messages
-    document.getElementById('message-login').innerHTML = '';
+        // Clear previous messages
+        document.getElementById('message-login').innerHTML = '';
 
-    // Create FormData object to gather the form data
-    const formData = new FormData(this);
+        // Create FormData object to gather the form data
+        const formData = new FormData(this);
 
-    // Log form data to the console for debugging
-    for (let [key, value] of formData.entries()) {
-        console.log(key + ': ' + value);  // Log each field for debugging
-    }
-
-    // Perform AJAX request
-    fetch('login-process.php', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => {
-        // Log the full response object for debugging
-        console.log('Response:', response);
-
-        // Ensure response is OK, if not throw a response error
-        if (!response.ok) {
-            throw new Error('Network response was not ok. Status: ' + response.status);
+        // Log form data to the console for debugging
+        for (let [key, value] of formData.entries()) {
+            console.log(key + ': ' + value);  // Log each field for debugging
         }
 
-        return response.json();  // Parse JSON response
-    })
-    .then(data => {
-        console.log('Data:', data);  // Log the data to verify its content
+        // Perform AJAX request
+        fetch('login-process.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            // Log the full response object for debugging
+            console.log('Response:', response);
 
-        if (data.success) {
-            // Redirect to dashboard or homepage
-            window.location.href = 'index.php';
-        } else if (data.message && data.message.trim() === "User not found.") {
-            // Show specific message for user not found
-            document.getElementById('message-login').innerHTML = '<div class="alert alert-danger text-center">' + data.message + '</div>';
-        } else if (data.message && data.message.trim() === "Invalid email or password.") {
-            // Show specific message for invalid credentials
-            document.getElementById('message-login').innerHTML = '<div class="alert alert-danger text-center">' + data.message + '</div>';
-        } else if (data.message && data.message.trim() === "Your account is inactive. Please contact support.") {
-            // Show specific message for inactive account
-            document.getElementById('message-login').innerHTML = '<div class="alert alert-warning text-center">' + data.message + '</div>';
-        } else {
-            // Fallback for unexpected responses
-            document.getElementById('message-login').innerHTML = '<div class="alert alert-danger text-center">An unexpected error occurred. Please try again.</div>';
-        }
-    })
-   
-});
+            // Ensure response is OK, if not throw a response error
+            if (!response.ok) {
+                throw new Error('Network response was not ok. Status: ' + response.status);
+            }
+
+            return response.json();  // Parse JSON response
+        })
+        .then(data => {
+            console.log('Data:', data);  // Log the data to verify its content
+
+            if (data.success) {
+                // Redirect to dashboard or homepage
+                window.location.href = 'index.php';
+            } else if (data.message && data.message.trim() === "User not found.") {
+                // Show specific message for user not found
+                document.getElementById('message-login').innerHTML = '<div class="alert alert-danger text-center">' + data.message + '</div>';
+            } else if (data.message && data.message.trim() === "Invalid email or password.") {
+                // Show specific message for invalid credentials
+                document.getElementById('message-login').innerHTML = '<div class="alert alert-danger text-center">' + data.message + '</div>';
+            } else if (data.message && data.message.trim() === "Your account is inactive. Please contact support.") {
+                // Show specific message for inactive account
+                document.getElementById('message-login').innerHTML = '<div class="alert alert-warning text-center">' + data.message + '</div>';
+            } else {
+                // Fallback for unexpected responses
+                document.getElementById('message-login').innerHTML = '<div class="alert alert-danger text-center">An unexpected error occurred. Please try again.</div>';
+            }
+        })
+    
+    });
 
 
 
@@ -209,7 +209,7 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
         });
     </script>
 
-<?php include 'includes\scripts.php' ?>
+<?php include '../Client Section/Includes/scripts.php' ?>
     
     </body>
 </html>

@@ -1,5 +1,5 @@
 <?php
-require "conn.php";
+require "../conn.php";
 session_start();
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -41,7 +41,7 @@ if (isset($_POST['bookNow']))
     $result = $conn->query("SELECT MAX(bookingId) AS lastBookingId FROM booking");
     if (!$result) {
         $_SESSION['status'] = "Error fetching last booking ID: " . $conn->error;
-        header("Location: bookingform.php");
+        header("Location: ../bookingform.php");
         exit(0);
     }
 
@@ -143,7 +143,7 @@ if (isset($_POST['bookNow']))
         {
             $_SESSION['status'] = "Guest insertion failed: " . $stmt2->error;
             $conn->rollback();  // Rollback transaction
-            header("Location: bookingform.php");
+            header("Location: ../bookingform.php");
             exit(0);
         }
     }
@@ -153,7 +153,7 @@ if (isset($_POST['bookNow']))
 
     // Store the transaction number in session and redirect
     $_SESSION['transactNo'] = $transactNo;
-    header("Location: payment.php");
+    header("Location: ../payment.php");
     exit(0);
 }
 

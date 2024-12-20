@@ -1,5 +1,5 @@
 <?php
-include 'conn.php'; // Ensure you include the correct database connection
+include '../conn.php'; // Ensure you include the correct database connection
 
 
 if (isset($_POST['packageId']) && isset($_POST['origin']) && isset($_POST['month'])) 
