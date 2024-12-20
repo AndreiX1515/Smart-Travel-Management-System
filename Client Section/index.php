@@ -1,5 +1,14 @@
 <?php 
+  require '../conn.php';
   session_start();
+
+  ini_set('display_errors', 1);
+  ini_set('display_startup_errors', 1);
+  error_reporting(E_ALL);
+
+  $email = $_SESSION['email'] ?? ''; // Use null coalescing operator to avoid undefined index
+  $accId = $_SESSION['accountId'] ?? '';
+  
 ?>
 
 
@@ -83,6 +92,7 @@
               <li><a href="#about">About</a></li>
               <li><a href="#services">Services</a></li>
               <li><a href="#contact">Contact</a></li>
+              <li><a href="transaction.php">Transaction History</a></li>
           </ul>
               <!-- Vertical line between menu items and login button -->
               <div class="vertical-line"></div>
