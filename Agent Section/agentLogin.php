@@ -27,7 +27,7 @@
     <main class="main-container">
         <div class="login-container">
             <div class="logo mt-5 mb-5">
-                <img src="..\assets\images\logo-tab.png" alt="" class="logo-image" width="160" height="120">
+                <img src="../Assets/Logos/logo-tab.png" alt="" class="logo-image" width="160" height="120">
             </div>
             <form class="mt-3" id="loginForm"  method="POST">
                 <!-- Username input field -->
@@ -67,9 +67,8 @@
         </div>
     </main>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <?php include "../Agent Section/includes/scripts.php"; ?>
+  
 
     <script>
     $(document).ready(function() {

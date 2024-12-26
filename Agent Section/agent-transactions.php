@@ -26,7 +26,6 @@ include '../Agent Section/includes/breadcrumbs.php';
 
     <div class="content-wrapper-transact d-flex flex-column">
      
-
         <div class="table-header">
          <div class="sorting-wrapper">
 
@@ -130,7 +129,7 @@ include '../Agent Section/includes/breadcrumbs.php';
           endif;
         ?>
         
-        <table id="product-table" class="product-table mt-2">
+        <table id="product-table" class="product-table">
           <thead>
             <tr>
                 <th>Transaction ID</th>
@@ -642,7 +641,7 @@ $(document).ready(function () {
         order: [[0, 'desc']],
         scrollX: false,
         autoWidth: false,
-        pageLength: 8, // Limit the number of rows per page to 8
+        pageLength: 9, // Limit the number of rows per page to 8
     });
 
     // Search Functionality

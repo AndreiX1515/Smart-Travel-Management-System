@@ -27,7 +27,7 @@
     <main class="main-container">
         <div class="login-container">
             <div class="logo mt-5 mb-5">
-                <img src="..\assets\images\logo-tab.png" alt="" class="logo-image" width="160" height="120">
+                <img src="../Assets/Logos/logo-tab.png" alt="" class="logo-image" width="160" height="120">
             </div>
             <form class="mt-3" id="loginForm"  method="POST">
                 <!-- Username input field -->

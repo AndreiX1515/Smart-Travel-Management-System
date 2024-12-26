@@ -65,7 +65,7 @@
                         <span class="m-0">Branch: <?php echo $branchName; ?></span>
                         <span class="m-0">Agent ID: <?php echo $agentId; ?></span>
                     </div>
-                    <img src="../assets/images/circle.png" alt="Profile" class="profile-image me-2" width="40px" height="40px">
+                    <img src="../Assets/Icons/circle.png" alt="Profile" class="profile-image me-2" width="40px" height="40px">
                 </a>
 
                 <ul class="dropdown-menu dropdown-menu-end mt-3" aria-labelledby="navbarDropdown">

@@ -1,9 +1,36 @@
+<?php
+		require "../conn.php";
+
+		ini_set('display_errors', 1);
+		ini_set('display_startup_errors', 1);
+		error_reporting(E_ALL);
+
+		// Initialize variables
+		$accountId = $_SESSION['employee_accountId'] ?? '';
+		$empId = $_SESSION['employee_employeeId'] ?? '';
+		$firstName =  $_SESSION['employee_fName'] ?? '';
+		$lastName =  $_SESSION['employee_lName'] ?? '';
+		$middleName = $_SESSION['employee_mName'] ?? '';  // Middle name is optional
+		$email = $_SESSION['email'] ?? '';
+		$password = $_SESSION['password'] ?? '';
+		$userType = $_SESSION['employee_userType'] ?? '';  // Assuming user type is part of the session
+
+
+		// Format the full name: Get the first letter of the middle name and place it at the end
+		$middleNameInitial = $middleName ? substr($middleName, 0, 1) . '.' : ''; // First initial of middle name
+		$fullName = htmlspecialchars($firstName . ' ' . $middleNameInitial . ' ' . $lastName);  // Full name with middle name initial at the end
+
+		// Position or role (assuming userType and accountType are available)
+		$position = htmlspecialchars(strtoupper($empId));
+?>
+
+
 <div class="sidebar">
   <div class="sidebar-logo-section">
     <a class="nav-link logo-link" href="#">
         <div class="logo-content">
             <div class="logo-backdrop">
-                <img src="../assets/images/logo-tab.png" alt="Logo" class="sidebar-logo">
+                <img src="../Assets/Logos/logo-tab.png" alt="Logo" class="sidebar-logo">
             </div>
             <span class="fw-bold">SMART TRAVEL</span>
         </div>
@@ -106,32 +133,6 @@
 					</div>
 			</li>
 </ul>
-
-		<?php
-						require "../conn.php";
-
-						ini_set('display_errors', 1);
-						ini_set('display_startup_errors', 1);
-						error_reporting(E_ALL);
-
-						// Initialize variables
-						$accountId = $_SESSION['employee_accountId'] ?? '';
-						$empId = $_SESSION['employee_employeeId'] ?? '';
-						$firstName =  $_SESSION['employee_fName'] ?? '';
-						$lastName =  $_SESSION['employee_lName'] ?? '';
-						$middleName = $_SESSION['employee_mName'] ?? '';  // Middle name is optional
-						$email = $_SESSION['email'] ?? '';
-						$password = $_SESSION['password'] ?? '';
-						$userType = $_SESSION['employee_userType'] ?? '';  // Assuming user type is part of the session
-
-
-						// Format the full name: Get the first letter of the middle name and place it at the end
-						$middleNameInitial = $middleName ? substr($middleName, 0, 1) . '.' : ''; // First initial of middle name
-						$fullName = htmlspecialchars($firstName . ' ' . $middleNameInitial . ' ' . $lastName);  // Full name with middle name initial at the end
-
-						// Position or role (assuming userType and accountType are available)
-						$position = htmlspecialchars(strtoupper($empId));
-		?>
 
   <div class="logout">
 			<div class="profile-section">
