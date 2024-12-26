@@ -10,7 +10,7 @@ $email = $_SESSION['email'] ?? ''; // Use null coalescing operator to avoid unde
 // $firstName = $_SESSION['first_name'] ?? '';
 // $lastName = $_SESSION['last_name'] ?? '';
 // $middleName = $_SESSION['middle_name'] ?? '';
-$accId = $_SESSION['accountid'] ?? '';
+$accId = $_SESSION['accountId'] ?? '';
 
 // $fullName = htmlspecialchars($lastName . ', ' . $firstName . ($middleName ? ' ' . substr($middleName, 0, 1) . '.' : ''));
 ?>
@@ -76,7 +76,7 @@ $accId = $_SESSION['accountid'] ?? '';
      </div>
      <div class="modal-footer">
          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-         <a href="client-logout.php" class="btn btn-danger" id="logoutButton">Logout</a>
+         <a href="../Client Section/Functions/client-logout.php" class="btn btn-danger" id="logoutButton">Logout</a>
      </div>
    </div>
  </div>
