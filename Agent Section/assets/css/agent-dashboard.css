@@ -835,6 +835,19 @@ position: relative;
   display: block;
 }
 
+.table-container::-webkit-scrollbar {
+  width: 6px; /* Increased scrollbar width */
+  height: 6px; /* Increased scrollbar height for horizontal scroll */
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.3); /* Scrollbar thumb color */
+  border-radius: 6px; /* Increased border radius for a more rounded thumb */
+}
+
+.table-container::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0.1); /* Scrollbar track color */
+}
 
 
 
@@ -1019,7 +1032,6 @@ position: relative;
   position: relative;
   height: 30vh;
   margin-top: 5px;
-  
  }
  
  .fit-container .one {

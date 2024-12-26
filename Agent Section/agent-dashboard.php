@@ -1197,7 +1197,7 @@ session_start();
             </div>
               
             <div class="body">
-              <div class="confirm-table-container">
+              <div class="table-container confirm-table-container">
                 <table class="confirm-table">
                   <thead>
                     <tr>
