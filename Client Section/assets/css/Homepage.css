@@ -872,6 +872,38 @@ nav {
  height: 100%;
 }
 
+
+.section-body .center-part {
+	width: 100%; /* Width of the left part */
+	height: 100%; /* Height of the left part */
+	padding: 20px; /* Added padding for better content spacing */
+	background-color: #f9f9f9; /* Light background color for a clean look */
+	border-radius: 8px; /* Rounded corners for a softer appearance */
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+	position: relative; /* Required for absolute positioning of the overlay */
+	overflow: hidden; /* Hide any overflow from the image */
+	transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.center-part .content-overlay {
+ background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(255, 255, 255, 0.1) 80%);
+ color: white; /* Text color */
+ padding: 0px 50px; /* Padding for text */
+ position: absolute; /* Position overlay on top */
+ top: 0; /* Align to top */
+ left: 0; /* Align to left */
+ right: 0; /* Align to right */
+ bottom: 0; /* Align to bottom */
+ display: flex;
+ flex-direction: column; /* Stack h2 and p vertically */
+ justify-content: flex-end; /* Align content to the bottom */
+ align-items: flex-start; /* Align content to the left */
+ text-align: left; /* Align text to the left */
+ z-index: 2; /* Ensure the overlay is above the background image */
+}
+
+
+
 .section-body .left-part {
  width: 60%; /* Width of the left part */
  height: 100%; /* Height of the left part */
@@ -888,16 +920,6 @@ nav {
  transform: translateY(-5px) scale(1.02); /* Slight lift and scaling on hover */
  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* Increased shadow for hover effect */
  background-color: #f0f0f0; /* Slightly darker background color on hover */
-}
-
-.background-img {
- width: 100%; /* Make the image take up the full width of the container */
- height: 100%; /* Make the image take up the full height of the container */
- object-fit: cover; /* Maintain aspect ratio while covering the entire area */
- position: absolute; /* Positioning the image absolutely */
- top: 0; /* Align to the top of the container */
- left: 0; /* Align to the left of the container */
- z-index: 1; /* Ensure the image is behind the overlay */
 }
 
 .left-part .content-overlay {
@@ -925,6 +947,20 @@ nav {
  max-width: 800px;
  text-align: left; /* Center-aligns text */
 }
+
+
+
+.background-img {
+ width: 100%; /* Make the image take up the full width of the container */
+ height: 100%; /* Make the image take up the full height of the container */
+ object-fit: cover; /* Maintain aspect ratio while covering the entire area */
+ position: absolute; /* Positioning the image absolutely */
+ top: 0; /* Align to the top of the container */
+ left: 0; /* Align to the left of the container */
+ z-index: 1; /* Ensure the image is behind the overlay */
+}
+
+
 
 
 .section-body .right-part {

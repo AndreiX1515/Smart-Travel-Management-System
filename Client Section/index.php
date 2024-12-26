@@ -63,12 +63,12 @@
      }
 
      /* Define each background with its specific timing */
-     .bg1 { background-image: url('assets/images/hero-1.jpg'); animation-delay: 0s; }
-     .bg2 { background-image: url('assets/images/hero-2.jpg'); animation-delay: 5s; }
-     .bg3 { background-image: url('assets/images/hero-3.jpg'); animation-delay: 10s; }
-     .bg4 { background-image: url('assets/images/hero-4.jpg'); animation-delay: 15s; }
-     .bg5 { background-image: url('assets/images/hero-5.jpg'); animation-delay: 20s; }
-     .bg6 { background-image: url('assets/images/hero-6.jpg'); animation-delay: 25s; }
+     .bg1 { background-image: url('../Assets/Places in Korea/hero-1.jpg'); animation-delay: 0s; }
+     .bg2 { background-image: url('../Assets/Places in Korea/hero-2.jpg'); animation-delay: 5s; }
+     .bg3 { background-image: url('../Assets/Places in Korea/hero-3.jpg'); animation-delay: 10s; }
+     .bg4 { background-image: url('../Assets/Places in Korea/hero-4.jpg'); animation-delay: 15s; }
+     .bg5 { background-image: url('../Assets/Places in Korea/hero-5.jpg'); animation-delay: 20s; }
+     .bg6 { background-image: url('../Assets/Places in Korea/hero-6.jpg'); animation-delay: 25s; }
 
      /* Keyframes for fading background images */
      @keyframes BgFade {
@@ -83,7 +83,7 @@
  <header>
   <nav>
       <div class="logo-container d-flex flex-row g-2">
-          <img src="assets/images/logo.png" alt="Logo" class="logo">
+          <img src="../Assets/Logos/logo.png" alt="Logo" class="logo">
       </div>
 
       <div class="menu-container">
@@ -110,7 +110,7 @@
                                          <!-- <h6 class="mb-1"><?php echo $_SESSION['first_name'] . ' ' . $_SESSION['last_name']; ?></h6> 
                                          <span class="m-0">Branch: <?php echo $branch; ?></span> -->
                                      </div>
-                                     <img src="assets/images/user.png" alt="Profile" class="profile-image me-2" width="40px" height="40px">
+                                     <img src="../Assets/Icons/user.png" alt="Profile" class="profile-image me-2" width="40px" height="40px">
                                  </a>
                                  <ul class="dropdown-menu dropdown-menu-end mt-3" aria-labelledby="navbarDropdown">
                                      <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i> My Profile</a></li>
@@ -170,7 +170,7 @@
 
  <section class="about">
     <div class="image-accent">
-        <img src="assets/images/hero-2.JPG" alt="Description of the image">
+        <img src="../Assets/Places in Korea/hero-2.JPG" alt="Description of the image">
     </div>
 
     <div class="about-content d-flex flex-column">
@@ -375,7 +375,7 @@
              <div class="carousel-item active">
                <div class="carousel-content">
                      <div class="image-container">
-                         <img src="assets/images/Places in Korea/Jeju Island/jeongbang_waterfall.jpg"  alt="Jeongbang Waterfall">
+                         <img src="../Assets/Places in Korea/Jeju Island/jeongbang_waterfall.jpg"  alt="Jeongbang Waterfall">
                      </div>
                      <div class="content-container">
                          <h3>Summer Package</h3>
@@ -407,7 +407,7 @@
              <div class="carousel-item">
                 <div class="carousel-content">
                    <div class="image-container">
-                       <img src="assets\images\Places in Korea\Jeju Island\seongsan_ilchulbong.jpg"  alt="Image 2">
+                       <img src="../Assets/Places in Korea/Jeju Island/jeongbang_waterfall.jpg"  alt="Image 2">
                    </div>
                    <div class="content-container">
                          <h3>Summer Package</h3>
@@ -439,7 +439,7 @@
              <div class="carousel-item">
                <div class="carousel-content">
                  <div class="image-container">
-                     <img src="assets\images\Places in Korea\Jeju Island\hallasan.jpg"  alt="Image 3">
+                     <img src="../Assets/Places in Korea/Jeju Island/hallasan.jpg"  alt="Image 3">
                  </div>
                  <div class="content-container">
                          <h3>Summer Package</h3>
@@ -473,10 +473,6 @@
      </div>
    </div>
 
-
-
-
-
 </section>
 
 
@@ -490,8 +486,20 @@
  </div>
 
  <div class="section-body">
+  <div class="center-part">
+    <img src="../Assets/Hotels/marinabay.jpg" alt="Left Part Background" class="background-img">
+    <div class="content-overlay">
+     <div class="content-overlay-text w-75">
+      <h2>Smart Hotel</h2>
+      <p>Experience the vibrant waterfront with stunning marina views and world-class amenities.</p>
+     </div>
+    </div>
+  </div>
+ </div>
+
+ <div class="section-body">
   <div class="left-part">
-    <img src="assets/images/530681382.jpg" alt="Left Part Background" class="background-img">
+    <img src="../Assets/Hotels/marinabay.jpg" alt="Left Part Background" class="background-img">
     <div class="content-overlay">
      <div class="content-overlay-text w-75">
       <h2>Marina Bay Hotel</h2>
@@ -502,7 +510,7 @@
 
   <div class="right-part">
     <div class="top-part">
-        <img src="assets/images/Hotels/ramada.jpg" alt="Top Part Background" class="background-img">
+        <img src="../Assets/Hotels/ramada.jpg" alt="Top Part Background" class="background-img">
         <div class="content-overlay">
          <div class="content-overlay-text w-75">
             <h6>Ramada Hotel Korea</h6>
@@ -511,7 +519,7 @@
        </div>
     </div>
     <div class="bottom-part">
-        <img src="assets/images/Hotels/airsky (2).jpg" alt="Bottom Part Background" class="background-img">
+        <img src="../Assets/Hotels/airsky (2).jpg" alt="Bottom Part Background" class="background-img">
         <div class="content-overlay">
          <div class="content-overlay-text w-75">
           <h6>Airsky Hotel</h6>
@@ -525,7 +533,7 @@
  <div class="section-body">
   <div class="right-part">
     <div class="top-part">
-        <img src="assets/images/Hotels/centum.png" alt="Top Part Background" class="background-img">
+        <img src="../Assets/Hotels/centum.png" alt="Top Part Background" class="background-img">
         <div class="content-overlay">
          <div class="content-overlay-text w-75">
           <h6>Centum Hotel</h6>
@@ -535,7 +543,7 @@
        </div>
     </div>
     <div class="bottom-part">
-        <img src="assets/images/Hotels/recenz hotel.png" alt="Bottom Part Background" class="background-img">
+        <img src="../Assets/Hotels/recenz hotel.png" alt="Bottom Part Background" class="background-img">
         <div class="content-overlay">
          <div class="content-overlay-text w-75">
           <h6>Recenz Hotel</h6>
@@ -547,7 +555,7 @@
   </div>
 
   <div class="left-part">
-   <img src="assets/images/Hotels/royal emporium.jpg" alt="Left Part Background" class="background-img">
+   <img src="../Assets/Hotels/royal emporium.jpg" alt="Left Part Background" class="background-img">
    <div class="content-overlay">
     <div class="content-overlay-text w-75">
      <h2>Royal Emporium Hotel</h2>
@@ -560,7 +568,7 @@
 
 <div class="section-body">
   <div class="left-part">
-   <img src="assets/images/Hotels/ibis.jpg" alt="Left Part Background" class="background-img">
+   <img src="../Assets/Hotels/ibis.jpg" alt="Left Part Background" class="background-img">
    <div class="content-overlay">
     <div class="content-overlay-text w-75">
      <h2>Ibis Insadong Hotel</h2>
@@ -572,7 +580,7 @@
 
  <div class="right-part">
    <div class="top-part">
-       <img src="assets/images/Hotels/blue ocean.png" alt="Top Part Background" class="background-img">
+       <img src="../Assets/Hotels/blue ocean.png" alt="Top Part Background" class="background-img">
        <div class="content-overlay">
         <div class="content-overlay-text w-75">
          <h6>Blue Ocean Hotel</h6>
@@ -605,7 +613,7 @@
 
              <div class="footer-logo-wrapper">
                <a href="#!">
-                 <img src="assets/images/logo.png" alt="Smart Travel Logo" width="250" height="50">
+                 <img src="../Assets/Logos/logo.png" alt="Smart Travel Logo" width="250" height="50">
                </a>
              </div>
 

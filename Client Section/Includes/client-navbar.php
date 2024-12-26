@@ -19,7 +19,7 @@ $accId = $_SESSION['accountid'] ?? '';
   <nav class="navbar navbar-expand-lg justify-content-between sticky-top">
     <div class="container-fluid d-flex justify-content-between">
       <a href="client-dashboard.php" class="navbar-brand">
-        <img src="assets\images\SMART LOGO 2 (2).png" alt="Logo" width="180" height="30" class="me-2"> 
+        <img src="../Assets/Logos/SMART LOGO 2 (2).png" alt="Logo" width="180" height="30" class="me-2"> 
       </a>
       
       <div class="nav-end-container">
@@ -31,7 +31,7 @@ $accId = $_SESSION['accountid'] ?? '';
                   <h6 class="m-0"></h6>
                   <span class="m-0"><?= htmlspecialchars($email); ?></span>
                 </div>
-                <img src="assets/images/circle.png" alt="Profile" class="profile-image me-2" width="40" height="40">
+                <img src="../Assets/Icons/profile-user.png" alt="Profile" class="profile-image me-2" width="40" height="40">
               </a>
 
               <ul class="dropdown-menu dropdown-menu-end mt-3" aria-labelledby="navbarDropdown">

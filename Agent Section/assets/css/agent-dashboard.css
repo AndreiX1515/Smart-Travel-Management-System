@@ -361,7 +361,7 @@ body {
   flex-direction: row;
   gap: 8px;
   position: relative;
-  height: 32.5vh;
+  height: 33.5vh;
 }
 
 
@@ -376,7 +376,7 @@ body {
 .second-row-container .body {
   position: relative; 
   width: 100%;
-  height: auto;
+  height: 100;
   color: #fff;
 }
 
@@ -388,7 +388,6 @@ body {
   justify-content: center; 
   height: 50px; 
   align-items: center;
-  border: 1px solid black;
 }
 
 .one .btn {
@@ -436,7 +435,7 @@ body {
   width: 33.33%;
   overflow-x: auto; 
   overflow-y: auto; 
-  height: 27vh; 
+  height: 28vh; 
   max-height: 30vh; 
   background-color: #fff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -469,7 +468,7 @@ body {
 }
 
 .unconfirm-table tbody td {
-  padding: 10px 6px; 
+  padding: 6px 6px; 
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   color: #555;
   vertical-align: middle; 
@@ -478,8 +477,12 @@ body {
 .unconfirm-table tbody tr {
   background-color: transparent;
   transition: background-color 0.3s;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: bold;
+}
+
+.unconfirm-table tbody tr:hover {
+  background-color: #e6e6e6; /* Light grey background on hover for clarity */
 }
 
 .td-content {
@@ -499,12 +502,7 @@ body {
   font-size: 14px; /* Smaller text for additional details */
 }
 
-/* Adjust row height */
-.unconfirm-table tbody tr {
-  font-size: 12px;
-  font-weight: normal;
-  height: 40px; /* Reduced height for compact design */
-}
+
 
 
 
@@ -539,26 +537,6 @@ width: 20%; /* Column for Contact Name */
 width: 10%; /* Column for Status */
 }
 
-.unconfirm-table tbody tr {
-background-color: transparent; /* Maintain transparency */
-transition: background-color 0.3s; /* Smooth transition for hover effect */
-font-size: 14px;
-font-weight: bold;
-}
-
-.unconfirm-table tbody tr:hover {
-background-color: #e6e6e6; /* Light grey background on hover for clarity */
-}
-
-.unconfirm-table tbody tr:first-child {
-border-top-left-radius: 10px; /* Rounded corners for the first row */
-border-top-right-radius: 10px;
-}
-
-.unconfirm-table tbody tr:last-child {
-border-bottom-left-radius: 10px; /* Rounded corners for the last row */
-border-bottom-right-radius: 10px;
-}
 
 
 /* Second Row Container - Div Two */
@@ -571,7 +549,7 @@ position: relative;
 
 .two .header {
   width: 100%;
-  padding: 5px 0px; 
+  padding: 10px 0px; 
   display: flex;
   justify-content: center;
   height: 50px; /* Fixed height for the header */
@@ -582,9 +560,8 @@ position: relative;
 .two .body {
   position: relative; 
   width: 100%;
-  background-color: #fff;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
-  height: 85%;
+  height: 100;
+  color: #fff;
 }
 
 
@@ -592,9 +569,10 @@ position: relative;
   width: 33.33%;
   overflow-x: auto; 
   overflow-y: auto; 
-  height: 27vh; 
+  height: 28vh; 
   max-height: 30vh; 
-  color: #fff;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Request Table */
@@ -603,12 +581,15 @@ position: relative;
   border-collapse: collapse;
   font-family: Arial, sans-serif;
   font-size: 12px;
-  white-space: nowrap; 
+  white-space: nowrap;
 }
 
 .request-table thead {
   background-color: #fff3e0; 
   text-align: left;
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 
 .request-table thead th {
@@ -677,9 +658,10 @@ position: relative;
   width: 33.33%;
   overflow-x: auto; 
   overflow-y: auto; 
-  height: 27vh; 
+  height: 28vh; 
   max-height: 30vh; 
-  color: #fff;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Pending Payment Table */
@@ -708,7 +690,7 @@ position: relative;
 }
 
 .pending-payment-table tbody td {
-  padding: 10px 6px; 
+  padding: 6px 6px; 
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   color: #555;
   vertical-align: middle; 
@@ -717,7 +699,7 @@ position: relative;
 .pending-payment-table tbody tr {
   background-color: transparent; 
   transition: background-color 0.3s;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 600;
 }
 
@@ -819,13 +801,12 @@ position: relative;
   padding: 6px 14px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   color: #555;
-  height: 50px;
 }
 
 .confirm-table tbody tr {
   background-color: transparent;
   transition: background-color 0.3s;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: bold;
 }
 
@@ -845,7 +826,6 @@ position: relative;
 
 
 
-
 /* Table styles */
 .table-container {
   width: 100%;
@@ -853,13 +833,7 @@ position: relative;
   overflow-x: auto;
   margin-bottom: 20px;
   display: block;
-  
 }
-
-
-
-
-
 
 
 
@@ -1032,3 +1006,109 @@ position: relative;
      min-width: 100px; /* Adjust minimum width for smaller screens */
  }
 }
+
+
+
+/* ======================================= */
+/* Confirm Container */
+.fit-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  position: relative;
+  height: 30vh;
+  margin-top: 5px;
+  
+ }
+ 
+ .fit-container .one {
+  width: 100%; /* Full width for the card */
+  height: 30vh; /* Adjusted height */
+  
+ }
+ 
+ .fit-container .one .header {
+  width: 100%;
+  padding: 10px 0px; 
+  display: flex; 
+  justify-content: center; 
+  height: 50px; 
+  align-items: center;
+ }
+ 
+ 
+ /* Confirm Table Container */
+ .fit-table-container {
+  width: 100%;
+  height: 60vh; 
+
+  position: relative;
+  overflow-y: auto; 
+  overflow-x: auto; 
+  -webkit-overflow-scrolling: touch;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+ }
+ 
+ .fit-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow-x: auto;
+  overflow-y: auto;
+  border-radius: 10px;
+ }
+
+.fit-table thead {
+  background-color: #e0f7fa;
+  text-align: left;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.fit-table thead th {
+  font-size: 14px;
+  padding: 4px 14px;
+  font-weight: bold;
+  color: #333;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+.fit-table tbody td {
+  padding: 6px 14px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  color: #555;
+}
+
+.fit-table tbody tr {
+  background-color: transparent;
+  transition: background-color 0.3s;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.fit-table tbody tr:hover {
+  background-color: #b2ebf2;
+}
+
+.fit-table tbody tr:first-child {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.fit-table tbody tr:last-child {
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+
+
+
+
+
+
+

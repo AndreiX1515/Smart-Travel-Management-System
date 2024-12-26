@@ -1,12 +1,12 @@
 <?php
-require_once('../../assets/tcpdf/tcpdf.php');  // Ensure you have the correct TCPDF path
+require_once('../../tcpdf/tcpdf.php');  // Ensure you have the correct TCPDF path
 
 class PDF extends TCPDF {
     // Page header
     public function Header() {
         if ($this->getPage() == 1) {  // Check if it's the first page
             // Add logo
-            $this->Image('../../assets/images/SMART LOGO 2 (2).jpg', 45, 4, 105, 15); // Adjust 'logo.png' path, position, and size as needed
+            $this->Image('../../Assets/Logos/SMART LOGO 2 (2).jpg', 45, 4, 105, 15); // Adjust 'logo.png' path, position, and size as needed
             $this->Ln(25); // Adds 10mm of vertical space
 
             $this->SetFont('Helvetica', 'B', 6);
