@@ -6,17 +6,43 @@
 
 /* Navbar Section */
 .navbar {
-    padding: 10px 65px; /* Adjust as necessary */
-    display: flex;
-    background-color: transparent; /* Use your preferred color */
-    z-index: 999; /* Ensure the navbar is above other elements */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Adds a subtle shadow */
-    transition: background-color 0.3s, box-shadow 0.3s; /* Smooth transition for background color and shadow */
+	padding: 10px 35px;
+	display: flex;
+	background-color: transparent;
+	z-index: 999;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+	position: sticky;  
+	top: 0;            
+	width: 100%;
+	background-color: rgb(230, 230, 230);     
 }
 
+.navbar-middle {
+	flex-grow: 1; /* Ensures the middle section stretches appropriately */
+	text-align: center;
+}
+
+.navbar-nav .nav-item .nav-link {
+	color: #6c757d; /* Default link color */
+	font-size: 16px;
+	transition: color 0.3s ease;
+}
+
+.navbar-nav .nav-item .nav-link:hover {
+	color: #116530; /* Hover color */
+	text-decoration: none; /* No underline on hover */
+}
+
+
+
+
+
+
+
+
 .navbar-brand {
-    margin-left: 0px; /* Add some space to the left */
-    margin-bottom: 2px;
+		margin-left: 0px; /* Add some space to the left */
+		margin-bottom: 2px;
 }
 
 .navbar-toggler {
@@ -69,3 +95,50 @@
  border-radius: 50%; /* Circular image */
 }
 
+
+
+/* Sidebar styling */
+.sidebar {
+	width: 250px; /* Fixed width for the sidebar */
+	background-color: #2c3e50;
+	color: #fff;
+	padding: 20px;
+	border-radius: 8px;
+	box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+	display: flex;
+	flex-direction: column;
+}
+
+.sidebar h3 {
+	font-size: 20px;
+	margin-bottom: 20px;
+}
+
+.sidebar ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.sidebar ul li {
+	margin: 15px 0;
+}
+
+.sidebar ul li a {
+	text-decoration: none;
+	color: #fff;
+	font-size: 16px;
+	padding: 10px;
+	display: block;
+	transition: background-color 0.3s;
+	border-radius: 4px;
+}
+
+.sidebar ul li a:hover {
+	background-color: #34495e;
+}
+
+/* Active state styling */
+.sidebar ul li a.active {
+	background-color: #16a085; /* New background color for active state */
+}

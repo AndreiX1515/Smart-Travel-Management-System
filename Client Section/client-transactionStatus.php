@@ -54,7 +54,7 @@
         endif;
       ?>
 
-      <a class="btn btn-primary me-2" href="client-transactionHistory.php" role="button">Go Back</a>
+      <a class="btn btn-primary me-2" href="client-transactionHistoryy.php" role="button">Go Back</a>
 
       <?php
         $query1 = "SELECT booking.*, package.packageName, flight.flightDepartureDate 

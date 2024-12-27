@@ -1,0 +1,374 @@
+/* Importing fonts from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&family=Parkinsans:wght@300..800&family=Roboto:wght@100..900&family=Rubik:wght@300..900&display=swap');
+
+* {
+    font-family: 'Roboto', 'Montserrat', 'Poppins', 'Parkinsans', 'Rubik', sans-serif;
+}
+
+
+body {
+    background-color: #f8f9fa;
+    font-family: 'Poppins', 'Roboto', sans-serif;
+}
+
+.main-container {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    gap: 15px; /* Space between left and right sides */
+    width: 98.5%;
+    height: 89vh;
+    margin: 10px;
+    padding: 10px 30px;
+    box-sizing: border-box;
+
+}
+
+.main-container .left-side-container {
+    display: flex;
+    flex-direction: column;
+    width: 45%;
+    height: 100%;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    padding: 0px 30px;
+}
+
+/* Main container */
+.content-container {
+    width: 100%;
+    background-color: #fff; 
+    
+}
+
+/* Horizontal line styling */
+.hr-line {
+    border: none;
+    border-top: 2px solid rgba(0, 0, 0, 0.5);
+    margin: -3px 0px;
+}
+
+
+/* Content One: Overall Styling */
+.content-one {
+    display: flex;
+    width: 97%;
+    padding: 10px 0;
+    justify-content: space-between;
+}
+
+/* Content Header */
+.content-header {
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    padding: 10px 0;
+    margin: 10px 0;
+}
+
+.content-header h4 {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+    color: #1d1d1d;
+}
+
+/* Back Button */
+.back-button-wrapper {
+    margin-bottom: 10px;
+}
+
+.back-button-link {
+    text-decoration: none;
+    color: #6c757d;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    transition: color 0.3s ease, text-decoration 0.3s ease;
+}
+
+
+/* Status Pill Base */
+.status-pill {
+    display: inline-block;
+    padding: 6px 15px;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 20px;
+    color: white;
+}
+
+/* Pending Status */
+.status-pending {
+    background-color: #ff9800; /* Orange for Pending */
+}
+
+/* Completed Status */
+.status-completed {
+    background-color: #4caf50; /* Green for Completed */
+}
+
+/* Canceled Status */
+.status-canceled {
+    background-color: #f44336; /* Red for Canceled */
+}
+
+
+
+
+
+
+
+
+
+.back-button-link:hover {
+    color: #116530;
+}
+
+/* Row Styling inside Content-One */
+.content-one .row {
+    display: flex;
+    width: 100%;
+    margin-top: 15px;
+}
+
+/* Column Styling */
+.content-one .col {
+    flex: 1;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+/* Column Hover Effect */
+.content-one .col:hover {
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Headings Inside Content-One */
+.content-one h4 {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+}
+
+/* Paragraphs Inside Content-One */
+.content-one p {
+    font-size: 14px;
+    color: #666;
+    margin: 0; /* Reset margin for consistent spacing */
+}
+
+
+
+
+
+
+/* Content Two */
+.content-two {
+    padding: 10px 0px;
+    font-family: Arial, sans-serif;
+}
+
+.content-two h4 {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+}
+
+/* Title header inside content-two */
+.content-two .title-header {
+    padding: 0px 10px;
+}
+
+/* Title text inside content-two */
+.content-two .title-header h5 {
+    font-weight: bold;
+    color: #333;
+}
+
+.content-two .content-body {
+    padding: 10px 15px; 
+    font-family: 'Poppins', sans-serif; 
+    margin-top: 10px;
+}
+
+.content-two .content-body .row {
+    display: flex;
+    justify-content: space-between; /* Space between columns */
+    gap: 10px; /* Minimal gap between items */
+    flex-wrap: nowrap; /* Ensures side-by-side alignment */
+    width: 60%;
+}
+
+.content-two .content-body .col-md-4 {
+    flex: 1; /* Ensures equal width for columns */
+    padding: 10px 0px;
+    box-sizing: border-box;
+    
+}
+
+.content-two .content-body .col-md-4 h4 {
+    font-size: 16px;
+    font-weight: bold;
+    color: #0e0e0e;
+    margin: 0 0 5px 0; /* Reduced spacing for compact layout */
+}
+
+.content-two .content-body .col-md-4 p {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+}
+
+
+.main-container .right-side-container {
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    width: 35%; /* Adjusted width to fit side by side */
+    height: 100%; /* Full height of main-container */
+    gap: 15px; /* Space between top and bottom containers */
+    box-sizing: border-box; /* Include padding in dimensions */
+}
+
+.right-side-sub-container {
+    flex: 1;
+    width: 100%;
+    border-radius: 10px;
+    display: flex;
+    background-color: #ffffff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
+}
+
+.container-wrapper {
+    width: 100%;
+    border: 1px solid black;
+
+
+}
+
+/* Header Section Styling */
+.header-section {
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+    border-bottom: 2px solid #ddd;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Title Styling */
+.header-content h4 {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+}
+
+/* Status Badge Styling */
+.status-badge {
+    display: inline-block;
+    padding: 5px 15px;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 15px;
+    color: white;
+}
+
+/* Pending Status Badge */
+.status-pending {
+    background-color: #ff9800; /* Orange for Pending */
+}
+
+/* Body Section Styling */
+.body-section {
+    padding: 20px;
+    margin-top: 20px;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Table Wrapper Styling */
+.table-wrapper {
+    overflow-x: auto;
+    padding: 10px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    background-color: #fafafa;
+}
+
+
+/* Guest Table Styling */
+.guest-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    color: #333;
+    margin-top: 10px;
+}
+
+.guest-table thead {
+    background-color: #f5f5f5;
+    border-bottom: 2px solid #ddd;
+}
+
+.guest-table th,
+.guest-table td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+.guest-table th {
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #555;
+}
+
+.guest-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.guest-table tbody tr:hover {
+    background-color: #f1f1f1;
+    transition: background-color 0.2s ease;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 5px 10px;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 12px;
+    color: white;
+}
+
+.status-pending {
+    background-color: #ff9800; /* Orange for Pending */
+}
+
+.status-completed {
+    background-color: #4caf50; /* Green for Confirmed */
+}
+
+
+
+
+
+
+
