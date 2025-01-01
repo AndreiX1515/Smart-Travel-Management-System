@@ -14,55 +14,7 @@
     <link href="../Client Section/assets/css/samplelogin.css?v=<?php echo time(); ?>" rel="stylesheet">
 
     <style>
-        /* CSS to visually disable the button */
-        .button-disabled {
-            background-color: #ccc; /* Light gray background */
-            color: #666; /* Darker gray text */
-            pointer-events: none; /* Prevent mouse events */
-            cursor: not-allowed; /* Change cursor to indicate it's disabled */
-        }
-
-        .container-background {
-            position: absolute;
-            width: 100vw;
-            height: 100vh;
-            top: 0;
-            left: 0;
-            overflow: hidden;
-        }
-
-        /* Dark overlay */
-        .dark-overlay {
-            position: absolute;
-            width: 100vw;
-            height: 100vh;
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0)); /* Gradient from dark to transparent */
-            z-index: 1; /* Ensure the overlay is above the background images */
-        }
-
-        .background-image {
-            position: absolute;
-            width: 100vw;
-            height: 100vh;
-            background-size: cover;
-            background-position: center;
-            opacity: 0; /* Start with images hidden */
-            animation: BgFade 30s infinite; /* 30 seconds for 6 images */
-            z-index: 0; /* Keep the background images behind the overlay */
-        }
-
-        /* Define each background with its specific timing */
-        .bg1 { background-image: url('assets/images/hero-1.jpg'); animation-delay: 0s; }
-        .bg2 { background-image: url('assets/images/hero-2.jpg'); animation-delay: 5s; }
-        .bg3 { background-image: url('assets/images/hero-3.jpg'); animation-delay: 10s; }
-        .bg4 { background-image: url('assets/images/hero-4.jpg'); animation-delay: 15s; }
-        .bg5 { background-image: url('assets/images/hero-5.jpg'); animation-delay: 20s; }
-        .bg6 { background-image: url('assets/images/hero-6.jpg'); animation-delay: 25s; }
-
-        @keyframes BgFade {
-            0%, 100% { opacity: 0; }   
-            10%, 40% { opacity: 1; }    
-        }
+        
     </style>
 </head>
 
@@ -75,17 +27,12 @@
   <div class="dark-overlay"></div>
 
   <div class="container-background"> 
-    <div class="background-image bg1"></div>
-    <div class="background-image bg2"></div>
-    <div class="background-image bg3"></div>
-    <div class="background-image bg4"></div>
-    <div class="background-image bg5"></div>
-    <div class="background-image bg6"></div>
+    
   </div>
 
     <div class="loginform d-flex flex-column">
         <div class="logo-container text-left">
-            <img src="assets\images\SMART LOGO 2 (2).png" alt="Logo">
+            <img src="../Assets/Logos/SMART LOGO 2 (2).png" alt="Logo">
         </div>
 
         <div class="header-container d-flex flex-column text-start mt-1">
