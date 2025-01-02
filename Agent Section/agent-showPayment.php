@@ -108,58 +108,58 @@
 
 <!-- Modal -->
 <div class="modal fade" id="paymentModal<?= $transactionNumber ?>" tabindex="-1" aria-labelledby="paymentModalLabel<?= $transactionNumber ?>" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="paymentModalLabel<?= $transactionNumber ?>">Payment for Transaction #<?= $transactionNumber ?></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="paymentModalLabel<?= $transactionNumber ?>">Payment for Transaction #<?= $transactionNumber ?></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="../Agent Section/functions/agent-transactionPayment-code.php" method="POST" enctype="multipart/form-data">
+        <div class="modal-body">
+          <input type="hidden" name="transactionNumber" value="<?= $transactionNumber ?>">
+          <input type="hidden" name="accountId" value="<?= $accountId ?>">
+
+          <div class="mb-3">
+            <label class="form-label">Payment for:</label>
+            <select class="form-select" name="paymentTitle" required>
+              <option selected disabled>Select Payment Title</option>
+              <option value="Package Payment">Package Payment</option>
+              <option value="Request Payment">Request Payment</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Payment Type</label>
+            <select class="form-select" name="paymentType" required>
+              <option selected disabled>Select Payment Type</option>
+              <option value="Downpayment">Downpayment</option>
+              <option value="Partial Payment">Partial Payment</option>
+              <option value="Full Payment">Full Payment</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Payment Amount</label>
+            <input type="number" class="form-control" name="amount" placeholder="Enter payment Amount" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Proof of Payment</label>
+            <div class="mb-3">
+              <input type="file" class="form-control" name="proofs[]" accept="image/*,application/pdf" multiple>
             </div>
-            <form action="../Agent Section/functions/agent-transactionPayment-code.php" method="POST" enctype="multipart/form-data">
-                <div class="modal-body">
-                    <input type="hidden" name="transactionNumber" value="<?= $transactionNumber ?>">
-                    <input type="hidden" name="accountId" value="<?= $accountId ?>">
+            <!-- List of file names -->
+            <ul id="fileList<?= $transactionNumber ?>" class="list-unstyled mt-2"></ul>
+          </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Payment for:</label>
-                        <select class="form-select" name="paymentTitle" required>
-                            <option selected disabled>Select Payment Title</option>
-                            <option value="Package Payment">Package Payment</option>
-                            <option value="Request Payment">Request Payment</option>
-                        </select>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Payment Type</label>
-                        <select class="form-select" name="paymentType" required>
-                            <option selected disabled>Select Payment Type</option>
-                            <option value="Downpayment">Downpayment</option>
-                            <option value="Partial Payment">Partial Payment</option>
-                            <option value="Full Payment">Full Payment</option>
-                        </select>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Payment Amount</label>
-                        <input type="number" class="form-control" name="amount" placeholder="Enter payment Amount" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Proof of Payment</label>
-                        <div class="mb-3">
-                            <input type="file" class="form-control" name="proofs[]" accept="image/*,application/pdf" multiple>
-                        </div>
-                        <!-- List of file names -->
-                        <ul id="fileList<?= $transactionNumber ?>" class="list-unstyled mt-2"></ul>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" name="payment" class="btn btn-primary">Submit payment</button>
-                    </div>
-                </div>
-            </form>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" name="payment" class="btn btn-primary">Submit payment</button>
+          </div>
         </div>
+      </form>
     </div>
+  </div>
 </div>
 
 

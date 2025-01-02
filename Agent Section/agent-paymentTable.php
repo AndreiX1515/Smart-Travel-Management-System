@@ -183,7 +183,7 @@
 
 
 
-<script>
+<!-- <script>
   document.addEventListener('DOMContentLoaded', function () 
   {
     // Target all buttons that trigger a modal
@@ -208,7 +208,7 @@
         bootstrapModal.show();
       });
     });
-  });
+  }); -->
 </script>
 
 <script>
