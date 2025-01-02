@@ -14,14 +14,9 @@
     <title>Login Page</title>
     <meta charset="UTF-8">
     
-    <!-- Bootstrap CSS CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    
+    <?php include '../Agent Section/includes/head.php' ?>
 
-    <!-- Font Awesome Icon Kit CDN -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
-
-    <link href="..\Agent Section\assets\css\agent-login.css?v=<?php echo time(); ?>" rel="stylesheet">
+    <link href="../Agent Section/assets/css/agent-login.css?v=<?php echo time(); ?>" rel="stylesheet">
 </head>
 
     <main class="main-container">
@@ -70,7 +65,7 @@
     <?php include "../Agent Section/includes/scripts.php"; ?>
   
 
-    <script>
+<script>
     $(document).ready(function() {
        $('#loginForm').on('submit', function(event) {
            event.preventDefault(); // Prevent default form submission
@@ -129,24 +124,24 @@
            });
        });
    });
+</script>
 
-    </script>
+<script>
+    document.getElementById('togglePassword').addEventListener('click', function () {
+        const passwordField = document.getElementById('floatingPassword');
+        const toggleIcon = document.getElementById('toggleIcon');
 
-    <script>
-        document.getElementById('togglePassword').addEventListener('click', function () {
-            const passwordField = document.getElementById('floatingPassword');
-            const toggleIcon = document.getElementById('toggleIcon');
+        if (passwordField.type === 'password') {
+            passwordField.type = 'text';
+            toggleIcon.classList.remove('far', 'fa-eye'); // Remove line-type eye
+            toggleIcon.classList.add('far', 'fa-eye-slash'); // Change to line-type eye-slash
+        } else {
+            passwordField.type = 'password';
+            toggleIcon.classList.remove('far', 'fa-eye-slash'); // Remove line-type eye-slash
+            toggleIcon.classList.add('far', 'fa-eye'); // Change back to line-type eye
+        }
+    });
+</script>
 
-            if (passwordField.type === 'password') {
-                passwordField.type = 'text';
-                toggleIcon.classList.remove('far', 'fa-eye'); // Remove line-type eye
-                toggleIcon.classList.add('far', 'fa-eye-slash'); // Change to line-type eye-slash
-            } else {
-                passwordField.type = 'password';
-                toggleIcon.classList.remove('far', 'fa-eye-slash'); // Remove line-type eye-slash
-                toggleIcon.classList.add('far', 'fa-eye'); // Change back to line-type eye
-            }
-        });
-    </script>
-</body>
+  </body>
 </html>

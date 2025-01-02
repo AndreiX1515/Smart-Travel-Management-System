@@ -11,7 +11,7 @@ if (isset($_SESSION['accountId'])) {
     $logout_stmt->bind_param("s", $session_id);
     $logout_stmt->execute();
     $logout_stmt->close();
-    header("location: ../Client Section/index.php");
+    header("location: ../index.php");
 }
 
 // Destroy PHP session

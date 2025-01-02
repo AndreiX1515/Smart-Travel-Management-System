@@ -1,5 +1,5 @@
 <?php
-session_start(); // Make sure to start the session
+session_start();
 ?>
 
 <!DOCTYPE html>
@@ -14,146 +14,126 @@ session_start(); // Make sure to start the session
 </head>
 
 <body>
-    <!-- Back to homepage button -->
-    <a href="login.php" class="back-btn">
-      <i class="fas fa-arrow-left"></i> Back to Login Page
-    </a>
-    
-    <div class="container-background"></div>
-  
-    <div class="main-container">
-      <!-- Accent Image Section -->
-      <div class="image-accent position-relative">
-        <div class="logo-container text-left">
-            <img src="assets/images/logo.png" alt="Logo">
-        </div>
-          <div class="bg-overlay"></div>
-          <img src="assets/images/register-accent-image.jpg" alt="Accent Image" class="img-fluid">
-      </div>
-  
-      <!-- Login Form Section -->
-      <div class="loginform d-flex flex-column">
-            <div class="header-container d-flex flex-column text-start mt-3 mb-3">
-                <h5 class="header h2 fw-bolder mb-0">Register</h5> <!-- Removed margin-bottom -->
-                <p class="h6 sub-header mb-0">The start of your journey with us.</p>
-            </div>
-            <!-- Registration Form -->
-            <form class="mt-lg-3" id="registerForm" method="POST" action="register.php">
-                <div class="message-1 mb-2 fw-bold" id="message-1"> </div>
-                <!-- <div class="mb-3">
-                    <div class="form-floating">
-                        <input type="text" class="form-control" id="floatingFirstName" name="Reg-FirstName" placeholder="First Name" required>
-                        <label for="floatingFirstName">First Name<small class="text-danger"> *</small></label>
-                    </div>
-                </div>
+		<!-- Back to homepage button -->
+		<a href="login.php" class="back-btn">
+				<i class="fas fa-arrow-left"></i> Back to Login Page
+		</a>
+		
+		<div class="container-background"></div>
 
-                <div class="mb-3">
-                    <div class="form-floating">
-                        <input type="text" class="form-control" id="floatingLastName" name="Reg-LastName" placeholder="Last Name" required>
-                        <label for="floatingLastName">Last Name<small class="text-danger"> *</small></label>
-                    </div>
-                </div>
+		<div class="main-container">
+				<!-- Accent Image Section -->
+				<div class="image-accent position-relative">
+						<div class="logo-container text-left">
+						</div>
+								<div class="bg-overlay"></div>
+								<img src="../Assets/Places in Korea/register-accent-image.jpg" alt="Accent Image" class="img-fluid">
+				</div>
 
-                <div class="mb-3">
-                    <div class="form-floating">
-                        <input type="text" class="form-control" id="floatingMiddleName" name="Reg-MiddleName" placeholder="Middle Name">
-                        <label for="floatingMiddleName">Middle Name</label>
-                    </div>
-                </div> -->
+				<!-- Login Form Section -->
+				<div class="loginform d-flex flex-column">
+										<div class="header-container d-flex flex-column text-start mt-3 mb-3">
+														<h5 class="header h2 fw-bolder mb-0">Register</h5> 
+														<p class="h6 sub-header mb-0">The start of your journey with us.</p>
+										</div>
+										<!-- Registration Form -->
+										<form class="mt-lg-3" id="registerForm" method="POST" action="register.php">
+														<div class="message-1 mb-2 fw-bold" id="message-1"> </div>
+														
+														<div class="mb-2">
+																		<div class="form-floating">
+																						<input type="email" class="form-control" id="floatingEmail" name="Reg-Email" placeholder="Email" required>
+																						<label for="floatingEmail">Email <small class="text-danger"> *</small></label>
+																		</div>
 
-                <div class="mb-2">
-                    <div class="form-floating">
-                        <input type="email" class="form-control" id="floatingEmail" name="Reg-Email" placeholder="Email" required>
-                        <label for="floatingEmail">Email <small class="text-danger"> *</small></label>
-                    </div>
+														<div id="email-message" class="text-danger"></div>
+															<!-- Message area -->
+														</div>
 
-                <div id="email-message" class="text-danger"></div>
-                 <!-- Message area -->
-                </div>
+														<div class="message mt-1 mb-1 d-flex justify-content-start text-danger" id="message-email"></div>
 
-                <div class="message mt-1 mb-1 d-flex justify-content-start text-danger" id="message-email"></div>
+														<div class="mt-2 mb-3 position-relative">
+																		<div class="form-floating">
+																						<input type="password" class="form-control" id="floatingPassword" name="Reg-Password" placeholder="Password" required>
+																						<label for="floatingPassword">Password <small class="text-danger"> *</small></label>
+																						<span id="togglePassword" class="position-absolute" style="right: 10px; top: 50%; transform: translateY(-50%);">
+																										<i class="far fa-eye" id="toggleIcon"></i>
+																						</span>
+																		</div>
+														</div>
 
-                <div class="mt-2 mb-3 position-relative">
-                    <div class="form-floating">
-                        <input type="password" class="form-control" id="floatingPassword" name="Reg-Password" placeholder="Password" required>
-                        <label for="floatingPassword">Password <small class="text-danger"> *</small></label>
-                        <span id="togglePassword" class="position-absolute" style="right: 10px; top: 50%; transform: translateY(-50%);">
-                            <i class="far fa-eye" id="toggleIcon"></i>
-                        </span>
-                    </div>
-                </div>
+														<div class="mb-2 position-relative">
+																		<div class="form-floating">
+																						<input type="password" class="form-control" id="floatingPassword2" name="Reg-CPassword" placeholder="Confirm Password" required>
+																						<label for="floatingPassword2">Confirm Password <small class="text-danger"> *</small></label>
+																						<span id="togglePassword2" class="position-absolute" style="right: 10px; top: 50%; transform: translateY(-50%);">
+																										<i class="far fa-eye" id="toggleIcon2"></i>
+																						</span>
+																		</div>
+														</div>
 
-                <div class="mb-2 position-relative">
-                    <div class="form-floating">
-                        <input type="password" class="form-control" id="floatingPassword2" name="Reg-CPassword" placeholder="Confirm Password" required>
-                        <label for="floatingPassword2">Confirm Password <small class="text-danger"> *</small></label>
-                        <span id="togglePassword2" class="position-absolute" style="right: 10px; top: 50%; transform: translateY(-50%);">
-                            <i class="far fa-eye" id="toggleIcon2"></i>
-                        </span>
-                    </div>
-                </div>
+														<!-- <div class="message mt-1 mb-2 d-flex justify-content-start text-danger" id="message-confirmp"></div> -->
 
-                <!-- <div class="message mt-1 mb-2 d-flex justify-content-start text-danger" id="message-confirmp"></div> -->
+														<div class="mb-3">
+																		<!-- <div class="send-otp d-flex flex-row align-items-center">
+																						<div class="form-floating me-3 flex-grow-1">
+																										<input type="text" class="form-control" id="floatingOtp" name="Reg-OTP" placeholder="Enter OTP">
+																										<label for="floatingOtp">OTP</label>
+																						</div>
+																							Send OTP link with countdown 
+																						<a href="#" id="sendOtpLink" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Send OTP <span id="otpCountdown"></span></a>
+																		</div> -->
+														</div>
 
-                <div class="mb-3">
-                    <!-- <div class="send-otp d-flex flex-row align-items-center">
-                        <div class="form-floating me-3 flex-grow-1">
-                            <input type="text" class="form-control" id="floatingOtp" name="Reg-OTP" placeholder="Enter OTP">
-                            <label for="floatingOtp">OTP</label>
-                        </div>
-                         Send OTP link with countdown 
-                        <a href="#" id="sendOtpLink" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Send OTP <span id="otpCountdown"></span></a>
-                    </div> -->
-                </div>
+														<button type="submit" class="btn btn-primary w-100" id="SubmitRegButton">Register</button>
+														
+										</form>
+				</div>
+</div>
 
-                <button type="submit" class="btn btn-primary w-100" id="SubmitRegButton">Register</button>
-                
-            </form>
-      </div>
-  </div>
+<!-- Modals -->
+<!-- OTP Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 
-    <!-- Modals -->
-    <!-- OTP Modal -->
-    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content">
+								<div class="modal-header">
+												<h5 class="modal-title fs-5" id="staticBackdropLabel">Enter the Confirmation Code sent to your Email</h5>
+												<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
 
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title fs-5" id="staticBackdropLabel">Enter the Confirmation Code sent to your Email</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
+				<div class="modal-body p-4">
+								<div class="primary-text mb-4">
+													Let us know this email belongs to you. Enter the code in the email sent to your provided email.
+								</div>
 
-        <div class="modal-body p-4">
-            <div class="primary-text mb-4">
-                 Let us know this email belongs to you. Enter the code in the email sent to your provided email.
-            </div>
+								<div class="otp-field-container mb-4">
+												<div class="send-otp d-flex flex-row align-items-center mb-4">
+																				<div class="form-floating me-3 flex-grow-1">
+																								<input type="text" class="form-control" id="floatingOtp" name="Reg-OTP" placeholder="Enter OTP">
+																								<label for="floatingOtp">OTP</label>
+																				</div>
+												</div>
 
-            <div class="otp-field-container mb-4">
-                <div class="send-otp d-flex flex-row align-items-center mb-4">
-                        <div class="form-floating me-3 flex-grow-1">
-                            <input type="text" class="form-control" id="floatingOtp" name="Reg-OTP" placeholder="Enter OTP">
-                            <label for="floatingOtp">OTP</label>
-                        </div>
-                </div>
+												<!-- Send OTP link with countdown -->
+												<a href="#" id="sendOtpLink-modal">Send OTP <span id="otpCountdown"></span></a>
+												<div class="message-otp mt-2 fw-bold" id="message-otp"> </div>
+								</div>
+								
+				</div>
 
-                <!-- Send OTP link with countdown -->
-                <a href="#" id="sendOtpLink-modal">Send OTP <span id="otpCountdown"></span></a>
-                <div class="message-otp mt-2 fw-bold" id="message-otp"> </div>
-            </div>
-            
-        </div>
+				<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Edit Contact Info</button>
+								<button type="button" class="btn btn-primary" id="verifyOtpButton">Submit</button>
+				</div>
 
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Edit Contact Info</button>
-            <button type="button" class="btn btn-primary" id="verifyOtpButton">Submit</button>
-        </div>
-
-        </div>
-    </div>
+				</div>
+</div>
 </div>
 
 <?php include '../Client Section/Includes/scripts.php'; ?>
 
+<!-- Registration AJAX Process -->
 <script>
 			$(document).ready(function () {
 							// Check if email is already in use on blur
@@ -394,38 +374,39 @@ session_start(); // Make sure to start the session
 </script>
 
 
-    <script>
-						document.getElementById('togglePassword').addEventListener('click', function () {
-						const passwordField = document.getElementById('floatingPassword');
-						const toggleIcon = document.getElementById('toggleIcon');
+<!-- View Password Toggle -->
+<script>
+		document.getElementById('togglePassword').addEventListener('click', function () {
+		const passwordField = document.getElementById('floatingPassword');
+		const toggleIcon = document.getElementById('toggleIcon');
 
-						if (passwordField.type === 'password') {
-										passwordField.type = 'text';
-										toggleIcon.classList.remove('far', 'fa-eye'); // Remove line-type eye
-										toggleIcon.classList.add('far', 'fa-eye-slash'); // Change to line-type eye-slash
-						} else {
-										passwordField.type = 'password';
-										toggleIcon.classList.remove('far', 'fa-eye-slash'); // Remove line-type eye-slash
-										toggleIcon.classList.add('far', 'fa-eye'); // Change back to line-type eye
-						}
-    });
+		if (passwordField.type === 'password') {
+						passwordField.type = 'text';
+						toggleIcon.classList.remove('far', 'fa-eye'); // Remove line-type eye
+						toggleIcon.classList.add('far', 'fa-eye-slash'); // Change to line-type eye-slash
+		} else {
+						passwordField.type = 'password';
+						toggleIcon.classList.remove('far', 'fa-eye-slash'); // Remove line-type eye-slash
+						toggleIcon.classList.add('far', 'fa-eye'); // Change back to line-type eye
+		}
+});
 
-    // Confirm Password Toggle
-    document.getElementById('togglePassword2').addEventListener('click', function () {
-        const passwordField2 = document.getElementById('floatingPassword2');
-        const toggleIcon2 = document.getElementById('toggleIcon2');
+// Confirm Password Toggle
+document.getElementById('togglePassword2').addEventListener('click', function () {
+				const passwordField2 = document.getElementById('floatingPassword2');
+				const toggleIcon2 = document.getElementById('toggleIcon2');
 
-        if (passwordField2.type === 'password') {
-            passwordField2.type = 'text';
-            toggleIcon2.classList.remove('far', 'fa-eye'); // Remove line-type eye
-            toggleIcon2.classList.add('far', 'fa-eye-slash'); // Change to line-type eye-slash
-        } else {
-            passwordField2.type = 'password';
-            toggleIcon2.classList.remove('far', 'fa-eye-slash'); // Remove line-type eye-slash
-            toggleIcon2.classList.add('far', 'fa-eye'); // Change back to line-type eye
-        }
-    });
-    </script>
+				if (passwordField2.type === 'password') {
+								passwordField2.type = 'text';
+								toggleIcon2.classList.remove('far', 'fa-eye'); // Remove line-type eye
+								toggleIcon2.classList.add('far', 'fa-eye-slash'); // Change to line-type eye-slash
+				} else {
+								passwordField2.type = 'password';
+								toggleIcon2.classList.remove('far', 'fa-eye-slash'); // Remove line-type eye-slash
+								toggleIcon2.classList.add('far', 'fa-eye'); // Change back to line-type eye
+				}
+});
+</script>
 
 
     </body>

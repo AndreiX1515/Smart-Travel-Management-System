@@ -3,16 +3,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100..1000&display=swap');
 
 * {
- font-family: 'Poppins', 'Roboto-Flex', Arial, sans-serif;
+    font-family: 'Segoe UI', 'Roboto-Flex', Arial, sans-serif;
 }
 
 body {
     padding: 0;
     margin: 0;
-    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+    background-color: #ffffff;
 }
-
-
 
 /* General styling for the container */
 .main-container {
@@ -25,47 +24,6 @@ body {
     box-sizing: border-box;  
 }
 
-
-/* Sidebar styling */
-.sidebar {
-    width: 250px; /* Fixed width for the sidebar */
-    background-color: #2c3e50;
-    color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-}
-
-.sidebar h3 {
-    font-size: 20px;
-    margin-bottom: 20px;
-}
-
-.sidebar ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.sidebar ul li {
-    margin: 15px 0;
-}
-
-.sidebar ul li a {
-    text-decoration: none;
-    color: #fff;
-    font-size: 16px;
-    padding: 10px;
-    display: block;
-    transition: background-color 0.3s;
-    border-radius: 4px;
-}
-
-.sidebar ul li a:hover {
-    background-color: #34495e;
-}
 
 /* Content styling */
 .content {
@@ -142,7 +100,7 @@ p {
     display: flex;
     justify-content: space-between;
     align-items: center;
-   
+    border-radius: 8px 8px 0 0;
 }
 
 .card-header h4 {
@@ -162,6 +120,7 @@ p {
     text-decoration: none;
     color: #fff;
     background-color: #3498db;
+    border-radius: 4px;
     font-size: 14px;
     transition: background-color 0.3s ease;
 }
@@ -173,66 +132,66 @@ p {
 
 
 
-
-
-
-
-.custom-tabs {
-    margin: 20px 0;
+.table-tabs {
+    display: flex;
+    align-items: center;
+    justify-content: left; /* Center-align the tabs */
+    margin: 15px 0;
+    width: 100%;
+    border-bottom: 1px solid #ddd; /* Add bottom border for better structure */
 }
 
-/* Reset list styles for ul and li */
-.tab-nav {
-		display: flex;
-		border-bottom: 2px solid #ddd;
-		list-style-type: none; /* Remove bullets */
-		margin: 0;
-		padding: 0;
+.custom-pills .nav-link {
+    color: #6c757d; /* Default text color */
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center;
+    border: none;
+    border-radius: 0;
+    background-color: transparent;
+    padding: 10px 16px; /* Increased padding for better spacing */
+    margin: 0 10px; /* Add spacing between tabs */
+    transition: color 0.3s ease, border-bottom 0.3s ease;
 }
 
-.tab-item {
-		margin-right: 10px;
+.custom-pills .nav-link.active {
+    color: #ff8200; /* Orange active text color */
+    font-weight: 600;
+    border-bottom: 3px solid #ff8200; /* Active tab bottom border */
+    background-color: transparent;
 }
 
-/* Tab button styles */
-.tab-button {
-		background: none;
-		border: none;
-		padding: 10px 15px;
-		font-size: 16px;
-		color: #333;
-		cursor: pointer;
-		position: relative;
-		transition: color 0.3s, border-color 0.3s;
-		outline: none; /* Remove focus outline */
+.custom-pills .nav-link:hover {
+    color: #ff8200; /* Hover color */
+    background-color: transparent; /* Ensure no background on hover */
 }
 
-/* Active tab styles */
-.tab-button.active {
-		color: #116530; /* Active tab text color */
+.custom-pills .nav-link:not(.active) {
+    border-bottom: 3px solid transparent; /* Keeps spacing consistent */
 }
 
-.tab-button.active::after {
-		content: "";
-		position: absolute;
-		bottom: 0;
-		left: 0;
-		width: 100%;
-		height: 3px;
-		background-color: #116530; /* Underline color */
-}
 
-/* Remove default border/outline when active */
-.tab-button:focus,
-.tab-button.active {
-		outline: none;
-		box-shadow: none; /* Prevents focus or active outlines */
-}
 
-/* Hover effect for tabs */
-.tab-button:not(.active):hover {
-		color: #116530; /* Hover effect for inactive tabs */
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -243,51 +202,47 @@ p {
     margin: 20px 0;
 }
 
+
 table {
     width: 100%;
     border-collapse: collapse;
-    text-align: left;
-    border: 1px solid #ddd; /* Outer border for structure */
-    border-top-left-radius: 12px; /* Rounded top-left corner */
-    border-top-right-radius: 12px; /* Rounded top-right corner */
-    overflow: hidden; /* Ensures the rounded corners are visible */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
-
-
 th, td {
     padding: 12px;
     text-align: left;
     border-bottom: 1px solid #ddd;
 }
-
 th {
     background-color: #f2f2f2;
-    font-weight: bold;
-
 }
-
-tr:last-child td {
-    border-bottom: none; /* Remove bottom border for the last row */
-}
-
 tr:hover {
-    background-color: #f5f5f5; /* Hover effect */
+    background-color: #f5f5f5;
 }
-
 .btn {
     padding: 8px 12px;
     margin: 4px;
     text-decoration: none;
     border-radius: 4px;
     color: #fff;
-    font-size: 14px;
 }
-
 .btn-view {
-    background-color: #4CAF50; /* Green */
+    background-color: #4CAF50;
+}
+.btn-download {
+    background-color: #008CBA;
 }
 
-.btn-download {
-    background-color: #008CBA; /* Blue */
+
+.back-button {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 20px 0;
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+.back-button:hover {
+    background-color: #45a049;
 }

@@ -35,6 +35,50 @@ html, body {
  transform: scale(1.05); /* Slightly scale up on hover for emphasis */
 }
 
+/* CSS to visually disable the button */
+.button-disabled {
+    background-color: #ccc; /* Light gray background */
+    color: #666; /* Darker gray text */
+    pointer-events: none; /* Prevent mouse events */
+    cursor: not-allowed; /* Change cursor to indicate it's disabled */
+}
+
+.container-background {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    background: #FC5C7D;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #6A82FB, #FC5C7D);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #6A82FB, #FC5C7D); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+
+}
+
+/* Dark overlay */
+.dark-overlay {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0)); /* Gradient from dark to transparent */
+    z-index: 1; /* Ensure the overlay is above the background images */
+}
+
+.background-image {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+    opacity: 0; /* Start with images hidden */
+    animation: BgFade 30s infinite; /* 30 seconds for 6 images */
+    z-index: 0; /* Keep the background images behind the overlay */
+}
+
+
+
 .main-container {
     display: flex;
     flex-wrap: wrap;
@@ -50,64 +94,84 @@ html, body {
     position: relative;
 }
 
+
+
+
+
 .loginform {
- padding: 30px; /* Adjusted padding */
- background-color: rgba(255, 255, 255, 0.9); /* Less transparent for better visibility */
- z-index: 2;
- width: 400px; /* Slightly narrower for a more compact design */
- height: auto; /* Adjust height automatically based on content */
- margin: 0 auto; /* Center horizontally */
- border-radius: 10px; /* Slightly larger rounded corners */
- box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2); /* Deeper shadow for more depth */
- backdrop-filter: blur(10px); /* Optional: Adds a blur effect to the background */
- border: 1px solid rgba(0, 0, 0, 0.1); /* Optional: Adds a subtle border */
+    padding: 40px; /* Reduced padding for a tighter layout */
+    background-color: rgba(255, 255, 255, 0.6); /* Refined glass effect */
+    z-index: 2;
+    width: 500px; /* Slightly smaller width */
+    height: auto; /* Automatically adjust height */
+    margin: 50px auto; /* Center horizontally and add vertical margin */
+    border-radius: 15px; /* Softer rounded corners */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+    backdrop-filter: blur(20px); /* Moderate blur for a glass-like effect */
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Minimal border for style */
 }
 
 /* Input fields styling */
 .loginform input {
- width: 100%; /* Full width for input fields */
- padding: 12px; /* Increased padding */
- margin: 10px 0; /* Space between input fields */
- border: 1px solid #ced4da; /* Border for input fields */
- border-radius: 5px; /* Rounded corners for input fields */
- box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* Inner shadow for depth */
+    width: 100%; /* Full width for input fields */
+    padding: 12px; /* Slightly reduced padding */
+    margin: 10px 0; /* Space between fields */
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Soft border for minimalism */
+    border-radius: 8px; /* Slightly smaller rounded corners */
+    background-color: rgba(255, 255, 255, 0.7); /* Transparent background */
+    box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.1); /* Subtle inner shadow */
+    font-size: 15px; /* Adjusted font size */
 }
 
 /* Button styling */
 .loginform button {
- background-color: #116530; /* Primary color for the button */
- color: white; /* Text color */
- padding: 12px; /* Increased padding */
- margin-top: 10px; /* Space above the button */
- border: none; /* Remove border */
- border-radius: 5px; /* Rounded corners for button */
- cursor: pointer; /* Pointer on hover */
- transition: background-color 0.3s ease; /* Smooth transition on hover */
+    background-color: #116530; /* Primary button color */
+    color: white; /* Contrast text */
+    padding: 12px; /* Slightly smaller button size */
+    margin-top: 15px; /* Space above button */
+    border: none; /* No border */
+    border-radius: 8px; /* Rounded corners for consistency */
+    cursor: pointer; /* Pointer on hover */
+    font-size: 16px; /* Adjusted font size for readability */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition */
 }
 
 .loginform button:hover {
- background-color: #0e4e24; /* Darker shade on hover */
+    background-color: #0e4e24; /* Darker green on hover */
+    transform: scale(1.05); /* Slight hover effect */
 }
 
-/* Optional: Add a title style */
+/* Title and additional text styling */
 .loginform h2 {
- text-align: center; /* Center title */
- margin-bottom: 20px; /* Space below title */
- color: #116530; /* Primary color for title */
-}
-
-.logo-container img {
-    width: 85px; 
-    height: 50px;
-    
-    object-fit: contain; 
+    text-align: left; /* Align text to the left */
+    margin-bottom: 20px; /* Adjusted spacing below title */
+    color: #116530; /* Primary color */
+    font-size: 24px; /* Slightly smaller font size */
 }
 
 .header-container p {
-    font-size: 12px;
-    font-weight: 500;
-    color: grey;
+    font-size: 13px; /* Adjusted text size */
+    font-weight: 400; /* Normal font weight */
+    color: rgb(88, 88, 88); /* Light grey color */
+    text-align: left; /* Align text to the left */
+    margin-bottom: 10px; /* Reduced spacing between text */
 }
+
+/* Logo container */
+.logo-container img {
+    width: 100px; /* Slightly smaller logo */
+    height: auto; /* Maintain aspect ratio */
+    object-fit: contain;
+    margin-bottom: 20px; /* Adjusted spacing below logo */
+    display: block; /* Center alignment */
+    justify-self: left;
+}
+
+
+
+
+
+
 
 /* Social Icons Section */
 .social-icons {
@@ -174,6 +238,14 @@ html, body {
     margin: 0 10px;
     color: #666;
 }
+
+
+
+
+
+
+
+
 
 /* Image Accent Section */
 .image-accent {

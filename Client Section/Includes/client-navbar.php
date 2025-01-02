@@ -17,48 +17,70 @@ $accId = $_SESSION['accountId'] ?? '';
 
 <header>      
   <nav class="navbar navbar-expand-lg justify-content-between sticky-top">
-    <div class="container-fluid d-flex justify-content-between">
-      <a href="client-dashboard.php" class="navbar-brand">
-        <img src="../Assets/Logos/SMART LOGO 2 (2).png" alt="Logo" width="180" height="30" class="me-2"> 
-      </a>
-      
-      <div class="nav-end-container">
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav ms-auto">
-            <li class="nav-item dropdown d-flex align-items-center">
-              <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <div class="profile-container ms-2 me-3">
-                  <h6 class="m-0"></h6>
-                  <span class="m-0"><?= htmlspecialchars($email); ?></span>
-                </div>
-                <img src="../Assets/Icons/profile-user.png" alt="Profile" class="profile-image me-2" width="40" height="40">
+  <div class="container-fluid d-flex justify-content-between align-items-center">
+  <!-- Logo -->
+  <a href="client-dashboard.php" class="navbar-brand">
+    <img src="../Assets/Logos/SMART LOGO 2 (2).png" alt="Logo" width="180" height="30" class="me-2"> 
+  </a>
+  
+  <!-- Nav Links in the Middle -->
+  <div class="navbar-middle">
+    <ul class="navbar-nav d-flex flex-row justify-content-center">
+      <li class="nav-item">
+        <a class="nav-link px-3" href="index.php">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link px-3" href="client-transactionHistoryy.php">View Transaction History</a>
+      </li>
+      <!-- <li class="nav-item">
+        <a class="nav-link px-3" href="vehicles.php">Vehicles</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link px-3" href="reports.php">Reports</a>
+      </li> -->
+    </ul>
+  </div>
+  
+  <!-- Profile and End Section -->
+  <div class="nav-end-container">
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item dropdown d-flex align-items-center">
+          <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <div class="profile-container ms-2 me-3">
+              <h6 class="m-0"></h6>
+              <!-- <span class="m-0"> -->
+                <!-- <?= htmlspecialchars($email); ?> -->
+              <!-- </span> -->
+            </div>
+            <img src="../Assets/Icons/profile-user.png" alt="Profile" class="profile-image me-2" width="40" height="40">
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end mt-3" aria-labelledby="navbarDropdown">
+            <li>
+              <a class="dropdown-item" href="#">
+                <i class="fas fa-user me-2"></i> My Profile
               </a>
-
-              <ul class="dropdown-menu dropdown-menu-end mt-3" aria-labelledby="navbarDropdown">
-                <li>
-                  <a class="dropdown-item" href="#">
-                    <i class="fas fa-user me-2"></i> My Profile
-                  </a>
-                </li>
-                <li>
-                  <a class="dropdown-item" href="#">
-                    <i class="fas fa-cog me-2"></i> Settings
-                  </a>
-                </li>
-                <li>
-                  <hr class="dropdown-divider">
-                </li>
-                <li>
-                  <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">
-                    <i class="fas fa-sign-out-alt me-2"></i> Logout
-                  </a>
-                </li>
-              </ul>
+            </li>
+            <li>
+              <a class="dropdown-item" href="#">
+                <i class="fas fa-cog me-2"></i> Settings
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li>
+              <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">
+                <i class="fas fa-sign-out-alt me-2"></i> Logout
+              </a>
             </li>
           </ul>
-        </div>
-      </div>
+        </li>
+      </ul>
     </div>
+  </div>
+</div>
+
   </nav>
 </header>
 

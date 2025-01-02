@@ -855,7 +855,7 @@ div.dataTables_wrapper td:nth-child(-n+11) {
    left: 0;
    background-color: #f8f9fa; /* Light background for sticky columns */
    z-index: 10; /* Ensure it stays on top of the other columns */
-   box-shadow: inset -1px 0 #ccc; /* Subtle divider for clarity */
+   
  }
  
  /* Adjust Scroll Behavior */
@@ -910,10 +910,13 @@ div.dataTables_wrapper td:nth-child(-n+11) {
  }
  
  /* Adjust column widths for additional columns beyond the 12th */
- div.dataTables_wrapper thead th:nth-child(n+10), 
- div.dataTables_wrapper tbody td:nth-child(n+10) { 
-   width: 10%; 
- }
+div.dataTables_wrapper thead th:nth-child(n+10), 
+div.dataTables_wrapper tbody td:nth-child(n+10) { 
+  width: 10%;
+  box-sizing: border-box;
+}
+
+
  
  
  
