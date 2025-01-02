@@ -180,6 +180,8 @@
   </div>
 </div>
 
+<?php include 'includes/scripts.php'; ?>
+
 <script>
   document.addEventListener('DOMContentLoaded', function() 
   {

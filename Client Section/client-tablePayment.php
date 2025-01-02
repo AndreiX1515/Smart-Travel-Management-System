@@ -144,6 +144,8 @@
   </div>
 </div>
 
+<?php include 'includes/scripts.php'; ?>
+
 <script>
   // Custom JavaScript for handling modal close and removing backdrop
   $(document).ready(function () {
@@ -161,7 +163,7 @@
 </script>
 
 
-<script>
+<!-- <script>
   // Custom JavaScript to handle modal close functionality
   document.addEventListener("DOMContentLoaded", () => {
     const closeButtons = document.querySelectorAll(".custom-close");
@@ -178,7 +180,7 @@
       });
     });
   });
-</script>
+</script> -->
 
 
 

@@ -155,8 +155,8 @@
               <button class="btn btn-danger btn-sm mt-2 me-2" data-bs-toggle="modal" data-bs-target="#cancelTransactionModal">
                 Cancel Transaction
               </button>
-              <button class="btn btn-primary btn-sm mt-2 me-2" data-bs-toggle="modal" data-bs-target="#paymentModal<?= $transactNum ?>"
-                data-transact-no="<?= $transactNum ?>" data-account-id="<?= $accountId ?>">Add Payment</button>
+              <button class="btn btn-primary btn-sm mt-2 me-2" data-bs-toggle="modal" data-bs-target="#paymentModal<?= $transactionNumber ?>"
+                data-transact-no="<?= $transactionNumber ?>" data-account-id="<?= $accId ?>">Add Payment</button>
               <button class="btn btn-primary btn-sm mt-2 me-2" data-bs-toggle="modal" data-bs-target="#requestModal" 
                 data-transaction-id="<?= $transactionNumber ?>">Add Request</button>
             </div>
@@ -202,6 +202,40 @@
       </div>
     </div>
   </div>
+
+  <!-- Cancel Transaction Modal -->
+<div class="modal fade" id="cancelTransactionModal" tabindex="-1" aria-labelledby="cancelTransactionModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="cancelTransactionModalLabel">Confirm Cancellation</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="../Agent Section/functions/agent-cancelTransact-code.php" method="POST">
+        <div class="modal-body">
+          <p class="mb-3">
+            Are you sure you want to cancel this transaction? This action cannot be undone.
+          </p>
+
+          <!-- Hidden Input for Transaction Number -->
+          <input type="hidden" name="updateTransactNo" value="<?php echo htmlspecialchars($transactNum); ?>">
+
+          <!-- Reason for Cancellation -->
+          <div class="mb-3">
+            <label for="cancellationReason" class="form-label">
+              Reason for Cancellation <span class="text-danger fw-bold">*</span>
+            </label>
+            <input id="cancellationReason" name="reason" class="form-control" placeholder="Enter the reason for cancellation" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" name="cancelTransact" class="btn btn-danger">Confirm Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
   
   <?php include 'includes/scripts.php'; ?>
 
