@@ -21,7 +21,7 @@ if (isset($_POST['pay']))
 
     if (isset($_FILES['proofs']) && count($_FILES['proofs']['name']) > 0) 
     {
-      $uploadDir = "uploads" . DIRECTORY_SEPARATOR . $transactNo . DIRECTORY_SEPARATOR;
+      $uploadDir = "../../Agent Section/functions/uploads/" . DIRECTORY_SEPARATOR . $transactNo . DIRECTORY_SEPARATOR;
       $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'pdf'];
       $maxFileSize = 4 * 1024 * 1024; // 4MB per file
       $uploadedFiles = []; // Array to store file paths
