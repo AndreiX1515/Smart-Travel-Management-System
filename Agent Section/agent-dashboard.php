@@ -1152,8 +1152,8 @@ session_start();
 
                             <td> 
                                 <div class='td-content d-flex flex-column align-items-left'>
-                                      <h6>Title: <span>" . htmlspecialchars($row['Payment Title']) . "</span></h6>
-                                      <h6>Type: <span>" . htmlspecialchars($row['Payment Type']) . "</span></h6>
+                                      <h6>Title: <span>" . $row['Payment Title'] . "</span></h6>
+                                      <h6>Type: <span>" . $row['Payment Type'] . "</span></h6>
                               </div>
                           </td>
 
