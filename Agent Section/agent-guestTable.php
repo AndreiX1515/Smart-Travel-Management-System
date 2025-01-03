@@ -169,7 +169,8 @@
         <div class="modal-body">
           <!-- Hidden input for transaction number -->
           <input type="hidden" name="transaction_number" value="<?php echo htmlspecialchars($_SESSION['transaction_number'] ?? ''); ?>">
-          
+          <input type="hidden" name="accId" value="<?php echo $accountId; ?>">
+
           <!-- Container for all guests' visa requirements -->
           <div id="allGuestFields">
             <div class="mb-4">

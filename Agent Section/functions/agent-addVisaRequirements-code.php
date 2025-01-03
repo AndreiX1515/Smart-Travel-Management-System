@@ -10,7 +10,7 @@ if (isset($_POST['attachVisaRequirements'])) {
 
     // Retrieve transaction number and agent ID from session or form
     $transactNo = $_POST['transaction_number'] ?? $_SESSION['transaction_number'] ?? null;
-    $agentId = $_SESSION['agent_agentId'] ?? null;
+    $accId = $_POST['accId'];
 
     if (!$transactNo || !$agentId) {
         echo "Transaction number or Agent ID is missing.";
@@ -103,14 +103,14 @@ if (isset($_POST['attachVisaRequirements'])) {
             date_default_timezone_set('Asia/Taipei');
             $currentTime = date('Y-m-d H:i:s');
 
-            $query = "INSERT INTO visarequirements (guestId, transactNo, agentId, passport, permit, validId, certificate, dateSubmitted)
+            $query = "INSERT INTO visarequirements (guestId, transactNo, accId, passport, permit, validId, certificate, dateSubmitted)
                       VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
             $stmt = $conn->prepare($query);
             if ($stmt) {
                 $stmt->bind_param(
                     "isssssss",
-                    $guestId, $transactNo, $agentId,
+                    $guestId, $transactNo, $accId,
                     $filePaths['passport'], $filePaths['permit'],
                     $filePaths['validId'], $filePaths['certificate'], $currentTime
                 );
