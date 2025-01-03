@@ -31,6 +31,8 @@ if (isset($_POST['login'])) {
 
                     if ($accountType === 'agent') {
                         handleLogin($accountId, 'agent', "SELECT * FROM agent WHERE accountId = ?", ['branchId']);
+                        $_SESSION['email'] = $email;
+                        $_SESSION['password'] = $password;
                     } elseif ($accountType === 'employee') {
                         handleLogin($accountId, 'employee', "SELECT * FROM employee WHERE accountId = ?", ['position', 'countryCode', 'contactNo', 'branch']);
                     } else {
