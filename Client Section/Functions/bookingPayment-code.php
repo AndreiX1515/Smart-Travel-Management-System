@@ -22,6 +22,7 @@ if (isset($_POST['pay']))
     if (isset($_FILES['proofs']) && count($_FILES['proofs']['name']) > 0) 
     {
       $uploadDir = "../../Agent Section/functions/uploads/" . DIRECTORY_SEPARATOR . $transactNo . DIRECTORY_SEPARATOR;
+      $dbUploadDir = "uploads" . DIRECTORY_SEPARATOR . $transactNo . DIRECTORY_SEPARATOR;
       $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'pdf'];
       $maxFileSize = 4 * 1024 * 1024; // 4MB per file
       $uploadedFiles = []; // Array to store file paths
@@ -44,6 +45,7 @@ if (isset($_POST['pay']))
           $newFileName = $transactNo . '-' . date('m-d-Y_H-i') . '-' . uniqid() . '.' . $fileExtension;
 
           $destPath = $uploadDir . $newFileName;
+          $dbFilePath = $dbUploadDir . $newFileName;
 
           if (move_uploaded_file($fileTmpPath, $destPath)) 
           {
@@ -86,7 +88,7 @@ if (isset($_POST['pay']))
         foreach ($uploadedFiles as $filePath) 
         {
           // Bind parameters for each file upload
-          $stmt->bind_param('sidss', $transactNo, $accountId, $amount, $filePath, $paymentDate);
+          $stmt->bind_param('sidss', $transactNo, $accountId, $amount, $dbFilePath, $paymentDate);
 
           if (!$stmt->execute()) 
           {
