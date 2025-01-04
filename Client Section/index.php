@@ -158,7 +158,7 @@
       <div class="d-flex flex-row gap-3">
 
 
-      <a href="<?php echo isset($_SESSION['accountId']) ? 'bookingform.php' : 'login.php'; ?>" class="cta-button">Book Now</a>
+      <a href="<?php echo isset($_SESSION['accountId']) ? 'client-bookingform.php' : 'login.php'; ?>" class="cta-button">Book Now</a>
 
 
 

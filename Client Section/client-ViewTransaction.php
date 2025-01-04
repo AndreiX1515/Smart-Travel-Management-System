@@ -36,7 +36,7 @@
 										<div class="content-container">
 												<div class="content-header">
 														<div class="back-button-wrapper">
-																		<a href="index.php" class="back-button-link">
+																		<a href="client-transactionHistoryy.php" class="back-button-link">
 																						<i class="fa-solid fa-arrow-left me-2"></i> Back to Transaction Page
 																		</a>
 														</div>
@@ -139,7 +139,7 @@
 																	<table class="guest-table">
 																					<thead>
 																									<tr>
-																													<th>#</th>
+																													<th>ID</th>
 																													<th>Name</th>
 																													<th>Contact</th>
 																													<th>Relationship</th>
