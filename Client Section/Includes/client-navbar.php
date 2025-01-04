@@ -19,7 +19,7 @@ $accId = $_SESSION['accountId'] ?? '';
   <nav class="navbar navbar-expand-lg justify-content-between sticky-top">
   <div class="container-fluid d-flex justify-content-between align-items-center">
   <!-- Logo -->
-  <a href="client-dashboard.php" class="navbar-brand">
+  <a href="index.php" class="navbar-brand">
     <img src="../Assets/Logos/SMART LOGO 2 (2).png" alt="Logo" width="180" height="30" class="me-2"> 
   </a>
   

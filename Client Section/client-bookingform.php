@@ -18,18 +18,14 @@
   // $fullName = htmlspecialchars($lastName . ', ' . $firstName . ($middleName ? ' ' . substr($middleName, 0, 1) . '.' : ''));
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Flight Booking</title>
-
   <?php include '../Client Section/Includes/head.php'; ?>
-  
+
+  <title>Booking Form</title>
+
   <link rel="stylesheet" href="../Client Section/assets/css/client-portal.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="../Client Section/assets/css/client-navbar.css?v=<?php echo time(); ?>"> 
  
@@ -74,7 +70,6 @@
             </div>
 
             <div class="card-body p-4">
-
               <div class="row">
                 <!-- Agent Dropdown -->
                 <div class="col-md-12">
@@ -576,7 +571,7 @@
       </div>
       
     </div>
-    
+
  </div>
 </div>
 

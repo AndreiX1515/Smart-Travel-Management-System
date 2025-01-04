@@ -1,228 +1,169 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Poppins:wght@100..900&family=Roboto:wght@100..900&display=swap');
-
-* {
-  font-family: 'Poppins', 'Inter', Arial, sans-serif;
-}
-
-
-body {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-}
-
-
-
-h1 {
-    font-size: 28px;
-    margin-bottom: 20px;
-}
-
-p {
-    font-size: 16px;
-    color: #7f8c8d;
-    margin-bottom: 30px;
-}
-
-/* Row layout for cards */
-.row {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-
-
 .card {
-    background-color: #fff;
-    overflow: hidden;
+  background-color: #fff;
+  overflow: hidden;
 }
 
 .card-header {
-    background-color: #3498db;
-    color: #fff;
-    padding: 10px 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-   
+  background-color: #3498db;
+  color: #fff;
+  padding: 10px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .card-header h4 {
-    margin: 0;
-    font-size: 16px;
+  margin: 0;
+  font-size: 16px;
 }
 
 .card-body {
-    padding: 0;
-    font-size: 14px;
-    color: #2c3e50;
+  padding: 0;
+  font-size: 14px;
+  color: #2c3e50;
 }
 
 /* Button styling */
 .btn {
-    padding: 8px 12px;
-    text-decoration: none;
-    color: #fff;
-    background-color: #3498db;
-    font-size: 14px;
-    transition: background-color 0.3s ease;
+  padding: 8px 12px;
+  text-decoration: none;
+  color: #fff;
+  background-color: #3498db;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
 }
 
 .btn:hover {
-    background-color: #2980b9;
+  background-color: #2980b9;
 }
 
-
-
-
-
-
-
-
+/* Custom tabs */
 .custom-tabs {
-    margin: 20px 0;
+  margin: 20px 0;
 }
 
 /* Reset list styles for ul and li */
 .tab-nav {
-    display: flex;
-    list-style-type: none; /* Remove bullets */
-    margin: 0;
-    padding: 0;
+  display: flex;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
 }
 
 .tab-item {
-    margin-right: 10px;
+  margin-right: 10px;
 }
 
 /* Tab button styles */
 .tab-button {
-    background: none;
-    border: none;
-    padding: 10px 15px;
-    font-size: 16px;
-    color: #333;
-    cursor: pointer;
-    position: relative;
-    transition: color 0.3s, border-color 0.3s;
-    outline: none; /* Remove focus outline */
+  background: none;
+  border: none;
+  padding: 10px 15px;
+  font-size: 16px;
+  color: #333;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.3s, border-color 0.3s;
+  outline: none;
 }
 
-/* Active tab styles */
 .tab-button.active {
-    color: #116530; /* Active tab text color */
+  color: #116530;
 }
 
 .tab-button.active::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background-color: #116530; /* Underline color */
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #116530;
 }
 
-/* Remove default border/outline when active */
 .tab-button:focus,
 .tab-button.active {
-		outline: none;
-		box-shadow: none; /* Prevents focus or active outlines */
+  outline: none;
+  box-shadow: none;
 }
 
-/* Hover effect for tabs */
 .tab-button:not(.active):hover {
-		color: #116530; /* Hover effect for inactive tabs */
+  color: #116530;
 }
 
-
-
+/* Table styles */
 .table-container {
-    width: 100%;
-    overflow-x: auto;
-    margin: 20px 0;
+  width: 100%;
+  overflow-x: auto;
+  margin: 20px 0;
 }
 
 table {
-    width: 100%;
-    border-collapse: collapse;
-    text-align: left;
-    border: 1px solid #ddd;
-    border-top-left-radius: 12px; 
-    border-top-right-radius: 12px; 
-    overflow: hidden; 
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  border: 1px solid #ddd;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 thead {
-    background-color: #f2f2f2;
-    font-weight: bold;
-    text-transform: uppercase;
+  background-color: #f2f2f2;
+  font-weight: bold;
+  text-transform: uppercase;
 }
 
 th, td {
-    padding: 8px 10px;
-    text-align: left;
+  padding: 8px 10px;
+  text-align: left;
 }
 
-
-
 tr:last-child td {
-    border-bottom: none;
+  border-bottom: none;
 }
 
 tr:hover {
-    background-color: #f5f5f5; /* Hover effect */
-}
-
-.btn {
-    padding: 8px 12px;
-    margin: 4px;
-    text-decoration: none;
-    border-radius: 4px;
-    color: #fff;
-    font-size: 14px;
+  background-color: #f5f5f5;
 }
 
 .btn-view {
-    background-color: #4CAF50; /* Green */
+  background-color: #4CAF50;
 }
 
 .btn-download {
-    background-color: #008CBA; /* Blue */
+  background-color: #008CBA;
 }
 
 table th:first-child {
-    border-top-left-radius: 10px; 
-    border-bottom-left-radius: 10px;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
 }
 
 table th:last-child {
-    border-top-right-radius: 10px; /* Rounds the top-right corner */
-    border-bottom-right-radius: 10px; /* Rounds the bottom-right corner */
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
 table td {
-    padding: 10px 10px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-    color: #6b7280; 
-    background-color: #ffffff; 
+  padding: 10px 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  color: #6b7280;
+  background-color: #ffffff;
 }
 
 table td:first-child {
-    border-top: none; 
+  border-top: none;
 }
 
 table td:last-child {
-    border-bottom: 1px solid #ddd; 
+  border-bottom: 1px solid #ddd;
 }
 
 table tr:hover {
-    background-color: #e5e7eb; 
-    cursor: pointer; 
+  background-color: #e5e7eb;
+  cursor: pointer;
 }

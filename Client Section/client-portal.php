@@ -22,15 +22,12 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Flight Booking</title>
-
   <?php include '../Client Section/Includes/head.php'; ?>
-  
-  <link rel="stylesheet" href="assets\css\client-portal.css?v=<?php echo time(); ?>">
-  <link rel="stylesheet" href="assets\css\client-navbar.css?v=<?php echo time(); ?>"> 
+
+  <title>Booking Form</title>
+
+  <link rel="stylesheet" href="../Client Section/assets/css/client-portal.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="../Client Section/assets/css/client-navbar.css?v=<?php echo time(); ?>"> 
  
 </head>
 
@@ -40,49 +37,24 @@
 
 <?php include '../Client Section/Includes/client-sidebar.php'; ?>
 
-<div class="content-header">
-    <div class="back-button-wrapper">
-        <a href="index.php" class="back-button-link"> <i class="fa-solid fa-arrow-left me-2"></i> Back to Homepage</a>
-    </div>
-    <h1>Client Portal</h1>
-    <p>Welcome to your client portal. Here you can view your transactions, update your profile, and more.</p>
-</div>
-
 <div class="main-container">
+  <div class="container">
+    <div class="content-header">
+        <div class="back-button-wrapper">
+            <a href="index.php" class="back-button-link"> <i class="fa-solid fa-arrow-left me-2"></i> Back to Homepage</a>
+        </div>
+        <h1>Client Portal</h1>
+    </div>
 
-  <div class="content">
-    <!-- <div class="row">
-      <div class="col-md-12">
-          <div class="card">
-              <div class="card-header">
-                  <h4>Profile</h4>
-                  <a href="client-profile.php" class="btn btn-primary">View</a>
-              </div>
-              <div class="card-body">
-                  <p>View and update your profile information.</p>
-              </div>
-          </div>
-      </div>
+    <div class="container-body">
 
-      <div class="col-md-6">
-          <div class="card">
-              <div class="card-header">
-                  <h4>Transactions</h4>
-                  <a href="client-transactionHistory.php" class="btn btn-primary">View</a>
-              </div>
-              <div class="card-body">
-                  <p>View your transaction history.</p>
-              </div>
-          </div>
-      </div> -->
-
-  </div> 
+  
+    </div>
+    
+  </div>
 </div>
-
-
 
 <?php include '../Client Section/Includes/scripts.php'; ?>
-<!-- <script src="heartbeat.js"></script>  -->
 
 <!-- Row Click Selection JS -->
 <script>
