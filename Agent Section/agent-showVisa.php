@@ -37,8 +37,7 @@
                              GROUP_CONCAT(v.certificate) AS certificate
                        FROM guest g
                        JOIN visarequirements v ON g.transactNo = v.transactNo
-                       WHERE g.transactNo = '$transactionNumber'
-                       GROUP BY g.guestId";
+                       WHERE g.transactNo = '$transactionNumber'";
 
              $res1 = $conn->query($sql1);
 
