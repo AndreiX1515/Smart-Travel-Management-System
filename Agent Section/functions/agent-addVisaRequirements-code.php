@@ -12,7 +12,8 @@ if (isset($_POST['attachVisaRequirements'])) {
     $transactNo = $_POST['transaction_number'] ?? $_SESSION['transaction_number'] ?? null;
     $accId = $_POST['accId'];
 
-    if (!$transactNo || !$accId) {
+    if (!$transactNo || !$accId) 
+    {
         echo "Transaction number or Agent ID is missing.";
         exit;
     }
@@ -84,25 +85,25 @@ if (isset($_POST['attachVisaRequirements'])) {
             $fileSize = filesize($fileTmpPath);
         
             if ($fileArray['error'][$i] !== UPLOAD_ERR_OK) {
-                echo "Error uploading file $fileName: " . $fileArray['error'][$i] . "<br>";
+                $_SESSION['status'] = "Error uploading file $fileName: " . $fileArray['error'][$i] . "<br>";
                 $fileUploaded = false;
                 break;
             }
         
             if (!in_array($fileTypeDetected, $allowedTypes)) {
-                echo "Invalid file type for $fileType. Only JPG, PNG, and PDF files are allowed.<br>";
+                $_SESSION['status'] = "Invalid file type for $fileType. Only JPG, PNG, and PDF files are allowed.<br>";
                 $fileUploaded = false;
                 break;
             }
         
             if ($fileSize > $maxFileSize) {
-                echo "File $fileName exceeds the maximum allowed size (5MB).<br>";
+                $_SESSION['status'] = "File $fileName exceeds the maximum allowed size (5MB).<br>";
                 $fileUploaded = false;
                 break;
             }
         
             if (!move_uploaded_file($fileTmpPath, $filePath)) {
-                echo "Error moving file $fileName to destination.<br>";
+                $_SESSION['status'] = "Error moving file $fileName to destination.<br>";
                 $fileUploaded = false;
                 break;
             }
@@ -125,19 +126,18 @@ if (isset($_POST['attachVisaRequirements'])) {
                 );
 
                 if ($stmt->execute()) {
-                    echo "Visa requirements uploaded successfully for guest $guestId.<br>";
-                    
+                    $_SESSION['status'] = "Visa requirements uploaded successfully for guest $guestId.";
                 } else {
-                    echo "Error executing query: " . $stmt->error . "<br>";
+                    $_SESSION['status'] = "Error executing query: " . $stmt->error . "<br>";
                 }
                 $stmt->close();
             } else {
-                echo "Error preparing statement: " . $conn->error . "<br>";
+                $_SESSION['status'] = "Error preparing statement: " . $conn->error . "<br>";
             }
         }
     }
 
-    echo "Visa requirements have been successfully uploaded.";
+    $_SESSION['status'] = "Visa requirements have been successfully uploaded.";
     header("Location: ../agent-showGuest.php?id=" . htmlspecialchars($transactNo));
     exit();
 }
