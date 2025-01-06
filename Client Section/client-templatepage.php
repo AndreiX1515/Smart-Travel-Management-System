@@ -1,20 +1,21 @@
-<?php
-    // include 'session_validate.php'; // This will check if the session is valid
-    require '../conn.php';
-    session_start();
 
-    ini_set('display_errors', 1);
-    ini_set('display_startup_errors', 1);
-    error_reporting(E_ALL);
-    
-    // Fetch session variables directlys
-    $email = $_SESSION['email'] ?? ''; // Use null coalescing operator to avoid undefined index
-    // $firstName = $_SESSION['first_name'] ?? '';
-    // $lastName = $_SESSION['last_name'] ?? '';
-    // $middleName = $_SESSION['middle_name'] ?? '';
-    $accId = $_SESSION['accountId'] ?? '';
-    
-    // $fullName = htmlspecialchars($lastName . ', ' . $firstName . ($middleName ? ' ' . substr($middleName, 0, 1) . '.' : ''));
+<?php
+  // include 'session_validate.php'; // This will check if the session is valid
+  require '../conn.php';
+  session_start();
+
+  ini_set('display_errors', 1);
+  ini_set('display_startup_errors', 1);
+  error_reporting(E_ALL);
+  
+  // Fetch session variables directlys
+  $email = $_SESSION['email'] ?? ''; // Use null coalescing operator to avoid undefined index
+  // $firstName = $_SESSION['first_name'] ?? '';
+  // $lastName = $_SESSION['last_name'] ?? '';
+  // $middleName = $_SESSION['middle_name'] ?? '';
+  $accId = $_SESSION['accountId'] ?? '';
+  
+  // $fullName = htmlspecialchars($lastName . ', ' . $firstName . ($middleName ? ' ' . substr($middleName, 0, 1) . '.' : ''));
 ?>
 
 <!DOCTYPE html>
@@ -23,31 +24,41 @@
 <head>
   <?php include '../Client Section/Includes/head.php'; ?>
 
-  <title>Booking Form</title>
+  <title>Template Page</title>
 
-  <link rel="stylesheet" href="../Client Section/assets/css/client-transactionHistory.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="../Client Section/assets/css/client-portal.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="../Client Section/assets/css/client-navbar.css?v=<?php echo time(); ?>"> 
+ 
 </head>
 
 <body>
-<?php include '../Client Section/Includes/client-navbar.php'; ?>  
 
-<div class="main-container">
+<?php 
+    if(isset($_SESSION['status'])):
+?>
+
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <strong>Hey!</strong> <?= $_SESSION['status']; ?>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+
+<?php 
+  unset($_SESSION['status']);
+  endif;
+?>
+
+
+<?php include '../Client Section/Includes/client-navbar.php'; ?>
+
+<div class="body-container">
   <div class="sub-container">
     <?php include '../Client Section/Includes/client-sidebar.php'; ?>
   </div>
 
-  <div class="container">
-    <div class="content-header">
-        <div class="back-button-wrapper">
-            <a href="index.php" class="back-button-link"> <i class="fa-solid fa-arrow-left me-2"></i> Back to Homepage</a>
-        </div>
-        <h1>Transaction History</h1>
-    </div>
-
-    
+  <div class="main-container">
     
   </div>
+       
 </div>
 
 
@@ -66,7 +77,7 @@
       {
         const transactionNumber = row.getAttribute("data-url").split('=')[1]; // Extract transaction number from the URL
 
-        console.log("Transaction Number: ", transactionNumber); // Debugging line
+        console.log("Transaction Number: ", transactionNumber);
 
         // Use AJAX to send the transaction number to the server
         $.ajax(
@@ -91,6 +102,5 @@
   });
 </script>
 
-</body>
-
+ </body>
 </html>

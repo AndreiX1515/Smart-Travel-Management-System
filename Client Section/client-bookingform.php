@@ -33,10 +33,6 @@
 
 <body>
 
-<?php include '../Client Section/Includes/client-navbar.php'; ?>
-
-<?php include '../Client Section/Includes/client-sidebar.php'; ?>
-
 <?php 
     if(isset($_SESSION['status'])):
 ?>
@@ -51,17 +47,25 @@
   endif;
 ?>
 
-<div class="main-container">
-  <div class="container">
+
+<?php include '../Client Section/Includes/client-navbar.php'; ?>
+
+<div class="body-container">
+  <div class="sub-container">
+    <?php include '../Client Section/Includes/client-sidebar.php'; ?>
+  </div>
+
+  <div class="main-container">
     <div class="content-header">
         <div class="back-button-wrapper">
             <a href="client-portal.php" class="back-button-link"> <i class="fa-solid fa-arrow-left me-2"></i> Back to Client Portal</a>
         </div>
-        <h1>Add Booking</h1>
-        <p>Begin your next unforgettable journey by making your booking with us</p>
+        <h1>Booking</h1>
+        <p>Begin your unforgettable journey by making your booking with us</p>
     </div>
 
     <div class="container-body">
+      <div class="bookingform">
       <div class="row">
        <form action="../Client Section/Functions/bookingform-code.php" method="POST">
           <div class="card">
@@ -569,8 +573,10 @@
           </div>
        </form>
       </div>
-      
+
     </div>
+       
+  </div>
 
  </div>
 </div>
