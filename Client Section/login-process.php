@@ -5,6 +5,8 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+header('Content-Type: application/json');
+
 include '../conn.php';
 
 ob_clean();
@@ -93,9 +95,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['timeout'] = time();
 
             echo json_encode(['success' => true, 'message' => 'Logged in successfully']);
+
             } else {
                 echo json_encode(['success' => false, 'message' => 'Invalid email or password.']);
             }
+            
     } else {
         echo json_encode(['success' => false, 'message' => 'User not found.']);
     }

@@ -56,15 +56,9 @@
   </div>
 
   <div class="main-container">
-    <div class="content-header">
-        <div class="back-button-wrapper">
-            <a href="index.php" class="back-button-link"> <i class="fa-solid fa-arrow-left me-2"></i> Back to Homepage</a>
-        </div>
-        <h1>Client Portal</h1>
-    </div>
+    
   </div>
        
-  
 </div>
 
 

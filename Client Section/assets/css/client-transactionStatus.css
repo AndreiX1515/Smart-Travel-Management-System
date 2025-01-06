@@ -1,28 +1,32 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Poppins:wght@100..900&family=Roboto:wght@100..900&display=swap');
 
-* {
-  font-family: 'Poppins', 'Inter', Arial, sans-serif;
+/* Back Button */
+.back-button-wrapper {
+    margin-bottom: 10px;
 }
 
-
-body {
-    background-color: #f8f9fa;
-    font-family: 'Poppins', 'Roboto', sans-serif;
+.back-button-link {
+    text-decoration: none;
+    color: #6c757d;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    transition: color 0.3s ease, text-decoration 0.3s ease;
 }
 
 .main-container {
     display: flex;
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
-    gap: 15px; /* Space between left and right sides */
-    width: 98.5%;
-    height: 89vh;
-    margin: 10px;
-    padding: 10px 30px;
-    box-sizing: border-box;
-
+    justify-content: center; /* Center content horizontally */
+    align-items: center; /* Center content vertically */
+    gap: 15px; /* Space between child elements */
+    width: 100%; /* Full width of the screen */
+    height: 92vh; /* Full height of the screen */
+    margin: 0; /* Remove margin to ensure it spans fully */
+    padding: 10px 30px; /* Padding inside the container */
+    box-sizing: border-box; /* Includes padding and border in dimensions */
+    margin-top: 3.7%;
 }
+
+
 
 .main-container .left-side-container {
     display: flex;
@@ -33,6 +37,7 @@ body {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); */
     background-color: transparent;
     padding: 0px 30px;
+    border: 1px solid black;
 }
 
 /* Main container */
@@ -53,8 +58,9 @@ body {
 /* Content One: Overall Styling */
 .content-one {
     display: flex;
-    width: 97%;
-    padding: 10px 0;
+    width: 100%;
+    justify-content: left;
+    align-items: center;
     justify-content: space-between;
 }
 
@@ -73,21 +79,6 @@ body {
     color: #1d1d1d;
 }
 
-/* Back Button */
-.back-button-wrapper {
-    margin-bottom: 10px;
-}
-
-.back-button-link {
-    text-decoration: none;
-    color: #6c757d;
-    font-size: 14px;
-    display: inline-flex;
-    align-items: center;
-    transition: color 0.3s ease, text-decoration 0.3s ease;
-}
-
-
 /* Status Pill Base */
 .status-pill {
     display: inline-block;
@@ -98,13 +89,6 @@ body {
     border-radius: 20px;
     color: white;
 }
-
-
-
-
-
-
-
 
 
 
@@ -147,12 +131,8 @@ body {
 .content-one p {
     font-size: 14px;
     color: #666;
-    margin: 0; /* Reset margin for consistent spacing */
+    margin-bottom: 10px;
 }
-
-
-
-
 
 
 /* Content Two */
@@ -171,7 +151,7 @@ body {
 
 /* Title header inside content-two */
 .content-two .title-header {
-    padding: 0px 10px;
+    padding: 0px 0px;
 }
 
 /* Title text inside content-two */
@@ -203,13 +183,13 @@ body {
 
 .content-two .content-body .col-md-4 h4 {
     font-size: 16px;
-    font-weight: bold;
+    font-weight: 600;
     color: #0e0e0e;
     margin: 0 0 5px 0; /* Reduced spacing for compact layout */
 }
 
 .content-two .content-body .col-md-4 p {
-    font-size: 14px;
+    font-size: 16px;
     color: #666;
     margin: 0;
 }
@@ -222,37 +202,43 @@ body {
     height: 100%; /* Full height of main-container */
     gap: 15px; /* Space between top and bottom containers */
     box-sizing: border-box; /* Include padding in dimensions */
+    border: 1px solid black;
 }
 
 .right-side-sub-container {
     flex: 1;
     width: 100%;
-    border-radius: 10px;
+    border-radius: 8px;
     display: flex;
-    background-color: #ffffff;
+    background-color: #bebebe;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
 }
 
 .container-wrapper {
     width: 100%;
     background-color: #ffffff; /* Optional: Add a background color for better visibility */
-    border-radius: 8px; /* Optional: Add rounded corners */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Creates a lifted shadow effect */
 }
+    
 
 
 /* Header Section Styling */
 .header-section {
-    padding: 10px 15px;
+    padding: 8px 20px;
     margin-bottom: 5px;
     /* margin-bottom: 5px;
     border-bottom: 2px solid #ddd; */
 }
 
+
 .header-content {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 5px 15px;  /* Adds some padding to make the pill effect */
+    border-radius: 50px; /* Makes the container pill-shaped */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);  /* Optional: Adds shadow for depth */
+    width: 30%;  /* Adjusts width based on text */
+    white-space: nowrap;  /* Prevents wrapping of text */
 }
 
 /* Title Styling */
@@ -288,7 +274,7 @@ body {
 /* Table Wrapper Styling */
 .table-wrapper {
     overflow-x: auto;
-    padding: 0px 10px;
+    padding: 5px 10px;
 }   
 
 
@@ -351,7 +337,11 @@ body {
 
 
 
-
+/* Table Wrapper Styling */
+.table-wrapper-one {
+    overflow-x: auto;
+    padding: 15px 0px;
+} 
 
 
 

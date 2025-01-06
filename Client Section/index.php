@@ -19,9 +19,9 @@
 
 <title>Smart Travel</title>
 
- <?php include 'includes\head.php' ?>
+<?php include '../Client Section/Includes/head.php' ?>
 
- <link rel="stylesheet" href="assets/css/Homepage.css?v=<?php echo time(); ?>">
+ <link rel="stylesheet" href="../Client Section/assets/css/Homepage.css?v=<?php echo time(); ?>">
 
  <style>
     .button-disabled {
@@ -93,7 +93,7 @@
               <li><a href="#services">Services</a></li>
               <li><a href="#contact">Contact</a></li>
               <?php if (isset($_SESSION['accountId'])): ?>
-                  <li><a href="../Client Section/client-portal.php">Client Portal</a></li>
+                  <li><a href="../Client Section/client-portall.php">Client Portal</a></li>
               <?php endif; ?>
           </ul>
               <!-- Vertical line between menu items and login button -->
@@ -866,11 +866,18 @@
 </body>
 
 <script>
-    // Navbar Button Trigger
-        document.getElementById("LoginButton").onclick = function () {
-        location.href = "login.php";
-    };
- </script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Navbar Button Trigger
+        const loginButton = document.getElementById("LoginButton");
+        if (loginButton) {
+            loginButton.onclick = function () {
+                location.href = "login.php";
+            };
+        } else {
+            console.error('LoginButton element not found');
+        }
+    });
+</script>
 
  <script>
     window.addEventListener('scroll', function() {

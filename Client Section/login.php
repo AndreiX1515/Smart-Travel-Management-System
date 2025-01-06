@@ -76,22 +76,22 @@
 
 
     <script>
-    const LoginButton = document.getElementById('LoginButton'); // Ensure this matches the button ID
-
-    document.getElementById('loginForm').addEventListener('submit', function(event) {
+       const LoginButton = document.getElementById('LoginButton'); // Ensure this matches the button ID
+    
+    document.getElementById('loginForm').addEventListener('submit', function (event) {
         event.preventDefault(); // Prevent default form submission
-
+    
         // Clear previous messages
         document.getElementById('message-login').innerHTML = '';
-
+    
         // Create FormData object to gather the form data
         const formData = new FormData(this);
-
+    
         // Log form data to the console for debugging
         for (let [key, value] of formData.entries()) {
-            console.log(key + ': ' + value);  // Log each field for debugging
+            console.log(`${key}: ${value}`); // Log each field for debugging
         }
-
+    
         // Perform AJAX request
         fetch('login-process.php', {
             method: 'POST',
@@ -100,20 +100,25 @@
         .then(response => {
             // Log the full response object for debugging
             console.log('Response:', response);
-
+    
             // Ensure response is OK, if not throw a response error
             if (!response.ok) {
-                throw new Error('Network response was not ok. Status: ' + response.status);
+                throw new Error(`Network response was not ok. Status: ${response.status}`);
             }
-
-            return response.json();  // Parse JSON response
+    
+            return response.json(); // Parse JSON response
+        })
+        .catch(error => {
+            // Handle errors from the fetch or JSON parsing
+            console.error('Fetch Error:', error);
+            document.getElementById('message-login').innerHTML = `An error occurred: ${error.message}`;
         })
         .then(data => {
             console.log('Data:', data);  // Log the data to verify its content
-
+    
             if (data.success) {
                 // Redirect to dashboard or homepage
-                window.location.href = 'index.php';
+                window.location.href = '../Client Section/index.php';
             } else if (data.message && data.message.trim() === "User not found.") {
                 // Show specific message for user not found
                 document.getElementById('message-login').innerHTML = '<div class="alert alert-danger text-center">' + data.message + '</div>';
@@ -127,10 +132,8 @@
                 // Fallback for unexpected responses
                 document.getElementById('message-login').innerHTML = '<div class="alert alert-danger text-center">An unexpected error occurred. Please try again.</div>';
             }
-        })
-    
+        });
     });
-
 
 
     </script>

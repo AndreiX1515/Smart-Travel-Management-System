@@ -15,6 +15,21 @@ body {
 }
 
 
+.navbar {
+	padding: 6px 35px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background: rgba(238, 238, 238, 0.2);
+	backdrop-filter: blur(10px);
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); 
+	border-bottom: 1px solid rgba(255, 255, 255, 0.2); 
+	z-index: 999;
+	position: fixed;
+	top: 0;
+	width: 100%;
+	box-sizing: border-box;
+}
 
 
 .navbar-middle {
@@ -134,19 +149,6 @@ body {
 
 .sidebar ul li a.active {
 	background-color: #16a085;
-}
-
-
-.navbar {
-	padding: 6px 35px;
-	display: flex;
-	background-color: rgb(230, 230, 230);
-	z-index: 999;
-	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-	position: fixed;
-	top: 0;
-	width: 100%;
-	box-sizing: border-box;
 }
 
 
