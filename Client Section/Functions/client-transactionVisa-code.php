@@ -13,7 +13,7 @@ if (isset($_POST['attachVisaRequirements'])) {
     $accId = $_POST['accId'];
 
     if (!$transactNo || !$accId) {
-        echo "Transaction number or Agent ID is missing.";
+        echo "Transaction number or Account ID is missing.";
         exit;
     }
 
@@ -38,7 +38,8 @@ if (isset($_POST['attachVisaRequirements'])) {
         $guestId = $guestIds[$i];
 
         // Create upload directory
-        $uploadDir = $_SERVER['DOCUMENT_ROOT'] . "/SMART-TRAVEL-MANAGEMENT-SYSTEM/Files Uploads/Visa Requirements Uploads" . DIRECTORY_SEPARATOR . $transactNo . DIRECTORY_SEPARATOR . $guestId;
+        $uploadDir = "../../Agent Section/functions/uploads-visa-requirements/" . DIRECTORY_SEPARATOR . $transactNo . DIRECTORY_SEPARATOR . $guestId;
+        $dbUploadDir = "uploads-visa-requirements". DIRECTORY_SEPARATOR . $transactNo . DIRECTORY_SEPARATOR . $guestId;
 
         if (!is_dir($uploadDir) && !mkdir($uploadDir, 0777, true)) {
             echo "Failed to create upload directory for guest $guestId.<br>";
@@ -48,13 +49,13 @@ if (isset($_POST['attachVisaRequirements'])) {
         // Concatenate guest ID with the current date and time
         $guestidDate =  $guestId . ' _ ' . $currentDateTime;
 
-        // File paths with dynamic extension
+        // File paths with specific naming format
         $filePaths = [
-            'passport' => '',
-            'permit' => '',
-            'validId' => '',
-            'certificate' => '',
-            'guaranteedLetter' => ''
+            'passport' => $uploadDir . DIRECTORY_SEPARATOR . 'Passport_ ' . $guestidDate  . '.pdf', // Example file naming
+            'permit' => $uploadDir . DIRECTORY_SEPARATOR . 'Permit_ ' . $guestidDate  . '.pdf',
+            'validId' => $uploadDir . DIRECTORY_SEPARATOR . 'ValidID_ ' . $guestidDate  . '.pdf',
+            'certificate' => $uploadDir . DIRECTORY_SEPARATOR . 'Certificate_ ' . $guestidDate  . '.pdf',
+            'guaranteedLetter' => $uploadDir . DIRECTORY_SEPARATOR . 'GuaranteedLetter_ ' . $guestidDate  . '.pdf'
         ];
 
         $files = [
@@ -70,39 +71,34 @@ if (isset($_POST['attachVisaRequirements'])) {
         foreach ($files as $fileType => $fileArray) {
             $fileTmpPath = $fileArray['tmp_name'][$i];
             $fileName = sanitizeFileName($fileArray['name'][$i]);
-        
-            // Get the file extension
-            $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
-        
-            // Generate the destination file path dynamically based on the original extension
-            $filePath = $uploadDir . DIRECTORY_SEPARATOR . ucfirst($fileType) . '_ ' . $guestidDate . '.' . $fileExtension;
-        
-            // Store the dynamically created path in the array
-            $filePaths[$fileType] = $filePath;
-        
+            $filePath = $filePaths[$fileType];
             $fileTypeDetected = mime_content_type($fileTmpPath);
             $fileSize = filesize($fileTmpPath);
-        
+
             if ($fileArray['error'][$i] !== UPLOAD_ERR_OK) {
                 echo "Error uploading file $fileName: " . $fileArray['error'][$i] . "<br>";
+                $_SESSION['status'] = "Error uploading file $fileName: " . $fileArray['error'][$i] . "<br>";
                 $fileUploaded = false;
                 break;
             }
-        
+
             if (!in_array($fileTypeDetected, $allowedTypes)) {
                 echo "Invalid file type for $fileType. Only JPG, PNG, and PDF files are allowed.<br>";
+                $_SESSION['status'] = "Invalid file type for $fileType. Only JPG, PNG, and PDF files are allowed.<br>";
                 $fileUploaded = false;
                 break;
             }
-        
+
             if ($fileSize > $maxFileSize) {
                 echo "File $fileName exceeds the maximum allowed size (5MB).<br>";
+                $_SESSION['status'] = "File $fileName exceeds the maximum allowed size (5MB).<br>";
                 $fileUploaded = false;
                 break;
             }
-        
+
             if (!move_uploaded_file($fileTmpPath, $filePath)) {
                 echo "Error moving file $fileName to destination.<br>";
+                $_SESSION['status'] = "Error moving file $fileName to destination.<br>";
                 $fileUploaded = false;
                 break;
             }
@@ -126,19 +122,22 @@ if (isset($_POST['attachVisaRequirements'])) {
 
                 if ($stmt->execute()) {
                     echo "Visa requirements uploaded successfully for guest $guestId.<br>";
+                    $_SESSION['status'] = "Visa requirements uploaded successfully for guest $guestId.";
                     
                 } else {
                     echo "Error executing query: " . $stmt->error . "<br>";
+                    $_SESSION['status'] = "Error executing query: " . $stmt->error . "";
                 }
                 $stmt->close();
             } else {
                 echo "Error preparing statement: " . $conn->error . "<br>";
+                $_SESSION['status'] = "Error preparing statement: " . $conn->error."";
             }
         }
     }
 
-    echo "Visa requirements have been successfully uploaded.";
-    header("Location: ../agent-showGuest.php?id=" . htmlspecialchars($transactNo));
+    $_SESSION['status'] = "Visa requirements have been successfully uploaded.";
+    header("Location: ../client-transactionStatus.php?id=" . htmlspecialchars($transactNo));
     exit();
 }
 ?>

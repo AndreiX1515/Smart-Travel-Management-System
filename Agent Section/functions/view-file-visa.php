@@ -12,10 +12,10 @@ if (isset($_GET['file'])) {
     $filePath = str_replace('\\', '/', $filePath);
 
     // Define the upload directory (this should point to the correct location in the 'functions' folder)
-    $uploadDir = __DIR__ . DIRECTORY_SEPARATOR; // Correct path to 'functions/uploads'
+    $uploadDir = $_SERVER['DOCUMENT_ROOT']; // Correct path to 'functions/uploads'
 
     // Combine the upload directory with the sanitized file path to create the full path
-    $fullPath = $uploadDir . DIRECTORY_SEPARATOR . $filePath;
+    $fullPath = $filePath;
 
     // Debugging output to verify paths
     error_log("Requested File Path (decoded and sanitized): " . $filePath);
