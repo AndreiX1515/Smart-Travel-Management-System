@@ -21,8 +21,7 @@ if (isset($_POST['payment'])) {
     $conn->query("SET @current_user_id = $accountId");
 
     if (isset($_FILES['proofs']) && count($_FILES['proofs']['name']) > 0) {
-        $uploadDir = "../../Agent Section/functions/uploads/" . DIRECTORY_SEPARATOR . $transactNo . DIRECTORY_SEPARATOR;
-        $dbUploadDir = "uploads" . DIRECTORY_SEPARATOR . $transactNo . DIRECTORY_SEPARATOR;
+        $uploadDir = $_SERVER['DOCUMENT_ROOT'] . "/SMART-TRAVEL-MANAGEMENT-SYSTEM/Files Uploads/Payment Uploads" . DIRECTORY_SEPARATOR . $transactNo . DIRECTORY_SEPARATOR;
         $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'pdf'];
         $maxFileSize = 4 * 1024 * 1024; // 4MB per file
         $uploadedFiles = []; // Array to store file paths
@@ -42,7 +41,6 @@ if (isset($_POST['payment'])) {
                 $newFileName = $transactNo . '-' . date('m-d-Y_H-i') . '-' . uniqid() . '.' . $fileExtension;
 
                 $destPath = $uploadDir . $newFileName;
-                $dbFilePath = $dbUploadDir . $newFileName;
 
                 if (move_uploaded_file($fileTmpPath, $destPath)) {
                     // Store only the relative file path (directory + filename) in the array
@@ -77,7 +75,7 @@ if (isset($_POST['payment'])) {
             // Loop through uploaded files and insert each file path into the database
             foreach ($uploadedFiles as $filePath) {
                 // Bind parameters for each file upload
-                $stmt->bind_param('sissdss', $transactNo, $accountId, $paymentTitle, $paymentType, $amount, $dbFilePath, $paymentDate);
+                $stmt->bind_param('sissdss', $transactNo, $accountId, $paymentTitle, $paymentType, $amount, $destPath, $paymentDate);
 
                 if (!$stmt->execute()) {
                     $_SESSION['status'] = "Database error on payment insert: " . $stmt->error;

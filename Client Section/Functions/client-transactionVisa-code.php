@@ -38,9 +38,7 @@ if (isset($_POST['attachVisaRequirements'])) {
         $guestId = $guestIds[$i];
 
         // Create upload directory
-        $uploadDir = "../../Agent Section/functions/uploads-visa-requirements/" . DIRECTORY_SEPARATOR . $transactNo . DIRECTORY_SEPARATOR . $guestId;
-        $dbUploadDir = "uploads-visa-requirements". DIRECTORY_SEPARATOR . $transactNo . DIRECTORY_SEPARATOR . $guestId;
-
+        $uploadDir = $_SERVER['DOCUMENT_ROOT'] . "/SMART-TRAVEL-MANAGEMENT-SYSTEM/Files Uploads/Visa Requirements Uploads" . DIRECTORY_SEPARATOR . $transactNo . DIRECTORY_SEPARATOR . $guestId;
         if (!is_dir($uploadDir) && !mkdir($uploadDir, 0777, true)) {
             echo "Failed to create upload directory for guest $guestId.<br>";
             continue;
@@ -49,13 +47,13 @@ if (isset($_POST['attachVisaRequirements'])) {
         // Concatenate guest ID with the current date and time
         $guestidDate =  $guestId . ' _ ' . $currentDateTime;
 
-        // File paths with specific naming format
+        // File paths with dynamic extension
         $filePaths = [
-            'passport' => $uploadDir . DIRECTORY_SEPARATOR . 'Passport_ ' . $guestidDate  . '.pdf', // Example file naming
-            'permit' => $uploadDir . DIRECTORY_SEPARATOR . 'Permit_ ' . $guestidDate  . '.pdf',
-            'validId' => $uploadDir . DIRECTORY_SEPARATOR . 'ValidID_ ' . $guestidDate  . '.pdf',
-            'certificate' => $uploadDir . DIRECTORY_SEPARATOR . 'Certificate_ ' . $guestidDate  . '.pdf',
-            'guaranteedLetter' => $uploadDir . DIRECTORY_SEPARATOR . 'GuaranteedLetter_ ' . $guestidDate  . '.pdf'
+            'passport' => '',
+            'permit' => '',
+            'validId' => '',
+            'certificate' => '',
+            'guaranteedLetter' => ''
         ];
 
         $files = [
@@ -71,34 +69,39 @@ if (isset($_POST['attachVisaRequirements'])) {
         foreach ($files as $fileType => $fileArray) {
             $fileTmpPath = $fileArray['tmp_name'][$i];
             $fileName = sanitizeFileName($fileArray['name'][$i]);
-            $filePath = $filePaths[$fileType];
+        
+            // Get the file extension
+            $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+        
+            // Generate the destination file path dynamically based on the original extension
+            $filePath = $uploadDir . DIRECTORY_SEPARATOR . ucfirst($fileType) . '_ ' . $guestidDate . '.' . $fileExtension;
+        
+            // Store the dynamically created path in the array
+            $filePaths[$fileType] = $filePath;
+        
             $fileTypeDetected = mime_content_type($fileTmpPath);
             $fileSize = filesize($fileTmpPath);
-
+        
             if ($fileArray['error'][$i] !== UPLOAD_ERR_OK) {
                 echo "Error uploading file $fileName: " . $fileArray['error'][$i] . "<br>";
-                $_SESSION['status'] = "Error uploading file $fileName: " . $fileArray['error'][$i] . "<br>";
                 $fileUploaded = false;
                 break;
             }
-
+        
             if (!in_array($fileTypeDetected, $allowedTypes)) {
                 echo "Invalid file type for $fileType. Only JPG, PNG, and PDF files are allowed.<br>";
-                $_SESSION['status'] = "Invalid file type for $fileType. Only JPG, PNG, and PDF files are allowed.<br>";
                 $fileUploaded = false;
                 break;
             }
-
+        
             if ($fileSize > $maxFileSize) {
                 echo "File $fileName exceeds the maximum allowed size (5MB).<br>";
-                $_SESSION['status'] = "File $fileName exceeds the maximum allowed size (5MB).<br>";
                 $fileUploaded = false;
                 break;
             }
-
+        
             if (!move_uploaded_file($fileTmpPath, $filePath)) {
                 echo "Error moving file $fileName to destination.<br>";
-                $_SESSION['status'] = "Error moving file $fileName to destination.<br>";
                 $fileUploaded = false;
                 break;
             }
