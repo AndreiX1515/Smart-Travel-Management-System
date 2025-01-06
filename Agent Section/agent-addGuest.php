@@ -717,6 +717,7 @@
         event.preventDefault(); // Prevent default form submission
 
         let isValid = true; // Initialize isValid flag
+        const expPassportSpan = $('#expPassport'); // Target the span element
 
         // Primary Guest field validation
         $('.guest-form').each(function (index) 
@@ -818,7 +819,7 @@
         });
 
         // If the form is valid, submit the form
-        if (isValid) 
+        if (isValid && expPassportSpan === "") 
         {
           console.log("Form is valid. Submitting...");
           $('#guestForm').submit(); // Submit the form with ID #guestForm
@@ -1080,14 +1081,13 @@
         // Check if the flight date satisfies the 6-month rule
         if (flightDateObj < sixMonthsBeforeExpiry) 
         {
-          expPassportSpan.text("Passport meets the 6-month rule. You are good to travel.").removeClass('text-danger').addClass('text-success');
+          expPassportSpan.text("");
         } 
         else 
         {
-          expPassportSpan.text("Your passport does not meet the 6-month validity rule for this flight date.").removeClass('text-success').addClass('text-danger');
+          expPassportSpan.text("Your passport does not meet the 6-month validity rule for this flight date.");
         }
       });
-
 
       // Function to calculate age from birthdate
       function calculateAge(birthdate) 

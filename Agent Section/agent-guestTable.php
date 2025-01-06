@@ -13,13 +13,11 @@
           }
 
           // Run the query to get guest count and pax
-          $query2 = "SELECT 
-                        COALESCE(COUNT(g.transactNo), 0) AS guest_count, 
-                        COALESCE(COUNT(v.transactNo), 0) AS visa_count,
-                        COALESCE(b.pax, 0) AS pax 
+          $query2 = "SELECT COALESCE(COUNT(DISTINCT g.transactNo), 0) AS guest_count, COALESCE(COUNT(DISTINCT v.transactNo), 0) AS visa_count,
+                        b.pax AS pax 
                       FROM booking b
-                      LEFT JOIN guest g ON g.transactNo = b.transactNo 
-                      LEFT JOIN visarequirements v ON v.transactNo = b.transactNo
+                      JOIN guest g ON g.transactNo = b.transactNo 
+                      JOIN visarequirements v ON v.transactNo = b.transactNo
                       WHERE b.transactNo = '$transactionNumber'";
 
           $result2 = $conn->query($query2);
@@ -40,7 +38,7 @@
 
           // Determine whether to disable the button
           $disable_button = ($guest_count >= $pax) ? 'disabled' : ''; // Disable if guest_count >= pax
-          $disable_button2 = ($guest_count = 0 || $visa_count >= $pax) ? 'disabled' : ''; // Disable if guest_count >= pax
+          $disable_button2 = ($visa_count >= $pax) ? 'disabled' : ''; // Disable if guest_count >= pax
         ?>
 
         <!-- Add Guest Button -->
@@ -62,6 +60,9 @@
         Attach Visa Requirements
         </button>
       </div>
+      <p>Pax: <?php echo $pax;?></p>
+      <p>Guest Count: <?php echo $guest_count;?></p>
+      <p>Visa Count: <?php echo $visa_count;?></p>
     </div>
 
     <div class="table-container">
