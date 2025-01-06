@@ -13,18 +13,25 @@
           }
 
           // Run the query to get guest count and pax
-          $query2 = "SELECT COALESCE(COUNT(DISTINCT g.transactNo), 0) AS guest_count, COALESCE(COUNT(DISTINCT v.transactNo), 0) AS visa_count,
+          $query2 = "SELECT COALESCE(COUNT(g.transactNo), 0) AS guest_count, 
                         b.pax AS pax 
                       FROM booking b
                       JOIN guest g ON g.transactNo = b.transactNo 
-                      JOIN visarequirements v ON v.transactNo = b.transactNo
+                      WHERE b.transactNo = '$transactionNumber'";
+
+          $query3 = "SELECT COALESCE(COUNT(v.transactNo), 0) AS visa_count, 
+                        b.pax AS pax 
+                      FROM booking b
+                      JOIN visarequirements v ON v.transactNo = b.transactNo 
                       WHERE b.transactNo = '$transactionNumber'";
 
           $result2 = $conn->query($query2);
+          $result3 = $conn->query($query3);
 
           // Initialize guest_count and pax variables
           $guest_count = 0;
-          $pax = 0;
+          $pax2 = 0;
+          $pax3 = 0;
 
           // Check if the query returned results
           if ($result2 && $result2->num_rows > 0) 
@@ -32,13 +39,20 @@
             // Fetch the result
             $row2 = $result2->fetch_assoc();
             $guest_count = $row2['guest_count'];
-            $visa_count = $row2['visa_count'];
-            $pax = $row2['pax'];
+            $pax2 = $row2['pax'];
+          }
+
+          if ($result3 && $result3->num_rows > 0) 
+          {
+            // Fetch the result
+            $row3 = $result3->fetch_assoc();
+            $visa_count = $row3['visa_count'];
+            $pax3 = $row3['pax'];
           }
 
           // Determine whether to disable the button
-          $disable_button = ($guest_count >= $pax) ? 'disabled' : ''; // Disable if guest_count >= pax
-          $disable_button2 = ($visa_count >= $pax) ? 'disabled' : ''; // Disable if guest_count >= pax
+          $disable_button = ($guest_count >= $pax2) ? 'disabled' : ''; // Disable if guest_count >= pax
+          $disable_button2 = ($visa_count >= $pax3) ? 'disabled' : ''; // Disable if guest_count >= pax
         ?>
 
         <!-- Add Guest Button -->
@@ -60,9 +74,9 @@
         Attach Visa Requirements
         </button>
       </div>
-      <p>Pax: <?php echo $pax;?></p>
+      <!-- <p>Pax: <?php echo $pax3;?></p>
       <p>Guest Count: <?php echo $guest_count;?></p>
-      <p>Visa Count: <?php echo $visa_count;?></p>
+      <p>Visa Count: <?php echo $visa_count;?></p> -->
     </div>
 
     <div class="table-container">
