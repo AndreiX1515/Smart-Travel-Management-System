@@ -27,17 +27,22 @@
          <tbody>
            <?php
              $sql1 = "SELECT g.guestId, 
-                             CONCAT(g.fName, ' ', 
-                                    IF(g.mName = 'N/A' OR g.mName IS NULL, '', CONCAT(SUBSTRING(g.mName, 1, 1), '. ')),
-                                    g.lName, 
-                                    IF(g.suffix = 'N/A' OR g.suffix IS NULL, '', CONCAT(' ', g.suffix))) AS guestName,
-                             GROUP_CONCAT(v.passport) AS passport,
-                             GROUP_CONCAT(v.permit) AS permit,
-                             GROUP_CONCAT(v.validId) AS validId,
-                             GROUP_CONCAT(v.certificate) AS certificate
-                       FROM guest g
-                       JOIN visarequirements v ON g.transactNo = v.transactNo
-                       WHERE g.transactNo = '$transactionNumber' GROUP BY g.guestId";
+             CONCAT(g.fName, ' ', 
+                    IF(g.mName = 'N/A' OR g.mName IS NULL, '', CONCAT(SUBSTRING(g.mName, 1, 1), '. ')),
+                    g.lName, 
+                    IF(g.suffix = 'N/A' OR g.suffix IS NULL, '', CONCAT(' ', g.suffix))) AS guestName,
+             v.passport AS passport,
+             v.permit AS permit,
+             v.validId AS validId,
+             v.certificate AS certificate
+      FROM visarequirements v
+      INNER JOIN guest g ON v.transactNo = g.transactNo
+      WHERE v.transactNo = '$transactionNumber'
+        AND (v.passport IS NOT NULL 
+             OR v.permit IS NOT NULL 
+             OR v.validId IS NOT NULL 
+             OR v.certificate IS NOT NULL)";
+
 
              $res1 = $conn->query($sql1);
 

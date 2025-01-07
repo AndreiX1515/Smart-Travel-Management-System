@@ -16,22 +16,18 @@
           $query2 = "SELECT COALESCE(COUNT(g.transactNo), 0) AS guest_count, 
                         b.pax AS pax 
                       FROM booking b
-                      JOIN guest g ON g.transactNo = b.transactNo 
+                      LEFT JOIN guest g ON g.transactNo = b.transactNo 
                       WHERE b.transactNo = '$transactionNumber'";
 
           $query3 = "SELECT COALESCE(COUNT(v.transactNo), 0) AS visa_count, 
                         b.pax AS pax 
                       FROM booking b
-                      JOIN visarequirements v ON v.transactNo = b.transactNo 
+                      LEFT JOIN visarequirements v ON v.transactNo = b.transactNo 
                       WHERE b.transactNo = '$transactionNumber'";
 
           $result2 = $conn->query($query2);
           $result3 = $conn->query($query3);
 
-          // Initialize guest_count and pax variables
-          $guest_count = 0;
-          $pax2 = 0;
-          $pax3 = 0;
 
           // Check if the query returned results
           if ($result2 && $result2->num_rows > 0) 
@@ -56,27 +52,25 @@
         ?>
 
         <!-- Add Guest Button -->
-        <button type="button" class="btn btn-primary" 
-              <?php echo $disable_button; ?> 
-              onclick="if (!this.disabled) { window.location.href = 'agent-addGuest.php'; }">
+        <button type="button" class="btn btn-primary" <?php echo $disable_button; ?> 
+          onclick="if (!this.disabled) { window.location.href = 'agent-addGuest.php'; }">
           Add Guest Information
         </button>
 
         <!-- <button type="button" class="btn btn-primary">
           View Guest Files
         </button> -->
-        <button type="button" class="btn btn-primary" 
-          data-bs-toggle="modal" 
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" 
           <?php echo $disable_button2; ?> 
           <?php if (empty($disable_button2)) : ?>
             data-bs-target="#visaModal"
           <?php endif; ?>>
-        Attach Visa Requirements
+          Attach Visa Requirements
         </button>
       </div>
-      <!-- <p>Pax: <?php echo $pax3;?></p>
+      <p>Pax: <?php echo $pax2;?></p>
       <p>Guest Count: <?php echo $guest_count;?></p>
-      <p>Visa Count: <?php echo $visa_count;?></p> -->
+      <p>Visa Count: <?php echo $visa_count;?></p>
     </div>
 
     <div class="table-container">
