@@ -23,311 +23,21 @@
     margin: 0; 
     padding: 10px 30px; 
     box-sizing: border-box; 
-    margin-top: 3.7%;
+    margin-top: 3.7%;url(client-transactionStatus.css)
 } */
-
-
-.top-container {
-    margin-top: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    height: 55vh;
-    gap: 10px;
-}
-
-
-
-.left-top-container {
-    display: flex;
-    flex-direction: column;
-    width: 60%;
-    height: 100%;
-    padding: 5px 0px 10px 0px;
-    /* border-radius: 8px; 
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); */
-}
-
-/* Content One: Overall Styling */
-.content-one {
-    display: flex;
-    width: 100%;
-    justify-content: left;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.col-md-3 p {
-    padding: 5px 5px;
-
-}
-
-.pill-status {
-    display: inline-block;
-    padding: 5px 10px;
-    border-radius: 50px; /* Pill shape */
-    background-color: #e0e0e0; /* Background color */
-    color: #333; /* Text color */
-    font-size: 14px;
-    font-weight: bold;
-    text-align: center;
-}
-
-
-
-
-
-.right-top-container {
-    display: flex;
-    flex-direction: column;
-    width: 40%;
-    height: 100%;
-    gap: 10px;
-
-}
-
-.right-sub-container {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
-    padding: 10px;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-}
-
-.right-sub-container .title-section {
-    display: flex;
-    justify-content: start;
-    padding: 15px 5px;
-    align-items: center;
-    margin: 0;
-}
-
-.right-sub-container .title-section h5 {
-    font-weight: bold;
-    font-size: 16px;
-    color: #333;
-    margin: 0;
-    padding: 0;
-}
-
-.right-sub-container .content-body {
-    flex: 1;
-    overflow: auto; /* Ensure the content body can scroll if content overflows */
-}
-
-.right-sub-container .table-wrapper-one {
-    overflow: auto; /* Ensure the table can scroll if content overflows */
-    padding: 0px 0px;
-}
-
-.right-sub-container .guest-table {
-    width: 100%;
-    border-spacing: 0;
-    font-size: 14px;
-    color: #333;
-    margin-bottom: 15px;
-}
-
-.right-sub-container .guest-table thead {
-    position: sticky;
-    top: 0;
-    z-index: 1;
-    padding: 3px 10px;
-    border-radius: 15px;
-    text-transform: uppercase;
-    background-color: #ececec;
-    overflow: hidden;
-}
-
-.right-sub-container .guest-table th {
-    padding: 4px 10px;
-    text-align: left;
-    border: none;
-    font-weight: 600;
-    color: #4b5563;
-}
-
-.right-sub-container .guest-table th:first-child {
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
-}
-
-.right-sub-container .guest-table th:last-child {
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-}
-
-.right-sub-container .guest-table td {
-    padding: 6px 10px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-    color: #6b7280;
-    background-color: #ffffff;
-}
-
-.right-sub-container .guest-table td:first-child {
-    border-top: none;
-}
-
-.right-sub-container .guest-table tr:hover {
-    background-color: #e5e7eb;
-    cursor: pointer;
-}
-
-
-
-
-
-
-.bottom-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: left;
-    width: 100%;
-    height: 24vh;
-    padding: 10px 0px;
-    gap: 10px;
-    /* background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
-    overflow: hidden;
-}
-
-.bottom-container .title-section {
-    display: flex;
-    justify-content: start; 
-    padding: 0px 5px;
-    align-items: center;
-    margin: 0;
-}
-
-.bottom-container .title-section h5 {
-    font-weight: bold;
-    color: #333;
-    margin: 0;
-    padding: 0;
-}
-
-.bottom-container .content-body {
-    flex: 1;
-    overflow: auto; /* Ensure the content body can scroll if content overflows */
-}
-
-.bottom-container .table-wrapper-one {
-    overflow: auto; /* Ensure the table can scroll if content overflows */
-    padding: 0px 0px;
-}
-
-.bottom-container .guest-table {
-    width: 100%;
-    border-spacing: 0;
-    font-size: 14px;
-    color: #333;
-    margin-bottom: 15px;
-}
-
-.bottom-container .guest-table thead {
-    position: sticky;
-    top: 0;
-    z-index: 1;
-    padding: 3px 10px;
-    border-radius: 15px;
-    text-transform: uppercase;
-    background-color: #ececec;
-    overflow: hidden;
-}
-
-.bottom-container .guest-table th {
-    padding: 4px 10px;
-    text-align: left;
-    border: none;
-    font-weight: 600;
-    color: #4b5563;
-}
-
-.bottom-container .guest-table th:first-child {
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
-}
-
-.bottom-container .guest-table th:last-child {
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-}
-
-.bottom-container .guest-table td {
-    padding: 6px 10px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-    color: #6b7280;
-    background-color: #ffffff;
-}
-
-.bottom-container .guest-table td:first-child {
-    border-top: none;
-}
-
-.bottom-container .guest-table tr:hover {
-    background-color: #e5e7eb;
-    cursor: pointer;
-}
-
-.bottom-container .guest-table th:first-child {
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
-}
-
-.bottom-container .guest-table th:last-child {
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-}
-
-.bottom-container .guest-table td {
-    padding: 6px 10px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-    color: #6b7280;
-    background-color: #ffffff;
-}
-
-.bottom-container .guest-table td:first-child {
-    border-top: none;
-}
-
-.bottom-container .guest-table tr:hover {
-    background-color: #e5e7eb;
-    cursor: pointer;
-}
-
-
-
-
-
-
-
-
-
-
 
 
 
 .left-side-container {
     display: flex;
     flex-direction: column;
-    width: 100%;
+    width: 45%;
     height: 100%;
     /* border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); */
     background-color: transparent;
-    padding: 0px 10px 0px 0px;
-    overflow-x: hidden;
-    overflow: hidden;
+    padding: 0px 30px;
+    border: 1px solid black;
 }
 
 /* Main container */
@@ -341,7 +51,7 @@
 .hr-line {
     border: none;
     border-top: 2px solid rgba(0, 0, 0, 0.5);
-    margin: 0;
+    margin: -3px 0px;
 }
 
 
@@ -358,8 +68,8 @@
 .content-header {
     font-family: 'Arial', sans-serif;
     color: #333;
-    padding: 0px 0;
-    margin: 0px 0;
+    padding: 10px 0;
+    margin: 10px 0;
 }
 
 .content-header h4 {
@@ -563,15 +273,8 @@
 /* Table Wrapper Styling */
 .table-wrapper {
     overflow-x: auto;
-    padding: 0px 10px;
+    padding: 5px 10px;
 }   
-
-
-/* Table Wrapper Styling */
-.table-wrapper-one {
-    overflow-x: auto;
-    padding: 0px 0px;
-} 
 
 
 /* Guest Table Styling */
@@ -610,27 +313,34 @@
     border-bottom-right-radius: 10px; /* Rounds the bottom-right corner */
 }
 
+
+
+
 .guest-table td {
-    padding: 6px 10px;
+    padding: 10px 10px;
     text-align: left;
-    border-bottom: 1px solid #ddd;
-    color: #6b7280; 
-    background-color: #ffffff; 
+    border-bottom: 1px solid #ddd; /* Optional: Add a bottom border for better separation */
+    color: #6b7280; /* Slightly lighter color for data */
+    background-color: #ffffff; /* White background for table cells */
 }
 
 .guest-table td:first-child {
-    border-top: none; 
+    border-top: none; /* Removes the top border of the first td */
 }
 
 
 .guest-table tr:hover {
-    background-color: #e5e7eb;
-    cursor: pointer; 
+    background-color: #e5e7eb; /* Slight hover effect */
+    cursor: pointer; /* Indicates interactivity if needed */
 }
 
 
 
-
+/* Table Wrapper Styling */
+.table-wrapper-one {
+    overflow-x: auto;
+    padding: 15px 0px;
+} 
 
 
 
