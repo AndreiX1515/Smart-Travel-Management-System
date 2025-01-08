@@ -659,11 +659,9 @@ session_start();
           <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Confirmed</button>
         </li> -->
       </ul>
-
     </div>
     
     <div class="tab-content" id="pills-tabContent">
-
       <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
         <div class="second-row-container">
           <!-- Transactions table -->
@@ -1152,8 +1150,8 @@ session_start();
 
                             <td> 
                                 <div class='td-content d-flex flex-column align-items-left'>
-                                      <h6>Title: <span>" . htmlspecialchars($row['Payment Title']) . "</span></h6>
-                                      <h6>Type: <span>" . htmlspecialchars($row['Payment Type']) . "</span></h6>
+                                      <h6>Title: <span>" . $row['Payment Title'] . "</span></h6>
+                                      <h6>Type: <span>" . $row['Payment Type'] . "</span></h6>
                               </div>
                           </td>
 
@@ -1804,9 +1802,7 @@ session_start();
       <!-- <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">
       </div> -->
     </div>
-
   </div>
-
 </div>
 
 <?php require "../Agent Section/includes/scripts.php"; ?>

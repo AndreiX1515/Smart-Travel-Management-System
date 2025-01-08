@@ -165,11 +165,12 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
 
-      <form action="../Agent Section/functions/agent-addVisaRequirements-code.php" method="POST" enctype="multipart/form-data">
+      <form action="../Client Section/Functions/client-transactionVisa-code.php" method="POST" enctype="multipart/form-data">
         <div class="modal-body">
           <!-- Hidden input for transaction number -->
           <input type="hidden" name="transaction_number" value="<?php echo htmlspecialchars($_SESSION['transaction_number'] ?? ''); ?>">
-          
+          <input type="hidden" name="accId" value="<?php echo $accId; ?>"> 
+
           <!-- Container for all guests' visa requirements -->
           <div id="allGuestFields">
             <div class="mb-4">

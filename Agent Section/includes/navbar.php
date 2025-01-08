@@ -69,19 +69,19 @@
                 </a>
 
                 <ul class="dropdown-menu dropdown-menu-end mt-3" aria-labelledby="navbarDropdown">
-                    <li>
+                  <li>
                     <a class="dropdown-item" href="#" style="font-size: 14px;" data-bs-toggle="modal" data-bs-target="#viewPasswordModal">
                       <i class="fas fa-user me-2"></i> View Password
                     </a>
                   </li>
 
                   <li>
-                      <hr class="dropdown-divider">
+                    <hr class="dropdown-divider">
                   </li>
                   <li>
-                      <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal" style="font-size: 14px;">
-                          <i class="fas fa-sign-out-alt me-2"></i> Logout
-                      </a>
+                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal" style="font-size: 14px;">
+                      <i class="fas fa-sign-out-alt me-2"></i> Logout
+                    </a>
                   </li>
                 </ul>
 

@@ -211,7 +211,7 @@
 
                   <div class="col-md-6">
                     <div class="form-group mb-3">
-                      <label class="mb-2" for="passportExp">Date of Expiration: <span class="text-danger fw-bold">*</span> <span id="expPassport" class="text-danger">Expired</span></label>
+                      <label class="mb-2" for="passportExp">Date of Expiration: <span class="text-danger fw-bold">*</span> <span id="expPassport" class="text-danger"></span></label>
                       <input type="date" name="passportExp[]" class="form-control" required>
                       <span id="passportExpError" class="text-danger"></span> <!-- Error message for Passport Exp -->
                     </div>
@@ -717,6 +717,7 @@
         event.preventDefault(); // Prevent default form submission
 
         let isValid = true; // Initialize isValid flag
+        const expPassportSpan = $('#expPassport'); // Target the span element
 
         // Primary Guest field validation
         $('.guest-form').each(function (index) 
@@ -818,7 +819,7 @@
         });
 
         // If the form is valid, submit the form
-        if (isValid) 
+        if (isValid && expPassportSpan === "") 
         {
           console.log("Form is valid. Submitting...");
           $('#guestForm').submit(); // Submit the form with ID #guestForm
@@ -1050,6 +1051,44 @@
         }
       });
 
+      $(document).on('change', 'input[name^="passportExp"]', function () 
+      {
+        const passportExp = $(this).val(); // Get the passport expiration date from the input field
+        const flightDate = '<?php echo $flightdate; ?>'; // PHP variable for the flight date
+        const expPassportSpan = $('#expPassport'); // Target the span element
+
+        // Parse dates
+        const passportExpiryDate = new Date(passportExp); // Convert the expiration date to a JavaScript Date object
+        const flightDateObj = new Date(flightDate); // Convert the flight date to a JavaScript Date object
+
+        // Validate the input date format and logic
+        if (isNaN(passportExpiryDate.getTime())) 
+        {
+          expPassportSpan.text("Invalid passport expiration date format. Please use YYYY-MM-DD.");
+          return;
+        }
+
+        if (isNaN(flightDateObj.getTime())) 
+        {
+          expPassportSpan.text("Invalid flight date provided.");
+          return;
+        }
+
+        // Calculate 6 months before the passport expiration date
+        const sixMonthsBeforeExpiry = new Date(passportExpiryDate);
+        sixMonthsBeforeExpiry.setMonth(sixMonthsBeforeExpiry.getMonth() - 6);
+
+        // Check if the flight date satisfies the 6-month rule
+        if (flightDateObj < sixMonthsBeforeExpiry) 
+        {
+          expPassportSpan.text("");
+        } 
+        else 
+        {
+          expPassportSpan.text("Your passport does not meet the 6-month validity rule for this flight date.");
+        }
+      });
+
       // Function to calculate age from birthdate
       function calculateAge(birthdate) 
       {
@@ -1080,7 +1119,7 @@
 
   </script>
 
-  <script>
+  <!-- <script>
     $(document).ready(function () 
     {
       // Add event listener to birthdate fields to auto-calculate age
@@ -1167,7 +1206,7 @@
       }
 
     });
-  </script>
+  </script> -->
 
 </body>
 </html>

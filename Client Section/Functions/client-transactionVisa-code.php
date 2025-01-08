@@ -12,9 +12,8 @@ if (isset($_POST['attachVisaRequirements'])) {
     $transactNo = $_POST['transaction_number'] ?? $_SESSION['transaction_number'] ?? null;
     $accId = $_POST['accId'];
 
-    if (!$transactNo || !$accId) 
-    {
-        echo "Transaction number or Agent ID is missing.";
+    if (!$transactNo || !$accId) {
+        echo "Transaction number or Account ID is missing.";
         exit;
     }
 
@@ -40,7 +39,6 @@ if (isset($_POST['attachVisaRequirements'])) {
 
         // Create upload directory
         $uploadDir = $_SERVER['DOCUMENT_ROOT'] . "/SMART-TRAVEL-MANAGEMENT-SYSTEM/Files Uploads/Visa Requirements Uploads" . DIRECTORY_SEPARATOR . $transactNo . DIRECTORY_SEPARATOR . $guestId;
-
         if (!is_dir($uploadDir) && !mkdir($uploadDir, 0777, true)) {
             echo "Failed to create upload directory for guest $guestId.<br>";
             continue;
@@ -85,25 +83,25 @@ if (isset($_POST['attachVisaRequirements'])) {
             $fileSize = filesize($fileTmpPath);
         
             if ($fileArray['error'][$i] !== UPLOAD_ERR_OK) {
-                $_SESSION['status'] = "Error uploading file $fileName: " . $fileArray['error'][$i] . "<br>";
+                echo "Error uploading file $fileName: " . $fileArray['error'][$i] . "<br>";
                 $fileUploaded = false;
                 break;
             }
         
             if (!in_array($fileTypeDetected, $allowedTypes)) {
-                $_SESSION['status'] = "Invalid file type for $fileType. Only JPG, PNG, and PDF files are allowed.<br>";
+                echo "Invalid file type for $fileType. Only JPG, PNG, and PDF files are allowed.<br>";
                 $fileUploaded = false;
                 break;
             }
         
             if ($fileSize > $maxFileSize) {
-                $_SESSION['status'] = "File $fileName exceeds the maximum allowed size (5MB).<br>";
+                echo "File $fileName exceeds the maximum allowed size (5MB).<br>";
                 $fileUploaded = false;
                 break;
             }
         
             if (!move_uploaded_file($fileTmpPath, $filePath)) {
-                $_SESSION['status'] = "Error moving file $fileName to destination.<br>";
+                echo "Error moving file $fileName to destination.<br>";
                 $fileUploaded = false;
                 break;
             }
@@ -126,19 +124,23 @@ if (isset($_POST['attachVisaRequirements'])) {
                 );
 
                 if ($stmt->execute()) {
+                    echo "Visa requirements uploaded successfully for guest $guestId.<br>";
                     $_SESSION['status'] = "Visa requirements uploaded successfully for guest $guestId.";
+                    
                 } else {
-                    $_SESSION['status'] = "Error executing query: " . $stmt->error . "<br>";
+                    echo "Error executing query: " . $stmt->error . "<br>";
+                    $_SESSION['status'] = "Error executing query: " . $stmt->error . "";
                 }
                 $stmt->close();
             } else {
-                $_SESSION['status'] = "Error preparing statement: " . $conn->error . "<br>";
+                echo "Error preparing statement: " . $conn->error . "<br>";
+                $_SESSION['status'] = "Error preparing statement: " . $conn->error."";
             }
         }
     }
 
     $_SESSION['status'] = "Visa requirements have been successfully uploaded.";
-    header("Location: ../agent-showGuest.php?id=" . htmlspecialchars($transactNo));
+    header("Location: ../client-transactionStatus.php?id=" . htmlspecialchars($transactNo));
     exit();
 }
 ?>
