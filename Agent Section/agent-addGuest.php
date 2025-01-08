@@ -797,7 +797,6 @@
     });
   </script>
 
-
   <!-- Datalist for Nationalities -->
   <script>
     // List of nationalities

@@ -25,11 +25,21 @@
       if (isset($_GET['id'])) 
       {
         $guestId = htmlspecialchars($_GET['id']);
-        // echo $guestId;
+        $transactionNo = $_SESSION['transaction_number'];
       } 
+
+      $stmt = $conn->prepare("SELECT b.flightId, f.flightDepartureDate as departureDate FROM booking b
+                              JOIN flight f ON b.flightId = f.flightId WHERE transactNo = ?");
+      $stmt->bind_param("s", $transactionNo);
+      $stmt->execute();
+      $result = $stmt->get_result();
+
+      if ($row = $result->fetch_assoc()) 
+      {
+        $flightdate = $row['departureDate'];
+      }   
       
     ?>
-    
     <?php if(isset($_SESSION['status'])): ?>
       <div class="alert alert-warning alert-dismissible fade show" role="alert">
         <strong>Hey!</strong> <?= $_SESSION['status']; ?>
@@ -42,10 +52,10 @@
     ?>
 
     <div class="content-wrapper bg-transparent pt-2 ms-4">
-      <form action="../Agent Section/functions/agent-updateGuestInfo-code.php" method="POST">
+      <form action="../Agent Section/functions/agent-updateGuestInfo-code.php" id="guestForm" method="POST">
         <div class="card guest-form shadow-sm mb-3">
           <div class="card-header bg-secondary text-white d-flex flex-row justify-content-between align-items-center">
-            <h5 class="font-weight-bold mt-1">Guest Information </h5>
+            <h5 class="font-weight-bold mt-1">Guest Information</h5>
           </div>
           <div class="card-body px-5">
             <?php
@@ -117,7 +127,7 @@
 
                   <div class="col-md-3">
                     <div class="form-group mb-3">
-                      <label class="mb-2" for="age">Age <span class="text-danger fw-bold">*</span> </label>
+                      <label class="mb-2" for="age">Age <span class="text-danger fw-bold">*</span> <span id="infant"></span></label>
                       <input type="number" name="age" class="form-control" placeholder="Age" value="<?php echo $row['age']; ?>" readonly>
                       <span id="ageError" class="text-danger"></span> <!-- Error message for Age -->
                     </div>
@@ -348,7 +358,7 @@
 
                   <div class="col-md-6">
                     <div class="form-group mb-3">
-                      <label class="mb-2" for="passportExp">Date of Expiration: <span class="text-danger fw-bold">*</span></label>
+                      <label class="mb-2" for="passportExp">Date of Expiration: <span class="text-danger fw-bold">*</span> <span id="expPassport" class="text-danger"></span></label>
                       <input type="date" name="passportExp" class="form-control" value="<?php echo $row['passportExp']; ?>" required>
                       <span id="passportExpError" class="text-danger"></span> <!-- Error message for Passport Exp -->
                     </div>
@@ -1027,7 +1037,7 @@
             ?>   
           </div>
           <div class="card-footer d-flex justify-content-end mb-5 my-3">
-            <button type="submit" class="btn btn-primary" name="updateGuestInfo">Update Guest Information</button>
+            <button type="submit" class="btn btn-primary" id="updateGuestInfo" name="updateGuestInfo">Update Guest Information</button>
           </div>
         </div>
       </form>
@@ -1040,49 +1050,184 @@
   <script>
     $(document).ready(function () 
     {
-      // Add event listener to birthdate fields to auto-calculate age
+      // Validation logic for booking
+      $('#updateGuestInfo').click(function (event) 
+      {
+        let isValid = true; // Initialize isValid flag
+        let allExpPassportValid = true; // Initialize flag for expPassportSpan validation
+
+        // Validate Primary Guest fields
+        $('.guest-form').each(function (index) 
+        {
+          const guestFormNumber = index; // Get guest form number
+          const guestFields = [
+            { name: 'fName', error: 'First name is required.' },
+            { name: 'lName', error: 'Last name is required.' },
+            { name: 'mName', error: 'Middle name is required.' },
+            { name: 'suffix', error: 'Suffix is required.', isSelect: true },
+            { name: 'birthdate', error: 'Birthdate is required.' },
+            { name: 'age', error: 'Age is required.' },
+            { name: 'sex', error: 'Sex is required.', isSelect: true },
+            { name: 'nationality', error: 'Nationality is required.' },
+            { name: 'passportNo', error: 'Passport number is required.' },
+            { name: 'passportExp', error: 'Passport expiration date is required.' },
+            { name: 'countryCode', error: 'Country Code is required.', isSelect: true },
+            { name: 'contactNo', error: 'Contact number is required.' },
+            { name: 'email', error: 'Email is required.' },
+            { name: 'addressLine', error: 'Address is required.' },
+            { name: 'city', error: 'City is required.' },
+            { name: 'state', error: 'State is required.' },
+            { name: 'zipCode', error: 'Zip Code is required.' },
+            { name: 'country', error: 'Country is required.' }
+          ];
+
+          // Iterate through the fields to validate
+          guestFields.forEach(({ name, error, isSelect }) => 
+          {
+            const errorSpanId = `#${name}Error`;
+            const input = isSelect
+              ? $(this).find(`select[name^="${name}"]`)
+              : $(this).find(`input[name^="${name}"]`);
+
+            if (!input.val()) 
+            {
+              input.addClass('is-invalid'); // Add invalid class
+              $(errorSpanId).text(error); // Set error message dynamically
+              isValid = false; // Set valid flag to false
+            }
+
+            // Clear error when input field is focused or changed
+            input.on('focus change', function () 
+            {
+              $(this).removeClass('is-invalid'); // Remove invalid class
+              $(errorSpanId).text(''); // Clear error message
+            });
+          });
+
+          // Check expPassportSpan for this form
+          const expPassportSpan = $(this).find('span[id^="expPassport"]');
+          if (expPassportSpan.text().trim() !== '')
+           {
+            allExpPassportValid = false; // Mark as invalid if any expPassportSpan is not empty
+          }
+        });
+
+        // Validate Cloned Guest fields (same as above)
+        // This section can remain unchanged unless specific logic for cloned fields differs
+
+        // Check overall validity
+        if (isValid && allExpPassportValid) 
+        {
+          console.log("Submitting");
+          $('#guestForm').submit(); // Submit the form with ID #guestForm
+        } 
+        else if (!allExpPassportValid) 
+        {
+          event.preventDefault(); // Prevent default form submission
+          let alertMessage = "Make Sure the passport would not expire for another six months before you depart.";
+          alert(alertMessage); // Display alert with errors
+        }
+        else 
+        {
+          event.preventDefault(); // Prevent default form submission
+          let alertMessage = "Some required fields are empty or not valid.";
+          alert(alertMessage); // Display alert with errors
+        }
+      });
+    });
+  </script>
+  
+  <!-- Update birthdate and passport exp -->
+  <script>
+    $(document).ready(function () 
+    {
+      // Event listener for birthdate field
       $(document).on('change', 'input[name^="birthdate"]', function () 
       {
-        const birthdate = $(this).val(); // Get the birthdate value
+        const birthdate = $(this).val();
 
         // Make sure the birthdate is in a valid format (YYYY-MM-DD)
         if (isValidDate(birthdate)) 
         {
-          const age = calculateAge(birthdate); // Calculate the age based on birthdate
+          const age = calculateAge(birthdate); // Calculate age
 
-          if (!isNaN(age) && age > 0) 
+          // Update the age field and handle infant text
+          const parentCard = $(this).closest('.card-body');
+          parentCard.find('input[name="age"]').val(age > 0 ? age : 0);
+
+          const infantSpan = $('#infant');
+          if (age === 0) 
           {
-            // Update the age field in the same form that contains the birthdate field
-            $(this).closest('.card-body').find('input[name^="age"]').val(age); 
+            infantSpan.text('Infant'); // Display "Infant" for age 0
           } 
           else 
           {
-            $(this).closest('.card-body').find('input[name^="age"]').val(''); // Clear the age field if invalid
+            infantSpan.text(''); // Clear if not an infant
           }
+        } 
+        // else 
+        // {
+        //   // Clear invalid fields
+        //   $(this).closest('.card-body').find('input[name^="age"]').val('');
+        //   $(this).closest('.card-body').find('span[id^="infant"]').text('');
+        // }
+      });
+
+      $(document).on('change', 'input[name^="passportExp"]', function () 
+      {
+        const passportExp = $(this).val(); // Get the passport expiration date from the input field
+        const flightDate = '<?php echo $flightdate; ?>'; // PHP variable for the flight date
+        const expPassportSpan = $('#expPassport'); // Target the span element
+
+        // Parse dates
+        const passportExpiryDate = new Date(passportExp); // Convert the expiration date to a JavaScript Date object
+        const flightDateObj = new Date(flightDate); // Convert the flight date to a JavaScript Date object
+
+        // Validate the input date format and logic
+        if (isNaN(passportExpiryDate.getTime())) 
+        {
+          expPassportSpan.text("Invalid passport expiration date format. Please use YYYY-MM-DD.");
+          return;
+        }
+
+        if (isNaN(flightDateObj.getTime())) 
+        {
+          expPassportSpan.text("Invalid flight date provided.");
+          return;
+        }
+
+        // Calculate 6 months before the passport expiration date
+        const sixMonthsBeforeExpiry = new Date(passportExpiryDate);
+        sixMonthsBeforeExpiry.setMonth(sixMonthsBeforeExpiry.getMonth() - 6);
+
+        // Check if the flight date satisfies the 6-month rule
+        if (flightDateObj < sixMonthsBeforeExpiry) 
+        {
+          expPassportSpan.text("");
         } 
         else 
         {
-          $(this).closest('.card-body').find('input[name^="age"]').val(''); // Clear the age field if date is invalid
+          expPassportSpan.text("Your passport does not meet the 6-month validity rule for this flight date.");
         }
       });
 
       // Function to calculate age from birthdate
       function calculateAge(birthdate) 
       {
-        const birthDateObj = new Date(birthdate); // Convert the birthdate string into a Date object
-        const today = new Date(); // Get the current date
-        let age = today.getFullYear() - birthDateObj.getFullYear(); // Calculate age by year difference
+        const birthDateObj = new Date(birthdate); // Convert birthdate string into Date object
+        const today = new Date();
+        let age = today.getFullYear() - birthDateObj.getFullYear();
 
-        // Adjust the age if the birthday hasn't occurred yet this year
+        // Adjust if the birthday hasn't occurred yet this year
         const monthDiff = today.getMonth() - birthDateObj.getMonth();
         const dayDiff = today.getDate() - birthDateObj.getDate();
 
         if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) 
         {
-          age--; // Reduce age if the birthdate hasn't occurred yet this year
+          age--;
         }
 
-        return age;
+        return age; // Do not apply the < 1 check; this ensures 0 is returned if the age is exactly 0
       }
 
       // Function to check if the date is in a valid format (YYYY-MM-DD)
