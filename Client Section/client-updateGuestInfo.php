@@ -1,26 +1,35 @@
-<?php session_start(); ?>
+<?php
+  // include 'session_validate.php'; // This will check if the session is valid
+  require '../conn.php';
+  session_start();
+
+  ini_set('display_errors', 1);
+  ini_set('display_startup_errors', 1);
+  error_reporting(E_ALL);
+  
+  // Fetch session variables directlys
+  $email = $_SESSION['email'] ?? ''; // Use null coalescing operator to avoid undefined index
+  // $firstName = $_SESSION['first_name'] ?? '';
+  // $lastName = $_SESSION['last_name'] ?? '';
+  // $middleName = $_SESSION['middle_name'] ?? '';
+  $accId = $_SESSION['accountId'] ?? '';
+  
+  // $fullName = htmlspecialchars($lastName . ', ' . $firstName . ($middleName ? ' ' . substr($middleName, 0, 1) . '.' : ''));
+?>
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard</title>
-
-  <!-- Include jQuery -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-  <link rel="stylesheet" href="../Agent Section/assets/css/agent-transaction.css?v=<?php echo time(); ?>">
-  <link rel="stylesheet" href="../Agent Section/assets/css/navbar-sidebar.css?v=<?php echo time(); ?>">
+<head>    
+  <title>Client Update Guest Information</title>
+  <?php include 'includes/head.php' ?>
+  <link rel="stylesheet" href="assets\css\client-dashboard.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="assets\css\client-navbar.css?v=<?php echo time(); ?>">
 </head>
-<body>
-  <?php include '../Agent Section/includes/sidebar.php'; ?>
 
+<body>
   <div class="main-content" id="mainContent">
     <?php 
-      include '../Agent Section/includes/navbar.php'; 
-
+      include '../Client Section/Includes/client-navbar.php'; 
+      
       // Check if 'id' is passed in the URL
       if (isset($_GET['id'])) 
       {
@@ -38,21 +47,22 @@
       {
         $flightdate = $row['departureDate'];
       }   
-      
     ?>
-    <?php if(isset($_SESSION['status'])): ?>
+
+    <?php 
+      if(isset($_SESSION['status'])):
+    ?>
       <div class="alert alert-warning alert-dismissible fade show" role="alert">
         <strong>Hey!</strong> <?= $_SESSION['status']; ?>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
-
-      <?php 
-        unset($_SESSION['status']);
-        endif;
+    <?php 
+      unset($_SESSION['status']);
+      endif;
     ?>
 
     <div class="content-wrapper bg-transparent pt-2 ms-4">
-      <form action="../Agent Section/functions/agent-updateGuestInfo-code.php" id="guestForm" method="POST">
+      <form action="../Client Section/Functions/client-updateGuestInfo-code.php" id="guestForm" method="POST">
         <div class="card guest-form shadow-sm mb-3">
           <div class="card-header bg-secondary text-white d-flex flex-row justify-content-between align-items-center">
             <h5 class="font-weight-bold mt-1">Guest Information</h5>
@@ -760,7 +770,6 @@
                           <option value="+967" <?php echo (isset($row['countryCode2']) && $row['countryCode2'] == '+967') ? 'selected' : ''; ?>>Yemen (+967)</option>
                           <option value="+260" <?php echo (isset($row['countryCode2']) && $row['countryCode2'] == '+260') ? 'selected' : ''; ?>>Zambia (+260)</option>
                           <option value="+263" <?php echo (isset($row['countryCode2']) && $row['countryCode2'] == '+263') ? 'selected' : ''; ?>>Zimbabwe (+263)</option>
-
                         </select>
                         <input type="tel" class="form-control" name="2ndcontactNo" placeholder="Enter Contact No" value="<?php echo $row['contactNo2']; ?>">
                       </div>
@@ -1044,9 +1053,7 @@
     </div>
   </div>
 
-  <?php require "../Agent Section/includes/scripts.php"; ?>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+  <!-- Field validation -->
   <script>
     $(document).ready(function () 
     {
@@ -1239,6 +1246,4 @@
       }
     });
   </script>
-  
 </body>
-</html>
