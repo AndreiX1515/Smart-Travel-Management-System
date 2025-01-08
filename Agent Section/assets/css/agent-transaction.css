@@ -6,6 +6,71 @@ body {
  font-family: Arial, sans-serif;
 }
  
+
+
+/* Minimalist Styling for Navigation Container */
+.nav-start-container {
+  display: flex;
+  align-items: last baseline;
+  justify-content: flex-start;
+  gap: 15px; /* Space between the back button and the title */
+  padding: 5px 0px;
+}
+
+
+.nav-start-container h6{
+  font-weight: bold;
+}
+
+.nav-start-container span{
+  font-weight: normal;
+}
+
+
+/* Styling for Back Button */
+.back-button {
+  background: none;
+  border: 2px solid #000000; /* Blue border */
+  border-radius: 50%; /* Circular shape */
+  color: #000000; /* Blue color for the button */
+  font-size: 20px;
+  width: 35px; /* Set width and height to create a circle */
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0; /* Remove default padding */
+  z-index: 5;
+}
+
+/* Back Button Hover Effect */
+.back-button:hover {
+  color: #fff; /* Change text color on hover */
+  background-color: #007bff; /* Blue background on hover */
+  border-color: #0056b3; /* Darker blue border on hover */
+}
+
+/* Styling for Transaction Title */
+.transaction-title {
+  font-size: 18px;
+  font-weight: 400; /* Lighter font weight for a minimalist look */
+  color: #333; /* Dark color for text */
+  margin: 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 .content-wrapper {
  height: 35vh;
  width: 95%;

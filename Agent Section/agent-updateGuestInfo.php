@@ -37,7 +37,8 @@
       if ($row = $result->fetch_assoc()) 
       {
         $flightdate = $row['departureDate'];
-      }     
+      }   
+      
     ?>
     <?php if(isset($_SESSION['status'])): ?>
       <div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -1046,7 +1047,6 @@
   <?php require "../Agent Section/includes/scripts.php"; ?>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-  <!-- Field validation -->
   <script>
     $(document).ready(function () 
     {
