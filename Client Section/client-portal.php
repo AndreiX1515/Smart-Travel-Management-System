@@ -16,7 +16,7 @@
   $accId = $_SESSION['accountId'] ?? '';
   
   // $fullName = htmlspecialchars($lastName . ', ' . $firstName . ($middleName ? ' ' . substr($middleName, 0, 1) . '.' : ''));
-  ?>
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -26,7 +26,7 @@
 
   <title>Booking Form</title>
 
-  <link rel="stylesheet" href="../Client Section/assets/css/client-portal.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="../Client Section/assets/css/client-bookingform.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="../Client Section/assets/css/client-navbar.css?v=<?php echo time(); ?>"> 
  
 </head>
@@ -35,62 +35,24 @@
 
 <?php include '../Client Section/Includes/client-navbar.php'; ?>
 
-<?php include '../Client Section/Includes/client-sidebar.php'; ?>
-
-<div class="main-container">
-  <div class="container">
+<div class="body-container">
+  <div class="main-container">  
     <div class="content-header">
         <div class="back-button-wrapper">
-            <a href="index.php" class="back-button-link"> <i class="fa-solid fa-arrow-left me-2"></i> Back to Homepage</a>
+            <a href="client-portal.php" class="back-button-link"> <i class="fa-solid fa-arrow-left me-2"></i> Back to Client Portal</a>
         </div>
-        <h1>Client Portal</h1>
+        <h1>Client Page</h1>
     </div>
 
     <div class="container-body">
 
-  
     </div>
-    
+
   </div>
+
 </div>
 
 <?php include '../Client Section/Includes/scripts.php'; ?>
 
-<!-- Row Click Selection JS -->
-<script>
-  document.addEventListener("DOMContentLoaded", function() 
-  {
-    document.querySelectorAll("tr[data-url]").forEach(function(row) 
-    {
-      row.addEventListener("click", function() 
-      {
-        const transactionNumber = row.getAttribute("data-url").split('=')[1]; // Extract transaction number from the URL
-
-        console.log("Transaction Number: ", transactionNumber);
-
-        // Use AJAX to send the transaction number to the server
-        $.ajax(
-        {
-          url: '../Agent Section/functions/fetchTransactNo.php', // The PHP file to handle the session setting
-          type: 'POST',
-          data: { transaction_number: transactionNumber },
-          success: function(response)
-          {
-            console.log("Response: ", response); // Debugging line
-
-            // Redirect to the next page after successfully setting the session
-            window.location.href = row.getAttribute("data-url"); // Use the original URL stored in data-url attribute
-          },
-          error: function(xhr, status, error) 
-          {
-            console.error("AJAX Error: " + status + " " + error); // Enhanced error logging
-          }
-        });
-      });
-    });
-  });
-</script>
-
-</body>
-
+ </body>
 </html>

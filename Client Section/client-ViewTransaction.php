@@ -38,9 +38,6 @@
 <?php include '../Client Section/Includes/client-navbar.php'; ?>
 
 <div class="body-container">
-  <div class="sub-container">
-    <?php include '../Client Section/Includes/client-sidebar.php'; ?>
-  </div>
 
   <div class="main-container">
 				<div class="content-header">

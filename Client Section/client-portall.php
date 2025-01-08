@@ -34,19 +34,18 @@
 <body>
 
 <?php 
-    if(isset($_SESSION['status'])):
+  if(isset($_SESSION['status'])):
 ?>
 
-  <div class="alert alert-warning alert-dismissible fade show" role="alert">
-    <strong>Hey!</strong> <?= $_SESSION['status']; ?>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-  </div>
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+  <strong>Hey!</strong> <?= $_SESSION['status']; ?>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
 
 <?php 
-  unset($_SESSION['status']);
-  endif;
+unset($_SESSION['status']);
+endif;
 ?>
-
 
 <?php include '../Client Section/Includes/client-navbar.php'; ?>
 
@@ -58,6 +57,10 @@
         </div>
         <h1>Client Portal</h1>
     </div>
+
+    
+
+
   </div>
        
   
