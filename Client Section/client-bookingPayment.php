@@ -1,57 +1,74 @@
+
 <?php
-  // include 'session_validate.php';
-  require "../conn.php";
-  ini_set('display_errors', 1);
-  ini_set('display_startup_errors', 1);
-  error_reporting(E_ALL);
-  $accId = $_SESSION['accountId'] ?? '';
+    // include 'session_validate.php'; // This will check if the session is valid
+    require '../conn.php';
+    session_start();
+
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
+
+    // Fetch session variables directlys
+    $email = $_SESSION['email'] ?? ''; // Use null coalescing operator to avoid undefined index
+    // $firstName = $_SESSION['first_name'] ?? '';
+    // $lastName = $_SESSION['last_name'] ?? '';
+    // $middleName = $_SESSION['middle_name'] ?? '';
+    $accId = $_SESSION['accountId'] ?? '';
+
+    // $fullName = htmlspecialchars($lastName . ', ' . $firstName . ($middleName ? ' ' . substr($middleName, 0, 1) . '.' : ''));
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <title>Document</title>
+  <?php include '../Client Section/Includes/head.php'; ?>
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Booking Form</title>
 
-    <meta name="description" content="">
-    <meta name="keywords" content="">
-
-    <!-- Bootstrap CSS CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-
-    <!-- Font Awesome Icon Kit CDN -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
-
-    <!-- Favicons -->
-    <link href="assets/images/rsz_logo-tab.png" rel="icon">
-    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
-
-    <link rel="stylesheet" href="assets\css\payment.css">
+  <link rel="stylesheet" href="../Client Section/assets/css/payment.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="../Client Section/assets/css/client-navbar.css?v=<?php echo time(); ?>"> 
+ 
 </head>
 
 <body>
 
-<div class="main-content" id="mainContent">
-  
-  <?php
+<?php
     // Check if 'id' is passed in the URL
     if (isset($_GET['id'])) 
     {
       $transactionNumber = htmlspecialchars($_GET['id']);
     }
   ?>
-    
 
-    <div class="container">
-      <a href="bookingform.php" class="back-button">
-        <i class="fas fa-arrow-left"></i>
-      </a>
+<?php include '../Client Section/Includes/client-navbar.php'; ?>
+
+<div class="body-container">
+  <div class="main-container">  
+    <div class="content-header">
+        <div class="back-button-wrapper">
+            <a href="client-bookingform.php" class="back-button-link"> <i class="fa-solid fa-arrow-left me-2"></i> Back to Booking Section</a>
+        </div>
+        <h1>Payment Details</h1>
+        <p>To confirm your booking, a down payment is required to secure your reservation.</p>
+    </div>
+
+    <div class="container-body">
+      <?php 
+      if(isset($_SESSION['status'])):
+      ?>
+
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          <strong>Hey!</strong> <?= $_SESSION['status']; ?>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+      <?php 
+        unset($_SESSION['status']);
+        endif;
+      ?>
 
       <div class="subscription">
-        <h3 class="ms-3">Payment Details</h3>
-
         <div class="section section-1 px-3">
           <div class="header-container d-flex flex-row justify-content-between mb-2">
             <h4>Choose Payment Method</h4>
@@ -193,8 +210,10 @@
         
         <form action="../Client Section/Functions/bookingPayment-code.php" method="POST" enctype="multipart/form-data">
           <hr>
-          <input type="" value="<?php echo $accId; ?>" name="agentAccountId">
+          <input type="hidden" value="<?php echo $accId; ?>" name="agentAccountId"> <!-- Account ID Input (to be hidden) -->
+
           <input type="hidden" value="<?php echo $transactionNumber; ?>" name="transactNo">
+
           <input type="number" class="form-control" name="downpayment" step="0.01" min="<?php echo $downpayment; ?>" max="<?php echo $totalPrice; ?>" placeholder="Enter Downpayment Amount" required>
           <h6 class="mt-4">Attach Proof/Screenshot of transaction:</h6>
           <input type="file" id="attachment" class="attachment" name="proofs[]" accept="image/*" required>
@@ -216,11 +235,13 @@
           </div>
         </form>
       </div>
-    </div> 
+    
+    </div>
 
+ </div>
 </div>
-  
-    
-    
-</body>
+
+<?php include '../Client Section/Includes/scripts.php'; ?>
+
+  </body>
 </html>

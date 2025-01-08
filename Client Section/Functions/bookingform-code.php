@@ -81,7 +81,7 @@ if (isset($_POST['bookNow']))
 
 	// Optionally redirect or provide a success message
 	$_SESSION['status'] = "Booking successful!";
-	header("Location: ../bookingPayment.php?id=" . htmlspecialchars($transactNo));
+	header("Location: ../client-bookingPayment.php?id=" . htmlspecialchars($transactNo));
 	exit(0);
 }
 

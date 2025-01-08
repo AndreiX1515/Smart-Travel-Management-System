@@ -33,10 +33,6 @@
 <?php include '../Client Section/Includes/client-navbar.php'; ?>  
 
 <div class="main-container">
-  <div class="sub-container">
-    <?php include '../Client Section/Includes/client-sidebar.php'; ?>
-  </div>
-
   <div class="container">
     <div class="content-header">
         <div class="back-button-wrapper">

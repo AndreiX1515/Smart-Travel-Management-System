@@ -1,0 +1,310 @@
+/* .container-body	{
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+
+} */
+
+
+.card {
+	background-color: #fff;
+	overflow: hidden;
+	margin-top: 15px;
+}
+
+.card-header {
+	background-color: #3498db;
+	color: #fff;
+	padding: 10px 15px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	border-radius: 8px 8px 0 0;
+}
+
+.card-header h4 {
+	margin: 0;
+	font-size: 16px;
+}
+
+.card-body {
+	padding: 15px 20px;
+	font-size: 14px;
+	color: #2c3e50;
+}
+
+.columns label {
+	font-size: 14px;
+	font-weight: 600;
+	margin-top: 15px;
+	margin-bottom: 10px;
+}
+
+
+.land-only {
+	padding: 0px 0px;
+}
+
+
+.card-footer {
+	display: flex;
+	justify-content: start;
+	align-items: center;
+	padding: 20px 20px;
+}
+
+
+.total-price-container {
+	margin: 20px 0px;
+}
+
+
+.ContactPerson {
+	padding: 10px;
+}
+
+
+
+.country-select {
+	width: auto;
+	max-width: 150px; /* Adjust width */
+	font-size: 14px; /* Adjust font size */
+}
+
+/* Optional: Style when the select is focused */
+.country-select:focus {
+	outline: none; /* Remove outline */
+	border-color: #007bff; /* Change border color when focused */
+}
+
+
+/* Optional: Adjust the input field to match the select box size */
+.contactNo {
+	font-size: 14px; /* Adjust font size */
+}
+
+
+
+.ContactPerson .card-body {
+	padding: 20px 10px;
+	font-size: 14px;
+	color: #2c3e50;
+}
+
+
+
+
+
+
+
+
+/* Normal view (1441px and up) */
+@media (min-width: 1441px) {
+	.navbar-middle {
+					display: block; /* Shows the navbar middle */
+	}
+
+	.navbar-toggler {
+					display: none; /* Hides the toggler button */
+	}
+
+	.navbar-nav {
+					display: flex; /* Horizontal display */
+					text-align: left;
+					margin: 0px 15px; /* Set margin to 15px */
+	}
+
+	.navbar-collapse .navbar-nav {
+					display: none;
+	}
+
+	.navbar-nav .nav-item {
+					padding: 5px 0px;
+	}
+
+	.navbar-nav .nav-link {
+					font-size: 18px; /* Increased font size */
+	}
+}
+
+/* For large screens (1281px - 1440px) */
+@media (max-width: 1440px) and (min-width: 1281px) {
+	.navbar-middle {
+					display: block; /* Keeps the navbar middle visible */
+	}
+
+	.navbar-toggler {
+					display: none; /* Hides the toggler button */
+	}
+
+	.navbar-nav {
+					display: flex; /* Horizontal display */
+					text-align: left;
+					margin: 0px 15px; /* Set margin to 15px */
+	}
+
+	.navbar-collapse .navbar-nav {
+		display: none;
+	}
+
+	.navbar-nav .nav-item {
+					padding: 8px 0px;
+	}
+
+	.navbar-nav .nav-link {
+					font-size: 17px; /* Slightly smaller font size */
+	}
+}
+
+/* For medium screens (1025px - 1280px) */
+@media (max-width: 1280px) and (min-width: 992px) {
+	.navbar-middle {
+					display: block; /* Keeps the navbar middle visible */
+	}
+
+	.navbar-toggler {
+					display: none; /* Hides the toggler button */
+	}
+
+	.navbar-nav {
+					display: flex; /* Horizontal display */
+					text-align: left;
+					margin: 0px 15px; /* Set margin to 15px */
+	}
+
+	.navbar-collapse .navbar-nav {
+		display: none;
+}
+
+	.navbar-nav .nav-item {
+					padding: 8px 0px;
+	}
+
+	.navbar-nav .nav-link {
+					font-size: 16px; /* Reduced font size for medium screens */
+	}
+}
+
+/* For smaller medium screens (769px - 1024px) */
+@media (max-width: 991px) and (min-width: 769px) {
+	.navbar-middle {
+					display: none; /* Hides the navbar middle */
+	}
+
+	.navbar-toggler {
+					display: block; /* Shows the toggler button */
+	}
+
+	.navbar-nav {
+					display: block; /* Stacks the navbar items */
+					text-align: center;
+					margin: 15px; /* Set margin to 15px */
+	}
+
+	.navbar-nav .nav-item {
+					padding: 8px 0;
+	}
+
+	.navbar-nav .nav-link {
+					font-size: 15px; /* Further reduced font size */
+	}
+
+	.columns .mName {
+		font-size: 12px; /* Adjust the font size as needed */
+		white-space: nowrap; /* Prevent text from wrapping */
+		margin-bottom: 5px;
+	}
+}
+
+/* For mobile screens (601px - 768px) */
+@media (max-width: 768px) and (min-width: 601px) {
+	.navbar-middle {
+		display: none; /* Hides the navbar middle */
+	}
+
+	.navbar-toggler {
+		display: block; /* Shows the toggler button */
+	}
+
+	.navbar-nav {
+		display: block; /* Stacks the navbar items */
+		text-align: center;
+		margin: 15px; /* Set margin to 15px */
+	}
+
+	.navbar-nav .nav-item {
+		padding: 8px 0;
+	}
+
+	.navbar-nav .nav-link {
+		font-size: 14px; /* Smaller font size */
+	}
+}
+
+/* For small mobile screens (481px - 600px) */
+@media (max-width: 600px) and (min-width: 481px) {
+	.navbar-middle {
+		display: none; /* Hides the navbar middle */
+	}
+
+	.navbar-toggler {
+		display: block; /* Shows the toggler button */
+	}
+
+	.navbar-nav {
+		display: block; /* Stacks the navbar items */
+		text-align: center;
+		margin: 15px; /* Set margin to 15px */
+	}
+
+	.navbar-nav .nav-item {
+		padding: 8px 0;
+	}
+
+	.navbar-nav .nav-link {
+		font-size: 13px; /* Even smaller font size */
+	}
+}
+
+/* For mobile screens (320px - 480px) */
+@media (max-width: 480px) and (min-width: 320px) {
+	.navbar-middle {
+		display: none; /* Hides the navbar middle */
+	}
+
+	.navbar-toggler {
+		display: block; /* Shows the toggler button */
+	}
+
+	.navbar-nav {
+		display: block; /* Stacks the navbar items */
+		text-align: center;
+		margin: 15px; /* Set margin to 15px */
+	}
+
+	.navbar-nav .nav-item {
+		padding: 6px 0;
+	}
+
+	.navbar-nav .nav-link {
+		font-size: 12px; /* Smallest font size */
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
