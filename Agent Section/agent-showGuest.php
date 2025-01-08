@@ -6,6 +6,41 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 ?>
+
+<!-- Session Variables -->
+<?php  
+$accountId = $_SESSION['agent_accountId'];
+$agentId = $_SESSION['agent_agentId'];
+$agentCode = $_SESSION['agent_agentCode'];
+$agentRole = $_SESSION['agent_agentRole'];
+$agentType = $_SESSION['agent_agentType'];
+$fName =  $_SESSION['agent_fName'] ?? '';
+$lName = $_SESSION['agent_lName'] ?? '';
+$mName = $_SESSION['agent_mName'] ?? '';
+$branchId = $_SESSION['agent_branchId'] ?? '';
+$email = $_SESSION['email'] ?? '';
+$password = $_SESSION['password'] ?? '';
+
+$sql1 = "Select * from branch where branchId= '$branchId'";
+$result1 = $conn->query($sql1);
+
+// Check if a result is returned
+if ($result1->num_rows > 0) {
+  // Fetch the branchName
+  $row = $result1->fetch_assoc();
+  $branchName = $row['branchName'];
+} else {
+  $branchName = "No Branch";
+}
+
+// Format the full name
+$fullName = htmlspecialchars($lName . ', ' . $fName . ($mName ? ' ' . substr($mName, 0, 1) . '.' : ''));
+
+// Optional: hide password by default
+$maskedPassword = '••••••••••';
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -20,64 +55,32 @@ error_reporting(E_ALL);
 </head>
 
 <body>
-  <?php include '../Agent Section/includes/sidebar.php'; ?>
+<?php include '../Agent Section/includes/sidebar.php'; ?>
 
-  <div class="main-content" id="mainContent">
-    <!-- Session Variables -->
-    <?php  
-      $accountId = $_SESSION['agent_accountId'];
-      $agentId = $_SESSION['agent_agentId'];
-      $agentCode = $_SESSION['agent_agentCode'];
-      $agentRole = $_SESSION['agent_agentRole'];
-      $agentType = $_SESSION['agent_agentType'];
-      $fName =  $_SESSION['agent_fName'] ?? '';
-      $lName = $_SESSION['agent_lName'] ?? '';
-      $mName = $_SESSION['agent_mName'] ?? '';
-      $branchId = $_SESSION['agent_branchId'] ?? '';
-      $email = $_SESSION['email'] ?? '';
-      $password = $_SESSION['password'] ?? '';
 
-      $sql1 = "Select * from branch where branchId= '$branchId'";
-      $result1 = $conn->query($sql1);
+<!-- Current Date Variable --> 
+<?php
+  date_default_timezone_set('Asia/Taipei');
+  $current_date = date('D, F d, Y');
+?>
 
-      // Check if a result is returned
-      if ($result1->num_rows > 0) {
-          // Fetch the branchName
-          $row = $result1->fetch_assoc();
-          $branchName = $row['branchName'];
-      } else {
-          $branchName = "No Branch";
-      }
+<!-- Transact Number Session Variable -->
+<?php 
+  if (isset($_SESSION['transaction_number'])) {
+    $transactionNumber = $_SESSION['transaction_number'];
+  } 
 
-      // Format the full name
-      $fullName = htmlspecialchars($lName . ', ' . $fName . ($mName ? ' ' . substr($mName, 0, 1) . '.' : ''));
+  if (isset($_GET['id'])) {
+    $transactionNumber = htmlspecialchars($_GET['id']);
+  } 
+?>
 
-      // Optional: hide password by default
-      $maskedPassword = '••••••••••';
-    ?>
+<?php include '../Agent Section/includes/logoutViewPassModal.php'; ?>
 
-    <!-- Current Date Variable --> 
-    <?php
-      date_default_timezone_set('Asia/Taipei');
-      $current_date = date('D, F d, Y');
-    ?>
-
-    <!-- Transact Number Session Variable -->
-    <?php 
-      if (isset($_SESSION['transaction_number'])) 
-      {
-        $transactionNumber = $_SESSION['transaction_number'];
-      } 
-     
-      if (isset($_GET['id'])) 
-      {
-       $transactionNumber = htmlspecialchars($_GET['id']);
-      } 
-    ?>
-
-    <header>      
-      <nav class="navbar navbar-expand-lg justify-content-between sticky-top">
-        <div class="container-fluid d-flex justify-content-between">
+<div class="main-content" id="mainContent">
+  <header>      
+    <nav class="navbar navbar-expand-lg justify-content-between sticky-top">
+      <div class="container-fluid d-flex justify-content-between">
           <div class="nav-start-container d-flex flex-row">
             <button class="back-button" onclick="window.location.href='../Agent Section/agent-transactions.php';">
               <i class="fas fa-arrow-left"></i>
@@ -91,7 +94,7 @@ error_reporting(E_ALL);
               <h6><?php echo $current_date; ?></h6>
             </div>
 
-						<div class="vertical-line-navbar"></div>
+            <div class="vertical-line-navbar"></div>
 
             <div class="collapse navbar-collapse" id="navbarNav">
               <ul class="navbar-nav ms-auto">
@@ -122,87 +125,86 @@ error_reporting(E_ALL);
                   </ul>
                 </li>
               </ul>
-            </div>
-															
+            </div>                 
           </div>
-        </div>
-      </nav>
-    </header>
 
-    <?php include '../Agent Section/includes/logoutViewPassModal.php'; ?>
-
-    <?php if(isset($_SESSION['status'])): ?>
-      <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        <strong>Hey!</strong> <?= $_SESSION['status']; ?>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
+    </nav>
+  </header>
 
-      <?php 
-        unset($_SESSION['status']);
-        endif;
-    ?>
 
-    <?php
-      $query1 = "SELECT booking.*, package.packageName, flight.flightDepartureDate 
-                  FROM booking 
-                  JOIN package ON booking.packageId = package.packageId
-                  LEFT JOIN flight ON booking.flightId = flight.flightId
-                  WHERE transactNo = '$transactionNumber'";
+  <?php if(isset($_SESSION['status'])): ?>
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <strong>Hey!</strong> <?= $_SESSION['status']; ?>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
 
-      $result1 = $conn->query($query1);
+  <?php 
+  unset($_SESSION['status']);
+  endif;
+  ?>
 
-      if ($result1->num_rows > 0) {
-        // Output data of each row
-        while ($row1 = $result1->fetch_assoc()) {
-          $transactNum = $row1['transactNo'];
-          $fName = $row1['fName'];
-          $mName = $row1['mName'];
-          $lName = $row1['lName'];
-          $suffix = $row1['suffix'];
-          $countryCode = $row1['countryCode'];
-          $contact = $row1['contactNo'];
-          $email = $row1['email'];
-          $packageName = $row1['packageName'];
-          $flightDate = $row1['flightDepartureDate'];
-          $pax = $row1['pax'];
-          $status = $row1['status'];
-          $price = $row1['totalPrice'];
-          $flightId = $row1['flightId']; // Fetch flightId
+  <?php
+  $query1 = "SELECT booking.*, package.packageName, flight.flightDepartureDate 
+            FROM booking 
+            JOIN package ON booking.packageId = package.packageId
+            LEFT JOIN flight ON booking.flightId = flight.flightId
+            WHERE transactNo = '$transactionNumber'";
 
-          // Construct the full name using the conditions for middle name and suffix
-          $fullName = $lName . ", " . $fName . " " . 
-                      ($suffix !== 'N/A' ? $suffix . " " : "") .  // Add space after suffix only if it's not 'N/A'
-                      ($mName !== 'N/A' ? substr($mName, 0, 1) . ". " : "");  // Add middle initial with dot only if it's not 'N/A'
-          $contactNo = $countryCode . $contact;
+  $result1 = $conn->query($query1);
 
-          // Check if flightId is NULL and set flightDate accordingly
-          if (is_null($flightId)) 
-          {
-            $flightDate = "Land Package Only";
-          }
+  if ($result1->num_rows > 0) {
+  // Output data of each row
+  while ($row1 = $result1->fetch_assoc()) {
+    $transactNum = $row1['transactNo'];
+    $fName = $row1['fName'];
+    $mName = $row1['mName'];
+    $lName = $row1['lName'];
+    $suffix = $row1['suffix'];
+    $countryCode = $row1['countryCode'];
+    $contact = $row1['contactNo'];
+    $email = $row1['email'];
+    $packageName = $row1['packageName'];
+    $flightDate = $row1['flightDepartureDate'];
+    $pax = $row1['pax'];
+    $status = $row1['status'];
+    $price = $row1['totalPrice'];
+    $flightId = $row1['flightId']; // Fetch flightId
 
-          $status = isset($row1['status']) ? $row1['status'] : 'Unknown';
+    // Construct the full name using the conditions for middle name and suffix
+    $fullName = $lName . ", " . $fName . " " . 
+                ($suffix !== 'N/A' ? $suffix . " " : "") .  // Add space after suffix only if it's not 'N/A'
+                ($mName !== 'N/A' ? substr($mName, 0, 1) . ". " : "");  // Add middle initial with dot only if it's not 'N/A'
+    $contactNo = $countryCode . $contact;
 
-          // Initialize an empty class string
-          $statusClass = '';
+    // Check if flightId is NULL and set flightDate accordingly
+    if (is_null($flightId)) 
+    {
+      $flightDate = "Land Package Only";
+    }
 
-          // Assign classes based on the status value using switch
-          switch ($status) 
-          {
-            case 'Confirmed':
-                $statusClass = 'bg-success text-white'; // Green background, white text
-                break;
-            case 'Cancelled':
-                $statusClass = 'bg-danger text-white'; // Red background, white text
-                break;
-            case 'Pending':
-                $statusClass = 'bg-warning text-dark'; // Yellow background, dark text
-                break;
-            default:
-                $statusClass = 'bg-secondary text-white'; // Gray background, white text
-                break;
-          }
-    ?>
+    $status = isset($row1['status']) ? $row1['status'] : 'Unknown';
+
+    // Initialize an empty class string
+    $statusClass = '';
+
+    // Assign classes based on the status value using switch
+    switch ($status) 
+    {
+      case 'Confirmed':
+          $statusClass = 'bg-success text-white'; // Green background, white text
+          break;
+      case 'Cancelled':
+          $statusClass = 'bg-danger text-white'; // Red background, white text
+          break;
+      case 'Pending':
+          $statusClass = 'bg-warning text-dark'; // Yellow background, dark text
+          break;
+      default:
+          $statusClass = 'bg-secondary text-white'; // Gray background, white text
+          break;
+    }
+  ?>
 
 
 	  <div class="content-wrapper">
@@ -286,7 +288,7 @@ error_reporting(E_ALL);
         ?>   
 			</div>
     </div>
-  </div>
+</div>
 
 <!-- Cancel Transaction Modal -->
 <div class="modal fade" id="cancelTransactionModal" tabindex="-1" aria-labelledby="cancelTransactionModalLabel" aria-hidden="true">
