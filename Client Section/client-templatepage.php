@@ -16,7 +16,7 @@
   $accId = $_SESSION['accountId'] ?? '';
   
   // $fullName = htmlspecialchars($lastName . ', ' . $firstName . ($middleName ? ' ' . substr($middleName, 0, 1) . '.' : ''));
-  ?>
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -24,7 +24,7 @@
 <head>
   <?php include '../Client Section/Includes/head.php'; ?>
 
-  <title>Booking Form</title>
+  <title>Template Page</title>
 
   <link rel="stylesheet" href="../Client Section/assets/css/client-portal.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="../Client Section/assets/css/client-navbar.css?v=<?php echo time(); ?>"> 
@@ -33,28 +33,39 @@
 
 <body>
 
+<?php 
+    if(isset($_SESSION['status'])):
+?>
+
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <strong>Hey!</strong> <?= $_SESSION['status']; ?>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+
+<?php 
+  unset($_SESSION['status']);
+  endif;
+?>
+
+
 <?php include '../Client Section/Includes/client-navbar.php'; ?>
 
-<?php include '../Client Section/Includes/client-sidebar.php'; ?>
+<div class="body-container">
+  <div class="sub-container">
+    <?php include '../Client Section/Includes/client-sidebar.php'; ?>
+  </div>
 
-<div class="main-container">
-  <div class="container">
-    <div class="content-header">
-        <div class="back-button-wrapper">
-            <a href="index.php" class="back-button-link"> <i class="fa-solid fa-arrow-left me-2"></i> Back to Homepage</a>
-        </div>
-        <h1>Client Portal</h1>
-    </div>
-
-    <div class="container-body">
-
-  
-    </div>
+  <div class="main-container">
     
   </div>
+       
 </div>
 
+
+
+
 <?php include '../Client Section/Includes/scripts.php'; ?>
+<!-- <script src="heartbeat.js"></script>  -->
 
 <!-- Row Click Selection JS -->
 <script>
@@ -91,6 +102,5 @@
   });
 </script>
 
-</body>
-
+ </body>
 </html>

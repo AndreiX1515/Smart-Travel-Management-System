@@ -26,40 +26,37 @@
   
   <div class="dark-overlay"></div>
 
-  <div class="container-background"> 
-    
-  </div>
+  <div class="container-background"> </div>
+		<div class="loginform d-flex flex-column">
+			<div class="logo-container text-left">
+					<img src="../Assets/Logos/SMART LOGO 2 (2).png" alt="Logo">
+			</div>
 
-    <div class="loginform d-flex flex-column">
-        <div class="logo-container text-left">
-            <img src="../Assets/Logos/SMART LOGO 2 (2).png" alt="Logo">
-        </div>
+			<div class="header-container d-flex flex-column text-start mt-1">
+			<h6 class="header h4 fw-bolder">Experience Travel with Us.</h6>
+			<p class="h6 sub-header">Discover new horizons and create unforgettable memories with our curated travel experiences tailored just for you.</p>
+		</div>
 
-        <div class="header-container d-flex flex-column text-start mt-1">
-           <h6 class="header h4 fw-bolder">Experience Travel with Us.</h6>
-           <p class="h6 sub-header">Discover new horizons and create unforgettable memories with our curated travel experiences tailored just for you.</p>
-       </div>
+		<!-- Login Form -->
+		<form class="mt-5" id="loginForm">
+				<!-- Email input field -->
+				<div class="mb-3">
+						<div class="form-floating">
+								<input type="email" class="form-control" id="floatingEmail" name="email" placeholder="Email" required>
+								<label for="floatingEmail">Email</label>
+						</div>
+				</div>
 
-        <!-- Login Form -->
-        <form class="mt-5" id="loginForm">
-            <!-- Email input field -->
-            <div class="mb-3">
-                <div class="form-floating">
-                    <input type="email" class="form-control" id="floatingEmail" name="email" placeholder="Email" required>
-                    <label for="floatingEmail">Email</label>
-                </div>
-            </div>
-
-            <!-- Password input field -->
-            <div class="mb-1 position-relative">
-                <div class="form-floating">
-                    <input type="password" class="form-control" id="floatingPassword" name="password" placeholder="Password" required>
-                    <label for="floatingPassword">Password</label>
-                    <span id="togglePassword" class="position-absolute" style="right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;">
-                        <i class="far fa-eye" id="toggleIcon"></i>
-                    </span>
-                </div>
-            </div>
+				<!-- Password input field -->
+				<div class="mb-1 position-relative">
+						<div class="form-floating">
+								<input type="password" class="form-control" id="floatingPassword" name="password" placeholder="Password" required>
+								<label for="floatingPassword">Password</label>
+								<span id="togglePassword" class="position-absolute" style="right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;">
+										<i class="far fa-eye" id="toggleIcon"></i>
+								</span>
+						</div>
+				</div>
 
             <div class="fp-container mb-1 d-flex justify-content-end align-items-center mt-2">
                 <a href="#" class="">Forgot Password?</a>
@@ -79,22 +76,22 @@
 
 
     <script>
-    const LoginButton = document.getElementById('LoginButton'); // Ensure this matches the button ID
-
-    document.getElementById('loginForm').addEventListener('submit', function(event) {
+       const LoginButton = document.getElementById('LoginButton'); // Ensure this matches the button ID
+    
+    document.getElementById('loginForm').addEventListener('submit', function (event) {
         event.preventDefault(); // Prevent default form submission
-
+    
         // Clear previous messages
         document.getElementById('message-login').innerHTML = '';
-
+    
         // Create FormData object to gather the form data
         const formData = new FormData(this);
-
+    
         // Log form data to the console for debugging
         for (let [key, value] of formData.entries()) {
-            console.log(key + ': ' + value);  // Log each field for debugging
+            console.log(`${key}: ${value}`); // Log each field for debugging
         }
-
+    
         // Perform AJAX request
         fetch('login-process.php', {
             method: 'POST',
@@ -103,20 +100,25 @@
         .then(response => {
             // Log the full response object for debugging
             console.log('Response:', response);
-
+    
             // Ensure response is OK, if not throw a response error
             if (!response.ok) {
-                throw new Error('Network response was not ok. Status: ' + response.status);
+                throw new Error(`Network response was not ok. Status: ${response.status}`);
             }
-
-            return response.json();  // Parse JSON response
+    
+            return response.json(); // Parse JSON response
+        })
+        .catch(error => {
+            // Handle errors from the fetch or JSON parsing
+            console.error('Fetch Error:', error);
+            document.getElementById('message-login').innerHTML = `An error occurred: ${error.message}`;
         })
         .then(data => {
             console.log('Data:', data);  // Log the data to verify its content
-
+    
             if (data.success) {
                 // Redirect to dashboard or homepage
-                window.location.href = 'index.php';
+                window.location.href = '../Client Section/index.php';
             } else if (data.message && data.message.trim() === "User not found.") {
                 // Show specific message for user not found
                 document.getElementById('message-login').innerHTML = '<div class="alert alert-danger text-center">' + data.message + '</div>';
@@ -130,10 +132,8 @@
                 // Fallback for unexpected responses
                 document.getElementById('message-login').innerHTML = '<div class="alert alert-danger text-center">An unexpected error occurred. Please try again.</div>';
             }
-        })
-    
+        });
     });
-
 
 
     </script>
@@ -156,7 +156,7 @@
         });
     </script>
 
-<?php include '../Client Section/Includes/scripts.php' ?>
+   <?php include '../Client Section/Includes/scripts.php' ?>
     
     </body>
 </html>

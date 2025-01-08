@@ -1,9 +1,10 @@
 <div class="sidebar">
   <ul>
-    <li><a href="client-portal.php" class="sidebar-link">Profile</a></li>
-    <li><a href="client-transactionHistoryy.php" class="sidebar-link">Transaction History</a></li>
-    <li><a href="client-support.php" class="sidebar-link">Support</a></li>
-    <li><a href="client-settings.php" class="sidebar-link">Settings</a></li>
+    <li><a href="client-portall.php" class="sidebar-link">Home</a></li>
+    <li><a href="client-bookingform.php" class="sidebar-link">Book Now</a></li>
+    <li><a href="client-transactionHistoryyy.php" class="sidebar-link">Transaction History</a></li>
+    <!-- <li><a href="client-support.php" class="sidebar-link">Support</a></li>
+    <li><a href="client-settings.php" class="sidebar-link">Settings</a></li> -->
   </ul>
 </div>
 

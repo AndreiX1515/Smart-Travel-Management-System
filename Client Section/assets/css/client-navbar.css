@@ -1,144 +1,457 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Poppins:wght@400;500;600;700&display=swap');
 
 * {
-    font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+    font-family: 'Roboto', 'Segoe UI', Arial, sans-serif;
 }
 
-/* Navbar Section */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    margin: 0;
+    padding: 0;
+    height: 100%; /* Ensure full height for body */
+    overflow: hidden; /* Hides the scrollbar globally */
+}
+
+/* Container where scroll is enabled but scrollbar is hidden */
+.body-container {
+    display: flex;
+    width: 100%;
+    height: 90vh;
+    padding: 15px 30px;
+    box-sizing: border-box;
+    margin-top: 70px; /* Adjusted to account for navbar height */
+    overflow: auto; /* Enables scrolling within the container */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+}
+
+.body-container::-webkit-scrollbar {
+    display: none; /* Hides scrollbar in WebKit-based browsers (Chrome, Safari, etc.) */
+}
+
+
+
+
+/* Navbar styles */
 .navbar {
-	padding: 10px 35px;
+	padding: 6px 20px;
 	display: flex;
-	background-color: transparent;
+	justify-content: space-between;
+	align-items: center;
+	background: rgba(238, 238, 238, 0.2);
+	backdrop-filter: blur(10px);
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+	border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 	z-index: 999;
-	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-	position: sticky;  
-	top: 0;            
+	position: fixed;
+	top: 0;
 	width: 100%;
-	background-color: rgb(230, 230, 230);     
+	box-sizing: border-box;
 }
 
+/* Navbar middle section */
 .navbar-middle {
-	flex-grow: 1; /* Ensures the middle section stretches appropriately */
-	text-align: center;
+		flex-grow: 1;
+		text-align: center;
 }
 
+
+.navbar-toggler {
+	padding: 0;
+}
+
+
+
+
+
+
+/* Navbar links */
 .navbar-nav .nav-item .nav-link {
-	color: #6c757d; /* Default link color */
-	font-size: 16px;
+	color: #6c757d;
+	font-size: 14px;
 	transition: color 0.3s ease;
 }
 
 .navbar-nav .nav-item .nav-link:hover {
-	color: #116530; /* Hover color */
-	text-decoration: none; /* No underline on hover */
+	color: #116530;
+	text-decoration: none;
 }
 
 
 
-
-
-
-
-
-.navbar-brand {
-		margin-left: 0px; /* Add some space to the left */
-		margin-bottom: 2px;
-}
-
-.navbar-toggler {
-    margin-left: auto; /* Ensures the toggler is at the end */
-}
-
-/* Toggle button styles */
 .toggle-btn {
-    display: flex;
-    align-items: center; /* Aligns the icon vertically */
-    cursor: pointer;
-    margin-right: 0px; /* Optional: Add some space to the right */
-    border: none;
-    border-radius: 0 5px 5px 0;
-    width: 40px;
-    height: 40px;
-    color: white;
-    font-size: 20px;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-    z-index: 1100; /* Keep it above the sidebar */
-    color: #000;
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+	margin-right: 0px;
+	border: none;
+	border-radius: 0 5px 5px 0;
+	width: 40px;
+	height: 40px;
+	color: white;
+	font-size: 20px;
+	cursor: pointer;
+	transition: transform 0.3s ease;
+	z-index: 1100;
+	color: #000;
 }
 
-
+/* Dropdown and profile image */
 .nav-item.dropdown {
- display: flex; /* Make the dropdown a flex container */
- align-items: center; /* Align itemsfvertically centered */
+	display: flex;
+	align-items: center;
 }
 
 .profile-container {
- display: flex; /* Use flexbox for the name and position */
- align-items: start;
- flex-direction: column; /* Stack name and position vertically */
- margin-left: 8px; /* Space between image and text */
+	display: flex;
+	align-items: start;
+	flex-direction: column;
+	margin-left: 8px;
 }
 
 .profile-container h6 {
- font-weight: bold; /* Bold for the name */
- margin: 0; /* Remove margin */
-}
-
-.profile-container span {
- font-size: 12px; /* Smaller font for position */
- color: gray; /* Gray color for the position */
- margin: 0; /* Remove margin */
-}
-
-.profile-image {
- border-radius: 50%; /* Circular image */
-}
-
-
-
-/* Sidebar styling */
-.sidebar {
-	width: 250px; /* Fixed width for the sidebar */
-	background-color: #2c3e50;
-	color: #fff;
-	padding: 20px;
-	border-radius: 8px;
-	box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-	display: flex;
-	flex-direction: column;
-}
-
-.sidebar h3 {
-	font-size: 20px;
-	margin-bottom: 20px;
-}
-
-.sidebar ul {
-	list-style: none;
-	padding: 0;
+	font-weight: bold;
 	margin: 0;
 }
 
-.sidebar ul li {
-	margin: 15px 0;
+.profile-container span {
+	font-size: 12px;
+	color: gray;
+	margin: 0;
 }
 
-.sidebar ul li a {
-	text-decoration: none;
-	color: #fff;
-	font-size: 16px;
-	padding: 10px;
+.profile-image {
+	border-radius: 50%;
+}
+
+.navbar-collapse {
+	display: none;
+
+}
+
+/* Normal view (1441px and up) */
+@media (min-width: 1441px) {
+	.navbar-middle {
+					display: block; /* Shows the navbar middle */
+	}
+
+	.navbar-toggler {
+					display: none; /* Hides the toggler button */
+	}
+
+	.navbar-nav {
+					display: flex; /* Horizontal display */
+					text-align: left;
+					margin: 0px 15px; /* Set margin to 15px */
+	}
+
+	.navbar-collapse .navbar-nav {
+					display: none;
+	}
+
+	.navbar-nav .nav-item {
+					padding: 5px 0px;
+	}
+
+	.navbar-nav .nav-link {
+					font-size: 18px; /* Increased font size */
+	}
+}
+
+/* For large screens (1281px - 1440px) */
+@media (max-width: 1440px) and (min-width: 1281px) {
+	.navbar-middle {
+					display: block; /* Keeps the navbar middle visible */
+	}
+
+	.navbar-toggler {
+					display: none; /* Hides the toggler button */
+	}
+
+	.navbar-nav {
+					display: flex; /* Horizontal display */
+					text-align: left;
+					margin: 0px 15px; /* Set margin to 15px */
+	}
+
+	.navbar-collapse .navbar-nav {
+		display: none;
+}
+
+	.navbar-nav .nav-item {
+					padding: 8px 0px;
+	}
+
+	.navbar-nav .nav-link {
+					font-size: 17px; /* Slightly smaller font size */
+	}
+}
+
+/* For medium screens (1025px - 1280px) */
+@media (max-width: 1280px) and (min-width: 992px) {
+	.navbar-middle {
+					display: block; /* Keeps the navbar middle visible */
+	}
+
+	.navbar-toggler {
+					display: none; /* Hides the toggler button */
+	}
+
+	.navbar-nav {
+					display: flex; /* Horizontal display */
+					text-align: left;
+					margin: 0px 15px; /* Set margin to 15px */
+	}
+
+	.navbar-collapse .navbar-nav {
+		display: none;
+}
+
+	.navbar-nav .nav-item {
+					padding: 8px 0px;
+	}
+
+	.navbar-nav .nav-link {
+					font-size: 16px; /* Reduced font size for medium screens */
+	}
+}
+
+/* For smaller medium screens (769px - 1024px) */
+@media (max-width: 991px) and (min-width: 769px) {
+	.navbar-middle {
+					display: none; /* Hides the navbar middle */
+	}
+
+	.navbar-toggler {
+					display: block; /* Shows the toggler button */
+	}
+
+	.navbar-nav {
+					display: block; /* Stacks the navbar items */
+					text-align: center;
+					margin: 15px; /* Set margin to 15px */
+	}
+
+	.navbar-nav .nav-item {
+					padding: 8px 0;
+	}
+
+	.navbar-nav .nav-link {
+					font-size: 15px; /* Further reduced font size */
+	}
+
+}
+
+/* For mobile screens (601px - 768px) */
+@media (max-width: 768px) and (min-width: 601px) {
+	.navbar-middle {
+					display: none; /* Hides the navbar middle */
+	}
+
+	.navbar-toggler {
+					display: block; /* Shows the toggler button */
+	}
+
+	.navbar-nav {
+					display: block; /* Stacks the navbar items */
+					text-align: center;
+					margin: 15px; /* Set margin to 15px */
+	}
+
+	.navbar-nav .nav-item {
+					padding: 8px 0;
+	}
+
+	.navbar-nav .nav-link {
+					font-size: 14px; /* Smaller font size */
+	}
+}
+
+/* For small mobile screens (481px - 600px) */
+@media (max-width: 600px) and (min-width: 481px) {
+	.navbar-middle {
+					display: none; /* Hides the navbar middle */
+	}
+
+	.navbar-toggler {
+					display: block; /* Shows the toggler button */
+	}
+
+	.navbar-nav {
+					display: block; /* Stacks the navbar items */
+					text-align: center;
+					margin: 15px; /* Set margin to 15px */
+	}
+
+	.navbar-nav .nav-item {
+					padding: 8px 0;
+	}
+
+	.navbar-nav .nav-link {
+					font-size: 13px; /* Even smaller font size */
+	}
+}
+
+/* For mobile screens (320px - 480px) */
+@media (max-width: 480px) and (min-width: 320px) {
+	.navbar-middle {
+					display: none; /* Hides the navbar middle */
+	}
+
+	.navbar-toggler {
+					display: block; /* Shows the toggler button */
+	}
+
+	.navbar-nav {
+					display: block; /* Stacks the navbar items */
+					text-align: center;
+					margin: 15px; /* Set margin to 15px */
+	}
+
+	.navbar-nav .nav-item {
+					padding: 6px 0;
+	}
+
+	.navbar-nav .nav-link {
+					font-size: 12px; /* Smallest font size */
+	}
+}
+
+/* Make sure navbar items are shown when toggled */
+.navbar-collapse {
+	display: none; /* Initially hidden */
+	display: flex;
+	flex-direction: column;
+	justify-content: left;
+}
+
+.navbar-collapse.show {
+	display: block; /* Show when toggled */
+}
+
+/* Hide navbar items by default */
+.navbar-collapse {
+	display: none; /* Initially hidden */
+}
+
+/* Show when toggled (added class 'show' when toggled) */
+.navbar-collapse.show {
+	display: flex; /* Show when toggled */
+}
+
+/* Navbar links inside collapse */
+.navbar-collapse .navbar-nav {
+	width: 100%; /* Ensure full-width of the parent container */
+	padding: 0;
+	margin: 0;
+	border: 1px solid black;
+}
+
+/* Styling individual navbar items */
+.navbar-collapse .nav-item {
+	width: 100%; /* Full width of the parent */
+	
+}
+
+.navbar-collapse .nav-link {
 	display: block;
-	transition: background-color 0.3s;
-	border-radius: 4px;
+	text-align: left; /* Align text to the left */
+	color: #333; /* Dark gray text for readability */
+	font-size: 16px; /* Clear font size */
+	font-weight: 500; /* Medium font weight for clarity */
 }
 
-.sidebar ul li a:hover {
-	background-color: #34495e;
+/* Hover effect on navbar items */
+.navbar-collapse .nav-link:hover {
+	color: #116530; /* Accent color */
+	font-weight: bold;
 }
 
-/* Active state styling */
-.sidebar ul li a.active {
-	background-color: #16a085; /* New background color for active state */
+/* Remove border on last item */
+.navbar-collapse .nav-item:last-child .nav-link {
+	border-bottom: none; /* Remove bottom border from the last item */
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+.main-container {
+	margin-top: 5px;
+	height: 85vh;
+	width: 100%;  /* 3/4 of the container */
+}
+
+
+.content-header {
+	font-family: Arial, sans-serif;
+	color: #333;
+	width: 100%;  
+	background-color: #fff;
+	z-index: 10; 
+	box-sizing: border-box; 
+}
+
+.content-header h1 {
+	font-size: 28px;
+	font-weight: bold;
+	margin: 0;
+	color: #1d1d1d;
+}
+
+.content-header p {
+	font-size: 16px;
+	font-weight: 400;
+	margin: 0;
+	color: #6b6b6b;
+}
+
+.container-body {
+	 margin-top: 20px;
+		width: 100%; 
+		padding: 0px;
+	
+}
+
+
+.back-button-wrapper {
+	margin-bottom: 10px;
+}
+
+.back-button-link {
+	text-decoration: none;
+	color: #6c757d;
+	font-size: 14px;
+	display: inline-flex;
+	align-items: center;
+	transition: color 0.3s ease, text-decoration 0.3s ease;
+}
+
+.back-button-link:hover {
+	color: #116530;
+}
+

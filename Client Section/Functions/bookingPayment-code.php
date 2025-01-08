@@ -53,14 +53,14 @@ if (isset($_POST['pay']))
           else 
           {
             $_SESSION['status'] = "Failed to upload file: $fileName";
-            header("Location: ../bookingform.php");
+            header("Location: ../client-bookingPayment.php");
             exit(0);
           }
         } 
         else 
         {
           $_SESSION['status'] = "File $fileName is invalid or exceeds size limit of 4MB.";
-          header("Location: ../bookingform.php");
+          header("Location: ../client-bookingPayment.php");
           exit(0);
         }
       }
@@ -78,7 +78,7 @@ if (isset($_POST['pay']))
         {
           $_SESSION['status'] = "Booking SQL preparation failed: " . $conn->error;
           $conn->rollback();
-          header("Location: ../bookingform.php");
+          header("Location: ../client-bookingPayment.php");
           exit(0);
         }
 
@@ -92,27 +92,27 @@ if (isset($_POST['pay']))
           {
             $_SESSION['status'] = "Database error on payment insert: " . $stmt->error;
             $conn->rollback();
-            header("Location: ../bookingform.php");
+            header("Location: ../client-bookingPayment.php");
             exit(0);
           }
         }
 
         $conn->commit();
         $_SESSION['status'] = "Payment and proof files uploaded successfully!";
-        header("Location: ../bookingform.php");
+        header("Location: ../client-bookingform.php");
         exit(0);
       } 
       else 
       {
         $_SESSION['status'] = "No valid files uploaded.";
-        header("Location: ../bookingform.php");
+        header("Location: ../client-bookingpayment.php");
         exit(0);
       }
     } 
     else 
     {
       $_SESSION['status'] = "Proof of payment files are required.";
-      header("Location: ../bookingform.php");
+      header("Location: ../client-bookingPayment.php");
       exit(0);
     }
   }

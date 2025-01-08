@@ -1,293 +1,169 @@
-/* Import Poppins Font */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100..1000&display=swap');
-
-* {
- font-family: 'Poppins', 'Roboto-Flex', Arial, sans-serif;
-}
-
-body {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-}
-
-
-
-/* General styling for the container */
-.main-container {
-    display: flex;
-    justify-content: center;
-    width: 100%;             
-    height: 90vh;            
-    margin: 0;               
-    padding: 20px;
-    box-sizing: border-box;  
-}
-
-
-/* Sidebar styling */
-.sidebar {
-    width: 250px; /* Fixed width for the sidebar */
-    background-color: #2c3e50;
-    color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-}
-
-.sidebar h3 {
-    font-size: 20px;
-    margin-bottom: 20px;
-}
-
-.sidebar ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.sidebar ul li {
-    margin: 15px 0;
-}
-
-.sidebar ul li a {
-    text-decoration: none;
-    color: #fff;
-    font-size: 16px;
-    padding: 10px;
-    display: block;
-    transition: background-color 0.3s;
-    border-radius: 4px;
-}
-
-.sidebar ul li a:hover {
-    background-color: #34495e;
-}
-
-/* Content styling */
-.content {
-    flex-grow: 1;
-    margin-left: 20px;
-    background-color: transparent;
-    padding: 5px 20px;
-}
-
-
-
-
-.content-header {
-    font-family: Arial, sans-serif;
-    color: #333; /* Adjust text color as needed */
-}
-
-.back-button-wrapper {
-    margin-bottom: 10px; /* Spacing between back button and header */
-}
-
-.back-button-link {
-    text-decoration: none; /* Remove default underline */
-    color: #6c757d;        /* Default text color */
-    font-size: 14px;       /* Adjust font size */
-    display: inline-flex;  /* Align icon and text inline */
-    align-items: center;   /* Vertically align icon with text */
-    transition: color 0.3s ease, text-decoration 0.3s ease; /* Smooth transitions */
-}
-
-.back-button-link:hover {
-    color: #116530;        /* Change text color on hover */
-}
-
-
-
-.content-header h1 {
-    font-size: 28px;
-    font-weight: bold;
-    margin: 0;
-    color: #1d1d1d; /* Adjust as per the desired style */
-}
-
-h1 {
-    font-size: 28px;
-    margin-bottom: 20px;
-}
-
-p {
-    font-size: 16px;
-    color: #7f8c8d;
-    margin-bottom: 30px;
-}
-
-/* Row layout for cards */
-.row {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-
 
 .card {
-    background-color: #fff;
-    overflow: hidden;
+  background-color: #fff;
+  overflow: hidden;
 }
 
 .card-header {
-    background-color: #3498db;
-    color: #fff;
-    padding: 10px 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-   
+  background-color: #3498db;
+  color: #fff;
+  padding: 10px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .card-header h4 {
-    margin: 0;
-    font-size: 16px;
+  margin: 0;
+  font-size: 16px;
 }
 
 .card-body {
-    padding: 0;
-    font-size: 14px;
-    color: #2c3e50;
+  padding: 0;
+  font-size: 14px;
+  color: #2c3e50;
 }
 
 /* Button styling */
 .btn {
-    padding: 8px 12px;
-    text-decoration: none;
-    color: #fff;
-    background-color: #3498db;
-    font-size: 14px;
-    transition: background-color 0.3s ease;
+  padding: 8px 12px;
+  text-decoration: none;
+  color: #fff;
+  background-color: #3498db;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
 }
 
 .btn:hover {
-    background-color: #2980b9;
+  background-color: #2980b9;
 }
 
-
-
-
-
-
-
-
+/* Custom tabs */
 .custom-tabs {
-    margin: 20px 0;
+  margin: 20px 0;
 }
 
 /* Reset list styles for ul and li */
 .tab-nav {
-		display: flex;
-		border-bottom: 2px solid #ddd;
-		list-style-type: none; /* Remove bullets */
-		margin: 0;
-		padding: 0;
+  display: flex;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
 }
 
 .tab-item {
-		margin-right: 10px;
+  margin-right: 10px;
 }
 
 /* Tab button styles */
 .tab-button {
-		background: none;
-		border: none;
-		padding: 10px 15px;
-		font-size: 16px;
-		color: #333;
-		cursor: pointer;
-		position: relative;
-		transition: color 0.3s, border-color 0.3s;
-		outline: none; /* Remove focus outline */
+  background: none;
+  border: none;
+  padding: 10px 15px;
+  font-size: 16px;
+  color: #333;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.3s, border-color 0.3s;
+  outline: none;
 }
 
-/* Active tab styles */
 .tab-button.active {
-		color: #116530; /* Active tab text color */
+  color: #116530;
 }
 
 .tab-button.active::after {
-		content: "";
-		position: absolute;
-		bottom: 0;
-		left: 0;
-		width: 100%;
-		height: 3px;
-		background-color: #116530; /* Underline color */
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #116530;
 }
 
-/* Remove default border/outline when active */
 .tab-button:focus,
 .tab-button.active {
-		outline: none;
-		box-shadow: none; /* Prevents focus or active outlines */
+  outline: none;
+  box-shadow: none;
 }
 
-/* Hover effect for tabs */
 .tab-button:not(.active):hover {
-		color: #116530; /* Hover effect for inactive tabs */
+  color: #116530;
 }
 
-
-
-
+/* Table styles */
 .table-container {
-    width: 100%;
-    overflow-x: auto;
-    margin: 20px 0;
+  width: 100%;
+  overflow-x: auto;
+  margin: 20px 0;
 }
 
 table {
-    width: 100%;
-    border-collapse: collapse;
-    text-align: left;
-    border: 1px solid #ddd; /* Outer border for structure */
-    border-top-left-radius: 12px; /* Rounded top-left corner */
-    border-top-right-radius: 12px; /* Rounded top-right corner */
-    overflow: hidden; /* Ensures the rounded corners are visible */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  border: 1px solid #ddd;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
+thead {
+  background-color: #f2f2f2;
+  font-weight: bold;
+  text-transform: uppercase;
+}
 
 th, td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-}
-
-th {
-    background-color: #f2f2f2;
-    font-weight: bold;
-
+  padding: 8px 10px;
+  text-align: left;
 }
 
 tr:last-child td {
-    border-bottom: none; /* Remove bottom border for the last row */
+  border-bottom: none;
 }
 
 tr:hover {
-    background-color: #f5f5f5; /* Hover effect */
-}
-
-.btn {
-    padding: 8px 12px;
-    margin: 4px;
-    text-decoration: none;
-    border-radius: 4px;
-    color: #fff;
-    font-size: 14px;
+  background-color: #f5f5f5;
 }
 
 .btn-view {
-    background-color: #4CAF50; /* Green */
+  background-color: #4CAF50;
 }
 
 .btn-download {
-    background-color: #008CBA; /* Blue */
+  background-color: #008CBA;
+}
+
+table th:first-child {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+table th:last-child {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+table td {
+  padding: 10px 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  color: #6b7280;
+  background-color: #ffffff;
+}
+
+table td:first-child {
+  border-top: none;
+}
+
+table td:last-child {
+  border-bottom: 1px solid #ddd;
+}
+
+table tr:hover {
+  background-color: #e5e7eb;
+  cursor: pointer;
 }
