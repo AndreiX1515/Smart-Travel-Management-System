@@ -92,7 +92,7 @@
       </div>
 
       <!-- Dynamically generate Guest Information Cards based on pax -->
-      <form action="../Agent Section/functions/agent-addGuest-code.php" method="POST">
+      <form action="../Agent Section/functions/agent-addGuest-code.php" id="guestForm" method="POST">
         <input type="hidden" name="transactNo" value="<?php echo $transactionNumber; ?>">
         <!-- Guest Forms Container -->
         <div id="guestFormsContainer">
@@ -109,7 +109,6 @@
             <div id="cardBodyContent1" class="collapse show">
               <div class="card-body px-5">
                 
-
                 <!-- Guest Personal Information -->
                 <div class="header-container d-flex flex-row w-100 mb-3">
                   <h5 class="card-title bg-primary text-white p-3 w-100 personal-info-header">Personal Information</h5>
@@ -708,23 +707,20 @@
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-  <!-- <script>
+  <script>
     $(document).ready(function () 
     {
       // Validation logic for booking
       $('#addGuest').click(function (event) 
       {
-        event.preventDefault(); // Prevent default form submission
-
         let isValid = true; // Initialize isValid flag
-        const expPassportSpan = $('#expPassport'); // Target the span element
+        let allExpPassportValid = true; // Initialize flag for expPassportSpan validation
 
-        // Primary Guest field validation
+        // Validate Primary Guest fields
         $('.guest-form').each(function (index) 
         {
           const guestFormNumber = index; // Get guest form number
-          const guestFields = 
-          [
+          const guestFields = [
             { name: 'fName', error: 'First name is required.' },
             { name: 'lName', error: 'Last name is required.' },
             { name: 'mName', error: 'Middle name is required.' },
@@ -748,59 +744,10 @@
           // Iterate through the fields to validate
           guestFields.forEach(({ name, error, isSelect }) => 
           {
-            // Update ID for the specific guest form (assuming error spans follow this pattern)
             const errorSpanId = `#${name}Error`;
             const input = isSelect
-                ? $(this).find(`select[name^="${name}"]`)
-                : $(this).find(`input[name^="${name}"]`);
-
-            // Validate if the input/select is empty
-            if (!input.val()) 
-            {
-              input.addClass('is-invalid'); // Add invalid class
-              $(errorSpanId).text(error);   // Set error message dynamically
-              isValid = false;              // Set valid flag to false
-            }
-
-            // Clear error when input field is focused or changed
-            input.on('focus change', function () 
-            {
-              $(this).removeClass('is-invalid'); // Remove invalid class
-              $(errorSpanId).text('');           // Clear error message
-            });
-          });
-        });
-
-        // Cloned Guest field validation
-        $('.guest-form').each(function (index) 
-        {
-          const guestFormNumber = index + 1; // Get guest form number
-          const guestFields = [
-              { name: 'fName', error: 'First name is required.' },
-              { name: 'lName', error: 'Last name is required.' },
-              { name: 'mName', error: 'Middle name is required.' },
-              { name: 'suffix', error: 'Suffix is required.', isSelect: true },
-              { name: 'birthdate', error: 'Birthdate is required.' },
-              { name: 'age', error: 'Age is required.' },
-              { name: 'sex', error: 'Sex is required.', isSelect: true },
-              { name: 'nationality', error: 'Nationality is required.' },
-              { name: 'passportNo', error: 'Passport number is required.' },
-              { name: 'passportExp', error: 'Passport expiration date is required.' },
-              { name: 'countryCode', error: 'Country Code is required.', isSelect: true }, // Added countryCode validation
-              { name: 'contactNo', error: 'Contact number is required.' },
-              { name: 'email', error: 'Email is required.' },
-              { name: 'addressLine', error: 'Address is required.' },
-              { name: 'city', error: 'City is required.' },
-              { name: 'state', error: 'State is required.' },
-              { name: 'zipCode', error: 'Zip Code is required.' },
-              { name: 'country', error: 'Country is required.' }
-          ];
-
-          guestFields.forEach(({ name, error, isSelect }) => 
-          {
-            // Update ID for the specific guest form
-            // const errorSpanId = `#${name}Error${guestFormNumber}`;
-            const input = isSelect ? $(this).find(`select[name^="${name}"]`) : $(this).find(`input[name^="${name}"]`);
+              ? $(this).find(`select[name^="${name}"]`)
+              : $(this).find(`input[name^="${name}"]`);
 
             if (!input.val()) 
             {
@@ -816,22 +763,42 @@
               $(errorSpanId).text(''); // Clear error message
             });
           });
+
+          // Check expPassportSpan for this form
+          const expPassportSpan = $(this).find('span[id^="expPassport"]');
+          if (expPassportSpan.text().trim() !== '')
+           {
+            allExpPassportValid = false; // Mark as invalid if any expPassportSpan is not empty
+          }
         });
 
-        // If the form is valid, submit the form
-        if (isValid && expPassportSpan === "") 
+        // Validate Cloned Guest fields (same as above)
+        // This section can remain unchanged unless specific logic for cloned fields differs
+
+        // Check overall validity
+        if (isValid && allExpPassportValid) 
         {
-          console.log("Form is valid. Submitting...");
+          console.log("Submitting");
           $('#guestForm').submit(); // Submit the form with ID #guestForm
         } 
+        else if (!allExpPassportValid) 
+        {
+          event.preventDefault(); // Prevent default form submission
+          let alertMessage = "Make Sure the passport would not expire for another six months before you depart.";
+          alert(alertMessage); // Display alert with errors
+        }
         else 
         {
-          console.log("Form is invalid. Fix errors before submitting.");
+          event.preventDefault(); // Prevent default form submission
+          let alertMessage = "Some required fields are empty or not valid.";
+          alert(alertMessage); // Display alert with errors
         }
       });
     });
-  </script> -->
+  </script>
 
+
+  <!-- Datalist for Nationalities -->
   <script>
     // List of nationalities
     const nationalities = [
@@ -875,6 +842,7 @@
     });
   </script>
 
+  <!-- Datalist for Countries -->
   <script>
     const countries = [
       "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua", "Barbuda", 
@@ -917,6 +885,7 @@
     });
   </script>
 
+  <!-- Age and Passport Validation -->
   <script>
     $(document).ready(function () 
     {
@@ -929,7 +898,8 @@
         const existingForms = $('.guest-form');
         const currentCount = existingForms.length;
 
-        if (currentCount < maxPax) {
+        if (currentCount < maxPax) 
+        {
           // Clone the first form
           const newForm = existingForms.first().clone();
           const newIndex = currentCount + 1;
@@ -942,22 +912,25 @@
           collapsible.attr('data-bs-target', `#cardBodyContent${newIndex}`);
           collapsibleContent.attr('id', `cardBodyContent${newIndex}`);
 
-          // Reset form values
+          // Reset form input values
           newForm.find('input').val(''); // Clear input values
           newForm.find('.error-message').text(''); // Clear error messages
 
-          // Dynamically update span IDs and reset their content
-          newForm.find('span[id]').each(function () {
+          // Dynamically update span IDs and reset their content only for the new form
+          newForm.find('span[id]').each(function () 
+          {
             const baseId = $(this).attr('id').replace(/\d+$/, ''); // Remove existing numeric suffix
-            $(this).attr('id', `${baseId}${newIndex}`).text(''); // Add new index and clear content
+            $(this).attr('id', `${baseId}${newIndex}`).text(''); // Add new index and clear content only for the new form
           });
 
           // Ensure the delete button is present only in the cloned forms
           const cardHeader = newForm.find('.card-header');
           let deleteButton = cardHeader.find('.deleteGuestFormButton');
 
-          if (deleteButton.length === 0) {
-            deleteButton = $('<button>', {
+          if (deleteButton.length === 0) 
+          {
+            deleteButton = $('<button>', 
+            {
               class: 'btn btn-sm btn-danger deleteGuestFormButton ms-2',
               type: 'button',
               text: 'Delete',
@@ -968,7 +941,9 @@
           // Append the new form to the container
           guestFormsContainer.append(newForm);
           renumberForms(); // Renumber the remaining forms
-        } else {
+        } 
+        else 
+        {
           alert(`You can only add up to ${maxPax} guest forms.`);
         }
       });
@@ -987,34 +962,25 @@
       {
         $('.guest-form').each(function (index) 
         {
-          const formIndex = index + 1;
+          const newIndex = index + 1;
 
-          // Update the main guest form header (Guest Information 1, 2, etc.)
-          $(this).find('.font-weight-bold.mt-1').text(`Guest Information ${formIndex}`);
+          // Update form header text
+          $(this).find('h5').text(`Guest Information ${newIndex}`);
 
-          // Update section headers dynamically
-          $(this).find('.personal-info-header').text(`Personal Information ${formIndex}`);
-          $(this).find('.contact-info-header').text(`Contact Information ${formIndex}`);
-          $(this).find('.address-info-header').text(`Address Information ${formIndex}`);
-
-          // Update collapsible elements
+          // Update collapsible IDs
           const collapsible = $(this).find('[data-bs-target]');
           const collapsibleContent = $(this).find('.collapse');
 
-          // Update error IDs dynamically
-          $(this).find('.error-message').each(function () {
-            const baseId = $(this).attr('id').replace(/\d+$/, ''); // Strip existing index
-            $(this).attr('id', `${baseId}${formIndex}`); // Append updated index
-          });
+          collapsible.attr('data-bs-target', `#cardBodyContent${newIndex}`);
+          collapsibleContent.attr('id', `cardBodyContent${newIndex}`);
 
-          // Update span IDs dynamically
-          $(this).find('span[id]').each(function () {
-            const baseId = $(this).attr('id').replace(/\d+$/, ''); // Remove existing numeric suffix
-            $(this).attr('id', `${baseId}${formIndex}`).text(''); // Clear and append updated index
+          // Update span IDs without clearing their content in existing forms
+          $(this).find('span[id]').each(function () 
+          {
+            const baseId = $(this).attr('id').replace(/\d+$/, ''); // Remove numeric suffix
+            $(this).attr('id', `${baseId}${newIndex}`);
+            // Content is preserved for existing forms; only new forms are cleared during cloning
           });
-
-          collapsible.attr('data-bs-target', `#cardBodyContent${formIndex}`);
-          collapsibleContent.attr('id', `cardBodyContent${formIndex}`);
         });
       }
 
@@ -1055,37 +1021,36 @@
       {
         const passportExp = $(this).val(); // Get the passport expiration date from the input field
         const flightDate = '<?php echo $flightdate; ?>'; // PHP variable for the flight date
-        const expPassportSpan = $('#expPassport'); // Target the span element
 
-        // Parse dates
-        const passportExpiryDate = new Date(passportExp); // Convert the expiration date to a JavaScript Date object
-        const flightDateObj = new Date(flightDate); // Convert the flight date to a JavaScript Date object
-
-        // Validate the input date format and logic
-        if (isNaN(passportExpiryDate.getTime())) 
+        // Ensure both passportExp and flightDate are in valid format
+        if (isValidDate(passportExp) && isValidDate(flightDate)) 
         {
-          expPassportSpan.text("Invalid passport expiration date format. Please use YYYY-MM-DD.");
-          return;
-        }
+          const passportExpiryDate = new Date(passportExp); // Convert the expiration date to a JavaScript Date object
+          const flightDateObj = new Date(flightDate); // Convert the flight date to a JavaScript Date object
 
-        if (isNaN(flightDateObj.getTime())) 
-        {
-          expPassportSpan.text("Invalid flight date provided.");
-          return;
-        }
+          // Calculate 6 months before the passport expiration date
+          const sixMonthsBeforeExpiry = new Date(passportExpiryDate);
+          sixMonthsBeforeExpiry.setMonth(sixMonthsBeforeExpiry.getMonth() - 6);
 
-        // Calculate 6 months before the passport expiration date
-        const sixMonthsBeforeExpiry = new Date(passportExpiryDate);
-        sixMonthsBeforeExpiry.setMonth(sixMonthsBeforeExpiry.getMonth() - 6);
+          // Update the span with the appropriate message
+          const parentCard = $(this).closest('.card-body');
+          const expPassportSpan = parentCard.find('span[id^="expPassport"]'); // Target the span inside the same form
 
-        // Check if the flight date satisfies the 6-month rule
-        if (flightDateObj < sixMonthsBeforeExpiry) 
-        {
-          expPassportSpan.text("");
+          if (flightDateObj < sixMonthsBeforeExpiry) 
+          {
+            expPassportSpan.text(""); // Passport is valid
+          } 
+          else 
+          {
+            expPassportSpan.text("Your passport does not meet the 6-month validity rule for this flight date."); // Invalid passport
+          }
         } 
         else 
         {
-          expPassportSpan.text("Your passport does not meet the 6-month validity rule for this flight date.");
+          // Invalid date format handling
+          const parentCard = $(this).closest('.card-body');
+          const expPassportSpan = parentCard.find('span[id^="expPassport"]'); // Target the span inside the same form
+          expPassportSpan.text("Invalid passport expiration date format. Please use YYYY-MM-DD."); // Invalid format error
         }
       });
 

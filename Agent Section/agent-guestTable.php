@@ -68,9 +68,9 @@
           Attach Visa Requirements
         </button>
       </div>
-      <p>Pax: <?php echo $pax2;?></p>
+      <!-- <p>Pax: <?php echo $pax2;?></p>
       <p>Guest Count: <?php echo $guest_count;?></p>
-      <p>Visa Count: <?php echo $visa_count;?></p>
+      <p>Visa Count: <?php echo $visa_count;?></p> -->
     </div>
 
     <div class="table-container">
