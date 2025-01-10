@@ -31,16 +31,9 @@ $accId = $_SESSION['accountId'] ?? '';
           </li>
 
           <li class="nav-item">
-            <a class="nav-link px-3" href="client-portal.php">Client Portal</a>
-          </li>
-
-          <li class="nav-item">
             <a class="nav-link px-3" href="client-bookingform.php">Booking</a>
           </li>
           
-          <li class="nav-item">
-            <a class="nav-link px-3" href="client-transactionHistory.php">View Transaction History</a>
-          </li>
         </ul>
       </div>
 
@@ -60,24 +53,15 @@ $accId = $_SESSION['accountId'] ?? '';
           </li>
 
           <li class="nav-item">
-            <a class="nav-link px-3" href="client-portal.php">Client Portal</a>
-          </li>
-
-          <li class="nav-item">
             <a class="nav-link px-3" href="client-bookingform.php">Booking</a>
           </li>
           
-          <li class="nav-item">
-            <a class="nav-link px-3" href="client-transactionHistory.php">View Transaction History</a>
-          </li>
         </ul>
       </div>
 
     </div>
   </nav>
 </header>
-
-
 
 
 <!-- Logout Confirmation Modal -->

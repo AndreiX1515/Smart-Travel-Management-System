@@ -27,50 +27,51 @@
   <div class="dark-overlay"></div>
 
   <div class="container-background"> </div>
-		<div class="loginform d-flex flex-column">
-			<div class="logo-container text-left">
-					<img src="../Assets/Logos/SMART LOGO 2 (2).png" alt="Logo">
-			</div>
 
-			<div class="header-container d-flex flex-column text-start mt-1">
-			<h6 class="header h4 fw-bolder">Experience Travel with Us.</h6>
-			<p class="h6 sub-header">Discover new horizons and create unforgettable memories with our curated travel experiences tailored just for you.</p>
-		</div>
-
-		<!-- Login Form -->
-		<form class="mt-5" id="loginForm">
-				<!-- Email input field -->
-				<div class="mb-3">
-						<div class="form-floating">
-								<input type="email" class="form-control" id="floatingEmail" name="email" placeholder="Email" required>
-								<label for="floatingEmail">Email</label>
-						</div>
-				</div>
-
-				<!-- Password input field -->
-				<div class="mb-1 position-relative">
-						<div class="form-floating">
-								<input type="password" class="form-control" id="floatingPassword" name="password" placeholder="Password" required>
-								<label for="floatingPassword">Password</label>
-								<span id="togglePassword" class="position-absolute" style="right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;">
-										<i class="far fa-eye" id="toggleIcon"></i>
-								</span>
-						</div>
-				</div>
-
-            <div class="fp-container mb-1 d-flex justify-content-end align-items-center mt-2">
-                <a href="#" class="">Forgot Password?</a>
-            </div>
-
-            <button type="submit" class="btn btn-primary w-100" id="LoginButton">Login</button>
-
-            <div class="bottom-login-account mt-3 text-center">
-                <p class="mb-0">Don't have an account? <a href="../Client Section/register.php" class="text-decoration-none">Register Now</a></p>
-            </div>
-
-            <div id="message-login" class="message-login mt-3 h6 fw-light fs-6" style="font-size: 8px;"></div>
-        </form>
+<div class="loginform d-flex flex-column">
+    <div class="logo-container text-left">
+        <img src="../Assets/Logos/SMART LOGO 2 (2).png" alt="Logo">
     </div>
+
+    <div class="header-container d-flex flex-column text-start mt-1">
+        <h6 class="header h4 fw-bolder">Experience Travel with Us.</h6>
+        <p class="h6 sub-header">Discover new horizons and create unforgettable memories with our curated travel experiences tailored just for you.</p>
+    </div>
+
+    <!-- Login Form -->
+    <form class="mt-5" id="loginForm">
+        <!-- Email input field -->
+        <div class="mb-3">
+            <div class="form-floating">
+                <input type="email" class="form-control" id="floatingEmail" name="email" placeholder="Email" required>
+                <label for="floatingEmail">Email</label>
+            </div>
+        </div>
+
+        <!-- Password input field -->
+        <div class="mb-1 position-relative">
+                <div class="form-floating">
+                        <input type="password" class="form-control" id="floatingPassword" name="password" placeholder="Password" required>
+                        <label for="floatingPassword">Password</label>
+                        <span id="togglePassword" class="position-absolute" style="right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;">
+                                <i class="far fa-eye" id="toggleIcon"></i>
+                        </span>
+                </div>
+        </div>
+
+        <div class="fp-container mb-1 d-flex justify-content-end align-items-center mt-2">
+            <a href="#" class="">Forgot Password?</a>
+        </div>
+
+        <button type="submit" class="loginbtn btn btn-primary w-100" id="LoginButton">Login</button>
+
+        <div class="bottom-login-account mt-3 text-center">
+            <p class="mb-0">Don't have an account? <a href="../Client Section/register.php" class="text-decoration-none">Register Now</a></p>
+        </div>
+
+        <div id="message-login" class="message-login mt-3 h6 fw-light fs-6" style="font-size: 8px;"></div>
+    </form>
+</div>
 
 
 

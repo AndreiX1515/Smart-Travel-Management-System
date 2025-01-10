@@ -24,7 +24,7 @@
 <head>
   <?php include '../Client Section/Includes/head.php'; ?>
 
-  <title>Booking Form</title>
+  <title>Transaction History</title>
 
   <link rel="stylesheet" href="../Client Section/assets/css/client-transactionHistory.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="../Client Section/assets/css/client-navbar.css?v=<?php echo time(); ?>"> 
@@ -70,95 +70,94 @@
     
           <input type="hidden" class="hidden" value="<?php echo $accId; ?>"></input>
 
-          <div class="table-container">
-            <table>
-              <thead>
-                <tr>
-                  <th scope="col">Transaction Number</th>
-                  <th scope="col">Agent</th>
-                  <th scope="col">Contact Person</th>
-                  <th scope="col">Package Name</th>
-                  <th scope="col">Flight Date</th>
-                  <th scope="col">Total Pax</th>
-                  <th scope="col">Amount To Pay</th>
-                  <th scope="col">Downpayment Total</th>
-                  <th scope="col">Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                <?php
-                  $accId = $_SESSION['accountId'];
-                  $sql1 = "SELECT b.transactNo AS `T.N`, p.packageName AS `PACKAGE`,
-                                DATE_FORMAT(b.bookingDate, '%m-%d-%Y') AS `TRANSACTION DATE`, b.bookingType as bookingType,
-                                DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y') AS `FLIGHT DATE`, b.pax AS `TOTAL PAX`,
-                                CONCAT(b.lName, ', ', b.fName, ' ', CASE WHEN b.mName = 'N/A' THEN '' 
-                                  ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ', CASE WHEN b.suffix = 'N/A' THEN '' 
-                                  ELSE b.suffix END) AS `CONTACT NAME`,
-                                b.email AS `CONTACT EMAIL`, CONCAT(b.countryCode, ' ', b.contactNo) AS `CONTACT PHONE`, b.status AS `STATUS`
-                            FROM 
-                                booking b
-                            LEFT JOIN 
-                                flight f ON b.flightId = f.flightId
-                            LEFT JOIN 
-                                package p ON b.packageId = p.packageId
-                            WHERE 
-                                b.accountId = '$accId'";
+          <div class="table-container"> 
+    <table>
+        <tbody>
+            <?php
+            $accId = $_SESSION['accountId'];
+            $sql1 = "SELECT 
+                        DATE_FORMAT(b.bookingDate, '%M %d, %Y') AS `TRANSACTION DATE`,
+                        b.transactNo AS `T.N`, 
+                        p.packageName AS `PACKAGE`,
+                        b.bookingType as bookingType,
+                        DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y') AS `FLIGHT DATE`,
+                        b.pax AS `TOTAL PAX`,
+                        CONCAT(b.lName, ', ', b.fName, ' ', 
+                            CASE WHEN b.mName = 'N/A' THEN '' ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, 
+                            ' ', CASE WHEN b.suffix = 'N/A' THEN '' ELSE b.suffix END) AS `CONTACT NAME`,
+                        b.email AS `CONTACT EMAIL`,
+                        CONCAT(b.countryCode, ' ', b.contactNo) AS `CONTACT PHONE`,
+                        b.status AS `STATUS`
+                    FROM 
+                        booking b
+                    LEFT JOIN 
+                        flight f ON b.flightId = f.flightId
+                    LEFT JOIN 
+                        package p ON b.packageId = p.packageId
+                    WHERE 
+                        b.accountId = '$accId'
+                    ORDER BY 
+                        b.bookingDate DESC";
 
-                  $res1 = $conn->query($sql1);
+            $res1 = $conn->query($sql1);
 
-                  if ($res1->num_rows > 0) 
-                  {
-                    while ($row = $res1->fetch_assoc()) 
-                    {
-                      $transactNo = $row['T.N'];
-                      $pax = $row['TOTAL PAX'];
+            $currentDate = '';
+            if ($res1->num_rows > 0) {
+                while ($row = $res1->fetch_assoc()) {
+                    $transactionDate = $row['TRANSACTION DATE'];
 
-                      $status = isset($row['STATUS']) ? $row['STATUS'] : 'Unknown';
-                      $statusClass = '';
+                    // Display date header only when the date changes
+                    if ($currentDate != $transactionDate) {
+                        if ($currentDate != '') {
+                            echo "</tbody>"; // Close the previous date group
+                        }
+                        $currentDate = $transactionDate;
+                        echo "<thead>
+                          <tr>
+                            <th colspan='100%' class='transaction-date-header mt-4'>{$transactionDate}</th>
+                          </tr>
+                        </thead>";
+                        echo "<tbody class='mt-4'>"; // Start a new group
+                    }
 
-                      switch ($status) {
-                          case 'Confirmed':
-                              $statusClass = 'bg-success text-white'; // Green background, white text
-                              break;
-                          case 'Cancelled':
-                              $statusClass = 'bg-danger text-white'; // Red background, white text
-                              break;
-                          case 'Pending':
-                              $statusClass = 'bg-warning text-dark'; 
-                              break;
-                          default:
-                              $statusClass = 'bg-secondary text-white'; 
-                      }
+                    $transactNo = $row['T.N'];
+                    $pax = $row['TOTAL PAX'];
+                    $status = isset($row['STATUS']) ? $row['STATUS'] : 'Unknown';
 
-                      echo "<tr data-url='client-viewTransaction.php?id=" . htmlspecialchars($transactNo) . "'>
+                    // Assign status class
+                    $statusClass = match ($status) {
+                        'Confirmed' => 'bg-success text-white',
+                        'Cancelled' => 'bg-danger text-white',
+                        'Pending' => 'bg-warning text-dark',
+                        default => 'bg-secondary text-white',
+                    };
+
+                    // Render transaction row
+                    echo "<tr data-url='client-ViewTransaction.php?id=" . htmlspecialchars($transactNo) . "' class='mt-2'>
                         <td>{$transactNo}</td>
-                        <td> A001 </td>
+                        <td>A001</td>
                         <td>{$row['CONTACT NAME']}</td>
-                        <td> 
+                        <td>
                           <div class='d-flex flex-column'>
-                            <span><strong>Email: </strong>" . $row['CONTACT EMAIL'] ." </span>
-                            <span><strong>Contact Number: </strong> " . $row['CONTACT PHONE'] ."</span>
+                            <span><strong>Email: </strong>{$row['CONTACT EMAIL']}</span>
+                            <span><strong>Contact Number: </strong>{$row['CONTACT PHONE']}</span>
                           </div>
                         </td>
-
                         <td>{$row['PACKAGE']}</td>
-                        <td>{$row['TRANSACTION DATE']}</td>
                         <td>{$row['FLIGHT DATE']}</td>
-                        <td>{$row['TOTAL PAX']}</td>
-
+                        <td>Total Pax: {$row['TOTAL PAX']}</td>
                         <td>
-                          <span class='badge p-2 rounded-pill {$statusClass} '>
-                              {$status}
-                          </span>
+                          <span class='badge p-2 rounded-pill {$statusClass}'>{$status}</span>
                         </td>
-                      </tr>";
-                    }
-                  }
-                ?>
-              </tbody>
-            </table>
+                    </tr>";
+                }
+                echo "</tbody>"; // Close the last date group
+            }
+            ?>
+        </tbody>
+    </table>
+</div>
 
-          </div>
 
         </div>
 

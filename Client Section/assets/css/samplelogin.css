@@ -10,6 +10,7 @@ html, body {
     padding: 0;
     font-family: "Poppins", sans-serif;
     box-sizing: border-box;
+    overflow: hidden;
 }
 
 /* Back to Homepage button */
@@ -17,30 +18,30 @@ html, body {
  position: absolute;
  top: 20px;
  left: 20px;
- z-index: 3; /* Higher z-index than other content */
- background-color: rgba(0, 0, 0, 0.7); /* Dark background for contrast */
+ z-index: 3;
+ background-color: rgba(0, 0, 0, 0.7);
  padding: 10px 20px;
  border-radius: 5px;
  border: none;
  font-size: 16px;
- color: white; /* Keep text color white for contrast */
+ color: white;
  text-decoration: none;
  font-weight: bold;
- transition: background-color 0.3s ease, transform 0.3s ease; /* Added transition for scaling effect */
- box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+ transition: background-color 0.3s ease, transform 0.3s ease;
+ box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
 .back-btn:hover {
- background-color: rgba(0, 0, 0, 0.8); /* Darker shade on hover */
- transform: scale(1.05); /* Slightly scale up on hover for emphasis */
+ background-color: rgba(0, 0, 0, 0.8);
+ transform: scale(1.05);
 }
 
 /* CSS to visually disable the button */
 .button-disabled {
-    background-color: #ccc; /* Light gray background */
-    color: #666; /* Darker gray text */
-    pointer-events: none; /* Prevent mouse events */
-    cursor: not-allowed; /* Change cursor to indicate it's disabled */
+    background-color: #ccc;
+    color: #666;
+    pointer-events: none;
+    cursor: not-allowed;
 }
 
 .container-background {
@@ -50,11 +51,10 @@ html, body {
     top: 0;
     left: 0;
     overflow: hidden;
-    background: #FC5C7D;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #6A82FB, #FC5C7D);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #6A82FB, #FC5C7D); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
-
+    background: #FC5C7D;
+    background: -webkit-linear-gradient(to right, #6A82FB, #FC5C7D);
+    background: linear-gradient(to right, #6A82FB, #FC5C7D);
+    overflow: hidden;
 }
 
 /* Dark overlay */
@@ -62,8 +62,8 @@ html, body {
     position: absolute;
     width: 100vw;
     height: 100vh;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0)); /* Gradient from dark to transparent */
-    z-index: 1; /* Ensure the overlay is above the background images */
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0));
+    z-index: 1;
 }
 
 .background-image {
@@ -72,12 +72,10 @@ html, body {
     height: 100vh;
     background-size: cover;
     background-position: center;
-    opacity: 0; /* Start with images hidden */
-    animation: BgFade 30s infinite; /* 30 seconds for 6 images */
-    z-index: 0; /* Keep the background images behind the overlay */
+    opacity: 0;
+    animation: BgFade 30s infinite;
+    z-index: 0;
 }
-
-
 
 .main-container {
     display: flex;
@@ -92,86 +90,77 @@ html, body {
     z-index: 2;
     background-color: white;
     position: relative;
+    overflow: hidden;
 }
 
-
-
-
-
 .loginform {
-    padding: 40px; /* Reduced padding for a tighter layout */
-    background-color: rgba(255, 255, 255, 0.6); /* Refined glass effect */
+    padding: 40px;
+    background-color: rgba(255, 255, 255, 0.6);
     z-index: 2;
-    width: 500px; /* Slightly smaller width */
-    height: auto; /* Automatically adjust height */
-    margin: 50px auto; /* Center horizontally and add vertical margin */
-    border-radius: 15px; /* Softer rounded corners */
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
-    backdrop-filter: blur(20px); /* Moderate blur for a glass-like effect */
-    border: 1px solid rgba(255, 255, 255, 0.2); /* Minimal border for style */
+    width: 500px;
+    height: auto;
+    margin: 50px auto;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 /* Input fields styling */
 .loginform input {
-    width: 100%; /* Full width for input fields */
-    padding: 12px; /* Slightly reduced padding */
-    margin: 10px 0; /* Space between fields */
-    border: 1px solid rgba(255, 255, 255, 0.3); /* Soft border for minimalism */
-    border-radius: 8px; /* Slightly smaller rounded corners */
-    background-color: rgba(255, 255, 255, 0.7); /* Transparent background */
-    box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.1); /* Subtle inner shadow */
-    font-size: 15px; /* Adjusted font size */
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.7);
+    box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.1);
+    font-size: 15px;
 }
 
 /* Button styling */
 .loginform button {
-    background-color: #116530; /* Primary button color */
-    color: white; /* Contrast text */
-    padding: 12px; /* Slightly smaller button size */
-    margin-top: 15px; /* Space above button */
-    border: none; /* No border */
-    border-radius: 8px; /* Rounded corners for consistency */
-    cursor: pointer; /* Pointer on hover */
-    font-size: 16px; /* Adjusted font size for readability */
-    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition */
+    background-color: #116530;
+    color: white;
+    padding: 12px;
+    margin-top: 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .loginform button:hover {
-    background-color: #0e4e24; /* Darker green on hover */
-    transform: scale(1.05); /* Slight hover effect */
+    background-color: #0e4e24;
+    transform: scale(1.05);
 }
 
 /* Title and additional text styling */
 .loginform h2 {
-    text-align: left; /* Align text to the left */
-    margin-bottom: 20px; /* Adjusted spacing below title */
-    color: #116530; /* Primary color */
-    font-size: 24px; /* Slightly smaller font size */
+    text-align: left;
+    margin-bottom: 20px;
+    color: #116530;
+    font-size: 24px;
 }
 
 .header-container p {
-    font-size: 13px; /* Adjusted text size */
-    font-weight: 400; /* Normal font weight */
-    color: rgb(88, 88, 88); /* Light grey color */
-    text-align: left; /* Align text to the left */
-    margin-bottom: 10px; /* Reduced spacing between text */
+    font-size: 13px;
+    font-weight: 400;
+    color: rgb(88, 88, 88);
+    text-align: left;
+    margin-bottom: 10px;
 }
 
 /* Logo container */
 .logo-container img {
-    width: 100px; /* Slightly smaller logo */
-    height: auto; /* Maintain aspect ratio */
+    width: 100px;
+    height: auto;
     object-fit: contain;
-    margin-bottom: 20px; /* Adjusted spacing below logo */
-    display: block; /* Center alignment */
+    margin-bottom: 20px;
+    display: block;
     justify-self: left;
 }
-
-
-
-
-
-
 
 /* Social Icons Section */
 .social-icons {
@@ -239,14 +228,6 @@ html, body {
     color: #666;
 }
 
-
-
-
-
-
-
-
-
 /* Image Accent Section */
 .image-accent {
     display: flex;
@@ -294,7 +275,6 @@ html, body {
 }
 
 .loginform img {
-    
     border-radius: 50px;
     height: 85px;
     width: 250px;
@@ -332,103 +312,212 @@ html, body {
 
 #LoginButton {
     margin-top: 5%;
-    border-color: #000;
-    background-color: #000;
+    border-color: #797979;
+    background-color: rgb(192, 31, 31);
     font-weight: 500;
     font-size: 16px;
 }
 
- /* .message-login {
-    background-color: #f8d7da;
-    color: #721c24; 
-    border: 1px solid #f5c6cb; 
-    padding: 10px 20px; 
-    border-radius: 5px;  
-    font-size: 12px; 
-    font-weight: 500;  
-    margin-bottom: 20px; 
-    display: flex;
-    align-items: center; 
-    justify-content: space-between; 
-} */
-
-/*
-.message-login .close-btn {
-    background: none;
-    border: none;
-    font-size: 18px;
-    color: #721c24; /* Same as text color 
-    cursor: pointer;
-}
- */
-
 /* CSS to visually disable the button */
 .button-disabled {
-    background-color: #ccc; /* Light gray background */
-    color: #666; /* Darker gray text */
-    pointer-events: none; /* Prevent mouse events */
-    cursor: not-allowed; /* Change cursor to indicate it's disabled */
+    background-color: #ccc;
+    color: #666;
+    pointer-events: none;
+    cursor: not-allowed;
 }
 
+/* Media Queries for Responsive Design */
+@media (max-width: 480px) {
+    .main-container {
+        width: 90%;
+        height: auto;
+    }
 
+    .container-background {
+        background-color: transparent;
+    }
 
-/* Hide .image-accent when width is 1246px or below
-@media (max-width: 1246px) {
-    .image-accent {
-        display: none;
+    .header-container h6 {
+        color: #ececec;
+    }
+
+    .header-container p{
+        color: #ecececc9;
+    }
+
+    .fp-container a {
+        color: #ecececc9;
+    }
+
+    .bottom-login-account p {
+        color: #ecececb9;
     }
 
     .loginform {
         width: 100%;
-        padding: 20px;
+        padding: 40px;
+        background-color: transparent;
+        border: none;
+        box-shadow: none;
+    }
+
+    .loginform h2 {
+        font-size: 20px;
+    }
+
+    .loginform button {
+        font-size: 14px;
+    }
+
+    .back-btn {
+        display: none;
     }
 }
 
-/* Further adjustments for tablets and smartphones 
-@media (max-width: 768px) {
-    .sub-header p {
-        padding: 0 15px;
-    }
-
-    .header {
-        padding: 5px 20px;
-    }
-
-    .navbar a {
-        margin-left: 10px;
-    }
-
-    .content-wrapper h1 {
-        font-size: 1.8rem;
-    }
-
-    .content-wrapper p {
-        font-size: 0.9rem;
-    }
-
-    .loginform {
-        max-width: 100%;
-        padding: 10px;
-    }
-
-    .social-icons a {
-        margin: 5px 0;
-        display: block;
-        text-align: center;
-    }
-}
-
-/* Adjust layout for wider screens 
-@media (min-width: 1246px) {
+@media (min-width: 481px) and (max-width: 600px) {
     .main-container {
-        flex-wrap: nowrap;
+        width: 80%;
+        height: auto;
+        background-color: none;
     }
+
+    .container-background {
+        background-color: transparent;
+    }
+
+    .header-container h6 {
+        color: #ececec;
+    }
+
+    .header-container p{
+        color: #ecececc9;
+    }
+
+    .fp-container a {
+        color: #ecececc9;
+    }
+
+    .bottom-login-account p {
+        color: #ecececb9;
+    }
+
 
     .loginform {
-        width: 45%;
+        width: 100%;
+        padding: 40px;
+        background-color: transparent;
+        border: none;
+        box-shadow: none;
+    }
+    
+   
+    .loginform h2 {
+        font-size: 22px;
+    }
+    .loginform button {
+        font-size: 15px;
     }
 
-    .image-accent {
+    .back-btn {
+        display: none;
+    }
+}
+
+@media (min-width: 601px) and (max-width: 768px) {
+    .main-container {
+        width: 70%;
+        height: auto;
+    }
+    .loginform {
+        width: 80%;
+        padding: 30px;
+    }
+    .loginform h2 {
+        font-size: 23px;
+    }
+    .loginform button {
+        font-size: 15px;
+    }
+
+    .back-btn {
+        display: inline-block;
+        padding: 5px 10px;
+        font-size: 12px;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .main-container {
+        width: 60%;
+        height: auto;
+    }
+    .loginform {
+        width: 70%;
+        padding: 35px;
+    }
+    .loginform h2 {
+        font-size: 24px;
+    }
+    .loginform button {
+        font-size: 16px;
+    }
+    .back-btn {
+        display: inline-block;
+        padding: 5px 10px;
+        font-size: 12px;
+    }
+}
+
+@media (min-width: 1025px) and (max-width: 1280px) {
+    .main-container {
         width: 55%;
+        height: auto;
+    }
+    .loginform {
+        width: 60%;
+        padding: 40px;
+    }
+    .loginform h2 {
+        font-size: 24px;
+    }
+    .loginform button {
+        font-size: 16px;
+    }
+    .back-btn {
+        display: block;
+    }
+}
+
+/* @media (min-width: 1281px) and (max-width: 1440px) {
+    .main-container {
+        width: 50%;
+        height: auto;
+    }
+    .loginform {
+        width: 55%;
+        padding: 40px;
+    }
+    .loginform h2 {
+        font-size: 24px;
+    }
+    .loginform button {
+        font-size: 16px;
+    }
+}
+
+@media (min-width: 1441px) {
+    .main-container {
+        width: 45%;
+        height: auto;
+    }
+    .loginform {
+        width: 50%;
+        padding: 40px;
+    }
+    .loginform h2 {
+        font-size: 24px;
+    }
+    .loginform button {
+        font-size: 16px;
     }
 } */

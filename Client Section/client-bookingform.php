@@ -39,7 +39,7 @@
   <div class="main-container">  
     <div class="content-header">
         <div class="back-button-wrapper">
-            <a href="client-portal.php" class="back-button-link"> <i class="fa-solid fa-arrow-left me-2"></i> Back to Client Portal</a>
+            <a href="index.php" class="back-button-link"> <i class="fa-solid fa-arrow-left me-2"></i> Back to Homepage</a>
         </div>
         <h1>Booking</h1>
         <p>Begin your unforgettable journey by making your booking with us</p>
@@ -469,14 +469,15 @@
 
             <div class="total-price-container">
               <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center py-3">
-                  <h5 class="align-items-center pt-2 fw-bolder">Total Price: ₱ <span id="displayTotalPrice">0</span></h5>
-                  <strong id="errorMessage" class="text-danger"></strong>
-                  <button type="button" class="btn btn-primary p-2 px-3" id="bookNowButton">Book Now</button>
+                  <div class="card-header">
+                    <h5>Total Price: ₱ <span id="displayTotalPrice">0</span></h5>
+                    <strong id="errorMessage" class="text-danger"></strong>
+                    <button type="button" id="bookNowButton" class="btn">Book Now</button>
                 </div>
-                <input type="hidden" id="totalPrice" name="totalPrice" placeholder="Total Price">
+                <input type="hidden" id="totalPrice" name="totalPrice">
               </div>
             </div>
+
 
           <!-- Booking Summary Modal -->
           <div class="modal fade" id="BookingSummaryModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

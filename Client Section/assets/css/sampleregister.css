@@ -89,7 +89,7 @@ html, body {
     padding: 40px;
     background-color: rgba(255, 255, 255, 0.6); 
     z-index: 2;
-    width: 25%;
+    width: 30%;
     height: 65%; 
     border-radius: 15px; 
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2); 
@@ -464,108 +464,125 @@ a#sendOtpLink-modal {
     text-decoration: none; /* Optionally remove underline */
 }
 
-/* Media query for screens 1246px and below */
-@media (max-width: 1246px) {
-    .image-accent {
-        display: none;
+/* Mobile devices (320px – 480px) */
+@media (max-width: 480px) {
+    .header-container h5 {
+        color: #ffffff;
+    }
+
+    .header-container p {
+        color: #ecececc9;
+        font-size: 11px; /* Smaller paragraph text */
     }
 
     .loginform {
-        width: 100%; /* Adjust login form to full width */
+        width: 85%; /* Slightly smaller width */
+        height: auto; /* Adjust height dynamically */
+        padding: 15px; /* Further reduced padding */
+        border-radius: 8px; /* Adjusted border radius */
+        margin: 0; /* Remove margin */
+        background-color: transparent;
+        border: none;
+        box-shadow: none;
     }
 
     .main-container {
-        width: 90%; /* Adjust container width to fit smaller screens */
-        height: auto; /* Ensure container height adjusts based on content */
+        flex-direction: column; /* Stack elements vertically */
+        align-items: center; /* Center align elements */
+    }
+
+    .form-container input {
+        padding: 8px; /* Further reduced padding for smaller fields */
+        font-size: 14px; /* Adjust input font size */
+    }
+
+    .bottom-register-div button {
+        font-size: 13px; /* Smaller button text */
+        padding: 8px 12px; /* Reduced button padding */
     }
 }
 
-/* Media query for screens 768px and below (smartphones) */
-@media (max-width: 768px) {
-    html, body {
-        padding: 10px; /* Add some padding on smaller screens */
-        align-items: center; /* Vertically center the container */
-        justify-content: center;
-        height: 100vh; /* Ensure the body takes full viewport height */
+
+/* Mobile devices (up to 576px) */
+@media (max-width: 576px) {
+    .header-container h5 {
+        color: #e2e2e2;
     }
 
-    .main-container {
-        flex-direction: column; /* Stack items vertically */
-        width: 100%; /* Full width for mobile */
-        padding: 10px; /* Reduce padding */
-        height: auto; /* Let content dictate height */
-        align-items: center; /* Center content horizontally */
-        justify-content: center; /* Center content vertically */
+    .header-container p{
+        color: #ecececc9;
     }
 
     .loginform {
-        width: 100%; /* Ensure login form takes full width */
-        padding: 10px; /* Adjust padding for smaller screens */
+        width: 90%; /* Full width for smaller screens */
+        height: auto; /* Adjust height dynamically */
+        padding: 20px; /* Smaller padding */
+        border-radius: 10px; /* Reduced border radius */
+        margin: 0; /* Remove margin */
+        background-color: transparent;
+        border: none;
+        box-shadow: none;
     }
 
-    .bottom-login-account p,
-    .bottom-login-account a {
-        font-size: 14px; /* Increase font size for readability */
+    .main-container {
+        flex-direction: column; /* Stack elements vertically */
     }
 
-    .logo-container img {
-        width: 70px; /* Smaller logo for mobile */
+    .header-container p {
+        font-size: 12px; /* Smaller text size */
+    }
+
+    .form-container input {
+        padding: 10px; /* Reduced padding for smaller fields */
+    }
+
+    .bottom-register-div button {
+        font-size: 14px; /* Smaller button text */
+    }
+}
+
+/* Tablets (577px to 768px) */
+@media (min-width: 577px) and (max-width: 768px) {
+    .loginform {
+        width: 70%; /* Adjusted width */
+        height: auto; /* Dynamic height */
+        padding: 40px; /* Moderate padding */
+    }
+
+    .form-container input {
+        padding: 12px; /* Slightly larger fields */
+    }
+
+    .bottom-register-div button {
+        font-size: 15px; /* Adjusted button text size */
+    }
+}
+
+/* Small laptops (769px to 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .loginform {
+        width: 50%; /* Adjusted width for larger screens */
         height: auto;
     }
 
-    .back-btn {
-        font-size: 14px; /* Adjust font size of back button */
+    .form-container h2 {
+        font-size: 22px; /* Adjust title size */
     }
 
-    #LoginButton {
-        font-size: 14px; /* Adjust button font size */
-    }
-
-    .fp-container a {
-        font-size: 14px; /* Increase the font size of forgot password link */
+    .bottom-register-div button {
+        font-size: 16px;
     }
 }
 
-/* Media query for extra small screens (320px) */
-@media (max-width: 320px) {
-    html, body {
-        height: 100vh; /* Ensure body height fills viewport */
-        align-items: center; /* Center items vertically */
-        justify-content: center; /* Center items horizontally */
-    }
-
-    .main-container {
-        width: 95%; /* Ensure container is narrower on extra small screens */
-        padding: 5px; /* Reduce padding for extra small screens */
-        align-items: center; /* Center content horizontally */
-        justify-content: center; /* Center content vertically */
-        height: auto; /* Allow height to adjust based on content */
-    }
-
+/* Large screens (above 1024px) */
+@media (min-width: 1025px) and (max-width: 1366px) {
     .loginform {
-        width: 100%; /* Full width for login form */
-        padding: 5px; /* Reduce padding */
+        width: 45%; /* Maintain standard size */
+        height: 65%;
     }
 
-    .logo-container img {
-        width: 60px; /* Smaller logo for tiny screens */
-        height: auto;
-    }
-
-    .bottom-login-account p,
-    .bottom-login-account a {
-        font-size: 12px; /* Further adjust font size */
-    }
-
-    #LoginButton {
-        font-size: 12px; /* Smaller font size for buttons */
-    }
-
-    .fp-container a {
-        font-size: 12px; /* Smaller forgot password link */
-    }
-
-    .back-btn {
-        font-size: 12px; /* Adjust back button for tiny screens */
+    .form-container h2 {
+        font-size: 24px; /* Restore title size */
     }
 }
+

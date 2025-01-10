@@ -40,6 +40,19 @@
 	margin-bottom: 10px;
 }
 
+.columns input {
+	margin-bottom: 10px;
+
+}
+
+
+
+
+.text-danger {
+	margin-top: 15px;
+
+
+}
 
 .land-only {
 	padding: 0px 0px;
@@ -50,20 +63,83 @@
 	display: flex;
 	justify-content: start;
 	align-items: center;
-	padding: 20px 20px;
+	padding: 20px 20px;	
 }
 
 
+/* Total Price Container */
 .total-price-container {
-	margin: 20px 0px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 15px;
 }
+
+/* Card */
+.total-price-container .card {
+	border: 1px solid #ced4da;
+	border-radius: 10px;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+	background-color: #fff;
+	width: 100%;
+}
+
+/* Card Header */
+.total-price-container .card-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 15px;
+	background-color: #f8f9fa;
+	border-bottom: 1px solid #e9ecef;
+}
+
+/* Total Price */
+.total-price-container .card-header h5 {
+	margin: 0;
+	font-weight: bold;
+	font-size: 18px;
+	color: #000000;
+}
+
+/* Error Message */
+.total-price-container #errorMessage {
+	font-size: 14px;
+	color: #dc3545;
+}
+
+/* Book Now Button */
+.total-price-container #bookNowButton {
+	padding: 5px 15px;
+	font-size: 14px;
+	font-weight: bold;
+	border: none;
+	border-radius: 5px;
+	background-color: #dc3545;
+	color: #fff;
+	cursor: pointer;
+	transition: background-color 0.3s;
+}
+
+.total-price-container #bookNowButton:hover {
+	background-color: #0056b3;
+}
+
+/* Hidden Input */
+.total-price-container #totalPrice {
+	display: none;
+}
+
+
+
+
+
+
 
 
 .ContactPerson {
 	padding: 10px;
 }
-
-
 
 .country-select {
 	width: auto;

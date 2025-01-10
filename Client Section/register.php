@@ -22,61 +22,55 @@ session_start();
 <div class="container-background"> </div>
 
 <div class="main-container">
-	<!-- Login Form Section -->
-	<div class="loginform">
-			<div class="header-container">
-							<h5 class="header h1 fw-bolder mb-2">Register</h5>
-							<p class="h5 sub-header mb-0">The start of your journey with us.</p>
-			</div>
+    <!-- Login Form Section -->
+    <div class="loginform">
+        <div class="header-container">
+            <h5 class="header h1 fw-bolder mb-2">Register</h5>
+            <p class="h5 sub-header mb-0">The start of your journey with us.</p>
+        </div>
 
-			<div class="form-container">
-					<!-- Registration Form -->
-					<form class="" id="registerForm" method="POST" action="register.php">
-									<div class="message-1 mb-2 fw-bold" id="message-1"></div>
+        <div class="form-container">
+            <!-- Registration Form -->
+            <form class="" id="registerForm" method="POST" action="register.php">
+                <div class="message-1 mb-2 fw-bold" id="message-1"></div>
 
-									<div class="mb-2">
-													<div class="form-floating">
-																	<input type="email" class="form-control" id="floatingEmail" name="Reg-Email" placeholder="Email" required>
-																	<label for="floatingEmail">Email <small class="text-danger"> *</small></label>
-													</div>
-													<div id="email-message" class="text-danger"></div>
-									</div>
+                <div class="mb-2">
+                    <div class="form-floating">
+                        <input type="email" class="form-control" id="floatingEmail" name="Reg-Email" placeholder="Email" required>
+                        <label for="floatingEmail">Email <small class="text-danger"> *</small></label>
+                    </div>
+                    <div id="email-message" class="text-danger"></div>
+                </div>
 
-									<div class="mt-2 mb-3 position-relative">
-													<div class="form-floating">
-																	<input type="password" class="form-control" id="floatingPassword" name="Reg-Password" placeholder="Password" required>
-																	<label for="floatingPassword">Password <small class="text-danger"> *</small></label>
-																	<span id="togglePassword" class="position-absolute" style="right: 10px; top: 50%; transform: translateY(-50%);">
-																					<i class="far fa-eye" id="toggleIcon"></i>
-																	</span>
-													</div>
-									</div>
+                <div class="mt-2 mb-3 position-relative">
+                    <div class="form-floating">
+                        <input type="password" class="form-control" id="floatingPassword" name="Reg-Password" placeholder="Password" required>
+                        <label for="floatingPassword">Password <small class="text-danger"> *</small></label>
+                        <span id="togglePassword" class="position-absolute" style="right: 10px; top: 50%; transform: translateY(-50%);">
+                            <i class="far fa-eye" id="toggleIcon"></i>
+                        </span>
+                    </div>
+                </div>
 
-									<div class="mb-2 position-relative">
-													<div class="form-floating">
-																	<input type="password" class="form-control" id="floatingPassword2" name="Reg-CPassword" placeholder="Confirm Password" required>
-																	<label for="floatingPassword2">Confirm Password <small class="text-danger"> *</small></label>
-																	<span id="togglePassword2" class="position-absolute" style="right: 10px; top: 50%; transform: translateY(-50%);">
-																					<i class="far fa-eye" id="toggleIcon2"></i>
-																	</span>
-													</div>
-									</div>
+                <div class="mb-2 position-relative">
+                    <div class="form-floating">
+                        <input type="password" class="form-control" id="floatingPassword2" name="Reg-CPassword" placeholder="Confirm Password" required>
+                        <label for="floatingPassword2">Confirm Password <small class="text-danger"> *</small></label>
+                        <span id="togglePassword2" class="position-absolute" style="right: 10px; top: 50%; transform: translateY(-50%);">
+                            <i class="far fa-eye" id="toggleIcon2"></i>
+                        </span>
+                    </div>
+                </div>
 
-									<div class="bottom-register-div">
-												<button type="submit" class="btn btn-primary w-100" id="SubmitRegButton">Register</button>
-												<span class="account-link">
-																Already have an account? <a href="login.php" class="login-link">Log in</a>
-												</span>
-								</div>
-
-
-									
-
-
-					</form>
-
-			 </div>
-	 </div>
+                <div class="bottom-register-div">
+                    <button type="submit" class="btn btn-primary w-100" id="SubmitRegButton">Register</button>
+                    <span class="account-link">
+                        Already have an account? <a href="login.php" class="login-link">Log in</a>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
 <!-- Modals -->
