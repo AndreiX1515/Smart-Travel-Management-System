@@ -42,7 +42,7 @@
 
 .columns input {
 	margin-bottom: 10px;
-
+	text-transform: uppercase;
 }
 
 
@@ -67,12 +67,81 @@
 }
 
 
+.contact-group {
+	display: flex;
+	flex-wrap: nowrap;
+	gap: 10px; /* Space between the select and input */
+	margin-bottom: 15px;
+}
+
+.country-select {
+	width: 30%; /* Adjust width as needed */
+	padding: 8px;
+	font-size: 14px;
+	border: 1px solid #ced4da;
+	border-radius: 5px;
+	margin-top: -10px;
+}
+
+.contactNo {
+	width: 70%; /* Complementary width for the input */
+	padding: 8px;
+	font-size: 14px;
+	border: 1px solid #ced4da;
+	border-radius: 5px;
+}
+
+.input-group {
+	align-items: center; /* Vertically aligns elements */
+}
+
+.form-select, .form-control {
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow */
+	transition: border-color 0.3s ease-in-out;
+}
+
+.form-select:focus, .form-control:focus {
+	border-color: #116530; /* Green border on focus */
+	outline: none;
+	box-shadow: 0 0 5px rgba(17, 101, 48, 0.5);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.ContactPerson .card-body {
+	padding: 5px 20px;
+	font-size: 14px;
+	color: #2c3e50;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Total Price Container */
 .total-price-container {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	margin-bottom: 15px;
 }
 
 /* Card */
@@ -89,7 +158,6 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	padding: 15px;
 	background-color: #f8f9fa;
 	border-bottom: 1px solid #e9ecef;
 }
@@ -133,39 +201,6 @@
 
 
 
-
-
-
-
-.ContactPerson {
-	padding: 10px;
-}
-
-.country-select {
-	width: auto;
-	max-width: 150px; /* Adjust width */
-	font-size: 14px; /* Adjust font size */
-}
-
-/* Optional: Style when the select is focused */
-.country-select:focus {
-	outline: none; /* Remove outline */
-	border-color: #007bff; /* Change border color when focused */
-}
-
-
-/* Optional: Adjust the input field to match the select box size */
-.contactNo {
-	font-size: 14px; /* Adjust font size */
-}
-
-
-
-.ContactPerson .card-body {
-	padding: 20px 10px;
-	font-size: 14px;
-	color: #2c3e50;
-}
 
 
 

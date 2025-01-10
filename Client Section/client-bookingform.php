@@ -1,7 +1,7 @@
 
 <?php
-  // include 'session_validate.php'; // This will check if the session is valid
   require '../conn.php';
+  
   session_start();
 
   ini_set('display_errors', 1);
@@ -15,8 +15,20 @@
   // $middleName = $_SESSION['middle_name'] ?? '';
   $accId = $_SESSION['accountId'] ?? '';
   
+  include '../Client Section/Functions/session_validate.php';
+  
+
   // $fullName = htmlspecialchars($lastName . ', ' . $firstName . ($middleName ? ' ' . substr($middleName, 0, 1) . '.' : ''));
 ?>
+
+
+
+
+
+
+
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -73,7 +85,7 @@
                   <div class="columns col-md-6">
                     <label for="agentId">Select Agent: <span class="text-danger fw-bold">*</span></label>
                     <select class="form-select" id="agentId" name="agentId" required>
-                      <option selected disabled>Select Agent</option>
+                      <option selected disabled>SELECT AGENT</option>
                       <?php
                         $sql1 = mysqli_query($conn, "SELECT agentId, CONCAT(lName, ', ', fName, CASE WHEN mName IS NULL OR mName = 'N/A' 
                         THEN '' ELSE CONCAT(' ', LEFT(mName, 1), '.') END) AS agentName FROM agent 
@@ -100,7 +112,7 @@
                       <label for="packageName"> Package <span class="text-danger fw-bold">*</span> </label>
 
                       <select class="form-select" id="packageName" name="packageName" required>
-                        <option selected disabled>Select Package</option>
+                        <option selected disabled>SELECT PACKAGE</option>
                         <?php
                           $sql1 = mysqli_query($conn, "SELECT DISTINCT packageId, packageName FROM package ORDER BY packageName ASC");
                           while($res1 = mysqli_fetch_array($sql1)) 
@@ -121,7 +133,7 @@
                       <label for="origin">Origin <span class="text-danger fw-bold">*</span></label>
 
                       <select class="form-select" id="origin" name="origin" required>
-                        <option selected disabled>Select Origin</option>
+                        <option selected disabled>SELECT ORIGIN</option>
                       </select>
 
                       <span id="originError" class="text-danger"></span>
@@ -137,7 +149,7 @@
                         <!-- Year Dropdown -->
                         <label for="year">Year <span class="text-danger fw-bold">*</span></label>
                         <select class="form-select" id="year" name="year" required>
-                          <option selected disabled>Select Year</option>
+                          <option selected disabled>SELECT YEAR</option>
                         </select>
                         <span id="yearError" class="text-danger"></span> <!-- Error message for year -->
                       </div>
@@ -149,7 +161,7 @@
                         <!-- Month Dropdown -->
                         <label for="month">Month <span class="text-danger fw-bold">*</span></label>
                         <select class="form-select" id="month" name="month" required>
-                          <option selected disabled>Select Month</option>
+                          <option selected disabled>SELECT MONTH</option>
                           <option value="January">January</option>
                           <option value="February">February</option>
                           <option value="March">March</option>
@@ -174,7 +186,7 @@
                       <label for="flightDate">Flight Date <span class="text-danger fw-bold">*</span> </label>
 
                       <select class="form-select" id="flightDate" name="flightDate" required>
-                        <option selected disabled>Select Flight Date</option>
+                        <option selected disabled>SELECT FLIGHT DATE</option>
                       </select>
 
                       <span id="flightDateError" class="text-danger"></span> <!-- Error message for outbound flight -->
@@ -185,7 +197,7 @@
                   <div class="columns col-md-6">
                     <div class="form-group">
                       <label for="totalPax">Total Pax <span class="text-danger fw-bold">*</span></label>
-                      <label id="maxSeats"></label>
+                      <label id="maxSeats"></label> 
                       <label id="availSeats"></label>
                       <input type="number" class="form-control" id="totalPax" name="totalPax" min="1" placeholder="Enter Total Pax" required>
                       <span id="totalPaxError" class="text-danger"></span> <!-- Error message for Total Pax -->
@@ -262,7 +274,7 @@
                     <div class="form-group">
                       <label for="suffix">Suffix <span class="text-danger fw-bold">*</span></label>
                       <select class="form-select" name="suffix" id="suffix" required>
-                        <option selected disabled>Select Suffix</option>
+                        <option selected disabled>SELECT SUFFIX</option>
                         <option value="N/A">None</option>
                         <option value="Jr.">Jr.</option>
                         <option value="Sr.">Sr.</option>
@@ -282,8 +294,14 @@
                     <div class="form-group">
                       <label for="contactNo">Contact No. <span class="text-danger fw-bold">*</span></label>
 
-                      <div class="input-group">
+                      <script>
+                        function updateCountryCodeValue() {
+                          var countryCode = document.getElementById("countryCode").value;
+                          document.getElementById("selectedCountryCode").textContent = countryCode || "None";
+                        }
+                      </script>
 
+                      <div class="input-group">
                           <select name="countryCode" id="countryCode" class="form-select country-select" required onchange="updateCountryCodeValue()">
                               <option value="+263">(+263) Zimbabwe</option>
                               <option value="+260">(+260) Zambia</option>
@@ -438,13 +456,6 @@
                               <option value="+52">(+52) Mexico</option>
                           </select>
 
-                          <script>
-                              function updateCountryCodeValue() {
-                                  var countryCode = document.getElementById("countryCode").value;
-                                  document.getElementById("selectedCountryCode").textContent = countryCode || "None";
-                              }
-                          </script>
-
                           <input type="tel" class="form-control contactNo" id="contactNo" name="contactNo" placeholder="Contact Number" required>
                       </div>
 
@@ -468,7 +479,7 @@
             </div>
 
             <div class="total-price-container">
-              <div class="card">
+              <div class="card border">
                   <div class="card-header">
                     <h5>Total Price: ₱ <span id="displayTotalPrice">0</span></h5>
                     <strong id="errorMessage" class="text-danger"></strong>
