@@ -11,6 +11,8 @@ $email = $_SESSION['email'] ?? ''; // Use null coalescing operator to avoid unde
 // $lastName = $_SESSION['last_name'] ?? '';
 // $middleName = $_SESSION['middle_name'] ?? '';
 $accId = $_SESSION['accountId'] ?? '';
+$agentId = $_SESSION['agentId'];
+$agentCode = $_SESSION['agentCode']
 
 // $fullName = htmlspecialchars($lastName . ', ' . $firstName . ($middleName ? ' ' . substr($middleName, 0, 1) . '.' : ''));
 ?>

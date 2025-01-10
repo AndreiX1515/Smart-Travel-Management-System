@@ -8,8 +8,8 @@ error_reporting(E_ALL);
 if (isset($_POST['bookNow'])) 
 {
 	$accountId = $_SESSION['accountId'];
-	$agentId = $_POST['agentId'];
-	$agentCode = $_POST['agentCode'];
+	$agentId = $_SESSION['agentId'];
+  $agentCode = $_SESSION['agentCode'];
 	$fName = $_POST['fName'];  
 	$mName = $_POST['mName'];  
 	$lName = $_POST['lName'];  

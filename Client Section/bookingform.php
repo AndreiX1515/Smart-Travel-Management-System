@@ -15,6 +15,8 @@
   // $lastName = $_SESSION['last_name'] ?? '';
   // $middleName = $_SESSION['middle_name'] ?? '';
   $accId = $_SESSION['accountId'] ?? '';
+  $agentId = $_SESSION['agentId'];
+  $agentCode = $_SESSION['agentCode'];
   
   // $fullName = htmlspecialchars($lastName . ', ' . $firstName . ($middleName ? ' ' . substr($middleName, 0, 1) . '.' : ''));
 ?>
@@ -86,13 +88,15 @@
           <div class="card">
             <div class="card-header bg-secondary text-white text-light">
               <h4 class="my-2 px-2">Details</h4>
+              <h5 class="agentCode">Agent Code; <?php echo $agentCode; ?></h5>
+              <h5 class="agentId">Agent Id: <?php echo $agentId; ?></h5>
             </div>
 
             <div class="card-body p-4">
 
               <div class="row">
                 <!-- Agent Dropdown -->
-                <div class="col-md-12">
+                <!-- <div class="col-md-12">
                   <label for="agentId" class="fs-6">Select Agent: <span class="text-danger fw-bold">*</span></label>
                   <select class="form-select mt-2 fs-6" id="agentId" name="agentId" required>
                     <option selected disabled>Select Agent</option>
@@ -108,8 +112,8 @@
                     ?>
                   </select>
                   <input type="hidden" id="agentCode" name="agentCode" placeholder="Agent Code">
-                  <span id="agentError" class="text-danger"></span> <!-- Error message for package -->
-                </div>
+                  <span id="agentError" class="text-danger"></span> Error message for package
+                </div> -->
               </div>
 
               <div class="row">
@@ -597,57 +601,57 @@
     $(document).ready(function ()
     {
       // Fetching Agent Code once an agent is selected
-      $('#agentId').on('change', function () 
-      {
-        var agentId = $(this).val(); // Get the selected agentId
+      // $('#agentId').on('change', function () 
+      // {
+      //   var agentId = $(this).val(); // Get the selected agentId
 
-        // Reset dependent fields
-        // $('#packageName').html('<option selected disabled>Select Package</option>');
-        $('#origin').html('<option selected disabled>Select Origin</option>');
-        $('#year').html('<option selected disabled>Select Year</option>');
-        $('#month').html('<option selected disabled>Select Month</option>');
-        $('#flightDate').html('<option selected disabled>Select Flight Date</option>');
-        $('#flightId').val('');
-        $('#flightPrice').text('0.00');
-        $('#maxSeats').text('');
-        $('#availSeats').text('');
-        $('#displayTotalPrice').text('0.00');
-        $('#totalPrice').val('0.00');
-        $('#totalPax').val('');
-        $('#totalPax').attr('placeholder', 'Enter Total Pax');
+      //   // Reset dependent fields
+      //   // $('#packageName').html('<option selected disabled>Select Package</option>');
+      //   $('#origin').html('<option selected disabled>Select Origin</option>');
+      //   $('#year').html('<option selected disabled>Select Year</option>');
+      //   $('#month').html('<option selected disabled>Select Month</option>');
+      //   $('#flightDate').html('<option selected disabled>Select Flight Date</option>');
+      //   $('#flightId').val('');
+      //   $('#flightPrice').text('0.00');
+      //   $('#maxSeats').text('');
+      //   $('#availSeats').text('');
+      //   $('#displayTotalPrice').text('0.00');
+      //   $('#totalPrice').val('0.00');
+      //   $('#totalPax').val('');
+      //   $('#totalPax').attr('placeholder', 'Enter Total Pax');
 
-        if (agentId) 
-        {
-          // Make an AJAX request to fetch agent code
-          $.ajax(
-          {
-            url: '../Agent Section/functions/fetchAgentCode.php',
-            type: 'POST',
-            data: { agentId: agentId },
-            success: function (response) 
-            {
-              try 
-              {
-                // Parse the JSON response
-                var data = JSON.parse(response);
+      //   if (agentId) 
+      //   {
+      //     // Make an AJAX request to fetch agent code
+      //     $.ajax(
+      //     {
+      //       url: '../Agent Section/functions/fetchAgentCode.php',
+      //       type: 'POST',
+      //       data: { agentId: agentId },
+      //       success: function (response) 
+      //       {
+      //         try 
+      //         {
+      //           // Parse the JSON response
+      //           var data = JSON.parse(response);
 
-                // Update the agentCode input field
-                $('#agentCode').val(data.agentCode || ''); // Set agent code or clear if empty
-              } catch (e) 
-              {
-                console.error('Error parsing JSON response:', e);
-              }
-            },
-            error: function (xhr, status, error) {
-                console.error('Error fetching agent code:', error);
-            }
-          });
-        } 
-        else 
-        {
-          $('#agentCode').val(''); // Clear the agentCode input field if no agent is selected
-        }
-      });
+      //           // Update the agentCode input field
+      //           $('#agentCode').val(data.agentCode || ''); // Set agent code or clear if empty
+      //         } catch (e) 
+      //         {
+      //           console.error('Error parsing JSON response:', e);
+      //         }
+      //       },
+      //       error: function (xhr, status, error) {
+      //           console.error('Error fetching agent code:', error);
+      //       }
+      //     });
+      //   } 
+      //   else 
+      //   {
+      //     $('#agentCode').val(''); // Clear the agentCode input field if no agent is selected
+      //   }
+      // });
 
       // Fetching Origin once Package was Selected
       $('#packageName').on('change', function () 
