@@ -52,21 +52,21 @@
 
     <div class="container-body">
 
-      <?php 
-      if(isset($_SESSION['status'])):
-      ?>
+        <?php 
+        if(isset($_SESSION['status'])):
+        ?>
 
         <div class="alert alert-warning alert-dismissible fade show" role="alert">
           <strong>Hey!</strong> <?= $_SESSION['status']; ?>
           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
 
-      <?php 
-        unset($_SESSION['status']);
-        endif;
-      ?>
+        <?php 
+          unset($_SESSION['status']);
+          endif;
+        ?>
 
-      <div class="bookingform">
+        <div class="bookingform">
           <form action="../Client Section/Functions/bookingform-code.php" method="POST">
             <div class="card">
               <div class="card-header bg-secondary text-white text-light">
@@ -94,7 +94,7 @@
                     <input type="hidden" id="agentCode" name="agentCode" placeholder="Agent Code">
 
                     <span id="agentError" class="text-danger"></span>
-                  </div>
+                </div>
                 </div>
 
                 <div class="row">
@@ -206,7 +206,7 @@
                 </div>          
 
                 <div class="land-only row">
-                <!-- Flight Details Input -->
+                  <!-- Flight Details Input -->
                   <div class="columns col-md-12" id="flightDetailsContainer" style="display: none;">
                     <div class="form-group">
                       <label for="flightDetails">Flight Details for Package Only</label>
@@ -214,12 +214,11 @@
                     </div>
                   </div>
                   
-
                   <input type="hidden" id="flightId" name="flightId" value="" placeholder="Flight Id Input">
                   <input type="hidden" id="packagePrice" name="packagePrice" placeholder="Package Price">
                   <input type="hidden" name="flightPrice" id="flightPricee" placeholder="Flight Price">
                   <!-- <input type="" name="agentId" id="agentId" value="<?php echo $_SESSION['agent_agentId']; ?>" placeholder="Agent Id"> -->
-              </div>
+                </div>
 
               </div>
 
@@ -481,115 +480,89 @@
                 <input type="hidden" id="totalPrice" name="totalPrice">
               </div>
             </div>
+        </div>
 
+        <!-- Booking Summary Modal -->
+        <div class="modal fade" id="BookingSummaryModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-md modal-dialog-centered"> <!-- Added modal-lg for a wider modal -->
+            <div class="modal-content">
 
-          <!-- Booking Summary Modal -->
-          <div class="modal fade" id="BookingSummaryModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg modal-dialog-centered"> <!-- Added modal-lg for a wider modal -->
-              <div class="modal-content position-relative">
-                    
-                <button type="button" class="btn-close close-outside p-4" data-bs-dismiss="modal" aria-label="Close"></button>
-                    
-                <div class="modal-body">
-                  <div class="confirmation-container container">
-                    <!-- Logo Section -->
-                    <div class="row d-flex justify-content-center align-items-center text-center mb-3 mt-2">
-                      <div class="col">
-                        <img src="../assets/images/SMART LOGO 2 (2).png" alt="Trip Image" class="img-fluid" style="max-width: 250px; max-height: 80px;">
-                      </div>
-                    </div>
-
-                    <h5 class="text-left mb-4">BOOKING SUMMARY</h5>
-
-                    <!-- Transaction and Contact Info -->
-                    <div class="transaction-info row mb-3">
-                      <div class="col-12">
-
-                        <div class="d-flex justify-content-between mb-1">
-                          <p class="mb-0"><strong>Contact Guest Name:</strong></p>
-                          <p class="mb-0" id="contactPersonName">Sample Name</p>
-                        </div>
-
-                        <div class="d-flex justify-content-between mb-1">
-                          <p class="mb-0"><strong>Contact Email:</strong></p>
-                          <p class="mb-0" id="contactPersonEmail">Sample Email</p>
-                        </div>
-                      </div>
-                    </div>
-
-                    <hr>
-
-                    <!-- Package Details -->
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="d-flex justify-content-between mb-1">
-                          <p class="mb-0"><strong>Package Name:</strong></p>
-                          <p class="mb-0" id="selectedPackage">No Package Selected</p>
-                        </div>
-
-                        <div class="d-flex justify-content-between">
-                          <p class="mb-0"><strong>No. of Guests:</strong></p>
-                          <p class="mb-0" id="guestCount">1</p>
-                        </div>
-                      </div>
-                    </div>
-
-                    <hr>
-
-                    <!-- Flight/Origin Details -->
-                    <div class="row">
-                        <div class="col-md-4">
-                          <div class="d-flex justify-content-between">
-                            <p class="mb-0"><strong>Origin:</strong></p>
-                            <p class="mb-0" id="selectedOrigin">No Origin Selected</p>
-                          </div>
-                        </div>
-
-                        <div class="col-md-4">
-                          <div class="d-flex justify-content-between">
-                            <p class="mb-0"><strong>Flight Date:</strong></p>
-                            <p class="mb-0" id="selectedDate">No Flight Date Selected</p>
-                          </div>
-                        </div>
-
-                        <!-- <div class="col-md-4">
-                          <div class="d-flex justify-content-between">
-                            <p class="mb-0"><strong>Flight Date:</strong></p>
-                            <p class="mb-0" id="selectedDate">No Flight Date Selected</p>
-                          </div>
-                        </div> -->
-
-                      </div>
-                    </div>
-
-                    <hr>
-
-                    <!-- Proceed to Payment -->
-                    <div class="row mt-4">
-                      <div class="col d-flex justify-content-between">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary" name="bookNow">Proceed to Payment</button>
-                      </div>
-                    </div>
-
-                  </div>
-                </div>
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Booking Summary</h5>
+                <button type="button" class="btn-close close-outside" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
+                  
+              <div class="modal-body">
+                  <!-- Transaction and Contact Info -->
+                  <div class="row">
+                      <div class="col-md-12">
+                          <div class="modal-columns-content">
+                              <p>Guest Name:</p>
+                              <p id="contactPersonName" class="bold">Dela Cruz, Juan C.</p>
+                          </div>
+                      
+                          <div class="modal-columns-content">
+                              <p>Email:</p>
+                              <p id="contactPersonEmail" class="bold">delacruzjuan@gmail.com</p>
+                          </div>
+                      </div>
+                  </div>
+
+                  <hr>
+
+                  <!-- Package Details -->
+                  <div class="row">
+                    <div class="col-md-12">
+                        <div class="modal-columns-content">
+                            <p>Package Name:</p>
+                            <p id="selectedPackage" class="bold">No Package Selected</p>
+                        </div>
+                    
+                        <div class="modal-columns-content">
+                            <p>No. of Guests:</p>
+                            <p id="guestCount" class="bold">1</p>
+                        </div>
+                    </div>
+                    
+                  </div>
+
+                  <hr>
+
+                  <!-- Flight/Origin Details -->
+                  <div class="row">
+                    <div class="col-md-12">
+                        <div class="modal-columns-content">
+                            <p>Origin:</p>
+                            <p id="selectedOrigin" class="bold">MNL - INC</p>
+                        </div>
+                    
+                        <div class="modal-columns-content">
+                            <p>Flight Date:</p>
+                            <p id="selectedDate" class="bold">No Flight Date Selected</p>
+                        </div>
+                    </div>
+                  </div>
+
+              </div>
+
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" name="bookNow">Proceed to Payment</button>
+              </div>
+
             </div>
+          </div>
+
+        </div>
+
+      </form>
+
     </div>
-  
-    </form>
-  </div>
 
   </div>
 
-  </div>
-
- </div>
 </div>
 
-
-
+ 
 
 <?php include '../Client Section/Includes/scripts.php'; ?>
 <!-- <script src="heartbeat.js"></script>  -->
@@ -627,6 +600,14 @@
       });
     });
   });
+</script>
+
+<script>
+  window.onload = function() {
+  // Triggering the modal to show
+  var myModal = new bootstrap.Modal(document.getElementById('BookingSummaryModal'));
+  myModal.show();
+};
 </script>
 
 <script>

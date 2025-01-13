@@ -199,6 +199,70 @@
 }
 
 
+/* Booking Summary - Modal */
+
+.modal-header	{
+	padding: 20px 25px;
+	border: 0;
+}
+
+.modal-header button {
+	color: black;
+	z-index: 100;
+}
+
+
+.modal-body {
+	padding:  20px 25px;
+	/* border: 1px solid black; */
+}
+
+.modal-columns-content {
+	display: flex;
+	justify-content: space-between;
+	margin: 0;
+}
+
+.modal-columns-content p{
+	font-weight: 400;
+	color: #4e4e4ede;
+	text-transform: uppercase;
+}
+
+.modal-columns-content .bold {
+	font-weight: 600;
+	color: #000000;
+}
+
+
+
+
+
+
+
+
+
+.modal-content {
+	border-radius: 8px;
+	background-color: #fff;
+	border: 1px solid #ccc;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+
+.modal-footer {
+	display: flex;
+	justify-content: left;
+	align-items: center;
+	width: 100%;
+}
+
+.modal-footer button {
+	width: 100%;
+}
+
+
+
 
 
 
