@@ -2,7 +2,6 @@
   session_start();
   require "../conn.php"; // Move up to the parent directory
 
-
   ini_set('display_errors', 1);
   ini_set('display_startup_errors', 1);
   error_reporting(E_ALL);
@@ -11,13 +10,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Employee - Dashboard</title>
+    <title>Dashboard</title>
     <?php include '../Employee Section/includes/emp-head.php'?>
     <link rel="stylesheet" href="../Employee Section/assets/css/emp-dashboard.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="../Employee Section/assets/css/emp-sidebar-navbar.css?v=<?php echo time(); ?>">
-   
 </head>
 <body>
 

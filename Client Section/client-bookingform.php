@@ -23,13 +23,6 @@
 
 
 
-
-
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -263,7 +256,7 @@
                   <!-- Middle Name Input -->
                   <div class="columns col-md-3">
                     <div class="form-group">
-                      <label class="mName" for="mName">Middle Name <span class="text-danger fw-bold">Type N/A if None</span></label>
+                      <label class="mName" for="mName">Middle Name <span class="text-danger fw-bold">N/A if None</span></label>
                       <input type="text" name="mName" id="mName" class="form-control" placeholder="Enter Middle Name" required>
                       <span id="mNameError" class="text-danger"></span> <!-- Error message for Middle Name -->
                     </div>
@@ -559,12 +552,12 @@
                           </div>
                         </div>
 
-                        <div class="col-md-4">
+                        <!-- <div class="col-md-4">
                           <div class="d-flex justify-content-between">
                             <p class="mb-0"><strong>Flight Date:</strong></p>
                             <p class="mb-0" id="selectedDate">No Flight Date Selected</p>
                           </div>
-                        </div>
+                        </div> -->
 
                       </div>
                     </div>
@@ -583,12 +576,12 @@
                 </div>
               </div>
             </div>
-      </div>
+    </div>
   
-      </form>
-    </div>
+    </form>
+  </div>
 
-    </div>
+  </div>
 
   </div>
 

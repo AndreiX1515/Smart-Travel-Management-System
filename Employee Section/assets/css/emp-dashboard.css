@@ -25,43 +25,43 @@
  
  
  .header-counts {
-   width: 100%;
-   padding: 10px 0px 10px 5px;
-  }
-  
-  
-  .header-counts h6 {
-   margin: 0; /* Removes default margin */
-   text-align: left;
-   color: rgb(255, 255, 255); /* Sets the text color with reduced opacity */
-   font-size: .9rem; /* Adjusts font size */
-   font-weight: bold;
-   letter-spacing: 0.5px; /* Adds slight spacing between letters */
-  }
+  width: 100%;
+  padding: 10px 0px 10px 5px;
+}
+
+
+.header-counts h6 {
+  margin: 0;
+  text-align: left;
+  color: rgb(255, 255, 255); 
+  font-size: .9rem; 
+  font-weight: bold;
+  letter-spacing: 0.5px; 
+}
  
  
  .white-pill {
-   display: inline-block; 
-   padding: 5px 20px 5px 10px;
-   font-size: .7rem;
-   font-weight: bold; 
-   color: rgb(255, 255, 255);
-   background-color: #1F75FE; 
-   border-radius: 0 50px 50px 0; 
-   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
-   letter-spacing: 0.5px; 
-   text-align: left; 
-   transition: box-shadow 0.3s ease, transform 0.2s ease; 
-  }
+  display: inline-block; 
+  padding: 5px 20px 5px 10px;
+  font-size: .7rem;
+  font-weight: bold; 
+  color: rgb(255, 255, 255);
+  background-color: #1F75FE; 
+  border-radius: 0 50px 50px 0; 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+  letter-spacing: 0.5px; 
+  text-align: left; 
+  transition: box-shadow 0.3s ease, transform 0.2s ease; 
+}
  
  
  .counts-wrapper .card {
   background-color: #343A40;
- }
+}
  
  .card .header {
-   padding: 0px 10px 0px 10px;
-   color: #4c4f52;
+  padding: 0px 10px 0px 10px;
+  color: #4c4f52;
  }
  
  
@@ -71,7 +71,11 @@
   gap: 10px;
  }
  
- .card-content .col-md-5 {
+.card-content {
+  padding: 30px;
+}
+
+.card-content .col-md-5 {
   margin-top: 5px;
   display: flex;
   flex-direction: row;
@@ -83,7 +87,7 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Added box shadow */
   border-radius: 8px; /* Optional: Slight rounding for a softer look */
   background-color: #fff; /* Optional: Ensure the shadow is visible */
- }
+}
  
  .totalpayment{
   height: 105px;

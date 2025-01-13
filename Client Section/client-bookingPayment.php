@@ -28,18 +28,17 @@
 
   <link rel="stylesheet" href="../Client Section/assets/css/payment.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="../Client Section/assets/css/client-navbar.css?v=<?php echo time(); ?>"> 
- 
 </head>
 
 <body>
 
 <?php
-    // Check if 'id' is passed in the URL
-    if (isset($_GET['id'])) 
-    {
-      $transactionNumber = htmlspecialchars($_GET['id']);
-    }
-  ?>
+  // Check if 'id' is passed in the URL
+  if (isset($_GET['id'])) 
+  {
+    $transactionNumber = htmlspecialchars($_GET['id']);
+  }
+?>
 
 <?php include '../Client Section/Includes/client-navbar.php'; ?>
 
@@ -54,8 +53,8 @@
     </div>
 
     <div class="container-body">
-      <?php 
-      if(isset($_SESSION['status'])):
+      <!-- <?php 
+      // if(isset($_SESSION['status'])):
       ?>
 
         <div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -64,58 +63,141 @@
         </div>
 
       <?php 
-        unset($_SESSION['status']);
-        endif;
-      ?>
+        // unset($_SESSION['status']);
+        // endif;
+      ?> -->
 
       <div class="subscription">
-        <div class="section section-1 px-3">
-          <div class="header-container d-flex flex-row justify-content-between mb-2">
+      
+        <div class="section section-1">
+          <div class="header-container">
             <h4>Choose Payment Method</h4>
           </div>
 
-          <div class="billing-options mt-4" >
-            <!-- Bank Transfer Payment Option -->
-            <div class="billing-card" data-value="bank-transfer">
-              <div class="radiobutton-container">
-                <input type="radio" name="billing">
-              </div>
-              <div class="payment-logo" style="margin-top: 10px;">
-                <i class="fas fa-money-bill-transfer" style="font-size: 52px;"></i>
-                <span>Bank Transfer</span>
-              </div>
-            </div>
+          <div class="billing-options">
+            <ul class="nav nav-pills" id="pills-tab" role="tablist">
+
+              <li class="navitems nav-item" role="presentation">
+                <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true" onclick="activateTab('home')">
+                  <div class="card card-tab">
+                    <div class="card-body">
+                      <i class="fas fa-money-bill-transfer"></i>
+                      <span>Bank Transfer</span>
+                    </div>
+                  </div>
+                </button>
+              </li>
+
+              <!-- Credit Card Card -->
+              <li class="navitems nav-item" role="presentation">
+                <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false" onclick="activateTab('profile')">
+                  <div class="card card-tab">
+                    <div class="card-body">
+                      <i class="fas fa-credit-card"></i>
+                      <span>Credit Card</span>
+                    </div>
+                  </div>
+                </button>
+              </li>
+
+              <!-- PayPal Card -->
+              <li class="navitems nav-item" role="presentation">
+                <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false" onclick="activateTab('contact')">
+                  <div class="card card-tab">
+                    <div class="card-body">
+                      <i class="fas fa-paypal"></i>
+                      <span>PayPal</span>
+                    </div>
+                  </div>
+                </button>
+              </li>
+
+            </ul>
+
           </div>
+
+          <!-- Feedback Section to Display Active Tab Note: To know which card are toggled-->
+          <!-- <div id="activeTabFeedback">
+            Currently active tab: <span id="activeTab">Bank Transfer</span>
+          </div> -->
+          
         </div>
 
-        <div class="section section-1 px-3">
-          <h3>Bank Details</h3>
-          <div class="bank-detail-row">
-            <div class="bank-detail-col">
-              <label for="bank-name">Bank Name:</label>
-              <p id="bank-name">Banco De Oro (BDO)</p>
-            </div>
-            <div class="bank-detail-col">
-              <label for="account-name">Account Name:</label>
-              <p id="account-name">Hyung Sub Kim (Nickname: Jed Kim)</p>
-            </div>
-          </div>
-          <div class="bank-detail-row">
-            <div class="bank-detail-col">
-              <label for="account-number">Account Number (PH - Peso):</label>
-              <p id="account-number">00780020352</p>
+        <script>
+          // JavaScript function to activate a specific tab and track the active state
+          function activateTab(tab) {
+            // Reset active class for all buttons
+            document.querySelectorAll('.nav-link').forEach(function(button) {
+              button.classList.remove('active');
+              button.setAttribute('aria-selected', 'false');
+            });
+
+            // Set active class for the selected button
+            let selectedTab = document.getElementById('pills-' + tab + '-tab');
+            selectedTab.classList.add('active');
+            selectedTab.setAttribute('aria-selected', 'true');
+            
+            // Update feedback section with the currently active tab
+            document.getElementById('activeTab').textContent = capitalizeFirstLetter(tab);
+          }
+
+          // Capitalize the first letter of the tab name for better readability
+          function capitalizeFirstLetter(str) {
+            return str.charAt(0).toUpperCase() + str.slice(1);
+          }
+        </script>
+
+        <div class="tab-content" id="pills-tabContent">
+
+          <!-- Bank Transfer Content -->
+          <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+            <div class="section section-1">
+              <h3>Bank Details</h3>
+              <div class="bank-detail-row">
+                <div class="bank-detail-col">
+                  <label for="bank-name">Bank Name:</label>
+                  <p id="bank-name">Banco De Oro (BDO)</p>
+                </div>
+                <div class="bank-detail-col">
+                  <label for="account-name">Account Name:</label>
+                  <p id="account-name">Hyung Sub Kim (Nickname: Jed Kim)</p>
+                </div>
+              </div>
+              <div class="bank-detail-row">
+                <div class="bank-detail-col">
+                  <label for="account-number">Account Number (PH - Peso):</label>
+                  <p id="account-number">00780020352</p>
+                </div>
+              </div>
+              <div class="bank-detail-row">
+                <div class="bank-detail-col">
+                  <label for="account-number">Account Number (US - Dollar):</label>
+                  <p id="account-number">10780018789</p>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div class="bank-detail-row">
-            <div class="bank-detail-col">
-              <label for="account-number">Account Number (US - Dollar):</label>
-              <p id="account-number">10780018789</p>
+          <!-- Credit Card Content -->
+          <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+            <div class="section section-2">
+              <h3>Credit Card Details</h3>
+              <!-- Credit Card Content Goes Here -->
             </div>
           </div>
+
+          <!-- PayPal Content -->
+          <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+            <div class="section section-3">
+              <h3>PayPal Details</h3>
+              <!-- PayPal Content Goes Here -->
+            </div>
+          </div>
+
         </div>
       </div>
-        
+      
+
       <div class="order-summary">
         <?php
           $packageName = "N/A"; 
@@ -197,29 +279,35 @@
           </div>
         </div>
 
-        <hr>
+        <div class="total row">
+            <div class="col-sm">
+              <div class="d-flex justify-content-between mb-1">
+                <p class="mb-0"><strong>Total:</strong></p>
+                <p class="mb-0">₱ <?php echo $formattedPrice; ?></p>
+              </div>
+            </div>
+        </div>   
 
-        <div class="row">
-          <div class="col-sm">
-            <div class="d-flex justify-content-between mb-1">
-              <p class="mb-0"><strong>Total:</strong></p>
-              <p class="mb-0">₱ <?php echo $formattedPrice; ?></p> <!-- Added commas for better readability -->
+        <form action="../Client Section/Functions/bookingPayment-code.php" method="POST" enctype="multipart/form-data">
+
+        <div class="os-second-section">
+          <div class="downpayment row">
+            <div class="col-sm">
+              <input type="hidden" value="<?php echo $accId; ?>" name="agentAccountId"> 
+              <input type="hidden" value="<?php echo $transactionNumber; ?>" name="transactNo">
+
+              <h6 class="my-3">Attach Proof/Screenshot of transaction:</h6>
+
+              <div class="file-attachment">
+                <input type="file" id="attachment" class="attachment" name="proofs[]" accept="image/*" required>
+              </div>
+
+              <input type="number" class="form-control" name="downpayment" step="0.01" min="<?php echo $downpayment; ?>" max="<?php echo $totalPrice; ?>" placeholder="Enter Downpayment Amount" required>
+              
             </div>
           </div>
-        </div>
-        
-        <form action="../Client Section/Functions/bookingPayment-code.php" method="POST" enctype="multipart/form-data">
-          <hr>
-          <input type="hidden" value="<?php echo $accId; ?>" name="agentAccountId"> <!-- Account ID Input (to be hidden) -->
 
-          <input type="hidden" value="<?php echo $transactionNumber; ?>" name="transactNo">
-
-          <input type="number" class="form-control" name="downpayment" step="0.01" min="<?php echo $downpayment; ?>" max="<?php echo $totalPrice; ?>" placeholder="Enter Downpayment Amount" required>
-          <h6 class="mt-4">Attach Proof/Screenshot of transaction:</h6>
-          <input type="file" id="attachment" class="attachment" name="proofs[]" accept="image/*" required>
-          <hr>
-
-          <div class="row mt-4">
+          <div class="row mt-2">
             <div class="col-sm">
               <div class="d-flex align-items-left mb-3"> <!-- Align items center for checkbox -->
                 <input type="checkbox" class="ms-1 me-3"> <!-- Added margin to the checkbox -->
@@ -233,9 +321,12 @@
               <button type="submit" class="pay-button" name="pay">Pay Now</button>
             </div>
           </div>
+
+
+        </div>
+
         </form>
       </div>
-    
     </div>
 
  </div>

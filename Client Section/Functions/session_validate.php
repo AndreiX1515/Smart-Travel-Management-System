@@ -7,7 +7,7 @@ $inactive = 600; // 10 minutes (600 seconds)
 if (!isset($_SESSION['accountId'])) {
     header("Location: ../Client Section/login.php?message=Please log in."); // Redirect with message
     exit;
-} 
+}
 
 // $session_id = session_id();
 // $accountid = $_SESSION['accountId'];
