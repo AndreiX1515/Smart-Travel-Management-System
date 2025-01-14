@@ -8,8 +8,13 @@
     $hotelId = $_POST['hotelId'];
 
     // Fetch distinct origins based on the selected packageId
-    $sql = mysqli_query($conn, "SELECT roomId, rooms, availRooms FROM fitrooms 
-                                WHERE hotelId = '$hotelId' ORDER BY price ASC");
+    $sql = mysqli_query($conn, "SELECT r.roomId as roomId, r.rooms as rooms, r.availRooms - IFNULL((
+                    SELECT SUM(rooms) 
+                    FROM fit f 
+                    WHERE f.roomId = r.roomId 
+                    AND f.status = 'Confirmed'), 0) AS availRooms 
+                                FROM fitrooms r
+                                WHERE r.hotelId = '$hotelId' ORDER BY r.price ASC");
 
     $roomOptions = '<option selected disabled>Select Room</option>'; // Default option
 
