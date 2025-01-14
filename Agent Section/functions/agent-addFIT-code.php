@@ -13,7 +13,8 @@
     $packageName = $_POST['packageName'];
     $nights = $_POST['nights'];
     $hotels = $_POST['hotels'];
-    $trip = $_POST['trip'];
+    $rooms = $_POST['rooms'];
+    $room = $_POST['room'];
     $dayPicker = $_POST['dayPicker'];
     $returnDate = $_POST['returnDate'];
     $pax = $_POST['pax'];
@@ -49,9 +50,9 @@
     $conn->begin_transaction();
 
     // Prepare the SQL statement for insertion into the booking table
-    $sql1 = "INSERT INTO fit (transactionNo, accountId, agentId, agentCode, packageName, nights, hotel, trip, startDate, returnDate, 
-    pax, phpPrice, usdPrice, fName, mName, lName, suffix, countryCode, contactNo, email, bookingDate, status) 
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), 'Pending')";
+    $sql1 = "INSERT INTO fit (transactionNo, accountId, agentId, agentCode, packageId, nights, hotelId, roomId, rooms, startDate, 
+    returnDate, pax, phpPrice, usdPrice, fName, mName, lName, suffix, countryCode, contactNo, email, bookingDate, status) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), 'Pending')";
     $stmt1 = $conn->prepare($sql1);
 
     if (!$stmt1) 
@@ -63,7 +64,7 @@
     }
 
     // Bind and execute the booking insertion
-    $stmt1->bind_param('sisssissssiddsssssss', $transactNo, $accountId, $agentId, $agentCode, $packageName, $nights, $hotels, $trip, 
+    $stmt1->bind_param('sissiiiiissiddsssssss', $transactNo, $accountId, $agentId, $agentCode, $packageName, $nights, $hotels, $room, $rooms, 
     $dayPicker, $returnDate, $pax, $totalCostPHP, $totalCostUSD, $fName, $mName, $lName, $suffix, $countryCode, $contactNo, $email);
     
     if (!$stmt1->execute()) 
