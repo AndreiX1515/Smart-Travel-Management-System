@@ -628,11 +628,11 @@ $(document).ready(function () {
         columnDefs: [
             { width: '10%', targets: 0 }, // ID
             { width: '15%', targets: 1 }, // Contact Person Name
-            { width: '20%', targets: 2 }, // Contact Person Details
-            { width: '15%', targets: 3 }, // Package Name
+            { width: '25%', targets: 2 }, // Contact Person Details
+            { width: '20%', targets: 3 }, // Package Name
             { width: '12%', targets: 4 }, // Booking Date
             { width: '13%', targets: 5 }, // Flight Date
-            { width: '10%', targets: 6 }, // Total Pax
+            { width: '5%', targets: 6 }, // Total Pax
             { width: '5%',  targets: 7 }  // Status
         ],
         language: {
