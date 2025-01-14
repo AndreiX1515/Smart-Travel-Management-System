@@ -360,8 +360,6 @@ body {
   white-space: nowrap; /* Prevent text wrapping */
 }
 
-
-
 .product-table tr {
   transition: background-color 0.3s, color 0.3s;
 }
