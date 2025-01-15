@@ -215,8 +215,9 @@
 
         </div>
 
-        <div class="btn-container">
-          <button id="generate-soa-btn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+        <div class="btn-container"> 
+         <!--  data-bs-toggle="modal" data-bs-target="#staticBackdrop" -->
+          <button id="generate-soa-btn" class="btn btn-primary" >
             Generate SOA
           </button>
         </div>
