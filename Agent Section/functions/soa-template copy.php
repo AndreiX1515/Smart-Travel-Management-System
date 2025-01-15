@@ -32,6 +32,11 @@ class PDF extends TCPDF {
             $this->Cell(30, 8, 'FROM', 1, 0, 'C');
             $this->Cell(60, 8, '', 1, 1, 'C');
 
+            $this->SetXY(110, 59);
+
+            $this->Cell(30, 8, 'UPDATE DATE:', 1, 0, 'C');
+            $this->Cell(60, 8, '', 1, 1, 'C');
+
             // Add a bit of space before starting the table
             $this->Ln(2); 
         }
@@ -45,7 +50,7 @@ class PDF extends TCPDF {
         $this->Ln(2);
 
         // Set the X and Y for the header
-        $this->SetXY(10, 63);
+        $this->SetXY(10, 69);
 
         $this->SetFont('Helvetica', 'B', 10, true);
         $this->SetFillColor(255, 255, 255); // White background
@@ -54,10 +59,10 @@ class PDF extends TCPDF {
         // Render header cells
         $this->Cell(15, 6, 'NO.', 1, 0, 'C', true); 
         $this->Cell(65, 6, 'CONTENTS', 1, 0, 'C', true);
-        $this->Cell(35, 6, 'Price ($)', 1, 0, 'C', true);
+        $this->Cell(35, 6, 'Price (USD)', 1, 0, 'C', true);
         $this->Cell(15, 6, 'PAX', 1, 0, 'C', true);
-        $this->Cell(30, 6, 'TOTAL ($)', 1, 0, 'C', true);
-        $this->Cell(30, 6, 'TOTAL (₱)', 1, 1, 'C', true);
+        $this->Cell(30, 6, 'TOTAL (USD)', 1, 0, 'C', true);
+        $this->Cell(30, 6, 'TOTAL (PHP)', 1, 1, 'C', true);
 
         $this->SetFont('Helvetica', '', 10, true);
         // Reset text color
@@ -115,7 +120,7 @@ class PDF extends TCPDF {
         $this->Ln(2);
     
         // Set the X and Y for the header based on passed Y position
-        $this->SetXY(125, $yPosition);
+        $this->SetXY(10, $yPosition);
     
         // Header cells
         $this->SetFont('Helvetica', '', 10, true);
@@ -123,7 +128,8 @@ class PDF extends TCPDF {
         $this->SetTextColor(0, 0, 0); // Black text color
     
         // Render subtotal cells
-        $this->Cell(35, 7, 'Sub Total', 1, 0, 'C', true);
+        $this->Cell(115, 7, '', 1, 0, 'C', true);
+        $this->Cell(35, 7, 'SUB TOTAL', 1, 0, 'C', true);
         $this->Cell(40, 7, 'PHP 999,999', 1, 0, 'C', true);
     
         // Reset text color
@@ -185,7 +191,7 @@ class PDF extends TCPDF {
         $this->Ln(2);
     
         // Set the X and Y for the header based on passed Y position
-        $this->SetXY(125, $yPosition);
+        $this->SetXY(10, $yPosition);
     
         // Header cells
         $this->SetFont('Helvetica', '', 10, true);
@@ -193,7 +199,8 @@ class PDF extends TCPDF {
         $this->SetTextColor(0, 0, 0); // Black text color
     
         // Render subtotal cells
-        $this->Cell(35, 7, 'Sub Total', 1, 0, 'C', true);
+        $this->Cell(115, 7, '', 1, 0, 'C', true);
+        $this->Cell(35, 7, 'SUB TOTAL', 1, 0, 'C', true);
         $this->Cell(40, 7, 'PHP 999,999', 1, 0, 'C', true);
     
         // Reset text color
@@ -272,11 +279,41 @@ class PDF extends TCPDF {
         $this->SetTextColor(0, 0, 0);
     
         // Return the final Y position for reference (add 7 for the row height)
+        return $yPosition + 9;
+    }
+
+    public function accountInfo($yPosition) {
+        $this->SetFont('Helvetica', 'B', 10);
+    
+        // Add some space after the previous content (to prevent overlap)
+        $this->Ln(2);
+    
+        // Set the X and Y for the header based on passed Y position
+        $this->SetXY(10, $yPosition);
+    
+        // Header cells
+        $this->SetFont('Helvetica', '', 10, true);
+        $this->SetFillColor(255, 255, 255); // White background
+        $this->SetTextColor(0, 0, 0); // Black text color   
+    
+        // Render header cells for Balance table using MultiCell
+        $this->SetFont('Helvetica', 'B', 10, true);
+        // Render MultiCell with no bottom border
+$this->MultiCell(190, 4, 'ACCOUNT INFORMATION', 'LTR', 'L', true);
+$this->SetFont('Helvetica', '', 10, true);
+$this->MultiCell(190, 7, 
+'Bank Name: Banco De Oro (BDO) - Zuellig Branch Makati Avenue
+Name of Account: Hyung Sub Kim (Nickname: Jed Kim)
+Peso Account No.: 007800203252
+US Dollar Account No.: 107800113512','LBR', 'L', true);
+
+        // Reset text color
+        $this->SetTextColor(0, 0, 0);
+    
+        // Return the final Y position for reference (add 7 for the row height)
         return $yPosition + 10;
     }
     
-
-
 
 }
 
@@ -307,8 +344,6 @@ $tableData2 = [
 
 $tableData3 = [
     ['no' => 1, 'contents' => 'Content 1', 'price' => 100, 'pax' => 2, 'total_usd' => 200, 'total_php' => 10000],
-    ['no' => 2, 'contents' => 'Content 2', 'price' => 150, 'pax' => 3, 'total_usd' => 450, 'total_php' => 22500],
-
 ];
 
 
@@ -320,13 +355,11 @@ $pdf->SetMargins(10, 10, 10); // Adjust to provide consistent spacing
 // $pdf->tableContentSubTotal();
 // Output the PDF
 
-
-
 $pdf->AddPage();
 $pdf->tableHeader();
 
 // Get the initial Y position after rendering the header
-$yPosition = 69; // Set the starting position for the first table
+$yPosition = 75; // Set the starting position for the first table
 
 // Pass the Y position to tableContent and get the updated position
 $yPosition = $pdf->tableContent($tableData, $yPosition);
@@ -345,6 +378,8 @@ $yPosition = $pdf->tableTippingFee($tableData3, $yPosition);
 
 // Pass the updated Y position to tableBalance and get the final position
 $yPosition = $pdf->tableBalance($yPosition);
+
+$yPosition = $pdf->accountInfo($yPosition);
 
 // Output the PDF
 $pdf->Output('itinerary-Winter.pdf', 'I');
