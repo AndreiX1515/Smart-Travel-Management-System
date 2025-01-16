@@ -36,7 +36,7 @@
           <h6 class="white-pill">Current Transaction</h6>
         </div>
     
-        <div class="card-content px-3">
+        <div class="card-content">
           <!-- Total and Confirmed Transaction Count -->
           <div class="row">
             <!-- Total Transaction Count -->
@@ -442,9 +442,9 @@
       <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
 
         <!-- Flight Seat Tracker Table -->
-        <div class="info-table-container" style="overflow-x: auto;">
+        <div class="info-table-container">
           <table class="info-table" id="info-table">
-            <thead class="border-2">
+            <thead>
               <tr>
                 <th rowspan="2">TEAM OP</th>
                 <th rowspan="2">ORIGIN</th>
@@ -595,7 +595,7 @@
                     echo '<td>' . $row['LandOnly'] . '</td>';
                     echo '<td>₱ ' . number_format($row['WholesalePrice'], 2) . '</td>';
                     echo '<td>₱ ' . number_format($row['RetailPrice'], 2) . '</td>';
-                    echo '<td style="padding: 0px 5px" >₱ ' . number_format($row['LandArrangement'], 2) . '</td>';
+                    echo '<td>₱ ' . number_format($row['LandArrangement'], 2) . '</td>';
               
                     foreach ($row as $key => $value) 
                     {
@@ -609,7 +609,8 @@
                         $colorIndex = array_search($key, array_keys($row)) % count($colors); // Cycle through the color array
                         $backgroundColor = $colors[$colorIndex];
 
-                        echo '<td style="font-weight: ' . $fontWeight . ';">' . $value . '</td>';
+                        echo '<td style="font-weight: ' . $fontWeight . '; border-left: 1px solid #ddd; border-right: 1px solid #ddd;">' . $value . '</td>';
+
                       }
                     }
                     echo '</tr>';
@@ -632,6 +633,7 @@
       <!-- Payment and Requests Table -->
       <div class="tab-pane fade " id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
 
+      <div class="tab-content">
         <div class="header-wrapper">
           <!-- Request Table -->
           <div class="request-wrapper">
@@ -790,31 +792,29 @@
             </div>
 
           </div>
-
         </div>
 
         <!-- Confirmed Transaction Tables -->
         <div class="confirm-container">
-            <div class="one">
-              <div class="header d-flex justify-content-between align-items-center">
-                <h6 class="white-pill fw-bolder">Confirmed Transactions</h6>
-              </div>
+            <div class="table-header">
+              <h6 class="white-pill">Confirmed Transactions</h6>
+            </div>
                 
-              <div class="body">
-                <div class="table-container confirm-table-container">
-                  <table class="confirm-table">
-                    <thead>
-                      <tr>
-                        <th>TRANSACTION NO.</th>
-                        <th>AGENT NAME</th>
-                        <th>PACKAGE</th>
-                        <th>FLIGHT DATE</th>
-                        <th>TOTAL PAX.</th>
-                        <th>BOOKING TYPE</th>
-                        <th>STATUS</th>
-                      </tr>
-                    </thead>
-                    <tbody>
+            <div class="body">
+              <div class="table-container confirm-table-container">
+                <table class="confirm-table">
+                  <thead>
+                    <tr>
+                      <th>TRANSACTION NO.</th>
+                      <th>AGENT NAME</th>
+                      <th>PACKAGE</th>
+                      <th>FLIGHT DATE</th>
+                      <th>TOTAL PAX.</th>
+                      <th>BOOKING TYPE</th>
+                      <th>STATUS</th>
+                    </tr>
+                  </thead>
+                  <tbody>
                     <?php
                       $query1 = "SELECT b.*, f.flightDepartureDate AS Start, p.packageName,
                                         f.returnDepartureDate AS End, CONCAT(a.lName, ', ', a.fName, 
@@ -882,17 +882,17 @@
 
 
                       $conn->close();
-
-
                     ?>
                   </tbody>
                 </table>
               </div>
-            </div>
+           
+
           </div>
         </div>
 
       </div>
+    </div>
 
 
       <!-- <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0"></div>
@@ -907,10 +907,11 @@
     <?php include '../Employee Section/includes/emp-scripts.php' ?>
 
     <script>
-    $(document).ready(function() {
-    // Check if DataTable is already initialized
+$(document).ready(function() {
+    // Initialize DataTable for .info-table if not already initialized
     if (!$.fn.DataTable.isDataTable('.info-table')) {
         var table = $('.info-table').DataTable({
+            autoWidth: false,
             scrollX: true,
             scrollY: '563px',
             paging: false, // Disable pagination
@@ -922,16 +923,46 @@
             dom: 'rt<"bottom"flp>',
             ordering: false, // Disable sorting on all columns
         });
-
-        // Add event listener for row selection using event delegation
-        $('.info-table').on('click', 'tbody tr', function() {
-            $('.info-table tbody tr').removeClass('selected'); // Clear selection
-            $(this).addClass('selected'); // Highlight selected row
-        });
     }
-});
 
-    </script>
+    // Function to apply the 'selected' class to rows in both tables
+    function selectRowInBothTables(index) {
+        // Remove the 'selected' class from all rows in both tables
+        $('.info-table tbody tr').removeClass('selected');
+        $('div.dataTables_wrapper tbody tr').removeClass('selected');
+
+        // Add the 'selected' class to the row at the given index in both tables
+        $('.info-table tbody tr').eq(index).addClass('selected');
+        $('div.dataTables_wrapper tbody tr').eq(index).addClass('selected');
+    }
+
+    // Add event listener for row clicks in .info-table using event delegation
+    $('.info-table').on('click', 'tbody tr', function() {
+        const index = $(this).index(); // Get the index of the clicked row
+        selectRowInBothTables(index);  // Trigger row selection for both tables
+    });
+
+    // Add event listener for row clicks in div.dataTables_wrapper using event delegation
+    $('div.dataTables_wrapper').on('click', 'tbody tr', function() {
+        const index = $(this).index(); // Get the index of the clicked row
+        selectRowInBothTables(index);  // Trigger row selection for both tables
+    });
+
+    // Add custom CSS for the selected row
+    $('<style>')
+        .prop('type', 'text/css')
+        .html(`
+            .info-table tbody tr.selected, div.dataTables_wrapper tbody tr.selected {
+                background-color: rgb(42, 204, 253) !important;
+                color: black !important;
+                font-weight: bold;
+            }
+        `)
+        .appendTo('head');
+});
+</script>
+
+
 
   </body>
 </html>

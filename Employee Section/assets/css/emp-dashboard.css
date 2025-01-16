@@ -60,7 +60,7 @@
 }
  
  .card .header {
-  padding: 0px 10px 0px 10px;
+  padding: 0px 5px 0px 5px;
   color: #4c4f52;
  }
  
@@ -72,7 +72,7 @@
  }
  
 .card-content {
-  padding: 30px;
+  padding: 10px;
 }
 
 .card-content .col-md-5 {
@@ -155,7 +155,8 @@
  /* Card 4 */
  .card-body-currency {
    width: 100%;
-   padding: 0px 10px;
+   padding: 5px 10px;
+   /* border: 1px solid black; */
   }
   
   /* Currency Cards Container */
@@ -170,7 +171,7 @@
   /* Individual Currency Card */
   .currency-card {
    width: 140px;
-   height: 10.5vh;
+   height: 11vh;
    padding: 0px; 
    display: flex;
    flex-direction: column;
@@ -250,22 +251,14 @@
   }
   
  
- 
- .header-wrapper {
-  display: flex;
-  flex-direction: row;
-  gap: 15px;
-  width: 100%;
-  height: 30vh;
-  margin-bottom: 5px;
- }
- 
  .navTabs-wrapper {
   width: 100%;
-  padding: 0px;
-  margin: 20px 0px;
+  padding: 5px 0px;
+  margin: 10px 0px 10px 0px;
   display: flex; /* Make the container a flexbox */
   gap: 10px; /* Added gap between each nav item */
+  border-radius: 15px;
+  /* border: 1px solid gainsboro; */
 }
 
 .nav-pills {
@@ -284,6 +277,7 @@
   padding: 8px 14px; 
   transition: all 0.3s ease; 
   border-radius: 15px;
+  border: 1px solid gainsboro;
   color: black;
 }
 
@@ -299,9 +293,26 @@
 }
 
  
+
+
+
+
+.tab-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
  
- 
- 
+
+.header-wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  width: 100%;
+  height: 30vh; 
+  gap: 20px;
+ }
+
  /* =======================================*/
  /* General Table CSS*/
  
@@ -459,7 +470,6 @@
  /* Wrapper for the Request Table */
  .request-wrapper {
   width: 50%;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1), 0px -4px 0px transparent;
   border-radius: 15px;
 }
 
@@ -467,12 +477,12 @@
  /* Container for the Request Table */
  .request-table-container {
    width: 100%; 
-   max-height: 280px; 
-   height: auto; 
+   height: 80%;
    overflow-x: auto; 
    overflow-y: auto; 
-   box-sizing: border-box; 
-   padding-right: 25px;
+   box-sizing: border-box;
+   border: 1px solid gainsboro; 
+   
  }
  
  /* Main Request Table */
@@ -533,13 +543,13 @@
   overflow-x: auto;
   overflow-y: auto; /* Ensure vertical scrolling for long content */
   width: 100%;
-  max-height: 240px;
+  height: 80%;
   padding-right: 10px;
+  border: 1px solid gainsboro;
 }
 
 .payment-wrapper {
   width: 50%;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1), 0px -4px 0px transparent;
   border-radius: 15px;
 }
 
@@ -608,55 +618,32 @@
 ============================ */
 .confirm-container {
   display: flex;
-  flex-direction: row;
-  gap: 8px;
-  position: relative;
-  height: 335px; /* Increased height for better visibility */
-  margin-top: 5px;
-  box-sizing: border-box;
-}
-
-.confirm-container .one {
+  flex-direction: column;
   width: 100%;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1), 0px -4px 0px transparent;
-}
-
-
-.confirm-container .one .header {
-  width: 100%;
-  padding: 10px 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 50px; /* Fixed height for the header */
+  height: 36vh;
 }
 
 /* ============================
    Confirm Table Container
 ============================ */
 .confirm-table-container {
-  width: 100%;
-  height: 275px; /* Dynamic height excluding header */
-  overflow-x: auto; /* Horizontal scrolling */
-  overflow-y: auto; /* Vertical scrolling for table rows */
-  -webkit-overflow-scrolling: touch;
-  background-color: transparent;
-  padding-right: 10px;
-  box-sizing: border-box; /* Ensure padding is included in dimensions */
+  width: 100%; 
+  height: 45.5%;
+  overflow-x: auto; 
+  overflow-y: auto; 
+  border: 1px solid gainsboro; 
 }
 
 /* ============================
    Confirm Table Styles
 ============================ */
 .confirm-table {
-  width: 100%;
-  border-collapse: collapse;
+  width: 100%; 
+  height: 30%; 
+  font-family: Arial, sans-serif;
   font-size: 14px;
-  background-color: transparent;
-  white-space: nowrap;
-  table-layout: auto; /* Improved layout for responsiveness */
-  height: 275px;
-  
+  text-align: left;
+  background-color: transparent; /* Ensure background is clear */
 }
 
 /* ============================
@@ -691,7 +678,7 @@
 
 .confirm-table tbody tr {
   background-color: transparent;
-  transition: background-color 0.3s ease-in-out; /* Smooth hover effect */
+  transition: background-color 0.3s ease-in-out;
   font-size: 12px;
   font-weight: bold;
 }
@@ -708,362 +695,214 @@
  
  
  
- .legend-guides {
-   display: flex;
-   flex-direction: row;
-   gap: 15px; /* Adjusted gap for balanced spacing */
-   justify-content: start; /* Align items to the left */
-   align-items: center;
-   flex-wrap: wrap; /* Allow wrapping if there are many items */
-   margin: 10px 0;
-   padding: 0;
- }
- 
- .legend-item-wrapper {
-   display: flex;
-   flex-direction: row;
-   align-items: center;
-   justify-content: center;
-   gap: 8px; /* Space between the color circle and text */
- }
- 
- .legend-item {
-   display: inline-flex;
-   align-items: center;
-   justify-content: center;
-   gap: 10px;
-   font-size: 12px;
-   font-weight: 500;
- }
- 
- .legend-text {
-   color: black; /* Specifically target h6 and set text color to black */
- }
- 
- .color-circle {
-   width: 12px;
-   height: 12px;
-   border-radius: 50%;
-   display: inline-block;
-   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
- }
- 
- /* Ensure the refresh button is spaced appropriately */
- .refresh-button-wrapper {
-   display: flex;
-   align-items: center;
-   justify-content: flex-end; /* Position button to the right */
- }
- 
- 
- 
+.legend-guides {
+  display: flex;
+  flex-direction: row;
+  gap: 15px; /* Adjusted gap for balanced spacing */
+  justify-content: start; /* Align items to the left */
+  align-items: center;
+  flex-wrap: wrap; /* Allow wrapping if there are many items */
+  margin: 10px 0;
+  padding: 0;
+}
+
+.legend-item-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 8px; /* Space between the color circle and text */
+}
+
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.legend-text {
+  color: black; /* Specifically target h6 and set text color to black */
+}
+
+.color-circle {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Ensure the refresh button is spaced appropriately */
+.refresh-button-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; /* Position button to the right */
+}
  
 
- /* Info Table Container */
- .info-table-container {
-   display: flex;
-   flex-direction: row;
-   position: relative;
-   height: 72vh; /* Fixed height for the container */
-   padding: 0px 0px 0px 0px;
- }
- 
- .info-table {
+
+/* Info Table Container */
+.info-table-container {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  height: 67.5vh; /* Fixed height for the container */
+  padding: 0;
+  overflow-x: auto; /* Allow horizontal scrolling */
+  overflow-y: hidden; /* Restrict vertical scrolling */
+}
+
+/* Ensure table and container sizes are consistent */
+.info-table {
   width: 100%;
-  overflow-x: auto; 
+  height: 100%; /* Match the height of the container */
   border-collapse: collapse;
   font-family: Arial, sans-serif;
   font-size: 12px;
   background-color: #fff;
+  color: #000000 !important;
   text-align: center;
+  table-layout: fixed; /* Ensure columns have a fixed width */
+  overflow: hidden; /* Prevent any unwanted overflow */
   box-sizing: border-box;
-  table-layout: fixed;
-  margin-top: 15px;
 }
 
-div.dataTables_wrapper {
-  width: 100%;
-  overflow-x: auto;
-  margin-bottom: 20px;
-}
-
-div.dataTables_wrapper thead {
-  font-size: 12px;
+.info-table tbody tr.selected {
+  background-color: rgb(42, 204, 253) !important;
+  color: black !important;
   font-weight: bold;
-  background-color: #f8f9fa;
-  color: #333;
-  border-bottom: 2px solid #e0e0e0;
 }
 
-div.dataTables_wrapper thead th {
-  padding: 12px 8px;
-  text-align: center;
-  font-weight: 600;
-  border-right: 1px solid #e6e6e6;
-  background-color: #f8f9fa;
-  white-space: normal;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-}
-
-div.dataTables_wrapper td {
-  padding: 10px 12px;
-  text-align: center;
-  font-size: 14px;
-  color: #555;
-  white-space: nowrap;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-div.dataTables_wrapper tbody tr:hover,
-div.dataTables_wrapper .dataTable tr:hover {
-  background-color: #f9f9f9;
-  color: #000;
+/* Optional: Change color on hover */
+.info-table tbody tr:hover {
+  background-color: #f9f9f9; /* Light hover effect */
   cursor: pointer;
 }
 
-div.dataTables_wrapper tbody tr.selected,
-div.dataTables_wrapper .dataTable tr.selected {
-  background-color: #e6f7ff;
-  color: #333;
+/* Add style for highlighted row */
+div.dataTables_wrapper tbody tr.selected {
+  background-color: rgb(42, 204, 253) !important;
+  color: black !important;
+  font-weight: bold;
 }
 
-div.dataTables_wrapper thead th:last-child,
-div.dataTables_wrapper td:last-child {
-  border-right: none;
+/* Highlight selected header cell */
+div.dataTables_wrapper thead th.selected {
+  background-color: #f1f1f1; /* Same as row highlight */
+  color: #000; /* Text color */
 }
 
-div.dataTables_wrapper thead th:first-child,
-div.dataTables_wrapper td:first-child {
-  border-left: none;
-  border-radius: 8px 0 0 8px;
+/* Optional: Change color on hover */
+div.dataTables_wrapper tbody tr:hover {
+  background-color: #f9f9f9; /* Light hover effect */
+  cursor: pointer;
 }
 
-div.dataTables_wrapper tbody tr:last-child td {
-  border-bottom: none;
+div.dataTables_wrapper td,
+div.dataTables_wrapper th {
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-div.dataTables_wrapper thead th:nth-child(-n+11),
-div.dataTables_wrapper td:nth-child(-n+11) {
-  position: sticky;
-  left: 0;
+/* Styling for table data (td) */
+div.dataTables_wrapper td {
+  padding: 14px 10px;
+  text-align: center;
+  font-size: 12px;
+  color: #555;
+  border-bottom: 1px solid #ddd; /* Border between rows */
+}
+
+div.dataTables_wrapper thead th {
+  padding: 8px 8px;
+  text-align: center;
+  font-weight: bold;
+  border-right: 1px solid #e6e6e6;
   background-color: #f8f9fa;
-  z-index: 10;
-  box-shadow: inset -1px 0 #ccc;
 }
- 
- /* Sticky Columns */
- .info-table th:nth-child(-n+11),
- .info-table td:nth-child(-n+11) {
-   position: sticky;
-   left: 0;
-   background-color: #f8f9fa; /* Light background for sticky columns */
-   z-index: 10; /* Ensure it stays on top of the other columns */
-   
- }
- 
- /* Adjust Scroll Behavior */
- div.dataTables_wrapper tbody {
-   overflow-y: visible; /* Prevent vertical scrolling in the body */
- }
- 
- /* Adjust column widths for the first 12 columns in DataTables */
- div.dataTables_wrapper thead th:nth-child(1), 
- div.dataTables_wrapper tbody td:nth-child(1) { 
-   width: 5%; 
- }
- 
- div.dataTables_wrapper thead th:nth-child(2), 
- div.dataTables_wrapper tbody td:nth-child(2) { 
-   width: 5%; 
- }
- 
- div.dataTables_wrapper thead th:nth-child(3), 
- div.dataTables_wrapper tbody td:nth-child(3) { 
-   width: 16%; 
- }
- 
- div.dataTables_wrapper thead th:nth-child(4), 
- div.dataTables_wrapper tbody td:nth-child(4) { 
-   width: 5%; 
- }
- 
- div.dataTables_wrapper thead th:nth-child(5), 
- div.dataTables_wrapper tbody td:nth-child(5) { 
-   width: 5%; 
- }
- 
- div.dataTables_wrapper thead th:nth-child(6), 
- div.dataTables_wrapper tbody td:nth-child(6) { 
-   width: 5%; 
- }
- 
- div.dataTables_wrapper thead th:nth-child(7), 
- div.dataTables_wrapper tbody td:nth-child(7) { 
-   width: 5%; 
- }
- 
- div.dataTables_wrapper thead th:nth-child(8), 
- div.dataTables_wrapper tbody td:nth-child(8) { 
-   width: 5%; 
- }
- 
- div.dataTables_wrapper thead th:nth-child(9), 
- div.dataTables_wrapper tbody td:nth-child(9) { 
-   width: 5%; 
- }
- 
- /* Adjust column widths for additional columns beyond the 12th */
-div.dataTables_wrapper thead th:nth-child(n+10), 
-div.dataTables_wrapper tbody td:nth-child(n+10) { 
+
+
+/* Sticky Columns for DataTables (first 11 columns) */
+div.dataTables_wrapper thead th:nth-child(-n+11),
+div.dataTables_wrapper tbody td:nth-child(-n+11) {
+  position: sticky;
+  left: 5;
+  background-color: #f8f9fa; /* Light background for sticky columns */
+  z-index: 10; /* Ensure it stays on top of the other columns */
+}
+
+/* Column-Specific Width Adjustments */
+div.dataTables_wrapper thead th:nth-child(1),
+div.dataTables_wrapper tbody td:nth-child(1) {
+  width: 8%;
+}
+
+div.dataTables_wrapper thead th:nth-child(2),
+div.dataTables_wrapper tbody td:nth-child(2) {
+  width: 5%;
+}
+
+div.dataTables_wrapper thead th:nth-child(3),
+div.dataTables_wrapper tbody td:nth-child(3) {
+  width: 15%;
+}
+
+div.dataTables_wrapper thead th:nth-child(4),
+div.dataTables_wrapper tbody td:nth-child(4) {
+  width: 5%;
+  
+}
+
+div.dataTables_wrapper thead th:nth-child(5),
+div.dataTables_wrapper tbody td:nth-child(5) {
+  width: 5%;
+}
+
+div.dataTables_wrapper thead th:nth-child(6),
+div.dataTables_wrapper tbody td:nth-child(6) {
+  width: 5%;
+}
+
+div.dataTables_wrapper thead th:nth-child(7),
+div.dataTables_wrapper tbody td:nth-child(7) {
+  width: 5%;
+}
+
+div.dataTables_wrapper thead th:nth-child(8),
+div.dataTables_wrapper tbody td:nth-child(8) {
   width: 10%;
-  box-sizing: border-box;
 }
 
+div.dataTables_wrapper thead th:nth-child(9),
+div.dataTables_wrapper tbody td:nth-child(9) {
+  width: 10%;
+}
 
- 
- 
- 
+div.dataTables_wrapper thead th:nth-child(10),
+div.dataTables_wrapper tbody td:nth-child(10) {
+  width: 10%;
+}
 
- /* Always show the profile icon */
- .profile-icon-visible {
-   display: block !important;
-  }
+div.dataTables_wrapper thead th:nth-child(11),
+div.dataTables_wrapper tbody td:nth-child(11) {
+  width: 10%;
+}
+
+/* For columns beyond 12th */
+div.dataTables_wrapper thead th:nth-child(n+12),
+div.dataTables_wrapper tbody td:nth-child(n+12) {
+  width: 10%; /* Default width for columns beyond 12 */
+}
+
+/* Profile Icon */
+.profile-icon-visible {
+  display: block !important;
+}
+
   
 
 
 
-  /* Info Table
- .info-table {
-  width: 100%;
-  overflow-x: auto; 
-  border-collapse: collapse;
-  font-family: Arial, sans-serif;
-  font-size: 12px;
-  background-color: #fff;
-  text-align: center;
-  box-sizing: border-box;
-  table-layout: fixed;
-  margin-top: 15px;
-}
-
-
-div.dataTables_wrapper {
-  width: 100%;
-  overflow-x: auto; 
-}
-
-
-div.dataTables_wrapper thead {
-  padding: 8px 12px;
-  font-size: 12px;
-  font-weight: bold;
-  background-color: #f8f9fa; 
-  color: #333; 
-  z-index: 2;
-  border-bottom: 2px solid #e0e0e0; 
-}
-
-div.dataTables_wrapper thead th {
-  padding: 10px 0;
-  text-align: center;
-  border-right: 1px solid grey;
-  border-left: 1px solid grey;
-  font-weight: 600;
-  background-color: transparent;
-  white-space: normal;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-}
-
-
-div.dataTables_wrapper td {
-  padding: 10px 12px;
-  border: 1px solid #ccc;
-  text-align: center;
-  font-size: 14px;
-  white-space: nowrap;
-  transition: background-color 0.3s ease; 
-}
-
-
-div.dataTables_wrapper tbody tr:hover,
-div.dataTables_wrapper .dataTable tr:hover {
-  background-color: #f1f1f1;
-  cursor: pointer;
-}
-
-
-div.dataTables_wrapper tbody tr.selected,
-div.dataTables_wrapper .dataTable tr.selected {
-  background-color: #dcdcdc; 
-  color: #333; 
-}
-
-
-.info-table th:nth-child(-n+11),
-.info-table td:nth-child(-n+11) {
-  position: sticky;
-  left: 0;
-  background-color: #f8f9fa; 
-  z-index: 10;
-  box-shadow: inset -1px 0 #ccc; 
-}
-
-
-div.dataTables_wrapper tbody {
-  overflow-y: visible; 
-}
-
-
-div.dataTables_wrapper thead th:nth-child(1), 
-div.dataTables_wrapper tbody td:nth-child(1) { 
-  width: 5%; 
-}
-
-div.dataTables_wrapper thead th:nth-child(2), 
-div.dataTables_wrapper tbody td:nth-child(2) { 
-  width: 5%; 
-}
-
-div.dataTables_wrapper thead th:nth-child(3), 
-div.dataTables_wrapper tbody td:nth-child(3) { 
-  width: 16%; 
-}
-
-div.dataTables_wrapper thead th:nth-child(4), 
-div.dataTables_wrapper tbody td:nth-child(4) { 
-  width: 5%; 
-}
-
-div.dataTables_wrapper thead th:nth-child(5), 
-div.dataTables_wrapper tbody td:nth-child(5) { 
-  width: 5%; 
-}
-
-div.dataTables_wrapper thead th:nth-child(6), 
-div.dataTables_wrapper tbody td:nth-child(6) { 
-  width: 5%; 
-}
-
-div.dataTables_wrapper thead th:nth-child(7), 
-div.dataTables_wrapper tbody td:nth-child(7) { 
-  width: 5%; 
-}
-
-div.dataTables_wrapper thead th:nth-child(8), 
-div.dataTables_wrapper tbody td:nth-child(8) { 
-  width: 5%; 
-}
-
-div.dataTables_wrapper thead th:nth-child(9), 
-div.dataTables_wrapper tbody td:nth-child(9) { 
-  width: 5%; 
-}
-
-
-div.dataTables_wrapper thead th:nth-child(n+10), 
-div.dataTables_wrapper tbody td:nth-child(n+10) { 
-  width: 10%; 
-} */
-
+ 
