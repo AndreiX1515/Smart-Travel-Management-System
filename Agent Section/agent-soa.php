@@ -152,7 +152,7 @@
           <div class="columns col-md-2">
             <div class="table-filters-container">
               <label for="company-filter">Month</label>
-              <select id="company-filter" name="company-filter" class="form-control">
+              <select id="month-filter" name="month-filter" class="form-control">
                 <option value="January">January</option>
                 <option value="February">February</option>
                 <option value="March">March</option>
@@ -221,11 +221,38 @@
             Generate SOA
           </button>
         </div>
+
       </div>
     
+      <script>
+          // Get the generate SOA button and table container
+          const generateSoaBtn = document.getElementById('generate-soa-btn');
+          const tableContainer = document.querySelector('.table-content-product');
+
+          // Add event listener to the button to show the table container
+          generateSoaBtn.addEventListener('click', function() {
+              // Get the selected values
+              const company = document.getElementById('company-filter').value;
+              const month = document.getElementById('month-filter').value;
+              const year = document.getElementById('year-filter').value;
+
+              // Fetch data based on selected values (you can replace this part with your data-fetching logic)
+              console.log('Company:', company);
+              console.log('Month:', month);
+              console.log('Year:', year);
+
+              // Show the table container
+              tableContainer.style.display = 'block';
+
+              // Optionally, you can dynamically populate the table based on the selected filters
+              // For example, using AJAX to fetch the data from the server
+              // Here you could write AJAX or other logic to load the relevant data into the table.
+          });
+      </script>
+
       <div class="table-container-product">
-        <div class="table-content-product">
-          <table class="product-table">
+        <div class="table-content-product" style="display: none;">
+          <table class="product-table" id="soa-table" >
             <thead>
               <tr>
                 <th>No.</th>
@@ -444,10 +471,6 @@
 
         </div>
       </div>
-
-
-      
-      
     </div>
     
     <div class="content-footer">
@@ -565,6 +588,76 @@
 <?php require "../Agent Section/includes/scripts.php"; ?>
 
 <script>
+  $(document).ready(function () {
+  // Dynamically populate year options
+  const currentYear = new Date().getFullYear();
+  const yearSelect = $('#year-filter');
+  for (let i = currentYear - 5; i <= currentYear + 5; i++) {
+    const option = $('<option>', {
+      value: i,
+      text: i
+    });
+    yearSelect.append(option);
+  }
+  yearSelect.val(currentYear); // Set the current year as default
+
+  // Handle the Generate SOA button click
+  $('#generate-soa-btn').on('click', function () {
+    const companyName = $('#company-filter').val();
+    const month = $('#month-filter').val();
+    const year = $('#year-filter').val();
+
+    // Check if all required values are selected
+    if (companyName !== 'All' && month && year) {
+      // Show the table container
+      $('.table-content-product').show();
+
+      // Simulating an AJAX call to fetch data (dummy data)
+      setTimeout(function () {
+        // Dummy data based on the selection
+        const dummyData = [
+          { no: 1, description: 'Hotel Stay B', priceUSD: 150, pricePHP: 7500, pax: 5, totalUSD: 750, totalPHP: 37500 },
+          { no: 2, description: 'Flight C', priceUSD: 300, pricePHP: 15000, pax: 8, totalUSD: 2400, totalPHP: 120000 },
+          { no: 3, description: 'Tour Package D', priceUSD: 450, pricePHP: 22500, pax: 12, totalUSD: 5400, totalPHP: 270000 },
+          { no: 4, description: 'Hotel Stay E', priceUSD: 200, pricePHP: 10000, pax: 6, totalUSD: 1200, totalPHP: 60000 },
+          { no: 5, description: 'Flight F', priceUSD: 250, pricePHP: 12500, pax: 7, totalUSD: 1750, totalPHP: 87500 },
+          { no: 6, description: 'Tour Package G', priceUSD: 600, pricePHP: 30000, pax: 15, totalUSD: 9000, totalPHP: 450000 }
+        ];
+
+        // Populate the table with dummy data
+        let tableContent = '';
+        dummyData.forEach(function (row) {
+          tableContent += `<tr>
+            <td>${row.no}</td>
+            <td>${row.description}</td>
+            <td>${row.priceUSD}</td>
+            <td>${row.pricePHP}</td>
+            <td>${row.pax}</td>
+            <td>${row.totalUSD}</td>
+            <td>${row.totalPHP}</td>
+          </tr>`;
+        });
+
+        // Insert the rows into the table body
+        $('.table-content-product tbody').html(tableContent);
+      }, 500); // Simulating AJAX delay
+    } else {
+      // If any filter is not selected, show an alert
+      alert('Please select a valid company, month, and year.');
+    }
+  });
+});
+
+</script>
+
+
+
+
+
+
+
+
+<script>
 
 function openModal(row) {
     const transactNo = row.getAttribute('data-transact-no'); // Get the transact number
@@ -612,7 +705,6 @@ function closeModal() {
     });
   });
 </script>
-
 
 <script>
  const table = $('#product-table').DataTable({
