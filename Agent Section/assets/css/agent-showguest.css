@@ -29,11 +29,10 @@ body {
   box-sizing: border-box;
 }
 
-
 .transaction-info {
  display: flex;
  flex-direction: column;
- width: 40%; 
+ width: 50%; 
  padding: 15px; 
  border: 1px solid #e9edf0;
  background-color: transparent;
@@ -67,6 +66,101 @@ body {
  padding: 3px 8px; /* Reduced padding for a smaller badge */
 }
 
+.transaction-header {
+  width: 100%;
+  height: 15vh;
+  /* border: 1px solid black; */
+  display: flex;
+  justify-content: space-between;
+  align-items: last baseline;
+  padding: 0px 10px;
+}
+
+.transaction-info-body {
+  width: 100%;
+  height: 75vh;
+  /* border: 1px solid black; */
+  padding: 5px 15px 5px 15px;
+}
+
+.transaction-info-body .row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.transaction-info-body .col-md-5.columns {
+  padding-right: 15px; /* Optional: Adjust for spacing */
+}
+
+.transaction-info-body .info-item {
+  margin-bottom: 10px; /* Gap between each item */
+  text-transform: capitalize;
+}
+
+.transaction-info-body .info-item-email{
+  margin-bottom: 10px; /* Gap between each item */
+}
+
+.transaction-info-body .info-item p {
+  margin: 0;
+}
+
+
+
+
+
+.transaction-info-footer {
+  display: flex;
+  justify-content: end;
+  height: 10vh;
+  /* border: 1px solid black; */
+  display: flex;
+  gap: 10px;
+  justify-content: end;
+  align-items: last baseline;
+}
+
+.transaction-info-footer button {
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Cancel Button Styling */
+.transaction-info-footer .cancel-btn {
+  background-color: #dc3545;
+  color: white;
+}
+
+.transaction-info-footer .cancel-btn:hover {
+  background-color: #c82333;
+}
+
+/* Payment Button Styling */
+.transaction-info-footer .payment-btn {
+  background-color: #007bff;
+  color: white;
+}
+
+.transaction-info-footer .payment-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Request Button Styling */
+.transaction-info-footer .request-btn {
+  background-color: #007bff;
+  color: white;
+}
+
+.transaction-info-footer .request-btn:hover {
+  background-color: #0056b3;
+}
+
+
+
 @media (max-width: 768px) {
  .transaction-info {
    padding: 10px; /* Further reduce padding on small screens */
@@ -82,23 +176,57 @@ body {
 }
 
 
-
-
-
-
 .table-wrapper {
- display: flex;
- flex-direction: column;
- width: 60%; 
- border: 1px solid #e9edf0;
- background-color: transparent;
- border-radius: 8px;
- box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  padding: 15px;
+  border: 1px solid #e9edf0;
+  background-color: transparent;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+.table-wrapper .transaction-header h5 {
+  font-size: 1em; /* Slightly smaller heading */
+  margin-bottom: 8px; /* Reduced space below the header */
 }
 
 
 
+ 
 
+
+.transaction-body {
+  width: 100%;
+  height: 70vh;
+  border: 1px solid #e0e0e0; /* Light, soft border color for a minimalist look */
+  border-radius: 8px; /* Rounded corners for a modern, clean look */
+  background-color: #ffffff; /* Flat white background */
+  box-shadow: none; /* Removing any shadow for a flatter appearance */
+  padding: 15px 10px; /* Padding for internal spacing */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  
+}
+
+.tab-content {
+  width: 100%;
+  height: 50vh;
+}
+
+
+.pills-tab-container {
+  width: 100%;
+  /* border: 1px solid black; */
+}
+
+.body-tab-container {
+  width: 100%;
+  /* border: 1px solid black; */
+
+}
 
 
 
@@ -120,7 +248,6 @@ body {
   flex-direction: column;
   gap: 10px;
   background-color: transparent;
-  
   box-sizing: border-box;
  }
  
@@ -290,10 +417,6 @@ body {
  background: #555; /* Thumb color on hover */
 }
 
- 
-
-
-
 
 /* Table status badges */
 .td-status-confirmed {
@@ -305,7 +428,6 @@ body {
  text-align: center;
  display: inline-block;
 }
-
 
 .td-status-pending {
  font-weight: 600;
