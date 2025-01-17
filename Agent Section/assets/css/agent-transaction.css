@@ -7,7 +7,6 @@ body {
 }
  
 
-
 /* Minimalist Styling for Navigation Container */
 .nav-start-container {
   display: flex;
@@ -59,16 +58,6 @@ body {
   color: #333; /* Dark color for text */
   margin: 0;
 }
-
-
-
-
-
-
-
-
-
-
 
 
 .content-wrapper {
