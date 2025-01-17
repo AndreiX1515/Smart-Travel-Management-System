@@ -602,13 +602,13 @@
   });
 </script>
 
-<script>
+<!-- <script>
   window.onload = function() {
   // Triggering the modal to show
   var myModal = new bootstrap.Modal(document.getElementById('BookingSummaryModal'));
   myModal.show();
 };
-</script>
+</script> -->
 
 <script>
 $(document).ready(function () {
