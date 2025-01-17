@@ -1,0 +1,141 @@
+.main-content .container-content {
+  padding: 0px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.card {
+  margin-bottom: 10px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: last baseline;
+  padding: 5px 15px;
+  background-color: #343a40e0;
+  
+}
+
+.card-header h4 {
+  margin-top: 10px;
+  font-size: 18px;
+  color: #fff;
+}
+
+.card-body {
+  padding: 20px 15px;
+}
+
+.card-footer {
+  width: 100%;
+  padding: 10px 15px;
+  display: flex;
+  justify-content: start;
+  align-items: last baseline;
+}
+
+.card-footer .row {
+  width: 100%;
+  margin-top: 10px;
+  display: flex;
+}
+
+.booking-info .columns h5 {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.booking-info .columns span {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.booking-info .form-group label {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.booking-info .card-body  {
+  padding: 20px 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.booking-info .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.booking-info .form-group label {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.booking-info .email-fields input {
+  margin-top: 8px;
+  /* border: 1px solid black; */
+}
+
+.booking-info .input-group select {
+  margin-top: 8px;
+}
+
+
+
+
+
+
+
+.contact-person-details .card-body  {
+  padding: 20px 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.contact-person-details .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.contact-person-details .form-group label {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.contact-person-details .email-fields input {
+  margin-top: 8px;
+  /* border: 1px solid black; */
+}
+
+.contact-person-details .input-group select {
+  margin-top: 8px;
+}
+
+.second-row .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.book-now .card-footer {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+
+}
+
+
+
+
+
+
+
+
+
+

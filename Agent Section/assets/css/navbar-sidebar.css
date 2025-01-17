@@ -14,6 +14,7 @@ body {
 }
 
 
+
 /* Misc */
 .horizontal-line {
  width: 100%; /* Full width */
@@ -22,17 +23,22 @@ body {
  margin: 10px 0; /* Space above and below the line */
 }
 
-/* Main Content Section */
-.main-content {
-  margin-left: 0; /* Start with no margin to account for hidden sidebar */
-  transition: margin-left 0.5s ease; /* Smooth transition for margin */
-  position: relative; /* Keep it relative for positioning */
+
+.main-content-container {
+  border: 1px solid black;
 }
 
-/* Adjust margin when the sidebar is active */
-.main-content.active {
- margin-left: 250px; /* Add margin to account for visible sidebar */
+
+/* Main Content Section */
+.main-content {
+  margin-left: 0; 
+  transition: margin-left 0.5s ease; 
+  position: relative;
+  border: 1px solid black;
 }
+
+
+
 
 
 
@@ -219,6 +225,14 @@ body {
 }
 
 
+
+
+
+
+
+
+
+
 /* Navbar Section */
 .navbar {
  padding: 10px 15px 5px 0px; 
@@ -337,3 +351,4 @@ body {
  font-size: 0.85rem;
  color: #6c757d;
 }
+

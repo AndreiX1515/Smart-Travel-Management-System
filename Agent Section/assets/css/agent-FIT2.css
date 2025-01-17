@@ -1,0 +1,389 @@
+body {
+  background-color: transparent;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+.main-content {
+  width: 100%;
+  border: 1px solid black;
+  margin-left: 40%;
+}
+
+
+
+ 
+.main-container {
+  display: flex;
+  justify-content: start;
+  width: 100%;
+  border: 1px solid black;
+}
+
+.container-content {
+  width: 100%;
+  border: 1px solid black;
+}
+
+.content-wrapper {
+ height: 35vh;
+ width: 95%;
+ margin: 0px 40px 0px 15px;
+ display: flex;
+ flex-direction: column;
+ gap: 10px;
+ background-color: transparent;
+ box-sizing: border-box;
+}
+
+.content-wrapper-transact {
+ height: 90vh;
+ width: 95%;
+ margin: 0px 10px 0px 10px;
+ display: flex;
+ flex-direction: column;
+ gap: 10px;
+ background-color: transparent;
+ box-sizing: border-box;
+}
+ 
+
+.table-header {
+  border: 1px solid #ced4da; /* Optional border color */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Box shadow for a subtle effect */
+  padding: 5px 0px 10px 0px;
+  background-color: #f8f9fa; /* Optional background color */
+  border-radius: 5px; /* Optional rounded corners */
+ }
+ 
+.sorting-wrapper {
+ display: flex;
+ justify-content: space-between;
+ padding: 0px 0px; /* Top, right, bottom (0px), left */
+
+}
+
+.sorting-wrapper label {
+ font-size: 14px;
+ font-weight: 600;
+}
+
+
+.dropdown-sorting-wrapper {
+  display: flex;
+  gap: 15px;
+  justify-content: last baseline;
+}
+
+
+
+.flightbooking-wrapper {
+  display: flex;
+  justify-content: end;
+  width: 55%;
+  gap: 25px;
+  padding: 15px 15px 15px 0px;
+
+
+}
+
+.flightbooking-wrapper input {
+  width: 150px;
+  height: 35px;
+}
+
+.flightbooking-wrapper input:hover {
+  cursor: pointer;
+}
+
+.date-range-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.date-range-inputs-wrapper {
+  display: flex;
+  margin: 5px 0px;
+  gap: 15px;
+  align-items: last baseline;
+}
+
+
+
+
+.filter-field {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  margin-left: 10px;
+}
+
+#clearSorting {
+  font-size: 12px;
+  padding: 8px 10px;
+  align-self: center;
+}
+
+
+
+.datepicker {
+  padding: 4px 10px;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  font-size: 14px;
+  z-index: 10;
+}
+ 
+.datepicker:focus {
+  border-color: #116530; /* Match your preferred color */
+  box-shadow: 0 0 4px rgba(17, 101, 48, 0.4);
+}
+ 
+ 
+.datepicker-wrapper:hover{
+  cursor: pointer;
+}
+ 
+.select-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.select-wrapper::after {
+  content: "\25BC"; 
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  font-size: 16px;
+  color: #555;
+  pointer-events: none; 
+}
+ 
+.custom-select, 
+.filter-group select {
+  appearance: none; 
+  width: 100%;
+  min-width: 150px;
+  padding: 5px 40px 5px 10px; 
+  font-size: 14px;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  background-color: #ffffff;
+  background-clip: padding-box;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.search-bar {
+  position: sticky;
+  top: 0;
+  transform: translateY(0);
+  transition: transform 0.3s ease;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: last baseline;
+  padding: 5px 10px;
+  border-radius: 8px 8px 0 0;
+  z-index: 0;
+}
+
+.right-side {
+  font-size: 14px;
+  font-weight: 500;
+  
+}
+
+
+.search-bar.scrolled-upward {
+  transform: translateY(-30px); /* Adjusts position slightly upward */
+}
+
+ 
+ .search-input {
+  flex-grow: 2;
+  width: 250px;
+ }
+  
+  .search-input input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #d3d6d8;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #333;
+  background-color: #ffffff;
+  transition: border-color 0.3s ease;
+ }
+ 
+ .search-input input::placeholder {
+  color: #999;
+ }
+ 
+ .search-input input:focus {
+  border-color: #4e73df;
+  outline: none;
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ /* Table container styling */
+
+ 
+ /* Disable sorting on columns 1 through 8
+ table.dataTable th:nth-child(1),
+ table.dataTable th:nth-child(2),
+ table.dataTable th:nth-child(3),
+ table.dataTable th:nth-child(4),
+ table.dataTable th:nth-child(5),
+ table.dataTable th:nth-child(6),
+ table.dataTable th:nth-child(7),
+ table.dataTable th:nth-child(8) {
+     pointer-events: none;  
+     user-select: none; 
+ } */
+
+ .table-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+ }
+ 
+ .show-column span{
+  color: black;
+  font-weight: 600;
+ }
+ 
+ .show-column select {
+  margin-left: 5px;
+  padding: 3px;
+  border-radius: 10px;
+ }
+ 
+ .table-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  flex: 1;
+  padding: 5px;
+  background-color: transparent;
+  overflow-y: auto; /* Enable vertical scrolling */
+  overflow-x: auto; /* Enable horizontal scrolling */
+  box-sizing: border-box;
+}
+
+/* Transaction Table */
+.product-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  table-layout: auto; /* Allow dynamic column width */
+  overflow: hidden; /* Ensure the table itself doesn't overflow */
+}
+
+.table-container::-webkit-scrollbar {
+  width: 8px; /* Scrollbar width */
+  height: 8px; /* Scrollbar height for horizontal scroll */
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.3); /* Scrollbar thumb color */
+  border-radius: 4px; /* Rounded scrollbar thumb */
+}
+
+.table-container::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0.1); /* Scrollbar track color */
+}
+
+
+.product-table th {
+  position: sticky; /* Keep header fixed during scrolling */
+  top: 0;
+  z-index: 1; /* Ensure header is on top */
+  background-color: #e6e6e6; /* Light background for headers */
+  font-weight: bold;
+}
+
+
+.product-table th,
+.product-table td {
+  padding: 10px; /* Unified padding for consistency */
+  text-align: left;
+  border-bottom: 1px solid #ddd; /* Consistent border styling */
+  font-size: 0.9em;
+  white-space: nowrap; /* Prevent text wrapping */
+}
+
+
+
+.product-table tr {
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.product-table tr:hover {
+  background-color: #f2f2f2; /* Subtle hover effect */
+  color: #000; /* Ensure hover text color contrast */
+  cursor: pointer;
+}
+
+/* Customize DataTable pagination for smaller design */
+.dataTables_paginate {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.dataTables_paginate .paginate_button {
+  padding: 3px 6px; /* Reduced padding */
+  margin: 0 3px; /* Reduced margin */
+  background-color: #007bff;
+  color: white;
+  border-radius: 3px; /* Smaller border radius */
+  font-size: 14px; /* Smaller font size */
+  border: none;
+  cursor: pointer;
+}
+
+.dataTables_paginate .paginate_button:hover {
+  background-color: #0056b3;
+}
+
+.dataTables_paginate .paginate_button.disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.dataTables_length select {
+  padding: 3px;
+  font-size: 12px; /* Smaller font size */
+  border-radius: 3px; /* Smaller border radius */
+}
+
+/* Hide the 'Show entries' text but keep the dropdown visible */
+.dataTables_length label {
+  display: none; /* Hide the 'Show entries' text */
+}
+
+.dataTables_length select {
+  font-size: 12px; /* Adjust font size for the dropdown */
+  padding: 3px; /* Adjust padding for a more compact look */
+}
+.dataTables_info {
+  display: none;
+}
