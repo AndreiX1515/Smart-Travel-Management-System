@@ -24,7 +24,7 @@ include '../Agent Section/includes/breadcrumbs.php';
   <div class="main-content" id="mainContent">
     <?php include '../Agent Section/includes/navbar.php'; ?>
 
-    <div class="content-wrapper-transact d-flex flex-column">
+    <div class="container">
       <!-- <div class="table-header">
          <div class="sorting-wrapper">
 

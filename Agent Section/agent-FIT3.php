@@ -18,7 +18,7 @@ session_start();
 </head>
 <body>
 
-<div class="body-container">
+<div class="body-container" id="mainContent">
   <?php include "../Agent Section/includes/sidebar copy.php"; ?>
 
 
@@ -478,21 +478,90 @@ session_start();
             <!-- <input type="" class="form-control mt-2 fs-6" id="totalCost" name="totalCost" readonly> -->
           </div>
 
-          <!-- Modal -->
-
-
+          <!-- Modal --> 
+          
 
         </form>
+
+        <!-- Booking Summary Modal -->
+        <div class="modal fade" id="BookingSummaryModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-md modal-dialog-centered"> <!-- Added modal-lg for a wider modal -->
+              <div class="modal-content">
+
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Booking Summary</h5>
+                  <button type="button" class="btn-close close-outside" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                    
+                <div class="modal-body">
+                    <!-- Transaction and Contact Info -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="modal-columns-content">
+                                <p>Guest Name:</p>
+                                <p id="contactPersonName" class="bold">Dela Cruz, Juan C.</p>
+                            </div>
+                        
+                            <div class="modal-columns-content">
+                                <p>Email:</p>
+                                <p id="contactPersonEmail" class="bold">delacruzjuan@gmail.com</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <!-- Package Details -->
+                    <div class="row">
+                      <div class="col-md-12">
+                          <div class="modal-columns-content">
+                              <p>Package Name:</p>
+                              <p id="selectedPackage" class="bold">No Package Selected</p>
+                          </div>
+                      
+                          <div class="modal-columns-content">
+                              <p>No. of Guests:</p>
+                              <p id="guestCount" class="bold">1</p>
+                          </div>
+                      </div>
+                      
+                    </div>
+
+                    <hr>
+
+                    <!-- Flight/Origin Details -->
+                    <div class="row">
+                      <div class="col-md-12">
+                          <div class="modal-columns-content">
+                              <p>Origin:</p>
+                              <p id="selectedOrigin" class="bold">MNL - INC</p>
+                          </div>
+                      
+                          <div class="modal-columns-content">
+                              <p>Flight Date:</p>
+                              <p id="selectedDate" class="bold">No Flight Date Selected</p>
+                          </div>
+                      </div>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary" name="bookNow">Proceed to Payment</button>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
       </div>
     
-      
-
-
     </div>
   </div>
 </div>
 
-
+<?php include '../Agent Section/functions/exchange-rate.php'?>
+<?php require "../Agent Section/includes/scripts.php"; ?>
 
 <script>
 var usdToPhp = 56.50; // Replace this with your actual value
@@ -650,8 +719,7 @@ $(document).ready(function ()
 </script>
 
 
-<?php include '../Agent Section/functions/exchange-rate.php'?>
-<?php require "../Agent Section/includes/scripts.php"; ?>
+
 
 
   </body>
