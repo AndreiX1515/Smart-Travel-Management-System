@@ -136,23 +136,37 @@
       <div class="table-actions">
         <div class="row">
           <div class="columns col-md-2">
-              <div class="table-filters-container">
-                <label for="company-filter ">Company Name:</label>
-                <select id="company-filter" name="company-filter" class="form-control">
-                    <option value="All">Select a company</option>
-                    <option value="P91 Travel & Tours">P91 Travel & Tours</option>
-                    <option value="APD Travel & Tours">APD Travel & Tours</option>
-                    <option value="FRANCIA Travel & Tours">FRANCIA Travel & Tours</option>
-                    <option value="Travel Escape">Travel Escape</option>
-                    <option value="FRANCIA Travel & Tours">EWINER</option>
-                </select>
-              </div>
+            <div class="table-filters-container">
+              <label for="company-filter ">Company Name:</label>
+              <select id="company-filter" name="company-filter" class="form-control">
+                <option value="All">Select a company</option>
+                <?php
+                  // Execute the SQL query
+                  $sql1 = "SELECT branchId, branchName FROM branch";
+                  $res1 = $conn->query($sql1);
+
+                  // Check if there are results
+                  if ($res1->num_rows > 0) 
+                  {
+                    // Loop through the results and generate options
+                    while ($row = $res1->fetch_assoc()) 
+                    {
+                      echo "<option value='" . $row['branchId'] . "'>" . $row['branchName'] . "</option>";
+                    }
+                  } 
+                  else 
+                  {
+                    echo "<option value=''>No companies available</option>";
+                  }
+                ?>
+              </select>
+            </div>
           </div>
 
           <div class="columns col-md-2">
             <div class="table-filters-container">
-              <label for="company-filter">Month</label>
-              <select id="company-filter" name="company-filter" class="form-control">
+              <label for="month-filter">Month</label>
+              <select id="month-filter" name="month-filter" class="form-control">
                 <option value="January">January</option>
                 <option value="February">February</option>
                 <option value="March">March</option>
@@ -190,8 +204,8 @@
           </div>
 
           <script>
-            // Get the current month as a number (0 = January, 1 = February, ..., 11 = December)
-            const currentMonthIndex = new Date().getMonth();
+            // Get the current month (1 = January, 2 = February, ..., 12 = December)
+            const currentMonthIndex = new Date().getMonth() + 1; // Add 1 to make it 1-based
             const currentYear = new Date().getFullYear();
 
             // Get the year select element
@@ -208,21 +222,33 @@
             // Optionally set the current year as selected
             yearSelect.value = currentYear;
             
-            // Get the month select element and set the current month as selected
+            // Get the month select element
             const monthSelect = document.getElementById('month-filter');
-            monthSelect.selectedIndex = currentMonthIndex;
+
+            // Dynamically populate the months (1 = January, 2 = February, ..., 12 = December)
+            for (let i = 1; i <= 12; i++) {
+              const option = document.createElement('option');
+              option.value = i; // The value will be 1-based (1, 2, 3, ..., 12)
+              option.textContent = new Date(0, i - 1).toLocaleString('default', { month: 'long' }); // Convert to month name
+              monthSelect.appendChild(option);
+            }
+
+            // Set the current month as selected
+            monthSelect.value = currentMonthIndex; // Use 1-based month index
           </script>
 
         </div>
 
         <div class="btn-container">
-          <button id="generate-soa-btn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+          <button id="generate-soa-btn" class="btn btn-primary">
             Generate SOA
           </button>
         </div>
       </div>
+
+      <div id="result-container"></div>
     
-      <div class="table-container-product">
+      <!-- <div class="table-container-product">
         <div class="table-content-product">
           <table class="product-table">
             <thead>
@@ -237,64 +263,50 @@
               </tr>
             </thead>
             <tbody>
-             
-              <tr>
-                <td>2</td>
-                <td>Hotel Stay B</td>
-                <td>150</td>
-                <td>7,500</td>
-                <td>5</td>
-                <td>750</td>
-                <td>37,500</td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td>Flight C</td>
-                <td>300</td>
-                <td>15,000</td>
-                <td>8</td>
-                <td>2,400</td>
-                <td>120,000</td>
-              </tr>
-              <tr>
-                <td>4</td>
-                <td>Tour Package D</td>
-                <td>450</td>
-                <td>22,500</td>
-                <td>12</td>
-                <td>5,400</td>
-                <td>270,000</td>
-              </tr>
-              <tr>
-                <td>5</td>
-                <td>Hotel Stay E</td>
-                <td>200</td>
-                <td>10,000</td>
-                <td>6</td>
-                <td>1,200</td>
-                <td>60,000</td>
-              </tr>
-              <tr>
-                <td>6</td>
-                <td>Flight F</td>
-                <td>250</td>
-                <td>12,500</td>
-                <td>7</td>
-                <td>1,750</td>
-                <td>87,500</td>
-              </tr>
-              <tr>
-                <td>7</td>
-                <td>Tour Package G</td>
-                <td>600</td>
-                <td>30,000</td>
-                <td>15</td>
-                <td>9,000</td>
-                <td>450,000</td>
-              </tr>
+              <?php
+                $totalPriceSum = 0;
+                $count = 1; // Initialize the counter
+                $sql1 = "SELECT f.flightId, f.flightPrice, CONCAT(f.flightDepartureDate, ' - ', f.returnArrivalDate) AS flightDates, 
+                            SUM(DISTINCT b.pax) AS pax, SUM(DISTINCT b.totalPrice) AS totalPrice
+                          FROM 
+                              payment p
+                          LEFT JOIN 
+                              booking b ON p.transactNo = b.transactNo
+                          LEFT JOIN
+                              flight f ON f.flightId = b.flightId
+                          WHERE 
+                              b.status = 'Confirmed' 
+                              AND MONTH(f.flightDepartureDate) = 1
+                              AND YEAR(f.flightDepartureDate) = 2025
+                          GROUP BY 
+                              f.flightId, f.flightDepartureDate, f.returnArrivalDate";
+                $res1 = $conn->query($sql1);
+
+                $res1 = $conn->query($sql1);
+
+                if ($res1->num_rows > 0) 
+                {
+                  while ($row = $res1->fetch_assoc()) 
+                  {
+                    $totalPriceSum += $row['totalPrice'];
+                    // Format flightPrice with commas and display the row
+                    $formattedFlightPrice = number_format($row['flightPrice'], 2);
+                    $formattedTotalPrice = number_format($row['totalPrice'], 2);
+                    echo "<tr'>
+                            <td>$count</td>
+                            <td>$row[flightDates]</td>
+                            <td></td>
+                            <td>₱ $formattedFlightPrice</td>
+                            <td>$row[pax]</td>
+                            <td></td>
+                            <td>₱ $formattedTotalPrice</td>
+                          </tr>";
+                    $count++;
+                  }
+                } 
+              ?>
             </tbody>
           </table>
-
 
           <div class="subtotal-container">
             <div class="balance">
@@ -302,112 +314,78 @@
             </div>
             <div class="subtotal-item-usd">
               <span>USD:</span>
-              <span class="subtotal-usd">1,275,000</span>
+              <span class="subtotal-usd"></span>
             </div>
             <div class="subtotal-item-php">
               <span>PHP:</span>
-              <span class="subtotal-php">1,275,000</span>
+              <span class="subtotal-php">₱ <?php echo number_format($totalPriceSum, 2); ?></span>
             </div>
           </div>
 
           <table class="product-table">
-            <!-- <thead>
-              <tr>
-                <th>No.</th>
-                <th>Contents</th>
-                <th>Price (USD)</th>
-                <th>Price (PHP)</th>
-                <th>PAX</th>
-                <th>Total (USD)</th>
-                <th>Total (PHP)</th>
-              </tr>
-            </thead> -->
             <tbody>
-             
-              <tr>
-                <td>2</td>
-                <td>Hotel Stay B</td>
-                <td>150</td>
-                <td>7,500</td>
-                <td>5</td>
-                <td>750</td>
-                <td>37,500</td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td>Flight C</td>
-                <td>300</td>
-                <td>15,000</td>
-                <td>8</td>
-                <td>2,400</td>
-                <td>120,000</td>
-              </tr>
-              <tr>
-                <td>4</td>
-                <td>Tour Package D</td>
-                <td>450</td>
-                <td>22,500</td>
-                <td>12</td>
-                <td>5,400</td>
-                <td>270,000</td>
-              </tr>
-              <tr>
-                <td>5</td>
-                <td>Hotel Stay E</td>
-                <td>200</td>
-                <td>10,000</td>
-                <td>6</td>
-                <td>1,200</td>
-                <td>60,000</td>
-              </tr>
-              <tr>
-                <td>6</td>
-                <td>Flight F</td>
-                <td>250</td>
-                <td>12,500</td>
-                <td>7</td>
-                <td>1,750</td>
-                <td>87,500</td>
-              </tr>
-              <tr>
-                <td>7</td>
-                <td>Tour Package G</td>
-                <td>600</td>
-                <td>30,000</td>
-                <td>15</td>
-                <td>9,000</td>
-                <td>450,000</td>
-              </tr>
-              <tr>
-                <td>7</td>
-                <td>Tour Package G</td>
-                <td>600</td>
-                <td>30,000</td>
-                <td>15</td>
-                <td>9,000</td>
-                <td>450,000</td>
-              </tr>
-              <tr>
-                <td>7</td>
-                <td>Tour Package G</td>
-                <td>600</td>
-                <td>30,000</td>
-                <td>15</td>
-                <td>9,000</td>
-                <td>450,000</td>
-              </tr>
-              <tr>
-                <td>7</td>
-                <td>Tour Package G</td>
-                <td>600</td>
-                <td>30,000</td>
-                <td>15</td>
-                <td>9,000</td>
-                <td>450,000</td>
-              </tr>
+              <?php
+                $totalCostSum = 0;
+                $handlingFeeCount = 0;
+                $sql1 = "SELECT b.flightId, cd.details, cd.price, SUM(r.pax) AS pax, SUM(r.requestCost) AS requestCost, 
+                          COUNT(CASE WHEN r.handlingFee != 0 THEN 1 ELSE NULL END) AS handlingFeeCount
+                        FROM 
+                          `request` r
+                        JOIN 
+                          concerndetails cd 
+                        ON 
+                          r.concernDetailsId = cd.concernDetailsId
+                        JOIN 
+                         booking b 
+                        ON 
+                          r.transactNo = b.transactNo
+                        JOIN
+                          flight f
+                        ON 
+                        b.flightId = f.flightId
+                        WHERE 
+                          r.requestStatus = 'Confirmed'AND MONTH(f.flightDepartureDate) = 1 AND YEAR(f.flightDepartureDate) = 2025
+                        GROUP BY 
+                          r.concernDetailsId";
+
+                $res1 = $conn->query($sql1);
+
+                if ($res1->num_rows > 0) 
+                {
+                  while ($row = $res1->fetch_assoc()) 
+                  {
+                    $handlingFeeCount += $row['handlingFeeCount'];
+                    $handlingFeeTotal = $handlingFeeCount * 100;
+                    $handlingFeeTotal = number_format($handlingFeeTotal, 2);
+                    $totalCostSum += $row['requestCost'];
+                    $formattedRequestPrice = number_format($row['price'], 2);
+                    $formattedRequestCost = number_format($row['requestCost'], 2);
+                    echo "<tr'>
+                            <td>$count</td>
+                            <td>$row[details]</td>
+                            <td></td>
+                            <td>₱ $formattedRequestPrice</td>
+                            <td>$row[pax]</td>
+                            <td></td>
+                            <td>₱ $formattedRequestCost</td>
+                          </tr>";
+                    $count++;
+                  }  
+                }
+
+                echo "<tr>
+                          <td>$count</td>
+                          <td>Handling Fee</td>
+                          <td></td>
+                          <td>₱ 100.00</td>
+                          <td>$handlingFeeCount</td>
+                          <td></td>
+                          <td>₱ $handlingFeeTotal</td>
+                        </tr>";
+                $count++;
+              ?>
             </tbody>
           </table>
-
 
           <div class="subtotal-container">
             <div class="balance">
@@ -415,14 +393,13 @@
             </div>
             <div class="subtotal-item-usd">
               <span>USD:</span>
-              <span class="subtotal-usd">1,275,000</span>
+              <span class="subtotal-usd"></span>
             </div>
             <div class="subtotal-item-php">
               <span>PHP:</span>
-              <span class="subtotal-php">1,275,000</span>
+              <span class="subtotal-php">₱ <?php $total1 = $totalCostSum + $handlingFeeTotal; echo number_format($total1, 2); ?></span>
             </div>
           </div>
-
 
           <div class="balance-container">
             <div class="balance">
@@ -431,21 +408,15 @@
             </div>
             <div class="balanceUSD">
               <span>USD:</span>
-              <span class="subtotal-usd">1,275,000</span>
+              <span class="subtotal-usd"></span>
             </div>
             <div class="balancePHP">
               <span>PHP:</span>
-              <span class="subtotal-php">1,275,000</span>
+              <span class="subtotal-php">₱ <?php $total = $totalCostSum + $totalPriceSum + $handlingFeeTotal; echo number_format($total, 2); ?></span>
             </div>
           </div>
-
-
-
         </div>
-      </div>
-
-
-      
+      </div> -->
       
     </div>
     
@@ -459,113 +430,45 @@
 
 
 <!-- Modal -->
-<div class="modal fade" id="staticBackdrop-tablerows" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-
-      <!-- Modal Header -->
-      <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel"></h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-
-      <!-- Modal Body -->
-      <div class="modal-body">
-        <div class="content-header">
-          <h6 id="modal-content">Modal Content Here</h6>
-        </div>
-        <div class="content-body">
-          <!-- Additional content for the modal body goes here -->
-        </div>
-      </div>
-
-      <!-- Modal Footer -->
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-
-<div class="modal fade modalSOA" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title" id="staticBackdropLabel">Generate SOA</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div class="content-header">
-
-          <div class="row">
-            <div class="columns col-md-2">
-                <div class="table-filters-container">
-                  <label for="company-filter ">Company Name:</label>
-                  <select id="company-filter" name="company-filter" class="form-control">
-                      <option value="All">Select a company</option>
-                      <option value="P91 Travel & Tours">P91 Travel & Tours</option>
-                      <option value="APD Travel & Tours">APD Travel & Tours</option>
-                      <option value="FRANCIA Travel & Tours">FRANCIA Travel & Tours</option>
-                      <option value="Travel Escape">Travel Escape</option>
-                      <option value="FRANCIA Travel & Tours">EWINER</option>
-                  </select>
-                </div>
-            </div>
-
-            <div class="columns col-md-2">
-                <div class="table-filters-container">
-                  <label for="company-filter ">Month</label>
-                  <select id="company-filter" name="company-filter" class="form-control">
-                    <option value="" selected>All</option>
-                    <option value="January">January</option>
-                    <option value="February">February</option>
-                    <option value="March">March</option>
-                    <option value="April">April</option>
-                    <option value="May">May</option>
-                    <option value="June">June</option>
-                    <option value="July">July</option>
-                    <option value="August">August</option>
-                    <option value="September">September</option>
-                    <option value="October">October</option>
-                    <option value="November">November</option>
-                    <option value="December">December</option>
-                  </select>
-                </div>
-            </div>
-
-          </div>
-
-          <div class="btn-container">
-            <button id="generate-soa-btn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-              Generate SOA
-            </button>
-          </div>
-        </div>
-
-        <div class="content-body">
-
-
-        </div>
-
-        
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary">Generate</button>
-      </div>
-    </div>
-  </div>
-</div>
-
 
 <?php require "../Agent Section/includes/scripts.php"; ?>
 
 <script>
+  document.getElementById('generate-soa-btn').addEventListener('click', function() 
+  {
+    const companyId = document.getElementById('company-filter').value;
+    const month = document.getElementById('month-filter').value;
+    const year = document.getElementById('year-filter').value;
 
-function openModal(row) {
+    // Send data to PHP using AJAX
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', '../Agent Section/functions/fetchSoA.php', true); // Replace with your PHP file name
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    
+    const data = `companyId=${companyId}&month=${month}&year=${year}`;
+    
+    xhr.onload = function() 
+    {
+      if (xhr.status === 200) 
+      {
+        // Update the result container with the server response
+        document.getElementById('result-container').innerHTML = xhr.responseText;
+      } 
+      else 
+      {
+        alert('Error: ' + xhr.status);
+      }
+    };
+    
+    xhr.send(data);
+  });
+
+</script>
+
+<!-- Modal -->
+<!-- <script>
+  function openModal(row) 
+  {
     const transactNo = row.getAttribute('data-transact-no'); // Get the transact number
     const modalContent = document.getElementById('modal-content');
     modalContent.innerHTML = `<p>${transactNo}</p>`; // Update modal content
@@ -573,48 +476,54 @@ function openModal(row) {
     // Use Bootstrap's modal methods to show the modal
     const modal = new bootstrap.Modal(document.getElementById('staticBackdrop-tablerows'));
     modal.show();
-}
+  }
 
-function closeModal() {
+  function closeModal() 
+  {
     // Use Bootstrap's modal methods to hide the modal
     const modal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
     modal.hide();
-}
+  }
+</script> -->
 
+<!-- Row Select -->
+<!-- <script>
+  document.addEventListener("DOMContentLoaded", function() 
+  {
+    document.querySelectorAll("tr[data-url]").forEach(function(row) 
+    {
+      row.addEventListener("click", function() 
+      {
+        const transactionNumber = row.getAttribute("data-url").split('=')[1]; // Extract transaction number from the URL
 
-</script>
+        console.log("Transaction Number: ", transactionNumber); // Debugging line
 
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    document.querySelectorAll("tr[data-url]").forEach(function(row) {
-        row.addEventListener("click", function() {
-            const transactionNumber = row.getAttribute("data-url").split('=')[1]; // Extract transaction number from the URL
+        // Use AJAX to send the transaction number to the server
+        $.ajax(
+        {
+          url: '../Agent Section/functions/fetchTransactNo.php', // The PHP file to handle the session setting
+          type: 'POST',
+          data: { transaction_number: transactionNumber },
+          success: function(response) 
+          {
+            console.log("Response: ", response); // Debugging line
 
-            console.log("Transaction Number: ", transactionNumber); // Debugging line
-
-            // Use AJAX to send the transaction number to the server
-            $.ajax({
-                url: '../Agent Section/functions/fetchTransactNo.php', // The PHP file to handle the session setting
-                type: 'POST',
-                data: { transaction_number: transactionNumber },
-                success: function(response) {
-                    console.log("Response: ", response); // Debugging line
-
-                    // Redirect to the next page after successfully setting the session
-                    window.location.href = row.getAttribute("data-url"); // Use the original URL stored in data-url attribute
-                },
-                error: function(xhr, status, error) {
-                    console.error("AJAX Error: " + status + " " + error); // Enhanced error logging
-                }
-            });
+            // Redirect to the next page after successfully setting the session
+            window.location.href = row.getAttribute("data-url"); // Use the original URL stored in data-url attribute
+          },
+          error: function(xhr, status, error) 
+          {
+            console.error("AJAX Error: " + status + " " + error); // Enhanced error logging
+          }
         });
+      });
     });
   });
-</script>
-
+</script> -->
 
 <script>
- const table = $('#product-table').DataTable({
+  const table = $('#product-table').DataTable(
+  {
         dom: 'rtip',
         columnDefs: [
           {width: '12%', targets: 0}, // Transact No.
@@ -628,8 +537,9 @@ function closeModal() {
 
 
         ],
-        language: {
-            emptyTable: "No Transaction Records Available"
+        language: 
+        {
+          emptyTable: "No Transaction Records Available"
         },
         order: [[0, 'desc']],
         scrollX: false,
