@@ -448,8 +448,8 @@ include '../Agent Section/includes/breadcrumbs.php';
           <div class="card-footer d-flex justify-content-between align-items-center py-3">
             <button type="submit" class="btn btn-primary" name="bookNow">Book Now</button>
           </div>
-          <input type="" id="totalCostUSD" name="totalCostUSD" placeholder="Total Price USD">
-          <input type="" id="totalCostPHP" name="totalCostPHP" placeholder="Total Price PHP">
+          <input type="hidden" id="totalCostUSD" name="totalCostUSD" placeholder="Total Price USD">
+          <input type="hidden" id="totalCostPHP" name="totalCostPHP" placeholder="Total Price PHP">
           <!-- <input type="" class="form-control mt-2 fs-6" id="totalCost" name="totalCost" readonly> -->
         </div>
 
