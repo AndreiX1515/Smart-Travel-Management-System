@@ -19,7 +19,7 @@
   <?php include '../Agent Section/includes/navbar.php' ?>
 
   <div class="main-container">
-    <div class="container-content">
+    <div class="container">
       <?php 
         if(isset($_SESSION['status'])):
       ?>
