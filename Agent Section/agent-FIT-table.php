@@ -119,14 +119,14 @@ include '../Agent Section/includes/breadcrumbs.php';
             <tr>
               <th>Transaction No</th>
               <th>Contact Person Info</th>
-              <th>Contact Person Contact Details</th>
+              <th>Contact Details</th>
               <th>Package Name</th>
               <th>No. of Nights</th>
-              <th>Name of Hotel</th>
-              <th>Trip</th>
-              <th>Start Date</th>
-              <th>Return Date</th>
-              <th>Total Pax</th>
+              <th>Hotel Name</th>
+              <th>Room Type</th>
+              <th>Check-in Date</th>
+              <th>Check-out Date</th>
+              <th>Total Guests</th>
               <th>Price</th>
               <th>Transaction Date</th>
               <th>Status</th>
@@ -134,16 +134,19 @@ include '../Agent Section/includes/breadcrumbs.php';
           </thead>
           <tbody>
             <?php
-              $agentCode = $_SESSION['agent_agentCode'];
-              $agentId = $_SESSION['agent_accountId'];
-
-              $sql1 = "SELECT transactionNo AS `T.N`, packageName AS `PACKAGE`, pax AS `TOTAL PAX`, nights, hotel, trip, startDate, 
-                          returnDate, phpPrice, usdPrice, bookingDate as `TRANSACTION DATE`, status as `STATUS`,
-                          CONCAT(lName, ', ', fName, ' ', CASE WHEN mName = 'N/A' THEN '' 
-                            ELSE CONCAT(SUBSTRING(mName, 1, 1), '.') END, ' ', CASE WHEN suffix = 'N/A' THEN '' 
-                            ELSE suffix END) AS `CONTACT NAME`, email as `CONTACT EMAIL`, 
-                          CONCAT(countryCode, ' ', contactNo) AS `CONTACT PHONE` 
-                            from fit";
+              $sql1 = "SELECT f.transactionNo AS `Transaction No`, 
+                          CONCAT(f.lName, ', ', f.fName, ' ', 
+                                IF(f.mName IS NOT NULL AND f.mName != '', CONCAT(LEFT(f.mName, 1), '.'), ''), 
+                                IF(f.suffix IS NOT NULL AND f.suffix != 'N/A', CONCAT(' ', f.suffix), '')) AS `Contact Name`,
+                          CONCAT(f.countryCode, ' ', f.contactNo) AS `Contact Details`,
+                          fp.packageName AS `Package Name`, DATEDIFF(f.returnDate, f.startDate) AS `No. of Nights`,
+                          fh.hotelName AS `Hotel Name`, fr.rooms AS `Room Type`, f.startDate AS `Check-in Date`,
+                          f.returnDate AS `Check-out Date`, f.pax AS `Total Guests`, f.phpPrice AS `Price`,
+                          f.bookingDate AS `Transaction Date`,f.status AS `Status`
+                      FROM fit f
+                      JOIN fitpackage fp ON fp.packageId = f.packageId
+                      JOIN fithotel fh ON fh.hotelId = f.hotelId
+                      JOIN fitrooms fr ON fr.roomId = f.roomId";
 
               $res1 = $conn->query($sql1);
 
@@ -151,70 +154,43 @@ include '../Agent Section/includes/breadcrumbs.php';
               {
                 while ($row = $res1->fetch_assoc()) 
                 {
-                  $transactNo = $row['T.N'];
-                  $pax = $row['TOTAL PAX'];
-
-                  $status = isset($row['STATUS']) ? $row['STATUS'] : 'Unknown';
                   $statusClass = '';
-
-                  switch ($status) 
+                  switch ($row['Status']) 
                   {
                     case 'Confirmed':
-                        $statusClass = 'bg-success text-white'; // Green background, white text
+                        $statusClass = 'bg-success text-white';
                         break;
                     case 'Cancelled':
-                        $statusClass = 'bg-danger text-white'; // Red background, white text
+                        $statusClass = 'bg-danger text-white';
                         break;
                     case 'Pending':
-                        $statusClass = 'bg-warning text-dark'; 
+                        $statusClass = 'bg-warning text-dark';
                         break;
                     default:
-                        $statusClass = 'bg-secondary text-white'; 
+                        $statusClass = 'bg-secondary text-white';
                   }
 
                   echo "<tr>
-                          <td>{$transactNo}</td>
-                          
-                          <td>{$row['CONTACT NAME']}</td>
-
-                          <td>
-                            <div class='d-flex flex-column'>
-                              <span><strong>Email: </strong>" . $row['CONTACT EMAIL'] ."</span>
-                              <span><strong>Contact Number: </strong>" . $row['CONTACT PHONE'] ."</span>
-                            </div>
-                          </td>
-                          
-                          <td>{$row['PACKAGE']}</td>
-
-                          <td>{$row['nights']}</td>
-
-                          <td>{$row['hotel']}</td>
-
-                          <td>{$row['trip']}</td>
-
-                          <td>{$row['startDate']}</td>
-
-                          <td>{$row['returnDate']}</td>
-
-                          <td style='text-align: center; font-weight: bold;'>{$row['TOTAL PAX']}</td>
-
-                          <td>{$row['phpPrice']}</td>
-
-                          <td>{$row['TRANSACTION DATE']}</td>
-
-                          <td>
-                            <span class='badge p-2 rounded-pill {$statusClass}'>
-                              {$status}
-                            </span>
-                          </td>
-                      </tr>";
+                          <td>{$row['Transaction No']}</td>
+                          <td>{$row['Contact Name']}</td>
+                          <td>{$row['Contact Details']}</td>
+                          <td>{$row['Package Name']}</td>
+                          <td>{$row['No. of Nights']}</td>
+                          <td>{$row['Hotel Name']}</td>
+                          <td>{$row['Room Type']}</td>
+                          <td>{$row['Check-in Date']}</td>
+                          <td>{$row['Check-out Date']}</td>
+                          <td style='text-align: center; font-weight: bold;'>{$row['Total Guests']}</td>
+                          <td>{$row['Price']}</td>
+                          <td>{$row['Transaction Date']}</td>
+                          <td><span class='badge p-2 rounded-pill {$statusClass}'>{$row['Status']}</span></td>
+                        </tr>";
                 }
               } 
               else 
               {
-                echo "<tr><td colspan='8'>No bookings found</td></tr>";
+                echo "<tr><td colspan='13'>No bookings found</td></tr>";
               }
-              $conn->close();
             ?>
           </tbody>
         </table>
@@ -224,7 +200,7 @@ include '../Agent Section/includes/breadcrumbs.php';
   </div>
 
   <!-- DataTables #product-table -->
-<script>
+<!-- <script>
 $(document).ready(function () {
       const table = $('#product-table').DataTable({
         dom: 'rti',
@@ -327,7 +303,7 @@ $(document).ready(function () {
         table.draw();
     });
 });
-</script>
+</script> -->
 
   <?php require "../Agent Section/includes/scripts.php"; ?>
 
