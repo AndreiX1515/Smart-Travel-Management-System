@@ -139,7 +139,7 @@
             <div class="table-filters-container">
               <label for="company-filter ">Company Name:</label>
               <select id="company-filter" name="company-filter" class="form-control">
-                <option value="All">Select a company</option>
+                <option selected disabled>Select a company</option>
                 <?php
                   // Execute the SQL query
                   $sql1 = "SELECT branchId, branchName FROM branch";
@@ -167,6 +167,7 @@
             <div class="table-filters-container">
               <label for="month-filter">Month</label>
               <select id="month-filter" name="month-filter" class="form-control">
+                <option selected disabled>Select month</option>
                 <option value="January">January</option>
                 <option value="February">February</option>
                 <option value="March">March</option>
@@ -221,6 +222,12 @@
 
             // Optionally set the current year as selected
             yearSelect.value = currentYear;
+            
+            // Get the month select element
+            const monthSelect = document.getElementById('month-filter');
+
+            // Set the current month as selected
+            monthSelect.value = currentMonthIndex; // Use 1-based month index
           </script>
 
         </div>
