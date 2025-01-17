@@ -11,8 +11,8 @@ session_start();
 
   <?php include "../Agent Section/includes/head.php"; ?>
 
-  <link rel="stylesheet" href="../Agent Section/assets/css/navbar-sidebar copy.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="../Agent Section/assets/css/agent-dashboard copy 3.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="../Agent Section/assets/css/navbar-sidebar copy.css?v=<?php echo time(); ?>">
 </head>
 <body>
 

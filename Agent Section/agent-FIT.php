@@ -8,29 +8,30 @@
   <title>F.I.T</title>
 
   <?php include '../Agent Section/includes/head.php' ?>
-  <link rel="stylesheet" href="../Agent Section/assets/css/agent-transaction.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="../Agent Section/assets/css/agent-FIT2.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="../Agent Section/assets/css/navbar-sidebar.css?v=<?php echo time(); ?>">
 </head>
 
 <body>
   <?php include '../Agent Section/includes/sidebar.php' ?>
 
-<div class="main-content" id="mainContent">
+<div class="main-content">
   <?php include '../Agent Section/includes/navbar.php' ?>
 
-  <div class="main-container d-flex flex-row justify-content-lg-start">
+  <div class="main-container">
     <div class="container">
-        <?php 
-          if(isset($_SESSION['status'])):
-          ?>
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-              <strong></strong> <?= $_SESSION['status']; ?>
-              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-          <?php 
-          unset($_SESSION['status']);
-          endif;
-        ?>
+      <?php 
+        if(isset($_SESSION['status'])):
+      ?>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <strong></strong> <?= $_SESSION['status']; ?>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      <?php 
+        unset($_SESSION['status']);
+        endif;
+      ?>
+
       <form action="../Agent Section/functions/agent-addFIT-code.php" method="POST">
         <div class="card">
             <div class="card-body p-4">
