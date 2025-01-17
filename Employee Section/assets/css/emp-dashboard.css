@@ -11,7 +11,8 @@
   gap: 5px; /* Gap between cards */
   width: 100%;
   height: 15vh;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  border: 1px solid black;
  }
  
  .main-content .counts-wrapper .card {
@@ -60,7 +61,7 @@
 }
  
  .card .header {
-  padding: 0px 5px 0px 5px;
+  padding: 0px 3px 0px 3px;
   color: #4c4f52;
  }
  
@@ -72,11 +73,10 @@
  }
  
 .card-content {
-  padding: 10px;
+  padding: 5px 15px;
 }
 
 .card-content .col-md-5 {
-  margin-top: 5px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -87,6 +87,7 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Added box shadow */
   border-radius: 8px; /* Optional: Slight rounding for a softer look */
   background-color: #fff; /* Optional: Ensure the shadow is visible */
+  border: 1px solid rgb(104, 75, 75);
 }
  
  .totalpayment{
@@ -254,11 +255,11 @@
  .navTabs-wrapper {
   width: 100%;
   padding: 5px 0px;
-  margin: 10px 0px 10px 0px;
+  margin: 5px 0px 10px 0px;
   display: flex; /* Make the container a flexbox */
   gap: 10px; /* Added gap between each nav item */
   border-radius: 15px;
-  /* border: 1px solid gainsboro; */
+  border: 1px solid gainsboro;
 }
 
 .nav-pills {
@@ -749,7 +750,7 @@
   display: flex;
   flex-direction: row;
   position: relative;
-  height: 67.5vh; /* Fixed height for the container */
+  height: 68vh; /* Fixed height for the container */
   padding: 0;
   overflow-x: auto; /* Allow horizontal scrolling */
   overflow-y: hidden; /* Restrict vertical scrolling */
