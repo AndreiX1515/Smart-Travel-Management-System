@@ -244,6 +244,7 @@
             Generate SOA
           </button>
         </div>
+
       </div>
 
       <div id="result-container"></div>
@@ -254,7 +255,7 @@
             <thead>
               <tr>
                 <th>No.</th>
-                <th>Contents</th>
+                <th>Description</th>
                 <th>Price (USD)</th>
                 <th>Price (PHP)</th>
                 <th>PAX</th>
