@@ -167,7 +167,18 @@
             <div class="table-filters-container">
               <label for="month-filter">Month</label>
               <select id="month-filter" name="month-filter" class="form-control">
-                
+                <option value="January">January</option>
+                <option value="February">February</option>
+                <option value="March">March</option>
+                <option value="April">April</option>
+                <option value="May">May</option>
+                <option value="June">June</option>
+                <option value="July">July</option>
+                <option value="August">August</option>
+                <option value="September">September</option>
+                <option value="October">October</option>
+                <option value="November">November</option>
+                <option value="December">December</option>
               </select>
             </div>
           </div>
@@ -210,20 +221,6 @@
 
             // Optionally set the current year as selected
             yearSelect.value = currentYear;
-            
-            // Get the month select element
-            const monthSelect = document.getElementById('month-filter');
-
-            // Dynamically populate the months (1 = January, 2 = February, ..., 12 = December)
-            for (let i = 1; i <= 12; i++) {
-              const option = document.createElement('option');
-              option.value = i; // The value will be 1-based (1, 2, 3, ..., 12)
-              option.textContent = new Date(0, i - 1).toLocaleString('default', { month: 'long' }); // Convert to month name
-              monthSelect.appendChild(option);
-            }
-
-            // Set the current month as selected
-            monthSelect.value = currentMonthIndex; // Use 1-based month index
           </script>
 
         </div>
