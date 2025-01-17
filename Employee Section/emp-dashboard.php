@@ -907,13 +907,13 @@
     <?php include '../Employee Section/includes/emp-scripts.php' ?>
 
     <script>
-$(document).ready(function() {
+$(document).ready(function () {
     // Initialize DataTable for .info-table if not already initialized
     if (!$.fn.DataTable.isDataTable('.info-table')) {
         var table = $('.info-table').DataTable({
             autoWidth: false,
-            scrollX: true,
-            scrollY: '563px',
+            scrollX: true, // Enable horizontal scrolling
+            scrollY: "583px", // Enable vertical scrolling and set height
             paging: false, // Disable pagination
             searching: false, // Disable search
             info: false, // Disable info
@@ -925,25 +925,23 @@ $(document).ready(function() {
         });
     }
 
-    // Function to apply the 'selected' class to rows in both tables
+    // Apply the 'selected' class to rows in both tables when clicked
     function selectRowInBothTables(index) {
-        // Remove the 'selected' class from all rows in both tables
-        $('.info-table tbody tr').removeClass('selected');
-        $('div.dataTables_wrapper tbody tr').removeClass('selected');
-
-        // Add the 'selected' class to the row at the given index in both tables
+        // Clear previous selections
+        $('.info-table tbody tr, div.dataTables_wrapper tbody tr').removeClass('selected');
+        // Apply the 'selected' class to the specified row index
         $('.info-table tbody tr').eq(index).addClass('selected');
         $('div.dataTables_wrapper tbody tr').eq(index).addClass('selected');
     }
 
     // Add event listener for row clicks in .info-table using event delegation
-    $('.info-table').on('click', 'tbody tr', function() {
+    $('.info-table').on('click', 'tbody tr', function () {
         const index = $(this).index(); // Get the index of the clicked row
         selectRowInBothTables(index);  // Trigger row selection for both tables
     });
 
     // Add event listener for row clicks in div.dataTables_wrapper using event delegation
-    $('div.dataTables_wrapper').on('click', 'tbody tr', function() {
+    $('div.dataTables_wrapper').on('click', 'tbody tr', function () {
         const index = $(this).index(); // Get the index of the clicked row
         selectRowInBothTables(index);  // Trigger row selection for both tables
     });
@@ -960,7 +958,10 @@ $(document).ready(function() {
         `)
         .appendTo('head');
 });
+
 </script>
+
+
 
 
 

@@ -12,7 +12,7 @@
   width: 100%;
   height: 15vh;
   margin-bottom: 10px;
-  border: 1px solid black;
+  /* border: 1px solid black; */
  }
  
  .main-content .counts-wrapper .card {
@@ -27,7 +27,7 @@
  
  .header-counts {
   width: 100%;
-  padding: 10px 0px 10px 5px;
+  padding: 10px 0px 10px 3px;
 }
 
 
@@ -73,21 +73,23 @@
  }
  
 .card-content {
-  padding: 5px 15px;
+  padding: 5px 12px;
 }
 
 .card-content .col-md-5 {
+  margin-bottom: 5px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
   flex: 1;
+  gap: 10px;
   padding: 5px 10px; /* Reduced padding */
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Added box shadow */
   border-radius: 8px; /* Optional: Slight rounding for a softer look */
   background-color: #fff; /* Optional: Ensure the shadow is visible */
-  border: 1px solid rgb(104, 75, 75);
+  /* border: 1px solid rgb(104, 75, 75); */
 }
  
  .totalpayment{
@@ -154,25 +156,25 @@
  
  
  /* Card 4 */
- .card-body-currency {
-   width: 100%;
-   padding: 5px 10px;
-   /* border: 1px solid black; */
-  }
+.card-body-currency {
+  width: 100%;
+  padding: 0px;
+  /* border: 1px solid black; */
+}
   
-  /* Currency Cards Container */
-  .currency-cards {
-   display: flex;
-   flex-direction: row; /* Arrange cards horizontally */
-   gap: 5px; /* Spacing between cards */
-   justify-content: left; /* Align cards to the left */
-   align-items: center; /* Vertically center the cards */
-  }
+/* Currency Cards Container */
+.currency-cards {
+  display: flex;
+  flex-direction: row; /* Arrange cards horizontally */
+  gap: 5px; /* Spacing between cards */
+  justify-content: left; /* Align cards to the left */
+  align-items: center; /* Vertically center the cards */
+}
   
   /* Individual Currency Card */
   .currency-card {
    width: 140px;
-   height: 11vh;
+   height: 10.5vh;
    padding: 0px; 
    display: flex;
    flex-direction: column;
@@ -254,12 +256,12 @@
  
  .navTabs-wrapper {
   width: 100%;
-  padding: 5px 0px;
-  margin: 5px 0px 10px 0px;
+  padding: 0px;
+  margin: 10px 0px 10px 0px;
   display: flex; /* Make the container a flexbox */
   gap: 10px; /* Added gap between each nav item */
   border-radius: 15px;
-  border: 1px solid gainsboro;
+  /* border: 1px solid gainsboro; */
 }
 
 .nav-pills {
@@ -629,7 +631,7 @@
 ============================ */
 .confirm-table-container {
   width: 100%; 
-  height: 45.5%;
+  height: 85%;
   overflow-x: auto; 
   overflow-y: auto; 
   border: 1px solid gainsboro; 
@@ -744,16 +746,16 @@
 }
  
 
-
 /* Info Table Container */
 .info-table-container {
   display: flex;
   flex-direction: row;
   position: relative;
-  height: 68vh; /* Fixed height for the container */
+  height: 69.5vh; /* Fixed height for the container */
   padding: 0;
   overflow-x: auto; /* Allow horizontal scrolling */
-  overflow-y: hidden; /* Restrict vertical scrolling */
+  overflow-y: auto; /* Restrict vertical scrolling */
+  /* border: 1px solid black; */
 }
 
 /* Ensure table and container sizes are consistent */
@@ -767,8 +769,7 @@
   color: #000000 !important;
   text-align: center;
   table-layout: fixed; /* Ensure columns have a fixed width */
-  overflow: hidden; /* Prevent any unwanted overflow */
-  box-sizing: border-box;
+  /* overflow: hidden; Prevent any unwanted overflow */
 }
 
 .info-table tbody tr.selected {
@@ -809,7 +810,7 @@ div.dataTables_wrapper th {
 
 /* Styling for table data (td) */
 div.dataTables_wrapper td {
-  padding: 14px 10px;
+  padding: 16px 10px;
   text-align: center;
   font-size: 12px;
   color: #555;
@@ -817,12 +818,16 @@ div.dataTables_wrapper td {
 }
 
 div.dataTables_wrapper thead th {
-  padding: 8px 8px;
+  position: sticky; /* Make the header sticky */
+  top: 0; /* Stick the header to the top of the scrolling container */
+  z-index: 2; /* Ensure the header stays above table rows */
+  background-color: #f8f9fa; /* Background color to differentiate the header */
   text-align: center;
   font-weight: bold;
   border-right: 1px solid #e6e6e6;
-  background-color: #f8f9fa;
+  padding: 8px 8px;
 }
+
 
 
 /* Sticky Columns for DataTables (first 11 columns) */
