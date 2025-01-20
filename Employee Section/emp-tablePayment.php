@@ -193,48 +193,39 @@
 
               $res1 = $conn->query($sql1);
 
-              if ($res1->num_rows > 0) {
-                while ($row = $res1->fetch_assoc()) {
-                  // // Determine the badge class for the payment status
-                  // $status = $row['paymentStatus'];
-                  // $badgeClass = '';
-                  
-                  // switch ($status) {
-                  //   case 'Submitted':
-                  //     $badgeClass = 'bg-primary'; // Blue for Submitted
-                  //     break;
-                  //   case 'Approved':
-                  //     $badgeClass = 'bg-success'; // Green for Approved
-                  //     break;
-                  //   default:
-                  //     $badgeClass = 'bg-secondary'; // Gray for unknown statuses
-                  //     break;
-                  // }
-
-
+              if ($res1->num_rows > 0) 
+              {
+                while ($row = $res1->fetch_assoc()) 
+                {
                   $paymentTypeClass = '';
                   $paymentTypeValue = $row['paymentType'];
 
                   // Assign classes based on the payment type
-                  if ($paymentTypeValue === 'Partial Payment') {
-                      $paymentTypeClass = 'badge bg-warning text-dark';
-                  } elseif ($paymentTypeValue === 'Full Payment') {
-                      $paymentTypeClass = 'badge bg-success';
-                  } else {
-                      $paymentTypeClass = 'badge bg-secondary';
+                  if ($paymentTypeValue === 'Partial Payment') 
+                  {
+                    $paymentTypeClass = 'badge bg-warning text-dark';
+                  } 
+                  elseif ($paymentTypeValue === 'Full Payment') 
+                  {
+                    $paymentTypeClass = 'badge bg-success';
+                  } 
+                  else 
+                  {
+                    $paymentTypeClass = 'badge bg-secondary';
                   }
-
 
                   // Fetch the raw date (e.g., "2000-01-01")
                   $rawPaymentDate = $row['paymentDate'];
                   
-                  try {
-                      // Create a DateTime object and format the date to "January 1, 2000"
-                      $date = new DateTime($rawPaymentDate);
-                      $formattedDate = $date->format('F j, Y');
-                  } catch (Exception $e) {
-                      // Handle the exception if the date is invalid
-                      $formattedDate = 'Invalid date';
+                  try 
+                  {
+                    // Create a DateTime object and format the date to "January 1, 2000"
+                    $date = new DateTime($rawPaymentDate);
+                    $formattedDate = $date->format('F j, Y');
+                  } catch (Exception $e) 
+                  {
+                    // Handle the exception if the date is invalid
+                    $formattedDate = 'Invalid date';
                   }
                   
                   // Output table row with data-transactno attribute
@@ -245,21 +236,23 @@
                           <td><span class='$paymentTypeClass p-2'>$paymentTypeValue</span></td>
                           <td>₱ {$row['amount']}</td>
                           <td class='viewdownloadfile-wrapper'>
-                              <a class='btn-view' href='../Agent Section/functions/view-file.php?file=" . urlencode($row['filePath']) . "' target='_blank'>
-                                  <i class='fas fa-eye'></i> View File
-                              </a>
-                              <br />
-                              <a class='btn-download' href='../Agent Section/functions/download.php?file=" . urlencode($row['filePath']) . "' target='_blank'>
-                                  <i class='fas fa-download'></i> Download File
-                              </a>
+                            <a class='btn-view' href='../Agent Section/functions/view-file.php?file=" . urlencode($row['filePath']) . "' target='_blank'>
+                              <i class='fas fa-eye'></i> View File
+                            </a>
+                            <br />
+                            <a class='btn-download' href='../Agent Section/functions/download.php?file=" . urlencode($row['filePath']) . "' target='_blank'>
+                              <i class='fas fa-download'></i> Download File
+                            </a>
                           </td>
                           <td>
-                              <span class='raw-date' style='display:none;'>$rawPaymentDate</span>
-                              $formattedDate
+                            <span class='raw-date' style='display:none;'>$rawPaymentDate</span>
+                            $formattedDate
                           </td>
                       </tr>";
                 }
-              } else {
+              } 
+              else 
+              {
                 echo "<tr><td colspan='8' style='text-align: center;'>No Payments Found</td></tr>";
               }
             ?>

@@ -34,8 +34,8 @@
 
       <form action="../Agent Section/functions/agent-addFIT-code.php" method="POST">
         <div class="card">
-          <div class="card-header p-4">
-            <h5>FIT</h5>
+          <div class="card-header p-4 bg-secondary text-white text-light">
+            <h4>FIT</h4>
           </div>
           <!-- Booking Details -->
           <div class="card-body p-4">
