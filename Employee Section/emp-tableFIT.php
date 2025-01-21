@@ -125,27 +125,32 @@
       </div> -->
 
       <script>
-          function toggleClearButton(input) {
-            const clearButton = input.nextElementSibling; // Get the button next to the input
-            clearButton.style.display = input.value ? "block" : "none";
-          }
+        function toggleClearButton(input) 
+        {
+          const clearButton = input.nextElementSibling; // Get the button next to the input
+          clearButton.style.display = input.value ? "block" : "none";
+        }
 
-          // Clear the input field
-          function clearInput(button) {
-            const input = button.previousElementSibling; // Get the input field before the button
-            input.value = "";
-            button.style.display = "none"; // Hide the clear button
-            input.focus(); // Refocus on the input
-          }
+        // Clear the input field
+        function clearInput(button) 
+        {
+          const input = button.previousElementSibling; // Get the input field before the button
+          input.value = "";
+          button.style.display = "none"; // Hide the clear button
+          input.focus(); // Refocus on the input
+        }
       </script>
 
       <div class="table-wrapper">
-       <table class="">
-          <thead>
+        <table class="table table-bordered">
+          <thead class="table-light">
             <tr>
               <th>TRANSACT NO.</th>
-              <th>AGENT NAME</th>
-              <th>PAYMENT TITLE</th>
+              <th>HOTEL NAME</th>
+              <th>ROOM TYPE</th>
+              <th>NUMBER OF ROOMS</th>
+              <th>NUMBER OF GUESTS</th>
+              <th>TRIP DURATION</th>
               <th>PAYMENT TYPE</th>
               <th>AMOUNT</th>
               <th>PROOF OF PAYMENT</th>
@@ -154,74 +159,51 @@
           </thead>
           <tbody>
             <?php
-              $sql1 = "SELECT p.paymentId, p.transactNo, 
-                              CONCAT(a.lName, ', ', a.fName, 
-                                  IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1), '.'), '')) AS agentName, 
-                              p.paymentTitle, p.paymentType, FORMAT(p.amount, 2) AS amount, 
-                              p.filePath, DATE_FORMAT(p.paymentDate, '%m-%d-%Y') AS paymentDate, p.paymentStatus
-                          FROM 
-                              payment p
-                          LEFT JOIN 
-                              booking b ON p.transactNo = b.transactNo
-                          LEFT JOIN 
-                              agent a ON b.agentId = a.agentId
-                          WHERE
-                              p.paymentStatus = 'Submitted'";
+              $sql1 = "SELECT p.paymentId as paymentId, f.transactionNo as transactNo, p.paymentType as paymentType, p.amount as amount, 
+                          p.filePath as filePath, h.hotelName as hotelName, r.rooms as roomName, f.rooms as rooms, f.pax as pax,
+                          CONCAT(DATE_FORMAT(f.startDate, '%Y-%m-%d'), ' to ', DATE_FORMAT(f.returnDate, '%Y-%m-%d')) AS tripDuration,
+                          p.paymentDate as paymentDate
+                        FROM fit f
+                        JOIN fithotel h ON h.hotelId = f.hotelId
+                        JOIN fitrooms r ON r.roomId = f.roomId
+                        JOIN fitpayment p ON p.transactNo = f.transactionNo
+                        WHERE p.paymentStatus = 'Submitted'";
 
               $res1 = $conn->query($sql1);
 
-              if ($res1->num_rows > 0) {
-                while ($row = $res1->fetch_assoc()) {
-                
+              if ($res1->num_rows > 0) 
+              {
+                while ($row = $res1->fetch_assoc()) 
+                {
+                  // Define the payment type class for styling
+                  $paymentTypeClass = $row['paymentType'] === 'Partial Payment' ? 'badge bg-warning text-dark' : 
+                                      ($row['paymentType'] === 'Full Payment' ? 'badge bg-success' : 'badge bg-secondary');
 
-
-                  $paymentTypeClass = '';
-                  $paymentTypeValue = $row['paymentType'];
-
-                  // Assign classes based on the payment type
-                  if ($paymentTypeValue === 'Partial Payment') {
-                      $paymentTypeClass = 'badge bg-warning text-dark';
-                  } elseif ($paymentTypeValue === 'Full Payment') {
-                      $paymentTypeClass = 'badge bg-success';
-                  } else {
-                      $paymentTypeClass = 'badge bg-secondary';
-                  }
-
-                  // Fetch the raw date (e.g., "2000-01-01")
+                  // Format the payment date
                   $rawPaymentDate = $row['paymentDate'];
+                  $formattedDate = (new DateTime($rawPaymentDate))->format('F j, Y');
 
-                  // Create a DateTime object and format the date to "January 1, 2000"
-                  $date = new DateTime($rawPaymentDate);
-                  $formattedDate = $date->format('F j, Y');
-
-
-                  // Output table row with data-transactno attribute
+                  // Output table row
                   echo "<tr class='transaction-row' data-paymentId='{$row['paymentId']}'>
                           <td>{$row['transactNo']}</td>
-                          <td>{$row['agentName']}</td>
-                          <td>{$row['paymentTitle']}</td>
-                          <td><span class='$paymentTypeClass p-2'>$paymentTypeValue</span></td>
-                          <td>₱ {$row['amount']}</td>
-                          <td class='viewdownloadfile-wrapper'>
-                              <a class='btn-view' href='../Agent Section/functions/view-file.php?file=" . urlencode($row['filePath']) . "' target='_blank'>
-                                  <i class='fas fa-eye'></i> View File
-                              </a>
-                              <br />
-                              <a class='btn-download' href='../Agent Section/functions/download.php?file=" . urlencode($row['filePath']) . "' target='_blank'>
-                                  <i class='fas fa-download'></i> Download File
-                              </a>
-                          </td>
-
-
+                          <td>{$row['hotelName']}</td>
+                          <td>{$row['roomName']}</td>
+                          <td>{$row['rooms']}</td>
+                          <td>{$row['pax']}</td>
+                          <td>{$row['tripDuration']}</td>
+                          <td><span class='$paymentTypeClass p-2'>{$row['paymentType']}</span></td>
+                          <td>₱ " . number_format($row['amount'], 2) . "</td>
                           <td>
-                            <span class='raw-date' style='display:none;'>$rawPaymentDate</span>
-                            $formattedDate
+                            <a class='btn btn-sm btn-primary' href='../Agent Section/functions/view-file.php?file=" . urlencode($row['filePath']) . "' target='_blank'>View</a>
+                            <a class='btn btn-sm btn-secondary' href='../Agent Section/functions/download.php?file=" . urlencode($row['filePath']) . "' target='_blank'>Download</a>
                           </td>
-                     
+                          <td>$formattedDate</td>
                         </tr>";
                 }
-              } else {
-                echo "<tr><td colspan='8' style='text-align: center;'>No Payments Found</td></tr>";
+              } 
+              else 
+              {
+                echo "<tr><td colspan='10' class='text-center'>No Payments Found</td></tr>";
               }
             ?>
           </tbody>
@@ -232,7 +214,6 @@
   </div>
 </div>
 
-
 <!-- Payment Status Modal-->
 <div class="modal fade" id="transactionModal" tabindex="-1" aria-labelledby="transactionModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -241,7 +222,7 @@
         <h5 class="modal-title">Transaction Details - ID: <span id="transactionModalLabel"></span></h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <form action="../Employee Section/functions/emp-tablePayment-code.php" method="POST">
+      <form action="../Employee Section/functions/emp-tableFITPayment-code.php" method="POST">
         <div class="modal-body">
           <input type="hidden" id="paymentIdInput" name="paymentId">
           
@@ -260,7 +241,7 @@
             <!-- Remarks Input -->
             <label for="paymentRemarks" class="form-label fw-bold">Remarks:</label>
             <input type="text" id="paymentRemarks" name="paymentRemarks" class="form-control" 
-            placeholder="Enter remarks or additional comments here">
+              placeholder="Enter remarks or additional comments here">
           </div>
         </div>
         <div class="modal-footer">
@@ -273,42 +254,48 @@
 </div>
 
 <?php
-// Fetch the status from the session
-$statusMessage = isset($_SESSION['status']) ? $_SESSION['status'] : '';
+  // Fetch the status from the session
+  $statusMessage = isset($_SESSION['status']) ? $_SESSION['status'] : '';
 
-// Set default toast color, and check if status is "Cancelled"
-$toastColor = 'text-bg-primary'; // Default color
-if (isset($_SESSION['status']) && strpos($_SESSION['status'], 'Cancelled') !== false) {
+  // Set default toast color, and check if status is "Cancelled"
+  $toastColor = 'text-bg-primary'; // Default color
+  if (isset($_SESSION['status']) && strpos($_SESSION['status'], 'Cancelled') !== false) 
+  {
     $toastColor = 'text-bg-danger'; // Change to red for "Cancelled" status
-} elseif (isset($_SESSION['toastColor'])) {
+  } 
+  elseif (isset($_SESSION['toastColor'])) 
+  {
     $toastColor = $_SESSION['toastColor']; // Use session-defined toast color
-}
+  }
 
 
-if (!empty($statusMessage)) {
+  if (!empty($statusMessage))
+  {
     // You can use this status message in a toast or somewhere else
     echo '<div class="toast-container position-fixed top-0 end-0 p-3">
             <div id="statusToast" class="toast align-items-center ' . $toastColor . ' border-0" role="alert" aria-live="assertive" aria-atomic="true">
-                <div class="d-flex">
-                    <div class="toast-body">
-                        ' . htmlspecialchars($statusMessage) . '
-                    </div>
-                    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+              <div class="d-flex">
+                <div class="toast-body">
+                  ' . htmlspecialchars($statusMessage) . '
                 </div>
+                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+              </div>
             </div>
           </div>';
     
     // After displaying the status message, unset session variables
     unset($_SESSION['status']);
     unset($_SESSION['toastColor']);
-}
+  }
 ?>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
+  document.addEventListener('DOMContentLoaded', function () 
+  {
     // Automatically display the toast if it exists
     const toastElement = document.getElementById('statusToast');
-    if (toastElement) {
+    if (toastElement) 
+    {
       const toast = new bootstrap.Toast(toastElement);
       toast.show();
     }
@@ -316,21 +303,23 @@ if (!empty($statusMessage)) {
 </script>
 
 <script>
-  document.querySelectorAll('.viewdownloadfile-wrapper a').forEach((link) => {
-    link.addEventListener('click', (event) => {
-        if (link.textContent.trim() === 'View File') {
-            // Close the modal
-            const modal = document.getElementById('transactionModal');
-            const bootstrapModal = bootstrap.Modal.getInstance(modal); // Get the active modal instance
-            if (bootstrapModal) {
-                bootstrapModal.hide(); // Close the modal
-            }
+  document.querySelectorAll('.viewdownloadfile-wrapper a').forEach((link) => 
+  {
+    link.addEventListener('click', (event) => 
+    {
+      if (link.textContent.trim() === 'View File') 
+      {
+        // Close the modal
+        const modal = document.getElementById('transactionModal');
+        const bootstrapModal = bootstrap.Modal.getInstance(modal); // Get the active modal instance
+        if (bootstrapModal) 
+        {
+          bootstrapModal.hide(); // Close the modal
         }
+      }
     });
-});
-
+  });
 </script>
-
 
 <script>
   // Wait for the DOM to be fully loaded

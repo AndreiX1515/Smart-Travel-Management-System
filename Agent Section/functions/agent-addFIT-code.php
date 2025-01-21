@@ -80,7 +80,7 @@
 
     // Optionally redirect or provide a success message
     $_SESSION['status'] = "Booking successful!";
-    header("Location: ../agent-FIT.php");
+    header("Location: ../agent-bookingFITPayment.php?id=" . $transactNo);
     exit(0);
   }
 ?>

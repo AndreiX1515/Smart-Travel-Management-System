@@ -34,138 +34,143 @@
 
       <form action="../Agent Section/functions/agent-addFIT-code.php" method="POST">
         <div class="card">
-            <div class="card-body p-4">
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group mb-3">
-                    <label for="packageName" class="fs-6">Package <span class="text-danger fw-bold">*</span></label>
-                    <select class="form-select mt-2 fs-6" id="packageName" name="packageName" required>
-                      <option selected disabled>Select Package</option>
-                      <?php
-                        $sql1 = mysqli_query($conn, "SELECT packageId, packageName FROM fitpackage ORDER BY packageName ASC");
-                        while($res1 = mysqli_fetch_array($sql1)) 
-                        { 
-                          echo "<option value='{$res1['packageId']}'>{$res1['packageName']}</option>";
-                        }
-                      ?>
-                    </select>
-                    <span id="packageNameError" class="text-danger"></span> <!-- Error message for package -->
-                  </div>
+          <div class="card-header p-4 bg-secondary text-white text-light">
+            <h4>FIT</h4>
+          </div>
+          <!-- Booking Details -->
+          <div class="card-body p-4">
+            <div class="row">
+              <!-- <div class="col-md-6">
+                <div class="form-group mb-3">
+                  <label for="packageName" class="fs-6">Package <span class="text-danger fw-bold">*</span></label>
+                  <select class="form-select mt-2 fs-6" id="packageName" name="packageName" required>
+                    <option selected disabled>Select Package</option>
+                    <?php
+                      $sql1 = mysqli_query($conn, "SELECT packageId, packageName FROM fitpackage ORDER BY packageName ASC");
+                      while($res1 = mysqli_fetch_array($sql1)) 
+                      { 
+                        echo "<option value='{$res1['packageId']}'>{$res1['packageName']}</option>";
+                      }
+                    ?>
+                  </select>
+                  <span id="packageNameError" class="text-danger"></span> Error message for package 
                 </div>
+              </div> -->
 
-                <div class="col-md-6">
-                  <div class="form-group mb-3">
-                    <label for="nights" class="fs-6">No. of Nights <span class="text-danger fw-bold">*</span></label>
-                    <select class="form-select mt-2 fs-6" id="nights" name="nights" required>
-                      <option selected disabled>Select No. of Nights</option>
-                      <option value="3">3 Nights</option>
-                      <option value="4">4 Nights</option>
-                      <option value="5">5 Nights</option>
-                    </select>
-                    <span id="nightsError" class="text-danger"></span>
-                  </div>
+              <div class="col-md-6">
+                <div class="form-group mb-3">
+                  <label for="nights" class="fs-6">No. of Nights <span class="text-danger fw-bold">*</span></label>
+                  <select class="form-select mt-2 fs-6" id="nights" name="nights" required>
+                    <option selected disabled>Select No. of Nights</option>
+                    <option value="3">3 Nights</option>
+                    <option value="4">4 Nights</option>
+                    <option value="5">5 Nights</option>
+                  </select>
+                  <span id="nightsError" class="text-danger"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group mb-3">
+                  <label for="hotels" class="fs-6">Hotels <span class="text-danger fw-bold">*</span></label>
+                  <select class="form-select mt-2 fs-6" id="hotels" name="hotels" required>
+                    <option selected disabled>Select Hotel</option>
+                    <?php
+                      $sql1 = mysqli_query($conn, "SELECT hotelId, hotelName FROM fithotel ORDER BY hotelName ASC");
+                      while($res1 = mysqli_fetch_array($sql1)) 
+                      { 
+                        echo "<option value='{$res1['hotelId']}'>{$res1['hotelName']}</option>";
+                      }
+                    ?>
+                    <!-- <option value="Smart Hotel" data-price="80">Smart Hotel - $80/night + $20 on Friday & Saturday</option>
+                    <option value="Marina Bay Hotel" data-price="100">Marina Bay Hotel - $100/night + $20 on Friday & Saturday</option> -->
+                  </select>
+                  <span id="hotelsError" class="text-danger"></span>
                 </div>
               </div>
 
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group mb-3">
-                    <label for="hotels" class="fs-6">Hotels <span class="text-danger fw-bold">*</span></label>
-                    <select class="form-select mt-2 fs-6" id="hotels" name="hotels" required>
-                      <option selected disabled>Select Hotel</option>
-                      <?php
-                        $sql1 = mysqli_query($conn, "SELECT hotelId, hotelName FROM fithotel ORDER BY hotelName ASC");
-                        while($res1 = mysqli_fetch_array($sql1)) 
-                        { 
-                          echo "<option value='{$res1['hotelId']}'>{$res1['hotelName']}</option>";
-                        }
-                      ?>
-                      <!-- <option value="Smart Hotel" data-price="80">Smart Hotel - $80/night + $20 on Friday & Saturday</option>
-                      <option value="Marina Bay Hotel" data-price="100">Marina Bay Hotel - $100/night + $20 on Friday & Saturday</option> -->
-                    </select>
-                    <span id="hotelsError" class="text-danger"></span>
-                  </div>
-                </div>
-
-                <div class="col-md-6">
-                  <div class="form-group mb-6">
-                    <label for="room" class="fs-6">Rooms <span class="text-danger fw-bold">*</span></label>
-                    <select class="form-select mt-2 fs-6" id="room" name="room" required>
-                      <option selected disabled>Select Room</option>
-                      
-                    </select>
-                    <span id="roomError" class="text-danger"></span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group mb-6">
-                    <label for="dayPicker" class="fs-6">Select Day <span class="text-danger fw-bold">*</span></label>
-                    <input type="date" class="form-control mt-2 fs-6" id="dayPicker" name="dayPicker" required>
-                    <span id="packageNameError" class="text-danger"></span> <!-- Error message for package -->
-                  </div>
-                </div>
-
-                <div class="col-md-6">
-                  <div class="form-group mb-3">
-                    <label for="returnDate" class="fs-6">Return Date <span class="text-danger fw-bold">*</span></label>
-                    <input type="date" class="form-control mt-2 fs-6" id="returnDate" name="returnDate" readonly>
-                    <span id="packageNameError" class="text-danger"></span> <!-- Error message for package -->
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group mb-6">
-                    <label class="fs-6">No. of Rooms<span class="text-danger fw-bold">*</span></label>
-                    <label id="roomsError" class="text-danger fs-6 d-none"></label> <!-- Error message for rooms -->
-                    <input type="number" class="form-control mt-2 fs-6" id="rooms" name="rooms" placeholder="Enter No of Rooms" min="1" required>
-                  </div>
-                </div>
-
-                <div class="col-md-6">
-                  <div class="form-group mb-6">
-                    <label class="fs-6">Pax<span class="text-danger fw-bold">*</span></label>
+              <div class="col-md-6">
+                <div class="form-group mb-6">
+                  <label for="room" class="fs-6">Rooms <span class="text-danger fw-bold">*</span></label>
+                  <select class="form-select mt-2 fs-6" id="room" name="room" required>
+                    <option selected disabled>Select Room</option>
                     
-                    <label id="paxError" class="text-danger fs-6 d-none"></label> <!-- Error message for pax -->
-                    <input type="number" class="form-control mt-2 fs-6" id="paxRequest" name="pax" placeholder="Enter pax" min="1" required>
-                  </div>
+                  </select>
+                  <span id="roomError" class="text-danger"></span>
                 </div>
               </div>
             </div>
 
-            <!-- Prices -->
-            <div class="card-footer d-flex justify-content-start align-items-center py-3">
-              <div class="row w-100">
-                <div class="col-12">
-                  <h5>
-                    <label>
-                      Additional Cost (Rooms): $ <span id="additionalRoomCost">0.00</span>
-                    </label>
-                  </h5>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group mb-6">
+                  <label for="dayPicker" class="fs-6">Select Day <span class="text-danger fw-bold">*</span></label>
+                  <input type="date" class="form-control mt-2 fs-6" id="dayPicker" name="dayPicker" required>
+                  <span id="packageNameError" class="text-danger"></span> <!-- Error message for package -->
                 </div>
-                <div class="col-12">
-                  <h5>
-                    <label>
-                      Price: $ <span id="totalPrice">0.00</span>
-                    </label>
-                  </h5>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group mb-3">
+                  <label for="returnDate" class="fs-6">Return Date <span class="text-danger fw-bold">*</span></label>
+                  <input type="date" class="form-control mt-2 fs-6" id="returnDate" name="returnDate" readonly>
+                  <span id="packageNameError" class="text-danger"></span> <!-- Error message for package -->
                 </div>
-                <div class="col-12">
-                  <h5>
-                    <label>
-                      Price in PHP: ₱ <span id="totalPricePhp">0.00</span>
-                    </label>
-                  </h5>
-                </div>
-                <input type="hidden" id="roomPrice" name="roomPrice" placeholder="Room Price in USD">
               </div>
             </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group mb-6">
+                  <label class="fs-6">No. of Rooms<span class="text-danger fw-bold">*</span></label>
+                  <label id="roomsError" class="text-danger fs-6 d-none"></label> <!-- Error message for rooms -->
+                  <input type="number" class="form-control mt-2 fs-6" id="rooms" name="rooms" placeholder="Enter No of Rooms" min="1" required>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group mb-6">
+                  <label class="fs-6">Pax<span class="text-danger fw-bold">*</span></label>
+                  
+                  <label id="paxError" class="text-danger fs-6 d-none"></label> <!-- Error message for pax -->
+                  <input type="number" class="form-control mt-2 fs-6" id="paxRequest" name="pax" placeholder="Enter pax" min="1" required>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Prices -->
+          <div class="card-footer d-flex justify-content-start align-items-center py-3">
+            <div class="row w-100">
+              <div class="col-12">
+                <h5>
+                  <label>
+                    Additional Cost (Rooms): $ <span id="additionalRoomCost">0.00</span>
+                  </label>
+                </h5>
+              </div>
+              <div class="col-12">
+                <h5>
+                  <label>
+                    Price: $ <span id="totalPrice">0.00</span>
+                  </label>
+                </h5>
+              </div>
+              <div class="col-12">
+                <h5>
+                  <label>
+                    Price in PHP: ₱ <span id="totalPricePhp">0.00</span>
+                  </label>
+                </h5>
+              </div>
+              <input type="hidden" id="roomPrice" name="roomPrice" placeholder="Room Price in USD">
+            </div>
+          </div>
         </div>
 
+        <!-- Contact Person Details -->
         <div class="card mt-4">
           <div class="card-header bg-secondary text-white text-light">
             <h4 class="my-2 px-2">Contact Person Details</h4>
@@ -440,7 +445,6 @@
           <input type="hidden" id="totalCostPHP" name="totalCostPHP" placeholder="Total Price PHP">
           <!-- <input type="" class="form-control mt-2 fs-6" id="totalCost" name="totalCost" readonly> -->
         </div>
-
       </form>
     </div>
   </div>
@@ -450,158 +454,158 @@
 <?php require "../Agent Section/includes/scripts.php"; ?>
 
 <script>
-var usdToPhp = 56.50; // Replace this with your actual value
-$(document).ready(function () 
-{
-  // Fetching Rooms once Hotel was Selected
-  $('#hotels').on('change', function () 
+  var usdToPhp = 56.50; // Replace this with your actual value
+  $(document).ready(function () 
   {
-    var hotelId = $(this).val();
-
-    if (hotelId) 
+    // Fetching Rooms once Hotel was Selected
+    $('#hotels').on('change', function () 
     {
-      $.ajax(
+      var hotelId = $(this).val();
+
+      if (hotelId) 
       {
-        url: '../Agent Section/functions/fetchRooms.php',
-        type: 'POST',
-        data: { hotelId: hotelId },
-        success: function (response) 
+        $.ajax(
         {
-          // Parse the JSON response
-          var data = JSON.parse(response);
+          url: '../Agent Section/functions/fetchRooms.php',
+          type: 'POST',
+          data: { hotelId: hotelId },
+          success: function (response) 
+          {
+            // Parse the JSON response
+            var data = JSON.parse(response);
 
-          // Update the room options dropdown
-          $('#room').html(data.roomOptions);
+            // Update the room options dropdown
+            $('#room').html(data.roomOptions);
 
-          // Optional: Debugging
-          // console.log(data);
-        }
-      });
-    } 
-    else 
-    {
-      $('#room').html('<option selected disabled>Select Rooms</option>');
-    }
-  });
-
-  // Fetching Room Price once Room was Selected
-  $('#room').on('change', function () 
-  {
-    var roomId = $(this).val();
-
-    if (roomId) 
-    {
-      $.ajax(
+            // Optional: Debugging
+            // console.log(data);
+          }
+        });
+      } 
+      else 
       {
-        url: '../Agent Section/functions/fetchRoomPrice.php',
-        type: 'POST',
-        data: { roomId: roomId },
-        success: function (response) 
+        $('#room').html('<option selected disabled>Select Rooms</option>');
+      }
+    });
+
+    // Fetching Room Price once Room was Selected
+    $('#room').on('change', function () 
+    {
+      var roomId = $(this).val();
+
+      if (roomId) 
+      {
+        $.ajax(
         {
-          // Parse the JSON response
-          var data = JSON.parse(response);
+          url: '../Agent Section/functions/fetchRoomPrice.php',
+          type: 'POST',
+          data: { roomId: roomId },
+          success: function (response) 
+          {
+            // Parse the JSON response
+            var data = JSON.parse(response);
 
-          // Update the price input and available rooms
-          $('#roomPrice').val(data.roomPrice);
-          $('#rooms').attr('max', data.avail);
+            // Update the price input and available rooms
+            $('#roomPrice').val(data.roomPrice);
+            $('#rooms').attr('max', data.avail);
 
-          // Optional: Debugging
-          // console.log(data);
-        }
-      });
-    } 
-    else 
+            // Optional: Debugging
+            // console.log(data);
+          }
+        });
+      } 
+      else 
+      {
+        $('#roomPrice').val('Error');
+      }
+    });
+
+    // Validate the number of rooms selected
+    $('#rooms').on('change input', function () 
     {
-      $('#roomPrice').val('Error');
+      var roomCount = $(this).val(); // Get the current value of the input
+      var maxRooms = $(this).attr('max'); // Get the max attribute value
+
+      // Ensure the entered value does not exceed the max
+      if (parseInt(roomCount) > parseInt(maxRooms)) 
+      {
+        alert('The number of rooms exceeds the available limit!');
+        $(this).val(maxRooms); // Reset to the maximum allowed value
+      }
+
+      // Optional: Debugging
+      // console.log('Rooms selected:', roomCount, 'Max available:', maxRooms);
+    });
+
+    // Function to calculate the return date
+    function calculateReturnDate() 
+    {
+      const selectedDate = $('#dayPicker').val(); // Get the selected start date
+      const nights = $('#nights').val(); // Get the number of nights
+
+      if (selectedDate && nights) 
+      {
+        const startDate = new Date(selectedDate); // Convert to Date object
+        startDate.setDate(startDate.getDate() + parseInt(nights)); // Add nights
+
+        // Format the new date as yyyy-mm-dd
+        const year = startDate.getFullYear();
+        const month = String(startDate.getMonth() + 1).padStart(2, '0');
+        const day = String(startDate.getDate()).padStart(2, '0');
+        const formattedDate = `${year}-${month}-${day}`;
+
+        // Update the return date field
+        $('#returnDate').val(formattedDate);
+      } 
+      else 
+      {
+        $('#returnDate').val('');
+      }
     }
+
+    // Event listeners for changes in the date or nights dropdown
+    $('#dayPicker').on('change', calculateReturnDate);
+    $('#nights').on('change', calculateReturnDate);
+
+    // Function to calculate the total cost
+    function calculateTotalCost() 
+    {
+      const rooms = parseInt($('#rooms').val(), 10) || 1;
+      const pax = parseInt($('#paxRequest').val(), 10) || 1;
+      
+      const maxPaxCapacity = rooms * 3; // Each room can have a maximum of 3 pax
+
+      if (pax > maxPaxCapacity)
+      {
+        alert(`Maximum pax for ${rooms} room(s) is ${maxPaxCapacity}.`);
+        return;
+      }
+
+      // Calculate pax surcharge
+      const roomCapacity = rooms * 2; // Each room accommodates 2 pax without surcharge
+      const extraPax = pax > roomCapacity ? pax - roomCapacity : 0; // Excess pax above free capacity
+      const paxSurcharge = extraPax > 0 ? extraPax * 50 : 0; // $50 surcharge for each extra pax
+
+      // Update additional cost span
+      $('#additionalRoomCost').text(paxSurcharge.toFixed(2));
+
+      // Update fields with total cost
+      const roomPrice = parseFloat($('#roomPrice').val()) || 0;
+      const totalCost = roomPrice * rooms + paxSurcharge;
+      const totalCostInPhp = totalCost * usdToPhp;
+
+      $('#totalCostPHP').val(totalCostInPhp.toFixed(2));
+      $('#totalCostUSD').val(totalCost.toFixed(2));
+      $('#totalPrice').text(totalCost.toFixed(2));
+      $('#totalPricePhp').text(totalCostInPhp.toLocaleString('en-PH', { minimumFractionDigits: 2 }));
+    }
+
+    // Event listener for cost calculations
+    $('#dayPicker, #nights, #rooms, #paxRequest, #roomPrice').on('change input', calculateTotalCost);
+
+    // Initial cost calculation on page load
+    calculateTotalCost();
   });
-
-  // Validate the number of rooms selected
-  $('#rooms').on('change input', function () 
-  {
-    var roomCount = $(this).val(); // Get the current value of the input
-    var maxRooms = $(this).attr('max'); // Get the max attribute value
-
-    // Ensure the entered value does not exceed the max
-    if (parseInt(roomCount) > parseInt(maxRooms)) 
-    {
-      alert('The number of rooms exceeds the available limit!');
-      $(this).val(maxRooms); // Reset to the maximum allowed value
-    }
-
-    // Optional: Debugging
-    // console.log('Rooms selected:', roomCount, 'Max available:', maxRooms);
-  });
-
-  // Function to calculate the return date
-  function calculateReturnDate() 
-  {
-    const selectedDate = $('#dayPicker').val(); // Get the selected start date
-    const nights = $('#nights').val(); // Get the number of nights
-
-    if (selectedDate && nights) 
-    {
-      const startDate = new Date(selectedDate); // Convert to Date object
-      startDate.setDate(startDate.getDate() + parseInt(nights)); // Add nights
-
-      // Format the new date as yyyy-mm-dd
-      const year = startDate.getFullYear();
-      const month = String(startDate.getMonth() + 1).padStart(2, '0');
-      const day = String(startDate.getDate()).padStart(2, '0');
-      const formattedDate = `${year}-${month}-${day}`;
-
-      // Update the return date field
-      $('#returnDate').val(formattedDate);
-    } 
-    else 
-    {
-      $('#returnDate').val('');
-    }
-  }
-
-  // Event listeners for changes in the date or nights dropdown
-  $('#dayPicker').on('change', calculateReturnDate);
-  $('#nights').on('change', calculateReturnDate);
-
-  // Function to calculate the total cost
-  function calculateTotalCost() 
-  {
-    const rooms = parseInt($('#rooms').val(), 10) || 1;
-    const pax = parseInt($('#paxRequest').val(), 10) || 1;
-    
-    const maxPaxCapacity = rooms * 3; // Each room can have a maximum of 3 pax
-
-    if (pax > maxPaxCapacity)
-    {
-      alert(`Maximum pax for ${rooms} room(s) is ${maxPaxCapacity}.`);
-      return;
-    }
-
-    // Calculate pax surcharge
-    const roomCapacity = rooms * 2; // Each room accommodates 2 pax without surcharge
-    const extraPax = pax > roomCapacity ? pax - roomCapacity : 0; // Excess pax above free capacity
-    const paxSurcharge = extraPax > 0 ? extraPax * 50 : 0; // $50 surcharge for each extra pax
-
-    // Update additional cost span
-    $('#additionalRoomCost').text(paxSurcharge.toFixed(2));
-
-    // Update fields with total cost
-    const roomPrice = parseFloat($('#roomPrice').val()) || 0;
-    const totalCost = roomPrice * rooms + paxSurcharge;
-    const totalCostInPhp = totalCost * usdToPhp;
-
-    $('#totalCostPHP').val(totalCostInPhp.toFixed(2));
-    $('#totalCostUSD').val(totalCost.toFixed(2));
-    $('#totalPrice').text(totalCost.toFixed(2));
-    $('#totalPricePhp').text(totalCostInPhp.toLocaleString('en-PH', { minimumFractionDigits: 2 }));
-  }
-
-  // Event listener for cost calculations
-  $('#dayPicker, #nights, #rooms, #paxRequest, #roomPrice').on('change input', calculateTotalCost);
-
-  // Initial cost calculation on page load
-  calculateTotalCost();
-});
 </script>
 
   
