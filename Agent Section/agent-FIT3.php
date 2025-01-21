@@ -49,7 +49,6 @@ session_start();
             </div>
 
               <div class="card-body">
-
                 <div class="row">
                   <div class="columns col-md-6">
                     <div class="form-group">
