@@ -69,9 +69,6 @@ html, body {
 		cursor: not-allowed; /* Change cursor to indicate it's disabled */
 }
 
-
-
-
 .main-container {
     display: flex;
     justify-content: center;
@@ -148,8 +145,6 @@ html, body {
     display: block; /* Center alignment */
 }
 
-
-
 .bottom-register-div {
     display: flex;
     flex-direction: column;
@@ -158,7 +153,6 @@ html, body {
     margin-top: 30px;
     gap: 10px;
 }
-
 
 .bottom-register-div button {
 	background-color: #116530; 
@@ -209,6 +203,49 @@ html, body {
 	0% { transform: rotate(0deg); }
 	100% { transform: rotate(360deg); }
 }
+
+
+#SubmitRegButton {
+    font-size: 1rem;
+    width: 100%;
+    font-weight: 500;
+    padding: 10px 20px; /* Button padding */
+    border: 1px solid #3a3a3a; /* Button border */
+    border-radius: 5px; /* Slightly rounded corners */
+    background-color: #ffffff; /* Default white background */
+    color: #3a3a3a; /* Text color */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth hover transition */
+}
+
+#SubmitRegButton:hover {
+    color: #ffffff; /* Change text color on hover */
+    background-color: #0055f3; /* Add background color on hover */
+    border-color: #0055f3; /* Match border with hover background */
+}
+
+#SubmitRegButton:active {
+    transform: scale(0.98); /* Slight scale-down on click */
+}
+
+#SubmitRegButton.disabled {
+    color: rgb(170, 170, 170); /* Greyed-out text when disabled */
+    background-color: gainsboro; /* Disabled background */
+    border-color: gainsboro; /* Disabled border */
+    pointer-events: none; /* Prevent interaction */
+    cursor: not-allowed; /* Show not-allowed cursor */
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -302,9 +339,6 @@ a#sendOtpLink-modal {
 
 
 
-
-
-
 .form-floating {
 	margin-right: 15px;
 	flex-grow: 1;
@@ -317,7 +351,6 @@ a#sendOtpLink-modal {
 .form-floating label {
 	padding-left: 10px;
 }
-
 
 
 .message-otp {
@@ -386,7 +419,8 @@ a#sendOtpLink-modal {
 
 
 #sendOtpLink.disabled {
-    color: grey; /* Grey out the text when disabled */
+    color: rgb(170, 170, 170); /* Grey out the text when disabled */
+    border: 1px solid gainsboro;
     pointer-events: none; /* Prevent clicking while disabled */
 }
 
@@ -463,6 +497,139 @@ a#sendOtpLink-modal {
     pointer-events: none; /* Prevent clicks while disabled */
     text-decoration: none; /* Optionally remove underline */
 }
+
+/* Success Modal Styles (Scoped to successModal) */
+#successModal .modal-content {
+    border-radius: 10px;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  }
+  
+  #successModal .success-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 70px; /* Increased size */
+    height: 70px; /* Increased size */
+    margin-bottom: 20px;
+  }
+  
+  #successModal .success-icon .circle {
+    border: 5px solid #28a745; /* Slightly thicker border */
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+  
+  #successModal .success-icon .checkmark {
+    position: absolute;
+    width: 36px; /* Larger checkmark */
+    height: 18px; /* Larger checkmark */
+    border: solid #28a745;
+    border-width: 0 5px 5px 0;
+    transform: scaleX(-1) rotate(45deg); /* Flip horizontally and rotate */
+    top: 50%;
+    left: 50%;
+    margin-top: -7px;
+    margin-left: -12px;
+    opacity: 0;
+    animation: draw 0.5s ease forwards;
+    animation-delay: 0.5s; /* Delay animation to show after the circle */
+}
+
+  
+  @keyframes draw {
+    0% {
+      width: 0;
+      height: 0;
+      opacity: 0;
+    }
+    100% {
+      width: 24px;
+      height: 12px;
+      opacity: 1;
+    }
+  }
+  
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+      opacity: 0.7;
+    }
+    50% {
+      transform: scale(1.1);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 0.7;
+    }
+  }
+  
+  #successModal .text-content h4 {
+    font-size: 1.25rem;
+    color: #333;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  
+  #successModal .text-content p {
+    font-size: 0.875rem;
+    color: #666;
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+  
+  #successModal .modal-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px; /* Added gap between elements */
+  }
+  
+  #successModal .modal-header{
+    border-bottom: none;
+    padding-top: 0;
+    background: transparent;
+  }
+
+  #successModal .modal-footer {
+    border-top: none;
+    padding-top: 0;
+    background: transparent;
+  }
+  
+  #successModal #okButton {
+    background-color: #28a745;
+    border: none;
+    color: white;
+    font-weight: 600;
+    padding: 10px 0;
+    font-size: 1rem;
+    border-radius: 5px;
+  }
+  
+  #successModal #okButton:hover {
+    background-color: #218838;
+  }
+  
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* Mobile devices (320px – 480px) */
 @media (max-width: 480px) {

@@ -761,7 +761,6 @@ position: relative;
  .confirm-table-container {
   width: 100%;
   height: 27vh; 
-
   position: relative;
   overflow-y: auto; 
   overflow-x: auto; 

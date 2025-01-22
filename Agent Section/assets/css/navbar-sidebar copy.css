@@ -254,7 +254,7 @@ a:hover {
 .main-content {
   height: 90vh;
   margin-top: 6vh;
-  /* border: 1px solid black; */
+  border: 1px solid black;
 }
 
 
