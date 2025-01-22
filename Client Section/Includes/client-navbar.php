@@ -7,12 +7,41 @@ error_reporting(E_ALL);
 
 // Fetch session variables directlys
 $email = $_SESSION['email'] ?? ''; // Use null coalescing operator to avoid undefined index
-// $firstName = $_SESSION['first_name'] ?? '';
-// $lastName = $_SESSION['last_name'] ?? '';
-// $middleName = $_SESSION['middle_name'] ?? '';
 $accId = $_SESSION['accountId'] ?? '';
 
-// $fullName = htmlspecialchars($lastName . ', ' . $firstName . ($middleName ? ' ' . substr($middleName, 0, 1) . '.' : ''));
+$sql1 = "SELECT * FROM Agent WHERE accId = $accId";
+if ($accId !== '') 
+{
+  // Use a prepared statement to safely query the database
+  $stmt = $conn->prepare("SELECT agentCode, agentId, agentRole FROM agent WHERE accountId = ?");
+  $stmt->bind_param("i", $accId); // Bind the accountId parameter to the query
+  $stmt->execute();
+  $result = $stmt->get_result(); // Get the result of the query
+
+  // Check if the query returns any rows
+  if ($result->num_rows > 0) 
+  {
+    // Fetch the result as an associative array
+    while ($row = $result->fetch_assoc()) 
+    {
+      $_SESSION['agentCode'] = $row['agentCode'];
+      $_SESSION['agentId'] = $row['agentId'];
+      $_SESSION['agentRole'] = $row['agentRole'];
+      $_SESSION['agent_agentType'] = $row['agentType'];
+    }
+  } 
+  else 
+  {
+    echo "No agent found with the given account ID.";
+  }
+
+  // Close the statement
+  $stmt->close();
+} 
+else 
+{
+  echo "Account ID is missing.";
+}
 ?>
 
 <header>

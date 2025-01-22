@@ -96,7 +96,6 @@
                   <label for="room" class="fs-6">Rooms <span class="text-danger fw-bold">*</span></label>
                   <select class="form-select mt-2 fs-6" id="room" name="room" required>
                     <option selected disabled>Select Room</option>
-                    
                   </select>
                   <span id="roomError" class="text-danger"></span>
                 </div>
