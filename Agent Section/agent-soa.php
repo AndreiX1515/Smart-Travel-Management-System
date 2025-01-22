@@ -234,7 +234,7 @@
 
         <div class="btn-container">
           <button id="generate-soa-btn" class="btn btn-primary">
-            Generate SOA
+            Preview SOA
           </button>
         </div>
 
@@ -415,8 +415,8 @@
     </div>
     
     <div class="content-footer">
-      <button class="btn btn-secondary" id="preview-btn">Preview</button>
-      <button class="btn btn-primary" id="download-btn">Download</button>
+      <!-- <button class="btn btn-secondary" id="preview-btn">Preview</button> -->
+      <button class="btn btn-primary" id="download-btn">Generate SoA</button>
     </div>
 
   </div>

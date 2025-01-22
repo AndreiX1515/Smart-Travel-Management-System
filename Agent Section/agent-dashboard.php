@@ -40,42 +40,42 @@ session_start();
               </div>
               <div class="side-content d-flex flex-column">
                 <?php
-                      // Get session variables
-                      $accountId = $_SESSION['agent_accountId'];
-                      $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking where accountId = '$accountId' and MONTH(bookingDate) = MONTH(CURRENT_DATE()) AND YEAR(bookingDate) = YEAR(CURRENT_DATE())"; $result = mysqli_query($conn, $totalTransactionsQuery);
-                      $agentId = $_SESSION['agent_agentId'];
-                      $agentCode = $_SESSION['agent_agentCode'];
-                      $agentRole = $_SESSION['agent_agentRole'];
+                    // Get session variables
+                    $accountId = $_SESSION['agent_accountId'];
+                    $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking where accountId = '$accountId' and MONTH(bookingDate) = MONTH(CURRENT_DATE()) AND YEAR(bookingDate) = YEAR(CURRENT_DATE())"; $result = mysqli_query($conn, $totalTransactionsQuery);
+                    $agentId = $_SESSION['agent_agentId'];
+                    $agentCode = $_SESSION['agent_agentCode'];
+                    $agentRole = $_SESSION['agent_agentRole'];
 
-                      // Determine which query to run based on the agent's role
-                      if ($agentRole != 'Head Agent') 
-                      {
-                        // Query for non-Head Agent, use accountId
-                        $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking 
-                                                  WHERE accountId = '$accountId' AND MONTH(bookingDate) = MONTH(CURRENT_DATE()) 
-                                                  AND YEAR(bookingDate) = YEAR(CURRENT_DATE())";
-                      } 
-                      else 
-                      {
-                        // Query for Head Agent, use agentCode
-                        $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking 
-                                                  WHERE agentCode = '$agentCode' AND MONTH(bookingDate) = MONTH(CURRENT_DATE()) 
-                                                  AND YEAR(bookingDate) = YEAR(CURRENT_DATE())";
-                      }
+                    // Determine which query to run based on the agent's role
+                    if ($agentRole != 'Head Agent') 
+                    {
+                      // Query for non-Head Agent, use accountId
+                      $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking 
+                                                WHERE accountId = '$accountId' AND MONTH(bookingDate) = MONTH(CURRENT_DATE()) 
+                                                AND YEAR(bookingDate) = YEAR(CURRENT_DATE())";
+                    } 
+                    else 
+                    {
+                      // Query for Head Agent, use agentCode
+                      $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking 
+                                                WHERE agentCode = '$agentCode' AND MONTH(bookingDate) = MONTH(CURRENT_DATE()) 
+                                                AND YEAR(bookingDate) = YEAR(CURRENT_DATE())";
+                    }
 
-                      // Execute the query
-                      $result = mysqli_query($conn, $totalTransactionsQuery);
+                    // Execute the query
+                    $result = mysqli_query($conn, $totalTransactionsQuery);
 
-                      // Check if the query was successful and fetch the result
-                      if ($result) 
-                      {
-                        $row = mysqli_fetch_assoc($result);
-                        $totalTransactions = $row['total'];
-                      } 
-                      else 
-                      {
-                        $totalTransactions = 0; // Default to 0 if query fails
-                      }
+                    // Check if the query was successful and fetch the result
+                    if ($result) 
+                    {
+                      $row = mysqli_fetch_assoc($result);
+                      $totalTransactions = $row['total'];
+                    } 
+                    else 
+                    {
+                      $totalTransactions = 0; // Default to 0 if query fails
+                    }
                   ?>
                 <h5><?php echo $totalTransactions; ?></h5>
                 <p>TOTAL</p>
@@ -712,7 +712,7 @@ session_start();
                                 LEFT JOIN
                                     agent a ON b.agentId = a.agentId
                                 WHERE 
-                                    b.agentId = '$agentId' and b.status = 'Pending'
+                                    b.accountId = '$accountId' and b.status = 'Pending'
                                 ORDER BY 
                                     b.transactNo DESC";
               
@@ -904,7 +904,7 @@ session_start();
                               LEFT JOIN 
                                   concerndetails cd ON r.concernDetailsId = cd.concernDetailsId
                               WHERE 
-                                  b.agentId = '$agentId' AND r.requestStatus = 'Submitted'
+                                  b.accountId = '$accountId' AND r.requestStatus = 'Submitted'
                               ORDER BY 
                                   r.requestDate DESC";
 
@@ -1023,7 +1023,6 @@ session_start();
                           }
                         }
                       }
-                      
                     ?>
                   </tbody>
                 </table>
@@ -1065,7 +1064,7 @@ session_start();
                                 JOIN 
                                   booking b ON p.transactNo = b.transactNo
                                 WHERE 
-                                  b.agentId = '$agentId' and p.paymentStatus = 'Submitted'  -- Adjust conditions as needed
+                                  b.accountId = '$accountId' and p.paymentStatus = 'Submitted'  -- Adjust conditions as needed
                                 ORDER BY 
                                   p.paymentDate DESC";  // Order by payment date
 
@@ -1175,8 +1174,6 @@ session_start();
                           echo "<tr><td colspan='4' style='text-align: left;'>No payments at the the moment</td></tr>";
                         }
                       }
-
-                      
                     ?>
                   </tbody>
                 </table>
