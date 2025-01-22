@@ -24,80 +24,74 @@ include '../Agent Section/includes/breadcrumbs.php';
   <div class="main-content" id="mainContent">
     <?php include '../Agent Section/includes/navbar.php'; ?>
 
-    <div class="content-wrapper-transact d-flex flex-column">
+    <div class="content-wrapper-transact">
      
         <div class="table-header">
-         <div class="sorting-wrapper">
+          <div class="search-wrapper">
+              <div class="search-input-wrapper">
+                  <input type="text" id="search" placeholder="Search here..">
+                  <!-- <span class="icon">🔍</span> -->
+              </div>
+          </div>
 
-           <div class="dropdown-sorting-wrapper">
-              <div class="filter-field mb-3 d-flex flex-column">
-                <label for="packages">Packages:</label>
-                <div class="select-wrapper mt-2">
-                  <select id="packages" class="custom-select">
-                    <option value="">All</option>
+
+          <!-- <div class="filter-field">
+              <!-- <label for="status">Status:</label> 
+              <div class="select-wrapper">
+                <select id="status">
+                  <option value="All" disabled selected>Select Status</option>
+                  <option value="Pending">Pending</option>
+                  <option value="Confirmed">Confirmed</option>
+                  <option value="Cancelled">Cancelled</option>
+                </select>
+              </div>
+            </div> -->
+
+          <div class="second-header-wrapper">
+            <div class="date-range-wrapper sorting-wrapper">
+              <div class="select-wrapper">
+                <select id="packages">
+                    <option value="All" disabled selected>Select Packages</option>
                     <option value="Autumn Tour Package">Autumn Tour</option>
                     <option value="Summer Tour Package">Summer Tour</option>
                     <option value="Spring Tour Package">Spring Tour</option>
                     <option value="Winter Tour Package">Winter Tour</option>
                     <option value="Regular Tour Package">Regular Tour</option>
                     <option value="Busan Tour Package">Busan Tour</option>
-                  </select>
-                </div>
+                </select>
               </div>
-
-              <div class="filter-field mb-3 d-flex flex-column">
-                <label for="status">Status:</label>
-                <div class="select-wrapper mt-2">
-                  <select id="status" class="custom-select">
-                    <option value="">All</option>
-                    <option value="Pending">Pending</option>
-                    <option value="Confirmed">Confirmed</option>
-                    <option value="Cancelled">Cancelled</option>
-                  </select>
-                </div>
-              </div>
-           </div>
-
-           <div class="flightbooking-wrapper d-flex flex-row ">
-
-             <div class="date-range-wrapper">
-               <div class="label-wrapper">
-                 <label for="status">Booking Date (Start - End):</label>
-               </div>
-               <div class="date-range-inputs-wrapper">
-                 <input type="text" class="datepicker" id="BookingStartDate" placeholder="Start Date">
-                 <span class="fw-bolder"> <i class="fa-solid fa-arrow-right"></i> </span>
-                 <input type="text" class="datepicker" id="BookingEndDate" placeholder="End Date">
-               </div>
-             </div>
-
-             <div class="date-range-wrapper">
-               <div class="label-wrapper">
-                 <label for="status">Flight Date (Start - End):</label>
-               </div>
-               <div class="date-range-inputs-wrapper">
-                 <input type="text" class="datepicker" id="FlightStartDate" placeholder="Start Date">
-                 <span class="fw-bold"> <i class="fa-solid fa-arrow-right"> </i> </span>
-                 <input type="text" class="datepicker" id="FlightEndDate" placeholder="End Date">
-               </div>
-             </div>
-
-            
-             <div class="filter-field d-flex align-center">
-              <button id="clearSorting" class="btn btn-secondary btn-sm clearFilters">
-                 Clear Filters
-              </button>
             </div>
 
-           </div>
-         </div>
+            <div class="date-range-wrapper flightbooking-wrapper">
+              <div class="date-range-inputs-wrapper">
+                <div class="input-with-icon">
+                  <input type="text" class="datepicker" id="BookingStartDate" placeholder="Booking Date">
+                  <i class="fas fa-calendar-alt calendar-icon"></i>
+                </div>
+              </div>
+            </div>
 
-         <div class="search-bar">
+            <div class="date-range-wrapper flightbooking-wrapper">
+              <div class="date-range-inputs-wrapper">
+                <div class="input-with-icon">
+                  <input type="text" class="datepicker" id="FlightStartDate" placeholder="Flight Date">
+                  <i class="fas fa-calendar-alt calendar-icon"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="buttons-wrapper">
+              <button id="clearSorting" class="btn btn-secondary">
+                  Clear Filters
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- <div class="search-bar">
            <div class="left-side">
-             <div class="search-input">
-               <label for="status">Search:</label>
-               <input type="text" id="search" class="form-control mt-1" placeholder="Search">
-             </div>
+             
            </div>
 
            <div class="right-side" style="display: flex; align-items: baseline; gap: 10px;">
@@ -111,11 +105,34 @@ include '../Agent Section/includes/breadcrumbs.php';
              <label for="entries" style="font-family: Arial, sans-serif;">Entries</label>
            </div>
            
-         </div>
-       </div>
+         </div> -->   
 
-       <div class="table-container">
-        <!-- <hr style="border: 1px solid grey; margin: 5px 0 20px 0;"> -->
+         <div class="navpills-container">
+            <ul class="nav nav-pills nav-underline" id="pills-tab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">
+                        All <span class="badge">88</span>
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">
+                        Pending <span class="badge">61</span>
+                    </button>
+                </li>
+
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">
+                        Confirmed <span class="badge">27</span>
+                    </button>
+                </li>
+
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">
+                        Cancelled <span class="badge">27</span>
+                    </button>
+                </li>
+            </ul>
+        </div>
 
         <?php 
           if(isset($_SESSION['status'])):
@@ -128,185 +145,217 @@ include '../Agent Section/includes/breadcrumbs.php';
           unset($_SESSION['status']);
           endif;
         ?>
+
         
-        <table id="product-table" class="product-table">
-          <thead>
-            <tr>
-                <th>Transaction ID</th>
-                <th>Contact Person Info</th>
-                <th>Contact Person Contact Details</th>
-                <th>Package Name</th>
-                <th>Transaction Date</th>
-                <th>Flight Date</th>
-                <th>Total Pax</th>
-                <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php
-              $agentRole = $_SESSION['agent_agentRole'];
-              $agentCode = $_SESSION['agent_agentCode'];
-              $accountId = $_SESSION['agent_accountId'];
-              if ($agentRole != 'Head Agent')
-              {
-                $sql1 = "SELECT b.transactNo AS `T.N`, p.packageName AS `PACKAGE`,
-                          DATE_FORMAT(b.bookingDate, '%m-%d-%Y') AS `TRANSACTION DATE`, b.bookingType as bookingType,
-                          DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y') AS `FLIGHT DATE`, b.pax AS `TOTAL PAX`,
-                          CONCAT(b.lName, ', ', b.fName, ' ', CASE WHEN b.mName = 'N/A' THEN '' 
-                            ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ', CASE WHEN b.suffix = 'N/A' THEN '' 
-                            ELSE b.suffix END) AS `CONTACT NAME`,
-                          b.email AS `CONTACT EMAIL`, CONCAT(b.countryCode, ' ', b.contactNo) AS `CONTACT PHONE`, b.status AS `STATUS`
-                      FROM 
-                          booking b
-                      LEFT JOIN 
-                          flight f ON b.flightId = f.flightId
-                      LEFT JOIN 
-                          package p ON b.packageId = p.packageId
-                      LEFT JOIN
-                          agent a ON b.agentId = a.agentId
-                      WHERE 
-                          b.agentId = '$agentId' 
-                      ORDER BY 
-                          b.transactNo DESC";
+          <div class="tab-content" id="pills-tabContent">
+              <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
+                <div class="table-container">
+                  <table id="product-table" class="product-table">
+                    <thead>
+                      <tr>
+                          <th>Transaction ID</th>
+                          <th>Contact Person Info</th>
+                          <th>Contact Person Contact Details</th>
+                          <th>Package Name</th>
+                          <th>Transaction Date</th>
+                          <th>Flight Date</th>
+                          <th>Total Pax</th>
+                          <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <?php
+                        $agentRole = $_SESSION['agent_agentRole'];
+                        $agentCode = $_SESSION['agent_agentCode'];
+                        $accountId = $_SESSION['agent_accountId'];
+                        if ($agentRole != 'Head Agent')
+                        {
+                          $sql1 = "SELECT b.transactNo AS `T.N`, p.packageName AS `PACKAGE`,
+                                    DATE_FORMAT(b.bookingDate, '%m-%d-%Y') AS `TRANSACTION DATE`, b.bookingType as bookingType,
+                                    DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y') AS `FLIGHT DATE`, b.pax AS `TOTAL PAX`,
+                                    CONCAT(b.lName, ', ', b.fName, ' ', CASE WHEN b.mName = 'N/A' THEN '' 
+                                      ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ', CASE WHEN b.suffix = 'N/A' THEN '' 
+                                      ELSE b.suffix END) AS `CONTACT NAME`,
+                                    b.email AS `CONTACT EMAIL`, CONCAT(b.countryCode, ' ', b.contactNo) AS `CONTACT PHONE`, b.status AS `STATUS`
+                                FROM 
+                                    booking b
+                                LEFT JOIN 
+                                    flight f ON b.flightId = f.flightId
+                                LEFT JOIN 
+                                    package p ON b.packageId = p.packageId
+                                LEFT JOIN
+                                    agent a ON b.agentId = a.agentId
+                                WHERE 
+                                    b.agentId = '$agentId' 
+                                ORDER BY 
+                                    b.transactNo DESC";
 
-                $res1 = $conn->query($sql1);
+                          $res1 = $conn->query($sql1);
 
-                if ($res1->num_rows > 0) 
-                {
-                  while ($row = $res1->fetch_assoc()) 
-                  {
-                    $transactNo = $row['T.N'];
-                    $pax = $row['TOTAL PAX'];
+                          if ($res1->num_rows > 0) 
+                          {
+                            while ($row = $res1->fetch_assoc()) 
+                            {
+                              $transactNo = $row['T.N'];
+                              $pax = $row['TOTAL PAX'];
 
-                    $status = isset($row['STATUS']) ? $row['STATUS'] : 'Unknown';
-                    $statusClass = '';
+                              $status = isset($row['STATUS']) ? $row['STATUS'] : 'Unknown';
+                              $statusClass = '';
 
-                    switch ($status) {
-                        case 'Confirmed':
-                            $statusClass = 'bg-success text-white'; // Green background, white text
-                            break;
-                        case 'Cancelled':
-                            $statusClass = 'bg-danger text-white'; // Red background, white text
-                            break;
-                        case 'Pending':
-                            $statusClass = 'bg-warning text-dark'; 
-                            break;
-                        default:
-                            $statusClass = 'bg-secondary text-white'; 
-                    }
+                              switch ($status) {
+                                  case 'Confirmed':
+                                      $statusClass = 'bg-success text-white'; // Green background, white text
+                                      break;
+                                  case 'Cancelled':
+                                      $statusClass = 'bg-danger text-white'; // Red background, white text
+                                      break;
+                                  case 'Pending':
+                                      $statusClass = 'bg-warning text-dark'; 
+                                      break;
+                                  default:
+                                      $statusClass = 'bg-secondary text-white'; 
+                              }
 
-                    echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($transactNo) . "'>
-                            <td>{$transactNo}</td>
-                            <td>{$row['CONTACT NAME']}</td>
-                            <td> 
-                              <div class='d-flex flex-column'>
-                                <span><strong>Email: </strong>" . $row['CONTACT EMAIL'] ." </span>
-                                <span><strong>Contact Number: </strong> " . $row['CONTACT PHONE'] ."</span>
-                              </div>
-                            </td>
-  
-                            <td>{$row['PACKAGE']}</td>
-                            <td>{$row['TRANSACTION DATE']}</td>
-                            <td>{$row['FLIGHT DATE']}</td>
-                            <td style='text-align: center; font-weight: bold;'>
-                                {$row['TOTAL PAX']}
-                            </td>
-                            <td>
-                              <span class='badge p-2 rounded-pill {$statusClass} '>
-                                  {$status}
-                              </span>
-                           </td>
-                    </tr>";
-                  }
-                } 
-              
-              }
-              else
-              {
-                $sql1 = "SELECT b.transactNo AS `T.N`, p.packageName AS `PACKAGE`, 
-                            DATE_FORMAT(b.bookingDate, '%m-%d-%Y') AS `TRANSACTION DATE`, b.bookingType as bookingType,
-                            DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y') AS `FLIGHT DATE`,
-                            b.pax AS `TOTAL PAX`, CONCAT(b.lName, ', ', b.fName, ' ', CASE WHEN b.mName = 'N/A' 
-                            THEN '' ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ', CASE WHEN b.suffix = 'N/A' THEN '' 
-                            ELSE b.suffix END) AS `CONTACT NAME`, b.email AS `CONTACT EMAIL`,
-                            CONCAT(b.countryCode, ' ', b.contactNo) AS `CONTACT PHONE`, b.status AS `STATUS`
-                          FROM 
-                              booking b
-                          LEFT JOIN 
-                              flight f ON b.flightId = f.flightId
-                          LEFT JOIN 
-                              package p ON b.packageId = p.packageId
-                          LEFT JOIN
-                              agent a ON b.agentId = a.agentId
-                          WHERE 
-                              b.agentCode = '$agentCode' 
-                          ORDER BY 
-                              b.transactNo DESC";
+                              echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($transactNo) . "'>
+                                      <td>{$transactNo}</td>
+                                      <td>{$row['CONTACT NAME']}</td>
+                                      <td> 
+                                        <div class='d-flex flex-column'>
+                                          <span><strong>Email: </strong>" . $row['CONTACT EMAIL'] ." </span>
+                                          <span><strong>Contact Number: </strong> " . $row['CONTACT PHONE'] ."</span>
+                                        </div>
+                                      </td>
+            
+                                      <td>{$row['PACKAGE']}</td>
+                                      <td>{$row['TRANSACTION DATE']}</td>
+                                      <td>{$row['FLIGHT DATE']}</td>
+                                      <td style='text-align: center; font-weight: bold;'>
+                                          {$row['TOTAL PAX']}
+                                      </td>
+                                      <td>
+                                        <span class='badge p-2 rounded-pill {$statusClass} '>
+                                            {$status}
+                                        </span>
+                                    </td>
+                              </tr>";
+                            }
+                          } 
+                        
+                        }
+                        else
+                        {
+                          $sql1 = "SELECT b.transactNo AS `T.N`, p.packageName AS `PACKAGE`, 
+                                      DATE_FORMAT(b.bookingDate, '%m-%d-%Y') AS `TRANSACTION DATE`, b.bookingType as bookingType,
+                                      DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y') AS `FLIGHT DATE`,
+                                      b.pax AS `TOTAL PAX`, CONCAT(b.lName, ', ', b.fName, ' ', CASE WHEN b.mName = 'N/A' 
+                                      THEN '' ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ', CASE WHEN b.suffix = 'N/A' THEN '' 
+                                      ELSE b.suffix END) AS `CONTACT NAME`, b.email AS `CONTACT EMAIL`,
+                                      CONCAT(b.countryCode, ' ', b.contactNo) AS `CONTACT PHONE`, b.status AS `STATUS`
+                                    FROM 
+                                        booking b
+                                    LEFT JOIN 
+                                        flight f ON b.flightId = f.flightId
+                                    LEFT JOIN 
+                                        package p ON b.packageId = p.packageId
+                                    LEFT JOIN
+                                        agent a ON b.agentId = a.agentId
+                                    WHERE 
+                                        b.agentCode = '$agentCode' 
+                                    ORDER BY 
+                                        b.transactNo DESC";
 
-                $res1 = $conn->query($sql1);
+                          $res1 = $conn->query($sql1);
 
-                if ($res1->num_rows > 0) 
-                {
-                  while ($row = $res1->fetch_assoc()) 
-                  {
-                    $transactNo = $row['T.N'];
-                    $pax = $row['TOTAL PAX'];
+                          if ($res1->num_rows > 0) 
+                          {
+                            while ($row = $res1->fetch_assoc()) 
+                            {
+                              $transactNo = $row['T.N'];
+                              $pax = $row['TOTAL PAX'];
 
-                    $status = isset($row['STATUS']) ? $row['STATUS'] : 'Unknown';
-                    $statusClass = '';
+                              $status = isset($row['STATUS']) ? $row['STATUS'] : 'Unknown';
+                              $statusClass = '';
 
-                    switch ($status) 
-                    {
-                      case 'Confirmed':
-                          $statusClass = 'bg-success text-white'; // Green background, white text
-                          break;
-                      case 'Cancelled':
-                          $statusClass = 'bg-danger text-white'; // Red background, white text
-                          break;
-                      case 'Pending':
-                          $statusClass = 'bg-warning text-dark'; 
-                          break;
-                      default:
-                          $statusClass = 'bg-secondary text-white'; 
-                    }
+                              switch ($status) 
+                              {
+                                case 'Confirmed':
+                                    $statusClass = 'bg-success text-white'; // Green background, white text
+                                    break;
+                                case 'Cancelled':
+                                    $statusClass = 'bg-danger text-white'; // Red background, white text
+                                    break;
+                                case 'Pending':
+                                    $statusClass = 'bg-warning text-dark'; 
+                                    break;
+                                default:
+                                    $statusClass = 'bg-secondary text-white'; 
+                              }
 
-                    echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($transactNo) . "'>
-                        <td>{$transactNo}</td>
-                        <td>{$row['CONTACT NAME']}</td>
-                        <td>
-                          <div class='d-flex flex-column'>
-                            <span><strong>Email: </strong>" . $row['CONTACT EMAIL'] ."</span>
-                            <span><strong>Contact Number: </strong>" . $row['CONTACT PHONE'] ."</span>
-                          </div>
-                        </td>
-                        <td>{$row['PACKAGE']}</td>
-                        <td>{$row['TRANSACTION DATE']}</td>
-                        <td>{$row['FLIGHT DATE']}</td>
-                        <td style='text-align: center; font-weight: bold;'>{$row['TOTAL PAX']}</td>
-                        <td>
-                          <span class='badge p-2 rounded-pill {$statusClass}'>
-                            {$status}
-                          </span>
-                        </td>
-                      </tr>";
-                  }
-                } 
-                else 
-                {
-                  echo "<tr><td colspan='10'>No bookings found</td></tr>";
-                }
-              }
+                              echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($transactNo) . "'>
+                                  <td>{$transactNo}</td>
+                                  <td>{$row['CONTACT NAME']}</td>
+                                  <td>
+                                    <div class='d-flex flex-column'>
+                                      <span><strong>Email: </strong>" . $row['CONTACT EMAIL'] ."</span>
+                                      <span><strong>Contact Number: </strong>" . $row['CONTACT PHONE'] ."</span>
+                                    </div>
+                                  </td>
+                                  <td>{$row['PACKAGE']}</td>
+                                  <td>{$row['TRANSACTION DATE']}</td>
+                                  <td>{$row['FLIGHT DATE']}</td>
+                                  <td style='text-align: center; font-weight: bold;'>{$row['TOTAL PAX']}</td>
+                                  <td>
+                                    <span class='badge p-2 rounded-pill {$statusClass}'>
+                                      {$status}
+                                    </span>
+                                  </td>
+                                </tr>";
+                            }
+                          } 
+                          else 
+                          {
+                            echo "<tr><td colspan='10'>No bookings found</td></tr>";
+                          }
+                        }
 
-              if ($res1) {
-                $res1->free();
-              }
+                        if ($res1) {
+                          $res1->free();
+                        }
 
 
-              $conn->close();
-            ?>
-          </tbody>
-        </table>
-      </div>
+                        $conn->close();
+                      ?>
+                    </tbody>
+                  </table>
+                </div>
+
+                <!-- Custom Pagination Container -->
+                <div class="table-footer">
+                  <div class="pagination-controls">
+                    <button id="prevPage" class="pagination-btn">Previous</button>
+                    <span id="pageInfo" class="page-info"></span>
+                    <button id="nextPage" class="pagination-btn">Next</button>
+                  </div>
+                </div>     
+
+              </div>
+              <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
+                  <!-- Content for Pickups -->
+                  Pickups Content Here
+              </div>
+
+              <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">
+                  <!-- Content for Returns -->
+                  Returns Content Here
+              </div>
+
+              <div class="tab-pane fade" id="pills-disabled" role="tabpanel" aria-labelledby="pills-disabled-tab" tabindex="0">
+                  <!-- Content for Disabled -->
+                  Disabled Content Here
+              </div>
+
+          </div>
+        
     </div>
   </div>
 
@@ -572,6 +621,35 @@ include '../Agent Section/includes/breadcrumbs.php';
   </div>
 
 
+<!-- Row Click Selection JS -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  document.querySelectorAll("tr[data-url]").forEach(function(row) {
+      row.addEventListener("click", function() {
+          const transactionNumber = row.getAttribute("data-url").split('=')[1]; // Extract transaction number from the URL
+
+          console.log("Transaction Number: ", transactionNumber); // Debugging line
+
+          // Use AJAX to send the transaction number to the server
+          $.ajax({
+              url: '../Agent Section/functions/fetchTransactNo.php', // The PHP file to handle the session setting
+              type: 'POST',
+              data: { transaction_number: transactionNumber },
+              success: function(response) {
+                  console.log("Response: ", response); // Debugging line
+
+                  // Redirect to the next page after successfully setting the session
+                  window.location.href = row.getAttribute("data-url"); // Use the original URL stored in data-url attribute
+              },
+              error: function(xhr, status, error) {
+                  console.error("AJAX Error: " + status + " " + error); // Enhanced error logging
+              }
+          });
+      });
+  });
+});
+</script>
+
 
 <!-- JQuery Datapicker -->
 <script>
@@ -588,66 +666,138 @@ include '../Agent Section/includes/breadcrumbs.php';
 });
 </script>
 
+
 <script>
-  $(function() {
-    $("#FlightStartDate").datepicker({
-      changeMonth: true,
-      changeYear: true
-    });
-  } );
+  // Initialize variables to store selected date values
+  let bookingStartDate = $('#BookingStartDate').val();
+  let flightStartDate = $('#FlightStartDate').val();
 
-  $(function() {
-    $("#FlightEndDate").datepicker({
-      changeMonth: true,
-      changeYear: true
+$(function() {
+    // Apply datepicker to all specified date fields
+    $("#FlightStartDate, #BookingStartDate").datepicker({
+        dateFormat: "mm-dd-yy", // Set the format to MM-DD-YYYY
+        showAnim: "fadeIn", // Optional: Adds a fade-in effect when the date picker is opened
+        changeMonth: true, // Allow the month to be changed from the dropdown
+        changeYear: true,  // Allow the year to be changed from the dropdown
+        yearRange: "1900:2100", // Set a range of years (optional)
+        onSelect: function(dateText) {
+            // When a date is selected, update the input field with the date
+            $(this).val(dateText);
+            
+            // Store the selected date value in the corresponding variable
+            if ($(this).attr("id") === "FlightStartDate") {
+                flightStartDate = dateText;
+            } else if ($(this).attr("id") === "BookingStartDate") {
+                bookingStartDate = dateText;
+            }
+            
+            console.log("Selected Date (onSelect): " + dateText); // Log the selected date
+        }
     });
-  } );
 
-  $(function() {
-    $("#BookingStartDate").datepicker({
-      changeMonth: true,
-      changeYear: true
-    });
-  } );
+    // Enforce MM-DD-YYYY format and limit length to 10 characters
+    $("#FlightStartDate, #BookingStartDate").on("input", function() {
+        var value = $(this).val();
+        
+        // Remove non-numeric and non-dash characters (no spaces allowed)
+        value = value.replace(/[^\d-]/g, '');
 
-  $(function() {
-    $("#BookingEndDate").datepicker({
-      changeMonth: true,
-      changeYear: true
+        // Automatically add dashes in the correct places if necessary
+        if (value.length > 2 && value.charAt(2) !== '-') {
+            value = value.substring(0, 2) + '-' + value.substring(2);
+        }
+        if (value.length > 5 && value.charAt(5) !== '-') {
+            value = value.substring(0, 5) + '-' + value.substring(5);
+        }
+
+        // Limit the total input length to 10 characters (MM-DD-YYYY)
+        if (value.length > 10) {
+            value = value.substring(0, 10);
+        }
+
+        // Update the input field value
+        $(this).val(value);
+
+        // Log the input value
+        console.log("Input Value (on input): " + value); // Log the input value
+        
+        // Store the input value in the corresponding variable
+        if ($(this).attr("id") === "FlightStartDate") {
+            flightStartDate = value;
+        } else if ($(this).attr("id") === "BookingStartDate") {
+            bookingStartDate = value;
+        }
     });
-  } );
+
+    // Example of using the stored variables later in your code
+    $("#submitButton").on("click", function() {
+        console.log("Booking Start Date: " + bookingStartDate);
+        console.log("Flight Start Date: " + flightStartDate);
+        
+        // You can use these variables to filter, submit, or process the dates as needed
+    });
+});
 </script>
-<!-- ############################################## -->
 
 
 <!-- DataTables #product-table -->
 <script>
 $(document).ready(function () {
-      const table = $('#product-table').DataTable({
-        dom: 'rtip',
-        columnDefs: [
-            { width: '10%', targets: 0 }, // ID
-            { width: '15%', targets: 1 }, // Contact Person Name
-            { width: '25%', targets: 2 }, // Contact Person Details
-            { width: '20%', targets: 3 }, // Package Name
-            { width: '12%', targets: 4 }, // Booking Date
-            { width: '13%', targets: 5 }, // Flight Date
-            { width: '5%', targets: 6 }, // Total Pax
-            { width: '5%',  targets: 7 }  // Status
-        ],
-        language: {
-            emptyTable: "No Transaction Records Available"
-        },
-        order: [[0, 'desc']],
-        scrollX: false,
-        autoWidth: false,
-        pageLength: 9, // Limit the number of rows per page to 8
+    const table = $('#product-table').DataTable({
+      dom: 'rtip',  // Use only the relevant table elements
+      language: {
+        emptyTable: "No Transaction Records Available"
+      },
+      order: [[0, 'desc']],  // Default sorting by Transaction ID (descending)
+      scrollX: false,
+      scrollY: '61.3vh',  // Set a fixed height for the table (adjust as necessary)
+      paging: true,  // Enable pagination
+      pageLength: 10,  // Set the number of rows per page
+      autoWidth: false,
+      autoHeight: false,  // Prevent automatic height adjustment
     });
 
+    // Debounce function to limit the rate of execution
+    function debounce(func, wait) {
+      let timeout;
+      return function () {
+        clearTimeout(timeout);
+        timeout = setTimeout(func, wait);
+      };
+    }
+    
     // Search Functionality
     $('#search').on('keyup', function () {
         table.search(this.value).draw();
     });
+
+    // Update the custom pagination buttons and page info
+    function updatePagination() {
+      const info = table.page.info();
+      const currentPage = info.page + 1; // Get current page number (1-indexed)
+      const totalPages = info.pages; // Get total pages
+
+      // Update page info text
+      $('#pageInfo').text(`Page ${currentPage} of ${totalPages}`);
+
+      // Enable/Disable prev and next buttons based on current page
+      $('#prevPage').prop('disabled', currentPage === 1);
+      $('#nextPage').prop('disabled', currentPage === totalPages);
+    }
+
+    // Custom pagination button click events
+    $('#prevPage').on('click', function() {
+      table.page('previous').draw('page');
+      updatePagination();
+    });
+
+    $('#nextPage').on('click', function() {
+      table.page('next').draw('page');
+      updatePagination();
+    });
+
+    // Initialize pagination on first load
+    updatePagination();
 
     // Status Filter
     $('#status').on('change', function () {
@@ -661,95 +811,45 @@ $(document).ready(function () {
         table.column(3).search(selectedPackage || '').draw();
     });
 
-    // Initialize Datepickers
-    const dateFields = ['#FlightStartDate', '#FlightEndDate', '#BookingStartDate', '#BookingEndDate'];
-    dateFields.forEach((field) => {
-        $(field).datepicker({
-            changeMonth: true,
-            changeYear: true,
-            dateFormat: 'yy-mm-dd'
-        }).on('focus', (e) => {
-            e.preventDefault();
-        });
-    });
 
-    // Helper Function to Check Date in Range
-    function isDateInRange(startDate, endDate, targetDate) {
-        if (!targetDate) return true; // Allow empty target dates
-        const target = new Date(targetDate);
-        const start = startDate ? new Date(startDate) : null;
-        const end = endDate ? new Date(endDate) : null;
-        return (!start || target >= start) && (!end || target <= end);
-    }
+    // Booking Date Filter with value change
+    $('#BookingStartDate').on('input', debounce(function () {
+      const selectedBookingDate = $(this).val();  // Get the selected value directly from the input field
+      console.log("Booking Date Filter:", selectedBookingDate);  // Log the selected booking date
+      table.column(4).search(selectedBookingDate || '').draw();  // Column 4 (index starts at 0)
+    }, 500)); // 500ms debounce time
 
-    // Custom Filter for Flight Dates
-    $.fn.dataTable.ext.search.push(function (settings, data) {
-        const flightStartDate = $('#FlightStartDate').val();
-        const flightEndDate = $('#FlightEndDate').val();
-        const flightDate = data[5];
-        return isDateInRange(flightStartDate, flightEndDate, flightDate);
-    });
-
-    // Custom Filter for Booking Dates
-    $.fn.dataTable.ext.search.push(function (settings, data) {
-        const bookingStartDate = $('#BookingStartDate').val();
-        const bookingEndDate = $('#BookingEndDate').val();
-        const bookingDate = data[4];
-        return isDateInRange(bookingStartDate, bookingEndDate, bookingDate);
-    });
-
-    // Apply Filters on Date Change
-    $('#FlightStartDate, #FlightEndDate, #BookingStartDate, #BookingEndDate').on('change', function () {
-        table.draw();
-    });
+    // Flight Date Filter with value change
+    $('#FlightStartDate').on('input', debounce(function () {
+      const selectedFlightDate = $(this).val();  // Get the selected value directly from the input field
+      console.log("Flight Date Filter:", selectedFlightDate);  // Log the selected flight date
+      table.column(5).search(selectedFlightDate || '').draw();  // Column 5 (index starts at 0)
+    }, 500)); // 500ms debounce time
+   
 
     // Clear All Filters
     $('#clearSorting').on('click', function () {
+        // Clear search field
         $('#search').val('');
         table.search('').draw();
 
-        $('#status').val('').change();
-        $('#packages').val('').change();
+        // Clear status dropdown
+        $('#status').val('All').change();
 
-        dateFields.forEach((field) => {
-            $(field).val('');
-        });
+        // Clear packages dropdown
+        $('#packages').val('All').change();
 
+        // Clear date fields
+        $('#BookingStartDate').val('');
+        $('#FlightStartDate').val('');
+
+        // Redraw the table
         table.draw();
     });
+
 });
 </script>
 
-
-
-<!-- Row Click Selection JS -->
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    document.querySelectorAll("tr[data-url]").forEach(function(row) {
-        row.addEventListener("click", function() {
-            const transactionNumber = row.getAttribute("data-url").split('=')[1]; // Extract transaction number from the URL
-
-            console.log("Transaction Number: ", transactionNumber); // Debugging line
-
-            // Use AJAX to send the transaction number to the server
-            $.ajax({
-                url: '../Agent Section/functions/fetchTransactNo.php', // The PHP file to handle the session setting
-                type: 'POST',
-                data: { transaction_number: transactionNumber },
-                success: function(response) {
-                    console.log("Response: ", response); // Debugging line
-
-                    // Redirect to the next page after successfully setting the session
-                    window.location.href = row.getAttribute("data-url"); // Use the original URL stored in data-url attribute
-                },
-                error: function(xhr, status, error) {
-                    console.error("AJAX Error: " + status + " " + error); // Enhanced error logging
-                }
-            });
-        });
-    });
-  });
-</script>
 
 
 
@@ -774,7 +874,6 @@ function addGuestInfo(transactionNumber) {
   });
 }
 
-
 function showGuestInfo(transactionNumber) {
   console.log("Transaction Number: ", transactionNumber); // Debug line
   // Use AJAX to send the transaction number to the server
@@ -795,8 +894,6 @@ function showGuestInfo(transactionNumber) {
     }
   });
 }
-
-
 
 function showRequestHistory(transactionNumber)  {
   console.log("Transaction Number: ", transactionNumber); // Debug line (To Remove in Prod)
@@ -841,7 +938,6 @@ function showPaymentHistory(transactionNumber) {
   });
 }
 </script>
-
 
 
 <script>
@@ -1004,10 +1100,9 @@ function fetchBookingDetails(transactionId) {
   });
 }
 
-
-document.getElementById('paxRequest').addEventListener('input', function() {
-  validateMaxValue(this);
-});
+// document.getElementById('paxRequest').addEventListener('input', function() {
+//   validateMaxValue(this);
+// });
 
 function updateBooking() {
   const form = document.getElementById('updateBookingForm');

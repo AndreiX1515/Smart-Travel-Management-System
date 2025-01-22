@@ -377,8 +377,8 @@ session_start();
 
         // Add loading animation to the Register button
         var button = $('#SubmitRegButton');
-                    button.html('Processing, Please Wait... <span class="loader"></span>'); // Add spinner
-                    button.prop('disabled', true); // Disable button to prevent multiple clicks
+            button.html('Processing, Please Wait... <span class="loader"></span>'); // Add spinner
+            button.prop('disabled', true); // Disable button to prevent multiple clicks
 
 
         // Check if email is already in use before sending OTP
