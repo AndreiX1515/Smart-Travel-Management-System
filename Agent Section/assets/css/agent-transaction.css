@@ -500,7 +500,7 @@ body {
 /* Column width adjustments */
 .product-table th:nth-child(1),
 .product-table td:nth-child(1) {
-  width: 12%; /* Adjust width for Transaction ID column */
+  width: 10%; /* Adjust width for Transaction ID column */
 }
 
 .product-table th:nth-child(2),

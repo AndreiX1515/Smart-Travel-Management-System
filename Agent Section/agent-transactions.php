@@ -62,14 +62,14 @@ include '../Agent Section/includes/breadcrumbs.php';
               </div>
             </div>
 
-            <div class="date-range-wrapper flightbooking-wrapper">
+            <!-- <div class="date-range-wrapper flightbooking-wrapper">
               <div class="date-range-inputs-wrapper">
                 <div class="input-with-icon">
                   <input type="text" class="datepicker" id="BookingStartDate" placeholder="Booking Date">
                   <i class="fas fa-calendar-alt calendar-icon"></i>
                 </div>
               </div>
-            </div>
+            </div> -->
 
             <div class="date-range-wrapper flightbooking-wrapper">
               <div class="date-range-inputs-wrapper">
@@ -339,20 +339,23 @@ include '../Agent Section/includes/breadcrumbs.php';
                 </div>     
 
               </div>
+
               <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
                   <!-- Content for Pickups -->
-                  Pickups Content Here
+                  Pending Table Here
               </div>
+
 
               <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">
                   <!-- Content for Returns -->
-                  Returns Content Here
+                  Confirmed table Here
               </div>
 
-              <div class="tab-pane fade" id="pills-disabled" role="tabpanel" aria-labelledby="pills-disabled-tab" tabindex="0">
-                  <!-- Content for Disabled -->
+
+              <!-- <div class="tab-pane fade" id="pills-disabled" role="tabpanel" aria-labelledby="pills-disabled-tab" tabindex="0">
+                  <!-- Content for Disabled 
                   Disabled Content Here
-              </div>
+              </div> -->
 
           </div>
         
@@ -667,105 +670,32 @@ document.addEventListener("DOMContentLoaded", function() {
 </script>
 
 
-<script>
-  // Initialize variables to store selected date values
-  let bookingStartDate = $('#BookingStartDate').val();
-  let flightStartDate = $('#FlightStartDate').val();
-
-$(function() {
-    // Apply datepicker to all specified date fields
-    $("#FlightStartDate, #BookingStartDate").datepicker({
-        dateFormat: "mm-dd-yy", // Set the format to MM-DD-YYYY
-        showAnim: "fadeIn", // Optional: Adds a fade-in effect when the date picker is opened
-        changeMonth: true, // Allow the month to be changed from the dropdown
-        changeYear: true,  // Allow the year to be changed from the dropdown
-        yearRange: "1900:2100", // Set a range of years (optional)
-        onSelect: function(dateText) {
-            // When a date is selected, update the input field with the date
-            $(this).val(dateText);
-            
-            // Store the selected date value in the corresponding variable
-            if ($(this).attr("id") === "FlightStartDate") {
-                flightStartDate = dateText;
-            } else if ($(this).attr("id") === "BookingStartDate") {
-                bookingStartDate = dateText;
-            }
-            
-            console.log("Selected Date (onSelect): " + dateText); // Log the selected date
-        }
-    });
-
-    // Enforce MM-DD-YYYY format and limit length to 10 characters
-    $("#FlightStartDate, #BookingStartDate").on("input", function() {
-        var value = $(this).val();
-        
-        // Remove non-numeric and non-dash characters (no spaces allowed)
-        value = value.replace(/[^\d-]/g, '');
-
-        // Automatically add dashes in the correct places if necessary
-        if (value.length > 2 && value.charAt(2) !== '-') {
-            value = value.substring(0, 2) + '-' + value.substring(2);
-        }
-        if (value.length > 5 && value.charAt(5) !== '-') {
-            value = value.substring(0, 5) + '-' + value.substring(5);
-        }
-
-        // Limit the total input length to 10 characters (MM-DD-YYYY)
-        if (value.length > 10) {
-            value = value.substring(0, 10);
-        }
-
-        // Update the input field value
-        $(this).val(value);
-
-        // Log the input value
-        console.log("Input Value (on input): " + value); // Log the input value
-        
-        // Store the input value in the corresponding variable
-        if ($(this).attr("id") === "FlightStartDate") {
-            flightStartDate = value;
-        } else if ($(this).attr("id") === "BookingStartDate") {
-            bookingStartDate = value;
-        }
-    });
-
-    // Example of using the stored variables later in your code
-    $("#submitButton").on("click", function() {
-        console.log("Booking Start Date: " + bookingStartDate);
-        console.log("Flight Start Date: " + flightStartDate);
-        
-        // You can use these variables to filter, submit, or process the dates as needed
-    });
-});
-</script>
-
-
 <!-- DataTables #product-table -->
 <script>
 $(document).ready(function () {
-    const table = $('#product-table').DataTable({
-      dom: 'rtip',  // Use only the relevant table elements
-      language: {
-        emptyTable: "No Transaction Records Available"
-      },
-      order: [[0, 'desc']],  // Default sorting by Transaction ID (descending)
-      scrollX: false,
-      scrollY: '61.3vh',  // Set a fixed height for the table (adjust as necessary)
-      paging: true,  // Enable pagination
-      pageLength: 10,  // Set the number of rows per page
-      autoWidth: false,
-      autoHeight: false,  // Prevent automatic height adjustment
+      const table = $('#product-table').DataTable({
+        dom: 'rtip',  // Use only the relevant table elements
+        language: {
+            emptyTable: "No Transaction Records Available"
+        },
+        order: [[0, 'desc']],  // Default sorting by Transaction ID (descending)
+        scrollX: false,
+        scrollY: '61.3vh',  // Set a fixed height for the table (adjust as necessary)
+        paging: true,  // Enable pagination
+        pageLength: 10,  // Set the number of rows per page
+        autoWidth: false,
+        autoHeight: false,  // Prevent automatic height adjustment
+
+        // Disable sorting for specific columns
+        columnDefs: [
+          {
+            targets: [1, 2, 3, 4, 5, 6, 7], // Disable sorting for 2nd and 4th columns
+            orderable: false
+          }
+        ]
     });
 
-    // Debounce function to limit the rate of execution
-    function debounce(func, wait) {
-      let timeout;
-      return function () {
-        clearTimeout(timeout);
-        timeout = setTimeout(func, wait);
-      };
-    }
-    
+
     // Search Functionality
     $('#search').on('keyup', function () {
         table.search(this.value).draw();
@@ -811,21 +741,105 @@ $(document).ready(function () {
         table.column(3).search(selectedPackage || '').draw();
     });
 
-
     // Booking Date Filter with value change
-    $('#BookingStartDate').on('input', debounce(function () {
+    $('#BookingStartDate').on('change', function () {
       const selectedBookingDate = $(this).val();  // Get the selected value directly from the input field
       console.log("Booking Date Filter:", selectedBookingDate);  // Log the selected booking date
       table.column(4).search(selectedBookingDate || '').draw();  // Column 4 (index starts at 0)
-    }, 500)); // 500ms debounce time
+    });
 
     // Flight Date Filter with value change
-    $('#FlightStartDate').on('input', debounce(function () {
+    $('#FlightStartDate').on('change', function () {
       const selectedFlightDate = $(this).val();  // Get the selected value directly from the input field
       console.log("Flight Date Filter:", selectedFlightDate);  // Log the selected flight date
       table.column(5).search(selectedFlightDate || '').draw();  // Column 5 (index starts at 0)
-    }, 500)); // 500ms debounce time
-   
+    });
+
+    // Apply datepicker and input validation for FlightStartDate
+    $("#FlightStartDate").datepicker({
+        dateFormat: "mm-dd-yy", // Set the format to MM-DD-YYYY
+        showAnim: "fadeIn", // Optional: Adds a fade-in effect when the date picker is opened
+        changeMonth: true, // Allow the month to be changed from the dropdown
+        changeYear: true,  // Allow the year to be changed from the dropdown
+        yearRange: "1900:2100", // Set a range of years (optional)
+        onSelect: function(dateText) {
+            // When a date is selected, update the input field with the date
+            $(this).val(dateText);
+            flightStartDate = dateText; // Store the selected date
+            console.log("FlightStartDate Selected Date (onSelect): " + dateText);
+            table.column(5).search(flightStartDate || '').draw();  // Column 5 (index starts at 0)
+        }
+    });
+
+    $("#FlightStartDate").datepicker({
+        dateFormat: "mm-dd-yy", // Set the format to MM-DD-YYYY
+        showAnim: "fadeIn", // Optional: Adds a fade-in effect when the date picker is opened
+        changeMonth: true, // Allow the month to be changed from the dropdown
+        changeYear: true,  // Allow the year to be changed from the dropdown
+        yearRange: "1900:2100", // Set a range of years (optional)
+        onSelect: function(dateText) {
+            // When a date is selected, update the input field with the date
+            if (dateText === "") {
+                flightStartDate = ""; // Reset the variable if the field is cleared
+            } else {
+                flightStartDate = dateText; // Store the selected date
+            }
+            console.log("FlightStartDate Selected Date (onSelect): " + flightStartDate);
+            table.column(5).search(flightStartDate || '').draw(); // Column 5 (index starts at 0)
+        }
+    });
+
+    // Apply datepicker and input validation for BookingStartDate
+    $("#BookingStartDate").datepicker({
+        dateFormat: "mm-dd-yy", // Set the format to MM-DD-YYYY
+        showAnim: "fadeIn", // Optional: Adds a fade-in effect when the date picker is opened
+        changeMonth: true, // Allow the month to be changed from the dropdown
+        changeYear: true,  // Allow the year to be changed from the dropdown
+        yearRange: "1900:2100", // Set a range of years (optional)
+        onSelect: function(dateText) {
+            // When a date is selected, update the input field with the date
+            $(this).val(dateText);
+            bookingStartDate = dateText; // Store the selected date
+            console.log("FlightStartDate Selected Date (onSelect): " + dateText);
+            table.column(4).search(bookingStartDate || '').draw();  // Column 5 (index starts at 0)
+        }
+    });
+
+    // BookingStartDate Input Validation and Formatting
+    $("#BookingStartDate").on("input", function () {
+        var value = $(this).val();
+
+        // Remove non-numeric and non-dash characters
+        value = value.replace(/[^\d-]/g, '');
+
+        // Automatically add dashes in the correct places if necessary
+        if (value.length > 2 && value.charAt(2) !== '-') {
+            value = value.substring(0, 2) + '-' + value.substring(2);
+        }
+        if (value.length > 5 && value.charAt(5) !== '-') {
+            value = value.substring(0, 5) + '-' + value.substring(5);
+        }
+
+        // Limit the total input length to 10 characters (MM-DD-YYYY)
+        if (value.length > 10) {
+            value = value.substring(0, 10);
+        }
+
+        // Update the input field value
+        $(this).val(value);
+
+        // Reset or update the bookingStartDate variable
+        if (value === "") {
+            bookingStartDate = ""; // Reset the variable if the input is cleared
+        } else {
+            bookingStartDate = value; // Update the variable with the formatted value
+        }
+
+        // Update the table column search
+        table.column(5).search(bookingStartDate || '').draw(); // Column 5 (index starts at 0)
+
+        console.log("BookingStartDate Input Value (on input): " + value);
+    });
 
     // Clear All Filters
     $('#clearSorting').on('click', function () {
@@ -839,13 +853,20 @@ $(document).ready(function () {
         // Clear packages dropdown
         $('#packages').val('All').change();
 
+         // Explicitly reset the variables
+         flightStartDate = '';
+        bookingStartDate = '';
+
         // Clear date fields
-        $('#BookingStartDate').val('');
-        $('#FlightStartDate').val('');
+        $('#BookingStartDate').val('').trigger('change'); // Reset and trigger input for BookingStartDate
+        $('#FlightStartDate').val('').trigger('change');  // Reset and trigger input for FlightStartDate
+
+       
 
         // Redraw the table
         table.draw();
     });
+
 
 });
 </script>
