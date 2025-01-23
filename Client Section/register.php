@@ -204,15 +204,279 @@
 		$('#message-1').text('').removeClass('show');
 		emailField.css('border', '');
 
-		// If email field is blank
-		if (!email) 
-		{
-			// $('#message-1')
-			//     .text('Email is required.')
-			//     .addClass('show');
-			// emailField.css('border', '1px solid lightcoral');
-			updateButtonState();
-			return;
+        // If email field is blank
+        if (!email) {
+            // $('#message-1')
+            //     .text('Email is required.')
+            //     .addClass('show');
+            // emailField.css('border', '1px solid lightcoral');
+            updateButtonState();
+            return;
+        }
+
+        // Email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            $('#message-1')
+                .text('Please enter a valid email address.')
+                .addClass('show');
+            emailField.css('border', '1px solid lightcoral');
+            updateButtonState();
+            return;
+        }
+
+        // Check if email is already in use
+        $.ajax({
+            url: '../Client Section/Functions/email-check.php', // PHP script to check the email
+            method: 'POST',
+            data: { email: email },
+            dataType: 'json',
+            success: function (response) {
+                if (response.exists) {
+                    $('#message-1')
+                        .text('This email is already in use.')
+                        .addClass('show');
+                    emailField.css('border', '1px solid lightcoral');
+                    isEmailValid = false;
+                } else {
+                    emailField.css('border', '');
+                    isEmailValid = true;
+                }
+                updateButtonState(); // Update button state after the response
+            },
+            error: function () {
+                $('#message-1')
+                    .text('Error checking email. Please try again.')
+                    .addClass('show');
+                emailField.css('border', '1px solid lightcoral');
+                isEmailValid = false;
+                updateButtonState();
+            }
+        });
+    }
+
+    // // Trigger the function when the password field is focused
+    // $('#floatingPassword').on('focus', function() {
+    //     updateButtonState(); // Disable button when the password field is focused
+    // });
+
+    // Event listeners for validation
+    $('#floatingEmail').on('blur', validateEmail);
+    $('#floatingPassword').on('blur', validatePassword);
+    $('#floatingPassword2').on('blur', validateConfirmPassword);
+
+    // Function to validate password
+    function validatePassword() {
+        passwordField = $('#floatingPassword');
+        password = passwordField.val(); // Get latest password value
+
+        cpasswordField = $('#floatingPassword2');
+        cpassword = cpasswordField.val(); // Get latest
+
+        isPasswordValid = false; // Reset flag
+
+        // Clear previous messages and borders
+        $('#message-1').text('').removeClass('show');
+        passwordField.css('border', '');
+
+        // If password field is blank
+        if (!password) {
+            // $('#message-1')
+            //     .text('Password is required.')
+            //     .addClass('show');
+            // passwordField.css('border', '1px solid lightcoral');
+            updateButtonState();
+            return;
+        }
+
+        // Password length validation
+        if (password.length < 8) {
+            $('#message-1')
+                .text('Password must be at least 8 characters long.')
+                .addClass('show');
+            passwordField.css('border', '1px solid lightcoral');
+            updateButtonState();
+            return;
+        }
+
+        isPasswordValid = true;
+        updateButtonState();
+    }
+
+    // Function to validate confirm password
+    function validateConfirmPassword() {
+        let passwordField = $('#floatingPassword');
+        let password = passwordField.val(); // Get latest password value
+
+        let cpasswordField = $('#floatingPassword2');
+        let cpassword = cpasswordField.val(); // Get latest confirm password value
+        isConfirmPasswordValid = false; // Reset flag
+
+        // Clear previous messages and borders
+        $('#message-1').text('').removeClass('show');
+        cpasswordField.css('border', '');
+
+        // If confirm password field is blank
+        if (!cpassword) {
+            // $('#message-1')
+            //     .text('Confirm Password is required.')
+            //     .addClass('show');
+            // cpasswordField.css('border', '1px solid lightcoral');
+            updateButtonState();
+            return;
+        }
+
+        // Confirm password validation
+        if (password !== cpassword) {
+            $('#message-1')
+                .text('Passwords do not match.')
+                .addClass('show');
+            cpasswordField.css('border', '1px solid lightcoral');
+            updateButtonState();
+            return;
+        }
+
+        isConfirmPasswordValid = true;
+        updateButtonState();
+    }
+
+
+    // Final check to enable or disable the button
+    function updateButtonState() {
+        if (isEmailValid && isPasswordValid && isConfirmPasswordValid) {
+            button.prop('disabled', false);
+            console.log(email, password, cpassword);
+
+        } else {
+            button.prop('disabled', true);
+            console.log(email, password, cpassword);
+        }
+    }
+    
+    	// Registration button click handler
+    $('#SubmitRegButton').on('click', function (e) {
+        e.preventDefault(); // Prevent default behavior
+
+        // Retrieve input field values
+        let emailField = $('#floatingEmail');
+        let email = emailField.val();
+        let passwordField = $('#floatingPassword');
+        let password = passwordField.val();
+        let cpasswordField = $('#floatingPassword2');
+        let cpassword = cpasswordField.val();
+
+        // Clear any previous message and reset borders
+        $('#message-1').text('').removeClass('show');
+        emailField.css('border', '');
+        passwordField.css('border', '');
+        cpasswordField.css('border', '');
+
+        // Validation logic
+        if (!email || !password || !cpassword) {
+            $('#message-1').text('All fields are required').addClass('show');
+            if (!email) emailField.css('border', '1px solid lightcoral');
+            if (!password) passwordField.css('border', '1px solid lightcoral');
+            if (!cpassword) cpasswordField.css('border', '1px solid lightcoral');
+            showMessage(); // Call to handle fade out
+            return;
+        }
+
+        // Email format validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            $('#message-1').text('Please enter a valid email address').addClass('show');
+            emailField.css('border', '1px solid lightcoral');
+            showMessage();
+            return;
+        }
+
+        // Password length validation
+        if (password.length < 8) {
+            $('#message-1').text('Password must be at least 8 characters long').addClass('show');
+            passwordField.css('border', '1px solid lightcoral');
+            showMessage();
+            return;
+        }
+
+        // Check if passwords match
+        if (password !== cpassword) {
+            $('#message-1').text('Passwords do not match').addClass('show');
+            cpasswordField.css('border', '1px solid lightcoral');
+            showMessage();
+            return;
+        }
+
+        // Add loading animation to the Register button
+        var button = $('#SubmitRegButton');
+            button.html('Processing, Please Wait... <span class="loader"></span>'); // Add spinner
+            button.prop('disabled', true); // Disable button to prevent multiple clicks
+
+
+        // Check if email is already in use before sending OTP
+        $.ajax({
+            url: '../Client Section/Functions/email-check.php', // Your PHP script to check the email
+            method: 'POST',
+            data: { email: email },
+            dataType: 'json',
+            success: function (response) {
+                if (response.exists) {
+                    $('#message-1').text('This email is already in use.').addClass('show');
+                    emailField.css('border', '1px solid lightcoral');
+                    showMessage(); // Call to handle fade out
+                    button.html('Register'); // Reset button text
+                    button.prop('disabled', false); // Re-enable button
+                    return; // Stop further execution if email exists
+                }
+
+                // If email is not in use, proceed to send OTP
+                $.ajax({
+                    url: '../Client Section/Functions/send-otp.php',
+                    method: 'POST',
+                    data: {
+                        email: email,
+                        password: password
+                    },
+                    dataType: 'json', // Expect a JSON response
+                    success: function (response) {
+                        // Trigger the Bootstrap modal
+                        $('#staticBackdrop').modal('show');
+                        // Handle other response messages here
+
+                        // Reset the button text and re-enable it once modal is shown
+                        button.html('Register');
+                        button.prop('disabled', false); // Re-enable button
+                    },
+                    error: function () {
+                        $('#message-1').text('Failed to send OTP. Please try again.').addClass('show'); // Handle error display
+                        showMessage();
+                        button.html('Register'); // Reset button text
+                        button.prop('disabled', false); // Re-enable button
+                    }
+                });
+            },
+            error: function () {
+                $('#message-1').text('Error checking email. Please try again.').addClass('show'); // Handle error display
+                showMessage();
+                button.html('Register'); // Reset button text
+                button.prop('disabled', false); // Re-enable button
+            }
+        });
+    });
+
+    // Function to handle message fade out
+    function showMessage() {
+			// Show message, then fade out after 5 seconds
+			setTimeout(function () {
+					$('#message-1').fadeOut(500, function () {
+					$('#message-1').text('').removeClass('show').show(); // Reset after fade out
+				});
+			}, 5000); // 5 seconds
+
+			setTimeout(function () {
+					$('#message-otp').fadeOut(500, function () {
+					$('#message-otp').text('').removeClass('show').show(); // Reset after fade out
+				});
+			}, 5000); // 5 seconds
 		}
 
 		// Email validation
