@@ -7,9 +7,10 @@ session_start();
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Agent - Dashboard</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <title>Dashboard</title>
+
+  <?php include "../Agent Section/includes/head.php"; ?>
+
   <link rel="stylesheet" href="../Agent Section/assets/css/navbar-sidebar.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="../Agent Section/assets/css/agent-dashboard.css?v=<?php echo time(); ?>">
 </head>
@@ -678,9 +679,7 @@ session_start();
                   <thead>
                     <tr>
                       <th>NO.</th>
-                      <th>BOOKING INFO.</th>
                       <th>FLIGHT INFO.</th>  
-                      <th>CONTACT NAME</th>
                       <th>STATUS</th>
                     </tr>
                   </thead>
@@ -830,15 +829,23 @@ session_start();
                                   $badgeClass = 'bg-info'; // Blue for other statuses
                                   break;
                             }
+
+                            // <td> 
+                            //     <div class='td-content d-flex flex-column align-items-left'>
+                            //       <h6>Booking Type: <span>" . htmlspecialchars($row['bookingType']) . "</span></h6>
+                            //       <h6>Package: <span>" . htmlspecialchars($row['PACKAGE']) . "</span></h6>
+                            //     </div>
+                            // </td>
+
+                            // <td>" . htmlspecialchars($row['CONTACT NAME']) . "</td>
+
+
+
+
                             echo "
                             <tr data-url='agent-showGuest.php?id=" . htmlspecialchars($row['T.N']) . "'>
                                 <td>" . htmlspecialchars(substr($row['T.N'], 5)) . "</td>
-                                <td> 
-                                    <div class='td-content d-flex flex-column align-items-left'>
-                                      <h6>Booking Type: <span>" . htmlspecialchars($row['bookingType']) . "</span></h6>
-                                      <h6>Package: <span>" . htmlspecialchars($row['PACKAGE']) . "</span></h6>
-                                    </div>
-                                </td>
+                                
 
                                 <td> 
                                     <div class='td-content d-flex flex-column align-items-left'>
@@ -847,7 +854,7 @@ session_start();
                                   </div>
                                 </td>
                                                                 
-                                <td>" . htmlspecialchars($row['CONTACT NAME']) . "</td>
+                                
                                 <td> <span class='badge " . $badgeClass . " p-2'>" . $status . "</span> </td>
                             </tr>";
                           }
@@ -1187,7 +1194,7 @@ session_start();
         <div class="confirm-container">
           <div class="one">
             <div class="header d-flex justify-content-between align-items-center">
-              <h6 class="white-pill">Confirmed Transactions</h6>
+              <h6 class="white-pill">Confirmed</h6>
             </div>
               
             <div class="body">

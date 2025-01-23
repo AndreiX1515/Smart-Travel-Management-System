@@ -57,7 +57,6 @@ $maskedPassword = '••••••••••';
 <body>
 <?php include '../Agent Section/includes/sidebar.php'; ?>
 
-
 <!-- Current Date Variable --> 
 <?php
   date_default_timezone_set('Asia/Taipei');
@@ -295,7 +294,6 @@ $maskedPassword = '••••••••••';
           
         </div>
       </div>
-
     </div>
 
     <div class="transaction-body">

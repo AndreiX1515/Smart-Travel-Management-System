@@ -22,8 +22,6 @@
     <div class="main-content" id="mainContent">
       <?php include '../Agent Section/includes/navbar.php' ?>
 
-      
-
       <?php
         // Check if 'id' is passed in the URL
         if (isset($_GET['id'])) 

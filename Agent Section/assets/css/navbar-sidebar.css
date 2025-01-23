@@ -5,14 +5,12 @@
  font-family: 'Inter', 'Helvetica Neue', 'Segoe UI', Arial, sans-serif;
 }
 
-
 body {
     background-color: #ffffff;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-
 
 /* Misc */
 .horizontal-line {
@@ -33,9 +31,6 @@ body {
 .main-content.active {
  margin-left: 250px; /* Add margin to account for visible sidebar */
 }
-
-
-
 
 
 /* Sidebar styling */
@@ -150,24 +145,72 @@ body {
  color: #ffffff; /* White text on hover */
 }
 
+/* Home Button */
+.sidebar .home {
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid #dcdcdc; /* Soft gray border */
+  color: #333333; /* Dark text for better contrast */
+  background-color: #f5f5f5; /* Light gray background */
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-align: center;
+  transition: background-color 0.2s ease, color 0.2s ease, border 0.2s ease;
+}
+
+.sidebar .home i {
+  color: #474747; /* Light text on hover */
+}
+
+.sidebar .home:hover {
+  background-color: #e0e0e0; /* Slightly darker gray on hover */
+  color: #ffffff; /* Light text on hover */
+  border: 1px solid #b0b0b0; /* Darker border on hover */
+}
+
 /* Add Booking Button */
 .sidebar .add-booking {
- 
- padding: 6px 12px;
- border-radius: 6px;
- color: #ffffff;
- background-color: #ff0015; /* Blue background */
- text-decoration: none;
- font-size: 0.95rem;
- font-weight: 600;
- text-align: center;
- transition: background-color 0.2s ease, color 0.2s ease;
+  padding: 10px 12px;
+  border-radius: 6px;
+  color: #ffffff;
+  background-color: #c62828; /* Deep red background */
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-align: center;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .sidebar .add-booking:hover {
- background-color: #b3001e; /* Darker blue on hover */
- color: #e9ecef; /* Light text on hover */
+  background-color: #b71c1c; /* Darker red on hover */
+  color: #e9ecef; /* Light text on hover */
 }
+
+/* Add FIT Button */
+.sidebar .add-FIT {
+  padding: 10px 12px;
+  border-radius: 6px;
+  color: #ffffff;
+  background-color: #0163d4; /* Turquoise background */
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-align: center;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.sidebar .add-FIT:hover {
+  background-color: #00648c; /* Darker turquoise on hover */
+  color: #e9ecef; /* Light text on hover */
+}
+
+/* Add FIT Button Span */
+.sidebar .add-FIT span {
+  margin-left: 6px;
+}
+
+
 
 .sidebar .add-booking i {
  color: #ffffff;

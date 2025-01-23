@@ -21,7 +21,7 @@ session_start();
 
   <div class="main-content-container">
     <div class="navbar">
-      <h5>Dashboard</h5>
+      <h5>Transactions</h5>
     </div>
 
     <div class="main-content">
@@ -29,9 +29,6 @@ session_start();
 
     </div>
   </div>
-
-
-
 
 </div>
 

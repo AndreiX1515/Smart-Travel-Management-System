@@ -57,7 +57,6 @@
                           break;
                   }
 
-
                   echo "<tr>
                           <td>{$row['paymentId']}</td>
                           <td>{$row['paymentTitle']}</td>
@@ -144,6 +143,7 @@
   </div>
 </div>
 
+<!-- Modal Function -->
 <script>
   // Custom JavaScript for handling modal close and removing backdrop
   $(document).ready(function () {
@@ -160,7 +160,7 @@
   });
 </script>
 
-
+<!-- Modal Close Function -->
 <script>
   // Custom JavaScript to handle modal close functionality
   document.addEventListener("DOMContentLoaded", () => {
@@ -179,9 +179,6 @@
     });
   });
 </script>
-
-
-
 
 <!-- <script>
   document.addEventListener('DOMContentLoaded', function () 
@@ -208,9 +205,10 @@
         bootstrapModal.show();
       });
     });
-  }); -->
-</script>
+  }); 
+</script> -->
 
+<!-- Upload Script -->
 <script>
   const maxFiles = 5;
   const maxFileSize = 4 * 1024 * 1024; // 4MB
@@ -307,6 +305,7 @@
   }
 </script>
 
+<!-- Payment AJAX Function -->
 <script>
   $(document).ready(function() 
   {
