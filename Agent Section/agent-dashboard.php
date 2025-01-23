@@ -1187,7 +1187,7 @@ session_start();
         <div class="confirm-container">
           <div class="one">
             <div class="header d-flex justify-content-between align-items-center">
-              <h6 class="white-pill">Confirmed Transactions</h6>
+              <h6 class="white-pill">Confirmed</h6>
             </div>
               
             <div class="body">
