@@ -422,11 +422,9 @@
   </div>
 </div>
 
-
-<!-- Modal -->
-
 <?php require "../Agent Section/includes/scripts.php"; ?>
 
+<!-- Preview SoA -->
 <script>
   document.getElementById('generate-soa-btn').addEventListener('click', function() 
   {
@@ -441,7 +439,7 @@
     
     const data = `companyId=${companyId}&month=${month}&year=${year}`;
     
-    xhr.onload = function() 
+    xhr.onload = function()
     {
       if (xhr.status === 200) 
       {
@@ -456,8 +454,48 @@
     
     xhr.send(data);
   });
-
 </script>
+
+<!-- Generate SoA -->
+<script>
+  document.getElementById('download-btn').addEventListener('click', function() 
+  {
+    const companyId = document.getElementById('company-filter').value;
+    const month = document.getElementById('month-filter').value;
+    const year = document.getElementById('year-filter').value;
+
+    // Make an AJAX request to the server
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', '../Agent Section/functions/generateSoA.php', true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.responseType = 'blob';
+
+    xhr.onload = function() 
+    {
+      if (xhr.status === 200) 
+      {
+        // Create a link to download the PDF
+        const blob = new Blob([xhr.response], { type: 'application/pdf' });
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = 'Statement_of_Account.pdf';
+        link.click();
+      } 
+      else 
+      {
+        alert('Failed to generate the SOA. Please try again.');
+      }
+    };
+
+    xhr.onerror = function() 
+    {
+      alert('An error occurred while processing the request.');
+    };
+
+    xhr.send(`companyId=${companyId}&month=${month}&year=${year}`);
+  });
+</script>
+
 
 <!-- Modal -->
 <!-- <script>
