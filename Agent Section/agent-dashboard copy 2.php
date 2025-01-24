@@ -30,7 +30,7 @@ require "../conn.php";
         <!-- Cards First Row -->
         <div class="counts-wrapper">
           <!-- CARD 1 Current Transaction Counts-->
-          <div class="card border-0">
+          <div class="card">
             <div class="header-counts">
               <h6 class="white-pill">Current Transaction</h6>
             </div>
@@ -243,7 +243,7 @@ require "../conn.php";
           </div>
 
           <!-- CARD 2 - On Due -->
-          <div class="card border-0">
+          <div class="card">
             <div class="header-counts">
               <h6 class="white-pill">On Due</h6>
             </div>
@@ -487,7 +487,7 @@ require "../conn.php";
           </div>
 
           <!-- CARD 3 - Total Payment -->
-          <div class="card border-0">
+          <div class="card">
             <div class="header-counts">
               <h6 class="white-pill">Total Sales</h6>
             </div>
@@ -590,7 +590,7 @@ require "../conn.php";
           <?php include '../Agent Section/functions/exchange-rate.php'?>
 
           <!-- CARD 4 -->
-          <div class="card border-0">
+          <div class="card">
             <div class="header-counts d-flex justify-content-between align-items-center header-currency">
               <h6 class="white-pill">Daily Currency Conversion</h6>
               <a href="" class="pill-button">View History</a>
