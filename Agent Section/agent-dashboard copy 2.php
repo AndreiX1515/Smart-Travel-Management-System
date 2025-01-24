@@ -751,7 +751,7 @@ require "../conn.php";
                                       break;
                                 }
                                 echo "
-                                <tr data-url='agent-showGuest.php?id=" . htmlspecialchars($row['T.N']) . "'>
+                                <tr data-url='agent-showGuest2.php?id=" . htmlspecialchars($row['T.N']) . "'>
                                     <td>" . htmlspecialchars(substr($row['T.N'], 5)) . "</td>
                                     <td> 
                                         <div class='td-content d-flex flex-column align-items-left'>
@@ -847,7 +847,7 @@ require "../conn.php";
 
 
                                 echo "
-                                <tr data-url='agent-showGuest.php?id=" . htmlspecialchars($row['T.N']) . "'>
+                                <tr data-url='agent-showGuest2.php?id=" . htmlspecialchars($row['T.N']) . "'>
                                     <td>" . htmlspecialchars(substr($row['T.N'], 5)) . "</td>
                                     
 
@@ -950,7 +950,7 @@ require "../conn.php";
                                 $title = $row['Request'] ?? 'Custom Request'; // Use 'Custom Request' if `Request` is NULL
                                 $details = $row['Details'] ?? $row['CustomRequest']; // Use `CustomRequest` if `Details` is NULL
 
-                                echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($row['T.N']) . "'>
+                                echo "<tr data-url='agent-showGuest2.php?id=" . htmlspecialchars($row['T.N']) . "'>
                                         <td>" . htmlspecialchars(substr($row['transactNo'], 5)) . "</td> 
                                         <td>" . htmlspecialchars($title) . "</td> 
                                         <td>" . htmlspecialchars($row['Date']) . "</td> 
@@ -1016,7 +1016,7 @@ require "../conn.php";
                                   $title = $row['Request'] ?? 'Custom Request'; // Use 'Custom Request' if `Request` is NULL
                                   $details = $row['Details'] ?? $row['CustomRequest']; // Use `CustomRequest` if `Details` is NULL
 
-                                  echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($row['T.N']) . "'>
+                                  echo "<tr data-url='agent-showGuest2.php?id=" . htmlspecialchars($row['T.N']) . "'>
                                           <td>" . htmlspecialchars(substr($row['transactNo'], 5)) . "</td>
                                           <td>" . htmlspecialchars($title) . "</td> 
                                           <td>" . htmlspecialchars($row['Date']) . "</td> 
@@ -1088,7 +1088,7 @@ require "../conn.php";
                                 $rowTrans = htmlspecialchars(substr($row['Transaction No'], 5));
 
 
-                                echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($row['Transaction No']) . "'>
+                                echo "<tr data-url='agent-showGuest2.php?id=" . htmlspecialchars($row['Transaction No']) . "'>
                                         <td>{$rowTrans}</td>
 
                                     <td> 
@@ -1155,7 +1155,7 @@ require "../conn.php";
                                   }
 
 
-                                echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($row['Transaction No']) . "'>
+                                echo "<tr data-url='agent-showGuest2.php?id=" . htmlspecialchars($row['Transaction No']) . "'>
                                         <td>{$rowTrans}</td>
 
                                 <td> 
@@ -1287,7 +1287,7 @@ require "../conn.php";
 
                             
                                 // Display table row
-                                echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($row['transactNo']) . "'>";
+                                echo "<tr data-url='agent-showGuest2.php?id=" . htmlspecialchars($row['transactNo']) . "'>";
                                 echo "<td>" . htmlspecialchars(substr($row['transactNo'], 5)) . "</td>"; 
                                 echo "<td>" . htmlspecialchars($row['packageName']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['FlightDate']) . "</td>"; 
@@ -1372,7 +1372,7 @@ require "../conn.php";
 
                               
                                   // Display table row
-                                  echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($row['transactNo']) . "'>";
+                                  echo "<tr data-url='agent-showGuest2.php?id=" . htmlspecialchars($row['transactNo']) . "'>";
                                   echo "<td>" . htmlspecialchars(substr($row['transactNo'], 5)) . "</td>"; // TransactNo
                                   echo "<td>" . htmlspecialchars($row['packageName']) . "</td>"; // Package Name
                                   echo "<td>" . htmlspecialchars($row['FlightDate']) . "</td>"; // Flight Date Range
@@ -1715,7 +1715,7 @@ require "../conn.php";
 
                             
                                 // Display table row
-                                echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($row['transactNo']) . "'>";
+                                echo "<tr data-url='agent-showGuest2.php?id=" . htmlspecialchars($row['transactNo']) . "'>";
                                 echo "<td>" . htmlspecialchars(substr($row['transactNo'], 5)) . "</td>"; // TransactNo
                                 echo "<td>" . htmlspecialchars($row['packageName']) . "</td>"; // Package Name
                                 echo "<td>" . htmlspecialchars($row['FlightDate']) . "</td>"; // Flight Date Range
@@ -1777,7 +1777,7 @@ require "../conn.php";
 
                               
                                   // Display table row
-                                  echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($row['transactNo']) . "'>";
+                                  echo "<tr data-url='agent-showGuest2.php?id=" . htmlspecialchars($row['transactNo']) . "'>";
                                   echo "<td>" . htmlspecialchars(substr($row['transactNo'], 5)) . "</td>"; // TransactNo
                                   echo "<td>" . htmlspecialchars($row['packageName']) . "</td>"; // Package Name
                                   echo "<td>" . htmlspecialchars($row['FlightDate']) . "</td>"; // Flight Date Range
