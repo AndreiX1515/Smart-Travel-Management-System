@@ -240,7 +240,15 @@
 
       </div>
 
-      <div id="result-container"></div>
+      <div id="result-container">
+
+      
+      </div>
+
+      <div class="content-footer">
+      <!-- <button class="btn btn-secondary" id="preview-btn">Preview</button> -->
+      <button class="btn btn-primary" id="download-btn">Generate SoA</button>
+    </div>
     
       <!-- <div class="table-container-product">
         <div class="table-content-product">
@@ -414,10 +422,7 @@
       
     </div>
     
-    <div class="content-footer">
-      <!-- <button class="btn btn-secondary" id="preview-btn">Preview</button> -->
-      <button class="btn btn-primary" id="download-btn">Generate SoA</button>
-    </div>
+    
 
   </div>
 </div>
@@ -464,37 +469,79 @@
     const month = document.getElementById('month-filter').value;
     const year = document.getElementById('year-filter').value;
 
-    // Make an AJAX request to the server
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', '../Agent Section/functions/generateSoA.php', true);
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.responseType = 'blob';
+    // Get current date in mm/dd/yyyy format
+    const currentDate = new Date();
+    const currentDateFormatted = (currentDate.getMonth() + 1).toString().padStart(2, '0') + '/' +
+                                  currentDate.getDate().toString().padStart(2, '0') + '/' +
+                                  currentDate.getFullYear();
 
-    xhr.onload = function() 
+    // First, send the request to agent-addSoA.php to insert SOA data
+    const xhrAddSoA = new XMLHttpRequest();
+    xhrAddSoA.open('POST', '../Agent Section/functions/agent-addSoA.php', true);
+    xhrAddSoA.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhrAddSoA.responseType = 'json'; // Expect JSON response for the SOA number
+
+    xhrAddSoA.onload = function() 
     {
-      if (xhr.status === 200) 
+      if (xhrAddSoA.status === 200) 
       {
-        // Create a link to download the PDF
-        const blob = new Blob([xhr.response], { type: 'application/pdf' });
-        const link = document.createElement('a');
-        link.href = window.URL.createObjectURL(blob);
-        link.download = 'Statement_of_Account.pdf';
-        link.click();
+        const response = xhrAddSoA.response;
+        
+        if (response.soanum) 
+        {
+          const soaNumber = response.soanum; // Get the generated SOA number
+
+          // Proceed to generate the SOA PDF
+          const xhrPdf = new XMLHttpRequest();
+          xhrPdf.open('POST', '../Agent Section/functions/generateSoA.php', true);
+          xhrPdf.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+          xhrPdf.responseType = 'blob';
+
+          xhrPdf.onload = function() 
+          {
+            if (xhrPdf.status === 200) 
+            {
+              // Create a link to download the PDF
+              const blob = new Blob([xhrPdf.response], { type: 'application/pdf' });
+              const link = document.createElement('a');
+              link.href = window.URL.createObjectURL(blob);
+              link.download = `Statement_of_Account_${soaNumber}.pdf`;
+              link.click();
+            } 
+            else 
+            {
+              alert('Failed to generate the SOA PDF. Please try again.');
+            }
+          };
+
+          xhrPdf.onerror = function() {
+            alert('An error occurred while generating the SOA PDF.');
+          };
+
+          // Send the request to generate the SOA PDF with the SOA number
+          xhrPdf.send(`companyId=${companyId}&month=${month}&year=${year}&currentDate=${currentDateFormatted}&soaNumber=${soaNumber}`);
+        } 
+        else 
+        {
+          alert('Failed to generate SOA Number. Please try again.');
+        }
       } 
       else 
       {
-        alert('Failed to generate the SOA. Please try again.');
+        alert('Failed to insert SOA number. Server error: ' + xhrAddSoA.statusText);
       }
     };
 
-    xhr.onerror = function() 
+    xhrAddSoA.onerror = function() 
     {
-      alert('An error occurred while processing the request.');
+      alert('An error occurred while processing the request to insert SOA data.');
     };
 
-    xhr.send(`companyId=${companyId}&month=${month}&year=${year}`);
+    // Send the request with the necessary values for SOA number
+    xhrAddSoA.send(`companyId=${companyId}&month=${month}&year=${year}&currentDate=${currentDateFormatted}`);
   });
 </script>
+
 
 
 <!-- Modal -->

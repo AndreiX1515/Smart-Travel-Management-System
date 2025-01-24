@@ -58,6 +58,7 @@ if ($res1->num_rows > 0)
     $totalPriceSum += $row['totalPrice'];
     $formattedFlightPrice = number_format($row['flightPrice'], 2);
     $formattedTotalPrice = number_format($row['totalPrice'], 2);
+    $formattedTotalPriceSum = number_format($totalPriceSum, 2);
     $table1 .= "<tr>
                   <td>$count</td>
                   <td>{$row['flightDates']}</td>
@@ -79,7 +80,7 @@ if ($res1->num_rows > 0)
     ];
 
     $_SESSION['tableData'] = $tableData;
-    $_SESSION['totalPriceSum'] = $formattedTotalPrice;
+    $_SESSION['totalPriceSum'] = $formattedTotalPriceSum;
 
     $count++;
   }
@@ -96,9 +97,7 @@ $sql2 = "SELECT b.flightId, cd.details, cd.price, SUM(r.pax) AS pax, SUM(r.reque
           JOIN concerndetails cd ON r.concernDetailsId = cd.concernDetailsId
           JOIN booking b ON r.transactNo = b.transactNo
           JOIN flight f ON b.flightId = f.flightId
-          WHERE r.requestStatus = 'Confirmed' 
-          AND MONTH(f.flightDepartureDate) = $month 
-          AND YEAR(f.flightDepartureDate) = $year
+          WHERE r.requestStatus = 'Confirmed' AND MONTH(f.flightDepartureDate) = $month AND YEAR(f.flightDepartureDate) = $year
           AND ($companyId = 'All' OR b.agentCode = (SELECT agentCode FROM agent WHERE branchId = $companyId 
                   AND agentRole = 'Head Agent' LIMIT 1 ))
           GROUP BY r.concernDetailsId";
@@ -119,6 +118,7 @@ if ($res2->num_rows > 0)
     $totalCostSum += $row['requestCost'];
     $formattedRequestPrice = number_format($row['price'], 2);
     $formattedRequestCost = number_format($row['requestCost'], 2);
+    $formattedRequestCostSum = number_format($totalCostSum, 2);
     $table2 .= "<tr>
                   <td>$count</td>
                   <td>{$row['details']}</td>
@@ -144,7 +144,7 @@ if ($res2->num_rows > 0)
   if ($handlingFeeCount > 0) 
   {
     $handlingFeeTotal = $handlingFeeCount * 100;
-    $handlingFeeTotalFormatted = number_format($handlingFeeTotal, 2);
+    $formattedHandlingFeeTotal = number_format($handlingFeeTotal, 2);
     $table2 .= "<tr>
                   <td>$count</td>
                   <td>Handling Fee</td>
@@ -152,7 +152,7 @@ if ($res2->num_rows > 0)
                   <td>₱ 100.00</td>
                   <td>$handlingFeeCount</td>
                   <td></td>
-                  <td>₱ $handlingFeeTotalFormatted</td>
+                  <td>₱ $formattedHandlingFeeTotal</td>
                 </tr>";
 
     // Add handling fee to the tableData2 array
@@ -162,10 +162,15 @@ if ($res2->num_rows > 0)
       'price' => '100.00',
       'pax' => $handlingFeeCount,
       'total_usd' => '',
-      'total_php' => $handlingFeeTotalFormatted,
+      'total_php' => $formattedHandlingFeeTotal,
     ];
 
-    $totalFinal = $totalPriceSum + $totalCostSum + $handlingFeeTotal;
+    $totalRequestCostSum = $totalCostSum + $handlingFeeTotal;
+    $formattedTotalRequestCostSum = number_format($totalRequestCostSum, 2);
+
+    $count++;
+    $_SESSION['tableData2'] = $tableData2;
+    $_SESSION['totalRequestCost'] = $formattedTotalRequestCostSum;
   }
 } 
 else 
@@ -173,12 +178,82 @@ else
   $table2 = "<tr><td colspan='7'>No request data found</td></tr>";
 }
 
-$sql3 = "SELECT branchName FROM branch WHERE branchId = $companyId";
+// 3rd Table - Payment Data
+$table3 = "";
+$totalAmount = 0; // To calculate the total payment amount
+$tableData3 = []; // Array to store table3 data
+
+// Using prepared statements
+$sql3 = "SELECT DISTINCT p.transactNo AS transactNo, p.paymentType AS paymentType, p.amount AS amount, DATE(p.paymentDate) AS paymentDate
+          FROM 
+            payment p
+          JOIN 
+            booking b ON b.transactNo = p.transactNo
+          JOIN 
+            agent a ON a.agentCode = b.agentCode
+          JOIN 
+            flight f ON b.flightId = f.flightId
+          WHERE 
+            p.paymentStatus = 'Approved' AND MONTH(f.flightDepartureDate) = $month AND YEAR(f.flightDepartureDate) = $year
+              AND ($companyId = 'All' OR b.agentCode IN (SELECT agentCode FROM agent 
+                    WHERE branchId = $companyId AND agentRole = 'Head Agent'))";
+
 $res3 = $conn->query($sql3);
 
-if ($res3 && $res3->num_rows > 0) 
+if ($res3->num_rows > 0) 
 {
-  $row = $res3->fetch_assoc();
+  while ($row = $res3->fetch_assoc()) 
+  {
+    // Accumulate the total payment amount
+    $totalAmount += $row['amount'];
+    $formattedTotalAmount = number_format($totalAmount, 2);
+
+    // Format the payment amount
+    $formattedAmount = number_format($row['amount'], 2);
+    $formattedTotalAmount = number_format($totalAmount, 2);
+
+    // Format the payment date as "Month DD, YYYY"
+    $formattedDate = DateTime::createFromFormat('Y-m-d', $row['paymentDate'])->format('F d, Y');
+
+    // Build the table row
+    $table3 .= "<tr>
+                  <td>$count</td>
+                  <td>{$row['paymentType']} - $formattedDate</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td>₱ $formattedAmount</td>
+                </tr>";
+
+    // Add row data to the tableData3 array
+    $tableData3[] = [
+        'no' => $count,
+        'contents' => $row['paymentType'] . ' - ' . $formattedDate,
+        'price' => '', 
+        'pax' => '',
+        'total_usd' => '',
+        'total_php' => $formattedAmount 
+    ];
+
+    $count++; // Increment row counter
+  }
+
+  // Store table data and total amount in the session
+  $_SESSION['tableData3'] = $tableData3;
+  $_SESSION['totalAmount'] = $formattedTotalAmount; // Store formatted total amount
+} 
+else 
+{
+  $table3 = "<tr><td colspan='7'>No data found</td></tr>";
+}
+
+$sql4 = "SELECT branchName FROM branch WHERE branchId = $companyId";
+$res4 = $conn->query($sql4);
+
+if ($res4 && $res4->num_rows > 0) 
+{
+  $row = $res4->fetch_assoc();
   $_SESSION['branchName'] = $row['branchName']; // Store the branch name in the session
 } 
 else 
@@ -186,10 +261,11 @@ else
   $_SESSION['branchName'] = 'Unknown Branch'; // Default value if branch is not found
 }
 
-$_SESSION['tableData2'] = $tableData2;
-$totalRequestCost = number_format($totalCostSum + $handlingFeeTotal, 2);
-$_SESSION['totalRequestCost'] = $totalRequestCost;
-$_SESSION['totalFinal'] = number_format($totalFinal, 2);
+$totalCost = ($totalPriceSum + $totalRequestCostSum);
+$balance = ($totalPriceSum + $totalRequestCostSum) - $totalAmount;
+$formattedBalance = number_format($balance, 2);
+$_SESSION['balance'] = $formattedBalance;
+
 
 $response = "
   <table class='product-table'>
@@ -218,7 +294,7 @@ $response = "
     </div>
     <div class='subtotal-item-php'>
       <span>PHP:</span>
-      <span class='subtotal-php'>₱ " . number_format($totalPriceSum, 2) . "</span>
+      <span class='subtotal-php'>₱ " . $formattedTotalPriceSum . "</span>
     </div>
   </div>
   <table class='product-table'>
@@ -236,7 +312,25 @@ $response = "
     </div>
     <div class='subtotal-item-php'>
       <span>PHP:</span>
-      <span class='subtotal-php'>₱ " . number_format($totalCostSum + $handlingFeeTotal, 2) . "</span>
+      <span class='subtotal-php'>₱ " . $formattedTotalRequestCostSum . "</span>
+    </div>
+  </div>
+  <table class='product-table'>
+    <tbody>
+      $table3
+    </tbody>
+  </table>
+  <div class='subtotal-container'>
+    <div class='balance'>
+      <span>SUBTOTAL: </span>
+    </div>
+    <div class='subtotal-item-usd'>
+      <span>USD:</span>
+      <span class='subtotal-usd'></span>
+    </div>
+    <div class='subtotal-item-php'>
+      <span>PHP:</span>
+      <span class='subtotal-php'>₱ " . $formattedTotalAmount . "</span>
     </div>
   </div>
   <div class='balance-container'>
@@ -249,10 +343,10 @@ $response = "
     </div>
     <div class='balancePHP'>
       <span>PHP:</span>
-      <span class='subtotal-php'>₱ " . number_format($totalFinal, 2) . "</span>
+      <span class='subtotal-php'>₱ " . $formattedBalance . "</span>
     </div>
-  </div>
-";
+  </div>";
+
 
 // Return the response to the client
 echo $response;

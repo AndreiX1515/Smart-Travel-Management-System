@@ -4,13 +4,38 @@ session_start();
 
 // Get the selected filter values from the POST request
 $companyId = $_POST['companyId'];
-$month = date('m', strtotime($_POST['month']));
+$monthName = date('F', strtotime($_POST['month']));
 $year = $_POST['year'];
+$formattedDate = $_POST['currentDate'];
+$soaNumber = $_POST['soaNumber'];
 
 class PDF extends TCPDF 
 {
   private $yPosition;
-  private $branchName;
+  private $branchName = '';
+  private $formattedDate = '';
+  private $monthName = '';
+  private $soaNumber = '';
+
+  public function setBranchName($branchName) 
+  {
+    $this->branchName = $branchName;
+  }
+
+  public function setUpdateDate($formattedDate)
+  {
+    $this->formattedDate = $formattedDate;
+  }
+
+  public function setDateRange($monthName)
+  {
+    $this->monthName = $monthName;
+  }
+
+  public function setSoANo($soaNumber)
+  {
+    $this->soaNumber = $soaNumber;
+  }
 
   // Header function
   public function Header() 
@@ -31,9 +56,9 @@ class PDF extends TCPDF
       $this->SetFont('Helvetica', '', 10, true);
       $this->SetXY(10, 43);
       $this->Cell(30, 8, 'SOA NO.:', 1, 0, 'C');
-      $this->Cell(70, 8, '', 1, 0, 'C');
+      $this->Cell(70, 8, $this->soaNumber, 1, 0, 'C');
       $this->Cell(30, 8, 'DATE RANGE:', 1, 0, 'C');
-      $this->Cell(60, 8, '', 1, 1, 'C');
+      $this->Cell(60, 8, $this->monthName, 1, 1, 'C');
 
       $this->SetXY(10, 51);
       $this->Cell(30, 8, 'BILL TO:', 1, 0, 'C');
@@ -44,16 +69,11 @@ class PDF extends TCPDF
       $this->SetXY(110, 59);
 
       $this->Cell(30, 8, 'UPDATE DATE:', 1, 0, 'C');
-      $this->Cell(60, 8, '', 1, 1, 'C');
+      $this->Cell(60, 8, $this->formattedDate, 1, 1, 'C');
 
       // Add a bit of space before starting the table
       $this->Ln(2); 
     }
-  }
-
-  public function setBranchName($branchName) 
-  {
-    $this->branchName = $branchName;
   }
 
   // Table Header function
@@ -158,7 +178,7 @@ class PDF extends TCPDF
     return $yPosition + 10;
   }
   
-  public function tablePayment($tableData2, $yPosition) 
+  public function tableRequest($tableData2, $yPosition) 
   {
     $this->SetFont('Helvetica', 'B', 10);
 
@@ -222,7 +242,7 @@ class PDF extends TCPDF
 
     // Render subtotal cells
     $this->Cell(115, 7, '', 1, 0, 'C', true);
-    $this->Cell(35, 7, 'SUB TOTAL', 1, 0, 'C', true);
+    $this->Cell(35, 7, 'Total Request Cost', 1, 0, 'C', true);
     $this->Cell(40, 7, $totalRequestCost, 1, 0, 'C', true);
 
     // Reset text color
@@ -231,8 +251,82 @@ class PDF extends TCPDF
     // Return the final Y position for reference (add 10 for the row height)
     return $yPosition + 10;
   }
+
+  public function tablePayment($tableData3, $yPosition) 
+  {
+    $this->SetFont('Helvetica', 'B', 10);
     
-  public function tableBalance($totalFinal, $yPosition) 
+    // Add some space after the previous content (to prevent overlap)
+    $this->Ln(2);
+    
+    // Set the X and Y for the header based on passed Y position
+    $this->SetXY(10, $yPosition);
+    
+    // Header cells
+    $this->SetFont('Helvetica', '', 10, true);
+    $this->SetFillColor(255, 255, 255); // White background
+    $this->SetTextColor(0, 0, 0); // Black text color
+    
+    $col1 = 15;
+    $col2 = 65;
+    $col3 = 35;
+    $col4 = 15;
+    $col5 = 30;
+    $col6 = 30;
+
+    // Reset text color
+    $this->SetTextColor(0, 0, 0);
+    
+    // Loop through content rows and adjust Y position
+    foreach ($tableData3 as $row) 
+    {
+      // Set the X and Y for each row based on the current Y position
+      $this->SetXY(10, $yPosition);
+  
+      // Render cells with data
+      $this->Cell($col1, 7, $row['no'], 1, 0, 'C');
+      $this->Cell($col2, 7, $row['contents'], 1, 0, 'C');
+      $this->Cell($col3, 7, $row['price'], 1, 0, 'C');
+      $this->Cell($col4, 7, $row['pax'], 1, 0, 'C');
+      $this->Cell($col5, 7, $row['total_usd'], 1, 0, 'C');
+      $this->Cell($col6, 7, $row['total_php'], 1, 1, 'C');
+  
+      // Increment Y position for the next row
+      $yPosition += 7;
+    }
+    
+    // Return the final Y position for reference
+    return $yPosition;
+  }
+
+  public function tableContentSubTotal3($totalAmount, $yPosition) 
+  {
+    $this->SetFont('Helvetica', 'B', 10);
+
+    // Add some space after the previous content (to prevent overlap)
+    $this->Ln(2);
+
+    // Set the X and Y for the header based on passed Y position
+    $this->SetXY(10, $yPosition);
+
+    // Header cells
+    $this->SetFont('Helvetica', '', 10, true);
+    $this->SetFillColor(255, 255, 255); // White background
+    $this->SetTextColor(0, 0, 0); // Black text color
+
+    // Render subtotal cells
+    $this->Cell(115, 7, '', 1, 0, 'C', true);
+    $this->Cell(35, 7, 'Total Payment: ', 1, 0, 'C', true);
+    $this->Cell(40, 7, $totalAmount, 1, 0, 'C', true);
+
+    // Reset text color
+    $this->SetTextColor(0, 0, 0);
+
+    // Return the final Y position for reference (add 10 for the row height)
+    return $yPosition + 10;
+  }
+    
+  public function tableBalance($balance, $yPosition) 
   {
     $this->SetFont('Helvetica', 'B', 10);
 
@@ -250,7 +344,7 @@ class PDF extends TCPDF
     // Render header cells for Balance table
     $this->Cell(115, 7, 'BALANCE', 1, 0, 'C', true); 
     $this->Cell(35, 7, '', 1, 0, 'L', true); 
-    $this->Cell(40, 7, $totalFinal, 1, 0, 'L', true); 
+    $this->Cell(40, 7, $balance, 1, 0, 'L', true); 
 
     // Reset text color
     $this->SetTextColor(0, 0, 0);
@@ -300,7 +394,9 @@ $tableData = $_SESSION['tableData'];
 $totalPriceSum = $_SESSION['totalPriceSum'];
 $tableData2 = $_SESSION['tableData2'];
 $totalRequestCost = $_SESSION['totalRequestCost'];
-$totalFinal = $_SESSION['totalFinal'];
+$tableData3 =  $_SESSION['tableData3'];
+$totalAmount = $_SESSION['totalAmount'];
+$balance = $_SESSION['balance'];
 $branchName = $_SESSION['branchName'];
 
 // Set margins
@@ -311,11 +407,13 @@ $pdf->SetMargins(10, 10, 10); // Adjust to provide consistent spacing
 // $pdf->tableContentSubTotal();
 // Output the PDF
 
-$pdf->AddPage();
-$pdf->tableHeader();
-
 // Set the branch name
 $pdf->setBranchName($branchName);
+$pdf->setDateRange($monthName);
+$pdf->setUpdateDate($formattedDate);
+$pdf->setSoANo($soaNumber);
+$pdf->AddPage();
+$pdf->tableHeader();
 
 // Get the initial Y position after rendering the header
 $yPosition = 75; // Set the starting position for the first table
@@ -327,13 +425,19 @@ $yPosition = $pdf->tableContent($tableData, $yPosition);
 $yPosition = $pdf->tableContentSubTotal($totalPriceSum, $yPosition);
 
 // Pass the final Y position to tablePayment and get the final position
-$yPosition = $pdf->tablePayment($tableData2, $yPosition);
+$yPosition = $pdf->tableRequest($tableData2, $yPosition);
 
 // Pass the final Y position to tableContentSubTotal2 and get the final position
 $yPosition = $pdf->tableContentSubTotal2($totalRequestCost, $yPosition);
 
+// Pass the final Y position to tablePayment and get the final position
+$yPosition = $pdf->tablePayment($tableData3, $yPosition);
+
+// Pass the final Y position to tableContentSubTotal2 and get the final position
+$yPosition = $pdf->tableContentSubTotal2($totalAmount, $yPosition);
+
 // Pass the updated Y position to tableBalance and get the final position
-$yPosition = $pdf->tableBalance($totalFinal, $yPosition);
+$yPosition = $pdf->tableBalance($balance, $yPosition);
 
 $yPosition = $pdf->accountInfo($yPosition);
 
@@ -346,4 +450,8 @@ unset($_SESSION['totalPriceSum']);
 unset($_SESSION['tableData2']);
 unset($_SESSION['totalRequestCost']);
 unset($_SESSION['totalFinal']);
+unset($_SESSION['tableData3']);
+unset($_SESSION['totalAmount']);
+unset($_SESSION['balance']);
+unset($_SESSION['branchName']);
 ?>
