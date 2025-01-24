@@ -246,9 +246,10 @@
       </div>
 
       <div class="content-footer">
-      <!-- <button class="btn btn-secondary" id="preview-btn">Preview</button> -->
-      <button class="btn btn-primary" id="download-btn">Generate SoA</button>
-    </div>
+          <!-- <button class="btn btn-secondary" id="preview-btn">Preview</button> -->
+          <button class="btn btn-primary" id="download-btn" disabled>Generate SoA</button>
+      </div>
+
     
       <!-- <div class="table-container-product">
         <div class="table-content-product">
@@ -437,29 +438,65 @@
     const month = document.getElementById('month-filter').value;
     const year = document.getElementById('year-filter').value;
 
+    // Disable the button while the request is in progress
+    document.getElementById('generate-soa-btn').disabled = true;
+
+    // Show a loading indicator
+    const resultContainer = document.getElementById('result-container');
+    resultContainer.innerHTML = '<p>Loading...</p>';
+
     // Send data to PHP using AJAX
     const xhr = new XMLHttpRequest();
     xhr.open('POST', '../Agent Section/functions/fetchSoA.php', true); // Replace with your PHP file name
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    
+
     const data = `companyId=${companyId}&month=${month}&year=${year}`;
-    
-    xhr.onload = function()
+
+    xhr.onload = function() 
     {
+      // Re-enable the button after the request is complete
+      document.getElementById('generate-soa-btn').disabled = false;
+
       if (xhr.status === 200) 
       {
-        // Update the result container with the server response
-        document.getElementById('result-container').innerHTML = xhr.responseText;
+        // Parse the JSON response
+        const response = JSON.parse(xhr.responseText);
+
+        if (response.dataAvailable) 
+        {
+          // Update the result container with the HTML from the response
+          resultContainer.innerHTML = response.htmlContent;
+          // Enable the download button if data is available
+          document.getElementById('download-btn').disabled = false;
+        } 
+        else 
+        {
+          // If no data available, update the result container and disable the button
+          resultContainer.innerHTML = '<p>No data found for the selected filters.</p>';
+          document.getElementById('download-btn').disabled = true;
+        }
       } 
       else 
       {
-        alert('Error: ' + xhr.status);
+        // Handle errors in the request
+        resultContainer.innerHTML = '<p>Error loading data. Please try again later.</p>';
+        document.getElementById('download-btn').disabled = true;
       }
     };
-    
+
+    xhr.onerror = function() 
+    {
+      // Handle network errors
+      resultContainer.innerHTML = '<p>Network error. Please check your connection and try again.</p>';
+      document.getElementById('generate-soa-btn').disabled = false;
+      document.getElementById('download-btn').disabled = true;
+    };
+
+    // Send the data to the server
     xhr.send(data);
   });
 </script>
+
 
 <!-- Generate SoA -->
 <script>
