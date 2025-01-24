@@ -471,6 +471,29 @@ body {
   text-overflow: ellipsis; /* Add ellipsis for truncated content */
 }
 
+.contact-wrapper {
+  display: flex;
+  flex-direction: column;
+  padding: 0; /* Remove padding inside the wrapper */
+  /* border: 1px solid black;
+  border-radius: 5px; */
+  font-weight: 600;
+}
+
+.contact-wrapper > * {
+  margin: 0; /* Remove default margin from child elements */
+  padding: 0; /* Remove padding from child elements */
+  line-height: 1.5; /* Tighten vertical spacing */
+}
+
+.contact-wrapper span {
+  font-weight: 400;
+
+}
+
+
+
+
 /* Hover effect for table rows */
 .product-table tr {
   transition: background-color 0.3s, color 0.3s;
@@ -486,47 +509,62 @@ body {
 /* Column width adjustments */
 .product-table th:nth-child(1),
 .product-table td:nth-child(1) {
-  width: 7%; /* Adjust width for Transaction ID column */
+  width: 7.5%; /* Adjust width for Transaction ID column */
+  font-weight: bold;
 }
 
 .product-table th:nth-child(2),
 .product-table td:nth-child(2) {
-  width: 16%; /* Adjust width for Contact Person Info column */
+  width: 17%; /* Adjust width for Contact Person Info column */
 }
 
 .product-table th:nth-child(3),
 .product-table td:nth-child(3) {
-  width: 23%; /* Adjust width for Contact Person Contact Details column */
+  width: 6%; /* Adjust width for Contact Person Contact Details column */
+  text-align: center;
 }
 
 .product-table th:nth-child(4),
 .product-table td:nth-child(4) {
-  width: 14%; /* Adjust width for Package Name column */
+  width: 5.5%; /* Adjust width for Package Name column */
+  text-align: center;
 }
 
 .product-table th:nth-child(5),
 .product-table td:nth-child(5) {
-  width: 7%; /* Adjust width for Transaction Date column */
-  text-align: center;
+  width: 13%; /* Adjust width for Transaction Date column */
 }
 
 .product-table th:nth-child(6),
 .product-table td:nth-child(6) {
-  width: 7%; /* Adjust width for Flight Date column */
-  text-align: center;
+  width: 10%; /* Adjust width for Flight Date column */
 }
 
 .product-table th:nth-child(7),
 .product-table td:nth-child(7) {
-  width: 5%; /* Adjust width for Total Pax column */
+  width: 3%; /* Adjust width for Total Pax column */
   text-align: center;
 }
 
 .product-table th:nth-child(8),
 .product-table td:nth-child(8) {
-  width: 7%; /* Adjust width for Status column */
+  width: 5%; /* Adjust width for Status column */
   text-align: center;
 }
+
+.product-table th:nth-child(9),
+.product-table td:nth-child(9) {
+  width: 10%; /* Adjust width for Status column */
+  text-align: center;
+}
+
+.product-table th:nth-child(10),
+.product-table td:nth-child(10) {
+  width: 5%; /* Adjust width for Status column */
+  text-align: center;
+}
+
+
 
 
 

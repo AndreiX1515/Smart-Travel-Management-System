@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding: 15px 0px;
+  padding: 5px 0px;
 }
 
 .card-header {
@@ -23,7 +23,7 @@
 }
 
 .card-body {
-  padding: 15px 20px;
+  padding: 10px 20px;
 }
 
 .card-body .row {
@@ -38,19 +38,30 @@
   margin-bottom: 8px;
 }
 
-.row .land-only {
-  margin-top: 15px;
+.land-only {
+  width: 98.5%;
+  margin: -10px 10px 0px 10px;
+  /* border: 1px solid black; */
 }
+
+.flight-details-wrapper {
+  width: 98.5%;
+  margin: -10px 10px 0px 10px;
+  /* border: 1px solid black; */
+}
+
+
+
+
 
 .form-group label {
   font-size: 16px;
   font-weight: 600;
 }
 
-.price-wrapper .card-body {
+.flight-details-wrapper {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  border: 1px solid black;
 }
 
 .contact-person-details .card-body  {
@@ -89,24 +100,16 @@
   margin-top: -6px;
 }
 
-
-
-/* .columns .form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-} */
-
-
-
-
-
-
-
-
 .card-footer {
   display: flex;
   justify-content: start;
   align-items: center;
   padding: 15px;
+}
+
+.price-wrapper .card-body {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
 }
