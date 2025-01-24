@@ -9,12 +9,12 @@
     <i class="fas fa-home"></i> <span> Home </span> 
   </a>
    
-  <a href="../Agent Section/agent-addbooking.php" class="page-button add-booking mb-1 my-0" data-page-name="Add Booking"> 
+  <a href="../Agent Section/agent-addbooking - rename.php" class="page-button add-booking mb-1 my-0" data-page-name="Add Booking"> 
     <i class="fa-solid fa-user-plus"></i> <span> Add Booking </span>
   </a>
 
-  <a href="../Agent Section/agent-FIT3.php" class="page-button add-FIT mb-1 my-0" data-page-name="F.I.T">
-    <i class="fas fa-file-invoice"></i> <span> Add F.I.T </span>
+  <a href="../Agent Section/agent-FIT - rename.php" class="page-button add-FIT mb-1 my-0" data-page-name="Add F.I.T Booking">
+    <i class="fa-solid fa-user-plus"></i> <span> Add F.I.T </span>
   </a>
   
   <div class="section-title" onclick="toggleSubMenu('transactiontable-submenu')">
@@ -23,11 +23,11 @@
 
   <!-- This submenu is open by default -->
   <div class="submenu open" id="transactiontable-submenu">
-    <a href="../Agent Section/agent-transactions2.php" class="page-button my-0" data-page-name="Transactions">
+    <a href="../Agent Section/agent-transactions - rename.php" class="page-button my-0" data-page-name="Transactions">
       <i class="fas fa-file-invoice"></i> Packages
     </a>
 
-    <a href="../Agent Section/agent-FIT-table2.php" class="page-button my-0" data-page-name="F.I.T - View Table" style="font-size: 14px;">
+    <a href="../Agent Section/agent-FIT-table - rename.php" class="page-button my-0" data-page-name="F.I.T - View Table" style="font-size: 14px;">
       <i class="fas fa-file-invoice"></i> F.I.T 
     </a> 
   </div>

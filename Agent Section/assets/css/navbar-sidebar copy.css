@@ -145,8 +145,6 @@ a:hover {
  background-color: #495057; /* Darker background on hover */
  color: #ffffff; /* White text on hover */
 }
-
-
 /* Home Button */
 .sidebar .home {
   padding: 10px 12px;
@@ -184,6 +182,11 @@ a:hover {
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
+.sidebar .add-booking i {
+  color: #ffffff;
+  margin-right: 8px;
+ }
+
 .sidebar .add-booking:hover {
   background-color: #b71c1c; /* Darker red on hover */
   color: #e9ecef; /* Light text on hover */
@@ -207,17 +210,13 @@ a:hover {
   color: #e9ecef; /* Light text on hover */
 }
 
-/* Add FIT Button Span */
-.sidebar .add-FIT span {
-  margin-left: 6px;
-}
+
+.sidebar .add-FIT i {
+  color: #ffffff;
+  margin-right: 8px;
+ }
 
 
-
-.sidebar .add-booking i {
- color: #ffffff;
- margin-right: 8px;
-}
 
 /* Icon styles */
 .sidebar i {
@@ -268,17 +267,22 @@ a:hover {
 /* Navbar Styles */
 .navbar {
   display: flex;
-  align-items: baseline; /* Corrected 'last baseline' */
+  align-items: center; /* Corrected 'last baseline' */
   justify-content: start;
-  height: 6vh;
+  height: 7.4vh;
   width: 87.5%;
   border-bottom: 1px solid gainsboro;
-  padding: 15px 15px;
+  padding: 10px 15px 15px 5px;
   position: fixed;
   top: 11px;
   background-color: white;
   z-index: 1000;
+  margin-left: 10px;
   /* border: 1px solid black; */
+}
+
+.navbar .title-page {
+  margin-top: 12px;
 }
 
 /* Navbar Title Styles */
@@ -303,9 +307,50 @@ a:hover {
   width: 100%;
   height: 92vh;
   padding: 5px 6px 5px 10px;
-  margin-top: 5vh;
+  margin-top: 6.5vh;
+  /* border: 1px solid black; */
+}
+
+.main-content .backbutton-wrapper {
+  width: 100%;
+  height: 3vh;
   border: 1px solid black;
 }
+
+.backbutton-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.back-button-wrapper {
+	margin-bottom: 3px;
+  height: 50%;
+}
+
+.back-button-link {
+	text-decoration: none;
+	color: #6c757d;
+	font-size: 14px;
+	display: inline-flex;
+	align-items: center;
+	transition: color 0.3s ease, text-decoration 0.3s ease;
+  /* border: 1px solid black; */
+}
+
+.back-button-link:hover {
+	color: #116530;
+}
+
+
+.page-name-wrapper {
+  display: flex;
+  height: 50%;
+  /* border: 1px solid black; */
+  justify-content: left;
+  align-items: last baseline;
+  padding: 0px 0px 0px 18px;
+}
+
 
 
 

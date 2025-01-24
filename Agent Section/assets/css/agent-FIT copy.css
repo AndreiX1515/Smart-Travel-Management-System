@@ -1,5 +1,5 @@
 .main-content .container-content {
-  padding: 0px 10px;
+  padding: 5px 0px;
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -127,6 +127,7 @@
   display: flex;
   justify-content: end;
   align-items: center;
+  padding: 7px 10px;
 
 }
 

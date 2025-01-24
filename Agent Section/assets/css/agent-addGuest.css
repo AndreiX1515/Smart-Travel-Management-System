@@ -1,0 +1,244 @@
+.addguest-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.addguest-wrapper .wrapper-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* border: 1px solid black; */
+  height: 5vh;
+}
+
+.wrapper-header .transaction-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: last baseline;
+  padding: 5px 5px;
+  gap: 25px;
+  height: 5vh;
+  /* border: 1px solid black; */
+
+}
+
+.addguest-wrapper .wrapper-body {
+  padding: 0;
+}
+
+
+.guestInfo-wrapper .card{
+  padding: 0;
+  margin: 0;
+  margin-top: 20px;
+}
+
+.guestInfo-wrapper .card-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: last baseline;
+  padding: 10px 15px;
+  background-color: #eeeeee;
+}
+
+.guestInfo-wrapper .card-header h5 {
+  font-size: 18px;
+  margin-top: 5px;
+}
+
+.guestInfo-wrapper .card-header button {
+  width: 80px;
+  height: 40px;
+  background-color: #007BFF; /* Primary blue */
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  font-size: 0.9em;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.guestInfo-wrapper .card-header button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+  transform: scale(1.05);
+}
+
+.guestInfo-wrapper .card-header button:active {
+  background-color: #003d80; /* Even darker blue on click */
+  transform: scale(0.95);
+}
+
+.wrapper-body .card-footer {
+  padding: 0;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  /* border: 1px solid black; */
+  margin: 10px 0px 25px 0px;
+}
+
+.cardBodyContent1 {
+  background-color: #eeeeee;
+
+
+}
+
+.cardBodyContent1 .card-body {
+  padding: 0;
+  margin: 0;
+  margin-top: 15px;
+}
+
+
+.card-body .header-container {
+  display: flex;
+  width: 100%;
+  margin: 20px 0px 10px 0px;
+}
+
+.card-body .header-container > :not(:first-child) {
+  margin: 0px 0px 10px 0px;
+}
+
+
+.header-container .card-title {
+  padding: 0px;
+  width: 100%;
+  border-bottom: 1px solid black;
+  font-size: 18px;
+  
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.booking-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 5px 0px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: start;
+  align-items: last baseline;
+  padding: 5px 20px;
+  /* border: 1px solid black; */
+}
+
+.text-danger {
+  font-size: 12px;
+}
+
+.card-header h4{
+  margin-top: 10px;
+  font-size: 18px;
+}
+
+.card-body {
+  padding: 10px 20px;
+}
+
+.card-body .row {
+  margin-bottom: 5px;
+}
+
+.row .columns {
+  margin-bottom: 10px;
+}
+
+.columns label {
+  margin-bottom: 8px;
+}
+
+.land-only {
+  width: 98.5%;
+  margin: -10px 10px 0px 10px;
+  /* border: 1px solid black; */
+}
+
+.flight-details-wrapper {
+  width: 98.5%;
+  margin: -10px 10px 0px 10px;
+  /* border: 1px solid black; */
+}
+
+
+
+
+
+.form-group label {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.flight-details-wrapper {
+  display: flex;
+  border: 1px solid black;
+}
+
+.contact-person-details .card-body  {
+  padding: 20px 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.contact-person-details .form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-person-details .form-group label {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.contact-person-details .email-fields input {
+  margin-top: -4px;
+  /* border: 1px solid black; */
+}
+
+.contact-person-details .input-group  {
+  margin-top: -6px;
+}
+
+
+.contact-person-details .input-group select {
+  margin-top: 8px;
+}
+
+
+.form-group .contactNo {
+  margin-top: -6px;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  padding: 15px;
+  margin: 15px 0px;
+}
+
+.price-wrapper .card-body {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+}

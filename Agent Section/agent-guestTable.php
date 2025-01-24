@@ -1,9 +1,8 @@
 
 <!-- Guest Table -->
 <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
-  <div class="tab-wrapper">
-    <div class="d-flex justify-content-end align-items-center p-3">
-      <div class="d-flex justify-content-end gap-2">
+  <div class="tabs-wrapper">
+      <div class="table-header">
         <?php
           // Check if 'id' is passed in the URL
           if (isset($_GET['id'])) 
@@ -53,7 +52,7 @@
 
         <!-- Add Guest Button -->
         <button type="button" class="btn btn-primary" <?php echo $disable_button; ?> 
-          onclick="if (!this.disabled) { window.location.href = 'agent-addGuest.php'; }">
+          onclick="if (!this.disabled) { window.location.href = 'agent-addGuest - rename.php'; }">
           Add Guest Information
         </button>
 
@@ -67,11 +66,13 @@
           <?php endif; ?>>
           Attach Visa Requirements
         </button>
+
       </div>
+
       <!-- <p>Pax: <?php echo $pax2;?></p>
       <p>Guest Count: <?php echo $guest_count;?></p>
       <p>Visa Count: <?php echo $visa_count;?></p> -->
-    </div>
+    
 
     <div class="table-container">
       <table class="product-table">
@@ -160,6 +161,7 @@
         </tbody>
       </table>
     </div>
+    
   </div>
 </div>
 
@@ -223,6 +225,7 @@
   </div>
 </div>
 
+<!-- Add Guest Script -->
 <script>
   let guestCounter = 0;
 
@@ -341,6 +344,7 @@
 
 </script>
 
+<!-- Specific Row Clickable Script -->
 <script>
   document.addEventListener("DOMContentLoaded", function() 
   {
@@ -363,4 +367,8 @@
       window.location.href = url; // Redirect to the specified URL
     });
   });
-  </script>
+</script>
+
+<script>
+  
+</script>

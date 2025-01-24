@@ -1,5 +1,4 @@
 <?php 
-
 session_start(); 
 
 ?>
@@ -20,7 +19,6 @@ session_start();
 
 <div class="body-container" id="mainContent">
   <?php include "../Agent Section/includes/sidebar copy.php"; ?>
-
 
 
   <div class="main-content-container">

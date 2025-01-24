@@ -22,7 +22,7 @@ require "../conn.php";
 
   <div class="main-content-container">
     <div class="navbar">
-      <h5>Dashboard</h5>
+      <h5 class="title-page">Dashboard</h5>
     </div>
 
     <div class="main-content">
@@ -1805,6 +1805,7 @@ require "../conn.php";
                 </div>
               </div>
             </div>
+
           </div>
 
         <!-- <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">

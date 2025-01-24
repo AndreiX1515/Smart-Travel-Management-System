@@ -156,16 +156,16 @@ require "../conn.php";
                 </div>
               </div>
               
-              <div class="row land-only">
-                <div class="columns col-md-12">
+              <div class="row">
+                <div class="columns col-md-12 land-only">
                   <input type="checkbox" id="land" name="land" value="Land Only">
                   <label for="land"> Land Only</label><br>
                 </div>
               </div>
 
-              <div class="row">
+              <div class="row ">
                 <!-- Flight Details Input -->
-                <div class="columns col-md-12" id="flightDetailsContainer" style="display: none;">
+                <div class="columns col-md-12 flight-details-wrapper" id="flightDetailsContainer" style="display: none;">
                   <div class="form-group">
                     <label for="flightDetails">Flight Details for Package Only</label>
 
