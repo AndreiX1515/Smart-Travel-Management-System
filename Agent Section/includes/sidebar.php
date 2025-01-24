@@ -48,6 +48,9 @@
     <a href="../Agent Section/agent-soa.php" class="page-button" data-page-name="Statement of Accounts (SOA)">
       <i class="fas fa-file-invoice-dollar"></i> <span>SoA</span>
     </a>
+    <a href="../Agent Section/agent-soaFIT.php" class="page-button" data-page-name="Statement of Accounts (SOA)">
+      <i class="fas fa-file-invoice-dollar"></i> <span>FIT SoA</span>
+    </a>
     <a href="../Agent Section/agent-ticket.php" class="page-button" data-page-name="Ticket">
       <i class="fas fa-ticket"></i> <span>Ticket</span>
     </a>

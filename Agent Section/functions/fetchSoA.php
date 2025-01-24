@@ -8,6 +8,11 @@ $companyId = $_POST['companyId'];
 $month = date('m', strtotime($_POST['month']));
 $year = $_POST['year'];
 
+$totalRequestCostSum = 0;
+$formattedTotalPriceSum = '0.00';
+$formattedTotalRequestCostSum = '0.00';
+$formattedTotalAmount = '0.00';
+
 // Prepare SQL queries based on selected values
 // 1st Table - Flight Data
 $sql1 = "SELECT f.flightId, f.flightPrice, CONCAT(f.flightDepartureDate, ' - ', f.returnArrivalDate) AS flightDates, 
@@ -245,7 +250,7 @@ if ($res3->num_rows > 0)
 } 
 else 
 {
-  $table3 = "<tr><td colspan='7'>No data found</td></tr>";
+  $table3 = "<tr><td colspan='7'>No Payment data found</td></tr>";
 }
 
 $sql4 = "SELECT branchName FROM branch WHERE branchId = $companyId";
@@ -266,6 +271,21 @@ $balance = ($totalPriceSum + $totalRequestCostSum) - $totalAmount;
 $formattedBalance = number_format($balance, 2);
 $_SESSION['balance'] = $formattedBalance;
 
+// Return the response to the client
+// echo $response;
+
+// Check if there's any data to indicate availability
+$dataAvailable = false;
+
+// Check if there is any data in the result sets (flight, request, payment)
+if ($res1->num_rows > 0 || $res2->num_rows > 0 || $res3->num_rows > 0) {
+    $dataAvailable = true;
+}
+
+// For each query result, log the row count
+error_log("Result 1 row count: " . $res1->num_rows);
+error_log("Result 2 row count: " . $res2->num_rows);
+error_log("Result 3 row count: " . $res3->num_rows);
 
 $response = "
   <table class='product-table'>
@@ -348,6 +368,14 @@ $response = "
   </div>";
 
 
-// Return the response to the client
-echo $response;
+// Combine HTML content and data availability flag in a response array
+$responseData = [
+    'dataAvailable' => $dataAvailable,
+    'htmlContent' => $response // The HTML content you generated
+];
+
+// Send the data as a JSON response
+echo json_encode($responseData);
+
+
 ?>

@@ -69,7 +69,7 @@
         <div class="nav-start-container d-flex flex-row">
           <div class="content-header">
             <div class="back-button-wrapper">
-                <a href="agent-dashboard.php" class="back-button-link"> <i class="fa-solid fa-arrow-left me-2"></i> Back to Dashboard</a>
+              <a href="agent-dashboard.php" class="back-button-link"> <i class="fa-solid fa-arrow-left me-2"></i> Back to Dashboard</a>
             </div>
             <h1>Statement of Accounts (SOA)</h1>
           </div>
@@ -77,7 +77,7 @@
 
         <div class="nav-end-container d-flex flex-row align">
           <div class="date-time-container d-flex flex-row align-items-center">
-              <h6><?php echo $current_date; ?></h6>
+            <h6><?php echo $current_date; ?></h6>
           </div>
 
           <div class="vertical-line-navbar"></div>
@@ -85,41 +85,36 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
               <li class="nav-item dropdown d-flex align-items-center">
+                <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <div class="profile-container ms-2 me-3">
+                    <h6 class="mb-1"><?php echo $fullName; ?></h6>
+                    <span class="m-0">Branch: <?php echo $branchName; ?></span>
+                    <span class="m-0">Agent ID: <?php echo $agentId; ?></span>
+                  </div>
+                  <img src="../Assets/Icons/circle.png" alt="Profile" class="profile-image me-2" width="40px" height="40px">
+                </a>
 
-                  <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      <div class="profile-container ms-2 me-3">
-                          <h6 class="mb-1"><?php echo $fullName; ?></h6>
-                          <span class="m-0">Branch: <?php echo $branchName; ?></span>
-                          <span class="m-0">Agent ID: <?php echo $agentId; ?></span>
-                      </div>
-                      <img src="../Assets/Icons/circle.png" alt="Profile" class="profile-image me-2" width="40px" height="40px">
-                  </a>
+                <ul class="dropdown-menu dropdown-menu-end mt-3" aria-labelledby="navbarDropdown">
+                  <li>
+                    <a class="dropdown-item" href="#" style="font-size: 14px;" data-bs-toggle="modal" data-bs-target="#viewPasswordModal">
+                      <i class="fas fa-user me-2"></i> View Password
+                    </a>
+                  </li>
 
-                  <ul class="dropdown-menu dropdown-menu-end mt-3" aria-labelledby="navbarDropdown">
-                    <li>
-                      <a class="dropdown-item" href="#" style="font-size: 14px;" data-bs-toggle="modal" data-bs-target="#viewPasswordModal">
-                        <i class="fas fa-user me-2"></i> View Password
-                      </a>
-                    </li>
+                  <li>
+                    <hr class="dropdown-divider">
+                  </li>
 
-                    <li>
-                      <hr class="dropdown-divider">
-                    </li>
-
-                    <li>
-                      <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal" style="font-size: 14px;">
-                        <i class="fas fa-sign-out-alt me-2"></i> Logout
-                      </a>
-                    </li>
-
-                  </ul>
-
-                </li>  
-              </ul>
-            </div>
-
-      </div>
-
+                  <li>
+                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal" style="font-size: 14px;">
+                      <i class="fas fa-sign-out-alt me-2"></i> Logout
+                    </a>
+                  </li>
+                </ul>
+              </li>  
+            </ul>
+          </div>
+        </div>
       </div>
     </nav>
   </header>
@@ -246,9 +241,10 @@
       </div>
 
       <div class="content-footer">
-      <!-- <button class="btn btn-secondary" id="preview-btn">Preview</button> -->
-      <button class="btn btn-primary" id="download-btn">Generate SoA</button>
-    </div>
+          <!-- <button class="btn btn-secondary" id="preview-btn">Preview</button> -->
+          <button class="btn btn-primary" id="download-btn" disabled>Generate SoA</button>
+      </div>
+
     
       <!-- <div class="table-container-product">
         <div class="table-content-product">
@@ -437,29 +433,65 @@
     const month = document.getElementById('month-filter').value;
     const year = document.getElementById('year-filter').value;
 
+    // Disable the button while the request is in progress
+    document.getElementById('generate-soa-btn').disabled = true;
+
+    // Show a loading indicator
+    const resultContainer = document.getElementById('result-container');
+    resultContainer.innerHTML = '<p>Loading...</p>';
+
     // Send data to PHP using AJAX
     const xhr = new XMLHttpRequest();
     xhr.open('POST', '../Agent Section/functions/fetchSoA.php', true); // Replace with your PHP file name
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    
+
     const data = `companyId=${companyId}&month=${month}&year=${year}`;
-    
-    xhr.onload = function()
+
+    xhr.onload = function() 
     {
+      // Re-enable the button after the request is complete
+      document.getElementById('generate-soa-btn').disabled = false;
+
       if (xhr.status === 200) 
       {
-        // Update the result container with the server response
-        document.getElementById('result-container').innerHTML = xhr.responseText;
+        // Parse the JSON response
+        const response = JSON.parse(xhr.responseText);
+
+        if (response.dataAvailable) 
+        {
+          // Update the result container with the HTML from the response
+          resultContainer.innerHTML = response.htmlContent;
+          // Enable the download button if data is available
+          document.getElementById('download-btn').disabled = false;
+        } 
+        else 
+        {
+          // If no data available, update the result container and disable the button
+          resultContainer.innerHTML = '<p>No data found for the selected filters.</p>';
+          document.getElementById('download-btn').disabled = true;
+        }
       } 
       else 
       {
-        alert('Error: ' + xhr.status);
+        // Handle errors in the request
+        resultContainer.innerHTML = '<p>Error loading data. Please try again later.</p>';
+        document.getElementById('download-btn').disabled = true;
       }
     };
-    
+
+    xhr.onerror = function() 
+    {
+      // Handle network errors
+      resultContainer.innerHTML = '<p>Network error. Please check your connection and try again.</p>';
+      document.getElementById('generate-soa-btn').disabled = false;
+      document.getElementById('download-btn').disabled = true;
+    };
+
+    // Send the data to the server
     xhr.send(data);
   });
 </script>
+
 
 <!-- Generate SoA -->
 <script>
@@ -541,8 +573,6 @@
     xhrAddSoA.send(`companyId=${companyId}&month=${month}&year=${year}&currentDate=${currentDateFormatted}`);
   });
 </script>
-
-
 
 <!-- Modal -->
 <!-- <script>
