@@ -60,7 +60,7 @@ else
 $sql2 = "SELECT fp.paymentType AS paymentType,  DATE_FORMAT(fp.paymentDate, '%M %d, %Y') AS paymentDate, fp.amount AS paymentAmount 
          FROM `fit` f
          JOIN fitpayment fp ON f.transactionNo = fp.transactNo
-         WHERE MONTH(f.startDate) = $month AND YEAR(f.startDate) = $year AND f.status = 'Completed' AND fp.paymentStatus = 'Approved'";
+         WHERE MONTH(f.startDate) = $month AND YEAR(f.startDate) = $year AND fp.paymentStatus = 'Approved'";
 
 $res2 = $conn->query($sql2);
 
