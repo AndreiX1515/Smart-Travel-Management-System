@@ -329,6 +329,7 @@ a:hover {
   text-decoration: none; /* Remove underline */
   font-size: 16px;
   border-radius: 5px; /* Rounded corners */
+  margin-bottom: 10px;
 }
 
 .page-button.logout i {
