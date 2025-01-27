@@ -36,8 +36,8 @@
 					<div class="message-1 mb-2 fw-bold" id="message-1"></div>
 
 					<!-- Select Branch -->
-					<div class="mb2">
-						<div class="form-floating">
+					<div class="mb-2 me-3 py-2">
+					<div class="form-floating">
 							<select name="branchId" id="branchId" class="form-control" required>
 								<option selected disabled>Select Company:</option>
 								<?php
@@ -60,7 +60,7 @@
                   }
 								?>
 							</select>
-						</div>
+					</div>
 					</div>
 
 					<div class="mb-2">
@@ -364,6 +364,8 @@
         let password = passwordField.val();
         let cpasswordField = $('#floatingPassword2');
         let cpassword = cpasswordField.val();
+				let branchIdfield = $('#branchId');
+        let branchId = branchIdfield.val();
 
         // Clear any previous message and reset borders
         $('#message-1').text('').removeClass('show');
@@ -412,11 +414,15 @@
             button.prop('disabled', true); // Disable button to prevent multiple clicks
 
 
+				console.log(branchId);
+
         // Check if email is already in use before sending OTP
         $.ajax({
             url: '../Client Section/Functions/email-check.php', // Your PHP script to check the email
             method: 'POST',
-            data: { email: email },
+            data: { 
+							email: email 
+						},
             dataType: 'json',
             success: function (response) {
                 if (response.exists) {
@@ -434,7 +440,8 @@
                     method: 'POST',
                     data: {
                         email: email,
-                        password: password
+                        password: password,
+												branchId: branchId
                     },
                     dataType: 'json', // Expect a JSON response
                     success: function (response) {
@@ -479,308 +486,6 @@
 			}, 5000); // 5 seconds
 		}
 
-		// Email validation
-		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-		if (!emailRegex.test(email)) 
-		{
-			$('#message-1')
-					.text('Please enter a valid email address.')
-					.addClass('show');
-			emailField.css('border', '1px solid lightcoral');
-			updateButtonState();
-			return;
-		}
-
-		// Check if email is already in use
-		$.ajax(
-		{
-			url: '../Client Section/Functions/email-check.php', // PHP script to check the email
-			method: 'POST',
-			data: { email: email },
-			dataType: 'json',
-			success: function (response) 
-			{
-				if (response.exists) 
-				{
-					$('#message-1')
-							.text('This email is already in use.')
-							.addClass('show');
-					emailField.css('border', '1px solid lightcoral');
-					isEmailValid = false;
-				} 
-				else 
-				{
-					emailField.css('border', '');
-					isEmailValid = true;
-				}
-				updateButtonState(); // Update button state after the response
-			},
-			error: function () 
-			{
-				$('#message-1')
-						.text('Error checking email. Please try again.')
-						.addClass('show');
-				emailField.css('border', '1px solid lightcoral');
-				isEmailValid = false;
-				updateButtonState();
-			}
-		});
-	}
-
-	// // Trigger the function when the password field is focused
-	// $('#floatingPassword').on('focus', function() {
-	//     updateButtonState(); // Disable button when the password field is focused
-	// });
-
-	// Event listeners for validation
-	$('#floatingEmail').on('blur', validateEmail);
-	$('#floatingPassword').on('blur', validatePassword);
-	$('#floatingPassword2').on('blur', validateConfirmPassword);
-
-	// Function to validate password
-	function validatePassword() 
-	{
-		passwordField = $('#floatingPassword');
-		password = passwordField.val(); // Get latest password value
-
-		cpasswordField = $('#floatingPassword2');
-		cpassword = cpasswordField.val(); // Get latest
-
-		isPasswordValid = false; // Reset flag
-
-		// Clear previous messages and borders
-		$('#message-1').text('').removeClass('show');
-		passwordField.css('border', '');
-
-		// If password field is blank
-		if (!password) 
-		{
-			// $('#message-1')
-			//     .text('Password is required.')
-			//     .addClass('show');
-			// passwordField.css('border', '1px solid lightcoral');
-			updateButtonState();
-			return;
-		}
-
-		// Password length validation
-		if (password.length < 8) 
-		{
-			$('#message-1')
-					.text('Password must be at least 8 characters long.')
-					.addClass('show');
-			passwordField.css('border', '1px solid lightcoral');
-			updateButtonState();
-			return;
-		}
-
-		isPasswordValid = true;
-		updateButtonState();
-	}
-
-	// Function to validate confirm password
-	function validateConfirmPassword() 
-	{
-		let passwordField = $('#floatingPassword');
-		let password = passwordField.val(); // Get latest password value
-
-		let cpasswordField = $('#floatingPassword2');
-		let cpassword = cpasswordField.val(); // Get latest confirm password value
-		isConfirmPasswordValid = false; // Reset flag
-
-		// Clear previous messages and borders
-		$('#message-1').text('').removeClass('show');
-		cpasswordField.css('border', '');
-
-		// If confirm password field is blank
-		if (!cpassword) 
-		{
-			// $('#message-1')
-			//     .text('Confirm Password is required.')
-			//     .addClass('show');
-			// cpasswordField.css('border', '1px solid lightcoral');
-			updateButtonState();
-			return;
-		}
-
-		// Confirm password validation
-		if (password !== cpassword) 
-		{
-			$('#message-1')
-					.text('Passwords do not match.')
-					.addClass('show');
-			cpasswordField.css('border', '1px solid lightcoral');
-			updateButtonState();
-			return;
-		}
-
-		isConfirmPasswordValid = true;
-		updateButtonState();
-	}
-
-	// Final check to enable or disable the button
-	function updateButtonState() 
-	{
-		if (isEmailValid && isPasswordValid && isConfirmPasswordValid) 
-		{
-			button.prop('disabled', false);
-			console.log(email, password, cpassword);
-		} 
-		else 
-		{
-			button.prop('disabled', true);
-			console.log(email, password, cpassword);
-		}
-	}
-    
-	// Registration button click handler
-	$('#SubmitRegButton').on('click', function (e) 
-	{
-		e.preventDefault(); // Prevent default behavior
-
-		// Retrieve input field values
-		let branchField = $('#branchId');
-		let branchId = branchField.val();
-		let emailField = $('#floatingEmail');
-		let email = emailField.val();
-		let passwordField = $('#floatingPassword');
-		let password = passwordField.val();
-		let cpasswordField = $('#floatingPassword2');
-		let cpassword = cpasswordField.val();
-
-		// Clear any previous message and reset borders
-		$('#message-1').text('').removeClass('show');
-		emailField.css('border', '');
-		passwordField.css('border', '');
-		cpasswordField.css('border', '');
-
-		// console.log(branchId);
-
-		// Validation logic
-		if (!email || !password || !cpassword) 
-		{
-			$('#message-1').text('All fields are required').addClass('show');
-			if (!email) emailField.css('border', '1px solid lightcoral');
-			if (!password) passwordField.css('border', '1px solid lightcoral');
-			if (!cpassword) cpasswordField.css('border', '1px solid lightcoral');
-			showMessage(); // Call to handle fade out
-			return;
-		}
-
-		// Email format validation
-		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-		if (!emailRegex.test(email)) 
-		{
-			$('#message-1').text('Please enter a valid email address').addClass('show');
-			emailField.css('border', '1px solid lightcoral');
-			showMessage();
-			return;
-		}
-
-		// Password length validation
-		if (password.length < 8) 
-		{
-			$('#message-1').text('Password must be at least 8 characters long').addClass('show');
-			passwordField.css('border', '1px solid lightcoral');
-			showMessage();
-			return;
-		}
-
-		// Check if passwords match
-		if (password !== cpassword) 
-		{
-			$('#message-1').text('Passwords do not match').addClass('show');
-			cpasswordField.css('border', '1px solid lightcoral');
-			showMessage();
-			return;
-		}
-
-		// Add loading animation to the Register button
-		var button = $('#SubmitRegButton');
-								button.html('Processing, Please Wait... <span class="loader"></span>'); // Add spinner
-								button.prop('disabled', true); // Disable button to prevent multiple clicks
-
-
-		// Check if email is already in use before sending OTP
-		$.ajax(
-		{
-			url: '../Client Section/Functions/email-check.php', // Your PHP script to check the email
-			method: 'POST',
-			data: { email: email },
-			dataType: 'json',
-			success: function (response) 
-			{
-				if (response.exists) 
-				{
-					$('#message-1').text('This email is already in use.').addClass('show');
-					emailField.css('border', '1px solid lightcoral');
-					showMessage(); // Call to handle fade out
-					button.html('Register'); // Reset button text
-					button.prop('disabled', false); // Re-enable button
-					return; // Stop further execution if email exists
-				}
-
-				// If email is not in use, proceed to send OTP
-				$.ajax(
-				{
-					url: '../Client Section/Functions/send-otp.php',
-					method: 'POST',
-					data: 
-					{
-						email: email,
-						password: password,
-						branchId: branchId
-					},
-					dataType: 'json', // Expect a JSON response
-					success: function (response) 
-					{
-						// Trigger the Bootstrap modal
-						$('#staticBackdrop').modal('show');
-						// Handle other response messages here
-
-						// Reset the button text and re-enable it once modal is shown
-						button.html('Register');
-						button.prop('disabled', false); // Re-enable button
-					},
-					error: function () 
-					{
-						$('#message-1').text('Failed to send OTP. Please try again.').addClass('show'); // Handle error display
-						showMessage();
-						button.html('Register'); // Reset button text
-						button.prop('disabled', false); // Re-enable button
-					}
-				});
-			},
-			error: function () 
-			{
-				$('#message-1').text('Error checking email. Please try again.').addClass('show'); // Handle error display
-				showMessage();
-				button.html('Register'); // Reset button text
-				button.prop('disabled', false); // Re-enable button
-			}
-		});
-	});
-
-	// Function to handle message fade out
-	function showMessage() 
-	{
-		// Show message, then fade out after 5 seconds
-		setTimeout(function () 
-		{
-			$('#message-1').fadeOut(500, function () 
-			{
-				$('#message-1').text('').removeClass('show').show(); // Reset after fade out
-			});
-		}, 5000); // 5 seconds
-
-		setTimeout(function ()
-		{
-			$('#message-otp').fadeOut(500, function () 
-			{
-				$('#message-otp').text('').removeClass('show').show(); // Reset after fade out
-			});
-		}, 5000); // 5 seconds
-	}
 
 	// Function to start the OTP countdown
 	function startOtpCountdown(linkElement) 
@@ -892,86 +597,6 @@
 	});
 </script>
 
-<script>
-    // // Handle form submission
-    // document.getElementById('SubmitRegButton').addEventListener('click', function() {
-    //     var button = this;
-    //     var loader = document.createElement('span');
-    //     loader.classList.add('loader');
-        
-    //     // Change the button text and add the loader
-    //     button.innerHTML = 'Processing, Please Wait... <span class="loader"></span>';
-    //     button.appendChild(loader);
-
-    //     // Simulate an action (e.g., form submission, etc.)
-    //     setTimeout(function() {
-    //         // After action completes, trigger the modal to show
-    //         var modal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
-    //         modal.show();
-
-    //         // Hide the loader when the modal is shown
-    //         button.innerHTML = 'Register';
-    //         button.removeChild(loader);
-    //     }, 3000); // Simulated action time (replace with actual logic)
-    // });
-
-    // // Remove loading spinner when modal is shown
-    // document.getElementById('staticBackdrop').addEventListener('shown.bs.modal', function() {
-    //     var button = document.getElementById('SubmitRegButton');
-    //     var loader = button.querySelector('.loader');
-        
-    //     // Remove loader if it's still there
-    //     if (loader) {
-    //         button.innerHTML = 'Register'; // Reset button text
-    //         button.removeChild(loader); // Remove the spinner
-    //     }
-    //     });
-
-    // // Function to handle message fade out
-    // function showMessage() {
-    //     // Show message, then fade out after 5 seconds
-    //     setTimeout(function () {
-    //         $('#message-1').fadeOut(500, function () {
-    //         $('#message-1').text('').removeClass('show').show(); // Reset after fade out
-    //         });
-    //     }, 5000); // 5 seconds
-
-    //     setTimeout(function () {
-    //         $('#message-otp').fadeOut(500, function () {
-    //         $('#message-otp').text('').removeClass('show').show(); // Reset after fade out
-    //         });
-    //     }, 5000); // 5 seconds
-    // }
-
-    // // Function to start the OTP countdown
-    // function startOtpCountdown(linkElement) {
-    //     $(linkElement).addClass('link-dark disabled'); // Add dark class and disabled class to grey it out
-    //     let countdownTime = 10; // Countdown time in seconds
-    //     const countdownElement = document.getElementById('otpCountdown');
-
-    //     // Show the countdown
-    //     countdownElement.textContent = `(${countdownTime})`;
-
-    //     const countdownInterval = setInterval(() => {
-    //         countdownTime--;
-    //         countdownElement.textContent = `(${countdownTime})`;
-
-    //         // When countdown reaches 0
-    //         if (countdownTime <= 0) {
-    //             clearInterval(countdownInterval);
-    //             countdownElement.textContent = ''; // Clear text when countdown ends
-    //             $(linkElement).removeClass('link-dark disabled'); // Re-enable the link and remove dark color
-    //             $(linkElement).css('pointer-events', 'auto'); // Allow clicking again
-    //         }
-    //     }, 1000);
-
-    //     // Disable clicking the link until countdown is finished
-    //     $(linkElement).css('pointer-events', 'none');
-    // }
-
-
-    
-</script>
 
 <?php include '../Client Section/Includes/scripts.php'; ?>
 
@@ -1011,5 +636,5 @@
 </script>
 
 
-    </body>
+	</body>
 </html>

@@ -19,20 +19,20 @@ html, body {
 }
 
 .container-background {
-		width: 100vw;
-		height: 100vh;
-		background: hsla(43, 91%, 69%, 1);
-		background: linear-gradient(90deg, hsla(43, 91%, 69%, 1) 0%, hsla(212, 74%, 50%, 1) 100%);
+    width: 100vw;
+    height: 100vh;
+    background: hsla(43, 91%, 69%, 1);
+    background: linear-gradient(90deg, hsla(43, 91%, 69%, 1) 0%, hsla(212, 74%, 50%, 1) 100%);
 
-		background: -moz-linear-gradient(90deg, hsla(43, 91%, 69%, 1) 0%, hsla(212, 74%, 50%, 1) 100%);
+    background: -moz-linear-gradient(90deg, hsla(43, 91%, 69%, 1) 0%, hsla(212, 74%, 50%, 1) 100%);
 
-		background: -webkit-linear-gradient(90deg, hsla(43, 91%, 69%, 1) 0%, hsla(212, 74%, 50%, 1) 100%);
+    background: -webkit-linear-gradient(90deg, hsla(43, 91%, 69%, 1) 0%, hsla(212, 74%, 50%, 1) 100%);
 
-		filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#F8CF6A", endColorstr="#2178DD", GradientType=1 );
+    filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#F8CF6A", endColorstr="#2178DD", GradientType=1 );
 
-		position: absolute;
-		top: 0;
-		left: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 
@@ -86,8 +86,8 @@ html, body {
     padding: 40px;
     background-color: rgba(255, 255, 255, 0.6); 
     z-index: 2;
-    width: 30%;
-    height: 65%; 
+    width: 35%;
+    height: 70%; 
     border-radius: 15px; 
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2); 
     backdrop-filter: blur(20px); 

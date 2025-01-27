@@ -57,94 +57,109 @@ a:hover {
 
 /* Sidebar Styling */
 .sidebar {
-  width: 12%; /* Sidebar takes up 20% of the width */
+  width: 12%; /* Sidebar takes up 12% of the width */
   height: 100vh; /* Full height of the viewport */
-  padding: 0px 20px; 
-  box-sizing: border-box; 
+  padding: 0px 13px;
+  box-sizing: border-box;
   background-color: #343a40;
-}
-
-.sidebar .logo {
-  margin-top: 15px;
-
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Pushes the profile to the bottom */
 }
 
 /* Sidebar Logo */
-.sidebar img {
- width: 100%;
- object-fit: contain;
- padding: 15px 30px 15px 15px;
+.sidebar .logo {
+  margin-top: 15px;
 }
+
+/* Sidebar img */
+.sidebar img {
+  width: 100%;
+  object-fit: contain;
+  padding: 15px 30px 15px 15px;
+}
+
+.main-sidebar .dashboard-title {
+  color: #858585; /* Lighter gray text for section titles */
+  font-size: 0.85rem;
+  color: #858585; /* Lighter gray text for section titles */
+  font-weight: 500;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  
+}
+
 
 /* Section Titles */
 .sidebar .section-title {
- font-size: 0.85rem;
- color: #858585; /* Lighter gray text for section titles */
- font-weight: 500;
- text-transform: uppercase;
- letter-spacing: 0.5px;
- margin: 30px 0 5px;
- cursor: pointer;
- padding: 10px;
- display: flex;
- justify-content: space-between;
- align-items: center;
- transition: background-color 0.2s ease;
+  font-size: 0.85rem;
+  color: #858585; /* Lighter gray text for section titles */
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 30px 0 5px;
+  cursor: pointer;
+  padding: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background-color 0.2s ease;
 }
 
-.sidebar .section-title:hover {
- background-color: #495057; /* Darker background on hover */
- color: #ffffff; /* White text on hover */
-}
+/* .sidebar .section-title:hover {
+  background-color: #495057; /* Darker background on hover 
+  color: #ffffff; 
+} */
 
 /* Chevron Icon */
 .chevron-icon {
- transition: transform 0.3s ease;
+  transition: transform 0.3s ease;
 }
 
 .sidebar .section-title .chevron-icon {
- font-size: 0.9rem;
- color: #adb5bd; /* Default chevron color */
+  font-size: 0.9rem;
+  color: #adb5bd; /* Default chevron color */
 }
 
 /* Links inside the Sidebar */
 .sidebar a {
- display: flex;
- align-items: center;
- padding: 10px 12px;
- border-radius: 6px;
- color: #e9ecef; /* Light color for links */
- text-decoration: none;
- font-size: 0.95rem;
- transition: background-color 0.2s ease, color 0.2s ease;
+  display: flex;
+  align-items: center;
+  padding: 10px 12px;
+  border-radius: 6px;
+  color: #e9ecef; /* Light color for links */
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .sidebar a:hover {
- background-color: #495057; /* Darker background on hover */
- color: #ffffff; /* White text on hover */
+  background-color: #495057; /* Darker background on hover */
+  color: #ffffff; /* White text on hover */
 }
 
 /* Submenu styles */
 .sidebar .submenu.open + .section-title .chevron-icon {
- transform: rotate(180deg); /* Rotate the chevron when submenu is open */
+  transform: rotate(180deg); /* Rotate the chevron when submenu is open */
 }
 
 /* Links inside Submenu */
 .sidebar .submenu a {
- display: flex;
- align-items: left;
- padding: 10px 12px;
- border-radius: 6px;
- color: #e9ecef; /* Light color for submenu links */
- text-decoration: none;
- font-size: 0.95rem;
- transition: background-color 0.2s ease, color 0.2s ease;
+  display: flex;
+  align-items: left;
+  padding: 10px 12px;
+  border-radius: 6px;
+  color: #e9ecef; /* Light color for submenu links */
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .sidebar .submenu a:hover {
- background-color: #495057; /* Darker background on hover */
- color: #ffffff; /* White text on hover */
+  background-color: #495057; /* Darker background on hover */
+  color: #ffffff; /* White text on hover */
 }
+
 /* Home Button */
 .sidebar .home {
   padding: 10px 12px;
@@ -185,7 +200,7 @@ a:hover {
 .sidebar .add-booking i {
   color: #ffffff;
   margin-right: 8px;
- }
+}
 
 .sidebar .add-booking:hover {
   background-color: #b71c1c; /* Darker red on hover */
@@ -210,31 +225,128 @@ a:hover {
   color: #e9ecef; /* Light text on hover */
 }
 
-
 .sidebar .add-FIT i {
   color: #ffffff;
   margin-right: 8px;
- }
-
-
+}
 
 /* Icon styles */
 .sidebar i {
- margin-right: 8px;
- color: #adb5bd; /* Lighter gray icons */
+  margin-right: 8px;
+  color: #adb5bd; /* Lighter gray icons */
 }
 
 /* Submenu visibility */
 .sidebar .submenu {
- display: none;
- padding-left: 7px;
- /* transition: max-height 0.3s ease-in-out, opacity 0.3s ease; */
+  display: none;
+  padding-left: 7px;
 }
 
 .sidebar .submenu.open {
- display: block;
- /* animation: slideDown 0.3s ease-in-out; */
+  display: block;
 }
+
+/* Profile Section */
+.sidebar .profile-section {
+  display: flex;
+  gap: 2px;
+  justify-content: left; /* Push items to opposite ends */
+  align-items: center; /* Vertically align content */
+  padding: 5px 0px 5px 5px;
+  background-color: #495057; /* Dark gray background */
+  border-radius: 8px;
+  margin: 10px 0;
+  height: 8vh; /* Adjust height dynamically */
+}
+
+
+.sidebar .profile-wrapper {
+  display: flex;
+  flex-direction: column;
+  margin: 15px 0;
+}
+
+
+
+
+
+
+
+
+
+.sidebar .profile-section .profile-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* border: 1px solid black; */
+  padding: 20px 0px;
+}
+
+.sidebar .profile-section .profile-icon i {
+  font-size: 36px; /* Adjust icon size */
+  color: #ffffff;
+}
+
+.sidebar .profile-section .profile-details {
+  width: 100%;
+  display: flex;
+  flex-direction: column; /* Stack items vertically */
+  justify-content: left; /* Align vertically */
+  align-items: start;
+  color: #ffffff;
+  line-height: 1; /* Adjust line spacing for better readability */
+  margin: 0;
+  padding: 10px 0px;
+  /* border: 1px solid black; */
+}
+
+.sidebar .profile-section .profile-details .profile-name {
+  font-size: 14px;
+  font-weight: bold;
+  margin: 0;
+  color: #ffffff;
+  
+}
+
+.sidebar .profile-section .profile-details .profile-role {
+  font-size: 12px;
+  color: #adb5bd;
+  margin: 0;
+}
+
+.logout-wrapper {
+  width: 100%; /* Full width */
+}
+
+.page-button.logout {
+  display: flex; /* Use flexbox to align icon and text */
+  align-items: center; /* Vertically center the icon and text */
+  padding: 10px 15px; /* Adjust padding as needed */
+  text-align: left; /* Align text to the left */
+  background-color: #343a40; /* Dark background color */
+  color: #ffffff; /* White text */
+  border: 1px solid rgba(220, 220, 220, 0.822); /* Light border */
+  text-decoration: none; /* Remove underline */
+  font-size: 16px;
+  border-radius: 5px; /* Rounded corners */
+}
+
+.page-button.logout i {
+  margin-right: 10px; /* Add space between icon and text */
+}
+
+.page-button.logout:hover {
+  background-color: #495057; /* Lighter shade of the main color (#343a40) */
+  color: white; /* White text on hover */
+}
+
+
+
+
+
+
+
+
 
 
 /* @keyframes slideDown {
@@ -257,7 +369,7 @@ a:hover {
   overflow-y: auto; 
   border-top-left-radius: 15px; 
   border: 1px solid gainsboro;
-  display: flex;
+  display: flex;  
   flex-direction: column;
   gap: 5px; 
   background-color: #ffffff;

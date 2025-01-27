@@ -22,7 +22,7 @@ require "../conn.php";
 
   <div class="main-content-container">
     <div class="navbar">
-      <h5>Booking - F.I.T</h5>
+      <h5 class="title-page">Booking - F.I.T</h5>
     </div>
 
     <div class="main-content">
