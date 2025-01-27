@@ -85,16 +85,20 @@
       </a> -->
 
       <a href="../Agent Section/agent-soa2.php" class="page-button" data-page-name="Statement of Accounts (SOA)">
-        <i class="fas fa-file-invoice-dollar"></i> SoA
+        <i class="fas fa-file-invoice-dollar"></i> SoA - Packages
       </a>
-<a href="../Agent Section/agent-ticket.php" class="page-button" data-page-name="Ticket">
+
+      <a href="../Agent Section/agent-fitSOA - rename.php" class="page-button" data-page-name="Statement of Accounts (SOA) - F.I.T">
+        <i class="fas fa-file-invoice-dollar"></i> SoA - F.I.T
+      </a>
+
+      <!-- <a href="../Agent Section/agent-ticket.php" class="page-button" data-page-name="Ticket">
         <i class="fas fa-ticket"></i> Ticket
       </a>
 
       <a href="../Agent Section/agent-transactions.php" class="page-button" data-page-name="Voucher">
         <i class="fas fa-gift"></i> Voucher
-      </a>
-      <!--  -->
+      </a> -->
     </div>
   </div>
 

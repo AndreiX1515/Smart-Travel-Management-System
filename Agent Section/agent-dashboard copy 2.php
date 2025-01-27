@@ -593,7 +593,7 @@ require "../conn.php";
           <div class="card">
             <div class="header-counts d-flex justify-content-between align-items-center header-currency">
               <h6 class="white-pill">Daily Currency Conversion</h6>
-              <a href="" class="pill-button">View History</a>
+              <a href="../Agent Section/agent-currency-conversion.php" class="pill-button">View History</a>
             </div>
 
             <div class="card-body-currency">
