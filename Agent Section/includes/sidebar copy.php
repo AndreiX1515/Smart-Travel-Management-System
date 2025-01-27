@@ -80,21 +80,21 @@
     </div>
 
     <div class="submenu open" id="operational-submenu">
-      <a href="../Agent Section/agent-itenerary.php" class="page-button" data-page-name="Itinerary">
+      <!-- <a href="../Agent Section/agent-itenerary.php" class="page-button" data-page-name="Itinerary">
         <i class="fas fa-map"></i> Itinerary
-      </a>
+      </a> -->
 
       <a href="../Agent Section/agent-soa2.php" class="page-button" data-page-name="Statement of Accounts (SOA)">
         <i class="fas fa-file-invoice-dollar"></i> SoA
       </a>
-
-      <a href="../Agent Section/agent-ticket.php" class="page-button" data-page-name="Ticket">
+<a href="../Agent Section/agent-ticket.php" class="page-button" data-page-name="Ticket">
         <i class="fas fa-ticket"></i> Ticket
       </a>
 
       <a href="../Agent Section/agent-transactions.php" class="page-button" data-page-name="Voucher">
         <i class="fas fa-gift"></i> Voucher
       </a>
+      <!--  -->
     </div>
   </div>
 
