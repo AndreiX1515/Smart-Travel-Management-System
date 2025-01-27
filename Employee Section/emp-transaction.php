@@ -105,7 +105,7 @@
                       JOIN
                         agent a ON a.agentId = b.agentId
                       ORDER BY 
-                        b.bookingDate ASC";
+                        b.transactNo, b.agentCode ASC";
 
               // Execute the query
               $result = $conn->query($sql);

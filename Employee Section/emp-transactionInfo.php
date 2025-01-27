@@ -156,26 +156,27 @@
 
         <div class="guest-table-wrapper ">
           <table class="table-stripped">
-          <?php
-          $sql1 = "SELECT *, DATE_FORMAT(birthdate, '%M %d, %Y') AS birthdate, CONCAT(countryCode, ' ', contactNo) AS contactNo,
-                      CASE 
-                        WHEN countryCode2 IS NULL OR contactNo2 IS NULL THEN 'N/A'
-                        ELSE CONCAT(countryCode2, ' ', contactNo2)
-                      END AS contactNo2, CONCAT(addressLine1, ', ', 
-                      CASE 
-                        WHEN addressLine2 IS NOT NULL AND addressLine2 != '' THEN CONCAT(addressLine2, ', ') 
-                        ELSE '' 
-                      END, city, ', ', state, ', ', zipcode, ', ', country) AS address
+            <?php
+              $sql1 = "SELECT *, DATE_FORMAT(birthdate, '%M %d, %Y') AS birthdate, CONCAT(countryCode, ' ', contactNo) AS contactNo,
+                        CASE 
+                          WHEN countryCode2 IS NULL OR contactNo2 IS NULL THEN 'N/A'
+                          ELSE CONCAT(countryCode2, ' ', contactNo2)
+                        END AS contactNo2, CONCAT(addressLine1, ', ', 
+                        CASE 
+                          WHEN addressLine2 IS NOT NULL AND addressLine2 != '' THEN CONCAT(addressLine2, ', ') 
+                          ELSE '' 
+                        END, city, ', ', state, ', ', zipcode, ', ', country) AS address
                       FROM guest 
                       WHERE transactNo = '$transactNum'";
 
-          $res1 = $conn->query($sql1);
+              $res1 = $conn->query($sql1);
 
-          if ($res1->num_rows > 0) {
-              // Only display the table header if rows exist
-              echo "
-              <thead>
-                  <tr>
+              if ($res1->num_rows > 0) 
+              {
+                // Only display the table header if rows exist
+                echo "
+                  <thead>
+                    <tr>
                       <th>ID</th>
                       <th>Contact Name</th>
                       <th>Birthdate</th>
@@ -189,57 +190,61 @@
                       <th>Passport No.</th>
                       <th>Passport Exp.</th>
                       <th>Visa Status</th>
-                  </tr>
-              </thead>
-              <tbody>";
-              while ($row = $res1->fetch_assoc()) {
-                  $fullName = $row['fName'] . ' ' . $row['mName'] . ' ' . $row['lName'];
-                  if (!empty($row['suffix']) && $row['suffix'] !== 'N/A') {
-                      $fullName .= ' ' . $row['suffix'];
-                  }
+                    </tr>
+                  </thead>
+                  <tbody>";
+                    while ($row = $res1->fetch_assoc()) 
+                    {
+                      $fullName = $row['fName'] . ' ' . $row['mName'] . ' ' . $row['lName'];
+                      if (!empty($row['suffix']) && $row['suffix'] !== 'N/A') 
+                      {
+                        $fullName .= ' ' . $row['suffix'];
+                      }
 
-                  $guestId = htmlspecialchars($row['guestId']);
-                  $birthdate = htmlspecialchars($row['birthdate']);
-                  $age = htmlspecialchars($row['age']);
-                  $sex = htmlspecialchars($row['sex']);
-                  $nationality = htmlspecialchars($row['nationality']);
-                  $contactNo = htmlspecialchars($row['contactNo']);
-                  $contactNo2 = htmlspecialchars($row['contactNo2']);
-                  $emailAdd = htmlspecialchars($row['emailAdd']);
-                  $address = htmlspecialchars($row['address']);
-                  $passportNo = htmlspecialchars($row['passportNo']);
-                  $passportExp = htmlspecialchars($row['passportExp']);
+                      $guestId = htmlspecialchars($row['guestId']);
+                      $birthdate = htmlspecialchars($row['birthdate']);
+                      $age = htmlspecialchars($row['age']);
+                      $sex = htmlspecialchars($row['sex']);
+                      $nationality = htmlspecialchars($row['nationality']);
+                      $contactNo = htmlspecialchars($row['contactNo']);
+                      $contactNo2 = htmlspecialchars($row['contactNo2']);
+                      $emailAdd = htmlspecialchars($row['emailAdd']);
+                      $address = htmlspecialchars($row['address']);
+                      $passportNo = htmlspecialchars($row['passportNo']);
+                      $passportExp = htmlspecialchars($row['passportExp']);
 
-                  echo "
-                  <tr>
-                      <td>{$guestId}</td>
-                      <td>{$fullName}</td>
-                      <td>{$birthdate}</td>
-                      <td>{$age}</td>
-                      <td>{$sex}</td>
-                      <td>{$nationality}</td>
-                      <td>{$contactNo}</td>
-                      <td>{$contactNo2}</td>
-                      <td>{$emailAdd}</td>
-                      <td>{$address}</td>
-                      <td>{$passportNo}</td>
-                      <td>{$passportExp}</td>
-                      <td>{$row['visaStatus']}</td>
-                  </tr>";
-              }
-              echo "</tbody>";
-          } else {
-              // Hide the table header and display a message
-              echo "
-              <thead style='display: none;'></thead>
-              <tbody>
+                      echo "
+                        <tr class='table-row' data-guest-id='{$guestId}'>
+                          <td>{$guestId}</td>
+                          <td>{$fullName}</td>
+                          <td>{$birthdate}</td>
+                          <td>{$age}</td>
+                          <td>{$sex}</td>
+                          <td>{$nationality}</td>
+                          <td>{$contactNo}</td>
+                          <td>{$contactNo2}</td>
+                          <td>{$emailAdd}</td>
+                          <td>{$address}</td>
+                          <td>{$passportNo}</td>
+                          <td>{$passportExp}</td>
+                          <td>{$row['visaStatus']}</td>
+                        </tr>";
+                    }
+                  echo "</tbody>";
+              } 
+              else 
+              {
+                // Hide the table header and display a message
+                echo "
+                <thead style='display: none;'></thead>
+                <tbody>
                   <tr style='display: none;'></tr> <!-- Ensures no empty table rows -->
-              </tbody>
-              <div class='no-requests-container'>
+                </tbody>
+                <div class='no-requests-container'>
                   <span>No Guest Found</span>
-              </div>";
-          }
-          ?>
+                </div>";
+              }
+            ?>
         </table>
       </div>
 
@@ -271,7 +276,69 @@
   </div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="guestModal" tabindex="-1" role="dialog" aria-labelledby="guestModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="guestModalLabel">Update Visa Status</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form action="../Employee Section/functions/emp-updateVisaStatus-code.php" method="POST">
+        <div class="modal-body">
+          <input type="hidden" name="guestId" id="guestIdField"> 
+          <input type="hidden" name="transactNo" placeholder="transactNo" value="<?php echo $transactNum; ?>">
+
+          <!-- <p class="mb-3">
+            Are you sure you want to cancel this transaction? This action cannot be undone.
+          </p> -->
+
+          <div class="mb-4">
+            <label for="visaStatus" class="form-label fw-bold">Visa Status:</label>
+            <select id="visaStatus" name="visaStatus" class="form-select">
+              <option selected disabled>Select Option</option>
+              <option value="Approved">Approved</option>
+              <option value="Denied">Denied</option>
+            </select>
+          </div>
+
+          <!-- Reason for Cancellation -->
+          <div class="mb-3">
+            <label for="cancellationReason" class="form-label">
+              Reason for Denied <span class="text-danger fw-bold"></span>
+            </label>
+            <input id="cancellationReason" name="reason" class="form-control" placeholder="Enter the remarks for Denied Visa">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary" name="updateVisaStatus" data-dismiss="modal">Submit</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
 <?php include '../Employee Section/includes/emp-scripts.php' ?>
+
+<script>
+  // Select all table rows with the class 'table-row'
+  document.querySelectorAll('.table-row').forEach(row => {
+    row.addEventListener('click', function() {
+      // Get the data from the clicked row
+      const guestId = this.getAttribute('data-guest-id');
+      
+      // Set the guestId input field with the clicked row's guestId
+      document.getElementById('guestIdField').value = guestId;
+
+      // Open the modal
+      $('#guestModal').modal('show');
+    });
+  });
+</script>
 
 
 </body>

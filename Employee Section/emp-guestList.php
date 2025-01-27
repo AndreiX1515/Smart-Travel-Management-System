@@ -92,9 +92,9 @@
           <tbody>
               <?php
               // SQL query for fetching data
-              $sql = "SELECT g.guestId as guestId, g.transactNo as transactNo, f.flightId as flightId, g.fName as fname, g.mName as mName, g.lName as lName,
-                      g.suffix as suffix, g.birthdate as birthdate, g.age as age, g.sex as sex, g.Nationality as Nationality,
-                      f.flightDepartureDate as departureDate, f.returnArrivalDate as returnDate
+              $sql = "SELECT g.guestId as guestId, g.transactNo as transactNo, f.flightId as flightId, g.fName as fname, 
+                        g.mName as mName, g.lName as lName, g.suffix as suffix, g.birthdate as birthdate, g.age as age, g.sex as sex, 
+                        g.Nationality as Nationality, f.flightDepartureDate as departureDate, f.returnArrivalDate as returnDate
                       FROM guest g
                       JOIN booking b ON g.transactNo = b.transactNo
                       JOIN flight f ON f.flightId = b.flightId
