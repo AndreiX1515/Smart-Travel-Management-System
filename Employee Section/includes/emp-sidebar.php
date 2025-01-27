@@ -72,6 +72,12 @@
 												<span class="label" style="font-size: 14px;">Flight Seat History</span>
 								</a>
 				</li>
+				<li class="nav-item transaction">
+					<a class="nav-link page-button" href="../Employee Section/emp-guestList.php" data-page-name="Guest List">
+						<div class="icon"><i class="fas fa-plane"></i></div>
+						<span class="label">Guest List</span>
+					</a>
+				</li>
 
 				<!-- For Approvals Dropdown -->
 					<li class="nav-item dropdown">
