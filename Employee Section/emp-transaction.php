@@ -3,12 +3,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Employee - Transaction</title>
-    <?php include '../Employee Section/includes/emp-head.php' ?>
-    <link rel="stylesheet" href="../Employee Section/assets/css/emp-transaction.css?v=<?php echo time(); ?>">
-    <link rel="stylesheet" href="../Employee Section/assets/css/emp-sidebar-navbar.css?v=<?php echo time(); ?>">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Employee - Transaction</title>
+  <?php include '../Employee Section/includes/emp-head.php' ?>
+  <link rel="stylesheet" href="../Employee Section/assets/css/emp-transaction.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="../Employee Section/assets/css/emp-sidebar-navbar.css?v=<?php echo time(); ?>">
     
 </head>
 <body>
@@ -20,343 +20,354 @@
    <?php include '../Employee Section/includes/emp-navbar.php' ?>
    
   <div class="main-content">
-   <div class="table-container">
+    <div class="table-container">
 
-    <div class="table-subheader">
-      <div class="left-side-wrapper mt-2">
-        <div class="d-flex flex-row gap-3">
-          <div class="filter-wrapper">
-            <label for="" class="" style="margin-bottom: 11px;">Status</label>
-            <select id="statusDropdown" class="status-dropdown">
+      <div class="table-subheader">
+        <div class="left-side-wrapper mt-2">
+          <div class="d-flex flex-row gap-3">
+            <div class="filter-wrapper">
+              <label for="" class="" style="margin-bottom: 11px;">Status</label>
+              <select id="statusDropdown" class="status-dropdown">
                 <option value="Pending">Pending</option>
                 <option value="Confirmed">Confirmed</option>
                 <option value="Cancelled">Cancelled</option>
-            </select>
-          </div>
+              </select>
+            </div>
 
-          <div class="flight-dateRange-wrapper">
-            <label for="" class="">Flight Date (Departure)</label>
-            <div class="flight-field-wrapper">
-              <input type="date" class="form-control" id="flightStartDate">
-              <span class="mx-2">to</span>
-              <input type="date" class="form-control" id="flightEndDate">
+            <div class="flight-dateRange-wrapper">
+              <label for="" class="">Flight Date (Departure)</label>
+              <div class="flight-field-wrapper">
+                <input type="date" class="form-control" id="flightStartDate">
+                <span class="mx-2">to</span>
+                <input type="date" class="form-control" id="flightEndDate">
+              </div>
+            </div>
+
+            <!-- Booking Date Range Picker -->
+            <div class="booking-dateRange-wrapper">
+              <label for="bookingStartDate" class="">Booking Date</label>
+              <div class="d-flex align-items-center">
+                <input type="date" class="form-control" id="bookingStartDate">
+                <span class="mx-2">to</span>
+                <input type="date" class="form-control" id="bookingEndDate">
+              </div>
             </div>
           </div>
 
-          <!-- Booking Date Range Picker -->
-          <div class="booking-dateRange-wrapper">
-            <label for="bookingStartDate" class="">Booking Date</label>
-            <div class="d-flex align-items-center">
-              <input type="date" class="form-control" id="bookingStartDate">
-              <span class="mx-2">to</span>
-              <input type="date" class="form-control" id="bookingEndDate">
-            </div>
+          <div class="button-wrappers">
+            <button class="btn btn-outline-secondary" id="clearFiltersButton">Clear Filters</button>
+            <button class="btn btn-primary" id="clearFiltersButton"><i class="fa-solid fa-user-plus"></i> Add Booking</button>
           </div>
         </div>
 
-        <div class="button-wrappers">
-            <button class="btn btn-outline-secondary" id="clearFiltersButton">
-                  Clear Filters
-            </button>
+        <div class="search-wrapper">
+          <label for="tableSearchInput" class="search-label">Search:</label>
 
-            <button class="btn btn-primary" id="clearFiltersButton">
-            <i class="fa-solid fa-user-plus"></i> Add Booking
-            </button>
+          <input type="text" id="tableSearchInput" placeholder="Search..." class="form-control search-input" oninput="toggleClearButton(this)"/>
+
+          <button type="button" class="clear-button" onclick="clearInput(this)">
+            <i class="fas fa-times"></i>
+          </button>
         </div>
-
       </div>
 
-      <div class="search-wrapper">
-        <label for="tableSearchInput" class="search-label">Search:</label>
+      <div class="table-wrapper">
+        <table class="table-transaction table-striped">
+          <thead>
+            <tr>
+              <th rowspan="2">Transact No</th>
+              <th rowspan="2">Agent Name</th>
+              <th rowspan="2">Package Name</th>
+              <th colspan="2" class="text-center">Flight Date</th>
+              <th rowspan="2">Booking Date</th>
+              <th rowspan="2">Total Pax</th>
+              <th rowspan="2">Package Price</th>
+              <th rowspan="2">Status</th>
+            </tr>
+            <tr>
+              <th>Departure</th>
+              <th>Return</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php
+              // SQL query for SOA
+              $sql = "SELECT b.transactNo, f.flightDepartureDate as departureDate, f.returnDepartureDate as returnDate, b.status as bookingStatus,
+                          CONCAT(f.flightDepartureDate, ' | ', f.returnDepartureDate) AS FlightDate, p.packageName AS PackageName, 
+                          DATE_FORMAT(b.bookingDate, '%m.%d.%Y') AS BookingDate, b.pax AS TotalPax, b.totalPrice AS PackagePrice, 
+                          CONCAT(a.lName, ', ', a.fName, ' ', IFNULL(CONCAT(SUBSTRING(a.mName, 1, 1), '.'), '')) AS agentName
+                      FROM 
+                        booking b
+                      JOIN 
+                        flight f ON f.flightId = b.flightId
+                      JOIN 
+                        package p ON p.packageId = b.packageId
+                      JOIN
+                        agent a ON a.agentId = b.agentId
+                      ORDER BY 
+                        b.bookingDate ASC";
 
-        <input type="text" id="tableSearchInput" placeholder="Search..." class="form-control search-input" oninput="toggleClearButton(this)"/>
+              // Execute the query
+              $result = $conn->query($sql);
 
-        <button type="button" class="clear-button" onclick="clearInput(this)">
-          <i class="fas fa-times"></i>
-        </button>
+              // Check if there are results
+              if ($result->num_rows > 0) 
+              {
+                while ($row = $result->fetch_assoc()) 
+                {
+                  // Safely handle null values
+                  $transactNo = htmlspecialchars($row['transactNo'] ?? '');
+                  $agentName = htmlspecialchars($row['agentName'] ?? '');
+                  $packageName = htmlspecialchars($row['PackageName'] ?? '');
+                  $departureDate = $row['departureDate'] ?? null;
+                  $returnDate = $row['returnDate'] ?? null;
+                  $bookingDate = htmlspecialchars($row['BookingDate'] ?? '');
+                  $totalPax = htmlspecialchars($row['TotalPax'] ?? 0);
+                  $packagePrice = $row['PackagePrice'] ?? 0;
+                  $status = htmlspecialchars($row['bookingStatus'] ?? 'Unknown');
 
-      </div>
-
-
-  </div>
-
-  <div class="table-wrapper">
-    <table class="table-transaction table-striped">
-      <thead>
-        <tr>
-          <th rowspan="2">Transact No</th>
-          <th rowspan="2">Agent Name</th>
-          <th rowspan="2">Package Name</th>
-          <th colspan="2" class="text-center">Flight Date</th>
-          <th rowspan="2">Booking Date</th>
-          <th rowspan="2">Total Pax</th>
-          <th rowspan="2">Package Price</th>
-          <th rowspan="2">Status</th>
-        </tr>
-        <tr>
-          <th>Departure</th>
-          <th>Return</th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php
-          // SQL query for SOA
-          $sql = "SELECT b.transactNo, f.flightDepartureDate as departureDate, f.returnDepartureDate as returnDate, b.status as bookingStatus,
-                      CONCAT(f.flightDepartureDate, ' | ', f.returnDepartureDate) AS FlightDate, p.packageName AS PackageName, 
-                      DATE_FORMAT(b.bookingDate, '%m.%d.%Y') AS BookingDate, b.pax AS TotalPax, b.totalPrice AS PackagePrice, 
-                      CONCAT(a.lName, ', ', a.fName, ' ', IFNULL(CONCAT(SUBSTRING(a.mName, 1, 1), '.'), '')) AS agentName
-                  FROM 
-                    booking b
-                  JOIN 
-                    flight f ON f.flightId = b.flightId
-                  JOIN 
-                    package p ON p.packageId = b.packageId
-                  JOIN
-                    agent a ON a.agentId = b.agentId
-                  ORDER BY 
-                    b.bookingDate ASC";
-
-          // Execute the query
-          $result = $conn->query($sql);
-
-          // Check if there are results
-          if ($result->num_rows > 0) 
-          {
-            while ($row = $result->fetch_assoc()) 
-            {
-              
-              $status = htmlspecialchars($row['bookingStatus']);
-              $statusClass = ""; // Default class
-
-              // Determine the class based on the status value
-              switch($status) {
-                  case "Pending":
+                  // Determine the status class
+                  $statusClass = ""; // Default class
+                  switch ($status) 
+                  {
+                    case "Pending":
                       $statusClass = "bg-warning text-dark"; // Yellow pill for Pending
                       break;
-                  case "Confirmed":
+                    case "Confirmed":
                       $statusClass = "bg-success text-white"; // Green pill for Confirmed
                       break;
-                  case "Cancelled":
+                    case "Cancelled":
                       $statusClass = "bg-danger text-white"; // Red pill for Cancelled
                       break;
-                  case "Reject":
+                    case "Reject":
                       $statusClass = "bg-secondary text-white"; // Grey pill for Reject
                       break;
-                  default:
+                    default:
                       $statusClass = "bg-secondary text-white"; // Default case for unknown statuses
                       break;
+                  }
+
+                  // Format the dates for display if they are not null
+                  $formattedDepartureDate = $departureDate ? (new DateTime($departureDate))->format('F j, Y') : 'N/A';
+                  $formattedReturnDate = $returnDate ? (new DateTime($returnDate))->format('F j, Y') : 'N/A';
+
+                  // Output each row as a table row
+                  echo "<tr data-url='emp-transactionInfo.php?id=$transactNo'>";
+                  echo "<td>$transactNo</td>";
+                  echo "<td>$agentName</td>";
+                  echo "<td>$packageName</td>";
+                  echo "<td>$departureDate</td>";
+                  echo "<td>$returnDate</td>";
+                  echo "<td>$bookingDate</td>";
+                  echo "<td class='fw-bold ps-3'>$totalPax</td>";
+                  echo "<td>₱ " . number_format($packagePrice, 2) . "</td>";
+                  echo "<td> <span class='badge rounded-pill $statusClass p-2'>$status</span></td>";
+                  echo "</tr>";
+                }
               }
-
-              $departureDate = $row['departureDate'];
-              $returnDate = $row['returnDate'];
-
-              // Format the dates for display (e.g., "January 1, 2000")
-              $formattedDepartureDate = (new DateTime($departureDate))->format('F j, Y');
-              $formattedReturnDate = (new DateTime($returnDate))->format('F j, Y');
-
-              // Output each row as a table row
-              echo "<tr data-url='emp-transactionInfo.php?id=" . htmlspecialchars($row['transactNo']) . "'>";
-              echo "<td>" . htmlspecialchars($row['transactNo']) . "</td>";
-              echo "<td>" . htmlspecialchars($row['agentName']) . "</td>";
-              echo "<td>" . htmlspecialchars($row['PackageName']) . "</td>";
-              // echo "<td>" . htmlspecialchars($row['FlightDate']) . "</td>";
-              echo "<td>" . htmlspecialchars($row['departureDate']) . "</td>";
-              echo "<td>" . htmlspecialchars($row['returnDate']) . "</td>";
-              echo "<td>" . htmlspecialchars($row['BookingDate']) . "</td>";
-              echo "<td class='fw-bold ps-3'>" . htmlspecialchars($row['TotalPax']) . "</td>";
-              echo "<td>₱ " . number_format($row['PackagePrice'], 2) . "</td>";
-              echo "<td> <span class='badge rounded-pill $statusClass p-2'>" . $status . "</span></td>";
-              echo "</tr>";
-            }
-          } 
-          
-        ?>
-      </tbody>
-    </table>
+            ?>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
-  </div>
-
- </div>
 </div>
 
 <!-- Table Transaction DataTables and Sorting Functions -->
 <script>
- $(document).ready(function() {
-  var table = $('.table-transaction').DataTable({
-    paging: true,
-    searching: true,
-    ordering: true,
-    info: true,
-    pageLength: 12, // Set the number of rows per page
-    language: {
+ $(document).ready(function() 
+ {
+    var table = $('.table-transaction').DataTable(
+    {
+      paging: true,
+      searching: true,
+      ordering: true,
+      info: true,
+      pageLength: 12, // Set the number of rows per page
+      language: 
+      {
         emptyTable: "No Transaction Records Available"
-    },
-    dom: '<"top"f>rt<"bottom"p><"clear">', // Custom DOM layout to display only the table and pagination
-    initComplete: function () {
+      },
+      dom: '<"top"f>rt<"bottom"p><"clear">', // Custom DOM layout to display only the table and pagination
+      initComplete: function () 
+      {
         $(".dataTables_info").hide(); // Hide the entries (e.g., "Showing 1 to 10 of 100 entries")
         $(".dataTables_filter").hide(); // Hide the search field
-    },
-    columnDefs: [
+      },
+      columnDefs: 
+      [
         {
-            // Assuming the flight date is in the fourth column (index 3)
-            targets: 3, // Change this index to your flight date column
-            render: function(data, type, row) {
-                var date = new Date(data); // Convert numeric value (timestamp) to Date object
+          // Assuming the flight date is in the fourth column (index 3)
+          targets: 3, // Change this index to your flight date column
+          render: function(data, type, row) 
+          {
+            var date = new Date(data); // Convert numeric value (timestamp) to Date object
 
-                if (type === 'display' || type === 'filter') {
-                    // Return the formatted date as YYYY/MM/DD
-                    var year = date.getFullYear();
-                    var month = (date.getMonth() + 1).toString().padStart(2, '0');
-                    var day = date.getDate().toString().padStart(2, '0');
-                    return year + '/' + month + '/' + day; // YYYY/MM/DD
-                }
-
-                // For sorting, return the raw numeric value (timestamp) so DataTables can sort it correctly
-                return data;
+            if (type === 'display' || type === 'filter') 
+            {
+              // Return the formatted date as YYYY/MM/DD
+              var year = date.getFullYear();
+              var month = (date.getMonth() + 1).toString().padStart(2, '0');
+              var day = date.getDate().toString().padStart(2, '0');
+              return year + '/' + month + '/' + day; // YYYY/MM/DD
             }
+
+            // For sorting, return the raw numeric value (timestamp) so DataTables can sort it correctly
+            return data;
+          }
         }
-    ]
-  });
-
-  // Function to filter the table by date range
-  function filterByFlightDate() {
-    var startDate = $('#flightStartDate').val();
-    var endDate = $('#flightEndDate').val();
-
-    // Convert start and end dates to timestamps (numeric values) to ensure the filter works properly
-    var startTimestamp = new Date(startDate).getTime();
-    var endTimestamp = new Date(endDate).getTime();
-
-    // Apply the date filter to the DataTable using raw timestamp values
-    table.column(3).search(function(settings, data, dataIndex) {
-      var rowDate = new Date(data).getTime(); // Convert each row's date to timestamp
-      return rowDate >= startTimestamp && rowDate <= endTimestamp;
-    }).draw(); // Redraw the table after applying the filter
-  }
-
-  // Event listeners to trigger the filter when the user selects dates
-  $('#flightStartDate, #flightEndDate').on('change', function() {
-    filterByFlightDate();
-  });
-
-  // Optional: Apply sorting by flight date after applying the filter
-  table.order([3, 'asc']).draw();  // Assuming the flight date column is at index 3
-});
-
-
-
-    // Booking Date Range Sorting
-    $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
-        const bookingStartDate = $('#bookingStartDate').val(); // Booking Start Date
-        const bookingEndDate = $('#bookingEndDate').val(); // Booking End Date
-        const bookingDate = data[4]; // Assuming Booking Date is in column index 4
-
-        const booking = bookingDate ? new Date(bookingDate) : null;
-        const startDate = bookingStartDate ? new Date(bookingStartDate) : null;
-        const endDate = bookingEndDate ? new Date(bookingEndDate) : null;
-
-        // Booking Date filtering logic
-        if (
-            (!startDate || (booking && booking >= startDate)) &&
-            (!endDate || (booking && booking <= endDate))
-        ) {
-            return true; // Row matches Booking Date filter
-        }
-        return false; // Otherwise, hide this row
-    });
-
-    // Handle Booking Date Range Filtering on change
-    $('#bookingStartDate, #bookingEndDate').on('change', function() {
-        // Redraw table to apply booking date filters
-        table.draw();
-    });
-
-
-     // Handle custom "Items per Page" dropdown
-     $('#itemsPerPageDropdown .dropdown-item').on('click', function() {
-        var pageSize = $(this).data('page-size');
-        table.page.len(pageSize).draw();
+      ]
     });
 
     // Function to filter the table by date range
-    function filterByFlightDate() {
-        var startDate = $('#flightStartDate').val();
-        var endDate = $('#flightEndDate').val();
+    function filterByFlightDate() 
+    {
+      var startDate = $('#flightStartDate').val();
+      var endDate = $('#flightEndDate').val();
 
-        // Apply the date filter to the DataTable
-        table.column(3).search(startDate + ' to ' + endDate).draw(); // assuming flight date is in column 1 (adjust as needed)
+      // Convert start and end dates to timestamps (numeric values) to ensure the filter works properly
+      var startTimestamp = new Date(startDate).getTime();
+      var endTimestamp = new Date(endDate).getTime();
+
+      // Apply the date filter to the DataTable using raw timestamp values
+      table.column(3).search(function(settings, data, dataIndex) 
+      {
+        var rowDate = new Date(data).getTime(); // Convert each row's date to timestamp
+        return rowDate >= startTimestamp && rowDate <= endTimestamp;
+      }).draw(); // Redraw the table after applying the filter
     }
 
-
-    // Custom search functionality
-    $('#tableSearchInput').on('input', function() {
-        table.search(this.value).draw();
+    // Event listeners to trigger the filter when the user selects dates
+    $('#flightStartDate, #flightEndDate').on('change', function() 
+    {
+      filterByFlightDate();
     });
 
-    // Clear all filters functionality
-    $('#clearFiltersButton').on('click', function() {
-        $('#tableSearchInput').val('');
-        $('#flightStartDate').val('');
-        $('#flightEndDate').val('');
-        $('#bookingStartDate').val('');
-        $('#bookingEndDate').val('');
-        $('#itemsPerPageDropdown .dropdown-item').removeClass('active');
-        table.search('').draw();
-        table.page.len(10).draw();
-    });
+    // Optional: Apply sorting by flight date after applying the filter
+    table.order([3, 'asc']).draw();  // Assuming the flight date column is at index 3
+  });
 
+  // Booking Date Range Sorting
+  $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) 
+  {
+    const bookingStartDate = $('#bookingStartDate').val(); // Booking Start Date
+    const bookingEndDate = $('#bookingEndDate').val(); // Booking End Date
+    const bookingDate = data[4]; // Assuming Booking Date is in column index 4
 
-    // // Handle Booking Date Range Filtering
-    // $('#bookingStartDate, #bookingEndDate').on('change', function() {
-    //     var bookingStartDate = $('#bookingStartDate').val();
-    //     var bookingEndDate = $('#bookingEndDate').val();
-    //     if (bookingStartDate && bookingEndDate) {
-    //         table.column(4).search(bookingStartDate + ' to ' + bookingEndDate).draw();
-    //     }
-    // });
+    const booking = bookingDate ? new Date(bookingDate) : null;
+    const startDate = bookingStartDate ? new Date(bookingStartDate) : null;
+    const endDate = bookingEndDate ? new Date(bookingEndDate) : null;
 
-    // Clear filters functionality
-    $('#clearFiltersButton').on('click', function() {
-        $('#flightStartDate').val('');
-        $('#flightEndDate').val('');
-        $('#bookingStartDate').val('');
-        $('#bookingEndDate').val('');
-        $('#tableSearchInput').val('');
-        table.search('').columns().search('').draw(); // Reset the search and clear column filters
-    });
-
-    // Toggle clear button visibility
-    function toggleClearButton(input) {
-        const clearButton = input.nextElementSibling; // Get the button next to the input
-        clearButton.style.display = input.value ? "block" : "none";
+    // Booking Date filtering logic
+    if ((!startDate || (booking && booking >= startDate)) && (!endDate || (booking && booking <= endDate))) 
+    {
+      return true; // Row matches Booking Date filter
     }
+    return false; // Otherwise, hide this row
+  });
 
-    // Clear the input field and reset search when clicked (same as clearFiltersButton)
-    function clearInput(button) {
-        const input = button.previousElementSibling; // Get the input field before the button
-        input.value = ''; // Clear the input field
-        button.style.display = 'none'; // Hide the clear button
-        input.focus(); // Refocus on the input field
+  // Handle Booking Date Range Filtering on change
+  $('#bookingStartDate, #bookingEndDate').on('change', function() 
+  {
+    // Redraw table to apply booking date filters
+    table.draw();
+  });
 
-        // Reset the DataTable search and column filters, similar to clearFiltersButton
-        table.search('').columns().search('').draw(); // Reset DataTable search and column filters
-    }
+
+  // Handle custom "Items per Page" dropdown
+  $('#itemsPerPageDropdown .dropdown-item').on('click', function() 
+  {
+    var pageSize = $(this).data('page-size');
+    table.page.len(pageSize).draw();
+  });
+
+  // Function to filter the table by date range
+  function filterByFlightDate() 
+  {
+    var startDate = $('#flightStartDate').val();
+    var endDate = $('#flightEndDate').val();
+
+    // Apply the date filter to the DataTable
+    table.column(3).search(startDate + ' to ' + endDate).draw(); // assuming flight date is in column 1 (adjust as needed)
+  }
+
+  // Custom search functionality
+  $('#tableSearchInput').on('input', function() 
+  {
+    table.search(this.value).draw();
+  });
+
+  // Clear all filters functionality
+  $('#clearFiltersButton').on('click', function() 
+  {
+    $('#tableSearchInput').val('');
+    $('#flightStartDate').val('');
+    $('#flightEndDate').val('');
+    $('#bookingStartDate').val('');
+    $('#bookingEndDate').val('');
+    $('#itemsPerPageDropdown .dropdown-item').removeClass('active');
+    table.search('').draw();
+    table.page.len(10).draw();
+  });
+
+
+  // // Handle Booking Date Range Filtering
+  // $('#bookingStartDate, #bookingEndDate').on('change', function() {
+  //     var bookingStartDate = $('#bookingStartDate').val();
+  //     var bookingEndDate = $('#bookingEndDate').val();
+  //     if (bookingStartDate && bookingEndDate) {
+  //         table.column(4).search(bookingStartDate + ' to ' + bookingEndDate).draw();
+  //     }
+  // });
+
+  // Clear filters functionality
+  $('#clearFiltersButton').on('click', function() 
+  {
+    $('#flightStartDate').val('');
+    $('#flightEndDate').val('');
+    $('#bookingStartDate').val('');
+    $('#bookingEndDate').val('');
+    $('#tableSearchInput').val('');
+    table.search('').columns().search('').draw(); // Reset the search and clear column filters
+  });
+
+  // Toggle clear button visibility
+  function toggleClearButton(input) 
+  {
+    const clearButton = input.nextElementSibling; // Get the button next to the input
+    clearButton.style.display = input.value ? "block" : "none";
+  }
+
+  // Clear the input field and reset search when clicked (same as clearFiltersButton)
+  function clearInput(button) 
+  {
+    const input = button.previousElementSibling; // Get the input field before the button
+    input.value = ''; // Clear the input field
+    button.style.display = 'none'; // Hide the clear button
+    input.focus(); // Refocus on the input field
+
+    // Reset the DataTable search and column filters, similar to clearFiltersButton
+    table.search('').columns().search('').draw(); // Reset DataTable search and column filters
+  }
 </script>
-
 
 <!-- Table Head  -->
 <script> 
   let lastScrollTop = 0;
   const header = document.querySelector('.table-wrapper thead');
 
-  window.addEventListener('scroll', function() {
+  window.addEventListener('scroll', function() 
+  {
     let currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-    if (currentScrollTop > lastScrollTop) {
+    if (currentScrollTop > lastScrollTop) 
+    {
       // Scrolling down
       header.classList.add('has-border-top'); // Add the border-top
       header.style.transform = 'translateY(-5px)'; // Adjust upwards slightly
-    } else {
+    } 
+    else 
+    {
       // Scrolling up
       header.classList.remove('has-border-top'); // Remove the border-top
       header.style.transform = 'translateY(0)'; // Reset to original position
@@ -366,30 +377,29 @@
   });
 </script>
 
-
 <!-- Clickable table rows script -->
 <script>
-    document.addEventListener("DOMContentLoaded", function() 
-    {
-      document.querySelectorAll("tr[data-url]").forEach(function(row) 
-      {
-        row.addEventListener("click", function() 
-        {
-          window.location.href = row.getAttribute("data-url");
-        });
-      });
-    });
-    // Add event listener to each row for redirection
-    const rows = document.querySelectorAll("tr[data-url]");
-    
-    rows.forEach(row => 
+  document.addEventListener("DOMContentLoaded", function() 
+  {
+    document.querySelectorAll("tr[data-url]").forEach(function(row) 
     {
       row.addEventListener("click", function() 
       {
-        const url = row.getAttribute("data-url");
-        window.location.href = url; // Redirect to the specified URL
+        window.location.href = row.getAttribute("data-url");
       });
     });
+  });
+  // Add event listener to each row for redirection
+  const rows = document.querySelectorAll("tr[data-url]");
+  
+  rows.forEach(row => 
+  {
+    row.addEventListener("click", function() 
+    {
+      const url = row.getAttribute("data-url");
+      window.location.href = url; // Redirect to the specified URL
+    });
+  });
 </script>
 
 
