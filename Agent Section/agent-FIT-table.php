@@ -117,7 +117,6 @@ session_start();
               <th>Transaction No</th>
               <th>Contact Person Info</th>
               <th>Contact Details</th>
-              <th>Package Name</th>
               <th>No. of Nights</th>
               <th>Hotel Name</th>
               <th>Room Type</th>
@@ -133,17 +132,17 @@ session_start();
             <?php
               $sql1 = "SELECT f.transactionNo AS `Transaction No`, 
                           CONCAT(f.lName, ', ', f.fName, ' ', 
-                                IF(f.mName IS NOT NULL AND f.mName != '', CONCAT(LEFT(f.mName, 1), '.'), ''), 
-                                IF(f.suffix IS NOT NULL AND f.suffix != 'N/A', CONCAT(' ', f.suffix), '')) AS `Contact Name`,
+                            IF(f.mName IS NOT NULL AND f.mName != '', CONCAT(LEFT(f.mName, 1), '.'), ''), 
+                            IF(f.suffix IS NOT NULL AND f.suffix != 'N/A', CONCAT(' ', f.suffix), '')) AS `Contact Name`,
                           CONCAT(f.countryCode, ' ', f.contactNo) AS `Contact Details`,
                           fp.packageName AS `Package Name`, DATEDIFF(f.returnDate, f.startDate) AS `No. of Nights`,
                           fh.hotelName AS `Hotel Name`, fr.rooms AS `Room Type`, f.startDate AS `Check-in Date`,
                           f.returnDate AS `Check-out Date`, f.pax AS `Total Guests`, f.phpPrice AS `Price`,
-                          f.bookingDate AS `Transaction Date`,f.status AS `Status`
-                      FROM fit f
-                      JOIN fitpackage fp ON fp.packageId = f.packageId
-                      JOIN fithotel fh ON fh.hotelId = f.hotelId
-                      JOIN fitrooms fr ON fr.roomId = f.roomId";
+                          f.bookingDate AS `Transaction Date`, f.status AS `Status`
+                        FROM fit f
+                        LEFT JOIN fitpackage fp ON fp.packageId = f.packageId
+                        LEFT JOIN fithotel fh ON fh.hotelId = f.hotelId
+                        LEFT JOIN fitrooms fr ON fr.roomId = f.roomId";
 
               $res1 = $conn->query($sql1);
 
@@ -151,27 +150,27 @@ session_start();
               {
                 while ($row = $res1->fetch_assoc()) 
                 {
+                  $transactNo = $row['Transaction No'];
                   $statusClass = '';
                   switch ($row['Status']) 
                   {
                     case 'Confirmed':
-                        $statusClass = 'bg-success text-white';
-                        break;
+                      $statusClass = 'bg-success text-white';
+                      break;
                     case 'Cancelled':
-                        $statusClass = 'bg-danger text-white';
-                        break;
+                      $statusClass = 'bg-danger text-white';
+                      break;
                     case 'Pending':
-                        $statusClass = 'bg-warning text-dark';
-                        break;
+                      $statusClass = 'bg-warning text-dark';
+                      break;
                     default:
-                        $statusClass = 'bg-secondary text-white';
+                      $statusClass = 'bg-secondary text-white';
                   }
 
-                  echo "<tr>
+                   echo "<tr data-url='agent-showFITBooking.php?id=" . htmlspecialchars($transactNo) . "'>
                           <td>{$row['Transaction No']}</td>
                           <td>{$row['Contact Name']}</td>
                           <td>{$row['Contact Details']}</td>
-                          <td>{$row['Package Name']}</td>
                           <td>{$row['No. of Nights']}</td>
                           <td>{$row['Hotel Name']}</td>
                           <td>{$row['Room Type']}</td>
@@ -195,6 +194,42 @@ session_start();
 
     </div>
   </div>
+
+
+  <!-- Row Click Selection JS -->
+<script>
+  document.addEventListener("DOMContentLoaded", function() 
+  {
+    document.querySelectorAll("tr[data-url]").forEach(function(row) 
+    {
+      row.addEventListener("click", function() 
+      {
+        const transactionNumber = row.getAttribute("data-url").split('=')[1]; // Extract transaction number from the URL
+
+        console.log("Transaction Number: ", transactionNumber); // Debugging line
+
+        // Use AJAX to send the transaction number to the server
+        $.ajax(
+        {
+          url: '../Agent Section/functions/fetchTransactNo.php', // The PHP file to handle the session setting
+          type: 'POST',
+          data: { transaction_number: transactionNumber },
+          success: function(response) 
+          {
+            console.log("Response: ", response); // Debugging line
+
+            // Redirect to the next page after successfully setting the session
+            window.location.href = row.getAttribute("data-url"); // Use the original URL stored in data-url attribute
+          },
+          error: function(xhr, status, error) 
+          {
+            console.error("AJAX Error: " + status + " " + error); // Enhanced error logging
+          }
+        });
+      });
+    });
+  });
+</script>
 
   <!-- DataTables #product-table -->
 <!-- <script>
