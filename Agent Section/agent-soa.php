@@ -237,7 +237,6 @@
 
       <div id="result-container">
 
-      
       </div>
 
       <div class="content-footer">

@@ -182,6 +182,11 @@ session_start();
         </div>
 
         <div id="result-container"></div>
+
+        <div class="content-footer" id="content-footer">
+        <!-- <button class="btn btn-secondary" id="preview-btn">Preview</button> -->
+        <button class="btn btn-primary" id="download-btn">Generate SoA</button>
+      </div>
       
         <!-- <div class="table-container-product">
           <div class="table-content-product">
@@ -355,10 +360,7 @@ session_start();
         
       </div>
     
-      <div class="content-footer">
-        <!-- <button class="btn btn-secondary" id="preview-btn">Preview</button> -->
-        <button class="btn btn-primary" id="download-btn">Generate SoA</button>
-      </div>
+      
       
 
     </div>
@@ -440,6 +442,8 @@ function toggleSubMenu(submenuId) {
           resultContainer.innerHTML = response.htmlContent;
           // Enable the download button if data is available
           document.getElementById('download-btn').disabled = false;
+          document.getElementById('content-footer').style.display = 'flex';
+
         } 
         else 
         {

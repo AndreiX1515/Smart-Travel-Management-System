@@ -136,7 +136,7 @@ class PDF extends TCPDF {
         $this->SetTextColor(0, 0, 0);
     
         // Return the final Y position for reference (add 7 for the row height)
-        return $yPosition + 10;
+        return $yPosition + 7;
     }
     
     public function tablePayment($tableData2, $yPosition) {
@@ -207,7 +207,7 @@ class PDF extends TCPDF {
         $this->SetTextColor(0, 0, 0);
     
         // Return the final Y position for reference (add 10 for the row height)
-        return $yPosition + 10;
+        return $yPosition + 7;
     }
     
     public function tableTippingFee($tableData3, $yPosition) {
