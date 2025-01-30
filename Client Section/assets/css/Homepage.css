@@ -278,14 +278,14 @@ nav {
  position: relative; /* Ensure hero section positions correctly */
  overflow: hidden; /* Prevent overflow */
  height: 88vh;
- border: 1px solid black;
+ border-bottom: 1px solid gainsboro;
 }
 
 .flight-schedules .section-wrapper{
     display: flex;
     flex-direction: column;
     width: 100%;
-    border: 1px solid;
+    /* border: 1px solid; */
 }
 
 
@@ -293,7 +293,7 @@ nav {
  display: flex;
  flex-direction: column;
  width: 100%;
- border: 1px solid;
+ /* border: 1px solid; */
 }
 
 .flight-schedules .section-main-content {
@@ -301,7 +301,7 @@ nav {
  flex-direction: column;
  width: 100%;
  height: auto; 
- border: 1px solid;
+ /* border: 1px solid; */
 }
  
 
