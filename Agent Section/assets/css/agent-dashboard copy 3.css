@@ -435,7 +435,7 @@
 }
 
 .unconfirm-table thead th {
-  padding: 4px 6px 4px 6px; 
+  padding: 4px 14px; 
   font-weight: bold;
   color: #333;
   border-bottom: 2px solid rgba(0, 0, 0, 0.1);
@@ -443,10 +443,11 @@
 }
 
 .unconfirm-table tbody td {
-  padding: 6px 6px; 
+  padding: 4px 14px;  
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   color: #555;
   vertical-align: middle; 
+  font-weight: 600;
 }
 
 .unconfirm-table tbody tr {
@@ -468,13 +469,14 @@
 
 .td-content h6 {
   margin: 0;
-  font-size: 14px; /* Reduced for compact view */
-  font-weight: bold;
+  font-size: 12px; /* Reduced for compact view */
+  font-weight: 600;
+  color: #000;
 }
 
 .td-content h6 span {
-  font-weight: 500;
-  font-size: 14px; /* Smaller text for additional details */
+  font-weight: 400;
+  font-size: 12px; /* Smaller text for additional details */
 }
 
 
@@ -568,15 +570,16 @@ position: relative;
 }
 
 .request-table thead th {
-  padding: 4px 6px 4px 6px; 
+  padding: 4px 14px; 
   font-weight: bold;
+  text-transform: uppercase;
   color: #333;
   border-bottom: 2px solid rgba(0, 0, 0, 0.1);
   font-size: 12px; 
 }
 
 .request-table tbody td {
-  padding: 10px 6px; 
+  padding: 7.5px 14px; 
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   color: #555;
   vertical-align: middle; 
@@ -585,8 +588,8 @@ position: relative;
 .request-table tbody tr {
   background-color: transparent;
   transition: background-color 0.3s;
-  font-size: 14px;
-  font-weight: bold;
+  font-size: 12px;
+  font-weight: 600;
 }
 
 .request-table tbody tr:hover {
@@ -658,20 +661,21 @@ position: relative;
 
 .pending-payment-table thead th {
   font-size: 12px; 
-  padding: 4px 10px 4px 5px; 
+  padding: 4px 8px; 
   font-weight: bold;
   color: #333;
   border-bottom: 2px solid rgba(0, 0, 0, 0.1);
 }
 
 .pending-payment-table tbody td {
-  padding: 6px 6px; 
+  padding: 4px 8px;  
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   color: #555;
   vertical-align: middle; 
 }
 
 .pending-payment-table tbody tr {
+  padding: 4px 14px; 
   background-color: transparent; 
   transition: background-color 0.3s;
   font-size: 12px;
@@ -683,22 +687,6 @@ position: relative;
 } 
 
 
-.pending-payment-table tbody tr:first-child {
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-}
-
-.pending-payment-table tbody tr:last-child {
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
-}
-
-/* Optional: Remove side borders for aesthetics */
-.pending-payment-table td,
-.pending-payment-table th {
-  border-left: none;
-  border-right: none;
-}
 
 
 
@@ -763,17 +751,18 @@ position: relative;
 }
 
 .confirm-table thead th {
-  font-size: 14px;
-  padding: 4px 14px;
+  font-size: 12px; 
+  padding: 4px 14px; 
   font-weight: bold;
   color: #333;
   border-bottom: 2px solid rgba(0, 0, 0, 0.1);
 }
 
 .confirm-table tbody td {
-  padding: 6px 14px;
+  padding: 10.5px 14px; 
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   color: #555;
+  font-weight: 600;
 }
 
 .confirm-table tbody tr {
@@ -905,7 +894,8 @@ position: relative;
 
 /* Makes the entire thead sticky */
 .info-table thead {
- font-size: 14px;
+ padding: 6px 10px;
+ font-size: 12px;
  font-weight: bold;
  position: sticky;
  top: 0;
@@ -923,7 +913,7 @@ position: relative;
  z-index: 3; /* Ensures header cells stay above tbody content */
  word-wrap: break-word; /* Allow word wrapping */
  white-space: normal; /* Allow normal text wrapping instead of nowrap */
- padding: 10px; /* Add padding for readability */
+ padding: 6px 10px;
 }
 
 
@@ -1048,7 +1038,8 @@ position: relative;
  }
 
 .fit-table thead {
-  background-color: #747474;
+  background-color: #424242;
+  color: #fff;
   text-align: left;
   position: sticky;
   top: 0;
@@ -1058,8 +1049,8 @@ position: relative;
 .fit-table thead th {
   font-size: 14px;
   padding: 4px 14px;
-  font-weight: bold;
-  color: #333;
+  font-weight: 600;
+  color: #fff;
   border-bottom: 2px solid rgba(0, 0, 0, 0.1);
 }
 
@@ -1067,6 +1058,7 @@ position: relative;
   padding: 6px 14px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   color: #555;
+  font-weight: 600;
 }
 
 .fit-table tbody tr {

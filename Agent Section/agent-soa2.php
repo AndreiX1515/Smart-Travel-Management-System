@@ -64,9 +64,7 @@ session_start();
   <?php include "../Agent Section/includes/sidebar copy.php"; ?>
 
   <div class="main-content-container">
-    <div class="navbar">
-      <h5 class="title-page">Transactions</h5>
-    </div>
+    <?php include "../Agent Section/includes/navbar copy 2.php"; ?>
 
     <div class="main-content">
       <div class="content-body">
@@ -76,7 +74,7 @@ session_start();
 
         <div class="table-actions">
           <div class="row">
-            <div class="columns col-md-2">
+            <div class="columns col-md-3">
               <div class="table-filters-container">
                 <label for="company-filter ">Company Name:</label>
                 <select id="company-filter" name="company-filter" class="form-control">
@@ -105,69 +103,67 @@ session_start();
             </div>
 
             <div class="columns col-md-2">
-  <div class="table-filters-container">
-    <label for="month-filter">Month</label>
-    <select id="month-filter" name="month-filter" class="form-control">
-      <option selected disabled>Select Month</option>
-      <option value="January">January</option>
-      <option value="February">February</option>
-      <option value="March">March</option>
-      <option value="April">April</option>
-      <option value="May">May</option>
-      <option value="June">June</option>
-      <option value="July">July</option>
-      <option value="August">August</option>
-      <option value="September">September</option>
-      <option value="October">October</option>
-      <option value="November">November</option>
-      <option value="December">December</option>
-    </select>
-  </div>
-</div>
+              <div class="table-filters-container">
+                <label for="month-filter">Month</label>
+                <select id="month-filter" name="month-filter" class="form-control">
+                  <option selected disabled>Select Month</option>
+                  <option value="January">January</option>
+                  <option value="February">February</option>
+                  <option value="March">March</option>
+                  <option value="April">April</option>
+                  <option value="May">May</option>
+                  <option value="June">June</option>
+                  <option value="July">July</option>
+                  <option value="August">August</option>
+                  <option value="September">September</option>
+                  <option value="October">October</option>
+                  <option value="November">November</option>
+                  <option value="December">December</option>
+                </select>
+              </div>
+            </div>
 
-<script>
-  // First script: Set current month in month select
-  (function() {
-    const currentMonthIndex1 = new Date().getMonth(); // 0-based index for current month
-    const monthSelect1 = document.getElementById('month-filter');
-    monthSelect1.value = monthSelect1.options[currentMonthIndex1 + 1].value; // Adjust to 1-based index
-  })();
-</script>
+            <!-- First script: Set current month in month select -->
+            <script>
+              (function() {
+                const currentMonthIndex1 = new Date().getMonth(); // 0-based index for current month
+                const monthSelect1 = document.getElementById('month-filter');
+                monthSelect1.value = monthSelect1.options[currentMonthIndex1 + 1].value; // Adjust to 1-based index
+              })();
+            </script>
 
-<div class="columns col-md-3">
-  <div class="table-filters-container">
-    <label for="year-filter">Year</label>
-    <select id="year-filter" name="year-filter" class="form-control">
-      <!-- Year options will be populated dynamically -->
-    </select>
-  </div>
-</div>
+            <div class="columns col-md-3">
+              <div class="table-filters-container">
+                <label for="year-filter">Year</label>
+                <select id="year-filter" name="year-filter" class="form-control">
+                  <!-- Year options will be populated dynamically -->
+                </select>
+              </div>
+            </div>
 
-<script>
-  // Second script: Set current year and month in year select
-  (function() {
-    const currentMonthIndex2 = new Date().getMonth() + 1; // 1-based index for current month
-    const currentYear = new Date().getFullYear();
-    const yearSelect = document.getElementById('year-filter');
+            <script>
+              // Second script: Set current year and month in year select
+              (function() {
+                const currentMonthIndex2 = new Date().getMonth() + 1; // 1-based index for current month
+                const currentYear = new Date().getFullYear();
+                const yearSelect = document.getElementById('year-filter');
 
-    // Dynamically populate the years
-    for (let i = currentYear - 5; i <= currentYear + 5; i++) {
-      const option = document.createElement('option');
-      option.value = i;
-      option.textContent = i;
-      yearSelect.appendChild(option);
-    }
+                // Dynamically populate the years
+                for (let i = currentYear - 5; i <= currentYear + 5; i++) {
+                  const option = document.createElement('option');
+                  option.value = i;
+                  option.textContent = i;
+                  yearSelect.appendChild(option);
+                }
 
-    // Set the current year as selected
-    yearSelect.value = currentYear;
+                // Set the current year as selected
+                yearSelect.value = currentYear;
 
-    // // Set the current month as selected (independent of the first script)
-    // const monthSelect2 = document.getElementById('month-filter');
-    // monthSelect2.value = currentMonthIndex2; // Use the 1-based month index
-  })();
-</script>
-
-
+                // // Set the current month as selected (independent of the first script)
+                // const monthSelect2 = document.getElementById('month-filter');
+                // monthSelect2.value = currentMonthIndex2; // Use the 1-based month index
+              })();
+            </script>
 
           </div>
 

@@ -295,7 +295,7 @@
   });
 </script>
 
-<script>
+<!-- <script>
   document.addEventListener('DOMContentLoaded', () => 
   {
     // Check if there's a saved title in local storage
@@ -325,4 +325,4 @@
       });
     });
   });
-</script>
+</script> -->

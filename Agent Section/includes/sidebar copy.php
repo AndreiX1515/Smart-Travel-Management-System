@@ -58,11 +58,11 @@
       <i class="fas fa-home"></i> <span> Home </span> 
     </a>
    
-    <a href="../Agent Section/agent-addbooking - rename.php" class="page-button add-booking mb-1 my-0" data-page-name="Add Booking"> 
+    <a href="../Agent Section/agent-addbooking - rename.php" class="page-button add-booking mb-1 my-0" data-page-name="Add Booking - Packages"> 
       <i class="fa-solid fa-user-plus"></i> <span> Add Booking </span>
     </a>
 
-    <a href="../Agent Section/agent-FIT - rename.php" class="page-button add-FIT mb-1 my-0" data-page-name="Add F.I.T Booking">
+    <a href="../Agent Section/agent-FIT - rename.php" class="page-button add-FIT mb-1 my-0" data-page-name="Add Booking - F.I.T">
       <i class="fa-solid fa-user-plus"></i> <span> Add F.I.T </span>
     </a>
   
@@ -70,41 +70,42 @@
       Transactions <span class="chevron-icon fas fa-chevron-down"></span>
     </div>
 
-    <div class="submenu open" id="transactiontable-submenu">
-      <a href="../Agent Section/agent-transactions - rename.php" class="page-button my-0" data-page-name="Transactions">
-        <i class="fas fa-file-invoice"></i> Packages
-      </a>
+      <div class="submenu open" id="transactiontable-submenu">
+        <a href="../Agent Section/agent-transactions - rename.php" class="page-button my-0" data-page-name="Packages - Transactions table">
+          <i class="fas fa-file-invoice"></i> Packages
+        </a>
 
-      <a href="../Agent Section/agent-FIT-table - rename.php" class="page-button my-0" data-page-name="F.I.T - View Table" style="font-size: 14px;">
-        <i class="fas fa-file-invoice"></i> F.I.T 
-      </a> 
-    </div>
+        <a href="../Agent Section/agent-FIT-table - rename.php" class="page-button my-0" data-page-name="F.I.T - Transactions Table" style="font-size: 14px;">
+          <i class="fas fa-file-invoice"></i> F.I.T 
+        </a> 
+      </div>
 
     <div class="section-title" onclick="toggleSubMenu('operational-submenu')">
       Reports <span class="chevron-icon fas fa-chevron-down"></span>
     </div>
 
-    <div class="submenu open" id="operational-submenu">
-      <!-- <a href="../Agent Section/agent-itenerary.php" class="page-button" data-page-name="Itinerary">
-        <i class="fas fa-map"></i> Itinerary
-      </a> -->
+      <div class="submenu open" id="operational-submenu">
+        <!-- <a href="../Agent Section/agent-itenerary.php" class="page-button" data-page-name="Itinerary">
+          <i class="fas fa-map"></i> Itinerary
+        </a> -->
 
-      <a href="../Agent Section/agent-soa2.php" class="page-button" data-page-name="Statement of Accounts (SOA) - Packages">
-        <i class="fas fa-file-invoice-dollar"></i> SoA - Packages
-      </a>
+        <a href="../Agent Section/agent-soa2.php" class="page-button" data-page-name="Statement of Accounts (SOA) - Packages">
+          <i class="fas fa-file-invoice-dollar"></i> SOA - Packages
+        </a>
 
-      <a href="../Agent Section/agent-fitSOA - rename.php" class="page-button" data-page-name="Statement of Accounts (SOA) - F.I.T">
-        <i class="fas fa-file-invoice-dollar"></i> SoA - F.I.T
-      </a>
+        <a href="../Agent Section/agent-fitSOA - rename.php" class="page-button" data-page-name="Statement of Accounts (SOA) - F.I.T">
+          <i class="fas fa-file-invoice-dollar"></i> SOA - F.I.T
+        </a>
 
-      <!-- <a href="../Agent Section/agent-ticket.php" class="page-button" data-page-name="Ticket">
-        <i class="fas fa-ticket"></i> Ticket
-      </a>
+        <!-- <a href="../Agent Section/agent-ticket.php" class="page-button" data-page-name="Ticket">
+          <i class="fas fa-ticket"></i> Ticket
+        </a>
 
-      <a href="../Agent Section/agent-transactions.php" class="page-button" data-page-name="Voucher">
-        <i class="fas fa-gift"></i> Voucher
-      </a> -->
-    </div>
+        <a href="../Agent Section/agent-transactions.php" class="page-button" data-page-name="Voucher">
+          <i class="fas fa-gift"></i> Voucher
+        </a> -->
+      </div>
+
   </div>
 
   <div class="profile-wrapper">
@@ -119,8 +120,9 @@
       </div>
     </div>
 
+    <!-- ../Agent Section/logout.php -->
     <div class="logout-wrapper">
-      <a href="../Agent Section/logout.php" class="page-button logout" data-page-name="Logout" data-bs-toggle="modal" data-bs-target="#logoutModal">
+      <a href="#" class="page-button logout" data-page-name="Logout" data-bs-toggle="modal" data-bs-target="#logoutModal">
         <i class="fas fa-sign-out-alt"></i> <span>Logout</span>
       </a>
     </div>

@@ -382,10 +382,10 @@ a:hover {
   display: flex;
   align-items: center; /* Corrected 'last baseline' */
   justify-content: start;
-  height: 7.4vh;
+  height: 7vh;
   width: 87.5%;
   border-bottom: 1px solid gainsboro;
-  padding: 10px 15px 15px 5px;
+  padding: 15px 15px 15px 5px;
   position: fixed;
   top: 11px;
   background-color: white;
@@ -395,7 +395,7 @@ a:hover {
 }
 
 .navbar .title-page {
-  margin-top: 12px;
+  margin-top: 7px;
 }
 
 /* Navbar Title Styles */
@@ -433,13 +433,13 @@ a:hover {
   display: flex;
   justify-content: start;
   align-items: center;
-  border: 1px solid black;
+  /* border: 1px solid black; */
 }
 
 .back-button-wrapper {
   margin-bottom: 3px;
   height: 50%;
-  border: 1px solid black;
+  /* border: 1px solid black; */
   display: flex;
   align-items: center;
 }
@@ -451,8 +451,8 @@ a:hover {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px; /* Circular size */
-  height: 40px; /* Circular size */
+  width: 35px; /* Circular size */
+  height: 35px; /* Circular size */
   border: 1px solid black;
   border-radius: 50%; /* Makes it round */
   transition: color 0.3s ease, background 0.3s ease, transform 0.2s ease;
@@ -460,8 +460,8 @@ a:hover {
 
 .back-button-link:hover {
   color: white;
-  background-color: #116530;
-  transform: scale(1.1); /* Slight zoom effect */
+  background-color: #6c746f;
+  transform: scale(1); /* Slight zoom effect */
 }
 
 
@@ -469,7 +469,7 @@ a:hover {
 .page-name-wrapper {
   display: flex;
   height: 50%;
-  border: 1px solid black;
+  /* border: 1px solid black; */
   justify-content: left;
   align-items: last baseline;
   padding: 0px 0px 0px 10px;

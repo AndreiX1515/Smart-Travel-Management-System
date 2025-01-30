@@ -446,6 +446,7 @@
           <table class="info-table" id="info-table">
             <thead>
               <tr>
+                <th rowspan="2"></th>
                 <th rowspan="2">TEAM OP</th>
                 <th rowspan="2">ORIGIN</th>
                 <th colspan="2">FLIGHT DATE</th> <!-- Flight Date columns -->
@@ -546,7 +547,7 @@
                               f.origin, f.flightDepartureDate AS Start, f.returnDepartureDate AS End, 
                               f.availSeats AS FlightSeat, 
                               GREATEST(f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package' 
-                                                                    THEN b.pax ELSE 0 END), 0), 0) AS AvailSeats, 
+                              THEN b.pax ELSE 0 END), 0), 0) AS AvailSeats, 
                               IF(
                                   (f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package'
                                   THEN b.pax ELSE 0 END), 0)) < 0, 
@@ -580,12 +581,33 @@
                 $result = $conn->query($sql);
 
                 // Step 4: Display the results in HTML table
+
+                // class="form-check-input"
                 if ($result->num_rows > 0) 
                 {
                   while ($row = $result->fetch_assoc()) 
                   {
+
+                    $colorMapping = [
+                        "Heo, Vicky" => "#FFD700",  // Gold
+                        "Kim, Gwen" => "#ADD8E6",   // Light Blue
+                        "Sample, Dorothy" => "#98FB98", // Pale Green
+                        "Lm, Anna" => "#FFB6C1",    // Light Pink
+                        "Park, Lia" => "#E6E6FA",   // Lavender
+                        "Testing, Pamela" => "#FFDAB9" // Peach
+                    ];
+
+                    $rowColor = isset($colorMapping[$row['TeamOP']]) ? $colorMapping[$row['TeamOP']] : "transparent"; // Default to transparent if not listed
+
+
+
+
+
                     echo '<tr>';
-                    echo '<td class="fw-bold" style="font-size; 14px">' . $row['TeamOP'] . '</td>';
+                    echo '<td class="fw-bold" style="font-size: 12x; background-color: ' . $rowColor . ';">
+                            <input type="checkbox" class="row-checkbox">
+                          </td>';
+                    echo '<td class="" style="font-size: 12px; white-space: nowrap; background-color: ' . $rowColor . '; font-weight: bold;">' . $row['TeamOP'] . '</td>';
                     echo '<td>' . $row['origin'] . '</td>';
                     echo '<td>' . $row['Start'] . '</td>';
                     echo '<td>' . $row['End'] . '</td>';
@@ -596,24 +618,19 @@
                     echo '<td>₱ ' . number_format($row['WholesalePrice'], 2) . '</td>';
                     echo '<td>₱ ' . number_format($row['RetailPrice'], 2) . '</td>';
                     echo '<td>₱ ' . number_format($row['LandArrangement'], 2) . '</td>';
-              
-                    foreach ($row as $key => $value) 
-                    {
-                      $colors = ['#ADD8E6', '#98FB98', '#FFFFCC', '#E6E6FA', '#FFDAB9']; // Color array
-                      if (strpos($key, '_AL') !== false || strpos($key, '_LO') !== false) 
-                      {
-                        // Determine font weight
-                        $fontWeight = ($value >= 1) ? 'bolder' : 'normal';
 
-                        // Get the background color by cycling through the color array
-                        $colorIndex = array_search($key, array_keys($row)) % count($colors); // Cycle through the color array
-                        $backgroundColor = $colors[$colorIndex];
+                    foreach ($row as $key => $value) {
+                        $colors = ['#ADD8E6', '#98FB98', '#FFFFCC', '#E6E6FA', '#FFDAB9']; // Color array
+                        if (strpos($key, '_AL') !== false || strpos($key, '_LO') !== false) {
+                            $fontWeight = ($value >= 1) ? 'bolder' : 'normal';
+                            $colorIndex = array_search($key, array_keys($row)) % count($colors);
+                            $backgroundColor = $colors[$colorIndex];
 
-                        echo '<td style="font-weight: ' . $fontWeight . '; border-left: 1px solid #ddd; border-right: 1px solid #ddd;">' . $value . '</td>';
-
-                      }
+                            echo '<td style="font-weight: ' . $fontWeight . '; border-left: 1px solid #ddd; border-right: 1px solid #ddd;">' . $value . '</td>';
+                        }
                     }
-                    echo '</tr>';
+                echo '</tr>';
+
                   }
                 } 
                 else 
@@ -918,46 +935,87 @@ $(document).ready(function () {
             searching: false, // Disable search
             info: false, // Disable info
             fixedColumns: {
-                leftColumns: 11 // Freeze the first 11 columns
+                leftColumns: 12 // Freeze the first 11 columns
             },
             dom: 'rt<"bottom"flp>',
-            ordering: false, // Disable sorting on all columns
+            ordering: false // Disable sorting on all columns
         });
+
+        // Ensure uniform row height between frozen and non-frozen columns
+        function syncRowHeights() {
+            setTimeout(() => {
+                $('.DTFC_Cloned tbody tr').each(function (index) {
+                    let originalRow = $('.dataTable tbody tr').eq(index);
+                    let clonedRow = $(this);
+                    let originalHeight = originalRow.height();
+                    clonedRow.height(originalHeight);
+                });
+            }, 50); // Allow DataTable rendering before adjusting height
+        }
+
+        // Call sync function after initialization
+        syncRowHeights();
+
+        // Re-adjust heights on window resize or table updates
+        $(window).on('resize', syncRowHeights);
+        $('.info-table').on('draw.dt', syncRowHeights);
     }
 
-    // Apply the 'selected' class to rows in both tables when clicked
-    function selectRowInBothTables(index) {
-        // Clear previous selections
-        $('.info-table tbody tr, div.dataTables_wrapper tbody tr').removeClass('selected');
-        // Apply the 'selected' class to the specified row index
-        $('.info-table tbody tr').eq(index).addClass('selected');
-        $('div.dataTables_wrapper tbody tr').eq(index).addClass('selected');
-    }
+    // Prevent row selection when clicking on the checkbox
+    $('.info-table tbody').on('click', 'input[type="checkbox"]', function (e) {
+        e.stopPropagation(); // Stop event from propagating to row selection
+    });
+
+    // Apply the 'selected' class to rows in both tables when clicked (excluding checkboxes)
+    // function selectRowInBothTables(index) {
+    //     $('.info-table tbody tr, div.dataTables_wrapper tbody tr').removeClass('selected');
+    //     $('.info-table tbody tr').eq(index).addClass('selected');
+    //     $('div.dataTables_wrapper tbody tr').eq(index).addClass('selected');
+    // }
 
     // Add event listener for row clicks in .info-table using event delegation
-    $('.info-table').on('click', 'tbody tr', function () {
-        const index = $(this).index(); // Get the index of the clicked row
-        selectRowInBothTables(index);  // Trigger row selection for both tables
+    $('.info-table').on('click', 'tbody tr', function (e) {
+        if ($(e.target).is('input[type="checkbox"]')) return; // Ignore checkboxes
+        const index = $(this).index();
+        selectRowInBothTables(index);
     });
 
     // Add event listener for row clicks in div.dataTables_wrapper using event delegation
-    $('div.dataTables_wrapper').on('click', 'tbody tr', function () {
-        const index = $(this).index(); // Get the index of the clicked row
-        selectRowInBothTables(index);  // Trigger row selection for both tables
+    $('div.dataTables_wrapper').on('click', 'tbody tr', function (e) {
+        if ($(e.target).is('input[type="checkbox"]')) return;
+        const index = $(this).index();
+        selectRowInBothTables(index);
     });
 
     // Add custom CSS for the selected row
     $('<style>')
         .prop('type', 'text/css')
         .html(`
-            .info-table tbody tr.selected, div.dataTables_wrapper tbody tr.selected {
+             .info-table tbody tr.selected, div.dataTables_wrapper tbody tr.selected {
                 background-color: rgb(42, 204, 253) !important;
                 color: black !important;
                 font-weight: bold;
+                // height: 20px !important;
+                
             }
+
+            /* Ensure uniform row height */
+            // .dataTable tbody tr, 
+            // .dataTables_scrollBody tbody tr {
+            //     height: 20px !important;
+            // }
+
+            /* Adjust checkbox styling */
+            // .dataTable tbody tr td input[type="checkbox"] {
+            //     width: 10px;
+            //     height: 10px;
+            //     vertical-align: middle;
+            // }
         `)
         .appendTo('head');
 });
+
+
 
 </script>
 
