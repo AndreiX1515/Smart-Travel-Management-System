@@ -160,7 +160,6 @@
       <a href="<?php echo isset($_SESSION['accountId']) ? 'client-bookingform.php' : 'login.php'; ?>" class="cta-button">Book Now</a>
 
 
-
        <a href="#learn-more" class="cta-button-outline">Learn More</a>
       </div>
       
@@ -184,6 +183,7 @@
                 <th colspan="2">FLIGHT DATE</th> <!-- Flight Date columns -->
                 <th rowspan="2">AVAILABLE SEATS</th>
                 <th rowspan="2">ADDITIONAL SEATS</th>
+                <th rowspan="2"> </th>
 
               </tr>
               <tr style="top: -8px">
@@ -208,42 +208,45 @@
                 $agentColumns = rtrim($agentColumns, ', ');
 
                 $sql = "
-                SELECT CONCAT(e.lName, ', ', e.fName, 
-                        IF(e.mName IS NOT NULL AND e.mName != '', CONCAT(' ', LEFT(e.mName, 1)), '')) AS TeamOP,
-                    f.origin, 
-                    f.flightDepartureDate AS Start, 
-                    f.returnDepartureDate AS End, 
-                    f.availSeats AS FlightSeat, 
-                    GREATEST(
-                        (f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package' 
-                        THEN b.pax ELSE 0 END), 0)), 0) AS AvailSeats, 
-                    IF(
-                        (f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package' 
-                        THEN b.pax ELSE 0 END), 0)) < 0, 
-                        ABS(f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package' 
-                        THEN b.pax ELSE 0 END), 0)), 
-                        0) AS AdditionalSeats,
-                    SUM(CASE WHEN b.bookingType = 'Package' AND b.status = 'Confirmed' THEN b.pax ELSE 0 END) AS `Air+Land`,
-                    SUM(CASE WHEN b.bookingType = 'Land' AND b.status = 'Confirmed' THEN b.pax ELSE 0 END) AS `LandOnly`,
-                    f.wholesalePrice AS WholesalePrice, 
-                    f.flightPrice AS RetailPrice, 
-                    p.packagePrice AS LandArrangement, 
-                    $agentColumns
-                FROM 
-                    employee e 
-                JOIN 
-                    flight f ON f.employeeId = e.employeeId
-                LEFT JOIN 
-                    booking b ON b.flightId = f.flightId
-                LEFT JOIN 
-                    package p ON f.packageId = p.packageId
-                WHERE 
-                    f.flightDepartureDate >= CURDATE()
-                GROUP BY 
-                    f.flightId, e.lName, e.fName, e.mName, f.origin, f.flightDepartureDate, f.returnDepartureDate, f.availSeats, 
-                    f.wholesalePrice, f.flightPrice, p.packagePrice
-                ORDER BY 
-                    f.flightDepartureDate";
+                    SELECT 
+                        f.flightId AS flightid,  -- Added flightId here
+                        CONCAT(e.lName, ', ', e.fName, 
+                            IF(e.mName IS NOT NULL AND e.mName != '', CONCAT(' ', LEFT(e.mName, 1)), '')) AS TeamOP,
+                        f.origin, 
+                        f.flightDepartureDate AS Start, 
+                        f.returnDepartureDate AS End, 
+                        f.availSeats AS FlightSeat, 
+                        GREATEST(
+                            (f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package' 
+                            THEN b.pax ELSE 0 END), 0)), 0) AS AvailSeats, 
+                        IF(
+                            (f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package' 
+                            THEN b.pax ELSE 0 END), 0)) < 0, 
+                            ABS(f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package' 
+                            THEN b.pax ELSE 0 END), 0)), 
+                            0) AS AdditionalSeats,
+                        SUM(CASE WHEN b.bookingType = 'Package' AND b.status = 'Confirmed' THEN b.pax ELSE 0 END) AS `Air+Land`,
+                        SUM(CASE WHEN b.bookingType = 'Land' AND b.status = 'Confirmed' THEN b.pax ELSE 0 END) AS `LandOnly`,
+                        f.wholesalePrice AS WholesalePrice, 
+                        f.flightPrice AS RetailPrice, 
+                        p.packagePrice AS LandArrangement, 
+                        $agentColumns
+                    FROM 
+                        employee e 
+                    JOIN 
+                        flight f ON f.employeeId = e.employeeId
+                    LEFT JOIN 
+                        booking b ON b.flightId = f.flightId
+                    LEFT JOIN 
+                        package p ON f.packageId = p.packageId
+                    WHERE 
+                        f.flightDepartureDate >= CURDATE()
+                    GROUP BY 
+                        f.flightId, e.lName, e.fName, e.mName, f.origin, f.flightDepartureDate, f.returnDepartureDate, f.availSeats, 
+                        f.wholesalePrice, f.flightPrice, p.packagePrice
+                    ORDER BY 
+                        f.flightDepartureDate";
+
 
                 // Step 3: Execute the query
                 $result = $conn->query($sql);
@@ -259,11 +262,12 @@
                     echo '<td>' . $row['End'] . '</td>';
                     echo '<td class="fw-bold">' . $row['AvailSeats'] . '</td>';
                     echo '<td class="fw-bolder">' . $row['AdditionalSeats'] . '</td>';
-                    echo '<td><a href="booking.php?flightid=' . $row['flightid'] . '" class="btn btn-success">Book Now</a></td>';
+                    echo '<td><a href="../Client Section/client-bookingform-flight.php?flightid=' . $row['flightid'] . '" class="btn btn-sm btn-success book-now" data-flightid="' . $row['flightid'] . '" id="book-now">Book Now</a></td>';
+
+
+
+
                     echo '</tr>';
-
-
-
                   }
                 } 
                 else 
@@ -278,15 +282,23 @@
     </div>
 
     <script>
-      document.addEventListener('DOMContentLoaded', function () {
-        document.querySelectorAll('.book-now').forEach(button => {
-            button.addEventListener('click', function () {
-                let flightId = this.getAttribute('data-flightid');
-                console.log("Booking flight ID:", flightId);
-                // You can redirect, open a modal, or send an AJAX request with this ID
-            });
-        });
-    });
+    document.addEventListener('DOMContentLoaded', function () {
+    // Fetch the flightid from the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const flightId = urlParams.get('flightid');
+    
+    // If flightId exists, update the <h4> element with it
+    if (flightId) {
+        document.getElementById('flight-id').textContent = flightId;
+    }
+});
+
+
+
+
+
+
+
 
     </script>
 </section>
@@ -1010,13 +1022,6 @@ window.addEventListener('scroll', function() {
 });
 </script>
 
-<!-- Popper CDN -->
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
 
-<!-- Main Bootstrap JS CDN-->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
-
-<!-- JQuery JS CDN-->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 </html>
