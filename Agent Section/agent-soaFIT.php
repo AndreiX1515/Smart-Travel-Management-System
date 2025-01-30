@@ -128,7 +128,29 @@
         <div class="row">
           <div class="columns col-md-2">
             <div class="table-filters-container">
-              
+              <label for="company-filter ">Company Name:</label>
+              <select id="company-filter" name="company-filter" class="form-control">
+                <option selected disabled>Select a company</option>
+                <?php
+                  // Execute the SQL query
+                  $sql1 = "SELECT branchId, branchName FROM branch";
+                  $res1 = $conn->query($sql1);
+
+                  // Check if there are results
+                  if ($res1->num_rows > 0) 
+                  {
+                    // Loop through the results and generate options
+                    while ($row = $res1->fetch_assoc()) 
+                    {
+                      echo "<option value='" . $row['branchId'] . "'>" . $row['branchName'] . "</option>";
+                    }
+                  } 
+                  else 
+                  {
+                    echo "<option value=''>No companies available</option>";
+                  }
+                ?>
+              </select>
             </div>
           </div>
 
@@ -214,7 +236,7 @@
       
       </div>
 
-      <div class="content-footer">
+      <div>
         <button class="btn btn-primary" id="download-btn" disabled>Generate SoA</button>
       </div>
     </div>
@@ -227,6 +249,7 @@
 <script>
   document.getElementById('generate-soa-btn').addEventListener('click', function() 
   {
+    const companyId = document.getElementById('company-filter').value;
     const month = document.getElementById('month-filter').value;
     const year = document.getElementById('year-filter').value;
 
@@ -242,39 +265,38 @@
     xhr.open('POST', '../Agent Section/functions/fetchSoAFIT.php', true); // Replace with your PHP file name
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
-    const data = `month=${month}&year=${year}`;
+    const data = `companyId=${companyId}&month=${month}&year=${year}`;
 
     xhr.onload = function() 
     {
-      // Re-enable the button after the request is complete
       document.getElementById('generate-soa-btn').disabled = false;
+
+      // console.log("Raw Response:", xhr.responseText); // Debugging output
 
       if (xhr.status === 200) 
       {
-        // Parse the JSON response
-        const response = JSON.parse(xhr.responseText);
-
-        if (response.dataAvailable) 
-        {
-          // Update the result container with the HTML from the response
-          resultContainer.innerHTML = response.htmlContent;
-          // Enable the download button if data is available
-          document.getElementById('download-btn').disabled = false;
-        } 
-        else 
-        {
-          // If no data available, update the result container and disable the button
-          resultContainer.innerHTML = '<p>No data found for the selected filters.</p>';
+        try {
+          const response = JSON.parse(xhr.responseText); // This is where the error occurs
+          if (response.dataAvailable) {
+            resultContainer.innerHTML = response.htmlContent;
+            document.getElementById('download-btn').disabled = false;
+          } else {
+            resultContainer.innerHTML = '<p>No data found for the selected filters.</p>';
+            document.getElementById('download-btn').disabled = true;
+          }
+        } catch (error) {
+          console.error("JSON Parsing Error:", error, "Response:", xhr.responseText);
+          resultContainer.innerHTML = '<p>Error processing response. Please try again.</p>';
           document.getElementById('download-btn').disabled = true;
         }
       } 
       else 
       {
-        // Handle errors in the request
-        resultContainer.innerHTML = '<p>Error loading data. Please try again later.</p>';
+        resultContainer.innerHTML = `<p>Error loading data. Status Code: ${xhr.status}. Please try again later.</p>`;
         document.getElementById('download-btn').disabled = true;
       }
     };
+
 
     xhr.onerror = function() 
     {
@@ -286,6 +308,87 @@
 
     // Send the data to the server
     xhr.send(data);
+  });
+</script>
+
+<!-- Generate SoA -->
+<script>
+  document.getElementById('download-btn').addEventListener('click', function() 
+  {
+    const companyId = document.getElementById('company-filter').value;
+    const month = document.getElementById('month-filter').value;
+    const year = document.getElementById('year-filter').value;
+
+    // Get current date in mm/dd/yyyy format
+    const currentDate = new Date();
+    const currentDateFormatted = (currentDate.getMonth() + 1).toString().padStart(2, '0') + '/' +
+                                  currentDate.getDate().toString().padStart(2, '0') + '/' +
+                                  currentDate.getFullYear();
+
+    // First, send the request to agent-addSoA.php to insert SOA data
+    const xhrAddSoA = new XMLHttpRequest();
+    xhrAddSoA.open('POST', '../Agent Section/functions/agent-addSoAFIT.php', true);
+    xhrAddSoA.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhrAddSoA.responseType = 'json'; // Expect JSON response for the SOA number
+
+    xhrAddSoA.onload = function() 
+    {
+      if (xhrAddSoA.status === 200) 
+      {
+        const response = xhrAddSoA.response;
+        
+        if (response.soanum) 
+        {
+          const soaNumber = response.soanum; // Get the generated SOA number
+
+          // Proceed to generate the SOA PDF
+          const xhrPdf = new XMLHttpRequest();
+          xhrPdf.open('POST', '../Agent Section/functions/generateSoAFIT.php', true);
+          xhrPdf.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+          xhrPdf.responseType = 'blob';
+
+          xhrPdf.onload = function() 
+          {
+            if (xhrPdf.status === 200) 
+            {
+              // Create a link to download the PDF
+              const blob = new Blob([xhrPdf.response], { type: 'application/pdf' });
+              const link = document.createElement('a');
+              link.href = window.URL.createObjectURL(blob);
+              link.download = `Statement_of_Account_${soaNumber}.pdf`;
+              link.click();
+            } 
+            else 
+            {
+              alert('Failed to generate the SOA PDF. Please try again.');
+            }
+          };
+
+          xhrPdf.onerror = function() {
+            alert('An error occurred while generating the SOA PDF.');
+          };
+
+          // Send the request to generate the SOA PDF with the SOA number
+          xhrPdf.send(`companyId=${companyId}&month=${month}&year=${year}&currentDate=${currentDateFormatted}&soaNumber=${soaNumber}`);
+        } 
+        else 
+        {
+          alert('Failed to generate SOA Number. Please try again.');
+        }
+      } 
+      else 
+      {
+        alert('Failed to insert SOA number. Server error: ' + xhrAddSoA.statusText);
+      }
+    };
+
+    xhrAddSoA.onerror = function() 
+    {
+      alert('An error occurred while processing the request to insert SOA data.');
+    };
+
+    // Send the request with the necessary values for SOA number
+    xhrAddSoA.send(`companyId=${companyId}&month=${month}&year=${year}&currentDate=${currentDateFormatted}`);
   });
 </script>
 
