@@ -216,7 +216,7 @@
                       <label class="fs-6" for="contactNo">Contact No. <span class="text-danger fw-bold">*</span></label>
                       <div class="input-group">
                         <select name="countryCode" id="countryCode" class="form-select mt-2 fs-6" required>
-                          <option disabled selected>Country Code</option>
+                          <option disabled>Country Code</option>
                           <option value="+93">Afghanistan (+93)</option>
                           <option value="+355">Albania (+355)</option>
                           <option value="+213">Algeria (+213)</option>
@@ -348,7 +348,7 @@
                           <option value="+675">Papua New Guinea (+675)</option>
                           <option value="+595">Paraguay (+595)</option>
                           <option value="+51">Peru (+51)</option>
-                          <option value="+63">Philippines (+63)</option>
+                          <option value="+63" selected>Philippines (+63)</option>
                           <option value="+48">Poland (+48)</option>
                           <option value="+351">Portugal (+351)</option>
                           <option value="+974">Qatar (+974)</option>

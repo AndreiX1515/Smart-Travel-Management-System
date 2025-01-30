@@ -11,7 +11,7 @@
   </a>
 
   <!-- Add Booking link -->
-  <a href="../Agent Section/agent-addbooking2.php" class="page-button add-booking mb-1 my-0" data-page-name="Add Booking">
+  <a href="../Agent Section/agent-addbooking.php" class="page-button add-booking mb-1 my-0" data-page-name="Add Booking">
     <i class="fa-solid fa-user-plus"></i> <span>Add Booking</span>
   </a>
 

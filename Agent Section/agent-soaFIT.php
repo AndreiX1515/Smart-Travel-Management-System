@@ -19,71 +19,13 @@
 <?php include '../Agent Section/includes/sidebar.php'; ?> 
 
 <div class="main-content" id="mainContent">
-    
-  <?php
-    
-  ?>
 
   <?php
     date_default_timezone_set('Asia/Taipei');
     $current_date = date('D, F d, Y'); 
   ?>
 
-  <header>      
-    <nav class="navbar navbar-expand-lg justify-content-between sticky-top">
-      <div class="container-fluid d-flex justify-content-between">
-        <div class="nav-start-container d-flex flex-row">
-          <div class="content-header">
-            <div class="back-button-wrapper">
-              <a href="agent-dashboard.php" class="back-button-link"> <i class="fa-solid fa-arrow-left me-2"></i> Back to Dashboard</a>
-            </div>
-            <h1>Statement of Accounts (SoA FIT)</h1>
-          </div>
-        </div>
-
-        <div class="nav-end-container d-flex flex-row align">
-          <div class="date-time-container d-flex flex-row align-items-center">
-            <h6><?php echo $current_date; ?></h6>
-          </div>
-
-          <div class="vertical-line-navbar"></div>
-
-          <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-              <li class="nav-item dropdown d-flex align-items-center">
-                <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  <div class="profile-container ms-2 me-3">
-                    <h6 class="mb-1"><?php echo $fullName; ?></h6>
-                    <span class="m-0">Branch: <?php echo $branchName; ?></span>
-                    <span class="m-0">Agent ID: <?php echo $agentId; ?></span>
-                  </div>
-                  <img src="../Assets/Icons/circle.png" alt="Profile" class="profile-image me-2" width="40px" height="40px">
-                </a>
-
-                <ul class="dropdown-menu dropdown-menu-end mt-3" aria-labelledby="navbarDropdown">
-                  <li>
-                    <a class="dropdown-item" href="#" style="font-size: 14px;" data-bs-toggle="modal" data-bs-target="#viewPasswordModal">
-                      <i class="fas fa-user me-2"></i> View Password
-                    </a>
-                  </li>
-
-                  <li>
-                    <hr class="dropdown-divider">
-                  </li>
-
-                  <li>
-                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal" style="font-size: 14px;">
-                      <i class="fas fa-sign-out-alt me-2"></i> Logout
-                    </a>
-                  </li>
-                </ul>
-              </li>  
-            </ul>
-          </div>
-        </div>
-      </div>
-    </nav>
-  </header>
+  <?php include '../Agent Section/includes/navbar.php'; ?>
 
   <?php include '../Agent Section/includes/logoutViewPassModal.php'; ?>
 
