@@ -94,12 +94,13 @@ class PDF extends TCPDF
     $this->SetTextColor(0, 0, 0); // Black text color
 
     // Render header cells
-    $this->Cell(15, 6, 'NO.', 1, 0, 'C', true); 
-    $this->Cell(65, 6, "  " . 'CONTENTS', 1, 0, 'L', true);
-    $this->Cell(35, 6, 'Price (USD)', 1, 0, 'C', true);
-    $this->Cell(15, 6, 'PAX', 1, 0, 'C', true);
-    $this->Cell(30, 6, 'TOTAL (USD)', 1, 0, 'C', true);
-    $this->Cell(30, 6, 'TOTAL (PHP)', 1, 1, 'C', true);
+    $this->Cell(10, 6, 'NO.', 1, 0, 'C', true); 
+    $this->Cell(55, 6, " ".'CONTENTS', 1, 0, 'L', true);
+    $this->Cell(27, 6, 'Price (USD)', 1, 0, 'C', true);
+    $this->Cell(27, 6, 'Price (PHP)', 1, 0, 'C', true);
+    $this->Cell(10, 6, 'PAX', 1, 0, 'C', true);
+    $this->Cell(30.5, 6, 'TOTAL (USD)', 1, 0, 'C', true);
+    $this->Cell(30.5, 6, 'TOTAL (PHP)', 1, 1, 'C', true);
 
     $this->SetFont('Helvetica', '', 10, true);
     // Reset text color
@@ -121,12 +122,12 @@ class PDF extends TCPDF
     $this->SetFillColor(255, 255, 255); // White background
     $this->SetTextColor(0, 0, 0); // Black text color
 
-    $col1 = 15;
-    $col2 = 65;
-    $col3 = 35;
-    $col4 = 15;
-    $col5 = 30;
-    $col6 = 30;
+    $col1 = 10;
+    $col2 = 55;
+    $col3 = 27;
+    $col4 = 10;
+    $col5 = 30.5;
+    $col6 = 30.5;
 
     // Reset text color
     $this->SetTextColor(0, 0, 0);
@@ -139,7 +140,8 @@ class PDF extends TCPDF
 
       // Render cells with data
       $this->Cell($col1, 7, $row['no'], 1, 0, 'C');
-      $this->Cell($col2, 7, "  " . $row['contents'], 1, 0, 'L');
+      $this->Cell($col2, 7, " ".$row['contents'], 1, 0, 'L');
+      $this->Cell($col3, 7, $row['price'], 1, 0, 'C');
       $this->Cell($col3, 7, $row['price'], 1, 0, 'C');
       $this->Cell($col4, 7, $row['pax'], 1, 0, 'C');
       $this->Cell($col5, 7, $row['total_usd'], 1, 0, 'R');
@@ -170,11 +172,17 @@ class PDF extends TCPDF
     $this->SetTextColor(0, 0, 0); // Black text color
 
     // Render subtotal cells
-    $this->Cell(115, 7, '', 1, 0, 'C', true);
-    $this->SetFont('Helvetica', 'B', 8, true);
-    $this->Cell(45, 7, "  " . 'SUBTOTAL: ', 'LTB', 0, 'L', true);
+    $this->Cell(92, 7, '', 1, 0, 'C', true);
+
+
+    $this->SetFont('Helvetica', 'B', 7.5, true);
+
+    $this->Cell(37, 7, "  ".'SUB TOTAL: ', 1, 0, 'L', true);
+
     $this->SetFont('Helvetica', 'B', 10, true);
-    $this->Cell(30, 7, $subTotal, 'RTB', 0, 'R', true);  // Dynamically use the $subTotal variable
+
+    $this->Cell(30.5, 7, $subTotal, 1, 0, 'R', true);  // Dynamically use the $subTotal variable
+    $this->Cell(30.5, 7, $subTotal, 1, 0, 'R', true);  // Dynamically use the $subTotal variable
 
     // Reset text color
     $this->SetFont('Helvetica', '', 10, true);
@@ -200,12 +208,12 @@ class PDF extends TCPDF
     $this->SetFillColor(255, 255, 255); // White background
     $this->SetTextColor(0, 0, 0); // Black text color
 
-    $col1 = 15;
-    $col2 = 65;
-    $col3 = 35;
-    $col4 = 15;
-    $col5 = 30;
-    $col6 = 30;
+    $col1 = 10;
+    $col2 = 55;
+    $col3 = 27;
+    $col4 = 10;
+    $col5 = 30.5;
+    $col6 = 30.5;
 
     // Reset text color
     $this->SetTextColor(0, 0, 0);
@@ -219,6 +227,7 @@ class PDF extends TCPDF
       // Render cells with data
       $this->Cell($col1, 7, $row['no'], 1, 0, 'C');
       $this->Cell($col2, 7, "  " . $row['contents'], 1, 0, 'L');
+      $this->Cell($col3, 7, $row['price'], 1, 0, 'C');
       $this->Cell($col3, 7, $row['price'], 1, 0, 'C');
       $this->Cell($col4, 7, $row['pax'], 1, 0, 'C');
       $this->Cell($col5, 7, $row['total_usd'], 1, 0, 'R');
@@ -248,11 +257,15 @@ class PDF extends TCPDF
     $this->SetTextColor(0, 0, 0); // Black text color
 
     // Render subtotal cells
-    $this->Cell(115, 7, '', 1, 0, 'C', true);
-    $this->SetFont('Helvetica', 'B', 8, true);
-    $this->Cell(45, 7, "  " . 'TOTAL REQUEST COST: ', 'LTB', 0, 'L', true);
+    $this->Cell(92, 7, '', 1, 0, 'C', true);
+    $this->SetFont('Helvetica', 'B', 7, true);
+
+    $this->Cell(37, 7, "  " . 'TOTAL REQUEST COST: ', 1, 0, 'L', true);
+
     $this->SetFont('Helvetica', 'B', 10, true);
-    $this->Cell(30, 7, $totalRequestCost, 'RTB', 0, 'R', true);
+
+    $this->Cell(30.5, 7, $totalRequestCost, 1, 0, 'R', true);
+    $this->Cell(30.5, 7, $totalRequestCost, 1, 0, 'R', true);
 
     // Reset text color
     $this->SetFillColor(255, 255, 255); // White background
@@ -277,12 +290,12 @@ class PDF extends TCPDF
     $this->SetFillColor(255, 255, 255); // White background
     $this->SetTextColor(0, 0, 0); // Black text color
     
-    $col1 = 15;
-    $col2 = 65;
-    $col3 = 35;
-    $col4 = 15;
-    $col5 = 30;
-    $col6 = 30;
+    $col1 = 10;
+    $col2 = 55;
+    $col3 = 27;
+    $col4 = 10;
+    $col5 = 30.5;
+    $col6 = 30.5;
 
     // Reset text color
     $this->SetTextColor(0, 0, 0);
@@ -296,6 +309,7 @@ class PDF extends TCPDF
       // Render cells with data
       $this->Cell($col1, 7, $row['no'], 1, 0, 'C');
       $this->Cell($col2, 7, "  " . $row['contents'], 1, 0, 'L');
+      $this->Cell($col3, 7, $row['price'], 1, 0, 'C');
       $this->Cell($col3, 7, $row['price'], 1, 0, 'C');
       $this->Cell($col4, 7, $row['pax'], 1, 0, 'C');
       $this->Cell($col5, 7, $row['total_usd'], 1, 0, 'R');
@@ -325,11 +339,12 @@ class PDF extends TCPDF
     $this->SetTextColor(0, 0, 0); // Black text color
 
     // Render subtotal cells
-    $this->Cell(115, 7, '', 1, 0, 'C', true);
+    $this->Cell(92, 7, '', 1, 0, 'C', true);
     $this->SetFont('Helvetica', 'B', 8, true);
-    $this->Cell(45, 7, "  " . 'TOTAL PAYMENT: ', 'LTB', 0, 'L', true);
+    $this->Cell(37, 7, "  " . 'TOTAL PAYMENT: ', 1, 0, 'L', true);
     $this->SetFont('Helvetica', 'B', 10, true);
-    $this->Cell(30, 7, $totalAmount, 'RTB', 0, 'R', true);
+    $this->Cell(30.5, 7, $totalAmount, 1, 0, 'R', true);
+    $this->Cell(30.5, 7, $totalAmount, 1, 0, 'R', true);
 
     // Reset text color and font
     $this->SetFont('Helvetica', '', 10); // Reset to normal weight
@@ -356,11 +371,12 @@ class PDF extends TCPDF
     $this->SetTextColor(0, 0, 0); // Black text color
 
     // Render header cells for Balance table
-    $this->Cell(115, 7, '', 1, 0, 'C', true); 
-    $this->SetFont('Helvetica', 'B', 8); // Set font to bold ('B')
-    $this->Cell(45, 7, "  " . 'BALANCE: ', 'LTB', 0, 'L', true); 
-    $this->SetFont('Helvetica', 'B', 10); // Set font to bold ('B')
-    $this->Cell(30, 7, $balance, 'RTB', 0, 'R', true); 
+    $this->Cell(92, 7, '', 1, 0, 'C', true); 
+    $this->SetFont('Helvetica', 'B', 8);
+    $this->Cell(37, 7, "  " . 'BALANCE: ', 1, 0, 'L', true); 
+    $this->SetFont('Helvetica', 'B', 10);
+    $this->Cell(30.5, 7, $balance, 1, 0, 'R', true);
+    $this->Cell(30.5, 7, $balance, 1, 0, 'R', true);  
 
     // Reset text color and font
     $this->SetFont('Helvetica', '', 10); // Reset to normal weight

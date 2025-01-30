@@ -506,8 +506,8 @@ body {
 
 .product-table th:nth-child(5),
 .product-table td:nth-child(5) {
-  width: 7%; /* Adjust width for Transaction Date column */
-  text-align: center;
+  width: 7%; 
+  text-align: center; 
 }
 
 .product-table th:nth-child(6),
@@ -518,15 +518,15 @@ body {
 
 .product-table th:nth-child(7),
 .product-table td:nth-child(7) {
-  width: 5%; /* Adjust width for Total Pax column */
+  width: 8%; /* Adjust width for Total Pax column */
   text-align: center;
 }
 
-.product-table th:nth-child(8),
+/* .product-table th:nth-child(8),
 .product-table td:nth-child(8) {
-  width: 7%; /* Adjust width for Status column */
+  width: 7%; 
   text-align: center;
-}
+} */
 
 
 

@@ -22,7 +22,7 @@ require "../conn.php";
 
   <div class="main-content-container">
     <div class="navbar">
-      <h5 class="title-page">Dashboard</h5>
+      <h5 class="title-page" id="page-title">Dashboard</h5>
     </div>
 
     <div class="main-content">
@@ -593,7 +593,7 @@ require "../conn.php";
           <div class="card">
             <div class="header-counts d-flex justify-content-between align-items-center header-currency">
               <h6 class="white-pill">Daily Currency Conversion</h6>
-              <a href="" class="pill-button">View History</a>
+              <a href="../Agent Section/agent-currency-conversion.php" class="pill-button">View History</a>
             </div>
 
             <div class="card-body-currency">
@@ -1523,6 +1523,7 @@ require "../conn.php";
                 </div>
               </div>
             </div>
+            
           </div>
 
           <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">

@@ -157,7 +157,7 @@ require "../conn.php";
                           <th>Contact Person Info</th>
                           <th>Contact Details</th>
                           <th>Package Name</th>
-                          <th>Booking Date</th>
+                          <!-- <th>Booking Date</th> -->
                           <th>Flight Date</th>
                           <th>Total Pax</th>
                           <th>Status</th>
@@ -216,6 +216,9 @@ require "../conn.php";
                                       $statusClass = 'bg-secondary text-white'; 
                               }
 
+                              // Booking Date
+                              // <td>{$row['TRANSACTION DATE']}</td>
+
                               echo "<tr data-url='agent-showGuest2.php?id=" . htmlspecialchars($transactNo) . "'>
                                       <td>{$transactNo}</td>
                                       <td>{$row['CONTACT NAME']}</td>
@@ -227,7 +230,7 @@ require "../conn.php";
                                       </td>
             
                                       <td>{$row['PACKAGE']}</td>
-                                      <td>{$row['TRANSACTION DATE']}</td>
+                                      
                                       <td>{$row['FLIGHT DATE']}</td>
                                       <td style='text-align: center; font-weight: bold;'>
                                           {$row['TOTAL PAX']}
@@ -291,6 +294,8 @@ require "../conn.php";
                                     $statusClass = 'bg-secondary text-white'; 
                               }
 
+                              // <td>{$row['TRANSACTION DATE']}</td>
+
                               echo "<tr data-url='agent-showGuest2.php?id=" . htmlspecialchars($transactNo) . "'>
                                   <td>{$transactNo}</td>
                                   <td>{$row['CONTACT NAME']}</td>
@@ -301,7 +306,7 @@ require "../conn.php";
                                     </div>
                                   </td>
                                   <td>{$row['PACKAGE']}</td>
-                                  <td>{$row['TRANSACTION DATE']}</td>
+                                  
                                   <td>{$row['FLIGHT DATE']}</td>
                                   <td style='text-align: center; font-weight: bold;'>{$row['TOTAL PAX']}</td>
                                   <td>
@@ -724,7 +729,7 @@ $(document).ready(function () {
         // Disable sorting for specific columns
         columnDefs: [
           {
-            targets: [1, 2, 3, 4, 5, 6, 7], // Disable sorting for 2nd and 4th columns
+            targets: [1, 2, 3,  5, 6,], // Disable sorting for 2nd and 4th columns
             orderable: false
           }
         ]

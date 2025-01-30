@@ -105,71 +105,69 @@ session_start();
             </div>
 
             <div class="columns col-md-2">
-              <div class="table-filters-container">
-                <label for="month-filter">Month</label>
-                <select id="month-filter" name="month-filter" class="form-control">
-                  <option selected disabled>Select month</option>
-                  <option value="January">January</option>
-                  <option value="February">February</option>
-                  <option value="March">March</option>
-                  <option value="April">April</option>
-                  <option value="May">May</option>
-                  <option value="June">June</option>
-                  <option value="July">July</option>
-                  <option value="August">August</option>
-                  <option value="September">September</option>
-                  <option value="October">October</option>
-                  <option value="November">November</option>
-                  <option value="December">December</option>
-                </select>
-              </div>
-            </div>
+  <div class="table-filters-container">
+    <label for="month-filter">Month</label>
+    <select id="month-filter" name="month-filter" class="form-control">
+      <option selected disabled>Select Month</option>
+      <option value="January">January</option>
+      <option value="February">February</option>
+      <option value="March">March</option>
+      <option value="April">April</option>
+      <option value="May">May</option>
+      <option value="June">June</option>
+      <option value="July">July</option>
+      <option value="August">August</option>
+      <option value="September">September</option>
+      <option value="October">October</option>
+      <option value="November">November</option>
+      <option value="December">December</option>
+    </select>
+  </div>
+</div>
 
-            <script>
-              // Get the current month as a number (0 = January, 1 = February, ..., 11 = December)
-              const currentMonth = new Date().getMonth();
-              
-              // Get the select element
-              const selectElement = document.getElementById('company-filter');
-              
-              // Select the option corresponding to the current month
-              selectElement.selectedIndex = currentMonth;
-            </script>
+<script>
+  // First script: Set current month in month select
+  (function() {
+    const currentMonthIndex1 = new Date().getMonth(); // 0-based index for current month
+    const monthSelect1 = document.getElementById('month-filter');
+    monthSelect1.value = monthSelect1.options[currentMonthIndex1 + 1].value; // Adjust to 1-based index
+  })();
+</script>
 
-            <div class="columns col-md-3">
-              <div class="table-filters-container">
-                <label for="year-filter">Year</label>
-                <select id="year-filter" name="year-filter" class="form-control">
-                  <!-- Year options will be populated dynamically -->
-                </select>
-              </div>
-            </div>
+<div class="columns col-md-3">
+  <div class="table-filters-container">
+    <label for="year-filter">Year</label>
+    <select id="year-filter" name="year-filter" class="form-control">
+      <!-- Year options will be populated dynamically -->
+    </select>
+  </div>
+</div>
 
-            <script>
-              // Get the current month (1 = January, 2 = February, ..., 12 = December)
-              const currentMonthIndex = new Date().getMonth() + 1; // Add 1 to make it 1-based
-              const currentYear = new Date().getFullYear();
+<script>
+  // Second script: Set current year and month in year select
+  (function() {
+    const currentMonthIndex2 = new Date().getMonth() + 1; // 1-based index for current month
+    const currentYear = new Date().getFullYear();
+    const yearSelect = document.getElementById('year-filter');
 
-              // Get the year select element
-              const yearSelect = document.getElementById('year-filter');
-              
-              // Dynamically populate the years
-              for (let i = currentYear - 5; i <= currentYear + 5; i++) {
-                const option = document.createElement('option');
-                option.value = i;
-                option.textContent = i;
-                yearSelect.appendChild(option);
-              }
+    // Dynamically populate the years
+    for (let i = currentYear - 5; i <= currentYear + 5; i++) {
+      const option = document.createElement('option');
+      option.value = i;
+      option.textContent = i;
+      yearSelect.appendChild(option);
+    }
 
-              // Optionally set the current year as selected
-              yearSelect.value = currentYear;
-              
-              // Get the month select element
-              const monthSelect = document.getElementById('month-filter');
+    // Set the current year as selected
+    yearSelect.value = currentYear;
 
-              // Set the current month as selected
-              monthSelect.value = currentMonthIndex; // Use 1-based month index
-            </script>
+    // // Set the current month as selected (independent of the first script)
+    // const monthSelect2 = document.getElementById('month-filter');
+    // monthSelect2.value = currentMonthIndex2; // Use the 1-based month index
+  })();
+</script>
+
+
 
           </div>
 
@@ -360,8 +358,7 @@ session_start();
         
       </div>
     
-      
-      
+    
 
     </div>
   </div>
@@ -370,39 +367,6 @@ session_start();
 
 
 <?php require "../Agent Section/includes/scripts.php"; ?>
-
-<script>
-function toggleSubMenu(submenuId) {
-    const submenu = document.getElementById(submenuId);
-    const sectionTitle = submenu.previousElementSibling;
-    const chevron = sectionTitle.querySelector('.chevron-icon'); 
-
-    // Check if the submenu is already open
-    const isOpen = submenu.classList.contains('open');
-
-    // If it's open, we need to close it, and reset the chevron
-    if (isOpen) {
-        submenu.classList.remove('open');
-        chevron.style.transform = 'rotate(0deg)';
-    } else {
-        // First, close all open submenus and reset all chevrons
-        const allSubmenus = document.querySelectorAll('.submenu');
-        const allChevrons = document.querySelectorAll('.chevron-icon');
-        
-        allSubmenus.forEach(sub => {
-            sub.classList.remove('open');
-        });
-
-        allChevrons.forEach(chev => {
-            chev.style.transform = 'rotate(0deg)';
-        });
-
-        // Now, open the current submenu and rotate its chevron
-        submenu.classList.add('open');
-        chevron.style.transform = 'rotate(180deg)';
-    }
-}
-</script>
 
 
 <script>
