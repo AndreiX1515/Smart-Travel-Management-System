@@ -102,7 +102,18 @@
       <form action="../Client Section/Functions/bookingform-code.php" method="POST">
         <div class="bookingform">
 
-        <h4>Flight ID: <span id="flight-id"></span></h4>
+
+        <?php
+            if (isset($_GET['flightid'])) {
+                $flightid = $_GET['flightid'];
+            } else {
+                // Handle the case where the flightid is not available
+                echo "No flight ID found!";
+                exit;
+            }
+        ?>
+
+          <h4>Flight ID: <?php echo htmlspecialchars($flightid); ?></h4>    
 
 
           <div class="card">

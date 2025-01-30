@@ -179,6 +179,7 @@
           <table class="info-table">
             <thead class="border-2">
               <tr>
+                <th rowspan="2"></th>
                 <th rowspan="2">ORIGIN</th>
                 <th colspan="2">FLIGHT DATE</th> <!-- Flight Date columns -->
                 <th rowspan="2">AVAILABLE SEATS</th>
@@ -257,15 +258,13 @@
                   while ($row = $result->fetch_assoc()) 
                   {
                     echo '<tr>';
+                    echo '<td>' . $row['flightid'] . '</td>';
                     echo '<td>' . $row['origin'] . '</td>';
                     echo '<td>' . $row['Start'] . '</td>';
                     echo '<td>' . $row['End'] . '</td>';
                     echo '<td class="fw-bold">' . $row['AvailSeats'] . '</td>';
                     echo '<td class="fw-bolder">' . $row['AdditionalSeats'] . '</td>';
                     echo '<td><a href="../Client Section/client-bookingform-flight.php?flightid=' . $row['flightid'] . '" class="btn btn-sm btn-success book-now" data-flightid="' . $row['flightid'] . '" id="book-now">Book Now</a></td>';
-
-
-
 
                     echo '</tr>';
                   }
@@ -281,26 +280,7 @@
       </div>
     </div>
 
-    <script>
-    document.addEventListener('DOMContentLoaded', function () {
-    // Fetch the flightid from the URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const flightId = urlParams.get('flightid');
     
-    // If flightId exists, update the <h4> element with it
-    if (flightId) {
-        document.getElementById('flight-id').textContent = flightId;
-    }
-});
-
-
-
-
-
-
-
-
-    </script>
 </section>
 
 <section class="about">
