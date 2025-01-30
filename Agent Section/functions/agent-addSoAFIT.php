@@ -12,7 +12,7 @@ $currentDate = $_POST['currentDate']; // Current date sent from the client
 $conn->begin_transaction();
 
 // Fetch the last SOA number for the current year
-$sql5 = "SELECT MAX(id) AS lastSoAId FROM soa";
+$sql5 = "SELECT MAX(id) AS lastSoAId FROM soafit";
 $result5 = $conn->query($sql5);
 
 if (!$result5) 
@@ -33,7 +33,7 @@ $soaNo = 'SMT-' . $year . '-' . $formattedCounter;
 $dateGenerated = date('Y-m-d H:i:s'); // Format: YYYY-MM-DD HH:MM:SS
 
 // Prepare the SQL for insertion
-$sql6 = "INSERT INTO soa (soaNo, branchId, month, dateGenerated, status)
+$sql6 = "INSERT INTO soafit (soaNo, branchId, month, dateGenerated, status)
          VALUES (?, ?, ?, ?, ?)";
 $stmt6 = $conn->prepare($sql6);
 

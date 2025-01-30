@@ -90,7 +90,7 @@ if ($res1->num_rows > 0)
     $count++;
   }
 }
-else 
+else
 {
   $table1 = "<tr><td colspan='7'>No data found</td></tr>";
 }

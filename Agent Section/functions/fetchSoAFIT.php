@@ -4,6 +4,7 @@ require "../../conn.php"; // Include the DB connection
 session_start();
 
 // Get the selected filter values from the POST request
+$companyId = $_POST['companyId'];
 $month = isset($_POST['month']) ? intval(date('m', strtotime($_POST['month']))) : date('m');
 $year = isset($_POST['year']) ? intval($_POST['year']) : date('Y');
 
@@ -11,6 +12,8 @@ $year = isset($_POST['year']) ? intval($_POST['year']) : date('Y');
 $totalPhpSum = 0;
 $totalUsdSum = 0;
 $totalPaymentAmount = 0;
+$formattedTotalUsdSum = 0;  // Default to 0 if not set
+$formattedTotalPhpSum = 0;  // Default to 0 if not set
 $balance = 0;
 $count = 1;
 
@@ -18,14 +21,17 @@ $count = 1;
 $dataAvailable = false;
 $table1 = '';
 $table2 = '';
+$tableData1 = [];
+$tableData2 = [];
 
 // Query: Fetch booking data
-$sql = "SELECT f.startDate AS startDate, fh.hotelName AS hotelName, fr.rooms AS roomType, fr.price as roomPrice, f.rooms AS NoofRooms, 
-          f.pax AS pax, f.phpPrice AS bookingPhpPrice, f.usdPrice AS bookingUsdPrice
+$sql = "SELECT f.startDate AS startDate, fh.hotelName AS hotelName, fr.rooms AS roomType, fr.price as roomPrice, 
+          f.rooms AS NoofRooms, f.pax AS pax, f.phpPrice AS bookingPhpPrice, f.usdPrice AS bookingUsdPrice
         FROM `fit` f
         JOIN fithotel fh ON f.hotelId = fh.hotelId
         JOIN fitrooms fr ON f.roomId = fr.roomId
-        WHERE MONTH(f.startDate) = $month AND YEAR(f.startDate) = $year AND f.status = 'Completed'";
+        JOIN branch b ON f.agentCode = b.branchAgentCode
+        WHERE b.branchId = $companyId AND MONTH(f.startDate) = $month AND YEAR(f.startDate) = $year AND f.status = 'Completed'";
 
 $res = $conn->query($sql);
 
@@ -36,8 +42,12 @@ if ($res && $res->num_rows > 0)
   {
     // Booking Details
     $formattedBookingUsdPrice = number_format($row['roomPrice'], 2);
+    $formattedPricePHP = number_format($row['bookingPhpPrice'], 2);
+    $formattedPriceUSD = number_format($row['bookingUsdPrice'], 2);
     $totalPhpSum += $row['bookingPhpPrice'];
     $totalUsdSum += $row['bookingUsdPrice'];
+    $formattedTotalPhpSum = number_format($totalPhpSum, 2);
+    $formattedTotalUsdSum = number_format($totalUsdSum, 2);
 
     $table1 .= "<tr>
                   <td>$count</td>
@@ -45,9 +55,22 @@ if ($res && $res->num_rows > 0)
                   <td>$ $formattedBookingUsdPrice</td>
                   <td>-</td>
                   <td>{$row['pax']}</td>
-                  <td>$ " . number_format($row['bookingUsdPrice'], 2) . "</td>
-                  <td>₱ " . number_format($row['bookingPhpPrice'], 2) . "</td>
+                  <td>$ " . $formattedPriceUSD . "</td>
+                  <td>₱ " . $formattedPricePHP . "</td>
                 </tr>";
+
+    // Add the row data to the tableData1 array
+    $tableData1[] = [
+      'no' => $count,  // Sequential number
+      'contents' => "{$row['hotelName']} ({$row['roomType']}) R: {$row['NoofRooms']}",  // Hotel and room details
+      'price' => $formattedBookingUsdPrice,  // Formatted booking price in USD
+      'pax' => $row['pax'],  // Number of passengers
+      'total_usd' => $formattedPriceUSD,  // Total price in USD
+      'total_php' => $formattedPricePHP,  // Total price in PHP
+    ];
+
+    $_SESSION['tableData1'] = $tableData1;
+    $_SESSION['totalPhpSum'] = $formattedTotalPhpSum;
     $count++;
   }
 } 
@@ -60,7 +83,8 @@ else
 $sql2 = "SELECT fp.paymentType AS paymentType,  DATE_FORMAT(fp.paymentDate, '%M %d, %Y') AS paymentDate, fp.amount AS paymentAmount 
          FROM `fit` f
          JOIN fitpayment fp ON f.transactionNo = fp.transactNo
-         WHERE MONTH(f.startDate) = $month AND YEAR(f.startDate) = $year AND fp.paymentStatus = 'Approved'";
+         JOIN branch b ON f.agentCode = b.branchAgentCode
+         WHERE b.branchId = $companyId AND MONTH(f.startDate) = $month AND YEAR(f.startDate) = $year AND fp.paymentStatus = 'Approved'";
 
 $res2 = $conn->query($sql2);
 
@@ -75,13 +99,25 @@ if ($res2 && $res2->num_rows > 0)
 
     $table2 .= "<tr>
                   <td>$count</td>
-                  <td>{$row['paymentType']} (Payment Date: {$row['paymentDate']})</td>
+                  <td>{$row['paymentType']} - {$row['paymentDate']}</td>
                   <td>-</td>
-                  <td>₱ $formattedPaymentAmount</td>
+                  <td></td>
                   <td>-</td>
                   <td>-</td>
                   <td>₱ $formattedPaymentAmount</td>
                 </tr>";
+    // Add the row data to the tableData1 array
+    $tableData2[] = [
+      'no' => $count,  // Sequential number
+      'contents' =>  $row['paymentType'] . ' - ' . $row['paymentDate'],  // Hotel and room details
+      'price' => '',  // Formatted booking price in USD
+      'pax' => '',  // Number of passengers
+      'total_usd' => '',  // Total price in USD
+      'total_php' => $formattedPaymentAmount,  // Total price in PHP
+    ];
+
+    $_SESSION['tableData2'] = $tableData2;
+    $_SESSION['totalPaymentAmount'] = $formattedPaymentAmount;
     $count++;
   }
 } 
@@ -90,12 +126,26 @@ else
   $table2 = "<tr><td colspan='7'>No Payment Records found</td></tr>";
 }
 
+$sql4 = "SELECT branchName FROM branch WHERE branchId = $companyId";
+$res4 = $conn->query($sql4);
+
+if ($res4 && $res4->num_rows > 0) 
+{
+  $row = $res4->fetch_assoc();
+  $_SESSION['branchName'] = $row['branchName']; // Store the branch name in the session
+} 
+else 
+{
+  $_SESSION['branchName'] = 'Unknown Branch'; // Default value if branch is not found
+}
+
 // Generate subtotals
-$formattedTotalPhpSum = number_format($totalPhpSum, 2);
-$formattedTotalUsdSum = number_format($totalUsdSum, 2);
 $formattedTotalPaymentAmount = number_format($totalPaymentAmount, 2);
 $balance = $totalPhpSum - $totalPaymentAmount;
 $formattedBalance = number_format($balance, 2);
+
+// $_SESSION['table1'] = $table1;
+$_SESSION['balance'] = $formattedBalance;
 
 // Generate combined response
 $response = "
