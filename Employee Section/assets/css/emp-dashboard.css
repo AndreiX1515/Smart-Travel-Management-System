@@ -153,8 +153,8 @@
   margin: 0;
  }
  
- 
- 
+
+
  /* Card 4 */
 .card-body-currency {
   width: 100%;
@@ -171,87 +171,87 @@
   align-items: center; /* Vertically center the cards */
 }
   
-  /* Individual Currency Card */
-  .currency-card {
-   width: 140px;
-   height: 10.5vh;
-   padding: 0px; 
-   display: flex;
-   flex-direction: column;
-   align-items: center;
-   justify-content: center;
-   border-radius: 8px; 
-   background-color: white;
-   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); 
-   font-size: 16px;
-   font-weight: bold;
-   color: #333; /* Text color */
-   transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth hover effect */
-  }
-  
-  /* Flag Icon Wrapper */
-  .currency-card .flag-icon-wrapper {
-   display: flex;
-   flex-direction: column;
-   align-items: center;
-   padding: 10px 5px;
-   /* margin: 10px 5px 10px 5px; Adjusted margins to ensure consistent spacing */
-  }
-  
-  /* Flag Icon Styling */
-  .currency-card .flag-icon-wrapper img {
-   width: 25px;
-   height: 25px;
-  }
-  
-  .flag-icon-wrapper h6{
-    font-size: 12px;
-  }
-  
-  .currency-text-wrapper h5{
-   margin-top: 5px;
-   font-size: 14px;
-   font-weight: bold;
-   white-space: nowrap; /* Prevent word wrapping */
-  }
-  
-  .pill-button {
-   display: inline-block; /* Makes it behave like a button */
-   padding: 4px 15px; /* Adds padding for better button appearance */
-   font-size: 10px; /* Sets the font size */
-   color: #000; /* Black text color */
-   background-color: #ffffff; /* White background */
-   text-decoration: none; /* Removes underline from the link */
-   border-radius: 30px; /* Gives it a pill shape */
-   text-align: center; /* Centers the text */
-   border: 1px solid #b9adad; /* Light border to match the background */
-   transition: background-color 0.3s ease, transform 0.2s ease, border-color 0.3s ease; /* Smooth transition for hover effects */
-  }
-  
-  
-  .pill-button:hover {
-   background-color: #f1f1f1; /* Light grey background on hover */
-   border-color: #3b413d; /* Change border color on hover */
-  }
-  
-  
-  .pill-button:active {
-   transform: translateY(0); /* Resets the transform on click */
-   background-color: #e0e0e0; /* Slightly darker background on click */
-  }
-  
-  /* Icon Wrapper */
-  .icon-wrapper {
-   width: 40px; /* Match the size proportionately */
-   height: 40px;
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   background-color: transparent;
-   font-size: 18px; /* Icon size */
-   color: #495057;; /* Icon color */
-   transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth hover effect */
-  }
+/* Individual Currency Card */
+.currency-card {
+  width: 140px;
+  height: 10.5vh;
+  padding: 0px; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px; 
+  background-color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); 
+  font-size: 16px;
+  font-weight: bold;
+  color: #333; /* Text color */
+  transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth hover effect */
+}
+
+/* Flag Icon Wrapper */
+.currency-card .flag-icon-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 5px;
+  /* margin: 10px 5px 10px 5px; Adjusted margins to ensure consistent spacing */
+}
+
+/* Flag Icon Styling */
+.currency-card .flag-icon-wrapper img {
+  width: 25px;
+  height: 25px;
+}
+
+.flag-icon-wrapper h6{
+  font-size: 12px;
+}
+
+.currency-text-wrapper h5{
+  margin-top: 5px;
+  font-size: 14px;
+  font-weight: bold;
+  white-space: nowrap; /* Prevent word wrapping */
+}
+
+.pill-button {
+  display: inline-block; /* Makes it behave like a button */
+  padding: 4px 15px; /* Adds padding for better button appearance */
+  font-size: 10px; /* Sets the font size */
+  color: #000; /* Black text color */
+  background-color: #ffffff; /* White background */
+  text-decoration: none; /* Removes underline from the link */
+  border-radius: 30px; /* Gives it a pill shape */
+  text-align: center; /* Centers the text */
+  border: 1px solid #b9adad; /* Light border to match the background */
+  transition: background-color 0.3s ease, transform 0.2s ease, border-color 0.3s ease; /* Smooth transition for hover effects */
+}
+
+
+.pill-button:hover {
+  background-color: #f1f1f1; /* Light grey background on hover */
+  border-color: #3b413d; /* Change border color on hover */
+}
+
+
+.pill-button:active {
+  transform: translateY(0); /* Resets the transform on click */
+  background-color: #e0e0e0; /* Slightly darker background on click */
+}
+
+/* Icon Wrapper */
+.icon-wrapper {
+  width: 40px; /* Match the size proportionately */
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  font-size: 18px; /* Icon size */
+  color: #495057;; /* Icon color */
+  transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth hover effect */
+}
   
  
  .navTabs-wrapper {
@@ -613,9 +613,6 @@
  
  
  
- 
- 
- 
 /* ============================
    Confirm Container
 ============================ */
@@ -772,11 +769,11 @@
   /* overflow: hidden; Prevent any unwanted overflow */
 }
 
-.info-table tbody tr.selected {
+/* .info-table tbody tr.selected {
   background-color: rgb(42, 204, 253) !important;
   color: black !important;
   font-weight: bold;
-}
+} */
 
 /* Optional: Change color on hover */
 .info-table tbody tr:hover {
@@ -803,10 +800,6 @@ div.dataTables_wrapper tbody tr:hover {
   cursor: pointer;
 }
 
-div.dataTables_wrapper td,
-div.dataTables_wrapper th {
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
 
 /* Styling for table data (td) */
 div.dataTables_wrapper td {
@@ -815,6 +808,13 @@ div.dataTables_wrapper td {
   font-size: 12px;
   color: #555;
   border-bottom: 1px solid #ddd; /* Border between rows */
+  border-left: 1px solid #ddd; /* Left border */
+  border-right: 1px solid #ddd; /* Right border */
+}
+
+/* Optional: Add a border to the first and last columns for consistency */
+div.dataTables_wrapper td:first-child {
+  border-left: 1px solid #ddd;
 }
 
 div.dataTables_wrapper thead th {
@@ -825,14 +825,30 @@ div.dataTables_wrapper thead th {
   text-align: center;
   font-weight: bold;
   border-right: 1px solid #e6e6e6;
-  padding: 8px 8px;
+  padding: 5px 8px;
+}
+
+/* Ensure selected row does not change size */
+.info-table tbody tr,
+div.dataTables_wrapper tbody tr {
+    transition: none !important; /* Disable animations */
+    border-collapse: collapse; /* Prevent border spacing changes */
+}
+
+/* Selected row styling */
+.info-table tbody tr.selected, 
+div.dataTables_wrapper tbody tr.selected {
+    background-color: rgb(42, 204, 253) !important; /* Highlight color */
+    color: black !important;
+    font-weight: bold;
+    outline: 2px solid transparent; /* Prevent shifting due to borders */
+    border-spacing: 0;
 }
 
 
-
 /* Sticky Columns for DataTables (first 11 columns) */
-div.dataTables_wrapper thead th:nth-child(-n+11),
-div.dataTables_wrapper tbody td:nth-child(-n+11) {
+div.dataTables_wrapper thead th:nth-child(-n+12),
+div.dataTables_wrapper tbody td:nth-child(-n+12) {
   position: sticky;
   left: 5;
   background-color: #f8f9fa; /* Light background for sticky columns */
@@ -842,28 +858,34 @@ div.dataTables_wrapper tbody td:nth-child(-n+11) {
 /* Column-Specific Width Adjustments */
 div.dataTables_wrapper thead th:nth-child(1),
 div.dataTables_wrapper tbody td:nth-child(1) {
+  width: 2%;
+}
+
+/* Column-Specific Width Adjustments */
+div.dataTables_wrapper thead th:nth-child(2),
+div.dataTables_wrapper tbody td:nth-child(2) {
   width: 8%;
 }
 
-div.dataTables_wrapper thead th:nth-child(2),
+
 div.dataTables_wrapper tbody td:nth-child(2) {
-  width: 5%;
+  font-size: 8px;
 }
 
 div.dataTables_wrapper thead th:nth-child(3),
 div.dataTables_wrapper tbody td:nth-child(3) {
-  width: 15%;
+  width: 5%;
 }
 
 div.dataTables_wrapper thead th:nth-child(4),
 div.dataTables_wrapper tbody td:nth-child(4) {
-  width: 5%;
-  
+  width: 15%;
 }
 
 div.dataTables_wrapper thead th:nth-child(5),
 div.dataTables_wrapper tbody td:nth-child(5) {
   width: 5%;
+  
 }
 
 div.dataTables_wrapper thead th:nth-child(6),
@@ -878,7 +900,7 @@ div.dataTables_wrapper tbody td:nth-child(7) {
 
 div.dataTables_wrapper thead th:nth-child(8),
 div.dataTables_wrapper tbody td:nth-child(8) {
-  width: 10%;
+  width: 5%;
 }
 
 div.dataTables_wrapper thead th:nth-child(9),
@@ -896,9 +918,14 @@ div.dataTables_wrapper tbody td:nth-child(11) {
   width: 10%;
 }
 
+div.dataTables_wrapper thead th:nth-child(12),
+div.dataTables_wrapper tbody td:nth-child(12) {
+  width: 10%;
+}
+
 /* For columns beyond 12th */
-div.dataTables_wrapper thead th:nth-child(n+12),
-div.dataTables_wrapper tbody td:nth-child(n+12) {
+div.dataTables_wrapper thead th:nth-child(n+13),
+div.dataTables_wrapper tbody td:nth-child(n+13) {
   width: 10%; /* Default width for columns beyond 12 */
 }
 

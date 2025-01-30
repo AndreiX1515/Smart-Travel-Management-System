@@ -21,14 +21,13 @@ require "../conn.php";
   <?php include "../Agent Section/includes/sidebar copy.php"; ?>
 
   <div class="main-content-container">
-    <div class="navbar">
-      <h5 class="title-page" id="page-title">Dashboard</h5>
-    </div>
+    <?php include "../Agent Section/includes/navbar copy 2.php"; ?>
 
     <div class="main-content">
       <div class="content-container">
         <!-- Cards First Row -->
         <div class="counts-wrapper">
+
           <!-- CARD 1 Current Transaction Counts-->
           <div class="card">
             <div class="header-counts">
@@ -647,6 +646,7 @@ require "../conn.php";
               </div> 
             </div>
           </div>
+
         </div>
 
         <div class="tabs-wrapper">
@@ -669,6 +669,7 @@ require "../conn.php";
         <div class="tab-content" id="pills-tabContent">
           <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
             <div class="second-row-container">
+
               <!-- Transactions table -->
               <div class="one">
                 <div class="header d-flex justify-content-between align-items-center">
@@ -750,15 +751,21 @@ require "../conn.php";
                                       $badgeClass = 'bg-info'; // Blue for other statuses
                                       break;
                                 }
+
+                                // <td>" .htmlspecialchars($row['CONTACT NAME']) . "</td>
+
+                                // <td> 
+                                //     <div class='td-content d-flex flex-column align-items-left'>
+                                //       <h6>Booking Type: <span>" . htmlspecialchars($row['bookingType']) . "</span></h6>
+                                //       <h6>Package: <span>" . htmlspecialchars($row['PACKAGE']) . "</span></h6>
+                                //     </div>
+                                // </td>
+
                                 echo "
                                 <tr data-url='agent-showGuest2.php?id=" . htmlspecialchars($row['T.N']) . "'>
                                     <td>" . htmlspecialchars(substr($row['T.N'], 5)) . "</td>
-                                    <td> 
-                                        <div class='td-content d-flex flex-column align-items-left'>
-                                          <h6>Booking Type: <span>" . htmlspecialchars($row['bookingType']) . "</span></h6>
-                                          <h6>Package: <span>" . htmlspecialchars($row['PACKAGE']) . "</span></h6>
-                                        </div>
-                                    </td>
+
+                                    
 
                                     <td> 
                                         <div class='td-content d-flex flex-column align-items-left'>
@@ -767,7 +774,7 @@ require "../conn.php";
                                       </div>
                                     </td>
 
-                                    <td>" .htmlspecialchars($row['CONTACT NAME']) . "</td>
+                                    
                                     <td> <span class='badge " . $badgeClass . " p-2'>" . $status . "</span> </td>
                                 </tr>";
                               }
@@ -941,6 +948,9 @@ require "../conn.php";
                                     case 'To be confirmed':
                                         $statusClass = 'bg-secondary text-white';
                                         break;
+                                    case 'Submitted':
+                                      $statusClass = 'bg-primary text-white';
+                                      break;
                                     default:
                                         $statusClass = 'bg-light text-dark'; // Default class for unknown statuses
                                         break;
@@ -950,15 +960,16 @@ require "../conn.php";
                                 $title = $row['Request'] ?? 'Custom Request'; // Use 'Custom Request' if `Request` is NULL
                                 $details = $row['Details'] ?? $row['CustomRequest']; // Use `CustomRequest` if `Details` is NULL
 
-                                echo "<tr data-url='agent-showGuest2.php?id=" . htmlspecialchars($row['T.N']) . "'>
+                                echo 
+                                "<tr data-url='agent-showGuest2.php?id=" . htmlspecialchars($row['T.N']) . "'>
                                         <td>" . htmlspecialchars(substr($row['transactNo'], 5)) . "</td> 
                                         <td>" . htmlspecialchars($title) . "</td> 
                                         <td>" . htmlspecialchars($row['Date']) . "</td> 
                                         <td>
-                                            <span class='badge <?php echo $statusClass; ?>'>
-                                                <?php echo $status; ?>
-                                            </span>
-                                        </td>
+                                              <span class='badge <?php echo $statusClass; ?> p-2'>
+                                                  {$status}
+                                              </span>
+                                          </td>
                                       </tr>";
                               }
                             } 
@@ -1030,7 +1041,7 @@ require "../conn.php";
                               } 
                               else 
                               {
-                                echo "<tr><td colspan='4.5' style='text-align: left;'>No requests at the moment.</td></tr>";
+                                echo "<tr><td colspan='4.5' style='text-align: left;'>No requests at the moment</td></tr>";
                               }
                             }
                           }
@@ -1085,8 +1096,26 @@ require "../conn.php";
                             {
                               while ($row = $res2->fetch_assoc()) 
                               {
-                                $rowTrans = htmlspecialchars(substr($row['Transaction No'], 5));
+                                $status = $row['paymentStatus'];
+                                $badgeClass = '';
+                            
+                                switch ($status) {
+                                  case 'Submitted':
+                                    $badgeClass = 'badge bg-primary text-dark'; 
+                                    break;
+                                  case 'Confirmed':
+                                    $badgeClass = 'badge bg-success'; 
+                                    break;
+                                  case 'Pending':
+                                    $badgeClass = 'badge bg-danger'; 
+                                    break;
+                                  default:
+                                    $badgeClass = 'badge bg-secondary'; 
+                                    break;
+                                }
+    
 
+                                $rowTrans = htmlspecialchars(substr($row['Transaction No'], 5));
 
                                 echo "<tr data-url='agent-showGuest2.php?id=" . htmlspecialchars($row['Transaction No']) . "'>
                                         <td>{$rowTrans}</td>
@@ -1105,7 +1134,9 @@ require "../conn.php";
                                         </div>
                                     </td>
                                                                   
-                                  <td>{$row['paymentStatus']}</td>
+                                  <td><span class='<?php echo $badgeClass; ?> p-2'>
+                                          {$row['paymentStatus']}
+                                      </span></td>
                                 </tr>";
                               }
                             } 
@@ -1273,6 +1304,10 @@ require "../conn.php";
                                     case 'To be confirmed':
                                         $statusClass = 'bg-secondary text-white';
                                         break;
+                                    case 'Submitted':
+                                      $statusClass = 'bg-secondary text-white';
+                                      break;
+
                                     default:
                                         $statusClass = 'bg-light text-dark';
                                         break;
@@ -1297,9 +1332,9 @@ require "../conn.php";
                                 echo "<td>₱ " . number_format($totalAmountPaid, 2) . "</td>"; 
                                 echo "<td>₱ " . number_format($balance, 2) . "</td>"; 
                                 echo "<td>
-                                          <span class='badge <?php echo $statusClass; ?>'>
-                                              {$bookingStatus} ?>
-                                          </span>
+                                        <span class='badge <?php echo $statusClass; ?>'>
+                                            {$bookingStatus} ?>
+                                        </span>
                                       </td>"; 
                                 echo "</tr>";
                               }
@@ -1307,7 +1342,7 @@ require "../conn.php";
                             else 
                             {
                               // Display a message if no records are found
-                              echo "<tr><td colspan='12'>No records found.</td></tr>";
+                              echo "<tr><td colspan='12'>No records found</td></tr>";
                             }
                           }
                           else
@@ -1410,8 +1445,8 @@ require "../conn.php";
           <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
 
             <div class="flight-seat-container">
+
               <div class="one">
-                  
                 <div class="body-flight">
                   <div class="confirm-table-container-flight">
                     <table class="info-table">
@@ -1514,7 +1549,7 @@ require "../conn.php";
                           } 
                           else 
                           {
-                            echo "No records found.";
+                            echo "No records found";
                           }
                         ?>
                       </tbody>
@@ -1522,6 +1557,7 @@ require "../conn.php";
                   </div>
                 </div>
               </div>
+
             </div>
             
           </div>
@@ -1640,6 +1676,7 @@ require "../conn.php";
                 </div>
               </div>
             </div>
+
           </div>
 
           <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">
@@ -1732,7 +1769,7 @@ require "../conn.php";
                             else 
                             {
                               // Display a message if no records are found
-                              echo "<tr><td colspan='12'>No records found.</td></tr>";
+                              echo "<tr><td colspan='12'>No records found</td></tr>";
                             }
                           }
                           else
@@ -1794,7 +1831,7 @@ require "../conn.php";
                               else 
                               {
                                 // Display a message if no records are found
-                                echo "<tr><td colspan='12'>No records found.</td></tr>";
+                                echo "<tr><td colspan='12'>No records found</td></tr>";
                               }
                             }
                           }

@@ -56,20 +56,12 @@ $maskedPassword = '••••••••••';
   <?php include "../Agent Section/includes/sidebar copy.php"; ?>
 
   <div class="main-content-container">
-    <div class="navbar">
-      <h5 class="title-page">Transactions</h5>
-    </div>
+    <?php include "../Agent Section/includes/navbar copy 2.php"; ?>
 
     <div class="main-content">
       <div class="content-body">
         <div class="table-actions">
           <div class="row">
-            <div class="columns col-md-2">
-              <div class="table-filters-container">
-                
-              </div>
-            </div>
-
              <div class="columns col-md-2">
                 <div class="table-filters-container">
                   <label for="month-filter">Month</label>
@@ -130,12 +122,6 @@ $maskedPassword = '••••••••••';
 
               // Optionally set the current year as selected
               yearSelect.value = currentYear;
-              
-              // Get the month select element
-              const monthSelect = document.getElementById('month-filter');
-
-              // Set the current month as selected
-              monthSelect.value = currentMonthIndex; // Use 1-based month index
             </script>
 
           </div>

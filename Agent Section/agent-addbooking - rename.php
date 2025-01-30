@@ -22,9 +22,7 @@ require "../conn.php";
   <?php include "../Agent Section/includes/sidebar copy.php"; ?>
 
   <div class="main-content-container">
-    <div class="navbar">
-      <h5 class="title-page">Add Booking</h5>
-    </div>
+    <?php include "../Agent Section/includes/navbar copy 2.php"; ?>
 
     <div class="main-content">
       <?php 

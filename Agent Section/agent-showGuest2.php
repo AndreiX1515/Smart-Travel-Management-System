@@ -62,7 +62,7 @@
     <div class="navbar">
       <div class="backbutton-wrapper">
         <div class="back-button-wrapper">
-          <a href="index.php" class="back-button-link">
+          <a href="../Agent Section/agent-transactions - rename.php" class="back-button-link">
               <i class="fa-solid fa-arrow-left"></i>
           </a>
         </div>
