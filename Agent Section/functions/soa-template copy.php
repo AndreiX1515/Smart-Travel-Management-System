@@ -57,12 +57,14 @@ class PDF extends TCPDF {
         $this->SetTextColor(0, 0, 0); // Black text color
 
         // Render header cells
-        $this->Cell(15, 6, 'NO.', 1, 0, 'C', true); 
-        $this->Cell(65, 6, 'CONTENTS', 1, 0, 'C', true);
-        $this->Cell(35, 6, 'Price (USD)', 1, 0, 'C', true);
-        $this->Cell(15, 6, 'PAX', 1, 0, 'C', true);
-        $this->Cell(30, 6, 'TOTAL (USD)', 1, 0, 'C', true);
-        $this->Cell(30, 6, 'TOTAL (PHP)', 1, 1, 'C', true);
+        $this->Cell(10, 6, 'NO.', 1, 0, 'C', true); 
+        $this->Cell(55, 6, 'CONTENTS', 1, 0, 'C', true);
+        $this->Cell(27, 6, 'Price (USD)', 1, 0, 'C', true);
+        $this->Cell(27, 6, 'Price (PHP)', 1, 0, 'C', true);
+        $this->Cell(10, 6, 'PAX', 1, 0, 'C', true);
+        $this->Cell(30.5, 6, 'TOTAL (USD)', 1, 0, 'C', true);
+        $this->Cell(30.5, 6, 'TOTAL (PHP)', 1, 1, 'C', true);
+
 
         $this->SetFont('Helvetica', '', 10, true);
         // Reset text color
@@ -82,12 +84,12 @@ class PDF extends TCPDF {
         $this->SetFillColor(255, 255, 255); // White background
         $this->SetTextColor(0, 0, 0); // Black text color
     
-        $col1 = 15;
-        $col2 = 65;
-        $col3 = 35;
-        $col4 = 15;
-        $col5 = 30;
-        $col6 = 30;
+        $col1 = 10;
+        $col2 = 55;
+        $col3 = 27;
+        $col4 = 10;
+        $col5 = 30.5;
+        $col6 = 30.5;
     
         // Reset text color
         $this->SetTextColor(0, 0, 0);
@@ -100,6 +102,7 @@ class PDF extends TCPDF {
             // Render cells with data
             $this->Cell($col1, 7, $row['no'], 1, 0, 'C');
             $this->Cell($col2, 7, $row['contents'], 1, 0, 'C');
+            $this->Cell($col3, 7, $row['price'], 1, 0, 'C');
             $this->Cell($col3, 7, $row['price'], 1, 0, 'C');
             $this->Cell($col4, 7, $row['pax'], 1, 0, 'C');
             $this->Cell($col5, 7, $row['total_usd'], 1, 0, 'C');
@@ -128,9 +131,10 @@ class PDF extends TCPDF {
         $this->SetTextColor(0, 0, 0); // Black text color
     
         // Render subtotal cells
-        $this->Cell(115, 7, '', 1, 0, 'C', true);
-        $this->Cell(35, 7, 'SUB TOTAL', 1, 0, 'C', true);
-        $this->Cell(40, 7, 'PHP 999,999', 1, 0, 'C', true);
+        $this->Cell(92, 7, '', 1, 0, 'C', true);
+        $this->Cell(37, 7, 'SUB TOTAL', 1, 0, 'C', true);
+        $this->Cell(30.5, 7, 'PHP 999,999', 1, 0, 'C', true);
+        $this->Cell(30.5, 7, 'PHP 999,999', 1, 0, 'C', true);
     
         // Reset text color
         $this->SetTextColor(0, 0, 0);
@@ -153,12 +157,12 @@ class PDF extends TCPDF {
         $this->SetFillColor(255, 255, 255); // White background
         $this->SetTextColor(0, 0, 0); // Black text color
     
-        $col1 = 15;
-        $col2 = 65;
-        $col3 = 35;
-        $col4 = 15;
-        $col5 = 30;
-        $col6 = 30;
+        $col1 = 10;
+        $col2 = 55;
+        $col3 = 27;
+        $col4 = 10;
+        $col5 = 30.5;
+        $col6 = 30.5;
     
         // Reset text color
         $this->SetTextColor(0, 0, 0);
@@ -171,6 +175,7 @@ class PDF extends TCPDF {
             // Render cells with data
             $this->Cell($col1, 7, $row['no'], 1, 0, 'C');
             $this->Cell($col2, 7, $row['contents'], 1, 0, 'C');
+            $this->Cell($col3, 7, $row['price'], 1, 0, 'C');
             $this->Cell($col3, 7, $row['price'], 1, 0, 'C');
             $this->Cell($col4, 7, $row['pax'], 1, 0, 'C');
             $this->Cell($col5, 7, $row['total_usd'], 1, 0, 'C');
@@ -199,9 +204,10 @@ class PDF extends TCPDF {
         $this->SetTextColor(0, 0, 0); // Black text color
     
         // Render subtotal cells
-        $this->Cell(115, 7, '', 1, 0, 'C', true);
-        $this->Cell(35, 7, 'SUB TOTAL', 1, 0, 'C', true);
-        $this->Cell(40, 7, 'PHP 999,999', 1, 0, 'C', true);
+        $this->Cell(92, 7, '', 1, 0, 'C', true);
+        $this->Cell(37, 7, 'SUB TOTAL', 1, 0, 'C', true);
+        $this->Cell(30.5, 7, 'PHP 999,999', 1, 0, 'C', true);
+        $this->Cell(30.5, 7, 'PHP 999,999', 1, 0, 'C', true);
     
         // Reset text color
         $this->SetTextColor(0, 0, 0);
@@ -224,12 +230,12 @@ class PDF extends TCPDF {
         $this->SetFillColor(255, 255, 255); // White background
         $this->SetTextColor(0, 0, 0); // Black text color
         
-        $col1 = 15;
-        $col2 = 65;
-        $col3 = 35;
-        $col4 = 15;
-        $col5 = 30;
-        $col6 = 30;
+        $col1 = 10;
+        $col2 = 55;
+        $col3 = 27;
+        $col4 = 10;
+        $col5 = 30.5;
+        $col6 = 30.5;
     
         // Reset text color
         $this->SetTextColor(0, 0, 0);
@@ -242,6 +248,7 @@ class PDF extends TCPDF {
             // Render cells with data
             $this->Cell($col1, 7, $row['no'], 1, 0, 'C');
             $this->Cell($col2, 7, $row['contents'], 1, 0, 'C');
+            $this->Cell($col3, 7, $row['price'], 1, 0, 'C');
             $this->Cell($col3, 7, $row['price'], 1, 0, 'C');
             $this->Cell($col4, 7, $row['pax'], 1, 0, 'C');
             $this->Cell($col5, 7, $row['total_usd'], 1, 0, 'C');
@@ -271,9 +278,9 @@ class PDF extends TCPDF {
         $this->SetTextColor(0, 0, 0); // Black text color
     
         // Render header cells for Balance table
-        $this->Cell(115, 7, 'BALANCE', 1, 0, 'C', true); 
-        $this->Cell(35, 7, '$', 1, 0, 'L', true); 
-        $this->Cell(40, 7, '$', 1, 0, 'L', true); 
+        $this->Cell(129, 7, 'BALANCE', 1, 0, 'C', true); 
+        $this->Cell(30.5, 7, '$', 1, 0, 'L', true); 
+        $this->Cell(30.5, 7, '$', 1, 0, 'L', true); 
     
         // Reset text color
         $this->SetTextColor(0, 0, 0);

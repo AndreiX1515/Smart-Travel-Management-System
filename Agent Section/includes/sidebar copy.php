@@ -6,6 +6,11 @@
   error_reporting(E_ALL);
 
   $accountId = $_SESSION['agent_accountId'];
+
+  
+
+
+
   $agentId = $_SESSION['agent_agentId'];
   $agentCode = $_SESSION['agent_agentCode'];
   $agentRole = $_SESSION['agent_agentRole'];
@@ -84,7 +89,7 @@
         <i class="fas fa-map"></i> Itinerary
       </a> -->
 
-      <a href="../Agent Section/agent-soa2.php" class="page-button" data-page-name="Statement of Accounts (SOA)">
+      <a href="../Agent Section/agent-soa2.php" class="page-button" data-page-name="Statement of Accounts (SOA) - Packages">
         <i class="fas fa-file-invoice-dollar"></i> SoA - Packages
       </a>
 
@@ -124,23 +129,6 @@
 </div>
 
 <?php include '../Agent Section/includes/logoutViewPassModal.php'; ?>
-
-<!-- <style>
-/* Initially, no animation on load */
-.submenu {
-  display: none;
-  transition: none; /* Disable transition initially */
-}
-
-.submenu.open {
-  display: block;
-}
-
-/* When toggling the submenu, enable the transition */
-.submenu-toggle {
-  transition: height 0.3s ease; /* You can adjust the timing as per your preference */
-}
-</style> -->
 
 <script>
 function toggleSubMenu(submenuId) {

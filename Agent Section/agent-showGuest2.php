@@ -62,11 +62,13 @@
     <div class="navbar">
       <div class="backbutton-wrapper">
         <div class="back-button-wrapper">
-            <a href="index.php" class="back-button-link"> <i class="fa-solid fa-arrow-left me-2"></i> Back to Transaction Table</a>
+          <a href="index.php" class="back-button-link">
+              <i class="fa-solid fa-arrow-left"></i>
+          </a>
         </div>
 
         <div class="page-name-wrapper">
-          <h5>Transaction</h5>
+            <h5>Transaction</h5>
         </div>
 
       </div>

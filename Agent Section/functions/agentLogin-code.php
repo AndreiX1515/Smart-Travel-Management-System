@@ -33,9 +33,17 @@ if (isset($_POST['login'])) {
                         handleLogin($accountId, 'agent', "SELECT * FROM agent WHERE accountId = ?", ['branchId']);
                         $_SESSION['email'] = $email;
                         $_SESSION['password'] = $password;
-                    } elseif ($accountType === 'employee') {
+                    } 
+                    
+                    elseif ($accountType === 'employee') {
                         handleLogin($accountId, 'employee', "SELECT * FROM employee WHERE accountId = ?", ['position', 'countryCode', 'contactNo', 'branch']);
-                    } else {
+                    } 
+                    
+                    elseif ($accountType === 'guest') {
+                        handleLogin($accountId, 'guest', "SELECT * FROM agent WHERE accountId = ?", ['position', 'countryCode', 'contactNo', 'branch']);
+                    }
+
+                    else {
                         $response['success'] = false;
                         $response['message'] = "Invalid account type.";
                     }
@@ -47,6 +55,7 @@ if (isset($_POST['login'])) {
                     $response['success'] = false;
                     $response['message'] = "Your account is inactive. Please contact the administrator.";
                 }
+
             } else {
                 $response['success'] = false;
                 $response['message'] = "Incorrect password.";
@@ -90,11 +99,15 @@ function handleLogin($accountId, $userType, $query, $additionalFields = [])
             manageAgentSession($accountId, $userDetails, $userType, $additionalFields);
         } elseif ($userType === 'employee') {
             manageEmployeeSession($accountId, $userDetails, $userType, $additionalFields);
-        }
+        } elseif ($userType === 'guest') {
+            manageAgentSession($accountId, $userDetails, $userType, $additionalFields);
+        } 
 
         $response['success'] = true;
         $response['message'] = ucfirst($userType) . " login successful.";
-    } else {
+    } 
+    
+    else {
         $response['success'] = false;
         $response['message'] = ucfirst($userType) . " details not found.";
     }
@@ -219,5 +232,62 @@ function manageEmployeeSession($accountId, $userData, $userType, $additionalFiel
     $insert_stmt->close();
 }
 
+// function manageGuestSession($accountId, $userData, $userType, $additionalFields)
+// {
+//     global $conn;
+
+//     $session_id = session_id();
+//     $ip_address = $_SERVER['REMOTE_ADDR'];
+//     $user_agent = $_SERVER['HTTP_USER_AGENT'];
+//     $login_time = date('Y-m-d H:i:s');
+//     $last_activity = $login_time;
+
+//     // Check if there's an existing session for this account
+//     $session_check_stmt = $conn->prepare("SELECT session_id FROM user_sessions WHERE accountid = ?");
+//     $session_check_stmt->bind_param("i", $accountId);
+//     $session_check_stmt->execute();
+//     $session_check_result = $session_check_stmt->get_result();
+
+//     if ($session_check_result->num_rows > 0) {
+//         // Terminate the existing session if one is found
+//         $existing_session = $session_check_result->fetch_assoc();
+//         $existing_session_id = $existing_session['session_id'];
+
+//         // Delete the old session
+//         $delete_stmt = $conn->prepare("DELETE FROM user_sessions WHERE session_id = ?");
+//         $delete_stmt->bind_param("s", $existing_session_id);
+//         $delete_stmt->execute();
+//         $delete_stmt->close();
+//     }
+
+//     // Regenerate session ID to ensure session security
+//     session_regenerate_id(true);
+//     $new_session_id = session_id();
+
+//     // Store session data specifically for employee
+//     $_SESSION['employee_accountId'] = $accountId;
+//     $_SESSION['employee_userType'] = $userType;
+//     $_SESSION['employee_fName'] = $userData['fName'] ?? '';
+//     $_SESSION['employee_mName'] = $userData['mName'] ?? '';
+//     $_SESSION['employee_lName'] = $userData['lName'] ?? '';
+//     $_SESSION['employee_employeeId'] = $userData['employeeId'] ?? '';  
+//     $_SESSION['employee_accountId'] = $accountId;
+//     $_SESSION['employee_position'] = $userData['position'] ?? '';  
+//     $_SESSION['employee_timeout'] = time();
+
+//     // Store additional fields in session if provided
+//     foreach ($additionalFields as $field) {
+//         $_SESSION['employee_' . $field] = $userData[$field] ?? null;
+//     }
+
+//     // Insert new session into the user_sessions table
+//     $insert_stmt = $conn->prepare(
+//         "INSERT INTO user_sessions (session_id, accountid, login_time, last_activity, ip_address, user_agent) 
+//         VALUES (?, ?, ?, ?, ?, ?)"
+//     );
+//     $insert_stmt->bind_param("sissss", $new_session_id, $accountId, $login_time, $last_activity, $ip_address, $user_agent);
+//     $insert_stmt->execute();
+//     $insert_stmt->close();
+// }
 
 ?>

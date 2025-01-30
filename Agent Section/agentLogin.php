@@ -94,7 +94,12 @@
                        } else if (data.accountType === 'employee') {
                            // Redirect to employee dashboard
                            window.location.href = '../Employee Section/emp-dashboard.php';
-                       } else {
+                       } else if (data.accountType === 'guest') {
+                           // Redirect to employee dashboard
+                           window.location.href = '../Agent Section/agent-dashboard copy 2.php';
+                       } 
+                    
+                       else {
                            // Handle unknown account type
                            alert('Unknown account type. Please contact support.');
                        }
