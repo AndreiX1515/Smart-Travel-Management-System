@@ -75,97 +75,76 @@
         <table class="table-transaction table-striped">
           <thead>
             <tr>
-              <th rowspan="2">Transact No</th>
-              <th rowspan="2">Agent Name</th>
-              <th rowspan="2">Package Name</th>
-              <th colspan="2" class="text-center">Flight Date</th>
-              <th rowspan="2">Booking Date</th>
-              <th rowspan="2">Total Pax</th>
-              <th rowspan="2">Package Price</th>
-              <th rowspan="2">Status</th>
+                <th rowspan="2">Guest ID</th>
+                <th rowspan="2">Transaction No</th>
+                <th rowspan="2">Guest Name</th>
+                <th rowspan="2">Birthdate</th>
+                <th rowspan="2">Age</th>
+                <th rowspan="2">Sex</th>
+                <th rowspan="2">Nationality</th>
+                <th colspan="2" class="text-center">Flight Dates</th>
             </tr>
             <tr>
-              <th>Departure</th>
-              <th>Return</th>
+                <th>Departure</th>
+                <th>Return</th>
             </tr>
           </thead>
           <tbody>
-            <?php
-              // SQL query for SOA
-              $sql = "SELECT b.transactNo, f.flightDepartureDate as departureDate, f.returnDepartureDate as returnDate, b.status as bookingStatus,
-                          CONCAT(f.flightDepartureDate, ' | ', f.returnDepartureDate) AS FlightDate, p.packageName AS PackageName, 
-                          DATE_FORMAT(b.bookingDate, '%m.%d.%Y') AS BookingDate, b.pax AS TotalPax, b.totalPrice AS PackagePrice, 
-                          CONCAT(a.lName, ', ', a.fName, ' ', IFNULL(CONCAT(SUBSTRING(a.mName, 1, 1), '.'), '')) AS agentName
-                      FROM 
-                        booking b
-                      JOIN 
-                        flight f ON f.flightId = b.flightId
-                      JOIN 
-                        package p ON p.packageId = b.packageId
-                      JOIN
-                        agent a ON a.agentId = b.agentId
-                      ORDER BY 
-                        b.transactNo, b.agentCode ASC";
+              <?php
+              // SQL query for fetching data
+              $sql = "SELECT g.guestId as guestId, g.transactNo as transactNo, f.flightId as flightId, g.fName as fname, 
+                        g.mName as mName, g.lName as lName, g.suffix as suffix, g.birthdate as birthdate, g.age as age, g.sex as sex, 
+                        g.Nationality as Nationality, f.flightDepartureDate as departureDate, f.returnArrivalDate as returnDate
+                      FROM guest g
+                      JOIN booking b ON g.transactNo = b.transactNo
+                      JOIN flight f ON f.flightId = b.flightId
+                      ORDER BY f.flightId, b.transactNo, g.guestId";
 
-              // Execute the query
-              $result = $conn->query($sql);
+              // Execute the query and check for errors
+              if ($result = $conn->query($sql)) {
 
-              // Check if there are results
-              if ($result->num_rows > 0) 
-              {
-                while ($row = $result->fetch_assoc()) 
-                {
-                  // Safely handle null values
-                  $transactNo = htmlspecialchars($row['transactNo'] ?? '');
-                  $agentName = htmlspecialchars($row['agentName'] ?? '');
-                  $packageName = htmlspecialchars($row['PackageName'] ?? '');
-                  $departureDate = $row['departureDate'] ?? null;
-                  $returnDate = $row['returnDate'] ?? null;
-                  $bookingDate = htmlspecialchars($row['BookingDate'] ?? '');
-                  $totalPax = htmlspecialchars($row['TotalPax'] ?? 0);
-                  $packagePrice = $row['PackagePrice'] ?? 0;
-                  $status = htmlspecialchars($row['bookingStatus'] ?? 'Unknown');
+                  // Check if the query returns any rows
+                  if ($result->num_rows > 0) {
 
-                  // Determine the status class
-                  $statusClass = ""; // Default class
-                  switch ($status) 
-                  {
-                    case "Pending":
-                      $statusClass = "bg-warning text-dark"; // Yellow pill for Pending
-                      break;
-                    case "Confirmed":
-                      $statusClass = "bg-success text-white"; // Green pill for Confirmed
-                      break;
-                    case "Cancelled":
-                      $statusClass = "bg-danger text-white"; // Red pill for Cancelled
-                      break;
-                    case "Reject":
-                      $statusClass = "bg-secondary text-white"; // Grey pill for Reject
-                      break;
-                    default:
-                      $statusClass = "bg-secondary text-white"; // Default case for unknown statuses
-                      break;
+                      // Loop through the results and display them
+                      while ($row = $result->fetch_assoc()) {
+
+                          // Format the guest name with proper handling for middle name and suffix
+                          $guestName = htmlspecialchars($row['lName']) . ", " . htmlspecialchars($row['fname']);
+                          if (!empty($row['mName']) && $row['mName'] !== 'N/A') {
+                              $guestName .= " " . htmlspecialchars(substr($row['mName'], 0, 1)) . ".";
+                          }
+                          if (!empty($row['suffix']) && $row['suffix'] !== 'N/A') {
+                              $guestName .= " " . htmlspecialchars($row['suffix']);
+                          }
+
+                          // Format the dates for departure and return flight
+                          $departureDate = date('Y-m-d', strtotime($row['departureDate']));
+                          $returnDate = date('Y-m-d', strtotime($row['returnDate']));
+
+                          // Output the row data in HTML table format
+                          echo "<tr>
+                                  <td>" . htmlspecialchars($row['guestId']) . "</td>
+                                  <td>" . htmlspecialchars($row['transactNo']) . "</td>
+                                  <td>" . $guestName . "</td>
+                                  <td>" . htmlspecialchars($row['birthdate']) . "</td>
+                                  <td>" . htmlspecialchars($row['age']) . "</td>
+                                  <td>" . htmlspecialchars($row['sex']) . "</td>
+                                  <td>" . htmlspecialchars($row['Nationality']) . "</td>
+                                  <td>" . $departureDate . "</td>
+                                  <td>" . $returnDate . "</td>
+                                </tr>";
+
+                      }
+                  } else {
+                      // No results found, display a message
+                      echo "<tr><td colspan='9' class='text-center'>No data available</td></tr>";
                   }
-
-                  // Format the dates for display if they are not null
-                  $formattedDepartureDate = $departureDate ? (new DateTime($departureDate))->format('F j, Y') : 'N/A';
-                  $formattedReturnDate = $returnDate ? (new DateTime($returnDate))->format('F j, Y') : 'N/A';
-
-                  // Output each row as a table row
-                  echo "<tr data-url='emp-transactionInfo.php?id=$transactNo'>";
-                  echo "<td>$transactNo</td>";
-                  echo "<td>$agentName</td>";
-                  echo "<td>$packageName</td>";
-                  echo "<td>$departureDate</td>";
-                  echo "<td>$returnDate</td>";
-                  echo "<td>$bookingDate</td>";
-                  echo "<td class='fw-bold ps-3'>$totalPax</td>";
-                  echo "<td>₱ " . number_format($packagePrice, 2) . "</td>";
-                  echo "<td> <span class='badge rounded-pill $statusClass p-2'>$status</span></td>";
-                  echo "</tr>";
-                }
+              } else {
+                  // Query failed, display an error message
+                  echo "<tr><td colspan='9' class='text-center'>Error fetching data: " . $conn->error . "</td></tr>";
               }
-            ?>
+              ?>
           </tbody>
         </table>
       </div>

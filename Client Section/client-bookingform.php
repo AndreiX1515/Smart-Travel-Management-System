@@ -12,11 +12,10 @@
   $email = $_SESSION['email'] ?? ''; // Use null coalescing operator to avoid undefined index
   $accId = $_SESSION['accountId'] ?? '';
 
-  $sql1 = "SELECT * FROM Agent WHERE accId = $accId";
-  if ($accId !== '') 
+  if ($accId) 
   {
     // Use a prepared statement to safely query the database
-    $stmt = $conn->prepare("SELECT agentCode, agentId, agentRole FROM agent WHERE accountId = ?");
+    $stmt = $conn->prepare("SELECT agentCode, agentId, agentRole, agentType FROM agent WHERE accountId = ?");
     $stmt->bind_param("i", $accId); // Bind the accountId parameter to the query
     $stmt->execute();
     $result = $stmt->get_result(); // Get the result of the query
@@ -27,23 +26,32 @@
       // Fetch the result as an associative array
       while ($row = $result->fetch_assoc()) 
       {
-        $_SESSION['agentCode'] = $row['agentCode'];
-        $_SESSION['agentId'] = $row['agentId'];
-        $_SESSION['agentRole'] = $row['agentRole'];
+        // Store mandatory fields in the session
+        $_SESSION['agent_agentId'] = $row['agentId'] ?? '';  // Added agent_id to session
+        $_SESSION['agent_agentCode'] = $row['agentCode'] ?? '';  // Added agent_Code to session
+        $_SESSION['agent_agentRole'] = $row['agentRole'] ?? '';  // Added agent_agentRole to session
+        $_SESSION['agent_agentType'] = $row['agentType'] ?? '';  // Added agent_agentType to session
+
+        // Additional fields to dynamically add to session
+        $additionalFields = ['agentId', 'agentCode', 'agentRole', 'agentType'];
+        foreach ($additionalFields as $field) 
+        {
+          $_SESSION['agent_' . $field] = $row[$field] ?? null;
+        }
       }
     } 
     else 
     {
       echo "No agent found with the given account ID.";
     }
-
-    // Close the statement
-    $stmt->close();
   } 
   else 
   {
-    echo "Account ID is missing.";
+    echo "Invalid account ID.";
   }
+
+  // Close the statement
+  $stmt->close();
   
   include '../Client Section/Functions/session_validate.php';
 ?>
@@ -614,57 +622,57 @@
 <script>
 $(document).ready(function () {
   // Fetching Agent Code once an agent is selected
-  $('#agentId').on('change', function () 
-  {
-    var agentId = $(this).val(); // Get the selected agentId
+  // $('#agentId').on('change', function () 
+  // {
+  //   var agentId = $(this).val(); // Get the selected agentId
 
-    // Reset dependent fields
-    // $('#packageName').html('<option selected disabled>Select Package</option>');
-    $('#origin').html('<option selected disabled>Select Origin</option>');
-    $('#year').html('<option selected disabled>Select Year</option>');
-    $('#month').html('<option selected disabled>Select Month</option>');
-    $('#flightDate').html('<option selected disabled>Select Flight Date</option>');
-    $('#flightId').val('');
-    $('#flightPrice').text('0.00');
-    $('#maxSeats').text('');
-    $('#availSeats').text('');
-    $('#displayTotalPrice').text('0.00');
-    $('#totalPrice').val('0.00');
-    $('#totalPax').val('');
-    $('#totalPax').attr('placeholder', 'Enter Total Pax');
+  //   // Reset dependent fields
+  //   // $('#packageName').html('<option selected disabled>Select Package</option>');
+  //   $('#origin').html('<option selected disabled>Select Origin</option>');
+  //   $('#year').html('<option selected disabled>Select Year</option>');
+  //   $('#month').html('<option selected disabled>Select Month</option>');
+  //   $('#flightDate').html('<option selected disabled>Select Flight Date</option>');
+  //   $('#flightId').val('');
+  //   $('#flightPrice').text('0.00');
+  //   $('#maxSeats').text('');
+  //   $('#availSeats').text('');
+  //   $('#displayTotalPrice').text('0.00');
+  //   $('#totalPrice').val('0.00');
+  //   $('#totalPax').val('');
+  //   $('#totalPax').attr('placeholder', 'Enter Total Pax');
 
-    if (agentId) 
-    {
-      // Make an AJAX request to fetch agent code
-      $.ajax(
-      {
-        url: '../Agent Section/functions/fetchAgentCode.php',
-        type: 'POST',
-        data: { agentId: agentId },
-        success: function (response) 
-        {
-          try 
-          {
-            // Parse the JSON response
-            var data = JSON.parse(response);
+  //   if (agentId) 
+  //   {
+  //     // Make an AJAX request to fetch agent code
+  //     $.ajax(
+  //     {
+  //       url: '../Agent Section/functions/fetchAgentCode.php',
+  //       type: 'POST',
+  //       data: { agentId: agentId },
+  //       success: function (response) 
+  //       {
+  //         try 
+  //         {
+  //           // Parse the JSON response
+  //           var data = JSON.parse(response);
 
-            // Update the agentCode input field
-            $('#agentCode').val(data.agentCode || ''); // Set agent code or clear if empty
-          } catch (e) 
-          {
-            console.error('Error parsing JSON response:', e);
-          }
-        },
-        error: function (xhr, status, error) {
-            console.error('Error fetching agent code:', error);
-        }
-      });
-    } 
-    else 
-    {
-      $('#agentCode').val(''); // Clear the agentCode input field if no agent is selected
-    }
-  });
+  //           // Update the agentCode input field
+  //           $('#agentCode').val(data.agentCode || ''); // Set agent code or clear if empty
+  //         } catch (e) 
+  //         {
+  //           console.error('Error parsing JSON response:', e);
+  //         }
+  //       },
+  //       error: function (xhr, status, error) {
+  //           console.error('Error fetching agent code:', error);
+  //       }
+  //     });
+  //   } 
+  //   else 
+  //   {
+  //     $('#agentCode').val(''); // Clear the agentCode input field if no agent is selected
+  //   }
+  // });
 
   // Fetching Origin once Package was Selected
   $('#packageName').on('change', function () 

@@ -37,38 +37,39 @@
             if ($res1->num_rows > 0) 
             {
               while ($row = $res1->fetch_assoc())
+              {
+                // Fetch the payment status from the database
+                $status = $row['paymentStatus'];
+                
+                // Assign a corresponding Bootstrap badge class based on the status
+                $badgeClass = '';
+
+                switch($status) 
                 {
-                  // Fetch the payment status from the database
-                  $status = $row['paymentStatus'];
-                  
-                  // Assign a corresponding Bootstrap badge class based on the status
-                  $badgeClass = '';
+                  case 'Submitted':
+                    $badgeClass = 'bg-primary'; // Blue for Submitted
+                    break;
+                  case 'Approved':
+                    $badgeClass = 'bg-success'; // Green for Approved
+                    break;
+                  default:
+                    $badgeClass = 'bg-secondary'; // Gray for unknown statuses
+                    break;
+                }
 
-                  switch($status) {
-                      case 'Submitted':
-                          $badgeClass = 'bg-primary'; // Blue for Submitted
-                          break;
-                      case 'Approved':
-                          $badgeClass = 'bg-success'; // Green for Approved
-                          break;
-                      default:
-                          $badgeClass = 'bg-secondary'; // Gray for unknown statuses
-                          break;
-                  }
-
-                  echo "<tr>
-                          <td>{$row['paymentId']}</td>
-                          <td>{$row['paymentType']}</td>
-                          <td>₱ {$row['amount']}</td>
-                          <td>
-                            <a href='functions/view-file.php?file=" . urlencode($row['filePath']) . "' target='_blank'>View File</a> 
-                            <a href='functions/download.php?file=" . urlencode($row['filePath']) . "' target='_blank'>Download File</a> 
-                          </td>
-                          <td>{$row['paymentDate']}</td>
-                          <td>
-                            <span class='badge rounded-pill {$badgeClass} py-2'> {$status} </span>
-                          </td>
-                        </tr>";
+                echo "<tr>
+                        <td>{$row['paymentId']}</td>
+                        <td>{$row['paymentType']}</td>
+                        <td>₱ {$row['amount']}</td>
+                        <td>
+                          <a href='functions/view-file.php?file=" . urlencode($row['filePath']) . "' target='_blank'>View File</a> 
+                          <a href='functions/download.php?file=" . urlencode($row['filePath']) . "' target='_blank'>Download File</a> 
+                        </td>
+                        <td>{$row['paymentDate']}</td>
+                        <td>
+                          <span class='badge rounded-pill {$badgeClass} py-2'> {$status} </span>
+                        </td>
+                      </tr>";
               }
             } 
             else 
@@ -93,8 +94,8 @@
       <form action="../Agent Section/functions/agent-transactionFITPayment-code.php" method="POST" enctype="multipart/form-data">
         <div class="modal-body">
           <!-- Hidden Inputs -->
-          <input type="hidden" name="transactionNumber" value="<?= $transactionNumber ?>">
-          <input type="hidden" name="accountId" value="<?= $accountId ?>">
+          <input type="hidden" name="transactionNumber" value="<?= $transactionNumber ?>" placeholder="TransactNo">
+          <input type="hidden" name="accountId" value="<?= $accountId ?>" placeholder="accId">
 
           <div class="mb-3">
             <label class="form-label">Payment Type</label>
@@ -106,11 +107,41 @@
             </select>
           </div>
 
-          <div id="amountDisplay">Balance: ₱ <span id="amountValue">0.00 </span> <span id="amountStatus"></span> <span id="requestAmountStatus"></span></div>
+          <?php
+            $sql1 = "SELECT f.transactionNo, f.phpPrice AS phpPrice, SUM(fp.amount) AS paidAmount, 
+                        (f.phpPrice - SUM(fp.amount)) AS balanceRemaining 
+                      FROM fit f
+                      JOIN fitpayment fp ON f.transactionNo = fp.transactNo
+                      WHERE fp.paymentStatus = 'Approved'
+                      GROUP BY f.transactionNo, f.phpPrice";
+
+            $result1 = $conn->query($sql1);
+
+            if ($result1->num_rows > 0) 
+            {
+              $row = $result1->fetch_assoc(); // Assuming you are fetching data for one specific transaction
+              $transactionNo = $row['transactionNo'];
+              $phpPrice = $row['phpPrice'];
+              $paidAmount = $row['paidAmount'];
+              $balanceRemaining = $row['balanceRemaining'];
+            } 
+            else 
+            {
+              $phpPrice = 0;
+              $paidAmount = 0;
+              $balanceRemaining = 0;
+            }
+          ?>
+
+          <div id="amountDisplay">
+            Balance: ₱ <span id="amountValue"><?php echo number_format((float)$balanceRemaining, 2); ?></span>
+          </div>
 
           <div class="mb-3">
             <label class="form-label">Payment Amount</label>
-            <input type="number" step="0.01" class="form-control" id="paymentAmount" name="amount" placeholder="Enter payment Amount" min = "1" required>
+            <input type="number" step="0.01" class="form-control" id="paymentAmount" name="amount" 
+              placeholder="Enter payment amount" min="1" step="0.01"
+              max="<?php echo htmlspecialchars($balanceRemaining); ?>" required>
           </div>
 
           <div class="mb-3">
@@ -136,15 +167,18 @@
 <!-- Modal Function -->
 <script>
   // Custom JavaScript for handling modal close and removing backdrop
-  $(document).ready(function () {
+  $(document).ready(function () 
+  {
     // Handle close button click with custom behavior
-    $(".custom-close").on("click", function () {
+    $(".custom-close").on("click", function () 
+    {
       const modalId = $(this).data("modal-id");
       $(`#${modalId}`).modal("hide");
     });
 
     // Ensure backdrops are removed when the modal is hidden
-    $("#paymentModal<?= $transactionNumber ?>").on("hidden.bs.modal", function () {
+    $("#paymentModal<?= $transactionNumber ?>").on("hidden.bs.modal", function () 
+    {
       $(".modal-backdrop").remove();
     });
   });
@@ -153,15 +187,19 @@
 <!-- Modal Close Function -->
 <script>
   // Custom JavaScript to handle modal close functionality
-  document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("DOMContentLoaded", () => 
+  {
     const closeButtons = document.querySelectorAll(".custom-close");
 
-    closeButtons.forEach(button => {
-      button.addEventListener("click", function () {
+    closeButtons.forEach(button => 
+    {
+      button.addEventListener("click", function () 
+      {
         const modalId = this.getAttribute("data-modal-id");
         const modalElement = document.getElementById(modalId);
 
-        if (modalElement) {
+        if (modalElement) 
+        {
           // Use Bootstrap's modal('hide') to close the modal properly
           $(`#${modalId}`).modal('hide');
         }
@@ -170,33 +208,27 @@
   });
 </script>
 
-<!-- <script>
-  document.addEventListener('DOMContentLoaded', function () 
+<!-- Max Value input -->
+<script>
+  // Get the payment amount input field
+  const paymentAmountInput = document.getElementById("paymentAmount");
+
+  // Add an event listener to handle changes in the input
+  paymentAmountInput.addEventListener("input", () => 
   {
-    // Target all buttons that trigger a modal
-    const paymentModals = document.querySelectorAll('[data-bs-toggle="modal"]');
+    // Get the max value from the input attribute
+    const max = parseFloat(paymentAmountInput.getAttribute("max"));
     
-    paymentModals.forEach(button => 
+    // Get the current input value
+    const value = parseFloat(paymentAmountInput.value);
+
+    // If the value exceeds the max, set it to the max
+    if (value > max) 
     {
-      button.addEventListener('click', function () 
-      {
-        const transactionNumber = button.getAttribute('data-transact-no');
-        const accountId = button.getAttribute('data-account-id');
-
-        // Target the modal associated with this transaction
-        const modal = document.getElementById(`paymentModal${transactionNumber}`);
-
-        // Set the hidden input fields with the correct transaction data
-        modal.querySelector('[name="transactionNumber"]').value = transactionNumber;
-        modal.querySelector('[name="accountId"]').value = accountId;
-
-        // Show the modal
-        const bootstrapModal = new bootstrap.Modal(modal);
-        bootstrapModal.show();
-      });
-    });
-  }); 
-</script> -->
+      paymentAmountInput.value = max;
+    }
+  });
+</script>
 
 <!-- Upload Script -->
 <script>
@@ -295,123 +327,5 @@
   }
 </script>
 
-<!-- Payment AJAX Function -->
-<script>
-  $(document).ready(function() 
-  {
-    $('#paymentTitle').on('change', function () 
-    {
-      var paymentTitle = $(this).val(); // Get the selected payment title
-      var transactionNumber = $('input[name="transactionNumber"]').val(); // Get the transaction number
 
-      // Reset all fields
-      $('#amountValue').text('0.00'); // Reset amount display
-      $('#amountStatus').text(''); // Reset package payment status
-      $('#requestAmountStatus').text(''); // Reset request payment status
-
-      if (paymentTitle) 
-      {
-        // Make the AJAX request
-        $.ajax(
-        {
-          url: '../Agent Section/functions/fetchPaymentBalance.php', // Your server-side script
-          type: 'POST',
-          data: {
-              paymentTitle: paymentTitle,
-              transactionNumber: transactionNumber
-          },
-          success: function (response) 
-          {
-            var data = null;
-
-            // Parse the JSON response
-            try {
-                data = JSON.parse(response);
-            } catch (e) {
-                console.error("Error parsing JSON response: ", e);
-                $('#amountStatus').text('Error retrieving data');
-                $('#requestAmountStatus').text('Error retrieving data');
-                return;
-            }
-
-            // Check if amountLeft is defined and valid
-            if (data && typeof data.amountLeft !== 'undefined') 
-            {
-              var amountLeft = parseFloat(data.amountLeft || 0); // Default to 0
-              var packageMessage = data.packageMessage || ''; // Package payment status message
-              var requestMessage = data.requestMessage || ''; // Request payment status message
-
-              // Update the amount display
-              $('#amountValue').text(
-                amountLeft.toLocaleString('en-US', 
-                {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2
-                })
-              );
-
-              // Update status based on the payment title
-              if (paymentTitle === 'Package Payment') 
-              {
-                $('#amountStatus').text(packageMessage); // Show package payment message
-                $('#requestAmountStatus').text(''); // Clear request status
-              } 
-              else if (paymentTitle === 'Request Payment') 
-              {
-                if (requestMessage === "No confirmed requests found.") 
-                {
-                  // If no confirmed requests exist, show this message
-                  $('#requestAmountStatus').text(requestMessage); // Show the no requests message
-                  $('#amountStatus').text(''); // Clear package status
-                } 
-                else 
-                {
-                  $('#requestAmountStatus').text(requestMessage); // Show request payment message
-                  $('#amountStatus').text(''); // Clear package status
-                }
-              }
-
-              // Enable the payment input only if there is a balance
-              if (amountLeft > 0) 
-              {
-                $('#paymentAmount').attr('max', amountLeft.toFixed(2)); // Set max value
-
-                // Ensure entered amount doesn't exceed the max
-                $('input[name="amount"]').on('input', function () 
-                {
-                  var enteredAmount = parseFloat($(this).val());
-                  if (enteredAmount > amountLeft) 
-                  {
-                    $(this).val(amountLeft.toFixed(2)); // Cap input value
-                  }
-                });
-              } 
-            } 
-            else 
-            {
-              // Handle missing or invalid amountLeft
-              console.error("Invalid response: amountLeft is missing");
-              $('#amountStatus').text('Error retrieving payment balance');
-              $('#requestAmountStatus').text('Error retrieving payment balance');
-            }
-          },
-          error: function (xhr, status, error) 
-          {
-            console.error("Error fetching payment details:", error);
-            $('#amountValue').text('0.00'); // Reset amount display
-            $('#amountStatus').text('Error retrieving payment status');
-            $('#requestAmountStatus').text('Error retrieving payment status');
-          }
-        });
-      } 
-      else 
-      {
-        // Reset if no payment title selected
-        $('#amountValue').text('0.00');
-        $('#amountStatus').text('');
-        $('#requestAmountStatus').text('');
-      }
-    });
-  });
-</script>
 

@@ -8,9 +8,9 @@
     $origin = $_POST['origin'];
     $year = $_POST['year'];  // Year parameter
     $month = $_POST['month']; // Month parameter
-    $agentType = $_SESSION['agent_agentType'];
+    $agentType = $_SESSION['agent_agentType'] || $_SESSION['agentType'];
 
-    if ($agentType === 'Retailer')
+    if ($agentType == 'Retailer')
     {
       // SQL to fetch flights where the year and month match the selected year and month
       $sql = "SELECT flightId, DATE_FORMAT(flightDepartureDate, '%M %d, %Y') AS flightDate, flightPrice FROM flight 
