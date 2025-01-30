@@ -66,6 +66,19 @@
         <p class="mb-0">Don't have an account? <a href="../Client Section/register.php" class="text-decoration-none">Register Now</a></p>
       </div>
 
+      <?php
+        if (isset($_GET['flightid'])) 
+        {
+          $flightid = $_GET['flightid'];
+        } 
+        else 
+        {
+          // Handle the case where the flightid is not available
+          echo "No flight ID found!";
+          exit;
+        }
+      ?>
+
       <div id="message-login" class="message-login mt-3 h6 fw-light fs-6" style="font-size: 8px;"></div>
     </form>
   </div>
@@ -120,8 +133,17 @@
 
         if (data.success) 
         {
-          // Redirect to dashboard or homepage
-          window.location.href = '../Client Section/client-bookingform.php';
+          var flightId = <?php echo $flightid; ?>;
+          if (flightId != '')
+          {
+            window.location.href = '../Client Section/client-bookingform-flight.php?flightid=' + flightId;
+          }
+          else
+          {
+            // Redirect to dashboard or homepage
+            window.location.href = '../Client Section/client-bookingform.php';
+          }
+          
         } 
         else if (data.message && data.message.trim() === "User not found.") 
         {
