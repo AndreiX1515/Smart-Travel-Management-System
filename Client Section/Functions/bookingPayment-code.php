@@ -99,7 +99,35 @@ if (isset($_POST['pay']))
 
         $conn->commit();
         $_SESSION['status'] = "Payment and proof files uploaded successfully!";
-        header("Location: ../client-bookingform.php");
+
+
+
+        $accountId = $_SESSION['accountId'];  // The account ID sent from the AJAX request
+        
+        // Optionally, log the data for debugging purposes
+        error_log("Email: " . $email);
+        error_log("Account ID: " . $accountId);
+        error_log("Flight ID: " . $flightid);
+
+        // Update the session variables with the new values
+        $_SESSION['email'] = $email;
+        $_SESSION['accountId'] = $accountId;
+        $_SESSION['flightid'] = $flightid;
+
+        // If you want to change more session variables, do it here
+        $_SESSION['agent_accountId'] = $accountId;
+        $_SESSION['agent_agentId'] =  '';  
+        $_SESSION['agent_agentCode'] =  ''; 
+        $_SESSION['agent_agentRole'] =  '';
+        $_SESSION['agent_agentType'] =  '';
+        $_SESSION['agent_fName'] =  '';
+        $_SESSION['agent_lName'] =  '';
+        $_SESSION['agent_mName'] =  '';
+        $_SESSION['agent_branchId'] = '';
+        $_SESSION['password'] = '';
+
+
+        header("Location: ../../Agent Section/agent-dashboard copy 2.php");
         exit(0);
       } 
       else 

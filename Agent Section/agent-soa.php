@@ -236,7 +236,6 @@
       </div>
 
       <div id="result-container">
-
       </div>
 
       <div>
@@ -416,10 +415,8 @@
       </div> -->
       
     </div>
-    
-    
-
   </div>
+  
 </div>
 
 <?php require "../Agent Section/includes/scripts.php"; ?>

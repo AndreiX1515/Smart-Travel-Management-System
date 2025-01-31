@@ -14,6 +14,7 @@
     // $lastName = $_SESSION['last_name'] ?? '';
     // $middleName = $_SESSION['middle_name'] ?? '';
     $accId = $_SESSION['accountId'] ?? '';
+    $flightid = $_SESSION['flightid'] ?? '';
 
     // $fullName = htmlspecialchars($lastName . ', ' . $firstName . ($middleName ? ' ' . substr($middleName, 0, 1) . '.' : ''));
 ?>
@@ -32,11 +33,13 @@
 
 <body>
 
+
 <?php
   // Check if 'id' is passed in the URL
   if (isset($_GET['id'])) 
   {
     $transactionNumber = htmlspecialchars($_GET['id']);
+    
   }
 ?>
 
@@ -46,11 +49,112 @@
   <div class="main-container">  
     <div class="content-header">
         <div class="back-button-wrapper">
-            <a href="client-bookingform.php" class="back-button-link"> <i class="fa-solid fa-arrow-left me-2"></i> Back to Booking Section</a>
+            <!-- This button will trigger the modal -->
+            <button type="button" class="back-button-link btn btn-danger" id="backWarning">
+                <i class="fa-solid fa-arrow-left me-2"></i> Back to Booking Section
+            </button>
+
         </div>
         <h1>Payment Details</h1>
         <p>To confirm your booking, a down payment is required to secure your reservation.</p>
     </div>
+
+  <!-- Warning Modal -->
+  <div class="modal fade" id="bookingWarningModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title text-danger">
+                      <i class="fas fa-exclamation-triangle me-2"></i> Warning
+                  </h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body text-center">
+                  <p>Going back will keep the transaction pending, but it will not be finalized without payment.</p>
+              </div>
+              <div class="modal-footer d-flex justify-content-between">
+                  <!-- Back Button (Triggers Navigation) -->
+                  <button type="button" class="btn btn-secondary" id="confirmBack">
+                      <i class="fa-solid fa-arrow-left me-2"></i> Go Back
+                  </button>
+                  
+                  <!-- Proceed to Payment Button -->
+                  <a href="#" class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close">
+                      Proceed to Payment <i class="fa-solid fa-arrow-right ms-2"></i>
+                  </a>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <script>
+$(document).ready(function () {
+    let backWarningButton = $("#backWarning");
+    let confirmBackButton = $("#confirmBack");
+
+    // Show modal when back button is clicked
+    backWarningButton.on("click", function () {
+        console.log("Back button clicked.");
+        let modal = new bootstrap.Modal($("#bookingWarningModal")[0]);
+        modal.show();
+    });
+
+    // Clear sessions and navigate to booking page if confirmed
+    confirmBackButton.on("click", function () {
+         var email1 = "<?php echo $_SESSION['email'] ?>";
+         var accountid1 = "<?php echo $_SESSION['accountId'] ?>";
+         var flightid1 = "<?php echo $_SESSION['flightid'] ?>";
+
+        //  email: <?php echo json_encode($_SESSION['email'] ?? ''); ?>,  // Fetch session email directly into JavaScript
+        //     accountId: <?php echo json_encode($_SESSION['accountId'] ?? ''); ?>,
+        //     flightid: <?php echo json_encode($_SESSION['flightid'] ?? ''); ?>
+
+        // Fetch session data dynamically and ensure safe encoding for JavaScript
+        let sessionData = {
+            email: email1 ,  // Fetch session email directly into JavaScript
+            accountId: accountid1,
+            flightid: flightid1
+        };
+
+        // Log session data for debugging
+        console.log("Session Data:", sessionData);
+
+        // Check if session data is present
+        if (sessionData.email === "" || sessionData.accountId === "" || sessionData.flightid === "") {
+            console.log("Session data is incomplete. Unable to proceed.");
+        } else {
+            console.log("Session data is valid. Proceeding with AJAX request.");
+
+            // Send the AJAX request
+            $.ajax({
+                url: "../Client Section/Functions/clear_sessions.php",
+                type: "POST",
+                data: { 
+                    email: sessionData.email,
+                    accountId: sessionData.accountId,
+                    flightid: sessionData.flightid
+                },
+                dataType: "json",
+                success: function (response) {
+                    // Check if response status is success
+                    if (response.status === "success") {
+                        console.log("Session data cleared successfully.");
+                        window.location.href = "../Agent Section/agent-dashboard copy 2.php";
+                    } else {
+                        console.log("Error in session clearing: ", response.message);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("AJAX Error:", error);
+                }
+            });
+        }
+    });
+});
+</script>
+
+
+
 
     <div class="container-body">
       <!-- <?php 
