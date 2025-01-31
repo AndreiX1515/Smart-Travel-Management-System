@@ -190,60 +190,29 @@
           </thead>
           <tbody>
             <?php
-              $sql = "SELECT DISTINCT agentCode FROM agent WHERE agentCode IS NOT NULL AND agentCode != ''";
-              $result = $conn->query($sql);
-
-              $agentColumns = '';
-              while ($row = $result->fetch_assoc()) 
-              {
-                $agentColumns .= 
-                    'SUM(CASE WHEN b.agentCode = "' . $row['agentCode'] . '" AND b.bookingType = "Package" and b.status = "Confirmed" THEN b.pax ELSE 0 END) AS `' . $row['agentCode'] . '_AL`, ' .
-                    'SUM(CASE WHEN b.agentCode = "' . $row['agentCode'] . '" AND b.bookingType = "Land" and b.status = "Confirmed" THEN b.pax ELSE 0 END) AS `' . $row['agentCode'] . '_LO`, ';
-              }
-
-        
-              $agentColumns = rtrim($agentColumns, ', ');
-
-              $sql = "
-                  SELECT 
-                      f.flightId AS flightid,  -- Added flightId here
-                      CONCAT(e.lName, ', ', e.fName, 
-                          IF(e.mName IS NOT NULL AND e.mName != '', CONCAT(' ', LEFT(e.mName, 1)), '')) AS TeamOP,
-                      f.origin, 
-                      f.flightDepartureDate AS Start, 
-                      f.returnDepartureDate AS End, 
-                      f.availSeats AS FlightSeat, 
-                      GREATEST(
-                          (f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package' 
-                          THEN b.pax ELSE 0 END), 0)), 0) AS AvailSeats, 
-                      IF(
-                          (f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package' 
-                          THEN b.pax ELSE 0 END), 0)) < 0, 
-                          ABS(f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package' 
-                          THEN b.pax ELSE 0 END), 0)), 
-                          0) AS AdditionalSeats,
-                      SUM(CASE WHEN b.bookingType = 'Package' AND b.status = 'Confirmed' THEN b.pax ELSE 0 END) AS `Air+Land`,
-                      SUM(CASE WHEN b.bookingType = 'Land' AND b.status = 'Confirmed' THEN b.pax ELSE 0 END) AS `LandOnly`,
-                      f.wholesalePrice AS WholesalePrice, 
-                      f.flightPrice AS RetailPrice, 
-                      p.packagePrice AS LandArrangement, 
-                      $agentColumns
-                  FROM 
-                      employee e 
-                  JOIN 
-                      flight f ON f.employeeId = e.employeeId
-                  LEFT JOIN 
-                      booking b ON b.flightId = f.flightId
-                  LEFT JOIN 
-                      package p ON f.packageId = p.packageId
-                  WHERE 
-                      f.flightDepartureDate >= CURDATE()
-                  GROUP BY 
-                      f.flightId, e.lName, e.fName, e.mName, f.origin, f.flightDepartureDate, f.returnDepartureDate, f.availSeats, 
-                      f.wholesalePrice, f.flightPrice, p.packagePrice
-                  ORDER BY 
-                      f.flightDepartureDate";
-
+              $sql = "SELECT f.flightId AS flightid, f.origin, f.flightDepartureDate AS Start, f.returnDepartureDate AS End, 
+                        f.availSeats AS FlightSeat, GREATEST((f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' 
+                        AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0)), 0) AS AvailSeats, 
+                        IF((f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package' 
+                            THEN b.pax ELSE 0 END), 0)) < 0, ABS(f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' 
+                            AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0)), 0) AS AdditionalSeats, 
+                        SUM(CASE WHEN b.bookingType = 'Package' AND b.status = 'Confirmed' THEN b.pax ELSE 0 END) AS `Air+Land`,
+                        SUM(CASE WHEN b.bookingType = 'Land' AND b.status = 'Confirmed' THEN b.pax ELSE 0 END) AS `LandOnly`,
+                        f.wholesalePrice AS WholesalePrice, f.flightPrice AS RetailPrice, p.packagePrice AS LandArrangement
+                      FROM employee e 
+                      JOIN 
+                        flight f ON f.employeeId = e.employeeId
+                      LEFT JOIN 
+                        booking b ON b.flightId = f.flightId
+                      LEFT JOIN 
+                        package p ON f.packageId = p.packageId
+                      WHERE 
+                        f.flightDepartureDate >= CURDATE()
+                      GROUP BY 
+                        f.flightId, e.lName, e.fName, e.mName, f.origin, f.flightDepartureDate, f.returnDepartureDate, f.availSeats, 
+                        f.wholesalePrice, f.flightPrice, p.packagePrice
+                      ORDER BY 
+                        f.flightDepartureDate";
 
               // Step 3: Execute the query
               $result = $conn->query($sql);

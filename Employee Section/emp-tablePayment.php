@@ -181,7 +181,7 @@
                               CONCAT(a.lName, ', ', a.fName, 
                                   IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1), '.'), '')) AS agentName, 
                               p.paymentTitle, p.paymentType, FORMAT(p.amount, 2) AS amount, 
-                              p.filePath, DATE_FORMAT(p.paymentDate, '%m-%d-%Y') AS paymentDate, p.paymentStatus
+                              p.filePath, DATE_FORMAT(p.paymentDate, '%M %d, %Y') AS paymentDate, p.paymentStatus
                           FROM 
                               payment p
                           LEFT JOIN 
@@ -213,20 +213,17 @@
                   {
                     $paymentTypeClass = 'badge bg-secondary';
                   }
-
-                  // Fetch the raw date (e.g., "2000-01-01")
-                  $rawPaymentDate = $row['paymentDate'];
                   
-                  try 
-                  {
-                    // Create a DateTime object and format the date to "January 1, 2000"
-                    $date = new DateTime($rawPaymentDate);
-                    $formattedDate = $date->format('F j, Y');
-                  } catch (Exception $e) 
-                  {
-                    // Handle the exception if the date is invalid
-                    $formattedDate = 'Invalid date';
-                  }
+                  // try 
+                  // {
+                  //   // Create a DateTime object and format the date to "January 1, 2000"
+                  //   $date = new DateTime($rawPaymentDate);
+                  //   $formattedDate = $date->format('F j, Y');
+                  // } catch (Exception $e) 
+                  // {
+                  //   // Handle the exception if the date is invalid
+                  //   $formattedDate = 'Invalid date';
+                  // }
                   
                   // Output table row with data-transactno attribute
                   echo "<tr class='transaction-row' data-paymentId='{$row['paymentId']}'>
@@ -245,8 +242,8 @@
                             </a>
                           </td>
                           <td>
-                            <span class='raw-date' style='display:none;'>$rawPaymentDate</span>
-                            $formattedDate
+                            
+                {$row['paymentDate']}
                           </td>
                       </tr>";
                 }
@@ -275,7 +272,8 @@
       </div>
       <form action="../Employee Section/functions/emp-tablePayment-code.php" method="POST">
         <div class="modal-body">
-          <input type="hidden" id="paymentIdInput" name="paymentId">
+          <input type="" id="paymentIdInput" name="paymentId">
+          <input type="" id="accId" name="accId" placeholder="accId" value="<?php echo $_SESSION['employee_accountId']?>">
           
           <!-- Request Status Section -->
           <div class="mb-4">

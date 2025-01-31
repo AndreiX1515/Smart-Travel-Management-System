@@ -71,12 +71,12 @@
         {
           $flightid = $_GET['flightid'];
         } 
-        else 
-        {
-          // Handle the case where the flightid is not available
-          echo "No flight ID found!";
-          exit;
-        }
+        // else 
+        // {
+        //   // Handle the case where the flightid is not available
+        //   echo "No flight ID found!";
+        //   exit;
+        // }
       ?>
 
       <div id="message-login" class="message-login mt-3 h6 fw-light fs-6" style="font-size: 8px;"></div>
