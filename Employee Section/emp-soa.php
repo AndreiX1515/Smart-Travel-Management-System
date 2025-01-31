@@ -1,38 +1,30 @@
 
-<?php session_start(); ?>
+<?php 
+	session_start(); 
+?>
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Statement of Account (FIT)</title>
-
-  <?php include "../Agent Section/includes/head.php"; ?>
-
-  <link rel="stylesheet" href="../Agent Section/assets/css/agent-soa.css?v=<?php echo time(); ?>">
-  <link rel="stylesheet" href="../Agent Section/assets/css/navbar-sidebar.css?v=<?php echo time(); ?>">
-
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Employee - Transactions</title>
+	<?php include '../Employee Section/includes/emp-head.php' ?>
+	<link rel="stylesheet" href="../Employee Section/assets/css/emp-tableRequestPayment.css?v=<?php echo time(); ?>">
+	<link rel="stylesheet" href="../Employee Section/assets/css/emp-sidebar-navbar.css?v=<?php echo time(); ?>">
 </head>
-
 <body>
-<?php include '../Agent Section/includes/sidebar.php'; ?> 
 
-<div class="main-content" id="mainContent">
+<?php include '../Employee Section/includes/emp-sidebar.php' ?>
 
-  <?php
-    date_default_timezone_set('Asia/Taipei');
-    $current_date = date('D, F d, Y'); 
-  ?>
+<!-- Main Container -->
+<div class="main-container">
+  <?php include '../Employee Section/includes/emp-navbar.php' ?>
 
-  <?php include '../Agent Section/includes/navbar.php'; ?>
-
-  <?php include '../Agent Section/includes/logoutViewPassModal.php'; ?>
-
-  <div class="content-wrapper">
-
-    <div class="content-body">
-      <div class="table-actions">
+  <div class="main-content">
+		<div class="content-container">
+			
+			<div class="table-actions">
         <div class="row">
           <div class="columns col-md-2">
             <div class="table-filters-container">
@@ -53,7 +45,7 @@
                       echo "<option value='" . $row['branchId'] . "'>" . $row['branchName'] . "</option>";
                     }
                   } 
-                  else
+                  else 
                   {
                     echo "<option value=''>No companies available</option>";
                   }
@@ -136,22 +128,21 @@
             Preview SOA
           </button>
         </div>
-
       </div>
 
-      <div id="result-container">
+      <div id="result-container"></div>
 
-      
-      </div>
-
-      <div>
+      <div class="content-footer">
+        <!-- <button class="btn btn-secondary" id="preview-btn">Preview</button> -->
         <button class="btn btn-primary" id="download-btn" disabled>Generate SoA</button>
       </div>
-    </div>
+		</div>
+
   </div>
 </div>
 
-<?php require "../Agent Section/includes/scripts.php"; ?>
+
+<?php include '../Employee Section/includes/emp-scripts.php' ?>
 
 <!-- Preview SoA -->
 <script>
@@ -170,41 +161,42 @@
 
     // Send data to PHP using AJAX
     const xhr = new XMLHttpRequest();
-    xhr.open('POST', '../Agent Section/functions/fetchSoAFIT.php', true); // Replace with your PHP file name
+    xhr.open('POST', '../Employee Section/functions/fetchSoA.php', true); // Replace with your PHP file name
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
     const data = `companyId=${companyId}&month=${month}&year=${year}`;
 
     xhr.onload = function() 
     {
+      // Re-enable the button after the request is complete
       document.getElementById('generate-soa-btn').disabled = false;
-
-      // console.log("Raw Response:", xhr.responseText); // Debugging output
 
       if (xhr.status === 200) 
       {
-        try {
-          const response = JSON.parse(xhr.responseText); // This is where the error occurs
-          if (response.dataAvailable) {
-            resultContainer.innerHTML = response.htmlContent;
-            document.getElementById('download-btn').disabled = false;
-          } else {
-            resultContainer.innerHTML = '<p>No data found for the selected filters.</p>';
-            document.getElementById('download-btn').disabled = true;
-          }
-        } catch (error) {
-          console.error("JSON Parsing Error:", error, "Response:", xhr.responseText);
-          resultContainer.innerHTML = '<p>Error processing response. Please try again.</p>';
+        // Parse the JSON response
+        const response = JSON.parse(xhr.responseText);
+
+        if (response.dataAvailable) 
+        {
+          // Update the result container with the HTML from the response
+          resultContainer.innerHTML = response.htmlContent;
+          // Enable the download button if data is available
+          document.getElementById('download-btn').disabled = false;
+        } 
+        else 
+        {
+          // If no data available, update the result container and disable the button
+          resultContainer.innerHTML = '<p>No data found for the selected filters.</p>';
           document.getElementById('download-btn').disabled = true;
         }
       } 
       else 
       {
-        resultContainer.innerHTML = `<p>Error loading data. Status Code: ${xhr.status}. Please try again later.</p>`;
+        // Handle errors in the request
+        resultContainer.innerHTML = '<p>Error loading data. Please try again later.</p>';
         document.getElementById('download-btn').disabled = true;
       }
     };
-
 
     xhr.onerror = function() 
     {
@@ -216,87 +208,6 @@
 
     // Send the data to the server
     xhr.send(data);
-  });
-</script>
-
-<!-- Generate SoA -->
-<script>
-  document.getElementById('download-btn').addEventListener('click', function() 
-  {
-    const companyId = document.getElementById('company-filter').value;
-    const month = document.getElementById('month-filter').value;
-    const year = document.getElementById('year-filter').value;
-
-    // Get current date in mm/dd/yyyy format
-    const currentDate = new Date();
-    const currentDateFormatted = (currentDate.getMonth() + 1).toString().padStart(2, '0') + '/' +
-                                  currentDate.getDate().toString().padStart(2, '0') + '/' +
-                                  currentDate.getFullYear();
-
-    // First, send the request to agent-addSoA.php to insert SOA data
-    const xhrAddSoA = new XMLHttpRequest();
-    xhrAddSoA.open('POST', '../Agent Section/functions/agent-addSoAFIT.php', true);
-    xhrAddSoA.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhrAddSoA.responseType = 'json'; // Expect JSON response for the SOA number
-
-    xhrAddSoA.onload = function() 
-    {
-      if (xhrAddSoA.status === 200) 
-      {
-        const response = xhrAddSoA.response;
-        
-        if (response.soanum) 
-        {
-          const soaNumber = response.soanum; // Get the generated SOA number
-
-          // Proceed to generate the SOA PDF
-          const xhrPdf = new XMLHttpRequest();
-          xhrPdf.open('POST', '../Agent Section/functions/generateSoAFIT.php', true);
-          xhrPdf.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-          xhrPdf.responseType = 'blob';
-
-          xhrPdf.onload = function() 
-          {
-            if (xhrPdf.status === 200) 
-            {
-              // Create a link to download the PDF
-              const blob = new Blob([xhrPdf.response], { type: 'application/pdf' });
-              const link = document.createElement('a');
-              link.href = window.URL.createObjectURL(blob);
-              link.download = `Statement_of_Account_FIT_${soaNumber}.pdf`;
-              link.click();
-            } 
-            else 
-            {
-              alert('Failed to generate the SOA PDF. Please try again.');
-            }
-          };
-
-          xhrPdf.onerror = function() {
-            alert('An error occurred while generating the SOA PDF.');
-          };
-
-          // Send the request to generate the SOA PDF with the SOA number
-          xhrPdf.send(`companyId=${companyId}&month=${month}&year=${year}&currentDate=${currentDateFormatted}&soaNumber=${soaNumber}`);
-        } 
-        else 
-        {
-          alert('Failed to generate SOA Number. Please try again.');
-        }
-      } 
-      else 
-      {
-        alert('Failed to insert SOA number. Server error: ' + xhrAddSoA.statusText);
-      }
-    };
-
-    xhrAddSoA.onerror = function() 
-    {
-      alert('An error occurred while processing the request to insert SOA data.');
-    };
-
-    // Send the request with the necessary values for SOA number
-    xhrAddSoA.send(`companyId=${companyId}&month=${month}&year=${year}&currentDate=${currentDateFormatted}`);
   });
 </script>
 
@@ -324,9 +235,8 @@
     scrollX: false,
     autoWidth: false,
     pageLength: 10, // Limit the number of rows per page to 8
-    });
+  });
 </script>
-
 
 </body>
 </html>
