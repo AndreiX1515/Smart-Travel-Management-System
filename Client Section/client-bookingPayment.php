@@ -14,6 +14,7 @@
     // $lastName = $_SESSION['last_name'] ?? '';
     // $middleName = $_SESSION['middle_name'] ?? '';
     $accId = $_SESSION['accountId'] ?? '';
+    $flightid = $_SESSION['flightid'] ?? '';
 
     // $fullName = htmlspecialchars($lastName . ', ' . $firstName . ($middleName ? ' ' . substr($middleName, 0, 1) . '.' : ''));
 ?>
@@ -32,11 +33,13 @@
 
 <body>
 
+
 <?php
   // Check if 'id' is passed in the URL
   if (isset($_GET['id'])) 
   {
     $transactionNumber = htmlspecialchars($_GET['id']);
+    
   }
 ?>
 
@@ -46,11 +49,64 @@
   <div class="main-container">  
     <div class="content-header">
         <div class="back-button-wrapper">
-            <a href="client-bookingform.php" class="back-button-link"> <i class="fa-solid fa-arrow-left me-2"></i> Back to Booking Section</a>
+            <!-- This button will trigger the modal -->
+            <button type="button" class="back-button-link btn btn-danger" id="backWarning">
+                <i class="fa-solid fa-arrow-left me-2"></i> Back to Booking Section
+            </button>
+
         </div>
         <h1>Payment Details</h1>
         <p>To confirm your booking, a down payment is required to secure your reservation.</p>
     </div>
+
+  <!-- Warning Modal -->
+  <div class="modal fade" id="bookingWarningModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title text-danger">
+                      <i class="fas fa-exclamation-triangle me-2"></i> Warning
+                  </h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body text-center">
+                  <p>Going back will keep the transaction pending, but it will not be finalized without payment.</p>
+              </div>
+              <div class="modal-footer d-flex justify-content-between">
+                  <!-- Back Button (Triggers Navigation) -->
+                  <button type="button" class="btn btn-secondary" id="confirmBack">
+                      <i class="fa-solid fa-arrow-left me-2"></i> Go Back
+                  </button>
+                  
+                  <!-- Proceed to Payment Button -->
+                  <a href="#" class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close">
+                      Proceed to Payment <i class="fa-solid fa-arrow-right ms-2"></i>
+                  </a>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+    let backWarningButton = document.getElementById("backWarning");
+    let confirmBackButton = document.getElementById("confirmBack");
+
+    // Show modal when back button is clicked
+    backWarningButton.addEventListener("click", function () {
+        let modal = new bootstrap.Modal(document.getElementById("bookingWarningModal"));
+        modal.show();
+    });
+
+    // Navigate to booking page if confirmed
+    confirmBackButton.addEventListener("click", function () {
+        window.location.href = "client-bookingform-flight.php";
+    });
+});
+
+  </script>
+
+
 
     <div class="container-body">
       <!-- <?php 

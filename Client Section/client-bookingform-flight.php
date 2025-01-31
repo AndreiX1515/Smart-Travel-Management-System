@@ -107,6 +107,7 @@
           if (isset($_GET['flightid'])) 
           {
             $flightid = $_GET['flightid'];
+            $_SESSION['flightid'] = $flightid;
             $sql1 = "SELECT * FROM flight WHERE flightId = ?";
 
             // Prepare the statement
@@ -673,6 +674,7 @@
             </div>
           </div>
         </div>
+
       </form>
     </div>
   </div>
