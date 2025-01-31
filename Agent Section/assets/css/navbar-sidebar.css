@@ -1,148 +1,163 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 * {
- font-family: 'Inter', 'Helvetica Neue', 'Segoe UI', Arial, sans-serif;
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-    background-color: #ffffff;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  background-color: #ffffff;
+  font-size: 16px;
+  color: #333333;
 }
 
-/* Misc */
-.horizontal-line {
- width: 100%; /* Full width */
- height: 1px; /* Line thickness */
- background-color: #ccc; /* Grey color */
- margin: 10px 0; /* Space above and below the line */
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  color: #333333;
+  margin-bottom: 10px;
+}
+
+h1 {
+  font-size: 2.5em;
+}
+
+h2 {
+  font-size: 2em;
+}
+
+h3 {
+  font-size: 1.75em;
+}
+
+/* Links */
+a {
+  text-decoration: none;
+  color: #007bff;
+}
+
+a:hover {
+  color: #0056b3;
 }
 
 /* Main Content Section */
-.main-content {
-  margin-left: 0; /* Start with no margin to account for hidden sidebar */
-  transition: margin-left 0.5s ease; /* Smooth transition for margin */
-  position: relative; /* Keep it relative for positioning */
+/* Main Container */
+.body-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%; /* Full width of the viewport */
+  height: 100vh; /* Full height of the viewport */
+  box-sizing: border-box; /* Ensure padding doesn't overflow */
+  padding: 0px; /* Remove padding to prevent unnecessary spacing */
+  overflow: hidden;
+  background-color: #343a40;
 }
 
-/* Adjust margin when the sidebar is active */
-.main-content.active {
- margin-left: 250px; /* Add margin to account for visible sidebar */
-}
-
-
-/* Sidebar styling */
+/* Sidebar Styling */
 .sidebar {
- width: 200px;
- height: 100vh;
- background-color: #343a40;
- padding: 0px 25px 0px 10px;
- position: fixed;
- top: 0;
- left: 0;
- z-index: 1000;
- overflow-y: auto;
- display: flex;
- flex-direction: column;
- border-right: 1px solid #444; 
- box-shadow: 2px 0 8px rgba(0, 0, 0, 0.3); 
- transition: transform 0.3s ease-in-out;
-}
-
-.sidebar.hidden {
- transform: translateX(-100%);
+  width: 12%; /* Sidebar takes up 12% of the width */
+  height: 100vh; /* Full height of the viewport */
+  padding: 0px 13px;
+  box-sizing: border-box;
+  background-color: #343a40;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Pushes the profile to the bottom */
 }
 
 /* Sidebar Logo */
-.sidebar img {
- width: 100%;
- object-fit: contain;
- padding: 15px 30px 15px 15px;
+.sidebar .logo {
+  margin-top: 15px;
 }
 
-/* Dashboard Title */
-.dashboard-title {
- font-size: 0.85rem;
- color: #adb5bd; /* Lighter gray text for muted titles */
- font-weight: 500;
- text-transform: uppercase;
- letter-spacing: 0.5px;
- margin: 15px 30px 0px 0px;
- cursor: pointer;
- padding: 10px;
- transition: background-color 0.2s ease;
+/* Sidebar img */
+.sidebar img {
+  width: 100%;
+  object-fit: contain;
+  padding: 15px 30px 15px 15px;
 }
+
+.main-sidebar .dashboard-title {
+  color: #858585; /* Lighter gray text for section titles */
+  font-size: 0.85rem;
+  color: #858585; /* Lighter gray text for section titles */
+  font-weight: 500;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  
+}
+
 
 /* Section Titles */
 .sidebar .section-title {
- font-size: 0.85rem;
- color: #adb5bd; /* Lighter gray text for section titles */
- font-weight: 500;
- text-transform: uppercase;
- letter-spacing: 0.5px;
- margin: 30px 0 5px;
- cursor: pointer;
- padding: 10px;
- display: flex;
- justify-content: space-between;
- align-items: center;
- transition: background-color 0.2s ease;
+  font-size: 0.85rem;
+  color: #858585; /* Lighter gray text for section titles */
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 30px 0 5px;
+  cursor: pointer;
+  padding: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background-color 0.2s ease;
 }
 
-.sidebar .section-title:hover {
- background-color: #495057; /* Darker background on hover */
- color: #ffffff; /* White text on hover */
-}
+/* .sidebar .section-title:hover {
+  background-color: #495057; /* Darker background on hover 
+  color: #ffffff; 
+} */
 
 /* Chevron Icon */
 .chevron-icon {
- transition: transform 0.3s ease;
+  transition: transform 0.3s ease;
 }
 
 .sidebar .section-title .chevron-icon {
- font-size: 0.9rem;
- color: #adb5bd; /* Default chevron color */
+  font-size: 0.9rem;
+  color: #adb5bd; /* Default chevron color */
 }
 
 /* Links inside the Sidebar */
 .sidebar a {
- display: flex;
- align-items: center;
- padding: 10px 12px;
- border-radius: 6px;
- color: #e9ecef; /* Light color for links */
- text-decoration: none;
- font-size: 0.95rem;
- transition: background-color 0.2s ease, color 0.2s ease;
+  display: flex;
+  align-items: center;
+  padding: 10px 12px;
+  border-radius: 6px;
+  color: #e9ecef; /* Light color for links */
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .sidebar a:hover {
- background-color: #495057; /* Darker background on hover */
- color: #ffffff; /* White text on hover */
+  background-color: #495057; /* Darker background on hover */
+  color: #ffffff; /* White text on hover */
 }
 
 /* Submenu styles */
 .sidebar .submenu.open + .section-title .chevron-icon {
- transform: rotate(180deg); /* Rotate the chevron when submenu is open */
+  transform: rotate(180deg); /* Rotate the chevron when submenu is open */
 }
 
 /* Links inside Submenu */
 .sidebar .submenu a {
- display: flex;
- align-items: left;
- padding: 8px 15px;
- border-radius: 6px;
- color: #e9ecef; /* Light color for submenu links */
- text-decoration: none;
- font-size: 0.95rem;
- transition: background-color 0.2s ease, color 0.2s ease;
+  display: flex;
+  align-items: left;
+  padding: 10px 12px;
+  border-radius: 6px;
+  color: #e9ecef; /* Light color for submenu links */
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .sidebar .submenu a:hover {
- background-color: #495057; /* Darker background on hover */
- color: #ffffff; /* White text on hover */
+  background-color: #495057; /* Darker background on hover */
+  color: #ffffff; /* White text on hover */
 }
 
 /* Home Button */
@@ -182,6 +197,11 @@ body {
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
+.sidebar .add-booking i {
+  color: #ffffff;
+  margin-right: 8px;
+}
+
 .sidebar .add-booking:hover {
   background-color: #b71c1c; /* Darker red on hover */
   color: #e9ecef; /* Light text on hover */
@@ -205,38 +225,132 @@ body {
   color: #e9ecef; /* Light text on hover */
 }
 
-/* Add FIT Button Span */
-.sidebar .add-FIT span {
-  margin-left: 6px;
-}
-
-
-
-.sidebar .add-booking i {
- color: #ffffff;
- margin-right: 8px;
+.sidebar .add-FIT i {
+  color: #ffffff;
+  margin-right: 8px;
 }
 
 /* Icon styles */
 .sidebar i {
- margin-right: 8px;
- color: #adb5bd; /* Lighter gray icons */
+  margin-right: 8px;
+  color: #adb5bd; /* Lighter gray icons */
 }
 
 /* Submenu visibility */
 .sidebar .submenu {
- display: none;
- padding-left: 7px;
- transition: max-height 0.3s ease-in-out, opacity 0.3s ease;
+  display: none;
+  padding-left: 7px;
 }
 
 .sidebar .submenu.open {
- display: block;
- animation: slideDown 0.3s ease-in-out;
+  display: block;
+}
+
+/* Profile Section */
+.sidebar .profile-section {
+  display: flex;
+  gap: 2px;
+  justify-content: left; /* Push items to opposite ends */
+  align-items: center; /* Vertically align content */
+  padding: 5px 0px 5px 5px;
+  background-color: #495057; /* Dark gray background */
+  border-radius: 8px;
+  margin: 10px 0;
+  height: 8vh; /* Adjust height dynamically */
 }
 
 
-@keyframes slideDown {
+.sidebar .profile-wrapper {
+  display: flex;
+  flex-direction: column;
+  margin: 15px 0;
+}
+
+
+
+
+
+
+
+
+
+.sidebar .profile-section .profile-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* border: 1px solid black; */
+  padding: 20px 0px;
+}
+
+.sidebar .profile-section .profile-icon i {
+  font-size: 36px; /* Adjust icon size */
+  color: #ffffff;
+}
+
+.sidebar .profile-section .profile-details {
+  width: 100%;
+  display: flex;
+  flex-direction: column; /* Stack items vertically */
+  justify-content: left; /* Align vertically */
+  align-items: start;
+  color: #ffffff;
+  line-height: 1; /* Adjust line spacing for better readability */
+  margin: 0;
+  padding: 10px 0px;
+  /* border: 1px solid black; */
+}
+
+.sidebar .profile-section .profile-details .profile-name {
+  font-size: 14px;
+  font-weight: bold;
+  margin: 0;
+  color: #ffffff;
+  
+}
+
+.sidebar .profile-section .profile-details .profile-role {
+  font-size: 12px;
+  color: #adb5bd;
+  margin: 0;
+}
+
+.logout-wrapper {
+  width: 100%; /* Full width */
+}
+
+.page-button.logout {
+  display: flex; /* Use flexbox to align icon and text */
+  align-items: center; /* Vertically center the icon and text */
+  padding: 10px 15px; /* Adjust padding as needed */
+  text-align: left; /* Align text to the left */
+  background-color: #343a40; /* Dark background color */
+  color: #ffffff; /* White text */
+  border: 1px solid rgba(220, 220, 220, 0.822); /* Light border */
+  text-decoration: none; /* Remove underline */
+  font-size: 16px;
+  border-radius: 5px; /* Rounded corners */
+  margin-bottom: 10px;
+}
+
+.page-button.logout i {
+  margin-right: 10px; /* Add space between icon and text */
+}
+
+.page-button.logout:hover {
+  background-color: #495057; /* Lighter shade of the main color (#343a40) */
+  color: white; /* White text on hover */
+}
+
+
+
+
+
+
+
+
+
+
+/* @keyframes slideDown {
  from {
    max-height: 0;
    opacity: 0;
@@ -245,138 +359,125 @@ body {
    max-height: 500px;
    opacity: 1;
  }
+} */
+
+/* Main Content Styling */
+.main-content-container {
+  width: 88%; 
+  height: 100vh;
+  margin: 10px 0px;
+  box-sizing: border-box; 
+  overflow-y: auto; 
+  border-top-left-radius: 15px; 
+  border: 1px solid gainsboro;
+  display: flex;  
+  flex-direction: column;
+  gap: 5px; 
+  background-color: #ffffff;
+  padding: 10px;
 }
 
-
-/* Dashboard Title */
-.dashboard-title {
- font-size: 0.85rem;
- color: #6c757d; /* Muted section title */
- font-weight: 500;
- text-transform: uppercase;
- letter-spacing: 0.5px;
- margin: 15px 30px 0px 0px;
- cursor: pointer;
- padding: 10px;
- transition: background-color 0.2s ease;
-}
-
-
-/* Navbar Section */
+/* Navbar Styles */
 .navbar {
- padding: 10px 15px 5px 0px; 
- display: flex;
- align-items: center; 
- background-color: transparent;
- z-index: 999; 
- margin-bottom: 0px;
- position: sticky;
+  display: flex;
+  align-items: center; /* Corrected 'last baseline' */
+  justify-content: start;
+  height: 6.5vh;
+  width: 87.5%;
+  border-bottom: 1px solid gainsboro;
+  padding: 5px 0px 0px 10px;
+  position: fixed;
+  top: 11px;
+  background-color: white;
+  z-index: 1000;
+  margin-left: 0px;
+  /* border: 1px solid black; */
 }
 
-.navbar-brand {
-    margin-left: 0px; /* Add some space to the left */
-    margin-bottom: 2px;
+.navbar .title-page {
+  margin-top: 7px;
 }
 
-.navbar-toggler {
-    margin-left: auto; /* Ensures the toggler is at the end */
+/* Navbar Title Styles */
+.navbar-title {
+  font-size: 0.85rem;
+  color: #6c757d; /* Muted section title */
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  /* margin: 15px 30px 0 0; */
+  cursor: pointer;
+  padding: 10px;
+  transition: background-color 0.2s ease;
 }
 
-/* Toggle button styles */
-.toggle-btn {
-    display: flex;
-    align-items: center; /* Aligns the icon vertically */
-    cursor: pointer;
-    margin-right: 0px; /* Optional: Add some space to the right */
-    border: none;
-    border-radius: 0 5px 5px 0;
-    width: 40px;
-    height: 40px;
-    color: white;
-    font-size: 20px;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-    z-index: 1100; /* Keep it above the sidebar */
-    color: #000;
+/* Navbar Title Text Color */
+.navbar-title h5 {
+  color: black;
+}
+
+.main-content {
+  width: 100%;
+  height: 92vh;
+  padding: 0px 10px 5px 10px;
+  margin-top: 6vh;
+  /* border: 1px solid black; */
+}
+
+.main-content .backbutton-wrapper {
+  width: 100%;
+  height: 3vh;
+}
+
+.backbutton-wrapper {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  /* border: 1px solid black; */
+}
+
+.back-button-wrapper {
+  height: 50%;
+  /* border: 1px solid black; */
+  display: flex;
+  align-items: center;
+}
+
+.back-button-link {
+  text-decoration: none;
+  color: #6c757d;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 35px; /* Circular size */
+  height: 35px; /* Circular size */
+  border: 2px solid gainsboro;
+  border-radius: 50%; /* Makes it round */
+  transition: color 0.3s ease, background 0.3s ease, transform 0.2s ease;
+}
+
+.back-button-link:hover {
+  color: white;
+  background-color: #343a40;
+  transform: scale(1); /* Slight zoom effect */
 }
 
 
-.nav-item.dropdown {
- display: flex; /* Make the dropdown a flex container */
- align-items: center; /* Align itemsfvertically centered */
+
+.page-name-wrapper {
+  display: flex;
+  height: 50%;
+  /* border: 1px solid black; */
+  justify-content: left;
+  align-items: last baseline;
+  padding: 10px 0px 0px 10px;
 }
 
-.profile-container {
- display: flex; /* Use flexbox for the name and position */
- align-items: start;
- flex-direction: column; /* Stack name and position vertically */
- margin-left: 8px; /* Space between image and text */
+.page-name-wrapper h5 {
+  font-weight: 600;
+  font-size: 16px;
 }
 
-.profile-container h6 {
- font-weight: bold; /* Bold for the name */
- margin: 0; /* Remove margin */
-}
 
-.profile-container span {
- font-size: 8px; /* Smaller font for position */
- color: gray; /* Gray color for the position */
- margin: 0; /* Remove margin */
- font-weight: 500; /* Lighter font weight for thinner text */
- line-height: 1; /* Reduce line height to make the text more compact */
-}
 
-.profile-image {
- border-radius: 50%; /* Circular image */
-}
-
-.date-time-container {
- gap: 10px; /* Adds space between the date and the icon */
- padding: 10px;
- border-radius: 15px;
- color: #000000;
- text-align: baseline;
-}
-
-.date-time-container h6 {
- margin: 0;
- font-size: 14px; /* Adjust the font size as needed */
-}
-
-.date-time-container i {
- font-size: 16px; /* Adjust the icon size if necessary */
- color: #000; /* Icon color, adjust as needed */
-}
-
-.vertical-line-navbar {
- width: 1px; /* Line width */
- background-color: rgb(167, 167, 167); /* Line color */
- height: 40px; /* Adjust height to fit the navbar */
- margin: 10px 10px; /* Spacing around the line */
-}
-
-/* Profile Section */
-.profile-container {
- display: flex;
- margin-top: auto;
-}
-
-.profile-image {
- width: 30px;
- height: 30px;
- border-radius: 50%;
- margin-right: 10px;
- object-fit: cover;
-}
-
-.profile-container h6 {
- font-weight: 600;
- font-size: 0.95rem;
- color: #333;
- margin: 0;
-}
-
-.profile-container span {
- font-size: 0.85rem;
- color: #6c757d;
-}

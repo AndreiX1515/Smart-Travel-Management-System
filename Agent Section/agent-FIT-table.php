@@ -1,5 +1,7 @@
 <?php 
-session_start(); 
+session_start();
+require "../conn.php";
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -7,264 +9,404 @@ session_start();
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Transactions</title>
+  <title>Dashboard</title>
 
-  <?php include '../Agent Section/includes/head.php' ?>
-  <link rel="stylesheet" href="../Agent Section/assets/css/agent-FIT.css?v=<?php echo time(); ?>">
+  <?php include "../Agent Section/includes/head.php"; ?>
+
+  <link rel="stylesheet" href="../Agent Section/assets/css/agent-FIT-table.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="../Agent Section/assets/css/navbar-sidebar.css?v=<?php echo time(); ?>">
-
 </head>
-
 <body>
-  <?php include '../Agent Section/includes/sidebar.php'; ?> 
 
-  <div class="main-content" id="mainContent">
-    <?php include '../Agent Section/includes/navbar.php'; ?>
+<div class="body-container">
+  <?php include "../Agent Section/includes/sidebar.php"; ?>
 
-    <div class="container">
-      <!-- <div class="table-header">
-         <div class="sorting-wrapper">
+  <div class="main-content-container">
+    <?php include "../Agent Section/includes/navbar.php"; ?>
 
-           <div class="dropdown-sorting-wrapper">
-              <div class="filter-field mb-3 d-flex flex-column">
-                <label for="packages">Packages:</label>
-                <div class="select-wrapper mt-2">
-                  <select id="packages" class="custom-select">
-                    <option value="">All</option>
-                    <option value="Autumn Tour Package">Autumn Tour</option>
-                    <option value="Summer Tour Package">Summer Tour</option>
-                    <option value="Spring Tour Package">Spring Tour</option>
-                    <option value="Winter Tour Package">Winter Tour</option>
-                    <option value="Regular Tour Package">Regular Tour</option>
-                    <option value="Busan Tour Package">Busan Tour</option>
-                  </select>
+    <div class="main-content">
+      <div class="table-wrapper">
+          <div class="table-header">
+            <div class="search-wrapper">
+                <div class="search-input-wrapper">
+                    <input type="text" id="search" placeholder="Search here..">
+                    <!-- <span class="icon">🔍</span> -->
                 </div>
-              </div>
+            </div>
 
-              <div class="filter-field mb-3 d-flex flex-column">
-                <label for="status">Status:</label>
-                <div class="select-wrapper mt-2">
-                  <select id="status" class="custom-select">
-                    <option value="">All</option>
+            <!-- <div class="filter-field">
+                <!-- <label for="status">Status:</label> 
+                <div class="select-wrapper">
+                  <select id="status">
+                    <option value="All" disabled selected>Select Status</option>
                     <option value="Pending">Pending</option>
                     <option value="Confirmed">Confirmed</option>
                     <option value="Cancelled">Cancelled</option>
                   </select>
                 </div>
+              </div> -->
+
+            <div class="second-header-wrapper">
+              <div class="date-range-wrapper sorting-wrapper">
+                <div class="select-wrapper">
+                  <select id="packages">
+                      <option value="All" disabled selected>Select Packages</option>
+                      <option value="Autumn Tour Package">Autumn Tour</option>
+                      <option value="Summer Tour Package">Summer Tour</option>
+                      <option value="Spring Tour Package">Spring Tour</option>
+                      <option value="Winter Tour Package">Winter Tour</option>
+                      <option value="Regular Tour Package">Regular Tour</option>
+                      <option value="Busan Tour Package">Busan Tour</option>
+                  </select>
+                </div>
               </div>
-           </div>
 
-           <div class="flightbooking-wrapper d-flex flex-row ">
+              <!-- <div class="date-range-wrapper flightbooking-wrapper">
+                <div class="date-range-inputs-wrapper">
+                  <div class="input-with-icon">
+                    <input type="text" class="datepicker" id="BookingStartDate" placeholder="Booking Date">
+                    <i class="fas fa-calendar-alt calendar-icon"></i>
+                  </div>
+                </div>
+              </div> -->
 
-             <div class="date-range-wrapper">
-               <div class="label-wrapper">
-                 <label for="status">Booking Date (Start - End):</label>
-               </div>
-               <div class="date-range-inputs-wrapper">
-                 <input type="text" class="datepicker" id="BookingStartDate" placeholder="Start Date">
-                 <span class="fw-bolder"> <i class="fa-solid fa-arrow-right"></i> </span>
-                 <input type="text" class="datepicker" id="BookingEndDate" placeholder="End Date">
-               </div>
-             </div>
+              <div class="date-range-wrapper flightbooking-wrapper">
+                <div class="date-range-inputs-wrapper">
+                  <div class="input-with-icon">
+                    <input type="text" class="datepicker" id="FlightStartDate" placeholder="Flight Date">
+                    <i class="fas fa-calendar-alt calendar-icon"></i>
+                  </div>
+                </div>
+              </div>
 
-             <div class="date-range-wrapper">
-               <div class="label-wrapper">
-                 <label for="status">Flight Date (Start - End):</label>
-               </div>
-               <div class="date-range-inputs-wrapper">
-                 <input type="text" class="datepicker" id="FlightStartDate" placeholder="Start Date">
-                 <span class="fw-bold"> <i class="fa-solid fa-arrow-right"> </i> </span>
-                 <input type="text" class="datepicker" id="FlightEndDate" placeholder="End Date">
-               </div>
-             </div>
-
-            
-             <div class="filter-field d-flex align-center">
-              <button id="clearSorting" class="btn btn-secondary btn-sm clearFilters">
-                 Clear Filters
-              </button>
+              <div class="buttons-wrapper">
+                <button id="clearSorting" class="btn btn-secondary">
+                    Clear Filters
+                </button>
+              </div>
             </div>
 
-           </div>
-         </div>
+          </div>
 
-         <div class="search-bar">
-           <div class="left-side">
-             <div class="search-input">
-               <label for="status">Search:</label>
-               <input type="text" id="search" class="form-control mt-1" placeholder="Search">
-             </div>
-           </div>
+          <!-- <div class="search-bar">
+            <div class="left-side">
+              
+            </div>
 
-           <div class="right-side" style="display: flex; align-items: baseline; gap: 10px;">
-             <label for="entries" style="font-family: Arial, sans-serif;">Show </label>
-             <select id="entries" style="padding: 5px; font-family: Arial, sans-serif; border: 1px solid #ced4da; border-radius: 4px;">
-               <option value="10">10</option>
-               <option value="25">25</option>
-               <option value="50">50</option>
-               <option value="100">100</option>
-             </select>
-             <label for="entries" style="font-family: Arial, sans-serif;">Entries</label>
-           </div>
-           
-         </div>
-      </div> -->
+            <div class="right-side" style="display: flex; align-items: baseline; gap: 10px;">
+              <label for="entries" style="font-family: Arial, sans-serif;">Show </label>
+              <select id="entries" style="padding: 5px; font-family: Arial, sans-serif; border: 1px solid #ced4da; border-radius: 4px;">
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+              </select>
+              <label for="entries" style="font-family: Arial, sans-serif;">Entries</label>
+            </div>
+            
+          </div> -->   
 
-      <div class="table-container">
-        <table id="product-table" class="product-table mt-2">
-          <thead>
-            <tr>
-              <th>Transaction No</th>
-              <th>Contact Person Info</th>
-              <th>Contact Details</th>
-              <th>No. of Nights</th>
-              <th>Hotel Name</th>
-              <th>Room Type</th>
-              <th>Check-in Date</th>
-              <th>Check-out Date</th>
-              <th>Total Guests</th>
-              <th>Price</th>
-              <th>Transaction Date</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php
-              $sql1 = "SELECT f.transactionNo AS `Transaction No`, 
-                          CONCAT(f.lName, ', ', f.fName, ' ', 
-                            IF(f.mName IS NOT NULL AND f.mName != '', CONCAT(LEFT(f.mName, 1), '.'), ''), 
-                            IF(f.suffix IS NOT NULL AND f.suffix != 'N/A', CONCAT(' ', f.suffix), '')) AS `Contact Name`,
-                          CONCAT(f.countryCode, ' ', f.contactNo) AS `Contact Details`,
-                          fp.packageName AS `Package Name`, DATEDIFF(f.returnDate, f.startDate) AS `No. of Nights`,
-                          fh.hotelName AS `Hotel Name`, fr.rooms AS `Room Type`, f.startDate AS `Check-in Date`,
-                          f.returnDate AS `Check-out Date`, f.pax AS `Total Guests`, f.phpPrice AS `Price`,
-                          f.bookingDate AS `Transaction Date`, f.status AS `Status`
-                        FROM fit f
-                        LEFT JOIN fitpackage fp ON fp.packageId = f.packageId
-                        LEFT JOIN fithotel fh ON fh.hotelId = f.hotelId
-                        LEFT JOIN fitrooms fr ON fr.roomId = f.roomId";
+          <div class="navpills-container">
+              <ul class="nav nav-pills nav-underline" id="pills-tab" role="tablist">
+                  <li class="nav-item" role="presentation">
+                      <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">
+                          All <span class="badge">88</span>
+                      </button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                      <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">
+                          Pending <span class="badge">61</span>
+                      </button>
+                  </li>
 
-              $res1 = $conn->query($sql1);
+                  <li class="nav-item" role="presentation">
+                      <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">
+                          Confirmed <span class="badge">27</span>
+                      </button>
+                  </li>
 
-              if ($res1->num_rows > 0) 
-              {
-                while ($row = $res1->fetch_assoc()) 
-                {
-                  $transactNo = $row['Transaction No'];
-                  $statusClass = '';
-                  switch ($row['Status']) 
-                  {
-                    case 'Confirmed':
-                      $statusClass = 'bg-success text-white';
-                      break;
-                    case 'Cancelled':
-                      $statusClass = 'bg-danger text-white';
-                      break;
-                    case 'Pending':
-                      $statusClass = 'bg-warning text-dark';
-                      break;
-                    default:
-                      $statusClass = 'bg-secondary text-white';
-                  }
+                  <li class="nav-item" role="presentation">
+                      <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">
+                          Cancelled <span class="badge">27</span>
+                      </button>
+                  </li>
+              </ul>
+          </div>
 
-                   echo "<tr data-url='agent-showFITBooking.php?id=" . htmlspecialchars($transactNo) . "'>
-                          <td>{$row['Transaction No']}</td>
-                          <td>{$row['Contact Name']}</td>
-                          <td>{$row['Contact Details']}</td>
-                          <td>{$row['No. of Nights']}</td>
-                          <td>{$row['Hotel Name']}</td>
-                          <td>{$row['Room Type']}</td>
-                          <td>{$row['Check-in Date']}</td>
-                          <td>{$row['Check-out Date']}</td>
-                          <td style='text-align: center; font-weight: bold;'>{$row['Total Guests']}</td>
-                          <td>{$row['Price']}</td>
-                          <td>{$row['Transaction Date']}</td>
-                          <td><span class='badge p-2 rounded-pill {$statusClass}'>{$row['Status']}</span></td>
-                        </tr>";
-                }
-              } 
-              else 
-              {
-                echo "<tr><td colspan='13'>No bookings found</td></tr>";
-              }
-            ?>
-          </tbody>
-        </table>
+          <div class="tab-content" id="pills-tabContent">
+              <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
+                <div class="table-container">
+                  <table id="product-table" class="product-table">
+                      <thead>
+                        <tr>
+                          <th>Transaction No</th>
+                          <th>Contact Details</th>
+                          <th>Package Name</th>
+                          <th>No. of Nights</th>
+                          <th>Hotel Details</th>
+                          <th>Check-in/out</th>
+                          <th>Guests</th>
+                          <th>Price (₱)</th>
+                          <th>Transaction Date</th>
+                          <th>Status</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <?php
+                          $sql1 = "SELECT f.transactionNo AS `Transaction No`, 
+                                      CONCAT(f.lName, ', ', f.fName, ' ', 
+                                            IF(f.mName IS NOT NULL AND f.mName != '', CONCAT(LEFT(f.mName, 1), '.'), ''), 
+                                            IF(f.suffix IS NOT NULL AND f.suffix != 'N/A', CONCAT(' ', f.suffix), '')) AS `Contact Name`,
+                                      CONCAT(f.countryCode, ' ', f.contactNo) AS `Contact Details`,
+                                      fp.packageName AS `Package Name`, DATEDIFF(f.returnDate, f.startDate) AS `No. of Nights`,
+                                      fh.hotelName AS `Hotel Name`, fr.rooms AS `Room Type`, f.startDate AS `Check-in Date`,
+                                      f.returnDate AS `Check-out Date`, f.pax AS `Total Guests`, f.phpPrice AS `Price`,
+                                      f.bookingDate AS `Transaction Date`,f.status AS `Status`
+                                  FROM fit f
+                                  JOIN fitpackage fp ON fp.packageId = f.packageId
+                                  JOIN fithotel fh ON fh.hotelId = f.hotelId
+                                  JOIN fitrooms fr ON fr.roomId = f.roomId";
+
+                          $res1 = $conn->query($sql1);
+
+                          if ($res1->num_rows > 0) 
+                          {
+                            while ($row = $res1->fetch_assoc()) 
+                            {
+                              $statusClass = '';
+                              switch ($row['Status']) 
+                              {
+                                case 'Confirmed':
+                                    $statusClass = 'bg-success text-white';
+                                    break;
+                                case 'Cancelled':
+                                    $statusClass = 'bg-danger text-white';
+                                    break;
+                                case 'Pending':
+                                    $statusClass = 'bg-warning text-dark';
+                                    break;
+                                default:
+                                    $statusClass = 'bg-secondary text-white';
+                              }
+
+                              echo "<tr>
+                                      <td>{$row['Transaction No']}</td>
+                                      <td>
+                                        <div class='contact-wrapper'>
+                                          <p>Contact Name: <span> {$row['Contact Name']} </<span> </p>
+                                          <p>Phone Number: <span> {$row['Contact Details']} <span> </p>
+                                        </div>
+                                      </td>
+
+                                      <td>{$row['Package Name']}</td>
+                                      <td>{$row['No. of Nights']}</td>
+
+                                      <td>
+                                        <div class='contact-wrapper'>
+                                          <p>Hotel: <span> {$row['Hotel Name']} </<span> </p>
+                                          <p>Room Type: <span> {$row['Room Type']} <span> </p>
+                                        </div>
+                                      </td>
+
+                                      <td>
+                                        <div class='contact-wrapper'>
+                                          <p>Check In:  <span> {$row['Check-in Date']} </<span> </p>
+                                          <p>Check Out:  <span> {$row['Check-out Date']} <span> </p>
+                                        </div>
+                                      </td>
+
+                                      <td style='text-align: center; font-weight: bold;'>{$row['Total Guests']}</td>
+                                      <td>{$row['Price']}</td>
+                                      <td>{$row['Transaction Date']}</td>
+                                      <td><span class='badge p-2 rounded-pill {$statusClass}'>{$row['Status']}</span></td>
+                                    </tr>";
+                      
+                            }
+                          } 
+                          else 
+                          {
+                            echo "<tr><td colspan='13'>No bookings found</td></tr>";
+                          }
+                        ?>
+                      </tbody>
+                  </table>
+                </div>
+
+                <!-- Custom Pagination Container -->
+                <div class="table-footer">
+                  <div class="pagination-controls">
+                    <button id="prevPage" class="pagination-btn">Previous</button>
+                    <span id="pageInfo" class="page-info">Page 1 of 10</span>
+                    <button id="nextPage" class="pagination-btn">Next</button>
+                  </div>
+                </div>
+  
+              </div>
+
+              <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
+                  <!-- Content for Pickups -->
+                  Pending Table Here
+              </div>
+
+
+              <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">
+                  <!-- Content for Returns -->
+                  Confirmed table Here
+              </div>
+
+
+              <!-- <div class="tab-pane fade" id="pills-disabled" role="tabpanel" aria-labelledby="pills-disabled-tab" tabindex="0">
+                  <!-- Content for Disabled 
+                  Disabled Content Here
+              </div> -->
+
+          </div> 
       </div>
 
     </div>
   </div>
 
+</div>
 
-  <!-- Row Click Selection JS -->
+
+<?php require "../Agent Section/includes/scripts.php"; ?>
+
 <script>
-  document.addEventListener("DOMContentLoaded", function() 
-  {
-    document.querySelectorAll("tr[data-url]").forEach(function(row) 
-    {
-      row.addEventListener("click", function() 
-      {
-        const transactionNumber = row.getAttribute("data-url").split('=')[1]; // Extract transaction number from the URL
+function toggleSubMenu(submenuId) {
+    const submenu = document.getElementById(submenuId);
+    const sectionTitle = submenu.previousElementSibling;
+    const chevron = sectionTitle.querySelector('.chevron-icon'); 
 
-        console.log("Transaction Number: ", transactionNumber); // Debugging line
+    // Check if the submenu is already open
+    const isOpen = submenu.classList.contains('open');
 
-        // Use AJAX to send the transaction number to the server
-        $.ajax(
-        {
-          url: '../Agent Section/functions/fetchTransactNo.php', // The PHP file to handle the session setting
-          type: 'POST',
-          data: { transaction_number: transactionNumber },
-          success: function(response) 
-          {
-            console.log("Response: ", response); // Debugging line
-
-            // Redirect to the next page after successfully setting the session
-            window.location.href = row.getAttribute("data-url"); // Use the original URL stored in data-url attribute
-          },
-          error: function(xhr, status, error) 
-          {
-            console.error("AJAX Error: " + status + " " + error); // Enhanced error logging
-          }
+    // If it's open, we need to close it, and reset the chevron
+    if (isOpen) {
+        submenu.classList.remove('open');
+        chevron.style.transform = 'rotate(0deg)';
+    } else {
+        // First, close all open submenus and reset all chevrons
+        const allSubmenus = document.querySelectorAll('.submenu');
+        const allChevrons = document.querySelectorAll('.chevron-icon');
+        
+        allSubmenus.forEach(sub => {
+            sub.classList.remove('open');
         });
-      });
-    });
-  });
+
+        allChevrons.forEach(chev => {
+            chev.style.transform = 'rotate(0deg)';
+        });
+
+        // Now, open the current submenu and rotate its chevron
+        submenu.classList.add('open');
+        chevron.style.transform = 'rotate(180deg)';
+    }
+}
 </script>
 
-  <!-- DataTables #product-table -->
-<!-- <script>
+<!-- Row Click Selection JS -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  document.querySelectorAll("tr[data-url]").forEach(function(row) {
+      row.addEventListener("click", function() {
+          const transactionNumber = row.getAttribute("data-url").split('=')[1]; // Extract transaction number from the URL
+
+          console.log("Transaction Number: ", transactionNumber); // Debugging line
+
+          // Use AJAX to send the transaction number to the server
+          $.ajax({
+              url: '../Agent Section/functions/fetchTransactNo.php', // The PHP file to handle the session setting
+              type: 'POST',
+              data: { transaction_number: transactionNumber },
+              success: function(response) {
+                  console.log("Response: ", response); // Debugging line
+
+                  // Redirect to the next page after successfully setting the session
+                  window.location.href = row.getAttribute("data-url"); // Use the original URL stored in data-url attribute
+              },
+              error: function(xhr, status, error) {
+                  console.error("AJAX Error: " + status + " " + error); // Enhanced error logging
+              }
+          });
+      });
+  });
+});
+</script>
+
+
+<!-- JQuery Datapicker -->
+<script>
+  document.addEventListener("scroll", function () {
+  const searchBar = document.querySelector(".search-bar");
+  const scrollPosition = window.scrollY;
+
+  // Add or remove the upward adjustment class based on scroll position
+  if (scrollPosition > 70) { // Adjust the threshold as needed
+    searchBar.classList.add("scrolled-upward");
+  } else {
+    searchBar.classList.remove("scrolled-upward");
+  }
+});
+</script>
+
+<!-- DataTables #product-table -->
+<script>
 $(document).ready(function () {
       const table = $('#product-table').DataTable({
-        dom: 'rti',
-        columnDefs: [
-            { width: '10%', targets: 0 }, // ID
-            { width: '30%', targets: 1 }, // Contact Person Name
-            { width: '20%', targets: 2 }, // Contact Person Details
-            { width: '15%', targets: 3 }, // Package Name
-            { width: '12%', targets: 4 }, // Booking Date
-            { width: '13%', targets: 5 }, // Flight Date
-            { width: '10%', targets: 6 }, // Total Pax
-            { width: '5%',  targets: 7 },  // Status
-            { width: '15%', targets: 8 }, // Package Name
-            { width: '12%', targets: 9 }, // Booking Date
-            { width: '13%', targets: 10 }, // Flight Date
-            { width: '10%', targets: 11 }, // Total Pax
-            { width: '5%',  targets: 12 },  // Status
-            { width: '5%',  targets: 12 }  // Status
-        ],
+        dom: 'rtip',  // Use only the relevant table elements
         language: {
             emptyTable: "No Transaction Records Available"
         },
-        order: [[0, 'desc']],
+        order: [[0, 'desc']],  // Default sorting by Transaction ID (descending)
         scrollX: false,
+        scrollY: '67.5vh',  // Set a fixed height for the table (adjust as necessary)
+        paging: true,  // Enable pagination
+        pageLength: 11,  // Set the number of rows per page
         autoWidth: false,
-        pageLength: 8, // Limit the number of rows per page to 8
+        autoHeight: false,  // Prevent automatic height adjustment
+
+        // Disable sorting for specific columns
+        columnDefs: [
+          {
+            targets: [1, 2, 3, 4, 5, 6, 7, 9, ],
+            orderable: false
+          }
+        ]
     });
+
 
     // Search Functionality
     $('#search').on('keyup', function () {
         table.search(this.value).draw();
     });
+
+    // Update the custom pagination buttons and page info
+    function updatePagination() {
+      const info = table.page.info();
+      const currentPage = info.page + 1; // Get current page number (1-indexed)
+      const totalPages = info.pages; // Get total pages
+
+      // Update page info text
+      $('#pageInfo').text(`Page ${currentPage} of ${totalPages}`);
+
+      // Enable/Disable prev and next buttons based on current page
+      $('#prevPage').prop('disabled', currentPage === 1);
+      $('#nextPage').prop('disabled', currentPage === totalPages);
+    }
+
+    // Custom pagination button click events
+    $('#prevPage').on('click', function() {
+      table.page('previous').draw('page');
+      updatePagination();
+    });
+
+    $('#nextPage').on('click', function() {
+      table.page('next').draw('page');
+      updatePagination();
+    });
+
+    // Initialize pagination on first load
+    updatePagination();
 
     // Status Filter
     $('#status').on('change', function () {
@@ -278,66 +420,139 @@ $(document).ready(function () {
         table.column(3).search(selectedPackage || '').draw();
     });
 
-    // Initialize Datepickers
-    const dateFields = ['#FlightStartDate', '#FlightEndDate', '#BookingStartDate', '#BookingEndDate'];
-    dateFields.forEach((field) => {
-        $(field).datepicker({
-            changeMonth: true,
-            changeYear: true,
-            dateFormat: 'yy-mm-dd'
-        }).on('focus', (e) => {
-            e.preventDefault();
-        });
+    // Booking Date Filter with value change
+    $('#BookingStartDate').on('change', function () {
+      const selectedBookingDate = $(this).val();  // Get the selected value directly from the input field
+      console.log("Booking Date Filter:", selectedBookingDate);  // Log the selected booking date
+      table.column(4).search(selectedBookingDate || '').draw();  // Column 4 (index starts at 0)
     });
 
-    // Helper Function to Check Date in Range
-    function isDateInRange(startDate, endDate, targetDate) {
-        if (!targetDate) return true; // Allow empty target dates
-        const target = new Date(targetDate);
-        const start = startDate ? new Date(startDate) : null;
-        const end = endDate ? new Date(endDate) : null;
-        return (!start || target >= start) && (!end || target <= end);
-    }
-
-    // Custom Filter for Flight Dates
-    $.fn.dataTable.ext.search.push(function (settings, data) {
-        const flightStartDate = $('#FlightStartDate').val();
-        const flightEndDate = $('#FlightEndDate').val();
-        const flightDate = data[5];
-        return isDateInRange(flightStartDate, flightEndDate, flightDate);
+    // Flight Date Filter with value change
+    $('#FlightStartDate').on('change', function () {
+      const selectedFlightDate = $(this).val();  // Get the selected value directly from the input field
+      console.log("Flight Date Filter:", selectedFlightDate);  // Log the selected flight date
+      table.column(5).search(selectedFlightDate || '').draw();  // Column 5 (index starts at 0)
     });
 
-    // Custom Filter for Booking Dates
-    $.fn.dataTable.ext.search.push(function (settings, data) {
-        const bookingStartDate = $('#BookingStartDate').val();
-        const bookingEndDate = $('#BookingEndDate').val();
-        const bookingDate = data[4];
-        return isDateInRange(bookingStartDate, bookingEndDate, bookingDate);
+    // Apply datepicker and input validation for FlightStartDate
+    $("#FlightStartDate").datepicker({
+        dateFormat: "mm-dd-yy", // Set the format to MM-DD-YYYY
+        showAnim: "fadeIn", // Optional: Adds a fade-in effect when the date picker is opened
+        changeMonth: true, // Allow the month to be changed from the dropdown
+        changeYear: true,  // Allow the year to be changed from the dropdown
+        yearRange: "1900:2100", // Set a range of years (optional)
+        onSelect: function(dateText) {
+            // When a date is selected, update the input field with the date
+            $(this).val(dateText);
+            flightStartDate = dateText; // Store the selected date
+            console.log("FlightStartDate Selected Date (onSelect): " + dateText);
+            table.column(5).search(flightStartDate || '').draw();  // Column 5 (index starts at 0)
+        }
     });
 
-    // Apply Filters on Date Change
-    $('#FlightStartDate, #FlightEndDate, #BookingStartDate, #BookingEndDate').on('change', function () {
-        table.draw();
+    $("#FlightStartDate").datepicker({
+        dateFormat: "mm-dd-yy", // Set the format to MM-DD-YYYY
+        showAnim: "fadeIn", // Optional: Adds a fade-in effect when the date picker is opened
+        changeMonth: true, // Allow the month to be changed from the dropdown
+        changeYear: true,  // Allow the year to be changed from the dropdown
+        yearRange: "1900:2100", // Set a range of years (optional)
+        onSelect: function(dateText) {
+            // When a date is selected, update the input field with the date
+            if (dateText === "") {
+                flightStartDate = ""; // Reset the variable if the field is cleared
+            } else {
+                flightStartDate = dateText; // Store the selected date
+            }
+            console.log("FlightStartDate Selected Date (onSelect): " + flightStartDate);
+            table.column(5).search(flightStartDate || '').draw(); // Column 5 (index starts at 0)
+        }
+    });
+
+    // Apply datepicker and input validation for BookingStartDate
+    $("#BookingStartDate").datepicker({
+        dateFormat: "mm-dd-yy", // Set the format to MM-DD-YYYY
+        showAnim: "fadeIn", // Optional: Adds a fade-in effect when the date picker is opened
+        changeMonth: true, // Allow the month to be changed from the dropdown
+        changeYear: true,  // Allow the year to be changed from the dropdown
+        yearRange: "1900:2100", // Set a range of years (optional)
+        onSelect: function(dateText) {
+            // When a date is selected, update the input field with the date
+            $(this).val(dateText);
+            bookingStartDate = dateText; // Store the selected date
+            console.log("FlightStartDate Selected Date (onSelect): " + dateText);
+            table.column(4).search(bookingStartDate || '').draw();  // Column 5 (index starts at 0)
+        }
+    });
+
+    // BookingStartDate Input Validation and Formatting
+    $("#BookingStartDate").on("input", function () {
+        var value = $(this).val();
+
+        // Remove non-numeric and non-dash characters
+        value = value.replace(/[^\d-]/g, '');
+
+        // Automatically add dashes in the correct places if necessary
+        if (value.length > 2 && value.charAt(2) !== '-') {
+            value = value.substring(0, 2) + '-' + value.substring(2);
+        }
+        if (value.length > 5 && value.charAt(5) !== '-') {
+            value = value.substring(0, 5) + '-' + value.substring(5);
+        }
+
+        // Limit the total input length to 10 characters (MM-DD-YYYY)
+        if (value.length > 10) {
+            value = value.substring(0, 10);
+        }
+
+        // Update the input field value
+        $(this).val(value);
+
+        // Reset or update the bookingStartDate variable
+        if (value === "") {
+            bookingStartDate = ""; // Reset the variable if the input is cleared
+        } else {
+            bookingStartDate = value; // Update the variable with the formatted value
+        }
+
+        // Update the table column search
+        table.column(5).search(bookingStartDate || '').draw(); // Column 5 (index starts at 0)
+
+        console.log("BookingStartDate Input Value (on input): " + value);
     });
 
     // Clear All Filters
     $('#clearSorting').on('click', function () {
+        // Clear search field
         $('#search').val('');
         table.search('').draw();
 
-        $('#status').val('').change();
-        $('#packages').val('').change();
+        // Clear status dropdown
+        $('#status').val('All').change();
 
-        dateFields.forEach((field) => {
-            $(field).val('');
-        });
+        // Clear packages dropdown
+        $('#packages').val('All').change();
 
+         // Explicitly reset the variables
+         flightStartDate = '';
+        bookingStartDate = '';
+
+        // Clear date fields
+        $('#BookingStartDate').val('').trigger('change'); // Reset and trigger input for BookingStartDate
+        $('#FlightStartDate').val('').trigger('change');  // Reset and trigger input for FlightStartDate
+
+       
+
+        // Redraw the table
         table.draw();
     });
-});
-</script> -->
 
-  <?php require "../Agent Section/includes/scripts.php"; ?>
+
+});
+</script>
+
+
+
+
 
 
   </body>

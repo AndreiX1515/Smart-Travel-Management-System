@@ -1,4 +1,6 @@
-<?php session_start(); ?>
+<?php 
+session_start(); 
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,35 +9,36 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard</title>
 
+  <?php include "../Agent Section/includes/head.php"; ?>
 
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- Bootstrap JS Bundle (includes Popper.js) -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
   <link rel="stylesheet" href="../Agent Section/assets/css/agent-transaction.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="../Agent Section/assets/css/navbar-sidebar.css?v=<?php echo time(); ?>">
 </head>
-
 <body>
-  <?php include '../Agent Section/includes/sidebar.php'; ?> 
 
-  <div class="main-content" id="mainContent">
-    <?php 
-      include '../Agent Section/includes/navbar.php'; 
-      
-      // Check if the transaction number is set in the session
-      if (isset($_SESSION['transaction_number'])) 
-      {
-        $transactionNumber = $_SESSION['transaction_number'];
-      } 
-      else 
-      {
-        echo "No transaction number found.";
-      }
-    ?>
+<?php 
+  include '../Agent Section/includes/navbar.php'; 
+  
+  // Check if the transaction number is set in the session
+  if (isset($_SESSION['transaction_number'])) 
+  {
+    $transactionNumber = $_SESSION['transaction_number'];
+  } 
+  else 
+  {
+    echo "No transaction number found.";
+  }
+?>
 
+<div class="body-container">
+  <?php include "../Agent Section/includes/sidebar.php"; ?>
+
+  <div class="main-content-container">
+    <div class="navbar">
+      <h5 class="title-page">Transactions</h5>
+    </div>
+
+    <div class="main-content">
     <?php 
       if(isset($_SESSION['status'])):
     ?>
@@ -43,17 +46,19 @@
         <strong>Hey!</strong> <?= $_SESSION['status']; ?>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
+
     <?php 
       unset($_SESSION['status']);
       endif;
     ?>
-    <div class="content-wrapper">
-     <div class="header d-flex flex-row justify-content-between">
-       <h6> <span class="fw-bold text-dark">Transaction No: </span>  <?php echo $transactionNumber ?></h6>
-         <!-- Trigger Button -->
-         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#paymentModal<?= $transactionNumber ?>"
+
+      <div class="header d-flex flex-row justify-content-between">
+        <h6> <span class="fw-bold text-dark">Transaction No: </span>  <?php echo $transactionNumber ?></h6>
+          <!-- Trigger Button -->
+          <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#paymentModal<?= $transactionNumber ?>"
         data-transact-no="<?= $transactionNumber ?>" data-account-id="<?= $accountId ?>">Add Payment</button>
-     </div>
+      </div>
+
      <div class="table-container p-3">
       <table class="product-table">
         <thead>
@@ -99,12 +104,14 @@
 
         </tbody>
       </table>
-    </div>
+     </div>
+
+
     </div>
   </div>
+</div>
 
-  <?php require "../Agent Section/includes/scripts.php"; ?>
-
+<?php require "../Agent Section/includes/scripts.php"; ?>
 
 <!-- Modal -->
 <div class="modal fade" id="paymentModal<?= $transactionNumber ?>" tabindex="-1" aria-labelledby="paymentModalLabel<?= $transactionNumber ?>" aria-hidden="true">
@@ -288,17 +295,8 @@
 
 </script>
 
-<style>
-   .drop-zone 
-   {
-     cursor: pointer;
-     background-color: #f8f9fa;
-     min-height: 100px;
-     display: flex;
-     align-items: center;
-     justify-content: center;
-   }
-</style>
 
-</body>
+</script>
+
+  </body>
 </html>

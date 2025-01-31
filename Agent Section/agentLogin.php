@@ -90,13 +90,13 @@
                        console.log(data.accountType);
                        if (data.accountType === 'agent') {
                            // Redirect to agent dashboard
-                           window.location.href = '../Agent Section/agent-dashboard copy 2.php';
+                           window.location.href = '../Agent Section/agent-dashboard.php';
                        } else if (data.accountType === 'employee') {
                            // Redirect to employee dashboard
                            window.location.href = '../Employee Section/emp-dashboard.php';
                        } else if (data.accountType === 'guest') {
                            // Redirect to employee dashboard
-                           window.location.href = '../Agent Section/agent-dashboard copy 2.php';
+                           window.location.href = '../Agent Section/agent-dashboard.php';
                        } 
                     
                        else {
