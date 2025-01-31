@@ -20,15 +20,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     // If you want to change more session variables, do it here
     $_SESSION['agent_accountId'] = $accountId;
-    $_SESSION['agent_agentId'] = $_SESSION['agent_agentId'] ?? '';  // You can assign default values if needed
-    $_SESSION['agent_agentCode'] = $_SESSION['agent_agentCode'] ?? '';  // Same as above
-    $_SESSION['agent_agentRole'] = $_SESSION['agent_agentRole'] ?? '';
-    $_SESSION['agent_agentType'] = $_SESSION['agent_agentType'] ?? '';
-    $_SESSION['agent_fName'] = $_SESSION['agent_fName'] ?? '';
-    $_SESSION['agent_lName'] = $_SESSION['agent_lName'] ?? '';
-    $_SESSION['agent_mName'] = $_SESSION['agent_mName'] ?? '';
-    $_SESSION['agent_branchId'] = $_SESSION['agent_branchId'] ?? '';
-    $_SESSION['password'] = $_SESSION['password'] ?? '';
+    $_SESSION['agent_agentId'] =  '';  // You can assign default values if needed
+    $_SESSION['agent_agentCode'] = '';  // Same as above
+    $_SESSION['agent_agentRole'] =  '';
+    $_SESSION['agent_agentType'] =  '';
+    $_SESSION['agent_fName'] =  '';
+    $_SESSION['agent_lName'] = '';
+    $_SESSION['agent_mName'] =  '';
+    $_SESSION['agent_branchId'] =  '';
+    $_SESSION['password'] = '';
 
     // Return a JSON response
     echo json_encode(["status" => "success"]);
