@@ -238,7 +238,7 @@
       <div id="result-container">
       </div>
 
-      <div class="content-footer">
+      <div>
           <!-- <button class="btn btn-secondary" id="preview-btn">Preview</button> -->
           <button class="btn btn-primary" id="download-btn" disabled>Generate SoA</button>
       </div>

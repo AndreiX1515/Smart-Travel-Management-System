@@ -53,7 +53,7 @@
                       echo "<option value='" . $row['branchId'] . "'>" . $row['branchName'] . "</option>";
                     }
                   } 
-                  else 
+                  else
                   {
                     echo "<option value=''>No companies available</option>";
                   }
@@ -263,7 +263,7 @@
               const blob = new Blob([xhrPdf.response], { type: 'application/pdf' });
               const link = document.createElement('a');
               link.href = window.URL.createObjectURL(blob);
-              link.download = `Statement_of_Account_${soaNumber}.pdf`;
+              link.download = `Statement_of_Account_FIT_${soaNumber}.pdf`;
               link.click();
             } 
             else 

@@ -58,7 +58,7 @@ class PDF extends TCPDF
       $this->SetFont('Helvetica', '', 10, true);
       $this->SetXY(10, 43);
       $this->Cell(30, 8, 'SOA NO.:', 1, 0, 'C');
-      $this->Cell(70, 8, $this->soaNumber, 1, 0, 'C');
+      $this->Cell(70, 8, 'FIT-'.$this->soaNumber, 1, 0, 'C');
       $this->Cell(30, 8, 'DATE RANGE:', 1, 0, 'C');
       $this->Cell(60, 8, $this->monthName, 1, 1, 'C');
 
