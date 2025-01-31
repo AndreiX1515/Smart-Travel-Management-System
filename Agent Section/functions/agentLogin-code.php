@@ -146,17 +146,17 @@ function manageAgentSession($accountId, $userData, $userType, $additionalFields)
     session_regenerate_id(true);
     $new_session_id = session_id();
 
-    $_SESSION['agent_accountId'] = $accountId;
-    $_SESSION['agent_userType'] = $userType;
-    $_SESSION['agent_fName'] = $userData['fName'] ?? '';
-    $_SESSION['agent_mName'] = $userData['mName'] ?? '';
-    $_SESSION['agent_lName'] = $userData['lName'] ?? '';
-    $_SESSION['agent_agentId'] = $userData['agentId'] ?? '';  // Added agent_id to session
-    $_SESSION['agent_agentCode'] = $userData['agentCode'] ?? '';  // Added agent_Code to session
-    $_SESSION['agent_agentRole'] = $userData['agentRole'] ?? '';  // Added agent_agentRole to session
-    $_SESSION['agent_agentType'] = $userData['agentType'] ?? '';  // Added agent_agentType to session
-    $_SESSION['agent_branchId'] = $userData['branchId'] ?? '';  // Added branch_id to session
-    $_SESSION['agent_timeout'] = time();
+    $_SESSION['accountId'] = $accountId;
+    $_SESSION['userType'] = $userType;
+    $_SESSION['fName'] = $userData['fName'] ?? '';
+    $_SESSION['mName'] = $userData['mName'] ?? '';
+    $_SESSION['lName'] = $userData['lName'] ?? '';
+    $_SESSION['agentId'] = $userData['agentId'] ?? '';  // Added agent_id to session
+    $_SESSION['agentCode'] = $userData['agentCode'] ?? '';  // Added agent_Code to session
+    $_SESSION['agentRole'] = $userData['agentRole'] ?? '';  // Added agent_agentRole to session
+    $_SESSION['agentType'] = $userData['agentType'] ?? '';  // Added agent_agentType to session
+    $_SESSION['branchId'] = $userData['branchId'] ?? '';  // Added branch_id to session
+    $_SESSION['timeout'] = time();
 
     // Store additional fields in session if provided
     // foreach ($additionalFields as $field) {

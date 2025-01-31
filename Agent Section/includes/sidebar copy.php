@@ -5,18 +5,18 @@
   ini_set('display_startup_errors', 1);
   error_reporting(E_ALL);
 
-  $accountId = $_SESSION['agent_accountId'];
+  $accountId = $_SESSION['accountId'];
 
   
 
-  $agentId = $_SESSION['agent_agentId'];
-  $agentCode = $_SESSION['agent_agentCode'];
-  $agentRole = $_SESSION['agent_agentRole'];
-  $agentType = $_SESSION['agent_agentType'];
-  $fName =  $_SESSION['agent_fName'] ?? '';
-  $lName = $_SESSION['agent_lName'] ?? '';
-  $mName = $_SESSION['agent_mName'] ?? '';
-  $branchId = $_SESSION['agent_branchId'] ?? '';
+  $agentId = $_SESSION['agentId'];
+  $agentCode = $_SESSION['agentCode'];
+  $agentRole = $_SESSION['agentRole'];
+  $agentType = $_SESSION['agentType'];
+  $fName =  $_SESSION['fName'] ?? '';
+  $lName = $_SESSION['lName'] ?? '';
+  $mName = $_SESSION['mName'] ?? '';
+  $branchId = $_SESSION['branchId'] ?? '';
   $email = $_SESSION['email'] ?? '';
   $password = $_SESSION['password'] ?? '';
 
