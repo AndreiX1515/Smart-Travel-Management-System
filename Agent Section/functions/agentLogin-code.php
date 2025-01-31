@@ -159,9 +159,9 @@ function manageAgentSession($accountId, $userData, $userType, $additionalFields)
     $_SESSION['agent_timeout'] = time();
 
     // Store additional fields in session if provided
-    foreach ($additionalFields as $field) {
-        $_SESSION['agent_' . $field] = $userData[$field] ?? null;
-    }
+    // foreach ($additionalFields as $field) {
+    //     $_SESSION['agent_' . $field] = $userData[$field] ?? null;
+    // }
 
     // Insert new session into the user_sessions table
     $insert_stmt = $conn->prepare(

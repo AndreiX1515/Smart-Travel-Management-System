@@ -9,8 +9,6 @@
 
   
 
-
-
   $agentId = $_SESSION['agent_agentId'];
   $agentCode = $_SESSION['agent_agentCode'];
   $agentRole = $_SESSION['agent_agentRole'];
