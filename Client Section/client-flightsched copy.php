@@ -72,38 +72,52 @@ $accId = $_SESSION['accountId'] ?? '';
                     <div class="details-header">
                       <h3>Manila</h3>
                     </div>
-                    
-
-                    
+                  
                   </div>
                     
                   <div class="flight-date-wrapper">
                       <label for="">Flight Date: </label>
 
                       <div class="flight-date">
-                        <div class="flight-start">
-                          <label for="">Start:</label>
-                          <h5>2024-02-10</h5>
-                        </div>
+                          <div class="flight-start">
+                            <label for="">Start:</label>
+                            <h5>2024-02-10</h5>
+                          </div>
 
-                        <div class="flight-end">
-                          <label for="">End:</label>
-                          <h5>2024-02-15</h5>
-                        </div>
+                          <div class="flight-end">
+                            <label for="">End:</label>
+                            <h5>2024-02-15</h5>
+                          </div>
 
                       </div>
+                  </div>
 
+                  <div class="seats-wrapper">
+                      <div class="seats-container">
+                          <div class="seats-info">
+                              <label for="">Available Seats:</label>
+                              <p><strong>5</strong></p>
+                          </div>
+
+                          <div class="seats-info">
+                              <label for="">Additional Seats:</label>
+                              <p><strong>2</strong></p>
+                          </div>
+                      </div>
+
+                      <div class="book-now-container">
+                          <a href="#" class="btn book-now">Book Now</a>
+                      </div>
                       
                   </div>
 
-                  <p><strong>Available Seats:</strong> 5</p>
-                  <p><strong>Additional Seats:</strong> 2</p>
+                  
 
                   <!-- <div class="flight-price">
                     <span>$250</span>
                   </div> -->
 
-                  <a href="#" class="btn book-now">Book Now</a>
+                  
                 </div>
               </div>
             </div>
