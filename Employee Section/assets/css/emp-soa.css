@@ -60,12 +60,12 @@
   width: 100%;
   gap: 10px;
   height: 81vh;
-  border: 1px solid black;
+  /* border: 1px solid black; */
 }
 
 
 .table-wrapper {
-  border: 1px solid black;
+  /* border: 1px solid black; */
   overflow-y: auto;
 }
 

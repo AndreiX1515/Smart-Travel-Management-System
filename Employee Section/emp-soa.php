@@ -51,10 +51,10 @@
               </div>
             </div>
 
-            <div class="columns col-md-3">
+            <div class="columns col-md-3" id="flight-container">
               <div class="table-filters-container">
                 <label for="flight-filter ">Select Flight Date:</label>
-                <select id="flight-filter" name="flight-filter" class="form-control">
+                <select id="flight-filter" name="flight-filter" class="form-control" onchange="toggleFilters()">
                   <option selected disabled>Select Flight Date</option>
                   <?php
                     // Execute the SQL query
@@ -79,10 +79,10 @@
               </div>
             </div>
 
-            <div class="columns col-md-2">
+            <div class="columns col-md-2" id="month-container">
               <div class="table-filters-container">
                 <label for="month-filter">Month</label>
-                <select id="month-filter" name="month-filter" class="form-control">
+                <select id="month-filter" name="month-filter" class="form-control" onchange="toggleFilters()">
                   <option selected disabled>Select month</option>
                   <option value="January">January</option>
                   <option value="February">February</option>
@@ -111,10 +111,10 @@
               selectElement.selectedIndex = currentMonth;
             </script>
 
-            <div class="columns col-md-2">
+            <div class="columns col-md-2" id="year-container">
               <div class="table-filters-container">
                 <label for="year-filter">Year</label>
-                <select id="year-filter" name="year-filter" class="form-control">
+                <select id="year-filter" name="year-filter" class="form-control" onchange="toggleFilters()">
                   <!-- Year options will be populated dynamically -->
                 </select>
               </div>
@@ -146,6 +146,10 @@
               // Set the current month as selected
               monthSelect.value = currentMonthIndex; // Use 1-based month index
             </script>
+
+            <div class="columns col-md-2" id="reset-button-container" style="display: none;">
+              <button class="btn btn-warning" onclick="resetFilters()">Reset Filters</button>
+            </div>
           </div>
 
           <div class="btn-container">
@@ -156,8 +160,8 @@
         <div class="table-wrapper">
           <div id="result-container"></div>
         </div>
-
-        <div class="content-footer">
+        
+        <div>
           <!-- <button class="btn btn-secondary" id="preview-btn">Preview</button> -->
           <button class="btn btn-primary" id="download-btn" disabled>Generate SoA</button>
         </div>
@@ -315,6 +319,72 @@
 
 <?php include '../Employee Section/includes/emp-scripts.php' ?>
 
+<script>
+  function toggleFilters() 
+  {
+    const flightContainer = document.getElementById("flight-container");
+    const flightSelect = document.getElementById("flight-filter");
+    const monthContainer = document.getElementById("month-container");
+    const yearContainer = document.getElementById("year-container");
+    const monthSelect = document.getElementById("month-filter");
+    const yearSelect = document.getElementById("year-filter");
+    const resetButtonContainer = document.getElementById("reset-button-container");
+
+    // If a Flight Date is selected, hide the month and year filters
+    if (flightSelect.value !== "Select Flight Date" && flightSelect.value !== "") 
+    {
+      flightContainer.style.display = "block";  // Show the flight container
+      monthContainer.style.display = "none";   // Hide month container
+      yearContainer.style.display = "none";    // Hide year container
+      resetButtonContainer.style.display = "block"; // Show reset button
+    } 
+    // If Month or Year is selected, hide the flight filter
+    else if (monthSelect.value !== "Select month" || yearSelect.value !== "") 
+    {
+      flightContainer.style.display = "none";  // Hide the flight container
+      monthContainer.style.display = "block"; // Show month container
+      yearContainer.style.display = "block";  // Show year container
+      resetButtonContainer.style.display = "block"; // Show reset button
+    } 
+    // If neither Flight Date, Month, nor Year is selected, show all filters
+    else 
+    {
+      flightContainer.style.display = "block";
+      monthContainer.style.display = "block";
+      yearContainer.style.display = "block";
+      resetButtonContainer.style.display = "none"; // Hide reset button
+    }
+  }
+
+  function resetFilters() 
+  {
+    // Reset the values of the filters
+    document.getElementById("flight-filter").value = "Select Flight Date";
+    document.getElementById("month-filter").value = "Select month";
+    document.getElementById("year-filter").value = "";
+
+    // Make sure all filter containers are visible
+    const flightFilter = document.getElementById("flight-filter");
+    const monthFilter = document.getElementById("month-filter");
+    const yearFilter = document.getElementById("year-filter");
+    const flightContainer = flightFilter.closest(".columns");
+    const monthContainer = monthFilter.closest(".columns");
+    const yearContainer = yearFilter.closest(".columns");
+
+    // Display all the containers
+    flightContainer.style.display = "block";
+    monthContainer.style.display = "block";
+    yearContainer.style.display = "block";
+
+    // Hide the reset button
+    const resetButtonContainer = document.getElementById("reset-button-container");
+    resetButtonContainer.style.display = "none";
+
+    // Call the toggleFilters() function to ensure proper visibility
+    toggleFilters();
+  }
+</script>
+
 <!-- Preview SoA -->
 <script>
   document.getElementById('generate-soa-btn').addEventListener('click', function() 
@@ -322,6 +392,7 @@
     const companyId = document.getElementById('company-filter').value;
     const month = document.getElementById('month-filter').value;
     const year = document.getElementById('year-filter').value;
+    const flightSelect = document.getElementById('flight-filter').value;
 
     // Disable the button while the request is in progress
     document.getElementById('generate-soa-btn').disabled = true;
@@ -330,12 +401,24 @@
     const resultContainer = document.getElementById('result-container');
     resultContainer.innerHTML = '<p>Loading...</p>';
 
+    // Determine which PHP file to send the request to
+    let requestUrl = '';
+    let data = '';
+
+    if (flightSelect !== "Select Flight Date" && flightSelect !== "") {
+      // If flight date is selected, use flightId and send request to fetchSoAByFlightDate.php
+      requestUrl = '../Employee Section/functions/fetchSoAByFlightDate.php';
+      data = `companyId=${companyId}&flightId=${flightSelect}`;
+    } else {
+      // If month and year are selected, send request to fetchSoA.php
+      requestUrl = '../Employee Section/functions/fetchSoA.php';
+      data = `companyId=${companyId}&month=${month}&year=${year}`;
+    }
+
     // Send data to PHP using AJAX
     const xhr = new XMLHttpRequest();
-    xhr.open('POST', '../Employee Section/functions/fetchSoA.php', true); // Replace with your PHP file name
+    xhr.open('POST', requestUrl, true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-    const data = `companyId=${companyId}&month=${month}&year=${year}`;
 
     xhr.onload = function() 
     {
@@ -377,7 +460,7 @@
       document.getElementById('download-btn').disabled = true;
     };
 
-    // Send the data to the server
+    // Send the data to the appropriate PHP file
     xhr.send(data);
   });
 </script>
