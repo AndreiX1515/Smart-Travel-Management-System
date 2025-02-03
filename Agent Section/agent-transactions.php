@@ -13,13 +13,13 @@ require "../conn.php";
 
   <?php include "../Agent Section/includes/head.php"; ?>
 
-  <link rel="stylesheet" href="../Agent Section/assets/css/agent-transaction.css?v=<?php echo time(); ?>">
-  <link rel="stylesheet" href="../Agent Section/assets/css/navbar-sidebar.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="../Agent Section/assets/css/agent-transaction copy.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="../Agent Section/assets/css/navbar-sidebar copy.css?v=<?php echo time(); ?>">
 </head>
 <body>
 
 <div class="body-container">
-  <?php include "../Agent Section/includes/sidebar.php"; ?>
+  <?php include "../Agent Section/includes/sidebar copy.php"; ?>
 
   <div class="main-content-container">
     <div class="navbar">
@@ -165,9 +165,9 @@ require "../conn.php";
                     </thead>
                     <tbody>
                       <?php
-                        $agentRole = $_SESSION['agent_agentRole'];
-                        $agentCode = $_SESSION['agent_agentCode'];
-                        $accountId = $_SESSION['agent_accountId'];
+                        $agentRole = $_SESSION['agentRole'];
+                        $agentCode = $_SESSION['agentCode'];
+                        $accountId = $_SESSION['accountId'];
                         if ($agentRole != 'Head Agent')
                         {
                           $sql1 = "SELECT b.transactNo AS `T.N`, p.packageName AS `PACKAGE`,
@@ -219,7 +219,7 @@ require "../conn.php";
                               // Booking Date
                               // <td>{$row['TRANSACTION DATE']}</td>
 
-                              echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($transactNo) . "'>
+                              echo "<tr data-url='agent-showGuest2.php?id=" . htmlspecialchars($transactNo) . "'>
                                       <td>{$transactNo}</td>
                                       <td>{$row['CONTACT NAME']}</td>
                                       <td> 
@@ -296,7 +296,7 @@ require "../conn.php";
 
                               // <td>{$row['TRANSACTION DATE']}</td>
 
-                              echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($transactNo) . "'>
+                              echo "<tr data-url='agent-showGuest2.php?id=" . htmlspecialchars($transactNo) . "'>
                                   <td>{$transactNo}</td>
                                   <td>{$row['CONTACT NAME']}</td>
                                   <td>
@@ -631,6 +631,41 @@ require "../conn.php";
     </div>
 </div>
 
+<script>
+function toggleSubMenu(submenuId) {
+    const submenu = document.getElementById(submenuId);
+    const sectionTitle = submenu.previousElementSibling;
+    const chevron = sectionTitle.querySelector('.chevron-icon'); 
+
+    // Check if the submenu is already open
+    const isOpen = submenu.classList.contains('open');
+
+    // If it's open, we need to close it, and reset the chevron
+    if (isOpen) {
+        submenu.classList.remove('open');
+        chevron.style.transform = 'rotate(0deg)';
+    } else {
+        // First, close all open submenus and reset all chevrons
+        const allSubmenus = document.querySelectorAll('.submenu');
+        const allChevrons = document.querySelectorAll('.chevron-icon');
+        
+        allSubmenus.forEach(sub => {
+            sub.classList.remove('open');
+        });
+
+        allChevrons.forEach(chev => {
+            chev.style.transform = 'rotate(0deg)';
+        });
+
+        // Now, open the current submenu and rotate its chevron
+        submenu.classList.add('open');
+        chevron.style.transform = 'rotate(180deg)';
+    }
+}
+
+
+</script>
+
 <!-- Row Click Selection JS -->
 <script>
 document.addEventListener("DOMContentLoaded", function() {
@@ -908,7 +943,7 @@ function showGuestInfo(transactionNumber) {
     {
       console.log("Response: ", response); // Debug line
       // Redirect to the next page after setting the session
-      window.location.href = '../Agent Section/agent-showGuest.php'; // Redirect to your next page
+      window.location.href = '../Agent Section/agent-showGuest2.php'; // Redirect to your next page
     },
     error: function(xhr, status, error) 
     {
@@ -993,7 +1028,7 @@ function showGuestInfo(transactionNumber) {
     {
       console.log("Response: ", response); // Debug line
       // Redirect to the next page after setting the session
-      window.location.href = '../Agent Section/agent-showGuest.php'; // Redirect to your next page
+      window.location.href = '../Agent Section/agent-showGuest2.php'; // Redirect to your next page
     },
     error: function(xhr, status, error) 
     {

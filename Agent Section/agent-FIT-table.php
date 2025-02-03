@@ -13,16 +13,16 @@ require "../conn.php";
 
   <?php include "../Agent Section/includes/head.php"; ?>
 
-  <link rel="stylesheet" href="../Agent Section/assets/css/agent-FIT-table.css?v=<?php echo time(); ?>">
-  <link rel="stylesheet" href="../Agent Section/assets/css/navbar-sidebar.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="../Agent Section/assets/css/agent-FIT-table - copy.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="../Agent Section/assets/css/navbar-sidebar copy.css?v=<?php echo time(); ?>">
 </head>
 <body>
 
 <div class="body-container">
-  <?php include "../Agent Section/includes/sidebar.php"; ?>
+  <?php include "../Agent Section/includes/sidebar copy.php"; ?>
 
   <div class="main-content-container">
-    <?php include "../Agent Section/includes/navbar.php"; ?>
+    <?php include "../Agent Section/includes/navbar copy 2.php"; ?>
 
     <div class="main-content">
       <div class="table-wrapper">
@@ -173,6 +173,7 @@ require "../conn.php";
                           {
                             while ($row = $res1->fetch_assoc()) 
                             {
+                              $transactNo = $row['Transaction No'];
                               $statusClass = '';
                               switch ($row['Status']) 
                               {
@@ -189,7 +190,7 @@ require "../conn.php";
                                     $statusClass = 'bg-secondary text-white';
                               }
 
-                              echo "<tr>
+                              echo "<tr data-url='agent-showFITBooking.php?id=" . htmlspecialchars($transactNo) . "'>
                                       <td>{$row['Transaction No']}</td>
                                       <td>
                                         <div class='contact-wrapper'>
@@ -280,7 +281,6 @@ function toggleSubMenu(submenuId) {
     // Check if the submenu is already open
     const isOpen = submenu.classList.contains('open');
 
-<<<<<<< HEAD
     // If it's open, we need to close it, and reset the chevron
     if (isOpen) {
         submenu.classList.remove('open');
@@ -292,25 +292,6 @@ function toggleSubMenu(submenuId) {
         
         allSubmenus.forEach(sub => {
             sub.classList.remove('open');
-=======
-        // Use AJAX to send the transaction number to the server
-        $.ajax(
-        {
-          url: '../Agent Section/functions/fetchFITTransactNo.php', // The PHP file to handle the session setting
-          type: 'POST',
-          data: { transaction_number: transactionNumber },
-          success: function(response) 
-          {
-            console.log("Response: ", response); // Debugging line
-
-            // Redirect to the next page after successfully setting the session
-            window.location.href = row.getAttribute("data-url"); // Use the original URL stored in data-url attribute
-          },
-          error: function(xhr, status, error) 
-          {
-            console.error("AJAX Error: " + status + " " + error); // Enhanced error logging
-          }
->>>>>>> dev5-backup3
         });
 
         allChevrons.forEach(chev => {
@@ -335,7 +316,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
           // Use AJAX to send the transaction number to the server
           $.ajax({
-              url: '../Agent Section/functions/fetchTransactNo.php', // The PHP file to handle the session setting
+              url: '../Agent Section/functions/fetchFITTransactNo.php', // The PHP file to handle the session setting
               type: 'POST',
               data: { transaction_number: transactionNumber },
               success: function(response) {

@@ -49,15 +49,15 @@
 
     <div class="dashboard-title">Menu</div>
     
-    <a href="../Agent Section/agent-dashboard copy 2.php" class="page-button home my-0 mb-1 " data-page-name="Dashboard"> 
+    <a href="../Agent Section/agent-dashboard.php" class="page-button home my-0 mb-1 " data-page-name="Dashboard"> 
       <i class="fas fa-home"></i> <span> Home </span> 
     </a>
    
-    <a href="../Agent Section/agent-addbooking - rename.php" class="page-button add-booking mb-1 my-0" data-page-name="Add Booking - Packages"> 
+    <a href="../Agent Section/agent-addbooking.php" class="page-button add-booking mb-1 my-0" data-page-name="Add Booking - Packages"> 
       <i class="fa-solid fa-user-plus"></i> <span> Add Booking </span>
     </a>
 
-    <a href="../Agent Section/agent-FIT - rename.php" class="page-button add-FIT mb-1 my-0" data-page-name="Add Booking - F.I.T">
+    <a href="../Agent Section/agent-FIT.php" class="page-button add-FIT mb-1 my-0" data-page-name="Add Booking - F.I.T">
       <i class="fa-solid fa-user-plus"></i> <span> Add F.I.T </span>
     </a>
   
@@ -66,11 +66,11 @@
     </div>
 
       <div class="submenu open" id="transactiontable-submenu">
-        <a href="../Agent Section/agent-transactions - rename.php" class="page-button my-0" data-page-name="Packages - Transactions table">
+        <a href="../Agent Section/agent-transactions.php" class="page-button my-0" data-page-name="Packages - Transactions table">
           <i class="fas fa-file-invoice"></i> Packages
         </a>
 
-        <a href="../Agent Section/agent-FIT-table - rename.php" class="page-button my-0" data-page-name="F.I.T - Transactions Table" style="font-size: 14px;">
+        <a href="../Agent Section/agent-FIT-table.php" class="page-button my-0" data-page-name="F.I.T - Transactions Table" style="font-size: 14px;">
           <i class="fas fa-file-invoice"></i> F.I.T 
         </a> 
       </div>
