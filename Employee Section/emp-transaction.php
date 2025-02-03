@@ -77,11 +77,13 @@
             <tr>
               <th rowspan="2">Transact No</th>
               <th rowspan="2">Agent Name</th>
-              <th rowspan="2">Package Name</th>
+              <!-- <th rowspan="2">Package Name</th> -->
               <th colspan="2" class="text-center">Flight Date</th>
-              <th rowspan="2">Booking Date</th>
+              <!-- <th rowspan="2">Booking Date</th> -->
               <th rowspan="2">Total Pax</th>
               <th rowspan="2">Package Price</th>
+              <th rowspan="2">Amount Paid</th>
+              <th rowspan="2">Balance</th>
               <th rowspan="2">Status</th>
             </tr>
             <tr>
@@ -92,20 +94,27 @@
           <tbody>
             <?php
               // SQL query for SOA
-              $sql = "SELECT b.transactNo, f.flightDepartureDate as departureDate, f.returnDepartureDate as returnDate, b.status as bookingStatus,
-                          CONCAT(f.flightDepartureDate, ' | ', f.returnDepartureDate) AS FlightDate, p.packageName AS PackageName, 
-                          DATE_FORMAT(b.bookingDate, '%m.%d.%Y') AS BookingDate, b.pax AS TotalPax, b.totalPrice AS PackagePrice, 
-                          CONCAT(a.lName, ', ', a.fName, ' ', IFNULL(CONCAT(SUBSTRING(a.mName, 1, 1), '.'), '')) AS agentName
+              $sql = "SELECT b.transactNo, f.flightDepartureDate AS departureDate, f.returnDepartureDate AS returnDate, 
+                        b.status AS bookingStatus, CONCAT(f.flightDepartureDate, ' | ', f.returnDepartureDate) AS FlightDate, 
+                        p.packageName AS PackageName, DATE_FORMAT(b.bookingDate, '%m.%d.%Y') AS BookingDate, 
+                        b.pax AS TotalPax,  b.totalPrice AS PackagePrice, 
+                        CONCAT(a.lName, ', ', a.fName, ' ', IFNULL(CONCAT(SUBSTRING(a.mName, 1, 1), '.'), '')) AS agentName,
+                        SUM(pa.amount) AS TotalAmountPaid 
                       FROM 
-                        booking b
+                          booking b
                       JOIN 
-                        flight f ON f.flightId = b.flightId
+                          flight f ON f.flightId = b.flightId
                       JOIN 
-                        package p ON p.packageId = b.packageId
-                      JOIN
-                        agent a ON a.agentId = b.agentId
+                          package p ON p.packageId = b.packageId
+                      JOIN 
+                          agent a ON a.agentId = b.agentId
+                      LEFT JOIN 
+                          payment pa ON pa.transactNo = b.transactNo AND pa.paymentStatus = 'Approved'
+                      GROUP BY 
+                          b.transactNo, f.flightDepartureDate, f.returnDepartureDate, b.status, p.packageName, 
+                          b.bookingDate, b.pax, b.totalPrice, a.lName, a.fName, a.mName
                       ORDER BY 
-                        b.transactNo, b.agentCode ASC";
+                          b.transactNo, b.agentCode ASC";
 
               // Execute the query
               $result = $conn->query($sql);
@@ -124,6 +133,8 @@
                   $bookingDate = htmlspecialchars($row['BookingDate'] ?? '');
                   $totalPax = htmlspecialchars($row['TotalPax'] ?? 0);
                   $packagePrice = $row['PackagePrice'] ?? 0;
+                  $amountPaid = $row['TotalAmountPaid'] ?? 0;
+                  $balance = $packagePrice - $amountPaid;
                   $status = htmlspecialchars($row['bookingStatus'] ?? 'Unknown');
 
                   // Determine the status class
@@ -155,12 +166,14 @@
                   echo "<tr data-url='emp-transactionInfo.php?id=$transactNo'>";
                   echo "<td>$transactNo</td>";
                   echo "<td>$agentName</td>";
-                  echo "<td>$packageName</td>";
+                  // echo "<td>$packageName</td>";
                   echo "<td>$departureDate</td>";
                   echo "<td>$returnDate</td>";
-                  echo "<td>$bookingDate</td>";
+                  // echo "<td>$bookingDate</td>";
                   echo "<td class='fw-bold ps-3'>$totalPax</td>";
                   echo "<td>₱ " . number_format($packagePrice, 2) . "</td>";
+                  echo "<td>₱ " . number_format($amountPaid, 2) . "</td>";
+                  echo "<td>₱ " . number_format($balance, 2) . "</td>";
                   echo "<td> <span class='badge rounded-pill $statusClass p-2'>$status</span></td>";
                   echo "</tr>";
                 }
