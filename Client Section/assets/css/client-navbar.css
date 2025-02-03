@@ -414,7 +414,7 @@ body {
 	 margin-top: 20px;
 	 width: 100%; 
 	 padding: 0px;
-	 border: 1px solid black;
+	 /* border: 1px solid black; */
 	
 }
 
@@ -426,10 +426,12 @@ body {
 .back-button-link {
 	text-decoration: none;
 	color: #6c757d;
+	background-color: transparent;
 	font-size: 14px;
 	display: inline-flex;
 	align-items: center;
 	transition: color 0.3s ease, text-decoration 0.3s ease;
+	border: 0;
 }
 
 .back-button-link:hover {

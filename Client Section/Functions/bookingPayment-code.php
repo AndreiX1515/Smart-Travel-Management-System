@@ -141,7 +141,7 @@ if (isset($_POST['pay']))
         $stmt->close();
 
 
-        header("Location: ../../Agent Section/agent-dashboard copy 2.php");
+        header("Location: ../../Agent Section/agent-dashboard.php");
         exit(0);
       } 
       else 

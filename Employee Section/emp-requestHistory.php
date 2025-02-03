@@ -90,95 +90,87 @@
 				<table class="product-table" id="product-table">
 					<thead>
 						<tr>
-							<th rowspan="2">Transact No</th>
-							<th rowspan="2">Agent Name</th>
-							<th rowspan="2">Package Name</th>
-							<th colspan="2" class="text-center">Flight Date</th>
-							<th rowspan="2">Booking Date</th>
-							<th rowspan="2">Total Pax</th>
-							<th rowspan="2">Package Price</th>
-							<th rowspan="2">Status</th>
-						</tr>
-						<tr>
-							<th>Departure</th>
-							<th>Return</th>
+							<th>Transact No</th>
+              <!-- <th>Agent Name</th> -->
+              <th>Request Title</th>
+              <th>Request Details</th>
+              <th>Specific Details</th>
+              <th>Total Pax</th>
+              <th>Total Amount</th>
+              <th>Request Date</th>
 						</tr>
 					</thead>
 					<tbody>
 						<?php
-							// SQL query for SOA
-							$sql = "SELECT b.transactNo, f.flightDepartureDate as departureDate, f.returnDepartureDate as returnDate, b.status as bookingStatus,
-													CONCAT(f.flightDepartureDate, ' | ', f.returnDepartureDate) AS FlightDate, p.packageName AS PackageName, 
-													DATE_FORMAT(b.bookingDate, '%m.%d.%Y') AS BookingDate, b.pax AS TotalPax, b.totalPrice AS PackagePrice, 
-													CONCAT(a.lName, ', ', a.fName, ' ', IFNULL(CONCAT(SUBSTRING(a.mName, 1, 1), '.'), '')) AS agentName
+							$sql1 = "SELECT r.requestId, r.transactNo AS `TransactNo`,
+													CONCAT(a.lName, ', ', a.fName, 
+															IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1), '.'), '')) AS AgentName,
+													c.concernTitle AS `RequestTitle`, cd.details AS `RequestDetails`, b.pax AS `TotalPax`,
+													r.requestCost as requestCost,
+													r.customRequest as customRequest, r.details as details, DATE_FORMAT(r.requestDate, '%m-%d-%Y') AS `RequestDate`, 
+													r.requestStatus AS `Status`
 											FROM 
-												booking b
-											JOIN 
-												flight f ON f.flightId = b.flightId
-											JOIN 
-												package p ON p.packageId = b.packageId
-											JOIN
-												agent a ON a.agentId = b.agentId
-											ORDER BY 
-												b.transactNo, b.agentCode ASC";
+													request r
+											LEFT JOIN 
+													concern c ON r.concernId = c.concernId
+											LEFT JOIN 
+													concerndetails cd ON r.concernDetailsId = cd.concernDetailsId
+											LEFT JOIN 
+													booking b ON r.transactNo = b.transactNo
+											LEFT JOIN 
+													payment p ON b.transactNo = p.transactNo
+											LEFT JOIN 
+													agent a ON b.agentId = a.agentId
+											WHERE
+												r.requestStatus = 'Confirmed'
+											GROUP BY 
+													r.requestId";
 
-							// Execute the query
-							$result = $conn->query($sql);
+							$res1 = $conn->query($sql1);
 
-							// Check if there are results
-							if ($result->num_rows > 0) 
+							if ($res1->num_rows > 0) 
 							{
-								while ($row = $result->fetch_assoc()) 
+								while ($row = $res1->fetch_assoc()) 
 								{
-									// Safely handle null values
-									$transactNo = htmlspecialchars($row['transactNo'] ?? '');
-									$agentName = htmlspecialchars($row['agentName'] ?? '');
-									$packageName = htmlspecialchars($row['PackageName'] ?? '');
-									$departureDate = $row['departureDate'] ?? null;
-									$returnDate = $row['returnDate'] ?? null;
-									$bookingDate = htmlspecialchars($row['BookingDate'] ?? '');
-									$totalPax = htmlspecialchars($row['TotalPax'] ?? 0);
-									$packagePrice = $row['PackagePrice'] ?? 0;
-									$status = htmlspecialchars($row['bookingStatus'] ?? 'Unknown');
-
-									// Determine the status class
-									$statusClass = ""; // Default class
+									// Determine the badge class based on the status
+									$status = $row['Status'];
+									$badgeClass = '';
 									switch ($status) 
 									{
-										case "Pending":
-											$statusClass = "bg-warning text-dark"; // Yellow pill for Pending
-											break;
-										case "Confirmed":
-											$statusClass = "bg-success text-white"; // Green pill for Confirmed
-											break;
-										case "Cancelled":
-											$statusClass = "bg-danger text-white"; // Red pill for Cancelled
-											break;
-										case "Reject":
-											$statusClass = "bg-secondary text-white"; // Grey pill for Reject
-											break;
+										case 'Confirmed':
+												$badgeClass = 'text-bg-success'; // Green for Confirmed
+												break;
+										case 'Submitted':
+												$badgeClass = 'text-bg-secondary'; // Gray for Submitted
+												break;
+										case 'Rejected':
+												$badgeClass = 'text-bg-danger'; // Red for Rejected
+												break;
 										default:
-											$statusClass = "bg-secondary text-white"; // Default case for unknown statuses
-											break;
+												$badgeClass = 'text-bg-info'; // Blue for other statuses
+												break;
 									}
 
-									// Format the dates for display if they are not null
-									$formattedDepartureDate = $departureDate ? (new DateTime($departureDate))->format('F j, Y') : 'N/A';
-									$formattedReturnDate = $returnDate ? (new DateTime($returnDate))->format('F j, Y') : 'N/A';
+									// Ensure that title and details are displayed properly
+									$title = $row['RequestTitle'] ?? 'Custom Request';
+									$details = $row['RequestDetails'] ?? $row['customRequest'];
+									$requestId = $row['requestId'];
 
-									// Output each row as a table row
-									echo "<tr data-url='emp-transactionInfo.php?id=$transactNo'>";
-									echo "<td>$transactNo</td>";
-									echo "<td>$agentName</td>";
-									echo "<td>$packageName</td>";
-									echo "<td>$departureDate</td>";
-									echo "<td>$returnDate</td>";
-									echo "<td>$bookingDate</td>";
-									echo "<td class='fw-bold ps-3'>$totalPax</td>";
-									echo "<td>₱ " . number_format($packagePrice, 2) . "</td>";
-									echo "<td> <span class='badge rounded-pill $statusClass p-2'>$status</span></td>";
-									echo "</tr>";
+									// Output table row with data-transactno attribute
+									echo "<tr data-transactno='{$row['TransactNo']}' data-requestid='{$requestId}' class='transaction-row'>
+													<td>{$row['TransactNo']}</td>
+													<td>{$title}</td>
+													<td>{$details}</td>
+													<td>{$row['details']}</td>
+													<td>{$row['TotalPax']}</td>
+													<td>{$row['requestCost']}</td>
+													<td>{$row['RequestDate']}</td>
+												</tr>";
 								}
+							} 
+							else 
+							{
+								echo "<tr><td colspan='9' style='text-align: center;'>No Requests Found</td></tr>";
 							}
 						?>
 					</tbody>

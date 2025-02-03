@@ -12,48 +12,33 @@
   $email = $_SESSION['email'] ?? ''; // Use null coalescing operator to avoid undefined index
   $accId = $_SESSION['accountId'] ?? '';
 
-  if ($accId) 
-  {
+  if ($accId) {
     // Use a prepared statement to safely query the database
     $stmt = $conn->prepare("SELECT agentCode, agentId, agentRole, agentType FROM agent WHERE accountId = ?");
-    $stmt->bind_param("i", $accId); // Bind the accountId parameter to the query
+    $stmt->bind_param("i", $accId);
     $stmt->execute();
-    $result = $stmt->get_result(); // Get the result of the query
+    $result = $stmt->get_result();
 
-    // Check if the query returns any rows
-    if ($result->num_rows > 0) 
-    {
-      // Fetch the result as an associative array
-      while ($row = $result->fetch_assoc()) 
-      {
-        // Store mandatory fields in the session
-        $_SESSION['agent_agentId'] = $row['agentId'] ?? '';  // Added agent_id to session
-        $_SESSION['agent_agentCode'] = $row['agentCode'] ?? '';  // Added agent_Code to session
-        $_SESSION['agent_agentRole'] = $row['agentRole'] ?? '';  // Added agent_agentRole to session
-        $_SESSION['agent_agentType'] = $row['agentType'] ?? '';  // Added agent_agentType to session
-
-        // Additional fields to dynamically add to session
-        $additionalFields = ['agentId', 'agentCode', 'agentRole', 'agentType'];
-        foreach ($additionalFields as $field) 
-        {
-          $_SESSION['agent_' . $field] = $row[$field] ?? null;
-        }
+      // Fetch a single row
+      if ($row = $result->fetch_assoc()) {
+          // Store mandatory fields in the session
+          $_SESSION['agent_agentId'] = $row['agentId'] ?? '';
+          $_SESSION['agent_agentCode'] = $row['agentCode'] ?? '';
+          $_SESSION['agent_agentRole'] = $row['agentRole'] ?? '';
+          $_SESSION['agent_agentType'] = $row['agentType'] ?? '';
+      } else {
+          echo "No agent found with the given account ID.";
       }
-    } 
-    else 
-    {
-      echo "No agent found with the given account ID.";
+
+    } else {
+        echo "Invalid account ID.";
     }
-  } 
-  else 
-  {
-    echo "Invalid account ID.";
-  }
+
 
   // Close the statement
   $stmt->close();
   
-  include '../Client Section/Functions/session_validate.php';
+  // include '../Client Section/Functions/session_validate.php';
 ?>
 
 <!DOCTYPE html>

@@ -12,13 +12,26 @@
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
 <!-- DataTables Core CSS -->
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
 
 <!-- DataTables FixedColumns CSS -->
 <link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/3.3.0/css/fixedColumns.dataTables.min.css">
 
-<!-- jQuery (Latest version, as required by DataTables) -->
+<!-- JavaScript Libraries -->
+<!-- jQuery (Required for jQuery UI & DataTables) -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <!-- jQuery UI (For Datepicker, etc.) -->
 <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+
+<!-- Bootstrap Bundle (includes Popper.js for Bootstrap components) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- DataTables JS (Requires jQuery) -->
+<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+
+<!-- DataTables FixedColumns JS (Requires DataTables) -->
+<script src="https://cdn.datatables.net/fixedcolumns/3.3.0/js/dataTables.fixedColumns.min.js"></script>
+
+<!-- DataTables FixedHeader JS (Requires DataTables) -->
+<script src="https://cdn.datatables.net/fixedheader/3.2.0/js/dataTables.fixedHeader.min.js"></script>
