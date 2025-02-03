@@ -11,6 +11,7 @@ if (isset($_POST['pay']))
     $transactNo = $_POST['transactNo'];
     $accountId = $_SESSION['accountId'];
     $amount = $_POST['downpayment'];
+    $flightid = $_POST["flightid"] ?? '';
 
     // Set the timezone (replace 'Asia/Taipei' with your preferred timezone if needed)
     date_default_timezone_set('Asia/Taipei');
@@ -99,7 +100,48 @@ if (isset($_POST['pay']))
 
         $conn->commit();
         $_SESSION['status'] = "Payment and proof files uploaded successfully!";
-        header("Location: ../client-bookingform.php");
+
+        $_SESSION['accountId'] = $accountId;
+        $_SESSION['flightid'] = $flightid;
+
+        // Log data for debugging
+        error_log("Account ID: " . $accountId);
+        error_log("Flight ID: " . $flightid);
+
+        // Validate required fields
+        if (empty($accountId)) {
+            echo json_encode(["status" => "error", "message" => "No Account ID Found"]);
+            exit;
+        }
+
+        // Fetch agent and branch details if the user is an agent
+        $stmt = $conn->prepare("
+            SELECT ag.accountId, ag.agentId, ag.agentCode, ag.agentRole, 
+                  b.branchName, b.branchId 
+            FROM agent ag
+            JOIN branch b ON ag.branchId = b.branchId
+            WHERE ag.accountId = ?
+        ");
+        $stmt->bind_param("i", $accountId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($row = $result->fetch_assoc()) {
+            // Store agent details in the session
+            $_SESSION['agentId'] = $row['agentId'];
+            $_SESSION['agentType'] = $row['agentType'];
+            $_SESSION['agentCode'] = $row['agentCode'];
+            $_SESSION['agentRole'] = $row['agentRole'];
+            $_SESSION['branchId'] = $row['branchId'];
+            $_SESSION['branchName'] = $row['branchName'];
+            // $agentType = $_SESSION['agentType'];
+        }
+
+        // Close the statement
+        $stmt->close();
+
+
+        header("Location: ../../Agent Section/agent-dashboard copy 2.php");
         exit(0);
       } 
       else 

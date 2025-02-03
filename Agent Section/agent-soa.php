@@ -148,12 +148,178 @@ session_start();
                 const currentYear = new Date().getFullYear();
                 const yearSelect = document.getElementById('year-filter');
 
+<<<<<<< HEAD
                 // Dynamically populate the years
                 for (let i = currentYear - 5; i <= currentYear + 5; i++) {
                   const option = document.createElement('option');
                   option.value = i;
                   option.textContent = i;
                   yearSelect.appendChild(option);
+=======
+            // Get the year select element
+            const yearSelect = document.getElementById('year-filter');
+            
+            // Dynamically populate the years
+            for (let i = currentYear - 5; i <= currentYear + 5; i++) {
+              const option = document.createElement('option');
+              option.value = i;
+              option.textContent = i;
+              yearSelect.appendChild(option);
+            }
+
+            // Optionally set the current year as selected
+            yearSelect.value = currentYear;
+            
+            // Get the month select element
+            const monthSelect = document.getElementById('month-filter');
+
+            // Set the current month as selected
+            monthSelect.value = currentMonthIndex; // Use 1-based month index
+          </script>
+
+        </div>
+
+        <div class="btn-container">
+          <button id="generate-soa-btn" class="btn btn-primary">
+            Preview SOA
+          </button>
+        </div>
+
+      </div>
+
+      <div id="result-container">
+      </div>
+
+      <div>
+          <!-- <button class="btn btn-secondary" id="preview-btn">Preview</button> -->
+          <button class="btn btn-primary" id="download-btn" disabled>Generate SoA</button>
+      </div>
+
+    
+      <!-- <div class="table-container-product">
+        <div class="table-content-product">
+          <table class="product-table">
+            <thead>
+              <tr>
+                <th>No.</th>
+                <th>Description</th>
+                <th>Price (USD)</th>
+                <th>Price (PHP)</th>
+                <th>PAX</th>
+                <th>Total (USD)</th>
+                <th>Total (PHP)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php
+                $totalPriceSum = 0;
+                $count = 1; // Initialize the counter
+                $sql1 = "SELECT f.flightId, f.flightPrice, CONCAT(f.flightDepartureDate, ' - ', f.returnArrivalDate) AS flightDates, 
+                            SUM(DISTINCT b.pax) AS pax, SUM(DISTINCT b.totalPrice) AS totalPrice
+                          FROM 
+                              payment p
+                          LEFT JOIN 
+                              booking b ON p.transactNo = b.transactNo
+                          LEFT JOIN
+                              flight f ON f.flightId = b.flightId
+                          WHERE 
+                              b.status = 'Confirmed' 
+                              AND MONTH(f.flightDepartureDate) = 1
+                              AND YEAR(f.flightDepartureDate) = 2025
+                          GROUP BY 
+                              f.flightId, f.flightDepartureDate, f.returnArrivalDate";
+                $res1 = $conn->query($sql1);
+
+                $res1 = $conn->query($sql1);
+
+                if ($res1->num_rows > 0) 
+                {
+                  while ($row = $res1->fetch_assoc()) 
+                  {
+                    $totalPriceSum += $row['totalPrice'];
+                    // Format flightPrice with commas and display the row
+                    $formattedFlightPrice = number_format($row['flightPrice'], 2);
+                    $formattedTotalPrice = number_format($row['totalPrice'], 2);
+                    echo "<tr'>
+                            <td>$count</td>
+                            <td>$row[flightDates]</td>
+                            <td></td>
+                            <td>₱ $formattedFlightPrice</td>
+                            <td>$row[pax]</td>
+                            <td></td>
+                            <td>₱ $formattedTotalPrice</td>
+                          </tr>";
+                    $count++;
+                  }
+                } 
+              ?>
+            </tbody>
+          </table>
+
+          <div class="subtotal-container">
+            <div class="balance">
+              <span>SUBTOTAL: </span>
+            </div>
+            <div class="subtotal-item-usd">
+              <span>USD:</span>
+              <span class="subtotal-usd"></span>
+            </div>
+            <div class="subtotal-item-php">
+              <span>PHP:</span>
+              <span class="subtotal-php">₱ <?php echo number_format($totalPriceSum, 2); ?></span>
+            </div>
+          </div>
+
+          <table class="product-table">
+            <tbody>
+              <?php
+                $totalCostSum = 0;
+                $handlingFeeCount = 0;
+                $sql1 = "SELECT b.flightId, cd.details, cd.price, SUM(r.pax) AS pax, SUM(r.requestCost) AS requestCost, 
+                          COUNT(CASE WHEN r.handlingFee != 0 THEN 1 ELSE NULL END) AS handlingFeeCount
+                        FROM 
+                          `request` r
+                        JOIN 
+                          concerndetails cd 
+                        ON 
+                          r.concernDetailsId = cd.concernDetailsId
+                        JOIN 
+                         booking b 
+                        ON 
+                          r.transactNo = b.transactNo
+                        JOIN
+                          flight f
+                        ON 
+                        b.flightId = f.flightId
+                        WHERE 
+                          r.requestStatus = 'Confirmed'AND MONTH(f.flightDepartureDate) = 1 AND YEAR(f.flightDepartureDate) = 2025
+                        GROUP BY 
+                          r.concernDetailsId";
+
+                $res1 = $conn->query($sql1);
+
+                if ($res1->num_rows > 0) 
+                {
+                  while ($row = $res1->fetch_assoc()) 
+                  {
+                    $handlingFeeCount += $row['handlingFeeCount'];
+                    $handlingFeeTotal = $handlingFeeCount * 100;
+                    $handlingFeeTotal = number_format($handlingFeeTotal, 2);
+                    $totalCostSum += $row['requestCost'];
+                    $formattedRequestPrice = number_format($row['price'], 2);
+                    $formattedRequestCost = number_format($row['requestCost'], 2);
+                    echo "<tr'>
+                            <td>$count</td>
+                            <td>$row[details]</td>
+                            <td></td>
+                            <td>₱ $formattedRequestPrice</td>
+                            <td>$row[pax]</td>
+                            <td></td>
+                            <td>₱ $formattedRequestCost</td>
+                          </tr>";
+                    $count++;
+                  }  
+>>>>>>> dev5-backup3
                 }
 
                 // Set the current year as selected
@@ -182,6 +348,7 @@ session_start();
         <button class="btn btn-primary" id="download-btn">Generate SoA</button>
       </div>
       
+<<<<<<< HEAD
         <!-- <div class="table-container-product">
           <div class="table-content-product">
             <table class="product-table">
@@ -359,6 +526,11 @@ session_start();
     </div>
   </div>
 
+=======
+    </div>
+  </div>
+  
+>>>>>>> dev5-backup3
 </div>
 
 

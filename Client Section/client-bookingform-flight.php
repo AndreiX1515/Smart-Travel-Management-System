@@ -104,13 +104,61 @@
 
 
         <?php
-            if (isset($_GET['flightid'])) {
-                $flightid = $_GET['flightid'];
-            } else {
-                // Handle the case where the flightid is not available
-                echo "No flight ID found!";
-                exit;
+          if (isset($_GET['flightid'])) 
+          {
+            $flightid = $_GET['flightid'];
+            $_SESSION['flightid'] = $flightid;
+            $sql1 = "SELECT * FROM flight WHERE flightId = ?";
+
+            // Prepare the statement
+            if ($stmt = $conn->prepare($sql1)) 
+            {
+              // Bind the flightId as an integer parameter
+              $stmt->bind_param("i", $flightid); // "i" means integer
+
+              // Execute the statement
+              if ($stmt->execute()) 
+              {
+                // Get the result
+                $result = $stmt->get_result();
+
+                // Check if a row is returned
+                if ($result->num_rows > 0) 
+                {
+                  // Fetch the data
+                  while ($row = $result->fetch_assoc()) 
+                  {
+                    $packageId = $row['packageId'];
+                    $origin = $row['origin'];
+                    $year = date('Y', strtotime($row['flightDepartureDate']));
+                    $month = date('F', strtotime($row['flightDepartureDate']));
+                    $flightDepartureDate = $row['flightDepartureDate'];
+                    $flightPrice = $row['flightPrice'];
+                    // Display other columns as needed
+                  }
+                } 
+                else 
+                {
+                  echo "No flight found with that ID.";
+                }
+              } 
+              else 
+              {
+                echo "Error executing query: " . $stmt->error;
+              }
+
+              // Close the statement
+              $stmt->close();
+            } 
+            else 
+            {
+              echo "Error preparing statement: " . $conn->error;
             }
+          } 
+          else 
+          {
+            echo "Flight ID is not set.";
+          }
         ?>
 
           <h4>Flight ID: <?php echo htmlspecialchars($flightid); ?></h4>    
@@ -153,10 +201,15 @@
                     <select class="form-select" id="packageName" name="packageName" required>
                       <option selected disabled>SELECT PACKAGE</option>
                       <?php
+                        // Query to fetch packageId and packageName
                         $sql1 = mysqli_query($conn, "SELECT DISTINCT packageId, packageName FROM package ORDER BY packageName ASC");
-                        while($res1 = mysqli_fetch_array($sql1)) 
-                        { 
-                          echo "<option value='{$res1['packageId']}'>{$res1['packageName']}</option>";
+
+                        // Loop through the result to create options
+                        while ($res1 = mysqli_fetch_array($sql1)) 
+                        {
+                          // Check if this packageId is equal to the selected packageId (to mark it as selected)
+                          $selected = ($res1['packageId'] == $packageId) ? 'selected' : '';
+                          echo "<option value='{$res1['packageId']}' {$selected}>{$res1['packageName']}</option>";
                         }
                       ?>
                     </select>
@@ -170,6 +223,19 @@
                     <label for="origin">Origin <span class="text-danger fw-bold">*</span></label>
                     <select class="form-select" id="origin" name="origin" required>
                       <option selected disabled>SELECT ORIGIN</option>
+                      <?php
+                        // Query to fetch packageId and packageName
+                        $sql1 = mysqli_query($conn, "SELECT DISTINCT origin FROM flight
+                                        ORDER BY origin ASC");
+
+                        // Loop through the result to create options
+                        while ($res1 = mysqli_fetch_array($sql1)) 
+                        {
+                          // Check if this packageId is equal to the selected packageId (to mark it as selected)
+                          $selected = ($res1['origin'] == $origin) ? 'selected' : '';
+                          echo "<option value='{$res1['origin']}' {$selected}>{$res1['origin']}</option>";
+                        }
+                      ?>
                     </select>
                     <span id="originError" class="text-danger"></span>
                   </div>
@@ -183,6 +249,19 @@
                     <label for="year">Year <span class="text-danger fw-bold">*</span></label>
                     <select class="form-select" id="year" name="year" required>
                       <option selected disabled>SELECT YEAR</option>
+                      <?php
+                        // Query to fetch packageId and packageName
+                        $sql1 = mysqli_query($conn, "SELECT DISTINCT YEAR(flightDepartureDate) as year FROM flight 
+                                        ORDER BY flightDepartureDate ASC");
+
+                        // Loop through the result to create options
+                        while ($res1 = mysqli_fetch_array($sql1)) 
+                        {
+                          // Check if this packageId is equal to the selected packageId (to mark it as selected)
+                          $selected = ($res1['year'] == $year) ? 'selected' : '';
+                          echo "<option value='{$res1['year']}' {$selected}>{$res1['year']}</option>";
+                        }
+                      ?>
                     </select>
                     <span id="yearError" class="text-danger"></span> <!-- Error message for year -->
                   </div>
@@ -195,18 +274,19 @@
                     <label for="month">Month <span class="text-danger fw-bold">*</span></label>
                     <select class="form-select" id="month" name="month" required>
                       <option selected disabled>SELECT MONTH</option>
-                      <option value="January">January</option>
-                      <option value="February">February</option>
-                      <option value="March">March</option>
-                      <option value="April">April</option>
-                      <option value="May">May</option>
-                      <option value="June">June</option>
-                      <option value="July">July</option>
-                      <option value="August">August</option>
-                      <option value="September">September</option>
-                      <option value="October">October</option>
-                      <option value="November">November</option>
-                      <option value="December">December</option>
+                      <?php
+                        // Query to fetch packageId and packageName
+                        $sql1 = mysqli_query($conn, "SELECT DISTINCT MONTHNAME(flightDepartureDate) as month FROM flight
+                                        ORDER BY flightDepartureDate ASC");
+
+                        // Loop through the result to create options
+                        while ($res1 = mysqli_fetch_array($sql1)) 
+                        {
+                          // Check if this packageId is equal to the selected packageId (to mark it as selected)
+                          $selected = ($res1['month'] == $month) ? 'selected' : '';
+                          echo "<option value='{$res1['month']}' {$selected}>{$res1['month']}</option>";
+                        }
+                      ?>
                     </select>
                     <span id="monthError" class="text-danger"></span> <!-- Error message for month -->
                   </div>
@@ -217,11 +297,24 @@
                 <div class="columns col-md-6">
                   <div class="form-group">
                     <label for="flightDate">Flight Date <span class="text-danger fw-bold">*</span> </label>
-
                     <select class="form-select" id="flightDate" name="flightDate" required>
                       <option selected disabled>SELECT FLIGHT DATE</option>
-                    </select>
+                      <?php
+                        // Query to fetch packageId and packageName
+                        $sql1 = mysqli_query($conn, "SELECT flightId, flightDepartureDate, flightPrice FROM flight WHERE packageId = $packageId AND 
+                                        MONTHNAME(flightDepartureDate) = '$month' ORDER BY flightDepartureDate ASC");
 
+                        // Loop through the result to create options
+                        while ($res1 = mysqli_fetch_array($sql1)) 
+                        {
+                          // Check if this packageId is equal to the selected packageId (to mark it as selected)
+                          $selected = ($res1['flightDepartureDate'] == $flightDepartureDate) ? 'selected' : '';
+                          echo "<option value='{$res1['flightId']}' {$selected}>
+                                  " . date('M j, Y', strtotime($res1['flightDepartureDate'])) . " || Price: {$res1['flightPrice']}
+                                </option>";
+                        }
+                      ?>
+                      </select>
                     <span id="flightDateError" class="text-danger"></span> <!-- Error message for outbound flight -->
                   </div>
                 </div>
@@ -243,7 +336,7 @@
                   <input type="checkbox" id="land" name="land" value="Land Only">
                   <label for="land"> Check if Land Only</label><br>
                 </div>
-              </div>          
+              </div>
 
               <div class="land-only row">
                 <!-- Flight Details Input -->
@@ -254,9 +347,9 @@
                   </div>
                 </div>
                 
-                <input type="hidden" id="flightId" name="flightId" value="" placeholder="Flight Id Input">
+                <input type="hidden" id="flightId" name="flightId" value="<?php echo $flightid; ?>" placeholder="Flight Id Input">
                 <input type="hidden" id="packagePrice" name="packagePrice" placeholder="Package Price">
-                <input type="hidden" name="flightPrice" id="flightPricee" placeholder="Flight Price">
+                <input type="hidden" name="flightPrice" id="flightPricee" value="<?php echo $flightPrice; ?>" placeholder="Flight Price">
                 <!-- <input type="" name="agentId" id="agentId" value="<?php echo $_SESSION['agent_agentId']; ?>" placeholder="Agent Id"> -->
               </div>
             </div>
@@ -581,6 +674,7 @@
             </div>
           </div>
         </div>
+
       </form>
     </div>
   </div>
@@ -724,6 +818,22 @@ $(document).ready(function () {
           // Update the origin dropdown
           $('#origin').html(data.originOptions); // Use originOptions from the response
 
+          // Check if the origin is already selected, if not, retain the previous value
+          // if (!$('#origin').val()) 
+          // {
+          //   $('#origin').val("<?php echo isset($origin) ? $origin : ''; ?>");
+          // }
+
+          // if (!$('#year').val()) 
+          // {
+          //   $('#year').val("<?php echo isset($year) ? $year : ''; ?>");
+          // }
+
+          // if (!$('#month').val()) 
+          // {
+          //   $('#month').val("<?php echo isset($month) ? $month : ''; ?>");
+          // }
+
           // Update the package price input
           $('#packagePrice').val(data.packagePrice); // Set the package price value
 
@@ -773,6 +883,7 @@ $(document).ready(function () {
         {
           // console.log(response); // Debugging the response
           $('#year').html(response); // Update year dropdown with the fetched years
+          // Check if the origin is already selected, if not, retain the previous value
         },
         error: function (xhr, status, error) 
         {

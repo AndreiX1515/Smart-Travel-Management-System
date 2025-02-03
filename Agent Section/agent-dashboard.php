@@ -34,6 +34,7 @@ require "../conn.php";
               <h6 class="white-pill">Current Transaction</h6>
             </div>
 
+<<<<<<< HEAD
             <div class="card-content px-3">
               <!-- Total Transaction, and Completed Transaction -->
               <div class="row">
@@ -43,6 +44,93 @@ require "../conn.php";
                     <i class="fas fa-calendar-alt"></i> 
                   </div>
                   <div class="side-content d-flex flex-column">
+=======
+            <div class="icon-wrapper mx-2">
+              <i class="fas fa-exchange-alt"></i>
+            </div>
+
+            <div class="currency-card">
+              <div class="flag-icon-wrapper">
+                <img src="../Assets/Flags/philippines (2).png" alt="">
+                <h6 class="mt-2">PHP</h6>
+                <div class="currency-text-wrapper">
+                  <h5>₱ <?php echo number_format($usd_to_php, 2); ?></h5>
+                </div>
+              </div>
+            </div>
+
+            <div class="currency-card">
+              <div class="flag-icon-wrapper">
+                <img src="../Assets/Flags/korean-flag.png" alt="">
+                <h6 class="mt-2">KOR</h6>
+                <div class="currency-text-wrapper">
+                  <h5>₩ <?php echo number_format($usd_to_krw, 0); ?></h5>
+                </div>
+              </div>
+            </div>
+
+            <!-- <div class="currency-card">
+              <div class="flag-icon-wrapper">
+                <img src="../assets/images/Flags/european.png" alt="">
+                  <h6 class="mt-2">EUR</h6>
+                  <div class="currency-text-wrapper">
+                  <h6>€ 
+                    <?php 
+                    // echo number_format($usd_to_euro, 2); 
+                    ?></h6>
+                </div>
+              </div>
+            </div> -->
+          </div> 
+        </div>
+      </div>
+    </div>
+
+    <div class="tabs-wrapper">
+      <ul class="nav nav-pills" id="pills-tab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Flight Seats Tracker</button>
+        </li>
+
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Other Tables</button>
+        </li>
+
+        
+
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">F.I.T</button>
+        </li>
+
+        <!-- <li class="nav-item" role="presentation">
+          <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Confirmed</button>
+        </li> -->
+      </ul>
+    </div>
+    
+    <div class="tab-content" id="pills-tabContent">
+      <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
+        <div class="second-row-container">
+          <!-- Transactions table -->
+          <div class="one">
+            <div class="header d-flex justify-content-between align-items-center">
+              <h6 class="white-pill">Pending</h6>
+              <div class="view-booking-container">
+              </div>
+            </div>
+          
+            <div class="body">
+              <div class="table-container unconfirm-table-container">
+                <table class="unconfirm-table">
+                  <thead>
+                    <tr>
+                      <th>NO.</th>
+                      <th>FLIGHT INFO.</th>  
+                      <th>STATUS</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+>>>>>>> dev5-backup3
                     <?php
                         // Get session variables
                         $accountId = $_SESSION['agent_accountId'];

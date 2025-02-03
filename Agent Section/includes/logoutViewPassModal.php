@@ -10,13 +10,62 @@
         Are you sure you want to logout?
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <a href="../Agent Section/agentLogin.php" class="btn btn-danger" id="logoutButton">Logout</a>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <a href="#" class="btn btn-danger" id="logoutButton">Logout</a>
+
       </div>
     </div>
   </div>
 </div>
 
+
+
+<script>
+ $('#logoutButton').on('click', function(e) {
+    e.preventDefault(); // Prevent default anchor click behavior
+
+    $.ajax({
+        url: '../Agent Section/functions/agent-logout.php',
+        type: 'GET',
+        success: function(response) {
+            var data = JSON.parse(response); // Parse the JSON response
+
+            // Log the response for debugging
+            console.log(data);
+
+            if (data.status === 'success') {
+                // Redirect based on the account type
+                switch (data.accountType) {
+                    case 'guest':
+                        window.location.href = "../Client Section/login.php"; // Redirect to client login
+                        break;
+                    case 'agent':
+                        window.location.href = "../Agent Section/agentLogin.php"; // Redirect to agent login
+                        break;
+                    case 'admin':
+                        window.location.href = "admin-dashboard.php"; // Redirect to admin dashboard
+                        break;
+                    case 'employee':
+                        window.location.href = "employee-dashboard.php"; // Redirect to employee dashboard
+                        break;
+                    default:
+                        console.log("Unknown account type.");
+                        break;
+                }
+            } else {
+                console.log("Error:", data.message); // Log the error message if any
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error("AJAX Error:", error); // Log any errors during the AJAX request
+        }
+    });
+});
+
+
+
+
+</script>
 <!-- View Password Modal -->
 <div class="modal fade" id="viewPasswordModal" tabindex="-1" aria-labelledby="viewPasswordModalLabel" aria-hidden="true">
   <div class="modal-dialog">

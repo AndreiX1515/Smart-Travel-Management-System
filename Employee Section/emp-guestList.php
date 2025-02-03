@@ -98,7 +98,7 @@
                       FROM guest g
                       JOIN booking b ON g.transactNo = b.transactNo
                       JOIN flight f ON f.flightId = b.flightId
-                      ORDER BY f.flightId, b.transactNo, g.guestId";
+                      ORDER BY guestId, f.flightDepartureDate";
 
               // Execute the query and check for errors
               if ($result = $conn->query($sql)) {

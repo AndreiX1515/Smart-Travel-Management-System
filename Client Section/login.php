@@ -15,6 +15,20 @@
 </head>
 
 <body>
+
+  
+<?php
+
+// Store flightid if available in GET
+if (isset($_GET['flightid'])) {
+    $_SESSION['flightid'] = $_GET['flightid'];
+}
+
+// Use session if available, otherwise fallback to empty string
+$flightId = isset($_SESSION['flightid']) ? $_SESSION['flightid'] : "";
+?>
+
+
   <!-- Back to homepage button -->
   <a href="index.php" class="back-btn">
     <i class="fas fa-arrow-left"></i> Back to Home Page
@@ -30,6 +44,7 @@
     </div>
 
     <div class="header-container d-flex flex-column text-start mt-1">
+    <input type="text" value="<?php echo $flightId; ?>" id="flight_id" hidden>
       <h6 class="header h4 fw-bolder">Experience Travel with Us.</h6>
       <p class="h6 sub-header">Discover new horizons and create unforgettable memories with our curated travel experiences tailored just for you.</p>      
     </div>
@@ -63,8 +78,11 @@
       <button type="submit" class="loginbtn btn btn-primary w-100" id="LoginButton">Login</button>
 
       <div class="bottom-login-account mt-3 text-center">
-        <p class="mb-0">Don't have an account? <a href="../Client Section/register.php" class="text-decoration-none">Register Now</a></p>
-      </div>
+        <p class="mb-0">Don't have an account? 
+            <a href="../Client Section/register.php<?php echo isset($_SESSION['flightid']) ? '?flightid=' . urlencode($_SESSION['flightid']) : ''; ?>" class="text-decoration-none">Register Now</a>
+        </p>
+    </div>
+
 
       <div id="message-login" class="message-login mt-3 h6 fw-light fs-6" style="font-size: 8px;"></div>
     </form>
@@ -120,8 +138,18 @@
 
         if (data.success) 
         {
-          // Redirect to dashboard or homepage
-          window.location.href = '../Client Section/client-bookingform.php';
+          var flightId = "<?php echo $flightId; ?>";
+
+          if (flightId != '')
+          {
+            window.location.href = '../Client Section/client-bookingform-flight.php?flightid=' + flightId;
+          }
+          else
+          {
+            // Redirect to dashboard or homepage
+            window.location.href = '../Client Section/client-bookingform.php';
+          }
+          
         } 
         else if (data.message && data.message.trim() === "User not found.") 
         {

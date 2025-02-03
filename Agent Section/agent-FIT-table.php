@@ -280,6 +280,7 @@ function toggleSubMenu(submenuId) {
     // Check if the submenu is already open
     const isOpen = submenu.classList.contains('open');
 
+<<<<<<< HEAD
     // If it's open, we need to close it, and reset the chevron
     if (isOpen) {
         submenu.classList.remove('open');
@@ -291,6 +292,25 @@ function toggleSubMenu(submenuId) {
         
         allSubmenus.forEach(sub => {
             sub.classList.remove('open');
+=======
+        // Use AJAX to send the transaction number to the server
+        $.ajax(
+        {
+          url: '../Agent Section/functions/fetchFITTransactNo.php', // The PHP file to handle the session setting
+          type: 'POST',
+          data: { transaction_number: transactionNumber },
+          success: function(response) 
+          {
+            console.log("Response: ", response); // Debugging line
+
+            // Redirect to the next page after successfully setting the session
+            window.location.href = row.getAttribute("data-url"); // Use the original URL stored in data-url attribute
+          },
+          error: function(xhr, status, error) 
+          {
+            console.error("AJAX Error: " + status + " " + error); // Enhanced error logging
+          }
+>>>>>>> dev5-backup3
         });
 
         allChevrons.forEach(chev => {

@@ -15,9 +15,9 @@
 <html lang="en">
 <head>
 
-<title>Smart Travel</title>
+  <title>Smart Travel</title>
 
-<?php include '../Client Section/Includes/head.php' ?>
+  <?php include '../Client Section/Includes/head.php' ?>
 
  <link rel="stylesheet" href="../Client Section/assets/css/Homepage.css?v=<?php echo time(); ?>">
 
@@ -81,207 +81,87 @@
 
 <header>
   <nav>
-      <div class="logo-container d-flex flex-row g-2">
-          <img src="../Assets/Logos/logo.png" alt="Logo" class="logo">
-      </div>
+    <div class="logo-container d-flex flex-row g-2">
+      <img src="../Assets/Logos/logo.png" alt="Logo" class="logo">
+    </div>
 
-      <div class="menu-container">
-          <ul class="menu-list d-flex align-items-center"> <!-- Add flex for horizontal alignment -->
-              <li><a href="#home">Home</a></li>
-              <li><a href="#about">About</a></li>
-              <li><a href="#services">Services</a></li>
-              <li><a href="#contact">Contact</a></li>
-              <?php 
-              if (isset($_SESSION['accountId'])): ?>
-              <!-- <li> <a href="../Client Section/client-portall.php">Client Portal</a></li> -->
-              <?php endif; ?> 
+    <div class="menu-container">
+      <ul class="menu-list d-flex align-items-center"> <!-- Add flex for horizontal alignment -->
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <?php 
+        if (isset($_SESSION['accountId'])): ?>
+        <!-- <li> <a href="../Client Section/client-portall.php">Client Portal</a></li> -->
+        <?php endif; ?> 
+      </ul>
+      <!-- Vertical line between menu items and login button -->
+      <div class="vertical-line"></div>
+
+      <div class="login-btn-container mt-1">
+        <div class="collapse navbar-collapse show" id="navbarNav"> <!-- Add "show" class to make sure it’s visible -->
+          <ul class="navbar-nav ms-auto">
+            <?php if (isset($_SESSION['accountId'])): ?>
+              <!-- Profile Dropdown when Session is Active -->
+              <li class="nav-item dropdown d-flex align-items-center">
+                <a class="nav-link dropdown-toggle text-light d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <div class="profile-container ms-2 me-3">
+                    <!-- <h6 class="mb-1"><?php echo $_SESSION['first_name'] . ' ' . $_SESSION['last_name']; ?></h6> 
+                    <span class="m-0">Branch: <?php echo $branch; ?></span> -->
+                  </div>
+                  <img src="../Assets/Icons/user.png" alt="Profile" class="profile-image me-2" width="40px" height="40px">
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end mt-3" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i> My Profile</a></li>
+                  <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i> Transaction History</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
+                </ul>
+              </li>
+            <?php else: ?>
+
+              <!-- Show Login Button when No Session is Active -->
+              <li class="nav-item">
+                <button class="btn btn-login" id="LoginButton">LOGIN</button>
+              </li>
+            <?php endif; ?>
           </ul>
-              <!-- Vertical line between menu items and login button -->
-              <div class="vertical-line"></div>
-
-              <div class="login-btn-container mt-1">
-                 <div class="collapse navbar-collapse show" id="navbarNav"> <!-- Add "show" class to make sure it’s visible -->
-                     <ul class="navbar-nav ms-auto">
-                         <?php if (isset($_SESSION['accountId'])): ?>
-                             <!-- Profile Dropdown when Session is Active -->
-                             <li class="nav-item dropdown d-flex align-items-center">
-                                 <a class="nav-link dropdown-toggle text-light d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                     <div class="profile-container ms-2 me-3">
-                                         <!-- <h6 class="mb-1"><?php echo $_SESSION['first_name'] . ' ' . $_SESSION['last_name']; ?></h6> 
-                                         <span class="m-0">Branch: <?php echo $branch; ?></span> -->
-                                     </div>
-                                     <img src="../Assets/Icons/user.png" alt="Profile" class="profile-image me-2" width="40px" height="40px">
-                                 </a>
-                                 <ul class="dropdown-menu dropdown-menu-end mt-3" aria-labelledby="navbarDropdown">
-                                     <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i> My Profile</a></li>
-                                     <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i> Transaction History</a></li>
-                                     <li><hr class="dropdown-divider"></li>
-                                     <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
-                                 </ul>
-                             </li>
-                         <?php else: ?>
-
-                             <!-- Show Login Button when No Session is Active -->
-                             <li class="nav-item">
-                                 <button class="btn btn-login" id="LoginButton">LOGIN</button>
-                             </li>
-                         <?php endif; ?>
-                     </ul>
-                 </div>
-             </div>
-
-
-          
+        </div>
       </div>
+    </div>
   </nav>
 </header>
 
 <section class="hero">
-    <!-- Background images container -->
-    <div class="container-background">
-      <div class="background-image bg1"></div>
-      <div class="background-image bg2"></div>
-      <div class="background-image bg3"></div>
-      <div class="background-image bg4"></div>
-      <div class="background-image bg5"></div>
-      <div class="background-image bg6"></div>
+  <!-- Background images container -->
+  <div class="container-background">
+    <div class="background-image bg1"></div>
+    <div class="background-image bg2"></div>
+    <div class="background-image bg3"></div>
+    <div class="background-image bg4"></div>
+    <div class="background-image bg5"></div>
+    <div class="background-image bg6"></div>
+  </div>
+
+  <!-- Dark overlay -->
+  <div class="overlay"></div>
+
+  <!-- Main content in the hero section -->
+  <div class="section-container">
+    <h1>Discover the World with <span class="highlight">Smart Travel</span></h1>
+    <p>Your satisfaction is our top priority. Experience travel like never before!</p> 
+    <div class="d-flex flex-row gap-3">
+
+
+      <a href="<?php echo isset($_SESSION['accountId']) ?  'login.php' :  'client-flightSched.php'; ?>" class="cta-button">
+        Book Now</a>
+      <a href="#learn-more" class="cta-button-outline">Learn More</a>
     </div>
-
-    <!-- Dark overlay -->
-    <div class="overlay"></div>
-
-    <!-- Main content in the hero section -->
-    <div class="section-container">
-      <h1>Discover the World with <span class="highlight">Smart Travel</span></h1>
-      <p>Your satisfaction is our top priority. Experience travel like never before!</p> 
-      <div class="d-flex flex-row gap-3">
-
-
-      <a href="<?php echo isset($_SESSION['accountId']) ? 'client-bookingform.php' : 'login.php'; ?>" class="cta-button">Book Now</a>
-
-
-       <a href="#learn-more" class="cta-button-outline">Learn More</a>
-      </div>
-      
-    </div>
-</section>
-
-<section class="flight-schedules">
-  <div class="section-wrapper">
-    <div class="section-header">
-      <h3>Flight Schedules</h3>
-      <p>Check out our latest flight schedules and book your next adventure today!</p>
-    </div>
-
-    <div class="section-main-content">
-
-        <div class="confirm-table-container-flight">
-          <table class="info-table">
-            <thead class="border-2">
-              <tr>
-                <th rowspan="2"></th>
-                <th rowspan="2">ORIGIN</th>
-                <th colspan="2">FLIGHT DATE</th> <!-- Flight Date columns -->
-                <th rowspan="2">AVAILABLE SEATS</th>
-                <th rowspan="2">ADDITIONAL SEATS</th>
-                <th rowspan="2"> </th>
-
-              </tr>
-              <tr style="top: -8px">
-                <th>START</th>
-                <th>END</th>
-              </tr>
-            </thead>
-            <tbody>
-              <?php
-                $sql = "SELECT DISTINCT agentCode FROM agent WHERE agentCode IS NOT NULL AND agentCode != ''";
-                $result = $conn->query($sql);
-
-                $agentColumns = '';
-                while ($row = $result->fetch_assoc()) 
-                {
-                  $agentColumns .= 
-                      'SUM(CASE WHEN b.agentCode = "' . $row['agentCode'] . '" AND b.bookingType = "Package" and b.status = "Confirmed" THEN b.pax ELSE 0 END) AS `' . $row['agentCode'] . '_AL`, ' .
-                      'SUM(CASE WHEN b.agentCode = "' . $row['agentCode'] . '" AND b.bookingType = "Land" and b.status = "Confirmed" THEN b.pax ELSE 0 END) AS `' . $row['agentCode'] . '_LO`, ';
-                }
-
-          
-                $agentColumns = rtrim($agentColumns, ', ');
-
-                $sql = "
-                    SELECT 
-                        f.flightId AS flightid,  -- Added flightId here
-                        CONCAT(e.lName, ', ', e.fName, 
-                            IF(e.mName IS NOT NULL AND e.mName != '', CONCAT(' ', LEFT(e.mName, 1)), '')) AS TeamOP,
-                        f.origin, 
-                        f.flightDepartureDate AS Start, 
-                        f.returnDepartureDate AS End, 
-                        f.availSeats AS FlightSeat, 
-                        GREATEST(
-                            (f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package' 
-                            THEN b.pax ELSE 0 END), 0)), 0) AS AvailSeats, 
-                        IF(
-                            (f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package' 
-                            THEN b.pax ELSE 0 END), 0)) < 0, 
-                            ABS(f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package' 
-                            THEN b.pax ELSE 0 END), 0)), 
-                            0) AS AdditionalSeats,
-                        SUM(CASE WHEN b.bookingType = 'Package' AND b.status = 'Confirmed' THEN b.pax ELSE 0 END) AS `Air+Land`,
-                        SUM(CASE WHEN b.bookingType = 'Land' AND b.status = 'Confirmed' THEN b.pax ELSE 0 END) AS `LandOnly`,
-                        f.wholesalePrice AS WholesalePrice, 
-                        f.flightPrice AS RetailPrice, 
-                        p.packagePrice AS LandArrangement, 
-                        $agentColumns
-                    FROM 
-                        employee e 
-                    JOIN 
-                        flight f ON f.employeeId = e.employeeId
-                    LEFT JOIN 
-                        booking b ON b.flightId = f.flightId
-                    LEFT JOIN 
-                        package p ON f.packageId = p.packageId
-                    WHERE 
-                        f.flightDepartureDate >= CURDATE()
-                    GROUP BY 
-                        f.flightId, e.lName, e.fName, e.mName, f.origin, f.flightDepartureDate, f.returnDepartureDate, f.availSeats, 
-                        f.wholesalePrice, f.flightPrice, p.packagePrice
-                    ORDER BY 
-                        f.flightDepartureDate";
-
-
-                // Step 3: Execute the query
-                $result = $conn->query($sql);
-
-                // Step 4: Display the results in HTML table
-                if ($result->num_rows > 0) 
-                {
-                  while ($row = $result->fetch_assoc()) 
-                  {
-                    echo '<tr>';
-                    echo '<td>' . $row['flightid'] . '</td>';
-                    echo '<td>' . $row['origin'] . '</td>';
-                    echo '<td>' . $row['Start'] . '</td>';
-                    echo '<td>' . $row['End'] . '</td>';
-                    echo '<td class="fw-bold">' . $row['AvailSeats'] . '</td>';
-                    echo '<td class="fw-bolder">' . $row['AdditionalSeats'] . '</td>';
-                    echo '<td><a href="../Client Section/client-bookingform-flight.php?flightid=' . $row['flightid'] . '" class="btn btn-sm btn-success book-now" data-flightid="' . $row['flightid'] . '" id="book-now">Book Now</a></td>';
-
-                    echo '</tr>';
-                  }
-                } 
-                else 
-                {
-                  echo "No records found.";
-                }
-              ?>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
     
+  </div>
 </section>
+
 
 <section class="about">
     <div class="image-accent">

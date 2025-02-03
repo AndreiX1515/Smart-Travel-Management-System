@@ -24,6 +24,8 @@ if (isset($_POST['bookNow']))
 	$bookingType = isset($_POST['land']) ? 'Land' : 'Package';
 	$flightDetails = ($bookingType === 'Land') ? $_POST['flightDetails'] : NULL;
 
+	$flightId = $_SESSION['flightid'];
+
 	// Get the last bookingId and increment it for the new transaction
 	$result = $conn->query("SELECT MAX(bookingId) AS lastBookingId FROM booking");
 	if (!$result) 
@@ -72,7 +74,7 @@ if (isset($_POST['bookNow']))
 	{
 		$_SESSION['status'] = "Database error on booking insert: " . $stmt1->error;
 		$conn->rollback();  // Rollback the transaction if there is an error
-		header("Location: ../bookingform.php");
+		header("Location: ../client-bookingform-flight.php");
 		exit(0);
 	}
 

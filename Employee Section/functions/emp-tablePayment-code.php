@@ -10,7 +10,7 @@
     $paymentId = $_POST['paymentId'];
     $paymentStatus = $_POST['paymentStatus'];
     $paymentRemarks = $_POST['paymentRemarks'];
-    $accountId = $_SESSION['employee_accountId'];
+    $accountId = $_POST['accId'];
 
     // Set the session variable for the current user in MySQL
     $conn->query("SET @current_user_id = $accountId");
@@ -25,7 +25,7 @@
     }
 
     // Prepare the SQL statement for updating the request status
-    $sql1 = "UPDATE payment SET paymentStatus = ?, paymentRemarks = ? WHERE paymentId = ?";
+    $sql1 = "UPDATE payment SET paymentStatus = ?, paymentRemarks = ?, performedBy = ? WHERE paymentId = ?";
     $stmt1 = $conn->prepare($sql1);
 
     if (!$stmt1) 
@@ -38,7 +38,7 @@
     }
 
     // Bind parameters and execute the update
-    $stmt1->bind_param('ssi', $paymentStatus, $paymentRemarks, $paymentId);
+    $stmt1->bind_param('ssii', $paymentStatus, $paymentRemarks, $accountId, $paymentId);
     
     if (!$stmt1->execute()) 
     {
