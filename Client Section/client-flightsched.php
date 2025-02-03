@@ -57,8 +57,16 @@ $accId = $_SESSION['accountId'] ?? '';
       <section class="flight-schedules">
         <div class="section-wrapper">
           <div class="section-header">
-            <h3>Flight Schedules</h3>
-            <p>Check out our latest flight schedules and book your next adventure today!</p>
+            <div class="header-info">
+              <h3>Flight Schedules</h3>
+              <p>Check out our latest flight schedules and book your next adventure today!</p>
+            </div>
+           
+            <div class="date-filter">
+                <label for="flight-date">Select Flight (Start) Date:</label>
+                <input type="date" id="flight-date">
+            </div>
+
           </div>
 
           <div class="section-main-content">
@@ -84,11 +92,6 @@ $accId = $_SESSION['accountId'] ?? '';
               ?>
 
               <!-- Date Picker -->
-              <div class="date-filter">
-                  <label for="flight-date">Select Flight Date:</label>
-                  <input type="date" id="flight-date">
-              </div>
-
               <div id="flights-container">
                   <?php
                   if ($result->num_rows > 0) {

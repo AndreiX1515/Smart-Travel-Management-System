@@ -1,12 +1,19 @@
 /* Flight Schedules */
 
+.main-container {
+  padding: 0;
+  margin: 0;
+}
+
+
+
+
 .flight-schedules {
-  background-color: #f9f9f9; /* Optional: background color */
+  background-color: transparent; /* Optional: background color */
   display: flex; /* Use flexbox for layout */
   position: relative; /* Ensure hero section positions correctly */
   overflow: hidden; /* Prevent overflow */
-  height: 100vh;
-  padding: 0px 50px;
+  height: 88.5vh;
   border-bottom: 1px solid gainsboro;
 
   /* border: 1px solid black; */
@@ -16,19 +23,76 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin-bottom: 15px;
-  /* margin-top: 30px; */
-  /* border: 1px solid; */
   /* border: 1px solid black; */
 }
 
 .flight-schedules .section-header {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   width: 100%;
-  padding: 20px 125px;
+  padding: 20px 250px 20px 125px;
   /* border: 1px solid; */
 }
+
+.section-header .header-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.section-header .date-filter {
+  display: flex;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-family: Arial, sans-serif;
+  color: #333;
+  /* margin: 10px 0; */
+}
+
+.date-filter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: Arial, sans-serif;
+  color: #333;
+  margin: 10px 0;
+}
+
+/* Minimalist flat style for the date filter */
+
+
+.date-filter label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 4px;
+}
+
+.date-filter input[type="date"] {
+  padding: 10px;
+  font-size: 14px;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  background-color: #fff;
+  color: #333;
+  transition: border-color 0.3s ease;
+}
+
+/* Focus and hover effects */
+.date-filter input[type="date"]:focus {
+  border-color: #116530; /* Accent color */
+  outline: none;
+}
+
+.date-filter input[type="date"]:hover {
+  border-color: #8a8a8a;
+}
+
+
+
+
+
+
 
 .flight-schedules .section-main-content {
   display: flex;
