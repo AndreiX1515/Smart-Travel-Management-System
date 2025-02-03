@@ -483,7 +483,6 @@ unset($_SESSION['tableData']);
 unset($_SESSION['totalPriceSum']);
 unset($_SESSION['tableData2']);
 unset($_SESSION['totalRequestCost']);
-unset($_SESSION['totalFinal']);
 unset($_SESSION['tableData3']);
 unset($_SESSION['totalAmount']);
 unset($_SESSION['balance']);
