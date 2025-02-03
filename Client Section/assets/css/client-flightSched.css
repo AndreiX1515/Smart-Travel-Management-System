@@ -118,16 +118,18 @@
 
 
 .flight-card {
-    display: flex;
-    align-items: flex-start; /* Align items to the start */
-    justify-content: flex-start; /* Align content to the left */
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    padding: 15px;
-    width: 100%;
-    margin-bottom: 20px;
-  }
+  display: flex;
+  align-items: flex-start; /* Align items to the start */
+  justify-content: flex-start; /* Align content to the left */
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  border: 1px solid rgba(0, 0, 0, 0.15); /* Flat border shadow effect */
+  padding: 15px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
   
   .flight-info {
     display: flex;

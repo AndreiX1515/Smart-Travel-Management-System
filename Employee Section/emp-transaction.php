@@ -20,6 +20,7 @@
    <?php include '../Employee Section/includes/emp-navbar.php' ?>
    
   <div class="main-content">
+    
     <div class="table-container">
 
       <div class="table-header">
@@ -309,26 +310,26 @@ $(document).ready(function () {
     // Package Filter
     $('#packages').on('change', function () {
         const selectedPackage = $(this).val();
-        table.column(3).search(selectedPackage || '').draw();
+        table.column(2).search(selectedPackage || '').draw();
     });
 
     // Booking Date Filter with value change
     $('#BookingStartDate').on('change', function () {
       const selectedBookingDate = $(this).val();  // Get the selected value directly from the input field
       console.log("Booking Date Filter:", selectedBookingDate);  // Log the selected booking date
-      table.column(4).search(selectedBookingDate || '').draw();  // Column 4 (index starts at 0)
+      table.column(3).search(selectedBookingDate || '').draw();  // Column 4 (index starts at 0)
     });
 
     // Flight Date Filter with value change
     $('#FlightStartDate').on('change', function () {
       const selectedFlightDate = $(this).val();  // Get the selected value directly from the input field
       console.log("Flight Date Filter:", selectedFlightDate);  // Log the selected flight date
-      table.column(5).search(selectedFlightDate || '').draw();  // Column 5 (index starts at 0)
+      table.column(3).search(selectedFlightDate || '').draw();  // Column 5 (index starts at 0)
     });
 
     // Apply datepicker and input validation for FlightStartDate
     $("#FlightStartDate").datepicker({
-        dateFormat: "mm-dd-yy", // Set the format to MM-DD-YYYY
+        dateFormat: "yy-mm-dd", // Set the format to MM-DD-YYYY
         showAnim: "fadeIn", // Optional: Adds a fade-in effect when the date picker is opened
         changeMonth: true, // Allow the month to be changed from the dropdown
         changeYear: true,  // Allow the year to be changed from the dropdown
@@ -338,27 +339,10 @@ $(document).ready(function () {
             $(this).val(dateText);
             flightStartDate = dateText; // Store the selected date
             console.log("FlightStartDate Selected Date (onSelect): " + dateText);
-            table.column(5).search(flightStartDate || '').draw();  // Column 5 (index starts at 0)
+            table.column(3).search(flightStartDate || '').draw();  // Column 5 (index starts at 0)
         }
     });
 
-    $("#FlightStartDate").datepicker({
-        dateFormat: "mm-dd-yy", // Set the format to MM-DD-YYYY
-        showAnim: "fadeIn", // Optional: Adds a fade-in effect when the date picker is opened
-        changeMonth: true, // Allow the month to be changed from the dropdown
-        changeYear: true,  // Allow the year to be changed from the dropdown
-        yearRange: "1900:2100", // Set a range of years (optional)
-        onSelect: function(dateText) {
-            // When a date is selected, update the input field with the date
-            if (dateText === "") {
-                flightStartDate = ""; // Reset the variable if the field is cleared
-            } else {
-                flightStartDate = dateText; // Store the selected date
-            }
-            console.log("FlightStartDate Selected Date (onSelect): " + flightStartDate);
-            table.column(5).search(flightStartDate || '').draw(); // Column 5 (index starts at 0)
-        }
-    });
 
     // Apply datepicker and input validation for BookingStartDate
     $("#BookingStartDate").datepicker({
