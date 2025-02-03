@@ -26,242 +26,241 @@ require "../conn.php";
 
     <div class="main-content">
       <div class="table-wrapper">
-          <div class="table-header">
-            <div class="search-wrapper">
-                <div class="search-input-wrapper">
-                    <input type="text" id="search" placeholder="Search here..">
-                    <!-- <span class="icon">🔍</span> -->
-                </div>
+        <div class="table-header">
+
+          <div class="search-wrapper">
+            <div class="search-input-wrapper">
+              <input type="text" id="search" placeholder="Search here..">
+              <!-- <span class="icon">🔍</span> -->
             </div>
-
-            <!-- <div class="filter-field">
-                <!-- <label for="status">Status:</label> 
-                <div class="select-wrapper">
-                  <select id="status">
-                    <option value="All" disabled selected>Select Status</option>
-                    <option value="Pending">Pending</option>
-                    <option value="Confirmed">Confirmed</option>
-                    <option value="Cancelled">Cancelled</option>
-                  </select>
-                </div>
-              </div> -->
-
-            <div class="second-header-wrapper">
-              <div class="date-range-wrapper sorting-wrapper">
-                <div class="select-wrapper">
-                  <select id="packages">
-                      <option value="All" disabled selected>Select Packages</option>
-                      <option value="Autumn Tour Package">Autumn Tour</option>
-                      <option value="Summer Tour Package">Summer Tour</option>
-                      <option value="Spring Tour Package">Spring Tour</option>
-                      <option value="Winter Tour Package">Winter Tour</option>
-                      <option value="Regular Tour Package">Regular Tour</option>
-                      <option value="Busan Tour Package">Busan Tour</option>
-                  </select>
-                </div>
-              </div>
-
-              <!-- <div class="date-range-wrapper flightbooking-wrapper">
-                <div class="date-range-inputs-wrapper">
-                  <div class="input-with-icon">
-                    <input type="text" class="datepicker" id="BookingStartDate" placeholder="Booking Date">
-                    <i class="fas fa-calendar-alt calendar-icon"></i>
-                  </div>
-                </div>
-              </div> -->
-
-              <div class="date-range-wrapper flightbooking-wrapper">
-                <div class="date-range-inputs-wrapper">
-                  <div class="input-with-icon">
-                    <input type="text" class="datepicker" id="FlightStartDate" placeholder="Flight Date">
-                    <i class="fas fa-calendar-alt calendar-icon"></i>
-                  </div>
-                </div>
-              </div>
-
-              <div class="buttons-wrapper">
-                <button id="clearSorting" class="btn btn-secondary">
-                    Clear Filters
-                </button>
-              </div>
-            </div>
-
           </div>
 
-          <!-- <div class="search-bar">
-            <div class="left-side">
-              
-            </div>
-
-            <div class="right-side" style="display: flex; align-items: baseline; gap: 10px;">
-              <label for="entries" style="font-family: Arial, sans-serif;">Show </label>
-              <select id="entries" style="padding: 5px; font-family: Arial, sans-serif; border: 1px solid #ced4da; border-radius: 4px;">
-                <option value="10">10</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
+          <!-- <div class="filter-field">
+            <label for="status">Status:</label> 
+            <div class="select-wrapper">
+              <select id="status">
+                <option value="All" disabled selected>Select Status</option>
+                <option value="Pending">Pending</option>
+                <option value="Confirmed">Confirmed</option>
+                <option value="Cancelled">Cancelled</option>
               </select>
-              <label for="entries" style="font-family: Arial, sans-serif;">Entries</label>
             </div>
-            
-          </div> -->   
+          </div> -->
 
-          <div class="navpills-container">
-              <ul class="nav nav-pills nav-underline" id="pills-tab" role="tablist">
-                  <li class="nav-item" role="presentation">
-                      <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">
-                          All <span class="badge">88</span>
-                      </button>
-                  </li>
-                  <li class="nav-item" role="presentation">
-                      <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">
-                          Pending <span class="badge">61</span>
-                      </button>
-                  </li>
+          <div class="second-header-wrapper">
+            <div class="date-range-wrapper sorting-wrapper">
+              <div class="select-wrapper">
+                <select id="packages">
+                  <option value="All" disabled selected>Select Packages</option>
+                  <option value="Autumn Tour Package">Autumn Tour</option>
+                  <option value="Summer Tour Package">Summer Tour</option>
+                  <option value="Spring Tour Package">Spring Tour</option>
+                  <option value="Winter Tour Package">Winter Tour</option>
+                  <option value="Regular Tour Package">Regular Tour</option>
+                  <option value="Busan Tour Package">Busan Tour</option>
+                </select>
+              </div>
+            </div>
 
-                  <li class="nav-item" role="presentation">
-                      <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">
-                          Confirmed <span class="badge">27</span>
-                      </button>
-                  </li>
+            <!-- <div class="date-range-wrapper flightbooking-wrapper">
+              <div class="date-range-inputs-wrapper">
+                <div class="input-with-icon">
+                  <input type="text" class="datepicker" id="BookingStartDate" placeholder="Booking Date">
+                  <i class="fas fa-calendar-alt calendar-icon"></i>
+                </div>
+              </div>
+            </div> -->
 
-                  <li class="nav-item" role="presentation">
-                      <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">
-                          Cancelled <span class="badge">27</span>
-                      </button>
-                  </li>
-              </ul>
+            <div class="date-range-wrapper flightbooking-wrapper">
+              <div class="date-range-inputs-wrapper">
+                <div class="input-with-icon">
+                  <input type="text" class="datepicker" id="FlightStartDate" placeholder="Flight Date">
+                  <i class="fas fa-calendar-alt calendar-icon"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="buttons-wrapper">
+              <button id="clearSorting" class="btn btn-secondary">
+                  Clear Filters
+              </button>
+            </div>
           </div>
 
-          <div class="tab-content" id="pills-tabContent">
-              <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
-                <div class="table-container">
-                  <table id="product-table" class="product-table">
-                      <thead>
-                        <tr>
-                          <th>Transaction No</th>
-                          <th>Contact Details</th>
-                          <th>Package Name</th>
-                          <th>No. of Nights</th>
-                          <th>Hotel Details</th>
-                          <th>Check-in/out</th>
-                          <th>Guests</th>
-                          <th>Price (₱)</th>
-                          <th>Transaction Date</th>
-                          <th>Status</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <?php
-                          $sql1 = "SELECT f.transactionNo AS `Transaction No`, 
-                                      CONCAT(f.lName, ', ', f.fName, ' ', 
-                                            IF(f.mName IS NOT NULL AND f.mName != '', CONCAT(LEFT(f.mName, 1), '.'), ''), 
-                                            IF(f.suffix IS NOT NULL AND f.suffix != 'N/A', CONCAT(' ', f.suffix), '')) AS `Contact Name`,
-                                      CONCAT(f.countryCode, ' ', f.contactNo) AS `Contact Details`,
-                                      fp.packageName AS `Package Name`, DATEDIFF(f.returnDate, f.startDate) AS `No. of Nights`,
-                                      fh.hotelName AS `Hotel Name`, fr.rooms AS `Room Type`, f.startDate AS `Check-in Date`,
-                                      f.returnDate AS `Check-out Date`, f.pax AS `Total Guests`, f.phpPrice AS `Price`,
-                                      f.bookingDate AS `Transaction Date`,f.status AS `Status`
-                                  FROM fit f
-                                  JOIN fitpackage fp ON fp.packageId = f.packageId
-                                  JOIN fithotel fh ON fh.hotelId = f.hotelId
-                                  JOIN fitrooms fr ON fr.roomId = f.roomId";
+        </div>
 
-                          $res1 = $conn->query($sql1);
+        <div class="search-bar">
+          <div class="left-side"></div>
 
-                          if ($res1->num_rows > 0) 
+          <div class="right-side" style="display: flex; align-items: baseline; gap: 10px;">
+            <label for="entries" style="font-family: Arial, sans-serif;">Show </label>
+            <select id="entries" style="padding: 5px; font-family: Arial, sans-serif; border: 1px solid #ced4da; border-radius: 4px;">
+              <option value="10">10</option>
+              <option value="25">25</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
+            <label for="entries" style="font-family: Arial, sans-serif;">Entries</label>
+          </div>
+          
+        </div>   
+
+        <div class="navpills-container">
+          <ul class="nav nav-pills nav-underline" id="pills-tab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">
+                All <span class="badge">88</span>
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">
+                Pending <span class="badge">61</span>
+              </button>
+            </li>
+
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">
+                Confirmed <span class="badge">27</span>
+              </button>
+            </li>
+
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">
+                Cancelled <span class="badge">27</span>
+              </button>
+            </li>
+          </ul>
+        </div>
+
+        <div class="tab-content" id="pills-tabContent">
+            <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
+              <div class="table-container">
+                <table id="product-table" class="product-table">
+                    <thead>
+                      <tr>
+                        <th>Transaction No</th>
+                        <th>Contact Details</th>
+                        <th>Package Name</th>
+                        <th>No. of Nights</th>
+                        <th>Hotel Details</th>
+                        <th>Check-in/out</th>
+                        <th>Guests</th>
+                        <th>Price (₱)</th>
+                        <th>Transaction Date</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <?php
+                        $sql1 = "SELECT f.transactionNo AS `Transaction No`, 
+                                    CONCAT(f.lName, ', ', f.fName, ' ', 
+                                          IF(f.mName IS NOT NULL AND f.mName != '', CONCAT(LEFT(f.mName, 1), '.'), ''), 
+                                          IF(f.suffix IS NOT NULL AND f.suffix != 'N/A', CONCAT(' ', f.suffix), '')) AS `Contact Name`,
+                                    CONCAT(f.countryCode, ' ', f.contactNo) AS `Contact Details`,
+                                    fp.packageName AS `Package Name`, DATEDIFF(f.returnDate, f.startDate) AS `No. of Nights`,
+                                    fh.hotelName AS `Hotel Name`, fr.rooms AS `Room Type`, f.startDate AS `Check-in Date`,
+                                    f.returnDate AS `Check-out Date`, f.pax AS `Total Guests`, f.phpPrice AS `Price`,
+                                    f.bookingDate AS `Transaction Date`,f.status AS `Status`
+                                FROM fit f
+                                JOIN fitpackage fp ON fp.packageId = f.packageId
+                                JOIN fithotel fh ON fh.hotelId = f.hotelId
+                                JOIN fitrooms fr ON fr.roomId = f.roomId";
+
+                        $res1 = $conn->query($sql1);
+
+                        if ($res1->num_rows > 0) 
+                        {
+                          while ($row = $res1->fetch_assoc()) 
                           {
-                            while ($row = $res1->fetch_assoc()) 
+                            $transactNo = $row['Transaction No'];
+                            $statusClass = '';
+                            switch ($row['Status']) 
                             {
-                              $transactNo = $row['Transaction No'];
-                              $statusClass = '';
-                              switch ($row['Status']) 
-                              {
-                                case 'Confirmed':
-                                    $statusClass = 'bg-success text-white';
-                                    break;
-                                case 'Cancelled':
-                                    $statusClass = 'bg-danger text-white';
-                                    break;
-                                case 'Pending':
-                                    $statusClass = 'bg-warning text-dark';
-                                    break;
-                                default:
-                                    $statusClass = 'bg-secondary text-white';
-                              }
-
-                              echo "<tr data-url='agent-showFITBooking.php?id=" . htmlspecialchars($transactNo) . "'>
-                                      <td>{$row['Transaction No']}</td>
-                                      <td>
-                                        <div class='contact-wrapper'>
-                                          <p>Contact Name: <span> {$row['Contact Name']} </<span> </p>
-                                          <p>Phone Number: <span> {$row['Contact Details']} <span> </p>
-                                        </div>
-                                      </td>
-
-                                      <td>{$row['Package Name']}</td>
-                                      <td>{$row['No. of Nights']}</td>
-
-                                      <td>
-                                        <div class='contact-wrapper'>
-                                          <p>Hotel: <span> {$row['Hotel Name']} </<span> </p>
-                                          <p>Room Type: <span> {$row['Room Type']} <span> </p>
-                                        </div>
-                                      </td>
-
-                                      <td>
-                                        <div class='contact-wrapper'>
-                                          <p>Check In:  <span> {$row['Check-in Date']} </<span> </p>
-                                          <p>Check Out:  <span> {$row['Check-out Date']} <span> </p>
-                                        </div>
-                                      </td>
-
-                                      <td style='text-align: center; font-weight: bold;'>{$row['Total Guests']}</td>
-                                      <td>{$row['Price']}</td>
-                                      <td>{$row['Transaction Date']}</td>
-                                      <td><span class='badge p-2 rounded-pill {$statusClass}'>{$row['Status']}</span></td>
-                                    </tr>";
-                      
+                              case 'Confirmed':
+                                  $statusClass = 'bg-success text-white';
+                                  break;
+                              case 'Cancelled':
+                                  $statusClass = 'bg-danger text-white';
+                                  break;
+                              case 'Pending':
+                                  $statusClass = 'bg-warning text-dark';
+                                  break;
+                              default:
+                                  $statusClass = 'bg-secondary text-white';
                             }
-                          } 
-                          else 
-                          {
-                            echo "<tr><td colspan='13'>No bookings found</td></tr>";
+
+                            echo "<tr data-url='agent-showFITBooking.php?id=" . htmlspecialchars($transactNo) . "'>
+                                    <td>{$row['Transaction No']}</td>
+                                    <td>
+                                      <div class='contact-wrapper'>
+                                        <p>Contact Name: <span> {$row['Contact Name']} </<span> </p>
+                                        <p>Phone Number: <span> {$row['Contact Details']} <span> </p>
+                                      </div>
+                                    </td>
+
+                                    <td>{$row['Package Name']}</td>
+                                    <td>{$row['No. of Nights']}</td>
+
+                                    <td>
+                                      <div class='contact-wrapper'>
+                                        <p>Hotel: <span> {$row['Hotel Name']} </<span> </p>
+                                        <p>Room Type: <span> {$row['Room Type']} <span> </p>
+                                      </div>
+                                    </td>
+
+                                    <td>
+                                      <div class='contact-wrapper'>
+                                        <p>Check In:  <span> {$row['Check-in Date']} </<span> </p>
+                                        <p>Check Out:  <span> {$row['Check-out Date']} <span> </p>
+                                      </div>
+                                    </td>
+
+                                    <td style='text-align: center; font-weight: bold;'>{$row['Total Guests']}</td>
+                                    <td>{$row['Price']}</td>
+                                    <td>{$row['Transaction Date']}</td>
+                                    <td><span class='badge p-2 rounded-pill {$statusClass}'>{$row['Status']}</span></td>
+                                  </tr>";
+                    
                           }
-                        ?>
-                      </tbody>
-                  </table>
+                        } 
+                        else 
+                        {
+                          echo "<tr><td colspan='13'>No bookings found</td></tr>";
+                        }
+                      ?>
+                    </tbody>
+                </table>
+              </div>
+
+              <!-- Custom Pagination Container -->
+              <div class="table-footer">
+                <div class="pagination-controls">
+                  <button id="prevPage" class="pagination-btn">Previous</button>
+                  <span id="pageInfo" class="page-info">Page 1 of 10</span>
+                  <button id="nextPage" class="pagination-btn">Next</button>
                 </div>
-
-                <!-- Custom Pagination Container -->
-                <div class="table-footer">
-                  <div class="pagination-controls">
-                    <button id="prevPage" class="pagination-btn">Previous</button>
-                    <span id="pageInfo" class="page-info">Page 1 of 10</span>
-                    <button id="nextPage" class="pagination-btn">Next</button>
-                  </div>
-                </div>
-  
               </div>
 
-              <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
-                  <!-- Content for Pickups -->
-                  Pending Table Here
-              </div>
+            </div>
+
+            <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
+                <!-- Content for Pickups -->
+                Pending Table Here
+            </div>
 
 
-              <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">
-                  <!-- Content for Returns -->
-                  Confirmed table Here
-              </div>
+            <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">
+                <!-- Content for Returns -->
+                Confirmed table Here
+            </div>
 
 
-              <!-- <div class="tab-pane fade" id="pills-disabled" role="tabpanel" aria-labelledby="pills-disabled-tab" tabindex="0">
-                  <!-- Content for Disabled 
-                  Disabled Content Here
-              </div> -->
+            <!-- <div class="tab-pane fade" id="pills-disabled" role="tabpanel" aria-labelledby="pills-disabled-tab" tabindex="0">
+                <!-- Content for Disabled 
+                Disabled Content Here
+            </div> -->
 
-          </div> 
+        </div> 
       </div>
 
     </div>
