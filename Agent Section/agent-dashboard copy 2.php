@@ -12,16 +12,16 @@ require "../conn.php";
 
   <?php include "../Agent Section/includes/head.php"; ?>
 
-  <link rel="stylesheet" href="../Agent Section/assets/css/agent-dashboard copy 3.css?v=<?php echo time(); ?>">
-  <link rel="stylesheet" href="../Agent Section/assets/css/navbar-sidebar copy.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="../Agent Section/assets/css/agent-dashboard.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="../Agent Section/assets/css/navbar-sidebar.css?v=<?php echo time(); ?>">
 </head>
 <body>
 
 <div class="body-container">
-  <?php include "../Agent Section/includes/sidebar copy.php"; ?>
+  <?php include "../Agent Section/includes/sidebar.php"; ?>
 
   <div class="main-content-container">
-    <?php include "../Agent Section/includes/navbar copy 2.php"; ?>
+    <?php include "../Agent Section/includes/navbar.php"; ?>
 
     <div class="main-content">
       <div class="content-container">
