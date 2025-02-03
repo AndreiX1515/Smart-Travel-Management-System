@@ -1,5 +1,6 @@
 <?php 
 session_start();
+require "../conn.php"; 
 ?>
 
 <!DOCTYPE html>
@@ -8,142 +9,144 @@ session_start();
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Transactions</title>
+  <title>Dashboard</title>
 
-  <?php include '../Agent Section/includes/head.php' ?>
+  <?php include "../Agent Section/includes/head.php"; ?>
+
   <link rel="stylesheet" href="../Agent Section/assets/css/agent-transaction.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="../Agent Section/assets/css/navbar-sidebar.css?v=<?php echo time(); ?>">
-
 </head>
-
 <body>
-  <?php include '../Agent Section/includes/sidebar.php'; ?> 
 
-  <div class="main-content" id="mainContent"> 
-    <?php include '../Agent Section/includes/navbar.php'; ?>
+<div class="body-container">
+  <?php include "../Agent Section/includes/sidebar.php"; ?>
 
-    <div class="content-wrapper-transact">
-        <div class="table-header">
-          <div class="search-wrapper">
-              <div class="search-input-wrapper">
-                  <input type="text" id="search" placeholder="Search here..">
-                  <!-- <span class="icon">🔍</span> -->
-              </div>
-          </div>
+  <div class="main-content-container">
+    <div class="navbar">
+      <h5 class="title-page">Transaction - Packages</h5>
+    </div>
 
-
-          <!-- <div class="filter-field">
-              <!-- <label for="status">Status:</label> 
-              <div class="select-wrapper">
-                <select id="status">
-                  <option value="All" disabled selected>Select Status</option>
-                  <option value="Pending">Pending</option>
-                  <option value="Confirmed">Confirmed</option>
-                  <option value="Cancelled">Cancelled</option>
-                </select>
-              </div>
-            </div> -->
-
-          <div class="second-header-wrapper">
-            <div class="date-range-wrapper sorting-wrapper">
-              <div class="select-wrapper">
-                <select id="packages">
-                    <option value="All" disabled selected>Select Packages</option>
-                    <option value="Autumn Tour Package">Autumn Tour</option>
-                    <option value="Summer Tour Package">Summer Tour</option>
-                    <option value="Spring Tour Package">Spring Tour</option>
-                    <option value="Winter Tour Package">Winter Tour</option>
-                    <option value="Regular Tour Package">Regular Tour</option>
-                    <option value="Busan Tour Package">Busan Tour</option>
-                </select>
-              </div>
+    <div class="main-content">
+      <div class="table-wrapper">
+          <div class="table-header">
+            <div class="search-wrapper">
+                <div class="search-input-wrapper">
+                    <input type="text" id="search" placeholder="Search here..">
+                    <!-- <span class="icon">🔍</span> -->
+                </div>
             </div>
 
-            <!-- <div class="date-range-wrapper flightbooking-wrapper">
-              <div class="date-range-inputs-wrapper">
-                <div class="input-with-icon">
-                  <input type="text" class="datepicker" id="BookingStartDate" placeholder="Booking Date">
-                  <i class="fas fa-calendar-alt calendar-icon"></i>
+            <!-- <div class="filter-field">
+                <!-- <label for="status">Status:</label> 
+                <div class="select-wrapper">
+                  <select id="status">
+                    <option value="All" disabled selected>Select Status</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Confirmed">Confirmed</option>
+                    <option value="Cancelled">Cancelled</option>
+                  </select>
+                </div>
+              </div> -->
+
+            <div class="second-header-wrapper">
+              <div class="date-range-wrapper sorting-wrapper">
+                <div class="select-wrapper">
+                  <select id="packages">
+                      <option value="All" disabled selected>Select Packages</option>
+                      <option value="Autumn Tour Package">Autumn Tour</option>
+                      <option value="Summer Tour Package">Summer Tour</option>
+                      <option value="Spring Tour Package">Spring Tour</option>
+                      <option value="Winter Tour Package">Winter Tour</option>
+                      <option value="Regular Tour Package">Regular Tour</option>
+                      <option value="Busan Tour Package">Busan Tour</option>
+                  </select>
                 </div>
               </div>
-            </div> -->
 
-            <div class="date-range-wrapper flightbooking-wrapper">
-              <div class="date-range-inputs-wrapper">
-                <div class="input-with-icon">
-                  <input type="text" class="datepicker" id="FlightStartDate" placeholder="Flight Date">
-                  <i class="fas fa-calendar-alt calendar-icon"></i>
+              <!-- <div class="date-range-wrapper flightbooking-wrapper">
+                <div class="date-range-inputs-wrapper">
+                  <div class="input-with-icon">
+                    <input type="text" class="datepicker" id="BookingStartDate" placeholder="Booking Date">
+                    <i class="fas fa-calendar-alt calendar-icon"></i>
+                  </div>
                 </div>
+              </div> -->
+
+              <div class="date-range-wrapper flightbooking-wrapper">
+                <div class="date-range-inputs-wrapper">
+                  <div class="input-with-icon">
+                    <input type="text" class="datepicker" id="FlightStartDate" placeholder="Flight Date">
+                    <i class="fas fa-calendar-alt calendar-icon"></i>
+                  </div>
+                </div>
+              </div>
+
+              <div class="buttons-wrapper">
+                <button id="clearSorting" class="btn btn-secondary">
+                    Clear Filters
+                </button>
               </div>
             </div>
 
-            <div class="buttons-wrapper">
-              <button id="clearSorting" class="btn btn-secondary">
-                  Clear Filters
-              </button>
+          </div>
+
+          <!-- <div class="search-bar">
+            <div class="left-side">
+              
             </div>
+
+            <div class="right-side" style="display: flex; align-items: baseline; gap: 10px;">
+              <label for="entries" style="font-family: Arial, sans-serif;">Show </label>
+              <select id="entries" style="padding: 5px; font-family: Arial, sans-serif; border: 1px solid #ced4da; border-radius: 4px;">
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+              </select>
+              <label for="entries" style="font-family: Arial, sans-serif;">Entries</label>
+            </div>
+            
+          </div> -->   
+
+          <div class="navpills-container">
+              <ul class="nav nav-pills nav-underline" id="pills-tab" role="tablist">
+                  <li class="nav-item" role="presentation">
+                      <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">
+                          All <span class="badge">88</span>
+                      </button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                      <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">
+                          Pending <span class="badge">61</span>
+                      </button>
+                  </li>
+
+                  <li class="nav-item" role="presentation">
+                      <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">
+                          Confirmed <span class="badge">27</span>
+                      </button>
+                  </li>
+
+                  <li class="nav-item" role="presentation">
+                      <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">
+                          Cancelled <span class="badge">27</span>
+                      </button>
+                  </li>
+              </ul>
           </div>
 
-        </div>
+          <?php 
+            if(isset($_SESSION['status'])):
+          ?>
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+              <strong>Hey!</strong> <?= $_SESSION['status']; ?>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          <?php 
+            unset($_SESSION['status']);
+            endif;
+          ?>
 
-        <!-- <div class="search-bar">
-           <div class="left-side">
-             
-           </div>
-
-           <div class="right-side" style="display: flex; align-items: baseline; gap: 10px;">
-             <label for="entries" style="font-family: Arial, sans-serif;">Show </label>
-             <select id="entries" style="padding: 5px; font-family: Arial, sans-serif; border: 1px solid #ced4da; border-radius: 4px;">
-               <option value="10">10</option>
-               <option value="25">25</option>
-               <option value="50">50</option>
-               <option value="100">100</option>
-             </select>
-             <label for="entries" style="font-family: Arial, sans-serif;">Entries</label>
-           </div>
-           
-         </div> -->   
-
-         <div class="navpills-container">
-            <ul class="nav nav-pills nav-underline" id="pills-tab" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">
-                        All <span class="badge">88</span>
-                    </button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">
-                        Pending <span class="badge">61</span>
-                    </button>
-                </li>
-
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">
-                        Confirmed <span class="badge">27</span>
-                    </button>
-                </li>
-
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">
-                        Cancelled <span class="badge">27</span>
-                    </button>
-                </li>
-            </ul>
-        </div>
-
-        <?php 
-          if(isset($_SESSION['status'])):
-        ?>
-          <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            <strong>Hey!</strong> <?= $_SESSION['status']; ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
-        <?php 
-          unset($_SESSION['status']);
-          endif;
-        ?>
-
-        
           <div class="tab-content" id="pills-tabContent">
               <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
                 <div class="table-container">
@@ -152,9 +155,9 @@ session_start();
                       <tr>
                           <th>Transaction ID</th>
                           <th>Contact Person Info</th>
-                          <th>Contact Person Contact Details</th>
+                          <th>Contact Details</th>
                           <th>Package Name</th>
-                          <th>Transaction Date</th>
+                          <!-- <th>Booking Date</th> -->
                           <th>Flight Date</th>
                           <th>Total Pax</th>
                           <th>Status</th>
@@ -213,6 +216,9 @@ session_start();
                                       $statusClass = 'bg-secondary text-white'; 
                               }
 
+                              // Booking Date
+                              // <td>{$row['TRANSACTION DATE']}</td>
+
                               echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($transactNo) . "'>
                                       <td>{$transactNo}</td>
                                       <td>{$row['CONTACT NAME']}</td>
@@ -224,7 +230,7 @@ session_start();
                                       </td>
             
                                       <td>{$row['PACKAGE']}</td>
-                                      <td>{$row['TRANSACTION DATE']}</td>
+                                      
                                       <td>{$row['FLIGHT DATE']}</td>
                                       <td style='text-align: center; font-weight: bold;'>
                                           {$row['TOTAL PAX']}
@@ -288,6 +294,8 @@ session_start();
                                     $statusClass = 'bg-secondary text-white'; 
                               }
 
+                              // <td>{$row['TRANSACTION DATE']}</td>
+
                               echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($transactNo) . "'>
                                   <td>{$transactNo}</td>
                                   <td>{$row['CONTACT NAME']}</td>
@@ -298,7 +306,7 @@ session_start();
                                     </div>
                                   </td>
                                   <td>{$row['PACKAGE']}</td>
-                                  <td>{$row['TRANSACTION DATE']}</td>
+                                  
                                   <td>{$row['FLIGHT DATE']}</td>
                                   <td style='text-align: center; font-weight: bold;'>{$row['TOTAL PAX']}</td>
                                   <td>
@@ -327,13 +335,15 @@ session_start();
                 </div>
 
                 <!-- Custom Pagination Container -->
+                <!-- Custom Pagination Container -->
                 <div class="table-footer">
                   <div class="pagination-controls">
                     <button id="prevPage" class="pagination-btn">Previous</button>
-                    <span id="pageInfo" class="page-info"></span>
+                    <span id="pageInfo" class="page-info">Page 1 of 10</span>
                     <button id="nextPage" class="pagination-btn">Next</button>
                   </div>
-                </div>     
+                </div>
+  
 
               </div>
 
@@ -354,12 +364,14 @@ session_start();
                   Disabled Content Here
               </div> -->
 
-          </div>
+          </div> 
+      </div>    
     </div>
   </div>
+</div>
 
-  <!-- Modal for Update Booking -->
-  <div class="modal fade" id="updateBookingModal" tabindex="-1" aria-labelledby="updateBookingModalLabel" aria-hidden="true">
+<!-- Modal for Update Booking -->
+<div class="modal fade" id="updateBookingModal" tabindex="-1" aria-labelledby="updateBookingModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header border-0">
@@ -617,8 +629,7 @@ session_start();
         </form>
       </div>
     </div>
-  </div>
-
+</div>
 
 <!-- Row Click Selection JS -->
 <script>
@@ -649,7 +660,6 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 </script>
 
-
 <!-- JQuery Datapicker -->
 <script>
   document.addEventListener("scroll", function () {
@@ -665,7 +675,6 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 </script>
 
-
 <!-- DataTables #product-table -->
 <script>
 $(document).ready(function () {
@@ -676,16 +685,16 @@ $(document).ready(function () {
         },
         order: [[0, 'desc']],  // Default sorting by Transaction ID (descending)
         scrollX: false,
-        scrollY: '61.3vh',  // Set a fixed height for the table (adjust as necessary)
+        scrollY: '67.5vh',  // Set a fixed height for the table (adjust as necessary)
         paging: true,  // Enable pagination
-        pageLength: 10,  // Set the number of rows per page
+        pageLength: 11,  // Set the number of rows per page
         autoWidth: false,
         autoHeight: false,  // Prevent automatic height adjustment
 
         // Disable sorting for specific columns
         columnDefs: [
           {
-            targets: [1, 2, 3, 4, 5, 6, 7], // Disable sorting for 2nd and 4th columns
+            targets: [1, 2, 3,  5, 6,], // Disable sorting for 2nd and 4th columns
             orderable: false
           }
         ]
@@ -867,10 +876,6 @@ $(document).ready(function () {
 });
 </script>
 
-
-
-
-
 <script>
 function addGuestInfo(transactionNumber) {
   console.log("Transaction Number: ", transactionNumber); // Debug line (To Remove in Prod)
@@ -956,182 +961,89 @@ function showPaymentHistory(transactionNumber) {
 }
 </script>
 
-
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-  const updateBookingModal = document.getElementById('updateBookingModal');
-  updateBookingModal.addEventListener('show.bs.modal', function (event) 
+function addGuestInfo(transactionNumber) {
+  console.log("Transaction Number: ", transactionNumber); // Debug line (To Remove in Prod)
+  $.ajax(
   {
-    const button = event.relatedTarget; // Button that triggered the modal
-    const transactionId = button.getAttribute('data-transaction-id'); // Fetch transaction ID
-
-    // Populate the hidden input field with the transaction ID
-    document.querySelector('#updateBookingForm input[name="transaction_number"]').value = transactionId;
-
-    // Display the transaction ID in the modal
-    document.getElementById('transactionId').textContent = transactionId;
-
-    // Fetch booking details based on the transaction ID
-    fetchBookingDetails(transactionId);
-  });
-});
-
-$(document).ready(function () {
-  $('#concern').on('change', function () {
-  var concernId = $(this).val();  // Get the selected concern ID
-  $('#requestDetails').html('<option selected disabled>Select Specific Detail</option>'); // Clear request details field
-  $('#price').val(''); // Clear request details field
-
-  // Debugging: Log the selected concernId
-  console.log("Selected concernId: ", concernId);
-
-  // Hide the additional details select container initially
-  $('#additionalSelectContainer').hide();
-
-  // Clear previous options
-  $('#additionalDetails').html('<option selected disabled>Select Additional Detail</option>');
-
-  if (concernId) 
-  {
-    // Debugging: Log the concernId being sent to the server
-    console.log("Sending concernId to server: ", concernId);
-
-    $.ajax(
+    url: '../Agent Section/functions/fetchTransactNo.php', // The PHP file that will handle the session setting
+    type: 'POST',
+    data: { transaction_number: transactionNumber },
+    success: function(response) 
     {
-      url: '../Agent Section/functions/fetchConcernDetails.php',  // Your server-side script to fetch additional details
-      type: 'POST',
-      data: { concernId: concernId },  // Send the concernId as a parameter
-      success: function (response) 
-      {
-        // Debugging: Log the raw response from the server
-        console.log("Server response: ", response);
-
-        // Parse the JSON response
-        try 
-        {
-          var data = JSON.parse(response);
-
-          // Debugging: Log the parsed data
-          console.log("Parsed response data: ", data);
-
-          // Show the additional select container once data is available
-          $('#additionalSelectContainer').show();
-
-          // Populate the additional details select dropdown
-          if (Array.isArray(data.detailsData)) {
-            data.detailsData.forEach(function (item) 
-            {
-              var option = $('<option>').val(item.id).text(item.title).data('price', item.price);  // Create an option element
-              $('#requestDetails').append(option);  // Append the option to the additionalDetails dropdown
-            });
-          } 
-          else 
-          {
-            console.error("Error: detailsData is not an array");
-          }
-        } catch (e) 
-        {
-          // Handle any JSON parsing errors
-          console.error("Error parsing JSON response: ", e);
-        }
-      },
-      error: function (xhr, status, error) 
-      {
-        // Debugging: Log any AJAX error
-        console.error("Error fetching additional details:", error);
-        console.log("AJAX error details: ", xhr, status);
-      }
-    });
-  } 
-  else 
-  {
-    // If no valid concern ID is selected, reset the additional details dropdown
-    $('#additionalSelectContainer').hide();
-    $('#additionalDetails').html('<option selected disabled>Select Additional Detail</option>');
-  }
-  });
-
-  $('#requestDetails').on('change', function () {
-  // Get the selected option's price
-  var selectedOption = $(this).find('option:selected');
-  var price = selectedOption.data('price');  // Retrieve the price from the selected option
-
-  // Update the price input field with the selected price
-  $('#price').val(price);  // Set the price value in the input field
-
-  // Perform the calculation with the 'pax' input
-  calculateTotalPrice();
-  });
-
-  $('#paxRequest').on('input', function () {
-  calculateTotalPrice();
-  });
-
-  function calculateTotalPrice() {
-    var price = parseFloat($('#price').val().replace(/,/g, '')) || 0; // Remove commas for calculation
-    var pax = parseInt($('#paxRequest').val()) || 0; // Get the pax, default to 0 if NaN
-
-    // Calculate the total price
-    var totalPrice = pax * price;
-
-    $('#displayTotalPrice').text(formatNumberWithCommas(totalPrice.toFixed(2))); // Update the input field with the calculated total price
-    // Update the price input field or display the total price wherever needed
-    $('#TotalPrice').val(totalPrice.toFixed(2)); // Update the input field with the calculated total price
-  } 
-});
-
-
-function fetchBookingDetails(transactionId) {
-  fetch('../Agent Section/functions/getBookingDetails.php', {
-    method: 'POST',
-    headers: 
-    {
-      'Content-Type': 'application/json',
+      console.log("Response: ", response); // Debug line (To Remove in Prod)
+      window.location.href = '../Agent Section/agent-addGuest.php'; // Redirect to your next page
     },
-    body: JSON.stringify({ transaction_id: transactionId }),
-  })
-
-  .then(response => response.json())
-  .then(data => 
-  {
-    if (data.success) 
+    error: function(xhr, status, error) 
     {
-      // Populate fields with the fetched data
-      document.getElementById('fName').value = data.booking.fName;
-      document.getElementById('lName').value = data.booking.lName;
-      document.getElementById('mName').value = data.booking.mName;
-      document.getElementById('suffix').value = data.booking.suffix;
-      document.getElementById('countryCode').value = data.booking.countryCode;
-      document.getElementById('contactNo').value = data.booking.contactNo;
-      document.getElementById('email').value = data.booking.email;
-      document.getElementById('pax').value = data.booking.pax;
-    } 
-    else 
-    {
-      console.error('Error fetching booking details:', data.message);
+      console.error("AJAX Error: " + status + " " + error); // Enhanced error logging
     }
-  })
-  .catch(error => 
-  {
-    console.error('Fetch error:', error);
   });
 }
 
-// document.getElementById('paxRequest').addEventListener('input', function() {
-//   validateMaxValue(this);
-// });
-
-function updateBooking() {
-  const form = document.getElementById('updateBookingForm');
-  const formData = new FormData(form);
-  // Implement AJAX call to update booking...
-  console.log("Updating booking with data:", formData);
+function showGuestInfo(transactionNumber) {
+  console.log("Transaction Number: ", transactionNumber); // Debug line
+  // Use AJAX to send the transaction number to the server
+  $.ajax(
+  {
+    url: '../Agent Section/functions/fetchTransactNo.php', // The PHP file that will handle the session setting
+    type: 'POST',
+    data: { transaction_number: transactionNumber },
+    success: function(response) 
+    {
+      console.log("Response: ", response); // Debug line
+      // Redirect to the next page after setting the session
+      window.location.href = '../Agent Section/agent-showGuest.php'; // Redirect to your next page
+    },
+    error: function(xhr, status, error) 
+    {
+      console.error("AJAX Error: " + status + " " + error); // Enhanced error logging
+    }
+  });
 }
 
-function formatNumberWithCommas(num) {
-  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+function showRequestHistory(transactionNumber)  {
+  console.log("Transaction Number: ", transactionNumber); // Debug line (To Remove in Prod)
+  // Use AJAX to send the transaction number to the server
+  $.ajax(
+  {
+    url: '../Agent Section/functions/fetchTransactNo.php', // The PHP file that will handle the session setting
+    type: 'POST',
+    data: { transaction_number: transactionNumber },
+    success: function(response) 
+    {
+      console.log("Response: ", response); // Debug line
+      // Redirect to the next page after setting the session
+      window.location.href = '../Agent Section/agent-showRequest.php'; // Redirect to your next page
+    },
+    error: function(xhr, status, error) 
+    {
+      console.error("AJAX Error: " + status + " " + error); // Enhanced error logging
+    }
+  });
 }
 
+
+function showPaymentHistory(transactionNumber) {
+  console.log("Transaction Number: ", transactionNumber); // Debug line (To Remove in Prod)
+  
+  $.ajax(
+  {
+    url: '../Agent Section/functions/fetchTransactNo.php', // The PHP file that will handle the session setting
+    type: 'POST',
+    data: { transaction_number: transactionNumber },
+    success: function(response) 
+    {
+      console.log("Response: ", response); // Debug line
+      // Redirect to the next page after setting the session
+      window.location.href = '../Agent Section/agent-showPayment.php'; // Redirect to your next page
+    },
+    error: function(xhr, status, error) 
+    {
+      console.error("AJAX Error: " + status + " " + error); // Enhanced error logging
+    }
+  });
+}
 </script>
 
 <?php require "../Agent Section/includes/scripts.php"; ?>

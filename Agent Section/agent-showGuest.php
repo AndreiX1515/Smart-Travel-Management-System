@@ -1,14 +1,15 @@
 <?php 
-session_start(); 
-require "../conn.php";
+  session_start();
+  require "../conn.php";
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+  ini_set('display_errors', 1);
+  ini_set('display_startup_errors', 1);
+  error_reporting(E_ALL); 
 ?>
 
 <!-- Session Variables -->
 <?php  
+<<<<<<< HEAD
 $accountId = $_SESSION['accountId'];
 $agentId = $_SESSION['agentId'];
 $agentCode = $_SESSION['agentCode'];
@@ -20,26 +21,43 @@ $mName = $_SESSION['mName'] ?? '';
 $branchId = $_SESSION['branchId'] ?? '';
 $email = $_SESSION['email'] ?? '';
 $password = $_SESSION['password'] ?? '';
+=======
+  $accountId = $_SESSION['agent_accountId'];
+  $agentId = $_SESSION['agent_agentId'];
+  $agentCode = $_SESSION['agent_agentCode'];
+  $agentRole = $_SESSION['agent_agentRole'];
+  $agentType = $_SESSION['agent_agentType'];
+  $fName =  $_SESSION['agent_fName'] ?? '';
+  $lName = $_SESSION['agent_lName'] ?? '';
+  $mName = $_SESSION['agent_mName'] ?? '';
+  $branchId = $_SESSION['agent_branchId'] ?? '';
+  $email = $_SESSION['email'] ?? '';
+  $password = $_SESSION['password'] ?? '';
+>>>>>>> dev6
 
-$sql1 = "Select * from branch where branchId= '$branchId'";
-$result1 = $conn->query($sql1);
+  $sql1 = "Select * from branch where branchId= '$branchId'";
+  $result1 = $conn->query($sql1);
 
-// Check if a result is returned
-if ($result1->num_rows > 0) {
-  // Fetch the branchName
-  $row = $result1->fetch_assoc();
-  $branchName = $row['branchName'];
-} else {
-  $branchName = "No Branch";
-}
+  // Check if a result is returned
+  if ($result1->num_rows > 0) {
+    // Fetch the branchName
+    $row = $result1->fetch_assoc();
+    $branchName = $row['branchName'];
+  } else {
+    $branchName = "No Branch";
+  }
 
-// Format the full name
-$fullName = htmlspecialchars($lName . ', ' . $fName . ($mName ? ' ' . substr($mName, 0, 1) . '.' : ''));
+  // Format the full name
+  $fullName = htmlspecialchars($lName . ', ' . $fName . ($mName ? ' ' . substr($mName, 0, 1) . '.' : ''));
 
-// Optional: hide password by default
-$maskedPassword = '••••••••••';
+  // Optional: hide password by default
+  $maskedPassword = '••••••••••';
+
+  // Current Date Variable 
+  date_default_timezone_set('Asia/Taipei');
+  $current_date = date('D, F d, Y');
+  
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -47,292 +65,242 @@ $maskedPassword = '••••••••••';
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Transactions</title>
+  <title>Dashboard</title>
 
-  <?php include '../Agent Section/includes/head.php'; ?>
+  <?php include "../Agent Section/includes/head.php"; ?>
+
   <link rel="stylesheet" href="../Agent Section/assets/css/agent-showguest.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="../Agent Section/assets/css/navbar-sidebar.css?v=<?php echo time(); ?>">
 </head>
-
 <body>
-<?php include '../Agent Section/includes/sidebar.php'; ?>
 
-<!-- Current Date Variable --> 
-<?php
-  date_default_timezone_set('Asia/Taipei');
-  $current_date = date('D, F d, Y');
-?>
+<div class="body-container">
+  <?php include "../Agent Section/includes/sidebar.php"; ?>
 
-<!-- Transact Number Session Variable -->
-<?php 
-  if (isset($_SESSION['transaction_number'])) {
-    $transactionNumber = $_SESSION['transaction_number'];
-  } 
+  <div class="main-content-container">
+    <div class="navbar">
+      <div class="backbutton-wrapper">
 
-  if (isset($_GET['id'])) {
-    $transactionNumber = htmlspecialchars($_GET['id']);
-  } 
-?>
+        <div class="back-button-wrapper">
+          <a href="../Agent Section/agent-transactions.php" class="back-button-link">
+              <i class="fa-solid fa-arrow-left"></i>
+          </a>
+        </div>
 
-<?php include '../Agent Section/includes/logoutViewPassModal.php'; ?>
+        <div class="page-name-wrapper">
+            <h5>Transaction No.: </h5>
+        </div>
 
-<div class="main-content" id="mainContent">
-  <header>      
-    <nav class="navbar navbar-expand-lg justify-content-between sticky-top">
-      <div class="container-fluid d-flex justify-content-between">
-          <div class="nav-start-container d-flex flex-row">
-            <button class="back-button" onclick="window.location.href='../Agent Section/agent-transactions.php';">
-              <i class="fas fa-arrow-left"></i>
-            </button>
+      </div>
+    </div>
 
-            <h6>Transaction: <span><?php echo $transactionNumber; ?> </span></h6>
-          </div>
+    
 
-          <div class="nav-end-container d-flex flex-row align">
-            <div class="date-time-container d-flex flex-row align-items-center">
-              <h6><?php echo $current_date; ?></h6>
-            </div>
+    <!-- Transact Number Session Variable -->
+    <?php 
+      if (isset($_SESSION['transaction_number'])) {
+        $transactionNumber = $_SESSION['transaction_number'];
+      } 
 
-            <div class="vertical-line-navbar"></div>
+      if (isset($_GET['id'])) {
+        $transactionNumber = htmlspecialchars($_GET['id']);
+      } 
+    ?>
 
-            <div class="collapse navbar-collapse" id="navbarNav">
-              <ul class="navbar-nav ms-auto">
-                <li class="nav-item dropdown d-flex align-items-center">
-                  <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <div class="profile-container ms-2 me-3">
-                      <h6 class="mb-1"><?php echo $fullName; ?></h6>
-                      <span class="m-0">Branch: <?php echo $branchName; ?></span>
-                      <span class="m-0">Agent ID: <?php echo $agentId; ?></span>
+    <?php
+        $query1 = "SELECT booking.*, package.packageName, flight.flightDepartureDate 
+                  FROM booking 
+                  JOIN package ON booking.packageId = package.packageId
+                  LEFT JOIN flight ON booking.flightId = flight.flightId
+                  WHERE transactNo = '$transactionNumber'";
+
+        $result1 = $conn->query($query1);
+
+        if ($result1->num_rows > 0) {
+        // Output data of each row
+        while ($row1 = $result1->fetch_assoc()) {
+          $transactNum = $row1['transactNo'];
+          $fName = $row1['fName'];
+          $mName = $row1['mName'];
+          $lName = $row1['lName'];
+          $suffix = $row1['suffix'];
+          $countryCode = $row1['countryCode'];
+          $contact = $row1['contactNo'];
+          $email = $row1['email'];
+          $packageName = $row1['packageName'];
+          $flightDate = $row1['flightDepartureDate'];
+          $pax = $row1['pax'];
+          $status = $row1['status'];
+          $price = $row1['totalPrice'];
+          $flightId = $row1['flightId']; // Fetch flightId
+
+          // Construct the full name using the conditions for middle name and suffix
+          $fullName = $lName . ", " . $fName . " " . 
+                      ($suffix !== 'N/A' ? $suffix . " " : "") .  // Add space after suffix only if it's not 'N/A'
+                      ($mName !== 'N/A' ? substr($mName, 0, 1) . ". " : "");  // Add middle initial with dot only if it's not 'N/A'
+          $contactNo = $countryCode . $contact;
+
+          // Check if flightId is NULL and set flightDate accordingly
+          if (is_null($flightId)) 
+          {
+            $flightDate = "Land Package Only";
+          }
+
+          $status = isset($row1['status']) ? $row1['status'] : 'Unknown';
+
+          // Initialize an empty class string
+          $statusClass = '';
+
+          // Assign classes based on the status value using switch
+          switch ($status) 
+          {
+            case 'Confirmed':
+                $statusClass = 'bg-success text-white'; // Green background, white text
+                break;
+            case 'Cancelled':
+                $statusClass = 'bg-danger text-white'; // Red background, white text
+                break;
+            case 'Pending':
+                $statusClass = 'bg-warning text-dark'; // Yellow background, dark text
+                break;
+            default:
+                $statusClass = 'bg-secondary text-white'; // Gray background, white text
+                break;
+          }
+      ?>
+
+    <div class="main-content">
+      <div class="show-guest-wrapper">
+        <div class="header">
+          <div class="transaction-info">
+              <div class="transaction-header">
+                <h5 class="">Transaction Information: </h5>
+              </div>
+            
+              <div class="transaction-info-body">
+                  <div class="row">
+                    <div class="col-md-5 columns">
+                      <div class="info-item">
+                        <p><strong>Transaction No:</strong> <?php echo htmlspecialchars($transactNum); ?></p>
+                      </div>
+
+                      <div class="info-item">
+                        <p><strong>Total Pax:</strong> <?php echo htmlspecialchars($pax); ?></p>
+                      </div>
+
+                      <div class="info-item">
+                        <p><strong>Package:</strong> <?php echo htmlspecialchars($packageName); ?></p>
+                      </div>
+
+                      <div class="info-item">
+                        <p><strong>Flight Date:</strong> <?php echo htmlspecialchars($flightDate); ?></p>
+                      </div>
+
+                      <div class="info-item">
+                        <p><strong>Status:</strong> <span class="badge rounded-pill <?php echo $statusClass; ?>"> 
+                        <?php echo htmlspecialchars($status); ?> </span> </p>
+                      </div>
                     </div>
-                    <img src="../assets/images/circle.png" alt="Profile" class="profile-image me-2" width="40px" height="40px">
-                  </a>
+                
+                    <div class="col-md-7 columns">
+                      <div class="info-item">
+                        <p><strong>Contact Person:</strong> <?php echo htmlspecialchars($fullName); ?></p>
+                      </div>
 
-                  <ul class="dropdown-menu dropdown-menu-end mt-3" aria-labelledby="navbarDropdown">
-                    <li>
-                      <a class="dropdown-item" href="#" style="font-size: 14px;" data-bs-toggle="modal" data-bs-target="#viewPasswordModal">
-                        <i class="fas fa-user me-2"></i> View Password
-                      </a>
-                    </li>
-                    <li>
-                      <hr class="dropdown-divider">
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal" style="font-size: 14px;">
-                        <i class="fas fa-sign-out-alt me-2"></i> Logout
-                      </a>
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-            </div>                 
+                      <div class="info-item">
+                        <p><strong>Contact No:</strong> <?php echo htmlspecialchars($contactNo); ?></p>
+                      </div>
+
+                      <div class="info-item-email">
+                        <p><strong>Email:</strong> <?php echo htmlspecialchars($email); ?></p>
+                      </div>
+
+                      <div class="info-item">
+                        <p><strong>Price: ₱ <?php echo number_format((float)$price, 2); ?></strong></p>
+                      </div>
+                    </div>
+
+                    <?php
+                      }
+
+                      } else {
+                        echo "0 results";
+                      }
+                    ?>
+
+                  </div> 
+              </div>
+
+              <div class="transaction-info-footer">
+                  <button class="cancel-btn" data-toggle="modal" data-target="#cancelTransactionModal">
+                    Cancel Transaction
+                  </button>
+                  <button class="payment-btn" data-toggle="modal" data-target="#paymentModal<?= $transactNum ?>" 
+                    data-transact-no="<?= $transactNum ?>" data-account-id="<?= $accountId ?>">
+                    Add Payment
+                  </button>
+                  <button class="request-btn" data-toggle="modal" data-target="#requestModal" 
+                    data-transaction-id="<?= $transactionNumber ?>">
+                    Add Request
+                  </button>
+              </div>
+          </div>
+          
+          <div class="table-wrapper">
+            <!-- <div class="transaction-header">
+              <h5 class="">Guest Information: </h5>
+            </div> -->
+              
+            <div class="transaction-info-body">
+              
+            </div>
+
+            <div class="transaction-info-footer">
+              
+            </div>
+          </div>
+        </div>
+
+        <div class="pills-tab-container">
+          <ul class="nav nav-pills" id="pills-tab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Guest Information</button>
+            </li>
+
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="pills-visa-tab" data-bs-toggle="pill" data-bs-target="#pills-visa" type="button" role="tab" aria-controls="pills-visa" aria-selected="false">Visa Requirements</button>
+            </li>
+
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Request History</button>
+            </li>
+
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Payment History</button>
+            </li>
+          </ul>
+        </div>
+
+        <div class="transaction-body">
+          <div class="body-tab-container">
+            <div class="tab-content" id="pills-tabContent">
+              <!-- Guest Table -->
+              <?php include 'agent-guestTable.php'; ?>
+              <?php include 'agent-showVisa.php'; ?>
+              <?php include 'agent-requestTable.php'; ?>
+              <?php include 'agent-paymentTable.php'; ?>
+              
+              <?php 
+              // include 'agent-flightTable.php'; 
+              ?>   
+            </div>
           </div>
 
-      </div>
-    </nav>
-  </header>
-
-  <?php if(isset($_SESSION['status'])): ?>
-    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-      <strong>Hey!</strong> <?= $_SESSION['status']; ?>
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-
-  <?php 
-  unset($_SESSION['status']);
-  endif;
-  ?>
-
-  <?php
-    $query1 = "SELECT booking.*, package.packageName, flight.flightDepartureDate 
-              FROM booking 
-              JOIN package ON booking.packageId = package.packageId
-              LEFT JOIN flight ON booking.flightId = flight.flightId
-              WHERE transactNo = '$transactionNumber'";
-
-    $result1 = $conn->query($query1);
-
-    if ($result1->num_rows > 0) {
-    // Output data of each row
-    while ($row1 = $result1->fetch_assoc()) {
-      $transactNum = $row1['transactNo'];
-      $fName = $row1['fName'];
-      $mName = $row1['mName'];
-      $lName = $row1['lName'];
-      $suffix = $row1['suffix'];
-      $countryCode = $row1['countryCode'];
-      $contact = $row1['contactNo'];
-      $email = $row1['email'];
-      $packageName = $row1['packageName'];
-      $flightDate = $row1['flightDepartureDate'];
-      $pax = $row1['pax'];
-      $status = $row1['status'];
-      $price = $row1['totalPrice'];
-      $flightId = $row1['flightId']; // Fetch flightId
-
-      // Construct the full name using the conditions for middle name and suffix
-      $fullName = $lName . ", " . $fName . " " . 
-                  ($suffix !== 'N/A' ? $suffix . " " : "") .  // Add space after suffix only if it's not 'N/A'
-                  ($mName !== 'N/A' ? substr($mName, 0, 1) . ". " : "");  // Add middle initial with dot only if it's not 'N/A'
-      $contactNo = $countryCode . $contact;
-
-      // Check if flightId is NULL and set flightDate accordingly
-      if (is_null($flightId)) 
-      {
-        $flightDate = "Land Package Only";
-      }
-
-      $status = isset($row1['status']) ? $row1['status'] : 'Unknown';
-
-      // Initialize an empty class string
-      $statusClass = '';
-
-      // Assign classes based on the status value using switch
-      switch ($status) 
-      {
-        case 'Confirmed':
-            $statusClass = 'bg-success text-white'; // Green background, white text
-            break;
-        case 'Cancelled':
-            $statusClass = 'bg-danger text-white'; // Red background, white text
-            break;
-        case 'Pending':
-            $statusClass = 'bg-warning text-dark'; // Yellow background, dark text
-            break;
-        default:
-            $statusClass = 'bg-secondary text-white'; // Gray background, white text
-            break;
-      }
-  ?>
-
-  <div class="content-wrapper">
-    <div class="header">
-      <div class="transaction-info">
-        <div class="transaction-header">
-          <h5 class="">Transaction Information: </h5>
         </div>
-        
-        <div class="transaction-info-body">
-          <div class="row">
-            <div class="col-md-5 columns">
-              <div class="info-item">
-                <p><strong>Transaction No:</strong> <?php echo htmlspecialchars($transactNum); ?></p>
-              </div>
-
-              <div class="info-item">
-                <p><strong>Total Pax:</strong> <?php echo htmlspecialchars($pax); ?></p>
-              </div>
-
-              <div class="info-item">
-                <p><strong>Package:</strong> <?php echo htmlspecialchars($packageName); ?></p>
-              </div>
-
-              <div class="info-item">
-                <p><strong>Flight Date:</strong> <?php echo htmlspecialchars($flightDate); ?></p>
-              </div>
-
-              <div class="info-item">
-                <p><strong>Status:</strong> <span class="badge rounded-pill <?php echo $statusClass; ?>"> 
-                <?php echo htmlspecialchars($status); ?> </span> </p>
-              </div>
-            </div>
-         
-
-
-            <div class="col-md-7 columns">
-              <div class="info-item">
-                <p><strong>Contact Person:</strong> <?php echo htmlspecialchars($fullName); ?></p>
-              </div>
-
-              <div class="info-item">
-                <p><strong>Contact No:</strong> <?php echo htmlspecialchars($contactNo); ?></p>
-              </div>
-
-              <div class="info-item-email">
-                <p><strong>Email:</strong> <?php echo htmlspecialchars($email); ?></p>
-              </div>
-
-              <div class="info-item">
-                <p><strong>Price: ₱ <?php echo number_format((float)$price, 2); ?></strong></p>
-              </div>
-            </div>
-
-            <?php
-              }
-
-              } else {
-                echo "0 results";
-              }
-            ?>
-          </div> 
-        </div>
-
-        <div class="transaction-info-footer">
-          <button class="cancel-btn" data-toggle="modal" data-target="#cancelTransactionModal">
-            Cancel Transaction
-          </button>
-          <button class="payment-btn" data-toggle="modal" data-target="#paymentModal<?= $transactNum ?>" 
-            data-transact-no="<?= $transactNum ?>" data-account-id="<?= $accountId ?>">
-            Add Payment
-          </button>
-          <button class="request-btn" data-toggle="modal" data-target="#requestModal" 
-            data-transaction-id="<?= $transactionNumber ?>">
-            Add Request
-          </button>
-        </div>
-      </div>
+     </div>
       
-      <div class="table-wrapper">
-        <div class="transaction-header">
-          <h5 class="">Guest Information: </h5>
-        </div>
-          
-        <div class="transaction-info-body">
-          
-        </div>
-
-        <div class="transaction-info-footer">
-          
-        </div>
-      </div>
-    </div>
-
-    <div class="transaction-body">
-      <div class="pills-tab-container">
-        <ul class="nav nav-pills" id="pills-tab" role="tablist">
-          <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Guest Information</button>
-          </li>
-
-          <li class="nav-item" role="presentation">
-            <button class="nav-link" id="pills-visa-tab" data-bs-toggle="pill" data-bs-target="#pills-visa" type="button" role="tab" aria-controls="pills-visa" aria-selected="false">Visa Requirements</button>
-          </li>
-
-          <li class="nav-item" role="presentation">
-            <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Request History</button>
-          </li>
-
-          <li class="nav-item" role="presentation">
-            <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Payment History</button>
-          </li>
-        </ul>
-      </div>
-
-      
-      <div class="body-tab-container">
-        <div class="tab-content" id="pills-tabContent">
-          <!-- Guest Table -->
-          <?php include 'agent-guestTable.php'; ?>
-          <?php include 'agent-showVisa.php'; ?>
-          <?php include 'agent-requestTable.php'; ?>
-          <?php include 'agent-paymentTable.php'; ?>
-          
-          <?php 
-          // include 'agent-flightTable.php'; 
-          ?>   
-        </div>
-      </div>
-    </div>
-
+     
+   </div>
   </div>
 </div>
 
@@ -371,8 +339,7 @@ $maskedPassword = '••••••••••';
 </div>
 
 
-
 <?php require "../Agent Section/includes/scripts.php"; ?>
 
- </body>
+  </body>
 </html>

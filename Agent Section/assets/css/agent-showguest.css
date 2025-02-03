@@ -1,21 +1,10 @@
-body {
-  background-color: transparent;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
- }
- 
- /* Main content wrapper */
- .content-wrapper {
-  height: 35vh;
-  width: 95%;
-  margin: 0px 40px 0px 15px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  background-color: transparent;
-  box-sizing: border-box;
+
+ .show-guest-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    /* border: 1px solid black; */
+    height: 90vh;
  }
 
  .header {
@@ -72,15 +61,16 @@ body {
   /* border: 1px solid black; */
   display: flex;
   justify-content: space-between;
-  align-items: last baseline;
+  align-items: first baseline;
   padding: 0px 10px;
+  border-bottom: 1px solid gainsboro;
 }
 
 .transaction-info-body {
   width: 100%;
   height: 75vh;
   /* border: 1px solid black; */
-  padding: 5px 15px 5px 15px;
+  padding: 20px 10px 10px 10px;
 }
 
 .transaction-info-body .row {
@@ -107,13 +97,13 @@ body {
 
 
 
-
-
 .transaction-info-footer {
   display: flex;
   justify-content: end;
   height: 10vh;
+  padding: 5px 0px;
   /* border: 1px solid black; */
+  /* border-top: 1px solid gainsboro; */
   display: flex;
   gap: 10px;
   justify-content: end;
@@ -199,12 +189,12 @@ body {
 
 .transaction-body {
   width: 100%;
-  height: 70vh;
-  border: 1px solid #e0e0e0; /* Light, soft border color for a minimalist look */
+  height: 54vh;
+  border: 1px solid gainsboro; /* Light, soft border color for a minimalist look */
   border-radius: 8px; /* Rounded corners for a modern, clean look */
   background-color: #ffffff; /* Flat white background */
   box-shadow: none; /* Removing any shadow for a flatter appearance */
-  padding: 15px 10px; /* Padding for internal spacing */
+  /* padding: 15px 10px; */
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -213,22 +203,67 @@ body {
 
 .tab-content {
   width: 100%;
-  height: 50vh;
+  height: 53vh;
+  padding: 10px;
+  /* border: 1px solid black; */
 }
 
 
 .pills-tab-container {
   width: 100%;
+}
+
+.pills-tab-container .nav-pills {
+  display: flex;
+  gap: 10px; /* 10px gap between each tab */
+}
+
+.pills-tab-container .nav-item .nav-link {
+  background-color: #007bff; /* Flat blue color for active tab */
+  color: white;
+  border: none; /* Remove border */
+  border-radius: 15px; /* Smaller rounded edges */
+  padding: 8px 15px; /* Reduced padding for smaller tabs */
+  font-size: 0.87em; /* Slightly smaller font size */
+  font-weight: 500;
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition */
+}
+
+.pills-tab-container .nav-item .nav-link.active {
+  background-color: #0056b3; /* Darker blue for active tab */
+}
+
+.pills-tab-container .nav-item .nav-link:not(.active) {
+  background-color: transparent; /* Transparent background for inactive */
+  color: #6c757d; /* Grey color for inactive */
+  border: 1px solid #ccc; /* Grey border for inactive tabs */
+  border-radius: 15px; /* Smaller rounded border */
+}
+
+.pills-tab-container .nav-item .nav-link:hover {
+  background-color: #0069d9; /* Slightly lighter blue on hover */
+}
+
+.pills-tab-container .nav-item .nav-link:focus {
+  box-shadow: none; /* Remove focus shadow */
+}
+
+
+
+
+.tabs-wrapper {
+  display: flex;
+  flex-direction: column;
   /* border: 1px solid black; */
 }
 
-.body-tab-container {
-  width: 100%;
+.tabs-wrapper .table-header {
+  display: flex;
+  justify-content: end;
+  gap: 10px;
   /* border: 1px solid black; */
-
+  padding: 8px 0px;
 }
-
-
 
 
 
@@ -337,18 +372,17 @@ body {
  .table-container {
   display: flex;
   flex-direction: column;
-  height: 100%;
-  flex: 1;
+  height: 90%;
   overflow-y: auto;
   box-sizing: border-box;
+  /* border: 1px solid black */
  }
 
- 
- .table-actions {
+.table-actions {
   display: flex;
   justify-content: space-between;
   margin-bottom: 5px;
- }
+}
  
  .show-column span{
   color: black;
@@ -363,9 +397,6 @@ body {
  }
  
 
-
-
- 
 /* Table styling */
 .product-table {
  width: 100%;
@@ -374,29 +405,43 @@ body {
  overflow-x: auto; /* Enable horizontal scrolling if content overflows */
 }
 
-/* Table header and data cell styling */
-.product-table th,
-.product-table td {
- padding: 10px 12px; /* Reduced padding for a smaller row height */
- text-align: left;
- border-bottom: 1px solid #ddd;
- font-size: .93em;
- white-space: nowrap; /* Prevent word wrapping */
- overflow: hidden; /* Ensure content does not overflow */
- text-overflow: ellipsis; /* Add ellipsis for long content */
+/* Header Styling */
+.product-table th {
+  position: sticky; /* Keep header fixed during scrolling */
+  top: 0;
+  z-index: 1; /* Ensure header stays on top of content */
+  background-color: #e6e6e6; /* Light background for headers */
+  font-weight: bold;
+  text-align: left;
+  border: 1px solid #ddd; /* Add side and bottom borders */
+  font-size: 0.8em; /* Compact font size */
+  white-space: nowrap; /* Prevent text wrapping */
+  text-transform: uppercase; /* Uppercase text for headers */
+  padding: 10px 12px;
 }
 
-/* Table header background color */
-.product-table th {
- background-color: #f8f9fa;
- white-space: nowrap; /* Prevent text wrapping in table headers */
- font-size: .85em;
+
+/* Table Cell Styling */
+.product-table td {
+  padding: 15px 12px; /* Smaller padding for compact layout */
+  text-align: left; /* Align text to the left */
+  vertical-align: middle; /* Center-align content vertically */
+  border-bottom: 1px solid #ddd; /* Subtle border for row separation */
+  font-size: 0.9em; /* Compact font size */
+  white-space: nowrap; /* Prevent text wrapping */
+  overflow: hidden; /* Hide overflowing content */
+  text-overflow: ellipsis; /* Add ellipsis for truncated content */
 }
 
 /* Hover effect for table rows */
+.product-table tr {
+  transition: background-color 0.3s, color 0.3s;
+}
+
 .product-table tr:hover {
- background-color: #f2f2f2; /* Light grey background on hover */
- cursor: pointer; /* Indicate clickable rows */
+  background-color: #f2f2f2; /* Subtle hover effect */
+  color: #000; /* Ensure hover text color contrast */
+  cursor: pointer;
 }
 
 /* Custom scrollbar styling */

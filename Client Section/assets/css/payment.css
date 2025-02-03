@@ -65,7 +65,7 @@
 .billing-card.active {
     border-color: #116530; /* Active state border color */
     background-color: #ffffff; /* Light gray background on hover */
-    transform: scale(1.10); /* Slightly enlarge the card */
+    transform: scale(1.10); /* Slightly enlarge the card */  
 }
 
 .billing-card:hover {

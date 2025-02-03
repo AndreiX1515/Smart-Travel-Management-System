@@ -321,8 +321,9 @@ body {
  height: 100vh;
  position: relative; /* Ensure navbar is inside this container */
  background-color: rgba(245, 246, 248, 0.137);
+ /* border: 1px solid #ccc; */
 }
 
 .main-content  {
-   padding: 5px 20px 20px 20px;
+   padding: 5px 10px 5px 10px;
 }

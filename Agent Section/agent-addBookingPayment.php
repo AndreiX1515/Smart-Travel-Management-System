@@ -1,44 +1,55 @@
-
-<?php session_start(); ?>
+<?php 
+session_start(); 
+?>
 <!DOCTYPE html>
 <html lang="en">
- <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Booking Payment - Agent</title>
 
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booking Payment</title>
+
+  <?php include "../Agent Section/includes/head.php"; ?>
+
+  
+  <link rel="stylesheet" href="../Agent Section/assets/css/agent-transaction.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="../Agent Section/assets/css/agent-payment.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="../Agent Section/assets/css/navbar-sidebar.css?v=<?php echo time(); ?>">
+</head>
+<body>
+
+<div class="body-container">
+  <?php include "../Agent Section/includes/sidebar.php"; ?>
+
+  <div class="main-content-container">
+    <div class="navbar">
+      <div class="backbutton-wrapper">
+        <div class="back-button-wrapper">
+          <a href="../Agent Section/agent-transactions.php" class="back-button-link">
+              <i class="fa-solid fa-arrow-left"></i>
+          </a>
+        </div>
+
+        <div class="page-name-wrapper">
+            <h5>Transaction</h5>
+        </div>
+
+      </div>
+    </div>
+
+    <?php
+      // Check if 'id' is passed in the URL
+      if (isset($_GET['id'])) 
+      {
+        $transactionNumber = htmlspecialchars($_GET['id']);
+      }
+    ?>
+
+    <div class="main-content">
+      <div class="container-body">
     
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-    <link rel="stylesheet" href="../Agent Section/assets/css/navbar-sidebar.css?v=<?php echo time(); ?>">
-    <link rel="stylesheet" href="../Agent Section/assets/css/agent-transaction.css?v=<?php echo time(); ?>">
-    <link rel="stylesheet" href="../Agent Section/assets/css/agent-payment.css?v=<?php echo time(); ?>">
- </head>
- 
-  <body>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <?php include '../Agent Section/includes/sidebar.php' ?>
-
-    <div class="main-content" id="mainContent">
-      <?php include '../Agent Section/includes/navbar.php' ?>
-
-      <?php
-        // Check if 'id' is passed in the URL
-        if (isset($_GET['id'])) 
-        {
-          $transactionNumber = htmlspecialchars($_GET['id']);
-        }
-      ?>
-
-      <div class="container">
-       
-        <a href="agent-addbooking.php" class="back-button">
-          <i class="fas fa-arrow-left"></i>
-        </a>
-
         <div class="subscription">
           <h3 class="ms-3">Payment Details</h3>
-
           <div class="section section-1 px-3">
             <div class="header-container d-flex flex-row justify-content-between mb-2">
               <h4>Choose Payment Method</h4>
@@ -85,7 +96,7 @@
             </div>
           </div>
         </div>
-         
+          
         <div class="order-summary">
           <?php
             $packageName = "N/A"; 
@@ -178,6 +189,7 @@
             </div>
           </div>
           
+<<<<<<< HEAD
           <form action="../Agent Section/functions/agent-addBookingPayment-code.php" method="POST" enctype="multipart/form-data">
             <hr>
             <input type="hidden" value="<?php echo $_SESSION['accountId']; ?>" name="agentAccountId">
@@ -186,28 +198,41 @@
             <h6 class="mt-4">Attach Proof/Screenshot of transaction:</h6>
             <input type="file" id="attachment" class="attachment" name="proofs[]" accept="image/*" required>
             <hr>
+=======
+            <form action="../Agent Section/functions/agent-addBookingPayment-code.php" method="POST" enctype="multipart/form-data">
+              <hr>
+              <input type="hidden" value="<?php echo $_SESSION['agent_accountId']; ?>" name="agentAccountId">
+              <input type="hidden" value="<?php echo $transactionNumber; ?>" name="transactNo">
+              <input type="number" class="form-control" name="downpayment" step="0.01" min="<?php echo $downpayment; ?>" max="<?php echo $totalPrice; ?>" placeholder="Enter Downpayment Amount" required>
+              <h6 class="mt-4">Attach Proof/Screenshot of transaction:</h6>
+              <input type="file" id="attachment" class="attachment" name="proofs[]" accept="image/*" required>
+              <hr>
+>>>>>>> dev6
 
-            <div class="row mt-4">
-              <div class="col-sm">
-                <div class="d-flex align-items-left mb-3"> <!-- Align items center for checkbox -->
-                  <input type="checkbox" class="ms-1 me-3"> <!-- Added margin to the checkbox -->
-                  <div class="checkbox-text">
-                    <span>
-                      By clicking this, I agree to Smart Travel <a href="#" class="terms-link">Terms & Conditions</a> and 
-                      <a href="#" class="privacy-link">Privacy Policy</a>
-                    </span>
+              <div class="row mt-4">
+                <div class="col-sm">
+                  <div class="d-flex align-items-left mb-3"> <!-- Align items center for checkbox -->
+                    <input type="checkbox" class="ms-1 me-3"> <!-- Added margin to the checkbox -->
+                    <div class="checkbox-text">
+                      <span>
+                        By clicking this, I agree to Smart Travel <a href="#" class="terms-link">Terms & Conditions</a> and 
+                        <a href="#" class="privacy-link">Privacy Policy</a>
+                      </span>
+                    </div>
                   </div>
+                  <button type="submit" class="pay-button" name="pay">Pay Now</button>
                 </div>
-                <button type="submit" class="pay-button" name="pay">Pay Now</button>
               </div>
-            </div>
-          </form>
+            </form>
         </div>
-      </div> 
+      
+      </div>
     </div>
+  </div>
+</div>
 
-    <?php require "../Agent Section/includes/scripts.php"; ?>
+
+<?php require "../Agent Section/includes/scripts.php"; ?>
 
   </body>
-
 </html>
