@@ -51,6 +51,34 @@
               </div>
             </div>
 
+            <div class="columns col-md-3">
+              <div class="table-filters-container">
+                <label for="flight-filter ">Select Flight Date:</label>
+                <select id="flight-filter" name="flight-filter" class="form-control">
+                  <option selected disabled>Select Flight Date</option>
+                  <?php
+                    // Execute the SQL query
+                    $sql1 = "SELECT flightId, DATE_FORMAT(flightDepartureDate, '%M %d, %Y') AS formattedDepartureDate FROM flight";
+                    $res1 = $conn->query($sql1);
+
+                    // Check if there are results
+                    if ($res1->num_rows > 0) 
+                    {
+                      // Loop through the results and generate options
+                      while ($row = $res1->fetch_assoc()) 
+                      {
+                        echo "<option value='" . $row['flightId'] . "'>" . $row['formattedDepartureDate'] . "</option>";
+                      }
+                    } 
+                    else 
+                    {
+                      echo "<option value=''>No flights available</option>";
+                    }
+                  ?>
+                </select>
+              </div>
+            </div>
+
             <div class="columns col-md-2">
               <div class="table-filters-container">
                 <label for="month-filter">Month</label>
