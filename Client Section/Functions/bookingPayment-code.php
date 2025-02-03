@@ -127,15 +127,28 @@ if (isset($_POST['pay']))
         $result = $stmt->get_result();
 
         if ($row = $result->fetch_assoc()) {
-            // Store agent details in the session
-            $_SESSION['agentId'] = $row['agentId'];
-            $_SESSION['agentType'] = $row['agentType'];
-            $_SESSION['agentCode'] = $row['agentCode'];
-            $_SESSION['agentRole'] = $row['agentRole'];
-            $_SESSION['branchId'] = $row['branchId'];
-            $_SESSION['branchName'] = $row['branchName'];
-            // $agentType = $_SESSION['agentType'];
-        }
+          // Check if all the required data has values
+          if (!empty($row['agentId']) && !empty($row['agentType']) && !empty($row['agentCode']) && 
+              !empty($row['agentRole']) && !empty($row['branchId']) && !empty($row['branchName'])) {
+      
+              // Store agent details in the session
+              $_SESSION['agentId'] = $row['agentId'];
+              $_SESSION['agentType'] = $row['agentType'];
+              $_SESSION['agentCode'] = $row['agentCode'];
+              $_SESSION['agentRole'] = $row['agentRole'];
+              $_SESSION['branchId'] = $row['branchId'];
+              $_SESSION['branchName'] = $row['branchName'];
+              
+              // You can add debugging or logging here to ensure session data is stored
+              // error_log("Session data stored successfully: " . print_r($_SESSION, true));
+              
+          } else {
+              // If any required data is missing, handle the error
+              echo json_encode(["status" => "error", "message" => "Missing required agent data."]);
+              exit; // Stop further execution if required data is missing
+          }
+      }
+      
 
         // Close the statement
         $stmt->close();

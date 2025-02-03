@@ -21,6 +21,15 @@ require "../conn.php";
 <div class="body-container">
   <?php include "../Agent Section/includes/sidebar copy.php"; ?>
 
+  <?php 
+    if (!isset($_SESSION['accountId'])) {
+      // If accountId is not set, redirect to agentLogin.php
+      header("Location: agentLogin.php");
+      exit; // Ensure no further code is executed after the redirect
+  }
+  
+  ?>
+
   <div class="main-content-container">
     <div class="navbar">
       <h5 class="title-page">Transaction - Packages</h5>
@@ -168,6 +177,8 @@ require "../conn.php";
                         $agentRole = $_SESSION['agentRole'];
                         $agentCode = $_SESSION['agentCode'];
                         $accountId = $_SESSION['accountId'];
+
+
                         if ($agentRole != 'Head Agent')
                         {
                           $sql1 = "SELECT b.transactNo AS `T.N`, p.packageName AS `PACKAGE`,
@@ -327,7 +338,6 @@ require "../conn.php";
                           $res1->free();
                         }
 
-
                         $conn->close();
                       ?>
                     </tbody>
@@ -338,6 +348,7 @@ require "../conn.php";
                 <!-- Custom Pagination Container -->
                 <div class="table-footer">
                   <div class="pagination-controls">
+                    <input type="text" value=<?php echo $agentCode; ?> id="agentCode">
                     <button id="prevPage" class="pagination-btn">Previous</button>
                     <span id="pageInfo" class="page-info">Page 1 of 10</span>
                     <button id="nextPage" class="pagination-btn">Next</button>

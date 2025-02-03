@@ -20,10 +20,20 @@ require "../conn.php";
 <div class="body-container">
   <?php include "../Agent Section/includes/sidebar copy.php"; ?>
 
+  <?php 
+    if (!isset($_SESSION['accountId'])) {
+      // If accountId is not set, redirect to agentLogin.php
+      header("Location: agentLogin.php");
+      exit; // Ensure no further code is executed after the redirect
+  }
+  
+  ?>
+
   <div class="main-content-container">
     <?php include "../Agent Section/includes/navbar copy 2.php"; ?>
 
     <div class="main-content">
+      <input type="text" value="<?php echo $agentCode; ?>" id="accountId">
       <div class="content-container">
         <!-- Cards First Row -->
         <div class="counts-wrapper">
