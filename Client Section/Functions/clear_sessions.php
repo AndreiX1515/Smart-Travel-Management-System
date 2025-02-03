@@ -44,10 +44,13 @@ $result = $stmt->get_result();
 if ($row = $result->fetch_assoc()) {
     // Store agent details in the session
     $_SESSION['agentId'] = $row['agentId'];
+    $_SESSION['agentType'] = $row['agentType'];
     $_SESSION['agentCode'] = $row['agentCode'];
     $_SESSION['agentRole'] = $row['agentRole'];
     $_SESSION['branchId'] = $row['branchId'];
     $_SESSION['branchName'] = $row['branchName'];
+
+    // $agentType = $_SESSION['agentType'];
 }
 
 // Close the statement
