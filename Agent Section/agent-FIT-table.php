@@ -211,7 +211,7 @@ session_start();
         // Use AJAX to send the transaction number to the server
         $.ajax(
         {
-          url: '../Agent Section/functions/fetchTransactNo.php', // The PHP file to handle the session setting
+          url: '../Agent Section/functions/fetchFITTransactNo.php', // The PHP file to handle the session setting
           type: 'POST',
           data: { transaction_number: transactionNumber },
           success: function(response) 
