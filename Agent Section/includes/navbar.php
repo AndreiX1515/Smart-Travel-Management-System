@@ -10,7 +10,6 @@
         document.getElementById('page-title').textContent = savedTitle;
     }
 
-<<<<<<< HEAD
   $accountId = $_SESSION['accountId'];
   
   $agentId = $_SESSION['agentId'];
@@ -104,7 +103,6 @@
 
 
 <?php include '../Agent Section/includes/logoutViewPassModal.php'; ?>
-=======
     const buttons = document.querySelectorAll('.page-button');
     buttons.forEach(button => {
         button.addEventListener('click', (event) => {
@@ -123,4 +121,3 @@
     });
   });
 </script>
->>>>>>> dev6
