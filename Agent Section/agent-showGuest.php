@@ -9,19 +9,6 @@
 
 <!-- Session Variables -->
 <?php  
-<<<<<<< HEAD
-  $accountId = $_SESSION['agent_accountId'];
-  $agentId = $_SESSION['agent_agentId'];
-  $agentCode = $_SESSION['agent_agentCode'];
-  $agentRole = $_SESSION['agent_agentRole'];
-  $agentType = $_SESSION['agent_agentType'];
-  $fName =  $_SESSION['agent_fName'] ?? '';
-  $lName = $_SESSION['agent_lName'] ?? '';
-  $mName = $_SESSION['agent_mName'] ?? '';
-  $branchId = $_SESSION['agent_branchId'] ?? '';
-  $email = $_SESSION['email'] ?? '';
-  $password = $_SESSION['password'] ?? '';
-=======
 $accountId = $_SESSION['accountId'];
 $agentId = $_SESSION['agentId'];
 $agentCode = $_SESSION['agentCode'];
@@ -33,7 +20,6 @@ $mName = $_SESSION['mName'] ?? '';
 $branchId = $_SESSION['branchId'] ?? '';
 $email = $_SESSION['email'] ?? '';
 $password = $_SESSION['password'] ?? '';
->>>>>>> dev5-backup3
 
   $sql1 = "Select * from branch where branchId= '$branchId'";
   $result1 = $conn->query($sql1);
