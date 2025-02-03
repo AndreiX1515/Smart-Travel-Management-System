@@ -172,11 +172,11 @@ require "../conn.php";
                 </div>
               </div>
 
-              <input type="hidden" id="agentCode" name="agentCode" value="<?php echo $_SESSION['agent_agentCode'];; ?>" placeholder="agentCode Input">
+              <input type="hidden" id="agentCode" name="agentCode" value="<?php echo $_SESSION['agentCode'];; ?>" placeholder="agentCode Input">
               <input type="hidden" id="flightId" name="flightId" value="" placeholder="Flight Id Input">
               <input type="hidden" id="packagePrice" name="packagePrice" placeholder="Package Price">
               <input type="hidden" name="flightPrice" id="flightPricee" placeholder="Flight Price">
-              <input type="hidden" name="agentId" id="agentId" value="<?php echo $_SESSION['agent_agentId']; ?>" placeholder="Agent Id">
+              <input type="hidden" name="agentId" id="agentId" value="<?php echo $_SESSION['agentId']; ?>" placeholder="Agent Id">
               
             </div>
 
