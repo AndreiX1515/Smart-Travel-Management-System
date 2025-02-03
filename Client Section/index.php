@@ -154,7 +154,7 @@
     <div class="d-flex flex-row gap-3">
 
 
-      <a href="<?php echo isset($_SESSION['accountId']) ? 'client-flightSched.php' : 'login.php'; ?>" class="cta-button">
+      <a href="<?php echo isset($_SESSION['accountId']) ?  'login.php' :  'client-flightSched.php'; ?>" class="cta-button">
         Book Now</a>
       <a href="#learn-more" class="cta-button-outline">Learn More</a>
     </div>
