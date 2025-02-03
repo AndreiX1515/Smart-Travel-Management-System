@@ -11,6 +11,7 @@ if (isset($_POST['pay']))
     $transactNo = $_POST['transactNo'];
     $accountId = $_SESSION['accountId'];
     $amount = $_POST['downpayment'];
+    $flightid = $_POST["flightid"] ?? '';
 
     // Set the timezone (replace 'Asia/Taipei' with your preferred timezone if needed)
     date_default_timezone_set('Asia/Taipei');
@@ -100,28 +101,18 @@ if (isset($_POST['pay']))
         $conn->commit();
         $_SESSION['status'] = "Payment and proof files uploaded successfully!";
 
-
-
-        // Fetch and sanitize input data
-        $email = $_POST["email"] ?? '';
-        $accountId = $_POST["accountId"] ?? '';
-        $flightid = $_POST["flightid"] ?? '';
+        $_SESSION['accountId'] = $accountId;
+        $_SESSION['flightid'] = $flightid;
 
         // Log data for debugging
-        error_log("Email: " . $email);
         error_log("Account ID: " . $accountId);
         error_log("Flight ID: " . $flightid);
 
         // Validate required fields
-        if (empty($email) || empty($accountId) || empty($flightid)) {
-            echo json_encode(["status" => "error", "message" => "Missing required fields"]);
+        if (empty($accountId)) {
+            echo json_encode(["status" => "error", "message" => "No Account ID Found"]);
             exit;
         }
-
-        // Update session variables
-        $_SESSION['email'] = $email;
-        $_SESSION['accountId'] = $accountId;
-        $_SESSION['flightid'] = $flightid;
 
         // Fetch agent and branch details if the user is an agent
         $stmt = $conn->prepare("

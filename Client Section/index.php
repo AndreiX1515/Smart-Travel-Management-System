@@ -154,7 +154,7 @@
     <div class="d-flex flex-row gap-3">
 
 
-      <a href="<?php echo isset($_SESSION['accountId']) ? 'client-bookingform.php' : 'login.php'; ?>" class="cta-button">
+      <a href="<?php echo isset($_SESSION['accountId']) ? 'client-flightSched.php' : 'login.php'; ?>" class="cta-button">
         Book Now</a>
       <a href="#learn-more" class="cta-button-outline">Learn More</a>
     </div>
@@ -162,90 +162,6 @@
   </div>
 </section>
 
-<section class="flight-schedules">
-  <div class="section-wrapper">
-    <div class="section-header">
-      <h3>Flight Schedules</h3>
-      <p>Check out our latest flight schedules and book your next adventure today!</p>
-    </div>
-
-    <div class="section-main-content">
-
-      <div class="confirm-table-container-flight">
-        <table class="info-table">
-          <thead class="border-2">
-            <tr>
-              <!-- <th rowspan="2"></th> -->
-              <th rowspan="2">ORIGIN</th>
-              <th colspan="2">FLIGHT DATE</th> <!-- Flight Date columns -->
-              <th rowspan="2">AVAILABLE SEATS</th>
-              <th rowspan="2">ADDITIONAL SEATS</th>
-              <th rowspan="2"> </th>
-
-            </tr>
-            <tr style="top: -8px">
-              <th>START</th>
-              <th>END</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php
-              $sql = "SELECT f.flightId AS flightid, f.origin, f.flightDepartureDate AS Start, f.returnDepartureDate AS End, 
-                        f.availSeats AS FlightSeat, GREATEST((f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' 
-                        AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0)), 0) AS AvailSeats, 
-                        IF((f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package' 
-                            THEN b.pax ELSE 0 END), 0)) < 0, ABS(f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' 
-                            AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0)), 0) AS AdditionalSeats, 
-                        SUM(CASE WHEN b.bookingType = 'Package' AND b.status = 'Confirmed' THEN b.pax ELSE 0 END) AS `Air+Land`,
-                        SUM(CASE WHEN b.bookingType = 'Land' AND b.status = 'Confirmed' THEN b.pax ELSE 0 END) AS `LandOnly`,
-                        f.wholesalePrice AS WholesalePrice, f.flightPrice AS RetailPrice, p.packagePrice AS LandArrangement
-                      FROM employee e 
-                      JOIN 
-                        flight f ON f.employeeId = e.employeeId
-                      LEFT JOIN 
-                        booking b ON b.flightId = f.flightId
-                      LEFT JOIN 
-                        package p ON f.packageId = p.packageId
-                      WHERE 
-                        f.flightDepartureDate >= CURDATE()
-                      GROUP BY 
-                        f.flightId, e.lName, e.fName, e.mName, f.origin, f.flightDepartureDate, f.returnDepartureDate, f.availSeats, 
-                        f.wholesalePrice, f.flightPrice, p.packagePrice
-                      ORDER BY 
-                        f.flightDepartureDate";
-
-              // Step 3: Execute the query
-              $result = $conn->query($sql);
-
-              // Step 4: Display the results in HTML table
-              if ($result->num_rows > 0) 
-              {
-                while ($row = $result->fetch_assoc()) 
-                {
-                  echo '<tr>';
-                  // echo '<td>' . $row['flightid'] . '</td>';
-                  echo '<td>' . $row['origin'] . '</td>';
-                  echo '<td>' . $row['Start'] . '</td>';
-                  echo '<td>' . $row['End'] . '</td>';
-                  echo '<td class="fw-bold">' . $row['AvailSeats'] . '</td>';
-                  echo '<td class="fw-bolder">' . $row['AdditionalSeats'] . '</td>';
-                  echo '<td><a href="../Client Section/login.php?flightid=' . $row['flightid'] . '" 
-                        class="btn btn-sm btn-success book-now" data-flightid="' . $row['flightid'] . '" id="book-now">Book Now</a></td>';
-
-                  echo '</tr>';
-                }
-              } 
-              else 
-              {
-                echo "No records found.";
-              }
-            ?>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</section>
 
 <section class="about">
     <div class="image-accent">

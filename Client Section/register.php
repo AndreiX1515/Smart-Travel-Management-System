@@ -1,6 +1,14 @@
 <?php
 	session_start();
 	require "../conn.php";
+
+
+    // Store flightid in session if it's passed via GET
+    if (isset($_GET['flightid'])) {
+        $_SESSION['flightid'] = $_GET['flightid'];
+    }
+
+
 ?>
 
 <!DOCTYPE html>
@@ -579,10 +587,13 @@
 				$('#successModal').modal('show'); 
 
 				// Handle the OK button click
-				$('#okButton').on('click', function() 
-				{
-					window.location.href = 'login.php'; // Redirect to the login page
-				});
+                $('#okButton').on('click', function() {
+                    let flightId = "<?php echo isset($_SESSION['flightid']) ? $_SESSION['flightid'] : ''; ?>";
+                    let redirectUrl = flightId ? 'login.php?flightid=' + encodeURIComponent(flightId) : 'login.php';
+                    
+                    window.location.href = redirectUrl; // Redirect to login while keeping flightid if available
+                });
+
 			}
 			else 
 			{
