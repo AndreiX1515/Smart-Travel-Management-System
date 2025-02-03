@@ -8,7 +8,7 @@
     $origin = $_POST['origin'];
     $year = $_POST['year'];  // Year parameter
     $month = $_POST['month']; // Month parameter
-    $agentType = $_SESSION['agent_agentType'] || $_SESSION['agentType'];
+    $agentType = $_SESSION['agentType'];
 
     if ($agentType == 'Retailer')
     {
