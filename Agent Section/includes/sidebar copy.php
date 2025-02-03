@@ -75,31 +75,31 @@
         </a> 
       </div>
 
-    <div class="section-title" onclick="toggleSubMenu('operational-submenu')">
+    <!-- <div class="section-title" onclick="toggleSubMenu('operational-submenu')">
       Reports <span class="chevron-icon fas fa-chevron-down"></span>
     </div>
 
-      <div class="submenu open" id="operational-submenu">
-        <!-- <a href="../Agent Section/agent-itenerary.php" class="page-button" data-page-name="Itinerary">
-          <i class="fas fa-map"></i> Itinerary
-        </a> -->
+    <div class="submenu open" id="operational-submenu">
+      <a href="../Agent Section/agent-itenerary.php" class="page-button" data-page-name="Itinerary">
+        <i class="fas fa-map"></i> Itinerary
+      </a>
 
-        <a href="../Agent Section/agent-soa2.php" class="page-button" data-page-name="Statement of Accounts (SOA) - Packages">
-          <i class="fas fa-file-invoice-dollar"></i> SOA - Packages
-        </a>
+      <a href="../Agent Section/agent-soa2.php" class="page-button" data-page-name="Statement of Accounts (SOA) - Packages">
+        <i class="fas fa-file-invoice-dollar"></i> SOA - Packages
+      </a>
 
-        <a href="../Agent Section/agent-fitSOA - rename.php" class="page-button" data-page-name="Statement of Accounts (SOA) - F.I.T">
-          <i class="fas fa-file-invoice-dollar"></i> SOA - F.I.T
-        </a>
+      <a href="../Agent Section/agent-fitSOA - rename.php" class="page-button" data-page-name="Statement of Accounts (SOA) - F.I.T">
+        <i class="fas fa-file-invoice-dollar"></i> SOA - F.I.T
+      </a>
 
-        <!-- <a href="../Agent Section/agent-ticket.php" class="page-button" data-page-name="Ticket">
-          <i class="fas fa-ticket"></i> Ticket
-        </a>
+      <a href="../Agent Section/agent-ticket.php" class="page-button" data-page-name="Ticket">
+        <i class="fas fa-ticket"></i> Ticket
+      </a>
 
-        <a href="../Agent Section/agent-transactions.php" class="page-button" data-page-name="Voucher">
-          <i class="fas fa-gift"></i> Voucher
-        </a> -->
-      </div>
+      <a href="../Agent Section/agent-transactions.php" class="page-button" data-page-name="Voucher">
+        <i class="fas fa-gift"></i> Voucher
+      </a>
+    </div> -->
 
   </div>
 
