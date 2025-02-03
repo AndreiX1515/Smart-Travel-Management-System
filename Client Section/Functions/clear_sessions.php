@@ -1,41 +1,62 @@
 <?php
 session_start();
+require "../../conn.php";
 
-// If this is a POST request, process it
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    // Fetch data from POST
-    $email = $_POST["email"];  // The email value sent from the AJAX request
-    $accountId = $_POST["accountId"];  // The account ID sent from the AJAX request
-    $flightid = $_POST["flightid"];  // The flight ID sent from the AJAX request
-
-    // Optionally, log the data for debugging purposes
-    error_log("Email: " . $email);
-    error_log("Account ID: " . $accountId);
-    error_log("Flight ID: " . $flightid);
-
-    // Update the session variables with the new values
-    $_SESSION['email'] = $email;
-    $_SESSION['accountId'] = $accountId;
-    $_SESSION['flightid'] = $flightid;
-
-    // If you want to change more session variables, do it here
-    $_SESSION['agent_accountId'] = $accountId;
-    $_SESSION['agent_agentId'] =  '';  // You can assign default values if needed
-    $_SESSION['agent_agentCode'] = '';  // Same as above
-    $_SESSION['agent_agentRole'] =  '';
-    $_SESSION['agent_agentType'] =  '';
-    $_SESSION['agent_fName'] =  '';
-    $_SESSION['agent_lName'] = '';
-    $_SESSION['agent_mName'] =  '';
-    $_SESSION['agent_branchId'] =  '';
-    $_SESSION['password'] = '';
-
-    // Return a JSON response
-    echo json_encode(["status" => "success"]);
+// Check if the request is POST
+if ($_SERVER["REQUEST_METHOD"] !== "POST") {
+    echo json_encode(["status" => "error", "message" => "Invalid request"]);
     exit;
 }
 
-// If accessed directly without a POST request, return an error
-echo json_encode(["status" => "error", "message" => "Invalid request"]);
+// Fetch and sanitize input data
+$email = $_POST["email"] ?? '';
+$accountId = $_POST["accountId"] ?? '';
+$flightid = $_POST["flightid"] ?? '';
+
+// Log data for debugging
+error_log("Email: " . $email);
+error_log("Account ID: " . $accountId);
+error_log("Flight ID: " . $flightid);
+
+// Validate required fields
+if (empty($email) || empty($accountId) || empty($flightid)) {
+    echo json_encode(["status" => "error", "message" => "Missing required fields"]);
+    exit;
+}
+
+// Update session variables
+$_SESSION['email'] = $email;
+$_SESSION['accountId'] = $accountId;
+$_SESSION['flightid'] = $flightid;
+
+// Fetch agent and branch details if the user is an agent
+$stmt = $conn->prepare("
+    SELECT ag.accountId, ag.agentId, ag.agentCode, ag.agentRole, 
+           b.branchName, b.branchId 
+    FROM agent ag
+    JOIN branch b ON ag.branchId = b.branchId
+    WHERE ag.accountId = ?
+");
+$stmt->bind_param("i", $accountId);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($row = $result->fetch_assoc()) {
+    // Store agent details in the session
+    $_SESSION['agentId'] = $row['agentId'];
+    $_SESSION['agentType'] = $row['agentType'];
+    $_SESSION['agentCode'] = $row['agentCode'];
+    $_SESSION['agentRole'] = $row['agentRole'];
+    $_SESSION['branchId'] = $row['branchId'];
+    $_SESSION['branchName'] = $row['branchName'];
+
+    // $agentType = $_SESSION['agentType'];
+}
+
+// Close the statement
+$stmt->close();
+
+// Return success response
+echo json_encode(["status" => "success"]);
 exit;
 ?>

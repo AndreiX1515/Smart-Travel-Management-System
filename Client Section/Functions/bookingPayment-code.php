@@ -102,29 +102,52 @@ if (isset($_POST['pay']))
 
 
 
-        $accountId = $_SESSION['accountId'];  // The account ID sent from the AJAX request
-        
-        // Optionally, log the data for debugging purposes
+        // Fetch and sanitize input data
+        $email = $_POST["email"] ?? '';
+        $accountId = $_POST["accountId"] ?? '';
+        $flightid = $_POST["flightid"] ?? '';
+
+        // Log data for debugging
         error_log("Email: " . $email);
         error_log("Account ID: " . $accountId);
         error_log("Flight ID: " . $flightid);
 
-        // Update the session variables with the new values
+        // Validate required fields
+        if (empty($email) || empty($accountId) || empty($flightid)) {
+            echo json_encode(["status" => "error", "message" => "Missing required fields"]);
+            exit;
+        }
+
+        // Update session variables
         $_SESSION['email'] = $email;
         $_SESSION['accountId'] = $accountId;
         $_SESSION['flightid'] = $flightid;
 
-        // If you want to change more session variables, do it here
-        $_SESSION['agent_accountId'] = $accountId;
-        $_SESSION['agent_agentId'] =  '';  
-        $_SESSION['agent_agentCode'] =  ''; 
-        $_SESSION['agent_agentRole'] =  '';
-        $_SESSION['agent_agentType'] =  '';
-        $_SESSION['agent_fName'] =  '';
-        $_SESSION['agent_lName'] =  '';
-        $_SESSION['agent_mName'] =  '';
-        $_SESSION['agent_branchId'] = '';
-        $_SESSION['password'] = '';
+        // Fetch agent and branch details if the user is an agent
+        $stmt = $conn->prepare("
+            SELECT ag.accountId, ag.agentId, ag.agentCode, ag.agentRole, 
+                  b.branchName, b.branchId 
+            FROM agent ag
+            JOIN branch b ON ag.branchId = b.branchId
+            WHERE ag.accountId = ?
+        ");
+        $stmt->bind_param("i", $accountId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($row = $result->fetch_assoc()) {
+            // Store agent details in the session
+            $_SESSION['agentId'] = $row['agentId'];
+            $_SESSION['agentType'] = $row['agentType'];
+            $_SESSION['agentCode'] = $row['agentCode'];
+            $_SESSION['agentRole'] = $row['agentRole'];
+            $_SESSION['branchId'] = $row['branchId'];
+            $_SESSION['branchName'] = $row['branchName'];
+            // $agentType = $_SESSION['agentType'];
+        }
+
+        // Close the statement
+        $stmt->close();
 
 
         header("Location: ../../Agent Section/agent-dashboard copy 2.php");

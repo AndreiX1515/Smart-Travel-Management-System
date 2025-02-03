@@ -165,9 +165,9 @@ require "../conn.php";
                     </thead>
                     <tbody>
                       <?php
-                        $agentRole = $_SESSION['agent_agentRole'];
-                        $agentCode = $_SESSION['agent_agentCode'];
-                        $accountId = $_SESSION['agent_accountId'];
+                        $agentRole = $_SESSION['agentRole'];
+                        $agentCode = $_SESSION['agentCode'];
+                        $accountId = $_SESSION['accountId'];
                         if ($agentRole != 'Head Agent')
                         {
                           $sql1 = "SELECT b.transactNo AS `T.N`, p.packageName AS `PACKAGE`,
