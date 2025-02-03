@@ -9,17 +9,17 @@
 
 <!-- Session Variables -->
 <?php  
-$accountId = $_SESSION['accountId'];
-$agentId = $_SESSION['agentId'];
-$agentCode = $_SESSION['agentCode'];
-$agentRole = $_SESSION['agentRole'];
-$agentType = $_SESSION['agentType'];
-$fName =  $_SESSION['fName'] ?? '';
-$lName = $_SESSION['lName'] ?? '';
-$mName = $_SESSION['mName'] ?? '';
-$branchId = $_SESSION['branchId'] ?? '';
-$email = $_SESSION['email'] ?? '';
-$password = $_SESSION['password'] ?? '';
+  $accountId = $_SESSION['accountId'];
+  $agentId = $_SESSION['agentId'];
+  $agentCode = $_SESSION['agentCode'];
+  $agentRole = $_SESSION['agentRole'];
+  $agentType = $_SESSION['agentType'];
+  $fName =  $_SESSION['fName'] ?? '';
+  $lName = $_SESSION['lName'] ?? '';
+  $mName = $_SESSION['mName'] ?? '';
+  $branchId = $_SESSION['branchId'] ?? '';
+  $email = $_SESSION['email'] ?? '';
+  $password = $_SESSION['password'] ?? '';
 
   $sql1 = "Select * from branch where branchId= '$branchId'";
   $result1 = $conn->query($sql1);
@@ -38,11 +38,6 @@ $password = $_SESSION['password'] ?? '';
 
   // Optional: hide password by default
   $maskedPassword = '••••••••••';
-
-  // Current Date Variable 
-  date_default_timezone_set('Asia/Taipei');
-  $current_date = date('D, F d, Y');
-  
 ?>
 
 <!DOCTYPE html>
@@ -66,7 +61,6 @@ $password = $_SESSION['password'] ?? '';
   <div class="main-content-container">
     <div class="navbar">
       <div class="backbutton-wrapper">
-
         <div class="back-button-wrapper">
           <a href="../Agent Section/agent-transactions.php" class="back-button-link">
               <i class="fa-solid fa-arrow-left"></i>
@@ -74,13 +68,17 @@ $password = $_SESSION['password'] ?? '';
         </div>
 
         <div class="page-name-wrapper">
-            <h5>Transaction No.: </h5>
+            <h5>Transaction</h5>
         </div>
 
       </div>
     </div>
 
-    
+    <!-- Current Date Variable --> 
+    <?php
+      date_default_timezone_set('Asia/Taipei');
+      $current_date = date('D, F d, Y');
+    ?>
 
     <!-- Transact Number Session Variable -->
     <?php 
@@ -213,7 +211,6 @@ $password = $_SESSION['password'] ?? '';
                         echo "0 results";
                       }
                     ?>
-
                   </div> 
               </div>
 
@@ -230,64 +227,64 @@ $password = $_SESSION['password'] ?? '';
                     Add Request
                   </button>
               </div>
-          </div>
+            </div>
           
-          <div class="table-wrapper">
-            <!-- <div class="transaction-header">
-              <h5 class="">Guest Information: </h5>
-            </div> -->
-              
-            <div class="transaction-info-body">
-              
-            </div>
+            <div class="table-wrapper">
+              <div class="transaction-header">
+                <h5 class="">Guest Information: </h5>
+              </div>
+                
+              <div class="transaction-info-body">
+                
+              </div>
 
-            <div class="transaction-info-footer">
-              
-            </div>
-          </div>
-        </div>
-
-        <div class="pills-tab-container">
-          <ul class="nav nav-pills" id="pills-tab" role="tablist">
-            <li class="nav-item" role="presentation">
-              <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Guest Information</button>
-            </li>
-
-            <li class="nav-item" role="presentation">
-              <button class="nav-link" id="pills-visa-tab" data-bs-toggle="pill" data-bs-target="#pills-visa" type="button" role="tab" aria-controls="pills-visa" aria-selected="false">Visa Requirements</button>
-            </li>
-
-            <li class="nav-item" role="presentation">
-              <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Request History</button>
-            </li>
-
-            <li class="nav-item" role="presentation">
-              <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Payment History</button>
-            </li>
-          </ul>
-        </div>
-
-        <div class="transaction-body">
-          <div class="body-tab-container">
-            <div class="tab-content" id="pills-tabContent">
-              <!-- Guest Table -->
-              <?php include 'agent-guestTable.php'; ?>
-              <?php include 'agent-showVisa.php'; ?>
-              <?php include 'agent-requestTable.php'; ?>
-              <?php include 'agent-paymentTable.php'; ?>
-              
-              <?php 
-              // include 'agent-flightTable.php'; 
-              ?>   
+              <div class="transaction-info-footer">
+                
+              </div>
             </div>
           </div>
 
-        </div>
+          <div class="pills-tab-container">
+            <ul class="nav nav-pills" id="pills-tab" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Guest Information</button>
+              </li>
+
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="pills-visa-tab" data-bs-toggle="pill" data-bs-target="#pills-visa" type="button" role="tab" aria-controls="pills-visa" aria-selected="false">Visa Requirements</button>
+              </li>
+
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Request History</button>
+              </li>
+
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Payment History</button>
+              </li>
+            </ul>
+          </div>
+
+          <div class="transaction-body">
+            <div class="body-tab-container">
+              <div class="tab-content" id="pills-tabContent">
+                <!-- Guest Table -->
+                <?php include 'agent-guestTable.php'; ?>
+                <?php include 'agent-showVisa.php'; ?>
+                <?php include 'agent-requestTable.php'; ?>
+                <?php include 'agent-paymentTable.php'; ?>
+                
+                <?php 
+                // include 'agent-flightTable.php'; 
+                ?>   
+              </div>
+            </div>
+
+          </div>
      </div>
       
-     
    </div>
   </div>
+
 </div>
 
 <!-- Cancel Transaction Modal -->
@@ -326,6 +323,39 @@ $password = $_SESSION['password'] ?? '';
 
 
 <?php require "../Agent Section/includes/scripts.php"; ?>
+
+<script>
+function toggleSubMenu(submenuId) {
+    const submenu = document.getElementById(submenuId);
+    const sectionTitle = submenu.previousElementSibling;
+    const chevron = sectionTitle.querySelector('.chevron-icon'); 
+
+    // Check if the submenu is already open
+    const isOpen = submenu.classList.contains('open');
+
+    // If it's open, we need to close it, and reset the chevron
+    if (isOpen) {
+        submenu.classList.remove('open');
+        chevron.style.transform = 'rotate(0deg)';
+    } else {
+        // First, close all open submenus and reset all chevrons
+        const allSubmenus = document.querySelectorAll('.submenu');
+        const allChevrons = document.querySelectorAll('.chevron-icon');
+        
+        allSubmenus.forEach(sub => {
+            sub.classList.remove('open');
+        });
+
+        allChevrons.forEach(chev => {
+            chev.style.transform = 'rotate(0deg)';
+        });
+
+        // Now, open the current submenu and rotate its chevron
+        submenu.classList.add('open');
+        chevron.style.transform = 'rotate(180deg)';
+    }
+}
+</script>
 
   </body>
 </html>

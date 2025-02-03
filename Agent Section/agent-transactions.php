@@ -13,13 +13,13 @@ require "../conn.php";
 
   <?php include "../Agent Section/includes/head.php"; ?>
 
-  <link rel="stylesheet" href="../Agent Section/assets/css/agent-transaction copy.css?v=<?php echo time(); ?>">
-  <link rel="stylesheet" href="../Agent Section/assets/css/navbar-sidebar copy.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="../Agent Section/assets/css/agent-transaction.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="../Agent Section/assets/css/navbar-sidebar.css?v=<?php echo time(); ?>">
 </head>
 <body>
 
 <div class="body-container">
-  <?php include "../Agent Section/includes/sidebar copy.php"; ?>
+  <?php include "../Agent Section/includes/sidebar.php"; ?>
 
   <div class="main-content-container">
     <div class="navbar">
@@ -219,7 +219,7 @@ require "../conn.php";
                               // Booking Date
                               // <td>{$row['TRANSACTION DATE']}</td>
 
-                              echo "<tr data-url='agent-showGuest2.php?id=" . htmlspecialchars($transactNo) . "'>
+                              echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($transactNo) . "'>
                                       <td>{$transactNo}</td>
                                       <td>{$row['CONTACT NAME']}</td>
                                       <td> 
@@ -296,7 +296,7 @@ require "../conn.php";
 
                               // <td>{$row['TRANSACTION DATE']}</td>
 
-                              echo "<tr data-url='agent-showGuest2.php?id=" . htmlspecialchars($transactNo) . "'>
+                              echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($transactNo) . "'>
                                   <td>{$transactNo}</td>
                                   <td>{$row['CONTACT NAME']}</td>
                                   <td>
@@ -943,7 +943,7 @@ function showGuestInfo(transactionNumber) {
     {
       console.log("Response: ", response); // Debug line
       // Redirect to the next page after setting the session
-      window.location.href = '../Agent Section/agent-showGuest2.php'; // Redirect to your next page
+      window.location.href = '../Agent Section/agent-showGuest.php'; // Redirect to your next page
     },
     error: function(xhr, status, error) 
     {
@@ -1028,7 +1028,7 @@ function showGuestInfo(transactionNumber) {
     {
       console.log("Response: ", response); // Debug line
       // Redirect to the next page after setting the session
-      window.location.href = '../Agent Section/agent-showGuest2.php'; // Redirect to your next page
+      window.location.href = '../Agent Section/agent-showGuest.php'; // Redirect to your next page
     },
     error: function(xhr, status, error) 
     {

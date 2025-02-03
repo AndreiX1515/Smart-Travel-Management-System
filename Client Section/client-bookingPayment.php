@@ -130,7 +130,7 @@ $(document).ready(function () {
 
             if (response.status === "success") {
                 console.log("Session data cleared successfully.");
-                window.location.href = "../Agent Section/agent-dashboard copy 2.php";
+                window.location.href = "../Agent Section/agent-dashboard.php";
             } else {
                 console.error("Error in session clearing:", response.message);
             }
