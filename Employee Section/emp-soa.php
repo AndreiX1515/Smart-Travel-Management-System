@@ -153,9 +153,11 @@
           </div>
         </div>
 
-        <div id="result-container"></div>
+        <div class="table-wrapper">
+          <div id="result-container"></div>
+        </div>
 
-        <div>
+        <div class="content-footer">
           <!-- <button class="btn btn-secondary" id="preview-btn">Preview</button> -->
           <button class="btn btn-primary" id="download-btn" disabled>Generate SoA</button>
         </div>
@@ -379,7 +381,6 @@
     xhr.send(data);
   });
 </script>
-
 
 <!-- Generate SoA -->
 <script>
