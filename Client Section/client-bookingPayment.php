@@ -145,8 +145,6 @@ $flightid = $_SESSION['flightid'] ?? '';
       </script>
 
 
-
-
       <div class="container-body">
         <!-- <?php
               // if(isset($_SESSION['status'])):

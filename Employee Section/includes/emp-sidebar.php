@@ -191,20 +191,34 @@
 
 
 <script>
-document.getElementById("confirmLogout").addEventListener("click", function() {
-    $.ajax({
-        url: "../Employee Section/functions/emp-logout.php",
-        type: "POST",
-        success: function(response) {
-            window.location.href = "../Agent Section/agentLogin.php"; // Redirect after logout
-        },
-        error: function(xhr, status, error) {
-            console.error("Logout failed:", error);
-        }
-    });
-});
-
-
+	$(document).ready(function() 
+	{
+		// Trigger logout
+		$('#confirmLogout').click(function() 
+		{
+			$.ajax(
+			{
+				url: '../Agent Section/functions/agent-logout.php',
+				type: 'POST',
+				success: function(response) 
+				{
+					if (response.trim() === 'success') 
+					{
+						// Redirect to the login page
+						window.location.href = '../Agent Section/agentLogin.php';
+					} 
+					else 
+					{
+						alert('Logout failed. Please try again.');
+					}
+				},
+				error: function() 
+				{
+					alert('An error occurred. Please try again.');
+				}
+			});
+		});
+	});
 </script>
 
 

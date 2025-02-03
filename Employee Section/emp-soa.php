@@ -51,6 +51,34 @@
               </div>
             </div>
 
+            <div class="columns col-md-3">
+              <div class="table-filters-container">
+                <label for="flight-filter ">Select Flight Date:</label>
+                <select id="flight-filter" name="flight-filter" class="form-control">
+                  <option selected disabled>Select Flight Date</option>
+                  <?php
+                    // Execute the SQL query
+                    $sql1 = "SELECT flightId, DATE_FORMAT(flightDepartureDate, '%M %d, %Y') AS formattedDepartureDate FROM flight";
+                    $res1 = $conn->query($sql1);
+
+                    // Check if there are results
+                    if ($res1->num_rows > 0) 
+                    {
+                      // Loop through the results and generate options
+                      while ($row = $res1->fetch_assoc()) 
+                      {
+                        echo "<option value='" . $row['flightId'] . "'>" . $row['formattedDepartureDate'] . "</option>";
+                      }
+                    } 
+                    else 
+                    {
+                      echo "<option value=''>No flights available</option>";
+                    }
+                  ?>
+                </select>
+              </div>
+            </div>
+
             <div class="columns col-md-2">
               <div class="table-filters-container">
                 <label for="month-filter">Month</label>
@@ -302,7 +330,7 @@
 
     // Send data to PHP using AJAX
     const xhr = new XMLHttpRequest();
-    xhr.open('POST', '../Agent Section/functions/fetchSoA.php', true); // Replace with your PHP file name
+    xhr.open('POST', '../Employee Section/functions/fetchSoA.php', true); // Replace with your PHP file name
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
     const data = `companyId=${companyId}&month=${month}&year=${year}`;
@@ -369,7 +397,7 @@
 
     // First, send the request to agent-addSoA.php to insert SOA data
     const xhrAddSoA = new XMLHttpRequest();
-    xhrAddSoA.open('POST', '../Agent Section/functions/agent-addSoA.php', true);
+    xhrAddSoA.open('POST', '../Employee Section/functions/emp-addSoA.php', true);
     xhrAddSoA.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhrAddSoA.responseType = 'json'; // Expect JSON response for the SOA number
 
@@ -385,7 +413,7 @@
 
           // Proceed to generate the SOA PDF
           const xhrPdf = new XMLHttpRequest();
-          xhrPdf.open('POST', '../Agent Section/functions/generateSoA.php', true);
+          xhrPdf.open('POST', '../Employee Section/functions/generateSoA.php', true);
           xhrPdf.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
           xhrPdf.responseType = 'blob';
 
