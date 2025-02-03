@@ -101,55 +101,47 @@ $(document).ready(function () {
 
     // Clear sessions and navigate to booking page if confirmed
     confirmBackButton.on("click", function () {
-         var email1 = "<?php echo $_SESSION['email'] ?>";
-         var accountid1 = "<?php echo $_SESSION['accountId'] ?>";
-         var flightid1 = "<?php echo $_SESSION['flightid'] ?>";
+    // Fetch session data dynamically
+    var sessionData = {
+        email: "<?php echo $_SESSION['email'] ?? ''; ?>",
+        accountId: "<?php echo $_SESSION['accountId'] ?? ''; ?>",
+        flightid: "<?php echo $_SESSION['flightid'] ?? ''; ?>"
+    };
 
-        //  email: <?php echo json_encode($_SESSION['email'] ?? ''); ?>,  // Fetch session email directly into JavaScript
-        //     accountId: <?php echo json_encode($_SESSION['accountId'] ?? ''); ?>,
-        //     flightid: <?php echo json_encode($_SESSION['flightid'] ?? ''); ?>
+    // Debugging: Log session data
+    console.log("Fetched Session Data:", sessionData);
 
-        // Fetch session data dynamically and ensure safe encoding for JavaScript
-        let sessionData = {
-            email: email1 ,  // Fetch session email directly into JavaScript
-            accountId: accountid1,
-            flightid: flightid1
-        };
+    // Check if session data is present
+    if (!sessionData.email || !sessionData.accountId || !sessionData.flightid) {
+        console.warn("Session data is incomplete. Unable to proceed.");
+        return; // Stop execution if session data is missing
+    }
 
-        // Log session data for debugging
-        console.log("Session Data:", sessionData);
+    console.log("Session data is valid. Proceeding with AJAX request.");
 
-        // Check if session data is present
-        if (sessionData.email === "" || sessionData.accountId === "" || sessionData.flightid === "") {
-            console.log("Session data is incomplete. Unable to proceed.");
-        } else {
-            console.log("Session data is valid. Proceeding with AJAX request.");
+    // Send the AJAX request
+    $.ajax({
+        url: "../Client Section/Functions/clear_sessions.php",
+        type: "POST",
+        data: sessionData,
+        dataType: "json",
+        success: function (response) {
+            console.log("AJAX Response:", response);
 
-            // Send the AJAX request
-            $.ajax({
-                url: "../Client Section/Functions/clear_sessions.php",
-                type: "POST",
-                data: { 
-                    email: sessionData.email,
-                    accountId: sessionData.accountId,
-                    flightid: sessionData.flightid
-                },
-                dataType: "json",
-                success: function (response) {
-                    // Check if response status is success
-                    if (response.status === "success") {
-                        console.log("Session data cleared successfully.");
-                        window.location.href = "../Agent Section/agent-dashboard copy 2.php";
-                    } else {
-                        console.log("Error in session clearing: ", response.message);
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.error("AJAX Error:", error);
-                }
-            });
+            if (response.status === "success") {
+                console.log("Session data cleared successfully.");
+                window.location.href = "../Agent Section/agent-dashboard copy 2.php";
+            } else {
+                console.error("Error in session clearing:", response.message);
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error("AJAX Error:", error);
+            console.log("XHR Response:", xhr.responseText);
         }
     });
+});
+
 });
 </script>
 

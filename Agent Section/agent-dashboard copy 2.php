@@ -45,11 +45,11 @@ require "../conn.php";
                   <div class="side-content d-flex flex-column">
                     <?php
                         // Get session variables
-                        $accountId = $_SESSION['agent_accountId'];
+                        $accountId = $_SESSION['accountId'];
                         $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking where accountId = '$accountId' and MONTH(bookingDate) = MONTH(CURRENT_DATE()) AND YEAR(bookingDate) = YEAR(CURRENT_DATE())"; $result = mysqli_query($conn, $totalTransactionsQuery);
-                        $agentId = $_SESSION['agent_agentId'];
-                        $agentCode = $_SESSION['agent_agentCode'];
-                        $agentRole = $_SESSION['agent_agentRole'];
+                        $agentId = $_SESSION['agentId'];
+                        $agentCode = $_SESSION['agentCode'];
+                        $agentRole = $_SESSION['agentRole'];
 
                         // Determine which query to run based on the agent's role
                         if ($agentRole != 'Head Agent') 
@@ -94,11 +94,11 @@ require "../conn.php";
                   <div class="side-content d-flex flex-column">
                     <?php
                       // Get session variables
-                      $accountId = $_SESSION['agent_accountId'];
+                      $accountId = $_SESSION['accountId'];
                       $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking where status='Confirmed' and accountId = '$accountId' and MONTH(bookingDate) = MONTH(CURRENT_DATE()) AND YEAR(bookingDate) = YEAR(CURRENT_DATE())";
                       
-                      $agentCode = $_SESSION['agent_agentCode'];
-                      $agentRole = $_SESSION['agent_agentRole'];
+                      $agentCode = $_SESSION['agentCode'];
+                      $agentRole = $_SESSION['agentRole'];
 
                       // Determine which query to run based on the agent's role
                       if ($agentRole != 'Head Agent') 
@@ -148,9 +148,9 @@ require "../conn.php";
                   <div class="side-content d-flex flex-column">
                     <?php
                       // Get session variables
-                      $accountId = $_SESSION['agent_accountId'];
-                      $agentCode = $_SESSION['agent_agentCode'];
-                      $agentRole = $_SESSION['agent_agentRole'];
+                      $accountId = $_SESSION['accountId'];
+                      $agentCode = $_SESSION['agentCode'];
+                      $agentRole = $_SESSION['agentRole'];
 
                       // Determine which query to run based on the agent's role
                       if ($agentRole != 'Head Agent') 
@@ -197,9 +197,9 @@ require "../conn.php";
                   <div class="side-content d-flex flex-column">
                     <?php
                       // Get session variables
-                      $accountId = $_SESSION['agent_accountId'];
-                      $agentCode = $_SESSION['agent_agentCode'];
-                      $agentRole = $_SESSION['agent_agentRole'];
+                      $accountId = $_SESSION['accountId'];
+                      $agentCode = $_SESSION['agentCode'];
+                      $agentRole = $_SESSION['agentRole'];
 
                       // Determine which query to run based on the agent's role
                       if ($agentRole != 'Head Agent') 
@@ -257,9 +257,9 @@ require "../conn.php";
                   <div class="side-content d-flex flex-column">
                     <?php
                       // Get session variables
-                      $accountId = $_SESSION['agent_accountId'];
-                      $agentCode = $_SESSION['agent_agentCode'];
-                      $agentRole = $_SESSION['agent_agentRole'];
+                      $accountId = $_SESSION['accountId'];
+                      $agentCode = $_SESSION['agentCode'];
+                      $agentRole = $_SESSION['agentRole'];
 
                       // Determine which query to run based on the agent's role
                       if ($agentRole != 'Head Agent') 
@@ -314,9 +314,9 @@ require "../conn.php";
                   <div class="side-content d-flex flex-column">
                     <?php
                       // Assuming you already have a connection to your database
-                      $accountId = $_SESSION['agent_accountId'];
-                      $agentCode = $_SESSION['agent_agentCode'];
-                      $agentRole = $_SESSION['agent_agentRole'];
+                      $accountId = $_SESSION['accountId'];
+                      $agentCode = $_SESSION['agentCode'];
+                      $agentRole = $_SESSION['agentRole'];
 
                       // Determine which query to run based on the agent's role
                       if ($agentRole != 'Head Agent') 
@@ -372,9 +372,9 @@ require "../conn.php";
                   <div class="side-content d-flex flex-column">
                     <?php
                       // Assuming you already have a connection to your database
-                      $accountId = $_SESSION['agent_accountId'];
-                      $agentCode = $_SESSION['agent_agentCode'];
-                      $agentRole = $_SESSION['agent_agentRole'];
+                      $accountId = $_SESSION['accountId'];
+                      $agentCode = $_SESSION['agentCode'];
+                      $agentRole = $_SESSION['agentRole'];
 
                       // Determine which query to run based on the agent's role
                       if ($agentRole != 'Head Agent') 
@@ -430,9 +430,9 @@ require "../conn.php";
                   <div class="side-content d-flex flex-column">
                     <?php
                       // Assuming you already have a connection to your database
-                      $accountId = $_SESSION['agent_accountId'];
-                      $agentCode = $_SESSION['agent_agentCode'];
-                      $agentRole = $_SESSION['agent_agentRole'];
+                      $accountId = $_SESSION['accountId'];
+                      $agentCode = $_SESSION['agentCode'];
+                      $agentRole = $_SESSION['agentRole'];
 
                       // Determine which query to run based on the agent's role
                       if ($agentRole != 'Head Agent') 
@@ -500,9 +500,9 @@ require "../conn.php";
                   <div class="side-content d-flex flex-column">
                     <?php
                       // Assuming you already have a connection to your database
-                      $accountId = $_SESSION['agent_accountId'];
-                      $agentCode = $_SESSION['agent_agentCode'];
-                      $agentRole = $_SESSION['agent_agentRole'];
+                      $accountId = $_SESSION['accountId'];
+                      $agentCode = $_SESSION['agentCode'];
+                      $agentRole = $_SESSION['agentRole'];
 
                       // Determine which query to run based on the agent's role
                       if ($agentRole != 'Head Agent') 
@@ -545,9 +545,9 @@ require "../conn.php";
                   <div class="side-content d-flex flex-column">
                     <?php
                       // Assuming you already have a connection to your database
-                      $accountId = $_SESSION['agent_accountId'];
-                      $agentCode = $_SESSION['agent_agentCode'];
-                      $agentRole = $_SESSION['agent_agentRole'];
+                      $accountId = $_SESSION['accountId'];
+                      $agentCode = $_SESSION['agentCode'];
+                      $agentRole = $_SESSION['agentRole'];
 
                       // Determine which query to run based on the agent's role
                       if ($agentRole != 'Head Agent') 
@@ -691,9 +691,9 @@ require "../conn.php";
                       <tbody>
                         <?php
                           // Assuming you already have a connection to your database
-                          $accountId = $_SESSION['agent_accountId'];
-                          $agentCode = $_SESSION['agent_agentCode'];
-                          $agentRole = $_SESSION['agent_agentRole'];
+                          $accountId = $_SESSION['accountId'];
+                          $agentCode = $_SESSION['agentCode'];
+                          $agentRole = $_SESSION['agentRole'];
 
                           // Determine which query to run based on the agent's role
                           if ($agentRole != 'Head Agent') 
@@ -903,9 +903,9 @@ require "../conn.php";
                       <tbody>
                         <?php
                           // Assuming you already have a connection to your database
-                          $accountId = $_SESSION['agent_accountId'];
-                          $agentCode = $_SESSION['agent_agentCode'];
-                          $agentRole = $_SESSION['agent_agentRole'];
+                          $accountId = $_SESSION['accountId'];
+                          $agentCode = $_SESSION['agentCode'];
+                          $agentRole = $_SESSION['agentRole'];
 
                           // Determine which query to run based on the agent's role
                           if ($agentRole != 'Head Agent') 
@@ -1072,9 +1072,9 @@ require "../conn.php";
                       <tbody>
                         <?php
                           // Assuming you already have a connection to your database
-                          $accountId = $_SESSION['agent_accountId'];
-                          $agentCode = $_SESSION['agent_agentCode'];
-                          $agentRole = $_SESSION['agent_agentRole'];
+                          $accountId = $_SESSION['accountId'];
+                          $agentCode = $_SESSION['agentCode'];
+                          $agentRole = $_SESSION['agentRole'];
 
                           if ($agentRole != 'Head Agent') 
                           {
@@ -1251,9 +1251,9 @@ require "../conn.php";
                       <tbody>
                         <?php
                           // Assuming you already have a connection to your database
-                          $accountId = $_SESSION['agent_accountId'];
-                          $agentCode = $_SESSION['agent_agentCode'];
-                          $agentRole = $_SESSION['agent_agentRole'];
+                          $accountId = $_SESSION['accountId'];
+                          $agentCode = $_SESSION['agentCode'];
+                          $agentRole = $_SESSION['agentRole'];
 
                           if ($agentRole != 'Head Agent') 
                           {
@@ -1707,9 +1707,9 @@ require "../conn.php";
                       <tbody>
                         <?php
                           
-                          $accountId = $_SESSION['agent_accountId'];
-                          $agentCode = $_SESSION['agent_agentCode'];
-                          $agentRole = $_SESSION['agent_agentRole'];
+                          $accountId = $_SESSION['accountId'];
+                          $agentCode = $_SESSION['agentCode'];
+                          $agentRole = $_SESSION['agentRole'];
 
                           if ($agentRole != 'Head Agent') 
                           {

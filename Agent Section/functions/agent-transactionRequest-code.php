@@ -51,8 +51,7 @@
         exit(0);
       }
 
-      // Close the statement
-      $stmt->close();
+  
     }
 
     // else if ($concern == '3')
@@ -112,11 +111,7 @@
         exit(0);
       }
 
-      // Close the statement
-      $stmt->close();
 
-      // Close the connection
-      $conn->close();
     }
 
   }

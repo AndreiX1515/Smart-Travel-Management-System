@@ -378,10 +378,13 @@ body {
 
 
 .main-container {
-
-	height: 85vh;
+	padding: 20px 35px;
+	height: 93vh;
 	width: 100%;  /* 3/4 of the container */
+	/* border: 1px solid black; */
+	overflow-y: auto;  /* Enables vertical scrolling when content overflows */
 }
+
 
 
 .content-header {
@@ -409,8 +412,9 @@ body {
 
 .container-body {
 	 margin-top: 20px;
-		width: 100%; 
-		padding: 0px;
+	 width: 100%; 
+	 padding: 0px;
+	 border: 1px solid black;
 	
 }
 
