@@ -1,12 +1,3 @@
-body {
- background-color: transparent;
- margin: 0;
- padding: 0;
- box-sizing: border-box;
- font-family: Arial, sans-serif;
-}
- 
-
 /* Minimalist Styling for Navigation Container */
 .nav-start-container {
   display: flex;
@@ -16,7 +7,6 @@ body {
   padding: 5px 0px;
 }
 
-
 .nav-start-container h6{
   font-weight: bold;
 }
@@ -24,7 +14,6 @@ body {
 .nav-start-container span{
   font-weight: normal;
 }
-
 
 /* Styling for Back Button */
 .back-button {
@@ -93,6 +82,7 @@ body {
   padding: 10px 8px 7px 8px;
   background-color: #dbdbdb; /* Optional background color */
   border-radius: 10px; /* Optional rounded corners */
+  margin-bottom: 10px;
 }
 
 .search-wrapper {
@@ -269,6 +259,7 @@ body {
 
 .input-with-icon input {
   width: 100%;
+  height: 32px;
   padding: 10px 35px 10px 10px; /* Space for the icon */
   border: 1px solid #e0e0e0;
   border-radius: 5px;
@@ -384,7 +375,7 @@ body {
 .table-container {
   display: flex;
   flex-direction: column;
-  height: 85%;
+  height: 90%;
   flex: 1;
   background-color: transparent;
   overflow: hidden; /* Hide overflow from the container */
@@ -393,62 +384,41 @@ body {
 }
 
 
-
-/* Table footer styling with minimalist design */
 .table-footer {
-  border-top: 1px solid #ddd; /* Light border to separate the footer */
   height: 15%; /* Fixed height for the footer */
-  background-color: #f9f9f9; /* Subtle background color */
+  background-color: transparent; /* Light background color */
   display: flex;
   align-items: center;
-  justify-content: end; /* Center the pagination controls */
-  padding: 10px;
-  margin-top: 10px;
-  border: 1px solid #ddd;
+  justify-content: flex-end; /* Align pagination to the end */
+  padding: 5px 20px; /* Padding for spacing */
+  margin-top: 5px;
+  border-radius: 5px; /* Slight rounding of the footer */
 }
 
-/* Pagination Controls Container */
-.pagination-controls {
-  display: flex;
-  align-items: center;
-  gap: 10px; /* Space between buttons and page info */
-}
-
-/* Pagination Buttons (Previous/Next) */
+/* Style the buttons */
 .pagination-btn {
-  padding: 5px 15px;
-  background-color: transparent; /* Transparent background for flat design */
-  border: 1px solid #ddd; /* Light border to give subtle outline */
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  font-size: 0.9em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background-color: #ffffff; /* White background */
+  border: 1px solid #ddd; /* Light border for buttons */
+  border-radius: 5px; /* Rounded corners */
+  padding: 8px 15px; /* Button padding */
+  font-size: 14px; /* Button font size */
+  font-weight: normal; /* Normal text weight */
+  color: #333; /* Dark text color */
+  cursor: pointer; /* Pointer cursor on hover */
+  margin: 0 5px; /* Space between buttons */
 }
 
-/* Hover effect on buttons */
-.pagination-btn:hover {
-  background-color: #007bff; /* Highlight on hover */
-  color: white;
-  transform: scale(1.05); /* Slight zoom effect */
-}
-
-/* Disabled button state */
-.pagination-btn.disabled {
-  background-color: transparent;
-  color: #ccc;
-  cursor: not-allowed;
-  border-color: #f0f0f0; /* Light border for disabled state */
-}
-
-/* Page Info Styling */
+/* Style for the page info */
 .page-info {
-  font-size: 0.90em;
-  color: #333;
-  font-weight: bold;
+  font-size: 14px;
+  color: #333; /* Dark text for page info */
+  margin: 0 10px;
 }
+
+
+
+
+
 
 
 
@@ -469,20 +439,41 @@ body {
   background-color: #e6e6e6; /* Light background for headers */
   font-weight: bold;
   text-align: left;
-  padding: 5px;
-  border-bottom: 1px solid #ddd;
-  font-size: 0.9em;
+  border: 1px solid #ddd; /* Add side and bottom borders */
+  font-size: 0.8em; /* Compact font size */
   white-space: nowrap; /* Prevent text wrapping */
+  text-transform: uppercase; /* Uppercase text for headers */
+ 
+  border-top: none; /* Remove top border so the thead's top border-radius is visible */
 }
 
+/* Apply rounded corners to the first and last th elements */
+.product-table th:first-child {
+  border-top-left-radius: 10px; /* Rounded top left corner */
+  border-bottom-left-radius: 10px; /* Rounded top left corner */
+}
+
+.product-table th:last-child {
+  border-top-right-radius: 10px; /* Rounded top right corner */
+  border-bottom-right-radius: 10px; /* Rounded top right corner */
+}
+
+.product-table thead {
+  overflow: hidden; /* Ensure content stays within rounded area */
+  padding: 6px; /* Consistent padding for headers */
+}
+
+
 /* Table Cell Styling */
-.product-table th,
 .product-table td {
-  padding: 5px 10px; /* Unified padding for consistency */
-  text-align: left;
-  border-bottom: 1px solid #ddd; /* Consistent border styling */
-  font-size: 0.85em;
+  padding: 5px 8px; /* Smaller padding for compact layout */
+  text-align: left; /* Align text to the left */
+  vertical-align: middle; /* Center-align content vertically */
+  border-bottom: 1px solid #ddd; /* Subtle border for row separation */
+  font-size: 0.85em; /* Compact font size */
   white-space: nowrap; /* Prevent text wrapping */
+  overflow: hidden; /* Hide overflowing content */
+  text-overflow: ellipsis; /* Add ellipsis for truncated content */
 }
 
 /* Hover effect for table rows */
@@ -500,44 +491,47 @@ body {
 /* Column width adjustments */
 .product-table th:nth-child(1),
 .product-table td:nth-child(1) {
-  width: 10%; /* Adjust width for Transaction ID column */
+  width: 7%; /* Adjust width for Transaction ID column */
 }
 
 .product-table th:nth-child(2),
 .product-table td:nth-child(2) {
-  width: 20%; /* Adjust width for Contact Person Info column */
+  width: 16%; /* Adjust width for Contact Person Info column */
 }
 
 .product-table th:nth-child(3),
 .product-table td:nth-child(3) {
-  width: 30%; /* Adjust width for Contact Person Contact Details column */
+  width: 23%; /* Adjust width for Contact Person Contact Details column */
 }
 
 .product-table th:nth-child(4),
 .product-table td:nth-child(4) {
-  width: 20%; /* Adjust width for Package Name column */
+  width: 14%; /* Adjust width for Package Name column */
 }
 
 .product-table th:nth-child(5),
 .product-table td:nth-child(5) {
-  width: 15%; /* Adjust width for Transaction Date column */
+  width: 7%; 
+  text-align: center; 
 }
 
 .product-table th:nth-child(6),
 .product-table td:nth-child(6) {
-  width: 15%; /* Adjust width for Flight Date column */
+  width: 7%; /* Adjust width for Flight Date column */
+  text-align: center;
 }
 
 .product-table th:nth-child(7),
 .product-table td:nth-child(7) {
-  width: 5%; /* Adjust width for Total Pax column */
-}
-
-.product-table th:nth-child(8),
-.product-table td:nth-child(8) {
-  width: 10%; /* Adjust width for Status column */
+  width: 8%; /* Adjust width for Total Pax column */
   text-align: center;
 }
+
+/* .product-table th:nth-child(8),
+.product-table td:nth-child(8) {
+  width: 7%; 
+  text-align: center;
+} */
 
 
 

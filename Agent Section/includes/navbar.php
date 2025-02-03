@@ -1,10 +1,16 @@
-<?php
-  require "../conn.php";
+<div class="navbar">
+  <h5 class="title-page" id="page-title">Dashboard</h5>
+</div>
 
-  ini_set('display_errors', 1);
-  ini_set('display_startup_errors', 1);
-  error_reporting(E_ALL);
+    <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Check if there's a saved title in local storage
+    const savedTitle = localStorage.getItem('pageTitle');
+    if (savedTitle) {
+        document.getElementById('page-title').textContent = savedTitle;
+    }
 
+<<<<<<< HEAD
   $accountId = $_SESSION['accountId'];
   
   $agentId = $_SESSION['agentId'];
@@ -98,3 +104,23 @@
 
 
 <?php include '../Agent Section/includes/logoutViewPassModal.php'; ?>
+=======
+    const buttons = document.querySelectorAll('.page-button');
+    buttons.forEach(button => {
+        button.addEventListener('click', (event) => {
+            event.preventDefault();
+            const newPageName = button.getAttribute('data-page-name');
+            document.getElementById('page-title').textContent = newPageName;
+
+            // Save the title to local storage
+            localStorage.setItem('pageTitle', newPageName);
+
+            const newUrl = button.getAttribute('href');
+            setTimeout(() => {
+                window.location.href = newUrl;
+            }, 25);
+        });
+    });
+  });
+</script>
+>>>>>>> dev6
