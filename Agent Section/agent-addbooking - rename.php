@@ -172,11 +172,11 @@ require "../conn.php";
                 </div>
               </div>
 
-              <input type="hidden" id="agentCode" name="agentCode" value="<?php echo $_SESSION['agent_agentCode'];; ?>" placeholder="agentCode Input">
+              <input type="hidden" id="agentCode" name="agentCode" value="<?php echo $_SESSION['agentCode'];; ?>" placeholder="agentCode Input">
               <input type="hidden" id="flightId" name="flightId" value="" placeholder="Flight Id Input">
               <input type="hidden" id="packagePrice" name="packagePrice" placeholder="Package Price">
               <input type="hidden" name="flightPrice" id="flightPricee" placeholder="Flight Price">
-              <input type="hidden" name="agentId" id="agentId" value="<?php echo $_SESSION['agent_agentId']; ?>" placeholder="Agent Id">
+              <input type="hidden" name="agentId" id="agentId" value="<?php echo $_SESSION['agentId']; ?>" placeholder="Agent Id">
               
             </div>
 
@@ -253,7 +253,7 @@ require "../conn.php";
 
                     <div class="input-group">
                       <select name="countryCode" id="countryCode" class="form-select" required>
-                        <option disabled selected>Country Code</option>
+                        <option disabled>Country Code</option>
                         <option value="+93">Afghanistan (+93)</option>
                         <option value="+355">Albania (+355)</option>
                         <option value="+213">Algeria (+213)</option>
@@ -385,7 +385,7 @@ require "../conn.php";
                         <option value="+675">Papua New Guinea (+675)</option>
                         <option value="+595">Paraguay (+595)</option>
                         <option value="+51">Peru (+51)</option>
-                        <option value="+63">Philippines (+63)</option>
+                        <option value="+63" selected>Philippines (+63)</option>
                         <option value="+48">Poland (+48)</option>
                         <option value="+351">Portugal (+351)</option>
                         <option value="+974">Qatar (+974)</option>
@@ -565,43 +565,42 @@ require "../conn.php";
 <?php require "../Agent Section/includes/scripts.php"; ?>
 
 <script>
-function toggleSubMenu(submenuId) {
-    const submenu = document.getElementById(submenuId);
-    const sectionTitle = submenu.previousElementSibling;
-    const chevron = sectionTitle.querySelector('.chevron-icon'); 
+  function toggleSubMenu(submenuId) {
+      const submenu = document.getElementById(submenuId);
+      const sectionTitle = submenu.previousElementSibling;
+      const chevron = sectionTitle.querySelector('.chevron-icon'); 
 
-    // Check if the submenu is already open
-    const isOpen = submenu.classList.contains('open');
+      // Check if the submenu is already open
+      const isOpen = submenu.classList.contains('open');
 
-    // If it's open, we need to close it, and reset the chevron
-    if (isOpen) {
-        submenu.classList.remove('open');
-        chevron.style.transform = 'rotate(0deg)';
-    } else {
-        // First, close all open submenus and reset all chevrons
-        const allSubmenus = document.querySelectorAll('.submenu');
-        const allChevrons = document.querySelectorAll('.chevron-icon');
-        
-        allSubmenus.forEach(sub => {
-            sub.classList.remove('open');
-        });
+      // If it's open, we need to close it, and reset the chevron
+      if (isOpen) {
+          submenu.classList.remove('open');
+          chevron.style.transform = 'rotate(0deg)';
+      } else {
+          // First, close all open submenus and reset all chevrons
+          const allSubmenus = document.querySelectorAll('.submenu');
+          const allChevrons = document.querySelectorAll('.chevron-icon');
+          
+          allSubmenus.forEach(sub => {
+              sub.classList.remove('open');
+          });
 
-        allChevrons.forEach(chev => {
-            chev.style.transform = 'rotate(0deg)';
-        });
+          allChevrons.forEach(chev => {
+              chev.style.transform = 'rotate(0deg)';
+          });
 
-        // Now, open the current submenu and rotate its chevron
-        submenu.classList.add('open');
-        chevron.style.transform = 'rotate(180deg)';
-    }
-}
-
-
+          // Now, open the current submenu and rotate its chevron
+          submenu.classList.add('open');
+          chevron.style.transform = 'rotate(180deg)';
+      }
+  }
 </script>
 
 
 <script>
-$(document).ready(function () {
+$(document).ready(function () 
+{
   // Fetching Origin once Package was Selected
   $('#packageName').on('change', function () 
   {

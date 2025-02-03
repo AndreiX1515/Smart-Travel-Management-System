@@ -2,10 +2,10 @@
   require "../../conn.php"; // Adjust path if needed
   session_start(); // Start the session to access session variables
 
-  if (isset($_POST['flightId']) && isset($_SESSION['agent_agentId'])) 
+  if (isset($_POST['flightId']) && isset($_SESSION['agentId'])) 
   {
     $flightId = $_POST['flightId'];
-    $agentId = $_SESSION['agent_agentId'];
+    $agentId = $_SESSION['agentId'];
 
     // Prepare and execute the query
     $query = "SELECT 

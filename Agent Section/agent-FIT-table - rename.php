@@ -173,6 +173,7 @@ require "../conn.php";
                           {
                             while ($row = $res1->fetch_assoc()) 
                             {
+                              $transactNo = $row['Transaction No'];
                               $statusClass = '';
                               switch ($row['Status']) 
                               {
@@ -189,7 +190,7 @@ require "../conn.php";
                                     $statusClass = 'bg-secondary text-white';
                               }
 
-                              echo "<tr>
+                              echo "<tr data-url='agent-showFITBooking.php?id=" . htmlspecialchars($transactNo) . "'>
                                       <td>{$row['Transaction No']}</td>
                                       <td>
                                         <div class='contact-wrapper'>
@@ -315,7 +316,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
           // Use AJAX to send the transaction number to the server
           $.ajax({
-              url: '../Agent Section/functions/fetchTransactNo.php', // The PHP file to handle the session setting
+              url: '../Agent Section/functions/fetchFITTransactNo.php', // The PHP file to handle the session setting
               type: 'POST',
               data: { transaction_number: transactionNumber },
               success: function(response) {

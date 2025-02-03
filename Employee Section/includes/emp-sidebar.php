@@ -132,6 +132,9 @@
 					<li class="nav-item">
 						<a class="nav-link page-button" href="../Employee Section/emp-soa.php" data-page-name="SOA">SOA</a>
 					</li>
+					<li class="nav-item">
+						<a class="nav-link page-button" href="../Employee Section/emp-soaFIT.php" data-page-name="SOA">SOA FIT</a>
+					</li>
 				</ul>
 			</div>
 		</li>
