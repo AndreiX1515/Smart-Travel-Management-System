@@ -662,9 +662,9 @@
               <table class="table request-table">
                 <thead>
                   <tr>
-                    <th>AGENT NAME</th>
+                    <th>TRANSACTION NO</th>
+                    <th>FLIGHT DATE</th>
                     <th>REQUEST</th>
-                    <th>DATE</th>
                     <th>STATUS</th>
                   </tr>
                 </thead>
@@ -672,47 +672,46 @@
                   <?php
                     $sql1 = "SELECT r.transactNo AS `T.N`, c.concernTitle AS `Request`, DATE_FORMAT(r.requestDate, '%m.%d.%Y') AS `Date`,
                                   r.requestStatus, b.agentCode, CONCAT(a.lName, ', ', a.fName, 
-                                      IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1)), '')) AS agentName
-                              FROM 
-                                  request r
-                              JOIN 
-                                  booking b ON r.transactNo = b.transactNo
-                              JOIN 
-                                  concern c ON r.concernId = c.concernId
-                              JOIN
-                                  agent a ON b.agentId = a.agentId
+                                  IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1)), '')) AS agentName,
+                                  DATE_FORMAT(f.flightDepartureDate, '%m.%d.%Y') AS `flightDepartureDate`
+                              FROM request r
+                              JOIN booking b ON r.transactNo = b.transactNo
+                              JOIN concern c ON r.concernId = c.concernId
+                              JOIN agent a ON b.agentId = a.agentId
+                              JOIN flight f ON b.flightId = f.flightId
                               WHERE 
                                 r.requestStatus = 'Submitted'
                               ORDER BY 
-                                  r.requestDate DESC";  // Order by request date
+                                r.requestDate DESC";  // Order by request date
 
                     $res1 = $conn->query($sql1);
                       
                     if ($res1->num_rows > 0) 
                     {
-                      while ($row = $res1->fetch_assoc()) {
-                        
+                      while ($row = $res1->fetch_assoc()) 
+                      {
                         $statusClass = '';
-                        switch ($row['requestStatus']) {
-                            case 'Confirmed':
-                                $statusClass = 'badge bg-success'; // Green pill for "Approved"
-                                break;
-                            case 'Pending':
-                                $statusClass = 'badge bg-primary'; // Yellow pill for "Pending"
-                                break;
-                            case 'Rejected':
-                                $statusClass = 'badge bg-danger'; // Red pill for "Rejected"
-                                break;
-                            default:
-                                $statusClass = 'badge bg-secondary'; // Grey pill for unknown statuses
-                                break;
+                        switch ($row['requestStatus']) 
+                        {
+                          case 'Confirmed':
+                            $statusClass = 'badge bg-success'; // Green pill for "Approved"
+                            break;
+                          case 'Pending':
+                            $statusClass = 'badge bg-primary'; // Yellow pill for "Pending"
+                            break;
+                          case 'Rejected':
+                            $statusClass = 'badge bg-danger'; // Red pill for "Rejected"
+                            break;
+                          default:
+                            $statusClass = 'badge bg-secondary'; // Grey pill for unknown statuses
+                            break;
                         }
                     
                         // Echo table row with dynamically styled pills
                         echo "<tr>
-                                <td>{$row['agentName']}</td>
+                                <td>{$row['T.N']}</td>
+                                <td>{$row['flightDepartureDate']}</td>
                                 <td>{$row['Request']}</td>
-                                <td>{$row['Date']}</td>
                                 <td><span class='{$statusClass}'>{$row['requestStatus']}</span></td>
                               </tr>";
                     }
@@ -740,11 +739,12 @@
               <table class="payment-table table ">
                 <thead>
                   <tr>
-                    <th>AGENT NAME</th>
+                    <th>TRANSACTION NO</th>
+                    <th>FLIGHT DATE</th>
                     <th>PAYMENT TITLE</th>
                     <th>PAYMENT TYPE</th>
                     <th>PAYMENT AMOUNT</th>
-                    <th>DATE</th> 
+                    <!-- <th>DATE</th>  -->
                     <th>STATUS</th>
                   </tr>
                 </thead>
@@ -753,13 +753,12 @@
                     $sql2 = "SELECT p.transactNo AS `Transaction No`, p.paymentTitle AS `Payment Title`,
                               CONCAT(FORMAT(p.amount, 2)) AS `Amount`, DATE_FORMAT(p.paymentDate, '%m.%d.%Y') AS `Date`, p.paymentType AS `Payment Type`,
                               p.paymentStatus, b.agentCode, CONCAT(a.lName, ', ', a.fName, 
-                                      IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1)), '')) AS agentName
-                            FROM 
-                              payment p
-                            JOIN 
-                              booking b ON p.transactNo = b.transactNo
-                            JOIN
-                                agent a ON b.agentId = a.agentId
+                              IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1)), '')) AS agentName,
+                              DATE_FORMAT(f.flightDepartureDate, '%m.%d.%Y') AS `flightDepartureDate`
+                            FROM payment p
+                            JOIN booking b ON p.transactNo = b.transactNo
+                            JOIN agent a ON b.agentId = a.agentId
+                            JOIN flight f ON b.flightId = f.flightId
                             WHERE 
                               p.paymentStatus = 'Submitted'
                             ORDER BY 
@@ -788,11 +787,11 @@
                     
                         // Echo table row with dynamically styled pills
                         echo "<tr>
-                                <td>{$row['agentName']}</td>
+                                <td>{$row['Transaction No']}</td>
+                                <td>{$row['flightDepartureDate']}</td>
                                 <td>{$row['Payment Title']}</td>
                                 <td>{$row['Payment Type']}</td>
                                 <td>₱ {$row['Amount']}</td>
-                                <td>{$row['Date']}</td>
                                 <td><span class='{$statusClass}'>{$row['paymentStatus']}</span></td>
                               </tr>";
                     }
