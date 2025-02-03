@@ -302,7 +302,7 @@
 
     // Send data to PHP using AJAX
     const xhr = new XMLHttpRequest();
-    xhr.open('POST', '../Agent Section/functions/fetchSoA.php', true); // Replace with your PHP file name
+    xhr.open('POST', '../Employee Section/functions/fetchSoA.php', true); // Replace with your PHP file name
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
     const data = `companyId=${companyId}&month=${month}&year=${year}`;
@@ -369,7 +369,7 @@
 
     // First, send the request to agent-addSoA.php to insert SOA data
     const xhrAddSoA = new XMLHttpRequest();
-    xhrAddSoA.open('POST', '../Agent Section/functions/agent-addSoA.php', true);
+    xhrAddSoA.open('POST', '../Employee Section/functions/emp-addSoA.php', true);
     xhrAddSoA.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhrAddSoA.responseType = 'json'; // Expect JSON response for the SOA number
 
@@ -385,7 +385,7 @@
 
           // Proceed to generate the SOA PDF
           const xhrPdf = new XMLHttpRequest();
-          xhrPdf.open('POST', '../Agent Section/functions/generateSoA.php', true);
+          xhrPdf.open('POST', '../Employee Section/functions/generateSoA.php', true);
           xhrPdf.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
           xhrPdf.responseType = 'blob';
 
