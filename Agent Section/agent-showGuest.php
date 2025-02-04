@@ -152,134 +152,132 @@ $maskedPassword = '••••••••••';
           }
       ?>
 
-          <div class="main-content">
-            <div class="show-guest-wrapper">
-              <div class="header">
-                <div class="transaction-info">
-                  <div class="transaction-header">
-                    <h5 class="">Transaction Information: </h5>
-                  </div>
+      <div class="main-content">
+        <div class="show-guest-wrapper">
+          <div class="header">
+            <div class="transaction-info">
+              <div class="transaction-header">
+                <h5 class="">Transaction Information: </h5>
+              </div>
 
-                  <div class="transaction-info-body">
-                    <div class="row">
-                      <div class="col-md-5 columns">
-                        <div class="info-item">
-                          <p><strong>Transaction No:</strong> <?php echo htmlspecialchars($transactNum); ?></p>
-                        </div>
+              <div class="transaction-info-body">
+                <div class="row">
+                  <div class="col-md-5 columns">
+                    <div class="info-item">
+                      <p><strong>Transaction No:</strong> <?php echo htmlspecialchars($transactNum); ?></p>
+                    </div>
 
-                        <div class="info-item">
-                          <p><strong>Total Pax:</strong> <?php echo htmlspecialchars($pax); ?></p>
-                        </div>
+                    <div class="info-item">
+                      <p><strong>Total Pax:</strong> <?php echo htmlspecialchars($pax); ?></p>
+                    </div>
 
-                        <div class="info-item">
-                          <p><strong>Package:</strong> <?php echo htmlspecialchars($packageName); ?></p>
-                        </div>
+                    <div class="info-item">
+                      <p><strong>Package:</strong> <?php echo htmlspecialchars($packageName); ?></p>
+                    </div>
 
-                        <div class="info-item">
-                          <p><strong>Flight Date:</strong> <?php echo htmlspecialchars($flightDate); ?></p>
-                        </div>
+                    <div class="info-item">
+                      <p><strong>Flight Date:</strong> <?php echo htmlspecialchars($flightDate); ?></p>
+                    </div>
 
-                        <div class="info-item">
-                          <p><strong>Status:</strong> <span class="badge rounded-pill <?php echo $statusClass; ?>">
-                              <?php echo htmlspecialchars($status); ?> </span> </p>
-                        </div>
-                      </div>
-
-                      <div class="col-md-7 columns">
-                        <div class="info-item">
-                          <p><strong>Contact Person:</strong> <?php echo htmlspecialchars($fullName); ?></p>
-                        </div>
-
-                        <div class="info-item">
-                          <p><strong>Contact No:</strong> <?php echo htmlspecialchars($contactNo); ?></p>
-                        </div>
-
-                        <div class="info-item-email">
-                          <p><strong>Email:</strong> <?php echo htmlspecialchars($email); ?></p>
-                        </div>
-
-                        <div class="info-item">
-                          <p><strong>Price: ₱ <?php echo number_format((float)$price, 2); ?></strong></p>
-                        </div>
-                      </div>
-
-                  <?php
-                }
-              } else {
-                echo "0 results";
-              }
-                  ?>
+                    <div class="info-item">
+                      <p><strong>Status:</strong> <span class="badge rounded-pill <?php echo $statusClass; ?>">
+                          <?php echo htmlspecialchars($status); ?> </span> </p>
                     </div>
                   </div>
 
-                  <div class="transaction-info-footer">
-                    <button class="cancel-btn" data-bs-toggle="modal" data-bs-target="#cancelTransactionModal">
-                      Cancel Transaction
-                    </button>
+                  <div class="col-md-7 columns">
+                    <div class="info-item">
+                      <p><strong>Contact Person:</strong> <?php echo htmlspecialchars($fullName); ?></p>
+                    </div>
 
-                    <button class="payment-btn" data-toggle="modal" data-target="#paymentModal<?= $transactNum ?>"
-                      data-transact-no="<?= $transactNum ?>" data-account-id="<?= $accountId ?>">
-                      Add Payment
-                    </button>
+                    <div class="info-item">
+                      <p><strong>Contact No:</strong> <?php echo htmlspecialchars($contactNo); ?></p>
+                    </div>
 
-                    <button class="request-btn" data-toggle="modal" data-target="#requestModal"
-                      data-transaction-id="<?= $transactionNumber ?>">
-                      Add Request
-                    </button>
-                  </div>
-                </div>
+                    <div class="info-item-email">
+                      <p><strong>Email:</strong> <?php echo htmlspecialchars($email); ?></p>
+                    </div>
 
-                <div class="table-wrapper">
-                  <div class="transaction-header">
-                    <h5 class="">Guest Information: </h5>
+                    <div class="info-item">
+                      <p><strong>Price: ₱ <?php echo number_format((float)$price, 2); ?></strong></p>
+                    </div>
                   </div>
 
-                  <div class="transaction-info-body">
-
-                  </div>
-
-                  <div class="transaction-info-footer">
-
-                  </div>
+              <?php
+            }
+          } else {
+            echo "0 results";
+          }
+              ?>
                 </div>
               </div>
 
-              <div class="pills-tab-container">
-                <ul class="nav nav-pills" id="pills-tab" role="tablist">
-                  <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Guest Information</button>
-                  </li>
+              <div class="transaction-info-footer">
+                <button class="cancel-btn" data-bs-toggle="modal" data-bs-target="#cancelTransactionModal">
+                  Cancel Transaction
+                </button>
 
-                  <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="pills-visa-tab" data-bs-toggle="pill" data-bs-target="#pills-visa" type="button" role="tab" aria-controls="pills-visa" aria-selected="false">Visa Requirements</button>
-                  </li>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#paymentModal<?= $transactionNumber ?>"
+                data-transact-no="<?= $transactionNumber ?>" data-account-id="<?= $accountId ?>">Add Payment</button>
 
-                  <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Request History</button>
-                  </li>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#requestModal" 
+                  data-transaction-id="<?= $transactionNumber ?>">Add Request</button>
 
-                  <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Payment History</button>
-                  </li>
-                </ul>
+              </div>
+            </div>
+
+            <div class="table-wrapper">
+              <div class="transaction-header">
+                <h5 class="">Guest Information: </h5>
               </div>
 
-              <div class="transaction-body">
-                <div class="body-tab-container">
-                  <div class="tab-content" id="pills-tabContent">
-                    <!-- Guest Table -->
-                    <?php include 'agent-guestTable.php'; ?>
-                    <?php include 'agent-showVisa.php'; ?>
-                    <?php include 'agent-requestTable.php'; ?>
-                    <?php include 'agent-paymentTable.php'; ?>
-                  </div>
-                </div>
+              <div class="transaction-info-body">
+
               </div>
 
+              <div class="transaction-info-footer">
+
+              </div>
             </div>
           </div>
-    </div>
+
+          <div class="pills-tab-container">
+            <ul class="nav nav-pills" id="pills-tab" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Guest Information</button>
+              </li>
+
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="pills-visa-tab" data-bs-toggle="pill" data-bs-target="#pills-visa" type="button" role="tab" aria-controls="pills-visa" aria-selected="false">Visa Requirements</button>
+              </li>
+
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Request History</button>
+              </li>
+
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Payment History</button>
+              </li>
+            </ul>
+          </div>
+
+          <div class="transaction-body">
+            <div class="body-tab-container">
+              <div class="tab-content" id="pills-tabContent">
+                <!-- Guest Table -->
+                <?php include 'agent-guestTable.php'; ?>
+                <?php include 'agent-showVisa.php'; ?>
+                <?php include 'agent-requestTable.php'; ?>
+                <?php include 'agent-paymentTable.php'; ?>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      
   </div>
+</div>
 
 <!-- Modal Structure -->
 <div class="modal fade" id="cancelTransactionModal" tabindex="-1" aria-labelledby="cancelTransactionModalLabel" aria-hidden="true">

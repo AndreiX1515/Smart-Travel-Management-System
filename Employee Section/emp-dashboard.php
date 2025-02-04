@@ -779,7 +779,7 @@
                                 $statusClass = 'badge bg-warning text-dark'; // Yellow pill for "Pending"
                                 break;
                             case 'Submitted':
-                                $statusClass = 'badge bg-primary text-light'; // Red pill for "Failed"
+                                $statusClass = 'badge bg-secondary text-light'; // Red pill for "Failed"
                                 break;
                             default:
                                 $statusClass = 'badge bg-secondary'; // Grey pill for unknown statuses

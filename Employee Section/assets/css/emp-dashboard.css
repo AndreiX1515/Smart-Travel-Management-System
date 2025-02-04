@@ -572,7 +572,7 @@
 .payment-table th {
   padding: 6px 14px; /* Improved padding */
   border-bottom: 1px solid #e0e0e0;
-  background-color: #f8f9fa;
+  background-color: gainsboro;
   font-size: 10px;
   font-weight: bold;
   text-align: left;
@@ -650,7 +650,7 @@
    Table Header Styles
 ============================ */
 .confirm-table thead {
-  background-color: #00defc;
+  background-color: gainsboro;
   text-align: left;
   position: sticky; /* Sticky header */
   top: 0;

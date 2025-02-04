@@ -1073,7 +1073,7 @@ require "../conn.php";
                                         $statusClass = 'bg-secondary text-white';
                                         break;
                                     case 'Submitted':
-                                      $statusClass = 'bg-primary text-white';
+                                      $statusClass = 'bg-secondary text-white';
                                       break;
                                     default:
                                         $statusClass = 'bg-light text-dark'; // Default class for unknown statuses
@@ -1141,7 +1141,7 @@ require "../conn.php";
                                           $statusClass = 'bg-danger text-white';
                                           break;
                                       case 'Submitted':
-                                          $statusClass = 'bg-primary text-white';
+                                          $statusClass = 'bg-secondary text-black';
                                           break;
                                       default:
                                           $statusClass = 'bg-light text-dark'; // Default class for unknown statuses
@@ -1225,7 +1225,7 @@ require "../conn.php";
                             
                                 switch ($status) {
                                   case 'Submitted':
-                                    $badgeClass = 'badge bg-primary text-dark'; 
+                                    $badgeClass = 'badge bg-secondary text-dark'; 
                                     break;
                                   case 'Confirmed':
                                     $badgeClass = 'badge bg-success'; 
@@ -1296,7 +1296,7 @@ require "../conn.php";
 
                                   switch ($status) {
                                           case 'Submitted':
-                                            $badgeClass = 'badge bg-primary text-dark'; 
+                                            $badgeClass = 'badge bg-secondary text-dark'; 
                                             break;
                                           case 'Confirmed':
                                             $badgeClass = 'badge bg-success'; 
@@ -1510,7 +1510,7 @@ require "../conn.php";
                                           $statusClass = 'bg-success text-white';
                                           break;
                                       case 'Confirmed':
-                                          $statusClass = 'bg-primary text-dark';
+                                          $statusClass = 'bg-secondary text-dark';
                                           break;
                                       case 'Rejected':
                                           $statusClass = 'bg-danger text-white';

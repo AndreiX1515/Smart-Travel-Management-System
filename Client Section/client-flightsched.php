@@ -103,20 +103,39 @@ $accId = $_SESSION['accountId'] ?? '';
             <div class="confirm-table-container-flight">
               <?php
               // Database query
-              $sql = "SELECT f.flightId AS flightid, f.origin, f.flightDepartureDate AS Start, f.returnDepartureDate AS End, 
+              $sql = "SELECT 
+                      f.flightId AS flightid, 
+                      f.origin, 
+                      f.flightDepartureDate AS Start, 
+                      f.returnDepartureDate AS End, 
                       f.availSeats AS FlightSeat, 
-                      GREATEST((f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' 
-                      AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0)), 0) AS AvailSeats, 
-                      IF((f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package' 
-                          THEN b.pax ELSE 0 END), 0)) < 0, ABS(f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' 
-                          AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0)), 0) AS AdditionalSeats, 
-                      f.flightPrice AS RetailPrice
-                  FROM employee e 
-                  JOIN flight f ON f.employeeId = e.employeeId
-                  LEFT JOIN booking b ON b.flightId = f.flightId
-                  WHERE f.flightDepartureDate >= CURDATE()
-                  GROUP BY f.flightId, f.origin, f.flightDepartureDate, f.returnDepartureDate, f.availSeats, f.flightPrice
-                  ORDER BY f.flightDepartureDate";
+                      GREATEST(
+                          (f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' 
+                          AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0)), 
+                          0
+                      ) AS AvailSeats, 
+                      IF(
+                          (f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' 
+                          AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0)) < 0, 
+                          ABS(f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' 
+                          AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0)), 
+                          0
+                      ) AS AdditionalSeats, 
+                      f.flightPrice AS RetailPrice,  
+                      f.flightPrice AS FlightPrice   
+                  FROM 
+                      employee e 
+                  JOIN 
+                      flight f ON f.employeeId = e.employeeId
+                  LEFT JOIN 
+                      booking b ON b.flightId = f.flightId
+                  WHERE 
+                      f.flightDepartureDate >= CURDATE()
+                  GROUP BY 
+                      f.flightId, f.origin, f.flightDepartureDate, f.returnDepartureDate, f.availSeats, f.flightPrice
+                  ORDER BY 
+                      f.flightDepartureDate;
+                  ";
 
               $result = $conn->query($sql);
               ?>
@@ -149,6 +168,16 @@ $accId = $_SESSION['accountId'] ?? '';
                     echo '                    <h5>' . htmlspecialchars($row['End']) . '</h5>';
                     echo '                </div>';
                     echo '            </div>';
+
+                    echo '            <div class="flight-date">';
+                    echo '                <div class="flight-start">';
+                    echo '                    <label for="">Package Price</label>';
+                    echo '                    <h5> ₱ ' . htmlspecialchars($row['FlightPrice']) . '</h5>';
+                    echo '                </div>';
+                    echo '            </div>';
+                    
+
+                    echo '';            
                     echo '        </div>';
 
                     // Seats Section
@@ -168,6 +197,8 @@ $accId = $_SESSION['accountId'] ?? '';
                     echo '            <div class="book-now-container">';
                     echo '                <a href="../Client Section/login.php?flightid=' . urlencode($row['flightid']) . '" class="btn book-now">Book Now</a>';
                     echo '            </div>';
+
+
                     echo '        </div>';
 
                     echo '    </div>';
