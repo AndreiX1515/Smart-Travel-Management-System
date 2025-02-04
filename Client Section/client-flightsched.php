@@ -54,24 +54,54 @@ $accId = $_SESSION['accountId'] ?? '';
 
 
     <div class="main-container">
-      <section class="flight-schedules">
+      <div class="flight-schedules">
+
         <div class="section-wrapper">
           <div class="section-header">
             <div class="header-info">
-              <h3>Flight Schedules</h3>
-              <p>Check out our latest flight schedules and book your next adventure today!</p>
+                <h3>Flight Schedules</h3>
+                <p>Check out our latest flight schedules and book your next adventure today!</p>
             </div>
-           
-            <div class="date-filter">
-                <label for="flight-date">Select Flight (Start) Date:</label>
-                <input type="date" id="flight-date">
+
+            <div class="filters-container">
+                <div class="filters">
+                    <div class="filter-group">
+                        <label for="flight-month">Select Month:</label>
+                        <select id="flight-month">
+                            <option value="">All Months</option>
+                            <option value="01">January</option>
+                            <option value="02">February</option>
+                            <option value="03">March</option>
+                            <option value="04">April</option>
+                            <option value="05">May</option>
+                            <option value="06">June</option>
+                            <option value="07">July</option>
+                            <option value="08">August</option>
+                            <option value="09">September</option>
+                            <option value="10">October</option>
+                            <option value="11">November</option>
+                            <option value="12">December</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="flight-date">Select Flight Date:</label>
+                        <input type="date" id="flight-date">
+                    </div>
+                    
+                    <button id="clear-filters" class="clear-btn">Clear</button>
+                </div>
             </div>
+
+
+
 
           </div>
 
+
           <div class="section-main-content">
             <div class="confirm-table-container-flight">
-            <?php
+              <?php
               // Database query
               $sql = "SELECT f.flightId AS flightid, f.origin, f.flightDepartureDate AS Start, f.returnDepartureDate AS End, 
                       f.availSeats AS FlightSeat, 
@@ -93,60 +123,60 @@ $accId = $_SESSION['accountId'] ?? '';
 
               <!-- Date Picker -->
               <div id="flights-container">
-                  <?php
-                  if ($result->num_rows > 0) {
-                      while ($row = $result->fetch_assoc()) {
-                          echo '<div class="flight-card" data-date="' . htmlspecialchars($row['Start']) . '">';
-                          echo '    <div class="flight-info">';
-                          
-                          // Flight Details
-                          echo '        <div class="flight-details">';
-                          echo '            <div class="details-header">';
-                          echo '                <h3>' . htmlspecialchars($row['origin']) . '</h3>';
-                          echo '            </div>';
-                          echo '        </div>';
+                <?php
+                if ($result->num_rows > 0) {
+                  while ($row = $result->fetch_assoc()) {
+                    echo '<div class="flight-card" data-date="' . htmlspecialchars($row['Start']) . '">';
+                    echo '    <div class="flight-info">';
 
-                          // Flight Date Section
-                          echo '        <div class="flight-date-wrapper">';
-                          echo '            <label for="">Flight Date: </label>';
-                          echo '            <div class="flight-date">';
-                          echo '                <div class="flight-start">';
-                          echo '                    <label for="">Start:</label>';
-                          echo '                    <h5>' . htmlspecialchars($row['Start']) . '</h5>';
-                          echo '                </div>';
-                          echo '                <div class="flight-end">';
-                          echo '                    <label for="">End:</label>';
-                          echo '                    <h5>' . htmlspecialchars($row['End']) . '</h5>';
-                          echo '                </div>';
-                          echo '            </div>';
-                          echo '        </div>';
+                    // Flight Details
+                    echo '        <div class="flight-details">';
+                    echo '            <div class="details-header">';
+                    echo '                <h3>' . htmlspecialchars($row['origin']) . '</h3>';
+                    echo '            </div>';
+                    echo '        </div>';
 
-                          // Seats Section
-                          echo '        <div class="seats-wrapper">';
-                          echo '            <div class="seats-container">';
-                          echo '                <div class="seats-info">';
-                          echo '                    <label for="">Available Seats:</label>';
-                          echo '                    <p><strong>' . htmlspecialchars($row['AvailSeats']) . '</strong></p>';
-                          echo '                </div>';
-                          echo '                <div class="seats-info">';
-                          echo '                    <label for="">Additional Seats:</label>';
-                          echo '                    <p><strong>' . htmlspecialchars($row['AdditionalSeats']) . '</strong></p>';
-                          echo '                </div>';
-                          echo '            </div>';
+                    // Flight Date Section
+                    echo '        <div class="flight-date-wrapper">';
+                    echo '            <label for="">Flight Date: </label>';
+                    echo '            <div class="flight-date">';
+                    echo '                <div class="flight-start">';
+                    echo '                    <label for="">Start:</label>';
+                    echo '                    <h5>' . htmlspecialchars($row['Start']) . '</h5>';
+                    echo '                </div>';
+                    echo '                <div class="flight-end">';
+                    echo '                    <label for="">End:</label>';
+                    echo '                    <h5>' . htmlspecialchars($row['End']) . '</h5>';
+                    echo '                </div>';
+                    echo '            </div>';
+                    echo '        </div>';
 
-                          // Book Now Button
-                          echo '            <div class="book-now-container">';
-                          echo '                <a href="../Client Section/login.php?flightid=' . urlencode($row['flightid']) . '" class="btn book-now">Book Now</a>';
-                          echo '            </div>';
-                          echo '        </div>';
+                    // Seats Section
+                    echo '        <div class="seats-wrapper">';
+                    echo '            <div class="seats-container">';
+                    echo '                <div class="seats-info">';
+                    echo '                    <label for="">Available Seats:</label>';
+                    echo '                    <p><strong>' . htmlspecialchars($row['AvailSeats']) . '</strong></p>';
+                    echo '                </div>';
+                    echo '                <div class="seats-info">';
+                    echo '                    <label for="">Additional Seats:</label>';
+                    echo '                    <p><strong>' . htmlspecialchars($row['AdditionalSeats']) . '</strong></p>';
+                    echo '                </div>';
+                    echo '            </div>';
 
-                          echo '    </div>';
-                          echo '</div>';
-                      }
-                  } else {
-                      echo "<p>No flights available.</p>";
+                    // Book Now Button
+                    echo '            <div class="book-now-container">';
+                    echo '                <a href="../Client Section/login.php?flightid=' . urlencode($row['flightid']) . '" class="btn book-now">Book Now</a>';
+                    echo '            </div>';
+                    echo '        </div>';
+
+                    echo '    </div>';
+                    echo '</div>';
                   }
-                  ?>
+                } else {
+                  echo "<p>No flights available.</p>";
+                }
+                ?>
               </div>
 
             </div>
@@ -155,7 +185,7 @@ $accId = $_SESSION['accountId'] ?? '';
           </div>
         </div>
 
-      </section>
+      </div>
 
     </div>
   </div>
@@ -165,32 +195,44 @@ $accId = $_SESSION['accountId'] ?? '';
   <!-- <script src="heartbeat.js"></script>  -->
 
   <script>
+  document.addEventListener("DOMContentLoaded", function () {
+      const datePicker = document.getElementById("flight-date");
+      const monthSelect = document.getElementById("flight-month");
+      const flightCards = document.querySelectorAll(".flight-card");
+      const clearButton = document.getElementById("clear-filters"); // Get Clear button
 
-document.addEventListener("DOMContentLoaded", function () {
-    const datePicker = document.getElementById("flight-date");
-    const flightCards = document.querySelectorAll(".flight-card");
+      function filterFlights() {
+          const selectedDate = datePicker.value; // Get selected date
+          const selectedMonth = monthSelect.value; // Get selected month
 
-    datePicker.addEventListener("change", function () {
-        const selectedDate = datePicker.value; // Get selected date
-        
-        flightCards.forEach(card => {
-            const flightDate = card.getAttribute("data-date"); // Get flight's departure date
-            
-            if (flightDate === selectedDate || selectedDate === "") {
-                card.style.display = "block"; // Show matching flights
-            } else {
-                card.style.display = "none"; // Hide non-matching flights
-            }
-        });
-    });
-});
+          flightCards.forEach(card => {
+              const flightDate = card.getAttribute("data-date"); // Get flight's departure date
+              const flightMonth = flightDate ? flightDate.split("-")[1] : ""; // Extract month
+
+              const matchesDate = selectedDate === "" || flightDate === selectedDate;
+              const matchesMonth = selectedMonth === "" || flightMonth === selectedMonth;
+
+              if (matchesDate && matchesMonth) {
+                  card.style.display = "block"; // Show matching flights
+              } else {
+                  card.style.display = "none"; // Hide non-matching flights
+              }
+          });
+      }
+
+      function clearFilters() {
+          datePicker.value = "";
+          monthSelect.value = "";
+          filterFlights(); // Refresh flights display after clearing
+      }
+
+      datePicker.addEventListener("change", filterFlights);
+      monthSelect.addEventListener("change", filterFlights);
+      clearButton.addEventListener("click", clearFilters); // Attach event to clear button
+  });
+
 
   </script>
-
-
-
-
-
 
 
   <!-- Row Click Selection JS -->

@@ -106,11 +106,6 @@ a:hover {
   transition: background-color 0.2s ease;
 }
 
-/* .sidebar .section-title:hover {
-  background-color: #495057; /* Darker background on hover 
-  color: #ffffff; 
-} */
-
 /* Chevron Icon */
 .chevron-icon {
   transition: transform 0.3s ease;
@@ -266,14 +261,6 @@ a:hover {
   margin: 15px 0;
 }
 
-
-
-
-
-
-
-
-
 .sidebar .profile-section .profile-icon {
   display: flex;
   justify-content: center;
@@ -343,36 +330,18 @@ a:hover {
 
 
 
-
-
-
-
-
-
-
-/* @keyframes slideDown {
- from {
-   max-height: 0;
-   opacity: 0;
- }
- to {
-   max-height: 500px;
-   opacity: 1;
- }
-} */
-
 /* Main Content Styling */
 .main-content-container {
-  width: 88%; 
+  width: 88%;
   height: 100vh;
   margin: 10px 0px;
-  box-sizing: border-box; 
-  overflow-y: auto; 
-  border-top-left-radius: 15px; 
+  box-sizing: border-box;
+  overflow-y: auto;
+  border-top-left-radius: 15px;
   border: 1px solid gainsboro;
-  display: flex;  
+  display: flex;
   flex-direction: column;
-  gap: 5px; 
+  gap: 5px;
   background-color: #ffffff;
   padding: 10px;
 }
@@ -380,7 +349,7 @@ a:hover {
 /* Navbar Styles */
 .navbar {
   display: flex;
-  align-items: center; /* Corrected 'last baseline' */
+  align-items: center;
   justify-content: start;
   height: 7vh;
   width: 87.5%;
@@ -391,7 +360,6 @@ a:hover {
   background-color: white;
   z-index: 1000;
   margin-left: 10px;
-  /* border: 1px solid black; */
 }
 
 .navbar .title-page {
@@ -453,7 +421,7 @@ a:hover {
   justify-content: center;
   width: 35px; /* Circular size */
   height: 35px; /* Circular size */
-  border: 1px solid black;
+  /* border: 1px solid black; */
   border-radius: 50%; /* Makes it round */
   transition: color 0.3s ease, background 0.3s ease, transform 0.2s ease;
 }
@@ -464,18 +432,14 @@ a:hover {
   transform: scale(1); /* Slight zoom effect */
 }
 
-
-
 .page-name-wrapper {
   display: flex;
   height: 50%;
   /* border: 1px solid black; */
   justify-content: left;
   align-items: last baseline;
-  padding: 0px 0px 0px 10px;
+  padding: 8px 0px 0px 10px;
 }
-
-
 
 
 

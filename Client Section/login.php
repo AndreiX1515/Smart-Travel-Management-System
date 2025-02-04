@@ -178,9 +178,6 @@ require '../conn.php';
               }
           }
 
-
- 
-          
           else if (data.message && data.message.trim() === "User not found.") {
             // Show specific message for user not found
             document.getElementById('message-login').innerHTML = '<div class="alert alert-danger text-center">' + data.message + '</div>';

@@ -18,22 +18,24 @@ error_reporting(E_ALL);
   <?php include "../Agent Section/includes/head.php"; ?>
 
   <link rel="stylesheet" href="../Agent Section/assets/css/agent-addGuest.css?v=<?php echo time(); ?>">
-  <link rel="stylesheet" href="../Agent Section/assets/css/navbar-sidebar copy.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="../Agent Section/assets/css/navbar-sidebar.css?v=<?php echo time(); ?>">
 </head>
 <body>
 
 <div class="body-container">
-  <?php include "../Agent Section/includes/sidebar copy.php"; ?>
+  <?php include "../Agent Section/includes/sidebar.php"; ?>
 
   <div class="main-content-container">
     <div class="navbar">
       <div class="backbutton-wrapper">
         <div class="back-button-wrapper">
-            <a href="index.php" class="back-button-link"> <i class="fa-solid fa-arrow-left me-2"></i> Back to Transaction</a>
+          <a href="../Agent Section/agent-showGuest.php" class="back-button-link">
+              <i class="fa-solid fa-arrow-left"></i>
+          </a>
         </div>
 
         <div class="page-name-wrapper">
-          <h5>Add Guest</h5>
+            <h5>Add Guest Information</h5>
         </div>
 
       </div>

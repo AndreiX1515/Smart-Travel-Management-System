@@ -1,29 +1,35 @@
-<?php 
+<?php
 session_start(); // Start the session
 require '../../conn.php'; // Your database connection
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') 
-{
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
+
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   // Common function to output JSON response
-  function jsonResponse($success, $message) 
+  function jsonResponse($success, $message)
   {
+    // Check if the success flag is false, then add a fallback error message
+    if (!$success) {
+      $message = $message ?: 'An unexpected error occurred. Please try again later.';
+    }
+    
     echo json_encode(['success' => $success, 'message' => $message]);
     exit;
   }
 
   // Check if OTP is being verified
-  if (isset($_POST['Reg-OTP'])) 
-  {
+  if (isset($_POST['Reg-OTP'])) {
     $enteredOtp = $_POST['Reg-OTP'];
 
     // Validate OTP
-    if (!isset($_SESSION['otp'])) 
-    {
+    if (!isset($_SESSION['otp'])) {
       jsonResponse(false, 'OTP session not found. Please request a new OTP.');
     }
 
-    if ($enteredOtp !== $_SESSION['otp']) 
-    {
+    if ($enteredOtp !== $_SESSION['otp']) {
       jsonResponse(false, 'Invalid OTP. Please try again.');
     }
 
@@ -49,8 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
     (?, ?, ?, ?, 'guest', NOW())");
     $stmt1->bind_param("ssis", $email, $password, $otp, $account_status);
 
-    if ($stmt1->execute()) 
-    {
+    if ($stmt1->execute()) {
       // Get the last inserted accountId
       $accountId = $conn->insert_id;
 
@@ -63,8 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
       $stmt2->close(); // Properly close $stmt2
 
       // Check if branchAgentCode is NULL or empty
-      if (is_null($branchAgentCode) || $branchAgentCode === '') 
-      {
+      if (is_null($branchAgentCode) || $branchAgentCode === '') {
         jsonResponse(false, "Error: Branch agent code not found for branchId: " . $branchId);
         $conn->rollback();
         exit;
@@ -86,23 +90,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
           VALUES (?, ?, ?, ?, 'Retailer', 'Sub Agent2')");
       $stmt4->bind_param("ssii", $agentId, $branchAgentCode, $accountId, $branchId);
 
-      if ($stmt4->execute()) 
-      {
+      if ($stmt4->execute()) {
         // Commit the transaction
         $conn->commit();
 
         // Clear session variables after successful registration
         unset($_SESSION['Reg-FirstName'], $_SESSION['Reg-LastName'], $_SESSION['Reg-MiddleName'], $_SESSION['Reg-Email'], $_SESSION['Reg-Password'], $_SESSION['otp']);
         jsonResponse(true, 'Registration successful! Agent created with ID: ' . $agentId);
-      } 
-      else 
-      {
+      } else {
         jsonResponse(false, "Error inserting agent: " . $stmt4->error);
         $conn->rollback();
       }
-    } 
-    else 
-    {
+    } else {
       jsonResponse(false, "Error inserting account: " . $stmt1->error);
       $conn->rollback();
     }
@@ -110,10 +109,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
     $stmt1->close();
     $stmt4->close();
     $conn->close();
-      
-  } 
-  else 
-  {
+  } else {
     // Registration data submission
     $firstName = $_POST['Reg-FirstName'] ?? '';
     $lastName = $_POST['Reg-LastName'] ?? '';
@@ -122,14 +118,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
     $password = $_POST['Reg-Password'] ?? '';
 
     // Validation: Check if fields are not empty
-    if (empty($firstName) || empty($lastName) || empty($email) || empty($password)) 
-    {
+    if (empty($firstName) || empty($lastName) || empty($email) || empty($password)) {
       jsonResponse(false, 'Please fill in all required fields.');
     }
 
     // Validation: Check if email is valid
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) 
-    {
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
       jsonResponse(false, 'Please enter a valid email address.');
     }
 
@@ -149,7 +143,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 }
 
 // Function to generate a 6-digit OTP
-function generateVerificationCode() 
+function generateVerificationCode()
 {
   return substr(number_format(time() * rand(), 0, '', ''), 0, 6);
 }

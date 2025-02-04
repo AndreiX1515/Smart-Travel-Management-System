@@ -55,24 +55,24 @@ else
       <!-- Nav Links in the Middle -->
       <div class="navbar-middle">
         <ul class="navbar-nav">
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a class="nav-link px-3" href="index.php">Home</a>
           </li>
 
           <li class="nav-item">
             <a class="nav-link px-3" href="client-bookingform.php">Booking</a>
-          </li>
+          </li> -->
           
         </ul>
       </div>
 
       <!-- Profile and End Section -->
-      <div class="nav-end-container">
-        <!-- Collapsible Navbar Toggle -->
+      <!-- <div class="nav-end-container">
+    
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-      </div>
+      </div> -->
 
       <!-- Collapsible Navbar Content -->
       <div class="collapse navbar-collapse" id="navbarNav">
