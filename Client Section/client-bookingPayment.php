@@ -112,7 +112,7 @@ $flightid = $_SESSION['flightid'] ?? '';
             console.log("Fetched Session Data:", sessionData);
 
             // Check if session data is present
-            if (!sessionData.email || !sessionData.accountId || !sessionData.flightid) {
+            if (!sessionData.email || !sessionData.accountId) {
               console.warn("Session data is incomplete. Unable to proceed.");
               return; // Stop execution if session data is missing
             }

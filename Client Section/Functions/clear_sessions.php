@@ -21,7 +21,7 @@ $flightid = $_POST["flightid"] ?? '';
 error_log("Received Data - Email: $email, Account ID: $accountId, Flight ID: $flightid");
 
 // Validate required fields
-if (empty($email) || empty($accountId) || empty($flightid)) {
+if (empty($email) || empty($accountId)) {
     error_log("Missing required fields.");
     echo json_encode(["status" => "error", "message" => "Missing required fields"]);
     exit;
