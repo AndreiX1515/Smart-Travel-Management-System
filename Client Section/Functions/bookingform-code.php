@@ -24,7 +24,7 @@ if (isset($_POST['bookNow']))
 	$bookingType = isset($_POST['land']) ? 'Land' : 'Package';
 	$flightDetails = ($bookingType === 'Land') ? $_POST['flightDetails'] : NULL;
 
-	$flightId = $_SESSION['flightid'];
+	// $flightId = $_SESSION['flightid'];
 
 	// Get the last bookingId and increment it for the new transaction
 	$result = $conn->query("SELECT MAX(bookingId) AS lastBookingId FROM booking");

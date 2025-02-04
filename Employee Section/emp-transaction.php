@@ -22,7 +22,7 @@
   <div class="main-content">
     
     <div class="table-container">
-
+ 
       <div class="table-header">
         <div class="search-wrapper">
             <div class="search-input-wrapper">

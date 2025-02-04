@@ -7,11 +7,12 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// Fetch session variables directlys
-$email = $_SESSION['email'] ?? ''; // Use null coalescing operator to avoid undefined index
+
 // $firstName = $_SESSION['first_name'] ?? '';
 // $lastName = $_SESSION['last_name'] ?? '';
 // $middleName = $_SESSION['middle_name'] ?? '';
+
+$email = $_SESSION['email'] ?? ''; // Use null coalescing operator to avoid undefined index=
 $accId = $_SESSION['accountId'] ?? '';
 $flightid = $_SESSION['flightid'] ?? '';
 
@@ -293,35 +294,52 @@ $flightid = $_SESSION['flightid'] ?? '';
 
         <div class="order-summary">
           <?php
+          // Default values
           $packageName = "N/A";
           $pax = 0;
           $flightDate = "N/A";
           $formattedDP = "0.00";
           $formattedPrice = "0.00";
 
-          $sql1 = mysqli_query($conn, "SELECT b.pax, b.totalPrice,
-                  IF(f.flightId != 0, DATE_FORMAT(f.flightDepartureDate, '%M %d, %Y'), 'Custom Scheduled Flight') 
-                  AS onboardFlightSched, p.packageName 
-              FROM booking b 
-              JOIN flight f ON b.flightId = f.flightId 
-              JOIN package p ON b.packageId = p.packageId 
-              WHERE b.transactNo = '$transactionNumber'");
+          // Prepare the SQL statement
+          $sql1 = "SELECT b.pax, b.totalPrice, 
+                          IF(f.flightId != 0, DATE_FORMAT(f.flightDepartureDate, '%M %d, %Y'), 'Custom Scheduled Flight') AS onboardFlightSched, 
+                          p.packageName 
+                  FROM booking b 
+                  LEFT JOIN flight f ON b.flightId = f.flightId 
+                  LEFT JOIN package p ON b.packageId = p.packageId 
+                  WHERE b.transactNo = ?";
 
-          if ($sql1 && mysqli_num_rows($sql1) > 0) {
-            while ($res1 = mysqli_fetch_array($sql1)) {
-              $totalPrice = $res1['totalPrice'];
-              $formattedPrice = number_format($totalPrice, 2); // Format to 2 decimal places
-              $downpayment = $res1['pax'] * 1000;
-              $formattedDP = number_format($downpayment, 2); // Format to 2 decimal places
+          // Use prepared statement to prevent SQL injection
+          if ($stmt = $conn->prepare($sql1)) {
+              $stmt->bind_param("s", $transactionNumber);
+              $stmt->execute();
+              $result = $stmt->get_result();
 
-              // Get additional fields
-              $flightDate = $res1['onboardFlightSched'];
-              $packageName = $res1['packageName'];
-              $pax = $res1['pax'];
-            }
+              // Fetch the result
+              if ($result->num_rows > 0) {
+                  $res1 = $result->fetch_assoc();
+                  
+                  // Extract values
+                  $totalPrice = $res1['totalPrice'] ?? 0;
+                  $pax = $res1['pax'] ?? 0;
+                  $flightDate = $res1['onboardFlightSched'] ?? "N/A";
+                  $packageName = $res1['packageName'] ?? "N/A";
+
+                  // Format values
+                  $formattedPrice = number_format($totalPrice, 2);
+                  $downpayment = $pax * 1000;
+                  $formattedDP = number_format($downpayment, 2);
+              } else {
+                  echo "<p class='text-danger'>No booking details found for TransactNo: $transactionNumber.</p>";
+              }
+
+              // Close statement
+              $stmt->close();
           } else {
-            echo "<p class='text-danger'>No booking details found for TransactNo: $transactionNumber.</p>";
+              echo "<p class='text-danger'>Database error: " . $conn->error . "</p>";
           }
+
           ?>
 
           <div class="row">

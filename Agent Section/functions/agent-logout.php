@@ -23,11 +23,13 @@ if (isset($_SESSION['accountId'])) {
     // Check if account exists and fetch account type
     if ($row = $result->fetch_assoc()) {
         $accountType = $row['accountType']; // 'admin', 'agent', 'employee', 'guest'
-
-        // Unset session variables and destroy session
-        unset($_SESSION['accountId']);
-        session_destroy();
-
+    
+        // Check if account type is guest, then unset session variables
+        if ($accountType === 'guest') {
+            unset($_SESSION['accountId']);
+            unset($_SESSION['flightId']);
+        }
+    
         // Return account type in the response
         echo json_encode(["status" => "success", "accountType" => $accountType]);
         exit;
@@ -35,6 +37,7 @@ if (isset($_SESSION['accountId'])) {
         echo json_encode(["status" => "error", "message" => "Account not found."]);
         exit;
     }
+    
 
 } else {
     echo json_encode(["status" => "error", "message" => "No session found."]);
