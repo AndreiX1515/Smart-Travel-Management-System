@@ -99,22 +99,17 @@
                         p.packageName AS PackageName, DATE_FORMAT(b.bookingDate, '%m.%d.%Y') AS BookingDate, 
                         b.pax AS TotalPax,  b.totalPrice AS PackagePrice, 
                         CONCAT(a.lName, ', ', a.fName, ' ', IFNULL(CONCAT(SUBSTRING(a.mName, 1, 1), '.'), '')) AS agentName,
-                        SUM(pa.amount) AS TotalAmountPaid 
-                      FROM 
-                          booking b
-                      JOIN 
-                          flight f ON f.flightId = b.flightId
-                      JOIN 
-                          package p ON p.packageId = b.packageId
-                      JOIN 
-                          agent a ON a.agentId = b.agentId
-                      LEFT JOIN 
-                          payment pa ON pa.transactNo = b.transactNo AND pa.paymentStatus = 'Approved'
+                        SUM(pa.amount) AS TotalAmountPaid, br.branchName as branchName
+                      FROM booking b
+                      JOIN branch br ON b.agentCode = br.branchAgentCode
+                      JOIN flight f ON f.flightId = b.flightId
+                      JOIN package p ON p.packageId = b.packageId
+                      JOIN agent a ON a.agentId = b.agentId
+                      LEFT JOIN payment pa ON pa.transactNo = b.transactNo AND pa.paymentStatus = 'Approved'
                       GROUP BY 
-                          b.transactNo, f.flightDepartureDate, f.returnDepartureDate, b.status, p.packageName, 
-                          b.bookingDate, b.pax, b.totalPrice, a.lName, a.fName, a.mName
-                      ORDER BY 
-                          b.transactNo, b.agentCode ASC";
+                        b.transactNo, f.flightDepartureDate, f.returnDepartureDate, b.status, p.packageName, 
+                        b.bookingDate, b.pax, b.totalPrice, a.lName, a.fName, a.mName
+                      ORDER BY b.transactNo, b.agentCode ASC";
 
               // Execute the query
               $result = $conn->query($sql);
@@ -165,7 +160,7 @@
                   // Output each row as a table row
                   echo "<tr data-url='emp-transactionInfo.php?id=$transactNo'>";
                   echo "<td>$transactNo</td>";
-                  echo "<td>$agentName</td>";
+                  echo "<td>{$row['branchName']}</td>";
                   // echo "<td>$packageName</td>";
                   echo "<td>$departureDate</td>";
                   echo "<td>$returnDate</td>";

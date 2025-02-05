@@ -834,9 +834,11 @@
                     <?php
                       $query1 = "SELECT b.*, f.flightDepartureDate AS Start, p.packageName,
                                         f.returnDepartureDate AS End, CONCAT(a.lName, ', ', a.fName, 
-                                        IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1)), '')) AS agentName
+                                        IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1)), '')) AS agentName,
+                                        br.branchName as branchName
                                   FROM booking b 
                                   JOIN agent a ON b.agentId = a.agentId
+                                  JOIN branch br ON b.agentCode = br.branchAgentCode
                                   JOIN flight f ON b.flightId = f.flightId
                                   JOIN package p ON b.packageId = p.packageId
                                   WHERE status = 'Confirmed'";
@@ -873,7 +875,7 @@
                               // Generate the table row
                               echo "<tr>
                                       <td>{$row['transactNo']}</td>
-                                      <td>{$row['agentName']}</td>
+                                      <td>{$row['branchName']}</td>
                                       <td>{$row['packageName']}</td>
                                       <td>{$row['Start']}</td>
                                       <td>{$row['pax']}</td>

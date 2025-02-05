@@ -158,15 +158,17 @@
                           c.concernTitle AS `RequestTitle`, cd.details AS `RequestDetails`, b.pax AS `TotalPax`,
                           r.requestCost as requestCost,
                           r.customRequest as customRequest, r.details as details, DATE_FORMAT(r.requestDate, '%m-%d-%Y') AS `RequestDate`, 
-                          r.requestStatus AS `Status`
+                          r.requestStatus AS `Status`, br.branchName as branchName
                       FROM 
                           request r
+                      
                       LEFT JOIN 
                           concern c ON r.concernId = c.concernId
                       LEFT JOIN 
                           concerndetails cd ON r.concernDetailsId = cd.concernDetailsId
                       LEFT JOIN 
                           booking b ON r.transactNo = b.transactNo
+                      JOIN branch br ON b.agentCode = br.branchAgentCode
                       LEFT JOIN 
                           payment p ON b.transactNo = p.transactNo
                       LEFT JOIN 
@@ -205,7 +207,7 @@
                   // Output table row with data-transactno attribute
                   echo "<tr class='request-row' data-requestId='{$row['requestId']}'>
                           <td>{$row['TransactNo']}</td>
-                          <td>{$row['AgentName']}</td>
+                          <td>{$row['branchName']}</td>
                           <td>{$title}</td>
                           <td>{$details}</td>
                           <td>{$row['details']}</td>
