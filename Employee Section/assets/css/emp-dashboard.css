@@ -650,7 +650,8 @@
    Table Header Styles
 ============================ */
 .confirm-table thead {
-  background-color: gainsboro;
+  background-color: rgb(224, 15, 0);
+  color: white;
   text-align: left;
   position: sticky; /* Sticky header */
   top: 0;
@@ -661,7 +662,7 @@
   font-size: 14px;
   padding: 6px 14px;
   font-weight: bold;
-  color: #333;
+  color: white;
   border-bottom: 2px solid rgba(0, 0, 0, 0.1);
 }
 

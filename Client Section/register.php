@@ -171,6 +171,10 @@ if (isset($_GET['flightid'])) {
         </div>
     </div>
 
+    <?php 
+    // include '../Client Section/Includes/scripts.php'; 
+    ?>
+    
     <script>
         document.getElementById('floatingOtp').addEventListener('input', function(event) {
             let value = event.target.value;
@@ -477,23 +481,6 @@ if (isset($_GET['flightid'])) {
             });
         });
 
-        // Function to handle message fade out
-        function showMessage() {
-            // Show message, then fade out after 5 seconds
-            setTimeout(function() {
-                $('#message-1').fadeOut(500, function() {
-                    $('#message-1').text('').removeClass('show').show(); // Reset after fade out
-                });
-            }, 5000); // 5 seconds
-
-            setTimeout(function() {
-                $('#message-otp').fadeOut(500, function() {
-                    $('#message-otp').text('').removeClass('show').show(); // Reset after fade out
-                });
-            }, 5000); // 5 seconds
-        }
-
-
         // Function to start the OTP countdown
         function startOtpCountdown(linkElement) {
             $(linkElement).addClass('link-dark disabled'); // Add dark class and disabled class to grey it out
@@ -520,12 +507,34 @@ if (isset($_GET['flightid'])) {
             $(linkElement).css('pointer-events', 'none');
         }
 
+
+          // Function to handle message fade out
+          function showMessage() {
+            // Show message, then fade out after 5 seconds
+            setTimeout(function() {
+                $('#message-1').fadeOut(500, function() {
+                    $('#message-1').text('').removeClass('show').show(); // Reset after fade out
+                });
+            }, 5000); // 5 seconds
+
+            setTimeout(function() {
+                $('#message-otp').fadeOut(500, function() {
+                    $('#message-otp').text('').removeClass('show').show(); // Reset after fade out
+                });
+            }, 5000); // 5 seconds
+        }
+
+        
         // Event listener for sending OTP
         $('#sendOtpLink-modal').on('click', function(e) {
             e.preventDefault(); // Prevent default behavior
 
             // Start the OTP countdown immediately when the link is clicked
             startOtpCountdown(this); // Pass the link element
+
+            let branchIdfield = $('#branchId');
+            let branchId = branchIdfield.val();
+
             console.log(branchId);
 
             $.ajax({
@@ -548,80 +557,48 @@ if (isset($_GET['flightid'])) {
             });
         });
 
-        // OTP verification handler
-        document.getElementById('verifyOtpButton').addEventListener('click', function(e) {
-            e.preventDefault();
+        $(document).ready(function () {
+            $('#verifyOtpButton').click(function (e) {
+                e.preventDefault();
 
-            // Get the OTP input value
-            let otp = document.querySelector('input[name="Reg-OTP"]').value;
-            console.log("Entered OTP:", otp);
+                let otp = $('input[name="Reg-OTP"]').val();
+                console.log("Entered OTP:", otp);
 
-            let formData = 'Reg-OTP=' + encodeURIComponent(otp); // Prepare the data to send in the request
+                $.ajax({
+                    url: '../Client Section/Functions/verify-otp.php',
+                    method: 'POST',
+                    data: { 'Reg-OTP': otp },
+                    dataType: 'json',
+                    beforeSend: function () {
+                        $('#verifyOtpButton').prop('disabled', true).text('Verifying...');
+                    },
+                    success: function (response) {
+                        $('#verifyOtpButton').prop('disabled', false).text('Verify OTP');
+                        console.log("Parsed Response:", response);
 
-            // Create a new XMLHttpRequest
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', '../Client Section/Functions/verify-otp.php', true);
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-            // Debugging the data being sent
-            console.log("Sending data:", formData);
-
-            // Define the onload handler for the response
-            xhr.onload = function() {
-                if (xhr.status === 200) {
-                    // Debugging the response from the server
-                    console.log("Response from server:", xhr.responseText);
-
-                    // Parse the response JSON
-                    try {
-                        var data = JSON.parse(xhr.responseText);
-                        console.log("Parsed Response:", data);
-
-                        // Check if the OTP verification was successful
-                        if (data.success) {
-                            // Show the success modal
+                        if (response.success) {
+                            console.log("Success Message:", response.message);
                             $('#successModal').modal('show');
 
-                            // Handle the OK button click
-                            document.getElementById('okButton').addEventListener('click', function() {
-                                let flightId = "<?php echo isset($_SESSION['flightid']) ? $_SESSION['flightid'] : ''; ?>";
-                                let redirectUrl = flightId ? 'login.php?flightid=' + encodeURIComponent(flightId) : 'login.php';
-
-                                window.location.href = redirectUrl; // Redirect to login while keeping flightid if available
+                            $('#okButton').off('click').on('click', function () {
+                                window.location.href = 'login.php';
                             });
-
                         } else {
-                            // Show an error message
-                            document.getElementById('message-otp').textContent = data.message;
-                            document.getElementById('message-otp').classList.add('show');
+                            $('#message-otp').text(response.message).addClass('show');
                         }
-                    } catch (e) {
-                        console.error("Error parsing response JSON:", e);
-                        document.getElementById('message-otp').textContent = 'Failed to process the response. Please try again.';
-                        document.getElementById('message-otp').classList.add('show');
+                    },
+                    error: function () {
+                        $('#verifyOtpButton').prop('disabled', false).text('Verify OTP');
+                        $('#message-otp').text('Failed to verify OTP. Please try again.').addClass('show');
                     }
-                } else {
-                    // Handle errors with the request
-                    console.error("Request failed. Status:", xhr.status);
-                    document.getElementById('message-otp').textContent = 'Failed to verify OTP. Please try again.';
-                    document.getElementById('message-otp').classList.add('show');
-                }
-            };
-
-            // Define the onerror handler
-            xhr.onerror = function() {
-                console.error("Request error.");
-                document.getElementById('message-otp').textContent = 'Error while sending request. Please try again.';
-                document.getElementById('message-otp').classList.add('show');
-            };
-
-            // Send the request with the form data
-            xhr.send(formData);
+                });
+            });
         });
+
+
+
     </script>
 
-
-    <?php include '../Client Section/Includes/scripts.php'; ?>
 
     <!-- View Password Toggle -->
     <script>

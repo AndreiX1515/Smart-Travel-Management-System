@@ -887,7 +887,7 @@ position: relative;
 /* Optional: Add padding and borders to table cells for better visibility */
 .info-table td, .info-table th {
  padding: 8px 12px;
- border: 1px solid #ddd; /* Light border for table cells */
+ border: 1px solid #2c2c2c; /* Light border for table cells */
  box-sizing: border-box; /* Prevents overflow */
  white-space: nowrap; /* Prevents text wrapping for a cleaner look */
 }
@@ -899,8 +899,8 @@ position: relative;
  font-weight: bold;
  position: sticky;
  top: 0;
- background-color: #343a40;
- color: #fff;
+ background-color: gainsboro;
+ color: #424242;
  z-index: 2;
  border: 1px solid #4e4e4e; 
  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);

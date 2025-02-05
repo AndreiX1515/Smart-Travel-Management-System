@@ -1,17 +1,22 @@
 <?php
 session_start();
 
-// Unset specific session variables
-unset($_SESSION['employee_accountId']);
-unset($_SESSION['employee_employeeId']);
-unset($_SESSION['employee_fName']);
-unset($_SESSION['employee_lName']);
-unset($_SESSION['employee_mName']);
-unset($_SESSION['email']);
-unset($_SESSION['password']);
-unset($_SESSION['employee_userType']);
+// Check if the session is already empty
+if (empty($_SESSION)) {
+    echo json_encode(['success' => true, 'message' => 'No active session found.']);
+    exit;
+}
 
-// Send success response
-http_response_code(200);
+// Unset specific session variables if they exist
+unset($_SESSION['employee_accountId'], $_SESSION['employee_employeeId'], $_SESSION['employee_fName'], 
+      $_SESSION['employee_lName'], $_SESSION['employee_mName'], $_SESSION['email'], 
+      $_SESSION['password'], $_SESSION['employee_userType']);
+
+// Destroy session completely
+session_destroy();
+
+// Return JSON response
+header('Content-Type: application/json');
+echo json_encode(['success' => true, 'message' => 'Logout successful.']);
 exit;
 ?>

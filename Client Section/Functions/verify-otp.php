@@ -2,10 +2,9 @@
 session_start(); // Start the session
 require '../../conn.php'; // Your database connection
 
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
+ini_set('display_errors', 1); 
+ini_set('display_startup_errors', 1); 
 error_reporting(E_ALL);
-
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   // Common function to output JSON response
@@ -129,7 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Store registration data in session for later use (after OTP verification)
     $_SESSION['Reg-FirstName'] = $firstName;
-    $_SESSION['Reg-LastName'] = $lastName;
+    $_SESSION['Reg-LastName'] = $lastName;        
     $_SESSION['Reg-MiddleName'] = $middleName;
     $_SESSION['Reg-Email'] = $email;
     $_SESSION['Reg-Password'] = $password;
@@ -138,7 +137,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $_SESSION['otp'] = generateVerificationCode();
 
     // Placeholder: Print OTP for demonstration (remove this in production)
-    echo jsonResponse(true, 'OTP sent to your email. Your OTP is: ' . $_SESSION['otp']);
+    jsonResponse(true, 'OTP sent to your email. Your OTP is: ' . $_SESSION['otp']);
   }
 }
 
