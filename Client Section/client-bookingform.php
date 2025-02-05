@@ -45,7 +45,7 @@ if ($accId) {
 // Close the statement
 $stmt->close();
 
-include '../Client Section/Functions/session_validate.php';
+// include '../Client Section/Functions/session_validate.php';
 ?>
 
 <!DOCTYPE html>
