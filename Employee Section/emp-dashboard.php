@@ -377,7 +377,7 @@
               <!-- USD CARD -->
               <div class="currency-card">
                 <div class="flag-icon-wrapper">
-                  <img src="../assets/Flags/english-flag.png" alt="">
+                  <img src="../Assets/Flags/english-flag.png" alt="">
                   <h6 class="mt-2">USD</h6>
                   <div class="currency-text-wrapper">
                     <h5>$ 1</h5>
@@ -392,7 +392,7 @@
               <!-- PHP CARD -->
               <div class="currency-card">
                 <div class="flag-icon-wrapper">
-                  <img src="../assets/Flags/philippines (2).png" alt="">
+                  <img src="../Assets/Flags/philippines (2).png" alt="">
                   <h6 class="mt-2">PHP</h6>
                   <div class="currency-text-wrapper">
                    <h5>₱ <?php echo number_format($usd_to_php, 2); ?></h5>
@@ -403,7 +403,7 @@
               <!-- KOR CARD -->
               <div class="currency-card">
                 <div class="flag-icon-wrapper">
-                  <img src="../assets/Flags/korean-flag.png" alt="">
+                  <img src="../Assets/Flags/korean-flag.png" alt="">
                   <h6 class="mt-2">KOR</h6>
                   <div class="currency-text-wrapper">
                     <h5>₩ <?php echo number_format($usd_to_krw, 0); ?></h5>
