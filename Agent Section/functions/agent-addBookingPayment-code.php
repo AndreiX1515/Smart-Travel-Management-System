@@ -97,6 +97,28 @@ if (isset($_POST['pay']))
           }
         }
 
+        // Corrected UPDATE statement
+        $sql1 = "UPDATE booking SET status = 'Pending' WHERE transactNo = ?";
+        $stmt1 = $conn->prepare($sql1);
+
+        if (!$stmt1) 
+        {
+          $_SESSION['status'] = "Update query preparation failed: " . $conn->error;
+          $conn->rollback();
+          header("Location: ../agent-showGuest.php?id=" . urlencode($transactNo));
+          exit();
+        }
+
+        // Bind and execute the update query
+        $stmt1->bind_param('s', $transactNo);
+        if (!$stmt1->execute()) 
+        {
+          $_SESSION['status'] = "Database error on booking update: " . $stmt1->error;
+          $conn->rollback();
+          header("Location: ../agent-showGuest.php?id=" . urlencode($transactNo));
+          exit();
+        }
+
         $conn->commit();
         $_SESSION['status'] = "Payment and proof files uploaded successfully!";
         header("Location: ../agent-showGuest.php?id=" . htmlspecialchars($transactNo));
