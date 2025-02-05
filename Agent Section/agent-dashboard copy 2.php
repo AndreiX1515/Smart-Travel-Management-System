@@ -687,6 +687,7 @@ require "../conn.php";
                           <!-- <th rowspan="2">FLIGHT SEAT</th> -->
                           <th rowspan="2">AVAILABLE SEATS</th>
                           <th rowspan="2">ADDITIONAL SEATS</th>
+                          <th rowspan="2">RETAIL PRICE</th> 
                           <!-- <th rowspan="2">AIR + LAND</th>
                           <th rowspan="2">LAND ONLY</th>
                           <th rowspan="2">WHOLESALE PRICE</th>
@@ -771,7 +772,7 @@ require "../conn.php";
                                 // echo '<td class="fw-bolder">' . $row['Air+Land'] . '</td>';
                                 // echo '<td class="fw-bolder">' . $row['LandOnly'] . '</td>';
                                 // echo '<td>₱ ' . number_format($row['WholesalePrice'], 2) . '</td>';
-                                // echo '<td>₱ ' . number_format($row['RetailPrice'], 2) . '</td>';
+                                echo '<td>₱ ' . number_format($row['RetailPrice'], 2) . '</td>';
                                 // echo '<td>₱ ' . number_format($row['LandArrangement'], 2) . '</td>';
                               echo '</tr>';
                             }
