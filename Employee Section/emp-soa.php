@@ -618,42 +618,43 @@
         console.warn("Invalid input: Please select a flight date OR both month and year."); // Debugging
         return;
       }
-
-      // Function to Generate SOA PDF
-      function generateSoAPdf(soaNumber, requestData) 
-      {
-        requestData.soaNumber = soaNumber;
-        console.log("Generating PDF for SOA Number:", soaNumber);
-        console.log("Request Data for PDF:", requestData); // Debugging
-
-        $.ajax(
-        {
-          url: "../Employee Section/functions/generateSoA.php",
-          type: "POST",
-          data: requestData,
-          xhrFields: { responseType: "blob" }, // Expect a PDF file
-          success: function (blob) 
-          {
-            console.log("PDF Blob received:", blob); // Debugging
-            const link = document.createElement("a");
-            link.href = window.URL.createObjectURL(blob);
-            link.download = `Statement_of_Account_${soaNumber}.pdf`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            console.log("PDF download triggered successfully."); // Debugging
-          },
-          error: function (xhr, status, error) 
-          {
-            console.error("PDF Generation Error:", status, error, xhr.responseText); // Debugging
-            alert("Failed to generate the SOA PDF. Please try again.");
-          },
-        });
-      }
     });
+
+    // Function to Generate SOA PDF
+    function generateSoAPdf(soaNumber, requestData) 
+    {
+      requestData.soaNumber = soaNumber;
+
+      $.ajax(
+      {
+        url: "../Employee Section/functions/generateSoA.php",
+        type: "POST",
+        data: requestData,
+        xhr: function () 
+        {
+          let xhr = new XMLHttpRequest();
+          xhr.responseType = "blob"; // Expect binary response
+          return xhr;
+        },
+        success: function (data) 
+        {
+          const blob = new Blob([data], { type: "application/pdf" });
+          const link = document.createElement("a");
+          link.href = window.URL.createObjectURL(blob);
+          link.download = `Statement_of_Account_${soaNumber}.pdf`;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        },
+        error: function (xhr, status, error) 
+        {
+          console.error("PDF Generation Error:", status, error, xhr.responseText);
+          alert("Failed to generate the SOA PDF. Please try again.");
+        }
+      });
+    }
   });
 </script>
-
 
 <!-- Orig Preview SoA -->
 <!-- <script>
