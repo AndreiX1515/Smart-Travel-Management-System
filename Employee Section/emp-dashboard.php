@@ -457,7 +457,7 @@
                 <th rowspan="2">WHOLESALE PRICE</th>
                 <th rowspan="2">RETAIL PRICE</th>
                 <th rowspan="2" style="font-size: 10px; padding: 0px 5px">LAND ARRANGEMENT PRICE</th>
-
+                <th rowspan="2" style="font-size: 10px; padding: 0px 5px">LAND PRICE</th>
                 <!-- Dynamic headers for agent columns -->
                 <?php
                   // Define an array of colors to style the <th> elements
@@ -555,7 +555,7 @@
                               SUM(CASE WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') AND b.bookingType = 'Package' AND 
                                a.agentType = 'Wholeseller' THEN b.pax ELSE 0 END) AS `LandOnly`,
                               f.wholesalePrice AS WholesalePrice, f.flightPrice AS RetailPrice, p.packagePrice AS LandArrangement,
-                              $agentColumns
+                              f.landPrice as landPrice, $agentColumns
                           FROM 
                               employee e
                           JOIN 
@@ -615,6 +615,7 @@
                     echo '<td>₱ ' . number_format($row['WholesalePrice'], 2) . '</td>';
                     echo '<td>₱ ' . number_format($row['RetailPrice'], 2) . '</td>';
                     echo '<td>₱ ' . number_format($row['LandArrangement'], 2) . '</td>';
+                    echo '<td>₱ ' . number_format($row['landPrice'], 2) . '</td>';
 
                     foreach ($row as $key => $value) {
                         $colors = ['#ADD8E6', '#98FB98', '#FFFFCC', '#E6E6FA', '#FFDAB9']; // Color array

@@ -599,597 +599,593 @@ require "../conn.php";
 
 
 <script>
-$(document).ready(function () 
-{
-  // Fetching Origin once Package was Selected
-  $('#packageName').on('change', function () 
+  $(document).ready(function () 
   {
-    var packageId = $(this).val();
-    var selectedPackageName = $("#packageName option:selected").text();
-    $('#origin').html('<option selected disabled>Select Origin</option>'); // Clear origin field
-    $('#year').html('<option selected disabled>Select Year</option>'); // Clear year field
-    $('#month').html('<option selected disabled>Select Month</option>'); // Clear month field
-    $('#flightDate').html('<option selected disabled>Select Flight Date</option>'); // Clear Flight Date field
-    $('#flightId').val(''); // Clear Flight Id field
-    $('#flightPrice').text('0.00'); // Clear Flight Price field
-    $('#maxSeats').text(''); // Clear Max Seat field
-    $('#availSeats').text(''); // Clear Avail Seats field
-    $('#displayTotalPrice').text("0.00"); // Display total price
-    $('#totalPrice').val("0.00"); // Set hidden input value
-    $('#totalPax').val("Enter Total Pax"); // Set Total Pax value
-
-    // Update the modal with the selected package name
-    $('#selectedPackage').text(selectedPackageName);
-
-    if (packageId) 
+    // Fetching Origin once Package was Selected
+    $('#packageName').on('change', function () 
     {
-      $.ajax(
+      var packageId = $(this).val();
+      var selectedPackageName = $("#packageName option:selected").text();
+      $('#origin').html('<option selected disabled>Select Origin</option>'); // Clear origin field
+      $('#year').html('<option selected disabled>Select Year</option>'); // Clear year field
+      $('#month').html('<option selected disabled>Select Month</option>'); // Clear month field
+      $('#flightDate').html('<option selected disabled>Select Flight Date</option>'); // Clear Flight Date field
+      $('#flightId').val(''); // Clear Flight Id field
+      $('#flightPrice').text('0.00'); // Clear Flight Price field
+      $('#maxSeats').text(''); // Clear Max Seat field
+      $('#availSeats').text(''); // Clear Avail Seats field
+      $('#displayTotalPrice').text("0.00"); // Display total price
+      $('#totalPrice').val("0.00"); // Set hidden input value
+      $('#totalPax').val("Enter Total Pax"); // Set Total Pax value
+
+      // Update the modal with the selected package name
+      $('#selectedPackage').text(selectedPackageName);
+
+      if (packageId) 
       {
-        url: '../Agent Section/functions/fetchOrigin.php',
-        type: 'POST',
-        data: { packageId: packageId },
-        success: function (response) 
+        $.ajax(
         {
-          // Parse the JSON response
-          var data = JSON.parse(response);
+          url: '../Agent Section/functions/fetchOrigin.php',
+          type: 'POST',
+          data: { packageId: packageId },
+          success: function (response) 
+          {
+            // Parse the JSON response
+            var data = JSON.parse(response);
 
-          // Update the origin dropdown
-          $('#origin').html(data.originOptions); // Use originOptions from the response
+            // Update the origin dropdown
+            $('#origin').html(data.originOptions); // Use originOptions from the response
 
-          // Update the package price input
-          $('#packagePrice').val(data.packagePrice); // Set the package price value
+            // Update the package price input
+            $('#packagePrice').val(data.packagePrice); // Set the package price value
 
-          // console.log(data); // Optional: For debugging
-        },
-        error: function (xhr, status, error) 
-        {
-          console.error('Error fetching origins:', error); // Log the error to console
-        }
-      });
-    } 
-    else 
-    {
-      $('#origin').html('<option selected disabled>Select Origin</option>');
-    }
-  });
-
-  // Fetching Distinct Year once origin was Selected
-  $('#origin').on('change', function () 
-  {
-    var packageId = $('#packageName').val();
-    var origin = $('#origin').val();
-    var selectedOrigin = $("#origin option:selected").text();
-
-    // Update the modal with the selected origin
-    $('#selectedOrigin').text(selectedOrigin);
-
-    $('#year').html('<option selected disabled>Select Year</option>'); // Clear year field
-    $('#month').html('<option selected disabled>Select Month</option>'); // Clear month field
-    $('#flightDate').html('<option selected disabled>Select Flight Date</option>'); // Clear Flight Date field
-    $('#flightId').val(''); // Clear Flight Id field
-    $('#flightPrice').text('0.00'); // Clear Flight Price field
-    $('#maxSeats').text(''); // Clear Max Seat field
-    $('#availSeats').text(''); // Clear Avail Seats field
-    $('#displayTotalPrice').text("0.00"); // Display total price
-    $('#totalPrice').val("0.00"); // Set hidden input value
-    $('#totalPax').val("Enter Total Pax"); // Set Total Pax value
-
-    if (packageId && origin) 
-    {
-      $.ajax(
-      {
-        url: '../Agent Section/functions/fetchYear.php',
-        type: 'POST',
-        data: { packageId: packageId, origin: origin}, // Send packageId, origin
-        success: function (response) 
-        {
-          // console.log(response); // Debugging the response
-          $('#year').html(response); // Update year dropdown with the fetched years
-        },
-        error: function (xhr, status, error) 
-        {
-          console.error('Error fetching year:', error); // Log the error to console
-        }
-      });
-    } 
-    else 
-    {
-      $('#year').html('<option selected disabled>Select Year</option>');
-    }
-  });
-
-  // Fetching Distinct Month once year depending on the package and origin was Selected
-  $('#year').on('change', function () 
-  {
-    var packageId = $('#packageName').val();
-    var origin = $('#origin').val();
-    var selectedYear = $('#year').val();  // Get the selected year
-
-    // Clear month and flight fields
-    $('#month').html('<option selected disabled>Select Month</option>');
-    $('#flightDate').html('<option selected disabled>Select Flight Date</option>');
-    $('#flightId').val('');  // Clear Flight Id field
-    $('#flightPrice').val('0.00'); // Clear Flight Price field
-    $('#maxSeats').text(''); // Clear Max Seat field
-    $('#availSeats').text(''); // Clear Avail Seats field
-    $('#displayTotalPrice').text("0.00"); // Display total price
-    $('#totalPrice').val("0.00"); // Set hidden input value
-    $('#totalPax').val("Enter Total Pax"); // Set Total Pax value
-
-    if (packageId && origin && selectedYear) 
-    {
-      $.ajax(
-      {
-        url: '../Agent Section/functions/fetchMonth.php',  // PHP file to fetch distinct months
-        type: 'POST',
-        data: {
-          packageId: packageId,
-          origin: origin,
-          year: selectedYear  // Send the selected year to fetch relevant months
-        },
-        success: function (response) 
-        {
-          // Update month dropdown with the fetched distinct months
-          $('#month').html(response);
-        },
-        error: function (xhr, status, error) 
-        {
-          console.error('Error fetching months:', error);  // Log the error to the console
-        }
-      });
-    } 
-    else 
-    {
-      $('#month').html('<option selected disabled>Select Month</option>');
-    }
-  });
-
-  // Fetching Flight Date based on the package, origin, year, and month
-  $('#month').on('change', function () 
-  {
-    var packageId = $('#packageName').val();
-    var origin = $('#origin').val();
-    var selectedYear = $('#year').val();  // Get the selected year
-    var selectedMonth = $('#month').val();  // Get the selected month
-
-    // Clear flight fields
-    $('#flightDate').html('<option selected disabled>Select Flight Date</option>');
-    $('#flightId').val('');  // Clear Flight Id field
-    $('#flightPrice').text('0.00'); // Clear Flight Price field
-    $('#flightPrice').val('0.00'); // Clear Flight Price field
-    $('#maxSeats').text(''); // Clear Max Seat field
-    $('#availSeats').text(''); // Clear Avail Seats field
-    $('#displayTotalPrice').text("0.00"); // Display total price
-    $('#totalPrice').val("0.00"); // Set hidden input value
-    $('#totalPax').val("Enter Total Pax"); // Set Total Pax value
-
-    if (packageId && origin && selectedYear && selectedMonth) 
-    {
-      $.ajax(
-      {
-        url: '../Agent Section/functions/fetchFlightDate.php',  // PHP file to fetch flight dates
-        type: 'POST',
-        data: {
-          packageId: packageId,
-          origin: origin,
-          year: selectedYear,
-          month: selectedMonth  // Send the selected month to fetch relevant flight dates
-        },
-        success: function (response) 
-        {
-          // Update flight date dropdown with the fetched flight dates
-          $('#flightDate').html(response);
-        },
-        error: function (xhr, status, error) 
-        {
-          console.error('Error fetching flight dates:', error);  // Log the error to the console
-        }
-      });
-    } 
-    else 
-    {
-      $('#flightDate').html('<option selected disabled>Select Flight Date</option>');
-    }
-  });
-
-  // Fetching Flight Id once Flight Date was Selected
-  $('#flightDate').on('change', function () 
-  {
-    var flightDate = $(this).val();
-    var selectedFlight = $("#flightDate option:selected").text();
-    // Extract only the flight date by splitting at the " || " (delimiter between date and price)
-    var selectedDate = selectedFlight.split(' || ')[0].trim();
-
-    // Update the <p> element with the extracted flight date
-    $('#selectedDate').text(selectedDate);
-
-    if (flightDate === "Null") 
-    {
-      // If outbound flight is "Null", use the package price instead of the flight price
-      var packagePrice = parseFloat($('#packagePrice').val()); // Get the package price value
-      flightPrice = packagePrice; // Ensure it's a number
-      var formattedPrice = packagePrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-      const totalPax = parseInt($('#totalPax').val()) || 0;
-      const totalPrice = flightPrice * totalPax;
-
-      // Update the flight price display with the formatted package price
-      $('#flightPrice').text(formattedPrice);
-
-      // Update the flight price for all guests with the package price
-      $('input[name="flightPrice"]').val(packagePrice);
-
-      $('input[name="flightId"]').val("Null");
-
-      // Manually trigger the change event on #flightId
-      $('#flightId').trigger('change');
-
-      // Format total price with commas
-      $('#displayTotalPrice').text(formatNumberWithCommas(totalPrice.toFixed(2))); // Display total price
-      $('#totalPrice').val(totalPrice.toFixed(2)); // Set hidden input value
-
-      console.log('Outbound flight is null, using package price:', packagePrice);
-    } 
-    else if (flightDate) 
-    {
-      // If a valid outbound flight is selected, fetch return flight and flight price
-      $.ajax(
-      {
-        url: '../Agent Section/functions/fetchFlightId.php', // Separate PHP file for return flight
-        type: 'POST',
-        data: { flightDate: flightDate },
-        success: function (response) 
-        {
-          var data = JSON.parse(response); // Parse the JSON response
-
-          flightPrice = parseFloat(data.flightPrice); // Ensure it's a number
-
-          // Format the price with commas and two decimal places
-          var formattedPrice = flightPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-
-          // Update the flight price display with the formatted price
-          $('#flightPrice').text(formattedPrice);
-          $('#flightPricee').val(formattedPrice);
-
-          // Update the flight ID 
-          $('input[name="flightId"]').val(data.flightId);
-
-          // Manually trigger the change event on #flightId
-          $('#flightId').trigger('change');
-
-          const totalPax = parseInt($('#totalPax').val()) || 0;
-          const totalPrice = flightPrice * totalPax;
-
-          // Format total price with commas
-          $('#displayTotalPrice').text(formatNumberWithCommas(totalPrice.toFixed(2))); // Display total price
-          $('#totalPrice').val(totalPrice.toFixed(2)); // Set hidden input value
-
-        },
-        error: function (xhr, status, error) 
-        {
-          console.error('Error fetching return flight:', error); // Log the error to console
-        }
-      });
-    } 
-    else 
-    {
-      // If no Flight Date is selected, clear return flight input fields
-      console.error('Error fetching Flight Date:', error); // Log the error to console
-    }
-  });
-
-  // Event listeners
-  $('#flightId').on('change', updateTotalPaxMax); // Trigger on flight change
-  $('#land').on('change', updateTotalPaxMax);    // Trigger on "Land Only" checkbox toggle
-
-  // Ensure that if the user manually enters a number greater than the max, it's automatically corrected
-  $('#totalPax').on('input', function() 
-  {
-    var maxSeats = parseInt($(this).attr('max'));
-    var currentPax = parseInt($(this).val());
-
-    // If currentPax is greater than maxSeats or less than 1, adjust the value
-    if (currentPax > maxSeats) {
-      $(this).val(maxSeats); // Reset to the max value
-    } else if (currentPax < 1 || isNaN(currentPax)) {
-      $(this).val(1); // Reset to 1 if the value is less than 1 or not a number
-    }
-  });
-
-  // Book Now Button Click Event
-  $('#bookNowButton').click(function (event) 
-  {
-    event.preventDefault(); // Prevent default form submission
-
-    const errors = {
-      packageName: 'Please Select a Package.',
-      totalPax: 'Please Enter Total Pax.',
-      origin: 'Please Select Origin',
-      year: 'Please Select Year',
-      month: 'Please Select Month',
-      flightDate: 'Please Select Flight Date.',
-      fName: 'Please Enter First Name',
-      lName: 'Please Enter Last Name',
-      mName: 'Please Enter Middle Name',
-      suffix: 'Please Select Suffix',
-      countryCode: 'Please Select Country Code',
-      contactNo: 'Please Enter Contact No',
-      email: 'Please Enter Email'
-    };
-
-    // Reset error messages and remove invalid class
-    $('span[id$="Error"]').text('');
-    $('select, input').removeClass('is-invalid');
-
-    let isValid = true; // Initialize isValid flag
-    // Extract the numeric value from the label's text
-    let totalSeatsText = $('#availSeats').text();
-    let totalSeats = parseInt(totalSeatsText.replace(/\D/g, '')) || 0;  // Replace all non-digit characters and parse the number
-    let landOnly = $('#land').prop('checked');
-
-    console.log(totalSeats);
-
-    // Validation function
-    const validateField = (selector, errorMsgKey) => 
-    {
-      const fieldValue = $(selector).val();
-      if (!fieldValue) 
-      {
-        $(`${selector}Error`).text(errors[errorMsgKey]); // Update error message
-        $(selector).addClass('is-invalid'); // Add invalid class
-        isValid = false; // Set valid flag to false
-      }
-    };
-
-    // Validate all fields
-    validateField('#packageName', 'packageName');
-    validateField('#totalPax', 'totalPax');
-    validateField('#origin', 'origin');
-    validateField('#year', 'year');
-    validateField('#month', 'month');
-    validateField('#flightDate', 'flightDate');
-    validateField('#fName', 'fName');
-    validateField('#lName', 'lName');
-    validateField('#mName', 'mName');
-    validateField('#suffix', 'suffix');
-    validateField('#countryCode', 'countryCode');
-    validateField('#contactNo', 'contactNo');
-    validateField('#email', 'email');
-
-    // Additional check for totalPax to ensure it is not 0
-    const totalPax = parseInt($('#totalPax').val());
-    if (totalPax === 0 || isNaN(totalPax)) 
-    {
-      $('#totalPaxError').text('Total Pax cannot be 0. Please enter a valid number.');
-      $('#totalPax').addClass('is-invalid');
-      isValid = false;
-    }
-
-    // Clear error messages when inputs are focused or changed
-    $('select, input').on('focus change', function () 
-    {
-      const errorSpanId = `#${$(this).attr('id')}Error`;
-      $(this).removeClass('is-invalid'); // Remove invalid class
-      $(errorSpanId).text(''); // Clear error message
-      $('#errorMessage').text(''); // Show error message in the UI
-    });
-
-    // Combined validation for Land Only or Seat availability
-    if (isValid) 
-    {
-      const firstName = $('#fName').val().trim();
-      const lastName = $('#lName').val().trim();
-      let middleName = $('#mName').val().trim() || '';
-      let suffix = $('#suffix').val().trim() || '';
-      let email = $('#email').val().trim();
-
-      // Set suffix and middle name to an empty string if they are "N/A"
-      suffix = suffix === 'N/A' ? '' : suffix;
-      middleName = middleName === 'N/A' ? '' : middleName;
-
-      // Format middle name to the first letter followed by a dot, if not empty
-      middleName = middleName ? middleName.charAt(0) + '.' : '';
-
-      // Concatenate to full name in the desired format
-      const fullName = `${lastName}, ${firstName} ${suffix} ${middleName}`;
-
-      // Check if "Land Only" is selected
-      if ($('#land').prop('checked')) 
-      {
-        // Set the full name and email, and trigger modal
-        $('#contactPersonName').text(fullName);
-        $('#contactPersonEmail').text(email);
-        $('#guestCount').text(totalPax);
-        $('#BookingSummaryModal').modal('show'); // Trigger modal display
-      } 
-      else if (totalPax > totalSeats) 
-      {
-        // If land only is not selected, check for seat availability
-        $('#errorMessage').text('The Available Seats are not enough.'); // Show error message in the UI
-        alert('The Available Seats are not enough.'); // Show error message as an alert
+            // console.log(data); // Optional: For debugging
+          },
+          error: function (xhr, status, error) 
+          {
+            console.error('Error fetching origins:', error); // Log the error to console
+          }
+        });
       } 
       else 
       {
-        // Set the full name in the contactPersonName paragraph
-        $('#contactPersonName').text(fullName);
-        // Set the email in the email paragraph
-        $('#contactPersonEmail').text(email);
-        // Set the total number of guests in the guestCount paragraph
-        $('#guestCount').text(totalPax);
-
-        $('#BookingSummaryModal').modal('show'); // Trigger modal display
+        $('#origin').html('<option selected disabled>Select Origin</option>');
       }
-    } 
-    else 
+    });
+
+    // Fetching Distinct Year once origin was Selected
+    $('#origin').on('change', function () 
     {
-      $('#errorMessage').text('Validation failed or no seats available.'); // Show error message in the UI
-      console.error('Validation failed or no seats available.');
-    }
-  });
+      var packageId = $('#packageName').val();
+      var origin = $('#origin').val();
+      var selectedOrigin = $("#origin option:selected").text();
 
+      // Update the modal with the selected origin
+      $('#selectedOrigin').text(selectedOrigin);
 
-  // Automatically recalculate total price when flightDate or totalPax changes
-  $('#flightDate, #totalPax').on('input change', function () 
-  {
-    updateTotalPrice(); // Recalculate total price
-  });
+      $('#year').html('<option selected disabled>Select Year</option>'); // Clear year field
+      $('#month').html('<option selected disabled>Select Month</option>'); // Clear month field
+      $('#flightDate').html('<option selected disabled>Select Flight Date</option>'); // Clear Flight Date field
+      $('#flightId').val(''); // Clear Flight Id field
+      $('#flightPrice').text('0.00'); // Clear Flight Price field
+      $('#maxSeats').text(''); // Clear Max Seat field
+      $('#availSeats').text(''); // Clear Avail Seats field
+      $('#displayTotalPrice').text("0.00"); // Display total price
+      $('#totalPrice').val("0.00"); // Set hidden input value
+      $('#totalPax').val("Enter Total Pax"); // Set Total Pax value
 
-  // Recalculate total price when "land" checkbox is toggled
-  document.getElementById('land').addEventListener('change', function() 
-  {
-    updateTotalPrice(); // Recalculate total price when land is checked/unchecked
-  });
-
-  // Function to update total price calculation
-  function updateTotalPrice() 
-  {
-    let totalPrice = 0;
-    const isLandChecked = document.getElementById('land').checked; // Check if "land" checkbox is checked
-    const totalPax = parseInt($('#totalPax').val()) || 0; // Get total passengers, default to 0 if invalid
-
-    if (isLandChecked) 
-    {
-      // If the "land" checkbox is checked, use the package price
-      flightDetailsContainer.style.display = 'block'; // Show when checked
-      const packagePriceField = document.getElementById('packagePrice');
-      if (packagePriceField) 
+      if (packageId && origin) 
       {
-        const packagePrice = parseFloat(packagePriceField.value) || 0; // Use package price, default to 0 if invalid
-        totalPrice = packagePrice * totalPax; // Multiply by total passengers
-
-        // Update the display to show the package price per pax
-        const flightPriceSpan = document.getElementById('flightPrice');
-        if (flightPriceSpan) 
+        $.ajax(
         {
-          const formattedPackagePrice = `${formatNumberWithCommas(packagePrice.toFixed(2))}`;
-          flightPriceSpan.innerText = formattedPackagePrice; // Show package price per pax
+          url: '../Agent Section/functions/fetchYear.php',
+          type: 'POST',
+          data: { packageId: packageId, origin: origin}, // Send packageId, origin
+          success: function (response) 
+          {
+            // console.log(response); // Debugging the response
+            $('#year').html(response); // Update year dropdown with the fetched years
+          },
+          error: function (xhr, status, error) 
+          {
+            console.error('Error fetching year:', error); // Log the error to console
+          }
+        });
+      } 
+      else 
+      {
+        $('#year').html('<option selected disabled>Select Year</option>');
+      }
+    });
+
+    // Fetching Distinct Month once year depending on the package and origin was Selected
+    $('#year').on('change', function () 
+    {
+      var packageId = $('#packageName').val();
+      var origin = $('#origin').val();
+      var selectedYear = $('#year').val();  // Get the selected year
+
+      // Clear month and flight fields
+      $('#month').html('<option selected disabled>Select Month</option>');
+      $('#flightDate').html('<option selected disabled>Select Flight Date</option>');
+      $('#flightId').val('');  // Clear Flight Id field
+      $('#flightPrice').val('0.00'); // Clear Flight Price field
+      $('#maxSeats').text(''); // Clear Max Seat field
+      $('#availSeats').text(''); // Clear Avail Seats field
+      $('#displayTotalPrice').text("0.00"); // Display total price
+      $('#totalPrice').val("0.00"); // Set hidden input value
+      $('#totalPax').val("Enter Total Pax"); // Set Total Pax value
+
+      if (packageId && origin && selectedYear) 
+      {
+        $.ajax(
+        {
+          url: '../Agent Section/functions/fetchMonth.php',  // PHP file to fetch distinct months
+          type: 'POST',
+          data: {
+            packageId: packageId,
+            origin: origin,
+            year: selectedYear  // Send the selected year to fetch relevant months
+          },
+          success: function (response) 
+          {
+            // Update month dropdown with the fetched distinct months
+            $('#month').html(response);
+          },
+          error: function (xhr, status, error) 
+          {
+            console.error('Error fetching months:', error);  // Log the error to the console
+          }
+        });
+      } 
+      else 
+      {
+        $('#month').html('<option selected disabled>Select Month</option>');
+      }
+    });
+
+    // Fetching Flight Date based on the package, origin, year, and month
+    $('#month').on('change', function () 
+    {
+      var packageId = $('#packageName').val();
+      var origin = $('#origin').val();
+      var selectedYear = $('#year').val();  // Get the selected year
+      var selectedMonth = $('#month').val();  // Get the selected month
+
+      // Clear flight fields
+      $('#flightDate').html('<option selected disabled>Select Flight Date</option>');
+      $('#flightId').val('');  // Clear Flight Id field
+      $('#flightPrice').text('0.00'); // Clear Flight Price field
+      $('#flightPrice').val('0.00'); // Clear Flight Price field
+      $('#maxSeats').text(''); // Clear Max Seat field
+      $('#availSeats').text(''); // Clear Avail Seats field
+      $('#displayTotalPrice').text("0.00"); // Display total price
+      $('#totalPrice').val("0.00"); // Set hidden input value
+      $('#totalPax').val("Enter Total Pax"); // Set Total Pax value
+
+      if (packageId && origin && selectedYear && selectedMonth) 
+      {
+        $.ajax(
+        {
+          url: '../Agent Section/functions/fetchFlightDate.php',  // PHP file to fetch flight dates
+          type: 'POST',
+          data: {
+            packageId: packageId,
+            origin: origin,
+            year: selectedYear,
+            month: selectedMonth  // Send the selected month to fetch relevant flight dates
+          },
+          success: function (response) 
+          {
+            // Update flight date dropdown with the fetched flight dates
+            $('#flightDate').html(response);
+          },
+          error: function (xhr, status, error) 
+          {
+            console.error('Error fetching flight dates:', error);  // Log the error to the console
+          }
+        });
+      } 
+      else 
+      {
+        $('#flightDate').html('<option selected disabled>Select Flight Date</option>');
+      }
+    });
+
+    // Fetching Flight Id once Flight Date was Selected
+    $('#flightDate').on('change', function () 
+    {
+      var flightDate = $(this).val();
+      var selectedFlight = $("#flightDate option:selected").text();
+      // Extract only the flight date by splitting at the " || " (delimiter between date and price)
+      var selectedDate = selectedFlight.split(' || ')[0].trim();
+
+      // Update the <p> element with the extracted flight date
+      $('#selectedDate').text(selectedDate);
+
+      if (flightDate === "Null") 
+      {
+        // If outbound flight is "Null", use the package price instead of the flight price
+        var packagePrice = parseFloat($('#packagePrice').val()); // Get the package price value
+        flightPrice = packagePrice; // Ensure it's a number
+        var formattedPrice = packagePrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        const totalPax = parseInt($('#totalPax').val()) || 0;
+        const totalPrice = flightPrice * totalPax;
+
+        // Update the flight price display with the formatted package price
+        $('#flightPrice').text(formattedPrice);
+
+        // Update the flight price for all guests with the package price
+        $('input[name="flightPrice"]').val(packagePrice);
+
+        $('input[name="flightId"]').val("Null");
+
+        // Manually trigger the change event on #flightId
+        $('#flightId').trigger('change');
+
+        // Format total price with commas
+        $('#displayTotalPrice').text(formatNumberWithCommas(totalPrice.toFixed(2))); // Display total price
+        $('#totalPrice').val(totalPrice.toFixed(2)); // Set hidden input value
+
+        console.log('Outbound flight is null, using package price:', packagePrice);
+      } 
+      else if (flightDate) 
+      {
+        // If a valid outbound flight is selected, fetch return flight and flight price
+        $.ajax(
+        {
+          url: '../Agent Section/functions/fetchFlightId.php', // Separate PHP file for return flight
+          type: 'POST',
+          data: { flightDate: flightDate },
+          success: function (response) 
+          {
+            var data = JSON.parse(response); // Parse the JSON response
+
+            flightPrice = parseFloat(data.flightPrice); // Ensure it's a number
+
+            // Format the price with commas and two decimal places
+            var formattedPrice = flightPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+            // Update the flight price display with the formatted price
+            $('#flightPrice').text(formattedPrice);
+            $('#flightPricee').val(formattedPrice);
+
+            // Update the flight ID 
+            $('input[name="flightId"]').val(data.flightId);
+
+            // Manually trigger the change event on #flightId
+            $('#flightId').trigger('change');
+
+            const totalPax = parseInt($('#totalPax').val()) || 0;
+            const totalPrice = flightPrice * totalPax;
+
+            // Format total price with commas
+            $('#displayTotalPrice').text(formatNumberWithCommas(totalPrice.toFixed(2))); // Display total price
+            $('#totalPrice').val(totalPrice.toFixed(2)); // Set hidden input value
+
+          },
+          error: function (xhr, status, error) 
+          {
+            console.error('Error fetching return flight:', error); // Log the error to console
+          }
+        });
+      } 
+      else 
+      {
+        // If no Flight Date is selected, clear return flight input fields
+        console.error('Error fetching Flight Date:', error); // Log the error to console
+      }
+    });
+
+    // Event listeners
+    $('#flightId').on('change', updateTotalPaxMax); // Trigger on flight change
+    $('#land').on('change', updateTotalPaxMax);    // Trigger on "Land Only" checkbox toggle
+
+    // Ensure that if the user manually enters a number greater than the max, it's automatically corrected
+    $('#totalPax').on('input', function() 
+    {
+      var maxSeats = parseInt($(this).attr('max'));
+      var currentPax = parseInt($(this).val());
+
+      // If currentPax is greater than maxSeats or less than 1, adjust the value
+      if (currentPax > maxSeats) {
+        $(this).val(maxSeats); // Reset to the max value
+      } else if (currentPax < 1 || isNaN(currentPax)) {
+        $(this).val(1); // Reset to 1 if the value is less than 1 or not a number
+      }
+    });
+
+    // Book Now Button Click Event
+    $('#bookNowButton').click(function (event) 
+    {
+      event.preventDefault(); // Prevent default form submission
+
+      const errors = {
+        packageName: 'Please Select a Package.',
+        totalPax: 'Please Enter Total Pax.',
+        origin: 'Please Select Origin',
+        year: 'Please Select Year',
+        month: 'Please Select Month',
+        flightDate: 'Please Select Flight Date.',
+        fName: 'Please Enter First Name',
+        lName: 'Please Enter Last Name',
+        mName: 'Please Enter Middle Name',
+        suffix: 'Please Select Suffix',
+        countryCode: 'Please Select Country Code',
+        contactNo: 'Please Enter Contact No',
+        email: 'Please Enter Email'
+      };
+
+      // Reset error messages and remove invalid class
+      $('span[id$="Error"]').text('');
+      $('select, input').removeClass('is-invalid');
+
+      let isValid = true; // Initialize isValid flag
+      // Extract the numeric value from the label's text
+      let totalSeatsText = $('#availSeats').text();
+      let totalSeats = parseInt(totalSeatsText.replace(/\D/g, '')) || 0;  // Replace all non-digit characters and parse the number
+      let landOnly = $('#land').prop('checked');
+
+      console.log(totalSeats);
+
+      // Validation function
+      const validateField = (selector, errorMsgKey) => 
+      {
+        const fieldValue = $(selector).val();
+        if (!fieldValue) 
+        {
+          $(`${selector}Error`).text(errors[errorMsgKey]); // Update error message
+          $(selector).addClass('is-invalid'); // Add invalid class
+          isValid = false; // Set valid flag to false
+        }
+      };
+
+      // Validate all fields
+      validateField('#packageName', 'packageName');
+      validateField('#totalPax', 'totalPax');
+      validateField('#origin', 'origin');
+      validateField('#year', 'year');
+      validateField('#month', 'month');
+      validateField('#flightDate', 'flightDate');
+      validateField('#fName', 'fName');
+      validateField('#lName', 'lName');
+      validateField('#mName', 'mName');
+      validateField('#suffix', 'suffix');
+      validateField('#countryCode', 'countryCode');
+      validateField('#contactNo', 'contactNo');
+      validateField('#email', 'email');
+
+      // Additional check for totalPax to ensure it is not 0
+      const totalPax = parseInt($('#totalPax').val());
+      if (totalPax === 0 || isNaN(totalPax)) 
+      {
+        $('#totalPaxError').text('Total Pax cannot be 0. Please enter a valid number.');
+        $('#totalPax').addClass('is-invalid');
+        isValid = false;
+      }
+
+      // Clear error messages when inputs are focused or changed
+      $('select, input').on('focus change', function () 
+      {
+        const errorSpanId = `#${$(this).attr('id')}Error`;
+        $(this).removeClass('is-invalid'); // Remove invalid class
+        $(errorSpanId).text(''); // Clear error message
+        $('#errorMessage').text(''); // Show error message in the UI
+      });
+
+      // Combined validation for Land Only or Seat availability
+      if (isValid) 
+      {
+        const firstName = $('#fName').val().trim();
+        const lastName = $('#lName').val().trim();
+        let middleName = $('#mName').val().trim() || '';
+        let suffix = $('#suffix').val().trim() || '';
+        let email = $('#email').val().trim();
+
+        // Set suffix and middle name to an empty string if they are "N/A"
+        suffix = suffix === 'N/A' ? '' : suffix;
+        middleName = middleName === 'N/A' ? '' : middleName;
+
+        // Format middle name to the first letter followed by a dot, if not empty
+        middleName = middleName ? middleName.charAt(0) + '.' : '';
+
+        // Concatenate to full name in the desired format
+        const fullName = `${lastName}, ${firstName} ${suffix} ${middleName}`;
+
+        // Check if "Land Only" is selected
+        if ($('#land').prop('checked')) 
+        {
+          // Set the full name and email, and trigger modal
+          $('#contactPersonName').text(fullName);
+          $('#contactPersonEmail').text(email);
+          $('#guestCount').text(totalPax);
+          $('#BookingSummaryModal').modal('show'); // Trigger modal display
+        } 
+        else if (totalPax > totalSeats) 
+        {
+          // If land only is not selected, check for seat availability
+          $('#errorMessage').text('The Available Seats are not enough.'); // Show error message in the UI
+          alert('The Available Seats are not enough.'); // Show error message as an alert
+        } 
+        else 
+        {
+          // Set the full name in the contactPersonName paragraph
+          $('#contactPersonName').text(fullName);
+          // Set the email in the email paragraph
+          $('#contactPersonEmail').text(email);
+          // Set the total number of guests in the guestCount paragraph
+          $('#guestCount').text(totalPax);
+
+          $('#BookingSummaryModal').modal('show'); // Trigger modal display
+        }
+      } 
+      else 
+      {
+        $('#errorMessage').text('Validation failed or no seats available.'); // Show error message in the UI
+        console.error('Validation failed or no seats available.');
+      }
+    });
+
+    // Automatically recalculate total price when flightDate or totalPax changes
+    $('#flightDate, #totalPax').on('input change', function () 
+    {
+      updateTotalPrice(); // Recalculate total price
+    });
+
+    // Recalculate total price when "land" checkbox is toggled
+    document.getElementById('land').addEventListener('change', function() 
+    {
+      updateTotalPrice(); // Recalculate total price when land is checked/unchecked
+    });
+
+    // Function to update total price calculation
+    function updateTotalPrice() 
+    {
+      let totalPrice = 0;
+      const isLandChecked = document.getElementById('land').checked; // Check if "land" checkbox is checked
+      const totalPax = parseInt($('#totalPax').val()) || 0; // Get total passengers, default to 0 if invalid
+
+      if (isLandChecked) 
+      {
+        // If the "land" checkbox is checked, use the package price
+        flightDetailsContainer.style.display = 'block'; // Show when checked
+        const packagePriceField = document.getElementById('packagePrice');
+        if (packagePriceField) 
+        {
+          const packagePrice = parseFloat(packagePriceField.value) || 0; // Use package price, default to 0 if invalid
+          totalPrice = packagePrice * totalPax; // Multiply by total passengers
+
+          // Update the display to show the package price per pax
+          const flightPriceSpan = document.getElementById('flightPrice');
+          if (flightPriceSpan) 
+          {
+            const formattedPackagePrice = `${formatNumberWithCommas(packagePrice.toFixed(2))}`;
+            flightPriceSpan.innerText = formattedPackagePrice; // Show package price per pax
+          }
         }
       }
-    } 
-    else 
-    {
-      // If "land" is unchecked, use the original flight price from the hidden input
-      const flightPriceSpan = document.getElementById('flightPrice');
-      const flightPriceField = $('#flightPricee'); // Hidden input field using jQuery
-      flightDetailsContainer.style.display = 'none'; // Show when checked
-      if (flightPriceSpan && flightPriceField.length) 
+      else 
       {
-        const originalFlightPrice = parseFloat(
-          flightPriceField.val().replace(/,/g, '').replace('₱', '').trim()
-        ) || 0; // Retrieve and parse the original flight price
-        totalPrice = originalFlightPrice * totalPax; // Calculate total price using original flight price
+        // If "land" is unchecked, use the original flight price from the hidden input
+        const flightPriceSpan = document.getElementById('flightPrice');
+        const flightPriceField = $('#flightPricee'); // Hidden input field using jQuery
+        flightDetailsContainer.style.display = 'none'; // Show when checked
+        if (flightPriceSpan && flightPriceField.length) 
+        {
+          const originalFlightPrice = parseFloat(
+            flightPriceField.val().replace(/,/g, '').replace('₱', '').trim()
+          ) || 0; // Retrieve and parse the original flight price
+          totalPrice = originalFlightPrice * totalPax; // Calculate total price using original flight price
 
-        const formattedOriginalPrice = `${formatNumberWithCommas(originalFlightPrice.toFixed(2))}`;
-        flightPriceSpan.innerText = formattedOriginalPrice; // Show original flight price
+          const formattedOriginalPrice = `${formatNumberWithCommas(originalFlightPrice.toFixed(2))}`;
+          flightPriceSpan.innerText = formattedOriginalPrice; // Show original flight price
+        }
+      }
+
+      // Format and update the total price display
+      const displayTotalPriceElement = document.getElementById('displayTotalPrice');
+      if (displayTotalPriceElement) 
+      {
+        displayTotalPriceElement.innerText = `${formatNumberWithCommas(totalPrice.toFixed(2))}`; // Format with commas
+      }
+
+      // Update the totalPrice hidden input field
+      const totalPriceField = document.getElementById('totalPrice');
+      if (totalPriceField) 
+      {
+        totalPriceField.value = totalPrice.toFixed(2); // Set value with 2 decimal places
       }
     }
 
-    // Format and update the total price display
-    const displayTotalPriceElement = document.getElementById('displayTotalPrice');
-    if (displayTotalPriceElement) 
+    // Optional: Listen for changes in pax fields
+    document.querySelectorAll('.pax').forEach((element) => 
     {
-      displayTotalPriceElement.innerText = `${formatNumberWithCommas(totalPrice.toFixed(2))}`; // Format with commas
-    }
-
-    // Update the totalPrice hidden input field
-    const totalPriceField = document.getElementById('totalPrice');
-    if (totalPriceField) 
-    {
-      totalPriceField.value = totalPrice.toFixed(2); // Set value with 2 decimal places
-    }
-  }
-
-  // Optional: Listen for changes in pax fields
-  document.querySelectorAll('.pax').forEach((element) => 
-  {
-    element.addEventListener('input', function() 
-    {
-      updateTotalPrice(); // Recalculate when pax value changes
-    });
-  });
-
-  // Helper function to format numbers with commas
-  function formatNumberWithCommas(num) 
-  {
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  }
-
-  function updateTotalPaxMax() 
-  {
-    // Get the input values
-    var flightId = $('#flightId').val();
-    var agentId = $('#agentId').val();
-    var isLandOnlyChecked = $('#land').is(':checked');
-
-    if (flightId !== '') 
-    {
-      // Perform an AJAX request to fetch seat information
-      $.ajax(
+      element.addEventListener('input', function() 
       {
-        url: '../Agent Section/functions/fetchMaxSeatsPerAgent.php', // Replace with your server-side script URL
-        method: 'POST',
-        data: { flightId: flightId, agentId: agentId }, // Send the flightId to the server
-        dataType: 'json', // Specify that we're expecting JSON response
-        success: function(response) 
+        updateTotalPrice(); // Recalculate when pax value changes
+      });
+    });
+
+    // Helper function to format numbers with commas
+    function formatNumberWithCommas(num) 
+    {
+      return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    function updateTotalPaxMax() 
+    {
+      // Get the input values
+      var flightId = $('#flightId').val();
+      var agentId = $('#agentId').val();
+      var isLandOnlyChecked = $('#land').is(':checked');
+
+      if (flightId !== '') 
+      {
+        // Perform an AJAX request to fetch seat information
+        $.ajax(
         {
-          if (response.flightId !== null) 
+          url: '../Agent Section/functions/fetchMaxSeatsPerAgent.php', // Replace with your server-side script URL
+          method: 'POST',
+          data: { flightId: flightId, agentId: agentId }, // Send the flightId to the server
+          dataType: 'json', // Specify that we're expecting JSON response
+          success: function(response) 
           {
-            // Extract the maxSeats from the response
-            var maxSeats = response.maxSeats;
-            var totalSeats = response.totalSeatsLeft;
-
-            if (!isLandOnlyChecked) 
+            if (response.flightId !== null) 
             {
-              // If "Land Only" is not checked, dynamically update the max attribute
-              $('#totalPax').attr('max', maxSeats);
+              // Extract the maxSeats from the response
+              var maxSeats = response.maxSeats;
+              var totalSeats = response.totalSeatsLeft;
 
-              // Check if the current value of totalPax exceeds maxSeats, reset to maxSeats if needed
-              var currentPax = $('#totalPax').val();
-              if (currentPax > maxSeats) 
+              if (!isLandOnlyChecked) 
               {
-                $('#totalPax').val(maxSeats); // Adjust the value
-                console.log('Pax left: ' + maxSeats);
-                console.log('Seats left: ' + totalSeats);
-              }
+                // If "Land Only" is not checked, dynamically update the max attribute
+                $('#totalPax').attr('max', maxSeats);
 
-              // Display the available seats
-              $('#maxSeats').text('Agent-Specific Available Seats for this Flight: ' + maxSeats);
-              $('#availSeats').text('Total Remaining Seats for this Flight: ' + totalSeats);
+                // Check if the current value of totalPax exceeds maxSeats, reset to maxSeats if needed
+                var currentPax = $('#totalPax').val();
+                if (currentPax > maxSeats) 
+                {
+                  $('#totalPax').val(maxSeats); // Adjust the value
+                  console.log('Pax left: ' + maxSeats);
+                  console.log('Seats left: ' + totalSeats);
+                }
+
+                // Display the available seats
+                $('#maxSeats').text('Agent-Specific Available Seats for this Flight: ' + maxSeats);
+                $('#availSeats').text('Total Remaining Seats for this Flight: ' + totalSeats);
+              } 
+              else 
+              {
+                // If "Land Only" is checked, set a default max value and clear the display
+                $('#totalPax').attr('max', 999); // Example max value, adjust as needed
+                $('#maxSeats').text(' ');
+                $('#availSeats').text(' ');
+              }
             } 
             else 
             {
-              // If "Land Only" is checked, set a default max value and clear the display
-              $('#totalPax').attr('max', 999); // Example max value, adjust as needed
-              $('#maxSeats').text(' ');
-              $('#availSeats').text(' ');
+              // Handle the case where no flight information is found
+              $('#maxSeats').text('Available Seats for this Flight: N/A');
             }
-          } 
-          else 
+          },
+          error: function(xhr, status, error) 
           {
-            // Handle the case where no flight information is found
-            $('#maxSeats').text('Available Seats for this Flight: N/A');
+            // Log any errors
+            console.error('AJAX Error:', error);
           }
-        },
-        error: function(xhr, status, error) 
-        {
-          // Log any errors
-          console.error('AJAX Error:', error);
-        }
-      });
-    } 
-    else 
-    {
-        // Reset if no flight ID is selected
-        $('#totalPax').removeAttr('max');
-        $('#maxSeats').text('Available Seats for this Flight: N/A');
+        });
+      } 
+      else 
+      {
+          // Reset if no flight ID is selected
+          $('#totalPax').removeAttr('max');
+          $('#maxSeats').text('Available Seats for this Flight: N/A');
+      }
     }
-  }
 
-  // Initial call to set total price on page load
-  updateTotalPrice();
-
-});
-
-
+    // Initial call to set total price on page load
+    updateTotalPrice();
+  });
 </script>
 
 
