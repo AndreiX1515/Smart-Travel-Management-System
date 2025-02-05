@@ -116,6 +116,7 @@
                 <label for="year-filter">Year</label>
                 <select id="year-filter" name="year-filter" class="form-control" onchange="toggleFilters()">
                   <!-- Year options will be populated dynamically -->
+                  <option selected disabled>Select year</option>
                 </select>
               </div>
             </div>
@@ -138,13 +139,13 @@
               }
 
               // Optionally set the current year as selected
-              yearSelect.value = currentYear;
+              yearSelect.selectedIndex = 0;
               
               // Get the month select element
               const monthSelect = document.getElementById('month-filter');
 
               // Set the current month as selected
-              monthSelect.value = currentMonthIndex; // Use 1-based month index
+              monthSelect.selectedIndex = 0; // Use 1-based month index
             </script>
 
             <div class="columns col-md-2" id="reset-button-container" style="display: none;">
@@ -157,10 +158,8 @@
           </div>
         </div>
 
-        <div class="table-wrapper">
-          <div id="result-container"></div>
-        </div>
-        
+        <div id="result-container"></div>
+
         <div>
           <!-- <button class="btn btn-secondary" id="preview-btn">Preview</button> -->
           <button class="btn btn-primary" id="download-btn" disabled>Generate SoA</button>
@@ -319,6 +318,7 @@
 
 <?php include '../Employee Section/includes/emp-scripts.php' ?>
 
+<!-- Filter Script -->
 <script>
   function toggleFilters() 
   {
@@ -387,12 +387,281 @@
 
 <!-- Preview SoA -->
 <script>
+  $(document).ready(function () 
+  {
+    $("#generate-soa-btn").on("click", function () 
+    {
+      const companyId = $("#company-filter").val();
+      const month = $("#month-filter").val();
+      const year = $("#year-filter").val();
+      const flightId = $("#flight-filter").val();
+      const resultContainer = $("#result-container");
+      const downloadBtn = $("#download-btn");
+
+      console.log(companyId);
+      console.log(month);
+      console.log(year);
+      console.log(flightId);
+
+      // Disable the button while processing
+      $(this).prop("disabled", true);
+      resultContainer.html("<p>Loading...</p>");
+
+      let requestUrl = "";
+      let requestData = {};
+
+      if (flightId != null) 
+      {
+        // AJAX Request
+        $.ajax(
+        {
+          url: "../Employee Section/functions/fetchSoAByFlightDate.php",
+          type: "POST",
+          data: {companyId: companyId, flightId: flightId},
+          dataType: "json",
+          success: function (response) 
+          {
+            $("#generate-soa-btn").prop("disabled", false); // Re-enable the button
+
+            if (response.dataAvailable) 
+            {
+              resultContainer.html(response.htmlContent);
+              downloadBtn.prop("disabled", false);
+            } 
+            else 
+            {
+              resultContainer.html("<p>No data found for the selected filters.</p>");
+              downloadBtn.prop("disabled", true);
+            }
+          },
+          error: function (xhr, status, error) 
+          {
+            resultContainer.html("<p>Error loading data. Please try again later.</p>");
+            $("#generate-soa-btn").prop("disabled", false);
+            downloadBtn.prop("disabled", true);
+            console.error("AJAX Error:", status, error); // Debugging
+          },
+        });
+      } 
+      else if (month != null && year != null) 
+      {
+        // AJAX Request
+        $.ajax(
+        {
+          url: "../Employee Section/functions/fetchSoA.php",
+          type: "POST",
+          data: {companyId: companyId, month: month, year: year},
+          dataType: "json",
+          success: function (response) 
+          {
+            $("#generate-soa-btn").prop("disabled", false); // Re-enable the button
+
+            if (response.dataAvailable) 
+            {
+              resultContainer.html(response.htmlContent);
+              downloadBtn.prop("disabled", false);
+            } 
+            else 
+            {
+              resultContainer.html("<p>No data found for the selected filters.</p>");
+              downloadBtn.prop("disabled", true);
+            }
+          },
+          error: function (xhr, status, error) {
+            resultContainer.html("<p>Error loading data. Please try again later.</p>");
+            $("#generate-soa-btn").prop("disabled", false);
+            downloadBtn.prop("disabled", true);
+            console.error("AJAX Error:", status, error); // Debugging
+          },
+        });
+      }
+      else 
+      {
+        console.log("Invalid input: Please select a flight date OR both month and year.");
+      }  
+    });
+  });
+</script>
+
+<!-- Generate SoA -->
+<script>
+  $(document).ready(function () 
+  {
+    $("#download-btn").click(function () 
+    {
+      const companyId = $("#company-filter").val();
+      const month = $("#month-filter").val();
+      const year = $("#year-filter").val();
+      const flightId = $("#flight-filter").val();
+      const downloadBtn = $("#download-btn");
+      const generateSoaBtn = $("#generate-soa-btn");
+      const resultContainer = $("#result-container");
+      let soaNumber = "";
+
+      // Get current date in mm/dd/yyyy format
+      const currentDate = new Date();
+      const currentDateFormatted = (currentDate.getMonth() + 1).toString().padStart(2, "0") +  "/" +
+                                    currentDate.getDate().toString().padStart(2, "0") +
+                                    "/" + currentDate.getFullYear();
+
+      console.log("Inputs:", { companyId, month, year, flightId }); // Debugging
+
+      let requestUrl = "";
+      let requestData = { companyId: companyId, currentDate: currentDateFormatted };
+
+      // Determine request URL and parameters
+      if (flightId) 
+      {
+        requestUrl = "../Employee Section/functions/emp-addSoAByFlightDate.php";
+        requestData.flightId = flightId;
+        // Step 1: Insert SOA Data
+        $.ajax(
+        {
+          url: "../Employee Section/functions/emp-addSoAByFlightDate.php",
+          type: "POST",
+          data: requestData,
+          dataType: "json",
+          beforeSend: function () 
+          {
+            console.log("Generating SOA, please wait..."); // Debugging
+            generateSoaBtn.prop("disabled", true);
+            downloadBtn.prop("disabled", true);
+            resultContainer.html("<p>Generating SOA, please wait...</p>");
+          },
+          success: function (response) 
+          {
+            console.log("Response received:", response); // Debugging
+
+            if (response.success && response.soanum) 
+            {
+              soaNumber = response.soanum; // Extract SOA number
+              console.log("SOA Number received:", soaNumber); // Debugging
+
+              resultContainer.html("<p>SOA generated successfully!</p>");
+              generateSoaBtn.prop("disabled", false);
+              downloadBtn.prop("disabled", false);
+
+              // Step 2: Generate PDF
+              generateSoAPdf(soaNumber, requestData);
+            } 
+            else 
+            {
+              console.warn("Failed to generate SOA:", response); // Debugging
+              resultContainer.html("<p>Failed to generate SOA. Please check your inputs.</p>");
+              generateSoaBtn.prop("disabled", false);
+            }
+          },
+          error: function (xhr, status, error) 
+          {
+            console.error("AJAX Error:", status, error, xhr.responseText); // Debugging
+            resultContainer.html("<p>Error processing request. Please try again later.</p>");
+            generateSoaBtn.prop("disabled", false);
+          },
+        });
+      } 
+      else if (month && year) 
+      {
+        requestData.month = month;
+        requestData.year = year;
+
+        console.log("Sending AJAX request to:", "../Employee Section/functions/emp-addSoA.php");
+        console.log("Request Data:", requestData); // Debugging
+
+        // Step 1: Insert SOA Data
+        $.ajax(
+        {
+          url: "../Employee Section/functions/emp-addSoA.php",
+          type: "POST",
+          data: requestData,
+          dataType: "json",
+          beforeSend: function () 
+          {
+            console.log("Generating SOA, please wait..."); // Debugging
+            generateSoaBtn.prop("disabled", true);
+            downloadBtn.prop("disabled", true);
+            resultContainer.html("<p>Generating SOA, please wait...</p>");
+          },
+          success: function (response) 
+          {
+            console.log("Response received:", response); // Debugging
+
+            if (response.success && response.soanum) 
+            {
+              soaNumber = response.soanum; // Extract SOA number
+              console.log("SOA Number received:", soaNumber); // Debugging
+              console.log("Request Data: ", requestData); // Debugging
+
+              resultContainer.html("<p>SOA generated successfully!</p>");
+              generateSoaBtn.prop("disabled", false);
+              downloadBtn.prop("disabled", false);
+
+              // Step 2: Generate PDF
+              generateSoAPdf(soaNumber, requestData);
+            } 
+            else 
+            {
+              console.warn("Failed to generate SOA:", response); // Debugging
+              resultContainer.html("<p>Failed to generate SOA. Please check your inputs.</p>");
+              generateSoaBtn.prop("disabled", false);
+            }
+          },
+          error: function (xhr, status, error) 
+          {
+            console.error("AJAX Error:", status, error, xhr.responseText); // Debugging
+            resultContainer.html("<p>Error processing request. Please try again later.</p>");
+            generateSoaBtn.prop("disabled", false);
+          },
+        });
+      } 
+      else 
+      {
+        console.warn("Invalid input: Please select a flight date OR both month and year."); // Debugging
+        return;
+      }
+
+      // Function to Generate SOA PDF
+      function generateSoAPdf(soaNumber, requestData) 
+      {
+        requestData.soaNumber = soaNumber;
+        console.log("Generating PDF for SOA Number:", soaNumber);
+        console.log("Request Data for PDF:", requestData); // Debugging
+
+        $.ajax(
+        {
+          url: "../Employee Section/functions/generateSoA.php",
+          type: "POST",
+          data: requestData,
+          xhrFields: { responseType: "blob" }, // Expect a PDF file
+          success: function (blob) 
+          {
+            console.log("PDF Blob received:", blob); // Debugging
+            const link = document.createElement("a");
+            link.href = window.URL.createObjectURL(blob);
+            link.download = `Statement_of_Account_${soaNumber}.pdf`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            console.log("PDF download triggered successfully."); // Debugging
+          },
+          error: function (xhr, status, error) 
+          {
+            console.error("PDF Generation Error:", status, error, xhr.responseText); // Debugging
+            alert("Failed to generate the SOA PDF. Please try again.");
+          },
+        });
+      }
+    });
+  });
+</script>
+
+
+<!-- Orig Preview SoA -->
+<!-- <script>
   document.getElementById('generate-soa-btn').addEventListener('click', function() 
   {
     const companyId = document.getElementById('company-filter').value;
     const month = document.getElementById('month-filter').value;
     const year = document.getElementById('year-filter').value;
-    const flightSelect = document.getElementById('flight-filter').value;
 
     // Disable the button while the request is in progress
     document.getElementById('generate-soa-btn').disabled = true;
@@ -401,24 +670,12 @@
     const resultContainer = document.getElementById('result-container');
     resultContainer.innerHTML = '<p>Loading...</p>';
 
-    // Determine which PHP file to send the request to
-    let requestUrl = '';
-    let data = '';
-
-    if (flightSelect !== "Select Flight Date" && flightSelect !== "") {
-      // If flight date is selected, use flightId and send request to fetchSoAByFlightDate.php
-      requestUrl = '../Employee Section/functions/fetchSoAByFlightDate.php';
-      data = `companyId=${companyId}&flightId=${flightSelect}`;
-    } else {
-      // If month and year are selected, send request to fetchSoA.php
-      requestUrl = '../Employee Section/functions/fetchSoA.php';
-      data = `companyId=${companyId}&month=${month}&year=${year}`;
-    }
-
     // Send data to PHP using AJAX
     const xhr = new XMLHttpRequest();
-    xhr.open('POST', requestUrl, true);
+    xhr.open('POST', '../Employee Section/functions/fetchSoA.php', true); // Replace with your PHP file name
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+    const data = `companyId=${companyId}&month=${month}&year=${year}`;
 
     xhr.onload = function() 
     {
@@ -460,18 +717,19 @@
       document.getElementById('download-btn').disabled = true;
     };
 
-    // Send the data to the appropriate PHP file
+    // Send the data to the server
     xhr.send(data);
   });
-</script>
+</script> -->
 
-<!-- Generate SoA -->
-<script>
+<!-- Orig Generate SoA -->
+<!-- <script>
   document.getElementById('download-btn').addEventListener('click', function() 
   {
     const companyId = document.getElementById('company-filter').value;
     const month = document.getElementById('month-filter').value;
     const year = document.getElementById('year-filter').value;
+    const flightId = document.getElementById('flight-filter').value;
 
     // Get current date in mm/dd/yyyy format
     const currentDate = new Date();
@@ -544,7 +802,7 @@
     // Send the request with the necessary values for SOA number
     xhrAddSoA.send(`companyId=${companyId}&month=${month}&year=${year}&currentDate=${currentDateFormatted}`);
   });
-</script>
+</script> -->
 
 <!-- Modal -->
 <!-- <script>

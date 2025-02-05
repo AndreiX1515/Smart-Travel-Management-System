@@ -1,15 +1,23 @@
 <?php
 require "../../conn.php";
 session_start();
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 $response = []; // Initialize response array
 
+session_start();
+require "../../conn.php"; // Database connection
+
+header("Content-Type: application/json");
+$response = ["success" => false, "message" => "Invalid request."];
+
+// Check if login form is submitted
 if (isset($_POST['login'])) {
-    $email = $_POST['username'];
-    $password = $_POST['password'];
+    $email = trim($_POST['username']);
+    $password = trim($_POST['password']);
 
     if (!empty($email) && !empty($password)) {
         // Verify account existence and fetch details
@@ -21,61 +29,72 @@ if (isset($_POST['login'])) {
 
         if ($resultAccount->num_rows > 0) {
             $account = $resultAccount->fetch_assoc();
+            
 
-            // Verify password
+            // Verify password (Simple comparison instead of password_verify)
             if ($password === $account['password']) {
-                // Check account status
+                // Check if account is active
                 if ($account['accountStatus'] === 'active') {
-                    $accountType = $account['accountType'];
-                    $accountId = $account['accountId'];
 
-                    if ($accountType === 'agent') {
-                        handleLogin($accountId, 'agent', "SELECT * FROM agent WHERE accountId = ?", ['branchId']);
+                    $accountId = $account['accountId'];
+                    // Check if accountId exists in user_sessions
+                    $sqlSession = "SELECT COUNT(*) AS sessionCount FROM user_sessions WHERE accountid = ?";
+                    $stmtSession = $conn->prepare($sqlSession);
+                    $stmtSession->bind_param('i', $accountId);
+                    $stmtSession->execute();
+                    $resultSession = $stmtSession->get_result();
+                    $sessionData = $resultSession->fetch_assoc(); 
+                    $stmtSession->close();
+
+                    if ($sessionData['sessionCount'] > 0) {
+                         // If a session exists, send an error response
+                        $response['success'] = false;
+                        $response['message'] = "You are logged in on another device. Please close from other tab or devices then reload before logging in again!";
+
+                        
+                    } else {
+                        // Handle login based on account type
+                        if ($accountType === 'agent') {
+                            handleLogin($accountId, 'agent', "SELECT * FROM agent WHERE accountId = ?", ['branchId']);
+
+                        } elseif ($accountType === 'employee') {
+                            handleLogin($accountId, 'employee', "SELECT * FROM employee WHERE accountId = ?", ['position', 'countryCode', 'contactNo', 'branch']);
+
+                        } elseif ($accountType === 'guest') {
+                            handleLogin($accountId, 'guest', "SELECT * FROM agent WHERE accountId = ?", ['position', 'countryCode', 'contactNo', 'branch']);
+                            
+                        } else {
+                            $response['message'] = "Invalid account type.";
+                            echo json_encode($response);
+                            exit;
+                        }
+
+                        // Store email and password in session
                         $_SESSION['email'] = $email;
                         $_SESSION['password'] = $password;
-                    } 
-                    
-                    elseif ($accountType === 'employee') {
-                        handleLogin($accountId, 'employee', "SELECT * FROM employee WHERE accountId = ?", ['position', 'countryCode', 'contactNo', 'branch']);
-                    } 
-                    
-                    elseif ($accountType === 'guest') {
-                        handleLogin($accountId, 'guest', "SELECT * FROM agent WHERE accountId = ?", ['position', 'countryCode', 'contactNo', 'branch']);
+
+                        // Successful login response
+                        $response['success'] = true;
+                        $response['message'] = "Login successful.";
+                        $response['accountType'] = $accountType;
                     }
-
-                    else {
-                        $response['success'] = false;
-                        $response['message'] = "Invalid account type.";
-                    }
-
-                    // Add accountType to the response
-                    $response['accountType'] = $accountType;
-
                 } else {
-                    $response['success'] = false;
                     $response['message'] = "Your account is inactive. Please contact the administrator.";
                 }
-
             } else {
-                $response['success'] = false;
                 $response['message'] = "Incorrect password.";
             }
         } else {
-            $response['success'] = false;
             $response['message'] = "Account does not exist.";
         }
 
         $stmtAccount->close();
     } else {
-        $response['success'] = false;
         $response['message'] = "Please fill in both fields.";
     }
-} else {
-    $response['success'] = false;
-    $response['message'] = "Invalid request.";
 }
 
-header('Content-Type: application/json');
+$conn->close();
 echo json_encode($response);
 
 
@@ -119,10 +138,13 @@ function manageAgentSession($accountId, $userData, $userType, $additionalFields)
     global $conn;
 
     $session_id = session_id();
-    $ip_address = $_SERVER['REMOTE_ADDR'];
-    $user_agent = $_SERVER['HTTP_USER_AGENT'];
+    $ip_address = $_SERVER['REMOTE_ADDR'] ?? '';
+    $user_agent = $_SERVER['HTTP_USER_AGENT'] ?? '';
+
+    date_default_timezone_set('Asia/Taipei'); // Set to your preferred timezone
     $login_time = date('Y-m-d H:i:s');
     $last_activity = $login_time;
+
 
     // Check if there's an existing session for this account
     $session_check_stmt = $conn->prepare("SELECT session_id FROM user_sessions WHERE accountid = ?");

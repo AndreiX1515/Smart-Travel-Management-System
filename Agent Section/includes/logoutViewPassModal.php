@@ -21,6 +21,38 @@
 
 
 <script>
+$(document).ready(function() {
+    $('#logoutButton').click(function() {
+        $.ajax({
+            url: '../Agent Section/functions/agent-logout.php',
+            type: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                    // Handle redirection based on account type
+                    if (response.accountType === 'agent') {
+                        window.location.href = '../Agent Section/agentLogin.php';
+                    } else if (response.accountType === 'guest') {
+                        window.location.href = '../Agent Section/agentLogin.php';
+                    } else {
+                        window.location.href = '../login.php'; // Default redirection
+                    }
+                } else {
+                    alert(response.message);
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.error('AJAX Error:', textStatus, errorThrown);
+                alert('An unexpected error occurred. Please try again.');
+            }
+        });
+    });
+});
+
+</script>
+
+
+<!-- <script>
  $('#logoutButton').on('click', function(e) {
     e.preventDefault(); // Prevent default anchor click behavior
 
@@ -60,10 +92,7 @@
             console.error("AJAX Error:", error); // Log any errors during the AJAX request
         }
     });
-});
-
-
-
+}); -->
 
 </script>
 <!-- View Password Modal -->

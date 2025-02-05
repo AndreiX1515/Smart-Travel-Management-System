@@ -161,7 +161,6 @@ require '../conn.php';
 
                               if (response.hasBooking) {
                                   window.location.href = '../Agent Section/agent-dashboard.php'; // Redirect if booking exists
-
                               } else {
                                   window.location.href = '../Client Section/client-bookingform.php'; // Redirect to booking form if no booking found
                               }
@@ -173,7 +172,8 @@ require '../conn.php';
                       // Send the accountId in the POST request
                       xhr.send("accountId=" + encodeURIComponent(accountId));
                   } else {
-                      console.log("No accountId found in session.");
+                      // If accountId is missing, redirect to the homepage or dashboard
+                      window.location.href = '../Client Section/dashboard.php';
                   }
               }
           }

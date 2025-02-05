@@ -211,7 +211,7 @@
             <!-- Request Status Dropdown -->
             <label for="paymentStatus" class="form-label fw-bold">Request Status:</label>
             <select id="paymentStatus" name="paymentStatus" class="form-select">
-              <option selected disabled>Select Option</option>
+              <option selected disabled value="">Select Option</option>
               <option value="Approved">Approved</option>
               <option value="Rejected">Rejected</option>
             </select>

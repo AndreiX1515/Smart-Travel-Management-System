@@ -1,13 +1,17 @@
 <?php
 include '../conn.php'; // Include your database connection
 
-$inactive = 600; // 10 minutes (600 seconds)
+
 
 // Check if the user is logged in, if not, redirect to login page
 if (!isset($_SESSION['accountId'])) {
     header("Location: ../Client Section/login.php?message=Please log in."); // Redirect with message
     exit;
 }
+
+
+
+$inactive = 600; // 10 minutes (600 seconds)
 
 $session_id = session_id();
 $accountid = $_SESSION['accountId'];
