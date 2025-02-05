@@ -47,13 +47,26 @@
           <div class="date-range-wrapper sorting-wrapper">
             <div class="select-wrapper">
               <select id="packages">
-                  <option value="All" disabled selected>Select Packages</option>
-                  <option value="Autumn Tour Package">Autumn Tour</option>
-                  <option value="Summer Tour Package">Summer Tour</option>
-                  <option value="Spring Tour Package">Spring Tour</option>
-                  <option value="Winter Tour Package">Winter Tour</option>
-                  <option value="Regular Tour Package">Regular Tour</option>
-                  <option value="Busan Tour Package">Busan Tour</option>
+                  <option value="All" disabled selected>Select Branch</option>
+                  <?php
+                    // Execute the SQL query
+                    $sql1 = "SELECT branchId, branchName FROM branch ORDER BY branchName ASC";
+                    $res1 = $conn->query($sql1);
+
+                    // Check if there are results
+                    if ($res1->num_rows > 0) 
+                    {
+                      // Loop through the results and generate options
+                      while ($row = $res1->fetch_assoc()) 
+                      {
+                        echo "<option value='" . $row['branchId'] . "'>" . $row['branchName'] . "</option>";
+                      }
+                    } 
+                    else 
+                    {
+                      echo "<option value=''>No companies available</option>";
+                    }
+                  ?>
               </select>
             </div>
           </div>
