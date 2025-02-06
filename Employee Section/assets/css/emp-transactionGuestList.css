@@ -367,12 +367,12 @@
 /* Column width adjustments */
 .product-table th:nth-child(1),
 .product-table td:nth-child(1) {
-  width: 6%; /* Transaction ID */
+  width: 4%; /* Transaction ID */
 }
 
 .product-table th:nth-child(2),
 .product-table td:nth-child(2) {
-  width: 12%; /* Contact Person Info */
+  width: 8%; /* Contact Person Info */
 }
 
 .product-table th:nth-child(3),
@@ -403,7 +403,7 @@
 
 .product-table th:nth-child(8),
 .product-table td:nth-child(8) {
-  width: 6%; /* Sub Column */
+  width: 15%; /* Sub Column */
   text-align: center;
 }
 
