@@ -88,18 +88,18 @@
         <table class="product-table" id="product-table">
           <thead>
             <tr>
-                <th rowspan="2">Guest ID</th>
-                <th rowspan="2">Transaction No</th>
-                <th rowspan="2">Guest Name</th>
-                <th rowspan="2">Birthdate</th>
-                <th rowspan="2">Age</th>
-                <th rowspan="2">Sex</th>
-                <th rowspan="2">Nationality</th>
-                <th colspan="2" class="text-center">Flight Dates</th>
+              <th rowspan="2">Guest ID</th>
+              <th rowspan="2">Transaction No</th>
+              <th rowspan="2">Guest Name</th>
+              <th rowspan="2">Birthdate</th>
+              <th rowspan="2">Age</th>
+              <th rowspan="2">Sex</th>
+              <th rowspan="2">Nationality</th>
+              <th colspan="2" class="text-center">Flight Dates</th>
             </tr>
             <tr>
-                <th>Departure</th>
-                <th>Return</th>
+              <th>Departure</th>
+              <th>Return</th>
             </tr>
           </thead>
           <tbody>
@@ -111,7 +111,7 @@
                       FROM guest g
                       JOIN booking b ON g.transactNo = b.transactNo
                       JOIN flight f ON f.flightId = b.flightId
-                      ORDER BY guestId, f.flightDepartureDate";
+                      ORDER BY departureDate, transactNo";
 
               // Execute the query
               $result = $conn->query($sql);
@@ -120,35 +120,36 @@
               if ($result->num_rows > 0) 
               {
                 // Loop through the results and display them
-                      while ($row = $result->fetch_assoc()) {
+                while ($row = $result->fetch_assoc()) 
+                {
+                  // Format the guest name with proper handling for middle name and suffix
+                  $guestName = htmlspecialchars($row['lName']) . ", " . htmlspecialchars($row['fname']);
+                  if (!empty($row['mName']) && $row['mName'] !== 'N/A') 
+                  {
+                    $guestName .= " " . htmlspecialchars(substr($row['mName'], 0, 1)) . ".";
+                  }
+                  if (!empty($row['suffix']) && $row['suffix'] !== 'N/A') 
+                  {
+                    $guestName .= " " . htmlspecialchars($row['suffix']);
+                  }
 
-                          // Format the guest name with proper handling for middle name and suffix
-                          $guestName = htmlspecialchars($row['lName']) . ", " . htmlspecialchars($row['fname']);
-                          if (!empty($row['mName']) && $row['mName'] !== 'N/A') {
-                              $guestName .= " " . htmlspecialchars(substr($row['mName'], 0, 1)) . ".";
-                          }
-                          if (!empty($row['suffix']) && $row['suffix'] !== 'N/A') {
-                              $guestName .= " " . htmlspecialchars($row['suffix']);
-                          }
+                  // Format the dates for departure and return flight
+                  $departureDate = date('Y-m-d', strtotime($row['departureDate']));
+                  $returnDate = date('Y-m-d', strtotime($row['returnDate']));
 
-                          // Format the dates for departure and return flight
-                          $departureDate = date('Y-m-d', strtotime($row['departureDate']));
-                          $returnDate = date('Y-m-d', strtotime($row['returnDate']));
-
-                          // Output the row data in HTML table format
-                          echo "<tr>
-                                  <td>" . htmlspecialchars($row['guestId']) . "</td>
-                                  <td>" . htmlspecialchars($row['transactNo']) . "</td>
-                                  <td>" . $guestName . "</td>
-                                  <td>" . htmlspecialchars($row['birthdate']) . "</td>
-                                  <td>" . htmlspecialchars($row['age']) . "</td>
-                                  <td>" . htmlspecialchars($row['sex']) . "</td>
-                                  <td>" . htmlspecialchars($row['Nationality']) . "</td>
-                                  <td>" . $departureDate . "</td>
-                                  <td>" . $returnDate . "</td>
-                                </tr>";
-
-                      }
+                  // Output the row data in HTML table format
+                  echo "<tr>
+                          <td>" . htmlspecialchars($row['guestId']) . "</td>
+                          <td>" . htmlspecialchars($row['transactNo']) . "</td>
+                          <td>" . $guestName . "</td>
+                          <td>" . htmlspecialchars($row['birthdate']) . "</td>
+                          <td>" . htmlspecialchars($row['age']) . "</td>
+                          <td>" . htmlspecialchars($row['sex']) . "</td>
+                          <td>" . htmlspecialchars($row['Nationality']) . "</td>
+                          <td>" . $departureDate . "</td>
+                          <td>" . $returnDate . "</td>
+                        </tr>";
+                }
               }
             ?>
           </tbody>
