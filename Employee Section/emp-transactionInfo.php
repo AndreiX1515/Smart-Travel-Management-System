@@ -59,10 +59,13 @@
         </div>
 
         <?php
-          $query1 = "SELECT booking.*, package.packageName, flight.flightDepartureDate FROM booking 
-                      JOIN package ON booking.packageId = package.packageId
-                      LEFT JOIN flight ON booking.flightId = flight.flightId
-                      WHERE transactNo = '$transactionId'";
+          $query1 = "SELECT b.*, p.packageName, f.flightDepartureDate, SUM(pa.amount) AS TotalAmountPaid 
+                      FROM booking b 
+                      JOIN package p ON b.packageId = p.packageId
+                      LEFT JOIN flight f ON b.flightId = f.flightId
+                      LEFT JOIN payment pa ON pa.transactNo = b.transactNo AND pa.paymentStatus = 'Approved'
+                      WHERE b.transactNo = '$transactionId'
+                      GROUP BY b.transactNo";
 
           $result1 = $conn->query($query1);
 
@@ -85,6 +88,8 @@
               $status = $row1['status'];
               $price = $row1['totalPrice'];
               $flightId = $row1['flightId']; // Fetch flightId
+              $balance = $row1['totalPrice'] - $row1['TotalAmountPaid'];
+              $formattedBalance = number_format($balance, 2);
 
               // Construct the full name using the conditions for middle name and suffix
               $fullName = $lName . ", " . $fName . " " . 
@@ -145,6 +150,7 @@
             <p><strong>Contact Person:</strong> <?php echo $fullName; ?></p>
             <p><strong>Contact No:</strong> <?php echo $contactNo; ?></p>
             <p><strong>Email:</strong> <?php echo $email;?></p>
+            <p><strong>Balance: ₱ </strong> <?php echo $formattedBalance; ?></p>
           </div>
         </div>
       </div>
