@@ -821,6 +821,9 @@
                       <th>TOTAL PAX.</th>
                       <th>BOOKING TYPE</th>
                       <th>STATUS</th>
+                      <th>COMMENT</th>
+                      <th>ACTION</th>
+                      
                     </tr>
                   </thead>
                   <tbody>
@@ -841,43 +844,54 @@
                       // Check if the query returned any results
                       if ($result && $result->num_rows > 0) 
                       {
-                        while ($row = $result->fetch_assoc()) 
-                        {
-                          $status = $row['status'];
-                      
-                          // Define the pill status class based on the status value
-                          switch ($status) 
-                          {
-                            case 'Confirmed':
-                              $pillClass = 'bg-success';
-                              break;
-                            case 'Cancelled':
-                              $pillClass = 'bg-danger';
-                              break;
-                            case 'Pending':
-                              $pillClass = 'bg-warning';
-                              break;
-                            case 'Rejected':
-                              $pillClass = 'bg-info';
-                              break;
-                            default:
-                              $pillClass = 'bg-secondary';
-                              break;
-                          }
-                          
-                          // Generate the table row
-                          echo "<tr>
-                                  <td>{$row['transactNo']}</td>
-                                  <td>{$row['branchName']}</td>
-                                  <td>{$row['packageName']}</td>
-                                  <td>{$row['Start']}</td>
-                                  <td>{$row['pax']}</td>
-                                  <td>{$row['bookingType']}</td>
-                                  <td>
-                                      <span class='badge $pillClass p-2'>{$status}</span>
-                                  </td>
+                 
+                        while ($row = $result->fetch_assoc()) {
+                            $status = $row['status'];
+
+                            // Define the pill status class based on the status value
+                            switch ($status) {
+                                case 'Confirmed':
+                                    $pillClass = 'bg-success';
+                                    break;
+                                case 'Cancelled':
+                                    $pillClass = 'bg-danger';
+                                    break;
+                                case 'Pending':
+                                    $pillClass = 'bg-warning';
+                                    break;
+                                case 'Rejected':
+                                    $pillClass = 'bg-info';
+                                    break;
+                                default:
+                                    $pillClass = 'bg-secondary';
+                                    break;
+                            }
+
+                            // Generate the table row with dynamically set `recordId`
+                            echo "<tr data-id='{$row['transactNo']}'> <!-- Set the row ID dynamically -->
+                                    <td>{$row['transactNo']}</td>
+                                    <td>{$row['branchName']}</td>
+                                    <td>{$row['packageName']}</td>
+                                    <td>{$row['Start']}</td>
+                                    <td>{$row['pax']}</td>
+                                    <td>{$row['bookingType']}</td>
+                                    <td>
+                                        <span class='badge $pillClass p-2'>{$status}</span>
+                                    </td>
+                                    <td>
+                                        <!-- Add a text input for comments -->
+                                        <input type='text' class='form-control' name='comment' id='commentInput{$row['transactNo']}' placeholder='Add a comment'>
+                                    </td>
+                                    <td>
+                                        <!-- Hidden field to hold the record ID (hidden as input value) -->
+                                        <input type='text' class='recordId' value='{$row['transactNo']}' hidden>
+                                        
+                                        <!-- Add a submit button -->
+                                        <button type='button' class='btn btn-primary submitComment' data-id='{$row['transactNo']}'>Submit</button>
+                                    </td>
                                 </tr>";
                         }
+                       
                       } 
                       else 
                       {
@@ -892,6 +906,39 @@
                       $conn->close();
                     ?>
                   </tbody>
+
+                  <script>
+                      $('.submitComment').on('click', function() {
+                        // Get the row ID from the data-id attribute of the submit button
+                        var rowId = $(this).data('id');
+                        
+                        // Get the comment value from the corresponding input field
+                        var comment = $('#commentInput' + rowId).val(); // Dynamically select the comment input based on the row ID
+                        
+                        if(comment) {
+                            // Make an AJAX request to submit the comment and fetch data based on the row ID
+                            $.ajax({
+                                url: 'your-server-endpoint.php', // Replace with the actual URL
+                                type: 'POST',
+                                data: {
+                                    comment: comment,
+                                    id: rowId // Send the row ID with the comment
+                                },
+                                success: function(response) {
+                                    console.log('Comment submitted for row ID ' + rowId + ':', response);
+                                    // Optionally update the UI or show a success message
+                                },
+                                error: function(xhr, status, error) {
+                                    console.error('Error submitting comment for row ID ' + rowId + ':', error);
+                                }
+                            });
+                        } else {
+                            alert('Please enter a comment.');
+                        }
+                    });
+
+                  </script>
+
                 </table>
               </div>
             </div>
