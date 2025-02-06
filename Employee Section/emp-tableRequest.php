@@ -83,7 +83,7 @@
       </div>
 
       <div class="table-container">
-        <table class="product-table" id="productTable">
+      <table class="product-table" id="product-table">
           <thead>
             <tr>
               <th>Transact No</th>
@@ -99,30 +99,30 @@
           <tbody>
             <?php
               $sql1 = "SELECT r.requestId, r.transactNo AS `TransactNo`,
-              CONCAT(a.lName, ', ', a.fName, 
-                  IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1), '.'), '')) AS AgentName,
-              c.concernTitle AS `RequestTitle`, cd.details AS `RequestDetails`, b.pax AS `TotalPax`,
-              r.requestCost as requestCost,
-              r.customRequest as customRequest, r.details as details, DATE_FORMAT(r.requestDate, '%m-%d-%Y') AS `RequestDate`, 
-              r.requestStatus AS `Status`, br.branchName as branchName
-          FROM 
-              request r
-          
-          LEFT JOIN 
-              concern c ON r.concernId = c.concernId
-          LEFT JOIN 
-              concerndetails cd ON r.concernDetailsId = cd.concernDetailsId
-          LEFT JOIN 
-              booking b ON r.transactNo = b.transactNo
-          JOIN branch br ON b.agentCode = br.branchAgentCode
-          LEFT JOIN 
-              payment p ON b.transactNo = p.transactNo
-          LEFT JOIN 
-              agent a ON b.agentId = a.agentId
-          WHERE
-            r.requestStatus = 'Submitted'
-          GROUP BY 
-              r.requestId";
+                          CONCAT(a.lName, ', ', a.fName, 
+                              IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1), '.'), '')) AS AgentName,
+                          c.concernTitle AS `RequestTitle`, cd.details AS `RequestDetails`, b.pax AS `TotalPax`,
+                          r.requestCost as requestCost,
+                          r.customRequest as customRequest, r.details as details, DATE_FORMAT(r.requestDate, '%m-%d-%Y') AS `RequestDate`, 
+                          r.requestStatus AS `Status`, br.branchName as branchName
+                      FROM 
+                          request r
+                      
+                      LEFT JOIN 
+                          concern c ON r.concernId = c.concernId
+                      LEFT JOIN 
+                          concerndetails cd ON r.concernDetailsId = cd.concernDetailsId
+                      LEFT JOIN 
+                          booking b ON r.transactNo = b.transactNo
+                      JOIN branch br ON b.agentCode = br.branchAgentCode
+                      LEFT JOIN 
+                          payment p ON b.transactNo = p.transactNo
+                      LEFT JOIN 
+                          agent a ON b.agentId = a.agentId
+                      WHERE
+                        r.requestStatus = 'Submitted'
+                      GROUP BY 
+                          r.requestId";
 
               $res1 = $conn->query($sql1);
 
@@ -153,7 +153,7 @@
                   // Output table row with data-transactno attribute
                   echo "<tr class='request-row' data-requestId='{$row['requestId']}'>
                           <td>{$row['TransactNo']}</td>
-                          <td>{$row['AgentName']}</td>
+                          <td>{$row['branchName']}</td>
                           <td>{$title}</td>
                           <td>{$details}</td>
                           <td>{$row['details']}</td>
