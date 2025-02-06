@@ -739,7 +739,7 @@
 
     // First, send the request to agent-addSoA.php to insert SOA data
     const xhrAddSoA = new XMLHttpRequest();
-    xhrAddSoA.open('POST', '../Employee Section/functions/emp-addSoA.php', true);
+    xhrAddSoA.open('POST', '../Agent Section/functions/agent-addSoA.php', true);
     xhrAddSoA.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhrAddSoA.responseType = 'json'; // Expect JSON response for the SOA number
 
@@ -755,7 +755,7 @@
 
           // Proceed to generate the SOA PDF
           const xhrPdf = new XMLHttpRequest();
-          xhrPdf.open('POST', '../Employee Section/functions/generateSoA.php', true);
+          xhrPdf.open('POST', '../Agent Section/functions/generateSoA.php', true);
           xhrPdf.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
           xhrPdf.responseType = 'blob';
 

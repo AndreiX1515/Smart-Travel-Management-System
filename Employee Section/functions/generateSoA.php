@@ -1,12 +1,6 @@
 <?php
 require_once('../../tcpdf/tcpdf.php');
-// require "../../conn.php"; // Include the DB connection
 session_start();
-
-// if (isset($_POST['companyId']) && isset($_POST['monthName'])  && isset($_POST['year']) && isset($_POST['currentDate'])) 
-// {
-  
-// }
 
 // Get the selected filter values from the POST request
 $companyId = $_POST['companyId'];
