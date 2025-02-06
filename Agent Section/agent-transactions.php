@@ -156,7 +156,7 @@ require "../conn.php";
                           <th>Transaction ID</th>
                           <th>Contact Person Info</th>
                           <th>Contact Details</th>
-                          <th>Package Name</th>
+                          <th>Branch Name</th>
                           <!-- <th>Booking Date</th> -->
                           <th>Flight Date</th>
                           <th>Total Pax</th>
@@ -175,7 +175,7 @@ require "../conn.php";
                                     DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y') AS `FLIGHT DATE`, b.pax AS `TOTAL PAX`,
                                     CONCAT(b.lName, ', ', b.fName, ' ', CASE WHEN b.mName = 'N/A' THEN '' 
                                       ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ', CASE WHEN b.suffix = 'N/A' THEN '' 
-                                      ELSE b.suffix END) AS `CONTACT NAME`,
+                                      ELSE b.suffix END) AS `CONTACT NAME`, br.branchName as branchName,
                                     b.email AS `CONTACT EMAIL`, CONCAT(b.countryCode, ' ', b.contactNo) AS `CONTACT PHONE`, b.status AS `STATUS`
                                 FROM 
                                     booking b
@@ -185,6 +185,7 @@ require "../conn.php";
                                     package p ON b.packageId = p.packageId
                                 LEFT JOIN
                                     agent a ON b.agentId = a.agentId
+                                JOIN branch br ON b.agentCode = br.branchAgentCode
                                 WHERE 
                                     b.agentId = '$agentId' 
                                 ORDER BY 
@@ -229,7 +230,7 @@ require "../conn.php";
                                         </div>
                                       </td>
             
-                                      <td>{$row['PACKAGE']}</td>
+                                      <td>{$row['branchName']}</td>
                                       
                                       <td>{$row['FLIGHT DATE']}</td>
                                       <td style='text-align: center; font-weight: bold;'>
@@ -247,25 +248,20 @@ require "../conn.php";
                         }
                         else
                         {
-                          $sql1 = "SELECT b.transactNo AS `T.N`, p.packageName AS `PACKAGE`, 
+                          $sql1 = "SELECT b.transactNo AS `T.N`, p.packageName AS `PACKAGE`, br.branchName as branchName,
                                       DATE_FORMAT(b.bookingDate, '%m-%d-%Y') AS `TRANSACTION DATE`, b.bookingType as bookingType,
                                       DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y') AS `FLIGHT DATE`,
                                       b.pax AS `TOTAL PAX`, CONCAT(b.lName, ', ', b.fName, ' ', CASE WHEN b.mName = 'N/A' 
                                       THEN '' ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ', CASE WHEN b.suffix = 'N/A' THEN '' 
                                       ELSE b.suffix END) AS `CONTACT NAME`, b.email AS `CONTACT EMAIL`,
                                       CONCAT(b.countryCode, ' ', b.contactNo) AS `CONTACT PHONE`, b.status AS `STATUS`
-                                    FROM 
-                                        booking b
-                                    LEFT JOIN 
-                                        flight f ON b.flightId = f.flightId
-                                    LEFT JOIN 
-                                        package p ON b.packageId = p.packageId
-                                    LEFT JOIN
-                                        agent a ON b.agentId = a.agentId
-                                    WHERE 
-                                        b.agentCode = '$agentCode' 
-                                    ORDER BY 
-                                        b.transactNo DESC";
+                                    FROM booking b
+                                    LEFT JOIN flight f ON b.flightId = f.flightId
+                                    LEFT JOIN package p ON b.packageId = p.packageId
+                                    LEFT JOIN agent a ON b.agentId = a.agentId
+                                    JOIN branch br ON b.agentCode = br.branchAgentCode
+                                    WHERE b.agentCode = '$agentCode' 
+                                    ORDER BY b.transactNo DESC";
 
                           $res1 = $conn->query($sql1);
 
@@ -305,7 +301,7 @@ require "../conn.php";
                                       <span><strong>Contact Number: </strong>" . $row['CONTACT PHONE'] ."</span>
                                     </div>
                                   </td>
-                                  <td>{$row['PACKAGE']}</td>
+                                  <td>{$row['branchName']}</td>
                                   
                                   <td>{$row['FLIGHT DATE']}</td>
                                   <td style='text-align: center; font-weight: bold;'>{$row['TOTAL PAX']}</td>

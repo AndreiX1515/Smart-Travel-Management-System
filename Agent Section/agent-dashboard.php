@@ -675,6 +675,7 @@ require "../conn.php";
 
             <div class="flight-seat-container">
 
+              <!-- Flight Seat -->
               <div class="one">
                 <div class="body-flight">
                   <div class="confirm-table-container-flight">
@@ -1359,7 +1360,7 @@ require "../conn.php";
                       <thead>
                         <tr>
                           <th>NO.</th>
-                          <th>PACKAGE</th>
+                          <th>BRANCH NAME</th>
                           <th>FLIGHT DATE</th>
                           <th>TOTAL PAX.</th>
                           <th>CONTACT NAME</th>
@@ -1381,7 +1382,7 @@ require "../conn.php";
                             // Query to select all records from the booking table
                             $query = "SELECT b.transactNo, b.flightId, b.pax, b.totalPrice AS packagePrice, 
                                         CONCAT(DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y'), ' - ', DATE_FORMAT(f.returnDepartureDate, 
-                                        '%m-%d-%Y')) AS FlightDate, p.packageName AS packageName, 
+                                        '%m-%d-%Y')) AS FlightDate, p.packageName AS packageName, br.branchName as branchName,
                                         CONCAT(b.lName, ', ', b.fName, ' ', 
                                             CASE WHEN b.mName = 'N/A' THEN '' ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ',
                                             CASE WHEN b.suffix = 'N/A' THEN '' ELSE b.suffix END) AS contactName, 
@@ -1392,6 +1393,7 @@ require "../conn.php";
                                       JOIN flight f ON b.flightId = f.flightId
                                       LEFT JOIN 
                                         package p ON b.packageId = p.packageId
+                                      JOIN branch br ON b.agentCode = br.branchAgentCode
                                       LEFT JOIN 
                                         (SELECT transactNo, SUM(amount) AS totalPaidAmount FROM payment
                                           WHERE paymentStatus = 'Approved' GROUP BY transactNo) paid ON b.transactNo = paid.transactNo
@@ -1472,7 +1474,7 @@ require "../conn.php";
                               // Query to select all records from the booking table
                               $query = "SELECT b.transactNo, b.flightId, b.pax, b.totalPrice AS packagePrice, 
                                           CONCAT(DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y'), ' - ', DATE_FORMAT(f.returnDepartureDate, 
-                                          '%m-%d-%Y')) AS FlightDate, p.packageName AS packageName, 
+                                          '%m-%d-%Y')) AS FlightDate, p.packageName AS packageName, br.branchName as branchName,
                                           CONCAT(b.lName, ', ', b.fName, ' ', 
                                               CASE WHEN b.mName = 'N/A' THEN '' ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ',
                                               CASE WHEN b.suffix = 'N/A' THEN '' ELSE b.suffix END) AS contactName, 
@@ -1483,6 +1485,7 @@ require "../conn.php";
                                         JOIN flight f ON b.flightId = f.flightId
                                         LEFT JOIN 
                                           package p ON b.packageId = p.packageId
+                                        JOIN branch br ON b.agentCode = br.branchAgentCode
                                         LEFT JOIN 
                                           (SELECT transactNo, SUM(amount) AS totalPaidAmount FROM payment
                                             WHERE paymentStatus = 'Approved' GROUP BY transactNo) paid ON b.transactNo = paid.transactNo
@@ -1530,7 +1533,7 @@ require "../conn.php";
                                   // Display table row
                                   echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($row['transactNo']) . "'>";
                                   echo "<td>" . htmlspecialchars(substr($row['transactNo'], 5)) . "</td>"; // TransactNo
-                                  echo "<td>" . htmlspecialchars($row['packageName']) . "</td>"; // Package Name
+                                  echo "<td>" . htmlspecialchars($row['branchName']) . "</td>"; // Package Name
                                   echo "<td>" . htmlspecialchars($row['FlightDate']) . "</td>"; // Flight Date Range
                                   echo "<td>" . htmlspecialchars($row['pax']) . "</td>"; // Pax (Number of Passengers)
                                   echo "<td>" . htmlspecialchars($row['contactName']) . "</td>"; // Contact Name
