@@ -792,7 +792,7 @@ require "../conn.php";
           <div class="tab-pane fade " id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
             <div class="second-row-container">
 
-              <!-- Transactions table -->
+              <!-- Pending Transactions table -->
               <div class="one">
                 <div class="header d-flex justify-content-between align-items-center">
                   <h6 class="white-pill">Pending</h6>
@@ -806,7 +806,8 @@ require "../conn.php";
                       <thead>
                         <tr>
                           <th>NO.</th>
-                          <th>FLIGHT INFO.</th>  
+                          <th>BRANCH NAME</th>
+                          <th>FLIGHT DATE</th>  
                           <th>STATUS</th>
                         </tr>
                       </thead>
@@ -821,26 +822,20 @@ require "../conn.php";
                           if ($agentRole != 'Head Agent') 
                           {
                             $sql1 = "SELECT b.transactNo AS `T.N`, p.packageName AS `PACKAGE`, b.bookingType as bookingType,
-                                      CASE 
-                                          WHEN b.flightId IS NULL THEN 'Land Only'
-                                          ELSE CONCAT(DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y'), ' ', 
-                                          DATE_FORMAT(f.flightDepartureTime, '%h:%i %p')) END AS `FLIGHT DATE`, b.pax AS `TOTAL PAX`,
-                                      CONCAT(
-                                          b.lName, ', ', b.fName, ' ', 
-                                          CASE WHEN b.mName = 'N/A' THEN '' ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ',
-                                          CASE WHEN b.suffix = 'N/A' THEN '' ELSE b.suffix END ) AS `CONTACT NAME`, b.status AS `STATUS`
-                                    FROM 
-                                        booking b
-                                    LEFT JOIN 
-                                        flight f ON b.flightId = f.flightId
-                                    LEFT JOIN 
-                                        package p ON b.packageId = p.packageId
-                                    LEFT JOIN
-                                        agent a ON b.agentId = a.agentId
-                                    WHERE 
-                                        b.accountId = '$accountId' and b.status = 'Pending'
-                                    ORDER BY 
-                                        b.transactNo DESC";
+                                      CASE WHEN b.flightId IS NULL THEN 'Land Only'
+                                        ELSE CONCAT(DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y'), ' ', 
+                                        DATE_FORMAT(f.flightDepartureTime, '%h:%i %p')) END AS `FLIGHT DATE`, b.pax AS `TOTAL PAX`,
+                                      CONCAT(b.lName, ', ', b.fName, ' ', 
+                                        CASE WHEN b.mName = 'N/A' THEN '' ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ',
+                                        CASE WHEN b.suffix = 'N/A' THEN '' ELSE b.suffix END ) AS `CONTACT NAME`, b.status AS `STATUS`,
+                                        br.branchName as branchName
+                                    FROM booking b
+                                    LEFT JOIN flight f ON b.flightId = f.flightId
+                                    LEFT JOIN package p ON b.packageId = p.packageId
+                                    LEFT JOIN agent a ON b.agentId = a.agentId
+                                    JOIN branch br ON b.agentCode = br.branchAgentCode
+                                    WHERE b.accountId = '$accountId' and b.status = 'Pending'
+                                    ORDER BY b.transactNo DESC";
                   
                             // Run the query and check for results
                             $res1 = $conn->query($sql1);
@@ -858,20 +853,20 @@ require "../conn.php";
                                 switch ($status) 
                                 {
                                   case 'Confirmed':
-                                      $badgeClass = 'bg-success'; // Green
-                                      break;
+                                    $badgeClass = 'bg-success'; // Green
+                                    break;
                                   case 'Cancelled':
-                                      $badgeClass = 'bg-secondary'; // Gray
-                                      break;
+                                    $badgeClass = 'bg-secondary'; // Gray
+                                    break;
                                   case 'Pending':
-                                      $badgeClass = 'bg-warning'; // Yellow
-                                      break;
+                                    $badgeClass = 'bg-warning'; // Yellow
+                                    break;
                                   case 'Reject':
-                                      $badgeClass = 'bg-danger'; // Red
-                                      break;
+                                    $badgeClass = 'bg-danger'; // Red
+                                    break;
                                   default:
-                                      $badgeClass = 'bg-info'; // Blue for other statuses
-                                      break;
+                                    $badgeClass = 'bg-info'; // Blue for other statuses
+                                    break;
                                 }
 
                                 // <td>" .htmlspecialchars($row['CONTACT NAME']) . "</td>
@@ -884,21 +879,12 @@ require "../conn.php";
                                 // </td>
 
                                 echo "
-                                <tr data-url='agent-showGuest.php?id=" . htmlspecialchars($row['T.N']) . "'>
+                                  <tr data-url='agent-showGuest.php?id=" . htmlspecialchars($row['T.N']) . "'>
                                     <td>" . htmlspecialchars(substr($row['T.N'], 5)) . "</td>
-
-                                    
-
-                                    <td> 
-                                        <div class='td-content d-flex flex-column align-items-left'>
-                                          <h6>Flight Date: <span>" . htmlspecialchars($row['FLIGHT DATE']) . "</span></h6>
-                                          <h6>Total Pax: <span>" . htmlspecialchars($row['TOTAL PAX']) . "</span></h6>
-                                      </div>
-                                    </td>
-
-                                    
+                                    <td>" . $row['branchName'] . "</td>
+                                    <td> " . htmlspecialchars($row['FLIGHT DATE']) . "</td>
                                     <td> <span class='badge " . $badgeClass . " p-2'>" . $status . "</span> </td>
-                                </tr>";
+                                  </tr>";
                               }
                             } 
                             else 
@@ -910,26 +896,20 @@ require "../conn.php";
                           else
                           {
                             $sql1 = "SELECT b.transactNo AS `T.N`, p.packageName AS `PACKAGE`, b.bookingType as bookingType,
-                                      CASE 
-                                          WHEN b.flightId IS NULL THEN 'Land Only'
-                                          ELSE CONCAT(DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y'), ' ', 
-                                          DATE_FORMAT(f.flightDepartureTime, '%h:%i %p')) END AS `FLIGHT DATE`, b.pax AS `TOTAL PAX`,
-                                      CONCAT(
-                                          b.lName, ', ', b.fName, ' ', 
-                                          CASE WHEN b.mName = 'N/A' THEN '' ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ',
-                                          CASE WHEN b.suffix = 'N/A' THEN '' ELSE b.suffix END ) AS `CONTACT NAME`, b.status AS `STATUS`
-                                    FROM 
-                                        booking b
-                                    LEFT JOIN 
-                                        flight f ON b.flightId = f.flightId
-                                    LEFT JOIN 
-                                        package p ON b.packageId = p.packageId
-                                    LEFT JOIN
-                                        agent a ON b.agentId = a.agentId
-                                    WHERE 
-                                        b.agentCode = '$agentCode' and b.status = 'Pending'
-                                    ORDER BY 
-                                        b.transactNo DESC";
+                                      CASE WHEN b.flightId IS NULL THEN 'Land Only'
+                                        ELSE CONCAT(DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y'), ' ', 
+                                        DATE_FORMAT(f.flightDepartureTime, '%h:%i %p')) END AS `FLIGHT DATE`, b.pax AS `TOTAL PAX`,
+                                      CONCAT(b.lName, ', ', b.fName, ' ', 
+                                        CASE WHEN b.mName = 'N/A' THEN '' ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ',
+                                        CASE WHEN b.suffix = 'N/A' THEN '' ELSE b.suffix END ) AS `CONTACT NAME`, b.status AS `STATUS`,
+                                        br.branchName as branchName
+                                    FROM booking b
+                                    LEFT JOIN flight f ON b.flightId = f.flightId
+                                    LEFT JOIN package p ON b.packageId = p.packageId
+                                    LEFT JOIN agent a ON b.agentId = a.agentId
+                                    JOIN branch br ON b.agentCode = br.branchAgentCode
+                                    WHERE b.agentCode = '$agentCode' and b.status = 'Pending'
+                                    ORDER BY b.transactNo DESC";
                   
                             // Run the query and check for results
                             $res1 = $conn->query($sql1);
@@ -947,20 +927,20 @@ require "../conn.php";
                                 switch ($status) 
                                 {
                                   case 'Confirmed':
-                                      $badgeClass = 'bg-success'; // Green
-                                      break;
+                                    $badgeClass = 'bg-success'; // Green
+                                    break;
                                   case 'Cancelled':
-                                      $badgeClass = 'bg-secondary'; // Gray
-                                      break;
+                                    $badgeClass = 'bg-secondary'; // Gray
+                                    break;
                                   case 'Pending':
-                                      $badgeClass = 'bg-warning'; // Yellow
-                                      break;
+                                    $badgeClass = 'bg-warning'; // Yellow
+                                    break;
                                   case 'Reject':
-                                      $badgeClass = 'bg-danger'; // Red
-                                      break;
+                                    $badgeClass = 'bg-danger'; // Red
+                                    break;
                                   default:
-                                      $badgeClass = 'bg-info'; // Blue for other statuses
-                                      break;
+                                    $badgeClass = 'bg-info'; // Blue for other statuses
+                                    break;
                                 }
 
                                 // <td> 
@@ -972,23 +952,12 @@ require "../conn.php";
 
                                 // <td>" . htmlspecialchars($row['CONTACT NAME']) . "</td>
 
-
-
-
                                 echo "
                                 <tr data-url='agent-showGuest.php?id=" . htmlspecialchars($row['T.N']) . "'>
-                                    <td>" . htmlspecialchars(substr($row['T.N'], 5)) . "</td>
-                                    
-
-                                    <td> 
-                                        <div class='td-content d-flex flex-column align-items-left'>
-                                          <h6>Flight Date: <span>" . htmlspecialchars($row['FLIGHT DATE']) . "</span></h6>
-                                          <h6>Total Pax: <span>" . htmlspecialchars($row['TOTAL PAX']) . "</span></h6>
-                                      </div>
-                                    </td>
-                                                                    
-                                    
-                                    <td> <span class='badge " . $badgeClass . " p-2'>" . $status . "</span> </td>
+                                  <td>" . htmlspecialchars(substr($row['T.N'], 5)) . "</td>
+                                  <td>" . $row['branchName'] . "</td>
+                                  <td>" . htmlspecialchars($row['FLIGHT DATE']) . "</td>
+                                  <td> <span class='badge " . $badgeClass . " p-2'>" . $status . "</span> </td>
                                 </tr>";
                               }
                             } 
@@ -1017,6 +986,7 @@ require "../conn.php";
                       <thead>
                         <tr>
                           <th>No.</th>
+                          <th>Branch Name</th>
                           <th>Request</th>
                           <th>Date Requested</th>
                           <th>Status</th>
@@ -1033,20 +1003,15 @@ require "../conn.php";
                           if ($agentRole != 'Head Agent') 
                           {
                             $sql1 = "SELECT r.transactNo AS `T.N`, c.concernTitle AS `Request`, cd.details AS `Details`, 
-                                      r.customRequest AS `CustomRequest`, DATE_FORMAT(r.requestDate, '%m-%d-%Y') AS `Date`,  
-                                      r.requestStatus AS `Status`, b.transactNo
-                                  FROM 
-                                      request r
-                                  LEFT JOIN 
-                                      booking b ON r.transactNo = b.transactNo
-                                  LEFT JOIN 
-                                      concern c ON r.concernId = c.concernId
-                                  LEFT JOIN 
-                                      concerndetails cd ON r.concernDetailsId = cd.concernDetailsId
-                                  WHERE 
-                                      b.accountId = '$accountId' AND r.requestStatus = 'Submitted'
-                                  ORDER BY 
-                                      r.requestDate DESC";
+                                        r.customRequest AS `CustomRequest`, DATE_FORMAT(r.requestDate, '%m-%d-%Y') AS `Date`,  
+                                        r.requestStatus AS `Status`, b.transactNo, br.branchName as branchName
+                                      FROM request r
+                                      LEFT JOIN  booking b ON r.transactNo = b.transactNo
+                                      LEFT JOIN concern c ON r.concernId = c.concernId
+                                      LEFT JOIN concerndetails cd ON r.concernDetailsId = cd.concernDetailsId
+                                      JOIN branch br ON b.agentCode = br.branchAgentCode
+                                      WHERE b.accountId = '$accountId' AND r.requestStatus = 'Submitted'
+                                      ORDER BY r.requestDate DESC";
 
                             $res1 = $conn->query($sql1);
 
@@ -1057,41 +1022,40 @@ require "../conn.php";
                                 $status = htmlspecialchars($row['Status']);
                                 $statusClass = '';
 
-                                switch ($status) {
-                                    case 'Active':
-                                        $statusClass = 'bg-success text-white';
-                                        break;
-                                    case 'Pending':
-                                        $statusClass = 'bg-warning text-dark';
-                                        break;
-                                    case 'Inactive':
-                                        $statusClass = 'bg-danger text-white';
-                                        break;
-                                    case 'To be confirmed':
-                                        $statusClass = 'bg-secondary text-white';
-                                        break;
-                                    case 'Submitted':
-                                      $statusClass = 'bg-secondary text-white';
-                                      break;
-                                    default:
-                                        $statusClass = 'bg-light text-dark'; // Default class for unknown statuses
-                                        break;
+                                switch ($status) 
+                                {
+                                  case 'Active':
+                                    $statusClass = 'bg-success text-white';
+                                    break;
+                                  case 'Pending':
+                                    $statusClass = 'bg-warning text-dark';
+                                    break;
+                                  case 'Inactive':
+                                    $statusClass = 'bg-danger text-white';
+                                    break;
+                                  case 'To be confirmed':
+                                    $statusClass = 'bg-secondary text-white';
+                                    break;
+                                  case 'Submitted':
+                                    $statusClass = 'bg-secondary text-white';
+                                    break;
+                                  default:
+                                    $statusClass = 'bg-light text-dark'; // Default class for unknown statuses
+                                    break;
                                 }
-
-
                                 $title = $row['Request'] ?? 'Custom Request'; // Use 'Custom Request' if `Request` is NULL
                                 $details = $row['Details'] ?? $row['CustomRequest']; // Use `CustomRequest` if `Details` is NULL
 
-                                echo 
-                                "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($row['T.N']) . "'>
+                                echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($row['T.N']) . "'>
                                         <td>" . htmlspecialchars(substr($row['transactNo'], 5)) . "</td> 
+                                        <td>". $row['branchName'] ."</td>
                                         <td>" . htmlspecialchars($title) . "</td> 
                                         <td>" . htmlspecialchars($row['Date']) . "</td> 
                                         <td>
-                                              <span class='badge <?php echo $statusClass; ?> p-2'>
-                                                  {$status}
-                                              </span>
-                                          </td>
+                                          <span class='badge <?php echo $statusClass; ?> p-2'>
+                                            {$status}
+                                          </span>
+                                        </td>
                                       </tr>";
                               }
                             } 
@@ -1102,69 +1066,64 @@ require "../conn.php";
                           }
                           else
                           {
-                            {
-                              $sql1 = "SELECT r.transactNo AS `T.N`, c.concernTitle AS `Request`, cd.details AS `Details`, 
+                            $sql1 = "SELECT r.transactNo AS `T.N`, c.concernTitle AS `Request`, cd.details AS `Details`, 
                                         r.customRequest AS `CustomRequest`, DATE_FORMAT(r.requestDate, '%m-%d-%Y') AS `Date`,  
-                                        r.requestStatus AS `Status`, b.transactNo
-                                    FROM 
-                                        request r
-                                    LEFT JOIN 
-                                        booking b ON r.transactNo = b.transactNo
-                                    LEFT JOIN 
-                                        concern c ON r.concernId = c.concernId
-                                    LEFT JOIN 
-                                        concerndetails cd ON r.concernDetailsId = cd.concernDetailsId
-                                    WHERE 
-                                        b.agentCode = '$agentCode' AND r.requestStatus = 'Submitted'
-                                    ORDER BY 
-                                        r.requestDate DESC";
+                                        r.requestStatus AS `Status`, b.transactNo, br.branchName as branchName
+                                    FROM request r
+                                    LEFT JOIN booking b ON r.transactNo = b.transactNo
+                                    LEFT JOIN concern c ON r.concernId = c.concernId
+                                    LEFT JOIN concerndetails cd ON r.concernDetailsId = cd.concernDetailsId
+                                    JOIN branch br ON b.agentCode = br.branchAgentCode
+                                    WHERE b.agentCode = '$agentCode' AND r.requestStatus = 'Submitted'
+                                    ORDER BY r.requestDate DESC";
 
-                              $res1 = $conn->query($sql1);
+                            $res1 = $conn->query($sql1);
 
-                              if ($res1 && $res1->num_rows > 0) 
+                            if ($res1 && $res1->num_rows > 0) 
+                            {
+                              while ($row = $res1->fetch_assoc()) 
                               {
-                                while ($row = $res1->fetch_assoc()) 
+                                $status = htmlspecialchars($row['Status']);
+                                $statusClass = '';
+
+                                switch ($status) 
                                 {
-                                  $status = htmlspecialchars($row['Status']);
-                                  $statusClass = '';
-
-                                  switch ($status) {
-                                      case 'Confirmed':
-                                          $statusClass = 'bg-success text-white';
-                                          break;
-                                      case 'Pending':
-                                          $statusClass = 'bg-warning text-dark';
-                                          break;
-                                      case 'Rejected':
-                                          $statusClass = 'bg-danger text-white';
-                                          break;
-                                      case 'Submitted':
-                                          $statusClass = 'bg-secondary text-black';
-                                          break;
-                                      default:
-                                          $statusClass = 'bg-light text-dark'; // Default class for unknown statuses
-                                          break;
-                                  }
-
-                                  $title = $row['Request'] ?? 'Custom Request'; // Use 'Custom Request' if `Request` is NULL
-                                  $details = $row['Details'] ?? $row['CustomRequest']; // Use `CustomRequest` if `Details` is NULL
-
-                                  echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($row['T.N']) . "'>
-                                          <td>" . htmlspecialchars(substr($row['transactNo'], 5)) . "</td>
-                                          <td>" . htmlspecialchars($title) . "</td> 
-                                          <td>" . htmlspecialchars($row['Date']) . "</td> 
-                                          <td>
-                                              <span class='badge <?php echo $statusClass; ?> p-2'>
-                                                  {$status}
-                                              </span>
-                                          </td>
-                                        </tr>";
+                                  case 'Confirmed':
+                                    $statusClass = 'bg-success text-white';
+                                    break;
+                                  case 'Pending':
+                                    $statusClass = 'bg-warning text-dark';
+                                    break;
+                                  case 'Rejected':
+                                    $statusClass = 'bg-danger text-white';
+                                    break;
+                                  case 'Submitted':
+                                    $statusClass = 'bg-secondary text-black';
+                                    break;
+                                  default:
+                                    $statusClass = 'bg-light text-dark'; // Default class for unknown statuses
+                                    break;
                                 }
-                              } 
-                              else 
-                              {
-                                echo "<tr><td colspan='4.5' style='text-align: left;'>No requests at the moment</td></tr>";
+
+                                $title = $row['Request'] ?? 'Custom Request'; // Use 'Custom Request' if `Request` is NULL
+                                $details = $row['Details'] ?? $row['CustomRequest']; // Use `CustomRequest` if `Details` is NULL
+
+                                echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($row['T.N']) . "'>
+                                        <td>" . htmlspecialchars(substr($row['transactNo'], 5)) . "</td>
+                                        <td>". $row['branchName'] ."</td>
+                                        <td>" . htmlspecialchars($title) . "</td> 
+                                        <td>" . htmlspecialchars($row['Date']) . "</td> 
+                                        <td>
+                                          <span class='badge <?php echo $statusClass; ?> p-2'>
+                                            {$status}
+                                          </span>
+                                        </td>
+                                      </tr>";
                               }
+                            } 
+                            else 
+                            {
+                              echo "<tr><td colspan='4.5' style='text-align: left;'>No requests at the moment</td></tr>";
                             }
                           }
                         ?>
@@ -1186,6 +1145,7 @@ require "../conn.php";
                       <thead>
                         <tr>
                           <th>NO.</th>
+                          <td>BRANCH NAME</td>
                           <th>PAYMENT INFO</th>
                           <th>AMOUNT</th>
                           <th>STATUS</th>
@@ -1202,15 +1162,12 @@ require "../conn.php";
                           {
                             $sql2 = "SELECT p.transactNo AS `Transaction No`, p.paymentTitle AS `Payment Title`, 
                                       CONCAT(FORMAT(p.amount, 2)) AS `Amount`, DATE_FORMAT(p.paymentDate, '%m-%d-%Y') AS `Date`,  
-                                      p.paymentType AS `Payment Type`,p.paymentStatus, b.agentId
-                                    FROM 
-                                      payment p
-                                    JOIN 
-                                      booking b ON p.transactNo = b.transactNo
-                                    WHERE 
-                                      b.accountId = '$accountId' and p.paymentStatus = 'Submitted'  -- Adjust conditions as needed
-                                    ORDER BY 
-                                      p.paymentDate DESC";  // Order by payment date
+                                      p.paymentType AS `Payment Type`,p.paymentStatus, b.agentId, br.branchName as branchName
+                                    FROM payment p
+                                    JOIN booking b ON p.transactNo = b.transactNo
+                                    JOIN branch br ON b.agentCode = br.branchAgentCode
+                                    WHERE b.accountId = '$accountId' and p.paymentStatus = 'Submitted'
+                                    ORDER BY p.paymentDate DESC";  // Order by payment date
 
                             $res2 = $conn->query($sql2);
                             
@@ -1221,7 +1178,8 @@ require "../conn.php";
                                 $status = $row['paymentStatus'];
                                 $badgeClass = '';
                             
-                                switch ($status) {
+                                switch ($status) 
+                                {
                                   case 'Submitted':
                                     $badgeClass = 'badge bg-secondary text-dark'; 
                                     break;
@@ -1235,31 +1193,25 @@ require "../conn.php";
                                     $badgeClass = 'badge bg-secondary'; 
                                     break;
                                 }
-    
-
                                 $rowTrans = htmlspecialchars(substr($row['Transaction No'], 5));
 
                                 echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($row['Transaction No']) . "'>
                                         <td>{$rowTrans}</td>
-
-                                    <td> 
+                                        <td>". $row['branchName'] ."</td>
+                                        <td> 
                                           <div class='td-content d-flex flex-column align-items-left'>
-                                                <h6>Title: <span>" . htmlspecialchars($row['Payment Title']) . "</span></h6>
-                                                <h6>Type: <span>" . htmlspecialchars($row['Payment Type']) . "</span></h6>
-                                        </div>
-                                    </td>
-
-                                    <td> 
+                                            <h6>Title: <span>" . htmlspecialchars($row['Payment Title']) . "</span></h6>
+                                            <h6>Type: <span>" . htmlspecialchars($row['Payment Type']) . "</span></h6>
+                                          </div>
+                                        </td>
+                                        <td> 
                                           <div class='td-content d-flex flex-column align-items-left'>
-                                                <h6>Amount: <span>₱ " . htmlspecialchars($row['Amount']) . "</span></h6>
-                                                <h6>Date Submitted: <span>" . htmlspecialchars($row['Date']) . "</span></h6>
-                                        </div>
-                                    </td>
-                                                                  
-                                  <td><span class='<?php echo $badgeClass; ?> p-2'>
-                                          {$row['paymentStatus']}
-                                      </span></td>
-                                </tr>";
+                                            <h6>Amount: <span>₱ " . htmlspecialchars($row['Amount']) . "</span></h6>
+                                            <h6>Date Submitted: <span>" . htmlspecialchars($row['Date']) . "</span></h6>
+                                          </div>
+                                        </td>                      
+                                        <td><span class='<?php echo $badgeClass; ?> p-2'>{$row['paymentStatus']}</span></td>
+                                      </tr>";
                               }
                             } 
                             else 
@@ -1271,15 +1223,12 @@ require "../conn.php";
                           {
                             $sql2 = "SELECT p.transactNo AS `Transaction No`, p.paymentTitle AS `Payment Title`, 
                                       CONCAT(FORMAT(p.amount, 2)) AS `Amount`, DATE_FORMAT(p.paymentDate, '%m-%d-%Y') AS `Date`,  
-                                      p.paymentType AS `Payment Type`,p.paymentStatus, b.agentId
-                                    FROM 
-                                      payment p
-                                    JOIN 
-                                      booking b ON p.transactNo = b.transactNo
-                                    WHERE 
-                                      b.agentCode = '$agentCode' and p.paymentStatus = 'Submitted'  -- Adjust conditions as needed
-                                    ORDER BY 
-                                      p.paymentDate DESC";  // Order by payment date
+                                      p.paymentType AS `Payment Type`,p.paymentStatus, b.agentId, br.branchName as branchName
+                                    FROM payment p
+                                    JOIN booking b ON p.transactNo = b.transactNo
+                                    JOIN branch br ON b.agentCode = br.branchAgentCode
+                                    WHERE b.agentCode = '$agentCode' and p.paymentStatus = 'Submitted'
+                                    ORDER BY p.paymentDate DESC";  // Order by payment date
 
                             $res2 = $conn->query($sql2);
                             
@@ -1289,48 +1238,43 @@ require "../conn.php";
                               {
                                 $rowTrans = htmlspecialchars(substr($row['Transaction No'], 5));
 
-                                  $status = $row['paymentStatus'];
-                                  $badgeClass = '';
+                                $status = $row['paymentStatus'];
+                                $badgeClass = '';
 
-                                  switch ($status) {
-                                          case 'Submitted':
-                                            $badgeClass = 'badge bg-secondary text-dark'; 
-                                            break;
-                                          case 'Confirmed':
-                                            $badgeClass = 'badge bg-success'; 
-                                            break;
-                                          case 'Pending':
-                                            $badgeClass = 'badge bg-danger'; 
-                                            break;
-                                          default:
-                                            $badgeClass = 'badge bg-secondary'; 
-                                            break;
-                                  }
+                                switch ($status) 
+                                {
+                                  case 'Submitted':
+                                    $badgeClass = 'badge bg-secondary text-dark'; 
+                                    break;
+                                  case 'Confirmed':
+                                    $badgeClass = 'badge bg-success'; 
+                                    break;
+                                  case 'Pending':
+                                    $badgeClass = 'badge bg-danger'; 
+                                    break;
+                                  default:
+                                    $badgeClass = 'badge bg-secondary'; 
+                                    break;
+                                }
 
 
                                 echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($row['Transaction No']) . "'>
                                         <td>{$rowTrans}</td>
-
-                                <td> 
-                                    <div class='td-content d-flex flex-column align-items-left'>
-                                          <h6>Title: <span>" . $row['Payment Title'] . "</span></h6>
-                                          <h6>Type: <span>" . $row['Payment Type'] . "</span></h6>
-                                  </div>
-                              </td>
-
-                              <td> 
-                                    <div class='td-content d-flex flex-column align-items-left'>
-                                          <h6>Amount: <span>₱ " . htmlspecialchars($row['Amount']) . "</span></h6>
-                                          <h6>Date Submitted: <span>" . htmlspecialchars($row['Date']) . "</span></h6>
-                                  </div>
-                              </td>
-                                                                        
-                                  <td>
-                                      <span class='<?php echo $badgeClass; ?> p-2'>
-                                          {$row['paymentStatus']}
-                                      </span>
-                                    </td>
-                                </tr>";
+                                        <td>". $row['branchName'] ."</td>
+                                        <td> 
+                                          <div class='td-content d-flex flex-column align-items-left'>
+                                            <h6>Title: <span>" . $row['Payment Title'] . "</span></h6>
+                                            <h6>Type: <span>" . $row['Payment Type'] . "</span></h6>
+                                          </div>
+                                        </td>
+                                        <td> 
+                                          <div class='td-content d-flex flex-column align-items-left'>
+                                            <h6>Amount: <span>₱ " . htmlspecialchars($row['Amount']) . "</span></h6>
+                                            <h6>Date Submitted: <span>" . htmlspecialchars($row['Date']) . "</span></h6>
+                                          </div>
+                                        </td>                       
+                                        <td><span class='<?php echo $badgeClass; ?> p-2'>{$row['paymentStatus']}</span></td>
+                                      </tr>";
                               }
                             } 
                             else 
@@ -1697,149 +1641,45 @@ require "../conn.php";
                     <table class="fit-table">
                       <thead>
                         <tr>
-                          <th>NO.</th>
-                          <th>PACKAGE</th>
-                          <th>FLIGHT DATE</th>
-                          <th>TOTAL PAX.</th>
-                          <th>CONTACT NAME</th>
-                          <th>BOOKING TYPE</th>
-                          <th>AMOUNT PAID</th>
-                          <th>BALANCE</th>
-                          <th>STATUS</th>
+                          <th>TRANSACT NO.</th>
+                          <th>HOTEL NAME</th>
+                          <th>ROOM TYPE</th>
+                          <th>NUMBER OF ROOMS</th>
+                          <th>NUMBER OF GUESTS</th>
+                          <th>TRIP DURATION</th>
                         </tr>
                       </thead>
                       <tbody>
                         <?php
-                          
                           $accountId = $_SESSION['accountId'];
                           $agentCode = $_SESSION['agentCode'];
                           $agentRole = $_SESSION['agentRole'];
 
-                          if ($agentRole != 'Head Agent') 
+                          $sql1 = "SELECT f.transactionNo as transactNo, f.nights as noOfNights, h.hotelName as hotelName,
+                                      r.rooms as roomName, f.rooms as noOfRooms, f.pax as pax
+                                    FROM fit f
+                                    JOIN fithotel h ON f.hotelId = h.hotelId
+                                    JOIN fitrooms r ON f.roomId = r.roomId";
+                          $res1 = $conn->query($sql1);
+
+                          if ($res1->num_rows > 0) 
                           {
-                            // Query to select all records from the booking table
-                            $query = "SELECT b.transactNo, b.flightId, b.pax, b.totalPrice AS packagePrice, 
-                                        CONCAT(DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y'), ' - ', DATE_FORMAT(f.returnDepartureDate, 
-                                        '%m-%d-%Y')) AS FlightDate, p.packageName AS packageName, 
-                                        CONCAT(b.lName, ', ', b.fName, ' ', 
-                                            CASE WHEN b.mName = 'N/A' THEN '' ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ',
-                                            CASE WHEN b.suffix = 'N/A' THEN '' ELSE b.suffix END) AS contactName, 
-                                        IFNULL(req.totalRequestCost, 0) AS totalRequestCost, IFNULL(paid.totalPaidAmount, 0) AS totalPaidAmount,
-                                        b.status AS bookingStatus, b.bookingType, (b.totalPrice + IFNULL(req.totalRequestCost, 0)) AS TotalCost
-                                      FROM 
-                                        booking b
-                                      JOIN flight f ON b.flightId = f.flightId
-                                      LEFT JOIN 
-                                        package p ON b.packageId = p.packageId
-                                      LEFT JOIN 
-                                        (SELECT transactNo, SUM(amount) AS totalPaidAmount FROM payment
-                                          WHERE paymentStatus = 'Approved' GROUP BY transactNo) paid ON b.transactNo = paid.transactNo
-                                      LEFT JOIN 
-                                        (SELECT transactNo, SUM(requestCost) AS totalRequestCost FROM request
-                                          WHERE requestStatus = 'Confirmed' GROUP BY transactNo) req ON b.transactNo = req.transactNo
-                                      WHERE 
-                                        b.status = 'Confirmed' and b.accountId = '$accountId' and f.flightDepartureDate >= CURDATE()";
-
-                            $result = $conn->query($query); // Execute the query
-
-                            // Check if there are results and populate the table
-                            if ($result && $result->num_rows > 0) 
+                            while ($row = $res1->fetch_assoc()) 
                             {
-                              while ($row = $result->fetch_assoc()) 
-                              {
-                                // Calculate Balance
-                                $totalAmountPaid = $row['totalPaidAmount'];
-                                $totalAmountToBePaid = $row['packagePrice'] + $row['totalRequestCost']; // Total price + total request cost
-                                $balance = $totalAmountToBePaid - $totalAmountPaid; // Balance calculation
-
-                                // Determine if fully paid or not
-                                $status = ($totalAmountPaid == $totalAmountToBePaid) ? 'Fully Paid' : 'Not Paid';
-
-                            
-                                // Display table row
-                                echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($row['transactNo']) . "'>";
-                                echo "<td>" . htmlspecialchars(substr($row['transactNo'], 5)) . "</td>"; // TransactNo
-                                echo "<td>" . htmlspecialchars($row['packageName']) . "</td>"; // Package Name
-                                echo "<td>" . htmlspecialchars($row['FlightDate']) . "</td>"; // Flight Date Range
-                                echo "<td>" . htmlspecialchars($row['pax']) . "</td>"; // Pax (Number of Passengers)
-                                echo "<td>" . htmlspecialchars($row['contactName']) . "</td>"; // Contact Name
-                                echo "<td>" . $row['bookingType'] . "</td>"; // Booking Type 
-                                echo "<td>₱ " . number_format($totalAmountPaid, 2) . "</td>"; // Total Amount Paid
-                                echo "<td>₱ " . number_format($balance, 2) . "</td>"; // Balance (Amount to be paid - Amount paid)
-                                echo "<td>" . htmlspecialchars($row['bookingStatus']) . "</td>"; // Status (Fully Paid or Not Paid)
-                                echo "</tr>";
-                              }
-                            } 
-                            else 
-                            {
-                              // Display a message if no records are found
-                              echo "<tr><td colspan='12'>No records found</td></tr>";
+                              echo "<tr>";
+                              echo "<td>" . htmlspecialchars($row['transactNo']) . "</td>";
+                              echo "<td>" . htmlspecialchars($row['hotelName']) . "</td>";
+                              echo "<td>" . htmlspecialchars($row['roomName']) . "</td>";
+                              echo "<td>" . htmlspecialchars($row['noOfRooms']) . "</td>";
+                              echo "<td>" . htmlspecialchars($row['pax']) . "</td>";
+                              echo "<td>" . htmlspecialchars($row['noOfNights']) . " Night(s)</td>";
+                              echo "</tr>";
                             }
                           }
-                          else
+                          else 
                           {
-                            {
-                              // Query to select all records from the booking table
-                              $query = "SELECT b.transactNo, b.flightId, b.pax, b.totalPrice AS packagePrice, 
-                                          CONCAT(DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y'), ' - ', DATE_FORMAT(f.returnDepartureDate, 
-                                          '%m-%d-%Y')) AS FlightDate, p.packageName AS packageName, 
-                                          CONCAT(b.lName, ', ', b.fName, ' ', 
-                                              CASE WHEN b.mName = 'N/A' THEN '' ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ',
-                                              CASE WHEN b.suffix = 'N/A' THEN '' ELSE b.suffix END) AS contactName, 
-                                          IFNULL(req.totalRequestCost, 0) AS totalRequestCost, IFNULL(paid.totalPaidAmount, 0) AS totalPaidAmount,
-                                          b.status AS bookingStatus, b.bookingType, (b.totalPrice + IFNULL(req.totalRequestCost, 0)) AS TotalCost
-                                        FROM 
-                                          booking b
-                                        JOIN flight f ON b.flightId = f.flightId
-                                        LEFT JOIN 
-                                          package p ON b.packageId = p.packageId
-                                        LEFT JOIN 
-                                          (SELECT transactNo, SUM(amount) AS totalPaidAmount FROM payment
-                                            WHERE paymentStatus = 'Approved' GROUP BY transactNo) paid ON b.transactNo = paid.transactNo
-                                        LEFT JOIN 
-                                          (SELECT transactNo, SUM(requestCost) AS totalRequestCost FROM request
-                                            WHERE requestStatus = 'Confirmed' GROUP BY transactNo) req ON b.transactNo = req.transactNo
-                                        WHERE 
-                                          b.status = 'Confirmed' and b.agentCode = '$agentCode'";
-
-                              $result = $conn->query($query); // Execute the query
-
-                              // Check if there are results and populate the table
-                              if ($result && $result->num_rows > 0) 
-                              {
-                                while ($row = $result->fetch_assoc()) 
-                                {
-                                  // Calculate Balance
-                                  $totalAmountPaid = $row['totalPaidAmount'];
-                                  $totalAmountToBePaid = $row['packagePrice'] + $row['totalRequestCost']; // Total price + total request cost
-                                  $balance = $totalAmountToBePaid - $totalAmountPaid; // Balance calculation
-
-                                  // Determine if fully paid or not
-                                  $status = ($totalAmountPaid == $totalAmountToBePaid) ? 'Fully Paid' : 'Not Paid';
-
-                              
-                                  // Display table row
-                                  echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($row['transactNo']) . "'>";
-                                  echo "<td>" . htmlspecialchars(substr($row['transactNo'], 5)) . "</td>"; // TransactNo
-                                  echo "<td>" . htmlspecialchars($row['packageName']) . "</td>"; // Package Name
-                                  echo "<td>" . htmlspecialchars($row['FlightDate']) . "</td>"; // Flight Date Range
-                                  echo "<td>" . htmlspecialchars($row['pax']) . "</td>"; // Pax (Number of Passengers)
-                                  echo "<td>" . htmlspecialchars($row['contactName']) . "</td>"; // Contact Name
-                                  echo "<td>" . $row['bookingType'] . "</td>"; // Booking Type 
-                                  echo "<td>₱ " . number_format($totalAmountPaid, 2) . "</td>"; // Total Amount Paid
-                                  echo "<td>₱ " . number_format($balance, 2) . "</td>"; // Balance (Amount to be paid - Amount paid)
-                                  echo "<td>" . htmlspecialchars($row['bookingStatus']) . "</td>"; // Status (Fully Paid or Not Paid)
-                                  echo "</tr>";
-                                }
-                              } 
-                              else 
-                              {
-                                // Display a message if no records are found
-                                echo "<tr><td colspan='12'>No records found</td></tr>";
-                              }
-                            }
+                            echo "<tr><td colspan='6' class='text-center'>No Records Found</td></tr>";
                           }
-                          
                         ?>
                       </tbody>
                     </table>

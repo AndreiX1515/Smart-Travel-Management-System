@@ -52,8 +52,8 @@
 
     // Prepare the SQL statement for insertion into the booking table
     $sql1 = "INSERT INTO booking (accountId, transactNo, agentId, agentCode, flightId, packageId, fName, lName, mName, suffix, countryCode, 
-    contactNo, email, pax, totalPrice, bookingType, flightDetails, status, bookingDate) VALUES 
-    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Pending', NOW())";
+                contactNo, email, pax, totalPrice, bookingType, flightDetails, status, bookingDate) VALUES 
+                (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Reserved', NOW())";
     $stmt1 = $conn->prepare($sql1);
 
     if (!$stmt1) 
