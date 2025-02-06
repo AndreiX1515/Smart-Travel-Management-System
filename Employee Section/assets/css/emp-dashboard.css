@@ -620,7 +620,8 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 30vh;
+  height: 37vh;
+  border: 1px solid black;
 }
 
 /* ============================
@@ -818,16 +819,25 @@ div.dataTables_wrapper td:first-child {
   border-left: 1px solid #ddd;
 }
 
-div.dataTables_wrapper thead th {
-  position: sticky; /* Make the header sticky */
-  top: 0; /* Stick the header to the top of the scrolling container */
-  z-index: 2; /* Ensure the header stays above table rows */
-  background-color: #f8f9fa; /* Background color to differentiate the header */
-  text-align: center;
-  font-weight: bold;
-  border-right: 1px solid #e6e6e6;
-  padding: 5px 8px;
+/* Styling for the table header in both dataTables and info-table */
+div.dataTables_wrapper thead, 
+div.info-table thead {
+    position: sticky; /* Make the entire thead sticky */
+    top: 0; /* Stick the header to the top of the scrolling container */
+    z-index: 2; /* Ensure the header stays above table rows */
+    background-color: #f8f9fa; /* Background color to differentiate the header */
+    padding: 3px 8px; /* Adjust padding for better spacing */
 }
+
+/* Styling for each table header cell (th) */
+div.dataTables_wrapper thead th, 
+div.info-table thead th {
+    text-align: center; /* Center align the text */
+    font-weight: bold; /* Make the header text bold */
+    border-right: 1px solid #e6e6e6; /* Add right border between columns */
+    padding: 10px 8px; /* Adjust padding for better spacing */
+}
+
 
 /* Ensure selected row does not change size */
 .info-table tbody tr,
@@ -847,15 +857,6 @@ div.dataTables_wrapper tbody tr.selected {
 }
 
 
-/* Sticky Columns for DataTables (first 11 columns) */
-div.dataTables_wrapper thead th:nth-child(-n+12),
-div.dataTables_wrapper tbody td:nth-child(-n+12) {
-  position: sticky;
-  left: 5;
-  background-color: #f8f9fa; /* Light background for sticky columns */
-  z-index: 10; /* Ensure it stays on top of the other columns */
-}
-
 /* Column-Specific Width Adjustments */
 div.dataTables_wrapper thead th:nth-child(1),
 div.dataTables_wrapper tbody td:nth-child(1) {
@@ -865,7 +866,7 @@ div.dataTables_wrapper tbody td:nth-child(1) {
 /* Column-Specific Width Adjustments */
 div.dataTables_wrapper thead th:nth-child(2),
 div.dataTables_wrapper tbody td:nth-child(2) {
-  width: 8%;
+  width: 12%;
 }
 
 
@@ -880,18 +881,18 @@ div.dataTables_wrapper tbody td:nth-child(3) {
 
 div.dataTables_wrapper thead th:nth-child(4),
 div.dataTables_wrapper tbody td:nth-child(4) {
-  width: 15%;
+  width: 18%;
 }
 
 div.dataTables_wrapper thead th:nth-child(5),
 div.dataTables_wrapper tbody td:nth-child(5) {
-  width: 5%;
+  width: 6%;
   
 }
 
 div.dataTables_wrapper thead th:nth-child(6),
 div.dataTables_wrapper tbody td:nth-child(6) {
-  width: 5%;
+  width: 7%;
 }
 
 div.dataTables_wrapper thead th:nth-child(7),
@@ -906,22 +907,31 @@ div.dataTables_wrapper tbody td:nth-child(8) {
 
 div.dataTables_wrapper thead th:nth-child(9),
 div.dataTables_wrapper tbody td:nth-child(9) {
-  width: 10%;
+  width: 9%;
 }
 
 div.dataTables_wrapper thead th:nth-child(10),
 div.dataTables_wrapper tbody td:nth-child(10) {
-  width: 10%;
+  width: 9%;
 }
 
 div.dataTables_wrapper thead th:nth-child(11),
 div.dataTables_wrapper tbody td:nth-child(11) {
-  width: 10%;
+  width: 9%;
 }
 
 div.dataTables_wrapper thead th:nth-child(12),
 div.dataTables_wrapper tbody td:nth-child(12) {
-  width: 10%;
+  width: 9%;
+}
+
+/* Sticky Columns for DataTables (first 11 columns) */
+div.dataTables_wrapper thead th:nth-child(-n+12),
+div.dataTables_wrapper tbody td:nth-child(-n+12) {
+  position: sticky;
+  left: 5;
+  background-color: #f8f9fa; /* Light background for sticky columns */
+  z-index: 10; /* Ensure it stays on top of the other columns */
 }
 
 /* For columns beyond 12th */

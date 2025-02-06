@@ -282,7 +282,7 @@ $(document).ready(function () {
         // Disable sorting for specific columns
         columnDefs: [
           {
-            targets: [1, 2, 3,  5, 6,], // Disable sorting for 2nd and 4th columns
+            targets: [1, 2, 3, 5, 6,], // Disable sorting for 2nd and 4th columns
             orderable: false
           }
         ]

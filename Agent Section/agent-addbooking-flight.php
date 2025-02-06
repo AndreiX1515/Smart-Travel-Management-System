@@ -114,7 +114,7 @@ require "../conn.php";
                         while ($res1 = mysqli_fetch_array($sql1)) {
                           // Check if this packageId is equal to the selected packageId (to mark it as selected)
                           $selected = ($res1['packageId'] == $packageId) ? 'selected' : '';
-                          echo "<option value='{$res1['packageId']}' {$selected}>{$res1['packageName']}</option>";
+                          echo "<option value='{$res1['packageId']}'  {$selected}>{$res1['packageName']}</option>";
                         }
                         ?>
                       </select>
