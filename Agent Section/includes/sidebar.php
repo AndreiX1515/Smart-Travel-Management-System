@@ -57,9 +57,9 @@
       <i class="fa-solid fa-user-plus"></i> <span> Add Booking </span>
     </a>
 
-    <a href="../Agent Section/agent-FIT.php" class="page-button add-FIT mb-1 my-0" data-page-name="Add Booking - F.I.T">
+    <!-- <a href="../Agent Section/agent-FIT.php" class="page-button add-FIT mb-1 my-0" data-page-name="Add Booking - F.I.T">
       <i class="fa-solid fa-user-plus"></i> <span> Add F.I.T </span>
-    </a>
+    </a> -->
   
     <div class="section-title" onclick="toggleSubMenu('transactiontable-submenu')">
       Transactions <span class="chevron-icon fas fa-chevron-down"></span>
@@ -70,9 +70,9 @@
           <i class="fas fa-file-invoice"></i> Packages
         </a>
 
-        <a href="../Agent Section/agent-FIT-table.php" class="page-button my-0" data-page-name="F.I.T - Transactions Table" style="font-size: 14px;">
+        <!-- <a href="../Agent Section/agent-FIT-table.php" class="page-button my-0" data-page-name="F.I.T - Transactions Table" style="font-size: 14px;">
           <i class="fas fa-file-invoice"></i> F.I.T 
-        </a> 
+        </a>  -->
       </div>
 
     <!-- <div class="section-title" onclick="toggleSubMenu('operational-submenu')">
