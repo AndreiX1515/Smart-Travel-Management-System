@@ -3,12 +3,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Employee - Transactions</title>
-    <?php include '../Employee Section/includes/emp-head.php'?>
-    <link rel="stylesheet" href="../Employee Section/assets/css/emp-transactionTableFIT.css?v=<?php echo time(); ?>">
-    <link rel="stylesheet" href="../Employee Section/assets/css/emp-sidebar-navbar.css?v=<?php echo time(); ?>">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Employee - Transactions</title>
+  <?php include '../Employee Section/includes/emp-head.php'?>
+  <link rel="stylesheet" href="../Employee Section/assets/css/emp-transactionTableFIT.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="../Employee Section/assets/css/emp-sidebar-navbar.css?v=<?php echo time(); ?>">
 <body>
 
 <?php include '../Employee Section/includes/emp-sidebar.php' ?>
@@ -22,10 +22,10 @@
 
       <div class="table-header">
         <div class="search-wrapper">
-            <div class="search-input-wrapper">
-                <input type="text" id="search" placeholder="Search here..">
-                <!-- <span class="icon">🔍</span> -->
-            </div>
+          <div class="search-input-wrapper">
+            <input type="text" id="search" placeholder="Search here..">
+            <!-- <span class="icon">🔍</span> -->
+          </div>
         </div>
 
         <!-- <div class="filter-field">
