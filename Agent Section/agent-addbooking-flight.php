@@ -887,7 +887,7 @@ require "../conn.php";
       });
 
       // Fetching Flight Id once Flight Date was Selected
-      $('#flightDate, #totalPax').on('change', function() {
+      $('#flightDate').on('change', function() {
         var flightDate = $(this).val();
         var selectedFlight = $("#flightDate option:selected").text();
         // Extract only the flight date by splitting at the " || " (delimiter between date and price)
@@ -971,7 +971,7 @@ require "../conn.php";
       });
 
 
-      function fetchFlightDetails() {
+    function fetchFlightDetails() {
     var flightDate = $('#flightDate').val();
     var selectedFlight = $("#flightDate option:selected").text();
     
@@ -1038,9 +1038,9 @@ require "../conn.php";
     }
 }
 
-// Event handlers
-$('#flightDate').on('change', fetchFlightDetails);
-$('#totalPax').on('focusin', fetchFlightDetails);
+      // Event handlers
+      $('#flightDate').on('change', fetchFlightDetails);
+      $('#totalPax').on('focusin', fetchFlightDetails);
 
       
 
