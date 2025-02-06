@@ -51,7 +51,7 @@
               </div>
             </div>
 
-            <div class="columns col-md-3" id="flight-container">
+            <!-- <div class="columns col-md-3" id="flight-container">
               <div class="table-filters-container">
                 <label for="flight-filter ">Select Flight Date:</label>
                 <select id="flight-filter" name="flight-filter" class="form-control" onchange="toggleFilters()">
@@ -77,12 +77,12 @@
                   ?>
                 </select>
               </div>
-            </div>
+            </div> -->
 
             <div class="columns col-md-2" id="month-container">
               <div class="table-filters-container">
                 <label for="month-filter">Month</label>
-                <select id="month-filter" name="month-filter" class="form-control" onchange="toggleFilters()">
+                <select id="month-filter" name="month-filter" class="form-control">
                   <option selected disabled>Select month</option>
                   <option value="January">January</option>
                   <option value="February">February</option>
@@ -114,7 +114,7 @@
             <div class="columns col-md-2" id="year-container">
               <div class="table-filters-container">
                 <label for="year-filter">Year</label>
-                <select id="year-filter" name="year-filter" class="form-control" onchange="toggleFilters()">
+                <select id="year-filter" name="year-filter" class="form-control">
                   <!-- Year options will be populated dynamically -->
                   <option selected disabled>Select year</option>
                 </select>
@@ -319,7 +319,7 @@
 <?php include '../Employee Section/includes/emp-scripts.php' ?>
 
 <!-- Filter Script -->
-<script>
+<!-- <script>
   function toggleFilters() 
   {
     const flightContainer = document.getElementById("flight-container");
@@ -383,10 +383,10 @@
     // Call the toggleFilters() function to ensure proper visibility
     toggleFilters();
   }
-</script>
+</script> -->
 
 <!-- Preview SoA -->
-<script>
+<!-- <script>
   $(document).ready(function () 
   {
     $("#generate-soa-btn").on("click", function () 
@@ -481,10 +481,10 @@
       }  
     });
   });
-</script>
+</script> -->
 
 <!-- Generate SoA -->
-<script>
+<!-- <script>
   $(document).ready(function () 
   {
     $("#download-btn").click(function () 
@@ -654,10 +654,10 @@
       });
     }
   });
-</script>
+</script> -->
 
 <!-- Orig Preview SoA -->
-<!-- <script>
+<script>
   document.getElementById('generate-soa-btn').addEventListener('click', function() 
   {
     const companyId = document.getElementById('company-filter').value;
@@ -721,16 +721,15 @@
     // Send the data to the server
     xhr.send(data);
   });
-</script> -->
+</script>
 
 <!-- Orig Generate SoA -->
-<!-- <script>
+<script>
   document.getElementById('download-btn').addEventListener('click', function() 
   {
     const companyId = document.getElementById('company-filter').value;
     const month = document.getElementById('month-filter').value;
     const year = document.getElementById('year-filter').value;
-    const flightId = document.getElementById('flight-filter').value;
 
     // Get current date in mm/dd/yyyy format
     const currentDate = new Date();
@@ -803,7 +802,7 @@
     // Send the request with the necessary values for SOA number
     xhrAddSoA.send(`companyId=${companyId}&month=${month}&year=${year}&currentDate=${currentDateFormatted}`);
   });
-</script> -->
+</script>
 
 <!-- Modal -->
 <!-- <script>
