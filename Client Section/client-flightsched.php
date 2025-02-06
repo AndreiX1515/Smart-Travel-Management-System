@@ -172,7 +172,7 @@ $accId = $_SESSION['accountId'] ?? '';
                     echo '            <div class="flight-date">';
                     echo '                <div class="flight-start">';
                     echo '                    <label for="">Package Price</label>';
-                    echo '                    <h5> ₱ ' . htmlspecialchars($row['FlightPrice']) . '</h5>';
+                    echo '                    <h5> ₱ ' . number_format($row['FlightPrice'], 2) . '</h5>';
                     echo '                </div>';
                     echo '            </div>';
                     
