@@ -51,6 +51,18 @@
 }
 
 
+.seat-info {
+  display: flex; /* Aligns items in a row */
+  gap: 8px; /* Adds spacing between elements */
+  font-size: 0.9rem; /* Adjust size if needed */
+  color: #6c757d; /* Optional: Muted text for better UI */
+  margin-top: 4px; /* Adds slight spacing from input */
+}
+
+.separator {
+  font-weight: bold; /* Makes the separator visually stronger */
+  color: #495057; /* Slightly darker for visibility */
+}
 
 
 
