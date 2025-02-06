@@ -201,14 +201,14 @@
       </div>
       <form action="../Employee Section/functions/emp-tablePayment-code.php" method="POST">
         <div class="modal-body">
-          <input type="" id="paymentIdInput" name="paymentId">
-          <input type="" id="accId" name="accId" placeholder="accId" value="<?php echo $_SESSION['employee_accountId']?>">
+          <input type="hidden" id="paymentIdInput" name="paymentId">
+          <input type="hidden" id="accId" name="accId" placeholder="accId" value="<?php echo $_SESSION['employee_accountId']?>">
           
           <!-- Request Status Section -->
           <div class="mb-4">
             <!-- Request Status Dropdown -->
             <label for="paymentStatus" class="form-label fw-bold">Request Status:</label>
-            <select id="paymentStatus" name="paymentStatus" class="form-select">
+            <select id="paymentStatus" name="paymentStatus" class="form-select" required>
               <option selected disabled value="">Select Option</option>
               <option value="Approved">Approved</option>
               <option value="Rejected">Rejected</option>
