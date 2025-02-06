@@ -99,18 +99,16 @@
           <tbody>
             <?php
               $sql1 = "SELECT p.paymentId, p.transactNo, 
-                              CONCAT(a.lName, ', ', a.fName, 
-                                  IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1), '.'), '')) AS agentName, 
-                              p.paymentTitle, p.paymentType, FORMAT(p.amount, 2) AS amount, 
-                              p.filePath, DATE_FORMAT(p.paymentDate, '%M %d, %Y') AS paymentDate, p.paymentStatus
-                          FROM 
-                              payment p
-                          LEFT JOIN 
-                              booking b ON p.transactNo = b.transactNo
-                          LEFT JOIN 
-                              agent a ON b.agentId = a.agentId
-                          WHERE
-                              p.paymentStatus = 'Submitted'";
+              CONCAT(a.lName, ', ', a.fName, 
+                  IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1), '.'), '')) AS agentName, 
+              p.paymentTitle, p.paymentType, FORMAT(p.amount, 2) AS amount, 
+              p.filePath, DATE_FORMAT(p.paymentDate, '%M %d, %Y') AS paymentDate, p.paymentStatus, 
+              br.branchName as branchName
+          FROM payment p
+          LEFT JOIN booking b ON p.transactNo = b.transactNo
+          JOIN branch br ON b.agentCode = br.branchAgentCode
+          LEFT JOIN agent a ON b.agentId = a.agentId
+          WHERE p.paymentStatus = 'Submitted'";
 
               $res1 = $conn->query($sql1);
 
