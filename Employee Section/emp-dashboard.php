@@ -809,7 +809,6 @@
               <h6 class="white-pill">Confirmed Transactions</h6>
             </div>
                   
-            <div class="body">
               <div class="table-container confirm-table-container">
                 <table class="confirm-table">
                   <thead>
@@ -822,90 +821,276 @@
                       <th>BOOKING TYPE</th>
                       <th>STATUS</th>
                       <th>COMMENT</th>
-                      <th>ACTION</th>
                       
                     </tr>
                   </thead>
                   <tbody>
-                    <?php
-                      $query1 = "SELECT b.*, f.flightDepartureDate AS Start, p.packageName,
-                                        f.returnDepartureDate AS End, CONCAT(a.lName, ', ', a.fName, 
-                                        IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1)), '')) AS agentName,
-                                        br.branchName as branchName
-                                  FROM booking b 
-                                  JOIN agent a ON b.agentId = a.agentId
-                                  JOIN branch br ON b.agentCode = br.branchAgentCode
-                                  JOIN flight f ON b.flightId = f.flightId
-                                  JOIN package p ON b.packageId = p.packageId
-                                  WHERE status = 'Confirmed'";
+    <?php
+    $query1 = "SELECT b.*, f.flightDepartureDate AS Start, p.packageName,
+                      f.returnDepartureDate AS End, CONCAT(a.lName, ', ', a.fName, 
+                      IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1)), '')) AS agentName,
+                      br.branchName as branchName
+              FROM booking b 
+              JOIN agent a ON b.agentId = a.agentId
+              JOIN branch br ON b.agentCode = br.branchAgentCode
+              JOIN flight f ON b.flightId = f.flightId
+              JOIN package p ON b.packageId = p.packageId
+              WHERE status = 'Confirmed'";
 
-                      $result = $conn->query($query1);
+    $result = $conn->query($query1);
 
-                      // Check if the query returned any results
-                      if ($result && $result->num_rows > 0) 
-                      {
-                 
-                        while ($row = $result->fetch_assoc()) {
-                            $status = $row['status'];
+    // Check if the query returned any results
+    if ($result && $result->num_rows > 0) {
+      while ($row = $result->fetch_assoc()) {
+        $status = $row['status'];
+    
+        // Define the pill status class based on the status value
+        switch ($status) {
+            case 'Confirmed':
+                $pillClass = 'bg-success';
+                break;
+            case 'Cancelled':
+                $pillClass = 'bg-danger';
+                break;
+            case 'Pending':
+                $pillClass = 'bg-warning';
+                break;
+            case 'Rejected':
+                $pillClass = 'bg-info';
+                break;
+            default:
+                $pillClass = 'bg-secondary';
+                break;
+        }
+    
+        // Generate the table row with dynamically set `recordId`
+        echo "<tr data-id='{$row['transactNo']}'> <!-- Set the row ID dynamically -->
+            <td>{$row['transactNo']}</td>
+            <td>{$row['branchName']}</td>
+            <td>{$row['packageName']}</td>
+            <td>{$row['Start']}</td>
+            <td>{$row['pax']}</td>
+            <td>{$row['bookingType']}</td>
+            <td>
+                <span class='badge $pillClass p-2'>{$status}</span>
+            </td>";
+    
+        // Fetching the comment from the database
+        $transactNo = $row['transactNo'];
+        $stmt = $conn->prepare('SELECT comment FROM bookingcomments WHERE transactNo = ?');
+        $stmt->bind_param('s', $transactNo);
+        $stmt->execute();
+        $resultComment = $stmt->get_result();
+        $comment = $resultComment->fetch_assoc();
+        $stmt->close();
+    
+        // Check if a comment exists or not, and display accordingly
+        echo "<td>";
+echo '<div class="comment-container" id="commentContainer' . $transactNo . '">';
 
-                            // Define the pill status class based on the status value
-                            switch ($status) {
-                                case 'Confirmed':
-                                    $pillClass = 'bg-success';
-                                    break;
-                                case 'Cancelled':
-                                    $pillClass = 'bg-danger';
-                                    break;
-                                case 'Pending':
-                                    $pillClass = 'bg-warning';
-                                    break;
-                                case 'Rejected':
-                                    $pillClass = 'bg-info';
-                                    break;
-                                default:
-                                    $pillClass = 'bg-secondary';
-                                    break;
-                            }
+// Comment exists or not
+if ($comment && !empty($comment['comment'])) {
+    // If a comment exists, display it and show the 'Edit' button
+    echo '<div class="comment-exists">
+            <div class="comment-input">
+                <input type="text" class="form-control" name="comment" id="commentInput' . $transactNo . '" value="' . htmlspecialchars($comment['comment']) . '" disabled>
+            </div>
+            <div class="edit-button">
+                <button type="button" class="btn btn-warning editComment" data-id="' . $transactNo . '">Edit</button>
+            </div>
+          </div>';
+} else {
+    // If no comment exists, display the placeholder for adding a comment
+    echo '<div class="no-comment">
+            <div class="comment-input">
+                <input type="text" class="form-control" name="comment" id="commentInput' . $transactNo . '" placeholder="Add a comment" disabled>
+            </div>
+            <div class="add-button">
+                <button type="button" class="btn btn-success addComment" data-id="' . $transactNo . '">Add</button>
+            </div>
+          </div>';
+}
 
-                            // Generate the table row with dynamically set `recordId`
-                            echo "<tr data-id='{$row['transactNo']}'> <!-- Set the row ID dynamically -->
-                                    <td>{$row['transactNo']}</td>
-                                    <td>{$row['branchName']}</td>
-                                    <td>{$row['packageName']}</td>
-                                    <td>{$row['Start']}</td>
-                                    <td>{$row['pax']}</td>
-                                    <td>{$row['bookingType']}</td>
-                                    <td>
-                                        <span class='badge $pillClass p-2'>{$status}</span>
-                                    </td>
-                                    <td>
-                                        <!-- Add a text input for comments -->
-                                        <input type='text' class='form-control' name='comment' id='commentInput{$row['transactNo']}' placeholder='Add a comment'>
-                                    </td>
-                                    <td>
-                                        <!-- Hidden field to hold the record ID (hidden as input value) -->
-                                        <input type='text' class='recordId' value='{$row['transactNo']}' hidden>
-                                        
-                                        <!-- Add a submit button -->
-                                        <button type='button' class='btn btn-primary submitComment' data-id='{$row['transactNo']}'>Submit</button>
-                                    </td>
-                                </tr>";
-                        }
-                       
-                      } 
-                      else 
-                      {
-                        // No records found
-                        echo "<tr><td colspan='7'>No confirmed bookings found.</td></tr>";
-                      }
-                      
-                      if ($result) 
-                      {
-                        $result->free();
-                      }
-                      $conn->close();
-                    ?>
-                  </tbody>
+echo '</div>'; // Close the comment-container div
+
+// Hidden field to hold the record ID and action buttons
+echo '<div class="button-container">
+        <input type="text" class="recordId" value="' . $row['transactNo'] . '" hidden>
+        
+        <!-- Initially hidden submit button -->
+        <button type="button" class="btn btn-primary submitComment" data-id="' . $transactNo . '" style="display: none;">Submit</button>
+        
+        <!-- Initially hidden cancel buttons -->
+        <button type="button" class="btn btn-danger cancelComment" data-id="' . $transactNo . '" style="display: none;">Cancel Edit</button>
+        <button type="button" class="btn btn-danger cancelAddComment" data-id="' . $transactNo . '" style="display: none;">Cancel Add</button>
+      </div>';
+
+echo "</td>"; // Close the <td> tag
+
+    
+        echo "</tr>";
+    }
+    
+    } else {
+        // No records found
+        echo "<tr><td colspan='7'>No confirmed bookings found.</td></tr>";
+    }
+
+    if ($result) {
+        $result->free();
+    }
+    $conn->close();
+    ?>
+</tbody>
+
+                  <script>
+   document.addEventListener('DOMContentLoaded', function() {
+
+// Function to show the relevant buttons for editing or adding a comment
+function toggleCommentButtons(transactNo, action) {
+    const commentInput = document.getElementById('commentInput' + transactNo);
+    const submitButton = document.querySelector('.submitComment[data-id="' + transactNo + '"]');
+    const cancelEditButton = document.querySelector('.cancelComment[data-id="' + transactNo + '"]');
+    const cancelAddButton = document.querySelector('.cancelAddComment[data-id="' + transactNo + '"]');
+    const editButton = document.querySelector('.editComment[data-id="' + transactNo + '"]');
+    const addButton = document.querySelector('.addComment[data-id="' + transactNo + '"]');
+
+    // Enable the comment input and focus on it
+    commentInput.disabled = false;
+    commentInput.focus();
+
+    // Save the original comment text to an attribute so we can revert it later
+    const originalComment = commentInput.value; // Get the current comment
+    commentInput.setAttribute('data-original-comment', originalComment);
+
+    // Show the submit button
+    submitButton.style.display = 'inline-block';
+    
+    // Display the relevant cancel button based on action
+    if (action === 'edit') {
+        cancelEditButton.style.display = 'inline-block';
+        cancelAddButton.style.display = 'none';  // Hide Add cancel button
+    } else if (action === 'add') {
+        cancelAddButton.style.display = 'inline-block';
+        cancelEditButton.style.display = 'none';  // Hide Edit cancel button
+    }
+
+    // Hide the action buttons (Edit or Add)
+    editButton.style.display = 'none';
+    addButton.style.display = 'none';
+}
+
+// When 'Edit' is clicked
+document.querySelectorAll('.editComment').forEach(function(button) {
+    button.addEventListener('click', function() {
+        const transactNo = this.getAttribute('data-id');
+        toggleCommentButtons(transactNo, 'edit');
+    });
+});
+
+// When 'Add' is clicked
+document.querySelectorAll('.addComment').forEach(function(button) {
+    button.addEventListener('click', function() {
+        const transactNo = this.getAttribute('data-id');
+        toggleCommentButtons(transactNo, 'add');
+    });
+});
+
+// When 'Submit' is clicked
+document.querySelectorAll('.submitComment').forEach(function(button) {
+    button.addEventListener('click', function() {
+        const transactNo = this.getAttribute('data-id');
+        const commentInput = document.getElementById('commentInput' + transactNo);
+        const comment = commentInput.value;
+
+        // AJAX request to submit the comment
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'submit_comment.php', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                // Successful submission feedback
+                alert('Comment submitted successfully!');
+                // Disable input and reset buttons
+                commentInput.disabled = true;
+                button.style.display = 'none';
+
+                // Show 'Edit' button and hide 'Cancel' button
+                document.querySelector('.editComment[data-id="' + transactNo + '"]').style.display = 'inline-block';
+                document.querySelector('.cancelComment[data-id="' + transactNo + '"]').style.display = 'none';
+                document.querySelector('.cancelAddComment[data-id="' + transactNo + '"]').style.display = 'none';
+
+                // Hide the 'Add' button after submission
+                document.querySelector('.addComment[data-id="' + transactNo + '"]').style.display = 'none';
+            } else {
+                // Handle errors
+                alert('Error submitting comment.');
+            }
+        };
+        xhr.send('transactNo=' + transactNo + '&comment=' + encodeURIComponent(comment));
+    });
+});
+
+// When 'Cancel' (Edit) is clicked
+document.querySelectorAll('.cancelComment').forEach(function(button) {
+    button.addEventListener('click', function() {
+        const transactNo = this.getAttribute('data-id');
+        const commentInput = document.getElementById('commentInput' + transactNo);
+        const submitButton = document.querySelector('.submitComment[data-id="' + transactNo + '"]');
+        const editButton = document.querySelector('.editComment[data-id="' + transactNo + '"]');
+        const addButton = document.querySelector('.addComment[data-id="' + transactNo + '"]');
+
+        // Reset the comment input to its original value if available
+        commentInput.disabled = true;
+
+        // Retrieve the original comment text stored earlier
+        const originalComment = commentInput.getAttribute('data-original-comment');
+        
+        if (originalComment) {
+            commentInput.value = originalComment; // Revert to the original comment
+        } else {
+            commentInput.value = ''; // Placeholder or empty state if no original comment
+        }
+
+        // Hide the submit and cancel buttons, and restore the edit button
+        submitButton.style.display = 'none';
+        this.style.display = 'none';
+
+        editButton.style.display = 'block'; // Show 'Edit' button
+
+        // Give feedback that changes have been canceled
+        alert('Changes have been canceled!');
+    });
+});
+
+// When 'Cancel' (Add) is clicked
+document.querySelectorAll('.cancelAddComment').forEach(function(button) {
+    button.addEventListener('click', function() {
+        const transactNo = this.getAttribute('data-id');
+        const commentInput = document.getElementById('commentInput' + transactNo);
+        const submitButton = document.querySelector('.submitComment[data-id="' + transactNo + '"]');
+        const editButton = document.querySelector('.editComment[data-id="' + transactNo + '"]');
+        const addButton = document.querySelector('.addComment[data-id="' + transactNo + '"]');
+
+        // Reset the comment input and hide the submit/cancel buttons
+        commentInput.disabled = true;
+        commentInput.value = ''; // Clear input value for Add comment
+
+        // Hide the submit and cancel buttons
+        submitButton.style.display = 'none';
+        this.style.display = 'none';
+
+        // Show the Add button again
+        addButton.style.display = 'block';
+
+        // Give feedback that changes have been canceled
+        alert('Add operation canceled!');
+    });
+});
+
+});
+
+                  </script>
 
                   <script>
                       $('.submitComment').on('click', function() {
@@ -918,7 +1103,7 @@
                         if(comment) {
                             // Make an AJAX request to submit the comment and fetch data based on the row ID
                             $.ajax({
-                                url: 'your-server-endpoint.php', // Replace with the actual URL
+                                url: '../Employee Section/functions/emp-commentSubmit.php', 
                                 type: 'POST',
                                 data: {
                                     comment: comment,
@@ -941,7 +1126,7 @@
 
                 </table>
               </div>
-            </div>
+
           </div>
         </div>
       </div>

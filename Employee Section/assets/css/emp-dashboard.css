@@ -620,8 +620,8 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 37vh;
-  border: 1px solid black;
+  height: 39vh;
+  /* border: 1px solid black; */
 }
 
 /* ============================
@@ -665,6 +665,7 @@
   font-weight: bold;
   color: white;
   border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+  width: auto; /* Allows the table to adjust width based on content */
 }
 
 /* ============================
@@ -678,6 +679,59 @@
   overflow: hidden;
 }
 
+/* ============================
+   Table Column Width Adjustments
+============================ */
+.confirm-table th:nth-child(1),
+.confirm-table td:nth-child(1) {
+  width: 8%; /* Transaction No. */
+}
+
+.confirm-table th:nth-child(2),
+.confirm-table td:nth-child(2) {
+  width: 8%; /* Agent Name */
+}
+
+.confirm-table th:nth-child(3),
+.confirm-table td:nth-child(3) {
+  width: 8%; /* Package */
+}
+
+.confirm-table th:nth-child(4),
+.confirm-table td:nth-child(4) {
+  width: 8%; /* Flight Date */
+}
+
+.confirm-table th:nth-child(5),
+.confirm-table td:nth-child(5) {
+  width: 5%; /* Total Pax */
+  text-align: center;
+}
+
+.confirm-table th:nth-child(6),
+.confirm-table td:nth-child(6) {
+  width: 6%; /* Booking Type */
+}
+
+.confirm-table th:nth-child(7),
+.confirm-table td:nth-child(7) {
+  width: 5%; /* Status */
+}
+
+.confirm-table th:nth-child(8),
+.confirm-table td:nth-child(8) {
+  width: 18%; /* Comment */
+  border-left: 1px solid gainsboro;
+}
+
+.confirm-table th:nth-child(9),
+.confirm-table td:nth-child(9) {
+  width: 3%; /* Action */
+}
+
+/* ============================
+   Table Row Hover Effect
+============================ */
 .confirm-table tbody tr {
   background-color: transparent;
   transition: background-color 0.3s ease-in-out;
@@ -685,18 +739,106 @@
   font-weight: bold;
 }
 
-/* ============================
-   Row Hover Effect
-============================ */
 .confirm-table tbody tr:hover {
   background-color: #b2ebf2; /* Row hover background color */
   cursor: pointer;
 }
 
  
- 
- 
- 
+
+
+
+
+/* General container for comment input and button */
+.comment-container {
+  display: flex;
+  flex-direction: row; /* Align items horizontally */
+  justify-content: flex-start; /* Align items at the start of the container */
+  align-items: center; /* Align items vertically centered */
+  gap: 10px; /* Add 10px gap between the elements */
+  width: 100%; /* Ensure the container takes up full width of the cell */
+}
+
+/* For the block where the comment exists */
+.comment-exists, .no-comment {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* Align elements to the start */
+  gap: 10px; /* Adjust the space between the elements */
+  margin-bottom: 10px;
+  width: 100%; /* Ensure content takes full width of the parent */
+}
+
+/* Styling for comment input field */
+.comment-input input {
+  width: 400px; /* Adjust the width of the input */
+  padding: 10px;
+  font-size: 14px;
+  text-align: left; /* Align text to the left inside the input */
+  border-radius: 5px; /* Optional: rounded corners for the input */
+  background-color: transparent; /* Set background to transparent */
+  border: 1px solid #ccc; /* Optional: light border color for visibility */
+  color: #333; /* Set text color */
+}
+
+
+/* Styling for edit/add button */
+.edit-button button, .add-button button {
+  padding: 8px 16px;
+  font-size: 14px;
+  border-radius: 5px; /* Optional: rounded corners for buttons */
+}
+
+/* Specific styles for the 'Edit' and 'Add' buttons */
+.edit-button button {
+  background-color: #f0ad4e; /* Bootstrap warning color */
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.add-button button {
+  background-color: #5bc0de; /* Bootstrap success color */
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.edit-button button:hover, .add-button button:hover {
+  opacity: 0.8;
+}
+
+/* Submit and cancel buttons (hidden initially) */
+.submitComment, .cancelComment, .cancelAddComment {
+  display: none;
+  padding: 8px 16px;
+  font-size: 14px;
+  border-radius: 5px;
+}
+
+.submitComment {
+  background-color: #0275d8; /* Bootstrap primary color */
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.cancelComment, .cancelAddComment {
+  background-color: #d9534f; /* Bootstrap danger color */
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.submitComment:hover, .cancelComment:hover, .cancelAddComment:hover {
+  opacity: 0.8;
+}
+
+
+
+
+
+
 .legend-guides {
   display: flex;
   flex-direction: row;
