@@ -102,29 +102,29 @@
 					</thead>
 					<tbody>
 						<?php
-							$sql1 = "SELECT r.requestId, r.transactNo AS `TransactNo`,
-													CONCAT(a.lName, ', ', a.fName, 
-															IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1), '.'), '')) AS AgentName,
-													c.concernTitle AS `RequestTitle`, cd.details AS `RequestDetails`, b.pax AS `TotalPax`,
-													r.requestCost as requestCost,
-													r.customRequest as customRequest, r.details as details, DATE_FORMAT(r.requestDate, '%m-%d-%Y') AS `RequestDate`, 
-													r.requestStatus AS `Status`
-											FROM 
-													request r
-											LEFT JOIN 
-													concern c ON r.concernId = c.concernId
-											LEFT JOIN 
-													concerndetails cd ON r.concernDetailsId = cd.concernDetailsId
-											LEFT JOIN 
-													booking b ON r.transactNo = b.transactNo
-											LEFT JOIN 
-													payment p ON b.transactNo = p.transactNo
-											LEFT JOIN 
-													agent a ON b.agentId = a.agentId
-											WHERE
-												r.requestStatus = 'Confirmed'
-											GROUP BY 
-													r.requestId";
+									$sql1 = "SELECT r.requestId, r.transactNo AS `TransactNo`,
+									CONCAT(a.lName, ', ', a.fName, 
+											IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1), '.'), '')) AS AgentName,
+									c.concernTitle AS `RequestTitle`, cd.details AS `RequestDetails`, b.pax AS `TotalPax`,
+									r.requestCost as requestCost,
+									r.customRequest as customRequest, r.details as details, DATE_FORMAT(r.requestDate, '%m-%d-%Y') AS `RequestDate`, 
+									r.requestStatus AS `Status`
+							FROM 
+									request r
+							LEFT JOIN 
+									concern c ON r.concernId = c.concernId
+							LEFT JOIN 
+									concerndetails cd ON r.concernDetailsId = cd.concernDetailsId
+							LEFT JOIN 
+									booking b ON r.transactNo = b.transactNo
+							LEFT JOIN 
+									payment p ON b.transactNo = p.transactNo
+							LEFT JOIN 
+									agent a ON b.agentId = a.agentId
+							WHERE
+								r.requestStatus = 'Confirmed'
+							GROUP BY 
+									r.requestId";
 
 							$res1 = $conn->query($sql1);
 
