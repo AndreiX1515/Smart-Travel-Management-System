@@ -149,7 +149,7 @@
                   // Output table row with data-transactno attribute
                   echo "<tr class='transaction-row' data-paymentId='{$row['paymentId']}'>
                           <td>{$row['transactNo']}</td>
-                          <td>{$row['agentName']}</td>
+                          <td>{$row['branchName']}</td>
                           <td>{$row['paymentTitle']}</td>
                           <td><span class='$paymentTypeClass p-2'>$paymentTypeValue</span></td>
                           <td>₱ {$row['amount']}</td>

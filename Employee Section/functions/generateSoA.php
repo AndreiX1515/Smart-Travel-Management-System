@@ -1,5 +1,6 @@
 <?php
 require_once('../../tcpdf/tcpdf.php');
+require "../../conn.php"; // Include the DB connection
 session_start();
 
 if (isset($_POST['companyId']) && isset($_POST['monthName'])  && isset($_POST['year']) && isset($_POST['currentDate'])) 
@@ -10,6 +11,12 @@ if (isset($_POST['companyId']) && isset($_POST['monthName'])  && isset($_POST['y
   $year = $_POST['year'];
   $formattedDate = $_POST['currentDate'];
   $soaNumber = $_POST['soaNumber'];
+
+  echo $companyId;
+  echo $monthName;
+  echo $year;
+  echo $formattedDate;
+  echo $soaNumber;
 
   $space = "";
 
