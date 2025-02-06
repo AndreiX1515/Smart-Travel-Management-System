@@ -687,6 +687,8 @@ require "../conn.php";
                           <!-- <th rowspan="2">FLIGHT SEAT</th> -->
                           <th rowspan="2">AVAILABLE SEATS</th>
                           <th rowspan="2">ADDITIONAL SEATS</th>
+                          <th rowspan="2">RETAIL PRICE</th>
+                          <th rowspan="2"></th>
                           <!-- <th rowspan="2">AIR + LAND</th>
                           <th rowspan="2">LAND ONLY</th>
                           <th rowspan="2">WHOLESALE PRICE</th>
@@ -714,43 +716,36 @@ require "../conn.php";
                     
                           $agentColumns = rtrim($agentColumns, ', ');
 
-                          $sql = "
-                          SELECT CONCAT(e.lName, ', ', e.fName, 
-                                  IF(e.mName IS NOT NULL AND e.mName != '', CONCAT(' ', LEFT(e.mName, 1)), '')) AS TeamOP,
-                              f.origin, 
-                              f.flightDepartureDate AS Start, 
-                              f.returnDepartureDate AS End, 
-                              f.availSeats AS FlightSeat, 
-                              GREATEST(
-                                  (f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package' 
-                                  THEN b.pax ELSE 0 END), 0)), 0) AS AvailSeats, 
-                              IF(
-                                  (f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package' 
-                                  THEN b.pax ELSE 0 END), 0)) < 0, 
-                                  ABS(f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package' 
-                                  THEN b.pax ELSE 0 END), 0)), 
-                                  0) AS AdditionalSeats,
-                              SUM(CASE WHEN b.bookingType = 'Package' AND b.status = 'Confirmed' THEN b.pax ELSE 0 END) AS `Air+Land`,
-                              SUM(CASE WHEN b.bookingType = 'Land' AND b.status = 'Confirmed' THEN b.pax ELSE 0 END) AS `LandOnly`,
-                              f.wholesalePrice AS WholesalePrice, 
-                              f.flightPrice AS RetailPrice, 
-                              p.packagePrice AS LandArrangement, 
-                              $agentColumns
-                          FROM 
-                              employee e 
-                          JOIN 
-                              flight f ON f.employeeId = e.employeeId
-                          LEFT JOIN 
-                              booking b ON b.flightId = f.flightId
-                          LEFT JOIN 
-                              package p ON f.packageId = p.packageId
-                          WHERE 
-                              f.flightDepartureDate >= CURDATE()
-                          GROUP BY 
-                              f.flightId, e.lName, e.fName, e.mName, f.origin, f.flightDepartureDate, f.returnDepartureDate, f.availSeats, 
-                              f.wholesalePrice, f.flightPrice, p.packagePrice
-                          ORDER BY 
-                              f.flightDepartureDate";
+                          $sql = "SELECT CONCAT(e.lName, ', ', e.fName, 
+                                    IF(e.mName IS NOT NULL AND e.mName != '', CONCAT(' ', LEFT(e.mName, 1)), '')) AS TeamOP,
+                                    f.origin, f.flightId as flightId, f.flightDepartureDate AS Start, f.returnDepartureDate AS End, 
+                                    f.availSeats AS FlightSeat, 
+                                    GREATEST(
+                                      (f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package' 
+                                      THEN b.pax ELSE 0 END), 0)), 0) AS AvailSeats, 
+                                    IF((f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package' 
+                                        THEN b.pax ELSE 0 END), 0)) < 0, 
+                                        ABS(f.availSeats - IFNULL(SUM(CASE WHEN b.status = 'Confirmed' AND b.bookingType = 'Package' 
+                                        THEN b.pax ELSE 0 END), 0)), 0) AS AdditionalSeats,
+                                    SUM(CASE WHEN b.bookingType = 'Package' AND b.status = 'Confirmed' THEN b.pax ELSE 0 END) AS `Air+Land`,
+                                    SUM(CASE WHEN b.bookingType = 'Land' AND b.status = 'Confirmed' THEN b.pax ELSE 0 END) AS `LandOnly`,
+                                    f.wholesalePrice AS WholesalePrice, f.flightPrice AS RetailPrice, p.packagePrice AS LandArrangement, 
+                                    $agentColumns
+                                FROM 
+                                    employee e 
+                                JOIN 
+                                    flight f ON f.employeeId = e.employeeId
+                                LEFT JOIN 
+                                    booking b ON b.flightId = f.flightId
+                                LEFT JOIN 
+                                    package p ON f.packageId = p.packageId
+                                WHERE 
+                                    f.flightDepartureDate >= CURDATE()
+                                GROUP BY 
+                                    f.flightId, e.lName, e.fName, e.mName, f.origin, f.flightDepartureDate, f.returnDepartureDate, f.availSeats, 
+                                    f.wholesalePrice, f.flightPrice, p.packagePrice
+                                ORDER BY 
+                                    f.flightDepartureDate";
 
                           // Step 3: Execute the query
                           $result = $conn->query($sql);
@@ -768,6 +763,8 @@ require "../conn.php";
                                 // echo '<td class="fw-bold">' . $row['FlightSeat'] . '</td>';
                                 echo '<td class="fw-bold">' . $row['AvailSeats'] . '</td>';
                                 echo '<td class="fw-bolder">' . $row['AdditionalSeats'] . '</td>';
+                                echo '<td>₱ ' . number_format($row['RetailPrice'], 2) . '</td>';
+                                echo '<td><a href="../Client Section/login.php?flightid=' . urlencode($row['flightId']) . '" class="btn btn-primary">Book Now</a></td>';
                                 // echo '<td class="fw-bolder">' . $row['Air+Land'] . '</td>';
                                 // echo '<td class="fw-bolder">' . $row['LandOnly'] . '</td>';
                                 // echo '<td>₱ ' . number_format($row['WholesalePrice'], 2) . '</td>';
