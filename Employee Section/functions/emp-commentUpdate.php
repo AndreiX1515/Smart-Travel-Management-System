@@ -13,29 +13,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $comment = !empty($_POST['comment']) ? $_POST['comment'] : null;
     $transactNo = !empty($_POST['transactNo']) ? $_POST['transactNo'] : null;
 
-    // Log the variables to check if they are correct
-    error_log("Comment: " . $comment);  // Log the comment
-    error_log("Transaction Number: " . $transactNo);  // Log the transaction number
-
     // Check if the comment and transactNo are not empty
     if ($comment && $transactNo) {
-        // Insert the comment into the bookingcomments table for the specific booking ID
-        $query = "INSERT INTO bookingcomments (transactNo, comment) VALUES (?, ?)";
+        // Update the comment in the bookingcomments table
+        $query = "UPDATE bookingcomments SET comment = ? WHERE transactNo = ?";
         
         // Prepare and bind the statement
         if ($stmt = $conn->prepare($query)) {
-            $stmt->bind_param('ss', $transactNo, $comment); // 's' for string (transactNo and comment)
+            $stmt->bind_param('ss', $comment, $transactNo); // 's' for string (comment and transactNo)
 
             if ($stmt->execute()) {
-                // Include the comment and transactNo in the response
-                echo json_encode([
-                    'status' => 'success',
-                    'message' => 'Comment submitted successfully!',
-                    'comment' => $comment,  // Add comment to response
-                    'transactNo' => $transactNo  // Add transactNo to response
-                ]);
+                echo json_encode(['status' => 'success', 'message' => 'Comment updated successfully!']);
             } else {
-                echo json_encode(['status' => 'error', 'message' => 'Failed to submit comment.']);
+                echo json_encode(['status' => 'error', 'message' => 'Failed to update comment.']);
             }
 
             $stmt->close();
