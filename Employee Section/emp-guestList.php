@@ -88,7 +88,7 @@
         <table class="product-table" id="product-table">
           <thead>
             <tr>
-              <th rowspan="2">Guest ID</th>
+              <!-- <th rowspan="2">Guest ID</th> -->
               <th rowspan="2">Transaction No</th>
               <th rowspan="2">Guest Name</th>
               <th rowspan="2">Birthdate</th>
@@ -105,13 +105,14 @@
           <tbody>
             <?php
               // SQL query for SOA
-              $sql = "SELECT g.guestId as guestId, g.transactNo as transactNo, f.flightId as flightId, g.fName as fname, 
-                        g.mName as mName, g.lName as lName, g.suffix as suffix, g.birthdate as birthdate, g.age as age, g.sex as sex, 
-                        g.Nationality as Nationality, f.flightDepartureDate as departureDate, f.returnArrivalDate as returnDate
-                      FROM guest g
-                      JOIN booking b ON g.transactNo = b.transactNo
-                      JOIN flight f ON f.flightId = b.flightId
-                      ORDER BY departureDate, transactNo";
+              $sql = "SELECT g.guestId AS guestId, g.transactNo AS transactNo, g.fName AS fname, g.mName AS mName, g.lName AS lName, 
+                        g.suffix AS suffix, g.birthdate AS birthdate, g.age AS age, g.sex AS sex, g.Nationality AS Nationality, 
+                        f.flightDepartureDate AS departureDate, f.returnArrivalDate AS returnDate
+                      FROM `guest` g
+                      INNER JOIN `booking` b ON g.transactNo = b.transactNo
+                      INNER JOIN `flight` f ON b.flightId = f.flightId
+                      WHERE b.status = 'Confirmed'
+                      ORDER BY f.flightDepartureDate ASC";
 
               // Execute the query
               $result = $conn->query($sql);
@@ -139,7 +140,6 @@
 
                   // Output the row data in HTML table format
                   echo "<tr>
-                          <td>" . htmlspecialchars($row['guestId']) . "</td>
                           <td>" . htmlspecialchars($row['transactNo']) . "</td>
                           <td>" . $guestName . "</td>
                           <td>" . htmlspecialchars($row['birthdate']) . "</td>
