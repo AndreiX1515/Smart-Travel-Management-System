@@ -1,173 +1,163 @@
 <?php
-  session_start();
-  require "../conn.php"; // Move up to the parent directory
+session_start();
+require "../conn.php"; // Move up to the parent directory
 
-  ini_set('display_errors', 1);
-  ini_set('display_startup_errors', 1);
-  error_reporting(E_ALL);
- 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <title>Dashboard</title>
-    <?php include '../Employee Section/includes/emp-head.php'?>
-    <link rel="stylesheet" href="../Employee Section/assets/css/emp-dashboard.css?v=<?php echo time(); ?>">
-    <link rel="stylesheet" href="../Employee Section/assets/css/emp-sidebar-navbar.css?v=<?php echo time(); ?>">
+  <title>Dashboard</title>
+  <?php include '../Employee Section/includes/emp-head.php' ?>
+  <link rel="stylesheet" href="../Employee Section/assets/css/emp-dashboard.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="../Employee Section/assets/css/emp-sidebar-navbar.css?v=<?php echo time(); ?>">
 </head>
+
 <body>
 
-<?php include '../Employee Section/includes/emp-sidebar.php' ?>
+  <?php include '../Employee Section/includes/emp-sidebar.php' ?>
 
-<!-- Main Container -->
-<div class="main-container bg-body">
-  <?php include '../Employee Section/includes/emp-navbar.php' ?>
+  <!-- Main Container -->
+  <div class="main-container bg-body">
+    <?php include '../Employee Section/includes/emp-navbar.php' ?>
 
-  <?php include '../Agent Section/functions/exchange-rate.php'?>
+    <?php include '../Agent Section/functions/exchange-rate.php' ?>
 
-  <div class="main-content">
+    <div class="main-content">
 
-    <!-- Cards Count 1st Row -->
-    <div class="counts-wrapper">
+      <!-- Cards Count 1st Row -->
+      <div class="counts-wrapper">
 
-      <!-- CARD 1 - Current Transactions -->
-      <div class="card border-0">
-        <div class="header">
-          <h6 class="white-pill">Current Transaction</h6>
-        </div>
-    
-        <div class="card-content">
-          <!-- Total and Confirmed Transaction Count -->
-          <div class="row">
-            <!-- Total Transaction Count -->
-            <div class="col-md-5 d-flex flex-row">
-              <div class="card-icon icon-blue">
-                <i class="fas fa-calendar-alt"></i> 
-              </div>
-              <div class="side-content d-flex flex-column">
-                <?php
+        <!-- CARD 1 - Current Transactions -->
+        <div class="card border-0">
+          <div class="header">
+            <h6 class="white-pill">Current Transaction</h6>
+          </div>
+
+          <div class="card-content">
+            <!-- Total and Confirmed Transaction Count -->
+            <div class="row">
+              <!-- Total Transaction Count -->
+              <div class="col-md-5 d-flex flex-row">
+                <div class="card-icon icon-blue">
+                  <i class="fas fa-calendar-alt"></i>
+                </div>
+                <div class="side-content d-flex flex-column">
+                  <?php
                   // Assuming you already have a connection to your database
                   $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking WHERE MONTH(bookingDate) = MONTH(CURRENT_DATE()) 
                                               AND YEAR(bookingDate) = YEAR(CURRENT_DATE())";
                   $result = mysqli_query($conn, $totalTransactionsQuery);
 
-                  if ($result) 
-                  {
+                  if ($result) {
                     $row = mysqli_fetch_assoc($result);
                     $totalTransactions = $row['total'];
-                  } 
-                  else 
-                  {
+                  } else {
                     $totalTransactions = 0; // default to 0 if query fails
                   }
-                ?>
-                <h5><?php echo $totalTransactions;?></h5>
-                <p>TOTAL TRANSACTIONS</p>
+                  ?>
+                  <h5><?php echo $totalTransactions; ?></h5>
+                  <p>TOTAL TRANSACTIONS</p>
+                </div>
               </div>
-            </div>
-       
-            <!-- Confirmed Transaction Count -->
-            <div class="col-md-5 d-flex flex-row">
-              <div class="card-icon icon-green">
-                <i class="fas fa-check-circle"></i>
-              </div>
-              <div class="side-content d-flex flex-column">
-                <?php
+
+              <!-- Confirmed Transaction Count -->
+              <div class="col-md-5 d-flex flex-row">
+                <div class="card-icon icon-green">
+                  <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="side-content d-flex flex-column">
+                  <?php
                   // Assuming you already have a connection to your database
                   $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking WHERE MONTH(bookingDate) = MONTH(CURRENT_DATE()) AND YEAR(bookingDate) = YEAR(CURRENT_DATE()) AND status = 'Confirmed'";
                   $result = mysqli_query($conn, $totalTransactionsQuery);
 
-                  if ($result) 
-                  {
+                  if ($result) {
                     $row = mysqli_fetch_assoc($result);
                     $totalTransactions = $row['total'];
-                  } 
-                  else 
-                  {
+                  } else {
                     $totalTransactions = 0; // default to 0 if query fails
                   }
-                ?>
-                <h5><?php echo $totalTransactions; ?></h5>
-                <p>CONFIRMED</p>
+                  ?>
+                  <h5><?php echo $totalTransactions; ?></h5>
+                  <p>CONFIRMED</p>
+                </div>
               </div>
             </div>
-          </div>
 
-          <!-- Pending, and Cancelled Transaction Count -->
-          <div class="row">
-            <!-- Pending Transaction Count -->
-            <div class="col-md-5 d-flex flex-row">
-              <div class="card-icon icon-yellow">
-                <i class="fas fa-exclamation-triangle"></i>
-              </div>
-              <div class="side-content d-flex flex-column">
-                <?php
+            <!-- Pending, and Cancelled Transaction Count -->
+            <div class="row">
+              <!-- Pending Transaction Count -->
+              <div class="col-md-5 d-flex flex-row">
+                <div class="card-icon icon-yellow">
+                  <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="side-content d-flex flex-column">
+                  <?php
                   // Assuming you already have a connection to your database
                   $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking WHERE MONTH(bookingDate) = MONTH(CURRENT_DATE()) 
                                               AND YEAR(bookingDate) = YEAR(CURRENT_DATE()) AND status = 'Pending'";
                   $result = mysqli_query($conn, $totalTransactionsQuery);
 
-                  if ($result) 
-                  {
+                  if ($result) {
                     $row = mysqli_fetch_assoc($result);
                     $totalTransactions = $row['total'];
-                  } 
-                  else 
-                  {
+                  } else {
                     $totalTransactions = 0; // default to 0 if query fails
                   }
-                ?>
-                <h5><?php echo $totalTransactions; ?></h5>
-                <p>PENDING</p>
+                  ?>
+                  <h5><?php echo $totalTransactions; ?></h5>
+                  <p>PENDING</p>
+                </div>
               </div>
-            </div>
-      
-            <!-- Cancelled Transaction Count -->
-            <div class="col-md-5 d-flex flex-row">
-              <div class="card-icon icon-red">
-                <i class="fas fa-times-circle"></i>
-              </div>
-              <div class="side-content d-flex flex-column">
-                <?php
+
+              <!-- Cancelled Transaction Count -->
+              <div class="col-md-5 d-flex flex-row">
+                <div class="card-icon icon-red">
+                  <i class="fas fa-times-circle"></i>
+                </div>
+                <div class="side-content d-flex flex-column">
+                  <?php
                   // Assuming you already have a connection to your database
                   $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking WHERE MONTH(bookingDate) = MONTH(CURRENT_DATE()) 
                                               AND YEAR(bookingDate) = YEAR(CURRENT_DATE()) AND status = 'Cancelled'";
                   $result = mysqli_query($conn, $totalTransactionsQuery);
 
-                  if ($result) 
-                  {
+                  if ($result) {
                     $row = mysqli_fetch_assoc($result);
                     $totalTransactions = $row['total'];
-                  } 
-                  else 
-                  {
+                  } else {
                     $totalTransactions = 0; // default to 0 if query fails
                   }
-                ?>
-                <h5><?php echo $totalTransactions; ?></h5>
-                <p>CANCELLED</p>
+                  ?>
+                  <h5><?php echo $totalTransactions; ?></h5>
+                  <p>CANCELLED</p>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-  
-      <!-- CARD 2 - On Due -->
-      <div class="card border-0">
-        <div class="header">
-          <h6 class="white-pill">On Due</h6>
-        </div>
 
-        <div class="card-content px-3">
-          <!-- 5 Days and 10 Days Due Count -->
-          <div class="row">
-            <!-- 5 Days Due Count -->
-            <div class="col-md-5 d-flex flex-row">
-              <div class="card-icon icon-blue">
-                <i class="fas fa-calendar-alt"></i>
-              </div>
-              <div class="side-content d-flex flex-column">
-                <?php
+        <!-- CARD 2 - On Due -->
+        <div class="card border-0">
+          <div class="header">
+            <h6 class="white-pill">On Due</h6>
+          </div>
+
+          <div class="card-content px-3">
+            <!-- 5 Days and 10 Days Due Count -->
+            <div class="row">
+              <!-- 5 Days Due Count -->
+              <div class="col-md-5 d-flex flex-row">
+                <div class="card-icon icon-blue">
+                  <i class="fas fa-calendar-alt"></i>
+                </div>
+                <div class="side-content d-flex flex-column">
+                  <?php
                   // Assuming $conn is your database connection
                   $days5Query = "SELECT COUNT(*) AS `bookingsDueIn5Days` FROM booking b 
                                   JOIN flight f ON b.flightId = f.flightId
@@ -179,28 +169,25 @@
                   $result = $conn->query($days5Query);
 
                   // Check if the query returned a result
-                  if ($result->num_rows > 0) 
-                  {
+                  if ($result->num_rows > 0) {
                     $row = $result->fetch_assoc();
                     $bookingsDueIn5Days = $row['bookingsDueIn5Days'];
-                  } 
-                  else 
-                  {
+                  } else {
                     $bookingsDueIn5Days = 0;  // Default to 0 if no records found
                   }
-                ?>
-                <h5><?php echo $bookingsDueIn5Days; ?></h5>
-                <p>5 DAYS</p>
+                  ?>
+                  <h5><?php echo $bookingsDueIn5Days; ?></h5>
+                  <p>5 DAYS</p>
+                </div>
               </div>
-            </div>
-   
-            <!-- 10 Days Due Count -->
-            <div class="col-md-5 d-flex flex-row">
-              <div class="card-icon icon-green">
-                <i class="fas fa-check-circle"></i>
-              </div>
-              <div class="side-content d-flex flex-column">
-                <?php
+
+              <!-- 10 Days Due Count -->
+              <div class="col-md-5 d-flex flex-row">
+                <div class="card-icon icon-green">
+                  <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="side-content d-flex flex-column">
+                  <?php
                   // Assuming $conn is your database connection
                   $days10Query = "SELECT COUNT(*) AS bookingsDueIn10Days FROM booking b
                                     JOIN flight f ON b.flightId = f.flightId
@@ -212,31 +199,28 @@
                   $result = $conn->query($days10Query);
 
                   // Check if the query returned a result
-                  if ($result->num_rows > 0) 
-                  {
+                  if ($result->num_rows > 0) {
                     $row = $result->fetch_assoc();
                     $bookingsDueIn10Days = $row['bookingsDueIn10Days'];
-                  } 
-                  else 
-                  {
+                  } else {
                     $bookingsDueIn10Days = 0;  // Default to 0 if no records found
                   }
-                ?>
-                <h5><?php echo $bookingsDueIn10Days; ?></h5>
-                <p>10 DAYS</p>
+                  ?>
+                  <h5><?php echo $bookingsDueIn10Days; ?></h5>
+                  <p>10 DAYS</p>
+                </div>
               </div>
             </div>
-          </div>
 
-          <!-- 20 Days and 30 Days Due Count -->
-          <div class="row">
-            <!-- 20 Days Due Count -->
-            <div class="col-md-5 d-flex flex-row">
-              <div class="card-icon icon-yellow">
-                <i class="fas fa-exclamation-triangle"></i>
-              </div>
-              <div class="side-content d-flex flex-column">
-                <?php
+            <!-- 20 Days and 30 Days Due Count -->
+            <div class="row">
+              <!-- 20 Days Due Count -->
+              <div class="col-md-5 d-flex flex-row">
+                <div class="card-icon icon-yellow">
+                  <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="side-content d-flex flex-column">
+                  <?php
                   // Assuming $conn is your database connection
                   $days20Query = "SELECT COUNT(*) AS `bookingsDueIn20Days` FROM booking b 
                                   JOIN flight f ON b.flightId = f.flightId
@@ -249,28 +233,25 @@
                   $result = $conn->query($days20Query);
 
                   // Check if the query returned a result
-                  if ($result->num_rows > 0) 
-                  {
+                  if ($result->num_rows > 0) {
                     $row = $result->fetch_assoc();
                     $bookingsDueIn20Days = $row['bookingsDueIn20Days'];
-                  } 
-                  else 
-                  {
+                  } else {
                     $bookingsDueIn20Days = 0;  // Default to 0 if no records found
                   }
-                ?>
-                <h5><?php echo $bookingsDueIn20Days; ?></h5>
-                <p>15 DAYS</p>
+                  ?>
+                  <h5><?php echo $bookingsDueIn20Days; ?></h5>
+                  <p>15 DAYS</p>
+                </div>
               </div>
-            </div>
-      
-            <!-- 30 Days Due Count -->
-            <div class="col-md-5 d-flex flex-row">
-              <div class="card-icon icon-red">
-                <i class="fas fa-times-circle"></i>
-              </div>
-              <div class="side-content d-flex flex-column">
-                <?php
+
+              <!-- 30 Days Due Count -->
+              <div class="col-md-5 d-flex flex-row">
+                <div class="card-icon icon-red">
+                  <i class="fas fa-times-circle"></i>
+                </div>
+                <div class="side-content d-flex flex-column">
+                  <?php
                   // Assuming $conn is your database connection
                   $days30Query = "SELECT COUNT(*) AS `bookingsDueIn30Days` FROM booking b 
                                     JOIN flight f ON b.flightId = f.flightId
@@ -282,32 +263,29 @@
                   $result = $conn->query($days30Query);
 
                   // Check if the query returned a result
-                  if ($result->num_rows > 0) 
-                  {
+                  if ($result->num_rows > 0) {
                     $row = $result->fetch_assoc();
                     $bookingsDueIn30Days = $row['bookingsDueIn30Days'];
-                  } 
-                  else 
-                  {
+                  } else {
                     $bookingsDueIn30Days = 0;  // Default to 0 if no records found
                   }
-                ?>
-                <h5><?php echo $bookingsDueIn30Days; ?></h5>
-                <p>30 DAYS</p>
+                  ?>
+                  <h5><?php echo $bookingsDueIn30Days; ?></h5>
+                  <p>30 DAYS</p>
+                </div>
               </div>
             </div>
+
           </div>
-      
-        </div>
-      </div>
-
-      <!-- CARD 3 - Total Payment -->
-      <div class="card border-0" >
-        <div class="header">
-          <h6 class="white-pill">Total Sales</h6>
         </div>
 
-        <?php
+        <!-- CARD 3 - Total Payment -->
+        <div class="card border-0">
+          <div class="header">
+            <h6 class="white-pill">Total Sales</h6>
+          </div>
+
+          <?php
           // Query for total payments in the past month
           $pastMonthQuery = "SELECT IFNULL(SUM(amount), 0) AS totalPastMonth 
           FROM payment WHERE paymentStatus = 'Approved' 
@@ -316,9 +294,9 @@
 
           $pastMonthResult = $conn->query($pastMonthQuery);
           $pastMonthTotal = ($pastMonthResult->num_rows > 0) ? number_format($pastMonthResult->fetch_assoc()['totalPastMonth'], 2) : '0.00';
-        ?>
+          ?>
 
-        <?php
+          <?php
           // Query for total payments in the current month
           $currentMonthQuery = "SELECT IFNULL(SUM(amount), 0) AS totalCurrentMonth 
           FROM payment WHERE paymentStatus = 'Approved' 
@@ -327,23 +305,23 @@
 
           $currentMonthResult = $conn->query($currentMonthQuery);
           $currentMonthTotal = ($currentMonthResult->num_rows > 0) ? number_format($currentMonthResult->fetch_assoc()['totalCurrentMonth'], 2) : 0;
-        ?>
+          ?>
 
 
-        <div class="card-content px-3">
-        <div class="row">
+          <div class="card-content px-3">
+            <div class="row">
               <div class="col-md-5 d-flex flex-row total-sales">
                 <div class="card-icon icon-blue">
                   <i class="fas fa-calendar-alt"></i>
                 </div>
                 <div class="side-content d-flex flex-column">
-                 
+
                   <h5 class="month-sales">₱ <?php echo $currentMonthTotal; ?></h5>
                   <p>CURRENT MONTH</p>
                 </div>
               </div>
 
-            
+
             </div>
 
             <div class="row">
@@ -352,20 +330,20 @@
                   <i class="fas fa-calendar-alt"></i>
                 </div>
                 <div class="side-content d-flex flex-column">
-                  
+
                   <h5 class="month-sales">₱ <?php echo $pastMonthTotal; ?></h5>
                   <p>PAST MONTH</p>
 
                 </div>
               </div>
             </div>
-            
-          
-        </div>
-      </div>
 
-      <!-- CARD 4 -->
-      <div class="card border-0">
+
+          </div>
+        </div>
+
+        <!-- CARD 4 -->
+        <div class="card border-0">
           <div class="header d-flex justify-content-between align-items-center">
             <h6 class="white-pill">Daily Currency Conversion</h6>
             <a href="" class="pill-button">View History</a>
@@ -395,7 +373,7 @@
                   <img src="../assets/Flags/philippines (2).png" alt="">
                   <h6 class="mt-2">PHP</h6>
                   <div class="currency-text-wrapper">
-                   <h5>₱ <?php echo number_format($usd_to_php, 2); ?></h5>
+                    <h5>₱ <?php echo number_format($usd_to_php, 2); ?></h5>
                   </div>
                 </div>
               </div>
@@ -411,55 +389,55 @@
                 </div>
               </div>
 
-            </div> 
+            </div>
           </div>
+        </div>
+
       </div>
 
-    </div>
- 
-    <div class="navTabs-wrapper">
-      <ul class="nav nav-pills" id="pills-tab" role="tablist">
-        <li class="nav-item" role="presentation">
-          <button class="nav-link active" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Flight Seat Tracker</button>
-        </li>
+      <div class="navTabs-wrapper">
+        <ul class="nav nav-pills" id="pills-tab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Flight Seat Tracker</button>
+          </li>
 
-        <li class="nav-item" role="presentation">
-          <button class="nav-link " id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Payment and Requests</button>
-        </li>
-        
-        <!-- <li class="nav-item" role="presentation">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link " id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Payment and Requests</button>
+          </li>
+
+          <!-- <li class="nav-item" role="presentation">
           <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Contact</button>
         </li>
         <li class="nav-item" role="presentation">
           <button class="nav-link" id="pills-disabled-tab" data-bs-toggle="pill" data-bs-target="#pills-disabled" type="button" role="tab" aria-controls="pills-disabled" aria-selected="false" disabled>Disabled</button>
         </li> -->
-      </ul>
-    </div>
+        </ul>
+      </div>
 
-    <!-- Flight Seat Tracker Tab -->
-    <div class="tab-content" id="pills-tabContent">
+      <!-- Flight Seat Tracker Tab -->
+      <div class="tab-content" id="pills-tabContent">
 
-      <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
+        <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
 
-        <!-- Flight Seat Tracker Table -->
-        <div class="info-table-container">
-          <table class="info-table" id="info-table">
-            <thead>
-              <tr>
-                <th rowspan="2"></th>
-                <th rowspan="2">TEAM OP</th>
-                <th rowspan="2">ORIGIN</th>
-                <th colspan="2">FLIGHT DATE</th> <!-- Flight Date columns -->
-                <th rowspan="2" style="font-size: 10px;">AVAILABLE SEATS</th>
-                <th rowspan="2" style="font-size: 10px;">ADDITIONAL SEATS</th>
-                <th rowspan="2">AIR + LAND</th>
-                <th rowspan="2">LAND ONLY</th>
-                <th rowspan="2">WHOLESALE PRICE</th>
-                <th rowspan="2">RETAIL PRICE</th>
-                <th rowspan="2" style="font-size: 10px; padding: 0px 5px">LAND ARRANGEMENT PRICE</th>
-                <th rowspan="2" style="font-size: 10px; padding: 0px 5px">LAND PRICE</th>
-                <!-- Dynamic headers for agent columns -->
-                <?php
+          <!-- Flight Seat Tracker Table -->
+          <div class="info-table-container">
+            <table class="info-table" id="info-table">
+              <thead>
+                <tr>
+                  <th rowspan="2"></th>
+                  <th rowspan="2">TEAM OP</th>
+                  <th rowspan="2">ORIGIN</th>
+                  <th colspan="2">FLIGHT DATE</th> <!-- Flight Date columns -->
+                  <th rowspan="2" style="font-size: 10px;">AVAILABLE SEATS</th>
+                  <th rowspan="2" style="font-size: 10px;">ADDITIONAL SEATS</th>
+                  <th rowspan="2">AIR + LAND</th>
+                  <th rowspan="2">LAND ONLY</th>
+                  <th rowspan="2">WHOLESALE PRICE</th>
+                  <th rowspan="2">RETAIL PRICE</th>
+                  <th rowspan="2" style="font-size: 10px; padding: 0px 5px">LAND ARRANGEMENT PRICE</th>
+                  <th rowspan="2" style="font-size: 10px; padding: 0px 5px">LAND PRICE</th>
+                  <!-- Dynamic headers for agent columns -->
+                  <?php
                   // Define an array of colors to style the <th> elements
                   $colors = ['#ADD8E6', '#98FB98', '#FFFFCC', '#E6E6FA', '#FFDAB9']; // Extend this array as needed
 
@@ -470,25 +448,24 @@
                   // Initialize a counter for cycling through the color array
                   $colorIndex = 0;
 
-                  while ($row = $result->fetch_assoc()) 
-                  {
+                  while ($row = $result->fetch_assoc()) {
                     // Get the current color based on the index and loop through the color array
                     $color = $colors[$colorIndex % count($colors)];
-                    
+
                     // Output the <th> element with the inline style for background color
                     echo '<th colspan="2" data-bs-toggle="tooltip" title="' . $row['agentCode'] . '" style="background-color: ' . $color . ';">' . $row['agentCode'] . '</th>';
-                    
+
                     // Increment the color index for the next iteration
                     $colorIndex++;
                   }
-                ?>
-              </tr>
-              <tr style="top: -10px">
-                <th>START</th>
-                <th>END</th>
-                <!-- A1, A2, A3, A4, A5, A6, A7 Sub Headers -->
-                <!-- Dynamic sub-headers for agent columns -->
-                <?php
+                  ?>
+                </tr>
+                <tr style="top: -10px">
+                  <th>START</th>
+                  <th>END</th>
+                  <!-- A1, A2, A3, A4, A5, A6, A7 Sub Headers -->
+                  <!-- Dynamic sub-headers for agent columns -->
+                  <?php
                   // Define the same array of colors to style the <th> elements
                   $colors = ['#ADD8E6', '#98FB98', '#FFFFCC', '#E6E6FA', '#FFDAB9']; // Extend this array as needed
 
@@ -499,31 +476,29 @@
                   // Initialize a counter for cycling through the color array
                   $colorIndex = 0;
 
-                  while ($row = $result->fetch_assoc()) 
-                  {
+                  while ($row = $result->fetch_assoc()) {
                     // Get the current color based on the index and loop through the color array
                     $color = $colors[$colorIndex % count($colors)];
-                    
+
                     // Output the <th> elements with the inline style for background color
                     echo '<th style="background-color: ' . $color . ';">A.L</th>';
                     echo '<th style="background-color: ' . $color . ';">L.O</th>';
-                    
+
                     // Increment the color index for the next iteration
                     $colorIndex++;
                   }
-                ?>
-              </tr>
-            </thead>
-            <tbody>
-              <?php
+                  ?>
+                </tr>
+              </thead>
+              <tbody>
+                <?php
                 $sql = "SELECT DISTINCT a.agentCode AS agentCode, a.agentType AS agentType
                         FROM agent a
                         WHERE a.agentCode IS NOT NULL AND a.agentCode != ''";
                 $result = $conn->query($sql);
-                
+
                 $agentColumns = '';
-                while ($row = $result->fetch_assoc()) 
-                {
+                while ($row = $result->fetch_assoc()) {
                   $agentCode = $row['agentCode'];
                   // Removed agentRole filter, now summing pax per agentCode without multiplying by the number of agents with the same code
                   $agentColumns .= "
@@ -534,10 +509,10 @@
                               AND b.agentCode = '$agentCode' AND a.agentType = 'Wholeseller' 
                               THEN b.pax ELSE 0 END) AS `{$agentCode}_LO`, ";
                 }
-                
+
                 // Trim the trailing comma from the dynamically generated columns
                 $agentColumns = rtrim($agentColumns, ', ');
-                
+
                 // Main query
                 $sql = "SELECT CONCAT(e.lName, ', ', e.fName, 
                               IF(e.mName IS NOT NULL AND e.mName != '', CONCAT(' ', LEFT(e.mName, 1)), '')) AS TeamOP,
@@ -580,18 +555,16 @@
                 // Step 4: Display the results in HTML table
 
                 // class="form-check-input"
-                if ($result->num_rows > 0) 
-                {
-                  while ($row = $result->fetch_assoc()) 
-                  {
+                if ($result->num_rows > 0) {
+                  while ($row = $result->fetch_assoc()) {
 
                     $colorMapping = [
-                        "Heo, Vicky" => "#FFD700",  // Gold
-                        "Kim, Gwen" => "#ADD8E6",   // Light Blue
-                        "Sample, Dorothy" => "#98FB98", // Pale Green
-                        "Lm, Anna" => "#FFB6C1",    // Light Pink
-                        "Park, Lia" => "#E6E6FA",   // Lavender
-                        "Testing, Pamela" => "#FFDAB9" // Peach
+                      "Heo, Vicky" => "#FFD700",  // Gold
+                      "Kim, Gwen" => "#ADD8E6",   // Light Blue
+                      "Sample, Dorothy" => "#98FB98", // Pale Green
+                      "Lm, Anna" => "#FFB6C1",    // Light Pink
+                      "Park, Lia" => "#E6E6FA",   // Lavender
+                      "Testing, Pamela" => "#FFDAB9" // Peach
                     ];
 
                     $rowColor = isset($colorMapping[$row['TeamOP']]) ? $colorMapping[$row['TeamOP']] : "transparent"; // Default to transparent if not listed
@@ -618,52 +591,49 @@
                     echo '<td>₱ ' . number_format($row['landPrice'], 2) . '</td>';
 
                     foreach ($row as $key => $value) {
-                        $colors = ['#ADD8E6', '#98FB98', '#FFFFCC', '#E6E6FA', '#FFDAB9']; // Color array
-                        if (strpos($key, '_AL') !== false || strpos($key, '_LO') !== false) {
-                            $fontWeight = ($value >= 1) ? 'bolder' : 'normal';
-                            $colorIndex = array_search($key, array_keys($row)) % count($colors);
-                            $backgroundColor = $colors[$colorIndex];
+                      $colors = ['#ADD8E6', '#98FB98', '#FFFFCC', '#E6E6FA', '#FFDAB9']; // Color array
+                      if (strpos($key, '_AL') !== false || strpos($key, '_LO') !== false) {
+                        $fontWeight = ($value >= 1) ? 'bolder' : 'normal';
+                        $colorIndex = array_search($key, array_keys($row)) % count($colors);
+                        $backgroundColor = $colors[$colorIndex];
 
-                            echo '<td style="font-weight: ' . $fontWeight . '; border-left: 1px solid #ddd; border-right: 1px solid #ddd;">' . $value . '</td>';
-                        }
+                        echo '<td style="font-weight: ' . $fontWeight . '; border-left: 1px solid #ddd; border-right: 1px solid #ddd;">' . $value . '</td>';
+                      }
                     }
-                echo '</tr>';
-
+                    echo '</tr>';
                   }
-                } 
-                else 
-                {
+                } else {
                   echo "No records found.";
                 }
-              ?>
-            </tbody>
-          </table>
+                ?>
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>      
 
-      <!-- Payment and Requests Table -->
-      <div class="tab-pane fade " id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
+        <!-- Payment and Requests Table -->
+        <div class="tab-pane fade " id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
 
-        <div class="tab-content">
-          <div class="header-wrapper">
-            <!-- Request Table -->
-            <div class="request-wrapper">
-              <div class="table-header">
-                <h6 class="white-pill">Requests</h6>
-              </div>
+          <div class="tab-content">
+            <div class="header-wrapper">
+              <!-- Request Table -->
+              <div class="request-wrapper">
+                <div class="table-header">
+                  <h6 class="white-pill">Requests</h6>
+                </div>
 
-              <div class="request-table-container">
-                <table class="table request-table">
-                  <thead>
-                    <tr>
-                      <th>TRANSACTION NO</th>
-                      <th>FLIGHT DATE</th>
-                      <th>REQUEST</th>
-                      <th>STATUS</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <?php
+                <div class="request-table-container">
+                  <table class="table request-table">
+                    <thead>
+                      <tr>
+                        <th>TRANSACTION NO</th>
+                        <th>FLIGHT DATE</th>
+                        <th>REQUEST</th>
+                        <th>STATUS</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <?php
                       $sql1 = "SELECT r.transactNo AS `T.N`, c.concernTitle AS `Request`, DATE_FORMAT(r.requestDate, '%m.%d.%Y') AS `Date`,
                                     r.requestStatus, b.agentCode, CONCAT(a.lName, ', ', a.fName, 
                                     IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1)), '')) AS agentName,
@@ -679,14 +649,11 @@
                                   r.requestDate DESC";  // Order by request date
 
                       $res1 = $conn->query($sql1);
-                        
-                      if ($res1->num_rows > 0) 
-                      {
-                        while ($row = $res1->fetch_assoc()) 
-                        {
+
+                      if ($res1->num_rows > 0) {
+                        while ($row = $res1->fetch_assoc()) {
                           $statusClass = '';
-                          switch ($row['requestStatus']) 
-                          {
+                          switch ($row['requestStatus']) {
                             case 'Confirmed':
                               $statusClass = 'badge bg-success'; // Green pill for "Approved"
                               break;
@@ -700,7 +667,7 @@
                               $statusClass = 'badge bg-secondary'; // Grey pill for unknown statuses
                               break;
                           }
-                      
+
                           // Echo table row with dynamically styled pills
                           echo "<tr>
                                   <td>{$row['T.N']}</td>
@@ -709,39 +676,37 @@
                                   <td><span class='{$statusClass}'>{$row['requestStatus']}</span></td>
                                 </tr>";
                         }
-                      } 
-                      else 
-                      {
+                      } else {
                         echo "<tr><td colspan='6' style='text-align: center; font-size: 10px;'>NO CURRENT REQUEST AS OF THE MOMENT</td></tr>";
                       }
-                    ?>
-                  </tbody>
-                </table>
+                      ?>
+                    </tbody>
+                  </table>
+                </div>
+
               </div>
 
-            </div>
+              <!-- Payment Table -->
+              <div class="payment-wrapper">
+                <div class="table-header">
+                  <h6 class="white-pill">Payment</h6>
+                </div>
 
-            <!-- Payment Table -->
-            <div class="payment-wrapper">
-              <div class="table-header">
-                <h6 class="white-pill">Payment</h6>
-              </div>
-
-              <div class="payment-table-container">
-                <table class="payment-table table ">
-                  <thead>
-                    <tr>
-                      <th>TRANSACTION NO</th>
-                      <th>FLIGHT DATE</th>
-                      <th>PAYMENT TITLE</th>
-                      <th>PAYMENT TYPE</th>
-                      <th>PAYMENT AMOUNT</th>
-                      <!-- <th>DATE</th>  -->
-                      <th>STATUS</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <?php
+                <div class="payment-table-container">
+                  <table class="payment-table table ">
+                    <thead>
+                      <tr>
+                        <th>TRANSACTION NO</th>
+                        <th>FLIGHT DATE</th>
+                        <th>PAYMENT TITLE</th>
+                        <th>PAYMENT TYPE</th>
+                        <th>PAYMENT AMOUNT</th>
+                        <!-- <th>DATE</th>  -->
+                        <th>STATUS</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <?php
                       $sql2 = "SELECT p.transactNo AS `Transaction No`, p.paymentTitle AS `Payment Title`,
                                 CONCAT(FORMAT(p.amount, 2)) AS `Amount`, DATE_FORMAT(p.paymentDate, '%m.%d.%Y') AS `Date`, p.paymentType AS `Payment Type`,
                                 p.paymentStatus, b.agentCode, CONCAT(a.lName, ', ', a.fName, 
@@ -757,15 +722,12 @@
                                 p.paymentDate DESC";  // Order by payment date
 
                       $res2 = $conn->query($sql2);
-                      
-                      if ($res2->num_rows > 0) 
-                      {
-                        while ($row = $res2->fetch_assoc()) 
-                        {
+
+                      if ($res2->num_rows > 0) {
+                        while ($row = $res2->fetch_assoc()) {
                           // Map paymentStatus to Bootstrap pill classes
                           $statusClass = '';
-                          switch ($row['paymentStatus']) 
-                          {
+                          switch ($row['paymentStatus']) {
                             case 'Approved':
                               $statusClass = 'badge bg-success text-light'; // Green pill for "Paid"
                               break;
@@ -779,7 +741,7 @@
                               $statusClass = 'badge bg-secondary'; // Grey pill for unknown statuses
                               break;
                           }
-                      
+
                           // Echo table row with dynamically styled pills
                           echo "<tr>
                                   <td>{$row['Transaction No']}</td>
@@ -790,27 +752,25 @@
                                   <td><span class='{$statusClass}'>{$row['paymentStatus']}</span></td>
                                 </tr>";
                         }
-                      } 
-                      else 
-                      {  
+                      } else {
                         echo "<tr><td colspan='12' style='text-align: center; font-size: 10px;'>NO CURRENT PAYMENTS AS OF THE MOMENT</td></tr>";
                       }
-                    ?>
-                  </tbody>
-                </table>
+                      ?>
+                    </tbody>
+                  </table>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Confirmed Transaction Tables -->
+            <div class="confirm-container">
+              <div class="table-header">
+                <h6 class="white-pill">Confirmed Transactions</h6>
               </div>
 
-            </div>
-          </div>
-
-          <!-- Confirmed Transaction Tables -->
-          <div class="confirm-container">
-            <div class="table-header">
-              <h6 class="white-pill">Confirmed Transactions</h6>
-            </div>
-                  
               <div class="table-container confirm-table-container">
-                <table class="confirm-table">
+                <table class="confirm-table" id="confirm-table">
                   <thead>
                     <tr>
                       <th>TRANSACTION NO.</th>
@@ -821,12 +781,12 @@
                       <th>BOOKING TYPE</th>
                       <th>STATUS</th>
                       <th>COMMENT</th>
-                      
+
                     </tr>
                   </thead>
                   <tbody>
-    <?php
-    $query1 = "SELECT b.*, f.flightDepartureDate AS Start, p.packageName,
+                    <?php
+                    $query1 = "SELECT b.*, f.flightDepartureDate AS Start, p.packageName,
                       f.returnDepartureDate AS End, CONCAT(a.lName, ', ', a.fName, 
                       IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1)), '')) AS agentName,
                       br.branchName as branchName
@@ -837,389 +797,426 @@
               JOIN package p ON b.packageId = p.packageId
               WHERE status = 'Confirmed'";
 
-    $result = $conn->query($query1);
+                    $result = $conn->query($query1);
 
-    // Check if the query returned any results
-    if ($result && $result->num_rows > 0) {
-      while ($row = $result->fetch_assoc()) {
-        $status = $row['status'];
-    
-        // Define the pill status class based on the status value
-        switch ($status) {
-            case 'Confirmed':
-                $pillClass = 'bg-success';
-                break;
-            case 'Cancelled':
-                $pillClass = 'bg-danger';
-                break;
-            case 'Pending':
-                $pillClass = 'bg-warning';
-                break;
-            case 'Rejected':
-                $pillClass = 'bg-info';
-                break;
-            default:
-                $pillClass = 'bg-secondary';
-                break;
-        }
-    
-        // Generate the table row with dynamically set `recordId`
-        echo "<tr data-id='{$row['transactNo']}'> <!-- Set the row ID dynamically -->
-            <td>{$row['transactNo']}</td>
-            <td>{$row['branchName']}</td>
-            <td>{$row['packageName']}</td>
-            <td>{$row['Start']}</td>
-            <td>{$row['pax']}</td>
-            <td>{$row['bookingType']}</td>
-            <td>
-                <span class='badge $pillClass p-2'>{$status}</span>
-            </td>";
-    
-        // Fetching the comment from the database
-        $transactNo = $row['transactNo'];
-        $stmt = $conn->prepare('SELECT comment FROM bookingcomments WHERE transactNo = ?');
-        $stmt->bind_param('s', $transactNo);
-        $stmt->execute();
-        $resultComment = $stmt->get_result();
-        $comment = $resultComment->fetch_assoc();
-        $stmt->close();
-    
-        // Check if a comment exists or not, and display accordingly
-        echo "<td>";
-echo '<div class="comment-container" id="commentContainer' . $transactNo . '">';
+                    // Check if the query returned any results
+                    if ($result && $result->num_rows > 0) {
+                      while ($row = $result->fetch_assoc()) {
+                        $status = $row['status'];
 
-// Comment exists or not
-if ($comment && !empty($comment['comment'])) {
-    // If a comment exists, display it and show the 'Edit' button
-    echo '<div class="comment-exists">
-            <div class="comment-input">
-                <input type="text" class="form-control" name="comment" id="commentInput' . $transactNo . '" value="' . htmlspecialchars($comment['comment']) . '" disabled>
-            </div>
-            <div class="edit-button">
-                <button type="button" class="btn btn-warning editComment" data-id="' . $transactNo . '">Edit</button>
-            </div>
-          </div>';
-} else {
-    // If no comment exists, display the placeholder for adding a comment
-    echo '<div class="no-comment">
-            <div class="comment-input">
-                <input type="text" class="form-control" name="comment" id="commentInput' . $transactNo . '" placeholder="Add a comment" disabled>
-            </div>
-            <div class="add-button">
-                <button type="button" class="btn btn-success addComment" data-id="' . $transactNo . '">Add</button>
-            </div>
-          </div>';
-}
-
-echo '</div>'; // Close the comment-container div
-
-// Hidden field to hold the record ID and action buttons
-echo '<div class="button-container">
-        <input type="text" class="recordId" value="' . $row['transactNo'] . '" hidden>
-        
-        <!-- Initially hidden submit button -->
-        <button type="button" class="btn btn-primary submitComment" data-id="' . $transactNo . '" style="display: none;">Submit</button>
-        
-        <!-- Initially hidden cancel buttons -->
-        <button type="button" class="btn btn-danger cancelComment" data-id="' . $transactNo . '" style="display: none;">Cancel Edit</button>
-        <button type="button" class="btn btn-danger cancelAddComment" data-id="' . $transactNo . '" style="display: none;">Cancel Add</button>
-      </div>';
-
-echo "</td>"; // Close the <td> tag
-
-    
-        echo "</tr>";
-    }
-    
-    } else {
-        // No records found
-        echo "<tr><td colspan='7'>No confirmed bookings found.</td></tr>";
-    }
-
-    if ($result) {
-        $result->free();
-    }
-    $conn->close();
-    ?>
-</tbody>
-
-                  <script>
-   document.addEventListener('DOMContentLoaded', function() {
-
-// Function to show the relevant buttons for editing or adding a comment
-function toggleCommentButtons(transactNo, action) {
-    const commentInput = document.getElementById('commentInput' + transactNo);
-    const submitButton = document.querySelector('.submitComment[data-id="' + transactNo + '"]');
-    const cancelEditButton = document.querySelector('.cancelComment[data-id="' + transactNo + '"]');
-    const cancelAddButton = document.querySelector('.cancelAddComment[data-id="' + transactNo + '"]');
-    const editButton = document.querySelector('.editComment[data-id="' + transactNo + '"]');
-    const addButton = document.querySelector('.addComment[data-id="' + transactNo + '"]');
-
-    // Enable the comment input and focus on it
-    commentInput.disabled = false;
-    commentInput.focus();
-
-    // Save the original comment text to an attribute so we can revert it later
-    const originalComment = commentInput.value; // Get the current comment
-    commentInput.setAttribute('data-original-comment', originalComment);
-
-    // Show the submit button
-    submitButton.style.display = 'inline-block';
-    
-    // Display the relevant cancel button based on action
-    if (action === 'edit') {
-        cancelEditButton.style.display = 'inline-block';
-        cancelAddButton.style.display = 'none';  // Hide Add cancel button
-    } else if (action === 'add') {
-        cancelAddButton.style.display = 'inline-block';
-        cancelEditButton.style.display = 'none';  // Hide Edit cancel button
-    }
-
-    // Hide the action buttons (Edit or Add)
-    editButton.style.display = 'none';
-    addButton.style.display = 'none';
-}
-
-// When 'Edit' is clicked
-document.querySelectorAll('.editComment').forEach(function(button) {
-    button.addEventListener('click', function() {
-        const transactNo = this.getAttribute('data-id');
-        toggleCommentButtons(transactNo, 'edit');
-    });
-});
-
-// When 'Add' is clicked
-document.querySelectorAll('.addComment').forEach(function(button) {
-    button.addEventListener('click', function() {
-        const transactNo = this.getAttribute('data-id');
-        toggleCommentButtons(transactNo, 'add');
-    });
-});
-
-// When 'Submit' is clicked
-document.querySelectorAll('.submitComment').forEach(function(button) {
-    button.addEventListener('click', function() {
-        const transactNo = this.getAttribute('data-id');
-        const commentInput = document.getElementById('commentInput' + transactNo);
-        const comment = commentInput.value;
-
-        // AJAX request to submit the comment
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', 'submit_comment.php', true);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                // Successful submission feedback
-                alert('Comment submitted successfully!');
-                // Disable input and reset buttons
-                commentInput.disabled = true;
-                button.style.display = 'none';
-
-                // Show 'Edit' button and hide 'Cancel' button
-                document.querySelector('.editComment[data-id="' + transactNo + '"]').style.display = 'inline-block';
-                document.querySelector('.cancelComment[data-id="' + transactNo + '"]').style.display = 'none';
-                document.querySelector('.cancelAddComment[data-id="' + transactNo + '"]').style.display = 'none';
-
-                // Hide the 'Add' button after submission
-                document.querySelector('.addComment[data-id="' + transactNo + '"]').style.display = 'none';
-            } else {
-                // Handle errors
-                alert('Error submitting comment.');
-            }
-        };
-        xhr.send('transactNo=' + transactNo + '&comment=' + encodeURIComponent(comment));
-    });
-});
-
-// When 'Cancel' (Edit) is clicked
-document.querySelectorAll('.cancelComment').forEach(function(button) {
-    button.addEventListener('click', function() {
-        const transactNo = this.getAttribute('data-id');
-        const commentInput = document.getElementById('commentInput' + transactNo);
-        const submitButton = document.querySelector('.submitComment[data-id="' + transactNo + '"]');
-        const editButton = document.querySelector('.editComment[data-id="' + transactNo + '"]');
-        const addButton = document.querySelector('.addComment[data-id="' + transactNo + '"]');
-
-        // Reset the comment input to its original value if available
-        commentInput.disabled = true;
-
-        // Retrieve the original comment text stored earlier
-        const originalComment = commentInput.getAttribute('data-original-comment');
-        
-        if (originalComment) {
-            commentInput.value = originalComment; // Revert to the original comment
-        } else {
-            commentInput.value = ''; // Placeholder or empty state if no original comment
-        }
-
-        // Hide the submit and cancel buttons, and restore the edit button
-        submitButton.style.display = 'none';
-        this.style.display = 'none';
-
-        editButton.style.display = 'block'; // Show 'Edit' button
-
-        // Give feedback that changes have been canceled
-        alert('Changes have been canceled!');
-    });
-});
-
-// When 'Cancel' (Add) is clicked
-document.querySelectorAll('.cancelAddComment').forEach(function(button) {
-    button.addEventListener('click', function() {
-        const transactNo = this.getAttribute('data-id');
-        const commentInput = document.getElementById('commentInput' + transactNo);
-        const submitButton = document.querySelector('.submitComment[data-id="' + transactNo + '"]');
-        const editButton = document.querySelector('.editComment[data-id="' + transactNo + '"]');
-        const addButton = document.querySelector('.addComment[data-id="' + transactNo + '"]');
-
-        // Reset the comment input and hide the submit/cancel buttons
-        commentInput.disabled = true;
-        commentInput.value = ''; // Clear input value for Add comment
-
-        // Hide the submit and cancel buttons
-        submitButton.style.display = 'none';
-        this.style.display = 'none';
-
-        // Show the Add button again
-        addButton.style.display = 'block';
-
-        // Give feedback that changes have been canceled
-        alert('Add operation canceled!');
-    });
-});
-
-});
-
-                  </script>
-
-                  <script>
-                      $('.submitComment').on('click', function() {
-                        // Get the row ID from the data-id attribute of the submit button
-                        var rowId = $(this).data('id');
-                        
-                        // Get the comment value from the corresponding input field
-                        var comment = $('#commentInput' + rowId).val(); // Dynamically select the comment input based on the row ID
-                        
-                        if(comment) {
-                            // Make an AJAX request to submit the comment and fetch data based on the row ID
-                            $.ajax({
-                                url: '../Employee Section/functions/emp-commentSubmit.php', 
-                                type: 'POST',
-                                data: {
-                                    comment: comment,
-                                    id: rowId // Send the row ID with the comment
-                                },
-                                success: function(response) {
-                                    console.log('Comment submitted for row ID ' + rowId + ':', response);
-                                    // Optionally update the UI or show a success message
-                                },
-                                error: function(xhr, status, error) {
-                                    console.error('Error submitting comment for row ID ' + rowId + ':', error);
-                                }
-                            });
-                        } else {
-                            alert('Please enter a comment.');
+                        // Define the pill status class based on the status value
+                        switch ($status) {
+                          case 'Confirmed':
+                            $pillClass = 'bg-success';
+                            break;
+                          case 'Cancelled':
+                            $pillClass = 'bg-danger';
+                            break;
+                          case 'Pending':
+                            $pillClass = 'bg-warning';
+                            break;
+                          case 'Rejected':
+                            $pillClass = 'bg-info';
+                            break;
+                          default:
+                            $pillClass = 'bg-secondary';
+                            break;
                         }
-                    });
 
-                  </script>
+                        // Generate the table row with dynamically set `recordId`
+                        echo "<tr data-id='{$row['transactNo']}'> <!-- Set the row ID dynamically -->
+                                <td>{$row['transactNo']}</td>
+                                <td>{$row['branchName']}</td>
+                                <td>{$row['packageName']}</td>
+                                <td>{$row['Start']}</td>
+                                <td>{$row['pax']}</td>
+                                <td>{$row['bookingType']}</td>
+                                <td>
+                                    <span class='badge $pillClass p-2'>{$status}</span>
+                                </td>";
 
+                        // Fetching the comment from the database
+                        $transactNo = $row['transactNo'];
+                        $stmt = $conn->prepare('SELECT * FROM bookingcomments WHERE transactNo = ?');
+                        $stmt->bind_param('s', $transactNo);
+                        $stmt->execute();
+                        $resultComment = $stmt->get_result();
+                        $comment = $resultComment->fetch_assoc();
+                        $stmt->close();
+
+                        echo "<td>";
+                        echo '<div class="comment-container" id="commentContainer' . $transactNo . '">';
+
+                        // Check if a comment exists
+                        if ($comment && !empty($comment['comment'])) {
+                          // If a comment exists, display it and show the 'Edit' button
+                          echo '<div class="comment-exists">
+                                  <div class="comment-input">
+                                      <input type="text" class="form-control" name="comment" id="commentInput' . $transactNo . '" value="' . htmlspecialchars($comment['comment']) . '" disabled>
+                                  </div>
+                                  <div class="edit-button">
+                                      <button type="button" class="btn btn-warning editComment" data-id="' . $transactNo . '">Edit</button>
+                                  </div>
+                                </div>';
+                        } else {
+                          // If no comment exists, show input for adding a new comment
+                          echo '<div class="no-comment">
+                                  <div class="comment-input">
+                                      <input type="text" class="form-control" name="comment" id="commentInput' . $transactNo . '" placeholder="Add a comment" disabled>
+                                  </div>
+                                  <div class="add-button">
+                                      <button type="button" class="btn btn-success addComment" data-id="' . $transactNo . '">Add</button>
+                                  </div>
+                                </div>';
+                        }
+
+                        echo '<div class="button-container">
+                                <input type="text" class="recordId" value="' . $row['transactNo'] . '" hidden>
+
+                                <!-- Submit buttons for add/edit -->
+                                <button type="button" class="btn btn-primary submitAddComment" data-id="' . $transactNo . '" style="display: none;">Submit</button>
+                                <button type="button" class="btn btn-primary submitEditComment" data-id="' . $transactNo . '" style="display: none;">Update</button>
+
+                                <!-- Cancel buttons -->
+                                <button type="button" class="btn btn-danger cancelEditComment" data-id="' . $transactNo . '" style="display: none;">Cancel Edit</button>
+
+                                <button type="button" class="btn btn-danger cancelAddComment" data-id="' . $transactNo . '" style="display: none;">Cancel Add</button>
+
+                                  <!-- Delete button (only visible during edit) -->
+                                <button type="button" class="btn btn-danger deleteComment" data-id="' . $transactNo  . '" style="display: none;">Remove</button>
+                              </div>';
+
+                        echo '</div>'; // Close the comment-container div
+
+                      
+                        echo "</td>"; // Close the <td> tag
+
+
+                        echo "</tr>";
+                      }
+                    } else {
+                      // No records found
+                      echo "<tr><td colspan='7'>No confirmed bookings found.</td></tr>";
+                    }
+
+                    if ($result) {
+                      $result->free();
+                    }
+
+                    $conn->close();
+                    ?>
+                  </tbody>
                 </table>
               </div>
 
+            </div>
           </div>
         </div>
+
+
+
+        <!-- <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0"></div>
+      <div class="tab-pane fade" id="pills-disabled" role="tabpanel" aria-labelledby="pills-disabled-tab" tabindex="0"></div> -->
+
       </div>
 
-
-      <!-- <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0"></div>
-      <div class="tab-pane fade" id="pills-disabled" role="tabpanel" aria-labelledby="pills-disabled-tab" tabindex="0"></div> -->
-    
     </div>
-
   </div>
-</div>
 
+  <!-- Modal -->
+  <div class="modal" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Are you sure you want to delete this comment? This action cannot be undone.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<?php include '../Employee Section/includes/emp-scripts.php' ?>
+  <?php include '../Employee Section/includes/emp-scripts.php' ?>
 
-<script>
-  $(document).ready(function () 
-  {
-    // Initialize DataTable for .info-table if not already initialized
-    if (!$.fn.DataTable.isDataTable('.info-table')) 
-    {
-      var table = $('.info-table').DataTable(
-      {
-        autoWidth: false,
-        scrollX: true, // Enable horizontal scrolling
-        scrollY: "583px", // Enable vertical scrolling and set height
-        paging: false, // Disable pagination
-        searching: false, // Disable search
-        info: false, // Disable info
-        fixedColumns: 
-        {
-          leftColumns: 12 // Freeze the first 11 columns
-        },
-        dom: 'rt<"bottom"flp>',
-        ordering: false // Disable sorting on all columns
-      });
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      function toggleCommentForm(transactNo, action) {
+        const commentInput = document.getElementById('commentInput' + transactNo);
+        const submitAddButton = document.querySelector('.submitAddComment[data-id="' + transactNo + '"]');
+        const submitEditButton = document.querySelector('.submitEditComment[data-id="' + transactNo + '"]');
+        const cancelEditButton = document.querySelector('.cancelEditComment[data-id="' + transactNo + '"]');
+        const cancelAddButton = document.querySelector('.cancelAddComment[data-id="' + transactNo + '"]');
+        const editButton = document.querySelector('.editComment[data-id="' + transactNo + '"]');
+        const addButton = document.querySelector('.addComment[data-id="' + transactNo + '"]');
+        const deleteButton = document.querySelector('.deleteComment[data-id="' + transactNo + '"]');
 
-      // Ensure uniform row height between frozen and non-frozen columns
-      function syncRowHeights() 
-      {
-        setTimeout(() => 
-        {
-          $('.DTFC_Cloned tbody tr').each(function (index) 
-          {
-            let originalRow = $('.dataTable tbody tr').eq(index);
-            let clonedRow = $(this);
-            let originalHeight = originalRow.height();
-            clonedRow.height(originalHeight);
-          });
-        }, 50); // Allow DataTable rendering before adjusting height
+        commentInput.disabled = false;
+        commentInput.focus();
+        const originalComment = commentInput.value;
+        commentInput.setAttribute('data-original-comment', originalComment);
+
+        if (action === 'edit') {
+          submitEditButton.style.display = 'inline-block';
+          cancelEditButton.style.display = 'inline-block';
+          submitAddButton.style.display = 'none';
+          cancelAddButton.style.display = 'none';
+          deleteButton.style.display = 'inline-block'; // Show delete button on edit
+          editButton.style.display = 'none';
+        } else if (action === 'add') {
+          submitAddButton.style.display = 'inline-block';
+          cancelAddButton.style.display = 'inline-block';
+          submitEditButton.style.display = 'none';
+          cancelEditButton.style.display = 'none';
+          // deleteButton.style.display = 'none'; // Hide delete button on add
+          addButton.style.display = 'none';
+        }
+
+        editButton.style.display = 'none';
+        addButton.style.display = 'none';
       }
 
-      // Call sync function after initialization
-      syncRowHeights();
+      document.querySelectorAll('.editComment').forEach(button => {
+        button.addEventListener('click', function() {
+          const transactNo = this.getAttribute('data-id');
+          toggleCommentForm(transactNo, 'edit');
+        });
+      });
 
-      // Re-adjust heights on window resize or table updates
-      $(window).on('resize', syncRowHeights);
-      $('.info-table').on('draw.dt', syncRowHeights);
-    }
-
-    // Prevent row selection when clicking on the checkbox
-    $('.info-table tbody').on('click', 'input[type="checkbox"]', function (e) 
-    {
-      e.stopPropagation(); // Stop event from propagating to row selection
+      document.querySelectorAll('.addComment').forEach(button => {
+        button.addEventListener('click', function() {
+          const transactNo = this.getAttribute('data-id');
+          toggleCommentForm(transactNo, 'add');
+        });
+      });
     });
 
-    // Apply the 'selected' class to rows in both tables when clicked (excluding checkboxes)
-    // function selectRowInBothTables(index) 
-    // {
-    //   $('.info-table tbody tr, div.dataTables_wrapper tbody tr').removeClass('selected');
-    //   $('.info-table tbody tr').eq(index).addClass('selected');
-    //   $('div.dataTables_wrapper tbody tr').eq(index).addClass('selected');
-    // }
+    // Handle click on delete button
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.deleteComment').forEach(button => {
+        button.addEventListener('click', function() {
+          const transactNo = this.getAttribute('data-id'); // Get the transactNo from the data-id attribute
+          const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal')); // Use existing modal with id 'deleteModal'
 
-    // Add event listener for row clicks in .info-table using event delegation
-    $('.info-table').on('click', 'tbody tr', function (e) 
-    {
-      if ($(e.target).is('input[type="checkbox"]')) return; // Ignore checkboxes
-      const index = $(this).index();
-      selectRowInBothTables(index);
+          // Show the modal
+          deleteModal.show();
+
+          // When the "Delete" button in the modal is clicked, send the delete request
+          document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+            const formData = new FormData();
+            formData.append('transactNo', transactNo); // Send the transactNo
+
+            // Send the delete request via fetch
+            fetch('../Employee Section/functions/emp-commentDelete.php', {
+                method: 'POST',
+                body: formData
+              })
+              .then(response => response.json())
+              .then(data => {
+                if (data.status === 'success') {
+                  alert(data.message);
+                  location.reload(); // Reload the page after successful deletion
+                } else {
+                  alert(data.message || 'Error deleting comment.');
+                }
+              })
+              .catch(error => {
+                console.error('Error:', error);
+                alert('Error occurred while deleting the comment.');
+              });
+
+            // Close the modal after deletion attempt
+            deleteModal.hide();
+          });
+        });
+      });
     });
 
-    // Add event listener for row clicks in div.dataTables_wrapper using event delegation
-    $('div.dataTables_wrapper').on('click', 'tbody tr', function (e) 
-    {
-      if ($(e.target).is('input[type="checkbox"]')) return;
-      const index = $(this).index();
-      selectRowInBothTables(index);
+    document.querySelectorAll('.submitAddComment').forEach(button => {
+      button.addEventListener('click', function() {
+        const transactNo = this.getAttribute('data-id');
+        const comment = document.getElementById('commentInput' + transactNo).value;
+
+        if (comment) {
+          console.log('Transaction Number:', transactNo);
+          console.log('Comment:', comment);
+
+          $.ajax({
+            url: '../Employee Section/functions/emp-commentSubmit.php',
+            type: 'POST',
+            data: {
+              transactNo,
+              comment
+            },
+            success: function(response) {
+              const jsonResponse = JSON.parse(response); // Parse the JSON response
+              if (jsonResponse.status === 'success') {
+                alert('Comment added successfully!');
+
+                // Log the returned variables (comment and transactNo) from the response
+                console.log('Comment:', jsonResponse.comment);
+                console.log('Transaction Number:', jsonResponse.transactNo);
+
+                // Optionally, you can reload the table or perform any other update
+                location.reload(); // Uncomment if you want to reload the page
+              } else {
+                alert(jsonResponse.message || 'Error adding comment.');
+              }
+            },
+            error: function(xhr, status, error) {
+              alert('Error adding comment.');
+            }
+          });
+        } else {
+          alert('Please enter a comment.');
+        }
+      });
     });
 
-    // Add custom CSS for the selected row
-    $('<style>')
+
+    document.querySelectorAll('.submitEditComment').forEach(button => {
+      button.addEventListener('click', function() {
+        const transactNo = this.getAttribute('data-id');
+        const comment = document.getElementById('commentInput' + transactNo).value;
+
+        if (comment) {
+          $.ajax({
+            url: '../Employee Section/functions/emp-commentUpdate.php',
+            type: 'POST',
+            data: {
+              transactNo,
+              comment
+            },
+
+            success: function(response) {
+              alert('Comment updated successfully!');
+              location.reload();
+            },
+            error: function(xhr, status, error) {
+              alert('Error updating comment.');
+            }
+          });
+        } else {
+          alert('Please enter a comment.');
+        }
+      });
+    });
+
+    document.querySelectorAll('.cancelEditComment').forEach(button => {
+    button.addEventListener('click', function() {
+            const transactNo = this.getAttribute('data-id');
+            const commentInput = document.getElementById('commentInput' + transactNo);
+            const editButton = document.querySelector('.editComment[data-id="' + transactNo + '"]');
+            const addButton = document.querySelector('.addComment[data-id="' + transactNo + '"]');
+            const submitEditButton = document.querySelector('.submitEditComment[data-id="' + transactNo + '"]');
+            const cancelEditButton = document.querySelector('.cancelEditComment[data-id="' + transactNo + '"]');
+            const deleteButton = document.querySelector('.deleteComment[data-id="' + transactNo + '"]');
+
+            commentInput.value = commentInput.getAttribute('data-original-comment');
+            commentInput.disabled = true;
+
+            // Restore default button visibility
+            submitEditButton.style.display = 'none';
+            cancelEditButton.style.display = 'none';
+            deleteButton.style.display = 'none';
+            editButton.style.display = 'inline-block';
+        });
+    });
+
+    document.querySelectorAll('.cancelAddComment').forEach(button => {
+        button.addEventListener('click', function() {
+            const transactNo = this.getAttribute('data-id');
+            const commentInput = document.getElementById('commentInput' + transactNo);
+            const editButton = document.querySelector('.editComment[data-id="' + transactNo + '"]');
+            const addButton = document.querySelector('.addComment[data-id="' + transactNo + '"]');
+            const submitAddButton = document.querySelector('.submitAddComment[data-id="' + transactNo + '"]');
+            const cancelAddButton = document.querySelector('.cancelAddComment[data-id="' + transactNo + '"]');
+
+            commentInput.value = ''; // Reset comment input
+            commentInput.disabled = true; // Disable the input field
+
+            // Restore default button visibility
+            submitAddButton.style.display = 'none';
+            cancelAddButton.style.display = 'none';
+            addButton.style.display = 'inline-block'; // Ensure 'addButton' is visible
+        });
+    });
+
+  </script>
+
+
+  <script>
+    $(document).ready(function() {
+      // Initialize DataTable for .info-table if not already initialized
+      if (!$.fn.DataTable.isDataTable('.info-table')) {
+        var table = $('.info-table').DataTable({
+          autoWidth: false,
+          scrollX: true, // Enable horizontal scrolling
+          scrollY: "583px", // Enable vertical scrolling and set height
+          paging: false, // Disable pagination
+          searching: false, // Disable search
+          info: false, // Disable info
+          fixedColumns: {
+            leftColumns: 12 // Freeze the first 11 columns
+          },
+          dom: 'rt<"bottom"flp>',
+          ordering: false // Disable sorting on all columns
+        });
+
+        // Ensure uniform row height between frozen and non-frozen columns
+        function syncRowHeights() {
+          setTimeout(() => {
+            $('.DTFC_Cloned tbody tr').each(function(index) {
+              let originalRow = $('.dataTable tbody tr').eq(index);
+              let clonedRow = $(this);
+              let originalHeight = originalRow.height();
+              clonedRow.height(originalHeight);
+            });
+          }, 50); // Allow DataTable rendering before adjusting height
+        }
+
+        // Call sync function after initialization
+        syncRowHeights();
+
+        // Re-adjust heights on window resize or table updates
+        $(window).on('resize', syncRowHeights);
+        $('.info-table').on('draw.dt', syncRowHeights);
+      }
+
+      // Prevent row selection when clicking on the checkbox
+      $('.info-table tbody').on('click', 'input[type="checkbox"]', function(e) {
+        e.stopPropagation(); // Stop event from propagating to row selection
+      });
+
+      // Apply the 'selected' class to rows in both tables when clicked (excluding checkboxes)
+      // function selectRowInBothTables(index) 
+      // {
+      //   $('.info-table tbody tr, div.dataTables_wrapper tbody tr').removeClass('selected');
+      //   $('.info-table tbody tr').eq(index).addClass('selected');
+      //   $('div.dataTables_wrapper tbody tr').eq(index).addClass('selected');
+      // }
+
+      // Add event listener for row clicks in .info-table using event delegation
+      $('.info-table').on('click', 'tbody tr', function(e) {
+        if ($(e.target).is('input[type="checkbox"]')) return; // Ignore checkboxes
+        const index = $(this).index();
+        selectRowInBothTables(index);
+      });
+
+      // Add event listener for row clicks in div.dataTables_wrapper using event delegation
+      $('div.dataTables_wrapper').on('click', 'tbody tr', function(e) {
+        if ($(e.target).is('input[type="checkbox"]')) return;
+        const index = $(this).index();
+        selectRowInBothTables(index);
+      });
+
+      // Add custom CSS for the selected row
+      $('<style>')
         .prop('type', 'text/css')
         .html(`
               .info-table tbody tr.selected, div.dataTables_wrapper tbody tr.selected 
@@ -1244,7 +1241,8 @@ document.querySelectorAll('.cancelAddComment').forEach(function(button) {
             // }
         `)
         .appendTo('head');
-  });
-</script>
+    });
+  </script>
 </body>
+
 </html>

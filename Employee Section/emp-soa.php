@@ -160,10 +160,7 @@
 
         <div id="result-container"></div>
 
-        <div>
-          <!-- <button class="btn btn-secondary" id="preview-btn">Preview</button> -->
-          <button class="btn btn-primary" id="download-btn" disabled>Generate SoA</button>
-        </div>
+      
 
         <!-- <div class="table-container-product">
           <div class="table-content-product">
@@ -312,6 +309,11 @@
         </div> -->
 
       </div>
+
+      <div class="content-footer">
+          <!-- <button class="btn btn-secondary" id="preview-btn">Preview</button> -->
+          <button class="btn btn-primary" id="download-btn" disabled>Generate SoA</button>
+        </div>
     </div>
   </div>
 </div>
