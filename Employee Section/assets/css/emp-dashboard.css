@@ -263,9 +263,9 @@
   gap: 10px;
   width: 100%;
   height: 5vh;
-  margin-bottom: 10px;
+  margin: 10px 0px;
   padding: 0px 15px 0px 0px;
-  border: 1px solid black;
+  /* border: 1px solid black; */
 }
 
 /* ==================================== */
@@ -985,11 +985,11 @@
   display: flex;
   flex-direction: row;
   position: relative;
-  height: 72vh; /* Fixed height for the container */
+  height: 69vh; /* Fixed height for the container */
   padding: 0;
   overflow-x: auto; /* Allow horizontal scrolling */
   overflow-y: auto; /* Restrict vertical scrolling */
-  /* border: 1px solid black; */
+  border: 1px solid black;
 }
 
 /* Ensure table and container sizes are consistent */
@@ -1004,6 +1004,7 @@
   text-align: center;
   table-layout: fixed; /* Ensure columns have a fixed width */
   /* overflow: hidden; Prevent any unwanted overflow */
+  /* border: 1px solid black; */
 }
 
 /* .info-table tbody tr.selected {
@@ -1060,7 +1061,7 @@ div.info-table thead {
     position: sticky; /* Make the entire thead sticky */
     top: 0; /* Stick the header to the top of the scrolling container */
     z-index: 2; /* Ensure the header stays above table rows */
-    background-color: #f8f9fa; /* Background color to differentiate the header */
+    background-color: #696969; /* Background color to differentiate the header */
     padding: 3px 8px; /* Adjust padding for better spacing */
 }
 

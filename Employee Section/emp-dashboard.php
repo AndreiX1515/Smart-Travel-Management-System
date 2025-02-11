@@ -422,13 +422,13 @@ error_reporting(E_ALL);
 
 
 
-      
+
 
       <!-- Flight Seat Tracker Tab -->
       <div class="tab-content" id="pills-tabContent">
 
         <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
-          
+
           <!-- Flight Seat Tracker Table -->
           <div class="info-table-container">
             <table class="info-table" id="info-table">
@@ -607,7 +607,7 @@ ORDER BY
                     <input type="checkbox" class="status-checkbox row-checkbox" data-id="' . $flight_id . '" 
                            data-status="' . $chkStatus . '" ' . ($chkStatus == 1 ? 'checked' : '') . '>
                     </td>';
-          
+
                     echo '<td class="" style="font-size: 12px; white-space: nowrap; background-color: ' . $rowColor . '; font-weight: bold;">' . $row['TeamOP'] . '</td>';
                     echo '<td>' . $row['origin'] . '</td>';
                     echo '<td>' . $row['Start'] . '</td>';
@@ -696,7 +696,7 @@ ORDER BY
                               break;
                             case 'Submitted':
                               $statusClass = 'badge bg-warning text-dark'; // Red pill for "Rejected"
-                              break;                              
+                              break;
                             default:
                               $statusClass = 'badge bg-secondary'; // Grey pill for unknown statuses
                               break;
@@ -795,7 +795,7 @@ ORDER BY
                 </div>
 
               </div>
-              
+
             </div>
 
             <!-- Confirmed Transaction Tables -->
@@ -859,7 +859,7 @@ ORDER BY
                         }
 
                         // <td>{$row['packageName']}</td>
-                        
+
                         // Generate the table row with dynamically set `recordId`
                         echo "<tr data-id='{$row['transactNo']}'> <!-- Set the row ID dynamically -->
                                 <td>{$row['transactNo']}</td>
@@ -927,7 +927,7 @@ ORDER BY
 
                         echo '</div>'; // Close the comment-container div
 
-                      
+
                         echo "</td>"; // Close the <td> tag
 
 
@@ -986,29 +986,30 @@ ORDER BY
 
   <!-- JS for Checkbox -->
   <script>
-$(document).ready(function() {
-    let changes = {}; // Store changed checkbox values
+    $(document).ready(function() {
+      let changes = {}; // Store changed checkbox values
 
-    // Function to check if there are changes and toggle the Save button
-    function toggleSaveButton() {
+      // Function to check if there are changes and toggle the Save button
+      function toggleSaveButton() {
         if (Object.keys(changes).length > 0) {
-            $('#saveChanges').css('display', 'block'); // Show Save button
+          $('#saveChanges').css('display', 'block'); // Show Save button
         } else {
-            $('#saveChanges').css('display', 'none'); // Hide Save button
+          $('#saveChanges').css('display', 'none'); // Hide Save button
         }
-    }
+      }
 
-    // Function to get all checked flight IDs and log them
-    function logCheckedFlightIds() {
+      // Function to get all checked flight IDs and log them
+      function logCheckedFlightIds() {
         let checkedIds = [];
         $('.status-checkbox:checked').each(function() {
-            checkedIds.push($(this).data('id'));
+          checkedIds.push($(this).data('id'));
         });
         console.log("Checked Flight IDs:", checkedIds); // Log the checked flight IDs
-    }
+      }
 
-    // When a checkbox is toggled
-    $('.status-checkbox').on('change', function() {
+
+      // When a checkbox is toggled
+      $('.status-checkbox').on('change', function() {
         let flightId = $(this).data('id'); // Get flight ID
         let isChecked = $(this).is(':checked') ? 1 : 0; // Convert to 1 (checked) or 0 (unchecked)
 
@@ -1017,52 +1018,60 @@ $(document).ready(function() {
 
         // If checkbox state differs from original, store it, otherwise remove it
         if ($(this).data('original') !== isChecked) {
-            changes[flightId] = isChecked; // Add to changes object
+          changes[flightId] = isChecked; // Add to changes object
         } else {
-            delete changes[flightId]; // Remove from changes object
+          delete changes[flightId]; // Remove from changes object
         }
 
         logCheckedFlightIds(); // Log checked flight IDs to console
         toggleSaveButton(); // Show or hide the Save button
-    });
+      });
 
-    // Save Button Click Event
-    $('#saveChanges').on('click', function() {
+      // Save Button Click Event
+      $('#saveChanges').on('click', function() {
         if (Object.keys(changes).length === 0) return; // No changes to save
 
         $.ajax({
-            url: '../Agent Section/functions/agent-updateCheckStatus.php',
-            type: 'POST',
-            data: { 
-                updates: changes // Send updates as the payload
-            },
-            success: function(response) {
-                alert('Status updated successfully!');
-                changes = {}; // Clear changes after saving
-                $('.status-checkbox').each(function() {
-                    $(this).data('original', $(this).is(':checked') ? 1 : 0); // Update original values
-                });
-                toggleSaveButton(); // Hide button after saving
-                location.reload(); // Reload the page after saving
-            },
-            error: function() {
-                alert('Error updating status.');
-            }
+          url: '../Agent Section/functions/agent-updateCheckStatus.php',
+          type: 'POST',
+          data: {
+            updates: changes // Send updates as the payload
+          },
+          success: function(response) {
+            alert('Status updated successfully!');
+            changes = {}; // Clear changes after saving
+            $('.status-checkbox').each(function() {
+              $(this).data('original', $(this).is(':checked') ? 1 : 0); // Update original values
+            });
+            toggleSaveButton(); // Hide button after saving
+            location.reload(); // Reload the page after saving
+          },
+          error: function() {
+            alert('Error updating status.');
+          }
+        });
+      });
+
+      // Initialize original checkbox states
+      $('.status-checkbox').each(function() {
+        $(this).data('original', $(this).is(':checked') ? 1 : 0);
+      });
+
+      toggleSaveButton(); // Ensure the button is hidden initially
+    });
+
+    $('#pills-home-tab').on('click', function() {
+        $('#saveChanges').css('display', 'none'); // Hide Save button
+        changes = {}; // Flush the changes array
+        console.log("Changes array flushed:", changes); // Log the flushed array
+
+        // Reset all checkboxes to their original state (untrigger non-changed checkboxes)
+        $('.status-checkbox').each(function() {
+            let originalState = $(this).data('original') === 1; // Get the original state (true or false)
+            $(this).prop('checked', originalState); // Set checkbox to its original state
         });
     });
-
-    // Initialize original checkbox states
-    $('.status-checkbox').each(function() {
-        $(this).data('original', $(this).is(':checked') ? 1 : 0);
-    });
-
-    toggleSaveButton(); // Ensure the button is hidden initially
-});
-
-
-
-
-  </script>                  
+  </script>
 
 
 
@@ -1239,45 +1248,44 @@ $(document).ready(function() {
     });
 
     document.querySelectorAll('.cancelEditComment').forEach(button => {
-    button.addEventListener('click', function() {
-            const transactNo = this.getAttribute('data-id');
-            const commentInput = document.getElementById('commentInput' + transactNo);
-            const editButton = document.querySelector('.editComment[data-id="' + transactNo + '"]');
-            const addButton = document.querySelector('.addComment[data-id="' + transactNo + '"]');
-            const submitEditButton = document.querySelector('.submitEditComment[data-id="' + transactNo + '"]');
-            const cancelEditButton = document.querySelector('.cancelEditComment[data-id="' + transactNo + '"]');
-            const deleteButton = document.querySelector('.deleteComment[data-id="' + transactNo + '"]');
+      button.addEventListener('click', function() {
+        const transactNo = this.getAttribute('data-id');
+        const commentInput = document.getElementById('commentInput' + transactNo);
+        const editButton = document.querySelector('.editComment[data-id="' + transactNo + '"]');
+        const addButton = document.querySelector('.addComment[data-id="' + transactNo + '"]');
+        const submitEditButton = document.querySelector('.submitEditComment[data-id="' + transactNo + '"]');
+        const cancelEditButton = document.querySelector('.cancelEditComment[data-id="' + transactNo + '"]');
+        const deleteButton = document.querySelector('.deleteComment[data-id="' + transactNo + '"]');
 
-            commentInput.value = commentInput.getAttribute('data-original-comment');
-            commentInput.disabled = true;
+        commentInput.value = commentInput.getAttribute('data-original-comment');
+        commentInput.disabled = true;
 
-            // Restore default button visibility
-            submitEditButton.style.display = 'none';
-            cancelEditButton.style.display = 'none';
-            deleteButton.style.display = 'none';
-            editButton.style.display = 'inline-block';
-        });
+        // Restore default button visibility
+        submitEditButton.style.display = 'none';
+        cancelEditButton.style.display = 'none';
+        deleteButton.style.display = 'none';
+        editButton.style.display = 'inline-block';
+      });
     });
 
     document.querySelectorAll('.cancelAddComment').forEach(button => {
-        button.addEventListener('click', function() {
-            const transactNo = this.getAttribute('data-id');
-            const commentInput = document.getElementById('commentInput' + transactNo);
-            const editButton = document.querySelector('.editComment[data-id="' + transactNo + '"]');
-            const addButton = document.querySelector('.addComment[data-id="' + transactNo + '"]');
-            const submitAddButton = document.querySelector('.submitAddComment[data-id="' + transactNo + '"]');
-            const cancelAddButton = document.querySelector('.cancelAddComment[data-id="' + transactNo + '"]');
+      button.addEventListener('click', function() {
+        const transactNo = this.getAttribute('data-id');
+        const commentInput = document.getElementById('commentInput' + transactNo);
+        const editButton = document.querySelector('.editComment[data-id="' + transactNo + '"]');
+        const addButton = document.querySelector('.addComment[data-id="' + transactNo + '"]');
+        const submitAddButton = document.querySelector('.submitAddComment[data-id="' + transactNo + '"]');
+        const cancelAddButton = document.querySelector('.cancelAddComment[data-id="' + transactNo + '"]');
 
-            commentInput.value = ''; // Reset comment input
-            commentInput.disabled = true; // Disable the input field
+        commentInput.value = ''; // Reset comment input
+        commentInput.disabled = true; // Disable the input field
 
-            // Restore default button visibility
-            submitAddButton.style.display = 'none';
-            cancelAddButton.style.display = 'none';
-            addButton.style.display = 'inline-block'; // Ensure 'addButton' is visible
-        });
+        // Restore default button visibility
+        submitAddButton.style.display = 'none';
+        cancelAddButton.style.display = 'none';
+        addButton.style.display = 'inline-block'; // Ensure 'addButton' is visible
+      });
     });
-
   </script>
 
 
@@ -1288,7 +1296,7 @@ $(document).ready(function() {
         var table = $('.info-table').DataTable({
           autoWidth: false,
           scrollX: true, // Enable horizontal scrolling
-          scrollY: "583px", // Enable vertical scrolling and set height
+          scrollY: "580px", // Enable vertical scrolling and set height
           paging: false, // Disable pagination
           searching: false, // Disable search
           info: false, // Disable info
