@@ -663,6 +663,9 @@ error_reporting(E_ALL);
                             case 'Rejected':
                               $statusClass = 'badge bg-danger'; // Red pill for "Rejected"
                               break;
+                            case 'Submitted':
+                              $statusClass = 'badge bg-warning text-dark'; // Red pill for "Rejected"
+                              break;                              
                             default:
                               $statusClass = 'badge bg-secondary'; // Grey pill for unknown statuses
                               break;
@@ -673,7 +676,7 @@ error_reporting(E_ALL);
                                   <td>{$row['T.N']}</td>
                                   <td>{$row['flightDepartureDate']}</td>
                                   <td>{$row['Request']}</td>
-                                  <td><span class='{$statusClass}'>{$row['requestStatus']}</span></td>
+                                  <td><span class='{$statusClass} p-2'>{$row['requestStatus']}</span></td>
                                 </tr>";
                         }
                       } else {
@@ -735,7 +738,7 @@ error_reporting(E_ALL);
                               $statusClass = 'badge bg-warning text-dark'; // Yellow pill for "Pending"
                               break;
                             case 'Submitted':
-                              $statusClass = 'badge bg-primary text-light'; // Red pill for "Failed"
+                              $statusClass = 'badge bg-warning text-dark'; // Red pill for "Failed"
                               break;
                             default:
                               $statusClass = 'badge bg-secondary'; // Grey pill for unknown statuses
@@ -749,7 +752,7 @@ error_reporting(E_ALL);
                                   <td>{$row['Payment Title']}</td>
                                   <td>{$row['Payment Type']}</td>
                                   <td>₱ {$row['Amount']}</td>
-                                  <td><span class='{$statusClass}'>{$row['paymentStatus']}</span></td>
+                                  <td><span class='{$statusClass} p-2'>{$row['paymentStatus']}</span></td>
                                 </tr>";
                         }
                       } else {
@@ -761,6 +764,7 @@ error_reporting(E_ALL);
                 </div>
 
               </div>
+              
             </div>
 
             <!-- Confirmed Transaction Tables -->
@@ -775,7 +779,7 @@ error_reporting(E_ALL);
                     <tr>
                       <th>TRANSACTION NO.</th>
                       <th>AGENT NAME</th>
-                      <th>PACKAGE</th>
+                      <!-- <th>PACKAGE</th> -->
                       <th>FLIGHT DATE</th>
                       <th>TOTAL PAX.</th>
                       <th>BOOKING TYPE</th>
@@ -823,11 +827,13 @@ error_reporting(E_ALL);
                             break;
                         }
 
+                        // <td>{$row['packageName']}</td>
+                        
                         // Generate the table row with dynamically set `recordId`
                         echo "<tr data-id='{$row['transactNo']}'> <!-- Set the row ID dynamically -->
                                 <td>{$row['transactNo']}</td>
                                 <td>{$row['branchName']}</td>
-                                <td>{$row['packageName']}</td>
+                              
                                 <td>{$row['Start']}</td>
                                 <td>{$row['pax']}</td>
                                 <td>{$row['bookingType']}</td>
@@ -862,7 +868,7 @@ error_reporting(E_ALL);
                           // If no comment exists, show input for adding a new comment
                           echo '<div class="no-comment">
                                   <div class="comment-input">
-                                      <input type="text" class="form-control" name="comment" id="commentInput' . $transactNo . '" placeholder="Add a comment" disabled>
+                                      <input type="text" class="form-control" name="comment" id="commentInput' . $transactNo . '"  disabled>
                                   </div>
                                   <div class="add-button">
                                       <button type="button" class="btn btn-success addComment" data-id="' . $transactNo . '">Add</button>
@@ -877,13 +883,15 @@ error_reporting(E_ALL);
                                 <button type="button" class="btn btn-primary submitAddComment" data-id="' . $transactNo . '" style="display: none;">Submit</button>
                                 <button type="button" class="btn btn-primary submitEditComment" data-id="' . $transactNo . '" style="display: none;">Update</button>
 
+                                  <!-- Delete button (only visible during edit) -->
+                                <button type="button" class="btn btn-danger deleteComment" data-id="' . $transactNo  . '" style="display: none;">Remove</button>
+
                                 <!-- Cancel buttons -->
                                 <button type="button" class="btn btn-danger cancelEditComment" data-id="' . $transactNo . '" style="display: none;">Cancel Edit</button>
 
                                 <button type="button" class="btn btn-danger cancelAddComment" data-id="' . $transactNo . '" style="display: none;">Cancel Add</button>
 
-                                  <!-- Delete button (only visible during edit) -->
-                                <button type="button" class="btn btn-danger deleteComment" data-id="' . $transactNo  . '" style="display: none;">Remove</button>
+                                
                               </div>';
 
                         echo '</div>'; // Close the comment-container div
@@ -927,14 +935,14 @@ error_reporting(E_ALL);
   <div class="modal" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
-        <div class="modal-header">
+        <div class="modal-header border-0">
           <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           Are you sure you want to delete this comment? This action cannot be undone.
         </div>
-        <div class="modal-footer">
+        <div class="modal-footer border-0">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
           <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
         </div>
