@@ -442,7 +442,7 @@ error_reporting(E_ALL);
                   $colors = ['#ADD8E6', '#98FB98', '#FFFFCC', '#E6E6FA', '#FFDAB9']; // Extend this array as needed
 
                   // Fetch agent column headers dynamically
-                  $sql = "SELECT DISTINCT agentCode FROM agent WHERE agentCode IS NOT NULL AND agentCode != ''";
+                  $sql = "SELECT branchName FROM branch WHERE branchAgentCode IS NOT NULL AND branchAgentCode != ''";
                   $result = $conn->query($sql);
 
                   // Initialize a counter for cycling through the color array
@@ -453,7 +453,7 @@ error_reporting(E_ALL);
                     $color = $colors[$colorIndex % count($colors)];
 
                     // Output the <th> element with the inline style for background color
-                    echo '<th colspan="2" data-bs-toggle="tooltip" title="' . $row['agentCode'] . '" style="background-color: ' . $color . ';">' . $row['agentCode'] . '</th>';
+                    echo '<th colspan="2" data-bs-toggle="tooltip" title="' . $row['branchName'] . '" style="background-color: ' . $color . ';">' . $row['branchName'] . '</th>';
 
                     // Increment the color index for the next iteration
                     $colorIndex++;
