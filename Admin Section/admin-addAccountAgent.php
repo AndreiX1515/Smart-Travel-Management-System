@@ -65,11 +65,12 @@ session_start();
 
                 </div>
                 <div class="row mt-3">
-                  <div class="col-md-6">
+                  <div class="col-md-3">
                     <label for="email" class="form-label">Email/Agent Code</label>
                     <input type="email" class="form-control" id="email" name="email" required>
                   </div>
-                  <div class="col-md-6">
+
+                  <div class="col-md-4">
                     <div class="form-group">
 
                       <label for="contactNo" class="contactNo">Contact No. <span class="text-danger">*</span></label>
@@ -323,10 +324,11 @@ session_start();
 
             <div class="card mb-3">
               <div class="card-header">Account Information</div>
+
               <div class="card-body">
                 <div class="row">
 
-                  <div class="col-md-4">
+                  <div class="col-md-2">
                     <label for="accountType" class="form-label">Account Type</label>
                     <select class="form-select" id="accountType" name="accountType" required>
                       <option value="admin">Admin</option>
@@ -336,7 +338,7 @@ session_start();
                     </select>
                   </div>
 
-                  <div class="col-md-4">
+                  <div class="col-md-2">
                     <label for="accountStatus" class="form-label">Branch</label>
                     <select class="form-select" id="accountStatus" name="accountStatus" required>
                       <option value="active">Active</option>
@@ -344,7 +346,7 @@ session_start();
                     </select>
                   </div>
 
-                  <div class="col-md-4">
+                  <div class="col-md-2">
                     <label for="accountStatus" class="form-label">Branch</label>
                     <select class="form-select" id="accountStatus" name="accountStatus" required>
                       <option value="active">Active</option>
@@ -356,8 +358,6 @@ session_start();
 
               </div>
             </div>
-
-
 
 
             <div class="submit-button-wrapper">
@@ -382,26 +382,45 @@ session_start();
 
   <script>
     $(document).ready(function () {
-        $('#addUserForm').submit(function (event) {
-            event.preventDefault(); // Prevent the form from submitting the normal way
+        $('#addAccountForm').submit(function (event) {
+            event.preventDefault(); // Prevent default form submission
+
+            // Log form data to console
+            let formData = new FormData(this);
+            formData.forEach(function(value, key) {
+                console.log(key + ": " + value); // Log each form field and its value
+            });
 
             $.ajax({
                 url: '../Admin Section/functions/admin-addAccountAgent - code.php',
                 type: 'POST',
-                data: new FormData(this),
+                data: formData,
                 processData: false,
                 contentType: false,
                 success: function (response) {
                     let jsonResponse = JSON.parse(response);
-                    $('#responseMessage').html(jsonResponse.message);
-                  },
-                  error: function () {
-                      $('#responseMessage').html('<span style="color:red;">An error occurred. Please try again.</span>');
-                  }
-              });
-          });
-      });
-  </script>
+                    
+                    // Display the response message in the DOM
+                    if (jsonResponse.status === "success") {
+                        $('#responseMessage').html('<span style="color:green;">' + jsonResponse.message + '</span>');
+                        // Display an alert for success
+                        alert("Success: " + jsonResponse.message);
+                    } else {
+                        $('#responseMessage').html('<span style="color:red;">' + jsonResponse.message + '</span>');
+                        // Display an alert for error
+                        alert("Error: " + jsonResponse.message);
+                    }
+                },
+
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.error("AJAX error: " + textStatus + ': ' + errorThrown);
+                    alert("Error: Something went wrong during the request.");
+                }
+            });
+        });
+    });
+</script>
+
 
   <script>
     function toggleSubMenu(submenuId) {
