@@ -779,6 +779,9 @@ error_reporting(E_ALL);
                       <th>FLIGHT DATE</th>
                       <th>TOTAL PAX.</th>
                       <th>BOOKING TYPE</th>
+                      <th>PACKAGE PRICE</th>
+                      <th>AMOUNT PAID</th>
+                      <th>BALANCE</th>
                       <th>STATUS</th>
                       <th>COMMENT</th>
 
@@ -786,22 +789,26 @@ error_reporting(E_ALL);
                   </thead>
                   <tbody>
                     <?php
-                    $query1 = "SELECT b.*, f.flightDepartureDate AS Start, p.packageName,
-                      f.returnDepartureDate AS End, CONCAT(a.lName, ', ', a.fName, 
-                      IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1)), '')) AS agentName,
-                      br.branchName as branchName
-              FROM booking b 
-              JOIN agent a ON b.agentId = a.agentId
-              JOIN branch br ON b.agentCode = br.branchAgentCode
-              JOIN flight f ON b.flightId = f.flightId
-              JOIN package p ON b.packageId = p.packageId
-              WHERE status = 'Confirmed'";
+                      $query1 = "SELECT b.*, f.flightDepartureDate AS Start, p.packageName, b.totalPrice AS PackagePrice, 
+                                  f.returnDepartureDate AS End, CONCAT(a.lName, ', ', a.fName, 
+                                  IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1)), '')) AS agentName,
+                                  br.branchName as branchName, SUM(pa.amount) AS TotalAmountPaid
+                                FROM booking b 
+                                JOIN agent a ON b.agentId = a.agentId
+                                JOIN branch br ON b.agentCode = br.branchAgentCode
+                                JOIN flight f ON b.flightId = f.flightId
+                                JOIN package p ON b.packageId = p.packageId
+                                LEFT JOIN payment pa ON pa.transactNo = b.transactNo AND pa.paymentStatus = 'Approved'
+                                WHERE status = 'Confirmed' GROUP BY b.transactNo";
 
                     $result = $conn->query($query1);
 
                     // Check if the query returned any results
                     if ($result && $result->num_rows > 0) {
                       while ($row = $result->fetch_assoc()) {
+                        $packagePrice = $row['PackagePrice'] ?? 0;
+                        $amountPaid = $row['TotalAmountPaid'] ?? 0;
+                        $balance = $packagePrice - $amountPaid;
                         $status = $row['status'];
 
                         // Define the pill status class based on the status value
@@ -831,8 +838,11 @@ error_reporting(E_ALL);
                                 <td>{$row['Start']}</td>
                                 <td>{$row['pax']}</td>
                                 <td>{$row['bookingType']}</td>
+                                <td>{$row['PackagePrice']}</td>
+                                <td>". number_format($amountPaid, 2) ."</td>
+                                <td>". number_format($balance, 2) ."</td>
                                 <td>
-                                    <span class='badge $pillClass p-2'>{$status}</span>
+                                  <span class='badge $pillClass p-2'>{$status}</span>
                                 </td>";
 
                         // Fetching the comment from the database
