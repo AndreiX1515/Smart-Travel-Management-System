@@ -525,55 +525,55 @@ error_reporting(E_ALL);
 
                 // Main query
                 $sql = "SELECT 
-    f.flightId, 
-    f.is_active, 
-    CONCAT(e.lName, ', ', e.fName, 
-        IF(e.mName IS NOT NULL AND e.mName != '', CONCAT(' ', LEFT(e.mName, 1)), '')) AS TeamOP,
-    f.origin, 
-    f.flightDepartureDate AS Start, 
-    f.returnDepartureDate AS End, 
-    f.availSeats AS FlightSeat, 
-    GREATEST(f.availSeats - IFNULL(SUM(CASE 
-        WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') 
-        AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0), 0) AS AvailSeats, 
-    IF(
-        (f.availSeats - IFNULL(SUM(CASE 
-            WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') 
-            AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0)) < 0, 
-        ABS(f.availSeats - IFNULL(SUM(CASE 
-            WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') 
-            AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0)), 0) AS AdditionalSeats,
-    SUM(CASE 
-        WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') 
-        AND b.bookingType = 'Package' 
-        AND a.agentType = 'Retailer' THEN b.pax ELSE 0 END) AS `Air+Land`,
-    SUM(CASE 
-        WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') 
-        AND b.bookingType = 'Package' 
-        AND a.agentType = 'Wholeseller' THEN b.pax ELSE 0 END) AS `LandOnly`,
-    f.wholesalePrice AS WholesalePrice, 
-    f.flightPrice AS RetailPrice, 
-    p.packagePrice AS LandArrangement,
-    f.landPrice AS landPrice, 
-    $agentColumns
-FROM 
-    employee e
-JOIN 
-    flight f ON f.employeeId = e.employeeId
-LEFT JOIN 
-    booking b ON b.flightId = f.flightId
-LEFT JOIN 
-    package p ON f.packageId = p.packageId
-LEFT JOIN 
-    agent a ON b.agentId = a.agentId
-WHERE 
-    f.flightDepartureDate >= CURDATE()
-GROUP BY 
-    f.flightId, f.is_active, f.origin, f.flightDepartureDate, f.returnDepartureDate, f.availSeats, 
-    f.wholesalePrice, f.flightPrice, p.packagePrice
-ORDER BY 
-    f.flightDepartureDate
-";
+                        f.flightId, 
+                        f.is_active, 
+                        CONCAT(e.lName, ', ', e.fName, 
+                            IF(e.mName IS NOT NULL AND e.mName != '', CONCAT(' ', LEFT(e.mName, 1)), '')) AS TeamOP,
+                        f.origin, 
+                        f.flightDepartureDate AS Start, 
+                        f.returnDepartureDate AS End, 
+                        f.availSeats AS FlightSeat, 
+                        GREATEST(f.availSeats - IFNULL(SUM(CASE 
+                            WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') 
+                            AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0), 0) AS AvailSeats, 
+                        IF(
+                            (f.availSeats - IFNULL(SUM(CASE 
+                                WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') 
+                                AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0)) < 0, 
+                            ABS(f.availSeats - IFNULL(SUM(CASE 
+                                WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') 
+                                AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0)), 0) AS AdditionalSeats,
+                        SUM(CASE 
+                            WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') 
+                            AND b.bookingType = 'Package' 
+                            AND a.agentType = 'Retailer' THEN b.pax ELSE 0 END) AS `Air+Land`,
+                        SUM(CASE 
+                            WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') 
+                            AND b.bookingType = 'Package' 
+                            AND a.agentType = 'Wholeseller' THEN b.pax ELSE 0 END) AS `LandOnly`,
+                        f.wholesalePrice AS WholesalePrice, 
+                        f.flightPrice AS RetailPrice, 
+                        p.packagePrice AS LandArrangement,
+                        f.landPrice AS landPrice, 
+                        $agentColumns
+                    FROM 
+                        employee e
+                    JOIN 
+                        flight f ON f.employeeId = e.employeeId
+                    LEFT JOIN 
+                        booking b ON b.flightId = f.flightId
+                    LEFT JOIN 
+                        package p ON f.packageId = p.packageId
+                    LEFT JOIN 
+                        agent a ON b.agentId = a.agentId
+                    WHERE 
+                        f.flightDepartureDate >= CURDATE()
+                    GROUP BY 
+                        f.flightId, f.is_active, f.origin, f.flightDepartureDate, f.returnDepartureDate, f.availSeats, 
+                        f.wholesalePrice, f.flightPrice, p.packagePrice
+                    ORDER BY 
+                        f.flightDepartureDate
+                    ";
 
                 // Step 3: Execute the query
                 $result = $conn->query($sql);
@@ -732,7 +732,7 @@ ORDER BY
                       <tr>
                         <th>TRANSACTION NO</th>
                         <th>FLIGHT DATE</th>
-                        <th>PAYMENT TITLE</th>
+                        <th>PAID BY</th>
                         <th>PAYMENT TYPE</th>
                         <th>PAYMENT AMOUNT</th>
                         <!-- <th>DATE</th>  -->
@@ -810,13 +810,11 @@ ORDER BY
                     <tr>
                       <th>TRANSACTION NO.</th>
                       <th>AGENT NAME</th>
-                      <!-- <th>PACKAGE</th> -->
                       <th>FLIGHT DATE</th>
                       <th>TOTAL PAX.</th>
                       <th>BOOKING TYPE</th>
                       <th>PACKAGE PRICE</th>
-                      <th>AMOUNT PAID</th>
-                      <th>BALANCE</th>
+                      <th>AMOUNT INFO</th>
                       <th>STATUS</th>
                       <th>COMMENT</th>
 
@@ -845,6 +843,10 @@ ORDER BY
                         $amountPaid = $row['TotalAmountPaid'] ?? 0;
                         $balance = $packagePrice - $amountPaid;
                         $status = $row['status'];
+                        $formattedPP = '₱ ' . $row['PackagePrice'];
+                        $formattedAP = '₱' . number_format($amountPaid, 2);
+                        $formattedBal = '₱' . number_format($balance, 2);
+                        
 
                         // Define the pill status class based on the status value
                         switch ($status) {
@@ -871,13 +873,26 @@ ORDER BY
                         echo "<tr data-id='{$row['transactNo']}'> <!-- Set the row ID dynamically -->
                                 <td>{$row['transactNo']}</td>
                                 <td>{$row['branchName']}</td>
-                              
                                 <td>{$row['Start']}</td>
                                 <td>{$row['pax']}</td>
                                 <td>{$row['bookingType']}</td>
-                                <td>{$row['PackagePrice']}</td>
-                                <td>". number_format($amountPaid, 2) ."</td>
-                                <td>". number_format($balance, 2) ."</td>
+                                <td>{$formattedPP}</td>
+                                <td>
+                                    <div class='payment-info'>
+                                      <div class='payment-row'>
+                                          <span class='label'>Amount Paid:</span>
+                                          <span class='value'>{$formattedAP}</span>
+                                      </div>
+
+                                      <div class='payment-row'>
+                                          <span class='label'>Balance:</span>
+                                          <span class='value'>{$formattedBal} </span>
+                                      </div>
+                                  </div>
+
+                                </td>
+
+
                                 <td>
                                   <span class='badge $pillClass p-2'>{$status}</span>
                                 </td>";
@@ -1306,7 +1321,7 @@ ORDER BY
         var table = $('.info-table').DataTable({
           autoWidth: false,
           scrollX: true, // Enable horizontal scrolling
-          scrollY: "580px", // Enable vertical scrolling and set height
+          scrollY: "570px", // Enable vertical scrolling and set height
           paging: false, // Disable pagination
           searching: false, // Disable search
           info: false, // Disable info
