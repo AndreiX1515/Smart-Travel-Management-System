@@ -73,19 +73,19 @@ $position = htmlspecialchars(strtoupper($empId));
 			</a>
 		</li>
 
-		<!-- <li class="nav-item transaction">
+		<li class="nav-item transaction">
 			<a class="nav-link page-button" href="../Employee Section/emp-guestList.php" data-page-name="Guest List">
 				<div class="icon"><i class="fas fa-user"></i></div>
 				<span class="label">Guest List</span>
 			</a>
-		</li> -->
+		</li>
 
-		<li class="nav-item transaction">
+		<!-- <li class="nav-item transaction">
 			<a class="nav-link page-button" href="../Employee Section/emp-requestList.php" data-page-name="Guest List">
 				<div class="icon"><i class="fas fa-user"></i></div>
 				<span class="label">Request List</span>
 			</a>
-		</li>
+		</li> -->
 
 		<!-- For Approvals Dropdown -->
 		<li class="nav-item dropdown">
