@@ -30,7 +30,12 @@
 						<input type="text" id="search" placeholder="Search here..">
 						<!-- <span class="icon">🔍</span> -->
 					</div>
+
+					
 				</div>
+				<button id="openModalBtn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addRequestModal">
+						Add New Request
+				</button>
 
 
 				<!-- <div class="filter-field">
@@ -91,33 +96,18 @@
 				<table class="product-table" id="product-table">
 					<thead>
 						<tr>
-							<th>Transact No</th>
+							<!-- <th>Transact No</th> -->
               <!-- <th>Agent Name</th> -->
               <th>Request Title</th>
               <th>Request Details</th>
-              <th>Specific Details</th>
-              <th>Total Pax</th>
-              <th>Total Amount</th>
-              <th>Request Date</th>
+              <th>Price</th>
 						</tr>
 					</thead>
 					<tbody>
 						<?php
-							$sql1 = "SELECT r.requestId, r.transactNo AS `TransactNo`,
-													CONCAT(a.lName, ', ', a.fName, 
-															IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1), '.'), '')) AS AgentName,
-													c.concernTitle AS `RequestTitle`, cd.details AS `RequestDetails`, b.pax AS `TotalPax`,
-													r.requestCost as requestCost,
-													r.customRequest as customRequest, r.details as details, DATE_FORMAT(r.requestDate, '%m-%d-%Y') AS `RequestDate`, 
-													r.requestStatus AS `Status`
-												FROM request r
-												LEFT JOIN concern c ON r.concernId = c.concernId
-												LEFT JOIN concerndetails cd ON r.concernDetailsId = cd.concernDetailsId
-												LEFT JOIN booking b ON r.transactNo = b.transactNo
-												LEFT JOIN payment p ON b.transactNo = p.transactNo
-												LEFT JOIN agent a ON b.agentId = a.agentId
-												WHERE r.requestStatus = 'Confirmed'
-												GROUP BY r.requestId";
+              $sql1 = "SELECT c.concernId as concernId, c.concernTitle as concernTitle , cd.details as details, cd.price as price 
+                        FROM concern c
+                        JOIN concerndetails cd ON c.concernId = cd.concernId";
 
 							$res1 = $conn->query($sql1);
 
@@ -125,39 +115,12 @@
 							{
 								while ($row = $res1->fetch_assoc()) 
 								{
-									// Determine the badge class based on the status
-									$status = $row['Status'];
-									$badgeClass = '';
-									switch ($status) 
-									{
-										case 'Confirmed':
-												$badgeClass = 'text-bg-success'; // Green for Confirmed
-												break;
-										case 'Submitted':
-												$badgeClass = 'text-bg-secondary'; // Gray for Submitted
-												break;
-										case 'Rejected':
-												$badgeClass = 'text-bg-danger'; // Red for Rejected
-												break;
-										default:
-												$badgeClass = 'text-bg-info'; // Blue for other statuses
-												break;
-									}
-
-									// Ensure that title and details are displayed properly
-									$title = $row['RequestTitle'] ?? 'Custom Request';
-									$details = $row['RequestDetails'] ?? $row['customRequest'];
-									$requestId = $row['requestId'];
 
 									// Output table row with data-transactno attribute
-									echo "<tr data-transactno='{$row['TransactNo']}' data-requestid='{$requestId}' class='transaction-row'>
-													<td>{$row['TransactNo']}</td>
-													<td>{$title}</td>
-													<td>{$details}</td>
+									echo "<tr>
+													<td>{$row['concernTitle']}</td>
 													<td>{$row['details']}</td>
-													<td>{$row['TotalPax']}</td>
-													<td>{$row['requestCost']}</td>
-													<td>{$row['RequestDate']}</td>
+													<td>{$row['price']}</td>
 												</tr>";
 								}
 							} 
@@ -183,38 +146,56 @@
   </div>
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="transactionModal" tabindex="-1" aria-labelledby="transactionModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="transactionModalLabel">Transaction Details</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-			<form action="../Employee Section/functions/emp-requestUpdateAmount-code.php" method="POST">
+<!-- Add New Request Item Modal -->
+<div class="modal fade" id="addRequestModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="modalLabel">New Request</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<form action="../Employee Section/functions/emp-requestList-code.php" method="POST">
 				<div class="modal-body">
 					<div class="mb-3">
-						<label for="transactNo" class="form-label fw-bold">Transaction Number:</label>
-						<span id="transactNo" class="text-primary"></span>
+						<label for="requestTitle" class="form-label">Request Title</label>
+						<select class="form-control" name="requestTitle" id="requestTitle" required>
+              <option selected disabled>Select Request Title</option>
+              <?php
+                $sql1 = "SELECT * FROM concern";
+                $result = $conn->query($sql1);
+
+                if ($result->num_rows > 0) 
+                {
+                  while ($row = $result->fetch_assoc()) 
+                  {
+                    echo "<option value='" . htmlspecialchars($row['concernId']) . "'>" . htmlspecialchars($row['concernTitle']) . "</option>";
+                  }
+                } 
+                else 
+                {
+                  echo "<option disabled>No concerns available</option>";
+                }
+              ?>
+            </select>
 					</div>
-
-					<input type="hidden" id="modalRequestId" name="requestId">
-
 					<div class="mb-3">
-						<label for="requestAmount" class="form-label">Enter Total Amount:</label>
-						<input type="number" id="requestAmount" name="requestAmount" class="form-control" placeholder="Enter amount in PHP" 
-							step="0.01" min="0" required>
+						<label for="requestDetails" class="form-label">Details</label>
+						<textarea class="form-control" id="requestDetails" name="requestDetails" rows="3" placeholder="Enter details"></textarea>
 					</div>
+          <div class="mb-3">
+            <label for="requestAmount" class="form-label">Request Cost</label>
+						<input type="number" step="0.01" class="form-control" id="requestAmount" name="requestAmount" placeholder="Enter Cost" min = "1" required>
+          </div>
 				</div>
-
 				<div class="modal-footer">
-					<button type="submit" name="updatePrice" class="btn btn-primary">Update Price</button>
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				<button type="submit" name="submit" class="btn btn-success">Submit Request</button>
 				</div>
 			</form>
-    </div>
-  </div>
+		</div>
+	</div>
 </div>
+
+
 
 <?php include '../Employee Section/includes/emp-scripts.php' ?>
 
