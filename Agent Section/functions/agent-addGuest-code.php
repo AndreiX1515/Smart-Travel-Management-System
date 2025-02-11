@@ -8,15 +8,15 @@
   if (isset($_POST['addGuestInformation'])) 
   {
     $transactNo = $_POST['transactNo'];
-    $fNames = $_POST['fName'];
-    $lNames = $_POST['lName'];
-    $mNames = $_POST['mName'];
+    $fNames = array_map('strtoupper', $_POST['fName']);
+    $lNames = array_map('strtoupper', $_POST['lName']);
+    $mNames = array_map('strtoupper', $_POST['mName']);
     $suffixes = $_POST['suffix'];
     $birthdates = $_POST['birthdate'];
     $ages = $_POST['age'];
     $sexes = $_POST['sex'];
     $nationalities = $_POST['nationality']; 
-    $passportNos = $_POST['passportNo']; 
+    $passportNos = array_map('strtoupper', $_POST['passportNo']);
     $passportExps = $_POST['passportExp']; 
     $countryCode1st = $_POST['countryCode']; 
     $contactNo1st = $_POST['contactNo'];

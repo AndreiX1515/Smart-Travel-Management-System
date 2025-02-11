@@ -757,7 +757,8 @@ error_reporting(E_ALL);
 <?php require "../Agent Section/includes/scripts.php"; ?>
 
 <script>
-function toggleSubMenu(submenuId) {
+  function toggleSubMenu(submenuId) 
+  {
     const submenu = document.getElementById(submenuId);
     const sectionTitle = submenu.previousElementSibling;
     const chevron = sectionTitle.querySelector('.chevron-icon'); 
@@ -766,119 +767,123 @@ function toggleSubMenu(submenuId) {
     const isOpen = submenu.classList.contains('open');
 
     // If it's open, we need to close it, and reset the chevron
-    if (isOpen) {
-        submenu.classList.remove('open');
-        chevron.style.transform = 'rotate(0deg)';
-    } else {
-        // First, close all open submenus and reset all chevrons
-        const allSubmenus = document.querySelectorAll('.submenu');
-        const allChevrons = document.querySelectorAll('.chevron-icon');
+    if (isOpen) 
+    {
+      submenu.classList.remove('open');
+      chevron.style.transform = 'rotate(0deg)';
+    } 
+    else 
+    {
+      // First, close all open submenus and reset all chevrons
+      const allSubmenus = document.querySelectorAll('.submenu');
+      const allChevrons = document.querySelectorAll('.chevron-icon');
         
-        allSubmenus.forEach(sub => {
-            sub.classList.remove('open');
-        });
+      allSubmenus.forEach(sub => 
+      {
+        sub.classList.remove('open');
+      });
 
-        allChevrons.forEach(chev => {
-            chev.style.transform = 'rotate(0deg)';
-        });
+      allChevrons.forEach(chev => 
+      {
+        chev.style.transform = 'rotate(0deg)';
+      });
 
-        // Now, open the current submenu and rotate its chevron
-        submenu.classList.add('open');
-        chevron.style.transform = 'rotate(180deg)';
+      // Now, open the current submenu and rotate its chevron
+      submenu.classList.add('open');
+      chevron.style.transform = 'rotate(180deg)';
     }
-}
-
-
+  }
 </script>
 
+<!-- Save Guest Information Button Validation -->
 <script>
-    $(document).ready(function () 
+  $(document).ready(function () 
+  {
+    // Validation logic for booking
+    $('#addGuest').click(function (event) 
     {
-      // Validation logic for booking
-      $('#addGuest').click(function (event) 
+      let isValid = true; // Initialize isValid flag
+      let allExpPassportValid = true; // Initialize flag for expPassportSpan validation
+
+      // Validate Primary Guest fields
+      $('.guest-form').each(function (index) 
       {
-        let isValid = true; // Initialize isValid flag
-        let allExpPassportValid = true; // Initialize flag for expPassportSpan validation
+        const guestFormNumber = index; // Get guest form number
+        const guestFields = [
+          { name: 'fName', error: 'First name is required.' },
+          { name: 'lName', error: 'Last name is required.' },
+          { name: 'mName', error: 'Middle name is required.' },
+          { name: 'suffix', error: 'Suffix is required.', isSelect: true },
+          { name: 'birthdate', error: 'Birthdate is required.' },
+          { name: 'age', error: 'Age is required.' },
+          { name: 'sex', error: 'Sex is required.', isSelect: true },
+          { name: 'nationality', error: 'Nationality is required.' },
+          { name: 'passportNo', error: 'Passport number is required.' },
+          { name: 'passportExp', error: 'Passport expiration date is required.' },
+          { name: 'countryCode', error: 'Country Code is required.', isSelect: true },
+          { name: 'contactNo', error: 'Contact number is required.' },
+          { name: 'email', error: 'Email is required.' },
+          { name: 'addressLine', error: 'Address is required.' },
+          { name: 'city', error: 'City is required.' },
+          { name: 'state', error: 'State is required.' },
+          { name: 'zipCode', error: 'Zip Code is required.' },
+          { name: 'country', error: 'Country is required.' }
+        ];
 
-        // Validate Primary Guest fields
-        $('.guest-form').each(function (index) 
+        // Iterate through the fields to validate
+        guestFields.forEach(({ name, error, isSelect }) => 
         {
-          const guestFormNumber = index; // Get guest form number
-          const guestFields = [
-            { name: 'fName', error: 'First name is required.' },
-            { name: 'lName', error: 'Last name is required.' },
-            { name: 'mName', error: 'Middle name is required.' },
-            { name: 'suffix', error: 'Suffix is required.', isSelect: true },
-            { name: 'birthdate', error: 'Birthdate is required.' },
-            { name: 'age', error: 'Age is required.' },
-            { name: 'sex', error: 'Sex is required.', isSelect: true },
-            { name: 'nationality', error: 'Nationality is required.' },
-            { name: 'passportNo', error: 'Passport number is required.' },
-            { name: 'passportExp', error: 'Passport expiration date is required.' },
-            { name: 'countryCode', error: 'Country Code is required.', isSelect: true },
-            { name: 'contactNo', error: 'Contact number is required.' },
-            { name: 'email', error: 'Email is required.' },
-            { name: 'addressLine', error: 'Address is required.' },
-            { name: 'city', error: 'City is required.' },
-            { name: 'state', error: 'State is required.' },
-            { name: 'zipCode', error: 'Zip Code is required.' },
-            { name: 'country', error: 'Country is required.' }
-          ];
+          const errorSpanId = `#${name}Error`;
+          const input = isSelect
+            ? $(this).find(`select[name^="${name}"]`)
+            : $(this).find(`input[name^="${name}"]`);
 
-          // Iterate through the fields to validate
-          guestFields.forEach(({ name, error, isSelect }) => 
+          if (!input.val()) 
           {
-            const errorSpanId = `#${name}Error`;
-            const input = isSelect
-              ? $(this).find(`select[name^="${name}"]`)
-              : $(this).find(`input[name^="${name}"]`);
-
-            if (!input.val()) 
-            {
-              input.addClass('is-invalid'); // Add invalid class
-              $(errorSpanId).text(error); // Set error message dynamically
-              isValid = false; // Set valid flag to false
-            }
-
-            // Clear error when input field is focused or changed
-            input.on('focus change', function () 
-            {
-              $(this).removeClass('is-invalid'); // Remove invalid class
-              $(errorSpanId).text(''); // Clear error message
-            });
-          });
-
-          // Check expPassportSpan for this form
-          const expPassportSpan = $(this).find('span[id^="expPassport"]');
-          if (expPassportSpan.text().trim() !== '')
-           {
-            allExpPassportValid = false; // Mark as invalid if any expPassportSpan is not empty
+            input.addClass('is-invalid'); // Add invalid class
+            $(errorSpanId).text(error); // Set error message dynamically
+            isValid = false; // Set valid flag to false
           }
+
+          // Clear error when input field is focused or changed
+          input.on('focus change', function () 
+          {
+            $(this).removeClass('is-invalid'); // Remove invalid class
+            $(errorSpanId).text(''); // Clear error message
+          });
         });
 
-        // Validate Cloned Guest fields (same as above)
-        // This section can remain unchanged unless specific logic for cloned fields differs
-
-        // Check overall validity
-        if (isValid && allExpPassportValid) 
-        {
-          console.log("Submitting");
-          $('#guestForm').submit(); // Submit the form with ID #guestForm
-        } 
-        else if (!allExpPassportValid) 
-        {
-          event.preventDefault(); // Prevent default form submission
-          let alertMessage = "Make Sure the passport would not expire for another six months before you depart.";
-          alert(alertMessage); // Display alert with errors
-        }
-        else 
-        {
-          event.preventDefault(); // Prevent default form submission
-          let alertMessage = "Some required fields are empty or not valid.";
-          alert(alertMessage); // Display alert with errors
+        // Check expPassportSpan for this form
+        const expPassportSpan = $(this).find('span[id^="expPassport"]');
+        if (expPassportSpan.text().trim() !== '')
+          {
+          allExpPassportValid = false; // Mark as invalid if any expPassportSpan is not empty
         }
       });
+
+      // Validate Cloned Guest fields (same as above)
+      // This section can remain unchanged unless specific logic for cloned fields differs
+
+      // Check overall validity
+      if (isValid && allExpPassportValid) 
+      {
+        console.log("Submitting");
+        $('#guestForm').submit(); // Submit the form with ID #guestForm
+      } 
+      else if (!allExpPassportValid) 
+      {
+        event.preventDefault(); // Prevent default form submission
+        let alertMessage = "Make Sure the passport would not expire for another six months before you depart.";
+        alert(alertMessage); // Display alert with errors
+      }
+      else 
+      {
+        event.preventDefault(); // Prevent default form submission
+        let alertMessage = "Some required fields are empty or not valid.";
+        alert(alertMessage); // Display alert with errors
+      }
     });
+  });
 </script>
 
 <!-- Datalist for Nationalities -->
@@ -1166,6 +1171,8 @@ function toggleSubMenu(submenuId) {
   });
 
 </script>
+
+<!-- Name and Passport Auto-Capital Letters -->
 
 
   </body>
