@@ -80,6 +80,13 @@ $position = htmlspecialchars(strtoupper($empId));
 			</a>
 		</li>
 
+		<li class="nav-item transaction">
+			<a class="nav-link page-button" href="../Employee Section/emp-requestList.php" data-page-name="Guest List">
+				<div class="icon"><i class="fas fa-user"></i></div>
+				<span class="label">Request List</span>
+			</a>
+		</li>
+
 		<!-- For Approvals Dropdown -->
 		<li class="nav-item dropdown">
 			<a class="nav-link page-button" href="#" id="manageBookingDropdown" role="button" data-bs-toggle="collapse" data-bs-target="#manageBookingMenu" aria-expanded="false" aria-controls="manageBookingMenu" data-page-name="Operationals">
