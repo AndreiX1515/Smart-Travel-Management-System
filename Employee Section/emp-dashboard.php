@@ -395,30 +395,40 @@ error_reporting(E_ALL);
 
       </div>
 
-      <div class="navTabs-wrapper">
-        <ul class="nav nav-pills" id="pills-tab" role="tablist">
-          <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Flight Seat Tracker</button>
-          </li>
+      <div class="second-div">
+        <div class="navTabs-wrapper">
+          <ul class="nav nav-pills" id="pills-tab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Flight Seat Tracker</button>
+            </li>
 
-          <li class="nav-item" role="presentation">
-            <button class="nav-link " id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Payment and Requests</button>
-          </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link " id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Payment and Requests</button>
+            </li>
 
-          <!-- <li class="nav-item" role="presentation">
-          <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Contact</button>
-        </li>
-        <li class="nav-item" role="presentation">
-          <button class="nav-link" id="pills-disabled-tab" data-bs-toggle="pill" data-bs-target="#pills-disabled" type="button" role="tab" aria-controls="pills-disabled" aria-selected="false" disabled>Disabled</button>
-        </li> -->
-        </ul>
+            <!-- <li class="nav-item" role="presentation">
+            <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Contact</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="pills-disabled-tab" data-bs-toggle="pill" data-bs-target="#pills-disabled" type="button" role="tab" aria-controls="pills-disabled" aria-selected="false" disabled>Disabled</button>
+          </li> -->
+          </ul>
+        </div>
+
+        <div class="content-heading">
+          <button class="btn btn-primary saveBtn" id="saveChanges">Save</button>
+        </div>
       </div>
+
+
+
+      
 
       <!-- Flight Seat Tracker Tab -->
       <div class="tab-content" id="pills-tabContent">
 
         <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
-
+          
           <!-- Flight Seat Tracker Table -->
           <div class="info-table-container">
             <table class="info-table" id="info-table">
@@ -514,40 +524,56 @@ error_reporting(E_ALL);
                 $agentColumns = rtrim($agentColumns, ', ');
 
                 // Main query
-                $sql = "SELECT CONCAT(e.lName, ', ', e.fName, 
-                              IF(e.mName IS NOT NULL AND e.mName != '', CONCAT(' ', LEFT(e.mName, 1)), '')) AS TeamOP,
-                              f.origin, f.flightDepartureDate AS Start, f.returnDepartureDate AS End, 
-                              f.availSeats AS FlightSeat, 
-                              GREATEST(f.availSeats - IFNULL(SUM(CASE WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') 
-                              AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0), 0) AS AvailSeats, 
-                              IF(
-                                  (f.availSeats - IFNULL(SUM(CASE WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') 
-                                    AND b.bookingType = 'Package'THEN b.pax ELSE 0 END), 0)) < 0, 
-                                  ABS(f.availSeats - IFNULL(SUM(CASE WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') 
-                                  AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0)), 0) AS AdditionalSeats,
-                              SUM(CASE WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') AND b.bookingType = 'Package' AND 
-                                a.agentType = 'Retailer' THEN b.pax ELSE 0 END) AS `Air+Land`,
-                              SUM(CASE WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') AND b.bookingType = 'Package' AND 
-                               a.agentType = 'Wholeseller' THEN b.pax ELSE 0 END) AS `LandOnly`,
-                              f.wholesalePrice AS WholesalePrice, f.flightPrice AS RetailPrice, p.packagePrice AS LandArrangement,
-                              f.landPrice as landPrice, $agentColumns
-                          FROM 
-                              employee e
-                          JOIN 
-                              flight f ON f.employeeId = e.employeeId
-                          LEFT JOIN 
-                              booking b ON b.flightId = f.flightId
-                          LEFT JOIN 
-                              package p ON f.packageId = p.packageId
-                          LEFT JOIN 
-                              agent a ON b.agentId = a.agentId
-                          WHERE 
-                              f.flightDepartureDate >= CURDATE()
-                          GROUP BY 
-                              f.flightId, f.origin, f.flightDepartureDate, f.returnDepartureDate, f.availSeats, 
-                              f.wholesalePrice, f.flightPrice, p.packagePrice
-                          ORDER BY 
-                              f.flightDepartureDate";
+                $sql = "SELECT 
+    f.flightId, 
+    f.is_active, 
+    CONCAT(e.lName, ', ', e.fName, 
+        IF(e.mName IS NOT NULL AND e.mName != '', CONCAT(' ', LEFT(e.mName, 1)), '')) AS TeamOP,
+    f.origin, 
+    f.flightDepartureDate AS Start, 
+    f.returnDepartureDate AS End, 
+    f.availSeats AS FlightSeat, 
+    GREATEST(f.availSeats - IFNULL(SUM(CASE 
+        WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') 
+        AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0), 0) AS AvailSeats, 
+    IF(
+        (f.availSeats - IFNULL(SUM(CASE 
+            WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') 
+            AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0)) < 0, 
+        ABS(f.availSeats - IFNULL(SUM(CASE 
+            WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') 
+            AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0)), 0) AS AdditionalSeats,
+    SUM(CASE 
+        WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') 
+        AND b.bookingType = 'Package' 
+        AND a.agentType = 'Retailer' THEN b.pax ELSE 0 END) AS `Air+Land`,
+    SUM(CASE 
+        WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') 
+        AND b.bookingType = 'Package' 
+        AND a.agentType = 'Wholeseller' THEN b.pax ELSE 0 END) AS `LandOnly`,
+    f.wholesalePrice AS WholesalePrice, 
+    f.flightPrice AS RetailPrice, 
+    p.packagePrice AS LandArrangement,
+    f.landPrice AS landPrice, 
+    $agentColumns
+FROM 
+    employee e
+JOIN 
+    flight f ON f.employeeId = e.employeeId
+LEFT JOIN 
+    booking b ON b.flightId = f.flightId
+LEFT JOIN 
+    package p ON f.packageId = p.packageId
+LEFT JOIN 
+    agent a ON b.agentId = a.agentId
+WHERE 
+    f.flightDepartureDate >= CURDATE()
+GROUP BY 
+    f.flightId, f.is_active, f.origin, f.flightDepartureDate, f.returnDepartureDate, f.availSeats, 
+    f.wholesalePrice, f.flightPrice, p.packagePrice
+ORDER BY 
+    f.flightDepartureDate
+";
 
                 // Step 3: Execute the query
                 $result = $conn->query($sql);
@@ -567,6 +593,9 @@ error_reporting(E_ALL);
                       "Testing, Pamela" => "#FFDAB9" // Peach
                     ];
 
+                    $flight_id = $row['flightId'];
+                    $chkStatus = $row['is_active'];
+
                     $rowColor = isset($colorMapping[$row['TeamOP']]) ? $colorMapping[$row['TeamOP']] : "transparent"; // Default to transparent if not listed
 
 
@@ -574,9 +603,11 @@ error_reporting(E_ALL);
 
 
                     echo '<tr>';
-                    echo '<td class="fw-bold" style="font-size: 12x; background-color: ' . $rowColor . ';">
-                            <input type="checkbox" class="row-checkbox">
-                          </td>';
+                    echo '<td class="fw-bold" style="font-size: 12px; background-color: ' . $rowColor . ';">
+                    <input type="checkbox" class="status-checkbox row-checkbox" data-id="' . $flight_id . '" 
+                           data-status="' . $chkStatus . '" ' . ($chkStatus == 1 ? 'checked' : '') . '>
+                    </td>';
+          
                     echo '<td class="" style="font-size: 12px; white-space: nowrap; background-color: ' . $rowColor . '; font-weight: bold;">' . $row['TeamOP'] . '</td>';
                     echo '<td>' . $row['origin'] . '</td>';
                     echo '<td>' . $row['Start'] . '</td>';
@@ -952,6 +983,98 @@ error_reporting(E_ALL);
 
   <?php include '../Employee Section/includes/emp-scripts.php' ?>
 
+
+  <!-- JS for Checkbox -->
+  <script>
+$(document).ready(function() {
+    let changes = {}; // Store changed checkbox values
+
+    // Function to check if there are changes and toggle the Save button
+    function toggleSaveButton() {
+        if (Object.keys(changes).length > 0) {
+            $('#saveChanges').css('display', 'block'); // Show Save button
+        } else {
+            $('#saveChanges').css('display', 'none'); // Hide Save button
+        }
+    }
+
+    // Function to get all checked flight IDs and log them
+    function logCheckedFlightIds() {
+        let checkedIds = [];
+        $('.status-checkbox:checked').each(function() {
+            checkedIds.push($(this).data('id'));
+        });
+        console.log("Checked Flight IDs:", checkedIds); // Log the checked flight IDs
+    }
+
+    // When a checkbox is toggled
+    $('.status-checkbox').on('change', function() {
+        let flightId = $(this).data('id'); // Get flight ID
+        let isChecked = $(this).is(':checked') ? 1 : 0; // Convert to 1 (checked) or 0 (unchecked)
+
+        // Log the flight ID of the toggled checkbox
+        console.log("Toggled Flight ID:", flightId);
+
+        // If checkbox state differs from original, store it, otherwise remove it
+        if ($(this).data('original') !== isChecked) {
+            changes[flightId] = isChecked; // Add to changes object
+        } else {
+            delete changes[flightId]; // Remove from changes object
+        }
+
+        logCheckedFlightIds(); // Log checked flight IDs to console
+        toggleSaveButton(); // Show or hide the Save button
+    });
+
+    // Save Button Click Event
+    $('#saveChanges').on('click', function() {
+        if (Object.keys(changes).length === 0) return; // No changes to save
+
+        $.ajax({
+            url: '../Agent Section/functions/agent-updateCheckStatus.php',
+            type: 'POST',
+            data: { 
+                updates: changes // Send updates as the payload
+            },
+            success: function(response) {
+                alert('Status updated successfully!');
+                changes = {}; // Clear changes after saving
+                $('.status-checkbox').each(function() {
+                    $(this).data('original', $(this).is(':checked') ? 1 : 0); // Update original values
+                });
+                toggleSaveButton(); // Hide button after saving
+                location.reload(); // Reload the page after saving
+            },
+            error: function() {
+                alert('Error updating status.');
+            }
+        });
+    });
+
+    // Initialize original checkbox states
+    $('.status-checkbox').each(function() {
+        $(this).data('original', $(this).is(':checked') ? 1 : 0);
+    });
+
+    toggleSaveButton(); // Ensure the button is hidden initially
+});
+
+
+
+
+  </script>                  
+
+
+
+
+
+
+
+
+
+
+
+  <!-- JS for Comment -->
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       function toggleCommentForm(transactNo, action) {
