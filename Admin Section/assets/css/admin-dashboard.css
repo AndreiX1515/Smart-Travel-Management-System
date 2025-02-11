@@ -1,0 +1,1082 @@
+.content-container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+
+
+/* info-container Section */
+.info-container {
+  width: 100%;
+  background-color: #F6F6F6; 
+  border-radius: 10px; 
+  height: 5vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  padding: 5px 25px;
+}
+
+
+.header-counts {
+ width: 100%;
+ padding: 10px 0px 10px 5px;
+}
+
+
+.header-counts h6 {
+ margin: 0; /* Removes default margin */
+ text-align: left;
+ color: rgb(255, 255, 255); /* Sets the text color with reduced opacity */
+ font-size: .9rem; /* Adjusts font size */
+ font-weight: bold;
+ letter-spacing: 0.5px; /* Adds slight spacing between letters */
+}
+
+.white-pill {
+ display: inline-block; 
+ padding: 6px 20px 6px 10px;
+ font-size: .8rem;
+ font-weight: bold; 
+ color: rgb(255, 255, 255);
+ background-color: #1F75FE; 
+ border-radius: 0 50px 50px 0; 
+ box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+ letter-spacing: 0.5px; 
+ text-align: left; 
+ transition: box-shadow 0.3s ease, transform 0.2s ease; 
+}
+
+
+
+
+.counts-wrapper {
+ display: flex;
+ flex-direction: row;
+ gap: 5px; /* Gap between cards */
+ width: 100%;
+ height: 17vh;
+ /* border: 1px solid black; */
+}
+
+.counts-wrapper .card {
+  flex: 1; 
+  background-color: #ffffff; 
+  display: flex;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #333;
+  border: 0;
+  /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;  */
+}
+
+
+
+.card .header {
+  padding: 10px 20px 5px 10px;
+  color: #4c4f52;
+  font-size: 15px;
+}
+
+
+.row {
+ display: flex;
+ flex-direction: row;
+ gap: 10px;
+}
+
+.card-content .col-md-5 {
+ margin-top: 5px;
+ height: 5vh;
+ display: flex;
+ flex-direction: row;
+ align-items: center;
+ justify-content: flex-start;
+ flex: 1;
+ padding: 0px 10px; /* Reduced padding */
+ transition: transform 0.2s ease, box-shadow 0.2s ease;
+ box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Added box shadow */
+ border-radius: 8px; /* Optional: Slight rounding for a softer look */
+ background-color: #fff; /* Optional: Ensure the shadow is visible */
+}
+
+.total-sales {
+ height: 5vh;
+}
+
+.card-icon {
+ font-size: 14px;
+ margin-right: 10px;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ width: 30px;
+ height: 30px;
+ border-radius: 30%;
+ color: #ffffff;
+}
+
+/* Blue Icon for Total Transactions */
+.icon-blue {
+ background-color: #17a2b8;
+}
+
+/* Green Icon for Completed Transactions */
+.icon-green {
+ background-color: #28a745;
+}
+
+/* Yellow Icon for Pending Transactions */
+.icon-yellow {
+ background-color: #ffc107;
+ color: #333;
+}
+
+/* Red Icon for Cancelled Transactions */
+.icon-red {
+ background-color: #dc3545;
+}
+
+.icon-gray {
+ background-color: gray;
+}
+
+.side-content {
+ display: flex;
+ flex-direction: column;
+ justify-content: center; /* Center align the text vertically */
+}
+
+.side-content h5 {
+ font-size: 24px; /* Reduced font size for the number */
+ font-weight: bold;
+ margin: 0;
+ color: #3a3535;
+ margin-bottom: -5px;
+}
+
+.side-content p {
+ font-size: 10px; /* Smaller font size for description */
+ font-weight: bold;
+ color: #747b85; /* Lighter gray for the description */
+ margin-bottom: 0;
+}
+
+.side-content .month-sales {
+ font-size: 22px; /* Reduced font size for the number */
+ font-weight: bold;
+}
+
+
+
+/* Card 4 */
+.card-body-currency {
+ width: 100%;
+ padding: 0px 10px;
+}
+
+/* Currency Cards Container */
+.currency-cards {
+ display: flex;
+ flex-direction: row; /* Arrange cards horizontally */
+ gap: 5px; /* Spacing between cards */
+ justify-content: left; /* Align cards to the left */
+ align-items: center; /* Vertically center the cards */
+}
+
+/* Individual Currency Card */
+.currency-card {
+ width: 140px;
+ height: 10.5vh;
+ padding: 5px 0px 0px 0px; 
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ justify-content: center;
+ border-radius: 8px; 
+ background-color: white;
+ box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); 
+ font-size: 16px;
+ font-weight: bold;
+ color: #333; /* Text color */
+ transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth hover effect */
+}
+
+/* Flag Icon Wrapper */
+.currency-card .flag-icon-wrapper {
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ padding: 10px 5px;
+ /* margin: 10px 5px 10px 5px; Adjusted margins to ensure consistent spacing */
+}
+
+/* Flag Icon Styling */
+.currency-card .flag-icon-wrapper img {
+ width: 25px;
+ height: 25px;
+}
+
+.header-currency {
+  margin-bottom: 5px;
+}
+
+
+
+
+.flag-icon-wrapper h6{
+  font-size: 12px;
+}
+
+.currency-text-wrapper h5{
+ margin-top: 5px;
+ font-size: 14px;
+ font-weight: bold;
+ white-space: nowrap; /* Prevent word wrapping */
+}
+
+
+
+
+
+.pill-button {
+ display: inline-block; /* Makes it behave like a button */
+ padding: 4px 15px; /* Adds padding for better button appearance */
+ font-size: 10px; /* Sets the font size */
+ color: #000; /* Black text color */
+ background-color: #ffffff; /* White background */
+ text-decoration: none; /* Removes underline from the link */
+ border-radius: 30px; /* Gives it a pill shape */
+ text-align: center; /* Centers the text */
+ border: 1px solid #b9adad; /* Light border to match the background */
+ transition: background-color 0.3s ease, transform 0.2s ease, border-color 0.3s ease; /* Smooth transition for hover effects */
+}
+
+
+.pill-button:hover {
+ background-color: #f1f1f1; /* Light grey background on hover */
+ border-color: #3b413d; /* Change border color on hover */
+}
+
+
+.pill-button:active {
+ transform: translateY(0); /* Resets the transform on click */
+ background-color: #e0e0e0; /* Slightly darker background on click */
+}
+
+
+
+
+/* Icon Wrapper */
+.icon-wrapper {
+ width: 40px; /* Match the size proportionately */
+ height: 40px;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ background-color: transparent;
+ 
+ font-size: 18px; /* Icon size */
+ color: #495057;; /* Icon color */
+ transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth hover effect */
+}
+/* ======================================= */
+
+.tab-content {
+  display: flex;
+  flex-direction: column;
+  /* border: 1px solid black; */
+  height: 66.5vh;
+  padding: 5px 0px;
+}
+
+
+
+
+
+/* Tabs Container */
+.tabs-wrapper {
+  padding: 0;
+  width: 100%;
+  display: flex;
+  justify-content: start;
+  /* border: 1px solid black; */
+  margin-top: 5px;
+}
+
+/* Active Tab Styling */
+.nav-pills .nav-link.active {
+  background-color: #1F75FE !important; /* Active tab background color */
+  border-color: #1F75FE; /* Border color for active tab */
+  color: white; /* Active tab text color */
+}
+
+/* Non-active Tab Styling */
+.nav-pills .nav-link {
+  color: rgb(0, 0, 0); /* Non-active tab text color */
+  font-weight: 600;
+  margin-right: 20px; /* Gap between each tab */
+  background-color: transparent; /* Transparent background for non-active tabs */
+  border: 1px solid #ccc; /* Light border for non-active tabs */
+  border-radius: 15px;
+}
+
+/* Hover Effect for Non-active Tabs */
+.nav-pills .nav-link:not(.active):hover {
+  background-color: #f1f1f1; /* Hover effect for non-active tabs */
+  border-color: #aaa; /* Border color on hover for non-active tabs */
+}
+
+
+/* Second Row Container */
+.second-row-container {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  position: relative;
+  height: 33.5vh;
+}
+
+
+/* Second Row Container - Pending Div */
+.second-row-container .one {
+  width: 33.33%;
+  background-color: transparent;
+  padding-bottom: 5px;
+}
+
+/* Body styles */
+.second-row-container .body {
+  position: relative; 
+  width: 100%;
+  height: 100;
+  color: #fff;
+}
+
+
+.second-row-container .header {
+  width: 100%;
+  padding: 5px 0px; 
+  display: flex; 
+  justify-content: center; 
+  height: 50px; 
+  align-items: center;
+}
+
+.one .btn {
+  padding: 8px 8px;
+  border-radius: 4px; 
+  text-decoration: none; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  text-align: center;
+  transition: background-color 0.3s ease, text-decoration 0.3s ease; 
+  gap: 8px; 
+  align-self: first baseline;
+}
+
+/* Optional hover effect for better UX */
+.one .btn:hover {
+  background-color: #0056b3;
+  color: white; 
+}
+
+.view-booking-container {
+  display: flex; 
+  align-items: center;
+}
+
+
+.header > div {
+  margin-left: auto; 
+}
+
+.header h6 {
+  font-size: 14px;
+  font-weight: bolder;
+}
+
+
+
+
+
+
+
+/* Container for Scrollable Unconfirm Table */
+.unconfirm-table-container {
+  width: 33.33%;
+  overflow-x: auto; 
+  overflow-y: auto; 
+  height: 28vh; 
+  max-height: 30vh; 
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Unconfirm Table Styles */
+.unconfirm-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  white-space: nowrap; 
+}
+
+
+.unconfirm-table thead {
+  background-color: #4FFFB0;
+  text-align: left;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.unconfirm-table thead th {
+  padding: 4px 14px; 
+  font-weight: bold;
+  color: #333;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+  font-size: 12px; 
+}
+
+.unconfirm-table tbody td {
+  padding: 4px 14px;  
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  color: #555;
+  vertical-align: middle; 
+  font-weight: 600;
+}
+
+.unconfirm-table tbody tr {
+  background-color: transparent;
+  transition: background-color 0.3s;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.unconfirm-table tbody tr:hover {
+  background-color: #e6e6e6; /* Light grey background on hover for clarity */
+}
+
+.td-content {
+  display: flex; /* Flexbox for alignment */
+  flex-direction: column; /* Stack content vertically */
+  gap: 2px; /* Consistent gap */
+}
+
+.td-content h6 {
+  margin: 0;
+  font-size: 12px; /* Reduced for compact view */
+  font-weight: 600;
+  color: #000;
+}
+
+.td-content h6 span {
+  font-weight: 400;
+  font-size: 12px; /* Smaller text for additional details */
+}
+
+
+
+
+
+/* Adjust column widths */
+.unconfirm-table thead th:nth-child(1),
+.unconfirm-table tbody td:nth-child(1) {
+width: 18%; /* Column for Transaction No. */
+}
+
+.unconfirm-table thead th:nth-child(2),
+.unconfirm-table tbody td:nth-child(2) {
+width: 20%; /* Column for Package */
+}
+
+.unconfirm-table thead th:nth-child(3),
+.unconfirm-table tbody td:nth-child(3) {
+width: 20%; /* Column for Flight Date */
+}
+
+.unconfirm-table thead th:nth-child(4),
+.unconfirm-table tbody td:nth-child(4) {
+width: 5%; /* Adjusted for Total Pax */
+}
+
+.unconfirm-table thead th:nth-child(5),
+.unconfirm-table tbody td:nth-child(5) {
+width: 20%; /* Column for Contact Name */
+}
+
+.unconfirm-table thead th:nth-child(6),
+.unconfirm-table tbody td:nth-child(6) {
+width: 10%; /* Column for Status */
+}
+
+
+
+/* Second Row Container - Div Two */
+.second-row-container .two {
+width: 33.33%;
+display: flex;
+flex-direction: column; 
+position: relative; 
+}
+
+.two .header {
+  width: 100%;
+  padding: 10px 0px; 
+  display: flex;
+  justify-content: center;
+  height: 50px; /* Fixed height for the header */
+  align-items: center;
+}
+
+
+.two .body {
+  position: relative; 
+  width: 100%;
+  height: 100;
+  color: #fff;
+}
+
+
+.request-table-container {
+  width: 33.33%;
+  overflow-x: auto; 
+  overflow-y: auto; 
+  height: 28vh; 
+  max-height: 30vh; 
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Request Table */
+.request-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.request-table thead {
+  background-color: #4FFFB0;
+  text-align: left;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.request-table thead th {
+  padding: 4px 14px; 
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #333;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+  font-size: 12px; 
+}
+
+.request-table tbody td {
+  padding: 7.5px 14px; 
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  color: #555;
+  vertical-align: middle; 
+}
+
+.request-table tbody tr {
+  background-color: transparent;
+  transition: background-color 0.3s;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.request-table tbody tr:hover {
+  background-color: #ffe0b2; 
+}
+
+.request-table tbody tr:first-child {
+  border-top-left-radius: 10px; 
+  border-top-right-radius: 10px;
+}
+
+.request-table tbody tr:last-child {
+  border-bottom-left-radius: 10px; 
+  border-bottom-right-radius: 10px;
+}
+
+
+/* Third Row Container - Div Three */
+.three {
+  width: 33.33%;
+  background-color: transparent;
+  padding-bottom: 5px;
+}
+
+.three .header {
+  width: 100%;
+  padding: 5px 0px; 
+  display: flex; 
+  justify-content: center; 
+  height: 50px; 
+  align-items: center;
+}
+
+
+.three .body {
+  position: relative;
+  width: 100%;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+  height: 85%;
+}
+
+.pending-payment-container {
+  width: 33.33%;
+  overflow-x: auto; 
+  overflow-y: auto; 
+  height: 28vh; 
+  max-height: 30vh; 
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Pending Payment Table */
+.pending-payment-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  white-space: nowrap; 
+}
+
+.pending-payment-table thead {
+  background-color: #4FFFB0;
+  text-align: left;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.pending-payment-table thead th {
+  font-size: 12px; 
+  padding: 4px 8px; 
+  font-weight: bold;
+  color: #333;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+.pending-payment-table tbody td {
+  padding: 4px 8px;  
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  color: #555;
+  vertical-align: middle; 
+}
+
+.pending-payment-table tbody tr {
+  padding: 4px 14px; 
+  background-color: transparent; 
+  transition: background-color 0.3s;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.pending-payment-table tbody tr:hover {
+  background-color: #b2ebf2;
+} 
+
+
+
+
+
+
+
+/* Confirm Container */
+.confirm-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  height: 24vh;
+  margin-top: 5px;
+  
+ }
+ 
+ .confirm-container .one {
+  width: 100%; /* Full width for the card */
+  height: 30vh; /* Adjusted height */
+  
+ }
+ 
+ .confirm-container .one .header {
+  width: 100%;
+  padding: 10px 0px; 
+  display: flex; 
+  justify-content: center; 
+  height: 50px; 
+  align-items: center;
+ }
+ 
+ 
+ /* Confirm Table Container */
+ .confirm-table-container {
+  width: 100%;
+  height: 27vh; 
+  position: relative;
+  overflow-y: auto; 
+  overflow-x: auto; 
+  -webkit-overflow-scrolling: touch;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+ }
+ 
+ .confirm-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow-x: auto;
+  overflow-y: auto;
+  border-radius: 10px;
+ }
+
+.confirm-table thead {
+  background-color: #e0f7fa;
+  text-align: left;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.confirm-table thead th {
+  font-size: 12px; 
+  padding: 4px 14px; 
+  font-weight: bold;
+  color: #333;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+.confirm-table tbody td {
+  padding: 10.5px 14px; 
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  color: #555;
+  font-weight: 600;
+}
+
+.confirm-table tbody tr {
+  background-color: transparent;
+  transition: background-color 0.3s;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.confirm-table tbody tr:hover {
+  background-color: #b2ebf2;
+}
+
+.confirm-table tbody tr:first-child {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.confirm-table tbody tr:last-child {
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+
+
+/* Table styles */
+.table-container {
+  width: 100%;
+  padding: 0;
+  overflow-x: auto;
+  margin-bottom: 20px;
+  display: block;
+}
+
+.table-container::-webkit-scrollbar {
+  width: 6px; /* Increased scrollbar width */
+  height: 6px; /* Increased scrollbar height for horizontal scroll */
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.3); /* Scrollbar thumb color */
+  border-radius: 6px; /* Increased border radius for a more rounded thumb */
+}
+
+.table-container::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0.1); /* Scrollbar track color */
+}
+
+
+
+
+
+
+
+/* Flight Seat Container */
+.flight-seat-container {
+ display: flex;
+ flex-direction: row;
+ margin-top: 5px;
+ gap: 15px; 
+ position: relative;
+ height: 65vh; 
+ overflow-x: auto; 
+ overflow-y: auto; 
+}
+
+/* Card Container Styling */
+.flight-seat-container .one {
+ width: 100%;
+ height: 65vh;
+ background-color: #fff; 
+ border-radius: 8px; 
+ box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+ overflow: hidden;
+}
+
+/* Confirm Table Container */
+.confirm-table-container-flight {
+ width: 100%;
+ height: 65vh; 
+ overflow-x: auto;
+ overflow-y: auto; 
+ position: relative;
+}
+
+/* Info Table */
+.info-table {
+ width: 100%;
+ height: 400px; /* Adjust table height as needed */
+ overflow-y: auto; /* Allow vertical scrolling */
+ overflow-x: auto; /* Allow horizontal scrolling */
+ border-collapse: collapse;
+ font-family: Arial, sans-serif;
+ font-size: 12px;
+ background-color: #fff;
+ text-align: center;
+ box-sizing: border-box;
+}
+
+
+/* Confirm Table Container */
+.confirm-table-container-flight {
+ width: 100%;
+ height: 65vh; 
+ overflow: hidden;
+ display: block;
+ position: relative;
+ overflow-y: auto; 
+ overflow-x: auto; 
+}
+
+/* Confirm Table Container */
+.confirm-table-container-flight {
+ width: 100%;
+ height: 65vh; 
+ overflow-x: auto; 
+ overflow-y: auto; 
+ display: block; 
+ position: relative;
+}
+
+/* Optional: Add padding and borders to table cells for better visibility */
+.info-table td, .info-table th {
+ padding: 8px 12px;
+ border: 1px solid #bbbbbb; 
+ box-sizing: border-box; /* Prevents overflow */
+ white-space: nowrap; /* Prevents text wrapping for a cleaner look */
+}
+
+/* Makes the entire thead sticky */
+.info-table thead {
+ padding: 6px 10px;
+ font-size: 12px;
+ font-weight: bold;
+ position: sticky;
+ top: 0;
+ background-color: gainsboro;
+ color: #424242;
+ z-index: 2;
+ box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Header-specific styles */
+.info-table th {
+ text-align: center;
+ position: relative; /* Ensures proper stacking context */
+ z-index: 3; /* Ensures header cells stay above tbody content */
+ word-wrap: break-word; /* Allow word wrapping */
+ white-space: normal; /* Allow normal text wrapping instead of nowrap */
+ padding: 6px 10px;
+}
+
+
+/* Table data cell styling */
+.info-table td {
+ padding: 10px 12px; /* Padding for better readability */
+ border: 1px solid #ccc; /* Add borders between cells */
+ text-align: center;
+ font-size: 14px;
+ word-wrap: break-word; /* Ensure text breaks within cells */
+ white-space: nowrap; /* Prevent wrapping for readability */
+}
+
+/* Row hover effect */
+.info-table tbody tr:hover {
+ background-color: #f1f1f1; /* Light hover effect */
+ cursor: pointer;
+}
+
+/* Adjust column widths for the first 11 columns */
+.info-table th:nth-child(1), .info-table td:nth-child(1) { width: 10%; }
+.info-table th:nth-child(2), .info-table td:nth-child(2) { width: 6%; }
+.info-table th:nth-child(3), .info-table td:nth-child(3) { width: 12%; }
+.info-table th:nth-child(4), .info-table td:nth-child(4) { width: 8%; }
+.info-table th:nth-child(5), .info-table td:nth-child(5) { width: 8%; }
+.info-table th:nth-child(6), .info-table td:nth-child(6) { width: 8%; }
+.info-table th:nth-child(7), .info-table td:nth-child(7) { width: 8%; }
+.info-table th:nth-child(8), .info-table td:nth-child(8) { width: 8%; }
+.info-table th:nth-child(9), .info-table td:nth-child(9) { width: 8%; }
+.info-table th:nth-child(10), .info-table td:nth-child(10) { width: 12%; }
+.info-table th:nth-child(11), .info-table td:nth-child(11) { width: 12%; }
+.info-table th:nth-child(12), .info-table td:nth-child(12) { width: 12%; }
+
+/* Adjust columns 12 and beyond with width set to 6% */
+/* .info-table th:nth-child(n+12),
+.info-table td:nth-child(n+12) {
+ width: 10%;
+} */
+
+
+/* Ensure table container wrapper has overflow enabled */
+.info-table-wrapper {
+ display: block; /* Ensure block-level container */
+ overflow-x: auto; /* Enable horizontal scrolling */
+ -webkit-overflow-scrolling: touch; /* Smooth scrolling on mobile devices */
+}
+
+/* Adjust width for container in case of excessive content */
+.info-table-wrapper {
+ width: 100%; /* Ensure it spans the full container */
+}
+
+/* Responsive behavior */
+@media (max-width: 768px) {
+ .info-table th,
+ .info-table td {
+     font-size: 12px; /* Smaller font size for small screens */
+     padding: 6px 8px; /* Reduced padding */
+ }
+}
+
+
+/* Optional: Add some responsiveness */
+@media (max-width: 600px) {
+ .card {
+     min-width: 100px; /* Adjust minimum width for smaller screens */
+ }
+}
+
+
+
+/* ======================================= */
+/* Confirm Container */
+.fit-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  position: relative;
+  height: 30vh;
+  margin-top: 5px;
+ }
+ 
+ .fit-container .one {
+  width: 100%; /* Full width for the card */
+  height: 30vh; /* Adjusted height */
+  
+ }
+ 
+ .fit-container .one .header {
+  width: 100%;
+  padding: 10px 0px; 
+  display: flex; 
+  justify-content: center; 
+  height: 50px; 
+  align-items: center;
+ }
+ 
+ 
+ /* Confirm Table Container */
+ .fit-table-container {
+  width: 100%;
+  height: 60vh; 
+
+  position: relative;
+  overflow-y: auto; 
+  overflow-x: auto; 
+  -webkit-overflow-scrolling: touch;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+ }
+ 
+ .fit-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow-x: auto;
+  overflow-y: auto;
+  border-radius: 10px;
+ }
+
+.fit-table thead {
+  background-color: #424242;
+  color: #fff;
+  text-align: left;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.fit-table thead th {
+  font-size: 14px;
+  padding: 4px 14px;
+  font-weight: 600;
+  color: #fff;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+.fit-table tbody td {
+  padding: 6px 14px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  color: #555;
+  font-weight: 600;
+}
+
+.fit-table tbody tr {
+  background-color: transparent;
+  transition: background-color 0.3s;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.fit-table tbody tr:hover {
+  background-color: #b2ebf2;
+}
+
+.fit-table tbody tr:first-child {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.fit-table tbody tr:last-child {
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}

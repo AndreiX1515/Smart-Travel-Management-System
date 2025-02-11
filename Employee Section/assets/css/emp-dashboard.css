@@ -43,7 +43,7 @@
  
  .white-pill {
   display: inline-block; 
-  padding: 5px 20px 5px 10px;
+  padding: 5px 15px 5px 10px;
   font-size: .7rem;
   font-weight: bold; 
   color: rgb(255, 255, 255);
@@ -253,15 +253,30 @@
   transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth hover effect */
 }
   
- 
- .navTabs-wrapper {
+
+/* ==================================== */
+
+.second-div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
   width: 100%;
+  height: 5vh;
+  margin-bottom: 10px;
+  padding: 0px 15px 0px 0px;
+  border: 1px solid black;
+}
+
+/* ==================================== */
+ .navTabs-wrapper {
+  width: 50%;
   padding: 0px;
-  margin: 10px 0px 10px 0px;
+  /* margin: 10px 0px 10px 0px; */
   display: flex; /* Make the container a flexbox */
   gap: 10px; /* Added gap between each nav item */
-  border-radius: 15px;
-  /* border: 1px solid gainsboro; */
+  /* border-radius: 15px; */
+  /* border: 1px solid black; */
 }
 
 .nav-pills {
@@ -295,10 +310,43 @@
   color: white; /* Change text color for active tab */
 }
 
- 
+/* ==================================== */
+
+.content-heading {
+  display: flex;
+  width: 50%;
+  flex-direction: row;
+  justify-content: end;
+  align-items: center;
+  /* border: 1px solid black; */
+}
+
+.content-heading .saveBtn {
+  display: none;
+}
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ==================================== */
 
 .tab-content {
   display: flex;
@@ -310,10 +358,10 @@
 .header-wrapper {
   display: flex;
   flex-direction: row;
-  gap: 15px;
   width: 100%;
   height: 30vh; 
   gap: 20px;
+  /* border: 1px solid black; */
  }
 
  /* =======================================*/
@@ -329,7 +377,7 @@
  }
  
  .table-header {
-   padding: 0px 0px 10px 0px;
+   padding: 0px 0px 0px 0px;
    display: flex;
    flex-direction: row;
    align-items: center;
@@ -337,6 +385,7 @@
    font-weight: bold;
    color: #000000;
    flex-shrink: 0;
+   /* border: 1px solid black; */
  }
  
  .table-header h6 {
@@ -344,7 +393,7 @@
  }
  
  .table-container {
-   padding-right: 10px;
+
    width: 100%;
    flex-grow: 1;
    overflow-y: auto;
@@ -364,7 +413,7 @@
  }
  
  .table thead {
-   background-color: #00defc;
+   background-color: #dc3545;
    text-align: left;
    position: sticky;
    top: 0;
@@ -372,11 +421,11 @@
  }
  
  .table thead th {
-   background-color: #747474;
+   background-color: #dc3545;
    color: #ffffff;
    font-weight: 500;
    text-align: left;
-   padding: 10px 15px;
+   padding: 6px 15px;
    border-bottom: 2px solid #dee2e6;
    position: sticky;
    top: 0;
@@ -393,146 +442,102 @@
    white-space: nowrap;
    border-bottom: 1px solid #dee2e6;
  }
+
+
  
- /* ============================ */
- /* Row Hover Effect Styles */
- /* ============================ */
- .table tbody tr:hover {
-   background-color: #b2ebf2; /* Highlight row on hover */
-   cursor: pointer; /* Show pointer cursor to indicate interactivity */
- }
- 
- /* Add Border Top Class */
- .has-border-top {
-   border-top: 3px solid #000000;
- }
- 
- 
- /* ==========================================*/
- /* Price table CSS */
- 
- /* General Styles */
- .price-table-wrapper {
-   width: 33.33%; /* Full width of the parent */
- }
- 
- /* Header Styles */
- .price-table thead {
-   background-color: #f8f9fa; /* Light gray header */
-   font-weight: bold; /* Bold header text */
-   text-transform: uppercase; /* Uppercase for header */
-   color: #555; /* Softer header color */
- }
- 
- 
- /* Column Width Adjustments */
- .price-table thead th:nth-child(1),
- .price-table tbody td:nth-child(1) {
-   width: 5%; /* Transact No */
- }
- 
- .price-table thead th:nth-child(2),
- .price-table tbody td:nth-child(2) {
-   width: 20%; /* Agent Name */
- }
- 
- .price-table thead th:nth-child(3),
- .price-table tbody td:nth-child(3) {
-   width: 25%; /* Package Name */
- }
- 
- .price-table thead th:nth-child(4),
- .price-table tbody td:nth-child(4) {
-   width: 15%; /* Flight Date */
- }
- 
- .price-table thead th:nth-child(5),
- .price-table tbody td:nth-child(5) {
-   width: 15%; /* Booking Date */
- }
- 
- .price-table thead th:nth-child(6),
- .price-table tbody td:nth-child(6) {
-   width: 10%; /* Total Pax */
- }
- 
- .price-table thead th:nth-child(7),
- .price-table tbody td:nth-child(7) {
-   width: 15%; /* Package Price */
- }
- 
- .price-table thead th:nth-child(8),
- .price-table tbody td:nth-child(8) {
-   width: 10%; /* Status */
- }
- 
- 
- 
+
+
  /* ============================================= */
  /* Request Table */
- /* Wrapper for the Request Table */
+
  .request-wrapper {
   width: 50%;
   border-radius: 15px;
 }
 
+.request-table-container {
+  overflow-x: auto;
+  overflow-y: auto;
+  width: 100%;
+  height: 85%;
+  border: 1px solid gainsboro;
+}
+
+.request-table {
+  width: 100%;
+  height: auto;
+  border-collapse: collapse;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  text-align: left;
+  background-color: transparent;
+}
+
+.request-table thead {
+  background-color: #dc3545;
+}
+
+.request-table th, 
+.request-table td {
+  border-bottom: 1px solid #e0e0e0;
+  border-left: 1px solid #e0e0e0; /* Left border */
+  border-right: 1px solid #e0e0e0; /* Right border */
+}
+
+.request-table th {
+  padding: 0px 14px;
+  background-color: gainsboro;
+  font-size: 10px;
+  font-weight: bold;
+  text-align: left;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  white-space: nowrap;
+}
+
+.request-table td {
+  color: #495057;
+  padding: 8px 14px;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
  
- /* Container for the Request Table */
- .request-table-container {
-   width: 100%; 
-   height: 80%;
-   overflow-x: auto; 
-   overflow-y: auto; 
-   box-sizing: border-box;
-   border: 1px solid gainsboro; 
-   
- }
- 
- /* Main Request Table */
- .request-table {
-   width: 100%; 
-   height: auto; 
-   border-collapse: collapse; 
-   font-family: Arial, sans-serif;
-   font-size: 14px;
-   text-align: left;
-   background-color: transparent; /* Ensure background is clear */
- }
- 
- /* Table Header (th) and Body Cells (td) */
- .request-table th,
- .request-table td {
-   padding: 6px 14px; /* Added more padding for better spacing */
-   text-align: left;
-   white-space: nowrap; /* Prevent content from wrapping */
-   overflow: hidden; /* Hide overflowed content */
-   text-overflow: ellipsis; /* Add "..." for overflowing content */
- }
- 
- /* Table Header (th) Styles */
- .request-table th {
-   border-bottom: 2px solid #e0e0e0; /* Subtle border to separate the header */
-   background-color: #f8f9fa; /* Light grey background for header */
-   font-size: 10px; /* Slightly larger font size for better readability */
-   font-weight: bold;
- }
- 
- /* Even Row Styles */
- .request-table tr:nth-child(even) {
-   background-color: #f9f9f9; /* Light alternating row color */
- }
- 
- /* Table Data (td) Styles */
- .request-table td {
-   color: #495057; /* Neutral text color for better readability */
- }
- 
- /* Row Hover Effects */
- .request-table tr:hover {
-   background-color: #e9ecef; /* Highlight row on hover */
-   transition: background-color 0.3s ease-in-out; /* Smooth transition effect */
- }
- 
+}
+
+.request-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.request-table tr:hover {
+  background-color: #e9ecef;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.request-table th:nth-child(1) {
+  width: 15%;
+}
+
+.request-table th:nth-child(2) {
+  width: 10%;
+}
+
+.request-table th:nth-child(3) {
+  width: 55%;
+}
+
+.request-table th:nth-child(4) {
+  width: 10%;
+}
+
+
+
+
+
+
+
+
  
  
  
@@ -544,10 +549,9 @@
 
 .payment-table-container {
   overflow-x: auto;
-  overflow-y: auto; /* Ensure vertical scrolling for long content */
+  overflow-y: auto;
   width: 100%;
-  height: 80%;
-  padding-right: 10px;
+  height: 85%;
   border: 1px solid gainsboro;
 }
 
@@ -555,7 +559,6 @@
   width: 50%;
   border-radius: 15px;
 }
-
 
 .payment-table {
   width: 100%;
@@ -566,52 +569,70 @@
   table-layout: auto;
 }
 
-/* ============================ */
-/* Table Header Styles */
-/* ============================ */
-.payment-table th {
-  padding: 6px 14px; /* Improved padding */
+.payment-table thead {
+  background-color: gainsboro;
+}
+
+
+.payment-table th, 
+.payment-table td {
   border-bottom: 1px solid #e0e0e0;
+  border-left: 1px solid #e0e0e0; /* Left border */
+  border-right: 1px solid #e0e0e0; /* Right border */
+}
+
+
+.payment-table th {
+  padding: 0px 14px;
   background-color: gainsboro;
   font-size: 10px;
   font-weight: bold;
   text-align: left;
   position: sticky;
-  top: 0; /* Sticky header */
-  z-index: 2; /* Ensure header stays above body */
+  top: 0;
+  z-index: 2;
   white-space: nowrap;
 }
 
-/* ============================ */
-/* Even Row Styles */
-/* ============================ */
-.payment-table tr:nth-child(even) {
-  background-color: #f9f9f9;
-}
-
-/* ============================ */
-/* Table Body Styles */
-/* ============================ */
 .payment-table td {
   color: #495057;
-  padding: 8px 14px; /* Improved padding */
+  padding: 8px 14px;
   text-align: left;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-/* ============================ */
-/* Row Hover Effect Styles */
-/* ============================ */
-.payment-table tr:hover {
-  background-color: #e9ecef; /* Highlight row on hover */
-  transition: background-color 0.3s ease-in-out; /* Smooth transition effect */
+
+.payment-table tbody tr:hover {
+  background-color: #b2ebf2;
+  cursor: pointer;
 }
 
- 
- 
- 
+
+
+
+.payment-table th:nth-child(1),
+.payment-table td:nth-child(1) {
+  width: 20%;
+}
+
+.payment-table th:nth-child(2),
+.payment-table td:nth-child(2) {
+  width: 10%;
+}
+
+.payment-table th:nth-child(3),
+.payment-table td:nth-child(3) {
+  width: 50%;
+}
+
+.payment-table th:nth-child(4),
+.payment-table td:nth-child(4) {
+  width: 15%;
+}
+
+
  
 /* ============================
    Confirm Container
@@ -621,114 +642,51 @@
   flex-direction: column;
   width: 100%;
   height: 39vh;
-  /* border: 1px solid black; */
 }
 
-/* ============================
-   Confirm Table Container
-============================ */
 .confirm-table-container {
-  width: 100%; 
+  width: 100%;
   height: 70%;
-  overflow-x: auto; 
-  overflow-y: auto; 
-  border: 1px solid gainsboro; 
+  overflow-x: auto;
+  overflow-y: auto;
+  border: 1px solid gainsboro;
 }
 
-/* ============================
-   Confirm Table Styles
-============================ */
 .confirm-table {
-  width: 100%; 
-  height: 20%; 
+  width: 100%;
+  height: auto;
   font-family: Arial, sans-serif;
   font-size: 14px;
   text-align: left;
-  background-color: transparent; /* Ensure background is clear */
+  background-color: transparent;
 }
 
-/* ============================
-   Table Header Styles
-============================ */
 .confirm-table thead {
   background-color: #dc3545;
   color: white;
   text-align: left;
-  position: sticky; /* Sticky header */
+  position: sticky;
   top: 0;
-  z-index: 2; /* Ensures header stays above other content */
+  z-index: 2;
 }
 
 .confirm-table thead th {
-  font-size: 14px;
-  padding: 6px 14px;
+  font-size: 12px;
   font-weight: bold;
   color: white;
+  padding: 5px 12px;
   border-bottom: 2px solid rgba(0, 0, 0, 0.1);
-  width: auto; /* Allows the table to adjust width based on content */
+  width: auto;
 }
 
-/* ============================
-   Table Body Styles
-============================ */
 .confirm-table tbody td {
-  padding: 0px 14px;
+  padding: 5px 12px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   color: #555;
-  text-overflow: ellipsis; /* Handle long text gracefully */
+  text-overflow: ellipsis;
   overflow: hidden;
 }
 
-/* ============================
-   Table Column Width Adjustments
-============================ */
-.confirm-table th:nth-child(1),
-.confirm-table td:nth-child(1) {
-  width: 8%; /* Transaction No. */
-}
-
-.confirm-table th:nth-child(2),
-.confirm-table td:nth-child(2) {
-  width: 8%; /* Agent Name */
-}
-
-.confirm-table th:nth-child(3),
-.confirm-table td:nth-child(3) {
-  width: 8%; /* Package */
-}
-
-.confirm-table th:nth-child(4),
-.confirm-table td:nth-child(4) {
-  width: 8%; /* Flight Date */
-}
-
-.confirm-table th:nth-child(5),
-.confirm-table td:nth-child(5) {
-  width: 5%; /* Total Pax */
-  text-align: center;
-}
-
-.confirm-table th:nth-child(6),
-.confirm-table td:nth-child(6) {
-  width: 6%; /* Booking Type */
-}
-
-.confirm-table th:nth-child(7),
-.confirm-table td:nth-child(7) {
-  width: 5%; /* Status */
-}
-
-.confirm-table th:nth-child(8),
-.confirm-table td:nth-child(8) {
-  width: 25%; /* Comment */
-  border-left: 1px solid gainsboro;
-}
-
-
-
-/* ============================
-   Table Row Hover Effect
-============================ */
 .confirm-table tbody tr {
   background-color: transparent;
   transition: background-color 0.3s ease-in-out;
@@ -737,15 +695,42 @@
 }
 
 .confirm-table tbody tr:hover {
-  background-color: #b2ebf2; /* Row hover background color */
+  background-color: #b2ebf2;
   cursor: pointer;
 }
 
+/* Specific styling for individual components */
+
+/* Table Row (tr) */
+.confirm-table tbody tr {
+  display: table-row;
+  vertical-align: middle;
+  border-color: inherit;
+}
+
+/* Table Data (td) */
+.confirm-table tbody td {
+  display: table-cell;
+  vertical-align: inherit;
+  text-align: left;
+  padding: 0px 12px;
+}
+
+/* Table Header (th) */
+.confirm-table thead th {
+  display: table-cell;
+  vertical-align: inherit;
+  text-align: left;
+  padding: 5px 12px;
+  font-weight: bold;
+  color: white;
+}
+
+
+
+
+
  
-
-
-
-
 /* General container for comment input and button */
 .comment-container {
   display: flex;
@@ -754,7 +739,7 @@
   align-items: center; /* Align items vertically centered */
   gap: 5px; /* Add 10px gap between the elements */
   width: 100%; /* Ensure the container takes up full width of the cell */
-  border: 1px solid black;
+  /* border: 1px solid black; */
   padding-top: 10px;
   box-sizing: border-box; /* Include padding and border in the width calculation */
 }
@@ -767,7 +752,7 @@
   flex-wrap: wrap; /* Allow buttons to wrap onto the next line on smaller screens */
   width: 100%; /* Full width of the parent container */
   box-sizing: border-box; /* Include padding and border in width calculation */
-  border: 1px solid black;
+  /* border: 1px solid black; */
   padding-bottom: 10px;
 }
 
@@ -791,10 +776,27 @@
   text-align: left; /* Align text to the left inside the input */
   border-radius: 5px; /* Optional: rounded corners for the input */
   background-color: transparent; /* Set background to transparent */
-  border: 1px solid #ccc; /* Optional: light border color for visibility */
   color: #333; /* Set text color */
 }
 
+.comment-input input {
+  flex-grow: 1; /* Make the input field take remaining space */
+  min-width: 280px; /* Minimum width to ensure input is not too small */
+  padding: 10px;
+  font-size: 14px;
+  text-align: left; /* Align text to the left inside the input */
+  border-radius: 5px; /* Optional: rounded corners for the input */
+  background-color: transparent; /* Set background to transparent */
+  color: #333; /* Set text color */
+}
+
+.comment-input input:disabled {
+  background-color: transparent; /* Keep the background transparent */
+  color: #575757; /* Lighten text color for disabled state */
+  /* border: 1px solid #ddd; Lighter border for disabled state */
+  cursor: not-allowed; /* Change cursor to show it's not interactive */
+  border: 1px solid transparent;
+}
 
 
 
@@ -867,13 +869,57 @@
 }
 
 
+/* ============================
+   Table Column Width Adjustments
+============================ */
+.confirm-table th:nth-child(1),
+.confirm-table td:nth-child(1) {
+  width: 6%; /* Transaction No. */
+}
+
+.confirm-table th:nth-child(2),
+.confirm-table td:nth-child(2) {
+  width: 8%; /* Agent Name */
+}
+
+.confirm-table th:nth-child(3),
+.confirm-table td:nth-child(3) {
+  width: 8%; /* Package */
+}
+
+.confirm-table th:nth-child(4),
+.confirm-table td:nth-child(4) {
+  width: 4%; /* Flight Date */
+  text-align: center;
+}
+
+.confirm-table th:nth-child(5),
+.confirm-table td:nth-child(5) {
+  width: 5%; /* Total Pax */
+  text-align: center;
+}
+
+.confirm-table th:nth-child(6),
+.confirm-table td:nth-child(6) {
+  width: 6%; /* Booking Type */
+}
+
+.confirm-table th:nth-child(7),
+.confirm-table td:nth-child(7) {
+  width: 12%; /* Comment */
+  border-left: 1px solid gainsboro;
+}
 
 
 
 
 
 
+ 
 
+
+
+/* ============================================= */
 
 .legend-guides {
   display: flex;
@@ -921,7 +967,18 @@
   align-items: center;
   justify-content: flex-end; /* Position button to the right */
 }
- 
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* Info Table Container */
 .info-table-container {
