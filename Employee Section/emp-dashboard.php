@@ -355,7 +355,7 @@ error_reporting(E_ALL);
               <!-- USD CARD -->
               <div class="currency-card">
                 <div class="flag-icon-wrapper">
-                  <img src="../assets/Flags/english-flag.png" alt="">
+                  <img src="../Assets/Flags/english-flag.png" alt="">
                   <h6 class="mt-2">USD</h6>
                   <div class="currency-text-wrapper">
                     <h5>$ 1</h5>
@@ -370,7 +370,7 @@ error_reporting(E_ALL);
               <!-- PHP CARD -->
               <div class="currency-card">
                 <div class="flag-icon-wrapper">
-                  <img src="../assets/Flags/philippines (2).png" alt="">
+                  <img src="../Assets/Flags/philippines (2).png" alt="">
                   <h6 class="mt-2">PHP</h6>
                   <div class="currency-text-wrapper">
                     <h5>₱ <?php echo number_format($usd_to_php, 2); ?></h5>
@@ -381,7 +381,7 @@ error_reporting(E_ALL);
               <!-- KOR CARD -->
               <div class="currency-card">
                 <div class="flag-icon-wrapper">
-                  <img src="../assets/Flags/korean-flag.png" alt="">
+                  <img src="../Assets/Flags/korean-flag.png" alt="">
                   <h6 class="mt-2">KOR</h6>
                   <div class="currency-text-wrapper">
                     <h5>₩ <?php echo number_format($usd_to_krw, 0); ?></h5>
@@ -599,9 +599,6 @@ error_reporting(E_ALL);
                     $rowColor = isset($colorMapping[$row['TeamOP']]) ? $colorMapping[$row['TeamOP']] : "transparent"; // Default to transparent if not listed
 
 
-
-
-
                     echo '<tr>';
                     echo '<td class="fw-bold" style="font-size: 12px; background-color: ' . $rowColor . ';">
                     <input type="checkbox" class="status-checkbox row-checkbox" data-id="' . $flight_id . '" 
@@ -659,6 +656,7 @@ error_reporting(E_ALL);
                       <tr>
                         <th>TRANSACTION NO</th>
                         <th>FLIGHT DATE</th>
+                        <th>REQUESTED BY: </th>
                         <th>REQUEST</th>
                         <th>STATUS</th>
                       </tr>
@@ -706,6 +704,7 @@ error_reporting(E_ALL);
                           echo "<tr>
                                   <td>{$row['T.N']}</td>
                                   <td>{$row['flightDepartureDate']}</td>
+                                  <td></td>
                                   <td>{$row['Request']}</td>
                                   <td><span class='{$statusClass} p-2'>{$row['requestStatus']}</span></td>
                                 </tr>";
@@ -843,7 +842,7 @@ error_reporting(E_ALL);
                         $amountPaid = $row['TotalAmountPaid'] ?? 0;
                         $balance = $packagePrice - $amountPaid;
                         $status = $row['status'];
-                        $formattedPP = '₱ ' . $row['PackagePrice'];
+                        $formattedPP = '₱ ' . number_format($packagePrice, 2);
                         $formattedAP = '₱' . number_format($amountPaid, 2);
                         $formattedBal = '₱' . number_format($balance, 2);
                         

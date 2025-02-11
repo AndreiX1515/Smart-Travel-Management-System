@@ -59,7 +59,7 @@
                       // Loop through the results and generate options
                       while ($row = $res1->fetch_assoc()) 
                       {
-                        echo "<option value='" . $row['branchId'] . "'>" . $row['branchName'] . "</option>";
+                        echo "<option value='" . $row['branchName'] . "'>" . $row['branchName'] . "</option>";
                       }
                     } 
                     else 
@@ -331,7 +331,7 @@ $(document).ready(function () {
     // Package Filter
     $('#packages').on('change', function () {
         const selectedPackage = $(this).val();
-        table.column(2).search(selectedPackage || '').draw();
+        table.column(1).search(selectedPackage || '').draw();
     });
 
     // Booking Date Filter with value change

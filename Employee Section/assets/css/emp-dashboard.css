@@ -524,10 +524,14 @@
 }
 
 .request-table th:nth-child(3) {
-  width: 55%;
+  width: 20%;
 }
 
 .request-table th:nth-child(4) {
+  width: 45%;
+}
+
+.request-table th:nth-child(5) {
   width: 10%;
 }
 

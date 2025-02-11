@@ -1,4 +1,47 @@
+.content-container {
+  height: 88vh;
+  /* border: 1px solid black; */
+  margin: 15px 40px
+}
+
+
 .card-header  {
   font-size: 14px;
   font-weight: bold;
+}
+
+
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+}
+
+.contactNoWrapper .form-select {
+  flex: 1;
+  margin-top: 8px;
+  font-size: 13px;
+  padding: 8px;
+  max-width: 200px; /* Adjust this width as needed */
+}
+
+#contactNo {
+  flex: 2;
+  margin-top: 8px;
+  width: 100%;
+}
+
+.submit-button-wrapper {
+  display: flex;
+  justify-content: end;
+  width: 100%;
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid gainsboro;
+  border-radius: 10px;
 }
