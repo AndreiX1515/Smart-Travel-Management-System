@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Employee - Transaction</title>
   <?php include '../Employee Section/includes/emp-head.php' ?>
-  <link rel="stylesheet" href="../Employee Section/assets/css/emp-transactionGuestList.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="../Employee Section/assets/css/emp-visaRequirementsTable.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="../Employee Section/assets/css/emp-sidebar-navbar.css?v=<?php echo time(); ?>">
     
 </head>
@@ -26,7 +26,6 @@
         <div class="search-wrapper">
             <div class="search-input-wrapper">
                 <input type="text" id="search" placeholder="Search here..">
-                <!-- <span class="icon">🔍</span> -->
             </div>
         </div>
 

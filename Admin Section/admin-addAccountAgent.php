@@ -342,7 +342,7 @@ session_start();
                     <label for="accountStatus" class="form-label">Branch</label>
                     <select class="form-select" id="accountStatus" name="accountStatus" required>
                       <option value="active">Active</option>
-                      <option value="inactive">Inactive</option>
+                      <option value="inactive">Inactive</option>     
                     </select>
                   </div>
 
