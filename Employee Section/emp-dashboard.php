@@ -582,8 +582,10 @@ error_reporting(E_ALL);
                 // Step 4: Display the results in HTML table
 
                 // class="form-check-input"
-                if ($result->num_rows > 0) {
-                  while ($row = $result->fetch_assoc()) {
+                if ($result->num_rows > 0) 
+                {
+                  while ($row = $result->fetch_assoc()) 
+                  {
 
                     $colorMapping = [
                       "Heo, Vicky" => "#FFD700",  // Gold
@@ -631,6 +633,7 @@ error_reporting(E_ALL);
                     }
                     echo '</tr>';
                   }
+                }
                 ?>
               </tbody>
             </table>
