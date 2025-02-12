@@ -86,7 +86,7 @@ require "../conn.php";
               </div> -->
 
               <div class="buttons-wrapper">
-                <button id="Add Account" class="btn btn-primary">
+                <button id="AddAccountBtn" class="btn btn-primary">
                     Add Account
                 </button>
               </div>
@@ -322,6 +322,12 @@ require "../conn.php";
 
 
 <?php require "../Agent Section/includes/scripts.php"; ?>
+
+<script>
+    document.getElementById('AddAccountBtn').addEventListener('click', function() {
+        window.location.href = '../Admin Section/admin-addAccountAgent.php';
+    });
+</script>
 
 <script>
 function toggleSubMenu(submenuId) {
