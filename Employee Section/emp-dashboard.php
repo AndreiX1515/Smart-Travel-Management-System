@@ -448,26 +448,27 @@ error_reporting(E_ALL);
                   <th rowspan="2" style="font-size: 10px; padding: 0px 5px">LAND PRICE</th>
                   <!-- Dynamic headers for agent columns -->
                   <?php
-                  // Define an array of colors to style the <th> elements
-                  $colors = ['#ADD8E6', '#98FB98', '#FFFFCC', '#E6E6FA', '#FFDAB9']; // Extend this array as needed
+                    // Define an array of colors to style the <th> elements
+                    $colors = ['#ADD8E6', '#98FB98', '#FFFFCC', '#E6E6FA', '#FFDAB9']; // Extend this array as needed
 
-                  // Fetch agent column headers dynamically
-                  $sql = "SELECT branchName FROM branch WHERE branchAgentCode IS NOT NULL AND branchAgentCode != ''";
-                  $result = $conn->query($sql);
+                    // Fetch agent column headers dynamically
+                    $sql = "SELECT branchName FROM branch WHERE branchAgentCode IS NOT NULL AND branchAgentCode != ''";
+                    $result = $conn->query($sql);
 
-                  // Initialize a counter for cycling through the color array
-                  $colorIndex = 0;
+                    // Initialize a counter for cycling through the color array
+                    $colorIndex = 0;
 
-                  while ($row = $result->fetch_assoc()) {
-                    // Get the current color based on the index and loop through the color array
-                    $color = $colors[$colorIndex % count($colors)];
+                    while ($row = $result->fetch_assoc()) 
+                    {
+                      // Get the current color based on the index and loop through the color array
+                      $color = $colors[$colorIndex % count($colors)];
 
-                    // Output the <th> element with the inline style for background color
-                    echo '<th colspan="2" data-bs-toggle="tooltip" title="' . $row['branchName'] . '" style="background-color: ' . $color . ';">' . $row['branchName'] . '</th>';
+                      // Output the <th> element with the inline style for background color
+                      echo '<th colspan="2" data-bs-toggle="tooltip" title="' . $row['branchName'] . '" style="background-color: ' . $color . ';">' . $row['branchName'] . '</th>';
 
-                    // Increment the color index for the next iteration
-                    $colorIndex++;
-                  }
+                      // Increment the color index for the next iteration
+                      $colorIndex++;
+                    }
                   ?>
                 </tr>
                 <tr style="top: -10px">
@@ -502,10 +503,10 @@ error_reporting(E_ALL);
               </thead>
               <tbody>
                 <?php
-                $sql = "SELECT DISTINCT a.agentCode AS agentCode, a.agentType AS agentType
-                        FROM agent a
-                        WHERE a.agentCode IS NOT NULL AND a.agentCode != ''";
-                $result = $conn->query($sql);
+                  $sql = "SELECT DISTINCT a.agentCode AS agentCode, a.agentType AS agentType
+                          FROM agent a
+                          WHERE a.agentCode IS NOT NULL AND a.agentCode != ''";
+                  $result = $conn->query($sql);
 
                 $agentColumns = '';
                 while ($row = $result->fetch_assoc()) {
@@ -581,8 +582,10 @@ error_reporting(E_ALL);
                 // Step 4: Display the results in HTML table
 
                 // class="form-check-input"
-                if ($result->num_rows > 0) {
-                  while ($row = $result->fetch_assoc()) {
+                if ($result->num_rows > 0) 
+                {
+                  while ($row = $result->fetch_assoc()) 
+                  {
 
                     $colorMapping = [
                       "Heo, Vicky" => "#FFD700",  // Gold
@@ -630,8 +633,6 @@ error_reporting(E_ALL);
                     }
                     echo '</tr>';
                   }
-                } else {
-                  echo "No records found.";
                 }
                 ?>
               </tbody>
@@ -666,12 +667,13 @@ error_reporting(E_ALL);
                       $sql1 = "SELECT r.transactNo AS `T.N`, c.concernTitle AS `Request`, DATE_FORMAT(r.requestDate, '%m.%d.%Y') AS `Date`,
                                     r.requestStatus, b.agentCode, CONCAT(a.lName, ', ', a.fName, 
                                     IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1)), '')) AS agentName,
-                                    DATE_FORMAT(f.flightDepartureDate, '%m.%d.%Y') AS `flightDepartureDate`
+                                    DATE_FORMAT(f.flightDepartureDate, '%m.%d.%Y') AS `flightDepartureDate`, br.branchName as branchName
                                 FROM request r
                                 JOIN booking b ON r.transactNo = b.transactNo
                                 JOIN concern c ON r.concernId = c.concernId
                                 JOIN agent a ON b.agentId = a.agentId
                                 JOIN flight f ON b.flightId = f.flightId
+                                JOIN branch br ON b.agentCode = br.branchAgentCode
                                 WHERE 
                                   r.requestStatus = 'Submitted'
                                 ORDER BY 
@@ -704,7 +706,7 @@ error_reporting(E_ALL);
                           echo "<tr>
                                   <td>{$row['T.N']}</td>
                                   <td>{$row['flightDepartureDate']}</td>
-                                  <td></td>
+                                  <td>{$row['branchName']}</td>
                                   <td>{$row['Request']}</td>
                                   <td><span class='{$statusClass} p-2'>{$row['requestStatus']}</span></td>
                                 </tr>";
@@ -741,26 +743,28 @@ error_reporting(E_ALL);
                     <tbody>
                       <?php
                       $sql2 = "SELECT p.transactNo AS `Transaction No`, p.paymentTitle AS `Payment Title`,
-                                CONCAT(FORMAT(p.amount, 2)) AS `Amount`, DATE_FORMAT(p.paymentDate, '%m.%d.%Y') AS `Date`, p.paymentType AS `Payment Type`,
-                                p.paymentStatus, b.agentCode, CONCAT(a.lName, ', ', a.fName, 
+                                CONCAT(FORMAT(p.amount, 2)) AS `Amount`, DATE_FORMAT(p.paymentDate, '%m.%d.%Y') AS `Date`, 
+                                p.paymentType AS `Payment Type`, p.paymentStatus, b.agentCode, CONCAT(a.lName, ', ', a.fName, 
                                 IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1)), '')) AS agentName,
-                                DATE_FORMAT(f.flightDepartureDate, '%m.%d.%Y') AS `flightDepartureDate`
+                                DATE_FORMAT(f.flightDepartureDate, '%m.%d.%Y') AS `flightDepartureDate`, br.branchName as branchName
                               FROM payment p
                               JOIN booking b ON p.transactNo = b.transactNo
                               JOIN agent a ON b.agentId = a.agentId
                               JOIN flight f ON b.flightId = f.flightId
-                              WHERE 
-                                p.paymentStatus = 'Submitted'
-                              ORDER BY 
-                                p.paymentDate DESC";  // Order by payment date
+                              JOIN branch br ON b.agentCode = br.branchAgentCode
+                              WHERE p.paymentStatus = 'Submitted'
+                              ORDER BY p.paymentDate DESC";  // Order by payment date
 
                       $res2 = $conn->query($sql2);
 
-                      if ($res2->num_rows > 0) {
-                        while ($row = $res2->fetch_assoc()) {
+                      if ($res2->num_rows > 0) 
+                      {
+                        while ($row = $res2->fetch_assoc()) 
+                        {
                           // Map paymentStatus to Bootstrap pill classes
                           $statusClass = '';
-                          switch ($row['paymentStatus']) {
+                          switch ($row['paymentStatus']) 
+                          {
                             case 'Approved':
                               $statusClass = 'badge bg-success text-light'; // Green pill for "Paid"
                               break;
@@ -779,7 +783,7 @@ error_reporting(E_ALL);
                           echo "<tr>
                                   <td>{$row['Transaction No']}</td>
                                   <td>{$row['flightDepartureDate']}</td>
-                                  <td>{$row['Payment Title']}</td>
+                                  <td>{$row['branchName']}</td>
                                   <td>{$row['Payment Type']}</td>
                                   <td>₱ {$row['Amount']}</td>
                                   <td><span class='{$statusClass} p-2'>{$row['paymentStatus']}</span></td>

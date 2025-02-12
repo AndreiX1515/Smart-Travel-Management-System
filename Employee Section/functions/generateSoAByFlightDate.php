@@ -4,20 +4,20 @@ session_start();
 
 // Get the selected filter values from the POST request
 $companyId = $_POST['companyId'];
-$monthName = date('F', strtotime($_POST['month']));
-$year = $_POST['year'];
+$flightId = $_POST['flightId'];
 $formattedDate = $_POST['currentDate'];
 $soaNumber = $_POST['soaNumber'];
+$flightDate = $_POST['flightDate'];
 
 $space = "";
 
 class PDF extends TCPDF 
 {
   private $yPosition;
-  private $branchName = '';
-  private $formattedDate = '';
-  private $monthName = '';
-  private $soaNumber = '';
+  // private $branchName = '';
+  // private $formattedDate = '';
+  // private $monthName = '';
+  // private $soaNumber = '';
 
   public function setBranchName($branchName) 
   {
@@ -442,7 +442,7 @@ $pdf->SetMargins(10, 10, 10); // Adjust to provide consistent spacing
 
 // Set the branch name
 $pdf->setBranchName($branchName);
-$pdf->setDateRange($monthName);
+$pdf->setDateRange($flightDate);
 $pdf->setUpdateDate($formattedDate);
 $pdf->setSoANo($soaNumber);
 $pdf->AddPage();
