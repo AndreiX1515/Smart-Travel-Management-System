@@ -51,7 +51,7 @@
               </div>
             </div>
 
-            <!-- <div class="columns col-md-3" id="flight-container">
+            <div class="columns col-md-3" id="flight-container">
               <div class="table-filters-container">
                 <label for="flight-filter ">Select Flight Date:</label>
                 <select id="flight-filter" name="flight-filter" class="form-control" onchange="toggleFilters()">
@@ -77,7 +77,7 @@
                   ?>
                 </select>
               </div>
-            </div> -->
+            </div>
 
             <div class="columns col-md-2" id="month-container">
               <div class="table-filters-container">
@@ -321,7 +321,19 @@
 <?php include '../Employee Section/includes/emp-scripts.php' ?>
 
 <!-- Filter Script -->
-<!-- <script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () 
+  {
+    const flightSelect = document.getElementById("flight-filter");
+    const monthSelect = document.getElementById("month-filter");
+    const yearSelect = document.getElementById("year-filter");
+
+    // Attach event listeners to filters
+    flightSelect.addEventListener("change", toggleFilters);
+    monthSelect.addEventListener("change", toggleFilters);
+    yearSelect.addEventListener("change", toggleFilters);
+  });
+
   function toggleFilters() 
   {
     const flightContainer = document.getElementById("flight-container");
@@ -332,60 +344,248 @@
     const yearSelect = document.getElementById("year-filter");
     const resetButtonContainer = document.getElementById("reset-button-container");
 
-    // If a Flight Date is selected, hide the month and year filters
-    if (flightSelect.value !== "Select Flight Date" && flightSelect.value !== "") 
+    const isFlightSelected = flightSelect.value !== "Select Flight Date";
+    const isMonthSelected = monthSelect.value !== "Select month";
+    const isYearSelected = yearSelect.value !== "Select year";
+
+    if (isFlightSelected) 
     {
-      flightContainer.style.display = "block";  // Show the flight container
-      monthContainer.style.display = "none";   // Hide month container
-      yearContainer.style.display = "none";    // Hide year container
-      resetButtonContainer.style.display = "block"; // Show reset button
+      // Flight selected → Hide Month/Year filters, show Reset
+      flightContainer.style.display = "block";
+      monthContainer.style.display = "none";
+      yearContainer.style.display = "none";
+      resetButtonContainer.style.display = "block";
     } 
-    // If Month or Year is selected, hide the flight filter
-    else if (monthSelect.value !== "Select month" || yearSelect.value !== "") 
+    else if (isMonthSelected || isYearSelected)
     {
-      flightContainer.style.display = "none";  // Hide the flight container
-      monthContainer.style.display = "block"; // Show month container
-      yearContainer.style.display = "block";  // Show year container
-      resetButtonContainer.style.display = "block"; // Show reset button
+      // Month or Year selected → Hide Flight filter, show Reset
+      flightContainer.style.display = "none";
+      monthContainer.style.display = "block";
+      yearContainer.style.display = "block";
+      resetButtonContainer.style.display = "block";
     } 
-    // If neither Flight Date, Month, nor Year is selected, show all filters
     else 
     {
+      // No selection → Show all filters, hide Reset
       flightContainer.style.display = "block";
       monthContainer.style.display = "block";
       yearContainer.style.display = "block";
-      resetButtonContainer.style.display = "none"; // Hide reset button
+      resetButtonContainer.style.display = "none";
     }
   }
 
   function resetFilters() 
   {
-    // Reset the values of the filters
     document.getElementById("flight-filter").value = "Select Flight Date";
     document.getElementById("month-filter").value = "Select month";
-    document.getElementById("year-filter").value = "";
+    document.getElementById("year-filter").value = "Select year";
+    document.getElementById("result-container").innerHTML = "";
 
-    // Make sure all filter containers are visible
-    const flightFilter = document.getElementById("flight-filter");
-    const monthFilter = document.getElementById("month-filter");
-    const yearFilter = document.getElementById("year-filter");
-    const flightContainer = flightFilter.closest(".columns");
-    const monthContainer = monthFilter.closest(".columns");
-    const yearContainer = yearFilter.closest(".columns");
-
-    // Display all the containers
-    flightContainer.style.display = "block";
-    monthContainer.style.display = "block";
-    yearContainer.style.display = "block";
-
-    // Hide the reset button
-    const resetButtonContainer = document.getElementById("reset-button-container");
-    resetButtonContainer.style.display = "none";
-
-    // Call the toggleFilters() function to ensure proper visibility
-    toggleFilters();
+    toggleFilters(); // Reapply visibility rules
   }
-</script> -->
+</script>
+
+<!-- Working Merge Preview SOA -->
+<script>
+  document.getElementById('generate-soa-btn').addEventListener('click', function() 
+  {
+    const companyId = document.getElementById('company-filter').value;
+    const monthFilter = document.getElementById('month-filter');
+    const yearFilter = document.getElementById('year-filter');
+    const flightFilter = document.getElementById('flight-filter');
+    const selectedText = flightFilter.options[flightFilter.selectedIndex].text;
+    console.log(selectedText);
+
+    // console.log(flightFilter.text);
+
+    let url = '';
+    let data = `companyId=${companyId}`;
+
+    console.log(yearFilter.value);
+    console.log(monthFilter.value);
+
+
+    // Determine whether to use the date filter or the flight filter
+    if (monthFilter.value !== "Select month" && yearFilter.value !== "Select year") 
+    {
+      // Use Month & Year (Orig Preview SoA)
+      url = '../Employee Section/functions/fetchSoA.php';
+      data += `&month=${monthFilter.value}&year=${yearFilter.value}`;
+    } 
+    else if (flightFilter && flightFilter.value) 
+    {
+      // Use Flight ID (Flight Date Preview SoA)
+      url = '../Employee Section/functions/fetchSoAByFlightDate.php';
+      data += `&flightId=${flightFilter.value}`;
+    } 
+    else 
+    {
+      // Handle case where no filter is selected
+      document.getElementById('result-container').innerHTML = '<p>Please select valid filters.</p>';
+      return;
+    }
+
+    // Disable the button while the request is in progress
+    document.getElementById('generate-soa-btn').disabled = true;
+
+    // Show a loading indicator
+    const resultContainer = document.getElementById('result-container');
+    resultContainer.innerHTML = '<p>Loading...</p>';
+
+    // Send data to PHP using AJAX
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', url, true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+    xhr.onload = function() 
+    {
+      // Re-enable the button after the request is complete
+      document.getElementById('generate-soa-btn').disabled = false;
+
+      if (xhr.status === 200) 
+      {
+        // Parse the JSON response
+        const response = JSON.parse(xhr.responseText);
+
+        if (response.dataAvailable) 
+        {
+          // Update the result container with the HTML from the response
+          resultContainer.innerHTML = response.htmlContent;
+          // Enable the download button if data is available
+          document.getElementById('download-btn').disabled = false;
+        } 
+        else 
+        {
+          // If no data available, update the result container and disable the button
+          resultContainer.innerHTML = '<p>No data found for the selected filters.</p>';
+          document.getElementById('download-btn').disabled = true;
+        }
+      } 
+      else 
+      {
+        // Handle errors in the request
+        resultContainer.innerHTML = '<p>Error loading data. Please try again later.</p>';
+        document.getElementById('download-btn').disabled = true;
+      }
+    };
+
+    xhr.onerror = function() 
+    {
+      // Handle network errors
+      resultContainer.innerHTML = '<p>Network error. Please check your connection and try again.</p>';
+      document.getElementById('generate-soa-btn').disabled = false;
+      document.getElementById('download-btn').disabled = true;
+    };
+
+    console.log(data);
+
+    // Send the data to the server
+    xhr.send(data);
+  });
+</script>
+
+<!-- Working Merge Generate SOA -->
+<script>
+  document.getElementById('download-btn').addEventListener('click', function() 
+  {
+    const companyId = document.getElementById('company-filter').value;
+    const monthFilter = document.getElementById('month-filter');
+    const yearFilter = document.getElementById('year-filter');
+    const flightFilter = document.getElementById('flight-filter');
+    const selectedText = flightFilter.options[flightFilter.selectedIndex].text;
+    console.log(selectedText);
+
+    // Get current date in mm/dd/yyyy format
+    const currentDate = new Date();
+    const currentDateFormatted = (currentDate.getMonth() + 1).toString().padStart(2, '0') + '/' +
+                                  currentDate.getDate().toString().padStart(2, '0') + '/' +
+                                  currentDate.getFullYear();
+
+    let urlAddSoA = '';
+    let urlGenerateSoA = '';
+    let data = `companyId=${companyId}&currentDate=${currentDateFormatted}`;
+
+    // Determine the request type based on available filters
+    if (monthFilter.value !== "Select month" && yearFilter.value !== "Select year")
+    {
+      // Use Month & Year (Orig Generate SoA)
+      urlAddSoA = '../Employee Section/functions/emp-addSoA.php';
+      urlGenerateSoA = '../Employee Section/functions/generateSoA.php';
+      data += `&month=${monthFilter.value}&year=${yearFilter.value}`;
+    } 
+    else if (flightFilter.value !== "Select Flight Date") 
+    {
+      console.log(data);
+      // Use Flight ID (Flight Date Generate SoA)
+      urlAddSoA = '../Employee Section/functions/emp-addSoAByFlightDate.php';
+      urlGenerateSoA = '../Employee Section/functions/generateSoAByFlightDate.php';
+      data += `&flightId=${flightFilter.value}&flightDate=${selectedText}`;
+      console.log(data);
+    } 
+    else 
+    {
+      // Handle case where no valid filters are selected
+      alert('Please select valid filters before generating the SOA.');
+      return;
+    }
+
+    // First, send the request to insert SOA data and get the generated SOA number
+    const xhrAddSoA = new XMLHttpRequest();
+    xhrAddSoA.open('POST', urlAddSoA, true);
+    xhrAddSoA.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhrAddSoA.responseType = 'json'; // Expect JSON response for the SOA number
+
+    xhrAddSoA.onload = function() {
+      if (xhrAddSoA.status === 200) {
+        const response = xhrAddSoA.response;
+        console.log(response);
+
+        if (response.soanum) {
+          const soaNumber = response.soanum; // Get the generated SOA number
+          console.log(soaNumber);
+
+          // Proceed to generate the SOA PDF
+          const xhrPdf = new XMLHttpRequest();
+          xhrPdf.open('POST', urlGenerateSoA, true);
+          xhrPdf.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+          xhrPdf.responseType = 'blob';
+
+          xhrPdf.onload = function() {
+            if (xhrPdf.status === 200) {
+              // Create a link to download the PDF
+              const blob = new Blob([xhrPdf.response], { type: 'application/pdf' });
+              const link = document.createElement('a');
+              link.href = window.URL.createObjectURL(blob);
+              link.download = `Statement_of_Account_${soaNumber}.pdf`;
+              link.click();
+            } else {
+              alert('Failed to generate the SOA PDF. Please try again.');
+            }
+          };
+
+          xhrPdf.onerror = function() {
+            alert('An error occurred while generating the SOA PDF.');
+          };
+
+          const finalData = data + `&soaNumber=${soaNumber}`;
+          xhrPdf.send(finalData);
+          console.log(finalData);
+        } else {
+          alert('Failed to generate SOA Number. Please try again.');
+        }
+      } else {
+        alert('Failed to insert SOA number. Server error: ' + xhrAddSoA.statusText);
+      }
+    };
+
+    xhrAddSoA.onerror = function() {
+      alert('An error occurred while processing the request to insert SOA data.');
+    };
+
+    // Send the request with the necessary values for SOA number
+    xhrAddSoA.send(data);
+  });
+</script>
 
 <!-- Preview SoA -->
 <!-- <script>
@@ -658,8 +858,155 @@
   });
 </script> -->
 
-<!-- Orig Preview SoA -->
-<script>
+<!-- Working Flight Date Preview SoA -->
+<!-- <script>
+  document.getElementById('generate-soa-btn').addEventListener('click', function() 
+  {
+    const companyId = document.getElementById('company-filter').value;
+    const flightId = document.getElementById('flight-filter').value;
+
+    // Disable the button while the request is in progress
+    document.getElementById('generate-soa-btn').disabled = true;
+
+    // Show a loading indicator
+    const resultContainer = document.getElementById('result-container');
+    resultContainer.innerHTML = '<p>Loading...</p>';
+
+    // Send data to PHP using AJAX
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', '../Employee Section/functions/fetchSoAByFlightDate.php', true); // Replace with your PHP file name
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+    const data = `companyId=${companyId}&flightId=${flightId}`;
+
+    xhr.onload = function() 
+    {
+      // Re-enable the button after the request is complete
+      document.getElementById('generate-soa-btn').disabled = false;
+
+      if (xhr.status === 200) 
+      {
+        // Parse the JSON response
+        const response = JSON.parse(xhr.responseText);
+
+        if (response.dataAvailable) 
+        {
+          // Update the result container with the HTML from the response
+          resultContainer.innerHTML = response.htmlContent;
+          // Enable the download button if data is available
+          document.getElementById('download-btn').disabled = false;
+        } 
+        else 
+        {
+          // If no data available, update the result container and disable the button
+          resultContainer.innerHTML = '<p>No data found for the selected filters.</p>';
+          document.getElementById('download-btn').disabled = true;
+        }
+      } 
+      else 
+      {
+        // Handle errors in the request
+        resultContainer.innerHTML = '<p>Error loading data. Please try again later.</p>';
+        document.getElementById('download-btn').disabled = true;
+      }
+    };
+
+    xhr.onerror = function() 
+    {
+      // Handle network errors
+      resultContainer.innerHTML = '<p>Network error. Please check your connection and try again.</p>';
+      document.getElementById('generate-soa-btn').disabled = false;
+      document.getElementById('download-btn').disabled = true;
+    };
+
+    // Send the data to the server
+    xhr.send(data);
+  });
+</script> -->
+
+<!-- Working Flight Date Generate SoA -->
+<!-- <script>
+  document.getElementById('download-btn').addEventListener('click', function() 
+  {
+    const companyId = document.getElementById('company-filter').value;
+    const flightId = document.getElementById('flight-filter').value;
+    const year = document.getElementById('year-filter').value;
+
+    // Get current date in mm/dd/yyyy format
+    const currentDate = new Date();
+    const currentDateFormatted = (currentDate.getMonth() + 1).toString().padStart(2, '0') + '/' +
+                                  currentDate.getDate().toString().padStart(2, '0') + '/' +
+                                  currentDate.getFullYear();
+
+    // First, send the request to agent-addSoA.php to insert SOA data
+    const xhrAddSoA = new XMLHttpRequest();
+    xhrAddSoA.open('POST', '../Agent Section/functions/emp-addSoAByFlightDate.php', true);
+    xhrAddSoA.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhrAddSoA.responseType = 'json'; // Expect JSON response for the SOA number
+
+    xhrAddSoA.onload = function() 
+    {
+      if (xhrAddSoA.status === 200) 
+      {
+        const response = xhrAddSoA.response;
+        
+        if (response.soanum) 
+        {
+          const soaNumber = response.soanum; // Get the generated SOA number
+
+          // Proceed to generate the SOA PDF
+          const xhrPdf = new XMLHttpRequest();
+          xhrPdf.open('POST', '../Agent Section/functions/generateSoAByFlightDate.php', true);
+          xhrPdf.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+          xhrPdf.responseType = 'blob';
+
+          xhrPdf.onload = function() 
+          {
+            if (xhrPdf.status === 200) 
+            {
+              // Create a link to download the PDF
+              const blob = new Blob([xhrPdf.response], { type: 'application/pdf' });
+              const link = document.createElement('a');
+              link.href = window.URL.createObjectURL(blob);
+              link.download = `Statement_of_Account_${soaNumber}.pdf`;
+              link.click();
+            } 
+            else 
+            {
+              alert('Failed to generate the SOA PDF. Please try again.');
+            }
+          };
+
+          xhrPdf.onerror = function() {
+            alert('An error occurred while generating the SOA PDF.');
+          };
+
+          // Send the request to generate the SOA PDF with the SOA number
+          xhrPdf.send(`companyId=${companyId}&flightId=${flightId}&year=${year}&currentDate=${currentDateFormatted}&soaNumber=${soaNumber}`);
+        } 
+        else 
+        {
+          alert('Failed to generate SOA Number. Please try again.');
+        }
+      } 
+      else 
+      {
+        alert('Failed to insert SOA number. Server error: ' + xhrAddSoA.statusText);
+      }
+    };
+
+    xhrAddSoA.onerror = function() 
+    {
+      alert('An error occurred while processing the request to insert SOA data.');
+    };
+
+    // Send the request with the necessary values for SOA number
+    xhrAddSoA.send(`companyId=${companyId}&flightId=${flightId}&currentDate=${currentDateFormatted}`);
+  });
+</script> -->
+
+<!-- Working Orig Preview SoA -->
+<!-- <script>
   document.getElementById('generate-soa-btn').addEventListener('click', function() 
   {
     const companyId = document.getElementById('company-filter').value;
@@ -723,10 +1070,10 @@
     // Send the data to the server
     xhr.send(data);
   });
-</script>
+</script> -->
 
-<!-- Orig Generate SoA -->
-<script>
+<!-- Working Orig Generate SoA -->
+<!-- <script>
   document.getElementById('download-btn').addEventListener('click', function() 
   {
     const companyId = document.getElementById('company-filter').value;
@@ -741,7 +1088,7 @@
 
     // First, send the request to agent-addSoA.php to insert SOA data
     const xhrAddSoA = new XMLHttpRequest();
-    xhrAddSoA.open('POST', '../Agent Section/functions/agent-addSoA.php', true);
+    xhrAddSoA.open('POST', '../Employee Section/functions/emp-addSoA.php', true);
     xhrAddSoA.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhrAddSoA.responseType = 'json'; // Expect JSON response for the SOA number
 
@@ -757,7 +1104,7 @@
 
           // Proceed to generate the SOA PDF
           const xhrPdf = new XMLHttpRequest();
-          xhrPdf.open('POST', '../Agent Section/functions/generateSoA.php', true);
+          xhrPdf.open('POST', '../Employee Section/functions/generateSoA.php', true);
           xhrPdf.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
           xhrPdf.responseType = 'blob';
 
@@ -804,7 +1151,7 @@
     // Send the request with the necessary values for SOA number
     xhrAddSoA.send(`companyId=${companyId}&month=${month}&year=${year}&currentDate=${currentDateFormatted}`);
   });
-</script>
+</script> -->
 
 <!-- Modal -->
 <!-- <script>

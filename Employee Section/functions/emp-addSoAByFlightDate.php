@@ -2,10 +2,6 @@
 require "../../conn.php"; // Include the DB connection
 session_start();
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-header('Content-Type: application/json');
-
 if (isset($_POST['companyId']) && isset($_POST['flightId']) && isset($_POST['currentDate'])) 
 {
   // Get data from the POST request
@@ -13,39 +9,30 @@ if (isset($_POST['companyId']) && isset($_POST['flightId']) && isset($_POST['cur
   $currentDate = $_POST['currentDate']; // Current date sent from the client
   $flightId = $_POST['flightId'];
 
-  // Check if flightId is provided or if we use month/year
-  if ($flightId) 
-  {
-    // Flight date-based SOA
-    $sqlFlight = "SELECT flightDepartureDate FROM flight WHERE id = ?";
-    $stmtFlight = $conn->prepare($sqlFlight);
-    $stmtFlight->bind_param('i', $flightId);
-    $stmtFlight->execute();
-    $resultFlight = $stmtFlight->get_result();
-    
-    if ($rowFlight = $resultFlight->fetch_assoc()) 
-    {
-      $flightDate = $rowFlight['flightDepartureDate'];
-      $month = date('m', strtotime($flightDate));
-      $year = date('Y', strtotime($flightDate));
-    } 
-    else 
-    {
-      echo json_encode(['error' => "Invalid Flight ID."]);
-      exit();
-    }
-
-    $stmtFlight->close();
-  }
-  else 
-  {
-    // Month/Year-based SOA
-    $month = date('m', strtotime($_POST['month']));
-    $year = $_POST['year'];
-  }
-
   // Begin the transaction
   $conn->begin_transaction();
+
+  // Check if flightId is provided or if we use month/year
+  // if ($flightId) 
+  // {
+  //   // Flight date-based SOA
+  //   $sqlFlight = "SELECT flightDepartureDate FROM flight WHERE id = ?";
+  //   $stmtFlight = $conn->prepare($sqlFlight);
+  //   $stmtFlight->bind_param('i', $flightId);
+  //   $stmtFlight->execute();
+  //   $resultFlight = $stmtFlight->get_result();
+    
+  //   if ($rowFlight = $resultFlight->fetch_assoc()) 
+  //   {
+  //     $flightDate = $rowFlight['flightDepartureDate'];
+  //   } 
+  //   else 
+  //   {
+  //     echo json_encode(['error' => "Invalid Flight ID."]);
+  //   }
+  // }
+
+  $year = date('Y', strtotime($currentDate));
 
   // Fetch the last SOA number for the current year
   $sql5 = "SELECT MAX(id) AS lastSoAId FROM soa";
