@@ -1300,7 +1300,7 @@ error_reporting(E_ALL);
         var table = $('.info-table').DataTable({
           autoWidth: false,
           scrollX: true, // Enable horizontal scrolling
-          scrollY: "570px", // Enable vertical scrolling and set height
+          scrollY: "575px", // Enable vertical scrolling and set height
           paging: false, // Disable pagination
           searching: false, // Disable search
           info: false, // Disable info

@@ -81,7 +81,7 @@ $position = htmlspecialchars(strtoupper($empId));
 		</li>
 
 		<li class="nav-item transaction">
-			<a class="nav-link page-button" href="../Employee Section/emp-visaRequirementsTable.php" data-page-name="Guest List">
+			<a class="nav-link page-button" href="../Employee Section/emp-visaRequirementsTable.php" data-page-name="Visa Requirements">
 				<div class="icon"><i class="fas fa-file-lines"></i></i></div>
 				<span class="label" style="font-size: 14px;" >Visa Requirements</span>
 			</a>
@@ -97,7 +97,7 @@ $position = htmlspecialchars(strtoupper($empId));
 		<!-- For Approvals Dropdown -->
 		<li class="nav-item dropdown">
 			<a class="nav-link page-button" href="#" id="manageBookingDropdown" role="button" data-bs-toggle="collapse" data-bs-target="#manageBookingMenu" aria-expanded="false" aria-controls="manageBookingMenu" data-page-name="Operationals">
-				<div class="icon"><i class="fa-solid fa-thumbs-up"></i></i></i></div>
+				<div class="icon"><i class="fa-solid fa-thumbs-up"></i></div>
 				<span class="label">For Approvals</span>
 			</a>
 			<div class="collapse" id="manageBookingMenu">
@@ -225,6 +225,33 @@ $position = htmlspecialchars(strtoupper($empId));
     });
 });
 
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Check if there's a saved title in local storage
+    const savedTitle = localStorage.getItem('pageTitle');
+    if (savedTitle) {
+        document.getElementById('page-title').textContent = savedTitle;
+    }
+
+    const buttons = document.querySelectorAll('.page-button');
+    buttons.forEach(button => {
+        button.addEventListener('click', (event) => {
+            event.preventDefault();
+            const newPageName = button.getAttribute('data-page-name');
+            document.getElementById('page-title').textContent = newPageName;
+
+            // Save the title to local storage
+            localStorage.setItem('pageTitle', newPageName);
+
+            const newUrl = button.getAttribute('href');
+            setTimeout(() => {
+                window.location.href = newUrl;
+            }, 25);
+        });
+    });
+  });
 </script>
 
 

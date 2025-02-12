@@ -9,7 +9,7 @@ require "../conn.php";
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard</title>
+  <title></title>
 
   <?php include "../Agent Section/includes/head.php"; ?>
 
@@ -23,7 +23,7 @@ require "../conn.php";
 
   <div class="main-content-container">
     <div class="navbar">
-      <h5 class="title-page">Transaction - Packages</h5>
+      <h5 class="title-page">Packages - Transactions table</h5>
     </div>
 
     <div class="main-content">

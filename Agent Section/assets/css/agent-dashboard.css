@@ -316,7 +316,7 @@
 /* Non-active Tab Styling */
 .nav-pills .nav-link {
   color: rgb(0, 0, 0); /* Non-active tab text color */
-  font-weight: 600;
+  font-weight: 400;
   margin-right: 20px; /* Gap between each tab */
   background-color: transparent; /* Transparent background for non-active tabs */
   border: 1px solid #ccc; /* Light border for non-active tabs */
@@ -329,6 +329,18 @@
   border-color: #aaa; /* Border color on hover for non-active tabs */
 }
 
+
+
+
+
+
+
+
+
+
+
+
+/* ============================= */
 
 /* Second Row Container */
 .second-row-container {
@@ -407,7 +419,7 @@
 
 /* Container for Scrollable Unconfirm Table */
 .unconfirm-table-container {
-  width: 33.33%;
+  width: 25%;
   overflow-x: auto; 
   overflow-y: auto; 
   height: 28vh; 
@@ -427,7 +439,8 @@
 
 
 .unconfirm-table thead {
-  background-color: #4FFFB0;
+  background-color: #dc3545;
+  color: #ffffff;
   text-align: left;
   position: sticky;
   top: 0;
@@ -435,23 +448,46 @@
 }
 
 .unconfirm-table thead th {
-  padding: 4px 14px; 
+  font-size: 10px; 
+  padding: 4px 8px; 
   font-weight: bold;
-  color: #333;
+  color: #ffffff;
   border-bottom: 2px solid rgba(0, 0, 0, 0.1);
-  font-size: 12px; 
+  border-left: 1px solid rgba(0, 0, 0, 0.2); /* Left border */
+  border-right: 1px solid rgba(0, 0, 0, 0.2); /* Right border */
+}
+
+/* Remove left border from the first column and right border from the last column in header */
+.unconfirm-table thead th:first-child {
+  border-left: none;
+}
+
+.unconfirm-table thead th:last-child {
+  border-right: none;
 }
 
 .unconfirm-table tbody td {
-  padding: 4px 14px;  
+  padding: 4px 8px;  
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  border-left: 1px solid rgba(0, 0, 0, 0.2); /* Left border */
+  border-right: 1px solid rgba(0, 0, 0, 0.2); /* Right border */
   color: #555;
   vertical-align: middle; 
   font-weight: 600;
 }
 
+/* Remove left border from the first column and right border from the last column in body */
+.unconfirm-table tbody td:first-child {
+  border-left: none;
+}
+
+.unconfirm-table tbody td:last-child {
+  border-right: none;
+}
+
 .unconfirm-table tbody tr {
-  background-color: transparent;
+  padding: 4px 14px; 
+  background-color: transparent; 
   transition: background-color 0.3s;
   font-size: 12px;
   font-weight: bold;
@@ -461,24 +497,15 @@
   background-color: #e6e6e6; /* Light grey background on hover for clarity */
 }
 
-.td-content {
-  display: flex; /* Flexbox for alignment */
-  flex-direction: column; /* Stack content vertically */
-  gap: 2px; /* Consistent gap */
+.unconfirm-table tbody tr:first-child {
+  border-top-left-radius: 10px; 
+  border-top-right-radius: 10px;
 }
 
-.td-content h6 {
-  margin: 0;
-  font-size: 12px; /* Reduced for compact view */
-  font-weight: 600;
-  color: #000;
+.unconfirm-table tbody tr:last-child {
+  border-bottom-left-radius: 10px; 
+  border-bottom-right-radius: 10px;
 }
-
-.td-content h6 span {
-  font-weight: 400;
-  font-size: 12px; /* Smaller text for additional details */
-}
-
 
 
 
@@ -486,17 +513,17 @@
 /* Adjust column widths */
 .unconfirm-table thead th:nth-child(1),
 .unconfirm-table tbody td:nth-child(1) {
-width: 18%; /* Column for Transaction No. */
+width: 6%; /* Column for Transaction No. */
 }
 
 .unconfirm-table thead th:nth-child(2),
 .unconfirm-table tbody td:nth-child(2) {
-width: 20%; /* Column for Package */
+width: 12%; /* Column for Package */
 }
 
 .unconfirm-table thead th:nth-child(3),
 .unconfirm-table tbody td:nth-child(3) {
-width: 20%; /* Column for Flight Date */
+width: 12%; /* Column for Flight Date */
 }
 
 .unconfirm-table thead th:nth-child(4),
@@ -504,15 +531,8 @@ width: 20%; /* Column for Flight Date */
 width: 5%; /* Adjusted for Total Pax */
 }
 
-.unconfirm-table thead th:nth-child(5),
-.unconfirm-table tbody td:nth-child(5) {
-width: 20%; /* Column for Contact Name */
-}
 
-.unconfirm-table thead th:nth-child(6),
-.unconfirm-table tbody td:nth-child(6) {
-width: 10%; /* Column for Status */
-}
+
 
 
 
@@ -533,6 +553,9 @@ position: relative;
   align-items: center;
 }
 
+
+
+/* ==================*/
 
 .two .body {
   position: relative; 
@@ -562,7 +585,8 @@ position: relative;
 }
 
 .request-table thead {
-  background-color: #4FFFB0;
+  background-color: #dc3545;
+  color: #ffffff;
   text-align: left;
   position: sticky;
   top: 0;
@@ -570,19 +594,41 @@ position: relative;
 }
 
 .request-table thead th {
-  padding: 4px 14px; 
+  padding: 4px 8px; 
   font-weight: bold;
   text-transform: uppercase;
-  color: #333;
+  color: #ffffff;
   border-bottom: 2px solid rgba(0, 0, 0, 0.1);
-  font-size: 12px; 
+  border-left: 1px solid rgba(0, 0, 0, 0.2); /* Left border */
+  border-right: 1px solid rgba(0, 0, 0, 0.2); /* Right border */
+  font-size: 10px; 
+}
+
+/* Remove left border from the first column and right border from the last column in header */
+.request-table thead th:first-child {
+  border-left: none;
+}
+
+.request-table thead th:last-child {
+  border-right: none;
 }
 
 .request-table tbody td {
-  padding: 7.5px 14px; 
+  padding: 4px 8px; 
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  border-left: 1px solid rgba(0, 0, 0, 0.2); /* Left border */
+  border-right: 1px solid rgba(0, 0, 0, 0.2); /* Right border */
   color: #555;
   vertical-align: middle; 
+}
+
+/* Remove left border from the first column and right border from the last column in body */
+.request-table tbody td:first-child {
+  border-left: none;
+}
+
+.request-table tbody td:last-child {
+  border-right: none;
 }
 
 .request-table tbody tr {
@@ -606,6 +652,34 @@ position: relative;
   border-bottom-right-radius: 10px;
 }
 
+/* Adjust column widths */
+.request-table th:nth-child(1), .request-table td:nth-child(1) {
+  width: 10%; /* No. */
+}
+
+.request-table th:nth-child(2), .request-table td:nth-child(2) {
+  width: 30%; /* Name */
+}
+
+.request-table th:nth-child(3), .request-table td:nth-child(3) {
+  width: 40%; /* Request */
+}
+
+.request-table th:nth-child(4), .request-table td:nth-child(4) {
+  width: 10%; /* Date Requested */
+}
+
+.request-table th:nth-child(5), .request-table td:nth-child(5) {
+  width: 10%; /* Status */
+}
+
+
+
+
+
+
+
+/* ========= */
 
 /* Third Row Container - Div Three */
 .three {
@@ -633,7 +707,7 @@ position: relative;
 }
 
 .pending-payment-container {
-  width: 33.33%;
+  width: 28%;
   overflow-x: auto; 
   overflow-y: auto; 
   height: 28vh; 
@@ -647,12 +721,13 @@ position: relative;
   width: 100%;
   border-collapse: collapse;
   font-family: Arial, sans-serif;
-  font-size: 12px;
+  font-size: 10px; 
   white-space: nowrap; 
 }
 
 .pending-payment-table thead {
-  background-color: #4FFFB0;
+  background-color: #dc3545;
+  color: #ffffff;
   text-align: left;
   position: sticky;
   top: 0;
@@ -660,18 +735,40 @@ position: relative;
 }
 
 .pending-payment-table thead th {
-  font-size: 12px; 
+  font-size: 10px; 
   padding: 4px 8px; 
   font-weight: bold;
-  color: #333;
+  color: #ffffff;
   border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+  border-left: 1px solid rgba(0, 0, 0, 0.2); /* Left border */
+  border-right: 1px solid rgba(0, 0, 0, 0.2); /* Right border */
+}
+
+/* Remove left border from the first column and right border from the last column in header */
+.pending-payment-table thead th:first-child {
+  border-left: none;
+}
+
+.pending-payment-table thead th:last-child {
+  border-right: none;
 }
 
 .pending-payment-table tbody td {
   padding: 4px 8px;  
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  border-left: 1px solid rgba(0, 0, 0, 0.2); /* Left border */
+  border-right: 1px solid rgba(0, 0, 0, 0.2); /* Right border */
   color: #555;
   vertical-align: middle; 
+}
+
+/* Remove left border from the first column and right border from the last column in body */
+.pending-payment-table tbody td:first-child {
+  border-left: none;
+}
+
+.pending-payment-table tbody td:last-child {
+  border-right: none;
 }
 
 .pending-payment-table tbody tr {
@@ -683,8 +780,37 @@ position: relative;
 }
 
 .pending-payment-table tbody tr:hover {
-  background-color: #b2ebf2;
-} 
+  background-color: #ffe0b2; 
+}
+
+.pending-payment-table tbody tr:first-child {
+  border-top-left-radius: 10px; 
+  border-top-right-radius: 10px;
+}
+
+.pending-payment-table tbody tr:last-child {
+  border-bottom-left-radius: 10px; 
+  border-bottom-right-radius: 10px;
+}
+
+
+.td-content {
+  display: flex; 
+  flex-direction: column; 
+  gap: 2px; 
+}
+
+.td-content h6 {
+  margin: 0;
+  font-size: 12px; 
+  font-weight: 600;
+  color: #000;
+}
+
+.td-content h6 span {
+  font-weight: 400;
+  font-size: 12px; 
+}
 
 
 
@@ -719,6 +845,11 @@ position: relative;
  }
  
  
+
+
+
+ /* ======================== */
+
  /* Confirm Table Container */
  .confirm-table-container {
   width: 100%;
@@ -743,7 +874,8 @@ position: relative;
  }
 
 .confirm-table thead {
-  background-color: #e0f7fa;
+  background-color: #dc3545;
+  color: #ffffff;
   text-align: left;
   position: sticky;
   top: 0;
@@ -752,28 +884,121 @@ position: relative;
 
 .confirm-table thead th {
   font-size: 12px; 
-  padding: 4px 14px; 
+  padding: 4px 8px; 
   font-weight: bold;
-  color: #333;
-  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+  color: #ffffff;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  border-left: 1px solid rgba(0, 0, 0, 0.2); /* Left border */
+  border-right: 1px solid rgba(0, 0, 0, 0.2); /* Right border */
+}
+
+/* Remove left border from the first column and right border from the last column in body */
+.confirm-table thead th:first-child {
+  border-left: none;
+}
+
+.confirm-table thead th:last-child {
+  border-right: none;
 }
 
 .confirm-table tbody td {
-  padding: 10.5px 14px; 
+  padding: 4px 8px;  
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  border-left: 1px solid rgba(0, 0, 0, 0.2); /* Left border */
+  border-right: 1px solid rgba(0, 0, 0, 0.2); /* Right border */
   color: #555;
   font-weight: 600;
 }
 
+
+/* Remove left border from the first column and right border from the last column in body */
+.confirm-table tbody td:first-child {
+  border-left: none;
+}
+
+.confirm-table tbody td:last-child {
+  border-right: none;
+}
+
 .confirm-table tbody tr {
-  background-color: transparent;
+  background-color: transparent; 
   transition: background-color 0.3s;
   font-size: 12px;
   font-weight: bold;
 }
 
 .confirm-table tbody tr:hover {
-  background-color: #b2ebf2;
+  background-color: #b2ebf2; /* Light blue background on hover */
+}
+
+.confirm-table tbody tr:first-child {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.confirm-table tbody tr:last-child {
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+/* Adjust column widths */
+.confirm-table th:nth-child(1), .confirm-table td:nth-child(1) {
+  width: 5%; /* NO. */
+}
+
+.confirm-table th:nth-child(2), .confirm-table td:nth-child(2) {
+  width: 15%; /* NAME */
+}
+
+.confirm-table th:nth-child(3), .confirm-table td:nth-child(3) {
+  width: 15%; /* FLIGHT DATE */
+}
+
+.confirm-table th:nth-child(4), .confirm-table td:nth-child(4) {
+  width: 5%; /* TOTAL PAX. */
+  text-align: center;
+}
+
+.confirm-table th:nth-child(5), .confirm-table td:nth-child(5) {
+  width: 15%; /* CONTACT NAME */
+}
+
+.confirm-table th:nth-child(6), .confirm-table td:nth-child(6) {
+  width: 15%; /* BOOKING TYPE */
+  text-align: center;
+}
+
+.confirm-table th:nth-child(7), .confirm-table td:nth-child(7) {
+  width: 10%; /* AMOUNT PAID */
+}
+
+.confirm-table th:nth-child(8), .confirm-table td:nth-child(8) {
+  width: 10%; /* BALANCE */
+}
+
+.confirm-table th:nth-child(9), .confirm-table td:nth-child(9) {
+  width: 10%; /* STATUS */
+  text-align: center;
+}
+
+/* Remove left border from the first column and right border from the last column in body */
+.confirm-table tbody td:first-child {
+  border-left: none;
+}
+
+.confirm-table tbody td:last-child {
+  border-right: none;
+}
+
+.confirm-table tbody tr {
+  background-color: transparent; 
+  transition: background-color 0.3s;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.confirm-table tbody tr:hover {
+  background-color: #b2ebf2; /* Light blue background on hover */
 }
 
 .confirm-table tbody tr:first-child {
@@ -788,6 +1013,17 @@ position: relative;
 
 
 
+
+
+
+
+
+
+
+
+
+/* ====================== */
+
 /* Table styles */
 .table-container {
   width: 100%;
@@ -795,6 +1031,7 @@ position: relative;
   overflow-x: auto;
   margin-bottom: 20px;
   display: block;
+  border: 1px solid gainsboro;
 }
 
 .table-container::-webkit-scrollbar {
@@ -824,9 +1061,10 @@ position: relative;
  margin-top: 5px;
  gap: 15px; 
  position: relative;
- height: 65vh; 
+ height: 66vh; 
  overflow-x: auto; 
- overflow-y: auto; 
+ overflow-y: auto;
+ border: 1px solid gainsboro; 
 }
 
 /* Card Container Styling */
@@ -834,7 +1072,6 @@ position: relative;
  width: 100%;
  height: 65vh;
  background-color: #fff; 
- border-radius: 8px; 
  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
  overflow: hidden;
 }
@@ -847,6 +1084,7 @@ position: relative;
  overflow-y: auto; 
  position: relative;
 }
+
 
 /* Info Table */
 .info-table {
@@ -883,6 +1121,10 @@ position: relative;
  display: block; 
  position: relative;
 }
+
+
+
+
 
 /* Optional: Add padding and borders to table cells for better visibility */
 .info-table td, .info-table th {
