@@ -12,13 +12,18 @@ $response = array();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Retrieve and sanitize form data
-    $email = mysqli_real_escape_string($conn, $_POST['email']);
+    
     $fName = mysqli_real_escape_string($conn, $_POST['firstName']);
     $iName = mysqli_real_escape_string($conn, $_POST['lastName']);
     $mName = mysqli_real_escape_string($conn, $_POST['middleName']);
+    $Suffix = mysqli_real_escape_string($conn, $_POST['Suffix']);
     $countryCode = mysqli_real_escape_string($conn, $_POST['countryCode']);
     $contactNo = mysqli_real_escape_string($conn, $_POST['contactNo']);
-
+    $email = mysqli_real_escape_string($conn, $_POST['email']);
+    $password = mysqli_real_escape_string($conn, $_POST['password']);
+    $branchId = mysqli_real_escape_string($conn, $_POST['branchId']);
+    $agentType = mysqli_real_escape_string($conn, $_POST['agentType']);
+   
 
     // $password = mysqli_real_escape_string($conn, $_POST['password']);
     // $otp = mysqli_real_escape_string($conn, 999999);
@@ -35,14 +40,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // $commissionRate = mysqli_real_escape_string($conn, $_POST['commissionRate']);
 
     // Validate required fields
-    // if (empty($email) || empty($password) || empty($otp) || empty($accountStatus) || empty($accountType) ||
-    //     empty($branchId) || empty($fName) || empty($iName) || empty($mName) || empty($contactNo) ||
-    //     empty($agentType) || empty($agentRole) || empty($commissionRate)) {
-    //     $response['status'] = 'error';
-    //     $response['message'] = 'All fields are required.';
-    //     echo json_encode($response);
-    //     exit();
-    // }
+    if (empty($email) || empty($password) || empty($Suffix) || empty($countryCode) || 
+        empty($contactNo) || empty($fName) || empty($iName) || empty($mName)) {
+        $response['status'] = 'error';
+        $response['message'] = 'All fields are required.';
+        echo json_encode($response);
+        exit();
+    }
 
     // Check if the provided agentCode exists
     $sql_check_agentCode = "SELECT COUNT(*) AS count FROM agent WHERE agentCode = '$agentCode'";

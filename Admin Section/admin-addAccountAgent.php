@@ -50,27 +50,28 @@ require "../conn.php";
               <div class="content-body">
 
                 <div class="row">
-                  <div class="col-md-2">
+                  <div class="col-md-3">
                     <label for="firstName" class="form-label">First Name</label>
                     <input type="text" class="form-control" id="firstName" name="firstName" required>
                   </div>
 
-                  <div class="col-md-2">
+                  <div class="col-md-3">
                     <label for="lastName" class="form-label">Last Name</label>
                     <input type="text" class="form-control" id="lastName" name="lastName" required>
                   </div>
 
-                  <div class="col-md-2">
+                  <div class="col-md-3">
                     <label for="middleName" class="form-label">Middle Name</label>
+                    <input type="text" class="form-control" id="middleName" name="middleName">
+                  </div>
+
+                  <div class="col-md-3">
+                    <label for="middleName" class="form-label">Suffix</label>
                     <input type="text" class="form-control" id="middleName" name="middleName">
                   </div>
                 </div>
 
                 <div class="row mt-3">
-                  <div class="col-md-3">
-                    <label for="email" class="form-label">Email/Agent Code</label>
-                    <input type="email" class="form-control" id="email" name="email" required>
-                  </div>
 
                   <div class="col-md-4">
                     <div class="form-group">
@@ -276,6 +277,39 @@ require "../conn.php";
 
                     </div>
                   </div>
+
+                  <div class="col-md-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                  </div>
+
+                </div>
+
+                <div class="row mt-3">
+
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label for="email" class="form-label">Email</label>
+                      <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                  </div>
+
+                  
+
+                </div>
+
+                <div class="row password">
+
+                <div class="col-md-3">
+                    <label for="email" class="form-label">Password</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                  </div>
+
+                  <div class="col-md-3">
+                    <label for="email" class="form-label">Confirm Password</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                  </div>
+
                 </div>
 
               </div>
@@ -312,6 +346,16 @@ require "../conn.php";
                       ?>
                     </select>
                   </div>
+
+                  <div class="col-md-3">
+                    <label for="accountStatus" class="form-label">Agent Type</label>
+                    <select class="form-select" id="accountStatus" name="accountStatus" required>
+                        <option value="" selected disabled>Select Agent Type</option>
+                        <option value="Wholesaler">Wholesaler</option>
+                        <option value="Retailer">Retailer</option>
+                    </select>
+                  </div>
+
                 </div>
 
               </div>
