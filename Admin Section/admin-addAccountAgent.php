@@ -1,5 +1,6 @@
 <?php
 session_start();
+require "../conn.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -37,33 +38,34 @@ session_start();
       </div>
 
       <div class="main-content">
+        <form id="addAccountForm">
+
         <div class="content-container">
 
-          <form id="addAccountForm">
-
-            <div class="card mb-3">
-              <div class="card-header">
+            <div class="content-section">
+              <div class="content-header">
                 Personal Information
               </div>
 
-              <div class="card-body">
+              <div class="content-body">
+
                 <div class="row">
-                  <div class="col-md-4">
+                  <div class="col-md-2">
                     <label for="firstName" class="form-label">First Name</label>
                     <input type="text" class="form-control" id="firstName" name="firstName" required>
                   </div>
 
-                  <div class="col-md-4">
+                  <div class="col-md-2">
                     <label for="lastName" class="form-label">Last Name</label>
                     <input type="text" class="form-control" id="lastName" name="lastName" required>
                   </div>
 
-                  <div class="col-md-4">
+                  <div class="col-md-2">
                     <label for="middleName" class="form-label">Middle Name</label>
                     <input type="text" class="form-control" id="middleName" name="middleName">
                   </div>
-
                 </div>
+
                 <div class="row mt-3">
                   <div class="col-md-3">
                     <label for="email" class="form-label">Email/Agent Code</label>
@@ -267,49 +269,6 @@ session_start();
 
                         <input type="text" id="contactNo" name="contactNo" class="form-control" placeholder="Enter phone number" required>
 
-                        <script>
-                          let contactNo = document.getElementById("contactNo");
-                          let countryCode = document.getElementById("countryCode");
-
-                          // **Set default PH format on page load**
-                          contactNo.placeholder = "9-XXXXXXXXX"; // PH format
-                          contactNo.value = "9-"; // Reset to enforce format
-                          contactNo.setAttribute("maxlength", "11"); // Limit length
-
-                          // Listen for country code changes
-                          countryCode.addEventListener("change", function() {
-                            if (this.value === "+63") {
-                              contactNo.placeholder = "9-XXXXXXXXX"; // PH format
-                              contactNo.value = "9-"; // Reset to enforce format
-                              contactNo.setAttribute("maxlength", "11"); // Limit length
-                            } else {
-                              contactNo.placeholder = "Enter phone number"; // Default format
-                              contactNo.value = ""; // Clear input
-                              contactNo.removeAttribute("maxlength"); // Remove length restriction
-                            }
-                          });
-
-                          // Enforce PH number format while typing
-                          contactNo.addEventListener("input", function() {
-                            if (countryCode.value === "+63") {
-                              this.value = this.value.replace(/\D/g, ""); // Remove non-numeric characters
-
-                              // Ensure '9-' is always at the start
-                              if (!this.value.startsWith("9-")) {
-                                this.value = "9-" + this.value.replace(/^9-?/, "").slice(0, 9);
-                              }
-                            }
-                          });
-
-                          // Prevent users from editing the '9-'
-                          contactNo.addEventListener("keydown", function(event) {
-                            if (countryCode.value === "+63") {
-                              if (this.selectionStart < 2) {
-                                event.preventDefault(); // Block edits before '9-'
-                              }
-                            }
-                          });
-                        </script>
 
                         <span id="contactNoError" class="text-danger"></span>
                         <!-- Error message for Contact No -->
@@ -320,57 +279,52 @@ session_start();
                 </div>
 
               </div>
+
+
             </div>
 
-            <div class="card mb-3">
-              <div class="card-header">Account Information</div>
+            <div class="content-section">
+              <div class="content-header">
+                Account Information
+              </div>
 
-              <div class="card-body">
+              <div class="content-body">
+
                 <div class="row">
-
-                  <div class="col-md-2">
-                    <label for="accountType" class="form-label">Account Type</label>
-                    <select class="form-select" id="accountType" name="accountType" required>
-                      <option value="admin">Admin</option>
-                      <option value="agent">Agent</option>
-                      <option value="employee">Employee</option>
-                      <option value="guest">Guest</option>
-                    </select>
-                  </div>
-
-                  <div class="col-md-2">
+                  <div class="col-md-3">
                     <label for="accountStatus" class="form-label">Branch</label>
                     <select class="form-select" id="accountStatus" name="accountStatus" required>
-                      <option value="active">Active</option>
-                      <option value="inactive">Inactive</option>     
+                      <option value="All" disabled selected>Select Branch</option>
+                      <?php
+                      // Execute the SQL query
+                      $sql1 = "SELECT branchId, branchName FROM branch ORDER BY branchName ASC";
+                      $res1 = $conn->query($sql1);
+
+                      // Check if there are results
+                      if ($res1->num_rows > 0) {
+                        // Loop through the results and generate options
+                        while ($row = $res1->fetch_assoc()) {
+                          echo "<option value='" . $row['branchName'] . "'>" . $row['branchName'] . "</option>";
+                        }
+                      } else {
+                        echo "<option value=''>No companies available</option>";
+                      }
+                      ?>
                     </select>
                   </div>
-
-                  <div class="col-md-2">
-                    <label for="accountStatus" class="form-label">Branch</label>
-                    <select class="form-select" id="accountStatus" name="accountStatus" required>
-                      <option value="active">Active</option>
-                      <option value="inactive">Inactive</option>
-                    </select>
-                  </div>
-
                 </div>
 
               </div>
-            </div>
 
+
+            </div>
 
             <div class="submit-button-wrapper">
               <button type="submit" class="btn btn-primary">Add Agent</button>
             </div>
-          </form>
-
 
         </div>
-
-
-
-
+        </form>
 
       </div>
     </div>
@@ -380,46 +334,97 @@ session_start();
 
   <?php require "../Agent Section/includes/scripts.php"; ?>
 
+
+
+
+
+
+  <!-- ContactNo and Country Code Script -->
   <script>
-    $(document).ready(function () {
-        $('#addAccountForm').submit(function (event) {
-            event.preventDefault(); // Prevent default form submission
+    let contactNo = document.getElementById("contactNo");
+    let countryCode = document.getElementById("countryCode");
 
-            // Log form data to console
-            let formData = new FormData(this);
-            formData.forEach(function(value, key) {
-                console.log(key + ": " + value); // Log each form field and its value
-            });
+    // **Set default PH format on page load**
+    contactNo.placeholder = "9-XXXXXXXXX"; // PH format
+    contactNo.value = "9-"; // Reset to enforce format
+    contactNo.setAttribute("maxlength", "11"); // Limit length
 
-            $.ajax({
-                url: '../Admin Section/functions/admin-addAccountAgent - code.php',
-                type: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function (response) {
-                    let jsonResponse = JSON.parse(response);
-                    
-                    // Display the response message in the DOM
-                    if (jsonResponse.status === "success") {
-                        $('#responseMessage').html('<span style="color:green;">' + jsonResponse.message + '</span>');
-                        // Display an alert for success
-                        alert("Success: " + jsonResponse.message);
-                    } else {
-                        $('#responseMessage').html('<span style="color:red;">' + jsonResponse.message + '</span>');
-                        // Display an alert for error
-                        alert("Error: " + jsonResponse.message);
-                    }
-                },
-
-                error: function (jqXHR, textStatus, errorThrown) {
-                    console.error("AJAX error: " + textStatus + ': ' + errorThrown);
-                    alert("Error: Something went wrong during the request.");
-                }
-            });
-        });
+    // Listen for country code changes
+    countryCode.addEventListener("change", function() {
+      if (this.value === "+63") {
+        contactNo.placeholder = "9-XXXXXXXXX"; // PH format
+        contactNo.value = "9-"; // Reset to enforce format
+        contactNo.setAttribute("maxlength", "11"); // Limit length
+      } else {
+        contactNo.placeholder = "Enter phone number"; // Default format
+        contactNo.value = ""; // Clear input
+        contactNo.removeAttribute("maxlength"); // Remove length restriction
+      }
     });
-</script>
+
+    // Enforce PH number format while typing
+    contactNo.addEventListener("input", function() {
+      if (countryCode.value === "+63") {
+        this.value = this.value.replace(/\D/g, ""); // Remove non-numeric characters
+
+        // Ensure '9-' is always at the start
+        if (!this.value.startsWith("9-")) {
+          this.value = "9-" + this.value.replace(/^9-?/, "").slice(0, 9);
+        }
+      }
+    });
+
+    // Prevent users from editing the '9-'
+    contactNo.addEventListener("keydown", function(event) {
+      if (countryCode.value === "+63") {
+        if (this.selectionStart < 2) {
+          event.preventDefault(); // Block edits before '9-'
+        }
+      }
+    });
+  </script>
+
+
+  <script>
+    $(document).ready(function() {
+      $('#addAccountForm').submit(function(event) {
+        event.preventDefault(); // Prevent default form submission
+
+        // Log form data to console
+        let formData = new FormData(this);
+        formData.forEach(function(value, key) {
+          console.log(key + ": " + value); // Log each form field and its value
+        });
+
+        $.ajax({
+          url: '../Admin Section/functions/admin-addAccountAgent - code.php',
+          type: 'POST',
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function(response) {
+            let jsonResponse = JSON.parse(response);
+
+            // Display the response message in the DOM
+            if (jsonResponse.status === "success") {
+              $('#responseMessage').html('<span style="color:green;">' + jsonResponse.message + '</span>');
+              // Display an alert for success
+              alert("Success: " + jsonResponse.message);
+            } else {
+              $('#responseMessage').html('<span style="color:red;">' + jsonResponse.message + '</span>');
+              // Display an alert for error
+              alert("Error: " + jsonResponse.message);
+            }
+          },
+
+          error: function(jqXHR, textStatus, errorThrown) {
+            console.error("AJAX error: " + textStatus + ': ' + errorThrown);
+            alert("Error: Something went wrong during the request.");
+          }
+        });
+      });
+    });
+  </script>
 
 
   <script>

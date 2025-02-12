@@ -9,7 +9,7 @@ require "../conn.php";
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard</title>
+  <title>Add Booking - Flight</title>
 
   <?php include "../Agent Section/includes/head.php"; ?>
 

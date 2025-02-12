@@ -89,64 +89,65 @@
           <table class="product-table" id="product-table">
             <thead>
               <tr>
-                <!-- <th rowspan="2">Guest ID</th> -->
-                <th rowspan="2">Transaction No</th>
-                <th rowspan="2">Guest Name</th>
-                <th rowspan="2">Birthdate</th>
-                <th rowspan="2">Age</th>
-                <th rowspan="2">Sex</th>
-                <th rowspan="2">Nationality</th>
-                <th colspan="2" class="text-center">Flight Dates</th>
-              </tr>
-              <tr>
-                <th>Departure</th>
-                <th>Return</th>
+                <th>GUEST ID</th>
+                <th>TRANSACTION NO.</th>
+                <th>GUEST NAME</th>
+                <th>PASSPORT</th>
+                <th>PERMIT</th>
+                <th>VALID ID</th>
+                <th>CERTIFICATE</th>
               </tr>
             </thead>
             <tbody>
               <?php
-              // SQL query for SOA
-              $sql = "SELECT g.guestId AS guestId, g.transactNo AS transactNo, g.fName AS fname, g.mName AS mName, g.lName AS lName, 
-                        g.suffix AS suffix, g.birthdate AS birthdate, g.age AS age, g.sex AS sex, g.Nationality AS Nationality, 
-                        f.flightDepartureDate AS departureDate, f.returnArrivalDate AS returnDate
-                      FROM `guest` g
-                      INNER JOIN `booking` b ON g.transactNo = b.transactNo
-                      INNER JOIN `flight` f ON b.flightId = f.flightId
-                      WHERE b.status = 'Confirmed'
-                      ORDER BY f.flightDepartureDate ASC";
+                $sql1 = "SELECT v.transactNo, 
+                      v.guestId, 
+                      CONCAT(g.fName, ' ', 
+                              IF(g.mName = 'N/A' OR g.mName IS NULL, '', CONCAT(SUBSTRING(g.mName, 1, 1), '. ')),
+                              g.lName, 
+                              IF(g.suffix = 'N/A' OR g.suffix IS NULL, '', CONCAT(' ', g.suffix))) AS guestName,
+                      v.passport AS passport, 
+                      v.permit AS permit, 
+                      v.validId AS validId, 
+                      v.certificate AS certificate
+                FROM visarequirements v
+                INNER JOIN guest g ON v.guestId = g.guestId
+                WHERE v.passport IS NOT NULL 
+                  OR v.permit IS NOT NULL 
+                  OR v.validId IS NOT NULL 
+                  OR v.certificate IS NOT NULL";
 
-              // Execute the query
-              $result = $conn->query($sql);
+              $res1 = $conn->query($sql1);
 
-              // Check if there are results
-              if ($result->num_rows > 0) {
-                // Loop through the results and display them
-                while ($row = $result->fetch_assoc()) {
-                  // Format the guest name with proper handling for middle name and suffix
-                  $guestName = htmlspecialchars($row['lName']) . ", " . htmlspecialchars($row['fname']);
-                  if (!empty($row['mName']) && $row['mName'] !== 'N/A') {
-                    $guestName .= " " . htmlspecialchars(substr($row['mName'], 0, 1)) . ".";
-                  }
-                  if (!empty($row['suffix']) && $row['suffix'] !== 'N/A') {
-                    $guestName .= " " . htmlspecialchars($row['suffix']);
-                  }
-
-                  // Format the dates for departure and return flight
-                  $departureDate = date('Y-m-d', strtotime($row['departureDate']));
-                  $returnDate = date('Y-m-d', strtotime($row['returnDate']));
-
-                  // Output the row data in HTML table format
+              if ($res1->num_rows > 0) {
+                while ($row = $res1->fetch_assoc()) {
                   echo "<tr>
-                          <td>" . htmlspecialchars($row['transactNo']) . "</td>
-                          <td>" . $guestName . "</td>
-                          <td>" . htmlspecialchars($row['birthdate']) . "</td>
-                          <td>" . htmlspecialchars($row['age']) . "</td>
-                          <td>" . htmlspecialchars($row['sex']) . "</td>
-                          <td>" . htmlspecialchars($row['Nationality']) . "</td>
-                          <td>" . $departureDate . "</td>
-                          <td>" . $returnDate . "</td>
-                        </tr>";
+                      <td>{$row['guestId']}</td>
+                      <td>{$row['transactNo']}</td>
+                      <td>{$row['guestName']}</td>
+                      <td>
+                        <a href='functions/view-file.php?file=" . urlencode($row['passport']) . "' target='_blank'>View File</a> 
+                        <a href='functions/download.php?file=" . urlencode($row['passport']) . "' target='_blank'>Download File</a> 
+                      </td>
+
+                      <td>
+                        <a href='functions/view-file.php?file=" . urlencode($row['permit']) . "' target='_blank'>View File</a> 
+                        <a href='functions/download.php?file=" . urlencode($row['permit']) . "' target='_blank'>Download File</a> 
+                      </td>
+
+                      <td>
+                        <a href='functions/view-file.php?file=" . urlencode($row['validId']) . "' target='_blank'>View File</a> 
+                        <a href='functions/download.php?file=" . urlencode($row['validId']) . "' target='_blank'>Download File</a> 
+                      </td>
+
+                      <td>
+                        <a href='functions/view-file.php?file=" . urlencode($row['certificate']) . "' target='_blank'>View File</a> 
+                        <a href='functions/download.php?file=" . urlencode($row['certificate']) . "' target='_blank'>Download File</a> 
+                      </td>
+                    </tr>";
                 }
+              } else {
+                echo "<tr><td colspan='6' style='text-align: center;'>No Visa Status </td></tr>";
               }
               ?>
             </tbody>
