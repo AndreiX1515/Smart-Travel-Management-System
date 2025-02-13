@@ -69,7 +69,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         if ($result_max_code) {
             $max_code_row = mysqli_fetch_assoc($result_max_code);
-            $newAgentCode = $max_code_row['maxCode'] + 1;
+            $nextCode = $max_code_row['maxCode'] + 1;
+
+            // Format the code based on its length
+            if ($nextCode < 10) {
+                $newAgentCode = 'A00' . $nextCode; // Single digit (1-9) -> A001, A002...
+            } elseif ($nextCode < 100) {
+                $newAgentCode = 'A0' . $nextCode; // Two digits (10-99) -> A010, A011...
+            } else {
+                $newAgentCode = 'A' . $nextCode; // Three digits and above (100+) -> A100, A101...
+            }
         } else {
             $response['status'] = 'error';
             $response['message'] = "Error fetching max agent code: " . mysqli_error($conn);
@@ -80,6 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Use the provided agentCode if it's unique
         $newAgentCode = $agentCode;
     }
+
 
     // Insert into the accounts table first
     $sql_account = "INSERT INTO accounts (email, password, otp, accountStatus, accountType, createdAt) 
@@ -105,10 +115,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $response['status'] = 'error';
         $response['message'] = "Error inserting into accounts table: " . mysqli_error($conn);
     }
+
+
 } else {
     $response['status'] = 'error';
     $response['message'] = 'Invalid request method.';
 }
+
 
 // Send the response as JSON
 echo json_encode($response);

@@ -571,16 +571,17 @@ error_reporting(E_ALL);
                 </div>
 
                 <div class="row password">
-                  <div class="columns col-md-3">
-                    <label for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password" name="password" required>
+                  <div class="columns col-md-5">
+                      <label for="password" class="form-label">Password</label>
+                      <input type="password" class="form-control" id="password" name="password" required>
                   </div>
 
-                  <div class="columns col-md-3">
-                    <label for="cpassword" class="form-label">Confirm Password</label>
-                    <input type="password" class="form-control" id="cpassword" name="cpassword" required>
+                  <div class="columns col-md-5">
+                      <label for="cpassword" class="form-label">Confirm Password</label>
+                      <input type="password" class="form-control" id="cpassword" name="cpassword" required>
+                      <small id="passwordError" class="text-danger" style="display: none;">Passwords do not match!</small>
                   </div>
-                </div>
+              </div>
 
               </div>
             </div>
@@ -633,30 +634,150 @@ error_reporting(E_ALL);
 
         <!-- Modal Footer -->
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="closeModalBtn">Close</button>
-          <button type="submit" class="btn btn-primary">Save changes</button>
+          <div class="btn-wrapper">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="closeModalBtn">Close</button>
+            <button type="submit" class="btn btn-primary">Save changes</button>
+          </div>
         </div>
-        </form>
-      </div>
+
+      </form>
     </div>
   </div>
+</div>
+
+<!-- ContactNo and Country Code Script -->
+<script>
+    let contactNo = document.getElementById("contactNo");
+    let countryCode = document.getElementById("countryCode");
+
+    // **Set default PH format on page load**
+    contactNo.placeholder = "9-XXXXXXXXX"; // PH format
+    contactNo.value = "9-"; // Reset to enforce format
+    contactNo.setAttribute("maxlength", "11"); // Limit length
+
+    // Listen for country code changes
+    countryCode.addEventListener("change", function() {
+      if (this.value === "+63") {
+        contactNo.placeholder = "9-XXXXXXXXX"; // PH format
+        contactNo.value = "9-"; // Reset to enforce format
+        contactNo.setAttribute("maxlength", "11"); // Limit length
+      } else {
+        contactNo.placeholder = "Enter phone number"; // Default format
+        contactNo.value = ""; // Clear input
+        contactNo.removeAttribute("maxlength"); // Remove length restriction
+      }
+    });
+
+    // Enforce PH number format while typing
+    contactNo.addEventListener("input", function() {
+      if (countryCode.value === "+63") {
+        this.value = this.value.replace(/\D/g, ""); // Remove non-numeric characters
+
+        // Ensure '9-' is always at the start
+        if (!this.value.startsWith("9-")) {
+          this.value = "9-" + this.value.replace(/^9-?/, "").slice(0, 9);
+        }
+      }
+    });
+
+    // Prevent users from editing the '9-'
+    contactNo.addEventListener("keydown", function(event) {
+      if (countryCode.value === "+63") {
+        if (this.selectionStart < 2) {
+          event.preventDefault(); // Block edits before '9-'
+        }
+      }
+    });
+  </script>
+
+
+  <script>
+
+    $(document).ready(function() {
+
+      const password = document.getElementById("password");
+      const confirmPassword = document.getElementById("cpassword");
+      const passwordError = document.getElementById("passwordError");
+
+      function validatePassword() {
+          if (password.value !== confirmPassword.value) {
+              passwordError.style.display = "block";
+              confirmPassword.setCustomValidity("Passwords do not match!");
+          } else {
+              passwordError.style.display = "none";
+              confirmPassword.setCustomValidity("");
+          }
+      }
+
+      password.addEventListener("input", validatePassword);
+      confirmPassword.addEventListener("input", validatePassword);
 
 
 
-                <script>
-                // Trigger modal close explicitly through JavaScript if needed
-                var closeModalBtn = document.getElementById("closeModalBtn");
+      $('#addAccountForm').submit(function(event) {
+        event.preventDefault(); // Prevent default form submission
 
-  closeModalBtn.addEventListener("click", function () {
-    var addAccountModal = new bootstrap.Modal(document.getElementById("AddAccountModal"));
-    addAccountModal.hide(); // Hide modal manually
+
+        // Log form data to console
+        let formData = new FormData(this);
+        formData.forEach(function(value, key) {
+          console.log(key + ": " + value); // Log each form field and its value
+        });
+
+        $.ajax({
+          url: '../Admin Section/functions/admin-addAccountAgent - code.php',
+          type: 'POST',
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function(response) {
+            let jsonResponse = JSON.parse(response);
+
+            // Display the response message in the DOM
+            if (jsonResponse.status === "success") {
+              $('#responseMessage').html('<span style="color:green;">' + jsonResponse.message + '</span>');
+              // Display an alert for success
+              alert("Success: " + jsonResponse.message);
+            } else {
+              $('#responseMessage').html('<span style="color:red;">' + jsonResponse.message + '</span>');
+              // Display an alert for error
+              alert("Error: " + jsonResponse.message);
+            }
+          },
+
+          error: function(jqXHR, textStatus, errorThrown) {
+            console.error("AJAX error: " + textStatus + ': ' + errorThrown);
+            alert("Error: Something went wrong during the request.");
+          }
+        });
+      });
+    });
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      let addAccountModal = document.getElementById("AddAccountModal");
+
+      addAccountModal.addEventListener("hidden.bs.modal", function () {
+          document.querySelectorAll(".modal-backdrop").forEach((el) => el.remove());
+          document.body.classList.remove("modal-open"); // Prevent scrolling lock
+      });
   });
-</script>                     
-
-
-
-
-
+  </script>
+                             
   <script>
     document.getElementById("AddAccountBtn").addEventListener("click", function() {
       var addAccountModal = new bootstrap.Modal(document.getElementById("AddAccountModal"));
@@ -679,38 +800,6 @@ error_reporting(E_ALL);
   </script>
 
 
-  <script>
-    function toggleSubMenu(submenuId) {
-      const submenu = document.getElementById(submenuId);
-      const sectionTitle = submenu.previousElementSibling;
-      const chevron = sectionTitle.querySelector('.chevron-icon');
-
-      // Check if the submenu is already open
-      const isOpen = submenu.classList.contains('open');
-
-      // If it's open, we need to close it, and reset the chevron
-      if (isOpen) {
-        submenu.classList.remove('open');
-        chevron.style.transform = 'rotate(0deg)';
-      } else {
-        // First, close all open submenus and reset all chevrons
-        const allSubmenus = document.querySelectorAll('.submenu');
-        const allChevrons = document.querySelectorAll('.chevron-icon');
-
-        allSubmenus.forEach(sub => {
-          sub.classList.remove('open');
-        });
-
-        allChevrons.forEach(chev => {
-          chev.style.transform = 'rotate(0deg)';
-        });
-
-        // Now, open the current submenu and rotate its chevron
-        submenu.classList.add('open');
-        chevron.style.transform = 'rotate(180deg)';
-      }
-    }
-  </script>
 
   <!-- DataTables #product-table -->
   <script>

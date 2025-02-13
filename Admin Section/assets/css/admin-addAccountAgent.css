@@ -87,15 +87,27 @@
 /* Modal Footer Styling */
 .modal-footer {
   display: flex;
-  justify-content: flex-end; /* Align buttons to the right */
-  gap: 10px;
-  padding: 10px;
+  height: 6.5vh;
+  padding: 0px 10px;
   border-top: 1px solid #ddd;
   background-color: #f1f1f1;
   border-radius: 0 0 10px 10px; /* Optional: to match rounded corners */
 }
 
-.modal-footer .btn {
+
+
+.btn-wrapper {
+  display: flex;
+  gap: 10px;
+  justify-content: right;
+  width: 100%;
+  padding: 10px 10px 15px 10px;
+  /* border: 1px solid black; */
+}
+
+
+
+/* .modal-footer .btn {
   padding: 8px 20px;
   font-size: 14px;
   border-radius: 5px;
@@ -110,7 +122,10 @@
 .modal-footer .btn-secondary {
   background-color: #6c757d;
   color: white;
-}
+} */
+
+
+
 
 /* Optional: Modal general styling */
 .modal-content {
@@ -124,10 +139,3 @@
   border-bottom: 1px solid #ddd;
 }
 
-
-
-.modal-footer {
-  background-color: #f7f7f7;
-  padding: 15px;
-  text-align: right;
-}

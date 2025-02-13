@@ -6,8 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Employee - Transactions</title>
   <?php include '../Employee Section/includes/emp-head.php' ?>
-  <link rel="stylesheet" href="../Employee Section/assets/css/emp-soa.css?v=<?php echo time(); ?>">
+  
   <link rel="stylesheet" href="../Employee Section/assets/css/emp-sidebar-navbar.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="../Employee Section/assets/css/emp-soa.css?v=<?php echo time(); ?>">
 </head>
 
 <body>
@@ -48,31 +49,7 @@
                 </select>
               </div>
 
-              <div class="table-filters-container" id="flight-container">
-                <label for="flight-filter ">Select Flight Date:</label>
-                <select id="flight-filter" name="flight-filter" onchange="toggleFilters()">
-                  <option selected disabled>Select Flight Date</option>
-                  <?php
-                    // Execute the SQL query
-                    $sql1 = "SELECT flightId, DATE_FORMAT(flightDepartureDate, '%M %d, %Y') AS formattedDepartureDate FROM flight";
-                    $res1 = $conn->query($sql1);
-
-                    // Check if there are results
-                    if ($res1->num_rows > 0) 
-                    {
-                      // Loop through the results and generate options
-                      while ($row = $res1->fetch_assoc()) 
-                      {
-                        echo "<option value='" . $row['flightId'] . "'>" . $row['formattedDepartureDate'] . "</option>";
-                      }
-                    } 
-                    else 
-                    {
-                      echo "<option value=''>No flights available</option>";
-                    }
-                  ?>
-                </select>
-              </div>
+              <div class="vertical-separator"></div>
 
               <div class="table-filters-container" id="month-container">
                 <label for="month-filter">Month</label>
@@ -139,10 +116,38 @@
                 monthSelect.selectedIndex = 0; // Use 1-based month index
               </script>
 
+              <div class="vertical-separator"></div>
+
+              <div class="table-filters-container" id="flight-container">
+                <label for="flight-filter ">Select Flight Date:</label>
+                <select id="flight-filter" name="flight-filter" onchange="toggleFilters()">
+                  <option selected disabled>Select Flight Date</option>
+                  <?php
+                    // Execute the SQL query
+                    $sql1 = "SELECT flightId, DATE_FORMAT(flightDepartureDate, '%M %d, %Y') AS formattedDepartureDate FROM flight";
+                    $res1 = $conn->query($sql1);
+
+                    // Check if there are results
+                    if ($res1->num_rows > 0) 
+                    {
+                      // Loop through the results and generate options
+                      while ($row = $res1->fetch_assoc()) 
+                      {
+                        echo "<option value='" . $row['flightId'] . "'>" . $row['formattedDepartureDate'] . "</option>";
+                      }
+                    } 
+                    else 
+                    {
+                      echo "<option value=''>No flights available</option>";
+                    }
+                  ?>
+                </select>
+              </div>
+
             </div>
 
             <div class="second-wrapper">
-              <div class="btn-container" id="reset-button-container">
+              <div class="btn-container reset-filters" id="reset-button-container">
                  <button class="btn btn-warning" onclick="resetFilters()">Reset Filters</button>
               </div>
 
@@ -152,22 +157,9 @@
             </div>
           </div>
 
+          <div id="result-container"></div>
 
-
-
-
-
-
-
-
-
-
-
-            <div id="result-container"></div>
-
-
-
-            <!-- <div class="table-container-product">
+          <!-- <div class="table-container-product">
           <div class="table-content-product">
             <table class="product-table">
               <thead>
@@ -310,13 +302,12 @@
             </div>
           </div>
         </div> -->
-
           </div>
 
           <div class="content-footer">
-            <!-- <button class="btn btn-secondary" id="preview-btn">Preview</button> -->
             <button class="btn btn-primary" id="download-btn" disabled>Generate SoA</button>
           </div>
+
         </div>
       </div>
     </div>

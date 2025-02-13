@@ -1,8 +1,15 @@
+
+.main-content  {
+  padding: 0px;
+  
+}
+
+
 .content-wrapper {
   display: flex;
   flex-direction: column;
-  height: 88vh;
-  width: 97%;
+  height: 91vh;
+  width: 98%;
   margin: 15px 30px 0px 10px;
   display: flex;
   flex-direction: column;
@@ -78,7 +85,6 @@
   border-right: 1px solid gainsboro;
   border-bottom: 1px solid gainsboro;
   display: flex;
-  gap: 10px;
   justify-content: flex-end;
   align-items: center;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Box shadow */
@@ -183,13 +189,24 @@
   height: 100%;
   gap: 10px; /* Adjust spacing between elements */
   /* border: 1px solid black; */
-  padding: 0px 15px;
+  padding: 25px 15px 0px 15px;
+  /* border: 1px solid black; */
 }
 
-.btn-wrapper {
-  padding: 0px;
-  width: 150px;
+
+
+.reset-filters {
+  display: none;
 }
+
+
+.vertical-separator {
+  width: 2px; /* Line thickness */
+  height: 65%; /* Full height */
+  background-color: #ccc; /* Line color */
+  margin: 10px 15px; /* Adds spacing around the line */
+}
+
 
 
 
