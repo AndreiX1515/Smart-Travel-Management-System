@@ -1297,39 +1297,24 @@ error_reporting(E_ALL);
     $(document).ready(function() {
       // Initialize DataTable for .info-table if not already initialized
       if (!$.fn.DataTable.isDataTable('.info-table')) {
-        var table = $('.info-table').DataTable({
-          autoWidth: false,
-          scrollX: true, // Enable horizontal scrolling
-          scrollY: "575px", // Enable vertical scrolling and set height
-          paging: false, // Disable pagination
-          searching: false, // Disable search
-          info: false, // Disable info
-          fixedColumns: {
-            leftColumns: 12 // Freeze the first 11 columns
-          },
-          dom: 'rt<"bottom"flp>',
-          ordering: false // Disable sorting on all columns
-        });
+          var table = $('.info-table').DataTable({
+            autoWidth: false,
+            scrollX: true, // Enable horizontal scrolling
+            scrollY: "548px", // Enable vertical scrolling and set height
+            paging: false, // Disable pagination
+            searching: false, // Disable search
+            info: false, // Disable info
+            fixedColumns: {
+              // rightColumns: 14, // Freeze the first 14 columns
+              startColumns: 14, // Freeze the first 14 columns
+            },
+            dom: 'rt<"bottom"flp>',
+            ordering: false, // Disable sorting on all columns
+            scrollCollapse: true, // Collapse the table when no data is available
+            stateSave: true // Save table state (e.g., scroll position) between reloads
+          });
 
-        // Ensure uniform row height between frozen and non-frozen columns
-        function syncRowHeights() {
-          setTimeout(() => {
-            $('.DTFC_Cloned tbody tr').each(function(index) {
-              let originalRow = $('.dataTable tbody tr').eq(index);
-              let clonedRow = $(this);
-              let originalHeight = originalRow.height();
-              clonedRow.height(originalHeight);
-            });
-          }, 50); // Allow DataTable rendering before adjusting height
         }
-
-        // Call sync function after initialization
-        syncRowHeights();
-
-        // Re-adjust heights on window resize or table updates
-        $(window).on('resize', syncRowHeights);
-        $('.info-table').on('draw.dt', syncRowHeights);
-      }
 
       // Prevent row selection when clicking on the checkbox
       $('.info-table tbody').on('click', 'input[type="checkbox"]', function(e) {
@@ -1358,32 +1343,6 @@ error_reporting(E_ALL);
         selectRowInBothTables(index);
       });
 
-      // Add custom CSS for the selected row
-      $('<style>')
-        .prop('type', 'text/css')
-        .html(`
-              .info-table tbody tr.selected, div.dataTables_wrapper tbody tr.selected 
-              {
-                background-color: rgb(42, 204, 253) !important;
-                color: black !important;
-                font-weight: bold;
-                // height: 20px !important;
-              }
-
-            /* Ensure uniform row height */
-            // .dataTable tbody tr, 
-            // .dataTables_scrollBody tbody tr {
-            //     height: 20px !important;
-            // }
-
-            /* Adjust checkbox styling */
-            // .dataTable tbody tr td input[type="checkbox"] {
-            //     width: 10px;
-            //     height: 10px;
-            //     vertical-align: middle;
-            // }
-        `)
-        .appendTo('head');
     });
   </script>
 </body>

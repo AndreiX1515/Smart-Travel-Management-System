@@ -45,8 +45,8 @@ class PDF extends TCPDF
     if ($this->getPage() == 1) 
     { // Check if it's the first page
       // Add logo
-      $this->Image('../../Assets/Logos/SMART LOGO 2 (2).jpg', 10, 10, 65, 13); // Adjust 'logo.png' path, position, and size as needed
-      $this->Ln(30); // Adds 30mm of vertical space
+      $this->Image('../../Assets/Logos/SMART LOGO 2 (2).jpg', 10, 5, 60, 10); // Adjust 'logo.png' path, position, and size as needed
+      $this->Ln(20); // Adds 30mm of vertical space
 
       // Voucher title
       $this->SetFillColor(211, 211, 211); // Set the fill color
@@ -56,19 +56,19 @@ class PDF extends TCPDF
 
       // Add TO, ATTACHMENT, etc.
       $this->SetFont('Helvetica', '', 10, true);
-      $this->SetXY(10, 43);
+      $this->SetXY(10, 30);
       $this->Cell(30, 8, 'SOA NO.:', 1, 0, 'C');
       $this->Cell(70, 8, $this->soaNumber, 1, 0, 'C');
       $this->Cell(30, 8, 'DATE RANGE:', 1, 0, 'C');
       $this->Cell(60, 8, $this->monthName, 1, 1, 'C');
 
-      $this->SetXY(10, 51);
+      $this->SetXY(10, 38);
       $this->Cell(30, 8, 'BILL TO:', 1, 0, 'C');
       $this->Cell(70, 8, $this->branchName, 1, 0, 'C');
       $this->Cell(30, 8, 'FROM:', 1, 0, 'C');
       $this->Cell(60, 8, 'Smart Travel', 1, 1, 'C');
 
-      $this->SetXY(110, 59);
+      $this->SetXY(110, 46);
 
       $this->Cell(30, 8, 'UPDATE DATE:', 1, 0, 'C');
       $this->Cell(60, 8, $this->formattedDate, 1, 1, 'C');
@@ -87,7 +87,7 @@ class PDF extends TCPDF
     $this->Ln(2);
 
     // Set the X and Y for the header
-    $this->SetXY(10, 69);
+    $this->SetXY(10, 55);
 
     $this->SetFont('Helvetica', 'B', 10, true);
     $this->SetFillColor(255, 255, 255); // White background
@@ -308,7 +308,12 @@ class PDF extends TCPDF
   
       // Render cells with data
       $this->Cell($col1, 7, $row['no'], 1, 0, 'C');
+      $this->SetFont('Helvetica', '', 8, true);
+
       $this->Cell($col2, 7, "  " . $row['contents'], 1, 0, 'L');
+
+      $this->SetFont('Helvetica', '', 10, true);
+
       $this->Cell($col3, 7, $row['price'], 1, 0, 'C');
       $this->Cell($col3, 7, $row['price'], 1, 0, 'C');
       $this->Cell($col4, 7, $row['pax'], 1, 0, 'C');
@@ -434,11 +439,8 @@ $balance = $_SESSION['balance'];
 $branchName = $_SESSION['branchName'];
 
 // Set margins
-$pdf->SetMargins(10, 10, 10); // Adjust to provide consistent spacing
-
-// $pdf->tableBalance();
-// $pdf->tableContentSubTotal();
-// Output the PDF
+$pdf->SetMargins(10, 10, 10); // Set left, top, right margins to 5mm
+$pdf->SetAutoPageBreak(TRUE, 10); // Set bottom margin to 10mm
 
 // Set the branch name
 $pdf->setBranchName($branchName);
@@ -449,30 +451,55 @@ $pdf->AddPage();
 $pdf->tableHeader();
 
 // Get the initial Y position after rendering the header
-$yPosition = 75; // Set the starting position for the first table
+$yPosition = 61; // Set the starting position for the first table
+
+// Define the max Y position
+$maxYPosition = 277; // 297mm - 10mm (top margin) - 10mm (bottom margin)
 
 // Pass the Y position to tableContent and get the updated position
 $yPosition = $pdf->tableContent($tableData, $yPosition);
 
-// Pass the updated Y position to tableContentSubTotal and get the final position
+// Check if Y position exceeds maxYPosition and add a new page if necessary
+if ($yPosition > $maxYPosition) {
+    $pdf->AddPage(); // Create a new page
+    $yPosition = 75; // Reset Y position for the new page
+}
+
 $yPosition = $pdf->tableContentSubTotal($totalPriceSum, $yPosition);
 
-// Pass the final Y position to tablePayment and get the final position
+// Pass the final Y position to tableRequest and check for new page
 $yPosition = $pdf->tableRequest($tableData2, $yPosition);
+if ($yPosition > $maxYPosition) {
+    $pdf->AddPage();
+    $yPosition = 75;
+}
 
-// Pass the final Y position to tableContentSubTotal2 and get the final position
 $yPosition = $pdf->tableContentSubTotal2($totalRequestCost, $yPosition);
 
-// Pass the final Y position to tablePayment and get the final position
+// Pass the final Y position to tablePayment and check for new page
 $yPosition = $pdf->tablePayment($tableData3, $yPosition);
+if ($yPosition > $maxYPosition) {
+    $pdf->AddPage();
+    $yPosition = 75;
+}
 
-// Pass the final Y position to tableContentSubTotal2 and get the final position
 $yPosition = $pdf->tableContentSubTotal3($totalAmount, $yPosition);
 
-// Pass the updated Y position to tableBalance and get the final position
+// Pass the final Y position to tableBalance and check for new page
 $yPosition = $pdf->tableBalance($balance, $yPosition);
+if ($yPosition > $maxYPosition) {
+    $pdf->AddPage();
+    $yPosition = 75;
+}
 
+// Now add the check for accountInfo
 $yPosition = $pdf->accountInfo($yPosition);
+
+// Check if the Y position exceeds the max Y position after accountInfo
+if ($yPosition > $maxYPosition) {
+    $pdf->AddPage(); // Add a new page if content overflows
+    
+}
 
 // Output the PDF
 $pdf->Output('itinerary-Winter.pdf', 'I');
@@ -486,4 +513,5 @@ unset($_SESSION['tableData3']);
 unset($_SESSION['totalAmount']);
 unset($_SESSION['balance']);
 unset($_SESSION['branchName']);
+
 ?>
