@@ -643,9 +643,9 @@ error_reporting(E_ALL);
 
 
 
-  <script>
-  // Trigger modal close explicitly through JavaScript if needed
-  var closeModalBtn = document.getElementById("closeModalBtn");
+                <script>
+                // Trigger modal close explicitly through JavaScript if needed
+                var closeModalBtn = document.getElementById("closeModalBtn");
 
   closeModalBtn.addEventListener("click", function () {
     var addAccountModal = new bootstrap.Modal(document.getElementById("AddAccountModal"));
