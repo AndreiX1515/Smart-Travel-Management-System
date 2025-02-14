@@ -241,19 +241,19 @@ require "../conn.php";
                   </div>
                 </div>
 
-                <input type="text" id="agentCode" name="agentCode" value="<?php echo $_SESSION['agentCode']; ?>" placeholder="Agent Code Input">
-                <input type="text" id="flightId" name="flightId" value="<?php echo $flightid; ?>" placeholder="Flight Id Input">
+                <input type="hidden" id="agentCode" name="agentCode" value="<?php echo $_SESSION['agentCode']; ?>" placeholder="Agent Code Input">
+                <input type="hidden" id="flightId" name="flightId" value="<?php echo $flightid; ?>" placeholder="Flight Id Input">
 
                 <!-- Adjusted Fields -->
-                <input type="text" id="packagePrice" name="packagePrice" value="<?php echo isset($packagePrice) ? $packagePrice : ''; ?>" placeholder="Package Price">
-                <input type="text" name="flightPrice" id="flightPricee" value="<?php echo isset($flightPrice) ? $flightPrice : ''; ?>" placeholder="Flight Price">
-                <input type="text" name="agentId" id="agentId" value="<?php echo $_SESSION['agentId']; ?>" placeholder="Agent Id">
-                <input type="text" name="agentType" placeholder="Agent Type Input" value="<?php echo $_SESSION['agentType']; ?>">
+                <input type="hidden" id="packagePrice" name="packagePrice" value="<?php echo isset($packagePrice) ? $packagePrice : ''; ?>" placeholder="Package Price">
+                <input type="hidden" name="flightPrice" id="flightPricee" value="<?php echo isset($flightPrice) ? $flightPrice : ''; ?>" placeholder="Flight Price">
+                <input type="hidden" name="agentId" id="agentId" value="<?php echo $_SESSION['agentId']; ?>" placeholder="Agent Id">
+                <input type="hidden" name="agentType" placeholder="Agent Type Input" value="<?php echo $_SESSION['agentType']; ?>">
 
                 <!-- Adjusted Package Fields -->
-                <input type="text" name="packageId" id="packageId" value="<?php echo isset($packageId) ? $packageId : ''; ?>" placeholder="Package Id Input">
-                <input type="text" name="packageName" id="packageName" value="<?php echo isset($packageName) ? $packageName : ''; ?>" placeholder="Package Name Input">
-                <input type="text" name="origin" id="origin" value="<?php echo isset($origin) ? $origin : ''; ?>" placeholder="Origin Input">
+                <input type="hidden" name="packageId" id="packageId" value="<?php echo isset($packageId) ? $packageId : ''; ?>" placeholder="Package Id Input">
+                <input type="hidden" name="packageName" id="packageName" value="<?php echo isset($packageName) ? $packageName : ''; ?>" placeholder="Package Name Input">
+                <input type="hidden" name="origin" id="origin" value="<?php echo isset($origin) ? $origin : ''; ?>" placeholder="Origin Input">
 
               </div>
 
