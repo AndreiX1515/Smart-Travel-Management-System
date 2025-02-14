@@ -120,7 +120,6 @@
           </thead>
           <tbody>
             <?php
-              // SQL query for SOA
               $sql = "SELECT b.transactNo, f.flightDepartureDate AS departureDate, f.returnDepartureDate AS returnDate, 
                         b.status AS bookingStatus, CONCAT(f.flightDepartureDate, ' | ', f.returnDepartureDate) AS FlightDate, 
                         p.packageName AS PackageName, DATE_FORMAT(b.bookingDate, '%m.%d.%Y') AS BookingDate, 
@@ -136,7 +135,7 @@
                       GROUP BY 
                         b.transactNo, f.flightDepartureDate, f.returnDepartureDate, b.status, p.packageName, 
                         b.bookingDate, b.pax, b.totalPrice, a.lName, a.fName, a.mName
-                      ORDER BY b.transactNo, b.agentCode ASC";
+                      ORDER BY b.transactNo";
 
               // Execute the query
               $result = $conn->query($sql);

@@ -151,6 +151,9 @@
             <p><strong>Contact No:</strong> <?php echo $contactNo; ?></p>
             <p><strong>Email:</strong> <?php echo $email;?></p>
             <p><strong>Balance: ₱ </strong> <?php echo $formattedBalance; ?></p>
+            <button class="btn btn-danger cancel-btn" data-transact="<?php echo $transactNo; ?>" data-bs-toggle="modal" data-bs-target="#cancelModal">
+              Cancel Transaction
+            </button>
           </div>
         </div>
       </div>
@@ -251,11 +254,10 @@
                 </div>";
               }
             ?>
-        </table>
+          </table>
+        </div>
       </div>
-
     </div>
-  </div>
 
   <div class="nav-pills-wrapper">
     <ul class="nav nav-pills " id="pills-tab" role="tablist">
@@ -282,7 +284,33 @@
   </div>
 </div>
 
-<!-- Modal -->
+<!-- Cancel Transaction Modal -->
+<div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="cancelModalLabel">Cancel Transaction</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="../Employee Section/functions/emp-cancelTransact-code.php" method="POST">
+        <div class="modal-body">
+          <p>Are you sure you want to cancel this transaction?</p>
+          <p><strong>Transaction No: <?php echo $transactNum; ?></p>
+          <input type="hidden" name="transactNo" placeholder="Transact No" value="<?php echo $transactNum; ?>">
+          <input type="hidden" name="accId" placeholder="Acc Id" value="<?php echo $accountId; ?>">
+          <input type="text" name="remarks" placeholder="Enter Remarks"> 
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" name="confirmCancel" class="btn btn-danger" id="confirmCancel">Confirm Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<!-- Visa Status Modal -->
 <div class="modal fade" id="guestModal" tabindex="-1" role="dialog" aria-labelledby="guestModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">

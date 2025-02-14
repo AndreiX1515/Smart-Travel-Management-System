@@ -120,11 +120,11 @@ $position = htmlspecialchars(strtoupper($empId));
 							Payment
 						</a>
 					</li>
-					<li class="nav-item">
+					<!-- <li class="nav-item">
 						<a class="nav-link page-button" href="../Employee Section/emp-tableFIT.php" data-page-name="For Approvals - F.I.T">
 							F.I.T
 						</a>
-					</li>
+					</li> -->
 				</ul>
 			</div>
 		</li>
@@ -149,9 +149,9 @@ $position = htmlspecialchars(strtoupper($empId));
 					<li class="nav-item">
 						<a class="nav-link page-button" href="../Employee Section/emp-soa.php" data-page-name="SOA">SOA</a>
 					</li>
-					<li class="nav-item">
+					<!-- <li class="nav-item">
 						<a class="nav-link page-button" href="../Employee Section/emp-soaFIT.php" data-page-name="SOA">SOA FIT</a>
-					</li>
+					</li> -->
 				</ul>
 			</div>
 		</li>
