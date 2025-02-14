@@ -934,12 +934,12 @@
   display: flex;
   flex-direction: row;
   position: relative;
-  height: 73vh; /* Fixed height for the container */
+  height: 69vh; /* Fixed height for the container */
   margin-bottom: 20px; /* Add margin below to provide space for the bottom scrollbar */
   margin-right: 20px; /* Add margin to the right for the vertical scrollbar */
   overflow-x: auto; /* Allow horizontal scrolling */
   overflow-y: auto; /* Allow vertical scrolling */
-  border: 1px solid gainsboro;
+  /* border: 1px solid gainsboro; */
   width: 100%; /* Ensure the container uses full width */
 }
 
@@ -953,6 +953,7 @@
   table-layout: fixed;
   margin-bottom: 25px;
   border-collapse: collapse;
+  scroll-margin: 10px;
 }
 
 /* Ensure the table header stays fixed */
@@ -1014,7 +1015,7 @@ div.dataTables_wrapper thead th, .info-table thead th {
   text-align: center; /* Center align the text */
   font-weight: bold; /* Make the header text bold */
   border-right: 1px solid #e6e6e6; /* Add right border between columns */
-  padding: 10px 8px; /* Adjust padding for better spacing */
+  padding: 3px 8px; /* Adjust padding for better spacing */
   background-color: #dc3545; 
   color: #ffffff;
 

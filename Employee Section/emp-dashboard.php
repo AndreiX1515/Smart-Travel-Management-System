@@ -1293,13 +1293,15 @@ error_reporting(E_ALL);
         var table = $('.info-table').DataTable({
           autoWidth: false,
           scrollX: true, // Enable horizontal scrolling
-          scrollY: "548px", // Enable vertical scrolling and set height
+          scrollY: "570px", // Enable vertical scrolling and set height
           paging: false, // Disable pagination
           searching: false, // Disable search
           info: false, // Disable info
           fixedColumns: {
-            rightColumns: 14 // Freeze the first 14 columns
-        },
+            startColumns: 13, // Freeze the first 13 columns from the left
+            endColumns: 0     // No frozen columns on the right
+          },
+
           dom: 'rt<"bottom"flp>',
           ordering: false, // Disable sorting on all columns
           scrollCollapse: true, // Collapse the table when no data is available

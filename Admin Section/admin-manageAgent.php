@@ -35,6 +35,7 @@ error_reporting(E_ALL);
       <div class="main-content">
         <div class="table-wrapper">
           <div class="table-header">
+
             <div class="search-wrapper">
               <div class="search-input-wrapper">
                 <input type="text" id="search" placeholder="Search here..">
@@ -54,7 +55,7 @@ error_reporting(E_ALL);
               </div> -->
 
             <div class="second-header-wrapper">
-              <!-- <div class="date-range-wrapper sorting-wrapper">
+              <div class="date-range-wrapper sorting-wrapper">
                 <div class="select-wrapper">
                   <select id="packages">
                       <option value="All" disabled selected>Select Packages</option>
@@ -66,7 +67,23 @@ error_reporting(E_ALL);
                       <option value="Busan Tour Package">Busan Tour</option>
                   </select>
                 </div>
-              </div> -->
+              </div>
+
+              <div class="date-range-wrapper sorting-wrapper">
+                <div class="select-wrapper">
+                  <select id="packages">
+                      <option value="All" disabled selected>Select Status</option>
+                      <option value="Autumn Tour Package">Autumn Tour</option>
+                      <option value="Summer Tour Package">Summer Tour</option>
+                      <option value="Spring Tour Package">Spring Tour</option>
+                      <option value="Winter Tour Package">Winter Tour</option>
+                      <option value="Regular Tour Package">Regular Tour</option>
+                      <option value="Busan Tour Package">Busan Tour</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="vertical-separator"></div>
 
               <!-- <div class="date-range-wrapper flightbooking-wrapper">
                 <div class="date-range-inputs-wrapper">
@@ -86,11 +103,11 @@ error_reporting(E_ALL);
                 </div>
               </div> -->
 
-              <!-- <div class="buttons-wrapper">
+              <div class="buttons-wrapper">
                 <button id="clearSorting" class="btn btn-secondary">
                     Clear Filters
                 </button>
-              </div> -->
+              </div>
 
               <div class="buttons-wrapper">
                 <button id="AddAccountBtn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#AddAccountModal">
@@ -102,36 +119,9 @@ error_reporting(E_ALL);
 
           </div>
 
-          <div class="navpills-container">
-            <ul class="nav nav-pills nav-underline" id="pills-tab" role="tablist">
-              <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">
-                  All <span class="badge">88</span>
-                </button>
-              </li>
-              <li class="nav-item" role="presentation">
-                <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">
-                  Agent <span class="badge">61</span>
-                </button>
-              </li>
 
-              <li class="nav-item" role="presentation">
-                <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">
-                  Client <span class="badge">27</span>
-                </button>
-              </li>
 
-              <!-- <li class="nav-item" role="presentation">
-                <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">
-                  Cancelled <span class="badge">27</span>
-                </button>
-              </li> -->
-            </ul>
-          </div>
-
-          <div class="tab-content" id="pills-tabContent">
-            <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
-              <div class="table-container">
+          <div class="table-container">
                 <table id="product-table" class="product-table">
                   <thead>
                     <tr>
@@ -223,34 +213,22 @@ error_reporting(E_ALL);
                   </tbody>
 
                 </table>
-              </div>
-
-              <!-- Custom Pagination Container -->
-              <div class="table-footer">
-                <div class="pagination-controls">
-                  <button id="prevPage" class="pagination-btn">Previous</button>
-                  <span id="pageInfo" class="page-info">Page 1 of 10</span>
-                  <button id="nextPage" class="pagination-btn">Next</button>
-                </div>
-              </div>
-
-
-            </div>
-
-            <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
-              <!-- Content for Pickups -->
-              Pending Table Here
-            </div>
-
-            <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">
-              <!-- Content for Returns -->
-              Confirmed table Here
-            </div>
-
           </div>
+
+          <!-- Custom Pagination Container -->
+          <div class="table-footer">
+            <div class="pagination-controls">
+              <button id="prevPage" class="pagination-btn">Previous</button>
+              <span id="pageInfo" class="page-info">Page 1 of 10</span>
+              <button id="nextPage" class="pagination-btn">Next</button>
+            </div>
+          </div>
+              
+          
 
         </div>
 
+        
       </div>
     </div>
   </div>
@@ -338,28 +316,28 @@ error_reporting(E_ALL);
               </div>
 
               <style>
-                /* Make readonly fields greyed out */
-                .readonly-grey {
-                    background-color: #e9ecef !important; /* Grey background */
-                    pointer-events: none; /* Prevent clicking */
+              /* Make readonly fields greyed out */
+              .readonly-grey {
+                  background-color: #e9ecef !important; /* Grey background */
+                  pointer-events: none; /* Prevent clicking */
+              }
+            </style>
+
+            <script>
+            document.getElementById("accountType").addEventListener("change", function() {
+                let agentRoleField = document.getElementById("agentRole");
+
+                if (this.value === "Client") {
+                    agentRoleField.value = "Sub Agent"; 
+                    agentRoleField.setAttribute("readonly", "readonly"); // Make it readonly
+                    agentRoleField.classList.add("readonly-grey"); // Apply greyed-out style
+                } else {
+                    agentRoleField.value = ""; 
+                    agentRoleField.removeAttribute("readonly"); // Allow selection for other cases
+                    agentRoleField.classList.remove("readonly-grey"); // Remove greyed-out style
                 }
-              </style>
-
-              <script>
-              document.getElementById("accountType").addEventListener("change", function() {
-                  let agentRoleField = document.getElementById("agentRole");
-
-                  if (this.value === "guest") {
-                      agentRoleField.value = "Sub Agent"; 
-                      agentRoleField.setAttribute("readonly", "readonly"); // Make it readonly
-                      agentRoleField.classList.add("readonly-grey"); // Apply greyed-out style
-                  } else {
-                      agentRoleField.value = ""; 
-                      agentRoleField.removeAttribute("readonly"); // Allow selection for other cases
-                      agentRoleField.classList.remove("readonly-grey"); // Remove greyed-out style
-                  }
-              });
-              </script>
+            });
+            </script>
 
 
               <div class="content-header">
@@ -707,7 +685,7 @@ error_reporting(E_ALL);
       </form>
     </div>
   </div>
-</div>
+  </div>
 
 <!-- ContactNo and Country Code Script -->
 <!-- <script>
@@ -754,9 +732,10 @@ error_reporting(E_ALL);
     });
   </script> -->
 
-
   <script>
+
     $(document).ready(function() {
+
       const password = document.getElementById("password");
       const confirmPassword = document.getElementById("cpassword");
       const passwordError = document.getElementById("passwordError");
@@ -773,6 +752,7 @@ error_reporting(E_ALL);
 
       password.addEventListener("input", validatePassword);
       confirmPassword.addEventListener("input", validatePassword);
+
 
 
       $('#addAccountForm').submit(function(event) {
@@ -815,8 +795,6 @@ error_reporting(E_ALL);
       });
     });
   </script>
-
-
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -864,9 +842,9 @@ error_reporting(E_ALL);
           [0, 'desc']
         ], // Default sorting by Transaction ID (descending)
         scrollX: false,
-        scrollY: '68.7vh', // Set a fixed height for the table (adjust as necessary)
+        scrollY: '72vh', // Set a fixed height for the table (adjust as necessary)
         paging: true, // Enable pagination
-        pageLength: 15, // Set the number of rows per page
+        pageLength: 14, // Set the number of rows per page
         autoWidth: false,
         autoHeight: false, // Prevent automatic height adjustment
 
