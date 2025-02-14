@@ -1,60 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Employee - Transactions</title>
-    <?php include '../Employee Section/includes/emp-head.php' ?>
-    <link rel="stylesheet" href="../Employee Section/assets/css/emp-soa.css?v=<?php echo time(); ?>">
-    <link rel="stylesheet" href="../Employee Section/assets/css/emp-sidebar-navbar.css?v=<?php echo time(); ?>">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Employee - Transactions</title>
+  <?php include '../Employee Section/includes/emp-head.php' ?>
+  
+  <link rel="stylesheet" href="../Employee Section/assets/css/emp-sidebar-navbar.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="../Employee Section/assets/css/emp-soa.css?v=<?php echo time(); ?>">
 </head>
+
 <body>
 
-<?php include '../Employee Section/includes/emp-sidebar.php' ?>
+  <?php include '../Employee Section/includes/emp-sidebar.php' ?>
 
-<!-- Main Container -->
-<div class="main-container">
-  <?php include '../Employee Section/includes/emp-navbar.php' ?>
+  <!-- Main Container -->
+  <div class="main-container">
+    <?php include '../Employee Section/includes/emp-navbar.php' ?>
 
-  <div class="main-content">
-    <div class="content-wrapper">
-      <div class="content-body">
-        <!-- <div class="counts-section"></div>  -->
-        <div class="table-actions">
-          <div class="row">
+    <div class="main-content">
+      <div class="content-wrapper">
+        <div class="content-body">
+          <!-- <div class="counts-section"></div>  -->
 
-            <div class="columns col-md-3">
+          <div class="table-actions">
+            <div class="first-wrapper">
+
               <div class="table-filters-container">
-                <label for="company-filter ">Company Name:</label>
-                <select id="company-filter" name="company-filter" class="form-control">
+                <label for="company-filter">Company Name:</label>
+                <select id="company-filter" name="company-filter">
                   <option selected disabled>Select a company</option>
                   <?php
-                    // Execute the SQL query
-                    $sql1 = "SELECT branchId, branchName FROM branch";
-                    $res1 = $conn->query($sql1);
+                  // Execute the SQL query
+                  $sql1 = "SELECT branchId, branchName FROM branch";
+                  $res1 = $conn->query($sql1);
 
-                    // Check if there are results
-                    if ($res1->num_rows > 0) 
-                    {
-                      // Loop through the results and generate options
-                      while ($row = $res1->fetch_assoc()) 
-                      {
-                        echo "<option value='" . $row['branchId'] . "'>" . $row['branchName'] . "</option>";
-                      }
-                    } 
-                    else 
-                    {
-                      echo "<option value=''>No companies available</option>";
+                  // Check if there are results
+                  if ($res1->num_rows > 0) {
+                    // Loop through the results and generate options
+                    while ($row = $res1->fetch_assoc()) {
+                      echo "<option value='" . $row['branchId'] . "'>" . $row['branchName'] . "</option>";
                     }
+                  } else {
+                    echo "<option value=''>No companies available</option>";
+                  }
                   ?>
                 </select>
               </div>
-            </div>
 
-            <div class="columns col-md-3" id="flight-container">
-              <div class="table-filters-container">
+              <div class="vertical-separator"></div>
+
+              <div class="table-filters-container" id="month-container">
+                <label for="month-filter">Month</label>
+                <select id="month-filter" name="month-filter">
+                  <option selected disabled>Select month</option>
+                  <option value="January">January</option>
+                  <option value="February">February</option>
+                  <option value="March">March</option>
+                  <option value="April">April</option>
+                  <option value="May">May</option>
+                  <option value="June">June</option>
+                  <option value="July">July</option>
+                  <option value="August">August</option>
+                  <option value="September">September</option>
+                  <option value="October">October</option>
+                  <option value="November">November</option>
+                  <option value="December">December</option>
+                </select>
+              </div>
+
+              <script>
+                // Get the current month as a number (0 = January, 1 = February, ..., 11 = December)
+                const currentMonth = new Date().getMonth();
+                
+                // Get the select element
+                const selectElement = document.getElementById('company-filter');
+                
+                // Select the option corresponding to the current month
+                selectElement.selectedIndex = currentMonth;
+              </script>
+
+              <div class="table-filters-container" id="year-container">
+                <label for="year-filter">Year</label>
+                <select id="year-filter" name="year-filter">
+                  <!-- Year options will be populated dynamically -->
+                  <option selected disabled>Select year</option>
+                </select>
+              </div>
+
+              <script>
+                // Get the current month (1 = January, 2 = February, ..., 12 = December)
+                const currentMonthIndex = new Date().getMonth() + 1; // Add 1 to make it 1-based
+                const currentYear = new Date().getFullYear();
+
+                // Get the year select element
+                const yearSelect = document.getElementById('year-filter');
+                
+                // Dynamically populate the years
+                for (let i = currentYear - 5; i <= currentYear + 5; i++) 
+                {
+                  const option = document.createElement('option');
+                  option.value = i;
+                  option.textContent = i;
+                  yearSelect.appendChild(option);
+                }
+
+                // Optionally set the current year as selected
+                yearSelect.selectedIndex = 0;
+                
+                // Get the month select element
+                const monthSelect = document.getElementById('month-filter');
+
+                // Set the current month as selected
+                monthSelect.selectedIndex = 0; // Use 1-based month index
+              </script>
+
+              <div class="vertical-separator"></div>
+
+              <div class="table-filters-container" id="flight-container">
                 <label for="flight-filter ">Select Flight Date:</label>
-                <select id="flight-filter" name="flight-filter" class="form-control" onchange="toggleFilters()">
+                <select id="flight-filter" name="flight-filter" onchange="toggleFilters()">
                   <option selected disabled>Select Flight Date</option>
                   <?php
                     // Execute the SQL query
@@ -77,92 +143,23 @@
                   ?>
                 </select>
               </div>
+
             </div>
 
-            <div class="columns col-md-2" id="month-container">
-              <div class="table-filters-container">
-                <label for="month-filter">Month</label>
-                <select id="month-filter" name="month-filter" class="form-control">
-                  <option selected disabled>Select month</option>
-                  <option value="January">January</option>
-                  <option value="February">February</option>
-                  <option value="March">March</option>
-                  <option value="April">April</option>
-                  <option value="May">May</option>
-                  <option value="June">June</option>
-                  <option value="July">July</option>
-                  <option value="August">August</option>
-                  <option value="September">September</option>
-                  <option value="October">October</option>
-                  <option value="November">November</option>
-                  <option value="December">December</option>
-                </select>
+            <div class="second-wrapper">
+              <div class="btn-container reset-filters" id="reset-button-container">
+                 <button class="btn btn-warning" onclick="resetFilters()">Reset Filters</button>
               </div>
-            </div>
 
-            <script>
-              // Get the current month as a number (0 = January, 1 = February, ..., 11 = December)
-              const currentMonth = new Date().getMonth();
-              
-              // Get the select element
-              const selectElement = document.getElementById('company-filter');
-              
-              // Select the option corresponding to the current month
-              selectElement.selectedIndex = currentMonth;
-            </script>
-
-            <div class="columns col-md-2" id="year-container">
-              <div class="table-filters-container">
-                <label for="year-filter">Year</label>
-                <select id="year-filter" name="year-filter" class="form-control">
-                  <!-- Year options will be populated dynamically -->
-                  <option selected disabled>Select year</option>
-                </select>
+              <div class="btn-container">
+                <button id="generate-soa-btn" class="btn btn-primary">Preview SOA</button>
               </div>
-            </div>
-
-            <script>
-              // Get the current month (1 = January, 2 = February, ..., 12 = December)
-              const currentMonthIndex = new Date().getMonth() + 1; // Add 1 to make it 1-based
-              const currentYear = new Date().getFullYear();
-
-              // Get the year select element
-              const yearSelect = document.getElementById('year-filter');
-              
-              // Dynamically populate the years
-              for (let i = currentYear - 5; i <= currentYear + 5; i++) 
-              {
-                const option = document.createElement('option');
-                option.value = i;
-                option.textContent = i;
-                yearSelect.appendChild(option);
-              }
-
-              // Optionally set the current year as selected
-              yearSelect.selectedIndex = 0;
-              
-              // Get the month select element
-              const monthSelect = document.getElementById('month-filter');
-
-              // Set the current month as selected
-              monthSelect.selectedIndex = 0; // Use 1-based month index
-            </script>
-
-            <div class="columns col-md-2" id="reset-button-container" style="display: none;">
-              <button class="btn btn-warning" onclick="resetFilters()">Reset Filters</button>
             </div>
           </div>
 
-          <div class="btn-container">
-            <button id="generate-soa-btn" class="btn btn-primary">Preview SOA</button>
-          </div>
-        </div>
+          <div id="result-container"></div>
 
-        <div id="result-container"></div>
-
-      
-
-        <!-- <div class="table-container-product">
+          <!-- <div class="table-container-product">
           <div class="table-content-product">
             <table class="product-table">
               <thead>
@@ -178,9 +175,9 @@
               </thead>
               <tbody>
                 <?php
-                  $totalPriceSum = 0;
-                  $count = 1; // Initialize the counter
-                  $sql1 = "SELECT f.flightId, f.flightPrice, CONCAT(f.flightDepartureDate, ' - ', f.returnArrivalDate) AS flightDates, 
+                $totalPriceSum = 0;
+                $count = 1; // Initialize the counter
+                $sql1 = "SELECT f.flightId, f.flightPrice, CONCAT(f.flightDepartureDate, ' - ', f.returnArrivalDate) AS flightDates, 
                               SUM(DISTINCT b.pax) AS pax, SUM(DISTINCT b.totalPrice) AS totalPrice
                           FROM 
                               payment p
@@ -194,19 +191,17 @@
                               AND YEAR(f.flightDepartureDate) = 2025
                           GROUP BY 
                               f.flightId, f.flightDepartureDate, f.returnArrivalDate";
-                  $res1 = $conn->query($sql1);
+                $res1 = $conn->query($sql1);
 
-                  $res1 = $conn->query($sql1);
+                $res1 = $conn->query($sql1);
 
-                  if ($res1->num_rows > 0) 
-                  {
-                    while ($row = $res1->fetch_assoc()) 
-                    {
-                      $totalPriceSum += $row['totalPrice'];
-                      // Format flightPrice with commas and display the row
-                      $formattedFlightPrice = number_format($row['flightPrice'], 2);
-                      $formattedTotalPrice = number_format($row['totalPrice'], 2);
-                      echo "<tr'>
+                if ($res1->num_rows > 0) {
+                  while ($row = $res1->fetch_assoc()) {
+                    $totalPriceSum += $row['totalPrice'];
+                    // Format flightPrice with commas and display the row
+                    $formattedFlightPrice = number_format($row['flightPrice'], 2);
+                    $formattedTotalPrice = number_format($row['totalPrice'], 2);
+                    echo "<tr'>
                               <td>$count</td>
                               <td>$row[flightDates]</td>
                               <td></td>
@@ -215,9 +210,9 @@
                               <td></td>
                               <td>₱ $formattedTotalPrice</td>
                           </tr>";
-                      $count++;
-                    }
-                  } 
+                    $count++;
+                  }
+                }
                 ?>
               </tbody>
             </table>
@@ -234,9 +229,9 @@
             <table class="product-table">
               <tbody>
                 <?php
-                  $totalCostSum = 0;
-                  $handlingFeeCount = 0;
-                  $sql1 = "SELECT b.flightId, cd.details, cd.price, SUM(r.pax) AS pax, SUM(r.requestCost) AS requestCost, 
+                $totalCostSum = 0;
+                $handlingFeeCount = 0;
+                $sql1 = "SELECT b.flightId, cd.details, cd.price, SUM(r.pax) AS pax, SUM(r.requestCost) AS requestCost, 
                             COUNT(CASE WHEN r.handlingFee != 0 THEN 1 ELSE NULL END) AS handlingFeeCount
                           FROM 
                             `request` r
@@ -249,19 +244,17 @@
                           GROUP BY 
                             r.concernDetailsId";
 
-                  $res1 = $conn->query($sql1);
+                $res1 = $conn->query($sql1);
 
-                  if ($res1->num_rows > 0) 
-                  {
-                    while ($row = $res1->fetch_assoc()) 
-                    {
-                      $handlingFeeCount += $row['handlingFeeCount'];
-                      $handlingFeeTotal = $handlingFeeCount * 100;
-                      $handlingFeeTotal = number_format($handlingFeeTotal, 2);
-                      $totalCostSum += $row['requestCost'];
-                      $formattedRequestPrice = number_format($row['price'], 2);
-                      $formattedRequestCost = number_format($row['requestCost'], 2);
-                      echo "<tr'>
+                if ($res1->num_rows > 0) {
+                  while ($row = $res1->fetch_assoc()) {
+                    $handlingFeeCount += $row['handlingFeeCount'];
+                    $handlingFeeTotal = $handlingFeeCount * 100;
+                    $handlingFeeTotal = number_format($handlingFeeTotal, 2);
+                    $totalCostSum += $row['requestCost'];
+                    $formattedRequestPrice = number_format($row['price'], 2);
+                    $formattedRequestCost = number_format($row['requestCost'], 2);
+                    echo "<tr'>
                               <td>$count</td>
                               <td>$row[details]</td>
                               <td></td>
@@ -270,11 +263,11 @@
                               <td></td>
                               <td>₱ $formattedRequestCost</td>
                           </tr>";
-                      $count++;
-                    }  
+                    $count++;
                   }
+                }
 
-                  echo "<tr>
+                echo "<tr>
                           <td>$count</td>
                           <td>Handling Fee</td>
                           <td></td>
@@ -283,7 +276,7 @@
                           <td></td>
                           <td>₱ $handlingFeeTotal</td>
                           </tr>";
-                  $count++;
+                $count++;
                 ?>
               </tbody>
             </table>
@@ -293,7 +286,8 @@
               <div class="subtotal-item-usd"> <span>USD:</span> <span class="subtotal-usd"></span> </div>
               <div class="subtotal-item-php">
                 <span>PHP:</span>
-                <span class="subtotal-php">₱ <?php $total1 = $totalCostSum + $handlingFeeTotal; echo number_format($total1, 2); ?></span>
+                <span class="subtotal-php">₱ <?php $total1 = $totalCostSum + $handlingFeeTotal;
+                                              echo number_format($total1, 2); ?></span>
               </div>
             </div>
 
@@ -302,293 +296,269 @@
               <div class="balanceUSD"> <span>USD:</span> <span class="subtotal-usd"></span> </div>
               <div class="balancePHP">
                 <span>PHP:</span>
-                <span class="subtotal-php">₱ <?php $total = $totalCostSum + $totalPriceSum + $handlingFeeTotal; echo number_format($total, 2); ?></span>
+                <span class="subtotal-php">₱ <?php $total = $totalCostSum + $totalPriceSum + $handlingFeeTotal;
+                                              echo number_format($total, 2); ?></span>
               </div>
             </div>
           </div>
         </div> -->
+          </div>
 
-      </div>
+          <div class="content-footer">
+            <button class="btn btn-primary" id="download-btn" disabled>Generate SoA</button>
+          </div>
 
-      <div class="content-footer">
-          <!-- <button class="btn btn-secondary" id="preview-btn">Preview</button> -->
-          <button class="btn btn-primary" id="download-btn" disabled>Generate SoA</button>
         </div>
+      </div>
     </div>
-  </div>
-</div>
 
-<?php include '../Employee Section/includes/emp-scripts.php' ?>
+    <?php include '../Employee Section/includes/emp-scripts.php' ?>
 
-<!-- Filter Script -->
-<script>
-  document.addEventListener("DOMContentLoaded", function () 
-  {
-    const flightSelect = document.getElementById("flight-filter");
-    const monthSelect = document.getElementById("month-filter");
-    const yearSelect = document.getElementById("year-filter");
+    <!-- Filter Script -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        const flightSelect = document.getElementById("flight-filter");
+        const monthSelect = document.getElementById("month-filter");
+        const yearSelect = document.getElementById("year-filter");
 
-    // Attach event listeners to filters
-    flightSelect.addEventListener("change", toggleFilters);
-    monthSelect.addEventListener("change", toggleFilters);
-    yearSelect.addEventListener("change", toggleFilters);
-  });
+        // Attach event listeners to filters
+        flightSelect.addEventListener("change", toggleFilters);
+        monthSelect.addEventListener("change", toggleFilters);
+        yearSelect.addEventListener("change", toggleFilters);
+      });
 
-  function toggleFilters() 
-  {
-    const flightContainer = document.getElementById("flight-container");
-    const flightSelect = document.getElementById("flight-filter");
-    const monthContainer = document.getElementById("month-container");
-    const yearContainer = document.getElementById("year-container");
-    const monthSelect = document.getElementById("month-filter");
-    const yearSelect = document.getElementById("year-filter");
-    const resetButtonContainer = document.getElementById("reset-button-container");
+      function toggleFilters() {
+        const flightContainer = document.getElementById("flight-container");
+        const flightSelect = document.getElementById("flight-filter");
+        const monthContainer = document.getElementById("month-container");
+        const yearContainer = document.getElementById("year-container");
+        const monthSelect = document.getElementById("month-filter");
+        const yearSelect = document.getElementById("year-filter");
+        const resetButtonContainer = document.getElementById("reset-button-container");
 
-    const isFlightSelected = flightSelect.value !== "Select Flight Date";
-    const isMonthSelected = monthSelect.value !== "Select month";
-    const isYearSelected = yearSelect.value !== "Select year";
+        const isFlightSelected = flightSelect.value !== "Select Flight Date";
+        const isMonthSelected = monthSelect.value !== "Select month";
+        const isYearSelected = yearSelect.value !== "Select year";
 
-    if (isFlightSelected) 
-    {
-      // Flight selected → Hide Month/Year filters, show Reset
-      flightContainer.style.display = "block";
-      monthContainer.style.display = "none";
-      yearContainer.style.display = "none";
-      resetButtonContainer.style.display = "block";
-    } 
-    else if (isMonthSelected || isYearSelected)
-    {
-      // Month or Year selected → Hide Flight filter, show Reset
-      flightContainer.style.display = "none";
-      monthContainer.style.display = "block";
-      yearContainer.style.display = "block";
-      resetButtonContainer.style.display = "block";
-    } 
-    else 
-    {
-      // No selection → Show all filters, hide Reset
-      flightContainer.style.display = "block";
-      monthContainer.style.display = "block";
-      yearContainer.style.display = "block";
-      resetButtonContainer.style.display = "none";
-    }
-  }
-
-  function resetFilters() 
-  {
-    document.getElementById("flight-filter").value = "Select Flight Date";
-    document.getElementById("month-filter").value = "Select month";
-    document.getElementById("year-filter").value = "Select year";
-    document.getElementById("result-container").innerHTML = "";
-
-    toggleFilters(); // Reapply visibility rules
-  }
-</script>
-
-<!-- Working Merge Preview SOA -->
-<script>
-  document.getElementById('generate-soa-btn').addEventListener('click', function() 
-  {
-    const companyId = document.getElementById('company-filter').value;
-    const monthFilter = document.getElementById('month-filter');
-    const yearFilter = document.getElementById('year-filter');
-    const flightFilter = document.getElementById('flight-filter');
-    const selectedText = flightFilter.options[flightFilter.selectedIndex].text;
-    console.log(selectedText);
-
-    // console.log(flightFilter.text);
-
-    let url = '';
-    let data = `companyId=${companyId}`;
-
-    console.log(yearFilter.value);
-    console.log(monthFilter.value);
-
-
-    // Determine whether to use the date filter or the flight filter
-    if (monthFilter.value !== "Select month" && yearFilter.value !== "Select year") 
-    {
-      // Use Month & Year (Orig Preview SoA)
-      url = '../Employee Section/functions/fetchSoA.php';
-      data += `&month=${monthFilter.value}&year=${yearFilter.value}`;
-    } 
-    else if (flightFilter && flightFilter.value) 
-    {
-      // Use Flight ID (Flight Date Preview SoA)
-      url = '../Employee Section/functions/fetchSoAByFlightDate.php';
-      data += `&flightId=${flightFilter.value}`;
-    } 
-    else 
-    {
-      // Handle case where no filter is selected
-      document.getElementById('result-container').innerHTML = '<p>Please select valid filters.</p>';
-      return;
-    }
-
-    // Disable the button while the request is in progress
-    document.getElementById('generate-soa-btn').disabled = true;
-
-    // Show a loading indicator
-    const resultContainer = document.getElementById('result-container');
-    resultContainer.innerHTML = '<p>Loading...</p>';
-
-    // Send data to PHP using AJAX
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', url, true);
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-    xhr.onload = function() 
-    {
-      // Re-enable the button after the request is complete
-      document.getElementById('generate-soa-btn').disabled = false;
-
-      if (xhr.status === 200) 
-      {
-        // Parse the JSON response
-        const response = JSON.parse(xhr.responseText);
-
-        if (response.dataAvailable) 
-        {
-          // Update the result container with the HTML from the response
-          resultContainer.innerHTML = response.htmlContent;
-          // Enable the download button if data is available
-          document.getElementById('download-btn').disabled = false;
-        } 
-        else 
-        {
-          // If no data available, update the result container and disable the button
-          resultContainer.innerHTML = '<p>No data found for the selected filters.</p>';
-          document.getElementById('download-btn').disabled = true;
-        }
-      } 
-      else 
-      {
-        // Handle errors in the request
-        resultContainer.innerHTML = '<p>Error loading data. Please try again later.</p>';
-        document.getElementById('download-btn').disabled = true;
-      }
-    };
-
-    xhr.onerror = function() 
-    {
-      // Handle network errors
-      resultContainer.innerHTML = '<p>Network error. Please check your connection and try again.</p>';
-      document.getElementById('generate-soa-btn').disabled = false;
-      document.getElementById('download-btn').disabled = true;
-    };
-
-    console.log(data);
-
-    // Send the data to the server
-    xhr.send(data);
-  });
-</script>
-
-<!-- Working Merge Generate SOA -->
-<script>
-  document.getElementById('download-btn').addEventListener('click', function() 
-  {
-    const companyId = document.getElementById('company-filter').value;
-    const monthFilter = document.getElementById('month-filter');
-    const yearFilter = document.getElementById('year-filter');
-    const flightFilter = document.getElementById('flight-filter');
-    const selectedText = flightFilter.options[flightFilter.selectedIndex].text;
-    console.log(selectedText);
-
-    // Get current date in mm/dd/yyyy format
-    const currentDate = new Date();
-    const currentDateFormatted = (currentDate.getMonth() + 1).toString().padStart(2, '0') + '/' +
-                                  currentDate.getDate().toString().padStart(2, '0') + '/' +
-                                  currentDate.getFullYear();
-
-    let urlAddSoA = '';
-    let urlGenerateSoA = '';
-    let data = `companyId=${companyId}&currentDate=${currentDateFormatted}`;
-
-    // Determine the request type based on available filters
-    if (monthFilter.value !== "Select month" && yearFilter.value !== "Select year")
-    {
-      // Use Month & Year (Orig Generate SoA)
-      urlAddSoA = '../Employee Section/functions/emp-addSoA.php';
-      urlGenerateSoA = '../Employee Section/functions/generateSoA.php';
-      data += `&month=${monthFilter.value}&year=${yearFilter.value}`;
-    } 
-    else if (flightFilter.value !== "Select Flight Date") 
-    {
-      console.log(data);
-      // Use Flight ID (Flight Date Generate SoA)
-      urlAddSoA = '../Employee Section/functions/emp-addSoAByFlightDate.php';
-      urlGenerateSoA = '../Employee Section/functions/generateSoAByFlightDate.php';
-      data += `&flightId=${flightFilter.value}&flightDate=${selectedText}`;
-      console.log(data);
-    } 
-    else 
-    {
-      // Handle case where no valid filters are selected
-      alert('Please select valid filters before generating the SOA.');
-      return;
-    }
-
-    // First, send the request to insert SOA data and get the generated SOA number
-    const xhrAddSoA = new XMLHttpRequest();
-    xhrAddSoA.open('POST', urlAddSoA, true);
-    xhrAddSoA.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhrAddSoA.responseType = 'json'; // Expect JSON response for the SOA number
-
-    xhrAddSoA.onload = function() {
-      if (xhrAddSoA.status === 200) {
-        const response = xhrAddSoA.response;
-        console.log(response);
-
-        if (response.soanum) {
-          const soaNumber = response.soanum; // Get the generated SOA number
-          console.log(soaNumber);
-
-          // Proceed to generate the SOA PDF
-          const xhrPdf = new XMLHttpRequest();
-          xhrPdf.open('POST', urlGenerateSoA, true);
-          xhrPdf.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-          xhrPdf.responseType = 'blob';
-
-          xhrPdf.onload = function() {
-            if (xhrPdf.status === 200) {
-              // Create a link to download the PDF
-              const blob = new Blob([xhrPdf.response], { type: 'application/pdf' });
-              const link = document.createElement('a');
-              link.href = window.URL.createObjectURL(blob);
-              link.download = `Statement_of_Account_${soaNumber}.pdf`;
-              link.click();
-            } else {
-              alert('Failed to generate the SOA PDF. Please try again.');
-            }
-          };
-
-          xhrPdf.onerror = function() {
-            alert('An error occurred while generating the SOA PDF.');
-          };
-
-          const finalData = data + `&soaNumber=${soaNumber}`;
-          xhrPdf.send(finalData);
-          console.log(finalData);
+        if (isFlightSelected) {
+            // Flight selected → Hide Month/Year filters, show Reset
+            flightContainer.style.display = "flex"; // Keep flex alignment
+            flightContainer.style.marginLeft = "10px"; // Adjusted for consistency
+            monthContainer.style.display = "none";
+            yearContainer.style.display = "none";
+            resetButtonContainer.style.display = "flex"; // Ensures proper layout
+        } else if (isMonthSelected || isYearSelected) {
+            // Month or Year selected → Hide Flight filter, show Reset
+            flightContainer.style.display = "none";
+            monthContainer.style.display = "flex"; // Ensure alignment
+            yearContainer.style.display = "flex";
+            resetButtonContainer.style.display = "flex";
         } else {
-          alert('Failed to generate SOA Number. Please try again.');
+            // No selection → Show all filters, hide Reset
+            flightContainer.style.display = "flex";
+            monthContainer.style.display = "flex";
+            yearContainer.style.display = "flex";
+            resetButtonContainer.style.display = "none";
         }
-      } else {
-        alert('Failed to insert SOA number. Server error: ' + xhrAddSoA.statusText);
+
       }
-    };
 
-    xhrAddSoA.onerror = function() {
-      alert('An error occurred while processing the request to insert SOA data.');
-    };
+      function resetFilters() {
+        document.getElementById("flight-filter").value = "Select Flight Date";
+        document.getElementById("month-filter").value = "Select month";
+        document.getElementById("year-filter").value = "Select year";
+        document.getElementById("result-container").innerHTML = "";
 
-    // Send the request with the necessary values for SOA number
-    xhrAddSoA.send(data);
-  });
-</script>
+        toggleFilters(); // Reapply visibility rules
+      }
+    </script>
 
-<!-- Preview SoA -->
-<!-- <script>
+    <!-- Working Merge Preview SOA -->
+    <script>
+      document.getElementById('generate-soa-btn').addEventListener('click', function() {
+        const companyId = document.getElementById('company-filter').value;
+        const monthFilter = document.getElementById('month-filter');
+        const yearFilter = document.getElementById('year-filter');
+        const flightFilter = document.getElementById('flight-filter');
+        const selectedText = flightFilter.options[flightFilter.selectedIndex].text;
+        console.log(selectedText);
+
+        // console.log(flightFilter.text);
+
+        let url = '';
+        let data = `companyId=${companyId}`;
+
+        console.log(yearFilter.value);
+        console.log(monthFilter.value);
+
+
+        // Determine whether to use the date filter or the flight filter
+        if (monthFilter.value !== "Select month" && yearFilter.value !== "Select year") {
+          // Use Month & Year (Orig Preview SoA)
+          url = '../Employee Section/functions/fetchSoA.php';
+          data += `&month=${monthFilter.value}&year=${yearFilter.value}`;
+        } else if (flightFilter && flightFilter.value) {
+          // Use Flight ID (Flight Date Preview SoA)
+          url = '../Employee Section/functions/fetchSoAByFlightDate.php';
+          data += `&flightId=${flightFilter.value}`;
+        } else {
+          // Handle case where no filter is selected
+          document.getElementById('result-container').innerHTML = '<p>Please select valid filters.</p>';
+          return;
+        }
+
+        // Disable the button while the request is in progress
+        document.getElementById('generate-soa-btn').disabled = true;
+
+        // Show a loading indicator
+        const resultContainer = document.getElementById('result-container');
+        resultContainer.innerHTML = '<p>Loading...</p>';
+
+        // Send data to PHP using AJAX
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', url, true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+        xhr.onload = function() {
+          // Re-enable the button after the request is complete
+          document.getElementById('generate-soa-btn').disabled = false;
+
+          if (xhr.status === 200) {
+            // Parse the JSON response
+            const response = JSON.parse(xhr.responseText);
+
+            if (response.dataAvailable) {
+              // Update the result container with the HTML from the response
+              resultContainer.innerHTML = response.htmlContent;
+              // Enable the download button if data is available
+              document.getElementById('download-btn').disabled = false;
+            } else {
+              // If no data available, update the result container and disable the button
+              resultContainer.innerHTML = '<p>No data found for the selected filters.</p>';
+              document.getElementById('download-btn').disabled = true;
+            }
+          } else {
+            // Handle errors in the request
+            resultContainer.innerHTML = '<p>Error loading data. Please try again later.</p>';
+            document.getElementById('download-btn').disabled = true;
+          }
+        };
+
+        xhr.onerror = function() {
+          // Handle network errors
+          resultContainer.innerHTML = '<p>Network error. Please check your connection and try again.</p>';
+          document.getElementById('generate-soa-btn').disabled = false;
+          document.getElementById('download-btn').disabled = true;
+        };
+
+        console.log(data);
+
+        // Send the data to the server
+        xhr.send(data);
+      });
+    </script>
+
+    <!-- Working Merge Generate SOA -->
+    <script>
+      document.getElementById('download-btn').addEventListener('click', function() {
+        const companyId = document.getElementById('company-filter').value;
+        const monthFilter = document.getElementById('month-filter');
+        const yearFilter = document.getElementById('year-filter');
+        const flightFilter = document.getElementById('flight-filter');
+        const selectedText = flightFilter.options[flightFilter.selectedIndex].text;
+        console.log(selectedText);
+
+        // Get current date in mm/dd/yyyy format
+        const currentDate = new Date();
+        const currentDateFormatted = (currentDate.getMonth() + 1).toString().padStart(2, '0') + '/' +
+          currentDate.getDate().toString().padStart(2, '0') + '/' +
+          currentDate.getFullYear();
+
+        let urlAddSoA = '';
+        let urlGenerateSoA = '';
+        let data = `companyId=${companyId}&currentDate=${currentDateFormatted}`;
+
+        // Determine the request type based on available filters
+        if (monthFilter.value !== "Select month" && yearFilter.value !== "Select year") {
+          // Use Month & Year (Orig Generate SoA)
+          urlAddSoA = '../Employee Section/functions/emp-addSoA.php';
+          urlGenerateSoA = '../Employee Section/functions/generateSoA.php';
+          data += `&month=${monthFilter.value}&year=${yearFilter.value}`;
+        } else if (flightFilter.value !== "Select Flight Date") {
+          console.log(data);
+          // Use Flight ID (Flight Date Generate SoA)
+          urlAddSoA = '../Employee Section/functions/emp-addSoAByFlightDate.php';
+          urlGenerateSoA = '../Employee Section/functions/generateSoAByFlightDate.php';
+          data += `&flightId=${flightFilter.value}&flightDate=${selectedText}`;
+          console.log(data);
+        } else {
+          // Handle case where no valid filters are selected
+          alert('Please select valid filters before generating the SOA.');
+          return;
+        }
+
+        // First, send the request to insert SOA data and get the generated SOA number
+        const xhrAddSoA = new XMLHttpRequest();
+        xhrAddSoA.open('POST', urlAddSoA, true);
+        xhrAddSoA.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhrAddSoA.responseType = 'json'; // Expect JSON response for the SOA number
+
+        xhrAddSoA.onload = function() {
+          if (xhrAddSoA.status === 200) {
+            const response = xhrAddSoA.response;
+            console.log(response);
+
+            if (response.soanum) {
+              const soaNumber = response.soanum; // Get the generated SOA number
+              console.log(soaNumber);
+
+              // Proceed to generate the SOA PDF
+              const xhrPdf = new XMLHttpRequest();
+              xhrPdf.open('POST', urlGenerateSoA, true);
+              xhrPdf.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+              xhrPdf.responseType = 'blob';
+
+              xhrPdf.onload = function() {
+                if (xhrPdf.status === 200) {
+                  // Create a link to download the PDF
+                  const blob = new Blob([xhrPdf.response], {
+                    type: 'application/pdf'
+                  });
+                  const link = document.createElement('a');
+                  link.href = window.URL.createObjectURL(blob);
+                  link.download = `Statement_of_Account_${soaNumber}.pdf`;
+                  link.click();
+                } else {
+                  alert('Failed to generate the SOA PDF. Please try again.');
+                }
+              };
+
+              xhrPdf.onerror = function() {
+                alert('An error occurred while generating the SOA PDF.');
+              };
+
+              const finalData = data + `&soaNumber=${soaNumber}`;
+              xhrPdf.send(finalData);
+              console.log(finalData);
+            } else {
+              alert('Failed to generate SOA Number. Please try again.');
+            }
+          } else {
+            alert('Failed to insert SOA number. Server error: ' + xhrAddSoA.statusText);
+          }
+        };
+
+        xhrAddSoA.onerror = function() {
+          alert('An error occurred while processing the request to insert SOA data.');
+        };
+
+        // Send the request with the necessary values for SOA number
+        xhrAddSoA.send(data);
+      });
+    </script>
+
+    <!-- Preview SoA -->
+    <!-- <script>
   $(document).ready(function () 
   {
     $("#generate-soa-btn").on("click", function () 
@@ -685,8 +655,8 @@
   });
 </script> -->
 
-<!-- Generate SoA -->
-<!-- <script>
+    <!-- Generate SoA -->
+    <!-- <script>
   $(document).ready(function () 
   {
     $("#download-btn").click(function () 
@@ -858,8 +828,8 @@
   });
 </script> -->
 
-<!-- Working Flight Date Preview SoA -->
-<!-- <script>
+    <!-- Working Flight Date Preview SoA -->
+    <!-- <script>
   document.getElementById('generate-soa-btn').addEventListener('click', function() 
   {
     const companyId = document.getElementById('company-filter').value;
@@ -924,8 +894,8 @@
   });
 </script> -->
 
-<!-- Working Flight Date Generate SoA -->
-<!-- <script>
+    <!-- Working Flight Date Generate SoA -->
+    <!-- <script>
   document.getElementById('download-btn').addEventListener('click', function() 
   {
     const companyId = document.getElementById('company-filter').value;
@@ -1005,8 +975,8 @@
   });
 </script> -->
 
-<!-- Working Orig Preview SoA -->
-<!-- <script>
+    <!-- Working Orig Preview SoA -->
+    <!-- <script>
   document.getElementById('generate-soa-btn').addEventListener('click', function() 
   {
     const companyId = document.getElementById('company-filter').value;
@@ -1072,8 +1042,8 @@
   });
 </script> -->
 
-<!-- Working Orig Generate SoA -->
-<!-- <script>
+    <!-- Working Orig Generate SoA -->
+    <!-- <script>
   document.getElementById('download-btn').addEventListener('click', function() 
   {
     const companyId = document.getElementById('company-filter').value;
@@ -1153,8 +1123,8 @@
   });
 </script> -->
 
-<!-- Modal -->
-<!-- <script>
+    <!-- Modal -->
+    <!-- <script>
   function openModal(row) 
   {
     const transactNo = row.getAttribute('data-transact-no'); // Get the transact number
@@ -1174,8 +1144,8 @@
   }
 </script> -->
 
-<!-- Row Select -->
-<!-- <script>
+    <!-- Row Select -->
+    <!-- <script>
   document.addEventListener("DOMContentLoaded", function() 
   {
     document.querySelectorAll("tr[data-url]").forEach(function(row) 
@@ -1209,31 +1179,55 @@
   });
 </script> -->
 
-<script>
-  const table = $('#product-table').DataTable(
-  {
-    dom: 'rtip',
-    columnDefs: [
-      {width: '12%', targets: 0}, // Transact No.
-      {width: '22%', targets: 1}, // To/From
-      {width: '6%', targets: 2},  // Pax
-      {width: '15%', targets: 3}, // Booking Type
-      {width: '12%', targets: 4}, // Package Price
-      {width: '12%', targets: 5}, // Amount to be Paid
-      {width: '12%', targets: 6}, // Amount Paid
-      {width: '9%', targets: 7}   // Status
-    ],
-    language: 
-    {
-      emptyTable: "No Transaction Records Available"
-    },
-    order: [[0, 'desc']],
-    scrollX: false,
-    autoWidth: false,
-    pageLength: 10, // Limit the number of rows per page to 8
-  });
-</script>
+    <script>
+      const table = $('#product-table').DataTable({
+        dom: 'rtip',
+        columnDefs: [{
+            width: '12%',
+            targets: 0
+          }, // Transact No.
+          {
+            width: '22%',
+            targets: 1
+          }, // To/From
+          {
+            width: '6%',
+            targets: 2
+          }, // Pax
+          {
+            width: '15%',
+            targets: 3
+          }, // Booking Type
+          {
+            width: '12%',
+            targets: 4
+          }, // Package Price
+          {
+            width: '12%',
+            targets: 5
+          }, // Amount to be Paid
+          {
+            width: '12%',
+            targets: 6
+          }, // Amount Paid
+          {
+            width: '9%',
+            targets: 7
+          } // Status
+        ],
+        language: {
+          emptyTable: "No Transaction Records Available"
+        },
+        order: [
+          [0, 'desc']
+        ],
+        scrollX: false,
+        autoWidth: false,
+        pageLength: 10, // Limit the number of rows per page to 8
+      });
+    </script>
 
 
 </body>
+
 </html>

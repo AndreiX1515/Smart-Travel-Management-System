@@ -445,7 +445,7 @@ $pdf->setBranchName($branchName);
 $pdf->setDateRange($flightDate);
 $pdf->setUpdateDate($formattedDate);
 $pdf->setSoANo($soaNumber);
-$pdf->AddPage();
+
 $pdf->tableHeader();
 
 // Get the initial Y position after rendering the header

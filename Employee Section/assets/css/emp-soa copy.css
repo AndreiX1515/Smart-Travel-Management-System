@@ -1,15 +1,8 @@
-
-.main-content  {
-  padding: 0px;
-  
-}
-
-
 .content-wrapper {
   display: flex;
   flex-direction: column;
-  height: 91vh;
-  width: 98%;
+  height: 88vh;
+  width: 97%;
   margin: 15px 30px 0px 10px;
   display: flex;
   flex-direction: column;
@@ -20,44 +13,44 @@
 }
 
 .content-header {
-  font-family: Arial, sans-serif;
-  color: #333;
-  width: 100%;
-  background-color: #fff;
-  z-index: 10;
-  box-sizing: border-box;
+	font-family: Arial, sans-serif;
+	color: #333;
+	width: 100%;  
+	background-color: #fff;
+	z-index: 10; 
+	box-sizing: border-box; 
   margin-bottom: 10px;
 }
 
 .content-header h1 {
-  font-size: 22px;
-  font-weight: bold;
-  margin: 0;
-  color: #1d1d1d;
+	font-size: 22px;
+	font-weight: bold;
+	margin: 0;
+	color: #1d1d1d;
 }
 
 .content-header p {
-  font-size: 16px;
-  font-weight: 400;
-  margin: 0;
-  color: #6b6b6b;
+	font-size: 16px;
+	font-weight: 400;
+	margin: 0;
+	color: #6b6b6b;
 }
 
 .back-button-wrapper {
-  margin-bottom: 10px;
+	margin-bottom: 10px;
 }
 
 .back-button-link {
-  text-decoration: none;
-  color: #6c757d;
-  font-size: 14px;
-  display: inline-flex;
-  align-items: center;
-  transition: color 0.3s ease, text-decoration 0.3s ease;
+	text-decoration: none;
+	color: #6c757d;
+	font-size: 14px;
+	display: inline-flex;
+	align-items: center;
+	transition: color 0.3s ease, text-decoration 0.3s ease;
 }
 
 .back-button-link:hover {
-  color: #116530;
+	color: #116530;
 }
 
 /* General Layout for Content */
@@ -71,10 +64,15 @@
   overflow-y: auto;
 }
 
+
 .table-wrapper {
   /* border: 1px solid black; */
   overflow-y: auto;
 }
+
+
+
+
 
 .content-footer {
   width: 100%;
@@ -85,10 +83,12 @@
   border-right: 1px solid gainsboro;
   border-bottom: 1px solid gainsboro;
   display: flex;
+  gap: 10px;
   justify-content: flex-end;
   align-items: center;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Box shadow */
 }
+
 
 .content-footer .btn {
   padding: 10px 20px;
@@ -103,13 +103,22 @@
 
 /* Message Box */
 
+
+
+
+
+
+
+
+
+
 /* .counts-section {
   display: flex;
   height: 15vh;
   width: 100%;
 } */
 
-/* Disable sorting on columns 1 through 8
+ /* Disable sorting on columns 1 through 8
  table.dataTable th:nth-child(1),
  table.dataTable th:nth-child(2),
  table.dataTable th:nth-child(3),
@@ -122,95 +131,62 @@
      user-select: none; 
  } */
 
+ 
+
 .table-actions {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   gap: 20px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  background-color: #fff;
+  padding: 10px 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
+  background-color: #fff; 
   border: 1px solid gainsboro;
   height: 12vh;
 }
 
-.table-actions .first-wrapper {
+.table-actions .filters-wrapper {
   display: flex;
   flex-direction: row;
-  justify-content: left;
-  align-items: center;
-  width: 75%;
-  height: 100%;
+  width: 100%;
   gap: 10px; /* Adjust spacing between elements */
-  /* border: 1px solid black; */
+  border: 1px solid black;
   padding: 0px 15px;
 }
 
-.table-filters-container {
+.table-actions .first-section-container {
   display: flex;
-  flex-direction: row; /* Change from column to row */
-  gap: 10px;
-  width: 250px;
-  align-items: left;
-  /* border: 1px solid black; */
-  margin-top: 15px;
+  flex-direction: row;
+  align-items: center; /* Ensures elements align properly */
+  width: 100%;
+  border: 1px solid black;
 }
 
 .filters-wrapper .columns {
   display: flex;
   flex-direction: row;
   align-items: left;
+  padding: 5px 0;
+ 
 }
 
-/* Styling for the Label */
-.table-filters-container label {
-  font-size: 12px;
-  color: #333;
-  display: block;
-  font-weight: 600;
-  text-transform: uppercase;
-}
-
-/* Styling for the Container */
 .table-filters-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row; /* Change from column to row */
   gap: 10px;
-  margin-bottom: 15px;
-}
-
-
-.table-actions .second-wrapper {
-  display: flex;
-  flex-direction: row;
-  justify-content: end;
   align-items: center;
-  width: 25%;
-  height: 100%;
-  gap: 10px; /* Adjust spacing between elements */
-  /* border: 1px solid black; */
-  padding: 25px 15px 0px 15px;
-  /* border: 1px solid black; */
 }
 
 
-
-.reset-filters {
-  display: none;
+/* Adjusting width for the Year Filter */
+#company-filter {
+  width: 110%; /* Increase width for the year select */
 }
 
-
-.vertical-separator {
-  width: 2px; /* Line thickness */
-  height: 65%; /* Full height */
-  background-color: #ccc; /* Line color */
-  margin: 10px 15px; /* Adds spacing around the line */
+#year-filter {
+  width: 140%; /* Increase width for the year select */
 }
-
-
-
-
-
 
 /* Rest of the styling */
 .table-filters-container select {
@@ -219,7 +195,7 @@
   font-size: 14px;
   color: #333;
   background-color: transparent;
-  border: 2px solid #ddd; /* No border-radius for flat look */
+  border: 2px solid #ddd;  /* No border-radius for flat look */
   font-weight: 400;
   transition: border-color 0.3s, color 0.3s;
   outline: none;
@@ -237,6 +213,23 @@
   color: #116530;
 }
 
+/* Styling for the Label */
+.table-filters-container label {
+  font-size: 14px;
+  color: #333;
+  display: block;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+/* Styling for the Container */
+.table-filters-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
 .table-filters-container select:focus {
   box-shadow: none;
 }
@@ -246,18 +239,27 @@
   color: #333;
 }
 
-
-.show-column span {
-  color: black;
-  font-weight: 600;
+ 
+.btn-container {
+width: 55%;
+display: flex;
+justify-content: end;
+align-items: last baseline;
+border: 1px solid black;
 }
 
+
+.show-column span{
+color: black;
+font-weight: 600;
+}
+ 
 .show-column select {
-  margin-left: 5px;
-  padding: 3px;
-  border-radius: 10px;
+margin-left: 5px;
+padding: 3px;
+border-radius: 10px;
 }
-
+ 
 /* Table container styling */
 .table-container-product {
   padding: 0;
@@ -272,6 +274,7 @@
   border: 1px solid gainsboro;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Box shadow */
 }
+
 
 /* Transaction Table */
 .product-table {
@@ -311,64 +314,74 @@
   white-space: nowrap;
 }
 
+
+
 .product-table tr {
   transition: background-color 0.3s, color 0.3s;
 }
 
 .product-table tr:hover {
-  background-color: #f2f2f2;
-  color: #000;
+  background-color: #f2f2f2; 
+  color: #000; 
   cursor: pointer;
 }
 
-.product-table th:nth-child(1),
+.product-table th:nth-child(1), 
 .product-table td:nth-child(1) {
   width: 4%; /* Adjust width for 'No.' column */
 }
 
-.product-table th:nth-child(2),
+.product-table th:nth-child(2), 
 .product-table td:nth-child(2) {
   width: 30%; /* Adjust width for 'Contents' column */
 }
 
-.product-table th:nth-child(3),
+.product-table th:nth-child(3), 
 .product-table td:nth-child(3) {
   width: 15%; /* Adjust width for 'Price (USD)' column */
   text-align: end;
 }
 
-.product-table th:nth-child(4),
+.product-table th:nth-child(4), 
 .product-table td:nth-child(4) {
   width: 15%; /* Adjust width for 'Price (PHP)' column */
   text-align: end;
 }
 
-.product-table th:nth-child(5),
+
+
+
+.product-table th:nth-child(5), 
 .product-table td:nth-child(5) {
   width: 5%; /* Adjust width for 'PAX' column */
   text-align: center;
 }
 
-.product-table th:nth-child(6),
+.product-table th:nth-child(6), 
 .product-table td:nth-child(6) {
   width: 15%; /* Adjust width for 'Total (USD)' column */
   text-align: end;
 }
 
-.product-table th:nth-child(7),
+.product-table th:nth-child(7), 
 .product-table td:nth-child(7) {
   width: 15%; /* Adjust width for 'TOTAL (PHP)' column */
   text-align: end;
 }
 
+
+
 .subtotal-container {
   border: 1px solid #ddd;
   display: flex;
   justify-content: end;
-  font-size: 0.95em;
+  font-size: .95em;
   font-weight: bold;
-  background-color: #d3d3d3;
+  background-color:#d3d3d3;
+  
 }
+
+
 
 .subtotal-item-usd,
 .subtotal-item-php {
@@ -393,13 +406,15 @@
   width: 15.1%;
 }
 
+
+
 /* Balance Container */
 .balance-container {
   border: 1px solid #ddd;
   display: flex;
   width: 100%;
   background-color: #f9f9f9;
-  font-size: 0.95em;
+  font-size: .95em;
   font-weight: bold;
 }
 
@@ -419,8 +434,7 @@
 }
 
 /* Balance Subtotals (USD and PHP) */
-.balanceUSD,
-.balancePHP {
+.balanceUSD, .balancePHP {
   border-left: 1px solid #ddd;
   border-right: 1px solid #ddd;
   border-bottom: 1px solid #ddd; /* Only side and bottom borders */
@@ -440,12 +454,19 @@
 .balanceUSD {
   border-top: none; /* No top border for the first subtotal */
   width: 15.2%;
+
 }
 
 .balancePHP {
   border-top: none; /* No top border for the second subtotal */
   width: 15.1%;
+
 }
+
+
+
+
+
 
 /* Customize DataTable pagination for smaller design
 .dataTables_paginate {
@@ -490,6 +511,15 @@
 .dataTables_info {
   display: none;
 } */
+
+
+
+
+
+
+
+
+
 
 /* Modal */
 /* Modal Overlay */
@@ -585,6 +615,8 @@
   background-color: #0056b3;
 }
 
+
+
 #staticBackdrop .modalSOA {
   padding: 10px;
   margin: 0;
@@ -594,9 +626,9 @@
 
 #staticBackdrop .modal-body .content-header {
   width: 100%;
-  padding: 10px;
+  padding: 10px; 
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; 
   border: 1px solid black;
 }
 
@@ -607,15 +639,16 @@
   border: 1px solid black;
 }
 
+
 #staticBackdrop .modal-body .table-filters-container label {
   display: block;
 }
 
 #staticBackdrop .modal-body .table-filters-container select {
-  width: 100%;
+  width: 100%; 
   padding: 8px;
   border-radius: 4px;
-  border: 1px solid #ced4da;
+  border: 1px solid #ced4da; 
 }
 
 #staticBackdrop .modal-body .btn-container {
@@ -641,6 +674,7 @@
   background-color: #0056b3; /* Darker blue on hover */
 }
 
+
 /* /* #staticBackdrop .modal-header {
   padding: 12px 14px;
   border-bottom: 0; 
@@ -657,12 +691,20 @@
   border: 1px solid black;
 }
 
+
+
+
 /* #staticBackdrop .modal-body .content-header {
   border: 1px solid black;
   padding: 15px 0px;
 } */
 
-#staticBackdrop .modal-body .content-body {
+#staticBackdrop .modal-body .content-body{
   border: 1px solid black;
   height: 55vh;
-}
+} 
+
+
+
+
+

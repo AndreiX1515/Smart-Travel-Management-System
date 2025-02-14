@@ -1,85 +1,113 @@
 <?php
-session_start();
-require "../../conn.php"; // Move up to the parent directory
+  session_start();
+  ini_set('display_errors', 1);
+  ini_set('display_startup_errors', 1);
+  error_reporting(E_ALL);
+  require "../../conn.php"; // Move up to the parent directory
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+  if (isset($_POST['bookNow'])) 
+  {
+    $accountId = $_SESSION['accountId'];
+    $agentId = $_POST['agentId'];  
+    $agentCode = $_POST['agentCode'];  
+    $fName = $_POST['fName'];  
+    $mName = $_POST['mName'];  
+    $lName = $_POST['lName'];  
+    $suffix = $_POST['suffix'];
+    $countryCode = $_POST['countryCode']; 
+    $contactNo = $_POST['contactNo'];
+    $email = $_POST['email'];
+    $packageId = $_POST['packageName'];
+    $flightId = $_POST['flightDate'];
+    $totalPax = $_POST['totalPax'];
+    $totalPrice = $_POST['totalPrice'];
+    $bookingType = isset($_POST['land']) ? 'Land' : 'Package';
+    $flightDetails = ($bookingType === 'Land') ? $_POST['flightDetails'] : NULL;
 
-// Initialize response array
-$response = array();
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Retrieve and sanitize form data
-    $email = mysqli_real_escape_string($conn, $_POST['email']);
-    $password = mysqli_real_escape_string($conn, $_POST['password']);
-    $otp = mysqli_real_escape_string($conn, $_POST['otp']);
-    $accountStatus = mysqli_real_escape_string($conn, $_POST['accountStatus']);
-    $accountType = mysqli_real_escape_string($conn, $_POST['accountType']);
-
-    // Agent information
-    $branchId = mysqli_real_escape_string($conn, $_POST['branchId']);
-    $fName = mysqli_real_escape_string($conn, $_POST['fName']);
-    $iName = mysqli_real_escape_string($conn, $_POST['iName']);
-    $mName = mysqli_real_escape_string($conn, $_POST['mName']);
-    $countryCode = mysqli_real_escape_string($conn, $_POST['countryCode']);
-    $contactNo = mysqli_real_escape_string($conn, $_POST['contactNo']);
-    $agentType = mysqli_real_escape_string($conn, $_POST['agentType']);
-    $agentRole = mysqli_real_escape_string($conn, $_POST['agentRole']);
-    $commissionRate = mysqli_real_escape_string($conn, $_POST['commissionRate']);
-
-    // Validate required fields
-    if (empty($email) || empty($password) || empty($otp) || empty($accountStatus) || empty($accountType) ||
-        empty($branchId) || empty($fName) || empty($iName) || empty($mName) || empty($contactNo) ||
-        empty($agentType) || empty($agentRole) || empty($commissionRate)) {
-        $response['status'] = 'error';
-        $response['message'] = 'All fields are required.';
-        echo json_encode($response);
-        exit();
+    // Get the last bookingId and increment it for the new transaction
+    $result = $conn->query("SELECT MAX(bookingId) AS lastBookingId FROM booking");
+    if (!$result) 
+    {
+      $_SESSION['status'] = "Error fetching last booking ID: " . $conn->error;
+      header("Location: ../agent-addBooking - rename.php");
+      exit(0);
     }
 
-    // Insert into the accounts table first
-    $sql_account = "INSERT INTO accounts (email, password, otp, accountStatus, accountType, createdAt) 
-                    VALUES ('$email', '$password', '$otp', '$accountStatus', '$accountType', NOW())";
+    $row = $result->fetch_assoc();
+    $newBookingId = ($row && $row['lastBookingId'] !== null) ? $row['lastBookingId'] + 1 : 1;
+    $formattedCounter = str_pad($newBookingId, 6, '0', STR_PAD_LEFT);
+    $transactNo = $agentCode . '-' . $formattedCounter;
+
+    // Check if "Own Flight" is selected (value is 'Null')
+    if ($flightId === 'Null') 
+    {
+      $flightId = NULL; // Set flightId to NULL if "Own Flight" is selected
+    }
+
+    // Set the session variable for the current user in MySQL
+    $conn->query("SET @current_user_id = $accountId");
+
+    // Start a transaction
+    $conn->begin_transaction();
+
+    // Prepare the SQL statement for insertion into the booking table
+    $sql1 = "INSERT INTO booking (accountId, transactNo, agentId, agentCode, flightId, packageId, fName, lName, mName, suffix, countryCode, 
+    contactNo, email, pax, totalPrice, bookingType, flightDetails, status, bookingDate) VALUES 
+    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Pending', NOW())";
+    $stmt1 = $conn->prepare($sql1);
+
+    if (!$stmt1) 
+    {
+      $_SESSION['status'] = "Booking SQL preparation failed: " . $conn->error;
+      $conn->rollback();  // Rollback transaction
+      header("Location: ../agent-addbooking - rename.php");
+      exit(0);
+    }
+
+    // Bind and execute the booking insertion
+    $stmt1->bind_param('isssiisssssssidss', $accountId, $transactNo, $agentId, $agentCode, $flightId, $packageId, $fName, $lName, $mName, 
+    $suffix, $countryCode, $contactNo, $email, $totalPax, $totalPrice, $bookingType, $flightDetails);
     
-    if (mysqli_query($conn, $sql_account)) {
-        // Get the last inserted accountId
-        $accountId = mysqli_insert_id($conn);
-
-        // Get the last agentId and increment it for the new agent
-        $result = $conn->query("SELECT MAX(agentId) AS lastAgentId FROM agent");
-
-        if ($result) {
-            $row = $result->fetch_assoc();
-            $newAgentId = $row['lastAgentId'] + 1;  // Increment the last agentId
-        } else {
-            $newAgentId = 1;  // If no records exist, start from 1
-        }
-
-        // Insert agent details using the new agentId
-        $sql_agent = "INSERT INTO agent (agentId, accountId, branchId, fName, iName, mName, countryCode, contactNo, agentType, agentRole, commissionRate)
-                      VALUES ('$newAgentId', '$accountId', '$branchId', '$fName', '$iName', '$mName', '$countryCode', '$contactNo', '$agentType', '$agentRole', '$commissionRate')";
-        
-        if (mysqli_query($conn, $sql_agent)) {
-            // Success response
-            $response['status'] = 'success';
-            $response['message'] = "User added successfully with Agent ID: $newAgentId!";
-        } else {
-            $response['status'] = 'error';
-            $response['message'] = "Error inserting into agent table: " . mysqli_error($conn);
-        }
-    } else {
-        $response['status'] = 'error';
-        $response['message'] = "Error inserting into accounts table: " . mysqli_error($conn);
+    if (!$stmt1->execute()) 
+    {
+      $_SESSION['status'] = "Database error on booking insert: " . $stmt1->error;
+      $conn->rollback();  // Rollback the transaction if there is an error
+      header("Location: ../agent-addbooking - rename.php");
+      exit(0);
     }
-} else {
-    $response['status'] = 'error';
-    $response['message'] = 'Invalid request method.';
-}
 
-// Send the response as JSON
-echo json_encode($response);
+    // If flightId is NULL, insert into the clientFlight table
+    // if (is_null($flightId)) 
+    // {
+    //   // Prepare the SQL statement for insertion into the clientFlight table
+    //   $sql2 = "INSERT INTO clientflight (transactNo) VALUES (?)";
+    //   $stmt2 = $conn->prepare($sql2);
 
-// Close the database connection
-mysqli_close($conn);
+    //   if (!$stmt2) 
+    //   {
+    //     $_SESSION['status'] = "Client Flight SQL preparation failed: " . $conn->error;
+    //     $conn->rollback();  // Rollback transaction
+    //     header("Location: ../agent-addBooking.php");
+    //     exit(0);
+    //   }
+
+    //   $stmt2->bind_param('s', $transactNo);
+
+    //   if (!$stmt2->execute()) 
+    //   {
+    //     $_SESSION['status'] = "Database error on client flight insert: " . $stmt2->error;
+    //     $conn->rollback();  // Rollback transaction
+    //     header("Location: ../agent-addBooking.php");
+    //     exit(0);
+    //   }
+    // }
+
+    // If no errors, commit the transaction
+    $conn->commit();
+
+    // Optionally redirect or provide a success message
+    $_SESSION['status'] = "Booking successful!";
+    header("Location: ../agent-addBookingPayment.php?id=" . htmlspecialchars($transactNo));
+    exit(0);
+  }
 ?>

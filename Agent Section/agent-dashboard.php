@@ -92,7 +92,6 @@ require "../conn.php";
                       // Get session variables
                       $accountId = $_SESSION['accountId'];
                       $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking where status='Confirmed' and accountId = '$accountId' and MONTH(bookingDate) = MONTH(CURRENT_DATE()) AND YEAR(bookingDate) = YEAR(CURRENT_DATE())";
-
                       $agentCode = $_SESSION['agentCode'];
                       $agentRole = $_SESSION['agentRole'];
 
@@ -710,7 +709,7 @@ require "../conn.php";
                               echo '<td class="fw-bold">' . $row['AvailSeats'] . '</td>';
                               echo '<td class="fw-bolder">' . $row['AdditionalSeats'] . '</td>';
                               echo '<td>₱ ' . number_format($row['RetailPrice'], 2) . '</td>';
-                              echo '<td><a href="../Agent Section/agent-addbooking-flight.php?flightid=' . urlencode($row['flightId']) . '" class="btn btn-primary">Book Now</a></td>';
+                              echo '<td><a href="../Agent Section/agent-revisedAddBooking.php?flightid=' . urlencode($row['flightId']) . '" class="btn btn-primary">Book Now</a></td>';
                               // echo '<td class="fw-bolder">' . $row['Air+Land'] . '</td>';
                               // echo '<td class="fw-bolder">' . $row['LandOnly'] . '</td>';
                               // echo '<td>₱ ' . number_format($row['WholesalePrice'], 2) . '</td>';
@@ -729,7 +728,6 @@ require "../conn.php";
                 </div>
 
               </div>
-
             </div>
 
             <div class="tab-pane fade " id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
@@ -1591,7 +1589,7 @@ require "../conn.php";
             </div>
 
             <!-- <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">
-        </div> -->
+            </div> -->
           </div>
 
         </div>
