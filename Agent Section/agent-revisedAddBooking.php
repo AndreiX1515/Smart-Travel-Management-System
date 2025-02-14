@@ -190,15 +190,15 @@ require "../conn.php";
                 </div>
               </div>
 
-              <input type="" id="agentCode" name="agentCode" value="<?php echo $_SESSION['agentCode'];; ?>" placeholder="agentCode Input">
-              <input type="" id="flightId" name="flightId" value="" placeholder="Flight Id Input">
-              <input type="" id="packagePrice" name="packagePrice" placeholder="Package Price">
-              <input type="" name="flightPrice" id="flightPricee" placeholder="Flight Price">
-              <input type="" name="agentId" id="agentId" value="<?php echo $_SESSION['agentId']; ?>" placeholder="Agent Id">
-              <input type="" name="agentType" placeholder="Agent Type Input" value="<?php echo $_SESSION['agentType'];?>">
-              <input type="" name="packageId" id="packageId" placeholder="Package Id Input">
-              <input type="" name="packageName" id="packageName" placeholder="Package Name Input">
-              <input type="" name="origin" id="origin" placeholder="Origin Input">
+              <input type="hidden" id="agentCode" name="agentCode" value="<?php echo $_SESSION['agentCode'];; ?>" placeholder="agentCode Input">
+              <input type="hidden" id="flightId" name="flightId" value="" placeholder="Flight Id Input">
+              <input type="hidden" id="packagePrice" name="packagePrice" placeholder="Package Price">
+              <input type="hidden" name="flightPrice" id="flightPricee" placeholder="Flight Price">
+              <input type="hidden" name="agentId" id="agentId" value="<?php echo $_SESSION['agentId']; ?>" placeholder="Agent Id">
+              <input type="hidden" name="agentType" placeholder="Agent Type Input" value="<?php echo $_SESSION['agentType'];?>">
+              <input type="hidden" name="packageId" id="packageId" placeholder="Package Id Input">
+              <input type="hidden" name="packageName" id="packageName" placeholder="Package Name Input">
+              <input type="hidden" name="origin" id="origin" placeholder="Origin Input">
             </div>
 
             <div class="card-footer"> 
@@ -930,6 +930,8 @@ require "../conn.php";
           $('#packageId').val(data.packageId); // Set the value of the input field
           $('#origin').val(data.origin); // Set the value of the input field
 
+          updateTotalPaxMax();
+
           // flightPrice = parseFloat(data.flightPrice); // Ensure it's a number
 
           // // Format the price with commas and two decimal places
@@ -955,13 +957,12 @@ require "../conn.php";
     });
 
     // Event listeners
-    $('#flightId').on('change', updateTotalPaxMax); // Trigger on flight change
+    // $('#flightId').on('change', updateTotalPaxMax); // Trigger on flight change
     $('#land').on('change', updateTotalPaxMax);    // Trigger on "Land Only" checkbox toggle
 
     // Ensure that if the user manually enters a number greater than the max, it's automatically corrected
     $('#totalPax').on('input', function() 
     {
-      updateTotalPaxMax();
       var maxSeats = parseInt($(this).attr('max'));
       var currentPax = parseInt($(this).val());
 

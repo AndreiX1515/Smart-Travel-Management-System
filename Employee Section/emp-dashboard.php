@@ -512,11 +512,11 @@ error_reporting(E_ALL);
                   while ($row = $result->fetch_assoc()) 
                   {
                     $agentCode = $row['agentCode'];
-                    $agentColumns .= "IFNULL(SUM(CASE WHEN b.bookingType = 'Package' AND b.status = 'Confirmed' 
+                    $agentColumns .= "IFNULL(SUM(CASE WHEN b.bookingType = 'Package' AND (b.status = 'Confirmed' OR b.status = 'Reserved')
                                         AND b.agentCode = '$agentCode' AND a.agentType = 'Retailer' 
                                         THEN b.pax ELSE 0 END), 0) AS `{$agentCode}_AL`,
 
-                                      IFNULL(SUM(CASE WHEN b.bookingType = 'Package' AND b.status = 'Confirmed' 
+                                      IFNULL(SUM(CASE WHEN b.bookingType = 'Package' AND (b.status = 'Confirmed' OR b.status = 'Reserved')
                                           AND b.agentCode = '$agentCode' AND a.agentType = 'Wholeseller' 
                                           THEN b.pax ELSE 0 END), 0) AS `{$agentCode}_LO`, ";
                   }
@@ -544,7 +544,7 @@ error_reporting(E_ALL);
                             f.landPrice AS landPrice, 
                             $agentColumns
                           FROM employee e
-                          JOIN flight f ON f.employeeId = e.employeeId
+                          RIGHT JOIN flight f ON f.employeeId = e.employeeId
                           LEFT JOIN booking b ON b.flightId = f.flightId
                           LEFT JOIN package p ON f.packageId = p.packageId
                           LEFT JOIN agent a ON b.agentId = a.agentId
