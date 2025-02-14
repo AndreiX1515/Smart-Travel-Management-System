@@ -624,17 +624,21 @@
 }
 
 .confirm-table thead th {
-  font-size: 12px;
-  font-weight: bold;
+  font-size: 10px;
+  font-weight: 500;
   color: white;
   padding: 5px 12px;
   border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
   width: auto;
 }
 
 .confirm-table tbody td {
   padding: 0px 12px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  border-left: 1px solid rgba(0, 0, 0, 0.05);
+  border-right: 1px solid rgba(0, 0, 0, 0.05);
   color: #555;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -646,37 +650,15 @@
   transition: background-color 0.3s ease-in-out;
 }
 
+
 .confirm-table tbody tr:hover {
   background-color: #b2ebf2;
   cursor: pointer;
 }
 
-/* Specific styling for individual components */
 
-/* Table Row (tr) */
-.confirm-table tbody tr {
-  display: table-row;
-  vertical-align: middle;
-  border-color: inherit;
-}
 
-/* Table Data (td) */
-.confirm-table tbody td {
-  display: table-cell;
-  vertical-align: inherit;
-  text-align: left;
-  padding: 0px 12px;
-}
 
-/* Table Header (th) */
-.confirm-table thead th {
-  display: table-cell;
-  vertical-align: inherit;
-  text-align: left;
-  padding: 5px 12px;
-  font-weight: bold;
-  color: white;
-}
 
 /* General container for comment input and button */
 .comment-container {
@@ -821,17 +803,17 @@
 ============================ */
 .confirm-table th:nth-child(1),
 .confirm-table td:nth-child(1) {
-  width: 4%; /* Transaction No. */
+  width: 3%; /* Transaction No. */
 }
 
 .confirm-table th:nth-child(2),
 .confirm-table td:nth-child(2) {
-  width: 6%; /* Agent Name */
+  width: 8%; /* Agent Name */
 }
 
 .confirm-table th:nth-child(3),
 .confirm-table td:nth-child(3) {
-  width: 5%; /* Package */
+  width: 4%; /* Package */
 }
 
 .confirm-table th:nth-child(4),
@@ -858,13 +840,13 @@
 
 .confirm-table th:nth-child(8),
 .confirm-table td:nth-child(8) {
-  width: 5%; /* Total Pax */
+  width: 3%; /* Total Pax */
   text-align: center;
 }
 
 .confirm-table th:nth-child(9),
 .confirm-table td:nth-child(9) {
-  width: 18%; /* Comment */
+  width: 20%; /* Comment */
   border-left: 1px solid gainsboro;
 }
 
@@ -872,6 +854,7 @@
   display: flex;
   flex-direction: column;
   gap: 3px;
+  line-height: 1; /* Adjust line height */
 }
 
 .payment-row {
@@ -884,12 +867,15 @@
 .payment-row .label {
   font-size: 14px;
   font-weight: bold;
+  line-height: 1.15; /* Adjust line height */
 }
 
 .value {
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 400;
+  line-height: 1.15; /* Adjust line height */
 }
+
 
 /* ============================================= */
 
@@ -943,37 +929,55 @@
 
 /* ====================== */
 
+/* Info Table Container */
+.info-table-container {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  height: 73vh; /* Fixed height for the container */
+  margin-bottom: 20px; /* Add margin below to provide space for the bottom scrollbar */
+  margin-right: 20px; /* Add margin to the right for the vertical scrollbar */
+  overflow-x: auto; /* Allow horizontal scrolling */
+  overflow-y: auto; /* Allow vertical scrolling */
+  border: 1px solid gainsboro;
+  width: 100%; /* Ensure the container uses full width */
+}
 
+/* Ensure table and container sizes are consistent */
+.info-table, div.dataTables_wrapper {
+  width: 100%;
+  font-size: 12px;
+  background-color: #fff;
+  color: #000000 !important;
+  text-align: center;
+  table-layout: fixed;
+  margin-bottom: 25px;
+  border-collapse: collapse;
+}
 
-
-
-
-
-
-/* .info-table tbody tr.selected {
-  background-color: rgb(42, 204, 253) !important;
-  color: black !important;
-  font-weight: bold;
-} */
-
-
+/* Ensure the table header stays fixed */
+.info-table thead th, div.dataTables_wrapper thead th {
+  position: sticky;
+  top: 0; /* Stick to the top */
+  z-index: 10; /* Ensure it's on top of the table content */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for better visibility */
+}
 
 /* Add style for highlighted row */
-div.dataTables_wrapper tbody tr.selected {
+div.dataTables_wrapper tbody tr.selected, .info-table tbody tr.selected {
   background-color: rgb(42, 204, 253) !important;
   color: black !important;
   font-weight: bold;
 }
 
 /* Highlight selected header cell */
-div.dataTables_wrapper thead th.selected {
+div.dataTables_wrapper thead th.selected, .info-table thead th.selected {
   background-color: #f1f1f1; /* Same as row highlight */
   color: #000; /* Text color */
 }
 
-
 /* Styling for table data (td) */
-div.dataTables_wrapper td {
+div.dataTables_wrapper td, .info-table td {
   padding: 16px 10px;
   text-align: center;
   font-size: 12px;
@@ -983,40 +987,49 @@ div.dataTables_wrapper td {
   border-right: 1px solid #ddd; /* Right border */
 }
 
+/* === Sticky First 12 Columns === */
+div.dataTables_wrapper thead th:nth-child(-n + 12), .info-table thead th:nth-child(-n + 12),
+div.dataTables_wrapper tbody td:nth-child(-n + 12), .info-table tbody td:nth-child(-n + 12) {
+  position: sticky;
+  left: 0;
+  z-index: 10;
+  border-right: 1px solid #ddd; /* Optional: adds a visual separator */
+}
+
 /* Optional: Add a border to the first and last columns for consistency */
-div.dataTables_wrapper td:first-child {
+div.dataTables_wrapper td:first-child, .info-table td:first-child {
   border-left: 1px solid #ddd;
 }
 
 /* Styling for the table header in both dataTables and info-table */
-div.dataTables_wrapper thead,
-div.info-table thead {
+div.dataTables_wrapper thead, .info-table thead {
   position: sticky; /* Make the entire thead sticky */
   top: 0; /* Stick the header to the top of the scrolling container */
   z-index: 2; /* Ensure the header stays above table rows */
-  background-color: #696969; /* Background color to differentiate the header */
   padding: 3px 8px; /* Adjust padding for better spacing */
 }
 
 /* Styling for each table header cell (th) */
-div.dataTables_wrapper thead th,
-div.info-table thead th {
+div.dataTables_wrapper thead th, .info-table thead th {
   text-align: center; /* Center align the text */
   font-weight: bold; /* Make the header text bold */
   border-right: 1px solid #e6e6e6; /* Add right border between columns */
   padding: 10px 8px; /* Adjust padding for better spacing */
+  background-color: #dc3545; 
+  color: #ffffff;
+
+
 }
 
+
 /* Ensure selected row does not change size */
-.info-table tbody tr,
-div.dataTables_wrapper tbody tr {
+.info-table tbody tr, div.dataTables_wrapper tbody tr {
   transition: none !important; /* Disable animations */
   border-collapse: collapse; /* Prevent border spacing changes */
 }
 
 /* Selected row styling */
-.info-table tbody tr.selected,
-div.dataTables_wrapper tbody tr.selected {
+.info-table tbody tr.selected, div.dataTables_wrapper tbody tr.selected {
   background-color: rgb(42, 204, 253) !important; /* Highlight color */
   color: black !important;
   font-weight: bold;
@@ -1025,99 +1038,15 @@ div.dataTables_wrapper tbody tr.selected {
 }
 
 
-/* Column-Specific Width Adjustments */
-/* div.dataTables_wrapper thead th:nth-child(1),
-div.dataTables_wrapper tbody td:nth-child(1) {
-  width: 2%;
-}
 
-div.dataTables_wrapper thead th:nth-child(2),
-div.dataTables_wrapper tbody td:nth-child(2) {
-  width: 10%;
-}
-
-div.dataTables_wrapper tbody td:nth-child(2) {
-  font-size: 8px;
-}
-
-div.dataTables_wrapper thead th:nth-child(3),
-div.dataTables_wrapper tbody td:nth-child(3) {
-  width: 5%;
-}
-
-div.dataTables_wrapper thead th:nth-child(4),
-div.dataTables_wrapper tbody td:nth-child(4) {
-  width: 18%;
-}
-
-div.dataTables_wrapper thead th:nth-child(5),
-div.dataTables_wrapper tbody td:nth-child(5) {
-  width: 6%;
-}
-
-div.dataTables_wrapper thead th:nth-child(6),
-div.dataTables_wrapper tbody td:nth-child(6) {
-  width: 7%;
-}
-
-div.dataTables_wrapper thead th:nth-child(7),
-div.dataTables_wrapper tbody td:nth-child(7) {
-  width: 5%;
-}
-
-div.dataTables_wrapper thead th:nth-child(8),
-div.dataTables_wrapper tbody td:nth-child(8) {
-  width: 5%;
-}
-
-div.dataTables_wrapper thead th:nth-child(9),
-div.dataTables_wrapper tbody td:nth-child(9) {
-  width: 9%;
-}
-
-div.dataTables_wrapper thead th:nth-child(10),
-div.dataTables_wrapper tbody td:nth-child(10) {
-  width: 9%;
-}
-
-div.dataTables_wrapper thead th:nth-child(11),
-div.dataTables_wrapper tbody td:nth-child(11) {
-  width: 9%;
-}
-
-div.dataTables_wrapper thead th:nth-child(12),
-div.dataTables_wrapper tbody td:nth-child(12) {
-  width: 9%;
-} */
-
-
-/* === Sticky First 12 Columns === */
-div.dataTables_wrapper thead th:nth-child(-n + 12),
-div.dataTables_wrapper tbody td:nth-child(-n + 12) {
-  position: sticky;
-  left: 0;
-  background-color: #ffffff; /* Light background for frozen columns */
-  z-index: 10;
-  border-right: 1px solid #ddd; /* Optional: adds a visual separator */
-}
-
-/* Ensuring sticky headers don't overlap when scrolling horizontally */
-div.dataTables_wrapper thead th {
-  position: sticky;
-  top: 0;
-  background-color: #ffffff;
-  z-index: 5; /* Keeps the header on top when scrolling */
-}
 
 /* Optional: Change color on hover */
-div.dataTables_wrapper tbody tr,
-.info-table tbody tr {
+div.dataTables_wrapper tbody tr, .info-table tbody tr {
   background-color: #ffffff; /* Light hover effect */
 }
 
 /* Optional: Change color on hover */
-.info-table tbody tr:hover,
-div.dataTables_wrapper tbody tr:hover {
+.info-table tbody tr:hover, div.dataTables_wrapper tbody tr:hover {
   background-color: #dfdfdf; /* Light hover effect */
   cursor: pointer;
 }
@@ -1132,7 +1061,6 @@ div.dataTables_scrollBody {
 div.dataTables_scrollHead {
   overflow: hidden;
 }
-
 
 
 
@@ -1206,44 +1134,6 @@ div.dataTables_wrapper tbody td:nth-child(14) {
   width: 10%;
   font-size: 12px;
 }
-
-
-/* Ensure the table header stays fixed */
-.info-table thead th {
-  position: sticky;
-  top: 0; /* Stick to the top */
-  background-color: #fff; /* White background for header */
-  z-index: 10; /* Ensure it's on top of the table content */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for better visibility */
-}
-
-/* Info Table Container */
-.info-table-container {
-  display: flex;
-  flex-direction: row;
-  position: relative;
-  height: 73vh; /* Fixed height for the container */
-  margin-bottom: 20px; /* Add margin below to provide space for the bottom scrollbar */
-  margin-right: 20px; /* Add margin to the right for the vertical scrollbar */
-  overflow-x: auto; /* Allow horizontal scrolling */
-  overflow-y: auto; /* Allow vertical scrolling */
-  border: 1px solid gainsboro;
-  width: 100%; /* Ensure the container uses full width */
-}
-
-/* Ensure table and container sizes are consistent */
-.info-table {
-  width: 100%;
-  font-size: 12px;
-  background-color: #fff;
-  color: #000000 !important;
-  text-align: center;
-  table-layout: fixed;
-  margin-bottom: 25px;
-}
-
-
-
 
 /* Ensure the 13th column and beyond is scrollable */
 div.dataTables_wrapper thead th:nth-child(n + 13),

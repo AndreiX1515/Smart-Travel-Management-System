@@ -94,7 +94,7 @@ error_reporting(E_ALL);
 
               <div class="buttons-wrapper">
                 <button id="AddAccountBtn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#AddAccountModal">
-                  Add Agent Account
+                  <i class="fas fa-user-plus"></i> Add Account
                 </button>
               </div>
 
@@ -111,21 +111,21 @@ error_reporting(E_ALL);
               </li>
               <li class="nav-item" role="presentation">
                 <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">
-                  Pending <span class="badge">61</span>
+                  Agent <span class="badge">61</span>
                 </button>
               </li>
 
               <li class="nav-item" role="presentation">
                 <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">
-                  Confirmed <span class="badge">27</span>
+                  Client <span class="badge">27</span>
                 </button>
               </li>
 
-              <li class="nav-item" role="presentation">
+              <!-- <li class="nav-item" role="presentation">
                 <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">
                   Cancelled <span class="badge">27</span>
                 </button>
-              </li>
+              </li> -->
             </ul>
           </div>
 
@@ -144,7 +144,7 @@ error_reporting(E_ALL);
                       <th>Contact No.</th>
                       <th>Agent Type</th>
                       <th>Agent Role</th>
-                      <th>Status</th>
+                      <th>STATUS</th>
                       <th></th>
                     </tr>
                   </thead>
@@ -186,14 +186,14 @@ error_reporting(E_ALL);
                             <td>{$row['Agent ID']}</td>
                             <td>{$row['Name']}</td>
                             <td>{$row['Email']}</td>
-                            <td>{$row['Password']}</td>
+                            <td>***********</td>
                             <td>{$row['Contact No.']}</td>
                             <td>{$row['Agent Type']}</td>
                             <td class='agentRole'>{$row['Agent Role']}</td>
                             <td>{$row['Status']}</td>
                             <td>
                                 <div class='dropdown-center' style='text-align: center; position: relative;'>
-                                    <button class='btn btn-light' type='button' data-bs-toggle='dropdown' aria-expanded='false'>
+                                    <button class='btn' type='button' data-bs-toggle='dropdown' aria-expanded='false'>
                                         <i class='fas fa-ellipsis-v'></i>
                                     </button>
                                     <ul class='dropdown-menu' style='position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);'>
@@ -320,6 +320,48 @@ error_reporting(E_ALL);
         <div class="modal-body">
           <form id="addAccountForm">
             <div class="content-section">
+              <div class="content-header">
+                Account Type
+              </div>
+
+              <div class="content-body">
+                <div class="row">
+                  <div class="columns col-md-4">
+                    <label for="Suffix" class="form-label">Account Type</label>
+                    <select class="form-control" id="accountType" name="accountType">
+                        <option value="">Select Account Type</option>
+                        <option value="agent">Agent</option>
+                        <option value="guest">Client</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <style>
+                /* Make readonly fields greyed out */
+                .readonly-grey {
+                    background-color: #e9ecef !important; /* Grey background */
+                    pointer-events: none; /* Prevent clicking */
+                }
+              </style>
+
+              <script>
+              document.getElementById("accountType").addEventListener("change", function() {
+                  let agentRoleField = document.getElementById("agentRole");
+
+                  if (this.value === "guest") {
+                      agentRoleField.value = "Sub Agent"; 
+                      agentRoleField.setAttribute("readonly", "readonly"); // Make it readonly
+                      agentRoleField.classList.add("readonly-grey"); // Apply greyed-out style
+                  } else {
+                      agentRoleField.value = ""; 
+                      agentRoleField.removeAttribute("readonly"); // Allow selection for other cases
+                      agentRoleField.classList.remove("readonly-grey"); // Remove greyed-out style
+                  }
+              });
+              </script>
+
+
               <div class="content-header">
                 Personal Information
               </div>
@@ -552,7 +594,20 @@ error_reporting(E_ALL);
                           <option value="+263">Zimbabwe (+263)</option>
                         </select>
 
-                        <input type="text" id="contactNo" name="contactNo" class="form-control" placeholder="Enter phone number" required>
+                        <input type="text" id="contactNo" name="contactNo" class="form-control" placeholder="Enter phone number" required maxlength="11">
+
+                        <script>
+                        document.getElementById("contactNo").addEventListener("input", function() {
+                            // Remove non-numeric characters
+                            this.value = this.value.replace(/\D/g, '');
+                            
+                            // Ensure max length of 11 characters
+                            if (this.value.length > 11) {
+                                this.value = this.value.slice(0, 11);
+                            }
+                        });
+                        </script>
+
 
 
                         <span id="contactNoError" class="text-danger"></span>
@@ -586,50 +641,59 @@ error_reporting(E_ALL);
               </div>
             </div>
 
-            <div class="content-section">
+            
               <div class="content-header">
                 Account Information
               </div>
 
               <div class="content-body">
                 <div class="row">
-                <div class="columns col-md-4">
-                    <label for="accountStatus" class="form-label">Branch</label>
-                    <select class="form-select" id="branchId" name="branchId" required>
-                        <option value="All" disabled selected>Select Branch</option>
-                        <?php
-                        // Execute the SQL query to fetch branch details
-                        $sql1 = "SELECT branchId, branchName FROM branch ORDER BY branchName ASC";
-                        $res1 = $conn->query($sql1);
+                  <div class="columns col-md-4">
+                      <label for="accountStatus" class="form-label">Branch</label>
+                      <select class="form-select" id="branchId" name="branchId" required>
+                          <option value="All" disabled selected>Select Branch</option>
+                          <?php
+                          // Execute the SQL query to fetch branch details
+                          $sql1 = "SELECT branchId, branchName FROM branch ORDER BY branchName ASC";
+                          $res1 = $conn->query($sql1);    
 
-                        // Check if there are results
-                        if ($res1->num_rows > 0) {
-                            // Loop through the results and generate options
-                            while ($row = $res1->fetch_assoc()) {
-                                // Use branchId as the value for each option
-                                echo "<option value='" . $row['branchId'] . "'>" . $row['branchName'] . "</option>";
-                            }
-                        } else {
-                            echo "<option value=''>No branches available</option>";
-                        }
-                        ?>
-                    </select>
-                </div>
-
-
+                          // Check if there are results
+                          if ($res1->num_rows > 0) {
+                              // Loop through the results and generate options
+                              while ($row = $res1->fetch_assoc()) {
+                                  // Use branchId as the value for each option
+                                  echo "<option value='" . $row['branchId'] . "'>" . $row['branchName'] . "</option>";
+                              }
+                          } else {
+                              echo "<option value=''>No branches available</option>";
+                          }
+                          ?>
+                      </select>
+                  </div>
 
                   <div class="columns col-md-4">
                     <label for="accountStatus" class="form-label">Agent Type</label>
                     <select class="form-select" id="agentType" name="agentType" required>
                       <option value="" selected disabled>Select Agent Type</option>
-                      <option value="Wholesaler">Wholesaler</option>
+                      <option value="Wholeseller">Wholeseller</option>
                       <option value="Retailer">Retailer</option>
                     </select>
                   </div>
+
+                  <div class="columns col-md-4">
+                    <label for="accountStatus" class="form-label">Agent Role</label>
+                    <select class="form-select" id="agentRole" name="agentRole" required>
+                      <option value="" selected disabled>Select Agent Type</option>
+                      <option value="Head Agent">Head Agent</option>
+                      <option value="Sub Agent">Sub Agent</option>
+                      <option value="Sub Agent 2">Sub Agent 2</option>
+                    </select>
+                  </div>
+
                 </div>
 
               </div>
-            </div>
+           
         </div>
 
         <!-- Modal Footer -->
@@ -646,7 +710,7 @@ error_reporting(E_ALL);
 </div>
 
 <!-- ContactNo and Country Code Script -->
-<script>
+<!-- <script>
     let contactNo = document.getElementById("contactNo");
     let countryCode = document.getElementById("countryCode");
 
@@ -688,13 +752,11 @@ error_reporting(E_ALL);
         }
       }
     });
-  </script>
+  </script> -->
 
 
   <script>
-
     $(document).ready(function() {
-
       const password = document.getElementById("password");
       const confirmPassword = document.getElementById("cpassword");
       const passwordError = document.getElementById("passwordError");
@@ -711,7 +773,6 @@ error_reporting(E_ALL);
 
       password.addEventListener("input", validatePassword);
       confirmPassword.addEventListener("input", validatePassword);
-
 
 
       $('#addAccountForm').submit(function(event) {
@@ -738,6 +799,7 @@ error_reporting(E_ALL);
               $('#responseMessage').html('<span style="color:green;">' + jsonResponse.message + '</span>');
               // Display an alert for success
               alert("Success: " + jsonResponse.message);
+              location.reload();
             } else {
               $('#responseMessage').html('<span style="color:red;">' + jsonResponse.message + '</span>');
               // Display an alert for error
@@ -753,17 +815,6 @@ error_reporting(E_ALL);
       });
     });
   </script>
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -813,9 +864,9 @@ error_reporting(E_ALL);
           [0, 'desc']
         ], // Default sorting by Transaction ID (descending)
         scrollX: false,
-        scrollY: '68vh', // Set a fixed height for the table (adjust as necessary)
+        scrollY: '68.7vh', // Set a fixed height for the table (adjust as necessary)
         paging: true, // Enable pagination
-        pageLength: 12, // Set the number of rows per page
+        pageLength: 15, // Set the number of rows per page
         autoWidth: false,
         autoHeight: false, // Prevent automatic height adjustment
 

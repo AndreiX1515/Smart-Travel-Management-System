@@ -376,7 +376,7 @@
 .table-container {
   display: flex;
   flex-direction: column;
-  height: 90%;
+  height: 92%;
   flex: 1;
   background-color: transparent;
   overflow: hidden; /* Hide overflow from the container */
@@ -392,8 +392,8 @@
   align-items: center;
   justify-content: flex-end; /* Align pagination to the end */
   padding: 5px 20px; /* Padding for spacing */
-  margin-top: 5px;
-  border-radius: 5px; /* Slight rounding of the footer */
+
+  
 }
 
 /* Style the buttons */
@@ -423,67 +423,122 @@
 
 
 
-/* Table Styles for Product Table */
-.product-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 15px;
- 
-}
+/* =======================
+   Table Styles for Product Table
+   ======================= */
+   .product-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #fff;
+    table-layout: auto;
+  }
+  
+  /* =======================
+     Header Styling
+     ======================= */
+  .product-table thead {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background-color: #e6e6e6;
+  }
+  
+  .product-table th {
+    font-weight: bold;
+    text-align: left;
+    border: 1px solid #ddd;
+    font-size: 0.8em;
+    white-space: nowrap;
+    text-transform: uppercase;
+    padding: 4px 8px; /* Reduced padding for a compact look */
+  }
+  
+  .product-table th:first-child {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+  }
+  
+  .product-table th:last-child {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
+  
+  /* =======================
+     Body Styling
+     ======================= */
+     .product-table tbody td {
+      padding: 4px 8px !important; /* Force smaller padding */
+      text-align: left;
+      vertical-align: middle;
+      border: 1px solid #f1f1f1;
+      font-size: 0.85em;
+      position: relative;
+      white-space: nowrap; /* Disable word wrapping */
+  }
+  
+  
+  /* =======================
+     Row Styling
+     ======================= */
+  .product-table tbody tr {
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+  }
+  
+  /* Alternating row colors */
+  .product-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .product-table tbody tr:hover {
+    background-color: #f2f2f2;
+    color: #000;
+    cursor: pointer;
+  }
+  
+  /* =======================
+     Table Borders & Spacing
+     ======================= */
+  .product-table th,
+  .product-table td {
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+  }
+  
+  .product-table th:first-child,
+  .product-table td:first-child {
+    border-left: none;
+  }
+  
+  .product-table th:last-child,
+  .product-table td:last-child {
+    border-right: none;
+  }
+  
+  /* =======================
+     Responsive Design
+     ======================= */
+  @media (max-width: 768px) {
+    .product-table th, .product-table td {
+      font-size: 0.75em !important;
+      padding: 2px 5px !important;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .product-table th, .product-table td {
+      font-size: 0.7em !important;
+      padding: 1px 4px !important;
+    }
+  }
+  
 
-/* Header Styling */
-.product-table th {
-  position: sticky; /* Keep header fixed during scrolling */
-  top: 0;
-  z-index: 1; /* Ensure header stays on top of content */
-  background-color: #e6e6e6; /* Light background for headers */
-  font-weight: bold;
-  text-align: left;
-  border: 1px solid #ddd; /* Add side and bottom borders */
-  font-size: 0.8em; /* Compact font size */
-  white-space: nowrap; /* Prevent text wrapping */
-  text-transform: uppercase; /* Uppercase text for headers */
-  border-top: none; /* Remove top border so the thead's top border-radius is visible */
-}
 
-/* Apply rounded corners to the first and last th elements */
-.product-table th:first-child {
-  border-top-left-radius: 10px; /* Rounded top left corner */
-  border-bottom-left-radius: 10px; /* Rounded top left corner */
-}
 
-.product-table th:last-child {
-  border-top-right-radius: 10px; /* Rounded top right corner */
-  border-bottom-right-radius: 10px; /* Rounded top right corner */
-}
 
-.product-table thead {
-  overflow: hidden; /* Ensure content stays within rounded area */
-  padding: 6px; /* Consistent padding for headers */
-}
 
-.product-table td {
-  padding: 5px 8px; /* Smaller padding for compact layout */
-  text-align: left; /* Align text to the left */
-  vertical-align: middle; /* Center-align content vertically */
-  border-bottom: 1px solid #ddd; /* Subtle border for row separation */
-  font-size: 0.85em; /* Compact font size */
-  /* white-space: nowrap; 
-  overflow: hidden; /
-  text-overflow: ellipsis;  */
-  position: relative; /* Ensure position context for absolute dropdown */
-}
-
-/* Hover effect for table rows */
-.product-table tr {
-  transition: background-color 0.3s, color 0.3s;
-}
-
-.product-table tr:hover {
-  background-color: #f2f2f2; /* Subtle hover effect */
-  color: #000; /* Ensure hover text color contrast */
-  cursor: pointer;
-}
 
 /* Button Styling for Dropdown */
 .custom-dropdown button {
@@ -539,20 +594,24 @@
 
 
 
+
 /* Column width adjustments - Total 100% */
 .product-table th:nth-child(1),
 .product-table td:nth-child(1) {
-  width: 8%; /* Account ID */
+  width: 4%; /* Account ID */
+  
 }
 
 .product-table th:nth-child(2),
 .product-table td:nth-child(2) {
-  width: 8%; /* Agent Code */
+  width: 4%; /* Agent Code */
+  
 }
 
 .product-table th:nth-child(3),
 .product-table td:nth-child(3) {
-  width: 8%; /* Agent ID */
+  width: 4%; /* Agent ID */
+  
 }
 
 .product-table th:nth-child(4),
@@ -567,7 +626,7 @@
 
 .product-table th:nth-child(6),
 .product-table td:nth-child(6) {
-  width: 10%; /* Password */
+  width: 12%; /* Password */
 }
 
 .product-table th:nth-child(7),
@@ -577,26 +636,27 @@
 
 .product-table th:nth-child(8),
 .product-table td:nth-child(8) {
-  width: 10%; /* Agent Type */
+  width: 6%; /* Agent Type */
   text-align: center;
 }
 
 .product-table th:nth-child(9),
 .product-table td:nth-child(9) {
-  width: 10%; /* Agent Role */
+  width: 6%; /* Agent Role */
   text-align: center;
 }
 
 .product-table th:nth-child(10),
 .product-table td:nth-child(10) {
-  width: 7%; /* Status */
-  text-align: center;
+  width: 6%; /* Status */
   text-transform: capitalize;
+  text-align: center;
+  
 }
 
 .product-table th:nth-child(11),
 .product-table td:nth-child(11) {
-  width: 5%; /* Actions */
+  width: 2%; /* Actions */
   text-align: center;
 } 
 

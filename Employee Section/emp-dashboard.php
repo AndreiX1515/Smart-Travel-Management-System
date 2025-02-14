@@ -421,9 +421,6 @@ error_reporting(E_ALL);
       </div>
 
 
-
-
-
       <!-- Flight Seat Tracker Tab -->
       <div class="tab-content" id="pills-tabContent">
 
@@ -434,44 +431,43 @@ error_reporting(E_ALL);
             <table class="info-table" id="info-table">
               <thead>
                 <tr>
-                  <th rowspan="2"></th>
-                  <th rowspan="2">TEAM OP</th>
-                  <th rowspan="2">ORIGIN</th>
-                  <th colspan="2">FLIGHT DATE</th> <!-- Flight Date columns -->
-                  <th rowspan="2" style="font-size: 10px;">AVAILABLE SEATS</th>
-                  <th rowspan="2" style="font-size: 10px;">ADDITIONAL SEATS</th>
-                  <th rowspan="2">AIR + LAND</th>
-                  <th rowspan="2">LAND ONLY</th>
-                  <th rowspan="2">WHOLESALE PRICE</th>
-                  <th rowspan="2">RETAIL PRICE</th>
-                  <th rowspan="2" style="font-size: 10px; padding: 0px 5px">LAND ARRANGEMENT PRICE</th>
-                  <th rowspan="2" style="font-size: 10px; padding: 0px 5px">LAND PRICE</th>
+                  <th rowspan="2" class="red-white"></th>
+                  <th rowspan="2" class="red-white">TEAM OP</th>
+                  <th rowspan="2" class="red-white">ORIGIN</th>
+                  <th colspan="2" class="red-white">FLIGHT DATE</th> <!-- Flight Date columns -->
+                  <th rowspan="2" class="red-white" style="font-size: 10px;">AVAILABLE SEATS</th>
+                  <th rowspan="2" class="red-white" style="font-size: 10px;">ADDITIONAL SEATS</th>
+                  <th rowspan="2" class="red-white">AIR + LAND</th>
+                  <th rowspan="2" class="red-white">LAND ONLY</th>
+                  <th rowspan="2" class="red-white">WHOLESALE PRICE</th>
+                  <th rowspan="2" class="red-white">RETAIL PRICE</th>
+                  <th rowspan="2" class="red-white" style="font-size: 10px; padding: 0px 5px">LAND ARRANGEMENT PRICE</th>
+                  <th rowspan="2" class="red-white" style="font-size: 10px; padding: 0px 5px">LAND PRICE</th>
                   <!-- Dynamic headers for agent columns -->
                   <?php
-                    // Define an array of colors to style the <th> elements
-                    $colors = ['#ADD8E6', '#98FB98', '#FFFFCC', '#E6E6FA', '#FFDAB9']; // Extend this array as needed
+                  // Define an array of colors to style the <th> elements
+                  $colors = ['#ADD8E6', '#98FB98', '#FFFFCC', '#E6E6FA', '#FFDAB9']; // Extend this array as needed
 
-                    // Fetch agent column headers dynamically
-                    $sql = "SELECT branchName FROM branch WHERE branchAgentCode IS NOT NULL AND branchAgentCode != ''";
-                    $result = $conn->query($sql);
+                  // Fetch agent column headers dynamically
+                  $sql = "SELECT branchName FROM branch WHERE branchAgentCode IS NOT NULL AND branchAgentCode != ''";
+                  $result = $conn->query($sql);
 
-                    // Initialize a counter for cycling through the color array
-                    $colorIndex = 0;
+                  // Initialize a counter for cycling through the color array
+                  $colorIndex = 0;
 
-                    while ($row = $result->fetch_assoc()) 
-                    {
-                      // Get the current color based on the index and loop through the color array
-                      $color = $colors[$colorIndex % count($colors)];
+                  while ($row = $result->fetch_assoc()) {
+                    // Get the current color based on the index and loop through the color array
+                    $color = $colors[$colorIndex % count($colors)];
 
-                      // Output the <th> element with the inline style for background color
-                      echo '<th colspan="2" data-bs-toggle="tooltip" title="' . $row['branchName'] . '" style="background-color: ' . $color . ';">' . $row['branchName'] . '</th>';
+                    // Output the <th> element with the inline style for background color
+                    echo '<th colspan="2" data-bs-toggle="tooltip" title="' . $row['branchName'] . '" style="background-color: ' . $color . '; color: #000;">' . $row['branchName'] . '</th>';
 
-                      // Increment the color index for the next iteration
-                      $colorIndex++;
-                    }
+                    // Increment the color index for the next iteration
+                    $colorIndex++;
+                  }
                   ?>
                 </tr>
-                <tr style="top: -10px">
+                <tr style="top: -10px;">
                   <th>START</th>
                   <th>END</th>
                   <!-- A1, A2, A3, A4, A5, A6, A7 Sub Headers -->
@@ -492,8 +488,8 @@ error_reporting(E_ALL);
                     $color = $colors[$colorIndex % count($colors)];
 
                     // Output the <th> elements with the inline style for background color
-                    echo '<th style="background-color: ' . $color . ';">A.L</th>';
-                    echo '<th style="background-color: ' . $color . ';">L.O</th>';
+                    echo '<th style="background-color: ' . $color . '; color: #000;">A.L</th>';
+                    echo '<th style="background-color: ' . $color . '; color: #000;">L.O</th>';
 
                     // Increment the color index for the next iteration
                     $colorIndex++;
@@ -501,31 +497,25 @@ error_reporting(E_ALL);
                   ?>
                 </tr>
               </thead>
-              <tbody> 
+              <tbody>
                 <?php
-                  $sql = "SELECT DISTINCT a.agentCode AS agentCode, a.agentType AS agentType
+                $sql = "SELECT DISTINCT a.agentCode AS agentCode, a.agentType AS agentType
                           FROM agent a
                           WHERE a.agentCode IS NOT NULL AND a.agentCode != ''";
-                  $result = $conn->query($sql);
+                $result = $conn->query($sql);
 
-                  $agentColumns = '';
-                  while ($row = $result->fetch_assoc()) 
-                  {
-                    $agentCode = $row['agentCode'];
-                    $agentColumns .= "IFNULL(SUM(CASE WHEN b.bookingType = 'Package' AND b.status = 'Confirmed' 
-                                        AND b.agentCode = '$agentCode' AND a.agentType = 'Retailer' 
-                                        THEN b.pax ELSE 0 END), 0) AS `{$agentCode}_AL`,
+                $agentColumns = '';
+                while ($row = $result->fetch_assoc()) {
+                  $agentCode = $row['agentCode'];
+                  $agentColumns .= "IFNULL(SUM(CASE WHEN b.bookingType = 'Package' AND b.status = 'Confirmed' AND b.agentCode = '$agentCode' AND a.agentType = 'Retailer' THEN b.pax ELSE 0 END), 0) AS `{$agentCode}_AL`, IFNULL(SUM(CASE WHEN b.bookingType = 'Package' AND b.status = 'Confirmed' AND b.agentCode = '$agentCode' AND a.agentType = 'Wholeseller' 
+                  THEN b.pax ELSE 0 END), 0) AS `{$agentCode}_LO`, ";
+                }
 
-                                      IFNULL(SUM(CASE WHEN b.bookingType = 'Package' AND b.status = 'Confirmed' 
-                                          AND b.agentCode = '$agentCode' AND a.agentType = 'Wholeseller' 
-                                          THEN b.pax ELSE 0 END), 0) AS `{$agentCode}_LO`, ";
-                  }
+                // Trim the trailing comma from the dynamically generated columns
+                $agentColumns = rtrim($agentColumns, ', ');
 
-                  // Trim the trailing comma from the dynamically generated columns
-                  $agentColumns = rtrim($agentColumns, ', ');
-
-                  // Main query
-                  $sql = "SELECT f.flightId, f.is_active, f.origin, f.flightDepartureDate AS Start, f.returnDepartureDate AS End,
+                // Main query
+                $sql = "SELECT f.flightId, f.is_active, f.origin, f.flightDepartureDate AS Start, f.returnDepartureDate AS End,
                             CONCAT(e.lName, ', ', e.fName, 
                               IF(e.mName IS NOT NULL AND e.mName != '', CONCAT(' ', LEFT(e.mName, 1)), '')) AS TeamOP,
                             f.availSeats AS FlightSeat, 
@@ -553,63 +543,61 @@ error_reporting(E_ALL);
                             f.wholesalePrice, f.flightPrice, p.packagePrice
                           ORDER BY f.flightDepartureDate";
 
-                  // Step 3: Execute the query
-                  $result = $conn->query($sql);
+                // Step 3: Execute the query
+                $result = $conn->query($sql);
 
-                  // Step 4: Display the results in HTML table
+                // Step 4: Display the results in HTML table
 
-                  // class="form-check-input"
-                  if ($result->num_rows > 0) 
-                  {
-                    while ($row = $result->fetch_assoc()) 
-                    {
+                // class="form-check-input"
+                if ($result->num_rows > 0) {
+                  while ($row = $result->fetch_assoc()) {
 
-                      $colorMapping = [
-                        "Heo, Vicky" => "#FFD700",  // Gold
-                        "Kim, Gwen" => "#ADD8E6",   // Light Blue
-                        "Sample, Dorothy" => "#98FB98", // Pale Green
-                        "Lm, Anna" => "#FFB6C1",    // Light Pink
-                        "Park, Lia" => "#E6E6FA",   // Lavender
-                        "Testing, Pamela" => "#FFDAB9" // Peach
-                      ];
+                    $colorMapping = [
+                      "Heo, Vicky" => "#FFD700",  // Gold
+                      "Kim, Gwen" => "#ADD8E6",   // Light Blue
+                      "Sample, Dorothy" => "#98FB98", // Pale Green
+                      "Lm, Anna" => "#FFB6C1",    // Light Pink
+                      "Park, Lia" => "#E6E6FA",   // Lavender
+                      "Testing, Pamela" => "#FFDAB9" // Peach
+                    ];
 
-                      $flight_id = $row['flightId'];
-                      $chkStatus = $row['is_active'];
+                    $flight_id = $row['flightId'];
+                    $chkStatus = $row['is_active'];
 
-                      $rowColor = isset($colorMapping[$row['TeamOP']]) ? $colorMapping[$row['TeamOP']] : "transparent"; // Default to transparent if not listed
+                    $rowColor = isset($colorMapping[$row['TeamOP']]) ? $colorMapping[$row['TeamOP']] : "transparent"; // Default to transparent if not listed
 
-                      echo '<tr>';
-                      echo '<td class="fw-bold" style="font-size: 12px; background-color: ' . $rowColor . ';">
+                    echo '<tr>';
+                    echo '<td class="fw-bold" style="font-size: 12px; background-color: ' . $rowColor . ';">
                       <input type="checkbox" class="status-checkbox row-checkbox" data-id="' . $flight_id . '" 
                             data-status="' . $chkStatus . '" ' . ($chkStatus == 1 ? 'checked' : '') . '>
                       </td>';
 
-                      echo '<td class="" style="font-size: 12px; white-space: nowrap; background-color: ' . $rowColor . '; font-weight: bold;">' . $row['TeamOP'] . '</td>';
-                      echo '<td>' . $row['origin'] . '</td>';
-                      echo '<td>' . $row['Start'] . '</td>';
-                      echo '<td>' . $row['End'] . '</td>';
-                      echo '<td>' . $row['AvailSeats'] . '</td>';
-                      echo '<td>' . $row['AdditionalSeats'] . '</td>';
-                      echo '<td>' . $row['Air+Land'] . '</td>';
-                      echo '<td>' . $row['LandOnly'] . '</td>';
-                      echo '<td>₱ ' . number_format($row['WholesalePrice'], 2) . '</td>';
-                      echo '<td>₱ ' . number_format($row['RetailPrice'], 2) . '</td>';
-                      echo '<td>₱ ' . number_format($row['LandArrangement'], 2) . '</td>';
-                      echo '<td>₱ ' . number_format($row['landPrice'], 2) . '</td>';
+                    echo '<td class="" style="font-size: 12px; white-space: nowrap; background-color: ' . $rowColor . '; font-weight: bold;">' . $row['TeamOP'] . '</td>';
+                    echo '<td>' . $row['origin'] . '</td>';
+                    echo '<td>' . $row['Start'] . '</td>';
+                    echo '<td>' . $row['End'] . '</td>';
+                    echo '<td>' . $row['AvailSeats'] . '</td>';
+                    echo '<td>' . $row['AdditionalSeats'] . '</td>';
+                    echo '<td>' . $row['Air+Land'] . '</td>';
+                    echo '<td>' . $row['LandOnly'] . '</td>';
+                    echo '<td>₱ ' . number_format($row['WholesalePrice'], 2) . '</td>';
+                    echo '<td>₱ ' . number_format($row['RetailPrice'], 2) . '</td>';
+                    echo '<td>₱ ' . number_format($row['LandArrangement'], 2) . '</td>';
+                    echo '<td>₱ ' . number_format($row['landPrice'], 2) . '</td>';
 
-                      foreach ($row as $key => $value) {
-                        $colors = ['#ADD8E6', '#98FB98', '#FFFFCC', '#E6E6FA', '#FFDAB9']; // Color array
-                        if (strpos($key, '_AL') !== false || strpos($key, '_LO') !== false) {
-                          $fontWeight = ($value >= 1) ? 'bolder' : 'normal';
-                          $colorIndex = array_search($key, array_keys($row)) % count($colors);
-                          $backgroundColor = $colors[$colorIndex];
+                    foreach ($row as $key => $value) {
+                      $colors = ['#ADD8E6', '#98FB98', '#FFFFCC', '#E6E6FA', '#FFDAB9']; // Color array
+                      if (strpos($key, '_AL') !== false || strpos($key, '_LO') !== false) {
+                        $fontWeight = ($value >= 1) ? 'bolder' : 'normal';
+                        $colorIndex = array_search($key, array_keys($row)) % count($colors);
+                        $backgroundColor = $colors[$colorIndex];
 
-                          echo '<td style="font-weight: ' . $fontWeight . '; border-left: 1px solid #ddd; border-right: 1px solid #ddd;">' . $value . '</td>';
-                        }
+                        echo '<td style="font-weight: ' . $fontWeight . '; border-left: 1px solid #ddd; border-right: 1px solid #ddd;">' . $value . '</td>';
                       }
-                      echo '</tr>';
                     }
+                    echo '</tr>';
                   }
+                }
                 ?>
               </tbody>
             </table>
@@ -733,14 +721,11 @@ error_reporting(E_ALL);
 
                       $res2 = $conn->query($sql2);
 
-                      if ($res2->num_rows > 0) 
-                      {
-                        while ($row = $res2->fetch_assoc()) 
-                        {
+                      if ($res2->num_rows > 0) {
+                        while ($row = $res2->fetch_assoc()) {
                           // Map paymentStatus to Bootstrap pill classes
                           $statusClass = '';
-                          switch ($row['paymentStatus']) 
-                          {
+                          switch ($row['paymentStatus']) {
                             case 'Approved':
                               $statusClass = 'badge bg-success text-light'; // Green pill for "Paid"
                               break;
@@ -801,7 +786,7 @@ error_reporting(E_ALL);
                   </thead>
                   <tbody>
                     <?php
-                      $query1 = "SELECT b.*, f.flightDepartureDate AS Start, p.packageName, b.totalPrice AS PackagePrice, 
+                    $query1 = "SELECT b.*, f.flightDepartureDate AS Start, p.packageName, b.totalPrice AS PackagePrice, 
                                   f.returnDepartureDate AS End, CONCAT(a.lName, ', ', a.fName, 
                                   IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1)), '')) AS agentName,
                                   br.branchName as branchName, SUM(pa.amount) AS TotalAmountPaid
@@ -825,7 +810,7 @@ error_reporting(E_ALL);
                         $formattedPP = '₱ ' . number_format($packagePrice, 2);
                         $formattedAP = '₱' . number_format($amountPaid, 2);
                         $formattedBal = '₱' . number_format($balance, 2);
-                        
+
 
                         // Define the pill status class based on the status value
                         switch ($status) {
@@ -1065,15 +1050,15 @@ error_reporting(E_ALL);
     });
 
     $('#pills-home-tab').on('click', function() {
-        $('#saveChanges').css('display', 'none'); // Hide Save button
-        changes = {}; // Flush the changes array
-        console.log("Changes array flushed:", changes); // Log the flushed array
+      $('#saveChanges').css('display', 'none'); // Hide Save button
+      changes = {}; // Flush the changes array
+      console.log("Changes array flushed:", changes); // Log the flushed array
 
-        // Reset all checkboxes to their original state (untrigger non-changed checkboxes)
-        $('.status-checkbox').each(function() {
-            let originalState = $(this).data('original') === 1; // Get the original state (true or false)
-            $(this).prop('checked', originalState); // Set checkbox to its original state
-        });
+      // Reset all checkboxes to their original state (untrigger non-changed checkboxes)
+      $('.status-checkbox').each(function() {
+        let originalState = $(this).data('original') === 1; // Get the original state (true or false)
+        $(this).prop('checked', originalState); // Set checkbox to its original state
+      });
     });
   </script>
 
@@ -1297,24 +1282,23 @@ error_reporting(E_ALL);
     $(document).ready(function() {
       // Initialize DataTable for .info-table if not already initialized
       if (!$.fn.DataTable.isDataTable('.info-table')) {
-          var table = $('.info-table').DataTable({
-            autoWidth: false,
-            scrollX: true, // Enable horizontal scrolling
-            scrollY: "548px", // Enable vertical scrolling and set height
-            paging: false, // Disable pagination
-            searching: false, // Disable search
-            info: false, // Disable info
-            fixedColumns: {
-              // rightColumns: 14, // Freeze the first 14 columns
-              startColumns: 14, // Freeze the first 14 columns
-            },
-            dom: 'rt<"bottom"flp>',
-            ordering: false, // Disable sorting on all columns
-            scrollCollapse: true, // Collapse the table when no data is available
-            stateSave: true // Save table state (e.g., scroll position) between reloads
-          });
+        var table = $('.info-table').DataTable({
+          autoWidth: false,
+          scrollX: true, // Enable horizontal scrolling
+          scrollY: "548px", // Enable vertical scrolling and set height
+          paging: false, // Disable pagination
+          searching: false, // Disable search
+          info: false, // Disable info
+          fixedColumns: {
+            rightColumns: 14 // Freeze the first 14 columns
+        },
+          dom: 'rt<"bottom"flp>',
+          ordering: false, // Disable sorting on all columns
+          scrollCollapse: true, // Collapse the table when no data is available
+          stateSave: true // Save table state (e.g., scroll position) between reloads
+        });
 
-        }
+      }
 
       // Prevent row selection when clicking on the checkbox
       $('.info-table tbody').on('click', 'input[type="checkbox"]', function(e) {
