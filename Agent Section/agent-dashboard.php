@@ -709,7 +709,7 @@ require "../conn.php";
                               echo '<td class="fw-bold">' . $row['AvailSeats'] . '</td>';
                               echo '<td class="fw-bolder">' . $row['AdditionalSeats'] . '</td>';
                               echo '<td>₱ ' . number_format($row['RetailPrice'], 2) . '</td>';
-                              echo '<td><a href="../Agent Section/agent-revisedAddBooking.php?flightid=' . urlencode($row['flightId']) . '" class="btn btn-primary">Book Now</a></td>';
+                              echo '<td><a href="../Agent Section/agent-revisedAddBooking-2.php?flightid=' . urlencode($row['flightId']) . '" class="btn btn-primary">Book Now</a></td>';
                               // echo '<td class="fw-bolder">' . $row['Air+Land'] . '</td>';
                               // echo '<td class="fw-bolder">' . $row['LandOnly'] . '</td>';
                               // echo '<td>₱ ' . number_format($row['WholesalePrice'], 2) . '</td>';
