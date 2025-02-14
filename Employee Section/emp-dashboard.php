@@ -499,10 +499,10 @@ error_reporting(E_ALL);
               </thead>
               <tbody>
                 <?php
-                $sql = "SELECT DISTINCT a.agentCode AS agentCode, a.agentType AS agentType
-                          FROM agent a
-                          WHERE a.agentCode IS NOT NULL AND a.agentCode != ''";
-                $result = $conn->query($sql);
+                  $sql = "SELECT DISTINCT a.agentCode AS agentCode, a.agentType AS agentType
+                            FROM agent a
+                            WHERE a.agentCode IS NOT NULL AND a.agentCode != ''";
+                  $result = $conn->query($sql);
 
                   $agentColumns = '';
                   while ($row = $result->fetch_assoc()) 
@@ -517,90 +517,95 @@ error_reporting(E_ALL);
                                           THEN b.pax ELSE 0 END), 0) AS `{$agentCode}_LO`, ";
                   }
 
-                // Main query
-                $sql = "SELECT f.flightId, f.is_active, f.origin, f.flightDepartureDate AS Start, f.returnDepartureDate AS End,
-                            CONCAT(e.lName, ', ', e.fName, 
-                              IF(e.mName IS NOT NULL AND e.mName != '', CONCAT(' ', LEFT(e.mName, 1)), '')) AS TeamOP,
-                            f.availSeats AS FlightSeat, 
-                            GREATEST(f.availSeats - IFNULL(SUM(CASE 
-                              WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') 
-                              AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0), 0) AS AvailSeats, 
-                            IF((f.availSeats - IFNULL(SUM(CASE WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') 
-                              AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0)) < 0, 
-                              ABS(f.availSeats - IFNULL(SUM(CASE WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') 
-                                AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0)), 0) AS AdditionalSeats,
-                            SUM(CASE WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') 
-                              AND b.bookingType = 'Package' AND a.agentType = 'Retailer' THEN b.pax ELSE 0 END) AS `Air+Land`,
-                            SUM(CASE WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') AND b.bookingType = 'Package' 
-                              AND a.agentType = 'Wholeseller' THEN b.pax ELSE 0 END) AS `LandOnly`,
-                            f.wholesalePrice AS WholesalePrice, f.flightPrice AS RetailPrice, p.packagePrice AS LandArrangement,
-                            f.landPrice AS landPrice, 
-                            $agentColumns
-                          FROM employee e
-                          RIGHT JOIN flight f ON f.employeeId = e.employeeId
-                          LEFT JOIN booking b ON b.flightId = f.flightId
-                          LEFT JOIN package p ON f.packageId = p.packageId
-                          LEFT JOIN agent a ON b.agentId = a.agentId
-                          WHERE f.flightDepartureDate >= CURDATE()
-                          GROUP BY f.flightId, f.is_active, f.origin, f.flightDepartureDate, f.returnDepartureDate, f.availSeats, 
-                            f.wholesalePrice, f.flightPrice, p.packagePrice
-                          ORDER BY f.flightDepartureDate";
+                  // Trim the trailing comma from the dynamically generated columns
+                  $agentColumns = rtrim($agentColumns, ', ');
 
-                // Step 3: Execute the query
-                $result = $conn->query($sql);
+                  // Main query
+                  $sql = "SELECT f.flightId, f.is_active, f.origin, f.flightDepartureDate AS Start, f.returnDepartureDate AS End,
+                              CONCAT(e.lName, ', ', e.fName, 
+                                IF(e.mName IS NOT NULL AND e.mName != '', CONCAT(' ', LEFT(e.mName, 1)), '')) AS TeamOP,
+                              f.availSeats AS FlightSeat, 
+                              GREATEST(f.availSeats - IFNULL(SUM(CASE 
+                                WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') 
+                                AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0), 0) AS AvailSeats, 
+                              IF((f.availSeats - IFNULL(SUM(CASE WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') 
+                                AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0)) < 0, 
+                                ABS(f.availSeats - IFNULL(SUM(CASE WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') 
+                                  AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0)), 0) AS AdditionalSeats,
+                              SUM(CASE WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') 
+                                AND b.bookingType = 'Package' AND a.agentType = 'Retailer' THEN b.pax ELSE 0 END) AS `Air+Land`,
+                              SUM(CASE WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') AND b.bookingType = 'Package' 
+                                AND a.agentType = 'Wholeseller' THEN b.pax ELSE 0 END) AS `LandOnly`,
+                              f.wholesalePrice AS WholesalePrice, f.flightPrice AS RetailPrice, p.packagePrice AS LandArrangement,
+                              f.landPrice AS landPrice, 
+                              $agentColumns
+                            FROM employee e
+                            RIGHT JOIN flight f ON f.employeeId = e.employeeId
+                            LEFT JOIN booking b ON b.flightId = f.flightId
+                            LEFT JOIN package p ON f.packageId = p.packageId
+                            LEFT JOIN agent a ON b.agentId = a.agentId
+                            WHERE f.flightDepartureDate >= CURDATE()
+                            GROUP BY f.flightId, f.is_active, f.origin, f.flightDepartureDate, f.returnDepartureDate, f.availSeats, 
+                              f.wholesalePrice, f.flightPrice, p.packagePrice
+                            ORDER BY f.flightDepartureDate";
 
-                // Step 4: Display the results in HTML table
+                  // Step 3: Execute the query
+                  $result = $conn->query($sql);
 
-                // class="form-check-input"
-                if ($result->num_rows > 0) {
-                  while ($row = $result->fetch_assoc()) {
+                  // Step 4: Display the results in HTML table
 
-                    $colorMapping = [
-                      "Heo, Vicky" => "#FFD700",  // Gold
-                      "Kim, Gwen" => "#ADD8E6",   // Light Blue
-                      "Sample, Dorothy" => "#98FB98", // Pale Green
-                      "Lm, Anna" => "#FFB6C1",    // Light Pink
-                      "Park, Lia" => "#E6E6FA",   // Lavender
-                      "Testing, Pamela" => "#FFDAB9" // Peach
-                    ];
+                  // class="form-check-input"
+                  if ($result->num_rows > 0) 
+                  {
+                    while ($row = $result->fetch_assoc()) 
+                    {
 
-                    $flight_id = $row['flightId'];
-                    $chkStatus = $row['is_active'];
+                      $colorMapping = [
+                        "Heo, Vicky" => "#FFD700",  // Gold
+                        "Kim, Gwen" => "#ADD8E6",   // Light Blue
+                        "Sample, Dorothy" => "#98FB98", // Pale Green
+                        "Lm, Anna" => "#FFB6C1",    // Light Pink
+                        "Park, Lia" => "#E6E6FA",   // Lavender
+                        "Testing, Pamela" => "#FFDAB9" // Peach
+                      ];
 
-                    $rowColor = isset($colorMapping[$row['TeamOP']]) ? $colorMapping[$row['TeamOP']] : "transparent"; // Default to transparent if not listed
+                      $flight_id = $row['flightId'];
+                      $chkStatus = $row['is_active'];
 
-                    echo '<tr>';
-                    echo '<td class="fw-bold" style="font-size: 12px; background-color: ' . $rowColor . ';">
-                      <input type="checkbox" class="status-checkbox row-checkbox" data-id="' . $flight_id . '" 
-                            data-status="' . $chkStatus . '" ' . ($chkStatus == 1 ? 'checked' : '') . '>
-                      </td>';
+                      $rowColor = isset($colorMapping[$row['TeamOP']]) ? $colorMapping[$row['TeamOP']] : "transparent"; // Default to transparent if not listed
 
-                    echo '<td class="" style="font-size: 12px; white-space: nowrap; background-color: ' . $rowColor . '; font-weight: bold;">' . $row['TeamOP'] . '</td>';
-                    echo '<td>' . $row['origin'] . '</td>';
-                    echo '<td>' . $row['Start'] . '</td>';
-                    echo '<td>' . $row['End'] . '</td>';
-                    echo '<td>' . $row['AvailSeats'] . '</td>';
-                    echo '<td>' . $row['AdditionalSeats'] . '</td>';
-                    echo '<td>' . $row['Air+Land'] . '</td>';
-                    echo '<td>' . $row['LandOnly'] . '</td>';
-                    echo '<td>₱ ' . number_format($row['WholesalePrice'], 2) . '</td>';
-                    echo '<td>₱ ' . number_format($row['RetailPrice'], 2) . '</td>';
-                    echo '<td>₱ ' . number_format($row['LandArrangement'], 2) . '</td>';
-                    echo '<td>₱ ' . number_format($row['landPrice'], 2) . '</td>';
+                      echo '<tr>';
+                      echo '<td class="fw-bold" style="font-size: 12px; background-color: ' . $rowColor . ';">
+                        <input type="checkbox" class="status-checkbox row-checkbox" data-id="' . $flight_id . '" 
+                              data-status="' . $chkStatus . '" ' . ($chkStatus == 1 ? 'checked' : '') . '>
+                        </td>';
 
-                    foreach ($row as $key => $value) {
-                      $colors = ['#ADD8E6', '#98FB98', '#FFFFCC', '#E6E6FA', '#FFDAB9']; // Color array
-                      if (strpos($key, '_AL') !== false || strpos($key, '_LO') !== false) {
-                        $fontWeight = ($value >= 1) ? 'bolder' : 'normal';
-                        $colorIndex = array_search($key, array_keys($row)) % count($colors);
-                        $backgroundColor = $colors[$colorIndex];
+                      echo '<td class="" style="font-size: 12px; white-space: nowrap; background-color: ' . $rowColor . '; font-weight: bold;">' . $row['TeamOP'] . '</td>';
+                      echo '<td>' . $row['origin'] . '</td>';
+                      echo '<td>' . $row['Start'] . '</td>';
+                      echo '<td>' . $row['End'] . '</td>';
+                      echo '<td>' . $row['AvailSeats'] . '</td>';
+                      echo '<td>' . $row['AdditionalSeats'] . '</td>';
+                      echo '<td>' . $row['Air+Land'] . '</td>';
+                      echo '<td>' . $row['LandOnly'] . '</td>';
+                      echo '<td>₱ ' . number_format($row['WholesalePrice'], 2) . '</td>';
+                      echo '<td>₱ ' . number_format($row['RetailPrice'], 2) . '</td>';
+                      echo '<td>₱ ' . number_format($row['LandArrangement'], 2) . '</td>';
+                      echo '<td>₱ ' . number_format($row['landPrice'], 2) . '</td>';
 
-                        echo '<td style="font-weight: ' . $fontWeight . '; border-left: 1px solid #ddd; border-right: 1px solid #ddd;">' . $value . '</td>';
+                      foreach ($row as $key => $value) {
+                        $colors = ['#ADD8E6', '#98FB98', '#FFFFCC', '#E6E6FA', '#FFDAB9']; // Color array
+                        if (strpos($key, '_AL') !== false || strpos($key, '_LO') !== false) {
+                          $fontWeight = ($value >= 1) ? 'bolder' : 'normal';
+                          $colorIndex = array_search($key, array_keys($row)) % count($colors);
+                          $backgroundColor = $colors[$colorIndex];
+
+                          echo '<td style="font-weight: ' . $fontWeight . '; border-left: 1px solid #ddd; border-right: 1px solid #ddd;">' . $value . '</td>';
+                        }
                       }
+                      echo '</tr>';
                     }
-                    echo '</tr>';
                   }
-                }
                 ?>
               </tbody>
             </table>
