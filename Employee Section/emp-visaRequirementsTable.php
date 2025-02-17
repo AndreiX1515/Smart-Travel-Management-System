@@ -113,55 +113,53 @@
             </thead>
             <tbody>
               <?php
-                $sql1 = "SELECT v.transactNo, 
-                      v.guestId, 
-                      CONCAT(g.fName, ' ', 
-                              IF(g.mName = 'N/A' OR g.mName IS NULL, '', CONCAT(SUBSTRING(g.mName, 1, 1), '. ')),
-                              g.lName, 
-                              IF(g.suffix = 'N/A' OR g.suffix IS NULL, '', CONCAT(' ', g.suffix))) AS guestName,
-                      v.passport AS passport, 
-                      v.permit AS permit, 
-                      v.validId AS validId, 
-                      v.certificate AS certificate
-                FROM visarequirements v
-                INNER JOIN guest g ON v.guestId = g.guestId
-                WHERE v.passport IS NOT NULL 
-                  OR v.permit IS NOT NULL 
-                  OR v.validId IS NOT NULL 
-                  OR v.certificate IS NOT NULL";
+                $sql1 = "SELECT v.transactNo, v.guestId, 
+                            CONCAT(g.fName, ' ', IF(g.mName = 'N/A' OR g.mName IS NULL, '', CONCAT(SUBSTRING(g.mName, 1, 1), '. ')),
+                              g.lName, IF(g.suffix = 'N/A' OR g.suffix IS NULL, '', CONCAT(' ', g.suffix))) AS guestName,
+                            v.passport AS passport, v.permit AS permit, v.validId AS validId, v.certificate AS certificate
+                          FROM visarequirements v
+                          INNER JOIN guest g ON v.guestId = g.guestId
+                          WHERE v.passport IS NOT NULL 
+                            OR v.permit IS NOT NULL 
+                            OR v.validId IS NOT NULL 
+                            OR v.certificate IS NOT NULL";
 
-              $res1 = $conn->query($sql1);
+                $res1 = $conn->query($sql1);
 
-              if ($res1->num_rows > 0) {
-                while ($row = $res1->fetch_assoc()) {
-                  echo "<tr>
-                      <td>{$row['guestId']}</td>
-                      <td>{$row['transactNo']}</td>
-                      <td>{$row['guestName']}</td>
-                      <td>
-                        <a href='functions/view-file.php?file=" . urlencode($row['passport']) . "' target='_blank'>View File</a> 
-                        <a href='functions/download.php?file=" . urlencode($row['passport']) . "' target='_blank'>Download File</a> 
-                      </td>
+                if ($res1->num_rows > 0) 
+                {
+                  while ($row = $res1->fetch_assoc()) 
+                  {
+                    echo "<tr>
+                        <td>{$row['guestId']}</td>
+                        <td>{$row['transactNo']}</td>
+                        <td>{$row['guestName']}</td>
+                        <td>
+                          <a href='functions/view-file.php?file=" . urlencode($row['passport']) . "' target='_blank'>View File</a> 
+                          <a href='functions/download.php?file=" . urlencode($row['passport']) . "' target='_blank'>Download File</a> 
+                        </td>
 
-                      <td>
-                        <a href='functions/view-file.php?file=" . urlencode($row['permit']) . "' target='_blank'>View File</a> 
-                        <a href='functions/download.php?file=" . urlencode($row['permit']) . "' target='_blank'>Download File</a> 
-                      </td>
+                        <td>
+                          <a href='functions/view-file.php?file=" . urlencode($row['permit']) . "' target='_blank'>View File</a> 
+                          <a href='functions/download.php?file=" . urlencode($row['permit']) . "' target='_blank'>Download File</a> 
+                        </td>
 
-                      <td>
-                        <a href='functions/view-file.php?file=" . urlencode($row['validId']) . "' target='_blank'>View File</a> 
-                        <a href='functions/download.php?file=" . urlencode($row['validId']) . "' target='_blank'>Download File</a> 
-                      </td>
+                        <td>
+                          <a href='functions/view-file.php?file=" . urlencode($row['validId']) . "' target='_blank'>View File</a> 
+                          <a href='functions/download.php?file=" . urlencode($row['validId']) . "' target='_blank'>Download File</a> 
+                        </td>
 
-                      <td>
-                        <a href='functions/view-file.php?file=" . urlencode($row['certificate']) . "' target='_blank'>View File</a> 
-                        <a href='functions/download.php?file=" . urlencode($row['certificate']) . "' target='_blank'>Download File</a> 
-                      </td>
-                    </tr>";
+                        <td>
+                          <a href='functions/view-file.php?file=" . urlencode($row['certificate']) . "' target='_blank'>View File</a> 
+                          <a href='functions/download.php?file=" . urlencode($row['certificate']) . "' target='_blank'>Download File</a> 
+                        </td>
+                      </tr>";
+                  }
+                } 
+                else 
+                {
+                  echo "<tr><td colspan='6' style='text-align: center;'>No Visa Status </td></tr>";
                 }
-              } else {
-                echo "<tr><td colspan='6' style='text-align: center;'>No Visa Status </td></tr>";
-              }
               ?>
             </tbody>
           </table>

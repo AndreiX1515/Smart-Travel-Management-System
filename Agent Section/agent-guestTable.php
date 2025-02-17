@@ -3,47 +3,49 @@
   <div class="tabs-wrapper">
     <div class="table-header">
       <?php
-      // Check if 'id' is passed in the URL
-      if (isset($_GET['id'])) {
-        $transactionNumber = htmlspecialchars($_GET['id']);
-        $_SESSION['transaction_number'] = $transactionNumber;
-      }
+        // Check if 'id' is passed in the URL
+        if (isset($_GET['id'])) 
+        {
+          $transactionNumber = htmlspecialchars($_GET['id']);
+          $_SESSION['transaction_number'] = $transactionNumber;
+        }
 
-      // Run the query to get guest count and pax
-      $query2 = "SELECT COALESCE(COUNT(g.transactNo), 0) AS guest_count, 
-                        b.pax AS pax 
-                      FROM booking b
-                      LEFT JOIN guest g ON g.transactNo = b.transactNo 
-                      WHERE b.transactNo = '$transactionNumber'";
+        // Run the query to get guest count and pax
+        $query2 = "SELECT COALESCE(COUNT(g.transactNo), 0) AS guest_count, 
+                          b.pax AS pax 
+                        FROM booking b
+                        LEFT JOIN guest g ON g.transactNo = b.transactNo 
+                        WHERE b.transactNo = '$transactionNumber'";
 
-      $query3 = "SELECT COALESCE(COUNT(v.transactNo), 0) AS visa_count, 
-                        b.pax AS pax 
-                      FROM booking b
-                      LEFT JOIN visarequirements v ON v.transactNo = b.transactNo 
-                      WHERE b.transactNo = '$transactionNumber'";
+        $query3 = "SELECT COALESCE(COUNT(v.transactNo), 0) AS visa_count, 
+                          b.pax AS pax 
+                        FROM booking b
+                        LEFT JOIN visarequirements v ON v.transactNo = b.transactNo 
+                        WHERE b.transactNo = '$transactionNumber'";
 
-      $result2 = $conn->query($query2);
-      $result3 = $conn->query($query3);
+        $result2 = $conn->query($query2);
+        $result3 = $conn->query($query3);
 
+        // Check if the query returned results
+        if ($result2 && $result2->num_rows > 0) 
+        {
+          // Fetch the result
+          $row2 = $result2->fetch_assoc();
+          $guest_count = $row2['guest_count'];
+          $pax2 = $row2['pax'];
+        }
 
-      // Check if the query returned results
-      if ($result2 && $result2->num_rows > 0) {
-        // Fetch the result
-        $row2 = $result2->fetch_assoc();
-        $guest_count = $row2['guest_count'];
-        $pax2 = $row2['pax'];
-      }
+        if ($result3 && $result3->num_rows > 0) 
+        {
+          // Fetch the result
+          $row3 = $result3->fetch_assoc();
+          $visa_count = $row3['visa_count'];
+          $pax3 = $row3['pax'];
+        }
 
-      if ($result3 && $result3->num_rows > 0) {
-        // Fetch the result
-        $row3 = $result3->fetch_assoc();
-        $visa_count = $row3['visa_count'];
-        $pax3 = $row3['pax'];
-      }
-
-      // Determine whether to disable the button
-      $disable_button = ($guest_count >= $pax2) ? 'disabled' : ''; // Disable if guest_count >= pax
-      $disable_button2 = ($visa_count >= $pax3) ? 'disabled' : ''; // Disable if guest_count >= pax
+        // Determine whether to disable the button
+        $disable_button = ($guest_count >= $pax2) ? 'disabled' : ''; // Disable if guest_count >= pax
+        $disable_button2 = ($visa_count >= $pax3) ? 'disabled' : ''; // Disable if guest_count >= pax
       ?>
 
       <!-- Add Guest Button -->

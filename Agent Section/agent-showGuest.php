@@ -77,79 +77,89 @@ $maskedPassword = '••••••••••';
 
       <!-- Current Date Variable -->
       <?php
-      date_default_timezone_set('Asia/Taipei');
-      $current_date = date('D, F d, Y');
+        date_default_timezone_set('Asia/Taipei');
+        $current_date = date('D, F d, Y');
       ?>
 
       <!-- Transact Number Session Variable -->
       <?php
-      if (isset($_SESSION['transaction_number'])) {
-        $transactionNumber = $_SESSION['transaction_number'];
-      }
+        if (isset($_SESSION['transaction_number'])) {
+          $transactionNumber = $_SESSION['transaction_number'];
+        }
 
-      if (isset($_GET['id'])) {
-        $transactionNumber = htmlspecialchars($_GET['id']);
-      }
+        if (isset($_GET['id'])) {
+          $transactionNumber = htmlspecialchars($_GET['id']);
+        }
       ?>
 
       <?php
-      $query1 = "SELECT booking.*, package.packageName, flight.flightDepartureDate 
-                  FROM booking 
-                  JOIN package ON booking.packageId = package.packageId
-                  LEFT JOIN flight ON booking.flightId = flight.flightId
-                  WHERE transactNo = '$transactionNumber'";
+        $query1 = "SELECT booking.*, package.packageName, flight.flightDepartureDate 
+                    FROM booking 
+                    JOIN package ON booking.packageId = package.packageId
+                    LEFT JOIN flight ON booking.flightId = flight.flightId
+                    WHERE transactNo = '$transactionNumber'";
 
-      $result1 = $conn->query($query1);
+        $result1 = $conn->query($query1);
 
-      if ($result1->num_rows > 0) {
-        // Output data of each row
-        while ($row1 = $result1->fetch_assoc()) {
-          $transactNum = $row1['transactNo'];
-          $fName = $row1['fName'];
-          $mName = $row1['mName'];
-          $lName = $row1['lName'];
-          $suffix = $row1['suffix'];
-          $countryCode = $row1['countryCode'];
-          $contact = $row1['contactNo'];
-          $email = $row1['email'];
-          $packageName = $row1['packageName'];
-          $flightDate = $row1['flightDepartureDate'];
-          $pax = $row1['pax'];
-          $status = $row1['status'];
-          $price = $row1['totalPrice'];
-          $flightId = $row1['flightId']; // Fetch flightId
+        if ($result1->num_rows > 0) 
+        {
+          // Output data of each row
+          while ($row1 = $result1->fetch_assoc()) 
+          {
+            $transactNum = $row1['transactNo'];
+            $fName = $row1['fName'];
+            $mName = $row1['mName'];
+            $lName = $row1['lName'];
+            $suffix = $row1['suffix'];
+            $countryCode = $row1['countryCode'];
+            $contact = $row1['contactNo'];
+            $email = $row1['email'];
+            $packageName = $row1['packageName'];
+            $flightDate = $row1['flightDepartureDate'];
+            $pax = $row1['pax'];
+            $status = $row1['status'];
+            $price = $row1['totalPrice'];
+            $flightId = $row1['flightId']; // Fetch flightId
 
-          // Construct the full name using the conditions for middle name and suffix
-          $fullName = $lName . ", " . $fName . " " .
-            ($suffix !== 'N/A' ? $suffix . " " : "") .  // Add space after suffix only if it's not 'N/A'
-            ($mName !== 'N/A' ? substr($mName, 0, 1) . ". " : "");  // Add middle initial with dot only if it's not 'N/A'
-          $contactNo = $countryCode . $contact;
+            // Construct the full name using the conditions for middle name and suffix
+            $fullName = $lName . ", " . $fName . " " .
+              ($suffix !== 'N/A' ? $suffix . " " : "") .  // Add space after suffix only if it's not 'N/A'
+              ($mName !== 'N/A' ? substr($mName, 0, 1) . ". " : "");  // Add middle initial with dot only if it's not 'N/A'
+            $contactNo = $countryCode . $contact;
 
-          // Check if flightId is NULL and set flightDate accordingly
-          if (is_null($flightId)) {
-            $flightDate = "Land Package Only";
+            // Check if flightId is NULL and set flightDate accordingly
+            if (is_null($flightId)) 
+            {
+              $flightDate = "Land Package Only";
+            }
+
+            $status = isset($row1['status']) ? $row1['status'] : 'Unknown';
+
+            // Initialize an empty class string
+            $statusClass = '';
+
+            // Assign classes based on the status value using switch
+            switch ($status) 
+            {
+              case 'Confirmed':
+                $statusClass = 'bg-success text-white'; // Green background, white text
+                break;
+              case 'Cancelled':
+                $statusClass = 'bg-danger text-white'; // Red background, white text
+                break;
+              case 'Pending':
+                $statusClass = 'bg-warning text-dark'; // Yellow background, dark text
+                break;
+              default:
+                $statusClass = 'bg-secondary text-white'; // Gray background, white text
+                break;
+            }
           }
-
-          $status = isset($row1['status']) ? $row1['status'] : 'Unknown';
-
-          // Initialize an empty class string
-          $statusClass = '';
-
-          // Assign classes based on the status value using switch
-          switch ($status) {
-            case 'Confirmed':
-              $statusClass = 'bg-success text-white'; // Green background, white text
-              break;
-            case 'Cancelled':
-              $statusClass = 'bg-danger text-white'; // Red background, white text
-              break;
-            case 'Pending':
-              $statusClass = 'bg-warning text-dark'; // Yellow background, dark text
-              break;
-            default:
-              $statusClass = 'bg-secondary text-white'; // Gray background, white text
-              break;
-          }
+        } 
+        else 
+        {
+          echo "0 results";
+        }
       ?>
 
       <div class="main-content">
@@ -202,26 +212,69 @@ $maskedPassword = '••••••••••';
                       <p><strong>Price: ₱ <?php echo number_format((float)$price, 2); ?></strong></p>
                     </div>
                   </div>
-
-              <?php
-            }
-          } else {
-            echo "0 results";
-          }
-              ?>
                 </div>
               </div>
 
               <div class="transaction-info-footer">
-                <button class="cancel-btn" data-bs-toggle="modal" data-bs-target="#cancelTransactionModal">
+                <!-- <button class="cancel-btn" data-bs-toggle="modal" data-bs-target="#cancelTransactionModal">
                   Cancel Transaction
-                </button>
+                </button> -->
 
                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#paymentModal<?= $transactionNumber ?>"
                 data-transact-no="<?= $transactionNumber ?>" data-account-id="<?= $accountId ?>">Add Payment</button>
 
                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#requestModal" 
                   data-transaction-id="<?= $transactionNumber ?>">Add Request</button>
+
+                  <?php
+                    // Run the query to get guest count and pax
+                    $query2 = "SELECT COALESCE(COUNT(g.transactNo), 0) AS guest_count, 
+                                      b.pax AS pax 
+                                    FROM booking b
+                                    LEFT JOIN guest g ON g.transactNo = b.transactNo 
+                                    WHERE b.transactNo = '$transactionNumber'";
+
+                    $query3 = "SELECT COALESCE(COUNT(v.transactNo), 0) AS visa_count, 
+                                      b.pax AS pax 
+                                    FROM booking b
+                                    LEFT JOIN visarequirements v ON v.transactNo = b.transactNo 
+                                    WHERE b.transactNo = '$transactionNumber'";
+
+                    $result2 = $conn->query($query2);
+                    $result3 = $conn->query($query3);
+
+                    // Check if the query returned results
+                    if ($result2 && $result2->num_rows > 0) 
+                    {
+                      // Fetch the result
+                      $row2 = $result2->fetch_assoc();
+                      $guest_count = $row2['guest_count'];
+                      $pax2 = $row2['pax'];
+                    }
+
+                    if ($result3 && $result3->num_rows > 0) 
+                    {
+                      // Fetch the result
+                      $row3 = $result3->fetch_assoc();
+                      $visa_count = $row3['visa_count'];
+                      $pax3 = $row3['pax'];
+                    }
+
+                    // Determine whether to disable the button
+                    $disable_button = ($guest_count >= $pax2) ? 'disabled' : ''; // Disable if guest_count >= pax
+                    $disable_button2 = ($visa_count >= $pax3) ? 'disabled' : ''; // Disable if guest_count >= pax
+                  ?>
+
+                  <!-- Add Guest Button -->
+                  <button type="button" class="btn btn-primary" <?php echo $disable_button; ?>
+                    onclick="if (!this.disabled) { window.location.href = 'agent-addGuest.php'; }">
+                    Add Guest Information
+                  </button>
+
+                  <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                    <?php echo ($visa_count >= $pax3) ? 'disabled' : 'data-bs-target="#visaModal"'; ?>>
+                    Attach Visa Requirements
+                  </button>
 
               </div>
             </div>
