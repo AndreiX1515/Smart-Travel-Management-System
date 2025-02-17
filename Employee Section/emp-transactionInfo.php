@@ -295,10 +295,15 @@
       <form action="../Employee Section/functions/emp-cancelTransact-code.php" method="POST">
         <div class="modal-body">
           <p>Are you sure you want to cancel this transaction?</p>
-          <p><strong>Transaction No: <?php echo $transactNum; ?></p>
-          <input type="hidden" name="transactNo" placeholder="Transact No" value="<?php echo $transactNum; ?>">
-          <input type="hidden" name="accId" placeholder="Acc Id" value="<?php echo $accountId; ?>">
-          <input type="text" name="remarks" placeholder="Enter Remarks"> 
+          <p><strong>Transaction No: <?php echo $transactNum; ?></strong></p>
+          
+          <input type="hidden" name="transactNo" value="<?php echo $transactNum; ?>" />
+          <input type="hidden" name="accId" value="<?php echo $accountId; ?>" />
+          
+          <div class="form-group">
+            <label for="remarks">Remarks</label>
+            <input type="text" class="form-control" id="remarks" name="remarks" placeholder="Enter Remarks" />
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

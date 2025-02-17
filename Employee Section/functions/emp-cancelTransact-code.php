@@ -8,7 +8,7 @@ require "../../conn.php"; // Move up to the parent directory
 if (isset($_POST['confirmCancel'])) 
 {
     $transactNo = $_POST['transactNo'];
-    $remarks = $_POST['remarks'];
+    $remarks = isset($_POST['remarks']) && !empty($_POST['remarks']) ? $_POST['remarks'] : null;
     $accountId = $_POST['accId'];
 
     // Set the session variable for the current user in MySQL

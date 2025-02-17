@@ -45,13 +45,26 @@
           <div class="date-range-wrapper sorting-wrapper">
             <div class="select-wrapper">
               <select id="packages">
-                  <option value="All" disabled selected>Select Packages</option>
-                  <option value="Autumn Tour Package">Autumn Tour</option>
-                  <option value="Summer Tour Package">Summer Tour</option>
-                  <option value="Spring Tour Package">Spring Tour</option>
-                  <option value="Winter Tour Package">Winter Tour</option>
-                  <option value="Regular Tour Package">Regular Tour</option>
-                  <option value="Busan Tour Package">Busan Tour</option>
+                <option value="All" disabled selected>Select Branch</option>
+                <?php
+                  // Execute the SQL query
+                  $sql1 = "SELECT branchId, branchName FROM branch ORDER BY branchName ASC";
+                  $res1 = $conn->query($sql1);
+
+                  // Check if there are results
+                  if ($res1->num_rows > 0) 
+                  {
+                    // Loop through the results and generate options
+                    while ($row = $res1->fetch_assoc()) 
+                    {
+                      echo "<option value='" . $row['branchName'] . "'>" . $row['branchName'] . "</option>";
+                    }
+                  } 
+                  else 
+                  {
+                    echo "<option value=''>No companies available</option>";
+                  }
+                ?>
               </select>
             </div>
           </div>
@@ -94,12 +107,13 @@
               <th rowspan="2">Age</th>
               <th rowspan="2">Sex</th>
               <th rowspan="2">Nationality</th>
-              <th colspan="2" class="text-center">Flight Dates</th>
+              <th>Departure Date</th>
+              <!-- <th colspan="2" class="text-center">Flight Dates</th> -->
             </tr>
-            <tr>
-              <th>Departure</th>
+            <!-- <tr>
+              <th>Departure Date</th>
               <th>Return</th>
-            </tr>
+            </tr> -->
           </thead>
           <tbody>
             <?php
@@ -108,10 +122,10 @@
                         g.suffix AS suffix, g.birthdate AS birthdate, g.age AS age, g.sex AS sex, g.Nationality AS Nationality, 
                         f.flightDepartureDate AS departureDate, f.returnArrivalDate AS returnDate
                       FROM `guest` g
-                      INNER JOIN `booking` b ON g.transactNo = b.transactNo
-                      INNER JOIN `flight` f ON b.flightId = f.flightId
+                      JOIN `booking` b ON g.transactNo = b.transactNo
+                      JOIN `flight` f ON b.flightId = f.flightId
                       WHERE b.status = 'Confirmed'
-                      ORDER BY f.flightDepartureDate ASC";
+                      ORDER BY f.flightDepartureDate ASC, f.returnArrivalDate ASC";
 
               // Execute the query
               $result = $conn->query($sql);
@@ -122,6 +136,7 @@
                 // Loop through the results and display them
                 while ($row = $result->fetch_assoc()) 
                 {
+                  // print_r($row); // debug
                   // Format the guest name with proper handling for middle name and suffix
                   $guestName = htmlspecialchars($row['lName']) . ", " . htmlspecialchars($row['fname']);
                   if (!empty($row['mName']) && $row['mName'] !== 'N/A') 
@@ -134,8 +149,9 @@
                   }
 
                   // Format the dates for departure and return flight
-                  $departureDate = date('Y-m-d', strtotime($row['departureDate']));
-                  $returnDate = date('Y-m-d', strtotime($row['returnDate']));
+                  $departureDate = !empty($row['departureDate']) ? date('Y-m-d', strtotime($row['departureDate'])) : 'N/A';
+                  $returnDate = !empty($row['returnDate']) ? date('Y-m-d', strtotime($row['returnDate'])) : 'N/A';
+
 
                   // Output the row data in HTML table format
                   echo "<tr>
@@ -145,8 +161,7 @@
                           <td>" . htmlspecialchars($row['age']) . "</td>
                           <td>" . htmlspecialchars($row['sex']) . "</td>
                           <td>" . htmlspecialchars($row['Nationality']) . "</td>
-                          <td>" . $departureDate . "</td>
-                          <td>" . $returnDate . "</td>
+                          <td>" . htmlspecialchars($departureDate) . "</td>
                         </tr>";
                 }
               }
