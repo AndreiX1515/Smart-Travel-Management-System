@@ -441,7 +441,7 @@ error_reporting(E_ALL);
                   <th rowspan="2" class="red-white">LAND ONLY</th>
                   <th rowspan="2" class="red-white">WHOLESALE PRICE</th>
                   <th rowspan="2" class="red-white">RETAIL PRICE</th>
-                  <th rowspan="2" class="red-white" style="font-size: 10px; padding: 0px 5px">LAND ARRANGEMENT PRICE</th>
+                  <!-- <th rowspan="2" class="red-white" style="font-size: 10px; padding: 0px 5px">LAND ARRANGEMENT PRICE</th> -->
                   <th rowspan="2" class="red-white" style="font-size: 10px; padding: 0px 5px">LAND PRICE</th>
                   <!-- Dynamic headers for agent columns -->
                   <?php
@@ -592,7 +592,7 @@ error_reporting(E_ALL);
                       echo '<td>' . $row['LandOnly'] . '</td>';
                       echo '<td>₱ ' . number_format($row['WholesalePrice'], 2) . '</td>';
                       echo '<td>₱ ' . number_format($row['RetailPrice'], 2) . '</td>';
-                      echo '<td>₱ ' . number_format($row['LandArrangement'], 2) . '</td>';
+                      // echo '<td>₱ ' . number_format($row['LandArrangement'], 2) . '</td>';
                       echo '<td>₱ ' . number_format($row['landPrice'], 2) . '</td>';
 
                       foreach ($row as $key => $value) {
