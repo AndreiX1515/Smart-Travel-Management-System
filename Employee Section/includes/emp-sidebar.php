@@ -59,19 +59,19 @@ $position = htmlspecialchars(strtoupper($empId));
 			</a>
 		</li>
 
-		<li class="nav-item transaction">
+		<!-- <li class="nav-item transaction">
 			<a class="nav-link page-button" href="../Employee Section/emp-RequestHistory.php" data-page-name="Request History">
 				<div class="icon"><i class="fas fa-history"></i></div>
 				<span class="label">Request History</span>
 			</a>
-		</li>
+		</li> -->
 
-		<li class="nav-item transaction">
+		<!-- <li class="nav-item transaction">
 			<a class="nav-link page-button" href="../Employee Section/emp-FlightSeatHistory.php" data-page-name="Flight Seat History">
 				<div class="icon"><i class="fas fa-plane"></i></div>
 				<span class="label" style="font-size: 14px;">Flight Seat History</span>
 			</a>
-		</li>
+		</li> -->
 
 		<li class="nav-item transaction">
 			<a class="nav-link page-button" href="../Employee Section/emp-guestList.php" data-page-name="Guest List">
@@ -86,9 +86,6 @@ $position = htmlspecialchars(strtoupper($empId));
 				<span class="label" style="font-size: 14px;" >Visa Requirements</span>
 			</a>
 		</li>
-
-
-
 		
 		<!-- <li class="nav-item transaction">
 			<a class="nav-link page-button" href="../Employee Section/emp-requestList.php" data-page-name="Guest List">
