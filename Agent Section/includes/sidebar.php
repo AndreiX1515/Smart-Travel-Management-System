@@ -53,7 +53,7 @@
       <i class="fas fa-home"></i> <span> Home </span> 
     </a>
    
-    <a href="../Agent Section/agent-addbooking.php" class="page-button add-booking mb-1 my-0" data-page-name="Add Booking - Packages"> 
+    <a href="../Agent Section/agent-revisedAddbooking.php" class="page-button add-booking mb-1 my-0" data-page-name="Add Booking - Packages"> 
       <i class="fa-solid fa-user-plus"></i> <span> Add Booking </span>
     </a>
 
