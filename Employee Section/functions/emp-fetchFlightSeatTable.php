@@ -1,105 +1,134 @@
 <?php
-require "../conn.php";
+require "../../conn.php";
 
 header('Content-Type: application/json');
-ini_set('display_errors', 0); // Prevent PHP errors from breaking JSON
 
-// Initialize response
-$response = [
-    "success" => false,
-    "message" => "",
-    "data" => []
-];
-
-try {
-    $agentColumns = '';
-    $agentData = []; // Store agent info for JSON response
-
-    // Fetch agent data
-    $sql = "SELECT branchName, branchAgentCode FROM branch WHERE branchAgentCode IS NOT NULL AND branchAgentCode != ''";
-    $result = $conn->query($sql);
-
-    if (!$result) {
-        throw new Exception("Agent query failed: " . $conn->error);
-    }
-
-    while ($row = $result->fetch_assoc()) {
-        $agentName = $row['branchName'];
-        $agentCode = $row['branchAgentCode'];
-
-        // Dynamic agent columns
-        $agentColumns .= "IFNULL(SUM(CASE WHEN b.bookingType = 'Package' 
-                                    AND (b.status = 'Confirmed' OR b.status = 'Reserved')
-                                    AND b.agentCode = '{$agentCode}' AND a.agentType = 'Retailer' 
-                                    THEN b.pax ELSE 0 END), 0) AS `{$agentCode}_AL`, 
-                          IFNULL(SUM(CASE WHEN b.bookingType = 'Package' 
-                                    AND (b.status = 'Confirmed' OR b.status = 'Reserved')
-                                    AND b.agentCode = '{$agentCode}' AND a.agentType = 'Wholeseller' 
-                                    THEN b.pax ELSE 0 END), 0) AS `{$agentCode}_LO`, ";
-
-        $agentData[] = ['name' => $agentName, 'code' => $agentCode];
-    }
-
-    // Remove the last comma
-    $agentColumns = rtrim($agentColumns, ', ');
-
-    // Ensure SQL is valid even if no agent columns exist
-    if (!empty($agentColumns)) {
-        $agentColumns = ", " . $agentColumns;
-    }
-
-    // Fetch flight data
-    $sql = "SELECT f.flightId, f.is_active, f.origin, f.flightDepartureDate AS Start, f.returnDepartureDate AS End,
-                    CONCAT(e.lName, ', ', e.fName, IF(e.mName IS NOT NULL AND e.mName != '', CONCAT(' ', LEFT(e.mName, 1)), '')) AS TeamOP,
-                    f.availSeats AS FlightSeat, 
-                    GREATEST(f.availSeats - IFNULL(SUM(CASE WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') 
-                                            AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0), 0) AS AvailSeats, 
-                    IF((f.availSeats - IFNULL(SUM(CASE WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') 
-                                            AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0)) < 0, 
-                        ABS(f.availSeats - IFNULL(SUM(CASE WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') 
-                                              AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0)), 0) AS AdditionalSeats,
-                    SUM(CASE WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') 
-                                AND b.bookingType = 'Package' AND a.agentType = 'Retailer' THEN b.pax ELSE 0 END) AS `AirLand`,
-                    SUM(CASE WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') AND b.bookingType = 'Package' 
-                                AND a.agentType = 'Wholeseller' THEN b.pax ELSE 0 END) AS `LandOnly`,
-                    f.wholesalePrice AS WholesalePrice, f.flightPrice AS RetailPrice, p.packagePrice AS LandArrangement,
-                    f.landPrice AS landPrice
-                    $agentColumns
-              FROM employee e
-              RIGHT JOIN flight f ON f.employeeId = e.employeeId
-              LEFT JOIN booking b ON b.flightId = f.flightId
-              LEFT JOIN package p ON f.packageId = p.packageId
-              LEFT JOIN agent a ON b.agentId = a.agentId
-              WHERE f.flightDepartureDate >= CURDATE()
-              GROUP BY f.flightId
-              ORDER BY f.flightDepartureDate";
-
-    $result = $conn->query($sql);
-
-    if (!$result) {
-        throw new Exception("Flight query failed: " . $conn->error);
-    }
-
-    $data = [];
-    while ($row = $result->fetch_assoc()) {
-        $row['agents'] = $agentData; // Attach agents array to each row
-        $data[] = $row;
-    }
-
-    $response["success"] = true;
-    $response["message"] = "Data fetched successfully";
-    $response["data"] = $data;
-
-} catch (Exception $e) {
-    $response["message"] = $e->getMessage();
+// Debug: Check Database Connection
+if ($conn->connect_error) {
+    die(json_encode(["error" => "Database connection failed: " . $conn->connect_error]));
 }
 
-// Encode JSON with error checking
-$json = json_encode($response, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+// Dynamically generate agent-specific columns
+$agentColumns = '';
+$agentInfo = [];
 
-if (json_last_error() !== JSON_ERROR_NONE) {
-    echo json_encode(["error" => "JSON Encoding Error: " . json_last_error_msg()]);
-} else {
-    echo $json;
+// Fetch distinct agent codes along with their branch names
+$sql_agents = "SELECT DISTINCT a.agentCode, a.agentType, b.branchName 
+               FROM agent a
+               LEFT JOIN branch b ON a.agentCode = b.branchAgentCode
+               WHERE a.agentCode IS NOT NULL AND a.agentCode != '' AND b.branchName IS NOT NULL";
+
+$result_agents = $conn->query($sql_agents);
+
+if (!$result_agents) {
+    die(json_encode(["error" => "Failed to fetch agent data: " . $conn->error]));
 }
+
+while ($row = $result_agents->fetch_assoc()) {
+    $agentCode = $row['agentCode'];
+    $branchName = $row['branchName']; // Fetch branch name
+
+    // Dynamically generate agent-specific SQL columns
+    $agentColumns .= "IFNULL(SUM(CASE WHEN b.bookingType = 'Package' AND b.status IN ('Pending', 'Processing') AND b.agentCode = '$agentCode' THEN b.pax ELSE 0 END), 0) AS `{$agentCode}_TotalPax`, ";
+
+    // Store agent codes and branch names for later use in dynamic columns
+    $agentInfo[] = ['agentCode' => $agentCode, 'branchName' => $branchName];
+}
+
+$agentColumns = rtrim($agentColumns, ', ');
+
+// Main query to fetch flight data with dynamically inserted agent columns
+$sql = "SELECT f.flightId, f.is_active, f.origin, f.flightDepartureDate AS Start, f.returnDepartureDate AS End,
+              CONCAT(e.lName, ', ', e.fName, IF(e.mName IS NOT NULL AND e.mName != '', CONCAT(' ', LEFT(e.mName, 1)), '')) AS TeamOP,
+              f.availSeats AS FlightSeat,
+              GREATEST(f.availSeats - IFNULL(SUM(CASE WHEN b.status IN ('Pending', 'Processing') AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0), 0) AS AvailSeats,
+              IF((f.availSeats - IFNULL(SUM(CASE WHEN b.status IN ('Pending', 'Processing') AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0)) < 0, 
+                ABS(f.availSeats - IFNULL(SUM(CASE WHEN b.status IN ('Pending', 'Processing') AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0)), 0) AS AdditionalSeats,
+              SUM(CASE WHEN b.status IN ('Pending', 'Processing') AND b.bookingType = 'Package' AND a.agentType = 'Retailer' THEN b.pax ELSE 0 END) AS `Air+Land`,
+              SUM(CASE WHEN b.status IN ('Pending', 'Processing') AND b.bookingType = 'Package' AND a.agentType = 'Wholeseller' THEN b.pax ELSE 0 END) AS `LandOnly`,
+              f.wholesalePrice AS WholesalePrice, f.flightPrice AS RetailPrice, p.packagePrice AS LandArrangement,
+              f.landPrice AS landPrice, $agentColumns
+          FROM employee e
+          RIGHT JOIN flight f ON f.employeeId = e.employeeId
+          LEFT JOIN booking b ON b.flightId = f.flightId
+          LEFT JOIN package p ON f.packageId = p.packageId
+          LEFT JOIN agent a ON b.agentId = a.agentId
+          WHERE f.flightDepartureDate >= CURDATE()
+          GROUP BY f.flightId, f.is_active, f.origin, f.flightDepartureDate, f.returnDepartureDate, f.availSeats, f.wholesalePrice, f.flightPrice, p.packagePrice
+          ORDER BY f.flightDepartureDate";
+
+error_log("SQL Query: " . $sql); // Log query for debugging
+$result = $conn->query($sql);
+
+// Debug: If Query Fails, Log Error
+if (!$result) {
+    die(json_encode(["error" => "Query failed: " . $conn->error]));
+}
+
+// Debug: Check If Any Data Exists
+if ($result->num_rows === 0) {
+    die(json_encode(["message" => "No data found in the database."]));
+}
+
+// Fetch data and ensure each agent-specific column is added dynamically
+$data = [];
+$dynamicColumns = [];
+
+// Loop through the result set and prepare data
+while ($row = $result->fetch_assoc()) {
+    $data[] = [
+        "flightId" => $row["flightId"],
+        "origin" => $row["origin"],
+        "startDate" => $row["Start"],
+        "endDate" => $row["End"],
+        "teamOP" => $row["TeamOP"],
+        "flightSeat" => $row["FlightSeat"],
+        "availSeats" => $row["AvailSeats"],
+        "additionalSeats" => $row["AdditionalSeats"],
+        "airLand" => $row["Air+Land"],
+        "landOnly" => $row["LandOnly"],
+        "wholesalePrice" => number_format($row["WholesalePrice"] ?? 0, 2),
+        "retailPrice" => number_format($row["RetailPrice"] ?? 0, 2),
+        "landArrangement" => number_format($row["LandArrangement"] ?? 0, 2),
+        "landPrice" => number_format($row["landPrice"] ?? 0, 2),
+    ];
+}
+
+// Dynamically create "Branch" and "AL" / "LO" columns for each agent
+foreach ($agentInfo as $agent) {
+    $dynamicColumns[] = [
+        "title" => $agent['branchName'],  // Use branch name instead of agent code
+        "headerHozAlign" => "center", 
+        "columns" => [
+            [
+                "title" => "AL",  // AirLand column
+                "field" => "{$agent['agentCode']}_AirLand",  // Dynamic field based on agent code
+                "hozAlign" => "center",
+                "cellStyle" => function ($cell) use ($agent) {
+                    return [
+                        "text-align" => "center",
+                        "font-weight" => "bold",
+                        "background-color" => "#ADD8E6"  // Example background color for AL column
+                    ];
+                }
+            ],
+            [
+                "title" => "LO",  // LandOnly column
+                "field" => "{$agent['agentCode']}_LandOnly",  // Dynamic field based on agent code
+                "hozAlign" => "center",
+                "cellStyle" => function ($cell) use ($agent) {
+                    return [
+                        "text-align" => "center",
+                        "font-weight" => "bold",
+                        "background-color" => "#FFDAB9"  // Example background color for LO column
+                    ];
+                }
+            ]
+        ]
+    ];
+}
+
+
+echo json_encode(['data' => $data, 'columns' => $dynamicColumns]);
+$conn->close();
 ?>

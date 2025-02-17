@@ -467,6 +467,7 @@ error_reporting(E_ALL);
                   }
                   ?>
                 </tr>
+
                 <tr style="top: -10px;">
                   <th>START</th>
                   <th>END</th>
@@ -478,6 +479,7 @@ error_reporting(E_ALL);
 
                   // Fetch agent column headers dynamically
                   $sql = "SELECT branchName FROM branch WHERE branchAgentCode IS NOT NULL AND branchAgentCode != ''";
+                  
                   $result = $conn->query($sql);
 
                   // Initialize a counter for cycling through the color array
@@ -496,11 +498,11 @@ error_reporting(E_ALL);
                   }
                   ?>
                 </tr>
+                
               </thead>
               <tbody>
                 <?php
-                  $sql = "SELECT DISTINCT a.agentCode AS agentCode, a.agentType AS agentType
-                            FROM agent a
+                  $sql = "SELECT DISTINCT a.agentCode AS agentCode, a.agentType AS agentType FROM agent a
                             WHERE a.agentCode IS NOT NULL AND a.agentCode != ''";
                   $result = $conn->query($sql);
 
@@ -1300,6 +1302,7 @@ error_reporting(E_ALL);
           fixedColumns: {
             startColumns: 13, // Freeze the first 13 columns from the left
             endColumns: 0     // No frozen columns on the right
+
           },
 
           dom: 'rt<"bottom"flp>',

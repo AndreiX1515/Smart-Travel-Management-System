@@ -428,7 +428,7 @@ error_reporting(E_ALL);
 
           <!-- Flight Seat Tracker Table -->
           <div class="info-table-container">
-              <div id="info-table"></div>
+            <div id="info-table"></div>
           </div>
 
         </div>
@@ -799,70 +799,368 @@ error_reporting(E_ALL);
     </div>
   </div>
 
+  <style>
+  .tabulator .tabulator-header .tabulator-col {
+      white-space: normal !important;
+      word-wrap: break-word !important;
+      word-break: break-word !important;
+  }
+
+
+    /* Word Wrap for a Specific Column */
+  /* Word Wrap for Specific Column */
+#info-table .word-wrap-column .tabulator-col-content {
+    word-wrap: break-word;  /* Enable word wrap */
+    white-space: normal;    /* Allow wrapping */
+    overflow: visible;      /* Ensure overflow is visible */
+    text-overflow: unset;   /* Remove the ellipsis */
+}
+
+  </style>
+
+
   <?php include '../Employee Section/includes/emp-scripts.php' ?>
 
-<script>
-  fetch('../Employee Section/functions/emp-fetchFlightSeatTable.php')
-    .then(response => {
-        if (!response.ok) {
-            throw new Error("Network response was not ok: " + response.statusText);
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // Define the color mapping for TeamOP
+      const colorMapping = {
+        "Heo, Vicky": "#FFD700", // Gold
+        "Kim, Gwen": "#ADD8E6", // Light Blue
+        "Sample, Dorothy": "#98FB98", // Pale Green
+        "Lm, Anna": "#FFB6C1", // Light Pink
+        "Park, Lia": "#E6E6FA", // Lavender
+        "Testing, Pamela": "#FFDAB9" // Peach
+      };
+
+      // Initialize Tabulator
+      var table = new Tabulator("#info-table", {
+        placeholder: "No Data Available",
+        layout: "fitData",
+        
+        columns: [{
+            title: "",
+            field: "is_active",
+            formatter: "tickCross",
+            hozAlign: "center",
+            headerHozAlign: "center", // Center the column header
+            frozen: true,
+            width: 50, // Adjust the width
+            cellClick: function(e, cell) {
+              let newValue = cell.getValue() === 1 ? 0 : 1;
+              cell.setValue(newValue);
+            },
+            // Add custom style for tick/cross
+            cellStyle: function(cell) {
+              return {
+                "padding": "10px"
+              }; // Example of padding
+            }
+          },
+
+          {
+            title: "Team OP",
+            field: "teamOP",
+            hozAlign: "center",
+            headerHozAlign: "center", // Center the column header
+            frozen: true,
+            formatter: function(cell) {
+              let value = cell.getValue();
+              let color = colorMapping[value] || "transparent";
+              return `<div style="background-color:${color}; padding:5px; text-align:center; word-wrap: break-word;">${value}</div>`;
+            },
+            // Wrap text in cell
+            cellStyle: function(cell) {
+              return {
+                "word-wrap": "break-word",
+                "white-space": "normal"
+              }; // Enable word wrap
+            }
+          },
+
+          {
+            title: "Origin",
+            field: "origin",
+            hozAlign: "center",
+            frozen: true,
+            headerHozAlign: "center", // Center the column header
+            width: 80, // Adjust the width
+            cellStyle: function(cell) {
+              return {
+                "word-wrap": "break-word",
+                "white-space": "normal"
+              }; // Enable word wrap
+            }
+          },
+
+          {
+            title: "Flight",
+            headerHozAlign: "center", // Center the column header
+            frozen: true,
+
+            columns: [{
+                title: "Start Date",
+                field: "startDate",
+                hozAlign: "center",
+                headerHozAlign: "center", // Center the column header
+
+                cellStyle: function(cell) {
+                  return {
+                    "text-align": "center", // Center align the cell content
+                    "padding": "10px", // Add padding to the cell (adjust as needed)
+                    "white-space": "normal", // Allow word wrapping
+                    "overflow": "hidden", // Hide overflowed text
+                    "text-overflow": "ellipsis" // Show ellipsis when text overflows
+                  };
+                },
+
+                headerStyle: {
+                  "padding": "10px", // Add padding to the header (adjust as needed)
+                  "text-align": "center", // Ensure header text is centered
+                  "white-space": "nowrap", // Disable word wrapping in header
+                  "overflow": "hidden", // Hide any overflowed header text
+                  "text-overflow": "ellipsis" // Add ellipsis for overflowed header text
+                }
+              },
+
+              {
+                title: "End Date",
+                field: "endDate",
+                hozAlign: "center",
+                headerHozAlign: "center", // Center the column header
+
+                cellStyle: function(cell) {
+                  return {
+                    "text-align": "center", // Center align the cell content
+                    "padding": "10px", // Add padding to the cell (adjust as needed)
+                    "white-space": "nowrap", // Allow word wrapping
+                    "overflow": "hidden", // Hide overflowed text
+                    "text-overflow": "ellipsis" // Show ellipsis when text overflows
+                  };
+                },
+                headerStyle: {
+                  "padding": "10px", // Add padding to the header (adjust as needed)
+                  "text-align": "center", // Ensure header text is centered
+                  "white-space": "nowrap", // Disable word wrapping in header
+                  "overflow": "hidden", // Hide any overflowed header text
+                  "text-overflow": "ellipsis" // Add ellipsis for overflowed header text
+                }
+              }
+            ]
+          },
+
+          {
+            title: "Av. Seats",
+            field: "availSeats",
+            hozAlign: "center",
+            headerHozAlign: "center",
+            sortable: false,
+            wordWrap: true, // Enable word wrapping for this column
+            frozen: true,
+            cellStyle: function(cell) {
+                return {
+                    "text-align": "center",
+                    "padding": "10px",
+                    "word-wrap": "break-word",  // Enable word wrap
+                    "white-space": "normal",    // Allow text to wrap onto next line
+                    "overflow": "visible"      // Ensure overflowed text is visible
+                };
+            },
+            headerStyle: {
+                "padding": "10px",
+                "text-align": "center"
+            },
+            class: "word-wrap-column" // Add class for the column
+        },
+
+          {
+            title: "Ad. Seats",
+            field: "additionalSeats",
+            hozAlign: "center",
+            frozen: true,
+            headerHozAlign: "center", // Center the column header
+            cellStyle: function(cell) {
+              return {
+                "text-align": "center"
+              };
+            }
+          },
+          {
+            title: "Air + Land",
+            field: "airLand",
+            hozAlign: "center",frozen: true,
+
+            headerHozAlign: "center", // Center the column header
+            cellStyle: function(cell) {
+              return {
+                "text-align": "center"
+              };
+            }
+          },
+          {
+            title: "Land Only",
+            field: "landOnly",
+            hozAlign: "center",
+            frozen: true,
+            
+            headerHozAlign: "center", // Center the column header
+            cellStyle: function(cell) {
+              return {
+                "text-align": "center"
+              };
+            }
+          },
+          {
+            title: "W. Price (₱)",
+            field: "wholesalePrice",
+            hozAlign: "right",
+            frozen: true,
+            headerHozAlign: "center", // Center the column header
+           
+            cellStyle: function(cell) {
+              return {
+                "text-align": "right",
+                "padding-right": "10px"
+              }; // Align and add padding
+            }
+          },
+          {
+            title: "R. Price (₱)",
+            field: "retailPrice",
+            hozAlign: "right",
+            frozen: true,
+            headerHozAlign: "center", // Center the column header
+            
+            cellStyle: function(cell) {
+              return {
+                "text-align": "right",
+                "padding-right": "10px"
+              }; // Align and add padding
+            }
+          },
+          {
+            title: "L. Arrangement (₱)",
+            field: "landArrangement",
+            hozAlign: "right",
+            frozen: true,
+            headerHozAlign: "center", // Center the column header
+         
+            cellStyle: function(cell) {
+              return {
+                "text-align": "right",
+                "padding-right": "10px"
+              }; // Align and add padding
+            }
+          },
+          {
+            title: "L. Price (₱)",
+            field: "landPrice",
+            hozAlign: "right",
+            headerHozAlign: "center", // Center the column header
+            formatter: "money",
+            frozen: true,
+            cellStyle: function(cell) {
+              return {
+                "text-align": "right",
+                "padding-right": "10px"
+              }; // Align and add padding
+            }
+          }
+        ]
+
+      });
+
+
+
+// Fetch Data via AJAX and dynamically add columns
+// Fetch Data via AJAX and dynamically add columns
+fetch("../Employee Section/functions/emp-fetchFlightSeatTable.php")
+    .then(response => response.json())
+    .then(responseData => {
+        // Log the fetched data to the console
+        console.log("Fetched Response Data:", responseData);
+
+        if (!responseData.data || !responseData.columns) {
+            console.error("Invalid response format: Missing 'data' or 'columns'.");
+            return;
         }
-        return response.json();
-    })
-    .then(data => {
-        if (!data.success) {
-            throw new Error(data.message || "Unknown error occurred while fetching data.");
-        }
 
-        if (!Array.isArray(data.data)) {
-            throw new Error("Invalid data format received.");
-        }
+        let dynamicColumns = [];
+        let generalColumns = [];
 
-        // Extract flight data and agent columns dynamically
-        let flightData = data.data;
+        // Color array for AL and LO columns
+        const colors = ['#ADD8E6', '#FFDAB9'];
 
-        let columns = [
-            { title: "TEAM OP", field: "TeamOP", width: 150 },
-            { title: "ORIGIN", field: "origin", width: 150 },
-            { title: "FLIGHT DATE", columns: [
-                { title: "START", field: "Start", width: 100 },
-                { title: "END", field: "End", width: 100 }
-            ]},
-            { title: "AVAILABLE SEATS", field: "AvailSeats", width: 100 },
-            { title: "ADDITIONAL SEATS", field: "AdditionalSeats", width: 100 },
-            { title: "AIR + LAND", field: "AirLand", width: 100 },
-            { title: "LAND ONLY", field: "LandOnly", width: 100 },
-            { title: "WHOLESALE PRICE", field: "WholesalePrice", width: 120, formatter: "money" },
-            { title: "RETAIL PRICE", field: "RetailPrice", width: 120, formatter: "money" },
-            { title: "LAND ARRANGEMENT PRICE", field: "LandArrangement", width: 150, formatter: "money" },
-            { title: "LAND PRICE", field: "landPrice", width: 120, formatter: "money" }
-        ];
+        // Iterate through the columns from the response
+        responseData.columns.forEach(function (columnData) {
+            // Always add AL and LO sub-columns for each main column
+            let nestedColumns = [];
 
-        // Add dynamic agent columns if they exist
-        if (flightData.length > 0 && flightData[0].agents) {
-            flightData[0].agents.forEach(agent => {
-                columns.push({ title: `${agent.name} A.L`, field: `${agent.code}_AL`, width: 100 });
-                columns.push({ title: `${agent.name} L.O`, field: `${agent.code}_LO`, width: 100 });
+            // Always add AL column
+            nestedColumns.push({
+                title: "AL",  // Title for AirLand column
+                field: `${columnData.field}_AirLand`,  // Suffix _AirLand to the main field name
+                hozAlign: "center",
+                headerHozAlign: "center",
+                cellStyle: function () {
+                    return {
+                        "text-align": "center",
+                        "font-weight": "bold",
+                        "background-color": "#ADD8E6"  // Light Blue for AL
+                    };
+                }
             });
-        }
 
-        new Tabulator("#info-table", {
-            height: "311px",
-            columns: columns,
-            pagination: "local",
-            paginationSize: 10,
-            data: flightData,
-            layout: "fitColumns",
-            responsiveLayout: "hide",
-            tooltips: true,
+            // Always add LO column
+            nestedColumns.push({
+                title: "LO",  // Title for LandOnly column
+                field: `${columnData.field}_LandOnly`,  // Suffix _LandOnly to the main field name
+                hozAlign: "center",
+                headerHozAlign: "center",
+                cellStyle: function () {
+                    return {
+                        "text-align": "center",
+                        "font-weight": "bold",
+                        "background-color": "#FFDAB9"  // Peach for LO
+                    };
+                }
+            });
+
+            // Add the main column with nested AL and LO columns
+            dynamicColumns.push({
+                title: columnData.title,         // Parent column title (e.g., branchName)
+                field: columnData.field,         // Main field for the parent column
+                hozAlign: columnData.hozAlign || 'center',
+                headerHozAlign: columnData.headerHozAlign || 'center',
+                width: columnData.width || 100,
+                cellStyle: columnData.cellStyle || function () {},
+                columns: nestedColumns           // Nested AL and LO columns
+            });
         });
-    })
-    .catch(error => {
-        console.error('Error fetching or processing data:', error);
-        alert(`Failed to load data: ${error.message}`);
-    });
 
-</script>
+        // Combine any general columns (if you have any) with the dynamic columns
+        let allColumns = [...generalColumns, ...dynamicColumns];
+
+        // Log the columns and data for debugging
+        console.log("Columns to be added:", allColumns);
+        console.log("Populating table with data:", responseData.data);
+
+        // Assuming 'table' is already initialized and supports addColumn and setData methods
+        allColumns.forEach(columnConfig => {
+            table.addColumn(columnConfig);
+        });
+
+        // Populate the table with data
+        if (responseData.data.length > 0) {
+            table.setData(responseData.data);
+        } else {
+            console.error("No data found in the response.");
+        }
+    })
+    .catch(error => console.error("Error fetching data:", error));
+
+  });
+  </script>
 
 
 
@@ -886,7 +1184,7 @@ error_reporting(E_ALL);
 
 
   <!-- JS for Checkbox -->
-  <script>
+  <!-- <script>
     $(document).ready(function() {
       let changes = {}; // Store changed checkbox values
 
@@ -972,7 +1270,7 @@ error_reporting(E_ALL);
         $(this).prop('checked', originalState); // Set checkbox to its original state
       });
     });
-  </script>
+  </script> -->
 
 
   <!-- JS for Comment -->
