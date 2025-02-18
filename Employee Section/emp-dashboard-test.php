@@ -1071,10 +1071,7 @@ error_reporting(E_ALL);
       });
 
 
-
-// Fetch Data via AJAX and dynamically add columns
-// Fetch Data via AJAX and dynamically add columns
-fetch("../Employee Section/functions/emp-fetchFlightSeatTable.php")
+      fetch("../Employee Section/functions/emp-fetchFlightSeatTable.php")
     .then(response => response.json())
     .then(responseData => {
         // Log the fetched data to the console
@@ -1088,62 +1085,62 @@ fetch("../Employee Section/functions/emp-fetchFlightSeatTable.php")
         let dynamicColumns = [];
         let generalColumns = [];
 
-        // Color array for AL and LO columns
-        const colors = ['#ADD8E6', '#FFDAB9'];
-
         // Iterate through the columns from the response
         responseData.columns.forEach(function (columnData) {
-            // Always add AL and LO sub-columns for each main column
-            let nestedColumns = [];
+            // If the column already has nested columns, use it directly.
+            if (columnData.columns && Array.isArray(columnData.columns)) {
+                dynamicColumns.push(columnData);
+            }
+            // Otherwise, if a field property exists, build nested AL/LO columns.
+            else if (columnData.field) {
+                let nestedColumns = [];
 
-            // Always add AL column
-            nestedColumns.push({
-                title: "AL",  // Title for AirLand column
-                field: `${columnData.field}_AirLand`,  // Suffix _AirLand to the main field name
-                hozAlign: "center",
-                headerHozAlign: "center",
-                cellStyle: function () {
-                    return {
-                        "text-align": "center",
-                        "font-weight": "bold",
-                        "background-color": "#ADD8E6"  // Light Blue for AL
-                    };
-                }
-            });
+                // Always add AL column
+                nestedColumns.push({
+                    title: "AL",  // Title for AirLand column
+                    field: `${columnData.field}_AL`,  // Suffix _AL to the main field name
+                    hozAlign: "center",
+                    headerHozAlign: "center",
+                    cellStyle: function () {
+                        return {
+                            "text-align": "center",
+                            "font-weight": "bold",
+                            "background-color": "#ADD8E6"  // Light Blue for AL
+                        };
+                    }
+                });
 
-            // Always add LO column
-            nestedColumns.push({
-                title: "LO",  // Title for LandOnly column
-                field: `${columnData.field}_LandOnly`,  // Suffix _LandOnly to the main field name
-                hozAlign: "center",
-                headerHozAlign: "center",
-                cellStyle: function () {
-                    return {
-                        "text-align": "center",
-                        "font-weight": "bold",
-                        "background-color": "#FFDAB9"  // Peach for LO
-                    };
-                }
-            });
+                // Always add LO column
+                nestedColumns.push({
+                    title: "LO",  // Title for LandOnly column
+                    field: `${columnData.field}_LO`,  // Suffix _LO to the main field name
+                    hozAlign: "center",
+                    headerHozAlign: "center",
+                    cellStyle: function () {
+                        return {
+                            "text-align": "center",
+                            "font-weight": "bold",
+                            "background-color": "#FFDAB9"  // Peach for LO
+                        };
+                    }
+                });
 
-            // Add the main column with nested AL and LO columns
-            dynamicColumns.push({
-                title: columnData.title,         // Parent column title (e.g., branchName)
-                field: columnData.field,         // Main field for the parent column
-                hozAlign: columnData.hozAlign || 'center',
-                headerHozAlign: columnData.headerHozAlign || 'center',
-                width: columnData.width || 100,
-                cellStyle: columnData.cellStyle || function () {},
-                columns: nestedColumns           // Nested AL and LO columns
-            });
+                // Add the main column with nested AL and LO columns
+                dynamicColumns.push({
+                    title: columnData.title,
+                    field: columnData.field,
+                    hozAlign: columnData.hozAlign || 'center',
+                    headerHozAlign: columnData.headerHozAlign || 'center',
+                    width: columnData.width || 100,
+                    cellStyle: columnData.cellStyle || function () {},
+                    columns: nestedColumns
+                });
+            }
         });
 
-        // Combine any general columns (if you have any) with the dynamic columns
+        // Combine any general columns (if you have them) with the dynamic columns
         let allColumns = [...generalColumns, ...dynamicColumns];
-
-        // Log the columns and data for debugging
-        console.log("Columns to be added:", allColumns);
-        console.log("Populating table with data:", responseData.data);
+        console.log("Final Columns to be added:", allColumns);
 
         // Assuming 'table' is already initialized and supports addColumn and setData methods
         allColumns.forEach(columnConfig => {
@@ -1158,6 +1155,7 @@ fetch("../Employee Section/functions/emp-fetchFlightSeatTable.php")
         }
     })
     .catch(error => console.error("Error fetching data:", error));
+
 
   });
   </script>
