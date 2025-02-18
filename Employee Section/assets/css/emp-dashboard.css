@@ -935,39 +935,110 @@
 
 
 /* ====================== */
-
 /* Info Table Container */
+
+.info-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 6vh;
+  border: 1px solid gainsboro;
+  border-radius: 10px;
+  padding: 5px 20px;
+}
+
+.item-number-select,
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+/* Label and Select Styling */
+.item-number-select label {
+  font-size: 14px;
+  color: #555;
+  margin-right: 10px;
+  font-weight: 500;
+}
+
+.select-box {
+  padding: 8px 12px;
+  font-size: 14px;
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  appearance: none;
+  outline: none;
+  transition: border 0.3s ease;
+}
+
+.select-box:hover,
+.select-box:focus {
+  border-color: #007bff;
+}
+
+/* Pagination Controls */
+.pagination-controls {
+  gap: 15px;
+}
+
+.pagination-btn {
+  padding: 8px 15px;
+  font-size: 14px;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.pagination-btn:hover {
+  background-color: #0056b3;
+}
+
+.page-info {
+  font-size: 14px;
+  color: #555;
+}
+
+
+
+
+
+
+
 .info-table-container {
   display: flex;
-  flex-direction: row;
   position: relative;
-  height: 69vh; /* Fixed height for the container */
-  margin-bottom: 20px; /* Add margin below to provide space for the bottom scrollbar */
-  margin-right: 20px; /* Add margin to the right for the vertical scrollbar */
+  height: 61.5vh; /* Fixed height for the container */
   overflow-x: auto; /* Allow horizontal scrolling */
   overflow-y: auto; /* Allow vertical scrolling */
   /* border: 1px solid gainsboro; */
   width: 100%; /* Ensure the container uses full width */
 }
 
-/* Ensure table and container sizes are consistent */
-/* .info-table, div.dataTables_wrapper {
+
+.info-table, div.dataTables_wrapper {
   width: 100%;
   font-size: 12px;
   background-color: #fff;
   color: #000000 !important;
   text-align: center;
   table-layout: fixed;
-  margin-bottom: 25px;
-  border-collapse: collapse;
-  scroll-margin: 10px;
-} */
+  overflow-x: auto; /* Allow horizontal scrolling */
+  overflow-y: auto; /* Allow vertical scrolling */
+  display: block; /* Make the table a block-level element to allow scrolling */
+}
 
-/* Ensure the table header stays fixed */
-.info-table thead th, div.dataTables_wrapper thead th {
-  position: sticky;
-  top: 0; /* Stick to the top */
-  z-index: 10; /* Ensure it's on top of the table content */
+.info-table thead,
+div.dataTables_wrapper thead {
+  position: sticky; /* Make the header sticky */
+  top: 0; /* Stick to the top of the container */
+  z-index: 10; /* Ensure the header stays above table content */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for better visibility */
 }
 
@@ -986,22 +1057,13 @@ div.dataTables_wrapper thead th.selected, .info-table thead th.selected {
 
 /* Styling for table data (td) */
 div.dataTables_wrapper td, .info-table td {
-  padding: 16px 10px;
+  padding: 10px 5px;
   text-align: center;
   font-size: 12px;
   color: #555;
   border-bottom: 1px solid #ddd; /* Border between rows */
   border-left: 1px solid #ddd; /* Left border */
   border-right: 1px solid #ddd; /* Right border */
-}
-
-/* === Sticky First 12 Columns === */
-div.dataTables_wrapper thead th:nth-child(-n + 12), .info-table thead th:nth-child(-n + 12),
-div.dataTables_wrapper tbody td:nth-child(-n + 12), .info-table tbody td:nth-child(-n + 12) {
-  position: sticky;
-  left: 0;
-  z-index: 10;
-  border-right: 1px solid #ddd; /* Optional: adds a visual separator */
 }
 
 /* Optional: Add a border to the first and last columns for consistency */
@@ -1015,6 +1077,10 @@ div.dataTables_wrapper thead, .info-table thead {
   top: 0; /* Stick the header to the top of the scrolling container */
   z-index: 2; /* Ensure the header stays above table rows */
   padding: 3px 8px; /* Adjust padding for better spacing */
+  background-color: #dc3545; 
+  color: #ffffff;
+  width: 100%; /* Ensure full width for the table */
+  border-collapse: collapse; /* Collapse borders to avoid misalignment */
 }
 
 /* Styling for each table header cell (th) */
@@ -1023,10 +1089,7 @@ div.dataTables_wrapper thead th, .info-table thead th {
   font-weight: bold; /* Make the header text bold */
   border-right: 1px solid #e6e6e6; /* Add right border between columns */
   padding: 3px 8px; /* Adjust padding for better spacing */
-  background-color: #dc3545; 
-  color: #ffffff;
 }
-
 
 /* Ensure selected row does not change size */
 .info-table tbody tr, div.dataTables_wrapper tbody tr {
@@ -1047,132 +1110,28 @@ div.dataTables_wrapper thead th, .info-table thead th {
 
 
 /* Optional: Change color on hover */
-div.dataTables_wrapper tbody tr, .info-table tbody tr {
-  background-color: #ffffff; /* Light hover effect */
-}
-
-/* Optional: Change color on hover */
 .info-table tbody tr:hover, div.dataTables_wrapper tbody tr:hover {
   background-color: #dfdfdf; /* Light hover effect */
   cursor: pointer;
 }
 
-/* === Ensure the table container scrolls properly === */
-div.dataTables_scrollBody {
-  overflow-x: auto !important; /* Force horizontal scrolling */
-  overflow-y: auto !important; /* Enable vertical scrolling */
-  max-width: 2500px; /* Set height for scrolling */
+/* Hide the built-in DataTable pagination controls */
+.dataTables_paginate {
+  display: none;
 }
 
-div.dataTables_scrollHead {
-  overflow: hidden;
+/* Hide the built-in DataTable length (rows per page) control */
+.dataTables_length {
+  display: none;
 }
 
 
 
-/* === Column Widths === */
-div.dataTables_wrapper thead th:nth-child(1),
-div.dataTables_wrapper tbody td:nth-child(1) {
-  width: 3%;
-}
 
-div.dataTables_wrapper thead th:nth-child(2),
-div.dataTables_wrapper tbody td:nth-child(2) {
-  width: 10%;
-}
 
-div.dataTables_wrapper tbody td:nth-child(2) {
-  font-size: 8.5px;
-}
 
-div.dataTables_wrapper thead th:nth-child(3),
-div.dataTables_wrapper tbody td:nth-child(3) {
-  width: 5%;
-}
 
-div.dataTables_wrapper thead th:nth-child(4),
-div.dataTables_wrapper tbody td:nth-child(4) {
-  width: 20%;
-}
 
-div.dataTables_wrapper thead th:nth-child(5),
-div.dataTables_wrapper tbody td:nth-child(5) {
-  width: 6%;
-}
-
-div.dataTables_wrapper thead th:nth-child(6),
-div.dataTables_wrapper tbody td:nth-child(6) {
-  width: 6%;
-}
-
-div.dataTables_wrapper thead th:nth-child(7),
-div.dataTables_wrapper tbody td:nth-child(7) {
-  width: 6%;
-}
-
-div.dataTables_wrapper thead th:nth-child(8),
-div.dataTables_wrapper tbody td:nth-child(8) {
-  width: 6%;
-}
-
-div.dataTables_wrapper thead th:nth-child(9),
-div.dataTables_wrapper tbody td:nth-child(9) {
-  width: 8%;
-}
-
-div.dataTables_wrapper thead th:nth-child(10),
-div.dataTables_wrapper tbody td:nth-child(10) {
-  width: 9%;
-}
-
-div.dataTables_wrapper thead th:nth-child(11),
-div.dataTables_wrapper tbody td:nth-child(11) {
-  width: 8%;
-}
-
-div.dataTables_wrapper thead th:nth-child(12),
-div.dataTables_wrapper tbody td:nth-child(12) {
-  width: 10%;
-}
-
-div.dataTables_wrapper thead th:nth-child(14),
-div.dataTables_wrapper tbody td:nth-child(14) {
-  width: 10%;
-  font-size: 12px;
-}
-
-/* Ensure the 13th column and beyond is scrollable */
-div.dataTables_wrapper thead th:nth-child(n + 13),
-div.dataTables_wrapper tbody td:nth-child(n + 13) {
-  width: 10%; /* Set the width of the columns */
-  min-width: 50px; /* Ensure a minimum width for proper alignment */
-  white-space: nowrap; /* Prevent text wrapping by default */
-  position: relative; /* Allow it to scroll */
-  font-size: 12px; /* Set uniform font size for all cells */
-  text-align: center; /* Align text in the center */
-  overflow-x: auto; /* Allow horizontal scrolling if necessary */
-  word-wrap: break-word; /* Allow long words to break and prevent overflow */
-}
-
-/* Ensure uniform font size across header and body cells */
-div.dataTables_wrapper thead th:nth-child(n + 13) {
-  font-size: 12px; /* Ensure the font size in the header matches the body */
-  white-space: normal; /* Allow wrapping in the header if needed */
-  word-wrap: break-word; /* Allow wrapping in header cells as well */
-}
-
-div.dataTables_wrapper tbody td:nth-child(n + 13) {
-  font-size: 12px; /* Ensure body font size is the same */
-  white-space: normal; /* Allow text wrapping in body cells */
-  word-wrap: break-word; /* Allow long words to wrap and prevent overflow */
-}
-
-/* Adjust for the 13th column and beyond to handle overflow and ensure proper wrapping */
-div.dataTables_wrapper thead th:nth-child(n + 13),
-div.dataTables_wrapper tbody td:nth-child(n + 13) {
-  word-wrap: break-word; /* Prevent text overflow */
-  white-space: normal; /* Allow wrapping when content is too long */
-}
 
 
 
