@@ -407,11 +407,7 @@
   text-align: center;
 }
 
-.product-table th:nth-child(9),
-.product-table td:nth-child(9) {
-  width: 4%; /* Actions */
-  text-align: center;
-}
+
 
 
 

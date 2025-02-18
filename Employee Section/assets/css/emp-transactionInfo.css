@@ -1,38 +1,33 @@
-
-
-
-
 /* Back Button Styling */
 .back-button-wrapper {
- display: flex;
- align-items: center;
- gap: 15px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
 
 .back-button-wrapper {
- display: flex;
- align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .back-button {
- background-color: #ffffff; /* White background */
- border: none;
- border-radius: 50%; /* Makes the button circular */
- padding: 10px; /* Adjust the padding to make it a perfect circle */
- font-size: 18px;
- color: #333; /* Dark color for the arrow */
- cursor: pointer;
- box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional soft shadow */
- display: flex;
- align-items: center;
- justify-content: center;
+  background-color: #ffffff; /* White background */
+  border: none;
+  border-radius: 50%; /* Makes the button circular */
+  padding: 10px; /* Adjust the padding to make it a perfect circle */
+  font-size: 18px;
+  color: #333; /* Dark color for the arrow */
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional soft shadow */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Back Button Hover Effect */
 .back-button:hover {
- background-color: #f0f0f0; /* Slightly change background color on hover */
+  background-color: #f0f0f0; /* Slightly change background color on hover */
 }
-
 
 /* Header Styling
 .header {
@@ -43,411 +38,415 @@
  padding: 8px 20px;
 } */
 
-
 /* Title Styling */
 .title h1 {
- font-size: 16px;
- font-weight: bold;
- color: #333;
- margin: 0;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  margin: 0;
 }
 
 /* Status and Date Styling */
 .status-wrapper {
- display: flex;
- align-items: center;
- gap: 15px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
 
 .status {
- background-color: #ffc107;
- color: #fff;
- padding: 5px 10px;
- border-radius: 20px;
- font-weight: bold;
- font-size: 14px;
-} 
+  background-color: #ffc107;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 14px;
+}
 
 .date {
- font-size: 14px;
- color: #333;
+  font-size: 14px;
+  color: #333;
 }
 
 .more-options {
- background: none;
- border: none;
- font-size: 18px;
- color: #333;
- cursor: pointer;
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: #333;
+  cursor: pointer;
 }
 
+.content-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 10px;
+}
 
 /* First-part-wrapper */
 .first-part-wrapper {
- display: flex; /* Use flexbox for layout */
- gap: 15px; /* Space between the two sections */
- padding: 10px 0px;
- margin-left: 5px;
- margin-right: 15px;
+  display: flex; /* Use flexbox for layout */
+  gap: 15px; /* Space between the two sections */
+  /* border: 1px solid black; */
 }
-
 
 /* Transaction Info - 40% of the width */
 .transaction-info-wrapper {
- width: 35%; /* Increased width for a slightly larger container */
- height: 30vh; /* Increased height for more space */
- background-color: #f8f9fa; /* Optional background for visualization */
- padding: 20px; /* Increased padding to give more space around the content */
- border-radius: 8px; /* Optional rounded corners */
- box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Optional shadow for effect */
- font-size: 0.9rem; /* Slightly larger font size */
+  width: 35%; /* Increased width for a slightly larger container */
+  height: 30vh; /* Increased height for more space */
+  background-color: #f8f9fa; /* Optional background for visualization */
+  border-radius: 8px; /* Optional rounded corners */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Optional shadow for effect */
+  font-size: 0.9rem; /* Slightly larger font size */
+}
+
+ .card-header {
+  display: flex;
+  padding: 15px 20px 5px 20px;
+  border-bottom: 1px solid gainsboro;
+}
+
+ .card-body {
+  display: flex;
+  /* border: 1px solid black; */
+  flex-wrap: wrap; /* Ensures responsiveness */
+  align-items: center; /* Aligns content vertically */
+  padding: 10px; /* Adds spacing inside the container */
+}
+
+ .card-body .guest-info {
+  display: flex;
+  flex-grow: 1; /* Ensures it takes up remaining space */
+  padding: 5px 20px 0px 20px;
+  justify-content: center;
+  align-items: first baseline;
+  flex-wrap: wrap; /* Prevents overflow on smaller screens */
+}
+
+.transaction-info-wrapper .card-footer {
+  display: flex;
+  justify-content: right;
+  padding: 10px 20px;
+  border-top: 1px solid gainsboro;
 }
 
 /* Adjust row and column gaps */
 .row.g-2 {
- gap: 1rem; /* Slightly larger gap between elements */
+  gap: 1rem; /* Slightly larger gap between elements */
 }
 
 /* Adjust badge styles for a larger look */
 .badge {
- font-size: 0.8rem; /* Slightly larger font for the badge */
- padding: 0.3rem 0.6rem; /* Increased padding for a larger badge */
+  font-size: 0.8rem; /* Slightly larger font for the badge */
+  padding: 0.3rem 0.6rem; /* Increased padding for a larger badge */
 }
 
 /* Optional: Make text slightly larger for better readability */
 .transaction-info-wrapper p {
- font-size: 0.9rem; /* Slightly larger text */
- margin-bottom: 0.6rem; /* Increase space between paragraphs for clarity */
+  font-size: 0.9rem; /* Slightly larger text */
+  margin-bottom: 0.6rem; /* Increase space between paragraphs for clarity */
 }
-
-
 
 /* Guest Info Table*/
 /* Guest Info Table - 60% of the width */
 .guest-info-table-wrapper {
- width: 70%;
- height: 30vh;
- background-color: #ffffff; /* Optional background for visualization */
- padding: 20px;
- border-radius: 8px; /* Optional rounded corners */
- box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Optional shadow for effect */
+  width: 70%;
+  height: 30vh;
+  background-color: #f8f9fa; /* Optional background for visualization */
+  border-radius: 8px; /* Optional rounded corners */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Optional shadow for effect */
+  font-size: 0.9rem; /* Slightly larger font size */
 }
 
 .guest-table-wrapper {
- width: 100%;
- padding: 0px 8px;
- height: 230px; /* Set a fixed height for vertical scroll */
- overflow-y: auto; /* Enable vertical scroll */
- overflow-x: auto; /* Enable horizontal scroll */
- -webkit-overflow-scrolling: touch; /* For smooth scrolling on iOS */
+  width: 100%;
+  padding: 0px 8px;
+  height: 230px; /* Set a fixed height for vertical scroll */
+  overflow-y: auto; /* Enable vertical scroll */
+  overflow-x: auto; /* Enable horizontal scroll */
+  -webkit-overflow-scrolling: touch; /* For smooth scrolling on iOS */
 }
 
 /* Guest Table Styling */
 .guest-table-wrapper table {
- width: 100%; /* Ensure the table takes up the full width */
- border-collapse: collapse; /* Remove gaps between cells */
- font-size: 12px; /* Smaller font size for compact display */
- min-width: 1000px; /* Minimum width for horizontal scrolling (can be adjusted) */
- table-layout: fixed; /* Prevent wrapping and make table cells take up equal space */
+  width: 100%; /* Ensure the table takes up the full width */
+  border-collapse: collapse; /* Remove gaps between cells */
+  font-size: 12px; /* Smaller font size for compact display */
+  min-width: 1000px; /* Minimum width for horizontal scrolling (can be adjusted) */
+  table-layout: fixed; /* Prevent wrapping and make table cells take up equal space */
 }
 
 /* Guest Table Header (Thead) Styling */
 .guest-table-wrapper thead th {
- background-color: #747474; /* Light gray for the header */
- color: #ffffff; /* Text color */
- font-size: 12px; /* Smaller font size */
- font-weight: 600;
- text-align: left;
- padding: 3px 8px; /* Reduced padding for compactness */
- border-bottom: 2px solid #dee2e6;
- position: sticky; /* Make header sticky */
- top: 0; /* Stick to the top */
- z-index: 10; /* Ensure it's above the table content */
+  background-color: #747474; /* Light gray for the header */
+  color: #ffffff; /* Text color */
+  font-size: 12px; /* Smaller font size */
+  font-weight: 600;
+  text-align: left;
+  padding: 3px 8px; /* Reduced padding for compactness */
+  border-bottom: 2px solid #dee2e6;
+  position: sticky; /* Make header sticky */
+  top: 0; /* Stick to the top */
+  z-index: 10; /* Ensure it's above the table content */
 }
-
 
 /* Adjust column widths for the table header and cells */
 .guest-table-wrapper thead th,
 .guest-table-wrapper tbody td {
- width: auto; /* Default width for dynamic adjustment */
- overflow: hidden; /* Prevent content from overflowing */
- text-overflow: ellipsis; /* Add ellipsis (...) for long content */
- white-space: nowrap; /* Prevent text from wrapping */
- padding: 8.5px 10px; /* Reduced padding for compactness */
+  width: auto; /* Default width for dynamic adjustment */
+  overflow: hidden; /* Prevent content from overflowing */
+  text-overflow: ellipsis; /* Add ellipsis (...) for long content */
+  white-space: nowrap; /* Prevent text from wrapping */
+  padding: 8.5px 10px; /* Reduced padding for compactness */
 }
 
 /* Guest Table Row Styling */
 .guest-table-wrapper tbody tr {
- border-bottom: 1px solid #dee2e6;
+  border-bottom: 1px solid #dee2e6;
 }
 
 .guest-table-wrapper tbody tr:last-child {
- border-bottom: none; /* Remove the bottom border for the last row */
+  border-bottom: none; /* Remove the bottom border for the last row */
 }
 
 .guest-table-wrapper td {
- color: #333;
- vertical-align: middle;
+  color: #333;
+  vertical-align: middle;
 }
 
 /* Guest Table Row Hover Effect */
 .guest-table-wrapper tbody tr:hover {
- background-color: #f5f5f5; /* Light gray background on row hover */
- cursor: pointer; /* Pointer cursor for interactivity */
- transition: background-color 0.3s ease; /* Smooth hover transition */
+  background-color: #f5f5f5; /* Light gray background on row hover */
+  cursor: pointer; /* Pointer cursor for interactivity */
+  transition: background-color 0.3s ease; /* Smooth hover transition */
 }
-
-
-
-
-
 
 /* Pending Status Example */
 .status-pending {
- background-color: #ffc107; /* Yellow for pending */
- color: #212529; /* Dark text for contrast */
+  background-color: #ffc107; /* Yellow for pending */
+  color: #212529; /* Dark text for contrast */
 }
 
 .status-pending .status-dot {
- background-color: #ffc107; /* Yellow dot */
+  background-color: #ffc107; /* Yellow dot */
 }
 
 /* Rejected Status Example */
 .status-rejected {
- background-color: #dc3545; /* Red for rejected */
- color: #ffffff; /* White text for contrast */
+  background-color: #dc3545; /* Red for rejected */
+  color: #ffffff; /* White text for contrast */
 }
 
 .status-rejected .status-dot {
- background-color: #dc3545; /* Red dot */
+  background-color: #dc3545; /* Red dot */
 }
 
 /* Confirmed Status */
 .status-confirmed {
- background-color: #28a745; /* Green for confirmed */
- color: #ffffff; /* White text for contrast */
+  background-color: #28a745; /* Green for confirmed */
+  color: #ffffff; /* White text for contrast */
 }
 
 /* Confirmed Status */
 .status-confirmed .status-dot {
- background-color: #28a745; /* Green dot */
- border-radius: 50%; /* Circular dot */
- border: 2px solid #1c7430; /* Darker green border for better contrast */
- box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); /* Subtle shadow to make it pop */
+  background-color: #28a745; /* Green dot */
+  border-radius: 50%; /* Circular dot */
+  border: 2px solid #1c7430; /* Darker green border for better contrast */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); /* Subtle shadow to make it pop */
 }
-
 
 /* General Status Styling */
 .status {
- display: inline-flex; /* Align dot and text */
- align-items: center; /* Center align dot and text */
- font-size: 8px; /* Adjust font size */
- font-weight: 500; /* Slightly bold text */
- padding: 4px 8px; /* Add padding around the badge */
- border-radius: 20px; /* Rounded badge */
- border: 1px solid #ddd; /* Optional: Light border for better visibility */
+  display: inline-flex; /* Align dot and text */
+  align-items: center; /* Center align dot and text */
+  font-size: 8px; /* Adjust font size */
+  font-weight: 500; /* Slightly bold text */
+  padding: 4px 8px; /* Add padding around the badge */
+  border-radius: 20px; /* Rounded badge */
+  border: 1px solid #ddd; /* Optional: Light border for better visibility */
 }
 
 /* Dot Styles */
 .status-dot {
- width: 6px; /* Smaller dot size */
- height: 6px; /* Smaller dot size */
- border-radius: 50%; /* Circular dot */
- margin-right: 5px; /* Space between dot and text */
+  width: 6px; /* Smaller dot size */
+  height: 6px; /* Smaller dot size */
+  border-radius: 50%; /* Circular dot */
+  margin-right: 5px; /* Space between dot and text */
 }
 
 /* Optional: Make the text larger or adjust as needed */
 .status p {
- font-size: 0.9rem; /* Increase font size for readability */
+  font-size: 0.9rem; /* Increase font size for readability */
 }
-
 
 /* Request History Table */
 .request-table-wrapper {
- width: 100%;
- padding: 0px 15px;
- height: 475px; /* Set a fixed height for vertical scroll */
- overflow-y: auto; /* Enable vertical scroll */
- overflow-x: auto; /* Enable horizontal scroll */
- -webkit-overflow-scrolling: touch; /* For smooth scrolling on iOS */
+  width: 100%;
+  padding: 0px 15px;
+  height: 475px; /* Set a fixed height for vertical scroll */
+  overflow-y: auto; /* Enable vertical scroll */
+  overflow-x: auto; /* Enable horizontal scroll */
+  -webkit-overflow-scrolling: touch; /* For smooth scrolling on iOS */
 }
 
 /* Request Table Styling */
 .request-table-wrapper table {
- width: 100%; /* Ensure the table takes up the full width */
- border-collapse: collapse; /* Remove gaps between cells */
- font-size: 14px; /* Smaller font size for compact display */
- min-width: 1000px; /* Minimum width for horizontal scrolling (can be adjusted) */
- table-layout: fixed; /* Prevent wrapping and make table cells take up equal space */
+  width: 100%; /* Ensure the table takes up the full width */
+  border-collapse: collapse; /* Remove gaps between cells */
+  font-size: 14px; /* Smaller font size for compact display */
+  min-width: 1000px; /* Minimum width for horizontal scrolling (can be adjusted) */
+  table-layout: fixed; /* Prevent wrapping and make table cells take up equal space */
 }
 
 /* Request Table Header (Thead) Styling */
 .request-table-wrapper thead th {
- background-color: #747474; /* Light gray for the header */
- color: #ffffff; /* Text color */
- font-size: 12px; /* Smaller font size */
- font-weight: 600;
- text-align: left;
- padding: 4px 4px; /* Reduced padding for compactness */
- border-bottom: 2px solid #dee2e6;
- position: sticky; /* Make header sticky */
- top: 0; /* Stick to the top */
- z-index: 10; /* Ensure it's above the table content */
+  background-color: #747474; /* Light gray for the header */
+  color: #ffffff; /* Text color */
+  font-size: 12px; /* Smaller font size */
+  font-weight: 600;
+  text-align: left;
+  padding: 4px 4px; /* Reduced padding for compactness */
+  border-bottom: 2px solid #dee2e6;
+  position: sticky; /* Make header sticky */
+  top: 0; /* Stick to the top */
+  z-index: 10; /* Ensure it's above the table content */
 }
 
 /* Adjust column widths for the table header and cells */
 .request-table-wrapper thead th,
 .request-table-wrapper tbody td {
- width: auto; /* Default width for dynamic adjustment */
- overflow: hidden; /* Prevent content from overflowing */
- text-overflow: ellipsis; /* Add ellipsis (...) for long content */
- white-space: nowrap; /* Prevent text from wrapping */
- padding: 8.5px 10px; /* Reduced padding for compactness */
+  width: auto; /* Default width for dynamic adjustment */
+  overflow: hidden; /* Prevent content from overflowing */
+  text-overflow: ellipsis; /* Add ellipsis (...) for long content */
+  white-space: nowrap; /* Prevent text from wrapping */
+  padding: 8.5px 10px; /* Reduced padding for compactness */
 }
 
 /* Request Table Row Styling */
 .request-table-wrapper tbody tr {
- border-bottom: 1px solid #dee2e6;
+  border-bottom: 1px solid #dee2e6;
 }
 
 .request-table-wrapper tbody tr:last-child {
- border-bottom: none; /* Remove the bottom border for the last row */
+  border-bottom: none; /* Remove the bottom border for the last row */
 }
 
 .request-table-wrapper td {
- color: #333;
- vertical-align: middle;
+  color: #333;
+  vertical-align: middle;
 }
 
 /* Request Table Row Hover Effect */
 .request-table-wrapper tbody tr:hover {
- background-color: #f5f5f5; /* Light gray background on row hover */
- cursor: pointer; /* Pointer cursor for interactivity */
- transition: background-color 0.3s ease; /* Smooth hover transition */
+  background-color: #f5f5f5; /* Light gray background on row hover */
+  cursor: pointer; /* Pointer cursor for interactivity */
+  transition: background-color 0.3s ease; /* Smooth hover transition */
 }
 
 /* Pending Status Example */
 .status-pending {
- background-color: #ffc107; /* Yellow for pending */
- color: #212529; /* Dark text for contrast */
+  background-color: #ffc107; /* Yellow for pending */
+  color: #212529; /* Dark text for contrast */
 }
-
 
 /* Rejected Status Example */
 .status-rejected {
- background-color: #dc3545; /* Red for rejected */
- color: #ffffff; /* White text for contrast */
+  background-color: #dc3545; /* Red for rejected */
+  color: #ffffff; /* White text for contrast */
 }
-
 
 /* Confirmed Status */
 .status-confirmed {
- background-color: #28a745; /* Green for confirmed */
- color: #ffffff; /* White text for contrast */
+  background-color: #28a745; /* Green for confirmed */
+  color: #ffffff; /* White text for contrast */
 }
 
 /* General Status Styling */
 .status {
- display: inline-flex; /* Align dot and text */
- align-items: center; /* Center align dot and text */
- font-size: 12px; /* Adjust font size */
- font-weight: 500; /* Slightly bold text */
- padding: 6px 14px; /* Add padding around the badge */
- border-radius: 20px; /* Rounded badge */
- border: 1px solid #ddd; /* Optional: Light border for better visibility */
+  display: inline-flex; /* Align dot and text */
+  align-items: center; /* Center align dot and text */
+  font-size: 12px; /* Adjust font size */
+  font-weight: 500; /* Slightly bold text */
+  padding: 6px 14px; /* Add padding around the badge */
+  border-radius: 20px; /* Rounded badge */
+  border: 1px solid #ddd; /* Optional: Light border for better visibility */
 }
 
 /* Dot Styles */
 .status-dot {
- width: 6px; /* Smaller dot size */
- height: 6px; /* Smaller dot size */
- border-radius: 50%; /* Circular dot */
- margin-right: 5px; /* Space between dot and text */
+  width: 6px; /* Smaller dot size */
+  height: 6px; /* Smaller dot size */
+  border-radius: 50%; /* Circular dot */
+  margin-right: 5px; /* Space between dot and text */
 }
 
 /* Optional: Make the text larger or adjust as needed */
 .status p {
- font-size: 0.9rem; /* Increase font size for readability */
+  font-size: 0.9rem; /* Increase font size for readability */
 }
-
-
-
-
-
-
-
 
 .nav-pills-wrapper {
- margin: 15px 15px 0px 15px;
- width: 100%; /* Full width */
- padding: 10px 0px;
- height: 6vh;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  width: 100%; /* Full width */
+  height: 6vh;
+  /* border: 1px solid black; */
 }
-
 
 /* Style for the nav-item to make them pill-shaped */
 .nav-pills .nav-item {
- margin-right: 10px; /* Space between items */
+  margin-right: 10px; /* Space between items */
 }
 
 /* Style for the nav-link to create the pill effect */
 .nav-pills .nav-link {
- border-radius: 50px; /* Makes the pill rounded */
- padding: 10px 20px; /* Add padding for a wider pill */
- font-size: 14px; /* Font size adjustment */
- color: #495057; /* Default text color */
- background-color: #f8f9fa; /* Background color of the pill */
- border: 1px solid #ddd; /* Border color */
- transition: background-color 0.3s, color 0.3s; 
- font-weight: bolder;
+  border-radius: 50px; /* Makes the pill rounded */
+  padding: 10px 20px; /* Add padding for a wider pill */
+  font-size: 14px; /* Font size adjustment */
+  color: #495057; /* Default text color */
+  background-color: #f8f9fa; /* Background color of the pill */
+  border: 1px solid #ddd; /* Border color */
+  transition: background-color 0.3s, color 0.3s;
+  font-weight: bolder;
 }
 
 /* Active pill (selected item) styling */
 .nav-pills .nav-link.active {
- color: #fff; /* Text color when active */
- background-color: #007bff; /* Background color when active */
- border-color: #007bff; /* Border color when active */
+  color: #fff; /* Text color when active */
+  background-color: #007bff; /* Background color when active */
+  border-color: #007bff; /* Border color when active */
 }
 
 /* Hover effect for the pills */
 .nav-pills .nav-link:hover {
- color: #007bff; /* Text color on hover */
- background-color: #f1f1f1; /* Light background on hover */
- border-color: #ccc; /* Border color on hover */
+  color: #007bff; /* Text color on hover */
+  background-color: #f1f1f1; /* Light background on hover */
+  border-color: #ccc; /* Border color on hover */
 }
-
 
 /* Tab Content Styling */
 .tab-content {
- margin: 10px 10px 10px 0px; /* 20px horizontal margin, 10px vertical margin */
- background-color: #fff; /* Ensure content area has a white background */
- border-radius: 8px; /* Optional rounded corners */
- box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Optional shadow for effect */
- height: 50vh;
- padding: 10px 0px; /* Add padding to the tab content */
- border-radius: 5px; /* Optional: make tab content corners rounded */
+  background-color: #fff; /* Ensure content area has a white background */
+  border-radius: 8px; /* Optional rounded corners */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Optional shadow for effect */
+  height: 50vh;
+  padding: 10px 0px; /* Add padding to the tab content */
+  border-radius: 5px; /* Optional: make tab content corners rounded */
 }
 
 /* Additional styling for the tabs if needed */
 .tab-pane {
- border-radius: 5px; /* Optional: make tab content corners rounded */
- order: 1px solid black;
- padding: 10px 0px; /* 20px horizontal margin, 10px vertical margin */
+  border-radius: 5px; /* Optional: make tab content corners rounded */
+  order: 1px solid black;
+  padding: 10px 0px; /* 20px horizontal margin, 10px vertical margin */
 }
-
-
-
-
-
-
-
 
 /* Add Ons */
 .no-requests-container {
-    text-align: left;    /* Aligns text to the left */
-    padding: 8px 16px;   /* Optional: Adjust padding to match your table cells */
-    border: 1px solid #ccc; /* Optional: Adds a border to match table styling */
-    font-family: Arial, sans-serif; /* Optional: Consistent font styling */
-    font-size: 14px; /* Optional: Adjust font size to match table content */
-    white-space: nowrap; /* Prevents text wrapping */
+  text-align: left; /* Aligns text to the left */
+  padding: 8px 16px; /* Optional: Adjust padding to match your table cells */
+  border: 1px solid #ccc; /* Optional: Adds a border to match table styling */
+  font-family: Arial, sans-serif; /* Optional: Consistent font styling */
+  font-size: 14px; /* Optional: Adjust font size to match table content */
+  white-space: nowrap; /* Prevents text wrapping */
 }

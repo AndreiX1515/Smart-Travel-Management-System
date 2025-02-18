@@ -635,7 +635,7 @@ require "../conn.php";
                             <!-- <th rowspan="2">FLIGHT SEAT</th> -->
                             <th rowspan="2">AVAILABLE SEATS</th>
                             <th rowspan="2">ADDITIONAL SEATS</th>
-                            <th rowspan="2">RETAIL PRICE</th>
+                            <th rowspan="2">PRICE</th>
                             <th rowspan="2"></th>
                             <!-- <th rowspan="2">AIR + LAND</th>
                           <th rowspan="2">LAND ONLY</th>

@@ -102,16 +102,16 @@
       <table class="product-table" id="product-table">
           <thead>
             <tr>
-              <th rowspan="2">Transact No</th>
-              <th rowspan="2">Agent Name</th>
+              <th>Transact No</th>
+              <th>Agent Name</th>
               <!-- <th rowspan="2">Package Name</th> -->
-              <th colspan="2" class="text-center">Flight Date</th>
+              <th>Flight Date</th>
               <!-- <th rowspan="2">Booking Date</th> -->
-              <th rowspan="2">Total Pax</th>
-              <th rowspan="2">Package Price</th>
-              <th rowspan="2">Amount Paid</th>
+              <th>Total Pax</th>
+              <th>Package Price</th>
+              <th>Amount Paid</th>
               <th rowspan="2">Balance</th>
-              <th rowspan="2">Status</th>
+              <th>Status</th>
             </tr>
             <!-- <tr>
               <th>Departure</th>
