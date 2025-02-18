@@ -113,10 +113,10 @@
               <th rowspan="2">Balance</th>
               <th rowspan="2">Status</th>
             </tr>
-            <tr>
+            <!-- <tr>
               <th>Departure</th>
               <th>Return</th>
-            </tr>
+            </tr> -->
           </thead>
           <tbody>
             <?php
@@ -135,7 +135,7 @@
                       GROUP BY 
                         b.transactNo, f.flightDepartureDate, f.returnDepartureDate, b.status, p.packageName, 
                         b.bookingDate, b.pax, b.totalPrice, a.lName, a.fName, a.mName
-                      ORDER BY b.transactNo";
+                      ORDER BY CAST(SUBSTRING_INDEX(b.transactNo, '-', -1) AS UNSIGNED)";
 
               // Execute the query
               $result = $conn->query($sql);
@@ -189,7 +189,7 @@
                   echo "<td>{$row['branchName']}</td>";
                   // echo "<td>$packageName</td>";
                   echo "<td>$departureDate</td>";
-                  echo "<td>$returnDate</td>";
+                  // echo "<td>$returnDate</td>";
                   // echo "<td>$bookingDate</td>";
                   echo "<td class='fw-bold ps-3'>$totalPax</td>";
                   echo "<td>₱ " . number_format($packagePrice, 2) . "</td>";

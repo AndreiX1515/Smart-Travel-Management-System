@@ -441,7 +441,7 @@ error_reporting(E_ALL);
                   <th rowspan="2" class="red-white">LAND ONLY</th>
                   <th rowspan="2" class="red-white">WHOLESALE PRICE</th>
                   <th rowspan="2" class="red-white">RETAIL PRICE</th>
-                  <th rowspan="2" class="red-white" style="font-size: 10px; padding: 0px 5px">LAND ARRANGEMENT PRICE</th>
+                  <!-- <th rowspan="2" class="red-white" style="font-size: 10px; padding: 0px 5px">LAND ARRANGEMENT PRICE</th> -->
                   <th rowspan="2" class="red-white" style="font-size: 10px; padding: 0px 5px">LAND PRICE</th>
 
                   <!-- Dynamic headers for agent columns -->
@@ -564,18 +564,18 @@ error_reporting(E_ALL);
                               data-status="' . $chkStatus . '" ' . ($chkStatus == 1 ? 'checked' : '') . '>
                         </td>';
 
-                    echo '<td class="" style="font-size: 12px; white-space: nowrap; background-color: ' . $rowColor . '; font-weight: bold;">' . $row['TeamOP'] . '</td>';
-                    echo '<td>' . $row['origin'] . '</td>';
-                    echo '<td>' . $row['Start'] . '</td>';
-                    echo '<td>' . $row['End'] . '</td>';
-                    echo '<td>' . $row['AvailSeats'] . '</td>';
-                    echo '<td>' . $row['AdditionalSeats'] . '</td>';
-                    echo '<td>' . $row['Air+Land'] . '</td>';
-                    echo '<td>' . $row['LandOnly'] . '</td>';
-                    echo '<td>₱ ' . number_format($row['WholesalePrice'], 2) . '</td>';
-                    echo '<td>₱ ' . number_format($row['RetailPrice'], 2) . '</td>';
-                    echo '<td>₱ ' . number_format($row['LandArrangement'], 2) . '</td>';
-                    echo '<td>₱ ' . number_format($row['landPrice'], 2) . '</td>';
+                      echo '<td class="" style="font-size: 12px; white-space: nowrap; background-color: ' . $rowColor . '; font-weight: bold;">' . $row['TeamOP'] . '</td>';
+                      echo '<td>' . $row['origin'] . '</td>';
+                      echo '<td>' . $row['Start'] . '</td>';
+                      echo '<td>' . $row['End'] . '</td>';
+                      echo '<td>' . $row['AvailSeats'] . '</td>';
+                      echo '<td>' . $row['AdditionalSeats'] . '</td>';
+                      echo '<td>' . $row['Air+Land'] . '</td>';
+                      echo '<td>' . $row['LandOnly'] . '</td>';
+                      echo '<td>₱ ' . number_format($row['WholesalePrice'], 2) . '</td>';
+                      echo '<td>₱ ' . number_format($row['RetailPrice'], 2) . '</td>';
+                      // echo '<td>₱ ' . number_format($row['LandArrangement'], 2) . '</td>';
+                      echo '<td>₱ ' . number_format($row['landPrice'], 2) . '</td>';
 
                     foreach ($row as $key => $value) {
                       if (strpos($key, '_AL') !== false || strpos($key, '_LO') !== false) {
