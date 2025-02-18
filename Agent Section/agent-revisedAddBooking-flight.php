@@ -193,10 +193,11 @@ require "../conn.php";
                         // Loop through the result to create options
                         while ($res1 = mysqli_fetch_array($sql1)) {
                           // Check if this packageId is equal to the selected packageId (to mark it as selected)
+                          $formattedRetailPrice = number_format($res1['flightPrice'], 2);
 
                           $selected = ($res1['flightDepartureDate'] == $flightDepartureDate) ? 'selected' : '';
                           echo "<option value='{$res1['flightId']}' {$selected}>
-                                  " . date('M j, Y', strtotime($res1['flightDepartureDate'])) . " || Price: {$res1['flightPrice']}
+                                  " . date('M j, Y', strtotime($res1['flightDepartureDate'])) . " || Price: ₱ {$formattedRetailPrice}
                                 </option>";
                         }
                         ?>
