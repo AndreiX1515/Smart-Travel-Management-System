@@ -182,24 +182,27 @@
               <select class="form-select" id="guestSelect" onchange="addGuestFields(this.value)">
                 <option selected disabled>-- Select Guest --</option>
                 <?php
-                if ($res1) {
-                  $transactionNumber = $_SESSION['transaction_number'] ?? '';
-                  $query1 = "SELECT g.guestId, CONCAT(g.lName, ', ', g.fName, ' ', 
-                                    CASE WHEN g.suffix = 'N/A' THEN '' ELSE g.suffix END, ' ',
-                                    CASE WHEN g.mName = 'N/A' THEN '' ELSE CONCAT(SUBSTRING(g.mName, 1, 1), '.') END) AS FULLNAME 
-                            FROM guest g
-                            LEFT JOIN visarequirements v ON g.guestId = v.guestId
-                            WHERE g.transactNo = '$transactionNumber'
-                            AND v.guestId IS NULL";
-                  $res1 = mysqli_query($conn, $query1);
-                  while ($row = mysqli_fetch_assoc($res1)) {
-                    $guestId = $row['guestId'];
-                    $fullName = $row['FULLNAME'];
-                    echo "<option value='$guestId'>$fullName</option>";
+                  if ($res1) 
+                  {
+                    $transactionNumber = $_SESSION['transaction_number'] ?? '';
+                    $query1 = "SELECT g.guestId, CONCAT(g.lName, ', ', g.fName, ' ', CASE WHEN g.suffix = 'N/A' THEN '' ELSE g.suffix END, ' ',
+                                CASE WHEN g.mName = 'N/A' THEN '' ELSE CONCAT(SUBSTRING(g.mName, 1, 1), '.') END) AS FULLNAME 
+                              FROM guest g
+                              LEFT JOIN visarequirements v ON g.guestId = v.guestId
+                              WHERE g.transactNo = '$transactionNumber'
+                              AND v.guestId IS NULL";
+                    $res1 = mysqli_query($conn, $query1);
+                    while ($row = mysqli_fetch_assoc($res1)) 
+                    {
+                      $guestId = $row['guestId'];
+                      $fullName = $row['FULLNAME'];
+                      echo "<option value='$guestId'>$fullName</option>";
+                    }
+                  } 
+                  else 
+                  {
+                    echo "<option value=''>No guests available</option>";
                   }
-                } else {
-                  echo "<option value=''>No guests available</option>";
-                }
                 ?>
               </select>
             </div>
@@ -214,8 +217,182 @@
   </div>
 </div>
 
-<!-- Add Guest Script -->
+<!-- Adjusted Visa Requirements Guest Script -->
 <script>
+  let guestCounter = 0;
+
+  function addGuestFields(guestId = "") 
+  {
+    const allGuestFieldsContainer = document.getElementById("allGuestFields");
+    const guestName = getGuestNameById(guestId);
+
+    guestCounter++;
+
+    const guestFieldsHTML = `
+      <div id="guestFields-${guestCounter}" class="guest-fields">
+        <h5 class="form-label mt-4">Visa Requirements for Guest: ${guestName}</h5>
+
+        <!-- Guest Name Display -->
+        <div class="mb-3">
+          <label class="form-label">Guest Name:</label>
+          <input type="text" class="form-control" name="guestNames[]" value="${guestName}" readonly>
+        </div>
+
+        <input type="hidden" name="guestIds[]" value="${guestId}">
+
+        <!-- Select Document Type -->
+        <div class="mb-3">
+          <label class="form-label">Select Document to Upload:</label>
+          <select class="form-select" onchange="showFileInput(this, ${guestCounter})">
+            <option selected disabled>-- Select Document --</option>
+            <option value="passport">Passport</option>
+            <option value="permit">Permit</option>
+            <option value="validId">Valid ID</option>
+            <option value="certificate">Certificate</option>
+            <option value="guaranteedLetter">Guaranteed Letter</option>
+          </select>
+        </div>
+
+        <div id="fileInputs-${guestCounter}"></div>
+
+        <button type="button" class="btn btn-danger mt-2" onclick="removeGuestFields(${guestCounter}, '${guestId}')">Remove Guest</button>
+        <hr>
+      </div>`;
+
+    allGuestFieldsContainer.insertAdjacentHTML("beforeend", guestFieldsHTML);
+    disableSelectedGuest(guestId);
+  }
+
+  // Fixed function with remove button for file inputs
+  function showFileInput(selectElement, counter) 
+  {
+    const fileInputsContainer = document.getElementById(`fileInputs-${counter}`);
+    const selectedValue = selectElement.value;
+
+    // Check if the document type is already added
+    if (document.getElementById(`${selectedValue}-${counter}`)) 
+    {
+      alert("You have already added this document.");
+      return;
+    }
+
+    // Generate file input with remove button
+    const fileInputHTML = `
+      <div id="${selectedValue}-${counter}" class="mb-3 d-flex align-items-center">
+        <label class="form-label me-2">${selectElement.options[selectElement.selectedIndex].text}:</label>
+        <input type="file" class="form-control me-2" name="${selectedValue}s[]" style="width:70%">
+        <button type="button" class="btn btn-danger btn-sm" onclick="removeFileInput('${selectedValue}-${counter}')">X</button>
+      </div>`;
+
+    fileInputsContainer.insertAdjacentHTML("beforeend", fileInputHTML);
+  }
+
+  // Function to remove specific file input
+  function removeFileInput(inputId) 
+  {
+    const fileInput = document.getElementById(inputId);
+    if (fileInput) 
+    {
+      fileInput.remove();
+    }
+  }
+
+  // Function to get guest name by ID
+  function getGuestNameById(guestId) 
+  {
+    const guestSelect = document.getElementById("guestSelect");
+    const options = guestSelect.options;
+
+    for (let i = 0; i < options.length; i++) 
+    {
+      if (options[i].value == guestId) 
+      {
+        return options[i].text;
+      }
+    }
+
+    return ''; // Return empty if no match is found
+  }
+
+  // Function to remove guest fields
+  function removeGuestFields(counter, guestId) 
+  {
+    const guestFields = document.getElementById(`guestFields-${counter}`);
+    if (guestFields) 
+    {
+      guestFields.remove();
+    }
+
+    // Re-enable the removed guest in the select dropdown
+    enableGuestInSelect(guestId);
+  }
+
+  // Function to disable selected guest in dropdown
+  function disableSelectedGuest(guestId) 
+  {
+    const guestSelect = document.getElementById("guestSelect");
+    const options = guestSelect.options;
+    for (let i = 0; i < options.length; i++) 
+    {
+      if (options[i].value == guestId) 
+      {
+        options[i].disabled = true;
+        break;
+      }
+    }
+  }
+
+  // Function to re-enable guest in dropdown
+  function enableGuestInSelect(guestId) 
+  {
+    const guestSelect = document.getElementById("guestSelect");
+    const options = guestSelect.options;
+    for (let i = 0; i < options.length; i++) 
+    {
+      if (options[i].value == guestId) 
+      {
+        options[i].disabled = false;
+        break;
+      }
+    }
+  }
+</script>
+
+<!-- Working Properly Reset Modal When Closed -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () 
+  {
+    const visaModal = document.getElementById("visaModal");
+
+    visaModal.addEventListener("hidden.bs.modal", function () 
+    {
+      // Reset the form
+      document.querySelector("#visaModal form").reset();
+
+      // Only remove guest fields, but keep the "Select Guest" dropdown
+      const allGuestFieldsContainer = document.getElementById("allGuestFields");
+      const guestSelectWrapper = document.querySelector("#allGuestFields .mb-4"); // Keeps the select field
+      allGuestFieldsContainer.innerHTML = ""; // Clear everything first
+      if (guestSelectWrapper) 
+      {
+        allGuestFieldsContainer.appendChild(guestSelectWrapper); // Restore select field
+      }
+
+      // Re-enable all previously disabled dropdown options
+      const guestSelect = document.getElementById("guestSelect");
+      for (let i = 0; i < guestSelect.options.length; i++) 
+      {
+        guestSelect.options[i].disabled = false;
+      }
+
+      // Reset the guest dropdown selection
+      guestSelect.selectedIndex = 0;
+    });
+  });
+</script>
+
+<!-- Orig Visa Requirements Guest Script -->
+<!-- <script>
   let guestCounter = 0;
 
   function addGuestFields(guestId = "") {
@@ -235,7 +412,7 @@
           Visa Requirements for Guest: ${guestName}
         </h5>
         
-        <!-- Guest Name Display (Read-Only) -->
+        Guest Name Display (Read-Only)
         <div class="mb-3">
           <label for="guestName-${guestCounter}" class="form-label">Guest Name:</label>
           <input type="text" class="form-control" id="guestName-${guestCounter}" name="guestNames[]" 
@@ -244,7 +421,7 @@
         
         <input type="hidden" name="guestIds[]" value="${guestId}">
         
-        <!-- Visa Fields -->
+        Visa Fields
         <div class="mb-3">
           <label for="passport-${guestCounter}" class="form-label">Passport:</label>
           <input type="file" class="form-control" id="passport-${guestCounter}" name="passports[]">
@@ -266,7 +443,7 @@
           <input type="file" class="form-control" id="guaranteedLetter-${guestCounter}" name="guaranteedLetters[]">
         </div>
         
-        <!-- Remove Button -->
+        Remove Button
         <button type="button" class="btn btn-danger" onclick="removeGuestFields(${guestCounter}, '${guestId}')">Remove</button>
         <hr>
       </div>`;
@@ -323,7 +500,7 @@
       }
     }
   }
-</script>
+</script> -->
 
 <!-- Specific Row Clickable Script -->
 <script>
