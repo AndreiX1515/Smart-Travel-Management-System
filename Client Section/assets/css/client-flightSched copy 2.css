@@ -1,0 +1,848 @@
+/* Flight Schedules */
+
+.main-container {
+  padding: 0;
+  margin: 0;
+}
+
+.flight-schedules {
+  background-color: transparent;
+  display: flex;
+  position: relative;
+  overflow: hidden;
+  height: 88.5vh;
+  
+}
+
+.flight-schedules .section-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.flight-schedules .section-header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 20px 10px 20px 0px;
+  /* border: 1px solid black; */
+  margin: 55px 5px 15px 5px;
+}
+
+.section-header .header-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.filters-container {
+  display: flex;
+  flex-direction: column;
+  
+  gap: 15px;
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+
+.filters {
+  display: flex;
+  align-items: left;
+  justify-content: left;
+  gap: 20px;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.filter-group label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 4px;
+}
+
+.filter-group select,
+.filter-group input {
+  padding: 10px;
+  font-size: 14px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+  color: #333;
+  transition: border-color 0.3s ease;
+  cursor: pointer;
+  appearance: none;
+}
+
+.filter-group select:hover,
+.filter-group input:hover {
+  border-color: #8a8a8a;
+}
+
+.filter-group select:focus,
+.filter-group input:focus {
+  border-color: #116530;
+  outline: none;
+  box-shadow: 0 0 5px rgba(17, 101, 48, 0.3);
+}
+
+.clear-btn {
+  margin-top: 25px;
+  padding: 10px 25px;
+  background-color: #116530;
+  color: white;
+  font-size: 14px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.clear-btn:hover {
+  background-color: #0e4a28;
+}
+
+
+.flight-schedules .section-main-content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: auto;
+}
+
+.confirm-table-container-flight {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  /* padding: 0px 120px; */
+  margin-right: 60px;
+  width: 100%;
+  height: 90vh;
+  overflow-x: auto;
+  overflow-y: auto;
+  position: relative;
+}
+
+
+.flights-container {
+  display: flex;
+  border: 1px solid black;
+}
+
+
+
+
+/* Flight Card (Horizontal Layout) */
+.flight-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  border-radius: 10px; /* Slightly smaller border radius */
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  padding: 10px 10px 5px 10px; /* Reduced padding */
+  width: 100%;
+  height: 70px; /* Reduced height */
+  margin-bottom: 15px; /* Slightly smaller spacing */
+  transition: all 0.3s ease;
+  flex-direction: row;
+}
+
+
+
+/* Flight Info */
+.flight-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 30px;
+  margin-top: 5px;
+  /* border: 1px solid black; */
+}
+
+/* Flight Details */
+.flight-details {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: center; /* Ensure all child elements stretch to the tallest height */
+  gap: 10px;
+  padding: 10px;
+  /* border: 1px solid black; */
+}
+
+/* Flight Origin */
+.flight-origin {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  /* border: 1px solid black; */
+}
+
+.flight-origin h5 {
+  font-size: 18px;
+  font-weight: 500;
+  color: black;
+}
+
+/* Flight Date Wrapper */
+.flight-date-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  align-items: flex-start;
+  /* border: 1px solid black; */
+}
+
+/* Flight Date */
+.flight-date {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  /* border: 1px solid black; */
+}
+
+
+
+/* Labels */
+.flight-content label{
+  font-size: 14px;
+  font-weight: bold;
+  color: black;
+}
+
+.flight-content h5{
+  font-size: 14px;
+  font-weight: 500;
+  color: black;
+}
+
+
+
+.flight-price label{
+  font-size: 14px;
+  font-weight: bold;
+  color: black;
+}
+
+.flight-price h5{
+  font-size: 14px;
+  font-weight: 500;
+  color: black;
+}
+
+
+
+
+
+
+/* Flight Details */
+.seats-container {
+  height: 100%; /* Occupy full height of parent */
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start; /* Align items to the left */
+  align-items: center; /* Center items vertically */
+  gap: 10px;
+  /* border: 1px solid black; */
+}
+
+/* Seats Wrapper */
+.seats-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 100%; /* Occupy full height of container */
+  padding: 10px;
+  gap: 20px;
+  /* border: 1px solid black; */
+}
+
+/* Seats Container */
+.seats-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start; /* Align text to the left */
+  gap: 20px;
+  height: 100%;
+}
+
+/* Seats Info */
+.seats-info {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.seats-info label {
+  font-size: 14px;
+  font-weight: bold;
+  color: black;
+}
+
+.seats-info p {
+  font-weight: 400;
+  font-size: 12px;
+}
+
+/* Separator */
+.separator {
+  width: 1px; /* Thickness of the line */
+  margin: 10px 20px;
+  background-color: rgba(0, 0, 0, 0.2); /* Light gray separator */
+  align-self: stretch; /* Ensures it spans the full height of its container */
+}
+
+/* Book Now Button */
+.book-now-container {
+  display: flex;
+  align-items: center; /* Center button vertically */
+}
+
+.book-now-container .btn.book-now {
+  background-color: #116530;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+.book-now-container .btn.book-now:hover {
+  background-color: #0e4b27;
+}
+
+
+
+
+/* Default Styles (Above 1280px) */
+.flight-card {
+  padding: 14px;
+}
+
+.flight-details h3 {
+  font-size: 24px;
+}
+
+.flight-details p {
+  font-size: 16px;
+}
+
+.seats-info p {
+  font-size: 14px;
+}
+
+
+
+
+
+/* Large Screens: 1025px - 1280px */
+@media (min-width: 1092px) and (max-width: 1280px) {
+  .flight-schedules {
+    height: 88vh;
+  }
+
+  .section-header {
+    padding: 5px 25px 10px 5px;
+    margin-bottom: 12px;
+  }
+
+  .flight-card {
+    padding: 12px;
+    height: 70px;
+  }
+
+  .flight-info {
+    gap: 25px;
+  }
+
+  .flight-details h3 {
+    font-size: 22px;
+  }
+
+  .flight-details p {
+    font-size: 14px;
+  }
+
+  .seats-info p {
+    font-size: 13px;
+  }
+
+  .book-now-container .btn.book-now {
+    padding: 10px 15px;
+    font-size: 14px;
+  }
+}
+
+/* Medium Screens: 769px - 1024px */
+@media (min-width: 1054px) and (max-width: 1091px) {
+  .flight-schedules {
+    height: 85vh;
+  }
+
+  .section-header {
+    padding-bottom: 12px;
+    gap: 10px;
+    padding: 15px 15px;
+  }
+
+  .flight-card {
+    padding: 10px;
+    height: 65px;
+  }
+
+  .flight-info {
+    gap: 20px;
+  }
+
+  .flight-details h3 {
+    font-size: 20px;
+  }
+
+  .flight-details p,
+  .seats-info p {
+    font-size: 12px;
+  }
+
+  .seats-wrapper {
+    gap: 15px;
+  }
+
+  .book-now-container .btn.book-now {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+}
+
+
+/* Medium Screens: 769px - 1052px */
+@media (min-width: 994px) and (max-width: 1052px) {
+  .flight-schedules {
+    height: 85vh;
+  }
+
+  .section-header {
+    padding-bottom: 12px;
+    padding: 15px;
+  }
+
+  .flight-card {
+    display: flex;
+    
+    height: auto; /* Adjust height based on content */
+    align-items: flex-start; /* Align content to the left */
+    text-align: left; /* Ensure text is left-aligned */
+    padding: 0px 15px;
+  }
+
+  .flight-info {
+    display: flex;
+  
+    align-items: flex-start; /* Left-align flight info */
+    gap: 0px; /* Reduced gap */
+  }
+
+  .flight-details h3 {
+    font-size: 15px;
+    text-align: left;
+    margin-bottom: 10px; /* Reduce spacing below the title */
+  }
+
+  .flight-details p,
+  .seats-info p {
+    font-size: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+    margin-bottom: 3px; /* Reduce spacing between paragraphs */
+  }
+
+  .seats-wrapper {
+    gap: 15px; /* Reduce spacing */
+    align-items: flex-start;
+  }
+
+  .separator {
+    width: 1px; /* Thickness of the line */
+    margin: 10px 0px;
+    background-color: rgba(0, 0, 0, 0.2); /* Light gray separator */
+    align-self: stretch; /* Ensures it spans the full height of its container */
+  }
+
+  .book-now-container .btn.book-now {
+    padding: 10px 50px; /* Slightly reduced padding */
+    font-size: 11px; /* Slightly smaller font */
+  }
+}
+
+/* Medium Screens: 769px - 1052px */
+@media (min-width: 773px) and (max-width: 993px) {
+  .flight-schedules {
+    height: 85vh;
+  }
+
+  .section-header {
+    flex-direction: column;
+    padding-bottom: 12px;
+    padding: 15px;
+  }
+
+  .flight-card {
+    display: flex;
+    flex-direction: column;
+    height: auto; /* Adjust height based on content */
+    align-items: flex-start; /* Align content to the left */
+    text-align: left; /* Ensure text is left-aligned */
+    padding: 0px 15px;
+  }
+
+  .flight-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Left-align flight info */
+    gap: 0px; /* Reduced gap */
+  }
+
+  .flight-details h3 {
+    font-size: 15px;
+    text-align: left;
+    margin-bottom: 10px; /* Reduce spacing below the title */
+  }
+
+  .flight-details p,
+  .seats-info p {
+    font-size: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+    margin-bottom: 3px; /* Reduce spacing between paragraphs */
+  }
+
+  .seats-wrapper {
+    gap: 10px; /* Reduce spacing */
+    align-items: flex-start;
+  }
+
+  .book-now-container .btn.book-now {
+    padding: 10px 50px; /* Slightly reduced padding */
+    font-size: 11px; /* Slightly smaller font */
+  }
+}
+
+
+
+/* Tablet Screens: 601px - 768px */
+@media (min-width: 666px) and (max-width: 772px) {
+  .flight-schedules {
+    padding: 5px;
+    height: auto;
+  }
+
+  .section-header {
+    flex-direction: column;
+    padding-bottom: 10px;
+    padding: 15px;
+    gap: 8px;
+  }
+
+  .flight-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align contents to the left */
+    text-align: left; /* Ensure text is left-aligned */
+    height: auto; /* Adjust height based on content */
+    padding: 8px;
+    width: 100%;
+    gap: 8px; /* Reduced gap */
+  }
+
+  .flight-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Left-align flight info */
+    gap: 8px; /* Reduced gap */
+  }
+
+  .flight-details h3 {
+    font-size: 16px; /* Slightly smaller for tablets */
+    text-align: left;
+    margin-bottom: 5px; /* Reduce spacing */
+  }
+
+  .flight-details p,
+  .seats-info p {
+    font-size: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+    margin-bottom: 3px; /* Reduce spacing */
+  }
+
+  .seats-wrapper {
+    gap: 15px; /* Reduce spacing */
+    align-items: flex-start;
+  }
+
+  .separator {
+    width: 1px; /* Thickness of the line */
+    margin: 10px 0px;
+    background-color: rgba(0, 0, 0, 0.2); /* Light gray separator */
+    align-self: stretch; /* Ensures it spans the full height of its container */
+  }
+
+  .book-now-container .btn.book-now {
+    padding: 10px 50px; /* Slightly reduced padding */
+    font-size: 11px; /* Slightly smaller font */
+  }
+}
+
+
+
+
+
+/* Mobile Screens: 481px - 600px */
+@media (min-width: 591px) and (max-width: 665px) {
+  .flight-schedules {
+    padding: 5px;
+    height: auto;
+  }
+
+  .section-header {
+    flex-direction: column;
+    padding-bottom: 10px;
+    padding: 12px;
+    gap: 6px; /* Reduced spacing */
+  }
+
+  .flight-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align contents to the left */
+    text-align: left;
+    height: auto; /* Adjust height based on content */
+    width: 100%;
+    padding: 6px;
+    gap: 6px; /* Further reduced gap */
+  }
+
+  .flight-date {
+    gap: 30px;
+  }
+
+  .flight-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px; /* Reduced spacing */
+  }
+
+  .flight-details h3 {
+    font-size: 15px;
+    text-align: left;
+    margin-bottom: 4px; /* Reduce spacing */
+  }
+
+  .flight-details p,
+  .seats-info p {
+    font-size: 9px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+    margin-bottom: 2px; /* Reduce spacing */
+  }
+
+  .seats-wrapper {
+    gap: 35px; /* Reduce spacing */
+    align-items: flex-start;
+  }
+
+  .book-now-container .btn.book-now {
+    padding: 10px 50px; /* Slightly reduced padding */
+    font-size: 11px; /* Slightly smaller font */
+  }
+
+  .separator {
+    width: 1px; /* Thickness of the line */
+    margin: 10px 10px;
+    background-color: rgba(0, 0, 0, 0.2); /* Light gray separator */
+    align-self: stretch; /* Ensures it spans the full height of its container */
+  }
+
+  
+}
+
+
+
+
+/* Small Mobile Screens: 320px - 400px */
+@media (min-width: 560px) and (max-width: 590px) {
+  .flight-schedules {
+    padding: 4px;
+    height: auto;
+  }
+
+  .section-header {
+    flex-direction: column;
+    padding-bottom: 8px;
+    padding: 10px;
+    gap: 5px; /* Reduced spacing */
+  }
+
+  .flight-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align contents to the left */
+    text-align: left;
+    height: auto; /* Adjust height based on content */
+    width: 100%;
+    padding: 5px;
+    gap: 5px; /* Further reduced gap */
+  }
+
+  .flight-date {
+    gap: 30px;
+  }
+
+  .flight-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px; /* Reduced spacing */
+  }
+
+  .flight-details h3 {
+    font-size: 14px;
+    text-align: left;
+    margin-bottom: 3px; /* Reduce spacing */
+  }
+
+  .flight-details p,
+  .seats-info p {
+    font-size: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+    margin-bottom: 2px; /* Reduce spacing */
+  }
+
+  .seats-wrapper {
+    gap: 20px; /* Reduce spacing */
+    align-items: flex-start;
+  }
+
+  .book-now-container .btn.book-now {
+    padding: 10px 50px; /* Slightly reduced padding */
+    font-size: 11px; /* Slightly smaller font */
+  }
+
+  .separator {
+    width: 1px; /* Thickness of the line */
+    margin: 8px 4px;
+    background-color: rgba(0, 0, 0, 0.2); /* Light gray separator */
+    align-self: stretch; /* Ensures it spans the full height of its container */
+  }
+}
+
+
+/* Extra Small Mobile Screens: 300px - 319px */
+@media (min-width: 300px) and (max-width: 559px) {
+ 
+
+
+  .flight-schedules {
+    padding: 3px;
+    height: auto;
+  }
+
+  .section-header {
+    flex-direction: column;
+    padding-bottom: 6px;
+    padding: 8px;
+    gap: 4px; /* Reduced spacing */
+  }
+
+  .flight-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align contents to the left */
+    text-align: left;
+    height: auto; /* Adjust height based on content */
+    width: 100%;
+    padding: 4px;
+    gap: 4px; /* Further reduced gap */
+  }
+
+  .flight-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px; /* Reduced spacing */
+  }
+
+
+  .flight-date {
+    gap: 30px;
+  }
+
+  
+  .flight-details h3 {
+    font-size: 13px;
+    text-align: left;
+    margin-bottom: 2px; /* Reduce spacing */
+  }
+
+  .flight-details p,
+  .seats-info p {
+    font-size: 7px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+    margin-bottom: 1px; /* Reduce spacing */
+  }
+
+  .flight-price label {
+    font-size: 12px;
+    
+  }
+
+  .seats-wrapper {
+    gap: 20px; /* Reduce spacing */
+    align-items: flex-start;
+  }
+
+  .book-now-container .btn.book-now {
+    padding: 8px 50px; /* Slightly reduced padding */
+    font-size: 11px; /* Slightly smaller font */
+  }
+
+  .separator {
+    width: 1px; /* Thickness of the line */
+    margin: 6px 0px;
+    background-color: rgba(0, 0, 0, 0.15); /* Lighter gray separator */
+    align-self: stretch; /* Ensures it spans the full height of its container */
+  }
+
+  .main-container {
+    padding: 20px 20px;
+    height: 93vh;
+    width: 100%;  /* 3/4 of the container */
+    /* border: 1px solid black; */
+    overflow-y: auto;  /* Enables vertical scrolling when content overflows */
+  }
+
+  
+}

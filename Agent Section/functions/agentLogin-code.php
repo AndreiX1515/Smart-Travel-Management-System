@@ -22,8 +22,8 @@ if (isset($_POST['login'])) {
         if ($resultAccount->num_rows > 0) {
             $account = $resultAccount->fetch_assoc();
 
-            // Verify password
-            if ($password === $account['password']) {
+            // Verify password using password_verify
+            if (password_verify($password, $account['password'])) {
                 // Check account status
                 if ($account['accountStatus'] === 'active') {
                     $accountType = $account['accountType'];
@@ -31,38 +31,28 @@ if (isset($_POST['login'])) {
 
                     if ($accountType === 'agent') {
                         handleLogin($accountId, 'agent', "SELECT * FROM agent WHERE accountId = ?", ['branchId']);
-                        $_SESSION['email'] = $email;
-                        $_SESSION['password'] = $password;
-                    } 
-                    
-                    elseif ($accountType === 'employee') {
+                    } elseif ($accountType === 'employee') {
                         handleLogin($accountId, 'employee', "SELECT * FROM employee WHERE accountId = ?", ['position', 'countryCode', 'contactNo', 'branch']);
-                    } 
-                    
-                    elseif ($accountType === 'guest') {
+                    } elseif ($accountType === 'guest') {
                         handleLogin($accountId, 'guest', "SELECT * FROM agent WHERE accountId = ?", ['position', 'countryCode', 'contactNo', 'branch']);
-                    }
-
-                    else {
+                    } else {
                         $response['success'] = false;
                         $response['message'] = "Invalid account type.";
                     }
 
                     // Add accountType to the response
                     $response['accountType'] = $accountType;
-
                 } else {
                     $response['success'] = false;
                     $response['message'] = "Your account is inactive. Please contact the administrator.";
                 }
-
             } else {
                 $response['success'] = false;
-                $response['message'] = "Incorrect password.";
+                $response['message'] = "Incorrect Username/Password";
             }
         } else {
             $response['success'] = false;
-            $response['message'] = "Account does not exist.";
+            $response['message'] = "Incorrect Username/Password";
         }
 
         $stmtAccount->close();
@@ -78,40 +68,35 @@ if (isset($_POST['login'])) {
 header('Content-Type: application/json');
 echo json_encode($response);
 
-
 // Function to handle login and session management
-function handleLogin($accountId, $userType, $query, $additionalFields = [])
-{
+function handleLogin($accountId, $userType, $query, $additionalFields = []) {
     global $conn, $response;
 
-    // Prepare and execute query
     $stmt = $conn->prepare($query);
     $stmt->bind_param('i', $accountId);
     $stmt->execute();
     $result = $stmt->get_result();
-    $stmt->close();  // Close statement after use
+    $stmt->close();
 
     if ($result->num_rows > 0) {
         $userDetails = $result->fetch_assoc();
-        
-        // Delegate to the correct session management function based on user type
+
         if ($userType === 'agent') {
             manageAgentSession($accountId, $userDetails, $userType, $additionalFields);
         } elseif ($userType === 'employee') {
             manageEmployeeSession($accountId, $userDetails, $userType, $additionalFields);
         } elseif ($userType === 'guest') {
             manageAgentSession($accountId, $userDetails, $userType, $additionalFields);
-        } 
+        }
 
         $response['success'] = true;
         $response['message'] = ucfirst($userType) . " login successful.";
-    } 
-    
-    else {
+    } else {
         $response['success'] = false;
         $response['message'] = ucfirst($userType) . " details not found.";
     }
 }
+
 
 // Function to manage session for agents
 function manageAgentSession($accountId, $userData, $userType, $additionalFields)

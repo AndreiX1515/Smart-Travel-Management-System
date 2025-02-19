@@ -35,7 +35,7 @@
           <i class="fas fa-user"></i> Agent
         </a>
 
-        <a href="#" class="page-button" data-page-name="Packages - Transactions table">
+        <a href="../Admin Section/admin-manageEmployee.php" class="page-button" data-page-name="Packages - Transactions table">
           <i class="fas fa-user"></i> Employee
         </a>
 

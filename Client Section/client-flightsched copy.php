@@ -26,7 +26,7 @@ $accId = $_SESSION['accountId'] ?? '';
   <title>Flight Schedules</title>
 
   <link rel="stylesheet" href="../Client Section/assets/css/client-portal.css?v=<?php echo time(); ?>">
-  <link rel="stylesheet" href="../Client Section/assets/css/client-flightSched copy.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="../Client Section/assets/css/client-flightSched.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="../Client Section/assets/css/client-navbar.css?v=<?php echo time(); ?>">
 
 </head>
@@ -92,7 +92,12 @@ $accId = $_SESSION['accountId'] ?? '';
                     <button id="clear-filters" class="clear-btn">Clear</button>
                 </div>
             </div>
+
+
+
+
           </div>
+
 
           <div class="section-main-content">
             <div class="confirm-table-container-flight">
@@ -141,53 +146,63 @@ $accId = $_SESSION['accountId'] ?? '';
                 if ($result->num_rows > 0) {
                   while ($row = $result->fetch_assoc()) {
                     echo '<div class="flight-card" data-date="' . htmlspecialchars($row['Start']) . '">';
-echo '    <div class="flight-info">';
+                    echo '    <div class="flight-info">';
 
-// Flight Origin
-echo '        <div class="flight-details">';
-echo '            <h3>' . htmlspecialchars($row['origin']) . '</h3>';
-echo '        </div>';
+                    // Flight Details
+                    echo '        <div class="flight-details">';
+                    echo '            <div class="details-header">';
+                    echo '                <h3>' . htmlspecialchars($row['origin']) . '</h3>';
+                    echo '            </div>';
+                    echo '        </div>';
 
-// Flight Date & Price
-echo '        <div class="flight-date-wrapper">';
-echo '            <div class="flight-date">';
-echo '                <div class="flight-start">';
-echo '                    <label>Start:</label>';
-echo '                    <h5>' . htmlspecialchars($row['Start']) . '</h5>';
-echo '                </div>';
-echo '                <div class="flight-end">';
-echo '                    <label>End:</label>';
-echo '                    <h5>' . htmlspecialchars($row['End']) . '</h5>';
-echo '                </div>';
-echo '                <div class="flight-price">';
-echo '                    <label>Package Price:</label>';
-echo '                    <h5>₱ ' . number_format($row['FlightPrice'], 2) . '</h5>';
-echo '                </div>';
-echo '            </div>';
-echo '        </div>';
+                    // Flight Date Section
+                    echo '        <div class="flight-date-wrapper">';
+                    echo '            <label for="">Flight Date: </label>';
+                    echo '            <div class="flight-date">';
+                    echo '                <div class="flight-start">';
+                    echo '                    <label for="">Start:</label>';
+                    echo '                    <h5>' . htmlspecialchars($row['Start']) . '</h5>';
+                    echo '                </div>';
+                    echo '                <div class="flight-end">';
+                    echo '                    <label for="">End:</label>';
+                    echo '                    <h5>' . htmlspecialchars($row['End']) . '</h5>';
+                    echo '                </div>';
+                    echo '            </div>';
 
-// Seats Info
-echo '        <div class="seats-wrapper">';
-echo '            <div class="seats-container">';
-echo '                <div class="seats-info">';
-echo '                    <label>Available Seats:</label>';
-echo '                    <p><strong>' . htmlspecialchars($row['AvailSeats']) . '</strong></p>';
-echo '                </div>';
-echo '                <div class="seats-info">';
-echo '                    <label>Additional Seats:</label>';
-echo '                    <p><strong>' . htmlspecialchars($row['AdditionalSeats']) . '</strong></p>';
-echo '                </div>';
-echo '            </div>';
+                    echo '            <div class="flight-date">';
+                    echo '                <div class="flight-start">';
+                    echo '                    <label for="">Package Price</label>';
+                    echo '                    <h5> ₱ ' . number_format($row['FlightPrice'], 2) . '</h5>';
+                    echo '                </div>';
+                    echo '            </div>';
+                    
 
-// Book Now Button
-echo '            <div class="book-now-container">';
-echo '                <a href="../Client Section/login.php?flightid=' . urlencode($row['flightid']) . '" class="btn book-now">Book Now</a>';
-echo '            </div>';
+                    echo '';            
+                    echo '        </div>';
 
-echo '        </div>';
-echo '    </div>';
-echo '</div>';
+                    // Seats Section
+                    echo '        <div class="seats-wrapper">';
+                    echo '            <div class="seats-container">';
+                    echo '                <div class="seats-info">';
+                    echo '                    <label for="">Available Seats:</label>';
+                    echo '                    <p><strong>' . htmlspecialchars($row['AvailSeats']) . '</strong></p>';
+                    echo '                </div>';
+                    echo '                <div class="seats-info">';
+                    echo '                    <label for="">Additional Seats:</label>';
+                    echo '                    <p><strong>' . htmlspecialchars($row['AdditionalSeats']) . '</strong></p>';
+                    echo '                </div>';
+                    echo '            </div>';
 
+                    // Book Now Button
+                    echo '            <div class="book-now-container">';
+                    echo '                <a href="../Client Section/login.php?flightid=' . urlencode($row['flightid']) . '" class="btn book-now">Book Now</a>';
+                    echo '            </div>';
+
+
+                    echo '        </div>';
+
+                    echo '    </div>';
+                    echo '</div>';
                   }
                 } else {
                   echo "<p>No flights available.</p>";

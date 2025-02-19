@@ -2,7 +2,7 @@
   <h5 class="title-page" id="page-title">Dashboard</h5>
 </div>
 
-    <script>
+    <!-- <script>
   document.addEventListener('DOMContentLoaded', () => {
     // Check if there's a saved title in local storage
     const savedTitle = localStorage.getItem('pageTitle');
@@ -27,4 +27,4 @@
         });
     });
   });
-</script>
+</script> -->

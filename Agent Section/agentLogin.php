@@ -1,10 +1,10 @@
 <?php
     require "../conn.php"; // Move up to the parent directory
-
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,15 +20,16 @@
 
     <main class="main-container">
         <div class="login-container">
-            <div class="logo mt-5 mb-5">
+            <div class="logo mt-1 mb-5">
                 <img src="../Assets/Logos/logo-tab.png" alt="" class="logo-image" width="160" height="120">
             </div>
+
             <form class="mt-3" id="loginForm"  method="POST">
                 <!-- Username input field -->
                 <div class="mb-3">
                     <div class="form-floating">
                         <input type="text" class="form-control border-1" id="floatingUsername" name="username" placeholder="Username" required>
-                        <label for="floatingUsername">Enter User ID or Email </label>
+                        <label for="floatingUsername">Enter User ID </label>
                     </div>
                 </div>
 
@@ -44,13 +45,13 @@
                 </div>
 
                 <!-- Forgot password and Remember me options -->
-                <div class="fp-container mt-3 mb-2 d-flex justify-content-between align-items-center">
-                    <div class="form-check">
-                        <!-- <input type="checkbox" class="form-check-input me-2 mb-1" id="rememberMe">
-                        <label class="form-check-label" for="rememberMe">Remember me</label>  -->
-                    </div>
-                    <a href="#" class="">Forgot Password?</a>
+                <div class="fp-container">
+                    <a href="#" class="forgot-password">Forgot your password?</a>
+                    <div class="fp-flag">Please contact the admin for assistance.</div>
                 </div>
+
+
+
 
                 <!-- Placeholder for login messages -->
                 <div id="message-login" class="message-login"></div>
@@ -63,6 +64,25 @@
 
     <?php include "../Agent Section/includes/scripts.php"; ?>
   
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    const forgotPassword = document.querySelector(".forgot-password");
+    const flag = document.querySelector(".fp-flag");
+
+    forgotPassword.addEventListener("click", function (event) {
+        event.preventDefault(); // Prevents default link behavior
+        event.stopPropagation(); // Prevents immediate closing on click
+        flag.style.display = flag.style.display === "block" ? "none" : "block";
+    });
+
+    document.addEventListener("click", function (event) {
+        if (!forgotPassword.contains(event.target)) {
+            flag.style.display = "none"; // Hide when clicking outside
+        }
+    });
+});
+
+</script>
 
 <script>
     $(document).ready(function() {
