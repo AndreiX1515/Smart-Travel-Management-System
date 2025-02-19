@@ -27,7 +27,7 @@ require "../conn.php";
 
       <div class="main-content">
         <?php
-        if (isset($_SESSION['status'])):
+          if (isset($_SESSION['status'])):
         ?>
           <div class="alert alert-success alert-dismissible fade show" role="alert">
             <strong></strong> <?= $_SESSION['status']; ?>
@@ -35,61 +35,71 @@ require "../conn.php";
           </div>
         <?php
           unset($_SESSION['status']);
-        endif;
+          endif;
         ?>
 
         <?php
+          if (isset($_GET['flightid'])) 
+          {
+            $flightid = $_GET['flightid'];
+            $_SESSION['flightid'] = $flightid;
 
-        if (isset($_GET['flightid'])) {
-          $flightid = $_GET['flightid'];
-          $_SESSION['flightid'] = $flightid;
+            // Join flight and package tables to get relevant information
+            $sql1 = "SELECT flight.*, package.packageName, package.packagePrice
+                      FROM flight
+                      JOIN package ON flight.packageId = package.packageId
+                      WHERE flight.flightId = ?";
 
-          // Join flight and package tables to get relevant information
-          $sql1 = "SELECT flight.*, package.packageName, package.packagePrice
-                     FROM flight
-                     JOIN package ON flight.packageId = package.packageId
-                     WHERE flight.flightId = ?";
+            // Prepare the statement
+            if ($stmt = $conn->prepare($sql1)) 
+            {
+              // Bind the flightId as an integer parameter
+              $stmt->bind_param("i", $flightid); // "i" means integer
 
-          // Prepare the statement
-          if ($stmt = $conn->prepare($sql1)) {
-            // Bind the flightId as an integer parameter
-            $stmt->bind_param("i", $flightid); // "i" means integer
+              // Execute the statement
+              if ($stmt->execute()) 
+              {
+                // Get the result
+                $result = $stmt->get_result();
 
-            // Execute the statement
-            if ($stmt->execute()) {
-              // Get the result
-              $result = $stmt->get_result();
-
-              // Check if a row is returned
-              if ($result->num_rows > 0) {
-                // Fetch the data
-                while ($row = $result->fetch_assoc()) {
-                  $packageId = $row['packageId'];
-                  $packageName = $row['packageName'];
-                  $packagePrice = $row['packagePrice'];
-                  $origin = $row['origin'];
-                  $year = date('Y', strtotime($row['flightDepartureDate']));
-                  $month = date('F', strtotime($row['flightDepartureDate']));
-                  $flightDepartureDate = $row['flightDepartureDate'];
-                  $flightPrice = $row['flightPrice'];
+                // Check if a row is returned
+                if ($result->num_rows > 0) 
+                {
+                  // Fetch the data
+                  while ($row = $result->fetch_assoc()) 
+                  {
+                    $packageId = $row['packageId'];
+                    $packageName = $row['packageName'];
+                    $packagePrice = $row['packagePrice'];
+                    $origin = $row['origin'];
+                    $year = date('Y', strtotime($row['flightDepartureDate']));
+                    $month = date('F', strtotime($row['flightDepartureDate']));
+                    $flightDepartureDate = $row['flightDepartureDate'];
+                    $flightPrice = $row['flightPrice'];
+                  }
+                } 
+                else 
+                {
+                  echo "No flight found with that ID.";
                 }
-              } else {
-                echo "No flight found with that ID.";
+              } 
+              else 
+              {
+                echo "Error executing query: " . $stmt->error;
               }
-            } else {
-              echo "Error executing query: " . $stmt->error;
+
+              // Close the statement
+              $stmt->close();
+            } 
+            else 
+            {
+              echo "Error preparing statement: " . $conn->error;
             }
-
-            // Close the statement
-            $stmt->close();
-          } else {
-            echo "Error preparing statement: " . $conn->error;
+          } 
+          else 
+          {
+            echo "Flight ID is not set.";
           }
-        } else {
-          echo "Flight ID is not set.";
-        }
-
-
         ?>
 
         <form action="../Agent Section/functions/agent-revisedAddBooking-code.php" method="POST">
@@ -100,84 +110,6 @@ require "../conn.php";
               </div>
 
               <div class="card-body">
-                <!-- <div class="row">
-                Package Dropdown
-                <div class="columns col-md-6">
-                  <div class="form-group">
-
-                    <label for="packageName">Package<span class="text-danger"> *</span></label>
-
-                    <select class="form-select" id="packageName" name="packageName" required>
-                      <option selected disabled>Select Package</option>
-                      <?php
-                      $sql1 = mysqli_query($conn, "SELECT DISTINCT packageId, packageName FROM package ORDER BY packageName ASC");
-                      while ($res1 = mysqli_fetch_array($sql1)) {
-                        echo "<option value='{$res1['packageId']}'>{$res1['packageName']}</option>";
-                      }
-                      ?>
-                    </select>
-
-                    <span id="packageNameError" class="text-danger"></span>
-                     Error message for package
-
-                  </div>
-                </div> -->
-
-                <!-- Origin Dropdown -->
-                <!-- <div class="columns col-md-6">
-                  <div class="form-group">
-
-                    <label for="origin">Origin <span class="text-danger">*</span></label>
-
-                    <select class="form-select" id="origin" name="origin" required>
-                      <option selected disabled>Select Origin</option>
-                    </select>
-
-                    <span id="originError" class="text-danger"></span> 
-                    Error message for origin
-                  </div>
-                </div> 
-              </div>
-
-              <div class="row">
-                Year Dropdown
-                <div class="columns col-md-6">
-                  <div class="form-group">
-                    <label for="year">Year <span class="text-danger">*</span></label>
-                    <select class="form-select" id="year" name="year" required>
-                      <option selected disabled>Select Year</option>
-                    </select>
-                    <span id="yearError" class="text-danger"></span> 
-                    Error message for year
-                  </div>
-                </div>
-
-                Month Dropdown
-                <div class="columns col-md-6">
-                  <div class="form-group">
-                    <label for="month">Month <span class="text-danger">*</span></label>
-                    <select class="form-select" id="month" name="month" required>
-                      <option selected disabled>Select Month</option>
-                      <option value="January">January</option>
-                      <option value="February">February</option>
-                      <option value="March">March</option>
-                      <option value="April">April</option>
-                      <option value="May">May</option>
-                      <option value="June">June</option>
-                      <option value="July">July</option>
-                      <option value="August">August</option>
-                      <option value="September">September</option>
-                      <option value="October">October</option>
-                      <option value="November">November</option>
-                      <option value="December">December</option>
-                    </select>
-                    <span id="monthError" class="text-danger"></span> 
-                    Error message for month
-
-                  </div>
-                </div>
-              </div> -->
-
                 <div class="row">
                   <!-- Flight Date Dropdown -->
                   <div class="columns col-md-6">
@@ -250,6 +182,7 @@ require "../conn.php";
                 <input type="hidden" name="flightPrice" id="flightPricee" value="<?php echo isset($flightPrice) ? $flightPrice : ''; ?>" placeholder="Flight Price">
                 <input type="hidden" name="agentId" id="agentId" value="<?php echo $_SESSION['agentId']; ?>" placeholder="Agent Id">
                 <input type="hidden" name="agentType" placeholder="Agent Type Input" value="<?php echo $_SESSION['agentType']; ?>">
+                <input type="hidden" name="accId" id="accId" placeholder="Account Id Input" value="<?php echo $_SESSION['accountId']; ?>">
 
                 <!-- Adjusted Package Fields -->
                 <input type="hidden" name="packageId" id="packageId" value="<?php echo isset($packageId) ? $packageId : ''; ?>" placeholder="Package Id Input">
@@ -643,7 +576,8 @@ require "../conn.php";
   <?php require "../Agent Section/includes/scripts.php"; ?>
 
   <script>
-    function toggleSubMenu(submenuId) {
+    function toggleSubMenu(submenuId) 
+    {
       const submenu = document.getElementById(submenuId);
       const sectionTitle = submenu.previousElementSibling;
       const chevron = sectionTitle.querySelector('.chevron-icon');
@@ -652,19 +586,24 @@ require "../conn.php";
       const isOpen = submenu.classList.contains('open');
 
       // If it's open, we need to close it, and reset the chevron
-      if (isOpen) {
+      if (isOpen) 
+      {
         submenu.classList.remove('open');
         chevron.style.transform = 'rotate(0deg)';
-      } else {
+      } 
+      else 
+      {
         // First, close all open submenus and reset all chevrons
         const allSubmenus = document.querySelectorAll('.submenu');
         const allChevrons = document.querySelectorAll('.chevron-icon');
 
-        allSubmenus.forEach(sub => {
+        allSubmenus.forEach(sub => 
+        {
           sub.classList.remove('open');
         });
 
-        allChevrons.forEach(chev => {
+        allChevrons.forEach(chev => 
+        {
           chev.style.transform = 'rotate(0deg)';
         });
 
@@ -947,31 +886,39 @@ require "../conn.php";
         // Get the input values
         var flightId = $('#flightId').val();
         var agentId = $('#agentId').val();
+        var accId = $('#accId').val();
         var isLandOnlyChecked = $('#land').is(':checked');
 
-        if (flightId !== '') {
+        if (flightId !== '') 
+        {
           // Perform an AJAX request to fetch seat information
-          $.ajax({
+          $.ajax(
+          {
             url: '../Agent Section/functions/fetchMaxSeatsPerAgent.php', // Replace with your server-side script URL
             method: 'POST',
-            data: {
+            data: 
+            {
               flightId: flightId,
-              agentId: agentId
+              accId: accId
             }, // Send the flightId to the server
             dataType: 'json', // Specify that we're expecting JSON response
-            success: function(response) {
-              if (response.flightId !== null) {
+            success: function(response) 
+            {
+              if (response.flightId !== null) 
+              {
                 // Extract the maxSeats from the response
                 var maxSeats = response.maxSeats;
                 var totalSeats = response.totalSeatsLeft;
 
-                if (!isLandOnlyChecked) {
+                if (!isLandOnlyChecked) 
+                {
                   // If "Land Only" is not checked, dynamically update the max attribute
                   $('#totalPax').attr('max', maxSeats);
 
                   // Check if the current value of totalPax exceeds maxSeats, reset to maxSeats if needed
                   var currentPax = $('#totalPax').val();
-                  if (currentPax > maxSeats) {
+                  if (currentPax > maxSeats) 
+                  {
                     $('#totalPax').val(maxSeats); // Adjust the value
                     console.log('Pax left: ' + maxSeats);
                     console.log('Seats left: ' + totalSeats);
@@ -980,23 +927,30 @@ require "../conn.php";
                   // Display the available seats
                   $('#maxSeats').text('Agent-Specific Available Seats for this Flight: ' + maxSeats);
                   $('#availSeats').text('Total Remaining Seats for this Flight: ' + totalSeats);
-                } else {
+                } 
+                else 
+                {
                   // If "Land Only" is checked, set a default max value and clear the display
                   $('#totalPax').attr('max', 999); // Example max value, adjust as needed
                   $('#maxSeats').text(' ');
                   $('#availSeats').text(' ');
                 }
-              } else {
+              } 
+              else 
+              {
                 // Handle the case where no flight information is found
                 $('#maxSeats').text('Available Seats for this Flight: N/A');
               }
             },
-            error: function(xhr, status, error) {
+            error: function(xhr, status, error) 
+            {
               // Log any errors
               console.error('AJAX Error:', error);
             }
           });
-        } else {
+        } 
+        else 
+        {
           // Reset if no flight ID is selected
           $('#totalPax').removeAttr('max');
           $('#maxSeats').text('Available Seats for this Flight: N/A');
