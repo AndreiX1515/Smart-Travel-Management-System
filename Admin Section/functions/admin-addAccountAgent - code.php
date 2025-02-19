@@ -153,10 +153,10 @@ elseif ($accountType === 'guest') {
         $accountId = mysqli_insert_id($conn);
 
         // Prepared statement for inserting guest details
-        $sql_guest = "INSERT INTO client (clientId, clientCode, accountId, branchId, fName, lName, mName, countryCode, contactNo, clientType, clientRole)
-                      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql_guest = "INSERT INTO client (clientId, accountId, branchId, fName, lName, mName, countryCode, contactNo, clientType, clientRole)
+                      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt_guest = mysqli_prepare($conn, $sql_guest);
-        mysqli_stmt_bind_param($stmt_guest, "ssiisssssss", $newClientId, $agentCode, $accountId, $branchId, $fName, $lName, $mName, $countryCode, $contactNo, $agentType, $agentRole);
+        mysqli_stmt_bind_param($stmt_guest, "siisssssss", $newClientId, $accountId, $branchId, $fName, $lName, $mName, $countryCode, $contactNo, $agentType, $agentRole);
 
         if (mysqli_stmt_execute($stmt_guest)) {
             $response['status'] = 'success';

@@ -371,7 +371,7 @@ error_reporting(E_ALL);
                   <div class="columns col-md-3">
                     <label for="Suffix" class="form-label">Suffix</label>
                     <select class="form-control" id="Suffix" name="Suffix">
-                        <option value="">Select Suffix</option>
+                        <option value="None">Select Suffix</option>
                         <option value="Jr">Jr.</option>
                         <option value="Sr">Sr.</option>
                         <option value="II">II</option>
@@ -670,6 +670,7 @@ error_reporting(E_ALL);
                       <label for="agentRole" class="form-label">Agent Role</label>
                       <select class="form-control" id="agentRole" >
                           <option value="">Select Role</option>
+                          <option value="Head Agent">Head Agent</option>
                           <option value="Sub Agent">Sub Agent</option>
                           <option value="Other Role">Other Role</option>
                       </select>
@@ -679,7 +680,7 @@ error_reporting(E_ALL);
               </div>
 
               <!-- Hidden input to store the selected agentRole -->
-              <input type="hidden" id="hiddenAgentRole" name="agentRole">
+              <input type="text" id="hiddenAgentRole" name="agentRole">
         </div>
 
         <!-- Modal Footer -->
