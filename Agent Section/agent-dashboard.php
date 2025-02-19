@@ -687,7 +687,7 @@ require "../conn.php";
                                       f.wholesalePrice AS WholesalePrice, f.flightPrice AS RetailPrice, p.packagePrice AS LandArrangement, 
                                       $agentColumns
                                   FROM employee e 
-                                  JOIN flight f ON f.employeeId = e.employeeId
+                                  RIGHT JOIN flight f ON f.employeeId = e.employeeId
                                   LEFT JOIN booking b ON b.flightId = f.flightId
                                   LEFT JOIN package p ON f.packageId = p.packageId
                                   LEFT JOIN agent a ON b.agentId = a.agentId
