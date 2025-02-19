@@ -449,11 +449,6 @@ $(document).ready(function () {
 
 
 
-
-
-
-
-
 <?php
 // Fetch the status from the session
 $statusMessage = isset($_SESSION['status']) ? $_SESSION['status'] : '';
@@ -497,6 +492,7 @@ if (!empty($statusMessage)) {
   });
 </script>
 
+
 <script>
   document.querySelectorAll('.viewdownloadfile-wrapper a').forEach((link) => {
     link.addEventListener('click', (event) => {
@@ -510,10 +506,10 @@ if (!empty($statusMessage)) {
         }
     });
 });
-
 </script>
 
 
+<!-- Row Select JS -->
 <script>
   // Wait for the DOM to be fully loaded
   document.addEventListener('DOMContentLoaded', function() 

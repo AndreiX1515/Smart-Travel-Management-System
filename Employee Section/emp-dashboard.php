@@ -577,11 +577,16 @@ error_reporting(E_ALL);
                       // echo '<td>₱ ' . number_format($row['LandArrangement'], 2) . '</td>';
                       echo '<td>₱ ' . number_format($row['landPrice'], 2) . '</td>';
 
-                    foreach ($row as $key => $value) {
-                      if (strpos($key, '_AL') !== false || strpos($key, '_LO') !== false) {
-                        echo '<td>' . $value . '</td>';
-                      }
+                      foreach ($row as $key => $value) {
+                        if (strpos($key, '_AL') !== false || strpos($key, '_LO') !== false) {
+                            // Check if the value is greater than 0 and apply a style or class
+                            $style = ($value > 0) ? 'style="font-weight: bold;"' : 'style="font-weight: 400;"'; // Apply bold style if value > 0
+                            
+                            // Output the table data with the style if needed
+                            echo '<td ' . $style . '>' . $value . '</td>';
+                        }
                     }
+                    
 
                     echo '</tr>';
                   }
@@ -776,182 +781,164 @@ error_reporting(E_ALL);
 
             </div>
 
-            <!-- Confirmed Transaction Tables -->
-            <div class="confirm-container">
-              <div class="table-header">
-                <h6 class="white-pill">Confirmed Transactions</h6>
-              </div>
+            <?php
+      // Function to render the confirmed transactions table
+      function renderConfirmedTransactionsTable($conn) {
+          // Query to get confirmed transactions
+          $query1 = "SELECT b.*, f.flightDepartureDate AS Start, p.packageName, b.totalPrice AS PackagePrice, 
+                        f.returnDepartureDate AS End, CONCAT(a.lName, ', ', a.fName, 
+                        IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1)), '')) AS agentName,
+                        br.branchName as branchName, SUM(pa.amount) AS TotalAmountPaid
+                      FROM booking b 
+                      JOIN agent a ON b.agentId = a.agentId
+                      JOIN branch br ON b.agentCode = br.branchAgentCode
+                      JOIN flight f ON b.flightId = f.flightId
+                      JOIN package p ON b.packageId = p.packageId
+                      LEFT JOIN payment pa ON pa.transactNo = b.transactNo AND pa.paymentStatus = 'Approved'
+                      WHERE status = 'Confirmed' GROUP BY b.transactNo";
 
-              <div class="table-container confirm-table-container">
-                <table class="confirm-table" id="confirm-table">
-                  <thead>
-                    <tr>
-                      <th>TRANSACTION NO.</th>
-                      <th>AGENT NAME</th>
-                      <th>FLIGHT DATE</th>
-                      <th>TOTAL PAX.</th>
-                      <th>BOOKING TYPE</th>
-                      <th>PACKAGE PRICE</th>
-                      <th>AMOUNT INFO</th>
-                      <th>STATUS</th>
-                      <th>COMMENT</th>
+          $result = $conn->query($query1);
 
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <?php
-                    $query1 = "SELECT b.*, f.flightDepartureDate AS Start, p.packageName, b.totalPrice AS PackagePrice, 
-                                  f.returnDepartureDate AS End, CONCAT(a.lName, ', ', a.fName, 
-                                  IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1)), '')) AS agentName,
-                                  br.branchName as branchName, SUM(pa.amount) AS TotalAmountPaid
-                                FROM booking b 
-                                JOIN agent a ON b.agentId = a.agentId
-                                JOIN branch br ON b.agentCode = br.branchAgentCode
-                                JOIN flight f ON b.flightId = f.flightId
-                                JOIN package p ON b.packageId = p.packageId
-                                LEFT JOIN payment pa ON pa.transactNo = b.transactNo AND pa.paymentStatus = 'Approved'
-                                WHERE status = 'Confirmed' GROUP BY b.transactNo";
+          // Check if the query returned any results
+          if ($result && $result->num_rows > 0) {
+              // Start the table HTML
+              echo '<div class="confirm-container">
+                      <div class="table-header">
+                        <h6 class="white-pill">Confirmed Transactions</h6>
+                      </div>
+                      <div class="table-container confirm-table-container">
+                        <table class="confirm-table" id="confirm-table">
+                          <thead>
+                            <tr>
+                              <th>TRANSACTION NO.</th>
+                              <th>AGENT NAME</th>
+                              <th>FLIGHT DATE</th>
+                              <th>TOTAL PAX.</th>
+                              <th>BOOKING TYPE</th>
+                              <th>PACKAGE PRICE</th>
+                              <th>AMOUNT INFO</th>
+                              <th>STATUS</th>
+                              <th>COMMENT</th>
+                            </tr>
+                          </thead>
+                          <tbody>';
 
-                    $result = $conn->query($query1);
+              // Loop through each row and render the table rows
+              while ($row = $result->fetch_assoc()) {
+                  $packagePrice = $row['PackagePrice'] ?? 0;
+                  $amountPaid = $row['TotalAmountPaid'] ?? 0;
+                  $balance = $packagePrice - $amountPaid;
+                  $status = $row['status'];
+                  $formattedPP = '₱ ' . number_format($packagePrice, 2);
+                  $formattedAP = '₱' . number_format($amountPaid, 2);
+                  $formattedBal = '₱' . number_format($balance, 2);
 
-                    // Check if the query returned any results
-                    if ($result && $result->num_rows > 0) {
-                      while ($row = $result->fetch_assoc()) {
-                        $packagePrice = $row['PackagePrice'] ?? 0;
-                        $amountPaid = $row['TotalAmountPaid'] ?? 0;
-                        $balance = $packagePrice - $amountPaid;
-                        $status = $row['status'];
-                        $formattedPP = '₱ ' . number_format($packagePrice, 2);
-                        $formattedAP = '₱' . number_format($amountPaid, 2);
-                        $formattedBal = '₱' . number_format($balance, 2);
+                  // Define the pill status class based on the status value
+                  switch ($status) {
+                      case 'Confirmed':
+                          $pillClass = 'bg-success';
+                          break;
+                      case 'Cancelled':
+                          $pillClass = 'bg-danger';
+                          break;
+                      case 'Pending':
+                          $pillClass = 'bg-warning';
+                          break;
+                      case 'Rejected':
+                          $pillClass = 'bg-info';
+                          break;
+                      default:
+                          $pillClass = 'bg-secondary';
+                          break;
+                  }
 
-
-                        // Define the pill status class based on the status value
-                        switch ($status) {
-                          case 'Confirmed':
-                            $pillClass = 'bg-success';
-                            break;
-                          case 'Cancelled':
-                            $pillClass = 'bg-danger';
-                            break;
-                          case 'Pending':
-                            $pillClass = 'bg-warning';
-                            break;
-                          case 'Rejected':
-                            $pillClass = 'bg-info';
-                            break;
-                          default:
-                            $pillClass = 'bg-secondary';
-                            break;
-                        }
-
-                        // <td>{$row['packageName']}</td>
-
-                        // Generate the table row with dynamically set `recordId`
-                        echo "<tr data-id='{$row['transactNo']}'> <!-- Set the row ID dynamically -->
-                                <td>{$row['transactNo']}</td>
-                                <td>{$row['branchName']}</td>
-                                <td>{$row['Start']}</td>
-                                <td>{$row['pax']}</td>
-                                <td>{$row['bookingType']}</td>
-                                <td>{$formattedPP}</td>
-                                <td>
-                                    <div class='payment-info'>
-                                      <div class='payment-row'>
-                                          <span class='label'>Amount Paid:</span>
-                                          <span class='value'>{$formattedAP}</span>
-                                      </div>
-
-                                      <div class='payment-row'>
-                                          <span class='label'>Balance:</span>
-                                          <span class='value'>{$formattedBal} </span>
-                                      </div>
+                  echo "<tr data-id='{$row['transactNo']}'>
+                          <td>{$row['transactNo']}</td>
+                          <td>{$row['branchName']}</td>
+                          <td>{$row['Start']}</td>
+                          <td>{$row['pax']}</td>
+                          <td>{$row['bookingType']}</td>
+                          <td>{$formattedPP}</td>
+                          <td>
+                              <div class='payment-info'>
+                                  <div class='payment-row'>
+                                      <span class='label'>Amount Paid:</span>
+                                      <span class='value'>{$formattedAP}</span>
                                   </div>
-
-                                </td>
-
-
-                                <td>
-                                  <span class='badge $pillClass p-2'>{$status}</span>
-                                </td>";
-
-                        // Fetching the comment from the database
-                        $transactNo = $row['transactNo'];
-                        $stmt = $conn->prepare('SELECT * FROM bookingcomments WHERE transactNo = ?');
-                        $stmt->bind_param('s', $transactNo);
-                        $stmt->execute();
-                        $resultComment = $stmt->get_result();
-                        $comment = $resultComment->fetch_assoc();
-                        $stmt->close();
-
-                        echo "<td>";
-                        echo '<div class="comment-container" id="commentContainer' . $transactNo . '">';
-
-                        // Check if a comment exists
-                        if ($comment && !empty($comment['comment'])) {
-                          // If a comment exists, display it and show the 'Edit' button
-                          echo '<div class="comment-exists">
-                                  <div class="comment-input">
-                                      <input type="text" class="form-control" name="comment" id="commentInput' . $transactNo . '" value="' . htmlspecialchars($comment['comment']) . '" disabled>
+                                  <div class='payment-row'>
+                                      <span class='label'>Balance:</span>
+                                      <span class='value'>{$formattedBal} </span>
                                   </div>
-                                  <div class="edit-button">
-                                      <button type="button" class="btn btn-warning editComment" data-id="' . $transactNo . '">Edit</button>
-                                  </div>
-                                </div>';
-                        } else {
-                          // If no comment exists, show input for adding a new comment
-                          echo '<div class="no-comment">
-                                  <div class="comment-input">
-                                      <input type="text" class="form-control" name="comment" id="commentInput' . $transactNo . '"  disabled>
-                                  </div>
-                                  <div class="add-button">
-                                      <button type="button" class="btn btn-success addComment" data-id="' . $transactNo . '">Add</button>
-                                  </div>
-                                </div>';
-                        }
+                              </div>
+                          </td>
+                          <td>
+                              <span class='badge $pillClass p-2'>{$status}</span>
+                          </td>";
 
-                        echo '<div class="button-container">
-                                <input type="text" class="recordId" value="' . $row['transactNo'] . '" hidden>
+                  // Fetching the comment from the database
+                  $transactNo = $row['transactNo'];
+                  $stmt = $conn->prepare('SELECT * FROM bookingcomments WHERE transactNo = ?');
+                  $stmt->bind_param('s', $transactNo);
+                  $stmt->execute();
+                  $resultComment = $stmt->get_result();
+                  $comment = $resultComment->fetch_assoc();
+                  $stmt->close();
 
-                                <!-- Submit buttons for add/edit -->
-                                <button type="button" class="btn btn-primary submitAddComment" data-id="' . $transactNo . '" style="display: none;">Submit</button>
-                                <button type="button" class="btn btn-primary submitEditComment" data-id="' . $transactNo . '" style="display: none;">Update</button>
+                  echo "<td>";
+                  echo '<div class="comment-container" id="commentContainer' . $transactNo . '">';
 
-                                  <!-- Delete button (only visible during edit) -->
-                                <button type="button" class="btn btn-danger deleteComment" data-id="' . $transactNo  . '" style="display: none;">Remove</button>
+                  // Check if a comment exists
+                  if ($comment && !empty($comment['comment'])) {
+                      echo '<div class="comment-exists">
+                              <div class="comment-input">
+                                  <input type="text" class="form-control" name="comment" id="commentInput' . $transactNo . '" value="' . htmlspecialchars($comment['comment']) . '" disabled>
+                              </div>
+                              <div class="edit-button">
+                                  <button type="button" class="btn btn-warning editComment" data-id="' . $transactNo . '">Edit</button>
+                              </div>
+                            </div>';
+                  } else {
+                      echo '<div class="no-comment">
+                              <div class="comment-input">
+                                  <input type="text" class="form-control" name="comment" id="commentInput' . $transactNo . '"  disabled>
+                              </div>
+                              <div class="add-button">
+                                  <button type="button" class="btn btn-success addComment" data-id="' . $transactNo . '">Add</button>
+                              </div>
+                            </div>';
+                  }
 
-                                <!-- Cancel buttons -->
-                                <button type="button" class="btn btn-danger cancelEditComment" data-id="' . $transactNo . '" style="display: none;">Cancel Edit</button>
+                  echo '<div class="button-container">
+                          <input type="text" class="recordId" value="' . $row['transactNo'] . '" hidden>
+                          <button type="button" class="btn btn-primary submitAddComment" data-id="' . $transactNo . '" style="display: none;">Submit</button>
+                          <button type="button" class="btn btn-primary submitEditComment" data-id="' . $transactNo . '" style="display: none;">Update</button>
+                          <button type="button" class="btn btn-danger deleteComment" data-id="' . $transactNo  . '" style="display: none;">Remove</button>
+                          <button type="button" class="btn btn-danger cancelEditComment" data-id="' . $transactNo . '" style="display: none;">Cancel Edit</button>
+                          <button type="button" class="btn btn-danger cancelAddComment" data-id="' . $transactNo . '" style="display: none;">Cancel Add</button>
+                        </div>';
+                  echo '</div>'; // Close the comment-container div
+                  echo "</td>"; // Close the <td> tag
+                  echo "</tr>";
+              }
 
-                                <button type="button" class="btn btn-danger cancelAddComment" data-id="' . $transactNo . '" style="display: none;">Cancel Add</button>
+              echo '</tbody></table></div></div>'; // End of table and div containers
+          } else {
+              // No records found
+              echo "<tr><td colspan='7'>No confirmed bookings found.</td></tr>";
+          }
 
-                                
-                              </div>';
+          if ($result) {
+              $result->free();
+          }
+      }
 
-                        echo '</div>'; // Close the comment-container div
+      // Call the function to render the table
+      renderConfirmedTransactionsTable($conn);
+      ?>
 
 
-                        echo "</td>"; // Close the <td> tag
 
 
-                        echo "</tr>";
-                      }
-                    } else {
-                      // No records found
-                      echo "<tr><td colspan='7'>No confirmed bookings found.</td></tr>";
-                    }
-
-                    if ($result) {
-                      $result->free();
-                    }
-
-                    $conn->close();
-                    ?>
-                  </tbody>
-                </table>
-              </div>
-
-            </div>
           </div>
         </div>
 
@@ -965,7 +952,7 @@ error_reporting(E_ALL);
     </div>
   </div>
 
-  <!-- Modal -->
+  <!-- Comment Delete Modal -->
   <div class="modal" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -984,318 +971,318 @@ error_reporting(E_ALL);
     </div>
   </div>
 
+
   <?php include '../Employee Section/includes/emp-scripts.php' ?>
 
 
-  <!-- JS for Checkbox -->
-  <script>
-    $(document).ready(function() {
-      let changes = {}; // Store changed checkbox values
+<!-- JS for Checkbox -->
+<script>
+  $(document).ready(function() {
+    let changes = {}; // Store changed checkbox values
 
-      // Function to check if there are changes and toggle the Save button
-      function toggleSaveButton() {
-        if (Object.keys(changes).length > 0) {
-          $('#saveChanges').css('display', 'block'); // Show Save button
-        } else {
-          $('#saveChanges').css('display', 'none'); // Hide Save button
-        }
+    // Function to check if there are changes and toggle the Save button
+    function toggleSaveButton() {
+      if (Object.keys(changes).length > 0) {
+        $('#saveChanges').css('display', 'block'); // Show Save button
+      } else {
+        $('#saveChanges').css('display', 'none'); // Hide Save button
+      }
+    }
+
+    // Function to get all checked flight IDs and log them
+    function logCheckedFlightIds() {
+      let checkedIds = [];
+      $('.status-checkbox:checked').each(function() {
+        checkedIds.push($(this).data('id'));
+      });
+      console.log("Checked Flight IDs:", checkedIds); // Log the checked flight IDs
+    }
+
+
+    // When a checkbox is toggled
+    $('.status-checkbox').on('change', function() {
+      let flightId = $(this).data('id'); // Get flight ID
+      let isChecked = $(this).is(':checked') ? 1 : 0; // Convert to 1 (checked) or 0 (unchecked)
+
+      // Log the flight ID of the toggled checkbox
+      console.log("Toggled Flight ID:", flightId);
+
+      // If checkbox state differs from original, store it, otherwise remove it
+      if ($(this).data('original') !== isChecked) {
+        changes[flightId] = isChecked; // Add to changes object
+      } else {
+        delete changes[flightId]; // Remove from changes object
       }
 
-      // Function to get all checked flight IDs and log them
-      function logCheckedFlightIds() {
-        let checkedIds = [];
-        $('.status-checkbox:checked').each(function() {
-          checkedIds.push($(this).data('id'));
-        });
-        console.log("Checked Flight IDs:", checkedIds); // Log the checked flight IDs
-      }
-
-
-      // When a checkbox is toggled
-      $('.status-checkbox').on('change', function() {
-        let flightId = $(this).data('id'); // Get flight ID
-        let isChecked = $(this).is(':checked') ? 1 : 0; // Convert to 1 (checked) or 0 (unchecked)
-
-        // Log the flight ID of the toggled checkbox
-        console.log("Toggled Flight ID:", flightId);
-
-        // If checkbox state differs from original, store it, otherwise remove it
-        if ($(this).data('original') !== isChecked) {
-          changes[flightId] = isChecked; // Add to changes object
-        } else {
-          delete changes[flightId]; // Remove from changes object
-        }
-
-        logCheckedFlightIds(); // Log checked flight IDs to console
-        toggleSaveButton(); // Show or hide the Save button
-      });
-
-      // Save Button Click Event
-      $('#saveChanges').on('click', function() {
-        if (Object.keys(changes).length === 0) return; // No changes to save
-
-        $.ajax({
-          url: '../Agent Section/functions/agent-updateCheckStatus.php',
-          type: 'POST',
-          data: {
-            updates: changes // Send updates as the payload
-          },
-          success: function(response) {
-            alert('Status updated successfully!');
-            changes = {}; // Clear changes after saving
-
-            // Update original values for the checkboxes
-            $('.status-checkbox').each(function() {
-              $(this).data('original', $(this).is(':checked') ? 1 : 0);
-            });
-
-            toggleSaveButton(); // Hide the save button after saving
-
-            // Destroy the DataTable instance before reinitializing
-            var table = $('#example').DataTable();
-            table.destroy();
-
-            // Reinitialize the DataTable by calling the function
-            initializeDataTable(); // This will reinitialize with the current settings
-
-            // Reload the page after saving (optional, if you want to reload instead of just refreshing the table)
-            // location.reload(); 
-          },
-          error: function() {
-            alert('Error updating status.');
-          }
-        });
-
-
-
-      });
-
-      // Initialize original checkbox states
-      $('.status-checkbox').each(function() {
-        $(this).data('original', $(this).is(':checked') ? 1 : 0);
-      });
-
-      toggleSaveButton(); // Ensure the button is hidden initially
+      logCheckedFlightIds(); // Log checked flight IDs to console
+      toggleSaveButton(); // Show or hide the Save button
     });
 
-    $('#pills-home-tab').on('click', function() {
-      $('#saveChanges').css('display', 'none'); // Hide Save button
-      changes = {}; // Flush the changes array
-      console.log("Changes array flushed:", changes); // Log the flushed array
+    // Save Button Click Event
+    $('#saveChanges').on('click', function() {
+      if (Object.keys(changes).length === 0) return; // No changes to save
 
-      // Reset all checkboxes to their original state (untrigger non-changed checkboxes)
-      $('.status-checkbox').each(function() {
-        let originalState = $(this).data('original') === 1; // Get the original state (true or false)
-        $(this).prop('checked', originalState); // Set checkbox to its original state
-      });
-    });
-  </script>
+      $.ajax({
+        url: '../Agent Section/functions/agent-updateCheckStatus.php',
+        type: 'POST',
+        data: {
+          updates: changes // Send updates as the payload
+        },
+        success: function(response) {
+          alert('Status updated successfully!');
+          changes = {}; // Clear changes after saving
 
+          // Update original values for the checkboxes
+          $('.status-checkbox').each(function() {
+            $(this).data('original', $(this).is(':checked') ? 1 : 0);
+          });
 
-  <!-- JS for Comment -->
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      function toggleCommentForm(transactNo, action) {
-        const commentInput = document.getElementById('commentInput' + transactNo);
-        const submitAddButton = document.querySelector('.submitAddComment[data-id="' + transactNo + '"]');
-        const submitEditButton = document.querySelector('.submitEditComment[data-id="' + transactNo + '"]');
-        const cancelEditButton = document.querySelector('.cancelEditComment[data-id="' + transactNo + '"]');
-        const cancelAddButton = document.querySelector('.cancelAddComment[data-id="' + transactNo + '"]');
-        const editButton = document.querySelector('.editComment[data-id="' + transactNo + '"]');
-        const addButton = document.querySelector('.addComment[data-id="' + transactNo + '"]');
-        const deleteButton = document.querySelector('.deleteComment[data-id="' + transactNo + '"]');
+          toggleSaveButton(); // Hide the save button after saving
 
-        commentInput.disabled = false;
-        commentInput.focus();
-        const originalComment = commentInput.value;
-        commentInput.setAttribute('data-original-comment', originalComment);
+          // Destroy the DataTable instance before reinitializing
+          var table = $('#example').DataTable();
+          table.destroy();
 
-        if (action === 'edit') {
-          submitEditButton.style.display = 'inline-block';
-          cancelEditButton.style.display = 'inline-block';
-          submitAddButton.style.display = 'none';
-          cancelAddButton.style.display = 'none';
-          deleteButton.style.display = 'inline-block'; // Show delete button on edit
-          editButton.style.display = 'none';
-        } else if (action === 'add') {
-          submitAddButton.style.display = 'inline-block';
-          cancelAddButton.style.display = 'inline-block';
-          submitEditButton.style.display = 'none';
-          cancelEditButton.style.display = 'none';
-          // deleteButton.style.display = 'none'; // Hide delete button on add
-          addButton.style.display = 'none';
+          // Reinitialize the DataTable by calling the function
+          initializeDataTable(); // This will reinitialize with the current settings
+
+          // Reload the page after saving (optional, if you want to reload instead of just refreshing the table)
+          // location.reload(); 
+        },
+        error: function() {
+          alert('Error updating status.');
         }
+      });
 
+
+
+    });
+
+    // Initialize original checkbox states
+    $('.status-checkbox').each(function() {
+      $(this).data('original', $(this).is(':checked') ? 1 : 0);
+    });
+
+    toggleSaveButton(); // Ensure the button is hidden initially
+  });
+
+  $('#pills-home-tab').on('click', function() {
+    $('#saveChanges').css('display', 'none'); // Hide Save button
+    changes = {}; // Flush the changes array
+    console.log("Changes array flushed:", changes); // Log the flushed array
+
+    // Reset all checkboxes to their original state (untrigger non-changed checkboxes)
+    $('.status-checkbox').each(function() {
+      let originalState = $(this).data('original') === 1; // Get the original state (true or false)
+      $(this).prop('checked', originalState); // Set checkbox to its original state
+    });
+  });
+</script>
+
+<!-- JS for Comment -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    function toggleCommentForm(transactNo, action) {
+      const commentInput = document.getElementById('commentInput' + transactNo);
+      const submitAddButton = document.querySelector('.submitAddComment[data-id="' + transactNo + '"]');
+      const submitEditButton = document.querySelector('.submitEditComment[data-id="' + transactNo + '"]');
+      const cancelEditButton = document.querySelector('.cancelEditComment[data-id="' + transactNo + '"]');
+      const cancelAddButton = document.querySelector('.cancelAddComment[data-id="' + transactNo + '"]');
+      const editButton = document.querySelector('.editComment[data-id="' + transactNo + '"]');
+      const addButton = document.querySelector('.addComment[data-id="' + transactNo + '"]');
+      const deleteButton = document.querySelector('.deleteComment[data-id="' + transactNo + '"]');
+
+      commentInput.disabled = false;
+      commentInput.focus();
+      const originalComment = commentInput.value;
+      commentInput.setAttribute('data-original-comment', originalComment);
+
+      if (action === 'edit') {
+        submitEditButton.style.display = 'inline-block';
+        cancelEditButton.style.display = 'inline-block';
+        submitAddButton.style.display = 'none';
+        cancelAddButton.style.display = 'none';
+        deleteButton.style.display = 'inline-block'; // Show delete button on edit
         editButton.style.display = 'none';
+      } else if (action === 'add') {
+        submitAddButton.style.display = 'inline-block';
+        cancelAddButton.style.display = 'inline-block';
+        submitEditButton.style.display = 'none';
+        cancelEditButton.style.display = 'none';
+        // deleteButton.style.display = 'none'; // Hide delete button on add
         addButton.style.display = 'none';
       }
 
-      document.querySelectorAll('.editComment').forEach(button => {
-        button.addEventListener('click', function() {
-          const transactNo = this.getAttribute('data-id');
-          toggleCommentForm(transactNo, 'edit');
-        });
-      });
+      editButton.style.display = 'none';
+      addButton.style.display = 'none';
+    }
 
-      document.querySelectorAll('.addComment').forEach(button => {
-        button.addEventListener('click', function() {
-          const transactNo = this.getAttribute('data-id');
-          toggleCommentForm(transactNo, 'add');
-        });
-      });
-    });
-
-    // Handle click on delete button
-    document.addEventListener('DOMContentLoaded', function() {
-      document.querySelectorAll('.deleteComment').forEach(button => {
-        button.addEventListener('click', function() {
-          const transactNo = this.getAttribute('data-id'); // Get the transactNo from the data-id attribute
-          const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal')); // Use existing modal with id 'deleteModal'
-
-          // Show the modal
-          deleteModal.show();
-
-          // When the "Delete" button in the modal is clicked, send the delete request
-          document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
-            const formData = new FormData();
-            formData.append('transactNo', transactNo); // Send the transactNo
-
-            // Send the delete request via fetch
-            fetch('../Employee Section/functions/emp-commentDelete.php', {
-                method: 'POST',
-                body: formData
-              })
-              .then(response => response.json())
-              .then(data => {
-                if (data.status === 'success') {
-                  alert(data.message);
-                  location.reload(); // Reload the page after successful deletion
-                } else {
-                  alert(data.message || 'Error deleting comment.');
-                }
-              })
-              .catch(error => {
-                console.error('Error:', error);
-                alert('Error occurred while deleting the comment.');
-              });
-
-            // Close the modal after deletion attempt
-            deleteModal.hide();
-          });
-        });
-      });
-    });
-
-    document.querySelectorAll('.submitAddComment').forEach(button => {
+    document.querySelectorAll('.editComment').forEach(button => {
       button.addEventListener('click', function() {
         const transactNo = this.getAttribute('data-id');
-        const comment = document.getElementById('commentInput' + transactNo).value;
+        toggleCommentForm(transactNo, 'edit');
+      });
+    });
 
-        if (comment) {
-          console.log('Transaction Number:', transactNo);
-          console.log('Comment:', comment);
+    document.querySelectorAll('.addComment').forEach(button => {
+      button.addEventListener('click', function() {
+        const transactNo = this.getAttribute('data-id');
+        toggleCommentForm(transactNo, 'add');
+      });
+    });
+  });
 
-          $.ajax({
-            url: '../Employee Section/functions/emp-commentSubmit.php',
-            type: 'POST',
-            data: {
-              transactNo,
-              comment
-            },
-            success: function(response) {
-              const jsonResponse = JSON.parse(response); // Parse the JSON response
-              if (jsonResponse.status === 'success') {
-                alert('Comment added successfully!');
+  // Handle click on delete button
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.deleteComment').forEach(button => {
+      button.addEventListener('click', function() {
+        const transactNo = this.getAttribute('data-id'); // Get the transactNo from the data-id attribute
+        const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal')); // Use existing modal with id 'deleteModal'
 
-                // Log the returned variables (comment and transactNo) from the response
-                console.log('Comment:', jsonResponse.comment);
-                console.log('Transaction Number:', jsonResponse.transactNo);
+        // Show the modal
+        deleteModal.show();
 
-                // Optionally, you can reload the table or perform any other update
-                location.reload(); // Uncomment if you want to reload the page
+        // When the "Delete" button in the modal is clicked, send the delete request
+        document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+          const formData = new FormData();
+          formData.append('transactNo', transactNo); // Send the transactNo
+
+          // Send the delete request via fetch
+          fetch('../Employee Section/functions/emp-commentDelete.php', {
+              method: 'POST',
+              body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+              if (data.status === 'success') {
+                alert(data.message);
+                location.reload(); // Reload the page after successful deletion
               } else {
-                alert(jsonResponse.message || 'Error adding comment.');
+                alert(data.message || 'Error deleting comment.');
               }
-            },
-            error: function(xhr, status, error) {
-              alert('Error adding comment.');
+            })
+            .catch(error => {
+              console.error('Error:', error);
+              alert('Error occurred while deleting the comment.');
+            });
+
+          // Close the modal after deletion attempt
+          deleteModal.hide();
+        });
+      });
+    });
+  });
+
+  document.querySelectorAll('.submitAddComment').forEach(button => {
+    button.addEventListener('click', function() {
+      const transactNo = this.getAttribute('data-id');
+      const comment = document.getElementById('commentInput' + transactNo).value;
+
+      if (comment) {
+        console.log('Transaction Number:', transactNo);
+        console.log('Comment:', comment);
+
+        $.ajax({
+          url: '../Employee Section/functions/emp-commentSubmit.php',
+          type: 'POST',
+          data: {
+            transactNo,
+            comment
+          },
+          success: function(response) {
+            const jsonResponse = JSON.parse(response); // Parse the JSON response
+            if (jsonResponse.status === 'success') {
+              alert('Comment added successfully!');
+
+              // Log the returned variables (comment and transactNo) from the response
+              console.log('Comment:', jsonResponse.comment);
+              console.log('Transaction Number:', jsonResponse.transactNo);
+
+              // Optionally, you can reload the table or perform any other update
+              location.reload(); // Uncomment if you want to reload the page
+            } else {
+              alert(jsonResponse.message || 'Error adding comment.');
             }
-          });
-        } else {
-          alert('Please enter a comment.');
-        }
-      });
+          },
+          error: function(xhr, status, error) {
+            alert('Error adding comment.');
+          }
+        });
+      } else {
+        alert('Please enter a comment.');
+      }
     });
+  });
 
 
-    document.querySelectorAll('.submitEditComment').forEach(button => {
-      button.addEventListener('click', function() {
-        const transactNo = this.getAttribute('data-id');
-        const comment = document.getElementById('commentInput' + transactNo).value;
+  document.querySelectorAll('.submitEditComment').forEach(button => {
+    button.addEventListener('click', function() {
+      const transactNo = this.getAttribute('data-id');
+      const comment = document.getElementById('commentInput' + transactNo).value;
 
-        if (comment) {
-          $.ajax({
-            url: '../Employee Section/functions/emp-commentUpdate.php',
-            type: 'POST',
-            data: {
-              transactNo,
-              comment
-            },
+      if (comment) {
+        $.ajax({
+          url: '../Employee Section/functions/emp-commentUpdate.php',
+          type: 'POST',
+          data: {
+            transactNo,
+            comment
+          },
 
-            success: function(response) {
-              alert('Comment updated successfully!');
-              location.reload();
-            },
-            error: function(xhr, status, error) {
-              alert('Error updating comment.');
-            }
-          });
-        } else {
-          alert('Please enter a comment.');
-        }
-      });
+          success: function(response) {
+            alert('Comment updated successfully!');
+            location.reload();
+          },
+          error: function(xhr, status, error) {
+            alert('Error updating comment.');
+          }
+        });
+      } else {
+        alert('Please enter a comment.');
+      }
     });
+  });
 
-    document.querySelectorAll('.cancelEditComment').forEach(button => {
-      button.addEventListener('click', function() {
-        const transactNo = this.getAttribute('data-id');
-        const commentInput = document.getElementById('commentInput' + transactNo);
-        const editButton = document.querySelector('.editComment[data-id="' + transactNo + '"]');
-        const addButton = document.querySelector('.addComment[data-id="' + transactNo + '"]');
-        const submitEditButton = document.querySelector('.submitEditComment[data-id="' + transactNo + '"]');
-        const cancelEditButton = document.querySelector('.cancelEditComment[data-id="' + transactNo + '"]');
-        const deleteButton = document.querySelector('.deleteComment[data-id="' + transactNo + '"]');
+  document.querySelectorAll('.cancelEditComment').forEach(button => {
+    button.addEventListener('click', function() {
+      const transactNo = this.getAttribute('data-id');
+      const commentInput = document.getElementById('commentInput' + transactNo);
+      const editButton = document.querySelector('.editComment[data-id="' + transactNo + '"]');
+      const addButton = document.querySelector('.addComment[data-id="' + transactNo + '"]');
+      const submitEditButton = document.querySelector('.submitEditComment[data-id="' + transactNo + '"]');
+      const cancelEditButton = document.querySelector('.cancelEditComment[data-id="' + transactNo + '"]');
+      const deleteButton = document.querySelector('.deleteComment[data-id="' + transactNo + '"]');
 
-        commentInput.value = commentInput.getAttribute('data-original-comment');
-        commentInput.disabled = true;
+      commentInput.value = commentInput.getAttribute('data-original-comment');
+      commentInput.disabled = true;
 
-        // Restore default button visibility
-        submitEditButton.style.display = 'none';
-        cancelEditButton.style.display = 'none';
-        deleteButton.style.display = 'none';
-        editButton.style.display = 'inline-block';
-      });
+      // Restore default button visibility
+      submitEditButton.style.display = 'none';
+      cancelEditButton.style.display = 'none';
+      deleteButton.style.display = 'none';
+      editButton.style.display = 'inline-block';
     });
+  });
 
-    document.querySelectorAll('.cancelAddComment').forEach(button => {
-      button.addEventListener('click', function() {
-        const transactNo = this.getAttribute('data-id');
-        const commentInput = document.getElementById('commentInput' + transactNo);
-        const editButton = document.querySelector('.editComment[data-id="' + transactNo + '"]');
-        const addButton = document.querySelector('.addComment[data-id="' + transactNo + '"]');
-        const submitAddButton = document.querySelector('.submitAddComment[data-id="' + transactNo + '"]');
-        const cancelAddButton = document.querySelector('.cancelAddComment[data-id="' + transactNo + '"]');
+  document.querySelectorAll('.cancelAddComment').forEach(button => {
+    button.addEventListener('click', function() {
+      const transactNo = this.getAttribute('data-id');
+      const commentInput = document.getElementById('commentInput' + transactNo);
+      const editButton = document.querySelector('.editComment[data-id="' + transactNo + '"]');
+      const addButton = document.querySelector('.addComment[data-id="' + transactNo + '"]');
+      const submitAddButton = document.querySelector('.submitAddComment[data-id="' + transactNo + '"]');
+      const cancelAddButton = document.querySelector('.cancelAddComment[data-id="' + transactNo + '"]');
 
-        commentInput.value = ''; // Reset comment input
-        commentInput.disabled = true; // Disable the input field
+      commentInput.value = ''; // Reset comment input
+      commentInput.disabled = true; // Disable the input field
 
-        // Restore default button visibility
-        submitAddButton.style.display = 'none';
-        cancelAddButton.style.display = 'none';
-        addButton.style.display = 'inline-block'; // Ensure 'addButton' is visible
-      });
+      // Restore default button visibility
+      submitAddButton.style.display = 'none';
+      cancelAddButton.style.display = 'none';
+      addButton.style.display = 'inline-block'; // Ensure 'addButton' is visible
     });
-  </script>
+  });
+</script>
 
 
 <script>
@@ -1306,6 +1293,7 @@ error_reporting(E_ALL);
       var table = $('.info-table').DataTable({
         "scrollCollapse": true,
         "deferRender": true,
+        responsive: true,
         autoWidth: false, // Prevent automatic width calculation
         scrollX: true, // Enable horizontal scrolling
         scrollY: "540px", // Set vertical scroll height
@@ -1365,10 +1353,6 @@ error_reporting(E_ALL);
             width: '7%'
           },
           {
-            targets: 12,
-            width: '7%'
-          },
-          {
             targets: '_all',
             width: '3%',
             height: '40px',
@@ -1416,6 +1400,5 @@ error_reporting(E_ALL);
 </script>
 
 
-</body>
-
+  </body>
 </html>

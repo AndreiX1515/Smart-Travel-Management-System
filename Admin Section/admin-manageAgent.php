@@ -304,42 +304,49 @@ error_reporting(E_ALL);
 
               <div class="content-body">
                 <div class="row">
+                  <!-- Account Type Selection -->
                   <div class="columns col-md-4">
-                    <label for="Suffix" class="form-label">Account Type</label>
-                    <select class="form-control" id="accountType" name="accountType">
-                        <option value="">Select Account Type</option>
-                        <option value="agent">Agent</option>
-                        <option value="guest">Client</option>
-                    </select>
+                      <label for="accountType" class="form-label">Account Type</label>
+                      <select class="form-control" id="accountType" name="accountType">
+                          <option value="" disabled selected>Select Account Type</option>
+                          <option value="agent">Agent</option>
+                          <option value="guest">Client</option> <!-- Match this value in the script -->
+                      </select>
                   </div>
                 </div>
+
               </div>
 
               <style>
-              /* Make readonly fields greyed out */
-              .readonly-grey {
-                  background-color: #e9ecef !important; /* Grey background */
-                  pointer-events: none; /* Prevent clicking */
-              }
-            </style>
-
-            <script>
-            document.getElementById("accountType").addEventListener("change", function() {
-                let agentRoleField = document.getElementById("agentRole");
-
-                if (this.value === "Client") {
-                    agentRoleField.value = "Sub Agent"; 
-                    agentRoleField.setAttribute("readonly", "readonly"); // Make it readonly
-                    agentRoleField.classList.add("readonly-grey"); // Apply greyed-out style
-                } else {
-                    agentRoleField.value = ""; 
-                    agentRoleField.removeAttribute("readonly"); // Allow selection for other cases
-                    agentRoleField.classList.remove("readonly-grey"); // Remove greyed-out style
+                /* Make readonly fields greyed out */
+                .readonly-grey {
+                    background-color: #e9ecef !important; /* Grey background */
+                    pointer-events: none; /* Prevent interaction */
                 }
-            });
-            </script>
+              </style>
 
+              <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    document.getElementById("accountType").addEventListener("change", function() {
+                        let agentRoleField = document.getElementById("agentRole");
+                        let hiddenAgentRole = document.getElementById("hiddenAgentRole");
 
+                        if (this.value === "guest") { // Match the lowercase value from your select options
+                            agentRoleField.value = "Sub Agent";
+                            hiddenAgentRole.value = "Sub Agent"; // Ensure value is posted
+                            agentRoleField.setAttribute("disabled", "disabled"); // Disable selection
+                            agentRoleField.classList.add("readonly-grey"); // Apply greyed-out style
+                        } else {
+                            agentRoleField.value = "";
+                            hiddenAgentRole.value = ""; // Ensure it resets
+                            agentRoleField.removeAttribute("disabled"); // Enable selection
+                            agentRoleField.classList.remove("readonly-grey"); // Remove greyed-out style
+                        }
+                    });
+                });
+              </script>
+
+            
               <div class="content-header">
                 Personal Information
               </div>
@@ -596,12 +603,12 @@ error_reporting(E_ALL);
                   </div>
                 </div>
 
-                <div class="row">
+                <!-- <div class="row">
                   <div class="columns col-md-5">
                     <label for="email" class="form-label">Email</label>
                     <input type="email" class="form-control" id="email" name="email" required>
                   </div>
-                </div>
+                </div> -->
 
                 <div class="row password">
                   <div class="columns col-md-5">
@@ -658,20 +665,21 @@ error_reporting(E_ALL);
                     </select>
                   </div>
 
+                  <!-- Agent Role Selection -->
                   <div class="columns col-md-4">
-                    <label for="accountStatus" class="form-label">Agent Role</label>
-                    <select class="form-select" id="agentRole" name="agentRole" required>
-                      <option value="" selected disabled>Select Agent Type</option>
-                      <option value="Head Agent">Head Agent</option>
-                      <option value="Sub Agent">Sub Agent</option>
-                      <option value="Sub Agent 2">Sub Agent 2</option>
-                    </select>
+                      <label for="agentRole" class="form-label">Agent Role</label>
+                      <select class="form-control" id="agentRole" >
+                          <option value="">Select Role</option>
+                          <option value="Sub Agent">Sub Agent</option>
+                          <option value="Other Role">Other Role</option>
+                      </select>
                   </div>
 
                 </div>
-
               </div>
-           
+
+              <!-- Hidden input to store the selected agentRole -->
+              <input type="hidden" id="hiddenAgentRole" name="agentRole">
         </div>
 
         <!-- Modal Footer -->
