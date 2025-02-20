@@ -1,0 +1,374 @@
+/* Flight Schedules */
+
+.main-container {
+  padding: 0;
+  margin: 0;
+}
+
+.flight-schedules {
+  background-color: transparent;
+  display: flex;
+  position: relative;
+  overflow: hidden;
+  height: 88.5vh;
+  border-bottom: 1px solid gainsboro;
+}
+
+.flight-schedules .section-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.flight-schedules .section-header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  /* padding: 20px 250px 20px 125px; */
+}
+
+.section-header .header-info {
+  display: flex;
+  flex-direction: column;
+}
+
+
+
+.filters-container {
+  display: flex;
+  flex-direction: column;
+  
+  gap: 15px;
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+
+.filters {
+  display: flex;
+  align-items: left;
+  justify-content: left;
+  gap: 20px;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.filter-group label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 4px;
+}
+
+.filter-group select,
+.filter-group input {
+  padding: 10px;
+  font-size: 14px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+  color: #333;
+  transition: border-color 0.3s ease;
+  cursor: pointer;
+  appearance: none;
+}
+
+.filter-group select:hover,
+.filter-group input:hover {
+  border-color: #8a8a8a;
+}
+
+.filter-group select:focus,
+.filter-group input:focus {
+  border-color: #116530;
+  outline: none;
+  box-shadow: 0 0 5px rgba(17, 101, 48, 0.3);
+}
+
+.clear-btn {
+  margin-top: 25px;
+  padding: 10px 25px;
+  background-color: #116530;
+  color: white;
+  font-size: 14px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.clear-btn:hover {
+  background-color: #0e4a28;
+}
+
+
+
+
+
+.vertical-separator {
+  width: 2px;
+  background-color: #474747;
+  height: 100%;
+  margin: 0px 10px;
+  z-index: 2;
+}
+
+.flight-card {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  padding: 15px;
+  width: 100%;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+}
+
+.flight-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 10px;
+  width: 100%;
+  border: 1px solid black;
+}
+
+.flight-details {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  padding: 0px 10px;
+  border: 1px solid black;
+}
+
+.flight-details h3 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.flight-date-wrapper {
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  /* padding: 0px 10px; */
+}
+
+.flight-date-wrapper label {
+  font-size: 20px;
+  font-weight: bold;
+  color: black;
+}
+
+.flight-date-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 120px;
+  width: 100%;
+  padding: 0 10px;
+}
+
+.flight-date {
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 50%;
+  border: 1px solid black;
+}
+
+.flight-start {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border: 1px solid black;
+}
+
+
+
+.flight-start label {
+  font-size: 18px;
+  font-weight: bold;
+  color: black;
+}
+
+.flight-start h5 {
+  font-size: 18px;
+  font-weight: 500;
+  color: black;
+}
+
+
+.flight-seats-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  border: 1px solid black;
+}
+
+.seats-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+
+.container-header {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  border: 1px solid black;
+}
+.container-body {
+  display: flex;
+  gap: 10%;
+  border: 1px solid black;
+}
+
+.seats-body {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid black;
+}
+
+
+
+
+.first-part {
+  display: flex;
+  gap: 15px;
+
+}
+
+
+.seats-info {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border: 1px solid black;
+  gap: 10px;
+}
+
+
+.seats-info label {
+  font-size: 18px;
+  font-weight: bold;
+  color: black;
+}
+
+.seats-info h5 {
+  font-size: 18px;
+  font-weight: 500;
+  color: black;
+}
+
+
+
+.book-now-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 150px;
+  gap: 20px;
+}
+
+.book-now-container a {
+  width: 150px;
+}
+
+.btn.book-now {
+  background-color: #116530;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+.btn.book-now:hover {
+  background-color: #0e4b27;
+}
+
+/* Responsive Design */
+@media (max-width: 1280px) {
+  .flight-card {
+    padding: 12px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .flight-card {
+    flex-direction: column;
+    align-items: center;
+    text-align: left;
+  }
+
+  .section-header {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 15px;
+    gap: 10px;
+
+  }
+}
+
+@media (max-width: 768px) {
+  .flight-schedules {
+    padding: 5px;
+  }
+
+  .flight-card {
+    /* padding: 10px; */
+    width: 100%;
+  }
+  .flight-details h3 {
+    font-size: 20px;
+  }
+  .flight-details p {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 600px) {
+  .flight-card {
+    width: 95%;
+    padding: 8px;
+  }
+  .flight-details h3 {
+    font-size: 18px;
+  }
+  .flight-details p {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 480px) {
+  .flight-card {
+    width: 100%;
+    padding: 5px;
+  }
+  .flight-details h3 {
+    font-size: 16px;
+  }
+  .flight-details p {
+    font-size: 10px;
+  }
+}
+
+
