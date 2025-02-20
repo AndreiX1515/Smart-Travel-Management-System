@@ -34,7 +34,7 @@ if (isset($_POST['login'])) {
                     } elseif ($accountType === 'employee') {
                         handleLogin($accountId, 'employee', "SELECT * FROM employee WHERE accountId = ?", ['position', 'countryCode', 'contactNo', 'branch']);
                     } elseif ($accountType === 'guest') {
-                        handleLogin($accountId, 'guest', "SELECT * FROM agent WHERE accountId = ?", ['position', 'countryCode', 'contactNo', 'branch']);
+                        handleLogin($accountId, 'guest', "SELECT * FROM client WHERE accountId = ?", ['position', 'countryCode', 'contactNo', 'branch']);
                     } else {
                         $response['success'] = false;
                         $response['message'] = "Invalid account type.";
