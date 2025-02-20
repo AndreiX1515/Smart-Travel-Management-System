@@ -35,9 +35,15 @@
           <i class="fas fa-user"></i> Agent
         </a>
 
+        <a href="../Admin Section/admin-manageClient.php" class="page-button" data-page-name="Packages - Transactions table">
+          <i class="fas fa-user"></i> Client
+        </a>
+
         <a href="../Admin Section/admin-manageEmployee.php" class="page-button" data-page-name="Packages - Transactions table">
           <i class="fas fa-user"></i> Employee
         </a>
+
+        
 
         <!-- <a href="../Agent Section/agent-FIT-table.php" class="page-button my-0" data-page-name="F.I.T - Transactions Table" style="font-size: 14px;">
           <i class="fas fa-file-invoice"></i> F.I.T 

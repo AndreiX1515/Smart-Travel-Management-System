@@ -542,54 +542,68 @@ error_reporting(E_ALL);
 
                 // class="form-check-input"
                 if ($result->num_rows > 0) {
-                  while ($row = $result->fetch_assoc()) {
+    // Fetch employee data and map Names to Employee IDs
+$employeeQuery = "SELECT employeeId, CONCAT(lName, ', ', fName) AS fullName FROM employee";
+$employeeResult = $conn->query($employeeQuery);
 
-                    $colorMapping = [
-                      "Heo, Vicky" => "#FFD700",  // Gold
-                      "Kim, Gwen" => "#ADD8E6",   // Light Blue
-                      "Sample, Dorothy" => "#98FB98", // Pale Green
-                      "Lm, Anna" => "#FFB6C1",    // Light Pink
-                      "Park, Lia" => "#E6E6FA",   // Lavender
-                      "Testing, Pamela" => "#FFDAB9" // Peach
-                    ];
+$employeeMapping = []; // Array to store FullName => Employee ID mapping
 
-                    $flight_id = $row['flightId'];
-                    $chkStatus = $row['is_active'];
+if ($employeeResult->num_rows > 0) {
+    while ($empRow = $employeeResult->fetch_assoc()) {
+        $employeeMapping[$empRow['fullName']] = $empRow['employeeId'];
+    }
+}
 
-                    $rowColor = isset($colorMapping[$row['TeamOP']]) ? $colorMapping[$row['TeamOP']] : "transparent"; // Default to transparent if not listed
+// Predefined color mapping for employees (based on Full Name)
+$colorMapping = [
+    "Heo, Vicky" => "#FFD700",   // Gold
+    "Kim, Gwen" => "#ADD8E6",    // Light Blue
+    "Test, Dorothy" => "#98FB98", // Pale Green
+    "Im, Anna" => "#FFB6C1",     // Light Pink
+    "Park, Lia" => "#E6E6FA",    // Lavender
+    "Testing, Pamela" => "#FFDAB9" // Peach
+];
 
-                    echo '<tr>';
-                    echo '<td class="fw-bold" style="font-size: 12px; background-color: ' . $rowColor . ';">
-                        <input type="checkbox" class="status-checkbox row-checkbox" data-id="' . $flight_id . '" 
-                              data-status="' . $chkStatus . '" ' . ($chkStatus == 1 ? 'checked' : '') . '>
-                        </td>';
+while ($row = $result->fetch_assoc()) {
+    $flight_id = $row['flightId'];
+    $chkStatus = $row['is_active'];
 
-                      echo '<td class="" style="font-size: 12px; white-space: nowrap; background-color: ' . $rowColor . '; font-weight: bold;">' . $row['TeamOP'] . '</td>';
-                      echo '<td>' . $row['origin'] . '</td>';
-                      echo '<td>' . $row['Start'] . '</td>';
-                      echo '<td>' . $row['End'] . '</td>';
-                      echo '<td>' . $row['AvailSeats'] . '</td>';
-                      echo '<td>' . $row['AdditionalSeats'] . '</td>';
-                      echo '<td>' . $row['Air+Land'] . '</td>';
-                      echo '<td>' . $row['LandOnly'] . '</td>';
-                      echo '<td>₱ ' . number_format($row['WholesalePrice'], 2) . '</td>';
-                      echo '<td>₱ ' . number_format($row['RetailPrice'], 2) . '</td>';
-                      // echo '<td>₱ ' . number_format($row['LandArrangement'], 2) . '</td>';
-                      echo '<td>₱ ' . number_format($row['landPrice'], 2) . '</td>';
+    // Get Employee Name from TeamOP
+    $employeeName = isset($row['TeamOP']) ? trim($row['TeamOP']) : "";
 
-                      foreach ($row as $key => $value) {
-                        if (strpos($key, '_AL') !== false || strpos($key, '_LO') !== false) {
-                            // Check if the value is greater than 0 and apply a style or class
-                            $style = ($value > 0) ? 'style="font-weight: bold;"' : 'style="font-weight: 400;"'; // Apply bold style if value > 0
-                            
-                            // Output the table data with the style if needed
-                            echo '<td ' . $style . '>' . $value . '</td>';
-                        }
-                    }
-                    
+    // Assign a color dynamically based on Employee Name, defaulting to white if not found
+    $rowColor = isset($colorMapping[$employeeName]) ? $colorMapping[$employeeName] : "#FFFFFF";
 
-                    echo '</tr>';
-                  }
+    echo '<tr>';
+    echo '<td class="fw-bold" style="font-size: 12px; background-color: ' . $rowColor . '; ">
+            <input type="checkbox" class="status-checkbox row-checkbox" data-id="' . $flight_id . '" 
+                  data-status="' . $chkStatus . '" ' . ($chkStatus == 1 ? 'checked' : '') . '>
+          </td>';
+    
+    echo '<td class="" style="font-size: 12px; white-space: nowrap; background-color: ' . $rowColor . '; font-weight: bold;">' . htmlspecialchars($employeeName) . '</td>';
+    echo '<td>' . htmlspecialchars($row['origin']) . '</td>';
+    echo '<td>' . htmlspecialchars($row['Start']) . '</td>';
+    echo '<td>' . htmlspecialchars($row['End']) . '</td>';
+    echo '<td>' . htmlspecialchars($row['AvailSeats']) . '</td>';
+    echo '<td>' . htmlspecialchars($row['AdditionalSeats']) . '</td>';
+    echo '<td>' . htmlspecialchars($row['Air+Land']) . '</td>';
+    echo '<td>' . htmlspecialchars($row['LandOnly']) . '</td>';
+    echo '<td>₱ ' . number_format($row['WholesalePrice'], 2) . '</td>';
+    echo '<td>₱ ' . number_format($row['RetailPrice'], 2) . '</td>';
+    echo '<td>₱ ' . number_format($row['landPrice'], 2) . '</td>';
+
+    foreach ($row as $key => $value) {
+        if (strpos($key, '_AL') !== false || strpos($key, '_LO') !== false) {
+            $style = ($value > 0) ? 'style="font-weight: bold;"' : 'style="font-weight: 400;"';
+            echo '<td ' . $style . '>' . htmlspecialchars($value) . '</td>';
+        }
+    }
+
+    echo '</tr>';
+}
+
+
+                  
                 }
                 ?>
               </tbody>
@@ -782,10 +796,11 @@ error_reporting(E_ALL);
             </div>
 
             <?php
-      // Function to render the confirmed transactions table
-      function renderConfirmedTransactionsTable($conn) {
-          // Query to get confirmed transactions
-          $query1 = "SELECT b.*, f.flightDepartureDate AS Start, p.packageName, b.totalPrice AS PackagePrice, 
+            // Function to render the confirmed transactions table
+            function renderConfirmedTransactionsTable($conn)
+            {
+              // Query to get confirmed transactions
+              $query1 = "SELECT b.*, f.flightDepartureDate AS Start, p.packageName, b.totalPrice AS PackagePrice, 
                         f.returnDepartureDate AS End, CONCAT(a.lName, ', ', a.fName, 
                         IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1)), '')) AS agentName,
                         br.branchName as branchName, SUM(pa.amount) AS TotalAmountPaid
@@ -797,12 +812,12 @@ error_reporting(E_ALL);
                       LEFT JOIN payment pa ON pa.transactNo = b.transactNo AND pa.paymentStatus = 'Approved'
                       WHERE status = 'Confirmed' GROUP BY b.transactNo";
 
-          $result = $conn->query($query1);
+              $result = $conn->query($query1);
 
-          // Check if the query returned any results
-          if ($result && $result->num_rows > 0) {
-              // Start the table HTML
-              echo '<div class="confirm-container">
+              // Check if the query returned any results
+              if ($result && $result->num_rows > 0) {
+                // Start the table HTML
+                echo '<div class="confirm-container">
                       <div class="table-header">
                         <h6 class="white-pill">Confirmed Transactions</h6>
                       </div>
@@ -823,8 +838,8 @@ error_reporting(E_ALL);
                           </thead>
                           <tbody>';
 
-              // Loop through each row and render the table rows
-              while ($row = $result->fetch_assoc()) {
+                // Loop through each row and render the table rows
+                while ($row = $result->fetch_assoc()) {
                   $packagePrice = $row['PackagePrice'] ?? 0;
                   $amountPaid = $row['TotalAmountPaid'] ?? 0;
                   $balance = $packagePrice - $amountPaid;
@@ -835,21 +850,21 @@ error_reporting(E_ALL);
 
                   // Define the pill status class based on the status value
                   switch ($status) {
-                      case 'Confirmed':
-                          $pillClass = 'bg-success';
-                          break;
-                      case 'Cancelled':
-                          $pillClass = 'bg-danger';
-                          break;
-                      case 'Pending':
-                          $pillClass = 'bg-warning';
-                          break;
-                      case 'Rejected':
-                          $pillClass = 'bg-info';
-                          break;
-                      default:
-                          $pillClass = 'bg-secondary';
-                          break;
+                    case 'Confirmed':
+                      $pillClass = 'bg-success';
+                      break;
+                    case 'Cancelled':
+                      $pillClass = 'bg-danger';
+                      break;
+                    case 'Pending':
+                      $pillClass = 'bg-warning';
+                      break;
+                    case 'Rejected':
+                      $pillClass = 'bg-info';
+                      break;
+                    default:
+                      $pillClass = 'bg-secondary';
+                      break;
                   }
 
                   echo "<tr data-id='{$row['transactNo']}'>
@@ -889,7 +904,7 @@ error_reporting(E_ALL);
 
                   // Check if a comment exists
                   if ($comment && !empty($comment['comment'])) {
-                      echo '<div class="comment-exists">
+                    echo '<div class="comment-exists">
                               <div class="comment-input">
                                   <input type="text" class="form-control" name="comment" id="commentInput' . $transactNo . '" value="' . htmlspecialchars($comment['comment']) . '" disabled>
                               </div>
@@ -898,7 +913,7 @@ error_reporting(E_ALL);
                               </div>
                             </div>';
                   } else {
-                      echo '<div class="no-comment">
+                    echo '<div class="no-comment">
                               <div class="comment-input">
                                   <input type="text" class="form-control" name="comment" id="commentInput' . $transactNo . '"  disabled>
                               </div>
@@ -919,22 +934,22 @@ error_reporting(E_ALL);
                   echo '</div>'; // Close the comment-container div
                   echo "</td>"; // Close the <td> tag
                   echo "</tr>";
+                }
+
+                echo '</tbody></table></div></div>'; // End of table and div containers
+              } else {
+                // No records found
+                echo "<tr><td colspan='7'>No confirmed bookings found.</td></tr>";
               }
 
-              echo '</tbody></table></div></div>'; // End of table and div containers
-          } else {
-              // No records found
-              echo "<tr><td colspan='7'>No confirmed bookings found.</td></tr>";
-          }
+              if ($result) {
+                $result->free();
+              }
+            }
 
-          if ($result) {
-              $result->free();
-          }
-      }
-
-      // Call the function to render the table
-      renderConfirmedTransactionsTable($conn);
-      ?>
+            // Call the function to render the table
+            renderConfirmedTransactionsTable($conn);
+            ?>
 
 
 
@@ -975,430 +990,431 @@ error_reporting(E_ALL);
   <?php include '../Employee Section/includes/emp-scripts.php' ?>
 
 
-<!-- JS for Checkbox -->
-<script>
-  $(document).ready(function() {
-    let changes = {}; // Store changed checkbox values
+  <!-- JS for Checkbox -->
+  <script>
+    $(document).ready(function() {
+      let changes = {}; // Store changed checkbox values
 
-    // Function to check if there are changes and toggle the Save button
-    function toggleSaveButton() {
-      if (Object.keys(changes).length > 0) {
-        $('#saveChanges').css('display', 'block'); // Show Save button
-      } else {
-        $('#saveChanges').css('display', 'none'); // Hide Save button
-      }
-    }
-
-    // Function to get all checked flight IDs and log them
-    function logCheckedFlightIds() {
-      let checkedIds = [];
-      $('.status-checkbox:checked').each(function() {
-        checkedIds.push($(this).data('id'));
-      });
-      console.log("Checked Flight IDs:", checkedIds); // Log the checked flight IDs
-    }
-
-
-    // When a checkbox is toggled
-    $('.status-checkbox').on('change', function() {
-      let flightId = $(this).data('id'); // Get flight ID
-      let isChecked = $(this).is(':checked') ? 1 : 0; // Convert to 1 (checked) or 0 (unchecked)
-
-      // Log the flight ID of the toggled checkbox
-      console.log("Toggled Flight ID:", flightId);
-
-      // If checkbox state differs from original, store it, otherwise remove it
-      if ($(this).data('original') !== isChecked) {
-        changes[flightId] = isChecked; // Add to changes object
-      } else {
-        delete changes[flightId]; // Remove from changes object
-      }
-
-      logCheckedFlightIds(); // Log checked flight IDs to console
-      toggleSaveButton(); // Show or hide the Save button
-    });
-
-    // Save Button Click Event
-    $('#saveChanges').on('click', function() {
-      if (Object.keys(changes).length === 0) return; // No changes to save
-
-      $.ajax({
-        url: '../Agent Section/functions/agent-updateCheckStatus.php',
-        type: 'POST',
-        data: {
-          updates: changes // Send updates as the payload
-        },
-        success: function(response) {
-          alert('Status updated successfully!');
-          changes = {}; // Clear changes after saving
-
-          // Update original values for the checkboxes
-          $('.status-checkbox').each(function() {
-            $(this).data('original', $(this).is(':checked') ? 1 : 0);
-          });
-
-          toggleSaveButton(); // Hide the save button after saving
-
-          // Destroy the DataTable instance before reinitializing
-          var table = $('#example').DataTable();
-          table.destroy();
-
-          // Reinitialize the DataTable by calling the function
-          initializeDataTable(); // This will reinitialize with the current settings
-
-          // Reload the page after saving (optional, if you want to reload instead of just refreshing the table)
-          // location.reload(); 
-        },
-        error: function() {
-          alert('Error updating status.');
+      // Function to check if there are changes and toggle the Save button
+      function toggleSaveButton() {
+        if (Object.keys(changes).length > 0) {
+          $('#saveChanges').css('display', 'block'); // Show Save button
+        } else {
+          $('#saveChanges').css('display', 'none'); // Hide Save button
         }
+      }
+
+      // Function to get all checked flight IDs and log them
+      function logCheckedFlightIds() {
+        let checkedIds = [];
+        $('.status-checkbox:checked').each(function() {
+          checkedIds.push($(this).data('id'));
+        });
+        console.log("Checked Flight IDs:", checkedIds); // Log the checked flight IDs
+      }
+
+
+      // When a checkbox is toggled
+      $('.status-checkbox').on('change', function() {
+        let flightId = $(this).data('id'); // Get flight ID
+        let isChecked = $(this).is(':checked') ? 1 : 0; // Convert to 1 (checked) or 0 (unchecked)
+
+        // Log the flight ID of the toggled checkbox
+        console.log("Toggled Flight ID:", flightId);
+
+        // If checkbox state differs from original, store it, otherwise remove it
+        if ($(this).data('original') !== isChecked) {
+          changes[flightId] = isChecked; // Add to changes object
+        } else {
+          delete changes[flightId]; // Remove from changes object
+        }
+
+        logCheckedFlightIds(); // Log checked flight IDs to console
+        toggleSaveButton(); // Show or hide the Save button
       });
 
+      // Save Button Click Event
+      $('#saveChanges').on('click', function() {
+        if (Object.keys(changes).length === 0) return; // No changes to save
+
+        $.ajax({
+          url: '../Agent Section/functions/agent-updateCheckStatus.php',
+          type: 'POST',
+          data: {
+            updates: changes // Send updates as the payload
+          },
+          success: function(response) {
+            alert('Status updated successfully!');
+            changes = {}; // Clear changes after saving
+
+            // Update original values for the checkboxes
+            $('.status-checkbox').each(function() {
+              $(this).data('original', $(this).is(':checked') ? 1 : 0);
+            });
+
+            toggleSaveButton(); // Hide the save button after saving
+
+            // Destroy the DataTable instance before reinitializing
+            var table = $('#example').DataTable();
+            table.destroy();
+
+            // Reinitialize the DataTable by calling the function
+            initializeDataTable(); // This will reinitialize with the current settings
+
+            // Reload the page after saving (optional, if you want to reload instead of just refreshing the table)
+            // location.reload(); 
+          },
+          error: function() {
+            alert('Error updating status.');
+          }
+        });
 
 
+
+      });
+
+      // Initialize original checkbox states
+      $('.status-checkbox').each(function() {
+        $(this).data('original', $(this).is(':checked') ? 1 : 0);
+      });
+
+      toggleSaveButton(); // Ensure the button is hidden initially
     });
 
-    // Initialize original checkbox states
-    $('.status-checkbox').each(function() {
-      $(this).data('original', $(this).is(':checked') ? 1 : 0);
+    $('#pills-home-tab').on('click', function() {
+      $('#saveChanges').css('display', 'none'); // Hide Save button
+      changes = {}; // Flush the changes array
+      console.log("Changes array flushed:", changes); // Log the flushed array
+
+      // Reset all checkboxes to their original state (untrigger non-changed checkboxes)
+      $('.status-checkbox').each(function() {
+        let originalState = $(this).data('original') === 1; // Get the original state (true or false)
+        $(this).prop('checked', originalState); // Set checkbox to its original state
+      });
     });
+  </script>
 
-    toggleSaveButton(); // Ensure the button is hidden initially
-  });
+  <!-- JS for Comment -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      function toggleCommentForm(transactNo, action) {
+        const commentInput = document.getElementById('commentInput' + transactNo);
+        const submitAddButton = document.querySelector('.submitAddComment[data-id="' + transactNo + '"]');
+        const submitEditButton = document.querySelector('.submitEditComment[data-id="' + transactNo + '"]');
+        const cancelEditButton = document.querySelector('.cancelEditComment[data-id="' + transactNo + '"]');
+        const cancelAddButton = document.querySelector('.cancelAddComment[data-id="' + transactNo + '"]');
+        const editButton = document.querySelector('.editComment[data-id="' + transactNo + '"]');
+        const addButton = document.querySelector('.addComment[data-id="' + transactNo + '"]');
+        const deleteButton = document.querySelector('.deleteComment[data-id="' + transactNo + '"]');
 
-  $('#pills-home-tab').on('click', function() {
-    $('#saveChanges').css('display', 'none'); // Hide Save button
-    changes = {}; // Flush the changes array
-    console.log("Changes array flushed:", changes); // Log the flushed array
+        commentInput.disabled = false;
+        commentInput.focus();
+        const originalComment = commentInput.value;
+        commentInput.setAttribute('data-original-comment', originalComment);
 
-    // Reset all checkboxes to their original state (untrigger non-changed checkboxes)
-    $('.status-checkbox').each(function() {
-      let originalState = $(this).data('original') === 1; // Get the original state (true or false)
-      $(this).prop('checked', originalState); // Set checkbox to its original state
-    });
-  });
-</script>
+        if (action === 'edit') {
+          submitEditButton.style.display = 'inline-block';
+          cancelEditButton.style.display = 'inline-block';
+          submitAddButton.style.display = 'none';
+          cancelAddButton.style.display = 'none';
+          deleteButton.style.display = 'inline-block'; // Show delete button on edit
+          editButton.style.display = 'none';
+        } else if (action === 'add') {
+          submitAddButton.style.display = 'inline-block';
+          cancelAddButton.style.display = 'inline-block';
+          submitEditButton.style.display = 'none';
+          cancelEditButton.style.display = 'none';
+          // deleteButton.style.display = 'none'; // Hide delete button on add
+          addButton.style.display = 'none';
+        }
 
-<!-- JS for Comment -->
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    function toggleCommentForm(transactNo, action) {
-      const commentInput = document.getElementById('commentInput' + transactNo);
-      const submitAddButton = document.querySelector('.submitAddComment[data-id="' + transactNo + '"]');
-      const submitEditButton = document.querySelector('.submitEditComment[data-id="' + transactNo + '"]');
-      const cancelEditButton = document.querySelector('.cancelEditComment[data-id="' + transactNo + '"]');
-      const cancelAddButton = document.querySelector('.cancelAddComment[data-id="' + transactNo + '"]');
-      const editButton = document.querySelector('.editComment[data-id="' + transactNo + '"]');
-      const addButton = document.querySelector('.addComment[data-id="' + transactNo + '"]');
-      const deleteButton = document.querySelector('.deleteComment[data-id="' + transactNo + '"]');
-
-      commentInput.disabled = false;
-      commentInput.focus();
-      const originalComment = commentInput.value;
-      commentInput.setAttribute('data-original-comment', originalComment);
-
-      if (action === 'edit') {
-        submitEditButton.style.display = 'inline-block';
-        cancelEditButton.style.display = 'inline-block';
-        submitAddButton.style.display = 'none';
-        cancelAddButton.style.display = 'none';
-        deleteButton.style.display = 'inline-block'; // Show delete button on edit
         editButton.style.display = 'none';
-      } else if (action === 'add') {
-        submitAddButton.style.display = 'inline-block';
-        cancelAddButton.style.display = 'inline-block';
-        submitEditButton.style.display = 'none';
-        cancelEditButton.style.display = 'none';
-        // deleteButton.style.display = 'none'; // Hide delete button on add
         addButton.style.display = 'none';
       }
 
-      editButton.style.display = 'none';
-      addButton.style.display = 'none';
-    }
+      document.querySelectorAll('.editComment').forEach(button => {
+        button.addEventListener('click', function() {
+          const transactNo = this.getAttribute('data-id');
+          toggleCommentForm(transactNo, 'edit');
+        });
+      });
 
-    document.querySelectorAll('.editComment').forEach(button => {
-      button.addEventListener('click', function() {
-        const transactNo = this.getAttribute('data-id');
-        toggleCommentForm(transactNo, 'edit');
+      document.querySelectorAll('.addComment').forEach(button => {
+        button.addEventListener('click', function() {
+          const transactNo = this.getAttribute('data-id');
+          toggleCommentForm(transactNo, 'add');
+        });
       });
     });
 
-    document.querySelectorAll('.addComment').forEach(button => {
-      button.addEventListener('click', function() {
-        const transactNo = this.getAttribute('data-id');
-        toggleCommentForm(transactNo, 'add');
+    // Handle click on delete button
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.deleteComment').forEach(button => {
+        button.addEventListener('click', function() {
+          const transactNo = this.getAttribute('data-id'); // Get the transactNo from the data-id attribute
+          const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal')); // Use existing modal with id 'deleteModal'
+
+          // Show the modal
+          deleteModal.show();
+
+          // When the "Delete" button in the modal is clicked, send the delete request
+          document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+            const formData = new FormData();
+            formData.append('transactNo', transactNo); // Send the transactNo
+
+            // Send the delete request via fetch
+            fetch('../Employee Section/functions/emp-commentDelete.php', {
+                method: 'POST',
+                body: formData
+              })
+              .then(response => response.json())
+              .then(data => {
+                if (data.status === 'success') {
+                  alert(data.message);
+                  location.reload(); // Reload the page after successful deletion
+                } else {
+                  alert(data.message || 'Error deleting comment.');
+                }
+              })
+              .catch(error => {
+                console.error('Error:', error);
+                alert('Error occurred while deleting the comment.');
+              });
+
+            // Close the modal after deletion attempt
+            deleteModal.hide();
+          });
+        });
       });
     });
-  });
 
-  // Handle click on delete button
-  document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('.deleteComment').forEach(button => {
+    document.querySelectorAll('.submitAddComment').forEach(button => {
       button.addEventListener('click', function() {
-        const transactNo = this.getAttribute('data-id'); // Get the transactNo from the data-id attribute
-        const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal')); // Use existing modal with id 'deleteModal'
+        const transactNo = this.getAttribute('data-id');
+        const comment = document.getElementById('commentInput' + transactNo).value;
 
-        // Show the modal
-        deleteModal.show();
+        if (comment) {
+          console.log('Transaction Number:', transactNo);
+          console.log('Comment:', comment);
 
-        // When the "Delete" button in the modal is clicked, send the delete request
-        document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
-          const formData = new FormData();
-          formData.append('transactNo', transactNo); // Send the transactNo
+          $.ajax({
+            url: '../Employee Section/functions/emp-commentSubmit.php',
+            type: 'POST',
+            data: {
+              transactNo,
+              comment
+            },
+            success: function(response) {
+              const jsonResponse = JSON.parse(response); // Parse the JSON response
+              if (jsonResponse.status === 'success') {
+                alert('Comment added successfully!');
 
-          // Send the delete request via fetch
-          fetch('../Employee Section/functions/emp-commentDelete.php', {
-              method: 'POST',
-              body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-              if (data.status === 'success') {
-                alert(data.message);
-                location.reload(); // Reload the page after successful deletion
+                // Log the returned variables (comment and transactNo) from the response
+                console.log('Comment:', jsonResponse.comment);
+                console.log('Transaction Number:', jsonResponse.transactNo);
+
+                // Optionally, you can reload the table or perform any other update
+                location.reload(); // Uncomment if you want to reload the page
               } else {
-                alert(data.message || 'Error deleting comment.');
+                alert(jsonResponse.message || 'Error adding comment.');
               }
-            })
-            .catch(error => {
-              console.error('Error:', error);
-              alert('Error occurred while deleting the comment.');
-            });
-
-          // Close the modal after deletion attempt
-          deleteModal.hide();
-        });
-      });
-    });
-  });
-
-  document.querySelectorAll('.submitAddComment').forEach(button => {
-    button.addEventListener('click', function() {
-      const transactNo = this.getAttribute('data-id');
-      const comment = document.getElementById('commentInput' + transactNo).value;
-
-      if (comment) {
-        console.log('Transaction Number:', transactNo);
-        console.log('Comment:', comment);
-
-        $.ajax({
-          url: '../Employee Section/functions/emp-commentSubmit.php',
-          type: 'POST',
-          data: {
-            transactNo,
-            comment
-          },
-          success: function(response) {
-            const jsonResponse = JSON.parse(response); // Parse the JSON response
-            if (jsonResponse.status === 'success') {
-              alert('Comment added successfully!');
-
-              // Log the returned variables (comment and transactNo) from the response
-              console.log('Comment:', jsonResponse.comment);
-              console.log('Transaction Number:', jsonResponse.transactNo);
-
-              // Optionally, you can reload the table or perform any other update
-              location.reload(); // Uncomment if you want to reload the page
-            } else {
-              alert(jsonResponse.message || 'Error adding comment.');
+            },
+            error: function(xhr, status, error) {
+              alert('Error adding comment.');
             }
-          },
-          error: function(xhr, status, error) {
-            alert('Error adding comment.');
-          }
+          });
+        } else {
+          alert('Please enter a comment.');
+        }
+      });
+    });
+
+
+    document.querySelectorAll('.submitEditComment').forEach(button => {
+      button.addEventListener('click', function() {
+        const transactNo = this.getAttribute('data-id');
+        const comment = document.getElementById('commentInput' + transactNo).value;
+
+        if (comment) {
+          $.ajax({
+            url: '../Employee Section/functions/emp-commentUpdate.php',
+            type: 'POST',
+            data: {
+              transactNo,
+              comment
+            },
+
+            success: function(response) {
+              alert('Comment updated successfully!');
+              location.reload();
+            },
+            error: function(xhr, status, error) {
+              alert('Error updating comment.');
+            }
+          });
+        } else {
+          alert('Please enter a comment.');
+        }
+      });
+    });
+
+    document.querySelectorAll('.cancelEditComment').forEach(button => {
+      button.addEventListener('click', function() {
+        const transactNo = this.getAttribute('data-id');
+        const commentInput = document.getElementById('commentInput' + transactNo);
+        const editButton = document.querySelector('.editComment[data-id="' + transactNo + '"]');
+        const addButton = document.querySelector('.addComment[data-id="' + transactNo + '"]');
+        const submitEditButton = document.querySelector('.submitEditComment[data-id="' + transactNo + '"]');
+        const cancelEditButton = document.querySelector('.cancelEditComment[data-id="' + transactNo + '"]');
+        const deleteButton = document.querySelector('.deleteComment[data-id="' + transactNo + '"]');
+
+        commentInput.value = commentInput.getAttribute('data-original-comment');
+        commentInput.disabled = true;
+
+        // Restore default button visibility
+        submitEditButton.style.display = 'none';
+        cancelEditButton.style.display = 'none';
+        deleteButton.style.display = 'none';
+        editButton.style.display = 'inline-block';
+      });
+    });
+
+    document.querySelectorAll('.cancelAddComment').forEach(button => {
+      button.addEventListener('click', function() {
+        const transactNo = this.getAttribute('data-id');
+        const commentInput = document.getElementById('commentInput' + transactNo);
+        const editButton = document.querySelector('.editComment[data-id="' + transactNo + '"]');
+        const addButton = document.querySelector('.addComment[data-id="' + transactNo + '"]');
+        const submitAddButton = document.querySelector('.submitAddComment[data-id="' + transactNo + '"]');
+        const cancelAddButton = document.querySelector('.cancelAddComment[data-id="' + transactNo + '"]');
+
+        commentInput.value = ''; // Reset comment input
+        commentInput.disabled = true; // Disable the input field
+
+        // Restore default button visibility
+        submitAddButton.style.display = 'none';
+        cancelAddButton.style.display = 'none';
+        addButton.style.display = 'inline-block'; // Ensure 'addButton' is visible
+      });
+    });
+  </script>
+
+
+  <script>
+    // Function to initialize or reinitialize the DataTable
+    function initializeDataTable() {
+      // Check if the table is already initialized
+      if (!$.fn.DataTable.isDataTable('.info-table')) {
+        var table = $('.info-table').DataTable({
+          "scrollCollapse": true,
+          "deferRender": true,
+          responsive: true,
+          autoWidth: false, // Prevent automatic width calculation
+          scrollX: true, // Enable horizontal scrolling
+          scrollY: "540px", // Set vertical scroll height
+          paging: true, // Enable pagination
+          searching: false, // Disable search
+          info: false, // Disable info text
+          pageLength: 15, // Set number of rows per page
+          dom: 'rt<"bottom"flp>',
+          ordering: false, // Disable sorting on columns
+
+          columnDefs: [{
+              targets: 0,
+              width: '3%'
+            },
+            {
+              targets: 1,
+              width: '6%'
+            },
+            {
+              targets: 2,
+              width: '5%'
+            },
+            {
+              targets: 3,
+              width: '10%'
+            },
+            {
+              targets: 4,
+              width: '10%'
+            },
+            {
+              targets: 5,
+              width: '5%'
+            },
+            {
+              targets: 6,
+              width: '7%'
+            },
+            {
+              targets: 7,
+              width: '7%'
+            },
+            {
+              targets: 8,
+              width: '7%'
+            },
+            {
+              targets: 9,
+              width: '7%'
+            },
+            {
+              targets: 10,
+              width: '7%'
+            },
+            {
+              targets: 11,
+              width: '7%'
+            },
+            {
+              targets: '_all',
+              width: '3%',
+              height: '40px',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap'
+            } // For columns 13 and beyond
+          ]
         });
-      } else {
-        alert('Please enter a comment.');
-      }
-    });
-  });
 
-
-  document.querySelectorAll('.submitEditComment').forEach(button => {
-    button.addEventListener('click', function() {
-      const transactNo = this.getAttribute('data-id');
-      const comment = document.getElementById('commentInput' + transactNo).value;
-
-      if (comment) {
-        $.ajax({
-          url: '../Employee Section/functions/emp-commentUpdate.php',
-          type: 'POST',
-          data: {
-            transactNo,
-            comment
-          },
-
-          success: function(response) {
-            alert('Comment updated successfully!');
-            location.reload();
-          },
-          error: function(xhr, status, error) {
-            alert('Error updating comment.');
-          }
+        // Event listener for row clicks in .info-table
+        $('.info-table').on('click', 'tbody tr', function(e) {
+          if ($(e.target).is('input[type="checkbox"]')) return; // Ignore checkboxes
+          const index = $(this).index();
+          selectRowInBothTables(index); // If you have this function
         });
-      } else {
-        alert('Please enter a comment.');
+
+        // Update page length based on user selection
+        $('#rowsPerPage').on('change', function() {
+          var pageLength = $(this).val();
+          table.page.len(pageLength).draw(); // Set the page length and redraw the table
+        });
+
+        // Handle previous/next buttons
+        $('#prevPage').on('click', function() {
+          table.page('previous').draw('page');
+        });
+
+        $('#nextPage').on('click', function() {
+          table.page('next').draw('page');
+        });
+
+        // Update page info on page change
+        table.on('draw', function() {
+          var info = table.page.info();
+          $('#pageInfo').text('Page ' + (info.page + 1) + ' of ' + info.pages);
+        });
       }
-    });
-  });
-
-  document.querySelectorAll('.cancelEditComment').forEach(button => {
-    button.addEventListener('click', function() {
-      const transactNo = this.getAttribute('data-id');
-      const commentInput = document.getElementById('commentInput' + transactNo);
-      const editButton = document.querySelector('.editComment[data-id="' + transactNo + '"]');
-      const addButton = document.querySelector('.addComment[data-id="' + transactNo + '"]');
-      const submitEditButton = document.querySelector('.submitEditComment[data-id="' + transactNo + '"]');
-      const cancelEditButton = document.querySelector('.cancelEditComment[data-id="' + transactNo + '"]');
-      const deleteButton = document.querySelector('.deleteComment[data-id="' + transactNo + '"]');
-
-      commentInput.value = commentInput.getAttribute('data-original-comment');
-      commentInput.disabled = true;
-
-      // Restore default button visibility
-      submitEditButton.style.display = 'none';
-      cancelEditButton.style.display = 'none';
-      deleteButton.style.display = 'none';
-      editButton.style.display = 'inline-block';
-    });
-  });
-
-  document.querySelectorAll('.cancelAddComment').forEach(button => {
-    button.addEventListener('click', function() {
-      const transactNo = this.getAttribute('data-id');
-      const commentInput = document.getElementById('commentInput' + transactNo);
-      const editButton = document.querySelector('.editComment[data-id="' + transactNo + '"]');
-      const addButton = document.querySelector('.addComment[data-id="' + transactNo + '"]');
-      const submitAddButton = document.querySelector('.submitAddComment[data-id="' + transactNo + '"]');
-      const cancelAddButton = document.querySelector('.cancelAddComment[data-id="' + transactNo + '"]');
-
-      commentInput.value = ''; // Reset comment input
-      commentInput.disabled = true; // Disable the input field
-
-      // Restore default button visibility
-      submitAddButton.style.display = 'none';
-      cancelAddButton.style.display = 'none';
-      addButton.style.display = 'inline-block'; // Ensure 'addButton' is visible
-    });
-  });
-</script>
-
-
-<script>
-  // Function to initialize or reinitialize the DataTable
-  function initializeDataTable() {
-    // Check if the table is already initialized
-    if (!$.fn.DataTable.isDataTable('.info-table')) {
-      var table = $('.info-table').DataTable({
-        "scrollCollapse": true,
-        "deferRender": true,
-        responsive: true,
-        autoWidth: false, // Prevent automatic width calculation
-        scrollX: true, // Enable horizontal scrolling
-        scrollY: "540px", // Set vertical scroll height
-        paging: true, // Enable pagination
-        searching: false, // Disable search
-        info: false, // Disable info text
-        pageLength: 15, // Set number of rows per page
-        dom: 'rt<"bottom"flp>',
-        ordering: false, // Disable sorting on columns
-
-        columnDefs: [{
-            targets: 0,
-            width: '3%'
-          },
-          {
-            targets: 1,
-            width: '6%'
-          },
-          {
-            targets: 2,
-            width: '5%'
-          },
-          {
-            targets: 3,
-            width: '10%'
-          },
-          {
-            targets: 4,
-            width: '10%'
-          },
-          {
-            targets: 5,
-            width: '5%'
-          },
-          {
-            targets: 6,
-            width: '7%'
-          },
-          {
-            targets: 7,
-            width: '7%'
-          },
-          {
-            targets: 8,
-            width: '7%'
-          },
-          {
-            targets: 9,
-            width: '7%'
-          },
-          {
-            targets: 10,
-            width: '7%'
-          },
-          {
-            targets: 11,
-            width: '7%'
-          },
-          {
-            targets: '_all',
-            width: '3%',
-            height: '40px',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap'
-          } // For columns 13 and beyond
-        ]
-      });
-
-      // Event listener for row clicks in .info-table
-      $('.info-table').on('click', 'tbody tr', function(e) {
-        if ($(e.target).is('input[type="checkbox"]')) return; // Ignore checkboxes
-        const index = $(this).index();
-        selectRowInBothTables(index); // If you have this function
-      });
-
-      // Update page length based on user selection
-      $('#rowsPerPage').on('change', function() {
-        var pageLength = $(this).val();
-        table.page.len(pageLength).draw(); // Set the page length and redraw the table
-      });
-
-      // Handle previous/next buttons
-      $('#prevPage').on('click', function() {
-        table.page('previous').draw('page');
-      });
-
-      $('#nextPage').on('click', function() {
-        table.page('next').draw('page');
-      });
-
-      // Update page info on page change
-      table.on('draw', function() {
-        var info = table.page.info();
-        $('#pageInfo').text('Page ' + (info.page + 1) + ' of ' + info.pages);
-      });
     }
-  }
 
-  $(document).ready(function() {
-    // Call the function to initialize the DataTable when the document is ready
-    initializeDataTable();
-  });
-</script>
+    $(document).ready(function() {
+      // Call the function to initialize the DataTable when the document is ready
+      initializeDataTable();
+    });
+  </script>
 
 
-  </body>
+</body>
+
 </html>
