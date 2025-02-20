@@ -102,23 +102,22 @@
         <h5 class="modal-title" id="uploadModalLabel">Upload File</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-        <form id="uploadForm" action="../Agent Section/functions/agent-visaRequirementsUpdate-code.php" method="POST" enctype="multipart/form-data">
-          <input type="" name="guestId" id="modalGuestId">
-          <input type="" name="fileType" id="modalFileType">
-          <input type="" name="transactNo" value="<?php echo $transactionNumber; ?>">
+      <form id="uploadForm" action="../Agent Section/functions/agent-visaRequirementsUpdate-code.php" method="POST" enctype="multipart/form-data">
+        <div class="modal-body">
+          <input type="hidden" name="guestId" id="modalGuestId">
+          <input type="hidden" name="fileType" id="modalFileType">
+          <input type="hidden" name="transactNo" value="<?php echo $transactionNumber; ?>">
 
           <div class="mb-3">
             <label for="fileInput" class="form-label">Select File</label>
             <input type="file" class="form-control" name="file" id="fileInput" required>
           </div>
-
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-            <button type="submit" name="upload" class="btn btn-success">Upload</button>
-          </div>
-        </form>
-      </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" name="upload" class="btn btn-success">Upload</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>

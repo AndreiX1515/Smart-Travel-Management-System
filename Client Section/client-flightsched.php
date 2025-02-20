@@ -120,7 +120,7 @@ $accId = $_SESSION['accountId'] ?? '';
                       f.flightPrice AS FlightPrice   
                   FROM 
                       employee e 
-                  JOIN 
+                  RIGHT JOIN 
                       flight f ON f.employeeId = e.employeeId
                   LEFT JOIN 
                       booking b ON b.flightId = f.flightId
