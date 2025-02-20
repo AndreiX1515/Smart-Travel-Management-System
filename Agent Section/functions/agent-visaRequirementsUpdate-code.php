@@ -6,7 +6,7 @@ error_reporting(E_ALL);
 
 require "../../conn.php"; // Database connection
 
-if (isset($_POST['updateVisaRequirements'])) 
+if (isset($_POST['upload'])) 
 {
   $transactNo = $_POST['transactNo'] ?? null;
   $guestId = $_POST['guestId'] ?? null;
@@ -80,29 +80,32 @@ if (isset($_POST['updateVisaRequirements']))
   // Start transaction
   $conn->begin_transaction();
 
-  // Check if a record exists
-  $checkQuery = "SELECT * FROM visarequirements WHERE guestId = ? AND transactNo = ?";
-  $stmt = $conn->prepare($checkQuery);
-  $stmt->bind_param("is", $guestId, $transactNo);
-  $stmt->execute();
-  $result = $stmt->get_result();
-  $stmt->close();
-
-  if ($result->num_rows > 0) 
+  if ($fileType == 'passport')
   {
-    // Update the existing record
-    $updateQuery = "UPDATE visarequirements SET $fileType = ?, dateSubmitted = ? WHERE guestId = ? AND transactNo = ?";
-    $stmt = $conn->prepare($updateQuery);
-    $stmt->bind_param("ssis", $newFilePath, $currentDateTime, $guestId, $transactNo);
-  } 
+    $sql = "UPDATE visarequirements SET passport = ? WHERE guestId = ?";
+  }
+  else if ($fileType == 'permit')
+  {
+    $sql = "UPDATE visarequirements SET permit = ? WHERE guestId = ?";
+  }
+  else if ($fileType == 'validId')
+  {
+    $sql = "UPDATE visarequirements SET validId = ? WHERE guestId = ?";
+  }
+  else if ($fileType == 'certificate')
+  {
+    $sql = "UPDATE visarequirements SET certificate = ? WHERE guestId = ?";
+  }
   else 
   {
-    // Insert a new record if none exists
-    $insertQuery = "INSERT INTO visarequirements (guestId, transactNo, accId, $fileType, dateSubmitted)
-                    VALUES (?, ?, (SELECT accId FROM agent WHERE agentId = (SELECT accId FROM visarequirements WHERE transactNo = ? LIMIT 1)), ?, ?)";
-    $stmt = $conn->prepare($insertQuery);
-    $stmt->bind_param("issss", $guestId, $transactNo, $transactNo, $newFilePath, $currentDateTime);
+    $_SESSION['status'] = "Invalid file type provided.";
+    header("Location: ../agent-showGuest.php?id=" . htmlspecialchars($transactNo));
+    exit();
   }
+
+  // Prepare and execute update query
+  $stmt = $conn->prepare($sql);
+  $stmt->bind_param("si", $newFilePath, $guestId);
 
   if ($stmt->execute()) 
   {
@@ -112,11 +115,46 @@ if (isset($_POST['updateVisaRequirements']))
   else 
   {
     $conn->rollback();
-    $_SESSION['status'] = "Database update failed: " . $stmt->error;
+    $_SESSION['status'] = "Database update failed.";
   }
+  
+
+  // Check if a record exists
+  // $checkQuery = "SELECT * FROM visarequirements WHERE guestId = ? AND transactNo = ?";
+  // $stmt = $conn->prepare($checkQuery);
+  // $stmt->bind_param("is", $guestId, $transactNo);
+  // $stmt->execute();
+  // $result = $stmt->get_result();
+  // $stmt->close();
+
+  // if ($result->num_rows > 0) 
+  // {
+  //   // Update the existing record
+  //   $updateQuery = "UPDATE visarequirements SET $fileType = ?, dateSubmitted = ? WHERE guestId = ? AND transactNo = ?";
+  //   $stmt = $conn->prepare($updateQuery);
+  //   $stmt->bind_param("ssis", $newFilePath, $currentDateTime, $guestId, $transactNo);
+  // } 
+  // else 
+  // {
+  //   // Insert a new record if none exists
+  //   $insertQuery = "INSERT INTO visarequirements (guestId, transactNo, accId, $fileType, dateSubmitted)
+  //                   VALUES (?, ?, (SELECT accId FROM agent WHERE agentId = (SELECT accId FROM visarequirements WHERE transactNo = ? LIMIT 1)), ?, ?)";
+  //   $stmt = $conn->prepare($insertQuery);
+  //   $stmt->bind_param("issss", $guestId, $transactNo, $transactNo, $newFilePath, $currentDateTime);
+  // }
+
+  // if ($stmt->execute()) 
+  // {
+  //   $conn->commit();
+  //   $_SESSION['status'] = ucfirst($fileType) . " updated successfully.";
+  // } 
+  // else 
+  // {
+  //   $conn->rollback();
+  //   $_SESSION['status'] = "Database update failed: " . $stmt->error;
+  // }
 
   $stmt->close();
-  
   header("Location: ../agent-showGuest.php?id=" . htmlspecialchars($transactNo));
   exit();
 }
