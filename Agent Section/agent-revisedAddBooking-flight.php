@@ -18,7 +18,6 @@ require "../conn.php";
 </head>
 
 <body>
-
   <div class="body-container">
     <?php include "../Agent Section/includes/sidebar.php"; ?>
 
@@ -27,7 +26,7 @@ require "../conn.php";
 
       <div class="main-content">
         <?php
-          if (isset($_SESSION['status'])):
+        if (isset($_SESSION['status'])):
         ?>
           <div class="alert alert-success alert-dismissible fade show" role="alert">
             <strong></strong> <?= $_SESSION['status']; ?>
@@ -35,39 +34,44 @@ require "../conn.php";
           </div>
         <?php
           unset($_SESSION['status']);
-          endif;
+        endif;
         ?>
 
-        <?php
-          if (isset($_GET['flightid'])) 
-          {
-            $flightid = $_GET['flightid'];
-            $_SESSION['flightid'] = $flightid;
+<?php
 
-            // Join flight and package tables to get relevant information
-            $sql1 = "SELECT flight.*, package.packageName, package.packagePrice
-                      FROM flight
-                      JOIN package ON flight.packageId = package.packageId
-                      WHERE flight.flightId = ?";
 
-            // Prepare the statement
-            if ($stmt = $conn->prepare($sql1)) 
-            {
-              // Bind the flightId as an integer parameter
-              $stmt->bind_param("i", $flightid); // "i" means integer
+echo "<pre>";
+print_r($_SESSION);
+echo "</pre>";
 
-              // Execute the statement
-              if ($stmt->execute()) 
-              {
-                // Get the result
-                $result = $stmt->get_result();
+// Detect Flight ID from GET or SESSION
+if (isset($_GET['flightid']) || isset($_SESSION['flightid'])) {
+    if (isset($_GET['flightid'])) {
+        $_SESSION['flightid'] = $_GET['flightid']; // Update session if new GET value is present
+    }
 
-                // Check if a row is returned
-                if ($result->num_rows > 0) 
-                {
-                  // Fetch the data
-                  while ($row = $result->fetch_assoc()) 
-                  {
+    $flightid = $_SESSION['flightid']; // Use session-stored ID
+
+    // Join flight and package tables to get relevant information
+    $sql1 = "SELECT flight.*, package.packageName, package.packagePrice
+             FROM flight
+             JOIN package ON flight.packageId = package.packageId
+             WHERE flight.flightId = ?";
+
+    // Prepare the statement
+    if ($stmt = $conn->prepare($sql1)) {
+        // Bind the flightId as an integer parameter
+        $stmt->bind_param("i", $flightid); // "i" means integer
+
+        // Execute the statement
+        if ($stmt->execute()) {
+            // Get the result
+            $result = $stmt->get_result();
+
+            // Check if a row is returned
+            if ($result->num_rows > 0) {
+                // Fetch the data
+                while ($row = $result->fetch_assoc()) {
                     $packageId = $row['packageId'];
                     $packageName = $row['packageName'];
                     $packagePrice = $row['packagePrice'];
@@ -76,31 +80,25 @@ require "../conn.php";
                     $month = date('F', strtotime($row['flightDepartureDate']));
                     $flightDepartureDate = $row['flightDepartureDate'];
                     $flightPrice = $row['flightPrice'];
-                  }
-                } 
-                else 
-                {
-                  echo "No flight found with that ID.";
                 }
-              } 
-              else 
-              {
-                echo "Error executing query: " . $stmt->error;
-              }
-
-              // Close the statement
-              $stmt->close();
-            } 
-            else 
-            {
-              echo "Error preparing statement: " . $conn->error;
+            } else {
+                echo "No flight found with that ID.";
             }
-          } 
-          else 
-          {
-            echo "Flight ID is not set.";
-          }
-        ?>
+        } else {
+            echo "Error executing query: " . $stmt->error;
+        }
+
+        // Close the statement
+        $stmt->close();
+    } else {
+        echo "Error preparing statement: " . $conn->error;
+    }
+} else {
+    echo "Flight ID is not set in GET or SESSION.";
+}
+?>
+
+        
 
         <form action="../Agent Section/functions/agent-revisedAddBooking-code.php" method="POST">
           <div class="booking-wrapper">
@@ -174,20 +172,20 @@ require "../conn.php";
                   </div>
                 </div>
 
-                <input type="hidden" id="agentCode" name="agentCode" value="<?php echo $_SESSION['agentCode']; ?>" placeholder="Agent Code Input">
-                <input type="hidden" id="flightId" name="flightId" value="<?php echo $flightid; ?>" placeholder="Flight Id Input">
+                <input type="text" id="agentCode" name="agentCode" value="<?php echo $_SESSION['agentCode']; ?>" placeholder="Agent Code Input">
+                <input type="text" id="flightId" name="flightId" value="<?php echo $flightid; ?>" placeholder="Flight Id Input">
 
                 <!-- Adjusted Fields -->
-                <input type="hidden" id="packagePrice" name="packagePrice" value="<?php echo isset($packagePrice) ? $packagePrice : ''; ?>" placeholder="Package Price">
-                <input type="hidden" name="flightPrice" id="flightPricee" value="<?php echo isset($flightPrice) ? $flightPrice : ''; ?>" placeholder="Flight Price">
-                <input type="hidden" name="agentId" id="agentId" value="<?php echo $_SESSION['agentId']; ?>" placeholder="Agent Id">
-                <input type="hidden" name="agentType" placeholder="Agent Type Input" value="<?php echo $_SESSION['agentType']; ?>">
-                <input type="hidden" name="accId" id="accId" placeholder="Account Id Input" value="<?php echo $_SESSION['accountId']; ?>">
+                <input type="text" id="packagePrice" name="packagePrice" value="<?php echo isset($packagePrice) ? $packagePrice : ''; ?>" placeholder="Package Price">
+                <input type="text" name="flightPrice" id="flightPricee" value="<?php echo isset($flightPrice) ? $flightPrice : ''; ?>" placeholder="Flight Price">
+                <input type="text" name="agentId" id="agentId" value="<?php echo $_SESSION['agentId']; ?>" placeholder="Agent Id">
+                <input type="text" name="agentType" placeholder="Agent Type Input" value="<?php echo $_SESSION['agentType']; ?>">
+                <input type="text" name="accId" id="accId" placeholder="Account Id Input" value="<?php echo $_SESSION['accountId']; ?>">
 
                 <!-- Adjusted Package Fields -->
-                <input type="hidden" name="packageId" id="packageId" value="<?php echo isset($packageId) ? $packageId : ''; ?>" placeholder="Package Id Input">
-                <input type="hidden" name="packageName" id="packageName" value="<?php echo isset($packageName) ? $packageName : ''; ?>" placeholder="Package Name Input">
-                <input type="hidden" name="origin" id="origin" value="<?php echo isset($origin) ? $origin : ''; ?>" placeholder="Origin Input">
+                <input type="text" name="packageId" id="packageId" value="<?php echo isset($packageId) ? $packageId : ''; ?>" placeholder="Package Id Input">
+                <input type="text" name="packageName" id="packageName" value="<?php echo isset($packageName) ? $packageName : ''; ?>" placeholder="Package Name Input">
+                <input type="text" name="origin" id="origin" value="<?php echo isset($origin) ? $origin : ''; ?>" placeholder="Origin Input">
 
               </div>
 
@@ -576,8 +574,7 @@ require "../conn.php";
   <?php require "../Agent Section/includes/scripts.php"; ?>
 
   <script>
-    function toggleSubMenu(submenuId) 
-    {
+    function toggleSubMenu(submenuId) {
       const submenu = document.getElementById(submenuId);
       const sectionTitle = submenu.previousElementSibling;
       const chevron = sectionTitle.querySelector('.chevron-icon');
@@ -586,24 +583,19 @@ require "../conn.php";
       const isOpen = submenu.classList.contains('open');
 
       // If it's open, we need to close it, and reset the chevron
-      if (isOpen) 
-      {
+      if (isOpen) {
         submenu.classList.remove('open');
         chevron.style.transform = 'rotate(0deg)';
-      } 
-      else 
-      {
+      } else {
         // First, close all open submenus and reset all chevrons
         const allSubmenus = document.querySelectorAll('.submenu');
         const allChevrons = document.querySelectorAll('.chevron-icon');
 
-        allSubmenus.forEach(sub => 
-        {
+        allSubmenus.forEach(sub => {
           sub.classList.remove('open');
         });
 
-        allChevrons.forEach(chev => 
-        {
+        allChevrons.forEach(chev => {
           chev.style.transform = 'rotate(0deg)';
         });
 
@@ -616,11 +608,9 @@ require "../conn.php";
 
 
   <script>
-    $(document).ready(function() 
-    {  
+    $(document).ready(function() {
       // Fetch flight Related Details once changed
-      $('#flightDate').on('change', function() 
-      {
+      $('#flightDate').on('change', function() {
         var flightId = $(this).val();
         $('#flightId').val(flightId); // Set the value of the input field
         var selectedFlight = $("#flightDate option:selected").text();
@@ -628,16 +618,13 @@ require "../conn.php";
         $('#selectedDate').text(selectedDate);
         console.log("Selected Flight ID:", flightId); // Debugging output
 
-        $.ajax(
-        {
+        $.ajax({
           url: '../Agent Section/functions/fetchFlightDetails.php', // Separate PHP file for return flight
           type: 'POST',
-          data: 
-          {
+          data: {
             flightId: flightId
           },
-          success: function(response) 
-          {
+          success: function(response) {
             var data = JSON.parse(response); // Parse the JSON response
             console.log(data);
 
@@ -650,8 +637,7 @@ require "../conn.php";
             updateTotalPaxMax();
 
           },
-          error: function(xhr, status, error) 
-          {
+          error: function(xhr, status, error) {
             console.error('Error fetching return flight:', error); // Log the error to console
           }
         });
@@ -662,8 +648,7 @@ require "../conn.php";
       $('#land').on('change', updateTotalPaxMax); // Trigger on "Land Only" checkbox toggle
 
       // Ensure that if the user manually enters a number greater than the max, it's automatically corrected
-      $('#totalPax').on('input', function() 
-      {
+      $('#totalPax').on('input', function() {
         var maxSeats = parseInt($(this).attr('max'));
         var currentPax = parseInt($(this).val());
 
@@ -676,8 +661,7 @@ require "../conn.php";
       });
 
       // New Book Now Button Click Event
-      $('#bookNowButton').click(function(event) 
-      {
+      $('#bookNowButton').click(function(event) {
         $('#selectedPackage').text($('#packageName').val());
         $('#selectedOrigin').text($('#origin').val());
         var selectedFlight = $("#flightDate option:selected").text();
@@ -685,8 +669,7 @@ require "../conn.php";
         $('#selectedDate').text(selectedDate);
         event.preventDefault(); // Prevent default form submission
 
-        const errors = 
-        {
+        const errors = {
           totalPax: 'Please Enter Total Pax.',
           flightDate: 'Please Select Flight Date.',
           fName: 'Please Enter First Name',
@@ -711,11 +694,9 @@ require "../conn.php";
         console.log(totalSeats);
 
         // Validation function
-        const validateField = (selector, errorMsgKey) => 
-        {
+        const validateField = (selector, errorMsgKey) => {
           const fieldValue = $(selector).val();
-          if (!fieldValue) 
-          {
+          if (!fieldValue) {
             $(`${selector}Error`).text(errors[errorMsgKey]); // Update error message
             $(selector).addClass('is-invalid'); // Add invalid class
             isValid = false; // Set valid flag to false
@@ -735,16 +716,14 @@ require "../conn.php";
 
         // Additional check for totalPax to ensure it is not 0
         const totalPax = parseInt($('#totalPax').val());
-        if (totalPax === 0 || isNaN(totalPax)) 
-        {
+        if (totalPax === 0 || isNaN(totalPax)) {
           $('#totalPaxError').text('Total Pax cannot be 0. Please enter a valid number.');
           $('#totalPax').addClass('is-invalid');
           isValid = false;
         }
 
         // Clear error messages when inputs are focused or changed
-        $('select, input').on('focus change', function() 
-        {
+        $('select, input').on('focus change', function() {
           const errorSpanId = `#${$(this).attr('id')}Error`;
           $(this).removeClass('is-invalid'); // Remove invalid class
           $(errorSpanId).text(''); // Clear error message
@@ -752,8 +731,7 @@ require "../conn.php";
         });
 
         // Combined validation for Land Only or Seat availability
-        if (isValid) 
-        {
+        if (isValid) {
           const firstName = $('#fName').val().trim();
           const lastName = $('#lName').val().trim();
           let middleName = $('#mName').val().trim() || '';
@@ -771,22 +749,17 @@ require "../conn.php";
           const fullName = `${lastName}, ${firstName} ${suffix} ${middleName}`;
 
           // Check if "Land Only" is selected
-          if ($('#land').prop('checked')) 
-          {
+          if ($('#land').prop('checked')) {
             // Set the full name and email, and trigger modal
             $('#contactPersonName').text(fullName);
             $('#contactPersonEmail').text(email);
             $('#guestCount').text(totalPax);
             $('#BookingSummaryModal').modal('show'); // Trigger modal display
-          } 
-          else if (totalPax > totalSeats) 
-          {
+          } else if (totalPax > totalSeats) {
             // If land only is not selected, check for seat availability
             $('#errorMessage').text('The Available Seats are not enough.'); // Show error message in the UI
             alert('The Available Seats are not enough.'); // Show error message as an alert
-          } 
-          else 
-          {
+          } else {
             // Set the full name in the contactPersonName paragraph
             $('#contactPersonName').text(fullName);
             // Set the email in the email paragraph
@@ -796,29 +769,24 @@ require "../conn.php";
 
             $('#BookingSummaryModal').modal('show'); // Trigger modal display
           }
-        } 
-        else 
-        {
+        } else {
           $('#errorMessage').text('Validation failed or no seats available.'); // Show error message in the UI
           console.error('Validation failed or no seats available.');
         }
       });
 
       // Automatically recalculate total price when flightDate or totalPax changes
-      $('#flightDate, #totalPax').on('input change', function() 
-      {
+      $('#flightDate, #totalPax').on('input change', function() {
         updateTotalPrice(); // Recalculate total price
       });
 
       // Recalculate total price when "land" checkbox is toggled
-      document.getElementById('land').addEventListener('change', function() 
-      {
+      document.getElementById('land').addEventListener('change', function() {
         updateTotalPrice(); // Recalculate total price when land is checked/unchecked
       });
 
       // Function to update total price calculation
-      function updateTotalPrice() 
-      {
+      function updateTotalPrice() {
         let totalPrice = 0;
         const isLandChecked = document.getElementById('land').checked; // Check if "land" checkbox is checked
         const totalPax = parseInt($('#totalPax').val()) || 0; // Get total passengers, default to 0 if invalid
@@ -868,57 +836,47 @@ require "../conn.php";
       }
 
       // Optional: Listen for changes in pax fields
-      document.querySelectorAll('.pax').forEach((element) => 
-      {
+      document.querySelectorAll('.pax').forEach((element) => {
         element.addEventListener('input', function() {
           updateTotalPrice(); // Recalculate when pax value changes
         });
       });
 
       // Helper function to format numbers with commas
-      function formatNumberWithCommas(num) 
-      {
+      function formatNumberWithCommas(num) {
         return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       }
 
-      function updateTotalPaxMax() 
-      {
+      function updateTotalPaxMax() {
         // Get the input values
         var flightId = $('#flightId').val();
         var agentId = $('#agentId').val();
         var accId = $('#accId').val();
         var isLandOnlyChecked = $('#land').is(':checked');
 
-        if (flightId !== '') 
-        {
+        if (flightId !== '') {
           // Perform an AJAX request to fetch seat information
-          $.ajax(
-          {
+          $.ajax({
             url: '../Agent Section/functions/fetchMaxSeatsPerAgent.php', // Replace with your server-side script URL
             method: 'POST',
-            data: 
-            {
+            data: {
               flightId: flightId,
               accId: accId
             }, // Send the flightId to the server
             dataType: 'json', // Specify that we're expecting JSON response
-            success: function(response) 
-            {
-              if (response.flightId !== null) 
-              {
+            success: function(response) {
+              if (response.flightId !== null) {
                 // Extract the maxSeats from the response
                 var maxSeats = response.maxSeats;
                 var totalSeats = response.totalSeatsLeft;
 
-                if (!isLandOnlyChecked) 
-                {
+                if (!isLandOnlyChecked) {
                   // If "Land Only" is not checked, dynamically update the max attribute
                   $('#totalPax').attr('max', maxSeats);
 
                   // Check if the current value of totalPax exceeds maxSeats, reset to maxSeats if needed
                   var currentPax = $('#totalPax').val();
-                  if (currentPax > maxSeats) 
-                  {
+                  if (currentPax > maxSeats) {
                     $('#totalPax').val(maxSeats); // Adjust the value
                     console.log('Pax left: ' + maxSeats);
                     console.log('Seats left: ' + totalSeats);
@@ -927,30 +885,23 @@ require "../conn.php";
                   // Display the available seats
                   $('#maxSeats').text('Agent-Specific Available Seats for this Flight: ' + maxSeats);
                   $('#availSeats').text('Total Remaining Seats for this Flight: ' + totalSeats);
-                } 
-                else 
-                {
+                } else {
                   // If "Land Only" is checked, set a default max value and clear the display
                   $('#totalPax').attr('max', 999); // Example max value, adjust as needed
                   $('#maxSeats').text(' ');
                   $('#availSeats').text(' ');
                 }
-              } 
-              else 
-              {
+              } else {
                 // Handle the case where no flight information is found
                 $('#maxSeats').text('Available Seats for this Flight: N/A');
               }
             },
-            error: function(xhr, status, error) 
-            {
+            error: function(xhr, status, error) {
               // Log any errors
               console.error('AJAX Error:', error);
             }
           });
-        } 
-        else 
-        {
+        } else {
           // Reset if no flight ID is selected
           $('#totalPax').removeAttr('max');
           $('#maxSeats').text('Available Seats for this Flight: N/A');

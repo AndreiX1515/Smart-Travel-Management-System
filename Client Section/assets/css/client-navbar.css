@@ -1,442 +1,425 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Poppins:wght@400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Poppins:wght@400;500;600;700&display=swap");
 
 * {
-    font-family: 'Roboto', 'Segoe UI', Arial, sans-serif;
+  font-family: "Roboto", "Segoe UI", Arial, sans-serif;
 }
 
-h1, h2, h3, h4, h5, h6 {
-    font-family: 'Poppins', sans-serif;
-    font-weight: 600;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
 }
 
 body {
-    font-family: 'Roboto', sans-serif;
-    font-weight: 400;
-    margin: 0;
-    padding: 0;
-    height: 100%; /* Ensure full height for body */
-    overflow: hidden; /* Hides the scrollbar globally */
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  margin: 0;
+  padding: 0;
+  height: 100%; /* Ensure full height for body */
+  overflow: hidden; /* Hides the scrollbar globally */
 }
 
 /* Container where scroll is enabled but scrollbar is hidden */
 .body-container {
-    display: flex;
-    width: 100%;
-    height: 100vh;
-    box-sizing: border-box;
-    margin-top: 70px; /* Adjusted to account for navbar height */
-    overflow: auto; /* Enables scrolling within the container */
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE/Edge */
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  box-sizing: border-box;
+  margin-top: 37px; /* Adjusted to account for navbar height */
+  overflow: auto; /* Enables scrolling within the container */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
 }
 
 .body-container::-webkit-scrollbar {
-    display: none; /* Hides scrollbar in WebKit-based browsers (Chrome, Safari, etc.) */
+  display: none; /* Hides scrollbar in WebKit-based browsers (Chrome, Safari, etc.) */
 }
-
-
-
 
 /* Navbar styles */
 .navbar {
-	padding: 6px 20px;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	background: rgba(238, 238, 238, 0.2);
-	backdrop-filter: blur(10px);
-	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-	border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-	z-index: 999;
-	position: fixed;
-	top: 0;
-	width: 100%;
-	box-sizing: border-box;
+  padding: 6px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(238, 238, 238, 0.2);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  z-index: 999;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 /* Navbar middle section */
 .navbar-middle {
-		flex-grow: 1;
-		text-align: center;
+  flex-grow: 1;
+  text-align: center;
 }
-
 
 .navbar-toggler {
-	padding: 0;
+  padding: 0;
 }
-
-
-
-
-
 
 /* Navbar links */
 .navbar-nav .nav-item .nav-link {
-	color: #6c757d;
-	font-size: 14px;
-	transition: color 0.3s ease;
+  color: #6c757d;
+  font-size: 14px;
+  transition: color 0.3s ease;
 }
 
 .navbar-nav .nav-item .nav-link:hover {
-	color: #116530;
-	text-decoration: none;
+  color: #116530;
+  text-decoration: none;
 }
 
-
-
 .toggle-btn {
-	display: flex;
-	align-items: center;
-	cursor: pointer;
-	margin-right: 0px;
-	border: none;
-	border-radius: 0 5px 5px 0;
-	width: 40px;
-	height: 40px;
-	color: white;
-	font-size: 20px;
-	cursor: pointer;
-	transition: transform 0.3s ease;
-	z-index: 1100;
-	color: #000;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin-right: 0px;
+  border: none;
+  border-radius: 0 5px 5px 0;
+  width: 40px;
+  height: 40px;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  z-index: 1100;
+  color: #000;
 }
 
 /* Dropdown and profile image */
 .nav-item.dropdown {
-	display: flex;
-	align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .profile-container {
-	display: flex;
-	align-items: start;
-	flex-direction: column;
-	margin-left: 8px;
+  display: flex;
+  align-items: start;
+  flex-direction: column;
+  margin-left: 8px;
 }
 
 .profile-container h6 {
-	font-weight: bold;
-	margin: 0;
+  font-weight: bold;
+  margin: 0;
 }
 
 .profile-container span {
-	font-size: 12px;
-	color: gray;
-	margin: 0;
+  font-size: 12px;
+  color: gray;
+  margin: 0;
 }
 
 .profile-image {
-	border-radius: 50%;
+  border-radius: 50%;
 }
 
 .navbar-collapse {
-	display: none;
-
+  display: none;
 }
 
 /* Make sure navbar items are shown when toggled */
 .navbar-collapse {
-	display: none; /* Initially hidden */
-	display: flex;
-	flex-direction: column;
-	justify-content: left;
+  display: none; /* Initially hidden */
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
 }
 
 .navbar-collapse.show {
-	display: block; /* Show when toggled */
+  display: block; /* Show when toggled */
 }
 
 /* Hide navbar items by default */
 .navbar-collapse {
-	display: none; /* Initially hidden */
+  display: none; /* Initially hidden */
 }
 
 /* Show when toggled (added class 'show' when toggled) */
 .navbar-collapse.show {
-	display: flex; /* Show when toggled */
+  display: flex; /* Show when toggled */
 }
 
 /* Navbar links inside collapse */
 .navbar-collapse .navbar-nav {
-	width: 100%; /* Ensure full-width of the parent container */
-	padding: 0;
-	margin: 0;
+  width: 100%; /* Ensure full-width of the parent container */
+  padding: 0;
+  margin: 0;
 }
 
 /* Styling individual navbar items */
 .navbar-collapse .nav-item {
-	width: 100%; /* Full width of the parent */
-	
+  width: 100%; /* Full width of the parent */
 }
 
 .navbar-collapse .nav-link {
-	display: block;
-	text-align: left; /* Align text to the left */
-	color: #333; /* Dark gray text for readability */
-	font-size: 16px; /* Clear font size */
-	font-weight: 500; /* Medium font weight for clarity */
+  display: block;
+  text-align: left; /* Align text to the left */
+  color: #333; /* Dark gray text for readability */
+  font-size: 16px; /* Clear font size */
+  font-weight: 500; /* Medium font weight for clarity */
 }
 
 /* Hover effect on navbar items */
 .navbar-collapse .nav-link:hover {
-	color: #116530; /* Accent color */
-	font-weight: bold;
+  color: #116530; /* Accent color */
+  font-weight: bold;
 }
 
 /* Remove border on last item */
 .navbar-collapse .nav-item:last-child .nav-link {
-	border-bottom: none; /* Remove bottom border from the last item */
+  border-bottom: none; /* Remove bottom border from the last item */
 }
-
 
 .main-container {
-	padding: 20px 20px;
-	height: 93vh;
-	width: 100%;  /* 3/4 of the container */
-	/* border: 1px solid black; */
-	overflow-y: auto;  /* Enables vertical scrolling when content overflows */
+  padding: 0px 20px;
+  height: 93vh;
+  width: 100%; /* 3/4 of the container */
+  /* border: 1px solid black; */
+  overflow-y: auto; /* Enables vertical scrolling when content overflows */
 }
 
-
-
 .content-header {
-	font-family: Arial, sans-serif;
-	color: #333;
-	width: 100%;  
-	background-color: #fff;
-	z-index: 10; 
-	box-sizing: border-box; 
+  font-family: Arial, sans-serif;
+  color: #333;
+  width: 100%;
+  background-color: #fff;
+  z-index: 10;
+  box-sizing: border-box;
 }
 
 .content-header h1 {
-	font-size: 28px;
-	font-weight: bold;
-	margin: 0;
-	color: #1d1d1d;
+  font-size: 28px;
+  font-weight: bold;
+  margin: 0;
+  color: #1d1d1d;
 }
 
 .content-header p {
-	font-size: 16px;
-	font-weight: 400;
-	margin: 0;
-	color: #6b6b6b;
+  font-size: 16px;
+  font-weight: 400;
+  margin: 0;
+  color: #6b6b6b;
 }
 
 .container-body {
-	 margin-top: 20px;
-	 width: 100%; 
-	 padding: 0px;
-	 /* border: 1px solid black; */
-	
+  margin-top: 5px;
+  width: 100%;
+  padding: 0px;
+  /* border: 1px solid black; */
 }
 
-
 .back-button-wrapper {
-	margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 .back-button-link {
-	text-decoration: none;
-	color: #6c757d;
-	background-color: transparent;
-	font-size: 14px;
-	display: inline-flex;
-	align-items: center;
-	transition: color 0.3s ease, text-decoration 0.3s ease;
-	border: 0;
+  text-decoration: none;
+  color: #6c757d;
+  background-color: transparent;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  transition: color 0.3s ease, text-decoration 0.3s ease;
+  border: 0;
 }
 
 .back-button-link:hover {
-	color: #116530;
+  color: #116530;
 }
-
 
 /* Normal view (1441px and up) */
 @media (min-width: 1441px) {
-	.navbar-middle {
-					display: block; /* Shows the navbar middle */
-	}
+  .navbar-middle {
+    display: block; /* Shows the navbar middle */
+  }
 
-	.navbar-toggler {
-					display: none; /* Hides the toggler button */
-	}
+  .navbar-toggler {
+    display: none; /* Hides the toggler button */
+  }
 
-	.navbar-nav {
-					display: flex; /* Horizontal display */
-					text-align: left;
-					margin: 0px 15px; /* Set margin to 15px */
-	}
+  .navbar-nav {
+    display: flex; /* Horizontal display */
+    text-align: left;
+    margin: 0px 15px; /* Set margin to 15px */
+  }
 
-	.navbar-collapse .navbar-nav {
-					display: none;
-	}
+  .navbar-collapse .navbar-nav {
+    display: none;
+  }
 
-	.navbar-nav .nav-item {
-					padding: 5px 0px;
-	}
+  .navbar-nav .nav-item {
+    padding: 5px 0px;
+  }
 
-	.navbar-nav .nav-link {
-					font-size: 18px; /* Increased font size */
-	}
+  .navbar-nav .nav-link {
+    font-size: 18px; /* Increased font size */
+  }
 }
 
 /* For large screens (1281px - 1440px) */
 @media (max-width: 1440px) and (min-width: 1281px) {
-	.navbar-middle {
-					display: block; /* Keeps the navbar middle visible */
-	}
+  .navbar-middle {
+    display: block; /* Keeps the navbar middle visible */
+  }
 
-	.navbar-toggler {
-					display: none; /* Hides the toggler button */
-	}
+  .navbar-toggler {
+    display: none; /* Hides the toggler button */
+  }
 
-	.navbar-nav {
-					display: flex; /* Horizontal display */
-					text-align: left;
-					margin: 0px 15px; /* Set margin to 15px */
-	}
+  .navbar-nav {
+    display: flex; /* Horizontal display */
+    text-align: left;
+    margin: 0px 15px; /* Set margin to 15px */
+  }
 
-	.navbar-collapse .navbar-nav {
-		display: none;
-}
+  .navbar-collapse .navbar-nav {
+    display: none;
+  }
 
-	.navbar-nav .nav-item {
-					padding: 8px 0px;
-	}
+  .navbar-nav .nav-item {
+    padding: 8px 0px;
+  }
 
-	.navbar-nav .nav-link {
-					font-size: 17px; /* Slightly smaller font size */
-	}
+  .navbar-nav .nav-link {
+    font-size: 17px; /* Slightly smaller font size */
+  }
 }
 
 /* For medium screens (1025px - 1280px) */
 @media (max-width: 1280px) and (min-width: 992px) {
-	.navbar-middle {
-					display: block; /* Keeps the navbar middle visible */
-	}
+  .navbar-middle {
+    display: block; /* Keeps the navbar middle visible */
+  }
 
-	.navbar-toggler {
-					display: none; /* Hides the toggler button */
-	}
+  .navbar-toggler {
+    display: none; /* Hides the toggler button */
+  }
 
-	.navbar-nav {
-					display: flex; /* Horizontal display */
-					text-align: left;
-					margin: 0px 15px; /* Set margin to 15px */
-	}
+  .navbar-nav {
+    display: flex; /* Horizontal display */
+    text-align: left;
+    margin: 0px 15px; /* Set margin to 15px */
+  }
 
-	.navbar-collapse .navbar-nav {
-		display: none;
-}
+  .navbar-collapse .navbar-nav {
+    display: none;
+  }
 
-	.navbar-nav .nav-item {
-					padding: 8px 0px;
-	}
+  .navbar-nav .nav-item {
+    padding: 8px 0px;
+  }
 
-	.navbar-nav .nav-link {
-					font-size: 16px; /* Reduced font size for medium screens */
-	}
+  .navbar-nav .nav-link {
+    font-size: 16px; /* Reduced font size for medium screens */
+  }
 }
 
 /* For smaller medium screens (769px - 1024px) */
 @media (max-width: 991px) and (min-width: 769px) {
-	.navbar-middle {
-					display: none; /* Hides the navbar middle */
-	}
+  .navbar-middle {
+    display: none; /* Hides the navbar middle */
+  }
 
-	/* .navbar-toggler {
+  /* .navbar-toggler {
 					display: block; 
 	} */
 
-	.navbar-nav {
-					display: block; /* Stacks the navbar items */
-					text-align: center;
-					margin: 15px; /* Set margin to 15px */
-	}
+  .navbar-nav {
+    display: block; /* Stacks the navbar items */
+    text-align: center;
+    margin: 15px; /* Set margin to 15px */
+  }
 
-	.navbar-nav .nav-item {
-					padding: 8px 0;
-	}
+  .navbar-nav .nav-item {
+    padding: 8px 0;
+  }
 
-	.navbar-nav .nav-link {
-					font-size: 15px; /* Further reduced font size */
-	}
-
+  .navbar-nav .nav-link {
+    font-size: 15px; /* Further reduced font size */
+  }
 }
 
 /* For mobile screens (601px - 768px) */
 @media (max-width: 768px) and (min-width: 601px) {
-	.navbar-middle {
-					display: none; /* Hides the navbar middle */
-	}
+  .navbar-middle {
+    display: none; /* Hides the navbar middle */
+  }
 
-	/* .navbar-toggler {
+  /* .navbar-toggler {
 					display: block;
 	} */
 
-	.navbar-nav {
-					display: block; /* Stacks the navbar items */
-					text-align: center;
-					margin: 15px; /* Set margin to 15px */
-	}
+  .navbar-nav {
+    display: block; /* Stacks the navbar items */
+    text-align: center;
+    margin: 15px; /* Set margin to 15px */
+  }
 
-	.navbar-nav .nav-item {
-					padding: 8px 0;
-	}
+  .navbar-nav .nav-item {
+    padding: 8px 0;
+  }
 
-	.navbar-nav .nav-link {
-					font-size: 14px; /* Smaller font size */
-	}
+  .navbar-nav .nav-link {
+    font-size: 14px; /* Smaller font size */
+  }
 }
 
 /* For small mobile screens (481px - 600px) */
 @media (max-width: 600px) and (min-width: 481px) {
-	.navbar-middle {
-					display: none; /* Hides the navbar middle */
-	}
+  .navbar-middle {
+    display: none; /* Hides the navbar middle */
+  }
 
-	/* .navbar-toggler {
+  /* .navbar-toggler {
 					display: block;
 	} */
 
-	.navbar-nav {
-					display: block; /* Stacks the navbar items */
-					text-align: center;
-					margin: 15px; /* Set margin to 15px */
-	}
+  .navbar-nav {
+    display: block; /* Stacks the navbar items */
+    text-align: center;
+    margin: 15px; /* Set margin to 15px */
+  }
 
-	.navbar-nav .nav-item {
-					padding: 8px 0;
-	}
+  .navbar-nav .nav-item {
+    padding: 8px 0;
+  }
 
-	.navbar-nav .nav-link {
-					font-size: 13px; /* Even smaller font size */
-	}
+  .navbar-nav .nav-link {
+    font-size: 13px; /* Even smaller font size */
+  }
 }
 
 /* For mobile screens (320px - 480px) */
 @media (max-width: 480px) and (min-width: 320px) {
-	.navbar-middle {
-					display: none; /* Hides the navbar middle */
-	}
+  .navbar-middle {
+    display: none; /* Hides the navbar middle */
+  }
 
-	/* .navbar-toggler {
+  /* .navbar-toggler {
 					display: block;
 	} */
 
-	.navbar-nav {
-					display: block; /* Stacks the navbar items */
-					text-align: center;
-					margin: 15px; /* Set margin to 15px */
-	}
+  .navbar-nav {
+    display: block; /* Stacks the navbar items */
+    text-align: center;
+    margin: 15px; /* Set margin to 15px */
+  }
 
-	.navbar-nav .nav-item {
-					padding: 6px 0;
-	}
+  .navbar-nav .nav-item {
+    padding: 6px 0;
+  }
 
-	.navbar-nav .nav-link {
-					font-size: 12px; /* Smallest font size */
-	}
+  .navbar-nav .nav-link {
+    font-size: 12px; /* Smallest font size */
+  }
 }
-
-
