@@ -39,7 +39,7 @@
         // Commit the transaction if everything is successful
         $conn->commit();
         $_SESSION['status'] = "Request submitted successfully!";
-        header("Location: ../client-transactionStatus.php?id=" . htmlspecialchars($transactNo));
+        header("Location: ../client-transactionInfo.php?id=" . htmlspecialchars($transactNo));
         exit(0);
       } 
       else 
@@ -47,7 +47,7 @@
         // Rollback the transaction if there's an error
         $_SESSION['status'] = "Database error on request insert: " . $stmt->error;
         $conn->rollback();  // Rollback the transaction if there is an error
-        header("Location: ../client-transactionStatus.php?id=" . htmlspecialchars($transactNo));
+        header("Location: ../client-transactionInfo.php?id=" . htmlspecialchars($transactNo));
         exit(0);
       }
 
@@ -100,7 +100,7 @@
         // Commit the transaction if everything is successful
         $conn->commit();
         $_SESSION['status'] = "Request submitted successfully!";
-        header("Location: ../client-transactionStatus.php?id=" . htmlspecialchars($transactNo));
+        header("Location: ../client-transactionInfo.php?id=" . htmlspecialchars($transactNo));
         exit(0);
       } 
       else 
@@ -108,7 +108,7 @@
         // Rollback the transaction if there's an error
         $_SESSION['status'] = "Database error on request insert: " . $stmt->error;
         $conn->rollback();  // Rollback the transaction if there is an error
-        header("Location: ../client-transactionStatus.php?id=" . htmlspecialchars($transactNo));
+        header("Location: ../client-transactionInfo.php?id=" . htmlspecialchars($transactNo));
         exit(0);
       }
 
