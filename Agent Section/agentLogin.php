@@ -96,6 +96,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['flightid'])) {
 
             // Clear previous messages
             $('#message-login').html('');
+            const formData = new FormData(this);
+            formData.append('login', '1'); // Add login field to indicate form submission
 
             // Perform AJAX request
             $.ajax({
