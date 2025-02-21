@@ -51,8 +51,6 @@ $accId = $_SESSION['accountId'] ?? '';
   <?php include '../Client Section/Includes/client-navbar.php'; ?>
 
   <div class="body-container">
-
-
     <div class="main-container">
       <div class="flight-schedules">
 
@@ -93,81 +91,67 @@ $accId = $_SESSION['accountId'] ?? '';
               </div>
             </div>
 
-
-
-
           </div>
 
-
           <div class="section-main-content">
-            <div class="confirm-table-container-flight">
-              <?php
-              // Default data
-              $flightid = 1;
-              $origin = 'Manila';
-              $Start = '2025-03-15';
-              $End = '2025-03-20';
-              $FlightSeat = 150;
-              $AvailSeats = 120;
-              $AdditionalSeats = 0;
-              $FlightPrice = 7500.00;
-              ?>
 
-              <!-- Date Picker -->
-              <div id="flights-container">
-                <div class="flight-card" data-date="<?= htmlspecialchars($Start) ?>">
-                  <div class="flight-info">
+            <?php
+            // Default data
+            $flightid = 1;
+            $origin = 'Manila';
+            $Start = '2025-03-15';
+            $End = '2025-03-20';
+            $FlightSeat = 150;
+            $AvailSeats = 120;
+            $AdditionalSeats = 0;
+            $FlightPrice = 7500.00;
+            ?>
 
-                    <div class="flight-details">
-                      <div class="details-header">
-                        <h3><?= htmlspecialchars($origin) ?></h3>
-                      </div>
+            <!-- Date Picker -->
+            <div id="flights-container">
+              <div class="flight-card" data-date="<?= htmlspecialchars($Start) ?>">
+                <div class="flight-info">
+
+                  <div class="flight-details">
+                    <div class="details-header">
+                      <h3><?= htmlspecialchars($origin) ?></h3>
                     </div>
+                  </div>
 
 
-                    <div class="flight-date-wrapper">
-
-                      <div class="flight-date-content">
-
-                        <div class="flight-date">
-
-                          <div class="container-header">
-                            <label for="">Flight Date: </label>
-
+                  <div class="flight-date-wrapper">
+                    <div class="flight-date-content">
+                      <div class="flight-date">
+                       
+                        <div class="container-body">
+                          <div class="flight-start">
+                            <label for="">Start:</label>
+                            <h5><?= htmlspecialchars($Start) ?></h5>
                           </div>
 
-                          <div class="container-body">
-                            <div class="flight-start">
-                              <label for="">Start:</label>
-                              <h5><?= htmlspecialchars($Start) ?></h5>
-                            </div>
-
-                            <div class="flight-start">
-                              <label for="">End:</label>
-                              <h5><?= htmlspecialchars($End) ?></h5>
-                            </div>
-
-                            <div class="vertical-separator"></div>
-
-                            <div class="flight-start">
-                              <label for="">Package Price:</label>
-                              <h5>₱ <?= number_format($FlightPrice, 2) ?></h5>
-                            </div>
+                          <div class="flight-start">
+                            <label for="">End:</label>
+                            <h5><?= htmlspecialchars($End) ?></h5>
                           </div>
 
 
+                          <div class="flight-start">
+                            <label for="">Package Price:</label>
+                            <h5>₱ <?= number_format($FlightPrice, 2) ?></h5>
+                          </div>
                         </div>
+                      </div>
 
-                        <div class="flight-seats-wrapper">
+                      <div class="flight-seats-wrapper">
 
-                          <div class="seats-container">
-                            <div class="container-header">
-                              <label for="">Seats Information:</label>
-                            </div>
+                        <div class="seats-container">
+                          <div class="container-header seats-header">
+                        
+                          </div>
 
-                            <div class="container-body seats-body">
-                              <div class="first-part">
-                                <div class="seats-info">
+                          <div class="container-body seats-body">
+                            <div class="first-part">
+                              <div class="seats-info">
                                 <label for="">Available Seats:</label>
                                 <h5><?= htmlspecialchars($AvailSeats) ?></h5>
                               </div>
@@ -176,39 +160,27 @@ $accId = $_SESSION['accountId'] ?? '';
                                 <label for="">Additional Seats:</label>
                                 <h5><?= htmlspecialchars($AdditionalSeats) ?></h5>
                               </div>
-                              </div>
-                              
+                            </div>
 
-                              <div class="flight-start">
-                                <div class="book-now-container">
-                                  <a href="../Client Section/login.php?flightid=<?= urlencode($flightid) ?>" class="btn book-now">Book Now</a>
-                                </div>
-                              </div>
 
+                            <div class="seats-info">
+                              <div class="book-now-container">
+                                <a href="../Client Section/login.php?flightid=<?= urlencode($flightid) ?>" class="btn book-now">Book Now</a>
+                              </div>
                             </div>
 
                           </div>
 
-
-                          
                         </div>
-
-
                       </div>
-
-
 
                     </div>
 
-
-
                   </div>
+
                 </div>
               </div>
-
-
             </div>
-
 
           </div>
         </div>

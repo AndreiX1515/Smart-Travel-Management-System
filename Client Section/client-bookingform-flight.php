@@ -3,7 +3,7 @@
   require '../conn.php';
   
   session_start();
-
+  
   ini_set('display_errors', 1);
   ini_set('display_startup_errors', 1);
   error_reporting(E_ALL);
@@ -40,6 +40,58 @@
   
   // include '../Client Section/Functions/session_validate.php';
 ?>
+
+<?php
+
+echo "<pre>";
+print_r($_SESSION);
+echo "</pre>";
+
+
+          if (isset($_SESSION['flightid'])) {
+            $flightid = $_SESSION['flightid'];
+            
+            $sql1 = "SELECT * FROM flight WHERE flightId = ?";
+        
+           
+            // Prepare the statement
+            if ($stmt = $conn->prepare($sql1)) {
+                // Bind the flightId as an integer parameter
+                $stmt->bind_param("i", $flightid); // "i" means integer
+        
+                // Execute the statement
+                if ($stmt->execute()) {
+                    // Get the result
+                    $result = $stmt->get_result();
+        
+                    // Check if a row is returned
+                    if ($result->num_rows > 0) {
+                        // Fetch the data
+                        while ($row = $result->fetch_assoc()) {
+                            $packageId = $row['packageId'];
+                            $origin = $row['origin'];
+                            $year = date('Y', strtotime($row['flightDepartureDate']));
+                            $month = date('F', strtotime($row['flightDepartureDate']));
+                            $flightDepartureDate = $row['flightDepartureDate'];
+                            $flightPrice = $row['flightPrice'];
+                            // Display other columns as needed
+                        }
+                    } else {
+                        echo "No flight found with that ID.";
+                    }
+                } else {
+                    echo "Error executing query: " . $stmt->error;
+                }
+        
+                // Close the statement
+                $stmt->close();
+            } else {
+                echo "Error preparing statement: " . $conn->error;
+            }
+        } else {
+            echo "Flight ID is not set in session.";
+        }
+  ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -87,66 +139,7 @@
       <form action="../Client Section/Functions/bookingform-code.php" method="POST">
         <div class="bookingform">
 
-
-        <?php
-          if (isset($_GET['flightid'])) 
-          {
-            $flightid = $_GET['flightid'];
-            $_SESSION['flightid'] = $flightid;
-            $sql1 = "SELECT * FROM flight WHERE flightId = ?";
-
-            // Prepare the statement
-            if ($stmt = $conn->prepare($sql1)) 
-            {
-              // Bind the flightId as an integer parameter
-              $stmt->bind_param("i", $flightid); // "i" means integer
-
-              // Execute the statement
-              if ($stmt->execute()) 
-              {
-                // Get the result
-                $result = $stmt->get_result();
-
-                // Check if a row is returned
-                if ($result->num_rows > 0) 
-                {
-                  // Fetch the data
-                  while ($row = $result->fetch_assoc()) 
-                  {
-                    $packageId = $row['packageId'];
-                    $origin = $row['origin'];
-                    $year = date('Y', strtotime($row['flightDepartureDate']));
-                    $month = date('F', strtotime($row['flightDepartureDate']));
-                    $flightDepartureDate = $row['flightDepartureDate'];
-                    $flightPrice = $row['flightPrice'];
-                    // Display other columns as needed
-                  }
-                } 
-                else 
-                {
-                  echo "No flight found with that ID.";
-                }
-              } 
-              else 
-              {
-                echo "Error executing query: " . $stmt->error;
-              }
-
-              // Close the statement
-              $stmt->close();
-            } 
-            else 
-            {
-              echo "Error preparing statement: " . $conn->error;
-            }
-          } 
-          else 
-          {
-            echo "Flight ID is not set.";
-          }
-        ?>
-
-          <!-- <h4>Flight ID: <?php echo htmlspecialchars($flightid); ?></h4>     -->
+          <h4>Flight ID: <?php echo htmlspecialchars($flightid); ?></h4>    
 
 
           <div class="card">
