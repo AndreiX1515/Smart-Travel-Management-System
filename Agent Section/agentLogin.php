@@ -115,7 +115,7 @@
                            window.location.href = '../Employee Section/emp-dashboard.php';
                        } else if (data.accountType === 'guest') {
                            // Redirect to employee dashboard
-                           window.location.href = '../Agent Section/agent-dashboard.php';
+                           window.location.href = '../Client Section/client-dashboard.php';
                        } 
                     
                        else {
