@@ -124,7 +124,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['flightid'])) {
                                 window.location.href = `../Agent Section/agent-revisedAddBooking-flight.php?`;
                             } else {
                                 // Redirect to agent dashboard if no flightid is available
-                                window.location.href = '../Agent Section/agent-dashboard.php';
+                                window.location.href = '../Client Section/client-dashboard.php';
                             }
                         } else {
                             // Handle unknown account type
