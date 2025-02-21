@@ -1,31 +1,186 @@
-<div class="sidebar">
-  <ul>
-    <li><a href="client-portall.php" class="sidebar-link">Home</a></li>
-    <li><a href="client-bookingform.php" class="sidebar-link">Book Now</a></li>
-    <li><a href="client-transactionHistoryyy.php" class="sidebar-link">Transaction History</a></li>
-    <!-- <li><a href="client-support.php" class="sidebar-link">Support</a></li>
-    <li><a href="client-settings.php" class="sidebar-link">Settings</a></li> -->
-  </ul>
+<?php
+  require "../conn.php";
+
+  ini_set('display_errors', 1);
+  ini_set('display_startup_errors', 1);
+  error_reporting(E_ALL);
+
+  $accountId = $_SESSION['accountId'];
+  $agentId = $_SESSION['clientId'];
+  $agentCode = $_SESSION['clientCode'];
+  $agentRole = $_SESSION['clientRole'];
+  $agentType = $_SESSION['clientType'];
+  $fName =  $_SESSION['fName'] ?? '';
+  $lName = $_SESSION['lName'] ?? '';
+  $mName = $_SESSION['mName'] ?? '';
+  $branchId = $_SESSION['branchId'] ?? '';
+  $email = $_SESSION['email'] ?? '';
+  $password = $_SESSION['password'] ?? '';
+
+  $sql1 = "Select * from branch where branchId= '$branchId'";
+  $result1 = $conn->query($sql1);
+
+  // Check if a result is returned
+  if ($result1->num_rows > 0) {
+      // Fetch the branchName
+      $row = $result1->fetch_assoc();
+      $branchName = $row['branchName'];
+  } else {
+      $branchName = "No Branch";
+  }
+
+  // Format the full name
+  $fullName = htmlspecialchars($lName . ', ' . $fName . ($mName ? ' ' . substr($mName, 0, 1) . '.' : ''));
+
+  // Optional: hide password by default
+  $maskedPassword = '••••••••••';
+?>
+
+<?php
+  date_default_timezone_set('Asia/Taipei');
+  $current_date = date('D, F d, Y'); 
+?>
+
+<div class="sidebar" id="sidebar">
+  <div class="main-sidebar">
+    <div class="logo mt-3">
+      <img src="../Assets/Logos/logo.png" alt="Smart Travel Logo">
+    </div>
+
+    <div class="dashboard-title">Menu</div>
+    
+    <a href="../Client Section/client-dashboard.php" class="page-button home my-0 mb-1 " data-page-name="Dashboard"> 
+      <i class="fas fa-home"></i> <span> Home </span> 
+    </a>
+   
+    <!-- <a href="../Agent Section/agent-revisedAddbooking.php" class="page-button add-booking mb-1 my-0" data-page-name="Add Booking - Packages"> 
+      <i class="fa-solid fa-user-plus"></i> <span> Add Booking </span>
+    </a> -->
+
+    <!-- <a href="../Agent Section/agent-FIT.php" class="page-button add-FIT mb-1 my-0" data-page-name="Add Booking - F.I.T">
+      <i class="fa-solid fa-user-plus"></i> <span> Add F.I.T </span>
+    </a> -->
+  
+    <div class="section-title" onclick="toggleSubMenu('transactiontable-submenu')">
+      Transactions <span class="chevron-icon fas fa-chevron-down"></span>
+    </div>
+
+    <div class="submenu open" id="transactiontable-submenu">
+      <a href="../Client Section/client-transactions.php" class="page-button my-0" data-page-name="Packages - Transactions table">
+        <i class="fas fa-file-invoice"></i> Packages
+      </a>
+
+      <!-- <a href="../Agent Section/agent-FIT-table.php" class="page-button my-0" data-page-name="F.I.T - Transactions Table" style="font-size: 14px;">
+        <i class="fas fa-file-invoice"></i> F.I.T 
+      </a>  -->
+    </div>
+
+
+    <!-- <div class="section-title" onclick="toggleSubMenu('operational-submenu')">
+      Reports <span class="chevron-icon fas fa-chevron-down"></span>
+    </div>
+
+    <div class="submenu open" id="operational-submenu">
+      <a href="../Agent Section/agent-itenerary.php" class="page-button" data-page-name="Itinerary">
+        <i class="fas fa-map"></i> Itinerary
+      </a>
+
+      <a href="../Agent Section/agent-soa2.php" class="page-button" data-page-name="Statement of Accounts (SOA) - Packages">
+        <i class="fas fa-file-invoice-dollar"></i> SOA - Packages
+      </a>
+
+      <a href="../Agent Section/agent-fitSOA - rename.php" class="page-button" data-page-name="Statement of Accounts (SOA) - F.I.T">
+        <i class="fas fa-file-invoice-dollar"></i> SOA - F.I.T
+      </a>
+
+      <a href="../Agent Section/agent-ticket.php" class="page-button" data-page-name="Ticket">
+        <i class="fas fa-ticket"></i> Ticket
+      </a>
+
+      <a href="../Agent Section/agent-transactions.php" class="page-button" data-page-name="Voucher">
+        <i class="fas fa-gift"></i> Voucher
+      </a>
+    </div> -->
+
+  </div>
+
+  <div class="profile-wrapper">
+    <!-- Profile Section -->
+    <div class="profile-section">
+      <div class="profile-icon">
+        <i class="fas fa-user-circle"></i>
+      </div>
+      <div class="profile-details">
+        <h6 class="profile-name"><?php echo $fullName; ?></h>
+        <p class="profile-role mt-1"> <span><?php echo $branchName; ?> </span></p>
+      </div>
+    </div>
+
+    <!-- ../Agent Section/logout.php -->
+    <div class="logout-wrapper">
+      <a href="#" class="page-button logout" data-page-name="" data-bs-toggle="modal" data-bs-target="#logoutModal">
+        <i class="fas fa-sign-out-alt"></i> <span>Logout</span>
+      </a>
+    </div>
+
+  </div>
 </div>
 
+<?php include '../Agent Section/includes/logoutViewPassModal.php'; ?>
+
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-  // Get the current page's URL (or just the pathname)
-  const currentPage = window.location.pathname;
+function toggleSubMenu(submenuId) {
+    const submenu = document.getElementById(submenuId);
+    const sectionTitle = submenu.previousElementSibling;
+    const chevron = sectionTitle.querySelector('.chevron-icon'); 
 
-  // Get all sidebar links
-  const sidebarLinks = document.querySelectorAll('.sidebar-link');
+    // Check if the submenu is already open
+    const isOpen = submenu.classList.contains('open');
 
-  // Loop through all sidebar links and add 'active' class if the link matches the current page URL
-  sidebarLinks.forEach(link => {
-    // If the href matches the current page, add 'active' class
-    if (link.href.includes(currentPage)) {
-      link.classList.add('active');
+    // Toggle the submenu: If it's open, close it; If it's closed, open it
+    if (isOpen) {
+        submenu.classList.remove('open');
+        chevron.style.transform = 'rotate(0deg)';
+    } else {
+        submenu.classList.add('open');
+        chevron.style.transform = 'rotate(180deg)';
     }
-  });
+}
+
+// Optionally: Automatically open the submenu when the page loads (Transaction submenu is open by default in this case)
+document.addEventListener('DOMContentLoaded', function () {
+    const transactionSubmenu = document.getElementById('transactiontable-submenu');
+    const transactionChevron = document.querySelector('#transactiontable-submenu').previousElementSibling.querySelector('.chevron-icon');
+
+    // Set the default opened submenu (Transaction)
+    transactionSubmenu.classList.add('open');
+    transactionChevron.style.transform = 'rotate(180deg)';
 });
+</script>
 
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Check if there's a saved title in local storage
+    const savedTitle = localStorage.getItem('pageTitle');
+    if (savedTitle) {
+        document.getElementById('page-title').textContent = savedTitle;
+    }
 
+    const buttons = document.querySelectorAll('.page-button');
+    buttons.forEach(button => {
+        button.addEventListener('click', (event) => {
+            event.preventDefault();
+            const newPageName = button.getAttribute('data-page-name');
+            document.getElementById('page-title').textContent = newPageName;
 
+            // Save the title to local storage
+            localStorage.setItem('pageTitle', newPageName);
 
+            const newUrl = button.getAttribute('href');
+            setTimeout(() => {
+                window.location.href = newUrl;
+            }, 25);
+        });
+    });
+  });
 </script>

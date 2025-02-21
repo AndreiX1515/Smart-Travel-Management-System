@@ -11,7 +11,7 @@
   <div class="tab-wrapper">
     <div div class="d-flex justify-content-end align-items-center p-3">
       <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#paymentModal<?= $transactionNumber ?>"
-      data-transact-no="<?= $transactionNumber ?>" data-account-id="<?= $accId ?>">Add Payment</button>
+      data-transact-no="<?= $transactionNumber ?>" data-account-id="<?= $accountId ?>">Add Payment</button>
     </div>
 
     <div class="table-container">
@@ -57,7 +57,6 @@
                           break;
                   }
 
-
                   echo "<tr>
                           <td>{$row['paymentId']}</td>
                           <td>{$row['paymentTitle']}</td>
@@ -65,7 +64,7 @@
                           <td>₱ {$row['amount']}</td>
                           <td>
                               <a href='../Agent Section/functions/view-file.php?file=" . urlencode($row['filePath']) . "' target='_blank'>View File</a> 
-                              <a href='../Agent Section/functions/download.php?file=" . urlencode($row['filePath']) . "' target='_blank'>Download File</a> 
+                              <a href='../Agent Section/functions/functions/download.php?file=" . urlencode($row['filePath']) . "' target='_blank'>Download File</a> 
                           </td>
                           <td>{$row['paymentDate']}</td>
                           <td>
@@ -97,7 +96,7 @@
         <div class="modal-body">
           <!-- Hidden Inputs -->
           <input type="hidden" name="transactionNumber" value="<?= $transactionNumber ?>">
-          <input type="hidden" name="accountId" value="<?php echo $accId; ?>">
+          <input type="hidden" name="accountId" value="<?= $accountId ?>">
 
             <div class="mb-3">
               <label class="form-label">Payment for:</label>
@@ -144,8 +143,7 @@
   </div>
 </div>
 
-<?php include 'includes/scripts.php'; ?>
-
+<!-- Modal Function -->
 <script>
   // Custom JavaScript for handling modal close and removing backdrop
   $(document).ready(function () {
@@ -162,8 +160,8 @@
   });
 </script>
 
-
-<!-- <script>
+<!-- Modal Close Function -->
+<script>
   // Custom JavaScript to handle modal close functionality
   document.addEventListener("DOMContentLoaded", () => {
     const closeButtons = document.querySelectorAll(".custom-close");
@@ -180,12 +178,9 @@
       });
     });
   });
-</script> -->
+</script>
 
-
-
-
-<script>
+<!-- <script>
   document.addEventListener('DOMContentLoaded', function () 
   {
     // Target all buttons that trigger a modal
@@ -210,9 +205,10 @@
         bootstrapModal.show();
       });
     });
-  });
-</script>
+  }); 
+</script> -->
 
+<!-- Upload Script -->
 <script>
   const maxFiles = 5;
   const maxFileSize = 4 * 1024 * 1024; // 4MB
@@ -309,6 +305,7 @@
   }
 </script>
 
+<!-- Payment AJAX Function -->
 <script>
   $(document).ready(function() 
   {

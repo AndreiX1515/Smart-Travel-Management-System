@@ -6,13 +6,11 @@ error_reporting(E_ALL);
 
 require "../../conn.php"; // Move up to the parent directory
 
-if (isset($_POST['payment'])) 
+if (isset($_POST['pay'])) 
 {
-  $transactNo = $_POST['transactionNumber'];
-  $accountId = $_POST['accountId'];
-  $paymentTitle = $_POST['paymentTitle'];
-  $paymentType = $_POST['paymentType'];
-  $amount = $_POST['amount'];
+  $transactNo = $_POST['transactNo'];
+  $accountId = $_POST['agentAccountId'];
+  $amount = $_POST['downpayment'];
 
   // Set the timezone (replace 'Asia/Taipei' with your preferred timezone if needed)
   date_default_timezone_set('Asia/Taipei');
@@ -73,7 +71,7 @@ if (isset($_POST['payment']))
 
       // Insert payment information into the payment table, including file paths
       $sql = "INSERT INTO payment (transactNo, accountId, paymentTitle, paymentType, amount, filePath, paymentDate, paymentStatus) 
-              VALUES (?, ?, ?, ?, ?, ?, ?, 'Submitted')";
+              VALUES (?, ?, 'Package Payment', 'Downpayment', ?, ?, ?, 'Submitted')";
       $stmt = $conn->prepare($sql);
 
       if (!$stmt) 
@@ -88,7 +86,7 @@ if (isset($_POST['payment']))
       foreach ($uploadedFiles as $filePath) 
       {
         // Bind parameters for each file upload
-        $stmt->bind_param('sissdss', $transactNo, $accountId, $paymentTitle, $paymentType, $amount, $destPath, $paymentDate);
+        $stmt->bind_param('sidss', $transactNo, $accountId, $amount, $filePath, $paymentDate);
 
         if (!$stmt->execute()) 
         {
@@ -97,6 +95,28 @@ if (isset($_POST['payment']))
           header("Location: ../client-transactionInfo.php?id=" . htmlspecialchars($transactNo));
           exit(0);
         }
+      }
+
+      // Corrected UPDATE statement
+      $sql1 = "UPDATE booking SET status = 'Pending' WHERE transactNo = ?";
+      $stmt1 = $conn->prepare($sql1);
+
+      if (!$stmt1) 
+      {
+        $_SESSION['status'] = "Update query preparation failed: " . $conn->error;
+        $conn->rollback();
+        header("Location: ../client-transactionInfo.php?id=" . urlencode($transactNo));
+        exit();
+      }
+
+      // Bind and execute the update query
+      $stmt1->bind_param('s', $transactNo);
+      if (!$stmt1->execute()) 
+      {
+        $_SESSION['status'] = "Database error on booking update: " . $stmt1->error;
+        $conn->rollback();
+        header("Location: ../client-transactionInfo.php?id=" . urlencode($transactNo));
+        exit();
       }
 
       $conn->commit();

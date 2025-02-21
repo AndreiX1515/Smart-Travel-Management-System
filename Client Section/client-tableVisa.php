@@ -26,19 +26,14 @@
       </thead>
       <tbody>
         <?php
-          $sql1 = "SELECT g.guestId, 
-                          CONCAT(g.fName, ' ', 
-                                IF(g.mName = 'N/A' OR g.mName IS NULL, '', CONCAT(SUBSTRING(g.mName, 1, 1), '. ')),
-                                g.lName, 
-                                IF(g.suffix = 'N/A' OR g.suffix IS NULL, '', CONCAT(' ', g.suffix))) AS guestName,
-                          GROUP_CONCAT(v.passport) AS passport,
-                          GROUP_CONCAT(v.permit) AS permit,
-                          GROUP_CONCAT(v.validId) AS validId,
-                          GROUP_CONCAT(v.certificate) AS certificate
-                    FROM guest g
-                    JOIN visarequirements v ON g.transactNo = v.transactNo
-                    WHERE g.transactNo = '$transactionNumber'
-                    GROUP BY g.guestId";
+          $sql1 = "SELECT v.guestId, CONCAT(g.fName, ' ', 
+                    IF(g.mName = 'N/A' OR g.mName IS NULL, '', CONCAT(SUBSTRING(g.mName, 1, 1), '. ')),
+                    g.lName, IF(g.suffix = 'N/A' OR g.suffix IS NULL, '', CONCAT(' ', g.suffix))) AS guestName,
+                    v.passport AS passport,v.permit AS permit, v.validId AS validId, v.certificate AS certificate
+                  FROM visarequirements v
+                  INNER JOIN guest g ON v.guestId = g.guestId
+                  WHERE v.transactNo = '$transactionNumber'
+                    AND (v.passport IS NOT NULL OR v.permit IS NOT NULL OR v.validId IS NOT NULL OR v.certificate IS NOT NULL)";
 
           $res1 = $conn->query($sql1);
 
@@ -47,28 +42,43 @@
             while ($row = $res1->fetch_assoc()) 
             {
               echo "<tr>
-                      <td>{$row['guestId']}</td>
-                      <td>{$row['guestName']}</td>
-                      <td>
-                        <a href='../Agent Section/functions/view-file.php?file=" . urlencode($row['passport']) . "' target='_blank'>View File</a> 
-                        <a href='../Agent Section/functions/download.php?file=" . urlencode($row['passport']) . "' target='_blank'>Download File</a> 
-                      </td>
+                  <td>{$row['guestId']}</td>
+                  <td>{$row['guestName']}</td>
 
-                      <td>
-                        <a href='../Agent Section/functions/view-file.php?file=" . urlencode($row['permit']) . "' target='_blank'>View File</a> 
-                        <a href='../Agent Section/functions/download.php?file=" . urlencode($row['permit']) . "' target='_blank'>Download File</a> 
-                      </td>
+                  <td>";
+                  echo !empty($row['passport']) 
+                      ? "<a href='../Agent Section/functions/view-file.php?file=" . urlencode($row['passport']) . "' target='_blank'>View File</a> 
+                        <a href='../Agent Section/functions/download.php?file=" . urlencode($row['passport']) . "' target='_blank'>Download File</a>" 
+                      : "<button class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#uploadModal' 
+                                data-guestid='{$row['guestId']}' data-filetype='passport'>Upload Passport</button>";
+                  echo "</td>
 
-                      <td>
-                        <a href='../Agent Section/functions/view-file.php?file=" . urlencode($row['validId']) . "' target='_blank'>View File</a> 
-                        <a href='../Agent Section/functions/download.php?file=" . urlencode($row['validId']) . "' target='_blank'>Download File</a> 
-                      </td>
+                  <td>";
+                  echo !empty($row['permit']) 
+                      ? "<a href='../Agent Section/functions/view-file.php?file=" . urlencode($row['permit']) . "' target='_blank'>View File</a> 
+                        <a href='../Agent Section/functions/download.php?file=" . urlencode($row['permit']) . "' target='_blank'>Download File</a>" 
+                      : "<button class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#uploadModal' 
+                                data-guestid='{$row['guestId']}' data-filetype='permit'>Upload Permit</button>";
+                  echo "</td>
 
-                      <td>
-                        <a href='../Agent Section/functions/view-file.php?file=" . urlencode($row['certificate']) . "' target='_blank'>View File</a> 
-                        <a href='../Agent Section/functions/download.php?file=" . urlencode($row['certificate']) . "' target='_blank'>Download File</a> 
-                      </td>
-                    </tr>";
+                  <td>";
+                  echo !empty($row['validId']) 
+                      ? "<a href='../Agent Section/functions/view-file.php?file=" . urlencode($row['validId']) . "' target='_blank'>View File</a> 
+                        <a href='../Agent Section/functions/download.php?file=" . urlencode($row['validId']) . "' target='_blank'>Download File</a>" 
+                      : "<button class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#uploadModal' 
+                                data-guestid='{$row['guestId']}' data-filetype='validId'>Upload Valid ID</button>";
+                  echo "</td>
+
+                  <td>";
+                  echo !empty($row['certificate']) 
+                      ? "<a href='../Agent Section/functions/view-file.php?file=" . urlencode($row['certificate']) . "' target='_blank'>View File</a> 
+                        <a href='../Agent Section/functions/download.php?file=" . urlencode($row['certificate']) . "' target='_blank'>Download File</a>" 
+                      : "<button class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#uploadModal' 
+                                data-guestid='{$row['guestId']}' data-filetype='certificate'>Upload Certificate</button>";
+                  echo "</td>
+                  </tr>";
+
+
             }
           } 
           else 
@@ -78,8 +88,53 @@
         ?>
       </tbody>
     </table>
+
+
   </div>
 </div>
 
 
+<!-- Bootstrap Modal -->
+<div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="uploadModalLabel">Upload File</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form id="uploadForm" action="../Client Section/Functions/client-visaRequirementsUpdate-code.php" method="POST" enctype="multipart/form-data">
+        <div class="modal-body">
+          <input type="hidden" name="guestId" id="modalGuestId">
+          <input type="hidden" name="fileType" id="modalFileType">
+          <input type="hidden" name="transactNo" value="<?php echo $transactionNumber; ?>">
+
+          <div class="mb-3">
+            <label for="fileInput" class="form-label">Select File</label>
+            <input type="file" class="form-control" name="file" id="fileInput" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" name="upload" class="btn btn-success">Upload</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  var uploadModal = document.getElementById('uploadModal');
+  uploadModal.addEventListener('show.bs.modal', function (event) 
+  {
+    var button = event.relatedTarget; // Button that triggered the modal
+    var guestId = button.getAttribute('data-guestid');
+    var fileType = button.getAttribute('data-filetype');
+
+    document.getElementById('modalGuestId').value = guestId;
+    document.getElementById('modalFileType').value = fileType;
+
+    // Change modal title dynamically
+    document.getElementById('uploadModalLabel').innerText = "Upload " + fileType.charAt(0).toUpperCase() + fileType.slice(1);
+  });
+</script>
 

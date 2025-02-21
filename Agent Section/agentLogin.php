@@ -96,8 +96,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['flightid'])) {
 
             // Clear previous messages
             $('#message-login').html('');
-
-            // Gather form data
             const formData = new FormData(this);
             formData.append('login', '1'); // Add login field to indicate form submission
 
@@ -128,7 +126,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['flightid'])) {
                                 window.location.href = `../Agent Section/agent-revisedAddBooking-flight.php?`;
                             } else {
                                 // Redirect to agent dashboard if no flightid is available
-                                window.location.href = '../Agent Section/agent-dashboard.php';
+                                window.location.href = '../Client Section/client-dashboard.php';
                             }
                         } else {
                             // Handle unknown account type
