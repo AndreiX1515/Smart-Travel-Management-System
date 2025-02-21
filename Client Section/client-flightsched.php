@@ -51,8 +51,6 @@ $accId = $_SESSION['accountId'] ?? '';
     <?php include '../Client Section/Includes/client-navbar.php'; ?>
 
     <div class="body-container">
-
-
         <div class="main-container">
             <div class="flight-schedules">
 
@@ -141,7 +139,7 @@ $accId = $_SESSION['accountId'] ?? '';
 
                                             <div class="flight-date-wrapper">
                                                 <div class="flight-date-content">
-                                                    <div class="container-body">
+                                                    <div class="container-body flight-date-body">
                                                         <div class="flight-start">
                                                             <label>Start:</label>
                                                             <h5><?= htmlspecialchars($row['Start']) ?></h5>
@@ -192,11 +190,8 @@ $accId = $_SESSION['accountId'] ?? '';
                             ?>
                         </div>
                     </div>
-
                 </div>
-
             </div>
-
         </div>
     </div>
 

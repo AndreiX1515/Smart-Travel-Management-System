@@ -25,6 +25,20 @@
     <!-- <a href="../Agent Section/agent-FIT.php" class="page-button add-FIT mb-1 my-0" data-page-name="Add Booking - F.I.T">
       <i class="fa-solid fa-user-plus"></i> <span> Add F.I.T </span>
     </a> -->
+
+    <div class="section-title manage-accounts" onclick="toggleSubMenu('transactiontable-submenu')">
+      Manage Tickets <span class="chevron-icon fas fa-chevron-down"></span>
+    </div>
+
+      <div class="submenu open" id="transactiontable-submenu">
+        <a href="../Admin Section/admin-manageTickets.php" class="page-button" data-page-name="Manage Tickets">
+          <i class="fas fa-user"></i> Tickets
+        </a>
+
+        <!-- <a href="../Agent Section/agent-FIT-table.php" class="page-button my-0" data-page-name="F.I.T - Transactions Table" style="font-size: 14px;">
+          <i class="fas fa-file-invoice"></i> F.I.T 
+        </a>  -->
+    </div>
   
     <div class="section-title manage-accounts" onclick="toggleSubMenu('transactiontable-submenu')">
       Manage Accounts <span class="chevron-icon fas fa-chevron-down"></span>

@@ -1,6 +1,7 @@
 <?php
 session_start();
 require "../conn.php";
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -26,6 +27,9 @@ require "../conn.php";
 
       <div class="main-content">
         <div class="content-container">
+
+        
+
           <!-- Cards First Row -->
           <div class="counts-wrapper">
 

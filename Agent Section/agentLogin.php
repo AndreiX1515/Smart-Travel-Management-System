@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['flightid'])) {
     <div class="login-container">
         <div class="logo mt-1 mb-5">
             <img src="../Assets/Logos/logo-tab.png" alt="" class="logo-image" width="160" height="120">
-            <input type="text" name="flightid" id="flightid" value="<?= isset($_SESSION['flightid']) ? $_SESSION['flightid'] : '' ?>">
+            <input type="hidden" name="flightid" id="flightid" value="<?= isset($_SESSION['flightid']) ? $_SESSION['flightid'] : '' ?>">
         </div>
 
         <form class="mt-3" id="loginForm" method="POST">
