@@ -131,29 +131,29 @@
                   while ($row = $res1->fetch_assoc()) 
                   {
                     echo "<tr>
-                        <td>{$row['guestId']}</td>
-                        <td>{$row['transactNo']}</td>
-                        <td>{$row['guestName']}</td>
-                        <td>
-                          <a href='functions/view-file.php?file=" . urlencode($row['passport']) . "' target='_blank'>View File</a> 
-                          <a href='functions/download.php?file=" . urlencode($row['passport']) . "' target='_blank'>Download File</a> 
-                        </td>
+                            <td>{$row['guestId']}</td>
+                            <td>{$row['transactNo']}</td>
+                            <td>{$row['guestName']}</td>
+                            <td>" . (!empty($row['passport']) ? 
+                              "<a href='functions/view-file.php?file=" . urlencode($row['passport']) . "' target='_blank'>View File</a> 
+                              <a href='functions/download.php?file=" . urlencode($row['passport']) . "' target='_blank'>Download File</a>" 
+                              : "<span>No file uploaded</span>") . "</td>
 
-                        <td>
-                          <a href='functions/view-file.php?file=" . urlencode($row['permit']) . "' target='_blank'>View File</a> 
-                          <a href='functions/download.php?file=" . urlencode($row['permit']) . "' target='_blank'>Download File</a> 
-                        </td>
+                            <td>" . (!empty($row['permit']) ? 
+                              "<a href='functions/view-file.php?file=" . urlencode($row['permit']) . "' target='_blank'>View File</a> 
+                              <a href='functions/download.php?file=" . urlencode($row['permit']) . "' target='_blank'>Download File</a>" 
+                              : "<span>No file uploaded</span>") . "</td>
 
-                        <td>
-                          <a href='functions/view-file.php?file=" . urlencode($row['validId']) . "' target='_blank'>View File</a> 
-                          <a href='functions/download.php?file=" . urlencode($row['validId']) . "' target='_blank'>Download File</a> 
-                        </td>
+                            <td>" . (!empty($row['validId']) ? 
+                              "<a href='functions/view-file.php?file=" . urlencode($row['validId']) . "' target='_blank'>View File</a> 
+                              <a href='functions/download.php?file=" . urlencode($row['validId']) . "' target='_blank'>Download File</a>" 
+                              : "<span>No file uploaded</span>") . "</td>
 
-                        <td>
-                          <a href='functions/view-file.php?file=" . urlencode($row['certificate']) . "' target='_blank'>View File</a> 
-                          <a href='functions/download.php?file=" . urlencode($row['certificate']) . "' target='_blank'>Download File</a> 
-                        </td>
-                      </tr>";
+                            <td>" . (!empty($row['certificate']) ? 
+                              "<a href='functions/view-file.php?file=" . urlencode($row['certificate']) . "' target='_blank'>View File</a> 
+                              <a href='functions/download.php?file=" . urlencode($row['certificate']) . "' target='_blank'>Download File</a>" 
+                              : "<span>No file uploaded</span>") . "</td>
+                          </tr>";
                   }
                 } 
                 else 
