@@ -10,6 +10,9 @@ error_reporting(E_ALL);
 // Initialize response array
 $response = array();
 
+// Start output buffering to prevent unexpected output
+ob_start();
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Retrieve and sanitize form data
     $fName = $_POST['firstName'];
@@ -62,25 +65,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $newAgentId = 'A' . $nextId; // A100, A101...
         }
 
+
+        $agentUsername = $agentCode . '-' . $newAgentId;
+
         // Prepared statement for inserting into accounts table
         $sql_account = "INSERT INTO accounts (email, password, otp, accountStatus, accountType, createdAt) 
                         VALUES (?, ?, '', 'active', ?, NOW())";
         $stmt = mysqli_prepare($conn, $sql_account);
-        mysqli_stmt_bind_param($stmt, "sss", $newAgentId, $hashed_password, $accountType);
+        mysqli_stmt_bind_param($stmt, "sss", $agentUsername, $hashed_password, $accountType);
 
         if (mysqli_stmt_execute($stmt)) {
             // Get the last inserted accountId
             $accountId = mysqli_insert_id($conn);
 
             // Prepared statement for inserting agent details
-            $sql_agent = "INSERT INTO agent (agentId, agentCode, accountId, branchId, fName, lName, mName, countryCode, contactNo, agentType, agentRole, comissionRate)
-                          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '')";
+            $sql_agent = "INSERT INTO agent (agentId, agentCode, accountId, branchId, fName, lName, mName, countryCode, contactNo, agentType, agentRole, comissionRate, seats)
+                          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '', 0)";
             $stmt_agent = mysqli_prepare($conn, $sql_agent);
             mysqli_stmt_bind_param($stmt_agent, "ssissssssss", $newAgentId, $agentCode, $accountId, $branchId, $fName, $lName, $mName, $countryCode, $contactNo, $agentType, $agentRole);
 
             if (mysqli_stmt_execute($stmt_agent)) {
                 $response['status'] = 'success';
-                $response['message'] = "User added successfully with Agent Code: $newAgentId!";
+                $response['message'] = "User added successfully with Agent Code: $agentUsername!";
             } else {
                 $response['status'] = 'error';
                 $response['message'] = "Error inserting into agent table: " . mysqli_error($conn);
@@ -89,89 +95,80 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $response['status'] = 'error';
             $response['message'] = "Error inserting into accounts table: " . mysqli_error($conn);
         }
-    } 
-
-   // Logic for guest account type
-elseif ($accountType === 'guest') {
-    // Fetch the latest clientId from the database
-    $sql_max_id = "SELECT MAX(CAST(SUBSTRING(clientId, 2) AS UNSIGNED)) AS maxId FROM client";
-    $result_max_id = mysqli_query($conn, $sql_max_id);
-
-    if (!$result_max_id) {
-        $response['status'] = 'error';
-        $response['message'] = "Error fetching max client ID: " . mysqli_error($conn);
-        echo json_encode($response);
-        exit();
     }
 
-    $max_id_row = mysqli_fetch_assoc($result_max_id);
-    $nextId = ($max_id_row['maxId'] !== null) ? $max_id_row['maxId'] + 1 : 1; // If no records exist, start from 1
 
-    // Format the new clientId (instead of agentId)
-    if ($nextId < 10) {
-        $newClientId = 'C00' . $nextId; // C001, C002...
-    } elseif ($nextId < 100) {
-        $newClientId = 'C0' . $nextId; // C010, C011...
-    } else {
-        $newClientId = 'C' . $nextId; // C100, C101...
-    }
+    // Logic for guest account type
+    elseif ($accountType === 'guest') {
+        // Fetch the latest clientId from the database
+        $sql_max_id = "SELECT MAX(CAST(SUBSTRING(clientId, 2) AS UNSIGNED)) AS maxId FROM client";
+        $result_max_id = mysqli_query($conn, $sql_max_id);
 
-    // Check if the generated clientId already exists
-    $sql_check_duplicate = "SELECT COUNT(*) AS count FROM client WHERE clientId = '$newClientId'";
-    $result_check = mysqli_query($conn, $sql_check_duplicate);
+        if (!$result_max_id) {
+            $response = ['status' => 'error', 'message' => "Error fetching max client ID: " . mysqli_error($conn)];
+            ob_end_clean(); // Clear any buffered output
+            echo json_encode($response);
+            exit();
+        }
 
-    if (!$result_check) {
-        $response['status'] = 'error';
-        $response['message'] = "Error checking duplicate client ID: " . mysqli_error($conn);
-        echo json_encode($response);
-        exit();
-    }
+        $max_id_row = mysqli_fetch_assoc($result_max_id);
+        $nextId = ($max_id_row['maxId'] !== null) ? $max_id_row['maxId'] + 1 : 1;
 
-    $check_row = mysqli_fetch_assoc($result_check);
-
-    if ($check_row['count'] > 0) {
-        // If the clientId exists, increment the ID and retry
-        $nextId++;
+        // Format the new clientId using if-else
         if ($nextId < 10) {
-            $newClientId = 'C00' . $nextId;
+            $newClientId = 'C00' . $nextId; // C001, C002...
         } elseif ($nextId < 100) {
-            $newClientId = 'C0' . $nextId;
+            $newClientId = 'C0' . $nextId; // C010, C011...
         } else {
-            $newClientId = 'C' . $nextId;
+            $newClientId = 'C' . $nextId; // C100, C101...
         }
-    }
 
-    // Prepared statement for inserting into accounts table
-    $sql_account = "INSERT INTO accounts (email, password, otp, accountStatus, accountType, createdAt) 
+        // Construct the client username
+        $clientUsername = $agentCode . '-' . $newClientId;
+
+        // Prepared statement for inserting into accounts table
+        $sql_account = "INSERT INTO accounts (email, password, otp, accountStatus, accountType, createdAt) 
                     VALUES (?, ?, '', 'active', ?, NOW())";
+        $stmt = mysqli_prepare($conn, $sql_account);
 
-    $stmt = mysqli_prepare($conn, $sql_account);
-    mysqli_stmt_bind_param($stmt, "sss", $newClientId, $hashed_password, $accountType);
-
-    if (mysqli_stmt_execute($stmt)) {
-        // Get the last inserted accountId
-        $accountId = mysqli_insert_id($conn);
-
-        // Prepared statement for inserting guest details
-        $sql_guest = "INSERT INTO client (clientId, accountId, branchId, fName, lName, mName, countryCode, contactNo, clientType, clientRole)
-                      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        $stmt_guest = mysqli_prepare($conn, $sql_guest);
-        mysqli_stmt_bind_param($stmt_guest, "siisssssss", $newClientId, $accountId, $branchId, $fName, $lName, $mName, $countryCode, $contactNo, $agentType, $agentRole);
-
-        if (mysqli_stmt_execute($stmt_guest)) {
-            $response['status'] = 'success';
-            $response['message'] = "User added successfully with Client ID: $newClientId!";
-        } else {
-            $response['status'] = 'error';
-            $response['message'] = "Error inserting into client table: " . mysqli_error($conn);
+        if (!$stmt) {
+            $response = ['status' => 'error', 'message' => "Prepare statement failed: " . mysqli_error($conn)];
+            ob_end_clean();
+            echo json_encode($response);
+            exit();
         }
-    } else {
-        $response['status'] = 'error';
-        $response['message'] = "Error inserting into accounts table: " . mysqli_error($conn);
+
+        mysqli_stmt_bind_param($stmt, "sss", $clientUsername, $hashed_password, $accountType);
+
+        if (mysqli_stmt_execute($stmt)) {
+            // Get the last inserted accountId
+            $accountId = mysqli_insert_id($conn);
+
+            // Prepared statement for inserting guest details
+            $sql_guest = "INSERT INTO client (clientId, clientCode, accountId, branchId, fName, lName, mName, countryCode, contactNo, clientType, clientRole)
+                      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $stmt_guest = mysqli_prepare($conn, $sql_guest);
+
+            if (!$stmt_guest) {
+                $response = ['status' => 'error', 'message' => "Prepare statement failed: " . mysqli_error($conn)];
+                ob_end_clean();
+                echo json_encode($response);
+                exit();
+            }
+
+            mysqli_stmt_bind_param($stmt_guest, "ssiisssssss", $newClientId, $agentCode, $accountId, $branchId, $fName, $lName, $mName, $countryCode, $contactNo, $agentType, $clientRole);
+
+            if (mysqli_stmt_execute($stmt_guest)) {
+                $response = ['status' => 'success', 'message' => "User added successfully with Client ID: $newClientId!"];
+            } else {
+                $response = ['status' => 'error', 'message' => "Error inserting into client table: " . mysqli_error($conn)];
+            }
+        } else {
+            $response = ['status' => 'error', 'message' => "Error inserting into accounts table: " . mysqli_error($conn)];
+        }
+
+        ob_end_clean(); // Clear any unexpected output before sending JSON
     }
-}
-
-
 } else {
     $response['status'] = 'error';
     $response['message'] = 'Invalid request method.';
@@ -182,5 +179,3 @@ echo json_encode($response);
 
 // Close the database connection
 mysqli_close($conn);
-
-?>
