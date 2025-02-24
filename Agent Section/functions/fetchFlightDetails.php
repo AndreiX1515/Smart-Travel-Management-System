@@ -5,7 +5,7 @@ session_start(); // Start the session to access $_SESSION variables
 if (isset($_POST['flightId'])) 
 {
   $flightId = $_POST['flightId'];
-  $agentType = $_SESSION['agentType'];
+  $agentType = $_POST['agentType'];
 
   if ($agentType === 'Retailer')
   {
@@ -40,7 +40,7 @@ if (isset($_POST['flightId']))
       ));
     }
   }
-  else
+  else if ($agentType === 'Wholeseller')
   {
     $sql1 = "SELECT f.wholesalePrice as wholesalePrice, f.origin as origin, f.packageId as packageId, p.packagePrice as packagePrice,
                 p.packageName as packageName
