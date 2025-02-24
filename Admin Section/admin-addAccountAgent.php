@@ -294,8 +294,6 @@ require "../conn.php";
                     </div>
                   </div>
 
-                  
-
                 </div>
 
                 <div class="row password">
