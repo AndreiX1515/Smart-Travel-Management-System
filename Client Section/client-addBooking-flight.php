@@ -43,28 +43,28 @@ require "../conn.php";
         ?>
 
         <?php
-        if (isset($_SESSION['flightid']) || isset($_GET['flightid'])) 
-        {
-          // Use session flight ID if available, otherwise set from GET
-          $flightid = $_SESSION['flightid'] ?? $_GET['flightid'];
-          $_SESSION['flightid'] = $flightid;
-
-          // SQL query to join flight and package tables
-          $sql1 = "SELECT flight.*, package.packageName, package.packagePrice
-                     FROM flight
-                     JOIN package ON flight.packageId = package.packageId
-                     WHERE flight.flightId = ?";
-
-          // Prepare the statement
-          if ($stmt = $conn->prepare($sql1)) 
+          if (isset($_SESSION['flightid']) || isset($_GET['flightid'])) 
           {
-            // Bind the flightId as an integer parameter
-            $stmt->bind_param("i", $flightid);
+            // Use session flight ID if available, otherwise set from GET
+            $flightid = $_SESSION['flightid'] ?? $_GET['flightid'];
+            $_SESSION['flightid'] = $flightid;
 
-            // Execute the statement
-            if ($stmt->execute()) 
+            // SQL query to join flight and package tables
+            $sql1 = "SELECT flight.*, package.packageName, package.packagePrice
+                      FROM flight
+                      JOIN package ON flight.packageId = package.packageId
+                      WHERE flight.flightId = ?";
+
+            // Prepare the statement
+            if ($stmt = $conn->prepare($sql1)) 
             {
-              $result = $stmt->get_result();
+              // Bind the flightId as an integer parameter
+              $stmt->bind_param("i", $flightid);
+
+              // Execute the statement
+              if ($stmt->execute()) 
+              {
+                $result = $stmt->get_result();
 
                 // Check if a row is returned
                 if ($result->num_rows > 0) 
@@ -83,7 +83,7 @@ require "../conn.php";
                     $wholesalePrice = $row['wholesalePrice'];
                   }
                 } 
-                else 
+                else  
                 {
                   echo "No flight found with that ID.";
                 }
@@ -93,15 +93,10 @@ require "../conn.php";
                 echo "Error executing query: " . $stmt->error;
               }
             } 
-            else 
-            {
-              echo "Error executing query: " . $stmt->error;
-            }
-
             // Close the statement
             $stmt->close();
           } 
-          else 
+          else
           {
             echo "Error preparing statement: " . $conn->error;
           }
