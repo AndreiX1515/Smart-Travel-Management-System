@@ -273,6 +273,17 @@ body {
 
 /* For large screens (1281px - 1440px) */
 @media (max-width: 1440px) and (min-width: 1281px) {
+
+  .sidebar {
+    display: none; /* Hides the sidebar */
+  }
+
+  .main-content {
+    margin-left: 0; /* Adjust main content to full width */
+    width: 100%;
+  }
+
+  
   .navbar-middle {
     display: block; /* Keeps the navbar middle visible */
   }

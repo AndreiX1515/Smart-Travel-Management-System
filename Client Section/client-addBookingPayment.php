@@ -47,7 +47,7 @@ session_start();
 
     <div class="main-content">
       <div class="container-body">
-    
+
         <div class="subscription">
           <h3 class="ms-3">Payment Details</h3>
           <div class="section section-1 px-3">

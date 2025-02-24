@@ -14,7 +14,8 @@ require "../conn.php";
   <?php include "../Agent Section/includes/head.php"; ?>
 
   <link rel="stylesheet" href="../Agent Section/assets/css/agent-addBooking.css?v=<?php echo time(); ?>">
-  <link rel="stylesheet" href="../Agent Section/assets/css/navbar-sidebar.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="../Client Section/assets/css/client-bookingform.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="../Client Section/assets/css/navbar-sidebar.css?v=<?php echo time(); ?>">
 </head>
 
 <body>
@@ -39,67 +40,55 @@ require "../conn.php";
         ?>
 
         <?php
-          if (isset($_GET['flightid'])) 
-          {
-            $flightid = $_GET['flightid'];
+          if (isset($_SESSION['flightid']) || isset($_GET['flightid'])) {
+            // Use session flight ID if available, otherwise set from GET
+            $flightid = $_SESSION['flightid'] ?? $_GET['flightid'];
             $_SESSION['flightid'] = $flightid;
-
-            // Join flight and package tables to get relevant information
+        
+            // SQL query to join flight and package tables
             $sql1 = "SELECT flight.*, package.packageName, package.packagePrice
-                      FROM flight
-                      JOIN package ON flight.packageId = package.packageId
-                      WHERE flight.flightId = ?";
-
+                     FROM flight
+                     JOIN package ON flight.packageId = package.packageId
+                     WHERE flight.flightId = ?";
+        
             // Prepare the statement
-            if ($stmt = $conn->prepare($sql1)) 
-            {
-              // Bind the flightId as an integer parameter
-              $stmt->bind_param("i", $flightid); // "i" means integer
-
-              // Execute the statement
-              if ($stmt->execute()) 
-              {
-                // Get the result
-                $result = $stmt->get_result();
-
-                // Check if a row is returned
-                if ($result->num_rows > 0) 
-                {
-                  // Fetch the data
-                  while ($row = $result->fetch_assoc()) 
-                  {
-                    $packageId = $row['packageId'];
-                    $packageName = $row['packageName'];
-                    $packagePrice = $row['packagePrice'];
-                    $origin = $row['origin'];
-                    $year = date('Y', strtotime($row['flightDepartureDate']));
-                    $month = date('F', strtotime($row['flightDepartureDate']));
-                    $flightDepartureDate = $row['flightDepartureDate'];
-                    $flightPrice = $row['flightPrice'];
-                  }
-                } 
-                else 
-                {
-                  echo "No flight found with that ID.";
+            if ($stmt = $conn->prepare($sql1)) {
+                // Bind the flightId as an integer parameter
+                $stmt->bind_param("i", $flightid);
+        
+                // Execute the statement
+                if ($stmt->execute()) {
+                    $result = $stmt->get_result();
+        
+                    // Check if a row is returned
+                    if ($result->num_rows > 0) {
+                        // Fetch the data
+                        $row = $result->fetch_assoc();
+                        
+                        $packageId = $row['packageId'];
+                        $packageName = $row['packageName'];
+                        $packagePrice = $row['packagePrice'];
+                        $origin = $row['origin'];
+                        $year = date('Y', strtotime($row['flightDepartureDate']));
+                        $month = date('F', strtotime($row['flightDepartureDate']));
+                        $flightDepartureDate = $row['flightDepartureDate'];
+                        $flightPrice = $row['flightPrice'];
+                    } else {
+                        echo "No flight found with that ID.";
+                    }
+                } else {
+                    echo "Error executing query: " . $stmt->error;
                 }
-              } 
-              else 
-              {
-                echo "Error executing query: " . $stmt->error;
-              }
-
-              // Close the statement
-              $stmt->close();
-            } 
-            else 
-            {
-              echo "Error preparing statement: " . $conn->error;
+        
+                // Close the statement
+                $stmt->close();
+            } else {
+                echo "Error preparing statement: " . $conn->error;
             }
-          } 
-          else 
-          {
+        } else {
             echo "Flight ID is not set.";
-          }
+        }
+        
         ?>
 
         <form action="../Client Section/Functions/client-addBooking-code.php" method="POST">
