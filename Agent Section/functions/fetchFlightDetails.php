@@ -40,7 +40,7 @@ if (isset($_POST['flightId']))
       ));
     }
   }
-  else
+  else if ($agentType === 'Wholeseller')
   {
     $sql1 = "SELECT f.wholesalePrice as wholesalePrice, f.origin as origin, f.packageId as packageId, p.packagePrice as packagePrice,
                 p.packageName as packageName
