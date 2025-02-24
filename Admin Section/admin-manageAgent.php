@@ -325,27 +325,6 @@ error_reporting(E_ALL);
                 }
               </style>
 
-              <script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    document.getElementById("accountType").addEventListener("change", function() {
-                        let agentRoleField = document.getElementById("agentRole");
-                        let hiddenAgentRole = document.getElementById("hiddenAgentRole");
-
-                        if (this.value === "guest") { // Match the lowercase value from your select options
-                            agentRoleField.value = "Sub Agent";
-                            hiddenAgentRole.value = "Sub Agent"; // Ensure value is posted
-                            agentRoleField.setAttribute("disabled", "disabled"); // Disable selection
-                            agentRoleField.classList.add("readonly-grey"); // Apply greyed-out style
-                        } else {
-                            agentRoleField.value = "";
-                            hiddenAgentRole.value = ""; // Ensure it resets
-                            agentRoleField.removeAttribute("disabled"); // Enable selection
-                            agentRoleField.classList.remove("readonly-grey"); // Remove greyed-out style
-                        }
-                    });
-                });
-              </script>
-
             
               <div class="content-header">
                 Personal Information
@@ -668,7 +647,7 @@ error_reporting(E_ALL);
                   <!-- Agent Role Selection -->
                   <div class="columns col-md-4">
                       <label for="agentRole" class="form-label">Agent Role</label>
-                      <select class="form-control" id="agentRole" >
+                      <select class="form-control" id="agentRole" name="agentRole">
                           <option value="">Select Role</option>
                           <option value="Head Agent">Head Agent</option>
                           <option value="Sub Agent">Sub Agent</option>
@@ -742,7 +721,27 @@ error_reporting(E_ALL);
   </script> -->
 
   <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById("accountType").addEventListener("change", function() {
+            let agentRoleField = document.getElementById("agentRole");
+            let hiddenAgentRole = document.getElementById("hiddenAgentRole");
 
+            if (this.value === "guest") { // Match the lowercase value from your select options
+                agentRoleField.value = "Sub Agent";
+                hiddenAgentRole.value = "Sub Agent"; // Ensure value is posted
+                agentRoleField.setAttribute("disabled", "disabled"); // Disable selection
+                agentRoleField.classList.add("readonly-grey"); // Apply greyed-out style
+            } else {
+                agentRoleField.value = "";
+                hiddenAgentRole.value = ""; // Ensure it resets
+                agentRoleField.removeAttribute("disabled"); // Enable selection
+                agentRoleField.classList.remove("readonly-grey"); // Remove greyed-out style
+            }
+        });
+    });
+  </script>
+
+  <script>
     $(document).ready(function() {
 
       const password = document.getElementById("password");
@@ -750,7 +749,7 @@ error_reporting(E_ALL);
       const passwordError = document.getElementById("passwordError");
 
       function validatePassword() {
-          if (password.value !== confirmPassword.value) {
+          if (cpassword.value !== Password.value) {
               passwordError.style.display = "block";
               confirmPassword.setCustomValidity("Passwords do not match!");
           } else {
