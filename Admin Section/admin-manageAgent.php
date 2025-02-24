@@ -749,7 +749,7 @@ error_reporting(E_ALL);
       const passwordError = document.getElementById("passwordError");
 
       function validatePassword() {
-          if (cpassword.value !== Password.value) {
+          if (confirmPassword.value !== password.value) {
               passwordError.style.display = "block";
               confirmPassword.setCustomValidity("Passwords do not match!");
           } else {

@@ -13,8 +13,8 @@ require "../conn.php";
 
   <?php include "../Agent Section/includes/head.php"; ?>
 
-  <link rel="stylesheet" href="../Agent Section/assets/css/agent-addBooking.css?v=<?php echo time(); ?>">
-  <link rel="stylesheet" href="../Client Section/assets/css/client-bookingform.css?v=<?php echo time(); ?>">
+
+  <link rel="stylesheet" href="../Client Section/assets/css/client-addBooking.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="../Client Section/assets/css/navbar-sidebar.css?v=<?php echo time(); ?>">
 </head>
 
@@ -31,7 +31,7 @@ require "../conn.php";
 
       <div class="main-content">
         <?php
-        if (isset($_SESSION['status'])):
+          if (isset($_SESSION['status'])):
         ?>
           <div class="alert alert-success alert-dismissible fade show" role="alert">
             <strong></strong> <?= $_SESSION['status']; ?>
@@ -39,7 +39,7 @@ require "../conn.php";
           </div>
         <?php
           unset($_SESSION['status']);
-        endif;
+          endif;
         ?>
 
         <?php
@@ -107,12 +107,12 @@ require "../conn.php";
                   <div class="columns col-md-6">
                     <div class="form-group">
                       <label for="flightDate">Flight Date <span class="text-danger"> *</span></label>
+
                       <select class="form-select" id="flightDate" name="flightDate" required>
                         <option selected disabled>Select Flight Date</option>
                         <?php
                         // Query to fetch packageId and packageName
-                        $sql1 = mysqli_query($conn, "SELECT flightId, flightDepartureDate, flightPrice FROM flight WHERE packageId = $packageId AND 
-                                          MONTHNAME(flightDepartureDate) = '$month' ORDER BY flightDepartureDate ASC");
+                        $sql1 = mysqli_query($conn, "SELECT flightId, flightDepartureDate, flightPrice FROM flight WHERE packageId = $packageId AND MONTHNAME(flightDepartureDate) = '$month' ORDER BY flightDepartureDate ASC");
 
                         // Loop through the result to create options
                         while ($res1 = mysqli_fetch_array($sql1)) {
@@ -126,6 +126,7 @@ require "../conn.php";
                         }
                         ?>
                       </select>
+
                       <span id="flightDateError" class="text-danger"></span>
                       <!-- Error message for outbound flight -->
                     </div>
@@ -135,9 +136,9 @@ require "../conn.php";
                   <div class="columns col-md-6">
                     <div class="form-group">
                       <div class="col-header">
-                        <label for="totalPax">Total Pax <span class="text-danger"> *</span></label>
-                        <label id="maxSeats"></label>
-                        <label id="availSeats"></label>
+                        <div>
+                          <label for="totalPax">Total Pax <span class="text-danger"> *</span></label>
+                        </div>
                       </div>
 
                       <input type="number" class="form-control" id="totalPax" name="totalPax" min="1" placeholder="Enter Total Pax" required>
@@ -145,6 +146,16 @@ require "../conn.php";
                       <span id="totalPaxError" class="text-danger"></span>
                       <!-- Error message for Total Pax -->
                     </div>
+
+                    <div class="pax-seats">
+                      <div class="maxAvail">
+                        <label id="maxSeats"></label>
+                        <div class="separator"></div>
+                        <label id="availSeats"></label>
+                      </div>
+                    </div>
+
+
                   </div>
                 </div>
 
@@ -218,7 +229,8 @@ require "../conn.php";
                   <!-- Middle Name Input -->
                   <div class="columns col-md-3">
                     <div class="form-group">
-                      <label for="mName">Middle Name <span class="text-danger">Type N/A if none</span></label>
+                      <label for="mName">Middle Name <span class="text-danger mText">Type N/A if none</span></label>
+                      
                       <input type="text" name="mName" id="mName" class="form-control" placeholder="Enter Middle Name" required>
 
                       <span id="mNameError" class="text-danger"></span>

@@ -354,12 +354,12 @@ a:hover {
   height: 7vh;
   width: 87.5%;
   border-bottom: 1px solid gainsboro;
-  padding: 15px 15px 15px 5px;
+  padding: 15px 15px 15px 10px;
   position: fixed;
   top: 11px;
   background-color: white;
   z-index: 1000;
-  margin-left: 10px;
+
 }
 
 .navbar .title-page {
@@ -387,7 +387,7 @@ a:hover {
 .main-content {
   width: 100%;
   height: 92vh;
-  padding: 5px 6px 5px 10px;
+  padding: 5px 0px 5px 0px;
   margin-top: 6.5vh;
   /* border: 1px solid black; */
 }
@@ -444,215 +444,256 @@ a:hover {
 
 
 
-@media (min-width: 1441px) {
-  .navbar-middle {
-    display: block; /* Shows the navbar middle */
+/* Medium screens (max-width: 1440px) */
+@media (max-width: 1440px) {
+  .card-header h4 {
+    font-size: 26px;
   }
-
-  .navbar-toggler {
-    display: none; /* Hides the toggler button */
+  .text-danger {
+    font-size: 11px;
   }
-
-  .navbar-nav {
-    display: flex; /* Horizontal display */
-    text-align: left;
-    margin: 0px 15px; /* Set margin to 15px */
+  .form-group label {
+    font-size: 15px;
+    margin-left: 5px;
   }
-
-  .navbar-collapse .navbar-nav {
-    display: none;
-  }
-
-  .navbar-nav .nav-item {
-    padding: 5px 0px;
-  }
-
-  .navbar-nav .nav-link {
-    font-size: 18px; /* Increased font size */
+  .price-wrapper .card-body {
+    padding: 8px 12px;
   }
 }
 
-/* For large screens (1281px - 1440px) */
-@media (max-width: 1440px) and (min-width: 1281px) {
-
-  .sidebar {
-    display: none; /* Hides the sidebar */
+/* Tablets and smaller laptops (max-width: 1024px) */
+@media (max-width: 1024px) {
+  .card-header h4 {
+    font-size: 22px;
   }
+  .text-danger {
+    font-size: 10px;
+  }
+  .form-group label {
+    font-size: 14px;
+  }
+  .price-wrapper .card-body {
+    padding: 7px 10px;
+  }
+}
 
+/* Mobile screens (max-width: 768px) */
+@media (max-width: 768px) {
+  .card-header h4 {
+    font-size: 20px;
+  }
+  .text-danger {
+    font-size: 10px;
+  }
+  .form-group label {
+    font-size: 13px;
+  }
+  .card-body {
+    padding: 8px 15px;
+  }
+}
+
+/* Small mobile screens (max-width: 600px) */
+@media (max-width: 600px) {
+  .card-header h4 {
+    font-size: 20px;
+  }
+  .text-danger {
+    font-size: 9px;
+  }
+  .form-group label {
+    font-size: 12px;
+  }
+  .card-body {
+    padding: 6px 12px;
+  }
+}
+
+/* Extra small screens (max-width: 480px) */
+@media (max-width: 480px) {
+  .card-header h4 {
+    font-size: 18px;
+  }
+  .text-danger {
+    font-size: 8px;
+  }
+  .form-group label {
+    font-size: 11px;
+  }
+  .card-body {
+    padding: 5px 10px;
+  }
+}
+
+/* Large screens (max-width: 1440px) */
+@media (max-width: 1440px) {
+  .sidebar {
+    display: none;
+  }
   .main-content {
-    margin-left: 0; /* Adjust main content to full width */
+    margin-left: 0;
     width: 100%;
   }
-
-  
+  .main-content-container {
+    border-top-left-radius: 0px;
+    border: 1px solid gainsboro;
+  }
   .navbar-middle {
-    display: block; /* Keeps the navbar middle visible */
+    display: block;
   }
-
   .navbar-toggler {
-    display: none; /* Hides the toggler button */
+    display: none;
   }
-
   .navbar-nav {
-    display: flex; /* Horizontal display */
+    display: flex;
     text-align: left;
-    margin: 0px 15px; /* Set margin to 15px */
+    margin: 0px 15px;
   }
-
   .navbar-collapse .navbar-nav {
     display: none;
   }
-
   .navbar-nav .nav-item {
     padding: 8px 0px;
   }
-
   .navbar-nav .nav-link {
-    font-size: 17px; /* Slightly smaller font size */
+    font-size: 17px;
   }
 }
 
-/* For medium screens (1025px - 1280px) */
-@media (max-width: 1280px) and (min-width: 992px) {
+/* Medium screens (max-width: 1280px) */
+@media (max-width: 1280px) {
   .sidebar {
-    display: none; /* Hides the sidebar */
+    display: none;
   }
-
+  .main-content-container {
+    border-top-left-radius: 0px;
+    border: 1px solid gainsboro;
+  }
   .navbar-middle {
-    display: block; /* Keeps the navbar middle visible */
+    display: block;
   }
-
   .navbar-toggler {
-    display: none; /* Hides the toggler button */
+    display: none;
   }
-
   .navbar-nav {
-    display: flex; /* Horizontal display */
+    display: flex;
     text-align: left;
-    margin: 0px 15px; /* Set margin to 15px */
+    margin: 0px 15px;
   }
-
   .navbar-collapse .navbar-nav {
     display: none;
   }
-
   .navbar-nav .nav-item {
     padding: 8px 0px;
   }
-
   .navbar-nav .nav-link {
-    font-size: 16px; /* Reduced font size for medium screens */
+    font-size: 16px;
   }
 }
 
-/* For smaller medium screens (769px - 1024px) */
+/* Small screens (max-width: 991px) */
 @media (max-width: 991px) {
   .sidebar {
-    display: none; /* Hide the sidebar */
+    display: none;
   }
-
   .main-content-container {
-    width: 100%; /* Make the main content take full width */
+    width: 100%;
+    border-top-left-radius: 0px;
+    border: 1px solid gainsboro;
   }
-
   .navbar {
-    width: 100%; /* Ensure the navbar spans full width */
+    width: 100%;
   }
-
   .navbar-middle {
-    display: none; /* Hides the navbar middle */
+    display: none;
   }
-
-  
   .navbar-nav {
-    display: block; /* Stacks the navbar items */
+    display: block;
     text-align: center;
-    margin: 15px; /* Set margin to 15px */
+    margin: 15px;
   }
-
   .navbar-nav .nav-item {
     padding: 8px 0;
   }
-
   .navbar-nav .nav-link {
-    font-size: 15px; /* Further reduced font size */
+    font-size: 15px;
   }
 }
 
-/* For mobile screens (601px - 768px) */
+/* Mobile screens (max-width: 768px) */
 @media (max-width: 768px) {
-
   .sidebar {
-    display: none; /* Hides the sidebar */
+    display: none;
   }
-
   .navbar-middle {
-    display: none; /* Hides the navbar middle */
+    display: none;
   }
-
-
+  .main-content-container {
+    width: 100%;
+    border-top-left-radius: 0px;
+    border: 1px solid gainsboro;
+  }
   .navbar-nav {
-    display: block; /* Stacks the navbar items */
+    display: block;
     text-align: center;
-    margin: 15px; /* Set margin to 15px */
+    margin: 15px;
   }
-
   .navbar-nav .nav-item {
     padding: 8px 0;
   }
-
   .navbar-nav .nav-link {
-    font-size: 14px; /* Smaller font size */
+    font-size: 14px;
   }
 }
 
-/* For small mobile screens (481px - 600px) */
+/* Small mobile screens (max-width: 600px) */
 @media (max-width: 600px) {
   .sidebar {
-    display: none; /* Hides the sidebar */
+    display: none;
   }
-  
   .navbar-middle {
-    display: none; /* Hides the navbar middle */
+    display: none;
   }
-
+  .main-content-container {
+    width: 100%;
+    border-top-left-radius: 0px;
+    border: 1px solid gainsboro;
+  }
   .navbar-nav {
-    display: block; /* Stacks the navbar items */
+    display: block;
     text-align: center;
-    margin: 15px; /* Set margin to 15px */
+    margin: 15px;
   }
-
   .navbar-nav .nav-item {
     padding: 8px 0;
   }
-
   .navbar-nav .nav-link {
-    font-size: 13px; /* Even smaller font size */
+    font-size: 13px;
   }
 }
 
-/* For mobile screens (320px - 480px) */
+/* Extra small screens (max-width: 480px) */
 @media (max-width: 480px) {
   .sidebar {
-    display: none; /* Hides the sidebar */
+    display: none;
   }
-  
+  .main-content-container {
+    width: 100%;
+    border-top-left-radius: 0px;
+    border: 1px solid gainsboro;
+  }
   .navbar-middle {
-    display: none; /* Hides the navbar middle */
+    display: none;
   }
-
-
   .navbar-nav {
-    display: block; /* Stacks the navbar items */
+    display: block;
     text-align: center;
-    margin: 15px; /* Set margin to 15px */
+    margin: 15px;
   }
-
   .navbar-nav .nav-item {
     padding: 6px 0;
   }
-
   .navbar-nav .nav-link {
-    font-size: 12px; /* Smallest font size */
+    font-size: 12px;
   }
 }
