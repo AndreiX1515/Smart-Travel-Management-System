@@ -17,17 +17,71 @@ $branchId = $_SESSION['branchId'] ?? '';
 $email = $_SESSION['email'] ?? '';
 $password = $_SESSION['password'] ?? '';
 
-$sql1 = "Select * from branch where branchId= '$branchId'";
-$result1 = $conn->query($sql1);
+// Fetch Branch Name
+$sql1 = "SELECT branchName FROM branch WHERE branchId = ?";
+$stmt1 = $conn->prepare($sql1);
+$stmt1->bind_param("i", $branchId);
+$stmt1->execute();
+$result1 = $stmt1->get_result();
 
-// Check if a result is returned
-if ($result1->num_rows > 0) {
-  // Fetch the branchName
+if ($result1->num_rows > 0) 
+{
   $row = $result1->fetch_assoc();
   $branchName = $row['branchName'];
-} else {
+} 
+else 
+{
   $branchName = "No Branch";
 }
+$stmt1->close();
+
+// Fetch Agent Info (to get companyId)
+$sql2 = "SELECT companyId FROM agent WHERE accountId = ?";
+$stmt2 = $conn->prepare($sql2);
+$stmt2->bind_param("i", $accountId);
+$stmt2->execute();
+$result2 = $stmt2->get_result();
+
+if ($result2->num_rows > 0) 
+{
+  $row2 = $result2->fetch_assoc();
+  $companyId = $row2['companyId'];
+
+  // Fetch Company Name if companyId is NOT NULL
+  if (!is_null($companyId)) 
+  {
+    $sql3 = "SELECT companyName FROM company WHERE companyId = ?";
+    $stmt3 = $conn->prepare($sql3);
+    $stmt3->bind_param("i", $companyId);
+    $stmt3->execute();
+    $result3 = $stmt3->get_result();
+
+    if ($result3->num_rows > 0) 
+    {
+      $row3 = $result3->fetch_assoc();
+      $companyName = $row3['companyName'];
+    } 
+    else 
+    {
+      $companyName = "Unknown Company"; // Fallback if no company record found
+    }
+    $stmt3->close();
+  } 
+  else 
+  {
+    $companyName = null; // No company assigned
+  }
+} 
+else 
+{
+  // Only set "No Branch" if branchName is still empty
+  if (empty($branchName)) 
+  {
+    $branchName = "No Branch";
+  }
+}
+$stmt2->close();
+
 
 // Format the full name
 $fullName = htmlspecialchars($lName . ', ' . $fName . ($mName ? ' ' . substr($mName, 0, 1) . '.' : ''));
@@ -210,7 +264,9 @@ $current_date = date('D, F d, Y');
       </div>
       <div class="profile-details">
         <h6 class="profile-name"><?php echo $fullName; ?></h>
-          <p class="profile-role mt-1"> <span><?php echo $branchName; ?> </span></p>
+          <p class="profile-role mt-1"> 
+            <span><?php echo htmlspecialchars(!empty($companyName) ? $companyName : $branchName);  ?> </span>
+          </p>
       </div>
     </div>
 
