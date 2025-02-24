@@ -5,7 +5,7 @@ session_start(); // Start the session to access $_SESSION variables
 if (isset($_POST['flightId'])) 
 {
   $flightId = $_POST['flightId'];
-  $agentType = $_SESSION['agentType'];
+  $agentType = $_POST['agentType'];
 
   if ($agentType === 'Retailer')
   {

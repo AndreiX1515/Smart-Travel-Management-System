@@ -25,7 +25,7 @@ session_start();
     <div class="navbar">
       <div class="backbutton-wrapper">
         <div class="back-button-wrapper">
-          <a href="../Agent Section/agent-transactions.php" class="back-button-link">
+          <a href="../Client Section/client-transactions.php" class="back-button-link">
               <i class="fa-solid fa-arrow-left"></i>
           </a>
         </div>

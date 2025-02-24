@@ -76,6 +76,7 @@ require "../conn.php";
                     $month = date('F', strtotime($row['flightDepartureDate']));
                     $flightDepartureDate = $row['flightDepartureDate'];
                     $flightPrice = $row['flightPrice'];
+                    $wholesalePrice = $row['wholesalePrice'];
                   }
                 } 
                 else 
@@ -119,18 +120,31 @@ require "../conn.php";
                         <option selected disabled>Select Flight Date</option>
                         <?php
                           // Query to fetch packageId and packageName
-                          $sql1 = mysqli_query($conn, "SELECT flightId, flightDepartureDate, flightPrice FROM flight WHERE packageId = $packageId AND 
+                          $sql1 = mysqli_query($conn, "SELECT flightId, flightDepartureDate, flightPrice, wholesalePrice 
+                                          FROM flight WHERE packageId = $packageId AND 
                                           MONTHNAME(flightDepartureDate) = '$month' ORDER BY flightDepartureDate ASC");
 
                           // Loop through the result to create options
-                          while ($res1 = mysqli_fetch_array($sql1)) {
+                          while ($res1 = mysqli_fetch_array($sql1)) 
+                          {
                             // Check if this packageId is equal to the selected packageId (to mark it as selected)
                             $formattedRetailPrice = number_format($res1['flightPrice'], 2);
+                            $formattedWholesalePrice = number_format($res1['wholesalePrice'], 2);
 
-                            $selected = ($res1['flightDepartureDate'] == $flightDepartureDate) ? 'selected' : '';
-                            echo "<option value='{$res1['flightId']}' {$selected}>
-                                    " . date('M j, Y', strtotime($res1['flightDepartureDate'])) . " || Price: ₱ {$formattedRetailPrice}
-                                  </option>";
+                            if ($agentType === 'Retailer')
+                            {
+                              $selected = ($res1['flightDepartureDate'] == $flightDepartureDate) ? 'selected' : '';
+                              echo "<option value='{$res1['flightId']}' {$selected}>
+                                      " . date('M j, Y', strtotime($res1['flightDepartureDate'])) . " || Price: ₱ {$formattedRetailPrice}
+                                    </option>";
+                            }
+                            else if ($agentType === 'Wholeseller')
+                            {
+                              $selected = ($res1['flightDepartureDate'] == $flightDepartureDate) ? 'selected' : '';
+                              echo "<option value='{$res1['flightId']}' {$selected}>
+                                      " . date('M j, Y', strtotime($res1['flightDepartureDate'])) . " || Price: ₱ {$formattedWholesalePrice}
+                                    </option>";
+                            }
                           }
                         ?>
                       </select>
@@ -179,7 +193,9 @@ require "../conn.php";
 
                 <!-- Adjusted Fields -->
                 <input type="hidden" id="packagePrice" name="packagePrice" value="<?php echo isset($packagePrice) ? $packagePrice : ''; ?>" placeholder="Package Price">
-                <input type="hidden" name="flightPrice" id="flightPricee" value="<?php echo isset($flightPrice) ? $flightPrice : ''; ?>" placeholder="Flight Price">
+                <input type="hidden" name="flightPrice" id="flightPricee" placeholder="Flight Price"
+                  value="<?php echo isset($agentType) ? ($agentType === 'Retailer' ? htmlspecialchars($flightPrice) : 
+                  htmlspecialchars($wholesalePrice)) : ''; ?>">
                 <input type="hidden" name="agentId" id="agentId" value="<?php echo $_SESSION['clientId']; ?>" placeholder="Agent Id">
                 <input type="hidden" name="agentType" placeholder="Agent Type Input" value="<?php echo $_SESSION['clientType']; ?>">
                 <input type="hidden" name="accId" id="accId" placeholder="Account Id Input" value="<?php echo $_SESSION['accountId']; ?>">
@@ -622,6 +638,7 @@ require "../conn.php";
       $('#flightDate').on('change', function() 
       {
         var flightId = $(this).val();
+        var agentType = $(this).val();
         $('#flightId').val(flightId); // Set the value of the input field
         var selectedFlight = $("#flightDate option:selected").text();
         var selectedDate = selectedFlight.split(' || ')[0].trim();
@@ -634,7 +651,7 @@ require "../conn.php";
           type: 'POST',
           data: 
           {
-            flightId: flightId
+            flightId: flightId, agentType: agentType
           },
           success: function(response) 
           {
