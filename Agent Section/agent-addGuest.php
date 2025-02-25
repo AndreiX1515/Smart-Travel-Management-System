@@ -29,7 +29,7 @@ error_reporting(E_ALL);
     <div class="navbar">
       <div class="backbutton-wrapper">
         <div class="back-button-wrapper">
-          <a href="../Agent Section/agent-showGuest.php" class="back-button-link">
+          <a href="../Agent Section/agent-showGuest.php?id=<?= $_SESSION['transaction_number'] ?>" class="back-button-link">
               <i class="fa-solid fa-arrow-left"></i>
           </a>
         </div>
