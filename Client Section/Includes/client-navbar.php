@@ -75,7 +75,7 @@ else
       </div> -->
 
       <!-- Collapsible Navbar Content -->
-      <div class="collapse navbar-collapse" id="navbarNav">
+      <!-- <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item">
             <a class="nav-link px-3" href="index.php">Home</a>
@@ -86,7 +86,7 @@ else
           </li>
           
         </ul>
-      </div>
+      </div> -->
 
     </div>
   </nav>

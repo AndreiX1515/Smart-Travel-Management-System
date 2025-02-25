@@ -659,7 +659,7 @@ error_reporting(E_ALL);
               </div>
 
               <!-- Hidden input to store the selected agentRole -->
-              <input type="text" id="hiddenAgentRole" name="agentRole">
+              <input type="text" id="hiddenAgentRole" name="clientRole">
         </div>
 
         <!-- Modal Footer -->

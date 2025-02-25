@@ -3,6 +3,7 @@
   flex-direction: column;
   gap: 10px;
   padding: 5px 0px;
+  width: 100%;
 }
 
 .card-header {
@@ -10,14 +11,13 @@
   justify-content: start;
   align-items: last baseline;
   padding: 5px 20px;
-  /* border: 1px solid black; */
 }
 
 .text-danger {
   font-size: 12px;
 }
 
-.card-header h4{
+.card-header h4 {
   margin-top: 10px;
   font-size: 18px;
 }
@@ -38,33 +38,23 @@
   margin-bottom: 8px;
 }
 
-.land-only {
+.land-only, .flight-details-wrapper {
   width: 98.5%;
-  margin: -10px 10px 0px 10px;
-  /* border: 1px solid black; */
+  margin: -10px 5px 0px 5px;
 }
-
-.flight-details-wrapper {
-  width: 98.5%;
-  margin: -10px 10px 0px 10px;
-  /* border: 1px solid black; */
-}
-
 
 .seat-info {
-  display: flex; /* Aligns items in a row */
-  gap: 8px; /* Adds spacing between elements */
-  font-size: 0.9rem; /* Adjust size if needed */
-  color: #6c757d; /* Optional: Muted text for better UI */
-  margin-top: 4px; /* Adds slight spacing from input */
+  display: flex;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: #6c757d;
+  margin-top: 4px;
 }
 
 .separator {
-  font-weight: bold; /* Makes the separator visually stronger */
-  color: #495057; /* Slightly darker for visibility */
+  font-weight: bold;
+  color: #495057;
 }
-
-
 
 .form-group label {
   font-size: 16px;
@@ -73,10 +63,10 @@
 
 .flight-details-wrapper {
   display: flex;
-  border: 1px solid black;
+  /* border: 1px solid black; */
 }
 
-.contact-person-details .card-body  {
+.contact-person-details .card-body {
   padding: 20px 15px;
   display: flex;
   flex-direction: column;
@@ -95,18 +85,15 @@
 
 .contact-person-details .email-fields input {
   margin-top: -4px;
-  /* border: 1px solid black; */
 }
 
-.contact-person-details .input-group  {
+.contact-person-details .input-group {
   margin-top: -6px;
 }
-
 
 .contact-person-details .input-group select {
   margin-top: 8px;
 }
-
 
 .form-group .contactNo {
   margin-top: -6px;
@@ -125,3 +112,127 @@
   align-items: center;
   padding: 10px 15px;
 }
+
+.pax-seats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* border: 1px solid black; */
+  padding: 10px 5px 0px 5px;
+}
+
+.maxAvail {
+  display: flex;
+  align-items: stretch; /* Ensures elements take full height */
+  gap: 8px; /* Adds spacing between elements */
+}
+
+.separator {
+  width: 2px; /* Adjust thickness */
+  background-color: #333; /* Adjust color */
+  height: 100%; /* Makes it stretch to container height */
+  align-self: stretch; /* Ensures full height matching other elements */
+}
+
+
+.maxAvail label {
+  font-size: 13px;
+}
+
+
+
+
+
+
+
+/* Responsive Design Adjustments */
+
+/* Medium screens (up to 1440px) */
+@media (max-width: 1440px) {
+  .card-header h4 {
+    font-size: 26px;
+  }
+  .text-danger {
+    font-size: 11px;
+  }
+  .form-group label {
+    font-size: 18px;
+  }
+  .price-wrapper .card-body {
+    padding: 8px 12px;
+  }
+}
+
+/* Tablets and smaller laptops (up to 1024px) */
+@media (max-width: 1024px) {
+  .sidebar {
+    display: none;
+  }
+
+  .card-header h4 {
+    font-size: 16px;
+  }
+  .text-danger {
+    font-size: 10px;
+  }
+  .form-group label {
+    font-size: 12px;
+  }
+  .price-wrapper .card-body {
+    padding: 7px 10px;
+  }
+}
+
+/* Mobile screens (up to 768px) */
+@media (max-width: 768px) {
+  .card-header h4 {
+    font-size: 15px;
+  }
+  .text-danger {
+    font-size: 10px;
+  }
+  .form-group label {
+    font-size: 13px;
+  }
+  .card-body {
+    padding: 8px 15px;
+  }
+}
+
+/* Small mobile screens (up to 600px) */
+@media (max-width: 600px) {
+  .card-header h4 {
+    font-size: 14px;
+  }
+  .text-danger {
+    font-size: 9px;
+  }
+  .form-group label {
+    font-size: 12px;
+  }
+  .card-body {
+    padding: 6px 12px;
+  }
+}
+
+/* Extra small screens (up to 480px) */
+@media (max-width: 480px) {
+  .card-header h4 {
+    font-size: 20px;
+  }
+
+  .text-danger {
+    font-size: 15px;
+  }
+
+  .text-danger {
+    font-size: 8px;
+  }
+  .form-group label {
+    font-size: 8px;
+  }
+  .card-body {
+    padding: 5px 10px;
+  }
+}
+

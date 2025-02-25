@@ -9,10 +9,9 @@ require "../conn.php";
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Booking</title>
+  <title>Add Booking - Flight</title>
 
   <?php include "../Agent Section/includes/head.php"; ?>
-
 
   <link rel="stylesheet" href="../Agent Section/assets/css/agent-addBooking.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="../Agent Section/assets/css/navbar-sidebar.css?v=<?php echo time(); ?>">
@@ -24,84 +23,73 @@ require "../conn.php";
     <?php include "../Agent Section/includes/sidebar.php"; ?>
 
     <div class="main-content-container">
-      <div class="navbar">
-        <h5 class="title-page" id="page-title">Booking</h5>
-      </div>
-
+      <?php include "../Agent Section/includes/navbar.php"; ?>
 
       <div class="main-content">
-        <?php
+      <?php
           if (isset($_SESSION['status'])):
-        ?>
-          <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <strong></strong> <?= $_SESSION['status']; ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
-        <?php
-          unset($_SESSION['status']);
+          ?>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+              <strong></strong> <?= $_SESSION['status']; ?>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          <?php
+            unset($_SESSION['status']);
           endif;
-        ?>
+          ?>
 
-        <?php
-          if (isset($_SESSION['flightid']) || isset($_GET['flightid'])) 
-          {
-            // Use session flight ID if available, otherwise set from GET
-            $flightid = $_SESSION['flightid'] ?? $_GET['flightid'];
-            $_SESSION['flightid'] = $flightid;
+          <?php
+          if (isset($_SESSION['flightid']) || isset($_GET['flightid'])) {
+              // Use session flight ID if available, otherwise set from GET
+              $flightid = $_SESSION['flightid'] ?? $_GET['flightid'];
+              $_SESSION['flightid'] = $flightid;
 
-            // SQL query to join flight and package tables
-            $sql1 = "SELECT flight.*, package.packageName, package.packagePrice
-                      FROM flight
-                      JOIN package ON flight.packageId = package.packageId
-                      WHERE flight.flightId = ?";
+              // SQL query to join flight and package tables
+              $sql1 = "SELECT flight.*, package.packageName, package.packagePrice
+                        FROM flight
+                        JOIN package ON flight.packageId = package.packageId
+                        WHERE flight.flightId = ?";
 
-            // Prepare the statement
-            if ($stmt = $conn->prepare($sql1)) 
-            {
-              // Bind the flightId as an integer parameter
-              $stmt->bind_param("i", $flightid);
+              // Prepare the statement
+              if ($stmt = $conn->prepare($sql1)) {
+                  // Bind the flightId as an integer parameter
+                  $stmt->bind_param("i", $flightid);
 
-              // Execute the statement
-              if ($stmt->execute()) 
-              {
-                $result = $stmt->get_result();
+                  // Execute the statement
+                  if ($stmt->execute()) {
+                      $result = $stmt->get_result();
 
-                // Check if a row is returned
-                if ($result->num_rows > 0) 
-                {
-                  // Fetch the data
-                  while ($row = $result->fetch_assoc()) 
-                  {
-                    $packageId = $row['packageId'];
-                    $packageName = $row['packageName'];
-                    $packagePrice = $row['packagePrice'];
-                    $origin = $row['origin'];
-                    $year = date('Y', strtotime($row['flightDepartureDate']));
-                    $month = date('F', strtotime($row['flightDepartureDate']));
-                    $flightDepartureDate = $row['flightDepartureDate'];
-                    $flightPrice = $row['flightPrice'];
-                    $wholesalePrice = $row['wholesalePrice'];
+                      // Check if a row is returned
+                      if ($result->num_rows > 0) {
+                          // Fetch the data
+                          while ($row = $result->fetch_assoc()) {
+                              $packageId = $row['packageId'];
+                              $packageName = $row['packageName'];
+                              $packagePrice = $row['packagePrice'];
+                              $origin = $row['origin'];
+                              $year = date('Y', strtotime($row['flightDepartureDate']));
+                              $month = date('F', strtotime($row['flightDepartureDate']));
+                              $flightDepartureDate = $row['flightDepartureDate'];
+                              $flightPrice = $row['flightPrice'];
+                              $wholesalePrice = $row['wholesalePrice'];
+                          }
+                      } else {
+                          echo "No flight found with that ID.";
+                      }
+                  } else {
+                      echo "Error executing query: " . $stmt->error;
                   }
-                } 
-                else  
-                {
-                  echo "No flight found with that ID.";
-                }
-              } 
-              else 
-              {
-                echo "Error executing query: " . $stmt->error;
+                  // Close the statement
+                  $stmt->close();
+              } else {
+                  echo "Error preparing statement: " . $conn->error;
               }
-            } 
-            // Close the statement
-            $stmt->close();
-          } 
-          else
-          {
-            echo "Error preparing statement: " . $conn->error;
+          } else {
+              echo "Flight ID is not set.";
           }
+          ?>
 
-        ?>
+
 
         <form action="../Agent Section/functions/agent-addBooking-code.php" method="POST">
           <div class="booking-wrapper">
@@ -112,44 +100,158 @@ require "../conn.php";
 
               <div class="card-body">
                 <div class="row">
+                  <!-- Package Dropdown -->
+                  <div class="columns col-md-6">
+                    <div class="form-group">
+
+                      <label for="packageName">Package<span class="text-danger"> *</span></label>
+
+                      <select class="form-select" id="packageName" name="packageName" required>
+                        <option selected disabled>Select Package</option>
+                        <?php
+                        // Query to fetch packageId and packageName
+                        $sql1 = mysqli_query($conn, "SELECT DISTINCT packageId, packageName FROM package ORDER BY packageName ASC");
+
+                        // Loop through the result to create options
+                        while ($res1 = mysqli_fetch_array($sql1)) {
+                          // Check if this packageId is equal to the selected packageId (to mark it as selected)
+                          $selected = ($res1['packageId'] == $packageId) ? 'selected' : '';
+                          echo "<option value='{$res1['packageId']}'  {$selected}>{$res1['packageName']}</option>";
+                        }
+                        ?>
+                      </select>
+
+                      <span id="packageNameError" class="text-danger"></span>
+                      <!-- Error message for package -->
+
+                    </div>
+                  </div>
+
+                  <!-- Origin Dropdown -->
+                  <div class="columns col-md-6">
+                    <div class="form-group">
+
+                      <label for="origin">Origin <span class="text-danger">*</span></label>
+
+                      <select class="form-select" id="origin" name="origin" required>
+                        <option selected disabled>Select Origin</option>
+
+                        <?php
+                        // Query to fetch packageId and packageName
+                        $sql1 = mysqli_query($conn, "SELECT DISTINCT origin FROM flight
+                                        ORDER BY origin ASC");
+
+                        // Loop through the result to create options
+                        while ($res1 = mysqli_fetch_array($sql1)) {
+                          // Check if this packageId is equal to the selected packageId (to mark it as selected)
+                          $selected = ($res1['origin'] == $origin) ? 'selected' : '';
+                          echo "<option value='{$res1['origin']}' {$selected}>{$res1['origin']}</option>";
+                        }
+                        ?>
+
+                      </select>
+
+                      <span id="originError" class="text-danger"></span>
+                      <!-- Error message for origin -->
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <!-- Year Dropdown -->
+                  <div class="columns col-md-6">
+                    <div class="form-group">
+                      <label for="year">Year <span class="text-danger">*</span></label>
+                      <select class="form-select" id="year" name="year" required>
+                        <option selected disabled>Select Year</option>
+                        <?php
+                        // Query to fetch packageId and packageName
+                        $sql1 = mysqli_query($conn, "SELECT DISTINCT YEAR(flightDepartureDate) as year FROM flight 
+                                        ORDER BY flightDepartureDate ASC");
+
+                        // Loop through the result to create options
+                        while ($res1 = mysqli_fetch_array($sql1)) {
+                          // Check if this packageId is equal to the selected packageId (to mark it as selected)
+                          $selected = ($res1['year'] == $year) ? 'selected' : '';
+                          echo "<option value='{$res1['year']}' {$selected}>{$res1['year']}</option>";
+                        }
+                        ?>
+
+
+
+
+                      </select>
+                      <span id="yearError" class="text-danger"></span>
+                      <!-- Error message for year -->
+                    </div>
+                  </div>
+
+                  <!-- Month Dropdown -->
+                  <div class="columns col-md-6">
+                    <div class="form-group">
+                      <label for="month">Month <span class="text-danger">*</span></label>
+                      <select class="form-select" id="month" name="month" required>
+                        <option selected disabled>Select Month</option>
+
+                        <?php
+                        // Query to fetch packageId and packageName
+                        $sql1 = mysqli_query($conn, "SELECT DISTINCT MONTHNAME(flightDepartureDate) as month FROM flight
+                                        ORDER BY flightDepartureDate ASC");
+
+                        // Loop through the result to create options
+                        while ($res1 = mysqli_fetch_array($sql1)) {
+                          // Check if this packageId is equal to the selected packageId (to mark it as selected)
+                          $selected = ($res1['month'] == $month) ? 'selected' : '';
+                          echo "<option value='{$res1['month']}' {$selected}>{$res1['month']}</option>";
+                        }
+                        ?>
+
+
+
+
+
+                        <!-- <option value="January">January</option>
+                      <option value="February">February</option>
+                      <option value="March">March</option>
+                      <option value="April">April</option>
+                      <option value="May">May</option>
+                      <option value="June">June</option>
+                      <option value="July">July</option>
+                      <option value="August">August</option>
+                      <option value="September">September</option>
+                      <option value="October">October</option>
+                      <option value="November">November</option>
+                      <option value="December">December</option> -->
+                      </select>
+                      <span id="monthError" class="text-danger"></span>
+                      <!-- Error message for month -->
+
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
                   <!-- Flight Date Dropdown -->
                   <div class="columns col-md-6">
                     <div class="form-group">
                       <label for="flightDate">Flight Date <span class="text-danger"> *</span></label>
-
                       <select class="form-select" id="flightDate" name="flightDate" required>
                         <option selected disabled>Select Flight Date</option>
                         <?php
-                          // Query to fetch packageId and packageName
-                          $sql1 = mysqli_query($conn, "SELECT flightId, flightDepartureDate, flightPrice, wholesalePrice 
-                                          FROM flight WHERE packageId = $packageId AND 
-                                          MONTHNAME(flightDepartureDate) = '$month' ORDER BY flightDepartureDate ASC");
+                        // Query to fetch packageId and packageName
+                        $sql1 = mysqli_query($conn, "SELECT flightId, flightDepartureDate, flightPrice FROM flight WHERE packageId = $packageId AND 
+                                        MONTHNAME(flightDepartureDate) = '$month' ORDER BY flightDepartureDate ASC");
 
-                          // Loop through the result to create options
-                          while ($res1 = mysqli_fetch_array($sql1)) 
-                          {
-                            // Check if this packageId is equal to the selected packageId (to mark it as selected)
-                            $formattedRetailPrice = number_format($res1['flightPrice'], 2);
-                            $formattedWholesalePrice = number_format($res1['wholesalePrice'], 2);
-
-                            if ($agentType === 'Retailer')
-                            {
-                              $selected = ($res1['flightDepartureDate'] == $flightDepartureDate) ? 'selected' : '';
-                              echo "<option value='{$res1['flightId']}' {$selected}>
-                                      " . date('M j, Y', strtotime($res1['flightDepartureDate'])) . " || Price: ₱ {$formattedRetailPrice}
-                                    </option>";
-                            }
-                            else if ($agentType === 'Wholeseller')
-                            {
-                              $selected = ($res1['flightDepartureDate'] == $flightDepartureDate) ? 'selected' : '';
-                              echo "<option value='{$res1['flightId']}' {$selected}>
-                                      " . date('M j, Y', strtotime($res1['flightDepartureDate'])) . " || Price: ₱ {$formattedWholesalePrice}
-                                    </option>";
-                            }
-                          }
+                        // Loop through the result to create options
+                        while ($res1 = mysqli_fetch_array($sql1)) {
+                          // Check if this packageId is equal to the selected packageId (to mark it as selected)
+                          $selected = ($res1['flightDepartureDate'] == $flightDepartureDate) ? 'selected' : '';
+                          echo "<option value='{$res1['flightId']}' {$selected}>
+                                  " . date('M j, Y', strtotime($res1['flightDepartureDate'])) . " || Price: {$res1['flightPrice']}
+                                </option>";
+                        }
                         ?>
                       </select>
-
                       <span id="flightDateError" class="text-danger"></span>
                       <!-- Error message for outbound flight -->
                     </div>
@@ -158,10 +260,10 @@ require "../conn.php";
                   <!-- Total Pax Input -->
                   <div class="columns col-md-6">
                     <div class="form-group">
-                      <div class="col-header">
-                        <div>
-                          <label for="totalPax">Total Pax <span class="text-danger"> *</span></label>
-                        </div>
+                      <div class="col-header totalpax">
+                        <label for="totalPax">Total Pax <span class="text-danger"> *</span></label>
+                        <label id="maxSeats"></label>
+                        <label id="availSeats"></label>
                       </div>
 
                       <input type="number" class="form-control" id="totalPax" name="totalPax" min="1" placeholder="Enter Total Pax" required>
@@ -169,16 +271,6 @@ require "../conn.php";
                       <span id="totalPaxError" class="text-danger"></span>
                       <!-- Error message for Total Pax -->
                     </div>
-
-                    <div class="pax-seats">
-                      <div class="maxAvail">
-                        <label id="maxSeats"></label>
-                        <div class="separator"></div>
-                        <label id="availSeats"></label>
-                      </div>
-                    </div>
-
-
                   </div>
                 </div>
 
@@ -200,22 +292,11 @@ require "../conn.php";
                   </div>
                 </div>
 
-                <input type="hidden" id="agentCode" name="agentCode" value="<?php echo $_SESSION['agentCode']; ?>" placeholder="Agent Code Input">
-                <input type="hidden" id="flightId" name="flightId" value="<?php echo $flightid; ?>" placeholder="Flight Id Input">
-
-                <!-- Adjusted Fields -->
-                <input type="hidden" id="packagePrice" name="packagePrice" value="<?php echo isset($packagePrice) ? $packagePrice : ''; ?>" placeholder="Package Price">
-                <input type="hidden" name="flightPrice" id="flightPricee" placeholder="Flight Price"
-                  value="<?php echo isset($agentType) ? ($agentType === 'Retailer' ? htmlspecialchars($flightPrice) : 
-                  htmlspecialchars($wholesalePrice)) : ''; ?>">
-                <input type="hidden" name="agentId" id="agentId" value="<?php echo $_SESSION['agentId']; ?>" placeholder="Agent Id">
-                <input type="hidden" name="agentType" placeholder="Agent Type Input" value="<?php echo $_SESSION['agentType']; ?>">
-                <input type="hidden" name="accId" id="accId" placeholder="Account Id Input" value="<?php echo $_SESSION['accountId']; ?>">
-
-                <!-- Adjusted Package Fields -->
-                <input type="hidden" name="packageId" id="packageId" value="<?php echo isset($packageId) ? $packageId : ''; ?>" placeholder="Package Id Input">
-                <input type="hidden" name="packageName" id="packageName" value="<?php echo isset($packageName) ? $packageName : ''; ?>" placeholder="Package Name Input">
-                <input type="hidden" name="origin" id="origin" value="<?php echo isset($origin) ? $origin : ''; ?>" placeholder="Origin Input">
+                <input type="text" id="agentCode" name="agentCode" value="<?php echo $_SESSION['agentCode'];; ?>" placeholder="agentCode Input">
+                <input type="text" id="flightId" name="flightId" value="" placeholder="Flight Id Input">
+                <input type="text" id="packagePrice" name="packagePrice" placeholder="Package Price">
+                <input type="text" name="flightPrice" id="flightPricee" placeholder="Flight Price">
+                <input type="text" name="agentId" id="agentId" value="<?php echo $_SESSION['agentId']; ?>" placeholder="Agent Id">
 
               </div>
 
@@ -254,8 +335,7 @@ require "../conn.php";
                   <!-- Middle Name Input -->
                   <div class="columns col-md-3">
                     <div class="form-group">
-                      <label for="mName">Middle Name <span class="text-danger mText">Type N/A if none</span></label>
-                      
+                      <label for="mName">Middle Name <span class="text-danger">Type N/A if none</span></label>
                       <input type="text" name="mName" id="mName" class="form-control" placeholder="Enter Middle Name" required>
 
                       <span id="mNameError" class="text-danger"></span>
@@ -526,7 +606,7 @@ require "../conn.php";
                       <!-- Logo Section -->
                       <div class="row d-flex justify-content-center align-items-center text-center mb-3 mt-2">
                         <div class="col">
-                          <img src="../Assets/Logos/SMART LOGO 2 (2).png" alt="Trip Image" class="img-fluid" style="max-width: 250px; max-height: 80px;">
+                          <img src="../assets/images/SMART LOGO 2 (2).png" alt="Trip Image" class="img-fluid" style="max-width: 250px; max-height: 80px;">
                         </div>
                       </div>
 
@@ -637,46 +717,339 @@ require "../conn.php";
     }
   </script>
 
+
   <script>
     $(document).ready(function() {
-      // Fetch flight Related Details once changed
-      $('#flightDate').on('change', function() {
-        var flightId = $(this).val();
-        var agentType = $(this).val();
-        $('#flightId').val(flightId); // Set the value of the input field
-        var selectedFlight = $("#flightDate option:selected").text();
-        var selectedDate = selectedFlight.split(' || ')[0].trim();
-        $('#selectedDate').text(selectedDate);
-        console.log("Selected Flight ID:", flightId); // Debugging output
+      // Fetching Origin once Package was Selected
+      $('#packageName').on('change', function() {
+        var packageId = $(this).val();
+        var selectedPackageName = $("#packageName option:selected").text();
+        $('#origin').html('<option selected disabled>Select Origin</option>'); // Clear origin field
+        $('#year').html('<option selected disabled>Select Year</option>'); // Clear year field
+        $('#month').html('<option selected disabled>Select Month</option>'); // Clear month field
+        $('#flightDate').html('<option selected disabled>Select Flight Date</option>'); // Clear Flight Date field
+        $('#flightId').val(''); // Clear Flight Id field
+        $('#flightPrice').text('0.00'); // Clear Flight Price field
+        $('#maxSeats').text(''); // Clear Max Seat field
+        $('#availSeats').text(''); // Clear Avail Seats field
+        $('#displayTotalPrice').text("0.00"); // Display total price
+        $('#totalPrice').val("0.00"); // Set hidden input value
+        $('#totalPax').val("Enter Total Pax"); // Set Total Pax value
 
-        $.ajax({
-          url: '../Agent Section/functions/fetchFlightDetails.php', // Separate PHP file for return flight
-          type: 'POST',
-          data: 
-          {
-            flightId: flightId, agentType: agentType
-          },
-          success: function(response) {
-            var data = JSON.parse(response); // Parse the JSON response
-            console.log(data);
+        // Update the modal with the selected package name
+        $('#selectedPackage').text(selectedPackageName);
 
-            $('#packagePrice').val(data.packagePrice); // Set the value of the input field
-            $('#packageName').val(data.packageName); // Set the value of the input field
-            $('#flightPricee').val(data.flightPrice); // Set the value of the input field
-            $('#packageId').val(data.packageId); // Set the value of the input field
-            $('#origin').val(data.origin); // Set the value of the input field
+        if (packageId) {
+          $.ajax({
+            url: '../Agent Section/functions/fetchOrigin.php',
+            type: 'POST',
+            data: {
+              packageId: packageId
+            },
+            success: function(response) {
+              // Parse the JSON response
+              var data = JSON.parse(response);
 
-            updateTotalPaxMax();
+              // Update the origin dropdown
+              $('#origin').html(data.originOptions); // Use originOptions from the response
 
-          },
-          error: function(xhr, status, error) {
-            console.error('Error fetching return flight:', error); // Log the error to console
-          }
-        });
+              // Update the package price input
+              $('#packagePrice').val(data.packagePrice); // Set the package price value
+
+              // console.log(data); // Optional: For debugging
+            },
+            error: function(xhr, status, error) {
+              console.error('Error fetching origins:', error); // Log the error to console
+            }
+          });
+        } else {
+          $('#origin').html('<option selected disabled>Select Origin</option>');
+        }
       });
+
+      // Fetching Distinct Year once origin was Selected
+      $('#origin').on('change', function() {
+        var packageId = $('#packageName').val();
+        var origin = $('#origin').val();
+        var selectedOrigin = $("#origin option:selected").text();
+
+        // Update the modal with the selected origin
+        $('#selectedOrigin').text(selectedOrigin);
+
+        $('#year').html('<option selected disabled>Select Year</option>'); // Clear year field
+        $('#month').html('<option selected disabled>Select Month</option>'); // Clear month field
+        $('#flightDate').html('<option selected disabled>Select Flight Date</option>'); // Clear Flight Date field
+        $('#flightId').val(''); // Clear Flight Id field
+        $('#flightPrice').text('0.00'); // Clear Flight Price field
+        $('#maxSeats').text(''); // Clear Max Seat field
+        $('#availSeats').text(''); // Clear Avail Seats field
+        $('#displayTotalPrice').text("0.00"); // Display total price
+        $('#totalPrice').val("0.00"); // Set hidden input value
+        $('#totalPax').val("Enter Total Pax"); // Set Total Pax value
+
+        if (packageId && origin) {
+          $.ajax({
+            url: '../Agent Section/functions/fetchYear.php',
+            type: 'POST',
+            data: {
+              packageId: packageId,
+              origin: origin
+            }, // Send packageId, origin
+            success: function(response) {
+              // console.log(response); // Debugging the response
+              $('#year').html(response); // Update year dropdown with the fetched years
+            },
+            error: function(xhr, status, error) {
+              console.error('Error fetching year:', error); // Log the error to console
+            }
+          });
+        } else {
+          $('#year').html('<option selected disabled>Select Year</option>');
+        }
+      });
+
+      // Fetching Distinct Month once year depending on the package and origin was Selected
+      $('#year').on('change', function() {
+        var packageId = $('#packageName').val();
+        var origin = $('#origin').val();
+        var selectedYear = $('#year').val(); // Get the selected year
+
+        // Clear month and flight fields
+        $('#month').html('<option selected disabled>Select Month</option>');
+        $('#flightDate').html('<option selected disabled>Select Flight Date</option>');
+        $('#flightId').val(''); // Clear Flight Id field
+        $('#flightPrice').val('0.00'); // Clear Flight Price field
+        $('#maxSeats').text(''); // Clear Max Seat field
+        $('#availSeats').text(''); // Clear Avail Seats field
+        $('#displayTotalPrice').text("0.00"); // Display total price
+        $('#totalPrice').val("0.00"); // Set hidden input value
+        $('#totalPax').val("Enter Total Pax"); // Set Total Pax value
+
+        if (packageId && origin && selectedYear) {
+          $.ajax({
+            url: '../Agent Section/functions/fetchMonth.php', // PHP file to fetch distinct months
+            type: 'POST',
+            data: {
+              packageId: packageId,
+              origin: origin,
+              year: selectedYear // Send the selected year to fetch relevant months
+            },
+            success: function(response) {
+              // Update month dropdown with the fetched distinct months
+              $('#month').html(response);
+            },
+            error: function(xhr, status, error) {
+              console.error('Error fetching months:', error); // Log the error to the console
+            }
+          });
+        } else {
+          $('#month').html('<option selected disabled>Select Month</option>');
+        }
+      });
+
+      // Fetching Flight Date based on the package, origin, year, and month
+      $('#month').on('change', function() {
+        var packageId = $('#packageName').val();
+        var origin = $('#origin').val();
+        var selectedYear = $('#year').val(); // Get the selected year
+        var selectedMonth = $('#month').val(); // Get the selected month
+
+        // Clear flight fields
+        $('#flightDate').html('<option selected disabled>Select Flight Date</option>');
+        $('#flightId').val(''); // Clear Flight Id field
+        $('#flightPrice').text('0.00'); // Clear Flight Price field
+        $('#flightPrice').val('0.00'); // Clear Flight Price field
+        $('#maxSeats').text(''); // Clear Max Seat field
+        $('#availSeats').text(''); // Clear Avail Seats field
+        $('#displayTotalPrice').text("0.00"); // Display total price
+        $('#totalPrice').val("0.00"); // Set hidden input value
+        $('#totalPax').val("Enter Total Pax"); // Set Total Pax value
+
+        if (packageId && origin && selectedYear && selectedMonth) {
+          $.ajax({
+            url: '../Agent Section/functions/fetchFlightDate.php', // PHP file to fetch flight dates
+            type: 'POST',
+            data: {
+              packageId: packageId,
+              origin: origin,
+              year: selectedYear,
+              month: selectedMonth // Send the selected month to fetch relevant flight dates
+            },
+            success: function(response) {
+              // Update flight date dropdown with the fetched flight dates
+              $('#flightDate').html(response);
+            },
+            error: function(xhr, status, error) {
+              console.error('Error fetching flight dates:', error); // Log the error to the console
+            }
+          });
+        } else {
+          $('#flightDate').html('<option selected disabled>Select Flight Date</option>');
+        }
+      });
+
+      // Fetching Flight Id once Flight Date was Selected
+      $('#flightDate').on('change', function() {
+        var flightDate = $(this).val();
+        var selectedFlight = $("#flightDate option:selected").text();
+        // Extract only the flight date by splitting at the " || " (delimiter between date and price)
+        var selectedDate = selectedFlight.split(' || ')[0].trim();
+
+        // Update the <p> element with the extracted flight date
+        $('#selectedDate').text(selectedDate);
+
+        if (flightDate === "Null") {
+          // If outbound flight is "Null", use the package price instead of the flight price
+          var packagePrice = parseFloat($('#packagePrice').val()); // Get the package price value
+          flightPrice = packagePrice; // Ensure it's a number
+          var formattedPrice = packagePrice.toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+          });
+          const totalPax = parseInt($('#totalPax').val()) || 0;
+          const totalPrice = flightPrice * totalPax;
+
+          // Update the flight price display with the formatted package price
+          $('#flightPrice').text(formattedPrice);
+
+          // Update the flight price for all guests with the package price
+          $('input[name="flightPrice"]').val(packagePrice);
+
+          $('input[name="flightId"]').val("Null");
+
+          // Manually trigger the change event on #flightId
+          $('#flightId').trigger('change');
+
+          // Format total price with commas
+          $('#displayTotalPrice').text(formatNumberWithCommas(totalPrice.toFixed(2))); // Display total price
+          $('#totalPrice').val(totalPrice.toFixed(2)); // Set hidden input value
+
+          console.log('Outbound flight is null, using package price:', packagePrice);
+        } else if (flightDate) {
+          // If a valid outbound flight is selected, fetch return flight and flight price
+          $.ajax({
+            url: '../Agent Section/functions/fetchFlightId.php', // Separate PHP file for return flight
+            type: 'POST',
+            data: {
+              flightDate: flightDate
+            },
+            success: function(response) {
+              var data = JSON.parse(response); // Parse the JSON response
+
+              flightPrice = parseFloat(data.flightPrice); // Ensure it's a number
+
+              // Format the price with commas and two decimal places
+              var formattedPrice = flightPrice.toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+              });
+
+              // Update the flight price display with the formatted price
+              $('#flightPrice').text(formattedPrice);
+              $('#flightPricee').val(formattedPrice);
+
+              // Update the flight ID 
+              $('input[name="flightId"]').val(data.flightId);
+
+              // Manually trigger the change event on #flightId
+              $('#flightId').trigger('change');
+
+              const totalPax = parseInt($('#totalPax').val()) || 0;
+              const totalPrice = flightPrice * totalPax;
+
+              // Format total price with commas
+              $('#displayTotalPrice').text(formatNumberWithCommas(totalPrice.toFixed(2))); // Display total price
+              $('#totalPrice').val(totalPrice.toFixed(2)); // Set hidden input value
+
+            },
+            error: function(xhr, status, error) {
+              console.error('Error fetching return flight:', error); // Log the error to console
+            }
+          });
+        } else {
+          // If no Flight Date is selected, clear return flight input fields
+          console.error('Error fetching Flight Date:', error); // Log the error to console
+        }
+      });
+
+
+    function fetchFlightDetails() {
+    var flightDate = $('#flightDate').val();
+    var selectedFlight = $("#flightDate option:selected").text();
+    
+    // Extract only the flight date by splitting at the " || " (delimiter between date and price)
+    var selectedDate = selectedFlight.split(' || ')[0].trim();
+
+    // Update the <p> element with the extracted flight date
+    $('#selectedDate').text(selectedDate);
+
+    if (flightDate === "Null") {
+        // If outbound flight is "Null", use the package price instead of the flight price
+        var packagePrice = parseFloat($('#packagePrice').val()) || 0;
+        var formattedPrice = packagePrice.toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+
+        const totalPax = parseInt($('#totalPax').val()) || 0;
+        const totalPrice = packagePrice * totalPax;
+
+        $('#flightPrice').text(formattedPrice);
+        $('input[name="flightPrice"]').val(packagePrice);
+        $('input[name="flightId"]').val("Null");
+
+        $('#flightId').trigger('change');
+
+        $('#displayTotalPrice').text(formatNumberWithCommas(totalPrice.toFixed(2))); 
+        $('#totalPrice').val(totalPrice.toFixed(2));
+
+        console.log('Outbound flight is null, using package price:', packagePrice);
+    } else if (flightDate) {
+        // Fetch return flight and flight price via AJAX
+        $.ajax({
+            url: '../Agent Section/functions/fetchFlightId.php',
+            type: 'POST',
+            data: { flightDate: flightDate },
+            success: function(response) {
+                var data = JSON.parse(response);
+                var flightPrice = parseFloat(data.flightPrice) || 0;
+                
+                var formattedPrice = flightPrice.toLocaleString('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
+
+                $('#flightPrice').text(formattedPrice);
+                $('#flightPricee').val(formattedPrice);
+                $('input[name="flightId"]').val(data.flightId);
+
+                $('#flightId').trigger('change');
+
+                const totalPax = parseInt($('#totalPax').val()) || 0;
+                const totalPrice = flightPrice * totalPax;
+
+                $('#displayTotalPrice').text(formatNumberWithCommas(totalPrice.toFixed(2)));
+                $('#totalPrice').val(totalPrice.toFixed(2));
+            },
+            error: function(xhr, status, error) {
+                console.error('Error fetching return flight:', error);
+            }
+        });
+    } else {
+        console.error('Error fetching Flight Date');
+    }
+}
+
+      // Event handlers
+      $('#flightDate').on('change', fetchFlightDetails);
+      $('#totalPax').on('focusin', fetchFlightDetails);
+
+      
 
       // Event listeners
       $('#flightId').on('change', updateTotalPaxMax); // Trigger on flight change
+
+
       $('#land').on('change', updateTotalPaxMax); // Trigger on "Land Only" checkbox toggle
 
       // Ensure that if the user manually enters a number greater than the max, it's automatically corrected
@@ -692,17 +1065,16 @@ require "../conn.php";
         }
       });
 
-      // New Book Now Button Click Event
+      // Book Now Button Click Event
       $('#bookNowButton').click(function(event) {
-        $('#selectedPackage').text($('#packageName').val());
-        $('#selectedOrigin').text($('#origin').val());
-        var selectedFlight = $("#flightDate option:selected").text();
-        var selectedDate = selectedFlight.split(' || ')[0].trim();
-        $('#selectedDate').text(selectedDate);
         event.preventDefault(); // Prevent default form submission
 
         const errors = {
+          packageName: 'Please Select a Package.',
           totalPax: 'Please Enter Total Pax.',
+          origin: 'Please Select Origin',
+          year: 'Please Select Year',
+          month: 'Please Select Month',
           flightDate: 'Please Select Flight Date.',
           fName: 'Please Enter First Name',
           lName: 'Please Enter Last Name',
@@ -736,7 +1108,11 @@ require "../conn.php";
         };
 
         // Validate all fields
+        validateField('#packageName', 'packageName');
         validateField('#totalPax', 'totalPax');
+        validateField('#origin', 'origin');
+        validateField('#year', 'year');
+        validateField('#month', 'month');
         validateField('#flightDate', 'flightDate');
         validateField('#fName', 'fName');
         validateField('#lName', 'lName');
@@ -806,6 +1182,7 @@ require "../conn.php";
           console.error('Validation failed or no seats available.');
         }
       });
+
 
       // Automatically recalculate total price when flightDate or totalPax changes
       $('#flightDate, #totalPax').on('input change', function() {
@@ -883,7 +1260,6 @@ require "../conn.php";
         // Get the input values
         var flightId = $('#flightId').val();
         var agentId = $('#agentId').val();
-        var accId = $('#accId').val();
         var isLandOnlyChecked = $('#land').is(':checked');
 
         if (flightId !== '') {
@@ -893,7 +1269,7 @@ require "../conn.php";
             method: 'POST',
             data: {
               flightId: flightId,
-              accId: accId
+              agentId: agentId
             }, // Send the flightId to the server
             dataType: 'json', // Specify that we're expecting JSON response
             success: function(response) {
@@ -916,7 +1292,7 @@ require "../conn.php";
 
                   // Display the available seats
                   $('#maxSeats').text('Agent-Specific Available Seats for this Flight: ' + maxSeats);
-                  $('#availSeats').text('Total Remaining Seats for this Flight: ' + totalSeats);
+                  $('#availSeats').text('Remaining Seats for this Flight: ' + totalSeats);
                 } else {
                   // If "Land Only" is checked, set a default max value and clear the display
                   $('#totalPax').attr('max', 999); // Example max value, adjust as needed
@@ -942,9 +1318,14 @@ require "../conn.php";
 
       // Initial call to set total price on page load
       updateTotalPrice();
-      updateTotalPaxMax();
+
     });
   </script>
+
+
+
+
+
 
 </body>
 

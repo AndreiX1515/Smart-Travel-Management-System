@@ -29,7 +29,7 @@ try {
         $branchId = $_POST['branchId'];
         $accountType = $_POST['accountType'];
         $agentType = $_POST['agentType'];
-        $agentRole = $_POST['agentRole'];
+        
         $agentCode = "BU" . $_POST['branchId'];
 
         // Validation: Ensure required fields are not empty
@@ -42,6 +42,10 @@ try {
 
         // Logic for agent account type
         if ($accountType === 'agent') {
+
+            $agentRole = $_POST['agentRole'];
+        
+            
             // Fetch the latest agentId
             $sql_max_id = "SELECT MAX(CAST(SUBSTRING(agentId, 2) AS UNSIGNED)) AS maxId FROM agent";
             $result_max_id = mysqli_query($conn, $sql_max_id);
@@ -70,7 +74,7 @@ try {
 
             // Insert into agent table
             $sql_agent = "INSERT INTO agent (agentId, agentCode, accountId, branchId, fName, lName, mName, countryCode, contactNo, agentType, agentRole, comissionRate, seats)
-                          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '', 0)";
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '', 0)";
             $stmt_agent = mysqli_prepare($conn, $sql_agent);
             mysqli_stmt_bind_param($stmt_agent, "ssissssssss", $newAgentId, $agentCode, $accountId, $branchId, $fName, $lName, $mName, $countryCode, $contactNo, $agentType, $agentRole);
 
@@ -83,80 +87,60 @@ try {
             $response = ['status' => 'success', 'message' => "User added successfully with Agent Code: $agentUsername!"];
         }
 
-        elseif ($accountType === 'guest') {
+        if ($accountType === 'guest') {
 
-            // Validate if Client Code exists for the given Branch ID
-            $sql_validate_client = "SELECT COUNT(*) AS count FROM client WHERE clientCode = ? AND branchId = ?";
-            $stmt_validate_client = mysqli_prepare($conn, $sql_validate_client);
-        
-            if (!$stmt_validate_client) {
-                throw new Exception("Prepare statement failed: " . mysqli_error($conn));
+            $clientRole = $_POST['clientRole'];
+
+            // Fetch the latest clientId
+            $sql_max_id = "SELECT MAX(CAST(SUBSTRING(clientId, 2) AS UNSIGNED)) AS maxId FROM client";
+            $result_max_id = mysqli_query($conn, $sql_max_id);
+
+            if (!$result_max_id) {
+                throw new Exception("Error fetching max client ID: " . mysqli_error($conn));
             }
-        
-            mysqli_stmt_bind_param($stmt_validate_client, "si", $clientCode, $branchId);
-            mysqli_stmt_execute($stmt_validate_client);
-            $result_validate_client = mysqli_stmt_get_result($stmt_validate_client);
-            $row_validate_client = mysqli_fetch_assoc($result_validate_client);
-        
-            if ($row_validate_client['count'] == 0) {
-                throw new Exception("Error: Client Code or Branch ID not found.");
-            }
-        
-            // Fetch the latest client ID for the given Branch ID
-            $sql_max_id = "SELECT MAX(CAST(SUBSTRING(clientId, 2) AS UNSIGNED)) AS maxId FROM client WHERE branchId = ?";
-            $stmt_max_id = mysqli_prepare($conn, $sql_max_id);
-        
-            if (!$stmt_max_id) {
-                throw new Exception("Prepare statement failed: " . mysqli_error($conn));
-            }
-        
-            mysqli_stmt_bind_param($stmt_max_id, "i", $branchId);
-            mysqli_stmt_execute($stmt_max_id);
-            $result_max_id = mysqli_stmt_get_result($stmt_max_id);
+
             $max_id_row = mysqli_fetch_assoc($result_max_id);
-        
             $nextId = ($max_id_row['maxId'] !== null) ? $max_id_row['maxId'] + 1 : 1;
             $newClientId = ($nextId < 10) ? 'C00' . $nextId : (($nextId < 100) ? 'C0' . $nextId : 'C' . $nextId);
-            $clientUsername = $clientCode . '-' . $newClientId;
-        
+
+            $clientUsername =  $agentCode . '-' . $newClientId;
+
             // Insert into accounts table
             $sql_account = "INSERT INTO accounts (email, password, otp, accountStatus, accountType, createdAt) 
                             VALUES (?, ?, '', 'active', ?, NOW())";
             $stmt_account = mysqli_prepare($conn, $sql_account);
-        
+
             if (!$stmt_account) {
                 throw new Exception("Prepare statement failed: " . mysqli_error($conn));
             }
-        
+
             mysqli_stmt_bind_param($stmt_account, "sss", $clientUsername, $hashed_password, $accountType);
-        
+
             if (!mysqli_stmt_execute($stmt_account)) {
                 throw new Exception("Error inserting into accounts table: " . mysqli_error($conn));
             }
-        
+
             $accountId = mysqli_insert_id($conn);
-        
+
             // Insert into client table
-            $sql_guest = "INSERT INTO client (clientId, clientCode, accountId, branchId, fName, lName, mName, countryCode, contactNo, clientType, clientRole)
-                          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $sql_guest = "INSERT INTO client 
+            (clientId, clientCode, accountId, branchId, companyId, fName, lName, mName, countryCode, contactNo, clientType, clientRole, seats) VALUES (?, ?, ?, ?, 0, ?, ?, ?, ?, ?, ?, ?, 0)";
             $stmt_guest = mysqli_prepare($conn, $sql_guest);
-        
+
             if (!$stmt_guest) {
                 throw new Exception("Prepare statement failed: " . mysqli_error($conn));
             }
-        
-            mysqli_stmt_bind_param($stmt_guest, "ssiisssssss", $newClientId, $clientCode, $accountId, $branchId, $fName, $lName, $mName, $countryCode, $contactNo, $agentType, $clientRole);
-        
+
+            mysqli_stmt_bind_param($stmt_guest, "ssiisssssss", $newClientId, $agentCode, $accountId, $branchId, $fName, $lName, $mName, $countryCode, $contactNo, $agentType, $clientRole);
+
             if (!mysqli_stmt_execute($stmt_guest)) {
                 throw new Exception("Error inserting into client table: " . mysqli_error($conn));
             }
-        
+
             // Commit transaction
             mysqli_commit($conn);
-            $response = ['status' => 'success', 'message' => "User added successfully with Client ID: $newClientId!"];
+            $response = ['status' => 'success', 'message' => "User added successfully with Client ID: $clientUsername!"];
         }
-        
-
     } else {
         throw new Exception('Invalid request method.');
     }
@@ -171,4 +155,3 @@ echo json_encode($response);
 
 // Close the database connection
 mysqli_close($conn);
-?>

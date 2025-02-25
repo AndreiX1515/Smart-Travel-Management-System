@@ -121,26 +121,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['flightid'])) {
                         console.log(data.accountType);
 
                         if (data.accountType === 'agent') {
-                            // Redirect to agent dashboard
-                            window.location.href = '../Agent Section/agent-dashboard.php';
-                        } else if (data.accountType === 'employee') {
-                            // Redirect to employee dashboard
-                            window.location.href = '../Employee Section/emp-dashboard.php';
-                        } else if (data.accountType === 'guest') {
+
                             // Check if flightid exists in the hidden input or session
                             let flightid = document.getElementById('flightid') ? document.getElementById('flightid').value : '';
 
                             if (flightid) {
-                                // Redirect to booking page with flightid
-                                window.location.href = `../Client Section/client-addBooking-flight.php`;
+                                window.location.href = '../Agent Section/agent-addBooking-flight.php';
+
                             } else {
-                                // Redirect to agent dashboard if no flightid is available
+                                // Redirect to agent dashboard
+                                window.location.href = '../Agent Section/agent-dashboard.php';
+                            }
+
+                        }  else if (data.accountType === 'guest') {
+                            // Check if flightid exists in the hidden input or session
+                            let flightid = document.getElementById('flightid') ? document.getElementById('flightid').value : '';
+
+                            if (flightid) {
+                                window.location.href = `../Client Section/client-addBooking-flight.php`;
+
+                            } else {
                                 window.location.href = '../Client Section/client-dashboard.php';
                             }
+                            
+                        } else if (data.accountType === 'employee') {
+                            // Redirect to employee dashboard
+                            window.location.href = '../Employee Section/emp-dashboard.php';
+
                         } else {
                             // Handle unknown account type
                             alert('Unknown account type. Please contact support.');
                         }
+                        
                     } else {
                         // Show error message based on the response
                         $('#message-login').html(
