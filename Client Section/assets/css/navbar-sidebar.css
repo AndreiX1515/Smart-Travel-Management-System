@@ -361,6 +361,10 @@ a:hover {
   border: 1px solid black;
 }
 
+
+
+
+
 .navbar .title-page {
   margin-top: 7px;
 }
@@ -441,7 +445,7 @@ a:hover {
 }
 
 /* Responsive Styles */
-@media (max-width: 1440px) {
+/* @media (max-width: 1440px) {
   .card-header h4 {
     font-size: 26px;
   }
@@ -486,7 +490,7 @@ a:hover {
   .navbar-nav .nav-link {
     font-size: 17px;
   }
-}
+} */
 
 @media (max-width: 1280px) {
   .card-header h4 {

@@ -45,48 +45,12 @@ else
 ?>
 
 <header>
-  <nav class="navbar navbar-expand-lg justify-content-between sticky-top">
-    <div class="container-fluid d-flex justify-content-between align-items-center">
+  <nav class="navbar">
+    <div class="navbar-content">
       <!-- Logo -->
       <a href="index.php" class="navbar-brand">
         <img src="../Assets/Logos/SMART LOGO 2 (2).png" alt="Logo" width="180" height="30" class="me-2">
       </a>
-
-      <!-- Nav Links in the Middle -->
-      <div class="navbar-middle">
-        <ul class="navbar-nav">
-          <!-- <li class="nav-item">
-            <a class="nav-link px-3" href="index.php">Home</a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link px-3" href="client-bookingform.php">Booking</a>
-          </li> -->
-          
-        </ul>
-      </div>
-
-      <!-- Profile and End Section -->
-      <!-- <div class="nav-end-container">
-    
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-      </div> -->
-
-      <!-- Collapsible Navbar Content -->
-      <!-- <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link px-3" href="index.php">Home</a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link px-3" href="client-bookingform.php">Booking</a>
-          </li>
-          
-        </ul>
-      </div> -->
 
     </div>
   </nav>

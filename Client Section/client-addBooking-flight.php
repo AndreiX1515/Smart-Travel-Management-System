@@ -13,7 +13,6 @@ require "../conn.php";
 
   <?php include "../Agent Section/includes/head.php"; ?>
 
-
   <link rel="stylesheet" href="../Client Section/assets/css/client-addBooking.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="../Client Section/assets/css/navbar-sidebar.css?v=<?php echo time(); ?>">
 </head>
