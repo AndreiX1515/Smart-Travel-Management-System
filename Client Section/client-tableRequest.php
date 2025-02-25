@@ -100,9 +100,9 @@
           <p><strong>Transaction No:</strong> <span id="requestTransactionId"></span></p>
 
           <!-- Hidden Input Fields -->
-          <input type="" name="transaction_number" id="transactionNumberInput">
-          <input type="" name="agentId" value="<?php echo $agentId; ?>">
-          <input type="" name="accountId" value="<?php echo $accountId; ?>">
+          <input type="hidden" name="transaction_number" id="transactionNumberInput">
+          <input type="hidden" name="agentId" value="<?php echo $agentId; ?>">
+          <input type="hidden" name="accountId" value="<?php echo $accountId; ?>">
 
           <!-- Request Type Selection -->
           <div class="mb-3">
