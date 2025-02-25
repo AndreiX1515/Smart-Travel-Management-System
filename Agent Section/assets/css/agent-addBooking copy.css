@@ -1,0 +1,127 @@
+.booking-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 5px 0px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: start;
+  align-items: last baseline;
+  padding: 5px 20px;
+  /* border: 1px solid black; */
+}
+
+.text-danger {
+  font-size: 12px;
+}
+
+.card-header h4{
+  margin-top: 10px;
+  font-size: 18px;
+}
+
+.card-body {
+  padding: 10px 20px;
+}
+
+.card-body .row {
+  margin-bottom: 5px;
+}
+
+.row .columns {
+  margin-bottom: 10px;
+}
+
+.columns label {
+  margin-bottom: 8px;
+}
+
+.land-only {
+  width: 98.5%;
+  margin: -10px 10px 0px 10px;
+  /* border: 1px solid black; */
+}
+
+.flight-details-wrapper {
+  width: 98.5%;
+  margin: -10px 10px 0px 10px;
+  /* border: 1px solid black; */
+}
+
+
+.seat-info {
+  display: flex; /* Aligns items in a row */
+  gap: 8px; /* Adds spacing between elements */
+  font-size: 0.9rem; /* Adjust size if needed */
+  color: #6c757d; /* Optional: Muted text for better UI */
+  margin-top: 4px; /* Adds slight spacing from input */
+}
+
+.separator {
+  font-weight: bold; /* Makes the separator visually stronger */
+  color: #495057; /* Slightly darker for visibility */
+}
+
+
+
+.form-group label {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.flight-details-wrapper {
+  display: flex;
+  border: 1px solid black;
+}
+
+.contact-person-details .card-body  {
+  padding: 20px 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.contact-person-details .form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-person-details .form-group label {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.contact-person-details .email-fields input {
+  margin-top: -4px;
+  /* border: 1px solid black; */
+}
+
+.contact-person-details .input-group  {
+  margin-top: -6px;
+}
+
+
+.contact-person-details .input-group select {
+  margin-top: 8px;
+}
+
+
+.form-group .contactNo {
+  margin-top: -6px;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  padding: 15px;
+}
+
+.price-wrapper .card-body {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+}

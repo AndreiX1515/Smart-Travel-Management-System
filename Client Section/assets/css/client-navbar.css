@@ -32,7 +32,7 @@ body {
   /* margin-top: 15px;  */
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE/Edge */
-  border: 1px solid black;
+  /* border: 1px solid black; */
 }
 
 .body-container::-webkit-scrollbar {
@@ -62,6 +62,7 @@ body {
   top: 0;
   width: 100%;
   box-sizing: border-box;
+  padding: 10px 25px;
 }
 
 /* Navbar middle section */
@@ -108,27 +109,10 @@ body {
   align-items: center;
 }
 
-.profile-container {
-  display: flex;
-  align-items: start;
-  flex-direction: column;
-  margin-left: 8px;
-}
 
-.profile-container h6 {
-  font-weight: bold;
-  margin: 0;
-}
 
-.profile-container span {
-  font-size: 12px;
-  color: gray;
-  margin: 0;
-}
 
-.profile-image {
-  border-radius: 50%;
-}
+
 
 .navbar-collapse {
   display: none;
@@ -187,12 +171,15 @@ body {
   border-bottom: none; /* Remove bottom border from the last item */
 }
 
+
+
+
 .main-container {
   padding: 0px 20px;
   height: 93vh;
   width: 100%; /* 3/4 of the container */
   /* border: 1px solid black; */
-  margin: 60px 0px 30px 0px;
+  margin: 80px 0px 40px 0px;
   overflow-y: auto; /* Enables vertical scrolling when content overflows */
 }
 
@@ -328,6 +315,11 @@ body {
 
 /* For small mobile screens (481px - 600px) */
 @media (min-width: 410px) and (max-width: 600px) {
+  .main-container {
+    margin: 80px 0px 40px 0px;
+  }
+
+  
   .navbar-nav {
     text-align: center;
     margin: 15px;

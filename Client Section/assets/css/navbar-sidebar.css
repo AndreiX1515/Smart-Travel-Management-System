@@ -1,7 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
 
 * {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -14,7 +14,12 @@ body {
 }
 
 /* Headings */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-weight: 600;
   color: #333333;
   margin-bottom: 10px;
@@ -86,9 +91,7 @@ a:hover {
   font-weight: 500;
   text-transform: uppercase;
   margin-bottom: 10px;
-  
 }
-
 
 /* Section Titles */
 .sidebar .section-title {
@@ -254,7 +257,6 @@ a:hover {
   height: 8vh; /* Adjust height dynamically */
 }
 
-
 .sidebar .profile-wrapper {
   display: flex;
   flex-direction: column;
@@ -292,7 +294,6 @@ a:hover {
   font-weight: bold;
   margin: 0;
   color: #ffffff;
-  
 }
 
 .sidebar .profile-section .profile-details .profile-role {
@@ -328,8 +329,6 @@ a:hover {
   color: white; /* White text on hover */
 }
 
-
-
 /* Main Content Styling */
 .main-content-container {
   width: 88%;
@@ -359,8 +358,12 @@ a:hover {
   top: 11px;
   background-color: white;
   z-index: 1000;
-
+  border: 1px solid black;
 }
+
+
+
+
 
 .navbar .title-page {
   margin-top: 7px;
@@ -441,11 +444,8 @@ a:hover {
   padding: 8px 0px 0px 10px;
 }
 
-
-
-
-/* Medium screens (max-width: 1440px) */
-@media (max-width: 1440px) {
+/* Responsive Styles */
+/* @media (max-width: 1440px) {
   .card-header h4 {
     font-size: 26px;
   }
@@ -459,10 +459,40 @@ a:hover {
   .price-wrapper .card-body {
     padding: 8px 12px;
   }
-}
+  .sidebar {
+    display: none;
+  }
+  .main-content {
+    margin-left: 0;
+    width: 100%;
+  }
+  .main-content-container {
+    border-top-left-radius: 0;
+    border: 1px solid gainsboro;
+  }
+  .navbar-middle {
+    display: block;
+  }
+  .navbar-toggler {
+    display: none;
+  }
+  .navbar-nav {
+    display: flex;
+    text-align: left;
+    margin: 0 15px;
+  }
+  .navbar-collapse .navbar-nav {
+    display: none;
+  }
+  .navbar-nav .nav-item {
+    padding: 8px 0;
+  }
+  .navbar-nav .nav-link {
+    font-size: 17px;
+  }
+} */
 
-/* Tablets and smaller laptops (max-width: 1024px) */
-@media (max-width: 1024px) {
+@media (max-width: 1280px) {
   .card-header h4 {
     font-size: 22px;
   }
@@ -475,10 +505,12 @@ a:hover {
   .price-wrapper .card-body {
     padding: 7px 10px;
   }
+  .navbar-nav .nav-link {
+    font-size: 16px;
+  }
 }
 
-/* Mobile screens (max-width: 768px) */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .card-header h4 {
     font-size: 20px;
   }
@@ -488,118 +520,14 @@ a:hover {
   .form-group label {
     font-size: 13px;
   }
-  .card-body {
-    padding: 8px 15px;
+  .price-wrapper .card-body {
+    padding: 7px 10px;
   }
 }
 
-/* Small mobile screens (max-width: 600px) */
-@media (max-width: 600px) {
-  .card-header h4 {
-    font-size: 20px;
-  }
-  .text-danger {
-    font-size: 9px;
-  }
-  .form-group label {
-    font-size: 12px;
-  }
-  .card-body {
-    padding: 6px 12px;
-  }
-}
-
-/* Extra small screens (max-width: 480px) */
-@media (max-width: 480px) {
-  .card-header h4 {
-    font-size: 18px;
-  }
-  .text-danger {
-    font-size: 8px;
-  }
-  .form-group label {
-    font-size: 11px;
-  }
-  .card-body {
-    padding: 5px 10px;
-  }
-}
-
-/* Large screens (max-width: 1440px) */
-@media (max-width: 1440px) {
-  .sidebar {
-    display: none;
-  }
-  .main-content {
-    margin-left: 0;
-    width: 100%;
-  }
-  .main-content-container {
-    border-top-left-radius: 0px;
-    border: 1px solid gainsboro;
-  }
-  .navbar-middle {
-    display: block;
-  }
-  .navbar-toggler {
-    display: none;
-  }
-  .navbar-nav {
-    display: flex;
-    text-align: left;
-    margin: 0px 15px;
-  }
-  .navbar-collapse .navbar-nav {
-    display: none;
-  }
-  .navbar-nav .nav-item {
-    padding: 8px 0px;
-  }
-  .navbar-nav .nav-link {
-    font-size: 17px;
-  }
-}
-
-/* Medium screens (max-width: 1280px) */
-@media (max-width: 1280px) {
-  .sidebar {
-    display: none;
-  }
-  .main-content-container {
-    border-top-left-radius: 0px;
-    border: 1px solid gainsboro;
-  }
-  .navbar-middle {
-    display: block;
-  }
-  .navbar-toggler {
-    display: none;
-  }
-  .navbar-nav {
-    display: flex;
-    text-align: left;
-    margin: 0px 15px;
-  }
-  .navbar-collapse .navbar-nav {
-    display: none;
-  }
-  .navbar-nav .nav-item {
-    padding: 8px 0px;
-  }
-  .navbar-nav .nav-link {
-    font-size: 16px;
-  }
-}
-
-/* Small screens (max-width: 991px) */
 @media (max-width: 991px) {
-  .sidebar {
-    display: none;
-  }
   .main-content-container {
     width: 100%;
-    border-top-left-radius: 0px;
-    border: 1px solid gainsboro;
   }
   .navbar {
     width: 100%;
@@ -620,75 +548,54 @@ a:hover {
   }
 }
 
-/* Mobile screens (max-width: 768px) */
 @media (max-width: 768px) {
-  .sidebar {
-    display: none;
+  .card-header h4 {
+    font-size: 20px;
   }
-  .navbar-middle {
-    display: none;
+  .text-danger {
+    font-size: 10px;
   }
-  .main-content-container {
-    width: 100%;
-    border-top-left-radius: 0px;
-    border: 1px solid gainsboro;
+  .form-group label {
+    font-size: 13px;
   }
-  .navbar-nav {
-    display: block;
-    text-align: center;
-    margin: 15px;
-  }
-  .navbar-nav .nav-item {
-    padding: 8px 0;
+  .card-body {
+    padding: 8px 15px;
   }
   .navbar-nav .nav-link {
     font-size: 14px;
   }
 }
 
-/* Small mobile screens (max-width: 600px) */
 @media (max-width: 600px) {
-  .sidebar {
-    display: none;
+  .card-header h4 {
+    font-size: 20px;
   }
-  .navbar-middle {
-    display: none;
+  .text-danger {
+    font-size: 9px;
   }
-  .main-content-container {
-    width: 100%;
-    border-top-left-radius: 0px;
-    border: 1px solid gainsboro;
+  .form-group label {
+    font-size: 12px;
   }
-  .navbar-nav {
-    display: block;
-    text-align: center;
-    margin: 15px;
-  }
-  .navbar-nav .nav-item {
-    padding: 8px 0;
+  .card-body {
+    padding: 6px 12px;
   }
   .navbar-nav .nav-link {
     font-size: 13px;
   }
 }
 
-/* Extra small screens (max-width: 480px) */
 @media (max-width: 480px) {
-  .sidebar {
-    display: none;
+  .card-header h4 {
+    font-size: 18px;
   }
-  .main-content-container {
-    width: 100%;
-    border-top-left-radius: 0px;
-    border: 1px solid gainsboro;
+  .text-danger {
+    font-size: 8px;
   }
-  .navbar-middle {
-    display: none;
+  .form-group label {
+    font-size: 11px;
   }
-  .navbar-nav {
-    display: block;
-    text-align: center;
-    margin: 15px;
+  .card-body {
+    padding: 5px 10px;
   }
   .navbar-nav .nav-item {
     padding: 6px 0;
