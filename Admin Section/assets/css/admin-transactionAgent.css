@@ -396,7 +396,6 @@
      Header Styling
      ======================= */
   .product-table thead {
-    position: sticky;
     white-space: nowrap; /* Prevents text wrapping in headers */
     top: 0;
     z-index: 2;
