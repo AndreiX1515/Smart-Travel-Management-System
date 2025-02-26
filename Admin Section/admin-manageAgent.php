@@ -118,9 +118,7 @@ error_reporting(E_ALL);
             </div>
 
           </div>
-
-
-
+          
           <div class="table-container">
             <table id="product-table" class="product-table">
               <thead>
@@ -208,37 +206,37 @@ error_reporting(E_ALL);
                     $accountId = htmlspecialchars($row['Account ID']);
 
                     echo "<tr>
-        <td>{$row['Account ID']}</td>
-        <td>{$row['Entity ID']}</td>
-        <td>{$row['Name']}</td>
-        <td></td>
-        <td>{$row['Email']}</td>
-        <td>***********</td>  <!-- Hiding Password for Security -->
-        <td>{$row['Contact No.']}</td>
-        <td>{$row['Account Type']}</td>
-        <td>{$row['Entity Type']}</td>
-        <td class='entityRole'>{$row['Entity Role']}</td>
-        <td>{$row['Status']}</td>
-        <td>
-            <div class='dropdown-center' style='text-align: center; position: relative;'>
-                <button class='btn' type='button' data-bs-toggle='dropdown' aria-expanded='false'>
-                    <i class='fas fa-ellipsis-v'></i>
-                </button>
-                <ul class='dropdown-menu' style='position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);'>
-                    <li>
-                        <a class='dropdown-item edit' href='#' data-id='{$row['Account ID']}' data-bs-toggle='modal' data-bs-target='#editModal'>
-                            <i class='fas fa-edit'></i> Edit
-                        </a>
-                    </li>
-                    <li>
-                        <a class='dropdown-item delete text-danger' href='#' data-id='{$row['Account ID']}' data-bs-toggle='modal' data-bs-target='#deleteModal'>
-                            <i class='fas fa-trash-alt'></i> Delete
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </td>
-    </tr>";
+                            <td>{$row['Account ID']}</td>
+                            <td>{$row['Entity ID']}</td>
+                            <td>{$row['Name']}</td>
+                            <td></td>
+                            <td>{$row['Email']}</td>
+                            <td>***********</td>  <!-- Hiding Password for Security -->
+                            <td>{$row['Contact No.']}</td>
+                            <td>{$row['Account Type']}</td>
+                            <td>{$row['Entity Type']}</td>
+                            <td class='entityRole'>{$row['Entity Role']}</td>
+                            <td>{$row['Status']}</td>
+                            <td>
+                                <div class='dropdown-center' style='text-align: center; position: relative;'>
+                                    <button class='btn' type='button' data-bs-toggle='dropdown' aria-expanded='false'>
+                                        <i class='fas fa-ellipsis-v'></i>
+                                    </button>
+                                    <ul class='dropdown-menu' style='position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);'>
+                                        <li>
+                                            <a class='dropdown-item edit' href='#' data-id='{$row['Account ID']}' data-bs-toggle='modal' data-bs-target='#editModal'>
+                                                <i class='fas fa-edit'></i> Edit
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class='dropdown-item delete text-danger' href='#' data-id='{$row['Account ID']}' data-bs-toggle='modal' data-bs-target='#deleteModal'>
+                                                <i class='fas fa-trash-alt'></i> Delete
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>";
                   }
                 } else {
                   echo "<tr><td colspan='11' style='text-align: center;'>No agent records found</td></tr>";
@@ -636,7 +634,7 @@ error_reporting(E_ALL);
                   <div class="columns col-md-5">
                     <label for="cpassword" class="form-label">Confirm Password</label>
                     <input type="password" class="form-control" id="cpassword" name="cpassword" required>
-                    <small id="passwordError" class="text-danger" style="display: none;">Passwords do not match!</small>
+                    <small id="passwordError" class="text-danger mt-2" style="display: none;">Passwords do not match!</small>
                   </div>
                 </div>
 
@@ -697,7 +695,7 @@ error_reporting(E_ALL);
             </div>
 
             <!-- Hidden input to store the selected agentRole -->
-            <input type="text" id="hiddenAgentRole" name="clientRole">
+            <input type="hidden" id="hiddenAgentRole" name="clientRole">
         </div>
 
         <!-- Modal Footer -->
@@ -880,25 +878,23 @@ error_reporting(E_ALL);
   <script>
     $(document).ready(function() {
       const table = $('#product-table').DataTable({
-        dom: 'rtip',
-        language: {
-          emptyTable: "No Transaction Records Available",
-          zeroRecords: "No matching records found" // This prevents errors on empty searches
-        },
-        order: [
-          [0, 'desc']
-        ],
-        scrollX: false,
-        scrollY: '72vh',
-        paging: true,
-        pageLength: 14,
-        autoWidth: false,
-        autoHeight: false,
-        columnDefs: [{
-          targets: [1, 2, 3, 5, 6],
-          orderable: false
-        }]
+          dom: 'rtip',
+          language: {
+              emptyTable: "No Transaction Records Available",
+              zeroRecords: "No matching records found" // Prevents errors on empty searches
+          },
+          order: [[0, 'desc']],
+          scrollX: true,  // Enable horizontal scrolling for better responsiveness
+          scrollY: '72vh',
+          paging: true,
+          pageLength: 14,
+          autoWidth: false,
+          responsive: true, // Enable DataTables' built-in responsive behavior
+          columnDefs: [
+              { targets: [1, 2, 3, 5, 6], orderable: false }
+          ]
       });
+
 
 
 

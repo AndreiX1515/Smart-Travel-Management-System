@@ -605,7 +605,7 @@ error_reporting(E_ALL);
                     <label for="cpassword" class="form-label">Confirm Password</label>
                     <input type="password" class="form-control" id="cpassword" name="cpassword" required>
 
-                    <small id="passwordError" class="text-danger" style="display: none;">Passwords do not match!</small>
+                    <small id="passwordError" class="text-danger mt-2" style="display: none;">Passwords do not match!</small>
                   </div>
                 </div>
 

@@ -339,6 +339,7 @@
   box-sizing: border-box;
   /* border: 1px solid black; */
   overflow: hidden; /* Allows for scrolling if content exceeds the container height */
+  overflow-x: auto; /* Allows horizontal scrolling */
 }
 
 /* Table footer styling inside tab pane */
@@ -381,7 +382,7 @@
    Table Styles for Product Table
    ======================= */
    .product-table {
-    width: 100%;
+    width: 100% !important;
     border-collapse: collapse;
     margin-top: 15px;
     border-radius: 10px;
@@ -396,6 +397,7 @@
      ======================= */
   .product-table thead {
     position: sticky;
+    white-space: nowrap; /* Prevents text wrapping in headers */
     top: 0;
     z-index: 2;
     background-color: #e6e6e6;
