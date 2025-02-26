@@ -33,114 +33,184 @@ try {
         $agentCode = "BU" . $_POST['branchId'];
 
         // Validation: Ensure required fields are not empty
-        if (empty($fName) || empty($lName) || empty($password) || empty($branchId)) {
+        if (empty($fName) || empty($password) || empty($branchId)) {
             throw new Exception("Required fields cannot be empty.");
         }
 
         // Hash the password before storing it
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-        // Logic for agent account type
         if ($accountType === 'agent') {
-
             $agentRole = $_POST['agentRole'];
         
-            
-            // Fetch the latest agentId
-            $sql_max_id = "SELECT MAX(CAST(SUBSTRING(agentId, 2) AS UNSIGNED)) AS maxId FROM agent";
-            $result_max_id = mysqli_query($conn, $sql_max_id);
+            // Start transaction
+            mysqli_begin_transaction($conn);
+        
+            try {
+                // Validate BranchId (must not be empty or invalid)
+                if (empty($branchId) || !is_numeric($branchId)) {
+                    throw new Exception("Invalid Branch ID.");
+                }
+        
+                // Fetch the latest agent count for the specific BranchId
+                $sql_count_agents = "SELECT COUNT(*) AS agentCount FROM agent WHERE branchId = ?";
 
-            if (!$result_max_id) {
-                throw new Exception("Error fetching max agent ID: " . mysqli_error($conn));
+                $stmt_count = mysqli_prepare($conn, $sql_count_agents);
+                if (!$stmt_count) {
+                    throw new Exception("Error preparing count query: " . mysqli_error($conn));
+                }
+                
+                mysqli_stmt_bind_param($stmt_count, "i", $branchId);
+                mysqli_stmt_execute($stmt_count);
+                $result_count = mysqli_stmt_get_result($stmt_count);
+                if (!$result_count) {
+                    throw new Exception("Error executing count query: " . mysqli_error($conn));
+                }
+        
+                $count_row = mysqli_fetch_assoc($result_count);
+                $agentCount = $count_row['agentCount'] ?? 0;
+        
+                // Increment agent count
+                $nextId = $agentCount + 1;
+        
+                // Maintain A00 format (A001, A002, etc.)
+                if ($nextId < 10) {
+                    $newAgentId = 'A00' . $nextId; // A001 - A009
+                } elseif ($nextId < 100) {
+                    $newAgentId = 'A0' . $nextId;  // A010 - A099
+                } else {
+                    $newAgentId = 'A' . $nextId;   // A100 and beyond
+                }
+        
+                $agentUsername = $agentCode . '-' . $newAgentId;
+        
+                // Insert into accounts table
+                $sql_account = "INSERT INTO accounts (email, password, otp, accountStatus, accountType, createdAt) 
+                                VALUES (?, ?, '', 'active', ?, NOW())";
+                $stmt = mysqli_prepare($conn, $sql_account);
+                if (!$stmt) {
+                    throw new Exception("Error preparing account insert: " . mysqli_error($conn));
+                }
+                mysqli_stmt_bind_param($stmt, "sss", $agentUsername, $hashed_password, $accountType);
+                if (!mysqli_stmt_execute($stmt)) {
+                    throw new Exception("Error inserting into accounts table: " . mysqli_error($conn));
+                }
+        
+                $accountId = mysqli_insert_id($conn);
+                if (!$accountId) {
+                    throw new Exception("Failed to retrieve inserted Account ID.");
+                }
+        
+                // Insert into agent table
+                $sql_agent = "INSERT INTO agent (agentId, agentCode, accountId, branchId, fName, lName, mName, countryCode, contactNo, agentType, agentRole, comissionRate, seats)
+                              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '', 0)";
+                $stmt_agent = mysqli_prepare($conn, $sql_agent);
+                if (!$stmt_agent) {
+                    throw new Exception("Error preparing agent insert: " . mysqli_error($conn));
+                }
+                mysqli_stmt_bind_param($stmt_agent, "ssissssssss", $agentUsername, $agentCode, $accountId, $branchId, $fName, $lName, $mName, $countryCode, $contactNo, $agentType, $agentRole);
+                if (!mysqli_stmt_execute($stmt_agent)) {
+                    throw new Exception("Error inserting into agent table: " . mysqli_error($conn));
+                }
+        
+                // Commit transaction if everything is successful
+                mysqli_commit($conn);
+        
+                $response = ['status' => 'success', 'message' => "User added successfully with Agent Code: $agentUsername!"];
+        
+            } catch (Exception $e) {
+                // Rollback transaction on error
+                mysqli_rollback($conn);
+                $response = ['status' => 'error', 'message' => $e->getMessage()];
             }
-
-            $max_id_row = mysqli_fetch_assoc($result_max_id);
-            $nextId = ($max_id_row['maxId'] !== null) ? $max_id_row['maxId'] + 1 : 1;
-
-            $newAgentId = ($nextId < 10) ? 'A00' . $nextId : (($nextId < 100) ? 'A0' . $nextId : 'A' . $nextId);
-            $agentUsername = $agentCode . '-' . $newAgentId;
-
-            // Insert into accounts table
-            $sql_account = "INSERT INTO accounts (email, password, otp, accountStatus, accountType, createdAt) 
-                            VALUES (?, ?, '', 'active', ?, NOW())";
-            $stmt = mysqli_prepare($conn, $sql_account);
-            mysqli_stmt_bind_param($stmt, "sss", $agentUsername, $hashed_password, $accountType);
-
-            if (!mysqli_stmt_execute($stmt)) {
-                throw new Exception("Error inserting into accounts table: " . mysqli_error($conn));
-            }
-
-            $accountId = mysqli_insert_id($conn);
-
-            // Insert into agent table
-            $sql_agent = "INSERT INTO agent (agentId, agentCode, accountId, branchId, fName, lName, mName, countryCode, contactNo, agentType, agentRole, comissionRate, seats)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '', 0)";
-            $stmt_agent = mysqli_prepare($conn, $sql_agent);
-            mysqli_stmt_bind_param($stmt_agent, "ssissssssss", $newAgentId, $agentCode, $accountId, $branchId, $fName, $lName, $mName, $countryCode, $contactNo, $agentType, $agentRole);
-
-            if (!mysqli_stmt_execute($stmt_agent)) {
-                throw new Exception("Error inserting into agent table: " . mysqli_error($conn));
-            }
-
-            // Commit transaction
-            mysqli_commit($conn);
-            $response = ['status' => 'success', 'message' => "User added successfully with Agent Code: $agentUsername!"];
         }
+        
+        
 
         if ($accountType === 'guest') {
-
             $clientRole = $_POST['clientRole'];
-
-            // Fetch the latest clientId
-            $sql_max_id = "SELECT MAX(CAST(SUBSTRING(clientId, 2) AS UNSIGNED)) AS maxId FROM client";
-            $result_max_id = mysqli_query($conn, $sql_max_id);
-
-            if (!$result_max_id) {
-                throw new Exception("Error fetching max client ID: " . mysqli_error($conn));
+        
+            // Start transaction
+            mysqli_begin_transaction($conn);
+        
+            try {
+                // Validate BranchId (must not be empty or invalid)
+                if (empty($branchId) || !is_numeric($branchId)) {
+                    throw new Exception("Invalid Branch ID.");
+                }
+        
+                // Fetch the latest guest count for the specific BranchId
+                $sql_count_guests = "SELECT COUNT(*) AS guestCount FROM client WHERE branchId = ?";
+                $stmt_count = mysqli_prepare($conn, $sql_count_guests);
+                if (!$stmt_count) {
+                    throw new Exception("Error preparing count query: " . mysqli_error($conn));
+                }
+        
+                mysqli_stmt_bind_param($stmt_count, "i", $branchId);
+                mysqli_stmt_execute($stmt_count);
+                $result_count = mysqli_stmt_get_result($stmt_count);
+                if (!$result_count) {
+                    throw new Exception("Error executing count query: " . mysqli_error($conn));
+                }
+        
+                $count_row = mysqli_fetch_assoc($result_count);
+                $guestCount = $count_row['guestCount'] ?? 0;
+        
+                // Increment guest count
+                $nextId = $guestCount + 1;
+        
+                // Maintain C00 format (C001, C002, etc.)
+                if ($nextId < 10) {
+                    $newClientId = 'C00' . $nextId; // C001 - C009
+                } elseif ($nextId < 100) {
+                    $newClientId = 'C0' . $nextId;  // C010 - C099
+                } else {
+                    $newClientId = 'C' . $nextId;   // C100 and beyond
+                }
+        
+                $clientUsername = $agentCode . '-' . $newClientId;
+        
+                // Insert into accounts table
+                $sql_account = "INSERT INTO accounts (email, password, otp, accountStatus, accountType, createdAt) 
+                                VALUES (?, ?, '', 'active', ?, NOW())";
+                $stmt = mysqli_prepare($conn, $sql_account);
+                if (!$stmt) {
+                    throw new Exception("Error preparing account insert: " . mysqli_error($conn));
+                }
+                mysqli_stmt_bind_param($stmt, "sss", $clientUsername, $hashed_password, $accountType);
+                if (!mysqli_stmt_execute($stmt)) {
+                    throw new Exception("Error inserting into accounts table: " . mysqli_error($conn));
+                }
+        
+                $accountId = mysqli_insert_id($conn);
+                if (!$accountId) {
+                    throw new Exception("Failed to retrieve inserted Account ID.");
+                }
+        
+                // Insert into client table
+                $sql_guest = "INSERT INTO client (clientId, clientCode, accountId, branchId, companyId, fName, lName, mName, countryCode, contactNo, clientType, clientRole, seats) 
+                              VALUES (?, ?, ?, ?, 0, ?, ?, ?, ?, ?, ?, ?, 0)";
+                $stmt_guest = mysqli_prepare($conn, $sql_guest);
+                if (!$stmt_guest) {
+                    throw new Exception("Error preparing client insert: " . mysqli_error($conn));
+                }
+                mysqli_stmt_bind_param($stmt_guest, "ssiisssssss",  $clientUsername, $agentCode, $accountId, $branchId, $fName, $lName, $mName, $countryCode, $contactNo, $agentType, $clientRole);
+                if (!mysqli_stmt_execute($stmt_guest)) {
+                    throw new Exception("Error inserting into client table: " . mysqli_error($conn));
+                }
+        
+                // Commit transaction if everything is successful
+                mysqli_commit($conn);
+        
+                $response = ['status' => 'success', 'message' => "User added successfully with Client ID: $clientUsername!"];
+        
+            } catch (Exception $e) {
+                // Rollback transaction on error
+                mysqli_rollback($conn);
+                $response = ['status' => 'error', 'message' => $e->getMessage()];
             }
-
-            $max_id_row = mysqli_fetch_assoc($result_max_id);
-            $nextId = ($max_id_row['maxId'] !== null) ? $max_id_row['maxId'] + 1 : 1;
-            $newClientId = ($nextId < 10) ? 'C00' . $nextId : (($nextId < 100) ? 'C0' . $nextId : 'C' . $nextId);
-
-            $clientUsername =  $agentCode . '-' . $newClientId;
-
-            // Insert into accounts table
-            $sql_account = "INSERT INTO accounts (email, password, otp, accountStatus, accountType, createdAt) 
-                            VALUES (?, ?, '', 'active', ?, NOW())";
-            $stmt_account = mysqli_prepare($conn, $sql_account);
-
-            if (!$stmt_account) {
-                throw new Exception("Prepare statement failed: " . mysqli_error($conn));
-            }
-
-            mysqli_stmt_bind_param($stmt_account, "sss", $clientUsername, $hashed_password, $accountType);
-
-            if (!mysqli_stmt_execute($stmt_account)) {
-                throw new Exception("Error inserting into accounts table: " . mysqli_error($conn));
-            }
-
-            $accountId = mysqli_insert_id($conn);
-
-            // Insert into client table
-            $sql_guest = "INSERT INTO client 
-            (clientId, clientCode, accountId, branchId, companyId, fName, lName, mName, countryCode, contactNo, clientType, clientRole, seats) VALUES (?, ?, ?, ?, 0, ?, ?, ?, ?, ?, ?, ?, 0)";
-            $stmt_guest = mysqli_prepare($conn, $sql_guest);
-
-            if (!$stmt_guest) {
-                throw new Exception("Prepare statement failed: " . mysqli_error($conn));
-            }
-
-            mysqli_stmt_bind_param($stmt_guest, "ssiisssssss", $newClientId, $agentCode, $accountId, $branchId, $fName, $lName, $mName, $countryCode, $contactNo, $agentType, $clientRole);
-
-            if (!mysqli_stmt_execute($stmt_guest)) {
-                throw new Exception("Error inserting into client table: " . mysqli_error($conn));
-            }
-
-            // Commit transaction
-            mysqli_commit($conn);
-            $response = ['status' => 'success', 'message' => "User added successfully with Client ID: $clientUsername!"];
         }
+        
     } else {
         throw new Exception('Invalid request method.');
     }

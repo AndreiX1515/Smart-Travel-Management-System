@@ -66,7 +66,7 @@ error_reporting(E_ALL);
                       <option value="Regular Tour Package">Regular Tour</option>
                       <option value="Busan Tour Package">Busan Tour</option>
                   </select>
-                </div>
+                </div> 
               </div>
 
               <div class="date-range-wrapper sorting-wrapper">
@@ -139,23 +139,24 @@ error_reporting(E_ALL);
                     </tr>
                   </thead>
                   <?php
-                  $sql = "SELECT 
-                      a.accountId AS `Account ID`,
-                      ag.agentCode AS `Agent Code`,
-                      ag.agentId AS `Agent ID`,
-                      CONCAT(ag.lName, ', ', ag.fName, ' ', 
-                            CASE WHEN ag.mName = 'N/A' OR ag.mName IS NULL 
-                            THEN '' ELSE CONCAT(SUBSTRING(ag.mName, 1, 1), '.') END) AS `Name`,
-                      a.email AS `Email`,
-                      a.password AS `Password`,
-                      CONCAT(ag.countryCode, ' ', ag.contactNo) AS `Contact No.`,
-                      ag.agentType AS `Agent Type`,
-                      ag.agentRole AS `Agent Role`,
-                      a.accountStatus AS `Status`
-                      FROM accounts a
-                      LEFT JOIN agent ag ON a.accountId = ag.accountId
-                      WHERE a.accountType = 'agent' 
-                      ORDER BY ag.agentCode ASC, a.accountId ASC";  // Prioritizing Agent Code (A001, A002)
+                 $sql = "SELECT 
+                 a.accountId AS `Account ID`,
+                 c.clientCode AS `Client Code`,
+                 c.clientId AS `Client ID`,
+                 CONCAT(c.lName, ', ', c.fName, ' ', 
+                     CASE WHEN c.mName = 'N/A' OR c.mName IS NULL 
+                          THEN '' ELSE CONCAT(SUBSTRING(c.mName, 1, 1), '.') END) AS `Name`,
+                 a.email AS `Email`,
+                 a.password AS `Password`,
+                 CONCAT(c.countryCode, ' ', c.contactNo) AS `Contact No.`,
+                 c.clientType AS `Client Type`,
+                 c.clientRole AS `Client Role`,
+                 a.accountStatus AS `Status`
+             FROM accounts a
+             LEFT JOIN client c ON a.accountId = c.accountId
+             WHERE a.accountType = 'aclient' 
+             ORDER BY c.clientCode ASC, a.accountId ASC";  
+     
 
                   $result = $conn->query($sql);
 
@@ -172,14 +173,14 @@ error_reporting(E_ALL);
 
                         echo "<tr>
                             <td>{$row['Account ID']}</td>
-                            <td>{$row['Agent Code']}</td>
-                            <td>{$row['Agent ID']}</td>
+                            <td>{$row['Client Code']}</td>
+                            <td>{$row['Client ID']}</td>
                             <td>{$row['Name']}</td>
                             <td>{$row['Email']}</td>
                             <td>***********</td>
                             <td>{$row['Contact No.']}</td>
-                            <td>{$row['Agent Type']}</td>
-                            <td class='agentRole'>{$row['Agent Role']}</td>
+                            <td>{$row['Client Type']}</td>
+                            <td class='agentRole'>{$row['Client Role']}</td>
                             <td>{$row['Status']}</td>
                             <td>
                                 <div class='dropdown-center' style='text-align: center; position: relative;'>

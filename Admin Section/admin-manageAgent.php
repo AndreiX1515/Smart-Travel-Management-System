@@ -16,7 +16,7 @@ error_reporting(E_ALL);
 
   <?php include "../Admin Section/includes/head.php"; ?>
 
-  <link rel="stylesheet" href="../Admin Section/assets/css/admin-transaction.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="../Admin Section/assets/css/admin-transactionAgent.css?v=<?php echo time(); ?>">
 
   <link rel="stylesheet" href="../Admin Section/assets/css/admin-addAccountAgent.css?v=<?php echo time(); ?>">
 
@@ -58,13 +58,13 @@ error_reporting(E_ALL);
               <div class="date-range-wrapper sorting-wrapper">
                 <div class="select-wrapper">
                   <select id="packages">
-                      <option value="All" disabled selected>Select Packages</option>
-                      <option value="Autumn Tour Package">Autumn Tour</option>
-                      <option value="Summer Tour Package">Summer Tour</option>
-                      <option value="Spring Tour Package">Spring Tour</option>
-                      <option value="Winter Tour Package">Winter Tour</option>
-                      <option value="Regular Tour Package">Regular Tour</option>
-                      <option value="Busan Tour Package">Busan Tour</option>
+                    <option value="All" disabled selected>Select Packages</option>
+                    <option value="Autumn Tour Package">Autumn Tour</option>
+                    <option value="Summer Tour Package">Summer Tour</option>
+                    <option value="Spring Tour Package">Spring Tour</option>
+                    <option value="Winter Tour Package">Winter Tour</option>
+                    <option value="Regular Tour Package">Regular Tour</option>
+                    <option value="Busan Tour Package">Busan Tour</option>
                   </select>
                 </div>
               </div>
@@ -72,13 +72,13 @@ error_reporting(E_ALL);
               <div class="date-range-wrapper sorting-wrapper">
                 <div class="select-wrapper">
                   <select id="packages">
-                      <option value="All" disabled selected>Select Status</option>
-                      <option value="Autumn Tour Package">Autumn Tour</option>
-                      <option value="Summer Tour Package">Summer Tour</option>
-                      <option value="Spring Tour Package">Spring Tour</option>
-                      <option value="Winter Tour Package">Winter Tour</option>
-                      <option value="Regular Tour Package">Regular Tour</option>
-                      <option value="Busan Tour Package">Busan Tour</option>
+                    <option value="All" disabled selected>Select Status</option>
+                    <option value="Autumn Tour Package">Autumn Tour</option>
+                    <option value="Summer Tour Package">Summer Tour</option>
+                    <option value="Spring Tour Package">Spring Tour</option>
+                    <option value="Winter Tour Package">Winter Tour</option>
+                    <option value="Regular Tour Package">Regular Tour</option>
+                    <option value="Busan Tour Package">Busan Tour</option>
                   </select>
                 </div>
               </div>
@@ -105,7 +105,7 @@ error_reporting(E_ALL);
 
               <div class="buttons-wrapper">
                 <button id="clearSorting" class="btn btn-secondary">
-                    Clear Filters
+                  Clear Filters
                 </button>
               </div>
 
@@ -122,97 +122,133 @@ error_reporting(E_ALL);
 
 
           <div class="table-container">
-                <table id="product-table" class="product-table">
-                  <thead>
-                    <tr>
-                      <th>Account ID</th>
-                      <th>Agent Code</th>
-                      <th>Agent ID</th>
-                      <th>Name</th>
-                      <th>Email</th>
-                      <th>Password</th>
-                      <th>Contact No.</th>
-                      <th>Agent Type</th>
-                      <th>Agent Role</th>
-                      <th>STATUS</th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <?php
-                  $sql = "SELECT 
-                      a.accountId AS `Account ID`,
-                      ag.agentCode AS `Agent Code`,
-                      ag.agentId AS `Agent ID`,
-                      CONCAT(ag.lName, ', ', ag.fName, ' ', 
-                            CASE WHEN ag.mName = 'N/A' OR ag.mName IS NULL 
-                            THEN '' ELSE CONCAT(SUBSTRING(ag.mName, 1, 1), '.') END) AS `Name`,
-                      a.email AS `Email`,
-                      a.password AS `Password`,
-                      CONCAT(ag.countryCode, ' ', ag.contactNo) AS `Contact No.`,
-                      ag.agentType AS `Agent Type`,
-                      ag.agentRole AS `Agent Role`,
-                      a.accountStatus AS `Status`
-                      FROM accounts a
-                      LEFT JOIN agent ag ON a.accountId = ag.accountId
-                      WHERE a.accountType = 'agent' 
-                      ORDER BY ag.agentCode ASC, a.accountId ASC";  // Prioritizing Agent Code (A001, A002)
-
-                  $result = $conn->query($sql);
-
-
-                  ?>
-                  <tbody>
-                    <?php
-
-                    // Check if there are records
-                    if ($result->num_rows > 0) {
-
-                      while ($row = $result->fetch_assoc()) {
-                        $accountId = htmlspecialchars($row['Account ID']);
-
-                        echo "<tr>
-                            <td>{$row['Account ID']}</td>
-                            <td>{$row['Agent Code']}</td>
-                            <td>{$row['Agent ID']}</td>
-                            <td>{$row['Name']}</td>
-                            <td>{$row['Email']}</td>
-                            <td>***********</td>
-                            <td>{$row['Contact No.']}</td>
-                            <td>{$row['Agent Type']}</td>
-                            <td class='agentRole'>{$row['Agent Role']}</td>
-                            <td>{$row['Status']}</td>
-                            <td>
-                                <div class='dropdown-center' style='text-align: center; position: relative;'>
-                                    <button class='btn' type='button' data-bs-toggle='dropdown' aria-expanded='false'>
-                                        <i class='fas fa-ellipsis-v'></i>
-                                    </button>
-                                    <ul class='dropdown-menu' style='position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);'>
-                                        <li>
-                                            <a class='dropdown-item edit' href='#' data-id='<?php $accountId; ?>' data-bs-toggle='modal' data-bs-target='#editModal'>
-                                                <i class='fas fa-edit'></i> Edit
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a class='dropdown-item delete text-danger' href='#' data-id='<?php echo $accountId; ?>' data-bs-toggle='modal' data-bs-target='#deleteModal'>
-                                                <i class='fas fa-trash-alt'></i> Delete
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </td>
+            <table id="product-table" class="product-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Agent ID</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Username</th>
+                  <th>Password</th>
+                  <th>Contact No.</th>
+                  <th>Account Type</th>
+                  <th>Agent Type</th>
+                  <th>Agent Role</th>
+                  <th>Status</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <?php
+              $sql = "SELECT 
+              a.accountId AS `Account ID`,
+              entity.entityCode AS `Entity Code`,
+              entity.entityId AS `Entity ID`,
+    
+              CASE 
+                  WHEN (entity.lName IS NULL OR entity.lName = '') 
+                  THEN entity.fName 
+                  ELSE CONCAT(entity.lName, ', ', entity.fName, 
+                      CASE 
+                          WHEN entity.mName IS NULL OR entity.mName = '' THEN '' 
+                          ELSE CONCAT(' ', SUBSTRING(entity.mName, 1, 1), '.') 
+                      END) 
+              END AS `Name`,
+    
+              a.email AS `Email`,
+              a.password AS `Password`,
+              CONCAT(entity.countryCode, ' ', entity.contactNo) AS `Contact No.`,
+              entity.entityType AS `Entity Type`,
+              entity.entityRole AS `Entity Role`,
+              a.accountStatus AS `Status`,
+              a.accountType AS `Account Type`  -- Added alias for accountType
+    
+          FROM accounts a
+          LEFT JOIN (
+              -- Agent Table
+              SELECT 
+                  agent.accountId,
+                  agent.agentId AS entityId,
+                  agent.agentCode AS entityCode,
+                  agent.fName, agent.lName, agent.mName,
+                  agent.countryCode, agent.contactNo,
+                  agent.agentType AS entityType,
+                  agent.agentRole AS entityRole
+              FROM agent
+              
+              UNION ALL
+              
+              -- Client Table
+              SELECT 
+                  client.accountId,
+                  client.clientId AS entityId,
+                  client.clientCode AS entityCode,
+                  client.fName, client.lName, client.mName,
+                  client.countryCode, client.contactNo,
+                  client.clientType AS entityType,
+                  client.clientRole AS entityRole
+              FROM client
+          ) AS entity ON a.accountId = entity.accountId
+          WHERE a.accountType IN ('agent', 'guest')
+          ORDER BY entity.entityCode ASC, a.accountId ASC";
+    
 
 
-                          </tr>";
-                      }
-                    } else {
-                      echo "<tr><td colspan='11' style='text-align: center;'>No agent records found</td></tr>";
-                    }
+              $result = $conn->query($sql);
 
-                    
-                    ?>
-                  </tbody>
 
-                </table>
+              ?>
+              <tbody>
+                <?php
+
+                // Check if there are records
+                if ($result->num_rows > 0) {
+
+                  while ($row = $result->fetch_assoc()) {
+                    $accountId = htmlspecialchars($row['Account ID']);
+
+                    echo "<tr>
+        <td>{$row['Account ID']}</td>
+        <td>{$row['Entity ID']}</td>
+        <td>{$row['Name']}</td>
+        <td></td>
+        <td>{$row['Email']}</td>
+        <td>***********</td>  <!-- Hiding Password for Security -->
+        <td>{$row['Contact No.']}</td>
+        <td>{$row['Account Type']}</td>
+        <td>{$row['Entity Type']}</td>
+        <td class='entityRole'>{$row['Entity Role']}</td>
+        <td>{$row['Status']}</td>
+        <td>
+            <div class='dropdown-center' style='text-align: center; position: relative;'>
+                <button class='btn' type='button' data-bs-toggle='dropdown' aria-expanded='false'>
+                    <i class='fas fa-ellipsis-v'></i>
+                </button>
+                <ul class='dropdown-menu' style='position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);'>
+                    <li>
+                        <a class='dropdown-item edit' href='#' data-id='{$row['Account ID']}' data-bs-toggle='modal' data-bs-target='#editModal'>
+                            <i class='fas fa-edit'></i> Edit
+                        </a>
+                    </li>
+                    <li>
+                        <a class='dropdown-item delete text-danger' href='#' data-id='{$row['Account ID']}' data-bs-toggle='modal' data-bs-target='#deleteModal'>
+                            <i class='fas fa-trash-alt'></i> Delete
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </td>
+    </tr>";
+                  }
+                } else {
+                  echo "<tr><td colspan='11' style='text-align: center;'>No agent records found</td></tr>";
+                }
+
+
+                ?>
+              </tbody>
+
+            </table>
           </div>
 
           <!-- Custom Pagination Container -->
@@ -223,12 +259,12 @@ error_reporting(E_ALL);
               <button id="nextPage" class="pagination-btn">Next</button>
             </div>
           </div>
-              
-          
+
+
 
         </div>
 
-        
+
       </div>
     </div>
   </div>
@@ -306,12 +342,12 @@ error_reporting(E_ALL);
                 <div class="row">
                   <!-- Account Type Selection -->
                   <div class="columns col-md-4">
-                      <label for="accountType" class="form-label">Account Type</label>
-                      <select class="form-control" id="accountType" name="accountType">
-                          <option value="" disabled selected>Select Account Type</option>
-                          <option value="agent">Agent</option>
-                          <option value="guest">Client</option> <!-- Match this value in the script -->
-                      </select>
+                    <label for="accountType" class="form-label">Account Type</label>
+                    <select class="form-control" id="accountType" name="accountType" required>
+                      <option value="" disabled selected>Select Account Type</option>
+                      <option value="agent">Agent</option>
+                      <option value="guest">Client</option> <!-- Match this value in the script -->
+                    </select>
                   </div>
                 </div>
 
@@ -320,12 +356,14 @@ error_reporting(E_ALL);
               <style>
                 /* Make readonly fields greyed out */
                 .readonly-grey {
-                    background-color: #e9ecef !important; /* Grey background */
-                    pointer-events: none; /* Prevent interaction */
+                  background-color: #e9ecef !important;
+                  /* Grey background */
+                  pointer-events: none;
+                  /* Prevent interaction */
                 }
               </style>
 
-            
+
               <div class="content-header">
                 Personal Information
               </div>
@@ -339,7 +377,7 @@ error_reporting(E_ALL);
 
                   <div class="columns col-md-3">
                     <label for="lastName" class="form-label">Last Name</label>
-                    <input type="text" class="form-control" id="lastName" name="lastName" required>
+                    <input type="text" class="form-control" id="lastName" name="lastName">
                   </div>
 
                   <div class="columns col-md-3">
@@ -350,13 +388,13 @@ error_reporting(E_ALL);
                   <div class="columns col-md-3">
                     <label for="Suffix" class="form-label">Suffix</label>
                     <select class="form-control" id="Suffix" name="Suffix">
-                        <option value="None">Select Suffix</option>
-                        <option value="Jr">Jr.</option>
-                        <option value="Sr">Sr.</option>
-                        <option value="II">II</option>
-                        <option value="III">III</option>
-                        <option value="IV">IV</option>
-                        <!-- Add more suffix options as needed -->
+                      <option value="None">Select Suffix</option>
+                      <option value="Jr">Jr.</option>
+                      <option value="Sr">Sr.</option>
+                      <option value="II">II</option>
+                      <option value="III">III</option>
+                      <option value="IV">IV</option>
+                      <!-- Add more suffix options as needed -->
                     </select>
                   </div>
 
@@ -561,15 +599,15 @@ error_reporting(E_ALL);
                         <input type="text" id="contactNo" name="contactNo" class="form-control" placeholder="Enter phone number" required maxlength="11">
 
                         <script>
-                        document.getElementById("contactNo").addEventListener("input", function() {
+                          document.getElementById("contactNo").addEventListener("input", function() {
                             // Remove non-numeric characters
                             this.value = this.value.replace(/\D/g, '');
-                            
+
                             // Ensure max length of 11 characters
                             if (this.value.length > 11) {
-                                this.value = this.value.slice(0, 11);
+                              this.value = this.value.slice(0, 11);
                             }
-                        });
+                          });
                         </script>
 
 
@@ -591,75 +629,75 @@ error_reporting(E_ALL);
 
                 <div class="row password">
                   <div class="columns col-md-5">
-                      <label for="password" class="form-label">Password</label>
-                      <input type="password" class="form-control" id="password" name="password" required>
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
                   </div>
 
                   <div class="columns col-md-5">
-                      <label for="cpassword" class="form-label">Confirm Password</label>
-                      <input type="password" class="form-control" id="cpassword" name="cpassword" required>
-                      <small id="passwordError" class="text-danger" style="display: none;">Passwords do not match!</small>
+                    <label for="cpassword" class="form-label">Confirm Password</label>
+                    <input type="password" class="form-control" id="cpassword" name="cpassword" required>
+                    <small id="passwordError" class="text-danger" style="display: none;">Passwords do not match!</small>
                   </div>
-              </div>
+                </div>
 
               </div>
             </div>
 
-            
-              <div class="content-header">
-                Account Information
-              </div>
 
-              <div class="content-body">
-                <div class="row">
-                  <div class="columns col-md-4">
-                      <label for="accountStatus" class="form-label">Branch</label>
-                      <select class="form-select" id="branchId" name="branchId" required>
-                          <option value="All" disabled selected>Select Branch</option>
-                          <?php
-                          // Execute the SQL query to fetch branch details
-                          $sql1 = "SELECT branchId, branchName FROM branch ORDER BY branchName ASC";
-                          $res1 = $conn->query($sql1);    
+            <div class="content-header">
+              Account Information
+            </div>
 
-                          // Check if there are results
-                          if ($res1->num_rows > 0) {
-                              // Loop through the results and generate options
-                              while ($row = $res1->fetch_assoc()) {
-                                  // Use branchId as the value for each option
-                                  echo "<option value='" . $row['branchId'] . "'>" . $row['branchName'] . "</option>";
-                              }
-                          } else {
-                              echo "<option value=''>No branches available</option>";
-                          }
-                          ?>
-                      </select>
-                  </div>
+            <div class="content-body">
+              <div class="row">
+                <div class="columns col-md-4">
+                  <label for="accountStatus" class="form-label">Branch</label>
+                  <select class="form-select" id="branchId" name="branchId" required>
+                    <option value="All" disabled selected>Select Branch</option>
+                    <?php
+                    // Execute the SQL query to fetch branch details
+                    $sql1 = "SELECT branchId, branchName FROM branch ORDER BY branchName ASC";
+                    $res1 = $conn->query($sql1);
 
-                  <div class="columns col-md-4">
-                    <label for="accountStatus" class="form-label">Agent Type</label>
-                    <select class="form-select" id="agentType" name="agentType" required>
-                      <option value="" selected disabled>Select Agent Type</option>
-                      <option value="Wholeseller">Wholeseller</option>
-                      <option value="Retailer">Retailer</option>
-                    </select>
-                  </div>
-
-                  <!-- Agent Role Selection -->
-                  <div class="columns col-md-4">
-                      <label for="agentRole" class="form-label">Agent Role</label>
-                      <select class="form-control" id="agentRole" name="agentRole">
-                          <option value="">Select Role</option>
-                          <option value="Head Agent">Head Agent</option>
-                          <option value="Sub Agent">Sub Agent</option>
-                          <option value="Other Role">Other Role</option>
-                      </select>
-                  </div>
-
+                    // Check if there are results
+                    if ($res1->num_rows > 0) {
+                      // Loop through the results and generate options
+                      while ($row = $res1->fetch_assoc()) {
+                        // Use branchId as the value for each option
+                        echo "<option value='" . $row['branchId'] . "'>" . $row['branchName'] . "</option>";
+                      }
+                    } else {
+                      echo "<option value=''>No branches available</option>";
+                    }
+                    ?>
+                  </select>
                 </div>
-              </div>
 
-              <!-- Hidden input to store the selected agentRole -->
-              <input type="text" id="hiddenAgentRole" name="clientRole">
+                <div class="columns col-md-4">
+                  <label for="accountStatus" class="form-label">Agent Type</label>
+                  <select class="form-select" id="agentType" name="agentType" required>
+                    <option value="" selected disabled>Select Agent Type</option>
+                    <option value="Wholeseller">Wholeseller</option>
+                    <option value="Retailer">Retailer</option>
+                  </select>
+                </div>
+
+                <!-- Agent Role Selection -->
+                <div class="columns col-md-4">
+                  <label for="agentRole" class="form-label">Agent Role</label>
+                  <select class="form-control" id="agentRole" name="agentRole">
+                    <option value="">Select Role</option>
+                    <option value="Head Agent">Head Agent</option>
+                    <option value="Sub Agent">Sub Agent</option>
+                    <option value="Other Role">Other Role</option>
+                  </select>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Hidden input to store the selected agentRole -->
+            <input type="text" id="hiddenAgentRole" name="clientRole">
         </div>
 
         <!-- Modal Footer -->
@@ -670,13 +708,13 @@ error_reporting(E_ALL);
           </div>
         </div>
 
-      </form>
+        </form>
+      </div>
     </div>
   </div>
-  </div>
 
-<!-- ContactNo and Country Code Script -->
-<!-- <script>
+  <!-- ContactNo and Country Code Script -->
+  <!-- <script>
     let contactNo = document.getElementById("contactNo");
     let countryCode = document.getElementById("countryCode");
 
@@ -722,22 +760,22 @@ error_reporting(E_ALL);
 
   <script>
     document.addEventListener("DOMContentLoaded", function() {
-        document.getElementById("accountType").addEventListener("change", function() {
-            let agentRoleField = document.getElementById("agentRole");
-            let hiddenAgentRole = document.getElementById("hiddenAgentRole");
+      document.getElementById("accountType").addEventListener("change", function() {
+        let agentRoleField = document.getElementById("agentRole");
+        let hiddenAgentRole = document.getElementById("hiddenAgentRole");
 
-            if (this.value === "guest") { // Match the lowercase value from your select options
-                agentRoleField.value = "Sub Agent";
-                hiddenAgentRole.value = "Sub Agent"; // Ensure value is posted
-                agentRoleField.setAttribute("disabled", "disabled"); // Disable selection
-                agentRoleField.classList.add("readonly-grey"); // Apply greyed-out style
-            } else {
-                agentRoleField.value = "";
-                hiddenAgentRole.value = ""; // Ensure it resets
-                agentRoleField.removeAttribute("disabled"); // Enable selection
-                agentRoleField.classList.remove("readonly-grey"); // Remove greyed-out style
-            }
-        });
+        if (this.value === "guest") { // Match the lowercase value from your select options
+          agentRoleField.value = "Sub Agent";
+          hiddenAgentRole.value = "Sub Agent"; // Ensure value is posted
+          agentRoleField.setAttribute("disabled", "disabled"); // Disable selection
+          agentRoleField.classList.add("readonly-grey"); // Apply greyed-out style
+        } else {
+          agentRoleField.value = "";
+          hiddenAgentRole.value = ""; // Ensure it resets
+          agentRoleField.removeAttribute("disabled"); // Enable selection
+          agentRoleField.classList.remove("readonly-grey"); // Remove greyed-out style
+        }
+      });
     });
   </script>
 
@@ -749,13 +787,13 @@ error_reporting(E_ALL);
       const passwordError = document.getElementById("passwordError");
 
       function validatePassword() {
-          if (confirmPassword.value !== password.value) {
-              passwordError.style.display = "block";
-              confirmPassword.setCustomValidity("Passwords do not match!");
-          } else {
-              passwordError.style.display = "none";
-              confirmPassword.setCustomValidity("");
-          }
+        if (confirmPassword.value !== password.value) {
+          passwordError.style.display = "block";
+          confirmPassword.setCustomValidity("Passwords do not match!");
+        } else {
+          passwordError.style.display = "none";
+          confirmPassword.setCustomValidity("");
+        }
       }
 
       password.addEventListener("input", validatePassword);
@@ -805,16 +843,16 @@ error_reporting(E_ALL);
   </script>
 
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function() {
       let addAccountModal = document.getElementById("AddAccountModal");
 
-      addAccountModal.addEventListener("hidden.bs.modal", function () {
-          document.querySelectorAll(".modal-backdrop").forEach((el) => el.remove());
-          document.body.classList.remove("modal-open"); // Prevent scrolling lock
+      addAccountModal.addEventListener("hidden.bs.modal", function() {
+        document.querySelectorAll(".modal-backdrop").forEach((el) => el.remove());
+        document.body.classList.remove("modal-open"); // Prevent scrolling lock
       });
-  });
+    });
   </script>
-                             
+
   <script>
     document.getElementById("AddAccountBtn").addEventListener("click", function() {
       var addAccountModal = new bootstrap.Modal(document.getElementById("AddAccountModal"));
@@ -825,7 +863,7 @@ error_reporting(E_ALL);
   <script>
     // Listen for the 'hidden.bs.modal' event, which is triggered when the modal is fully hidden
     var addAccountModal = document.getElementById("AddAccountModal");
-    addAccountModal.addEventListener('hidden.bs.modal', function () {
+    addAccountModal.addEventListener('hidden.bs.modal', function() {
       // Reset the form fields when the modal is closed
       document.getElementById("addAccountForm").reset();
     });
@@ -842,25 +880,25 @@ error_reporting(E_ALL);
   <script>
     $(document).ready(function() {
       const table = $('#product-table').DataTable({
-    dom: 'rtip',
-    language: {
-        emptyTable: "No Transaction Records Available",
-        zeroRecords: "No matching records found" // This prevents errors on empty searches
-    },
-    order: [[0, 'desc']],
-    scrollX: false,
-    scrollY: '72vh',
-    paging: true,
-    pageLength: 14,
-    autoWidth: false,
-    autoHeight: false,
-    columnDefs: [
-        {
-            targets: [1, 2, 3, 5, 6],
-            orderable: false
-        }
-    ]
-});
+        dom: 'rtip',
+        language: {
+          emptyTable: "No Transaction Records Available",
+          zeroRecords: "No matching records found" // This prevents errors on empty searches
+        },
+        order: [
+          [0, 'desc']
+        ],
+        scrollX: false,
+        scrollY: '72vh',
+        paging: true,
+        pageLength: 14,
+        autoWidth: false,
+        autoHeight: false,
+        columnDefs: [{
+          targets: [1, 2, 3, 5, 6],
+          orderable: false
+        }]
+      });
 
 
 

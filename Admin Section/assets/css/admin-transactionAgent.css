@@ -553,65 +553,69 @@
 /* Column width adjustments - Total 100% */
 .product-table th:nth-child(1),
 .product-table td:nth-child(1) {
-  width: 4%; /* Account ID */
-  
+  width: 5%; /* Account ID */
 }
 
 .product-table th:nth-child(2),
 .product-table td:nth-child(2) {
-  width: 4%; /* Agent Code */
-  
+  width: 7%; /* Agent Code */
 }
 
 .product-table th:nth-child(3),
 .product-table td:nth-child(3) {
-  width: 4%; /* Agent ID */
-  
+  width: 18%; /* Name */
 }
 
 .product-table th:nth-child(4),
 .product-table td:nth-child(4) {
-  width: 12%; /* Name */
+  width: 18%; /* Email */
 }
 
 .product-table th:nth-child(5),
 .product-table td:nth-child(5) {
-  width: 12%; /* Email */
+  width: 8%; /* Password */
 }
 
 .product-table th:nth-child(6),
 .product-table td:nth-child(6) {
-  width: 12%; /* Password */
+  width: 12%; /* Contact No. */
 }
 
 .product-table th:nth-child(7),
 .product-table td:nth-child(7) {
-  width: 10%; /* Contact No. */
+  width: 7%; /* Agent Type */
 }
 
 .product-table th:nth-child(8),
 .product-table td:nth-child(8) {
-  width: 6%; /* Agent Type */
+  width: 7%; /* Agent Role */
   text-align: center;
 }
 
 .product-table th:nth-child(9),
 .product-table td:nth-child(9) {
-  width: 6%; /* Agent Role */
+  width: 6%; /* Status */
   text-align: center;
 }
 
 .product-table th:nth-child(10),
 .product-table td:nth-child(10) {
-  width: 6%; /* Status */
+  width: 5%; /* Actions */
   text-align: center;
-}
+} 
 
 .product-table th:nth-child(11),
 .product-table td:nth-child(11) {
-  width: 2%; /* Actions */
+  width: 5%; /* Actions */
   text-align: center;
 } 
+
+.product-table th:nth-child(12),
+.product-table td:nth-child(12) {
+  width: 2%; /* Actions */
+  text-align: center;
+}
+
 
 
 

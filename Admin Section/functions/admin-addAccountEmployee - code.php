@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'];
     $branchId = $_POST['branchId'];
     $position = $_POST['empPosition'];
-    
+
     // Validation: Ensure required fields are not empty
     if (empty($fName) || empty($lName) || empty($password) || empty($branchId)) {
         $response['status'] = 'error';
@@ -33,54 +33,55 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Hash the password before storing it
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-    // Fetch the latest employeeId from the database
-    $sql_max_id = "SELECT MAX(CAST(SUBSTRING(employeeId, 2) AS UNSIGNED)) AS maxId FROM employee";
-    $result_max_id = mysqli_query($conn, $sql_max_id);
-
-    if (!$result_max_id) {
-        $response['status'] = 'error';
-        $response['message'] = "Error fetching max employee ID: " . mysqli_error($conn);
-        echo json_encode($response);
-        exit();
-    }
-
-    $max_id_row = mysqli_fetch_assoc($result_max_id);
-    $nextId = ($max_id_row['maxId'] !== null) ? $max_id_row['maxId'] + 1 : 1;
+    // Fetch employee count
+    $sql_count = "SELECT COUNT(*) AS total FROM employee";
+    $result_count = mysqli_query($conn, $sql_count);
+    $row_count = mysqli_fetch_assoc($result_count);
+    $nextId = $row_count['total'] + 1;
 
     // Format the new employeeId
-    if ($nextId < 10) {
-        $newEmployeeId = 'E00' . $nextId;
-    } elseif ($nextId < 100) {
-        $newEmployeeId = 'E0' . $nextId;
-    } else {
-        $newEmployeeId = 'E' . $nextId;
-    }
+    $newEmployeeId = sprintf("E%03d", $nextId);
+    $empUsername = 'SMT-' . $newEmployeeId;
 
-    // Insert into accounts table
-    $sql_account = "INSERT INTO accounts (email, password, otp, accountStatus, accountType, createdAt) 
-                    VALUES (?, ?, '', 'active', 'employee', NOW())";
-    $stmt = mysqli_prepare($conn, $sql_account);
-    mysqli_stmt_bind_param($stmt, "ss", $newEmployeeId, $hashed_password);
+    // Start transaction
+    mysqli_begin_transaction($conn);
 
-    if (mysqli_stmt_execute($stmt)) {
+    try {
+        // Insert into accounts table
+        $sql_account = "INSERT INTO accounts (email, password, otp, accountStatus, accountType, createdAt) VALUES (?, ?, '', 'active', 'employee', NOW())";
+        $stmt = mysqli_prepare($conn, $sql_account);
+        mysqli_stmt_bind_param($stmt, "ss", $empUsername, $hashed_password);
+
+        if (!mysqli_stmt_execute($stmt)) {
+            throw new Exception("Error inserting into accounts table: " . mysqli_error($conn));
+        }
+
         $accountId = mysqli_insert_id($conn);
 
         // Insert employee details
-        $sql_employee = "INSERT INTO employee (employeeId, accountId, fName, lName, mName, position,countryCode, contactNo, branch) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql_employee = "INSERT INTO employee (employeeId, accountId, fName, lName, mName, position, countryCode, contactNo, branch) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt_employee = mysqli_prepare($conn, $sql_employee);
-        mysqli_stmt_bind_param($stmt_employee, "sisssssss", $newEmployeeId, $accountId, $fName, $lName, $mName, $position, $countryCode, $contactNo, $branchId);
+        mysqli_stmt_bind_param($stmt_employee, "sisssssss", $empUsername, $accountId, $fName, $lName, $mName, $position, $countryCode, $contactNo, $branchId);
 
-        if (mysqli_stmt_execute($stmt_employee)) {
-            $response['status'] = 'success';
-            $response['message'] = "Employee added successfully with ID: $newEmployeeId!";
-        } else {
-            $response['status'] = 'error';
-            $response['message'] = "Error inserting into employees table: " . mysqli_error($conn);
+        if (!mysqli_stmt_execute($stmt_employee)) {
+            throw new Exception("Error inserting into employees table: " . mysqli_error($conn));
         }
-    } else {
+
+        // Commit transaction
+        mysqli_commit($conn);
+
+        $response['status'] = 'success';
+        $response['message'] = "Employee added successfully with ID: $empUsername!";
+    } catch (Exception $e) {
+        // Rollback transaction on error
+        mysqli_rollback($conn);
         $response['status'] = 'error';
-        $response['message'] = "Error inserting into accounts table: " . mysqli_error($conn);
+        $response['message'] = $e->getMessage();
     }
+
+    // Close statements
+    mysqli_stmt_close($stmt);
+    mysqli_stmt_close($stmt_employee);
 } else {
     $response['status'] = 'error';
     $response['message'] = 'Invalid request method.';
