@@ -477,9 +477,9 @@ error_reporting(E_ALL);
                   while ($row = $result->fetch_assoc()) {
                     // Output the <th> elements without background color or text color
                     echo '<th style="background-color: #dc3545; 
-  color: #ffffff; font-weight: 500;font-size: 12px;">A.L</th>';
+                          color: #ffffff; font-weight: 500;font-size: 12px;">A.L</th>';
                     echo '<th style="background-color: #dc3545; 
-  color: #ffffff; font-weight: 500;font-size: 12px;">L.O</th>';
+                          color: #ffffff; font-weight: 500;font-size: 12px;">L.O</th>';
                   }
                   ?>
                 </tr>
@@ -507,104 +507,97 @@ error_reporting(E_ALL);
                 $agentColumns = rtrim($agentColumns, ', ');
 
                 // Main query
-                $sql = "SELECT f.flightId, f.is_active, f.origin, f.flightDepartureDate AS Start, f.returnDepartureDate AS End,
-                              CONCAT(e.lName, ', ', e.fName, 
-                                IF(e.mName IS NOT NULL AND e.mName != '', CONCAT(' ', LEFT(e.mName, 1)), '')) AS TeamOP,
-                              f.availSeats AS FlightSeat, 
-                              GREATEST(f.availSeats - IFNULL(SUM(CASE 
-                                WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') 
-                                AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0), 0) AS AvailSeats, 
-                              IF((f.availSeats - IFNULL(SUM(CASE WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') 
-                                AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0)) < 0, 
-                                ABS(f.availSeats - IFNULL(SUM(CASE WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') 
-                                  AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0)), 0) AS AdditionalSeats,
-                              SUM(CASE WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') 
-                                AND b.bookingType = 'Package' AND a.agentType = 'Retailer' THEN b.pax ELSE 0 END) AS `Air+Land`,
-                              SUM(CASE WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') AND b.bookingType = 'Package' 
-                                AND a.agentType = 'Wholeseller' THEN b.pax ELSE 0 END) AS `LandOnly`,
-                              f.wholesalePrice AS WholesalePrice, f.flightPrice AS RetailPrice, p.packagePrice AS LandArrangement,
-                              f.landPrice AS landPrice, 
-                              $agentColumns
-                            FROM employee e
-                            RIGHT JOIN flight f ON f.employeeId = e.employeeId
-                            LEFT JOIN booking b ON b.flightId = f.flightId
-                            LEFT JOIN package p ON f.packageId = p.packageId
-                            LEFT JOIN agent a ON b.agentId = a.agentId
-                            WHERE f.flightDepartureDate >= CURDATE()
-                            GROUP BY f.flightId, f.is_active, f.origin, f.flightDepartureDate, f.returnDepartureDate, f.availSeats, 
-                              f.wholesalePrice, f.flightPrice, p.packagePrice
-                            ORDER BY f.flightDepartureDate";
+$sql = "SELECT 
+f.flightId, 
+f.is_active, 
+f.origin, 
+f.flightDepartureDate AS Start, 
+f.returnDepartureDate AS End,
+CONCAT(e.fName, 
+    CASE 
+        WHEN e.lName IS NULL OR e.lName = '' THEN '' 
+        ELSE CONCAT(', ', e.lName) 
+    END,
+    CASE 
+        WHEN e.mName IS NULL OR e.mName = '' OR e.mName = 'N/A' THEN '' 
+        ELSE CONCAT(' ', LEFT(e.mName, 1), '.') 
+    END
+) AS TeamOP,
+e.colorCode AS EmployeeColor,  -- Added colorCode column
+f.availSeats AS FlightSeat,
 
-                // Step 3: Execute the query
-                $result = $conn->query($sql);
+GREATEST(f.availSeats - IFNULL(SUM(CASE 
+    WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') 
+    AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0), 0) AS AvailSeats, 
 
-                // Step 4: Display the results in HTML table
+IF((f.availSeats - IFNULL(SUM(CASE WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') 
+    AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0)) < 0, 
+    ABS(f.availSeats - IFNULL(SUM(CASE WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') 
+    AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0)), 0) AS AdditionalSeats,
 
-                // class="form-check-input"
-                if ($result->num_rows > 0) {
-    // Fetch employee data and map Names to Employee IDs
-$employeeQuery = "SELECT employeeId, CONCAT(lName, ', ', fName) AS fullName FROM employee";
-$employeeResult = $conn->query($employeeQuery);
+SUM(CASE WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') 
+    AND b.bookingType = 'Package' AND a.agentType = 'Retailer' THEN b.pax ELSE 0 END) AS `Air+Land`,
 
-$employeeMapping = []; // Array to store FullName => Employee ID mapping
+SUM(CASE WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') AND b.bookingType = 'Package' 
+    AND a.agentType = 'Wholeseller' THEN b.pax ELSE 0 END) AS `LandOnly`,
 
-if ($employeeResult->num_rows > 0) {
-    while ($empRow = $employeeResult->fetch_assoc()) {
-        $employeeMapping[$empRow['fullName']] = $empRow['employeeId'];
-    }
-}
+f.wholesalePrice AS WholesalePrice, 
+f.flightPrice AS RetailPrice, 
+p.packagePrice AS LandArrangement,
+f.landPrice AS landPrice, 
+$agentColumns
 
-// Predefined color mapping for employees (based on Full Name)
-$colorMapping = [
-    "Heo, Vicky" => "#FFD700",   // Gold
-    "Kim, Gwen" => "#ADD8E6",    // Light Blue
-    "Test, Dorothy" => "#98FB98", // Pale Green
-    "Im, Anna" => "#FFB6C1",     // Light Pink
-    "Park, Lia" => "#E6E6FA",    // Lavender
-    "Testing, Pamela" => "#FFDAB9" // Peach
-];
+FROM employee e
+RIGHT JOIN flight f ON f.employeeId = e.employeeId
+LEFT JOIN booking b ON b.flightId = f.flightId
+LEFT JOIN package p ON f.packageId = p.packageId
+LEFT JOIN agent a ON b.agentId = a.agentId
 
+WHERE f.flightDepartureDate >= CURDATE()
+
+GROUP BY f.flightId, f.is_active, f.origin, f.flightDepartureDate, f.returnDepartureDate, 
+f.availSeats, f.wholesalePrice, f.flightPrice, p.packagePrice, e.colorCode
+
+ORDER BY f.flightDepartureDate";
+
+// Step 3: Execute the query
+$result = $conn->query($sql);
+
+// Check if there are results
 while ($row = $result->fetch_assoc()) {
-    $flight_id = $row['flightId'];
-    $chkStatus = $row['is_active'];
+  $flight_id = $row['flightId'] ?? '';
+  $chkStatus = $row['is_active'] ?? '';
+  
+  echo '<tr>';
+  echo '<td class="fw-bold" style="font-size: 12px; background-color: ' . htmlspecialchars($row['EmployeeColor'] ?? '') . '; ">
+        <input type="checkbox" class="status-checkbox row-checkbox" data-id="' . htmlspecialchars($flight_id) . '" 
+              data-status="' . htmlspecialchars($chkStatus) . '" ' . ($chkStatus == 1 ? 'checked' : '') . '>
+      </td>';
 
-    // Get Employee Name from TeamOP
-    $employeeName = isset($row['TeamOP']) ? trim($row['TeamOP']) : "";
+  echo '<td class="" style="font-size: 12px; white-space: nowrap; background-color: ' . htmlspecialchars($row['EmployeeColor'] ?? '') . '; font-weight: bold;">' . htmlspecialchars($row['TeamOP'] ?? '') . '</td>';
 
-    // Assign a color dynamically based on Employee Name, defaulting to white if not found
-    $rowColor = isset($colorMapping[$employeeName]) ? $colorMapping[$employeeName] : "#FFFFFF";
+  echo '<td>' . htmlspecialchars($row['origin'] ?? '') . '</td>';
+  echo '<td>' . htmlspecialchars($row['Start'] ?? '') . '</td>';
+  echo '<td>' . htmlspecialchars($row['End'] ?? '') . '</td>';
+  echo '<td>' . htmlspecialchars($row['AvailSeats'] ?? 0) . '</td>';
+  echo '<td>' . htmlspecialchars($row['AdditionalSeats'] ?? 0) . '</td>';
+  echo '<td>' . htmlspecialchars($row['Air+Land'] ?? 0) . '</td>';
+  echo '<td>' . htmlspecialchars($row['LandOnly'] ?? 0) . '</td>';
+  echo '<td>₱ ' . number_format($row['WholesalePrice'] ?? 0, 2) . '</td>';
+  echo '<td>₱ ' . number_format($row['RetailPrice'] ?? 0, 2) . '</td>';
+  echo '<td>₱ ' . number_format($row['landPrice'] ?? 0, 2) . '</td>';
 
-    echo '<tr>';
-    echo '<td class="fw-bold" style="font-size: 12px; background-color: ' . $rowColor . '; ">
-            <input type="checkbox" class="status-checkbox row-checkbox" data-id="' . $flight_id . '" 
-                  data-status="' . $chkStatus . '" ' . ($chkStatus == 1 ? 'checked' : '') . '>
-          </td>';
-    
-    echo '<td class="" style="font-size: 12px; white-space: nowrap; background-color: ' . $rowColor . '; font-weight: bold;">' . htmlspecialchars($employeeName) . '</td>';
-    echo '<td>' . htmlspecialchars($row['origin']) . '</td>';
-    echo '<td>' . htmlspecialchars($row['Start']) . '</td>';
-    echo '<td>' . htmlspecialchars($row['End']) . '</td>';
-    echo '<td>' . htmlspecialchars($row['AvailSeats']) . '</td>';
-    echo '<td>' . htmlspecialchars($row['AdditionalSeats']) . '</td>';
-    echo '<td>' . htmlspecialchars($row['Air+Land']) . '</td>';
-    echo '<td>' . htmlspecialchars($row['LandOnly']) . '</td>';
-    echo '<td>₱ ' . number_format($row['WholesalePrice'], 2) . '</td>';
-    echo '<td>₱ ' . number_format($row['RetailPrice'], 2) . '</td>';
-    echo '<td>₱ ' . number_format($row['landPrice'], 2) . '</td>';
+  foreach ($row as $key => $value) {
+      if (strpos($key, '_AL') !== false || strpos($key, '_LO') !== false) {
+          $style = (!empty($value) && $value > 0) ? 'style="font-weight: bold;"' : 'style="font-weight: 400;"';
+          echo '<td ' . $style . '>' . htmlspecialchars($value ?? 0) . '</td>';
+      }
+  }
 
-    foreach ($row as $key => $value) {
-        if (strpos($key, '_AL') !== false || strpos($key, '_LO') !== false) {
-            $style = ($value > 0) ? 'style="font-weight: bold;"' : 'style="font-weight: 400;"';
-            echo '<td ' . $style . '>' . htmlspecialchars($value) . '</td>';
-        }
-    }
-
-    echo '</tr>';
+  echo '</tr>';
 }
 
 
-                  
-                }
                 ?>
               </tbody>
             </table>

@@ -1,0 +1,127 @@
+.card {
+    background-color: #fff;
+    overflow: hidden;
+}
+
+.card-header {
+    background-color: #3498db;
+    color: #fff;
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 8px 8px 0 0;
+}
+
+.card-header h4 {
+    margin: 0;
+    font-size: 16px;
+}
+
+.card-body {
+    padding: 0;
+    font-size: 14px;
+    color: #2c3e50;
+}
+
+/* Button styling */
+.btn {
+    padding: 8px 12px;
+    text-decoration: none;
+    color: #fff;
+    background-color: #3498db;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #2980b9;
+}
+
+
+
+
+.table-tabs {
+    display: flex;
+    align-items: center;
+    justify-content: left; /* Center-align the tabs */
+    margin: 15px 0;
+    width: 100%;
+    border-bottom: 1px solid #ddd; /* Add bottom border for better structure */
+}
+
+.custom-pills .nav-link {
+    color: #6c757d; /* Default text color */
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center;
+    border: none;
+    border-radius: 0;
+    background-color: transparent;
+    padding: 10px 16px; /* Increased padding for better spacing */
+    margin: 0 10px; /* Add spacing between tabs */
+    transition: color 0.3s ease, border-bottom 0.3s ease;
+}
+
+.custom-pills .nav-link.active {
+    color: #ff8200; /* Orange active text color */
+    font-weight: 600;
+    border-bottom: 3px solid #ff8200; /* Active tab bottom border */
+    background-color: transparent;
+}
+
+.custom-pills .nav-link:hover {
+    color: #ff8200; /* Hover color */
+    background-color: transparent; /* Ensure no background on hover */
+}
+
+.custom-pills .nav-link:not(.active) {
+    border-bottom: 3px solid transparent; /* Keeps spacing consistent */
+}
+
+
+
+
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    margin: 20px 0;
+}
+
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+th {
+    background-color: #f2f2f2;
+}
+
+tr:hover {
+    background-color: #f5f5f5;
+}
+
+.btn {
+    padding: 8px 12px;
+    margin: 4px;
+    text-decoration: none;
+    border-radius: 4px;
+    color: #fff;
+}
+
+.btn-view {
+    background-color: #4CAF50;
+}
+
+.btn-download {
+    background-color: #008CBA;
+}
+
+

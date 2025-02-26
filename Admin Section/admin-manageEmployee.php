@@ -141,10 +141,17 @@ error_reporting(E_ALL);
               $sql = "SELECT 
               a.accountId AS `Account ID`,
               e.employeeId AS `Employee ID`,
-              CONCAT(e.lName, ', ', e.fName, ' ', 
-                    CASE WHEN e.mName = 'N/A' OR e.mName IS NULL 
-                    THEN '' ELSE CONCAT(SUBSTRING(e.mName, 1, 1), '.') END) AS `Name`,
-              e.position AS `Position`,
+              CASE 
+                  WHEN (e.lName IS NULL OR e.lName = '') 
+                  THEN e.fName 
+                  ELSE CONCAT(e.lName, ', ', e.fName, 
+                      CASE 
+                          WHEN e.mName IS NULL OR e.mName = '' OR e.mName = 'N/A' THEN '' 
+                          ELSE CONCAT(' ', SUBSTRING(e.mName, 1, 1), '.') 
+                      END
+                  ) 
+              END AS `Name`, 
+              e.position AS `Position`,  -- Added missing comma here
               a.email AS `Email`,
               a.password AS `Password`,
               CONCAT(e.countryCode, ' ', e.contactNo) AS `Contact No.`,
@@ -341,7 +348,7 @@ error_reporting(E_ALL);
 
                   <div class="columns col-md-3">
                     <label for="lastName" class="form-label">Last Name</label>
-                    <input type="text" class="form-control" id="lastName" name="lastName" required>
+                    <input type="text" class="form-control" id="lastName" name="lastName">
                   </div>
 
                   <div class="columns col-md-3">

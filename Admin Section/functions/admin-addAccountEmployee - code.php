@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $position = $_POST['empPosition'];
 
     // Validation: Ensure required fields are not empty
-    if (empty($fName) || empty($lName) || empty($password) || empty($branchId)) {
+    if (empty($fName) || empty($password) || empty($branchId)) {
         $response['status'] = 'error';
         $response['message'] = 'Required fields cannot be empty.';
         echo json_encode($response);
