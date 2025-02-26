@@ -29,8 +29,8 @@ error_reporting(E_ALL);
     <div class="navbar">
       <div class="backbutton-wrapper">
         <div class="back-button-wrapper">
-          <a href="../Client Section/client-transactions.php" class="back-button-link">
-              <i class="fa-solid fa-arrow-left"></i>
+          <a href="../Client Section/client-transactionInfo.php?id=<?= $_SESSION['transaction_number'] ?>" class="back-button-link">
+            <i class="fa-solid fa-arrow-left"></i>
           </a>
         </div>
 
