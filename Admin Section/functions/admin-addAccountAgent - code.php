@@ -107,10 +107,16 @@ try {
                 // Insert into agent table
                 $sql_agent = "INSERT INTO agent (agentId, agentCode, accountId, branchId, fName, lName, mName, countryCode, contactNo, agentType, agentRole, comissionRate, seats) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '', 0)";
                 $stmt_agent = mysqli_prepare($conn, $sql_agent);
+
                 if (!$stmt_agent) {
                     throw new Exception("Error preparing agent insert: " . mysqli_error($conn));
                 }
+                
                 mysqli_stmt_bind_param($stmt_agent, "ssissssssss", $agentUsername, $agentCode, $accountId, $branchId, $fName, $lName, $mName, $countryCode, $contactNo, $agentType, $agentRole);
+
+
+
+
                 if (!mysqli_stmt_execute($stmt_agent)) {
                     throw new Exception("Error inserting into agent table: " . mysqli_error($conn));
                 }
