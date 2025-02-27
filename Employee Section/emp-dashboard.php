@@ -460,8 +460,6 @@ error_reporting(E_ALL);
                       style="background-color: #dc3545; color: #ffffff; font-weight: 500;font-size: 12px;" >' . $row['branchName'] . '</th>';
                     }
                   ?>
-
-
                 </tr>
 
                 <tr style="top: -10px;">

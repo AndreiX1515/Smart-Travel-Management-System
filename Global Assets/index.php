@@ -21,6 +21,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../Global Assets/toast/script/toast.php"></script>
 
+    <script src="../Global Assets/toast/js/toast.js"></script>
+
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             showToast("🎉 Welcome! This toast appears on page load.", "success"); // Auto show on load

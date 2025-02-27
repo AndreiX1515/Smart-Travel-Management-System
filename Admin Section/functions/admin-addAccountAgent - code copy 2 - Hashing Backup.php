@@ -38,7 +38,7 @@ try {
         }
 
         // Hash the password before storing it
-        $hashed_password = $password;
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
         if ($accountType === 'agent') {
             $agentRole = $_POST['agentRole'];
@@ -83,14 +83,11 @@ try {
                 }
         
                 $agentUsername = $agentCode . '-' . $newAgentId;
-                $password = 'password1';
         
                 // Insert into accounts table
                 $sql_account = "INSERT INTO accounts (email, password, otp, accountStatus, accountType, createdAt) 
                                 VALUES (?, ?, '', 'active', ?, NOW())";
-
                 $stmt = mysqli_prepare($conn, $sql_account);
-
                 if (!$stmt) {
                     throw new Exception("Error preparing account insert: " . mysqli_error($conn));
                 }
