@@ -130,7 +130,8 @@
                       JOIN branch br ON b.agentCode = br.branchAgentCode
                       JOIN flight f ON f.flightId = b.flightId
                       JOIN package p ON p.packageId = b.packageId
-                      JOIN agent a ON a.agentId = b.agentId
+                      LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
+                      LEFT JOIN client c ON b.accountType = 'Client' AND b.accountId = c.accountId
                       LEFT JOIN payment pa ON pa.transactNo = b.transactNo AND pa.paymentStatus = 'Approved'
                       GROUP BY 
                         b.transactNo, f.flightDepartureDate, f.returnDepartureDate, b.status, p.packageName, 

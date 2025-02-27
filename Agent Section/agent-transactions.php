@@ -190,19 +190,13 @@ require "../conn.php";
                                       ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ', CASE WHEN b.suffix = 'N/A' THEN '' 
                                       ELSE b.suffix END) AS `CONTACT NAME`, br.branchName as branchName,
                                     b.email AS `CONTACT EMAIL`, CONCAT(b.countryCode, ' ', b.contactNo) AS `CONTACT PHONE`, b.status AS `STATUS`
-                                FROM 
-                                    booking b
-                                LEFT JOIN 
-                                    flight f ON b.flightId = f.flightId
-                                LEFT JOIN 
-                                    package p ON b.packageId = p.packageId
-                                LEFT JOIN
-                                    agent a ON b.agentId = a.agentId
+                                FROM booking b
+                                LEFT JOIN flight f ON b.flightId = f.flightId
+                                LEFT JOIN package p ON b.packageId = p.packageId
+                                LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
                                 JOIN branch br ON b.agentCode = br.branchAgentCode
-                                WHERE 
-                                    b.agentId = '$agentId' 
-                                ORDER BY 
-                                    b.transactNo DESC";
+                                WHERE b.accountType = 'Agent' 
+                                ORDER BY  b.transactNo DESC";
 
                           $res1 = $conn->query($sql1);
 
@@ -271,7 +265,9 @@ require "../conn.php";
                                     FROM booking b
                                     LEFT JOIN flight f ON b.flightId = f.flightId
                                     LEFT JOIN package p ON b.packageId = p.packageId
-                                    LEFT JOIN agent a ON b.agentId = a.agentId
+                                    LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
+                                    LEFT JOIN company c ON a.companyId = c.companyId
+                                    LEFT JOIN client cl ON b.accountType = 'Client' AND b.accountId = cl.accountId
                                     JOIN branch br ON b.agentCode = br.branchAgentCode
                                     WHERE b.agentCode = '$agentCode' 
                                     ORDER BY b.transactNo DESC";
