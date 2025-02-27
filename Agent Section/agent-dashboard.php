@@ -807,7 +807,7 @@ require "../conn.php";
                                         LEFT JOIN company cc ON cl.companyId = cc.companyId
                                         JOIN branch br ON b.agentCode = br.branchAgentCode
                                         WHERE b.accountId = '$accountId' 
-                                        AND b.status = 'Pending' 
+                                        AND b.status = 'Pending' OR b.status = 'Reserved'
                                         ORDER BY b.transactNo DESC";
 
                               $res1 = $conn->query($sql1);
@@ -874,13 +874,13 @@ require "../conn.php";
                                         FROM booking b
                                         LEFT JOIN flight f ON b.flightId = f.flightId
                                         LEFT JOIN package p ON b.packageId = p.packageId
-                                        LEFT JOIN agent a ON b.accountId = a.accountId
+                                        LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
                                         LEFT JOIN company c ON a.companyId = c.companyId
-                                        LEFT JOIN client cl ON b.accountId = cl.accountId
+                                        LEFT JOIN client cl ON b.accountType = 'Client' AND b.accountId = cl.accountId
                                         LEFT JOIN company cc ON cl.companyId = cc.companyId
                                         JOIN branch br ON b.agentCode = br.branchAgentCode
                                         WHERE b.agentCode = '$agentCode' 
-                                        AND b.status = 'Pending' 
+                                        AND (b.status = 'Pending' OR b.status = 'Reserved')
                                         ORDER BY b.transactNo DESC";
 
                               $res1 = $conn->query($sql1);
@@ -1048,9 +1048,9 @@ require "../conn.php";
                                       LEFT JOIN booking b ON r.transactNo = b.transactNo
                                       LEFT JOIN concern c ON r.concernId = c.concernId
                                       LEFT JOIN concerndetails cd ON r.concernDetailsId = cd.concernDetailsId
-                                      LEFT JOIN agent a ON b.accountId = a.accountId
+                                      LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
                                       LEFT JOIN company co ON a.companyId = co.companyId
-                                      LEFT JOIN client cl ON b.accountId = cl.accountId
+                                      LEFT JOIN client cl ON b.accountType = 'Client' AND b.accountId = cl.accountId
                                       LEFT JOIN company cc ON cl.companyId = cc.companyId
                                       LEFT JOIN branch br ON b.agentCode = br.branchAgentCode
                                       WHERE b.agentCode = '$agentCode'
@@ -1239,9 +1239,9 @@ require "../conn.php";
                                         ELSE 'Unknown' END AS `Account Name`
                                       FROM payment p
                                       JOIN booking b ON p.transactNo = b.transactNo
-                                      LEFT JOIN agent a ON b.accountId = a.accountId
+                                      LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
                                       LEFT JOIN company co ON a.companyId = co.companyId
-                                      LEFT JOIN client cl ON b.accountId = cl.accountId
+                                      LEFT JOIN client cl ON b.accountType = 'Client' AND b.accountId = cl.accountId
                                       LEFT JOIN company cc ON cl.companyId = cc.companyId
                                       LEFT JOIN branch br ON b.agentCode = br.branchAgentCode
                                       WHERE br.branchId = '$branchId'
@@ -1371,9 +1371,9 @@ require "../conn.php";
                                         JOIN flight f ON b.flightId = f.flightId
                                         LEFT JOIN package p ON b.packageId = p.packageId
                                         JOIN branch br ON b.agentCode = br.branchAgentCode
-                                        LEFT JOIN agent a ON b.accountId = a.accountId
+                                        LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
                                         LEFT JOIN company co ON a.companyId = co.companyId
-                                        LEFT JOIN client cl ON b.accountId = cl.accountId
+                                        LEFT JOIN client cl ON b.accountType = 'Client' AND b.accountId = cl.accountId
                                         LEFT JOIN company cc ON cl.companyId = cc.companyId
                                         LEFT JOIN 
                                           (SELECT transactNo, SUM(amount) AS totalPaidAmount FROM payment
@@ -1473,9 +1473,9 @@ require "../conn.php";
                                         JOIN flight f ON b.flightId = f.flightId
                                         LEFT JOIN package p ON b.packageId = p.packageId
                                         JOIN branch br ON b.agentCode = br.branchAgentCode
-                                        LEFT JOIN agent a ON b.accountId = a.accountId
+                                        LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
                                         LEFT JOIN company co ON a.companyId = co.companyId
-                                        LEFT JOIN client cl ON b.accountId = cl.accountId
+                                        LEFT JOIN client cl ON b.accountType = 'Client' AND b.accountId = cl.accountId
                                         LEFT JOIN company cc ON cl.companyId = cc.companyId
                                         LEFT JOIN 
                                           (SELECT transactNo, SUM(amount) AS totalPaidAmount FROM payment
