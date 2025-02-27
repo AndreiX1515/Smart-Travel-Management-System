@@ -265,7 +265,9 @@ require "../conn.php";
                                     FROM booking b
                                     LEFT JOIN flight f ON b.flightId = f.flightId
                                     LEFT JOIN package p ON b.packageId = p.packageId
-                                    LEFT JOIN agent a ON b.agentId = a.agentId
+                                    LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
+                                    LEFT JOIN company c ON a.companyId = c.companyId
+                                    LEFT JOIN client cl ON b.accountType = 'Client' AND b.accountId = cl.accountId
                                     JOIN branch br ON b.agentCode = br.branchAgentCode
                                     WHERE b.agentCode = '$agentCode' 
                                     ORDER BY b.transactNo DESC";
