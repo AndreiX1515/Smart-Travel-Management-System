@@ -161,39 +161,36 @@ error_reporting(E_ALL);
               a.accountStatus AS `Status`,
               a.accountType AS `Account Type`  -- Added alias for accountType
     
-          FROM accounts a
-          LEFT JOIN (
-              -- Agent Table
-              SELECT 
-                  agent.accountId,
-                  agent.agentId AS entityId,
-                  agent.agentCode AS entityCode,
-                  agent.fName, agent.lName, agent.mName,
-                  agent.countryCode, agent.contactNo,
-                  agent.agentType AS entityType,
-                  agent.agentRole AS entityRole
-              FROM agent
-              
-              UNION ALL
-              
-              -- Client Table
-              SELECT 
-                  client.accountId,
-                  client.clientId AS entityId,
-                  client.clientCode AS entityCode,
-                  client.fName, client.lName, client.mName,
-                  client.countryCode, client.contactNo,
-                  client.clientType AS entityType,
-                  client.clientRole AS entityRole
-              FROM client
-          ) AS entity ON a.accountId = entity.accountId
-          WHERE a.accountType IN ('agent', 'guest')
-          ORDER BY entity.entityCode ASC, a.accountId ASC";
+              FROM accounts a
+              LEFT JOIN (
+                  -- Agent Table
+                  SELECT 
+                      agent.accountId,
+                      agent.agentId AS entityId,
+                      agent.agentCode AS entityCode,
+                      agent.fName, agent.lName, agent.mName,
+                      agent.countryCode, agent.contactNo,
+                      agent.agentType AS entityType,
+                      agent.agentRole AS entityRole
+                  FROM agent
+                  
+                  UNION ALL
+                  
+                  -- Client Table
+                  SELECT 
+                      client.accountId,
+                      client.clientId AS entityId,
+                      client.clientCode AS entityCode,
+                      client.fName, client.lName, client.mName,
+                      client.countryCode, client.contactNo,
+                      client.clientType AS entityType,
+                      client.clientRole AS entityRole
+                  FROM client
+              ) AS entity ON a.accountId = entity.accountId
+              WHERE a.accountType IN ('agent', 'guest')
+              ORDER BY entity.entityCode ASC, a.accountId ASC";
     
-
-
               $result = $conn->query($sql);
-
 
               ?>
               <tbody>
@@ -238,10 +235,10 @@ error_reporting(E_ALL);
                             </td>
                         </tr>";
                   }
-                } else {
-                  echo "<tr><td colspan='11' style='text-align: center;'>No agent records found</td></tr>";
-                }
 
+                  } else {
+                    echo "<tr><td colspan='11' style='text-align: center;'>No agent records found</td></tr>";
+                  }
 
                 ?>
               </tbody>
@@ -318,7 +315,6 @@ error_reporting(E_ALL);
       </div>
     </div>
   </div>
-
 
   <!-- Add Account Modal -->
   <div class="modal" id="AddAccountModal" tabindex="-1" aria-labelledby="AddAccountModalLabel" aria-hidden="true">
@@ -405,7 +401,7 @@ error_reporting(E_ALL);
                       <label for="contactNo" class="contactNo">Contact No. <span class="text-danger">*</span></label>
 
                       <div class="input-group contactNoWrapper">
-                        <select name="countryCode" id="countryCode" class="form-select" required>
+                        <select name="countryCode" id="countryCode" class="form-select">
                           <option disabled>Country Code</option>
                           <option value="+93">Afghanistan (+93)</option>
                           <option value="+355">Albania (+355)</option>
@@ -594,7 +590,7 @@ error_reporting(E_ALL);
                           <option value="+263">Zimbabwe (+263)</option>
                         </select>
 
-                        <input type="text" id="contactNo" name="contactNo" class="form-control" placeholder="Enter phone number" required maxlength="11">
+                        <input type="text" id="contactNo" name="contactNo" class="form-control" placeholder="Enter phone number" maxlength="11">
 
                         <script>
                           document.getElementById("contactNo").addEventListener("input", function() {
@@ -607,7 +603,6 @@ error_reporting(E_ALL);
                             }
                           });
                         </script>
-
 
 
                         <span id="contactNoError" class="text-danger"></span>
@@ -683,7 +678,7 @@ error_reporting(E_ALL);
                 <!-- Agent Role Selection -->
                 <div class="columns col-md-4">
                   <label for="agentRole" class="form-label">Agent Role</label>
-                  <select class="form-control" id="agentRole" name="agentRole">
+                  <select class="form-control" id="agentRole" name="agentRole" required>
                     <option value="">Select Role</option>
                     <option value="Head Agent">Head Agent</option>
                     <option value="Sub Agent">Sub Agent</option>
@@ -891,7 +886,7 @@ error_reporting(E_ALL);
           autoWidth: false,
           responsive: true, // Enable DataTables' built-in responsive behavior
           columnDefs: [
-              { targets: [1, 2, 3, 5, 6], orderable: false }
+              { targets: [0, 2, 3, 5, 6], orderable: false }
           ]
       });
 
