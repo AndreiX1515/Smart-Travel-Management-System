@@ -567,7 +567,8 @@ require "../conn.php";
                                   RIGHT JOIN flight f ON f.employeeId = e.employeeId
                                   LEFT JOIN booking b ON b.flightId = f.flightId
                                   LEFT JOIN package p ON f.packageId = p.packageId
-                                  LEFT JOIN agent a ON b.agentId = a.agentId
+                                  LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
+                                  LEFT JOIN client c ON b.accountType = 'Client' AND b.accountId = c.accountId
                                   WHERE f.flightDepartureDate >= CURDATE()
                                   GROUP BY 
                                       f.flightId, e.lName, e.fName, e.mName, f.origin, f.flightDepartureDate, f.returnDepartureDate, 

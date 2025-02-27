@@ -8,7 +8,7 @@
   if (isset($_POST['bookNow'])) 
   {
     $accountId = $_SESSION['accountId'];
-    $agentId = $_POST['agentId'];  
+    $agentId = 'Client';  
     $agentCode = $_POST['agentCode'];  
     $fName = $_POST['fName'];  
     $mName = $_POST['mName'];  
@@ -51,7 +51,7 @@
     $conn->begin_transaction();
 
     // Prepare the SQL statement for insertion into the booking table
-    $sql1 = "INSERT INTO booking (accountId, transactNo, agentId, agentCode, flightId, packageId, fName, lName, mName, suffix, countryCode, 
+    $sql1 = "INSERT INTO booking (accountId, transactNo, accountType, agentCode, flightId, packageId, fName, lName, mName, suffix, countryCode, 
                 contactNo, email, pax, totalPrice, bookingType, flightDetails, status, bookingDate) VALUES 
                 (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Reserved', NOW())";
     $stmt1 = $conn->prepare($sql1);
