@@ -118,24 +118,16 @@
                           r.requestCost as requestCost,
                           r.customRequest as customRequest, r.details as details, DATE_FORMAT(r.requestDate, '%m-%d-%Y') AS `RequestDate`, 
                           r.requestStatus AS `Status`, br.branchName as branchName
-                      FROM 
-                          request r
-                      
-                      LEFT JOIN 
-                          concern c ON r.concernId = c.concernId
-                      LEFT JOIN 
-                          concerndetails cd ON r.concernDetailsId = cd.concernDetailsId
-                      LEFT JOIN 
-                          booking b ON r.transactNo = b.transactNo
+                      FROM request r
+                      LEFT JOIN concern c ON r.concernId = c.concernId
+                      LEFT JOIN concerndetails cd ON r.concernDetailsId = cd.concernDetailsId
+                      LEFT JOIN booking b ON r.transactNo = b.transactNo
                       JOIN branch br ON b.agentCode = br.branchAgentCode
-                      LEFT JOIN 
-                          payment p ON b.transactNo = p.transactNo
-                      LEFT JOIN 
-                          agent a ON b.agentId = a.agentId
-                      WHERE
-                        r.requestStatus = 'Submitted'
-                      GROUP BY 
-                          r.requestId";
+                      LEFT JOIN payment p ON b.transactNo = p.transactNo
+                      LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
+                      LEFT JOIN client cl ON b.accountType = 'Client' AND b.accountId = cl.accountId
+                      WHERE r.requestStatus = 'Submitted'
+                      GROUP BY r.requestId";
 
               $res1 = $conn->query($sql1);
 
