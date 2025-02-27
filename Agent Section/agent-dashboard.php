@@ -654,28 +654,34 @@ require "../conn.php";
                         </thead>
                         <tbody>
                           <?php
-                            $sql = "SELECT DISTINCT a.agentCode AS agentCode, a.agentType AS agentType
-                                    FROM agent a
-                                    WHERE a.agentCode IS NOT NULL AND a.agentCode != ''";
+                            $sql = "SELECT branchName, branchAgentCode 
+                                    FROM branch WHERE branchAgentCode IS NOT NULL AND branchAgentCode != ''";
                             $result = $conn->query($sql);
-
+          
                             $agentColumns = '';
                             while ($row = $result->fetch_assoc()) 
                             {
-                              $agentColumns .= "IFNULL(SUM(CASE WHEN b.bookingType = 'Package' AND (b.status = 'Confirmed' OR b.status = 
-                                                  'Reserved') AND b.agentCode = '$agentCode' AND a.agentType = 'Retailer' 
+                              $agentCode = $row['branchAgentCode'];
+                              $agentColumns .= "IFNULL(SUM(CASE WHEN b.bookingType = 'Package' 
+                                                  AND (b.status = 'Confirmed' OR b.status = 'Reserved')
+                                                  AND (a.agentCode = '$agentCode' OR c.clientCode = '$agentCode') 
+                                                  AND (a.agentType = 'Retailer' OR c.clientType = 'Retailer')
                                                   THEN b.pax ELSE 0 END), 0) AS `{$agentCode}_AL`,
-
-                                                IFNULL(SUM(CASE WHEN b.bookingType = 'Package' AND (b.status = 'Confirmed' OR b.status = 
-                                                  'Reserved')AND b.agentCode = '$agentCode' AND a.agentType = 'Wholeseller' 
+                            
+                                                IFNULL(SUM(CASE WHEN b.bookingType = 'Package' 
+                                                  AND (b.status = 'Confirmed' OR b.status = 'Reserved')
+                                                  AND (a.agentCode = '$agentCode' OR c.clientCode = '$agentCode')
+                                                  AND (a.agentType = 'Wholeseller' OR c.clientType = 'Wholeseller')
                                                   THEN b.pax ELSE 0 END), 0) AS `{$agentCode}_LO`, ";
                             }
-
+  
+                            // Trim the trailing comma from the dynamically generated columns
                             $agentColumns = rtrim($agentColumns, ', ');
-
-                            $sql = "SELECT CONCAT(e.lName, ', ', e.fName, 
-                                      IF(e.mName IS NOT NULL AND e.mName != '', CONCAT(' ', LEFT(e.mName, 1)), '')) AS TeamOP,
-                                      f.origin, f.flightId as flightId, f.flightDepartureDate AS Start, f.returnDepartureDate AS End, 
+  
+                            // Main query
+                            $sql = "SELECT f.flightId, f.is_active, f.origin, f.flightDepartureDate AS Start, f.returnDepartureDate AS End,
+                                      CONCAT(e.lName, ', ', e.fName, 
+                                        IF(e.mName IS NOT NULL AND e.mName != '', CONCAT(' ', LEFT(e.mName, 1)), '')) AS TeamOP,
                                       f.availSeats AS FlightSeat, 
                                       GREATEST(f.availSeats - IFNULL(SUM(CASE 
                                         WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') 
@@ -684,22 +690,25 @@ require "../conn.php";
                                         AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0)) < 0, 
                                         ABS(f.availSeats - IFNULL(SUM(CASE WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') 
                                           AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0)), 0) AS AdditionalSeats,
-                                      SUM(CASE WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') 
-                                        AND b.bookingType = 'Package' AND a.agentType = 'Retailer' THEN b.pax ELSE 0 END) AS `Air+Land`,
+                                      SUM(CASE WHEN (b.status = 'Confirmed' OR b.status = 'Reserved')  AND b.bookingType = 'Package' 
+                                        AND (a.agentType = 'Retailer' OR c.clientType = 'Retailer') THEN b.pax 
+                                        ELSE 0 END) AS `Air+Land`,
                                       SUM(CASE WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') AND b.bookingType = 'Package' 
-                                        AND a.agentType = 'Wholeseller' THEN b.pax ELSE 0 END) AS `LandOnly`,
-                                      f.wholesalePrice AS WholesalePrice, f.flightPrice AS RetailPrice, p.packagePrice AS LandArrangement, 
+                                        AND (a.agentType = 'Wholeseller' OR c.clientType = 'Wholeseller') THEN b.pax 
+                                        ELSE 0 END) AS `LandOnly`,
+                                      f.wholesalePrice AS WholesalePrice, f.flightPrice AS RetailPrice, p.packagePrice AS LandArrangement,
+                                      f.landPrice AS landPrice, 
                                       $agentColumns
-                                  FROM employee e 
-                                  RIGHT JOIN flight f ON f.employeeId = e.employeeId
-                                  LEFT JOIN booking b ON b.flightId = f.flightId
-                                  LEFT JOIN package p ON f.packageId = p.packageId
-                                  LEFT JOIN agent a ON b.agentId = a.agentId
-                                  WHERE f.flightDepartureDate >= CURDATE()
-                                  GROUP BY 
-                                      f.flightId, e.lName, e.fName, e.mName, f.origin, f.flightDepartureDate, f.returnDepartureDate, 
-                                      f.availSeats, f.wholesalePrice, f.flightPrice, p.packagePrice
-                                  ORDER BY f.flightDepartureDate";
+                                    FROM employee e
+                                    RIGHT JOIN flight f ON f.employeeId = e.employeeId
+                                    LEFT JOIN booking b ON b.flightId = f.flightId
+                                    LEFT JOIN package p ON f.packageId = p.packageId
+                                    LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
+                                    LEFT JOIN client c ON b.accountType = 'Client' AND b.accountId = c.accountId
+                                    WHERE f.flightDepartureDate >= CURDATE()
+                                    GROUP BY f.flightId, f.is_active, f.origin, f.flightDepartureDate, f.returnDepartureDate, f.availSeats, 
+                                      f.wholesalePrice, f.flightPrice, p.packagePrice, f.landPrice
+                                    ORDER BY f.flightDepartureDate";
 
                             // Step 3: Execute the query
                             $result = $conn->query($sql);
