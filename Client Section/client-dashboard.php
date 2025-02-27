@@ -670,48 +670,48 @@ require "../conn.php";
                                         AND b.status = 'Pending' 
                                         ORDER BY b.transactNo DESC";
 
-                              $res1 = $conn->query($sql1);
+                            $res1 = $conn->query($sql1);
 
-                              if ($res1->num_rows > 0) 
+                            if ($res1->num_rows > 0) 
+                            {
+                              while ($row = $res1->fetch_assoc()) 
                               {
-                                while ($row = $res1->fetch_assoc()) 
+                                $status = htmlspecialchars($row['STATUS']);
+                                $badgeClass = '';
+
+                                // Assign badge classes based on status
+                                switch ($status) 
                                 {
-                                  $status = htmlspecialchars($row['STATUS']);
-                                  $badgeClass = '';
-
-                                  // Assign badge classes based on status
-                                  switch ($status) 
-                                  {
-                                    case 'Confirmed':
-                                      $badgeClass = 'bg-success text-white'; // Green
-                                      break;
-                                    case 'Cancelled':
-                                      $badgeClass = 'bg-danger text-white'; // Red
-                                      break;
-                                    case 'Pending':
-                                      $badgeClass = 'bg-warning text-dark'; // Yellow
-                                      break;
-                                    case 'Reject':
-                                      $badgeClass = 'bg-danger text-white'; // Dark Red
-                                      break;
-                                    default:
-                                      $badgeClass = 'bg-info text-white'; // Blue for other statuses
-                                      break;
-                                  }
-
-                                  echo "
-                                  <tr data-url='client-transactionInfo.php?id=" . htmlspecialchars($row['T.N']) . "'>
-                                      <td>" . htmlspecialchars(substr($row['T.N'], 5)) . "</td>
-                                      <td>" . htmlspecialchars($row['ACCOUNT NAME']) . "</td>
-                                      <td>" . htmlspecialchars($row['FLIGHT DATE']) . "</td>
-                                      <td> <span class='badge " . $badgeClass . " p-2'>" . $status . "</span> </td>
-                                  </tr>";
+                                  case 'Confirmed':
+                                    $badgeClass = 'bg-success text-white'; // Green
+                                    break;
+                                  case 'Cancelled':
+                                    $badgeClass = 'bg-danger text-white'; // Red
+                                    break;
+                                  case 'Pending':
+                                    $badgeClass = 'bg-warning text-dark'; // Yellow
+                                    break;
+                                  case 'Reject':
+                                    $badgeClass = 'bg-danger text-white'; // Dark Red
+                                    break;
+                                  default:
+                                    $badgeClass = 'bg-info text-white'; // Blue for other statuses
+                                    break;
                                 }
-                              } 
-                              else 
-                              {
-                                echo "<tr><td colspan='8' style='text-align: left;'>No bookings as of the moment</td></tr>";
+
+                                echo "
+                                <tr data-url='client-transactionInfo.php?id=" . htmlspecialchars($row['T.N']) . "'>
+                                    <td>" . htmlspecialchars(substr($row['T.N'], 5)) . "</td>
+                                    <td>" . htmlspecialchars($row['ACCOUNT NAME']) . "</td>
+                                    <td>" . htmlspecialchars($row['FLIGHT DATE']) . "</td>
+                                    <td> <span class='badge " . $badgeClass . " p-2'>" . $status . "</span> </td>
+                                </tr>";
                               }
+                            } 
+                            else 
+                            {
+                              echo "<tr><td colspan='8' style='text-align: left;'>No bookings as of the moment</td></tr>";
+                            }
                           ?>
                         </tbody>
                       </table>

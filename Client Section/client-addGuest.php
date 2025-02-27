@@ -118,7 +118,7 @@ error_reporting(E_ALL);
 
           <div class="wrapper-body">
             <!-- Dynamically generate Guest Information Cards based on pax -->
-            <form class="card-form" action="../Client Section/functions/client-addGuest-code.php" id="guestForm" method="POST">
+            <form class="card-form" action="../Client Section/Functions/client-addGuest-code.php" id="guestForm" method="POST">
               <input type="hidden" name="transactNo" value="<?php echo $transactionNumber; ?>">
 
               <!-- Guest Forms Container -->
