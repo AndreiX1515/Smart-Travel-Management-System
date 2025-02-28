@@ -12,13 +12,13 @@
     $agentCode = $_POST['agentCode'];  
     $accountType = $_POST['userType'];  
     $fName = $_POST['fName'];  
-    $mName = $_POST['mName'];  
+    $mName = $_POST['mName'];                                             
     $lName = $_POST['lName'];  
     $suffix = $_POST['suffix'];
     $countryCode = $_POST['countryCode']; 
     $contactNo = $_POST['contactNo'];
     $email = $_POST['email'];
-    $packageId = $_POST['packageName'];
+    $packageId = $_POST['packageId'];
     $flightId = $_POST['flightDate'];
     $totalPax = $_POST['totalPax'];
     $totalPrice = $_POST['totalPrice'];

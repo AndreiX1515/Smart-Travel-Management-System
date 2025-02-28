@@ -5,12 +5,27 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-$accountId = $_SESSION['accountId'];
-$agentId = $_SESSION['agentId'];
-$agentCode = $_SESSION['agentCode'];
-$agentRole = $_SESSION['agentRole'];
-$agentType = $_SESSION['agentType'];
-$fName =  $_SESSION['fName'] ?? '';
+// Fetch accountType from accounts table
+$query = "SELECT accountType FROM accounts WHERE accountId = ?";
+$stmt = $conn->prepare($query);
+$stmt->bind_param("i", $accountId);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($row = $result->fetch_assoc()) {
+    $_SESSION['accountType'] = $row['accountType']; // Store in session
+}
+
+$stmt->close();
+
+// Assign session variables
+$agentId = $_SESSION['agentId'] ?? '';
+
+$agentCode = $_SESSION['agentCode'] ?? '';
+$agentRole = $_SESSION['agentRole'] ?? '';
+$agentType = $_SESSION['agentType'] ?? '';
+$accountType = $_SESSION['accountType'] ?? ''; // Now included
+$fName = $_SESSION['fName'] ?? '';
 $lName = $_SESSION['lName'] ?? '';
 $mName = $_SESSION['mName'] ?? '';
 $branchId = $_SESSION['branchId'] ?? '';

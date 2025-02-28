@@ -2,6 +2,10 @@
 session_start();
 require "../conn.php";
 
+// echo "<pre>";
+//     print_r($_SESSION); // Displays all session variables
+//     echo "</pre>";
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -23,21 +27,22 @@ require "../conn.php";
     <?php include "../Mobile/includes/sidebar.php"; ?>
 
     <div class="main-content-container">
+      
       <div class="navbar">
-          <div class="button-wrapper">
-            <button class="round-btn">
-              <i class="fas fa-chevron-left"></i> <!-- FontAwesome Icon -->
-            </button>
-          </div>
+        <div class="button-wrapper">
+          <button class="round-btn">
+            <i class="fas fa-chevron-left"></i> 
+          </button>
+        </div>
 
-          <div class="title-page-wrapper">
-              <h5 class="title-page" id="page-title">Booking</h5>
-          </div>
+        <div class="title-page-wrapper">
+          <h5 class="title-page" id="page-title">Payment</h5>
+        </div>
       </div>
 
       <div class="main-content">
         <?php
-          if (isset($_SESSION['status'])):
+        if (isset($_SESSION['status'])):
         ?>
           <div class="alert alert-success alert-dismissible fade show" role="alert">
             <strong></strong> <?= $_SESSION['status']; ?>
@@ -45,71 +50,60 @@ require "../conn.php";
           </div>
         <?php
           unset($_SESSION['status']);
-          endif;
+        endif;
         ?>
 
         <?php
-          if (isset($_SESSION['flightid']) || isset($_GET['flightid'])) 
-          {
-            // Use session flight ID if available, otherwise set from GET
-            $flightid = $_SESSION['flightid'] ?? $_GET['flightid'];
-            $_SESSION['flightid'] = $flightid;
+        if (isset($_SESSION['flightid']) || isset($_GET['flightid'])) {
+          // Use session flight ID if available, otherwise set from GET
+          $flightid = $_SESSION['flightid'] ?? $_GET['flightid'];
+          $_SESSION['flightid'] = $flightid;
 
-            // SQL query to join flight and package tables
-            $sql1 = "SELECT flight.*, package.packageName, package.packagePrice
+          // SQL query to join flight and package tables
+          $sql1 = "SELECT flight.*, package.packageName, package.packagePrice
                       FROM flight
                       JOIN package ON flight.packageId = package.packageId
                       WHERE flight.flightId = ?";
 
-            // Prepare the statement
-            if ($stmt = $conn->prepare($sql1)) 
-            {
-              // Bind the flightId as an integer parameter
-              $stmt->bind_param("i", $flightid);
+          // Prepare the statement
+          if ($stmt = $conn->prepare($sql1)) {
+            // Bind the flightId as an integer parameter
+            $stmt->bind_param("i", $flightid);
 
-              // Execute the statement
-              if ($stmt->execute()) 
-              {
-                $result = $stmt->get_result();
+            // Execute the statement
+            if ($stmt->execute()) {
+              $result = $stmt->get_result();
 
-                // Check if a row is returned
-                if ($result->num_rows > 0) 
-                {
-                  // Fetch the data
-                  while ($row = $result->fetch_assoc()) 
-                  {
-                    $packageId = $row['packageId'];
-                    $packageName = $row['packageName'];
-                    $packagePrice = $row['packagePrice'];
-                    $origin = $row['origin'];
-                    $year = date('Y', strtotime($row['flightDepartureDate']));
-                    $month = date('F', strtotime($row['flightDepartureDate']));
-                    $flightDepartureDate = $row['flightDepartureDate'];
-                    $flightPrice = $row['flightPrice'];
-                    $wholesalePrice = $row['wholesalePrice'];
-                  }
-                } 
-                else  
-                {
-                  echo "No flight found with that ID.";
+              // Check if a row is returned
+              if ($result->num_rows > 0) {
+                // Fetch the data
+                while ($row = $result->fetch_assoc()) {
+                  $packageId = $row['packageId'];
+                  $packageName = $row['packageName'];
+                  $packagePrice = $row['packagePrice'];
+                  $origin = $row['origin'];
+                  $year = date('Y', strtotime($row['flightDepartureDate']));
+                  $month = date('F', strtotime($row['flightDepartureDate']));
+                  $flightDepartureDate = $row['flightDepartureDate'];
+                  $flightPrice = $row['flightPrice'];
+                  $wholesalePrice = $row['wholesalePrice'];
                 }
-              } 
-              else 
-              {
-                echo "Error executing query: " . $stmt->error;
+              } else {
+                echo "No flight found with that ID.";
               }
-            } 
-            // Close the statement
-            $stmt->close();
-          } 
-          else
-          {
-            echo "Error preparing statement: " . $conn->error;
+            } else {
+              echo "Error executing query: " . $stmt->error;
+            }
           }
+          // Close the statement
+          $stmt->close();
+        } else {
+          echo "Error preparing statement: " . $conn->error;
+        }
 
         ?>
 
-        <form action="../Mobile/function/agent-addBooking-code.php" method="POST">
+        <form action="../Mobile/function/agent-addBooking-code copy.php" method="POST">
           <div class="booking-wrapper">
             <div class="card">
               <div class="card-header">
@@ -122,37 +116,33 @@ require "../conn.php";
                     <!-- Flight Date Dropdown -->
                     <div class="columns col-md-6">
                       <div class="form-group">
-                      <div class="column-header">
-                        <label for="flightDate">Flight Date <span class="text-danger"> *</span></label>
+                        <div class="column-header">
+                          <label for="flightDate">Flight Date <span class="text-danger"> *</span></label>
                         </div>
                         <select class="form-select" id="flightDate" name="flightDate" required>
                           <option selected disabled>Select Flight Date</option>
                           <?php
-                            // Query to fetch packageId and packageName
-                            $sql1 = mysqli_query($conn, "SELECT flightId, flightDepartureDate, flightPrice, wholesalePrice FROM flight WHERE packageId = $packageId AND MONTHNAME(flightDepartureDate) = '$month' ORDER BY flightDepartureDate ASC");
+                          // Query to fetch packageId and packageName
+                          $sql1 = mysqli_query($conn, "SELECT flightId, flightDepartureDate, flightPrice, wholesalePrice FROM flight WHERE packageId = $packageId AND MONTHNAME(flightDepartureDate) = '$month' ORDER BY flightDepartureDate ASC");
 
-                            // Loop through the result to create options
-                            while ($res1 = mysqli_fetch_array($sql1)) 
-                            {
-                              // Check if this packageId is equal to the selected packageId (to mark it as selected)
-                              $formattedRetailPrice = number_format($res1['flightPrice'], 2);
-                              $formattedWholesalePrice = number_format($res1['wholesalePrice'], 2);
+                          // Loop through the result to create options
+                          while ($res1 = mysqli_fetch_array($sql1)) {
+                            // Check if this packageId is equal to the selected packageId (to mark it as selected)
+                            $formattedRetailPrice = number_format($res1['flightPrice'], 2);
+                            $formattedWholesalePrice = number_format($res1['wholesalePrice'], 2);
 
-                              if ($agentType === 'Retailer')
-                              {
-                                $selected = ($res1['flightDepartureDate'] == $flightDepartureDate) ? 'selected' : '';
-                                echo "<option value='{$res1['flightId']}' {$selected}>
+                            if ($agentType === 'Retailer') {
+                              $selected = ($res1['flightDepartureDate'] == $flightDepartureDate) ? 'selected' : '';
+                              echo "<option value='{$res1['flightId']}' {$selected}>
                                         " . date('M j, Y', strtotime($res1['flightDepartureDate'])) . " || Price: ₱ {$formattedRetailPrice}
                                       </option>";
-                              }
-                              else if ($agentType === 'Wholeseller')
-                              {
-                                $selected = ($res1['flightDepartureDate'] == $flightDepartureDate) ? 'selected' : '';
-                                echo "<option value='{$res1['flightId']}' {$selected}>
+                            } else if ($agentType === 'Wholeseller') {
+                              $selected = ($res1['flightDepartureDate'] == $flightDepartureDate) ? 'selected' : '';
+                              echo "<option value='{$res1['flightId']}' {$selected}>
                                         " . date('M j, Y', strtotime($res1['flightDepartureDate'])) . " || Price: ₱ {$formattedWholesalePrice}
                                       </option>";
-                              }
                             }
+                          }
                           ?>
                         </select>
 
@@ -165,9 +155,9 @@ require "../conn.php";
                     <div class="columns col-md-6">
                       <div class="form-group">
                         <div class="col-header">
-                        <div class="column-header">
+                          <div class="column-header">
                             <label for="totalPax">Total Pax <span class="text-danger"> *</span></label>
-                        </div>
+                          </div>
                         </div>
 
                         <input type="number" class="form-control" id="totalPax" name="totalPax" min="1" placeholder="Enter Total Pax" required>
@@ -207,107 +197,118 @@ require "../conn.php";
                   </div>
 
                   <input type="text" id="agentCode" name="agentCode" value="<?php echo $_SESSION['agentCode']; ?>" placeholder="Agent Code Input">
+
+                  <input type="text" id="userType" name="userType" value="<?php echo $_SESSION['userType']; ?>" placeholder="Account Type">
+
+
                   <input type="text" id="flightId" name="flightId" value="<?php echo $flightid; ?>" placeholder="Flight Id Input">
 
                   <!-- Adjusted Fields -->
                   <input type="text" id="packagePrice" name="packagePrice" value="<?php echo isset($packagePrice) ? $packagePrice : ''; ?>" placeholder="Package Price">
+
                   <input type="text" name="flightPrice" id="flightPricee" placeholder="Flight Price"
-                    value="<?php echo isset($agentType) ? ($agentType === 'Retailer' ? htmlspecialchars($flightPrice) : 
-                    htmlspecialchars($wholesalePrice)) : ''; ?>">
+                    value="<?php echo isset($agentType) ? ($agentType === 'Retailer' ? htmlspecialchars($flightPrice) : htmlspecialchars($wholesalePrice)) : ''; ?>">
+
                   <input type="text" name="agentId" id="agentId" value="<?php echo $_SESSION['agentId']; ?>" placeholder="Agent Id">
+
+
                   <input type="text" name="agentType" placeholder="Agent Type Input" value="<?php echo $_SESSION['agentType']; ?>">
+
+
                   <input type="text" name="accId" id="accId" placeholder="Account Id Input" value="<?php echo $_SESSION['accountId']; ?>">
 
                   <!-- Adjusted Package Fields -->
                   <input type="text" name="packageId" id="packageId" value="<?php echo isset($packageId) ? $packageId : ''; ?>" placeholder="Package Id Input">
+
                   <input type="text" name="packageName" id="packageName" value="<?php echo isset($packageName) ? $packageName : ''; ?>" placeholder="Package Name Input">
+
                   <input type="text" name="origin" id="origin" value="<?php echo isset($origin) ? $origin : ''; ?>" placeholder="Origin Input">
 
-              </div>
-            </div>
-
-            <div class="card-footer">
-              <h5 style="display: none;"> Price: ₱ <span id="flightPrice">0.00</span> </h5>
-            </div>
-
-            <div class="card contact-person-details">
-              <div class="card-header">
-                <h4 class="">Contact Person Details</h4>
+                </div>
               </div>
 
-              <div class="card-body">
-                <div class="row">
-                  <!-- First Name Input -->
-                  <div class="columns col-md-3">
-                    <div class="form-group">
-                      <div class="column-header">
-                        <label for="fName">First Name <span class="text-danger">*</span></label>
-                      </div>
-                      <input type="text" name="fName" id="fName" class="form-control" placeholder="Enter First Name" required>
-                      <span id="fNameError" class="text-danger"></span>
-                      <!-- Error message for First Name -->
-                    </div>
-                  </div>
+              <div class="card-footer">
+                <h5 style="display: none;"> Price: ₱ <span id="flightPrice">0.00</span> </h5>
+              </div>
 
-                  <!-- Last Name Input -->
-                  <div class="columns col-md-3">
-                    <div class="form-group">
-                    <div class="column-header">
-                      <label for="lName">Last Name <span class="text-danger"> *</span> </label>
-                      </div>
-                      <input type="text" name="lName" id="lName" class="form-control" placeholder="Enter Last Name" required>
-                      <span id="lNameError" class="text-danger"></span>
-                      <!-- Error message for Last Name -->
-                    </div>
-                  </div>
-
-                  <!-- Middle Name Input -->
-                  <div class="columns col-md-3">
-                    <div class="form-group">
-
-                    <div class="column-header">
-                      <label for="mName">Middle Name <span class="text-danger mText">(Type N/A if none)</span> </label>
-                        
-                    </div>
-                      <input type="text" name="mName" id="mName" class="form-control" placeholder="Enter Middle Name" required>
-
-                      <span id="mNameError" class="text-danger"></span>
-                      <!-- Error message for Middle Name -->
-                    </div>
-                  </div>
-
-                  <!-- Suffix Dropdown -->
-                  <div class="columns col-md-3">
-                    <div class="form-group">
-                    <div class="column-header">
-                      <label for="suffix">Suffix <span class="text-danger"> *</span></label>
-                      </div>
-                      <select class="form-select" name="suffix" id="suffix" required>
-                        <option selected disabled>Select Suffix</option>
-                        <option value="N/A">None</option>
-                        <option value="Jr.">Jr.</option>
-                        <option value="Sr.">Sr.</option>
-                        <option value="II">II</option>
-                        <option value="III">III</option>
-                        <option value="IV">IV</option>
-                        <option value="V">V</option>
-                      </select>
-                      <span id="suffixError" class="text-danger"></span>
-                      <!-- Error message for Suffix -->
-                    </div>
-                  </div>
-
+              <div class="card contact-person-details">
+                <div class="card-header">
+                  <h4 class="">Contact Person Details</h4>
                 </div>
 
-                <div class="row">
-                  <!-- Contact No Input-->
-                  <div class="columns col-md-4">
-                    <div class="form-group">
-                      <div class="column-header">
-                        <label for="contactNo" class="contactNo">Contact No. <span class="text-danger">*</span></label>
+                <div class="card-body">
+                  <div class="row">
+                    <!-- First Name Input -->
+                    <div class="columns col-md-3">
+                      <div class="form-group">
+                        <div class="column-header">
+                          <label for="fName">First Name <span class="text-danger">*</span></label>
+                        </div>
+                        <input type="text" name="fName" id="fName" class="form-control" placeholder="Enter First Name" required>
+                        <span id="fNameError" class="text-danger"></span>
+                        <!-- Error message for First Name -->
                       </div>
+                    </div>
 
-                      <div class="input-group">
+                    <!-- Last Name Input -->
+                    <div class="columns col-md-3">
+                      <div class="form-group">
+                        <div class="column-header">
+                          <label for="lName">Last Name <span class="text-danger"> *</span> </label>
+                        </div>
+                        <input type="text" name="lName" id="lName" class="form-control" placeholder="Enter Last Name" required>
+                        <span id="lNameError" class="text-danger"></span>
+                        <!-- Error message for Last Name -->
+                      </div>
+                    </div>
+
+                    <!-- Middle Name Input -->
+                    <div class="columns col-md-3">
+                      <div class="form-group">
+
+                        <div class="column-header">
+                          <label for="mName">Middle Name <span class="text-danger mText">(Type N/A if none)</span> </label>
+
+                        </div>
+                        <input type="text" name="mName" id="mName" class="form-control" placeholder="Enter Middle Name" required>
+
+                        <span id="mNameError" class="text-danger"></span>
+                        <!-- Error message for Middle Name -->
+                      </div>
+                    </div>
+
+                    <!-- Suffix Dropdown -->
+                    <div class="columns col-md-3">
+                      <div class="form-group">
+                        <div class="column-header">
+                          <label for="suffix">Suffix <span class="text-danger"> *</span></label>
+                        </div>
+                        <select class="form-select" name="suffix" id="suffix" required>
+                          <option selected disabled>Select Suffix</option>
+                          <option value="N/A">None</option>
+                          <option value="Jr.">Jr.</option>
+                          <option value="Sr.">Sr.</option>
+                          <option value="II">II</option>
+                          <option value="III">III</option>
+                          <option value="IV">IV</option>
+                          <option value="V">V</option>
+                        </select>
+                        <span id="suffixError" class="text-danger"></span>
+                        <!-- Error message for Suffix -->
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <div class="row">
+                    <!-- Contact No Input-->
+                    <div class="columns col-md-4">
+                      <div class="form-group">
+                        <div class="column-header">
+                          <label for="contactNo" class="contactNo">Contact No. <span class="text-danger">*</span></label>
+                        </div>
+
+                        <div class="input-group">
                           <select name="countryCode" id="countryCode" class="form-select" required>
                             <option disabled>Country Code</option>
                             <option value="+93">Afghanistan (+93)</option>
@@ -496,127 +497,127 @@ require "../conn.php";
                             <option value="+260">Zambia (+260)</option>
                             <option value="+263">Zimbabwe (+263)</option>
                           </select>
-                       
-                        <input type="tel" class="form-control mt-2" id="contactNo" name="contactNo" placeholder="Contact Number" required>
+
+                          <input type="tel" class="form-control mt-2" id="contactNo" name="contactNo" placeholder="Contact Number" required>
+                        </div>
+
+                        <span id="contactNoError" class="text-danger"></span>
+                        <!-- Error message for Contact No -->
                       </div>
-
-                      <span id="contactNoError" class="text-danger"></span>
-                      <!-- Error message for Contact No -->
                     </div>
-                  </div>
 
-                  <!-- Email Input -->
-                  <div class="columns col-md-4 email-fields">
-                    <div class="form-group">
+                    <!-- Email Input -->
+                    <div class="columns col-md-4 email-fields">
+                      <div class="form-group">
 
-                      <div class="column-header">
-                        <label for="email">Email <span class="text-danger">*</span></label>
+                        <div class="column-header">
+                          <label for="email">Email <span class="text-danger">*</span></label>
+                        </div>
+
+                        <input type="email" name="email" id="email" class="form-control" placeholder="Enter Email Address" required>
+                        <span id="emailError" class="text-danger"></span> <!-- Error message for Email -->
                       </div>
-
-                      <input type="email" name="email" id="email" class="form-control" placeholder="Enter Email Address" required>
-                      <span id="emailError" class="text-danger"></span> <!-- Error message for Email -->
                     </div>
+
                   </div>
 
                 </div>
-
               </div>
-            </div>
 
-            <!-- <strong id="errorMessage" class="text-danger"></strong> -->
+              <!-- <strong id="errorMessage" class="text-danger"></strong> -->
 
-            <input type="hidden" id="totalPrice" name="totalPrice" placeholder="Total Price">
+              <input type="hidden" id="totalPrice" name="totalPrice" placeholder="Total Price">
 
-            <div class="price-wrapper">
-              <div class="card-body">
-                <h5 class="">Total Price: ₱ <span id="displayTotalPrice">0</span></h5> 
+              <div class="price-wrapper">
+                <div class="card-body">
+                  <h5 class="">Total Price: ₱ <span id="displayTotalPrice">0</span></h5>
+                </div>
               </div>
-            </div>
 
-            <div class="button-container">
+              <div class="button-container">
                 <button type="button" class="btn btn-primary" id="bookNowButton">Book Now</button>
-            </div>
+              </div>
 
-            <!-- Booking Summary Modal -->
-            <div class="modal fade" id="BookingSummaryModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-              <div class="modal-dialog modal-lg modal-dialog-centered"> <!-- Added modal-lg for a wider modal -->
-                <div class="modal-content position-relative">
+              <!-- Booking Summary Modal -->
+              <div class="modal fade" id="BookingSummaryModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered"> <!-- Added modal-lg for a wider modal -->
+                  <div class="modal-content position-relative">
 
-                  <button type="button" class="btn-close close-outside p-4" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close close-outside p-4" data-bs-dismiss="modal" aria-label="Close"></button>
 
-                  <div class="modal-body">
-                    <div class="confirmation-container container">
-                      <!-- Logo Section -->
-                      <div class="row d-flex justify-content-center align-items-center text-center mb-3 mt-2">
-                        <div class="col">
-                          <img src="../Assets/Logos/SMART LOGO 2 (2).png" alt="Trip Image" class="img-fluid" style="max-width: 250px; max-height: 80px;">
-                        </div>
-                      </div>
-
-                      <h5 class="text-left mb-4">BOOKING SUMMARY</h5>
-                      <!-- Transaction and Contact Info -->
-                      <div class="transaction-info row mb-3">
-                        <div class="col-12">
-
-                          <div class="d-flex justify-content-between mb-1">
-                            <p class="mb-0"><strong>Contact Guest Name:</strong></p>
-                            <p class="mb-0" id="contactPersonName">Sample Name</p>
-                          </div>
-
-                          <div class="d-flex justify-content-between mb-1">
-                            <p class="mb-0"><strong>Contact Email:</strong></p>
-                            <p class="mb-0" id="contactPersonEmail">Sample Email</p>
+                    <div class="modal-body">
+                      <div class="confirmation-container container">
+                        <!-- Logo Section -->
+                        <div class="row d-flex justify-content-center align-items-center text-center mb-3 mt-2">
+                          <div class="col">
+                            <img src="../Assets/Logos/SMART LOGO 2 (2).png" alt="Trip Image" class="img-fluid" style="max-width: 250px; max-height: 80px;">
                           </div>
                         </div>
-                      </div>
-                      <hr>
 
-                      <!-- Package Details -->
-                      <div class="row hotel-details mb-3">
-                        <div class="col-12">
-                          <div class="d-flex justify-content-between mb-1">
-                            <p class="mb-0"><strong>Package Name:</strong></p>
-                            <p class="mb-0" id="selectedPackage">No Package Selected</p>
-                          </div>
+                        <h5 class="text-left mb-4">BOOKING SUMMARY</h5>
+                        <!-- Transaction and Contact Info -->
+                        <div class="transaction-info row mb-3">
+                          <div class="col-12">
 
-                          <div class="d-flex justify-content-between">
-                            <p class="mb-0"><strong>No. of Guests:</strong></p>
-                            <p class="mb-0" id="guestCount">1</p>
-                          </div>
-                        </div>
-                      </div>
-                      <hr>
+                            <div class="d-flex justify-content-between mb-1">
+                              <p class="mb-0"><strong>Contact Guest Name:</strong></p>
+                              <p class="mb-0" id="contactPersonName">Sample Name</p>
+                            </div>
 
-                      <!-- Flight/Origin Details -->
-                      <div class="row mb-3">
-                        <div class="col-12">
-                          <div class="d-flex justify-content-between mb-1">
-                            <p class="mb-0"><strong>Origin:</strong></p>
-                            <p class="mb-0" id="selectedOrigin">No Origin Selected</p>
-                          </div>
-
-                          <div class="d-flex justify-content-between">
-                            <p class="mb-0"><strong>Flight Date:</strong></p>
-                            <p class="mb-0" id="selectedDate">No Flight Date Selected</p>
+                            <div class="d-flex justify-content-between mb-1">
+                              <p class="mb-0"><strong>Contact Email:</strong></p>
+                              <p class="mb-0" id="contactPersonEmail">Sample Email</p>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <hr>
+                        <hr>
 
-                      <!-- Proceed to Payment -->
-                      <div class="row mt-4">
-                        <div class="col d-flex justify-content-between">
-                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                          <button type="submit" class="btn btn-primary" name="bookNow">Proceed to Payment</button>
+                        <!-- Package Details -->
+                        <div class="row hotel-details mb-3">
+                          <div class="col-12">
+                            <div class="d-flex justify-content-between mb-1">
+                              <p class="mb-0"><strong>Package Name:</strong></p>
+                              <p class="mb-0" id="selectedPackage">No Package Selected</p>
+                            </div>
+
+                            <div class="d-flex justify-content-between">
+                              <p class="mb-0"><strong>No. of Guests:</strong></p>
+                              <p class="mb-0" id="guestCount">1</p>
+                            </div>
+                          </div>
+                        </div>
+                        <hr>
+
+                        <!-- Flight/Origin Details -->
+                        <div class="row mb-3">
+                          <div class="col-12">
+                            <div class="d-flex justify-content-between mb-1">
+                              <p class="mb-0"><strong>Origin:</strong></p>
+                              <p class="mb-0" id="selectedOrigin">No Origin Selected</p>
+                            </div>
+
+                            <div class="d-flex justify-content-between">
+                              <p class="mb-0"><strong>Flight Date:</strong></p>
+                              <p class="mb-0" id="selectedDate">No Flight Date Selected</p>
+                            </div>
+                          </div>
+                        </div>
+                        <hr>
+
+                        <!-- Proceed to Payment -->
+                        <div class="row mt-4">
+                          <div class="col d-flex justify-content-between">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" name="bookNow">Proceed to Payment</button>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-          </div>
+            </div>
         </form>
 
       </div>
@@ -675,9 +676,9 @@ require "../conn.php";
         $.ajax({
           url: '../Agent Section/functions/fetchFlightDetails.php', // Separate PHP file for return flight
           type: 'POST',
-          data: 
-          {
-            flightId: flightId, agentType: agentType
+          data: {
+            flightId: flightId,
+            agentType: agentType
           },
           success: function(response) {
             var data = JSON.parse(response); // Parse the JSON response
