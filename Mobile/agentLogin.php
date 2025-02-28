@@ -110,7 +110,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['flightid'])) {
 
             // Perform AJAX request
             $.ajax({
-                url: '../Agent Section/functions/agentLogin-code.php',
+                url: '../Mobile/function/agentLogin-code.php',
                 type: 'POST',
                 data: formData,
                 processData: false,
@@ -126,11 +126,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['flightid'])) {
                             let flightid = document.getElementById('flightid') ? document.getElementById('flightid').value : '';
 
                             if (flightid) {
-                                window.location.href = '../Agent Section/agent-addBooking-flight.php';
+                                window.location.href = '../Mobile/agent-addBooking-flight.php';
 
                             } else {
-                                // Redirect to agent dashboard
-                                window.location.href = '../Agent Section/agent-dashboard.php';
+                                alert('No flight selected. Redirecting to flight schedule.');
+
+                                window.location.href = '../Mobile/flightsched.php';
                             }
 
                         }  else if (data.accountType === 'guest') {
