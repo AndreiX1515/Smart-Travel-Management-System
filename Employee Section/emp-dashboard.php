@@ -804,7 +804,8 @@ error_reporting(E_ALL);
               $query1 = "SELECT b.*, f.flightDepartureDate AS Start, p.packageName, b.totalPrice AS PackagePrice, 
                         f.returnDepartureDate AS End, CONCAT(a.lName, ', ', a.fName, 
                         IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1)), '')) AS agentName,
-                        br.branchName as branchName, SUM(pa.amount) AS TotalAmountPaid
+                        br.branchName as branchName, SUM(pa.amount) AS TotalAmountPaid, 
+                        COALESCE(SUM(r.requestCost), 0) AS TotalRequestAmount
                       FROM booking b 
                       LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
                       LEFT JOIN client c ON b.accountType = 'Client' AND b.accountId = c.accountId
@@ -812,6 +813,7 @@ error_reporting(E_ALL);
                       JOIN flight f ON b.flightId = f.flightId
                       JOIN package p ON b.packageId = p.packageId
                       LEFT JOIN payment pa ON pa.transactNo = b.transactNo AND pa.paymentStatus = 'Approved'
+                      LEFT JOIN request r ON r.transactNo = b.transactNo AND r.requestStatus = 'Confirmed'
                       WHERE status = 'Confirmed' GROUP BY b.transactNo";
 
               $result = $conn->query($query1);
@@ -843,8 +845,9 @@ error_reporting(E_ALL);
                 // Loop through each row and render the table rows
                 while ($row = $result->fetch_assoc()) {
                   $packagePrice = $row['PackagePrice'] ?? 0;
+                  $requestTotal = $row['TotalRequestAmount'] ?? 0;
                   $amountPaid = $row['TotalAmountPaid'] ?? 0;
-                  $balance = $packagePrice - $amountPaid;
+                  $balance = ($packagePrice + $requestTotal) - $amountPaid;
                   $status = $row['status'];
                   $formattedPP = '₱ ' . number_format($packagePrice, 2);
                   $formattedAP = '₱' . number_format($amountPaid, 2);
