@@ -195,7 +195,7 @@ require "../conn.php";
                                 LEFT JOIN package p ON b.packageId = p.packageId
                                 LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
                                 JOIN branch br ON b.agentCode = br.branchAgentCode
-                                WHERE b.accountType = 'Agent' 
+                                WHERE b.accountId = $accountId 
                                 ORDER BY  b.transactNo DESC";
 
                           $res1 = $conn->query($sql1);
@@ -268,8 +268,9 @@ require "../conn.php";
                                     LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
                                     LEFT JOIN company c ON a.companyId = c.companyId
                                     LEFT JOIN client cl ON b.accountType = 'Client' AND b.accountId = cl.accountId
+                                    LEFT JOIN company cc ON cl.companyId = cc.companyId
                                     JOIN branch br ON b.agentCode = br.branchAgentCode
-                                    WHERE b.agentCode = '$agentCode' 
+                                    WHERE b.agentCode = '$agentCode' and (c.companyId = $companyId OR cc.companyId = $companyId) 
                                     ORDER BY b.transactNo DESC";
 
                           $res1 = $conn->query($sql1);
