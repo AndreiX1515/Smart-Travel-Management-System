@@ -27,11 +27,11 @@ require "../conn.php";
     <?php include "../Mobile/includes/sidebar.php"; ?>
 
     <div class="main-content-container">
-      
+
       <div class="navbar">
         <div class="button-wrapper">
           <button class="round-btn">
-            <i class="fas fa-chevron-left"></i> 
+            <i class="fas fa-chevron-left"></i>
           </button>
         </div>
 
@@ -122,29 +122,51 @@ require "../conn.php";
                         <select class="form-select" id="flightDate" name="flightDate" required>
                           <option selected disabled>Select Flight Date</option>
                           <?php
-                          // Query to fetch packageId and packageName
-                          $sql1 = mysqli_query($conn, "SELECT flightId, flightDepartureDate, flightPrice, wholesalePrice FROM flight WHERE packageId = $packageId AND MONTHNAME(flightDepartureDate) = '$month' ORDER BY flightDepartureDate ASC");
+                          // Ensure database connection exists
+                          if (!$conn) {
+                            die("<option disabled>Error: Database connection failed</option>");
+                          }
 
-                          // Loop through the result to create options
-                          while ($res1 = mysqli_fetch_array($sql1)) {
-                            // Check if this packageId is equal to the selected packageId (to mark it as selected)
-                            $formattedRetailPrice = number_format($res1['flightPrice'], 2);
-                            $formattedWholesalePrice = number_format($res1['wholesalePrice'], 2);
+                          // Ensure $packageId and $month are properly set
+                          if (isset($packageId, $month)) {
+                            // Use prepared statements for security
+                            $stmt = $conn->prepare("SELECT flightId, flightDepartureDate, flightPrice, wholesalePrice FROM flight WHERE packageId = ? AND MONTHNAME(flightDepartureDate) = ? ORDER BY flightDepartureDate ASC");
 
-                            if ($agentType === 'Retailer') {
-                              $selected = ($res1['flightDepartureDate'] == $flightDepartureDate) ? 'selected' : '';
-                              echo "<option value='{$res1['flightId']}' {$selected}>
-                                        " . date('M j, Y', strtotime($res1['flightDepartureDate'])) . " || Price: ₱ {$formattedRetailPrice}
-                                      </option>";
-                            } else if ($agentType === 'Wholeseller') {
-                              $selected = ($res1['flightDepartureDate'] == $flightDepartureDate) ? 'selected' : '';
-                              echo "<option value='{$res1['flightId']}' {$selected}>
-                                        " . date('M j, Y', strtotime($res1['flightDepartureDate'])) . " || Price: ₱ {$formattedWholesalePrice}
-                                      </option>";
+                            if ($stmt) {
+                              // Bind parameters
+                              $stmt->bind_param("is", $packageId, $month);
+
+                              // Execute query
+                              $stmt->execute();
+                              $result = $stmt->get_result();
+
+                              // Loop through results
+                              while ($res1 = $result->fetch_assoc()) {
+                                $formattedRetailPrice = number_format($res1['flightPrice'], 2);
+                                $formattedWholesalePrice = number_format($res1['wholesalePrice'], 2);
+                                $dateFormatted = date('M j, Y', strtotime($res1['flightDepartureDate']));
+
+                                // Check selected option
+                                $selected = ($res1['flightDepartureDate'] == $flightDepartureDate) ? 'selected' : '';
+
+                                if ($agentType === 'Retailer') {
+                                  echo "<option value='{$res1['flightId']}' {$selected}>$dateFormatted || Price: ₱ {$formattedRetailPrice}</option>";
+                                } else if ($agentType === 'Wholeseller') {
+                                  echo "<option value='{$res1['flightId']}' {$selected}>$dateFormatted || Price: ₱ {$formattedWholesalePrice}</option>";
+                                }
+                              }
+
+                              // Close statement
+                              $stmt->close();
+                            } else {
+                              echo "<option disabled>Error: " . $conn->error . "</option>";
                             }
+                          } else {
+                            echo "<option disabled>Error: Invalid Package ID or Month</option>";
                           }
                           ?>
                         </select>
+
 
                         <span id="flightDateError" class="text-danger"></span>
                         <!-- Error message for outbound flight -->
