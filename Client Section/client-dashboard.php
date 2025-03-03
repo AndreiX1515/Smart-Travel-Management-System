@@ -862,7 +862,7 @@ require "../conn.php";
                                       LEFT JOIN client cl ON b.accountId = cl.accountId
                                       LEFT JOIN company cc ON cl.companyId = cc.companyId
                                       LEFT JOIN branch br ON b.agentCode = br.branchAgentCode
-                                      WHERE b.agentCode = '$agentCode'
+                                      WHERE b.accountId = $accountId
                                       AND p.paymentStatus = 'Submitted'
                                       ORDER BY p.paymentDate DESC";
 
