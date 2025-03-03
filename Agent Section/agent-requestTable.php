@@ -259,13 +259,16 @@
         // const infantContainer = $('#infantContainer');
         const requestDetails = $('#requestDetails');
         const priceInput = $('#price');
+        const priceText = $('#displayTotalPrice');
 
         // Reset all fields and containers
         requestDetails.html('<option selected disabled>Select Specific Detail</option>');
-        priceInput.val('');
+        priceInput.val('0.00');
         additionalSelectContainer.hide();
         otherInputContainer.hide();
         additonalHeadcountContainer.hide();
+        priceText.text('0.00');
+        
         // infantContainer.hide();
 
         if (concernId === 'Others') 
@@ -336,25 +339,29 @@
         calculateTotalPrice(); // Recalculate the total price
       });
 
-
-      // Update total price dynamically based on pax
-      $('#paxRequest, #customAmount, #headcountCustomAmount').on('input', function() 
-      {
-        calculateTotalPrice();
-      });
-      // Ensure that if the user manually enters a number greater than the max, it's automatically corrected
+      // Handle pax input and prevent exceeding max value
       $('#paxRequest').on('input', function() 
       {
-        var maxSeats = parseInt($(this).attr('max'));
-        var currentPax = parseInt($(this).val());
+        let maxSeats = parseInt($(this).attr('max')) || 0;
+        let currentPax = parseInt($(this).val()) || 0;
 
-        // If currentPax is greater than maxSeats or less than 1, adjust the value
-        if (currentPax > maxSeats) {
+        // Ensure the value stays within the allowed range
+        if (currentPax > maxSeats) 
+        {
           $(this).val(maxSeats); // Reset to the max value
-        } else if (currentPax < 1 || isNaN(currentPax)) {
-          $(this).val(1); // Reset to 1 if the value is less than 1 or not a number
+          currentPax = maxSeats; // Update the variable
+        } 
+        else if (currentPax < 1 || isNaN(currentPax)) 
+        {
+          $(this).val(1); // Reset to 1 if it's invalid
+          currentPax = 1;
         }
+
+        calculateTotalPrice(); // Now call the price calculation after correction
       });
+
+      // Update total price dynamically when relevant inputs change
+      $('#customAmount, #headcountCustomAmount').on('input', calculateTotalPrice);
 
       function calculateTotalPrice() 
       {
@@ -365,11 +372,6 @@
         {
           price = parseFloat($('#customAmount').val()) || 0;
         }
-
-        // if ($('#concern').val() === 'Infant') 
-        // {
-        //   price = parseFloat($('#infantAmount').val()) || 0;
-        // }
 
         if ($('#concern').val() === '3') 
         {
@@ -428,4 +430,6 @@
     });
 
   });
+
+  
 </script>
