@@ -21,31 +21,36 @@ if (isset($_POST['login'])) {
 
         if ($resultAccount->num_rows > 0) {
             $account = $resultAccount->fetch_assoc();
+            $storedPassword = $account['password']; // Fetch stored password
 
-            // Check account status
-            if ($account['accountStatus'] === 'active') {
-                $accountType = $account['accountType'];
-                $accountId = $account['accountId'];
+            // 🔹 **Check Password Without Hashing** 🔹
+            if ($password == $storedPassword) {
+                // Check account status
+                if ($account['accountStatus'] === 'active') {
+                    $accountType = $account['accountType'];
+                    $accountId = $account['accountId'];
 
-                if ($accountType === 'agent') {
-                    handleLogin($accountId, 'agent', "SELECT * FROM agent WHERE accountId = ?", ['branchId']);
-                } elseif ($accountType === 'employee') {
-                    handleLogin($accountId, 'employee', "SELECT * FROM employee WHERE accountId = ?", ['position', 'countryCode', 'contactNo', 'branch']);
-                } elseif ($accountType === 'guest') {
-                    handleLogin($accountId, 'guest', "SELECT * FROM client WHERE accountId = ?", ['position', 'countryCode', 'contactNo', 'branch']);
+                    if ($accountType === 'agent') {
+                        handleLogin($accountId, 'agent', "SELECT * FROM agent WHERE accountId = ?", ['branchId']);
+                    } elseif ($accountType === 'employee') {
+                        handleLogin($accountId, 'employee', "SELECT * FROM employee WHERE accountId = ?", ['position', 'countryCode', 'contactNo', 'branch']);
+                    } elseif ($accountType === 'guest') {
+                        handleLogin($accountId, 'guest', "SELECT * FROM client WHERE accountId = ?", ['position', 'countryCode', 'contactNo', 'branch']);
+                    } else {
+                        $response['success'] = false;
+                        $response['message'] = "Invalid account type.";
+                    }
+
+                    // Add accountType to the response
+                    $response['accountType'] = $accountType;
                 } else {
                     $response['success'] = false;
-                    $response['message'] = "Invalid account type.";
+                    $response['message'] = "Your account is inactive. Please contact the administrator.";
                 }
-
-                // Add accountType to the response
-                $response['accountType'] = $accountType;
             } else {
                 $response['success'] = false;
-                $response['message'] = "Your account is inactive. Please contact the administrator.";
+                $response['message'] = "Incorrect Username/Password";
             }
-
-
         } else {
             $response['success'] = false;
             $response['message'] = "Incorrect Username/Password";
@@ -63,6 +68,7 @@ if (isset($_POST['login'])) {
 
 header('Content-Type: application/json');
 echo json_encode($response);
+
 
 // Function to handle login and session management
 function handleLogin($accountId, $userType, $query, $additionalFields = []) {

@@ -8,8 +8,11 @@
   if (isset($_POST['bookNow'])) 
   {
     $accountId = $_SESSION['accountId'];
-    $agentId = $_POST['agentId'];  
-    $agentCode = $_POST['agentCode'];  
+    $agentId = $_SESSION['clientId'] ?? '';
+    $agentCode = $_SESSION['clientCode'] ?? '';
+    $agentRole = $_SESSION['clientRole'] ?? '';
+    $agentType = $_SESSION['clientType'] ?? '';
+    $accountType = $_SESSION['userType'] ?? ''; // Now included 
     $fName = $_POST['fName'];  
     $mName = $_POST['mName'];  
     $lName = $_POST['lName'];  
@@ -51,7 +54,7 @@
     $conn->begin_transaction();
 
     // Prepare the SQL statement for insertion into the booking table
-    $sql1 = "INSERT INTO booking (accountId, transactNo, agentId, agentCode, flightId, packageId, fName, lName, mName, suffix, countryCode, 
+    $sql1 = "INSERT INTO booking (accountId, transactNo, accountType, agentCode, flightId, packageId, fName, lName, mName, suffix, countryCode, 
                 contactNo, email, pax, totalPrice, bookingType, flightDetails, status, bookingDate) VALUES 
                 (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Reserved', NOW())";
     $stmt1 = $conn->prepare($sql1);
@@ -65,7 +68,7 @@
     }
 
     // Bind and execute the booking insertion
-    $stmt1->bind_param('isssiisssssssidss', $accountId, $transactNo, $agentId, $agentCode, $flightId, $packageId, $fName, $lName, $mName, 
+    $stmt1->bind_param('isssiisssssssidss', $accountId, $transactNo, $accountType, $agentCode, $flightId, $packageId, $fName, $lName, $mName, 
     $suffix, $countryCode, $contactNo, $email, $totalPax, $totalPrice, $bookingType, $flightDetails);
     
     if (!$stmt1->execute()) 

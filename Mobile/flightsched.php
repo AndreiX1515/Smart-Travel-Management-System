@@ -25,10 +25,8 @@ $accId = $_SESSION['accountId'] ?? '';
 
     <title>Flight Schedules</title>
 
-   
-    <link rel="stylesheet" href="../Mobile/assets/css/client-flightSched copy 3.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="../Mobile/assets/css/client-flightSched.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="../Mobile/assets/css/client-navbar.css?v=<?php echo time(); ?>">
-
 </head>
 
 <body>
@@ -37,16 +35,15 @@ $accId = $_SESSION['accountId'] ?? '';
     if (isset($_SESSION['status'])):
     ?>
 
-        <!-- <div class="alert alert-warning alert-dismissible fade show" role="alert">
+  <!-- <div class="alert alert-warning alert-dismissible fade show" role="alert">
     <strong>Hey!</strong> <?= $_SESSION['status']; ?>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div> -->
 
     <?php
-        unset($_SESSION['status']);
+    unset($_SESSION['status']);
     endif;
     ?>
-
 
     <?php include '../Mobile/Includes/client-navbar.php'; ?>
 
@@ -169,7 +166,7 @@ $accId = $_SESSION['accountId'] ?? '';
                                                             </div>
                                                             <div class="seats-info">
                                                                 <div class="book-now-container">
-                                                                    <form action="../Agent Section/agentLogin.php" method="POST">
+                                                                    <form action="../Mobile/agentLogin.php" method="POST">
                                                                         <input type="hidden" name="flightid" value="<?= htmlspecialchars($row['flightid']) ?>">
                                                                         <button type="submit" class="btn book-now">Book Now</button>
                                                                     </form>

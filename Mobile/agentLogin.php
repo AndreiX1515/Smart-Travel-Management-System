@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['flightid'])) {
 
 <body>
 <!-- Back to homepage button -->
-<a href="../Client Section/client-flightsched.php" class="back-btn">
+<a href="../Mobile/flightsched.php" class="back-btn">
     <i class="fas fa-arrow-left"></i> <span> Back to Flight Schedules </span> 
   </a>
 
@@ -110,7 +110,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['flightid'])) {
 
             // Perform AJAX request
             $.ajax({
-                url: '../Agent Section/functions/agentLogin-code.php',
+                url: '../Mobile/function/agentLogin-code.php',
                 type: 'POST',
                 data: formData,
                 processData: false,
@@ -126,11 +126,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['flightid'])) {
                             let flightid = document.getElementById('flightid') ? document.getElementById('flightid').value : '';
 
                             if (flightid) {
-                                window.location.href = '../Agent Section/agent-addBooking-flight.php';
+                                window.location.href = '../Mobile/agent-addBooking-flight.php';
 
                             } else {
-                                // Redirect to agent dashboard
-                                window.location.href = '../Agent Section/agent-dashboard.php';
+                                alert('No flight selected. Redirecting to flight schedule.');
+
+                                window.location.href = '../Mobile/flightsched.php';
                             }
 
                         }  else if (data.accountType === 'guest') {
@@ -138,16 +139,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['flightid'])) {
                             let flightid = document.getElementById('flightid') ? document.getElementById('flightid').value : '';
 
                             if (flightid) {
-                                window.location.href = `../Client Section/client-addBooking-flight.php`;
+                                window.location.href = `../Mobile/client-addBooking-flight.php`;
 
                             } else {
-                                window.location.href = '../Client Section/client-dashboard.php';
+                                alert('No flight selected. Redirecting to flight schedule.');
+
+                                window.location.href = '../Mobile/flightsched.php';
                             }
                             
-                        } else if (data.accountType === 'employee') {
-                            // Redirect to employee dashboard
-                            window.location.href = '../Employee Section/emp-dashboard.php';
-
                         } else {
                             // Handle unknown account type
                             alert('Unknown account type. Please contact support.');

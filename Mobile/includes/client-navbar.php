@@ -5,43 +5,43 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// Fetch session variables directlys
-$email = $_SESSION['email'] ?? ''; // Use null coalescing operator to avoid undefined index
-$accId = $_SESSION['accountId'] ?? '';
+// // Fetch session variables directlys
+// $email = $_SESSION['email'] ?? ''; // Use null coalescing operator to avoid undefined index
+// $accId = $_SESSION['accountId'] ?? '';
 
-$sql1 = "SELECT * FROM Agent WHERE accId = $accId";
+// $sql1 = "SELECT * FROM Agent WHERE accId = $accId";
 
-if ($accId !== '') 
-{
-  // Use a prepared statement to safely query the database
-  $stmt = $conn->prepare("SELECT agentCode, agentId, agentRole FROM agent WHERE accountId = ?");
-  $stmt->bind_param("i", $accId); // Bind the accountId parameter to the query
-  $stmt->execute();
-  $result = $stmt->get_result(); // Get the result of the query
+// if ($accId !== '') 
+// {
+//   // Use a prepared statement to safely query the database
+//   $stmt = $conn->prepare("SELECT agentCode, agentId, agentRole FROM agent WHERE accountId = ?");
+//   $stmt->bind_param("i", $accId); // Bind the accountId parameter to the query
+//   $stmt->execute();
+//   $result = $stmt->get_result(); // Get the result of the query
 
-  // Check if the query returns any rows
-  if ($result->num_rows > 0) 
-  {
-    // Fetch the result as an associative array
-    while ($row = $result->fetch_assoc()) 
-    {
-      $_SESSION['agentCode'] = $row['agentCode'];
-      $_SESSION['agentId'] = $row['agentId'];
-      $_SESSION['agentRole'] = $row['agentRole'];
-    }
-  } 
-  else 
-  {
-    echo "No agent found with the given account ID.";
-  }
+//   // Check if the query returns any rows
+//   if ($result->num_rows > 0) 
+//   {
+//     // Fetch the result as an associative array
+//     while ($row = $result->fetch_assoc()) 
+//     {
+//       $_SESSION['agentCode'] = $row['agentCode'];
+//       $_SESSION['agentId'] = $row['agentId'];
+//       $_SESSION['agentRole'] = $row['agentRole'];
+//     }
+//   } 
+//   else 
+//   {
+//     echo "No agent found with the given account ID.";
+//   }
 
-  // Close the statement
-  $stmt->close();
-} 
-else 
-{
-  echo "Account ID is missing.";
-}
+//   // Close the statement
+//   $stmt->close();
+// } 
+// else 
+// {
+//   echo "Account ID is missing.";
+// }
 ?>
 
 <!-- <header>

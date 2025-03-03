@@ -53,14 +53,13 @@ if (isset($_POST['pay']))
         else 
         {
           $_SESSION['status'] = "Failed to upload file: $fileName";
-          header("Location: ../client-transactionInfo.php?id=" . htmlspecialchars($transactNo));
           exit(0);
         }
       } 
       else 
       {
         $_SESSION['status'] = "File $fileName is invalid or exceeds size limit of 4MB.";
-        header("Location: ../client-transactionInfo.php?id=" . htmlspecialchars($transactNo));
+  
         exit(0);
       }
     }
