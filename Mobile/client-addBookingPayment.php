@@ -11,6 +11,7 @@ session_start();
 
   <?php include "../Agent Section/includes/head.php"; ?>
 
+
   <link rel="stylesheet" href="../Agent Section/assets/css/agent-transaction.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="../Mobile/assets/css/agent-payment.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="../Mobile/assets/css/navbar-sidebar.css?v=<?php echo time(); ?>">
@@ -19,21 +20,23 @@ session_start();
 <body>
 
   <div class="body-container">
-    <?php include "../Mobile/includes/sidebar.php"; ?>
+    <?php include "../Mobile/includes/sidebar-client.php"; ?>
 
     <div class="main-content-container">
       <div class="navbar">
-        <div class="button-wrapper">
-          <button class="round-btn">
-            <i class="fas fa-chevron-left"></i>
-          </button>
-        </div>
+        <div class="backbutton-wrapper">
+          <div class="back-button-wrapper">
+            <a href="../Nobile/client-addbooking-flight.php" class="back-button-link">
+              <i class="fa-solid fa-arrow-left"></i>
+            </a>
+          </div>
 
-        <div class="title-page-wrapper">
-          <h5 class="title-page" id="page-title">Booking</h5>
+          <div class="page-name-wrapper">
+            <h5>Transaction</h5>
+          </div>
+
         </div>
       </div>
-
 
       <?php
       // Check if 'id' is passed in the URL
@@ -47,7 +50,6 @@ session_start();
 
           <div class="subscription">
             <h3 class="ms-3">Payment Details</h3>
-
             <div class="section section-1 px-3">
               <div class="header-container d-flex flex-row justify-content-between mb-2">
                 <h4>Choose Payment Method</h4>
@@ -56,34 +58,16 @@ session_start();
               <div class="billing-options mt-4">
                 <!-- Bank Transfer Payment Option -->
                 <div class="billing-card" data-value="bank-transfer">
-                  <input type="radio" name="billing" class="hidden-radio">
-                  <div class="payment-logo">
-                    <i class="fas fa-money-bill-transfer"></i>
+                  <div class="radiobutton-container">
+                    <input type="radio" name="billing">
+                  </div>
+                  <div class="payment-logo" style="margin-top: 10px;">
+                    <i class="fas fa-money-bill-transfer" style="font-size: 52px;"></i>
                     <span>Bank Transfer</span>
                   </div>
                 </div>
-
-
               </div>
             </div>
-
-            <script>
-              document.addEventListener("DOMContentLoaded", function() {
-                document.querySelectorAll('.billing-card').forEach(card => {
-                  card.addEventListener('click', function() {
-                    // Remove active state from all cards
-                    document.querySelectorAll('.billing-card').forEach(c => {
-                      c.classList.remove('active');
-                      c.querySelector('.hidden-radio').checked = false;
-                    });
-
-                    // Add active state to the clicked card
-                    this.classList.add('active');
-                    this.querySelector('.hidden-radio').checked = true;
-                  });
-                });
-              });
-            </script>
 
             <div class="section section-1 px-3">
               <h3>Bank Details</h3>
@@ -112,8 +96,6 @@ session_start();
               </div>
             </div>
           </div>
-
-
 
           <div class="order-summary">
             <?php
@@ -203,11 +185,14 @@ session_start();
               </div>
             </div>
 
-            <form id="paymentForm" enctype="multipart/form-data">
+            <form id="clientPaymentForm" enctype="multipart/form-data">
               <hr>
               <input type="hidden" value="<?php echo $_SESSION['accountId']; ?>" name="agentAccountId">
               <input type="hidden" value="<?php echo $transactionNumber; ?>" name="transactNo">
-              <input type="number" class="form-control" name="downpayment" step="0.01" min="<?php echo $downpayment; ?>" max="<?php echo $totalPrice; ?>" placeholder="Enter Downpayment Amount" required>
+
+              <input type="number" class="form-control" name="downpayment" step="0.01"
+                min="<?php echo $downpayment; ?>" max="<?php echo $totalPrice; ?>"
+                placeholder="Enter Downpayment Amount" required>
 
               <h6 class="mt-4">Attach Proof/Screenshot of transaction:</h6>
               <input type="file" id="attachment" class="attachment" name="proofs[]" accept="image/*" required>
@@ -216,92 +201,91 @@ session_start();
               <div class="row mt-4">
                 <div class="col-sm">
                   <div class="d-flex align-items-left mb-3">
-                    <input type="checkbox" id="termsCheckbox" class="ms-1 me-3" required>
+                    <input type="checkbox" id="termsCheckbox" class="ms-1 me-3">
                     <div class="checkbox-text">
                       <span>
-                        By clicking this, I agree to Smart Travel <a href="#" class="terms-link">Terms & Conditions</a> and
-                        <a href="#" class="privacy-link">Privacy Policy</a>
+                        By clicking this, I agree to Smart Travel <a href="#" class="terms-link">Terms & Conditions</a>
+                        and <a href="#" class="privacy-link">Privacy Policy</a>
                       </span>
                     </div>
                   </div>
-                  <button type="submit" class="pay-button" name="pay">Pay Now</button>
+                  <button type="submit" class="pay-button">Pay Now</button>
                 </div>
               </div>
+
+              <div id="message-payment" class="mt-3"></div> <!-- Message display area -->
             </form>
-
-            <!-- Display messages -->
-            <div id="message-payment" class="mt-2"></div>
           </div>
-
 
         </div>
       </div>
     </div>
   </div>
 
+  <?php require "../Agent Section/includes/scripts.php"; ?>
+
   <script>
-    $(document).ready(function() {
-      $("#paymentForm").on("submit", function(event) {
+$(document).ready(function () {
+    $("#clientPaymentForm").on("submit", function (event) {
         event.preventDefault(); // Prevent default form submission
 
         $('#message-payment').html(''); // Clear previous messages
 
-        // Ensure terms checkbox is checked
         if (!$("#termsCheckbox").is(":checked")) {
-          $('#message-payment').html('<div class="alert alert-danger">You must agree to the Terms & Conditions and Privacy Policy.</div>');
-          return;
+            $('#message-payment').html('<div class="alert alert-danger">You must agree to the Terms & Conditions and Privacy Policy.</div>');
+            return;
         }
 
         let formData = new FormData(this);
         formData.append('pay', '1'); // Add identifier for processing
 
         $.ajax({
-          url: "../Mobile/function/agent-addBookingPayment-code-m.php",
-          type: "POST",
-          data: formData,
-          contentType: false,
-          processData: false,
-          beforeSend: function() {
-            $('#message-payment').html('<div class="alert alert-info">Processing payment...</div>');
-          },
-          success: function(response) {
-            console.log("Server Response:", response); // Log full server response
+            url: "../Mobile/function/client-addBookingPayment-code.php",
+            type: "POST",
+            data: formData,
+            contentType: false,
+            processData: false,
+            beforeSend: function () {
+                $('#message-payment').html('<div class="alert alert-info">Processing payment...</div>');
+            },
+            success: function (response) {
+                console.log("Server Response:", response); // Log full server response
 
-            let res;
-            try {
-              res = typeof response === "string" ? JSON.parse(response) : response;
+                let res;
+                try {
+                    res = typeof response === "string" ? JSON.parse(response) : response;
 
-              // Fix: Ensure message is always a string
-              let message = typeof res.message === "object" ? JSON.stringify(res.message) : res.message;
+                    // Fix: Ensure message is always a string
+                    let message = typeof res.message === "object" ? JSON.stringify(res.message) : res.message;
 
-              if (res.status === "success") {
-                $('#message-payment').html('<div class="alert alert-success">' + message + '</div>');
-                $("#paymentForm")[0].reset();
+                    if (res.status === "success") {
+                        $('#message-payment').html('<div class="alert alert-success">' + message + '</div>');
+                        $("#clientPaymentForm")[0].reset();
 
-                setTimeout(() => {
-                  window.location.href = "../Mobile/flightsched.php";
-                }, 1500);
-              } else {
-                $('#message-payment').html('<div class="alert alert-danger">' + message + '</div>');
-                console.error("Payment Error:", message);
-              }
-
-            } catch (error) {
-              $('#message-payment').html('<div class="alert alert-danger">Unexpected error. Please try again.</div>');
-              console.error("JSON Parse Error:", error);
+                        setTimeout(() => {
+                            window.location.href = "../Mobile/flightsched.php";
+                        }, 1500);
+                    } else {
+                        $('#message-payment').html('<div class="alert alert-danger">' + message + '</div>');
+                        console.error("Payment Error:", message);
+                    }
+                    
+                } catch (error) {
+                    $('#message-payment').html('<div class="alert alert-danger">Unexpected error. Please try again.</div>');
+                    console.error("JSON Parse Error:", error);
+                }
+            },
+            error: function (xhr, status, error) {
+                $('#message-payment').html('<div class="alert alert-danger">Error processing payment. Please try again.</div>');
+                console.error("AJAX Error:", status, error);
             }
-          },
-          error: function(xhr, status, error) {
-            $('#message-payment').html('<div class="alert alert-danger">Error processing payment. Please try again.</div>');
-            console.error("AJAX Error:", status, error);
-          }
         });
-      });
     });
-  </script>
+});
 
 
-  <?php require "../Agent Section/includes/scripts.php"; ?>
+
+</script>
 
 </body>
 

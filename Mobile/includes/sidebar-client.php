@@ -19,10 +19,10 @@ if ($row = $result->fetch_assoc()) {
 $stmt->close();
 
 // Assign session variables
-$agentId = $_SESSION['agentId'] ?? '';
-$agentCode = $_SESSION['agentCode'] ?? '';
-$agentRole = $_SESSION['agentRole'] ?? '';
-$agentType = $_SESSION['agentType'] ?? '';
+$agentId = $_SESSION['clientId'] ?? '';
+$agentCode = $_SESSION['clientCode'] ?? '';
+$agentRole = $_SESSION['clientRole'] ?? '';
+$agentType = $_SESSION['clientType'] ?? '';
 $accountType = $_SESSION['accountType'] ?? ''; // Now included
 $fName = $_SESSION['fName'] ?? '';
 $lName = $_SESSION['lName'] ?? '';

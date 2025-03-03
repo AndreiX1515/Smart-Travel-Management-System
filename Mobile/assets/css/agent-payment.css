@@ -56,23 +56,124 @@
     background-color: white;
     border-radius: 7px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    
     width: 200px; /* Adjust width based on your design */
     cursor: pointer;
     transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease; /* Smooth transition */
+    border: 2px solid transparent; /* Ensure smooth border transition */
+    position: relative; /* To keep positioning consistent */
 }
 
+/* Hide the radio button but keep it functional */
+.hidden-radio {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Active effect for selected billing card */
 .billing-card.active {
-    border-color: #116530; /* Active state border color */
-    background-color: #ffffff; /* Light gray background on hover */
-    transform: scale(1.10); /* Slightly enlarge the card */  
+    border-color: #116530; /* Green border for selected card */
+    background-color: #ffffff;
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
+/* Hover effect */
 .billing-card:hover {
     background-color: #f0f0f0; /* Light gray background on hover */
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Shadow effect */
     transform: scale(1.05); /* Slightly enlarge the card */
 }
+
+/* Tab content management */
+.tab-content {
+    margin-top: 20px;
+}
+
+.tab-pane {
+    display: none;
+}
+
+.tab-pane.show.active {
+    display: block;
+}
+
+/* Billing options styling */
+.billing-options .nav-pills {
+    gap: 15px;
+}
+
+/* Ensure list items are properly sized */
+.billing-options .nav-item {
+    padding: 10px;
+    width: 160px;
+    height: 110px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Button styles for navigation */
+.billing-options .nav-link {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+    transition: background 0.3s ease, transform 0.3s ease, border 0.3s ease;
+}
+
+/* Hover effect for buttons */
+.billing-options .nav-link:hover {
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    transform: scale(1.05);
+}
+
+/* Active state for navigation buttons */
+.billing-options .nav-link.active {
+    background-color: #e9ecef;
+    border-radius: 5px;
+    border: 2px solid #116530;
+}
+
+/* Style for the card inside each nav-link */
+.billing-options .card-tab {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Card body adjustments */
+.billing-options .card-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Icon styles */
+.billing-options .card-body i {
+    font-size: 24px;
+    margin-bottom: 8px;
+}
+
+/* Text styles */
+.billing-options .card-body span {
+    font-size: 16px;
+}
+
+
+
+
+
+
+
 
 .payment-logo {
     display: flex;
@@ -97,88 +198,7 @@
     font-weight: 500;
 }
 
-.tab-content {
-    margin-top: 20px;
-}
 
-.tab-pane {
-    display: none;
-}
-
-.tab-pane.show.active {
-    display: block;
-}
-
-.billing-options .nav-pills {
-    gap: 15px;
-}
-
-
-
-/* Targeting the billing-options div and its inner elements */
-.billing-options .nav-item {
-    padding: 10px;
-    width: 160px; /* Set a fixed width for each list item */
-    height: 110px; /* Set a fixed height for each list item */
-    display: flex;
-    justify-content: center; /* Center the content horizontally */
-    align-items: center; /* Center the content vertically */
-}
-
-/* Styling for the nav-link button inside billing-options */
-.billing-options .nav-link {
-    width: 100%; /* Ensure the button takes up the full width of the li */
-    height: 100%; /* Ensure the button takes up the full height of the li */
-    padding: 0; /* Remove default padding */
-    border: none; /* Remove button borders */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: transparent; /* Make the button background transparent */
-    transition: background 0.3s ease, transform 0.3s ease, border 0.3s ease; /* Smooth transition for background, transform, and border */
-}
-
-/* Add transform effect only on hover inside billing-options */
-.billing-options .nav-link:hover {
-    background-color: #f8f9fa; /* Light background on hover */
-    border-radius: 5px; /* Slightly round the corners */
-    transform: scale(1.05); /* Scale up on hover */
-}
-
-/* Active state styling for nav-link inside billing-options */
-.billing-options .nav-link.active {
-    background-color: #e9ecef; /* Lighter background for active state */
-    border-radius: 5px;
-    border: 2px solid #116530; /* Add border when active */
-}
-
-/* Style for the card inside each nav-link in billing-options */
-.billing-options .card-tab {
-    width: 100%; /* Ensure the card takes up the full width of the li */
-    height: 100%; /* Ensure the card takes up the full height of the li */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* Style for the card body inside billing-options to arrange contents in a column */
-.billing-options .card-body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center; /* Center content vertically within the card body */
-}
-
-/* Icon styling inside billing-options */
-.billing-options .card-body i {
-    font-size: 24px; /* Adjust the icon size */
-    margin-bottom: 8px; /* Space between icon and text */
-}
-
-/* Text styling inside billing-options */
-.billing-options .card-body span {
-    font-size: 16px; /* Adjust text size */
-}
 
   
 
