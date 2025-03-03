@@ -1019,6 +1019,7 @@
   overflow-y: auto; /* Allow vertical scrolling */
   /* border: 1px solid gainsboro; */
   width: 100%; /* Ensure the container uses full width */
+  /* border: 1px solid black; */
 }
 
 

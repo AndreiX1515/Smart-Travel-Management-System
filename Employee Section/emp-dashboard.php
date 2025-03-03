@@ -82,6 +82,7 @@ error_reporting(E_ALL);
                   } else {
                     $totalTransactions = 0; // default to 0 if query fails
                   }
+
                   ?>
                   <h5><?php echo $totalTransactions; ?></h5>
                   <p>CONFIRMED</p>
@@ -446,19 +447,18 @@ error_reporting(E_ALL);
 
                   <!-- Dynamic headers for agent columns -->
                   <?php
-                    // Fetch agent column headers dynamically
-                    $sql = "SELECT branchName FROM branch WHERE branchAgentCode IS NOT NULL AND branchAgentCode != ''";
-                    $result = $conn->query($sql);
+                  // Fetch agent column headers dynamically
+                  $sql = "SELECT branchName FROM branch WHERE branchAgentCode IS NOT NULL AND branchAgentCode != ''";
+                  $result = $conn->query($sql);
 
-                    while ($row = $result->fetch_assoc()) 
-                    {
-                      // Output the <th> element without background color or text color
-                      echo '<th 
+                  while ($row = $result->fetch_assoc()) {
+                    // Output the <th> element without background color or text color
+                    echo '<th 
                       colspan="2" 
                       data-bs-toggle="tooltip" 
                       title="' . $row['branchName'] . '" 
                       style="background-color: #dc3545; color: #ffffff; font-weight: 500;font-size: 12px;" >' . $row['branchName'] . '</th>';
-                    }
+                  }
                   ?>
                 </tr>
 
@@ -468,33 +468,31 @@ error_reporting(E_ALL);
                   <!-- A1, A2, A3, A4, A5, A6, A7 Sub Headers -->
                   <!-- Dynamic sub-headers for agent columns -->
                   <?php
-                    // Fetch agent column headers dynamically
-                    $sql = "SELECT branchName FROM branch WHERE branchAgentCode IS NOT NULL AND branchAgentCode != ''";
+                  // Fetch agent column headers dynamically
+                  $sql = "SELECT branchName FROM branch WHERE branchAgentCode IS NOT NULL AND branchAgentCode != ''";
 
-                    $result = $conn->query($sql);
+                  $result = $conn->query($sql);
 
-                    while ($row = $result->fetch_assoc()) 
-                    {
-                      // Output the <th> elements without background color or text color
-                      echo '<th style="background-color: #dc3545; 
+                  while ($row = $result->fetch_assoc()) {
+                    // Output the <th> elements without background color or text color
+                    echo '<th style="background-color: #dc3545; 
                         color: #ffffff; font-weight: 500;font-size: 12px;">A.L</th>';
-                      echo '<th style="background-color: #dc3545; 
+                    echo '<th style="background-color: #dc3545; 
                         color: #ffffff; font-weight: 500;font-size: 12px;">L.O</th>';
-                    }
+                  }
                   ?>
                 </tr>
               </thead>
               <tbody>
                 <?php
-                  $sql = "SELECT branchName, branchAgentCode 
+                $sql = "SELECT branchName, branchAgentCode 
                           FROM branch WHERE branchAgentCode IS NOT NULL AND branchAgentCode != ''";
-                  $result = $conn->query($sql);
+                $result = $conn->query($sql);
 
-                  $agentColumns = '';
-                  while ($row = $result->fetch_assoc()) 
-                  {
-                    $agentCode = $row['branchAgentCode'];
-                    $agentColumns .= "IFNULL(SUM(CASE WHEN b.bookingType = 'Package' 
+                $agentColumns = '';
+                while ($row = $result->fetch_assoc()) {
+                  $agentCode = $row['branchAgentCode'];
+                  $agentColumns .= "IFNULL(SUM(CASE WHEN b.bookingType = 'Package' 
                                         AND (b.status = 'Confirmed' OR b.status = 'Reserved')
                                         AND (a.agentCode = '$agentCode' OR c.clientCode = '$agentCode') 
                                         AND (a.agentType = 'Retailer' OR c.clientType = 'Retailer')
@@ -505,16 +503,21 @@ error_reporting(E_ALL);
                                         AND (a.agentCode = '$agentCode' OR c.clientCode = '$agentCode')
                                         AND (a.agentType = 'Wholeseller' OR c.clientType = 'Wholeseller')
                                         THEN b.pax ELSE 0 END), 0) AS `{$agentCode}_LO`, ";
-                  }
+                }
 
-                  // Trim the trailing comma from the dynamically generated columns
-                  $agentColumns = rtrim($agentColumns, ', ');
+                // Trim the trailing comma from the dynamically generated columns
+                $agentColumns = rtrim($agentColumns, ', ');
 
-                  // Main query
-                  $sql = "SELECT f.flightId, f.is_active, f.origin, f.flightDepartureDate AS Start, f.returnDepartureDate AS End,
-                            CONCAT(e.lName, ', ', e.fName, 
-                              IF(e.mName IS NOT NULL AND e.mName != '', CONCAT(' ', LEFT(e.mName, 1)), '')) AS TeamOP,
+                // Main query
+                $sql = "SELECT f.flightId, f.is_active, f.origin, f.flightDepartureDate AS Start, f.returnDepartureDate AS End,
+                            CONCAT(
+                                IF(e.lName IS NOT NULL AND e.lName != '', CONCAT(e.lName, ', '), ''),
+                                e.fName,
+                                IF(e.mName IS NOT NULL AND e.mName != '' AND e.lName IS NOT NULL AND e.lName != '', CONCAT(' ', LEFT(e.mName, 1)), '')
+                            ) AS TeamOP,
+                            e.colorCode, 
                             f.availSeats AS FlightSeat, 
+                            
                             GREATEST(f.availSeats - IFNULL(SUM(CASE 
                               WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') 
                               AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0), 0) AS AvailSeats, 
@@ -539,82 +542,67 @@ error_reporting(E_ALL);
                           LEFT JOIN client c ON b.accountType = 'Client' AND b.accountId = c.accountId
                           WHERE f.flightDepartureDate >= CURDATE()
                           GROUP BY f.flightId, f.is_active, f.origin, f.flightDepartureDate, f.returnDepartureDate, f.availSeats, 
-                            f.wholesalePrice, f.flightPrice, p.packagePrice, f.landPrice
+                            f.wholesalePrice, f.flightPrice, p.packagePrice, f.landPrice, e.colorCode
                           ORDER BY f.flightDepartureDate";
 
-                  // Step 3: Execute the query
-                  $result = $conn->query($sql);
+                // Step 3: Execute the query
+                $result = $conn->query($sql);
 
-                  // Step 4: Display the results in HTML table
+                // Step 4: Display the results in HTML table
 
-                  // class="form-check-input"
-                  if ($result->num_rows > 0) 
-                  {
-                    // Fetch employee data and map Names to Employee IDs
-                    $employeeQuery = "SELECT employeeId, CONCAT(lName, ', ', fName) AS fullName FROM employee";
-                    $employeeResult = $conn->query($employeeQuery);
+                // class="form-check-input"
+                if ($result->num_rows > 0) {
+                  // Fetch employee data and map Names to Employee IDs
+                  $employeeQuery = "SELECT employeeId, CONCAT(lName, ', ', fName) AS fullName FROM employee";
+                  $employeeResult = $conn->query($employeeQuery);
 
-                    $employeeMapping = []; // Array to store FullName => Employee ID mapping
+                  $employeeMapping = []; // Array to store FullName => Employee ID mapping
 
-                    if ($employeeResult->num_rows > 0) 
-                    {
-                      while ($empRow = $employeeResult->fetch_assoc()) 
-                      {
-                        $employeeMapping[$empRow['fullName']] = $empRow['employeeId'];
-                      }
+                  if ($employeeResult->num_rows > 0) {
+                    while ($empRow = $employeeResult->fetch_assoc()) {
+                      $employeeMapping[$empRow['fullName']] = $empRow['employeeId'];
                     }
+                  }
 
-                    // Predefined color mapping for employees (based on Full Name)
-                    $colorMapping = [
-                      "Heo, Vicky" => "#FFD700",   // Gold
-                      "Kim, Gwen" => "#ADD8E6",    // Light Blue
-                      "Test, Dorothy" => "#98FB98", // Pale Green
-                      "Im, Anna" => "#FFB6C1",     // Light Pink
-                      "Park, Lia" => "#E6E6FA",    // Lavender
-                      "Testing, Pamela" => "#FFDAB9" // Peach
-                    ];
+                  while ($row = $result->fetch_assoc()) {
+                    $flight_id = $row['flightId'];
+                    $chkStatus = $row['is_active'];
 
-                    while ($row = $result->fetch_assoc()) 
-                    {
-                      $flight_id = $row['flightId'];
-                      $chkStatus = $row['is_active'];
+                    // Get Employee Name from TeamOP
+                    $employeeName = isset($row['TeamOP']) ? trim($row['TeamOP']) : "";
 
-                      // Get Employee Name from TeamOP
-                      $employeeName = isset($row['TeamOP']) ? trim($row['TeamOP']) : "";
+                    // Use the colorCode directly from the database, defaulting to white if not found
+                    $rowColor = !empty($row['colorCode']) ? $row['colorCode'] : "#FFFFFF";
 
-                      // Assign a color dynamically based on Employee Name, defaulting to white if not found
-                      $rowColor = isset($colorMapping[$employeeName]) ? $colorMapping[$employeeName] : "#FFFFFF";
-
-                      echo '<tr>';
-                      echo '<td class="fw-bold" style="font-size: 12px; background-color: ' . $rowColor . '; ">
+                    echo '<tr>';
+                    echo '<td class="fw-bold" style="font-size: 12px; background-color: ' . $rowColor . '; ">
                             <input type="checkbox" class="status-checkbox row-checkbox" data-id="' . $flight_id . '" 
                                   data-status="' . $chkStatus . '" ' . ($chkStatus == 1 ? 'checked' : '') . '>
                             </td>';
-                        
-                      echo '<td class="" style="font-size: 12px; white-space: nowrap; background-color: ' . $rowColor . '; font-weight: bold;">' . htmlspecialchars($employeeName) . '</td>';
-                      echo '<td>' . htmlspecialchars($row['origin']) . '</td>';
-                      echo '<td>' . htmlspecialchars($row['Start']) . '</td>';
-                      echo '<td>' . htmlspecialchars($row['End']) . '</td>';
-                      echo '<td>' . htmlspecialchars($row['AvailSeats']) . '</td>';
-                      echo '<td>' . htmlspecialchars($row['AdditionalSeats']) . '</td>';
-                      echo '<td>' . htmlspecialchars($row['Air+Land']) . '</td>';
-                      echo '<td>' . htmlspecialchars($row['LandOnly']) . '</td>';
-                      echo '<td>₱ ' . number_format($row['WholesalePrice'], 2) . '</td>';
-                      echo '<td>₱ ' . number_format($row['RetailPrice'], 2) . '</td>';
-                      echo '<td>₱ ' . number_format($row['landPrice'], 2) . '</td>';
 
-                      foreach ($row as $key => $value) 
-                      {
-                        if (strpos($key, '_AL') !== false || strpos($key, '_LO') !== false) 
-                        {
-                          $style = ($value > 0) ? 'style="font-weight: bold;"' : 'style="font-weight: 400;"';
-                          echo '<td ' . $style . '>' . htmlspecialchars($value) . '</td>';
-                        }
+                    echo '<td class="" style="font-size: 12px; white-space: nowrap; background-color: ' . htmlspecialchars($rowColor) . '; font-weight: bold;">' . htmlspecialchars($employeeName) . '</td>';
+
+                    echo '<td>' . htmlspecialchars($row['origin']) . '</td>';
+                    echo '<td>' . htmlspecialchars($row['Start']) . '</td>';
+                    echo '<td>' . htmlspecialchars($row['End']) . '</td>';
+                    echo '<td>' . htmlspecialchars($row['AvailSeats']) . '</td>';
+                    echo '<td>' . htmlspecialchars($row['AdditionalSeats']) . '</td>';
+                    echo '<td>' . htmlspecialchars($row['Air+Land']) . '</td>';
+                    echo '<td>' . htmlspecialchars($row['LandOnly']) . '</td>';
+                    echo '<td>₱ ' . number_format($row['WholesalePrice'], 2) . '</td>';
+                    echo '<td>₱ ' . number_format($row['RetailPrice'], 2) . '</td>';
+                    echo '<td>₱ ' . number_format($row['landPrice'], 2) . '</td>';
+
+                    foreach ($row as $key => $value) {
+                      if (strpos($key, '_AL') !== false || strpos($key, '_LO') !== false) {
+                        $style = ($value > 0) ? 'style="font-weight: bold;"' : 'style="font-weight: 400;"';
+                        echo '<td ' . $style . '>' . htmlspecialchars($value) . '</td>';
                       }
+                    }
 
-                      echo '</tr>';
-                    }                  
+                    echo '</tr>';
                   }
+                }
                 ?>
               </tbody>
             </table>
@@ -671,7 +659,7 @@ error_reporting(E_ALL);
                     </thead>
                     <tbody>
                       <?php
-                        $sql1 = "SELECT r.transactNo AS `T.N`, c.concernTitle AS `Request`, 
+                      $sql1 = "SELECT r.transactNo AS `T.N`, c.concernTitle AS `Request`, 
                                   DATE_FORMAT(r.requestDate, '%m.%d.%Y') AS `Date`,
                                   r.requestStatus, b.agentCode, CONCAT(a.lName, ', ', a.fName, 
                                   IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1)), '')) AS agentName,
@@ -688,46 +676,41 @@ error_reporting(E_ALL);
                                 ORDER BY 
                                   r.requestDate DESC";  // Order by request date
 
-                        $res1 = $conn->query($sql1);
+                      $res1 = $conn->query($sql1);
 
-                        if ($res1->num_rows > 0) 
-                        {
-                          while ($row = $res1->fetch_assoc()) 
-                          {
-                            $statusClass = '';
-                            switch ($row['requestStatus']) 
-                            {
-                              case 'Confirmed':
-                                $statusClass = 'badge bg-success'; // Green pill for "Approved"
-                                break;
-                              case 'Pending':
-                                $statusClass = 'badge bg-primary'; // Yellow pill for "Pending"
-                                break;
-                              case 'Rejected':
-                                $statusClass = 'badge bg-danger'; // Red pill for "Rejected"
-                                break;
-                              case 'Submitted':
-                                $statusClass = 'badge bg-warning text-dark'; // Red pill for "Rejected"
-                                break;
-                              default:
-                                $statusClass = 'badge bg-secondary'; // Grey pill for unknown statuses
-                                break;
-                            }
+                      if ($res1->num_rows > 0) {
+                        while ($row = $res1->fetch_assoc()) {
+                          $statusClass = '';
+                          switch ($row['requestStatus']) {
+                            case 'Confirmed':
+                              $statusClass = 'badge bg-success'; // Green pill for "Approved"
+                              break;
+                            case 'Pending':
+                              $statusClass = 'badge bg-primary'; // Yellow pill for "Pending"
+                              break;
+                            case 'Rejected':
+                              $statusClass = 'badge bg-danger'; // Red pill for "Rejected"
+                              break;
+                            case 'Submitted':
+                              $statusClass = 'badge bg-warning text-dark'; // Red pill for "Rejected"
+                              break;
+                            default:
+                              $statusClass = 'badge bg-secondary'; // Grey pill for unknown statuses
+                              break;
+                          }
 
-                            // Echo table row with dynamically styled pills
-                            echo "<tr>
+                          // Echo table row with dynamically styled pills
+                          echo "<tr>
                                     <td>{$row['T.N']}</td>
                                     <td>{$row['flightDepartureDate']}</td>
                                     <td>{$row['branchName']}</td>
                                     <td>{$row['Request']}</td>
                                     <td><span class='{$statusClass} p-2'>{$row['requestStatus']}</span></td>
                                   </tr>";
-                          }
-                        } 
-                        else 
-                        {
-                          echo "<tr><td colspan='6' style='text-align: center; font-size: 10px;'>NO CURRENT REQUEST AS OF THE MOMENT</td></tr>";
                         }
+                      } else {
+                        echo "<tr><td colspan='6' style='text-align: center; font-size: 10px;'>NO CURRENT REQUEST AS OF THE MOMENT</td></tr>";
+                      }
                       ?>
                     </tbody>
                   </table>
@@ -756,7 +739,7 @@ error_reporting(E_ALL);
                     </thead>
                     <tbody>
                       <?php
-                        $sql2 = "SELECT p.transactNo AS `Transaction No`, p.paymentTitle AS `Payment Title`,
+                      $sql2 = "SELECT p.transactNo AS `Transaction No`, p.paymentTitle AS `Payment Title`,
                                   CONCAT(FORMAT(p.amount, 2)) AS `Amount`, DATE_FORMAT(p.paymentDate, '%m.%d.%Y') AS `Date`, 
                                   p.paymentType AS `Payment Type`, p.paymentStatus, b.agentCode, CONCAT(a.lName, ', ', a.fName, 
                                   IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1)), '')) AS agentName,
@@ -770,32 +753,29 @@ error_reporting(E_ALL);
                                 WHERE p.paymentStatus = 'Submitted'
                                 ORDER BY p.paymentDate DESC";  // Order by payment date
 
-                        $res2 = $conn->query($sql2);
+                      $res2 = $conn->query($sql2);
 
-                        if ($res2->num_rows > 0) 
-                        {
-                          while ($row = $res2->fetch_assoc()) 
-                          {
-                            // Map paymentStatus to Bootstrap pill classes
-                            $statusClass = '';
-                            switch ($row['paymentStatus']) 
-                            {
-                              case 'Approved':
-                                $statusClass = 'badge bg-success text-light'; // Green pill for "Paid"
-                                break;
-                              case 'Pending':
-                                $statusClass = 'badge bg-warning text-dark'; // Yellow pill for "Pending"
-                                break;
-                              case 'Submitted':
-                                $statusClass = 'badge bg-warning text-dark'; // Red pill for "Failed"
-                                break;
-                              default:
-                                $statusClass = 'badge bg-secondary'; // Grey pill for unknown statuses
-                                break;
-                            }
+                      if ($res2->num_rows > 0) {
+                        while ($row = $res2->fetch_assoc()) {
+                          // Map paymentStatus to Bootstrap pill classes
+                          $statusClass = '';
+                          switch ($row['paymentStatus']) {
+                            case 'Approved':
+                              $statusClass = 'badge bg-success text-light'; // Green pill for "Paid"
+                              break;
+                            case 'Pending':
+                              $statusClass = 'badge bg-warning text-dark'; // Yellow pill for "Pending"
+                              break;
+                            case 'Submitted':
+                              $statusClass = 'badge bg-warning text-dark'; // Red pill for "Failed"
+                              break;
+                            default:
+                              $statusClass = 'badge bg-secondary'; // Grey pill for unknown statuses
+                              break;
+                          }
 
-                            // Echo table row with dynamically styled pills
-                            echo "<tr>
+                          // Echo table row with dynamically styled pills
+                          echo "<tr>
                                     <td>{$row['Transaction No']}</td>
                                     <td>{$row['flightDepartureDate']}</td>
                                     <td>{$row['branchName']}</td>
@@ -803,12 +783,10 @@ error_reporting(E_ALL);
                                     <td>₱ {$row['Amount']}</td>
                                     <td><span class='{$statusClass} p-2'>{$row['paymentStatus']}</span></td>
                                   </tr>";
-                          }
-                        } 
-                        else 
-                        {
-                          echo "<tr><td colspan='12' style='text-align: center; font-size: 10px;'>NO CURRENT PAYMENTS AS OF THE MOMENT</td></tr>";
                         }
+                      } else {
+                        echo "<tr><td colspan='12' style='text-align: center; font-size: 10px;'>NO CURRENT PAYMENTS AS OF THE MOMENT</td></tr>";
+                      }
                       ?>
                     </tbody>
                   </table>
@@ -1088,9 +1066,6 @@ error_reporting(E_ALL);
             alert('Error updating status.');
           }
         });
-
-
-
       });
 
       // Initialize original checkbox states
@@ -1341,61 +1316,62 @@ error_reporting(E_ALL);
 
           columnDefs: [{
               targets: 0,
-              width: '3%'
+              width: '1%'
             },
             {
               targets: 1,
-              width: '6%'
+              width: '4%'
             },
             {
               targets: 2,
-              width: '5%'
+              width: '4%'
             },
             {
               targets: 3,
-              width: '10%'
+              width: '5.5%'
             },
             {
               targets: 4,
-              width: '10%'
+              width: '5.5%'
             },
             {
               targets: 5,
-              width: '5%'
+              width: '3%'
             },
             {
               targets: 6,
-              width: '7%'
+              width: '3%'
             },
             {
               targets: 7,
-              width: '7%'
+              width: '4%'
             },
             {
               targets: 8,
-              width: '7%'
+              width: '4%'
             },
             {
               targets: 9,
-              width: '7%'
+              width: '4%'
             },
             {
               targets: 10,
-              width: '7%'
+              width: '6%'
             },
             {
               targets: 11,
-              width: '7%'
+              width: '6%'
             },
+
             {
               targets: '_all',
               width: '3%',
-              height: '40px',
-              overflow: 'hidden',
+              height: '30px',
               textOverflow: 'ellipsis',
               whiteSpace: 'nowrap'
-            } // For columns 13 and beyond
+            }
           ]
+
         });
 
         // Event listener for row clicks in .info-table

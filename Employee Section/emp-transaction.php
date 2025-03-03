@@ -24,6 +24,7 @@
     <div class="table-container">
  
       <div class="table-header">
+
         <div class="search-wrapper">
             <div class="search-input-wrapper">
                 <input type="text" id="search" placeholder="Search here..">
@@ -82,10 +83,11 @@
 
           <div class="date-range-wrapper flightbooking-wrapper">
             <div class="date-range-inputs-wrapper">
-              <div class="input-with-icon">
-                <input type="text" class="datepicker" id="FlightStartDate" placeholder="Flight Date">
-                <i class="fas fa-calendar-alt calendar-icon"></i>
-              </div>
+            <div class="input-with-icon">
+    <input type="text" class="datepicker" id="FlightStartDate" placeholder="Flight Date" readonly>
+    <i class="fas fa-calendar-alt calendar-icon"></i>
+</div>
+
             </div>
           </div>
 
@@ -100,109 +102,104 @@
       
       <div class="table-container">
       <table class="product-table" id="product-table">
-          <thead>
-            <tr>
-              <th>Transact No</th>
-              <th>Agent Name</th>
-              <!-- <th rowspan="2">Package Name</th> -->
-              <th>Flight Date</th>
-              <!-- <th rowspan="2">Booking Date</th> -->
-              <th>Total Pax</th>
-              <th>Package Price</th>
-              <th>Amount Paid</th>
-              <th rowspan="2">Balance</th>
-              <th>Status</th>
-            </tr>
-            <!-- <tr>
-              <th>Departure</th>
-              <th>Return</th>
-            </tr> -->
-          </thead>
-          <tbody>
-            <?php
-              $sql = "SELECT b.transactNo, f.flightDepartureDate AS departureDate, f.returnDepartureDate AS returnDate, 
-                        b.status AS bookingStatus, CONCAT(f.flightDepartureDate, ' | ', f.returnDepartureDate) AS FlightDate, 
-                        p.packageName AS PackageName, DATE_FORMAT(b.bookingDate, '%m.%d.%Y') AS BookingDate, 
-                        b.pax AS TotalPax,  b.totalPrice AS PackagePrice, 
-                        CONCAT(a.lName, ', ', a.fName, ' ', IFNULL(CONCAT(SUBSTRING(a.mName, 1, 1), '.'), '')) AS agentName,
-                        SUM(pa.amount) AS TotalAmountPaid, br.branchName as branchName
-                      FROM booking b
-                      JOIN branch br ON b.agentCode = br.branchAgentCode
-                      JOIN flight f ON f.flightId = b.flightId
-                      JOIN package p ON p.packageId = b.packageId
-                      LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
-                      LEFT JOIN client c ON b.accountType = 'Client' AND b.accountId = c.accountId
-                      LEFT JOIN payment pa ON pa.transactNo = b.transactNo AND pa.paymentStatus = 'Approved'
-                      GROUP BY 
-                        b.transactNo, f.flightDepartureDate, f.returnDepartureDate, b.status, p.packageName, 
-                        b.bookingDate, b.pax, b.totalPrice, a.lName, a.fName, a.mName
-                      ORDER BY CAST(SUBSTRING_INDEX(b.transactNo, '-', -1) AS UNSIGNED)";
+  <thead>
+    <tr>
+      <th>Transact No</th>
+      <th>Agent Name</th>
+      <th>Flight Date</th>
+      <th>Total Pax</th>
+      <th>Package Price</th>
+      <th>Amount Paid</th>
+      <th>Balance</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <?php
+    // Ensure $conn is properly initialized
+    if (!isset($conn)) {
+        die("Database connection error.");
+    }
 
-              // Execute the query
-              $result = $conn->query($sql);
+    $sql = "SELECT 
+              b.transactNo, 
+              f.flightDepartureDate AS departureDate, 
+              f.returnDepartureDate AS returnDate, 
+              b.status AS bookingStatus, 
+              CONCAT(f.flightDepartureDate, ' | ', f.returnDepartureDate) AS FlightDate, 
+              p.packageName AS PackageName, 
+              DATE_FORMAT(b.bookingDate, '%m.%d.%Y') AS BookingDate, 
+              b.pax AS TotalPax,  
+              b.totalPrice AS PackagePrice, 
+              CONCAT(a.lName, ', ', a.fName, ' ', IFNULL(CONCAT(SUBSTRING(a.mName, 1, 1), '.'), '')) AS agentName,
+              COALESCE(SUM(pa.amount), 0) AS TotalAmountPaid, 
+              br.branchName as branchName
+            FROM booking b
+            JOIN branch br ON b.agentCode = br.branchAgentCode
+            JOIN flight f ON f.flightId = b.flightId
+            JOIN package p ON p.packageId = b.packageId
+            LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
+            LEFT JOIN client c ON b.accountType = 'Client' AND b.accountId = c.accountId
+            LEFT JOIN payment pa ON pa.transactNo = b.transactNo AND pa.paymentStatus = 'Approved'
+            GROUP BY 
+              b.transactNo, f.flightDepartureDate, f.returnDepartureDate, b.status, 
+              p.packageName, b.bookingDate, b.pax, b.totalPrice, a.lName, a.fName, a.mName, br.branchName
+            ORDER BY CAST(SUBSTRING_INDEX(b.transactNo, '-', -1) AS UNSIGNED)";
 
-              // Check if there are results
-              if ($result->num_rows > 0) 
-              {
-                while ($row = $result->fetch_assoc()) 
-                {
-                  // Safely handle null values
-                  $transactNo = htmlspecialchars($row['transactNo'] ?? '');
-                  $agentName = htmlspecialchars($row['agentName'] ?? '');
-                  $packageName = htmlspecialchars($row['PackageName'] ?? '');
-                  $departureDate = $row['departureDate'] ?? null;
-                  $returnDate = $row['returnDate'] ?? null;
-                  $bookingDate = htmlspecialchars($row['BookingDate'] ?? '');
-                  $totalPax = htmlspecialchars($row['TotalPax'] ?? 0);
-                  $packagePrice = $row['PackagePrice'] ?? 0;
-                  $amountPaid = $row['TotalAmountPaid'] ?? 0;
-                  $balance = $packagePrice - $amountPaid;
-                  $status = htmlspecialchars($row['bookingStatus'] ?? 'Unknown');
+    // Execute the query
+    $result = $conn->query($sql);
 
-                  // Determine the status class
-                  $statusClass = ""; // Default class
-                  switch ($status) 
-                  {
-                    case "Pending":
-                      $statusClass = "bg-warning text-dark"; // Yellow pill for Pending
-                      break;
-                    case "Confirmed":
-                      $statusClass = "bg-success text-white"; // Green pill for Confirmed
-                      break;
-                    case "Cancelled":
-                      $statusClass = "bg-danger text-white"; // Red pill for Cancelled
-                      break;
-                    case "Reject":
-                      $statusClass = "bg-secondary text-white"; // Grey pill for Reject
-                      break;
-                    default:
-                      $statusClass = "bg-secondary text-white"; // Default case for unknown statuses
-                      break;
-                  }
+    // Check if there are results
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            // Safely handle null values
+            $transactNo = htmlspecialchars($row['transactNo'] ?? '');
+            $agentName = htmlspecialchars($row['agentName'] ?? '');
+            $packageName = htmlspecialchars($row['PackageName'] ?? '');
+            $departureDate = $row['departureDate'] ?? null;
+            $returnDate = $row['returnDate'] ?? null;
+            $bookingDate = htmlspecialchars($row['BookingDate'] ?? '');
+            $totalPax = htmlspecialchars($row['TotalPax'] ?? 0);
+            $packagePrice = $row['PackagePrice'] ?? 0;
+            $amountPaid = $row['TotalAmountPaid'] ?? 0;
+            $balance = max($packagePrice - $amountPaid, 0); // Prevent negative balances
+            $status = htmlspecialchars($row['bookingStatus'] ?? 'Unknown');
 
-                  // Format the dates for display if they are not null
-                  $formattedDepartureDate = $departureDate ? (new DateTime($departureDate))->format('F j, Y') : 'N/A';
-                  $formattedReturnDate = $returnDate ? (new DateTime($returnDate))->format('F j, Y') : 'N/A';
+            // Determine the status class
+            $statusClass = match ($status) {
+                "Pending" => "bg-warning text-dark",
+                "Confirmed" => "bg-success text-white",
+                "Cancelled" => "bg-danger text-white",
+                "Reject" => "bg-secondary text-white",
+                default => "bg-secondary text-white",
+            };
 
-                  // Output each row as a table row
-                  echo "<tr data-url='emp-transactionInfo.php?id=$transactNo'>";
-                  echo "<td>$transactNo</td>";
-                  echo "<td>{$row['branchName']}</td>";
-                  // echo "<td>$packageName</td>";
-                  echo "<td>$departureDate</td>";
-                  // echo "<td>$returnDate</td>";
-                  // echo "<td>$bookingDate</td>";
-                  echo "<td class='fw-bold ps-3'>$totalPax</td>";
-                  echo "<td>₱ " . number_format($packagePrice, 2) . "</td>";
-                  echo "<td>₱ " . number_format($amountPaid, 2) . "</td>";
-                  echo "<td>₱ " . number_format($balance, 2) . "</td>";
-                  echo "<td> <span class='badge rounded-pill $statusClass p-2'>$status</span></td>";
-                  echo "</tr>";
-                }
-              }
-            ?>
-          </tbody>
-        </table>
+            // Format dates
+            $formattedDepartureDate = $departureDate ? (new DateTime($departureDate))->format('F j, Y') : 'N/A';
+            $formattedReturnDate = $returnDate ? (new DateTime($returnDate))->format('F j, Y') : 'N/A';
+
+            // Securely encode URL
+            $transactionUrl = htmlspecialchars("emp-transactionInfo.php?id=$transactNo");
+
+            // Output each row as a table row
+            echo "<tr data-url='$transactionUrl'>";
+            echo "<td>$transactNo</td>";
+            echo "<td>" . htmlspecialchars($row['branchName'] ?? '') . "</td>";
+            echo "<td>$formattedDepartureDate</td>";
+            echo "<td class='fw-bold ps-3'>$totalPax</td>";
+            echo "<td>₱ " . number_format($packagePrice, 2) . "</td>";
+            echo "<td>₱ " . number_format($amountPaid, 2) . "</td>";
+            echo "<td>₱ " . number_format($balance, 2) . "</td>";
+            echo "<td> <span class='badge rounded-pill $statusClass p-2'>$status</span></td>";
+            echo "</tr>";
+        }
+    } else {
+        echo "<tr><td colspan='8' class='text-center'>No records found</td></tr>";
+    }
+    ?>
+  </tbody>
+</table>
+
       </div>
 
       <div class="table-footer">
@@ -249,7 +246,7 @@ document.addEventListener("DOMContentLoaded", function() {
 </script>
 
 <!-- JQuery Datapicker -->
-<script>
+<!-- <script>
   document.addEventListener("scroll", function () {
   const searchBar = document.querySelector(".search-bar");
   const scrollPosition = window.scrollY;
@@ -261,7 +258,7 @@ document.addEventListener("DOMContentLoaded", function() {
     searchBar.classList.remove("scrolled-upward");
   }
 });
-</script>
+</script> -->
 
 <!-- DataTables #product-table -->
 <script>
@@ -273,9 +270,9 @@ $(document).ready(function () {
         },
         order: [[0, 'desc']],  // Default sorting by Transaction ID (descending)
         scrollX: false,
-        scrollY: '69vh',  // Set a fixed height for the table (adjust as necessary)
+        scrollY: '73vh',  // Set a fixed height for the table (adjust as necessary)
         paging: true,  // Enable pagination
-        pageLength: 15,  // Set the number of rows per page
+        pageLength: 16,  // Set the number of rows per page
         autoWidth: false,
         autoHeight: false,  // Prevent automatic height adjustment
 

@@ -252,7 +252,7 @@
 .table-container {
   display: flex;
   flex-direction: column;
-  height: 90%;
+  height: 100%;
   flex: 1;
   background-color: transparent;
   overflow: hidden; /* Hide overflow from the container */
@@ -263,14 +263,15 @@
 
 
 .table-footer {
-  height: 15%; /* Fixed height for the footer */
+  height: 13%; /* Fixed height for the footer */
   background-color: transparent; /* Light background color */
   display: flex;
   align-items: center;
   justify-content: flex-end; /* Align pagination to the end */
-  padding: 5px 20px; /* Padding for spacing */
-  margin-top: 5px;
+  padding: 15px 20px; /* Padding for spacing */
+  /* margin-top: 5px; */
   border-radius: 5px; /* Slight rounding of the footer */
+  /* border: 1px solid black; */
 }
 
 /* Style the buttons */
