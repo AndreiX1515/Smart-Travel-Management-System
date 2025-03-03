@@ -248,7 +248,7 @@
 <?php include '../Employee Section/includes/emp-scripts.php' ?>
 
 <!-- JQuery Datapicker -->
-<script>
+<!-- <script>
   document.addEventListener("scroll", function () {
   const searchBar = document.querySelector(".search-bar");
   const scrollPosition = window.scrollY;
@@ -260,7 +260,7 @@
     searchBar.classList.remove("scrolled-upward");
   }
 });
-</script>
+</script> -->
 
 <!-- DataTables #product-table -->
 <script>
