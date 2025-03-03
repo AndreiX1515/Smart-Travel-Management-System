@@ -35,15 +35,17 @@ $(document).ready(function() {
                     } else if (response.accountType === 'guest') {
                         window.location.href = '../Agent Section/agentLogin.php';
                     } else {
-                        window.location.href = '../login.php'; // Default redirection
+                        window.location.href = '../Agent Section/agentLogin.php'; // Default redirection
                     }
                 } else {
                     alert(response.message);
+                    window.location.href = '../Agent Section/agentLogin.php'; // Default redirection
                 }
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 console.error('AJAX Error:', textStatus, errorThrown);
-                alert('An unexpected error occurred. Please try again.');
+                // alert('An unexpected error occurred. Please try again.');
+                window.location.href = '../Agent Section/agentLogin.php'; // Default redirection
             }
         });
     });

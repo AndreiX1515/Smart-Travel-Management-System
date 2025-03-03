@@ -111,9 +111,11 @@ $current_date = date('D, F d, Y');
 
 
 
-<?php include '../Agent Section/includes/logoutViewPassModal.php'; ?>
+<!-- <?php 
+// include '../Agent Section/includes/logoutViewPassModal.php'; 
+?> -->
 
-<script>
+<!-- <script>
   $(document).ready(function() {
     $("#ticketForm").submit(function(event) {
         event.preventDefault(); // Prevent default form submission
@@ -201,10 +203,10 @@ $current_date = date('D, F d, Y');
     }
   });
   });
-</script>
+</script> -->
 
 
-<script>
+<!-- <script>
   function toggleSubMenu(submenuId) {
     const submenu = document.getElementById(submenuId);
     const sectionTitle = submenu.previousElementSibling;
@@ -232,7 +234,7 @@ $current_date = date('D, F d, Y');
     transactionSubmenu.classList.add('open');
     transactionChevron.style.transform = 'rotate(180deg)';
   });
-</script>
+</script> -->
 
 <!-- <script>
   document.addEventListener('DOMContentLoaded', () => {
