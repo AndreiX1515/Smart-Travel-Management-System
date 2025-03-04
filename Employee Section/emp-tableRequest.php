@@ -97,25 +97,31 @@
           <table class="product-table" id="product-table">
             <thead>
               <tr>
-                <th>Transact No</th>
-                <th>Agent Name</th>
-                <th>Request Title</th>
-                <th>Request Details</th>
-                <th>Specific Details</th>
-                <th>Total Pax</th>
-                <th>Total Amount</th>
-                <th>Request Date</th>
+                <th>TRANSACT NO.</th>
+                <th>BRANCH</th>
+                <th>REQUEST TITLE</th>
+                <th>REQUEST DETAILS</th>
+                <th>SPECIFIC DETAILS</th>
+                <th>TOTAL PAX</th>
+                <th>TOTAL AMOUNT</th>
+                <th>REQUEST DATE</th>
               </tr>
             </thead>
             <tbody>
               <?php
               $sql1 = "SELECT r.requestId, r.transactNo AS `TransactNo`,
-                          CONCAT(a.lName, ', ', a.fName, 
-                              IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1), '.'), '')) AS AgentName,
-                          c.concernTitle AS `RequestTitle`, cd.details AS `RequestDetails`, b.pax AS `TotalPax`,
-                          r.requestCost as requestCost,
-                          r.customRequest as customRequest, r.details as details, DATE_FORMAT(r.requestDate, '%m-%d-%Y') AS `RequestDate`, 
-                          r.requestStatus AS `Status`, br.branchName as branchName
+                        CONCAT(a.lName, ', ', a.fName, 
+                            IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1), '.'), '')) AS AgentName,
+                        c.concernTitle AS `RequestTitle`, cd.details AS `RequestDetails`, b.pax AS `TotalPax`,
+                        r.requestCost as requestCost,
+                        r.customRequest as customRequest, r.details as details, DATE_FORMAT(r.requestDate, '%m-%d-%Y') AS `RequestDate`, 
+                        r.requestStatus AS `Status`, br.branchName as branchName,
+                        CASE 
+                          WHEN a.accountId IS NOT NULL 
+                            THEN CASE WHEN a.companyId IS NOT NULL THEN co.companyName ELSE br.branchName END
+                          WHEN cl.accountId IS NOT NULL 
+                            THEN CASE WHEN cl.companyId IS NOT NULL THEN cc.companyName ELSE br.branchName END
+                          ELSE 'Unknown'END AS `ACCOUNT NAME`
                       FROM request r
                       LEFT JOIN concern c ON r.concernId = c.concernId
                       LEFT JOIN concerndetails cd ON r.concernDetailsId = cd.concernDetailsId
@@ -123,7 +129,9 @@
                       JOIN branch br ON b.agentCode = br.branchAgentCode
                       LEFT JOIN payment p ON b.transactNo = p.transactNo
                       LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
+                      LEFT JOIN company co ON a.companyId = co.companyId
                       LEFT JOIN client cl ON b.accountType = 'Client' AND b.accountId = cl.accountId
+                      LEFT JOIN company cc ON cl.companyId = cc.companyId
                       WHERE r.requestStatus = 'Submitted'
                       GROUP BY r.requestId";
 
@@ -156,7 +164,7 @@
                   // Output table row with data-transactno attribute
                   echo "<tr class='request-row' data-requestId='{$row['requestId']}'>
                           <td>{$row['TransactNo']}</td>
-                          <td>{$row['branchName']}</td>
+                          <td>{$row['ACCOUNT NAME']}</td>
                           <td>{$title}</td>
                           <td>{$details}</td>
                           <td>{$row['details']}</td>

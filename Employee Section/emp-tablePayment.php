@@ -101,7 +101,7 @@
           <thead>
             <tr>
               <th>TRANSACT NO.</th>
-              <th>AGENT NAME</th>
+              <th>BRANCH</th>
               <th>PAYMENT TITLE</th>
               <th>PAYMENT TYPE</th>
               <th>AMOUNT</th>
@@ -116,12 +116,20 @@
                             IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1), '.'), '')) AS agentName, 
                         p.paymentTitle, p.paymentType, FORMAT(p.amount, 2) AS amount, 
                         p.filePath, DATE_FORMAT(p.paymentDate, '%M %d, %Y') AS paymentDate, p.paymentStatus, 
-                        br.branchName as branchName
+                        br.branchName as branchName,
+                        CASE 
+                          WHEN a.accountId IS NOT NULL 
+                            THEN CASE WHEN a.companyId IS NOT NULL THEN c.companyName ELSE br.branchName END
+                          WHEN cl.accountId IS NOT NULL 
+                            THEN CASE WHEN cl.companyId IS NOT NULL THEN cc.companyName ELSE br.branchName END
+                          ELSE 'Unknown'END AS `ACCOUNT NAME`
                       FROM payment p
                       LEFT JOIN booking b ON p.transactNo = b.transactNo
                       JOIN branch br ON b.agentCode = br.branchAgentCode
                       LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
-                      LEFT JOIN client c ON b.accountType = 'Client' AND b.accountId = c.accountId
+                      LEFT JOIN company c ON a.companyId = c.companyId
+                      LEFT JOIN client cl ON b.accountType = 'Client' AND b.accountId = cl.accountId
+                      LEFT JOIN company cc ON cl.companyId = cc.companyId
                       WHERE p.paymentStatus = 'Submitted'";
 
               $res1 = $conn->query($sql1);
@@ -161,7 +169,7 @@
                   // Output table row with data-transactno attribute
                   echo "<tr class='transaction-row' data-paymentId='{$row['paymentId']}'>
                           <td>{$row['transactNo']}</td>
-                          <td>{$row['branchName']}</td>
+                          <td>{$row['ACCOUNT NAME']}</td>
                           <td>{$row['paymentTitle']}</td>
                           <td><span class='$paymentTypeClass p-2'>$paymentTypeValue</span></td>
                           <td>₱ {$row['amount']}</td>
