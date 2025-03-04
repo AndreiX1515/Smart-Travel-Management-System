@@ -26,23 +26,23 @@
       <div class="table-header">
 
         <div class="search-wrapper">
-            <div class="search-input-wrapper">
-                <input type="text" id="search" placeholder="Search here..">
-                <!-- <span class="icon">🔍</span> -->
-            </div>
+          <div class="search-input-wrapper">
+            <input type="text" id="search" placeholder="Search here..">
+            <!-- <span class="icon">🔍</span> -->
+          </div>
         </div>
 
         <!-- <div class="filter-field">
-                <!-- <label for="status">Status:</label> 
-                <div class="select-wrapper">
-                  <select id="status">
-                    <option value="All" disabled selected>Select Status</option>
-                    <option value="Pending">Pending</option>
-                    <option value="Confirmed">Confirmed</option>
-                    <option value="Cancelled">Cancelled</option>
-                  </select>
-                </div>
-              </div> -->
+          <label for="status">Status:</label> 
+          <div class="select-wrapper">
+            <select id="status">
+              <option value="All" disabled selected>Select Status</option>
+              <option value="Pending">Pending</option>
+              <option value="Confirmed">Confirmed</option>
+              <option value="Cancelled">Cancelled</option>
+            </select>
+          </div>
+        </div> -->
 
         <div class="second-header-wrapper">
           <div class="date-range-wrapper sorting-wrapper">
@@ -83,11 +83,10 @@
 
           <div class="date-range-wrapper flightbooking-wrapper">
             <div class="date-range-inputs-wrapper">
-            <div class="input-with-icon">
-    <input type="text" class="datepicker" id="FlightStartDate" placeholder="Flight Date" readonly>
-    <i class="fas fa-calendar-alt calendar-icon"></i>
-</div>
-
+              <div class="input-with-icon">
+                <input type="text" class="datepicker" id="FlightStartDate" placeholder="Flight Date" readonly>
+                <i class="fas fa-calendar-alt calendar-icon"></i>
+              </div>
             </div>
           </div>
 
@@ -101,105 +100,107 @@
       </div>
       
       <div class="table-container">
-      <table class="product-table" id="product-table">
-  <thead>
-    <tr>
-      <th>Transact No</th>
-      <th>Agent Name</th>
-      <th>Flight Date</th>
-      <th>Total Pax</th>
-      <th>Package Price</th>
-      <th>Amount Paid</th>
-      <th>Balance</th>
-      <th>Status</th>
-    </tr>
-  </thead>
-  <tbody>
-    <?php
-    // Ensure $conn is properly initialized
-    if (!isset($conn)) {
-        die("Database connection error.");
-    }
+        <table class="product-table" id="product-table">
+          <thead>
+            <tr>
+              <th>Transact No</th>
+              <th>Agent Name</th>
+              <th>Flight Date</th>
+              <th>Total Pax</th>
+              <th>Package Price</th>
+              <th>Total Request Cost</th>
+              <th>Amount Paid</th>
+              <th>Balance</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php
+              // Ensure $conn is properly initialized
+              if (!isset($conn)) 
+              {
+                die("Database connection error.");
+              }
 
-    $sql = "SELECT 
-              b.transactNo, 
-              f.flightDepartureDate AS departureDate, 
-              f.returnDepartureDate AS returnDate, 
-              b.status AS bookingStatus, 
-              CONCAT(f.flightDepartureDate, ' | ', f.returnDepartureDate) AS FlightDate, 
-              p.packageName AS PackageName, 
-              DATE_FORMAT(b.bookingDate, '%m.%d.%Y') AS BookingDate, 
-              b.pax AS TotalPax,  
-              b.totalPrice AS PackagePrice, 
-              CONCAT(a.lName, ', ', a.fName, ' ', IFNULL(CONCAT(SUBSTRING(a.mName, 1, 1), '.'), '')) AS agentName,
-              COALESCE(SUM(pa.amount), 0) AS TotalAmountPaid, 
-              br.branchName as branchName
-            FROM booking b
-            JOIN branch br ON b.agentCode = br.branchAgentCode
-            JOIN flight f ON f.flightId = b.flightId
-            JOIN package p ON p.packageId = b.packageId
-            LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
-            LEFT JOIN client c ON b.accountType = 'Client' AND b.accountId = c.accountId
-            LEFT JOIN payment pa ON pa.transactNo = b.transactNo AND pa.paymentStatus = 'Approved'
-            GROUP BY 
-              b.transactNo, f.flightDepartureDate, f.returnDepartureDate, b.status, 
-              p.packageName, b.bookingDate, b.pax, b.totalPrice, a.lName, a.fName, a.mName, br.branchName
-            ORDER BY CAST(SUBSTRING_INDEX(b.transactNo, '-', -1) AS UNSIGNED)";
+              $sql = "SELECT b.transactNo, f.flightDepartureDate AS departureDate, f.returnDepartureDate AS returnDate, 
+                        b.status AS bookingStatus, CONCAT(f.flightDepartureDate, ' | ', f.returnDepartureDate) AS FlightDate, 
+                        p.packageName AS PackageName, DATE_FORMAT(b.bookingDate, '%m.%d.%Y') AS BookingDate, b.pax AS TotalPax,  
+                        b.totalPrice AS PackagePrice, br.branchName as branchName, COALESCE(SUM(pa.amount), 0) AS TotalAmountPaid,
+                        CONCAT(a.lName, ', ', a.fName, ' ', IFNULL(CONCAT(SUBSTRING(a.mName, 1, 1), '.'), '')) AS agentName,
+                        COALESCE(SUM(r.requestCost), 0) AS TotalRequestAmount
+                      FROM booking b
+                      JOIN branch br ON b.agentCode = br.branchAgentCode
+                      JOIN flight f ON f.flightId = b.flightId
+                      JOIN package p ON p.packageId = b.packageId
+                      LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
+                      LEFT JOIN client c ON b.accountType = 'Client' AND b.accountId = c.accountId
+                      LEFT JOIN payment pa ON pa.transactNo = b.transactNo AND pa.paymentStatus = 'Approved'
+                      LEFT JOIN request r ON r.transactNo = b.transactNo AND r.requestStatus = 'Confirmed'
+                      GROUP BY 
+                        b.transactNo, f.flightDepartureDate, f.returnDepartureDate, b.status, 
+                        p.packageName, b.bookingDate, b.pax, b.totalPrice, a.lName, a.fName, a.mName, br.branchName
+                      ORDER BY CAST(SUBSTRING_INDEX(b.transactNo, '-', -1) AS UNSIGNED)";
 
-    // Execute the query
-    $result = $conn->query($sql);
+              // Execute the query
+              $result = $conn->query($sql);
 
-    // Check if there are results
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            // Safely handle null values
-            $transactNo = htmlspecialchars($row['transactNo'] ?? '');
-            $agentName = htmlspecialchars($row['agentName'] ?? '');
-            $packageName = htmlspecialchars($row['PackageName'] ?? '');
-            $departureDate = $row['departureDate'] ?? null;
-            $returnDate = $row['returnDate'] ?? null;
-            $bookingDate = htmlspecialchars($row['BookingDate'] ?? '');
-            $totalPax = htmlspecialchars($row['TotalPax'] ?? 0);
-            $packagePrice = $row['PackagePrice'] ?? 0;
-            $amountPaid = $row['TotalAmountPaid'] ?? 0;
-            $balance = max($packagePrice - $amountPaid, 0); // Prevent negative balances
-            $status = htmlspecialchars($row['bookingStatus'] ?? 'Unknown');
+              // Check if there are results
+              if ($result->num_rows > 0) 
+              {
+                while ($row = $result->fetch_assoc()) 
+                {
+                  // Safely handle null values
+                  $transactNo = htmlspecialchars($row['transactNo'] ?? '');
+                  $agentName = htmlspecialchars($row['agentName'] ?? '');
+                  $packageName = htmlspecialchars($row['PackageName'] ?? '');
+                  $departureDate = $row['departureDate'] ?? null;
+                  $returnDate = $row['returnDate'] ?? null;
+                  $bookingDate = htmlspecialchars($row['BookingDate'] ?? '');
+                  $totalPax = htmlspecialchars($row['TotalPax'] ?? 0);
+                  $packagePrice = $row['PackagePrice'] ?? 0;
+                  $requestTotal = $row['TotalRequestAmount'] ?? 0;
+                  $amountPaid = $row['TotalAmountPaid'] ?? 0;
+                  $balance = max(($packagePrice + $requestTotal) - $amountPaid, 0); // Prevent negative balances
+                  $status = htmlspecialchars($row['bookingStatus'] ?? 'Unknown');
 
-            // Determine the status class
-            $statusClass = match ($status) {
-                "Pending" => "bg-warning text-dark",
-                "Confirmed" => "bg-success text-white",
-                "Cancelled" => "bg-danger text-white",
-                "Reject" => "bg-secondary text-white",
-                default => "bg-secondary text-white",
-            };
+                  // Determine the status class
+                  $statusClass = match ($status) 
+                  {
+                    "Pending" => "bg-warning text-dark",
+                    "Confirmed" => "bg-success text-white",
+                    "Cancelled" => "bg-danger text-white",
+                    "Reject" => "bg-secondary text-white",
+                    default => "bg-secondary text-white",
+                  };
 
-            // Format dates
-            $formattedDepartureDate = $departureDate ? (new DateTime($departureDate))->format('F j, Y') : 'N/A';
-            $formattedReturnDate = $returnDate ? (new DateTime($returnDate))->format('F j, Y') : 'N/A';
+                  // Format dates
+                  $formattedDepartureDate = $departureDate ? (new DateTime($departureDate))->format('F j, Y') : 'N/A';
+                  $formattedReturnDate = $returnDate ? (new DateTime($returnDate))->format('F j, Y') : 'N/A';
 
-            // Securely encode URL
-            $transactionUrl = htmlspecialchars("emp-transactionInfo.php?id=$transactNo");
+                  // Securely encode URL
+                  $transactionUrl = htmlspecialchars("emp-transactionInfo.php?id=$transactNo");
 
-            // Output each row as a table row
-            echo "<tr data-url='$transactionUrl'>";
-            echo "<td>$transactNo</td>";
-            echo "<td>" . htmlspecialchars($row['branchName'] ?? '') . "</td>";
-            echo "<td>$formattedDepartureDate</td>";
-            echo "<td class='fw-bold ps-3'>$totalPax</td>";
-            echo "<td>₱ " . number_format($packagePrice, 2) . "</td>";
-            echo "<td>₱ " . number_format($amountPaid, 2) . "</td>";
-            echo "<td>₱ " . number_format($balance, 2) . "</td>";
-            echo "<td> <span class='badge rounded-pill $statusClass p-2'>$status</span></td>";
-            echo "</tr>";
-        }
-    } else {
-        echo "<tr><td colspan='8' class='text-center'>No records found</td></tr>";
-    }
-    ?>
-  </tbody>
-</table>
-
+                  // Output each row as a table row
+                  echo "<tr data-url='$transactionUrl'>";
+                  echo "<td>$transactNo</td>";
+                  echo "<td>" . htmlspecialchars($row['branchName'] ?? '') . "</td>";
+                  echo "<td>$formattedDepartureDate</td>";
+                  echo "<td class='fw-bold ps-3'>$totalPax</td>";
+                  echo "<td>₱ " . number_format($packagePrice, 2) . "</td>";
+                  echo "<td>₱ " . number_format($requestTotal, 2) . "</td>";
+                  echo "<td>₱ " . number_format($amountPaid, 2) . "</td>";
+                  echo "<td>₱ " . number_format($balance, 2) . "</td>";
+                  echo "<td> <span class='badge rounded-pill $statusClass p-2'>$status</span></td>";
+                  echo "</tr>";
+                }
+              } 
+              else 
+              {
+                echo "<tr><td colspan='8' class='text-center'>No records found</td></tr>";
+              }
+            ?>
+          </tbody>
+        </table>
       </div>
 
       <div class="table-footer">

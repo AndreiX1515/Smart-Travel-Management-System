@@ -34,35 +34,41 @@ session_start();
         }
         ?>
 
-        <div class="title">
-          <h1>TRANSACTION ID: <?php echo $transactionId; ?></h1>
-        </div>
-
-        <!-- Navbar items and functionality can be added here -->
+      <div class="title">
+        <h1>TRANSACTION ID: <?php echo $transactionId; ?></h1>
       </div>
-    </nav>
 
-    <div class="main-content">
+      <!-- Navbar items and functionality can be added here -->
+    </div>
+  </nav>
 
-      <div class="content-container">
+  <div class="main-content">
+    <div class="content-container">
+  
+      <div class="first-part-wrapper">
+        <div class="transaction-info-wrapper">
+          <div class="card-header">
+            <h6>Transaction Information</h6>
+          </div>
 
-        <div class="first-part-wrapper">
-          <div class="transaction-info-wrapper">
-
-            <?php
-            $query1 = "SELECT b.*, p.packageName, f.flightDepartureDate, SUM(pa.amount) AS TotalAmountPaid 
-                      FROM booking b 
-                      JOIN package p ON b.packageId = p.packageId
-                      LEFT JOIN flight f ON b.flightId = f.flightId
-                      LEFT JOIN payment pa ON pa.transactNo = b.transactNo AND pa.paymentStatus = 'Approved'
-                      WHERE b.transactNo = '$transactionId'
-                      GROUP BY b.transactNo";
+          <?php
+            $query1 = "SELECT b.*, p.packageName, f.flightDepartureDate, COALESCE(SUM(pa.amount), 0) AS TotalAmountPaid,
+                        COALESCE(SUM(r.requestCost), 0) AS TotalRequestAmount
+                        FROM booking b 
+                        JOIN package p ON b.packageId = p.packageId
+                        LEFT JOIN flight f ON b.flightId = f.flightId
+                        LEFT JOIN payment pa ON pa.transactNo = b.transactNo AND pa.paymentStatus = 'Approved'
+                        LEFT JOIN request r ON r.transactNo = b.transactNo AND r.requestStatus = 'Confirmed'
+                        WHERE b.transactNo = '$transactionId'
+                        GROUP BY b.transactNo";
 
             $result1 = $conn->query($query1);
 
-            if ($result1->num_rows > 0) {
+            if ($result1->num_rows > 0) 
+            {
               // Output data of each row
-              while ($row1 = $result1->fetch_assoc()) {
+              while ($row1 = $result1->fetch_assoc()) 
+              {
                 $transactNum = $row1['transactNo'];
                 $fName = $row1['fName'];
                 $mName = $row1['mName'];
@@ -75,19 +81,22 @@ session_start();
                 $flightDate = $row1['flightDepartureDate'];
                 $pax = $row1['pax'];
                 $status = $row1['status'];
-                $price = $row1['totalPrice'];
+                $price = $row1['totalPrice'] ?? 0;
+                $requestCost = $row1['TotalRequestAmount'] ?? 0;
+                $amountPaid = $row1['TotalAmountPaid'] ?? 0;
                 $flightId = $row1['flightId']; // Fetch flightId
-                $balance = $row1['totalPrice'] - $row1['TotalAmountPaid'];
+                $balance = ($price + $requestCost) - $amountPaid;
                 $formattedBalance = number_format($balance, 2);
 
                 // Construct the full name using the conditions for middle name and suffix
-                $fullName = $lName . ", " . $fName . " " .
-                  ($suffix !== 'N/A' ? $suffix . " " : "") .  // Add space after suffix only if it's not 'N/A'
-                  ($mName !== 'N/A' ? substr($mName, 0, 1) . ". " : "");  // Add middle initial with dot only if it's not 'N/A'
+                $fullName = $lName . ", " . $fName . " " . 
+                            ($suffix !== 'N/A' ? $suffix . " " : "") .  // Add space after suffix only if it's not 'N/A'
+                            ($mName !== 'N/A' ? substr($mName, 0, 1) . ". " : "");  // Add middle initial with dot only if it's not 'N/A'
                 $contactNo = $countryCode . $contact;
 
                 // Check if flightId is NULL and set flightDate accordingly
-                if (is_null($flightId)) {
+                if (is_null($flightId)) 
+                {
                   $flightDate = "Land Package Only";
                 }
 
@@ -97,7 +106,8 @@ session_start();
                 $statusClass = '';
 
                 // Assign classes based on the status value using switch
-                switch ($status) {
+                switch ($status) 
+                {
                   case 'Confirmed':
                     $statusClass = 'bg-success text-white'; // Green background, white text
                     break;
@@ -112,45 +122,144 @@ session_start();
                     break;
                 }
               }
-            } else {
+            } 
+            else 
+            {
               echo "0 results";
             }
-            ?>
+          ?>
 
-            <div class="card-header">
-              <h6>Transaction Information</h6>
-            </div>
+          <div class="card-body">
+            <div class="row guest-info">
+              <div class="col-md-6">
+                <p><strong>Transaction No:</strong> <?php echo $transactNum; ?></p>
+                <p><strong>Total Pax:</strong> <?php echo $pax; ?></p>
+                <p><strong>Package:</strong> <?php echo $packageName; ?></p>
+                <p><strong>Flight Date:</strong> <?php echo $flightDate; ?></p>
+                <p class="align-items-center">
+                  <strong>Status:</strong> 
+                  <span class="badge rounded-pill bg-warning text-dark p-2">
+                    <?php echo $status; ?>
+                  </span>
+                </p>
+              </div>
 
-            <div class="card-body">
-              <div class="row guest-info">
-                <div class="col-md-6">
-                  <p><strong>Transaction No:</strong> <?php echo $transactNum; ?></p>
-                  <p><strong>Total Pax:</strong> <?php echo $pax; ?></p>
-                  <p><strong>Package:</strong> <?php echo $packageName; ?></p>
-                  <p><strong>Flight Date:</strong> <?php echo $flightDate; ?></p>
-                  <p class="align-items-center">
-                    <strong>Status:</strong>
-                    <span class="badge rounded-pill bg-warning text-dark p-2">
-                      <?php echo $status; ?>
-                    </span>
-                  </p>
-                </div>
-
-                <div class="col-md-6">
-                  <p><strong>Contact Person:</strong> <?php echo $fullName; ?></p>
-                  <p><strong>Contact No:</strong> <?php echo $contactNo; ?></p>
-                  <p><strong>Email:</strong> <?php echo $email; ?></p>
-                  <p><strong>Balance: ₱ </strong> <?php echo $formattedBalance; ?></p>
-                </div>
+              <div class="col-md-6">
+                <p><strong>Contact Person:</strong> <?php echo $fullName; ?></p>
+                <p><strong>Contact No:</strong> <?php echo $contactNo; ?></p>
+                <p><strong>Email:</strong> <?php echo $email;?></p>
+                <p><strong>Balance: ₱ </strong> <?php echo $formattedBalance; ?></p>
               </div>
             </div>
+          </div>
 
-            <div class="card-footer">
-              <button class="btn btn-danger btn-sm cancel-btn" data-transact="<?php echo $transactNo; ?>" data-bs-toggle="modal" data-bs-target="#cancelModal">
-                Cancel Transaction
-              </button>
+          <div class="card-footer">
+            <button class="btn btn-danger btn-sm cancel-btn" data-transact="<?php echo $transactNo; ?>" data-bs-toggle="modal" data-bs-target="#cancelModal">
+              Cancel Transaction
+            </button>
+          </div>
+
+        </div>
+
+        <div class="guest-info-table-wrapper">
+          <div class="card-header">
+            <h6>Guest Informations</h6>
+          </div>
+
+          <div class="card-body">
+            <div class="guest-table-wrapper">
+              <table class="table-stripped">
+                <?php
+                  $sql1 = "SELECT *, DATE_FORMAT(birthdate, '%M %d, %Y') AS birthdate, CONCAT(countryCode, ' ', contactNo) AS contactNo,
+                            CASE 
+                              WHEN countryCode2 IS NULL OR contactNo2 IS NULL THEN 'N/A'
+                              ELSE CONCAT(countryCode2, ' ', contactNo2)
+                            END AS contactNo2, CONCAT(addressLine1, ', ', 
+                            CASE 
+                              WHEN addressLine2 IS NOT NULL AND addressLine2 != '' THEN CONCAT(addressLine2, ', ') 
+                              ELSE '' 
+                            END, city, ', ', state, ', ', zipcode, ', ', country) AS address
+                          FROM guest 
+                          WHERE transactNo = '$transactNum'";
+
+                  $res1 = $conn->query($sql1);
+
+                  if ($res1->num_rows > 0) 
+                  {
+                    // Only display the table header if rows exist
+                    echo "
+                      <thead>
+                        <tr>
+                          <th>ID</th>
+                          <th>Contact Name</th>
+                          <th>Birthdate</th>
+                          <th>Age</th>
+                          <th>Sex</th>
+                          <th>Nationality</th>
+                          <th>Contact No</th>
+                          <th>Other Contact</th>
+                          <th>Email</th>
+                          <th>Address</th>
+                          <th>Passport No.</th>
+                          <th>Passport Exp.</th>
+                          <th>Visa Status</th>
+                        </tr>
+                      </thead>
+                      <tbody>";
+                        while ($row = $res1->fetch_assoc()) 
+                        {
+                          $fullName = $row['fName'] . ' ' . $row['mName'] . ' ' . $row['lName'];
+                          if (!empty($row['suffix']) && $row['suffix'] !== 'N/A') 
+                          {
+                            $fullName .= ' ' . $row['suffix'];
+                          }
+
+                          $guestId = htmlspecialchars($row['guestId']);
+                          $birthdate = htmlspecialchars($row['birthdate']);
+                          $age = htmlspecialchars($row['age']);
+                          $sex = htmlspecialchars($row['sex']);
+                          $nationality = htmlspecialchars($row['nationality']);
+                          $contactNo = htmlspecialchars($row['contactNo']);
+                          $contactNo2 = htmlspecialchars($row['contactNo2']);
+                          $emailAdd = htmlspecialchars($row['emailAdd']);
+                          $address = htmlspecialchars($row['address']);
+                          $passportNo = htmlspecialchars($row['passportNo']);
+                          $passportExp = htmlspecialchars($row['passportExp']);
+
+                          echo "
+                            <tr class='table-row' data-guest-id='{$guestId}'>
+                              <td>{$guestId}</td>
+                              <td>{$fullName}</td>
+                              <td>{$birthdate}</td>
+                              <td>{$age}</td>
+                              <td>{$sex}</td>
+                              <td>{$nationality}</td>
+                              <td>{$contactNo}</td>
+                              <td>{$contactNo2}</td>
+                              <td>{$emailAdd}</td>
+                              <td>{$address}</td>
+                              <td>{$passportNo}</td>
+                              <td>{$passportExp}</td>
+                              <td>{$row['visaStatus']}</td>
+                            </tr>";
+                        }
+                      echo "</tbody>";
+                  } 
+                  else 
+                  {
+                    // Hide the table header and display a message
+                    echo "
+                    <thead style='display: none;'></thead>
+                    <tbody>
+                      <tr style='display: none;'></tr> <!-- Ensures no empty table rows -->
+                    </tbody>
+                    <div class='no-requests-container'>
+                      <span>No Guest Found</span>
+                    </div>";
+                  }
+                ?>
+              </table>
             </div>
-
           </div>
 
           <div class="guest-info-table-wrapper">

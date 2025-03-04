@@ -270,7 +270,9 @@ require "../conn.php";
                                     LEFT JOIN client cl ON b.accountType = 'Client' AND b.accountId = cl.accountId
                                     LEFT JOIN company cc ON cl.companyId = cc.companyId
                                     JOIN branch br ON b.agentCode = br.branchAgentCode
-                                    WHERE b.agentCode = '$agentCode' and (c.companyId = $companyId OR cc.companyId = $companyId) 
+                                    WHERE b.agentCode = '$agentCode' 
+                                    AND (COALESCE(c.companyId, '') = COALESCE('$companyId', '') 
+                                    OR COALESCE(cc.companyId, '') = COALESCE('$companyId', '')) 
                                     ORDER BY b.transactNo DESC";
 
                           $res1 = $conn->query($sql1);

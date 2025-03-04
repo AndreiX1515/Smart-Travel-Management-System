@@ -119,7 +119,7 @@ session_start();
               {
                 $totalPrice = $res1['totalPrice'];
                 $formattedPrice = number_format($totalPrice, 2); // Format to 2 decimal places
-                $downpayment = $res1['pax'] * 1000;
+                $downpayment = $res1['pax'] * 3000;
                 $formattedDP = number_format($downpayment, 2); // Format to 2 decimal places
       
                 // Get additional fields
@@ -173,7 +173,7 @@ session_start();
           <div class="row">
             <div class="col-sm">
               <div class="d-flex justify-content-between mb-1">
-                <p class="mb-0">₱ 1,000 per Guest.</p> <!-- Added space for better readability -->
+                <p class="mb-0">₱ 3,000 per Guest.</p> <!-- Added space for better readability -->
               </div>
             </div>
           </div>
