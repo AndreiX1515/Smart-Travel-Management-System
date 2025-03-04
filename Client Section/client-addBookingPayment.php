@@ -119,7 +119,7 @@ session_start();
               {
                 $totalPrice = $res1['totalPrice'];
                 $formattedPrice = number_format($totalPrice, 2); // Format to 2 decimal places
-                $downpayment = $res1['pax'] * 1000;
+                $downpayment = $res1['pax'] * 3000;
                 $formattedDP = number_format($downpayment, 2); // Format to 2 decimal places
       
                 // Get additional fields
