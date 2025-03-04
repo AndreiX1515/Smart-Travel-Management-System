@@ -1,56 +1,57 @@
 <?php
-  session_start();
+session_start();
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Transactions</title>
-    <?php include '../Employee Section/includes/emp-head.php' ?>
-    <link rel="stylesheet" href="../Employee Section/assets/css/emp-transactionInfo.css?v=<?php echo time(); ?>">
-    <link rel="stylesheet" href="../Employee Section/assets/css/emp-sidebar-navbar.css?v=<?php echo time(); ?>">
-    
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transactions</title>
+  <?php include '../Employee Section/includes/emp-head.php' ?>
+  <link rel="stylesheet" href="../Employee Section/assets/css/emp-transactionInfo.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="../Employee Section/assets/css/emp-sidebar-navbar.css?v=<?php echo time(); ?>">
+
 </head>
+
 <body>
 
 
-<?php include '../Employee Section/includes/emp-sidebar.php' ?>
+  <?php include '../Employee Section/includes/emp-sidebar.php' ?>
 
-<!-- Main Container -->
-<div class="main-container">
-  <nav class="navbar navbar-expand-lg navbar-custom mt-2">
-    <div class="back-button-wrapper py-3 px-4">
-      <button class="back-button" onclick="window.location.href='../Employee Section/emp-transaction.php';">
-        <i class="fas fa-arrow-left"></i>
-      </button>
+  <!-- Main Container -->
+  <div class="main-container">
+    <nav class="navbar navbar-expand-lg navbar-custom mt-2">
+      <div class="back-button-wrapper">
+        <button class="back-button" onclick="window.location.href='../Employee Section/emp-transaction.php';">
+          <i class="fas fa-arrow-left"></i>
+        </button>
 
-      <?php 
-        if (isset($_GET['id'])) 
-        {
+        <?php
+        if (isset($_GET['id'])) {
           // Sanitize the input to prevent XSS attacks
           $transactionId = htmlspecialchars($_GET['id']);
         }
-      ?>
+        ?>
 
-      <div class="title">
-        <h1>TRANSACTION ID: <?php echo $transactionId; ?></h1>
+        <div class="title">
+          <h1>TRANSACTION ID: <?php echo $transactionId; ?></h1>
+        </div>
+
+        <!-- Navbar items and functionality can be added here -->
       </div>
+    </nav>
 
-      <!-- Navbar items and functionality can be added here -->
-    </div>
-  </nav>
+    <div class="main-content">
+      <div class="content-container">
 
-  <div class="main-content">
-    <div class="content-container">
-  
-      <div class="first-part-wrapper">
-        <div class="transaction-info-wrapper">
-          <div class="card-header">
-            <h6>Transaction Information</h6>
-          </div>
+        <div class="first-part-wrapper">
+          <div class="transaction-info-wrapper">
+            <div class="card-header">
+              <h6>Transaction Information</h6>
+            </div>
 
-          <?php
+            <?php
             $query1 = "SELECT b.*, p.packageName, f.flightDepartureDate, COALESCE(SUM(pa.amount), 0) AS TotalAmountPaid,
                         COALESCE(SUM(r.requestCost), 0) AS TotalRequestAmount
                         FROM booking b 
@@ -63,11 +64,9 @@
 
             $result1 = $conn->query($query1);
 
-            if ($result1->num_rows > 0) 
-            {
+            if ($result1->num_rows > 0) {
               // Output data of each row
-              while ($row1 = $result1->fetch_assoc()) 
-              {
+              while ($row1 = $result1->fetch_assoc()) {
                 $transactNum = $row1['transactNo'];
                 $fName = $row1['fName'];
                 $mName = $row1['mName'];
@@ -88,14 +87,13 @@
                 $formattedBalance = number_format($balance, 2);
 
                 // Construct the full name using the conditions for middle name and suffix
-                $fullName = $lName . ", " . $fName . " " . 
-                            ($suffix !== 'N/A' ? $suffix . " " : "") .  // Add space after suffix only if it's not 'N/A'
-                            ($mName !== 'N/A' ? substr($mName, 0, 1) . ". " : "");  // Add middle initial with dot only if it's not 'N/A'
+                $fullName = $lName . ", " . $fName . " " .
+                  ($suffix !== 'N/A' ? $suffix . " " : "") .  // Add space after suffix only if it's not 'N/A'
+                  ($mName !== 'N/A' ? substr($mName, 0, 1) . ". " : "");  // Add middle initial with dot only if it's not 'N/A'
                 $contactNo = $countryCode . $contact;
 
                 // Check if flightId is NULL and set flightDate accordingly
-                if (is_null($flightId)) 
-                {
+                if (is_null($flightId)) {
                   $flightDate = "Land Package Only";
                 }
 
@@ -105,8 +103,7 @@
                 $statusClass = '';
 
                 // Assign classes based on the status value using switch
-                switch ($status) 
-                {
+                switch ($status) {
                   case 'Confirmed':
                     $statusClass = 'bg-success text-white'; // Green background, white text
                     break;
@@ -121,270 +118,178 @@
                     break;
                 }
               }
-            } 
-            else 
-            {
+            } else {
               echo "0 results";
             }
-          ?>
+            ?>
 
-          <div class="card-body">
-            <div class="row guest-info">
-              <div class="col-md-6">
-                <p><strong>Transaction No:</strong> <?php echo $transactNum; ?></p>
-                <p><strong>Total Pax:</strong> <?php echo $pax; ?></p>
-                <p><strong>Package:</strong> <?php echo $packageName; ?></p>
-                <p><strong>Flight Date:</strong> <?php echo $flightDate; ?></p>
-                <p class="align-items-center">
-                  <strong>Status:</strong> 
-                  <span class="badge rounded-pill bg-warning text-dark p-2">
-                    <?php echo $status; ?>
-                  </span>
-                </p>
-              </div>
+            <div class="card-body">
+              <div class="row guest-info">
+                <div class="col-md-6">
+                  <p><strong>Transaction No:</strong> <?php echo $transactNum; ?></p>
+                  <p><strong>Total Pax:</strong> <?php echo $pax; ?></p>
+                  <p><strong>Package:</strong> <?php echo $packageName; ?></p>
+                  <p><strong>Flight Date:</strong> <?php echo $flightDate; ?></p>
+                  <p class="align-items-center">
+                    <strong>Status:</strong>
+                    <span class="badge rounded-pill bg-warning text-dark p-2">
+                      <?php echo $status; ?>
+                    </span>
+                  </p>
+                </div>
 
-              <div class="col-md-6">
-                <p><strong>Contact Person:</strong> <?php echo $fullName; ?></p>
-                <p><strong>Contact No:</strong> <?php echo $contactNo; ?></p>
-                <p><strong>Email:</strong> <?php echo $email;?></p>
-                <p><strong>Balance: ₱ </strong> <?php echo $formattedBalance; ?></p>
+                <div class="col-md-6">
+                  <p><strong>Contact Person:</strong> <?php echo $fullName; ?></p>
+                  <p><strong>Contact No:</strong> <?php echo $contactNo; ?></p>
+                  <p><strong>Email:</strong> <?php echo $email; ?></p>
+                  <p><strong>Balance: ₱ </strong> <?php echo $formattedBalance; ?></p>
+                </div>
               </div>
             </div>
+
+            <div class="card-footer">
+              <button class="btn btn-danger btn-sm cancel-btn" data-transact="<?php echo $transactNo; ?>" data-bs-toggle="modal" data-bs-target="#cancelModal">
+                Cancel Transaction
+              </button>
+            </div>
+
           </div>
 
-          <div class="card-footer">
-            <button class="btn btn-danger btn-sm cancel-btn" data-transact="<?php echo $transactNo; ?>" data-bs-toggle="modal" data-bs-target="#cancelModal">
-              Cancel Transaction
-            </button>
-          </div>
 
+          <div class="guest-info-table-wrapper">
+
+          </div>
         </div>
 
-        <div class="guest-info-table-wrapper">
-          <div class="card-header">
-            <h6>Guest Informations</h6>
-          </div>
+        <div class="nav-pills-wrapper">
+          <ul class="nav nav-pills " id="pills-tab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Guest Information</button>
+            </li>
 
-          <div class="card-body">
-            <div class="guest-table-wrapper">
-              <table class="table-stripped">
-                <?php
-                  $sql1 = "SELECT *, DATE_FORMAT(birthdate, '%M %d, %Y') AS birthdate, CONCAT(countryCode, ' ', contactNo) AS contactNo,
-                            CASE 
-                              WHEN countryCode2 IS NULL OR contactNo2 IS NULL THEN 'N/A'
-                              ELSE CONCAT(countryCode2, ' ', contactNo2)
-                            END AS contactNo2, CONCAT(addressLine1, ', ', 
-                            CASE 
-                              WHEN addressLine2 IS NOT NULL AND addressLine2 != '' THEN CONCAT(addressLine2, ', ') 
-                              ELSE '' 
-                            END, city, ', ', state, ', ', zipcode, ', ', country) AS address
-                          FROM guest 
-                          WHERE transactNo = '$transactNum'";
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="true">Request History</button>
+            </li>
 
-                  $res1 = $conn->query($sql1);
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Payment History</button>
+            </li>
+            <!-- <li class="nav-item" role="presentation">
+          <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Contact</button>
+        </li> -->
+            <!-- <li class="nav-item" role="presentation">
+          <button class="nav-link" id="pills-disabled-tab" data-bs-toggle="pill" data-bs-target="#pills-disabled" type="button" role="tab" aria-controls="pills-disabled" aria-selected="false" disabled>Disabled</button>
+        </li> -->
+          </ul>
+        </div>
 
-                  if ($res1->num_rows > 0) 
-                  {
-                    // Only display the table header if rows exist
-                    echo "
-                      <thead>
-                        <tr>
-                          <th>ID</th>
-                          <th>Contact Name</th>
-                          <th>Birthdate</th>
-                          <th>Age</th>
-                          <th>Sex</th>
-                          <th>Nationality</th>
-                          <th>Contact No</th>
-                          <th>Other Contact</th>
-                          <th>Email</th>
-                          <th>Address</th>
-                          <th>Passport No.</th>
-                          <th>Passport Exp.</th>
-                          <th>Visa Status</th>
-                        </tr>
-                      </thead>
-                      <tbody>";
-                        while ($row = $res1->fetch_assoc()) 
-                        {
-                          $fullName = $row['fName'] . ' ' . $row['mName'] . ' ' . $row['lName'];
-                          if (!empty($row['suffix']) && $row['suffix'] !== 'N/A') 
-                          {
-                            $fullName .= ' ' . $row['suffix'];
-                          }
+        <div class="tab-content" id="pills-tabContent">
+          <?php include '../Employee Section/emp-transactionGuestInfo.php' ?>
+          <?php include '../Employee Section/emp-transactionRequestHistory.php' ?>
+          <?php include '../Employee Section/emp-transactionPaymentHistory.php' ?>
+        </div>
 
-                          $guestId = htmlspecialchars($row['guestId']);
-                          $birthdate = htmlspecialchars($row['birthdate']);
-                          $age = htmlspecialchars($row['age']);
-                          $sex = htmlspecialchars($row['sex']);
-                          $nationality = htmlspecialchars($row['nationality']);
-                          $contactNo = htmlspecialchars($row['contactNo']);
-                          $contactNo2 = htmlspecialchars($row['contactNo2']);
-                          $emailAdd = htmlspecialchars($row['emailAdd']);
-                          $address = htmlspecialchars($row['address']);
-                          $passportNo = htmlspecialchars($row['passportNo']);
-                          $passportExp = htmlspecialchars($row['passportExp']);
+      </div>
 
-                          echo "
-                            <tr class='table-row' data-guest-id='{$guestId}'>
-                              <td>{$guestId}</td>
-                              <td>{$fullName}</td>
-                              <td>{$birthdate}</td>
-                              <td>{$age}</td>
-                              <td>{$sex}</td>
-                              <td>{$nationality}</td>
-                              <td>{$contactNo}</td>
-                              <td>{$contactNo2}</td>
-                              <td>{$emailAdd}</td>
-                              <td>{$address}</td>
-                              <td>{$passportNo}</td>
-                              <td>{$passportExp}</td>
-                              <td>{$row['visaStatus']}</td>
-                            </tr>";
-                        }
-                      echo "</tbody>";
-                  } 
-                  else 
-                  {
-                    // Hide the table header and display a message
-                    echo "
-                    <thead style='display: none;'></thead>
-                    <tbody>
-                      <tr style='display: none;'></tr> <!-- Ensures no empty table rows -->
-                    </tbody>
-                    <div class='no-requests-container'>
-                      <span>No Guest Found</span>
-                    </div>";
-                  }
-                ?>
-              </table>
+    </div>
+  </div>
+
+  <!-- Cancel Transaction Modal -->
+  <div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="cancelModalLabel">Cancel Transaction</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form action="../Employee Section/functions/emp-cancelTransact-code.php" method="POST">
+          <div class="modal-body">
+            <p>Are you sure you want to cancel this transaction?</p>
+            <p><strong>Transaction No: <?php echo $transactNum; ?></strong></p>
+
+            <input type="hidden" name="transactNo" value="<?php echo $transactNum; ?>" />
+            <input type="hidden" name="accId" value="<?php echo $accountId; ?>" />
+
+            <div class="form-group">
+              <label for="remarks">Remarks</label>
+              <input type="text" class="form-control" id="remarks" name="remarks" placeholder="Enter Remarks" />
             </div>
           </div>
-        </div>
-
-      </div>
-
-      <div class="nav-pills-wrapper">
-        <ul class="nav nav-pills " id="pills-tab" role="tablist">
-          <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Request History</button>
-          </li>
-          <li class="nav-item" role="presentation">
-            <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Payment History</button>
-          </li>
-          <!-- <li class="nav-item" role="presentation">
-            <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Contact</button>
-          </li> -->
-          <!-- <li class="nav-item" role="presentation">
-            <button class="nav-link" id="pills-disabled-tab" data-bs-toggle="pill" data-bs-target="#pills-disabled" type="button" role="tab" aria-controls="pills-disabled" aria-selected="false" disabled>Disabled</button>
-          </li> -->
-        </ul>
-      </div>
-
-      <div class="tab-content" id="pills-tabContent">
-        <?php include '../Employee Section/emp-transactionRequestHistory.php' ?>
-        <?php include '../Employee Section/emp-transactionPaymentHistory.php' ?>
-      </div>
- 
-    </div>
-  </div>
-</div>
-
-<!-- Cancel Transaction Modal -->
-<div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="cancelModalLabel">Cancel Transaction</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <form action="../Employee Section/functions/emp-cancelTransact-code.php" method="POST">
-        <div class="modal-body">
-          <p>Are you sure you want to cancel this transaction?</p>
-          <p><strong>Transaction No: <?php echo $transactNum; ?></strong></p>
-          
-          <input type="hidden" name="transactNo" value="<?php echo $transactNum; ?>" />
-          <input type="hidden" name="accId" value="<?php echo $accountId; ?>" />
-          
-          <div class="form-group">
-            <label for="remarks">Remarks</label>
-            <input type="text" class="form-control" id="remarks" name="remarks" placeholder="Enter Remarks" />
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" name="confirmCancel" class="btn btn-danger" id="confirmCancel">Confirm Cancel</button>
           </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="submit" name="confirmCancel" class="btn btn-danger" id="confirmCancel">Confirm Cancel</button>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   </div>
-</div>
 
 
-<!-- Visa Status Modal -->
-<div class="modal fade" id="guestModal" tabindex="-1" role="dialog" aria-labelledby="guestModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="guestModalLabel">Update Visa Status</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <form action="../Employee Section/functions/emp-updateVisaStatus-code.php" method="POST">
-        <div class="modal-body">
-          <input type="hidden" name="guestId" id="guestIdField"> 
-          <input type="hidden" name="transactNo" placeholder="transactNo" value="<?php echo $transactNum; ?>">
+  <!-- Visa Status Modal -->
+  <div class="modal fade" id="guestModal" tabindex="-1" role="dialog" aria-labelledby="guestModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="guestModalLabel">Update Visa Status</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="../Employee Section/functions/emp-updateVisaStatus-code.php" method="POST">
+          <div class="modal-body">
+            <input type="hidden" name="guestId" id="guestIdField">
+            <input type="hidden" name="transactNo" placeholder="transactNo" value="<?php echo $transactNum; ?>">
 
-          <!-- <p class="mb-3">
+            <!-- <p class="mb-3">
             Are you sure you want to cancel this transaction? This action cannot be undone.
           </p> -->
 
-          <div class="mb-4">
-            <label for="visaStatus" class="form-label fw-bold">Visa Status:</label>
-            <select id="visaStatus" name="visaStatus" class="form-select">
-              <option selected disabled>Select Option</option>
-              <option value="Approved">Approved</option>
-              <option value="Denied">Denied</option>
-            </select>
-          </div>
+            <div class="mb-4">
+              <label for="visaStatus" class="form-label fw-bold">Visa Status:</label>
+              <select id="visaStatus" name="visaStatus" class="form-select">
+                <option selected disabled>Select Option</option>
+                <option value="Approved">Approved</option>
+                <option value="Denied">Denied</option>
+              </select>
+            </div>
 
-          <!-- Reason for Cancellation -->
-          <div class="mb-3">
-            <label for="cancellationReason" class="form-label">
-              Reason for Denied <span class="text-danger fw-bold"></span>
-            </label>
-            <input id="cancellationReason" name="reason" class="form-control" placeholder="Enter the remarks for Denied Visa">
+            <!-- Reason for Cancellation -->
+            <div class="mb-3">
+              <label for="cancellationReason" class="form-label">
+                Reason for Denied <span class="text-danger fw-bold"></span>
+              </label>
+              <input id="cancellationReason" name="reason" class="form-control" placeholder="Enter the remarks for Denied Visa">
+            </div>
           </div>
-        </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-primary" name="updateVisaStatus" data-dismiss="modal">Submit</button>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        </div>
-      </form>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary" name="updateVisaStatus" data-dismiss="modal">Submit</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
-</div>
 
 
-<?php include '../Employee Section/includes/emp-scripts.php' ?>
+  <?php include '../Employee Section/includes/emp-scripts.php' ?>
 
-<script>
-  // Select all table rows with the class 'table-row'
-  document.querySelectorAll('.table-row').forEach(row => {
-    row.addEventListener('click', function() {
-      // Get the data from the clicked row
-      const guestId = this.getAttribute('data-guest-id');
-      
-      // Set the guestId input field with the clicked row's guestId
-      document.getElementById('guestIdField').value = guestId;
+  <script>
+    // Select all table rows with the class 'table-row'
+    document.querySelectorAll('.table-row').forEach(row => {
+      row.addEventListener('click', function() {
+        // Get the data from the clicked row
+        const guestId = this.getAttribute('data-guest-id');
 
-      // Open the modal
-      $('#guestModal').modal('show');
+        // Set the guestId input field with the clicked row's guestId
+        document.getElementById('guestIdField').value = guestId;
+
+        // Open the modal
+        $('#guestModal').modal('show');
+      });
     });
-  });
-</script>
+  </script>
 
 
 </body>
+
 </html>

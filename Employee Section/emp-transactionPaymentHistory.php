@@ -1,7 +1,8 @@
 <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
-  <div class="card-header px-3 py-1">
+
+  <!-- <div class="card-header px-3 py-1">
     <h6>Payment History</h6>
-  </div>
+  </div> -->
 
   <div class="request-table-wrapper">
     <table class="request-table">

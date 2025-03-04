@@ -17,13 +17,16 @@
   justify-content: space-between;
   align-items: center;
   gap: 10px;
-  border: 1px solid gainsboro; /* Optional border color */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Box shadow for a subtle effect */
-  padding: 10px 8px 7px 8px;
-  background-color: #dbdbdb; /* Optional background color */
-  border-radius: 10px; /* Optional rounded corners */
-  margin-bottom: 10px;
+  padding: 5px 0px 20px 0px;
   /* border: 1px solid black; */
+
+  /* border: 1px solid gainsboro; 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  */
+  
+  /* background-color: #dbdbdb; 
+  border-radius: 10px; 
+  margin-bottom: 10px; */
+ 
 }
 
 .search-wrapper {
@@ -40,7 +43,8 @@
   padding: 12px 15px;
   border-radius: 10px;
   background-color: #ffffff;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  
+  border: 1px solid gainsboro;
 }
 
 .search-input-wrapper input {
