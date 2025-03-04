@@ -372,44 +372,58 @@
 /* Column width adjustments */
 .product-table th:nth-child(1),
 .product-table td:nth-child(1) {
-  width: 6%; /* Transaction ID */
+  width: 8%; /* Transact No */
 }
 
 .product-table th:nth-child(2),
 .product-table td:nth-child(2) {
-  width: 12%; /* Contact Person Info */
+  width: 14%; /* Agent Name */
 }
 
 .product-table th:nth-child(3),
 .product-table td:nth-child(3) {
-  width: 12%; /* Adjusted width for better spacing */
+  width: 12%; /* Flight Date */
 }
 
 .product-table th:nth-child(4),
 .product-table td:nth-child(4) {
-  width: 15%; /* Main Details */
-}
-
-.product-table th:nth-child(5),
-.product-table td:nth-child(5) {
-  width: 12%; /* Date/Time */
-}
-
-.product-table th:nth-child(6),
-.product-table td:nth-child(6) {
-  width: 6%; /* Status */
-}
-
-.product-table th:nth-child(7),
-.product-table td:nth-child(7) {
   width: 8%; /* Total Pax */
   text-align: center;
 }
 
+.product-table th:nth-child(5),
+.product-table td:nth-child(5) {
+  width: 12%; /* Package Price */
+  text-align: center;
+ 
+}
+
+.product-table th:nth-child(6),
+.product-table td:nth-child(6) {
+  width: 14%; /* Total Request Cost */
+  text-align: center;
+  
+}
+
+.product-table th:nth-child(7),
+.product-table td:nth-child(7) {
+  width: 12%; /* Amount Paid */
+  text-align: center;
+  
+}
+
 .product-table th:nth-child(8),
 .product-table td:nth-child(8) {
-  width: 6%; /* Sub Column */
+  width: 10%; /* Balance */
   text-align: center;
+  
+}
+
+.product-table th:nth-child(9),
+.product-table td:nth-child(9) {
+  width: 6%; /* Status */
+  text-align: center;
+  
 }
 
 
