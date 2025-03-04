@@ -41,23 +41,21 @@ error_reporting(E_ALL);
           <div class="card-content">
             <!-- Total and Confirmed Transaction Count -->
             <div class="row">
-              <!-- Total Transaction Count -->
-              <div class="col-md-5 d-flex flex-row">
+              <div class="col-md-5 d-flex flex-row clickable-card" onclick="window.location.href='../Employee Section/emp-transaction.php'">
                 <div class="card-icon icon-blue">
                   <i class="fas fa-calendar-alt"></i>
                 </div>
                 <div class="side-content d-flex flex-column">
                   <?php
-                  // Assuming you already have a connection to your database
                   $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking WHERE MONTH(bookingDate) = MONTH(CURRENT_DATE()) 
-                                              AND YEAR(bookingDate) = YEAR(CURRENT_DATE())";
+                              AND YEAR(bookingDate) = YEAR(CURRENT_DATE())";
                   $result = mysqli_query($conn, $totalTransactionsQuery);
 
                   if ($result) {
                     $row = mysqli_fetch_assoc($result);
                     $totalTransactions = $row['total'];
                   } else {
-                    $totalTransactions = 0; // default to 0 if query fails
+                    $totalTransactions = 0;
                   }
                   ?>
                   <h5><?php echo $totalTransactions; ?></h5>
@@ -65,80 +63,79 @@ error_reporting(E_ALL);
                 </div>
               </div>
 
-              <!-- Confirmed Transaction Count -->
-              <div class="col-md-5 d-flex flex-row">
+              <!-- Confirmed Transactions -->
+              <div class="col-md-5 d-flex flex-row clickable-card" onclick="redirectToAgentTransaction('Confirmed')">
                 <div class="card-icon icon-green">
                   <i class="fas fa-check-circle"></i>
                 </div>
                 <div class="side-content d-flex flex-column">
                   <?php
-                  // Assuming you already have a connection to your database
-                  $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking WHERE MONTH(bookingDate) = MONTH(CURRENT_DATE()) AND YEAR(bookingDate) = YEAR(CURRENT_DATE()) AND status = 'Confirmed'";
-                  $result = mysqli_query($conn, $totalTransactionsQuery);
+                  $confirmedTransactionsQuery = "SELECT COUNT(*) AS total FROM booking WHERE MONTH(bookingDate) = MONTH(CURRENT_DATE()) 
+                                  AND YEAR(bookingDate) = YEAR(CURRENT_DATE()) AND status = 'Confirmed'";
+                  $result = mysqli_query($conn, $confirmedTransactionsQuery);
 
                   if ($result) {
                     $row = mysqli_fetch_assoc($result);
-                    $totalTransactions = $row['total'];
+                    $confirmedTransactions = $row['total'];
                   } else {
-                    $totalTransactions = 0; // default to 0 if query fails
+                    $confirmedTransactions = 0;
                   }
-
                   ?>
-                  <h5><?php echo $totalTransactions; ?></h5>
+                  <h5><?php echo $confirmedTransactions; ?></h5>
                   <p>CONFIRMED</p>
                 </div>
               </div>
             </div>
 
+
             <!-- Pending, and Cancelled Transaction Count -->
             <div class="row">
               <!-- Pending Transaction Count -->
-              <div class="col-md-5 d-flex flex-row">
+              <div class="col-md-5 d-flex flex-row clickable-card" onclick="redirectToAgentTransaction('Pending')">
                 <div class="card-icon icon-yellow">
                   <i class="fas fa-exclamation-triangle"></i>
                 </div>
                 <div class="side-content d-flex flex-column">
                   <?php
-                  // Assuming you already have a connection to your database
-                  $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking WHERE MONTH(bookingDate) = MONTH(CURRENT_DATE()) 
-                                              AND YEAR(bookingDate) = YEAR(CURRENT_DATE()) AND status = 'Pending'";
-                  $result = mysqli_query($conn, $totalTransactionsQuery);
+                  $pendingTransactionsQuery = "SELECT COUNT(*) AS total FROM booking WHERE MONTH(bookingDate) = MONTH(CURRENT_DATE()) 
+                                                AND YEAR(bookingDate) = YEAR(CURRENT_DATE()) AND status = 'Pending'";
+                  $result = mysqli_query($conn, $pendingTransactionsQuery);
 
                   if ($result) {
                     $row = mysqli_fetch_assoc($result);
-                    $totalTransactions = $row['total'];
+                    $pendingTransactions = $row['total'];
                   } else {
-                    $totalTransactions = 0; // default to 0 if query fails
+                    $pendingTransactions = 0;
                   }
                   ?>
-                  <h5><?php echo $totalTransactions; ?></h5>
+                  <h5><?php echo $pendingTransactions; ?></h5>
                   <p>PENDING</p>
                 </div>
               </div>
 
               <!-- Cancelled Transaction Count -->
-              <div class="col-md-5 d-flex flex-row">
+              <div class="col-md-5 d-flex flex-row clickable-card" onclick="redirectToAgentTransaction('Cancelled')">
                 <div class="card-icon icon-red">
                   <i class="fas fa-times-circle"></i>
                 </div>
                 <div class="side-content d-flex flex-column">
                   <?php
-                  // Assuming you already have a connection to your database
-                  $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking WHERE MONTH(bookingDate) = MONTH(CURRENT_DATE()) 
-                                              AND YEAR(bookingDate) = YEAR(CURRENT_DATE()) AND status = 'Cancelled'";
-                  $result = mysqli_query($conn, $totalTransactionsQuery);
+                  $cancelledTransactionsQuery = "SELECT COUNT(*) AS total FROM booking WHERE MONTH(bookingDate) = MONTH(CURRENT_DATE()) 
+                                                  AND YEAR(bookingDate) = YEAR(CURRENT_DATE()) AND status = 'Cancelled'";
+                  $result = mysqli_query($conn, $cancelledTransactionsQuery);
 
                   if ($result) {
                     $row = mysqli_fetch_assoc($result);
-                    $totalTransactions = $row['total'];
+                    $cancelledTransactions = $row['total'];
                   } else {
-                    $totalTransactions = 0; // default to 0 if query fails
+                    $cancelledTransactions = 0;
                   }
                   ?>
-                  <h5><?php echo $totalTransactions; ?></h5>
+                  <h5><?php echo $cancelledTransactions; ?></h5>
                   <p>CANCELLED</p>
                 </div>
               </div>
+
             </div>
           </div>
         </div>
@@ -989,6 +986,32 @@ error_reporting(E_ALL);
 
 
   <?php include '../Employee Section/includes/emp-scripts.php' ?>
+
+  <!-- for Card Counts Clickable -->
+
+  <!-- <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // Get URL parameters
+      const urlParams = new URLSearchParams(window.location.search);
+      const selectedStatus = urlParams.get("status");
+
+      if (selectedStatus) {
+        document.getElementById("status").value = selectedStatus;
+        $('#status').trigger('change'); // Trigger DataTable update if needed
+      }
+    });
+  </script> -->
+
+  <script>
+    function redirectToAgentTransaction(status) {
+      window.location.href = `../Employee Section/emp-transaction.php?status=${status}`;
+    }
+  </script>
+
+
+
+
+
 
 
   <!-- JS for Checkbox -->

@@ -99,6 +99,23 @@
   height: 105px;
 }
 
+.clickable-card {
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s ease-in-out;
+}
+
+.clickable-card:hover {
+  background: rgba(0, 0, 0, 0.05); /* Light hover effect */
+  transform: scale(1.05); /* Smooth scaling effect */
+}
+
+
+
+
+
+
+
+
 .card-icon {
   font-size: 14px; /* Smaller icon font size */
   margin-right: 10px; /* Reduced margin */

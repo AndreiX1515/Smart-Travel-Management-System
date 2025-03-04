@@ -100,6 +100,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['flightid'])) {
 
 <script>
     $(document).ready(function() {
+        
         $('#loginForm').on('submit', function(event) {
             event.preventDefault(); // Prevent default form submission
 
@@ -197,6 +198,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['flightid'])) {
     });
 </script>
 
+<script>
+
+</script>
 </body>
 
 </html>
