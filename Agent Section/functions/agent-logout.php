@@ -35,7 +35,6 @@ try {
             $_SESSION['agentType'], 
             $_SESSION['timeout'], 
             $_SESSION['flightid'],
-            $_SESSION['accountId'], 
             $_SESSION['userType'],
             $_SESSION['fName'], 
             $_SESSION['mName'], 

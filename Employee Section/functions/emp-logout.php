@@ -18,7 +18,6 @@ unset(
     $_SESSION['password'],
     $_SESSION['employee_userType'],
     $_SESSION['flightid'],
-    $_SESSION['accountId'],
     $_SESSION['userType'],
     $_SESSION['fName'],
     $_SESSION['mName'],
