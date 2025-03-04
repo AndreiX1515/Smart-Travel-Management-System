@@ -147,7 +147,7 @@
           <thead>
             <tr>
               <th>Transact No</th>
-              <th>Agent Name</th>
+              <th>Branch</th>
               <th>Package Name</th>
               <th>Booking Date</th>
               <th>Flight Date</th>
@@ -157,24 +157,16 @@
           </thead>
           <tbody>
             <?php
-              $sql1 = "SELECT b.transactNo AS `T.N`,
-                            CONCAT(a.lName, ', ', a.fName, 
-                                  IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1)), '')) AS agentName,
+              $sql1 = "SELECT b.transactNo AS `T.N`, br.branchName as branchName,
                             p.packageName AS `PACKAGE`, DATE_FORMAT(b.bookingDate, '%m-%d-%Y') AS `BOOKING DATE`,
                             DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y') AS `FLIGHT DATE`,
                             b.pax AS `TOTAL PAX`, b.status AS `STATUS`
-                        FROM 
-                            booking b
-                        LEFT JOIN 
-                            flight f ON b.flightId = f.flightId
-                        LEFT JOIN 
-                            package p ON b.packageId = p.packageId
-                        LEFT JOIN
-                            agent a ON b.agentId = a.agentId
-                        WHERE 
-                            b.status = 'Pending' 
-                        ORDER BY 
-                            b.transactNo DESC";
+                        FROM booking b
+                        JOIN branch br ON b.agentCode = br.branchAgentCode
+                        LEFT JOIN flight f ON b.flightId = f.flightId
+                        LEFT JOIN package p ON b.packageId = p.packageId
+                        WHERE b.status = 'Pending' AND (br.branchAgentCode = 'BU4' OR br.branchAgentCode = 'BU6')
+                        ORDER BY b.transactNo DESC";
 
               $res1 = $conn->query($sql1);
 
@@ -183,8 +175,8 @@
                 while ($row = $res1->fetch_assoc()) 
                 {
                   $transactNo = $row['T.N'];
-                  $agentName = $row['agentName'];
                   $package = $row['PACKAGE'];
+                  $branchName = $row['branchName'];
                   $bookingDate = $row['BOOKING DATE'];
                   $flightDate = $row['FLIGHT DATE'];
                   $totalPax = $row['TOTAL PAX'];
@@ -209,7 +201,7 @@
 
                   echo "<tr class='transaction-row' data-transactNo='{$transactNo}'>
                           <td>{$transactNo}</td>
-                          <td>{$agentName}</td>
+                          <td>{$branchName}</td>
                           <td>{$package}</td>
                           <td>{$bookingDate}</td>
                           <td>{$flightDate}</td>
