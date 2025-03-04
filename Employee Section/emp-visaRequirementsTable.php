@@ -135,7 +135,7 @@
                             <td>{$row['transactNo']}</td>
                             <td>{$row['guestName']}</td>
                             <td>" . (!empty($row['passport']) ? 
-                              "<a href='functions/view-file.php?file=" . urlencode($row['passport']) . "' target='_blank'>View File</a> 
+                              "<a href='/Agent Section/functions/view-file.php?file=" . urlencode($row['passport']) . "' target='_blank'>View File</a> 
                               <a href='functions/download.php?file=" . urlencode($row['passport']) . "' target='_blank'>Download File</a>" 
                               : "<span>No file uploaded</span>") . "</td>
 

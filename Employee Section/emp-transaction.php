@@ -103,15 +103,15 @@
         <table class="product-table" id="product-table">
           <thead>
             <tr>
-              <th>Transact No</th>
-              <th>Agent Name</th>
-              <th>Flight Date</th>
-              <th>Total Pax</th>
-              <th>Package Price</th>
-              <th>Total Request Cost</th>
-              <th>Amount Paid</th>
-              <th>Balance</th>
-              <th>Status</th>
+              <th>TRANSACT NO</th>
+              <th>BRANCH</th>
+              <th>FLIGHT DATE</th>
+              <th>TOTAL PAX</th>
+              <th>PACKAGE PRICE</th>
+              <th>TOTAL REQUEST COST</th>
+              <th>AMOUNT PAID</th>
+              <th>BALANCE</th>
+              <th>STATUS</th>
             </tr>
           </thead>
           <tbody>
@@ -127,13 +127,21 @@
                         p.packageName AS PackageName, DATE_FORMAT(b.bookingDate, '%m.%d.%Y') AS BookingDate, b.pax AS TotalPax,  
                         b.totalPrice AS PackagePrice, br.branchName as branchName, COALESCE(SUM(pa.amount), 0) AS TotalAmountPaid,
                         CONCAT(a.lName, ', ', a.fName, ' ', IFNULL(CONCAT(SUBSTRING(a.mName, 1, 1), '.'), '')) AS agentName,
-                        COALESCE(SUM(r.requestCost), 0) AS TotalRequestAmount
+                        COALESCE(SUM(r.requestCost), 0) AS TotalRequestAmount,
+                        CASE 
+                          WHEN a.accountId IS NOT NULL 
+                            THEN CASE WHEN a.companyId IS NOT NULL THEN c.companyName ELSE br.branchName END
+                          WHEN cl.accountId IS NOT NULL 
+                            THEN CASE WHEN cl.companyId IS NOT NULL THEN cc.companyName ELSE br.branchName END
+                          ELSE 'Unknown'END AS `ACCOUNT NAME`
                       FROM booking b
                       JOIN branch br ON b.agentCode = br.branchAgentCode
                       JOIN flight f ON f.flightId = b.flightId
                       JOIN package p ON p.packageId = b.packageId
                       LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
-                      LEFT JOIN client c ON b.accountType = 'Client' AND b.accountId = c.accountId
+                      LEFT JOIN company c ON a.companyId = c.companyId
+                      LEFT JOIN client cl ON b.accountType = 'Client' AND b.accountId = cl.accountId
+                      LEFT JOIN company cc ON cl.companyId = cc.companyId
                       LEFT JOIN payment pa ON pa.transactNo = b.transactNo AND pa.paymentStatus = 'Approved'
                       LEFT JOIN request r ON r.transactNo = b.transactNo AND r.requestStatus = 'Confirmed'
                       GROUP BY 
@@ -183,7 +191,7 @@
                   // Output each row as a table row
                   echo "<tr data-url='$transactionUrl'>";
                   echo "<td>$transactNo</td>";
-                  echo "<td>" . htmlspecialchars($row['branchName'] ?? '') . "</td>";
+                  echo "<td>" . htmlspecialchars($row['ACCOUNT NAME'] ?? '') . "</td>";
                   echo "<td>$formattedDepartureDate</td>";
                   echo "<td class='fw-bold ps-3'>$totalPax</td>";
                   echo "<td>₱ " . number_format($packagePrice, 2) . "</td>";
