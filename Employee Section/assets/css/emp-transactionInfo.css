@@ -161,7 +161,7 @@
 
 .guest-table-wrapper {
   width: 100%;
-  padding: 0px 8px;
+  padding: 0px 0px;
   height: 230px; /* Set a fixed height for vertical scroll */
   overflow-y: auto; /* Enable vertical scroll */
   overflow-x: auto; /* Enable horizontal scroll */
@@ -431,9 +431,10 @@
   /* border-radius: 8px; 
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);  */
   height: 50vh;
-  padding: 10px 0px; 
+  /* padding: 10px 0px;  */
   /* border-radius: 5px;  */
   /* border: 1px solid black; */
+
 }
 
 
