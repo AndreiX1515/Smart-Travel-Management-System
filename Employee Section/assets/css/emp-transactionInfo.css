@@ -3,6 +3,8 @@
   display: flex;
   align-items: center;
   gap: 15px;
+  padding: 5px 10px;
+  /* border: 1px solid black; */
 }
 
 .back-button-wrapper {
@@ -86,12 +88,13 @@
 .first-part-wrapper {
   display: flex; /* Use flexbox for layout */
   gap: 15px; /* Space between the two sections */
+  width: 100%;
   /* border: 1px solid black; */
 }
 
 /* Transaction Info - 40% of the width */
 .transaction-info-wrapper {
-  width: 35%; /* Increased width for a slightly larger container */
+  width: 50%; /* Increased width for a slightly larger container */
   height: 30vh; /* Increased height for more space */
   background-color: #f8f9fa; /* Optional background for visualization */
   border-radius: 8px; /* Optional rounded corners */
@@ -107,10 +110,9 @@
 
  .card-body {
   display: flex;
-  /* border: 1px solid black; */
-  flex-wrap: wrap; /* Ensures responsiveness */
-  align-items: center; /* Aligns content vertically */
-  padding: 10px; /* Adds spacing inside the container */
+  flex-wrap: wrap; 
+  align-items: center; 
+  padding: 10px; 
 }
 
  .card-body .guest-info {
@@ -149,7 +151,7 @@
 /* Guest Info Table*/
 /* Guest Info Table - 60% of the width */
 .guest-info-table-wrapper {
-  width: 70%;
+  width: 50%;
   height: 30vh;
   background-color: #f8f9fa; /* Optional background for visualization */
   border-radius: 8px; /* Optional rounded corners */
@@ -163,16 +165,15 @@
   height: 230px; /* Set a fixed height for vertical scroll */
   overflow-y: auto; /* Enable vertical scroll */
   overflow-x: auto; /* Enable horizontal scroll */
-  -webkit-overflow-scrolling: touch; /* For smooth scrolling on iOS */
 }
 
 /* Guest Table Styling */
 .guest-table-wrapper table {
-  width: 100%; /* Ensure the table takes up the full width */
-  border-collapse: collapse; /* Remove gaps between cells */
-  font-size: 12px; /* Smaller font size for compact display */
-  min-width: 1000px; /* Minimum width for horizontal scrolling (can be adjusted) */
-  table-layout: fixed; /* Prevent wrapping and make table cells take up equal space */
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  min-width: 1000px; 
+  table-layout: fixed;
 }
 
 /* Guest Table Header (Thead) Styling */
@@ -426,27 +427,36 @@
 
 /* Tab Content Styling */
 .tab-content {
-  background-color: #fff; /* Ensure content area has a white background */
-  border-radius: 8px; /* Optional rounded corners */
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Optional shadow for effect */
+  background-color: #fff; 
+  /* border-radius: 8px; 
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);  */
   height: 50vh;
-  padding: 10px 0px; /* Add padding to the tab content */
-  border-radius: 5px; /* Optional: make tab content corners rounded */
+  padding: 10px 0px; 
+  /* border-radius: 5px;  */
+  /* border: 1px solid black; */
 }
 
-/* Additional styling for the tabs if needed */
-.tab-pane {
-  border-radius: 5px; /* Optional: make tab content corners rounded */
-  order: 1px solid black;
-  padding: 10px 0px; /* 20px horizontal margin, 10px vertical margin */
-}
+
 
 /* Add Ons */
 .no-requests-container {
-  text-align: left; /* Aligns text to the left */
-  padding: 8px 16px; /* Optional: Adjust padding to match your table cells */
+  text-align: left; 
+  padding: 8px 8px; 
+  font-family: Arial, sans-serif; 
+  font-size: 14px; 
+  white-space: nowrap;
   border: 1px solid #ccc; /* Optional: Adds a border to match table styling */
-  font-family: Arial, sans-serif; /* Optional: Consistent font styling */
-  font-size: 14px; /* Optional: Adjust font size to match table content */
-  white-space: nowrap; /* Prevents text wrapping */
+}
+
+
+.tab-pane .card-header {
+  display: flex;
+  padding: 5px 20px 5px 20px;
+  border-bottom: 1px solid gainsboro;
+}
+
+.tab-pane .card-body {
+  display: flex;
+  flex-wrap: wrap; 
+  align-items: center; 
 }

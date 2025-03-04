@@ -1,4 +1,8 @@
-<?php session_start(); ?>
+<?php
+
+session_start();
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -23,7 +27,7 @@
 
     <div class="main-content">
       <div class="table-container">
-        
+
         <div class="table-header">
           <div class="search-wrapper">
             <div class="search-input-wrapper">
@@ -95,7 +99,7 @@
         </div>
 
         <div class="table-container">
-          <table class="product-table" id="product-table">
+          <table class="product-table" id="product-table" aria-describedby="product-table-caption">
             <thead>
               <tr>
                 <th>Transaction No</th>
@@ -109,29 +113,29 @@
             </thead>
             <tbody>
               <?php
-              // Ensure connection is established
-              if (!isset($conn)) {
-                die("Database connection error.");
+              // Ensure valid database connection
+              if (!isset($conn) || $conn->connect_error) {
+                die("Database connection error: " . ($conn->connect_error ?? 'Unknown error.'));
               }
 
               // SQL query for guest details
               $sql = "SELECT 
-                    g.guestId AS guestId, 
-                    g.transactNo AS transactNo, 
-                    g.fName AS fname, 
-                    g.mName AS mName, 
-                    g.lName AS lName, 
-                    g.suffix AS suffix, 
-                    g.birthdate AS birthdate, 
-                    g.age AS age, 
-                    g.sex AS sex, 
-                    g.Nationality AS nationality, 
-                    f.flightDepartureDate AS departureDate 
-                FROM `guest` g
-                JOIN `booking` b ON g.transactNo = b.transactNo
-                JOIN `flight` f ON b.flightId = f.flightId
-                WHERE b.status = 'Confirmed'
-                ORDER BY f.flightDepartureDate ASC";
+              g.guestId, 
+              g.transactNo, 
+              g.fName, 
+              g.mName, 
+              g.lName, 
+              g.suffix, 
+              g.birthdate, 
+              g.age, 
+              g.sex, 
+              g.nationality, 
+              f.flightDepartureDate 
+            FROM `guest` g
+            JOIN `booking` b ON g.transactNo = b.transactNo
+            JOIN `flight` f ON b.flightId = f.flightId
+            WHERE b.status = 'Confirmed'
+            ORDER BY f.flightDepartureDate ASC";
 
               // Execute the query
               $result = $conn->query($sql);
@@ -144,27 +148,29 @@
               // Fetch results and display rows
               if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
-                  // Format guest name
-                  $guestName = htmlspecialchars($row['lName']) . ", " . htmlspecialchars($row['fname']);
-                  if (!empty($row['mName']) && strtolower($row['mName']) !== 'n/a') {
-                    $guestName .= " " . htmlspecialchars(substr($row['mName'], 0, 1)) . ".";
+                  // Sanitize and format guest name
+                  $guestName = htmlspecialchars($row['lName'], ENT_QUOTES, 'UTF-8') . ", " .
+                    htmlspecialchars($row['fName'], ENT_QUOTES, 'UTF-8');
+                  if (!empty($row['mName']) && strtolower((string) $row['mName']) !== 'n/a') {
+                    $guestName .= " " . htmlspecialchars(substr($row['mName'], 0, 1), ENT_QUOTES, 'UTF-8') . ".";
                   }
-                  if (!empty($row['suffix']) && strtolower($row['suffix']) !== 'n/a') {
-                    $guestName .= " " . htmlspecialchars($row['suffix']);
+                  if (!empty($row['suffix']) && strtolower((string) $row['suffix']) !== 'n/a') {
+                    $guestName .= " " . htmlspecialchars($row['suffix'], ENT_QUOTES, 'UTF-8');
                   }
 
-                  // Format date
-                  $departureDate = !empty($row['departureDate']) ? date('Y-m-d', strtotime($row['departureDate'])) : 'N/A';
+                  // Format dates
+                  $birthdate = !empty($row['birthdate']) ? date('Y-m-d', strtotime($row['birthdate'])) : 'N/A';
+                  $departureDate = !empty($row['flightDepartureDate']) ? date('Y-m-d', strtotime($row['flightDepartureDate'])) : 'N/A';
 
                   echo "<tr>
-                        <td>" . htmlspecialchars($row['transactNo']) . "</td>
-                        <td>" . $guestName . "</td>
-                        <td>" . htmlspecialchars($row['birthdate']) . "</td>
-                        <td>" . htmlspecialchars($row['age']) . "</td>
-                        <td>" . htmlspecialchars($row['sex']) . "</td>
-                        <td>" . htmlspecialchars($row['nationality']) . "</td>
-                        <td>" . htmlspecialchars($departureDate) . "</td>
-                    </tr>";
+                    <td>" . htmlspecialchars($row['transactNo'], ENT_QUOTES, 'UTF-8') . "</td>
+                    <td>" . $guestName . "</td>
+                    <td>" . htmlspecialchars($birthdate, ENT_QUOTES, 'UTF-8') . "</td>
+                    <td>" . htmlspecialchars($row['age'], ENT_QUOTES, 'UTF-8') . "</td>
+                    <td>" . htmlspecialchars($row['sex'], ENT_QUOTES, 'UTF-8') . "</td>
+                    <td>" . htmlspecialchars($row['nationality'], ENT_QUOTES, 'UTF-8') . "</td>
+                    <td>" . htmlspecialchars($departureDate, ENT_QUOTES, 'UTF-8') . "</td>
+                </tr>";
                 }
               } else {
                 echo "<tr><td colspan='7'>No records found.</td></tr>";
@@ -172,6 +178,7 @@
               ?>
             </tbody>
           </table>
+
 
         </div>
 
@@ -209,6 +216,9 @@
   <!-- DataTables #product-table -->
   <script>
     $(document).ready(function() {
+      let flightStartDate = '';
+      let bookingStartDate = '';
+
       const table = $('#product-table').DataTable({
         dom: 'rtip',
         language: {
@@ -222,211 +232,105 @@
         paging: true,
         pageLength: 15,
         autoWidth: false,
-
         columnDefs: [{
             targets: [1, 2, 3, 5, 6],
             orderable: false
-          }, // Disable sorting for specific columns
+          },
           {
             targets: 0,
             width: '6%'
-          }, // Transaction ID
+          },
           {
             targets: 1,
             width: '14%'
-          }, // Contact Person Info
+          },
           {
             targets: 2,
             width: '14%'
-          }, // Adjusted width for better spacing
+          },
           {
             targets: 3,
             width: '18%'
-          }, // Main Details
+          },
           {
             targets: 4,
             width: '14%'
-          }, // Date/Time
+          },
           {
             targets: 5,
             width: '8%'
-          }, // Status
+          },
           {
             targets: 6,
             width: '13%',
             className: 'text-center'
-          }, // Total Pax (centered)
+          },
           {
             targets: 7,
             width: '13%',
             className: 'text-center'
-          } // Sub Column (centered)
+          }
         ]
       });
 
-
-
-
-      // Search Functionality
-      $('#search').on('keyup', function() {
-        table.search(this.value).draw();
-      });
-
-      // Update the custom pagination buttons and page info
       function updatePagination() {
         const info = table.page.info();
-        const currentPage = info.page + 1; // Get current page number (1-indexed)
-        const totalPages = info.pages; // Get total pages
-
-        // Update page info text
-        $('#pageInfo').text(`Page ${currentPage} of ${totalPages}`);
-
-        // Enable/Disable prev and next buttons based on current page
-        $('#prevPage').prop('disabled', currentPage === 1);
-        $('#nextPage').prop('disabled', currentPage === totalPages);
+        $('#pageInfo').text(`Page ${info.page + 1} of ${info.pages}`);
+        $('#prevPage').prop('disabled', info.page === 0);
+        $('#nextPage').prop('disabled', info.page + 1 === info.pages);
       }
 
-      // Custom pagination button click events
       $('#prevPage').on('click', function() {
         table.page('previous').draw('page');
-        updatePagination();
       });
 
       $('#nextPage').on('click', function() {
         table.page('next').draw('page');
+      });
+
+      // Update pagination on every table redraw
+      table.on('draw', function() {
         updatePagination();
       });
 
-      // Initialize pagination on first load
-      updatePagination();
+      $('#search').on('keyup', function() {
+        table.search(this.value).draw();
+      });
 
-      // Status Filter
       $('#status').on('change', function() {
-        const selectedStatus = $(this).val();
-        table.column(8).search(selectedStatus || '').draw();
+        table.column(6).search($(this).val() || '').draw();
       });
 
-      // Package Filter
       $('#packages').on('change', function() {
-        const selectedPackage = $(this).val();
-        table.column(2).search(selectedPackage || '').draw();
+        table.column(2).search($(this).val() || '').draw();
       });
 
-      // Booking Date Filter with value change
-      $('#BookingStartDate').on('change', function() {
-        const selectedBookingDate = $(this).val(); // Get the selected value directly from the input field
-        console.log("Booking Date Filter:", selectedBookingDate); // Log the selected booking date
-        table.column(3).search(selectedBookingDate || '').draw(); // Column 4 (index starts at 0)
-      });
-
-      // Flight Date Filter with value change
-      $('#FlightStartDate').on('change', function() {
-        const selectedFlightDate = $(this).val(); // Get the selected value directly from the input field
-        console.log("Flight Date Filter:", selectedFlightDate); // Log the selected flight date
-        table.column(3).search(selectedFlightDate || '').draw(); // Column 5 (index starts at 0)
-      });
-
-      // Apply datepicker and input validation for FlightStartDate
-      $("#FlightStartDate").datepicker({
-        dateFormat: "yy-mm-dd", // Set the format to MM-DD-YYYY
-        showAnim: "fadeIn", // Optional: Adds a fade-in effect when the date picker is opened
-        changeMonth: true, // Allow the month to be changed from the dropdown
-        changeYear: true, // Allow the year to be changed from the dropdown
-        yearRange: "1900:2100", // Set a range of years (optional)
+      $("#FlightStartDate, #BookingStartDate").datepicker({
+        dateFormat: "yy-mm-dd",
+        showAnim: "fadeIn",
+        changeMonth: true,
+        changeYear: true,
+        yearRange: "1900:2100",
         onSelect: function(dateText) {
-          // When a date is selected, update the input field with the date
           $(this).val(dateText);
-          flightStartDate = dateText; // Store the selected date
-          console.log("FlightStartDate Selected Date (onSelect): " + dateText);
-          table.column(3).search(flightStartDate || '').draw(); // Column 5 (index starts at 0)
+          const columnIndex = $(this).attr('id') === "FlightStartDate" ? 7 : 4;
+          table.column(columnIndex).search(dateText || '').draw();
         }
       });
 
-
-      // Apply datepicker and input validation for BookingStartDate
-      $("#BookingStartDate").datepicker({
-        dateFormat: "mm-dd-yy", // Set the format to MM-DD-YYYY
-        showAnim: "fadeIn", // Optional: Adds a fade-in effect when the date picker is opened
-        changeMonth: true, // Allow the month to be changed from the dropdown
-        changeYear: true, // Allow the year to be changed from the dropdown
-        yearRange: "1900:2100", // Set a range of years (optional)
-        onSelect: function(dateText) {
-          // When a date is selected, update the input field with the date
-          $(this).val(dateText);
-          bookingStartDate = dateText; // Store the selected date
-          console.log("FlightStartDate Selected Date (onSelect): " + dateText);
-          table.column(4).search(bookingStartDate || '').draw(); // Column 5 (index starts at 0)
-        }
-      });
-
-      // BookingStartDate Input Validation and Formatting
-      $("#BookingStartDate").on("input", function() {
-        var value = $(this).val();
-
-        // Remove non-numeric and non-dash characters
-        value = value.replace(/[^\d-]/g, '');
-
-        // Automatically add dashes in the correct places if necessary
-        if (value.length > 2 && value.charAt(2) !== '-') {
-          value = value.substring(0, 2) + '-' + value.substring(2);
-        }
-        if (value.length > 5 && value.charAt(5) !== '-') {
-          value = value.substring(0, 5) + '-' + value.substring(5);
-        }
-
-        // Limit the total input length to 10 characters (MM-DD-YYYY)
-        if (value.length > 10) {
-          value = value.substring(0, 10);
-        }
-
-        // Update the input field value
-        $(this).val(value);
-
-        // Reset or update the bookingStartDate variable
-        if (value === "") {
-          bookingStartDate = ""; // Reset the variable if the input is cleared
-        } else {
-          bookingStartDate = value; // Update the variable with the formatted value
-        }
-
-        // Update the table column search
-        table.column(5).search(bookingStartDate || '').draw(); // Column 5 (index starts at 0)
-
-        console.log("BookingStartDate Input Value (on input): " + value);
-      });
-
-      // Clear All Filters
       $('#clearSorting').on('click', function() {
-        // Clear search field
-        $('#search').val('');
-        table.search('').draw();
-
-        // Clear status dropdown
-        $('#status').val('All').change();
-
-        // Clear packages dropdown
-        $('#packages').val('All').change();
-
-        // Explicitly reset the variables
-        flightStartDate = '';
-        bookingStartDate = '';
-
-        // Clear date fields
-        $('#BookingStartDate').val('').trigger('change'); // Reset and trigger input for BookingStartDate
-        $('#FlightStartDate').val('').trigger('change'); // Reset and trigger input for FlightStartDate
-
-
-
-        // Redraw the table
-        table.draw();
+        $('#search, #BookingStartDate, #FlightStartDate').val('');
+        $('#status, #packages').val('All').change();
+        flightStartDate = bookingStartDate = '';
+        table.columns().search('').draw();
       });
 
-
+      updatePagination();
     });
   </script>
 
 
-  <!-- Table Head  -->
+  <!-- Table Head 
   <script>
     let lastScrollTop = 0;
     const header = document.querySelector('.table-wrapper thead');
@@ -446,7 +350,7 @@
 
       lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop; // Prevent negative scroll position
     });
-  </script>
+  </script> -->
 
   <!-- Clickable table rows script -->
   <script>
