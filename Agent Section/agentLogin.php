@@ -10,6 +10,8 @@ error_reporting(E_ALL);
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['flightid'])) {
     $_SESSION['flightid'] = htmlspecialchars($_POST['flightid']);
 }
+
+
 ?>
 
 <!DOCTYPE html>
@@ -28,9 +30,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['flightid'])) {
 
 <body>
 <!-- Back to homepage button -->
-<a href="../Client Section/client-flightsched.php" class="back-btn">
-    <i class="fas fa-arrow-left"></i> <span> Back to Flight Schedules </span> 
-  </a>
+    <a href="../Client Section/client-flightsched.php" class="back-btn" id="backToFlights">
+        <i class="fas fa-arrow-left"></i> <span> Back to Flight Schedules </span> 
+    </a>
 
     <main class="main-container">
         <div class="login-container">
@@ -40,6 +42,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['flightid'])) {
             </div>
 
             <div class="fields-container">
+                <?php 
+                // echo "<pre>";
+                // print_r($_SESSION);
+                // echo "</pre>";
+                ?> 
                 <form class="mt-3" id="loginForm" method="POST">
                     <!-- Username input field -->
                     <div class="mb-3">
@@ -78,6 +85,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['flightid'])) {
 </body>
 
 <?php include "../Agent Section/includes/scripts.php"; ?>
+
+<script>
+$(document).ready(function() {
+    $("#backToFlights").click(function(event) {
+        event.preventDefault(); // Prevent immediate navigation
+        
+        $.ajax({
+            url: '../Client Section/functions/unset_flight_session.php', // Adjust path if needed
+            type: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                    window.location.href = "../Client Section/client-flightsched.php"; // Redirect after session unset
+                }
+            },
+            error: function() {
+                window.location.href = "../Client Section/client-flightsched.php"; // Ensure redirection even if AJAX fails
+            }
+        });
+    });
+});
+
+</script>
+
+
+
+
+
+
+
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {

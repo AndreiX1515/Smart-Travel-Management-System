@@ -181,7 +181,8 @@
   </div>
 </div>
 
-<?php include '../Agent Section/includes/logoutViewPassModal.php'; ?>
+
+<?php include '../Employee Section/includes/logoutViewPassModal.php'; ?>
 
 <script>
 function toggleSubMenu(submenuId) {

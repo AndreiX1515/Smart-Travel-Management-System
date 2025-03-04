@@ -31,7 +31,7 @@ require "../conn.php";
 
       <div class="main-content">
         <?php
-          if (isset($_SESSION['status'])):
+        if (isset($_SESSION['status'])):
         ?>
           <div class="alert alert-success alert-dismissible fade show" role="alert">
             <strong></strong> <?= $_SESSION['status']; ?>
@@ -39,67 +39,56 @@ require "../conn.php";
           </div>
         <?php
           unset($_SESSION['status']);
-          endif;
+        endif;
         ?>
 
         <?php
-          if (isset($_SESSION['flightid']) || isset($_GET['flightid'])) 
-          {
-            // Use session flight ID if available, otherwise set from GET
-            $flightid = $_SESSION['flightid'] ?? $_GET['flightid'];
-            $_SESSION['flightid'] = $flightid;
+        if (isset($_SESSION['flightid']) || isset($_GET['flightid'])) {
+          // Use session flight ID if available, otherwise set from GET
+          $flightid = $_SESSION['flightid'] ?? $_GET['flightid'];
+          $_SESSION['flightid'] = $flightid;
 
-            // SQL query to join flight and package tables
-            $sql1 = "SELECT flight.*, package.packageName, package.packagePrice
+          // SQL query to join flight and package tables
+          $sql1 = "SELECT flight.*, package.packageName, package.packagePrice
                       FROM flight
                       JOIN package ON flight.packageId = package.packageId
                       WHERE flight.flightId = ?";
 
-            // Prepare the statement
-            if ($stmt = $conn->prepare($sql1)) 
-            {
-              // Bind the flightId as an integer parameter
-              $stmt->bind_param("i", $flightid);
+          // Prepare the statement
+          if ($stmt = $conn->prepare($sql1)) {
+            // Bind the flightId as an integer parameter
+            $stmt->bind_param("i", $flightid);
 
-              // Execute the statement
-              if ($stmt->execute()) 
-              {
-                $result = $stmt->get_result();
+            // Execute the statement
+            if ($stmt->execute()) {
+              $result = $stmt->get_result();
 
-                // Check if a row is returned
-                if ($result->num_rows > 0) 
-                {
-                  // Fetch the data
-                  while ($row = $result->fetch_assoc()) 
-                  {
-                    $packageId = $row['packageId'];
-                    $packageName = $row['packageName'];
-                    $packagePrice = $row['packagePrice'];
-                    $origin = $row['origin'];
-                    $year = date('Y', strtotime($row['flightDepartureDate']));
-                    $month = date('F', strtotime($row['flightDepartureDate']));
-                    $flightDepartureDate = $row['flightDepartureDate'];
-                    $flightPrice = $row['flightPrice'];
-                    $wholesalePrice = $row['wholesalePrice'];
-                  }
-                } 
-                else  
-                {
-                  echo "No flight found with that ID.";
+              // Check if a row is returned
+              if ($result->num_rows > 0) {
+                // Fetch the data
+                while ($row = $result->fetch_assoc()) {
+                  $packageId = $row['packageId'];
+                  $packageName = $row['packageName'];
+                  $packagePrice = $row['packagePrice'];
+                  $origin = $row['origin'];
+                  $year = date('Y', strtotime($row['flightDepartureDate']));
+                  $month = date('F', strtotime($row['flightDepartureDate']));
+                  $flightDepartureDate = $row['flightDepartureDate'];
+                  $flightPrice = $row['flightPrice'];
+                  $wholesalePrice = $row['wholesalePrice'];
                 }
-              } 
-              else 
-              {
-                echo "Error executing query: " . $stmt->error;
+              } else {
+                echo "No flight found with that ID.";
               }
-            } 
-            // Close the statement
-            $stmt->close();
-          } 
-          else
-          {
-            echo "Error preparing statement: " . $conn->error;
+            } else {
+              echo "Error executing query: " . $stmt->error;
+            }
           }
+          // Close the statement
+          $stmt->close();
+        } else {
+          echo "Error preparing statement: " . $conn->error;
+        }
 
         ?>
 
@@ -120,33 +109,29 @@ require "../conn.php";
                       <select class="form-select" id="flightDate" name="flightDate" required>
                         <option selected disabled>Select Flight Date</option>
                         <?php
-                          // Query to fetch packageId and packageName
-                          $sql1 = mysqli_query($conn, "SELECT flightId, flightDepartureDate, flightPrice, wholesalePrice 
+                        // Query to fetch packageId and packageName
+                        $sql1 = mysqli_query($conn, "SELECT flightId, flightDepartureDate, flightPrice, wholesalePrice 
                                           FROM flight WHERE packageId = $packageId AND 
                                           MONTHNAME(flightDepartureDate) = '$month' ORDER BY flightDepartureDate ASC");
 
-                          // Loop through the result to create options
-                          while ($res1 = mysqli_fetch_array($sql1)) 
-                          {
-                            // Check if this packageId is equal to the selected packageId (to mark it as selected)
-                            $formattedRetailPrice = number_format($res1['flightPrice'], 2);
-                            $formattedWholesalePrice = number_format($res1['wholesalePrice'], 2);
+                        // Loop through the result to create options
+                        while ($res1 = mysqli_fetch_array($sql1)) {
+                          // Check if this packageId is equal to the selected packageId (to mark it as selected)
+                          $formattedRetailPrice = number_format($res1['flightPrice'], 2);
+                          $formattedWholesalePrice = number_format($res1['wholesalePrice'], 2);
 
-                            if ($agentType === 'Retailer')
-                            {
-                              $selected = ($res1['flightDepartureDate'] == $flightDepartureDate) ? 'selected' : '';
-                              echo "<option value='{$res1['flightId']}' {$selected}>
+                          if ($agentType === 'Retailer') {
+                            $selected = ($res1['flightDepartureDate'] == $flightDepartureDate) ? 'selected' : '';
+                            echo "<option value='{$res1['flightId']}' {$selected}>
                                       " . date('M j, Y', strtotime($res1['flightDepartureDate'])) . " || Price: ₱ {$formattedRetailPrice}
                                     </option>";
-                            }
-                            else if ($agentType === 'Wholeseller')
-                            {
-                              $selected = ($res1['flightDepartureDate'] == $flightDepartureDate) ? 'selected' : '';
-                              echo "<option value='{$res1['flightId']}' {$selected}>
+                          } else if ($agentType === 'Wholeseller') {
+                            $selected = ($res1['flightDepartureDate'] == $flightDepartureDate) ? 'selected' : '';
+                            echo "<option value='{$res1['flightId']}' {$selected}>
                                       " . date('M j, Y', strtotime($res1['flightDepartureDate'])) . " || Price: ₱ {$formattedWholesalePrice}
                                     </option>";
-                            }
                           }
+                        }
                         ?>
                       </select>
 
@@ -200,22 +185,28 @@ require "../conn.php";
                   </div>
                 </div>
 
-                <input type="hidden" id="agentCode" name="agentCode" value="<?php echo $_SESSION['agentCode']; ?>" placeholder="Agent Code Input">
-                <input type="hidden" id="flightId" name="flightId" value="<?php echo $flightid; ?>" placeholder="Flight Id Input">
+                <input type="text" id="agentCode" name="agentCode" value="<?php echo $_SESSION['agentCode']; ?>" placeholder="Agent Code Input">
+
+                <input type="text" id="flightId" name="flightId" value="<?php echo $flightid; ?>" placeholder="Flight Id Input">
 
                 <!-- Adjusted Fields -->
-                <input type="hidden" id="packagePrice" name="packagePrice" value="<?php echo isset($packagePrice) ? $packagePrice : ''; ?>" placeholder="Package Price">
-                <input type="hidden" name="flightPrice" id="flightPricee" placeholder="Flight Price"
-                  value="<?php echo isset($agentType) ? ($agentType === 'Retailer' ? htmlspecialchars($flightPrice) : 
-                  htmlspecialchars($wholesalePrice)) : ''; ?>">
-                <input type="hidden" name="agentId" id="agentId" value="<?php echo $_SESSION['agentId']; ?>" placeholder="Agent Id">
-                <input type="hidden" name="agentType" placeholder="Agent Type Input" value="<?php echo $_SESSION['agentType']; ?>">
-                <input type="hidden" name="accId" id="accId" placeholder="Account Id Input" value="<?php echo $_SESSION['accountId']; ?>">
+                <input type="text" id="packagePrice" name="packagePrice" value="<?php echo isset($packagePrice) ? $packagePrice : ''; ?>" placeholder="Package Price">
+
+                <input type="text" name="flightPrice" id="flightPricee" placeholder="Flight Price"
+                  value="<?php echo isset($agentType) ? ($agentType === 'Retailer' ? htmlspecialchars($flightPrice) : htmlspecialchars($wholesalePrice)) : ''; ?>">
+
+                <input type="text" name="agentId" id="agentId" value="<?php echo $_SESSION['agentId']; ?>" placeholder="Agent Id">
+
+                <input type="text" name="agentType" placeholder="Agent Type Input" value="<?php echo $_SESSION['agentType']; ?>">
+                
+                <input type="text" name="accId" id="accId" placeholder="Account Id Input" value="<?php echo $_SESSION['accountId']; ?>">
 
                 <!-- Adjusted Package Fields -->
-                <input type="hidden" name="packageId" id="packageId" value="<?php echo isset($packageId) ? $packageId : ''; ?>" placeholder="Package Id Input">
-                <input type="hidden" name="packageName" id="packageName" value="<?php echo isset($packageName) ? $packageName : ''; ?>" placeholder="Package Name Input">
-                <input type="hidden" name="origin" id="origin" value="<?php echo isset($origin) ? $origin : ''; ?>" placeholder="Origin Input">
+                <input type="text" name="packageId" id="packageId" value="<?php echo isset($packageId) ? $packageId : ''; ?>" placeholder="Package Id Input">
+
+                <input type="text" name="packageName" id="packageName" value="<?php echo isset($packageName) ? $packageName : ''; ?>" placeholder="Package Name Input">
+
+                <input type="text" name="origin" id="origin" value="<?php echo isset($origin) ? $origin : ''; ?>" placeholder="Origin Input">
 
               </div>
 
@@ -255,7 +246,7 @@ require "../conn.php";
                   <div class="columns col-md-3">
                     <div class="form-group">
                       <label for="mName">Middle Name <span class="text-danger mText">Type N/A if none</span></label>
-                      
+
                       <input type="text" name="mName" id="mName" class="form-control" placeholder="Enter Middle Name" required>
 
                       <span id="mNameError" class="text-danger"></span>
@@ -643,6 +634,7 @@ require "../conn.php";
       $('#flightDate').on('change', function() {
         var flightId = $(this).val();
         var agentType = $(this).val();
+        
         $('#flightId').val(flightId); // Set the value of the input field
         var selectedFlight = $("#flightDate option:selected").text();
         var selectedDate = selectedFlight.split(' || ')[0].trim();
@@ -652,9 +644,9 @@ require "../conn.php";
         $.ajax({
           url: '../Agent Section/functions/fetchFlightDetails.php', // Separate PHP file for return flight
           type: 'POST',
-          data: 
-          {
-            flightId: flightId, agentType: agentType
+          data: {
+            flightId: flightId,
+            agentType: agentType
           },
           success: function(response) {
             var data = JSON.parse(response); // Parse the JSON response

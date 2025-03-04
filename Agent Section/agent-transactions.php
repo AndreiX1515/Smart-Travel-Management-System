@@ -103,24 +103,6 @@ require "../conn.php";
 
           </div>
 
-          <!-- <div class="search-bar">
-            <div class="left-side">
-              
-            </div>
-
-            <div class="right-side" style="display: flex; align-items: baseline; gap: 10px;">
-              <label for="entries" style="font-family: Arial, sans-serif;">Show </label>
-              <select id="entries" style="padding: 5px; font-family: Arial, sans-serif; border: 1px solid #ced4da; border-radius: 4px;">
-                <option value="10">10</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
-              </select>
-              <label for="entries" style="font-family: Arial, sans-serif;">Entries</label>
-            </div>
-            
-          </div> -->   
-
           <div class="navpills-container">
               <ul class="nav nav-pills nav-underline" id="pills-tab" role="tablist">
                   <li class="nav-item" role="presentation">

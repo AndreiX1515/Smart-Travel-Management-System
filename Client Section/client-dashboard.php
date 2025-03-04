@@ -22,7 +22,7 @@ require "../conn.php";
     <?php include "../Client Section/Includes/client-sidebar.php"; ?>
 
     <div class="main-content-container">
-      <?php include "../Agent Section/includes/navbar.php"; ?>
+      <?php include "../Client Section/Includes/client-navbar.php"; ?>
 
       <div class="main-content">
         <div class="content-container">
