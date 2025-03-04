@@ -78,7 +78,8 @@ require "../conn.php";
                                                       LEFT JOIN client cl ON b.accountType = 'Client' AND b.accountId = cl.accountId
                                                       LEFT JOIN company cc ON cl.companyId = cc.companyId
                                                       WHERE b.agentCode = '$agentCode' 
-                                                      AND (c.companyId = $companyId OR cc.companyId = $companyId)
+                                                      AND (COALESCE(c.companyId, '') = COALESCE('$companyId', '') 
+                                                      OR COALESCE(cc.companyId, '') = COALESCE('$companyId', ''))
                                                       AND MONTH(b.bookingDate) = MONTH(CURRENT_DATE()) 
                                                       AND YEAR(b.bookingDate) = YEAR(CURRENT_DATE())";
                         }
@@ -138,7 +139,8 @@ require "../conn.php";
                                                     LEFT JOIN client cl ON b.accountType = 'Client' AND b.accountId = cl.accountId
                                                     LEFT JOIN company cc ON cl.companyId = cc.companyId
                                                     WHERE b.status = 'Confirmed' AND b.agentCode = '$agentCode' 
-                                                    AND (c.companyId = $companyId OR cc.companyId = $companyId)
+                                                    AND (COALESCE(c.companyId, '') = COALESCE('$companyId', '') 
+                                                    OR COALESCE(cc.companyId, '') = COALESCE('$companyId', ''))
                                                     AND MONTH(b.bookingDate) = MONTH(CURRENT_DATE()) 
                                                     AND YEAR(b.bookingDate) = YEAR(CURRENT_DATE())";
                         }
@@ -196,7 +198,8 @@ require "../conn.php";
                                                     LEFT JOIN client cl ON b.accountType = 'Client' AND b.accountId = cl.accountId
                                                     LEFT JOIN company cc ON cl.companyId = cc.companyId
                                                     WHERE b.status = 'Pending' AND b.agentCode = '$agentCode' 
-                                                    AND (c.companyId = $companyId OR cc.companyId = $companyId) 
+                                                    AND (COALESCE(c.companyId, '') = COALESCE('$companyId', '') 
+                                                    OR COALESCE(cc.companyId, '') = COALESCE('$companyId', ''))
                                                     AND MONTH(b.bookingDate) = MONTH(CURRENT_DATE()) 
                                                     AND YEAR(b.bookingDate) = YEAR(CURRENT_DATE())";
                         }
@@ -251,7 +254,8 @@ require "../conn.php";
                                                     LEFT JOIN client cl ON b.accountType = 'Client' AND b.accountId = cl.accountId
                                                     LEFT JOIN company cc ON cl.companyId = cc.companyId
                                                     WHERE b.status = 'Cancelled' AND b.agentCode = '$agentCode' 
-                                                    AND (c.companyId = $companyId OR cc.companyId = $companyId)
+                                                    AND (COALESCE(c.companyId, '') = COALESCE('$companyId', '') 
+                                                    OR COALESCE(cc.companyId, '') = COALESCE('$companyId', ''))
                                                     AND MONTH(b.bookingDate) = MONTH(CURRENT_DATE()) 
                                                     AND YEAR(b.bookingDate) = YEAR(CURRENT_DATE())";
                         }
@@ -962,7 +966,9 @@ require "../conn.php";
                                         LEFT JOIN client cl ON b.accountType = 'Client' AND b.accountId = cl.accountId
                                         LEFT JOIN company cc ON cl.companyId = cc.companyId
                                         JOIN branch br ON b.agentCode = br.branchAgentCode
-                                        WHERE b.agentCode = '$agentCode' and (c.companyId = $companyId OR cc.companyId = $companyId)
+                                        WHERE b.agentCode = '$agentCode' 
+                                        AND (COALESCE(c.companyId, '') = COALESCE('$companyId', '') 
+                                        OR COALESCE(cc.companyId, '') = COALESCE('$companyId', ''))
                                         AND (b.status = 'Pending' OR b.status = 'Reserved')
                                         ORDER BY b.transactNo DESC";
 
@@ -1136,7 +1142,9 @@ require "../conn.php";
                                       LEFT JOIN client cl ON b.accountType = 'Client' AND b.accountId = cl.accountId
                                       LEFT JOIN company cc ON cl.companyId = cc.companyId
                                       LEFT JOIN branch br ON b.agentCode = br.branchAgentCode
-                                      WHERE b.agentCode = '$agentCode' and (co.companyId = $companyId OR cc.companyId = $companyId)
+                                      WHERE b.agentCode = '$agentCode' 
+                                      AND (COALESCE(co.companyId, '') = COALESCE('$companyId', '') 
+                                      OR COALESCE(cc.companyId, '') = COALESCE('$companyId', ''))
                                       AND r.requestStatus = 'Submitted'
                                       ORDER BY r.requestDate DESC";
 
@@ -1327,7 +1335,9 @@ require "../conn.php";
                                       LEFT JOIN client cl ON b.accountType = 'Client' AND b.accountId = cl.accountId
                                       LEFT JOIN company cc ON cl.companyId = cc.companyId
                                       LEFT JOIN branch br ON b.agentCode = br.branchAgentCode
-                                      WHERE br.branchId = '$branchId' and (co.companyId = $companyId OR cc.companyId = $companyId)
+                                      WHERE br.branchId = '$branchId' 
+                                      AND (COALESCE(co.companyId, '') = COALESCE('$companyId', '') 
+                                      OR COALESCE(cc.companyId, '') = COALESCE('$companyId', ''))
                                       AND p.paymentStatus = 'Submitted'
                                       ORDER BY p.paymentDate DESC";
 
@@ -1568,7 +1578,8 @@ require "../conn.php";
                                             WHERE requestStatus = 'Confirmed' GROUP BY transactNo) req ON b.transactNo = req.transactNo
                                         WHERE 
                                           b.status = 'Confirmed' and b.agentCode = '$agentCode' 
-                                          and (cc.companyId = $companyId OR cc.companyId = $companyId)";
+                                          AND (COALESCE(co.companyId, '') = COALESCE('$companyId', '') 
+                                          OR COALESCE(cc.companyId, '') = COALESCE('$companyId', ''))";
 
                               $result = $conn->query($query); // Execute the query
 
