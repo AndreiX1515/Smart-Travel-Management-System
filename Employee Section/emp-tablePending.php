@@ -165,7 +165,8 @@
                         JOIN branch br ON b.agentCode = br.branchAgentCode
                         LEFT JOIN flight f ON b.flightId = f.flightId
                         LEFT JOIN package p ON b.packageId = p.packageId
-                        WHERE b.status = 'Pending' AND (br.branchAgentCode = 'BU4' OR br.branchAgentCode = 'BU6')
+                        WHERE b.status='Reserved' 
+                          AND (br.branchAgentCode = 'BU4' OR br.branchAgentCode = 'BU6')
                         ORDER BY b.transactNo DESC";
 
               $res1 = $conn->query($sql1);
