@@ -1584,7 +1584,7 @@ require "../conn.php";
                                           (SELECT transactNo, SUM(requestCost) AS totalRequestCost FROM request
                                             WHERE requestStatus = 'Confirmed' GROUP BY transactNo) req ON b.transactNo = req.transactNo
                                         WHERE 
-                                          b.status = 'Confirmed' and b.agentCode = '$agentCode' 
+                                          b.status = 'Confirmed' AND b.agentCode = '$agentCode' 
                                           AND (COALESCE(co.companyId, '') = COALESCE('$companyId', '') 
                                           OR COALESCE(cc.companyId, '') = COALESCE('$companyId', ''))";
 
