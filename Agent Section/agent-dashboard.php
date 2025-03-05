@@ -31,6 +31,12 @@ require "../conn.php";
           <!-- Cards First Row -->
           <div class="counts-wrapper">
 
+          <?php 
+                // echo "<pre>";
+                // print_r($_SESSION);
+                // echo "</pre>";
+                ?>
+                
             <!-- CARD 1 Current Transaction Counts-->
             <div class="card">
               <div class="header-counts">
@@ -709,6 +715,7 @@ require "../conn.php";
           </div>
 
           <div class="tab-content" id="pills-tabContent">
+          
             <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
 
               <div class="flight-seat-container">

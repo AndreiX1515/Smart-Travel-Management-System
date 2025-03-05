@@ -29,14 +29,17 @@ try {
 
         // Unset only specific session variables
         unset(
-            $_SESSION['accountId'], 
-            $_SESSION['employeeId'], 
+            $_SESSION['agentId'], 
+            $_SESSION['agentCode'],
+            $_SESSION['agentRole'], 
+            $_SESSION['agentType'], 
+            $_SESSION['timeout'], 
+            $_SESSION['flightid'],
+            $_SESSION['userType'],
             $_SESSION['fName'], 
-            $_SESSION['lName'], 
             $_SESSION['mName'], 
-            $_SESSION['branchId'], 
-            $_SESSION['email'], 
-            $_SESSION['password']
+            $_SESSION['lName'], 
+            $_SESSION['branchId']
         );
 
         // Commit transaction

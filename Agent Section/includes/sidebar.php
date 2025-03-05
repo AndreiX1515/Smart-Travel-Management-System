@@ -259,9 +259,9 @@ $current_date = date('D, F d, Y');
 
     <!-- Profile Section -->
     <div class="profile-section">
-      <div class="profile-icon">
+      <!-- <div class="profile-icon">
         <i class="fas fa-user-circle"></i>
-      </div>
+      </div> -->
       <div class="profile-details">
         <h6 class="profile-name"><?php echo $fullName; ?></h>
           <p class="profile-role mt-1"> 
