@@ -85,25 +85,96 @@ require "../conn.php";
         <div class="navpills-container">
           <ul class="nav nav-pills nav-underline" id="pills-tab" role="tablist">
             <li class="nav-item" role="presentation">
-              <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">
-                All <span class="badge">88</span>
+              <button class="nav-link active" id="pills-all-tab" data-bs-toggle="pill" data-bs-target="#pills-all" type="button" role="tab" aria-controls="pills-all" aria-selected="true">
+                All 
+                <span class="badge">
+                  <?php
+                    $sql1 = "SELECT COUNT(*) AS totalBookings FROM booking WHERE accountId = $accountId";
+                    $result = mysqli_query($conn, $sql1);
+                    
+                    if ($result) 
+                    {
+                      $row = mysqli_fetch_assoc($result);
+                      $totalBookings = $row['totalBookings'];
+                    } 
+                    else 
+                    {
+                      $totalBookings = 0; // Default value if query fails
+                    }
+                    echo $totalBookings;
+                  ?>
+                </span>
               </button>
             </li>
             <li class="nav-item" role="presentation">
-              <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">
-                Pending <span class="badge">61</span>
+              <button class="nav-link" id="pills-pending-tab" data-bs-toggle="pill" data-bs-target="#pills-pending" type="button" role="tab" aria-controls="pills-pending" aria-selected="false">
+                Pending / Reserved 
+                <span class="badge">
+                  <?php
+                    $sql1 = "SELECT COUNT(*) AS totalBookings FROM booking 
+                              WHERE accountId = $accountId AND (status = 'Pending' OR status = 'Reserved')";
+                    $result = mysqli_query($conn, $sql1);
+                    
+                    if ($result) 
+                    {
+                      $row = mysqli_fetch_assoc($result);
+                      $totalBookings = $row['totalBookings'];
+                    } 
+                    else 
+                    {
+                      $totalBookings = 0; // Default value if query fails
+                    }
+                    echo $totalBookings;
+                  ?>
+                </span>
               </button>
             </li>
 
             <li class="nav-item" role="presentation">
-              <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">
-                Confirmed <span class="badge">27</span>
+              <button class="nav-link" id="pills-confirmed-tab" data-bs-toggle="pill" data-bs-target="#pills-confirmed" type="button" role="tab" aria-controls="pills-confirmed" aria-selected="false">
+                Confirmed 
+                <span class="badge">
+                  <?php
+                    $sql1 = "SELECT COUNT(*) AS totalBookings FROM booking 
+                              WHERE accountId = $accountId AND status = 'Confirmed'";
+                    $result = mysqli_query($conn, $sql1);
+                    
+                    if ($result) 
+                    {
+                      $row = mysqli_fetch_assoc($result);
+                      $totalBookings = $row['totalBookings'];
+                    } 
+                    else 
+                    {
+                      $totalBookings = 0; // Default value if query fails
+                    }
+                    echo $totalBookings;
+                  ?>
+                </span>
               </button>
             </li>
 
             <li class="nav-item" role="presentation">
-              <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">
-                Cancelled <span class="badge">27</span>
+              <button class="nav-link" id="pills-cancelled-tab" data-bs-toggle="pill" data-bs-target="#pills-cancelled" type="button" role="tab" aria-controls="pills-cancelled" aria-selected="false">
+                Cancelled 
+                <span class="badge">
+                  <?php
+                    $sql1 = "SELECT COUNT(*) AS totalBookings FROM booking 
+                              WHERE accountId = $accountId AND status = 'Cancelled'";
+                    $result = mysqli_query($conn, $sql1);
+                    
+                    if ($result) 
+                    {
+                      $row = mysqli_fetch_assoc($result);
+                      $totalBookings = $row['totalBookings'];
+                    } 
+                    else 
+                    {
+                      $totalBookings = 0; // Default value if query fails
+                    }
+                    echo $totalBookings;
+                  ?>
+                </span>
               </button>
             </li>
           </ul>
@@ -122,7 +193,7 @@ require "../conn.php";
         ?>
 
         <div class="tab-content" id="pills-tabContent">
-          <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
+          <div class="tab-pane fade show active" id="pills-all" role="tabpanel" aria-labelledby="pills-all-tab" tabindex="0">
             <div class="table-container">
               <table id="product-table" class="product-table">
                 <thead>
@@ -212,19 +283,23 @@ require "../conn.php";
                           </tr>";
                         }
                       }
-
+                      else
+                      {
+                        echo "<tr>
+                                <td colspan='7' class='text-center text-danger'>
+                                    No bookings found.
+                                </td>
+                              </tr>";
+                      }
                     if ($res1) 
                     {
                       $res1->free();
                     }
-
-                    $conn->close();
                   ?>
                 </tbody>
               </table>
             </div>
 
-            <!-- Custom Pagination Container -->
             <!-- Custom Pagination Container -->
             <div class="table-footer">
               <div class="pagination-controls">
@@ -233,19 +308,19 @@ require "../conn.php";
                 <button id="nextPage" class="pagination-btn">Next</button>
               </div>
             </div>
-
-
           </div>
 
-          <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
-            <!-- Content for Pickups -->
-            Pending Table Here
+          <div class="tab-pane fade" id="pills-pending" role="tabpanel" aria-labelledby="pills-pending-tab" tabindex="0">
+            <?php include 'client-tablePending.php'; ?>
           </div>
 
 
-          <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">
-            <!-- Content for Returns -->
-            Confirmed table Here
+          <div class="tab-pane fade" id="pills-confirmed" role="tabpanel" aria-labelledby="pills-confirmed-tab" tabindex="0">
+            <?php include 'client-tableConfirmed.php'; ?>
+          </div>
+
+          <div class="tab-pane fade" id="pills-cancelled" role="tabpanel" aria-labelledby="pills-cancelled-tab" tabindex="0">
+            <?php include 'client-tableCancelled.php'; ?>
           </div>
         </div> 
       </div>    
