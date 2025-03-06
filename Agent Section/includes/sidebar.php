@@ -5,17 +5,17 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-$accountId = $_SESSION['accountId'];
+$accountId = $_SESSION['agent_accountId'];
 $agentId = $_SESSION['agentId'];
 $agentCode = $_SESSION['agentCode'];
 $agentRole = $_SESSION['agentRole'];
 $agentType = $_SESSION['agentType'];
-$fName =  $_SESSION['fName'] ?? '';
-$lName = $_SESSION['lName'] ?? '';
-$mName = $_SESSION['mName'] ?? '';
-$branchId = $_SESSION['branchId'] ?? '';
-$email = $_SESSION['email'] ?? '';
-$password = $_SESSION['password'] ?? '';
+$fName =  $_SESSION['agent_fName'] ?? '';
+$lName = $_SESSION['agent_lName'] ?? '';
+$mName = $_SESSION['agent_mName'] ?? '';
+$branchId = $_SESSION['agent_branchId'] ?? '';
+$email = $_SESSION['agent_email'] ?? '';
+$password = $_SESSION['agent_password'] ?? '';
 
 // Fetch Branch Name
 $sql1 = "SELECT branchName FROM branch WHERE branchId = ?";

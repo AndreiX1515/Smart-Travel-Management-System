@@ -6,8 +6,8 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 // Fetch session variables directlys
-$email = $_SESSION['email'] ?? ''; // Use null coalescing operator to avoid undefined index
-$accId = $_SESSION['accountId'] ?? '';
+$email = $_SESSION['client_email'] ?? ''; // Use null coalescing operator to avoid undefined index
+$accId = $_SESSION['client_accountId'] ?? '';
 
 $sql1 = "SELECT * FROM Agent WHERE accId = $accId";
 
@@ -57,21 +57,3 @@ else
 </header>
 
 
-<!-- Logout Confirmation Modal -->
-<div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
- <div class="modal-dialog">
-   <div class="modal-content">
-     <div class="modal-header">
-         <h5 class="modal-title" id="logoutModalLabel">Confirm Logout</h5>
-         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-     </div>
-     <div class="modal-body">
-         Are you sure you want to logout?
-     </div>
-     <div class="modal-footer">
-         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-         <a href="../Client Section/Functions/client-logout.php" class="btn btn-danger" id="logoutButton">Logout</a>
-     </div>
-   </div>
- </div>
-</div>

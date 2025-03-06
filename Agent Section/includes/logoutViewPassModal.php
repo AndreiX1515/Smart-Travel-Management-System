@@ -10,8 +10,8 @@
         Are you sure you want to logout?
       </div>
       <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <a href="#" class="btn btn-danger" id="logoutButton">Logout</a>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <a href="#" class="btn btn-danger" id="logoutButton">Logout</a>
 
       </div>
     </div>
@@ -21,36 +21,28 @@
 
 
 <script>
-$(document).ready(function() {
+  $(document).ready(function() {
     $('#logoutButton').click(function() {
-        $.ajax({
-            url: '../Agent Section/functions/agent-logout.php',
-            type: 'GET',
-            dataType: 'json',
-            success: function(response) {
-                if (response.success) {
-                    // Handle redirection based on account type
-                    if (response.accountType === 'agent') {
-                        window.location.href = '../Agent Section/agentLogin.php';
-                    } else if (response.accountType === 'guest') {
-                        window.location.href = '../Agent Section/agentLogin.php';
-                    } else {
-                        window.location.href = '../Agent Section/agentLogin.php'; // Default redirection
-                    }
-                } else {
-                    alert(response.message);
-                    window.location.href = '../Agent Section/agentLogin.php'; // Default redirection
-                }
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                console.error('AJAX Error:', textStatus, errorThrown);
-                // alert('An unexpected error occurred. Please try again.');
-                window.location.href = '../Agent Section/agentLogin.php'; // Default redirection
-            }
-        });
-    });
-});
+      $.ajax({
+        url: '../Agent Section/functions/agent-logout.php',
+        type: 'GET',
+        dataType: 'json',
+        success: function(response) {
+          if (response.success) {
 
+            window.location.href = '../Agent Section/agentLogin.php';
+
+          } else {
+            alert(response.message || "Logout failed.");
+          }
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          console.error('AJAX Error:', textStatus, errorThrown);
+          alert("An error occurred. Please try again.");
+        }
+      });
+    });
+  });
 </script>
 
 
@@ -94,9 +86,10 @@ $(document).ready(function() {
             console.error("AJAX Error:", error); // Log any errors during the AJAX request
         }
     });
-}); -->
+}); 
 
-</script>
+</script>-->
+
 <!-- View Password Modal -->
 <div class="modal fade" id="viewPasswordModal" tabindex="-1" aria-labelledby="viewPasswordModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -152,19 +145,15 @@ $(document).ready(function() {
 </div>
 
 <script>
-  document.getElementById('togglePasswordBtn').addEventListener('click', function() 
-  {
+  document.getElementById('togglePasswordBtn').addEventListener('click', function() {
     const passwordText = document.getElementById('passwordText');
     const toggleIcon = document.getElementById('toggleIcon');
-    
+
     // Toggle between masked and actual password
-    if (passwordText.textContent === '••••••••••') 
-    {
+    if (passwordText.textContent === '••••••••••') {
       passwordText.textContent = "<?= htmlspecialchars($password); ?>"; // Replace dots with actual password
       toggleIcon.classList.replace('fa-eye', 'fa-eye-slash');
-    } 
-    else 
-    {
+    } else {
       passwordText.textContent = '••••••••••';
       toggleIcon.classList.replace('fa-eye-slash', 'fa-eye');
     }
@@ -173,39 +162,35 @@ $(document).ready(function() {
 
 
 <script>
-  $(document).ready(function () 
-  {
+  $(document).ready(function() {
     // Handle OTP Send Button
-    $('#sendOtpBtn').click(function () 
-    {
+    $('#sendOtpBtn').click(function() {
       // Get the values for the new password and confirmed password
       var newPassword = $('#newPassword').val();
       var confirmPassword = $('#confirmNewPassword').val();
 
-      console.log(newPassword,confirmPassword)
-      
+      console.log(newPassword, confirmPassword)
+
       // Check if both new password and confirmed password have values
-      if (!newPassword || !confirmPassword) 
-      {
+      if (!newPassword || !confirmPassword) {
         // Display error message if either password is empty
         $('#messageAlert').text('Please fill in both the new password and confirm password fields.')
-            .css('border', '1px solid red')
-            .css('background-color', '#f8d7da')
-            .css('color', 'red')
-            .show();
-        return;  // Stop the function from continuing
+          .css('border', '1px solid red')
+          .css('background-color', '#f8d7da')
+          .css('color', 'red')
+          .show();
+        return; // Stop the function from continuing
       }
 
       // Check if the new password and confirmed password match
-      if (newPassword !== confirmPassword) 
-      {
+      if (newPassword !== confirmPassword) {
         // Display error message if passwords don't match
         $('#messageAlert').text('The new password and confirm password do not match.')
-            .css('border', '1px solid red')
-            .css('background-color', '#f8d7da')
-            .css('color', 'red')
-            .show();
-        return;  // Stop the function from continuing
+          .css('border', '1px solid red')
+          .css('background-color', '#f8d7da')
+          .css('color', 'red')
+          .show();
+        return; // Stop the function from continuing
       }
 
       // Clear the error message if the passwords are valid
@@ -215,64 +200,55 @@ $(document).ready(function() {
 
       // Show a loading spinner or disable the button to prevent multiple requests
       $('#sendOtpBtn')
-          .prop('disabled', true)
-          .text('Sending OTP...')
-          .css('font-size', '12px'); // This sets the font size to 12px (adjust as needed)
+        .prop('disabled', true)
+        .text('Sending OTP...')
+        .css('font-size', '12px'); // This sets the font size to 12px (adjust as needed)
 
-      $.ajax(
-      {
+      $.ajax({
         url: '../Agent Section/functions/agent-sendOtpCPassword.php',
         type: 'POST',
-        data: 
-        {
+        data: {
           email: email // Send the user's email to the server
         },
-        success: function (response) 
-        {
+        success: function(response) {
           // Parse the JSON response from the server
           var jsonResponse = JSON.parse(response);
 
-          if (jsonResponse.success) 
-          {
+          if (jsonResponse.success) {
             // Inform the user that OTP was sent successfully
             $('#messageAlert').text('OTP has been sent to your registered email address.')
-                .css('border', '1px solid green')
-                .css('background-color', '#d4edda')
-                .css('color', 'green')
-                .show();
-          } 
-          else 
-          {
+              .css('border', '1px solid green')
+              .css('background-color', '#d4edda')
+              .css('color', 'green')
+              .show();
+          } else {
             // Handle the error (invalid email, failed to send OTP, etc.)
             $('#messageAlert').text('Failed to send OTP: ' + jsonResponse.message)
-                .css('border', '1px solid red')
-                .css('background-color', '#f8d7da')
-                .css('color', 'red')
-                .show();
+              .css('border', '1px solid red')
+              .css('background-color', '#f8d7da')
+              .css('color', 'red')
+              .show();
           }
 
           // Re-enable the button and reset its text
           $('#sendOtpBtn').prop('disabled', false).text('Send OTP');
         },
-        error: function () 
-        {
+        error: function() {
           // Handle any error that occurred during the AJAX request
           $('#messageAlert').text('An error occurred while sending the OTP.')
-              .css('border', '1px solid red')
-              .css('background-color', '#f8d7da')
-              .css('color', 'red')
-              .show();
+            .css('border', '1px solid red')
+            .css('background-color', '#f8d7da')
+            .css('color', 'red')
+            .show();
           $('#sendOtpBtn').prop('disabled', false).text('Send OTP');
         }
       });
     });
   });
 
-  $(document).ready(function () 
-  {
+  $(document).ready(function() {
     // Handle Change Password Form submission
-    $('#changePasswordForm').submit(function (e) 
-    {
+    $('#changePasswordForm').submit(function(e) {
       e.preventDefault(); // Prevent the default form submission
 
       // Get the entered OTP and new password details
@@ -281,10 +257,9 @@ $(document).ready(function() {
       var confirmNewPassword = $('#confirmNewPassword').val();
       var account_id = "<?php echo htmlspecialchars($accountId); ?>"; // PHP to JS variable
 
-      
+
       // Check if the new password and confirmation match
-      if (newPassword !== confirmNewPassword) 
-      {
+      if (newPassword !== confirmNewPassword) {
         $('#messageAlert').text('Passwords do not match.')
           .css('border', '1px solid red')
           .css('background-color', '#f8d7da')
@@ -293,82 +268,68 @@ $(document).ready(function() {
         return; // Stop further execution if passwords do not match
       }
 
-    // Perform the AJAX request to verify OTP
-      $.ajax(
-      {
+      // Perform the AJAX request to verify OTP
+      $.ajax({
         url: '../Agent Section/functions/agent-verify-otp.php', // Path to OTP verification script
         type: 'POST',
-        data: 
-        { 
+        data: {
           'changepass-OTP': enteredOtp,
           'accountid': account_id,
-          'newPassword': newPassword  // No underscore here
+          'newPassword': newPassword // No underscore here
         },
-        success: function (response) 
-        {
+        success: function(response) {
           var jsonResponse = JSON.parse(response); // Assuming the server returns JSON
 
           // If OTP is valid, proceed with password change
-          if (jsonResponse.success) 
-          {
+          if (jsonResponse.success) {
             // Proceed with password change if OTP is verified
-            $.ajax(
-            {
+            $.ajax({
               url: '../Agent Section/functions/agent-passwordChangeFunction.php', // Path to password change script
               type: 'POST',
-              data: 
-              {
+              data: {
                 'changepass-OTP': enteredOtp,
                 'accountid': account_id,
-                'newPassword': newPassword  // No underscore here
+                'newPassword': newPassword // No underscore here
               },
-              success: function (changePasswordResponse) 
-              {
+              success: function(changePasswordResponse) {
                 var changeResponse = JSON.parse(changePasswordResponse);
-                if (changeResponse.status === 'success') 
-                {
+                if (changeResponse.status === 'success') {
                   $('#messageAlert').text('Password changed successfully.')
-                      .css('border', '1px solid green')
-                      .css('background-color', '#d4edda')
-                      .css('color', 'green')
-                      .show();
-                      location.reload();
-                } 
-                else 
-                {
+                    .css('border', '1px solid green')
+                    .css('background-color', '#d4edda')
+                    .css('color', 'green')
+                    .show();
+                  location.reload();
+                } else {
                   $('#messageAlert').text(changeResponse.message)
-                      .css('border', '1px solid red')
-                      .css('background-color', '#f8d7da')
-                      .css('color', 'red')
-                      .show();
-                }
-              },
-              error: function () 
-              {
-                $('#messageAlert').text('An error occurred while changing the password.')
                     .css('border', '1px solid red')
                     .css('background-color', '#f8d7da')
                     .css('color', 'red')
                     .show();
+                }
+              },
+              error: function() {
+                $('#messageAlert').text('An error occurred while changing the password.')
+                  .css('border', '1px solid red')
+                  .css('background-color', '#f8d7da')
+                  .css('color', 'red')
+                  .show();
               }
             });
-          } 
-          else 
-          {
+          } else {
             $('#messageAlert').text('Invalid OTP entered.')
-                .css('border', '1px solid red')
-                .css('background-color', '#f8d7da')
-                .css('color', 'red')
-                .show();
-          }
-        },
-        error: function () 
-        {
-          $('#messageAlert').text('An error occurred while verifying the OTP.')
               .css('border', '1px solid red')
               .css('background-color', '#f8d7da')
               .css('color', 'red')
               .show();
+          }
+        },
+        error: function() {
+          $('#messageAlert').text('An error occurred while verifying the OTP.')
+            .css('border', '1px solid red')
+            .css('background-color', '#f8d7da')
+            .css('color', 'red')
+            .show();
         }
       });
     });

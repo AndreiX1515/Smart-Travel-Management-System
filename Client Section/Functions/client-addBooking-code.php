@@ -1,36 +1,48 @@
 <?php
-  session_start();
-  ini_set('display_errors', 1);
-  ini_set('display_startup_errors', 1);
-  error_reporting(E_ALL);
-  require "../../conn.php"; // Move up to the parent directory
+session_start();
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+require "../../conn.php"; // Move up to the parent directory
 
-  if (isset($_POST['bookNow'])) 
-  {
-    $accountId = $_SESSION['accountId'];
-    $agentId = 'Client';  
-    $agentCode = $_POST['agentCode'];  
-    $fName = $_POST['fName'];  
-    $mName = $_POST['mName'];  
-    $lName = $_POST['lName'];  
-    $suffix = $_POST['suffix'];
-    $countryCode = $_POST['countryCode']; 
-    $contactNo = $_POST['contactNo'];
-    $email = $_POST['email'];
-    $packageId = $_POST['packageId'];
-    $flightId = $_POST['flightDate'];
-    $totalPax = $_POST['totalPax'];
-    $totalPrice = $_POST['totalPrice'];
+header('Content-Type: application/json');
+$response = ["status" => "error", "message" => "Invalid request."];
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $accountId = $_SESSION['client_accountId'] ?? null;
+
+    if (!$accountId) {
+        echo json_encode(["status" => "error", "message" => "Session expired. Please log in again."]);
+        exit;
+    }
+
+    $agentId = 'Client';
+    $agentCode = $_POST['agentCode'] ?? '';
+    $fName = $_POST['fName'] ?? '';
+    $mName = $_POST['mName'] ?? '';
+    $lName = $_POST['lName'] ?? '';
+    $suffix = $_POST['suffix'] ?? '';
+    $countryCode = $_POST['countryCode'] ?? '';
+    $contactNo = $_POST['contactNo'] ?? '';
+    $email = $_POST['email'] ?? '';
+    $packageId = $_POST['packageId'] ?? '';
+    $flightId = $_POST['flightDate'] ?? '';
+    $totalPax = $_POST['totalPax'] ?? 1;
+    $totalPrice = $_POST['totalPrice'] ?? 0;
     $bookingType = isset($_POST['land']) ? 'Land' : 'Package';
-    $flightDetails = ($bookingType === 'Land') ? $_POST['flightDetails'] : NULL;
+    $flightDetails = ($bookingType === 'Land') ? ($_POST['flightDetails'] ?? NULL) : NULL;
 
-    // Get the last bookingId and increment it for the new transaction
+    // Validate required fields
+    if (empty($agentCode) || empty($fName) || empty($lName) || empty($contactNo) || empty($email) || empty($packageId)) {
+        echo json_encode(["status" => "error", "message" => "Missing required fields."]);
+        exit;
+    }
+
+    // Get the last bookingId and increment it
     $result = $conn->query("SELECT MAX(bookingId) AS lastBookingId FROM booking");
-    if (!$result) 
-    {
-      $_SESSION['status'] = "Error fetching last booking ID: " . $conn->error;
-      header("Location: ../client-addBooking-flight.php");
-      exit(0);
+    if (!$result) {
+        echo json_encode(["status" => "error", "message" => "Error fetching last booking ID: " . $conn->error]);
+        exit;
     }
 
     $row = $result->fetch_assoc();
@@ -38,50 +50,46 @@
     $formattedCounter = str_pad($newBookingId, 6, '0', STR_PAD_LEFT);
     $transactNo = $agentCode . '-' . $formattedCounter;
 
-    // Check if "Own Flight" is selected (value is 'Null')
-    if ($flightId === 'Null') 
-    {
-      $flightId = NULL; // Set flightId to NULL if "Own Flight" is selected
-    }
+    // Handle "Own Flight" selection
+    $flightId = ($flightId === 'Null') ? NULL : $flightId;
 
-    // Set the session variable for the current user in MySQL
+    // Set session variable for MySQL
     $conn->query("SET @current_user_id = $accountId");
 
-    // Start a transaction
+    // Start transaction
     $conn->begin_transaction();
 
-    // Prepare the SQL statement for insertion into the booking table
-    $sql1 = "INSERT INTO booking (accountId, transactNo, accountType, agentCode, flightId, packageId, fName, lName, mName, suffix, countryCode, 
-                contactNo, email, pax, totalPrice, bookingType, flightDetails, status, bookingDate) VALUES 
-                (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Reserved', NOW())";
-    $stmt1 = $conn->prepare($sql1);
+    try {
+        // Prepare SQL statement
+        $sql1 = "INSERT INTO booking (accountId, transactNo, accountType, agentCode, flightId, packageId, fName, lName, mName, suffix, countryCode, 
+                    contactNo, email, pax, totalPrice, bookingType, flightDetails, status, bookingDate) VALUES 
+                    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Reserved', NOW())";
+        $stmt1 = $conn->prepare($sql1);
 
-    if (!$stmt1) 
-    {
-      $_SESSION['status'] = "Booking SQL preparation failed: " . $conn->error;
-      $conn->rollback();  // Rollback transaction
-      header("Location: ../client-addBooking-flight.php");
-      exit(0);
+        if (!$stmt1) {
+            throw new Exception("Booking SQL preparation failed: " . $conn->error);
+        }
+
+        // Bind and execute the booking insertion
+        $stmt1->bind_param('isssiisssssssidss', $accountId, $transactNo, $agentId, $agentCode, $flightId, $packageId, $fName, $lName, $mName, 
+            $suffix, $countryCode, $contactNo, $email, $totalPax, $totalPrice, $bookingType, $flightDetails);
+
+        if (!$stmt1->execute()) {
+            throw new Exception("Database error on booking insert: " . $stmt1->error);
+        }
+
+        // Commit transaction
+        $conn->commit();
+
+        echo json_encode(["status" => "success", "message" => "Booking successful!", "transactNo" => $transactNo]);
+        exit;
+
+    } catch (Exception $e) {
+        $conn->rollback();
+        echo json_encode(["status" => "error", "message" => $e->getMessage()]);
+        exit;
     }
-
-    // Bind and execute the booking insertion
-    $stmt1->bind_param('isssiisssssssidss', $accountId, $transactNo, $agentId, $agentCode, $flightId, $packageId, $fName, $lName, $mName, 
-    $suffix, $countryCode, $contactNo, $email, $totalPax, $totalPrice, $bookingType, $flightDetails);
-    
-    if (!$stmt1->execute()) 
-    {
-      $_SESSION['status'] = "Database error on booking insert: " . $stmt1->error;
-      $conn->rollback();  // Rollback the transaction if there is an error
-      header("Location: ../client-addBooking-flight.php");
-      exit(0);
-    }
-
-    // If no errors, commit the transaction
-    $conn->commit();
-
-    // Optionally redirect or provide a success message
-    $_SESSION['status'] = "Booking successful!";
-    header("Location: ../client-addBookingPayment.php?id=" . htmlspecialchars($transactNo));
-    exit(0);
-  }
+}
+echo json_encode($response);
+exit;
 ?>

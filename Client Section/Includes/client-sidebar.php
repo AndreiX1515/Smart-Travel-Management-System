@@ -5,17 +5,17 @@
   ini_set('display_startup_errors', 1);
   error_reporting(E_ALL);
 
-  $accountId = $_SESSION['accountId'];
+  $accountId = $_SESSION['client_accountId'];
   $agentId = $_SESSION['clientId'];
   $agentCode = $_SESSION['clientCode'];
   $agentRole = $_SESSION['clientRole'];
   $agentType = $_SESSION['clientType'];
-  $fName =  $_SESSION['fName'] ?? '';
-  $lName = $_SESSION['lName'] ?? '';
-  $mName = $_SESSION['mName'] ?? '';
-  $branchId = $_SESSION['branchId'] ?? '';
-  $email = $_SESSION['email'] ?? '';
-  $password = $_SESSION['password'] ?? '';
+  $fName =  $_SESSION['client_fName'] ?? '';
+  $lName = $_SESSION['client_lName'] ?? '';
+  $mName = $_SESSION['client_mName'] ?? '';
+  $branchId = $_SESSION['client_branchId'] ?? '';
+  $email = $_SESSION['client_email'] ?? '';
+  $password = $_SESSION['client_password'] ?? '';
 
   // Fetch Branch Name
   $sql1 = "SELECT branchName FROM branch WHERE branchId = ?";
@@ -182,7 +182,9 @@
 </div>
 
 
-<?php include '../Employee Section/includes/logoutViewPassModal.php'; ?>
+<?php 
+include '../Client Section/Includes/logoutViewPassModal.php'; 
+?>
 
 <script>
 function toggleSubMenu(submenuId) {

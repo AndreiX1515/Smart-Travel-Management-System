@@ -12,7 +12,7 @@
   background-color: #F6F6F6; 
   border-radius: 10px; 
   height: 5vh;
-  display: flex;
+  display: flex; 
   flex-direction: row;
   justify-content: end;
   padding: 5px 25px;
@@ -736,7 +736,7 @@ position: relative;
 
 .pending-payment-table thead th {
   font-size: 10px; 
-  padding: 4px 8px; 
+  padding: 4px 6px; 
   font-weight: bold;
   color: #ffffff;
   border-bottom: 2px solid rgba(0, 0, 0, 0.1);
@@ -754,7 +754,7 @@ position: relative;
 }
 
 .pending-payment-table tbody td {
-  padding: 4px 8px;  
+  padding: 4px 6px;  
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   border-left: 1px solid rgba(0, 0, 0, 0.2); /* Left border */
   border-right: 1px solid rgba(0, 0, 0, 0.2); /* Right border */
@@ -811,6 +811,45 @@ position: relative;
   font-weight: 400;
   font-size: 12px; 
 }
+
+
+/* Adjust column widths */
+.pending-payment-table th:nth-child(1),
+.pending-payment-table td:nth-child(1) {
+    width: 4%; /* NO. column */
+}
+
+.pending-payment-table th:nth-child(2),
+.pending-payment-table td:nth-child(2) {
+    width: 25%; /* NAME column */
+}
+
+.pending-payment-table th:nth-child(3),
+.pending-payment-table td:nth-child(3) {
+    width: 30%; /* PAYMENT INFO column */
+}
+
+.pending-payment-table th:nth-child(4),
+.pending-payment-table td:nth-child(4) {
+    width: 20%; /* AMOUNT column */
+}
+
+.pending-payment-table th:nth-child(5),
+.pending-payment-table td:nth-child(5) {
+    width: 20%; /* STATUS column */
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

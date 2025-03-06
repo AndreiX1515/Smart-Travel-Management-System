@@ -1,64 +1,30 @@
 <?php
 session_start();
-require "../../conn.php"; // Database connection
 
-$response = ["status" => "error", "message" => "No session found."];
 
 // Check if session exists
-if (!isset($_SESSION['accountId'])) {
-    echo json_encode($response);
+if (!isset($_SESSION['agent_accountId'])) {
+    echo json_encode(["success" => false, "message" => "No session found."]);
     exit;
 }
 
-$accountId = $_SESSION['accountId'];
-$conn->begin_transaction(); // Start transaction
+// Unset only specific session variables
+unset(
+    $_SESSION['agent_accountId'], 
+    $_SESSION['agent_userType'], 
+    $_SESSION['agent_fName'], 
+    $_SESSION['agent_mName'], 
+    $_SESSION['agent_lName'], 
+    $_SESSION['agentId'],  
+    $_SESSION['agentCode'],  
+    $_SESSION['agentRole'],  
+    $_SESSION['agentType'],  
+    $_SESSION['agent_branchId'],  
+    $_SESSION['agent_timeout'],
+    $_SESSION['agent_flightId']
+);
 
-try {
-    // Check if account exists in user_sessions
-    $checkStmt = $conn->prepare("SELECT COUNT(*) AS sessionCount FROM user_sessions WHERE accountid = ?");
-    $checkStmt->bind_param("i", $accountId);
-    $checkStmt->execute();
-    $checkResult = $checkStmt->get_result();
-    $sessionData = $checkResult->fetch_assoc();
-
-    if ($sessionData['sessionCount'] > 0) {
-        // Delete session record from user_sessions table
-        $deleteStmt = $conn->prepare("DELETE FROM user_sessions WHERE accountid = ?");
-        $deleteStmt->bind_param("i", $accountId);
-        $deleteStmt->execute();
-
-        // Unset only specific session variables
-        unset(
-            $_SESSION['agentId'], 
-            $_SESSION['agentCode'],
-            $_SESSION['agentRole'], 
-            $_SESSION['agentType'], 
-            $_SESSION['timeout'], 
-            $_SESSION['flightid'],
-            $_SESSION['userType'],
-            $_SESSION['fName'], 
-            $_SESSION['mName'], 
-            $_SESSION['lName'], 
-            $_SESSION['branchId']
-        );
-
-        // Commit transaction
-        $conn->commit();
-
-        // Return success response
-        echo json_encode(["success" => true, "message" => "Logout successful."]);
-    } else {
-        echo json_encode(["status" => "error", "message" => "No active session found in user_sessions."]);
-    }
-
-    // Close statements
-    $checkStmt->close();
-    $deleteStmt->close();
-} catch (Exception $e) {
-    $conn->rollback(); // Rollback if error occurs
-    echo json_encode(["status" => "error", "message" => "Logout failed: " . $e->getMessage()]);
-}
-
-$conn->close();
+// Return success response
+echo json_encode(["success" => true, "message" => "Logout successful."]);
 exit;
 ?>

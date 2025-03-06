@@ -29,8 +29,17 @@ error_reporting(E_ALL);
 
     <div class="main-content">
 
+      <?php
+      echo "<pre>";
+      print_r($_SESSION);
+      echo "</pre>";
+      ?>
+
       <!-- Cards Count 1st Row -->
       <div class="counts-wrapper">
+
+          
+
 
         <!-- CARD 1 - Current Transactions -->
         <div class="card border-0">

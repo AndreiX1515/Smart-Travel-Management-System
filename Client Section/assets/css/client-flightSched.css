@@ -90,18 +90,52 @@
 .flight-schedules {
   background-color: transparent;
   display: flex;
+  flex-direction: column;
   position: relative;
   overflow: auto;
-  height: 92vh;
-  /*border: 1px solid black;*/
-  padding: 0px 5px 10px 5px;
+  height: 100vh;
+  /* border: 1px solid black; */
+  /* padding: 0px 5px 10px 5px; */
+  gap: 10px;
 }
+
+
+/* =================== */
+.backButton-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border: 1px solid black;
+}
+
+.proceed-btn {
+  background-color: #116530; /* Your preferred color */
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.3s ease;
+}
+
+.proceed-btn:hover {
+  background-color: #0e4a27; /* Slightly darker shade */
+}
+
+/* =================== */
 
 .flight-schedules .section-wrapper {
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 90%;
+  height: 100%;
+  /* border: 1px solid black; */
 }
 
 .flight-schedules .section-header {
@@ -109,6 +143,7 @@
   justify-content: space-between;
   width: 100%;
   /* padding: 20px 250px 20px 125px; */
+  border: 1px solid black;
 }
 
 .flight-container {
@@ -338,7 +373,7 @@
 }
 
 
-@media (max-width: 1280px) {
+/* @media (max-width: 1280px) {
   .flight-card {
     padding: 10px;
     height: auto;
@@ -355,19 +390,19 @@
   }
 
   .flight-date {
-    width: 100%; /* Make it full width for smaller screens */
+    width: 100%; 
   }
 
   .flight-date-content {
     flex-direction: column;
     gap: 15px;
   }
-}
+} */
 
 @media (max-width: 768px) {
   .flight-schedules {
     padding: 5px;
-    height: auto; /* Adjust height dynamically */
+    
   }
 
   .flight-card {

@@ -7,14 +7,9 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// Fetch session variables directlys
-$email = $_SESSION['email'] ?? ''; // Use null coalescing operator to avoid undefined index
-// $firstName = $_SESSION['first_name'] ?? '';
-// $lastName = $_SESSION['last_name'] ?? '';
-// $middleName = $_SESSION['middle_name'] ?? '';
+$email = $_SESSION['email'] ?? ''; 
 $accId = $_SESSION['accountId'] ?? '';
 
-// $fullName = htmlspecialchars($lastName . ', ' . $firstName . ($middleName ? ' ' . substr($middleName, 0, 1) . '.' : ''));
 ?>
 
 <!DOCTYPE html>
@@ -25,14 +20,13 @@ $accId = $_SESSION['accountId'] ?? '';
 
     <title>Flight Schedules</title>
 
-    <link rel="stylesheet" href="../Client Section/assets/css/client-portal.css?v=<?php echo time(); ?>">
-    <link rel="stylesheet" href="../Client Section/assets/css/client-flightSched copy 3.css?v=<?php echo time(); ?>">
-    <link rel="stylesheet" href="../Client Section/assets/css/client-navbar.css?v=<?php echo time(); ?>">
+
+    <link rel="stylesheet" href="../Client Section/assets/css/client-flightSched.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="../Client Section/assets/css/client-navbar-flight.css?v=<?php echo time(); ?>">
 
 </head>
 
 <body>
-
     <?php
     if (isset($_SESSION['status'])):
     ?>
@@ -40,58 +34,72 @@ $accId = $_SESSION['accountId'] ?? '';
         <!-- <div class="alert alert-warning alert-dismissible fade show" role="alert">
     <strong>Hey!</strong> <?= $_SESSION['status']; ?>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-  </div> -->
+    </div> -->
 
     <?php
         unset($_SESSION['status']);
     endif;
     ?>
 
+    <?php
+    // include '../Client Section/Includes/client-navbar.php'; 
+    ?>
 
-    <?php include '../Client Section/Includes/client-navbar.php'; ?>
+
 
     <div class="body-container">
+
         <div class="main-container">
+
             <div class="flight-schedules">
 
-                <div class="section-wrapper">
-                    <div class="section-header">
-                        <div class="header-info">
-                            <h3>Flight Schedules</h3>
-                            <p>Check out our latest flight schedules and book your next adventure today!</p>
-                        </div>
+            <div class="backButton-wrapper">
+                <button id="proceedLoginBtn" class="proceed-btn">
+                    Proceed to Login <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
 
-                        <div class="filters-container">
-                            <div class="filters">
-                                <div class="filter-group">
-                                    <label for="flight-month">Select Month:</label>
-                                    <select id="flight-month">
-                                        <option value="">All Months</option>
-                                        <option value="01">January</option>
-                                        <option value="02">February</option>
-                                        <option value="03">March</option>
-                                        <option value="04">April</option>
-                                        <option value="05">May</option>
-                                        <option value="06">June</option>
-                                        <option value="07">July</option>
-                                        <option value="08">August</option>
-                                        <option value="09">September</option>
-                                        <option value="10">October</option>
-                                        <option value="11">November</option>
-                                        <option value="12">December</option>
-                                    </select>
-                                </div>
 
-                                <div class="filter-group">
-                                    <label for="flight-date">Select Flight Date:</label>
-                                    <input type="date" id="flight-date">
-                                </div>
+                <div class="section-header">
 
-                                <button id="clear-filters" class="clear-btn">Clear</button>
-                            </div>
-                        </div>
+                    <div class="header-info">
+                        <h3>Flight Schedules</h3>
+                        <p>Check out our latest flight schedules and book your next adventure today!</p>
                     </div>
 
+                    <div class="filters-container">
+                        <div class="filters">
+                            <div class="filter-group">
+                                <label for="flight-month">Select Month:</label>
+                                <select id="flight-month">
+                                    <option value="">All Months</option>
+                                    <option value="01">January</option>
+                                    <option value="02">February</option>
+                                    <option value="03">March</option>
+                                    <option value="04">April</option>
+                                    <option value="05">May</option>
+                                    <option value="06">June</option>
+                                    <option value="07">July</option>
+                                    <option value="08">August</option>
+                                    <option value="09">September</option>
+                                    <option value="10">October</option>
+                                    <option value="11">November</option>
+                                    <option value="12">December</option>
+                                </select>
+                            </div>
+
+                            <div class="filter-group">
+                                <label for="flight-date">Select Flight Date:</label>
+                                <input type="date" id="flight-date">
+                            </div>
+
+                            <button id="clear-filters" class="clear-btn">Clear</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-wrapper">
+                    
                     <div class="section-main-content">
                         <div id="flights-container">
                             <?php
@@ -192,12 +200,39 @@ $accId = $_SESSION['accountId'] ?? '';
                     </div>
                 </div>
             </div>
+
         </div>
+
     </div>
 
 
     <?php include '../Client Section/Includes/scripts.php'; ?>
     <!-- <script src="heartbeat.js"></script>  -->
+
+    <script>
+        $(document).ready(function () {
+            $("#proceedLoginBtn").click(function () {
+                $.ajax({
+                    url: "../Client Section/Functions/client-logout.php",
+                    type: "POST",
+                    data: { trigger: true },
+                    dataType: "json",
+                    success: function (response) {
+                        if (response.success) {
+                            window.location.href = "../Agent Section/agentLogin.php"; 
+                        } else {
+                            console.error("Error:", response.message);
+                            window.location.href = "../Agent Section/agentLogin.php"; 
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("AJAX Error:", error);
+                        window.location.href = "../Agent Section/agentLogin.php"; 
+                    }
+                });
+            });
+        });
+    </script>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {

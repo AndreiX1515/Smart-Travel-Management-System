@@ -17,32 +17,28 @@
   </div>
 </div>
 
-
-
 <script>
 $(document).ready(function() {
     $('#logoutButton').click(function() {
         $.ajax({
-            url: '../Client Section/functions/client-logout.php',
+            url: '../Client Section/Functions/client-logout.php',
             type: 'GET',
             dataType: 'json',
             success: function(response) {
                 if (response.success) {
-                    // Redirect exclusively to the client login page
                     window.location.href = '../Agent Section/agentLogin.php';
                 } else {
-                    alert(response.message);
-                    // window.location.href = '../Agent Section/agentLogin.php'; // Fallback redirection
+                    window.location.href = '../Agent Section/agentLogin.php';
                 }
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 console.error('AJAX Error:', textStatus, errorThrown);
-                window.location.href = '../Agent Section/agentLogin.php'; 
+                alert("An error occurred during logout. Please try again.");
+                // window.location.href = '../Agent Section/agentLogin.php'; 
             }
         });
     });
 });
-
 
 </script>
 

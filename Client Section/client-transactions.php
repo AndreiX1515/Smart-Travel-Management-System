@@ -139,7 +139,7 @@ require "../conn.php";
                 </thead>
                 <tbody>
                   <?php
-                    $accountId = $_SESSION['accountId'];
+                    $accountId = $_SESSION['client_accountId'];
 
                     $sql1 = "SELECT b.transactNo AS `T.N`, p.packageName AS `PACKAGE`,
                               DATE_FORMAT(b.bookingDate, '%m-%d-%Y') AS `TRANSACTION DATE`, b.bookingType as bookingType,
