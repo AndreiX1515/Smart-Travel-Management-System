@@ -383,8 +383,6 @@
         const selectedText = flightFilter.options[flightFilter.selectedIndex].text;
         console.log(selectedText);
 
-        // console.log(flightFilter.text);
-
         let url = '';
         let data = `companyId=${companyId}`;
 
@@ -467,6 +465,7 @@
         const flightFilter = document.getElementById('flight-filter');
         const selectedText = flightFilter.options[flightFilter.selectedIndex].text;
         console.log(selectedText);
+        // console.log()
 
         // Get current date in mm/dd/yyyy format
         const currentDate = new Date();

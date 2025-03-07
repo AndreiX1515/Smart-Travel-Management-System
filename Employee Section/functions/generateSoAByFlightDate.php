@@ -2,9 +2,12 @@
 require_once('../../tcpdf/tcpdf.php');
 session_start();
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 // Get the selected filter values from the POST request
 $companyId = $_POST['companyId'];
-$flightId = $_POST['flightId'];
 $formattedDate = $_POST['currentDate'];
 $soaNumber = $_POST['soaNumber'];
 $flightDate = $_POST['flightDate'];
@@ -14,10 +17,10 @@ $space = "";
 class PDF extends TCPDF 
 {
   private $yPosition;
-  // private $branchName = '';
-  // private $formattedDate = '';
-  // private $monthName = '';
-  // private $soaNumber = '';
+  private $branchName = '';
+  private $formattedDate = '';
+  private $monthName = '';
+  private $soaNumber = '';
 
   public function setBranchName($branchName) 
   {
@@ -424,7 +427,7 @@ class PDF extends TCPDF
 // Create a new PDF instance and add pages as needed
 $pdf = new PDF();
 
-$tableData = $_SESSION['tableData'];
+$tableData = $_SESSION['tableData1'];
 $totalPriceSum = $_SESSION['totalPriceSum'];
 $tableData2 = $_SESSION['tableData2'];
 $totalRequestCost = $_SESSION['totalRequestCost'];
@@ -435,10 +438,7 @@ $branchName = $_SESSION['branchName'];
 
 // Set margins
 $pdf->SetMargins(10, 10, 10); // Adjust to provide consistent spacing
-
-// $pdf->tableBalance();
-// $pdf->tableContentSubTotal();
-// Output the PDF
+$pdf->SetAutoPageBreak(TRUE, 10); // Set bottom margin to 10mm
 
 // Set the branch name
 $pdf->setBranchName($branchName);
@@ -478,7 +478,7 @@ $yPosition = $pdf->accountInfo($yPosition);
 $pdf->Output('itinerary-Winter.pdf', 'I');
 
 // Clear session variables after the PDF is output
-unset($_SESSION['tableData']);
+unset($_SESSION['tableData1']);
 unset($_SESSION['totalPriceSum']);
 unset($_SESSION['tableData2']);
 unset($_SESSION['totalRequestCost']);

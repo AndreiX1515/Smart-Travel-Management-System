@@ -119,8 +119,7 @@ require "../conn.php";
                         <?php
                         // Query to fetch packageId and packageName
                         $sql1 = mysqli_query($conn, "SELECT flightId, flightDepartureDate, flightPrice, wholesalePrice FROM flight 
-                                              WHERE packageId = $packageId AND 
-                                              MONTHNAME(flightDepartureDate) = '$month' ORDER BY flightDepartureDate ASC");
+                                              ORDER BY flightDepartureDate ASC");
 
                         // Loop through the result to create options
                         while ($res1 = mysqli_fetch_array($sql1)) 

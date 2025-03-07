@@ -429,7 +429,7 @@ class PDF extends TCPDF
 // Create a new PDF instance and add pages as needed
 $pdf = new PDF();
 
-$tableData = $_SESSION['tableData'];
+$tableData = $_SESSION['tableData1'];
 $totalPriceSum = $_SESSION['totalPriceSum'];
 $tableData2 = $_SESSION['tableData2'];
 $totalRequestCost = $_SESSION['totalRequestCost'];
@@ -505,7 +505,7 @@ if ($yPosition > $maxYPosition) {
 $pdf->Output('itinerary-Winter.pdf', 'I');
 
 // Clear session variables after the PDF is output
-unset($_SESSION['tableData']);
+unset($_SESSION['tableData1']);
 unset($_SESSION['totalPriceSum']);
 unset($_SESSION['tableData2']);
 unset($_SESSION['totalRequestCost']);
