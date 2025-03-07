@@ -6,7 +6,7 @@
         <th>Contact Person Info</th>
         <th>Contact Details</th>
         <th>Branch Name</th>
-        <!-- <th>Booking Date</th> -->
+        <!-- <th>Booking Date</th> --> 
         <th>Flight Date</th>
         <th>Total Pax</th>
         <th>Status</th>
@@ -14,7 +14,7 @@
     </thead>
     <tbody>
       <?php
-        $accountId = $_SESSION['accountId'];
+        // $accountId = $_SESSION['accountId'];
 
         $sql1 = "SELECT b.transactNo AS `T.N`, p.packageName AS `PACKAGE`,
                   DATE_FORMAT(b.bookingDate, '%m-%d-%Y') AS `TRANSACTION DATE`, b.bookingType as bookingType,

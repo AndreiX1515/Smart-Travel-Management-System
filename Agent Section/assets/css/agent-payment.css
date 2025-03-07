@@ -1,9 +1,27 @@
 .container-body {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     gap: 20px;
+    padding: 0px 0px;
+    /* border: 1px solid black; */
+}
+
+.header-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
     margin-top: 10px;
-    padding: 25px 10px;
+    margin-bottom: 20px;
+    /* border: 1px solid black; */
+    line-height: .5;
+    padding: 0px 20px;
+}
+
+.content-wrapper {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    
 }
 
 
@@ -11,85 +29,106 @@
 .subscription {
     display: flex;
     flex-direction: column;
-    flex: 2;
     background-color: transparent;
-    gap: 0px;
+    gap: 15px;
+    
 }
+
+/* Order Summary Container */
+.order-summary {
+    display: flex;
+    flex-direction: column;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e0e0e0;
+    padding: 30px;
+    background-color: #ffffff;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    width: 100%;
+    max-width: 550px; /* Increased width */
+}
+
+
+
+
 
 
 .section-1 {
-    border-radius: 5px; 
-    padding: 20px 0px; 
-    /* background-color: #ffffff; 
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);  */
-    transition: box-shadow 0.3s ease, transform 0.3s ease; 
+    border-radius: 5px;
+    padding: 20px 20px;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    /* border: 1px solid black; */
 }
 
-.section-1 h4 {  
-    font-size: 16px; /* Consistent, readable size */
-    font-weight: 700; /* Bold for emphasis */
-    color: #333333; /* Neutral dark color for contrast */
-    margin-bottom: 10px; /* Space below the header */
+.section-1 h4 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #333333;
+    margin-bottom: 10px;
 }
 
-.section-1 .header-container {
+.section-1 .section-container {
     display: flex;
     justify-content: space-between;
     margin-bottom: 5px;
-    font-size: 14px; /* Consistent subheader size */
-    color: #555555; /* Subtle text color for headers */
+    font-size: 14px;
+    color: #555555;
+    /* border: 1px solid black; */
 }
 
 .billing-options {
-    display: flex; /* Display billing cards in a row */
+    display: flex;
     flex-direction: row;
-    gap: 20px; /* Space between billing cards */
-    padding: 0px 0px;
-
+    gap: 20px;
+    padding: 20px 0px;
 }
 
 .billing-card {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center the logo and text within the card */
-    padding: 15px; /* Adjust padding */
+    align-items: center;
+    padding: 15px;
     background-color: white;
     border-radius: 7px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    
-    width: 200px; /* Adjust width based on your design */
+    width: 200px;
     cursor: pointer;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease; /* Smooth transition */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
 }
 
-.billing-card.active {
-    border-color: #116530; /* Active state border color */
-    background-color: #ffffff; /* Light gray background on hover */
-    transform: scale(1.10); /* Slightly enlarge the card */  
+.billing-card input[type="radio"] {
+    display: none;
+}
+
+.billing-card.active,
+.billing-card.selected {
+    border: 1px solid #116530;
+    background-color: #f9f9f9;
+    transform: scale(1.05);
 }
 
 .billing-card:hover {
-    background-color: #f0f0f0; /* Light gray background on hover */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Shadow effect */
-    transform: scale(1.05); /* Slightly enlarge the card */
+    background-color: #f0f0f0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    transform: scale(1.05);
 }
 
 .payment-logo {
     display: flex;
     flex-direction: column;
     align-items: center;
-    text-align: center; /* Center the text */
+    text-align: center;
     font-weight: bold;
     color: #333;
     margin-top: 10px;
 }
 
 .payment-logo i {
-    font-size: 52px; 
+    font-size: 52px;
 }
 
 .payment-logo img {
-    margin-bottom: -20px; /* Remove space between the image and text */
+    margin-bottom: -20px;
 }
 
 .payment-logo span {
@@ -97,130 +136,42 @@
     font-weight: 500;
 }
 
-.tab-content {
-    margin-top: 20px;
+.billing-card.selected {
+    background-color: #e6f7e6;
+    border-color: #116530;
+    box-shadow: 0 4px 12px rgba(17, 101, 48, 0.2);
 }
-
-.tab-pane {
-    display: none;
-}
-
-.tab-pane.show.active {
-    display: block;
-}
-
-.billing-options .nav-pills {
-    gap: 15px;
-}
-
-
-
-/* Targeting the billing-options div and its inner elements */
-.billing-options .nav-item {
-    padding: 10px;
-    width: 160px; /* Set a fixed width for each list item */
-    height: 110px; /* Set a fixed height for each list item */
-    display: flex;
-    justify-content: center; /* Center the content horizontally */
-    align-items: center; /* Center the content vertically */
-}
-
-/* Styling for the nav-link button inside billing-options */
-.billing-options .nav-link {
-    width: 100%; /* Ensure the button takes up the full width of the li */
-    height: 100%; /* Ensure the button takes up the full height of the li */
-    padding: 0; /* Remove default padding */
-    border: none; /* Remove button borders */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: transparent; /* Make the button background transparent */
-    transition: background 0.3s ease, transform 0.3s ease, border 0.3s ease; /* Smooth transition for background, transform, and border */
-}
-
-/* Add transform effect only on hover inside billing-options */
-.billing-options .nav-link:hover {
-    background-color: #f8f9fa; /* Light background on hover */
-    border-radius: 5px; /* Slightly round the corners */
-    transform: scale(1.05); /* Scale up on hover */
-}
-
-/* Active state styling for nav-link inside billing-options */
-.billing-options .nav-link.active {
-    background-color: #e9ecef; /* Lighter background for active state */
-    border-radius: 5px;
-    border: 2px solid #116530; /* Add border when active */
-}
-
-/* Style for the card inside each nav-link in billing-options */
-.billing-options .card-tab {
-    width: 100%; /* Ensure the card takes up the full width of the li */
-    height: 100%; /* Ensure the card takes up the full height of the li */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* Style for the card body inside billing-options to arrange contents in a column */
-.billing-options .card-body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center; /* Center content vertically within the card body */
-}
-
-/* Icon styling inside billing-options */
-.billing-options .card-body i {
-    font-size: 24px; /* Adjust the icon size */
-    margin-bottom: 8px; /* Space between icon and text */
-}
-
-/* Text styling inside billing-options */
-.billing-options .card-body span {
-    font-size: 16px; /* Adjust text size */
-}
-
-  
-
-
-
-
-
-
-
-
-
 
 
 /* Bank details Div */
 h3 {
-    margin-bottom: 15px; /* Spacing below headings */
-    color: #333; /* Heading color */
+    margin-bottom: 15px;
+    color: #333;
 }
 
 .bank-detail-row {
-    display: flex; /* Use flexbox for rows */
-    justify-content: space-between; /* Space between columns */
-    padding: 10px 0; /* Padding for better spacing */
-    border-bottom: 1px solid #d0d0d0; /* Divider between rows */
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #d0d0d0;
 }
 
 .bank-detail-row:last-child {
-    border-bottom: none; /* No border for last row */
+    border-bottom: none;
 }
 
 .bank-detail-col {
-    flex: 1; /* Each column takes equal width */
-    margin-right: 15px; /* Spacing between columns */
+    flex: 1;
+    margin-right: 15px;
 }
 
 .bank-detail-col:last-child {
-    margin-right: 0; /* No margin for last column */
+    margin-right: 0;
 }
 
 label {
-    font-weight: bold; /* Bold labels */
-    color: #555; /* Darker label color */
+    font-weight: bold;
+    color: #555;
 }
 
 
@@ -229,192 +180,144 @@ label {
 
 
 
-
-
-
-
-
-
-
-
-
-/* Order Summary Div */
-.order-summary {
-    border-radius: 10px; 
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
-    border: 1px solid #e0e0e0; 
-    height: 60vh; 
-    padding: 20px; 
-    background-color: #ffffff; 
-    flex: 1;
-    width: 250px;
-    transition: box-shadow 0.3s ease, transform 0.3s ease; 
-}
-
+/* Header Titles */
 .order-summary h4 {
-    font-size: 16px; /* Bold header for content emphasis */
-    font-weight: 700; /* Highlighted weight for the title */
-    color: #333333; /* Neutral dark color for readability */
-    margin-bottom: 15px; /* Spacing below the title */
-}
-
-.order-summary p {
-    font-size: 14px; /* Standard text size */
-    color: #555555; /* Subtle text color for readability */
-    line-height: 1.5; /* Comfortable line spacing */
-}
-
-
-.os-second-section {
-    margin-top: 10px;    
-}
-
-
-.total {
-    border-top: 1px solid #d3d3d3; /* Soft gray top border */
-    border-bottom: 1px solid #d3d3d3; /* Soft gray bottom border */
-    padding: 15px 0px; /* Vertical spacing for content */
-    margin:  10px 0px 10px 0px; /* Space above the total section */
-    background-color: #fafafa; /* Light background for subtle contrast */
-    text-align: center; /* Centers content for a cleaner layout */
-    font-weight: 600; /* Slightly bold for emphasis */
-    font-size: 16px; /* Balanced size for readability */
-    color: #333; /* Neutral dark color for text */
-}
-
-
-
-
-
-p {
-    margin: 0; /* Remove margin for paragraphs */
-    color: #444; /* Darker text color */
-}
-
-
-.downpayment {
-    padding: 0px 0px 20px 0px;
- }
-
-
-.file-attachment {
-    border: 1px solid #d0d0d0;
-    padding: 10px 0px;
-    border-radius: 4px;
-    background-color: transparent;
-    font-family: 'Arial', sans-serif;
-    text-align: center;
-    margin: 10px 0;
-    color: tr#333;
-}
-
-.attachment {
-    width: 100%;
-    height: auto;
-    padding: 12px;
-    /* border: 1px solid #d0d0d0; */
-    border-radius: 4px;
-    background-color: #ffffff;
+    font-size: 20px;
+    font-weight: 700;
     color: #333;
-    font-size: 14px;
-    cursor: pointer;
-    outline: none;
+    margin-bottom: 15px;
 }
 
-.attachment:focus {
+/* General Paragraph Styling */
+.order-summary p {
+    font-size: 15px;
+    color: #555;
+    line-height: 1.6;
+}
+
+/* Total Section */
+.total {
+    border-top: 1px solid #d3d3d3;
+    border-bottom: 1px solid #d3d3d3;
+    padding: 14px 0;
+    margin: 18px 0;
+    background-color: #fafafa;
+    text-align: center;
+    font-weight: 700;
+    font-size: 20px;
+    color: #222;
+}
+
+/* File Upload Section */
+.file-attachment {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px dashed #d0d0d0;
+    padding: 14px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    margin: 18px 0;
+    text-align: center;
+    font-size: 15px;
+    cursor: pointer;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.file-attachment:hover {
+    border-color: #4a00ff;
+    background-color: #f3f3f3;
+}
+
+/* Input Styling */
+input[type="text"],
+input[type="file"] {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #d0d0d0;
+    border-radius: 6px;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="file"]:focus {
     border-color: #116530;
 }
 
+/* Checkbox Section */
+.terms-checkbox {
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+    color: #444;
+    margin-top: 12px;
+}
 
-
-
-
+.terms-checkbox input {
+    margin-right: 10px;
+}
 
 /* Pay Button */
 .pay-button {
     background-color: #4a00ff;
     color: white;
-    font-size: 16px;
-    padding: 15px 30px;
+    font-size: 17px;
+    padding: 16px;
     border: none;
     border-radius: 8px;
     cursor: pointer;
     width: 100%;
-    transition: background-color 0.3s ease;
-    margin-top: 10px; /* Space between checkbox and button */
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: 10px;
 }
 
 .pay-button:hover {
     background-color: #3700cc;
+    transform: scale(1.02);
 }
 
 
 
 
 
+/* Responsive Adjustments */
 
-
-/* Adjustments for 320px - 480px */
+/* 320px - 480px (Small smartphones) */
 @media (max-width: 480px) {
     .container-body {
-        flex-direction: column;
+        flex-direction: column-reverse;
         align-items: center;
-    }
-
-    .bank-detail-row {
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .subscription, .order-summary {
-        width: 100%;
-    }
-}
-
-/* Adjustments for 481px - 600px */
-@media (min-width: 481px) and (max-width: 880px) {
-    .container-body {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .bank-detail-row {
-        flex-direction: column;
-        gap: 10px;
     }
 
     .subscription, .order-summary {
         width: 100%;
     }
 
-
+    .header-container {
+        font-size: 1.2rem;
+    }
 }
 
-/* Adjustments for 601px - 768px */
-@media (min-width: 880px) and (max-width: 961px) {
+/* 481px - 768px (Larger smartphones & small tablets) */
+@media (min-width: 481px) and (max-width: 768px) {
     .container-body {
-        flex-direction: row;
-    }
-
-    .subscription {
-        flex: 2;
-        width: 60%;
-    }
-
-    .bank-detail-row {
         flex-direction: column;
-        gap: 10px;
+        align-items: center;
     }
 
-    .order-summary {
-        flex: 1;
-        width: 40%;
-        height: calc(60vh + 70px);
+    .subscription, .order-summary {
+        width: 100%;
+    }
+
+    .header-container {
+        font-size: 1.3rem;
     }
 }
 
-/* Adjustments for 769px - 1024px */
-@media (min-width: 962px) and (max-width: 1024px) {
+/* 769px - 1024px (Tablets & smaller laptops) */
+@media (min-width: 769px) and (max-width: 1024px) {
     .container-body {
         flex-direction: row;
     }
@@ -430,8 +333,8 @@ p {
     }
 }
 
-/* Adjustments for 1025px - 1280px */
-@media (min-width: 1025px) and (max-width: 1280px) {
+/* 1025px - 1366px (Laptops & small desktops) */
+@media (min-width: 1025px) and (max-width: 1366px) {
     .container-body {
         flex-direction: row;
     }
@@ -448,8 +351,8 @@ p {
     }
 }
 
-/* Adjustments for 1281px - 1440px
-@media (min-width: 1281px) and (max-width: 1440px) {
+/* 1367px - 1600px (Large desktops) */
+@media (min-width: 1367px) and (max-width: 1600px) {
     .container-body {
         flex-direction: row;
     }
@@ -465,8 +368,8 @@ p {
     }
 }
 
-/* Adjustments for 1441px and up */
-/* @media (min-width: 1441px) {
+/* 1601px and up (Extra-large screens) */
+@media (min-width: 1601px) {
     .container-body {
         flex-direction: row;
     }
@@ -480,7 +383,8 @@ p {
         flex: 1;
         width: 20%;
     }
-} */ 
+}
+
 
 
 

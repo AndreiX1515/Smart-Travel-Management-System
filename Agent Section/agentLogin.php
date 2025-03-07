@@ -11,7 +11,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['flightid'])) {
     $_SESSION['flightid'] = htmlspecialchars($_POST['flightid']);
 }
 
-
 ?>
 
 <!DOCTYPE html>
@@ -29,25 +28,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['flightid'])) {
 </head>
 
 <body>
-<!-- Back to homepage button -->
-    <a href="../Client Section/client-flightsched.php" class="back-btn" id="backToFlights">
-        <i class="fas fa-arrow-left"></i> <span> Back to Flight Schedules </span> 
+    <!-- Back to homepage button -->
+    <a href="#" class="back-btn" id="backToFlights">
+        <i class="fas fa-arrow-left"></i> <span> Back to Flight Schedules </span>
     </a>
+
 
     <main class="main-container">
         <div class="login-container">
             <div class="logo">
                 <img src="../Assets/Logos/logo-tab.png" alt="" class="logo-image" width="160" height="120">
-                <input type="hidden" name="flightid" id="flightid" value="<?= isset($_SESSION['flightid']) ? $_SESSION['flightid'] : '' ?>">
             </div>
 
             <div class="fields-container">
-                <?php 
+                <?php
                 // echo "<pre>";
                 // print_r($_SESSION);
                 // echo "</pre>";
-                ?> 
+                ?>
+
                 <form class="mt-3" id="loginForm" method="POST">
+                    <input type="hidden" name="flightid" id="flightid" value="<?= isset($_SESSION['flightid']) ? $_SESSION['flightid'] : '' ?>">
+
                     <!-- Username input field -->
                     <div class="mb-3">
                         <div class="form-floating">
@@ -86,34 +88,55 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['flightid'])) {
 
 <?php include "../Agent Section/includes/scripts.php"; ?>
 
+
 <script>
-$(document).ready(function() {
-    $("#backToFlights").click(function(event) {
-        event.preventDefault(); // Prevent immediate navigation
-        
-        $.ajax({
-            url: '../Client Section/functions/unset_flight_session.php', // Adjust path if needed
-            type: 'GET',
-            dataType: 'json',
-            success: function(response) {
-                if (response.success) {
-                    window.location.href = "../Client Section/client-flightsched.php"; // Redirect after session unset
+    $(document).ready(function() {
+        $("#backToFlights").click(function(e) {
+            e.preventDefault(); // Prevent default anchor behavior
+
+            $.ajax({
+                url: "../Agent Section/functions/agent-clear-session.php", // Create this PHP file for handling session cleanup if needed
+                type: "POST",
+                data: {
+                    action: "back"
+                },
+                dataType: "json",
+                success: function(response) {
+                    if (response.success) {
+                        window.location.href = "../Client Section/client-flightsched.php";
+                    } else {
+                        console.error("Error:", response.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("AJAX Error:", error);
                 }
-            },
-            error: function() {
-                window.location.href = "../Client Section/client-flightsched.php"; // Ensure redirection even if AJAX fails
-            }
+            });
         });
     });
-});
-
 </script>
 
+<script>
+    $(document).ready(function() {
+        $("#backToFlights").click(function(event) {
+            event.preventDefault(); // Prevent immediate navigation
 
-
-
-
-
+            $.ajax({
+                url: '../Client Section/functions/unset_flight_session.php', // Adjust path if needed
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        window.location.href = "../Client Section/client-flightsched.php"; // Redirect after session unset
+                    }
+                },
+                error: function() {
+                    window.location.href = "../Client Section/client-flightsched.php"; // Ensure redirection even if AJAX fails
+                }
+            });
+        });
+    });
+</script>
 
 
 <script>
@@ -142,10 +165,19 @@ $(document).ready(function() {
 
             // Clear previous messages
             $('#message-login').html('');
-            const formData = new FormData(this);
-            formData.append('login', '1'); // Add login field to indicate form submission
+            $('#LoginButton').removeClass('button-disabled'); // Ensure button is enabled for retries
 
-            // Perform AJAX request
+            const formData = new FormData(this);
+            formData.append('login', '1'); // Mark request as login
+
+            console.log("Submitting AJAX request...");
+
+            // Log all formData values
+            for (let [key, value] of formData.entries()) {
+                console.log(`FormData Key: ${key}, Value: ${value}`);
+            }
+
+
             $.ajax({
                 url: '../Agent Section/functions/agentLogin-code.php',
                 type: 'POST',
@@ -153,70 +185,94 @@ $(document).ready(function() {
                 processData: false,
                 contentType: false,
                 dataType: 'json', // Expecting JSON response
-                success: function(data) {
+                success: function(data, status, xhr) {
+                    console.log("AJAX Response:", data);
+                    console.log("Response Status:", status);
+                    console.log("XHR Status Code:", xhr.status);
+
                     if (data.success) {
-                        console.log(data.accountType);
+                        console.log("Full Response:", data); // Log full response for debugging
+                        console.log("Account Type:", data.accountType);
+                        console.log("Received Flight ID:", data.flightId || "No Flight ID received");
 
+                        // Use only the response flight ID
+                        let flightid = data.flightId && data.flightId !== "Not received" ? data.flightId : '';
+
+                        // Log final flight ID to verify correctness
+                        console.log("Final Flight ID:", flightid);
+
+                        // Handle redirection based on account type
                         if (data.accountType === 'agent') {
-
-                            // Check if flightid exists in the hidden input or session
-                            let flightid = document.getElementById('flightid') ? document.getElementById('flightid').value : '';
-
                             if (flightid) {
-                                window.location.href = '../Agent Section/agent-addBooking-flight.php';
+                                console.log("Redirecting with Flight ID:", flightid);
+                                alert("Redirecting to Agent Booking Page");
 
+                                // Unset session flight ID only if it exists
+                                if (typeof sessionStorage !== "undefined" && sessionStorage.getItem("flightId")) {
+                                    sessionStorage.removeItem("flightId");
+                                }
+
+                                window.location.href = '../Agent Section/agent-revisedAddBooking-flight.php';
                             } else {
-                                // Redirect to agent dashboard
+                                console.log("No Flight ID, redirecting to Dashboard.");
+                                alert("Redirecting to Agent Dashboard");
+
                                 window.location.href = '../Agent Section/agent-dashboard.php';
                             }
-
-                        }  else if (data.accountType === 'guest') {
-                            // Check if flightid exists in the hidden input or session
-                            let flightid = document.getElementById('flightid') ? document.getElementById('flightid').value : '';
+                        } else if (data.accountType === 'guest') {
+                            console.log("Final Flight ID (Guest):", flightid);
 
                             if (flightid) {
-                                window.location.href = `../Client Section/client-addBooking-flight.php`;
-
+                                console.log("Redirecting to Client Booking Page");
+                                alert("Redirecting to Client Booking Page");
+                                window.location.href = '../Client Section/client-addBooking-flight.php';
                             } else {
+                                console.log("Redirecting to Client Dashboard");
+                                alert("Redirecting to Client Booking Page");
                                 window.location.href = '../Client Section/client-dashboard.php';
                             }
                             
                         } else if (data.accountType === 'employee') {
-                            // Redirect to employee dashboard
+                            console.log("Redirecting to Employee Dashboard");
                             window.location.href = '../Employee Section/emp-dashboard.php';
-
                         } else {
-                            // Handle unknown account type
+                            console.warn("Unknown account type received:", data.accountType);
                             alert('Unknown account type. Please contact support.');
                         }
-                        
                     } else {
-                        // Show error message based on the response
+                        console.warn("Login failed:", data.message);
+
                         $('#message-login').html(
                             `<div class="alert alert-danger text-center">${data.message}</div>`
                         );
 
-                        // If the user is logged in on another device, disable the login button
-                        if (data.message &&
-                            data.message.trim() === "You are logged in on another device. Please close from other tab or devices then reload before logging in again!") {
-                            console.log("Disabling login button for 'Logged in on another device.'");
-                            $('#LoginButton').addClass('button-disabled'); // Disable the login button
+                        if (data.message && data.message.trim() ===
+                            "You are logged in on another device. Please close from other tab or devices then reload before logging in again!") {
+
+                            console.warn("Disabling login button due to concurrent login.");
+                            $('#LoginButton').addClass('button-disabled');
                         }
                     }
+
+
                 },
                 error: function(xhr, status, error) {
+                    console.error('AJAX Request Failed');
+                    console.error('Status:', status);
+                    console.error('XHR Response:', xhr.responseText);
                     console.error('Error:', error);
-                    // Show a generic error message if there's a problem with the request
+
                     $('#message-login').html(
                         '<div class="alert alert-danger">An error occurred. Please try again later.</div>'
                     );
-                    // Add CSS class to visually disable the button
+
                     $('#LoginButton').addClass('button-disabled');
                 }
             });
         });
     });
 </script>
+
 
 <script>
     document.getElementById('togglePassword').addEventListener('click', function() {

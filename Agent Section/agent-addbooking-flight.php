@@ -31,6 +31,12 @@ require "../conn.php";
 
       <div class="main-content">
         <?php
+        echo "<pre>";
+        print_r($_SESSION);
+        echo "</pre>";
+        ?>
+
+        <?php
         if (isset($_SESSION['status'])):
         ?>
           <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -43,54 +49,60 @@ require "../conn.php";
         ?>
 
         <?php
-        if (isset($_SESSION['flightid']) || isset($_GET['flightid'])) {
-          // Use session flight ID if available, otherwise set from GET
-          $flightid = $_SESSION['flightid'] ?? $_GET['flightid'];
-          $_SESSION['flightid'] = $flightid;
+        // Set flightId to session value by default, if available
+        $flightId = $_SESSION['agent_flightId'] ?? null;
 
-          // SQL query to join flight and package tables
-          $sql1 = "SELECT flight.*, package.packageName, package.packagePrice
-                      FROM flight
-                      JOIN package ON flight.packageId = package.packageId
-                      WHERE flight.flightId = ?";
-
-          // Prepare the statement
-          if ($stmt = $conn->prepare($sql1)) {
-            // Bind the flightId as an integer parameter
-            $stmt->bind_param("i", $flightid);
-
-            // Execute the statement
-            if ($stmt->execute()) {
-              $result = $stmt->get_result();
-
-              // Check if a row is returned
-              if ($result->num_rows > 0) {
-                // Fetch the data
-                while ($row = $result->fetch_assoc()) {
-                  $packageId = $row['packageId'];
-                  $packageName = $row['packageName'];
-                  $packagePrice = $row['packagePrice'];
-                  $origin = $row['origin'];
-                  $year = date('Y', strtotime($row['flightDepartureDate']));
-                  $month = date('F', strtotime($row['flightDepartureDate']));
-                  $flightDepartureDate = $row['flightDepartureDate'];
-                  $flightPrice = $row['flightPrice'];
-                  $wholesalePrice = $row['wholesalePrice'];
-                }
-              } else {
-                echo "No flight found with that ID.";
-              }
-            } else {
-              echo "Error executing query: " . $stmt->error;
-            }
-          }
-          // Close the statement
-          $stmt->close();
-        } else {
-          echo "Error preparing statement: " . $conn->error;
+        // If GET is set, override flightId and update session
+        if (isset($_GET['flightid'])) {
+            $flightId = $_GET['flightid'];
+            $_SESSION['agent_flightId'] = $flightId;
         }
 
+        // Proceed only if flightId is available
+        if ($flightId) {
+            // SQL query to join flight and package tables
+            $sql1 = "SELECT flight.*, package.packageName, package.packagePrice
+                    FROM flight
+                    JOIN package ON flight.packageId = package.packageId
+                    WHERE flight.flightId = ?";
+
+            // Prepare the statement
+            if ($stmt = $conn->prepare($sql1)) {
+                // Bind the flightId as an integer parameter
+                $stmt->bind_param("i", $flightId);
+
+                // Execute the statement
+                if ($stmt->execute()) {
+                    $result = $stmt->get_result();
+
+                    // Check if a row is returned
+                    if ($result->num_rows > 0) {
+                        // Fetch the data
+                        while ($row = $result->fetch_assoc()) {
+                            $packageId = $row['packageId'];
+                            $packageName = $row['packageName'];
+                            $packagePrice = $row['packagePrice'];
+                            $origin = $row['origin'];
+                            $year = date('Y', strtotime($row['flightDepartureDate']));
+                            $month = date('F', strtotime($row['flightDepartureDate']));
+                            $flightDepartureDate = $row['flightDepartureDate'];
+                            $flightPrice = $row['flightPrice'];
+                            $wholesalePrice = $row['wholesalePrice'];
+                        }
+                    } else {
+                        echo "No flight found with that ID.";
+                    }
+                } else {
+                    echo "Error executing query: " . $stmt->error;
+                }
+                // Close the statement
+                $stmt->close();
+            } else {
+                echo "Error preparing statement: " . $conn->error;
+            }
+        }
         ?>
+
 
         <form action="../Agent Section/functions/agent-addBooking-code.php" method="POST">
           <div class="booking-wrapper">
@@ -187,7 +199,7 @@ require "../conn.php";
 
                 <input type="text" id="agentCode" name="agentCode" value="<?php echo $_SESSION['agentCode']; ?>" placeholder="Agent Code Input">
 
-                <input type="text" id="flightId" name="flightId" value="<?php echo $flightid; ?>" placeholder="Flight Id Input">
+                <input type="text" id="flightId" name="flightId" value="<?php echo $flightId; ?>" placeholder="Flight Id Input">
 
                 <!-- Adjusted Fields -->
                 <input type="text" id="packagePrice" name="packagePrice" value="<?php echo isset($packagePrice) ? $packagePrice : ''; ?>" placeholder="Package Price">
@@ -199,7 +211,7 @@ require "../conn.php";
 
                 <input type="text" name="agentType" placeholder="Agent Type Input" value="<?php echo $_SESSION['agentType']; ?>">
                 
-                <input type="text" name="accId" id="accId" placeholder="Account Id Input" value="<?php echo $_SESSION['accountId']; ?>">
+                <input type="text" name="accId" id="accId" placeholder="Account Id Input" value="<?php echo $_SESSION['agent_accountId']; ?>">
 
                 <!-- Adjusted Package Fields -->
                 <input type="text" name="packageId" id="packageId" value="<?php echo isset($packageId) ? $packageId : ''; ?>" placeholder="Package Id Input">

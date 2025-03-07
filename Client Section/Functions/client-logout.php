@@ -1,31 +1,31 @@
 <?php
+
 session_start();
 
 // Check if session exists
-if (!isset($_SESSION['accountId'])) {
-    echo json_encode(["status" => "error", "message" => "No session found."]);
+if (!isset($_SESSION['client_accountId'])) {
+    echo json_encode(["success" => false, "message" => "No session found."]);
     exit;
 }
 
-// Unset only specific session variables
 unset(
-
     $_SESSION['clientId'], 
     $_SESSION['clientCode'],
     $_SESSION['clientRole'], 
     $_SESSION['clientType'], 
-    $_SESSION['timeout'], 
-    $_SESSION['flightid'],
-    $_SESSION['userType'],
-    $_SESSION['fName'], 
-    $_SESSION['mName'], 
-    $_SESSION['lName'], 
-    $_SESSION['branchId']
 );
 
+// Unset all session variables that start with 'client_'
+foreach ($_SESSION as $key => $value) {
+    if (strpos($key, 'client_') === 0) {
+        unset($_SESSION[$key]);
+    }
+}
 
 
-// Redirect to client login page
-header("Location: ../Client Section/clientLogin.php");
+
+// Send JSON response for AJAX success
+echo json_encode(["success" => true, "message" => "Logout successful."]);
 exit;
+
 ?>

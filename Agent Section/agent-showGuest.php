@@ -8,37 +8,7 @@ error_reporting(E_ALL);
 ?>
 
 <!-- Session Variables -->
-<?php
-$accountId = $_SESSION['accountId'];
-$agentId = $_SESSION['agentId'];
-$agentCode = $_SESSION['agentCode'];
-$agentRole = $_SESSION['agentRole'];
-$agentType = $_SESSION['agentType'];
-$fName =  $_SESSION['fName'] ?? '';
-$lName = $_SESSION['lName'] ?? '';
-$mName = $_SESSION['mName'] ?? '';
-$branchId = $_SESSION['branchId'] ?? '';
-$email = $_SESSION['email'] ?? '';
-$password = $_SESSION['password'] ?? '';
 
-$sql1 = "Select * from branch where branchId= '$branchId'";
-$result1 = $conn->query($sql1);
-
-// Check if a result is returned
-if ($result1->num_rows > 0) {
-  // Fetch the branchName
-  $row = $result1->fetch_assoc();
-  $branchName = $row['branchName'];
-} else {
-  $branchName = "No Branch";
-}
-
-// Format the full name
-$fullName = htmlspecialchars($lName . ', ' . $fName . ($mName ? ' ' . substr($mName, 0, 1) . '.' : ''));
-
-// Optional: hide password by default
-$maskedPassword = '••••••••••';
-?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -58,6 +28,38 @@ $maskedPassword = '••••••••••';
 
   <div class="body-container">
     <?php include "../Agent Section/includes/sidebar.php"; ?>
+
+    <?php
+// $accountId = $_SESSION['accountId'];
+// $agentId = $_SESSION['agentId'];
+// $agentCode = $_SESSION['agentCode'];
+// $agentRole = $_SESSION['agentRole'];
+// $agentType = $_SESSION['agentType'];
+// $fName =  $_SESSION['fName'] ?? '';
+// $lName = $_SESSION['lName'] ?? '';
+// $mName = $_SESSION['mName'] ?? '';
+// $branchId = $_SESSION['branchId'] ?? '';
+// $email = $_SESSION['email'] ?? '';
+// $password = $_SESSION['password'] ?? '';
+
+$sql1 = "Select * from branch where branchId= '$branchId'";
+$result1 = $conn->query($sql1);
+
+// Check if a result is returned
+if ($result1->num_rows > 0) {
+  // Fetch the branchName
+  $row = $result1->fetch_assoc();
+  $branchName = $row['branchName'];
+} else {
+  $branchName = "No Branch";
+}
+
+// Format the full name
+$fullName = htmlspecialchars($lName . ', ' . $fName . ($mName ? ' ' . substr($mName, 0, 1) . '.' : ''));
+
+// Optional: hide password by default
+$maskedPassword = '••••••••••';
+?>
 
     <div class="main-content-container">
       <div class="navbar">
