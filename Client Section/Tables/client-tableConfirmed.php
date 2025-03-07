@@ -14,7 +14,7 @@
     </thead>
     <tbody>
       <?php
-        $accountId = $_SESSION['accountId'];
+        // $accountId = $_SESSION['accountId'];
 
         $sql1 = "SELECT b.transactNo AS `T.N`, p.packageName AS `PACKAGE`,
                   DATE_FORMAT(b.bookingDate, '%m-%d-%Y') AS `TRANSACTION DATE`, b.bookingType as bookingType,
@@ -30,7 +30,7 @@
                 LEFT JOIN company c ON a.companyId = c.companyId
                 LEFT JOIN client cl ON b.accountType = 'Client' AND b.accountId = cl.accountId
                 JOIN branch br ON b.agentCode = br.branchAgentCode
-                WHERE b.accountId = '$accountId' AND (b.status = 'Pending' OR b.status = 'Reserved')
+                WHERE b.accountId = '$accountId' AND b.status = 'Confirmed'
                 ORDER BY b.transactNo DESC";
 
           $res1 = $conn->query($sql1);
@@ -91,7 +91,7 @@
           {
             echo "<tr>
                     <td colspan='7' class='text-center text-danger'>
-                        No Pending/Reserved bookings found.
+                        No Confirmed bookings found.
                     </td>
                   </tr>";
           }

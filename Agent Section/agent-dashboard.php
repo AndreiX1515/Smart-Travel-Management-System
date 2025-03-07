@@ -29,9 +29,9 @@ require "../conn.php";
         <div class="content-container">
 
           <?php
-          echo "<pre>";
-          print_r($_SESSION);
-          echo "</pre>";
+          // echo "<pre>";
+          // print_r($_SESSION);
+          // echo "</pre>";
           ?>
 
           <!-- Cards First Row -->
@@ -672,6 +672,11 @@ require "../conn.php";
 
               <div class="flight-seat-container">
 
+                <div class="flight-seat-header">
+
+
+                </div>
+
                 <!-- Flight Seat -->
                 <div class="one">
                   <div class="body-flight">
@@ -788,6 +793,12 @@ require "../conn.php";
                   </div>
                 </div>
 
+                <!-- <div class="flight-seat-footer">
+
+                </div> -->
+
+
+                
               </div>
             </div>
 
@@ -1154,9 +1165,9 @@ require "../conn.php";
                         <tbody>
                           <?php
                           // Assuming you already have a connection to your database
-                          $accountId = $_SESSION['accountId'];
-                          $agentCode = $_SESSION['agentCode'];
-                          $agentRole = $_SESSION['agentRole'];
+                          // $accountId = $_SESSION['accountId'];
+                          // $agentCode = $_SESSION['agentCode'];
+                          // $agentRole = $_SESSION['agentRole'];
 
                           if ($agentRole != 'Head Agent') {
                             $sql2 = "SELECT p.transactNo AS `Transaction No`, p.paymentTitle AS `Payment Title`, 
@@ -1561,6 +1572,7 @@ require "../conn.php";
               <div class="flight-seat-container">
                 <div class="one">
                   <div class="body-flight">
+
                     <div class="confirm-table-container-flight">
                       <table class="info-table">
                         <thead class="border-2">

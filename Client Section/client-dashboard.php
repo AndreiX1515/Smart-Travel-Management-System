@@ -480,9 +480,13 @@ require "../conn.php";
           </div>
 
           <div class="tab-content" id="pills-tabContent">
-            <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
 
+            <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
               <div class="flight-seat-container">
+
+                <div class="flight-seat-header">
+
+                </div>
 
                 <!-- Flight Seat -->
                 <div class="one">
@@ -591,12 +595,15 @@ require "../conn.php";
                     </div>
                   </div>
                 </div>
+                
+                <!-- <div class="flight-seat-footer">
+
+                </div> -->
 
               </div>
             </div>
 
             <div class="tab-pane fade " id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
-
               <div class="second-row-container">
                 <!-- Pending Transactions table -->
                 <div class="one">

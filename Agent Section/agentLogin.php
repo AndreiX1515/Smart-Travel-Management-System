@@ -42,13 +42,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['flightid'])) {
 
             <div class="fields-container">
                 <?php
-                echo "<pre>";
-                print_r($_SESSION);
-                echo "</pre>";
+                // echo "<pre>";
+                // print_r($_SESSION);
+                // echo "</pre>";
                 ?>
 
                 <form class="mt-3" id="loginForm" method="POST">
-                    <input type="text" name="flightid" id="flightid" value="<?= isset($_SESSION['flightid']) ? $_SESSION['flightid'] : '' ?>">
+                    <input type="hidden" name="flightid" id="flightid" value="<?= isset($_SESSION['flightid']) ? $_SESSION['flightid'] : '' ?>">
 
                     <!-- Username input field -->
                     <div class="mb-3">

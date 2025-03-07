@@ -12,15 +12,7 @@
   letter-spacing: 0.5px; /* Adds slight spacing between letters */
 }
 
-.main-content .counts-wrapper {
-  display: flex;
-  flex-direction: row;
-  gap: 5px; /* Gap between cards */
-  width: 100%;
-  height: 15vh;
-  margin-bottom: 5px;
-  /* border: 1px solid black; */
-}
+
 
 .main-content .counts-wrapper .card {
   flex: 1;
@@ -33,30 +25,46 @@
 
 .header-counts {
   width: 100%;
-  padding: 10px 0px 10px 3px;
-}
-
-.header-counts h6 {
-  margin: 0;
+  padding: 5px 0px 5px 5px;
+ }
+ 
+ 
+ .header-counts h6 {
+  margin: 0; /* Removes default margin */
   text-align: left;
-  color: rgb(255, 255, 255);
-  font-size: 0.9rem;
-  font-weight: bold;
-  letter-spacing: 0.5px;
-}
+  color: rgb(255, 255, 255); /* Sets the text color with reduced opacity */
+  font-size: .9rem; /* Adjusts font size */
+  font-weight: 500;
+  letter-spacing: 0.5px; /* Adds slight spacing between letters */
+ }
+ 
+
+
+
 
 .white-pill {
-  display: inline-block;
+  display: inline-block; 
   padding: 5px 15px 5px 10px;
-  font-size: 0.6rem;
+  font-size: .8rem;
   font-weight: 500;
   color: rgb(255, 255, 255);
-  background-color: #1f75fe;
-  border-radius: 0 50px 50px 0;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  letter-spacing: 0.5px;
-  text-align: left;
-  transition: box-shadow 0.3s ease, transform 0.2s ease;
+  background-color: #1F75FE; 
+  border-radius: 0 50px 50px 0; 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+  letter-spacing: 0.5px; 
+  text-align: left; 
+  transition: box-shadow 0.3s ease, transform 0.2s ease; 
+}
+
+.main-content .counts-wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 5px; /* Gap between cards */
+  width: 100%;
+  height: 16vh;
+  margin-bottom: 5px;
+  padding-top: 5px;
+  /* border: 1px solid black; */
 }
 
 .counts-wrapper .card {
@@ -69,6 +77,8 @@
   /* border: 1px solid black; */
 }
 
+
+
 .row {
   display: flex;
   flex-direction: row;
@@ -76,7 +86,7 @@
 }
 
 .card-content {
-  padding: 5px 12px;
+  padding: 5px 15px;
 }
 
 .card-content .col-md-5 {
@@ -352,7 +362,17 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+  /* border: 1px solid black; */
 }
+
+/* .tab-pane {
+  /* display: flex;
+  flex-direction: column;
+  gap: 10px; */
+  /* border: 1px solid black; 
+} */
+
+
 
 .header-wrapper {
   display: flex;
@@ -1031,7 +1051,7 @@
 .info-table-container {
   display: flex;
   position: relative;
-  height: 61.5vh; /* Fixed height for the container */
+  height: 63.3vh; /* Fixed height for the container */
   overflow-x: auto; /* Allow horizontal scrolling */
   overflow-y: auto; /* Allow vertical scrolling */
   /* border: 1px solid gainsboro; */

@@ -467,10 +467,6 @@
           .draw(); // Redraw table to default state
       });
 
-
-
-
-
     });
   </script>
 
