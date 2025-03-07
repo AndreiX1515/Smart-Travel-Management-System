@@ -675,11 +675,11 @@ require "../conn.php";
                 <div class="flight-seat-header">
                   <div class="table-header">
                     
-                    <div class="search-wrapper">
+                    <!-- <div class="search-wrapper">
                       <div class="search-input-wrapper">
                         <input type="text" id="search" placeholder="Search here..">
                       </div>
-                    </div>
+                    </div> -->
 
                     <div class="second-header-wrapper">
                       <div class="date-range-wrapper sorting-wrapper">
