@@ -28,12 +28,13 @@ require "../conn.php";
       </div>
 
       <div class="main-content">
+
         <div class="table-wrapper">
+          
           <div class="table-header">
             <div class="search-wrapper">
               <div class="search-input-wrapper">
                 <input type="text" id="search" placeholder="Search here..">
-                <!-- <span class="icon">🔍</span> -->
               </div>
             </div>
 

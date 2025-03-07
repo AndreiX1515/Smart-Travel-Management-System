@@ -3,16 +3,12 @@
   width: 100%;
 }
 
-
-
 .main-content .header h6 {
   margin: 0; /* Removes default margin */
   font-size: 1rem; /* Adjusts font size */
   font-weight: 400;
   letter-spacing: 0.5px; /* Adds slight spacing between letters */
 }
-
-
 
 .main-content .counts-wrapper .card {
   flex: 1;
