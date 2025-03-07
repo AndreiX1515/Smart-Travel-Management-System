@@ -673,9 +673,57 @@ require "../conn.php";
               <div class="flight-seat-container">
 
                 <div class="flight-seat-header">
+                  <div class="table-header">
+                    
+                    <div class="search-wrapper">
+                      <div class="search-input-wrapper">
+                        <input type="text" id="search" placeholder="Search here..">
+                      </div>
+                    </div>
 
+                    <div class="second-header-wrapper">
+                      <div class="date-range-wrapper sorting-wrapper">
+                        <div class="select-wrapper">
+                          <select id="packages">
+                            <option value="All" disabled selected>Select Branch</option>
+                            <?php
+                            // Execute the SQL query
+                            $sql1 = "SELECT branchId, branchName FROM branch ORDER BY branchName ASC";
+                            $res1 = $conn->query($sql1);
 
+                            // Check if there are results
+                            if ($res1->num_rows > 0) {
+                              // Loop through the results and generate options
+                              while ($row = $res1->fetch_assoc()) {
+                                echo "<option value='" . $row['branchName'] . "'>" . $row['branchName'] . "</option>";
+                              }
+                            } else {
+                              echo "<option value=''>No companies available</option>";
+                            }
+                            ?>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div class="date-range-wrapper flightbooking-wrapper">
+                        <div class="date-range-inputs-wrapper">
+                          <div class="input-with-icon">
+                            <input type="text" class="datepicker" id="FlightStartDate" placeholder="Flight Date" readonly>
+                            <i class="fas fa-calendar-alt calendar-icon"></i>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="buttons-wrapper">
+                        <button id="clearSorting" class="btn btn-secondary">
+                          Clear Filters
+                        </button>
+                      </div>
+                    </div>
+
+                  </div>
                 </div>
+
 
                 <!-- Flight Seat -->
                 <div class="one">
