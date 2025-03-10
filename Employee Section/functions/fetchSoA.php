@@ -16,6 +16,10 @@ if (isset($_POST['companyId']) && isset($_POST['month']) && isset($_POST['year']
   $month = date('m', strtotime($_POST['month']));
   $year = $_POST['year'];
 
+  $formattedTotalPriceSum = "0.00";
+  $formattedTotalRequestCostSum = "0.00";
+  $formattedTotalAmount = "0.00";
+
   // Query to get the branchAgentCode
   $sql1 = "SELECT branchAgentCode, branchName FROM branch WHERE branchId = $companyId";
   $result = $conn->query($sql1);
@@ -98,6 +102,7 @@ if (isset($_POST['companyId']) && isset($_POST['month']) && isset($_POST['year']
   } 
   else 
   {
+    $_SESSION['totalPriceSum'] = "0.00";
     $table1 = "<tr><td colspan='7'>No data found</td></tr>";
   }
 

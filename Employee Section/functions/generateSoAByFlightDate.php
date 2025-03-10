@@ -2,15 +2,15 @@
 require_once('../../tcpdf/tcpdf.php');
 session_start();
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+// ini_set('display_errors', 1);
+// ini_set('display_startup_errors', 1);
+// error_reporting(E_ALL);
 
 // Get the selected filter values from the POST request
-$companyId = $_POST['companyId'];
 $formattedDate = $_POST['currentDate'];
 $soaNumber = $_POST['soaNumber'];
 $flightDate = $_POST['flightDate'];
+
 
 $space = "";
 
@@ -445,35 +445,61 @@ $pdf->setBranchName($branchName);
 $pdf->setDateRange($flightDate);
 $pdf->setUpdateDate($formattedDate);
 $pdf->setSoANo($soaNumber);
-
+$pdf->AddPage();
 $pdf->tableHeader();
 
 // Get the initial Y position after rendering the header
-$yPosition = 75; // Set the starting position for the first table
+$yPosition = 61; // Set the starting position for the first table
+
+// Define the max Y position
+$maxYPosition = 277; // 297mm - 10mm (top margin) - 10mm (bottom margin)
 
 // Pass the Y position to tableContent and get the updated position
 $yPosition = $pdf->tableContent($tableData, $yPosition);
+
+// Check if Y position exceeds maxYPosition and add a new page if necessary
+if ($yPosition > $maxYPosition) {
+  $pdf->AddPage(); // Create a new page
+  $yPosition = 75; // Reset Y position for the new page
+}
 
 // Pass the updated Y position to tableContentSubTotal and get the final position
 $yPosition = $pdf->tableContentSubTotal($totalPriceSum, $yPosition);
 
 // Pass the final Y position to tablePayment and get the final position
 $yPosition = $pdf->tableRequest($tableData2, $yPosition);
+if ($yPosition > $maxYPosition) {
+  $pdf->AddPage();
+  $yPosition = 75;
+}
 
 // Pass the final Y position to tableContentSubTotal2 and get the final position
 $yPosition = $pdf->tableContentSubTotal2($totalRequestCost, $yPosition);
 
 // Pass the final Y position to tablePayment and get the final position
 $yPosition = $pdf->tablePayment($tableData3, $yPosition);
+if ($yPosition > $maxYPosition) {
+  $pdf->AddPage();
+  $yPosition = 75;
+}
 
 // Pass the final Y position to tableContentSubTotal2 and get the final position
 $yPosition = $pdf->tableContentSubTotal3($totalAmount, $yPosition);
 
 // Pass the updated Y position to tableBalance and get the final position
 $yPosition = $pdf->tableBalance($balance, $yPosition);
+if ($yPosition > $maxYPosition) {
+  $pdf->AddPage();
+  $yPosition = 75;
+}
 
 $yPosition = $pdf->accountInfo($yPosition);
+if ($yPosition > $maxYPosition) {
+  $pdf->AddPage();
+  $yPosition = 75;
+}
 
+ob_clean();
 // Output the PDF
 $pdf->Output('itinerary-Winter.pdf', 'I');
 
