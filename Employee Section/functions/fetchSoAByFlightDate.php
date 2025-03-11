@@ -6,11 +6,16 @@ session_start();
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+
 if (isset($_POST['companyId']) && isset($_POST['flightId'])) 
 {
   // Get the selected filter values from the POST request
   $companyId = $_POST['companyId'];
   $flightId = $_POST['flightId'];
+
+  $formattedTotalPriceSum = "0.00";
+  $formattedTotalRequestCostSum = "0.00";
+  $formattedTotalAmount = "0.00";
 
   // Query to get the branchAgentCode
   $sql1 = "SELECT branchAgentCode, branchName FROM branch WHERE branchId = $companyId";
@@ -120,11 +125,13 @@ if (isset($_POST['companyId']) && isset($_POST['flightId']))
     } 
     else 
     {
+      $_SESSION['totalPriceSum'] = "0.00";
       $table1 = "<tr><td colspan='7'>No flight bookings found</td></tr>";
     }
   } 
   else 
   {
+    $_SESSION['totalPriceSum'] = "0.00";
     $table1 = "<tr><td colspan='7'>No flight data found</td></tr>";
   }
 

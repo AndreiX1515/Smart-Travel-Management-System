@@ -389,7 +389,6 @@
         console.log(yearFilter.value);
         console.log(monthFilter.value);
 
-
         // Determine whether to use the date filter or the flight filter
         if (monthFilter.value !== "Select month" && yearFilter.value !== "Select year") {
           // Use Month & Year (Orig Preview SoA)
