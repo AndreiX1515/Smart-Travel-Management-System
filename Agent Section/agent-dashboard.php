@@ -46,8 +46,15 @@ require "../conn.php";
             <!-- CARD 1 Current Transaction Counts-->
             <div class="card">
               <div class="header-counts">
-                <h6 class="white-pill">Current Transaction</h6>
+                  <div class="primary-pill">
+                      <h6 class="white-pill">Current Monthly Transaction</h6>
+                  </div>
+
+                  <div class="accent-pill mt-1">
+                    <h6 class="accent-pill">as of <?php echo date('F, Y'); ?></h6>
+                  </div>
               </div>
+
 
               <div class="card-content px-3">
                 <!-- Total Transaction, and Completed Transaction -->
@@ -324,8 +331,10 @@ require "../conn.php";
 
             <!-- CARD 2 - On Due -->
             <div class="card">
-              <div class="header-counts">
-                <h6 class="white-pill">On Due</h6>
+             <div class="header-counts">
+                  <div class="primary-pill">
+                      <h6 class="white-pill">On Due</h6>
+                  </div>                  
               </div>
 
               <div class="card-content px-3">
@@ -542,8 +551,11 @@ require "../conn.php";
             <!-- CARD 3 - Total Payment -->
             <div class="card">
               <div class="header-counts">
-                <h6 class="white-pill">Total Sales</h6>
+                  <div class="primary-pill">
+                      <h6 class="white-pill">Total Sales</h6>
+                  </div>                  
               </div>
+
               <div class="card-content px-3">
                 <div class="row">
                   <!-- Current Month Sales -->
@@ -638,10 +650,20 @@ require "../conn.php";
 
             <!-- CARD 4 -->
             <div class="card">
-              <div class="header-counts d-flex justify-content-between align-items-center header-currency">
-                <h6 class="white-pill">Daily Currency Conversion</h6>
-                <a href="../Agent Section/agent-currency-conversion.php" class="pill-button">View History</a>
+              <div class="header-counts mb-1">
+                  <div class="primary-pill">
+                    <h6 class="white-pill">Daily Currency Conversion</h6>
+                  </div>
+
+                  <div class="accent-pill">
+                    <a href="../Agent Section/agent-currency-conversion.php" class="pill-button">View History</a>
+                  </div>
               </div>
+
+              <!-- <div class="header-counts d-flex justify-content-between align-items-center header-currency">
+                
+                
+              </div> -->
 
               <div class="card-body-currency">
                 <div class="currency-cards">

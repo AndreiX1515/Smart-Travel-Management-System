@@ -29,9 +29,9 @@ require "../conn.php";
       </div>
 
       <?php
-        $statusTab = isset($_GET['status']) ? $_GET['status'] : ''; 
+      $statusTab = isset($_GET['status']) ? $_GET['status'] : '';
       ?>
-    
+
       <div class="main-content">
         <div class="table-wrapper">
 
@@ -142,6 +142,7 @@ require "../conn.php";
             </ul>
           </div>
 
+
           <div class="table-container">
             <table id="product-table" class="product-table">
               <thead>
@@ -157,7 +158,7 @@ require "../conn.php";
               </thead>
               <tbody>
                 <?php
-               
+
                 if ($agentRole != 'Head Agent') {
                   $sql1 = "SELECT b.transactNo AS `T.N`, p.packageName AS `PACKAGE`, DATE_FORMAT(b.bookingDate, '%m-%d-%Y') AS `TRANSACTION DATE`, b.bookingType as bookingType, DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y') AS `FLIGHT DATE`, b.pax AS `TOTAL PAX`, CONCAT(b.lName, ', ', b.fName, ' ', CASE WHEN b.mName = 'N/A' THEN '' 
                   ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ', CASE WHEN b.suffix = 'N/A' THEN '' 
@@ -222,7 +223,6 @@ require "../conn.php";
                           </tr>";
                     }
                   }
-
                 } else {
                   $sql1 = "SELECT b.transactNo AS `T.N`, p.packageName AS `PACKAGE`, br.branchName as branchName,
                                   DATE_FORMAT(b.bookingDate, '%m-%d-%Y') AS `TRANSACTION DATE`, b.bookingType as bookingType,
@@ -302,6 +302,7 @@ require "../conn.php";
               </tbody>
             </table>
           </div>
+
 
           <div class="table-footer">
             <div class="pagination-controls">
@@ -579,131 +580,46 @@ require "../conn.php";
 
 
   <script>
-document.addEventListener("DOMContentLoaded", function () {
-    // Get the status from the URL
-    let statusTab = "<?php echo isset($_GET['status']) ? $_GET['status'] : ''; ?>";
-    console.log("Status from URL:", statusTab); // Debugging
+    document.addEventListener("DOMContentLoaded", function() {
+      // Get the status from the URL
+      let statusTab = "<?php echo isset($_GET['status']) ? $_GET['status'] : ''; ?>";
+      console.log("Status from URL:", statusTab); // Debugging
 
-    // Find all filter tabs
-    let tabs = document.querySelectorAll("#booking-filter-tabs li");
+      // Find all filter tabs
+      let tabs = document.querySelectorAll("#booking-filter-tabs li");
 
-    // Remove 'active' class from all tabs
-    tabs.forEach(tab => tab.classList.remove("active"));
+      // Remove 'active' class from all tabs
+      tabs.forEach(tab => tab.classList.remove("active"));
 
-    // Find the tab that matches the status
-    let matchedTab = [...tabs].find(tab => tab.getAttribute("data-filter") === statusTab);
+      // Find the tab that matches the status
+      let matchedTab = [...tabs].find(tab => tab.getAttribute("data-filter") === statusTab);
 
-    if (matchedTab) {
+      if (matchedTab) {
         matchedTab.classList.add("active"); // Highlight the correct tab
         console.log("Activating tab:", matchedTab.innerText);
 
         setTimeout(() => {
-            matchedTab.dispatchEvent(new Event("click", { bubbles: true }));
+          matchedTab.dispatchEvent(new Event("click", {
+            bubbles: true
+          }));
         }, 3);
 
-    } else {
+      } else {
         // Default to "All" if no match found
         let defaultTab = document.querySelector("#booking-filter-tabs li[data-filter='']");
         if (defaultTab) {
-            defaultTab.classList.add("active");
-            console.log("Activating default tab: All");
+          defaultTab.classList.add("active");
+          console.log("Activating default tab: All");
 
-            setTimeout(() => {
-                defaultTab.dispatchEvent(new Event("click", { bubbles: true }));
-            }, 100);
+          setTimeout(() => {
+            defaultTab.dispatchEvent(new Event("click", {
+              bubbles: true
+            }));
+          }, 100);
         }
-    }
-});
-</script>
-
-
-
-
-
-
-
-
-<!-- <script>
-    function toggleSubMenu(submenuId) 
-    {
-      const submenu = document.getElementById(submenuId);
-      const sectionTitle = submenu.previousElementSibling;
-      const chevron = sectionTitle.querySelector('.chevron-icon'); 
-
-      // Check if the submenu is already open
-      const isOpen = submenu.classList.contains('open');
-
-      // If it's open, we need to close it, and reset the chevron
-      if (isOpen) 
-      {
-        submenu.classList.remove('open');
-        chevron.style.transform = 'rotate(0deg)';
-      } 
-      else 
-      {
-        // First, close all open submenus and reset all chevrons
-        const allSubmenus = document.querySelectorAll('.submenu');
-        const allChevrons = document.querySelectorAll('.chevron-icon');
-        
-        allSubmenus.forEach(sub => 
-        {
-          sub.classList.remove('open');
-        });
-
-        allChevrons.forEach(chev => 
-        {
-          chev.style.transform = 'rotate(0deg)';
-        });
-
-        // Now, open the current submenu and rotate its chevron
-        submenu.classList.add('open');
-        chevron.style.transform = 'rotate(180deg)';
       }
-    }
-  </script> -->
-
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        // Get the status from PHP and store it in a JS variable
-        let statusTab = "<?php echo isset($_GET['status']) ? $_GET['status'] : ''; ?>";
-        console.log("Status from URL:", statusTab); // Debugging
-
-        // Find all filter tabs
-        let tabs = document.querySelectorAll("#booking-filter-tabs li");
-
-        // Remove 'active' class from all tabs
-        tabs.forEach(tab => tab.classList.remove("active"));
-
-        // Find the tab that matches the status
-        let matchedTab = [...tabs].find(tab => tab.getAttribute("data-filter") === statusTab);
-
-        if (matchedTab) {
-            matchedTab.classList.add("active"); // Highlight the correct tab
-            console.log("Activating tab:", matchedTab.innerText);
-        } else {
-            // Default to "All" if no match found
-            let defaultTab = document.querySelector("#booking-filter-tabs li[data-filter='']");
-            if (defaultTab) {
-                defaultTab.classList.add("active");
-                console.log("Activating default tab: All");
-            }
-        }
     });
-    </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  </script>
 
 
   <!-- Row Click Selection JS -->
@@ -737,20 +653,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   </script>
 
-  <!-- JQuery Datapicker -->
-  <script>
-    document.addEventListener("scroll", function() {
-      const searchBar = document.querySelector(".search-bar");
-      const scrollPosition = window.scrollY;
-
-      // Add or remove the upward adjustment class based on scroll position
-      if (scrollPosition > 70) { // Adjust the threshold as needed
-        searchBar.classList.add("scrolled-upward");
-      } else {
-        searchBar.classList.remove("scrolled-upward");
-      }
-    });
-  </script>
 
   <!-- Status Sorting tabs -->
   <script>
@@ -798,7 +700,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }]
       });
 
-     
+
 
       // Search Functionality
       $('#search').on('keyup', function() {
@@ -926,7 +828,6 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
 
-
     function showPaymentHistory(transactionNumber) {
       console.log("Transaction Number: ", transactionNumber); // Debug line (To Remove in Prod)
 
@@ -1006,7 +907,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       });
     }
-
 
     function showPaymentHistory(transactionNumber) {
       console.log("Transaction Number: ", transactionNumber); // Debug line (To Remove in Prod)
