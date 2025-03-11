@@ -5,12 +5,15 @@
 /* Table Container Styling */
 .table-container {
   width: 100%;
-  height: 90vh;
+  height: 93vh;
   display: flex;
   flex-direction: column;
+  gap: 5px;
   padding: 0px 0px 0px 0px; /* Adds some padding around the container */
   /* border: 1px solid black; */
 }
+
+/* ============================ */
 
 .table-header {
   display: flex; 
@@ -22,9 +25,9 @@
   padding: 10px 8px 7px 8px;
   background-color: #dbdbdb; /* Optional background color */
   border-radius: 10px; /* Optional rounded corners */
-  margin-bottom: 10px;
   /* border: 1px solid black; */
 }
+
 
 .search-wrapper {
   display: flex;
@@ -232,7 +235,6 @@
 }
 
 
-
 .buttons-wrapper {
   display: flex;
   justify-content: left;
@@ -240,19 +242,22 @@
   /* border: 1px solid black; */
 }
 
-
-
 #clearSorting {
   font-size: 12px;
   padding: 8px 10px;
   align-self: center;
 }
 
+
+
+
+
+
 /* Table container styling */
-.table-container {
+.table-wrapper {
   display: flex;
   flex-direction: column;
-  height: 90%;
+  height: 100%;
   flex: 1;
   background-color: transparent;
   overflow: hidden; /* Hide overflow from the container */
@@ -263,14 +268,14 @@
 
 
 .table-footer {
-  height: 15%; /* Fixed height for the footer */
+  height: 6%; /* Fixed height for the footer */
   background-color: transparent; /* Light background color */
   display: flex;
   align-items: center;
   justify-content: flex-end; /* Align pagination to the end */
   padding: 5px 20px; /* Padding for spacing */
-  margin-top: 5px;
-  border-radius: 5px; /* Slight rounding of the footer */
+  
+  /* border: 1px solid black; */
 }
 
 /* Style the buttons */
@@ -304,7 +309,6 @@
 .product-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 15px;
   table-layout: fixed; /* Make columns of fixed width */
 
 }
@@ -342,17 +346,18 @@
 }
 
 .product-table td {
-  padding: 5px 8px;
+  padding: 3px 6px;  /* Reduced padding for compactness */
   text-align: left;
   vertical-align: middle;
   border-bottom: 1px solid #ddd;
-  font-size: 0.85em;
+  font-size: 0.8em;  /* Slightly smaller font size */
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .product-table tr {
+  height: 30px;  /* Explicitly setting a smaller row height */
   transition: background-color 0.3s, color 0.3s;
 }
 
@@ -361,6 +366,7 @@
   color: #000;
   cursor: pointer;
 }
+
 
 
 
@@ -412,6 +418,71 @@
   width: 4%; /* Actions */
   text-align: center;
 }
+
+
+/*  View Download (TD) */
+
+.viewdownloadfile-wrapper {
+  text-align: center; /* Center align links */
+  white-space: nowrap; /* Prevent wrapping */
+  padding: 3px 5px; /* Compact padding */
+}
+
+.viewdownloadfile-wrapper a {
+  display: inline-block;
+  align-items: center;
+  justify-content: center;
+  width: 30%;
+  padding: 5px 8px;
+  font-size: 0.8em; /* Smaller text */
+  text-decoration: none;
+  border-radius: 5px;
+  margin: 2px 0; /* Add slight spacing */
+  transition: all 0.3s ease-in-out;
+}
+
+/* .viewdownloadfile-wrapper a .btn-view {
+  width: 2%;
+}
+
+.viewdownloadfile-wrapper a .btn-download {
+  width: 5%;
+} */
+
+
+.btn-view {
+  background-color: #007bff; /* Blue for view */
+  color: #fff;
+  border: 1px solid #007bff;
+}
+
+.btn-view:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+  border-color: #0056b3;
+}
+
+.btn-download {
+  background-color: #28a745; /* Green for download */
+  color: #fff;
+  border: 1px solid #28a745;
+}
+
+.btn-download:hover {
+  background-color: #1e7e34; /* Darker green on hover */
+  border-color: #1e7e34;
+}
+
+.viewdownloadfile-wrapper i {
+  margin-right: 5px; /* Add spacing between icon and text */
+}
+
+
+
+
+
+
+
+
 
 
 

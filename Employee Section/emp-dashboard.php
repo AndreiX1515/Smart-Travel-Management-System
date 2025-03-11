@@ -75,8 +75,7 @@ error_reporting(E_ALL);
                 </div>
                 <div class="side-content d-flex flex-column">
                   <?php
-                  $confirmedTransactionsQuery = "SELECT COUNT(*) AS total FROM booking WHERE MONTH(bookingDate) = MONTH(CURRENT_DATE()) 
-                                  AND YEAR(bookingDate) = YEAR(CURRENT_DATE()) AND status = 'Confirmed'";
+                  $confirmedTransactionsQuery = "SELECT COUNT(*) AS total FROM booking WHERE MONTH(bookingDate) = MONTH(CURRENT_DATE()) AND YEAR(bookingDate) = YEAR(CURRENT_DATE()) AND status = 'Confirmed'";
                   $result = mysqli_query($conn, $confirmedTransactionsQuery);
 
                   if ($result) {
@@ -102,8 +101,7 @@ error_reporting(E_ALL);
                 </div>
                 <div class="side-content d-flex flex-column">
                   <?php
-                  $pendingTransactionsQuery = "SELECT COUNT(*) AS total FROM booking WHERE MONTH(bookingDate) = MONTH(CURRENT_DATE()) 
-                                                AND YEAR(bookingDate) = YEAR(CURRENT_DATE()) AND status = 'Pending'";
+                  $pendingTransactionsQuery = "SELECT COUNT(*) AS total FROM booking WHERE MONTH(bookingDate) = MONTH(CURRENT_DATE()) AND YEAR(bookingDate) = YEAR(CURRENT_DATE()) AND status = 'Pending'";
                   $result = mysqli_query($conn, $pendingTransactionsQuery);
 
                   if ($result) {
@@ -422,7 +420,6 @@ error_reporting(E_ALL);
           <button class="btn btn-primary saveBtn" id="saveChanges">Save</button>
         </div>
       </div>
-
 
       <!-- Flight Seat Tracker Tab -->
       <div class="tab-content" id="pills-tabContent">
@@ -1032,6 +1029,7 @@ error_reporting(E_ALL);
     });
   </script> -->
 
+  <!-- For Clickable Cards -->
   <script>
     function redirectToAgentTransaction(status) {
       window.location.href = `../Employee Section/emp-transaction.php?status=${status}`;

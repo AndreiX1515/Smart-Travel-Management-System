@@ -1,11 +1,14 @@
 <?php
 require "../conn.php"; // Move up to the parent directory
 
+
 session_start();
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+
+echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETTY_PRINT) . ");</script>";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['flightid'])) {
     $_SESSION['flightid'] = htmlspecialchars($_POST['flightid']);

@@ -58,6 +58,18 @@
  /* border: 1px solid black; */
 }
 
+.clickable-card {
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s ease-in-out;
+}
+
+.clickable-card:hover {
+  background: rgba(0, 0, 0, 0.05); /* Light hover effect */
+  transform: scale(1.05); /* Smooth scaling effect */
+}
+
+
+
 .counts-wrapper .card {
   flex: 1; 
   background-color: #ffffff; 
@@ -1088,32 +1100,37 @@ position: relative;
  height: 68vh; 
  overflow-x: auto; 
  overflow-y: auto;
- border: 1px solid gainsboro;
+ /* border: 1px solid gainsboro; */
  /* border: 1px solid black;  */
 }
 
 .flight-seat-container .flight-seat-header {
   width: 100%;
-  height: 7vh;
+  height: 5.5vh;
   background-color: #fff; 
   overflow: hidden;
-  border: 1px solid gainsboro
- }
-
- .table-header {
+  /* border: 1px solid gainsboro; */
   display: flex; 
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   gap: 10px;
-  padding: 10px 8px 10px 8px;
-  margin-bottom: 10px;
-
-  /* border-bottom: 1px solid gainsboro; */
-  /* border-radius: 10px;  */
-
-  /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  background-color: #dbdbdb;   */
+  padding: 10px 8px;
+  border-bottom: 2px solid gainsboro;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+  z-index: 99;
+  /* border: 1px solid black; */
 }
+
+.flight-seat-footer {
+  display: flex;
+  height: 5.5vh;
+  /* border: 1px solid black; */
+}
+ 
+
+
+
+
 
 .search-wrapper {
   display: flex;
@@ -1261,6 +1278,7 @@ position: relative;
   justify-content: start;
   align-items: center;
   gap: 5px;
+  position: relative; /* Ensure it stays above other elements */
 }
 
 .flightbooking-wrapper input {
@@ -1277,6 +1295,7 @@ position: relative;
   align-items: center;
   justify-content: left;
   flex-direction: column;
+  position: relative; /* Ensure the datepicker does not get hidden */
 }
 
 .date-range-wrapper label {
@@ -1297,6 +1316,8 @@ position: relative;
   width: 150px;
   border: 1px solid grey;
   border-radius: 5px;
+  overflow: visible; /* Prevents clipping */
+  z-index: 3; /* Keeps it above other elements */
 }
 
 .input-with-icon input {
@@ -1308,6 +1329,8 @@ position: relative;
   background-color: #f9f9f9;
   color: #333;
   font-size: 14px;
+  position: relative;
+  z-index: 2; /* Ensures input stays interactive */
 }
 
 .input-with-icon input::placeholder {
@@ -1333,9 +1356,18 @@ position: relative;
   box-shadow: 0 0 4px rgba(17, 101, 48, 0.4);
 }
 
-/* Remove hover effects for now */
 .input-with-icon input:hover {
   cursor: pointer;
+}
+
+/* Ensure the datepicker is above the table header */
+.ui-datepicker {
+  z-index: 9999 !important; /* Bring it to the top */
+  position: absolute !important;
+  background: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border: 1px solid #ccc;
+  padding: 5px;
 }
 
 
@@ -1346,6 +1378,53 @@ position: relative;
   align-items: center;
   /* border: 1px solid black; */
 }
+
+
+
+/* Flight Price Slide */
+.price-range-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+}
+
+#slider-range {
+  width: 100%;
+  height: 8px;
+  background: #ddd;
+  border-radius: 5px;
+  position: relative;
+  margin-top: 5px;
+}
+
+.ui-slider-handle {
+  background: #116530;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.price-values {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.price-range-field {
+  width: 60px;
+  padding: 5px;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+
+
+
+
 
 
 
@@ -1362,47 +1441,88 @@ position: relative;
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/* ============================== */
 
 
 
 /* Card Container Styling */
 .flight-seat-container .one {
  width: 100%;
- height: 64vh;
+ height: 60vh;
  background-color: #fff; 
  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
  overflow: hidden;
  /* border: 1px solid black; */
 }
 
-.flight-seat-container .flight-seat-footer{
+.flight-seat-container .flight-seat-footer {
   width: 100%;
-  height: 5vh;
-  background-color: #fff; 
+  height: 6vh;
+  background-color: #fff;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  /* border: 1px solid black; */
- }
+  display: flex;
+  justify-content: flex-end; /* Align pagination to the right */
+  align-items: center;
+  padding: 0 15px;
+  border: 1px solid gainsboro;
+} 
+
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pagination-btn {
+  padding: 8px 12px;
+  border: none;
+  background-color: #116530;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.3s ease;
+}
+
+.pagination-btn:disabled {
+  background-color: #bbb;
+  cursor: not-allowed;
+}
+
+.page-numbers {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.page-number-btn {
+  padding: 6px 10px;
+  border: none;
+  background-color: #e0e0e0;
+  color: #333;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: background 0.3s ease;
+}
+
+.page-number-btn.active {
+  background-color: #116530;
+  color: white;
+  font-weight: bold;
+}
+
+.page-number-btn:hover {
+  background-color: #28a745;
+  color: white;
+}
+
+.dots {
+  font-size: 14px;
+  color: #666;
+}
+
 
 
 
@@ -1450,6 +1570,12 @@ position: relative;
 
 
 
+.dataTables_paginate, 
+.dataTables_info {
+    display: none !important;
+}
+
+
 
 /* Optional: Add padding and borders to table cells for better visibility */
 .info-table td, .info-table th {
@@ -1462,7 +1588,7 @@ position: relative;
 /* Table Container */
 .info-table {
   width: 100%;
-  height: 64vh;
+  height: 57vh;
   overflow-y: auto; /* Allow vertical scrolling */
   overflow-x: auto; /* Allow horizontal scrolling */
   border-collapse: collapse;
@@ -1492,6 +1618,8 @@ position: relative;
   z-index: 101; /* Higher than tbody */
   text-align: center;
   padding: 6px 10px;
+  text-align: center;
+  vertical-align: middle;
 }
 
 
@@ -1512,10 +1640,10 @@ position: relative;
 }
 
 /* Row hover effect */
-.info-table tbody tr:hover {
- background-color: #f1f1f1; /* Light hover effect */
+/* .info-table tbody tr:hover {
+ background-color: #f1f1f1; 
  cursor: pointer;
-}
+} */
 
 /* Adjust column widths for the first 11 columns */
 .info-table th:nth-child(1), .info-table td:nth-child(1) { width: 10%; }

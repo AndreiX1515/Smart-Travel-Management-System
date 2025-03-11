@@ -1,6 +1,7 @@
 <?php
 session_start();
 require "../conn.php";
+
 ?>
 
 <!DOCTYPE html>
@@ -27,27 +28,19 @@ require "../conn.php";
         <h5 class="title-page">Packages - Transactions table</h5>
       </div>
 
+      <?php
+        $statusTab = isset($_GET['status']) ? $_GET['status'] : ''; 
+      ?>
+    
       <div class="main-content">
         <div class="table-wrapper">
+
           <div class="table-header">
             <div class="search-wrapper">
               <div class="search-input-wrapper">
                 <input type="text" id="search" placeholder="Search here..">
-                <!-- <span class="icon">🔍</span> -->
               </div>
             </div>
-
-            <!-- <div class="filter-field">
-              <!-- <label for="status">Status:</label> 
-              <div class="select-wrapper">
-                <select id="status">
-                  <option value="All" disabled selected>Select Status</option>
-                  <option value="Pending">Pending</option>
-                  <option value="Confirmed">Confirmed</option>
-                  <option value="Cancelled">Cancelled</option>
-                </select>
-              </div>
-            </div> -->
 
             <div class="second-header-wrapper">
               <div class="date-range-wrapper sorting-wrapper">
@@ -73,19 +66,10 @@ require "../conn.php";
                 </div>
               </div>
 
-              <!-- <div class="date-range-wrapper flightbooking-wrapper">
-              <div class="date-range-inputs-wrapper">
-                <div class="input-with-icon">
-                  <input type="text" class="datepicker" id="BookingStartDate" placeholder="Booking Date">
-                  <i class="fas fa-calendar-alt calendar-icon"></i>
-                </div>
-              </div>
-            </div> -->
-
               <div class="date-range-wrapper flightbooking-wrapper">
                 <div class="date-range-inputs-wrapper">
                   <div class="input-with-icon">
-                    <input type="text" class="datepicker" id="FlightStartDate" placeholder="Flight Date">
+                    <input type="text" class="datepicker" id="FlightStartDate" placeholder="Flight Date" readonly>
                     <i class="fas fa-calendar-alt calendar-icon"></i>
                   </div>
                 </div>
@@ -93,7 +77,7 @@ require "../conn.php";
 
               <div class="buttons-wrapper">
                 <button id="clearSorting" class="btn btn-secondary">
-                  Clear Filters
+                  Clear
                 </button>
               </div>
             </div>
@@ -166,7 +150,6 @@ require "../conn.php";
                   <th>Contact Person Info</th>
                   <th>Contact Details</th>
                   <th>Branch Name</th>
-                  <!-- <th>Booking Date</th> -->
                   <th>Flight Date</th>
                   <th>Total Pax</th>
                   <th>Status</th>
@@ -594,44 +577,134 @@ require "../conn.php";
     </div>
   </div>
 
-  <!-- <script>
-  function toggleSubMenu(submenuId) 
-  {
-    const submenu = document.getElementById(submenuId);
-    const sectionTitle = submenu.previousElementSibling;
-    const chevron = sectionTitle.querySelector('.chevron-icon'); 
 
-    // Check if the submenu is already open
-    const isOpen = submenu.classList.contains('open');
+  <script>
+document.addEventListener("DOMContentLoaded", function () {
+    // Get the status from the URL
+    let statusTab = "<?php echo isset($_GET['status']) ? $_GET['status'] : ''; ?>";
+    console.log("Status from URL:", statusTab); // Debugging
 
-    // If it's open, we need to close it, and reset the chevron
-    if (isOpen) 
-    {
-      submenu.classList.remove('open');
-      chevron.style.transform = 'rotate(0deg)';
-    } 
-    else 
-    {
-      // First, close all open submenus and reset all chevrons
-      const allSubmenus = document.querySelectorAll('.submenu');
-      const allChevrons = document.querySelectorAll('.chevron-icon');
-      
-      allSubmenus.forEach(sub => 
-      {
-        sub.classList.remove('open');
-      });
+    // Find all filter tabs
+    let tabs = document.querySelectorAll("#booking-filter-tabs li");
 
-      allChevrons.forEach(chev => 
-      {
-        chev.style.transform = 'rotate(0deg)';
-      });
+    // Remove 'active' class from all tabs
+    tabs.forEach(tab => tab.classList.remove("active"));
 
-      // Now, open the current submenu and rotate its chevron
-      submenu.classList.add('open');
-      chevron.style.transform = 'rotate(180deg)';
+    // Find the tab that matches the status
+    let matchedTab = [...tabs].find(tab => tab.getAttribute("data-filter") === statusTab);
+
+    if (matchedTab) {
+        matchedTab.classList.add("active"); // Highlight the correct tab
+        console.log("Activating tab:", matchedTab.innerText);
+
+        setTimeout(() => {
+            matchedTab.dispatchEvent(new Event("click", { bubbles: true }));
+        }, 3);
+
+    } else {
+        // Default to "All" if no match found
+        let defaultTab = document.querySelector("#booking-filter-tabs li[data-filter='']");
+        if (defaultTab) {
+            defaultTab.classList.add("active");
+            console.log("Activating default tab: All");
+
+            setTimeout(() => {
+                defaultTab.dispatchEvent(new Event("click", { bubbles: true }));
+            }, 100);
+        }
     }
-  }
-</script> -->
+});
+</script>
+
+
+
+
+
+
+
+
+<!-- <script>
+    function toggleSubMenu(submenuId) 
+    {
+      const submenu = document.getElementById(submenuId);
+      const sectionTitle = submenu.previousElementSibling;
+      const chevron = sectionTitle.querySelector('.chevron-icon'); 
+
+      // Check if the submenu is already open
+      const isOpen = submenu.classList.contains('open');
+
+      // If it's open, we need to close it, and reset the chevron
+      if (isOpen) 
+      {
+        submenu.classList.remove('open');
+        chevron.style.transform = 'rotate(0deg)';
+      } 
+      else 
+      {
+        // First, close all open submenus and reset all chevrons
+        const allSubmenus = document.querySelectorAll('.submenu');
+        const allChevrons = document.querySelectorAll('.chevron-icon');
+        
+        allSubmenus.forEach(sub => 
+        {
+          sub.classList.remove('open');
+        });
+
+        allChevrons.forEach(chev => 
+        {
+          chev.style.transform = 'rotate(0deg)';
+        });
+
+        // Now, open the current submenu and rotate its chevron
+        submenu.classList.add('open');
+        chevron.style.transform = 'rotate(180deg)';
+      }
+    }
+  </script> -->
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Get the status from PHP and store it in a JS variable
+        let statusTab = "<?php echo isset($_GET['status']) ? $_GET['status'] : ''; ?>";
+        console.log("Status from URL:", statusTab); // Debugging
+
+        // Find all filter tabs
+        let tabs = document.querySelectorAll("#booking-filter-tabs li");
+
+        // Remove 'active' class from all tabs
+        tabs.forEach(tab => tab.classList.remove("active"));
+
+        // Find the tab that matches the status
+        let matchedTab = [...tabs].find(tab => tab.getAttribute("data-filter") === statusTab);
+
+        if (matchedTab) {
+            matchedTab.classList.add("active"); // Highlight the correct tab
+            console.log("Activating tab:", matchedTab.innerText);
+        } else {
+            // Default to "All" if no match found
+            let defaultTab = document.querySelector("#booking-filter-tabs li[data-filter='']");
+            if (defaultTab) {
+                defaultTab.classList.add("active");
+                console.log("Activating default tab: All");
+            }
+        }
+    });
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   <!-- Row Click Selection JS -->
   <script>
@@ -724,6 +797,8 @@ require "../conn.php";
           orderable: false
         }]
       });
+
+     
 
       // Search Functionality
       $('#search').on('keyup', function() {

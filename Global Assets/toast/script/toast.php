@@ -1,11 +1,16 @@
-
-
-
-<!-- Global Bootstrap Toast -->
-<div aria-live="polite" aria-atomic="true" class="position-relative">
-    <div class="toast-container top-0 end-0 p-3" id="toastContainer">
-        <!-- Toasts will be dynamically added here -->
+<div class="toast-container position-fixed top-0 end-0 p-3">
+    <div id="liveToast" class="toast align-items-center text-white border-0" role="alert">
+        <div class="d-flex">
+            <div class="toast-body">
+                <span id="toast-message"></span>
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+        </div>
     </div>
 </div>
 
-<script></script>
+<!-- ✅ Import Toast Script -->
+<script type="module">
+    import { checkFlashMessage } from "../Global Assets/toast/js/toast.js";
+    checkFlashMessage(); // Show toast if a message exists
+</script>

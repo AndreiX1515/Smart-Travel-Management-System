@@ -2,6 +2,8 @@
 session_start();
 require "../conn.php";
 
+echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETTY_PRINT) . ");</script>";
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -26,9 +28,9 @@ require "../conn.php";
 
       <div class="main-content">
         <?php
-        echo "<pre>";
-        print_r($_SESSION);
-        echo "</pre>";
+        // echo "<pre>";
+        // print_r($_SESSION);
+        // echo "</pre>";
         ?>
 
 
@@ -200,7 +202,7 @@ require "../conn.php";
 
                 <input type="text" name="agentType" placeholder="Agent Type Input" value="<?php echo $_SESSION['agentType']; ?>">
                 
-                <input type="text" name="accId" id="accId" placeholder="Account Id Input" value="<?php echo $_SESSION['client_accountId']; ?>">
+                <input type="text" name="accId" id="accId" placeholder="Account Id Input" value="<?php echo $_SESSION['agent_accountId']; ?>">
 
                 <!-- Adjusted Package Fields -->
                 <input type="text" name="packageId" id="packageId" value="<?php echo isset($packageId) ? $packageId : ''; ?>" placeholder="Package Id Input">

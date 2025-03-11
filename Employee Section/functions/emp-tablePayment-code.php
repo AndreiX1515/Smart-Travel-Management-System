@@ -1,65 +1,74 @@
 <?php
-  session_start();
-  ini_set('display_errors', 1);
-  ini_set('display_startup_errors', 1);
-  error_reporting(E_ALL);
-  require "../../conn.php"; // Move up to the parent directory
+session_start();
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+require "../../conn.php"; // Move up to the parent directory
 
-  if (isset($_POST['updatePaymentStatus'])) 
-  {
-    $paymentId = $_POST['paymentId'];
-    $paymentStatus = $_POST['paymentStatus'];
-    $paymentRemarks = $_POST['paymentRemarks'];
-    $accountId = $_POST['accId'];
+header('Content-Type: application/json'); // Set JSON response
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $paymentId = $_POST['paymentId'] ?? '';
+    $paymentStatus = $_POST['paymentStatus'] ?? '';
+    $paymentRemarks = $_POST['paymentRemarks'] ?? '';
+    $accountId = $_POST['accId'] ?? '';
+
+    // Validate required fields
+    if (empty($paymentId) || empty($paymentStatus) || empty($accountId)) {
+        echo json_encode(["status" => "error", "message" => "All fields are required."]);
+        exit;
+    }
+
+    // Set remarks to NULL if empty
+    $paymentRemarks = empty($paymentRemarks) ? NULL : $paymentRemarks;
 
     // Set the session variable for the current user in MySQL
     $conn->query("SET @current_user_id = $accountId");
-    
+
     // Start a transaction
     $conn->begin_transaction();
-
-    // Set remarks to NULL if empty
-    if (empty($paymentRemarks)) 
-    {
-      $paymentRemarks = NULL;
-    }
 
     // Prepare the SQL statement for updating the request status
     $sql1 = "UPDATE payment SET paymentStatus = ?, paymentRemarks = ?, performedBy = ? WHERE paymentId = ?";
     $stmt1 = $conn->prepare($sql1);
 
-    if (!$stmt1) 
-    {
-      $_SESSION['status'] = "SQL preparation failed: " . $conn->error;
-      $_SESSION['toastColor'] = 'text-bg-danger'; // Red color for error
-      $conn->rollback();  // Rollback transaction if the preparation fails
-      header("Location: ../emp-tablePayment.php");
-      exit(0);
+    if (!$stmt1) {
+        $conn->rollback();
+        echo json_encode(["status" => "error", "message" => "SQL preparation failed: " . $conn->error]);
+        exit;
     }
 
     // Bind parameters and execute the update
     $stmt1->bind_param('ssii', $paymentStatus, $paymentRemarks, $accountId, $paymentId);
     
-    if (!$stmt1->execute()) 
-    {
-      $_SESSION['status'] = "Database error: " . $stmt1->error;
-      $_SESSION['toastColor'] = 'text-bg-danger'; // Red color for error
-      $conn->rollback();  // Rollback the transaction on failure
-      $stmt1->close();
-      header("Location: ../emp-tablePayment.php");
-      exit(0);
+    if (!$stmt1->execute()) {
+        $conn->rollback();
+        echo json_encode(["status" => "error", "message" => "Database error: " . $stmt1->error]);
+        $stmt1->close();
+        exit;
     }
 
     // Close the first statement
     $stmt1->close();
 
-    // Commit the transaction if no errors
+    // Commit the transaction
     $conn->commit();
 
-    // Set a success message and redirect
-    $_SESSION['status'] = $paymentId . " - status successfully updated to: " . $paymentStatus;
-    $_SESSION['toastColor'] = 'text-bg-success'; // Green color for success
-    header("Location: ../emp-tablePayment.php");
-    exit(0);
-  }
+    // Determine a user-friendly label based on paymentStatus
+    $statusLabel = ($paymentStatus === "Approved") ? "Payment Successfully Approved" : "Payment Rejected";
+
+    // Return success response with additional fetch value
+    echo json_encode([
+        "status" => "success",
+        "message" => "$paymentId - status successfully updated to: $paymentStatus",
+        "paymentStatus" => $paymentStatus, // Raw status
+        "statusLabel" => $statusLabel      // Friendly label
+    ]);
+
+    exit;
+}
+
+// If accessed without POST request
+echo json_encode(["status" => "error", "message" => "Invalid request."]);
+exit;
 ?>
