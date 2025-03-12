@@ -564,28 +564,28 @@ require "../conn.php";
                       </div>
                     </div>
 
-                    <div class="date-range-wrapper sorting-wrapper">
+                    <!-- <div class="date-range-wrapper sorting-wrapper">
                       <div class="select-wrapper">
                         <select id="packages">
                           <option value="All" disabled selected>Select Branch</option>
                           <?php
                           // Execute the SQL query
-                          $sql1 = "SELECT branchId, branchName FROM branch ORDER BY branchName ASC";
-                          $res1 = $conn->query($sql1);
+                          // $sql1 = "SELECT branchId, branchName FROM branch ORDER BY branchName ASC";
+                          // $res1 = $conn->query($sql1);
 
-                          // Check if there are results
-                          if ($res1->num_rows > 0) {
-                            // Loop through the results and generate options
-                            while ($row = $res1->fetch_assoc()) {
-                              echo "<option value='" . $row['branchName'] . "'>" . $row['branchName'] . "</option>";
-                            }
-                          } else {
-                            echo "<option value=''>No companies available</option>";
-                          }
+                          // // Check if there are results
+                          // if ($res1->num_rows > 0) {
+                          //   // Loop through the results and generate options
+                          //   while ($row = $res1->fetch_assoc()) {
+                          //     echo "<option value='" . $row['branchName'] . "'>" . $row['branchName'] . "</option>";
+                          //   }
+                          // } else {
+                          //   echo "<option value=''>No companies available</option>";
+                          // }
                           ?>
                         </select>
                       </div>
-                    </div>
+                    </div> -->
 
 
                     <div class="buttons-wrapper">
@@ -1231,78 +1231,23 @@ require "../conn.php";
   <script>
     $(document).ready(function() {
       const table = $('#info-table').DataTable({
-          dom: 'rtip',
-          language: {
-              emptyTable: "No Transaction Records Available"
-          },
-          order: [[0, 'desc']],
-          paging: true,
-          pageLength: 7,
-          autoWidth: false,
-          autoHeight: false,
-          columnDefs: [
-              {
-                  targets: '_all', // Applies to all columns
-                  className: 'text-center'
-              },
-              {
-                  targets: [0, 2, 3, 4, 6], // Adjusted based on your table structure
-                  orderable: false
-              }
-          ]
-      });
+            dom: 'rtip',
+            language: {
+                emptyTable: "No Transaction Records Available"
+            },
+            order: [[0, 'desc']],
+            paging: true,
+            pageLength: 8,
+            scrollY: '570px',
+            scrollCollapse: true,
+            autoWidth: false,
+            columnDefs: [
+                { targets: "_all", className: "text-center" }
+            ]
+        });
 
-    // // Initialize the slider
-    // $("#slider-range").slider({
-    //     range: true,
-    //     min: 0,
-    //     max: 10000,
-    //     values: [0, 10000], // Default range
-    //     slide: function (event, ui) {
-    //         // Update input fields as slider moves
-    //         $("#min_price").val(ui.values[0]);
-    //         $("#max_price").val(ui.values[1]);
-    //     },
-    //     stop: function (event, ui) {
-    //         // Apply DataTables filtering when slider stops moving
-    //         table.draw();
-    //     }
-    // });
 
-    // // Initialize input fields with default values
-    // $("#min_price").val($("#slider-range").slider("values", 0));
-    // $("#max_price").val($("#slider-range").slider("values", 1));
-
-    // // Update slider when input fields change
-    // $("#min_price, #max_price").on("change", function () {
-    //     let minVal = parseInt($("#min_price").val()) || 0;
-    //     let maxVal = parseInt($("#max_price").val()) || 10000;
-
-    //     // Prevent invalid values
-    //     if (minVal < 0) minVal = 0;
-    //     if (maxVal > 10000) maxVal = 10000;
-    //     if (minVal > maxVal) minVal = maxVal;
-
-    //     $("#slider-range").slider("values", [minVal, maxVal]);
-
-    //     // Apply filtering in DataTables
-    //     table.draw();
-    // });
-
-    // // Custom DataTables filtering for price range
-    // $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
-    //     let min = parseInt($("#min_price").val()) || 0;
-    //     let max = parseInt($("#max_price").val()) || 10000;
-    //     let price = parseFloat(data[PRICE_COLUMN_INDEX]) || 0; // Replace with actual column index
-
-    //     return price >= min && price <= max;
-    // });
-
-    // // Ensure filtering applies when the table is reloaded
-    // $('#info-table').on('search.dt processing.dt', function () {
-    //     table.draw();
-    // });
-
+      
 
       function updatePagination() {
         const info = table.page.info();
@@ -1372,8 +1317,6 @@ require "../conn.php";
       // Initialize pagination
       updatePagination();
 
-
-
       // 🔹 Search Functionality
       $('#search').on('keyup', function() {
         table.search(this.value).draw();
@@ -1386,24 +1329,24 @@ require "../conn.php";
       });
 
       $("#FlightStartDate").datepicker({
-        dateFormat: "mm-dd-yy",
-        showAnim: "fadeIn",
-        changeMonth: true,
-        changeYear: true,
-        yearRange: "1900:2100",
-        appendTo: "body", // Moves the datepicker outside any restrictive containers
-        beforeShow: function(input, inst) {
-          setTimeout(function() {
-            inst.dpDiv.css({
-              top: $(input).offset().top + $(input).outerHeight(),
-              left: $(input).offset().left
-            });
-          }, 0);
-        },
-        onSelect: function(dateText) {
-          console.log("FlightStartDate Selected:", dateText);
-          table.column(1).search(dateText || '').draw();
-        }
+          dateFormat: "yy-mm-dd", // Changed format to YYYY-MM-DD
+          showAnim: "fadeIn",
+          changeMonth: true,
+          changeYear: true,
+          yearRange: "1900:2100",
+          appendTo: "body", // Moves the datepicker outside any restrictive containers
+          beforeShow: function(input, inst) {
+              setTimeout(function() {
+                  inst.dpDiv.css({
+                      top: $(input).offset().top + $(input).outerHeight(),
+                      left: $(input).offset().left
+                  });
+              }, 0);
+          },
+          onSelect: function(dateText) {
+              console.log("FlightStartDate Selected:", dateText);
+              table.column(1).search(dateText || '').draw();
+          }
       });
 
 

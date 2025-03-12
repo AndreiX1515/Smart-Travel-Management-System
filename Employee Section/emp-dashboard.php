@@ -1011,8 +1011,6 @@ error_reporting(E_ALL);
           </div>
         </div>
 
-
-
         <!-- <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0"></div>
       <div class="tab-pane fade" id="pills-disabled" role="tabpanel" aria-labelledby="pills-disabled-tab" tabindex="0"></div> -->
 
@@ -1498,20 +1496,27 @@ error_reporting(E_ALL);
 
 
 
-        // Handle previous/next buttons
-        $('#prevPage').on('click', function() {
-          table.page('previous').draw('page');
-        });
+        $(document).ready(function () {
+            // Set default page info on load
+            var info = table.page.info(); 
+            $('#pageInfo').text('Page ' + (info.page + 1) + ' of ' + info.pages);
 
-        $('#nextPage').on('click', function() {
-          table.page('next').draw('page');
-        });
+            // Handle previous/next buttons
+            $('#prevPage').on('click', function() {
+                table.page('previous').draw('page');
+            });
 
-        // Update page info on page change
-        table.on('draw', function() {
-          var info = table.page.info();
-          $('#pageInfo').text('Page ' + (info.page + 1) + ' of ' + info.pages);
+            $('#nextPage').on('click', function() {
+                table.page('next').draw('page');
+            });
+
+            // Update page info on page change
+            table.on('draw', function() {
+                var info = table.page.info();
+                $('#pageInfo').text('Page ' + (info.page + 1) + ' of ' + info.pages);
+            });
         });
+        
       }
     }
 

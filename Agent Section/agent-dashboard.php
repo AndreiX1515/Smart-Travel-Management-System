@@ -759,28 +759,28 @@ require "../conn.php";
                       </div>
                     </div>
 
-                    <div class="date-range-wrapper sorting-wrapper">
+                    <!-- <div class="date-range-wrapper sorting-wrapper">
                       <div class="select-wrapper">
                         <select id="packages">
                           <option value="All" disabled selected>Select Branch</option>
                           <?php
-                          // Execute the SQL query
-                          $sql1 = "SELECT branchId, branchName FROM branch ORDER BY branchName ASC";
-                          $res1 = $conn->query($sql1);
+                          // // Execute the SQL query
+                          // $sql1 = "SELECT branchId, branchName FROM branch ORDER BY branchName ASC";
+                          // $res1 = $conn->query($sql1);
 
-                          // Check if there are results
-                          if ($res1->num_rows > 0) {
-                            // Loop through the results and generate options
-                            while ($row = $res1->fetch_assoc()) {
-                              echo "<option value='" . $row['branchName'] . "'>" . $row['branchName'] . "</option>";
-                            }
-                          } else {
-                            echo "<option value=''>No companies available</option>";
-                          }
+                          // // Check if there are results
+                          // if ($res1->num_rows > 0) {
+                          //   // Loop through the results and generate options
+                          //   while ($row = $res1->fetch_assoc()) {
+                          //     echo "<option value='" . $row['branchName'] . "'>" . $row['branchName'] . "</option>";
+                          //   }
+                          // } else {
+                          //   echo "<option value=''>No companies available</option>";
+                          // }
                           ?>
                         </select>
                       </div>
-                    </div>
+                    </div> -->
 
 
                     <div class="buttons-wrapper">
@@ -1861,26 +1861,20 @@ require "../conn.php";
   <script>
     $(document).ready(function() {
       const table = $('#info-table').DataTable({
-          dom: 'rtip',
-          language: {
-              emptyTable: "No Transaction Records Available"
-          },
-          order: [[0, 'desc']],
-          paging: true,
-          pageLength: 7,
-          autoWidth: false,
-          autoHeight: false,
-          columnDefs: [
-              {
-                  targets: '_all', // Applies to all columns
-                  className: 'text-center'
-              },
-              {
-                  targets: [0, 2, 3, 4, 6], // Adjusted based on your table structure
-                  orderable: false
-              }
-          ]
-      });
+            dom: 'rtip',
+            language: {
+                emptyTable: "No Transaction Records Available"
+            },
+            order: [[0, 'desc']],
+            paging: true,
+            pageLength: 8,
+            scrollY: '570px',
+            scrollCollapse: true,
+            autoWidth: false,
+            columnDefs: [
+                { targets: "_all", className: "text-center" }
+            ]
+        });
 
       
       function updatePagination() {
