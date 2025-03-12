@@ -2,6 +2,10 @@
 session_start();
 require "../conn.php";
 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+header('Content-Type: application/json'); // Ensure JSON output
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -28,20 +32,8 @@ require "../conn.php";
       <div class="main-content">
         <div class="content-container">
 
-          <?php
-          // echo "<pre>";
-          // print_r($_SESSION);
-          // echo "</pre>";
-          ?>
-
           <!-- Cards First Row -->
           <div class="counts-wrapper">
-
-            <?php
-            // echo "<pre>";
-            // print_r($_SESSION);
-            // echo "</pre>";
-            ?>
 
             <!-- CARD 1 Current Transaction Counts-->
             <div class="card">
