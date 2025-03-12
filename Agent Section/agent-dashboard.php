@@ -1853,10 +1853,7 @@ require "../conn.php";
       console.log("Redirecting with status:", status);
       window.location.href = `../Agent Section/agent-transactions.php?status=${encodeURIComponent(status)}`;
     }
-
   </script>
-
-
 
   <script>
     $(document).ready(function() {
@@ -1977,8 +1974,6 @@ require "../conn.php";
           table.column(1).search(dateText || '').draw();
         }
       });
-
-
 
 
       // 🔹 Flight Date Change Event
