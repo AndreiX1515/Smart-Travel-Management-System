@@ -621,39 +621,6 @@ require "../conn.php";
     });
   </script>
 
-
-  <!-- Row Click Selection JS -->
-  <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      document.querySelectorAll("tr[data-url]").forEach(function(row) {
-        row.addEventListener("click", function() {
-          const transactionNumber = row.getAttribute("data-url").split('=')[1]; // Extract transaction number from the URL
-
-          console.log("Transaction Number: ", transactionNumber); // Debugging line
-
-          // Use AJAX to send the transaction number to the server
-          $.ajax({
-            url: '../Agent Section/functions/fetchTransactNo.php', // The PHP file to handle the session setting
-            type: 'POST',
-            data: {
-              transaction_number: transactionNumber
-            },
-            success: function(response) {
-              console.log("Response: ", response); // Debugging line
-
-              // Redirect to the next page after successfully setting the session
-              window.location.href = row.getAttribute("data-url"); // Use the original URL stored in data-url attribute
-            },
-            error: function(xhr, status, error) {
-              console.error("AJAX Error: " + status + " " + error); // Enhanced error logging
-            }
-          });
-        });
-      });
-    });
-  </script>
-
-
   <!-- Status Sorting tabs -->
   <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -769,6 +736,37 @@ require "../conn.php";
     });
   </script>
 
+   <!-- Row Click Selection JS -->
+   <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      document.querySelectorAll("tr[data-url]").forEach(function(row) {
+        row.addEventListener("click", function() {
+          const transactionNumber = row.getAttribute("data-url").split('=')[1]; // Extract transaction number from the URL
+
+          console.log("Transaction Number: ", transactionNumber); // Debugging line
+
+          // Use AJAX to send the transaction number to the server
+          $.ajax({
+            url: '../Agent Section/functions/fetchTransactNo.php', // The PHP file to handle the session setting
+            type: 'POST',
+            data: {
+              transaction_number: transactionNumber
+            },
+            success: function(response) {
+              console.log("Response: ", response); // Debugging line
+
+              // Redirect to the next page after successfully setting the session
+              window.location.href = row.getAttribute("data-url"); // Use the original URL stored in data-url attribute
+            },
+            error: function(xhr, status, error) {
+              console.error("AJAX Error: " + status + " " + error); // Enhanced error logging
+            }
+          });
+        });
+      });
+    });
+  </script>
+  
   <script>
     function addGuestInfo(transactionNumber) {
       console.log("Transaction Number: ", transactionNumber); // Debug line (To Remove in Prod)

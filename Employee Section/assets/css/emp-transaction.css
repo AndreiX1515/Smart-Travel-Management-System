@@ -290,14 +290,29 @@
   border-bottom: 3px solid #116530;
 }
 
-.badge {
+.badge-status-tab {
   background-color: #116530;
   color: white;
-  padding: 4px 10px;
-  border-radius: 15px;
+  margin-left: 3%;
   font-size: 12px;
   font-weight: 500;
+  width: 25px; /* Reduced width for a smaller badge */
+  height: 25px; /* Reduced height for a smaller badge */
+  border-radius: 55%; /* Ensures a perfect circle */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
+.badge-status-tab h6 {
+  margin: 0;
+  font-size: 10px; /* Slightly smaller for readability */
+  font-weight: 600;
+  text-align: center;
+}
+
+
+
 
 /* Mobile Optimization */
 @media (max-width: 768px) {

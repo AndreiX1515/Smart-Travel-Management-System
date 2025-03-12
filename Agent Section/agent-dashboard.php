@@ -51,7 +51,7 @@ require "../conn.php";
                   </div>
 
                   <div class="accent-pill mt-1">
-                    <h6 class="accent-pill">as of <?php echo date('F, Y'); ?></h6>
+                    <h6 class="accent-pill"><?php echo date('F, Y'); ?></h6>
                   </div>
               </div>
 
