@@ -34,7 +34,7 @@ $(document).ready(function() {
             error: function(jqXHR, textStatus, errorThrown) {
                 console.error('AJAX Error:', textStatus, errorThrown);
                 alert("An error occurred during logout. Please try again.");
-                // window.location.href = '../Agent Section/agentLogin.php'; 
+                window.location.href = '../Agent Section/agentLogin.php'; 
             }
         });
     });
@@ -85,7 +85,7 @@ $(document).ready(function() {
     });
 }); -->
 
-</script>
+
 <!-- View Password Modal -->
 <div class="modal fade" id="viewPasswordModal" tabindex="-1" aria-labelledby="viewPasswordModalLabel" aria-hidden="true">
   <div class="modal-dialog">

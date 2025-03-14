@@ -974,13 +974,83 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 6vh;
+  /* margin-top: 5px; */
+  height: 5.5vh;
   border: 1px solid gainsboro;
   border-radius: 10px;
-  padding: 5px 20px;
+  padding: 10px 20px;
 }
 
-.item-number-select,
+.item-number-select {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Label Styling */
+.item-number-select label {
+  font-size: 14px;
+  color: #555;
+  font-weight: 500;
+}
+
+/* Select Container with Arrow */
+.select-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.select-box {
+  padding: 8px 12px;
+  font-size: 14px;
+  width: 80px;
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  appearance: none; /* Remove default dropdown arrow */
+  outline: none;
+  transition: border 0.3s ease;
+  cursor: pointer;
+}
+
+/* Custom Arrow Down */
+.arrow-down {
+  position: absolute;
+  right: 10px;
+  pointer-events: none;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 6px solid #333;
+}
+
+/* Hover & Focus Effects */
+.select-box:hover,
+.select-box:focus {
+  border-color: #007bff;
+}
+
+/* Clear Button */
+.clear-btn {
+  background: none;
+  border: none;
+  color: #777;
+  font-size: 16px;
+  cursor: pointer;
+  display: none; /* Hidden by default */
+}
+
+.clear-btn:hover {
+  color: #d9534f;
+}
+
+
+
+
+
 .pagination-controls {
   display: flex;
   align-items: center;
@@ -988,30 +1058,6 @@
   margin: 20px 0;
 }
 
-/* Label and Select Styling */
-.item-number-select label {
-  font-size: 14px;
-  color: #555;
-  margin-right: 10px;
-  font-weight: 500;
-}
-
-.select-box {
-  padding: 8px 12px;
-  font-size: 14px;
-  color: #333;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  background-color: #fff;
-  appearance: none;
-  outline: none;
-  transition: border 0.3s ease;
-}
-
-.select-box:hover,
-.select-box:focus {
-  border-color: #007bff;
-}
 
 /* Pagination Controls */
 .pagination-controls {
@@ -1026,13 +1072,16 @@
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
+/* Hover effect for buttons */
 .pagination-btn:hover {
   background-color: #0056b3;
+  transform: translateY(-2px);
 }
 
+/* Pagination Info */
 .page-info {
   font-size: 14px;
   color: #555;
@@ -1044,10 +1093,11 @@
 
 
 
+
 .info-table-container {
   display: flex;
   position: relative;
-  height: 63.3vh; /* Fixed height for the container */
+  height: 64.3vh; /* Fixed height for the container */
   overflow-x: auto; /* Allow horizontal scrolling */
   overflow-y: auto; /* Allow vertical scrolling */
   /* border: 1px solid gainsboro; */
@@ -1070,7 +1120,6 @@
 
 .info-table thead,
 div.dataTables_wrapper thead {
-  position: sticky; /* Make the header sticky */
   top: 0; /* Stick to the top of the container */
   z-index: 10; /* Ensure the header stays above table content */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for better visibility */

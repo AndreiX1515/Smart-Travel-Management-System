@@ -270,7 +270,7 @@ $current_date = date('D, F d, Y');
       </div>
     </div>
 
-    <!-- ../Agent Section/logout.php -->
+
     <div class="logout-wrapper">
       <a href="#" class="page-button logout" data-page-name="" data-bs-toggle="modal" data-bs-target="#logoutModal">
         <i class="fas fa-sign-out-alt"></i> <span>Logout</span>

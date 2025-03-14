@@ -245,6 +245,48 @@ require "../conn.php";
     }
   </script>
 
+
+  <script>
+  document.addEventListener("DOMContentLoaded", function () {
+      // Get the status from the URL
+      let statusTab = "<?php echo isset($_GET['status']) ? $_GET['status'] : ''; ?>";
+      console.log("Status from URL:", statusTab); // Debugging
+
+      // Find all filter tabs
+      let tabs = document.querySelectorAll("#booking-filter-tabs li");
+
+      // Remove 'active' class from all tabs
+      tabs.forEach(tab => tab.classList.remove("active"));
+
+      // Find the tab that matches the status
+      let matchedTab = [...tabs].find(tab => tab.getAttribute("data-filter") === statusTab);
+
+      if (matchedTab) {
+          matchedTab.classList.add("active"); // Highlight the correct tab
+          console.log("Activating tab:", matchedTab.innerText);
+
+          
+          setTimeout(() => {
+              matchedTab.dispatchEvent(new Event("click", { bubbles: true }));
+          }, 3);
+
+      } else {
+          // Default to "All" if no match found
+          let defaultTab = document.querySelector("#booking-filter-tabs li[data-filter='']");
+          if (defaultTab) {
+              defaultTab.classList.add("active");
+              console.log("Activating default tab: All");
+
+              
+              setTimeout(() => {
+                  defaultTab.dispatchEvent(new Event("click", { bubbles: true }));
+              }, 100);
+          }
+      }
+  });
+  </script>
+
+
   <!-- Row Click Selection JS -->
   <script>
     document.addEventListener("DOMContentLoaded", function() {

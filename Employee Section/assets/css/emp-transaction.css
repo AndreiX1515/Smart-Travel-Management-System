@@ -5,10 +5,11 @@
 /* Table Container Styling */
 .table-container {
   width: 100%;
-  height: 90vh;
+  gap: 5px;
+  height: 93vh;
   display: flex;
   flex-direction: column;
-  padding: 0px 0px 0px 0px; /* Adds some padding around the container */
+  padding: 0px 0px; /* Adds some padding around the container */
   /* border: 1px solid black; */
 }
 
@@ -17,16 +18,8 @@
   justify-content: space-between;
   align-items: center;
   gap: 10px;
-  padding: 5px 0px 20px 0px;
+  padding: 5px 10px 5px 10px;
   /* border: 1px solid black; */
-
-  /* border: 1px solid gainsboro; 
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  */
-  
-  /* background-color: #dbdbdb; 
-  border-radius: 10px; 
-  margin-bottom: 10px; */
- 
 }
 
 .search-wrapper {
@@ -252,6 +245,92 @@
   align-self: center;
 }
 
+
+/* ====================== */
+
+.navpills-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+  /* border-radius: 8px; */
+  padding: 10px 10px 0px 10px;
+  background-color: transparent;
+  margin-bottom: .5%;
+  /* border: 1px solid black; */
+}
+
+.filter-tabs {
+  display: flex;
+  gap: 15px;
+  width: 100%;
+}
+
+.filter-btn {
+  background: transparent;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  position: relative;
+}
+
+.filter-btn:hover {
+  color: #116530;
+}
+
+.filter-btn.active {
+  font-weight: 600;
+  color: #116530;
+  border-bottom: 3px solid #116530;
+}
+
+.badge-status-tab {
+  background-color: #116530;
+  color: white;
+  margin-left: 3%;
+  font-size: 12px;
+  font-weight: 500;
+  width: 25px; /* Reduced width for a smaller badge */
+  height: 25px; /* Reduced height for a smaller badge */
+  border-radius: 55%; /* Ensures a perfect circle */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.badge-status-tab h6 {
+  margin: 0;
+  font-size: 10px; /* Slightly smaller for readability */
+  font-weight: 600;
+  text-align: center;
+}
+
+
+
+
+/* Mobile Optimization */
+@media (max-width: 768px) {
+  .filter-tabs {
+    gap: 10px;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .filter-btn {
+    font-size: 13px;
+    padding: 6px 12px;
+  }
+}
+
+/* ======================= */
+
+
 /* Table container styling */
 .table-container {
   display: flex;
@@ -266,16 +345,29 @@
 
 
 
+.table-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  flex: 1;
+  background-color: transparent;
+  overflow: hidden; /* Hide overflow from the container */
+  box-sizing: border-box;
+  /* border: 1px solid black; */
+}
+
+
+
 .table-footer {
-  height: 13%; /* Fixed height for the footer */
-  background-color: transparent; /* Light background color */
+  height: 6vh;
+  background-color: transparent;
   display: flex;
   align-items: center;
-  justify-content: flex-end; /* Align pagination to the end */
-  padding: 15px 20px; /* Padding for spacing */
-  /* margin-top: 5px; */
-  border-radius: 5px; /* Slight rounding of the footer */
-  /* border: 1px solid black; */
+  justify-content: flex-end;
+  margin-top: 10px;
+  padding: 20px 20px;
+  border-radius: 15px;
+  border: 1px solid gainsboro;
 }
 
 /* Style the buttons */

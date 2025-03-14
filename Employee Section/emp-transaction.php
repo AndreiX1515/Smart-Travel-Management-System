@@ -7,7 +7,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Employee - Transaction</title>
+
   <?php include '../Employee Section/includes/emp-head.php' ?>
+
   <link rel="stylesheet" href="../Employee Section/assets/css/emp-transaction.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="../Employee Section/assets/css/emp-sidebar-navbar.css?v=<?php echo time(); ?>">
 
@@ -19,7 +21,13 @@
 
   <!-- Main Container -->
   <div class="main-container">
-    <?php include '../Employee Section/includes/emp-navbar.php' ?>
+    <?php
+    include '../Employee Section/includes/emp-navbar.php'
+    ?>
+
+    <?php
+    $statusTab = isset($_GET['status']) ? $_GET['status'] : '';
+    ?>
 
     <div class="main-content">
 
@@ -30,21 +38,10 @@
           <div class="search-wrapper">
             <div class="search-input-wrapper">
               <input type="text" id="search" placeholder="Search here..">
-              <!-- <span class="icon">🔍</span> -->
             </div>
           </div>
 
-
           <div class="second-header-wrapper">
-            <!-- <div class="date-range-wrapper flightbooking-wrapper">
-            <div class="date-range-inputs-wrapper">
-              <div class="input-with-icon">
-                <input type="text" class="datepicker" id="BookingStartDate" placeholder="Booking Date">
-                <i class="fas fa-calendar-alt calendar-icon"></i>
-              </div>
-            </div>
-          </div> -->
-
             <div class="date-range-wrapper flightbooking-wrapper">
               <div class="date-range-inputs-wrapper">
                 <div class="input-with-icon">
@@ -77,18 +74,6 @@
               </div>
             </div>
 
-            <div class="date-range-wrapper sorting-wrapper">
-              <div class="select-wrapper">
-                <select id="status">
-                  <option value="" disabled selected>Select Status</option>
-                  <option value="Pending">Pending</option>
-                  <option value="Confirmed">Confirmed</option>
-                  <option value="Cancelled">Cancelled</option>
-                </select>
-              </div>
-            </div>
-
-
             <div class="buttons-wrapper">
               <button id="clearSorting" class="btn btn-secondary">
                 Clear Filters
@@ -98,25 +83,93 @@
 
         </div>
 
-      </div>
-      
-      <div class="table-container">
-        <table class="product-table" id="product-table">
-          <thead>
-            <tr>
-              <th>TRANSACT NO</th>
-              <th>BRANCH</th>
-              <th>FLIGHT DATE</th>
-              <th>TOTAL PAX</th>
-              <th>PACKAGE PRICE</th>
-              <th>TOTAL REQUEST COST</th>
-              <th>AMOUNT PAID</th>
-              <th>BALANCE</th>
-              <th>STATUS</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php
+        <div class="navpills-container">
+          <div class="filter-tabs" id="booking-filter-tabs">
+            <button class="filter-btn active" data-filter="">
+              All
+              <span class="badge-status-tab">
+                <h6>
+                  <?php
+                  $sql = "SELECT COUNT(*) AS totalBookings FROM booking;";
+                  $result = mysqli_query($conn, $sql);
+                  echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+                  ?>
+                </h6>
+              </span>
+            </button>
+
+            <button class="filter-btn" data-filter="Pending">Pending
+              <span class="badge-status-tab">
+                <h6>
+                  <?php
+                  $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
+                  WHERE status = 'Pending'";
+                  $result = mysqli_query($conn, $sql);
+                  echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+                  ?>
+                </h6>
+              </span>
+            </button>
+
+            <button class="filter-btn" data-filter="Reserved">Reserved
+              <span class="badge-status-tab">
+                <h6>
+                  <?php
+                  $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
+                  WHERE status = 'Reserved'";
+                  $result = mysqli_query($conn, $sql);
+                  echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+                  ?>
+                </h6>
+              </span>
+            </button>
+
+            <button class="filter-btn" data-filter="Confirmed">Confirmed
+              <span class="badge-status-tab">
+                <h6>
+                  <?php
+                  $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
+                WHERE status = 'Confirmed'";
+                  $result = mysqli_query($conn, $sql);
+                  echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+                  ?>
+                </h6>
+              </span>
+            </button>
+
+            <button class="filter-btn" data-filter="Cancelled">Cancelled
+              <span class="badge-status-tab">
+                <h6>
+                  <?php
+                  $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
+                  WHERE status = 'Cancelled'";
+                  $result = mysqli_query($conn, $sql);
+                  echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+                  ?>
+                </h6>
+              </span>
+            </button>
+          </div>
+        </div>
+
+
+        <div class="table-wrapper">
+          <table class="product-table" id="product-table">
+            <thead>
+              <tr>
+                <th>TRANSACT NO</th>
+                <th>BRANCH</th>
+                <th>FLIGHT DATE</th>
+                <th>TOTAL PAX</th>
+                <th>PACKAGE PRICE</th>
+                <th>TOTAL REQUEST COST</th>
+                <th>AMOUNT PAID</th>
+                <th>BALANCE</th>
+                <th>STATUS</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php
               // Ensure $conn is properly initialized
               if (!isset($conn)) {
                 die("Database connection error.");
@@ -219,8 +272,68 @@
     </div>
   </div>
 
+  <?php include '../Employee Section/includes/emp-scripts.php' ?>
 
-  <!-- Row Click Selection JS -->
+  
+  <!-- For Button Tabs Status Sorting -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // Get the status from the URL
+      let statusTab = "<?php echo isset($_GET['status']) ? $_GET['status'] : ''; ?>";
+      console.log("Status from URL:", statusTab); // Debugging
+
+      // Find all filter buttons
+      let buttons = document.querySelectorAll("#booking-filter-tabs .filter-btn");
+
+      // Remove 'active' class from all buttons
+      buttons.forEach(btn => btn.classList.remove("active"));
+
+      // Find the button that matches the status
+      let matchedButton = [...buttons].find(btn => btn.getAttribute("data-filter") === statusTab);
+
+      if (matchedButton) {
+        matchedButton.classList.add("active"); // Highlight the correct button
+        console.log("Activating button:", matchedButton.innerText);
+
+        setTimeout(() => {
+          matchedButton.click();
+        }, 3);
+
+      } else {
+        // Default to "All" if no match found
+        let defaultButton = document.querySelector("#booking-filter-tabs .filter-btn[data-filter='']");
+        if (defaultButton) {
+          defaultButton.classList.add("active");
+          console.log("Activating default button: All");
+
+          setTimeout(() => {
+            defaultButton.click();
+          }, 100);
+        }
+      }
+
+      // Add click event listener to each button
+      buttons.forEach(button => {
+        button.addEventListener("click", function() {
+          // Remove active class from all buttons
+          buttons.forEach(btn => btn.classList.remove("active"));
+
+          // Add active class to the clicked button
+          this.classList.add("active");
+
+          let filterValue = this.getAttribute("data-filter");
+
+          // Apply DataTables filtering
+          if ($.fn.DataTable.isDataTable("#product-table")) {
+            $('#product-table').DataTable().column(8).search(filterValue || '', true, false).draw();
+          }
+        });
+      });
+    });
+  </script>
+
+
+  <!-- Row Click Selection-->
   <script>
     document.addEventListener("DOMContentLoaded", function() {
       document.querySelectorAll("tr[data-url]").forEach(function(row) {
@@ -251,21 +364,6 @@
     });
   </script>
 
-  <!-- JQuery Datapicker -->
-  <!-- <script>
-  document.addEventListener("scroll", function () {
-  const searchBar = document.querySelector(".search-bar");
-  const scrollPosition = window.scrollY;
-
-  // Add or remove the upward adjustment class based on scroll position
-  if (scrollPosition > 70) { // Adjust the threshold as needed
-    searchBar.classList.add("scrolled-upward");
-  } else {
-    searchBar.classList.remove("scrolled-upward");
-  }
-});
-</script> -->
-
   <!-- DataTables #product-table -->
   <script>
     $(document).ready(function() {
@@ -278,9 +376,9 @@
           [0, 'desc']
         ], // Default sorting by Transaction ID (descending)
         scrollX: false,
-        scrollY: '73vh', // Set a fixed height for the table (adjust as necessary)
+        scrollY: '65.5vh', // Set a fixed height for the table (adjust as necessary)
         paging: true, // Enable pagination
-        pageLength: 16, // Set the number of rows per page
+        pageLength: 14, // Set the number of rows per page
         autoWidth: false,
         autoHeight: false, // Prevent automatic height adjustment
 
@@ -290,30 +388,6 @@
           orderable: false
         }]
       });
-
-      // Retrieve status from URL parameters
-      const urlParams = new URLSearchParams(window.location.search);
-      let storedStatus = urlParams.get("status"); // Get status from the URL
-
-      if (storedStatus) {
-          $("#status").val(storedStatus).trigger("change"); // Set dropdown and trigger change event
-          table.column(8).search(storedStatus).draw(); // Apply DataTable filter
-      } else {
-          $("#status").val(""); // Ensure default state if no status is found
-      }
-
-      // Update DataTable filtering when status changes
-      $("#status").on("change", function () {
-          let selectedStatus = $(this).val();
-          table.column(8).search(selectedStatus || "").draw(); // Ensure empty string if null
-      });
-
-      // Reset dropdown and DataTable when leaving the page
-      $(window).on("beforeunload", function () {
-          $("#status").val("").trigger("change"); // Reset status dropdown
-          table.column(8).search("").draw(); // Clear filter
-      });
-
 
       // Search Functionality
       $('#search').on('keyup', function() {
@@ -470,9 +544,5 @@
     });
   </script>
 
-
-  <?php include '../Employee Section/includes/emp-scripts.php' ?>
-
-</body>
-
+  </body>
 </html>

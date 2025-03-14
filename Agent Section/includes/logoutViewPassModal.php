@@ -21,28 +21,28 @@
 
 
 <script>
-  $(document).ready(function() {
+$(document).ready(function() {
     $('#logoutButton').click(function() {
-      $.ajax({
-        url: '../Agent Section/functions/agent-logout.php',
-        type: 'GET',
-        dataType: 'json',
-        success: function(response) {
-          if (response.success) {
-
-            window.location.href = '../Agent Section/agentLogin.php';
-
-          } else {
-            alert(response.message || "Logout failed.");
-          }
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-          console.error('AJAX Error:', textStatus, errorThrown);
-          alert("An error occurred. Please try again.");
-        }
-      });
+        $.ajax({
+            url: '../Agent Section/functions/agent-logout.php',
+            type: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                    window.location.href = '../Agent Section/agentLogin.php';
+                } else {
+                    window.location.href = '../Agent Section/agentLogin.php';
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.error('AJAX Error:', textStatus, errorThrown);
+                alert("An error occurred during logout. Please try again.");
+                window.location.href = '../Agent Section/agentLogin.php'; 
+            }
+        });
     });
-  });
+});
+
 </script>
 
 

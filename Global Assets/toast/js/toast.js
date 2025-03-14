@@ -1,31 +1,48 @@
-function showToast(message, type = "success") {
-    let toastContainer = document.getElementById("toastContainer");
+export function showToast(message, type = "success") {
+    let toastElement = document.getElementById("liveToast");
+    let toastMessage = document.getElementById("toast-message");
 
-    // Create Toast Element
-    let toastElement = document.createElement("div");
-    toastElement.className = `toast text-white bg-${type} border-0`;
-    toastElement.setAttribute("role", "alert");
-    toastElement.setAttribute("aria-live", "assertive");
-    toastElement.setAttribute("aria-atomic", "true");
+    if (!toastElement || !toastMessage) {
+        console.error("Toast elements not found. Ensure toast HTML is included.");
+        return;
+    }
 
-    toastElement.innerHTML = `
-        <div class="toast-header">
-            <strong class="me-auto">${type.charAt(0).toUpperCase() + type.slice(1)}</strong>
-            <small class="text-body-secondary">Just now</small>
-            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-        <div class="toast-body">${message}</div>
-    `;
+    toastMessage.textContent = message;
 
-    // Append to toast container
-    toastContainer.appendChild(toastElement);
+    // Remove old background classes and add the new one
+    toastElement.classList.remove("bg-success", "bg-danger", "bg-warning");
+    let bgColor = "bg-success"; // Default
 
-    // Initialize and show the toast
+    if (type === "success") {
+        bgColor = "bg-success";
+    } else if (type === "error") {
+        bgColor = "bg-danger";
+    } else if (type === "warning") {
+        bgColor = "bg-warning";
+    }
+
+    toastElement.classList.add(bgColor);
+
+    // Show toast
     let toast = new bootstrap.Toast(toastElement);
     toast.show();
 
-    // Remove toast after it's hidden
-    toastElement.addEventListener("hidden.bs.toast", function () {
-        toastElement.remove();
-    });
+    // Auto-close the toast after 5 seconds (5000ms)
+    setTimeout(() => {
+        toast.hide();
+    }, 5000);
+}
+
+// Function to check and display flash messages from localStorage
+export function checkFlashMessage() {
+    let flashMessage = localStorage.getItem("flashMessage");
+    let flashType = localStorage.getItem("flashType");
+
+    if (flashMessage) {
+        showToast(flashMessage, flashType || "success");
+
+        // Remove after displaying to prevent duplicate toasts
+        localStorage.removeItem("flashMessage");
+        localStorage.removeItem("flashType");
+    }
 }

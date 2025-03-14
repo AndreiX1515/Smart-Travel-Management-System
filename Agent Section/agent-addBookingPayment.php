@@ -191,7 +191,7 @@ session_start();
           
           <form action="../Agent Section/functions/agent-addBookingPayment-code.php" method="POST" enctype="multipart/form-data">
             <hr>
-            <input type="hidden" value="<?php echo $_SESSION['accountId']; ?>" name="agentAccountId">
+            <input type="hidden" value="<?php echo $_SESSION['agent_accountId']; ?>" name="agentAccountId">
             <input type="hidden" value="<?php echo $transactionNumber; ?>" name="transactNo">
             <input type="number" class="form-control" name="downpayment" step="0.01" min="<?php echo $downpayment; ?>" max="<?php echo $totalPrice; ?>" placeholder="Enter Downpayment Amount" required>
             <h6 class="mt-4">Attach Proof/Screenshot of transaction:</h6>

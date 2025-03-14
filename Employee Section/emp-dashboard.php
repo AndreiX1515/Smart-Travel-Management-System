@@ -75,8 +75,7 @@ error_reporting(E_ALL);
                 </div>
                 <div class="side-content d-flex flex-column">
                   <?php
-                  $confirmedTransactionsQuery = "SELECT COUNT(*) AS total FROM booking WHERE MONTH(bookingDate) = MONTH(CURRENT_DATE()) 
-                                  AND YEAR(bookingDate) = YEAR(CURRENT_DATE()) AND status = 'Confirmed'";
+                  $confirmedTransactionsQuery = "SELECT COUNT(*) AS total FROM booking WHERE MONTH(bookingDate) = MONTH(CURRENT_DATE()) AND YEAR(bookingDate) = YEAR(CURRENT_DATE()) AND status = 'Confirmed'";
                   $result = mysqli_query($conn, $confirmedTransactionsQuery);
 
                   if ($result) {
@@ -102,8 +101,7 @@ error_reporting(E_ALL);
                 </div>
                 <div class="side-content d-flex flex-column">
                   <?php
-                  $pendingTransactionsQuery = "SELECT COUNT(*) AS total FROM booking WHERE MONTH(bookingDate) = MONTH(CURRENT_DATE()) 
-                                                AND YEAR(bookingDate) = YEAR(CURRENT_DATE()) AND status = 'Pending'";
+                  $pendingTransactionsQuery = "SELECT COUNT(*) AS total FROM booking WHERE MONTH(bookingDate) = MONTH(CURRENT_DATE()) AND YEAR(bookingDate) = YEAR(CURRENT_DATE()) AND status = 'Pending'";
                   $result = mysqli_query($conn, $pendingTransactionsQuery);
 
                   if ($result) {
@@ -115,6 +113,27 @@ error_reporting(E_ALL);
                   ?>
                   <h5><?php echo $pendingTransactions; ?></h5>
                   <p>PENDING</p>
+                </div>
+              </div>
+
+              <div class="col-md-5 d-flex flex-row clickable-card" onclick="redirectToAgentTransaction('Reserved')">
+                <div class="card-icon bg-secondary">
+                  <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="side-content d-flex flex-column">
+                  <?php
+                  $pendingTransactionsQuery = "SELECT COUNT(*) AS total FROM booking WHERE MONTH(bookingDate) = MONTH(CURRENT_DATE()) AND YEAR(bookingDate) = YEAR(CURRENT_DATE()) AND status = 'Reserved'";
+                  $result = mysqli_query($conn, $pendingTransactionsQuery);
+
+                  if ($result) {
+                    $row = mysqli_fetch_assoc($result);
+                    $pendingTransactions = $row['total'];
+                  } else {
+                    $pendingTransactions = 0;
+                  }
+                  ?>
+                  <h5><?php echo $pendingTransactions; ?></h5>
+                  <p>RESERVED</p>
                 </div>
               </div>
 
@@ -423,7 +442,6 @@ error_reporting(E_ALL);
         </div>
       </div>
 
-
       <!-- Flight Seat Tracker Tab -->
       <div class="tab-content" id="pills-tabContent">
 
@@ -612,13 +630,21 @@ error_reporting(E_ALL);
 
           <div class="info-footer">
             <div class="item-number-select">
-              <label for="rowsPerPage">Rows per page: </label>
-              <select id="rowsPerPage" class="select-box">
-                <option value="10">10</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
-              </select>
+                <label for="rowsPerPage">Rows per page:</label>
+                <div class="select-container">
+                    <select id="rowsPerPage" class="select-box">
+                        <option value="16">16</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                    <span class="arrow-down"></span> <!-- Arrow Icon -->
+                </div>
+                
+                  <button id="clear-btn" class="btn btn-secondary btn-sm" onclick="clearSelection()">
+                    Reset
+                  </button>
+                             
             </div>
 
             <div class="pagination-controls">
@@ -626,8 +652,8 @@ error_reporting(E_ALL);
               <span id="pageInfo" class="page-info"></span>
               <button id="nextPage" class="pagination-btn">Next</button>
             </div>
-
           </div>
+
         </div>
 
         <!-- Payment and Requests Table -->
@@ -985,8 +1011,6 @@ error_reporting(E_ALL);
           </div>
         </div>
 
-
-
         <!-- <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0"></div>
       <div class="tab-pane fade" id="pills-disabled" role="tabpanel" aria-labelledby="pills-disabled-tab" tabindex="0"></div> -->
 
@@ -1032,6 +1056,8 @@ error_reporting(E_ALL);
     });
   </script> -->
 
+
+  <!-- For Clickable Cards -->
   <script>
     function redirectToAgentTransaction(status) {
       window.location.href = `../Employee Section/emp-transaction.php?status=${status}`;
@@ -1039,9 +1065,13 @@ error_reporting(E_ALL);
   </script>
 
 
-
-
-
+  <!-- Clear RowColNum -->
+  <script>
+    function clearSelection() {
+      const selectBox = document.getElementById("rowsPerPage");
+      selectBox.value = "16"; // Reset to default value
+    }
+  </script>
 
 
   <!-- JS for Checkbox -->
@@ -1362,11 +1392,11 @@ error_reporting(E_ALL);
           responsive: true,
           autoWidth: false, // Prevent automatic width calculation
           scrollX: true, // Enable horizontal scrolling
-          scrollY: "540px", // Set vertical scroll height
+          scrollY: "565px", // Set vertical scroll height
           paging: true, // Enable pagination
           searching: false, // Disable search
           info: false, // Disable info text
-          pageLength: 15, // Set number of rows per page
+          pageLength: 16, // Set number of rows per page
           dom: 'rt<"bottom"flp>',
           ordering: false, // Disable sorting on columns
 
@@ -1437,26 +1467,56 @@ error_reporting(E_ALL);
           selectRowInBothTables(index); // If you have this function
         });
 
+        // For RowColNum 
         // Update page length based on user selection
-        $('#rowsPerPage').on('change', function() {
-          var pageLength = $(this).val();
-          table.page.len(pageLength).draw(); // Set the page length and redraw the table
+        $('#rowsPerPage').on('change', function () {
+            var pageLength = $(this).val();
+            table.page.len(pageLength).draw(); // Set the page length and redraw the table
+            toggleClearButton(); // Show or hide the clear button
         });
 
-        // Handle previous/next buttons
-        $('#prevPage').on('click', function() {
-          table.page('previous').draw('page');
+        // Function to reset the selection and DataTable page length
+        window.clearSelection = function () {
+            $('#rowsPerPage').val('16').trigger('change'); // Reset dropdown & trigger change event
+        };
+
+        // Show/hide the clear button dynamically
+        function toggleClearButton() {
+            if ($('#rowsPerPage').val() !== '16') {
+                $('#clear-btn').show(); // Use ID selector for better accuracy
+            } else {
+                $('#clear-btn').hide();
+            }
+        }
+
+        // Initialize: Hide clear button if default value is selected
+        $(document).ready(function () {
+            toggleClearButton(); // Ensure correct initial visibility
         });
 
-        $('#nextPage').on('click', function() {
-          table.page('next').draw('page');
-        });
 
-        // Update page info on page change
-        table.on('draw', function() {
-          var info = table.page.info();
-          $('#pageInfo').text('Page ' + (info.page + 1) + ' of ' + info.pages);
+
+        $(document).ready(function () {
+            // Set default page info on load
+            var info = table.page.info(); 
+            $('#pageInfo').text('Page ' + (info.page + 1) + ' of ' + info.pages);
+
+            // Handle previous/next buttons
+            $('#prevPage').on('click', function() {
+                table.page('previous').draw('page');
+            });
+
+            $('#nextPage').on('click', function() {
+                table.page('next').draw('page');
+            });
+
+            // Update page info on page change
+            table.on('draw', function() {
+                var info = table.page.info();
+                $('#pageInfo').text('Page ' + (info.page + 1) + ' of ' + info.pages);
+            });
         });
+        
       }
     }
 
@@ -1467,6 +1527,6 @@ error_reporting(E_ALL);
   </script>
 
 
-</body>
 
+  </body>
 </html>

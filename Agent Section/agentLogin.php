@@ -1,11 +1,14 @@
 <?php
 require "../conn.php"; // Move up to the parent directory
 
+
 session_start();
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+
+echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETTY_PRINT) . ");</script>";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['flightid'])) {
     $_SESSION['flightid'] = htmlspecialchars($_POST['flightid']);
@@ -204,9 +207,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['flightid'])) {
                         // Handle redirection based on account type
                         if (data.accountType === 'agent') {
                             if (flightid) {
-                                console.log("Redirecting with Flight ID:", flightid);
-                                alert("Redirecting to Agent Booking Page");
-
+                               
+                                
                                 // Unset session flight ID only if it exists
                                 if (typeof sessionStorage !== "undefined" && sessionStorage.getItem("flightId")) {
                                     sessionStorage.removeItem("flightId");
@@ -214,8 +216,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['flightid'])) {
 
                                 window.location.href = '../Agent Section/agent-revisedAddBooking-flight.php';
                             } else {
-                                console.log("No Flight ID, redirecting to Dashboard.");
-                                alert("Redirecting to Agent Dashboard");
+                               
 
                                 window.location.href = '../Agent Section/agent-dashboard.php';
                             }
@@ -223,17 +224,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['flightid'])) {
                             console.log("Final Flight ID (Guest):", flightid);
 
                             if (flightid) {
-                                console.log("Redirecting to Client Booking Page");
-                                alert("Redirecting to Client Booking Page");
+                                
                                 window.location.href = '../Client Section/client-addBooking-flight.php';
                             } else {
-                                console.log("Redirecting to Client Dashboard");
-                                alert("Redirecting to Client Booking Page");
+                               
                                 window.location.href = '../Client Section/client-dashboard.php';
                             }
                             
                         } else if (data.accountType === 'employee') {
-                            console.log("Redirecting to Employee Dashboard");
                             window.location.href = '../Employee Section/emp-dashboard.php';
                         } else {
                             console.warn("Unknown account type received:", data.accountType);

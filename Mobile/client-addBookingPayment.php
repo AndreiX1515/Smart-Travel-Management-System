@@ -26,7 +26,7 @@ session_start();
       <div class="navbar">
         <div class="backbutton-wrapper">
           <div class="back-button-wrapper">
-            <a href="../Nobile/client-addbooking-flight.php" class="back-button-link">
+            <a href="../Mobile/client-addbooking-flight.php" class="back-button-link">
               <i class="fa-solid fa-arrow-left"></i>
             </a>
           </div>

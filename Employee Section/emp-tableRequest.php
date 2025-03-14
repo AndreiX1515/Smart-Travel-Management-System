@@ -26,21 +26,8 @@
           <div class="search-wrapper">
             <div class="search-input-wrapper">
               <input type="text" id="search" placeholder="Search here..">
-              <!-- <span class="icon">🔍</span> -->
             </div>
           </div>
-
-          <!-- <div class="filter-field">
-                <!-- <label for="status">Status:</label> 
-                <div class="select-wrapper">
-                  <select id="status">
-                    <option value="All" disabled selected>Select Status</option>
-                    <option value="Pending">Pending</option>
-                    <option value="Confirmed">Confirmed</option>
-                    <option value="Cancelled">Cancelled</option>
-                  </select>
-                </div>
-              </div> -->
 
           <div class="second-header-wrapper">
             <div class="date-range-wrapper sorting-wrapper">
@@ -65,15 +52,6 @@
                 </select>
               </div>
             </div>
-
-            <!-- <div class="date-range-wrapper flightbooking-wrapper">
-            <div class="date-range-inputs-wrapper">
-              <div class="input-with-icon">
-                <input type="text" class="datepicker" id="BookingStartDate" placeholder="Booking Date">
-                <i class="fas fa-calendar-alt calendar-icon"></i>
-              </div>
-            </div>
-          </div> -->
 
             <div class="date-range-wrapper flightbooking-wrapper">
               <div class="date-range-inputs-wrapper">
@@ -201,65 +179,95 @@
           <h5 class="modal-title">Transaction Details - ID: <span id="transactionModalLabel"> </span> </h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <form action="../Employee Section/functions/emp-tableRequest-code.php" method="POST">
-          <div class="modal-body">
-            <input type="hidden" id="requestIdInput" name="requestId">
 
-            <!-- Request Status Section -->
-            <div class="mb-3">
-              <label for="requestStatus" class="form-label"><strong>Request Status:</strong></label>
-              <select id="requestStatus" name="requestStatus" class="form-select" required>
-                <option selected disabled>Select Option</option>
-                <option value="Confirmed">Confirmed</option>
-                <option value="Rejected">Reject</option>
-              </select>
-            </div>
+        <form id="requestStatusForm">
+            <div class="modal-body">
+                <input type="hidden" id="requestIdInput" name="requestId">
 
-            <!-- Handling Fee -->
-            <div class="mb-3">
-              <label for="requestHandlingFee" class="form-label"><strong>Handling Fee:</strong></label>
-              <select id="requestHandlingFee" name="requestHandlingFee" class="form-select">
-                <option selected value="0">No Handling Fee</option>
-                <option value="100">₱ 100</option>
-                <option value="200">₱ 200</option>
-                <option value="300">₱ 300</option>
-                <option value="400">₱ 400</option>
-                <option value="500">₱ 500</option>
-              </select>
-            </div>
+                <!-- Request Status Section -->
+                <div class="mb-3">
+                    <label for="requestStatus" class="form-label"><strong>Request Status:</strong></label>
+                    <select id="requestStatus" name="requestStatus" class="form-select" required>
+                        <option selected disabled>Select Option</option>
+                        <option value="Confirmed">Confirmed</option>
+                        <option value="Rejected">Rejected</option>
+                    </select>
+                </div>
 
-            <div class="mb-4">
-              <!-- Remarks Input -->
-              <label for="requestRemarks" class="form-label fw-bold">Remarks:</label>
-              <input type="text" id="requestRemarks" name="requestRemarks" class="form-control"
-                placeholder="Enter remarks or additional comments here">
+                <!-- Handling Fee -->
+                <div class="mb-3">
+                    <label for="requestHandlingFee" class="form-label"><strong>Handling Fee:</strong></label>
+                    <select id="requestHandlingFee" name="requestHandlingFee" class="form-select">
+                        <option selected value="0">No Handling Fee</option>
+                        <option value="100">₱ 100</option>
+                        <option value="200">₱ 200</option>
+                        <option value="300">₱ 300</option>
+                        <option value="400">₱ 400</option>
+                        <option value="500">₱ 500</option>
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <!-- Remarks Input -->
+                    <label for="requestRemarks" class="form-label fw-bold">Remarks:</label>
+                    <input type="text" id="requestRemarks" name="requestRemarks" class="form-control"
+                        placeholder="Enter remarks or additional comments here">
+                </div>
             </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="submit" name="updateRequestStatus" class="btn btn-primary">Update Status</button>
-          </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Update Status</button>
+            </div>
         </form>
+
       </div>
     </div>
   </div>
 
   <?php include '../Employee Section/includes/emp-scripts.php' ?>
 
-  <!-- JQuery Datapicker -->
-  <script>
-    document.addEventListener("scroll", function() {
-      const searchBar = document.querySelector(".search-bar");
-      const scrollPosition = window.scrollY;
+  <?php include '../Global Assets/toast/script/toast.php' ?>
 
-      // Add or remove the upward adjustment class based on scroll position
-      if (scrollPosition > 70) { // Adjust the threshold as needed
-        searchBar.classList.add("scrolled-upward");
-      } else {
-        searchBar.classList.remove("scrolled-upward");
-      }
+
+  <script>
+    $(document).ready(function() {
+        $("#requestStatusForm").submit(function(event) {
+            event.preventDefault();
+
+            let submitButton = $("button[type='submit']");
+            submitButton.prop("disabled", true).text("Updating...");
+
+            $.ajax({
+                url: "../Employee Section/functions/emp-tableRequest-code.php",
+                type: "POST",
+                data: $(this).serialize(),
+                dataType: "json",
+                success: function(response) {
+                    let messageType = response.status === "success" ? "success" : "error";
+                    localStorage.setItem("flashMessage", response.statusLabel);
+                    localStorage.setItem("flashType", messageType);
+
+                    // Redirect after update
+                    window.location.href = "../Employee Section/emp-tableRequest.php";
+                },
+                error: function() {
+                    localStorage.setItem("flashMessage", "An error occurred. Please try again.");
+                    localStorage.setItem("flashType", "error");
+                    window.location.href = "../Employee Section/emp-tableRequest.php";
+                },
+                complete: function() {
+                    submitButton.prop("disabled", false).text("Update Status");
+                    $("#requestStatusForm")[0].reset(); // Clear form after submission
+                }
+            });
+        });
     });
+
   </script>
+
+
+
+
 
   <!-- DataTables #product-table -->
   <script>
@@ -273,7 +281,7 @@
           [0, 'desc']
         ], // Default sorting by Transaction ID (descending)
         scrollX: false,
-        scrollY: '69vh', // Set a fixed height for the table (adjust as necessary)
+        scrollY: '76.5vh', // Set a fixed height for the table (adjust as necessary)
         paging: true, // Enable pagination
         pageLength: 15, // Set the number of rows per page
         autoWidth: false,
