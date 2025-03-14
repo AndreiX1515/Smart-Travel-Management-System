@@ -34,6 +34,10 @@
     
 }
 
+
+
+
+/* =================================== */
 /* Order Summary Container */
 .order-summary {
     display: flex;
@@ -47,11 +51,6 @@
     width: 100%;
     max-width: 550px; /* Increased width */
 }
-
-
-
-
-
 
 .section-1 {
     border-radius: 5px;
@@ -173,12 +172,6 @@ label {
     font-weight: bold;
     color: #555;
 }
-
-
-
-
-
-
 
 /* Header Titles */
 .order-summary h4 {

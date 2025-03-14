@@ -2,9 +2,9 @@
 session_start();
 require "../conn.php";
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-header('Content-Type: application/json'); // Ensure JSON output
+// error_reporting(E_ALL);
+// ini_set('display_errors', 1);
+// header('Content-Type: application/json'); // Ensure JSON output
 
 ?>
 <!DOCTYPE html>
