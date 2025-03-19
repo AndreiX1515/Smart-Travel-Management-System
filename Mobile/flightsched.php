@@ -24,9 +24,9 @@ $accId = $_SESSION['accountId'] ?? '';
     <?php include '../Client Section/Includes/head.php'; ?>
 
     <title>Flight Schedules</title>
-
-    <link rel="stylesheet" href="../Mobile/assets/css/client-flightSched.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="../Mobile/assets/css/client-navbar.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="../Mobile/assets/css/client-flightSched.css?v=<?php echo time(); ?>">
+
 </head>
 
 <body>
@@ -35,13 +35,13 @@ $accId = $_SESSION['accountId'] ?? '';
     if (isset($_SESSION['status'])):
     ?>
 
-  <!-- <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <!-- <div class="alert alert-warning alert-dismissible fade show" role="alert">
     <strong>Hey!</strong> <?= $_SESSION['status']; ?>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div> -->
 
     <?php
-    unset($_SESSION['status']);
+        unset($_SESSION['status']);
     endif;
     ?>
 
@@ -49,19 +49,27 @@ $accId = $_SESSION['accountId'] ?? '';
 
     <div class="body-container">
         <div class="main-container">
+
+            <script>
+            var sessionData = <?php echo json_encode($_SESSION, JSON_PRETTY_PRINT); ?>;
+            console.log("Session Data:", sessionData);
+            </script>
+
             <div class="flight-schedules">
+
                 <div class="section-wrapper">
                     <div class="section-header">
                         <div class="header-info">
                             <h3>Flight Schedules</h3>
-                            <p>Check out our latest flight schedules and book your next adventure today!</p>
+                            <p>Check out our latest flight schedules here!</p>
                         </div>
 
                         <div class="filters-container">
                             <div class="filters">
-                                <div class="filter-group">
-                                    <label for="flight-month">Select Month:</label>
-                                    <select id="flight-month">
+                                <!-- Month Filter -->
+                                <div class="filter-month">
+                                    <label for="filter-month">Month:</label>
+                                    <select id="filter-month">
                                         <option value="">All Months</option>
                                         <option value="01">January</option>
                                         <option value="02">February</option>
@@ -78,18 +86,36 @@ $accId = $_SESSION['accountId'] ?? '';
                                     </select>
                                 </div>
 
-                                <div class="filter-group">
-                                    <label for="flight-date">Select Flight Date:</label>
-                                    <input type="date" id="flight-date">
+                                <!-- Year Filter -->
+                                <div class="filter-year">
+                                    <label for="filter-year">Year:</label>
+                                    <select id="filter-year"></select>
                                 </div>
 
-                                <button id="clear-filters" class="clear-btn">Clear</button>
+                                <!-- Date Filter -->
+                                <div class="filter-date">
+                                    <label for="filter-date">Flight Date:</label>
+                                    <input type="date" id="filter-date">
+                                </div>
+
+                                <div class="filter-button">
+                                    <label for="filter-date"></label>
+                                    <button id="clear-filters" class="clear-btn">
+                                        <i class="fas fa-sync-alt"></i>
+                                    </button>
+                                </div>
+
                             </div>
                         </div>
                     </div>
 
                     <div class="section-main-content">
+                        <button id="back-to-top" class="back-to-top">
+                            <i class="fas fa-arrow-up"></i>
+                        </button>
+
                         <div id="flights-container">
+                            
                             <?php
                             // Database query
                             $sql = "SELECT 
@@ -135,15 +161,18 @@ $accId = $_SESSION['accountId'] ?? '';
 
                                             <div class="flight-date-wrapper">
                                                 <div class="flight-date-content">
+
                                                     <div class="container-body flight-date-body">
                                                         <div class="flight-start">
                                                             <label>Start:</label>
                                                             <h5><?= htmlspecialchars($row['Start']) ?></h5>
                                                         </div>
+
                                                         <div class="flight-start">
                                                             <label>End:</label>
                                                             <h5><?= htmlspecialchars($row['End']) ?></h5>
                                                         </div>
+
                                                         <div class="flight-start">
                                                             <label>Package Price:</label>
                                                             <h5>₱ <?= number_format($row['FlightPrice'], 2) ?></h5>
@@ -151,9 +180,11 @@ $accId = $_SESSION['accountId'] ?? '';
                                                     </div>
                                                 </div>
 
+
                                                 <div class="flight-seats-wrapper">
                                                     <div class="seats-container">
                                                         <div class="container-body seats-body">
+
                                                             <div class="first-part">
                                                                 <div class="seats-info">
                                                                     <label>Available Seats:</label>
@@ -164,6 +195,7 @@ $accId = $_SESSION['accountId'] ?? '';
                                                                     <h5><?= htmlspecialchars($row['AdditionalSeats']) ?></h5>
                                                                 </div>
                                                             </div>
+
                                                             <div class="seats-info">
                                                                 <div class="book-now-container">
                                                                     <form action="../Mobile/agentLogin.php" method="POST">
@@ -173,8 +205,10 @@ $accId = $_SESSION['accountId'] ?? '';
                                                                 </div>
                                                             </div>
                                                         </div>
+
                                                     </div>
                                                 </div>
+
                                             </div>
                                         </div>
                                     </div>
@@ -187,7 +221,9 @@ $accId = $_SESSION['accountId'] ?? '';
                         </div>
                     </div>
                 </div>
+
             </div>
+
         </div>
     </div>
 
@@ -195,25 +231,87 @@ $accId = $_SESSION['accountId'] ?? '';
     <?php include '../Client Section/Includes/scripts.php'; ?>
     <!-- <script src="heartbeat.js"></script>  -->
 
+
+    <!-- JS for back-to-top button -->
+    <script>
+     document.addEventListener("DOMContentLoaded", function () {
+        const backToTopButton = document.getElementById("back-to-top");
+
+        if (!backToTopButton) {
+            console.error("Button #back-to-top not found.");
+            return;
+        }
+
+        window.addEventListener("scroll", function () {
+            if (window.scrollY > 300) {
+                backToTopButton.classList.add("show");
+            } else {
+                backToTopButton.classList.remove("show");
+            }
+        });
+
+        backToTopButton.addEventListener("click", function () {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+    });
+
+
+    </script>
+
+                         
+
+    <!-- JS for Year Select -->
+    <script>
+        // Get the current year
+        const currentYear = new Date().getFullYear();
+
+        // Reference the select element
+        const yearSelect = document.getElementById("filter-year");
+
+        // Generate years (from 10 years ago to 10 years ahead)
+        const startYear = currentYear - 10;
+        const endYear = currentYear + 10;
+
+        for (let year = startYear; year <= endYear; year++) {
+            let option = document.createElement("option");
+            option.value = year;
+            option.textContent = year;
+
+            // Set current year as default
+            if (year === currentYear) {
+                option.selected = true;
+            }
+
+            yearSelect.appendChild(option);
+        }
+    </script>
+
+    <!-- JS for Sorting Function -->
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            const datePicker = document.getElementById("flight-date");
-            const monthSelect = document.getElementById("flight-month");
+            const datePicker = document.getElementById("filter-date");
+            const monthSelect = document.getElementById("filter-month");
+            const yearSelect = document.getElementById("filter-year");
             const flightCards = document.querySelectorAll(".flight-card");
-            const clearButton = document.getElementById("clear-filters"); // Get Clear button
+            const clearButton = document.getElementById("clear-filters"); // Clear button
 
             function filterFlights() {
-                const selectedDate = datePicker.value; // Get selected date
-                const selectedMonth = monthSelect.value; // Get selected month
+                const selectedDate = datePicker.value; // Get selected date (YYYY-MM-DD)
+                const selectedMonth = monthSelect.value; // Get selected month (MM)
+                const selectedYear = yearSelect.value; // Get selected year (YYYY)
 
                 flightCards.forEach(card => {
-                    const flightDate = card.getAttribute("data-date"); // Get flight's departure date
-                    const flightMonth = flightDate ? flightDate.split("-")[1] : ""; // Extract month
+                    const flightDate = card.getAttribute("data-date"); // Flight's full date (YYYY-MM-DD)
+
+                    if (!flightDate) return; // Skip if no date available
+
+                    const [year, month, day] = flightDate.split("-"); // Extract year, month, day
 
                     const matchesDate = selectedDate === "" || flightDate === selectedDate;
-                    const matchesMonth = selectedMonth === "" || flightMonth === selectedMonth;
+                    const matchesMonth = selectedMonth === "" || month === selectedMonth;
+                    const matchesYear = selectedYear === "" || year === selectedYear;
 
-                    if (matchesDate && matchesMonth) {
+                    if (matchesDate && matchesMonth && matchesYear) {
                         card.style.display = "block"; // Show matching flights
                     } else {
                         card.style.display = "none"; // Hide non-matching flights
@@ -224,11 +322,13 @@ $accId = $_SESSION['accountId'] ?? '';
             function clearFilters() {
                 datePicker.value = "";
                 monthSelect.value = "";
+                yearSelect.value = new Date().getFullYear(); // Reset to current year
                 filterFlights(); // Refresh flights display after clearing
             }
 
             datePicker.addEventListener("change", filterFlights);
             monthSelect.addEventListener("change", filterFlights);
+            yearSelect.addEventListener("change", filterFlights);
             clearButton.addEventListener("click", clearFilters); // Attach event to clear button
         });
     </script>

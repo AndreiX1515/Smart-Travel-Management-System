@@ -1,11 +1,58 @@
+.main-content {
+  margin-top: 6.5vh;
+}
+
+
+.main-content-container {
+  padding: 0px 15px;
+}
+
 .booking-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 0px;
   padding: 0px 0px;
   width: 100%;
   border-radius: 0px;
+  /* border: 1px solid black; */
 }
+
+.section-header {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2px; /* Reduced space between elements */
+  margin: 0% 0; /* Reduced margin */
+  padding: 5px 0px 10px 0px; /* Tightened padding */
+  border-bottom: 1px solid gainsboro;
+
+  /* border: 1px solid black; */
+}
+
+.section-header h5 {
+  margin: 0;
+  font-size: 1.3rem; /* Smaller font size */
+  font-weight: bold;
+}
+
+.section-header p {
+  margin: 0;
+  font-size: .85rem; /* Reduced font size */
+  color: #666; /* Softer text color */
+}
+
+
+
+.section-content {
+  width: auto;
+  display: flex;
+  flex-direction: column;
+  padding: 15px 0px 0px 0px;
+  margin: 0px 11px;
+  /* border-bottom: 1px solid gainsboro; */
+  /* border: 1px solid black; */
+}
+
 
 .card-header {
   display: flex;
@@ -53,7 +100,9 @@
 }
 
 
-
+.hidden-fields {
+  display: none;
+}
 
 
 
@@ -80,15 +129,38 @@
 
 .row .columns {
   margin-bottom: 10px;
+  /* border: 1px solid black; */
+  padding: 10px 0px;
 }
 
 .columns label {
   margin-bottom: 8px;
 }
 
-.land-only, .flight-details-wrapper {
-  width: 98.5%;
-  margin: -10px 5px 0px 5px;
+.land-only {
+  height: 4vh;
+  width: 100%;
+  padding: 0;
+  display: flex;
+  align-items: center; /* Ensures vertical alignment */
+  gap: 5px; /* Adjust space between checkbox and label */
+}
+
+.land-only input[type="checkbox"] {
+  width: 16px; /* Standard checkbox size */
+  height: 16px;
+  margin: 0; /* Ensures no extra spacing */
+  vertical-align: middle; /* Aligns checkbox properly */
+}
+
+.land-only label {
+  vertical-align: middle; /* Aligns label with the checkbox */
+  margin: 0;
+}
+
+
+.flight-details-wrapper {
+  width: 100%;
 }
 
 .seat-info {
@@ -110,38 +182,8 @@
   /* border: 1px solid black; */
 }
 
-.contact-person-details .card-body {
-  padding: 20px 15px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
 
-.contact-person-details .form-group {
-  display: flex;
-  flex-direction: column;
-}
 
-.contact-person-details .form-group label {
-  font-size: 16px;
-  font-weight: 600;
-}
-
-.contact-person-details .email-fields input {
-  margin-top: -4px;
-}
-
-.contact-person-details .input-group {
-  margin-top: -6px;
-}
-
-.contact-person-details .input-group select {
-  margin-top: 8px;
-}
-
-.form-group .contactNo {
-  margin-top: -6px;
-}
 
 .card-footer {
   display: flex;
@@ -152,14 +194,29 @@
   border: 1px solid gainsboro;
 }
 
-.price-wrapper {
-  display: flex;
-  justify-content: left; /* Ensures items are spread out horizontally */
-  align-items: center; /* Aligns items to the center */
-  flex-wrap: nowrap; /* Prevents wrapping unless necessary */
-  margin-top: 2%;
 
+
+
+.price-wrapper {
+  padding: 20px 0px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center; 
+  flex-wrap: nowrap;
+  margin-top: 2%;
+  border-top: 1px solid gainsboro;
+  border-bottom: 1px solid gainsboro;
 }
+
+
+.total-price {
+  display: flex;
+  justify-content: space-between; /* Aligns items to each end */
+  align-items: center; /* Ensures proper vertical alignment */
+  width: 100%;
+}
+
+
 
 .price-wrapper .card-body {
   display: flex;
@@ -187,23 +244,16 @@
 }
 
 
-
-
-
-/* .price-wrapper .card-body h5 {
-  border: 1px solid black;
-} */
-
-
 .button-container {
+  padding: 15px 0px;
   display: flex;
   flex: 1;
   width: 100%;
-  margin-bottom: 4%;
+  margin: 1% 0% 3% 0%;
 }
 
 .button-container button {
-  flex: 1;  /* Makes the button fill the entire width of the container */
+  flex: 1;
   width: 100%; /* Ensures it takes full width */
 }
 
@@ -236,6 +286,36 @@
 }
 
 
+
+
+.contactno-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0px; /* Ensures they are as close as possible */
+  width: 100%;
+  /* border: 1px solid black; */
+  padding: 0px 0px 5px 0px; /* Adds a little spacing inside the wrapper */
+}
+
+.contactno-wrapper .form-select,
+.contactno-wrapper input[type="text"] {
+  height: 38px; /* Ensures both elements have the same height */
+  padding: 5px 10px; /* Consistent padding */
+  border: 1px solid #ced4da; /* Ensures both have a similar border */
+}
+
+.contactno-wrapper .form-select {
+  margin-top: 8px;
+  flex: 0 0 45%;
+  font-size: .8rem;
+}
+
+.contactno-wrapper input[type="text"] {
+  flex: 1; /* Takes up remaining space */
+  margin: 0; /* Removes any extra spacing */
+}
+
+
 /* .card-price-wrapper {
   display: flex;
   justify-content: space-between;
@@ -246,68 +326,326 @@
 } */
 
 
+.modal-dialog {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* Ensures vertical centering */
+}
 
 
-/* Responsive Design Adjustments */
+/* Back Modal Styling */
+#logout-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  padding: 20px;
+}
 
-/* Medium screens (up to 1440px) */
-@media (max-width: 1440px) {
-  .card-header h4 {
-    font-size: 26px;
+/* Show modal */
+#logout-modal.show {
+  display: flex;
+}
+
+/* Modal Content */
+#logout-modal .logout-modal-content {
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  text-align: center;
+  width: 100%;
+  max-width: 340px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  font-family: 'Inter', 'Roboto', sans-serif;
+  animation: fadeIn 0.25s ease-in-out;
+}
+
+/* Primary Message (Bold) */
+#logout-modal .logout-message-primary {
+  font-size: 18px;
+  color: #222;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+/* Secondary Message (Lighter) */
+#logout-modal .logout-message-secondary {
+  font-size: 12px;
+  color: #555;
+  font-weight: 400;
+  line-height: 1;
+  margin-bottom: 20px;
+}
+
+/* Buttons Container */
+#logout-modal .logout-modal-actions {
+  display: flex;
+  gap: 12px;
+}
+
+/* Button Styling */
+#logout-modal .logout-btn {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Cancel Button */
+#logout-modal .logout-btn-secondary {
+  background: #f1f1f1;
+  color: #333;
+}
+
+/* Confirm Logout Button */
+#logout-modal .logout-btn-danger {
+  background: #d9534f;
+  color: white;
+}
+
+/* Hover Effects */
+#logout-modal .logout-btn:hover {
+  opacity: 0.85;
+}
+
+/* Modal Animation */
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+      transform: scale(0.95);
   }
-  
- 
-  .price-wrapper .card-body {
-    padding: 8px 12px;
+  to {
+      opacity: 1;
+      transform: scale(1);
   }
 }
 
-/* Tablets and smaller laptops (up to 1024px) */
-@media (max-width: 1024px) {
-  .sidebar {
-    display: none;
+
+/* Responsive Adjustments */
+@media (max-width: 415px) {
+  #logout-modal .logout-modal-content {
+      width: 100%;
+      max-width: 320px;
+      padding: 20px;
   }
 
-  .card-header h4 {
-    font-size: 16px;
+  #logout-modal .logout-message-primary {
+      font-size: 16px;
   }
-  
- 
-  .price-wrapper .card-body {
-    padding: 7px 10px;
+
+  #logout-modal .logout-message-secondary {
+      font-size: 13px;
+  }
+
+  #logout-modal .logout-btn {
+      font-size: 13px;
+      padding: 10px;
   }
 }
 
-/* Mobile screens (up to 768px) */
+
+
+
+
+
+
+/* Booking Modal */
+#BookingSummaryModal .modal-content {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 10px 5px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  font-family: 'Inter', 'Roboto', sans-serif; 
+}
+
+/* Modal Header (Logo Section) */
+#BookingSummaryModal .modal-header {
+  border-bottom: none;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 0;
+}
+
+
+/* Modal Header (Logo Section) */
+#BookingSummaryModal .body-header {
+  padding: 10px 0px;
+  margin: 0px 0px 10px 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  /* border: 1px solid black; */
+}
+
+
+#BookingSummaryModal .modal-logo {
+  max-width: 200px;
+  height: auto;
+  margin-top: 10px;
+}
+
+/* Close Button (Outside) */
+#BookingSummaryModal .btn-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: transparent;
+  font-size: 18px;
+}
+
+#BookingSummaryModal .modal-body {
+  /* border: 1px solid black; */
+  padding: 0 10px;
+}
+
+/* Booking Title */
+#BookingSummaryModal h5 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  text-align: left;
+  /* border: 1px solid black; */
+}
+
+/* Booking Info */
+#BookingSummaryModal .booking-info {
+  font-size: 15px;
+  color: #555;
+  margin-bottom: 5px;
+  /* border: 1px solid black; */
+}
+
+/* Each Info Row */
+#BookingSummaryModal .info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+}
+
+/* Row Labels */
+#BookingSummaryModal .info-row p {
+  margin-bottom: 4px;
+}
+
+#BookingSummaryModal .info-row strong {
+  color: #222;
+}
+
+/* Separator Line */
+#BookingSummaryModal hr {
+  border: none;
+  border-top: 1px solid #ddd;
+  margin: 12px 0;
+}
+
+/* Modal Actions */
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px 0;
+}
+
+/* Base Button Style */
+.modal-actions .btn {
+  font-size: 16px;
+  font-weight: 500;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  transition: background 0.3s ease, opacity 0.3s ease;
+}
+
+/* Secondary Button (Back) */
+.modal-actions .btn-secondary {
+  background: #E0E0E0;
+  color: #333;
+}
+
+/* Primary Button (Proceed to Payment) */
+.modal-actions .btn-primary {
+  background: #116530;
+  color: white;
+}
+
+/* Hover Effects */
+.modal-actions .btn:hover {
+  opacity: 0.85;
+}
+
+
+/* Button Hover */
+#BookingSummaryModal .btn:hover {
+  opacity: 0.85;
+}
+
+
+
+/* Responsive */
 @media (max-width: 768px) {
-  .card-header h4 {
-    font-size: 15px;
+  #BookingSummaryModal .modal-content {
+      padding: 16px;
   }
-  
- 
-  .card-body {
-    padding: 8px 15px;
+
+  #BookingSummaryModal .info-row {
+      flex-direction: column;
+      align-items: flex-start;
+  }
+
+  #BookingSummaryModal .modal-actions {
+      flex-direction: column;
+      gap: 10px;
   }
 }
 
-/* Small mobile screens (up to 600px) */
-@media (max-width: 600px) {
-  .card-header h4 {
-    font-size: 14px;
-  }
-  
- 
-  .card-body {
-    padding: 6px 12px;
-  }
-}
-
-/* Extra small screens (up to 480px) */
 @media (max-width: 480px) {
-  .card-header h4 {
-    font-size: 20px;
+  #BookingSummaryModal h5 {
+      font-size: 18px;
   }
 
- 
+  #BookingSummaryModal .booking-info {
+      font-size: 14px;
+  }
+
+  #BookingSummaryModal .btn {
+      font-size: 14px;
+      padding: 8px 14px;
+  }
+
+  #BookingSummaryModal .modal-logo {
+      max-width: 150px;
+  }
+
+  .modal-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .modal-actions .btn {
+      width: 100%;
+  }
 }
+
+
+
+
+
+
+
+
 

@@ -240,7 +240,7 @@ $(document).ready(function () {
         formData.append('pay', '1'); // Add identifier for processing
 
         $.ajax({
-            url: "../Mobile/function/client-addBookingPayment-code.php",
+            url: "../Mobile/function/client-addBookingPayment-code-m.php",
             type: "POST",
             data: formData,
             contentType: false,

@@ -1,3 +1,7 @@
+.main-content {
+    margin-top: 1vh;
+}
+
 .container-body {
     display: flex;
     flex-direction: column;
@@ -173,6 +177,10 @@ label {
     color: #555;
 }
 
+
+
+
+
 /* Header Titles */
 .order-summary h4 {
     font-size: 20px;
@@ -270,6 +278,7 @@ input[type="file"]:focus {
     background-color: #3700cc;
     transform: scale(1.02);
 }
+
 
 
 

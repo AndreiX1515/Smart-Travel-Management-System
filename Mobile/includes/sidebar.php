@@ -24,19 +24,20 @@ $agentCode = $_SESSION['agentCode'] ?? '';
 $agentRole = $_SESSION['agentRole'] ?? '';
 $agentType = $_SESSION['agentType'] ?? '';
 $accountType = $_SESSION['accountType'] ?? ''; // Now included
-$fName = $_SESSION['fName'] ?? '';
-$lName = $_SESSION['lName'] ?? '';
-$mName = $_SESSION['mName'] ?? '';
-$branchId = $_SESSION['branchId'] ?? '';
-$email = $_SESSION['email'] ?? '';
-$password = $_SESSION['password'] ?? '';
+$fName = $_SESSION['agent_fName'] ?? '';
+$lName = $_SESSION['agent_lName'] ?? '';
+$mName = $_SESSION['agent_mName'] ?? '';
+$flightId = $_SESSION['agent_flightId'] ?? '';
+$branchId = $_SESSION['agent_branchId'] ?? '';
+// $email = $_SESSION['email'] ?? '';
+// $password = $_SESSION['password'] ?? '';
 
 // Fetch Branch Name
 $sql1 = "SELECT branchName FROM branch WHERE branchId = ?";
 $stmt1 = $conn->prepare($sql1);
 $stmt1->bind_param("i", $branchId);
 $stmt1->execute();
-$result1 = $stmt1->get_result();
+$result1 = $stmt1->get_result();  
 
 if ($result1->num_rows > 0) 
 {

@@ -353,13 +353,13 @@ a:hover {
   width: 100%;
   padding: 0px 10px;
   position: fixed;
-  top: 0; /* Ensures navbar is at the very top */
+  top: 0;
   right: 0.5px;
   background-color: white;
   z-index: 1000;
   gap: 10px;
   border-bottom: 1px solid gainsboro;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft bottom shadow */
+  /* border: 1px solid black; */
 }
 
 
@@ -439,13 +439,10 @@ a:hover {
 
 
 
-
 .main-content {
   width: 100%;
   height: 92vh;
   padding: 5px 0px 5px 0px;
-  margin-top: 6.5vh;
-  /* border: 1px solid black; */
 }
 
 .main-content .backbutton-wrapper {

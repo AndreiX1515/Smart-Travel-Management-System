@@ -45,6 +45,8 @@ if (isset($_POST['login'])) {
                         $response['message'] = "Invalid account type.";
                     }
                     
+
+
                     // Add accountType to the response
                     $response['accountType'] = $accountType;
                 } else {
