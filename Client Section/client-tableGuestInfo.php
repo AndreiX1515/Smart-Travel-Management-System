@@ -57,11 +57,7 @@
       <!-- <button type="button" class="btn btn-primary">
           View Guest Files
         </button> -->
-      <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-        <?php echo $disable_button2; ?>
-        <?php if (empty($disable_button2)) : ?>
-        data-bs-target="#visaModal"
-        <?php endif; ?>>
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#visaModal">
         Attach Visa Requirements
       </button>
 
@@ -171,11 +167,67 @@
 
       <form action="../Client Section/Functions/client-addVisaRequirements-code.php" method="POST" enctype="multipart/form-data">
         <div class="modal-body">
-          <!-- Hidden input for transaction number -->
           <input type="hidden" name="transaction_number" value="<?php echo htmlspecialchars($_SESSION['transaction_number'] ?? ''); ?>">
           <input type="hidden" name="accId" value="<?php echo $accountId; ?>">
 
+          <!-- Select Guest -->
+          <div class="mb-4">
+            <label for="guestSelect" class="form-label">Select Guest:</label>
+            <select class="form-select" id="guestSelect" onchange="addGuestFields(this)">
+              <option selected disabled>-- Select Guest --</option>
+              <?php
+                if ($res1) 
+                {
+                  $query1 = "SELECT g.guestId, CONCAT(g.lName, ', ', g.fName, ' ', 
+                              CASE WHEN g.suffix = 'N/A' THEN '' ELSE g.suffix END, ' ',
+                              CASE WHEN g.mName = 'N/A' THEN '' ELSE CONCAT(SUBSTRING(g.mName, 1, 1), '.') END) AS FULLNAME 
+                            FROM guest g
+                            WHERE g.transactNo = '$transactionNumber'";
+                  $res1 = mysqli_query($conn, $query1);
+                  while ($row = mysqli_fetch_assoc($res1)) 
+                  {
+                    $guestId = $row['guestId'];
+                    $fullName = htmlspecialchars($row['FULLNAME']);
+                    echo "<option value='$guestId'>$fullName</option>";
+                  }
+                } 
+                else 
+                {
+                  echo "<option value=''>No guests available</option>";
+                }
+              ?>
+            </select>
+          </div>
+
           <!-- Container for all guests' visa requirements -->
+          <div id="allGuestFields"></div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" name="attachVisaRequirements" class="btn btn-primary">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Original Visa Requirements Modal -->
+<!-- <div class="modal fade" id="visaModal" tabindex="-1" aria-labelledby="visaModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h6 class="modal-title" id="visaModalLabel">
+          Visa Requirements for Transaction No: <?php echo htmlspecialchars($_SESSION['transaction_number'] ?? ''); ?>
+        </h6>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <form action="../Client Section/Functions/client-addVisaRequirements-code.php" method="POST" enctype="multipart/form-data">
+        <div class="modal-body">
+          <input type="hidden" name="transaction_number" value="<?php echo htmlspecialchars($_SESSION['transaction_number'] ?? ''); ?>">
+          <input type="hidden" name="accId" value="<?php echo $accountId; ?>">
+
           <div id="allGuestFields">
             <div class="mb-4">
               <label for="guestSelect" class="form-label">Select Guest:</label>
@@ -215,10 +267,124 @@
       </form>
     </div>
   </div>
-</div>
+</div> -->
 
-<!-- Adjusted Visa Requirements Guest Script -->
+<!-- New Visa Requirements Guest Script -->
 <script>
+  let addedGuests = new Set();
+
+  function addGuestFields(selectElement) 
+  {
+    const guestId = selectElement.value;
+    const guestName = selectElement.options[selectElement.selectedIndex].text;
+
+    if (!guestId || addedGuests.has(guestId)) 
+    {
+      alert("Guest already added or invalid selection.");
+      return;
+    }
+
+    addedGuests.add(guestId);
+
+    const allGuestFieldsContainer = document.getElementById("allGuestFields");
+    const guestFieldsHTML = `
+      <div id="guestFields-${guestId}" class="guest-fields border rounded p-3 mt-3">
+        <h6>Visa Requirements for ${guestName}</h6>
+        <input type="hidden" name="guestIds[]" value="${guestId}">
+
+        <div class="mb-3">
+          <label class="form-label">Select Document to Upload:</label>
+          <select class="form-select" onchange="showFileInput(this, ${guestId})">
+            <option selected disabled>-- Select Document --</option>
+            <option value="passport">Passport</option>
+            <option value="permit">Permit</option>
+            <option value="validId">Valid ID</option>
+            <option value="certificate">Certificate</option>
+            <option value="guaranteedLetter">Guaranteed Letter</option>
+          </select>
+        </div>
+
+        <div id="fileInputs-${guestId}"></div>
+
+        <button type="button" class="btn btn-danger btn-sm mt-2" onclick="removeGuestFields('${guestId}')">
+          Remove ${guestName}
+        </button>
+      </div>`;
+
+    allGuestFieldsContainer.insertAdjacentHTML("beforeend", guestFieldsHTML);
+  }
+
+  function showFileInput(selectElement, guestId) 
+  {
+    const fileInputsContainer = document.getElementById(`fileInputs-${guestId}`);
+
+    if (!fileInputsContainer) 
+    {
+      console.error(`Error: File input container not found for guestId: ${guestId}`);
+      return;
+    }
+
+    const selectedValue = selectElement.value;
+
+    if (!selectedValue) 
+    {
+      alert("Please select a document type.");
+      return;
+    }
+
+    // Allow multiple file inputs for each document type
+    const fileInputHTML = `
+      <div class="mb-3 d-flex align-items-center">
+        <label class="form-label me-2">${selectElement.options[selectElement.selectedIndex].text}:</label>
+        <input type="file" class="form-control me-2" name="${selectedValue}[${guestId}][]" style="width:70%" multiple>
+        <button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove()">X</button>
+      </div>`;
+
+    fileInputsContainer.insertAdjacentHTML("beforeend", fileInputHTML);
+  }
+
+  function removeGuestFields(guestId) 
+  {
+    document.getElementById(`guestFields-${guestId}`).remove();
+    addedGuests.delete(guestId);
+  }
+</script>
+
+<!-- Working Properly Reset Modal When Closed -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () 
+  {
+    const visaModal = document.getElementById("visaModal");
+
+    visaModal.addEventListener("hidden.bs.modal", function () 
+    {
+      // Reset the form
+      document.querySelector("#visaModal form").reset();
+
+      // Only remove guest fields, but keep the "Select Guest" dropdown
+      const allGuestFieldsContainer = document.getElementById("allGuestFields");
+      const guestSelectWrapper = document.querySelector("#allGuestFields .mb-4"); // Keeps the select field
+      allGuestFieldsContainer.innerHTML = ""; // Clear everything first
+      if (guestSelectWrapper) 
+      {
+        allGuestFieldsContainer.appendChild(guestSelectWrapper); // Restore select field
+      }
+
+      // Re-enable all previously disabled dropdown options
+      const guestSelect = document.getElementById("guestSelect");
+      for (let i = 0; i < guestSelect.options.length; i++) 
+      {
+        guestSelect.options[i].disabled = false;
+      }
+
+      // Reset the guest dropdown selection
+      guestSelect.selectedIndex = 0;
+    });
+  });
+</script>
+
+<!-- Original2 Visa Requirements Guest Script -->
+<!-- <script>
   let guestCounter = 0;
 
   function addGuestFields(guestId = "") 
@@ -232,7 +398,6 @@
       <div id="guestFields-${guestCounter}" class="guest-fields">
         <h5 class="form-label mt-4">Visa Requirements for Guest: ${guestName}</h5>
 
-        <!-- Guest Name Display -->
         <div class="mb-3">
           <label class="form-label">Guest Name:</label>
           <input type="text" class="form-control" name="guestNames[]" value="${guestName}" readonly>
@@ -240,7 +405,6 @@
 
         <input type="hidden" name="guestIds[]" value="${guestId}">
 
-        <!-- Select Document Type -->
         <div class="mb-3">
           <label class="form-label">Select Document to Upload:</label>
           <select class="form-select" onchange="showFileInput(this, ${guestCounter})">
@@ -356,42 +520,9 @@
       }
     }
   }
-</script>
+</script> -->
 
-<!-- Working Properly Reset Modal When Closed -->
-<script>
-  document.addEventListener("DOMContentLoaded", function () 
-  {
-    const visaModal = document.getElementById("visaModal");
-
-    visaModal.addEventListener("hidden.bs.modal", function () 
-    {
-      // Reset the form
-      document.querySelector("#visaModal form").reset();
-
-      // Only remove guest fields, but keep the "Select Guest" dropdown
-      const allGuestFieldsContainer = document.getElementById("allGuestFields");
-      const guestSelectWrapper = document.querySelector("#allGuestFields .mb-4"); // Keeps the select field
-      allGuestFieldsContainer.innerHTML = ""; // Clear everything first
-      if (guestSelectWrapper) 
-      {
-        allGuestFieldsContainer.appendChild(guestSelectWrapper); // Restore select field
-      }
-
-      // Re-enable all previously disabled dropdown options
-      const guestSelect = document.getElementById("guestSelect");
-      for (let i = 0; i < guestSelect.options.length; i++) 
-      {
-        guestSelect.options[i].disabled = false;
-      }
-
-      // Reset the guest dropdown selection
-      guestSelect.selectedIndex = 0;
-    });
-  });
-</script>
-
-<!-- Orig Visa Requirements Guest Script -->
+<!-- Orig1 Visa Requirements Guest Script -->
 <!-- <script>
   let guestCounter = 0;
 

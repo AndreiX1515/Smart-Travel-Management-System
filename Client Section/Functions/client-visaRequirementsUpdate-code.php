@@ -10,6 +10,7 @@ if (isset($_POST['upload']))
 {
   $transactNo = $_POST['transactNo'] ?? null;
   $guestId = $_POST['guestId'] ?? null;
+  $accountId = $_POST['accountId'] ?? null;
   $fileType = $_POST['fileType'] ?? null;
   $file = $_FILES['file'] ?? null;
 
@@ -52,74 +53,65 @@ if (isset($_POST['upload']))
   if ($file['error'] !== UPLOAD_ERR_OK) 
   {
     $_SESSION['status'] = "Error uploading file.";
-    header("Location: ../client-showGuest.php?id=" . htmlspecialchars($transactNo));
+    header("Location: ../agent-showGuest.php?id=" . htmlspecialchars($transactNo));
     exit();
   }
   
   if (!in_array($fileTypeDetected, $allowedTypes)) 
   {
     $_SESSION['status'] = "Invalid file type. Only JPG, PNG, and PDF allowed.";
-    header("Location: ../client-showGuest.php?id=" . htmlspecialchars($transactNo));
+    header("Location: ../agent-showGuest.php?id=" . htmlspecialchars($transactNo));
     exit();
   }
 
   if ($fileSize > $maxFileSize) 
   {
     $_SESSION['status'] = "File exceeds 5MB limit.";
-    header("Location: ../client-showGuest.php?id=" . htmlspecialchars($transactNo));
+    header("Location: ../agent-showGuest.php?id=" . htmlspecialchars($transactNo));
     exit();
   }
 
   if (!move_uploaded_file($fileTmpPath, $newFilePath)) 
   {
     $_SESSION['status'] = "Error moving file.";
-    header("Location: ../client-showGuest.php?id=" . htmlspecialchars($transactNo));
+    header("Location: ../agent-showGuest.php?id=" . htmlspecialchars($transactNo));
     exit();
   }
 
   // Start transaction
   $conn->begin_transaction();
 
-  if ($fileType == 'passport')
-  {
-    $sql = "UPDATE visarequirements SET passport = ? WHERE guestId = ?";
-  }
-  else if ($fileType == 'permit')
-  {
-    $sql = "UPDATE visarequirements SET permit = ? WHERE guestId = ?";
-  }
-  else if ($fileType == 'validId')
-  {
-    $sql = "UPDATE visarequirements SET validId = ? WHERE guestId = ?";
-  }
-  else if ($fileType == 'certificate')
-  {
-    $sql = "UPDATE visarequirements SET certificate = ? WHERE guestId = ?";
-  }
-  else 
-  {
-    $_SESSION['status'] = "Invalid file type provided.";
-    header("Location: ../agent-showGuest.php?id=" . htmlspecialchars($transactNo));
-    exit();
-  }
+  // Insert into the database
+  $query = "INSERT INTO visarequirements (guestId, transactNo, accId, fileType, filePath, dateSubmitted)
+  VALUES (?, ?, ?, ?, ?, ?)";
+  $stmt = $conn->prepare($query);
 
-  // Prepare and execute update query
-  $stmt = $conn->prepare($sql);
-  $stmt->bind_param("si", $newFilePath, $guestId);
-
-  if ($stmt->execute()) 
+  if ($stmt) 
   {
-    $conn->commit();
-    $_SESSION['status'] = ucfirst($fileType) . " updated successfully.";
+    $stmt->bind_param("isisss", $guestId, $transactNo, $accountId, $fileType, $newFilePath, $currentDateTime);
+
+    if (!$stmt->execute()) 
+    {
+      $_SESSION['status'] = "Error executing query: " . $stmt->error;
+      $conn->rollback(); // Rollback transaction on failure
+      header("Location: ../agent-showGuest.php?id=" . htmlspecialchars($transactNo)); // Redirect on error
+      exit();
+    }
   } 
   else 
   {
-    $conn->rollback();
-    $_SESSION['status'] = "Database update failed.";
+    $_SESSION['status'] = "Error preparing statement: " . $conn->error;
+    $conn->rollback(); // Rollback transaction on failure
+    header("Location: ../agent-showGuest.php?id=" . htmlspecialchars($transactNo)); // Redirect on error
+    exit();
   }
 
-
+  // Commit transaction if everything is successful
+  $conn->commit();
   $stmt->close();
+
+  // Redirect to success page
+  $_SESSION['status'] = "Visa requirements uploaded successfully.";
   header("Location: ../client-transactionInfo.php?id=" . htmlspecialchars($transactNo));
   exit();
 }

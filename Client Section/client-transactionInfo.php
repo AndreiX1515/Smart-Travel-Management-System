@@ -238,8 +238,7 @@ error_reporting(E_ALL);
                     Add Guest Information
                   </button>
 
-                  <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                    <?php echo ($visa_count >= $pax3) ? 'disabled' : 'data-bs-target="#visaModal"'; ?>>
+                  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#visaModal">
                     Attach Visa Requirements
                   </button>
 
