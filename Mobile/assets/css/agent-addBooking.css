@@ -1,3 +1,8 @@
+
+.navbar {
+  padding: 0px 30px;
+}
+
 .main-content {
   margin-top: 6.5vh;
 }
@@ -10,24 +15,154 @@
 .booking-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 0px;
-  padding: 0px 0px;
+  gap: 10px; /* Adds spacing between booking sections */
+  padding: 10px 15px;
   width: 100%;
-  border-radius: 0px;
+  border-radius: 5px; /* Optional: small rounding */
+}
+
+.booking-contents-wrapper {
+  display: flex;
+  flex-direction: column;
   /* border: 1px solid black; */
+  gap: 10px;
 }
 
 .section-header {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 2px; /* Reduced space between elements */
-  margin: 0% 0; /* Reduced margin */
-  padding: 5px 0px 10px 0px; /* Tightened padding */
+  gap: 5px; /* More balanced spacing */
+  padding: 8px 0px;
   border-bottom: 1px solid gainsboro;
-
-  /* border: 1px solid black; */
 }
+
+.section-content {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 0px;
+  border-bottom: 1px solid gainsboro;
+}
+
+/* .add-border {
+  border: 1px solid black;
+} */
+
+
+
+
+
+
+.row-content {
+  display: flex;
+  flex-wrap: wrap; /* Allows items to move down when screen is small */
+  gap: 15px;
+  padding: 10px 0px;
+  align-items: stretch; /* Ensures all columns stretch to the same height */
+  margin: 0px 0px;
+  max-width: 100%; /* Ensures no hidden constraints */
+  overflow: visible; /* Allows flex items to move freely */
+}
+
+.columns {
+  display: flex;
+  flex-direction: column; /* Ensures vertical stacking of elements */
+  align-items: flex-start; /* Aligns content to the top */
+  justify-content: flex-start; /* Ensures content starts from the top */
+
+  padding: 5px 0px;
+}
+
+.columns label {
+  margin-bottom: 8px;
+}
+
+.total-pax-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1; /* Makes wrapper stretch within column */
+  gap: 10px;
+}
+
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Aligns items to the top */
+  align-items: flex-start; /* Ensures everything starts from the left */
+  width: 100%;
+  flex: 1; /* Ensures form elements stretch inside column */
+}
+
+.form-group label {
+  font-weight: 600;
+}
+
+.form-group .column-header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start; /* Ensures alignment to the top */
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 5px; /* Reduced margin for tighter spacing */
+  padding: 0; /* No extra spacing */
+  gap: 8px; /* Slightly reduced gap for better compactness */
+  line-height: 1; /* Avoid unnecessary text spacing */
+  flex-wrap: wrap; /* Ensures it wraps correctly if needed */
+}
+
+/* Ensure no extra spacing from child elements */
+.form-group .column-header * {
+  margin: 0;
+  padding: 0;
+}
+
+/* Enhance span text for better readability */
+.form-group .column-header span {
+  font-size: 12px;
+  font-weight: 600;
+  margin-top: 2px; /* Reduced margin for better alignment */
+}
+
+/* Ensures any additional subtext is aligned */
+.column-header .mText {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+
+
+/* .hidden-fields-rows {
+  display: none;
+  visibility: hidden;
+  height: 0;
+}
+
+
+.hidden-fields {
+  display: none;
+  visibility: hidden;
+  height: 0;
+} */
+
+
+
+
+.maxAvail {
+  display: flex;
+  justify-content: flex-start;  
+  gap: 20px;
+  align-items: center;
+  /* border: 1px solid black; */
+  width: 100%;
+  margin-top: 10px;
+}
+
+
+
+
+
 
 .section-header h5 {
   margin: 0;
@@ -43,16 +178,6 @@
 
 
 
-.section-content {
-  width: auto;
-  display: flex;
-  flex-direction: column;
-  padding: 15px 0px 0px 0px;
-  margin: 0px 11px;
-  /* border-bottom: 1px solid gainsboro; */
-  /* border: 1px solid black; */
-}
-
 
 .card-header {
   display: flex;
@@ -66,82 +191,19 @@
   color: #6c757d;
 }
 
-.form-group .column-header {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center; /* Ensures vertical alignment */
-  font-size: 16px;
-  font-weight: 600;
-  margin-bottom: 10px; /* Remove all margins */
-  padding: 0; /* Remove all paddings */
-  /* border: 1px solid black; */
-  gap: 10px;
-  line-height: 1; /* Reduce spacing caused by text */
-}
-
-/* Optional: Remove bottom spacing from child elements */
-.form-group .column-header * {
-  margin: 0;
-  padding: 0;
-}
-
-
-
-.form-group .column-header span{
-  font-size: 12px;
-  font-weight: 600;
-  margin-top: 5px;
-  
-}
-
-.column-header .mText {
-  font-size: 12px;
-  font-weight: 600;
-}
-
-
-.hidden-fields {
-  display: none;
-}
 
 
 
 
 
-.card-header h4 {
-  margin-top: 10px;
-  font-size: 18px;
-}
 
-.card-body {
-  padding: 20px 20px;
-  /* border: 1px solid black; */
-}
-
-.card-content {
-  padding: 15px 0px;
-
-}
-
-.card-body .row {
-  margin-bottom: 10px;
-}
-
-.row .columns {
-  margin-bottom: 10px;
-  /* border: 1px solid black; */
-  padding: 10px 0px;
-}
-
-.columns label {
-  margin-bottom: 8px;
-}
 
 .land-only {
   height: 4vh;
   width: 100%;
   padding: 0;
   display: flex;
+  flex-direction: row;
   align-items: center; /* Ensures vertical alignment */
   gap: 5px; /* Adjust space between checkbox and label */
 }
@@ -171,10 +233,6 @@
   margin-top: 4px;
 }
 
-.separator {
-  font-weight: bold;
-  color: #495057;
-}
 
 
 .flight-details-wrapper {
@@ -185,14 +243,6 @@
 
 
 
-.card-footer {
-  display: flex;
-  justify-content: start;
-  align-items: center;
-  padding: 15px;
-  margin-bottom: 2%;
-  border: 1px solid gainsboro;
-}
 
 
 
@@ -316,16 +366,11 @@
 }
 
 
-/* .card-price-wrapper {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 15px;
-  margin-bottom: 10px;
-  border: 1px solid black;
-} */
 
 
+
+
+/* Modal Logout */
 .modal-dialog {
   display: flex;
   justify-content: center;
@@ -453,11 +498,6 @@
       padding: 10px;
   }
 }
-
-
-
-
-
 
 
 /* Booking Modal */
@@ -596,6 +636,11 @@
 
 
 
+
+
+
+
+
 /* Responsive */
 @media (max-width: 768px) {
   #BookingSummaryModal .modal-content {
@@ -611,7 +656,25 @@
       flex-direction: column;
       gap: 10px;
   }
+
+  .row-content {
+      flex-direction: column; /* Stack elements vertically */
+      gap: 5px; /* Reduce gap for smaller screens */
+  }
+
+  .row .columns {
+      flex: 1 1 100%; /* Full width on small screens */
+      min-width: auto; /* Allow shrinking */
+  }
+
+  .maxAvail {
+    display: flex;
+    flex-direction: column; /* Ensure labels go below each other */
+    align-items: flex-start;
+    line-height: 0.5;
+  }
 }
+
 
 @media (max-width: 480px) {
   #BookingSummaryModal h5 {
@@ -648,4 +711,49 @@
 
 
 
+
+/* For General */
+
+/* Medium Screens - 768px */
+@media (max-width: 768px) {
+  .booking-wrapper {
+      padding: 10px; /* Reduce padding */
+  }
+
+  .row-content {
+      flex-wrap: wrap; /* Allow content to wrap */
+  }
+
+  .row .columns {
+      width: 48%; /* Make columns 2 per row */
+      min-width: unset; /* Remove min-width restriction */
+  }
+}
+
+/* Small Screens - 480px */
+@media (max-width: 480px) {
+  .booking-wrapper {
+      padding: 8px; /* Reduce padding further */
+  }
+
+  .row-content {
+      flex-direction: column; /* Stack elements for better readability */
+      gap: 10px;
+  }
+
+  .row .columns {
+      width: 100%; /* Full width */
+  }
+}
+
+/* Extra Small Screens - 360px */
+@media (max-width: 360px) {
+  .row-content {
+      flex-direction: column;
+  }
+
+  .row .columns {
+      width: 100%;
+  }
+}
 

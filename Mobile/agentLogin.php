@@ -141,7 +141,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['flightid'])) {
                             let flightid = document.getElementById('flightid') ? document.getElementById('flightid').value : '';
 
                             if (flightid) {
-                                 alert('Redirected to Agent Booking');
+                                alert('Redirected to Client Booking');
                                 window.location.href = `../Mobile/client-addBooking-flight.php`;
 
                             } else {

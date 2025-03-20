@@ -33,7 +33,7 @@ require "../conn.php";
       <div class="navbar">
         <div class="button-wrapper">
           <button class="round-btn" id="logout-btn">
-              <i class="fas fa-chevron-left"></i>
+            <i class="fas fa-chevron-left"></i>
           </button>
         </div>
 
@@ -96,539 +96,546 @@ require "../conn.php";
 
           <div class="booking-wrapper">
 
-            <div class="section-header">
-              <h5>Booking Details</h5>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. </p>
-            </div>
+            <div class="booking-contents-wrapper">
+              <div class="section-header">
+                <h5>Booking Details</h5>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. </p>
+              </div>
 
-            <div class="section-content">
-              <div class="row">
-                <!-- Flight Date Dropdown -->
-                <div class="columns col-md-6">
-                  <div class="form-group">
-                    <div class="column-header">
-                      <label for="flightDate">Flight Date <span class="text-danger"> *</span></label>
-                    </div>
-                    <select class="form-select" id="flightDate" name="flightDate" required>
-                      <option selected disabled>Select Flight Date</option>
-                      <?php
-                      // Ensure database connection exists
-                      if (!$conn) {
-                        die("<option disabled>Error: Database connection failed</option>");
-                      }
+              <div class="section-content">
+                <div class="row-content add-border">
 
-                      // Ensure $packageId and $month are properly set
-                      if (isset($packageId, $month)) {
-                        // Use prepared statements for security
-                        $stmt = $conn->prepare("SELECT flightId, flightDepartureDate, flightPrice, wholesalePrice FROM flight WHERE packageId = ? AND MONTHNAME(flightDepartureDate) = ? ORDER BY flightDepartureDate ASC");
-
-                        if ($stmt) {
-                          // Bind parameters
-                          $stmt->bind_param("is", $packageId, $month);
-
-                          // Execute query
-                          $stmt->execute();
-                          $result = $stmt->get_result();
-
-                          // Loop through results
-                          while ($res1 = $result->fetch_assoc()) {
-                            $formattedRetailPrice = number_format($res1['flightPrice'], 2);
-                            $formattedWholesalePrice = number_format($res1['wholesalePrice'], 2);
-                            $dateFormatted = date('M j, Y', strtotime($res1['flightDepartureDate']));
-
-                            // Check selected option
-                            $selected = ($res1['flightDepartureDate'] == $flightDepartureDate) ? 'selected' : '';
-
-                            if ($agentType === 'Retailer') {
-                              echo "<option value='{$res1['flightId']}' {$selected}>$dateFormatted || Price: ₱ {$formattedRetailPrice}</option>";
-                            } else if ($agentType === 'Wholeseller') {
-                              echo "<option value='{$res1['flightId']}' {$selected}>$dateFormatted || Price: ₱ {$formattedWholesalePrice}</option>";
-                            }
-                          }
-
-                          // Close statement
-                          $stmt->close();
-                        } else {
-                          echo "<option disabled>Error: " . $conn->error . "</option>";
-                        }
-                      } else {
-                        echo "<option disabled>Error: Invalid Package ID or Month</option>";
-                      }
-                      ?>
-                    </select>
-
-                    <span id="flightDateError" class="text-danger"></span>
-                    <!-- Error message for outbound flight -->
-                  </div>
-                </div>
-
-                <!-- Total Pax Input -->
-                <div class="columns col-md-6">
-                  <div class="form-group">
-                    <div class="col-header">
+                  <!-- Flight Date Dropdown -->
+                  <div class="columns col-md-6 add-border">
+                    <div class="form-group">
                       <div class="column-header">
-                        <label for="totalPax">Total Pax <span class="text-danger"> *</span></label>
+                        <label for="flightDate">Flight Date <span class="text-danger"> *</span></label>
                       </div>
-                    </div>
+                      <select class="form-select" id="flightDate" name="flightDate" required>
+                        <option selected disabled>Select Flight Date</option>
+                        <?php
+                        // Ensure database connection exists
+                        if (!$conn) {
+                          die("<option disabled>Error: Database connection failed</option>");
+                        }
 
-                    <input type="number" class="form-control" id="totalPax" name="totalPax" min="1" placeholder="Enter Total Pax" required>
+                        // Ensure $packageId and $month are properly set
+                        if (isset($packageId, $month)) {
+                          // Use prepared statements for security
+                          $stmt = $conn->prepare("SELECT flightId, flightDepartureDate, flightPrice, wholesalePrice FROM flight WHERE packageId = ? AND MONTHNAME(flightDepartureDate) = ? ORDER BY flightDepartureDate ASC");
 
-                    <span id="totalPaxError" class="text-danger"></span>
-                    <!-- Error message for Total Pax -->
-                  </div>
+                          if ($stmt) {
+                            // Bind parameters
+                            $stmt->bind_param("is", $packageId, $month);
 
-                  <div class="pax-seats">
-                    <div class="maxAvail">
-                      <label id="maxSeats"></label>
-                      <div class="separator"></div>
-                      <label id="availSeats"></label>
-                    </div>
-                  </div>
+                            // Execute query
+                            $stmt->execute();
+                            $result = $stmt->get_result();
 
+                            // Loop through results
+                            while ($res1 = $result->fetch_assoc()) {
+                              $formattedRetailPrice = number_format($res1['flightPrice'], 2);
+                              $formattedWholesalePrice = number_format($res1['wholesalePrice'], 2);
+                              $dateFormatted = date('M j, Y', strtotime($res1['flightDepartureDate']));
 
-                </div>
-              </div>
+                              // Check selected option
+                              $selected = ($res1['flightDepartureDate'] == $flightDepartureDate) ? 'selected' : '';
 
-              <div class="row">
-                <div class="columns col-md-12 land-only">
-                  <input type="checkbox" id="land" name="land" value="Land Only">
-                  <label for="land"> Land Only</label>
-                </div>
-              </div>
+                              if ($agentType === 'Retailer') {
+                                echo "<option value='{$res1['flightId']}' {$selected}>$dateFormatted || Price: ₱ {$formattedRetailPrice}</option>";
+                              } else if ($agentType === 'Wholeseller') {
+                                echo "<option value='{$res1['flightId']}' {$selected}>$dateFormatted || Price: ₱ {$formattedWholesalePrice}</option>";
+                              }
+                            }
 
-              <div class="row ">
-                <!-- Flight Details Input -->
-                <div class="columns col-md-12 flight-details-wrapper" id="flightDetailsContainer" style="display: none;">
-                  <div class="form-group">
-                    <label for="flightDetails">Flight Details for Package Only</label>
-
-                    <textarea class="form-control" id="flightDetails" name="flightDetails" placeholder="Input Flight Details Here"></textarea>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="columns col-md-12 hidden-fields">
-                  <div class="card-content">
-                    <input type="hidden" id="agentCode" name="agentCode" value="<?php echo $_SESSION['agentCode']; ?>" placeholder="Agent Code Input">
-
-                    <input type="hidden" id="userType" name="userType" value="<?php echo $_SESSION['agent_userType']; ?>" placeholder="Account Type">
-
-                    <input type="hidden" id="flightId" name="flightId" value="<?php echo $flightid; ?>" placeholder="Flight Id Input">
-
-                    <!-- Adjusted Fields -->
-                    <input type="hidden" id="packagePrice" name="packagePrice" value="<?php echo isset($packagePrice) ? $packagePrice : ''; ?>" placeholder="Package Price">
-
-                    <input type="hidden" name="flightPrice" id="flightPricee" placeholder="Flight Price"
-                      value="<?php echo isset($agentType) ? ($agentType === 'Retailer' ? htmlspecialchars($flightPrice) : htmlspecialchars($wholesalePrice)) : ''; ?>">
-
-                    <input type="hidden" name="agentId" id="agentId" value="<?php echo $_SESSION['agentId']; ?>" placeholder="Agent Id">
-
-                    <input type="hidden" name="agentType" placeholder="Agent Type Input" value="<?php echo $_SESSION['agentType']; ?>">
-
-                    <input type="hidden" name="accId" id="accId" placeholder="Account Id Input" value="<?php echo $_SESSION['agent_accountId']; ?>">
-
-                    <!-- Adjusted Package Fields -->
-                    <input type="hidden" name="packageId" id="packageId" value="<?php echo isset($packageId) ? $packageId : ''; ?>" placeholder="Package Id Input">
-
-                    <input type="hidden" name="packageName" id="packageName" value="<?php echo isset($packageName) ? $packageName : ''; ?>" placeholder="Package Name Input">
-
-                    <input type="hidden" name="origin" id="origin" value="<?php echo isset($origin) ? $origin : ''; ?>" placeholder="Origin Input">
-
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="columns col-md-12">
-                  <h5 style="display: none;"> Price: ₱ <span id="flightPrice">0.00</span> </h>
-                </div>
-              </div>
-
-            </div>
-
-            <div class="section-header">
-              <h5>Contact Details</h5>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. </p>
-            </div>
-
-            <div class="section-content">
-              <div class="row">
-                <!-- First Name Input -->
-                <div class="columns col-md-3">
-                  <div class="form-group">
-                    <div class="column-header">
-                      <label for="fName">First Name <span class="text-danger">*</span></label>
-                    </div>
-                    <input type="text" name="fName" id="fName" class="form-control" placeholder="Enter First Name" required>
-                    <span id="fNameError" class="text-danger"></span>
-                    <!-- Error message for First Name -->
-                  </div>
-                </div>
-
-                <!-- Last Name Input -->
-                <div class="columns col-md-3">
-                  <div class="form-group">
-                    <div class="column-header">
-                      <label for="lName">Last Name <span class="text-danger"> *</span> </label>
-                    </div>
-                    <input type="text" name="lName" id="lName" class="form-control" placeholder="Enter Last Name" required>
-                    <span id="lNameError" class="text-danger"></span>
-                    <!-- Error message for Last Name -->
-                  </div>
-                </div>
-
-                <!-- Middle Name Input -->
-                <div class="columns col-md-3">
-                  <div class="form-group">
-
-                    <div class="column-header">
-                      <label for="mName">Middle Name <span class="text-danger mText">(Type N/A if none)</span> </label>
-
-                    </div>
-                    <input type="text" name="mName" id="mName" class="form-control" placeholder="Enter Middle Name" required>
-
-                    <span id="mNameError" class="text-danger"></span>
-                    <!-- Error message for Middle Name -->
-                  </div>
-                </div>
-
-                <!-- Suffix Dropdown -->
-                <div class="columns col-md-3">
-                  <div class="form-group">
-                    <div class="column-header">
-                      <label for="suffix">Suffix <span class="text-danger"> *</span></label>
-                    </div>
-                    <select class="form-select" name="suffix" id="suffix" required>
-                      <option selected disabled>Select Suffix</option>
-                      <option value="N/A">None</option>
-                      <option value="Jr.">Jr.</option>
-                      <option value="Sr.">Sr.</option>
-                      <option value="II">II</option>
-                      <option value="III">III</option>
-                      <option value="IV">IV</option>
-                      <option value="V">V</option>
-                    </select>
-                    <span id="suffixError" class="text-danger"></span>
-                    <!-- Error message for Suffix -->
-                  </div>
-                </div>
-
-              </div>
-
-              <div class="row">
-                <!-- Contact No Input-->
-                <div class="columns col-md-4">
-                  <div class="form-group">
-                    <div class="column-header">
-                      <label for="contactNo" class="contactNo">Contact No. <span class="text-danger">*</span></label>
-                    </div>
-
-                    <div class="input-group contactno-wrapper">
-                      <select name="countryCode" id="countryCode" class="form-select" required>
-                        <option disabled>Country Code</option>
-                        <option value="+93">Afghanistan (+93)</option>
-                        <option value="+355">Albania (+355)</option>
-                        <option value="+213">Algeria (+213)</option>
-                        <option value="+376">Andorra (+376)</option>
-                        <option value="+244">Angola (+244)</option>
-                        <option value="+1-268">Antigua and Barbuda (+1-268)</option>
-                        <option value="+54">Argentina (+54)</option>
-                        <option value="+374">Armenia (+374)</option>
-                        <option value="+61">Australia (+61)</option>
-                        <option value="+43">Austria (+43)</option>
-                        <option value="+994">Azerbaijan (+994)</option>
-                        <option value="+1-242">Bahamas (+1-242)</option>
-                        <option value="+973">Bahrain (+973)</option>
-                        <option value="+880">Bangladesh (+880)</option>
-                        <option value="+1-246">Barbados (+1-246)</option>
-                        <option value="+375">Belarus (+375)</option>
-                        <option value="+32">Belgium (+32)</option>
-                        <option value="+501">Belize (+501)</option>
-                        <option value="+229">Benin (+229)</option>
-                        <option value="+975">Bhutan (+975)</option>
-                        <option value="+591">Bolivia (+591)</option>
-                        <option value="+387">Bosnia and Herzegovina (+387)</option>
-                        <option value="+267">Botswana (+267)</option>
-                        <option value="+55">Brazil (+55)</option>
-                        <option value="+673">Brunei (+673)</option>
-                        <option value="+359">Bulgaria (+359)</option>
-                        <option value="+226">Burkina Faso (+226)</option>
-                        <option value="+257">Burundi (+257)</option>
-                        <option value="+238">Cabo Verde (+238)</option>
-                        <option value="+855">Cambodia (+855)</option>
-                        <option value="+237">Cameroon (+237)</option>
-                        <option value="+1">Canada (+1)</option>
-                        <option value="+236">Central African Republic (+236)</option>
-                        <option value="+235">Chad (+235)</option>
-                        <option value="+56">Chile (+56)</option>
-                        <option value="+86">China (+86)</option>
-                        <option value="+57">Colombia (+57)</option>
-                        <option value="+269">Comoros (+269)</option>
-                        <option value="+243">Congo, Democratic Republic of the (+243)</option>
-                        <option value="+242">Congo, Republic of the (+242)</option>
-                        <option value="+506">Costa Rica (+506)</option>
-                        <option value="+385">Croatia (+385)</option>
-                        <option value="+53">Cuba (+53)</option>
-                        <option value="+357">Cyprus (+357)</option>
-                        <option value="+420">Czech Republic (+420)</option>
-                        <option value="+45">🇩🇰 Denmark (+45)</option>
-                        <option value="+253">🇩🇯 Djibouti (+253)</option>
-                        <option value="+1-767">🇩🇲 Dominica (+1-767)</option>
-                        <option value="+1-809">🇩🇴 Dominican Republic (+1-809)</option>
-                        <option value="+593">Ecuador (+593)</option>
-                        <option value="+20">Egypt (+20)</option>
-                        <option value="+503">El Salvador (+503)</option>
-                        <option value="+240">Equatorial Guinea (+240)</option>
-                        <option value="+291">Eritrea (+291)</option>
-                        <option value="+372">Estonia (+372)</option>
-                        <option value="+268">Eswatini (+268)</option>
-                        <option value="+251">Ethiopia (+251)</option>
-                        <option value="+679">Fiji (+679)</option>
-                        <option value="+358">Finland (+358)</option>
-                        <option value="+33">France (+33)</option>
-                        <option value="+241">Gabon (+241)</option>
-                        <option value="+220">Gambia (+220)</option>
-                        <option value="+995">Georgia (+995)</option>
-                        <option value="+49">Germany (+49)</option>
-                        <option value="+233">Ghana (+233)</option>
-                        <option value="+30">Greece (+30)</option>
-                        <option value="+1-473">Grenada (+1-473)</option>
-                        <option value="+502">Guatemala (+502)</option>
-                        <option value="+224">Guinea (+224)</option>
-                        <option value="+245">Guinea-Bissau (+245)</option>
-                        <option value="+592">Guyana (+592)</option>
-                        <option value="+509">Haiti (+509)</option>
-                        <option value="+504">Honduras (+504)</option>
-                        <option value="+36">Hungary (+36)</option>
-                        <option value="+354">Iceland (+354)</option>
-                        <option value="+91">India (+91)</option>
-                        <option value="+62">Indonesia (+62)</option>
-                        <option value="+98">Iran (+98)</option>
-                        <option value="+964">Iraq (+964)</option>
-                        <option value="+353">Ireland (+353)</option>
-                        <option value="+972">Israel (+972)</option>
-                        <option value="+39">Italy (+39)</option>
-                        <option value="+225">Ivory Coast (+225)</option>
-                        <option value="+81">Japan (+81)</option>
-                        <option value="+962">Jordan (+962)</option>
-                        <option value="+7">Kazakhstan (+7)</option>
-                        <option value="+254">Kenya (+254)</option>
-                        <option value="+686">Kiribati (+686)</option>
-                        <option value="+965">Kuwait (+965)</option>
-                        <option value="+996">Kyrgyzstan (+996)</option>
-                        <option value="+856">Laos (+856)</option>
-                        <option value="+371">Latvia (+371)</option>
-                        <option value="+961">Lebanon (+961)</option>
-                        <option value="+266">Lesotho (+266)</option>
-                        <option value="+231">Liberia (+231)</option>
-                        <option value="+218">Libya (+218)</option>
-                        <option value="+423">Liechtenstein (+423)</option>
-                        <option value="+370">Lithuania (+370)</option>
-                        <option value="+352">Luxembourg (+352)</option>
-                        <option value="+261">Madagascar (+261)</option>
-                        <option value="+265">Malawi (+265)</option>
-                        <option value="+60">Malaysia (+60)</option>
-                        <option value="+960">Maldives (+960)</option>
-                        <option value="+223">Mali (+223)</option>
-                        <option value="+356">Malta (+356)</option>
-                        <option value="+692">Marshall Islands (+692)</option>
-                        <option value="+596">Martinique (+596)</option>
-                        <option value="+222">Morocco (+222)</option>
-                        <option value="+258">Mozambique (+258)</option>
-                        <option value="+95">Myanmar (+95)</option>
-                        <option value="+264">Namibia (+264)</option>
-                        <option value="+674">Nauru (+674)</option>
-                        <option value="+977">Nepal (+977)</option>
-                        <option value="+31">Netherlands (+31)</option>
-                        <option value="+599">Netherlands Antilles (+599)</option>
-                        <option value="+64">New Zealand (+64)</option>
-                        <option value="+505">Nicaragua (+505)</option>
-                        <option value="+227">Niger (+227)</option>
-                        <option value="+234">Nigeria (+234)</option>
-                        <option value="+683">Niue (+683)</option>
-                        <option value="+672">Norfolk Island (+672)</option>
-                        <option value="+850">North Korea (+850)</option>
-                        <option value="+1-670">Northern Mariana Islands (+1-670)</option>
-                        <option value="+47">Norway (+47)</option>
-                        <option value="+968">Oman (+968)</option>
-                        <option value="+92">Pakistan (+92)</option>
-                        <option value="+680">Palau (+680)</option>
-                        <option value="+507">Panama (+507)</option>
-                        <option value="+675">Papua New Guinea (+675)</option>
-                        <option value="+595">Paraguay (+595)</option>
-                        <option value="+51">Peru (+51)</option>
-                        <option value="+63" selected>Philippines (+63)</option>
-                        <option value="+48">Poland (+48)</option>
-                        <option value="+351">Portugal (+351)</option>
-                        <option value="+974">Qatar (+974)</option>
-                        <option value="+40">Romania (+40)</option>
-                        <option value="+7">Russia (+7)</option>
-                        <option value="+250">Rwanda (+250)</option>
-                        <option value="+508">Saint Barthélemy (+508)</option>
-                        <option value="+1-869">Saint Kitts and Nevis (+1-869)</option>
-                        <option value="+1-758">Saint Lucia (+1-758)</option>
-                        <option value="+590">Saint Martin (+590)</option>
-                        <option value="+1-345">Cayman Islands (+1-345)</option>
-                        <option value="+239">São Tomé and Príncipe (+239)</option>
-                        <option value="+966">Saudi Arabia (+966)</option>
-                        <option value="+221">Senegal (+221)</option>
-                        <option value="+381">Serbia (+381)</option>
-                        <option value="+248">Seychelles (+248)</option>
-                        <option value="+232">Sierra Leone (+232)</option>
-                        <option value="+65">Singapore (+65)</option>
-                        <option value="+421">Slovakia (+421)</option>
-                        <option value="+386">Slovenia (+386)</option>
-                        <option value="+677">Solomon Islands (+677)</option>
-                        <option value="+252">Somalia (+252)</option>
-                        <option value="+27">South Africa (+27)</option>
-                        <option value="+82">South Korea (+82)</option>
-                        <option value="+211">South Sudan (+211)</option>
-                        <option value="+34">Spain (+34)</option>
-                        <option value="+94">Sri Lanka (+94)</option>
-                        <option value="+249">Sudan (+249)</option>
-                        <option value="+597">Suriname (+597)</option>
-                        <option value="+268">Swaziland (+268)</option>
-                        <option value="+46">Sweden (+46)</option>
-                        <option value="+41">Switzerland (+41)</option>
-                        <option value="+963">Syria (+963)</option>
-                        <option value="+886">Taiwan (+886)</option>
-                        <option value="+992">Tajikistan (+992)</option>
-                        <option value="+255">Tanzania (+255)</option>
-                        <option value="+66">Thailand (+66)</option>
-                        <option value="+670">Timor-Leste (+670)</option>
-                        <option value="+228">Togo (+228)</option>
-                        <option value="+676">Tonga (+676)</option>
-                        <option value="+1-868">Trinidad and Tobago (+1-868)</option>
-                        <option value="+216">Tunisia (+216)</option>
-                        <option value="+90">Turkey (+90)</option>
-                        <option value="+993">Turkmenistan (+993)</option>
-                        <option value="+1-649">Turks and Caicos Islands (+1-649)</option>
-                        <option value="+688">Vanuatu (+688)</option>
-                        <option value="+39">Vatican City (+39)</option>
-                        <option value="+58">Venezuela (+58)</option>
-                        <option value="+84">Vietnam (+84)</option>
-                        <option value="+681">Wallis and Futuna (+681)</option>
-                        <option value="+967">Yemen (+967)</option>
-                        <option value="+260">Zambia (+260)</option>
-                        <option value="+263">Zimbabwe (+263)</option>
+                            // Close statement
+                            $stmt->close();
+                          } else {
+                            echo "<option disabled>Error: " . $conn->error . "</option>";
+                          }
+                        } else {
+                          echo "<option disabled>Error: Invalid Package ID or Month</option>";
+                        }
+                        ?>
                       </select>
 
-                      <input type="tel" class="form-control mt-2" id="contactNo" name="contactNo" placeholder="Contact Number" required>
+                      <span id="flightDateError" class="text-danger"></span>
+
+                    </div>
+                  </div>
+
+                  <!-- Total Pax Input -->
+                  <div class="columns col-md-6 total-pax-wrapper add-border">
+
+                    <div class="form-group">
+                      <div class="col-header">
+                        <div class="column-header">
+                          <label for="totalPax">Total Pax <span class="text-danger"> *</span></label>
+                        </div>
+                      </div>
+
+                      <input type="number" class="form-control" id="totalPax" name="totalPax" min="1" placeholder="Enter Total Pax" required>
+
+                      <span id="totalPaxError" class="text-danger"></span>
+                      <!-- Error message for Total Pax -->
+
+                        <div class="maxAvail">
+                          <div class="add-border">
+                            <label id="maxSeats"></label>
+                          </div>
+
+                          
+                          <div class="add-border">
+                            <label id="availSeats"></label>
+                          </div>
+                        </div>
+
                     </div>
 
-                    <span id="contactNoError" class="text-danger"></span>
-                    <!-- Error message for Contact No -->
                   </div>
                 </div>
 
-                <!-- Email Input -->
-                <div class="columns col-md-4 email-fields">
-                  <div class="form-group">
-
-                    <div class="column-header">
-                      <label for="email">Email <span class="text-danger">*</span></label>
-                    </div>
-
-                    <input type="email" name="email" id="email" class="form-control" placeholder="Enter Email Address" required>
-                    <span id="emailError" class="text-danger"></span> <!-- Error message for Email -->
+                <div class="row-content add-border">
+                  <div class="col-md-5 land-only add-border">
+                    <input type="checkbox" id="land" name="land" value="Land Only">
+                    <label for="land"> Land Only</label>
                   </div>
                 </div>
 
+                <div class="row-content add-border">
+                  <!-- Flight Details Input -->
+                  <div class="columns col-md-12 flight-details-wrapper" id="flightDetailsContainer" style="display: none;">
+                    <div class="form-group">
+                      <label for="flightDetails">Flight Details for Package Only</label>
+
+                      <textarea class="form-control" id="flightDetails" name="flightDetails" placeholder="Input Flight Details Here"></textarea>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row-content hidden-fields-rows add-border">
+                  <div class="columns col-md-12 hidden-fields">
+                    <div class="card-content">
+                      <input type="hidden" id="agentCode" name="agentCode" value="<?php echo $_SESSION['agentCode']; ?>" placeholder="Agent Code Input">
+
+                      <input type="hidden" id="userType" name="userType" value="<?php echo $_SESSION['agent_userType']; ?>" placeholder="Account Type">
+
+                      <input type="hidden" id="flightId" name="flightId" value="<?php echo $flightid; ?>" placeholder="Flight Id Input">
+
+                      <!-- Adjusted Fields -->
+                      <input type="hidden" id="packagePrice" name="packagePrice" value="<?php echo isset($packagePrice) ? $packagePrice : ''; ?>" placeholder="Package Price">
+
+                      <input type="hidden" name="flightPrice" id="flightPricee" placeholder="Flight Price"
+                        value="<?php echo isset($agentType) ? ($agentType === 'Retailer' ? htmlspecialchars($flightPrice) : htmlspecialchars($wholesalePrice)) : ''; ?>">
+
+                      <input type="hidden" name="agentId" id="agentId" value="<?php echo $_SESSION['agentId']; ?>" placeholder="Agent Id">
+
+                      <input type="hidden" name="agentType" placeholder="Agent Type Input" value="<?php echo $_SESSION['agentType']; ?>">
+
+                      <input type="hidden" name="accId" id="accId" placeholder="Account Id Input" value="<?php echo $_SESSION['agent_accountId']; ?>">
+
+                      <!-- Adjusted Package Fields -->
+                      <input type="hidden" name="packageId" id="packageId" value="<?php echo isset($packageId) ? $packageId : ''; ?>" placeholder="Package Id Input">
+
+                      <input type="hidden" name="packageName" id="packageName" value="<?php echo isset($packageName) ? $packageName : ''; ?>" placeholder="Package Name Input">
+
+                      <input type="hidden" name="origin" id="origin" value="<?php echo isset($origin) ? $origin : ''; ?>" placeholder="Origin Input">
+
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row-content add-border">
+                  <div class="columns col-md-12">
+                    <h5 style="display: none;"> Price: ₱ <span id="flightPrice">0.00</span> </h>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="booking-contents-wrapper">           
+              <div class="section-header">
+                <h5>Contact Details</h5>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. </p>
               </div>
 
-              <div class="row">
-                <input type="hidden" id="totalPrice" name="totalPrice" placeholder="Total Price">
+              <div class="section-content">
+                <div class="row-content add-border">
+                  <!-- First Name Input -->
+                  <div class="columns col-md-3">
+                    <div class="form-group">
+                      <div class="column-header">
+                        <label for="fName">First Name <span class="text-danger">*</span></label>
+                      </div>
+                      <input type="text" name="fName" id="fName" class="form-control" placeholder="Enter First Name" required>
+                      <span id="fNameError" class="text-danger"></span>
+                      <!-- Error message for First Name -->
+                    </div>
+                  </div>
 
-                <div class="col-md-12 price-wrapper">
+                  <!-- Last Name Input -->
+                  <div class="columns col-md-3">
+                    <div class="form-group">
+                      <div class="column-header">
+                        <label for="lName">Last Name <span class="text-danger"> *</span> </label>
+                      </div>
+                      <input type="text" name="lName" id="lName" class="form-control" placeholder="Enter Last Name" required>
+                      <span id="lNameError" class="text-danger"></span>
+                      <!-- Error message for Last Name -->
+                    </div>
+                  </div>
+
+                  <!-- Middle Name Input -->
+                  <div class="columns col-md-3">
+                    <div class="form-group">
+
+                      <div class="column-header">
+                        <label for="mName">Middle Name <span class="text-danger mText">(Type N/A if none)</span> </label>
+
+                      </div>
+                      <input type="text" name="mName" id="mName" class="form-control" placeholder="Enter Middle Name" required>
+
+                      <span id="mNameError" class="text-danger"></span>
+                      <!-- Error message for Middle Name -->
+                    </div>
+                  </div>
+
+                  <!-- Suffix Dropdown -->
+                  <div class="columns col-md-2">
+                    <div class="form-group">
+                      <div class="column-header">
+                        <label for="suffix">Suffix <span class="text-danger"> *</span></label>
+                      </div>
+                      <select class="form-select" name="suffix" id="suffix" required>
+                        <option selected disabled>Select Suffix</option>
+                        <option value="N/A">None</option>
+                        <option value="Jr.">Jr.</option>
+                        <option value="Sr.">Sr.</option>
+                        <option value="II">II</option>
+                        <option value="III">III</option>
+                        <option value="IV">IV</option>
+                        <option value="V">V</option>
+                      </select>
+                      <span id="suffixError" class="text-danger"></span>
+                      <!-- Error message for Suffix -->
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row-content add-border">
+                  <!-- Contact No Input-->
+                  <div class="columns col-md-4">
+                    <div class="form-group">
+                      <div class="column-header">
+                        <label for="contactNo" class="contactNo">Contact No. <span class="text-danger">*</span></label>
+                      </div>
+
+                      <div class="input-group contactno-wrapper">
+                        <select name="countryCode" id="countryCode" class="form-select" required>
+                          <option disabled>Country Code</option>
+                          <option value="+93">Afghanistan (+93)</option>
+                          <option value="+355">Albania (+355)</option>
+                          <option value="+213">Algeria (+213)</option>
+                          <option value="+376">Andorra (+376)</option>
+                          <option value="+244">Angola (+244)</option>
+                          <option value="+1-268">Antigua and Barbuda (+1-268)</option>
+                          <option value="+54">Argentina (+54)</option>
+                          <option value="+374">Armenia (+374)</option>
+                          <option value="+61">Australia (+61)</option>
+                          <option value="+43">Austria (+43)</option>
+                          <option value="+994">Azerbaijan (+994)</option>
+                          <option value="+1-242">Bahamas (+1-242)</option>
+                          <option value="+973">Bahrain (+973)</option>
+                          <option value="+880">Bangladesh (+880)</option>
+                          <option value="+1-246">Barbados (+1-246)</option>
+                          <option value="+375">Belarus (+375)</option>
+                          <option value="+32">Belgium (+32)</option>
+                          <option value="+501">Belize (+501)</option>
+                          <option value="+229">Benin (+229)</option>
+                          <option value="+975">Bhutan (+975)</option>
+                          <option value="+591">Bolivia (+591)</option>
+                          <option value="+387">Bosnia and Herzegovina (+387)</option>
+                          <option value="+267">Botswana (+267)</option>
+                          <option value="+55">Brazil (+55)</option>
+                          <option value="+673">Brunei (+673)</option>
+                          <option value="+359">Bulgaria (+359)</option>
+                          <option value="+226">Burkina Faso (+226)</option>
+                          <option value="+257">Burundi (+257)</option>
+                          <option value="+238">Cabo Verde (+238)</option>
+                          <option value="+855">Cambodia (+855)</option>
+                          <option value="+237">Cameroon (+237)</option>
+                          <option value="+1">Canada (+1)</option>
+                          <option value="+236">Central African Republic (+236)</option>
+                          <option value="+235">Chad (+235)</option>
+                          <option value="+56">Chile (+56)</option>
+                          <option value="+86">China (+86)</option>
+                          <option value="+57">Colombia (+57)</option>
+                          <option value="+269">Comoros (+269)</option>
+                          <option value="+243">Congo, Democratic Republic of the (+243)</option>
+                          <option value="+242">Congo, Republic of the (+242)</option>
+                          <option value="+506">Costa Rica (+506)</option>
+                          <option value="+385">Croatia (+385)</option>
+                          <option value="+53">Cuba (+53)</option>
+                          <option value="+357">Cyprus (+357)</option>
+                          <option value="+420">Czech Republic (+420)</option>
+                          <option value="+45">🇩🇰 Denmark (+45)</option>
+                          <option value="+253">🇩🇯 Djibouti (+253)</option>
+                          <option value="+1-767">🇩🇲 Dominica (+1-767)</option>
+                          <option value="+1-809">🇩🇴 Dominican Republic (+1-809)</option>
+                          <option value="+593">Ecuador (+593)</option>
+                          <option value="+20">Egypt (+20)</option>
+                          <option value="+503">El Salvador (+503)</option>
+                          <option value="+240">Equatorial Guinea (+240)</option>
+                          <option value="+291">Eritrea (+291)</option>
+                          <option value="+372">Estonia (+372)</option>
+                          <option value="+268">Eswatini (+268)</option>
+                          <option value="+251">Ethiopia (+251)</option>
+                          <option value="+679">Fiji (+679)</option>
+                          <option value="+358">Finland (+358)</option>
+                          <option value="+33">France (+33)</option>
+                          <option value="+241">Gabon (+241)</option>
+                          <option value="+220">Gambia (+220)</option>
+                          <option value="+995">Georgia (+995)</option>
+                          <option value="+49">Germany (+49)</option>
+                          <option value="+233">Ghana (+233)</option>
+                          <option value="+30">Greece (+30)</option>
+                          <option value="+1-473">Grenada (+1-473)</option>
+                          <option value="+502">Guatemala (+502)</option>
+                          <option value="+224">Guinea (+224)</option>
+                          <option value="+245">Guinea-Bissau (+245)</option>
+                          <option value="+592">Guyana (+592)</option>
+                          <option value="+509">Haiti (+509)</option>
+                          <option value="+504">Honduras (+504)</option>
+                          <option value="+36">Hungary (+36)</option>
+                          <option value="+354">Iceland (+354)</option>
+                          <option value="+91">India (+91)</option>
+                          <option value="+62">Indonesia (+62)</option>
+                          <option value="+98">Iran (+98)</option>
+                          <option value="+964">Iraq (+964)</option>
+                          <option value="+353">Ireland (+353)</option>
+                          <option value="+972">Israel (+972)</option>
+                          <option value="+39">Italy (+39)</option>
+                          <option value="+225">Ivory Coast (+225)</option>
+                          <option value="+81">Japan (+81)</option>
+                          <option value="+962">Jordan (+962)</option>
+                          <option value="+7">Kazakhstan (+7)</option>
+                          <option value="+254">Kenya (+254)</option>
+                          <option value="+686">Kiribati (+686)</option>
+                          <option value="+965">Kuwait (+965)</option>
+                          <option value="+996">Kyrgyzstan (+996)</option>
+                          <option value="+856">Laos (+856)</option>
+                          <option value="+371">Latvia (+371)</option>
+                          <option value="+961">Lebanon (+961)</option>
+                          <option value="+266">Lesotho (+266)</option>
+                          <option value="+231">Liberia (+231)</option>
+                          <option value="+218">Libya (+218)</option>
+                          <option value="+423">Liechtenstein (+423)</option>
+                          <option value="+370">Lithuania (+370)</option>
+                          <option value="+352">Luxembourg (+352)</option>
+                          <option value="+261">Madagascar (+261)</option>
+                          <option value="+265">Malawi (+265)</option>
+                          <option value="+60">Malaysia (+60)</option>
+                          <option value="+960">Maldives (+960)</option>
+                          <option value="+223">Mali (+223)</option>
+                          <option value="+356">Malta (+356)</option>
+                          <option value="+692">Marshall Islands (+692)</option>
+                          <option value="+596">Martinique (+596)</option>
+                          <option value="+222">Morocco (+222)</option>
+                          <option value="+258">Mozambique (+258)</option>
+                          <option value="+95">Myanmar (+95)</option>
+                          <option value="+264">Namibia (+264)</option>
+                          <option value="+674">Nauru (+674)</option>
+                          <option value="+977">Nepal (+977)</option>
+                          <option value="+31">Netherlands (+31)</option>
+                          <option value="+599">Netherlands Antilles (+599)</option>
+                          <option value="+64">New Zealand (+64)</option>
+                          <option value="+505">Nicaragua (+505)</option>
+                          <option value="+227">Niger (+227)</option>
+                          <option value="+234">Nigeria (+234)</option>
+                          <option value="+683">Niue (+683)</option>
+                          <option value="+672">Norfolk Island (+672)</option>
+                          <option value="+850">North Korea (+850)</option>
+                          <option value="+1-670">Northern Mariana Islands (+1-670)</option>
+                          <option value="+47">Norway (+47)</option>
+                          <option value="+968">Oman (+968)</option>
+                          <option value="+92">Pakistan (+92)</option>
+                          <option value="+680">Palau (+680)</option>
+                          <option value="+507">Panama (+507)</option>
+                          <option value="+675">Papua New Guinea (+675)</option>
+                          <option value="+595">Paraguay (+595)</option>
+                          <option value="+51">Peru (+51)</option>
+                          <option value="+63" selected>Philippines (+63)</option>
+                          <option value="+48">Poland (+48)</option>
+                          <option value="+351">Portugal (+351)</option>
+                          <option value="+974">Qatar (+974)</option>
+                          <option value="+40">Romania (+40)</option>
+                          <option value="+7">Russia (+7)</option>
+                          <option value="+250">Rwanda (+250)</option>
+                          <option value="+508">Saint Barthélemy (+508)</option>
+                          <option value="+1-869">Saint Kitts and Nevis (+1-869)</option>
+                          <option value="+1-758">Saint Lucia (+1-758)</option>
+                          <option value="+590">Saint Martin (+590)</option>
+                          <option value="+1-345">Cayman Islands (+1-345)</option>
+                          <option value="+239">São Tomé and Príncipe (+239)</option>
+                          <option value="+966">Saudi Arabia (+966)</option>
+                          <option value="+221">Senegal (+221)</option>
+                          <option value="+381">Serbia (+381)</option>
+                          <option value="+248">Seychelles (+248)</option>
+                          <option value="+232">Sierra Leone (+232)</option>
+                          <option value="+65">Singapore (+65)</option>
+                          <option value="+421">Slovakia (+421)</option>
+                          <option value="+386">Slovenia (+386)</option>
+                          <option value="+677">Solomon Islands (+677)</option>
+                          <option value="+252">Somalia (+252)</option>
+                          <option value="+27">South Africa (+27)</option>
+                          <option value="+82">South Korea (+82)</option>
+                          <option value="+211">South Sudan (+211)</option>
+                          <option value="+34">Spain (+34)</option>
+                          <option value="+94">Sri Lanka (+94)</option>
+                          <option value="+249">Sudan (+249)</option>
+                          <option value="+597">Suriname (+597)</option>
+                          <option value="+268">Swaziland (+268)</option>
+                          <option value="+46">Sweden (+46)</option>
+                          <option value="+41">Switzerland (+41)</option>
+                          <option value="+963">Syria (+963)</option>
+                          <option value="+886">Taiwan (+886)</option>
+                          <option value="+992">Tajikistan (+992)</option>
+                          <option value="+255">Tanzania (+255)</option>
+                          <option value="+66">Thailand (+66)</option>
+                          <option value="+670">Timor-Leste (+670)</option>
+                          <option value="+228">Togo (+228)</option>
+                          <option value="+676">Tonga (+676)</option>
+                          <option value="+1-868">Trinidad and Tobago (+1-868)</option>
+                          <option value="+216">Tunisia (+216)</option>
+                          <option value="+90">Turkey (+90)</option>
+                          <option value="+993">Turkmenistan (+993)</option>
+                          <option value="+1-649">Turks and Caicos Islands (+1-649)</option>
+                          <option value="+688">Vanuatu (+688)</option>
+                          <option value="+39">Vatican City (+39)</option>
+                          <option value="+58">Venezuela (+58)</option>
+                          <option value="+84">Vietnam (+84)</option>
+                          <option value="+681">Wallis and Futuna (+681)</option>
+                          <option value="+967">Yemen (+967)</option>
+                          <option value="+260">Zambia (+260)</option>
+                          <option value="+263">Zimbabwe (+263)</option>
+                        </select>
+
+                        <input type="tel" class="form-control mt-2" id="contactNo" name="contactNo" placeholder="Contact Number" required>
+                      </div>
+
+                      <span id="contactNoError" class="text-danger"></span>
+                      <!-- Error message for Contact No -->
+                    </div>
+                  </div>
+
+                  <!-- Email Input -->
+                  <div class="columns col-md-4 email-fields">
+                    <div class="form-group">
+
+                      <div class="column-header">
+                        <label for="email">Email <span class="text-danger">*</span></label>
+                      </div>
+
+                      <input type="email" name="email" id="email" class="form-control" placeholder="Enter Email Address" required>
+                      <span id="emailError" class="text-danger"></span> <!-- Error message for Email -->
+                    </div>
+                  </div>
+
+                </div>
+
+                <div class="row-content add-border">
+                  <input type="hidden" id="totalPrice" name="totalPrice" placeholder="Total Price">
+
+                  <div class="col-md-12 price-wrapper">
                     <div class="total-price">
                       <h5 class="">Total Price: </h5>
                       <h5>₱ <span id="displayTotalPrice">0</span> </h5>
                     </div>
+                  </div>
                 </div>
-              </div>
 
-              <div class="row">
-                <div class="col-md-12 button-container">
+                <div class="row-content add-border">
+                  <div class="col-md-12 button-container">
                     <button type="button" class="btn btn-primary" id="bookNowButton">Book Now</button>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <!-- Booking Summary Modal -->
-            <div class="modal fade" id="BookingSummaryModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
+              <!-- Booking Summary Modal -->
+              <div class="modal fade" id="BookingSummaryModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
 
                 <div class="modal-dialog modal-lg modal-dialog-centered">
 
-                    <div class="modal-content position-relative">
+                  <div class="modal-content position-relative">
 
-                        <!-- Close Button -->
-                        <button type="button" class="btn-close close-outside" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <!-- Close Button -->
+                    <button type="button" class="btn-close close-outside" data-bs-dismiss="modal" aria-label="Close"></button>
 
-                        <div class="modal-body">
-                            <div class="confirmation-container ">
-                                <!-- Logo Section -->
-                                <div class="row body-header">
-                                    <div class="col">
-                                        <img src="../Assets/Logos/SMART LOGO 2 (2).png" alt="Trip Image" class="img-fluid" style="max-width: 220px;">
-                                    </div>
-                                </div>
-
-                                <!-- Title -->
-                                <h5>Booking Summary</h5>
-
-                                <!-- Contact Info -->
-                                <div class="booking-info">
-                                    <div class="info-row">
-                                        <p><strong>Contact Guest Name:</strong></p>
-                                        <p id="contactPersonName">Sample Name</p>
-                                    </div>
-                                    <div class="info-row">
-                                        <p><strong>Contact Email:</strong></p>
-                                        <p id="contactPersonEmail">Sample Email</p>
-                                    </div>
-                                </div>
-                                <hr>
-
-                                <!-- Package Details -->
-                                <div class="booking-info">
-                                    <div class="info-row">
-                                        <p><strong>Package Name:</strong></p>
-                                        <p id="selectedPackage">No Package Selected</p>
-                                    </div>
-                                    <div class="info-row">
-                                        <p><strong>No. of Guests:</strong></p>
-                                        <p id="guestCount">1</p>
-                                    </div>
-                                </div>
-                                <hr>
-
-                                <!-- Flight Details -->
-                                <div class="booking-info">
-                                    <div class="info-row">
-                                        <p><strong>Origin:</strong></p>
-                                        <p id="selectedOrigin">No Origin Selected</p>
-                                    </div>
-                                    <div class="info-row">
-                                        <p><strong>Flight Date:</strong></p>
-                                        <p id="selectedDate">No Flight Date Selected</p>
-                                    </div>
-                                </div>
-                                <hr>
-
-                                <!-- Action Buttons -->
-                                <div class="modal-actions">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Back</button>
-                                    <button type="submit" class="btn btn-primary" name="bookNow">Proceed to Payment</button>
-                                </div>
-
-
-                            </div>
+                    <div class="modal-body">
+                      <div class="confirmation-container ">
+                        <!-- Logo Section -->
+                        <div class="row body-header">
+                          <div class="col">
+                            <img src="../Assets/Logos/SMART LOGO 2 (2).png" alt="Trip Image" class="img-fluid" style="max-width: 220px;">
+                          </div>
                         </div>
-                    </div>
-                </div>
-            </div>
 
+                        <!-- Title -->
+                        <h5>Booking Summary</h5>
+
+                        <!-- Contact Info -->
+                        <div class="booking-info">
+                          <div class="info-row">
+                            <p><strong>Contact Guest Name:</strong></p>
+                            <p id="contactPersonName">Sample Name</p>
+                          </div>
+                          <div class="info-row">
+                            <p><strong>Contact Email:</strong></p>
+                            <p id="contactPersonEmail">Sample Email</p>
+                          </div>
+                        </div>
+                        <hr>
+
+                        <!-- Package Details -->
+                        <div class="booking-info">
+                          <div class="info-row">
+                            <p><strong>Package Name:</strong></p>
+                            <p id="selectedPackage">No Package Selected</p>
+                          </div>
+                          <div class="info-row">
+                            <p><strong>No. of Guests:</strong></p>
+                            <p id="guestCount">1</p>
+                          </div>
+                        </div>
+                        <hr>
+
+                        <!-- Flight Details -->
+                        <div class="booking-info">
+                          <div class="info-row">
+                            <p><strong>Origin:</strong></p>
+                            <p id="selectedOrigin">No Origin Selected</p>
+                          </div>
+                          <div class="info-row">
+                            <p><strong>Flight Date:</strong></p>
+                            <p id="selectedDate">No Flight Date Selected</p>
+                          </div>
+                        </div>
+                        <hr>
+
+                        <!-- Action Buttons -->
+                        <div class="modal-actions">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Back</button>
+                          <button type="submit" class="btn btn-primary" name="bookNow">Proceed to Payment</button>
+                        </div>
+
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
         </form>
 
@@ -639,18 +646,18 @@ require "../conn.php";
 
   <!-- Logout Confirmation Modal -->
   <div id="logout-modal">
-      <div class="logout-modal-content">
-          <p class="logout-message-primary">
-              <strong>Are you sure you want to go back?</strong>
-          </p>
-          <p class="logout-message-secondary">
-              Your current progress will be lost, and you’ll need to start over.
-          </p>
-          <div class="logout-modal-actions">
-              <button id="cancel-logout" class="logout-btn logout-btn-secondary">Stay on Page</button>
-              <button id="confirm-logout" class="logout-btn logout-btn-danger">Go Back</button>
-          </div>
+    <div class="logout-modal-content">
+      <p class="logout-message-primary">
+        <strong>Are you sure you want to go back?</strong>
+      </p>
+      <p class="logout-message-secondary">
+        Your current progress will be lost, and you’ll need to start over.
+      </p>
+      <div class="logout-modal-actions">
+        <button id="cancel-logout" class="logout-btn logout-btn-secondary">Stay on Page</button>
+        <button id="confirm-logout" class="logout-btn logout-btn-danger">Go Back</button>
       </div>
+    </div>
   </div>
 
 
@@ -680,7 +687,6 @@ require "../conn.php";
               beforeSend: function () {
                   console.log("Clearing session..."); // Debugging message
               },
-
               success: function (response) {
                   console.log(response); // Log response for debugging
                   if (response.success) {
@@ -691,11 +697,9 @@ require "../conn.php";
                       alert("Error: " + response.message);
                   }
               },
-
               error: function () {
                   alert("Error clearing session. Please try again.");
               }
-
           });
       });
 
@@ -710,43 +714,9 @@ require "../conn.php";
               logoutModal.removeClass("show");
           }
       });
-
   });
   </script>
-  
 
-  <script>
-    function toggleSubMenu(submenuId) {
-      const submenu = document.getElementById(submenuId);
-      const sectionTitle = submenu.previousElementSibling;
-      const chevron = sectionTitle.querySelector('.chevron-icon');
-
-      // Check if the submenu is already open
-      const isOpen = submenu.classList.contains('open');
-
-      // If it's open, we need to close it, and reset the chevron
-      if (isOpen) {
-        submenu.classList.remove('open');
-        chevron.style.transform = 'rotate(0deg)';
-      } else {
-        // First, close all open submenus and reset all chevrons
-        const allSubmenus = document.querySelectorAll('.submenu');
-        const allChevrons = document.querySelectorAll('.chevron-icon');
-
-        allSubmenus.forEach(sub => {
-          sub.classList.remove('open');
-        });
-
-        allChevrons.forEach(chev => {
-          chev.style.transform = 'rotate(0deg)';
-        });
-
-        // Now, open the current submenu and rotate its chevron
-        submenu.classList.add('open');
-        chevron.style.transform = 'rotate(180deg)';
-      }
-    }
-  </script>
 
   <script>
     $(document).ready(function() {

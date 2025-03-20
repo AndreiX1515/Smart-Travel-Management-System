@@ -34,11 +34,17 @@ if (isset($_POST['login'])) {
 
                     if ($accountType === 'agent') {
                         handleLogin($accountId, 'agent', "SELECT * FROM agent WHERE accountId = ?", ['branchId'], $flightId);
-                    } elseif ($accountType === 'employee') {
-                        handleLogin($accountId, 'employee', "SELECT * FROM employee WHERE accountId = ?", ['position', 'countryCode', 'contactNo', 'branch'], $flightId);
-                    } elseif ($accountType === 'guest') {
+                    } 
+                    
+                    // elseif ($accountType === 'employee') {
+                    //     handleLogin($accountId, 'employee', "SELECT * FROM employee WHERE accountId = ?", ['position', 'countryCode', 'contactNo', 'branch'], $flightId);
+                    // }
+                    
+                    elseif ($accountType === 'guest') {
                         handleLogin($accountId, 'guest', "SELECT * FROM client WHERE accountId = ?", ['position', 'countryCode', 'contactNo', 'branch'], $flightId);
-                    } else {
+                    }
+                    
+                    else {
                         $response['success'] = false;
                         $response['message'] = "Invalid account type.";
                     }
@@ -182,6 +188,7 @@ function manageAgentSession($accountId, $userData, $userType, $flightId, $additi
         $_SESSION['agentType'] = $userData['agentType'] ?? '';
         $_SESSION['agent_branchId'] = $userData['branchId'] ?? '';
         $_SESSION['agent_flightId'] = $flightId ?? '';
+        // $_SESSION['agent_email'] = $userData['email'] ?? '';
         $_SESSION['agent_timeout'] = time();
 
         unset($_SESSION['flightid']);
@@ -281,10 +288,11 @@ function manageGuestSession($accountId, $userData, $userType, $flightId, $additi
         $_SESSION['clientRole'] = $userData['clientRole'] ?? '';
         $_SESSION['clientType'] = $userData['clientType'] ?? '';
         $_SESSION['client_branchId'] = $userData['branchId'] ?? '';
+        // $_SESSION['client_email'] = $userData['email'] ?? '';
         $_SESSION['client_flightId'] = $flightId ?? '';
         $_SESSION['client_timeout'] = time();
 
-        unset($_SESSION['flightid']); // Ensure flight ID is only stored in session
+        unset($_SESSION['flightid']);
 
         // Store additional fields in session
         // foreach ($additionalFields as $field) {
