@@ -1857,7 +1857,7 @@ require "../conn.php";
             order: [[0, 'desc']],
             paging: true,
             pageLength: 8,
-            scrollY: '570px',
+            scrollY: '560px',
             scrollCollapse: true,
             autoWidth: false,
             columnDefs: [
