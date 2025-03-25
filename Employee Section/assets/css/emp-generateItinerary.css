@@ -1,15 +1,62 @@
-.main-content {
-  /* border: 1px solid black; */
-  height: 93vh;
-  overflow-x: auto;
-}
-
-.form-container {
+.main-container {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  padding: 10px 5px;
+  align-items: stretch; /* Ensures children stretch to full width */
+  gap: 10px;
+  height: 100vh;
+  overflow-y: auto;
+  padding: 10px 0px;
 }
+
+.main-content {
+  flex: 1; /* Allows it to take available space */
+  overflow-x: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form-container{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form-footer {
+  background-color: white;
+  display: none; /* Hidden by default */
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 10px 20px;
+  border: 1px solid gainsboro;
+  border-radius: 0 0 8px 8px; /* Matches form-container’s style */
+}
+
+
+.itinerary-container {
+  flex: 1; /* Takes up remaining space */
+  width: 100%;
+  height: auto; /* Adjust height dynamically */
+}
+
+.itinerary-card {
+  width: 100%;
+  background-color: #ffffff;
+  margin-bottom: 5px;
+}
+
+/* .form-footer {
+  background-color: white;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 15px 20px;
+  border: 1px solid gainsboro;
+} */
+
+
+
+
 
 
 /* Card - General */
@@ -322,21 +369,11 @@ select.form-control:focus {
 
 
 
-
-.itinerary-container {
-  width: 100%;
-  height: 40vh;
-  border: 1px solid black;
-}
-
-
 /* Full-width itinerary card */
 .itinerary-card {
   width: 100%;
   border-radius: 10px;
-  
   background-color: #ffffff;
-  overflow: hidden;
   margin-bottom: 20px;
   
 }
@@ -352,7 +389,7 @@ select.form-control:focus {
 
 /* Card Body */
 .itinerary-card .card-body {
-  padding: 20px;
+  padding: 12px 5px;
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -423,24 +460,3 @@ select.form-control:focus {
 
 
 
-
-
-
-
-
-
-
-.form-footer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background-color: white; 
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  padding: 10px 40px;
-  margin: 0px;
-  border-top: 1px solid gainsboro;
-  z-index: 1000; 
-}
