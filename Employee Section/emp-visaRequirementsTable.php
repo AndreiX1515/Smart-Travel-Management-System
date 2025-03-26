@@ -103,62 +103,107 @@
             <thead>
               <tr>
                 <th>GUEST ID</th>
+                <th>DEPARTURE DATE</th>
                 <th>TRANSACTION NO.</th>
                 <th>GUEST NAME</th>
                 <th>PASSPORT</th>
                 <th>PERMIT</th>
                 <th>VALID ID</th>
                 <th>CERTIFICATE</th>
+                <th>GUARANTEED LETTER</th>
               </tr>
             </thead>
             <tbody>
               <?php
-                $sql1 = "SELECT v.transactNo, v.guestId, 
-                            CONCAT(g.fName, ' ', IF(g.mName = 'N/A' OR g.mName IS NULL, '', CONCAT(SUBSTRING(g.mName, 1, 1), '. ')),
-                              g.lName, IF(g.suffix = 'N/A' OR g.suffix IS NULL, '', CONCAT(' ', g.suffix))) AS guestName,
-                            v.passport AS passport, v.permit AS permit, v.validId AS validId, v.certificate AS certificate
-                          FROM visarequirements v
-                          INNER JOIN guest g ON v.guestId = g.guestId
-                          WHERE v.passport IS NOT NULL 
-                            OR v.permit IS NOT NULL 
-                            OR v.validId IS NOT NULL 
-                            OR v.certificate IS NOT NULL";
+                $sql1 = "SELECT v.requirementId, v.transactNo, v.guestId, v.fileType, v.filePath, f.flightDepartureDate,
+                          CONCAT(g.fName, ' ', IF(g.mName = 'N/A' OR g.mName IS NULL, '', CONCAT(SUBSTRING(g.mName, 1, 1), '. ')), 
+                          g.lName, IF(g.suffix = 'N/A' OR g.suffix IS NULL, '', CONCAT(' ', g.suffix))) AS guestName
+                        FROM visarequirements v
+                        JOIN guest g ON v.guestId = g.guestId
+                        LEFT JOIN booking b ON b.transactNo = g.transactNo
+                        LEFT JOIN flight f ON b.flightId = f.flightId";
 
                 $res1 = $conn->query($sql1);
 
+                $filesByGuest = [];
                 if ($res1->num_rows > 0) 
                 {
                   while ($row = $res1->fetch_assoc()) 
                   {
+                    $guestId = $row['guestId'] ?? '';
+                    $fileType = $row['fileType'] ?? '';
+                    $filePath = $row['filePath'] ?? ''; // Ensure it's not NULL
+                    $transactNo = $row['transactNo'] ?? '';
+                    $requirementId = $row['requirementId'] ?? '';
+                    $departureDate = $row['flightDepartureDate'] ?? '';
+
+                    // Initialize guest data if not set
+                    if (!isset($filesByGuest[$guestId])) 
+                    {
+                      $filesByGuest[$guestId] = [
+                        'guestName' => $row['guestName'],
+                        'transactNo' => $transactNo, // Store per guest
+                        'departureDate' => $departureDate,
+                        'files' => []
+                      ];
+                    }
+
+                    // Store both requirementId and filePath together
+                    $filesByGuest[$guestId]['files'][$fileType][] = [
+                      'filePath' => $filePath,
+                      'requirementId' => $requirementId
+                    ];
+                  }
+                }
+
+                if (!empty($filesByGuest)) 
+                {
+                  foreach ($filesByGuest as $guestId => $guestData) 
+                  {
                     echo "<tr>
-                            <td>{$row['guestId']}</td>
-                            <td>{$row['transactNo']}</td>
-                            <td>{$row['guestName']}</td>
-                            <td>" . (!empty($row['passport']) ? 
-                              "<a href='functions/view-file.php?file=" . urlencode($row['passport']) . "' target='_blank'>View File</a> 
-                              <a href='functions/download.php?file=" . urlencode($row['passport']) . "' target='_blank'>Download File</a>" 
-                              : "<span>No file uploaded</span>") . "</td>
+                            <td>{$guestId}</td>
+                            <td>{$guestData['departureDate']}</td>
+                            <td>{$guestData['transactNo']}</td>
+                            <td>{$guestData['guestName']}</td>";
 
-                            <td>" . (!empty($row['permit']) ? 
-                              "<a href='functions/view-file.php?file=" . urlencode($row['permit']) . "' target='_blank'>View File</a> 
-                              <a href='functions/download.php?file=" . urlencode($row['permit']) . "' target='_blank'>Download File</a>" 
-                              : "<span>No file uploaded</span>") . "</td>
+                    // Define the expected file types
+                    $fileTypes = ['passport', 'permit', 'validId', 'certificate', 'guaranteedLetter'];
 
-                            <td>" . (!empty($row['validId']) ? 
-                              "<a href='functions/view-file.php?file=" . urlencode($row['validId']) . "' target='_blank'>View File</a> 
-                              <a href='functions/download.php?file=" . urlencode($row['validId']) . "' target='_blank'>Download File</a>" 
-                              : "<span>No file uploaded</span>") . "</td>
+                    // Generate table columns dynamically based on available/missing files
+                    foreach ($fileTypes as $fileType) 
+                    {
+                      echo "<td>";
 
-                            <td>" . (!empty($row['certificate']) ? 
-                              "<a href='functions/view-file.php?file=" . urlencode($row['certificate']) . "' target='_blank'>View File</a> 
-                              <a href='functions/download.php?file=" . urlencode($row['certificate']) . "' target='_blank'>Download File</a>" 
-                              : "<span>No file uploaded</span>") . "</td>
-                          </tr>";
+                      if (!empty($guestData['files'][$fileType])) 
+                      {
+                        foreach ($guestData['files'][$fileType] as $file)  // ✅ Now correctly accessing both
+                        {
+                          $filePath = !empty($file['filePath']) ? $file['filePath'] : ''; // Ensure no NULL values
+
+                          echo "<div >
+                                  <a class='btn btn-info btn-sm' 
+                                    href='../Agent Section/functions/view-file.php?file=" . urlencode($filePath) . "' target='_blank'>View File</a> 
+
+                                  <a class='btn btn-success btn-sm' 
+                                    href='../Employee Section/functions/download.php?file=" . urlencode($filePath) . "' target='_blank'>Download File</a>
+
+                                </div>";
+                        }
+                      } 
+                      else 
+                      {
+                        echo "No files Uploaded";
+                      }
+
+                      echo "</td>";
+                    }
+
+                    echo "</tr>";
                   }
                 } 
                 else 
                 {
-                  echo "<tr><td colspan='6' style='text-align: center;'>No Visa Status </td></tr>";
+                  echo "<tr><td colspan='8' style='text-align: center;'>No Visa Requirements</td></tr>";
                 }
               ?>
             </tbody>
@@ -183,14 +228,18 @@
 
   <!-- JQuery Datapicker -->
   <script>
-    document.addEventListener("scroll", function() {
+    document.addEventListener("scroll", function() 
+    {
       const searchBar = document.querySelector(".search-bar");
       const scrollPosition = window.scrollY;
 
       // Add or remove the upward adjustment class based on scroll position
-      if (scrollPosition > 70) { // Adjust the threshold as needed
+      if (scrollPosition > 70) 
+      { // Adjust the threshold as needed
         searchBar.classList.add("scrolled-upward");
-      } else {
+      } 
+      else 
+      {
         searchBar.classList.remove("scrolled-upward");
       }
     });
@@ -218,6 +267,9 @@
         columnDefs: [{
           targets: [1, 2, 3, 5, 6, ], // Disable sorting for 2nd and 4th columns
           orderable: false
+        },
+        {
+         targets: [0, 1], visible: false 
         }]
       });
 
@@ -278,7 +330,7 @@
       $('#FlightStartDate').on('change', function() {
         const selectedFlightDate = $(this).val(); // Get the selected value directly from the input field
         console.log("Flight Date Filter:", selectedFlightDate); // Log the selected flight date
-        table.column(3).search(selectedFlightDate || '').draw(); // Column 5 (index starts at 0)
+        table.column(1).search(selectedFlightDate || '').draw(); // Column 5 (index starts at 0)
       });
 
       // Apply datepicker and input validation for FlightStartDate
@@ -293,7 +345,7 @@
           $(this).val(dateText);
           flightStartDate = dateText; // Store the selected date
           console.log("FlightStartDate Selected Date (onSelect): " + dateText);
-          table.column(3).search(flightStartDate || '').draw(); // Column 5 (index starts at 0)
+          table.column(1).search(flightStartDate || '').draw(); // Column 5 (index starts at 0)
         }
       });
 
@@ -379,8 +431,6 @@
 
     });
   </script>
-
-
 
   <!-- Table Head  -->
   <script>
