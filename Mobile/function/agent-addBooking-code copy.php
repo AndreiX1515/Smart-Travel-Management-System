@@ -7,7 +7,7 @@
 
   if (isset($_POST['bookNow'])) 
   {
-    $accountId = $_SESSION['accountId'];
+    $accountId = $_SESSION['client_accountId'];
     $agentId = $_POST['agentId'];  
     $agentCode = $_POST['agentCode'];  
     $accountType = $_POST['userType'];  
@@ -54,7 +54,7 @@
     // Prepare the SQL statement for insertion into the booking table
     $sql1 = "INSERT INTO booking (accountId, transactNo, accountType, agentCode, flightId, packageId, fName, lName, mName, suffix, countryCode, 
     contactNo, email, pax, totalPrice, bookingType, flightDetails, status, bookingDate) VALUES 
-    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Pending', NOW())";
+    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Reserved', NOW())";
     $stmt1 = $conn->prepare($sql1);
 
     if (!$stmt1) 
@@ -108,7 +108,7 @@
 
     // Optionally redirect or provide a success message
     $_SESSION['status'] = "Booking successful!";
-    header("Location: ../agent-addBookingPayment.php?id=" . htmlspecialchars($transactNo));
+    header("Location: ../client-addBookingPayment.php?id=" . htmlspecialchars($transactNo));
     exit(0);
   }
 ?>

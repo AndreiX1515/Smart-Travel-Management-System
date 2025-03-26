@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['flightid'])) {
 
     <?php include '../Agent Section/includes/head.php' ?>
 
-    <link href="../Agent Section/assets/css/agent-login.css?v=<?php echo time(); ?>" rel="stylesheet">
+    <link href="../Mobile/assets/css/agent-login.css?v=<?php echo time(); ?>" rel="stylesheet">
 </head>
 
 <body>
@@ -36,11 +36,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['flightid'])) {
         <div class="login-container">
             <div class="logo">
                 <img src="../Assets/Logos/logo-tab.png" alt="" class="logo-image" width="160" height="120">
-                <input type="hidden" name="flightid" id="flightid" value="<?= isset($_SESSION['flightid']) ? $_SESSION['flightid'] : '' ?>">
             </div>
 
             <div class="fields-container">
                 <form class="mt-3" id="loginForm" method="POST">
+
+                    <input type="hidden" name="flightid" id="flightid" value="<?= isset($_SESSION['flightid']) ? $_SESSION['flightid'] : '' ?>">
+
                     <!-- Username input field -->
                     <div class="mb-3">
                         <div class="form-floating">
@@ -131,7 +133,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['flightid'])) {
 
                             } else {
                                 alert('No flight selected. Redirecting to flight schedule.');
-
                                 window.location.href = '../Mobile/flightsched.php';
                             }
 
@@ -140,6 +141,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['flightid'])) {
                             let flightid = document.getElementById('flightid') ? document.getElementById('flightid').value : '';
 
                             if (flightid) {
+                                alert('Redirected to Client Booking');
                                 window.location.href = `../Mobile/client-addBooking-flight.php`;
 
                             } else {

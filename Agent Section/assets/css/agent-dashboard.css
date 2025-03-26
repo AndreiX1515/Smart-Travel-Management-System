@@ -1049,7 +1049,7 @@
   display: flex;
   flex-direction: column;
   position: relative;
-  height: 68vh;
+  height: 67.7vh;
   overflow-x: auto;
   overflow-y: auto;
   /* border: 1px solid gainsboro; */
@@ -1058,7 +1058,7 @@
 
 .flight-seat-container .flight-seat-header {
   width: 100%;
-  height: 5.5vh;
+  height: 5.3vh;
   background-color: #fff;
   overflow: hidden;
   /* border: 1px solid gainsboro; */
@@ -1074,7 +1074,7 @@
 }
 
 .flight-seat-footer {
-  margin-top: 15px;
+  margin-top: 10px;
   display: flex;
   height: 4vh;
   /* border: 1px solid black; */
@@ -1444,38 +1444,22 @@
   color: #666;
 }
 
-/* Confirm Table Container */
-.confirm-table-container-flight {
-  width: 100%;
-  height: 70vh;
-  overflow-x: auto;
-  overflow-y: auto;
-  position: relative;
-  /* border: 1px solid black; */
-}
+
 
 /* Info Table */
 
 /* Confirm Table Container */
 .confirm-table-container-flight {
   width: 100%;
-  height: 64vh;
+  height: 60vh;
   overflow: hidden;
   display: block;
   position: relative;
   overflow-y: auto;
   overflow-x: auto;
+  /* border: 1px solid black; */
 }
 
-/* Confirm Table Container */
-.confirm-table-container-flight {
-  width: 100%;
-  height: 65vh;
-  overflow-x: auto;
-  overflow-y: auto;
-  display: block;
-  position: relative;
-}
 
 .dataTables_paginate,
 .dataTables_info {

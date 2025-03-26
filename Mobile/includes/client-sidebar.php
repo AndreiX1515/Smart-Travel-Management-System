@@ -5,17 +5,17 @@
   ini_set('display_startup_errors', 1);
   error_reporting(E_ALL);
 
-  $accountId = $_SESSION['accountId'];
+  $accountId = $_SESSION['client_accountId'];
   $agentId = $_SESSION['clientId'];
   $agentCode = $_SESSION['clientCode'];
   $agentRole = $_SESSION['clientRole'];
   $agentType = $_SESSION['clientType'];
-  $fName =  $_SESSION['fName'] ?? '';
-  $lName = $_SESSION['lName'] ?? '';
-  $mName = $_SESSION['mName'] ?? '';
-  $branchId = $_SESSION['branchId'] ?? '';
-  $email = $_SESSION['email'] ?? '';
-  $password = $_SESSION['password'] ?? '';
+  $fName =  $_SESSION['client_fName'] ?? '';
+  $lName = $_SESSION['client_lName'] ?? '';
+  $mName = $_SESSION['client_mName'] ?? '';
+  $branchId = $_SESSION['client_branchId'] ?? '';
+  // $email = $_SESSION['client_email'] ?? '';
+  // $password = $_SESSION['password'] ?? '';
 
   // Fetch Branch Name
   $sql1 = "SELECT branchName FROM branch WHERE branchId = ?";
@@ -94,7 +94,7 @@
   $current_date = date('D, F d, Y'); 
 ?>
 
-<div class="sidebar" id="sidebar">
+<!-- <div class="sidebar" id="sidebar">
   <div class="main-sidebar">
     <div class="logo mt-3">
       <img src="../Assets/Logos/logo.png" alt="Smart Travel Logo">
@@ -112,7 +112,7 @@
 
     <!-- <a href="../Agent Section/agent-FIT.php" class="page-button add-FIT mb-1 my-0" data-page-name="Add Booking - F.I.T">
       <i class="fa-solid fa-user-plus"></i> <span> Add F.I.T </span>
-    </a> -->
+    </a> 
   
     <div class="section-title" onclick="toggleSubMenu('transactiontable-submenu')">
       Transactions <span class="chevron-icon fas fa-chevron-down"></span>
@@ -125,7 +125,7 @@
 
       <!-- <a href="../Agent Section/agent-FIT-table.php" class="page-button my-0" data-page-name="F.I.T - Transactions Table" style="font-size: 14px;">
         <i class="fas fa-file-invoice"></i> F.I.T 
-      </a>  -->
+      </a>  
     </div>
 
 
@@ -153,12 +153,12 @@
       <a href="../Agent Section/agent-transactions.php" class="page-button" data-page-name="Voucher">
         <i class="fas fa-gift"></i> Voucher
       </a>
-    </div> -->
+    </div> 
 
   </div>
 
   <div class="profile-wrapper">
-    <!-- Profile Section -->
+
     <div class="profile-section">
       <div class="profile-icon">
         <i class="fas fa-user-circle"></i>
@@ -171,7 +171,7 @@
       </div>
     </div>
 
-    <!-- ../Agent Section/logout.php -->
+    ../Agent Section/logout.php 
     <div class="logout-wrapper">
       <a href="#" class="page-button logout" data-page-name="" data-bs-toggle="modal" data-bs-target="#logoutModal">
         <i class="fas fa-sign-out-alt"></i> <span>Logout</span>
@@ -179,7 +179,7 @@
     </div>
 
   </div>
-</div>
+</div> -->
 
 <?php include '../Agent Section/includes/logoutViewPassModal.php'; ?>
 

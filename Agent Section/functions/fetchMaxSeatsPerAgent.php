@@ -7,14 +7,14 @@
     $flightId = $_POST['flightId'];
     $accId = $_POST['accId'];
 
-    $query = "SELECT f.flightId, a.seats AS totalAgentSeats,(f.availSeats - COALESCE(( SELECT SUM(b.pax) FROM booking b 
-                WHERE b.flightId = f.flightId AND b.accountId = a.accountId AND (b.status = 'Confirmed' OR b.status='Reserved')
-                AND b.bookingType = 'Package'), 0)) AS totalSeatsLeft, GREATEST(a.seats - COALESCE((SELECT SUM(b.pax) FROM booking b 
-                WHERE b.flightId = f.flightId AND b.accountId = a.accountId AND  (b.status = 'Confirmed' OR b.status='Reserved') 
-                AND b.bookingType = 'Package'), 0), 0) AS availableSeats
-              FROM agent a
-              JOIN flight f ON f.flightId = ?
-              WHERE a.accountId = ?";
+    $query = "SELECT f.flightId, a.seats AS totalAgentSeats,(f.availSeats - COALESCE(( SELECT SUM(b.pax) FROM booking b WHERE b.flightId = f.flightId AND b.accountId = a.accountId AND (b.status = 'Confirmed' OR b.status='Reserved')
+    
+    AND b.bookingType = 'Package'), 0)) AS totalSeatsLeft, GREATEST(a.seats - COALESCE((SELECT SUM(b.pax) FROM booking b 
+    WHERE b.flightId = f.flightId AND b.accountId = a.accountId AND  (b.status = 'Confirmed' OR b.status='Reserved') 
+    AND b.bookingType = 'Package'), 0), 0) AS availableSeats
+    FROM agent a
+    JOIN flight f ON f.flightId = ?
+    WHERE a.accountId = ?";
 
     // Query flight seat through agentflightseat Table
     // $query = "SELECT flight.flightId, flight.availSeats - IFNULL((SELECT SUM(pax) FROM booking WHERE booking.flightId = flight.flightId 
