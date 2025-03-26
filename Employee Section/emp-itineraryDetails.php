@@ -18,6 +18,82 @@
     <div class="main-container">
         <?php include '../Employee Section/includes/emp-navbar.php' ?>
 
+       
+        <input type="text" id="itineraryId" readonly>
+
+        <script>
+        document.addEventListener("DOMContentLoaded", function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    const itineraryId = urlParams.get("id");
+
+    if (itineraryId) {
+        document.getElementById("itineraryId").value = itineraryId;
+
+        fetch(`../Employee Section/functions/emp-fetchItineraryDetails.php?itinerary_id=${itineraryId}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log("Fetched itinerary data:", data); // Console log the fetched data
+                if (data && data.length > 0) {
+                    populateFields(data);
+                } else {
+                    console.warn("No itinerary data found for ID:", itineraryId);
+                }
+            })
+            .catch(error => console.error("Error fetching itinerary details:", error));
+    }
+
+    function populateFields(data) {
+        data.forEach(item => {
+            console.log("Processing item:", item); // Console log each item being processed
+            switch (item.section) {
+                case "Itinerary":
+                    document.getElementById("packageSelect").value = item.details || "";
+                    document.getElementById("select-days").value = item.extraInfo || "";
+                    break;
+                case "Day":
+                    addDaySection(item.relatedName);
+                    break;
+                case "Area":
+                    populateDropdown("city" + item.dayId, item.relatedName);
+                    break;
+                case "Hotel":
+                    populateDropdown("hotel" + item.dayId, item.relatedName);
+                    break;
+                case "Meal Plan":
+                    populateDropdown("mealPlan" + item.dayId, item.relatedName);
+                    break;
+                case "Activity":
+                    populateDropdown("activity" + item.dayId, item.relatedName);
+                    break;
+                default:
+                    console.warn("Unknown section type:", item.section);
+            }
+        });
+    }
+
+    function populateDropdown(elementId, value) {
+        if (value) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                console.log(`Setting value for ${elementId}:`, value); // Console log dropdown update
+                element.value = value;
+            }
+        }
+    }
+
+    function addDaySection(dayName) {
+        console.log("Adding day section:", dayName); // Console log added day section
+        const dayContainer = document.getElementById("daysContainer");
+        const dayElement = document.createElement("div");
+        dayElement.textContent = dayName;
+        dayContainer.appendChild(dayElement);
+    }
+});
+
+        </script>
+
+
+
         <div class="main-content">
             <div class="form-container">
                 <div class="card">
@@ -202,41 +278,6 @@
                             </div>
                         </div>
 
-                        <!-- Hotel -->
-                        <!-- <div class="row">
-                            <div class="column-header mb-2">
-                                <label for="flightDate">Hotel
-                                    <span class="text-danger"> *</span>
-                                </label>
-                            </div>
-
-                            
-                            <div class="columns col-md-4">
-                                <div class="form-group">
-                                    <select class="form-select hotel-select" id="hotel1" name="hotel1" required>
-                                        <option selected disabled>Select Hotel (1)</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="columns col-md-4">
-                                <div class="form-group">
-                                    <select class="form-select hotel-select" id="hotel2" name="hotel2" required>
-                                        <option selected disabled>Select Hotel (2)</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="columns col-md-4">
-                                <div class="form-group">
-                                    <select class="form-select hotel-select" id="hotel3" name="hotel3" required>
-                                        <option selected disabled>Select Hotel (3)</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                        </div> -->
-
                     </div>
                 </div>
 
@@ -298,6 +339,11 @@
             </div>
         </div>
     </div>
+
+  
+                                    
+
+
 
 
 

@@ -135,7 +135,7 @@ $position = htmlspecialchars(strtoupper($empId));
 			<div class="collapse" id="manageBookingMenu">
 				<ul class="nav flex-column ms-3">
 					<li class="nav-item">
-						<a class="nav-link page-button open-new-tab" href="#" data-page-name="Itinerary" data-url="../Agent Section/functions/Itinerary-template.php">Itinerary</a>
+						<a class="nav-link page-button open-new-tab" href="#" data-page-name="Itinerary" data-url="../Employee Section/emp-itinerarytable.php">Itinerary</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link page-button open-new-tab" href="#" data-page-name="Voucher" data-url="../Agent Section/functions/voucher-template.php">Voucher</a>
