@@ -42,7 +42,7 @@
 .itinerary-card {
   width: 100%;
   background-color: #ffffff;
-  margin-bottom: 5px;
+  
 }
 
 /* .form-footer {
@@ -374,7 +374,7 @@ select.form-control:focus {
   width: 100%;
   border-radius: 10px;
   background-color: #ffffff;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   
 }
 
