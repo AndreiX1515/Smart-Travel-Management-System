@@ -16,20 +16,30 @@
     $birthdate = $_POST['birthdate'];
     $age = $_POST['age'];
     $sexe = $_POST['sex'];
-    $nationality = $_POST['nationality']; 
-    $passportNo = $_POST['passportNo']; 
-    $passportExp = $_POST['passportExp']; 
-    $countryCode1st = $_POST['countryCode']; 
+    $nationality = $_POST['nationality'];
+    $passportNo = $_POST['passportNo'];
+    $passportExp = $_POST['passportExp'];
+    $countryCode1st = $_POST['countryCode'];
     $contactNo1st = $_POST['contactNo'];
     $countryCode2nd = $_POST['2ndcountryCode'];
-    $contactNo2nd = $_POST['2ndcontactNo']; 
-    $email = $_POST['email']; 
-    $addressLine1st = $_POST['addressLine']; 
-    $addressLine2nd = $_POST['2ndaddressLine']; 
-    $city = $_POST['city']; 
-    $state = $_POST['state']; 
-    $zipCode = $_POST['zipCode']; 
-    $country = $_POST['country']; 
+    $contactNo2nd = $_POST['2ndcontactNo'] ?: NULL; // Set NULL if empty
+    $email = $_POST['email'];
+    $addressLine1st = $_POST['addressLine'];
+    $addressLine2nd = $_POST['2ndaddressLine'] ?: NULL; // Set NULL if empty
+    $city = $_POST['city'];
+    $state = $_POST['state'];
+    $zipCode = $_POST['zipCode'];
+    $country = $_POST['country'];
+
+    // if ($contactNo2nd === "")
+    // {
+    //   $contactNo2nd = null;
+    // }
+
+    // if ($addressLine2nd === "")
+    // {
+    //   $addressLine2nd = null;
+    // }
 
     // Start a transaction
     $conn->begin_transaction();
