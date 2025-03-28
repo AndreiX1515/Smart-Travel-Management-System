@@ -18,81 +18,140 @@
     <div class="main-container">
         <?php include '../Employee Section/includes/emp-navbar.php' ?>
 
-       
-        <input type="text" id="itineraryId" readonly>
-
-        <script>
-        document.addEventListener("DOMContentLoaded", function () {
-    const urlParams = new URLSearchParams(window.location.search);
-    const itineraryId = urlParams.get("id");
-
-    if (itineraryId) {
-        document.getElementById("itineraryId").value = itineraryId;
-
-        fetch(`../Employee Section/functions/emp-fetchItineraryDetails.php?itinerary_id=${itineraryId}`)
-            .then(response => response.json())
-            .then(data => {
-                console.log("Fetched itinerary data:", data); // Console log the fetched data
-                if (data && data.length > 0) {
-                    populateFields(data);
-                } else {
-                    console.warn("No itinerary data found for ID:", itineraryId);
-                }
-            })
-            .catch(error => console.error("Error fetching itinerary details:", error));
+        <?php
+    if (!isset($_GET['id'])) {
+        die("Invalid Itinerary ID");
     }
 
-    function populateFields(data) {
-        data.forEach(item => {
-            console.log("Processing item:", item); // Console log each item being processed
-            switch (item.section) {
-                case "Itinerary":
-                    document.getElementById("packageSelect").value = item.details || "";
-                    document.getElementById("select-days").value = item.extraInfo || "";
-                    break;
-                case "Day":
-                    addDaySection(item.relatedName);
-                    break;
-                case "Area":
-                    populateDropdown("city" + item.dayId, item.relatedName);
-                    break;
-                case "Hotel":
-                    populateDropdown("hotel" + item.dayId, item.relatedName);
-                    break;
-                case "Meal Plan":
-                    populateDropdown("mealPlan" + item.dayId, item.relatedName);
-                    break;
-                case "Activity":
-                    populateDropdown("activity" + item.dayId, item.relatedName);
-                    break;
-                default:
-                    console.warn("Unknown section type:", item.section);
+    $itineraryId = intval($_GET['id']); // Ensure it's an integer
+
+    // Fetch itinerary details
+    $sql = "SELECT itineraryName, noOfDays, packageName, periodStart, periodEnd, guideName, countryCode, 
+                contactNumber, city1, hotel1, city2, hotel2, city3, hotel3
+            FROM itineraries
+            WHERE itineraryId = ?";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $itineraryId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if (!$row = $result->fetch_assoc()) {
+        die("Itinerary not found");
+    }
+
+    $itinerary = [
+        'itineraryId' => $itineraryId,
+        'itineraryName' => $row['itineraryName'],
+        'noOfDays' => $row['noOfDays'],
+        'packageName' => $row['packageName'],
+        'periodStart' => $row['periodStart'],
+        'periodEnd' => $row['periodEnd'],
+        'guideName' => $row['guideName'],
+        'countryCode' => $row['countryCode'],
+        'contactNumber' => $row['contactNumber'],
+        'cities' => [
+            ['city' => $row['city1'], 'hotel' => $row['hotel1']],
+            ['city' => $row['city2'], 'hotel' => $row['hotel2']],
+            ['city' => $row['city3'], 'hotel' => $row['hotel3']]
+        ],
+        'days' => []
+    ];
+
+    // Fetch days, areas, hotels, activities, and meal plans
+    $sqlDays = "
+        SELECT 
+            d.dayId, 
+            d.dayNumber, 
+            GROUP_CONCAT(DISTINCT a.areaName ORDER BY a.areaName ASC) AS areas,
+            GROUP_CONCAT(DISTINCT h.hotelName ORDER BY h.hotelName ASC) AS hotels,
+            GROUP_CONCAT(DISTINCT act.activityName ORDER BY act.activityName ASC) AS activities,
+            GROUP_CONCAT(DISTINCT mp.mealPlan ORDER BY mp.mealPlan ASC) AS meals
+        FROM itinerarydays d
+        LEFT JOIN itineraryareas a ON d.dayId = a.dayId
+        LEFT JOIN itineraryhotels h ON d.dayId = h.dayId
+        LEFT JOIN itineraryactivities act ON d.dayId = act.dayId
+        LEFT JOIN itinerarymealplans mp ON d.dayId = mp.dayId
+        WHERE d.itineraryId = ?
+        GROUP BY d.dayId, d.dayNumber
+        ORDER BY d.dayNumber ASC";
+
+    $stmt = $conn->prepare($sqlDays);
+    $stmt->bind_param("i", $itineraryId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    while ($day = $result->fetch_assoc()) {
+        $areas = $day['areas'] ? explode(',', $day['areas']) : [];
+        $hotels = $day['hotels'] ? explode(',', $day['hotels']) : [];
+        $meals = $day['meals'] ? explode(',', $day['meals']) : [];
+        
+        // Log if arrays are empty
+        if (empty($areas)) {
+            echo "<script>console.log('No areas found for day " . $day['dayNumber'] . "');</script>";
+        }
+        if (empty($hotels)) {
+            echo "<script>console.log('No hotels found for day " . $day['dayNumber'] . "');</script>";
+        }
+        if (empty($meals)) {
+            echo "<script>console.log('No meals found for day " . $day['dayNumber'] . "');</script>";
+        }
+
+        // Store day data in itinerary array
+        $itinerary['days'][] = [
+            'day' => $day['dayNumber'],
+            'areas' => $areas,
+            'hotels' => $hotels,
+            'activities' => $day['activities'] ? explode(',', $day['activities']) : [],
+            'meals' => $meals
+        ];
+    }
+
+    // Convert array to JSON
+    $jsonData = json_encode($itinerary);
+
+    // Log JSON data in the browser console
+    echo "<script>console.log('Fetched Itinerary Data:', " . $jsonData . ");</script>";
+?>
+
+
+
+        <!-- HTML Form -->
+        <input type="hidden" id="itineraryId" value="<?= htmlspecialchars($itineraryId); ?>" readonly>
+
+        <!-- <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const itineraryId = urlParams.get("id");
+
+            if (itineraryId) {
+                fetch(`../Employee Section/functions/emp-fetchItineraryDetails.php?id=${itineraryId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.error) {
+                            console.error(data.error);
+                        } else {
+                            document.getElementById("packageSelect").value = data.packageName;
+                            document.getElementById("PeriodStartDate").value = data.periodStart;
+                            document.getElementById("PeriodEndDate").value = data.periodEnd;
+                            document.getElementById("guideName").value = data.guideName;
+                            document.getElementById("countryCode").value = data.countryCode;
+                            document.getElementById("contactNumber").value = data.contactNumber;
+                            document.getElementById("city1").value = data.city1;
+                            document.getElementById("hotel1").value = data.hotel1;
+                            document.getElementById("city2").value = data.city2;
+                            document.getElementById("hotel2").value = data.hotel2;
+                            document.getElementById("city3").value = data.city3;
+                            document.getElementById("hotel3").value = data.hotel3;
+                            document.getElementById("select-days").value = data.noOfDays;
+                        }
+                    })
+                    .catch(error => console.error("Error fetching itinerary:", error));
             }
         });
-    }
-
-    function populateDropdown(elementId, value) {
-        if (value) {
-            const element = document.getElementById(elementId);
-            if (element) {
-                console.log(`Setting value for ${elementId}:`, value); // Console log dropdown update
-                element.value = value;
-            }
-        }
-    }
-
-    function addDaySection(dayName) {
-        console.log("Adding day section:", dayName); // Console log added day section
-        const dayContainer = document.getElementById("daysContainer");
-        const dayElement = document.createElement("div");
-        dayElement.textContent = dayName;
-        dayContainer.appendChild(dayElement);
-    }
-});
-
-        </script>
 
 
+        </script> -->
 
         <div class="main-content">
             <div class="form-container">
@@ -115,7 +174,7 @@
 
                                 <div class="form-group">
                                     <select class="form-select" id="packageSelect" name="packageSelect" required>
-                                        <option selected disabled>Select Package Type</option>
+                                        <option selected><?= $itinerary['packageName']; ?></option>
                                         <?php
                                         // Execute the SQL query
                                         $sql1 = "SELECT packageName FROM package ORDER BY packageId ASC";
@@ -123,7 +182,7 @@
 
                                         // Check if there are results
                                         if ($res1->num_rows > 0) {
-                                            // Loop through the results and generate options
+                                            // Loop through the results and generate option
                                             while ($row = $res1->fetch_assoc()) {
                                                 echo "<option value='" . $row['packageName'] . "'>" . $row['packageName'] . "</option>";
                                             }
@@ -151,7 +210,7 @@
                                     <div class="form-group">
                                         <div class="date-range-inputs-wrapper">
                                             <div class="input-with-icon">
-                                                <input type="text" class="datepicker" id="PeriodStartDate" placeholder="Start" readonly>
+                                                <input type="text" class="datepicker" id="PeriodStartDate" placeholder="Start" value="<?= $itinerary['periodStart']; ?>" readonly>
                                                 <i class="fas fa-calendar-alt calendar-icon"></i>
                                             </div>
                                         </div>
@@ -163,7 +222,7 @@
                                     <div class="form-group">
                                         <div class="date-range-inputs-wrapper">
                                             <div class="input-with-icon">
-                                                <input type="text" class="datepicker" id="PeriodEndDate" placeholder="End" readonly>
+                                                <input type="text" class="datepicker" id="PeriodEndDate" placeholder="End" value="<?= $itinerary['periodEnd']; ?>" readonly>
                                                 <i class="fas fa-calendar-alt calendar-icon"></i>
                                             </div>
                                         </div>
@@ -171,8 +230,6 @@
                                 </div>
 
                             </div>
-
-
 
                             <div class="columns col-md-4">
                                 <div class="column-header">
@@ -183,8 +240,7 @@
 
                                 <div class="form-group">
                                     <select class="form-select" id="guideName" name="flightDate" required>
-                                        <option selected disabled>Select Guide</option>
-                                        <option value="John Doe">John Doe</option>
+                                        <option selected><?= $itinerary['guideName']; ?></option>
                                     </select>
                                 </div>
                             </div>
@@ -198,10 +254,10 @@
 
                                 <div class="form-group d-flex flex-row align-items-center">
                                     <select class="form-select" id="countryCode" style="width: 80px;">
-                                        <option value="+63" selected>+63</option>
+                                        <option selected><?= $itinerary['countryCode']; ?></option>
                                         <option value="+82">+82</option>
                                     </select>
-                                    <input type="text" class="form-control ms-2" id="contactNumber" name="contactNumber" min="1" placeholder="9***********" required>
+                                    <input type="text" class="form-control ms-2" id="contactNumber" name="contactNumber" value="<?= $itinerary['contactNumber']; ?>" required>
                                 </div>
 
                             </div>
@@ -209,74 +265,64 @@
                         </div>
 
                         <!-- Tour Areas, Hotels -->
-                        <div class="row">
-                            <div class="columns col-md-8">
-                                <div class="column-header">
-                                    <label for="flightDate">Tour Areas, Hotels <span class="text-danger"> *</span></label>
-                                </div>
-                                <div class="cityhotel-wrapper">
-                                    <div class="cityhotel-item">
-                                        <div class="form-group d-flex flex-row align-items-center">
-                                            <select class="form-select city-select" id="city1" name="city(1)" required>
-                                                <option selected disabled>Select City</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="dash-separator">-></div>
-                                    <div class="cityhotel-item">
-                                        <div class="form-group d-flex flex-row align-items-center">
-                                            <select class="form-select hotel-select" id="hotel1" name="hotel(1)" required>
-                                                <option selected disabled>Select Hotel</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <?php
+                            $cities = ["Seoul", "Busan", "Jeonju", "Jeju"];
+                            $hotels = [
+                                "Seoul" => ["Lotte Hotel Seoul", "Signiel Seoul", "The Shilla Seoul", "Grand Hyatt Seoul", "InterContinental Seoul COEX"],
+                                "Busan" => ["Park Hyatt Busan", "Paradise Hotel Busan"],
+                                "Jeonju" => ["Lahan Hotel Jeonju"],
+                                "Jeju" => ["Maison Glad Jeju", "Ramada Plaza Jeju"]
+                            ];
 
-                        <div class="row">
-                            <div class="columns col-md-8">
-                                <div class="cityhotel-wrapper">
-                                    <div class="cityhotel-item">
-                                        <div class="form-group d-flex flex-row align-items-center">
-                                            <select class="form-select city-select" id="city2" name="city(2)" required>
-                                                <option selected disabled>Select City</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="dash-separator">-></div>
-                                    <div class="cityhotel-item">
-                                        <div class="form-group d-flex flex-row align-items-center">
-                                            <select class="form-select hotel-select" id="hotel2" name="hotel(2)" required>
-                                                <option selected disabled>Select Hotel</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                            for ($i = 0; $i < 3; $i++) {
+                                $cityKey = "city" . ($i + 1);
+                                $hotelKey = "hotel" . ($i + 1);
+                                $selectedCity = $itinerary['cities'][$i]['city'] ?? "";
+                                $selectedHotel = $itinerary['cities'][$i]['hotel'] ?? "";
+                            ?>
+                                <div class="row">
+                                    <div class="columns col-md-8">
+                                        <div class="cityhotel-wrapper">
+                                            <div class="cityhotel-item">
+                                                <div class="form-group d-flex flex-row align-items-center">
+                                                    <select class="form-select city-select" id="<?= $cityKey ?>" name="city(<?= $i + 1 ?>)" data-index="<?= $i ?>" required>
+                                                        <?php foreach ($cities as $city) : ?>
+                                                            <option value="<?= $city ?>" <?= ($city === $selectedCity) ? 'selected' : '' ?>><?= $city ?></option>
+                                                        <?php endforeach; ?>
+                                                    </select>
+                                                </div>
+                                            </div>
 
-                        <div class="row">
-                            <div class="columns col-md-8">
-                                <div class="cityhotel-wrapper">
-                                    <div class="cityhotel-item">
-                                        <div class="form-group d-flex flex-row align-items-center">
-                                            <select class="form-select city-select" id="city3" name="city(3)" required>
-                                                <option selected disabled>Select City</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="dash-separator">-></div>
-                                    <div class="cityhotel-item">
-                                        <div class="form-group d-flex flex-row align-items-center">
-                                            <select class="form-select hotel-select" id="hotel3" name="hotel(3)" required>
-                                                <option selected disabled>Select Hotel</option>
-                                            </select>
+                                            <div class="dash-separator">-></div>
+
+                                            <div class="cityhotel-item">
+                                                <div class="form-group d-flex flex-row align-items-center">
+                                                    <select class="form-select hotel-select" id="<?= $hotelKey ?>" name="hotel(<?= $i + 1 ?>)" required>
+                                                        <option disabled <?= empty($selectedHotel) ? 'selected' : '' ?>>Select Hotel</option>
+                                                        <?php if (!empty($selectedCity) && isset($hotels[$selectedCity])) : ?>
+                                                            <?php foreach ($hotels[$selectedCity] as $hotel) : ?>
+                                                                <option value="<?= $hotel ?>" <?= ($hotel === $selectedHotel) ? 'selected' : '' ?>><?= $hotel ?></option>
+                                                            <?php endforeach; ?>
+                                                        <?php endif; ?>
+                                                    </select>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
+                                
+                                <script>
+                                    document.addEventListener("DOMContentLoaded", function () {
+                                        let selectedCity<?= $i ?> = document.getElementById("<?= $cityKey ?>").value;
+                                        console.log("Selected City <?= $i + 1 ?>:", selectedCity<?= $i ?>);
+                                    });
+                                </script>
+
+                            <?php } ?>
+
+
+
+
 
                     </div>
                 </div>
@@ -294,8 +340,9 @@
                                 <div class="form-group days-select-wrapper">
                                     <label for="flightDate">No. of days<span class="text-danger"> *</span></label>
                                     <select class="form-select" id="select-days" name="numberOfDays" required>
-                                        <option selected disabled>Select Number of Days</option>
+                                        <option value="<?= $noOfDays; ?>" selected>Day <?= $noOfDays; ?></option> <!-- Keeps preselected value -->
                                     </select>
+
                                     <small class="form-text text-muted">Changing this will clear all your data on the fields.</small>
                                 </div>
                             </div>
@@ -340,13 +387,6 @@
         </div>
     </div>
 
-  
-                                    
-
-
-
-
-
     <?php include '../Employee Section/includes/emp-scripts.php' ?>
 
     <!-- Datepicker Script -->
@@ -379,7 +419,7 @@
     </script>
 
     <!-- First Card Script -->
-    <script>
+    <!-- <script>
         document.addEventListener("DOMContentLoaded", () => {
             // Cities and Hotels Data
             const cities = ["Seoul", "Busan", "Jeonju", "Jeju"];
@@ -390,31 +430,35 @@
                 "Jeju": ["Maison Glad Jeju", "Ramada Plaza Jeju"]
             };
 
-            // Load stored hotel selections
-            loadStoredHotels();
-
-            // Populate city dropdowns
-            document.querySelectorAll(".city-select").forEach((select, index) => {
-                populateDropdown(select, cities, "Select City");
-                select.addEventListener("change", () => updateHotelDropdown(select, index + 1));
+            // Populate existing city dropdowns
+            document.querySelectorAll(".city-select").forEach((select) => {
+                const storedValue = select.getAttribute("data-selected"); // Get selected value from PHP
+                populateDropdown(select, cities, "Select City", storedValue);
+                select.addEventListener("change", () => updateHotelDropdown(select));
             });
 
+            // Load stored hotel selections from localStorage
+            loadStoredHotels();
+
             // Function to populate dropdowns (City or Hotel)
-            function populateDropdown(select, optionsList, placeholderText) {
+            function populateDropdown(select, optionList, placeholderText, selectedValue = "") {
                 if (!select) return;
 
-                select.innerHTML = `<option selected disabled>${placeholderText}</option>`;
-                optionsList.forEach(optionValue => {
+                select.innerHTML = `<option disabled>${placeholderText}</option>`;
+                optionList.forEach(optionValue => {
                     const option = document.createElement("option");
                     option.value = optionValue;
                     option.textContent = optionValue;
+                    if (optionValue === selectedValue) {
+                        option.selected = true;
+                    }
                     select.appendChild(option);
                 });
             }
 
-            // Function to update the corresponding Hotel dropdown when a City is selected
-            function updateHotelDropdown(citySelect, rowIndex) {
-                const row = citySelect.closest(".row"); // Get the parent row
+            // Function to update hotel dropdown based on city selection
+            function updateHotelDropdown(citySelect) {
+                const row = citySelect.closest(".row"); // Get parent row
                 const hotelSelect = row.querySelector(".hotel-select"); // Find corresponding hotel select
 
                 if (!hotelSelect) return;
@@ -426,28 +470,25 @@
                     populateDropdown(hotelSelect, hotels[selectedCity], "Select Hotel");
                 }
 
-                console.log(`Row ${rowIndex}: City Selected - ${selectedCity}`);
+                console.log(`City Selected: ${selectedCity}`);
             }
 
             // Function to load stored hotels from localStorage
             function loadStoredHotels() {
                 const storedHotels = JSON.parse(localStorage.getItem("selectedHotels")) || {};
-                document.querySelectorAll(".hotel-select").forEach((select, index) => {
-                    const row = select.closest(".row");
+                document.querySelectorAll(".row").forEach((row) => {
                     const citySelect = row.querySelector(".city-select");
-                    const rowIndex = index + 1;
+                    const hotelSelect = row.querySelector(".hotel-select");
 
-                    if (citySelect) {
+                    if (citySelect && hotelSelect) {
                         const selectedCity = citySelect.value;
                         if (selectedCity && hotels[selectedCity]) {
-                            populateDropdown(select, hotels[selectedCity], "Select Hotel");
+                            populateDropdown(hotelSelect, hotels[selectedCity], "Select Hotel");
                             if (storedHotels[selectedCity]) {
-                                select.value = storedHotels[selectedCity];
+                                hotelSelect.value = storedHotels[selectedCity];
                             }
                         }
                     }
-
-                    console.log(`Row ${rowIndex}: Loaded City - ${citySelect?.value || "None"}, Hotel - ${select.value || "None"}`);
                 });
             }
 
@@ -456,7 +497,6 @@
                 if (event.target.classList.contains("hotel-select")) {
                     const row = event.target.closest(".row");
                     const citySelect = row.querySelector(".city-select");
-                    const rowIndex = Array.from(document.querySelectorAll(".row")).indexOf(row) + 1;
                     if (!citySelect) return;
 
                     const selectedCity = citySelect.value;
@@ -466,21 +506,16 @@
                     storedHotels[selectedCity] = selectedHotel;
                     localStorage.setItem("selectedHotels", JSON.stringify(storedHotels));
 
-                    console.log(`Row ${rowIndex}: City - ${selectedCity}, Hotel - ${selectedHotel}`);
+                    console.log(`Saved: City - ${selectedCity}, Hotel - ${selectedHotel}`);
                 }
             });
 
-            // Observe dynamically added elements
+            // MutationObserver for dynamically added elements
             const observer = new MutationObserver(() => {
-                document.querySelectorAll(".hotel-select").forEach(select => {
+                document.querySelectorAll(".city-select").forEach((select) => {
                     if (!select.hasAttribute("data-initialized")) {
                         select.setAttribute("data-initialized", "true");
-                        const row = select.closest(".row");
-                        const citySelect = row.querySelector(".city-select");
-                        const rowIndex = Array.from(document.querySelectorAll(".row")).indexOf(row) + 1;
-                        if (citySelect) {
-                            updateHotelDropdown(citySelect, rowIndex);
-                        }
+                        select.addEventListener("change", () => updateHotelDropdown(select));
                     }
                 });
             });
@@ -490,148 +525,179 @@
                 subtree: true
             });
         });
-    </script>
+
+    </script> -->
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const selectDays = document.getElementById("select-days");
-            const itineraryContainer = document.getElementById("itinerary-container");
-            const formFooter = document.querySelector(".form-footer"); // Select the form-footer
-            const submitBtn = document.getElementById("submit-itinerary");
+    document.addEventListener("DOMContentLoaded", function () {
+        const itineraryContainer = document.getElementById("itinerary-container");
+        const selectDays = document.getElementById("select-days");
+        const formFooter = document.querySelector(".form-footer");
 
-            // Korean Tour Data
-            const koreanTourAreas = ["Seoul", "Busan", "Jeju", "Incheon", "Gyeongju"];
-            const koreanMealPlans = ["Traditional Korean Cuisine", "Street Food Tour", "Seafood Specialty", "Vegetarian Option", "Luxury Fine Dining"];
+        let itineraryData = <?= json_encode($itinerary); ?>;
+        console.log("Loaded itineraryData:", itineraryData);
 
-            const hotels = [
-                "Lotte Hotel Seoul",
-                "Signiel Seoul",
-                "The Shilla Seoul",
-                "Grand Hyatt Seoul",
-                "InterContinental Seoul COEX",
-                "Park Hyatt Busan",
-                "Paradise Hotel Busan",
-                "Lahan Hotel Jeonju",
-                "Maison Glad Jeju",
-                "Ramada Plaza Jeju"
-            ];
+        // Ensure days exist as an array
+        let days = Array.isArray(itineraryData.days) ? itineraryData.days : [];
+        let selectedValue = itineraryData.noOfDays || 0;
 
-            // Itineraries
-            const itineraries = [
-                "Gyeongbokgung Palace Tour",
-                "Myeongdong Shopping District",
-                "Namsan Seoul Tower",
-                "Bukchon Hanok Village",
-                "Dongdaemun Design Plaza",
-                "Busan Gamcheon Culture Village",
-                "Jeju Island Lava Tubes"
-            ];
+        // Extract and filter unique available areas, hotels, and meals from days
+        const getUniqueValues = (arr) => [...new Set(arr.flatMap(day => Array.isArray(day) ? day : []))];
 
-            for (let num = 1; num <= 5; num++) {
-                let option = document.createElement("option");
-                option.value = num;
-                option.textContent = `Day ${num}`;
-                selectDays.appendChild(option);
+        let availableAreas = getUniqueValues(days.map(day => day.areas));
+        let availableHotels = getUniqueValues(days.map(day => day.hotels));
+        let availableMeals = getUniqueValues(days.map(day => day.meals));
+
+        console.log("Available Areas:", availableAreas);
+        console.log("Available Hotels:", availableHotels);
+        console.log("Available Meal Plans:", availableMeals);
+
+        // Populate Days Dropdown
+        selectDays.innerHTML = "";
+        for (let num = 1; num <= 5; num++) {
+            let option = document.createElement("option");
+            option.value = num;
+            option.textContent = `Day ${num}`;
+            if (num === selectedValue) option.selected = true;
+            selectDays.appendChild(option);
+        }
+
+        function createSelectColumn(label, className, options = [], selectedValue, index = 1) {
+            // console.log(`Creating select dropdown for: ${label} ${index}`);
+
+            if (!Array.isArray(options) || options.length === 0) {
+                console.error("Options array is empty or undefined for:", label);
+                return `<div class="col-4"><label class="form-label fw-normal">${label} ${index}:</label><p style="color: red;">No options available</p></div>`;
             }
 
-            // Generate itinerary cards based on selected days
-            selectDays.addEventListener("change", function() {
-                const selectedDays = parseInt(selectDays.value);
-                itineraryContainer.innerHTML = ""; // Clear previous content
+            // Ensure options are unique
+            let uniqueOptions = [...new Set(options)];
 
-                for (let day = 1; day <= selectedDays; day++) {
-                    const card = document.createElement("div");
-                    card.className = "card itinerary-card mb-3"; // Bootstrap margin-bottom for spacing
+            // console.log("Final options before rendering:", uniqueOptions);
 
-                    card.innerHTML = `
-                        <div class="card-header bg-primary text-white fw-bold">Day ${day}</div>
-                        <div class="card-body">
-                            <div class="container-fluid">
-                                <div class="row mb-3">
-                                    ${day === 1 
-                                        ? `<div class="col-4">
-                                            <label class="form-label fw-semibold">Area:</label>    
-                                            <select class="form-select area-select" data-day="${day}">
-                                                <option selected disabled>Select Area</option>
-                                                ${koreanTourAreas.map(area => `<option value="${area}">${area}</option>`).join("")}
-                                            </select>
-                                        </div>`
-                                        : 
-                                        ["Area 1", "Area 2", "Area 3"].map(areaLabel => `
-                                            <div class="col-4">
-                                                <label class="form-label fw-semibold">${areaLabel}:</label>    
-                                                <select class="form-select area-select" data-day="${day}">
-                                                    <option selected disabled>Select ${areaLabel}</option>
-                                                    ${koreanTourAreas.map(area => `<option value="${area}">${area}</option>`).join("")}
-                                                </select>
-                                            </div>
-                                        `).join("")
-                                    }
-                                </div>
+            return `
+                <div class="col-4">
+                    <label class="form-label fw-normal">${label} ${index}:</label>
+                    <select class="form-select ${className}">
+                        <option selected disabled>Select ${label} ${index}</option>
+                        ${uniqueOptions.map(opt => {
+                            // console.log(`Processing option: ${opt}`);
+                            return `<option value="${opt}" ${String(opt) === String(selectedValue) ? "selected" : ""}>${opt}</option>`;
+                        }).join("")}
+                    </select>
+                </div>
+            `;
+        }
 
-                                <div class="row mb-3">
-                                    ${day === 1 
-                                        ? `<div class="col-4">
-                                            <label class="form-label fw-semibold">Meal Plan:</label>
-                                            <select class="form-select meal-plan-select" data-day="${day}">
-                                                <option selected disabled>Select Meal Plan</option>
-                                                ${koreanMealPlans.map(meal => `<option value="${meal}">${meal}</option>`).join("")}
-                                            </select>
-                                        </div>`
-                                        : 
-                                        ["Meal Plan 1", "Meal Plan 2", "Meal Plan 3"].map(mealLabel => `
-                                            <div class="col-4">
-                                                <label class="form-label fw-semibold">${mealLabel}:</label>
-                                                <select class="form-select meal-plan-select" data-day="${day}">
-                                                    <option selected disabled>Select ${mealLabel}</option>
-                                                    ${koreanMealPlans.map(meal => `<option value="${meal}">${meal}</option>`).join("")}
-                                                </select>
-                                            </div>
-                                        `).join("")
-                                    }
-                                </div>
 
-                                <div class="row mb-3">
-                                    <div class="col-12">
-                                        <label class="form-label fw-semibold">Hotels:</label>
-                                        <div class="row">
-                                            ${["Hotel 1", "Hotel 2", "Hotel 3"].map(hotelLabel => `
-                                                <div class="col-md-4 col-sm-12 mb-2">
-                                                    <select class="form-select hotel-select" data-day="${day}">
-                                                        <option selected disabled>Select ${hotelLabel}</option>
-                                                        ${hotels.map(hotel => `<option value="${hotel}">${hotel}</option>`).join("")}
-                                                    </select>
-                                                </div>
-                                            `).join("")}
-                                        </div>
+
+
+        // Function to create multiple select columns for hotels
+        function createMultipleSelectColumns(labels, className, options, selectedValues = []) {
+            return labels.map((label, index) => createSelectColumn(label, className, options, selectedValues[index] || "", index + 1)).join("");
+        }
+
+
+        // Function to generate itinerary cards for each day
+        function generateItineraryCards(days) {
+            itineraryContainer.innerHTML = "";
+
+            // console.log("Generating Itinerary for Days:", days);
+
+            for (let day = 1; day <= days; day++) {
+                
+                let dayData = itineraryData.days.find(d => d.day == day) || {};
+
+                let areas = Array.isArray(dayData.areas) ? dayData.areas : [];
+                let hotels = Array.isArray(dayData.hotels) ? dayData.hotels : [];
+                let meals = Array.isArray(dayData.meals) ? dayData.meals : [];
+                let activities = Array.isArray(dayData.activities) ? dayData.activities : [];
+
+                const card = document.createElement("div");
+                card.className = "card itinerary-card mb-3";
+                card.innerHTML = `
+                    <div class="card-header bg-primary text-white fw-bold">
+                        Day ${day}
+                    </div>
+
+                    <div class="card-body">
+                        <div class="container-fluid">
+                            <!-- Area Section (Dynamic) -->
+                            <div class="row mb-3">
+                                ${areas.map((area, index) => {
+                                    console.log(`Creating Select for Area ${index + 1}:`, area);
+                                    return createSelectColumn("Area", "area-select", availableAreas, area, index + 1);
+                                }).join("")}
+                            </div>
+
+                            <!-- Meal Plan Section (Dynamic) -->
+                            <div class="row mb-3">
+                                ${meals.map((meal, index) => createSelectColumn("Meal Plan", "meal-plan-select", availableMeals, meal, index + 1)).join("")}
+                            </div>
+
+                            <!-- Hotels Section (Dynamic) -->
+                            <div class="row mb-3">
+                                <div class="col-12">
+                                    <label class="form-label fw-semibold">Hotels:</label>
+                                    <div class="row">
+                                        ${createMultipleSelectColumns(["Hotel", "Hotel", "Hotel"], "hotel-select", availableHotels, hotels)}
                                     </div>
                                 </div>
+                            </div>
 
-                                <div class="row mb-3">
-                                    <div class="col-12">
-                                        <label class="form-label fw-semibold">Itinerary:</label>
+                            <!-- Itinerary Section (Dynamic) -->
+                            <div class="row mb-3">
+                                <div class="col-12">
+                                    <label class="form-label fw-semibold">Itinerary:</label>
+                                    <div class="row">
+                                        ${activities.map((activity, index) => `
+                                            <div class="col-12 mb-2">
+                                                <select class="form-select itinerary-select">
+                                                    <option selected disabled>Select Activity ${index + 1}</option>
+                                                    ${activities.map(act => `
+                                                        <option value="${act}" ${String(act) === String(activity) ? "selected" : ""}>${act}</option>
+                                                    `).join("")}
+                                                </select>
+                                            </div>
+                                        `).join("")}
                                     </div>
-                                    ${[1, 2, 3, 4, 5, 6, 7].map(num => `
-                                        <div class="col-12 mb-2">
-                                            <select class="form-select itinerary-select" data-day="${day}">
-                                                <option selected disabled>Select Itinerary ${num}</option>
-                                                ${itineraries.map(itinerary => `<option value="${itinerary}">${itinerary}</option>`).join("")}
-                                            </select>
-                                        </div>
-                                    `).join("")}
+
                                 </div>
                             </div>
                         </div>
-                    `;
+                    </div>
+                `;
+                itineraryContainer.appendChild(card);
+            }
 
-                    itineraryContainer.appendChild(card);
-                }
+            formFooter.style.display = days ? "flex" : "none";
+        }
 
-                // Hide the form-footer when itinerary is cleared
-                formFooter.style.display = selectedDays ? "flex" : "none";
-            });
+        // Event listener for days selection change
+        selectDays.addEventListener("change", function () {
+            const selectedDays = parseInt(selectDays.value);
+            generateItineraryCards(selectedDays);
+        });
 
-            document.addEventListener("change", function(event) {
+        // Initialize itinerary on page load if selectedValue is greater than 0
+        if (selectedValue > 0) {
+            generateItineraryCards(selectedValue);
+        }
+    });
+</script>
+
+
+
+
+
+
+
+
+    
+
+<script>
+            // Listen for selection changes inside itinerary cards
+            document.addEventListener("change", function (event) {
                 if (event.target.matches(".area-select, .hotel-select, .meal-plan-select, .itinerary-select")) {
                     const day = event.target.dataset.day;
                     if (!day) {
@@ -658,109 +724,118 @@
                     }, null, 2));
                 }
             });
-        });
+   
     </script>
 
+
     <script>
-        document.getElementById("submitTour").addEventListener("click", function () {
+        document.getElementById("submitTour").addEventListener("click", function() {
             $("#templateNameModal").modal("show");
         });
 
-// Function to proceed after entering the template name
-function proceedWithSubmission() {
-    const templateName = document.getElementById("templateName")?.value.trim();
+        // Function to proceed after entering the template name
+        function proceedWithSubmission() {
+            const templateName = document.getElementById("templateName")?.value.trim();
 
-    if (!templateName) {
-        alert("Please enter a template name before proceeding.");
-        return;
-    }
-
-    const itineraryData = [];
-
-    const selectedPackage = document.getElementById("packageSelect")?.value.trim() || "None";
-    const noOfDays = document.getElementById("select-days")?.value.trim() || "None";
-    const startDate = document.getElementById("PeriodStartDate")?.value.trim() || "None";
-    const endDate = document.getElementById("PeriodEndDate")?.value.trim() || "None";
-    const guideName = document.getElementById("guideName")?.value.trim() || "None";
-    const countryCode = document.getElementById("countryCode")?.value.trim() || "None";
-    const contactNumber = document.getElementById("contactNumber")?.value.trim() || "None";
-
-    const city1 = document.getElementById("city1")?.value.trim() || "None";
-    const hotel1 = document.getElementById("hotel1")?.value.trim() || "None";
-    const city2 = document.getElementById("city2")?.value.trim() || "None";
-    const hotel2 = document.getElementById("hotel2")?.value.trim() || "None";
-    const city3 = document.getElementById("city3")?.value.trim() || "None";
-    const hotel3 = document.getElementById("hotel3")?.value.trim() || "None";
-
-    document.querySelectorAll(".itinerary-card").forEach(dayCard => {
-        const day = dayCard.querySelector(".hotel-select")?.dataset.day || "Unknown";
-
-        const selectedAreas = [...dayCard.querySelectorAll(".area-select[data-day]")].map(area => area.value.trim()).filter(value => value !== "");
-        const selectedMealPlans = [...dayCard.querySelectorAll(".meal-plan-select[data-day]")].map(meal => meal.value.trim()).filter(value => value !== "");
-        const selectedHotels = [...dayCard.querySelectorAll(".hotel-select")].map(select => select.value.trim()).filter(value => value !== "");
-        const selectedItineraries = [...dayCard.querySelectorAll(".itinerary-select")].map(select => select.value.trim()).filter(value => value !== "");
-
-        itineraryData.push({
-            day,
-            areas: selectedAreas.length ? selectedAreas : ["None"],
-            meal_plans: selectedMealPlans.length ? selectedMealPlans : ["None"],
-            hotels: selectedHotels.length ? selectedHotels : ["None"],
-            itineraries: selectedItineraries.length ? selectedItineraries : ["None"]
-        });
-    });
-
-    console.group("📌 Submitting Itinerary Data");
-    console.table({ selectedPackage, startDate, endDate, guideName, city1, hotel1, city2, hotel2, city3, hotel3 });
-    console.table(itineraryData);
-    console.groupEnd();
-
-    const submitButton = document.getElementById("submitTour");
-    submitButton.disabled = true;
-
-    $.ajax({
-        url: "../Employee Section/functions/emp-saveItinerary.php",
-        type: "POST",
-        data: {
-            noOfDays: noOfDays,
-            package: selectedPackage,
-            period_start: startDate,
-            period_end: endDate,
-            countryCode: countryCode,
-            contactNumber: contactNumber,
-            guide: guideName,
-            city1: city1,
-            hotel1: hotel1,
-            city2: city2,
-            hotel2: hotel2,
-            city3: city3,
-            hotel3: hotel3,
-            itinerary: JSON.stringify(itineraryData),
-            templateName: templateName // Pass only the template name
-        },
-        dataType: "json",
-        success: function (response) {
-            submitButton.disabled = false;
-            if (response.status === "success") {
-                alert("Itinerary successfully created!");
-                location.reload();
-            } else {
-                console.error("❌ Server Error:", response.message);
-                alert("❌ Error saving itinerary: " + response.message);
+            if (!templateName) {
+                alert("Please enter a template name before proceeding.");
+                return;
             }
-        },
-        error: function (xhr, status, error) {
-            submitButton.disabled = false;
-            console.error("⚠️ AJAX Error:", error);
-            console.error("⚠️ Response Text:", xhr.responseText);
-            alert("An error occurred while saving the itinerary.");
+
+            const itineraryData = [];
+
+            const selectedPackage = document.getElementById("packageSelect")?.value.trim() || "None";
+            const noOfDays = document.getElementById("select-days")?.value.trim() || "None";
+            const startDate = document.getElementById("PeriodStartDate")?.value.trim() || "None";
+            const endDate = document.getElementById("PeriodEndDate")?.value.trim() || "None";
+            const guideName = document.getElementById("guideName")?.value.trim() || "None";
+            const countryCode = document.getElementById("countryCode")?.value.trim() || "None";
+            const contactNumber = document.getElementById("contactNumber")?.value.trim() || "None";
+
+            const city1 = document.getElementById("city1")?.value.trim() || "None";
+            const hotel1 = document.getElementById("hotel1")?.value.trim() || "None";
+            const city2 = document.getElementById("city2")?.value.trim() || "None";
+            const hotel2 = document.getElementById("hotel2")?.value.trim() || "None";
+            const city3 = document.getElementById("city3")?.value.trim() || "None";
+            const hotel3 = document.getElementById("hotel3")?.value.trim() || "None";
+
+            document.querySelectorAll(".itinerary-card").forEach(dayCard => {
+                const day = dayCard.querySelector(".hotel-select")?.dataset.day || "Unknown";
+
+                const selectedAreas = [...dayCard.querySelectorAll(".area-select[data-day]")].map(area => area.value.trim()).filter(value => value !== "");
+                const selectedMealPlans = [...dayCard.querySelectorAll(".meal-plan-select[data-day]")].map(meal => meal.value.trim()).filter(value => value !== "");
+                const selectedHotels = [...dayCard.querySelectorAll(".hotel-select")].map(select => select.value.trim()).filter(value => value !== "");
+                const selectedItineraries = [...dayCard.querySelectorAll(".itinerary-select")].map(select => select.value.trim()).filter(value => value !== "");
+
+                itineraryData.push({
+                    day,
+                    areas: selectedAreas.length ? selectedAreas : ["None"],
+                    meal_plans: selectedMealPlans.length ? selectedMealPlans : ["None"],
+                    hotels: selectedHotels.length ? selectedHotels : ["None"],
+                    itineraries: selectedItineraries.length ? selectedItineraries : ["None"]
+                });
+            });
+
+            console.group("📌 Submitting Itinerary Data");
+            console.table({
+                selectedPackage,
+                startDate,
+                endDate,
+                guideName,
+                city1,
+                hotel1,
+                city2,
+                hotel2,
+                city3,
+                hotel3
+            });
+            console.table(itineraryData);
+            console.groupEnd();
+
+            const submitButton = document.getElementById("submitTour");
+            submitButton.disabled = true;
+
+            $.ajax({
+                url: "../Employee Section/functions/emp-saveItinerary.php",
+                type: "POST",
+                data: {
+                    noOfDays: noOfDays,
+                    package: selectedPackage,
+                    period_start: startDate,
+                    period_end: endDate,
+                    countryCode: countryCode,
+                    contactNumber: contactNumber,
+                    guide: guideName,
+                    city1: city1,
+                    hotel1: hotel1,
+                    city2: city2,
+                    hotel2: hotel2,
+                    city3: city3,
+                    hotel3: hotel3,
+                    itinerary: JSON.stringify(itineraryData),
+                    templateName: templateName // Pass only the template name
+                },
+                dataType: "json",
+                success: function(response) {
+                    submitButton.disabled = false;
+                    if (response.status === "success") {
+                        alert("Itinerary successfully created!");
+                        location.reload();
+                    } else {
+                        console.error("❌ Server Error:", response.message);
+                        alert("❌ Error saving itinerary: " + response.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    submitButton.disabled = false;
+                    console.error("⚠️ AJAX Error:", error);
+                    console.error("⚠️ Response Text:", xhr.responseText);
+                    alert("An error occurred while saving the itinerary.");
+                }
+            });
+
+            $("#templateNameModal").modal("hide");
         }
-    });
-
-    $("#templateNameModal").modal("hide");
-}
-
-
-
     </script>
 
 </body>
