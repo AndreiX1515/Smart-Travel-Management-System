@@ -79,15 +79,15 @@
             </div> -->
 
             <div class="buttons-wrapper">
-              <button id="createItinerary" class="btn btn-primary">
-                Create Itinerary
-              </button>
+                <button id="createItinerary" class="btn btn-primary">
+                    Create Itinerary
+                </button>
             </div>
 
             <script>
-              document.getElementById("createItinerary").addEventListener("click", function() {
+            document.getElementById("createItinerary").addEventListener("click", function() {
                 window.location.href = "../Employee Section/emp-generateItinerary.php"; // Change to your target page
-              });
+            });
             </script>
           </div>
         </div>
@@ -99,9 +99,9 @@
               <span class="badge-status-tab">
                 <h6>
                   <?php
-                  $sql = "SELECT COUNT(*) AS totalBookings FROM itineraries;";
-                  $result = mysqli_query($conn, $sql);
-                  echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+                    $sql = "SELECT COUNT(*) AS totalBookings FROM itineraries;";
+                    $result = mysqli_query($conn, $sql);
+                    echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
                   ?>
                 </h6>
               </span>
@@ -112,9 +112,9 @@
               <span class="badge-status-tab">
                 <h6>
                   <?php
-                  $sql = "SELECT COUNT(*) AS totalBookings FROM itineraries;";
-                  $result = mysqli_query($conn, $sql);
-                  echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+                    $sql = "SELECT COUNT(*) AS totalBookings FROM itineraries;";
+                    $result = mysqli_query($conn, $sql);
+                    echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
                   ?>
                 </h6>
               </span>
@@ -174,95 +174,93 @@
           </div>
         </div>
 
-        <div class="itinerary-grid">
-            <?php
-            if (!isset($conn)) {
-                die("Database connection error.");
-            }
+        <div class="table-wrapper">
+          <table class="product-table" id="product-table">
+      <thead>
+          <tr>
+              <th>ITINERARY ID</th>
+              <th>USER ID</th>
+              <th>PACKAGE NAME</th>
+              <th>PERIOD START</th>
+              <th>NO. OF DAYS</th>
+              <th>GUIDE NAME</th>
+              <th>CONTACT NUMBER</th>
+              <th>CITY</th>
+              <th>HOTEL</th>
+              <th>CREATED AT</th>
+          </tr>
+      </thead>
+      <tbody>
+          <?php
+          // Ensure $conn is properly initialized
+          if (!isset($conn)) {
+              die("Database connection error.");
+          }
 
-            $sql = "SELECT * FROM itineraries ORDER BY createdAt DESC;";
-            $result = $conn->query($sql);
+          // Fetch all itineraries sorted by latest insert
+          $sql = "SELECT * FROM itineraries ORDER BY createdAt DESC;";
+          $result = $conn->query($sql);
 
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                    $itineraryId = htmlspecialchars($row['itineraryId'] ?? '');
-                    $packageName = htmlspecialchars($row['itineraryName'] ?? 'Untitled');
-                    $createdAt = $row['createdAt'] ? (new DateTime($row['createdAt']))->format('F j, Y g:i A') : 'N/A';
+          // Check if there are results
+          if ($result->num_rows > 0) {
+              while ($row = $result->fetch_assoc()) {
+                  // Extract and safely handle values
+                  $itineraryId = htmlspecialchars($row['itineraryId'] ?? '');
+                  $userId = htmlspecialchars($row['userId'] ?? '');
+                  $packageName = htmlspecialchars($row['packageName'] ?? '');
+                  $periodStart = htmlspecialchars($row['periodStart'] ?? 'N/A');
+                  $noOfDays = htmlspecialchars($row['noOfDays'] ?? '0');
+                  $guideName = htmlspecialchars($row['guideName'] ?? 'N/A');
+                  $contactNumber = htmlspecialchars($row['contactNumber'] ?? 'N/A');
 
-                    // Determine an icon letter (e.g., "IT" for itinerary)
-                    $iconLetter = strtoupper(substr($packageName, 0, 1));
-            ?>
-                    <div class="itinerary-card" data-id="<?php echo $itineraryId; ?>">
-                      <div class="card-content-wrap">
-                          <!-- Header Section -->
-                          <div class="it-card-header">
-                              <div class="itinerary-info">
-                                  <span class="file-type">IT</span>
-                                  <div class="itinerary-name">
-                                      <h6><?php echo $packageName; ?></h6>
-                                  </div>
-                              </div>
+                  // Fetch the first available city & hotel
+                  $city = htmlspecialchars($row['city1'] ?? $row['city2'] ?? $row['city3'] ?? 'N/A');
+                  $hotel = htmlspecialchars($row['hotel1'] ?? $row['hotel2'] ?? $row['hotel3'] ?? 'N/A');
 
-                              <!-- Dropdown Options -->
-                              <div class="options dropdown">
-                                  <button class="btn dropdown-toggle p-0 border-0 bg-transparent" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                      <i class="fas fa-ellipsis-v"></i>
-                                  </button>
-                                  <ul class="dropdown-menu dropdown-menu-end">
-                                      <li><a class="dropdown-item" href="#">View Details</a></li>
-                                      <li><a class="dropdown-item" href="#">Edit</a></li>
-                                      <li><a class="dropdown-item text-danger" href="#">Delete</a></li>
-                                  </ul>
-                              </div>
-                          </div>
+                  $createdAt = $row['createdAt'] ? (new DateTime($row['createdAt']))->format('F j, Y g:i A') : 'N/A';
 
-                          <!-- Body Section -->
-                          <div class="it-card-body">
-                              <div class="itinerary-icon"><?php echo $iconLetter; ?></div>
-                          </div>
+                  // Output each row
+                  echo "<tr class='clickable-row' data-id='$itineraryId'>";
+                  echo "<td>$itineraryId</td>";
+                  echo "<td>$userId</td>";
+                  echo "<td>$packageName</td>";
+                  echo "<td>$periodStart</td>";
+                  echo "<td>$noOfDays</td>";
+                  echo "<td>$guideName</td>";
+                  echo "<td>$contactNumber</td>";
+                  echo "<td>$city</td>";
+                  echo "<td>$hotel</td>";
+                  echo "<td>$createdAt</td>";
+                  echo "</tr>";
+              }
+          } else {
+              echo "<tr><td colspan='10' class='text-center'>No records found</td></tr>";
+          }
+          ?>
+      </tbody>
+          </table>
 
-                          <!-- Footer Section (Placeholder for future content) -->
-                          <div class="it-card-footer"></div>
-                      </div>
-                  </div>
-
-
-
-
-            <?php
-
-                }
-
-            } else {
-                echo "<p class='no-records'>No itineraries found.</p>";
-            }
-
-            ?>
+          <script>
+          document.addEventListener("DOMContentLoaded", function() {
+              document.querySelectorAll(".clickable-row").forEach(row => {
+                  row.addEventListener("click", function() {
+                      let itineraryId = this.getAttribute("data-id");
+                      if (itineraryId) {
+                          window.location.href = `emp-itineraryDetails.php?id=${itineraryId}`;
+                      }
+                  });
+              });
+          });
+          </script>
         </div>
 
-        <script>
-          document.addEventListener("DOMContentLoaded", function () {
-            document.addEventListener("click", function (event) {
-              let cardBody = event.target.closest(".it-card-body");
-              if (cardBody) {
-                let itineraryCard = cardBody.closest(".itinerary-card");
-                let itineraryId = itineraryCard ? itineraryCard.getAttribute("data-id") : null;
-                if (itineraryId) {
-                  window.location.href = `emp-itineraryDetails.php?id=${itineraryId}`;
-                }
-              }
-            });
-          });
-        </script>
-
-
-        <!-- <div class="table-footer">
+        <div class="table-footer">
           <div class="pagination-controls">
             <button id="prevPage" class="pagination-btn">Previous</button>
             <span id="pageInfo" class="page-info">Page 1 of 10</span>
             <button id="nextPage" class="pagination-btn">Next</button>
           </div>
-        </div> -->
+        </div>
 
       </div>
 
@@ -271,7 +269,7 @@
 
   <?php include '../Employee Section/includes/emp-scripts.php' ?>
 
-
+  
   <!-- For Button Tabs Status Sorting -->
   <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -540,6 +538,5 @@
     });
   </script>
 
-</body>
-
+  </body>
 </html>

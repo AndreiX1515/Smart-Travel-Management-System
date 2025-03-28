@@ -227,7 +227,7 @@ $position = htmlspecialchars(strtoupper($empId));
 
 </script>
 
-<script>
+<!-- <script>
   document.addEventListener('DOMContentLoaded', () => {
     // Check if there's a saved title in local storage
     const savedTitle = localStorage.getItem('pageTitle');
@@ -252,7 +252,7 @@ $position = htmlspecialchars(strtoupper($empId));
         });
     });
   });
-</script>
+</script> -->
 
 
 <script>
