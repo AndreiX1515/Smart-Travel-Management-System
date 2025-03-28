@@ -130,10 +130,11 @@ session_start();
 
                 // SQL query for guest details
                 $sql = "SELECT g.guestId, g.transactNo, g.fName, g.mName, g.lName, g.suffix, g.birthdate, g.age, g.sex, g.nationality, 
-                          g.passportNo, g.passportExp, f.flightDepartureDate 
+                          g.passportNo, g.passportExp, f.flightDepartureDate, rl.roomType
                         FROM `guest` g
                         JOIN `booking` b ON g.transactNo = b.transactNo
                         JOIN `flight` f ON b.flightId = f.flightId
+                        JOIN `roominglist` rl ON g.guestId = rl.guestId
                         WHERE b.status = 'Confirmed'
                         ORDER BY f.flightDepartureDate ASC";
 
@@ -174,7 +175,7 @@ session_start();
                             <td>" . $row['passportNo'] . "</td>
                             <td>" . $row['passportExp'] . "</td>
                             <td>" . $row['sex'] . "</td>
-                            <td>" . $row['sex'] . "</td>
+                            <td>" . $row['roomType'] . "</td>
                             <td>" . $departureDate . "</td>
                           </tr>";
                   }
@@ -183,6 +184,7 @@ session_start();
                 {
                   echo "<tr><td colspan='7'>No records found.</td></tr>";
                 }
+  
               ?>
             </tbody>
           </table>
@@ -246,12 +248,8 @@ session_start();
         columnDefs: [{
           targets: [1, 2, 3, 5, 6, ], // Disable sorting for 2nd and 4th columns
           orderable: false
-        },
-        {
-         targets: [11], visible: false 
         }]
       });
-
 
       // Search Functionality
       $('#search').on('keyup', function() {
@@ -410,7 +408,6 @@ session_start();
 
     });
   </script>
-
 
   <!-- Table Head 
   <script>
