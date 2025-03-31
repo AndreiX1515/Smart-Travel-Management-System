@@ -8,8 +8,8 @@
     <?php include '../Employee Section/includes/emp-head.php' ?>
     <link rel="stylesheet" href="../Employee Section/assets/css/emp-sidebar-navbar.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="../Employee Section/assets/css/emp-generateItinerary.css?v=<?php echo time(); ?>">
-    
-    
+
+
 </head>
 
 <body>
@@ -175,12 +175,12 @@
 
 
         </script> -->
-        
+
 
         <div class="main-content">
             <!-- HTML Form -->
             <input type="hidden" id="itineraryId" value="<?= htmlspecialchars($itineraryId); ?>" readonly>
-        
+
             <div class="form-container">
                 <div class="card">
                     <div class="card-header">
@@ -769,43 +769,6 @@
         });
     </script>
 
-<script>
-    $("#submitTour").on("click", function () {
-        let itineraryId = $("#itineraryId").val(); // Get itinerary ID
-        console.log("Fetched Itinerary ID:", itineraryId); // Debugging log
-
-        // Validate itineraryId before sending the request
-        if (!itineraryId) {
-            alert("Invalid Itinerary ID");
-            return;
-        }
-
-        // Make AJAX POST request
-        $.ajax({
-            url: "../Employee Section/functions/itinerary-template.php", // PHP script to handle the request
-            type: "POST", // POST method
-            data: { id: itineraryId }, // Send the itineraryId
-            contentType: "application/x-www-form-urlencoded", // Standard content type for form data
-            beforeSend: function () {
-                console.log("Sending data:", { id: itineraryId }); // Log the data before sending
-            },
-            success: function (response) {
-                console.log("AJAX Success Response:", response); // Log successful response
-                // Open the response in a new tab (assuming it's an HTML or PDF file)
-                window.open("../Employee Section/functions/itinerary-template.php", "_blank");
-            },
-            error: function (xhr, status, error) {
-                console.error("AJAX Error:", error); // Log errors if the request fails
-            }
-        });
-
-    });
-</script>
-
-
-
-
-
     <!-- JS Script for JSON (Array) console.log -->
     <script>
         document.addEventListener("change", function(event) {
@@ -836,6 +799,75 @@
             }
         });
     </script>
+
+
+
+    <!--- Generate Itinerary PDF -->
+    <script>
+        $('#submitTour').click(function() {
+            const itineraryId = $('#itineraryId').val();
+            const itineraryName = $('#itineraryName').val();
+
+            console.log('Itinerary ID:', itineraryId); // Log the Itinerary ID
+
+            if (!itineraryId) {
+                alert('Please enter a valid Itinerary ID.');
+                return;
+            }
+
+            let currentDate = new Date();
+            let formattedDate = `${(currentDate.getMonth() + 1).toString().padStart(2, '0')}/${currentDate.getDate().toString().padStart(2, '0')}/${currentDate.getFullYear()}`;
+
+            $.ajax({
+                url: '../Employee Section/functions/Itinerary-template.php',
+                type: 'POST',
+                data: {
+                    itineraryId,
+                    itineraryName,
+                    currentDate
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        console.log('Fetched Itinerary ID:', response.itineraryId);
+                        console.log('Fetched Itinerary Data:', response.data);
+
+                        window.open('../Employee Section/functions/Itinerary-template.php', '_blank');
+
+                        // $.ajax({
+                        //     url: '../Employee Section/functions/generateItineraryPDF.php',
+                        //     type: 'POST',
+                        //     data: {
+                        //         itineraryId
+                        //     },
+                        //     xhrFields: {
+                        //         responseType: 'blob'
+                        //     },
+                        //     success: function(blob) {
+                        //         let link = document.createElement('a');
+                        //         link.href = window.URL.createObjectURL(blob);
+                        //         link.download = `${itineraryName}.pdf`;
+                        //         link.click();
+                        //     },
+                        //     error: function(xhr) {
+                        //         console.error('PDF Generation Error:', xhr.responseText);
+                        //         alert('Failed to generate the itinerary PDF. Please try again.');
+                        //     }
+                        // });
+
+                    } else {
+                        alert('Failed to generate itinerary number. Please try again.');
+                    }
+                },
+                error: function(xhr) {
+                    console.error('emp-saveItinerary Error:', xhr.responseText);
+                    alert('Server error: ' + xhr.statusText);
+                }
+            });
+        });
+    </script>
+
+
 
     <!-- <script>
         document.getElementById("submitTour").addEventListener("click", function() {

@@ -1,68 +1,62 @@
 <?php
 require_once('../../tcpdf/tcpdf.php');  
-require_once('../../conn.php'); // Ensure database connection is included
+require_once('../../conn.php'); 
 
+// Prevent unwanted output before PDF generation
+ob_start();
+
+// Set JSON response headers
 header('Content-Type: application/json; charset=UTF-8');
 
-ob_start(); // Start output buffering
-
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    ob_end_clean();
-    echo "Invalid request method";
+    echo json_encode(['error' => 'Invalid request method']);
     exit;
 }
 
 // Validate Itinerary ID
-if (!isset($_POST['id']) || !is_numeric($_POST['id'])) {
-    ob_end_clean();
-    echo "Invalid Itinerary ID";
+if (!isset($_POST['itineraryId']) || !is_numeric($_POST['itineraryId'])) {
+    echo json_encode(['error' => 'Invalid Itinerary ID']);
     exit;
 }
 
-$itineraryId = intval($_POST['id']);
+$itineraryId = intval($_POST['itineraryId']);
+error_log("Received Itinerary ID: " . $itineraryId); // Debugging log
 
 if (!$conn) {
-    ob_end_clean();
-    echo "Database connection error";
+    echo json_encode(['error' => 'Database connection error']);
     exit;
 }
 
 // Fetch itinerary details
-$sql = "SELECT itineraryName, noOfDays, packageName, periodStart, periodEnd, guideName, countryCode, contactNumber, city1, hotel1, city2, hotel2, city3, hotel3 FROM itineraries WHERE itineraryId = ?";
+$sql = "SELECT itineraryName, noOfDays, packageName, periodStart, periodEnd, guideName, countryCode, contactNumber, city1, hotel1, city2, hotel2, city3, hotel3 
+        FROM itineraries WHERE itineraryId = ?";
 $stmt = $conn->prepare($sql);
-
 if (!$stmt) {
-    ob_end_clean();
-    echo "SQL error: " . $conn->error;
+    echo json_encode(['error' => 'SQL error: ' . $conn->error]);
     exit;
 }
-
 $stmt->bind_param("i", $itineraryId);
 $stmt->execute();
 $result = $stmt->get_result();
 
 if (!$row = $result->fetch_assoc()) {
-    ob_end_clean();
-    echo "Itinerary not found";
+    echo json_encode(['error' => 'Itinerary not found']);
     exit;
 }
 
-$itinerary = [
-    'itineraryId' => $itineraryId,
-    'itineraryName' => $row['itineraryName'],
-    'noOfDays' => $row['noOfDays'],
-    'packageName' => $row['packageName'],
-    'periodStart' => $row['periodStart'],
-    'periodEnd' => $row['periodEnd'],
-    'guideName' => $row['guideName'],
-    'countryCode' => $row['countryCode'],
-    'contactNumber' => $row['contactNumber'],
-    'cities' => array_filter([ // Filter out empty cities
-        ['city' => $row['city1'], 'hotel' => $row['hotel1']],
-        ['city' => $row['city2'], 'hotel' => $row['hotel2']],
-        ['city' => $row['city3'], 'hotel' => $row['hotel3']]
-    ], fn($c) => !empty($c['city']))
-];
+// Store fetched itinerary details
+$itineraryName = $row['itineraryName'];
+$noOfDays = $row['noOfDays'];
+$packageName = $row['packageName'];
+$periodStart = $row['periodStart'];
+$periodEnd = $row['periodEnd'];
+$guideName = $row['guideName'];
+$contactNumber = "+" . $row['countryCode'] . " " . $row['contactNumber'];
+$cities = array_filter([
+    ['city' => $row['city1'], 'hotel' => $row['hotel1']],
+    ['city' => $row['city2'], 'hotel' => $row['hotel2']],
+    ['city' => $row['city3'], 'hotel' => $row['hotel3']]
+], fn($c) => !empty($c['city']));
 
 // Fetch itinerary days, areas, hotels, activities, and meals
 $sqlDays = "
@@ -86,9 +80,9 @@ $stmt->bind_param("i", $itineraryId);
 $stmt->execute();
 $result = $stmt->get_result();
 
-$itinerary['days'] = [];
+$itineraryDays = [];
 while ($day = $result->fetch_assoc()) {
-    $itinerary['days'][] = [
+    $itineraryDays[] = [
         'day' => $day['dayNumber'],
         'areas' => $day['areas'] ? explode(', ', $day['areas']) : [],
         'hotels' => $day['hotels'] ? explode(', ', $day['hotels']) : [],
@@ -97,12 +91,12 @@ while ($day = $result->fetch_assoc()) {
     ];
 }
 
-// Clean output buffer and return plain data
+// Clean any buffered output to avoid "Some data has already been output" error
 ob_end_clean();
 
 
-
 class PDF extends TCPDF {
+
     // Page header
     public function Header() {
         if ($this->getPage() == 1) {  // Check if it's the first page
@@ -219,6 +213,8 @@ class PDF extends TCPDF {
             $this->SetTextColor(0,0,0);       // Text color
         }
     }
+
+
 
     public function day($daysData) {
      $yPosition = $this->GetY();  // Start from the current Y position (Day 1)
@@ -483,8 +479,6 @@ class PDF extends TCPDF {
       $this->Cell(30, $mealPlanHeight, $mealPlan[2], 'LRB', 0, 'C');
       $this->SetTextColor(0, 0, 0);
   }
-
-   
 
   // FOR DAY 4
   public function day4($daysData) {
@@ -1020,4 +1014,13 @@ $pdf->AddPage();
 $pdf->SecondPage();
 
 $pdf->Output('itinerary-Winter.pdf', 'I');
+
+// Return JSON response
+echo json_encode(
+    ['success' => true, 
+    'itineraryId' => $itineraryId, 
+    'data' => $itinerary]
+);
+
+
 ?>

@@ -254,7 +254,8 @@
 .navpills-container {
   display: flex;
   justify-content: flex-start;
-  align-items: center;
+  align-items: stretch;
+  width: 100%;
   border-bottom: 1px solid #ddd;
   /* border-radius: 8px; */
   padding: 0px 0px 0px 0px;
@@ -266,7 +267,8 @@
 .filter-tabs {
   display: flex;
   gap: 15px;
-  width: 100%;
+  width: 80%;
+  /* border: 1px solid black; */
 }
 
 .filter-btn {
@@ -324,6 +326,22 @@
   justify-content: center;
   width: 100%; /* Ensures proper text positioning */
 }
+
+
+.create-itinerary-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  align-items: stretch;
+  width: 20%;
+  gap: 10px;
+  padding: 0px 0px 0px 0px;
+  /* border: 1px solid black; */
+}
+
+
+
+
+
 
 
 

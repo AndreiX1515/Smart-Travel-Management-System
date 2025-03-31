@@ -21,7 +21,7 @@
         <div class="main-content">
             <div class="form-container">
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-header">   
                         <h5>Itinerary Details</h5>
                     </div>
 
@@ -332,7 +332,7 @@
         });
     </script>
 
-    <!-- First Card Script -->
+    <!-- Data Fetch to Fields -->
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             // Cities and Hotels Data
@@ -445,6 +445,7 @@
             });
         });
     </script>
+
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -616,106 +617,116 @@
     </script>
 
     <script>
-        document.getElementById("submitTour").addEventListener("click", function () {
+        document.getElementById("submitTour").addEventListener("click", function() {
             $("#templateNameModal").modal("show");
         });
 
-// Function to proceed after entering the template name
-function proceedWithSubmission() {
-    const templateName = document.getElementById("templateName")?.value.trim();
+        // Function to proceed after entering the template name
+        function proceedWithSubmission() {
+            const templateName = document.getElementById("templateName")?.value.trim();
 
-    if (!templateName) {
-        alert("Please enter a template name before proceeding.");
-        return;
-    }
-
-    const itineraryData = [];
-
-    const selectedPackage = document.getElementById("packageSelect")?.value.trim() || "None";
-    const noOfDays = document.getElementById("select-days")?.value.trim() || "None";
-    const startDate = document.getElementById("PeriodStartDate")?.value.trim() || "None";
-    const endDate = document.getElementById("PeriodEndDate")?.value.trim() || "None";
-    const guideName = document.getElementById("guideName")?.value.trim() || "None";
-    const countryCode = document.getElementById("countryCode")?.value.trim() || "None";
-    const contactNumber = document.getElementById("contactNumber")?.value.trim() || "None";
-
-    const city1 = document.getElementById("city1")?.value.trim() || "None";
-    const hotel1 = document.getElementById("hotel1")?.value.trim() || "None";
-    const city2 = document.getElementById("city2")?.value.trim() || "None";
-    const hotel2 = document.getElementById("hotel2")?.value.trim() || "None";
-    const city3 = document.getElementById("city3")?.value.trim() || "None";
-    const hotel3 = document.getElementById("hotel3")?.value.trim() || "None";
-
-    document.querySelectorAll(".itinerary-card").forEach(dayCard => {
-        const day = dayCard.querySelector(".hotel-select")?.dataset.day || "Unknown";
-
-        const selectedAreas = [...dayCard.querySelectorAll(".area-select[data-day]")].map(area => area.value.trim()).filter(value => value !== "");
-        const selectedMealPlans = [...dayCard.querySelectorAll(".meal-plan-select[data-day]")].map(meal => meal.value.trim()).filter(value => value !== "");
-        const selectedHotels = [...dayCard.querySelectorAll(".hotel-select")].map(select => select.value.trim()).filter(value => value !== "");
-        const selectedItineraries = [...dayCard.querySelectorAll(".itinerary-select")].map(select => select.value.trim()).filter(value => value !== "");
-
-        itineraryData.push({
-            day,
-            areas: selectedAreas.length ? selectedAreas : ["None"],
-            meal_plans: selectedMealPlans.length ? selectedMealPlans : ["None"],
-            hotels: selectedHotels.length ? selectedHotels : ["None"],
-            itineraries: selectedItineraries.length ? selectedItineraries : ["None"]
-        });
-    });
-
-    console.group("📌 Submitting Itinerary Data");
-    console.table({ selectedPackage, startDate, endDate, guideName, city1, hotel1, city2, hotel2, city3, hotel3 });
-    console.table(itineraryData);
-    console.groupEnd();
-
-    const submitButton = document.getElementById("submitTour");
-    submitButton.disabled = true;
-
-    $.ajax({
-        url: "../Employee Section/functions/emp-saveItinerary.php",
-        type: "POST",
-        data: {
-            noOfDays: noOfDays,
-            package: selectedPackage,
-            period_start: startDate,
-            period_end: endDate,
-            countryCode: countryCode,
-            contactNumber: contactNumber,
-            guide: guideName,
-            city1: city1,
-            hotel1: hotel1,
-            city2: city2,
-            hotel2: hotel2,
-            city3: city3,
-            hotel3: hotel3,
-            itinerary: JSON.stringify(itineraryData),
-            templateName: templateName // Pass only the template name
-        },
-        dataType: "json",
-        success: function (response) {
-            submitButton.disabled = false;
-            if (response.status === "success") {
-                alert("Itinerary successfully created!");
-                location.reload();
-            } else {
-                console.error("❌ Server Error:", response.message);
-                alert("❌ Error saving itinerary: " + response.message);
+            if (!templateName) {
+                alert("Please enter a template name before proceeding.");
+                return;
             }
-        },
-        error: function (xhr, status, error) {
-            submitButton.disabled = false;
-            console.error("⚠️ AJAX Error:", error);
-            console.error("⚠️ Response Text:", xhr.responseText);
-            alert("An error occurred while saving the itinerary.");
+
+            const itineraryData = [];
+
+            const selectedPackage = document.getElementById("packageSelect")?.value.trim() || "None";
+            const noOfDays = document.getElementById("select-days")?.value.trim() || "None";
+            const startDate = document.getElementById("PeriodStartDate")?.value.trim() || "None";
+            const endDate = document.getElementById("PeriodEndDate")?.value.trim() || "None";
+            const guideName = document.getElementById("guideName")?.value.trim() || "None";
+            const countryCode = document.getElementById("countryCode")?.value.trim() || "None";
+            const contactNumber = document.getElementById("contactNumber")?.value.trim() || "None";
+
+            const city1 = document.getElementById("city1")?.value.trim() || "None";
+            const hotel1 = document.getElementById("hotel1")?.value.trim() || "None";
+            const city2 = document.getElementById("city2")?.value.trim() || "None";
+            const hotel2 = document.getElementById("hotel2")?.value.trim() || "None";
+            const city3 = document.getElementById("city3")?.value.trim() || "None";
+            const hotel3 = document.getElementById("hotel3")?.value.trim() || "None";
+
+            document.querySelectorAll(".itinerary-card").forEach(dayCard => {
+                const day = dayCard.querySelector(".hotel-select")?.dataset.day || "Unknown";
+
+                const selectedAreas = [...dayCard.querySelectorAll(".area-select[data-day]")].map(area => area.value.trim()).filter(value => value !== "");
+                const selectedMealPlans = [...dayCard.querySelectorAll(".meal-plan-select[data-day]")].map(meal => meal.value.trim()).filter(value => value !== "");
+                const selectedHotels = [...dayCard.querySelectorAll(".hotel-select")].map(select => select.value.trim()).filter(value => value !== "");
+                const selectedItineraries = [...dayCard.querySelectorAll(".itinerary-select")].map(select => select.value.trim()).filter(value => value !== "");
+
+                itineraryData.push({
+                    day,
+                    areas: selectedAreas.length ? selectedAreas : ["None"],
+                    meal_plans: selectedMealPlans.length ? selectedMealPlans : ["None"],
+                    hotels: selectedHotels.length ? selectedHotels : ["None"],
+                    itineraries: selectedItineraries.length ? selectedItineraries : ["None"]
+                });
+            });
+
+            console.group("📌 Submitting Itinerary Data");
+            console.table({
+                selectedPackage,
+                startDate,
+                endDate,
+                guideName,
+                city1,
+                hotel1,
+                city2,
+                hotel2,
+                city3,
+                hotel3
+            });
+            console.table(itineraryData);
+            console.groupEnd();
+
+            const submitButton = document.getElementById("submitTour");
+            submitButton.disabled = true;
+
+            $.ajax({
+                url: "../Employee Section/functions/emp-saveItinerary.php",
+                type: "POST",
+                data: {
+                    noOfDays: noOfDays,
+                    package: selectedPackage,
+                    period_start: startDate,
+                    period_end: endDate,
+                    countryCode: countryCode,
+                    contactNumber: contactNumber,
+                    guide: guideName,
+                    city1: city1,
+                    hotel1: hotel1,
+                    city2: city2,
+                    hotel2: hotel2,
+                    city3: city3,
+                    hotel3: hotel3,
+                    itinerary: JSON.stringify(itineraryData),
+                    templateName: templateName // Pass only the template name
+                },
+                dataType: "json",
+                success: function(response) {
+                    submitButton.disabled = false;
+                    if (response.status === "success") {
+                        alert("Itinerary successfully created!");
+                        location.reload();
+                    } else {
+                        console.error("❌ Server Error:", response.message);
+                        alert("❌ Error saving itinerary: " + response.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    submitButton.disabled = false;
+                    console.error("⚠️ AJAX Error:", error);
+                    console.error("⚠️ Response Text:", xhr.responseText);
+                    alert("An error occurred while saving the itinerary.");
+                }
+            });
+
+            $("#templateNameModal").modal("hide");
         }
-    });
-
-    $("#templateNameModal").modal("hide");
-}
-
-
-
     </script>
+
+   
 
 </body>
 

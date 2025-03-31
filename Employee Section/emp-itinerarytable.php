@@ -21,9 +21,12 @@
 
   <!-- Main Container -->
   <div class="main-container">
-    <?php
-    include '../Employee Section/includes/emp-navbar.php'
-    ?>
+    <nav class="navbar navbar-expand-lg navbar-custom">
+      <div class="container-fluid mx-1">
+          <a class="navbar-brand" id="page-title" href="#">Itinerary Table</a>
+      </div>
+    </nav>
+
 
     <?php
     $statusTab = isset($_GET['status']) ? $_GET['status'] : '';
@@ -77,18 +80,6 @@
                 Clear Filters
               </button>
             </div> -->
-
-            <div class="buttons-wrapper">
-              <button id="createItinerary" class="btn btn-primary">
-                Create Itinerary
-              </button>
-            </div>
-
-            <script>
-              document.getElementById("createItinerary").addEventListener("click", function() {
-                window.location.href = "../Employee Section/emp-generateItinerary.php"; // Change to your target page
-              });
-            </script>
           </div>
         </div>
 
@@ -171,6 +162,21 @@
                 </h6>
               </span>
             </button> -->
+          </div>
+
+          <div class="create-itinerary-wrapper">
+            <div class="buttons-wrapper">
+              <button id="createItinerary" class="btn btn-primary">
+                Create Itinerary
+              </button>
+            </div>
+
+            <script>
+              document.getElementById("createItinerary").addEventListener("click", function() {
+                window.location.href = "../Employee Section/emp-generateItinerary.php"; // Change to your target page
+              });
+            </script>
+
           </div>
         </div>
 
