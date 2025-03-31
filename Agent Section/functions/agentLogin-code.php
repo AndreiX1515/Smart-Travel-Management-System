@@ -26,20 +26,21 @@ if (isset($_POST['login'])) {
             $account = $resultAccount->fetch_assoc();
             $storedPassword = $account['password']; // Fetch stored password
 
+
             // 🔹 **Check Password Without Hashing** 🔹
             if ($password == $storedPassword) {
                 // Check account status
                 if ($account['accountStatus'] === 'active') {
                     $accountType = $account['accountType'];
                     $accountId = $account['accountId'];
+                    $defaultPasswordStat = $account['defaultPasswordStat']; 
 
-                    
                     if ($accountType === 'agent') {
-                        handleLogin($accountId, 'agent', "SELECT * FROM agent WHERE accountId = ?", ['branchId'], $flightId);
+                        handleLogin($accountId, 'agent', "SELECT * FROM agent WHERE accountId = ?", ['branchId'], $flightId, $defaultPasswordStat);
                     } elseif ($accountType === 'employee') {
                         handleLogin($accountId, 'employee', "SELECT * FROM employee WHERE accountId = ?", ['position', 'countryCode', 'contactNo', 'branch'], $flightId);
                     } elseif ($accountType === 'guest') {
-                        handleLogin($accountId, 'guest', "SELECT * FROM client WHERE accountId = ?", ['position', 'countryCode', 'contactNo', 'branch'], $flightId);
+                        handleLogin($accountId, 'guest', "SELECT * FROM client WHERE accountId = ?", ['position', 'countryCode', 'contactNo', 'branch'], $flightId, $defaultPasswordStat);
                     } else {
                         $response['success'] = false;
                         $response['message'] = "Invalid account type.";
@@ -75,7 +76,7 @@ echo json_encode($response);
 
 
 // Function to handle login and session management
-function handleLogin($accountId, $userType, $query, $additionalFields = [], $flightId)
+function handleLogin($accountId, $userType, $query, $additionalFields = [], $flightId, $defaultPasswordStat)
 {
     global $conn, $response;
 
@@ -117,7 +118,7 @@ function handleLogin($accountId, $userType, $query, $additionalFields = [], $fli
 
         // Handle session based on user type
         if ($userType === 'agent') {
-            manageAgentSession($accountId, $userDetails, $userType, $flightId, $additionalFields);
+            manageAgentSession($accountId, $userDetails, $userType, $flightId, $additionalFields, $defaultPasswordStat);
         } elseif ($userType === 'employee') {
             manageEmployeeSession($accountId, $userDetails, $userType, $additionalFields);
         } elseif ($userType === 'guest') {
@@ -134,10 +135,8 @@ function handleLogin($accountId, $userType, $query, $additionalFields = [], $fli
 }
 
 
-
-
 // Function to manage session for agents
-function manageAgentSession($accountId, $userData, $userType, $flightId, $additionalFields)
+function manageAgentSession($accountId, $userData, $userType, $flightId, $additionalFields, $defaultPasswordStat)
 {
     global $conn;
 
@@ -220,7 +219,9 @@ function manageAgentSession($accountId, $userData, $userType, $flightId, $additi
         echo json_encode([
             "success" => true,
             "accountType" => "agent",
-            "flightId" => $_SESSION['agent_flightId'] ?? 'Not received'
+            "flightId" => $_SESSION['agent_flightId'] ?? 'Not received',
+            "defaultPasswordStat" => $defaultPasswordStat,
+            "userType" => $userType
         ]);
         exit();
         
@@ -235,9 +236,6 @@ function manageAgentSession($accountId, $userData, $userType, $flightId, $additi
         exit();
     }
 }
-
-
-
 
 
 function manageGuestSession($accountId, $userData, $userType, $flightId, $additionalFields)
@@ -336,10 +334,6 @@ function manageGuestSession($accountId, $userData, $userType, $flightId, $additi
         exit();
     }
 }
-
-
-
-
 
 // Function to manage session for employees
 function manageEmployeeSession($accountId, $userData, $userType, $additionalFields)
