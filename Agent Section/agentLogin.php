@@ -203,45 +203,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['flightid'])) {
                         // Extract flight ID, if available
                         let flightid = (data.flightId && data.flightId !== "Not received") ? data.flightId : '';
 
-
                         if (data.defaultPasswordStat === "yes") {
-                        alert("Default Password Detected. Proceeding to Change Password Page");
+                            alert("Default Password Detected. Proceeding to Change Password Page");
 
-                        if (!data.userType) {
-                            console.error("User type is missing.");
-                            return; // Stop execution if userType is missing
-                        }
-
-                        // Send AJAX request to update session
-                        $.ajax({
-                            url: "../User/functions/user-fetchUserType.php",
-                            type: "POST",
-                            data: { userType: data.userType },
-                            dataType: "json",
-                            success: function(response) {
-                                if (response.status === "success") {
-                                    window.location.href = "../User/userChangePassword.php";
-                                    return; // Stop further execution after redirect
-                                } else {
-                                    alert("Error: " + response.message);
-                                    return; // Stop further execution on error
-                                }
-                            },
-                            error: function(xhr, status, error) {
-                                console.error("AJAX Error:", status, error);
-                                alert("Failed to update session.");
-                                return; // Stop execution on AJAX failure
+                            // Store userType in sessionStorage
+                            if (data.userType) {
+                                sessionStorage.setItem("userType", data.userType);
                             }
-                        });
 
-                        return; // Stop further execution after AJAX call
-                    }
-
-
-
-
-
-
+                            // Redirect with userType in the URL
+                            window.location.href = "../User/userChangePassword.php?userType=" + encodeURIComponent(data.userType);
+                            
+                            return; // Stop further execution
+                        }
 
 
                         // Handle redirection based on account type
@@ -312,9 +286,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['flightid'])) {
                     $('#LoginButton').addClass('button-disabled');
                 }
             });
-
-
-
 
         });
     });

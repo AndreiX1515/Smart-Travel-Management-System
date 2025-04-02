@@ -6,41 +6,23 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// Get user type from session, default to 'user'
-$userType = $_SESSION['userType'] ?? 'user';
+echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETTY_PRINT) . ");</script>";
 
-// Retrieve session values based on user type
-$email = $accountId = '';
-
-if ($userType === 'agent') {
-    $email = $_SESSION['agent_email'] ?? '';
-    $accountId = $_SESSION['agent_accountId'] ?? '';
-
-} elseif ($userType === 'client') {
-    $email = $_SESSION['client_email'] ?? '';
-    $accountId = $_SESSION['client_accountId'] ?? '';
-} else {
-    echo "<script>console.warn('Unknown user type detected');</script>";
-}
-
-// Debugging: Log session values in the console safely
-echo "<script>
-    console.log('User Type:', '" . htmlspecialchars($userType) . "');
-    console.log('Email:', '" . htmlspecialchars($email) . "');
-    console.log('Account ID:', '" . htmlspecialchars($accountId) . "');
-</script>";
 ?>
 
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reset Password</title>
     <link rel="stylesheet" href="../User/assets/user-changePassword.css?v=<?php echo time(); ?>">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 </head>
+
 <body>
     <div class="main-container">
         <div class="login-container">
@@ -65,7 +47,7 @@ echo "<script>
                             <label for="current-password" class="input-label">Current Password</label>
                             <input type="password" id="current-password" name="current_password" class="input-field" placeholder="Enter current password" required>
                         </div>
-                        
+
                         <div class="form-inputs">
                             <label for="new-password" class="input-label">New Password</label>
                             <input type="password" id="new-password" name="new_password" class="input-field" placeholder="Enter new password" required>
@@ -87,13 +69,114 @@ echo "<script>
         </div>
     </div>
 
+    <?php
+    // Allowed user types
+    $allowedUserTypes = ['user', 'guest', 'agent'];
+
+    if (isset($_GET['userType'])) {
+
+        // Get the userType from the URL
+        $userTypeFromURL = filter_input(INPUT_GET, 'userType');
+    
+        // Log the userTypeFromURL value for debugging
+        echo "<script>console.log('userTypeFromURL: " . $userTypeFromURL . "');</script>";
+    
+        // Define valid user types
+        $validUserTypes = ['agent', 'guest'];
+    
+        // Check if the userType from URL is valid
+        if (!in_array($userTypeFromURL, $validUserTypes)) {
+            // If the userType is not valid, redirect to login
+            redirectToLogin('Invalid user type. Redirecting to login.');
+        }
+    
+        // Get the accountId based on the userType from the session
+        if ($userTypeFromURL === 'agent') {
+            $accountId = $_SESSION['agent_accountId'] ?? null; // Get agent accountId from session
+        } else {
+            $accountId = $_SESSION['client_accountId'] ?? null; // Get client accountId from session
+        }
+    
+        // Log session accountId
+        echo "<script>console.log('Session accountId: " . $accountId . "');</script>";
+    
+        // Check if accountId exists in session
+        if (!$accountId) {
+            redirectToLogin('Session expired or invalid! Redirecting to login.');
+        }
+    
+        // Fetch the actual account type from the database
+        $stmt = $conn->prepare("SELECT accountType FROM accounts WHERE accountId = ?");
+        $stmt->bind_param("i", $accountId);
+        $stmt->execute();
+        $stmt->bind_result($userAccountType);
+        $stmt->fetch();
+    
+        // Log fetched account type
+        echo "<script>console.log('Database accountType: " . $userAccountType . "');</script>";
+    
+        // Validate that the session account type matches the userType from URL
+        if ($userAccountType !== $userTypeFromURL) {
+            // If the types don't match, redirect to login
+            redirectToLogin('Unauthorized access detected! Redirecting to login.');
+        }
+    
+        // If everything is valid, update the session with the userType
+        $_SESSION['userType'] = $userTypeFromURL;
+    }
+    
+    /**
+     * Redirects user to the login page with an alert message.
+     * 
+     * @param string $message The alert message to display before redirecting.
+     */
+    function redirectToLogin($message)
+    {
+        echo "<script>
+                alert('$message');
+                console.log('$message');
+                window.location.href = '../Agent Section/agentLogin.php';
+            </script>";
+        exit;
+    }
+
+
+
+    // Ensure userType exists in session
+    $userType = $_SESSION['userType'] ?? 'user';
+
+    // Retrieve session values based on user type
+    $email = $accountId = '';
+
+    if ($userType === 'agent') {
+        $email = $_SESSION['agent_email'] ?? '';
+        $accountId = $_SESSION['agent_accountId'] ?? '';
+    } elseif ($userType === 'guest') {
+        $email = $_SESSION['client_email'] ?? '';
+        $accountId = $_SESSION['client_accountId'] ?? '';
+    } else {
+        echo "<script>
+                alert('Invalid user type detected! Redirecting to login.');
+                window.location.href = '../Agent Section/agentLogin.php';
+            </script>";
+        exit;
+    }
+
+    // Debugging: Log session values safely
+    echo "<script>
+            console.log('User Type:', '" . htmlspecialchars($userType) . "');
+            console.log('Email:', '" . htmlspecialchars($email) . "');
+            console.log('Account ID:', '" . htmlspecialchars($accountId) . "');
+        </script>";
+    ?>
+
     <script>
         function goBack() {
             window.history.back();
         }
 
-        $(document).ready(function () {
-            $("#resetForm").submit(function (e) {
+        $(document).ready(function() {
+            $("#resetForm").submit(function(e) {
                 e.preventDefault(); // Prevent default form submission
 
                 let currentPassword = $("#current-password").val();
@@ -106,37 +189,47 @@ echo "<script>
                 }
 
                 $.ajax({
-                    url: "../User/functions/changepassword.php",
+                    url: "../User/functions/user-changePassword.php",
                     type: "POST",
                     data: {
                         current_password: currentPassword,
                         new_password: newPassword
                     },
-                    success: function (response) {
+
+                    success: function(response) {
+
                         let jsonResponse;
+
                         try {
                             jsonResponse = JSON.parse(response.trim());
                         } catch (e) {
                             alert("Unexpected server response.");
-                            return;
+                            return;s
                         }
 
                         if (jsonResponse.status === "error") {
                             alert(jsonResponse.message);
-                        } else if (jsonResponse.status === "success") {
+                        } 
+                        
+                        else if (jsonResponse.status === "success") {
                             alert("Password updated successfully. Redirecting to Login page...");
                             setTimeout(() => {
                                 window.location.href = "../Agent Section/agentLogin.php";
-                            }, 3000);
+                            }, 1500);
                         }
+
                     },
-                    error: function () {
+
+                    error: function() {
                         alert("An error occurred. Please try again.");
                         window.location.href = "../Agent Section/agentLogin.php";
                     }
+                    
                 });
+
             });
         });
     </script>
 </body>
+
 </html>

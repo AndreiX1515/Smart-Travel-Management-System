@@ -83,8 +83,17 @@ else
 $stmt2->close();
 
 
-// Format the full name
-$fullName = htmlspecialchars($lName . ', ' . $fName . ($mName ? ' ' . substr($mName, 0, 1) . '.' : ''));
+// Format the full name in Last Name, First Name, Middle Name format
+$fullName = htmlspecialchars(trim(
+  $lName .                         // Always include last name
+  ($fName ? ', ' . $fName : '') .  // Add first name with a comma if it's not empty
+  ($mName ? ' ' . substr($mName, 0, 1) . '.' : '') // Add middle name initial if it's not empty
+));
+
+// Remove any trailing commas or extra spaces
+$fullName = rtrim($fullName, ', '); // Clean up if only the last name is present
+
+
 
 // Optional: hide password by default
 $maskedPassword = '••••••••••';

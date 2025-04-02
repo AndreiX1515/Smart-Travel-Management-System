@@ -47,7 +47,52 @@ if ($stmt->num_rows > 0) {
     $updateStmt->bind_param("si", $newPassword, $accountId);
 
     if ($updateStmt->execute()) {
+        if ($userType == "agent") {
+            // Unset only specific session variables
+            unset(
+                $_SESSION['agent_accountId'], 
+                $_SESSION['agent_userType'], 
+                $_SESSION['agent_fName'], 
+                $_SESSION['agent_mName'], 
+                $_SESSION['agent_lName'], 
+                $_SESSION['agentId'],  
+                $_SESSION['agentCode'],  
+                $_SESSION['agentRole'],  
+                $_SESSION['agentType'],  
+                $_SESSION['agent_branchId'],  
+                $_SESSION['agent_timeout'],
+                $_SESSION['agent_flightId'],
+                $_SESSION['userType']
+            );
+
+
+            // Unset all agent-related session variables
+            foreach ($_SESSION as $key => $value) {
+                if (strpos($key, 'agent_') === 0) {
+                    unset($_SESSION[$key]);
+                }
+            } 
+        }
+
+        else if ($userType == "client") {
+            unset(
+                $_SESSION['clientId'], 
+                $_SESSION['clientCode'],
+                $_SESSION['clientRole'], 
+                $_SESSION['clientType'],
+                $_SESSION['userType'] 
+            );
+            
+            // Unset all session variables that start with 'client_'
+            foreach ($_SESSION as $key => $value) {
+                if (strpos($key, 'client_') === 0) {
+                    unset($_SESSION[$key]);
+                }
+            }
+        }
+        
         echo json_encode(["status" => "success", "message" => "Password updated successfully."]);
+
     } else {
         echo json_encode(["status" => "error", "message" => "Failed to update password. Try again."]);
     }
