@@ -138,7 +138,7 @@
 
         // Convert array to JSON
         $jsonData = json_encode($itinerary);
-        echo "<script>console.log('Fetched Itinerary Data:', " . json_encode($itinerary, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE) . ");</script>";
+        echo "<script>console.log(" . json_encode($itinerary, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE) . ");</script>";
 
         ?>
 
@@ -358,7 +358,7 @@
                             <script>
                                 document.addEventListener("DOMContentLoaded", function() {
                                     let selectedCity<?= $i ?> = document.getElementById("<?= $cityKey ?>").value;
-                                    console.log("Selected City <?= $i + 1 ?>:", selectedCity<?= $i ?>);
+                                    // console.log("Selected City <?= $i + 1 ?>:", selectedCity<?= $i ?>);
                                 });
                             </script>
 
@@ -805,66 +805,53 @@
     <!--- Generate Itinerary PDF -->
     <script>
         $('#submitTour').click(function() {
-            const itineraryId = $('#itineraryId').val();
-            const itineraryName = $('#itineraryName').val();
+    const itineraryId = $('#itineraryId').val();
+    const itineraryName = $('#itineraryName').val();
 
-            console.log('Itinerary ID:', itineraryId); // Log the Itinerary ID
+    if (!itineraryId) {
+        alert('Please enter a valid Itinerary ID.');
+        return;
+    }
 
-            if (!itineraryId) {
-                alert('Please enter a valid Itinerary ID.');
-                return;
-            }
+    // Step 1: Open Itinerary Template (Executes SQL Query)
+    let templateWindow = window.open(`../Employee Section/functions/Itinerary-template.php?itineraryId=${encodeURIComponent(itineraryId)}`, '_blank');
 
-            let currentDate = new Date();
-            let formattedDate = `${(currentDate.getMonth() + 1).toString().padStart(2, '0')}/${currentDate.getDate().toString().padStart(2, '0')}/${currentDate.getFullYear()}`;
+    if (!templateWindow) {
+        alert('Popup blocked! Please allow popups for this site.');
+        return;
+    }
 
-            $.ajax({
-                url: '../Employee Section/functions/Itinerary-template.php',
-                type: 'POST',
-                data: {
-                    itineraryId,
-                    itineraryName,
-                    currentDate
-                },
-                dataType: 'json',
-                success: function(response) {
-                    if (response.success) {
-                        console.log('Fetched Itinerary ID:', response.itineraryId);
-                        console.log('Fetched Itinerary Data:', response.data);
+    // Step 2: Wait for the Template to Load Before Proceeding
+    let checkTemplateLoaded = setInterval(function() {
+        if (templateWindow.closed) {
+            clearInterval(checkTemplateLoaded);
 
-                        window.open('../Employee Section/functions/Itinerary-template.php', '_blank');
+            // Step 3: Generate PDF Only If Template Loaded Successfully
+            let xhrPdf = new XMLHttpRequest();
+            xhrPdf.open('GET', `../Employee Section/functions/generateItineraryPDF.php?itineraryId=${encodeURIComponent(itineraryId)}`, true);
+            xhrPdf.responseType = 'blob';
 
-                        // $.ajax({
-                        //     url: '../Employee Section/functions/generateItineraryPDF.php',
-                        //     type: 'POST',
-                        //     data: {
-                        //         itineraryId
-                        //     },
-                        //     xhrFields: {
-                        //         responseType: 'blob'
-                        //     },
-                        //     success: function(blob) {
-                        //         let link = document.createElement('a');
-                        //         link.href = window.URL.createObjectURL(blob);
-                        //         link.download = `${itineraryName}.pdf`;
-                        //         link.click();
-                        //     },
-                        //     error: function(xhr) {
-                        //         console.error('PDF Generation Error:', xhr.responseText);
-                        //         alert('Failed to generate the itinerary PDF. Please try again.');
-                        //     }
-                        // });
-
-                    } else {
-                        alert('Failed to generate itinerary number. Please try again.');
-                    }
-                },
-                error: function(xhr) {
-                    console.error('emp-saveItinerary Error:', xhr.responseText);
-                    alert('Server error: ' + xhr.statusText);
+            xhrPdf.onload = function() {
+                if (xhrPdf.status === 200) {
+                    const blob = new Blob([xhrPdf.response], { type: 'application/pdf' });
+                    const link = document.createElement('a');
+                    link.href = window.URL.createObjectURL(blob);
+                    link.download = `Itinerary_${itineraryName}.pdf`;
+                    link.click();
+                } else {
+                    alert('Failed to generate the itinerary PDF. Please try again.');
                 }
-            });
-        });
+            };
+
+            xhrPdf.onerror = function() {
+                alert('An error occurred while generating the itinerary PDF.');
+            };
+
+            xhrPdf.send();
+        }
+    }, 1000); // Check every second if template is closed
+});
+
     </script>
 
 

@@ -1,20 +1,26 @@
 <?php
-require('../../tcpdf/tcpdf.php');  
-require('../../conn.php'); 
+require_once('../../tcpdf/tcpdf.php');  
+require_once('../../conn.php'); 
 
-// Prevent unwanted output before JSON response
+// Prevent unwanted output before PDF generation
 ob_start();
 
 // Set JSON response headers
 header('Content-Type: application/json; charset=UTF-8');
 
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    echo json_encode(['error' => 'Invalid request method']);
+    exit;
+}
+
 // Validate Itinerary ID
-if (!isset($_GET['itineraryId']) || !is_numeric($_GET['itineraryId'])) {
+if (!isset($_POST['itineraryId']) || !is_numeric($_POST['itineraryId'])) {
     echo json_encode(['error' => 'Invalid Itinerary ID']);
     exit;
 }
 
-$itineraryId = intval($_GET['itineraryId']);
+$itineraryId = intval($_POST['itineraryId']);
+error_log("Received Itinerary ID: " . $itineraryId); // Debugging log
 
 if (!$conn) {
     echo json_encode(['error' => 'Database connection error']);
@@ -45,7 +51,6 @@ $packageName = $row['packageName'];
 $periodStart = $row['periodStart'];
 $periodEnd = $row['periodEnd'];
 $guideName = $row['guideName'];
-
 $contactNumber = "+" . $row['countryCode'] . " " . $row['contactNumber'];
 $cities = array_filter([
     ['city' => $row['city1'], 'hotel' => $row['hotel1']],
@@ -85,27 +90,16 @@ while ($day = $result->fetch_assoc()) {
         'meals' => $day['meals'] ? explode(', ', $day['meals']) : []
     ];
 }
+
 // Clean any buffered output to avoid "Some data has already been output" error
 ob_end_clean();
 
 
 class PDF extends TCPDF {
-    private $packageName;
-    private $noOfDays;
-    private $periodStart;
-    private $periodEnd;
-    private $guideName;
-    private $countryCode;
-    private $contactNumber;
+    protected $itinerary; // Store itinerary data
 
-    public function setItineraryDetails($packageName, $noOfDays, $periodStart, $periodEnd, $guideName, $countryCode, $contactNumber) {
-        $this->packageName = $packageName;
-        $this->noOfDays = $noOfDays;
-        $this->periodStart = $periodStart;
-        $this->periodEnd = $periodEnd;
-        $this->guideName = $guideName;
-        $this->countryCode = $countryCode;
-        $this->contactNumber = $contactNumber;
+    public function setItinerary($data) {
+        $this->itinerary = $data;
     }
 
     // Page header
@@ -113,11 +107,11 @@ class PDF extends TCPDF {
         if ($this->getPage() == 1) { // Only show header on the first page
             // Add logo
             $this->Image('../../Assets/Logos/SMART LOGO 2 (2).jpg', 45, 4, 105, 15);
-            $this->Ln(25);
+            $this->Ln(25); 
 
             // Warning notice
             $this->SetFont('Helvetica', 'B', 6);
-            $this->SetY($this->GetY() - 4);
+            $this->SetY($this->GetY() - 4); 
             $this->SetTextColor(255, 0, 0);
             $this->Cell(170, 0, '**Subject to change w/o prior notice based on local Situation**', 0, 0, 'L');
             $this->SetTextColor(0, 0, 0);
@@ -150,9 +144,9 @@ class PDF extends TCPDF {
             $this->SetTextColor(0,0,0);
 
             $this->SetFont('Helvetica', 'B', 16);
-            $this->Cell(0, 3, strtoupper($this->packageName), 'LRT', 1, 'C', true);
+            $this->Cell(0, 3, strtoupper($this->itinerary['packageName']), 'LRT', 1, 'C', true);
             $this->SetFont('Helvetica', 'B', 10);
-            $this->Cell(0, 3, 'KOREA TOUR ' . $this->noOfDays . ' DAYS & ' . ($this->noOfDays - 1) . ' NIGHTS', 'LRB', 1, 'C', true);
+            $this->Cell(0, 3, 'KOREA TOUR ' . $this->itinerary['noOfDays'] . ' DAYS & ' . ($this->itinerary['noOfDays'] - 1) . ' NIGHTS', 'LRB', 1, 'C', true);
 
             // Period and Guide details (Dynamically set from JSON)
             $this->SetFont('Helvetica', 'B', 9);
@@ -160,18 +154,17 @@ class PDF extends TCPDF {
             // Period section
             $this->SetXY(10, 47.3);
             $this->Cell(40, 8, 'PERIODS', 'LRB', 0, 'C');  
-            $this->Cell(70, 8, date('d, M. Y', strtotime($this->periodStart)) . ' - ' . date('d, M. Y', strtotime($this->periodEnd)), 'B', 0, 'C');
+            $this->Cell(70, 8, date('d, M. Y', strtotime($this->itinerary['periodStart'])) . ' - ' . date('d, M. Y', strtotime($this->itinerary['periodEnd'])), 'B', 0, 'C');
 
             // Guide details
             $this->Cell(20, 8, 'GUIDE:', 'LB', 0, 'C');
-            $this->Cell(60, 4, $this->guideName, 'LRB', 1, 'C');
+            $this->Cell(60, 4, $this->itinerary['guideName'], 'LRB', 1, 'C');
 
             // Contact details
             $this->SetXY(140, 51.25);
-            $this->Cell(60, 4, $this->countryCode . ' ' . $this->contactNumber, 'LRB', 1, 'C');
+            $this->Cell(60, 4, $this->itinerary['countryCode'] . ' ' . $this->itinerary['contactNumber'], 'LRB', 1, 'C');
         }
     }
-
 
     // Add hotel info table
     public function addHotelInfoTable() {
@@ -912,11 +905,12 @@ class PDF extends TCPDF {
 
 }
 
-
+// Create a new PDF instance and add pages as needed
 $pdf = new PDF();
 
 // Set margins
 $pdf->SetMargins(10, 10, 10); // Adjust to provide consistent spacing
+
 $pdf->AddPage();
 $pdf->addHotelInfoTable();
 $pdf->addItineraryHeader();
