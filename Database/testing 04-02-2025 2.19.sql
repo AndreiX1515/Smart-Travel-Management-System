@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 27, 2025 at 09:11 AM
+-- Generation Time: Apr 02, 2025 at 08:19 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -34,199 +34,200 @@ CREATE TABLE `accounts` (
   `otp` int(11) DEFAULT NULL,
   `accountStatus` enum('active','inactive') NOT NULL,
   `accountType` enum('admin','agent','employee','guest') NOT NULL,
-  `createdAt` datetime DEFAULT current_timestamp()
+  `createdAt` datetime DEFAULT current_timestamp(),
+  `defaultPasswordStat` enum('yes','no','','') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `accounts`
 --
 
-INSERT INTO `accounts` (`accountId`, `email`, `password`, `otp`, `accountStatus`, `accountType`, `createdAt`) VALUES
-(1, 'SMT-E001', 'password1', 0, 'active', 'employee', '2025-02-26 09:30:20'),
-(2, 'SMT-E002', 'password1', 0, 'active', 'employee', '2025-02-26 09:30:46'),
-(3, 'SMT-E003', 'password1', 0, 'active', 'employee', '2025-02-26 09:31:16'),
-(4, 'SMT-E004', 'password1', 0, 'active', 'employee', '2025-02-26 09:31:41'),
-(5, 'SMT-E005', 'password1', 0, 'active', 'employee', '2025-02-26 09:32:17'),
-(23, 'BU1-A001', 'password1', 0, 'active', 'agent', '2025-02-26 10:03:36'),
-(24, 'BU1-A002', 'password1', 0, 'active', 'agent', '2025-02-26 10:06:11'),
-(25, 'BU1-A003', 'password1', 0, 'active', 'agent', '2025-02-26 10:07:51'),
-(26, 'BU1-A004', 'password1', 0, 'active', 'agent', '2025-02-26 10:08:37'),
-(27, 'BU2-A001', 'password1', 0, 'active', 'agent', '2025-02-26 10:09:44'),
-(32, 'BU1-C001', 'password1', 0, 'active', 'guest', '2025-02-26 10:28:07'),
-(33, 'BU1-C002', 'password1', 0, 'active', 'guest', '2025-02-26 10:28:23'),
-(34, 'BU2-C001', 'password1', 0, 'active', 'guest', '2025-02-26 10:28:38'),
-(35, 'BU4-A001', 'password1', 0, 'active', 'agent', '2025-02-26 10:32:38'),
-(36, 'BU4-A002', 'password1', 0, 'active', 'agent', '2025-02-26 10:33:04'),
-(37, 'BU4-A003', 'password1', 0, 'active', 'agent', '2025-02-26 10:33:34'),
-(38, 'BU4-A004', 'password1', 0, 'active', 'agent', '2025-02-26 10:34:08'),
-(39, 'BU4-A005', 'password1', 0, 'active', 'agent', '2025-02-26 10:34:29'),
-(40, 'BU5-A001', 'password1', 0, 'active', 'agent', '2025-02-26 10:35:03'),
-(41, 'BU6-A001', 'password1', 0, 'active', 'agent', '2025-02-26 10:35:33'),
-(42, 'BU6-A002', 'password1', 0, 'active', 'agent', '2025-02-26 10:36:09'),
-(43, 'BU6-A003', 'password1', 0, 'active', 'agent', '2025-02-26 10:36:31'),
-(44, 'BU6-A004', 'password1', 0, 'active', 'agent', '2025-02-26 10:37:06'),
-(45, 'BU6-A005', 'password1', 0, 'active', 'agent', '2025-02-26 10:37:30'),
-(46, 'BU6-A006', 'password1', 0, 'active', 'agent', '2025-02-26 10:38:15'),
-(47, 'BU6-A007', 'password1', 0, 'active', 'agent', '2025-02-26 10:38:49'),
-(48, 'BU6-A008', 'password1', 0, 'active', 'agent', '2025-02-26 10:39:24'),
-(49, 'BU6-A009', 'password1', 0, 'active', 'agent', '2025-02-26 10:40:06'),
-(50, 'BU6-A010', 'password1', 0, 'active', 'agent', '2025-02-26 10:40:46'),
-(51, 'BU6-A011', 'password1', 0, 'active', 'agent', '2025-02-26 10:41:12'),
-(52, 'BU6-A012', 'password1', 0, 'active', 'agent', '2025-02-26 10:41:42'),
-(53, 'BU6-A013', 'password1', 0, 'active', 'agent', '2025-02-26 10:42:17'),
-(54, 'BU6-A014', 'password1', 0, 'active', 'agent', '2025-02-26 10:43:06'),
-(55, 'BU6-A015', 'password1', 0, 'active', 'agent', '2025-02-26 10:43:35'),
-(56, 'BU7-A001', 'password1', 0, 'active', 'agent', '2025-02-26 10:44:04'),
-(62, 'SMT-E006', 'password1', 0, 'active', 'employee', '2025-02-26 13:19:40'),
-(63, 'SMT-E007', 'password1', 0, 'active', 'employee', '2025-02-26 13:27:28'),
-(64, 'SMT-E008', 'password1', 0, 'active', 'employee', '2025-02-26 13:28:13'),
-(65, 'SMT-E009', 'password1', 0, 'active', 'employee', '2025-02-26 13:29:42'),
-(66, 'SMT-E010', 'password1', 0, 'active', 'employee', '2025-02-26 13:30:05'),
-(67, 'SMT-E011', 'password1', 0, 'active', 'employee', '2025-02-26 13:30:25'),
-(68, 'SMT-E012', 'password1', 0, 'active', 'employee', '2025-02-26 13:39:23'),
-(69, 'SMT-E013', 'password1', 0, 'active', 'employee', '2025-02-26 13:54:14'),
-(70, 'BU5-A002', 'password1', 0, 'active', 'agent', '2025-02-26 14:35:05'),
-(71, 'BU7-A002', 'password1', 0, 'active', 'agent', '2025-02-26 15:10:59'),
-(72, 'BU7-A003', 'password1', 0, 'active', 'agent', '2025-02-26 15:14:58'),
-(73, 'BU7-A004', 'password1', 0, 'active', 'agent', '2025-02-26 15:15:35'),
-(74, 'SMT-E014', 'password1', 0, 'active', 'employee', '2025-02-27 09:06:42'),
-(75, 'SMT-E015', 'password1', 0, 'active', 'employee', '2025-02-27 09:07:01'),
-(76, 'SMT-E016', 'password1', 0, 'active', 'employee', '2025-02-27 09:07:19'),
-(77, 'SMT-E017', 'password1', 0, 'active', 'employee', '2025-02-27 09:07:38'),
-(78, 'SMT-E018', 'password1', 0, 'active', 'employee', '2025-02-27 09:19:14'),
-(79, 'SMT-E019', 'password1', 0, 'active', 'employee', '2025-02-27 09:20:11'),
-(80, 'SMT-E020', 'password1', 0, 'active', 'employee', '2025-02-27 09:20:30'),
-(81, 'BU1-A005', 'password1', 0, 'active', 'agent', '2025-02-27 09:25:29'),
-(82, 'BU1-A006', 'password1', 0, 'active', 'agent', '2025-02-27 09:35:19'),
-(83, 'BU1-A007', 'password1', 0, 'active', 'agent', '2025-02-27 09:36:15'),
-(84, 'BU1-A008', 'password1', 0, 'active', 'agent', '2025-02-27 09:36:32'),
-(85, 'BU1-A009', 'password1', 0, 'active', 'agent', '2025-02-27 09:36:48'),
-(86, 'BU1-A010', 'password1', 0, 'active', 'agent', '2025-02-27 09:37:08'),
-(87, 'BU1-A011', 'password1', 0, 'active', 'agent', '2025-02-27 09:42:31'),
-(88, 'BU1-A012', 'password1', 0, 'active', 'agent', '2025-02-27 09:42:50'),
-(89, 'BU1-A013', 'password1', 0, 'active', 'agent', '2025-02-27 09:43:05'),
-(90, 'BU1-A014', 'password1', 0, 'active', 'agent', '2025-02-27 09:43:26'),
-(91, 'BU1-A015', 'password1', 0, 'active', 'agent', '2025-02-27 09:43:58'),
-(92, 'BU1-A016', 'password1', 0, 'active', 'agent', '2025-02-27 09:44:19'),
-(93, 'BU1-A017', 'password1', 0, 'active', 'agent', '2025-02-27 09:44:33'),
-(94, 'BU1-A018', 'password1', 0, 'active', 'agent', '2025-02-27 09:44:52'),
-(95, 'BU1-A019', 'password1', 0, 'active', 'agent', '2025-02-27 09:45:06'),
-(96, 'BU1-A020', 'password1', 0, 'active', 'agent', '2025-02-27 09:45:19'),
-(97, 'BU2-A002', 'password1', 0, 'active', 'agent', '2025-02-27 11:45:58'),
-(98, 'BU2-A003', 'password1', 0, 'active', 'agent', '2025-02-27 11:45:58'),
-(99, 'BU2-A004', 'password1', 0, 'active', 'agent', '2025-02-27 11:45:58'),
-(100, 'BU2-A005', 'password1', 0, 'active', 'agent', '2025-02-27 11:45:58'),
-(101, 'BU2-A006', 'password1', 0, 'active', 'agent', '2025-02-27 11:45:58'),
-(102, 'BU2-A007', 'password1', 0, 'active', 'agent', '2025-02-27 11:45:58'),
-(103, 'BU2-A008', 'password1', 0, 'active', 'agent', '2025-02-27 11:45:58'),
-(104, 'BU2-A009', 'password1', 0, 'active', 'agent', '2025-02-27 11:45:58'),
-(105, 'BU2-A010', 'password1', 0, 'active', 'agent', '2025-02-27 11:45:58'),
-(106, 'BU3-A001', 'password1', 0, 'active', 'agent', '2025-02-27 11:56:02'),
-(107, 'BU3-A002', 'password1', 0, 'active', 'agent', '2025-02-27 11:56:02'),
-(108, 'BU3-A003', 'password1', 0, 'active', 'agent', '2025-02-27 11:56:02'),
-(109, 'BU3-A004', 'password1', 0, 'active', 'agent', '2025-02-27 11:56:02'),
-(110, 'BU3-A005', 'password1', 0, 'active', 'agent', '2025-02-27 11:56:02'),
-(111, 'BU3-A006', 'password1', 0, 'active', 'agent', '2025-02-27 11:56:02'),
-(112, 'BU3-A007', 'password1', 0, 'active', 'agent', '2025-02-27 11:56:02'),
-(113, 'BU3-A008', 'password1', 0, 'active', 'agent', '2025-02-27 11:56:02'),
-(114, 'BU3-A009', 'password1', 0, 'active', 'agent', '2025-02-27 11:56:02'),
-(115, 'BU3-A010', 'password1', 0, 'active', 'agent', '2025-02-27 11:56:02'),
-(116, 'BU4-A006', 'password1', 0, 'active', 'agent', '2025-02-27 12:00:08'),
-(117, 'BU4-A007', 'password1', 0, 'active', 'agent', '2025-02-27 12:00:08'),
-(118, 'BU4-A008', 'password1', 0, 'active', 'agent', '2025-02-27 12:00:08'),
-(119, 'BU4-A009', 'password1', 0, 'active', 'agent', '2025-02-27 12:00:08'),
-(120, 'BU4-A010', 'password1', 0, 'active', 'agent', '2025-02-27 12:00:08'),
-(121, 'BU5-A003', 'password1', 0, 'active', 'agent', '2025-02-27 12:56:28'),
-(122, 'BU5-A004', 'password1', 0, 'active', 'agent', '2025-02-27 12:56:28'),
-(123, 'BU5-A005', 'password1', 0, 'active', 'agent', '2025-02-27 12:56:28'),
-(124, 'BU5-A006', 'password1', 0, 'active', 'agent', '2025-02-27 12:56:28'),
-(125, 'BU5-A007', 'password1', 0, 'active', 'agent', '2025-02-27 12:56:28'),
-(126, 'BU5-A008', 'password1', 0, 'active', 'agent', '2025-02-27 12:56:28'),
-(127, 'BU5-A009', 'password1', 0, 'active', 'agent', '2025-02-27 12:56:28'),
-(128, 'BU5-A010', 'password1', 0, 'active', 'agent', '2025-02-27 12:56:28'),
-(129, 'BU6-A016', 'password1', 0, 'active', 'agent', '2025-02-27 13:02:46'),
-(130, 'BU6-A017', 'password1', 0, 'active', 'agent', '2025-02-27 13:02:46'),
-(131, 'BU6-A018', 'password1', 0, 'active', 'agent', '2025-02-27 13:02:46'),
-(132, 'BU6-A019', 'password1', 0, 'active', 'agent', '2025-02-27 13:02:46'),
-(133, 'BU6-A020', 'password1', 0, 'active', 'agent', '2025-02-27 13:02:46'),
-(134, 'BU6-A021', 'password1', 0, 'active', 'agent', '2025-02-27 13:02:46'),
-(135, 'BU6-A022', 'password1', 0, 'active', 'agent', '2025-02-27 13:02:46'),
-(136, 'BU6-A023', 'password1', 0, 'active', 'agent', '2025-02-27 13:02:46'),
-(137, 'BU7-A005', 'password1', 0, 'active', 'agent', '2025-02-27 13:07:32'),
-(138, 'BU7-A006', 'password1', 0, 'active', 'agent', '2025-02-27 13:07:32'),
-(139, 'BU7-A007', 'password1', 0, 'active', 'agent', '2025-02-27 13:07:32'),
-(140, 'BU7-A008', 'password1', 0, 'active', 'agent', '2025-02-27 13:07:32'),
-(141, 'BU7-A009', 'password1', 0, 'active', 'agent', '2025-02-27 13:07:32'),
-(142, 'BU7-A010', 'password1', 0, 'active', 'agent', '2025-02-27 13:07:32'),
-(143, 'BU7-A011', 'password1', 0, 'active', 'agent', '2025-02-27 13:07:32'),
-(144, 'BU7-A012', 'password1', 0, 'active', 'agent', '2025-02-27 13:07:32'),
-(145, 'BU1-C003', 'password1', 0, 'active', 'guest', '2025-02-27 14:41:30'),
-(146, 'BU1-C004', 'password1', 0, 'active', 'guest', '2025-02-27 14:41:30'),
-(147, 'BU1-C005', 'password1', 0, 'active', 'guest', '2025-02-27 14:41:30'),
-(148, 'BU1-C006', 'password1', 0, 'active', 'guest', '2025-02-27 14:41:30'),
-(149, 'BU1-C007', 'password1', 0, 'active', 'guest', '2025-02-27 14:41:30'),
-(150, 'BU1-C008', 'password1', 0, 'active', 'guest', '2025-02-27 14:41:30'),
-(151, 'BU1-C009', 'password1', 0, 'active', 'guest', '2025-02-27 14:41:30'),
-(152, 'BU1-C010', 'password1', 0, 'active', 'guest', '2025-02-27 14:41:30'),
-(153, 'BU2-C002', 'password1', 0, 'active', 'guest', '2025-02-27 14:48:34'),
-(154, 'BU2-C003', 'password1', 0, 'active', 'guest', '2025-02-27 14:48:34'),
-(155, 'BU2-C004', 'password1', 0, 'active', 'guest', '2025-02-27 14:48:34'),
-(156, 'BU2-C005', 'password1', 0, 'active', 'guest', '2025-02-27 14:48:34'),
-(157, 'BU2-C006', 'password1', 0, 'active', 'guest', '2025-02-27 14:48:34'),
-(158, 'BU2-C007', 'password1', 0, 'active', 'guest', '2025-02-27 14:48:34'),
-(159, 'BU2-C008', 'password1', 0, 'active', 'guest', '2025-02-27 14:48:34'),
-(160, 'BU2-C009', 'password1', 0, 'active', 'guest', '2025-02-27 14:48:34'),
-(161, 'BU2-C010', 'password1', 0, 'active', 'guest', '2025-02-27 14:48:34'),
-(171, 'BU3-C001', 'password1', 0, 'active', 'guest', '2025-02-27 14:52:40'),
-(172, 'BU3-C002', 'password1', 0, 'active', 'guest', '2025-02-27 14:52:40'),
-(173, 'BU3-C003', 'password1', 0, 'active', 'guest', '2025-02-27 14:52:40'),
-(174, 'BU3-C004', 'password1', 0, 'active', 'guest', '2025-02-27 14:52:40'),
-(175, 'BU3-C005', 'password1', 0, 'active', 'guest', '2025-02-27 14:52:40'),
-(176, 'BU3-C006', 'password1', 0, 'active', 'guest', '2025-02-27 14:52:40'),
-(177, 'BU3-C007', 'password1', 0, 'active', 'guest', '2025-02-27 14:52:40'),
-(178, 'BU3-C008', 'password1', 0, 'active', 'guest', '2025-02-27 14:52:40'),
-(179, 'BU3-C009', 'password1', 0, 'active', 'guest', '2025-02-27 14:52:40'),
-(180, 'BU3-C010', 'password1', 0, 'active', 'guest', '2025-02-27 14:52:40'),
-(181, 'BU4-C001', 'password1', 0, 'active', 'guest', '2025-02-27 14:53:47'),
-(182, 'BU4-C002', 'password1', 0, 'active', 'guest', '2025-02-27 14:53:47'),
-(183, 'BU4-C003', 'password1', 0, 'active', 'guest', '2025-02-27 14:53:47'),
-(184, 'BU4-C004', 'password1', 0, 'active', 'guest', '2025-02-27 14:53:47'),
-(185, 'BU4-C005', 'password1', 0, 'active', 'guest', '2025-02-27 14:53:47'),
-(186, 'BU4-C006', 'password1', 0, 'active', 'guest', '2025-02-27 14:53:47'),
-(187, 'BU4-C007', 'password1', 0, 'active', 'guest', '2025-02-27 14:53:47'),
-(188, 'BU4-C008', 'password1', 0, 'active', 'guest', '2025-02-27 14:53:47'),
-(189, 'BU4-C009', 'password1', 0, 'active', 'guest', '2025-02-27 14:53:47'),
-(190, 'BU4-C010', 'password1', 0, 'active', 'guest', '2025-02-27 14:53:47'),
-(191, 'BU5-C001', 'password1', 0, 'active', 'guest', '2025-02-27 14:55:00'),
-(192, 'BU5-C002', 'password1', 0, 'active', 'guest', '2025-02-27 14:55:00'),
-(193, 'BU5-C003', 'password1', 0, 'active', 'guest', '2025-02-27 14:55:00'),
-(194, 'BU5-C004', 'password1', 0, 'active', 'guest', '2025-02-27 14:55:00'),
-(195, 'BU5-C005', 'password1', 0, 'active', 'guest', '2025-02-27 14:55:00'),
-(196, 'BU5-C006', 'password1', 0, 'active', 'guest', '2025-02-27 14:55:00'),
-(197, 'BU5-C007', 'password1', 0, 'active', 'guest', '2025-02-27 14:55:00'),
-(198, 'BU5-C008', 'password1', 0, 'active', 'guest', '2025-02-27 14:55:00'),
-(199, 'BU5-C009', 'password1', 0, 'active', 'guest', '2025-02-27 14:55:00'),
-(200, 'BU5-C010', 'password1', 0, 'active', 'guest', '2025-02-27 14:55:00'),
-(201, 'BU6-C001', 'password1', 0, 'active', 'guest', '2025-02-27 14:55:53'),
-(202, 'BU6-C002', 'password1', 0, 'active', 'guest', '2025-02-27 14:55:53'),
-(203, 'BU6-C003', 'password1', 0, 'active', 'guest', '2025-02-27 14:55:53'),
-(204, 'BU6-C004', 'password1', 0, 'active', 'guest', '2025-02-27 14:55:53'),
-(205, 'BU6-C005', 'password1', 0, 'active', 'guest', '2025-02-27 14:55:53'),
-(206, 'BU6-C006', 'password1', 0, 'active', 'guest', '2025-02-27 14:55:53'),
-(207, 'BU6-C007', 'password1', 0, 'active', 'guest', '2025-02-27 14:55:53'),
-(208, 'BU6-C008', 'password1', 0, 'active', 'guest', '2025-02-27 14:55:53'),
-(209, 'BU6-C009', 'password1', 0, 'active', 'guest', '2025-02-27 14:55:53'),
-(210, 'BU6-C010', 'password1', 0, 'active', 'guest', '2025-02-27 14:55:53'),
-(211, 'BU7-C001', 'password1', 0, 'active', 'guest', '2025-02-27 14:56:17'),
-(212, 'BU7-C002', 'password1', 0, 'active', 'guest', '2025-02-27 14:56:17'),
-(213, 'BU7-C003', 'password1', 0, 'active', 'guest', '2025-02-27 14:56:17'),
-(214, 'BU7-C004', 'password1', 0, 'active', 'guest', '2025-02-27 14:56:17'),
-(215, 'BU7-C005', 'password1', 0, 'active', 'guest', '2025-02-27 14:56:17'),
-(216, 'BU7-C006', 'password1', 0, 'active', 'guest', '2025-02-27 14:56:17'),
-(217, 'BU7-C007', 'password1', 0, 'active', 'guest', '2025-02-27 14:56:17'),
-(218, 'BU7-C008', 'password1', 0, 'active', 'guest', '2025-02-27 14:56:17'),
-(219, 'BU7-C009', 'password1', 0, 'active', 'guest', '2025-02-27 14:56:17'),
-(220, 'BU7-C010', 'password1', 0, 'active', 'guest', '2025-02-27 14:56:17');
+INSERT INTO `accounts` (`accountId`, `email`, `password`, `otp`, `accountStatus`, `accountType`, `createdAt`, `defaultPasswordStat`) VALUES
+(1, 'SMT-E001', 'password1', 0, 'active', 'employee', '2025-02-26 09:30:20', 'yes'),
+(2, 'SMT-E002', 'password1', 0, 'active', 'employee', '2025-02-26 09:30:46', 'yes'),
+(3, 'SMT-E003', 'password1', 0, 'active', 'employee', '2025-02-26 09:31:16', 'yes'),
+(4, 'SMT-E004', 'password1', 0, 'active', 'employee', '2025-02-26 09:31:41', 'yes'),
+(5, 'SMT-E005', 'password1', 0, 'active', 'employee', '2025-02-26 09:32:17', 'yes'),
+(23, 'BU1-A001', 'password1', 0, 'active', 'agent', '2025-02-26 10:03:36', 'yes'),
+(24, 'BU1-A002', 'password1', 0, 'active', 'agent', '2025-02-26 10:06:11', 'yes'),
+(25, 'BU1-A003', 'password1', 0, 'active', 'agent', '2025-02-26 10:07:51', 'yes'),
+(26, 'BU1-A004', 'password1', 0, 'active', 'agent', '2025-02-26 10:08:37', 'yes'),
+(27, 'BU2-A001', 'password1', 0, 'active', 'agent', '2025-02-26 10:09:44', 'yes'),
+(32, 'BU1-C001', 'password1', 0, 'active', 'guest', '2025-02-26 10:28:07', 'yes'),
+(33, 'BU1-C002', 'password1', 0, 'active', 'guest', '2025-02-26 10:28:23', 'yes'),
+(34, 'BU2-C001', 'password1', 0, 'active', 'guest', '2025-02-26 10:28:38', 'yes'),
+(35, 'BU4-A001', 'password1', 0, 'active', 'agent', '2025-02-26 10:32:38', 'yes'),
+(36, 'BU4-A002', 'password1', 0, 'active', 'agent', '2025-02-26 10:33:04', 'yes'),
+(37, 'BU4-A003', 'password1', 0, 'active', 'agent', '2025-02-26 10:33:34', 'yes'),
+(38, 'BU4-A004', 'password1', 0, 'active', 'agent', '2025-02-26 10:34:08', 'yes'),
+(39, 'BU4-A005', 'password1', 0, 'active', 'agent', '2025-02-26 10:34:29', 'yes'),
+(40, 'BU5-A001', 'password1', 0, 'active', 'agent', '2025-02-26 10:35:03', 'yes'),
+(41, 'BU6-A001', 'password1', 0, 'active', 'agent', '2025-02-26 10:35:33', 'yes'),
+(42, 'BU6-A002', 'password1', 0, 'active', 'agent', '2025-02-26 10:36:09', 'yes'),
+(43, 'BU6-A003', 'password1', 0, 'active', 'agent', '2025-02-26 10:36:31', 'yes'),
+(44, 'BU6-A004', 'password1', 0, 'active', 'agent', '2025-02-26 10:37:06', 'yes'),
+(45, 'BU6-A005', 'password1', 0, 'active', 'agent', '2025-02-26 10:37:30', 'yes'),
+(46, 'BU6-A006', 'password1', 0, 'active', 'agent', '2025-02-26 10:38:15', 'yes'),
+(47, 'BU6-A007', 'password1', 0, 'active', 'agent', '2025-02-26 10:38:49', 'yes'),
+(48, 'BU6-A008', 'password1', 0, 'active', 'agent', '2025-02-26 10:39:24', 'yes'),
+(49, 'BU6-A009', 'password1', 0, 'active', 'agent', '2025-02-26 10:40:06', 'yes'),
+(50, 'BU6-A010', 'password1', 0, 'active', 'agent', '2025-02-26 10:40:46', 'yes'),
+(51, 'BU6-A011', 'password1', 0, 'active', 'agent', '2025-02-26 10:41:12', 'yes'),
+(52, 'BU6-A012', 'password1', 0, 'active', 'agent', '2025-02-26 10:41:42', 'yes'),
+(53, 'BU6-A013', 'password1', 0, 'active', 'agent', '2025-02-26 10:42:17', 'yes'),
+(54, 'BU6-A014', 'password1', 0, 'active', 'agent', '2025-02-26 10:43:06', 'yes'),
+(55, 'BU6-A015', 'password1', 0, 'active', 'agent', '2025-02-26 10:43:35', 'yes'),
+(56, 'BU7-A001', 'password1', 0, 'active', 'agent', '2025-02-26 10:44:04', 'yes'),
+(62, 'SMT-E006', 'password1', 0, 'active', 'employee', '2025-02-26 13:19:40', 'yes'),
+(63, 'SMT-E007', 'password1', 0, 'active', 'employee', '2025-02-26 13:27:28', 'yes'),
+(64, 'SMT-E008', 'password1', 0, 'active', 'employee', '2025-02-26 13:28:13', 'yes'),
+(65, 'SMT-E009', 'password1', 0, 'active', 'employee', '2025-02-26 13:29:42', 'yes'),
+(66, 'SMT-E010', 'password1', 0, 'active', 'employee', '2025-02-26 13:30:05', 'yes'),
+(67, 'SMT-E011', 'password1', 0, 'active', 'employee', '2025-02-26 13:30:25', 'yes'),
+(68, 'SMT-E012', 'password1', 0, 'active', 'employee', '2025-02-26 13:39:23', 'yes'),
+(69, 'SMT-E013', 'password1', 0, 'active', 'employee', '2025-02-26 13:54:14', 'yes'),
+(70, 'BU5-A002', 'password1', 0, 'active', 'agent', '2025-02-26 14:35:05', 'yes'),
+(71, 'BU7-A002', 'password1', 0, 'active', 'agent', '2025-02-26 15:10:59', 'yes'),
+(72, 'BU7-A003', 'password1', 0, 'active', 'agent', '2025-02-26 15:14:58', 'yes'),
+(73, 'BU7-A004', 'password1', 0, 'active', 'agent', '2025-02-26 15:15:35', 'yes'),
+(74, 'SMT-E014', 'password1', 0, 'active', 'employee', '2025-02-27 09:06:42', 'yes'),
+(75, 'SMT-E015', 'password1', 0, 'active', 'employee', '2025-02-27 09:07:01', 'yes'),
+(76, 'SMT-E016', 'password1', 0, 'active', 'employee', '2025-02-27 09:07:19', 'yes'),
+(77, 'SMT-E017', 'password1', 0, 'active', 'employee', '2025-02-27 09:07:38', 'yes'),
+(78, 'SMT-E018', 'password1', 0, 'active', 'employee', '2025-02-27 09:19:14', 'yes'),
+(79, 'SMT-E019', 'password1', 0, 'active', 'employee', '2025-02-27 09:20:11', 'yes'),
+(80, 'SMT-E020', 'password1', 0, 'active', 'employee', '2025-02-27 09:20:30', 'yes'),
+(81, 'BU1-A005', 'password1', 0, 'active', 'agent', '2025-02-27 09:25:29', 'yes'),
+(82, 'BU1-A006', 'password1', 0, 'active', 'agent', '2025-02-27 09:35:19', 'yes'),
+(83, 'BU1-A007', 'password1', 0, 'active', 'agent', '2025-02-27 09:36:15', 'yes'),
+(84, 'BU1-A008', 'password1', 0, 'active', 'agent', '2025-02-27 09:36:32', 'yes'),
+(85, 'BU1-A009', 'password1', 0, 'active', 'agent', '2025-02-27 09:36:48', 'yes'),
+(86, 'BU1-A010', 'password1', 0, 'active', 'agent', '2025-02-27 09:37:08', 'yes'),
+(87, 'BU1-A011', 'password1', 0, 'active', 'agent', '2025-02-27 09:42:31', 'yes'),
+(88, 'BU1-A012', 'password1', 0, 'active', 'agent', '2025-02-27 09:42:50', 'yes'),
+(89, 'BU1-A013', 'password1', 0, 'active', 'agent', '2025-02-27 09:43:05', 'yes'),
+(90, 'BU1-A014', 'password1', 0, 'active', 'agent', '2025-02-27 09:43:26', 'yes'),
+(91, 'BU1-A015', 'password1', 0, 'active', 'agent', '2025-02-27 09:43:58', 'yes'),
+(92, 'BU1-A016', 'password1', 0, 'active', 'agent', '2025-02-27 09:44:19', 'yes'),
+(93, 'BU1-A017', 'password1', 0, 'active', 'agent', '2025-02-27 09:44:33', 'yes'),
+(94, 'BU1-A018', 'password1', 0, 'active', 'agent', '2025-02-27 09:44:52', 'yes'),
+(95, 'BU1-A019', 'password1', 0, 'active', 'agent', '2025-02-27 09:45:06', 'yes'),
+(96, 'BU1-A020', 'password1', 0, 'active', 'agent', '2025-02-27 09:45:19', 'yes'),
+(97, 'BU2-A002', 'password1', 0, 'active', 'agent', '2025-02-27 11:45:58', 'yes'),
+(98, 'BU2-A003', 'password1', 0, 'active', 'agent', '2025-02-27 11:45:58', 'yes'),
+(99, 'BU2-A004', 'password1', 0, 'active', 'agent', '2025-02-27 11:45:58', 'yes'),
+(100, 'BU2-A005', 'password1', 0, 'active', 'agent', '2025-02-27 11:45:58', 'yes'),
+(101, 'BU2-A006', 'password1', 0, 'active', 'agent', '2025-02-27 11:45:58', 'yes'),
+(102, 'BU2-A007', 'password1', 0, 'active', 'agent', '2025-02-27 11:45:58', 'yes'),
+(103, 'BU2-A008', 'password1', 0, 'active', 'agent', '2025-02-27 11:45:58', 'yes'),
+(104, 'BU2-A009', 'password1', 0, 'active', 'agent', '2025-02-27 11:45:58', 'yes'),
+(105, 'BU2-A010', 'password1', 0, 'active', 'agent', '2025-02-27 11:45:58', 'yes'),
+(106, 'BU3-A001', 'password1', 0, 'active', 'agent', '2025-02-27 11:56:02', 'yes'),
+(107, 'BU3-A002', 'password1', 0, 'active', 'agent', '2025-02-27 11:56:02', 'yes'),
+(108, 'BU3-A003', 'password1', 0, 'active', 'agent', '2025-02-27 11:56:02', 'yes'),
+(109, 'BU3-A004', 'password1', 0, 'active', 'agent', '2025-02-27 11:56:02', 'yes'),
+(110, 'BU3-A005', 'password1', 0, 'active', 'agent', '2025-02-27 11:56:02', 'yes'),
+(111, 'BU3-A006', 'password1', 0, 'active', 'agent', '2025-02-27 11:56:02', 'yes'),
+(112, 'BU3-A007', 'password1', 0, 'active', 'agent', '2025-02-27 11:56:02', 'yes'),
+(113, 'BU3-A008', 'password1', 0, 'active', 'agent', '2025-02-27 11:56:02', 'yes'),
+(114, 'BU3-A009', 'password1', 0, 'active', 'agent', '2025-02-27 11:56:02', 'yes'),
+(115, 'BU3-A010', 'password1', 0, 'active', 'agent', '2025-02-27 11:56:02', 'yes'),
+(116, 'BU4-A006', 'password1', 0, 'active', 'agent', '2025-02-27 12:00:08', 'yes'),
+(117, 'BU4-A007', 'password1', 0, 'active', 'agent', '2025-02-27 12:00:08', 'yes'),
+(118, 'BU4-A008', 'password1', 0, 'active', 'agent', '2025-02-27 12:00:08', 'yes'),
+(119, 'BU4-A009', 'password1', 0, 'active', 'agent', '2025-02-27 12:00:08', 'yes'),
+(120, 'BU4-A010', 'password1', 0, 'active', 'agent', '2025-02-27 12:00:08', 'yes'),
+(121, 'BU5-A003', 'password1', 0, 'active', 'agent', '2025-02-27 12:56:28', 'yes'),
+(122, 'BU5-A004', 'password1', 0, 'active', 'agent', '2025-02-27 12:56:28', 'yes'),
+(123, 'BU5-A005', 'password1', 0, 'active', 'agent', '2025-02-27 12:56:28', 'yes'),
+(124, 'BU5-A006', 'password1', 0, 'active', 'agent', '2025-02-27 12:56:28', 'yes'),
+(125, 'BU5-A007', 'password1', 0, 'active', 'agent', '2025-02-27 12:56:28', 'yes'),
+(126, 'BU5-A008', 'password1', 0, 'active', 'agent', '2025-02-27 12:56:28', 'yes'),
+(127, 'BU5-A009', 'password1', 0, 'active', 'agent', '2025-02-27 12:56:28', 'yes'),
+(128, 'BU5-A010', 'password1', 0, 'active', 'agent', '2025-02-27 12:56:28', 'yes'),
+(129, 'BU6-A016', 'password1', 0, 'active', 'agent', '2025-02-27 13:02:46', 'yes'),
+(130, 'BU6-A017', 'password1', 0, 'active', 'agent', '2025-02-27 13:02:46', 'yes'),
+(131, 'BU6-A018', 'password1', 0, 'active', 'agent', '2025-02-27 13:02:46', 'yes'),
+(132, 'BU6-A019', 'password1', 0, 'active', 'agent', '2025-02-27 13:02:46', 'yes'),
+(133, 'BU6-A020', 'password1', 0, 'active', 'agent', '2025-02-27 13:02:46', 'yes'),
+(134, 'BU6-A021', 'password1', 0, 'active', 'agent', '2025-02-27 13:02:46', 'yes'),
+(135, 'BU6-A022', 'password1', 0, 'active', 'agent', '2025-02-27 13:02:46', 'yes'),
+(136, 'BU6-A023', 'password1', 0, 'active', 'agent', '2025-02-27 13:02:46', 'yes'),
+(137, 'BU7-A005', 'password1', 0, 'active', 'agent', '2025-02-27 13:07:32', 'yes'),
+(138, 'BU7-A006', 'password1', 0, 'active', 'agent', '2025-02-27 13:07:32', 'yes'),
+(139, 'BU7-A007', 'password1', 0, 'active', 'agent', '2025-02-27 13:07:32', 'yes'),
+(140, 'BU7-A008', 'password1', 0, 'active', 'agent', '2025-02-27 13:07:32', 'yes'),
+(141, 'BU7-A009', 'password1', 0, 'active', 'agent', '2025-02-27 13:07:32', 'yes'),
+(142, 'BU7-A010', 'password1', 0, 'active', 'agent', '2025-02-27 13:07:32', 'yes'),
+(143, 'BU7-A011', 'password1', 0, 'active', 'agent', '2025-02-27 13:07:32', 'yes'),
+(144, 'BU7-A012', 'password1', 0, 'active', 'agent', '2025-02-27 13:07:32', 'yes'),
+(145, 'BU1-C003', 'password1', 0, 'active', 'guest', '2025-02-27 14:41:30', 'yes'),
+(146, 'BU1-C004', 'password1', 0, 'active', 'guest', '2025-02-27 14:41:30', 'yes'),
+(147, 'BU1-C005', 'password1', 0, 'active', 'guest', '2025-02-27 14:41:30', 'yes'),
+(148, 'BU1-C006', 'password1', 0, 'active', 'guest', '2025-02-27 14:41:30', 'yes'),
+(149, 'BU1-C007', 'password1', 0, 'active', 'guest', '2025-02-27 14:41:30', 'yes'),
+(150, 'BU1-C008', 'password1', 0, 'active', 'guest', '2025-02-27 14:41:30', 'yes'),
+(151, 'BU1-C009', 'password1', 0, 'active', 'guest', '2025-02-27 14:41:30', 'yes'),
+(152, 'BU1-C010', 'password1', 0, 'active', 'guest', '2025-02-27 14:41:30', 'yes'),
+(153, 'BU2-C002', 'password1', 0, 'active', 'guest', '2025-02-27 14:48:34', 'yes'),
+(154, 'BU2-C003', 'password1', 0, 'active', 'guest', '2025-02-27 14:48:34', 'yes'),
+(155, 'BU2-C004', 'password1', 0, 'active', 'guest', '2025-02-27 14:48:34', 'yes'),
+(156, 'BU2-C005', 'password1', 0, 'active', 'guest', '2025-02-27 14:48:34', 'yes'),
+(157, 'BU2-C006', 'password1', 0, 'active', 'guest', '2025-02-27 14:48:34', 'yes'),
+(158, 'BU2-C007', 'password1', 0, 'active', 'guest', '2025-02-27 14:48:34', 'yes'),
+(159, 'BU2-C008', 'password1', 0, 'active', 'guest', '2025-02-27 14:48:34', 'yes'),
+(160, 'BU2-C009', 'password1', 0, 'active', 'guest', '2025-02-27 14:48:34', 'yes'),
+(161, 'BU2-C010', 'password1', 0, 'active', 'guest', '2025-02-27 14:48:34', 'yes'),
+(171, 'BU3-C001', 'password1', 0, 'active', 'guest', '2025-02-27 14:52:40', 'yes'),
+(172, 'BU3-C002', 'password1', 0, 'active', 'guest', '2025-02-27 14:52:40', 'yes'),
+(173, 'BU3-C003', 'password1', 0, 'active', 'guest', '2025-02-27 14:52:40', 'yes'),
+(174, 'BU3-C004', 'password1', 0, 'active', 'guest', '2025-02-27 14:52:40', 'yes'),
+(175, 'BU3-C005', 'password1', 0, 'active', 'guest', '2025-02-27 14:52:40', 'yes'),
+(176, 'BU3-C006', 'password1', 0, 'active', 'guest', '2025-02-27 14:52:40', 'yes'),
+(177, 'BU3-C007', 'password1', 0, 'active', 'guest', '2025-02-27 14:52:40', 'yes'),
+(178, 'BU3-C008', 'password1', 0, 'active', 'guest', '2025-02-27 14:52:40', 'yes'),
+(179, 'BU3-C009', 'password1', 0, 'active', 'guest', '2025-02-27 14:52:40', 'yes'),
+(180, 'BU3-C010', 'password1', 0, 'active', 'guest', '2025-02-27 14:52:40', 'yes'),
+(181, 'BU4-C001', 'password1', 0, 'active', 'guest', '2025-02-27 14:53:47', 'yes'),
+(182, 'BU4-C002', 'password1', 0, 'active', 'guest', '2025-02-27 14:53:47', 'yes'),
+(183, 'BU4-C003', 'password1', 0, 'active', 'guest', '2025-02-27 14:53:47', 'yes'),
+(184, 'BU4-C004', 'password1', 0, 'active', 'guest', '2025-02-27 14:53:47', 'yes'),
+(185, 'BU4-C005', 'password1', 0, 'active', 'guest', '2025-02-27 14:53:47', 'yes'),
+(186, 'BU4-C006', 'password1', 0, 'active', 'guest', '2025-02-27 14:53:47', 'yes'),
+(187, 'BU4-C007', 'password1', 0, 'active', 'guest', '2025-02-27 14:53:47', 'yes'),
+(188, 'BU4-C008', 'password1', 0, 'active', 'guest', '2025-02-27 14:53:47', 'yes'),
+(189, 'BU4-C009', 'password1', 0, 'active', 'guest', '2025-02-27 14:53:47', 'yes'),
+(190, 'BU4-C010', 'password1', 0, 'active', 'guest', '2025-02-27 14:53:47', 'yes'),
+(191, 'BU5-C001', 'password1', 0, 'active', 'guest', '2025-02-27 14:55:00', 'yes'),
+(192, 'BU5-C002', 'password1', 0, 'active', 'guest', '2025-02-27 14:55:00', 'yes'),
+(193, 'BU5-C003', 'password1', 0, 'active', 'guest', '2025-02-27 14:55:00', 'yes'),
+(194, 'BU5-C004', 'password1', 0, 'active', 'guest', '2025-02-27 14:55:00', 'yes'),
+(195, 'BU5-C005', 'password1', 0, 'active', 'guest', '2025-02-27 14:55:00', 'yes'),
+(196, 'BU5-C006', 'password1', 0, 'active', 'guest', '2025-02-27 14:55:00', 'yes'),
+(197, 'BU5-C007', 'password1', 0, 'active', 'guest', '2025-02-27 14:55:00', 'yes'),
+(198, 'BU5-C008', 'password1', 0, 'active', 'guest', '2025-02-27 14:55:00', 'yes'),
+(199, 'BU5-C009', 'password1', 0, 'active', 'guest', '2025-02-27 14:55:00', 'yes'),
+(200, 'BU5-C010', 'password1', 0, 'active', 'guest', '2025-02-27 14:55:00', 'yes'),
+(201, 'BU6-C001', 'password1', 0, 'active', 'guest', '2025-02-27 14:55:53', 'yes'),
+(202, 'BU6-C002', 'password1', 0, 'active', 'guest', '2025-02-27 14:55:53', 'yes'),
+(203, 'BU6-C003', 'password1', 0, 'active', 'guest', '2025-02-27 14:55:53', 'yes'),
+(204, 'BU6-C004', 'password1', 0, 'active', 'guest', '2025-02-27 14:55:53', 'yes'),
+(205, 'BU6-C005', 'password1', 0, 'active', 'guest', '2025-02-27 14:55:53', 'yes'),
+(206, 'BU6-C006', 'password1', 0, 'active', 'guest', '2025-02-27 14:55:53', 'yes'),
+(207, 'BU6-C007', 'password1', 0, 'active', 'guest', '2025-02-27 14:55:53', 'yes'),
+(208, 'BU6-C008', 'password1', 0, 'active', 'guest', '2025-02-27 14:55:53', 'yes'),
+(209, 'BU6-C009', 'password1', 0, 'active', 'guest', '2025-02-27 14:55:53', 'yes'),
+(210, 'BU6-C010', 'password1', 0, 'active', 'guest', '2025-02-27 14:55:53', 'yes'),
+(211, 'BU7-C001', 'password1', 0, 'active', 'guest', '2025-02-27 14:56:17', 'yes'),
+(212, 'BU7-C002', 'password1', 0, 'active', 'guest', '2025-02-27 14:56:17', 'yes'),
+(213, 'BU7-C003', 'password1', 0, 'active', 'guest', '2025-02-27 14:56:17', 'yes'),
+(214, 'BU7-C004', 'password1', 0, 'active', 'guest', '2025-02-27 14:56:17', 'yes'),
+(215, 'BU7-C005', 'password1', 0, 'active', 'guest', '2025-02-27 14:56:17', 'yes'),
+(216, 'BU7-C006', 'password1', 0, 'active', 'guest', '2025-02-27 14:56:17', 'yes'),
+(217, 'BU7-C007', 'password1', 0, 'active', 'guest', '2025-02-27 14:56:17', 'yes'),
+(218, 'BU7-C008', 'password1', 0, 'active', 'guest', '2025-02-27 14:56:17', 'yes'),
+(219, 'BU7-C009', 'password1', 0, 'active', 'guest', '2025-02-27 14:56:17', 'yes'),
+(220, 'BU7-C010', 'password1', 0, 'active', 'guest', '2025-02-27 14:56:17', 'yes');
 
 -- --------------------------------------------------------
 
@@ -57231,35 +57232,6 @@ INSERT INTO `booking` (`bookingId`, `accountId`, `transactNo`, `accountType`, `a
 --
 -- Triggers `booking`
 --
--- DELIMITER $$
--- CREATE TRIGGER `after_booking_completed` AFTER UPDATE ON `booking` FOR EACH ROW BEGIN
--- 	-- Ensure @current_user_id is set if it's NULL
---     IF @current_user_id IS NULL THEN
---         SET @current_user_id = 'SYSTEM'; 
---     END IF;
-
---     -- Check if the status has been updated to 'Completed' and the agentType is 'Wholeseller'
---     IF NEW.status = 'Confirmed' AND OLD.status != 'Confirmed' THEN
---         -- Ensure the agentType is 'Wholeseller'
---         IF (SELECT agentType FROM agent WHERE accountId = OLD.accountId) = 'Wholeseller' THEN
---             INSERT INTO agentComission (
---                 agentId, accountId, transactNo, totalPrice, comissionAmount, createdAt
---             ) VALUES (
---                 OLD.agentId,
---                 OLD.accountId,
---                 OLD.transactNo,
---                 OLD.totalPrice,
---                 OLD.totalPrice * (SELECT comissionRate FROM agent WHERE accountId = OLD.accountId) / 100, -- Calculate commission
---                 NOW()
---             );
---         END IF;
---     END IF;
--- END
--- $$
--- DELIMITER;
-
-
-
 DELIMITER $$
 CREATE TRIGGER `after_booking_insert` AFTER INSERT ON `booking` FOR EACH ROW BEGIN
 	-- Ensure @current_user_id is set if it's NULL
@@ -58198,6 +58170,216 @@ INSERT INTO `hotel` (`hotelId`, `hotelName`, `hotelFullName`, `hotelAdd`, `hotel
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `itineraries`
+--
+
+CREATE TABLE `itineraries` (
+  `itineraryId` int(10) UNSIGNED NOT NULL,
+  `userId` int(10) UNSIGNED DEFAULT NULL,
+  `itineraryName` varchar(255) DEFAULT NULL,
+  `noOfDays` int(5) DEFAULT NULL,
+  `packageName` varchar(25) DEFAULT NULL,
+  `periodStart` varchar(25) DEFAULT NULL,
+  `periodEnd` varchar(25) DEFAULT NULL,
+  `guideName` varchar(25) DEFAULT NULL,
+  `countryCode` varchar(25) DEFAULT NULL,
+  `contactNumber` varchar(25) DEFAULT NULL,
+  `city1` varchar(25) DEFAULT NULL,
+  `hotel1` varchar(25) DEFAULT NULL,
+  `city2` varchar(25) DEFAULT NULL,
+  `hotel2` varchar(25) DEFAULT NULL,
+  `city3` varchar(25) DEFAULT NULL,
+  `hotel3` varchar(25) DEFAULT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `itineraries`
+--
+
+INSERT INTO `itineraries` (`itineraryId`, `userId`, `itineraryName`, `noOfDays`, `packageName`, `periodStart`, `periodEnd`, `guideName`, `countryCode`, `contactNumber`, `city1`, `hotel1`, `city2`, `hotel2`, `city3`, `hotel3`, `createdAt`) VALUES
+(1, 1, 'autumn itinerary test', 5, 'Autumn Tour Package', '2025-04-02', '2025-04-16', 'John Doe', '+63', '9999999999', 'Seoul', 'Lotte Hotel Seoul', 'Busan', 'Paradise Hotel Busan', 'Jeonju', 'Lahan Hotel Jeonju', '2025-04-02 06:19:07');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `itineraryactivities`
+--
+
+CREATE TABLE `itineraryactivities` (
+  `activityId` int(10) UNSIGNED NOT NULL,
+  `dayId` int(10) UNSIGNED DEFAULT NULL,
+  `activityName` varchar(255) DEFAULT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `itineraryactivities`
+--
+
+INSERT INTO `itineraryactivities` (`activityId`, `dayId`, `activityName`, `createdAt`) VALUES
+(1, 1, 'Gyeongbokgung Palace Tour', '2025-04-02 06:19:07'),
+(2, 1, 'Myeongdong Shopping District', '2025-04-02 06:19:07'),
+(3, 1, 'Myeongdong Shopping District', '2025-04-02 06:19:07'),
+(4, 1, 'Namsan Seoul Tower', '2025-04-02 06:19:07'),
+(5, 1, 'Namsan Seoul Tower', '2025-04-02 06:19:07'),
+(6, 1, 'Namsan Seoul Tower', '2025-04-02 06:19:07'),
+(7, 1, 'Gyeongbokgung Palace Tour', '2025-04-02 06:19:07'),
+(8, 2, 'Bukchon Hanok Village', '2025-04-02 06:19:07'),
+(9, 2, 'Namsan Seoul Tower', '2025-04-02 06:19:07'),
+(10, 2, 'Bukchon Hanok Village', '2025-04-02 06:19:07'),
+(11, 2, 'Busan Gamcheon Culture Village', '2025-04-02 06:19:07'),
+(12, 2, 'Bukchon Hanok Village', '2025-04-02 06:19:07'),
+(13, 2, 'Namsan Seoul Tower', '2025-04-02 06:19:07'),
+(14, 2, 'Bukchon Hanok Village', '2025-04-02 06:19:07'),
+(15, 3, 'Namsan Seoul Tower', '2025-04-02 06:19:07'),
+(16, 3, 'Myeongdong Shopping District', '2025-04-02 06:19:07'),
+(17, 3, 'Gyeongbokgung Palace Tour', '2025-04-02 06:19:07'),
+(18, 3, 'Myeongdong Shopping District', '2025-04-02 06:19:07'),
+(19, 3, 'Namsan Seoul Tower', '2025-04-02 06:19:07'),
+(20, 3, 'Dongdaemun Design Plaza', '2025-04-02 06:19:07'),
+(21, 3, 'Bukchon Hanok Village', '2025-04-02 06:19:07'),
+(22, 4, 'Bukchon Hanok Village', '2025-04-02 06:19:07'),
+(23, 4, 'Myeongdong Shopping District', '2025-04-02 06:19:07'),
+(24, 4, 'Namsan Seoul Tower', '2025-04-02 06:19:07'),
+(25, 4, 'Busan Gamcheon Culture Village', '2025-04-02 06:19:07'),
+(26, 4, 'Bukchon Hanok Village', '2025-04-02 06:19:07'),
+(27, 4, 'Namsan Seoul Tower', '2025-04-02 06:19:07'),
+(28, 4, 'Bukchon Hanok Village', '2025-04-02 06:19:07'),
+(29, 5, 'Bukchon Hanok Village', '2025-04-02 06:19:07'),
+(30, 5, 'Bukchon Hanok Village', '2025-04-02 06:19:07'),
+(31, 5, 'Dongdaemun Design Plaza', '2025-04-02 06:19:07'),
+(32, 5, 'Bukchon Hanok Village', '2025-04-02 06:19:07'),
+(33, 5, 'Bukchon Hanok Village', '2025-04-02 06:19:07'),
+(34, 5, 'Namsan Seoul Tower', '2025-04-02 06:19:07'),
+(35, 5, 'Myeongdong Shopping District', '2025-04-02 06:19:07');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `itineraryareas`
+--
+
+CREATE TABLE `itineraryareas` (
+  `itineraryAreaId` int(10) UNSIGNED NOT NULL,
+  `itineraryId` int(10) UNSIGNED DEFAULT NULL,
+  `dayId` int(10) UNSIGNED DEFAULT NULL,
+  `areaName` varchar(255) DEFAULT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `itineraryareas`
+--
+
+INSERT INTO `itineraryareas` (`itineraryAreaId`, `itineraryId`, `dayId`, `areaName`, `createdAt`) VALUES
+(1, 1, 1, 'Seoul', '2025-04-02 06:19:07'),
+(2, 1, 2, 'Seoul', '2025-04-02 06:19:07'),
+(3, 1, 2, 'Busan', '2025-04-02 06:19:07'),
+(4, 1, 2, 'Jeju', '2025-04-02 06:19:07'),
+(5, 1, 3, 'Busan', '2025-04-02 06:19:07'),
+(6, 1, 3, 'Gyeongju', '2025-04-02 06:19:07'),
+(7, 1, 3, 'Incheon', '2025-04-02 06:19:07'),
+(8, 1, 4, 'Seoul', '2025-04-02 06:19:07'),
+(9, 1, 4, 'Jeju', '2025-04-02 06:19:07'),
+(10, 1, 4, 'Gyeongju', '2025-04-02 06:19:07'),
+(11, 1, 5, 'Incheon', '2025-04-02 06:19:07'),
+(12, 1, 5, 'Incheon', '2025-04-02 06:19:07'),
+(13, 1, 5, 'Gyeongju', '2025-04-02 06:19:07');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `itinerarydays`
+--
+
+CREATE TABLE `itinerarydays` (
+  `dayId` int(10) UNSIGNED NOT NULL,
+  `itineraryId` int(10) UNSIGNED DEFAULT NULL,
+  `dayNumber` int(11) DEFAULT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `itinerarydays`
+--
+
+INSERT INTO `itinerarydays` (`dayId`, `itineraryId`, `dayNumber`, `createdAt`) VALUES
+(1, 1, 1, '2025-04-02 06:19:07'),
+(2, 1, 2, '2025-04-02 06:19:07'),
+(3, 1, 3, '2025-04-02 06:19:07'),
+(4, 1, 4, '2025-04-02 06:19:07'),
+(5, 1, 5, '2025-04-02 06:19:07');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `itineraryhotels`
+--
+
+CREATE TABLE `itineraryhotels` (
+  `hotelId` int(10) UNSIGNED NOT NULL,
+  `dayId` int(10) UNSIGNED DEFAULT NULL,
+  `hotelName` varchar(255) DEFAULT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `itineraryhotels`
+--
+
+INSERT INTO `itineraryhotels` (`hotelId`, `dayId`, `hotelName`, `createdAt`) VALUES
+(1, 1, 'Lotte Hotel Seoul', '2025-04-02 06:19:07'),
+(2, 1, 'Signiel Seoul', '2025-04-02 06:19:07'),
+(3, 1, 'The Shilla Seoul', '2025-04-02 06:19:07'),
+(4, 2, 'Lotte Hotel Seoul', '2025-04-02 06:19:07'),
+(5, 2, 'The Shilla Seoul', '2025-04-02 06:19:07'),
+(6, 2, 'Park Hyatt Busan', '2025-04-02 06:19:07'),
+(7, 3, 'Lotte Hotel Seoul', '2025-04-02 06:19:07'),
+(8, 3, 'The Shilla Seoul', '2025-04-02 06:19:07'),
+(9, 3, 'Grand Hyatt Seoul', '2025-04-02 06:19:07'),
+(10, 4, 'The Shilla Seoul', '2025-04-02 06:19:07'),
+(11, 4, 'The Shilla Seoul', '2025-04-02 06:19:07'),
+(12, 4, 'InterContinental Seoul COEX', '2025-04-02 06:19:07'),
+(13, 5, 'Grand Hyatt Seoul', '2025-04-02 06:19:07'),
+(14, 5, 'InterContinental Seoul COEX', '2025-04-02 06:19:07'),
+(15, 5, 'Maison Glad Jeju', '2025-04-02 06:19:07');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `itinerarymealplans`
+--
+
+CREATE TABLE `itinerarymealplans` (
+  `mealId` int(10) UNSIGNED NOT NULL,
+  `dayId` int(10) UNSIGNED DEFAULT NULL,
+  `mealPlan` varchar(255) DEFAULT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `itinerarymealplans`
+--
+
+INSERT INTO `itinerarymealplans` (`mealId`, `dayId`, `mealPlan`, `createdAt`) VALUES
+(1, 1, 'Traditional Korean Cuisine', '2025-04-02 06:19:07'),
+(2, 2, 'Traditional Korean Cuisine', '2025-04-02 06:19:07'),
+(3, 2, 'Street Food Tour', '2025-04-02 06:19:07'),
+(4, 2, 'Seafood Specialty', '2025-04-02 06:19:07'),
+(5, 3, 'Traditional Korean Cuisine', '2025-04-02 06:19:07'),
+(6, 3, 'Seafood Specialty', '2025-04-02 06:19:07'),
+(7, 3, 'Street Food Tour', '2025-04-02 06:19:07'),
+(8, 4, 'Vegetarian Option', '2025-04-02 06:19:07'),
+(9, 4, 'Luxury Fine Dining', '2025-04-02 06:19:07'),
+(10, 4, 'Seafood Specialty', '2025-04-02 06:19:07'),
+(11, 5, 'Vegetarian Option', '2025-04-02 06:19:07'),
+(12, 5, 'Luxury Fine Dining', '2025-04-02 06:19:07'),
+(13, 5, 'Vegetarian Option', '2025-04-02 06:19:07');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `package`
 --
 
@@ -58852,6 +59034,42 @@ ALTER TABLE `hotel`
   ADD UNIQUE KEY `hotelName` (`hotelName`);
 
 --
+-- Indexes for table `itineraries`
+--
+ALTER TABLE `itineraries`
+  ADD PRIMARY KEY (`itineraryId`);
+
+--
+-- Indexes for table `itineraryactivities`
+--
+ALTER TABLE `itineraryactivities`
+  ADD PRIMARY KEY (`activityId`);
+
+--
+-- Indexes for table `itineraryareas`
+--
+ALTER TABLE `itineraryareas`
+  ADD PRIMARY KEY (`itineraryAreaId`);
+
+--
+-- Indexes for table `itinerarydays`
+--
+ALTER TABLE `itinerarydays`
+  ADD PRIMARY KEY (`dayId`);
+
+--
+-- Indexes for table `itineraryhotels`
+--
+ALTER TABLE `itineraryhotels`
+  ADD PRIMARY KEY (`hotelId`);
+
+--
+-- Indexes for table `itinerarymealplans`
+--
+ALTER TABLE `itinerarymealplans`
+  ADD PRIMARY KEY (`mealId`);
+
+--
 -- Indexes for table `package`
 --
 ALTER TABLE `package`
@@ -59082,6 +59300,42 @@ ALTER TABLE `guestluggage`
 --
 ALTER TABLE `hotel`
   MODIFY `hotelId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `itineraries`
+--
+ALTER TABLE `itineraries`
+  MODIFY `itineraryId` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `itineraryactivities`
+--
+ALTER TABLE `itineraryactivities`
+  MODIFY `activityId` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+
+--
+-- AUTO_INCREMENT for table `itineraryareas`
+--
+ALTER TABLE `itineraryareas`
+  MODIFY `itineraryAreaId` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- AUTO_INCREMENT for table `itinerarydays`
+--
+ALTER TABLE `itinerarydays`
+  MODIFY `dayId` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `itineraryhotels`
+--
+ALTER TABLE `itineraryhotels`
+  MODIFY `hotelId` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
+-- AUTO_INCREMENT for table `itinerarymealplans`
+--
+ALTER TABLE `itinerarymealplans`
+  MODIFY `mealId` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `package`
