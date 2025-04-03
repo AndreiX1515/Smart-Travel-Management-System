@@ -85,9 +85,6 @@ while ($day = $result->fetch_assoc()) {
         'meals' => $day['meals'] ? explode(', ', $day['meals']) : []
     ];
 }
-// Clean any buffered output to avoid "Some data has already been output" error
-ob_end_clean();
-
 
 class PDF extends TCPDF {
     private $packageName;
@@ -1026,6 +1023,10 @@ $pdf->AddPage();
 $pdf->SecondPage();
 
 $pdf->Output('itinerary-Winter.pdf', 'I');
+
+
+// Clean any buffered output to avoid "Some data has already been output" error
+ob_end_clean();
 
 // Return JSON response
 echo json_encode(

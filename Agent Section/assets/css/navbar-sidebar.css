@@ -100,13 +100,14 @@ a:hover {
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  margin: 30px 0 5px;
+  margin: 25px 0 0px;
   cursor: pointer;
   padding: 5px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   transition: background-color 0.2s ease;
+  /* border: 1px solid black; */
 }
 
 /* Chevron Icon */
@@ -127,7 +128,7 @@ a:hover {
   border-radius: 6px;
   color: #e9ecef; /* Light color for links */
   text-decoration: none;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
@@ -136,21 +137,27 @@ a:hover {
   color: #ffffff; /* White text on hover */
 }
 
+
+
+
+
 /* Submenu styles */
 .sidebar .submenu.open + .section-title .chevron-icon {
   transform: rotate(180deg); /* Rotate the chevron when submenu is open */
 }
 
+
 /* Links inside Submenu */
 .sidebar .submenu a {
   display: flex;
   align-items: left;
-  padding: 10px 12px;
+  padding: 10px 5px;
   border-radius: 6px;
   color: #e9ecef; /* Light color for submenu links */
   text-decoration: none;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   transition: background-color 0.2s ease, color 0.2s ease;
+  /* border: 1px solid black; */
 }
 
 .sidebar .submenu a:hover {
@@ -166,7 +173,7 @@ a:hover {
   color: #333333; /* Dark text for better contrast */
   background-color: #f5f5f5; /* Light gray background */
   text-decoration: none;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   font-weight: 600;
   text-align: center;
   transition: background-color 0.2s ease, color 0.2s ease, border 0.2s ease;
@@ -237,12 +244,20 @@ a:hover {
 /* Submenu visibility */
 .sidebar .submenu {
   display: none;
-  padding-left: 7px;
+  padding-left: 0px;
+  margin-top: 10px;
 }
 
 .sidebar .submenu.open {
   display: block;
 }
+
+
+
+
+
+
+
 
 /* Profile Section */
 .sidebar .profile-section {
@@ -260,7 +275,8 @@ a:hover {
 .sidebar .profile-wrapper {
   display: flex;
   flex-direction: column;
-  margin: 15px 0;
+  margin: 5px 0px 10px 0px;
+  /* border: 1px solid black; */
 }
 
 .sidebar .profile-section .profile-icon {
@@ -305,6 +321,9 @@ a:hover {
 .logout-wrapper {
   width: 100%; /* Full width */
 }
+
+
+
 
 .page-button.logout {
   display: flex; /* Use flexbox to align icon and text */
@@ -432,11 +451,209 @@ a:hover {
 .page-name-wrapper {
   display: flex;
   height: 50%;
-  /* border: 1px solid black; */
   justify-content: left;
   align-items: last baseline;
   padding: 8px 0px 0px 10px;
 }
+
+
+
+
+
+
+
+
+/* Change Password Modal - Minimalist Style */
+#changePasswordModal .modal-content {
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  border: none;
+  overflow: hidden;
+}
+
+/* Modal Header */
+#changePasswordModal .modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #fff;
+  color: #333;
+  font-weight: 600;
+  padding: 15px;
+  border-bottom: none;
+}
+
+/* Title Wrapper */
+#changePasswordModal .modal-title-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 90%;
+  padding: 0 5px;
+}
+
+/* Modal Subtitle */
+#changePasswordModal .modal-title-wrapper small {
+  font-size: 12px;
+  line-height: 1.2;
+  color: #666;
+  margin-top: 4px;
+}
+
+/* Close Button Wrapper */
+#changePasswordModal .modal-close-wrapper {
+  display: flex;
+  width: 10%;
+}
+
+/* Close Button Styling */
+#changePasswordModal .btn-close {
+  opacity: 0.6;
+  transition: opacity 0.2s ease-in-out;
+}
+
+#changePasswordModal .btn-close:hover {
+  opacity: 1;
+}
+
+/* Modal Title */
+#changePasswordModal .modal-title {
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+}
+
+#changePasswordModal .modal-title i {
+  margin-right: 8px;
+}
+
+/* Modal Body */
+#changePasswordModal .modal-body {
+  padding: 20px;
+}
+
+/* Form Labels */
+#changePasswordModal .form-label {
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+/* Form Controls */
+#changePasswordModal .form-control {
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  padding: 12px;
+  font-size: 14px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+#changePasswordModal .form-control:focus {
+  border-color: #116530;
+  box-shadow: 0 0 5px rgba(17, 101, 48, 0.3);
+  outline: none;
+}
+
+
+
+
+/* Modal Footer */
+#changePasswordModal .modal-footer {
+  border-top: none;
+  display: flex;
+  justify-content: space-between; /* Ensures buttons are aligned horizontally */
+  align-items: stretch; /* Stretches button height to match the main div */
+  padding: 10px 20px;
+  gap: 10px;
+  width: 100%;
+}
+
+/* Button Wrapper */
+#changePasswordModal .footer-button-wrapper {
+  display: flex;
+  width: 100%; /* Ensures buttons take full width */
+  gap: 10px; /* Adds spacing between buttons */
+}
+
+/* Buttons */
+#changePasswordModal .btn-secondary,
+#changePasswordModal .btn-primary {
+  flex: 1; /* Ensures equal width for both buttons */
+  border: none;
+  padding: 12px;
+  font-weight: 500;
+  transition: background-color 0.3s, transform 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Secondary Button */
+#changePasswordModal .btn-secondary {
+  background-color: #ccc;
+  color: #333;
+}
+
+#changePasswordModal .btn-secondary:hover {
+  background-color: #bbb;
+  transform: scale(1.02);
+}
+
+/* Primary (Success) Button */
+#changePasswordModal .btn-primary {
+  background-color: #116530;
+  color: #fff;
+}
+
+#changePasswordModal .btn-primary:hover {
+  background-color: #0e4b28;
+}
+
+
+
+
+
+
+
+/* Error & Success Labels */
+.error-label, .success-label {
+  display: none;
+  font-size: 12px;
+  margin-top: 6px;
+}
+
+.error-label {
+  color: #d9534f;
+}
+
+.success-label {
+  color: #28a745;
+  font-weight: 600;
+}
+
+#messageAlert {
+  display: none;
+  justify-content: center;
+  align-items: start;
+  padding: 10px;
+  border-radius: 15px;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* Responsive Styles */
 @media (max-width: 1440px) {

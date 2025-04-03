@@ -805,8 +805,8 @@
     <!--- Generate Itinerary PDF -->
     <script>
         $('#submitTour').click(function() {
-    const itineraryId = $('#itineraryId').val();
-    const itineraryName = $('#itineraryName').val();
+        const itineraryId = $('#itineraryId').val();
+        const itineraryName = $('#itineraryName').val();
 
     if (!itineraryId) {
         alert('Please enter a valid Itinerary ID.');

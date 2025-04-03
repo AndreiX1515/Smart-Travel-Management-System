@@ -1,167 +1,202 @@
-<!-- Logout Confirmation Modal -->
-<div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+<!-- Change Password Modal -->
+<div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
+
       <div class="modal-header">
-        <h5 class="modal-title" id="logoutModalLabel">Confirm Logout</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        Are you sure you want to logout?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <a href="#" class="btn btn-danger" id="logoutButton">Logout</a>
 
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
-<script>
-$(document).ready(function() {
-    $('#logoutButton').click(function() {
-        $.ajax({
-            url: '../Agent Section/functions/agent-logout.php',
-            type: 'GET',
-            dataType: 'json',
-            success: function(response) {
-                if (response.success) {
-                    window.location.href = '../Agent Section/agentLogin.php';
-                } else {
-                    window.location.href = '../Agent Section/agentLogin.php';
-                }
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                console.error('AJAX Error:', textStatus, errorThrown);
-                alert("An error occurred during logout. Please try again.");
-                window.location.href = '../Agent Section/agentLogin.php'; 
-            }
-        });
-    });
-});
-
-</script>
-
-
-<!-- <script>
- $('#logoutButton').on('click', function(e) {
-    e.preventDefault(); // Prevent default anchor click behavior
-
-    $.ajax({
-        url: '../Agent Section/functions/agent-logout.php',
-        type: 'GET',
-        success: function(response) {
-            var data = JSON.parse(response); // Parse the JSON response
-
-            // Log the response for debugging
-            console.log(data);
-
-            if (data.status === 'success') {
-                // Redirect based on the account type
-                switch (data.accountType) {
-                    case 'guest':
-                        window.location.href = "../Client Section/login.php"; // Redirect to client login
-                        break;
-                    case 'agent':
-                        window.location.href = "../Agent Section/agentLogin.php"; // Redirect to agent login
-                        break;
-                    case 'admin':
-                        window.location.href = "admin-dashboard.php"; // Redirect to admin dashboard
-                        break;
-                    case 'employee':
-                        window.location.href = "employee-dashboard.php"; // Redirect to employee dashboard
-                        break;
-                    default:
-                        console.log("Unknown account type.");
-                        break;
-                }
-            } else {
-                console.log("Error:", data.message); // Log the error message if any
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error("AJAX Error:", error); // Log any errors during the AJAX request
-        }
-    });
-}); 
-
-</script>-->
-
-<!-- View Password Modal -->
-<div class="modal fade" id="viewPasswordModal" tabindex="-1" aria-labelledby="viewPasswordModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="viewPasswordModalLabel">Manage Password</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-
-      <div class="modal-body">
-        <!-- Password Display Section -->
-        <div class="password-header d-flex align-items-center justify-content-between mb-3">
-          <p class="mb-0 me-3">Your password is: <span id="passwordText"><?= htmlspecialchars($maskedPassword); ?></span></p>
-          <button type="button" class="btn btn-outline-secondary" id="togglePasswordBtn">
-            <i class="fas fa-eye" id="toggleIcon"></i>
-          </button>
+        <div class="modal-title-wrapper">
+          <h5 class="modal-title" id="changePasswordLabel">Change Password</h5>
+          <small class="modal-subtext">Ensure your new password is secure and different from previous ones.</small>
         </div>
 
-        <hr class="mt-3 mb-4">
+        <div class="modal-close-wrapper">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+      </div>
 
-        <h6 class="fw-bold mb-3">Change Password:</h6>
-        <!-- Change Password Fields -->
-        <form id="changePasswordForm" action="path_to_handle_password_change.php" method="POST">
+      <form id="changePasswordForm">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="currentPassword" class="form-label">Current Password</label>
+            <input type="password" class="form-control" id="currentPassword" name="currentPassword" placeholder="Enter current password">
+            <small id="currentPasswordError" class="error-label text-danger"></small>
+          </div>
 
           <div class="mb-3">
             <label for="newPassword" class="form-label">New Password</label>
-            <input type="password" class="form-control" id="newPassword" name="newPassword" required>
+            <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="Enter new password" required>
+            <small id="newPasswordError" class="error-label text-danger"></small>
           </div>
+
           <div class="mb-3">
             <label for="confirmNewPassword" class="form-label">Confirm New Password</label>
-            <input type="password" class="form-control" id="confirmNewPassword" name="confirmNewPassword" required>
+            <input type="password" class="form-control" id="confirmNewPassword" name="confirmNewPassword" placeholder="Re-enter new password" required>
+            <small id="confirmPasswordError" class="error-label text-danger"></small>
           </div>
-          <div class="mb-3 d-flex justify-content-between align-items-center">
-            <div class="w-75">
-              <label for="otp" class="form-label">OTP</label>
-              <input type="text" class="form-control" id="otp" name="otp" required>
-            </div>
+
+          <div id="otpFieldContainer" class="mb-3" style="display: flex;">
+            <label for="otp" class="form-label">OTP</label>
+            <input type="text" class="form-control" id="otp" name="otp" placeholder="Enter OTP">
             <button type="button" class="btn btn-outline-primary" id="sendOtpBtn" style="margin-top: 30px;">Send OTP</button>
           </div>
 
-          <!-- Message Alert Div with Red Border and Light Red Background -->
-          <div id="messageAlert" style="display:none; padding: 10px; margin: 15px 0; border: 1px solid red; background-color: #f8d7da; color: red; border-radius: 5px;">
-          </div>
+          <div id="messageAlert"> </div>
+        </div>
 
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="submit disabled" class="btn btn-primary" id="changePasswordBtn" style="margin-right: -15px;">Change Password</button>
-          </div>
-        </form>
-      </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Change Password</button>
+        </div>
+      </form>
+
     </div>
   </div>
 </div>
 
-<script>
-  document.getElementById('togglePasswordBtn').addEventListener('click', function() {
-    const passwordText = document.getElementById('passwordText');
-    const toggleIcon = document.getElementById('toggleIcon');
 
-    // Toggle between masked and actual password
-    if (passwordText.textContent === '••••••••••') {
-      passwordText.textContent = "<?= htmlspecialchars($password); ?>"; // Replace dots with actual password
-      toggleIcon.classList.replace('fa-eye', 'fa-eye-slash');
-    } else {
-      passwordText.textContent = '••••••••••';
-      toggleIcon.classList.replace('fa-eye-slash', 'fa-eye');
-    }
+<script>
+  $(document).ready(function () {
+
+    // Handle form submission
+    $('#changePasswordForm').on('submit', function (e) {
+      e.preventDefault(); // Prevent default form submission
+
+      // Clear previous error messages and hide error labels
+      document.getElementById('currentPasswordError').textContent = '';
+      document.getElementById('newPasswordError').textContent = '';
+      document.getElementById('confirmPasswordError').textContent = '';
+      document.getElementById('messageAlert').style.display = 'none';
+
+      // Hide all error labels (set display to none again before showing)
+      document.getElementById('currentPasswordError').style.display = 'none';
+      document.getElementById('newPasswordError').style.display = 'none';
+      document.getElementById('confirmPasswordError').style.display = 'none';
+
+      // Get form data
+      const currentPassword = document.getElementById('currentPassword').value;
+      const newPassword = document.getElementById('newPassword').value;
+      const confirmNewPassword = document.getElementById('confirmNewPassword').value;
+
+      // Validate New Password (custom logic)
+      if (newPassword.length < 8) {
+          document.getElementById('newPasswordError').textContent = 'Password must be at least 8 characters long.';
+          document.getElementById('newPasswordError').style.display = 'block'; // Show error label
+          return;  // Stop further checks if new password is invalid
+      }
+
+      // Validate New Password and Confirm Password
+      if (newPassword !== confirmNewPassword) {
+          document.getElementById('confirmPasswordError').textContent = 'Passwords do not match.';
+          document.getElementById('confirmPasswordError').style.display = 'block'; // Show error label
+          return;  // Stop further checks if passwords don't match
+      }
+
+      $.ajax({
+        url: '../Agent Section/functions/General/agent-changePassword.php',
+        type: 'POST',
+        data: { currentPassword: currentPassword },
+        success: function (response) {
+          console.log('Response:', response); // Log the entire response object
+
+          // Make sure response is parsed correctly (in case it's a JSON string)
+          response = JSON.parse(response);
+
+          // Check if there are any errors in the response
+          if (response.status === 'error') {
+            // Log the errors if present
+            console.log('Errors:', response.errors);
+
+            // Display the error message in the general message alert
+            $('#messageAlert').show();
+            $('#messageAlert').text(response.message); // Show error message from response
+            $('#messageAlert').css({
+              'background-color': '#f8d7da', // Red background for error
+              'color': '#721c24', // Dark red text color for error
+              'border': '1px solid #f5c6cb' // Border color for error
+            });
+
+            // Display the first error message in the current password error label
+            document.getElementById('currentPasswordError').textContent = response.message;
+            document.getElementById('currentPasswordError').style.display = 'block'; // Show error label
+
+          } else if (response.status === 'success') {
+            // If successful, log the success response
+            console.log('Success:', response.message);
+
+            // Display the success message in the general message alert
+            $('#messageAlert').show();
+            $('#messageAlert').text(response.message); // Show success message from response
+            $('#messageAlert').css({
+              'background-color': '#d4edda', // Green background for success
+              'color': '#155724', // Dark green text color for success
+              'border': '1px solid #c3e6cb' // Border color for success
+            });
+
+            // Proceed with further actions (e.g., show OTP field, redirect, etc.)
+            console.log('Proceed to password change or OTP step.');
+
+            // Add a 2-second delay before showing the OTP field container
+            setTimeout(function() {
+              // Show OTP field container (if OTP is part of the process)
+              var otpFieldContainer = document.getElementById('otpFieldContainer');
+              otpFieldContainer.style.display = 'block'; // Show OTP field
+            }, 2000); // 2-second delay
+          }
+        },
+        error: function () {
+          // If an error occurs with the AJAX request, show an error message
+          $('#messageAlert').show().text('An error occurred while validating the password.');
+          $('#messageAlert').css({
+            'background-color': '#f8d7da', // Red background for error
+            'color': '#721c24', // Dark red text color for error
+            'border': '1px solid #f5c6cb' // Border color for error
+          });
+        }
+      });
+
+      
+    });
   });
 </script>
 
 
+
+
+
+
+
+<!-- Logout Script --> 
 <script>
+  $(document).ready(function() {
+    $('#logoutButton').click(function() {
+      $.ajax({
+        url: '../Agent Section/functions/agent-logout.php',
+        type: 'GET',
+        dataType: 'json',
+        success: function(response) {
+          if (response.success) {
+            window.location.href = '../Agent Section/agentLogin.php';
+          } else {
+            window.location.href = '../Agent Section/agentLogin.php';
+          }
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          console.error('AJAX Error:', textStatus, errorThrown);
+          alert("An error occurred during logout. Please try again.");
+          window.location.href = '../Agent Section/agentLogin.php';
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+<!-- <script>
   $(document).ready(function() {
     // Handle OTP Send Button
     $('#sendOtpBtn').click(function() {
@@ -334,7 +369,7 @@ $(document).ready(function() {
       });
     });
   });
-</script>
+</script> -->
 
 <!-- <script>
   document.addEventListener('DOMContentLoaded', () => 
