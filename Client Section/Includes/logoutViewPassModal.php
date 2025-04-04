@@ -43,6 +43,32 @@ $(document).ready(function() {
 </script>
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!-- <script>
  $('#logoutButton').on('click', function(e) {
     e.preventDefault(); // Prevent default anchor click behavior
@@ -139,6 +165,10 @@ $(document).ready(function() {
     </div>
   </div>
 </div>
+
+
+
+
 
 <script>
   document.getElementById('togglePasswordBtn').addEventListener('click', function() 

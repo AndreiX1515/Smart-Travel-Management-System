@@ -6,6 +6,7 @@ $accountId = $_SESSION['agent_accountId']; // Get account ID from session
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $currentPassword = $_POST['currentPassword'];
+    
 
     // Check if current password is provided
     if (empty($currentPassword)) {
@@ -13,18 +14,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo json_encode([
             'status' => 'error',
             'message' => 'Current password is required.',
-            'currentPassword' => $currentPassword // Include the current password in the response (for debugging)
+            'currentPassword' => $currentPassword 
         ]);
         
     } else {
         // Verify password against the database
-        $stmt = $conn->prepare("SELECT password FROM accounts WHERE accountId = ?");
+        $stmt = $conn->prepare("SELECT password, emailAddress FROM accounts WHERE accountId = ?");
         $stmt->bind_param("i", $accountId);
         $stmt->execute();
-        $stmt->bind_result($storedPassword);
+        $stmt->bind_result($storedPassword, $emailAddress); // Bind both password and emailAddress
         $stmt->fetch();
         $stmt->close();
-
+    
         // Check if password matches
         if ($currentPassword !== $storedPassword) {
             // Respond with an error message if the current password is incorrect
@@ -35,15 +36,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             ]);
             
         } else {
-            // Respond with a success message if the password is correct
+            $_SESSION['emailAddress'] = $emailAddress;
+
             echo json_encode([
                 'status' => 'success',
-                'message' => 'Password is correct. You can proceed with changing it.',
-                'currentPassword' => $currentPassword // Include the current password in the response (for debugging)
+                'message' => 'Sending OTP to your email to verify change password...',
+                'currentPassword' => $currentPassword,
+                'accountId' => $accountId,
+                'emailAddress' => $emailAddress
             ]);
         }
-
     }
+    
 
     $conn->close(); // Close connection
 }

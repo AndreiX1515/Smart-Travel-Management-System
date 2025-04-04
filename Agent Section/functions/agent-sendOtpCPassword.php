@@ -13,7 +13,7 @@ $response = []; // Initialize response array to store messages
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Get the form field from the POST request
-    $email = isset($_POST['email']) ? $_POST['email'] : ''; // Email address
+    $email = isset($_POST['emailAddress']) ? $_POST['emailAddress'] : ''; // Email address
 
     // Check if email is empty or invalid
     if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -22,9 +22,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo json_encode($response);
         exit;
     }
-
-    // Store the email in session
-    $_SESSION['email'] = $email;
 
     // Function to generate a verification code
     function generateVerificationCode() {
@@ -36,6 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Generate new OTP if none exists
         $verificationCode = generateVerificationCode();
         $_SESSION['otp'] = $verificationCode;
+
     } else {
         // Clear the existing OTP and generate a new one
         unset($_SESSION['otp']);
@@ -77,14 +75,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Send the email
         $mail->send();
-        $response['success'] = true;
-        $response['message'] = 'OTP has been sent to your email address.';
-    } catch (Exception $e) {
-        $response['success'] = false;
-        $response['message'] = "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
-    }
 
-    // Return the response as JSON
-    echo json_encode($response);
+        echo json_encode([
+            'status' => 'success',
+            'message' => 'OTP has been sent to your email address.',
+            'otp' => $_SESSION['otp'] // Include the OTP in the response for debugging (optional)
+
+        ]);
+
+
+    } catch (Exception $e) {
+        echo json_encode([
+            'status' => 'error',
+            'message' => 'Message could not be sent. Mailer Error: {$mail->ErrorInfo}'
+        ]);
+
+    }
 }
 ?>

@@ -631,14 +631,280 @@ a:hover {
   font-weight: 600;
 }
 
+
+
+
+
+
+
 #messageAlert {
   display: none;
   justify-content: center;
-  align-items: start;
-  padding: 10px;
-  border-radius: 15px;
-
+  align-items: center; 
+  padding: 12px 20px; 
+  border-radius: 8px; 
+  font-size: 14px;
+  font-weight: 500; 
+  width: 100%; 
+  margin: 15px 0px 5px 0px; 
+  background-color: #f0f0f0; 
+  color: #333;
+  border: 1px solid #ddd; 
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); 
+  transition: opacity 0.3s ease, transform 0.3s ease; 
 }
+
+#messageAlert.show {
+  display: flex;
+  opacity: 1;
+  transform: translateY(0); /* Show with a slight upward motion */
+}
+
+#messageAlert.hide {
+  opacity: 0;
+  transform: translateY(-10px); /* Hide with a slight upward motion */
+}
+
+
+
+#otpAlert {
+  display: none;
+  justify-content: center;
+  align-items: center; 
+  padding: 12px 20px; 
+  border-radius: 8px; 
+  font-size: 14px;
+  font-weight: 500; 
+  width: 100%; 
+  margin: 15px 0px 5px 0px; 
+  background-color: #f0f0f0; 
+  color: #333;
+  border: 1px solid #ddd; 
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); 
+  transition: opacity 0.3s ease, transform 0.3s ease; 
+}
+
+#otpAlert.show {
+  display: flex;
+  opacity: 1;
+  transform: translateY(0); /* Show with a slight upward motion */
+}
+
+#otpAlert.hide {
+  opacity: 0;
+  transform: translateY(-10px); /* Hide with a slight upward motion */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+#otpFieldContainer {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+
+.otp-container {
+  display: flex;
+  gap: 10px;
+}
+
+.otp-input {
+  flex: 1; /* Makes input take up remaining space */
+}
+
+.resend-btn {
+  white-space: nowrap; /* Prevents text wrapping */
+  padding: 8px 15px;
+}
+
+
+/* ========== OTP Verification Modal ========== */
+#otpVerificationModal .otp-modal-content {
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  border-bottom: none;
+  padding: 20px;
+  text-align: center;
+  width: 500px;
+  max-height: 80vh; /* Limit the maximum height to 80% of the viewport height */
+  height: auto; /* Allow height to adjust based on content */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Align items at the top */
+  align-items: center;
+  overflow-y: auto; /* Allow scrolling if content overflows */
+}
+
+
+#otpVerificationModal .otp-modal-header {
+  border-bottom: none;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+.header-body-wrapper .otp-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0px 0px;
+  /* border: 1px solid black; */
+}
+
+
+#otpVerificationModal .otp-icon-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
+}
+
+#otpVerificationModal .otp-icon {
+  background-color: #007bff;
+  color: white;
+  font-size: 24px;
+  padding: 10px;
+  border-radius: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+  width: 50px; /* Fixed width */
+  height: 50px; /* Fixed height to maintain circle shape */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Adding box shadow */
+}
+
+
+#otpVerificationModal .otp-icon i {
+  margin: 0; /* Remove any default margins from the icon */
+  color: white;
+}
+
+
+
+
+
+
+.header-body-wrapper .header-body-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0;
+  /* border: 1px solid black; */
+}
+
+#otpVerificationModal .otp-subtext {
+  font-size: 14px;
+  color: #6c757d;
+  margin-top: 5px;
+  
+}
+
+#otpVerificationModal .otp-email-mask {
+  font-weight: bold;
+  color: #333;
+}
+
+
+
+
+
+#otpVerificationModal .otp-modal-container {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  /* border: 1px solid black; */
+}
+
+#otpVerificationModal .otp-modal-input {
+  width: 50px;
+  height: 50px;
+  font-size: 20px;
+  text-align: center;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  transition: all 0.3s ease-in-out;
+}
+
+#otpVerificationModal .otp-modal-input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+}
+
+
+
+#otpVerificationModal .otp-verify-btn {
+  width: 80%; /* Make the button slightly smaller by reducing width */
+  background-color: #007bff;
+  margin-top: 10px;
+  border: none;
+  padding: 8px 16px; /* Reduce padding to make the button smaller */
+  font-size: 16px; /* Slightly smaller font size */
+  border-radius: 8px;
+  color: white; /* Ensure text is white for visibility */
+  cursor: pointer; /* Change cursor to pointer on hover */
+}
+
+#otpVerificationModal .otp-verify-btn:hover {
+  background-color: #0056b3; /* Darker shade on hover */
+}
+
+
+
+
+#otpVerificationModal .otp-resend-text {
+  font-size: 14px;
+  margin-top: 10px;
+  color: #6c757d;
+}
+
+#otpVerificationModal .otp-resend-link {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+#otpVerificationModal .otp-resend-link:hover {
+  text-decoration: underline;
+}
+
+
+
+
+#otpVerificationModal .otpResent-button-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: first baseline;
+  width: 100%;
+  margin-top: 10px;
+  /* border: 1px solid black; */
+}
+
+
+
+
+
+
+
+
+
 
 
 

@@ -158,11 +158,31 @@
   </div>
 
   <div class="profile-wrapper">
+
+  <div class="concern-section mb-4">
+    <div class="section-title" onclick="toggleSubMenu('concerntable-submenu')">
+      Concerns <span class="chevron-icon fas fa-chevron-down"></span>
+    </div>
+
+    <div class="submenu open" id="concerntable-submenu">
+      <a href="#" class="page-button my-0" data-bs-toggle="modal" data-bs-target="#raiseTicketModal">
+        <i class="fas fa-ticket-alt"></i> Raise a Ticket
+      </a>
+
+      <a href="#" class="changePassword page-button my-0" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+        <i class="fas fa-lock"></i> Change Password
+      </a>
+    </div>
+
+    <?php include '../Client Section/Includes/logoutViewPassModal.php';  ?>
+    </div>
+
     <!-- Profile Section -->
     <div class="profile-section">
       <div class="profile-icon">
         <i class="fas fa-user-circle"></i>
       </div>
+
       <div class="profile-details">
         <h6 class="profile-name"><?php echo $fullName; ?></h>
         <p class="profile-role mt-1"> 
@@ -181,10 +201,194 @@
   </div>
 </div>
 
+<!-- Modals -->
 
-<?php 
-include '../Client Section/Includes/logoutViewPassModal.php'; 
-?>
+<!-- Raise Ticket Modal -->
+<div class="modal fade" id="raiseTicketModal" tabindex="-1" aria-labelledby="raiseTicketModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="raiseTicketModalLabel"><i class="fas fa-ticket-alt"></i> Raise a Ticket</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="ticketForm">
+          <div class="mb-3">
+            <label for="concernType" class="form-label">Concern</label>
+            <select class="form-select" id="concernType" required>
+              <option value="" selected disabled>Select Concern</option>
+              <option value="Request for Additional User">Request for Additional User</option>
+            </select>
+
+            <!-- Hidden input field for Number of Users -->
+            <div id="userCountContainer" style="display: none; margin-top: 10px;">
+              <label for="numUsers" class="form-label">Number of Users</label>
+              <input type="number" class="form-control" id="numUsers" min="1" placeholder="Enter number of users">
+
+            </div>
+          </div>
+
+          <div class="alert alert-info mt-3" id="userCountContainer-note" style="display: none; font-size: 14px;">
+            <p class="mb-1"><strong>Please provide user credentials using the template below:</strong></p>
+            <p class="mb-1"><strong>- Full Name <span style="font-weight: 400;">(First Name, Last Name, Middle Name, Suffix)</span>:</strong> </p>
+            <p class="mb-3"><strong>- Company Name:</strong></p>
+            <p class="mb-0"><strong>Note:</strong> A default password will be assigned initially.</p>
+          </div>
+
+
+
+          <!-- JS for Number of Users -->
+          <script>
+            document.getElementById("concernType").addEventListener("change", function() {
+              var userCountContainer = document.getElementById("userCountContainer");
+              var userCountContainerNote = document.getElementById("userCountContainer-note");
+              var ticketPriority = document.getElementById("ticketPriority");
+              if (this.value === "Request for Additional User") {
+                userCountContainer.style.display = "block";
+                userCountContainerNote.style.display = "block";
+                ticketPriority.style.display = "hidden";
+              } else {
+                userCountContainer.style.display = "none";
+                userCountContainerNote.style.display = "none";
+                ticketPriority.style.display = "block";
+              }
+            });
+          </script>
+
+
+          <div class="mb-3">
+            <label for="ticketDescription" class="form-label">Description</label>
+            <textarea class="form-control" id="ticketDescription" rows="4" required></textarea>
+          </div>
+          <div class="mb-3" id="ticketPriority" style="display: hidden;">
+            <label for="ticketPriority" class="form-label">Priority</label>
+            <select class="form-select" id="ticketPriority">
+              <option value="" disabled selected>Select Severity</option>
+              <option value="low">Low</option>
+              <option value="medium" selected>Medium</option>
+              <option value="high">High</option>
+            </select>
+          </div>
+          <!-- <div class="mb-3">
+                            <label for="ticketAttachment" class="form-label">Attachment (Optional)</label>
+                            <input type="file" class="form-control" id="ticketAttachment">
+                        </div> -->
+          <button type="submit" class="btn btn-success w-100"> Submit Ticket</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+<!-- Ticket Submission Script -->
+<script>
+  $(document).ready(function() {
+    $("#ticketForm").submit(function(event) {
+      event.preventDefault(); // Prevent default form submission
+
+      console.log("Form submission triggered."); // Debugging
+
+      // Collect form data
+      var concernType = $("#concernType").val();
+      var numUsers = $("#numUsers").val() || ""; // Get only if field is visible
+      var ticketDescription = $("#ticketDescription").val();
+      var ticketPriority = $("#ticketPriority").val() || "medium"; // Default to "medium" if empty
+
+
+      console.log("Collected form data:", {
+        concernType: concernType,
+        numUsers: numUsers,
+        ticketDescription: ticketDescription,
+        ticketPriority: ticketPriority
+      }); // Debugging
+
+      // Create data object
+      var formData = {
+        concernType: concernType,
+        numUsers: concernType === "Request for Additional User" ? numUsers : "", // Send only if applicable
+        ticketDescription: ticketDescription,
+        ticketPriority: ticketPriority
+      };
+
+      console.log("Final form data before AJAX request:", formData); // Debugging
+
+      // AJAX Request
+      $.ajax({
+        type: "POST",
+        url: "../Agent Section/functions/agent-processTicket.php", // Change to your server-side script
+        data: formData,
+        dataType: "json",
+        beforeSend: function() {
+          console.log("AJAX request is about to be sent..."); // Debugging
+        },
+        success: function(response) {
+          console.log("AJAX success response:", response); // Debugging
+
+          if (response.status === "success") {
+            alert("Ticket submitted successfully! Ticket ID: " + response.ticketId);
+            console.log("Ticket successfully created with ID:", response.ticketId); // Debugging
+
+            // Close the modal
+            let modal = document.getElementById("raiseTicketModal"); // Replace with your modal's actual ID
+            let modalInstance = bootstrap.Modal.getInstance(modal);
+            if (modalInstance) {
+              modalInstance.hide();
+            }
+
+            // Reset the form
+            document.getElementById("ticketForm").reset(); // Replace with your form's actual ID
+
+
+          } else {
+            alert("Error: " + response.message);
+            console.error("Server returned an error:", response.message); // Debugging
+          }
+        },
+        error: function(xhr, status, error) {
+          alert("An error occurred while submitting the ticket.");
+          console.error("AJAX error:", status, error); // Debugging
+          console.log("Response Text:", xhr.responseText); // Debugging
+        }
+      });
+    });
+
+    // Show/Hide Fields Based on Concern Selection
+    $("#concernType").change(function() {
+      console.log("Concern type changed to:", $(this).val()); // Debugging
+
+      if ($(this).val() === "Request for Additional User") {
+        $("#userCountContainer").show();
+        $("#userCountContainer-note").show();
+        $("#ticketPriority").hide();
+        console.log("Showing additional user input fields."); // Debugging
+      } else {
+        $("#userCountContainer").hide();
+        $("#userCountContainer-note").hide();
+        $("#ticketPriority").show();
+        console.log("Hiding additional user input fields."); // Debugging
+      }
+    });
+  });
+</script>
+
+
+
+
+
+
+
+
+
+
+
 
 <script>
 function toggleSubMenu(submenuId) {
@@ -215,30 +419,3 @@ document.addEventListener('DOMContentLoaded', function () {
     transactionChevron.style.transform = 'rotate(180deg)';
 });
 </script>
-
-<!-- <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    // Check if there's a saved title in local storage
-    const savedTitle = localStorage.getItem('pageTitle');
-    if (savedTitle) {
-        document.getElementById('page-title').textContent = savedTitle;
-    }
-
-    const buttons = document.querySelectorAll('.page-button');
-    buttons.forEach(button => {
-        button.addEventListener('click', (event) => {
-            event.preventDefault();
-            const newPageName = button.getAttribute('data-page-name');
-            document.getElementById('page-title').textContent = newPageName;
-
-            // Save the title to local storage
-            localStorage.setItem('pageTitle', newPageName);
-
-            const newUrl = button.getAttribute('href');
-            setTimeout(() => {
-                window.location.href = newUrl;
-            }, 25);
-        });
-    });
-  });
-</script> -->

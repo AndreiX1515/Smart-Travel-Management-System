@@ -80,8 +80,6 @@ $fullName = htmlspecialchars(trim(
 // Remove any trailing commas or extra spaces
 $fullName = rtrim($fullName, ', '); // Clean up if only the last name is present
 
-// Optional: hide password by default
-$maskedPassword = '••••••••••';
 
 ?>
 
