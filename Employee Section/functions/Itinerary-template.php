@@ -1,132 +1,35 @@
 <?php
-require('../../tcpdf/tcpdf.php');  
-require('../../conn.php'); 
-
-// Prevent unwanted output before JSON response
 ob_start();
 
-// Set JSON response headers
-header('Content-Type: application/json; charset=UTF-8');
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 
-// Validate Itinerary ID
-if (!isset($_GET['itineraryId']) || !is_numeric($_GET['itineraryId'])) {
-    echo json_encode(['error' => 'Invalid Itinerary ID']);
-    exit;
-}
-
-$itineraryId = intval($_GET['itineraryId']);
-
-if (!$conn) {
-    echo json_encode(['error' => 'Database connection error']);
-    exit;
-}
-
-// Fetch itinerary details
-$sql = "SELECT itineraryName, noOfDays, packageName, periodStart, periodEnd, guideName, countryCode, contactNumber, city1, hotel1, city2, hotel2, city3, hotel3 
-        FROM itineraries WHERE itineraryId = ?";
-$stmt = $conn->prepare($sql);
-if (!$stmt) {
-    echo json_encode(['error' => 'SQL error: ' . $conn->error]);
-    exit;
-}
-$stmt->bind_param("i", $itineraryId);
-$stmt->execute();
-$result = $stmt->get_result();
-
-if (!$row = $result->fetch_assoc()) {
-    echo json_encode(['error' => 'Itinerary not found']);
-    exit;
-}
-
-// Store fetched itinerary details
-$itineraryName = $row['itineraryName'];
-$noOfDays = $row['noOfDays'];
-$packageName = $row['packageName'];
-$periodStart = $row['periodStart'];
-$periodEnd = $row['periodEnd'];
-$guideName = $row['guideName'];
-
-$contactNumber = "+" . $row['countryCode'] . " " . $row['contactNumber'];
-$cities = array_filter([
-    ['city' => $row['city1'], 'hotel' => $row['hotel1']],
-    ['city' => $row['city2'], 'hotel' => $row['hotel2']],
-    ['city' => $row['city3'], 'hotel' => $row['hotel3']]
-], fn($c) => !empty($c['city']));
-
-// Fetch itinerary days, areas, hotels, activities, and meals
-$sqlDays = "
-    SELECT 
-        d.dayId, d.dayNumber, 
-        COALESCE(a.areas, '') AS areas,
-        COALESCE(h.hotels, '') AS hotels,
-        COALESCE(act.activities, '') AS activities,
-        COALESCE(mp.meals, '') AS meals
-    FROM itinerarydays d
-    LEFT JOIN (SELECT dayId, GROUP_CONCAT(DISTINCT areaName ORDER BY itineraryAreaId ASC SEPARATOR ', ') AS areas FROM itineraryareas GROUP BY dayId) a ON d.dayId = a.dayId
-    LEFT JOIN (SELECT dayId, GROUP_CONCAT(DISTINCT hotelName ORDER BY hotelId ASC SEPARATOR ', ') AS hotels FROM itineraryhotels GROUP BY dayId) h ON d.dayId = h.dayId
-    LEFT JOIN (SELECT dayId, GROUP_CONCAT(activityName ORDER BY activityId ASC SEPARATOR ', ') AS activities FROM itineraryactivities GROUP BY dayId) act ON d.dayId = act.dayId
-    LEFT JOIN (SELECT dayId, GROUP_CONCAT(DISTINCT mealPlan ORDER BY mealId ASC SEPARATOR ', ') AS meals FROM itinerarymealplans GROUP BY dayId) mp ON d.dayId = mp.dayId
-    WHERE d.itineraryId = ?
-    ORDER BY d.dayNumber ASC;
-";
-
-$stmt = $conn->prepare($sqlDays);
-$stmt->bind_param("i", $itineraryId);
-$stmt->execute();
-$result = $stmt->get_result();
-
-$itineraryDays = [];
-while ($day = $result->fetch_assoc()) {
-    $itineraryDays[] = [
-        'day' => $day['dayNumber'],
-        'areas' => $day['areas'] ? explode(', ', $day['areas']) : [],
-        'hotels' => $day['hotels'] ? explode(', ', $day['hotels']) : [],
-        'activities' => $day['activities'] ? explode(', ', $day['activities']) : [],
-        'meals' => $day['meals'] ? explode(', ', $day['meals']) : []
-    ];
-}
+require('../../tcpdf/tcpdf.php');
+require('../../conn.php');
 
 class PDF extends TCPDF {
-    private $packageName;
-    private $noOfDays;
-    private $periodStart;
-    private $periodEnd;
-    private $guideName;
-    private $countryCode;
-    private $contactNumber;
-
-    public function setItineraryDetails($packageName, $noOfDays, $periodStart, $periodEnd, $guideName, $countryCode, $contactNumber) {
-        $this->packageName = $packageName;
-        $this->noOfDays = $noOfDays;
-        $this->periodStart = $periodStart;
-        $this->periodEnd = $periodEnd;
-        $this->guideName = $guideName;
-        $this->countryCode = $countryCode;
-        $this->contactNumber = $contactNumber;
-    }
-
     // Page header
     public function Header() {
-        if ($this->getPage() == 1) { // Only show header on the first page
+        if ($this->getPage() == 1) {  // Check if it's the first page
             // Add logo
-            $this->Image('../../Assets/Logos/SMART LOGO 2 (2).jpg', 45, 4, 105, 15);
-            $this->Ln(25);
+            $this->Image('../../Assets/Logos/SMART LOGO 2 (2).jpg', 45, 4, 105, 15); // Adjust 'logo.png' path, position, and size as needed
+            $this->Ln(25); // Adds 10mm of vertical space
 
-            // Warning notice
             $this->SetFont('Helvetica', 'B', 6);
-            $this->SetY($this->GetY() - 4);
-            $this->SetTextColor(255, 0, 0);
-            $this->Cell(170, 0, '**Subject to change w/o prior notice based on local Situation**', 0, 0, 'L');
-            $this->SetTextColor(0, 0, 0);
+            $this->SetY($this->GetY() - 4); // Set the Y position for the line, adjust if needed
+            $this->SetTextColor(255, 0, 0); // Set text color to red (RGB: 255, 0, 0)
+            $this->Cell(170, 0, '**Subject to change w/o prior notice based on local Situiation**', 0, 0, 'L');
+            $this->SetTextColor(0, 0, 0); 
             $this->Cell(5, 0, 'TN: 1029365', 0, 0, 'L');
 
-            $this->Ln(2);
-            $this->SetY($this->GetY() + 2);
-            $this->Line(10, $this->GetY(), 200, $this->GetY()); // Line separator
+            $this->Ln(2); // Adds 10mm of vertical space
 
-            $this->Ln(1);
+            $this->SetY($this->GetY() + 2); // Set the Y position for the line, adjust if needed
+            $this->Line(10, $this->GetY(), 200, $this->GetY()); // Draw a line from x=10 to x=200 at the current Y position
 
-            // Header details
+            $this->Ln(1); // Adds 10mm of vertical space
+
+            // Header lines
             $this->SetFont('Helvetica', 'B', 8);
             $this->Cell(15, 0, 'TO :', 0, 0, 'L');
             $this->Cell(100, 0, 'TRAVEL', 0, 0, 'L');
@@ -135,40 +38,38 @@ class PDF extends TCPDF {
             $this->Cell(15, 5, 'FROM :', 0, 0, 'L');
             $this->Cell(100, 5, 'JED KIM', 0, 0, 'L');
             $this->Cell(15, 5, 'DATE :', 0, 0, 'L');
-            $this->Cell(30, 5, date('Y-m-d'), 0, 1, 'L');
+            $this->Cell(30, 5, '', 0, 1, 'L');
 
-            $this->SetY($this->GetY());
-            $this->Line(10, $this->GetY(), 200, $this->GetY());
+            $this->SetY($this->GetY()); // Set the Y position for the line, adjust if needed
+            $this->Line(10, $this->GetY(), 200, $this->GetY()); // Draw a line from x=10 to x=200 at the current Y position
 
-            $this->Ln(1);
+            $this->Ln(1); // Adds 10mm of vertical space
 
-            // Main title (Dynamically set Package Name)
-            $this->SetFillColor(137, 207, 240);
-            $this->SetTextColor(0,0,0);
+            // Main title
 
-            $this->SetFont('Helvetica', 'B', 16);
-            $this->Cell(0, 3, strtoupper($this->packageName), 'LRT', 1, 'C', true);
-            $this->SetFont('Helvetica', 'B', 10);
-            $this->Cell(0, 3, 'KOREA TOUR ' . $this->noOfDays . ' DAYS & ' . ($this->noOfDays - 1) . ' NIGHTS', 'LRB', 1, 'C', true);
+            $this->SetFillColor(137, 207, 240); // Set the fill color (Light peach)
+            $this->SetTextColor(0,0,0);       // Text color
 
-            // Period and Guide details (Dynamically set from JSON)
+            $this->SetFont('Helvetica', 'B', 16, true);
+            $this->Cell(0, 3, 'WINTER', 'LRT', 1, 'C', true);
+            $this->SetFont('Helvetica', 'B', 10, true);
+            $this->Cell(0, 3, 'KOREA TOUR 5 DAYS & 4 NIGHTS', 'LRB', 1, 'C', true);
+
+            // Set up columns for periods and hotel info
             $this->SetFont('Helvetica', 'B', 9);
 
-            // Period section
-            $this->SetXY(10, 47.3);
-            $this->Cell(40, 8, 'PERIODS', 'LRB', 0, 'C');  
-            $this->Cell(70, 8, date('d, M. Y', strtotime($this->periodStart)) . ' - ' . date('d, M. Y', strtotime($this->periodEnd)), 'B', 0, 'C');
+            // Create a vertical "HOTEL" cell spanning multiple rows
+            $this->SetXY(10, 47.3);  // Adjust the X and Y position if needed
+            $this->Cell(40, 8, 'PERIODS', 'LRB', 0, 'C', false);  // Borders on all sides, center-aligned text
+            $this->Cell(70, 8, '10, OCT. 2024 - 15, NOV. 2024', 'B', 0, 'C');
 
-            // Guide details
             $this->Cell(20, 8, 'GUIDE:', 'LB', 0, 'C');
-            $this->Cell(60, 4, $this->guideName, 'LRB', 1, 'C');
+            $this->Cell(60, 4, 'Mikey Lee', 'LRB', 1, 'C');
 
-            // Contact details
-            $this->SetXY(140, 51.25);
-            $this->Cell(60, 4, $this->countryCode . ' ' . $this->contactNumber, 'LRB', 1, 'C');
+            $this->SetXY(140, 51.25);  // Adjust the X and Y position if needed
+            $this->Cell(60, 4, '82(0)-324-3746', 'LRB', 1, 'C');
         }
     }
-
 
     // Add hotel info table
     public function addHotelInfoTable() {
@@ -223,8 +124,6 @@ class PDF extends TCPDF {
             $this->SetTextColor(0,0,0);       // Text color
         }
     }
-
-
 
     public function day($daysData) {
      $yPosition = $this->GetY();  // Start from the current Y position (Day 1)
@@ -490,6 +389,8 @@ class PDF extends TCPDF {
       $this->SetTextColor(0, 0, 0);
   }
 
+   
+
   // FOR DAY 4
   public function day4($daysData) {
    $yPosition4 = $this->GetY();  // Start from the current Y position (Day 3)
@@ -709,6 +610,7 @@ class PDF extends TCPDF {
    $this->SetFont('Helvetica', '', 9);
    // Render Itinerary content vertically, row by row
    $this->SetXY(45, $yPosition5 + 6.8);
+
    foreach ($itineraryContents as $itinerary) {
        $this->Cell(125, $lineHeight , $itinerary, 0, 0, 'L');
        $this->SetXY(45, $this->GetY() + $lineHeight);
@@ -909,131 +811,43 @@ class PDF extends TCPDF {
 
 }
 
-
 $pdf = new PDF();
-
-// Set margins
-$pdf->SetMargins(10, 10, 10); // Adjust to provide consistent spacing
+$pdf->SetMargins(10, 10, 10);
 $pdf->AddPage();
 $pdf->addHotelInfoTable();
 $pdf->addItineraryHeader();
 
-$daysData = [
-  [
-      'day' => 1, 
-      'area' => ['','INCHEON' ,''],
-      'itinerary' => [
-          'Arrive at Incheon Airport, transfer to the hotel.',
-          'Check-in and freshen up at the hotel.',
-          'Explore the hotel surroundings or relax.',        
-       ], 
-      'hotel' => ['Air Sky Hotel', 'Emporium Hotel'],
-      'mealPlan' => ['Hotel B/F', 'BBQ Chicken', 'Korean Chinese Food'],
-      'itineraryHeight' => 50
-  ],
-];
+if (isset($_POST['daysDetails'])) {
+    $daysDetails = json_decode($_POST['daysDetails'], true);
 
-$pdf->day($daysData);
+    // Start the JavaScript block to log to the console
+    echo "<script>console.log('Processing Day Details:');</script>";
 
+    foreach ($daysDetails as $detail) {
+        $day = $detail['day'];
+        $daysData = [[
+            'day' => $day,
+            'area' => array_pad(array_map('trim', $detail['areas']), 3, ''),
+            'itinerary' => array_map('trim', $detail['activities']),
+            'hotel' => array_map('trim', $detail['hotels']),
+            'mealPlan' => array_map('trim', $detail['meals']),
+            'itineraryHeight' => max(30, count($detail['activities']) * 6)
+        ]];
 
-$daysData = [
-   [
-       'day' => 2,
-       'area' => ['SEOUL', 'INCHEON', 'GANGWOON'], 
-       'itinerary' => [
-           'Arrive at Incheon Airport, transfer to the hotel.',
-           'Check-in and freshen up at the hotel.',
-           'Explore the hotel surroundings or relax.',
-           'Welcome dinner at a local restaurant featuring Korean cuisine.',
-           'Transfer to Incheon Airport for Departure.',
-           'Shopping for Korean Food & Souvenir.',
-           'Visit Gyeongbokgung Palace.',
-       ],
-       'hotel' => ['Centum Hotel', 'Marina Bay Hotel'],
-       'mealPlan' => ['Hotel B/F', 'BBQ Chicken', 'Korean Chinese Food'],
-       'itineraryHeight' => 40
-   ],
-   [
-    'day' => 3,
-    'area' => ['INCHEON', 'GYEONGGI', 'SEOUL'], 
-    'itinerary' => [
-        'Arrive at Incheon Airport, transfer to the hotel.',
-        'Check-in and freshen up at the hotel.',
-        'Explore the hotel surroundings or relax.',
-        'Welcome dinner at a local restaurant featuring Korean cuisine.',
-        'Transfer to Incheon Airport for Departure.',
-        'Shopping for Korean Food & Souvenir.',
-        'Visit Gyeongbokgung Palace.',
-    ],
-    'hotel' => ['Smart Hotel', 'Marina Bay Hotel'],
-    'mealPlan' => ['Hotel B/F', 'BBQ Chicken', 'Korean Chinese Food'],
-    'itineraryHeight' => 40
-  ],
-];
+        // Log day details to the console
+        echo "<script>console.log('Day $day:', " . json_encode($daysData) . ");</script>";
 
-$pdf->day2($daysData);
-
-$daysData = [
- [
-     'day' => 4,
-     'area' => ['', 'SEOUL', ''], 
-     'itinerary' => [
-         'Morning coffee at the hotel.',
-         'Departure to Bukchon Hanok Village for sightseeing.',
-         'Experience traditional Korean tea ceremony.',
-         'Lunch at a Michelin-starred Korean restaurant.',
-         'Visit to the National Museum of Korea.',
-         'Relax and explore Namsan Seoul Tower.',
-         'Evening shopping at Myeongdong Market.',
-         'End the day with a K-pop concert at a local venue.',
-     ],
-     'hotel' => ['Smart Hotel', 'Marina Bay Hotel'],
-     'mealPlan' => ['Coffee & Snacks', 'Korean Lunch', 'Buffet Dinner'],
-     'itineraryHeight' => 40
-    ],
-];
-
-$pdf->day4($daysData);
-
-
-$daysData = [
- [
-     'day' => 5,
-     'area' => ['SEOUL', 'INCHEON', ''], 
-     'itinerary' => [
-         'Morning coffee at the hotel.',
-         'Departure to Bukchon Hanok Village for sightseeing.',
-         'Experience traditional Korean tea ceremony.',
-         'Lunch at a Michelin-starred Korean restaurant.',
-         'Visit to the National Museum of Korea.',
-         'Relax and explore Namsan Seoul Tower.',
-         'Evening shopping at Myeongdong Market.',
-         'End the day with a K-pop concert at a local venue.',
-     ],
-     'hotel' => ['Depart From Incheon Airport', '(5J187 00:45)'],
-     'mealPlan' => ['Coffee & Snacks', 'Korean Lunch', 'Buffet Dinner'],
-     'itineraryHeight' => 40
-    ],
-];
-
-$pdf->day5($daysData);
+        $method = "day" . $day;
+        if (method_exists($pdf, $method)) {
+            $pdf->$method($daysData);
+        }
+    }
+}
 
 $pdf->AddPage();
-
 $pdf->SecondPage();
 
-$pdf->Output('itinerary-Winter.pdf', 'I');
-
-
-// Clean any buffered output to avoid "Some data has already been output" error
 ob_end_clean();
-
-// Return JSON response
-echo json_encode(
-    ['success' => true, 
-    'itineraryId' => $itineraryId, 
-    'data' => $itinerary]
-);
-
-
+$pdf->Output('itinerary-Winter.pdf', 'I');
+exit;
 ?>

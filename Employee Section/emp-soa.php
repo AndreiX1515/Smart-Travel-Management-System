@@ -488,14 +488,12 @@
         } 
         
         else if (flightFilter.value !== "Select Flight Date") {
-
           console.log(data);
           // Use Flight ID (Flight Date Generate SoA)
           urlAddSoA = '../Employee Section/functions/emp-addSoAByFlightDate.php';
           urlGenerateSoA = '../Employee Section/functions/generateSoAByFlightDate.php';
           data += `&flightId=${flightFilter.value}&flightDate=${selectedText}`;
           console.log(data);
-
         } 
         
         else {

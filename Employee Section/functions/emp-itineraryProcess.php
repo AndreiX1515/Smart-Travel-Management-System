@@ -1,77 +1,83 @@
 <?php
+require('../../conn.php');  
 
-require_once('../../conn.php'); 
+// Enable error reporting for debugging
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
-// Prevent unwanted output before PDF generation
-ob_start();
-
-// Set JSON response headers
-header('Content-Type: application/json; charset=UTF-8');
-
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    echo json_encode(['error' => 'Invalid request method']);
-    exit;
+// Ensure that the itinerary ID is provided
+if (!isset($_POST['itineraryId'])) {
+    echo json_encode(['success' => false, 'message' => 'Invalid Itinerary ID']);
+    exit();
 }
 
-// Validate Itinerary ID
-if (!isset($_POST['itineraryId']) || !is_numeric($_POST['itineraryId'])) {
-    echo json_encode(['error' => 'Invalid Itinerary ID']);
-    exit;
-}
+$itineraryId = intval($_POST['itineraryId']); // Ensure it's an integer
 
-$itineraryId = intval($_POST['itineraryId']);
-error_log("Received Itinerary ID: " . $itineraryId); // Debugging log
+// Fetch itinerary basic details
+$sql = "SELECT itineraryName, noOfDays, packageName, periodStart, periodEnd, guideName, countryCode, contactNumber, city1, hotel1, city2, hotel2, city3, hotel3 FROM itineraries
+        WHERE itineraryId = ?";
 
-if (!$conn) {
-    echo json_encode(['error' => 'Database connection error']);
-    exit;
-}
-
-// Fetch itinerary details
-$sql = "SELECT itineraryName, noOfDays, packageName, periodStart, periodEnd, guideName, countryCode, contactNumber, city1, hotel1, city2, hotel2, city3, hotel3 
-        FROM itineraries WHERE itineraryId = ?";
 $stmt = $conn->prepare($sql);
-if (!$stmt) {
-    echo json_encode(['error' => 'SQL error: ' . $conn->error]);
-    exit;
-}
 $stmt->bind_param("i", $itineraryId);
 $stmt->execute();
 $result = $stmt->get_result();
 
+// If no rows are returned, send a failure message
 if (!$row = $result->fetch_assoc()) {
-    echo json_encode(['error' => 'Itinerary not found']);
-    exit;
+    echo json_encode(['success' => false, 'message' => 'Itinerary not found']);
+    exit();
 }
 
-// Store fetched itinerary details
-$itineraryName = $row['itineraryName'];
-$noOfDays = $row['noOfDays'];
-$packageName = $row['packageName'];
-$periodStart = $row['periodStart'];
-$periodEnd = $row['periodEnd'];
-$guideName = $row['guideName'];
-$contactNumber = "+" . $row['countryCode'] . " " . $row['contactNumber'];
-$cities = array_filter([
-    ['city' => $row['city1'], 'hotel' => $row['hotel1']],
-    ['city' => $row['city2'], 'hotel' => $row['hotel2']],
-    ['city' => $row['city3'], 'hotel' => $row['hotel3']]
-], fn($c) => !empty($c['city']));
+// Itinerary details (First JSON)
+$itineraryDetails = [
+    'itineraryId' => $itineraryId,
+    'itineraryName' => $row['itineraryName'],
+    'noOfDays' => $row['noOfDays'],
+    'packageName' => $row['packageName'],
+    'periodStart' => $row['periodStart'],
+    'periodEnd' => $row['periodEnd'],
+    'guideName' => $row['guideName'],
+    'countryCode' => $row['countryCode'],
+    'contactNumber' => $row['contactNumber'],
+    'cities' => [
+        ['city' => $row['city1'], 'hotel' => $row['hotel1']],
+        ['city' => $row['city2'], 'hotel' => $row['hotel2']],
+        ['city' => $row['city3'], 'hotel' => $row['hotel3']]
+    ]
+];
 
-// Fetch itinerary days, areas, hotels, activities, and meals
+// Fetch day-wise details (Second JSON)
 $sqlDays = "
     SELECT 
-        d.dayId, d.dayNumber, 
+        d.dayId, 
+        d.dayNumber, 
         COALESCE(a.areas, '') AS areas,
         COALESCE(h.hotels, '') AS hotels,
         COALESCE(act.activities, '') AS activities,
         COALESCE(mp.meals, '') AS meals
     FROM itinerarydays d
-    LEFT JOIN (SELECT dayId, GROUP_CONCAT(DISTINCT areaName ORDER BY itineraryAreaId ASC SEPARATOR ', ') AS areas FROM itineraryareas GROUP BY dayId) a ON d.dayId = a.dayId
-    LEFT JOIN (SELECT dayId, GROUP_CONCAT(DISTINCT hotelName ORDER BY hotelId ASC SEPARATOR ', ') AS hotels FROM itineraryhotels GROUP BY dayId) h ON d.dayId = h.dayId
-    LEFT JOIN (SELECT dayId, GROUP_CONCAT(activityName ORDER BY activityId ASC SEPARATOR ', ') AS activities FROM itineraryactivities GROUP BY dayId) act ON d.dayId = act.dayId
-    LEFT JOIN (SELECT dayId, GROUP_CONCAT(DISTINCT mealPlan ORDER BY mealId ASC SEPARATOR ', ') AS meals FROM itinerarymealplans GROUP BY dayId) mp ON d.dayId = mp.dayId
+    LEFT JOIN (
+        SELECT dayId, GROUP_CONCAT(DISTINCT areaName ORDER BY itineraryAreaId ASC SEPARATOR ', ') AS areas
+        FROM itineraryareas 
+        GROUP BY dayId
+    ) a ON d.dayId = a.dayId
+    LEFT JOIN (
+        SELECT dayId, GROUP_CONCAT(DISTINCT hotelName ORDER BY hotelId ASC SEPARATOR ', ') AS hotels
+        FROM itineraryhotels 
+        GROUP BY dayId
+    ) h ON d.dayId = h.dayId
+    LEFT JOIN (
+        SELECT dayId, GROUP_CONCAT(activityName ORDER BY activityId ASC SEPARATOR ', ') AS activities
+        FROM itineraryactivities 
+        GROUP BY dayId
+    ) act ON d.dayId = act.dayId
+    LEFT JOIN (
+        SELECT dayId, GROUP_CONCAT(DISTINCT mealPlan ORDER BY mealId ASC SEPARATOR ', ') AS meals
+        FROM itinerarymealplans 
+        GROUP BY dayId
+    ) mp ON d.dayId = mp.dayId
     WHERE d.itineraryId = ?
+    GROUP BY d.dayId, d.dayNumber
     ORDER BY d.dayNumber ASC;
 ";
 
@@ -80,21 +86,32 @@ $stmt->bind_param("i", $itineraryId);
 $stmt->execute();
 $result = $stmt->get_result();
 
-$itineraryDays = [];
+$daysDetails = [];
 while ($day = $result->fetch_assoc()) {
-    $itineraryDays[] = [
+    $areas = $day['areas'] ? explode(',', $day['areas']) : [];
+    $hotels = $day['hotels'] ? explode(',', $day['hotels']) : [];
+    $meals = $day['meals'] ? explode(',', $day['meals']) : [];
+
+    // Store day data in daysDetails array
+    $daysDetails[] = [
         'day' => $day['dayNumber'],
-        'areas' => $day['areas'] ? explode(', ', $day['areas']) : [],
-        'hotels' => $day['hotels'] ? explode(', ', $day['hotels']) : [],
-        'activities' => $day['activities'] ? explode(', ', $day['activities']) : [],
-        'meals' => $day['meals'] ? explode(', ', $day['meals']) : []
+        'areas' => $areas,
+        'hotels' => $hotels,
+        'activities' => $day['activities'] ? explode(',', $day['activities']) : [],
+        'meals' => $meals
     ];
 }
 
-// Clean any buffered output to avoid "Some data has already been output" error
-ob_end_clean();
+// Convert to JSON (Separate JSONs for itinerary and days)
+$itineraryJson = json_encode($itineraryDetails);
+$daysJson = json_encode($daysDetails);
 
-
-
+// Return success response with data
+echo json_encode([
+    'success' => true,
+    'message' => 'Itinerary details fetched successfully.',
+    'itineraryDetails' => $itineraryDetails,
+    'daysDetails' => $daysDetails
+]);
 
 ?>

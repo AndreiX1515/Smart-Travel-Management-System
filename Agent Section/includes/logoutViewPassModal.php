@@ -44,7 +44,6 @@
               <small id="confirmPasswordError" class="error-label text-danger"></small>
           </div> -->
 
-
           <div id="messageAlert"> </div>
         </div>
 
@@ -58,12 +57,10 @@
   </div>
 </div>
 
-
 <!-- OTP Verification Modal -->
 <div class="modal fade" id="otpVerificationModal" tabindex="-1" aria-labelledby="otpVerificationModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered ">
     <div class="modal-content otp-modal-content">
-
 
       <div class="modal-body">
         <div class="header-body-wrapper">
@@ -131,7 +128,6 @@
   });
 </script>
 
-
 <!-- jQuery Script for Change Password Modal -->
 <script>
   $(document).ready(function() {
@@ -150,60 +146,86 @@
           if (response.status === 'success') {
             console.log('OTP Sent:', response.otp);
 
-            // Function to mask the email
+            // Mask the email for display
             function maskEmail(email) {
               const parts = email.split('@');
               const username = parts[0];
               const domain = parts[1];
-
               const maskedUsername = username.charAt(0) + '******' + username.charAt(username.length - 1);
               return maskedUsername + '@' + domain;
             }
 
-            // Delay action before proceeding to OTP verification
+            // Show success alert immediately
+            showOtpAlert('OTP has been sent to your email address.', 'success');
+
+            // Delay action before showing OTP modal
             setTimeout(function() {
               $('#changePasswordModal').modal('hide');
               $('#otpVerificationModal').modal('show');
 
-              // Optional: Append accountId to the OTP verification form
+              // Append accountId to form
               $('#otpVerificationForm').append('<input type="hidden" name="accountId" value="' + response.accountId + '">');
 
-              // Update the OTP email mask with the masked email address
+              // Mask and display the email address
               const maskedEmail = maskEmail(emailAddress);
               $('#otpVerificationModal .otp-email-mask').text(maskedEmail);
 
-              console.log(); // Log the masked email for debugging
-            }, 2500); // Delay of 2500 milliseconds (2.5 seconds) before showing OTP modal
+              console.log('Masked Email:', maskedEmail);
+            }, 500); // 2.5 second delay
 
           } else {
-            // Error handling if OTP sending fails
+            // OTP sending failed
             console.log('Error Sending OTP:', response.message);
-            $('#messageAlert').show();
-            $('#messageAlert').text('Failed to send OTP. Please try again.');
-            $('#messageAlert').css({
-              'background-color': '#f8d7da', // Red background for error
-              'color': '#721c24', // Dark red text color for error
-              'border': '1px solid #f5c6cb' // Border color for error
-            });
+            showOtpAlert('Failed to send OTP. Please try again.', 'error');
           }
         },
 
         error: function(xhr, status, error) {
-          // Handle AJAX error for sending OTP
+          // AJAX call itself failed
           console.log('AJAX Error:', error);
-          $('#messageAlert').show();
-          $('#messageAlert').text('An error occurred while sending OTP.');
-          $('#messageAlert').css({
-            'background-color': '#f8d7da', // Red background for error
-            'color': '#721c24', // Dark red text color for error
-            'border': '1px solid #f5c6cb' // Border color for error
-          });
+          showOtpAlert('An error occurred while sending OTP.', 'error');
         }
       });
 
     }
 
+
     function showOtpAlert(message, status) {
+
+      // Set the color and background based on the status
+      let backgroundColor, textColor, borderColor;
+
+        // Determine the color scheme based on the provided status
+        if (status === 'success') {
+            backgroundColor = '#d4edda'; // Green background
+            textColor = '#155724'; // Dark green text
+            borderColor = '#c3e6cb'; // Green border
+        } else if (status === 'error') {
+            backgroundColor = '#f8d7da'; // Red background
+            textColor = '#721c24'; // Dark red text
+            borderColor = '#f5c6cb'; // Red border
+        } else {
+            backgroundColor = '#fff3cd'; // Yellow background (default for warnings)
+            textColor = '#856404'; // Dark yellow text
+            borderColor = '#ffeeba'; // Yellow border
+        }
+
+        // Apply the styles and show the alert
+        $('#otpAlert').text(message).css({
+            'background-color': backgroundColor,
+            'color': textColor,
+            'border': `1px solid ${borderColor}`
+        }).show();
+
+        // Hide the alert after 3.5 seconds (3500 milliseconds)
+        setTimeout(function() {
+            $('#otpAlert').fadeOut();
+        }, 3500);
+    }
+
+
+    function showCPAlert(message, status) {
+
     // Set the color and background based on the status
     let backgroundColor, textColor, borderColor;
 
@@ -223,7 +245,7 @@
       }
 
       // Apply the styles and show the alert
-      $('#otpAlert').text(message).css({
+      $('#messageAlert').text(message).css({
           'background-color': backgroundColor,
           'color': textColor,
           'border': `1px solid ${borderColor}`
@@ -233,19 +255,7 @@
       setTimeout(function() {
           $('#otpAlert').fadeOut();
       }, 3500);
-  }
-
-
-
-
-
-
-
-
-
-
-
-
+    }
 
 
     // Handle form submission for change password
@@ -289,33 +299,35 @@
           response = JSON.parse(response);
 
           if (response.status === 'error') {
-            $('#messageAlert').show();
-            $('#messageAlert').text(response.message);
-            $('#messageAlert').css({
-              'background-color': '#f8d7da',
-              'color': '#721c24',
-              'border': '1px solid #f5c6cb'
-            });
+          
             document.getElementById('currentPasswordError').textContent = response.message;
             document.getElementById('currentPasswordError').style.display = 'block';
 
-          } else if (response.status === 'success') {
-            const accountId = response.accountId;
-            const emailAddress = response.emailAddress;
+          } 
+          
+          else if (response.status === 'success') {
 
-            $('#messageAlert').show();
-            $('#messageAlert').text(response.message);
-            $('#messageAlert').css({
-              'background-color': '#d4edda',
-              'color': '#155724',
-              'border': '1px solid #c3e6cb'
-            });
+              const accountId = response.accountId;
+              const emailAddress = response.emailAddress;
 
-            // After success, send OTP to the provided email
-            setTimeout(function() {
-              sendOtp(currentPassword, emailAddress); // Reusable OTP function
-            }, 500); // 2.5 seconds delay before sending OTP
+              // Store in sessionStorage
+              sessionStorage.setItem('emailAddress', emailAddress);
+
+              console.log('Email Address:', emailAddress); // Debugging log
+
+              $('#messageAlert').show();
+              $('#messageAlert').text(response.message);
+              $('#messageAlert').css({
+                'background-color': '#d4edda',
+                'color': '#155724',
+                'border': '1px solid #c3e6cb'
+              });
+
+              setTimeout(function() {
+                sendOtp(currentPassword, emailAddress); // Reusable OTP function
+              }, 500);
           }
+
 
         },
         error: function(xhr, status, error) {
@@ -350,6 +362,7 @@
         data: {
           otp: otp
         },
+
         dataType: 'json',
         success: function(response) {
           if (response.status === 'success') {
@@ -395,20 +408,19 @@
               error: function(xhr, status, error) {
                 console.error("AJAX Error (Password Change):", error);
                 console.log("Response Text (Password Change):", xhr.responseText);
+
                 $('#messageAlert').show().text('An error occurred while updating the password. Please try again.').css({
                   'background-color': '#f8d7da',
                   'color': '#721c24',
                   'border': '1px solid #f5c6cb'
                 });
+
               }
             });
 
           } else if (response.status === 'error') {
-
             console.log('OTP Verification Failed:', response.message); 
-
             showOtpAlert(response.message, response.status); 
-
           }   
           
           else {
@@ -426,19 +438,35 @@
 
     // Resend OTP functionality
     $('#sendOtpBtn').click(function(e) {
-      e.preventDefault();
-      const currentPassword = document.getElementById('currentPassword').value;
-      const emailAddress = <?= json_encode($_SESSION['emailAddress']); ?>;
+        e.preventDefault();
 
-      sendOtp(currentPassword, emailAddress); // Reusing the sendOtp function
-    });
+        const currentPassword = document.getElementById('currentPassword').value;
+        let emailAddress = <?= json_encode($_SESSION['emailAddress']); ?>;
+
+        // Fallback: use sessionStorage if PHP session is null, 'null', or empty string
+        if (!emailAddress || emailAddress === 'null' || emailAddress === '') {
+          emailAddress = sessionStorage.getItem('emailAddress');
+        }
+
+        // Check if password is empty
+        if (!currentPassword) {
+          showOtpAlert('Please enter your current password to resend OTP.', 'error');
+          return;
+        }
+
+        // Proceed if emailAddress is available
+        if (emailAddress) {
+          sendOtp(currentPassword, emailAddress); // Reuse existing OTP sending function
+          showOtpAlert('Resending OTP. Please wait...', 'success');
+        } else {
+          console.warn('Email address not found in session or sessionStorage.');
+          showOtpAlert('Unable to send OTP, Please Try Again.', 'error');
+        }
+      });
+
 
   });
 </script>
-
-
-
-
 
 
 
@@ -466,11 +494,6 @@
     });
   });
 </script>
-
-
-
-
-
 
 <!-- <script>
   $(document).ready(function() {

@@ -15,14 +15,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'status' => 'error',
             'message' => 'Current password is required.',
             'currentPassword' => $currentPassword 
-        ]);
+        ]); 
         
     } else {
         // Verify password against the database
         $stmt = $conn->prepare("SELECT password, emailAddress FROM accounts WHERE accountId = ?");
         $stmt->bind_param("i", $accountId);
         $stmt->execute();
-        $stmt->bind_result($storedPassword, $emailAddress); // Bind both password and emailAddress
+        $stmt->bind_result($storedPassword, $emailAddress); 
         $stmt->fetch();
         $stmt->close();
     

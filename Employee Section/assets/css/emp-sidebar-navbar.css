@@ -301,7 +301,7 @@ body {
  top: 0; 
  z-index: 1020; 
  background-color: transparent; 
- height: 6vh;
+ height: 5vh;
  margin-left: 0;
  margin-bottom: 3px; 
  color: rgba(177, 177, 177, 0.774);
@@ -315,6 +315,11 @@ body {
   font-weight: 600;
   margin: 10px 0px;
 }
+
+
+
+
+
 
 /* Main container for table */
 .main-container {

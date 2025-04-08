@@ -16,10 +16,16 @@
 
     <!-- Main Container -->
     <div class="main-container">
-        <?php include '../Employee Section/includes/emp-navbar.php' ?>
+        <nav class="navbar navbar-expand-lg navbar-custom">
+            <div class="navbar-wrapper">
+                <a class="navbar-brand" id="page-title" href="#">Create Itinerary</a>
+            </div>
+        </nav>
 
         <div class="main-content">
             <div class="form-container">
+                
+                <!-- Itinerary Details Card -->
                 <div class="card">
                     <div class="card-header">   
                         <h5>Itinerary Details</h5>
@@ -240,6 +246,7 @@
                     </div>
                 </div>
 
+                <!-- No. of Days Card -->
                 <div class="card">
                     <div class="card-header">
                         <h5>No. of Days</h5>
@@ -252,7 +259,7 @@
                             <div class="columns col-md-3">
                                 <div class="form-group days-select-wrapper">
                                     <label for="flightDate">No. of days<span class="text-danger"> *</span></label>
-                                    <select class="form-select" id="select-days" name="numberOfDays" required>
+                                    <select class="form-select" id="select-days" name="numberOfDays" required disabled>
                                         <option selected disabled>Select Number of Days</option>
                                     </select>
                                     <small class="form-text text-muted">Changing this will clear all your data on the fields.</small>
@@ -482,15 +489,19 @@
                 "Jeju Island Lava Tubes"
             ];
 
-            for (let num = 1; num <= 5; num++) {
+            const totalDays = 5;
+
+            // Add options to the dropdown for 5 days
+            for (let num = 1; num <= totalDays; num++) {
                 let option = document.createElement("option");
                 option.value = num;
                 option.textContent = `Day ${num}`;
                 selectDays.appendChild(option);
             }
 
-            // Generate itinerary cards based on selected days
-            selectDays.addEventListener("change", function() {
+            // Set the default selected option to Day 5
+            selectDays.value = 5;  // Default to Day 5
+            
                 const selectedDays = parseInt(selectDays.value);
                 itineraryContainer.innerHTML = ""; // Clear previous content
 
@@ -546,11 +557,12 @@
                                     }
                                 </div>
 
+                                
                                 <div class="row mb-3">
                                     <div class="col-12">
                                         <label class="form-label fw-semibold">Hotels:</label>
                                         <div class="row">
-                                            ${["Hotel 1", "Hotel 2", "Hotel 3"].map(hotelLabel => `
+                                            ${["Hotel 1", "Hotel 2"].map(hotelLabel => `
                                                 <div class="col-md-4 col-sm-12 mb-2">
                                                     <select class="form-select hotel-select" data-day="${day}">
                                                         <option selected disabled>Select ${hotelLabel}</option>
@@ -566,15 +578,27 @@
                                     <div class="col-12">
                                         <label class="form-label fw-semibold">Itinerary:</label>
                                     </div>
-                                    ${[1, 2, 3, 4, 5, 6, 7].map(num => `
-                                        <div class="col-12 mb-2">
-                                            <select class="form-select itinerary-select" data-day="${day}">
-                                                <option selected disabled>Select Itinerary ${num}</option>
-                                                ${itineraries.map(itinerary => `<option value="${itinerary}">${itinerary}</option>`).join("")}
-                                            </select>
-                                        </div>
-                                    `).join("")}
+                                    ${day === 1 
+                                        ? [1, 2, 3, 4].map(num => `
+                                            <div class="col-12 mb-2">
+                                                <select class="form-select itinerary-select" data-day="${day}">
+                                                    <option selected disabled>Select Itinerary ${num}</option>
+                                                    ${itineraries.map(itinerary => `<option value="${itinerary}">${itinerary}</option>`).join("")}
+                                                </select>
+                                            </div>
+                                        `).join("")
+
+                                        : [1, 2, 3, 4, 5, 6, 7].map(num => `
+                                            <div class="col-12 mb-2">
+                                                <select class="form-select itinerary-select" data-day="${day}">
+                                                    <option selected disabled>Select Itinerary ${num}</option>
+                                                    ${itineraries.map(itinerary => `<option value="${itinerary}">${itinerary}</option>`).join("")}
+                                                </select>
+                                            </div>
+                                        `).join("")
+                                    }
                                 </div>
+
                             </div>
                         </div>
                     `;
@@ -584,7 +608,10 @@
 
                 // Hide the form-footer when itinerary is cleared
                 formFooter.style.display = selectedDays ? "flex" : "none";
-            });
+          
+
+
+
 
             document.addEventListener("change", function(event) {
                 if (event.target.matches(".area-select, .hotel-select, .meal-plan-select, .itinerary-select")) {

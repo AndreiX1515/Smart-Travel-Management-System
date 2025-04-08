@@ -152,7 +152,6 @@ class PDF extends TCPDF {
          $itineraryContents = [$itineraryContents];
      }
      
-
      if (!is_array($mealPlan)) {
          $mealPlan = explode(',', $mealPlan);
      }

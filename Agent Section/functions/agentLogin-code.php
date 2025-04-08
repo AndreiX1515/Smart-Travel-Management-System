@@ -183,7 +183,7 @@ function manageAgentSession($accountId, $userData, $userType, $flightId, $additi
         $_SESSION['agentCode'] = $userData['agentCode'] ?? '';  
         $_SESSION['agentRole'] = $userData['agentRole'] ?? '';  
         $_SESSION['agentType'] = $userData['agentType'] ?? '';  
-        $_SESSION['agent_branchId'] = $userData['branchId'] ?? '';  
+        $_SESSION['agent_branchId'] = $userData['branchId'] ?? '';
         $_SESSION['agent_flightId'] = $flightId ?? '';  
         $_SESSION['agent_timeout'] = time();
 

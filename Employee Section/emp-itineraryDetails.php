@@ -773,9 +773,9 @@
     <script>
         document.addEventListener("change", function(event) {
             if (event.target.matches(".area-select, .hotel-select, .meal-plan-select, .itinerary-select")) {
-                const day = event.target.dataset.day;
-                if (!day) {
-                    console.warn("data-day attribute is missing!");
+                    const day = event.target.dataset.day;
+                    if (!day) {
+                        console.warn("data-day attribute is missing!");
                     return;
                 }
 
@@ -800,59 +800,88 @@
         });
     </script>
 
-
-
-    <!--- Generate Itinerary PDF -->
-    <script>
-        $('#submitTour').click(function() {
+<script>
+    $('#submitTour').click(function() {
         const itineraryId = $('#itineraryId').val();
         const itineraryName = $('#itineraryName').val();
+        const urlProcessItinerary = '../Employee Section/functions/emp-itineraryProcess.php'; 
+        const urlGenerateItinerary = '../Employee Section/functions/Itinerary-template.php';
 
-    if (!itineraryId) {
-        alert('Please enter a valid Itinerary ID.');
-        return;
-    }
-
-    // Step 1: Open Itinerary Template (Executes SQL Query)
-    let templateWindow = window.open(`../Employee Section/functions/Itinerary-template.php?itineraryId=${encodeURIComponent(itineraryId)}`, '_blank');
-
-    if (!templateWindow) {
-        alert('Popup blocked! Please allow popups for this site.');
-        return;
-    }
-
-    // Step 2: Wait for the Template to Load Before Proceeding
-    let checkTemplateLoaded = setInterval(function() {
-        if (templateWindow.closed) {
-            clearInterval(checkTemplateLoaded);
-
-            // Step 3: Generate PDF Only If Template Loaded Successfully
-            let xhrPdf = new XMLHttpRequest();
-            xhrPdf.open('GET', `../Employee Section/functions/generateItineraryPDF.php?itineraryId=${encodeURIComponent(itineraryId)}`, true);
-            xhrPdf.responseType = 'blob';
-
-            xhrPdf.onload = function() {
-                if (xhrPdf.status === 200) {
-                    const blob = new Blob([xhrPdf.response], { type: 'application/pdf' });
-                    const link = document.createElement('a');
-                    link.href = window.URL.createObjectURL(blob);
-                    link.download = `Itinerary_${itineraryName}.pdf`;
-                    link.click();
-                } else {
-                    alert('Failed to generate the itinerary PDF. Please try again.');
-                }
-            };
-
-            xhrPdf.onerror = function() {
-                alert('An error occurred while generating the itinerary PDF.');
-            };
-
-            xhrPdf.send();
+        // Step 1: Validate Itinerary ID
+        if (!itineraryId) {
+            alert('Please enter a valid Itinerary ID.');
+            return;
         }
-    }, 1000); // Check every second if template is closed
-});
 
-    </script>
+        // Step 2: Process the Itinerary and Save it Using AJAX
+        $.ajax({
+            url: urlProcessItinerary,  // URL to the backend PHP file
+            type: 'POST',
+            data: { itineraryId: itineraryId },  // Send the itineraryId to process the data
+            success: function(response) {
+                try {
+                    const jsonResponse = JSON.parse(response);
+
+                    // Log the formatted JSON response for debugging
+                    console.log("Formatted JSON Response: ", JSON.stringify(jsonResponse, null, 2));
+
+                    if (jsonResponse.success) {
+                        const itineraryDetails = jsonResponse.itineraryDetails;
+                        const daysDetails = jsonResponse.daysDetails;
+
+                        // Step 4: Generate PDF after itinerary processing and pass both JSONs
+                        generateItineraryExcel(itineraryDetails, daysDetails, itineraryId, itineraryName)
+                    } else {
+                        alert(jsonResponse.message || 'Failed to process the itinerary.');
+                    }
+                } catch (error) {
+                    console.error("Invalid JSON response:", error);
+                    alert('Error processing the itinerary. Please try again.');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("AJAX Error: ", error); // Log any errors in the AJAX request
+                alert('An error occurred while processing the itinerary.');
+            }
+        });
+
+    });
+
+    function generateItineraryExcel(itineraryDetails, daysDetails, itineraryId, itineraryName) {
+        $.ajax({
+            url: '../Employee Section/functions/itinerary-template-excel.php',  // PHP script for Excel generation
+            type: 'POST',
+            data: {
+                itineraryDetails: JSON.stringify(itineraryDetails),
+                daysDetails: JSON.stringify(daysDetails),
+                itineraryId: itineraryId
+            },
+            xhrFields: { responseType: 'blob' },  // Expecting binary data (Excel file)
+            success: function(blobResponse) {
+                // Create a download link for the blob
+                const blob = new Blob([blobResponse], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+                const link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = `Itinerary_${itineraryName}.xlsx`;  // Set filename for download
+                link.click();  // Simulate a click to trigger download
+
+                console.log('Excel file generated successfully.');
+            },
+            error: function() {
+                alert('Failed to generate the itinerary Excel file. Please try again.');
+            }
+        });
+    }
+
+
+
+
+
+</script>
+
+
+
+
 
 
 
