@@ -696,6 +696,7 @@
 
                     <div class="card-body">
                         <div class="container-fluid">
+                        
                             <!-- Area Section (Dynamic) -->
                             <div class="row mb-3">
                                 ${areas.map((area, index) => {
@@ -717,7 +718,7 @@
                                 <div class="col-12">
                                     <label class="form-label fw-semibold">Hotels:</label>
                                     <div class="row">
-                                        ${createMultipleSelectColumns(["Hotel", "Hotel", "Hotel"], "hotel-select", availableHotels, hotels)}
+                                        ${createMultipleSelectColumns(["Hotel", "Hotel"], "hotel-select", availableHotels, hotels)}
                                     </div>
                                 </div>
                             </div>
