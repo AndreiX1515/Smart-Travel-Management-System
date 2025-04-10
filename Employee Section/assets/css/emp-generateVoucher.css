@@ -85,12 +85,13 @@
 
 .form-footer {
   background-color: white;
-  display: none; /* Hidden by default */
+  display: flex;
   justify-content: flex-end;
   gap: 10px;
   padding: 10px 20px;
   border: 1px solid gainsboro;
-  border-radius: 0 0 8px 8px; /* Matches form-container’s style */
+  border-radius: 0 0 8px 8px;
+  margin: 15px 0px; 
 }
 
 
@@ -120,7 +121,7 @@
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border: none;
+  border: 1px solid gainsboro;
 }
 
 .card-header {
@@ -159,8 +160,8 @@
 .columns {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-bottom: 5px;
+  gap: 5px;
+  margin-bottom: 0px;
   /* border: 1px solid black; */
 }
 
@@ -170,6 +171,16 @@
   padding: 12px 16px;
   border-top: 1px solid #dee2e6;
 }
+
+
+.card-title {
+  background-color: #116530;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 15px 15px;
+}
+
 
 
 
@@ -243,7 +254,6 @@
 .form-header {
   border-radius: 8px;
   overflow: hidden;
-
   border: none;
   height: 50vh;
   padding-bottom: 10px; /* Reduced by 5px */
@@ -263,7 +273,7 @@
 .datepicker-wrapper {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 0px;
   width: 100%;
   /* border: 1px solid black; */
   padding-bottom: 10px; /* Reduced by 5px */
@@ -300,7 +310,7 @@
   font-size: 1rem;
   font-weight: bold;
   color: #333;
-  padding-bottom: 5px; /* Reduced by 5px */
+  padding-bottom: 0px; /* Reduced by 5px */
 }
 
 
@@ -331,7 +341,10 @@
   font-size: 1.2rem;
   font-weight: bold;
   color: #555;
+  width: 30px;
+
 }
+
 
 
 
@@ -445,11 +458,97 @@ select.form-control:focus {
 
 /* Card Body */
 .itinerary-card .card-body {
-  padding: 12px 5px;
+  padding: 10px 0px;
   display: flex;
   flex-direction: column;
   gap: 15px;
 }
+
+.card-body .row {
+  /* border: 1px solid black; */
+  /* border-bottom: 1px solid gainsboro; */
+  margin-bottom: 10px;
+}
+
+
+
+
+
+
+.main-header {
+  display: flex;
+  justify-content: start;
+  align-items: center; /* for vertical centering */
+  padding: 0px 7px 0px 7px;
+  /* border: 1px solid black; */
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.main-header h6 {
+  font-weight: bold;
+  margin: 0; /* remove default margin */
+}
+
+.header-container {
+  padding: 5px 5px; /* more balanced spacing inside */
+  /* border: 1px solid black; */
+  border-bottom: 1px solid gainsboro;
+  background-color: #fff; /* optional: separates from main-header */
+  width: 100%;
+}
+
+
+ 
+
+
+
+.includes-header-card {
+  display: flex;
+  justify-content: space-between;
+  width: 100%; 
+}
+
+.card-header {
+  flex-grow: 1;  /* Makes the header take up remaining space */
+}
+
+
+.add-button {
+  padding: 5px 10px;        /* Add padding for button size */
+  font-size: 16px;
+  font-weight: bold;          
+  background-color: #007bff; /* Bootstrap primary blue color */
+  color: white;             /* White text color */
+  border: 1px solid gainsboro;             /* Remove default border */
+  border-radius: 5px;       /* Rounded corners */
+  cursor: pointer;          /* Change cursor to pointer when hovering */
+  transition: background-color 0.3s ease, transform 0.2s; /* Smooth transitions */
+}
+
+.add-button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
+
+.add-button:focus {
+  outline: none;             /* Remove focus outline */
+}
+
+
+.includes-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+
+
+
+.include-cards {
+  display: none;
+}
+
+
+
 
 /* Align sections horizontally */
 .section-group {

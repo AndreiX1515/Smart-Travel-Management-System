@@ -17,6 +17,9 @@
 <!-- DataTables FixedColumns CSS -->
 <link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/3.3.0/css/fixedColumns.dataTables.min.css">
 
+<!-- jQuery Timepicker CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-timepicker/jquery.timepicker.min.css">
+
 <!-- JavaScript Libraries -->
 <!-- jQuery (Required for jQuery UI & DataTables) -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -36,6 +39,8 @@
 <!-- DataTables FixedHeader JS (Requires DataTables) -->
 <script src="https://cdn.datatables.net/fixedheader/3.2.0/js/dataTables.fixedHeader.min.js"></script>
 
+<!-- jQuery Timepicker JS -->
+<script src="https://cdn.jsdelivr.net/npm/jquery-timepicker/jquery.timepicker.min.js"></script>
 
 <!-- <link href="https://unpkg.com/tabulator-tables@6.3.1/dist/css/tabulator.min.css" rel="stylesheet">
  <script type="text/javascript" src="https://unpkg.com/tabulator-tables@6.3.1/dist/js/tabulator.min.js"></script> -->
