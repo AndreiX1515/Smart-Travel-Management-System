@@ -8,6 +8,14 @@
     <?php include '../Employee Section/includes/emp-head.php' ?>
     <link rel="stylesheet" href="../Employee Section/assets/css/emp-sidebar-navbar.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="../Employee Section/assets/css/emp-generateVoucher.css?v=<?php echo time(); ?>">
+
+    <!-- WickedPicker CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/wickedpicker@0.4.1/dist/wickedpicker.min.css">
+
+    <!-- WickedPicker JS -->
+    <script src="https://cdn.jsdelivr.net/npm/wickedpicker@0.4.1/dist/wickedpicker.min.js"></script>
+
+
 </head>
 
 <body>
@@ -28,14 +36,581 @@
                 <!-- Itinerary Details Card -->
                 <div class="card">
                     <div class="card-header bg-primary">
-                        <h5>Itinerary Details</h5>
+                        <h5>Voucher Details (Header) </h5>
                     </div>
 
                     <div class="card-body">
-
                         <!-- Package Row -->
                         <div class="row">
+                            <div class="columns col-md-4">
+                                <div class="column-header">
+                                    <label for="flightDate">To
+                                        <span class="text-danger"> *</span>
+                                    </label>
+                                </div>
+
+                                <div class="form-group">
+                                    <select class="form-select" id="packageSelect" name="packageSelect" required>
+                                        <option selected disabled>Select Package Type</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="columns col-md-4">
+                                <div class="column-header">
+                                    <label for="flightDate">From
+                                        <span class="text-danger"> *</span>
+                                    </label>
+                                </div>
+
+                                <div class="form-group">
+                                    <select class="form-select" id="packageSelect" name="packageSelect" required>
+                                        <option selected disabled>Select Package Type</option>
+                                    </select>
+                                </div>
+                            </div>
+
                             <!-- Flight Date Dropdown -->
+                            <div class="columns col-md-4">
+                                <div class="column-header">
+                                    <label for="flightDate">Tour
+                                        <span class="text-danger"> *</span>
+                                    </label>
+                                </div>
+
+                                <div class="form-group">
+                                    <select class="form-select" id="packageSelect" name="packageSelect" required>
+                                        <option selected disabled>Select Package Type</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Periods, Guide Row -->
+                        <div class="row">
+                            <div class="columns col-md-4">
+                                <div class="column-header">
+                                    <label for="flightDate">Attachment
+                                        <span class="text-danger"> *</span>
+                                    </label>
+                                </div>
+
+                                <div class="form-group">
+                                    <select class="form-select" id="packageSelect" name="packageSelect" required>
+                                        <option selected disabled>Select Package Type</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="columns col-md-4">
+
+                                <div class="column-header">
+                                    <label for="flightDate">Tour Periods:
+                                        <span class="text-danger"> *</span>
+                                    </label>
+                                </div>
+
+                                <div class="datepicker-wrapper">
+                                    <div class="form-group">
+                                        <div class="date-range-inputs-wrapper">
+                                            <div class="input-with-icon">
+                                                <input type="text" class="datepicker" id="PeriodStartDate" placeholder="Start" readonly>
+                                                <i class="fas fa-calendar-alt calendar-icon"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Dash Separator -->
+                                    <div class="dash-separator">-></div>
+
+                                    <div class="form-group">
+                                        <div class="date-range-inputs-wrapper">
+                                            <div class="input-with-icon">
+                                                <input type="text" class="datepicker" id="PeriodEndDate" placeholder="End" readonly>
+                                                <i class="fas fa-calendar-alt calendar-icon"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="columns col-md-4">
+                                <div class="column-header">
+                                    <label for="flightDate">No. of Pax
+                                        <span class="text-danger"> *</span>
+                                    </label>
+                                </div>
+
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="noOfPax" required>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header bg-primary card-title">
+                        <h5>Tour Condition</h5>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body tour-content">
+                        <!-- Package Row -->
+                        <div class="row">
+                            <div class="columns col-md-4">
+                                <div class="column-header">
+                                    <label for="flightDate">Date:
+                                        <span class="text-danger"> *</span>
+                                    </label>
+                                </div>
+
+                                <div class="form-group">
+                                    <select class="form-select" id="packageSelect" name="packageSelect" required>
+                                        <option selected disabled>Select Package Type</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="columns col-md-4">
+                                <div class="column-header">
+                                    <label for="flightDate">From
+                                        <span class="text-danger"> *</span>
+                                    </label>
+                                </div>
+
+                                <div class="form-group">
+                                    <select class="form-select" id="packageSelect" name="packageSelect" required>
+                                        <option selected disabled>Select Package Type</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Flight Date Dropdown -->
+                            <div class="columns col-md-4">
+
+                                <div class="column-header">
+                                    <label for="flightDate">Tour Periods:
+                                        <span class="text-danger"> *</span>
+                                    </label>
+                                </div>
+
+                                <div class="datepicker-wrapper">
+                                    <div class="form-group">
+                                        <div class="date-range-inputs-wrapper">
+                                            <div class="input-with-icon">
+                                                <input type="text" class="datepicker" id="PeriodStartDate" placeholder="Start" readonly>
+                                                <i class="fas fa-calendar-alt calendar-icon"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Dash Separator -->
+                                    <div class="dash-separator">-></div>
+
+                                    <div class="form-group">
+                                        <div class="date-range-inputs-wrapper">
+                                            <div class="input-with-icon">
+                                                <input type="text" class="datepicker" id="PeriodEndDate" placeholder="End" readonly>
+                                                <i class="fas fa-calendar-alt calendar-icon"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Periods, Guide Row -->
+                        <div class="row">
+
+                            <div class="columns col-md-4">
+                                <div class="column-header">
+                                    <label for="flightDate">Attachment
+                                        <span class="text-danger"> *</span>
+                                    </label>
+                                </div>
+
+                                <div class="form-group">
+                                    <select class="form-select" id="packageSelect" name="packageSelect" required>
+                                        <option selected disabled>Select Package Type</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="columns col-md-4">
+                                <div class="column-header">
+                                    <label for="flightDate">Guide
+                                        <span class="text-danger"> *</span>
+                                    </label>
+                                </div>
+
+                                <div class="form-group">
+                                    <select class="form-select" id="guideName" name="flightDate" required>
+                                        <option selected disabled>Select Guide</option>
+                                        <option value="John Doe">John Doe</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="columns col-md-4">
+                                <div class="column-header">
+                                    <label for="flightDate">Contact Number
+                                        <span class="text-danger"> *</span>
+                                    </label>
+                                </div>
+
+                                <div class="form-group d-flex flex-row align-items-center">
+                                    <select class="form-select" id="countryCode" style="width: 80px;">
+                                        <option value="+63" selected>+63</option>
+                                        <option value="+82">+82</option>
+                                    </select>
+                                    <input type="text" class="form-control ms-2" id="contactNumber" name="contactNumber" min="1" placeholder="9***********" required>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header bg-primary card-title">
+                        <h5>Other Informations</h5>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <!-- Guides Row -->
+                        <div class="row">
+                            <div class="columns col-md-12">
+                                <div class="column-header">
+                                    <label for="flightDate">Guide
+                                        <span class="text-danger"> *</span>
+                                    </label>
+                                </div>
+
+                                <div class="form-group">
+                                    <select class="form-select" id="packageSelect" name="packageSelect" required>
+                                        <option selected disabled>Select Guide</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header bg-primary">
+                        <h5>Air Schedule</h5>
+                    </div>
+
+                    <div class="card-body">
+                        <!-- Air Schedule -->
+                        <div class="row">
+                            <div class="main-header">
+                                <div class="header-container">
+                                    <h6>Arrival</h6>
+                                </div>
+                            </div>
+
+                            <div class="columns col-md-4">
+                                <div class="column-header">
+                                    <label for="flightDate">Date
+                                        <span class="text-danger"> *</span>
+                                    </label>
+                                </div>
+
+                                <div class="datepicker-wrapper">
+                                    <div class="form-group">
+                                        <div class="date-range-inputs-wrapper">
+                                            <div class="input-with-icon">
+                                                <input type="text" class="datepicker" id="PeriodEndDate" placeholder="End" readonly>
+                                                <i class="fas fa-calendar-alt calendar-icon"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="columns col-md-2">
+                                <div class="column-header">
+                                    <label for="flightDate">Flight
+                                        <span class="text-danger"> *</span>
+                                    </label>
+                                </div>
+
+                                <div class="form-group">
+                                    <select class="form-select" id="packageSelect" name="packageSelect" required>
+                                        <option selected disabled>Select Flight</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="columns col-md-4">
+                                <div class="column-header">
+                                    <label for="flightDate">Origin - Destination
+                                        <span class="text-danger"> *</span>
+                                    </label>
+                                </div>
+
+                                <div class="datepicker-wrapper">
+                                    <div class="form-group">
+                                        <select class="form-select" id="packageSelect" name="packageSelect" required>
+                                            <option selected disabled>Origin</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Dash Separator -->
+                                    <div class="dash-separator">-></div>
+
+                                    <div class="form-group">
+                                        <select class="form-select" id="packageSelect" name="packageSelect" required>
+                                            <option selected disabled>Destination</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="columns col-md-2">
+                                <div class="column-header">
+                                    <label for="flightTime">Time
+                                        <span class="text-danger"> *</span>
+                                    </label>
+                                </div>
+
+                                
+                                <div class="form-group">
+                                    <input type="text" class="form-control wickedpicker" id="flightTime" name="flightTime" placeholder="Select time" required readonly>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Air Schedule -->
+                        <div class="row">
+                            <div class="main-header">
+                                <div class="header-container">
+                                    <h6>Destination</h6>
+                                </div>
+                            </div>
+
+                            <div class="columns col-md-4">
+                                <div class="column-header">
+                                    <label for="flightDate">Date
+                                        <span class="text-danger"> *</span>
+                                    </label>
+                                </div>
+
+                                <div class="datepicker-wrapper">
+                                    <div class="form-group">
+                                        <div class="date-range-inputs-wrapper">
+                                            <div class="input-with-icon">
+                                                <input type="text" class="datepicker" id="PeriodEndDate" placeholder="End" readonly>
+                                                <i class="fas fa-calendar-alt calendar-icon"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="columns col-md-2">
+                                <div class="column-header">
+                                    <label for="flightDate">Flight
+                                        <span class="text-danger"> *</span>
+                                    </label>
+                                </div>
+
+                                <div class="form-group">
+                                    <select class="form-select" id="packageSelect" name="packageSelect" required>
+                                        <option selected disabled>Select Flight</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="columns col-md-4">
+                                <div class="column-header">
+                                    <label for="flightDate">Origin - Destination
+                                        <span class="text-danger"> *</span>
+                                    </label>
+                                </div>
+
+                                <div class="datepicker-wrapper">
+                                    <div class="form-group">
+                                        <select class="form-select" id="packageSelect" name="packageSelect" required>
+                                            <option selected disabled>Origin</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Dash Separator -->
+                                    <div class="dash-separator">-></div>
+
+                                    <div class="form-group">
+                                        <select class="form-select" id="packageSelect" name="packageSelect" required>
+                                            <option selected disabled>Destination</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="columns col-md-2">
+                                <div class="column-header">
+                                    <label for="flightDate">Time
+                                        <span class="text-danger"> *</span>
+                                    </label>
+                                </div>
+
+                                <div class="form-group">
+                                    <select class="form-select" id="packageSelect" name="packageSelect" required>
+                                        <option selected disabled>Select Flight</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header bg-primary">
+                        <h5>Guide Meeting</h5>
+                    </div>
+
+                    <div class="card-body">
+                        <!-- Guides Row -->
+                        <div class="row">
+                            <div class="columns col-md-4">
+                                <div class="column-header">
+                                    <label for="flightDate">Date
+                                        <span class="text-danger"> *</span>
+                                    </label>
+                                </div>
+
+                                <div class="datepicker-wrapper">
+                                    <div class="form-group">
+                                        <div class="date-range-inputs-wrapper">
+                                            <div class="input-with-icon">
+                                                <input type="text" class="datepicker" id="PeriodEndDate" placeholder="End" readonly>
+                                                <i class="fas fa-calendar-alt calendar-icon"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="columns col-md-2">
+                                <div class="column-header">
+                                    <label for="flightTime">Time
+                                        <span class="text-danger"> *</span>
+                                    </label>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="date-range-inputs-wrapper">
+                                        <div class="input-with-icon">
+                                            <input type="text" class="timepicker" id="flightTime" placeholder="Select time" readonly>
+                                            <i class="fas fa-clock calendar-icon"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="columns col-md-6">
+                                <div class="column-header">
+                                    <label for="flightDate">Place
+                                        <span class="text-danger"> *</span>
+                                    </label>
+                                </div>
+
+                                <div class="form-group">
+                                    <select class="form-select" id="packageSelect" name="packageSelect" required>
+                                        <option selected disabled>Select Flight</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Includes -->
+                <div class="card includes-header-card">
+                    <div class="card-header bg-primary card-title includes-wrapper">
+                        <h5>Includes</h5>
+
+                        <button class="add-button">+</button>
+                    </div>
+                </div>
+
+                <div class="card include-cards">
+                    <div class="card-body">
+                        <!-- Guides Row -->
+                        <div class="row">
+                            <div class="columns col-md-12">
+                                <div class="column-header">
+                                    <label for="flightDate">Guide
+                                        <span class="text-danger"> *</span>
+                                    </label>
+                                </div>
+
+                                <div class="form-group">
+                                    <select class="form-select" id="packageSelect" name="packageSelect" required>
+                                        <option selected disabled>Select Guide</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Excludes -->
+                <div class="card includes-header-card">
+                    <div class="card-header bg-primary card-title includes-wrapper">
+                        <h5>Excludes</h5>
+
+                        <button class="add-button">+</button>
+                    </div>
+                </div>
+
+                <div class="card include-cards">
+                    <div class="card-body">
+                        <!-- Guides Row -->
+                        <div class="row">
+                            <div class="columns col-md-12">
+                                <div class="column-header">
+                                    <label for="flightDate">Guide
+                                        <span class="text-danger"> *</span>
+                                    </label>
+                                </div>
+
+                                <div class="form-group">
+                                    <select class="form-select" id="packageSelect" name="packageSelect" required>
+                                        <option selected disabled>Select Guide</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Itinerary Details Card
+                <div class="card">
+                    <div class="card-header bg-primary">
+                        <h5>Voucher Details</h5>
+                    </div>
+
+                    <div class="card-body">
+                        
+                        <div class="row">
+                          
                             <div class="columns col-md-4">
                                 <div class="column-header">
                                     <label for="flightDate">Package
@@ -48,27 +623,27 @@
                                         <option selected disabled>Select Package Type</option>
                                         <?php
                                         // Execute the SQL query
-                                        $sql1 = "SELECT packageName FROM package ORDER BY packageId ASC";
-                                        $res1 = $conn->query($sql1);
+                                        // $sql1 = "SELECT packageName FROM package ORDER BY packageId ASC";
+                                        // $res1 = $conn->query($sql1);
 
-                                        // Check if there are results
-                                        if ($res1->num_rows > 0) {
-                                            // Loop through the results and generate options
-                                            while ($row = $res1->fetch_assoc()) {
-                                                echo "<option value='" . $row['packageName'] . "'>" . $row['packageName'] . "</option>";
-                                            }
-                                        } else {
-                                            echo "<option value=''>No companies available</option>";
-                                        }
+                                        // // Check if there are results
+                                        // if ($res1->num_rows > 0) {
+                                        //     // Loop through the results and generate options
+                                        //     while ($row = $res1->fetch_assoc()) {
+                                        //         echo "<option value='" . $row['packageName'] . "'>" . $row['packageName'] . "</option>";
+                                        //     }
+                                        // } else {
+                                        //     echo "<option value=''>No companies available</option>";
+                                        // }
                                         ?>
                                     </select>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Periods, Guide Row -->
+                       
                         <div class="row">
-                            <!-- Flight Date Dropdown -->
+                           
                             <div class="columns col-md-4">
 
                                 <div class="column-header">
@@ -87,7 +662,7 @@
                                         </div>
                                     </div>
 
-                                    <!-- Dash Separator -->
+                                    
                                     <div class="dash-separator">-></div>
 
                                     <div class="form-group">
@@ -135,10 +710,9 @@
                                 </div>
 
                             </div>
-
                         </div>
 
-                        <!-- Tour Areas, Hotels -->
+                        
                         <div class="row">
                             <div class="columns col-md-8">
                                 <div class="column-header">
@@ -208,7 +782,6 @@
                             </div>
                         </div>
 
-                        <!-- Hotel -->
                         <!-- <div class="row">
                             <div class="column-header mb-2">
                                 <label for="flightDate">Hotel
@@ -241,12 +814,12 @@
                                 </div>
                             </div>
 
-                        </div> -->
+                        </div> 
 
                     </div>
-                </div>
+                </div> -->
 
-                <!-- No. of Days Card -->
+                <!-- No. of Days Card
                 <div class="card">
                     <div class="card-header">
                         <h5>No. of Days</h5>
@@ -254,7 +827,6 @@
 
                     <div class="card-body">
 
-                        <!-- Package Row -->
                         <div class="row">
                             <div class="columns col-md-3">
                                 <div class="form-group days-select-wrapper">
@@ -268,14 +840,15 @@
 
                         </div>
                     </div>
-                </div>
+                </div> -->
 
                 <!-- <div class="itinerary-container" id="itinerary-container"></div> -->
             </div>
 
             <div class="form-footer">
-                <button type="button" class="btn btn-primary" id="submitTour">Generate Itinerary</button>
+                <button type="button" class="btn btn-primary" id="submitTour">Generate Voucher</button>
             </div>
+
         </div>
     </div>
 
@@ -305,6 +878,20 @@
     </div>
 
     <?php include '../Employee Section/includes/emp-scripts.php' ?>
+
+    <!-- JavaScript to Initialize Timepicker -->
+    <script>
+        $(document).ready(function(){
+            $('#flightTime').wickedpicker({
+            twentyFour: true,          // 24-hour format
+            now: null,                 // Don't auto-fill current time
+            showSeconds: false,        // Hide seconds
+            title: 'Select Time',      // Title of popup
+            placement: 'top'           // Attempt to show above input
+            });
+        });
+    </script>
+
 
     <!-- Datepicker Script -->
     <script>
@@ -538,13 +1125,13 @@
             selectDays.appendChild(option);
         }
 
+
         // Set the default selected option to Day 5
         selectDays.value = 5; // Default to Day 5
 
         const selectedDays = parseInt(selectDays.value);
         itineraryContainer.innerHTML = ""; // Clear previous content
 
-        // Function to update dropdown options based on selected values
         function updateDropdownOptions() {
             // Loop through all days
             for (let day = 1; day <= selectedDays; day++) {
@@ -584,6 +1171,7 @@
                 <div class="card-header bg-primary text-white fw-bold">Day ${day}</div>
                 <div class="card-body">
                     <div class="container-fluid">
+
                         <div class="row mb-3">
                             ${day === 1 
                                 ? `<div class="col-4">
