@@ -138,7 +138,7 @@ $position = htmlspecialchars(strtoupper($empId));
 						<a class="nav-link page-button open-new-tab" href="#" data-page-name="Itinerary" data-url="../Employee Section/emp-itinerarytable.php">Itinerary</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link page-button open-new-tab" href="#" data-page-name="Voucher" data-url="../Agent Section/functions/voucher-template.php">Voucher</a>
+						<a class="nav-link page-button open-new-tab" href="#" data-page-name="Voucher" data-url="../Employee Section/emp-voucherTable.php">Voucher</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link page-button" href="#" data-page-name="Ticket">Ticket</a>

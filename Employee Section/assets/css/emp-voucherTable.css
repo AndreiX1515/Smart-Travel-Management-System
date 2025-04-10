@@ -1,0 +1,872 @@
+
+/* ===================================== */
+
+.main-content {
+  padding: 0px;
+}
+
+/* Table Container Styling */
+.table-container {
+  width: 100%;
+  gap: 5px;
+  height: 93vh;
+  display: flex;
+  flex-direction: column;
+  padding: 0px 0px; /* Adds some padding around the container */
+  /* border: 1px solid black; */
+}
+
+.table-header {
+  display: flex; 
+  justify-content: end;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 0px 5px 0px;
+  border: 1px solid black;
+}
+
+.search-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.search-input-wrapper {
+  display: flex;
+  align-items: center;
+  width: 300px;
+  height: 40px;
+  padding: 12px 15px;
+  border-radius: 10px;
+  background-color: #ffffff;
+  
+  border: 1px solid gainsboro;
+}
+
+.search-input-wrapper input {
+  flex: 1;
+  border: none;
+  font-size: 16px;
+  color: #333;
+  background-color: transparent;
+  outline: none;
+  padding: 0;
+}
+
+.search-input-wrapper input::placeholder {
+  color: #999;
+}
+
+.search-input-wrapper .icon {
+  color: #999;
+  font-size: 18px;
+  margin-left: 10px;
+}
+
+.second-header-wrapper {
+  display: flex;
+  gap: 12px;
+  justify-content: left;
+  align-items: center;
+  height: auto;
+}
+
+/* Sorting Wrapper */
+.sorting-wrapper {
+ display: flex;
+ justify-content: start;
+ gap: 10px;
+ /* border: 1px solid black; */
+}
+
+/* .sorting-wrapper label {
+ font-size: 12px;
+ font-weight: 600;
+} */
+
+.sorting-wrapper select {
+  width: 160px;
+  padding: 6px 10px;
+  font-size: 13px;
+  border: 1px solid grey;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  color: #333;
+  font-weight: 600;
+  appearance: none;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+/* .sorting-wrapper select:hover,
+.sorting-wrapper select:focus {
+  border-color: #116530;
+  background-color: #c9c9c9;
+} */
+
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  gap: 10px;
+}
+
+.select-wrapper {
+  position: relative;
+  justify-content: start;
+  width: 100%;
+  background-color: #dbdbdb;
+}
+
+.select-wrapper::after {
+  content: "\25BC"; 
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  font-size: 12px;
+  color: #8b8b8b;
+  pointer-events: none; 
+}
+ 
+/* .custom-select, 
+.filter-group select {
+  appearance: none; 
+  width: 100%;
+  padding: 5px 40px; 
+  font-size: 14px;
+  border: 1px solid gainsboro;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  background-clip: padding-box;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+} */
+
+
+
+/* Flight Booking Divs */
+.flightbooking-wrapper {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 5px;
+}
+
+.flightbooking-wrapper input {
+  width: 140px;
+  height: 35px;
+}
+
+.flightbooking-wrapper input:hover {
+  cursor: pointer;
+}
+
+.date-range-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  flex-direction: column;
+}
+
+.date-range-wrapper label {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.date-range-inputs-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  gap: 10px;
+}
+
+/* Input Field with Icon */
+.input-with-icon {
+  position: relative;
+  width: 150px;
+  border: 1px solid grey;
+  border-radius: 5px;
+}
+
+.input-with-icon input {
+  width: 100%;
+  height: 32px;
+  padding: 10px 35px 10px 10px; /* Space for the icon */
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  color: #333;
+  font-size: 14px;
+}
+
+.input-with-icon input::placeholder {
+  color: #999;
+}
+
+/* Icon Inside Input */
+.input-with-icon .calendar-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  color: #6c757d;
+  pointer-events: none;
+}
+
+.input-with-icon input:hover,
+.input-with-icon input:focus {
+  border-color: #116530; /* Match your preferred color */
+  outline: none;
+  background-color: #f9f9f9;
+  box-shadow: 0 0 4px rgba(17, 101, 48, 0.4);
+}
+
+/* Remove hover effects for now */
+.input-with-icon input:hover {
+  cursor: pointer;
+}
+
+
+
+.buttons-wrapper {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  /* border: 1px solid black; */
+}
+
+
+
+#clearSorting {
+  font-size: 12px;
+  padding: 8px 10px;
+  align-self: center;
+}
+
+
+/* ====================== */
+
+.navpills-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: stretch;
+  width: 100%;
+  border-bottom: 1px solid #ddd;
+  /* border-radius: 8px; */
+  padding: 0px 0px 0px 0px;
+  background-color: transparent;
+  margin-bottom: .5%;
+  border: 1px solid black;
+}
+
+.filter-tabs {
+  display: flex;
+  gap: 15px;
+  width: 80%;
+  /* border: 1px solid black; */
+}
+
+.filter-btn {
+  background: transparent;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  display: inline-flex; /* Ensures it stays in one line */
+  align-items: center;
+  justify-content: flex-start;
+  gap: 5px;
+  position: relative;
+  /* border: 1px solid black; */
+  white-space: nowrap; /* Prevents text wrapping */
+}
+
+
+.filter-btn:hover {
+  color: #116530;
+}
+
+.filter-btn.active {
+  font-weight: 600;
+  color: #116530;
+  border-bottom: 3px solid #116530;
+}
+
+.badge-status-tab {
+  background-color: #116530;
+  color: white;
+  margin-left: 3%;
+  font-size: 12px;
+  font-weight: 500;
+  width: 28px; /* Slightly increased for better balance */
+  height: 28px;
+  border-radius: 50%; /* Ensures a perfect circle */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  flex-shrink: 0; /* Prevents shrinking in flex containers */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Adds subtle depth */
+}
+
+.badge-status-tab h6 {
+  margin: 0;
+  font-size: 11px; /* Adjusted for better fit */
+  font-weight: 600;
+  line-height: 1; /* Ensures tight text alignment */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%; /* Ensures proper text positioning */
+}
+
+
+.create-itinerary-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  align-items: stretch;
+  width: 20%;
+  gap: 10px;
+  padding: 0px 0px 0px 0px;
+  /* border: 1px solid black; */
+}
+
+
+
+
+
+
+
+
+
+/* Mobile Optimization */
+@media (max-width: 768px) {
+  .filter-tabs {
+    gap: 10px;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .filter-btn {
+    font-size: 13px;
+    padding: 6px 12px;
+  }
+}
+
+/* ======================= */
+
+
+/* Table container styling */
+.table-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  flex: 1;
+  background-color: transparent;
+  overflow: hidden; /* Hide overflow from the container */
+  box-sizing: border-box;
+  /* border: 1px solid black; */
+}
+
+
+
+.table-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  flex: 1;
+  background-color: transparent;
+  overflow: hidden; /* Hide overflow from the container */
+  box-sizing: border-box;
+  /* border: 1px solid black; */
+}
+
+
+
+.table-footer {
+  height: 6vh;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 10px;
+  padding: 20px 20px;
+  border-radius: 15px;
+  border: 1px solid gainsboro;
+}
+
+/* Style the buttons */
+.pagination-btn {
+  background-color: #ffffff; /* White background */
+  border: 1px solid #ddd; /* Light border for buttons */
+  border-radius: 5px; /* Rounded corners */
+  padding: 8px 15px; /* Button padding */
+  font-size: 14px; /* Button font size */
+  font-weight: normal; /* Normal text weight */
+  color: #333; /* Dark text color */
+  cursor: pointer; /* Pointer cursor on hover */
+  margin: 0 5px; /* Space between buttons */
+}
+
+/* Style for the page info */
+.page-info {
+  font-size: 14px;
+  color: #333; /* Dark text for page info */
+  margin: 0 10px;
+}
+
+
+
+
+
+
+
+
+/* Table Styles for Product Table */
+.product-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  table-layout: fixed; /* Make columns of fixed width */
+
+}
+
+/* Header Styling */
+.product-table th {
+  position: sticky; /* Keep header fixed during scrolling */
+  top: 0;
+  z-index: 1; /* Ensure header stays on top of content */
+  background-color: #e6e6e6; /* Light background for headers */
+  font-weight: bold;
+  text-align: left;
+  border: 1px solid #ddd; /* Add side and bottom borders */
+  font-size: 0.8em; /* Compact font size */
+  white-space: nowrap; /* Prevent text wrapping */
+  text-transform: uppercase; /* Uppercase text for headers */
+ 
+  border-top: none; /* Remove top border so the thead's top border-radius is visible */
+}
+
+/* Apply rounded corners to the first and last th elements */
+/* .product-table th:first-child {
+  border-top-left-radius: 10px; 
+  border-bottom-left-radius: 10px; 
+}
+
+.product-table th:last-child {
+  border-top-right-radius: 10px; 
+  border-bottom-right-radius: 10px; 
+} */
+
+.product-table thead {
+  overflow: hidden;
+  /* padding: 10px; */
+}
+
+.product-table td {
+  padding: 5px 8px;
+  text-align: left;
+  vertical-align: middle;
+  border-bottom: 1px solid #ddd;
+  font-size: 0.85em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.product-table tr {
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.product-table tr:hover {
+  background-color: #f2f2f2;
+  color: #000;
+  cursor: pointer;
+}
+
+
+
+/* Column width adjustments */
+.product-table th:nth-child(1),
+.product-table td:nth-child(1) {
+  width: 5%; /* Transact No */
+}
+
+.product-table th:nth-child(2),
+.product-table td:nth-child(2) {
+  width: 3%; /* Agent Name */
+}
+
+.product-table th:nth-child(3),
+.product-table td:nth-child(3) {
+  width: 8%; /* Flight Date */
+}
+
+.product-table th:nth-child(4),
+.product-table td:nth-child(4) {
+  width: 8%; /* Total Pax */
+  
+}
+
+.product-table th:nth-child(5),
+.product-table td:nth-child(5) {
+  width: 5%; /* Package Price */
+ 
+}
+
+.product-table th:nth-child(6),
+.product-table td:nth-child(6) {
+  width: 7%; /* Total Request Cost */
+  
+  
+}
+
+.product-table th:nth-child(7),
+.product-table td:nth-child(7) {
+  width: 7%; /* Amount Paid */
+  
+}
+
+.product-table th:nth-child(8),
+.product-table td:nth-child(8) {
+  width: 10%; /* Balance */
+  
+  
+}
+
+.product-table th:nth-child(9),
+.product-table td:nth-child(9) {
+  width: 10%; /* Status */
+ 
+  
+}
+
+.product-table th:nth-child(10),
+.product-table td:nth-child(10) {
+  width: 10%; /* Status */
+ 
+  
+}
+
+.product-table th:nth-child(11),
+.product-table td:nth-child(11) {
+  width: 2%; /* Status */
+ 
+  
+}
+
+
+
+
+
+
+
+/* Table Actions (buttons, etc.) */
+.table-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+/* Show Column Filter Styles */
+.show-column span {
+  color: black;
+  font-weight: 600;
+}
+
+.show-column select {
+  margin-left: 5px;
+  padding: 3px;
+  border-radius: 10px;
+}
+
+.dataTables_paginate {
+  display: none;
+}
+
+.dataTables_paginate .paginate_button {
+  padding: 3px 6px; /* Reduced padding */
+  margin: 0 3px; /* Reduced margin */
+  background-color: #007bff;
+  color: white;
+  border-radius: 3px; /* Smaller border radius */
+  font-size: 14px; /* Smaller font size */
+  border: none;
+  cursor: pointer;
+}
+
+.dataTables_paginate .paginate_button:hover {
+  background-color: #0056b3;
+}
+
+.dataTables_paginate .paginate_button.disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* DataTable Entries Length Styling */
+.dataTables_length select {
+  padding: 3px;
+  font-size: 12px; /* Smaller font size */
+  border-radius: 3px; /* Smaller border radius */
+}
+
+/* Hide the 'Show entries' text */
+.dataTables_length label {
+  display: none; /* Hide the 'Show entries' text */
+}
+
+.dataTables_info {
+  display: none;
+}
+
+
+
+
+
+
+
+
+
+
+/* Grid Layout */
+.itinerary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* Adjusted for better spacing */
+  gap: 15px;
+  padding: 10px 0px;
+  justify-content: center;
+}
+
+/* Card Styling */
+.itinerary-card {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 9 / 10; /* Maintains a balanced proportion */
+  background: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px; /* Adjusted for better spacing */
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  max-width: 190px;
+}
+
+/* Hover Effect */
+.itinerary-card:hover {
+  background: #f5f5f5;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Card Wrapper */
+.card-content-wrap {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+/* Header */
+.it-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  white-space: nowrap;
+  overflow: visible; /* Allows dropdown to be fully visible */
+  padding: 0px 0px 6px 0px;
+  border-bottom: 1px solid #ddd;
+  position: relative; /* Ensures dropdown aligns properly */
+}
+
+
+/* Header Left (File Type + Name) */
+.itinerary-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow: hidden;
+}
+
+.file-type {
+  background: #116530;
+  color: white;
+  font-size: 10px;
+  padding: 5px 8px;
+  border-radius: 5px;
+  font-weight: bold;
+  flex-shrink: 0; /* Prevents shrinking */
+}
+
+/* Itinerary Name */
+.itinerary-name {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 110px;
+}
+
+.itinerary-name h6 {
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+
+
+
+/* Options Dropdown */
+.options {
+  position: relative;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* Remove Bootstrap's Default Caret (Arrow) */
+.options .dropdown-toggle::after {
+  display: none !important;
+}
+
+/* Ensure Dropdown Stays in Place */
+.options .dropdown-menu {
+  position: absolute !important;
+  top: 0px !important; /* Moves it just below the three dots */
+  right: 0 !important;
+  z-index: 9999 !important;
+  min-width: 130px;
+  font-size: 14px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  padding: 5px 0;
+  background: white; /* Ensures proper background */
+  border: 1px solid #ddd;
+}
+
+/* Dropdown Item Styling */
+.options .dropdown-item {
+  padding: 8px 14px;
+  color: #333;
+  transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+/* Default Hover Effect */
+.options .dropdown-item:hover,
+.options .dropdown-item:focus {
+  background: #116530 !important;
+  color: white !important;
+}
+
+/* Fix for Bootstrap Overriding Danger Text */
+.options .dropdown-item.text-danger {
+  color: #dc3545 !important;
+}
+
+/* Ensure Red Background on Hover for Danger Items */
+.options .dropdown-item.text-danger:hover,
+.options .dropdown-item.text-danger:focus {
+  background: #dc3545 !important;
+  color: white !important;
+}
+
+
+
+
+
+/* Body */
+.it-card-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+  z-index: 1;
+  padding: 10px 0;
+}
+
+.itinerary-icon {
+  width: 60px;
+  height: 60px;
+  background: #e3e3e3;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: bold;
+  color: #555;
+  transition: background 0.3s;
+}
+
+.itinerary-card:hover .itinerary-icon {
+  background: #d6d6d6;
+}
+
+/* Footer */
+.it-card-footer {
+  text-align: center;
+  font-size: 12px;
+  color: #666;
+  padding: 10px;
+  flex-shrink: 0;
+  /* border-top: 1px solid #ddd; */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
