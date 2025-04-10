@@ -13,7 +13,6 @@ if (isset($_POST['login'])) {
     $password = $_POST['password'] ?? null;
     $flightId = isset($_POST['flightid']) ? $_POST['flightid'] : null; // Ensure $flightId is captured
 
-
     if (!empty($email) && !empty($password)) {
         // Verify account existence and fetch details
         $sqlAccount = "SELECT * FROM accounts WHERE email = ?";
@@ -32,19 +31,19 @@ if (isset($_POST['login'])) {
                 if ($account['accountStatus'] === 'active') {
                     $accountType = $account['accountType'];
                     $accountId = $account['accountId'];
+                    $defaultPasswordStat = $account['defaultPasswordStat'];
 
-                    
                     if ($accountType === 'agent') {
-                        handleLogin($accountId, 'agent', "SELECT * FROM agent WHERE accountId = ?", ['branchId'], $flightId);
-                    } elseif ($accountType === 'employee') {
-                        handleLogin($accountId, 'employee', "SELECT * FROM employee WHERE accountId = ?", ['position', 'countryCode', 'contactNo', 'branch'], $flightId);
+                        handleLogin($accountId, 'agent', "SELECT * FROM agent WHERE accountId = ?", ['branchId'], $flightId, $defaultPasswordStat);
                     } elseif ($accountType === 'guest') {
-                        handleLogin($accountId, 'guest', "SELECT * FROM client WHERE accountId = ?", ['position', 'countryCode', 'contactNo', 'branch'], $flightId);
+                        handleLogin($accountId, 'guest', "SELECT * FROM client WHERE accountId = ?", ['position', 'countryCode', 'contactNo', 'branch'], $flightId, $defaultPasswordStat);
+                    } elseif ($accountType === 'employee') {
+                        handleLoginEmployee($accountId, 'employee', "SELECT * FROM employee WHERE accountId = ?", ['position', 'countryCode', 'contactNo', 'branch']);
                     } else {
                         $response['success'] = false;
                         $response['message'] = "Invalid account type.";
                     }
-                    
+
                     // Add accountType to the response
                     $response['accountType'] = $accountType;
                 } else {
@@ -70,12 +69,13 @@ if (isset($_POST['login'])) {
     $response['message'] = "Invalid request.";
 }
 
+
 header('Content-Type: application/json');
 echo json_encode($response);
 
 
 // Function to handle login and session management
-function handleLogin($accountId, $userType, $query, $additionalFields = [], $flightId)
+function handleLogin($accountId, $userType, $query, $additionalFields = [], $flightId, $defaultPasswordStat)
 {
     global $conn, $response;
 
@@ -117,11 +117,9 @@ function handleLogin($accountId, $userType, $query, $additionalFields = [], $fli
 
         // Handle session based on user type
         if ($userType === 'agent') {
-            manageAgentSession($accountId, $userDetails, $userType, $flightId, $additionalFields);
-        } elseif ($userType === 'employee') {
-            manageEmployeeSession($accountId, $userDetails, $userType, $additionalFields);
+            manageAgentSession($accountId, $userDetails, $userType, $flightId, $additionalFields, $defaultPasswordStat);
         } elseif ($userType === 'guest') {
-            manageGuestSession($accountId, $userDetails, $userType, $flightId, $additionalFields);
+            manageGuestSession($accountId, $userDetails, $userType, $flightId, $additionalFields, $defaultPasswordStat);
         }
 
         $response['success'] = true;
@@ -133,11 +131,8 @@ function handleLogin($accountId, $userType, $query, $additionalFields = [], $fli
     }
 }
 
-
-
-
 // Function to manage session for agents
-function manageAgentSession($accountId, $userData, $userType, $flightId, $additionalFields)
+function manageAgentSession($accountId, $userData, $userType, $flightId, $additionalFields, $defaultPasswordStat)
 {
     global $conn;
 
@@ -188,7 +183,7 @@ function manageAgentSession($accountId, $userData, $userType, $flightId, $additi
         $_SESSION['agentCode'] = $userData['agentCode'] ?? '';  
         $_SESSION['agentRole'] = $userData['agentRole'] ?? '';  
         $_SESSION['agentType'] = $userData['agentType'] ?? '';  
-        $_SESSION['agent_branchId'] = $userData['branchId'] ?? '';  
+        $_SESSION['agent_branchId'] = $userData['branchId'] ?? '';
         $_SESSION['agent_flightId'] = $flightId ?? '';  
         $_SESSION['agent_timeout'] = time();
 
@@ -220,7 +215,9 @@ function manageAgentSession($accountId, $userData, $userType, $flightId, $additi
         echo json_encode([
             "success" => true,
             "accountType" => "agent",
-            "flightId" => $_SESSION['agent_flightId'] ?? 'Not received'
+            "flightId" => $_SESSION['agent_flightId'] ?? 'Not received',
+            "defaultPasswordStat" => $defaultPasswordStat,
+            "userType" => $userType
         ]);
         exit();
         
@@ -237,10 +234,8 @@ function manageAgentSession($accountId, $userData, $userType, $flightId, $additi
 }
 
 
-
-
-
-function manageGuestSession($accountId, $userData, $userType, $flightId, $additionalFields)
+// Function to manage session for Client
+function manageGuestSession($accountId, $userData, $userType, $flightId, $additionalFields, $defaultPasswordStat)
 {
     global $conn;
 
@@ -296,11 +291,6 @@ function manageGuestSession($accountId, $userData, $userType, $flightId, $additi
 
         unset($_SESSION['flightid']); // Ensure flight ID is only stored in session
 
-        // Store additional fields in session
-        // foreach ($additionalFields as $field) {
-        //     $_SESSION['client_' . $field] = $userData[$field] ?? null;
-        // }
-
         // Insert new session into DB
         $insert_stmt = $conn->prepare(
             "INSERT INTO user_sessions (session_id, accountid, login_time, last_activity, ip_address, user_agent) 
@@ -322,7 +312,9 @@ function manageGuestSession($accountId, $userData, $userType, $flightId, $additi
         echo json_encode([
             "success" => true,
             "accountType" => "guest",
-            "flightId" => $_SESSION['client_flightId'] ?? 'Not received'
+            "flightId" => $_SESSION['client_flightId'] ?? 'Not received',
+            "defaultPasswordStat" => $defaultPasswordStat,
+            "userType" => $userType
         ]);
         exit();
 
@@ -338,6 +330,62 @@ function manageGuestSession($accountId, $userData, $userType, $flightId, $additi
 }
 
 
+// ================================================================== //
+
+function handleLoginEmployee($accountId, $userType, $query, $additionalFields = [])
+{
+    global $conn, $response;
+
+    // Debugging: Log input parameters
+    error_log("handleLoginEmployee called with Account ID: $accountId, User Type: $userType");
+
+    // Ensure the userType is 'employee' before proceeding
+    if ($userType !== 'employee') {
+        $response['success'] = false;
+        $response['message'] = "Invalid user type. Only employees are allowed to log in.";
+        return;
+    }
+
+    // Prepare statement
+    $stmt = $conn->prepare($query);
+    if (!$stmt) {
+        error_log("MySQL Prepare Error: " . $conn->error);
+        $response['success'] = false;
+        $response['message'] = "Database error. Please try again later.";
+        return;
+    }
+
+    $stmt->bind_param('i', $accountId);
+    $executeStatus = $stmt->execute();
+
+    // Check execution
+    if (!$executeStatus) {
+        error_log("MySQL Execute Error: " . $stmt->error);
+        $response['success'] = false;
+        $response['message'] = "Database query failed. Please try again.";
+        return;
+    }
+
+    $result = $stmt->get_result();
+    $stmt->close();
+
+    if ($result->num_rows > 0) {
+        $userDetails = $result->fetch_assoc();
+
+        // Debugging: Confirm fetched data
+        error_log("User details fetched: " . print_r($userDetails, true));
+
+        // Handle employee session
+        manageEmployeeSession($accountId, $userDetails, $userType, $additionalFields);
+
+        $response['success'] = true;
+        $response['message'] = "Employee login successful.";
+    } else {
+        error_log("No user details found for Account ID: $accountId");
+        $response['success'] = false;
+        $response['message'] = "Employee details not found.";
+    }
+}
 
 
 

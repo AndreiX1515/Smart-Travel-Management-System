@@ -2,9 +2,11 @@
 session_start();
 require "../conn.php";
 
-// error_reporting(E_ALL);
-// ini_set('display_errors', 1);
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 // header('Content-Type: application/json'); // Ensure JSON output
+
+echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETTY_PRINT) . ");</script>";
 
 ?>
 <!DOCTYPE html>
@@ -1999,11 +2001,6 @@ require "../conn.php";
       }, 500);
     });
   </script>
-
-
-
-
-
 
 
   <!-- Flight Table Pagination -->

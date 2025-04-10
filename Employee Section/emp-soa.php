@@ -9,6 +9,7 @@
   
   <link rel="stylesheet" href="../Employee Section/assets/css/emp-sidebar-navbar.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="../Employee Section/assets/css/emp-soa.css?v=<?php echo time(); ?>">
+
 </head>
 
 <body>
@@ -478,22 +479,29 @@
 
         // Determine the request type based on available filters
         if (monthFilter.value !== "Select month" && yearFilter.value !== "Select year") {
+
           // Use Month & Year (Orig Generate SoA)
           urlAddSoA = '../Employee Section/functions/emp-addSoA.php';
           urlGenerateSoA = '../Employee Section/functions/generateSoA.php';
           data += `&month=${monthFilter.value}&year=${yearFilter.value}`;
-        } else if (flightFilter.value !== "Select Flight Date") {
+
+        } 
+        
+        else if (flightFilter.value !== "Select Flight Date") {
           console.log(data);
           // Use Flight ID (Flight Date Generate SoA)
           urlAddSoA = '../Employee Section/functions/emp-addSoAByFlightDate.php';
           urlGenerateSoA = '../Employee Section/functions/generateSoAByFlightDate.php';
           data += `&flightId=${flightFilter.value}&flightDate=${selectedText}`;
           console.log(data);
-        } else {
+        } 
+        
+        else {
           // Handle case where no valid filters are selected
           alert('Please select valid filters before generating the SOA.');
           return;
         }
+
 
         // First, send the request to insert SOA data and get the generated SOA number
         const xhrAddSoA = new XMLHttpRequest();
@@ -538,6 +546,7 @@
               const finalData = data + `&soaNumber=${soaNumber}`;
               xhrPdf.send(finalData);
               console.log(finalData);
+              
             } else {
               alert('Failed to generate SOA Number. Please try again.');
             }
@@ -554,6 +563,7 @@
         xhrAddSoA.send(data);
       });
     </script>
+
 
     <!-- Preview SoA -->
     <!-- <script>

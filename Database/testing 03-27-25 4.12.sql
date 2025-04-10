@@ -57231,32 +57231,35 @@ INSERT INTO `booking` (`bookingId`, `accountId`, `transactNo`, `accountType`, `a
 --
 -- Triggers `booking`
 --
-DELIMITER $$
-CREATE TRIGGER `after_booking_completed` AFTER UPDATE ON `booking` FOR EACH ROW BEGIN
-	-- Ensure @current_user_id is set if it's NULL
-    IF @current_user_id IS NULL THEN
-        SET @current_user_id = 'SYSTEM'; 
-    END IF;
+-- DELIMITER $$
+-- CREATE TRIGGER `after_booking_completed` AFTER UPDATE ON `booking` FOR EACH ROW BEGIN
+-- 	-- Ensure @current_user_id is set if it's NULL
+--     IF @current_user_id IS NULL THEN
+--         SET @current_user_id = 'SYSTEM'; 
+--     END IF;
 
-    -- Check if the status has been updated to 'Completed' and the agentType is 'Wholeseller'
-    IF NEW.status = 'Confirmed' AND OLD.status != 'Confirmed' THEN
-        -- Ensure the agentType is 'Wholeseller'
-        IF (SELECT agentType FROM agent WHERE accountId = OLD.accountId) = 'Wholeseller' THEN
-            INSERT INTO agentComission (
-                agentId, accountId, transactNo, totalPrice, comissionAmount, createdAt
-            ) VALUES (
-                OLD.agentId,
-                OLD.accountId,
-                OLD.transactNo,
-                OLD.totalPrice,
-                OLD.totalPrice * (SELECT comissionRate FROM agent WHERE accountId = OLD.accountId) / 100, -- Calculate commission
-                NOW()
-            );
-        END IF;
-    END IF;
-END
-$$
-DELIMITER ;
+--     -- Check if the status has been updated to 'Completed' and the agentType is 'Wholeseller'
+--     IF NEW.status = 'Confirmed' AND OLD.status != 'Confirmed' THEN
+--         -- Ensure the agentType is 'Wholeseller'
+--         IF (SELECT agentType FROM agent WHERE accountId = OLD.accountId) = 'Wholeseller' THEN
+--             INSERT INTO agentComission (
+--                 agentId, accountId, transactNo, totalPrice, comissionAmount, createdAt
+--             ) VALUES (
+--                 OLD.agentId,
+--                 OLD.accountId,
+--                 OLD.transactNo,
+--                 OLD.totalPrice,
+--                 OLD.totalPrice * (SELECT comissionRate FROM agent WHERE accountId = OLD.accountId) / 100, -- Calculate commission
+--                 NOW()
+--             );
+--         END IF;
+--     END IF;
+-- END
+-- $$
+-- DELIMITER;
+
+
+
 DELIMITER $$
 CREATE TRIGGER `after_booking_insert` AFTER INSERT ON `booking` FOR EACH ROW BEGIN
 	-- Ensure @current_user_id is set if it's NULL

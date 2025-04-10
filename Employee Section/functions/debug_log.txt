@@ -1,0 +1,181 @@
+Array
+(
+    [0] => Array
+        (
+            [day] => 1
+            [areas] => Array
+                (
+                    [0] => Seoul
+                )
+
+            [hotels] => Array
+                (
+                    [0] => Lotte Hotel Seoul
+                    [1] =>  Signiel Seoul
+                    [2] =>  The Shilla Seoul
+                )
+
+            [activities] => Array
+                (
+                    [0] => Gyeongbokgung Palace Tour
+                    [1] =>  Myeongdong Shopping District
+                    [2] =>  Myeongdong Shopping District
+                    [3] =>  Namsan Seoul Tower
+                    [4] =>  Namsan Seoul Tower
+                    [5] =>  Namsan Seoul Tower
+                    [6] =>  Gyeongbokgung Palace Tour
+                )
+
+            [meals] => Array
+                (
+                    [0] => Traditional Korean Cuisine
+                )
+
+        )
+
+    [1] => Array
+        (
+            [day] => 2
+            [areas] => Array
+                (
+                    [0] => Seoul
+                    [1] =>  Busan
+                    [2] =>  Jeju
+                )
+
+            [hotels] => Array
+                (
+                    [0] => Lotte Hotel Seoul
+                    [1] =>  The Shilla Seoul
+                    [2] =>  Park Hyatt Busan
+                )
+
+            [activities] => Array
+                (
+                    [0] => Bukchon Hanok Village
+                    [1] =>  Namsan Seoul Tower
+                    [2] =>  Bukchon Hanok Village
+                    [3] =>  Busan Gamcheon Culture Village
+                    [4] =>  Bukchon Hanok Village
+                    [5] =>  Namsan Seoul Tower
+                    [6] =>  Bukchon Hanok Village
+                )
+
+            [meals] => Array
+                (
+                    [0] => Traditional Korean Cuisine
+                    [1] =>  Street Food Tour
+                    [2] =>  Seafood Specialty
+                )
+
+        )
+
+    [2] => Array
+        (
+            [day] => 3
+            [areas] => Array
+                (
+                    [0] => Busan
+                    [1] =>  Gyeongju
+                    [2] =>  Incheon
+                )
+
+            [hotels] => Array
+                (
+                    [0] => Lotte Hotel Seoul
+                    [1] =>  The Shilla Seoul
+                    [2] =>  Grand Hyatt Seoul
+                )
+
+            [activities] => Array
+                (
+                    [0] => Namsan Seoul Tower
+                    [1] =>  Myeongdong Shopping District
+                    [2] =>  Gyeongbokgung Palace Tour
+                    [3] =>  Myeongdong Shopping District
+                    [4] =>  Namsan Seoul Tower
+                    [5] =>  Dongdaemun Design Plaza
+                    [6] =>  Bukchon Hanok Village
+                )
+
+            [meals] => Array
+                (
+                    [0] => Traditional Korean Cuisine
+                    [1] =>  Seafood Specialty
+                    [2] =>  Street Food Tour
+                )
+
+        )
+
+    [3] => Array
+        (
+            [day] => 4
+            [areas] => Array
+                (
+                    [0] => Seoul
+                    [1] =>  Jeju
+                    [2] =>  Gyeongju
+                )
+
+            [hotels] => Array
+                (
+                    [0] => The Shilla Seoul
+                    [1] =>  InterContinental Seoul COEX
+                )
+
+            [activities] => Array
+                (
+                    [0] => Bukchon Hanok Village
+                    [1] =>  Myeongdong Shopping District
+                    [2] =>  Namsan Seoul Tower
+                    [3] =>  Busan Gamcheon Culture Village
+                    [4] =>  Bukchon Hanok Village
+                    [5] =>  Namsan Seoul Tower
+                    [6] =>  Bukchon Hanok Village
+                )
+
+            [meals] => Array
+                (
+                    [0] => Vegetarian Option
+                    [1] =>  Luxury Fine Dining
+                    [2] =>  Seafood Specialty
+                )
+
+        )
+
+    [4] => Array
+        (
+            [day] => 5
+            [areas] => Array
+                (
+                    [0] => Incheon
+                    [1] =>  Gyeongju
+                )
+
+            [hotels] => Array
+                (
+                    [0] => Grand Hyatt Seoul
+                    [1] =>  InterContinental Seoul COEX
+                    [2] =>  Maison Glad Jeju
+                )
+
+            [activities] => Array
+                (
+                    [0] => Bukchon Hanok Village
+                    [1] =>  Bukchon Hanok Village
+                    [2] =>  Dongdaemun Design Plaza
+                    [3] =>  Bukchon Hanok Village
+                    [4] =>  Bukchon Hanok Village
+                    [5] =>  Namsan Seoul Tower
+                    [6] =>  Myeongdong Shopping District
+                )
+
+            [meals] => Array
+                (
+                    [0] => Vegetarian Option
+                    [1] =>  Luxury Fine Dining
+                )
+
+        )
+
+)

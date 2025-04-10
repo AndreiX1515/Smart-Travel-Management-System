@@ -1,3 +1,6 @@
+
+/* ===================================== */
+
 .main-content {
   padding: 0px;
 }
@@ -15,10 +18,10 @@
 
 .table-header {
   display: flex; 
-  justify-content: space-between;
+  justify-content: end;
   align-items: center;
   gap: 10px;
-  padding: 5px 10px 5px 10px;
+  padding: 5px 0px 5px 0px;
   /* border: 1px solid black; */
 }
 
@@ -251,10 +254,11 @@
 .navpills-container {
   display: flex;
   justify-content: flex-start;
-  align-items: center;
+  align-items: stretch;
+  width: 100%;
   border-bottom: 1px solid #ddd;
   /* border-radius: 8px; */
-  padding: 10px 10px 0px 10px;
+  padding: 0px 0px 0px 0px;
   background-color: transparent;
   margin-bottom: .5%;
   /* border: 1px solid black; */
@@ -263,7 +267,8 @@
 .filter-tabs {
   display: flex;
   gap: 15px;
-  width: 100%;
+  width: 80%;
+  /* border: 1px solid black; */
 }
 
 .filter-btn {
@@ -274,11 +279,15 @@
   font-size: 14px;
   font-weight: 500;
   color: #333;
-  display: flex;
+  display: inline-flex; /* Ensures it stays in one line */
   align-items: center;
+  justify-content: flex-start;
   gap: 5px;
   position: relative;
+  /* border: 1px solid black; */
+  white-space: nowrap; /* Prevents text wrapping */
 }
+
 
 .filter-btn:hover {
   color: #116530;
@@ -296,20 +305,43 @@
   margin-left: 3%;
   font-size: 12px;
   font-weight: 500;
-  width: 25px; /* Reduced width for a smaller badge */
-  height: 25px; /* Reduced height for a smaller badge */
-  border-radius: 55%; /* Ensures a perfect circle */
+  width: 28px; /* Slightly increased for better balance */
+  height: 28px;
+  border-radius: 50%; /* Ensures a perfect circle */
   display: flex;
   align-items: center;
   justify-content: center;
+  text-align: center;
+  flex-shrink: 0; /* Prevents shrinking in flex containers */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Adds subtle depth */
 }
 
 .badge-status-tab h6 {
   margin: 0;
-  font-size: 10px; /* Slightly smaller for readability */
+  font-size: 11px; /* Adjusted for better fit */
   font-weight: 600;
-  text-align: center;
+  line-height: 1; /* Ensures tight text alignment */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%; /* Ensures proper text positioning */
 }
+
+
+.create-itinerary-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  align-items: stretch;
+  width: 20%;
+  gap: 10px;
+  padding: 0px 0px 0px 0px;
+  /* border: 1px solid black; */
+}
+
+
+
+
+
 
 
 
@@ -597,6 +629,204 @@
 
 
 
+
+
+
+
+
+
+
+/* Grid Layout */
+.itinerary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* Adjusted for better spacing */
+  gap: 15px;
+  padding: 10px 0px;
+  justify-content: center;
+}
+
+/* Card Styling */
+.itinerary-card {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 9 / 10; /* Maintains a balanced proportion */
+  background: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px; /* Adjusted for better spacing */
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  max-width: 190px;
+}
+
+/* Hover Effect */
+.itinerary-card:hover {
+  background: #f5f5f5;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Card Wrapper */
+.card-content-wrap {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+/* Header */
+.it-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  white-space: nowrap;
+  overflow: visible; /* Allows dropdown to be fully visible */
+  padding: 0px 0px 6px 0px;
+  border-bottom: 1px solid #ddd;
+  position: relative; /* Ensures dropdown aligns properly */
+}
+
+
+/* Header Left (File Type + Name) */
+.itinerary-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow: hidden;
+}
+
+.file-type {
+  background: #116530;
+  color: white;
+  font-size: 10px;
+  padding: 5px 8px;
+  border-radius: 5px;
+  font-weight: bold;
+  flex-shrink: 0; /* Prevents shrinking */
+}
+
+/* Itinerary Name */
+.itinerary-name {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 110px;
+}
+
+.itinerary-name h6 {
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+
+
+
+/* Options Dropdown */
+.options {
+  position: relative;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* Remove Bootstrap's Default Caret (Arrow) */
+.options .dropdown-toggle::after {
+  display: none !important;
+}
+
+/* Ensure Dropdown Stays in Place */
+.options .dropdown-menu {
+  position: absolute !important;
+  top: 0px !important; /* Moves it just below the three dots */
+  right: 0 !important;
+  z-index: 9999 !important;
+  min-width: 130px;
+  font-size: 14px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  padding: 5px 0;
+  background: white; /* Ensures proper background */
+  border: 1px solid #ddd;
+}
+
+/* Dropdown Item Styling */
+.options .dropdown-item {
+  padding: 8px 14px;
+  color: #333;
+  transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+/* Default Hover Effect */
+.options .dropdown-item:hover,
+.options .dropdown-item:focus {
+  background: #116530 !important;
+  color: white !important;
+}
+
+/* Fix for Bootstrap Overriding Danger Text */
+.options .dropdown-item.text-danger {
+  color: #dc3545 !important;
+}
+
+/* Ensure Red Background on Hover for Danger Items */
+.options .dropdown-item.text-danger:hover,
+.options .dropdown-item.text-danger:focus {
+  background: #dc3545 !important;
+  color: white !important;
+}
+
+
+
+
+
+/* Body */
+.it-card-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+  z-index: 1;
+  padding: 10px 0;
+}
+
+.itinerary-icon {
+  width: 60px;
+  height: 60px;
+  background: #e3e3e3;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: bold;
+  color: #555;
+  transition: background 0.3s;
+}
+
+.itinerary-card:hover .itinerary-icon {
+  background: #d6d6d6;
+}
+
+/* Footer */
+.it-card-footer {
+  text-align: center;
+  font-size: 12px;
+  color: #666;
+  padding: 10px;
+  flex-shrink: 0;
+  /* border-top: 1px solid #ddd; */
+}
 
 
 
