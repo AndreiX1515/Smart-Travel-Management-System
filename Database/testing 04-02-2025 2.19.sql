@@ -354,18 +354,18 @@ INSERT INTO `agent` (`id`, `agentId`, `agentCode`, `accountId`, `branchId`, `com
 (113, 'BU7-A011', 'BU7', 143, 7, NULL, 'Reserve', NULL, NULL, '+63', NULL, 'Retailer', 'Sub Agent', 0, 10),
 (114, 'BU7-A012', 'BU7', 144, 7, NULL, 'Reserve', NULL, NULL, '+63', NULL, 'Retailer', 'Sub Agent', 0, 10);
 
---
--- Triggers `agent`
---
-DELIMITER $$
-CREATE TRIGGER `after_agent_insert` AFTER INSERT ON `agent` FOR EACH ROW BEGIN
-    -- Insert a record in agentFlightSeats for each existing flight
-    INSERT INTO agentflightseats (agentId, flightId, maxSeats)
-    SELECT NEW.agentId, f.flightId, 10
-    FROM flight f;
-END
-$$
-DELIMITER ;
+-- --
+-- -- Triggers `agent`
+-- --
+-- DELIMITER $$
+-- CREATE TRIGGER `after_agent_insert` AFTER INSERT ON `agent` FOR EACH ROW BEGIN
+--     -- Insert a record in agentFlightSeats for each existing flight
+--     INSERT INTO agentflightseats (agentId, flightId, maxSeats)
+--     SELECT NEW.agentId, f.flightId, 10
+--     FROM flight f;
+-- END
+-- $$
+-- DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -57229,65 +57229,65 @@ INSERT INTO `booking` (`bookingId`, `accountId`, `transactNo`, `accountType`, `a
 (19, 23, 'BU1-000019', 'Agent', 'BU1', 93, 7, 'testing1', 'testing1', 'testing1', 'Sr.', '+63', '9999999991', 'testing1@gmail.com', 3, '2025-03-07 10:49:12', 109541.04, 'Package', NULL, 'Confirmed', NULL),
 (20, 23, 'BU1-000020', 'Agent', 'BU1', 79, 7, 'testing1', 'testing1', 'testing1', 'Jr.', '+63', '9999999991', 'testing1@gmail.com', 2, '2025-03-19 14:45:00', 75870.22, 'Package', NULL, 'Reserved', NULL);
 
---
--- Triggers `booking`
---
-DELIMITER $$
-CREATE TRIGGER `after_booking_insert` AFTER INSERT ON `booking` FOR EACH ROW BEGIN
-	-- Ensure @current_user_id is set if it's NULL
-    IF @current_user_id IS NULL THEN
-        SET @current_user_id = 'SYSTEM'; 
-    END IF;
+-- --
+-- -- Triggers `booking`
+-- --
+-- DELIMITER $$
+-- CREATE TRIGGER `after_booking_insert` AFTER INSERT ON `booking` FOR EACH ROW BEGIN
+-- 	-- Ensure @current_user_id is set if it's NULL
+--     IF @current_user_id IS NULL THEN
+--         SET @current_user_id = 'SYSTEM'; 
+--     END IF;
 
-    INSERT INTO auditbooking (
-        bookingId, 
-        transactNo, 
-        actionType, 
-        actionDate, 
-        performedBy, 
-        oldValues, 
-        newValues
-    )
-    VALUES (
-        NEW.bookingId,
-        NEW.transactNo,
-        'INSERT',
-        CURRENT_TIMESTAMP,
-        @current_user_id, -- Dynamic session variable for the current user
-        NULL,
-        CONCAT('Inserted Transact No: ', NEW.transactNo, ', status: ', NEW.status)
-    );
-END
-$$
-DELIMITER ;
-DELIMITER $$
-CREATE TRIGGER `after_booking_update` AFTER UPDATE ON `booking` FOR EACH ROW BEGIN
-	-- Ensure @current_user_id is set if it's NULL
-    IF @current_user_id IS NULL THEN
-        SET @current_user_id = 'SYSTEM'; 
-    END IF;
+--     INSERT INTO auditbooking (
+--         bookingId, 
+--         transactNo, 
+--         actionType, 
+--         actionDate, 
+--         performedBy, 
+--         oldValues, 
+--         newValues
+--     )
+--     VALUES (
+--         NEW.bookingId,
+--         NEW.transactNo,
+--         'INSERT',
+--         CURRENT_TIMESTAMP,
+--         @current_user_id, -- Dynamic session variable for the current user
+--         NULL,
+--         CONCAT('Inserted Transact No: ', NEW.transactNo, ', status: ', NEW.status)
+--     );
+-- END
+-- $$
+-- DELIMITER ;
+-- DELIMITER $$
+-- CREATE TRIGGER `after_booking_update` AFTER UPDATE ON `booking` FOR EACH ROW BEGIN
+-- 	-- Ensure @current_user_id is set if it's NULL
+--     IF @current_user_id IS NULL THEN
+--         SET @current_user_id = 'SYSTEM'; 
+--     END IF;
 
-    INSERT INTO auditbooking (
-        bookingId, 
-        transactNo, 
-        actionType, 
-        actionDate, 
-        performedBy, 
-        oldValues, 
-        newValues
-    ) 
-    VALUES (
-        OLD.bookingId, 
-        OLD.transactNo, 
-        'UPDATE', 
-        CURRENT_TIMESTAMP, 
-        @current_user_id,  -- Replace with actual session variable or method for tracking the user
-        CONCAT('BookingId: ', OLD.bookingId, ', TransactNo: ', OLD.transactNo, ', Status: ', OLD.status), 
-        CONCAT('BookingId: ', NEW.bookingId, ', TransactNo: ', NEW.transactNo, ', Status: ', NEW.status)
-    );
-END
-$$
-DELIMITER ;
+--     INSERT INTO auditbooking (
+--         bookingId, 
+--         transactNo, 
+--         actionType, 
+--         actionDate, 
+--         performedBy, 
+--         oldValues, 
+--         newValues
+--     ) 
+--     VALUES (
+--         OLD.bookingId, 
+--         OLD.transactNo, 
+--         'UPDATE', 
+--         CURRENT_TIMESTAMP, 
+--         @current_user_id,  -- Replace with actual session variable or method for tracking the user
+--         CONCAT('BookingId: ', OLD.bookingId, ', TransactNo: ', OLD.transactNo, ', Status: ', OLD.status), 
+--         CONCAT('BookingId: ', NEW.bookingId, ', TransactNo: ', NEW.transactNo, ', Status: ', NEW.status)
+--     );
+-- END
+-- $$
+-- DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -57681,35 +57681,35 @@ CREATE TABLE `fitpayment` (
   `paymentRemarks` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Triggers `fitpayment`
---
-DELIMITER $$
-CREATE TRIGGER `update_fit_status` AFTER UPDATE ON `fitpayment` FOR EACH ROW BEGIN
-    DECLARE approvedPaymentCount INT;
-    DECLARE currentStatus VARCHAR(50);
+-- --
+-- -- Triggers `fitpayment`
+-- --
+-- DELIMITER $$
+-- CREATE TRIGGER `update_fit_status` AFTER UPDATE ON `fitpayment` FOR EACH ROW BEGIN
+--     DECLARE approvedPaymentCount INT;
+--     DECLARE currentStatus VARCHAR(50);
 
-    -- Fetch the current status of the fit table
-    SELECT status
-    INTO currentStatus
-    FROM fit
-    WHERE transactionNo = NEW.transactNo;
+--     -- Fetch the current status of the fit table
+--     SELECT status
+--     INTO currentStatus
+--     FROM fit
+--     WHERE transactionNo = NEW.transactNo;
 
-    -- Count the number of approved payments for this transactNo
-    SELECT COUNT(*)
-    INTO approvedPaymentCount
-    FROM fitpayment
-    WHERE transactNo = NEW.transactNo AND paymentStatus = 'Approved';
+--     -- Count the number of approved payments for this transactNo
+--     SELECT COUNT(*)
+--     INTO approvedPaymentCount
+--     FROM fitpayment
+--     WHERE transactNo = NEW.transactNo AND paymentStatus = 'Approved';
 
-    -- Update the status in the fit table if it's the first approved payment
-    IF approvedPaymentCount = 1 AND currentStatus != 'Confirmed' THEN
-        UPDATE fit
-        SET status = 'Confirmed'
-        WHERE transactionNo = NEW.transactNo;
-    END IF;
-END
-$$
-DELIMITER ;
+--     -- Update the status in the fit table if it's the first approved payment
+--     IF approvedPaymentCount = 1 AND currentStatus != 'Confirmed' THEN
+--         UPDATE fit
+--         SET status = 'Confirmed'
+--         WHERE transactionNo = NEW.transactNo;
+--     END IF;
+-- END
+-- $$
+-- DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -58067,18 +58067,18 @@ INSERT INTO `flight` (`flightId`, `packageId`, `employeeId`, `origin`, `flightNa
 (292, 7, NULL, 'Manila', 'MNL - INC', '5J188', '2025-12-30', '05:45:00', '2025-12-30', '10:45:00', 'ICN - MNL', '5J187', '2026-01-04', '12:45:00', '2026-01-04', '04:00:00', 36974.82, 41974.82, 0.00, 40, 0),
 (293, 7, NULL, 'Manila', 'MNL - INC', '5J188', '2025-12-31', '05:45:00', '2025-12-31', '10:45:00', 'ICN - MNL', '5J187', '2026-01-05', '12:45:00', '2026-01-05', '04:00:00', 35474.82, 40474.82, 0.00, 40, 0);
 
---
--- Triggers `flight`
---
-DELIMITER $$
-CREATE TRIGGER `after_flight_insert` AFTER INSERT ON `flight` FOR EACH ROW BEGIN
-    -- Insert a record in agentFlightSeats for each existing agent
-    INSERT INTO agentflightseats (agentId, flightId, maxSeats)
-    SELECT a.agentId, NEW.flightId, 10
-    FROM agent a;
-END
-$$
-DELIMITER ;
+-- --
+-- -- Triggers `flight`
+-- --
+-- DELIMITER $$
+-- CREATE TRIGGER `after_flight_insert` AFTER INSERT ON `flight` FOR EACH ROW BEGIN
+--     -- Insert a record in agentFlightSeats for each existing agent
+--     INSERT INTO agentflightseats (agentId, flightId, maxSeats)
+--     SELECT a.agentId, NEW.flightId, 10
+--     FROM agent a;
+-- END
+-- $$
+-- DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -58446,81 +58446,81 @@ INSERT INTO `payment` (`paymentId`, `transactNo`, `accountId`, `paymentTitle`, `
 (17, 'BU1-000018', 23, 'Package Payment', 'Downpayment', 9000.00, 'C:/xampp/htdocs/SMART-TRAVEL-MANAGEMENT-SYSTEM/Files Uploads/Payment Uploads\\BU1-000018\\BU1-000018-03-07-2025_09-38-67ca4e006425c.png', '2025-03-07 09:38:08', 'Approved', NULL, 1),
 (18, 'BU1-000019', 23, 'Package Payment', 'Downpayment', 9000.00, 'C:/xampp/htdocs/SMART-TRAVEL-MANAGEMENT-SYSTEM/Files Uploads/Payment Uploads\\BU1-000019\\BU1-000019-03-07-2025_10-49-67ca5eaf881f4.png', '2025-03-07 10:49:19', 'Approved', NULL, 1);
 
---
--- Triggers `payment`
---
-DELIMITER $$
-CREATE TRIGGER `after_payment_insert` AFTER INSERT ON `payment` FOR EACH ROW BEGIN
-    INSERT INTO auditpayment (
-        paymentId, transactNo, actionType, actionDate, performedBy, oldValues, newValues
-    )
-    VALUES (
-        NEW.paymentId,
-        NEW.transactNo,
-        'INSERT',
-        CURRENT_TIMESTAMP,
-        @current_user_id, -- Use the session variable for the user
-        NULL,
-        CONCAT(
-            'New Payment Details - Transact No: ', NEW.transactNo, ', Title: ', NEW.paymentTitle, 
-            ', Type: ', NEW.paymentType, ', Amount: ₱', NEW.amount, ', Status: ', NEW.paymentStatus
-        )
-    );
-END
-$$
-DELIMITER ;
-DELIMITER $$
-CREATE TRIGGER `after_payment_update` AFTER UPDATE ON `payment` FOR EACH ROW BEGIN
-    DECLARE currentStatus VARCHAR(50);
-    DECLARE paymentCount INT;
-    DECLARE bookingId INT;
+-- --
+-- -- Triggers `payment`
+-- --
+-- DELIMITER $$
+-- CREATE TRIGGER `after_payment_insert` AFTER INSERT ON `payment` FOR EACH ROW BEGIN
+--     INSERT INTO auditpayment (
+--         paymentId, transactNo, actionType, actionDate, performedBy, oldValues, newValues
+--     )
+--     VALUES (
+--         NEW.paymentId,
+--         NEW.transactNo,
+--         'INSERT',
+--         CURRENT_TIMESTAMP,
+--         @current_user_id, -- Use the session variable for the user
+--         NULL,
+--         CONCAT(
+--             'New Payment Details - Transact No: ', NEW.transactNo, ', Title: ', NEW.paymentTitle, 
+--             ', Type: ', NEW.paymentType, ', Amount: ₱', NEW.amount, ', Status: ', NEW.paymentStatus
+--         )
+--     );
+-- END
+-- $$
+-- DELIMITER ;
+-- DELIMITER $$
+-- CREATE TRIGGER `after_payment_update` AFTER UPDATE ON `payment` FOR EACH ROW BEGIN
+--     DECLARE currentStatus VARCHAR(50);
+--     DECLARE paymentCount INT;
+--     DECLARE bookingId INT;
 
-    -- Fetch the current booking status
-    SELECT b.bookingId, b.status
-    INTO bookingId, currentStatus
-    FROM booking b
-    WHERE b.transactNo = NEW.transactNo;
+--     -- Fetch the current booking status
+--     SELECT b.bookingId, b.status
+--     INTO bookingId, currentStatus
+--     FROM booking b
+--     WHERE b.transactNo = NEW.transactNo;
 
-    -- Count the number of approved payments
-    SELECT COUNT(*) INTO paymentCount
-    FROM payment
-    WHERE transactNo = NEW.transactNo AND paymentStatus = 'Approved';
+--     -- Count the number of approved payments
+--     SELECT COUNT(*) INTO paymentCount
+--     FROM payment
+--     WHERE transactNo = NEW.transactNo AND paymentStatus = 'Approved';
 
-    -- If this is the first approved payment, update booking status
-    IF paymentCount = 1 AND currentStatus != 'Confirmed' THEN
-        UPDATE booking
-        SET status = 'Confirmed'
-        WHERE transactNo = NEW.transactNo;
-    END IF;
+--     -- If this is the first approved payment, update booking status
+--     IF paymentCount = 1 AND currentStatus != 'Confirmed' THEN
+--         UPDATE booking
+--         SET status = 'Confirmed'
+--         WHERE transactNo = NEW.transactNo;
+--     END IF;
 
-    -- Insert audit entry for the payment update
-    INSERT INTO auditpayment (
-        paymentId, 
-        transactNo, 
-        actionType, 
-        actionDate, 
-        performedBy, 
-        oldValues, 
-        newValues
-    )
-    VALUES (
-        OLD.paymentId,
-        OLD.transactNo,
-        'UPDATE',
-        CURRENT_TIMESTAMP,
-        NEW.performedBy, -- Ensure `updatedBy` column exists in `payment` table
-        CONCAT(
-            'Old Payment - Transact No: ', OLD.transactNo, ', Title: ', OLD.paymentTitle, 
-            ', Type: ', OLD.paymentType, ', Amount: ₱', OLD.amount, ', Status: ', OLD.paymentStatus
-        ),
-        CONCAT(
-            'New Payment - Transact No: ', NEW.transactNo, ', Title: ', NEW.paymentTitle, 
-            ', Type: ', NEW.paymentType, ', Amount: ₱', NEW.amount, ', Status: ', NEW.paymentStatus
-        )
-    );
-END
-$$
-DELIMITER ;
+--     -- Insert audit entry for the payment update
+--     INSERT INTO auditpayment (
+--         paymentId, 
+--         transactNo, 
+--         actionType, 
+--         actionDate, 
+--         performedBy, 
+--         oldValues, 
+--         newValues
+--     )
+--     VALUES (
+--         OLD.paymentId,
+--         OLD.transactNo,
+--         'UPDATE',
+--         CURRENT_TIMESTAMP,
+--         NEW.performedBy, -- Ensure `updatedBy` column exists in `payment` table
+--         CONCAT(
+--             'Old Payment - Transact No: ', OLD.transactNo, ', Title: ', OLD.paymentTitle, 
+--             ', Type: ', OLD.paymentType, ', Amount: ₱', OLD.amount, ', Status: ', OLD.paymentStatus
+--         ),
+--         CONCAT(
+--             'New Payment - Transact No: ', NEW.transactNo, ', Title: ', NEW.paymentTitle, 
+--             ', Type: ', NEW.paymentType, ', Amount: ₱', NEW.amount, ', Status: ', NEW.paymentStatus
+--         )
+--     );
+-- END
+-- $$
+-- DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -58558,58 +58558,58 @@ INSERT INTO `request` (`requestId`, `transactNo`, `accountId`, `concernId`, `con
 (6, 'BU4-000006', 35, 2, 10, NULL, NULL, 0.00, 3, '', 3300.00, '2025-03-04 11:51:28', 'Confirmed', NULL),
 (7, 'BU1-000009', 23, 2, 10, NULL, NULL, NULL, 1, '', 1100.00, '2025-03-04 14:00:14', 'Submitted', NULL);
 
---
--- Triggers `request`
---
-DELIMITER $$
-CREATE TRIGGER `after_request_insert` AFTER INSERT ON `request` FOR EACH ROW BEGIN
-    INSERT INTO auditrequest (
-        requestId, transactNo, actionType, actionDate, performedBy, oldValues, newValues
-    )
-    VALUES (
-        NEW.requestId,
-        NEW.transactNo,
-        'INSERT',
-        CURRENT_TIMESTAMP,
-        @current_user_id, -- Use the session variable for the user
-        NULL,
-        CONCAT(
-            'Inserted Request for Transact No: ', NEW.transactNo, 
-            ', for ', NEW.pax, ' Pax',
-            IF(NEW.customAmount IS NOT NULL, CONCAT(', Custom Amount: ₱', NEW.customAmount), CONCAT(', Request Cost: ₱', NEW.requestCost)),
-            ', Status: ', NEW.requestStatus
-        )
-    );
-END
-$$
-DELIMITER ;
-DELIMITER $$
-CREATE TRIGGER `after_request_update` AFTER UPDATE ON `request` FOR EACH ROW BEGIN
-    INSERT INTO auditrequest (
-        requestId, transactNo, actionType, actionDate, performedBy, oldValues, newValues
-    )
-    VALUES (
-        OLD.requestId,
-        OLD.transactNo,
-        'UPDATE',
-        CURRENT_TIMESTAMP,
-        @current_user_id, -- Dynamic session variable for the current user
-        CONCAT(
-            'Updated Request for Transact No: ', OLD.transactNo, 
-            ', for ', OLD.pax, ' Pax',
-            IF(OLD.customAmount IS NOT NULL, CONCAT(', Custom Amount: ₱', OLD.customAmount), CONCAT(', Request Cost: ₱', OLD.requestCost)),
-            ', Status: ', OLD.requestStatus
-        ),
-        CONCAT(
-            'Updated Request for Transact No: ', NEW.transactNo, 
-            ', for ', NEW.pax, ' Pax',
-            IF(NEW.customAmount IS NOT NULL, CONCAT(', Custom Amount: ₱', NEW.customAmount), CONCAT(', Request Cost: ₱', NEW.requestCost)),
-            ', Status: ', NEW.requestStatus
-        )
-    );
-END
-$$
-DELIMITER ;
+-- --
+-- -- Triggers `request`
+-- --
+-- DELIMITER $$
+-- CREATE TRIGGER `after_request_insert` AFTER INSERT ON `request` FOR EACH ROW BEGIN
+--     INSERT INTO auditrequest (
+--         requestId, transactNo, actionType, actionDate, performedBy, oldValues, newValues
+--     )
+--     VALUES (
+--         NEW.requestId,
+--         NEW.transactNo,
+--         'INSERT',
+--         CURRENT_TIMESTAMP,
+--         @current_user_id, -- Use the session variable for the user
+--         NULL,
+--         CONCAT(
+--             'Inserted Request for Transact No: ', NEW.transactNo, 
+--             ', for ', NEW.pax, ' Pax',
+--             IF(NEW.customAmount IS NOT NULL, CONCAT(', Custom Amount: ₱', NEW.customAmount), CONCAT(', Request Cost: ₱', NEW.requestCost)),
+--             ', Status: ', NEW.requestStatus
+--         )
+--     );
+-- END
+-- $$
+-- DELIMITER ;
+-- DELIMITER $$
+-- CREATE TRIGGER `after_request_update` AFTER UPDATE ON `request` FOR EACH ROW BEGIN
+--     INSERT INTO auditrequest (
+--         requestId, transactNo, actionType, actionDate, performedBy, oldValues, newValues
+--     )
+--     VALUES (
+--         OLD.requestId,
+--         OLD.transactNo,
+--         'UPDATE',
+--         CURRENT_TIMESTAMP,
+--         @current_user_id, -- Dynamic session variable for the current user
+--         CONCAT(
+--             'Updated Request for Transact No: ', OLD.transactNo, 
+--             ', for ', OLD.pax, ' Pax',
+--             IF(OLD.customAmount IS NOT NULL, CONCAT(', Custom Amount: ₱', OLD.customAmount), CONCAT(', Request Cost: ₱', OLD.requestCost)),
+--             ', Status: ', OLD.requestStatus
+--         ),
+--         CONCAT(
+--             'Updated Request for Transact No: ', NEW.transactNo, 
+--             ', for ', NEW.pax, ' Pax',
+--             IF(NEW.customAmount IS NOT NULL, CONCAT(', Custom Amount: ₱', NEW.customAmount), CONCAT(', Request Cost: ₱', NEW.requestCost)),
+--             ', Status: ', NEW.requestStatus
+--         )
+--     );
+-- END
+-- $$
+-- DELIMITER ;
 
 -- --------------------------------------------------------
 
