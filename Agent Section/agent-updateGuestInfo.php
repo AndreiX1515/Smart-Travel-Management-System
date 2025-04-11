@@ -20,7 +20,18 @@
 
     <div class="main-content-container">
       <div class="navbar">
-        <h5 class="title-page" id="page-title">Update Guest Info</h5>
+        <div class="backbutton-wrapper">
+          <div class="back-button-wrapper">
+            <a href="../Agent Section/agent-showGuest.php?id=<?= $_SESSION['transaction_number'] ?>" class="back-button-link">
+              <i class="fa-solid fa-arrow-left"></i>
+            </a>
+          </div>
+
+          <div class="page-name-wrapper">
+            <h5>Update Guest Information</h5>
+          </div>
+
+        </div>
       </div>
 
       <div class="main-content">
@@ -44,18 +55,19 @@
           }
         ?>
         <?php if(isset($_SESSION['status'])): ?>
-          <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            <strong>Hey!</strong> <?= $_SESSION['status']; ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          <strong>Hey!</strong> <?= $_SESSION['status']; ?>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
 
-          <?php 
-            unset($_SESSION['status']);
-            endif;
-          ?>
-          <div class="content-wrapper bg-transparent pt-2 ms-4">
+        <?php 
+          unset($_SESSION['status']);
+          endif;
+        ?>
+        <div class="addguest-wrapper">
+          <div class="wrapper-body">
             <form action="../Agent Section/functions/agent-updateGuestInfo-code.php" id="guestForm" method="POST">
-              <div class="card guest-form shadow-sm mb-3">
+              <div class="card guest-form mb-3">
                 <div class="card-header bg-secondary text-white d-flex flex-row justify-content-between align-items-center">
                   <h5 class="font-weight-bold mt-1">Guest Information</h5>
                 </div>
@@ -350,7 +362,7 @@
 
                       <!--Guest Passport No, and Expiration-->
                       <div class="row mb-3">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                           <div class="form-group mb-3">
                             <label class="mb-2" for="passportNo">Passport No. <span class="text-danger fw-bold">*</span></label>
                             <input type="text" name="passportNo" class="form-control" placeholder="Enter Passport No" value="<?php echo $row['passportNo']; ?>" required>
@@ -358,7 +370,15 @@
                           </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="columns col-md-4">
+                          <div class="form-group">
+                            <label for="passportIssued">Date Issued: <span class="text-danger fw-bold">*</span></label>
+                            <input type="date" name="passportIssued" class="form-control" value="<?php echo $row['passportIssuedDate']; ?>" required>
+                            <span id="passportIssuedError" class="text-danger"></span> <!-- Error message for Passport No -->
+                          </div>
+                        </div>
+
+                        <div class="col-md-4">
                           <div class="form-group mb-3">
                             <label class="mb-2" for="passportExp">Date of Expiration: <span class="text-danger fw-bold">*</span> <span id="expPassport" class="text-danger"></span></label>
                             <input type="date" name="passportExp" class="form-control" value="<?php echo $row['passportExp']; ?>" required>
@@ -1041,11 +1061,13 @@
                 <div class="card-footer d-flex justify-content-end mb-5 my-3">
                   <button type="submit" class="btn btn-primary" id="updateGuestInfo" name="updateGuestInfo">Update Guest Information</button>
                 </div>
-              </div>
+
             </form>
           </div>
+        </div>
       </div>
     </div>
+    
   </div>
 
   <?php require "../Agent Section/includes/scripts.php"; ?>

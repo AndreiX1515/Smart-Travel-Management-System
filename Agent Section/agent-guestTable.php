@@ -83,6 +83,7 @@
             <th>EMAIL</th>
             <th>ADDRESS</th>
             <th>PASSPORT NO.</th>
+            <th>PASSPORT ISSUED DATE</th>
             <th>PASSPORT EXP.</th>
             <th>VISA STATUS</th>
           </tr>
@@ -128,6 +129,7 @@
                 $emailAdd = htmlspecialchars($row['emailAdd']);
                 $address = htmlspecialchars($row['address']);
                 $passportNo = htmlspecialchars($row['passportNo']);
+                $passportIssuedDate = $row['passportIssuedDate'] ?? '';
                 $passportExp = htmlspecialchars($row['passportExp']);
 
                 echo "<tr data-url='agent-updateGuestInfo.php?id={$guestId}'>
@@ -142,6 +144,7 @@
                           <td>{$emailAdd}</td>
                           <td>{$address}</td>
                           <td>{$passportNo}</td>
+                          <td>{$passportIssuedDate}</td>
                           <td>{$passportExp}</td>
                           <td>{$row['visaStatus']}</td>
                         </tr>";

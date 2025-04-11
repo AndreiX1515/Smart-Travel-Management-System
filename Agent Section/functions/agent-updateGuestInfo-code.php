@@ -18,6 +18,7 @@
     $sexe = $_POST['sex'];
     $nationality = $_POST['nationality'];
     $passportNo = $_POST['passportNo'];
+    $passportIssuedDate = $_POST['passportIssued'];
     $passportExp = $_POST['passportExp'];
     $countryCode1st = $_POST['countryCode'];
     $contactNo1st = $_POST['contactNo'];
@@ -48,15 +49,15 @@
     $stmt = $conn->prepare("UPDATE `guest` SET 
         `transactNo` = ?, `fName` = ?, `lName` = ?, `mName` = ?, `suffix` = ?, 
         `birthdate` = ?, `age` = ?, `sex` = ?, `nationality` = ?, `passportNo` = ?, 
-        `passportExp` = ?, `countryCode` = ?, `contactNo` = ?, `countryCode2` = ?, 
+        `passportIssuedDate` = ?, `passportExp` = ?, `countryCode` = ?, `contactNo` = ?, `countryCode2` = ?, 
         `contactNo2` = ?, `emailAdd` = ?, `addressLine1` = ?, `addressLine2` = ?, 
         `city` = ?, `state` = ?, `zipCode` = ?, `country` = ? 
         WHERE `guestId` = ?");
 
     // Bind parameters using 'ssssssissssssssssssss', adjusting for the correct data types
-    $stmt->bind_param("ssssssissssssssssssssss", 
+    $stmt->bind_param("ssssssisssssssssssssssss", 
         $transactNo, $fName, $lName, $mName, $suffixe, 
-        $birthdate, $age, $sexe, $nationality, $passportNo, 
+        $birthdate, $age, $sexe, $nationality, $passportNo, $passportIssuedDate,
         $passportExp, $countryCode1st, $contactNo1st, $countryCode2nd, 
         $contactNo2nd, $email, $addressLine1st, $addressLine2nd, $city, 
         $state, $zipCode, $country, $guestId);
