@@ -139,74 +139,88 @@
     // Store luggage to be deleted (for later backend request)
     let luggageToDelete = [];
 
-document.getElementById('saveAssignments').addEventListener('click', function () {
-  let roomAssignments = [];
-  let luggageAssignments = [];
+    document.getElementById('saveAssignments').addEventListener('click', function () 
+    {
+      let roomAssignments = [];
+      let luggageAssignments = [];
 
-  // First, delete any flagged luggage items from the database
-  deleteLuggageFromDatabase();
+      // First, delete any flagged luggage items from the database
+      deleteLuggageFromDatabase();
 
-  // Then, proceed with saving the room assignments and luggage details
-  $.ajax({
-    url: '../Agent Section/functions/fetchMaxRoomNumber.php', // Create this PHP file
-    type: 'GET',
-    dataType: 'json',
-    success: function(response) {
-      let maxRoomNumber = response.maxRoomNumber || 0; // Start from 0 if no existing data
+      // Then, proceed with saving the room assignments and luggage details
+      $.ajax(
+      {
+        url: '../Agent Section/functions/fetchMaxRoomNumber.php', // Create this PHP file
+        type: 'GET',
+        dataType: 'json',
+        success: function(response) 
+        {
+          let maxRoomNumber = response.maxRoomNumber || 0; // Start from 0 if no existing data
 
-      rooms.forEach((room) => {
-        maxRoomNumber++; // Increment for the next room
+          rooms.forEach((room) => 
+          {
+            maxRoomNumber++; // Increment for the next room
 
-        room.guests.forEach(guest => {
-          roomAssignments.push({
-            transactNo: guest.transactNo,
-            guestId: guest.id,
-            roomType: room.type,
-            roomNumber: maxRoomNumber // Assign based on fetched maxRoomNumber
-          });
+            room.guests.forEach(guest => 
+            {
+              roomAssignments.push(
+              {
+                transactNo: guest.transactNo,
+                guestId: guest.id,
+                roomType: room.type,
+                roomNumber: maxRoomNumber // Assign based on fetched maxRoomNumber
+              });
 
-          // Collect luggage data for each guest
-          let luggageItems = Array.from(document.querySelectorAll(`#luggageContainer-${guest.id} select`)).map(select => select.value);
-          luggageItems.forEach(luggage => {
-            luggageAssignments.push({
-              transactNo: guest.transactNo,
-              guestId: guest.id,
-              luggageId: luggage
+              // Collect luggage data for each guest
+              let luggageItems = Array.from(document.querySelectorAll(`#luggageContainer-${guest.id} select`)).map(select => select.value);
+              luggageItems.forEach(luggage => 
+              {
+                luggageAssignments.push(
+                {
+                  transactNo: guest.transactNo,
+                  guestId: guest.id,
+                  luggageId: luggage
+                });
+              });
             });
           });
-        });
-      });
 
-      // Ensure there's data to send
-      if (roomAssignments.length === 0) {
-        alert("No room assignments to save.");
-        return;
-      }
+          // Ensure there's data to send
+          if (roomAssignments.length === 0) 
+          {
+            alert("No room assignments to save.");
+            return;
+          }
 
-      // Send AJAX request to insert room assignments
-      $.ajax({
-        url: '../Agent Section/functions/agent-addRoomingList.php',
-        type: 'POST',
-        data: {
-          roomAssignments: JSON.stringify(roomAssignments),
-          luggageAssignments: JSON.stringify(luggageAssignments) // Include luggage data in the same request
+          // Send AJAX request to insert room assignments
+          $.ajax(
+          {
+            url: '../Agent Section/functions/agent-addRoomingList.php',
+            type: 'POST',
+            data: 
+            {
+              roomAssignments: JSON.stringify(roomAssignments),
+              luggageAssignments: JSON.stringify(luggageAssignments) // Include luggage data in the same request
+            },
+            success: function(response) 
+            {
+              console.log(response);
+              alert("Room assignments and luggage details saved successfully!");
+            },
+            error: function(xhr, status, error) 
+            {
+              console.error('Error saving data:', error);
+              alert("Failed to save room assignments and luggage details.");
+            }
+          });
         },
-        success: function(response) {
-          console.log(response);
-          alert("Room assignments and luggage details saved successfully!");
-        },
-        error: function(xhr, status, error) {
-          console.error('Error saving data:', error);
-          alert("Failed to save room assignments and luggage details.");
+        error: function(xhr, status, error) 
+        {
+          console.error('Error fetching max room number:', error);
+          alert("Failed to fetch max room number.");
         }
       });
-    },
-    error: function(xhr, status, error) {
-      console.error('Error fetching max room number:', error);
-      alert("Failed to fetch max room number.");
-    }
-  });
-});
+    });
 
     // Fetch guests when flight date changes
     $('#flightDate').on('change', function () 
@@ -348,105 +362,113 @@ document.getElementById('saveAssignments').addEventListener('click', function ()
       });
     }
 
-// Function to update the room list
-function updateRoomList() {
-  let assignedRoomsTable = document.getElementById('assignedRoomsTable');
-  assignedRoomsTable.innerHTML = ''; // Clear the existing table
+    // Function to update the room list
+    function updateRoomList() 
+    {
+      let assignedRoomsTable = document.getElementById('assignedRoomsTable');
+      assignedRoomsTable.innerHTML = ''; // Clear the existing table
 
-  let rowNumber = 1;
+      let rowNumber = 1;
 
-  rooms.forEach((room, roomIndex) => {
-    let firstGuest = true;
+      rooms.forEach((room, roomIndex) => 
+      {
+        let firstGuest = true;
 
-    room.guests.forEach((guest) => {
-      let row = assignedRoomsTable.insertRow();
-      row.setAttribute("data-guest-id", guest.id);
-      row.setAttribute("data-transact-no", guest.transactNo);
+        room.guests.forEach((guest) => 
+        {
+          let row = assignedRoomsTable.insertRow();
+          row.setAttribute("data-guest-id", guest.id);
+          row.setAttribute("data-transact-no", guest.transactNo);
 
-      // Get the count of luggage for the guest
-      let luggageCount = guest.luggageType.length;
-      console.log(`Guest ID: ${guest.id}, Number of Luggage: ${luggageCount}`);
+          // Get the count of luggage for the guest
+          let luggageCount = guest.luggageType.length;
+          console.log(`Guest ID: ${guest.id}, Number of Luggage: ${luggageCount}`);
 
-      // Generate container with multiple luggage selects for each guest
-      let luggageSelectGroup = `
-        <div id="luggageContainer-${guest.id}" class="luggage-group" data-guest-id="${guest.id}">
-          <div id="luggageSelects-${guest.id}">`;
+          // Generate container with multiple luggage selects for each guest
+          let luggageSelectGroup = `
+            <div id="luggageContainer-${guest.id}" class="luggage-group" data-guest-id="${guest.id}">
+              <div id="luggageSelects-${guest.id}">`;
 
-      if (luggageCount > 0) {
-        for (let i = 0; i < luggageCount; i++) {
+          if (luggageCount > 0) 
+          {
+            for (let i = 0; i < luggageCount; i++) 
+            {
+              luggageSelectGroup += `
+                <select class="form-control" name="luggageSelect-${guest.id}[]" 
+                  style="width: 100%; display: block; margin-bottom: 5px;" 
+                  id="luggageSelect-${guest.id}-${i}" data-luggage-id="${guest.luggageType[i]}">
+                  <option value="">Select Luggage</option>`;
+
+              luggageOptions.forEach(option => 
+              {
+                const selected = option.concernDetailsId == guest.luggageType[i] ? 'selected' : '';
+                luggageSelectGroup += `<option value="${option.concernDetailsId}" ${selected}>${option.details}</option>`;
+              });
+
+              luggageSelectGroup += `</select>`;
+            }
+          }
+
           luggageSelectGroup += `
-            <select class="form-control" name="luggageSelect-${guest.id}[]" 
-              style="width: 100%; display: block; margin-bottom: 5px;" 
-              id="luggageSelect-${guest.id}-${i}" data-luggage-id="${guest.luggageType[i]}">
-              <option value="">Select Luggage</option>`;
+            </div> <!-- end of luggageSelects container -->
+            <button type="button" class="btn btn-sm btn-primary mt-1" style="margin-top: 5px;" onclick="addLuggageSelect(${guest.id})">Add</button>
+            <button type="button" class="btn btn-sm btn-danger mt-1" style="margin-top: 5px; margin-left: 5px;" onclick="removeLuggageSelect(${guest.id})">Remove</button>
+          </div>`;
 
-          luggageOptions.forEach(option => {
-            const selected = option.concernDetailsId == guest.luggageType[i] ? 'selected' : '';
-            luggageSelectGroup += `<option value="${option.concernDetailsId}" ${selected}>${option.details}</option>`;
-          });
+          row.innerHTML = `
+            <td style="text-align: center; vertical-align: middle;">${rowNumber++}</td>
+            <td style="text-align: center; vertical-align: middle;">${guest.age || "N/A"}</td>
+            <td style="text-align: center; vertical-align: middle;">${guest.name.split(" ")[0]}</td>
+            <td style="text-align: center; vertical-align: middle;">${guest.name.split(" ").slice(-1).join(" ")}</td>
+            <td style="text-align: center; vertical-align: middle;">${guest.name}</td>
+            <td style="text-align: center; vertical-align: middle;">${guest.dob || "N/A"}</td>
+            <td style="text-align: center; vertical-align: middle;">${guest.nationality || "N/A"}</td>
+            <td style="text-align: center; vertical-align: middle;">${guest.passport || "N/A"}</td>
+            <td style="text-align: center; vertical-align: middle;">${guest.passportExp || "N/A"}</td>
+            <td style="text-align: center; vertical-align: middle;">${guest.sex || "N/A"}</td>
+            ${firstGuest ? `<td style="text-align: center;" class="room-type" rowspan="${room.guests.length}">${room.type.toUpperCase()}</td>` : ''} 
+            <td style="text-align: center; vertical-align: middle;">
+              ${luggageSelectGroup}
+            </td>
+            ${firstGuest ? `<td style="vertical-align: middle;" rowspan="${room.guests.length}"> 
+              <button style="display: block; margin: auto;" class="btn btn-danger btn-sm" onclick="removeRoom(${roomIndex})">
+                Remove
+              </button>
+            </td>` : ''}`;
 
-          luggageSelectGroup += `</select>`;
-        }
-      }
+          firstGuest = false;
+        });
+      });
+    }
 
-      luggageSelectGroup += `
-        </div> <!-- end of luggageSelects container -->
-        <button type="button" class="btn btn-sm btn-primary mt-1" style="margin-top: 5px;" onclick="addLuggageSelect(${guest.id})">Add</button>
-        <button type="button" class="btn btn-sm btn-danger mt-1" style="margin-top: 5px; margin-left: 5px;" onclick="removeLuggageSelect(${guest.id})">Remove</button>
-      </div>`;
+    // Add a luggage select dropdown dynamically
+    function addLuggageSelect(guestId) 
+    {
+      const container = document.getElementById(`luggageSelects-${guestId}`);
+      const selectCount = container.querySelectorAll('select').length;
 
-      row.innerHTML = `
-        <td style="text-align: center; vertical-align: middle;">${rowNumber++}</td>
-        <td style="text-align: center; vertical-align: middle;">${guest.age || "N/A"}</td>
-        <td style="text-align: center; vertical-align: middle;">${guest.name.split(" ")[0]}</td>
-        <td style="text-align: center; vertical-align: middle;">${guest.name.split(" ").slice(-1).join(" ")}</td>
-        <td style="text-align: center; vertical-align: middle;">${guest.name}</td>
-        <td style="text-align: center; vertical-align: middle;">${guest.dob || "N/A"}</td>
-        <td style="text-align: center; vertical-align: middle;">${guest.nationality || "N/A"}</td>
-        <td style="text-align: center; vertical-align: middle;">${guest.passport || "N/A"}</td>
-        <td style="text-align: center; vertical-align: middle;">${guest.passportExp || "N/A"}</td>
-        <td style="text-align: center; vertical-align: middle;">${guest.sex || "N/A"}</td>
-        ${firstGuest ? `<td style="text-align: center;" class="room-type" rowspan="${room.guests.length}">${room.type.toUpperCase()}</td>` : ''} 
-        <td style="text-align: center; vertical-align: middle;">
-          ${luggageSelectGroup}
-        </td>
-        ${firstGuest ? `<td style="vertical-align: middle;" rowspan="${room.guests.length}"> 
-          <button style="display: block; margin: auto;" class="btn btn-danger btn-sm" onclick="removeRoom(${roomIndex})">
-            Remove
-          </button>
-        </td>` : ''}`;
+      let select = document.createElement('select');
+      select.className = 'form-control';
+      select.name = `luggageSelect-${guestId}[]`;
+      select.id = `luggageSelect-${guestId}-${selectCount}`;
+      select.style.cssText = 'width: 100%; display: block; margin-bottom: 5px;';
+      select.dataset.new = 'true'; // Flag as new luggage
 
-      firstGuest = false;
-    });
-  });
-}
+      let defaultOption = document.createElement('option');
+      defaultOption.value = '';
+      defaultOption.textContent = 'Select Luggage';
+      select.appendChild(defaultOption);
 
-// Add a luggage select dropdown dynamically
-function addLuggageSelect(guestId) {
-  const container = document.getElementById(`luggageSelects-${guestId}`);
-  const selectCount = container.querySelectorAll('select').length;
+      luggageOptions.forEach(option => 
+      {
+        let opt = document.createElement('option');
+        opt.value = option.concernDetailsId;
+        opt.textContent = option.details;
+        select.appendChild(opt);
+      });
 
-  let select = document.createElement('select');
-  select.className = 'form-control';
-  select.name = `luggageSelect-${guestId}[]`;
-  select.id = `luggageSelect-${guestId}-${selectCount}`;
-  select.style.cssText = 'width: 100%; display: block; margin-bottom: 5px;';
-  select.dataset.new = 'true'; // Flag as new luggage
-
-  let defaultOption = document.createElement('option');
-  defaultOption.value = '';
-  defaultOption.textContent = 'Select Luggage';
-  select.appendChild(defaultOption);
-
-  luggageOptions.forEach(option => {
-    let opt = document.createElement('option');
-    opt.value = option.concernDetailsId;
-    opt.textContent = option.details;
-    select.appendChild(opt);
-  });
-
-  container.appendChild(select); // Append to the luggageSelects container
-}
+      container.appendChild(select); // Append to the luggageSelects container
+    }
 
     function generateLuggageSelects(guestId) 
     {
@@ -477,46 +499,51 @@ function addLuggageSelect(guestId) {
       return html;
     }
 
-// Remove the last luggage select dropdown for a guest
-function removeLuggageSelect(guestId) {
-  const container = document.getElementById(`luggageSelects-${guestId}`);
-  const selects = container.querySelectorAll('select');
+    // Remove the last luggage select dropdown for a guest
+    function removeLuggageSelect(guestId) 
+    {
+      const container = document.getElementById(`luggageSelects-${guestId}`);
+      const selects = container.querySelectorAll('select');
 
-  if (selects.length > 0) {
-    const lastSelect = selects[selects.length - 1];
-    if (lastSelect.dataset.new === 'true') {
-      // If it's newly added, just remove it from the DOM
-      container.removeChild(lastSelect);
-    } else {
-      // Handle case where the luggage has been saved in the database (store it for later deletion)
-      const luggageId = lastSelect.dataset.luggageId; // Get the luggage ID to be deleted
-      luggageToDelete.push({ guestId, luggageId }); // Store luggage to be deleted for later backend request
-      container.removeChild(lastSelect);
+      if (selects.length > 0) 
+      {
+        const lastSelect = selects[selects.length - 1];
+        if (lastSelect.dataset.new === 'true') 
+        {
+          // If it's newly added, just remove it from the DOM
+          container.removeChild(lastSelect);
+        } 
+        else 
+        {
+          // Handle case where the luggage has been saved in the database (store it for later deletion)
+          const luggageId = lastSelect.dataset.luggageId; // Get the luggage ID to be deleted
+          luggageToDelete.push({ guestId, luggageId }); // Store luggage to be deleted for later backend request
+          container.removeChild(lastSelect);
+        }
+
+        console.log(luggageToDelete);
+      }
     }
 
-    console.log(luggageToDelete);
-  }
-}
-
-// Function to handle deletion of luggage from the database
-function deleteLuggageFromDatabase() {
-  // Send a request to the backend to delete the stored luggage
-  fetch('../Agent Section/functions/agent-removeLuggage.php', {
-    method: 'POST',
-    body: JSON.stringify({ luggageToDelete }),
-    headers: { 'Content-Type': 'application/json' }
-  })
-  .then(response => response.json())
-  .then(data => {
-    if (data.status === 'success') {
-      console.log('Luggage deleted successfully');
-      luggageToDelete = []; // Clear the luggageToDelete array after successful deletion
-    } else {
-      console.log('Error deleting luggage');
+    // Function to handle deletion of luggage from the database
+    function deleteLuggageFromDatabase() {
+      // Send a request to the backend to delete the stored luggage
+      fetch('../Agent Section/functions/agent-removeLuggage.php', {
+        method: 'POST',
+        body: JSON.stringify({ luggageToDelete }),
+        headers: { 'Content-Type': 'application/json' }
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === 'success') {
+          console.log('Luggage deleted successfully');
+          luggageToDelete = []; // Clear the luggageToDelete array after successful deletion
+        } else {
+          console.log('Error deleting luggage');
+        }
+      })
+      .catch(error => console.error('Error:', error));
     }
-  })
-  .catch(error => console.error('Error:', error));
-}
 
     // Remove a room and reassign the guests to the unassigned list
     function removeRoom(index) 
