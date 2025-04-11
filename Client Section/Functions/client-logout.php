@@ -13,6 +13,8 @@ unset(
     $_SESSION['clientCode'],
     $_SESSION['clientRole'], 
     $_SESSION['clientType'], 
+    $_SESSION['userType'], 
+    $_SESSION['emailAddress']
 );
 
 // Unset all session variables that start with 'client_'

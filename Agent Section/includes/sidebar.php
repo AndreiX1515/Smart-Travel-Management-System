@@ -16,6 +16,7 @@ $mName = $_SESSION['agent_mName'] ?? '';
 $branchId = $_SESSION['agent_branchId'] ?? '';
 $email = $_SESSION['agent_email'] ?? '';
 $password = $_SESSION['agent_password'] ?? '';
+$emailAdress = $_SESSION['agent_emailAddress'] ?? '';
 
 // Fetch Branch Name
 $sql1 = "SELECT branchName FROM branch WHERE branchId = ?";
@@ -30,6 +31,7 @@ if ($result1->num_rows > 0) {
 } else {
   $branchName = "No Branch";
 }
+
 $stmt1->close();
 
 // Fetch Agent Info (to get companyId)

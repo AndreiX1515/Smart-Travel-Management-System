@@ -6,7 +6,6 @@ $accountId = $_SESSION['agent_accountId']; // Get account ID from session
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $currentPassword = $_POST['currentPassword'];
-    
 
     // Check if current password is provided
     if (empty($currentPassword)) {
@@ -16,7 +15,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'message' => 'Current password is required.',
             'currentPassword' => $currentPassword 
         ]); 
-        
     } else {
         // Verify password against the database
         $stmt = $conn->prepare("SELECT password, emailAddress FROM accounts WHERE accountId = ?");
@@ -25,16 +23,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->bind_result($storedPassword, $emailAddress); 
         $stmt->fetch();
         $stmt->close();
-    
+
         // Check if password matches
         if ($currentPassword !== $storedPassword) {
-            // Respond with an error message if the current password is incorrect
             echo json_encode([
                 'status' => 'error',
                 'message' => 'Current password is incorrect.',
-                'currentPassword' => $currentPassword // Include the current password in the response (for debugging)
+                'currentPassword' => $currentPassword
             ]);
-            
+        } elseif (empty($emailAddress)) {
+            // Handle missing email address
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'No email address associated with this account.',
+                'emailAddress' => '',
+                'accountId' => $accountId
+            ]);
+
         } else {
             $_SESSION['emailAddress'] = $emailAddress;
 
@@ -47,7 +52,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             ]);
         }
     }
-    
 
     $conn->close(); // Close connection
 }

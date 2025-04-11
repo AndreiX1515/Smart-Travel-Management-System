@@ -499,15 +499,35 @@ select.form-control:focus {
 }
 
 
- 
 
 
+/* .include-cards {
+  display: none;
+} */
 
 .includes-header-card {
   display: flex;
   justify-content: space-between;
   width: 100%; 
 }
+
+
+/* .excludes-cards {
+  display: none;
+} */
+
+.excludes-header-card {
+  display: flex;
+  justify-content: space-between;
+  width: 100%; 
+}
+
+
+
+
+
+
+
 
 .card-header {
   flex-grow: 1;  /* Makes the header take up remaining space */
@@ -543,9 +563,10 @@ select.form-control:focus {
 
 
 
-.include-cards {
-  display: none;
-}
+
+
+
+
 
 
 

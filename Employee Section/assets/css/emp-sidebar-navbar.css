@@ -14,174 +14,147 @@ body {
     overflow: hidden; /* Disables both horizontal and vertical scrolling */
 }
 
-/* Sidebar Styling */
-.sidebar {
- position: fixed;
- top: 0;
- left: 0;
- height: 100vh;
- width: 70px;
- background-color: #343A40;
- transition: width 0.3s ease; /* Smoothly change sidebar width */
- overflow: hidden;
- display: flex;
- flex-direction: column;
- z-index: 1030;
-}
 
-.sidebar:hover {
- width: 220px;
-}
-
-/* Sidebar items */
-.sidebar .nav-item {
- width: 100%;
-}
-
-/* Sidebar links */
-.sidebar .nav-link {
- display: flex;
- align-items: center; /* Keep icons and text vertically aligned */
- justify-content: flex-start;
- color: white;
- text-decoration: none;
- padding: 5px 20px; /* Adjust top and bottom padding here */
- white-space: nowrap;
- overflow: hidden;
- text-overflow: ellipsis;
- transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for hover effects */
-}
-
-/* Change background color on hover */
-.sidebar .nav-link:hover {
- background-color: #495057;
-}
-
-/* Add red background specifically for the "Add Booking" link */
+/* Add red background specifically for the "Add Booking" link
 .nav-item.add-booking .nav-link {
- background-color: rgba(255, 0, 0, 0.781); /* Red background fill */
- color: white; /* White text and icon color */
- border-radius: 5px; /* Optional: round corners */
- transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for hover effects */
- margin: 5px; /* Add margin around the "Add Booking" button */
+ background-color: rgba(255, 0, 0, 0.781); 
+ color: white; 
+ border-radius: 5px;
+ transition: background-color 0.3s ease, color 0.3s ease; 
+ margin: 5px; 
 }
 
-/* Change the background color on hover for "Add Booking" link */
+/* Change the background color on hover for "Add Booking" link 
 .nav-item.add-booking .nav-link:hover {
- background-color: rgba(139, 0, 0, 0.651); /* Darker red on hover */
-}
-
-
-/* Add red background specifically for the "Add Booking" link */
-.nav-item.transaction .icon {
- margin-left: 3.5px;
-}
-
-
-.nav-item.dropdown .icon {
- margin-left: 3.5px;
-}
-
-
-
+ background-color: rgba(139, 0, 0, 0.651); 
+} */
 
 
 
 
 /* Sidebar icons */
 .sidebar .icon {
- display: flex;
- justify-content: center; /* Center icons horizontally */
- align-items: center; /* Center icons vertically */
- height: 50px;
- width: 50px;
- color: white;
- font-size: 20px;
- transition: transform 0.3s ease, color 0.3s ease; /* Smooth icon transition */
+  display: flex;
+  justify-content: center; /* Center icons horizontally */
+  align-items: center; /* Center icons vertically */
+  height: 50px;
+  width: 50px;
+  color: white;
+  font-size: 20px;
+  transition: transform 0.3s ease, color 0.3s ease; /* Smooth icon transition */
 }
 
 /* Sidebar labels */
 .sidebar .label {
- opacity: 0; /* Initially hidden using opacity for smooth transitions */
- margin-left: 10px;
- font-size: 16px;
- color: white;
- transition: opacity 0.3s ease, margin-left 0.3s ease; /* Smoothly show/hide labels */
+  opacity: 0; /* Initially hidden using opacity for smooth transitions */
+  margin-left: 10px;
+  font-size: 16px;
+  color: white;
+  transition: opacity 0.3s ease, margin-left 0.3s ease; /* Smoothly show/hide labels */
 }
 
 .sidebar:hover .label {
- opacity: 1;
- margin-left: 5px;
+  opacity: 1;
 }
 
 /* Sidebar logo styling */
 .sidebar-logo-section {
- display: flex;
- align-items: center;
- justify-content: flex-start;
- color: white;
- width: 100%;
- white-space: nowrap;
- margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  color: white;
+  width: 100%;
+  white-space: nowrap;
+  margin-bottom: 15px;
 }
 
-.sidebar-logo-section .logo-link {
- display: flex;
- align-items: center;
- justify-content: flex-start;
- text-decoration: none;
- color: white;
- padding-left: 28px; /* Initial padding */
- padding-top: 20px; /* Initial padding */
- transition: transform 0.3s ease; /* Smooth transition for translateX */
-}
-
-.sidebar-logo-section .logo-link:hover {
- background-color: #343A40;
- cursor: context-menu;
- 
-}
-
-/* Move the logo link to the right when the sidebar is hovered */
-.sidebar:hover .sidebar-logo-section .logo-link {
- transform: translateX(12px); /* Move 8px to the right */
+.sidebar .nav-item {
+  position: relative;
+  width: 100%;
+  margin-bottom: 6px;
 }
 
 
-/* New logo content style */
-.sidebar-logo-section .logo-content {
- display: flex;
- align-items: center;
- justify-content: flex-start;
- gap: 10px;
- width: 100%;
+
+.nav-logo-wrapper {
+  margin-top: 15px;
 }
 
-.sidebar-logo-section .sidebar-logo {
- width: 35px;
- height: 35px;
- margin-left: -10px;
- object-fit: contain;
+.nav-logo-item-wrapper {
+  padding: 10px 0;
 }
 
-/* Logo text behavior */
-.sidebar-logo-section .logo-content span {
- opacity: 0; /* Initially hidden */
- font-size: 14px;
- font-weight: normal;
- color: white;
- transition: opacity 0.3s ease; /* Smoothly show text */
+/* Logo link structure */
+.nav-link.logo-link {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  color: white;
+  text-decoration: none;
+  width: 100%;
+  padding: 10px 20px;
+  transition: background-color 0.3s ease;
 }
 
-/* Show the logo text on hover */
-.sidebar:hover .sidebar-logo-section .logo-content span {
- opacity: 1;
+.nav-link.logo-link:hover {
+  background-color: #495057;
+  cursor: default;
 }
+
+/* Logo content layout */
+.logo-content {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  width: 100%;
+  margin-left: 2.5px;
+}
+
+/* Icon container */
+.logo-backdrop {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 35px;
+}
+
+/* Logo image */
+.sidebar-logo {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+/* Logo text (default hidden) */
+.logo-content span {
+  display: none;
+  font-size: 0.85rem;
+  line-height: 1;
+  font-weight: bold;
+  color: white;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  margin-left: 10px;
+}
+
+/* Show logo text only when sidebar is hovered/expanded */
+.sidebar:hover .logo-content span {
+  display: inline;
+  opacity: 1;
+}
+
+
+
+
+
 
 /* Push logout to the bottom */
 .sidebar .logout {
- margin-top: auto;
+  margin-top: auto;
 }
+
 
 /* Profile Section */
 .profile-section {
@@ -226,75 +199,292 @@ body {
  margin-left: -5px;
 }
 
-/* Dropdown Styling */
+
+
+/*==========================
+  Sidebar Dropdown Styling
+===========================*/
+
+/* Dropdown toggle (e.g., parent item) */
 .sidebar .nav-item .dropdown-toggle {
- display: flex;
- align-items: center;
- justify-content: space-between;
- font-size: 14px;
- padding: 10px 15px;
- cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+  padding: 10px 16px;
+  cursor: pointer;
+  color: white;
+  width: 100%;
+  background: none;
+  border: none;
 }
 
+/* Dropdown container */
 .sidebar .collapse {
- background-color: #495057;
- display: none;
+  display: none;
+  background-color: #495057;
+  padding-left: 10%;
+  margin-left: 0% !important;
+  border: none;
+  height: auto;
+  overflow: hidden;
 }
 
-
+/* Show dropdown on hover */
 .sidebar .nav-item.dropdown:hover .collapse {
- display: block;
+  display: block;
 }
 
+/* Dropdown item links */
 .sidebar .collapse .nav-link {
- color: white;
- padding: 10px 5px 10px 35px;
- position: relative; /* Needed for pseudo-element positioning */
+  color: white;
+  font-size: 14px;
+  padding: 8px 10px 8px 80px;
+  position: relative;
+  text-decoration: none;
+  border-radius: 4px;
+  width: 100%;
+  display: block;
+  transition: background-color 0.3s ease;
+  /* border: 1px solid black; */
 }
 
+/* Hover effect for dropdown items */
 .sidebar .collapse .nav-link:hover {
- background-color: #6c757d;
+  background-color: #6c757d;
 }
 
+/* Red accent bar on hover */
 .sidebar .collapse .nav-link:hover::before {
- content: '';
- position: absolute;
- top: 0;
- left: 0;
- height: 100%;
- width: 5px; /* Width of the red accent */
- background-color: red; /* Red accent */
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 5px;
+  background-color: red;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
 }
 
 
-/* Profile icon in navbar */
+
+.managebooking-menu-wrapper .nav-item {
+  margin-bottom: 6px; /* or your preferred margin value */
+}
+
+
+.managebooking-menu-wrapper .nav-item:last-child {
+  margin-bottom: 0px;
+}
+
+
+.report-menu-wrapper .nav-item {
+  margin-bottom: 6px; /* or your preferred margin value */
+}
+
+
+.report-menu-wrapper .nav-item:last-child {
+  margin-bottom: 0px;
+}
+
+
+
+
+
+
+
+
+
+
+/*==========================
+  Profile Dropdown Styling
+===========================*/
+
+/* Remove default arrow from profile dropdown */
 .profile-dropdown .dropdown-toggle::after {
- display: none; /* Remove default dropdown icon */
+  display: none;
 }
 
-/* Adjust the profile icon size */
+/* Profile icon style */
 .profile-icon {
- font-size: 1.5rem;
- color: rgb(255, 255, 255);
+  font-size: 1.5rem;
+  color: #ffffff;
 }
 
-/* Ensure dropdown doesn't overflow */
+/* Align dropdown menu to the right */
 .dropdown-menu-end {
- left: auto;
- right: 0;
+  right: 0;
+  left: auto;
 }
 
-/* Adjust the dropdown to stay within screen bounds */
+/* Limit dropdown width and handle overflow */
 .dropdown-menu {
- max-width: 300px;
- overflow: hidden;
- text-overflow: ellipsis;
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Hide profile details when sidebar is collapsed */
 .sidebar:not(:hover) .profile-left {
- display: none;
+  display: none;
 }
+
+
+
+
+
+/* Sidebar Styling */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 70px;
+  background-color: #343A40;
+  transition: width 0.3s ease;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  z-index: 1030;
+}
+
+/* Expand on hover */
+.sidebar:hover {
+  width: 220px;
+}
+
+
+
+
+
+/* Sidebar container item */
+.sidebar .nav-item {
+  position: relative;
+  width: 100%;
+  margin-bottom: 6px;
+}
+
+/* Sidebar link styles */
+.sidebar .nav-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  color: white;
+  text-decoration: none;
+  padding: 5px 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  border-radius: 4px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  box-sizing: border-box; /* Ensure padding doesn't affect layout */
+}
+
+/* Hover effect */
+.sidebar .nav-link:hover {
+  background-color: #495057;
+  /* Removed any transform or translate effects */
+}
+
+/* Icon wrapper alignment */
+.icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 35px;
+}
+
+/* Icon styling - refined (no circle or padding) */
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  width: auto;
+  height: auto;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.icon i {
+  font-size: 16px;
+}
+
+/* Label wrapper */
+.label-wrapper {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  padding-left: 6px; /* Reduced padding for tighter left alignment */
+}
+
+/* Label text */
+.label {
+  font-size: 0.85rem;
+  line-height: 1;
+  white-space: nowrap;
+  color: white;
+}
+
+/* Individual icon colors */
+#raiseTicketIcon i {
+  color: #116530;
+}
+
+#changePasswordIcon i {
+  color: #ff9800;
+}
+
+/* Ensuring a smaller font size for the label in #changePasswordIcon */
+#changePasswordIcon .label-wrapper .label {
+  font-size: 0.65rem !important;  /* Force the smaller font size */
+}
+
+#logoutIcon i {
+  color: #dc3545;
+}
+
+/* Active link (optional) */
+.sidebar .nav-link.active {
+  background-color: #11653033;
+  font-weight: 600;
+}
+
+/* Adjust placement of the entire link slightly to the left */
+.sidebar .nav-item .nav-link {
+  padding-left: 15px;  /* Further reduced left padding to shift the item more to the left */
+}
+
+
+/* Ensure the logo item is not affected by nav-item hover */
+.nav-logo-item-wrapper:hover {
+  background-color: transparent !important; /* Prevent background color change */
+  cursor: default !important; /* Prevent cursor from changing on hover */
+}
+
+/* Disable hover effects on the link inside the logo item */
+.nav-logo-wrapper .logo-link:hover {
+  background-color: transparent !important; /* Prevent hover background color change */
+  color: inherit !important; /* Keep the original color */
+}
+
+/* Keep the hover effect on other nav items as usual */
+.nav-item:hover {
+  background-color: #495057; /* Example hover color for other nav items */
+  cursor: pointer; /* Normal cursor for other items */
+}
+
+
+
+
+
+
+
+/* ===================== */
+
 
 .navbar-custom {
  position: sticky; 
@@ -315,6 +505,475 @@ body {
   font-weight: 600;
   margin: 10px 0px;
 }
+
+/* =========================== */
+
+
+
+
+/* Change Password Modal - Minimalist Style */
+#changePasswordModal .modal-content {
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  border: none;
+  overflow: hidden;
+}
+
+/* Modal Header */
+#changePasswordModal .modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #fff;
+  color: #333;
+  font-weight: 600;
+  padding: 15px;
+  border-bottom: none;
+}
+
+/* Title Wrapper */
+#changePasswordModal .modal-title-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 90%;
+  padding: 0 5px;
+}
+
+/* Modal Subtitle */
+#changePasswordModal .modal-title-wrapper small {
+  font-size: 12px;
+  line-height: 1.2;
+  color: #666;
+  margin-top: 4px;
+}
+
+/* Close Button Wrapper */
+#changePasswordModal .modal-close-wrapper {
+  display: flex;
+  width: 10%;
+}
+
+/* Close Button Styling */
+#changePasswordModal .btn-close {
+  opacity: 0.6;
+  transition: opacity 0.2s ease-in-out;
+}
+
+#changePasswordModal .btn-close:hover {
+  opacity: 1;
+}
+
+/* Modal Title */
+#changePasswordModal .modal-title {
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+}
+
+#changePasswordModal .modal-title i {
+  margin-right: 8px;
+}
+
+/* Modal Body */
+#changePasswordModal .modal-body {
+  padding: 20px;
+}
+
+/* Form Labels */
+#changePasswordModal .form-label {
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+/* Form Controls */
+#changePasswordModal .form-control {
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  padding: 12px;
+  font-size: 14px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+#changePasswordModal .form-control:focus {
+  border-color: #116530;
+  box-shadow: 0 0 5px rgba(17, 101, 48, 0.3);
+  outline: none;
+}
+
+
+
+
+/* Modal Footer */
+#changePasswordModal .modal-footer {
+  border-top: none;
+  display: flex;
+  justify-content: space-between; /* Ensures buttons are aligned horizontally */
+  align-items: stretch; /* Stretches button height to match the main div */
+  padding: 10px 20px;
+  gap: 10px;
+  width: 100%;
+}
+
+/* Button Wrapper */
+#changePasswordModal .footer-button-wrapper {
+  display: flex;
+  width: 100%; /* Ensures buttons take full width */
+  gap: 10px; /* Adds spacing between buttons */
+}
+
+/* Buttons */
+#changePasswordModal .btn-secondary,
+#changePasswordModal .btn-primary {
+  flex: 1; /* Ensures equal width for both buttons */
+  border: none;
+  padding: 12px;
+  font-weight: 500;
+  transition: background-color 0.3s, transform 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Secondary Button */
+#changePasswordModal .btn-secondary {
+  background-color: #ccc;
+  color: #333;
+}
+
+#changePasswordModal .btn-secondary:hover {
+  background-color: #bbb;
+  transform: scale(1.02);
+}
+
+/* Primary (Success) Button */
+#changePasswordModal .btn-primary {
+  background-color: #116530;
+  color: #fff;
+}
+
+#changePasswordModal .btn-primary:hover {
+  background-color: #0e4b28;
+}
+
+
+
+
+
+
+
+/* Error & Success Labels */
+.error-label, .success-label {
+  display: none;
+  font-size: 12px;
+  margin-top: 6px;
+}
+
+.error-label {
+  color: #d9534f;
+}
+
+.success-label {
+  color: #28a745;
+  font-weight: 600;
+}
+
+
+
+
+
+
+
+#messageAlert {
+  display: none;
+  justify-content: center;
+  align-items: center; 
+  padding: 12px 20px; 
+  border-radius: 8px; 
+  font-size: 14px;
+  font-weight: 500; 
+  width: 100%; 
+  margin: 5px 0px 5px 0px; 
+  background-color: #f0f0f0; 
+  color: #333;
+  border: 1px solid #ddd; 
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); 
+  transition: opacity 0.3s ease, transform 0.3s ease; 
+}
+
+#messageAlert.show {
+  display: flex;
+  opacity: 1;
+  transform: translateY(0); /* Show with a slight upward motion */
+}
+
+#messageAlert.hide {
+  opacity: 0;
+  transform: translateY(-10px); /* Hide with a slight upward motion */
+}
+
+
+
+#otpAlert {
+  display: none;
+  justify-content: center;
+  align-items: center; 
+  padding: 12px 20px; 
+  border-radius: 8px; 
+  font-size: 14px;
+  font-weight: 500; 
+  width: 100%; 
+  margin: 15px 0px 5px 0px; 
+  background-color: #f0f0f0; 
+  color: #333;
+  border: 1px solid #ddd; 
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); 
+  transition: opacity 0.3s ease, transform 0.3s ease; 
+}
+
+#otpAlert.show {
+  display: flex;
+  opacity: 1;
+  transform: translateY(0); /* Show with a slight upward motion */
+}
+
+#otpAlert.hide {
+  opacity: 0;
+  transform: translateY(-10px); /* Hide with a slight upward motion */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+#otpFieldContainer {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+
+.otp-container {
+  display: flex;
+  gap: 10px;
+}
+
+.otp-input {
+  flex: 1; /* Makes input take up remaining space */
+}
+
+.resend-btn {
+  white-space: nowrap; /* Prevents text wrapping */
+  padding: 8px 15px;
+}
+
+
+/* ========== OTP Verification Modal ========== */
+#otpVerificationModal .otp-modal-content {
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  border-bottom: none;
+  padding: 20px;
+  text-align: center;
+  width: 500px;
+  max-height: 80vh; /* Limit the maximum height to 80% of the viewport height */
+  height: auto; /* Allow height to adjust based on content */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Align items at the top */
+  align-items: center;
+  overflow-y: auto; /* Allow scrolling if content overflows */
+}
+
+
+#otpVerificationModal .otp-modal-header {
+  border-bottom: none;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+.header-body-wrapper .otp-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0px 0px;
+  /* border: 1px solid black; */
+}
+
+
+#otpVerificationModal .otp-icon-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
+}
+
+#otpVerificationModal .otp-icon {
+  background-color: #007bff;
+  color: white;
+  font-size: 24px;
+  padding: 10px;
+  border-radius: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+  width: 50px; /* Fixed width */
+  height: 50px; /* Fixed height to maintain circle shape */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Adding box shadow */
+}
+
+
+#otpVerificationModal .otp-icon i {
+  margin: 0; /* Remove any default margins from the icon */
+  color: white;
+}
+
+
+
+
+
+
+.header-body-wrapper .header-body-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0;
+  /* border: 1px solid black; */
+}
+
+#otpVerificationModal .otp-subtext {
+  font-size: 14px;
+  color: #6c757d;
+  margin-top: 5px;
+  
+}
+
+#otpVerificationModal .otp-email-mask {
+  font-weight: bold;
+  color: #333;
+}
+
+
+
+
+
+#otpVerificationModal .otp-modal-container {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  /* border: 1px solid black; */
+}
+
+#otpVerificationModal .otp-modal-input {
+  width: 50px;
+  height: 50px;
+  font-size: 20px;
+  text-align: center;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  transition: all 0.3s ease-in-out;
+}
+
+#otpVerificationModal .otp-modal-input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+}
+
+
+
+#otpVerificationModal .otp-verify-btn {
+  width: 80%; /* Make the button slightly smaller by reducing width */
+  background-color: #007bff;
+  margin-top: 10px;
+  border: none;
+  padding: 8px 16px; /* Reduce padding to make the button smaller */
+  font-size: 16px; /* Slightly smaller font size */
+  border-radius: 8px;
+  color: white; /* Ensure text is white for visibility */
+  cursor: pointer; /* Change cursor to pointer on hover */
+}
+
+#otpVerificationModal .otp-verify-btn:hover {
+  background-color: #0056b3; /* Darker shade on hover */
+}
+
+
+
+
+#otpVerificationModal .otp-resend-text {
+  font-size: 14px;
+  margin-top: 10px;
+  color: #6c757d;
+}
+
+#otpVerificationModal .otp-resend-link {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+#otpVerificationModal .otp-resend-link:hover {
+  text-decoration: underline;
+}
+
+
+
+
+#otpVerificationModal .otpResent-button-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: first baseline;
+  width: 100%;
+  margin-top: 10px;
+  /* border: 1px solid black; */
+}
+
+
+/* ===================================== */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

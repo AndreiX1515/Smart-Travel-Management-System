@@ -13,6 +13,7 @@
         <div class="modal-close-wrapper">
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
+
       </div>
 
       <form id="changePasswordForm">
@@ -132,64 +133,7 @@
 <script>
   $(document).ready(function() {
 
-    // Function to send OTP
-    function sendOtp(currentPassword, emailAddress) {
-      $.ajax({
-        url: '../Agent Section/functions/agent-sendOtpCPassword.php',
-        type: 'POST',
-        data: {
-          currentPassword: currentPassword,
-          emailAddress: emailAddress
-        },
-        dataType: 'json',
-        success: function(response) {
-          if (response.status === 'success') {
-            console.log('OTP Sent:', response.otp);
-
-            // Mask the email for display
-            function maskEmail(email) {
-              const parts = email.split('@');
-              const username = parts[0];
-              const domain = parts[1];
-              const maskedUsername = username.charAt(0) + '******' + username.charAt(username.length - 1);
-              return maskedUsername + '@' + domain;
-            }
-
-            // Show success alert immediately
-            showOtpAlert('OTP has been sent to your email address.', 'success');
-
-            // Delay action before showing OTP modal
-            setTimeout(function() {
-              $('#changePasswordModal').modal('hide');
-              $('#otpVerificationModal').modal('show');
-
-              // Append accountId to form
-              $('#otpVerificationForm').append('<input type="hidden" name="accountId" value="' + response.accountId + '">');
-
-              // Mask and display the email address
-              const maskedEmail = maskEmail(emailAddress);
-              $('#otpVerificationModal .otp-email-mask').text(maskedEmail);
-
-              console.log('Masked Email:', maskedEmail);
-            }, 500); // 2.5 second delay
-
-          } else {
-            // OTP sending failed
-            console.log('Error Sending OTP:', response.message);
-            showOtpAlert('Failed to send OTP. Please try again.', 'error');
-          }
-        },
-
-        error: function(xhr, status, error) {
-          // AJAX call itself failed
-          console.log('AJAX Error:', error);
-          showOtpAlert('An error occurred while sending OTP.', 'error');
-        }
-      });
-
-    }
-
-
+    // Function for OTP Modal Alert
     function showOtpAlert(message, status) {
 
       // Set the color and background based on the status
@@ -223,7 +167,7 @@
         }, 3500);
     }
 
-
+    // Function for CP Alert
     function showCPAlert(message, status) {
 
     // Set the color and background based on the status
@@ -257,6 +201,69 @@
       }, 3500);
     }
 
+    // Function to send OTP
+    function sendOtp(currentPassword, emailAddress) {
+
+      if (!emailAddress || emailAddress === 'null' || emailAddress.trim() === '') {
+        showOtpAlert('Email address is missing. Please update your profile to receive OTP.', 'error');
+        console.warn('Attempted to send OTP without a valid email address.');
+        return;
+      }
+
+      sessionStorage.setItem('emailAddress', emailAddress);
+
+      $.ajax({
+        url: '../Agent Section/functions/agent-sendOtpCPassword.php',
+        type: 'POST',
+        data: {
+          currentPassword: currentPassword,
+          emailAddress: emailAddress
+        },
+        dataType: 'json',
+        success: function(response) {
+          if (response.status === 'success') {
+            console.log('OTP Sent:', response.otp);
+
+            // Mask the email for display
+            function maskEmail(email) {
+              const parts = email.split('@');
+              const username = parts[0];
+              const domain = parts[1];
+              const maskedUsername = username.charAt(0) + '******' + username.charAt(username.length - 1);
+              return maskedUsername + '@' + domain;
+            }
+
+            showOtpAlert('OTP has been sent to your email address.', 'success');
+
+            setTimeout(function() {
+              $('#changePasswordModal').modal('hide');
+              $('#otpVerificationModal').modal('show');
+
+              // Append accountId to form if provided
+              if (response.accountId) {
+                $('#otpVerificationForm').append('<input type="hidden" name="accountId" value="' + response.accountId + '">');
+              }
+
+              // Mask and display the email address
+              const maskedEmail = maskEmail(emailAddress);
+              $('#otpVerificationModal .otp-email-mask').text(maskedEmail);
+
+              console.log('Masked Email:', maskedEmail);
+            }, 500);
+
+          } else {
+            // Handle specific error message from backend
+            console.log('Error Sending OTP:', response.message);
+            showOtpAlert(response.message || 'Failed to send OTP. Please try again.', 'error');
+          }
+        },
+
+        error: function(xhr, status, error) {
+          console.log('AJAX Error:', error);
+          showOtpAlert('An error occurred while sending OTP. Please try again later.', 'error');
+        }
+      });
+    }
 
     // Handle form submission for change password
     $('#changePasswordForm').on('submit', function(e) {
@@ -299,45 +306,37 @@
           response = JSON.parse(response);
 
           if (response.status === 'error') {
-          
             document.getElementById('currentPasswordError').textContent = response.message;
             document.getElementById('currentPasswordError').style.display = 'block';
 
-          } 
-          
-          else if (response.status === 'success') {
+          } else if (response.status === 'success') {
+            const accountId = response.accountId;
+            const emailAddress = response.emailAddress;
 
-              const accountId = response.accountId;
-              const emailAddress = response.emailAddress;
+            // Store in sessionStorage
+            sessionStorage.setItem('emailAddress', emailAddress);
 
-              // Store in sessionStorage
-              sessionStorage.setItem('emailAddress', emailAddress);
+            console.log('Email Address:', emailAddress); // Debugging log
 
-              console.log('Email Address:', emailAddress); // Debugging log
+            // ✅ Use showCPAlert for success message
+            showCPAlert(response.message, 'success');
 
-              $('#messageAlert').show();
-              $('#messageAlert').text(response.message);
-              $('#messageAlert').css({
-                'background-color': '#d4edda',
-                'color': '#155724',
-                'border': '1px solid #c3e6cb'
-              });
+            // ✅ Check if email is missing
+            if (!emailAddress || emailAddress === 'null' || emailAddress.trim() === '') {
+              showCPAlert('Unable to send OTP. Email address is missing.', 'error');
+              return;
+            }
 
-              setTimeout(function() {
-                sendOtp(currentPassword, emailAddress); // Reusable OTP function
-              }, 500);
+            // Proceed to send OTP
+            setTimeout(function() {
+              sendOtp(currentPassword, emailAddress); // Reusable OTP function
+            }, 500);
           }
-
-
         },
+
         error: function(xhr, status, error) {
           console.log('AJAX Error:', error);
-          $('#messageAlert').show().text('An error occurred while validating the password.');
-          $('#messageAlert').css({
-            'background-color': '#f8d7da',
-            'color': '#721c24',
-            'border': '1px solid #f5c6cb'
-          });
+          showCPAlert('An error occurred while validating the password.', 'error');
         }
       });
     });
@@ -438,37 +437,48 @@
 
     // Resend OTP functionality
     $('#sendOtpBtn').click(function(e) {
-        e.preventDefault();
+      e.preventDefault();
 
-        const currentPassword = document.getElementById('currentPassword').value;
-        let emailAddress = <?= json_encode($_SESSION['emailAddress']); ?>;
+      const currentPassword = document.getElementById('currentPassword').value;
 
-        // Fallback: use sessionStorage if PHP session is null, 'null', or empty string
-        if (!emailAddress || emailAddress === 'null' || emailAddress === '') {
-          emailAddress = sessionStorage.getItem('emailAddress');
-        }
+      // Safe email assignment from PHP
+      let emailAddress = <?= isset($_SESSION['client_emailAddress']) ? json_encode($_SESSION['client_emailAddress']) : null; ?>;
 
-        // Check if password is empty
-        if (!currentPassword) {
-          showOtpAlert('Please enter your current password to resend OTP.', 'error');
+      // Early layer: if PHP email is already empty/null
+      if (!emailAddress || emailAddress === 'null' || emailAddress.trim() === '') {
+        console.warn('Email from PHP session is missing. Checking sessionStorage as fallback.');
+        emailAddress = sessionStorage.getItem('emailAddress');
+
+        // If still not found, alert the user
+        if (!emailAddress || emailAddress === 'null' || emailAddress.trim() === '') {
+          console.warn('Email address not found in PHP session or sessionStorage.');
+          showOtpAlert('Unable to send OTP. No email address found. Please update your profile.', 'error');
           return;
         }
+      }
 
-        // Proceed if emailAddress is available
-        if (emailAddress) {
-          sendOtp(currentPassword, emailAddress); // Reuse existing OTP sending function
-          showOtpAlert('Resending OTP. Please wait...', 'success');
-        } else {
-          console.warn('Email address not found in session or sessionStorage.');
-          showOtpAlert('Unable to send OTP, Please Try Again.', 'error');
-        }
-      });
+      // Check if current password is empty
+      if (!currentPassword || currentPassword.trim() === '') {
+        showOtpAlert('Please enter your current password to resend OTP.', 'error');
+        return;
+      }
+
+      // Final fallback: double-check before sending
+      if (!emailAddress || emailAddress === 'null' || emailAddress.trim() === '') {
+        showOtpAlert('Email address is still invalid. Cannot send OTP.', 'error');
+        return;
+      }
+
+      // Proceed to send OTP
+      sendOtp(currentPassword, emailAddress); // Reuse existing OTP sending function
+      showOtpAlert('Resending OTP. Please wait...', 'success');
+    });
+
+
 
 
   });
 </script>
-
-
 
 <!-- Logout Script -->
 <script>

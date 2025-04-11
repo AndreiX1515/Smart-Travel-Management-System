@@ -554,6 +554,7 @@
                     <div class="card-body">
                         <!-- Guides Row -->
                         <div class="row">
+
                             <div class="columns col-md-12">
                                 <div class="column-header">
                                     <label for="flightDate">Guide
@@ -567,12 +568,14 @@
                                     </select>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
 
+
                 <!-- Excludes -->
-                <div class="card includes-header-card">
+                <div class="card excludes-header-card">
                     <div class="card-header bg-primary card-title includes-wrapper">
                         <h5>Excludes</h5>
 
@@ -580,7 +583,8 @@
                     </div>
                 </div>
 
-                <div class="card include-cards">
+
+                <div class="card excludes-cards">
                     <div class="card-body">
                         <!-- Guides Row -->
                         <div class="row">
@@ -878,6 +882,20 @@
     </div>
 
     <?php include '../Employee Section/includes/emp-scripts.php' ?>
+
+                                        
+
+
+
+
+
+
+
+
+
+
+
+
 
     <!-- JavaScript to Initialize Timepicker -->
     <script>

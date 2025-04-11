@@ -25,7 +25,6 @@ if (isset($_POST['login'])) {
             $account = $resultAccount->fetch_assoc();
             $storedPassword = $account['password']; // Fetch stored password
 
-            // 🔹 **Check Password Without Hashing** 🔹
             if ($password == $storedPassword) {
                 // Check account status
                 if ($account['accountStatus'] === 'active') {
@@ -176,15 +175,16 @@ function manageAgentSession($accountId, $userData, $userType, $flightId, $additi
         // Store agent details in session
         $_SESSION['agent_accountId'] = $accountId;
         $_SESSION['agent_userType'] = $userType;
-        $_SESSION['agent_fName'] = $userData['fName'] ?? '';
-        $_SESSION['agent_mName'] = $userData['mName'] ?? '';
-        $_SESSION['agent_lName'] = $userData['lName'] ?? '';
-        $_SESSION['agentId'] = $userData['agentId'] ?? '';  
-        $_SESSION['agentCode'] = $userData['agentCode'] ?? '';  
-        $_SESSION['agentRole'] = $userData['agentRole'] ?? '';  
-        $_SESSION['agentType'] = $userData['agentType'] ?? '';  
-        $_SESSION['agent_branchId'] = $userData['branchId'] ?? '';
-        $_SESSION['agent_flightId'] = $flightId ?? '';  
+        $_SESSION['agent_fName'] = $userData['fName'] ?? null;
+        $_SESSION['agent_mName'] = $userData['mName'] ?? null;
+        $_SESSION['agent_lName'] = $userData['lName'] ?? null;
+        $_SESSION['agentId'] = $userData['agentId'] ?? null;  
+        $_SESSION['agentCode'] = $userData['agentCode'] ?? null;  
+        $_SESSION['agentRole'] = $userData['agentRole'] ?? null;  
+        $_SESSION['agentType'] = $userData['agentType'] ?? null;  
+        $_SESSION['agent_branchId'] = $userData['branchId'] ?? null;
+        $_SESSION['agent_flightId'] = $flightId ?? null;  
+        $_SESSION['agent_emailAddress'] = $userData['emailAddress'] ?? null;  
         $_SESSION['agent_timeout'] = time();
 
         unset($_SESSION['flightid']);
@@ -388,7 +388,6 @@ function handleLoginEmployee($accountId, $userType, $query, $additionalFields = 
 }
 
 
-
 // Function to manage session for employees
 function manageEmployeeSession($accountId, $userData, $userType, $additionalFields)
 {
@@ -425,12 +424,13 @@ function manageEmployeeSession($accountId, $userData, $userType, $additionalFiel
     // Store session data specifically for employee
     $_SESSION['employee_accountId'] = $accountId;
     $_SESSION['employee_userType'] = $userType;
-    $_SESSION['employee_fName'] = $userData['fName'] ?? '';
-    $_SESSION['employee_mName'] = $userData['mName'] ?? '';
-    $_SESSION['employee_lName'] = $userData['lName'] ?? '';
-    $_SESSION['employee_employeeId'] = $userData['employeeId'] ?? '';
+    $_SESSION['employee_fName'] = $userData['fName'] ?? null;
+    $_SESSION['employee_mName'] = $userData['mName'] ?? null;
+    $_SESSION['employee_lName'] = $userData['lName'] ?? null;
+    $_SESSION['employee_employeeId'] = $userData['employeeId'] ?? null;
     $_SESSION['employee_accountId'] = $accountId;
-    $_SESSION['employee_position'] = $userData['position'] ?? '';
+    $_SESSION['employee_emailAddress'] = $userData['emailAddress'] ?? null;  
+    $_SESSION['employee_position'] = $userData['position'] ?? null;
     $_SESSION['employee_timeout'] = time();
 
     // Store additional fields in session if provided
