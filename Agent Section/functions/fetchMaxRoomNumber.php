@@ -2,7 +2,7 @@
 require "../../conn.php"; // Database connection
 
 // Fetch the highest room number from the roomingList table
-$query = "SELECT MAX(roomNumber) AS maxRoomNumber FROM roomingList";
+$query = "SELECT MAX(roomNumber) AS maxRoomNumber FROM roominglist";
 $result = mysqli_query($conn, $query);
 
 if ($result) {

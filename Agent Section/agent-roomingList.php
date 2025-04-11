@@ -136,12 +136,18 @@
     let availableGuests = [];  // Stores guests available for assignment
     let rooms = [];
     let removedLuggage = [];
+    // Store luggage to be deleted (for later backend request)
+    let luggageToDelete = [];
 
     document.getElementById('saveAssignments').addEventListener('click', function () 
     {
       let roomAssignments = [];
       let luggageAssignments = [];
 
+      // First, delete any flagged luggage items from the database
+      deleteLuggageFromDatabase();
+
+      // Then, proceed with saving the room assignments and luggage details
       $.ajax(
       {
         url: '../Agent Section/functions/fetchMaxRoomNumber.php', // Create this PHP file
@@ -151,14 +157,10 @@
         {
           let maxRoomNumber = response.maxRoomNumber || 0; // Start from 0 if no existing data
 
-          let roomAssignments = [];
-          let luggageAssignments = [];
-
-          // Assign room numbers dynamically
           rooms.forEach((room) => 
           {
             maxRoomNumber++; // Increment for the next room
-            
+
             room.guests.forEach(guest => 
             {
               roomAssignments.push(
@@ -171,7 +173,8 @@
 
               // Collect luggage data for each guest
               let luggageItems = Array.from(document.querySelectorAll(`#luggageContainer-${guest.id} select`)).map(select => select.value);
-              luggageItems.forEach(luggage => {
+              luggageItems.forEach(luggage => 
+              {
                 luggageAssignments.push(
                 {
                   transactNo: guest.transactNo,
@@ -194,15 +197,18 @@
           {
             url: '../Agent Section/functions/agent-addRoomingList.php',
             type: 'POST',
-            data: { 
+            data: 
+            {
               roomAssignments: JSON.stringify(roomAssignments),
               luggageAssignments: JSON.stringify(luggageAssignments) // Include luggage data in the same request
             },
-            success: function(response) {
+            success: function(response) 
+            {
               console.log(response);
               alert("Room assignments and luggage details saved successfully!");
             },
-            error: function(xhr, status, error) {
+            error: function(xhr, status, error) 
+            {
               console.error('Error saving data:', error);
               alert("Failed to save room assignments and luggage details.");
             }
@@ -219,6 +225,7 @@
     // Fetch guests when flight date changes
     $('#flightDate').on('change', function () 
     {
+      document.getElementById('assignedRoomsTable').innerHTML = '';
       let flightDate = $(this).val();
       let agentCode = "<?php echo $agentCode; ?>";
       console.log("Luggage Options:", luggageOptions);
@@ -389,7 +396,7 @@
               luggageSelectGroup += `
                 <select class="form-control" name="luggageSelect-${guest.id}[]" 
                   style="width: 100%; display: block; margin-bottom: 5px;" 
-                  id="luggageSelect-${guest.id}-${i}">
+                  id="luggageSelect-${guest.id}-${i}" data-luggage-id="${guest.luggageType[i]}">
                   <option value="">Select Luggage</option>`;
 
               luggageOptions.forEach(option => 
@@ -445,13 +452,15 @@
       select.name = `luggageSelect-${guestId}[]`;
       select.id = `luggageSelect-${guestId}-${selectCount}`;
       select.style.cssText = 'width: 100%; display: block; margin-bottom: 5px;';
+      select.dataset.new = 'true'; // Flag as new luggage
 
       let defaultOption = document.createElement('option');
       defaultOption.value = '';
       defaultOption.textContent = 'Select Luggage';
       select.appendChild(defaultOption);
 
-      luggageOptions.forEach(option => {
+      luggageOptions.forEach(option => 
+      {
         let opt = document.createElement('option');
         opt.value = option.concernDetailsId;
         opt.textContent = option.details;
@@ -498,8 +507,42 @@
 
       if (selects.length > 0) 
       {
-        container.removeChild(selects[selects.length - 1]);
+        const lastSelect = selects[selects.length - 1];
+        if (lastSelect.dataset.new === 'true') 
+        {
+          // If it's newly added, just remove it from the DOM
+          container.removeChild(lastSelect);
+        } 
+        else 
+        {
+          // Handle case where the luggage has been saved in the database (store it for later deletion)
+          const luggageId = lastSelect.dataset.luggageId; // Get the luggage ID to be deleted
+          luggageToDelete.push({ guestId, luggageId }); // Store luggage to be deleted for later backend request
+          container.removeChild(lastSelect);
+        }
+
+        console.log(luggageToDelete);
       }
+    }
+
+    // Function to handle deletion of luggage from the database
+    function deleteLuggageFromDatabase() {
+      // Send a request to the backend to delete the stored luggage
+      fetch('../Agent Section/functions/agent-removeLuggage.php', {
+        method: 'POST',
+        body: JSON.stringify({ luggageToDelete }),
+        headers: { 'Content-Type': 'application/json' }
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === 'success') {
+          console.log('Luggage deleted successfully');
+          luggageToDelete = []; // Clear the luggageToDelete array after successful deletion
+        } else {
+          console.log('Error deleting luggage');
+        }
+      })
+      .catch(error => console.error('Error:', error));
     }
 
     // Remove a room and reassign the guests to the unassigned list
