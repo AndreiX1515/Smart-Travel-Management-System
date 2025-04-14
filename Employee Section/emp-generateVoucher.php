@@ -33,10 +33,17 @@
         <div class="main-content">
             <div class="form-container">
 
+                <!-- Tour Condition Title Card -->
+                <div class="card">
+                    <div class="card-header bg-primary card-title">
+                        <h5>Header</h5>
+                    </div>
+                </div>
+
                 <!-- Itinerary Details Card -->
                 <div class="card">
-                    <div class="card-header bg-primary">
-                        <h5>Voucher Details (Header) </h5>
+                    <div class="card-header bg-secondary">
+                        <h5>Voucher Details</h5>
                     </div>
 
                     <div class="card-body">
@@ -153,6 +160,7 @@
                     </div>
                 </div>
 
+                <!-- Tour Condition Title Card -->
                 <div class="card">
                     <div class="card-header bg-primary card-title">
                         <h5>Tour Condition</h5>
@@ -160,131 +168,116 @@
                 </div>
 
                 <div class="card">
-                    <div class="card-body tour-content">
-                        <!-- Package Row -->
-                        <div class="row">
-                            <div class="columns col-md-4">
-                                <div class="column-header">
-                                    <label for="flightDate">Date:
-                                        <span class="text-danger"> *</span>
-                                    </label>
-                                </div>
-
-                                <div class="form-group">
-                                    <select class="form-select" id="packageSelect" name="packageSelect" required>
-                                        <option selected disabled>Select Package Type</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="columns col-md-4">
-                                <div class="column-header">
-                                    <label for="flightDate">From
-                                        <span class="text-danger"> *</span>
-                                    </label>
-                                </div>
-
-                                <div class="form-group">
-                                    <select class="form-select" id="packageSelect" name="packageSelect" required>
-                                        <option selected disabled>Select Package Type</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <!-- Flight Date Dropdown -->
-                            <div class="columns col-md-4">
-
-                                <div class="column-header">
-                                    <label for="flightDate">Tour Periods:
-                                        <span class="text-danger"> *</span>
-                                    </label>
-                                </div>
-
-                                <div class="datepicker-wrapper">
-                                    <div class="form-group">
-                                        <div class="date-range-inputs-wrapper">
-                                            <div class="input-with-icon">
-                                                <input type="text" class="datepicker" id="PeriodStartDate" placeholder="Start" readonly>
-                                                <i class="fas fa-calendar-alt calendar-icon"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Dash Separator -->
-                                    <div class="dash-separator">-></div>
-
-                                    <div class="form-group">
-                                        <div class="date-range-inputs-wrapper">
-                                            <div class="input-with-icon">
-                                                <input type="text" class="datepicker" id="PeriodEndDate" placeholder="End" readonly>
-                                                <i class="fas fa-calendar-alt calendar-icon"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                        <!-- Periods, Guide Row -->
-                        <div class="row">
-
-                            <div class="columns col-md-4">
-                                <div class="column-header">
-                                    <label for="flightDate">Attachment
-                                        <span class="text-danger"> *</span>
-                                    </label>
-                                </div>
-
-                                <div class="form-group">
-                                    <select class="form-select" id="packageSelect" name="packageSelect" required>
-                                        <option selected disabled>Select Package Type</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="columns col-md-4">
-                                <div class="column-header">
-                                    <label for="flightDate">Guide
-                                        <span class="text-danger"> *</span>
-                                    </label>
-                                </div>
-
-                                <div class="form-group">
-                                    <select class="form-select" id="guideName" name="flightDate" required>
-                                        <option selected disabled>Select Guide</option>
-                                        <option value="John Doe">John Doe</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="columns col-md-4">
-                                <div class="column-header">
-                                    <label for="flightDate">Contact Number
-                                        <span class="text-danger"> *</span>
-                                    </label>
-                                </div>
-
-                                <div class="form-group d-flex flex-row align-items-center">
-                                    <select class="form-select" id="countryCode" style="width: 80px;">
-                                        <option value="+63" selected>+63</option>
-                                        <option value="+82">+82</option>
-                                    </select>
-                                    <input type="text" class="form-control ms-2" id="contactNumber" name="contactNumber" min="1" placeholder="9***********" required>
-                                </div>
-
-                            </div>
-                        </div>
+                    <div class="card-header bg-secondary card-title first-wrapper d-flex justify-content-between align-items-center text-white">
+                        <h5 class="mb-0">Date & Hotels</h5>
+                        <button type="button" class="btn btn-success fw-bold" onclick="addCard()">
+                            <i class="fas fa-plus"></i>
+                        </button>
                     </div>
                 </div>
 
+                <!-- Container for Date & Hotel Cards -->
+                <div id="cardsContainer"></div>
+
+                <!-- Script for Add Container for Date & Hotels Section -->
+                <script>
+                    let cardCount = 0;
+
+                    function addCard() {
+                        cardCount++;
+                        const container = document.getElementById('cardsContainer');
+                        const card = document.createElement('div');
+
+                        card.className = 'card mt-1';
+                        card.innerHTML = `
+                            <div class="card-header bg-secondary card-title d-flex justify-content-between align-items-center text-white">
+                                <h5 class="mb-0">Date & Hotel #${cardCount}</h5>
+                                <button type="button" class="btn btn-sm btn-danger remove-card-btn">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+                            <div class="card-body tour-content">
+                                <div class="row">
+                                    <div class="columns col-md-4">
+                                        <div class="column-header">
+                                            <label>Date Range: <span class="text-danger">*</span></label>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="input-with-icon">
+                                                <input type="text" class="form-control datepicker" id="PeriodStartDate${cardCount}" name="PeriodStartDate${cardCount}" placeholder="Start" readonly>
+                                                <i class="fas fa-calendar-alt calendar-icon"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="columns col-md-4">
+                                        <div class="column-header"><br></div>
+                                        <div class="form-group">
+                                            <div class="input-with-icon">
+                                                <input type="text" class="form-control datepicker" id="PeriodEndDate${cardCount}" name="PeriodEndDate${cardCount}" placeholder="End" readonly>
+                                                <i class="fas fa-calendar-alt calendar-icon"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="columns col-md-4">
+                                        <div class="column-header">
+                                            <label>Hotel: <span class="text-danger">*</span></label>
+                                        </div>
+                                        <div class="form-group">
+                                            <select class="form-select" id="hotelSelect${cardCount}" name="hotelSelect${cardCount}" required>
+                                                <option value="" disabled selected>Select Hotel</option>
+                                                <option value="Shilla Stay">Shilla Stay</option>
+                                                <option value="Hotel PJ Myeongdong">Hotel PJ Myeongdong</option>
+                                                <option value="ENA Suite Hotel Namdaemun">ENA Suite Hotel Namdaemun</option>
+                                                <option value="Stanford Hotel Myeongdong">Stanford Hotel Myeongdong</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+
+                        container.appendChild(card);
+
+                        const removeButton = card.querySelector('.remove-card-btn');
+                        removeButton.addEventListener('click', () => {
+                            card.remove();
+                            cardCount--;
+                            updateCardHeaders();
+                        });
+
+                        // Initialize flatpickr for this card
+                        flatpickr(`#PeriodStartDate${cardCount}`, {
+                            dateFormat: "Y-m-d"
+                        });
+                        flatpickr(`#PeriodEndDate${cardCount}`, {
+                            dateFormat: "Y-m-d"
+                        });
+                    }
+
+                    function updateCardHeaders() {
+                        const cards = document.querySelectorAll('#cardsContainer .card');
+                        cards.forEach((card, index) => {
+                            const header = card.querySelector('h5');
+                            if (header) {
+                                header.textContent = `Date & Hotel #${index + 1}`;
+                            }
+                        });
+                    }
+
+                    // ✅ Show the first card by default
+                    addCard();
+                </script>
+
+
+
+                <!-- Other Information Title Card -->
                 <div class="card">
-                    <div class="card-header bg-primary card-title">
+                    <div class="card-header bg-secondary">
                         <h5>Other Informations</h5>
                     </div>
                 </div>
 
+                <!-- Select Guide -->
                 <div class="card">
                     <div class="card-body">
                         <!-- Guides Row -->
@@ -306,8 +299,9 @@
                     </div>
                 </div>
 
+                <!-- Air Schedule -->
                 <div class="card">
-                    <div class="card-header bg-primary">
+                    <div class="card-header bg-secondary">
                         <h5>Air Schedule</h5>
                     </div>
 
@@ -380,20 +374,22 @@
 
                             <div class="columns col-md-2">
                                 <div class="column-header">
-                                    <label for="flightTime">Time
-                                        <span class="text-danger"> *</span>
-                                    </label>
+                                    <label for="flightTime">Time <span class="text-danger"> *</span></label>
                                 </div>
 
-                                
                                 <div class="form-group">
-                                    <input type="text" class="form-control wickedpicker" id="flightTime" name="flightTime" placeholder="Select time" required readonly>
+                                    <div class="date-range-inputs-wrapper">
+                                        <div class="input-with-icon timepicker">
+                                            <input type="text" class="timepicker" placeholder="Pick a time" readonly>
+                                            <i class="fas fa-clock calendar-icon"></i>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
                         </div>
 
-                        <!-- Air Schedule -->
+
                         <div class="row">
                             <div class="main-header">
                                 <div class="header-container">
@@ -452,8 +448,8 @@
                                     <div class="dash-separator">-></div>
 
                                     <div class="form-group">
-                                        <select class="form-select" id="packageSelect" name="packageSelect" required>
-                                            <option selected disabled>Destination</option>
+                                        <select class="form-select" id="packageSelect" name=packageSelect" required>
+                                            <option selected disabled>Destination</option>"
                                         </select>
                                     </div>
                                 </div>
@@ -478,27 +474,26 @@
                     </div>
                 </div>
 
+                <!-- Guide Meeting -->
                 <div class="card">
-                    <div class="card-header bg-primary">
+                    <div class="card-header bg-secondary">
                         <h5>Guide Meeting</h5>
                     </div>
 
                     <div class="card-body">
                         <!-- Guides Row -->
                         <div class="row">
-                            <div class="columns col-md-4">
-                                <div class="column-header">
-                                    <label for="flightDate">Date
-                                        <span class="text-danger"> *</span>
-                                    </label>
-                                </div>
 
+                            <!-- Date Picker -->
+                            <div class="columns col-md-2">
+                                <div class="column-header">
+                                    <label for="PeriodStartDate">Date <span class="text-danger"> *</span></label>
+                                </div>
                                 <div class="datepicker-wrapper">
                                     <div class="form-group">
                                         <div class="date-range-inputs-wrapper">
-                                            <div class="input-with-icon">
-                                                <input type="text" class="datepicker" id="PeriodEndDate" placeholder="End" readonly>
-                                                <i class="fas fa-calendar-alt calendar-icon"></i>
+                                            <div class="input-with-icon datepicker">
+                                                <input type="text" class="datepicker" placeholder="Pick a date" readonly>
                                             </div>
                                         </div>
                                     </div>
@@ -507,25 +502,28 @@
 
                             <div class="columns col-md-2">
                                 <div class="column-header">
-                                    <label for="flightTime">Time
+                                    <label for="flightTime">
+                                        Time <small class="time-format">(24H Format)</small>
                                         <span class="text-danger"> *</span>
                                     </label>
                                 </div>
 
+
+
                                 <div class="form-group">
                                     <div class="date-range-inputs-wrapper">
-                                        <div class="input-with-icon">
-                                            <input type="text" class="timepicker" id="flightTime" placeholder="Select time" readonly>
+                                        <div class="input-with-icon timepicker">
+                                            <input type="text" class="timepicker" placeholder="Pick a time" readonly>
                                             <i class="fas fa-clock calendar-icon"></i>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-
-                            <div class="columns col-md-6">
+                            <!-- Place Selector -->
+                            <div class="columns col-md-8">
                                 <div class="column-header">
-                                    <label for="flightDate">Place
+                                    <label for="packageSelect">Place
                                         <span class="text-danger"> *</span>
                                     </label>
                                 </div>
@@ -541,312 +539,355 @@
                     </div>
                 </div>
 
-                <!-- Includes -->
+                <!-- Includes Header -->
                 <div class="card includes-header-card">
-                    <div class="card-header bg-primary card-title includes-wrapper">
+                    <div class="card-header bg-secondary card-title includes-wrapper">
                         <h5>Includes</h5>
-
-                        <button class="add-button">+</button>
+                        <button id="addIncludeBtn" class="btn btn-light btn-sm">+</button> <!-- Unique ID -->
                     </div>
                 </div>
 
+                <!-- Include Cards Container -->
                 <div class="card include-cards">
-                    <div class="card-body">
-                        <!-- Guides Row -->
-                        <div class="row">
+                    <div class="card-body" id="includesContainer">
+                        <!-- JS will generate .row elements here directly -->
+                    </div>
+                </div>
 
-                            <div class="columns col-md-12">
-                                <div class="column-header">
-                                    <label for="flightDate">Guide
-                                        <span class="text-danger"> *</span>
-                                    </label>
+                <!-- Includes Section Functions Script -->
+                <script>
+                    let includeCount = 0;
+                    const maxIncludes = 4;
+
+                    // Function to get all selected include values
+                    function getSelectedIncludes() {
+                        const selectedValues = [];
+                        const rows = document.querySelectorAll('.include-row');
+
+                        rows.forEach(row => {
+                            const select = row.querySelector('select');
+                            const customInput = row.querySelector('.custom-include-input');
+
+                            // Check if "others" is selected, and if it is, push the input value to the array
+                            if (select.value === "others") {
+                                selectedValues.push(customInput.value.trim());
+                            } else {
+                                selectedValues.push(select.value); // Otherwise, push the selected value
+                            }
+                        });
+
+                        return selectedValues;
+                    }
+
+                    // Function to update disabled options based on already selected values
+                    function updateDisabledOptions() {
+                        const selectedValues = getSelectedIncludes();
+                        const selects = document.querySelectorAll('.include-row select');
+
+                        selects.forEach(select => {
+                            const options = select.querySelectorAll('option');
+                            options.forEach(option => {
+                                if (
+                                    option.value !== select.value &&
+                                    selectedValues.includes(option.value) &&
+                                    option.value !== "" &&
+                                    option.value !== "others"
+                                ) {
+                                    option.disabled = true;
+                                } else {
+                                    option.disabled = false;
+                                }
+                            });
+                        });
+                    }
+
+                    // Function to add a new include row dynamically
+                    function addInclude() {
+                        if (includeCount >= maxIncludes) return;
+
+                        includeCount++;
+                        const includesContainer = document.getElementById('includesContainer');
+
+                        const newRow = document.createElement('div');
+                        newRow.className = 'row include-row align-items-start mb-1';
+                        newRow.setAttribute('data-index', includeCount);
+
+                        newRow.innerHTML = `
+                        <div class="col-md-12">
+                                <div class="label-container">
+                                    <label for="packageSelect${includeCount}" class="form-label">Includes ${includeCount}:</label>
+
+                                    <!-- Remove Button placed at the right end inside label-container -->
+                                    <button type="button" class="btn btn-sm btn-danger remove-include" title="Remove">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
                                 </div>
 
-                                <div class="form-group">
-                                    <select class="form-select" id="packageSelect" name="packageSelect" required>
-                                        <option selected disabled>Select Guide</option>
+                                <div class="content-container">
+                                    <select class="form-select include-select" id="packageSelect${includeCount}" name="packageSelect${includeCount}" required>
+                                        <option value="" selected disabled>Select Guide</option>
+                                        <option value="1">Hotel (4 nights with twin or triple sharing)</option>
+                                        <option value="2">Meals (4 times Lunch, 4 times Dinner)</option>
+                                        <option value="3">(Coach, Van), Admission as the itinerary, ENGLISH guide, etc.</option>
+                                        <option value="4">Airport Pick-up and Drop-off</option>
+                                        <option value="5">Souvenir Pack</option>
+                                        <option value="6">Travel Insurance</option>
+                                        <option value="others">Others</option>
+                                        <option value="0"> — No Additional Includes — </option>
                                     </select>
+
+                                    <input type="text" class="form-control custom-include-input d-none mt-2" placeholder="Please specify..." />
                                 </div>
                             </div>
 
-                        </div>
-                    </div>
-                </div>
+
+                        `;
+
+                        includesContainer.appendChild(newRow);
+
+                        const selectEl = newRow.querySelector('select');
+                        const customInput = newRow.querySelector('.custom-include-input');
+                        const removeBtn = newRow.querySelector('.remove-include');
+
+                        // Event listener for changes on select field
+                        selectEl.addEventListener('change', () => {
+                            if (selectEl.value === "others") {
+                                customInput.classList.remove("d-none");
+                                customInput.focus();
+                            } else {
+                                customInput.classList.add("d-none");
+                            }
+
+                            updateDisabledOptions();
+                            console.log('Selected Includes:', getSelectedIncludes());
+                        });
+
+                        // Event listener for custom input value to fill into the array
+                        customInput.addEventListener('input', () => {
+                            const inputVal = customInput.value.trim();
+                            let existingOtherOption = selectEl.querySelector('option[value="others"]');
+
+                            if (inputVal !== "") {
+                                // Keep the select value unchanged, the value in the input will be used instead
+                                updateDisabledOptions();
+                                console.log('Updated Custom Include:', inputVal);
+                            }
+                        });
+
+                        // Event listener to remove a row
+                        removeBtn.addEventListener('click', () => {
+                            newRow.remove();
+                            includeCount--;
+                            updateIncludeLabels();
+                            updateDisabledOptions();
+                            console.log('Selected Includes:', getSelectedIncludes());
+                        });
+
+                        updateDisabledOptions();
+                    }
+
+                    // Function to update the labels and attributes when rows are added or removed
+                    function updateIncludeLabels() {
+                        const rows = document.querySelectorAll('.include-row');
+                        rows.forEach((row, index) => {
+                            const label = row.querySelector('label');
+                            const select = row.querySelector('select');
+                            const number = index + 1;
+                            row.setAttribute('data-index', number);
+                            label.setAttribute('for', `packageSelect${number}`);
+                            label.textContent = `Includes ${number}:`;
+                            select.setAttribute('id', `packageSelect${number}`);
+                            select.setAttribute('name', `packageSelect${number}`);
+                        });
+                    }
+
+                    // Initialize the first row when the page is loaded
+                    function initIncludesSection() {
+                        addInclude();
+                    }
+
+                    // Add event listener for the add include button
+                    document.getElementById('addIncludeBtn').addEventListener('click', addInclude);
+
+                    // Initialize on page load
+                    window.addEventListener('DOMContentLoaded', initIncludesSection);
+                </script>
+
+
+
+
+
+
+
 
 
                 <!-- Excludes -->
                 <div class="card excludes-header-card">
-                    <div class="card-header bg-primary card-title includes-wrapper">
+                    <div class="card-header bg-secondary card-title excludes-wrapper">
                         <h5>Excludes</h5>
-
-                        <button class="add-button">+</button>
+                        <button type="button" class="add-button btn btn-primary add-exclude-button">+</button> <!-- Add Exclude Button -->
                     </div>
                 </div>
-
 
                 <div class="card excludes-cards">
                     <div class="card-body">
-                        <!-- Guides Row -->
-                        <div class="row">
-                            <div class="columns col-md-12">
-                                <div class="column-header">
-                                    <label for="flightDate">Guide
-                                        <span class="text-danger"> *</span>
-                                    </label>
-                                </div>
-
-                                <div class="form-group">
-                                    <select class="form-select" id="packageSelect" name="packageSelect" required>
-                                        <option selected disabled>Select Guide</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- Excludes Rows (Dynamically added) -->
+                        <div id="excludesContainer"></div>
                     </div>
                 </div>
 
-                <!-- Itinerary Details Card
-                <div class="card">
-                    <div class="card-header bg-primary">
-                        <h5>Voucher Details</h5>
-                    </div>
+                <!-- Excludes Section Functions Script -->
+                <script>
+                    document.addEventListener('DOMContentLoaded', () => {
+                        // Configuration for Excludes Section
+                        const excludeConfig = {
+                            count: 0, // Initialize the count of Excludes
+                            max: 4, // Maximum number of Exclude rows
+                            container: document.getElementById('excludesContainer'), // Container for Excludes rows
+                            addButton: document.querySelector('.add-exclude-button') // Add button for Excludes
+                        };
 
-                    <div class="card-body">
-                        
-                        <div class="row">
-                          
-                            <div class="columns col-md-4">
-                                <div class="column-header">
-                                    <label for="flightDate">Package
-                                        <span class="text-danger"> *</span>
-                                    </label>
-                                </div>
+                        // Initialize an array to store selected exclude values
+                        let selectedExcludes = [];
 
-                                <div class="form-group">
-                                    <select class="form-select" id="packageSelect" name="packageSelect" required>
-                                        <option selected disabled>Select Package Type</option>
-                                        <?php
-                                        // Execute the SQL query
-                                        // $sql1 = "SELECT packageName FROM package ORDER BY packageId ASC";
-                                        // $res1 = $conn->query($sql1);
+                        // Get selected excludes
+                        function getSelectedExcludes() {
+                            selectedExcludes = [];
+                            document.querySelectorAll('.exclude-row').forEach(row => {
+                                const select = row.querySelector('select');
+                                const input = row.querySelector('.custom-exclude-input');
 
-                                        // // Check if there are results
-                                        // if ($res1->num_rows > 0) {
-                                        //     // Loop through the results and generate options
-                                        //     while ($row = $res1->fetch_assoc()) {
-                                        //         echo "<option value='" . $row['packageName'] . "'>" . $row['packageName'] . "</option>";
-                                        //     }
-                                        // } else {
-                                        //     echo "<option value=''>No companies available</option>";
-                                        // }
-                                        ?>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
+                                if (select.value === 'others') {
+                                    selectedExcludes.push(input.value.trim());
+                                } else {
+                                    selectedExcludes.push(select.value);
+                                }
+                            });
+                            console.log('Selected Excludes:', selectedExcludes); // Log the array of selected excludes
+                        }
 
-                       
-                        <div class="row">
-                           
-                            <div class="columns col-md-4">
+                        // Update the disabled options in selects based on selected excludes
+                        function updateDisabledExcludes() {
+                            getSelectedExcludes();
+                            document.querySelectorAll('.exclude-row select').forEach(select => {
+                                select.querySelectorAll('option').forEach(option => {
+                                    if (
+                                        option.value !== select.value &&
+                                        selectedExcludes.includes(option.value) &&
+                                        option.value !== "" &&
+                                        option.value !== "others"
+                                    ) {
+                                        option.disabled = true;
+                                    } else {
+                                        option.disabled = false;
+                                    }
+                                });
+                            });
+                        }
 
-                                <div class="column-header">
-                                    <label for="flightDate">Periods
-                                        <span class="text-danger"> *</span>
-                                    </label>
-                                </div>
+                        // Update exclude labels based on the row index
+                        function updateExcludeLabels() {
+                            document.querySelectorAll('.exclude-row').forEach((row, i) => {
+                                const label = row.querySelector('label');
+                                const select = row.querySelector('select');
+                                const index = i + 1;
+                                row.setAttribute('data-index', index);
+                                label.setAttribute('for', `excludeSelect${index}`);
+                                label.textContent = `Excludes ${index}:`;
+                                select.setAttribute('id', `excludeSelect${index}`);
+                                select.setAttribute('name', `excludeSelect${index}`);
+                            });
+                        }
 
-                                <div class="datepicker-wrapper">
-                                    <div class="form-group">
-                                        <div class="date-range-inputs-wrapper">
-                                            <div class="input-with-icon">
-                                                <input type="text" class="datepicker" id="PeriodStartDate" placeholder="Start" readonly>
-                                                <i class="fas fa-calendar-alt calendar-icon"></i>
-                                            </div>
-                                        </div>
+                        // Create a new Exclude row
+                        function createExcludeRow() {
+                            excludeConfig.count++;
+                            const index = excludeConfig.count;
+
+                            const row = document.createElement('div');
+                            row.className = 'row exclude-row align-items-start mb-3';
+                            row.setAttribute('data-index', index);
+
+                            row.innerHTML = `
+                                <div class="col-md-12">
+                                    <div class="label-container">
+                                        <label for="excludeSelect${index}" class="form-label">Excludes ${index}:</label>
+                                        <button type="button" class="btn btn-sm btn-danger remove-exclude" title="Remove">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
                                     </div>
-
-                                    
-                                    <div class="dash-separator">-></div>
-
-                                    <div class="form-group">
-                                        <div class="date-range-inputs-wrapper">
-                                            <div class="input-with-icon">
-                                                <input type="text" class="datepicker" id="PeriodEndDate" placeholder="End" readonly>
-                                                <i class="fas fa-calendar-alt calendar-icon"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-
-
-
-                            <div class="columns col-md-4">
-                                <div class="column-header">
-                                    <label for="flightDate">Guide
-                                        <span class="text-danger"> *</span>
-                                    </label>
-                                </div>
-
-                                <div class="form-group">
-                                    <select class="form-select" id="guideName" name="flightDate" required>
-                                        <option selected disabled>Select Guide</option>
-                                        <option value="John Doe">John Doe</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="columns col-md-4">
-                                <div class="column-header">
-                                    <label for="flightDate">Contact Number
-                                        <span class="text-danger"> *</span>
-                                    </label>
-                                </div>
-
-                                <div class="form-group d-flex flex-row align-items-center">
-                                    <select class="form-select" id="countryCode" style="width: 80px;">
-                                        <option value="+63" selected>+63</option>
-                                        <option value="+82">+82</option>
-                                    </select>
-                                    <input type="text" class="form-control ms-2" id="contactNumber" name="contactNumber" min="1" placeholder="9***********" required>
-                                </div>
-
-                            </div>
-                        </div>
-
-                        
-                        <div class="row">
-                            <div class="columns col-md-8">
-                                <div class="column-header">
-                                    <label for="flightDate">Tour Areas, Hotels <span class="text-danger"> *</span></label>
-                                </div>
-                                <div class="cityhotel-wrapper">
-                                    <div class="cityhotel-item">
-                                        <div class="form-group d-flex flex-row align-items-center">
-                                            <select class="form-select city-select" id="city1" name="city(1)" required>
-                                                <option selected disabled>Select City</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="dash-separator">-></div>
-                                    <div class="cityhotel-item">
-                                        <div class="form-group d-flex flex-row align-items-center">
-                                            <select class="form-select hotel-select" id="hotel1" name="hotel(1)" required>
-                                                <option selected disabled>Select Hotel</option>
-                                            </select>
-                                        </div>
+                                    <div class="content-container">
+                                        <select class="form-select exclude-select mb-2" id="excludeSelect${index}" name="excludeSelect${index}" required>
+                                            <option value="" selected disabled>Select Exclude</option>
+                                            <option value="1">Flight (Round trip flight tickets)</option>
+                                            <option value="2">Visa Fees</option>
+                                            <option value="3">Meals (Meals outside the package)</option>
+                                            <option value="4">Personal Expenses</option>
+                                            <option value="5">Optional Tours</option>
+                                            <option value="others">Others</option>
+                                            <option value="0"> — No Excludes — </option>
+                                        </select>
+                                        <input type="text" class="form-control custom-exclude-input d-none" placeholder="Please specify..." />
                                     </div>
                                 </div>
-                            </div>
-                        </div>
+                            `;
 
-                        <div class="row">
-                            <div class="columns col-md-8">
-                                <div class="cityhotel-wrapper">
-                                    <div class="cityhotel-item">
-                                        <div class="form-group d-flex flex-row align-items-center">
-                                            <select class="form-select city-select" id="city2" name="city(2)" required>
-                                                <option selected disabled>Select City</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="dash-separator">-></div>
-                                    <div class="cityhotel-item">
-                                        <div class="form-group d-flex flex-row align-items-center">
-                                            <select class="form-select hotel-select" id="hotel2" name="hotel(2)" required>
-                                                <option selected disabled>Select Hotel</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                            // Event bindings for each new row
+                            const select = row.querySelector('select');
+                            const input = row.querySelector('.custom-exclude-input');
+                            const removeBtn = row.querySelector('.remove-exclude');
 
-                        <div class="row">
-                            <div class="columns col-md-8">
-                                <div class="cityhotel-wrapper">
-                                    <div class="cityhotel-item">
-                                        <div class="form-group d-flex flex-row align-items-center">
-                                            <select class="form-select city-select" id="city3" name="city(3)" required>
-                                                <option selected disabled>Select City</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="dash-separator">-></div>
-                                    <div class="cityhotel-item">
-                                        <div class="form-group d-flex flex-row align-items-center">
-                                            <select class="form-select hotel-select" id="hotel3" name="hotel(3)" required>
-                                                <option selected disabled>Select Hotel</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                            // Handling change event for select options
+                            select.addEventListener('change', () => {
+                                if (select.value === 'others') {
+                                    input.classList.remove('d-none');
+                                    input.focus();
+                                } else {
+                                    input.classList.add('d-none');
+                                }
+                                updateDisabledExcludes();
+                                getSelectedExcludes(); // Store and log updated selected values
+                            });
 
-                        <!-- <div class="row">
-                            <div class="column-header mb-2">
-                                <label for="flightDate">Hotel
-                                    <span class="text-danger"> *</span>
-                                </label>
-                            </div>
+                            // Handling input event for custom input field
+                            input.addEventListener('input', () => {
+                                getSelectedExcludes(); // Store and log updated selected values
+                            });
 
-                            
-                            <div class="columns col-md-4">
-                                <div class="form-group">
-                                    <select class="form-select hotel-select" id="hotel1" name="hotel1" required>
-                                        <option selected disabled>Select Hotel (1)</option>
-                                    </select>
-                                </div>
-                            </div>
+                            // Handling remove button click
+                            removeBtn.addEventListener('click', () => {
+                                row.remove();
+                                excludeConfig.count--;
+                                updateExcludeLabels();
+                                updateDisabledExcludes();
+                                getSelectedExcludes(); // Store and log updated selected values after removal
+                            });
 
-                            <div class="columns col-md-4">
-                                <div class="form-group">
-                                    <select class="form-select hotel-select" id="hotel2" name="hotel2" required>
-                                        <option selected disabled>Select Hotel (2)</option>
-                                    </select>
-                                </div>
-                            </div>
+                            excludeConfig.container.appendChild(row);
+                            updateDisabledExcludes();
+                        }
 
-                            <div class="columns col-md-4">
-                                <div class="form-group">
-                                    <select class="form-select hotel-select" id="hotel3" name="hotel3" required>
-                                        <option selected disabled>Select Hotel (3)</option>
-                                    </select>
-                                </div>
-                            </div>
+                        // Initialize the Excludes section
+                        function initExcludesSection() {
+                            // Create the first Exclude row
+                            createExcludeRow();
 
-                        </div> 
+                            // Add event listener to the Add button
+                            excludeConfig.addButton?.addEventListener('click', () => {
+                                if (excludeConfig.count < excludeConfig.max) {
+                                    createExcludeRow();
+                                }
+                            });
+                        }
 
-                    </div>
-                </div> -->
+                        // Initialize on page load
+                        initExcludesSection();
+                    });
+                </script>
 
-                <!-- No. of Days Card
-                <div class="card">
-                    <div class="card-header">
-                        <h5>No. of Days</h5>
-                    </div>
 
-                    <div class="card-body">
 
-                        <div class="row">
-                            <div class="columns col-md-3">
-                                <div class="form-group days-select-wrapper">
-                                    <label for="flightDate">No. of days<span class="text-danger"> *</span></label>
-                                    <select class="form-select" id="select-days" name="numberOfDays" required disabled>
-                                        <option selected disabled>Select Number of Days</option>
-                                    </select>
-                                    <small class="form-text text-muted">Changing this will clear all your data on the fields.</small>
-                                </div>
-                            </div>
 
-                        </div>
-                    </div>
-                </div> -->
-
-                <!-- <div class="itinerary-container" id="itinerary-container"></div> -->
             </div>
 
             <div class="form-footer">
@@ -883,36 +924,72 @@
 
     <?php include '../Employee Section/includes/emp-scripts.php' ?>
 
-                                        
 
-
-
-
-
-
-
-
-
-
-
-
-
-    <!-- JavaScript to Initialize Timepicker -->
+    <!-- Timepicker & Datepicker General Script -->
     <script>
-        $(document).ready(function(){
-            $('#flightTime').wickedpicker({
-            twentyFour: true,          // 24-hour format
-            now: null,                 // Don't auto-fill current time
-            showSeconds: false,        // Hide seconds
-            title: 'Select Time',      // Title of popup
-            placement: 'top'           // Attempt to show above input
+        document.addEventListener("DOMContentLoaded", function() {
+            // Function to initialize flatpickr with common settings
+            function initFlatpickr(selector, options) {
+                document.querySelectorAll(selector).forEach(function(element) {
+                    flatpickr(element, options);
+                });
+            }
+
+            // Initialize all datepickers with custom configuration
+            initFlatpickr("input.datepicker", {
+                dateFormat: "Y-m-d",
+                minDate: "today",
+                disableMobile: true,
+                appendTo: document.body, // Attach calendar to the body
+                position: "auto", // Auto position for flexibility
+                zIndex: 9999, // Ensure calendar stays on top
+                onOpen: function() {
+                    const calendar = document.querySelector('.flatpickr-calendar');
+                    if (calendar) {
+                        calendar.style.position = 'absolute';
+                        const inputRect = this.input.getBoundingClientRect();
+                        calendar.style.top = `${inputRect.bottom + window.scrollY + 8}px`; // Position it below the input field
+                    }
+                }
+            });
+
+            // Initialize all timepickers with 24-hour format
+            initFlatpickr("input.timepicker", {
+                enableTime: true,
+                noCalendar: true,
+                dateFormat: "H:i", // 24-hour format
+                time_24hr: true,
+                disableMobile: true,
+                appendTo: document.body, // Attach timepicker to the body
+                position: "auto", // Auto position for flexibility
+                zIndex: 9999, // Ensure timepicker stays on top
+                onOpen: function() {
+                    const timepicker = document.querySelector('.flatpickr-calendar');
+                    if (timepicker) {
+                        timepicker.style.position = 'absolute';
+                        const inputRect = this.input.getBoundingClientRect();
+                        timepicker.style.top = `${inputRect.bottom + window.scrollY + 8}px`; // Position it below the input field
+                    }
+                }
             });
         });
     </script>
 
+    <!-- JavaScript to Initialize Timepicker -->
+    <script>
+        $(document).ready(function() {
+            $('#flightTime').wickedpicker({
+                twentyFour: true, // 24-hour format
+                now: null, // Don't auto-fill current time
+                showSeconds: false, // Hide seconds
+                title: 'Select Time', // Title of popup
+                placement: 'top' // Attempt to show above input
+            });
+        });
+    </script>
 
     <!-- Datepicker Script -->
-    <script>
+    <!-- <script>
         $(document).ready(function() {
             // Apply datepicker for PeriodStartDate
             $("#PeriodStartDate").datepicker({
@@ -938,9 +1015,12 @@
                 }
             });
         });
-    </script>
+    </script> -->
 
-    <!-- Data Fetch to Fields -->
+
+
+
+    <!-- Data Fetch to Fields
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             // Cities and Hotels Data
@@ -1090,9 +1170,9 @@
                 subtree: true
             });
         });
-    </script>
+    </script> -->
 
-    <script>
+    <!-- <script>
         const selectDays = document.getElementById("select-days");
         const itineraryContainer = document.getElementById("itinerary-container");
         const formFooter = document.querySelector(".form-footer"); // Select the form-footer
@@ -1326,9 +1406,9 @@
                 updateDropdownOptions();
             }
         });
-    </script>
+    </script> -->
 
-    <script>
+    <!-- <script>
         document.getElementById("submitTour").addEventListener("click", function() {
             $("#templateNameModal").modal("show");
         });
@@ -1435,7 +1515,7 @@
 
             $("#templateNameModal").modal("hide");
         }
-    </script>
+    </script> -->
 
 </body>
 

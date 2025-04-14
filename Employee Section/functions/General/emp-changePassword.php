@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'currentPassword' => $currentPassword
         ]);
         exit;
-        
+
     } else {
         // Verify password against the database
         $stmt = $conn->prepare("SELECT password, emailAddress FROM accounts WHERE accountId = ?");
@@ -34,6 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 'message' => 'Current password is incorrect',
                 'currentPassword' => $currentPassword
             ]);
+
         } else {
             // Check if emailAddress is empty
             if (empty($emailAddress)) {
@@ -43,6 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     'emailAddress' => null,
                     'message' => 'Email address not found or is empty'
                 ]);
+                
             } else {
                 $_SESSION['emailAddress'] = $emailAddress;
 

@@ -122,10 +122,10 @@ $position = htmlspecialchars(strtoupper($empId));
 			<div class="collapse" id="reportMenu">
 				<ul class="nav flex-column report-menu-wrapper">
 					<li class="nav-item">
-						<a class="nav-link page-button open-new-tab" href="#" data-page-name="Itinerary" data-url="../Employee Section/emp-itinerarytable.php">Itinerary</a>
+						<a class="nav-link page-button open-new-tab" href="../Employee Section/emp-itinerarytable.php" data-page-name="Itinerary" data-url="">Itinerary</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link page-button open-new-tab" href="#" data-page-name="Voucher" data-url="../Employee Section/emp-voucherTable.php">Voucher</a>
+						<a class="nav-link page-button open-new-tab" href="../Employee Section/emp-voucherTable.php" data-page-name="Voucher" data-url="">Voucher</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link page-button" href="#" data-page-name="Ticket">Ticket</a>

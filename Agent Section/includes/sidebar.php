@@ -62,7 +62,7 @@ if ($result2->num_rows > 0) {
     $stmt3->close();
   } else {
     $companyName = null; // No company assigned
-  }
+  } 
 } else {
   // Only set "No Branch" if branchName is still empty
   if (empty($branchName)) {
