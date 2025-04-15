@@ -31,9 +31,7 @@
         <select id="flightDate" class="form-control" required>
           <option disabled selected>Select a Flight Date</option>
           <?php
-            $sql1 = "SELECT DISTINCT flightDepartureDate FROM flight 
-                    
-                    ORDER BY flightDepartureDate ASC";
+            $sql1 = "SELECT DISTINCT flightDepartureDate FROM flight ORDER BY flightDepartureDate ASC";
             $result = $conn->query($sql1);
         
             if ($result->num_rows > 0) 

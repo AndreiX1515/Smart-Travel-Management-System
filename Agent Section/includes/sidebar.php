@@ -119,6 +119,14 @@ $current_date = date('D, F d, Y');
         <i class="fas fa-file-invoice"></i> Rooming List
       </a>
 
+      <a href="../Agent Section/agent-soa.php" class="page-button my-0" data-page-name="Rooming Assignment">
+        <i class="fas fa-file-invoice"></i> Soa
+      </a>
+
+      <a href="../Agent Section/agent-reports.php" class="page-button my-0" data-page-name="Rooming Assignment">
+        <i class="fas fa-file-invoice"></i> Reports
+      </a>
+
       <!-- <a href="../Agent Section/agent-FIT-table.php" class="page-button my-0" data-page-name="F.I.T - Transactions Table" style="font-size: 14px;">
         <i class="fas fa-file-invoice"></i> F.I.T 
       </a>  -->
