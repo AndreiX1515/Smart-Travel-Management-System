@@ -6,16 +6,17 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 $accountId = $_SESSION['client_accountId'];
-$agentId = $_SESSION['clientId'];
-$agentCode = $_SESSION['clientCode'];
-$agentRole = $_SESSION['clientRole'];
-$agentType = $_SESSION['clientType'];
-$fName =  $_SESSION['client_fName'] ?? '';
-$lName = $_SESSION['client_lName'] ?? '';
-$mName = $_SESSION['client_mName'] ?? '';
-$branchId = $_SESSION['client_branchId'] ?? '';
-$email = $_SESSION['client_email'] ?? '';
-$password = $_SESSION['client_password'] ?? '';
+$agentId = $_SESSION['clientId'] ?? null;
+$agentCode = $_SESSION['clientCode'] ?? null;
+$agentRole = $_SESSION['clientRole'] ?? null;
+$agentType = $_SESSION['clientType'] ?? null;
+$fName =  $_SESSION['client_fName'] ?? null;
+$lName = $_SESSION['client_lName'] ?? null;
+$mName = $_SESSION['client_mName'] ?? null;
+$branchId = $_SESSION['client_branchId'] ?? null;
+$email = $_SESSION['client_email'] ?? null;
+$emailAddress = $_SESSION['client_emailAddress'] ?? null;
+$password = $_SESSION['client_password'] ?? null;
 
 // Fetch Branch Name
 $sql1 = "SELECT branchName FROM branch WHERE branchId = ?";
@@ -275,6 +276,31 @@ $current_date = date('D, F d, Y');
     </div>
   </div>
 </div>
+
+<!-- Logout Confirmation Modal -->
+<div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="logoutModalLabel">Confirm Logout</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to logout?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <a href="#" class="btn btn-danger" id="logoutButton">Logout</a>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
 
 
 <!-- Ticket Submission Script -->

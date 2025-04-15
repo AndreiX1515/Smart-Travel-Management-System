@@ -26,6 +26,8 @@ unset(
     $_SESSION['agent_branchId'],  
     $_SESSION['agent_timeout'],
     $_SESSION['agent_flightId'],
+    $_SESSION['userType'], 
+    $_SESSION['emailAddress']
 );
 
 

@@ -2,7 +2,7 @@
 session_start();
 require "../../../conn.php"; // Database connection
 
-$accountId = $_SESSION['client_accountId']; // Get account ID from session
+$accountId = $_SESSION['employee_accountId']; // Get account ID from session
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $currentPassword = $_POST['currentPassword'];
@@ -15,6 +15,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'message' => 'Current password is required.',
             'currentPassword' => $currentPassword
         ]);
+        exit;
+
     } else {
         // Verify password against the database
         $stmt = $conn->prepare("SELECT password, emailAddress FROM accounts WHERE accountId = ?");
@@ -32,6 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 'message' => 'Current password is incorrect',
                 'currentPassword' => $currentPassword
             ]);
+
         } else {
             // Check if emailAddress is empty
             if (empty($emailAddress)) {
@@ -41,6 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     'emailAddress' => null,
                     'message' => 'Email address not found or is empty'
                 ]);
+                
             } else {
                 $_SESSION['emailAddress'] = $emailAddress;
 

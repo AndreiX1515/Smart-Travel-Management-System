@@ -130,10 +130,81 @@
 
 <!-- jQuery Script for Change Password Modal -->
 <script>
-  $(document).ready(function() {
+$(document).ready(function() {
 
-    // Function to send OTP
+    function showOtpAlert(message, status) {
+
+      let backgroundColor, textColor, borderColor;
+
+        // Determine the color scheme based on the provided status
+        if (status === 'success') {
+            backgroundColor = '#d4edda'; // Green background
+            textColor = '#155724'; // Dark green text
+            borderColor = '#c3e6cb'; // Green border
+        } else if (status === 'error') {
+            backgroundColor = '#f8d7da'; // Red background
+            textColor = '#721c24'; // Dark red text
+            borderColor = '#f5c6cb'; // Red border
+        } else {
+            backgroundColor = '#fff3cd'; // Yellow background (default for warnings)
+            textColor = '#856404'; // Dark yellow text
+            borderColor = '#ffeeba'; // Yellow border
+        }
+
+        // Apply the styles and show the alert
+        $('#otpAlert').text(message).css({
+            'background-color': backgroundColor,
+            'color': textColor,
+            'border': `1px solid ${borderColor}`
+        }).show();
+
+        // Hide the alert after 3.5 seconds (3500 milliseconds)
+        setTimeout(function() {
+            $('#otpAlert').fadeOut();
+        }, 3500);
+    }
+
+    function showCPAlert(message, status) {
+
+    // Set the color and background based on the status
+    let backgroundColor, textColor, borderColor;
+
+      // Determine the color scheme based on the provided status
+      if (status === 'success') {
+          backgroundColor = '#d4edda'; // Green background
+          textColor = '#155724'; // Dark green text
+          borderColor = '#c3e6cb'; // Green border
+      } else if (status === 'error') {
+          backgroundColor = '#f8d7da'; // Red background
+          textColor = '#721c24'; // Dark red text
+          borderColor = '#f5c6cb'; // Red border
+      } else {
+          backgroundColor = '#fff3cd'; // Yellow background (default for warnings)
+          textColor = '#856404'; // Dark yellow text
+          borderColor = '#ffeeba'; // Yellow border
+      }
+
+      // Apply the styles and show the alert
+      $('#messageAlert').text(message).css({
+          'background-color': backgroundColor,
+          'color': textColor,
+          'border': `1px solid ${borderColor}`
+      }).show();
+
+      // Hide the alert after 3.5 seconds (3500 milliseconds)
+      setTimeout(function() {
+          $('#messageAlert').fadeOut();
+      }, 3500);
+    }
+
     function sendOtp(currentPassword, emailAddress) {
+      // Check if email address is missing or invalid
+      if (!emailAddress || emailAddress === 'null' || emailAddress.trim() === '') {
+        showOtpAlert('Email address is missing. Please update your profile to receive OTP.', 'error');
+        console.warn('Attempted to send OTP without a valid email address.');
+        return;
+      }
+
       $.ajax({
         url: '../Agent Section/functions/agent-sendOtpCPassword.php',
         type: 'POST',
@@ -186,78 +257,8 @@
           showOtpAlert('An error occurred while sending OTP.', 'error');
         }
       });
-
     }
-
-
-    function showOtpAlert(message, status) {
-
-      // Set the color and background based on the status
-      let backgroundColor, textColor, borderColor;
-
-        // Determine the color scheme based on the provided status
-        if (status === 'success') {
-            backgroundColor = '#d4edda'; // Green background
-            textColor = '#155724'; // Dark green text
-            borderColor = '#c3e6cb'; // Green border
-        } else if (status === 'error') {
-            backgroundColor = '#f8d7da'; // Red background
-            textColor = '#721c24'; // Dark red text
-            borderColor = '#f5c6cb'; // Red border
-        } else {
-            backgroundColor = '#fff3cd'; // Yellow background (default for warnings)
-            textColor = '#856404'; // Dark yellow text
-            borderColor = '#ffeeba'; // Yellow border
-        }
-
-        // Apply the styles and show the alert
-        $('#otpAlert').text(message).css({
-            'background-color': backgroundColor,
-            'color': textColor,
-            'border': `1px solid ${borderColor}`
-        }).show();
-
-        // Hide the alert after 3.5 seconds (3500 milliseconds)
-        setTimeout(function() {
-            $('#otpAlert').fadeOut();
-        }, 3500);
-    }
-
-
-    function showCPAlert(message, status) {
-
-    // Set the color and background based on the status
-    let backgroundColor, textColor, borderColor;
-
-      // Determine the color scheme based on the provided status
-      if (status === 'success') {
-          backgroundColor = '#d4edda'; // Green background
-          textColor = '#155724'; // Dark green text
-          borderColor = '#c3e6cb'; // Green border
-      } else if (status === 'error') {
-          backgroundColor = '#f8d7da'; // Red background
-          textColor = '#721c24'; // Dark red text
-          borderColor = '#f5c6cb'; // Red border
-      } else {
-          backgroundColor = '#fff3cd'; // Yellow background (default for warnings)
-          textColor = '#856404'; // Dark yellow text
-          borderColor = '#ffeeba'; // Yellow border
-      }
-
-      // Apply the styles and show the alert
-      $('#messageAlert').text(message).css({
-          'background-color': backgroundColor,
-          'color': textColor,
-          'border': `1px solid ${borderColor}`
-      }).show();
-
-      // Hide the alert after 3.5 seconds (3500 milliseconds)
-      setTimeout(function() {
-          $('#otpAlert').fadeOut();
-      }, 3500);
-    }
-
-
+    
     // Handle form submission for change password
     $('#changePasswordForm').on('submit', function(e) {
       e.preventDefault(); // Prevent default form submission
@@ -266,7 +267,7 @@
       document.getElementById('currentPasswordError').textContent = '';
       document.getElementById('newPasswordError').textContent = '';
       document.getElementById('confirmPasswordError').textContent = '';
-      document.getElementById('messageAlert').style.display = 'none';
+      $('#messageAlert').hide();
 
       // Get form data
       const currentPassword = document.getElementById('currentPassword').value;
@@ -288,57 +289,56 @@
       }
 
       $.ajax({
-        url: '../Client Section/Functions/General/client-changePassword.php',
-        type: 'POST',
-        data: {
-          currentPassword: currentPassword,
-          newPassword: newPassword
-        },
+          url: '../Client Section/Functions/General/client-changePassword.php', // Your PHP script URL
+          type: 'POST',
+          data: {
+              currentPassword: currentPassword,
+              newPassword: newPassword
+          },
+          success: function(response) {
+              response = JSON.parse(response);
 
-        success: function(response) {
-          response = JSON.parse(response);
+              // Handle errors from PHP
+              if (response.status === 'error') {
+                  // If the error is related to the current password
+                  if (response.message.includes('Current password is incorrect')) {
+                      document.getElementById('currentPasswordError').textContent = response.message;
+                      document.getElementById('currentPasswordError').style.display = 'block';
+                  }
+                  
+                  // If the error is related to emailAddress being empty or invalid
+                  else if (response.message.includes('Email address not found or is empty')) {
+                      showCPAlert(response.message, response.status)
+                  }
+                 
 
-          if (response.status === 'error') {
-            document.getElementById('currentPasswordError').textContent = response.message;
-            document.getElementById('currentPasswordError').style.display = 'block';
+                  else {
+                      showCPAlert(response.message, 'error');
+                  }
 
-          } 
+              } else if (response.status === 'success') {
+                  const accountId = response.accountId;
+                  const emailAddress = response.emailAddress;
+
+                  // Store in sessionStorage
+                  sessionStorage.setItem('emailAddress', emailAddress);
+                  console.log('Email Address:', emailAddress); // Debugging log
+
+                  showCPAlert(response.message, 'success');
+
+                  // Call OTP function after success
+                  setTimeout(function() {
+                      sendOtp(currentPassword, emailAddress); // Reusable OTP function
+                  }, 500);
+              }
+          },
           
-          else if (response.status === 'success') {
-
-              const accountId = response.accountId;
-              const emailAddress = response.emailAddress;
-
-              // Store in sessionStorage
-              sessionStorage.setItem('emailAddress', emailAddress);
-
-              console.log('Email Address:', emailAddress); // Debugging log
-
-              $('#messageAlert').show();
-              $('#messageAlert').text(response.message);
-              $('#messageAlert').css({
-                'background-color': '#d4edda',
-                'color': '#155724',
-                'border': '1px solid #c3e6cb'
-              });
-
-              setTimeout(function() {
-                sendOtp(currentPassword, emailAddress); // Reusable OTP function
-              }, 500);
+          error: function(xhr, status, error) {
+              console.log('AJAX Error:', error);
+              showCPAlert('An error occurred while validating the password.', 'error');
           }
-
-
-        },
-        error: function(xhr, status, error) {
-          console.log('AJAX Error:', error);
-          $('#messageAlert').show().text('An error occurred while validating the password.');
-          $('#messageAlert').css({
-            'background-color': '#f8d7da',
-            'color': '#721c24',
-            'border': '1px solid #f5c6cb'
-          });
-        }
       });
+
     });
 
     // OTP verification form submission
@@ -440,7 +440,7 @@
         e.preventDefault();
 
         const currentPassword = document.getElementById('currentPassword').value;
-        let emailAddress = <?= json_encode($_SESSION['emailAddress']); ?>;
+        let emailAddress = <?= json_encode($_SESSION['emailAddress'] ?? null); ?>;
 
         // Fallback: use sessionStorage if PHP session is null, 'null', or empty string
         if (!emailAddress || emailAddress === 'null' || emailAddress === '') {
@@ -467,14 +467,12 @@
   });
 </script>
 
-
-
 <!-- Logout Script -->
 <script>
   $(document).ready(function() {
     $('#logoutButton').click(function() {
       $.ajax({
-        url: '../Agent Section/functions/agent-logout.php',
+        url: '../Client Section/Functions/client-logout.php',
         type: 'GET',
         dataType: 'json',
         success: function(response) {
@@ -494,209 +492,3 @@
   });
 </script>
 
-<!-- <script>
-  $(document).ready(function() {
-    // Handle OTP Send Button
-    $('#sendOtpBtn').click(function() {
-      // Get the values for the new password and confirmed password
-      var newPassword = $('#newPassword').val();
-      var confirmPassword = $('#confirmNewPassword').val();
-
-      console.log(newPassword, confirmPassword)
-
-      // Check if both new password and confirmed password have values
-      if (!newPassword || !confirmPassword) {
-        // Display error message if either password is empty
-        $('#messageAlert').text('Please fill in both the new password and confirm password fields.')
-          .css('border', '1px solid red')
-          .css('background-color', '#f8d7da')
-          .css('color', 'red')
-          .show();
-        return; // Stop the function from continuing
-      }
-
-      // Check if the new password and confirmed password match
-      if (newPassword !== confirmPassword) {
-        // Display error message if passwords don't match
-        $('#messageAlert').text('The new password and confirm password do not match.')
-          .css('border', '1px solid red')
-          .css('background-color', '#f8d7da')
-          .css('color', 'red')
-          .show();
-        return; // Stop the function from continuing
-      }
-
-      // Clear the error message if the passwords are valid
-      $('#messageAlert').hide();
-
-      var email = "<?php echo htmlspecialchars($email); ?>"; // PHP to JS variable
-
-      // Show a loading spinner or disable the button to prevent multiple requests
-      $('#sendOtpBtn')
-        .prop('disabled', true)
-        .text('Sending OTP...')
-        .css('font-size', '12px'); // This sets the font size to 12px (adjust as needed)
-
-      $.ajax({
-        url: '../Agent Section/functions/agent-sendOtpCPassword.php',
-        type: 'POST',
-        data: {
-          email: email // Send the user's email to the server
-        },
-        success: function(response) {
-          // Parse the JSON response from the server
-          var jsonResponse = JSON.parse(response);
-
-          if (jsonResponse.success) {
-            // Inform the user that OTP was sent successfully
-            $('#messageAlert').text('OTP has been sent to your registered email address.')
-              .css('border', '1px solid green')
-              .css('background-color', '#d4edda')
-              .css('color', 'green')
-              .show();
-          } else {
-            // Handle the error (invalid email, failed to send OTP, etc.)
-            $('#messageAlert').text('Failed to send OTP: ' + jsonResponse.message)
-              .css('border', '1px solid red')
-              .css('background-color', '#f8d7da')
-              .css('color', 'red')
-              .show();
-          }
-
-          // Re-enable the button and reset its text
-          $('#sendOtpBtn').prop('disabled', false).text('Send OTP');
-        },
-        error: function() {
-          // Handle any error that occurred during the AJAX request
-          $('#messageAlert').text('An error occurred while sending the OTP.')
-            .css('border', '1px solid red')
-            .css('background-color', '#f8d7da')
-            .css('color', 'red')
-            .show();
-          $('#sendOtpBtn').prop('disabled', false).text('Send OTP');
-        }
-      });
-    });
-  });
-
-  $(document).ready(function() {
-    // Handle Change Password Form submission
-    $('#changePasswordForm').submit(function(e) {
-      e.preventDefault(); // Prevent the default form submission
-
-      // Get the entered OTP and new password details
-      var enteredOtp = $('#otp').val(); // OTP input field ID 'otp'
-      var newPassword = $('#newPassword').val();
-      var confirmNewPassword = $('#confirmNewPassword').val();
-      var account_id = "<?php echo htmlspecialchars($accountId); ?>"; // PHP to JS variable
-
-
-      // Check if the new password and confirmation match
-      if (newPassword !== confirmNewPassword) {
-        $('#messageAlert').text('Passwords do not match.')
-          .css('border', '1px solid red')
-          .css('background-color', '#f8d7da')
-          .css('color', 'red')
-          .show();
-        return; // Stop further execution if passwords do not match
-      }
-
-      // Perform the AJAX request to verify OTP
-      $.ajax({
-        url: '../Agent Section/functions/agent-verify-otp.php', // Path to OTP verification script
-        type: 'POST',
-        data: {
-          'changepass-OTP': enteredOtp,
-          'accountid': account_id,
-          'newPassword': newPassword // No underscore here
-        },
-        success: function(response) {
-          var jsonResponse = JSON.parse(response); // Assuming the server returns JSON
-
-          // If OTP is valid, proceed with password change
-          if (jsonResponse.success) {
-            // Proceed with password change if OTP is verified
-            $.ajax({
-              url: '../Agent Section/functions/agent-passwordChangeFunction.php', // Path to password change script
-              type: 'POST',
-              data: {
-                'changepass-OTP': enteredOtp,
-                'accountid': account_id,
-                'newPassword': newPassword // No underscore here
-              },
-              success: function(changePasswordResponse) {
-                var changeResponse = JSON.parse(changePasswordResponse);
-                if (changeResponse.status === 'success') {
-                  $('#messageAlert').text('Password changed successfully.')
-                    .css('border', '1px solid green')
-                    .css('background-color', '#d4edda')
-                    .css('color', 'green')
-                    .show();
-                  location.reload();
-                } else {
-                  $('#messageAlert').text(changeResponse.message)
-                    .css('border', '1px solid red')
-                    .css('background-color', '#f8d7da')
-                    .css('color', 'red')
-                    .show();
-                }
-              },
-              error: function() {
-                $('#messageAlert').text('An error occurred while changing the password.')
-                  .css('border', '1px solid red')
-                  .css('background-color', '#f8d7da')
-                  .css('color', 'red')
-                  .show();
-              }
-            });
-          } else {
-            $('#messageAlert').text('Invalid OTP entered.')
-              .css('border', '1px solid red')
-              .css('background-color', '#f8d7da')
-              .css('color', 'red')
-              .show();
-          }
-        },
-        error: function() {
-          $('#messageAlert').text('An error occurred while verifying the OTP.')
-            .css('border', '1px solid red')
-            .css('background-color', '#f8d7da')
-            .css('color', 'red')
-            .show();
-        }
-      });
-    });
-  });
-</script> -->
-
-<!-- <script>
-  document.addEventListener('DOMContentLoaded', () => 
-  {
-    // Check if there's a saved title in local storage
-    const savedTitle = localStorage.getItem('pageTitle');
-    if (savedTitle) 
-    {
-      document.getElementById('page-title').textContent = savedTitle;
-    }
-
-    const buttons = document.querySelectorAll('.page-button');
-
-    buttons.forEach(button => 
-    {
-      button.addEventListener('click', (event) => 
-      {
-        event.preventDefault();
-        const newPageName = button.getAttribute('data-page-name');
-        document.getElementById('page-title').textContent = newPageName;
-
-        localStorage.setItem('pageTitle', newPageName);
-
-        const newUrl = button.getAttribute('href');
-        setTimeout(() => 
-        {
-          window.location.href = newUrl;
-        }, 25);
-      });
-    });
-  });
-</script> -->
