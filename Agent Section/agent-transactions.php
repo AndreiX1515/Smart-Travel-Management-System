@@ -29,7 +29,7 @@ require "../conn.php";
       </div>
 
       <?php
-      $statusTab = isset($_GET['status']) ? $_GET['status'] : '';
+        $statusTab = isset($_GET['status']) ? $_GET['status'] : '';
       ?>
 
       <div class="main-content">
