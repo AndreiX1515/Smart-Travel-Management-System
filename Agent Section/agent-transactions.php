@@ -142,7 +142,6 @@ require "../conn.php";
             </ul>
           </div>
 
-
           <div class="table-container">
             <table id="product-table" class="product-table">
               <thead>

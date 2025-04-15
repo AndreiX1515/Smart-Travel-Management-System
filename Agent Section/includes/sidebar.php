@@ -232,7 +232,9 @@ $current_date = date('D, F d, Y');
           <div class="alert alert-info mt-3" id="userCountContainer-note" style="display: none; font-size: 14px;">
             <p class="mb-1"><strong>Please provide user credentials using the template below:</strong></p>
             <p class="mb-1"><strong>- Full Name <span style="font-weight: 400;">(First Name, Last Name, Middle Name, Suffix)</span>:</strong> </p>
-            <p class="mb-3"><strong>- Company Name:</strong></p>
+            <p class="mb-1"><strong>- Company Name:</strong></p>
+            <p class="mb-1"><strong>- Contact Number:</strong></p>
+            <p class="mb-3"><strong>- Email:</strong></p>
             <p class="mb-0"><strong>Note:</strong> A default password will be assigned initially.</p>
           </div>
 
