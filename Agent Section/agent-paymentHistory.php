@@ -78,13 +78,11 @@ require "../conn.php";
                 <?php
                   if ($agentRole != 'Head Agent')
                   {
-                    $sql1 = "SELECT g.guestId, g.transactNo, g.fName, g.mName, g.lName, g.suffix, g.birthdate, g.age, g.sex, g.nationality, 
-                              g.passportNo, g.passportExp, f.flightDepartureDate
-                            FROM `guest` g
-                            JOIN `booking` b ON g.transactNo = b.transactNo
-                            JOIN `flight` f ON b.flightId = f.flightId
+                    $sql1 = "SELECT b.transactNo, p.paymentId, p.amount, p.filePath, p.paymentDate, p.paymentStatus, p.paymentRemarks
+                            FROM `booking` b
+                            JOIN `payment` p ON b.transactNo = p.transactNo
                             WHERE b.accountId = $accountId
-                            ORDER BY f.flightDepartureDate ASC";
+                            ORDER BY p.paymentId ASC";
 
                     // Execute the query
                     $result1 = $conn->query($sql1);
@@ -100,30 +98,42 @@ require "../conn.php";
                     {
                       while ($row = $result1->fetch_assoc()) 
                       {
-                        if ($row['suffix'] === 'N/A')
+                        $amount = number_format($row['amount'], 2);
+                        $date = date("F-d-Y", strtotime($row['paymentDate']));
+                        $remarks = !empty($row['paymentRemarks']) ? $row['paymentRemarks'] : 'N/A';
+
+                        $status = isset($row['paymentStatus']) ? $row['paymentStatus'] : 'Unknown';
+                        $statusClass = '';
+
+                        switch ($status) 
                         {
-                          $row['suffix'] = '';
+                          case 'Approved':
+                            $statusClass = 'bg-success text-white'; // Green background, white text
+                            break;
+                          case 'Rejected':
+                            $statusClass = 'bg-danger text-white'; // Red background, white text
+                            break;
+                          case 'Submitted':
+                            $statusClass = 'bg-warning text-dark';
+                            break;
+                          default:
+                            $statusClass = 'bg-secondary text-white';
                         }
-
-                        // Sanitize and format guest name
-                        $guestName = $row['fName'] . ' ' . $row['suffix'] . ' ' . $row['lName'];
-
-                        // Format dates
-                        $birthdate = !empty($row['birthdate']) ? date('Y M d', strtotime($row['birthdate'])) : 'N/A';
-                        $departureDate = !empty($row['flightDepartureDate']) ? date('Y-m-d', strtotime($row['flightDepartureDate'])) : 'N/A';
 
                         echo "<tr>
                                 <td>" . $row['transactNo'] . "</td>
-                                <td>" . $row['age'] . "</td>
-                                <td>" . ($row['fName'] ?? '') . ' ' . ($row['suffix'] ?? '') . "</td>
-                                <td>" . $row['lName'] . "</td>
-                                <td>" . $guestName . "</td>
-                                <td>" . $birthdate . "</td>
-                                <td>" . $row['nationality'] . "</td>
-                                <td>" . $row['passportNo'] . "</td>
-                                <td>" . $row['passportExp'] . "</td>
-                                <td>" . $row['sex'] . "</td>
-                                <td>" . $departureDate . "</td>
+                                <td>₱ " . $amount . "</td>
+                                <td>
+                                  <a href='functions/view-file.php?file=" . urlencode($row['filePath']) . "' target='_blank'>View File</a> 
+                                  <a href='functions/download.php?file=" . urlencode($row['filePath']) . "' target='_blank'>Download File</a> 
+                                </td>
+                                <td>" . $date . "</td>
+                                <td>
+                                  <span class='badge p-2 rounded-pill {$statusClass}'>
+                                    {$status}
+                                  </span>
+                                </td>
+                                <td>" . $remarks . "</td>
                               </tr>";
                       }
                     }
