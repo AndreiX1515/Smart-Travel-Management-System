@@ -25,7 +25,7 @@ require "../conn.php";
 
     <div class="main-content-container">
       <div class="navbar">
-        <h5 class="title-page">Payment History</h5>
+        <h5 class="title-page">Request History</h5>
       </div>
 
       <?php
@@ -67,9 +67,11 @@ require "../conn.php";
               <thead>
                 <tr>
                   <th>TRANSACTION NO</th>
-                  <th>AMOUNT</th>
-                  <th>PROOF OF PAYMENT</th>
-                  <th>PAYMENT DATE</th>
+                  <th>REQUEST TITLE</th>
+                  <th>PRICE</th>
+                  <th>PAX</th>
+                  <th>TOTAL AMOUNT</th>
+                  <th>REQUEST DATE</th>
                   <th>STATUS</th>
                   <th>REMARKS</th>
                 </tr>
@@ -78,11 +80,13 @@ require "../conn.php";
                 <?php
                   if ($agentRole != 'Head Agent')
                   {
-                    $sql1 = "SELECT b.transactNo, p.paymentId, p.amount, p.filePath, p.paymentDate, p.paymentStatus, p.paymentRemarks
+                    $sql1 = "SELECT b.transactNo, r.requestId, r.pax, r.requestCost, r.requestDate, r.requestStatus, r.requestRemarks,
+                              cd.details, cd.price
                             FROM `booking` b
-                            JOIN `payment` p ON b.transactNo = p.transactNo
+                            JOIN `request` r ON b.transactNo = r.transactNo
+                            JOIN `concernDetails` cd ON r.concernDetailsId = cd.concernDetailsId
                             WHERE b.accountId = $accountId
-                            ORDER BY p.paymentId ASC";
+                            ORDER BY r.requestId ASC";
 
                     // Execute the query
                     $result1 = $conn->query($sql1);
@@ -98,16 +102,16 @@ require "../conn.php";
                     {
                       while ($row = $result1->fetch_assoc()) 
                       {
-                        $amount = number_format($row['amount'], 2);
-                        $date = date("F d, Y", strtotime($row['paymentDate']));
-                        $remarks = !empty($row['paymentRemarks']) ? $row['paymentRemarks'] : 'N/A';
+                        $amount = number_format($row['requestCost'], 2);
+                        $date = date("F d, Y", strtotime($row['requestDate']));
+                        $remarks = !empty($row['requestRemarks']) ? $row['requestRemarks'] : 'N/A';
 
-                        $status = isset($row['paymentStatus']) ? $row['paymentStatus'] : 'Unknown';
+                        $status = isset($row['requestStatus']) ? $row['requestStatus'] : 'Unknown';
                         $statusClass = '';
 
                         switch ($status) 
                         {
-                          case 'Approved':
+                          case 'Confirmed':
                             $statusClass = 'bg-success text-white'; // Green background, white text
                             break;
                           case 'Rejected':
@@ -122,11 +126,10 @@ require "../conn.php";
 
                         echo "<tr>
                                 <td>" . $row['transactNo'] . "</td>
+                                <td>" . $row['details'] . "</td>
+                                <td>₱ " . $row['price'] . "</td>
+                                <td>" . $row['pax'] . "</td>
                                 <td>₱ " . $amount . "</td>
-                                <td>
-                                  <a href='functions/view-file.php?file=" . urlencode($row['filePath']) . "' target='_blank'>View File</a> 
-                                  <a href='functions/download.php?file=" . urlencode($row['filePath']) . "' target='_blank'>Download File</a> 
-                                </td>
                                 <td>" . $date . "</td>
                                 <td>
                                   <span class='badge p-2 rounded-pill {$statusClass}'>
@@ -140,11 +143,13 @@ require "../conn.php";
                   }
                   else
                   {
-                    $sql1 = "SELECT b.transactNo, p.paymentId, p.amount, p.filePath, p.paymentDate, p.paymentStatus, p.paymentRemarks
+                    $sql1 = "SELECT b.transactNo, r.requestId, r.pax, r.requestCost, r.requestDate, r.requestStatus, r.requestRemarks,
+                              cd.details, cd.price
                             FROM `booking` b
-                            JOIN `payment` p ON b.transactNo = p.transactNo
+                            JOIN `request` r ON b.transactNo = r.transactNo
+                            JOIN `concernDetails` cd ON r.concernDetailsId = cd.concernDetailsId
                             WHERE b.agentCode = '$agentCode'
-                            ORDER BY p.paymentId ASC";
+                            ORDER BY r.requestId ASC";
 
                     // Execute the query
                     $result1 = $conn->query($sql1);
@@ -160,16 +165,16 @@ require "../conn.php";
                     {
                       while ($row = $result1->fetch_assoc()) 
                       {
-                        $amount = number_format($row['amount'], 2);
-                        $date = date("F-d-Y", strtotime($row['paymentDate']));
-                        $remarks = !empty($row['paymentRemarks']) ? $row['paymentRemarks'] : 'N/A';
+                        $amount = number_format($row['requestCost'], 2);
+                        $date = date("F d, Y", strtotime($row['requestDate']));
+                        $remarks = !empty($row['requestRemarks']) ? $row['requestRemarks'] : 'N/A';
 
-                        $status = isset($row['paymentStatus']) ? $row['paymentStatus'] : 'Unknown';
+                        $status = isset($row['requestStatus']) ? $row['requestStatus'] : 'Unknown';
                         $statusClass = '';
 
                         switch ($status) 
                         {
-                          case 'Approved':
+                          case 'Confirmed':
                             $statusClass = 'bg-success text-white'; // Green background, white text
                             break;
                           case 'Rejected':
@@ -184,11 +189,10 @@ require "../conn.php";
 
                         echo "<tr>
                                 <td>" . $row['transactNo'] . "</td>
+                                <td>" . $row['details'] . "</td>
+                                <td>₱ " . $row['price'] . "</td>
+                                <td>" . $row['pax'] . "</td>
                                 <td>₱ " . $amount . "</td>
-                                <td>
-                                  <a href='functions/view-file.php?file=" . urlencode($row['filePath']) . "' target='_blank'>View File</a> 
-                                  <a href='functions/download.php?file=" . urlencode($row['filePath']) . "' target='_blank'>Download File</a> 
-                                </td>
                                 <td>" . $date . "</td>
                                 <td>
                                   <span class='badge p-2 rounded-pill {$statusClass}'>
