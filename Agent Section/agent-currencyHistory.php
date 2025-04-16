@@ -22,7 +22,7 @@ session_start();
 
     <div class="main-content-container">
       <div class="navbar">
-        <h5 class="title-page">Currency History</h5>
+        <h5 class="title-page">Currency History (USD - PHP)</h5>
       </div>
 
       <div class="main-content">
@@ -32,48 +32,78 @@ session_start();
 
         <div class="content-body">
           <div class="table-container">
-            <table id="currency-table" class="currency-table">
-              <thead>
-                <tr>
-                  <th>Transaction ID</th>
-                  <th>Contact Person Info</th>
-                  <th>Contact Details</th>
-                  <th>Branch Name</th>
-                  <th>Flight Date</th>
-                  <th>Total Pax</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>TXN00123</td>
-                  <td>Kim Min-jun</td>
-                  <td>minjun.kim@example.com</td>
-                  <td>Seoul Central</td>
-                  <td>2025-05-10</td>
-                  <td>4</td>
-                  <td><span class="badge confirmed">Confirmed</span></td>
-                </tr>
-                <tr>
-                  <td>TXN00124</td>
-                  <td>Lee Jisoo</td>
-                  <td>jisoo.lee@example.com</td>
-                  <td>Busan Branch</td>
-                  <td>2025-05-12</td>
-                  <td>2</td>
-                  <td><span class="badge pending">Pending</span></td>
-                </tr>
-                <tr>
-                  <td>TXN00125</td>
-                  <td>Park Hyunwoo</td>
-                  <td>hyunwoo.park@example.com</td>
-                  <td>Incheon Intl</td>
-                  <td>2025-05-15</td>
-                  <td>6</td>
-                  <td><span class="badge cancelled">Cancelled</span></td>
-                </tr>
-              </tbody>
-            </table>
+          <table id="currency-table" class="currency-table">
+  <thead>
+    <tr>
+      <th>Currency</th>
+      <th>Rate</th>
+      <th>Percentage Difference</th>
+      <th>Date and Time Recorded</th>
+    </tr>
+  </thead>
+  <tbody>
+    <?php
+    // Fetch all currency data
+    $query = "SELECT * FROM currencyRates ORDER BY base_currency, target_currency, time_recorded DESC";
+    $result = $conn->query($query);
+
+    $currencyMap = [];
+
+    if ($result->num_rows > 0) {
+      // Group data by currency pair and date
+      while ($row = $result->fetch_assoc()) {
+        $pairKey = $row['base_currency'] . '_' . $row['target_currency'];
+        $date = date('Y-m-d', strtotime($row['time_recorded']));
+        $currencyMap[$pairKey][$date] = $row; // map latest rate by date
+      }
+
+      // Iterate through the data
+      foreach ($currencyMap as $pair => $dates) {
+        krsort($dates); // sort dates descending
+
+        foreach ($dates as $currentDate => $currentData) {
+          $currentRate = $currentData['exchange_rate'];
+          $currencyLabel = $currentData['base_currency'] . ' to ' . $currentData['target_currency'];
+          $dateTime = $currentData['time_recorded'];
+
+          // Get yesterday's date
+          $yesterday = date('Y-m-d', strtotime($currentDate . ' -1 day'));
+          $percentageDiff = 'N/A';
+          $changeClass = 'rate-neutral';
+          $arrow = '';
+
+          if (isset($dates[$yesterday])) {
+            $yesterdayRate = $dates[$yesterday]['exchange_rate'];
+            $diff = $currentRate - $yesterdayRate;
+            $percentChange = ($diff / $yesterdayRate) * 100;
+
+            $arrow = $percentChange > 0 ? '↑' : ($percentChange < 0 ? '↓' : '');
+            $changeClass = $percentChange > 0 ? 'rate-up' : ($percentChange < 0 ? 'rate-down' : 'rate-neutral');
+            $symbol = $percentChange >= 0 ? '+' : '';
+            $percentageDiff = $arrow . ' ' . $symbol . number_format($percentChange, 2) . '%';
+
+            // // Optional debugging
+            // echo "<script>console.log('{$pair} | {$currentDate}: {$currentRate} vs {$yesterday}: {$yesterdayRate} → {$percentageDiff}');</script>";
+          }
+
+          echo '<tr>';
+          echo '<td>' . $currencyLabel . '</td>';
+          echo '<td>' . $currentRate . '</td>';
+          echo '<td class="' . $changeClass . '">' . $percentageDiff . '</td>';
+          echo '<td>' . $dateTime . '</td>';
+          echo '</tr>';
+        }
+      }
+    } else {
+      echo '<tr><td colspan="4">No currency data found.</td></tr>';
+    }
+
+    $conn->close();
+    ?>
+  </tbody>
+</table>
+
+
           </div>
 
           <div class="table-footer">

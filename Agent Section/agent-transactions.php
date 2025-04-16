@@ -609,10 +609,12 @@ require "../conn.php";
             </div>
 
           </div>
+
           <div class="modal-footer border-0">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             <button type="submit" class="btn btn-primary" name="updateBooking">Update</button>
           </div>
+          
         </form>
       </div>
     </div>

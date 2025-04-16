@@ -650,13 +650,13 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                 </div>
 
                 <div class="accent-pill">
-                  <a href="../Agent Section/agent-currency-conversion.php" class="pill-button">View History</a>
+                  <a href="../Agent Section/agent-currencyHistory.php" class="pill-button">View History</a>
                 </div>
               </div>
 
               <div class="card-body-currency">
                 <div class="currency-cards">
-                  
+
                   <div class="currency-card">
                     <div class="flag-icon-wrapper">
                       <img src="../Assets/Flags/english-flag.png" alt="">
@@ -1835,8 +1835,8 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
 
         </div>
       </div>
-    </div>
 
+    </div>
   </div>
 
   <?php require "../Agent Section/includes/scripts.php"; ?>
@@ -1867,9 +1867,6 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
       });
     });
   </script>
-
-
-
 
   <script>
     function redirectToAgentTransaction(status) {
