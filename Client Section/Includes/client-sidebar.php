@@ -112,6 +112,22 @@ $current_date = date('D, F d, Y');
         <i class="fas fa-file-invoice"></i> Packages
       </a>
 
+      <a href="../Client Section/client-guestInformationList.php" class="page-button my-0" data-page-name="Guest Information List">
+        <i class="fas fa-file-invoice"></i> Guest Information List
+      </a>
+
+      <a href="../Client Section/client-requestHistory.php" class="page-button my-0" data-page-name="Request History">
+        <i class="fas fa-file-invoice"></i> Request History
+      </a>
+
+      <a href="../Client Section/client-paymentHistory.php" class="page-button my-0" data-page-name="Payment History">
+        <i class="fas fa-file-invoice"></i> Payment History
+      </a>
+
+      <a href="#" class="changePassword page-button my-0" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+        <i class="fas fa-lock"></i> Change Password
+      </a>
+
       <!-- <a href="../Agent Section/agent-FIT-table.php" class="page-button my-0" data-page-name="F.I.T - Transactions Table" style="font-size: 14px;">
         <i class="fas fa-file-invoice"></i> F.I.T 
       </a>  -->
@@ -156,10 +172,6 @@ $current_date = date('D, F d, Y');
       <div class="submenu open" id="concerntable-submenu">
         <a href="#" class="page-button my-0" data-bs-toggle="modal" data-bs-target="#raiseTicketModal">
           <i class="fas fa-ticket-alt"></i> Raise a Ticket
-        </a>
-
-        <a href="#" class="changePassword page-button my-0" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
-          <i class="fas fa-lock"></i> Change Password
         </a>
 
         <?php 
