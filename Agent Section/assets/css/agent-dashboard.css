@@ -81,10 +81,10 @@
 .counts-wrapper {
   display: flex;
   flex-direction: row;
-  /* gap: 5px;  */
   width: 100%;
-  height: 15.5vh;
-  border-bottom: 1px solid gainsboro;
+  height: 15vh;
+  /* border-bottom: 1px solid gainsboro; */
+  /* border: 1px solid black; */
 }
 
 .clickable-card {
@@ -314,8 +314,8 @@
   padding: 0 10px 0 0;
   gap: 10px;
   box-sizing: border-box;
-  /* border: 1px solid black; */
   height: 5vh; /* Optional: set height for testing */
+    /* border: 1px solid black; */
 }
 
 /* Tabs List Section */
@@ -1376,7 +1376,7 @@
 /* Card Container Styling */
 .flight-seat-container .one {
   width: 100%;
-  height: 63.5vh;
+  height: 64vh;
   background-color: #fff;
   overflow: hidden;
   border: 1px solid gainsboro;
@@ -1402,13 +1402,12 @@
 
 .flight-seat-footer {
   width: 100%;
-  height: 4.5vh;
-  margin-top: 10px;
+  height: 5vh;
   overflow: hidden;
   display: flex;
   justify-content: flex-end; /* Align pagination or buttons to the right */
   align-items: center;
-  padding: 0px 15px;
+  padding: 10px 0px 0px 15px;
   font-family: system-ui, sans-serif;
   font-size: 14px;
   color: #333;

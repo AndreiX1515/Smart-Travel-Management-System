@@ -60,6 +60,10 @@ a:hover {
   background-color: #343a40;
 }
 
+
+
+
+
 /* Sidebar Styling */
 .sidebar {
   width: 10%; /* Sidebar takes up 12% of the width */
@@ -138,14 +142,10 @@ a:hover {
 }
 
 
-
-
-
 /* Submenu styles */
 .sidebar .submenu.open + .section-title .chevron-icon {
   transform: rotate(180deg); /* Rotate the chevron when submenu is open */
 }
-
 
 /* Links inside Submenu */
 .sidebar .submenu a {
@@ -251,12 +251,6 @@ a:hover {
 .sidebar .submenu.open {
   display: block;
 }
-
-
-
-
-
-
 
 
 /* Profile Section */

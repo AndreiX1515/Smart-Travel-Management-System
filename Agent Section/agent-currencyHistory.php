@@ -32,81 +32,29 @@ session_start();
 
         <div class="content-body">
           <div class="table-container">
-          <table id="currency-table" class="currency-table">
-  <thead>
-    <tr>
-      <th>Currency</th>
-      <th>Rate</th>
-      <th>Percentage Difference</th>
-      <th>Date and Time Recorded</th>
-    </tr>
-  </thead>
-  <tbody>
-    <?php
-    // Fetch all currency data
-    $query = "SELECT * FROM currencyRates ORDER BY base_currency, target_currency, time_recorded DESC";
-    $result = $conn->query($query);
 
-    $currencyMap = [];
-
-    if ($result->num_rows > 0) {
-      // Group data by currency pair and date
-      while ($row = $result->fetch_assoc()) {
-        $pairKey = $row['base_currency'] . '_' . $row['target_currency'];
-        $date = date('Y-m-d', strtotime($row['time_recorded']));
-        $currencyMap[$pairKey][$date] = $row; // map latest rate by date
-      }
-
-      // Iterate through the data
-      foreach ($currencyMap as $pair => $dates) {
-        krsort($dates); // sort dates descending
-
-        foreach ($dates as $currentDate => $currentData) {
-          $currentRate = $currentData['exchange_rate'];
-          $currencyLabel = $currentData['base_currency'] . ' to ' . $currentData['target_currency'];
-          $dateTime = $currentData['time_recorded'];
-
-          // Get yesterday's date
-          $yesterday = date('Y-m-d', strtotime($currentDate . ' -1 day'));
-          $percentageDiff = 'N/A';
-          $changeClass = 'rate-neutral';
-          $arrow = '';
-
-          if (isset($dates[$yesterday])) {
-            $yesterdayRate = $dates[$yesterday]['exchange_rate'];
-            $diff = $currentRate - $yesterdayRate;
-            $percentChange = ($diff / $yesterdayRate) * 100;
-
-            $arrow = $percentChange > 0 ? '↑' : ($percentChange < 0 ? '↓' : '');
-            $changeClass = $percentChange > 0 ? 'rate-up' : ($percentChange < 0 ? 'rate-down' : 'rate-neutral');
-            $symbol = $percentChange >= 0 ? '+' : '';
-            $percentageDiff = $arrow . ' ' . $symbol . number_format($percentChange, 2) . '%';
-
-            // // Optional debugging
-            // echo "<script>console.log('{$pair} | {$currentDate}: {$currentRate} vs {$yesterday}: {$yesterdayRate} → {$percentageDiff}');</script>";
-          }
-
-          echo '<tr>';
-          echo '<td>' . $currencyLabel . '</td>';
-          echo '<td>' . $currentRate . '</td>';
-          echo '<td class="' . $changeClass . '">' . $percentageDiff . '</td>';
-          echo '<td>' . $dateTime . '</td>';
-          echo '</tr>';
-        }
-      }
-    } else {
-      echo '<tr><td colspan="4">No currency data found.</td></tr>';
-    }
-
-    $conn->close();
-    ?>
-  </tbody>
-</table>
-
+            <table id="currency-table" class="currency-table">
+              <thead>
+                <tr>
+                  <th>Currency</th>
+                  <th>Rate</th>
+                  <!-- <th>Percentage Difference</th> -->
+                  <th>Date and Time Recorded</th>
+                </tr>
+              </thead>
+              <tbody id="currency-body">
+                <tr>
+                  <td colspan="4">Loading...</td>
+                </tr>
+              </tbody>
+            </table>
 
           </div>
-
           <div class="table-footer">
+            <div class="last-updated-wrapper">
+              <h6>Last Updated: <span class="" id="lastUpdated"></span></h6>
+            </div>
+
             <div class="pagination-controls">
               <button id="prevPage" class="pagination-btn">Previous</button>
               <span id="pageInfo" class="page-info">Page 1 of 10</span>
@@ -122,6 +70,46 @@ session_start();
 
 
   <?php require "../Agent Section/includes/scripts.php"; ?>
+
+  <script>
+    function fetchCurrencyRates() {
+      fetch('../Agent Section/functions/currencyRateHistory/fetchCurrency.php')
+        .then(response => response.json())
+        .then(data => {
+          const tbody = document.getElementById('currency-body');
+          tbody.innerHTML = '';
+
+          if (data.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="4">No currency data found.</td></tr>';
+            return;
+          }
+
+          data.forEach(row => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+              <td>${row.currencyLabel}</td>
+              <td>${row.currentRate}</td>
+              <td>${row.dateTime}</td>
+            `;
+            tbody.appendChild(tr);
+          });
+        })
+        .catch(err => {
+          console.error('Failed to fetch currency rates:', err);
+        });
+    }
+
+    // Initial load
+    fetchCurrencyRates();
+    // Poll every 5 seconds
+    setInterval(fetchCurrencyRates, 5000);
+
+    // <td class="${row.changeClass}">${row.percentageDiff}</td>
+  </script>
+
+
+
+
 
 </body>
 

@@ -948,7 +948,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                                         JOIN branch br ON b.agentCode = br.branchAgentCode
                                         WHERE b.accountId = '$accountId' 
                                         AND (b.status = 'Pending' OR b.status = 'Reserved')
-                                        ORDER BY b.transactNo DESC";
+                                        ORDER BY b.transactNo DESC LIMIT 7";
 
                             $res1 = $conn->query($sql1);
 
@@ -1281,7 +1281,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                                       LEFT JOIN branch br ON b.agentCode = br.branchAgentCode
                                       WHERE b.accountId = '$accountId'
                                       AND p.paymentStatus = 'Submitted'
-                                      ORDER BY p.paymentDate DESC";
+                                      ORDER BY p.paymentDate DESC LIMIT 6";
 
                             $res2 = $conn->query($sql2);
 

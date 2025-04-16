@@ -118,7 +118,7 @@ $current_date = date('D, F d, Y');
       </a>
 
       <a href="../Agent Section/agent-guestInformationList.php" class="page-button my-0" data-page-name="Guest Information List">
-        <i class="fas fa-file-invoice"></i> Guest Information List
+        <i class="fas fa-file-invoice"></i> Guest Info List
       </a>
 
       <a href="../Agent Section/agent-requestHistory.php" class="page-button my-0" data-page-name="Request History">

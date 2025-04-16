@@ -10,13 +10,13 @@
   display: flex;
   justify-content: flex-start; /* Centers the content horizontally */
   align-items: flex-start; /* Keeps the content aligned at the top vertically */
-  border: 1px solid black;
+  /* border: 1px solid black; */
   padding: 10px 10px;
 }
 
 
 .field-select-wrapper {
-  border: 1px solid black;
+  border: 1px solid gainsboro;
   padding: 10px 15px;
   align-items: flex-start; /* Align children to the start */
 }

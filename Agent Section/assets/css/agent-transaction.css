@@ -420,11 +420,15 @@
 
 /* Table Styles for Product Table */
 .product-table {
+  table-layout: fixed;
   width: 100%;
-  border-collapse: collapse;
-  margin-top: 15px;
-  table-layout: fixed; /* Make columns of fixed width */
+}
 
+.product-table th,
+.product-table td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Header Styling */
@@ -484,44 +488,84 @@
 }
 
 
-/* Column width adjustments */
+
+
+/* Column width adjustments totaling 100% */
 .product-table th:nth-child(1),
 .product-table td:nth-child(1) {
-  width: 7%; /* Adjust width for Transaction ID column */
+  width: 7%;
 }
 
 .product-table th:nth-child(2),
 .product-table td:nth-child(2) {
-  width: 16%; /* Adjust width for Contact Person Info column */
+  width: 14%;
 }
 
 .product-table th:nth-child(3),
 .product-table td:nth-child(3) {
-  width: 23%; /* Adjust width for Contact Person Contact Details column */
+  width: 17%;
 }
 
 .product-table th:nth-child(4),
 .product-table td:nth-child(4) {
-  width: 14%; /* Adjust width for Package Name column */
+  width: 12%;
 }
 
 .product-table th:nth-child(5),
 .product-table td:nth-child(5) {
-  width: 7%; 
-  text-align: center; 
+  width: 8%;
 }
 
 .product-table th:nth-child(6),
 .product-table td:nth-child(6) {
-  width: 7%; /* Adjust width for Flight Date column */
+  width: 7%;
   text-align: center;
 }
 
 .product-table th:nth-child(7),
 .product-table td:nth-child(7) {
-  width: 8%; /* Adjust width for Total Pax column */
+  width: 8%;
+}
+
+.product-table th:nth-child(8),
+.product-table td:nth-child(8) {
+  width: 10%;
+}
+
+.product-table th:nth-child(9),
+.product-table td:nth-child(9) {
+  width: 10%;
+}
+
+.product-table th:nth-child(10),
+.product-table td:nth-child(10) {
+  width: 7%;
   text-align: center;
 }
+
+
+
+.cell-merge {
+  display: flex; 
+  flex-direction: column;
+}
+
+.cell-merge h6 {
+  font-weight: bold;
+  font-size: .9rem;
+}
+
+.cell-merge span {
+  font-weight: normal;
+  font-size: .9rem;
+}
+
+
+
+
+
+
+
 
 /* .product-table th:nth-child(8),
 .product-table td:nth-child(8) {

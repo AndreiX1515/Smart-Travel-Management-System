@@ -27,9 +27,9 @@ require "../conn.php";
       </div>
 
       <div class="main-content">
-        <div class="main-content-header">
+        <!-- <div class="main-content-header">
           <h5 class="text-center">Guest Room Assignment</h5>
-        </div>
+        </div> -->
 
         <div class="field-select-wrapper">
           <div class="row">
