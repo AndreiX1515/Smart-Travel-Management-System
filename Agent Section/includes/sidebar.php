@@ -71,7 +71,6 @@ if ($result2->num_rows > 0) {
 }
 $stmt2->close();
 
-
 // Format the full name in Last Name, First Name, Middle Name format
 $fullName = htmlspecialchars(trim(
   $lName .                         // Always include last name
@@ -90,7 +89,7 @@ $current_date = date('D, F d, Y');
 
 <div class="sidebar" id="sidebar">
   <div class="main-sidebar">
-    <div class="logo mt-3">
+    <div class="logo">
       <img src="../Assets/Logos/logo.png" alt="Smart Travel Logo">
     </div>
 
