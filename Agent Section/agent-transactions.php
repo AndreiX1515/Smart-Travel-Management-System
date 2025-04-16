@@ -142,21 +142,19 @@ require "../conn.php";
             </ul>
           </div>
 
-
           <div class="table-container">
             <table id="product-table" class="product-table">
               <thead>
                 <tr>
-                  <th>Transaction ID</th>
+                  <th>ID</th>
                   <th>Contact Person Info</th>
                   <th>Contact Details</th>
                   <th>Branch Name</th>
                   <th>Flight Date</th>
                   <th>Total Pax</th>
                   <th>Package Price</th>
-                  <th>Total Request Cost</th>
-                  <th>Amount Paid Balance</th>
-                  <th>Balance</th>
+                  <th>Total Req. Cost</th>
+                  <th>Amt. Paid Balance</th>
                   <th>Status</th>
                 </tr>
               </thead>
@@ -213,7 +211,10 @@ require "../conn.php";
                         $packagePrice = $row['PackagePrice'] ?? 0;
                         $requestTotal = $row['TotalRequestAmount'] ?? 0;
                         $amountPaid = $row['TotalAmountPaid'] ?? 0;
-                        $balance = max(($packagePrice + $requestTotal) - $amountPaid, 0); // Prevent negative balances
+                        $balance = max(($packagePrice + $requestTotal) - $amountPaid, 0); 
+                        
+                        
+                        // Prevent negative balances
                         // Booking Date
                         // <td>{$row['TRANSACTION DATE']}</td>
 
@@ -235,13 +236,22 @@ require "../conn.php";
                                 </td>
                                 <td>{$row['PackagePrice']}</td>
                                 <td>{$row['TotalRequestAmount']}</td>
-                                <td>{$row['TotalAmountPaid']}</td>
-                                <td>{$balance}</td>
+
+                                <td>
+                                    <div class='d-flex flex-column'>
+                                        <span><strong>Amount Paid: </strong>" . $row['TotalAmountPaid'] . " </span>
+                                        <span><strong>Balance: </strong> " . $balance . "</span>
+                                    </div>
+                                </td>
+
+                               
+
+
                                 <td>
                                   <span class='badge p-2 rounded-pill {$statusClass}'>
                                     {$status}
                                   </span>
-                              </td>
+                                </td>
                             </tr>";
                       }
                     }
@@ -610,10 +620,12 @@ require "../conn.php";
             </div>
 
           </div>
+
           <div class="modal-footer border-0">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             <button type="submit" class="btn btn-primary" name="updateBooking">Update</button>
           </div>
+          
         </form>
       </div>
     </div>
@@ -678,7 +690,7 @@ require "../conn.php";
 
           // Apply DataTables filtering (assuming your table uses DataTables)
           if ($.fn.DataTable.isDataTable("#product-table")) {
-            $('#product-table').DataTable().column(6).search(filterValue || '', true, false).draw();
+            $('#product-table').DataTable().column(9).search(filterValue || '', true, false).draw();
           }
         });
       });
@@ -693,20 +705,21 @@ require "../conn.php";
         language: {
           emptyTable: "No Transaction Records Available"
         },
-        order: [
-          [0, 'desc']
-        ],
-        scrollX: false,
+        order: [[0, 'desc']],
+        scrollX: false, // Ensure no horizontal scroll
         scrollY: '66.1vh',
         paging: true,
         pageLength: 11,
-        autoWidth: true,
+        autoWidth: false, // Disable auto width to use custom widths
         autoHeight: false,
-        columnDefs: [{
-          targets: [1, 2, 3, 5, 6],
-          orderable: false
-        }]
+        columnDefs: [
+          {
+            targets: [1, 2, 3, 5, 6],
+            orderable: false
+          }
+        ]
       });
+
 
 
 

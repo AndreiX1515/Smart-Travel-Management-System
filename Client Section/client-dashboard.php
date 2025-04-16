@@ -35,6 +35,7 @@ require "../conn.php";
           // print_r($_SESSION);
           // echo "</pre>";
           ?>
+          
           <!-- Cards First Row -->
           <div class="counts-wrapper">
 
@@ -447,7 +448,7 @@ require "../conn.php";
             <!-- CARD 4 -->
             <div class="card">
               
-              <div class="header-counts mb-1">
+              <div class="header-counts mb-2">
                   <div class="primary-pill">
                     <h6 class="white-pill">Daily Currency Conversion</h6>
                   </div>
@@ -512,74 +513,43 @@ require "../conn.php";
           </div>
 
           <div class="tabs-wrapper">
-            <ul class="nav nav-pills" id="pills-tab" role="tablist">
-              <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Flight Seats Tracker</button>
-              </li>
+            <div class="tabs-list-wrapper">
+              <ul class="nav nav-pills" id="pills-tab" role="tablist">
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link active" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Flight Seats Tracker</button>
+                </li>
 
-              <li class="nav-item" role="presentation">
-                <button class="nav-link " id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Pending and Requests</button>
-              </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link " id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Pending and Requests</button>
+                </li>
 
-
-          <!-- <li class="nav-item" role="presentation">
+                <!-- <li class="nav-item" role="presentation">
                 <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">F.I.T</button>
               </li> -->
 
-          <!-- <li class="nav-item" role="presentation">
+                <!-- <li class="nav-item" role="presentation">
                 <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Confirmed</button>
               </li> -->
-            </ul>
-          </div>
+              </ul>
+            </div>
 
-          <div class="tab-content" id="pills-tabContent">
-
-            <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
-
-              <div class="flight-seat-container">
-
-                <div class="flight-seat-header">
-                  <!-- <div class="search-wrapper">
-                      <div class="search-input-wrapper">
-                        <input type="text" id="search" placeholder="Search here..">
-                      </div>
-                    </div> -->
-
-                  <div class="second-header-wrapper">
-
-                    <!-- Price Range Wrapper -->
-                    <!-- <div class="date-range-wrapper price-range-wrapper">
-                        <!-- <label for="priceRange">Price Range:</label> 
-
-                        <!-- Price Range Slider 
-                        <div id="slider-range" class="price-filter-range"></div>
-
-                        <!-- Min & Max Price Inputs 
-                        <div class="price-values">
-                            <input type="number" id="min_price" class="price-range-field" min="0" max="9900" 
-                                  oninput="validity.valid||(value='0');">
-                            <span> - </span>
-                            <input type="number" id="max_price" class="price-range-field" min="0" max="10000" 
-                                  oninput="validity.valid||(value='10000');">
-                        </div>
-                    </div> -->
-
-
-                    <div class="date-range-wrapper flightbooking-wrapper">
-                      <div class="date-range-inputs-wrapper">
-                        <div class="input-with-icon">
-                          <input type="text" class="datepicker" id="FlightStartDate" placeholder="Flight Date" readonly>
-                          <i class="fas fa-calendar-alt calendar-icon"></i>
-                        </div>
-                      </div>
+            <div class="tabs-sorting-wrapper">
+              <div class="second-header-wrapper">
+                <div class="date-range-wrapper flightbooking-wrapper">
+                  <div class="date-range-inputs-wrapper">
+                    <div class="input-with-icon">
+                      <input type="text" class="datepicker" id="FlightStartDate" placeholder="Flight Date" readonly>
+                      <i class="fas fa-calendar-alt calendar-icon"></i>
                     </div>
+                  </div>
+                </div>
 
-                    <!-- <div class="date-range-wrapper sorting-wrapper">
+                <!-- <div class="date-range-wrapper sorting-wrapper">
                       <div class="select-wrapper">
                         <select id="packages">
                           <option value="All" disabled selected>Select Branch</option>
                           <?php
-                          // Execute the SQL query
+                          // // Execute the SQL query
                           // $sql1 = "SELECT branchId, branchName FROM branch ORDER BY branchName ASC";
                           // $res1 = $conn->query($sql1);
 
@@ -598,14 +568,22 @@ require "../conn.php";
                     </div> -->
 
 
-                    <div class="buttons-wrapper">
-                      <button id="clearSorting" class="btn btn-secondary">
-                        Clear Filters
-                      </button>
-                    </div>
-                  </div>
+                <div class="buttons-wrapper">
+                  <button id="clearSorting" class="btn btn-secondary">
+                    Clear Filters
+                  </button>
                 </div>
 
+              </div>
+            </div>
+
+          </div>
+
+          <div class="tab-content" id="pills-tabContent">
+
+            <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
+
+              <div class="flight-seat-container">
                 <!-- Flight Seat -->
                 <div class="one">
                   <div class="body-flight">
@@ -1228,7 +1206,37 @@ require "../conn.php";
 
   </div>
 
+
+
+
   <?php require "../Agent Section/includes/scripts.php"; ?>
+
+  <!-- Tab Div Hide Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const secondHeader = document.querySelector('.second-header-wrapper');
+      const flightSeatsTab = document.querySelector('#pills-profile-tab');
+
+      // Show on page load if default is active
+      if (flightSeatsTab.classList.contains('active')) {
+        secondHeader.style.display = 'flex';
+      } else {
+        secondHeader.style.display = 'none';
+      }
+
+      // Listen for tab shown event
+      const tabs = document.querySelectorAll('button[data-bs-toggle="pill"]');
+      tabs.forEach(tab => {
+        tab.addEventListener('shown.bs.tab', function (e) {
+          if (e.target.id === 'pills-profile-tab') {
+            secondHeader.style.display = 'flex';
+          } else {
+            secondHeader.style.display = 'none';
+          }
+        });
+      });
+    });
+  </script>                       
 
   <script>
     function redirectToAgentTransaction(status) {
@@ -1247,8 +1255,8 @@ require "../conn.php";
             },
             order: [[0, 'desc']],
             paging: true,
-            pageLength: 8,
-            scrollY: '570px',
+            pageLength: 9,
+            scrollY: '600px',
             scrollCollapse: true,
             autoWidth: false,
             columnDefs: [
@@ -1391,22 +1399,6 @@ require "../conn.php";
       }, 500);
     });
   </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   <!-- Clickable rows script -->
   <script>

@@ -10,7 +10,6 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
 
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 

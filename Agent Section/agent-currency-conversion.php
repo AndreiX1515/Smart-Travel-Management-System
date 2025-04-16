@@ -29,6 +29,7 @@ error_reporting(E_ALL);
 
     <div class="main-content">
       <div class="content-body">
+
         <div class="table-actions">
           <div class="row">
             <div class="columns col-md-3">
@@ -63,7 +64,6 @@ error_reporting(E_ALL);
               // Set the selected index to the current month (currentMonth is 0-based)
               selectElement.selectedIndex = currentMonth + 1; // Add 1 to account for the "Select month" option
             </script>
-
 
             <div class="columns col-md-3">
               <div class="table-filters-container">
@@ -118,7 +118,6 @@ error_reporting(E_ALL);
               Reload
             </button>
           </div>
-
         </div>
 
         <div class="content-body">

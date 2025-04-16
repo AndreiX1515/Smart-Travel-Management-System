@@ -40,13 +40,13 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
             <!-- CARD 1 Current Transaction Counts-->
             <div class="card">
               <div class="header-counts">
-                  <div class="primary-pill">
-                      <h6 class="white-pill">Current Monthly Transaction</h6>
-                  </div>
+                <div class="primary-pill">
+                  <h6 class="white-pill">Monthly Transaction</h6>
+                </div>
 
-                  <div class="accent-pill mt-1">
-                    <h6 class="accent-pill"><?php echo date('F, Y'); ?></h6>
-                  </div>
+                <div class="accent-pill mt-1">
+                  <h6 class="accent-pill"><?php echo date('F, Y'); ?></h6>
+                </div>
               </div>
 
 
@@ -325,10 +325,10 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
 
             <!-- CARD 2 - On Due -->
             <div class="card">
-             <div class="header-counts">
-                  <div class="primary-pill">
-                      <h6 class="white-pill">On Due</h6>
-                  </div>                  
+              <div class="header-counts">
+                <div class="primary-pill">
+                  <h6 class="white-pill">On Due</h6>
+                </div>
               </div>
 
               <div class="card-content px-3">
@@ -545,9 +545,9 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
             <!-- CARD 3 - Total Payment -->
             <div class="card">
               <div class="header-counts">
-                  <div class="primary-pill">
-                      <h6 class="white-pill">Total Sales</h6>
-                  </div>                  
+                <div class="primary-pill">
+                  <h6 class="white-pill">Total Sales</h6>
+                </div>
               </div>
 
               <div class="card-content px-3">
@@ -644,23 +644,19 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
 
             <!-- CARD 4 -->
             <div class="card">
-              <div class="header-counts mb-1">
-                  <div class="primary-pill">
-                    <h6 class="white-pill">Daily Currency Conversion</h6>
-                  </div>
+              <div class="header-counts mb-2">
+                <div class="primary-pill">
+                  <h6 class="white-pill">Daily Currency Conversion</h6>
+                </div>
 
-                  <div class="accent-pill">
-                    <a href="../Agent Section/agent-currency-conversion.php" class="pill-button">View History</a>
-                  </div>
+                <div class="accent-pill">
+                  <a href="../Agent Section/agent-currencyHistory.php" class="pill-button">View History</a>
+                </div>
               </div>
-
-              <!-- <div class="header-counts d-flex justify-content-between align-items-center header-currency">
-                
-                
-              </div> -->
 
               <div class="card-body-currency">
                 <div class="currency-cards">
+
                   <div class="currency-card">
                     <div class="flag-icon-wrapper">
                       <img src="../Assets/Flags/english-flag.png" alt="">
@@ -685,7 +681,10 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                     </div>
                   </div>
 
-                  <div class="currency-card">
+
+
+                  
+                  <!-- <div class="currency-card">
                     <div class="flag-icon-wrapper">
                       <img src="../Assets/Flags/korean-flag.png" alt="">
                       <h6 class="mt-2">KOR</h6>
@@ -693,7 +692,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                         <h5>₩ <?php echo number_format($usd_to_krw, 0); ?></h5>
                       </div>
                     </div>
-                  </div>
+                  </div> -->
 
                   <!-- <div class="currency-card">
                   <div class="flag-icon-wrapper">
@@ -709,51 +708,44 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                 </div> -->
                 </div>
               </div>
+
             </div>
 
           </div>
 
           <div class="tabs-wrapper">
-            <ul class="nav nav-pills" id="pills-tab" role="tablist">
-              <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Flight Seats Tracker</button>
-              </li>
+            <div class="tabs-list-wrapper">
+              <ul class="nav nav-pills" id="pills-tab" role="tablist">
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link active" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Flight Seats Tracker</button>
+                </li>
 
-              <li class="nav-item" role="presentation">
-                <button class="nav-link " id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Pending and Requests</button>
-              </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link " id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Pending and Requests</button>
+                </li>
 
+                <!-- <li class="nav-item" role="presentation">
+                <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">F.I.T</button>
+              </li> -->
 
-              <!-- <li class="nav-item" role="presentation">
-              <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">F.I.T</button>
-            </li> -->
+                <!-- <li class="nav-item" role="presentation">
+                <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Confirmed</button>
+              </li> -->
+              </ul>
+            </div>
 
-              <!-- <li class="nav-item" role="presentation">
-              <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Confirmed</button>
-            </li> -->
-            </ul>
-          </div>
-
-          <div class="tab-content" id="pills-tabContent">
-
-            <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
-
-              <div class="flight-seat-container">
-
-                <div class="flight-seat-header">
-
-                  <div class="second-header-wrapper">
-
-                    <div class="date-range-wrapper flightbooking-wrapper">
-                      <div class="date-range-inputs-wrapper">
-                        <div class="input-with-icon">
-                          <input type="text" class="datepicker" id="FlightStartDate" placeholder="Flight Date" readonly>
-                          <i class="fas fa-calendar-alt calendar-icon"></i>
-                        </div>
-                      </div>
+            <div class="tabs-sorting-wrapper">
+              <div class="second-header-wrapper">
+                <div class="date-range-wrapper flightbooking-wrapper">
+                  <div class="date-range-inputs-wrapper">
+                    <div class="input-with-icon">
+                      <input type="text" class="datepicker" id="FlightStartDate" placeholder="Flight Date" readonly>
+                      <i class="fas fa-calendar-alt calendar-icon"></i>
                     </div>
+                  </div>
+                </div>
 
-                    <!-- <div class="date-range-wrapper sorting-wrapper">
+                <!-- <div class="date-range-wrapper sorting-wrapper">
                       <div class="select-wrapper">
                         <select id="packages">
                           <option value="All" disabled selected>Select Branch</option>
@@ -777,14 +769,22 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                     </div> -->
 
 
-                    <div class="buttons-wrapper">
-                      <button id="clearSorting" class="btn btn-secondary">
-                        Clear Filters
-                      </button>
-                    </div>
-
-                  </div>
+                <div class="buttons-wrapper">
+                  <button id="clearSorting" class="btn btn-secondary">
+                    Clear Filters
+                  </button>
                 </div>
+
+              </div>
+            </div>
+
+          </div>
+
+          <div class="tab-content" id="pills-tabContent">
+
+            <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
+
+              <div class="flight-seat-container">
 
                 <!-- Flight Seat -->
                 <div class="one">
@@ -865,7 +865,8 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                               echo '<td class="fw-bold">' . $row['AvailSeats'] . '</td>';
                               echo '<td class="fw-bolder">' . $row['AdditionalSeats'] . '</td>';
                               echo '<td>₱ ' . number_format($row['RetailPrice'], 2) . '</td>';
-                              echo '<td><a href="../Agent Section/agent-revisedAddBooking-flight.php?flightid=' . urlencode($row['flightId']) . '" class="btn btn-primary">Book Now</a></td>';
+                              echo '<td>
+                              <a href="../Agent Section/agent-revisedAddBooking-flight.php?flightid=' . urlencode($row['flightId']) . '" class="btn btn-outline-primary">Book Now</a></td>';
                               echo '</tr>';
                             }
                           } else {
@@ -886,8 +887,8 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                   </div>
                 </div>
 
-
               </div>
+
             </div>
 
             <div class="tab-pane fade " id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
@@ -947,7 +948,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                                         JOIN branch br ON b.agentCode = br.branchAgentCode
                                         WHERE b.accountId = '$accountId' 
                                         AND (b.status = 'Pending' OR b.status = 'Reserved')
-                                        ORDER BY b.transactNo DESC";
+                                        ORDER BY b.transactNo DESC LIMIT 7";
 
                             $res1 = $conn->query($sql1);
 
@@ -1280,7 +1281,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                                       LEFT JOIN branch br ON b.agentCode = br.branchAgentCode
                                       WHERE b.accountId = '$accountId'
                                       AND p.paymentStatus = 'Submitted'
-                                      ORDER BY p.paymentDate DESC";
+                                      ORDER BY p.paymentDate DESC LIMIT 6";
 
                             $res2 = $conn->query($sql2);
 
@@ -1834,14 +1835,39 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
 
         </div>
       </div>
+
     </div>
-
   </div>
-
 
   <?php require "../Agent Section/includes/scripts.php"; ?>
 
-  
+  <!-- Tab Div Hide Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const secondHeader = document.querySelector('.second-header-wrapper');
+      const flightSeatsTab = document.querySelector('#pills-profile-tab');
+
+      // Show on page load if default is active
+      if (flightSeatsTab.classList.contains('active')) {
+        secondHeader.style.display = 'flex';
+      } else {
+        secondHeader.style.display = 'none';
+      }
+
+      // Listen for tab shown event
+      const tabs = document.querySelectorAll('button[data-bs-toggle="pill"]');
+      tabs.forEach(tab => {
+        tab.addEventListener('shown.bs.tab', function (e) {
+          if (e.target.id === 'pills-profile-tab') {
+            secondHeader.style.display = 'flex';
+          } else {
+            secondHeader.style.display = 'none';
+          }
+        });
+      });
+    });
+  </script>
+
   <script>
     function redirectToAgentTransaction(status) {
       console.log("Redirecting with status:", status);
@@ -1852,22 +1878,25 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
   <script>
     $(document).ready(function() {
       const table = $('#info-table').DataTable({
-            dom: 'rtip',
-            language: {
-                emptyTable: "No Transaction Records Available"
-            },
-            order: [[0, 'desc']],
-            paging: true,
-            pageLength: 8,
-            scrollY: '560px',
-            scrollCollapse: true,
-            autoWidth: false,
-            columnDefs: [
-                { targets: "_all", className: "text-center" }
-            ]
-        });
+        dom: 'rtip',
+        language: {
+          emptyTable: "No Transaction Records Available"
+        },
+        order: [
+          [0, 'desc']
+        ],
+        paging: true,
+        pageLength: 9,
+        scrollY: '600px',
+        scrollCollapse: true,
+        autoWidth: false,
+        columnDefs: [{
+          targets: "_all",
+          className: "text-center"
+        }]
+      });
 
-      
+
       function updatePagination() {
         const info = table.page.info();
         const totalPages = info.pages;
@@ -1949,7 +1978,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
       });
 
       $("#FlightStartDate").datepicker({
-        dateFormat: "mm-dd-yy",
+        dateFormat: "yy-mm-dd",
         showAnim: "fadeIn",
         changeMonth: true,
         changeYear: true,

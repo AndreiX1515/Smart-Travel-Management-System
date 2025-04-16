@@ -1,0 +1,562 @@
+
+.main-content {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.main-content-header {
+  height: 5vh;
+  display: flex;
+  justify-content: flex-start; /* Centers the content horizontally */
+  align-items: flex-start; /* Keeps the content aligned at the top vertically */
+  /* border: 1px solid black; */
+  padding: 10px 10px;
+}
+
+
+.field-select-wrapper {
+  border: 1px solid gainsboro;
+  padding: 10px 15px;
+  align-items: flex-start; /* Align children to the start */
+}
+
+
+.btn-wrapper {
+  display: flex;
+
+}
+
+
+.header-wrapper {
+  display: flex;
+  justify-content: flex-start; /* Centers the content horizontally */
+  align-items: flex-end; /* Keeps the content aligned at the top vertically */
+  /* border: 1px solid black; */
+  padding: 0px 0px;
+}
+
+/* Column Wrapper */
+.columns {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  padding: 5px 10px 5px 10px;
+  /* border: 1px solid black; */
+}
+
+.room-type-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: auto; /* Ensures the wrapper takes up full height of the container */
+}
+
+.room-type-select {
+  flex: 3; /* This will take up 3/4 of the available space */
+  /* border: 1px solid black; */
+}
+
+.assign-btn-wrapper {
+  flex: 1; 
+  display: flex;
+  justify-content: flex-end; 
+  align-items: flex-end; 
+  /* border: 1px solid black;  */
+  width: 100%; 
+}
+
+/* Flight Date Section */
+.flight-date-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px; /* Adds space between label and select wrapper */
+  width: 100%; /* Ensures it takes full width within col-md-6 */
+}
+
+/* Header for Label */
+.flight-date-wrapper .header-wrapper {
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
+  margin-bottom: 6px; /* Adds space below the header */
+}
+
+/* Label Styling */
+.flight-date-wrapper label {
+  font-size: 14px;
+  color: #333;
+  display: block;
+}
+
+/* Select Wrapper */
+.select-wrapper {
+  position: relative;
+  width: 100%;
+  /* border: 1px solid black; */
+  padding: 0px 0px;
+}
+
+/* Select Styling */
+.flight-date-wrapper select {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease-in-out;
+}
+
+/* Select Focus State */
+.flight-date-wrapper select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* Optional: Hover effect on Select Box */
+.flight-date-wrapper select:hover {
+  border-color: #0056b3;
+}
+
+
+.table-wrapper {
+  padding: 5px 10px;
+  /* border: 1px solid black; */
+}
+
+
+/* ========================================= */ 
+.table-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 10px 10px;
+  border: 1px solid gainsboro;
+  
+}
+
+.table-wrapper .header-wrapper {
+  display: flex;
+  justify-content: flex-start; /* Centers the content horizontally */
+  align-items: center; /* Keeps the content aligned at the top vertically */
+  /* border: 1px solid black; */
+  padding: 5px 0px;
+}
+
+
+.table-container {
+  /* border: 1px solid black; */
+  padding: 0px 0px;
+}
+
+.table-footer {
+  display: flex;
+  padding: 10px;
+  justify-content: flex-end;
+  align-items: stretch;
+  gap: 10px;
+  border: 1px solid gainsboro;
+  margin-top: 10px;
+
+}
+
+
+
+/* Table Styling for Assigned Rooms Table */
+.assigned-rooms-table {
+  width: 100%;
+  border-collapse: collapse; /* Remove space between table cells */
+  font-family: 'Arial', sans-serif; /* Cleaner font */
+  color: #333; /* Text color */
+}
+
+/* Table Header */
+.assigned-rooms-table thead {
+  background-color: #f8f9fa; /* Light background */
+  color: #495057; /* Slightly dark text for header */
+  border-bottom: 2px solid #e0e0e0; /* Soft border on the bottom of the header */
+}
+
+/* Table Header Styling */
+.assigned-rooms-table th {
+  padding: 5px 7px;
+  text-align: center;
+  vertical-align: middle;
+  font-weight: 600; /* Make header text bold */
+  font-size: 14px;
+  border-bottom: 1px solid #e0e0e0; /* Soft border under each header cell */
+  border-left: 1px solid #e0e0e0; /* Soft left border */
+  border-right: 1px solid #e0e0e0; /* Soft right border */
+  line-height: 1.3;
+}
+
+
+/* Table Body */
+.assigned-rooms-table tbody tr {
+  transition: background-color 0.2s ease; /* Smooth transition for hover effect */
+}
+
+.assigned-rooms-table tbody tr:hover {
+  background-color: #f1f3f5; /* Subtle hover effect */
+}
+
+.assigned-rooms-table td {
+  padding: 8px 15px;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 13px;
+  border-bottom: 1px solid #f1f3f5; /* Light border between rows */
+}
+
+/* Column Specific Styling */
+.assigned-rooms-table td:nth-child(1), .assigned-rooms-table th:nth-child(1) {
+  width: 1%;
+}
+
+.assigned-rooms-table td:nth-child(2), .assigned-rooms-table th:nth-child(2) {
+  width: 5%;
+}
+
+.assigned-rooms-table td:nth-child(3), .assigned-rooms-table th:nth-child(3) {
+  width: 9%;
+}
+
+.assigned-rooms-table td:nth-child(4), .assigned-rooms-table th:nth-child(4) {
+  width: 9%;
+}
+
+.assigned-rooms-table td:nth-child(5), .assigned-rooms-table th:nth-child(5) {
+  width: 9%;
+}
+
+.assigned-rooms-table td:nth-child(6), .assigned-rooms-table th:nth-child(6) {
+  width: 10%;
+}
+
+.assigned-rooms-table td:nth-child(7), .assigned-rooms-table th:nth-child(7) {
+  width: 8%;
+}
+
+.assigned-rooms-table td:nth-child(8), .assigned-rooms-table th:nth-child(8) {
+  width: 8%;
+}
+
+.assigned-rooms-table td:nth-child(9), .assigned-rooms-table th:nth-child(9) {
+  width: 8%;
+}
+
+.assigned-rooms-table td:nth-child(10), .assigned-rooms-table th:nth-child(10) {
+  width: 8%;
+}
+
+.assigned-rooms-table td:nth-child(11), .assigned-rooms-table th:nth-child(11) {
+  width: 8%;
+}
+
+.assigned-rooms-table td:nth-child(12), .assigned-rooms-table th:nth-child(12) {
+  width: 8%;
+}
+
+.assigned-rooms-table td:nth-child(13), .assigned-rooms-table th:nth-child(13) {
+  width: 8%;
+}
+
+/* Remove the last column's border for better spacing */
+.assigned-rooms-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Media Query to handle responsiveness */
+@media (max-width: 768px) {
+  .columns {
+    flex-direction: column;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.booking-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 5px 0px;
+  width: 100%;
+}
+
+.card-header {
+  display: flex;
+  justify-content: start;
+  align-items: last baseline;
+  padding: 5px 20px;
+}
+
+.text-danger {
+  font-size: 12px;
+}
+
+.card-header h4 {
+  margin-top: 10px;
+  font-size: 18px;
+}
+
+.card-body {
+  padding: 10px 20px;
+}
+
+.card-body .row {
+  margin-bottom: 5px;
+}
+
+.row .columns {
+  margin-bottom: 10px;
+}
+
+.columns label {
+  margin-bottom: 8px;
+}
+
+.land-only, .flight-details-wrapper {
+  width: 98.5%;
+  margin: -10px 5px 0px 5px;
+}
+
+.seat-info {
+  display: flex;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: #6c757d;
+  margin-top: 4px;
+}
+
+.separator {
+  font-weight: bold;
+  color: #495057;
+}
+
+.form-group label {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.flight-details-wrapper {
+  display: flex;
+  /* border: 1px solid black; */
+}
+
+.contact-person-details .card-body {
+  padding: 20px 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.contact-person-details .form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-person-details .form-group label {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.contact-person-details .email-fields input {
+  margin-top: -4px;
+}
+
+.contact-person-details .input-group {
+  margin-top: -6px;
+}
+
+.contact-person-details .input-group select {
+  margin-top: 8px;
+}
+
+.form-group .contactNo {
+  margin-top: -6px;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  padding: 15px;
+}
+
+.price-wrapper .card-body {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+}
+
+.pax-seats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* border: 1px solid black; */
+  padding: 10px 5px 0px 5px;
+}
+
+.maxAvail {
+  display: flex;
+  align-items: stretch; /* Ensures elements take full height */
+  gap: 8px; /* Adds spacing between elements */
+}
+
+.separator {
+  width: 2px; /* Adjust thickness */
+  background-color: #333; /* Adjust color */
+  height: 100%; /* Makes it stretch to container height */
+  align-self: stretch; /* Ensures full height matching other elements */
+}
+
+
+.maxAvail label {
+  font-size: 13px;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* Responsive Design Adjustments */
+
+/* Medium screens (up to 1440px) */
+@media (max-width: 1440px) {
+  .card-header h4 {
+    font-size: 26px;
+  }
+  .text-danger {
+    font-size: 11px;
+  }
+  .form-group label {
+    font-size: 18px;
+  }
+  .price-wrapper .card-body {
+    padding: 8px 12px;
+  }
+}
+
+/* Tablets and smaller laptops (up to 1024px) */
+@media (max-width: 1024px) {
+  .sidebar {
+    display: none;
+  }
+
+  .card-header h4 {
+    font-size: 16px;
+  }
+  .text-danger {
+    font-size: 10px;
+  }
+  .form-group label {
+    font-size: 12px;
+  }
+  .price-wrapper .card-body {
+    padding: 7px 10px;
+  }
+}
+
+/* Mobile screens (up to 768px) */
+@media (max-width: 768px) {
+  .card-header h4 {
+    font-size: 15px;
+  }
+  .text-danger {
+    font-size: 10px;
+  }
+  .form-group label {
+    font-size: 13px;
+  }
+  .card-body {
+    padding: 8px 15px;
+  }
+}
+
+/* Small mobile screens (up to 600px) */
+@media (max-width: 600px) {
+  .card-header h4 {
+    font-size: 14px;
+  }
+  .text-danger {
+    font-size: 9px;
+  }
+  .form-group label {
+    font-size: 12px;
+  }
+  .card-body {
+    padding: 6px 12px;
+  }
+}
+
+/* Extra small screens (up to 480px) */
+@media (max-width: 480px) {
+  .card-header h4 {
+    font-size: 20px;
+  }
+
+  .text-danger {
+    font-size: 15px;
+  }
+
+  .text-danger {
+    font-size: 8px;
+  }
+  .form-group label {
+    font-size: 8px;
+  }
+  .card-body {
+    padding: 5px 10px;
+  }
+}
+

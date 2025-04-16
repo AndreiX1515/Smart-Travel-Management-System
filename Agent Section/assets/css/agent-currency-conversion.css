@@ -12,13 +12,19 @@
 }
 
 .content-header {
-	font-family: Arial, sans-serif;
-	color: #333;
-	width: 100%;  
-	background-color: #fff;
-	z-index: 10; 
-	box-sizing: border-box; 
+  height: 20vh;
+  font-family: Arial, sans-serif;
+  color: #333;
+  width: 100%;
+  background-color: #e6e6e6a4;
+  z-index: 10;
+  box-sizing: border-box;
+  border-radius: 10px;
   margin-bottom: 10px;
+  /* border: 1px solid black; */
+
+  /* Soft shadow added */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .content-header h1 {
@@ -58,8 +64,15 @@
   flex-direction: column;
   width: 100%;
   gap: 10px;
-  height: 81vh;
+  height: 68vh;
+  /* border: 1px solid black; */
+  padding: 10;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f9f9f9;
 }
+
+
+
 
 .content-footer {
   width: 100%;
@@ -89,592 +102,169 @@
   opacity: 0.9; /* Slight hover effect */
 }
 
-/* Message Box */
 
+/* ========================== */
 
+/* ========================== */
 
+.table-container {
+  height: 73.5vh;
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  overflow-x: auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  border: 1px solid black;
+}
 
-
-
-
-
-
-
-/* .counts-section {
-  display: flex;
-  height: 15vh;
+.currency-table {
   width: 100%;
-} */
-
- /* Disable sorting on columns 1 through 8
- table.dataTable th:nth-child(1),
- table.dataTable th:nth-child(2),
- table.dataTable th:nth-child(3),
- table.dataTable th:nth-child(4),
- table.dataTable th:nth-child(5),
- table.dataTable th:nth-child(6),
- table.dataTable th:nth-child(7),
- table.dataTable th:nth-child(8) {
-     pointer-events: none;  
-     user-select: none; 
- } */
-
- 
-
-.table-actions {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-  padding: 15px 10px 5px 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Box shadow */
-  background-color: #fff; /* Ensure a clean background if desired */
-  border: 1px solid gainsboro;
-  height: 15vh;
-}
-
-.table-actions .row{
-  display: flex;
-  flex-direction: row;
-  justify-content: left;
-  width: 60%;
-  align-items: baseline;
-  /* border: 1px solid black; */
-}
- 
-.row .columns {
-  display: flex;
-  flex-direction: row;
-  /* border: 1px solid black; */
-}
-
-
-.table-filters-container {
-  display: flex;
-  flex-direction: column;
-  gap: 10px
-}
-
-/* Adjusting width for the Year Filter */
-
-
-/* Rest of the styling */
-.table-filters-container select {
-  width: 140%;
-  padding: 10px 12px;
-  font-size: 14px;
-  color: #333;
-  background-color: transparent;
-  border: 2px solid #ddd;  /* No border-radius for flat look */
-  font-weight: 400;
-  transition: border-color 0.3s, color 0.3s;
-  outline: none;
-  appearance: none;
-  background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"%3E%3Cpath fill="none" stroke="%23333" d="M2 6l6 6 6-6" /%3E%3C/svg%3E');
-  background-repeat: no-repeat;
-  background-position: right 10px center;
-  background-size: 12px;
-}
-
-/* Hover and Focus Effect */
-.table-filters-container select:hover,
-.table-filters-container select:focus {
-  border-color: #116530;
-  color: #116530;
-}
-
-/* Styling for the Label */
-.table-filters-container label {
-  font-size: 14px;
-  color: #333;
-  display: block;
-  font-weight: 600;
-  text-transform: uppercase;
-}
-
-/* Styling for the Container */
-.table-filters-container {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-bottom: 15px;
-}
-
-.table-filters-container select:focus {
-  box-shadow: none;
-}
-
-.table-filters-container select option {
-  background-color: #fff;
-  color: #333;
-}
-
- 
-.btn-container {
-width: 55%;
-display: flex;
-justify-content: end;
-align-items: last baseline;
-/* border: 1px solid black; */
-
-}
-
-
-.show-column span{
-color: black;
-font-weight: 600;
-}
- 
-.show-column select {
-margin-left: 5px;
-padding: 3px;
-border-radius: 10px;
-}
- 
-/* Table container styling */
-.table-container-product {
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  height: 95vh; /* Adjusted to full height */
-  background-color: transparent;
-  overflow-y: auto; /* Enable vertical overflow */
-  overflow-x: auto; /* Enable horizontal overflow */
-  border: 1px solid gainsboro;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Box shadow */
-}
-
-
-/* Transaction Table */
-.product-table {
-  width: 100%;
+  height: auto; /* Remove 80vh to let the table size adjust based on content */
   border-collapse: collapse;
-  table-layout: fixed; /* Make all columns relative to each other */
+  font-size: 14px;
+  table-layout: auto; /* Let columns size according to their content */
 }
 
-.product-table thead {
-  position: sticky;
-  top: 0;
-  z-index: 2;
-  background-color: #e6e6e6;
-  border-left: 1px solid #ddd; /* Add left border */
-  border-right: 1px solid #ddd; /* Add right border */
+.currency-table thead {
+  background-color: #f3f4f6;
+  color: #374151;
 }
 
-.product-table th {
-  padding: 6px 15px;
+.currency-table th,
+.currency-table td {
+  padding: 12px 16px;
   text-align: left;
-  font-weight: bold;
-  text-transform: uppercase;
-  font-size: 0.9em;
-  border-bottom: 2px solid #ddd;
-  border-left: 1px solid #ddd; /* Add left border */
-  border-right: 1px solid #ddd; /* Add right border */
-  white-space: nowrap;
+  border-bottom: 1px solid #e5e7eb;
+  vertical-align: middle; /* Ensure content is vertically centered */
+  height: auto; /* Prevent row stretching */
 }
 
-.product-table td {
-  padding: 6px 15px;
-  text-align: left;
-  font-size: 0.9em;
-  border-bottom: 1px solid #ddd;
-  border-left: 1px solid #ddd; /* Add left border */
-  border-right: 1px solid #ddd; /* Add right border */
-  white-space: nowrap;
+.currency-table tbody tr:hover {
+  background-color: #f9fafb;
 }
 
-
-
-.product-table tr {
-  transition: background-color 0.3s, color 0.3s;
+.currency-table tbody tr {
+  height: auto; /* Ensure rows don't stretch */
 }
 
-.product-table tr:hover {
-  background-color: #f2f2f2; 
-  color: #000; 
-  cursor: pointer;
+.badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 500;
 }
 
-.product-table th:nth-child(1), 
-.product-table td:nth-child(1) {
-  width: 4%; /* Adjust width for 'No.' column */
+.badge.confirmed {
+  background-color: #d1fae5;
+  color: #065f46;
 }
 
-.product-table th:nth-child(2), 
-.product-table td:nth-child(2) {
-  width: 30%; /* Adjust width for 'Contents' column */
+.badge.pending {
+  background-color: #fef3c7;
+  color: #92400e;
 }
 
-.product-table th:nth-child(3), 
-.product-table td:nth-child(3) {
-  width: 15%; /* Adjust width for 'Price (USD)' column */
-  text-align: end;
-}
-
-.product-table th:nth-child(4), 
-.product-table td:nth-child(4) {
-  width: 15%; /* Adjust width for 'Price (PHP)' column */
-  text-align: end;
+.badge.cancelled {
+  background-color: #fee2e2;
+  color: #991b1b;
 }
 
 
 
 
-.product-table th:nth-child(5), 
-.product-table td:nth-child(5) {
-  width: 5%; /* Adjust width for 'PAX' column */
-  text-align: center;
-}
+/* TABLE FOOTER */ 
 
-.product-table th:nth-child(6), 
-.product-table td:nth-child(6) {
-  width: 15%; /* Adjust width for 'Total (USD)' column */
-  text-align: end;
-}
-
-.product-table th:nth-child(7), 
-.product-table td:nth-child(7) {
-  width: 15%; /* Adjust width for 'TOTAL (PHP)' column */
-  text-align: end;
-}
-
-
-
-.subtotal-container {
-  border: 1px solid #ddd;
-  display: flex;
-  justify-content: end;
-  font-size: .95em;
-  font-weight: bold;
-  background-color:#d3d3d3;
-  
-}
-
-
-
-.subtotal-item-usd,
-.subtotal-item-php {
-  border-left: 1px solid #ddd;
-  border-right: 1px solid #ddd;
-  border-bottom: 1px solid #ddd; /* Added bottom border */
-  padding: 6px 15px;
-  font-size: 16px;
-  font-weight: bold;
-  display: flex;
-  justify-content: space-between;
-  background-color: #d3d3d3;
-}
-
-.subtotal-item-usd {
-  border-top: none; /* Removed top border for the first item */
-  width: 15.2%;
-}
-
-.subtotal-item-php {
-  border-top: none; /* No top border for the second item */
-  width: 15.1%;
-}
-
-
-
-/* Balance Container */
-.balance-container {
-  border: 1px solid #ddd;
-  display: flex;
-  width: 100%;
-  background-color: #f9f9f9;
-  font-size: .95em;
-  font-weight: bold;
-}
-
-/* Balance Item (Main Balance) */
-.balance {
-  border-left: 1px solid #ddd;
-  border-right: 1px solid #ddd;
-  border-bottom: 1px solid #ddd; /* Only side and bottom borders */
-  width: 100%;
-  gap: 0;
-  padding: 6px 15px;
-  font-size: 16px;
-  font-weight: bold;
-  display: flex;
-  justify-content: end;
-  background-color: #d3d3d3; /* Slightly different shade for distinction */
-}
-
-/* Balance Subtotals (USD and PHP) */
-.balanceUSD, .balancePHP {
-  border-left: 1px solid #ddd;
-  border-right: 1px solid #ddd;
-  border-bottom: 1px solid #ddd; /* Only side and bottom borders */
-  padding: 6px 15px;
-  font-size: 16px;
-  font-weight: bold;
-  display: flex;
-  justify-content: space-between;
-  background-color: #d3d3d3;
-}
-
-.balance:first-child {
-  border-top: none; /* No top border for the first item */
-  width: 69.7%;
-}
-
-.balanceUSD {
-  border-top: none; /* No top border for the first subtotal */
-  width: 15.2%;
-
-}
-
-.balancePHP {
-  border-top: none; /* No top border for the second subtotal */
-  width: 15.1%;
-
-}
-
-
-
-
-
-
-/* Customize DataTable pagination for smaller design
-.dataTables_paginate {
-  text-align: center;
-  margin-top: 10px;
-}
-
-.dataTables_paginate .paginate_button {
-  padding: 3px 6px; 
-  background-color: #007bff;
-  color: white;
-  border-radius: 3px; 
-  font-size: 14px; 
-  border: none;
-  cursor: pointer;
-}
-
-.dataTables_paginate .paginate_button:hover {
-  background-color: #0056b3;
-}
-
-.dataTables_paginate .paginate_button.disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-}
-
-.dataTables_length select {
-  padding: 3px;
-  font-size: 12px; 
-  border-radius: 3px; 
-}
-
-
-.dataTables_length label {
-  display: none; 
-}
-
-.dataTables_length select {
-  font-size: 12px; 
-  padding: 3px; 
-}
-.dataTables_info {
-  display: none;
-} */
-
-
-
-
-
-
-
-
-
-
-/* Modal */
-/* Modal Overlay */
-#modal {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 50%;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 1000;
-  overflow: hidden;
-}
-
-/* Modal Container */
-#modal .modal-container {
-  position: relative;
-  width: 50%;
-  margin: auto;
-  top: 15%;
-  background: white;
-  border-radius: 8px;
-  padding: 0;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  overflow: hidden;
-}
-
-/* Modal Header */
-#modal .modal-header {
+.table-footer {
+  height: 6vh;
+  margin-top: 5px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 20px;
-  background: #f8f9fa;
-  border-bottom: 1px solid #dee2e6;
+  border: 1px solid #ccc;
+  padding: 0 15px;
+  background-color: #f9f9f9;
+  border-radius: 6px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-#modal .modal-header .modal-title {
-  font-size: 13px;
-  font-weight: bold;
-  margin: 0;
-}
-
-#modal .modal-header .close-btn {
-  font-size: 20px;
-  color: #6c757d;
-  cursor: pointer;
-}
-
-/* Modal Body */
-#modal .modal-body {
-  padding: 20px;
-  font-size: 16px;
-  line-height: 1.5;
-  color: #333;
-}
-
-/* Modal Footer */
-#modal .modal-footer {
+.table-footer .last-updated-wrapper {
   display: flex;
-  justify-content: flex-end;
-  padding: 8px 15px;
-  background: #f8f9fa;
-  border-top: 1px solid #dee2e6;
-}
-
-#modal .modal-footer .btn {
-  padding: 5px 15px;
-  margin-left: 10px;
-  font-size: 14px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-#modal .modal-footer .btn-secondary {
-  background-color: #6c757d;
-  color: white;
+  align-items: center;
+  gap: 8px;
   border: none;
 }
 
-#modal .modal-footer .btn-secondary:hover {
-  background-color: #5a6268;
-}
-
-#modal .modal-footer .btn-primary {
-  background-color: #007bff;
-  color: white;
-  border: none;
-}
-
-#modal .modal-footer .btn-primary:hover {
-  background-color: #0056b3;
-}
-
-
-
-#staticBackdrop .modalSOA {
-  padding: 10px;
-  margin: 0;
-  box-sizing: border-box;
-  /* border-bottom: 0; */
-}
-
-#staticBackdrop .modal-body .content-header {
-  width: 100%;
-  padding: 10px; 
-  display: flex;
-  justify-content: space-between; 
-  border: 1px solid black;
-}
-
-#staticBackdrop .modal-body .content-header .row {
-  display: flex;
-  justify-content: left;
-  width: 60vh;
-  border: 1px solid black;
-}
-
-
-#staticBackdrop .modal-body .table-filters-container label {
-  display: block;
-}
-
-#staticBackdrop .modal-body .table-filters-container select {
-  width: 100%; 
-  padding: 8px;
-  border-radius: 4px;
-  border: 1px solid #ced4da; 
-}
-
-#staticBackdrop .modal-body .btn-container {
-  margin-top: 20px;
-  width: 45vh;
-  display: flex;
-  justify-content: flex-end; /* Align the button to the right */
-  align-items: last baseline;
-  border: 1px solid black;
-}
-
-#staticBackdrop .modal-body .btn-container button {
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-size: 1rem;
-  cursor: pointer;
-}
-
-#staticBackdrop .modal-body .btn-container button:hover {
-  background-color: #0056b3; /* Darker blue on hover */
-}
-
-
-/* /* #staticBackdrop .modal-header {
-  padding: 12px 14px;
-  border-bottom: 0; 
-} */
-
-#staticBackdrop .modal-header .modal-title {
-  font-size: 18px;
+.table-footer .last-updated-wrapper h6 {
+  font-size: 0.9rem;
   font-weight: 600;
+  color: #3d3d3d;
   margin: 0;
 }
 
-#staticBackdrop .modal-footer {
-  padding: 8px 14px;
-  border: 1px solid black;
+
+
+
+
+
+
+
+
+
+/* FOR PAGINATION */
+
+.pagination-controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.pagination-btn {
+  padding: 8px 16px;
+  background-color: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s ease;
+}
+
+.pagination-btn:hover {
+  background-color: #f3f4f6;
+}
+
+.page-info {
+  color: #6b7280;
+  font-size: 14px;
 }
 
 
 
 
-/* #staticBackdrop .modal-body .content-header {
-  border: 1px solid black;
-  padding: 15px 0px;
-} */
-
-#staticBackdrop .modal-body .content-body{
-  border: 1px solid black;
-  height: 55vh;
-} 
+/* ====================== */
 
 
+  .rate-up {
+    color: green;
+    font-weight: bold;
+  }
 
+  .rate-down {
+    color: red;
+    font-weight: bold;
+  }
 
+  .rate-neutral {
+    color: gray;
+    font-style: italic;
+  }
+
+  .currency-table td {
+    padding: 8px 12px;
+    text-align: left;
+  }
+
+  .currency-table th {
+    padding: 10px;
+    background-color: #f4f4f4;
+  }
 

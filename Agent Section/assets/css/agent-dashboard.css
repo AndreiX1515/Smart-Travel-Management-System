@@ -1,7 +1,7 @@
 .content-container {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 5px;
 }
 
 /* info-container Section */
@@ -23,6 +23,7 @@
   justify-content: space-between;
   flex-wrap: nowrap;
   overflow: hidden;
+  margin-bottom: 3px;
 
   /* border: 1px solid black; */
 }
@@ -80,9 +81,9 @@
 .counts-wrapper {
   display: flex;
   flex-direction: row;
-  /* gap: 5px;  */
   width: 100%;
-  height: 16vh;
+  height: 15vh;
+  /* border-bottom: 1px solid gainsboro; */
   /* border: 1px solid black; */
 }
 
@@ -198,14 +199,14 @@
 }
 
 .side-content .month-sales {
-  font-size: 22px; /* Reduced font size for the number */
+  font-size: 22px; 
   font-weight: bold;
 }
 
 /* Card 4 */
 .card-body-currency {
   width: 100%;
-  padding: 0px 10px;
+  padding: 0px 5px;
 }
 
 /* Currency Cards Container */
@@ -219,7 +220,7 @@
 
 /* Individual Currency Card */
 .currency-card {
-  width: 140px;
+  width: 200px;
   height: 10.5vh;
   padding: 5px 0px 0px 0px;
   display: flex;
@@ -306,12 +307,40 @@
 
 /* Tabs Container */
 .tabs-wrapper {
-  padding: 0;
   width: 100%;
   display: flex;
-  justify-content: start;
+  justify-content: space-between;
+  align-items: stretch; /* Makes child elements match height */
+  padding: 0 10px 0 0;
+  gap: 10px;
+  box-sizing: border-box;
+  height: 5vh; /* Optional: set height for testing */
+    /* border: 1px solid black; */
+}
+
+/* Tabs List Section */
+.tabs-list-wrapper {
+  flex: 1;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+  height: 100%; /* Ensures full height of parent */
   /* border: 1px solid black; */
 }
+
+/* Sorting Section */
+.tabs-sorting-wrapper {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 100%; /* Ensures full height of parent */
+  /* border: 1px solid black; */
+}
+
+
+
 
 /* Active Tab Styling */
 .nav-pills .nav-link.active {
@@ -348,6 +377,18 @@
   height: 68.3vh;
   /* border: 1px solid black; */
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* ============================= */
 
@@ -399,8 +440,8 @@
 
 /* Optional hover effect for better UX */
 .one .btn:hover {
-  background-color: #0056b3;
-  color: white;
+  background-color: #c5d4e4;
+  color: rgb(0, 0, 0);
 }
 
 .view-booking-container {
@@ -1049,36 +1090,14 @@
   display: flex;
   flex-direction: column;
   position: relative;
-  height: 67.7vh;
+  height: 70vh;
   overflow-x: auto;
   overflow-y: auto;
   /* border: 1px solid gainsboro; */
   /* border: 1px solid black;  */
 }
 
-.flight-seat-container .flight-seat-header {
-  width: 100%;
-  height: 5.3vh;
-  background-color: #fff;
-  overflow: hidden;
-  /* border: 1px solid gainsboro; */
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 8px;
-  border-bottom: 2px solid gainsboro;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  z-index: 99;
-  /* border: 1px solid black; */
-}
 
-.flight-seat-footer {
-  margin-top: 10px;
-  display: flex;
-  height: 4vh;
-  /* border: 1px solid black; */
-}
 
 .search-wrapper {
   display: flex;
@@ -1129,156 +1148,145 @@
   color: #333; /* Darker color on hover */
 }
 
+
+
+
+
+/* Container for Secondary Header */
 .second-header-wrapper {
   display: flex;
+  flex-wrap: wrap;
   gap: 12px;
-  justify-content: left;
   align-items: center;
-  height: auto;
+  justify-content: flex-start;
+  padding: 10px 0;
 }
 
-/* Sorting Wrapper */
+/* Sorting Container */
 .sorting-wrapper {
   display: flex;
-  justify-content: start;
-  gap: 10px;
-  /* border: 1px solid black; */
-}
-
-/* .sorting-wrapper label {
- font-size: 12px;
- font-weight: 600;
-} */
-
-.sorting-wrapper select {
-  width: 160px;
-  padding: 6px 10px;
-  font-size: 13px;
-  border: 1px solid grey;
-  border-radius: 5px;
-  background-color: #f9f9f9;
-  color: #333;
-  font-weight: 600;
-  appearance: none;
-  outline: none;
-  cursor: pointer;
-  transition: border-color 0.3s ease;
-}
-
-/* .sorting-wrapper select:hover,
-.sorting-wrapper select:focus {
-  border-color: #116530;
-  background-color: #c9c9c9;
-} */
-
-.filter-field {
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
   align-items: center;
   gap: 10px;
 }
 
+/* Select Dropdown */
+.sorting-wrapper select,
+.select-wrapper select {
+  width: 160px;
+  padding: 6px 10px;
+  font-size: 14px;
+  font-weight: 500;
+  background-color: #f9f9f9;
+  border: 1px solid #d4d4d4;
+  border-radius: 6px;
+  color: #333;
+  appearance: none;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.sorting-wrapper select:focus,
+.select-wrapper select:focus {
+  border-color: #116530;
+  box-shadow: 0 0 0 1px rgba(17, 101, 48, 0.3);
+}
+
+/* Wrapper for Custom Select */
 .select-wrapper {
   position: relative;
-  justify-content: start;
   width: 100%;
-  background-color: transparent;
-  border: 1px solid gainsboro;
 }
 
 .select-wrapper::after {
-  content: "\25BC";
+  content: "▾";
   position: absolute;
-  top: 50%;
   right: 10px;
+  top: 50%;
   transform: translateY(-50%);
   font-size: 12px;
-  color: #8b8b8b;
+  color: #888;
   pointer-events: none;
 }
 
-/* .custom-select, 
-.filter-group select {
-  appearance: none; 
-  width: 100%;
-  padding: 5px 40px; 
-  font-size: 14px;
-  border: 1px solid gainsboro;
-  border-radius: 5px;
-  background-color: #f9f9f9;
-  background-clip: padding-box;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  transition: border-color 0.3s ease;
-} */
+/* Filter Field Stack */
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
 
-/* Flight Booking Divs */
+/* Flight Booking Field */
 .flightbooking-wrapper {
   display: flex;
-  justify-content: start;
   align-items: center;
-  gap: 5px;
-  position: relative; /* Ensure it stays above other elements */
+  gap: 6px;
+  position: relative;
 }
 
 .flightbooking-wrapper input {
   width: 140px;
-  height: 35px;
+  height: 36px;
+  padding: 6px 10px;
+  font-size: 14px;
+  border: 1px solid #d4d4d4;
+  border-radius: 6px;
+  background-color: #f9f9f9;
+  color: #333;
 }
 
-.flightbooking-wrapper input:hover {
-  cursor: pointer;
+.flightbooking-wrapper input:focus {
+  border-color: #116530;
+  box-shadow: 0 0 0 1px rgba(17, 101, 48, 0.3);
+  outline: none;
 }
 
+/* Date Range Field Group */
 .date-range-wrapper {
   display: flex;
-  align-items: center;
-  justify-content: left;
   flex-direction: column;
-  position: relative; /* Ensure the datepicker does not get hidden */
+  gap: 6px;
 }
 
 .date-range-wrapper label {
   font-size: 12px;
   font-weight: 500;
+  color: #444;
 }
 
 .date-range-inputs-wrapper {
   display: flex;
-  align-items: center;
-  justify-content: left;
   gap: 10px;
+  align-items: center;
 }
 
-/* Input Field with Icon */
+/* Input with Icon */
 .input-with-icon {
   position: relative;
   width: 150px;
-  border: 1px solid grey;
-  border-radius: 5px;
-  overflow: visible; /* Prevents clipping */
-  z-index: 3; /* Keeps it above other elements */
 }
 
 .input-with-icon input {
   width: 100%;
-  height: 32px;
-  padding: 10px 35px 10px 10px; /* Space for the icon */
-  border: 1px solid #e0e0e0;
-  border-radius: 5px;
+  height: 36px;
+  padding: 6px 35px 6px 10px;
+  font-size: 14px;
+  border: 1px solid #d4d4d4;
+  border-radius: 6px;
   background-color: #f9f9f9;
   color: #333;
-  font-size: 14px;
-  position: relative;
-  z-index: 2; /* Ensures input stays interactive */
+  transition: border-color 0.2s ease;
+}
+
+.input-with-icon input:focus {
+  border-color: #116530;
+  box-shadow: 0 0 0 1px rgba(17, 101, 48, 0.3);
+  outline: none;
 }
 
 .input-with-icon input::placeholder {
   color: #999;
 }
 
-/* Icon Inside Input */
 .input-with-icon .calendar-icon {
   position: absolute;
   right: 10px;
@@ -1289,17 +1297,11 @@
   pointer-events: none;
 }
 
-.input-with-icon input:hover,
-.input-with-icon input:focus {
-  border-color: #116530; /* Match your preferred color */
-  outline: none;
-  background-color: #f9f9f9;
-  box-shadow: 0 0 4px rgba(17, 101, 48, 0.4);
-}
 
-.input-with-icon input:hover {
-  cursor: pointer;
-}
+
+
+
+
 
 /* Ensure the datepicker is above the table header */
 .ui-datepicker {
@@ -1364,30 +1366,58 @@
   align-self: center;
 }
 
+
+
+
+
+
 /* ============================== */
 
 /* Card Container Styling */
 .flight-seat-container .one {
   width: 100%;
-  height: 60vh;
+  height: 64vh;
   background-color: #fff;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   overflow: hidden;
+  border: 1px solid gainsboro;
+}
+
+.flight-seat-header {
+  width: 100%;
+  height: 5.3vh;
+  background-color: #fff;
+  overflow: hidden;
+  /* border: 1px solid gainsboro; */
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  padding: 0px 8px 5px 8px;
+  border-bottom: 2px solid gainsboro;
+  z-index: 99;
+  /* border: 1px solid black; */
+  margin-bottom: 5px;
+}
+
+
+.flight-seat-footer {
+  width: 100%;
+  height: 5vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: flex-end; /* Align pagination or buttons to the right */
+  align-items: center;
+  padding: 10px 0px 0px 15px;
+  font-family: system-ui, sans-serif;
+  font-size: 14px;
+  color: #333;
+  box-sizing: border-box;
+  gap: 10px; /* Space between items */
+  border-radius: 4px; /* Soft corners */
   /* border: 1px solid black; */
 }
 
-.flight-seat-container .flight-seat-footer {
-  width: 100%;
-  height: 6vh;
-  background-color: #fff;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  display: flex;
-  justify-content: flex-end; /* Align pagination to the right */
-  align-items: center;
-  padding: 0 15px;
-  border: 1px solid gainsboro;
-}
+
 
 .pagination-controls {
   display: flex;
@@ -1398,7 +1428,7 @@
 .pagination-btn {
   padding: 8px 12px;
   border: none;
-  background-color: #116530;
+  background-color: #dc3545;
   color: white;
   font-size: 14px;
   cursor: pointer;
@@ -1429,7 +1459,7 @@
 }
 
 .page-number-btn.active {
-  background-color: #116530;
+  background-color: #dc3546;
   color: white;
   font-weight: bold;
 }
@@ -1448,119 +1478,88 @@
 
 /* Info Table */
 
-/* Confirm Table Container */
+/* Container for Confirm Table */
 .confirm-table-container-flight {
   width: 100%;
-  height: 60vh;
-  overflow: hidden;
+  height: 64vh;
+  overflow: auto;
   display: block;
   position: relative;
-  overflow-y: auto;
-  overflow-x: auto;
-  /* border: 1px solid black; */
 }
 
-
+/* Hide DataTables controls */
 .dataTables_paginate,
 .dataTables_info {
   display: none !important;
 }
 
-/* Table Container */
+/* Table Scroll Wrapper */
 .info-table-container {
   width: 100%;
-  overflow-x: auto; /* Allow horizontal scrolling */
-  overflow-y: auto; /* Allow vertical scrolling */
+  overflow: auto;
   max-height: 57vh;
-  border: 1px solid #ccc; /* Optional: Add a border around the table */
   box-sizing: border-box;
 }
 
-/* Table */
+/* Minimalist Table */
 .info-table {
   width: 100%;
   table-layout: fixed;
   border-collapse: collapse;
-  font-family: Arial, sans-serif;
-  font-size: 12px;
+  font-family: system-ui, sans-serif;
+  font-size: 13px;
   background-color: #fff;
-  text-align: center;
-  position: relative; /* Ensures proper stacking context */
+  color: #111;
+  overflow: hidden;
 }
 
-/* Sticky Table Header */
-/* Center-align thead text */
+/* Sticky Red Header */
 .info-table thead {
   position: sticky;
   top: 0;
-  background-color: gainsboro;
-  color: #424242;
-  z-index: 100;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  border-bottom: 2px solid #bbbbbb;
-  text-align: center; /* Centers all header text */
+  background-color: #dc3545;
+  color: #fff;
+  z-index: 10;
+  border-bottom: 1px solid #dc3545;
 }
 
-
-/* Header Cells */
 .info-table th {
-  background-color: gainsboro;
-  z-index: 101;
-  padding: 3px 8px;
-  white-space: nowrap;
-  text-align: center;
+  padding: 4px 6px;
+  font-weight: 600;
   font-size: 14px;
-  min-width: 120px; /* Ensures headers don’t take full width */
-  border: 1px solid #bbbbbb; /* Add border around header cells */
-}
-
-.info-table th {
-  padding: 4px 6px; /* Reduce padding to decrease height */
-  font-size: 12px; /* Optionally reduce font size for a compact look */
-  line-height: .6; /* Adjust line height for better spacing */
-}
-
-.info-table thead th {
-  text-align: center !important;
-}
-
-/* Table Cells */
-.info-table td {
-  padding: 2px 8px;
-  border: 1px solid #bbbbbb;
   text-align: center;
-  font-size: 13px;
-  vertical-align: middle;
+  white-space: nowrap;
+  border-right: 1px solid rgba(216, 216, 216, 0.486);
+}
+
+/* Table Body */
+.info-table td {
+  padding: 5px 8px;
+  border-bottom: 1px solid #f1f3f5;
+  font-size: 14px;
+  color: #333;
+  text-align: center;
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
+  vertical-align: middle;
 }
 
-/* Adjust table row height */
+/* Zebra Striping */
+.info-table tbody tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+/* Reduced Row Height */
 .info-table tbody tr {
-  height: 20px;
+  height: 24px;
 }
 
-/* Responsive Fix */
-@media (max-width: 768px) {
-  .info-table th,
-  .info-table td {
-    font-size: 12px;
-    padding: 4px;
-  }
+/* Optional spacing below */
+.info-table + * {
+  margin-top: 1rem;
 }
 
-
-.info-table tbody tr {
-  position: relative;
-  z-index: 1;
-}
-
-/* Row hover effect */
-/* .info-table tbody tr:hover {
- background-color: #f1f1f1; 
- cursor: pointer;
-} */
 
 /* Adjust column widths for the first 11 columns */
 .info-table th:nth-child(1),
@@ -1612,22 +1611,17 @@
   width: 12%;
 }
 
-/* Adjust columns 12 and beyond with width set to 6% */
-/* .info-table th:nth-child(n+12),
-.info-table td:nth-child(n+12) {
- width: 10%;
-} */
 
 
 
-/* Responsive behavior */
-/* @media (max-width: 768px) {
+/* Responsive Fix */
+@media (max-width: 768px) {
   .info-table th,
   .info-table td {
-    font-size: 12px; 
-    padding: 6px 8px; 
+    font-size: 12px;
+    padding: 4px;
   }
-} */
+}
 
 /* Optional: Add some responsiveness */
 @media (max-width: 600px) {
@@ -1635,7 +1629,6 @@
     min-width: 100px; /* Adjust minimum width for smaller screens */
   }
 }
-
 
 
 
