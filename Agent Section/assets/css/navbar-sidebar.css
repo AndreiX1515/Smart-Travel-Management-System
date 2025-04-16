@@ -78,7 +78,9 @@ a:hover {
 
 /* Sidebar Logo */
 .sidebar .logo {
-  margin-top: 15px;
+  margin-top: 20px;
+  /* border: 1px solid black; */
+  margin-bottom: 15px;
 }
 
 /* Sidebar img */
