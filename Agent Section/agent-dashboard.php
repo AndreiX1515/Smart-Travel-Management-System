@@ -559,52 +559,49 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                     </div>
                     <div class="side-content d-flex flex-column">
                       <?php
-                      // Assuming you already have a connection to your database
-                      // $accountId = $_SESSION['accountId'];
-                      // $agentCode = $_SESSION['agentCode'];
-                      // $agentRole = $_SESSION['agentRole'];
+                        // Assuming you already have a connection to your database
 
-                      // Determine which query to run based on the agent's role
-                      if ($agentRole != 'Head Agent') 
-                      {
-                        // Query for non-Head Agent, use accountId in the payment table
-                        $currentMonthQuery = "SELECT SUM(b.totalPrice + IFNULL(r.requestCost, 0)) AS totalSales
-                                              FROM booking b
-                                              LEFT JOIN request r 
-                                                ON r.transactNo = b.transactNo 
-                                                AND r.requestStatus = 'Confirmed'
-                                                AND MONTH(r.requestDate) = MONTH(CURRENT_DATE)
-                                                AND YEAR(r.requestDate) = YEAR(CURRENT_DATE)
-                                              WHERE 
-                                                b.status = 'Confirmed' 
-                                                AND b.accountId = $accountId
-                                                AND MONTH(b.bookingDate) = MONTH(CURRENT_DATE)
-                                                AND YEAR(b.bookingDate) = YEAR(CURRENT_DATE)";
-                      } 
-                      else 
-                      {
-                        // Query for Head Agent, filter payments related to the agentCode in the booking table
-                        $currentMonthQuery = "SELECT SUM(b.totalPrice + IFNULL(r.requestCost, 0)) AS totalSales
-                                              FROM booking b
-                                              LEFT JOIN request r 
-                                                ON r.transactNo = b.transactNo 
-                                                AND r.requestStatus = 'Confirmed'
-                                                AND MONTH(r.requestDate) = MONTH(CURRENT_DATE)
-                                                AND YEAR(r.requestDate) = YEAR(CURRENT_DATE)
-                                              WHERE 
-                                                b.status = 'Confirmed' 
-                                                AND b.agentCode = '$agentCode'
-                                                AND MONTH(b.bookingDate) = MONTH(CURRENT_DATE)
-                                                AND YEAR(b.bookingDate) = YEAR(CURRENT_DATE)";
-                      }
+                        // Determine which query to run based on the agent's role
+                        if ($agentRole != 'Head Agent') 
+                        {
+                          // Query for non-Head Agent, use accountId in the payment table
+                          $currentMonthQuery = "SELECT SUM(b.totalPrice + IFNULL(r.requestCost, 0)) AS totalSales
+                                                FROM booking b
+                                                LEFT JOIN request r 
+                                                  ON r.transactNo = b.transactNo 
+                                                  AND r.requestStatus = 'Confirmed'
+                                                  AND MONTH(r.requestDate) = MONTH(CURRENT_DATE)
+                                                  AND YEAR(r.requestDate) = YEAR(CURRENT_DATE)
+                                                WHERE 
+                                                  b.status = 'Confirmed' 
+                                                  AND b.accountId = $accountId
+                                                  AND MONTH(b.bookingDate) = MONTH(CURRENT_DATE)
+                                                  AND YEAR(b.bookingDate) = YEAR(CURRENT_DATE)";
+                        } 
+                        else 
+                        {
+                          // Query for Head Agent, filter payments related to the agentCode in the booking table
+                          $currentMonthQuery = "SELECT SUM(b.totalPrice + IFNULL(r.requestCost, 0)) AS totalSales
+                                                FROM booking b
+                                                LEFT JOIN request r 
+                                                  ON r.transactNo = b.transactNo 
+                                                  AND r.requestStatus = 'Confirmed'
+                                                  AND MONTH(r.requestDate) = MONTH(CURRENT_DATE)
+                                                  AND YEAR(r.requestDate) = YEAR(CURRENT_DATE)
+                                                WHERE 
+                                                  b.status = 'Confirmed' 
+                                                  AND b.agentCode = '$agentCode'
+                                                  AND MONTH(b.bookingDate) = MONTH(CURRENT_DATE)
+                                                  AND YEAR(b.bookingDate) = YEAR(CURRENT_DATE)";
+                        }
 
-                      // Execute the query
-                      $currentMonthResult = $conn->query($currentMonthQuery);
+                        // Execute the query
+                        $currentMonthResult = $conn->query($currentMonthQuery);
 
-                      // Check if the query returned a result
-                      $currentMonthTotal = isset($currentMonthRow['totalSales']) 
-                        ? number_format((float)$currentMonthRow['totalSales'], 2) 
-                        : '0.00';
+                        // Check if the query returned a result
+                        $currentMonthTotal = isset($currentMonthRow['totalSales']) 
+                          ? number_format((float)$currentMonthRow['totalSales'], 2) 
+                          : '0.00';
                       ?>
                       <h5>₱ <?php echo $currentMonthTotal; ?></h5>
                       <p>CURRENT MONTH</p>
@@ -620,50 +617,47 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                     </div>
                     <div class="side-content d-flex flex-column">
                       <?php
-                      // Assuming you already have a connection to your database
-                      // $accountId = $_SESSION['accountId'];
-                      // $agentCode = $_SESSION['agentCode'];
-                      // $agentRole = $_SESSION['agentRole'];
+                        // Assuming you already have a connection to your database
 
-                      // Determine which query to run based on the agent's role
-                      if ($agentRole != 'Head Agent') 
-                      {
-                        // Query for non-Head Agent, use accountId in the payment table
-                        $pastMonthQuery = "SELECT SUM(b.totalPrice + IFNULL(r.requestCost, 0)) AS totalSales
-                                          FROM booking b
-                                          LEFT JOIN request r ON r.transactNo = b.transactNo 
-                                            AND r.requestStatus = 'Confirmed'
-                                            AND MONTH(r.requestDate) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH)
-                                            AND YEAR(r.requestDate) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH)
-                                          WHERE 
-                                            b.status = 'Confirmed' 
-                                            AND b.accountId = $accountId
-                                            AND MONTH(b.bookingDate) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH)
-                                            AND YEAR(b.bookingDate) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH)";
-                      } 
-                      else 
-                      {
-                        // Query for Head Agent, filter payments related to the agentCode in the booking table
-                        $pastMonthQuery = "SELECT SUM(b.totalPrice + IFNULL(r.requestCost, 0)) AS totalSales
-                                          FROM booking b
-                                          LEFT JOIN request r ON r.transactNo = b.transactNo 
-                                            AND r.requestStatus = 'Confirmed'
-                                            AND MONTH(r.requestDate) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH)
-                                            AND YEAR(r.requestDate) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH)
-                                          WHERE 
-                                            b.status = 'Confirmed' 
-                                            AND b.agentCode = '$agentCode'
-                                            AND MONTH(b.bookingDate) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH)
-                                            AND YEAR(b.bookingDate) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH)";
-                      }
+                        // Determine which query to run based on the agent's role
+                        if ($agentRole != 'Head Agent') 
+                        {
+                          // Query for non-Head Agent, use accountId in the payment table
+                          $pastMonthQuery = "SELECT SUM(b.totalPrice + IFNULL(r.requestCost, 0)) AS totalSales
+                                            FROM booking b
+                                            LEFT JOIN request r ON r.transactNo = b.transactNo 
+                                              AND r.requestStatus = 'Confirmed'
+                                              AND MONTH(r.requestDate) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH)
+                                              AND YEAR(r.requestDate) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH)
+                                            WHERE 
+                                              b.status = 'Confirmed' 
+                                              AND b.accountId = $accountId
+                                              AND MONTH(b.bookingDate) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH)
+                                              AND YEAR(b.bookingDate) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH)";
+                        } 
+                        else 
+                        {
+                          // Query for Head Agent, filter payments related to the agentCode in the booking table
+                          $pastMonthQuery = "SELECT SUM(b.totalPrice + IFNULL(r.requestCost, 0)) AS totalSales
+                                            FROM booking b
+                                            LEFT JOIN request r ON r.transactNo = b.transactNo 
+                                              AND r.requestStatus = 'Confirmed'
+                                              AND MONTH(r.requestDate) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH)
+                                              AND YEAR(r.requestDate) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH)
+                                            WHERE 
+                                              b.status = 'Confirmed' 
+                                              AND b.agentCode = '$agentCode'
+                                              AND MONTH(b.bookingDate) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH)
+                                              AND YEAR(b.bookingDate) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH)";
+                        }
 
-                      // Execute the query
-                      $pastMonthResult = $conn->query($pastMonthQuery);
+                        // Execute the query
+                        $pastMonthResult = $conn->query($pastMonthQuery);
 
-                      // Check if the query returned a result
-                      $pastMonthTotal = ($pastMonthResult && $pastMonthResult->num_rows > 0)
-                        ? number_format($pastMonthResult->fetch_assoc()['totalSales'], 2)
-                        : "0.00";
+                        // Check if the query returned a result
+                        $pastMonthTotal = ($pastMonthResult && $pastMonthResult->num_rows > 0)
+                          ? number_format($pastMonthResult->fetch_assoc()['totalSales'], 2)
+                          : "0.00";
                       ?>
                       <h5>₱ <?php echo $pastMonthTotal; ?></h5>
                       <p>PAST MONTH</p>
