@@ -127,8 +127,8 @@ require "../conn.php";
                                 <td>" . $row['transactNo'] . "</td>
                                 <td>₱ " . $amount . "</td>
                                 <td>
-                                  <a href='functions/view-file.php?file=" . urlencode($row['filePath']) . "' target='_blank'>View File</a> 
-                                  <a href='functions/download.php?file=" . urlencode($row['filePath']) . "' target='_blank'>Download File</a> 
+                                  <a href='../Agent Section/functions/view-file.php?file=" . urlencode($row['filePath']) . "' target='_blank'>View File</a> 
+                                  <a href='../Agent Section/functions/download.php?file=" . urlencode($row['filePath']) . "' target='_blank'>Download File</a> 
                                 </td>
                                 <td>" . $date . "</td>
                                 <td>
@@ -193,8 +193,8 @@ require "../conn.php";
                                 <td>" . $row['transactNo'] . "</td>
                                 <td>₱ " . $amount . "</td>
                                 <td>
-                                  <a href='functions/view-file.php?file=" . urlencode($row['filePath']) . "' target='_blank'>View File</a> 
-                                  <a href='functions/download.php?file=" . urlencode($row['filePath']) . "' target='_blank'>Download File</a> 
+                                  <a href='../Agent Section/functions/view-file.php?file=" . urlencode($row['filePath']) . "' target='_blank'>View File</a> 
+                                  <a href='../Agent Section/functions/download.php?file=" . urlencode($row['filePath']) . "' target='_blank'>Download File</a> 
                                 </td>
                                 <td>" . $date . "</td>
                                 <td>
