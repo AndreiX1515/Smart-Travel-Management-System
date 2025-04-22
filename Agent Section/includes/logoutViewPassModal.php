@@ -279,6 +279,8 @@
       const currentPassword = document.getElementById('currentPassword').value;
       const newPassword = document.getElementById('newPassword').value;
       const confirmNewPassword = document.getElementById('confirmNewPassword').value;
+      const emailAddress = <?= json_encode($_SESSION['agent_emailAddress'] ?? null); ?>;
+      console.log("Email from session:", emailAddress);
 
       // Validate New Password
       if (newPassword.length < 8) {
@@ -299,7 +301,8 @@
         type: 'POST',
         data: {
           currentPassword: currentPassword,
-          newPassword: newPassword
+          newPassword: newPassword,
+          emailAddress: emailAddress
         },
 
         success: function(response) {
@@ -439,10 +442,11 @@
     $('#sendOtpBtn').click(function(e) {
       e.preventDefault();
 
-      const currentPassword = document.getElementById('currentPassword').value;
+        const currentPassword = document.getElementById('currentPassword').value;
 
-      // Safe email assignment from PHP
-      let emailAddress = <?= isset($_SESSION['client_emailAddress']) ? json_encode($_SESSION['client_emailAddress']) : null; ?>;
+        let emailAddress = <?= json_encode($_SESSION['agent_emailAddress'] ?? null); ?>;
+        console.log("Email from session:", emailAddress);
+      
 
       // Early layer: if PHP email is already empty/null
       if (!emailAddress || emailAddress === 'null' || emailAddress.trim() === '') {

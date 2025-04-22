@@ -1568,7 +1568,7 @@
 }
 .info-table th:nth-child(2),
 .info-table td:nth-child(2) {
-  width: 6%;
+  width: 20%;
 }
 .info-table th:nth-child(3),
 .info-table td:nth-child(3) {

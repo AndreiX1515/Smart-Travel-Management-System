@@ -34,6 +34,26 @@ session_start();
         </div>
       </div> -->
 
+      <div class="navbar">
+        <div class="page-header-wrapper">
+
+          <div class="page-header-top">
+            <div class="back-btn-wrapper">
+              <button class="back-btn" id="logout-btn">
+                <i class="fas fa-chevron-left"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="page-header-content">
+            <div class="page-header-text">
+              <h5 class="header-title">Booking Details</h5>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
 
       <?php
       // Check if 'id' is passed in the URL
@@ -47,7 +67,6 @@ session_start();
 
           <div class="info-wrapper">
             <div class="payment-method">
-
               <div class="section section-1">
                 <div class="header-container">
                   <h4>Payment Method</h4>
@@ -335,7 +354,6 @@ session_start();
     </div>
   </div>
 
-
   <!-- Pay Later Modal (Centered) -->
   <div class="modal fade" id="payLaterModal" tabindex="-1" aria-labelledby="payLaterLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -366,7 +384,6 @@ session_start();
     </div>
   </div>
 
-
   <!-- Booking Accept Modal - Reserved -->
   <div class="modal fade" id="successModalLater" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -393,7 +410,6 @@ session_start();
     </div>
   </div>
 
-
   <!-- Booking Accept Modal - Pending -->
   <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -419,15 +435,6 @@ session_start();
       </div>
     </div>
   </div>
-
-
-  
-
-
-
-
-
-
 
   <?php require "../Agent Section/includes/scripts.php"; ?>
 

@@ -351,26 +351,43 @@ a:hover {
   justify-content: flex-start;
   height: 6vh;
   width: 100%;
-  padding: 0px 10px;
+  padding: 15px 0px 0px 0px;
   position: fixed;
   top: 0;
   right: 0.5px;
   background-color: white;
   z-index: 1000;
-  gap: 10px;
-  border-bottom: 1px solid gainsboro;
+  gap: 20px;
+  margin-bottom: 10px;
   /* border: 1px solid black; */
 }
 
 
-
-.button-wrapper {
+/* Wrapper for the whole header section */
+.page-header-wrapper {
+  height: 100%; /* Ensures the wrapper takes up full height */
   display: flex;
+  gap: 10px;
   /* border: 1px solid black; */
 }
 
-/* Round Button */
-.button-wrapper .round-btn {
+/* Top row with the back button */
+.page-header-top {
+  height: 100%; /* Stretches to fill the wrapper */
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  /* border: 1px solid black; */
+}
+
+/* Back button container */
+.back-btn-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+/* Back button style */
+.back-btn {
   background: white;
   color: #464646;
   border: none;
@@ -386,25 +403,47 @@ a:hover {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
-/* Hover Effect */
-.button-wrapper .round-btn:hover {
+.back-btn:hover {
   background: #0e4a28;
   color: white;
 }
 
-.title-page-wrapper {
+/* Content section */
+.page-header-content {
+  width: 100%;
+  height: 100%; /* Adapt full height of parent */
   display: flex;
+  justify-content: center;
+  align-items: flex-end;
   /* border: 1px solid black; */
-  padding-top: 5px;
+  box-sizing: border-box; /* Ensures padding and border don't exceed height */
 }
 
-.title-page-wrapper h5 {
-  font-size: 1rem;
-  color: #070707; /* Muted section title */
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
+
+.page-header-text {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  /* border: 1px solid black; */
+  margin-bottom: 5px;
 }
+
+.header-title {
+  font-size: 1.1rem;
+  color: #070707;
+  font-weight: 600;
+  margin: 0;
+}
+
+.header-description {
+  font-size: 14px;
+  color: #555;
+  margin: 0;
+}
+
+
+
+
 
 
 

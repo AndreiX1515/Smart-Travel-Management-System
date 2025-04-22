@@ -47,7 +47,7 @@ a:hover {
   color: #0056b3;
 }
 
-/* Main Content Section */
+
 /* Main Container */
 .body-container {
   display: flex;
@@ -59,10 +59,6 @@ a:hover {
   overflow: hidden;
   background-color: #343a40;
 }
-
-
-
-
 
 /* Sidebar Styling */
 .sidebar {
@@ -360,6 +356,14 @@ a:hover {
   padding: .7% 1%;
 }
 
+.main-content {
+  width: 100%;
+  height: 92vh;
+  margin-top: 6vh;
+  /* border: 1px solid black; */
+}
+
+
 /* Navbar Styles */
 .navbar {
   display: flex;
@@ -367,17 +371,14 @@ a:hover {
   justify-content: start;
   height: 7vh;
   width: 87.5%;
-  border-bottom: 1px solid gainsboro;
-  padding: 15px 15px 15px 10px;
+  padding: 15px 0px 15px 0px;
   position: fixed;
   top: 11px;
   background-color: white;
   z-index: 1000;
+  /* border: 1px solid black; */
 }
 
-.navbar .title-page {
-  margin-top: 7px;
-}
 
 /* Navbar Title Styles */
 .navbar-title {
@@ -386,6 +387,7 @@ a:hover {
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  margin-top: 7px;
   /* margin: 15px 30px 0 0; */
   cursor: pointer;
   padding: 10px;
@@ -394,63 +396,158 @@ a:hover {
 
 /* Navbar Title Text Color */
 .navbar-title h5 {
-  color: black;
+  color: rgb(58, 58, 58);
 }
 
-.main-content {
-  width: 100%;
-  height: 92vh;
-  margin-top: 6vh;
-  /* border: 1px solid black; */
-}
 
-.main-content .backbutton-wrapper {
-  width: 100%;
-  height: 3vh;
-}
-
-.backbutton-wrapper {
-  display: flex;
-  justify-content: start;
-  align-items: center;
-  /* border: 1px solid black; */
-}
-
-.back-button-wrapper {
-  margin-bottom: 3px;
-  height: 50%;
-  /* border: 1px solid black; */
+.navbar-back-wrapper {
   display: flex;
   align-items: center;
+  gap: 12px;
 }
 
-.back-button-link {
-  text-decoration: none;
-  color: #6c757d;
-  font-size: 18px;
+.back-button {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 35px; /* Circular size */
-  height: 35px; /* Circular size */
-  /* border: 1px solid black; */
-  border-radius: 50%; /* Makes it round */
-  transition: color 0.3s ease, background 0.3s ease, transform 0.2s ease;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: transparent;
+  color: #444;
+  font-size: 18px;
+  text-decoration: none;
+  border: 1px solid #ccc;
+  transition: all 0.3s ease;
 }
 
-.back-button-link:hover {
-  color: white;
-  background-color: #6c746f;
-  transform: scale(1); /* Slight zoom effect */
+.back-button:hover {
+  background-color: #444;
+  color: #fff;
+  transform: scale(1.05);
 }
 
-.page-name-wrapper {
+.page-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 500;
+  color: #222;
+}
+
+
+.header-title {
+  font-size: 1.1rem;
+  color: #3a3a3a;
+  font-weight: 600;
+  margin: 0;
+}
+
+.header-description {
+  font-size: 14px;
+  color: #555;
+  margin: 0;
+}
+
+
+
+/* ✅ Responsive Tweaks */
+@media (max-width: 600px) {
+  .navbar {
+    padding: 8px 12px;
+  }
+
+  .back-button {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+  }
+
+  .page-title {
+    font-size: 16px;
+  }
+}
+
+
+
+
+
+/* Wrapper for the whole header section */
+.page-header-wrapper {
+  height: 100%; /* Ensures the wrapper takes up full height */
   display: flex;
-  height: 50%;
-  justify-content: left;
-  align-items: last baseline;
-  padding: 8px 0px 0px 10px;
+  gap: 10px;
+  /* border: 1px solid black; */
 }
+
+/* Top row with the back button */
+.page-header-top {
+  height: 100%; /* Stretches to fill the wrapper */
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  /* border: 1px solid black; */
+}
+
+/* Back button container */
+.back-btn-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+/* Back button style */
+.back-btn {
+  background: white;
+  color: #464646;
+  border: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.back-btn:hover {
+  background: #7c7c7c;
+  color: white;
+}
+
+/* Content section */
+.page-header-content {
+  width: 100%;
+  height: 100%; /* Adapt full height of parent */
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  /* border: 1px solid black; */
+  box-sizing: border-box; /* Ensures padding and border don't exceed height */
+}
+
+
+.page-header-text {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  /* border: 1px solid black; */
+  margin-bottom: 5px;
+  margin-left: 5px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

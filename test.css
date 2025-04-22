@@ -1,0 +1,11 @@
+body {
+    padding: 10px 5px;
+}
+
+.tabulator {
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+.table-toolbar {
+    margin-bottom: 15px;
+}

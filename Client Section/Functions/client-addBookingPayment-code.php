@@ -29,7 +29,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pay'])) {
         foreach ($_FILES['proofs']['name'] as $key => $fileName) {
             $fileTmpPath = $_FILES['proofs']['tmp_name'][$key];
             $fileSize = $_FILES['proofs']['size'][$key];
-            $fileType = $_FILES['proofs']['type'][$key];
             $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
 
             if (in_array($fileExtension, $allowedExtensions) && $fileSize <= $maxFileSize && $_FILES['proofs']['error'][$key] === UPLOAD_ERR_OK) {
@@ -39,11 +38,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pay'])) {
                 if (move_uploaded_file($fileTmpPath, $destPath)) {
                     $uploadedFiles[] = $destPath;
                 } else {
-                    echo json_encode(["success" => false, "message" => "Failed to upload file: $fileName"]);
+                    echo json_encode(["status" => "error", "message" => "Failed to upload file: $fileName"]);
                     exit;
                 }
             } else {
-                echo json_encode(["success" => false, "message" => "File $fileName is invalid or exceeds size limit of 4MB."]);
+                echo json_encode(["status" => "error", "message" => "File $fileName is invalid or exceeds 4MB."]);
                 exit;
             }
         }
@@ -55,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pay'])) {
             $stmt = $conn->prepare($sql);
 
             if (!$stmt) {
-                echo json_encode(["success" => false, "message" => "Booking SQL preparation failed: " . $conn->error]);
+                echo json_encode(["status" => "error", "message" => "Payment SQL preparation failed: " . $conn->error]);
                 $conn->rollback();
                 exit;
             }
@@ -63,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pay'])) {
             foreach ($uploadedFiles as $filePath) {
                 $stmt->bind_param('sidss', $transactNo, $accountId, $amount, $filePath, $paymentDate);
                 if (!$stmt->execute()) {
-                    echo json_encode(["success" => false, "message" => "Database error on payment insert: " . $stmt->error]);
+                    echo json_encode(["status" => "error", "message" => "Database error on payment insert: " . $stmt->error]);
                     $conn->rollback();
                     exit;
                 }
@@ -73,27 +72,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pay'])) {
             $stmt1 = $conn->prepare($sql1);
 
             if (!$stmt1) {
-                echo json_encode(["success" => false, "message" => "Update query preparation failed: " . $conn->error]);
+                echo json_encode(["status" => "error", "message" => "Booking update preparation failed: " . $conn->error]);
                 $conn->rollback();
                 exit;
             }
 
             $stmt1->bind_param('s', $transactNo);
             if (!$stmt1->execute()) {
-                echo json_encode(["success" => false, "message" => "Database error on booking update: " . $stmt1->error]);
+                echo json_encode(["status" => "error", "message" => "Database error on booking update: " . $stmt1->error]);
                 $conn->rollback();
                 exit;
             }
 
             $conn->commit();
-            echo json_encode(["success" => true, "message" => "Payment and proof files uploaded successfully!", "transactNo" => $transactNo]);
+            echo json_encode([
+                "status" => "success",
+                "message" => "Payment and proof files uploaded successfully!",
+                "bookingStatus" => "Pending",
+                "transactionNumber" => $transactNo
+            ]);
             exit;
         } else {
-            echo json_encode(["success" => false, "message" => "No valid files uploaded."]);
+            echo json_encode(["status" => "error", "message" => "No valid files uploaded."]);
             exit;
         }
     } else {
-        echo json_encode(["success" => false, "message" => "Proof of payment files are required."]);
+        echo json_encode(["status" => "error", "message" => "Proof of payment files are required."]);
         exit;
     }
 }

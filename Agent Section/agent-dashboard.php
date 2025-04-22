@@ -2,13 +2,10 @@
 session_start();
 require "../conn.php";
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-// header('Content-Type: application/json'); // Ensure JSON output
-
 echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETTY_PRINT) . ");</script>";
 
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -24,12 +21,30 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
 </head>
 
 <body>
-
   <div class="body-container">
     <?php include "../Agent Section/includes/sidebar.php"; ?>
 
     <div class="main-content-container">
-      <?php include "../Agent Section/includes/navbar.php"; ?>
+      <div class="navbar">
+        <div class="page-header-wrapper">
+
+          <!-- <div class="page-header-top">
+            <div class="back-btn-wrapper">
+              <button class="back-btn" id="redirect-btn">
+                <i class="fas fa-chevron-left"></i>
+              </button>
+            </div>
+          </div> -->
+
+          <div class="page-header-content">
+            <div class="page-header-text">
+              <h5 class="header-title">Dashboard</h5>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
 
       <div class="main-content">
         <div class="content-container">
@@ -54,7 +69,8 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                 <!-- Total Transaction, and Completed Transaction -->
                 <div class="row">
                   <!-- Total Transaction Card -->
-                  <div class="col-md-5 d-flex flex-row clickable-card" onclick="window.location.href='../Agent Section/agent-transactions.php'">
+                  <div class="col-md-5 d-flex flex-row clickable-card"
+                    onclick="window.location.href='../Agent Section/agent-transactions.php'">
                     <div class="card-icon icon-blue">
                       <i class="fas fa-calendar-alt"></i>
                     </div>
@@ -63,9 +79,9 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                       // Get session variables
                       // $accountId = $_SESSION['agent_accountId'];
                       $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking 
-                                                    WHERE accountId = '$accountId' 
-                                                    AND MONTH(bookingDate) = MONTH(CURRENT_DATE()) 
-                                                    AND YEAR(bookingDate) = YEAR(CURRENT_DATE())";
+                                    WHERE accountId = '$accountId' 
+                                    AND MONTH(bookingDate) = MONTH(CURRENT_DATE()) 
+                                    AND YEAR(bookingDate) = YEAR(CURRENT_DATE())";
                       $result = mysqli_query($conn, $totalTransactionsQuery);
                       $agentId = $_SESSION['agentId'];
                       $agentCode = $_SESSION['agentCode'];
@@ -111,7 +127,8 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                   </div>
 
                   <!-- Confirmed Transaction -->
-                  <div class="col-md-5 d-flex flex-row clickable-card" onclick="redirectToAgentTransaction('Confirmed')">
+                  <div class="col-md-5 d-flex flex-row clickable-card"
+                    onclick="redirectToAgentTransaction('Confirmed')">
                     <div class="card-icon icon-green">
                       <i class="fas fa-check-circle"></i>
                     </div>
@@ -179,7 +196,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                       // $accountId = $_SESSION['accountId'];
                       // $agentCode = $_SESSION['agentCode'];
                       // $agentRole = $_SESSION['agentRole'];
-
+                      
                       // Determine which query to run based on the agent's role
                       if ($agentRole != 'Head Agent') {
                         // Query for non-Head Agent, use accountId
@@ -229,7 +246,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                       // $accountId = $_SESSION['accountId'];
                       // $agentCode = $_SESSION['agentCode'];
                       // $agentRole = $_SESSION['agentRole'];
-
+                      
                       // Determine which query to run based on the agent's role
                       if ($agentRole != 'Head Agent') {
                         // Query for non-Head Agent, use accountId
@@ -269,7 +286,8 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                   </div>
 
                   <!-- Total Cancelled Transaction -->
-                  <div class="col-md-5 d-flex flex-row clickable-card" onclick="redirectToAgentTransaction('Cancelled')">
+                  <div class="col-md-5 d-flex flex-row clickable-card"
+                    onclick="redirectToAgentTransaction('Cancelled')">
                     <div class="card-icon icon-red">
                       <i class="fas fa-times-circle"></i>
                     </div>
@@ -279,7 +297,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                       // $accountId = $_SESSION['accountId'];
                       // $agentCode = $_SESSION['agentCode'];
                       // $agentRole = $_SESSION['agentRole'];
-
+                      
                       // Determine which query to run based on the agent's role
                       if ($agentRole != 'Head Agent') {
                         // Query for non-Head Agent, use accountId
@@ -344,7 +362,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                       // // $accountId = $_SESSION['accountId'];
                       // $agentCode = $_SESSION['agentCode'];
                       // $agentRole = $_SESSION['agentRole'];
-
+                      
                       // Determine which query to run based on the agent's role
                       if ($agentRole != 'Head Agent') {
                         // Query for non-Head Agent, use accountId
@@ -395,7 +413,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                       // $accountId = $_SESSION['accountId'];
                       // $agentCode = $_SESSION['agentCode'];
                       // $agentRole = $_SESSION['agentRole'];
-
+                      
                       // Determine which query to run based on the agent's role
                       if ($agentRole != 'Head Agent') {
                         // Query for non-Head Agent, use accountId
@@ -446,7 +464,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                       // $accountId = $_SESSION['accountId'];
                       // $agentCode = $_SESSION['agentCode'];
                       // $agentRole = $_SESSION['agentRole'];
-
+                      
                       // Determine which query to run based on the agent's role
                       if ($agentRole != 'Head Agent') {
                         // Query for non-Head Agent, use accountId
@@ -497,7 +515,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                       // $accountId = $_SESSION['accountId'];
                       // $agentCode = $_SESSION['agentCode'];
                       // $agentRole = $_SESSION['agentRole'];
-
+                      
                       // Determine which query to run based on the agent's role
                       if ($agentRole != 'Head Agent') {
                         // Query for non-Head Agent, use accountId
@@ -563,7 +581,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                       // $accountId = $_SESSION['accountId'];
                       // $agentCode = $_SESSION['agentCode'];
                       // $agentRole = $_SESSION['agentRole'];
-
+                      
                       // Determine which query to run based on the agent's role
                       if ($agentRole != 'Head Agent') {
                         // Query for non-Head Agent, use accountId in the payment table
@@ -605,7 +623,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                       // $accountId = $_SESSION['accountId'];
                       // $agentCode = $_SESSION['agentCode'];
                       // $agentRole = $_SESSION['agentRole'];
-
+                      
                       // Determine which query to run based on the agent's role
                       if ($agentRole != 'Head Agent') {
                         // Query for non-Head Agent, use accountId in the payment table
@@ -683,7 +701,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
 
 
 
-                  
+
                   <!-- <div class="currency-card">
                     <div class="flag-icon-wrapper">
                       <img src="../Assets/Flags/korean-flag.png" alt="">
@@ -717,11 +735,15 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
             <div class="tabs-list-wrapper">
               <ul class="nav nav-pills" id="pills-tab" role="tablist">
                 <li class="nav-item" role="presentation">
-                  <button class="nav-link active" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Flight Seats Tracker</button>
+                  <button class="nav-link active" id="pills-profile-tab" data-bs-toggle="pill"
+                    data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile"
+                    aria-selected="false">Flight Seats Tracker</button>
                 </li>
 
                 <li class="nav-item" role="presentation">
-                  <button class="nav-link " id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Pending and Requests</button>
+                  <button class="nav-link " id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home"
+                    type="button" role="tab" aria-controls="pills-home" aria-selected="true">Pending and
+                    Requests</button>
                 </li>
 
                 <!-- <li class="nav-item" role="presentation">
@@ -753,7 +775,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                           // // Execute the SQL query
                           // $sql1 = "SELECT branchId, branchName FROM branch ORDER BY branchName ASC";
                           // $res1 = $conn->query($sql1);
-
+                          
                           // // Check if there are results
                           // if ($res1->num_rows > 0) {
                           //   // Loop through the results and generate options
@@ -782,7 +804,8 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
 
           <div class="tab-content" id="pills-tabContent">
 
-            <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
+            <div class="tab-pane fade show active" id="pills-profile" role="tabpanel"
+              aria-labelledby="pills-profile-tab" tabindex="0">
 
               <div class="flight-seat-container">
 
@@ -801,10 +824,12 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                             <th rowspan="2">PRICE</th>
                             <th rowspan="2"></th>
                           </tr>
+
                           <tr style="top: -8px">
                             <th>START</th>
                             <th>END</th>
                           </tr>
+                          
                         </thead>
 
                         <tbody>
@@ -919,7 +944,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                           // $accountId = $_SESSION['accountId'];
                           // $agentCode = $_SESSION['agentCode'];
                           // $agentRole = $_SESSION['agentRole'];
-
+                          
                           // Determine which query to run based on the agent's role
                           if ($agentRole != 'Head Agent') {
                             $sql1 = "SELECT b.transactNo AS `T.N`, p.packageName AS `PACKAGE`, b.bookingType as bookingType,
@@ -1087,7 +1112,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                           // $accountId = $_SESSION['accountId'];
                           // $agentCode = $_SESSION['agentCode'];
                           // $agentRole = $_SESSION['agentRole'];
-
+                          
                           // Determine which query to run based on the agent's role
                           if ($agentRole != 'Head Agent') {
                             $sql1 = "SELECT r.transactNo AS `T.N`, c.concernTitle AS `Request`, COALESCE(cd.details, r.customRequest) AS `Details`, 
@@ -1257,7 +1282,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                           // $accountId = $_SESSION['accountId'];
                           // $agentCode = $_SESSION['agentCode'];
                           // $agentRole = $_SESSION['agentRole'];
-
+                          
                           if ($agentRole != 'Head Agent') {
                             $sql2 = "SELECT p.transactNo AS `Transaction No`, p.paymentTitle AS `Payment Title`, 
                                         CONCAT(FORMAT(p.amount, 2)) AS `Amount`, DATE_FORMAT(p.paymentDate, '%m-%d-%Y') AS `Date`,  
@@ -1453,7 +1478,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                           // $accountId = $_SESSION['accountId'];
                           // $agentCode = $_SESSION['agentCode'];
                           // $agentRole = $_SESSION['agentRole'];
-
+                          
                           if ($agentRole != 'Head Agent') {
                             // Query to select all records from the booking table
                             $query = "SELECT b.transactNo, b.flightId, b.pax, b.totalPrice AS packagePrice, 
@@ -1492,7 +1517,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                                           b.status = 'Confirmed' and b.accountId = '$accountId' and f.flightDepartureDate >= CURDATE()";
 
                             $result = $conn->query($query); // Execute the query
-
+                          
                             // Check if there are results and populate the table
                             if ($result && $result->num_rows > 0) {
                               while ($row = $result->fetch_assoc()) {
@@ -1524,7 +1549,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                                 $totalAmountPaid = $row['totalPaidAmount'];
                                 $totalAmountToBePaid = $row['packagePrice'] + $row['totalRequestCost']; // Total price + total request cost
                                 $balance = $totalAmountToBePaid - $totalAmountPaid; // Balance calculation
-
+                          
                                 // Determine if fully paid or not
                                 $status = ($totalAmountPaid == $totalAmountToBePaid) ? 'Fully Paid' : 'Not Paid';
 
@@ -1589,7 +1614,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                                           OR COALESCE(cc.companyId, '') = COALESCE('$companyId', ''))";
 
                             $result = $conn->query($query); // Execute the query
-
+                          
                             // Check if there are results and populate the table
                             if ($result && $result->num_rows > 0) {
                               while ($row = $result->fetch_assoc()) {
@@ -1621,7 +1646,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                                 $totalAmountPaid = $row['totalPaidAmount'];
                                 $totalAmountToBePaid = $row['packagePrice'] + $row['totalRequestCost']; // Total price + total request cost
                                 $balance = $totalAmountToBePaid - $totalAmountPaid; // Balance calculation
-
+                          
                                 // Determine if fully paid or not
                                 $status = ($totalAmountPaid == $totalAmountToBePaid) ? 'Fully Paid' : 'Not Paid';
 
@@ -1657,7 +1682,8 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
 
             </div>
 
-            <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
+            <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab"
+              tabindex="0">
               <div class="flight-seat-container">
                 <div class="one">
                   <div class="body-flight">
@@ -1770,7 +1796,8 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
 
             </div>
 
-            <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">
+            <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab"
+              tabindex="0">
 
               <!-- FIT Table -->
               <div class="fit-container">
@@ -1797,7 +1824,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                           // $accountId = $_SESSION['accountId'];
                           // $agentCode = $_SESSION['agentCode'];
                           // $agentRole = $_SESSION['agentRole'];
-
+                          
                           $sql1 = "SELECT f.transactionNo as transactNo, f.nights as noOfNights, h.hotelName as hotelName,
                                       r.rooms as roomName, f.rooms as noOfRooms, f.pax as pax
                                     FROM fit f
@@ -1829,8 +1856,6 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
 
             </div>
 
-            <!-- <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">
-            </div> -->
           </div>
 
         </div>
@@ -1876,15 +1901,13 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
   </script>
 
   <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
       const table = $('#info-table').DataTable({
         dom: 'rtip',
         language: {
           emptyTable: "No Transaction Records Available"
         },
-        order: [
-          [0, 'desc']
-        ],
+        order: [[0, 'desc']],
         paging: true,
         pageLength: 9,
         scrollY: '600px',
@@ -1896,7 +1919,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
         }]
       });
 
-
+      // ✅ Fixed updatePagination function
       function updatePagination() {
         const info = table.page.info();
         const totalPages = info.pages;
@@ -1905,37 +1928,25 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
 
         if (totalPages > 1) {
           if (totalPages <= 5) {
-            // Show all pages if there are 5 or fewer total pages
             for (let i = 1; i <= totalPages; i++) {
               pageNumbersHtml += `<button class="page-number-btn ${i === currentPage ? 'active' : ''}" data-page="${i - 1}">${i}</button>`;
             }
           } else {
-            if (currentPage <= 3) {
-              // If in the first 3 pages, show first few pages + last 2
-              for (let i = 1; i <= 2; i++) {
-                pageNumbersHtml += `<button class="page-number-btn ${i === currentPage ? 'active' : ''}" data-page="${i - 1}">${i}</button>`;
-              }
-              pageNumbersHtml += `<span class="dots">...</span>`;
-              pageNumbersHtml += `<button class="page-number-btn" data-page="${totalPages - 2}">${totalPages - 1}</button>`;
-              pageNumbersHtml += `<button class="page-number-btn" data-page="${totalPages - 1}">${totalPages}</button>`;
-            } else if (currentPage >= totalPages - 2) {
-              // If in the last 3 pages, show first 2 + last few pages
-              pageNumbersHtml += `<button class="page-number-btn" data-page="0">1</button>`;
-              pageNumbersHtml += `<button class="page-number-btn" data-page="1">2</button>`;
-              pageNumbersHtml += `<span class="dots">...</span>`;
-              for (let i = totalPages - 1; i <= totalPages; i++) {
-                pageNumbersHtml += `<button class="page-number-btn ${i === currentPage ? 'active' : ''}" data-page="${i - 1}">${i}</button>`;
-              }
-            } else {
-              // Middle case: Show first page, ..., current - 1, current, current + 1, ..., last page
-              pageNumbersHtml += `<button class="page-number-btn" data-page="0">1</button>`;
-              pageNumbersHtml += `<span class="dots">...</span>`;
-              pageNumbersHtml += `<button class="page-number-btn" data-page="${currentPage - 2}">${currentPage - 1}</button>`;
-              pageNumbersHtml += `<button class="page-number-btn active" data-page="${currentPage - 1}">${currentPage}</button>`;
-              pageNumbersHtml += `<button class="page-number-btn" data-page="${currentPage}">${currentPage + 1}</button>`;
-              pageNumbersHtml += `<span class="dots">...</span>`;
-              pageNumbersHtml += `<button class="page-number-btn" data-page="${totalPages - 1}">${totalPages}</button>`;
+            const pageList = [1];
+            if (currentPage > 4) pageList.push('...');
+            for (let i = currentPage - 1; i <= currentPage + 1; i++) {
+              if (i > 1 && i < totalPages) pageList.push(i);
             }
+            if (currentPage < totalPages - 3) pageList.push('...');
+            if (!pageList.includes(totalPages)) pageList.push(totalPages);
+
+            pageList.forEach(page => {
+              if (page === '...') {
+                pageNumbersHtml += `<span class="dots">...</span>`;
+              } else {
+                pageNumbersHtml += `<button class="page-number-btn ${page === currentPage ? 'active' : ''}" data-page="${page - 1}">${page}</button>`;
+              }
+            });
           }
         }
 
@@ -1944,35 +1955,34 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
         $('#nextPage').prop('disabled', currentPage === totalPages);
       }
 
-      // Prev & Next Buttons
-      $('#prevPage').on('click', function() {
+      // ✅ Trigger only when DataTable is drawn
+      table.on('draw', function () {
+        updatePagination();
+      });
+
+      // ✅ Navigation controls
+      $('#prevPage').on('click', function () {
         table.page('previous').draw('page');
-        updatePagination();
       });
 
-      $('#nextPage').on('click', function() {
+      $('#nextPage').on('click', function () {
         table.page('next').draw('page');
-        updatePagination();
       });
 
-      // Clickable Page Numbers
-      $(document).on('click', '.page-number-btn', function() {
+      $(document).on('click', '.page-number-btn', function () {
         const page = $(this).data('page');
         table.page(page).draw('page');
-        updatePagination();
       });
 
-      // Initialize pagination
-      updatePagination();
 
+      // ===================================================================== //
 
-      // 🔹 Search Functionality
-      $('#search').on('keyup', function() {
+      $('#search').on('keyup', function () {
         table.search(this.value).draw();
       });
 
       // 🔹 Package Filter
-      $('#packages').on('change', function() {
+      $('#packages').on('change', function () {
         const selectedPackage = $(this).val();
         table.column(3).search(selectedPackage || '').draw();
       });
@@ -1984,15 +1994,15 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
         changeYear: true,
         yearRange: "1900:2100",
         appendTo: "body", // Moves the datepicker outside any restrictive containers
-        beforeShow: function(input, inst) {
-          setTimeout(function() {
+        beforeShow: function (input, inst) {
+          setTimeout(function () {
             inst.dpDiv.css({
               top: $(input).offset().top + $(input).outerHeight(),
               left: $(input).offset().left
             });
           }, 0);
         },
-        onSelect: function(dateText) {
+        onSelect: function (dateText) {
           console.log("FlightStartDate Selected:", dateText);
           table.column(1).search(dateText || '').draw();
         }
@@ -2000,7 +2010,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
 
 
       // 🔹 Flight Date Change Event
-      $('#FlightStartDate').on('change', function() {
+      $('#FlightStartDate').on('change', function () {
         const selectedFlightDate = $(this).val();
         console.log("Flight Date Filter:", selectedFlightDate);
         table.column(1).search(selectedFlightDate || '').draw();
@@ -2008,7 +2018,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
 
       // 🔹 Clear All Filters
       // Clear Sorting & Reset Price Filter
-      $('#clearSorting').on('click', function() {
+      $('#clearSorting').on('click', function () {
         $('#search').val('');
         table.search('').draw();
 
@@ -2022,71 +2032,6 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
         $("#min_price").val(0);
         $("#max_price").val(10000);
         table.draw();
-      });
-
-      // 🔹 Adjust Table After Filters Load
-      setTimeout(() => {
-        table.columns.adjust().draw();
-      }, 500);
-    });
-  </script>
-
-
-  <!-- Flight Table Pagination -->
-  <!-- <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      let currentPage = 1;
-      const rowsPerPage = 8;
-      const table = document.querySelector(".info-table tbody");
-      const rows = Array.from(table.rows);
-      const totalPages = Math.ceil(rows.length / rowsPerPage);
-
-      function displayPage(page) {
-        table.innerHTML = "";
-        const start = (page - 1) * rowsPerPage;
-        const end = start + rowsPerPage;
-        rows.slice(start, end).forEach(row => table.appendChild(row));
-
-        document.getElementById("pageNumbers").textContent = `Page ${page} of ${totalPages}`;
-        document.getElementById("prevPage").disabled = (page === 1);
-        document.getElementById("nextPage").disabled = (page === totalPages);
-      }
-
-      document.getElementById("prevPage").addEventListener("click", function() {
-        if (currentPage > 1) {
-          currentPage--;
-          displayPage(currentPage);
-        }
-      });
-
-      document.getElementById("nextPage").addEventListener("click", function() {
-        if (currentPage < totalPages) {
-          currentPage++;
-          displayPage(currentPage);
-        }
-      });
-
-      displayPage(currentPage);
-    });
-  </script> -->
-
-  <!-- Clickable rows script -->
-  <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      document.querySelectorAll("tr[data-url]").forEach(function(row) {
-        row.addEventListener("click", function() {
-          window.location.href = row.getAttribute("data-url");
-        });
-      });
-    });
-
-    // Add event listener to each row for redirection
-    const rows = document.querySelectorAll("tr[data-url]");
-
-    rows.forEach(row => {
-      row.addEventListener("click", function() {
-        const url = row.getAttribute("data-url");
-        window.location.href = url; // Redirect to the specified URL
       });
     });
   </script>

@@ -21,7 +21,7 @@ $accId = $_SESSION['accountId'] ?? '';
 <html lang="en">
 
 <head>
-    <?php include '../Client Section/Includes/head.php'; ?>
+    <?php include '../Client Section/includes/head.php'; ?>
 
     <title>Flight Schedules</title>
     <link rel="stylesheet" href="../Mobile/assets/css/client-navbar.css?v=<?php echo time(); ?>">
@@ -45,7 +45,7 @@ $accId = $_SESSION['accountId'] ?? '';
     endif;
     ?>
 
-    <?php include '../Mobile/Includes/client-navbar.php'; ?>
+    <?php include '../Mobile/includes/client-navbar.php'; ?>
 
     <div class="body-container">
         <div class="main-container">

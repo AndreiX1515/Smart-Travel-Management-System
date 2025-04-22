@@ -906,8 +906,9 @@
 
 .payment-row .label {
   font-size: 14px;
-  font-weight: bold;
+  font-weight: 500;
   line-height: 1.15; /* Adjust line height */
+  color: #000;
 }
 
 .value {

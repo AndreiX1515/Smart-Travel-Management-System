@@ -24,7 +24,23 @@ require "../conn.php";
 
     <div class="main-content-container">
       <div class="navbar">
-        <h5 class="title-page" id="page-title">Booking</h5>
+        <div class="page-header-wrapper">
+
+          <!-- <div class="page-header-top">
+            <div class="back-btn-wrapper">
+              <button class="back-btn" id="logout-btn">
+                <i class="fas fa-chevron-left"></i>
+              </button>
+            </div>
+          </div> -->
+
+          <div class="page-header-content">
+            <div class="page-header-text">
+              <h5 class="header-title">Add Booking</h5>
+            </div>
+          </div>
+
+        </div>
       </div>
 
       <div class="main-content">
@@ -628,7 +644,7 @@ require "../conn.php";
                 success: function (response) {
                     if (response.status === "success") {
                         // Redirect to payment page with transaction number
-                        window.location.href = "../Client Section/client-addBookingPayment.php?transactNo=" + encodeURIComponent(response.transactNo);
+                        window.location.href = "../Client Section/client-addBookingPayment.php?id=" + encodeURIComponent(response.transactNo);
                     } else {
                         console.error("Booking failed:", response.message);
                         alert(response.message);

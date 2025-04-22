@@ -6,6 +6,7 @@ $accountId = $_SESSION['agent_accountId']; // Get account ID from session
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $currentPassword = $_POST['currentPassword'];
+    $emailAddress = $_POST['emailAddress'] ?? ''; // Optional email address from POST data
 
     // Check if current password is provided
     if (empty($currentPassword)) {
@@ -15,12 +16,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'message' => 'Current password is required.',
             'currentPassword' => $currentPassword 
         ]); 
+
     } else {
         // Verify password against the database
-        $stmt = $conn->prepare("SELECT password, emailAddress FROM accounts WHERE accountId = ?");
+        $stmt = $conn->prepare("SELECT password FROM accounts WHERE accountId = ?");
         $stmt->bind_param("i", $accountId);
         $stmt->execute();
-        $stmt->bind_result($storedPassword, $emailAddress); 
+        $stmt->bind_result($storedPassword); 
         $stmt->fetch();
         $stmt->close();
 
@@ -41,8 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             ]);
 
         } else {
-            $_SESSION['emailAddress'] = $emailAddress;
-
+            
             echo json_encode([
                 'status' => 'success',
                 'message' => 'Sending OTP to your email to verify change password...',
