@@ -21,9 +21,11 @@
 
   <!-- Main Container -->
   <div class="main-container">
-    <?php
-    include '../Employee Section/includes/emp-navbar.php'
-    ?>
+    <nav class="navbar navbar-expand-lg navbar-custom">
+      <div class="container-fluid mx-1">
+          <a class="navbar-brand" id="page-title" href="#">Transaction</a>
+      </div>
+    </nav>
 
     <?php
     $statusTab = isset($_GET['status']) ? $_GET['status'] : '';
@@ -332,7 +334,6 @@
     });
   </script>
 
-
   <!-- Row Click Selection-->
   <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -376,9 +377,9 @@
           [0, 'desc']
         ], // Default sorting by Transaction ID (descending)
         scrollX: false,
-        scrollY: '65.5vh', // Set a fixed height for the table (adjust as necessary)
+        scrollY: '73vh', // Set a fixed height for the table (adjust as necessary)
         paging: true, // Enable pagination
-        pageLength: 14, // Set the number of rows per page
+        pageLength: 15, // Set the number of rows per page
         autoWidth: false,
         autoHeight: false, // Prevent automatic height adjustment
 

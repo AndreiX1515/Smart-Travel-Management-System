@@ -1,3 +1,10 @@
+.content-container {
+  padding: 15px 0px 0px 0px;
+  /* border: 1px solid black; */
+}
+
+
+
 /* Back Button Styling */
 .back-button-wrapper {
   display: flex;
@@ -92,30 +99,27 @@
   /* border: 1px solid black; */
 }
 
-/* Transaction Info - 40% of the width */
-.transaction-info-wrapper {
-  width: 50%; /* Increased width for a slightly larger container */
-  height: 30vh; /* Increased height for more space */
-  background-color: #f8f9fa; /* Optional background for visualization */
-  border-radius: 8px; /* Optional rounded corners */
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Optional shadow for effect */
-  font-size: 0.9rem; /* Slightly larger font size */
-}
 
- .card-header {
+
+
+.card-title-wrapper {
   display: flex;
-  padding: 15px 20px 5px 20px;
-  border-bottom: 1px solid gainsboro;
+  align-items: center;
 }
 
- .card-body {
-  display: flex;
-  flex-wrap: wrap; 
-  align-items: center; 
-  padding: 10px; 
+.card-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
 }
 
- .card-body .guest-info {
+
+
+
+
+
+.card-body .guest-info {
   display: flex;
   flex-grow: 1; /* Ensures it takes up remaining space */
   padding: 5px 20px 0px 20px;
@@ -124,12 +128,11 @@
   flex-wrap: wrap; /* Prevents overflow on smaller screens */
 }
 
-.transaction-info-wrapper .card-footer {
-  display: flex;
-  justify-content: right;
-  padding: 10px 20px;
-  border-top: 1px solid gainsboro;
+.transaction-details-container {
+  /* border: 1px solid black; */
+  width: 100%;
 }
+
 
 /* Adjust row and column gaps */
 .row.g-2 {
@@ -142,26 +145,99 @@
   padding: 0.3rem 0.6rem; /* Increased padding for a larger badge */
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+.transaction-info-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  height: 30vh;
+  background-color: transparent;
+  border-radius: 12px;
+  border: 1px solid gainsboro;
+  font-size: 0.9rem;
+}
+
+.card-header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid gainsboro;
+  /* border: 1px solid black; */
+  flex: 0 0 auto; /* keeps header at natural height */
+}
+
+.card-body {
+  display: flex;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 10px 20px;
+  overflow-y: auto; /* allow scrolling if contents overflow */
+  /* border: 1px solid black; */
+}
+
+.transaction-details-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.guest-info {
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  padding: 5px 0;
+  gap: 1rem;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 9px 20px;
+  border-top: 1px solid gainsboro;
+  /* border: 1px solid black; */
+  flex: 0 0 auto; /* footer remains fixed in height */
+}
+
+
+
 /* Optional: Make text slightly larger for better readability */
 .transaction-info-wrapper p {
   font-size: 0.9rem; /* Slightly larger text */
   margin-bottom: 0.6rem; /* Increase space between paragraphs for clarity */
 }
 
+
+
 /* Guest Info Table*/
 /* Guest Info Table - 60% of the width */
 .guest-info-table-wrapper {
   width: 50%;
   height: 30vh;
-  background-color: #f8f9fa; /* Optional background for visualization */
+  background-color: transparent; /* Optional background for visualization */
   border-radius: 8px; /* Optional rounded corners */
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Optional shadow for effect */
+  border: 1px solid gainsboro;
   font-size: 0.9rem; /* Slightly larger font size */
 }
 
 .guest-table-wrapper {
   width: 100%;
-  padding: 0px 0px;
   height: 230px; /* Set a fixed height for vertical scroll */
   overflow-y: auto; /* Enable vertical scroll */
   overflow-x: auto; /* Enable horizontal scroll */
@@ -172,7 +248,7 @@
   width: 100%;
   border-collapse: collapse;
   font-size: 12px;
-  min-width: 1000px; 
+  min-width: 1000px;
   table-layout: fixed;
 }
 
@@ -279,10 +355,15 @@
   font-size: 0.9rem; /* Increase font size for readability */
 }
 
+
+
+
+
+
+
 /* Request History Table */
 .request-table-wrapper {
   width: 100%;
-  padding: 0px 15px;
   height: 475px; /* Set a fixed height for vertical scroll */
   overflow-y: auto; /* Enable vertical scroll */
   overflow-x: auto; /* Enable horizontal scroll */
@@ -385,6 +466,11 @@
   font-size: 0.9rem; /* Increase font size for readability */
 }
 
+
+
+
+
+
 .nav-pills-wrapper {
   display: flex;
   justify-content: left;
@@ -425,39 +511,40 @@
   border-color: #ccc; /* Border color on hover */
 }
 
+
+
+
 /* Tab Content Styling */
 .tab-content {
-  background-color: #fff; 
-  /* border-radius: 8px; 
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);  */
-  height: 50vh;
-  /* padding: 10px 0px;  */
-  /* border-radius: 5px;  */
-  /* border: 1px solid black; */
-
+  background-color: #fff;
+  height: 52vh;
+  border: 1px solid black;
+  border: 1px solid gainsboro;
 }
 
 
 
 /* Add Ons */
 .no-requests-container {
-  text-align: left; 
-  padding: 8px 8px; 
-  font-family: Arial, sans-serif; 
-  font-size: 14px; 
+  text-align: left;
+  padding: 8px 8px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
   white-space: nowrap;
   border: 1px solid #ccc; /* Optional: Adds a border to match table styling */
 }
 
-
 .tab-pane .card-header {
   display: flex;
-  padding: 5px 20px 5px 20px;
+  padding: 0px 0px 5px 0px;
   border-bottom: 1px solid gainsboro;
+  /* border: 1px solid black; */
 }
 
 .tab-pane .card-body {
   display: flex;
-  flex-wrap: wrap; 
-  align-items: center; 
+  flex-wrap: wrap;
+  align-items: center;
+  /* border: 1px solid black; */
+  padding: 0px 0px 5px 0px;
 }

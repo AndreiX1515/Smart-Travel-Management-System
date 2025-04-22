@@ -21,6 +21,7 @@ session_start();
 
   <!-- Main Container -->
   <div class="main-container">
+
     <nav class="navbar navbar-expand-lg navbar-custom mt-2">
       <div class="back-button-wrapper">
         <button class="back-button" onclick="window.location.href='../Employee Section/emp-transaction.php';">
@@ -46,10 +47,14 @@ session_start();
       <div class="content-container">
 
         <div class="first-part-wrapper">
+
           <div class="transaction-info-wrapper">
             <div class="card-header">
-              <h6>Transaction Information</h6>
+              <div class="card-title-wrapper">
+                <h6 class="card-title">Transaction Information</h6>
+              </div>
             </div>
+
 
             <?php
             $query1 = "SELECT b.*, p.packageName, f.flightDepartureDate, COALESCE(SUM(pa.amount), 0) AS TotalAmountPaid,
@@ -123,26 +128,33 @@ session_start();
             }
             ?>
 
-            <div class="card-body">
-              <div class="row guest-info">
-                <div class="col-md-6">
-                  <p><strong>Transaction No:</strong> <?php echo $transactNum; ?></p>
-                  <p><strong>Total Pax:</strong> <?php echo $pax; ?></p>
-                  <p><strong>Package:</strong> <?php echo $packageName; ?></p>
-                  <p><strong>Flight Date:</strong> <?php echo $flightDate; ?></p>
-                  <p class="align-items-center">
-                    <strong>Status:</strong>
-                    <span class="badge rounded-pill bg-warning text-dark p-2">
-                      <?php echo $status; ?>
-                    </span>
-                  </p>
-                </div>
+            <div class="card-body booking-transaction-body">
+              <div class="transaction-details-container">
+                <div class="row guest-info-row">
 
-                <div class="col-md-6">
-                  <p><strong>Contact Person:</strong> <?php echo $fullName; ?></p>
-                  <p><strong>Contact No:</strong> <?php echo $contactNo; ?></p>
-                  <p><strong>Email:</strong> <?php echo $email; ?></p>
-                  <p><strong>Balance: ₱ </strong> <?php echo $formattedBalance; ?></p>
+                  <!-- Left Column -->
+                  <div class="col-md-6 transaction-details-left">
+                    <p class="mb-2"><strong>Transaction No:</strong> <?php echo $transactNum; ?></p>
+
+                    <p class="mb-2"><strong>Total Pax:</strong> <?php echo $pax; ?></p>
+                    <p class="mb-2"><strong>Package:</strong> <?php echo $packageName; ?></p>
+                    <p class="mb-2"><strong>Flight Date:</strong> <?php echo $flightDate; ?></p>
+                    <p class="mb-0 d-flex align-items-center">
+                      <strong class="me-2">Status:</strong>
+                      <span class="badge rounded-pill bg-warning text-dark p-2">
+                        <?php echo $status; ?>
+                      </span>
+                    </p>
+                  </div>
+
+                  <!-- Right Column -->
+                  <div class="col-md-6 transaction-details-right">
+                    <p class="mb-2"><strong>Contact Person:</strong> <?php echo $fullName; ?></p>
+                    <p class="mb-2"><strong>Contact No:</strong> <?php echo $contactNo; ?></p>
+                    <p class="mb-2"><strong>Email:</strong> <?php echo $email; ?></p>
+                    <p class="mb-0"><strong>Balance: ₱</strong> <?php echo $formattedBalance; ?></p>
+                  </div>
+
                 </div>
               </div>
             </div>
@@ -155,10 +167,10 @@ session_start();
 
           </div>
 
-
           <div class="guest-info-table-wrapper">
 
           </div>
+
         </div>
 
         <div class="nav-pills-wrapper">
@@ -223,7 +235,6 @@ session_start();
       </div>
     </div>
   </div>
-
 
   <!-- Visa Status Modal -->
   <div class="modal fade" id="guestModal" tabindex="-1" role="dialog" aria-labelledby="guestModalLabel" aria-hidden="true">
