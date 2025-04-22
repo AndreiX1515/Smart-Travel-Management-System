@@ -36,6 +36,10 @@ error_reporting(E_ALL);
             <div class="mb-4">
               <label class="form-label">Report Type:</label>
               <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="reportType" id="flightReport" value="flight" checked>
+                <label class="form-check-label" for="flightReport">Flight</label>
+              </div>
+              <div class="form-check form-check-inline">
                 <input class="form-check-input" type="radio" name="reportType" id="monthlyReport" value="monthly" checked>
                 <label class="form-check-label" for="monthlyReport">Monthly</label>
               </div>
@@ -45,8 +49,36 @@ error_reporting(E_ALL);
               </div>
             </div>
 
+            <!-- Flight Date Selector -->
+            <div id="flightSelector" class="mb-3" style="display: none;">
+              <label for="flightDate" class="form-label">Select Flight Date:</label>
+              <select class="form-select" name="flightDate" id="flightDate">
+                <option selected disabled>Select a flight date</option>
+                <?php
+                  // Assuming you have a database connection in $conn
+                  $query = "SELECT DISTINCT flightDepartureDate FROM flight ORDER BY flightDepartureDate ASC";
+                  $result = $conn->query($query);
+
+                  if ($result->num_rows > 0) 
+                  {
+                    while ($row = $result->fetch_assoc()) 
+                    {
+                      $date = $row['flightDepartureDate'];
+                      $formattedDate = date("M d, Y", strtotime($date));
+                      echo "<option value=\"$date\">$formattedDate</option>";
+                    }
+                  } 
+                  else 
+                  {
+                    echo "<option disabled>No flight dates available</option>";
+                  }
+                ?>
+              </select>
+            </div>
+
+
             <!-- Monthly Selector -->
-            <div id="monthlySelector" class="mb-3">
+            <div id="monthlySelector" class="mb-3" style="display: none;">
               <label for="month" class="form-label">Select Month:</label>
               <select class="form-select" name="month" id="month">
                 <option selected disabled>Select Month</option>
@@ -65,8 +97,6 @@ error_reporting(E_ALL);
               </select>
             </div>
 
-            <input name="agentCode" value="<?php echo $agentCode; ?>" value="Agent Code">
-
             <!-- Weekly Selector -->
             <div id="weeklySelector" class="mb-3" style="display: none;">
               <label for="week" class="form-label">Select Week:</label>
@@ -74,6 +104,8 @@ error_reporting(E_ALL);
                 <option selected disabled>Select a week</option>
               </select>
             </div>
+
+            <input name="agentCode" value="<?php echo $agentCode; ?>" value="Agent Code" hidden>
 
             <!-- Submit Button -->
             <div class="content-footer">
@@ -105,34 +137,57 @@ error_reporting(E_ALL);
 
   <!-- Optional Script to Toggle Selectors -->
   <script>
+    const flightRadio = document.getElementById('flightReport');
     const monthlyRadio = document.getElementById('monthlyReport');
     const weeklyRadio = document.getElementById('weeklyReport');
+
+    const flightSelector = document.getElementById('flightSelector');
     const monthlySelector = document.getElementById('monthlySelector');
     const weeklySelector = document.getElementById('weeklySelector');
 
-    monthlyRadio.addEventListener('change', () => {
-      if (monthlyRadio.checked) {
-        monthlySelector.style.display = 'block';
+    flightRadio.addEventListener('change', () => 
+    {
+      if (flightRadio.checked) 
+      {
+        flightSelector.style.display = 'block';
+        monthlySelector.style.display = 'none';
         weeklySelector.style.display = 'none';
+        document.getElementById('dataTable').style.display = 'none';
+        document.getElementById('downloadReport').style.display = 'none';
       }
     });
 
-    weeklyRadio.addEventListener('change', () => {
-      if (weeklyRadio.checked) {
+    monthlyRadio.addEventListener('change', () => 
+    {
+      if (monthlyRadio.checked) 
+      {
+        monthlySelector.style.display = 'block';
+        flightSelector.style.display = 'none';
+        weeklySelector.style.display = 'none';
+        document.getElementById('dataTable').style.display = 'none';
+        document.getElementById('downloadReport').style.display = 'none';
+      }
+    });
+
+    weeklyRadio.addEventListener('change', () => 
+    {
+      if (weeklyRadio.checked) 
+      {
         weeklySelector.style.display = 'block';
+        flightSelector.style.display = 'none';
         monthlySelector.style.display = 'none';
+        document.getElementById('dataTable').style.display = 'none';
+        document.getElementById('downloadReport').style.display = 'none';
       }
     });
   </script>
 
+  <!-- Script for Populating Weekly -->
   <script>
-    function generateWeeks(year) {
+    function generateWeeks(year) 
+    {
       const select = document.getElementById('week');
       select.innerHTML = '<option disabled>Select a week</option>'; // Reset
-
-      const start = new Date(year, 0, 1);
-      const end = new Date(year, 11, 31);
-      let weekNum = 1;
 
       const monthNames = [
         "January", "February", "March", "April", "May", "June",
@@ -144,25 +199,34 @@ error_reporting(E_ALL);
       const format = (d) =>
         `${monthNames[d.getMonth()]} ${d.getDate().toString().padStart(2, '0')}, ${d.getFullYear()}`;
 
-      // Align to first Monday
-      while (start.getDay() !== 1) {
+      // Start from the first Monday of the year
+      let start = new Date(year, 0, 1);
+      while (start.getDay() !== 1) 
+      {
         start.setDate(start.getDate() + 1);
       }
 
-      while (start < end) {
+      const end = new Date(year, 11, 31);
+
+      while (start <= end) 
+      {
         const weekStart = new Date(start);
         const weekEnd = new Date(start);
         weekEnd.setDate(weekStart.getDate() + 6);
 
+        // Determine ISO week number
+        const isoWeekNumber = getISOWeekNumber(weekStart);
+
         const label = `${format(weekStart)} to ${format(weekEnd)}`;
-        const value = `${year}-W${weekNum.toString().padStart(2, '0')}`;
+        const value = `${year}-W${isoWeekNumber.toString().padStart(2, '0')}`;
 
         const option = document.createElement('option');
         option.value = value;
         option.textContent = label;
 
         // Auto-select if today is in this range
-        if (today >= weekStart && today <= weekEnd) {
+        if (today >= weekStart && today <= weekEnd) 
+        {
           option.selected = true;
         }
 
@@ -170,13 +234,27 @@ error_reporting(E_ALL);
 
         // Move to next week
         start.setDate(start.getDate() + 7);
-        weekNum++;
       }
+    }
+
+    // Function to get ISO week number
+    function getISOWeekNumber(date) 
+    {
+      const tempDate = new Date(date.getTime());
+      tempDate.setHours(0, 0, 0, 0);
+      // Thursday in current week decides the year
+      tempDate.setDate(tempDate.getDate() + 3 - ((tempDate.getDay() + 6) % 7));
+      // January 4 is always in week 1
+      const week1 = new Date(tempDate.getFullYear(), 0, 4);
+      // Adjust to Thursday in week 1 and count number of weeks from date to week1
+      return 1 + Math.round(((tempDate.getTime() - week1.getTime()) / 86400000
+                            - 3 + ((week1.getDay() + 6) % 7)) / 7);
     }
 
     generateWeeks(new Date().getFullYear());
   </script>
 
+  <!-- Script for Generating Report -->
   <script>
     document.getElementById("reportForm").addEventListener("submit", function(event) 
     {
@@ -204,8 +282,8 @@ error_reporting(E_ALL);
         {
           alert(data.error);  // Show error message if no data
           console.log('Error in data:', data.error);
-        } 
-        else 
+        }
+        else
         {
           // Show table and fill it with data
           const tableBody = document.querySelector('#dataTable tbody');
@@ -216,9 +294,10 @@ error_reporting(E_ALL);
             console.log('Row data:', row); // Debug individual row data
             const tr = document.createElement('tr');
             tr.innerHTML = `
-              <td>${row.date}</td>
-              <td>${row.sales}</td>
-              <td>${row.revenue}</td>`;
+              <td>${row.name}</td>
+              <td>${row.flightDate}</td>
+              <td>${row.pax}</td>
+              <td>₱ ${row.amount}</td>`;
             tableBody.appendChild(tr);
           });
 
