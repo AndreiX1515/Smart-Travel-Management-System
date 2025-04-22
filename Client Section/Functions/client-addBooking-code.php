@@ -32,11 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $bookingType = isset($_POST['land']) ? 'Land' : 'Package';
     $flightDetails = ($bookingType === 'Land') ? ($_POST['flightDetails'] ?? NULL) : NULL;
 
-    // Validate required fields
-    if (empty($agentCode) || empty($fName) || empty($lName) || empty($contactNo) || empty($email) || empty($packageId)) {
-        echo json_encode(["status" => "error", "message" => "Missing required fields."]);
-        exit;
-    }
+   
 
     // Get the last bookingId and increment it
     $result = $conn->query("SELECT MAX(bookingId) AS lastBookingId FROM booking");
@@ -81,6 +77,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Commit transaction
         $conn->commit();
 
+        // Send email notification (commented out)
+        /*
+        $subject = "Booking Confirmation - " . $transactNo;
+        $message = "Dear $fName $lName,\n\nThank you for booking with us.\n\nYour transaction number is: $transactNo.\n\nWe look forward to serving you!\n\nBest regards,\nTravel Team";
+        $headers = "From: no-reply@yourdomain.com";
+
+        if (!mail($email, $subject, $message, $headers)) {
+            // Log email failure or handle accordingly
+        }
+        */
+
         echo json_encode(["status" => "success", "message" => "Booking successful!", "transactNo" => $transactNo]);
         exit;
 
@@ -90,6 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 }
+
 echo json_encode($response);
 exit;
 ?>

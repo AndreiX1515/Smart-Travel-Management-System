@@ -175,12 +175,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['flightid'])) {
 
             console.log("Submitting AJAX request...");
 
-            // Log all formData values
-            for (let [key, value] of formData.entries()) {
-                console.log(`FormData Key: ${key}, Value: ${value}`);
-            }
-
-
             $.ajax({
                 url: '../Agent Section/functions/agentLogin-code.php',
                 type: 'POST',
@@ -190,15 +184,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['flightid'])) {
                 dataType: 'json', // Expecting JSON response
 
                 success: function(data, status, xhr) {
-                    console.log("AJAX Response:", data);
-                    console.log("Response Status:", status);
-                    console.log("XHR Status Code:", xhr.status);
+                    // console.log("AJAX Response:", data);
+                    // console.log("Response Status:", status);
+                    // console.log("XHR Status Code:", xhr.status);
 
                     if (data.success) {
-                        console.log("Full Response:", data);
-                        console.log("Account Type:", data.accountType);
-                        console.log("Received Flight ID:", data.flightId || "No Flight ID received");
-                        console.log("Default Password Status:", data.defaultPasswordStat || "Not received");
+                        // console.log("Full Response:", data);
+                        // console.log("Account Type:", data.accountType);
+                        // console.log("Received Flight ID:", data.flightId || "No Flight ID received");
+                        // console.log("Default Password Status:", data.defaultPasswordStat || "Not received");
 
                         // Extract flight ID, if available
                         let flightid = (data.flightId && data.flightId !== "Not received") ? data.flightId : '';

@@ -25,7 +25,23 @@ require "../conn.php";
 
     <div class="main-content-container">
       <div class="navbar">
-        <h5 class="title-page">Packages - Transactions table</h5>
+        <div class="page-header-wrapper">
+
+          <!-- <div class="page-header-top">
+            <div class="back-btn-wrapper">
+              <button class="back-btn" id="redirect-btn">
+                <i class="fas fa-chevron-left"></i>
+              </button>
+            </div>
+          </div> -->
+
+          <div class="page-header-content">
+            <div class="page-header-text">
+              <h5 class="header-title">Transaction</h5>
+            </div>
+          </div>
+
+        </div>
       </div>
 
       <?php
@@ -244,9 +260,7 @@ require "../conn.php";
                                     </div>
                                 </td>
 
-                               
-
-
+                              
                                 <td>
                                   <span class='badge p-2 rounded-pill {$statusClass}'>
                                     {$status}

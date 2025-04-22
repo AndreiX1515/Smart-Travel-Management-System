@@ -30,52 +30,52 @@ error_reporting(E_ALL);
     <?php include "../Agent Section/includes/sidebar.php"; ?>
 
     <?php
-// $accountId = $_SESSION['accountId'];
-// $agentId = $_SESSION['agentId'];
-// $agentCode = $_SESSION['agentCode'];
-// $agentRole = $_SESSION['agentRole'];
-// $agentType = $_SESSION['agentType'];
-// $fName =  $_SESSION['fName'] ?? '';
-// $lName = $_SESSION['lName'] ?? '';
-// $mName = $_SESSION['mName'] ?? '';
-// $branchId = $_SESSION['branchId'] ?? '';
-// $email = $_SESSION['email'] ?? '';
-// $password = $_SESSION['password'] ?? '';
+    $sql1 = "Select * from branch where branchId= '$branchId'";
+    $result1 = $conn->query($sql1);
 
-$sql1 = "Select * from branch where branchId= '$branchId'";
-$result1 = $conn->query($sql1);
+    // Check if a result is returned
+    if ($result1->num_rows > 0) {
+      // Fetch the branchName
+      $row = $result1->fetch_assoc();
+      $branchName = $row['branchName'];
+    } else {
+      $branchName = "No Branch";
+    }
 
-// Check if a result is returned
-if ($result1->num_rows > 0) {
-  // Fetch the branchName
-  $row = $result1->fetch_assoc();
-  $branchName = $row['branchName'];
-} else {
-  $branchName = "No Branch";
-}
+    // Format the full name
+    $fullName = htmlspecialchars($lName . ', ' . $fName . ($mName ? ' ' . substr($mName, 0, 1) . '.' : ''));
 
-// Format the full name
-$fullName = htmlspecialchars($lName . ', ' . $fName . ($mName ? ' ' . substr($mName, 0, 1) . '.' : ''));
-
-// Optional: hide password by default
-$maskedPassword = '••••••••••';
-?>
+    // Optional: hide password by default
+    $maskedPassword = '••••••••••';
+    ?>
 
     <div class="main-content-container">
+
       <div class="navbar">
-        <div class="backbutton-wrapper">
-          <div class="back-button-wrapper">
-            <a href="../Agent Section/agent-transactions.php" class="back-button-link">
-              <i class="fa-solid fa-arrow-left"></i>
-            </a>
+        <div class="page-header-wrapper">
+
+          <div class="page-header-top">
+            <div class="back-btn-wrapper">
+              <button class="back-btn" id="redirect-btn">
+                <i class="fas fa-chevron-left"></i>
+              </button>
+            </div>
           </div>
 
-          <div class="page-name-wrapper">
-            <h5>Transaction</h5>
+          <div class="page-header-content">
+            <div class="page-header-text">
+              <h5 class="header-title">Transaction</h5>
+            </div>
           </div>
 
         </div>
       </div>
+
+      <script>
+        document.getElementById("redirect-btn").addEventListener("click", function () {
+          window.location.href = "../Agent Section/agent-transactions.php";
+        });
+      </script>
 
       <!-- Current Date Variable -->
       <?php

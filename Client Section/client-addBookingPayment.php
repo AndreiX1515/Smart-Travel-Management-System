@@ -12,7 +12,7 @@ session_start();
   <?php include "../Agent Section/includes/head.php"; ?>
 
 
-  
+
   <link rel="stylesheet" href="../Agent Section/assets/css/agent-payment.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="../Agent Section/assets/css/navbar-sidebar.css?v=<?php echo time(); ?>">
 </head>
@@ -24,103 +24,144 @@ session_start();
 
     <div class="main-content-container">
       <div class="navbar">
-        <div class="backbutton-wrapper">
-          <div class="back-button-wrapper">
-            <a href="../Client Section/client-transactions.php" class="back-button-link">
-              <i class="fa-solid fa-arrow-left"></i>
-            </a>
-          </div>
+        <div class="page-header-wrapper">
 
-          <div class="page-name-wrapper">
-            <h5>Transaction</h5>
+          <!-- <div class="page-header-top">
+            <div class="back-btn-wrapper">
+              <button class="back-btn" id="logout-btn">
+                <i class="fas fa-chevron-left"></i>
+              </button>
+            </div>
+          </div> -->
+
+          <div class="page-header-content">
+            <div class="page-header-text">
+              <h5 class="header-title">Payment Details</h5>
+            </div>
           </div>
 
         </div>
       </div>
 
-      <!-- Check if 'id' is passed in the URL -->
       <?php
-      if (isset($_GET['transactNo'])) {
-        $transactionNumber = htmlspecialchars($_GET['transactNo']);
+      // Check if 'id' is passed in the URL
+      if (isset($_GET['id'])) {
+        $transactionNumber = htmlspecialchars($_GET['id']);
+
+      } else {
+        // Redirect to a different page or show an error message
+        echo "<script>alert('Transaction number not found.'); 
+        window.location.href='client-transactionInfo.php';</script>";
+        exit; // Stop further execution
       }
+
       ?>
 
       <div class="main-content">
-        <div class="header-container">
-          <h3>Booking Payment</h2>
-          <p>Proceed your booking by providing a payment (Optional)</p>
-        </div>
 
-        <div class="container-body"> 
-          <div class="content-wrapper">
+        <div class="container-body">
 
-            <div class="subscription">
+          <div class="info-wrapper">
+            <div class="payment-method">
+
               <div class="section section-1">
-                <div class="section-container">
-                  <h4>Choose Payment Method</h4>
+                <div class="header-container">
+                  <h4>Payment Method</h4>
+                  <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
                 </div>
 
-                <div class="billing-options">
-                  <!-- Bank Transfer -->
-                  <div class="billing-card" data-value="bank-transfer">
-                    <div class="radiobutton-container">
-                      <input type="radio" name="billing">
-                    </div>
-                    <div class="payment-logo" style="margin-top: 10px;">
-                      <i class="fas fa-money-bill-transfer" style="font-size: 52px;"></i>
-                      <span>Bank Transfer</span>
+                <div class="section-body">
+
+                  <div class="section-content">
+                    <div class="row-content">
+
+                      <!-- Bank Transfer -->
+                      <div class="card-wrapper">
+                        <div class="billing-card">
+                          <div class="payment-content">
+                            <div class="payment-logo">
+                              <i class="fas fa-university fa-2x"></i>
+                            </div>
+                            <div class="payment-name">
+                              <span>Bank Transfer</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="card-wrapper">
+                        <div class="billing-card">
+                          <div class="payment-content">
+                            <div class="payment-logo">
+                              <!-- <i class="fas fa-mobile-alt fa-2x"></i>  -->
+                            </div>
+                            <div class="payment-name">
+                              <span></span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
 
-                  <!-- Credit/Debit Card -->
-                  <div class="billing-card" data-value="card-payment">
-                    <div class="radiobutton-container">
-                      <input type="radio" name="billing">
-                    </div>
-                    <div class="payment-logo" style="margin-top: 10px;">
-                      <i class="fas fa-credit-card" style="font-size: 52px;"></i>
-                      <span>Credit/Debit Card</span>
-                    </div>
-                  </div>
+                  <div class="section-content">
+                    <div class="row-content">
+                      <!-- Bank Transfer -->
+                      <div class="card-wrapper">
+                        <div class="billing-card disabled">
+                          <div class="payment-content">
+                            <div class="payment-logo">
+                              <i class="fas fa-mobile-alt fa-2x"></i>
+                            </div>
+                            <div class="payment-name">
+                              <span>GCash</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
 
-                  <!-- PayPal -->
-                  <div class="billing-card" data-value="paypal">
-                    <div class="radiobutton-container">
-                      <input type="radio" name="billing">
-                    </div>
-                    <div class="payment-logo" style="margin-top: 10px;">
-                      <i class="fab fa-paypal" style="font-size: 52px;"></i>
-                      <span>PayPal</span>
-                    </div>
-                  </div>
-
-                  <!-- GCash -->
-                  <div class="billing-card" data-value="gcash">
-                    <div class="radiobutton-container">
-                      <input type="radio" name="billing">
-                    </div>
-                    <div class="payment-logo" style="margin-top: 10px;">
-                      <i class="fas fa-mobile-alt" style="font-size: 52px;"></i>
-                      <span>GCash</span>
-                    </div>
-                  </div>
-
-                  <!-- Other E-Wallets -->
-                  <div class="billing-card" data-value="ewallet">
-                    <div class="radiobutton-container">
-                      <input type="radio" name="billing">
-                    </div>
-                    <div class="payment-logo" style="margin-top: 10px;">
-                      <i class="fas fa-wallet" style="font-size: 52px;"></i>
-                      <span>Other E-Wallets</span>
+                      <!-- Smart/Sun -->
+                      <div class="card-wrapper">
+                        <div class="billing-card disabled">
+                          <div class="payment-content">
+                            <div class="payment-logo">
+                              <i class="fas fa-mobile-alt fa-2x"></i>
+                            </div>
+                            <div class="payment-name">
+                              <span>Paymaya</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
 
               </div>
+            </div>
+
+            <div class="subscription">
+
+              <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                  document.querySelectorAll('.billing-card').forEach(card => {
+                    card.addEventListener('click', function () {
+                      // Remove active state from all cards
+                      document.querySelectorAll('.billing-card').forEach(c => {
+                        c.classList.remove('active');
+                        c.querySelector('.hidden-radio').checked = false;
+                      });
+
+                      // Add active state to the clicked card
+                      this.classList.add('active');
+                      this.querySelector('.hidden-radio').checked = true;
+                    });
+                  });
+                });
+              </script>
 
               <div class="section section-1">
-                <h3>Bank Details</h3>
+                <h4>Bank Details</h4>
                 <div class="bank-detail-row">
                   <div class="bank-detail-col">
                     <label for="bank-name">Bank Name:</label>
@@ -146,132 +187,255 @@ session_start();
                 </div>
               </div>
             </div>
-
-            <div class="order-summary">
-              <div class="order-summary-wrapper">
-                <?php
-                $packageName = "N/A";
-                $pax = 0;
-                $flightDate = "N/A";
-                $formattedDP = "0.00";
-                $formattedPrice = "0.00";
-
-                $sql1 = mysqli_query($conn, "SELECT b.pax, b.totalPrice,
-                        IF(f.flightId != 0, DATE_FORMAT(f.flightDepartureDate, '%M %d, %Y'), 'Custom Scheduled Flight') 
-                        AS onboardFlightSched, p.packageName 
-                    FROM booking b 
-                    JOIN flight f ON b.flightId = f.flightId 
-                    JOIN package p ON b.packageId = p.packageId 
-                    WHERE b.transactNo = '$transactionNumber'");
-
-                if ($sql1 && mysqli_num_rows($sql1) > 0) {
-                  while ($res1 = mysqli_fetch_array($sql1)) {
-                    $totalPrice = $res1['totalPrice'];
-                    $formattedPrice = number_format($totalPrice, 2); // Format to 2 decimal places
-                    $downpayment = $res1['pax'] * 3000;
-                    $formattedDP = number_format($downpayment, 2); // Format to 2 decimal places
-
-                    // Get additional fields
-                    $flightDate = $res1['onboardFlightSched'];
-                    $packageName = $res1['packageName'];
-                    $pax = $res1['pax'];
-                  }
-                } else {
-                  echo "<p class='text-danger'>No booking details found for TransactNo: $transactionNumber.</p>";
-                }
-                ?>
-
-                <div class="row">
-                  <div class="col-sm">
-                    <div class="d-flex justify-content-between mb-1">
-                      <p class="mb-0"><strong>Package Name:</strong></p>
-                      <p class="mb-0"><?php echo $packageName; ?></p> <!-- Added commas for better readability -->
-                    </div>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col-sm">
-                    <div class="d-flex justify-content-between mb-1">
-                      <p class="mb-0"><strong>Total Number of Guest:</strong></p>
-                      <p class="mb-0"><?php echo $pax; ?></p> <!-- Added commas for better readability -->
-                    </div>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col-sm">
-                    <div class="d-flex justify-content-between mb-1">
-                      <p class="mb-0"><strong>Flight Date:</strong></p>
-                      <p class="mb-0"><?php echo $flightDate; ?></p> <!-- Added commas for better readability -->
-                    </div>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col-sm">
-                    <div class="d-flex justify-content-between mb-1">
-                      <p class="mb-0"><strong>Downpayment:</strong></p>
-                      <p class="mb-0">Minimum ₱ <?php echo $formattedDP; ?></p> <!-- Added commas for better readability -->
-                    </div>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col-sm">
-                    <div class="d-flex justify-content-between mb-1">
-                      <p class="mb-0">₱ 1,000 per Guest.</p> <!-- Added space for better readability -->
-                    </div>
-                  </div>
-                </div>
-
-                <hr>
-
-                <div class="row">
-                  <div class="col-sm">
-                    <div class="d-flex justify-content-between mb-1">
-                      <p class="mb-0"><strong>Total:</strong></p>
-                      <p class="mb-0">₱ <?php echo $formattedPrice; ?></p> <!-- Added commas for better readability -->
-                    </div>
-                  </div>
-                </div>
-
-                <form id="paymentForm" enctype="multipart/form-data">
-                  <hr>
-                  <input type="hidden" value="<?php echo $_SESSION['client_accountId']; ?>" name="agentAccountId">
-                  <input type="hidden" value="<?php echo $transactionNumber; ?>" name="transactNo">
-
-                  <input type="number" class="form-control" name="downpayment" step="0.01" min="<?php echo $downpayment; ?>" max="<?php echo $totalPrice; ?>" placeholder="Enter Downpayment Amount" required>
-
-                  <h6 class="mt-4">Attach Proof/Screenshot of transaction:</h6>
-                  <input type="file" id="attachment" class="attachment" name="proofs[]" accept="image/*" required>
-                  <hr>
-
-                  <div class="row mt-4">
-                    <div class="col-sm">
-                      <div class="d-flex align-items-left mb-3">
-                        <input type="checkbox" id="termsCheckbox" class="ms-1 me-3">
-                        <div class="checkbox-text">
-                          <span>
-                            By clicking this, I agree to Smart Travel
-                            <a href="#" class="terms-link">Terms & Conditions</a> and
-                            <a href="#" class="privacy-link">Privacy Policy</a>
-                          </span>
-                        </div>
-                      </div>
-
-                      <div id="messageBox" class="" style="display: none;"></div>
-
-                      <button type="submit" class="pay-button" name="pay">Pay Now</button>
-                      <!-- Message box -->
-                      
-                    </div>
-                  </div>
-                </form>
-              </div>
-            </div>
           </div>
 
+          <div class="order-summary">
+            <?php
+            $packageName = "N/A";
+            $pax = 0;
+            $flightDate = "N/A";
+            $formattedDP = "0.00";
+            $formattedPrice = "0.00";
+
+            $sql1 = mysqli_query($conn, "SELECT b.pax, b.totalPrice,
+                    IF(f.flightId != 0, DATE_FORMAT(f.flightDepartureDate, '%M %d, %Y'), 'Custom Scheduled Flight') 
+                    AS onboardFlightSched, p.packageName 
+                FROM booking b 
+                JOIN flight f ON b.flightId = f.flightId 
+                JOIN package p ON b.packageId = p.packageId 
+                WHERE b.transactNo = '$transactionNumber'");
+
+            if ($sql1 && mysqli_num_rows($sql1) > 0) {
+              while ($res1 = mysqli_fetch_array($sql1)) {
+                $totalPrice = $res1['totalPrice'];
+                $formattedPrice = number_format($totalPrice, 2); // Format to 2 decimal places
+                $downpayment = $res1['pax'] * 3000;
+                $formattedDP = number_format($downpayment, 2); // Format to 2 decimal places
+            
+                // Get additional fields
+                $flightDate = $res1['onboardFlightSched'];
+                $packageName = $res1['packageName'];
+                $pax = $res1['pax'];
+              }
+            } else {
+              echo "<p class='text-danger'>No booking details found for TransactNo: $transactionNumber.</p>";
+            }
+            ?>
+
+            <div class="row">
+              <div class="col-sm">
+                <div class="d-flex justify-content-between mb-1">
+                  <p class="mb-0"><strong>Package Name:</strong></p>
+                  <p class="mb-0"><?php echo $packageName; ?></p> <!-- Added commas for better readability -->
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm">
+                <div class="d-flex justify-content-between mb-1">
+                  <p class="mb-0"><strong>Total Number of Guest:</strong></p>
+                  <p class="mb-0"><?php echo $pax; ?></p> <!-- Added commas for better readability -->
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm">
+                <div class="d-flex justify-content-between mb-1">
+                  <p class="mb-0"><strong>Flight Date:</strong></p>
+                  <p class="mb-0"><?php echo $flightDate; ?></p> <!-- Added commas for better readability -->
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm">
+                <div class="d-flex justify-content-between mb-1">
+                  <p class="mb-0"><strong>Downpayment:</strong></p>
+                  <p class="mb-0">Minimum ₱ <?php echo $formattedDP; ?></p> <!-- Added commas for better readability -->
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm">
+                <div class="d-flex justify-content-between mb-1">
+                  <p class="mb-0">₱ 3,000 per Guest.</p> <!-- Added space for better readability -->
+                </div>
+              </div>
+            </div>
+
+            <hr>
+
+            <div class="row">
+              <div class="col-sm">
+                <div class="d-flex justify-content-between mb-1">
+                  <p class="mb-0"><strong>Total:</strong></p>
+                  <p class="mb-0">₱ <?php echo $formattedPrice; ?></p> <!-- Added commas for better readability -->
+                </div>
+              </div>
+            </div>
+
+            <!--  -->
+
+            <form id="paymentForm">
+
+              <hr>
+              <input type="text" value="<?php echo $_SESSION['client_accountId']; ?>" name="agentAccountId">
+              <input type="text" value="<?php echo $transactionNumber; ?>" name="transactNo">
+              <input type="number" class="form-control" name="downpayment" step="0.01" min="<?php echo $downpayment; ?>"
+                max="<?php echo $totalPrice; ?>" placeholder="Enter Downpayment Amount" required>
+
+              <h6 class="mt-4">Attach Proof/Screenshot of transaction:</h6>
+              <input type="file" id="attachment" class="attachment" name="proofs[]" accept="image/*" required>
+              <hr>
+
+              <div class="row mt-4">
+                <div class="col-sm">
+                  <div class="d-flex align-items-left mb-3">
+                    <input type="checkbox" id="termsCheckbox" class="ms-1 me-3" required>
+                    <div class="checkbox-text">
+                      <span>
+                        By clicking this, I agree to Smart Travel <a href="#" class="terms-link">Terms & Conditions</a>
+                        and
+                        <a href="#" class="privacy-link">Privacy Policy</a>
+                      </span>
+                    </div>
+                  </div>
+                  <button type="submit" class="pay-button btn btn-success">
+                    Pay Now
+                  </button>
+                </div>
+              </div>
+            </form>
+
+            <button type="button" class="reserve-button btn btn-secondary" data-bs-toggle="modal"
+              data-bs-target="#payLaterModal">
+              Pay Later
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Pay Now Modal (Centered) -->
+  <div class="modal fade" id="payNowModal" tabindex="-1" aria-labelledby="payNowLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+
+      <!-- Mobile-friendly & Centered -->
+      <div class="modal-content pay-now-modal">
+        <!-- Success Icon -->
+        <div class="modal-body text-center">
+          <div class="pay-now-success-icon">
+            <div class="circle"></div>
+            <div class="checkmark"></div>
+          </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="modal-body pay-now-body">
+          <p>Booking Confirmation</p>
+          <p class="pay-now-secondary">Ensure sufficient balance or a valid payment method before proceeding.</p>
+        </div>
+
+        <!-- Footer -->
+        <div class="modal-footer pay-now-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-success" id="confirmPayment">Confirm</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Pay Later Modal (Centered) -->
+  <div class="modal fade" id="payLaterModal" tabindex="-1" aria-labelledby="payLaterLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+
+      <!-- Mobile-friendly & Centered -->
+      <div class="modal-content pay-later-modal">
+        <!-- Warning Icon -->
+        <div class="modal-body text-center">
+          <div class="pay-later-warning-icon">
+            <div class="circle"></div>
+            <div class="exclamation"></div>
+          </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="modal-body pay-later-body">
+          <p>Your booking will be placed under <strong>"Reserved"</strong> status.</p>
+          <p class="pay-later-secondary">Failure to complete the payment within the given timeframe may result in
+            cancellation.</p>
+        </div>
+
+        <!-- Footer -->
+        <div class="modal-footer pay-later-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-success" id="confirmLogout" data-bs-toggle="modal"
+            data-bs-target="#successModal">Confirm</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Booking Accept Modal - Reserved -->
+  <div class="modal fade" id="successModalLater" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+        </div>
+        <div class="modal-body text-center">
+
+          <div class="success-icon">
+            <div class="circle"></div>
+            <div class="checkmark"></div>
+          </div>
+
+          <div class="text-content">
+            <h4>Successfully Booked!</h4>
+            <p>Your booking transaction <strong><?php echo $transactionNumber; ?></strong> has been successfully
+              <strong>Booked!</strong> Please wait for a confirmation email, which will be sent to you shortly.
+            </p>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success w-100" id="okButtonLater">Got it</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Booking Accept Modal - Pending -->
+  <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+        </div>
+        <div class="modal-body text-center">
+
+          <div class="success-icon">
+            <div class="circle"></div>
+            <div class="checkmark"></div>
+          </div>
+
+          <div class="text-content">
+            <h4>Successfully Booked!</h4>
+            <p>Your booking transaction <strong><?php echo $transactionNumber; ?></strong> has been successfully
+              <strong>Booked!</strong> Please wait for a confirmation email, which will be sent to you shortly.
+            </p>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success w-100" id="okButton">Got it</button>
         </div>
       </div>
     </div>
@@ -280,98 +444,184 @@ session_start();
 
   <?php require "../Agent Section/includes/scripts.php"; ?>
 
+  <!-- Script for Pay Later Modal -->
   <script>
-$(document).ready(function () {
-    $("#paymentForm").submit(function (e) {
-        e.preventDefault(); // Prevent normal form submission
+    $(document).ready(function () {
+      $("#confirmLogout").click(function (event) {
+        event.preventDefault(); // Prevent default modal opening behavior
 
-        // Check if the checkbox is checked
-        if (!$("#termsCheckbox").is(":checked")) {
-            showMessage("You must agree to the Terms & Conditions.", "error");
-            return;
+        let hasErrors = false;
+        let requiredField = $("#requiredField").val().trim(); // Replace with actual input field ID
+
+        // Clear previous errors
+        $(".error-text").text("");
+
+        // Validate Required Field
+        if (requiredField === "") {
+          $("#requiredFieldError").text("This field is required.");
+          hasErrors = true;
         }
 
-        var formData = new FormData(this);
-        formData.append("pay", "1"); // Append identifier
+        if (!hasErrors) {
+          // No errors, proceed with showing the modal
+          $("#payLaterModal").modal("hide");
+          $("#successModal").modal("show");
+        }
+      });
 
+      // ✅ Redirect on "Got it" Click with 1-second delay
+      $("#okButton").click(function () {
+        setTimeout(function () {
+          window.location.href = "../Client Section/client-transactionInfo.php?id=<?= $transactionNumber ?>";
+        }, 1000); // 1 second = 1000ms
+      });
+
+      // ✅ Optional: Redirect if modal is closed manually with 1-second delay
+      $("#successModal").on("hidden.bs.modal", function () {
+        setTimeout(function () {
+          window.location.href = "../Client Section/client-transactionInfo.php?id=<?= $transactionNumber ?>";
+        }, 1000);
+      });
+    });
+  </script>
+
+
+  <!-- Script for Pay Now -->
+  <script>
+    $(document).ready(function () {
+      $("#paymentForm").on("submit", function (event) {
+        event.preventDefault(); // Prevent default form submission
+
+        // Clear previous messages and errors
+        $('#message-payment').html('');
+        $(".error-text").remove();
+
+        let hasErrors = false;
+
+        // Get input values
+        const downpaymentInput = $("input[name='downpayment']");
+        const downpayment = downpaymentInput.val().trim();
+        const minDownpayment = parseFloat(downpaymentInput.attr("min"));
+        const attachmentInput = $("#attachment")[0];
+        const termsChecked = $("#termsCheckbox").is(":checked");
+
+        // Validate Downpayment
+        if (downpayment === "" || isNaN(downpayment)) {
+          downpaymentInput.after('<small class="error-text text-danger">Please enter a valid amount.</small>');
+          hasErrors = true;
+        } else if (parseFloat(downpayment) < minDownpayment) {
+          downpaymentInput.after(`<small class="error-text text-danger">Minimum downpayment is ${minDownpayment}.</small>`);
+          hasErrors = true;
+        }
+
+        // Validate Attachment (check if a file is uploaded)
+        if (!attachmentInput.files || attachmentInput.files.length === 0) {
+          $("#attachment").after('<small class="error-text text-danger">Proof of transaction is required.</small>');
+          hasErrors = true;
+        }
+
+        // Validate Terms Checkbox
+        if (!termsChecked) {
+          $('#message-payment').html('<div class="alert alert-danger">You must agree to the Terms & Conditions and Privacy Policy.</div>');
+          hasErrors = true;
+        }
+
+        // Stop if there are validation errors
+        if (hasErrors) return;
+
+        // Prepare form data
+        const formData = new FormData(this);
+        formData.append('pay', '1'); // Add extra flag for server-side check
+
+        // Send AJAX request
         $.ajax({
-            url: "../Client Section/Functions/client-addBookingPayment-code.php",
-            type: "POST",
-            data: formData,
-            dataType: "json", // Automatically parse JSON
-            processData: false,
-            contentType: false,
-            beforeSend: function () {
-                showMessage("Processing payment...", "info");
-                $("#paymentForm :input").prop("disabled", true);
-            },
-            success: function (jsonResponse) {
-                $("#paymentForm :input").prop("disabled", false);
-                
-                if (jsonResponse.success) {
-                    showMessage(jsonResponse.message, "success");
+          url: "../Client Section/Functions/client-addBookingPayment-code.php",
+          type: "POST",
+          data: formData,
+          contentType: false,
+          processData: false,
+          beforeSend: function () {
+            $('#message-payment').html('<div class="alert alert-info">Processing payment...</div>');
+            console.log("Sending FormData...");
+          },
+          success: function (response) {
+            console.log("Server Response:", response);
 
-                    setTimeout(() => {
-                        let redirectUrl =
-                            "../Client Section/client-transactionInfo.php?id=" +
-                            encodeURIComponent(jsonResponse.transactNo);
-                        window.location.href = redirectUrl;
-                    }, 2000);
+            let res;
+            try {
+              res = typeof response === "string" ? JSON.parse(response) : response;
+
+              if (res.status === "success") {
+                $('#message-payment').html('<div class="alert alert-success">' + res.message + '</div>');
+
+                const bookingStatus = res.bookingStatus;
+                const transactionNumber = res.transactionNumber;
+
+                // Show appropriate success modal
+                if (bookingStatus === "Pay Later") {
+                  $("#successModalLater").modal("show");
                 } else {
-                    showMessage(jsonResponse.message || "Payment failed.", "error");
+                  $("#successModal").modal("show");
                 }
-            },
-            error: function (xhr, status, error) {
-                $("#paymentForm :input").prop("disabled", false);
-                console.error("AJAX Error:", xhr.responseText);
-                showMessage("Payment submission failed. Please try again.", "error");
-            },
+
+              } else {
+                $('#message-payment').html(`<div class="alert alert-danger">${res.message}</div>`);
+                console.error("Payment Error:", res.message);
+              }
+
+            } catch (error) {
+              $('#message-payment').html('<div class="alert alert-danger">Unexpected error. Please try again.</div>');
+              console.error("JSON Parse Error:", error);
+            }
+          },
+          error: function (xhr, status, error) {
+            $('#message-payment').html('<div class="alert alert-danger">Error processing payment. Please try again.</div>');
+            console.error("AJAX Error:", status, error);
+          }
         });
+
+
+      });
+
+
+      // ✅ Ensure modal allows closing by clicking outside or pressing ESC
+      $("#successModal").modal({
+        backdrop: true,  // Allow closing by clicking outside
+        keyboard: true   // Allow closing with ESC key
+      });
+
+      // ✅ Redirect when "Got it" is clicked
+      $("#okButton").on("click", function () {
+        $("#successModal").modal("hide"); // Ensure modal hides first
+        setTimeout(function () {
+          window.location.href = "../Client Section/client-transactionInfo.php?id=<?= $transactionNumber ?>";
+        }, 500); // Small delay for a smooth transition
+      });
+
+      // ✅ Redirect when modal is closed (by clicking outside or pressing ESC)
+      $("#successModal").on("hidden.bs.modal", function () {
+        window.location.href = "../Client Section/client-transactionInfo.php?id=<?= $transactionNumber ?>";
+      });
     });
 
-    // Function to show messages in the message box
-    function showMessage(message, type) {
-        var messageBox = $("#messageBox");
-        messageBox
-            .text(message)
-            .removeClass()
-            .addClass("mt-3 alert alert-" + getMessageClass(type))
-            .show(); // Ensure it's visible
 
-        setTimeout(() => messageBox.fadeOut(), 3000); 
-    }
-
-    // Get Bootstrap alert class based on message type
-    function getMessageClass(type) {
-        switch (type) {
-            case "success":
-                return "success"; // Green
-            case "error":
-                return "danger"; // Red
-            case "info":
-                return "primary"; // Blue
-            default:
-                return "secondary"; // Gray
-        }
-    }
-});
 
   </script>
 
 
-<!-- For Toggle Effect on Cards -->
-<script>
-/* JavaScript for toggling active class */
-document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll(".billing-card").forEach(card => {
+  <!-- For Toggle Effect on Cards -->
+  <script>
+    /* JavaScript for toggling active class */
+    document.addEventListener("DOMContentLoaded", function () {
+      document.querySelectorAll(".billing-card").forEach(card => {
         card.addEventListener("click", function () {
-            document.querySelectorAll(".billing-card").forEach(c => c.classList.remove("selected"));
-            this.classList.add("selected");
+          document.querySelectorAll(".billing-card").forEach(c => c.classList.remove("selected"));
+          this.classList.add("selected");
         });
+      });
     });
-});
 
-</script>
+  </script>
 
 
 </body>

@@ -2,9 +2,7 @@
 require "../../conn.php";
 session_start();
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+
 
 $response = []; // Initialize response array
 
@@ -33,9 +31,25 @@ if (isset($_POST['login'])) {
                     $defaultPasswordStat = $account['defaultPasswordStat'];
 
                     if ($accountType === 'agent') {
-                        handleLogin($accountId, 'agent', "SELECT * FROM agent WHERE accountId = ?", ['branchId'], $flightId, $defaultPasswordStat);
+                        handleLogin($accountId, 
+                        'agent', 
+                        "SELECT agent.*, accounts.emailAddress 
+                        FROM agent 
+                        JOIN accounts ON agent.accountId = accounts.accountId 
+                        WHERE agent.accountId = ?", 
+                        ['branchId'], 
+                        $flightId, 
+                        $defaultPasswordStat);
+
                     } elseif ($accountType === 'guest') {
-                        handleLogin($accountId, 'guest', "SELECT * FROM client WHERE accountId = ?", ['position', 'countryCode', 'contactNo', 'branch'], $flightId, $defaultPasswordStat);
+                        handleLogin($accountId, 'guest', "SELECT client.*, accounts.emailAddress 
+                        FROM client
+                        JOIN accounts ON client.accountId = accounts.accountId 
+                        WHERE client.accountId = ?", 
+                        ['position', 'countryCode', 'contactNo', 'branch'], 
+                        $flightId, 
+                        $defaultPasswordStat);
+
                     } elseif ($accountType === 'employee') {
                         handleLoginEmployee($accountId, 'employee', "SELECT * FROM employee WHERE accountId = ?", ['position', 'countryCode', 'contactNo', 'branch']);
                     } else {
@@ -178,13 +192,13 @@ function manageAgentSession($accountId, $userData, $userType, $flightId, $additi
         $_SESSION['agent_fName'] = $userData['fName'] ?? null;
         $_SESSION['agent_mName'] = $userData['mName'] ?? null;
         $_SESSION['agent_lName'] = $userData['lName'] ?? null;
-        $_SESSION['agentId'] = $userData['agentId'] ?? null;  
-        $_SESSION['agentCode'] = $userData['agentCode'] ?? null;  
-        $_SESSION['agentRole'] = $userData['agentRole'] ?? null;  
-        $_SESSION['agentType'] = $userData['agentType'] ?? null;  
+        $_SESSION['agentId'] = $userData['agentId'] ?? null;
+        $_SESSION['agentCode'] = $userData['agentCode'] ?? null;
+        $_SESSION['agentRole'] = $userData['agentRole'] ?? null;
+        $_SESSION['agentType'] = $userData['agentType'] ?? null;
         $_SESSION['agent_branchId'] = $userData['branchId'] ?? null;
-        $_SESSION['agent_flightId'] = $flightId ?? null;  
-        $_SESSION['agent_emailAddress'] = $userData['emailAddress'] ?? null;  
+        $_SESSION['agent_flightId'] = $flightId ?? null;
+        $_SESSION['agent_emailAddress'] = $userData['emailAddress'] ?? null;
         $_SESSION['agent_timeout'] = time();
 
         unset($_SESSION['flightid']);
@@ -220,8 +234,6 @@ function manageAgentSession($accountId, $userData, $userType, $flightId, $additi
             "userType" => $userType
         ]);
         exit();
-        
-
     } catch (Exception $e) {
         error_log("Session Management Error: " . $e->getMessage());
 
@@ -281,12 +293,12 @@ function manageGuestSession($accountId, $userData, $userType, $flightId, $additi
         $_SESSION['client_fName'] = $userData['fName'] ?? '';
         $_SESSION['client_mName'] = $userData['mName'] ?? '';
         $_SESSION['client_lName'] = $userData['lName'] ?? '';
-        $_SESSION['clientId'] = $userData['clientId'] ?? '';  
-        $_SESSION['clientCode'] = $userData['clientCode'] ?? '';  
-        $_SESSION['clientRole'] = $userData['clientRole'] ?? '';  
-        $_SESSION['clientType'] = $userData['clientType'] ?? '';  
-        $_SESSION['client_branchId'] = $userData['branchId'] ?? '';  
-        $_SESSION['client_flightId'] = $flightId ?? '';  
+        $_SESSION['clientId'] = $userData['clientId'] ?? '';
+        $_SESSION['clientCode'] = $userData['clientCode'] ?? '';
+        $_SESSION['clientRole'] = $userData['clientRole'] ?? '';
+        $_SESSION['clientType'] = $userData['clientType'] ?? '';
+        $_SESSION['client_branchId'] = $userData['branchId'] ?? '';
+        $_SESSION['client_flightId'] = $flightId ?? '';
         $_SESSION['client_timeout'] = time();
 
         unset($_SESSION['flightid']); // Ensure flight ID is only stored in session
@@ -317,7 +329,6 @@ function manageGuestSession($accountId, $userData, $userType, $flightId, $additi
             "userType" => $userType
         ]);
         exit();
-
     } catch (Exception $e) {
         error_log("Session Management Error: " . $e->getMessage());
 
@@ -429,7 +440,7 @@ function manageEmployeeSession($accountId, $userData, $userType, $additionalFiel
     $_SESSION['employee_lName'] = $userData['lName'] ?? null;
     $_SESSION['employee_employeeId'] = $userData['employeeId'] ?? null;
     $_SESSION['employee_accountId'] = $accountId;
-    $_SESSION['employee_emailAddress'] = $userData['emailAddress'] ?? null;  
+    $_SESSION['employee_emailAddress'] = $userData['emailAddress'] ?? null;
     $_SESSION['employee_position'] = $userData['position'] ?? null;
     $_SESSION['employee_timeout'] = time();
 

@@ -1,8 +1,8 @@
 <?php
 session_start();
 require "../conn.php";
-
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,7 +15,6 @@ require "../conn.php";
 
   <link rel="stylesheet" href="../Mobile/assets/css/navbar-sidebar.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="../Mobile/assets/css/agent-addBooking.css?v=<?php echo time(); ?>">
-
 </head>
 
 <body>
@@ -31,14 +30,22 @@ require "../conn.php";
     <div class="main-content-container">
 
       <div class="navbar">
-        <div class="button-wrapper">
-          <button class="round-btn" id="logout-btn">
-            <i class="fas fa-chevron-left"></i>
-          </button>
-        </div>
+        <div class="page-header-wrapper">
 
-        <div class="title-page-wrapper">
-          <h5 class="title-page" id="page-title">Booking</h5>
+          <div class="page-header-top">
+            <div class="back-btn-wrapper">
+              <button class="back-btn" id="logout-btn">
+                <i class="fas fa-chevron-left"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="page-header-content">
+            <div class="page-header-text">
+              <h5 class="header-title">Booking Details</h5>
+            </div>
+          </div>
+
         </div>
       </div>
 
@@ -97,20 +104,18 @@ require "../conn.php";
           <div class="booking-wrapper">
 
             <div class="booking-contents-wrapper">
-              <div class="section-header">
-                <h5>Booking Details</h5>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. </p>
-              </div>
-
+            
               <div class="section-content">
                 <div class="row-content add-border">
 
                   <!-- Flight Date Dropdown -->
                   <div class="columns col-md-6 add-border">
                     <div class="form-group">
+
                       <div class="column-header">
                         <label for="flightDate">Flight Date <span class="text-danger"> *</span></label>
                       </div>
+
                       <select class="form-select" id="flightDate" name="flightDate" required>
                         <option selected disabled>Select Flight Date</option>
                         <?php
@@ -251,17 +256,17 @@ require "../conn.php";
                   </div>
                 </div>
               </div>
-            </div>
 
+            </div>
 
             <div class="booking-contents-wrapper">           
               <div class="section-header">
                 <h5>Contact Details</h5>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. </p>
               </div>
 
               <div class="section-content">
                 <div class="row-content add-border">
+
                   <!-- First Name Input -->
                   <div class="columns col-md-3">
                     <div class="form-group">
@@ -321,9 +326,11 @@ require "../conn.php";
                       <!-- Error message for Suffix -->
                     </div>
                   </div>
+
                 </div>
 
                 <div class="row-content add-border">
+
                   <!-- Contact No Input-->
                   <div class="columns col-md-4">
                     <div class="form-group">
@@ -545,6 +552,7 @@ require "../conn.php";
                 </div>
 
                 <div class="row-content add-border">
+
                   <input type="hidden" id="totalPrice" name="totalPrice" placeholder="Total Price">
 
                   <div class="col-md-12 price-wrapper">
@@ -553,13 +561,17 @@ require "../conn.php";
                       <h5>₱ <span id="displayTotalPrice">0</span> </h5>
                     </div>
                   </div>
+
                 </div>
 
                 <div class="row-content add-border">
+
                   <div class="col-md-12 button-container">
                     <button type="button" class="btn btn-primary" id="bookNowButton">Book Now</button>
                   </div>
+
                 </div>
+
               </div>
 
               <!-- Booking Summary Modal -->
@@ -574,6 +586,7 @@ require "../conn.php";
 
                     <div class="modal-body">
                       <div class="confirmation-container ">
+
                         <!-- Logo Section -->
                         <div class="row body-header">
                           <div class="col">
@@ -586,41 +599,53 @@ require "../conn.php";
 
                         <!-- Contact Info -->
                         <div class="booking-info">
+
                           <div class="info-row">
                             <p><strong>Contact Guest Name:</strong></p>
                             <p id="contactPersonName">Sample Name</p>
                           </div>
+
                           <div class="info-row">
                             <p><strong>Contact Email:</strong></p>
                             <p id="contactPersonEmail">Sample Email</p>
                           </div>
+
                         </div>
+
                         <hr>
 
                         <!-- Package Details -->
                         <div class="booking-info">
+
                           <div class="info-row">
                             <p><strong>Package Name:</strong></p>
                             <p id="selectedPackage">No Package Selected</p>
                           </div>
+
                           <div class="info-row">
                             <p><strong>No. of Guests:</strong></p>
                             <p id="guestCount">1</p>
                           </div>
+
                         </div>
+
                         <hr>
 
                         <!-- Flight Details -->
                         <div class="booking-info">
+
                           <div class="info-row">
                             <p><strong>Origin:</strong></p>
                             <p id="selectedOrigin">No Origin Selected</p>
                           </div>
+
                           <div class="info-row">
                             <p><strong>Flight Date:</strong></p>
                             <p id="selectedDate">No Flight Date Selected</p>
                           </div>
+
                         </div>
+
                         <hr>
 
                         <!-- Action Buttons -->
@@ -660,7 +685,6 @@ require "../conn.php";
     </div>
   </div>
 
-
   <?php require "../Agent Section/includes/scripts.php"; ?>
 
   <!-- Back AJAX -->
@@ -676,7 +700,7 @@ require "../conn.php";
           logoutModal.addClass("show");
       });
 
-      // Confirm logout action (AJAX session clear)
+      // Confirm logout action (AJAX rion clear)
       confirmLogout.click(function () {
           $.ajax({
               url: "../Mobile/function/agent-logout.php", // PHP script to clear session
@@ -716,7 +740,6 @@ require "../conn.php";
       });
   });
   </script>
-
 
   <script>
     $(document).ready(function() {
@@ -1027,6 +1050,6 @@ require "../conn.php";
     });
   </script>
 
-</body>
 
+  </body>
 </html>

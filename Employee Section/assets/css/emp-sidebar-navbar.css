@@ -30,8 +30,6 @@ body {
 } */
 
 
-
-
 /* Sidebar icons */
 .sidebar .icon {
   display: flex;
@@ -73,7 +71,6 @@ body {
   width: 100%;
   margin-bottom: 6px;
 }
-
 
 
 .nav-logo-wrapper {
@@ -472,14 +469,10 @@ body {
 }
 
 /* Keep the hover effect on other nav items as usual */
-.nav-item:hover {
+.logout .nav-item:hover {
   background-color: #495057; /* Example hover color for other nav items */
   cursor: pointer; /* Normal cursor for other items */
 }
-
-
-
-
 
 
 

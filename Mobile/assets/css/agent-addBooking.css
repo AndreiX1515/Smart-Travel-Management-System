@@ -1,15 +1,16 @@
 
 .navbar {
-  padding: 0px 30px;
+  padding: 0px 20px;
 }
 
 .main-content {
-  margin-top: 6.5vh;
+  margin-top: 5vh;
 }
 
 
+
 .main-content-container {
-  padding: 0px 15px;
+  padding: 0px 10px;
 }
 
 .booking-wrapper {
@@ -28,29 +29,17 @@
   gap: 10px;
 }
 
-.section-header {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 5px; /* More balanced spacing */
-  padding: 8px 0px;
-  border-bottom: 1px solid gainsboro;
-}
-
 .section-content {
   display: flex;
   flex-direction: column;
   padding: 10px 0px;
-  border-bottom: 1px solid gainsboro;
+  /* border-bottom: 1px solid gainsboro; */
+  /* border: 1px solid black; */
 }
 
 /* .add-border {
   border: 1px solid black;
 } */
-
-
-
-
 
 
 .row-content {
@@ -69,7 +58,7 @@
   flex-direction: column; /* Ensures vertical stacking of elements */
   align-items: flex-start; /* Aligns content to the top */
   justify-content: flex-start; /* Ensures content starts from the top */
-
+  gap: 10px;
   padding: 5px 0px;
 }
 
@@ -91,6 +80,7 @@
   justify-content: flex-start; /* Aligns items to the top */
   align-items: flex-start; /* Ensures everything starts from the left */
   width: 100%;
+  gap: 10px;
   flex: 1; /* Ensures form elements stretch inside column */
 }
 
@@ -159,7 +149,15 @@
   margin-top: 10px;
 }
 
-
+.section-header {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 5px; /* More balanced spacing */
+  padding: 3px 0px;
+  /* border-bottom: 1px solid gainsboro; */
+  /* border: 1px solid black; */
+}
 
 
 
@@ -299,7 +297,8 @@
   display: flex;
   flex: 1;
   width: 100%;
-  margin: 1% 0% 3% 0%;
+  margin: 1% 0% 1% 0%;
+  /* border: 1px solid black; */
 }
 
 .button-container button {
@@ -416,7 +415,7 @@
 #logout-modal .logout-message-primary {
   font-size: 18px;
   color: #222;
-  font-weight: 600;
+  font-weight: 500;
   margin-bottom: 12px;
 }
 

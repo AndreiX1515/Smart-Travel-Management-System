@@ -7,7 +7,7 @@
 
   if (isset($_POST['bookNow'])) 
   {
-    $accountId = $_SESSION['client_accountId'];
+    $accountId = $_SESSION['agent_accountId'];
     $agentId = $_POST['agentId'];  
     $agentCode = $_POST['agentCode'];  
     $accountType = $_POST['userType'];  
@@ -108,7 +108,7 @@
 
     // Optionally redirect or provide a success message
     $_SESSION['status'] = "Booking successful!";
-    header("Location: ../client-addBookingPayment.php?id=" . htmlspecialchars($transactNo));
+    header("Location: ../agent-addBookingPayment.php?id=" . htmlspecialchars($transactNo));
     exit(0);
   }
 ?>

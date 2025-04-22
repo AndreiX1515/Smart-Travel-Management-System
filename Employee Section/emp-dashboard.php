@@ -23,7 +23,11 @@ error_reporting(E_ALL);
 
   <!-- Main Container -->
   <div class="main-container bg-body">
-    <?php include '../Employee Section/includes/emp-navbar.php' ?>
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container-fluid mx-1">
+            <a class="navbar-brand" id="page-title" href="#">Dashboard</a>
+        </div>
+    </nav>
 
     <?php include '../Agent Section/functions/exchange-rate.php' ?>
 
@@ -434,7 +438,6 @@ error_reporting(E_ALL);
             </div>
           </div>
         </div>
-
       </div>
 
       <div class="second-div">
@@ -469,6 +472,7 @@ error_reporting(E_ALL);
 
           <!-- Flight Seat Tracker Table -->
           <div class="info-table-container">
+
             <table class="info-table" id="info-table">
               <thead>
                 <tr>
@@ -523,6 +527,7 @@ error_reporting(E_ALL);
                   ?>
                 </tr>
               </thead>
+
               <tbody>
                 <?php
                 $sql = "SELECT branchName, branchAgentCode 
@@ -530,7 +535,9 @@ error_reporting(E_ALL);
                 $result = $conn->query($sql);
 
                 $agentColumns = '';
+
                 while ($row = $result->fetch_assoc()) {
+                  
                   $agentCode = $row['branchAgentCode'];
                   $agentColumns .= "IFNULL(SUM(CASE WHEN b.bookingType = 'Package' 
                                         AND (b.status = 'Confirmed' OR b.status = 'Reserved')
@@ -646,6 +653,7 @@ error_reporting(E_ALL);
                 ?>
               </tbody>
             </table>
+
           </div>
 
           <div class="info-footer">
@@ -681,6 +689,7 @@ error_reporting(E_ALL);
 
           <div class="tab-content">
             <div class="header-wrapper">
+              
               <!-- Request Table -->
               <div class="request-wrapper">
                 <div class="table-header">

@@ -191,6 +191,7 @@ $position = htmlspecialchars(strtoupper($empId));
 			</a>
 		</div>
 	</div>
+	
 </div>
 
 <!-- Logout Modal -->

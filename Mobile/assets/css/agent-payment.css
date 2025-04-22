@@ -1,6 +1,13 @@
-.main-container {
-    margin-top: 1vh;
+.navbar {
+    padding: 0px 10px;
+    /* border: 1px solid black; */
 }
+
+.main-content {
+    margin-top: 6.5vh;
+}
+  
+
 
 /* Main Flex Container */
 .container-body {

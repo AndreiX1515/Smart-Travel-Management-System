@@ -28,19 +28,30 @@ error_reporting(E_ALL);
 
     <div class="main-content-container">
       <div class="navbar">
-        <div class="backbutton-wrapper">
-          <div class="back-button-wrapper">
-            <a href="../Client Section/client-transactions.php" class="back-button-link">
-              <i class="fa-solid fa-arrow-left"></i>
-            </a>
+        <div class="page-header-wrapper">
+
+          <div class="page-header-top">
+            <div class="back-btn-wrapper">
+              <button class="back-btn" id="redirect-btn">
+                <i class="fas fa-chevron-left"></i>
+              </button>
+            </div>
           </div>
 
-          <div class="page-name-wrapper">
-            <h5>Transaction</h5>
+          <div class="page-header-content">
+            <div class="page-header-text">
+              <h5 class="header-title">Payment Details</h5>
+            </div>
           </div>
 
         </div>
       </div>
+
+      <script>
+        document.getElementById("redirect-btn").addEventListener("click", function () {
+          window.location.href = "../Client Section/client-transactions.php";
+        });
+      </script>
 
       <!-- Current Date Variable -->
       <?php
