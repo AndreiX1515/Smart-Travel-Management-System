@@ -13,16 +13,24 @@ require "../conn.php";
 
   <?php include "../Agent Section/includes/head.php"; ?>
 
-  <link rel="stylesheet" href="../Client Section/assets/css/client-addBooking.css?v=<?php echo time(); ?>">
-  <link rel="stylesheet" href="../Client Section/assets/css/navbar-sidebar.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="../Agent Section/assets/css/agent-addBooking.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="../Agent Section/assets/css/navbar-sidebar.css?v=<?php echo time(); ?>">
 </head>
 
 <body>
 
+  <?php
+  // echo "<pre>";
+  // print_r($_SESSION);
+  // echo "</pre>";
+  ?>
+
+  
   <div class="body-container">
     <?php include "../Client Section/Includes/client-sidebar.php"; ?>
 
     <div class="main-content-container">
+
       <div class="navbar">
         <div class="page-header-wrapper">
 
@@ -44,24 +52,6 @@ require "../conn.php";
       </div>
 
       <div class="main-content">
-
-        <?php
-        // echo "<pre>";
-        // print_r($_SESSION);
-        // echo "</pre>";
-        ?>
-
-        <?php
-        if (isset($_SESSION['status'])):
-        ?>
-          <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <strong></strong> <?= $_SESSION['status']; ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
-        <?php
-          unset($_SESSION['status']);
-        endif;
-        ?>
 
         <?php
           // Set flightId to session value by default, if available
@@ -120,16 +110,18 @@ require "../conn.php";
     
         ?>
 
-
         <form id="bookingForm">
           <div class="booking-wrapper">
             <div class="card">
+
               <div class="card-header">
                 <h4 class="">Booking</h4>
               </div>
 
               <div class="card-body">
+
                 <div class="row">
+
                   <!-- Flight Date Dropdown -->
                   <div class="columns col-md-6">
                     <div class="form-group">
@@ -192,8 +184,8 @@ require "../conn.php";
                       </div>
                     </div>
 
-
                   </div>
+                  
                 </div>
 
                 <div class="row">
@@ -203,7 +195,7 @@ require "../conn.php";
                   </div>
                 </div>
 
-                <div class="row ">
+                <div class="row">
                   <!-- Flight Details Input -->
                   <div class="columns col-md-12 flight-details-wrapper" id="flightDetailsContainer" style="display: none;">
                     <div class="form-group">
@@ -244,6 +236,7 @@ require "../conn.php";
               <div class="card-footer">
                 <h5 style="display: none;"> Price: ₱ <span id="flightPrice">0.00</span> </h5>
               </div>
+
             </div>
 
             <div class="card contact-person-details">
@@ -537,78 +530,68 @@ require "../conn.php";
             </div>
 
             <!-- Booking Summary Modal -->
-            <div class="modal fade" id="BookingSummaryModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="BookingSummaryModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+              aria-hidden="true">
               <div class="modal-dialog modal-lg modal-dialog-centered"> <!-- Added modal-lg for a wider modal -->
                 <div class="modal-content position-relative">
 
-                  <button type="button" class="btn-close close-outside p-4" data-bs-dismiss="modal" aria-label="Close"></button>
+                  <!-- Close Button -->
+                  <button type="button" class="btn-close close-outside p-4" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
 
+                  <!-- Modal Body -->
                   <div class="modal-body">
-                    <div class="confirmation-container container">
-                      <!-- Logo Section -->
-                      <div class="row d-flex justify-content-center align-items-center text-center mb-3 mt-2">
-                        <div class="col">
-                          <img src="../assets/images/SMART LOGO 2 (2).png" alt="Trip Image" class="img-fluid" style="max-width: 250px; max-height: 80px;">
+
+                    <!-- Booking Summary Container -->
+                    <div class="confirmation-container">
+
+                      <!-- Modal Header Section: Logo -->
+                      <div class="modal-header">
+                        <img src="../Assets/Logos/SMART LOGO 2 (2).png" alt="Trip Image" class="img-fluid"
+                          style="max-width: 250px; max-height: 80px;">
+                      </div>
+
+                      
+                     
+
+                       <!-- Combined Info Section -->
+                      <div class="info-section">
+                        <div class="summary-title-container">
+                          <!-- Booking Summary Title -->
+                          <h5 class="summary-title">BOOKING SUMMARY</h5>
+                        </div>
+
+                        <!-- Contact Info -->
+                        <div class="info-item">
+                          <strong>Contact Guest Name:</strong> <span id="contactPersonName">Sample Name</span>
+                        </div>
+                        <div class="info-item">
+                          <strong>Contact Email:</strong> <span id="contactPersonEmail">Sample Email</span>
+                        </div>
+
+                        <!-- Package Details -->
+                        <div class="info-item">
+                          <strong>Package Name:</strong> <span id="selectedPackage">No Package Selected</span>
+                        </div>
+                        <div class="info-item">
+                          <strong>No. of Guests:</strong> <span id="guestCount">1</span>
+                        </div>
+
+                        <!-- Flight/Origin Details -->
+                        <div class="info-item">
+                          <strong>Origin:</strong> <span id="selectedOrigin">No Origin Selected</span>
+                        </div>
+                        <div class="info-item">
+                          <strong>Flight Date:</strong> <span id="selectedDate">No Flight Date Selected</span>
                         </div>
                       </div>
 
-                      <h5 class="text-left mb-4">BOOKING SUMMARY</h5>
-                      <!-- Transaction and Contact Info -->
-                      <div class="transaction-info row mb-3">
-                        <div class="col-12">
-
-                          <div class="d-flex justify-content-between mb-1">
-                            <p class="mb-0"><strong>Contact Guest Name:</strong></p>
-                            <p class="mb-0" id="contactPersonName">Sample Name</p>
-                          </div>
-
-                          <div class="d-flex justify-content-between mb-1">
-                            <p class="mb-0"><strong>Contact Email:</strong></p>
-                            <p class="mb-0" id="contactPersonEmail">Sample Email</p>
-                          </div>
-                        </div>
+                      <!-- Modal Footer with Buttons -->
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" name="bookNow">Proceed to Payment</button>
                       </div>
-                      <hr>
 
-                      <!-- Package Details -->
-                      <div class="row hotel-details mb-3">
-                        <div class="col-12">
-                          <div class="d-flex justify-content-between mb-1">
-                            <p class="mb-0"><strong>Package Name:</strong></p>
-                            <p class="mb-0" id="selectedPackage">No Package Selected</p>
-                          </div>
-
-                          <div class="d-flex justify-content-between">
-                            <p class="mb-0"><strong>No. of Guests:</strong></p>
-                            <p class="mb-0" id="guestCount">1</p>
-                          </div>
-                        </div>
-                      </div>
-                      <hr>
-
-                      <!-- Flight/Origin Details -->
-                      <div class="row mb-3">
-                        <div class="col-12">
-                          <div class="d-flex justify-content-between mb-1">
-                            <p class="mb-0"><strong>Origin:</strong></p>
-                            <p class="mb-0" id="selectedOrigin">No Origin Selected</p>
-                          </div>
-
-                          <div class="d-flex justify-content-between">
-                            <p class="mb-0"><strong>Flight Date:</strong></p>
-                            <p class="mb-0" id="selectedDate">No Flight Date Selected</p>
-                          </div>
-                        </div>
-                      </div>
-                      <hr>
-
-                      <!-- Proceed to Payment -->
-                      <div class="row mt-4">
-                        <div class="col d-flex justify-content-between">
-                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                          <button type="submit" class="btn btn-primary" name="bookNow">Proceed to Payment</button>
-                        </div>
-                      </div>
                     </div>
                   </div>
                 </div>

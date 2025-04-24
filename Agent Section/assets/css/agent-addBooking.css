@@ -142,6 +142,169 @@
 
 
 
+/* ============================== */
+/* Booking Summary Modal styles */
+/* Modal Container */
+#BookingSummaryModal .modal-dialog {
+  max-width: 720px;
+  margin: auto;
+}
+
+/* Modal Content */
+#BookingSummaryModal .modal-content {
+  /* border: 1px solid #e5e7eb; */
+  border-radius: 12px;
+  background-color: #ffffff;
+  padding: 0;
+  box-shadow: none;
+  overflow: hidden;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Modal Header (Logo) */
+#BookingSummaryModal .modal-header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 15px 10px;
+  /* background-color: #f9fafb; */
+  border: none;
+}
+
+
+#BookingSummaryModal .summary-title-container {
+  height: 4.5vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  /* border: 1px solid black; */
+  margin-bottom: 10px;
+}
+
+/* Info Section (Contact, Package, Origin, Flight) */
+#BookingSummaryModal .info-section {
+  padding: 1rem;
+  border-radius: 8px;
+  background-color: #f9fafb;
+  margin-bottom: 1rem;
+  border: 1px solid #e5e7eb;
+  /* margin-top: 10px; */
+}
+
+/* Info Item (Each field) */
+#BookingSummaryModal .info-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+  color: #374151;
+}
+
+/* Strong Labels */
+#BookingSummaryModal .info-item strong {
+  font-weight: 500;
+  color: #111827;
+}
+
+
+/* Booking Summary Title */
+#BookingSummaryModal .summary-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  color: #111827;
+  text-align: center;
+  background-color: #fff;
+
+}
+
+
+
+
+
+
+
+/* Modal Footer */
+#BookingSummaryModal .modal-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0;
+  border: none;
+  /* border-top: 1px solid #e5e7eb; */
+  /* background-color: #f9fafb; */
+  padding: 5px 0px;
+}
+
+/* Buttons */
+#BookingSummaryModal .btn {
+  font-size: 0.95rem;
+  padding: 0.5rem 1.25rem;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+  font-weight: 500;
+}
+
+/* Flat Secondary Button */
+#BookingSummaryModal .btn-secondary {
+  background-color: transparent;
+  color: #374151;
+  border: 1px solid #d1d5db;
+}
+
+#BookingSummaryModal .btn-secondary:hover {
+  background-color: #f3f4f6;
+}
+
+/* Flat Primary Button */
+#BookingSummaryModal .btn-primary {
+  background-color: #1f2937;
+  color: #ffffff;
+  border: none;
+}
+#BookingSummaryModal .btn-primary:hover {
+  background-color: #111827;
+}
+
+/* Close Button (outside) */
+#BookingSummaryModal .btn-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  opacity: 0.6;
+  background: transparent;
+  border: none;
+}
+#BookingSummaryModal .btn-close:hover {
+  opacity: 1;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

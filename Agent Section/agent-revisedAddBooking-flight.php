@@ -24,28 +24,27 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
     <?php include "../Agent Section/includes/sidebar.php"; ?>
 
     <div class="main-content-container">
-      <?php include "../Agent Section/includes/navbar.php"; ?>
+      <div class="navbar">
+        <div class="page-header-wrapper">
+
+          <!-- <div class="page-header-top">
+            <div class="back-btn-wrapper">
+              <button class="back-btn" id="logout-btn">
+                <i class="fas fa-chevron-left"></i>
+              </button>
+            </div>
+          </div> -->
+
+          <div class="page-header-content">
+            <div class="page-header-text">
+              <h5 class="header-title">Add Booking</h5>
+            </div>
+          </div>
+
+        </div>
+      </div>
 
       <div class="main-content">
-        <?php
-        // echo "<pre>";
-        // print_r($_SESSION);
-        // echo "</pre>";
-        ?>
-
-
-        <?php
-        if (isset($_SESSION['status'])):
-        ?>
-          <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <strong></strong> <?= $_SESSION['status']; ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
-        <?php
-          unset($_SESSION['status']);
-        endif;
-        ?>
-
 
         <?php
         // Set flightId to session value by default, if available
@@ -53,58 +52,58 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
 
         // If GET is set, override flightId and update session
         if (isset($_GET['flightid'])) {
-            $flightId = $_GET['flightid'];
-            $_SESSION['agent_flightId'] = $flightId;
+          $flightId = $_GET['flightid'];
+          $_SESSION['agent_flightId'] = $flightId;
         }
 
         // Proceed only if flightId is available
         if ($flightId) {
-            // SQL query to join flight and package tables
-            $sql1 = "SELECT flight.*, package.packageName, package.packagePrice
+          // SQL query to join flight and package tables
+          $sql1 = "SELECT flight.*, package.packageName, package.packagePrice
                     FROM flight
                     JOIN package ON flight.packageId = package.packageId
                     WHERE flight.flightId = ?";
 
-            // Prepare the statement
-            if ($stmt = $conn->prepare($sql1)) {
-                // Bind the flightId as an integer parameter
-                $stmt->bind_param("i", $flightId);
+          // Prepare the statement
+          if ($stmt = $conn->prepare($sql1)) {
+            // Bind the flightId as an integer parameter
+            $stmt->bind_param("i", $flightId);
 
-                // Execute the statement
-                if ($stmt->execute()) {
-                    $result = $stmt->get_result();
+            // Execute the statement
+            if ($stmt->execute()) {
+              $result = $stmt->get_result();
 
-                    // Check if a row is returned
-                    if ($result->num_rows > 0) {
-                        // Fetch the data
-                        while ($row = $result->fetch_assoc()) {
-                            $packageId = $row['packageId'];
-                            $packageName = $row['packageName'];
-                            $packagePrice = $row['packagePrice'];
-                            $origin = $row['origin'];
-                            $year = date('Y', strtotime($row['flightDepartureDate']));
-                            $month = date('F', strtotime($row['flightDepartureDate']));
-                            $flightDepartureDate = $row['flightDepartureDate'];
-                            $flightPrice = $row['flightPrice'];
-                            $wholesalePrice = $row['wholesalePrice'];
-                        }
-                    } else {
-                        echo "No flight found with that ID.";
-                    }
-                } else {
-                    echo "Error executing query: " . $stmt->error;
+              // Check if a row is returned
+              if ($result->num_rows > 0) {
+                // Fetch the data
+                while ($row = $result->fetch_assoc()) {
+                  $packageId = $row['packageId'];
+                  $packageName = $row['packageName'];
+                  $packagePrice = $row['packagePrice'];
+                  $origin = $row['origin'];
+                  $year = date('Y', strtotime($row['flightDepartureDate']));
+                  $month = date('F', strtotime($row['flightDepartureDate']));
+                  $flightDepartureDate = $row['flightDepartureDate'];
+                  $flightPrice = $row['flightPrice'];
+                  $wholesalePrice = $row['wholesalePrice'];
                 }
-                // Close the statement
-                $stmt->close();
+              } else {
+                echo "No flight found with that ID.";
+              }
             } else {
-                echo "Error preparing statement: " . $conn->error;
+              echo "Error executing query: " . $stmt->error;
             }
+            // Close the statement
+            $stmt->close();
+          } else {
+            echo "Error preparing statement: " . $conn->error;
+          }
         }
         ?>
 
-
         <form action="../Agent Section/functions/agent-revisedAddBooking-code.php" method="POST">
           <div class="booking-wrapper">
+
             <div class="card">
               <div class="card-header">
                 <h4 class="">Details</h4>
@@ -112,6 +111,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
 
               <div class="card-body">
                 <div class="row">
+
                   <!-- Flight Date Dropdown -->
                   <div class="columns col-md-6">
                     <div class="form-group">
@@ -124,21 +124,17 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                                               ORDER BY flightDepartureDate ASC");
 
                         // Loop through the result to create options
-                        while ($res1 = mysqli_fetch_array($sql1)) 
-                        {
+                        while ($res1 = mysqli_fetch_array($sql1)) {
                           // Check if this packageId is equal to the selected packageId (to mark it as selected)
                           $formattedRetailPrice = number_format($res1['flightPrice'], 2);
                           $formattedWholesalePrice = number_format($res1['wholesalePrice'], 2);
 
-                          if ($agentType === 'Retailer')
-                          {
+                          if ($agentType === 'Retailer') {
                             $selected = ($res1['flightDepartureDate'] == $flightDepartureDate) ? 'selected' : '';
                             echo "<option value='{$res1['flightId']}' {$selected}>
                                     " . date('M j, Y', strtotime($res1['flightDepartureDate'])) . " || Price: ₱ {$formattedRetailPrice}
                                   </option>";
-                          }
-                          else if ($agentType === 'Wholeseller')
-                          {
+                          } else if ($agentType === 'Wholeseller') {
                             $selected = ($res1['flightDepartureDate'] == $flightDepartureDate) ? 'selected' : '';
                             echo "<option value='{$res1['flightId']}' {$selected}>
                                     " . date('M j, Y', strtotime($res1['flightDepartureDate'])) . " || Price: ₱ {$formattedWholesalePrice}
@@ -156,9 +152,9 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                   <div class="columns col-md-6">
                     <div class="form-group">
                       <div class="col-header">
-                        <label for="totalPax">Total Pax <span class="text-danger"> *</span></label>
-                        <label id="maxSeats"></label>
-                        <label id="availSeats"></label>
+                        <div>
+                          <label for="totalPax">Total Pax <span class="text-danger"> *</span></label>
+                        </div>
                       </div>
 
                       <input type="number" class="form-control" id="totalPax" name="totalPax" min="1" placeholder="Enter Total Pax" required>
@@ -166,7 +162,18 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                       <span id="totalPaxError" class="text-danger"></span>
                       <!-- Error message for Total Pax -->
                     </div>
+
+                    <div class="pax-seats">
+                      <div class="maxAvail">
+                        <label id="maxSeats"></label>
+                        <div class="separator"></div>
+                        <label id="availSeats"></label>
+                      </div>
+                    </div>
+
                   </div>
+
+
                 </div>
 
                 <div class="row">
@@ -178,38 +185,48 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
 
                 <div class="row ">
                   <!-- Flight Details Input -->
-                  <div class="columns col-md-12 flight-details-wrapper" id="flightDetailsContainer" style="display: none;">
+                  <div class="columns col-md-12 flight-details-wrapper" id="flightDetailsContainer"
+                    style="display: none;">
                     <div class="form-group">
                       <label for="flightDetails">Flight Details for Package Only</label>
 
-                      <textarea class="form-control" id="flightDetails" name="flightDetails" placeholder="Input Flight Details Here"></textarea>
+                      <textarea class="form-control" id="flightDetails" name="flightDetails"
+                        placeholder="Input Flight Details Here"></textarea>
                     </div>
                   </div>
                 </div>
 
-                <input type="hidden" id="agentCode" name="agentCode" value="<?php echo $_SESSION['agentCode']; ?>" placeholder="Agent Code Input">
+                <input type="hidden" id="agentCode" name="agentCode" value="<?php echo $_SESSION['agentCode']; ?>"
+                  placeholder="Agent Code Input">
 
-                <input type="hidden" id="flightId" name="flightId" value="<?php echo $flightId; ?>" placeholder="Flight Id Input">
+                <input type="hidden" id="flightId" name="flightId" value="<?php echo $flightId; ?>"
+                  placeholder="Flight Id Input">
 
                 <!-- Adjusted Fields -->
-                <input type="hidden" id="packagePrice" name="packagePrice" value="<?php echo isset($packagePrice) ? $packagePrice : ''; ?>" placeholder="Package Price">
+                <input type="hidden" id="packagePrice" name="packagePrice"
+                  value="<?php echo isset($packagePrice) ? $packagePrice : ''; ?>" placeholder="Package Price">
 
-                <input type="hidden" name="flightPrice" id="flightPricee" placeholder="Flight Price"
-                  value="<?php echo isset($agentType) ? ($agentType === 'Retailer' ? htmlspecialchars($flightPrice) : 
+                <input type="hidden" name="flightPrice" id="flightPricee" placeholder="Flight Price" value="<?php echo isset($agentType) ? ($agentType === 'Retailer' ? htmlspecialchars($flightPrice) :
                   htmlspecialchars($wholesalePrice)) : ''; ?>">
 
-                <input type="hidden" name="agentId" id="agentId" value="<?php echo $_SESSION['agentId']; ?>" placeholder="Agent Id">
+                <input type="hidden" name="agentId" id="agentId" value="<?php echo $_SESSION['agentId']; ?>"
+                  placeholder="Agent Id">
 
-                <input type="hidden" name="agentType" placeholder="Agent Type Input" value="<?php echo $_SESSION['agentType']; ?>">
-                
-                <input type="hidden" name="accId" id="accId" placeholder="Account Id Input" value="<?php echo $_SESSION['agent_accountId']; ?>">
+                <input type="hidden" name="agentType" placeholder="Agent Type Input"
+                  value="<?php echo $_SESSION['agentType']; ?>">
+
+                <input type="hidden" name="accId" id="accId" placeholder="Account Id Input"
+                  value="<?php echo $_SESSION['agent_accountId']; ?>">
 
                 <!-- Adjusted Package Fields -->
-                <input type="hidden" name="packageId" id="packageId" value="<?php echo isset($packageId) ? $packageId : ''; ?>" placeholder="Package Id Input">
+                <input type="hidden" name="packageId" id="packageId"
+                  value="<?php echo isset($packageId) ? $packageId : ''; ?>" placeholder="Package Id Input">
 
-                <input type="hidden" name="packageName" id="packageName" value="<?php echo isset($packageName) ? $packageName : ''; ?>" placeholder="Package Name Input">
-                
-                <input type="hidden" name="origin" id="origin" value="<?php echo isset($origin) ? $origin : ''; ?>" placeholder="Origin Input">
+                <input type="hidden" name="packageName" id="packageName"
+                  value="<?php echo isset($packageName) ? $packageName : ''; ?>" placeholder="Package Name Input">
+
+                <input type="hidden" name="origin" id="origin" value="<?php echo isset($origin) ? $origin : ''; ?>"
+                  placeholder="Origin Input">
 
               </div>
 
@@ -229,7 +246,8 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                   <div class="columns col-md-3">
                     <div class="form-group">
                       <label for="fName">First Name <span class="text-danger"> *</span></label>
-                      <input type="text" name="fName" id="fName" class="form-control" placeholder="Enter First Name" required>
+                      <input type="text" name="fName" id="fName" class="form-control" placeholder="Enter First Name"
+                        required>
                       <span id="fNameError" class="text-danger"></span>
                       <!-- Error message for First Name -->
                     </div>
@@ -239,7 +257,8 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                   <div class="columns col-md-3">
                     <div class="form-group">
                       <label for="lName">Last Name <span class="text-danger"> *</span> </label>
-                      <input type="text" name="lName" id="lName" class="form-control" placeholder="Enter Last Name" required>
+                      <input type="text" name="lName" id="lName" class="form-control" placeholder="Enter Last Name"
+                        required>
                       <span id="lNameError" class="text-danger"></span>
                       <!-- Error message for Last Name -->
                     </div>
@@ -249,7 +268,8 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                   <div class="columns col-md-3">
                     <div class="form-group">
                       <label for="mName">Middle Name <span class="text-danger">Type N/A if none</span></label>
-                      <input type="text" name="mName" id="mName" class="form-control" placeholder="Enter Middle Name" required>
+                      <input type="text" name="mName" id="mName" class="form-control" placeholder="Enter Middle Name"
+                        required>
 
                       <span id="mNameError" class="text-danger"></span>
                       <!-- Error message for Middle Name -->
@@ -474,7 +494,8 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                           <option value="+263">Zimbabwe (+263)</option>
                         </select>
 
-                        <input type="tel" class="form-control mt-2" id="contactNo" name="contactNo" placeholder="Contact Number" required>
+                        <input type="tel" class="form-control mt-2" id="contactNo" name="contactNo"
+                          placeholder="Contact Number" required>
                       </div>
 
                       <span id="contactNoError" class="text-danger"></span>
@@ -486,7 +507,8 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                   <div class="columns col-md-4 email-fields">
                     <div class="form-group">
                       <label for="email">Email <span class="text-danger">*</span></label>
-                      <input type="email" name="email" id="email" class="form-control" placeholder="Enter Email Address" required>
+                      <input type="email" name="email" id="email" class="form-control" placeholder="Enter Email Address"
+                        required>
                       <span id="emailError" class="text-danger"></span> <!-- Error message for Email -->
                     </div>
                   </div>
@@ -508,83 +530,74 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
             </div>
 
             <!-- Booking Summary Modal -->
-            <div class="modal fade" id="BookingSummaryModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="BookingSummaryModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+              aria-hidden="true">
               <div class="modal-dialog modal-lg modal-dialog-centered"> <!-- Added modal-lg for a wider modal -->
                 <div class="modal-content position-relative">
 
-                  <button type="button" class="btn-close close-outside p-4" data-bs-dismiss="modal" aria-label="Close"></button>
+                  <!-- Close Button -->
+                  <button type="button" class="btn-close close-outside p-4" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
 
+                  <!-- Modal Body -->
                   <div class="modal-body">
-                    <div class="confirmation-container container">
-                      <!-- Logo Section -->
-                      <div class="row d-flex justify-content-center align-items-center text-center mb-3 mt-2">
-                        <div class="col">
-                          <img src="../assets/images/SMART LOGO 2 (2).png" alt="Trip Image" class="img-fluid" style="max-width: 250px; max-height: 80px;">
+
+                    <!-- Booking Summary Container -->
+                    <div class="confirmation-container">
+
+                      <!-- Modal Header Section: Logo -->
+                      <div class="modal-header">
+                        <img src="../Assets/Logos/SMART LOGO 2 (2).png" alt="Trip Image" class="img-fluid"
+                          style="max-width: 250px; max-height: 80px;">
+                      </div>
+
+                      
+                     
+
+                       <!-- Combined Info Section -->
+                      <div class="info-section">
+                        <div class="summary-title-container">
+                          <!-- Booking Summary Title -->
+                          <h5 class="summary-title">BOOKING SUMMARY</h5>
+                        </div>
+
+                        <!-- Contact Info -->
+                        <div class="info-item">
+                          <strong>Contact Guest Name:</strong> <span id="contactPersonName">Sample Name</span>
+                        </div>
+                        <div class="info-item">
+                          <strong>Contact Email:</strong> <span id="contactPersonEmail">Sample Email</span>
+                        </div>
+
+                        <!-- Package Details -->
+                        <div class="info-item">
+                          <strong>Package Name:</strong> <span id="selectedPackage">No Package Selected</span>
+                        </div>
+                        <div class="info-item">
+                          <strong>No. of Guests:</strong> <span id="guestCount">1</span>
+                        </div>
+
+                        <!-- Flight/Origin Details -->
+                        <div class="info-item">
+                          <strong>Origin:</strong> <span id="selectedOrigin">No Origin Selected</span>
+                        </div>
+                        <div class="info-item">
+                          <strong>Flight Date:</strong> <span id="selectedDate">No Flight Date Selected</span>
                         </div>
                       </div>
 
-                      <h5 class="text-left mb-4">BOOKING SUMMARY</h5>
-                      <!-- Transaction and Contact Info -->
-                      <div class="transaction-info row mb-3">
-                        <div class="col-12">
-
-                          <div class="d-flex justify-content-between mb-1">
-                            <p class="mb-0"><strong>Contact Guest Name:</strong></p>
-                            <p class="mb-0" id="contactPersonName">Sample Name</p>
-                          </div>
-
-                          <div class="d-flex justify-content-between mb-1">
-                            <p class="mb-0"><strong>Contact Email:</strong></p>
-                            <p class="mb-0" id="contactPersonEmail">Sample Email</p>
-                          </div>
-                        </div>
+                      <!-- Modal Footer with Buttons -->
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" name="bookNow">Proceed to Payment</button>
                       </div>
-                      <hr>
 
-                      <!-- Package Details -->
-                      <div class="row hotel-details mb-3">
-                        <div class="col-12">
-                          <div class="d-flex justify-content-between mb-1">
-                            <p class="mb-0"><strong>Package Name:</strong></p>
-                            <p class="mb-0" id="selectedPackage">No Package Selected</p>
-                          </div>
-
-                          <div class="d-flex justify-content-between">
-                            <p class="mb-0"><strong>No. of Guests:</strong></p>
-                            <p class="mb-0" id="guestCount">1</p>
-                          </div>
-                        </div>
-                      </div>
-                      <hr>
-
-                      <!-- Flight/Origin Details -->
-                      <div class="row mb-3">
-                        <div class="col-12">
-                          <div class="d-flex justify-content-between mb-1">
-                            <p class="mb-0"><strong>Origin:</strong></p>
-                            <p class="mb-0" id="selectedOrigin">No Origin Selected</p>
-                          </div>
-
-                          <div class="d-flex justify-content-between">
-                            <p class="mb-0"><strong>Flight Date:</strong></p>
-                            <p class="mb-0" id="selectedDate">No Flight Date Selected</p>
-                          </div>
-                        </div>
-                      </div>
-                      <hr>
-
-                      <!-- Proceed to Payment -->
-                      <div class="row mt-4">
-                        <div class="col d-flex justify-content-between">
-                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                          <button type="submit" class="btn btn-primary" name="bookNow">Proceed to Payment</button>
-                        </div>
-                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+
 
           </div>
         </form>
@@ -594,8 +607,15 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
 
   </div>
 
-
   <?php require "../Agent Section/includes/scripts.php"; ?>
+
+  <!-- <script>
+    window.addEventListener('load', function () {
+      const bookingModal = new bootstrap.Modal(document.getElementById('BookingSummaryModal'));
+      bookingModal.show();
+    });
+  </script> -->
+
 
   <script>
     function toggleSubMenu(submenuId) {
@@ -630,11 +650,10 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
     }
   </script>
 
-
   <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
       // Fetch flight Related Details once changed
-      $('#flightDate').on('change', function() {
+      $('#flightDate').on('change', function () {
         var flightId = $(this).val();
         $('#flightId').val(flightId); // Set the value of the input field
         var selectedFlight = $("#flightDate option:selected").text();
@@ -648,7 +667,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
           data: {
             flightId: flightId
           },
-          success: function(response) {
+          success: function (response) {
             var data = JSON.parse(response); // Parse the JSON response
             console.log(data);
 
@@ -661,7 +680,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
             updateTotalPaxMax();
 
           },
-          error: function(xhr, status, error) {
+          error: function (xhr, status, error) {
             console.error('Error fetching return flight:', error); // Log the error to console
           }
         });
@@ -672,7 +691,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
       $('#land').on('change', updateTotalPaxMax); // Trigger on "Land Only" checkbox toggle
 
       // Ensure that if the user manually enters a number greater than the max, it's automatically corrected
-      $('#totalPax').on('input', function() {
+      $('#totalPax').on('input', function () {
         var maxSeats = parseInt($(this).attr('max'));
         var currentPax = parseInt($(this).val());
 
@@ -685,7 +704,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
       });
 
       // New Book Now Button Click Event
-      $('#bookNowButton').click(function(event) {
+      $('#bookNowButton').click(function (event) {
         $('#selectedPackage').text($('#packageName').val());
         $('#selectedOrigin').text($('#origin').val());
         var selectedFlight = $("#flightDate option:selected").text();
@@ -747,7 +766,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
         }
 
         // Clear error messages when inputs are focused or changed
-        $('select, input').on('focus change', function() {
+        $('select, input').on('focus change', function () {
           const errorSpanId = `#${$(this).attr('id')}Error`;
           $(this).removeClass('is-invalid'); // Remove invalid class
           $(errorSpanId).text(''); // Clear error message
@@ -800,12 +819,12 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
       });
 
       // Automatically recalculate total price when flightDate or totalPax changes
-      $('#flightDate, #totalPax').on('input change', function() {
+      $('#flightDate, #totalPax').on('input change', function () {
         updateTotalPrice(); // Recalculate total price
       });
 
       // Recalculate total price when "land" checkbox is toggled
-      document.getElementById('land').addEventListener('change', function() {
+      document.getElementById('land').addEventListener('change', function () {
         updateTotalPrice(); // Recalculate total price when land is checked/unchecked
       });
 
@@ -861,7 +880,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
 
       // Optional: Listen for changes in pax fields
       document.querySelectorAll('.pax').forEach((element) => {
-        element.addEventListener('input', function() {
+        element.addEventListener('input', function () {
           updateTotalPrice(); // Recalculate when pax value changes
         });
       });
@@ -888,7 +907,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
               accId: accId
             }, // Send the flightId to the server
             dataType: 'json', // Specify that we're expecting JSON response
-            success: function(response) {
+            success: function (response) {
               if (response.flightId !== null) {
                 // Extract the maxSeats from the response
                 var maxSeats = response.maxSeats;
@@ -920,7 +939,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                 $('#maxSeats').text('Available Seats for this Flight: N/A');
               }
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
               // Log any errors
               console.error('AJAX Error:', error);
             }

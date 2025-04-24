@@ -137,7 +137,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['flightid'])) {
                 dataType: 'json', // Expecting JSON response
                 success: function (data) {
                     if (data.success) {
-                        showLoginMessage(data.message || 'Login successful!', 'success');
+                        showLoginMessage(data.message || 'Login successful', 'success');
 
                         setTimeout(() => {
                             const flightid = document.getElementById('flightid')?.value || '';
@@ -154,13 +154,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['flightid'])) {
                             } else if (data.accountType === 'guest') {
 
                                 if (flightid) {
-                                    alert('Redirected to Client Booking');
                                     window.location.href = `../Mobile/client-addBooking-flight.php`;
                                 } else {
                                     alert('No flight selected. Redirecting to flight schedule.');
                                     window.location.href = '../Mobile/flightsched.php';
                                 }
-                                
+
                             } else {
                                 alert('Unknown account type. Please contact support.');
                             }
@@ -189,7 +188,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['flightid'])) {
         });
     });
 </script>
-
 
 <script>
     document.getElementById('togglePassword').addEventListener('click', function() {

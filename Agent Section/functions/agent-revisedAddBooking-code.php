@@ -76,32 +76,6 @@
       exit(0);
     }
 
-    // If flightId is NULL, insert into the clientFlight table
-    // if (is_null($flightId)) 
-    // {
-    //   // Prepare the SQL statement for insertion into the clientFlight table
-    //   $sql2 = "INSERT INTO clientflight (transactNo) VALUES (?)";
-    //   $stmt2 = $conn->prepare($sql2);
-
-    //   if (!$stmt2) 
-    //   {
-    //     $_SESSION['status'] = "Client Flight SQL preparation failed: " . $conn->error;
-    //     $conn->rollback();  // Rollback transaction
-    //     header("Location: ../agent-addBooking.php");
-    //     exit(0);
-    //   }
-
-    //   $stmt2->bind_param('s', $transactNo);
-
-    //   if (!$stmt2->execute()) 
-    //   {
-    //     $_SESSION['status'] = "Database error on client flight insert: " . $stmt2->error;
-    //     $conn->rollback();  // Rollback transaction
-    //     header("Location: ../agent-addBooking.php");
-    //     exit(0);
-    //   }
-    // }
-
     // If no errors, commit the transaction
     $conn->commit();
 

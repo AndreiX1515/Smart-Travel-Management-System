@@ -61,8 +61,9 @@ session_start();
               <div class="section section-1">
                 <div class="header-container">
                   <h4>Payment Method</h4>
-                  <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
+                  <p>Please select your preferred payment method to complete the booking process.</p>
                 </div>
+
 
                 <div class="section-body">
 
@@ -155,7 +156,11 @@ session_start();
               </script>
 
               <div class="section section-1">
-                <h4>Bank Details</h4>
+                <div class="header-container">
+                  <h4>Bank Details</h4>
+                  <p>Please ensure that the payment details are correct before proceeding with the transaction.</p>
+                </div>
+
                 <div class="bank-detail-row">
                   <div class="bank-detail-col">
                     <label for="bank-name">Bank Name:</label>
@@ -166,6 +171,7 @@ session_start();
                     <p id="account-name">Hyung Sub Kim (Nickname: Jed Kim)</p>
                   </div>
                 </div>
+
                 <div class="bank-detail-row">
                   <div class="bank-detail-col">
                     <label for="account-number">Account Number (PH - Peso):</label>
@@ -181,6 +187,7 @@ session_start();
                 </div>
               </div>
             </div>
+
           </div>
 
           <div class="order-summary">
@@ -211,6 +218,7 @@ session_start();
                 $packageName = $res1['packageName'];
                 $pax = $res1['pax'];
               }
+
             } else {
               echo "<p class='text-danger'>No booking details found for TransactNo: $transactionNumber.</p>";
             }
@@ -296,14 +304,16 @@ session_start();
                       </span>
                     </div>
                   </div>
+
                   <button type="submit" class="pay-button btn btn-success">
                     Pay Now
                   </button>
+
             </form>
 
             <button type="button" class="reserve-button btn btn-secondary" data-bs-toggle="modal"
               data-bs-target="#payLaterModal">
-              Pay Later
+              Reserve Booking
             </button>
 
           </div>

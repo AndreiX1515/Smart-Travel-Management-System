@@ -97,7 +97,7 @@ require "../conn.php";
 
         ?>
 
-        <form action="../Mobile/function/agent-addBooking-code copy.php" method="POST">
+        <form action="../Mobile/function/agent-addBooking-code.php" method="POST">
 
           <div class="booking-wrapper">
 
@@ -565,7 +565,7 @@ require "../conn.php";
                 <div class="row-content add-border">
 
                   <div class="col-md-12 button-container">
-                    <button type="button" class="btn btn-primary" id="bookNowButton">Book Now</button>
+                    <button type="button" class="btn btn-success" id="bookNowButton">Book Now</button>
                   </div>
 
                 </div>

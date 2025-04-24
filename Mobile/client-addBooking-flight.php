@@ -31,18 +31,25 @@ require "../conn.php";
     <div class="main-content-container">
 
       <div class="navbar">
-        <div class="button-wrapper">
-          <button class="round-btn" id="logout-btn">
-            <i class="fas fa-chevron-left"></i>
-          </button>
-        </div>
+        <div class="page-header-wrapper">
+          <div class="page-header-top">
+            <div class="back-btn-wrapper">
+              <button class="back-btn" id="logout-btn">
+                <i class="fas fa-chevron-left"></i>
+              </button>
+            </div>
+          </div>
 
-        <div class="title-page-wrapper">
-          <h5 class="title-page" id="page-title">Booking</h5>
+          <div class="page-header-content">
+            <div class="page-header-text">
+              <h5 class="header-title">Booking Details</h5>
+            </div>
+          </div>
         </div>
       </div>
 
       <div class="main-content">
+
         <?php
         if (isset($_SESSION['client_flightId'])) {
           // Use session flight ID if available, otherwise set from GET
@@ -92,15 +99,15 @@ require "../conn.php";
 
         ?>
 
-        <form action="../Mobile/function/agent-addBooking-code copy.php" method="POST">
+        <form action="../Mobile\function\client-addBooking-code.php" method="POST">
 
           <div class="booking-wrapper">
 
             <div class="booking-contents-wrapper">
-              <div class="section-header">
+              <!-- <div class="section-header">
                 <h5>Booking Details</h5>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. </p>
-              </div>
+              </div> -->
 
               <div class="section-content">
                 <div class="row-content add-border">
@@ -254,10 +261,11 @@ require "../conn.php";
             </div>
 
 
-            <div class="booking-contents-wrapper">           
+            <div class="booking-contents-wrapper">   
+
               <div class="section-header">
                 <h5>Contact Details</h5>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. </p>
+                <!-- <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. </p> -->
               </div>
 
               <div class="section-content">
@@ -558,7 +566,7 @@ require "../conn.php";
 
                 <div class="row-content add-border">
                   <div class="col-md-12 button-container">
-                    <button type="button" class="btn btn-primary" id="bookNowButton">Book Now</button>
+                    <button type="button" class="btn btn-success" id="bookNowButton">Book Now</button>
                   </div>
                 </div>
               </div>
@@ -626,16 +634,16 @@ require "../conn.php";
 
                         <!-- Action Buttons -->
                         <div class="modal-actions">
-                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Back</button>
                           <button type="submit" class="btn btn-primary" name="bookNow">Proceed to Payment</button>
+                          <button type="button" class="btn btn-outline-secondary back-btn-modal" data-bs-dismiss="modal">Back</button>
                         </div>
-
 
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
+
             </div>
 
         </form>
