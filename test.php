@@ -13,110 +13,111 @@
 <body>
 
 <h2>Booking Records</h2>
-<div id="booking-table"></div>
+
+<div id="flight-table"></div>
 
 <script src="https://unpkg.com/tabulator-tables@5.5.0/dist/js/tabulator.min.js"></script>
+
 <script>
-
-$.ajax({
-  url: 'getBranches.php',
-  type: 'GET',
-  dataType: 'text', // Use 'text' first to inspect raw format
-  success: function(response) {
-    console.log("Raw getBranches.php response (as text):", response);
-    console.log("typeof response:", typeof response);
-
-    let agentColumns = [];
-
-    try {
-      // Parse the response from string to object
-      const parsed = typeof response === 'string' ? JSON.parse(response) : response;
-      console.log("Parsed agentColumns:", parsed);
-
-      if (Array.isArray(parsed)) {
-        if (typeof parsed[0] === 'string') {
-          agentColumns = parsed;
-          console.log("Agent columns as strings:", agentColumns);
-        } else if (parsed[0]?.name) {
-          agentColumns = parsed.map(agent => agent.name);
-          console.log("Agent columns extracted from objects:", agentColumns);
-        } else {
-          console.warn("Array format unrecognized, defaulting to empty agent columns.");
-        }
-      } else {
-        console.error("Agent columns response is not an array.");
-      }
-    } catch (e) {
-      console.error("Error parsing agent columns:", e);
+fetch('getFlights.php')
+  .then(response => response.json())
+  .then(data => {
+    if (data.length === 0) {
+      console.error("No data found!");
       return;
     }
 
-    // Build dynamic agent columns
-    const dynamicAgentColumns = agentColumns.map(agent => ({
-      title: agent,
-      field: agent,
-      headerHozAlign: "center",
-      hozAlign: "center"
-    }));
+    console.log("Fetched Data:", data); // Debugging: Log the fetched data
 
-    console.log("Dynamic agent columns:", dynamicAgentColumns);
+    // 1. Basic columns
+    let columns = [
+      {title: "", field: "isActive", frozen: true},
+      {title: "TEAM OP", field: "TeamOP", frozen: true},
+      {title: "ORIGIN", field: "origin"},
+      {
+        title: "FLIGHT DATE",
+        columns: [
+          {title: "START", field: "Start"},
+          {title: "END", field: "End"}
+        ]
+      },
+      {title: "AVAILABLE SEATS", field: "AvailSeats", hozAlign: "center"},
+      {title: "ADDITIONAL SEATS", field: "AdditionalSeats", hozAlign: "center"},
+      {title: "AIR + LAND", field: "FlightSeat"},
+      {title: "LAND ONLY", field: "landOnly"},
+      {title: "WHOLESALE PRICE", field: "wholesalePrice"},
+      {title: "RETAIL PRICE", field: "RetailPrice"},
+      {title: "LAND PRICE", field: "landPrice"}
+    ];
 
-    // Step 2: Fetch flight data
-    $.ajax({
-      url: 'getFlights.php',
-      type: 'POST',
-      data: { agentColumns: JSON.stringify(agentColumns) },
-      dataType: 'json',
-      success: function(data) {
-        console.log("Flight data received:", data);
+    // 2. Dynamically create agent columns
+    const sample = data[0];
+    const agentCols = {};
 
-        const columns = [
-          { title: "Active", field: "is_active" },
-          { title: "Team OP", field: "TeamOP" },
-          { title: "Origin", field: "origin" },
-          { title: "Departure", field: "Start" },
-          { title: "Return", field: "End" },
-          { title: "Available", field: "AvailSeats" },
-          { title: "Additional", field: "AdditionalSeats" },
-          { title: "Air+Land", field: "Air+Land" },
-          { title: "Land Only", field: "LandOnly" },
-          { title: "Wholesale", field: "WholesalePrice" },
-          { title: "Retail", field: "RetailPrice" },
-          { title: "Land Price", field: "landPrice" },
-          { title: "Package", field: "LandArrangement" },
-        ];
+    console.log("Sample Data:", sample); // Debugging: Log the first row to check all available fields
 
-        // Add the Express Thead section dynamically if agentColumns exist
-        if (dynamicAgentColumns.length > 0) {
-          columns.push({
-            title: "Express Thead",
-            columns: dynamicAgentColumns
-          });
+    Object.keys(sample).forEach(key => {
+    const match = key.match(/^(.+)_([A|L]O)$/); // Matching agent columns like 'agentCode_AL' and 'agentCode_LO'
+    
+    if (match) {
+        const agent = match[1];  // Extract the agent code (e.g., "Agent1")
+        const type = match[2];   // Extract the type (either "AL" or "LO")
+
+        if (!agentCols[agent]) {
+            agentCols[agent] = {
+                title: agent.replace(/_/g, ' '),  // Use the agent code as the title
+                columns: []  // Create a subcolumns array
+            };
         }
 
-        console.log("Final Tabulator Columns:", columns);
+        // Ensure both A.L and L.O are always added
+        if (type === "AL" && !agentCols[agent].columns.some(col => col.title === "A.L")) {
+            agentCols[agent].columns.push({
+                title: "A.L",
+                field: key,
+                hozAlign: "center"
+            });
+        }
 
-        new Tabulator("#booking-table", {
-          data: data,
-          layout: "fitColumns",
-          responsiveLayout: "collapse",
-          columns: columns
-        });
-      },
-      error: function(xhr, status, error) {
-        console.error("Error fetching flight data:", error);
-        console.log("XHR response (getFlights.php):", xhr.responseText);
-      }
-    });
-  },
-  error: function(xhr, status, error) {
-    console.error("Error fetching agent columns:", error);
-    console.log("XHR response (getBranches.php):", xhr.responseText);
-  }
+        if (type === "LO" && !agentCols[agent].columns.some(col => col.title === "L.O")) {
+            agentCols[agent].columns.push({
+                title: "L.O",
+                field: key,
+                hozAlign: "center"
+            });
+        }
+    }
 });
 
 
+    // Debugging: Log final agent columns to ensure both A.L and L.O are being added
+    console.log("Agent Columns:", agentCols);
+
+    // 3. Push agent columns to the table
+    columns = columns.concat(Object.values(agentCols));
+
+    // Debugging: Log final columns to be used in the table
+    console.log("Final Columns:", columns);
+
+    // 4. Initialize Tabulator
+    new Tabulator("#flight-table", {
+      data,
+      layout: "fitDataStretch",
+      columns,
+      responsiveLayout: true,
+      height: "500px",
+    });
+  })
+  .catch(error => {
+    console.error("Error fetching flight data:", error);
+  });
 </script>
+
+
+
+
+
+
 
 
 </body>

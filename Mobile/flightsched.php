@@ -7,14 +7,15 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// Fetch session variables directlys
 $email = $_SESSION['email'] ?? ''; // Use null coalescing operator to avoid undefined index
-// $firstName = $_SESSION['first_name'] ?? '';
-// $lastName = $_SESSION['last_name'] ?? '';
-// $middleName = $_SESSION['middle_name'] ?? '';
 $accId = $_SESSION['accountId'] ?? '';
 
-// $fullName = htmlspecialchars($lastName . ', ' . $firstName . ($middleName ? ' ' . substr($middleName, 0, 1) . '.' : ''));
+
+echo "<script>";
+echo "var sessionData = " . json_encode($_SESSION, JSON_PRETTY_PRINT) . ";";
+echo "console.log('Session Data:', sessionData);";
+echo "</script>";
+
 ?>
 
 <!DOCTYPE html>
@@ -33,14 +34,14 @@ $accId = $_SESSION['accountId'] ?? '';
 
     <?php
     if (isset($_SESSION['status'])):
-    ?>
+        ?>
 
         <!-- <div class="alert alert-warning alert-dismissible fade show" role="alert">
     <strong>Hey!</strong> <?= $_SESSION['status']; ?>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-  </div> -->
+    </div> -->
 
-    <?php
+        <?php
         unset($_SESSION['status']);
     endif;
     ?>
@@ -50,14 +51,10 @@ $accId = $_SESSION['accountId'] ?? '';
     <div class="body-container">
         <div class="main-container">
 
-            <script>
-            var sessionData = <?php echo json_encode($_SESSION, JSON_PRETTY_PRINT); ?>;
-            console.log("Session Data:", sessionData);
-            </script>
-
             <div class="flight-schedules">
 
                 <div class="section-wrapper">
+
                     <div class="section-header">
                         <div class="header-info">
                             <h3>Flight Schedules</h3>
@@ -115,7 +112,7 @@ $accId = $_SESSION['accountId'] ?? '';
                         </button>
 
                         <div id="flights-container">
-                            
+
                             <?php
                             // Database query
                             $sql = "SELECT 
@@ -152,7 +149,7 @@ $accId = $_SESSION['accountId'] ?? '';
 
                             if ($result->num_rows > 0) {
                                 while ($row = $result->fetch_assoc()) {
-                            ?>
+                                    ?>
                                     <div class="flight-card" data-date="<?= htmlspecialchars($row['Start']) ?>">
                                         <div class="flight-info">
                                             <div class="flight-details">
@@ -199,8 +196,10 @@ $accId = $_SESSION['accountId'] ?? '';
                                                             <div class="seats-info">
                                                                 <div class="book-now-container">
                                                                     <form action="../Mobile/agentLogin.php" method="POST">
-                                                                        <input type="hidden" name="flightid" value="<?= htmlspecialchars($row['flightid']) ?>">
-                                                                        <button type="submit" class="btn book-now">Book Now</button>
+                                                                        <input type="hidden" name="flightid"
+                                                                            value="<?= htmlspecialchars($row['flightid']) ?>">
+                                                                        <button type="submit" class="btn book-now">Book
+                                                                            Now</button>
                                                                     </form>
                                                                 </div>
                                                             </div>
@@ -212,7 +211,7 @@ $accId = $_SESSION['accountId'] ?? '';
                                             </div>
                                         </div>
                                     </div>
-                            <?php
+                                    <?php
                                 }
                             } else {
                                 echo "<p>No flights available.</p>";
@@ -220,6 +219,7 @@ $accId = $_SESSION['accountId'] ?? '';
                             ?>
                         </div>
                     </div>
+                    
                 </div>
 
             </div>
@@ -234,31 +234,29 @@ $accId = $_SESSION['accountId'] ?? '';
 
     <!-- JS for back-to-top button -->
     <script>
-     document.addEventListener("DOMContentLoaded", function () {
-        const backToTopButton = document.getElementById("back-to-top");
+        document.addEventListener("DOMContentLoaded", function () {
+            const backToTopButton = document.getElementById("back-to-top");
 
-        if (!backToTopButton) {
-            console.error("Button #back-to-top not found.");
-            return;
-        }
-
-        window.addEventListener("scroll", function () {
-            if (window.scrollY > 300) {
-                backToTopButton.classList.add("show");
-            } else {
-                backToTopButton.classList.remove("show");
+            if (!backToTopButton) {
+                console.error("Button #back-to-top not found.");
+                return;
             }
+
+            window.addEventListener("scroll", function () {
+                if (window.scrollY > 300) {
+                    backToTopButton.classList.add("show");
+                } else {
+                    backToTopButton.classList.remove("show");
+                }
+            });
+
+            backToTopButton.addEventListener("click", function () {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            });
         });
-
-        backToTopButton.addEventListener("click", function () {
-            window.scrollTo({ top: 0, behavior: "smooth" });
-        });
-    });
-
-
     </script>
 
-                         
+
 
     <!-- JS for Year Select -->
     <script>
@@ -288,7 +286,7 @@ $accId = $_SESSION['accountId'] ?? '';
 
     <!-- JS for Sorting Function -->
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             const datePicker = document.getElementById("filter-date");
             const monthSelect = document.getElementById("filter-month");
             const yearSelect = document.getElementById("filter-year");
@@ -334,11 +332,11 @@ $accId = $_SESSION['accountId'] ?? '';
     </script>
 
 
-    <!-- Row Click Selection JS -->
+    <!-- Row Click Selection JS
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            document.querySelectorAll("tr[data-url]").forEach(function(row) {
-                row.addEventListener("click", function() {
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll("tr[data-url]").forEach(function (row) {
+                row.addEventListener("click", function () {
                     const transactionNumber = row.getAttribute("data-url").split('=')[1]; // Extract transaction number from the URL
 
                     console.log("Transaction Number: ", transactionNumber);
@@ -350,20 +348,20 @@ $accId = $_SESSION['accountId'] ?? '';
                         data: {
                             transaction_number: transactionNumber
                         },
-                        success: function(response) {
+                        success: function (response) {
                             console.log("Response: ", response); // Debugging line
 
                             // Redirect to the next page after successfully setting the session
                             window.location.href = row.getAttribute("data-url"); // Use the original URL stored in data-url attribute
                         },
-                        error: function(xhr, status, error) {
+                        error: function (xhr, status, error) {
                             console.error("AJAX Error: " + status + " " + error); // Enhanced error logging
                         }
                     });
                 });
             });
         });
-    </script>
+    </script> -->
 
 </body>
 

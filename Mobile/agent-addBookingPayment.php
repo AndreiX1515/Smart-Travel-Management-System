@@ -22,27 +22,15 @@ session_start();
     <?php include "../Mobile/includes/sidebar.php"; ?>
 
     <div class="main-content-container">
-      <!-- <div class="navbar">
-        <div class="button-wrapper">
-          <button class="round-btn">
-            <i class="fas fa-chevron-left"></i>
-          </button> 
-        </div>
-
-        <div class="title-page-wrapper">
-          <h5 class="title-page" id="page-title">Payment</h5>
-        </div>
-      </div> -->
-
       <div class="navbar">
         <div class="page-header-wrapper">
 
           <div class="page-header-top">
-            <div class="back-btn-wrapper">
+            <!-- <div class="back-btn-wrapper">
               <button class="back-btn" id="logout-btn">
                 <i class="fas fa-chevron-left"></i>
               </button>
-            </div>
+            </div> -->
           </div>
 
           <div class="page-header-content">

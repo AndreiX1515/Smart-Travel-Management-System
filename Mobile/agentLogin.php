@@ -101,9 +101,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['flightid'])) {
 </script>
 
 <script>
-    $(document).ready(function() {
-        
-        $('#loginForm').on('submit', function(event) {
+    function showLoginMessage(message, type) {
+        const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';
+
+        // Set the message HTML
+        $('#message-login').html(`
+            <div class="alert ${alertClass} text-center" id="autoDismissMessage">${message}</div>
+        `);
+
+        // Automatically remove the message after 5 seconds
+        setTimeout(() => {
+            $('#autoDismissMessage').fadeOut(400, function () {
+                $(this).remove();
+            });
+        }, 5000);
+    }
+
+
+    $(document).ready(function () {
+        $('#loginForm').on('submit', function (event) {
             event.preventDefault(); // Prevent default form submission
 
             // Clear previous messages
@@ -119,69 +135,61 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['flightid'])) {
                 processData: false,
                 contentType: false,
                 dataType: 'json', // Expecting JSON response
-                success: function(data) {
+                success: function (data) {
                     if (data.success) {
-                        console.log(data.accountType);
+                        showLoginMessage(data.message || 'Login successful!', 'success');
 
-                        if (data.accountType === 'agent') {
+                        setTimeout(() => {
+                            const flightid = document.getElementById('flightid')?.value || '';
 
-                            // Check if flightid exists in the hidden input or session
-                            let flightid = document.getElementById('flightid') ? document.getElementById('flightid').value : '';
+                            if (data.accountType === 'agent') {
 
-                            if (flightid) {
-                                window.location.href = '../Mobile/agent-addBooking-flight.php';
+                                if (flightid) {
+                                    window.location.href = '../Mobile/agent-addBooking-flight.php';
+                                } else {
+                                    alert('No flight selected. Redirecting to flight schedule.');
+                                    window.location.href = '../Mobile/flightsched.php';
+                                }
 
+                            } else if (data.accountType === 'guest') {
+
+                                if (flightid) {
+                                    alert('Redirected to Client Booking');
+                                    window.location.href = `../Mobile/client-addBooking-flight.php`;
+                                } else {
+                                    alert('No flight selected. Redirecting to flight schedule.');
+                                    window.location.href = '../Mobile/flightsched.php';
+                                }
+                                
                             } else {
-                                alert('No flight selected. Redirecting to flight schedule.');
-                                window.location.href = '../Mobile/flightsched.php';
+                                alert('Unknown account type. Please contact support.');
                             }
+                        }, 1500); // Delay before proceeding
+                    }
 
-                        }  else if (data.accountType === 'guest') {
-                            // Check if flightid exists in the hidden input or session
-                            let flightid = document.getElementById('flightid') ? document.getElementById('flightid').value : '';
-
-                            if (flightid) {
-                                alert('Redirected to Client Booking');
-                                window.location.href = `../Mobile/client-addBooking-flight.php`;
-
-                            } else {
-                                alert('No flight selected. Redirecting to flight schedule.');
-
-                                window.location.href = '../Mobile/flightsched.php';
-                            }
-                            
-                        } else {
-                            // Handle unknown account type
-                            alert('Unknown account type. Please contact support.');
-                        }
+                    
+                    else {
                         
-                    } else {
-                        // Show error message based on the response
-                        $('#message-login').html(
-                            `<div class="alert alert-danger text-center">${data.message}</div>`
-                        );
+                        showLoginMessage(data.message || 'Login failed. Please try again.', 'error');
 
-                        // If the user is logged in on another device, disable the login button
-                        if (data.message &&
-                            data.message.trim() === "You are logged in on another device. Please close from other tab or devices then reload before logging in again!") {
+                        if (data.message?.trim() === "You are logged in on another device. Please close from other tab or devices then reload before logging in again!") {
                             console.log("Disabling login button for 'Logged in on another device.'");
-                            $('#LoginButton').addClass('button-disabled'); // Disable the login button
+                            $('#LoginButton').addClass('button-disabled');
                         }
                     }
                 },
-                error: function(xhr, status, error) {
+
+                error: function (xhr, status, error) {
                     console.error('Error:', error);
-                    // Show a generic error message if there's a problem with the request
-                    $('#message-login').html(
-                        '<div class="alert alert-danger">An error occurred. Please try again later.</div>'
-                    );
-                    // Add CSS class to visually disable the button
+                    showLoginMessage('An error occurred. Please try again later.', 'error');
                     $('#LoginButton').addClass('button-disabled');
                 }
+
             });
         });
     });
 </script>
+
 
 <script>
     document.getElementById('togglePassword').addEventListener('click', function() {
@@ -200,9 +208,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['flightid'])) {
     });
 </script>
 
-<script>
 
-</script>
-</body>
-
+    </body>
 </html>

@@ -31,7 +31,6 @@ require "../conn.php";
 
       <div class="navbar">
         <div class="page-header-wrapper">
-
           <div class="page-header-top">
             <div class="back-btn-wrapper">
               <button class="back-btn" id="logout-btn">
@@ -45,7 +44,6 @@ require "../conn.php";
               <h5 class="header-title">Booking Details</h5>
             </div>
           </div>
-
         </div>
       </div>
 
@@ -576,9 +574,7 @@ require "../conn.php";
 
               <!-- Booking Summary Modal -->
               <div class="modal fade" id="BookingSummaryModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
-
                 <div class="modal-dialog modal-lg modal-dialog-centered">
-
                   <div class="modal-content position-relative">
 
                     <!-- Close Button -->
@@ -650,8 +646,9 @@ require "../conn.php";
 
                         <!-- Action Buttons -->
                         <div class="modal-actions">
-                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Back</button>
                           <button type="submit" class="btn btn-primary" name="bookNow">Proceed to Payment</button>
+                          <button type="button" class="btn btn-outline-secondary back-btn-modal" data-bs-dismiss="modal">Back</button>
+
                         </div>
 
 

@@ -48,285 +48,42 @@ a:hover {
 }
 
 /* Main Content Section */
-/* Main Container */
 .body-container {
   display: flex;
   justify-content: space-between;
-  width: 100%; /* Full width of the viewport */
-  height: 100vh; /* Full height of the viewport */
-  box-sizing: border-box; /* Ensure padding doesn't overflow */
-  padding: 0px; /* Remove padding to prevent unnecessary spacing */
+  width: 100%; 
+  height: 100vh; 
+  box-sizing: border-box; 
+  padding: 0px;
   overflow: hidden;
   background-color: #343a40;
 }
 
-/* Sidebar Styling */
-.sidebar {
-  width: 12%; /* Sidebar takes up 12% of the width */
-  height: 100vh; /* Full height of the viewport */
-  padding: 0px 13px;
-  box-sizing: border-box;
-  background-color: #343a40;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between; /* Pushes the profile to the bottom */
-}
-
-/* Sidebar Logo */
-.sidebar .logo {
-  margin-top: 15px;
-}
-
-/* Sidebar img */
-.sidebar img {
-  width: 100%;
-  object-fit: contain;
-  padding: 15px 30px 15px 15px;
-}
-
-.main-sidebar .dashboard-title {
-  color: #858585; /* Lighter gray text for section titles */
-  font-size: 0.85rem;
-  color: #858585; /* Lighter gray text for section titles */
-  font-weight: 500;
-  text-transform: uppercase;
-  margin-bottom: 10px;
-}
-
-/* Section Titles */
-.sidebar .section-title {
-  font-size: 0.85rem;
-  color: #858585; /* Lighter gray text for section titles */
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin: 30px 0 5px;
-  cursor: pointer;
-  padding: 5px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  transition: background-color 0.2s ease;
-}
-
-/* Chevron Icon */
-.chevron-icon {
-  transition: transform 0.3s ease;
-}
-
-.sidebar .section-title .chevron-icon {
-  font-size: 0.9rem;
-  color: #adb5bd; /* Default chevron color */
-}
-
-/* Links inside the Sidebar */
-.sidebar a {
-  display: flex;
-  align-items: center;
-  padding: 10px 12px;
-  border-radius: 6px;
-  color: #e9ecef; /* Light color for links */
-  text-decoration: none;
-  font-size: 0.95rem;
-  transition: background-color 0.2s ease, color 0.2s ease;
-}
-
-.sidebar a:hover {
-  background-color: #495057; /* Darker background on hover */
-  color: #ffffff; /* White text on hover */
-}
-
-/* Submenu styles */
-.sidebar .submenu.open + .section-title .chevron-icon {
-  transform: rotate(180deg); /* Rotate the chevron when submenu is open */
-}
-
-/* Links inside Submenu */
-.sidebar .submenu a {
-  display: flex;
-  align-items: left;
-  padding: 10px 12px;
-  border-radius: 6px;
-  color: #e9ecef; /* Light color for submenu links */
-  text-decoration: none;
-  font-size: 0.95rem;
-  transition: background-color 0.2s ease, color 0.2s ease;
-}
-
-.sidebar .submenu a:hover {
-  background-color: #495057; /* Darker background on hover */
-  color: #ffffff; /* White text on hover */
-}
-
-/* Home Button */
-.sidebar .home {
-  padding: 10px 12px;
-  border-radius: 6px;
-  border: 1px solid #dcdcdc; /* Soft gray border */
-  color: #333333; /* Dark text for better contrast */
-  background-color: #f5f5f5; /* Light gray background */
-  text-decoration: none;
-  font-size: 0.95rem;
-  font-weight: 600;
-  text-align: center;
-  transition: background-color 0.2s ease, color 0.2s ease, border 0.2s ease;
-}
-
-.sidebar .home i {
-  color: #474747; /* Light text on hover */
-}
-
-.sidebar .home:hover {
-  background-color: #e0e0e0; /* Slightly darker gray on hover */
-  color: #ffffff; /* Light text on hover */
-  border: 1px solid #b0b0b0; /* Darker border on hover */
-}
-
-/* Add Booking Button */
-.sidebar .add-booking {
-  padding: 10px 12px;
-  border-radius: 6px;
-  color: #ffffff;
-  background-color: #c62828; /* Deep red background */
-  text-decoration: none;
-  font-size: 0.95rem;
-  font-weight: 600;
-  text-align: center;
-  transition: background-color 0.2s ease, color 0.2s ease;
-}
-
-.sidebar .add-booking i {
-  color: #ffffff;
-  margin-right: 8px;
-}
-
-.sidebar .add-booking:hover {
-  background-color: #b71c1c; /* Darker red on hover */
-  color: #e9ecef; /* Light text on hover */
-}
-
-/* Add FIT Button */
-.sidebar .add-FIT {
-  padding: 10px 12px;
-  border-radius: 6px;
-  color: #ffffff;
-  background-color: #0163d4; /* Turquoise background */
-  text-decoration: none;
-  font-size: 0.95rem;
-  font-weight: 600;
-  text-align: center;
-  transition: background-color 0.2s ease, color 0.2s ease;
-}
-
-.sidebar .add-FIT:hover {
-  background-color: #00648c; /* Darker turquoise on hover */
-  color: #e9ecef; /* Light text on hover */
-}
-
-.sidebar .add-FIT i {
-  color: #ffffff;
-  margin-right: 8px;
-}
-
-/* Icon styles */
-.sidebar i {
-  margin-right: 8px;
-  color: #adb5bd; /* Lighter gray icons */
-}
-
-/* Submenu visibility */
-.sidebar .submenu {
-  display: none;
-  padding-left: 7px;
-}
-
-.sidebar .submenu.open {
-  display: block;
-}
-
-/* Profile Section */
-.sidebar .profile-section {
-  display: flex;
-  gap: 2px;
-  justify-content: left; /* Push items to opposite ends */
-  align-items: center; /* Vertically align content */
-  padding: 5px 0px 5px 5px;
-  background-color: #495057; /* Dark gray background */
-  border-radius: 8px;
-  margin: 10px 0;
-  height: 8vh; /* Adjust height dynamically */
-}
-
-.sidebar .profile-wrapper {
-  display: flex;
-  flex-direction: column;
-  margin: 15px 0;
-}
-
-.sidebar .profile-section .profile-icon {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  /* border: 1px solid black; */
-  padding: 20px 0px;
-}
-
-.sidebar .profile-section .profile-icon i {
-  font-size: 36px; /* Adjust icon size */
-  color: #ffffff;
-}
-
-.sidebar .profile-section .profile-details {
-  width: 100%;
-  display: flex;
-  flex-direction: column; /* Stack items vertically */
-  justify-content: left; /* Align vertically */
-  align-items: start;
-  color: #ffffff;
-  line-height: 1; /* Adjust line spacing for better readability */
-  margin: 0;
-  padding: 10px 0px;
-  /* border: 1px solid black; */
-}
-
-.sidebar .profile-section .profile-details .profile-name {
-  font-size: 14px;
-  font-weight: bold;
-  margin: 0;
-  color: #ffffff;
-}
-
-.sidebar .profile-section .profile-details .profile-role {
-  font-size: 12px;
-  color: #adb5bd;
-  margin: 0;
-}
-
+/* Sidebar Styles */
 .logout-wrapper {
-  width: 100%; /* Full width */
+  width: 100%;
 }
 
 .page-button.logout {
-  display: flex; /* Use flexbox to align icon and text */
-  align-items: center; /* Vertically center the icon and text */
-  padding: 10px 15px; /* Adjust padding as needed */
-  text-align: left; /* Align text to the left */
-  background-color: #343a40; /* Dark background color */
-  color: #ffffff; /* White text */
-  border: 1px solid rgba(220, 220, 220, 0.822); /* Light border */
-  text-decoration: none; /* Remove underline */
+  display: flex; 
+  align-items: center; 
+  text-align: left; 
+  background-color: #343a40; 
+  color: #ffffff; 
+  border: 1px solid rgba(220, 220, 220, 0.822); 
+  text-decoration: none; 
   font-size: 16px;
-  border-radius: 5px; /* Rounded corners */
+  border-radius: 5px; 
   margin-bottom: 10px;
 }
 
 .page-button.logout i {
-  margin-right: 10px; /* Add space between icon and text */
+  margin-right: 10px;
 }
 
 .page-button.logout:hover {
-  background-color: #495057; /* Lighter shade of the main color (#343a40) */
-  color: white; /* White text on hover */
+  background-color: #495057; 
+  color: white; 
 }
 
 /* Main Content Styling */
@@ -346,39 +103,25 @@ a:hover {
 
 /* Navbar Styles */
 .navbar {
-  display:flex;
+  display: flex;
   align-items: center;
   justify-content: flex-start;
-  height: 6vh;
+  min-height: clamp(50px, 8vh, 70px);
   width: 100%;
-  padding: 15px 0px 0px 0px;
+  padding: 0px 0px;
   position: fixed;
   top: 0;
-  right: 0.5px;
+  right: 0;
   background-color: white;
   z-index: 1000;
   gap: 20px;
   margin-bottom: 10px;
-  /* border: 1px solid black; */
+  border-bottom: 1px solid gainsboro;  
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
 }
 
 
-/* Wrapper for the whole header section */
-.page-header-wrapper {
-  height: 100%; /* Ensures the wrapper takes up full height */
-  display: flex;
-  gap: 10px;
-  /* border: 1px solid black; */
-}
 
-/* Top row with the back button */
-.page-header-top {
-  height: 100%; /* Stretches to fill the wrapper */
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  /* border: 1px solid black; */
-}
 
 /* Back button container */
 .back-btn-wrapper {
@@ -386,7 +129,6 @@ a:hover {
   align-items: center;
 }
 
-/* Back button style */
 .back-btn {
   background: white;
   color: #464646;
@@ -408,25 +150,41 @@ a:hover {
   color: white;
 }
 
-/* Content section */
-.page-header-content {
-  width: 100%;
-  height: 100%; /* Adapt full height of parent */
+.page-header-wrapper {
+  height: 100%; 
   display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  /* border: 1px solid black; */
-  box-sizing: border-box; /* Ensures padding and border don't exceed height */
+  gap: 10px;
 }
 
+.page-header-top {
+  height: 100%; 
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+.page-header-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  box-sizing: border-box;
+  margin-left: 5px;  
+}
 
 .page-header-text {
   display: flex;
   flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-end;
   gap: 5px;
-  /* border: 1px solid black; */
   margin-bottom: 5px;
+  text-align: center;
+  margin-top: 5px;
 }
+
+
 
 .header-title {
   font-size: 1.1rem;
@@ -442,18 +200,6 @@ a:hover {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 .navbar .title-page {
   margin-top: 7px;
 }
@@ -461,11 +207,10 @@ a:hover {
 /* Navbar Title Styles */
 .navbar-title {
   font-size: 0.85rem;
-  color: #6c757d; /* Muted section title */
+  color: #6c757d; 
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  /* margin: 15px 30px 0 0; */
   cursor: pointer;
   padding: 10px;
   transition: background-color 0.2s ease;
@@ -475,7 +220,6 @@ a:hover {
 .navbar-title h5 {
   color: black;
 }
-
 
 
 .main-content {
@@ -513,8 +257,7 @@ a:hover {
   justify-content: center;
   width: 35px; /* Circular size */
   height: 35px; /* Circular size */
-  /* border: 1px solid black; */
-  border-radius: 50%; /* Makes it round */
+  border-radius: 50%; 
   transition: color 0.3s ease, background 0.3s ease, transform 0.2s ease;
 }
 
@@ -527,73 +270,23 @@ a:hover {
 .page-name-wrapper {
   display: flex;
   height: 50%;
-  /* border: 1px solid black; */
   justify-content: left;
   align-items: last baseline;
   padding: 8px 0px 0px 10px;
 }
  
-/* Responsive Styles */
-/* @media (max-width: 1440px) {
-  .card-header h4 {
-    font-size: 26px;
-  }
-  .text-danger {
-    font-size: 11px;
-  }
-  .form-group label {
-    font-size: 15px;
-    margin-left: 5px;
-  }
-  .price-wrapper .card-body {
-    padding: 8px 12px;
-  }
-  .sidebar {
-    display: none;
-  }
-  .main-content {
-    margin-left: 0;
-    width: 100%;
-  }
-  .main-content-container {
-    border-top-left-radius: 0;
-    border: 1px solid gainsboro;
-  }
-  .navbar-middle {
-    display: block;
-  }
-  .navbar-toggler {
-    display: none;
-  }
-  .navbar-nav {
-    display: flex;
-    text-align: left;
-    margin: 0 15px;
-  }
-  .navbar-collapse .navbar-nav {
-    display: none;
-  }
-  .navbar-nav .nav-item {
-    padding: 8px 0;
-  }
-  .navbar-nav .nav-link {
-    font-size: 17px;
-  }
-} */
-
+/* Responsive Typography & Layouts */
 @media (max-width: 1280px) {
   .card-header h4 {
     font-size: 22px;
   }
-  .text-danger {
-    font-size: 10px;
-  }
-  
-  .price-wrapper .card-body {
-    padding: 7px 10px;
-  }
+
   .navbar-nav .nav-link {
     font-size: 16px;
+  }
+
+  .price-wrapper .card-body {
+    padding: 7px 10px;
   }
 }
 
@@ -601,32 +294,31 @@ a:hover {
   .card-header h4 {
     font-size: 20px;
   }
-  .text-danger {
-    font-size: 10px;
-  }
- 
+
   .price-wrapper .card-body {
     padding: 7px 10px;
   }
 }
 
 @media (max-width: 991px) {
-  .main-content-container {
-    width: 100%;
-  }
+  .main-content-container,
   .navbar {
     width: 100%;
   }
+
   .navbar-middle {
     display: none;
   }
+
   .navbar-nav {
     display: block;
     text-align: center;
   }
+
   .navbar-nav .nav-item {
     padding: 8px 0;
   }
+
   .navbar-nav .nav-link {
     font-size: 15px;
   }
@@ -636,27 +328,25 @@ a:hover {
   .card-header h4 {
     font-size: 20px;
   }
-  
-  
+
   .card-body {
     padding: 8px 15px;
   }
+
   .navbar-nav .nav-link {
     font-size: 14px;
   }
 }
 
 @media (max-width: 600px) {
-  .card-header h4 {
-    font-size: 20px;
-  }
   .text-danger {
     font-size: 9px;
   }
-  
+
   .card-body {
     padding: 6px 12px;
   }
+
   .navbar-nav .nav-link {
     font-size: 13px;
   }
@@ -666,14 +356,15 @@ a:hover {
   .card-header h4 {
     font-size: 18px;
   }
-  
-  
+
   .card-body {
     padding: 5px 10px;
   }
+
   .navbar-nav .nav-item {
     padding: 6px 0;
   }
+
   .navbar-nav .nav-link {
     font-size: 12px;
   }
