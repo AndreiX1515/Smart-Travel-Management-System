@@ -92,9 +92,9 @@
               <span class="badge-status-tab">
                 <h6>
                   <?php
-                  $sql = "SELECT COUNT(*) AS totalBookings FROM booking;";
-                  $result = mysqli_query($conn, $sql);
-                  echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+                    $sql = "SELECT COUNT(*) AS totalBookings FROM booking;";
+                    $result = mysqli_query($conn, $sql);
+                    echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
                   ?>
                 </h6>
               </span>
@@ -104,10 +104,10 @@
               <span class="badge-status-tab">
                 <h6>
                   <?php
-                  $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
-                  WHERE status = 'Pending'";
-                  $result = mysqli_query($conn, $sql);
-                  echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+                    $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
+                            WHERE status = 'Pending'";
+                    $result = mysqli_query($conn, $sql);
+                    echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
                   ?>
                 </h6>
               </span>
@@ -117,10 +117,10 @@
               <span class="badge-status-tab">
                 <h6>
                   <?php
-                  $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
-                  WHERE status = 'Reserved'";
-                  $result = mysqli_query($conn, $sql);
-                  echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+                    $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
+                    WHERE status = 'Reserved'";
+                    $result = mysqli_query($conn, $sql);
+                    echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
                   ?>
                 </h6>
               </span>
@@ -130,10 +130,10 @@
               <span class="badge-status-tab">
                 <h6>
                   <?php
-                  $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
-                WHERE status = 'Confirmed'";
-                  $result = mysqli_query($conn, $sql);
-                  echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+                    $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
+                            WHERE status = 'Confirmed'";
+                    $result = mysqli_query($conn, $sql);
+                    echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
                   ?>
                 </h6>
               </span>
@@ -143,17 +143,30 @@
               <span class="badge-status-tab">
                 <h6>
                   <?php
-                  $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
-                  WHERE status = 'Cancelled'";
-                  $result = mysqli_query($conn, $sql);
-                  echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+                    $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
+                            WHERE status = 'Cancelled'";
+                    $result = mysqli_query($conn, $sql);
+                    echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+                  ?>
+                </h6>
+              </span>
+            </button>
+
+            <button class="filter-btn" data-filter="Balanced">Booking with Remaining Balance
+              <span class="badge-status-tab">
+                <h6>
+                  <?php
+                    $sql = "SELECT COUNT(b.*) AS totalBookings, p.amount as sum 
+                            FROM booking b
+                            JOIN payment p ON p.transactNo = b.transactNo";
+                    $result = mysqli_query($conn, $sql);
+                    echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
                   ?>
                 </h6>
               </span>
             </button>
           </div>
         </div>
-
 
         <div class="table-wrapper">
           <table class="product-table" id="product-table">
@@ -177,7 +190,7 @@
                 die("Database connection error.");
               }
 
-              $sql = "SELECT b.transactNo, f.flightDepartureDate AS departureDate, f.returnDepartureDate AS returnDate, 
+              $sql = "SELECT b.transactNo, DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y') AS departureDate, f.returnDepartureDate AS returnDate, 
                         b.status AS bookingStatus, CONCAT(f.flightDepartureDate, ' | ', f.returnDepartureDate) AS FlightDate, 
                         p.packageName AS PackageName, DATE_FORMAT(b.bookingDate, '%m.%d.%Y') AS BookingDate, b.pax AS TotalPax,  
                         b.totalPrice AS PackagePrice, br.branchName as branchName, COALESCE(SUM(pa.amount), 0) AS TotalAmountPaid,
@@ -234,7 +247,7 @@
                   };
 
                   // Format dates
-                  $formattedDepartureDate = $departureDate ? (new DateTime($departureDate))->format('F j, Y') : 'N/A';
+                  // $formattedDepartureDate = $departureDate ? (new DateTime($departureDate))->format('F j, Y') : 'N/A';
                   $formattedReturnDate = $returnDate ? (new DateTime($returnDate))->format('F j, Y') : 'N/A';
 
                   // Securely encode URL
@@ -244,7 +257,7 @@
                   echo "<tr data-url='$transactionUrl'>";
                   echo "<td>$transactNo</td>";
                   echo "<td>" . htmlspecialchars($row['ACCOUNT NAME'] ?? '') . "</td>";
-                  echo "<td>$formattedDepartureDate</td>";
+                  echo "<td>$departureDate</td>";
                   echo "<td class='fw-bold ps-3'>$totalPax</td>";
                   echo "<td>₱ " . number_format($packagePrice, 2) . "</td>";
                   echo "<td>₱ " . number_format($requestTotal, 2) . "</td>";
@@ -275,7 +288,6 @@
   </div>
 
   <?php include '../Employee Section/includes/emp-scripts.php' ?>
-
   
   <!-- For Button Tabs Status Sorting -->
   <script>
@@ -374,7 +386,7 @@
           emptyTable: "No Transaction Records Available"
         },
         order: [
-          [0, 'desc']
+          [2, 'asc']
         ], // Default sorting by Transaction ID (descending)
         scrollX: false,
         scrollY: '73vh', // Set a fixed height for the table (adjust as necessary)
@@ -385,7 +397,7 @@
 
         // Disable sorting for specific columns
         columnDefs: [{
-          targets: [1, 2, 3, 4, 5, 6, 7, 8], // Disable sorting for 2nd and 4th columns
+          targets: [1, 3, 4, 5, 6, 7, 8], // Disable sorting for 2nd and 4th columns
           orderable: false
         }]
       });
@@ -440,7 +452,7 @@
       $('#FlightStartDate').on('change', function() {
         const selectedFlightDate = $(this).val(); // Get the selected value directly from the input field
         console.log("Flight Date Filter:", selectedFlightDate); // Log the selected flight date
-        table.column(3).search(selectedFlightDate || '').draw(); // Column 5 (index starts at 0)
+        table.column(2).search(selectedFlightDate || '').draw(); // Column 5 (index starts at 0)
       });
 
       // Apply datepicker and input validation for FlightStartDate
@@ -455,7 +467,7 @@
           $(this).val(dateText);
           flightStartDate = dateText; // Store the selected date
           console.log("FlightStartDate Selected Date (onSelect): " + dateText);
-          table.column(3).search(flightStartDate || '').draw(); // Column 5 (index starts at 0)
+          table.column(2).search(flightStartDate || '').draw(); // Column 5 (index starts at 0)
         }
       });
 
@@ -535,7 +547,7 @@
 
         // Reset DataTable filters & sorting
         table.order([
-            [0, 'desc']
+            [2, 'asc']
           ]) // Default sort by first column (Transaction ID)
           .search('') // Clear any search input
           .columns().search('') // Reset all column filters
