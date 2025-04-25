@@ -212,42 +212,41 @@
 
 .pills-tab-container {
   width: 100%;
-  /* border: 1px solid black; */
 }
 
 .pills-tab-container .nav-pills {
   display: flex;
-  gap: 10px; /* 10px gap between each tab */
+  gap: 10px; 
 }
 
 .pills-tab-container .nav-item .nav-link {
-  background-color: #007bff; /* Flat blue color for active tab */
+  background-color: #007bff;
   color: white;
-  border: none; /* Remove border */
-  border-radius: 15px; /* Smaller rounded edges */
-  padding: 8px 15px; /* Reduced padding for smaller tabs */
-  font-size: 0.87em; /* Slightly smaller font size */
+  border: none; 
+  border-radius: 15px; 
+  padding: 8px 15px; 
+  font-size: 0.87em; 
   font-weight: 500;
-  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition */
+  transition: background-color 0.3s ease; 
 }
 
 .pills-tab-container .nav-item .nav-link.active {
-  background-color: #0056b3; /* Darker blue for active tab */
+  background-color: #0056b3; 
 }
 
 .pills-tab-container .nav-item .nav-link:not(.active) {
-  background-color: transparent; /* Transparent background for inactive */
-  color: #6c757d; /* Grey color for inactive */
-  border: 1px solid #ccc; /* Grey border for inactive tabs */
-  border-radius: 15px; /* Smaller rounded border */
+  background-color: transparent; 
+  color: #6c757d; 
+  border: 1px solid #ccc; 
 }
 
 .pills-tab-container .nav-item .nav-link:hover {
-  background-color: #0069d9; /* Slightly lighter blue on hover */
+  background-color: #0069d9; 
+  color: white;
 }
 
 .pills-tab-container .nav-item .nav-link:focus {
-  box-shadow: none; /* Remove focus shadow */
+  box-shadow: none; 
 }
 
 

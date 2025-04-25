@@ -166,6 +166,7 @@ error_reporting(E_ALL);
 
       <div class="main-content">
         <div class="show-guest-wrapper">
+          
           <div class="header">
             <div class="transaction-info">
               <div class="transaction-header">

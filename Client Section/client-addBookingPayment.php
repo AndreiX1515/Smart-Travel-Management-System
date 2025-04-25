@@ -11,18 +11,32 @@ session_start();
 
   <?php include "../Agent Section/includes/head.php"; ?>
 
-
-
   <link rel="stylesheet" href="../Agent Section/assets/css/agent-payment.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="../Agent Section/assets/css/navbar-sidebar.css?v=<?php echo time(); ?>">
 </head>
 
 <body>
 
+  <?php
+  // Check if 'id' is passed in the URL
+  if (isset($_GET['id'])) {
+    $transactionNumber = htmlspecialchars($_GET['id']);
+
+  } else {
+    // Redirect to a different page or show an error message
+    echo "<script>alert('Transaction number not found.'); 
+    window.location.href='client-transactionInfo.php';</script>";
+    exit; // Stop further execution
+  }
+
+  ?>
+
+
   <div class="body-container">
     <?php include "../Client Section/Includes/client-sidebar.php"; ?>
 
     <div class="main-content-container">
+
       <div class="navbar">
         <div class="page-header-wrapper">
 
@@ -42,20 +56,6 @@ session_start();
 
         </div>
       </div>
-
-      <?php
-      // Check if 'id' is passed in the URL
-      if (isset($_GET['id'])) {
-        $transactionNumber = htmlspecialchars($_GET['id']);
-
-      } else {
-        // Redirect to a different page or show an error message
-        echo "<script>alert('Transaction number not found.'); 
-        window.location.href='client-transactionInfo.php';</script>";
-        exit; // Stop further execution
-      }
-
-      ?>
 
       <div class="main-content">
 
@@ -282,8 +282,8 @@ session_start();
             <form id="paymentForm">
 
               <hr>
-              <input type="text" value="<?php echo $_SESSION['client_accountId']; ?>" name="agentAccountId">
-              <input type="text" value="<?php echo $transactionNumber; ?>" name="transactNo">
+              <input type="hidden" value="<?php echo $_SESSION['client_accountId']; ?>" name="agentAccountId">
+              <input type="hidden" value="<?php echo $transactionNumber; ?>" name="transactNo">
               <input type="number" class="form-control" name="downpayment" step="0.01" min="<?php echo $downpayment; ?>"
                 max="<?php echo $totalPrice; ?>" placeholder="Enter Downpayment Amount" required>
 
@@ -312,7 +312,7 @@ session_start();
 
             <button type="button" class="reserve-button btn btn-secondary" data-bs-toggle="modal"
               data-bs-target="#payLaterModal">
-              Pay Later
+              Reserve Booking
             </button>
 
           </div>

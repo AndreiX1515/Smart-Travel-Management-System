@@ -7,18 +7,18 @@
 
   if (isset($_POST['bookNow'])) 
   {
-    $accountId = $_SESSION['accountId'];
+    $accountId = $_SESSION['agent_accountId'];
     $agentId = $_POST['agentId'];  
     $agentCode = $_POST['agentCode'];  
     $accountType = $_POST['userType'];  
     $fName = $_POST['fName'];  
-    $mName = $_POST['mName'];  
+    $mName = $_POST['mName'];                                             
     $lName = $_POST['lName'];  
     $suffix = $_POST['suffix'];
     $countryCode = $_POST['countryCode']; 
     $contactNo = $_POST['contactNo'];
     $email = $_POST['email'];
-    $packageId = $_POST['packageName'];
+    $packageId = $_POST['packageId'];
     $flightId = $_POST['flightDate'];
     $totalPax = $_POST['totalPax'];
     $totalPrice = $_POST['totalPrice'];
@@ -54,7 +54,7 @@
     // Prepare the SQL statement for insertion into the booking table
     $sql1 = "INSERT INTO booking (accountId, transactNo, accountType, agentCode, flightId, packageId, fName, lName, mName, suffix, countryCode, 
     contactNo, email, pax, totalPrice, bookingType, flightDetails, status, bookingDate) VALUES 
-    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Pending', NOW())";
+    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Reserved', NOW())";
     $stmt1 = $conn->prepare($sql1);
 
     if (!$stmt1) 

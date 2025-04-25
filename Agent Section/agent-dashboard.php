@@ -839,10 +839,9 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
 
                 <!-- Flight Seat -->
                 <div class="one">
-                  <div class="body-flight">
+                 
                     <div class="confirm-table-container-flight">
                       <table id="info-table" class="info-table">
-
                         <thead>
                           <tr>
                             <th rowspan="2">ORIGIN</th>
@@ -929,13 +928,13 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                         </tbody>
                       </table>
                     </div>
-                  </div>
+                  
                 </div>
 
                 <div class="flight-seat-footer">
                   <div class="pagination-controls">
                     <button id="prevPage" class="pagination-btn">Previous</button>
-                    <div id="pageNumbers" class="page-numbers"></div>
+                    <div id="pageNumbers" class="page-numbers"></div> <!-- Optional, can be removed -->
                     <button id="nextPage" class="pagination-btn">Next</button>
                   </div>
                 </div>
@@ -1824,8 +1823,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
 
             </div>
 
-            <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab"
-              tabindex="0">
+            <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">
 
               <!-- FIT Table -->
               <div class="fit-container">
@@ -1938,7 +1936,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
         order: [[0, 'desc']],
         paging: true,
         pageLength: 9,
-        scrollY: '600px',
+        scrollY: '62.8vh',
         scrollCollapse: true,
         autoWidth: false,
         columnDefs: [{
@@ -1947,48 +1945,23 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
         }]
       });
 
-      // ✅ Fixed updatePagination function
-      function updatePagination() {
+      // ✅ Simple Prev/Next pagination only
+      function updatePaginationControls() {
         const info = table.page.info();
-        const totalPages = info.pages;
         const currentPage = info.page + 1;
-        let pageNumbersHtml = '';
+        const totalPages = info.pages;
 
-        if (totalPages > 1) {
-          if (totalPages <= 5) {
-            for (let i = 1; i <= totalPages; i++) {
-              pageNumbersHtml += `<button class="page-number-btn ${i === currentPage ? 'active' : ''}" data-page="${i - 1}">${i}</button>`;
-            }
-          } else {
-            const pageList = [1];
-            if (currentPage > 4) pageList.push('...');
-            for (let i = currentPage - 1; i <= currentPage + 1; i++) {
-              if (i > 1 && i < totalPages) pageList.push(i);
-            }
-            if (currentPage < totalPages - 3) pageList.push('...');
-            if (!pageList.includes(totalPages)) pageList.push(totalPages);
-
-            pageList.forEach(page => {
-              if (page === '...') {
-                pageNumbersHtml += `<span class="dots">...</span>`;
-              } else {
-                pageNumbersHtml += `<button class="page-number-btn ${page === currentPage ? 'active' : ''}" data-page="${page - 1}">${page}</button>`;
-              }
-            });
-          }
-        }
-
-        $('#pageNumbers').html(pageNumbersHtml);
+        // Disable/enable based on current page
         $('#prevPage').prop('disabled', currentPage === 1);
         $('#nextPage').prop('disabled', currentPage === totalPages);
       }
 
-      // ✅ Trigger only when DataTable is drawn
+      // ✅ When DataTable is redrawn
       table.on('draw', function () {
-        updatePagination();
+        updatePaginationControls();
       });
 
-      // ✅ Navigation controls
+      // ✅ Navigation event handlers
       $('#prevPage').on('click', function () {
         table.page('previous').draw('page');
       });
@@ -1997,10 +1970,6 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
         table.page('next').draw('page');
       });
 
-      $(document).on('click', '.page-number-btn', function () {
-        const page = $(this).data('page');
-        table.page(page).draw('page');
-      });
 
 
       // ===================================================================== //

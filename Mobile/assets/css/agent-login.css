@@ -91,7 +91,7 @@ body {
   backdrop-filter: blur(10px);
 }
 
-/* Enhanced Glassmorphic Login Container */
+/* Default login container */
 .login-container {
   width: 520px; /* Optimal size */
   padding: 40px; /* Improved spacing */
@@ -105,7 +105,47 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  /* border: 1px solid black; */
 }
+
+/* Base responsive styling with clamp for smooth width transition */
+.login-container {
+  width: clamp(350px, 65%, 500px); /* Adapts between 300px and 500px smoothly */
+  padding: 20px;
+  border-radius: 18px;
+  
+}
+
+.form-group label,
+.form-control,
+.back-btn {
+  font-size: 14px;
+}
+
+.form-control {
+  padding: 10px;
+}
+
+.back-btn {
+  font-size: 14px;
+  padding: 8px 16px;
+  top: 14px;
+  left: 14px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 .fields-container {
   width: 100%;
@@ -188,28 +228,29 @@ body {
   color: #007bff;
 }
 
-/* Forgot Password & Register Link */
+/* Forgot Password & Register Link Container */
 .fp-container {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   align-items: center;
   font-size: 14px;
+  gap: 10px; /* Add space between links if needed */
   margin: 15px 0 30px 0;
-  padding: 0px 5px;
-  position: relative; /* Ensure relative positioning for absolute flag */
+  padding: 0 8px;
+  color: #2c2c2c;
 }
 
-/* Forgot Password link */
+/* Forgot Password & Register Links */
 .fp-container a {
-  color: rgb(44, 44, 44); /* Soft white */
+  color: #2c2c2c; /* Clean neutral color */
   font-size: 14px;
   text-decoration: none;
-  transition: color 0.3s ease, text-shadow 0.3s ease;
+  font-weight: 500;
+  transition: color 0.2s ease-in-out, text-decoration 0.2s ease-in-out;
 }
 
 .fp-container a:hover {
-  color: #116530;
-  text-shadow: 0px 0px 8px rgba(255, 255, 255, 0.6); /* Glow effect */
+  color: #242424; /* Accent color on hover */
   text-decoration: underline;
 }
 
@@ -233,22 +274,27 @@ body {
   display: block;
 }
 
-/* Login Button */
+
+
+/* Enhanced Flat Login Button */
 #LoginButton {
   width: 100%;
   padding: 12px;
   font-size: 14px;
-  font-weight: bold;
+  font-weight: 500;
+  border: 1px solid #116530; /* Subtle border for flat look */
   border-radius: 6px;
-  border: none;
-  background-color: #1f1f1f;
+  background-color: #116530f6; /* Your theme green */
   color: white;
-  transition: background-color 0.3s ease;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
 }
 
 #LoginButton:hover {
-  background-color: #0e4c24;
+  background-color: #0e4c24; /* Slightly darker green */
+  border-color: #0e4c24;
 }
+
 
 /* Alert messages */
 .message-login {
@@ -305,46 +351,15 @@ body {
   color: #6c757d;
 }
 
-
-/* Responsive Styles */
-@media (max-width: 1440px) {
-  .login-container {
-    width: 450px;
-    height: auto;
-    padding: 25px;
-  }
-  .form-group label {
-    font-size: 15px;
-  }
-  .form-control {
-    font-size: 14px;
-    padding: 10px;
-  }
-}
-
-@media (max-width: 1280px) {
-  .login-container {
-    width: 400px;
-  }
-  .form-group label {
-    font-size: 14px;
-  }
-  .form-control {
-    font-size: 13px;
-    padding: 9px;
-  }
-  .back-btn {
-    font-size: 15px;
-    padding: 9px 18px;
-    top: 15px;
-    left: 15px;
-  }
-}
-
+/* ≤ 1024px (Tablets and small laptops) */
 @media (max-width: 1024px) {
   .login-container {
     width: 380px;
     padding: 20px;
+    background: transparent;
+    backdrop-filter: none;
+    box-shadow: none;
+    border: none;
   }
   .form-group label {
     font-size: 13px;
@@ -359,10 +374,12 @@ body {
   }
 }
 
-@media (max-width: 991px) {
+/* ≤ 900px (Mid tablets) */
+@media (max-width: 900px) {
   .login-container {
-    width: 350px;
-    border-radius: 18px;
+    width: 70%;
+    padding: 24px;
+    border: none;
     background: transparent;
     backdrop-filter: none;
     box-shadow: none;
@@ -383,48 +400,21 @@ body {
   }
 }
 
-@media (max-width: 768px) {
-  .login-container {
-    width: 320px;
-    padding: 18px;
-    border-radius: 18px;
-    background: transparent;
-    backdrop-filter: none;
-    box-shadow: none;
-    border: none;
-  }
-  .form-group label {
-    font-size: 12px;
-  }
-  .form-control {
-    font-size: 11px;
-    padding: 7px;
-  }
-  .back-btn {
-    font-size: 12px;
-    padding: 6px 12px;
-    top: 10px;
-    left: 10px;
-  }
-
-  
-}
-
+/* ≤ 600px (Large phones) */
 @media (max-width: 600px) {
   .login-container {
-    width: 100%;
-    padding: 15px;
-    border-radius: 18px;
+    width: 85%;
+    padding: 20px;
     background: transparent;
     backdrop-filter: none;
     box-shadow: none;
     border: none;
   }
-  .form-group label {
+  .form-group label,
+  .form-control {
     font-size: 11px;
   }
   .form-control {
-    font-size: 11px;
     padding: 6px;
   }
   .back-btn {
@@ -437,44 +427,55 @@ body {
   .back-btn span {
     display: none;
   }
-  
 }
 
+/* ≤ 480px (Mid-size phones) */
 @media (max-width: 480px) {
   .login-container {
-    width: 100%;
-    padding: 30px;
-    border-radius: 18px;
-    background: transparent;
-    backdrop-filter: none;
-    box-shadow: none;
-    border: none;
+    width: 90%;
+    padding: 18px;
   }
-  .form-group label {
+  .form-group label,
+  .form-control {
     font-size: 10px;
   }
   .form-control {
-    font-size: 10px;
     padding: 5px;
   }
   .back-btn {
     font-size: 16px;
-    padding: 10px; /* Balanced padding */
+    padding: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    }
+  }
 
-    .back-btn i {
-      font-size: 20px; /* Increased size for better visibility */
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+  .back-btn i {
+    font-size: 20px;
+  }
 
-    .back-btn span {
-        display: none;
-    }
+  .back-btn span {
+    display: none;
+  }
+}
 
+/* ≤ 400px (Small phones) */
+@media (max-width: 400px) {
+  .login-container {
+    width: 95%;
+    padding: 10px;
+    
+  }
+  .form-group label,
+  .form-control {
+    font-size: 9px;
+  }
+  .form-control {
+    padding: 4px;
+  }
+  .back-btn {
+    font-size: 14px;
+    padding: 8px;
+  }
 }

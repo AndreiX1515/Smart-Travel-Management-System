@@ -22,17 +22,26 @@ session_start();
     <?php include "../Mobile/includes/sidebar.php"; ?>
 
     <div class="main-content-container">
-      <!-- <div class="navbar">
-        <div class="button-wrapper">
-          <button class="round-btn">
-            <i class="fas fa-chevron-left"></i>
-          </button> 
-        </div>
 
-        <div class="title-page-wrapper">
-          <h5 class="title-page" id="page-title">Payment</h5>
+      <div class="navbar">
+        <div class="page-header-wrapper">
+
+          <div class="page-header-top">
+            <!-- <div class="back-btn-wrapper">
+              <button class="back-btn" id="logout-btn">
+                <i class="fas fa-chevron-left"></i>
+              </button>
+            </div> -->
+          </div>
+
+          <div class="page-header-content">
+            <div class="page-header-text">
+              <h5 class="header-title">Payment Details</h5>
+            </div>
+          </div>
+
         </div>
-      </div> -->
+      </div>
 
 
       <?php
@@ -127,9 +136,9 @@ session_start();
             <div class="subscription">
 
               <script>
-                document.addEventListener("DOMContentLoaded", function() {
+                document.addEventListener("DOMContentLoaded", function () {
                   document.querySelectorAll('.billing-card').forEach(card => {
-                    card.addEventListener('click', function() {
+                    card.addEventListener('click', function () {
                       // Remove active state from all cards
                       document.querySelectorAll('.billing-card').forEach(c => {
                         c.classList.remove('active');
@@ -195,7 +204,7 @@ session_start();
                 $formattedPrice = number_format($totalPrice, 2); // Format to 2 decimal places
                 $downpayment = $res1['pax'] * 1000;
                 $formattedDP = number_format($downpayment, 2); // Format to 2 decimal places
-
+            
                 // Get additional fields
                 $flightDate = $res1['onboardFlightSched'];
                 $packageName = $res1['packageName'];
@@ -263,9 +272,10 @@ session_start();
 
             <form id="paymentForm" enctype="multipart/form-data">
               <hr>
-              <input type="hidden" value="<?php echo $_SESSION['client_accountId']; ?>" name="agentAccountId">
+              <input type="hidden" value="<?php echo $_SESSION['client_accountId'];?>" name="agentAccountId">
               <input type="hidden" value="<?php echo $transactionNumber; ?>" name="transactNo">
-              <input type="number" class="form-control" name="downpayment" step="0.01" min="<?php echo $downpayment; ?>" max="<?php echo $totalPrice; ?>" placeholder="Enter Downpayment Amount" required>
+              <input type="number" class="form-control" name="downpayment" step="0.01" min="<?php echo $downpayment; ?>"
+                max="<?php echo $totalPrice; ?>" placeholder="Enter Downpayment Amount" required>
 
               <h6 class="mt-4">Attach Proof/Screenshot of transaction:</h6>
               <input type="file" id="attachment" class="attachment" name="proofs[]" accept="image/*" required>
@@ -277,7 +287,8 @@ session_start();
                     <input type="checkbox" id="termsCheckbox" class="ms-1 me-3" required>
                     <div class="checkbox-text">
                       <span>
-                        By clicking this, I agree to Smart Travel <a href="#" class="terms-link">Terms & Conditions</a> and
+                        By clicking this, I agree to Smart Travel <a href="#" class="terms-link">Terms & Conditions</a>
+                        and
                         <a href="#" class="privacy-link">Privacy Policy</a>
                       </span>
                     </div>
@@ -287,7 +298,8 @@ session_start();
                   </button>
             </form>
 
-            <button type="button" class="reserve-button btn btn-secondary" data-bs-toggle="modal" data-bs-target="#payLaterModal">
+            <button type="button" class="reserve-button btn btn-secondary" data-bs-toggle="modal"
+              data-bs-target="#payLaterModal">
               Pay Later
             </button>
 
@@ -328,13 +340,12 @@ session_start();
         <!-- Footer -->
         <div class="modal-footer pay-now-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-success" id="confirmPayment" >Confirm</button>
+          <button type="button" class="btn btn-success" id="confirmPayment">Confirm</button>
         </div>
       </div>
 
     </div>
   </div>
-
 
   <!-- Pay Later Modal (Centered) -->
   <div class="modal fade" id="payLaterModal" tabindex="-1" aria-labelledby="payLaterLabel" aria-hidden="true">
@@ -353,19 +364,20 @@ session_start();
         <!-- Main Content -->
         <div class="modal-body pay-later-body">
           <p>Your booking will be placed under <strong>"Reserved"</strong> status.</p>
-          <p class="pay-later-secondary">Failure to complete the payment within the given timeframe may result in cancellation.</p>
+          <p class="pay-later-secondary">Failure to complete the payment within the given timeframe may result in
+            cancellation.</p>
         </div>
 
         <!-- Footer -->
         <div class="modal-footer pay-later-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-success" id="confirmLogout" data-bs-toggle="modal" data-bs-target="#successModal">Confirm</button>
+          <button type="button" class="btn btn-success" id="confirmLogout" data-bs-toggle="modal"
+            data-bs-target="#successModal">Confirm</button>
         </div>
       </div>
 
     </div>
   </div>
-
 
   <!-- Booking Accept Modal - Reserved -->
   <div class="modal fade" id="successModalLater" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
@@ -382,7 +394,8 @@ session_start();
 
           <div class="text-content">
             <h4>Successfully Booked!</h4>
-            <p>Your booking transaction <strong><?php echo $transactionNumber; ?></strong> has been successfully <strong>Booked!</strong>  Please wait for a confirmation email, which will be sent to you shortly.</p>
+            <p>Your booking transaction <strong><?php echo $transactionNumber; ?></strong> has been successfully
+              <strong>Booked!</strong> Please wait for a confirmation email, which will be sent to you shortly.</p>
           </div>
 
         </div>
@@ -392,7 +405,6 @@ session_start();
       </div>
     </div>
   </div>
-
 
   <!-- Booking Accept Modal - Pending -->
   <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
@@ -409,7 +421,8 @@ session_start();
 
           <div class="text-content">
             <h4>Successfully Booked!</h4>
-            <p>Your booking transaction <strong><?php echo $transactionNumber; ?></strong> has been successfully <strong>Booked!</strong> Please wait for a confirmation email, which will be sent to you shortly.</p>
+            <p>Your booking transaction <strong><?php echo $transactionNumber; ?></strong> has been successfully
+              <strong>Booked!</strong> Please wait for a confirmation email, which will be sent to you shortly.</p>
 
           </div>
         </div>
@@ -421,21 +434,13 @@ session_start();
   </div>
 
 
-  
-
-
-
-
-
-
-
   <?php require "../Agent Section/includes/scripts.php"; ?>
 
 
   <!-- Script for Pay Later Modal -->
   <script>
-    $(document).ready(function() {
-    $("#confirmLogout").click(function(event) {
+    $(document).ready(function () {
+      $("#confirmLogout").click(function (event) {
         event.preventDefault(); // Prevent default modal opening behavior
 
         let hasErrors = false;
@@ -446,62 +451,62 @@ session_start();
 
         // Validate Required Field
         if (requiredField === "") {
-            $("#requiredFieldError").text("This field is required.");
-            hasErrors = true;
+          $("#requiredFieldError").text("This field is required.");
+          hasErrors = true;
         }
 
         if (!hasErrors) {
-            // No errors, proceed with showing the modal
-            $("#payLaterModal").modal("hide");
-            $("#successModal").modal("show");
+          // No errors, proceed with showing the modal
+          $("#payLaterModal").modal("hide");
+          $("#successModal").modal("show");
         }
-    });
+      });
 
-    // ✅ AJAX Logout Request & Redirect on "Got it" Click
-    $("#okButton").click(function() {
+      // ✅ AJAX Logout Request & Redirect on "Got it" Click
+      $("#okButton").click(function () {
         $.ajax({
-            url: "../Mobile/function/client-logout.php",
-            type: "POST",
-            dataType: "json",
-            beforeSend: function() {
-                console.log("Clearing session...");
-            },
-            success: function(response) {
-                console.log("Server Response:", response);
+          url: "../Mobile/function/client-logout.php",
+          type: "POST",
+          dataType: "json",
+          beforeSend: function () {
+            console.log("Clearing session...");
+          },
+          success: function (response) {
+            console.log("Server Response:", response);
 
-                if (response && response.success) {
-                    console.log("Logout successful. Redirecting...");
+            if (response && response.success) {
+              console.log("Logout successful. Redirecting...");
 
-                    $("#successModal").modal("hide"); // Ensure modal hides first
-                    setTimeout(function() {
-                        window.location.href = "../Mobile/flightsched.php";
-                    }, 500); // Small delay for smooth transition
+              $("#successModal").modal("hide"); // Ensure modal hides first
+              setTimeout(function () {
+                window.location.href = "../Mobile/flightsched.php";
+              }, 500); // Small delay for smooth transition
 
-                } else {
-                    let errorMsg = response.message ? response.message : "Unexpected error occurred.";
-                    alert("Error: " + errorMsg);
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error("AJAX Error:", status, error);
-                alert("An error occurred while processing your request. Please try again.");
+            } else {
+              let errorMsg = response.message ? response.message : "Unexpected error occurred.";
+              alert("Error: " + errorMsg);
             }
+          },
+          error: function (xhr, status, error) {
+            console.error("AJAX Error:", status, error);
+            alert("An error occurred while processing your request. Please try again.");
+          }
         });
-    });
+      });
 
-    // ✅ Redirect when modal is closed (by clicking outside or pressing ESC)
-    $("#successModal").on("hidden.bs.modal", function() {
+      // ✅ Redirect when modal is closed (by clicking outside or pressing ESC)
+      $("#successModal").on("hidden.bs.modal", function () {
         window.location.href = "../Mobile/flightsched.php";
+      });
     });
-});
 
 
   </script>
 
 
   <script>
-  $(document).ready(function() {
-    $("#paymentForm").on("submit", function(event) {
+    $(document).ready(function () {
+      $("#paymentForm").on("submit", function (event) {
         event.preventDefault(); // Prevent default form submission
 
         $('#message-payment').html(''); // Clear previous messages
@@ -517,97 +522,97 @@ session_start();
 
         // Downpayment Validation
         if (downpayment === "" || isNaN(downpayment)) {
-            $("input[name='downpayment']").after('<small class="error-text text-danger">Please enter a valid amount.</small>');
-            hasErrors = true;
+          $("input[name='downpayment']").after('<small class="error-text text-danger">Please enter a valid amount.</small>');
+          hasErrors = true;
         } else if (parseFloat(downpayment) < minDownpayment) {
-            $("input[name='downpayment']").after(`<small class="error-text text-danger">Minimum downpayment is ${minDownpayment}.</small>`);
-            hasErrors = true;
+          $("input[name='downpayment']").after(`<small class="error-text text-danger">Minimum downpayment is ${minDownpayment}.</small>`);
+          hasErrors = true;
         }
 
         // Attachment Validation
         if (attachment === "") {
-            $("#attachment").after('<small class="error-text text-danger">Proof of transaction is required.</small>');
-            hasErrors = true;
+          $("#attachment").after('<small class="error-text text-danger">Proof of transaction is required.</small>');
+          hasErrors = true;
         }
 
         // Terms Checkbox Validation
         if (!termsChecked) {
-            $('#message-payment').html('<div class="alert alert-danger">You must agree to the Terms & Conditions and Privacy Policy.</div>');
-            hasErrors = true;
+          $('#message-payment').html('<div class="alert alert-danger">You must agree to the Terms & Conditions and Privacy Policy.</div>');
+          hasErrors = true;
         }
 
         // Prevent AJAX submission & modal opening if errors exist
         if (hasErrors) {
-            return;
+          return;
         }
 
         let formData = new FormData(this);
         formData.append('pay', '1'); // Add identifier for processing
 
         $.ajax({
-            url: "../Mobile/function/agent-addBookingPayment-code-m.php",
-            type: "POST",
-            data: formData,
-            contentType: false,
-            processData: false,
-            beforeSend: function() {
-                $('#message-payment').html('<div class="alert alert-info">Processing payment...</div>');
-            },
-            success: function(response) {
-                console.log("Server Response:", response);
+          url: "../Mobile/function/agent-addBookingPayment-code-m.php",
+          type: "POST",
+          data: formData,
+          contentType: false,
+          processData: false,
+          beforeSend: function () {
+            $('#message-payment').html('<div class="alert alert-info">Processing payment...</div>');
+          },
+          success: function (response) {
+            console.log("Server Response:", response);
 
-                let res;
-                try {
-                    res = typeof response === "string" ? JSON.parse(response) : response;
+            let res;
+            try {
+              res = typeof response === "string" ? JSON.parse(response) : response;
 
-                    if (res.status === "success") {
-                        let bookingStatus = res.bookingStatus; // Get bookingStatus from response
-                        let transactionNumber = res.transactionNumber; // Get transactionNumber
+              if (res.status === "success") {
+                let bookingStatus = res.bookingStatus; // Get bookingStatus from response
+                let transactionNumber = res.transactionNumber; // Get transactionNumber
 
-                        // ✅ If "Pay Later", show Reserved modal
-                        if (bookingStatus === "Pay Later") {
-                            $("#successModalLater").modal("show");
+                // ✅ If "Pay Later", show Reserved modal
+                if (bookingStatus === "Pay Later") {
+                  $("#successModalLater").modal("show");
 
-                        // ✅ Otherwise, show Booked modal
-                        } else {
-                            $("#successModal").modal("show");
-                        }
-
-                    } else {
-                        $('#message-payment').html('<div class="alert alert-danger">' + res.message + '</div>');
-                        console.error("Payment Error:", res.message);
-                    }
-                } catch (error) {
-                    $('#message-payment').html('<div class="alert alert-danger">Unexpected error. Please try again.</div>');
-                    console.error("JSON Parse Error:", error);
+                  // ✅ Otherwise, show Booked modal
+                } else {
+                  $("#successModal").modal("show");
                 }
-            },
-            error: function(xhr, status, error) {
-                $('#message-payment').html('<div class="alert alert-danger">Error processing payment. Please try again.</div>');
-                console.error("AJAX Error:", status, error);
-            }
-        });
-    });
 
-   // ✅ Ensure modal allows closing by clicking outside or pressing ESC
-   $("#successModal").modal({
+              } else {
+                $('#message-payment').html('<div class="alert alert-danger">' + res.message + '</div>');
+                console.error("Payment Error:", res.message);
+              }
+            } catch (error) {
+              $('#message-payment').html('<div class="alert alert-danger">Unexpected error. Please try again.</div>');
+              console.error("JSON Parse Error:", error);
+            }
+          },
+          error: function (xhr, status, error) {
+            $('#message-payment').html('<div class="alert alert-danger">Error processing payment. Please try again.</div>');
+            console.error("AJAX Error:", status, error);
+          }
+        });
+      });
+
+      // ✅ Ensure modal allows closing by clicking outside or pressing ESC
+      $("#successModal").modal({
         backdrop: true,  // Allow closing by clicking outside
         keyboard: true   // Allow closing with ESC key
-    });
+      });
 
-    // ✅ Redirect when "Got it" is clicked
-    $("#okButton").on("click", function() {
+      // ✅ Redirect when "Got it" is clicked
+      $("#okButton").on("click", function () {
         $("#successModal").modal("hide"); // Ensure modal hides first
-        setTimeout(function() {
-            window.location.href = "../Mobile/flightsched.php";
+        setTimeout(function () {
+          window.location.href = "../Mobile/flightsched.php";
         }, 500); // Small delay for a smooth transition
-    });
+      });
 
-    // ✅ Redirect when modal is closed (by clicking outside or pressing ESC)
-    $("#successModal").on("hidden.bs.modal", function() {
+      // ✅ Redirect when modal is closed (by clicking outside or pressing ESC)
+      $("#successModal").on("hidden.bs.modal", function () {
         window.location.href = "../Mobile/flightsched.php";
+      });
     });
-});
 
 
 
