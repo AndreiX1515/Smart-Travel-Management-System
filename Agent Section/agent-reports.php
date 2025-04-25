@@ -166,8 +166,8 @@ error_reporting(E_ALL);
                 </select>
               </div>
 
-              <input name="agentCode" value="<?php echo $agentCode; ?>">
-              <input name="accountId" value="<?php echo $accountId; ?>">
+              <input name="agentCode" value="<?php echo $agentCode; ?>" hidden>
+              <input name="accountId" value="<?php echo $accountId; ?>" hidden>
 
               <!-- Submit Button -->
               <div class="content-footer">
@@ -196,7 +196,7 @@ error_reporting(E_ALL);
     </div>
   </div>
 
-  <!-- Optional Script to Toggle Selectors -->
+  <!-- Script to Toggle Selectors -->
   <script>
     // Report Type Radio Buttons
     const flightRadio = document.getElementById('flightReport');
@@ -454,30 +454,40 @@ error_reporting(E_ALL);
     });
 
     // Download report (this could be CSV or Excel)
-    document.getElementById('downloadReport').addEventListener('click', function() {
+    document.getElementById('downloadReport').addEventListener('click', function () 
+    {
       console.log('Download button clicked');
-      const formData = new FormData(document.getElementById("reportForm"));
-      formData.append('format', 'csv'); // or 'excel' based on your choice
 
-      fetch('generate-report.php', {
-        method: 'POST',
-        body: formData
-      })
-      .then(response => {
-        console.log('Response received for report download:', response);
-        return response.blob();
-      })
-      .then(blob => {
-        console.log('Blob received for report download');
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = 'report.csv';  // Set the file name
-        link.click();
-        console.log('Download initiated');
-      })
-      .catch(error => {
-        console.error('Error during report download:', error);
-      });
+      const table = document.getElementById('dataTable');
+      if (!table || table.style.display === 'none') 
+      {
+        alert('No data to export.');
+        return;
+      }
+
+      let tableHTML = table.outerHTML.replace(/ /g, '%20');
+
+      const filename = 'flight-report.xls';
+      const dataType = 'application/vnd.ms-excel';
+
+      const downloadLink = document.createElement("a");
+      document.body.appendChild(downloadLink);
+
+      if (navigator.msSaveOrOpenBlob) 
+      {
+        // For IE
+        const blob = new Blob(['\ufeff', tableHTML], { type: dataType });
+        navigator.msSaveOrOpenBlob(blob, filename);
+      } 
+      else 
+      {
+        // For other browsers
+        downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
+        downloadLink.download = filename;
+        downloadLink.click();
+      }
+
+      document.body.removeChild(downloadLink);
     });
   </script>
 
