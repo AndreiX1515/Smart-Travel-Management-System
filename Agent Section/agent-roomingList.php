@@ -158,7 +158,7 @@ require "../conn.php";
           </div>
           
           <div class="table-footer">
-            <button class="btn btn-success btn-sm" onclick="generateExcel()">Generate to .xlsx file</button>
+            <button class="btn btn-success btn-sm" onclick="generateExcel()">Download</button>
             <button class="btn btn-success btn-sm" id="saveAssignments">Save</button>
           </div>
 
