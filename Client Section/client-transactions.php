@@ -207,7 +207,7 @@ require "../conn.php";
       {
         dom: 'rtip',
         language: { emptyTable: "No Transaction Records Available" },
-        order: [[0, 'desc']], // Sort by Transaction ID descending
+        order: [[4, 'asc']], // Sort by Flight Date descending
         scrollX: true, // enable horizontal scrolling to prevent text overflow
         scrollY: '66.1vh',
         paging: true,

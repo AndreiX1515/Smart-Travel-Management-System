@@ -97,7 +97,7 @@ $position = htmlspecialchars(strtoupper($empId));
 			<div class="collapse" id="manageBookingMenu">
 				<ul class="nav flex-column managebooking-menu-wrapper">
 					<li class="nav-item transaction">
-						<a class="nav-link page-button" href="../Employee Section/emp-tablePending.php" data-page-name="For Approvals - Booking">Booking</a>
+						<a class="nav-link page-button" href="../Employee Section/emp-tablePending.php" data-page-name="For Approvals - Booking">No Downpayment</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link page-button" href="../Employee Section/emp-tableRequest.php" data-page-name="For Approvals - Request">Request</a>

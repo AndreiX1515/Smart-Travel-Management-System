@@ -124,6 +124,10 @@ $current_date = date('D, F d, Y');
         <i class="fas fa-file-invoice"></i> Payment History
       </a>
 
+      <a href="../Client Section/client-reports.php" class="page-button my-0" data-page-name="Sales Report">
+        <i class="fas fa-file-invoice"></i> Sales Report
+      </a>
+
       <a href="#" class="changePassword page-button my-0" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
         <i class="fas fa-lock"></i> Change Password
       </a>

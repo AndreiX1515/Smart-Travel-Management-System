@@ -148,10 +148,10 @@ require "../conn.php";
               <li data-filter="Cancelled">Cancelled
                 <span class="badge">
                   <?php
-                  $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
-                WHERE accountId = $accountId AND status = 'Cancelled'";
-                  $result = mysqli_query($conn, $sql);
-                  echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+                    $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
+                            WHERE accountId = $accountId AND status = 'Cancelled'";
+                    $result = mysqli_query($conn, $sql);
+                    echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
                   ?>
                 </span>
               </li>
@@ -193,9 +193,9 @@ require "../conn.php";
                             JOIN branch br ON b.agentCode = br.branchAgentCode
                             LEFT JOIN payment pa ON pa.transactNo = b.transactNo AND pa.paymentStatus = 'Approved'
                             LEFT JOIN request r ON r.transactNo = b.transactNo AND r.requestStatus = 'Confirmed'
-                            WHERE b.accountId = $accountId 
+                            WHERE b.accountId = $accountId
                             GROUP BY b.transactNo
-                            ORDER BY b.transactNo DESC";
+                            ORDER BY `FLIGHT DATE`";
 
                     $res1 = $conn->query($sql1);
 
@@ -243,24 +243,19 @@ require "../conn.php";
                                     <span><strong>Contact Number: </strong> " . $row['CONTACT PHONE'] . "</span>
                                   </div>
                                 </td>
-      
                                 <td>{$row['branchName']}</td>
-                                
                                 <td>{$row['FLIGHT DATE']}</td>
                                 <td style='text-align: center; font-weight: bold;'>
                                   {$row['TOTAL PAX']}
                                 </td>
-                                <td>{$row['PackagePrice']}</td>
-                                <td>{$row['TotalRequestAmount']}</td>
-
+                                <td>₱ {$row['PackagePrice']}</td>
+                                <td>₱ {$row['TotalRequestAmount']}</td>
                                 <td>
-                                    <div class='d-flex flex-column'>
-                                        <span><strong>Amount Paid: </strong>" . $row['TotalAmountPaid'] . " </span>
-                                        <span><strong>Balance: </strong> " . $balance . "</span>
-                                    </div>
+                                  <div class='d-flex flex-column'>
+                                    <span><strong>Amount Paid: </strong> ₱ " . $row['TotalAmountPaid'] . " </span>
+                                    <span><strong>Balance: </strong> ₱ " . $balance . "</span>
+                                  </div>
                                 </td>
-
-                              
                                 <td>
                                   <span class='badge p-2 rounded-pill {$statusClass}'>
                                     {$status}
@@ -270,94 +265,7 @@ require "../conn.php";
                       }
                     }
                   } 
-                  else 
-                  {
-                    $sql1 = "SELECT b.transactNo AS `T.N`, p.packageName AS `PACKAGE`, br.branchName as branchName,
-                              DATE_FORMAT(b.bookingDate, '%m-%d-%Y') AS `TRANSACTION DATE`, b.bookingType as bookingType,
-                              DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y') AS `FLIGHT DATE`,
-                              b.pax AS `TOTAL PAX`, CONCAT(b.lName, ', ', b.fName, ' ', CASE WHEN b.mName = 'N/A' 
-                              THEN '' ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ', CASE WHEN b.suffix = 'N/A' THEN '' 
-                              ELSE b.suffix END) AS `CONTACT NAME`, b.email AS `CONTACT EMAIL`,
-                              CONCAT(b.countryCode, ' ', b.contactNo) AS `CONTACT PHONE`, b.status AS `STATUS`, 
-                              COALESCE(SUM(r.requestCost), 0) AS TotalRequestAmount, b.totalPrice AS PackagePrice, 
-                              COALESCE(SUM(pa.amount), 0) AS TotalAmountPaid
-                            FROM booking b
-                            LEFT JOIN flight f ON b.flightId = f.flightId
-                            LEFT JOIN package p ON b.packageId = p.packageId
-                            LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
-                            LEFT JOIN company c ON a.companyId = c.companyId
-                            LEFT JOIN client cl ON b.accountType = 'Client' AND b.accountId = cl.accountId
-                            LEFT JOIN company cc ON cl.companyId = cc.companyId
-                            JOIN branch br ON b.agentCode = br.branchAgentCode
-                            LEFT JOIN payment pa ON pa.transactNo = b.transactNo AND pa.paymentStatus = 'Approved'
-                            LEFT JOIN request r ON r.transactNo = b.transactNo AND r.requestStatus = 'Confirmed'
-                            WHERE b.agentCode = '$agentCode' 
-                              AND (COALESCE(c.companyId, '') = COALESCE('$companyId', '') 
-                              OR COALESCE(cc.companyId, '') = COALESCE('$companyId', '')) 
-                            GROUP BY b.transactNo
-                            ORDER BY b.transactNo DESC";
-
-                    $res1 = $conn->query($sql1);
-
-                    if ($res1->num_rows > 0) 
-                    {
-                      while ($row = $res1->fetch_assoc()) 
-                      {
-                        $transactNo = $row['T.N'];
-                        $pax = $row['TOTAL PAX'];
-
-                        $status = isset($row['STATUS']) ? $row['STATUS'] : 'Unknown';
-                        $statusClass = '';
-
-                        switch ($status) 
-                        {
-                          case 'Confirmed':
-                            $statusClass = 'bg-success text-white'; // Green background, white text
-                            break;
-                          case 'Cancelled':
-                            $statusClass = 'bg-danger text-white'; // Red background, white text
-                            break;
-                          case 'Pending':
-                            $statusClass = 'bg-warning text-dark';
-                            break;
-                          default:
-                            $statusClass = 'bg-secondary text-white';
-                        }
-
-                        $packagePrice = $row['PackagePrice'] ?? 0;
-                        $requestTotal = $row['TotalRequestAmount'] ?? 0;
-                        $amountPaid = $row['TotalAmountPaid'] ?? 0;
-                        $balance = max(($packagePrice + $requestTotal) - $amountPaid, 0); // Prevent negative balances
-                        // <td>{$row['TRANSACTION DATE']}</td>
-
-                        echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($transactNo) . "'>
-                                <td>{$transactNo}</td>
-                                <td>{$row['CONTACT NAME']}</td>
-                                <td>
-                                  <div class='d-flex flex-column'>
-                                    <span><strong>Email: </strong>" . $row['CONTACT EMAIL'] . "</span>
-                                    <span><strong>Contact Number: </strong>" . $row['CONTACT PHONE'] . "</span>
-                                  </div>
-                                </td>
-                                <td>{$row['branchName']}</td>
-                                
-                                <td>{$row['FLIGHT DATE']}</td>
-                                <td style='text-align: center; font-weight: bold;'>{$row['TOTAL PAX']}</td>
-                                <td>{$row['PackagePrice']}</td>
-                                <td>{$row['TotalRequestAmount']}</td>
-                                <td>{$row['TotalAmountPaid']}</td>
-                                <td>{$balance}</td>
-                                <td>
-                                  <span class='badge p-2 rounded-pill {$statusClass}'>
-                                    {$status}
-                                  </span>
-                                </td>
-                              </tr>";
-                      }
-                    } else {
-                      echo "<tr><td colspan='10'>No bookings found</td></tr>";
-                    }
-                  }
+                  
 
                   if ($res1) 
                   {
@@ -690,11 +598,14 @@ require "../conn.php";
 
   <!-- Status Sorting tabs -->
   <script>
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function() 
+    {
       const tabs = document.querySelectorAll("#booking-filter-tabs li");
 
-      tabs.forEach(tab => {
-        tab.addEventListener("click", function() {
+      tabs.forEach(tab => 
+      {
+        tab.addEventListener("click", function() 
+        {
           // Remove active class from all tabs
           tabs.forEach(t => t.classList.remove("active"));
           // Add active class to the clicked tab
@@ -703,7 +614,8 @@ require "../conn.php";
           let filterValue = this.getAttribute("data-filter");
 
           // Apply DataTables filtering (assuming your table uses DataTables)
-          if ($.fn.DataTable.isDataTable("#product-table")) {
+          if ($.fn.DataTable.isDataTable("#product-table")) 
+          {
             $('#product-table').DataTable().column(9).search(filterValue || '', true, false).draw();
           }
         });
@@ -713,13 +625,15 @@ require "../conn.php";
 
   <!-- DataTables #product-table -->
   <script>
-    $(document).ready(function() {
-      const table = $('#product-table').DataTable({
+    $(document).ready(function() 
+    {
+      const table = $('#product-table').DataTable(
+        {
         dom: 'rtip',
         language: {
           emptyTable: "No Transaction Records Available"
         },
-        order: [[0, 'desc']],
+        order: [[4, 'asc']],
         scrollX: false, // Ensure no horizontal scroll
         scrollY: '66.1vh',
         paging: true,
@@ -733,9 +647,6 @@ require "../conn.php";
           }
         ]
       });
-
-
-
 
       // Search Functionality
       $('#search').on('keyup', function() {
