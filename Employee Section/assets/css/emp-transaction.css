@@ -1,6 +1,96 @@
 .main-content {
   padding: 0px;
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Ensure it takes up the full height of its parent */
 }
+
+.tabs-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px;
+  margin-bottom: 10px;
+  border: 1px solid black;
+  height: 8vh; /* Fixed height for the tab container */
+}
+
+.table-container {
+  width: 100%;
+  gap: 5px;
+  flex-grow: 1; /* Allow it to grow and take up the remaining space */
+  display: flex;
+  flex-direction: column;
+  padding: 0px; /* Adds some padding around the container */
+  height: auto; /* Ensure it grows to fill the available space */
+  border: 1px solid black;
+}
+
+
+/* ==================================== */
+.navTabs-wrapper {
+  width: 50%;
+  padding: 0px;
+  /* margin: 10px 0px 10px 0px; */
+  display: flex; /* Make the container a flexbox */
+  gap: 10px; /* Added gap between each nav item */
+  /* border-radius: 15px; */
+  /* border: 1px solid black; */
+}
+
+.nav-pills {
+  display: flex; /* Ensure the nav-pills are in a row */
+  padding: 0; /* Remove default padding */
+  margin-right: 15px; /* Remove default margin */
+  list-style-type: none; /* Remove bullet points */
+}
+
+.nav-item {
+  margin-right: 10px; /* Added gap between nav items */
+}
+
+.navTabs-wrapper .nav-link {
+  background-color: transparent; /* Transparent background */
+  padding: 8px 14px;
+  transition: all 0.3s ease;
+  border-radius: 15px;
+  border: 1px solid gainsboro;
+  color: black;
+}
+
+.navTabs-wrapper .nav-link:hover {
+  border-color: #007bff; /* Change border color on hover */
+  background-color: rgba(
+    0,
+    123,
+    255,
+    0.1
+  ); /* Add slight blue background on hover */
+}
+
+.navTabs-wrapper .nav-link.active {
+  border-color: #007bff; /* Border color for active tab */
+  background-color: #007bff; /* Background color for active tab */
+  color: white; /* Change text color for active tab */
+}
+
+/* ==================================== */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* Table Container Styling */
 .table-container {

@@ -1,6 +1,8 @@
 <?php
 session_start();
 require "../conn.php";
+
+echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETTY_PRINT) . ");</script>";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -24,7 +26,23 @@ require "../conn.php";
     <div class="main-content-container">
 
       <div class="navbar">
-        <h5 class="title-page" id="page-title">Dashboard</h5>
+        <div class="page-header-wrapper">
+
+          <!-- <div class="page-header-top">
+            <div class="back-btn-wrapper">
+              <button class="back-btn" id="redirect-btn">
+                <i class="fas fa-chevron-left"></i>
+              </button>
+            </div>
+          </div> -->
+
+          <div class="page-header-content">
+            <div class="page-header-text">
+              <h5 class="header-title">Dashboard</h5>
+            </div>
+          </div>
+
+        </div>
       </div>
 
       <div class="main-content">
@@ -35,27 +53,28 @@ require "../conn.php";
           // print_r($_SESSION);
           // echo "</pre>";
           ?>
-          
+
           <!-- Cards First Row -->
           <div class="counts-wrapper">
 
             <!-- CARD 1 Current Transaction Counts-->
             <div class="card">
               <div class="header-counts">
-                  <div class="primary-pill">
-                      <h6 class="white-pill">Current Monthly Transaction</h6>
-                  </div>
+                <div class="primary-pill">
+                  <h6 class="white-pill">Current Monthly Transaction</h6>
+                </div>
 
-                  <div class="accent-pill mt-1">
-                    <h6 class="accent-pill"><?php echo date('F, Y'); ?></h6>
-                  </div>
+                <div class="accent-pill mt-1">
+                  <h6 class="accent-pill"><?php echo date('F, Y'); ?></h6>
+                </div>
               </div>
 
               <div class="card-content px-3">
                 <!-- Total Transaction, and Completed Transaction -->
                 <div class="row">
                   <!-- Total Transaction Card -->
-                  <div class="col-md-5 d-flex flex-row clickable-card" onclick="window.location.href='../Client Section/client-transactions.php'">
+                  <div class="col-md-5 d-flex flex-row clickable-card"
+                    onclick="window.location.href='../Client Section/client-transactions.php'">
                     <div class="card-icon icon-blue">
                       <i class="fas fa-calendar-alt"></i>
                     </div>
@@ -82,7 +101,8 @@ require "../conn.php";
                   </div>
 
                   <!-- Confirmed Transaction -->
-                  <div class="col-md-5 d-flex flex-row clickable-card" onclick="redirectToAgentTransaction('Confirmed')">
+                  <div class="col-md-5 d-flex flex-row clickable-card"
+                    onclick="redirectToAgentTransaction('Confirmed')">
                     <div class="card-icon icon-green">
                       <i class="fas fa-check-circle"></i>
                     </div>
@@ -120,7 +140,7 @@ require "../conn.php";
                       <?php
                       // Get session variables
                       // $accountId = $_SESSION['accountId'];
-
+                      
                       $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking 
                                                     WHERE status = 'Pending' AND accountId = '$accountId' 
                                                     AND MONTH(bookingDate) = MONTH(CURRENT_DATE()) 
@@ -149,7 +169,7 @@ require "../conn.php";
                       <?php
                       // Get session variables
                       // $accountId = $_SESSION['accountId'];
-
+                      
                       $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking 
                                                     WHERE status = 'Reserved' AND accountId = '$accountId' 
                                                     AND MONTH(bookingDate) = MONTH(CURRENT_DATE()) 
@@ -171,7 +191,8 @@ require "../conn.php";
                   </div>
 
                   <!-- Total Cancelled Transaction -->
-                  <div class="col-md-5 d-flex flex-row clickable-card" onclick="redirectToAgentTransaction('Cancelled')">
+                  <div class="col-md-5 d-flex flex-row clickable-card"
+                    onclick="redirectToAgentTransaction('Cancelled')">
                     <div class="card-icon icon-red">
                       <i class="fas fa-times-circle"></i>
                     </div>
@@ -179,7 +200,7 @@ require "../conn.php";
                       <?php
                       // Get session variables
                       // $accountId = $_SESSION['accountId'];
-
+                      
                       $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking 
                                                     WHERE status = 'Cancelled' AND accountId = '$accountId' 
                                                     AND MONTH(bookingDate) = MONTH(CURRENT_DATE()) 
@@ -207,9 +228,9 @@ require "../conn.php";
             <!-- CARD 2 - On Due -->
             <div class="card">
               <div class="header-counts">
-                  <div class="primary-pill">
-                      <h6 class="white-pill">On Due</h6>
-                  </div>
+                <div class="primary-pill">
+                  <h6 class="white-pill">On Due</h6>
+                </div>
               </div>
 
               <div class="card-content px-3">
@@ -223,7 +244,7 @@ require "../conn.php";
                       <?php
                       // Get session variables
                       // $accountId = $_SESSION['accountId'];
-
+                      
                       $days5Query = "SELECT COUNT(*) AS `bookingsDueIn5Days` FROM booking b 
                                         JOIN flight f ON b.flightId = f.flightId
                                         LEFT JOIN (SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) 
@@ -258,7 +279,7 @@ require "../conn.php";
                       <?php
                       // Assuming you already have a connection to your database
                       // $accountId = $_SESSION['accountId'];
-
+                      
                       $days10Query = "SELECT COUNT(*) AS bookingsDueIn10Days FROM booking b
                                           JOIN flight f ON b.flightId = f.flightId
                                           LEFT JOIN (SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) 
@@ -294,7 +315,7 @@ require "../conn.php";
                       <?php
                       // Assuming you already have a connection to your database
                       // $accountId = $_SESSION['accountId'];
-
+                      
                       $days20Query = "SELECT COUNT(*) AS bookingsDueIn20Days FROM booking b 
                                           JOIN flight f ON b.flightId = f.flightId
                                           LEFT JOIN (SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) 
@@ -329,7 +350,7 @@ require "../conn.php";
                       <?php
                       // Assuming you already have a connection to your database
                       // $accountId = $_SESSION['accountId'];
-
+                      
                       $days30Query = "SELECT COUNT(*) AS bookingsDueIn30Days FROM booking b 
                                           JOIN flight f ON b.flightId = f.flightId
                                           LEFT JOIN (SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) 
@@ -377,7 +398,7 @@ require "../conn.php";
                     </div>
                     <div class="side-content d-flex flex-column">
                       <?php
-                        $currentMonthQuery = "SELECT SUM(b.totalPrice + IFNULL(r.requestCost, 0)) AS totalSales
+                      $currentMonthQuery = "SELECT SUM(b.totalPrice + IFNULL(r.requestCost, 0)) AS totalSales
                                               FROM booking b
                                               LEFT JOIN request r 
                                                 ON r.transactNo = b.transactNo 
@@ -390,16 +411,15 @@ require "../conn.php";
                                                 AND MONTH(b.bookingDate) = MONTH(CURRENT_DATE)
                                                 AND YEAR(b.bookingDate) = YEAR(CURRENT_DATE)";
 
-                        // Execute the query
-                        $currentMonthResult = $conn->query($currentMonthQuery);
+                      // Execute the query
+                      $currentMonthResult = $conn->query($currentMonthQuery);
 
-                        // Get and format the result
-                        $currentMonthTotal = 0; // Default value if no result found
-                        if ($currentMonthResult && $currentMonthResult->num_rows > 0) 
-                        {
-                          $row = $currentMonthResult->fetch_assoc();
-                          $currentMonthTotal = (float)$row['totalSales']; // Cast to float
-                        }
+                      // Get and format the result
+                      $currentMonthTotal = 0; // Default value if no result found
+                      if ($currentMonthResult && $currentMonthResult->num_rows > 0) {
+                        $row = $currentMonthResult->fetch_assoc();
+                        $currentMonthTotal = (float) $row['totalSales']; // Cast to float
+                      }
                       ?>
                       <h5>₱ <?php echo number_format($currentMonthTotal, 2); ?></h5>
                       <p>CURRENT MONTH</p>
@@ -415,7 +435,7 @@ require "../conn.php";
                     </div>
                     <div class="side-content d-flex flex-column">
                       <?php
-                        $pastMonthQuery = "SELECT SUM(b.totalPrice + IFNULL(r.requestCost, 0)) AS totalSales
+                      $pastMonthQuery = "SELECT SUM(b.totalPrice + IFNULL(r.requestCost, 0)) AS totalSales
                                           FROM booking b
                                           LEFT JOIN request r ON r.transactNo = b.transactNo 
                                             AND r.requestStatus = 'Confirmed'
@@ -426,13 +446,13 @@ require "../conn.php";
                                             AND b.accountId = $accountId
                                             AND MONTH(b.bookingDate) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH)
                                             AND YEAR(b.bookingDate) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH)";
-                        
 
-                        $pastMonthResult = $conn->query($pastMonthQuery);
 
-                        $pastMonthTotal = ($pastMonthResult && $pastMonthResult->num_rows > 0)
-                          ? number_format($pastMonthResult->fetch_assoc()['totalSales'], 2)
-                          : "0.00";
+                      $pastMonthResult = $conn->query($pastMonthQuery);
+
+                      $pastMonthTotal = ($pastMonthResult && $pastMonthResult->num_rows > 0)
+                        ? number_format($pastMonthResult->fetch_assoc()['totalSales'], 2)
+                        : "0.00";
                       ?>
                       <h5>₱ <?php echo $pastMonthTotal; ?></h5>
                       <p>PAST MONTH</p>
@@ -447,15 +467,15 @@ require "../conn.php";
 
             <!-- CARD 4 -->
             <div class="card">
-              
-              <div class="header-counts mb-2">
-                  <div class="primary-pill">
-                    <h6 class="white-pill">Daily Currency Conversion</h6>
-                  </div>
 
-                  <div class="accent-pill">
-                    <a href="#" class="pill-button">View History</a>
-                  </div>
+              <div class="header-counts mb-2">
+                <div class="primary-pill">
+                  <h6 class="white-pill">Daily Currency Conversion</h6>
+                </div>
+
+                <div class="accent-pill">
+                  <a href="#" class="pill-button">View History</a>
+                </div>
               </div>
 
               <div class="card-body-currency">
@@ -516,11 +536,15 @@ require "../conn.php";
             <div class="tabs-list-wrapper">
               <ul class="nav nav-pills" id="pills-tab" role="tablist">
                 <li class="nav-item" role="presentation">
-                  <button class="nav-link active" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Flight Seats Tracker</button>
+                  <button class="nav-link active" id="pills-profile-tab" data-bs-toggle="pill"
+                    data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile"
+                    aria-selected="false">Flight Seats Tracker</button>
                 </li>
 
                 <li class="nav-item" role="presentation">
-                  <button class="nav-link " id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Pending and Requests</button>
+                  <button class="nav-link " id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home"
+                    type="button" role="tab" aria-controls="pills-home" aria-selected="true">Pending and
+                    Requests</button>
                 </li>
 
                 <!-- <li class="nav-item" role="presentation">
@@ -552,7 +576,7 @@ require "../conn.php";
                           // // Execute the SQL query
                           // $sql1 = "SELECT branchId, branchName FROM branch ORDER BY branchName ASC";
                           // $res1 = $conn->query($sql1);
-
+                          
                           // // Check if there are results
                           // if ($res1->num_rows > 0) {
                           //   // Loop through the results and generate options
@@ -581,7 +605,8 @@ require "../conn.php";
 
           <div class="tab-content" id="pills-tabContent">
 
-            <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
+            <div class="tab-pane fade show active" id="pills-profile" role="tabpanel"
+              aria-labelledby="pills-profile-tab" tabindex="0">
 
               <div class="flight-seat-container">
                 <!-- Flight Seat -->
@@ -600,7 +625,7 @@ require "../conn.php";
                             <th rowspan="2">PRICE</th>
                             <th rowspan="2"></th>
 
-                     <!-- <th rowspan="2">AIR + LAND</th>
+                            <!-- <th rowspan="2">AIR + LAND</th>
                           <th rowspan="2">LAND ONLY</th>
                           <th rowspan="2">WHOLESALE PRICE</th>
                           <th rowspan="2">RETAIL PRICE</th> 
@@ -668,24 +693,18 @@ require "../conn.php";
                           if ($result->num_rows > 0) {
                             while ($row = $result->fetch_assoc()) {
                               echo '<tr>';
-                              // echo '<td class="fw-bold">' . $row['TeamOP'] . '</td>';
                               echo '<td>' . $row['origin'] . '</td>';
                               echo '<td>' . $row['Start'] . '</td>';
                               echo '<td>' . $row['End'] . '</td>';
-                              // echo '<td class="fw-bold">' . $row['FlightSeat'] . '</td>';
                               echo '<td class="fw-bold">' . $row['AvailSeats'] . '</td>';
                               echo '<td class="fw-bolder">' . $row['AdditionalSeats'] . '</td>';
                               echo '<td>₱ ' . number_format($row['RetailPrice'], 2) . '</td>';
-                              echo '<td><a href="../Client Section/client-addBooking-flight.php?flightid=' . urlencode($row['flightId']) . '" class="btn btn-primary">Book Now</a></td>';
-                              // echo '<td class="fw-bolder">' . $row['Air+Land'] . '</td>';
-                              // echo '<td class="fw-bolder">' . $row['LandOnly'] . '</td>';
-                              // echo '<td>₱ ' . number_format($row['WholesalePrice'], 2) . '</td>';
-                              // echo '<td>₱ ' . number_format($row['RetailPrice'], 2) . '</td>';
-                              // echo '<td>₱ ' . number_format($row['LandArrangement'], 2) . '</td>';
+                              echo '<td>
+                              <a href="../Agent Section/agent-revisedAddBooking-flight.php?flightid=' . urlencode($row['flightId']) . '" class="btn btn-outline-primary">Book Now</a></td>';
                               echo '</tr>';
                             }
                           } else {
-                            echo "No records found";
+                            echo "<tr><td colspan='7' class='text-center'>No records found</td></tr>";
                           }
                           ?>
                         </tbody>
@@ -693,11 +712,10 @@ require "../conn.php";
                     </div>
                   </div>
                 </div>
-                
+
                 <div class="flight-seat-footer">
                   <div class="pagination-controls">
                     <button id="prevPage" class="pagination-btn">Previous</button>
-                    <div id="pageNumbers" class="page-numbers"></div>
                     <button id="nextPage" class="pagination-btn">Next</button>
                   </div>
                 </div>
@@ -730,7 +748,7 @@ require "../conn.php";
                           <?php
                           // Assuming you already have a connection to your database
                           // $accountId = $_SESSION['accountId'];
-
+                          
                           $sql1 = "SELECT b.transactNo AS `T.N`, p.packageName AS `PACKAGE`, b.bookingType as bookingType,
                                         CASE 
                                           WHEN b.flightId IS NULL THEN 'Land Only'
@@ -825,7 +843,7 @@ require "../conn.php";
                           <?php
                           // Assuming you already have a connection to your database
                           // $accountId = $_SESSION['accountId'];
-
+                          
                           $sql1 = "SELECT r.transactNo AS `T.N`, c.concernTitle AS `Request`, COALESCE(cd.details, r.customRequest) AS `Details`, 
                                         DATE_FORMAT(r.requestDate, '%m-%d-%Y') AS `Date`,  r.requestStatus AS `Status`, b.transactNo, 
                                         CASE 
@@ -920,7 +938,7 @@ require "../conn.php";
                           <?php
                           // Assuming you already have a connection to your database
                           // $accountId = $_SESSION['accountId'];
-
+                          
                           $sql2 = "SELECT p.transactNo AS `Transaction No`, p.paymentTitle AS `Payment Title`, CONCAT(FORMAT(p.amount, 2)) AS `Amount`, DATE_FORMAT(p.paymentDate, '%m-%d-%Y') AS `Date`,  
                                         p.paymentType AS `Payment Type`, p.paymentStatus, 
                                         CASE 
@@ -1032,7 +1050,7 @@ require "../conn.php";
                           <?php
                           // Assuming you already have a connection to your database
                           // $accountId = $_SESSION['accountId'];
-
+                          
                           // Query to select all records from the booking table
                           $query = "SELECT b.transactNo, b.flightId, b.pax, b.totalPrice AS packagePrice, 
                                         CONCAT(DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y'), ' - ', DATE_FORMAT(f.returnDepartureDate, 
@@ -1070,7 +1088,7 @@ require "../conn.php";
                                         b.status = 'Confirmed' and b.accountId = '$accountId' and f.flightDepartureDate >= CURDATE()";
 
                           $result = $conn->query($query); // Execute the query
-
+                          
                           // Check if there are results and populate the table
                           if ($result && $result->num_rows > 0) {
                             while ($row = $result->fetch_assoc()) {
@@ -1102,7 +1120,7 @@ require "../conn.php";
                               $totalAmountPaid = $row['totalPaidAmount'];
                               $totalAmountToBePaid = $row['packagePrice'] + $row['totalRequestCost']; // Total price + total request cost
                               $balance = $totalAmountToBePaid - $totalAmountPaid; // Balance calculation
-
+                          
                               // Determine if fully paid or not
                               $status = ($totalAmountPaid == $totalAmountToBePaid) ? 'Fully Paid' : 'Not Paid';
 
@@ -1137,7 +1155,8 @@ require "../conn.php";
 
             </div>
 
-            <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">
+            <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab"
+              tabindex="0">
 
               <!-- FIT Table -->
               <div class="fit-container">
@@ -1164,7 +1183,7 @@ require "../conn.php";
                           // $accountId = $_SESSION['accountId'];
                           // $agentCode = $_SESSION['agentCode'];
                           // $agentRole = $_SESSION['agentRole'];
-
+                          
                           $sql1 = "SELECT f.transactionNo as transactNo, f.nights as noOfNights, h.hotelName as hotelName,
                                       r.rooms as roomName, f.rooms as noOfRooms, f.pax as pax
                                     FROM fit f
@@ -1236,7 +1255,7 @@ require "../conn.php";
         });
       });
     });
-  </script>                       
+  </script>
 
   <script>
     function redirectToAgentTransaction(status) {
@@ -1247,129 +1266,87 @@ require "../conn.php";
   </script>
 
   <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
       const table = $('#info-table').DataTable({
-            dom: 'rtip',
-            language: {
-                emptyTable: "No Transaction Records Available"
-            },
-            order: [[0, 'desc']],
-            paging: true,
-            pageLength: 9,
-            scrollY: '600px',
-            scrollCollapse: true,
-            autoWidth: false,
-            columnDefs: [
-                { targets: "_all", className: "text-center" }
-            ]
-        });
+        dom: 'rtip',
+        language: {
+          emptyTable: "No Transaction Records Available"
+        },
+        order: [[0, 'desc']],
+        paging: true,
+        pageLength: 9,
+        scrollY: '62.8vh',
+        scrollCollapse: true,
+        autoWidth: false,
+        columnDefs: [{
+          targets: "_all",
+          className: "text-center"
+        }]
+      });
 
-
-      
-
-      function updatePagination() {
+      // ✅ Simple Prev/Next pagination only
+      function updatePaginationControls() {
         const info = table.page.info();
-        const totalPages = info.pages;
         const currentPage = info.page + 1;
-        let pageNumbersHtml = '';
+        const totalPages = info.pages;
 
-        if (totalPages > 1) {
-          if (totalPages <= 5) {
-            // Show all pages if there are 5 or fewer total pages
-            for (let i = 1; i <= totalPages; i++) {
-              pageNumbersHtml += `<button class="page-number-btn ${i === currentPage ? 'active' : ''}" data-page="${i - 1}">${i}</button>`;
-            }
-          } else {
-            if (currentPage <= 3) {
-              // If in the first 3 pages, show first few pages + last 2
-              for (let i = 1; i <= 2; i++) {
-                pageNumbersHtml += `<button class="page-number-btn ${i === currentPage ? 'active' : ''}" data-page="${i - 1}">${i}</button>`;
-              }
-              pageNumbersHtml += `<span class="dots">...</span>`;
-              pageNumbersHtml += `<button class="page-number-btn" data-page="${totalPages - 2}">${totalPages - 1}</button>`;
-              pageNumbersHtml += `<button class="page-number-btn" data-page="${totalPages - 1}">${totalPages}</button>`;
-            } else if (currentPage >= totalPages - 2) {
-              // If in the last 3 pages, show first 2 + last few pages
-              pageNumbersHtml += `<button class="page-number-btn" data-page="0">1</button>`;
-              pageNumbersHtml += `<button class="page-number-btn" data-page="1">2</button>`;
-              pageNumbersHtml += `<span class="dots">...</span>`;
-              for (let i = totalPages - 1; i <= totalPages; i++) {
-                pageNumbersHtml += `<button class="page-number-btn ${i === currentPage ? 'active' : ''}" data-page="${i - 1}">${i}</button>`;
-              }
-            } else {
-              // Middle case: Show first page, ..., current - 1, current, current + 1, ..., last page
-              pageNumbersHtml += `<button class="page-number-btn" data-page="0">1</button>`;
-              pageNumbersHtml += `<span class="dots">...</span>`;
-              pageNumbersHtml += `<button class="page-number-btn" data-page="${currentPage - 2}">${currentPage - 1}</button>`;
-              pageNumbersHtml += `<button class="page-number-btn active" data-page="${currentPage - 1}">${currentPage}</button>`;
-              pageNumbersHtml += `<button class="page-number-btn" data-page="${currentPage}">${currentPage + 1}</button>`;
-              pageNumbersHtml += `<span class="dots">...</span>`;
-              pageNumbersHtml += `<button class="page-number-btn" data-page="${totalPages - 1}">${totalPages}</button>`;
-            }
-          }
-        }
-
-        $('#pageNumbers').html(pageNumbersHtml);
+        // Disable/enable based on current page
         $('#prevPage').prop('disabled', currentPage === 1);
         $('#nextPage').prop('disabled', currentPage === totalPages);
       }
 
-      // Prev & Next Buttons
-      $('#prevPage').on('click', function() {
+      // ✅ When DataTable is redrawn
+      table.on('draw', function () {
+        updatePaginationControls();
+      });
+
+      // ✅ Navigation event handlers
+      $('#prevPage').on('click', function () {
         table.page('previous').draw('page');
-        updatePagination();
       });
 
-      $('#nextPage').on('click', function() {
+      $('#nextPage').on('click', function () {
         table.page('next').draw('page');
-        updatePagination();
       });
 
-      // Clickable Page Numbers
-      $(document).on('click', '.page-number-btn', function() {
-        const page = $(this).data('page');
-        table.page(page).draw('page');
-        updatePagination();
-      });
 
-      // Initialize pagination
-      updatePagination();
 
-      // 🔹 Search Functionality
-      $('#search').on('keyup', function() {
+      // ===================================================================== //
+
+      $('#search').on('keyup', function () {
         table.search(this.value).draw();
       });
 
       // 🔹 Package Filter
-      $('#packages').on('change', function() {
+      $('#packages').on('change', function () {
         const selectedPackage = $(this).val();
         table.column(3).search(selectedPackage || '').draw();
       });
 
       $("#FlightStartDate").datepicker({
-          dateFormat: "yy-mm-dd", // Changed format to YYYY-MM-DD
-          showAnim: "fadeIn",
-          changeMonth: true,
-          changeYear: true,
-          yearRange: "1900:2100",
-          appendTo: "body", // Moves the datepicker outside any restrictive containers
-          beforeShow: function(input, inst) {
-              setTimeout(function() {
-                  inst.dpDiv.css({
-                      top: $(input).offset().top + $(input).outerHeight(),
-                      left: $(input).offset().left
-                  });
-              }, 0);
-          },
-          onSelect: function(dateText) {
-              console.log("FlightStartDate Selected:", dateText);
-              table.column(1).search(dateText || '').draw();
-          }
+        dateFormat: "yy-mm-dd",
+        showAnim: "fadeIn",
+        changeMonth: true,
+        changeYear: true,
+        yearRange: "1900:2100",
+        appendTo: "body", // Moves the datepicker outside any restrictive containers
+        beforeShow: function (input, inst) {
+          setTimeout(function () {
+            inst.dpDiv.css({
+              top: $(input).offset().top + $(input).outerHeight(),
+              left: $(input).offset().left
+            });
+          }, 0);
+        },
+        onSelect: function (dateText) {
+          console.log("FlightStartDate Selected:", dateText);
+          table.column(1).search(dateText || '').draw();
+        }
       });
 
 
       // 🔹 Flight Date Change Event
-      $('#FlightStartDate').on('change', function() {
+      $('#FlightStartDate').on('change', function () {
         const selectedFlightDate = $(this).val();
         console.log("Flight Date Filter:", selectedFlightDate);
         table.column(1).search(selectedFlightDate || '').draw();
@@ -1378,33 +1355,28 @@ require "../conn.php";
       // 🔹 Clear All Filters
       // Clear Sorting & Reset Price Filter
       $('#clearSorting').on('click', function () {
-          $('#search').val('');
-          table.search('').draw();
+        $('#search').val('');
+        table.search('').draw();
 
-          $('#packages').val('All').change();
-          
-          $('#FlightStartDate').datepicker("setDate", null);
-          table.column(1).search('').draw();
+        $('#packages').val('All').change();
 
-          // Reset Price Filter
-          $("#priceRange").slider("values", [0, 10000]);
-          $("#min_price").val(0);
-          $("#max_price").val(10000);
-          table.draw();
+        $('#FlightStartDate').datepicker("setDate", null);
+        table.column(1).search('').draw();
+
+        // Reset Price Filter
+        $("#priceRange").slider("values", [0, 10000]);
+        $("#min_price").val(0);
+        $("#max_price").val(10000);
+        table.draw();
       });
-
-      // 🔹 Adjust Table After Filters Load
-      setTimeout(() => {
-        table.columns.adjust().draw();
-      }, 500);
     });
   </script>
 
   <!-- Clickable rows script -->
   <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      document.querySelectorAll("tr[data-url]").forEach(function(row) {
-        row.addEventListener("click", function() {
+    document.addEventListener("DOMContentLoaded", function () {
+      document.querySelectorAll("tr[data-url]").forEach(function (row) {
+        row.addEventListener("click", function () {
           window.location.href = row.getAttribute("data-url");
         });
       });
@@ -1414,7 +1386,7 @@ require "../conn.php";
     const rows = document.querySelectorAll("tr[data-url]");
 
     rows.forEach(row => {
-      row.addEventListener("click", function() {
+      row.addEventListener("click", function () {
         const url = row.getAttribute("data-url");
         window.location.href = url; // Redirect to the specified URL
       });

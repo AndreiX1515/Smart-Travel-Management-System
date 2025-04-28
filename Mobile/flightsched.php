@@ -22,7 +22,7 @@ echo "</script>";
 <html lang="en">
 
 <head>
-    <?php include '../Client Section/includes/head.php'; ?>
+    <?php include '../Mobile/includes/head.php'; ?>
 
     <title>Flight Schedules</title>
     <link rel="stylesheet" href="../Mobile/assets/css/client-navbar.css?v=<?php echo time(); ?>">
@@ -31,20 +31,6 @@ echo "</script>";
 </head>
 
 <body>
-
-    <?php
-    if (isset($_SESSION['status'])):
-        ?>
-
-        <!-- <div class="alert alert-warning alert-dismissible fade show" role="alert">
-    <strong>Hey!</strong> <?= $_SESSION['status']; ?>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div> -->
-
-        <?php
-        unset($_SESSION['status']);
-    endif;
-    ?>
 
     <?php include '../Mobile/includes/client-navbar.php'; ?>
 
@@ -157,8 +143,8 @@ echo "</script>";
                                             </div>
 
                                             <div class="flight-date-wrapper">
-                                                <div class="flight-date-content">
 
+                                                <div class="flight-date-content">
                                                     <div class="container-body flight-date-body">
                                                         <div class="flight-start">
                                                             <label>Start:</label>
@@ -207,6 +193,7 @@ echo "</script>";
 
                                                     </div>
                                                 </div>
+                                                
 
                                             </div>
                                         </div>
@@ -231,7 +218,6 @@ echo "</script>";
     <?php include '../Client Section/Includes/scripts.php'; ?>
     <!-- <script src="heartbeat.js"></script>  -->
 
-
     <!-- JS for back-to-top button -->
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -255,8 +241,6 @@ echo "</script>";
             });
         });
     </script>
-
-
 
     <!-- JS for Year Select -->
     <script>
@@ -330,7 +314,6 @@ echo "</script>";
             clearButton.addEventListener("click", clearFilters); // Attach event to clear button
         });
     </script>
-
 
     <!-- Row Click Selection JS
     <script>

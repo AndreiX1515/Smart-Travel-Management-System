@@ -336,9 +336,10 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                     </div>
                   </div>
 
-
                 </div>
+                
               </div>
+
             </div>
 
             <!-- CARD 2 - On Due -->

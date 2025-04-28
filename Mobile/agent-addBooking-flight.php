@@ -1,6 +1,16 @@
 <?php
 session_start();
 require "../conn.php";
+
+$email = $_SESSION['email'] ?? ''; // Use null coalescing operator to avoid undefined index
+$accId = $_SESSION['accountId'] ?? '';
+
+
+echo "<script>";
+echo "var sessionData = " . json_encode($_SESSION, JSON_PRETTY_PRINT) . ";";
+echo "console.log('Session Data:', sessionData);";
+echo "</script>";
+
 ?>
 
 <!DOCTYPE html>
@@ -11,7 +21,7 @@ require "../conn.php";
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Booking</title>
 
-  <?php include "../Agent Section/includes/head.php"; ?>
+  <?php include '../Mobile/includes/head.php'; ?>
 
   <link rel="stylesheet" href="../Mobile/assets/css/navbar-sidebar.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="../Mobile/assets/css/agent-addBooking.css?v=<?php echo time(); ?>">
@@ -22,10 +32,7 @@ require "../conn.php";
   <div class="body-container">
     <?php include "../Mobile/includes/sidebar.php"; ?>
 
-    <script>
-      var sessionData = <?php echo json_encode($_SESSION, JSON_PRETTY_PRINT); ?>;
-      console.log("Session Data:", sessionData);
-    </script>
+
 
     <div class="main-content-container">
 
@@ -102,7 +109,7 @@ require "../conn.php";
           <div class="booking-wrapper">
 
             <div class="booking-contents-wrapper">
-            
+
               <div class="section-content">
                 <div class="row-content add-border">
 
@@ -177,21 +184,22 @@ require "../conn.php";
                         </div>
                       </div>
 
-                      <input type="number" class="form-control" id="totalPax" name="totalPax" min="1" placeholder="Enter Total Pax" required>
+                      <input type="number" class="form-control" id="totalPax" name="totalPax" min="1"
+                        placeholder="Enter Total Pax" required>
 
                       <span id="totalPaxError" class="text-danger"></span>
                       <!-- Error message for Total Pax -->
 
-                        <div class="maxAvail">
-                          <div class="add-border">
-                            <label id="maxSeats"></label>
-                          </div>
-
-                          
-                          <div class="add-border">
-                            <label id="availSeats"></label>
-                          </div>
+                      <div class="maxAvail">
+                        <div class="add-border">
+                          <label id="maxSeats"></label>
                         </div>
+
+
+                        <div class="add-border">
+                          <label id="availSeats"></label>
+                        </div>
+                      </div>
 
                     </div>
 
@@ -207,11 +215,13 @@ require "../conn.php";
 
                 <div class="row-content add-border">
                   <!-- Flight Details Input -->
-                  <div class="columns col-md-12 flight-details-wrapper" id="flightDetailsContainer" style="display: none;">
+                  <div class="columns col-md-12 flight-details-wrapper" id="flightDetailsContainer"
+                    style="display: none;">
                     <div class="form-group">
                       <label for="flightDetails">Flight Details for Package Only</label>
 
-                      <textarea class="form-control" id="flightDetails" name="flightDetails" placeholder="Input Flight Details Here"></textarea>
+                      <textarea class="form-control" id="flightDetails" name="flightDetails"
+                        placeholder="Input Flight Details Here"></textarea>
                     </div>
                   </div>
                 </div>
@@ -219,30 +229,40 @@ require "../conn.php";
                 <div class="row-content hidden-fields-rows add-border">
                   <div class="columns col-md-12 hidden-fields">
                     <div class="card-content">
-                      <input type="hidden" id="agentCode" name="agentCode" value="<?php echo $_SESSION['agentCode']; ?>" placeholder="Agent Code Input">
+                      <input type="text" id="agentCode" name="agentCode" value="<?php echo $_SESSION['agentCode']; ?>"
+                        placeholder="Agent Code Input">
 
-                      <input type="hidden" id="userType" name="userType" value="<?php echo $_SESSION['agent_userType']; ?>" placeholder="Account Type">
+                      <input type="text" id="userType" name="userType"
+                        value="<?php echo $_SESSION['agent_userType']; ?>" placeholder="Account Type">
 
-                      <input type="hidden" id="flightId" name="flightId" value="<?php echo $flightid; ?>" placeholder="Flight Id Input">
+                      <input type="text" id="flightId" name="flightId" value="<?php echo $flightid; ?>"
+                        placeholder="Flight Id Input">
 
                       <!-- Adjusted Fields -->
-                      <input type="hidden" id="packagePrice" name="packagePrice" value="<?php echo isset($packagePrice) ? $packagePrice : ''; ?>" placeholder="Package Price">
+                      <input type="text" id="packagePrice" name="packagePrice"
+                        value="<?php echo isset($packagePrice) ? $packagePrice : ''; ?>" placeholder="Package Price">
 
-                      <input type="hidden" name="flightPrice" id="flightPricee" placeholder="Flight Price"
+                      <input type="text" name="flightPrice" id="flightPricee" placeholder="Flight Price"
                         value="<?php echo isset($agentType) ? ($agentType === 'Retailer' ? htmlspecialchars($flightPrice) : htmlspecialchars($wholesalePrice)) : ''; ?>">
 
-                      <input type="hidden" name="agentId" id="agentId" value="<?php echo $_SESSION['agentId']; ?>" placeholder="Agent Id">
+                      <input type="text" name="agentId" id="agentId" value="<?php echo $_SESSION['agentId']; ?>"
+                        placeholder="Agent Id">
 
-                      <input type="hidden" name="agentType" placeholder="Agent Type Input" value="<?php echo $_SESSION['agentType']; ?>">
+                      <input type="text" name="agentType" placeholder="Agent Type Input"
+                        value="<?php echo $_SESSION['agentType']; ?>">
 
-                      <input type="hidden" name="accId" id="accId" placeholder="Account Id Input" value="<?php echo $_SESSION['agent_accountId']; ?>">
+                      <input type="text" name="accId" id="accId" placeholder="Account Id Input"
+                        value="<?php echo $_SESSION['agent_accountId']; ?>">
 
                       <!-- Adjusted Package Fields -->
-                      <input type="hidden" name="packageId" id="packageId" value="<?php echo isset($packageId) ? $packageId : ''; ?>" placeholder="Package Id Input">
+                      <input type="text" name="packageId" id="packageId"
+                        value="<?php echo isset($packageId) ? $packageId : ''; ?>" placeholder="Package Id Input">
 
-                      <input type="hidden" name="packageName" id="packageName" value="<?php echo isset($packageName) ? $packageName : ''; ?>" placeholder="Package Name Input">
+                      <input type="text" name="packageName" id="packageName"
+                        value="<?php echo isset($packageName) ? $packageName : ''; ?>" placeholder="Package Name Input">
 
-                      <input type="hidden" name="origin" id="origin" value="<?php echo isset($origin) ? $origin : ''; ?>" placeholder="Origin Input">
+                      <input type="text" name="origin" id="origin" value="<?php echo isset($origin) ? $origin : ''; ?>"
+                        placeholder="Origin Input">
 
                     </div>
                   </div>
@@ -257,7 +277,7 @@ require "../conn.php";
 
             </div>
 
-            <div class="booking-contents-wrapper">           
+            <div class="booking-contents-wrapper">
               <div class="section-header">
                 <h5>Contact Details</h5>
               </div>
@@ -271,7 +291,8 @@ require "../conn.php";
                       <div class="column-header">
                         <label for="fName">First Name <span class="text-danger">*</span></label>
                       </div>
-                      <input type="text" name="fName" id="fName" class="form-control" placeholder="Enter First Name" required>
+                      <input type="text" name="fName" id="fName" class="form-control" placeholder="Enter First Name"
+                        required>
                       <span id="fNameError" class="text-danger"></span>
                       <!-- Error message for First Name -->
                     </div>
@@ -283,7 +304,8 @@ require "../conn.php";
                       <div class="column-header">
                         <label for="lName">Last Name <span class="text-danger"> *</span> </label>
                       </div>
-                      <input type="text" name="lName" id="lName" class="form-control" placeholder="Enter Last Name" required>
+                      <input type="text" name="lName" id="lName" class="form-control" placeholder="Enter Last Name"
+                        required>
                       <span id="lNameError" class="text-danger"></span>
                       <!-- Error message for Last Name -->
                     </div>
@@ -294,10 +316,12 @@ require "../conn.php";
                     <div class="form-group">
 
                       <div class="column-header">
-                        <label for="mName">Middle Name <span class="text-danger mText">(Type N/A if none)</span> </label>
+                        <label for="mName">Middle Name <span class="text-danger mText">(Type N/A if none)</span>
+                        </label>
 
                       </div>
-                      <input type="text" name="mName" id="mName" class="form-control" placeholder="Enter Middle Name" required>
+                      <input type="text" name="mName" id="mName" class="form-control" placeholder="Enter Middle Name"
+                        required>
 
                       <span id="mNameError" class="text-danger"></span>
                       <!-- Error message for Middle Name -->
@@ -526,7 +550,8 @@ require "../conn.php";
                           <option value="+263">Zimbabwe (+263)</option>
                         </select>
 
-                        <input type="tel" class="form-control mt-2" id="contactNo" name="contactNo" placeholder="Contact Number" required>
+                        <input type="tel" class="form-control mt-2" id="contactNo" name="contactNo"
+                          placeholder="Contact Number" required>
                       </div>
 
                       <span id="contactNoError" class="text-danger"></span>
@@ -542,7 +567,8 @@ require "../conn.php";
                         <label for="email">Email <span class="text-danger">*</span></label>
                       </div>
 
-                      <input type="email" name="email" id="email" class="form-control" placeholder="Enter Email Address" required>
+                      <input type="email" name="email" id="email" class="form-control" placeholder="Enter Email Address"
+                        required>
                       <span id="emailError" class="text-danger"></span> <!-- Error message for Email -->
                     </div>
                   </div>
@@ -573,12 +599,14 @@ require "../conn.php";
               </div>
 
               <!-- Booking Summary Modal -->
-              <div class="modal fade" id="BookingSummaryModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
+              <div class="modal fade" id="BookingSummaryModal" tabindex="-1" aria-labelledby="bookingModalLabel"
+                aria-hidden="true">
                 <div class="modal-dialog modal-lg modal-dialog-centered">
                   <div class="modal-content position-relative">
 
                     <!-- Close Button -->
-                    <button type="button" class="btn-close close-outside" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close close-outside" data-bs-dismiss="modal"
+                      aria-label="Close"></button>
 
                     <div class="modal-body">
                       <div class="confirmation-container ">
@@ -586,7 +614,8 @@ require "../conn.php";
                         <!-- Logo Section -->
                         <div class="row body-header">
                           <div class="col">
-                            <img src="../Assets/Logos/SMART LOGO 2 (2).png" alt="Trip Image" class="img-fluid" style="max-width: 220px;">
+                            <img src="../Assets/Logos/SMART LOGO 2 (2).png" alt="Trip Image" class="img-fluid"
+                              style="max-width: 220px;">
                           </div>
                         </div>
 
@@ -647,7 +676,8 @@ require "../conn.php";
                         <!-- Action Buttons -->
                         <div class="modal-actions">
                           <button type="submit" class="btn btn-primary" name="bookNow">Proceed to Payment</button>
-                          <button type="button" class="btn btn-outline-secondary back-btn-modal" data-bs-dismiss="modal">Back</button>
+                          <button type="button" class="btn btn-outline-secondary back-btn-modal"
+                            data-bs-dismiss="modal">Back</button>
 
                         </div>
 
@@ -682,8 +712,6 @@ require "../conn.php";
     </div>
   </div>
 
-  <?php require "../Agent Section/includes/scripts.php"; ?>
-
   <!-- Back AJAX -->
   <script>
     $(document).ready(function () {
@@ -694,54 +722,56 @@ require "../conn.php";
 
       // Show logout modal
       logoutBtn.click(function () {
-          logoutModal.addClass("show");
+        logoutModal.addClass("show");
       });
 
       // Confirm logout action (AJAX rion clear)
       confirmLogout.click(function () {
-          $.ajax({
-              url: "../Mobile/function/agent-logout.php", // PHP script to clear session
-              type: "POST",
-              data: {}, // No data needed
-              contentType: false,
-              processData: false,
-              beforeSend: function () {
-                  console.log("Clearing session..."); // Debugging message
-              },
-              success: function (response) {
-                  console.log(response); // Log response for debugging
-                  if (response.success) {
-                      setTimeout(function () {
-                          window.location.href = "../Mobile/flightsched.php"; // Redirect after 2 seconds
-                      }, 2000);
-                  } else {
-                      alert("Error: " + response.message);
-                  }
-              },
-              error: function () {
-                  alert("Error clearing session. Please try again.");
-              }
-          });
+        $.ajax({
+          url: "../Mobile/function/agent-logout.php", // PHP script to clear session
+          type: "POST",
+          data: {}, // No data needed
+          contentType: false,
+          processData: false,
+          beforeSend: function () {
+            console.log("Clearing session..."); // Debugging message
+          },
+          success: function (response) {
+            console.log(response); // Log response for debugging
+            if (response.success) {
+              setTimeout(function () {
+                window.location.href = "../Mobile/flightsched.php"; // Redirect after 2 seconds
+              }, 2000);
+            } else {
+              setTimeout(function () {
+                window.location.href = "../Mobile/flightsched.php"; // Redirect after 2 seconds
+              }, 2000);
+            }
+          },
+          error: function () {
+            alert("Error clearing session. Please try again.");
+          }
+        });
       });
 
       // Cancel logout action
       cancelLogout.click(function () {
-          logoutModal.removeClass("show");
+        logoutModal.removeClass("show");
       });
 
       // Hide modal when clicking outside
       $(window).click(function (event) {
-          if (event.target === logoutModal[0]) {
-              logoutModal.removeClass("show");
-          }
+        if (event.target === logoutModal[0]) {
+          logoutModal.removeClass("show");
+        }
       });
-  });
+    });
   </script>
 
   <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
       // Fetch flight Related Details once changed
-      $('#flightDate').on('change', function() {
+      $('#flightDate').on('change', function () {
         var flightId = $(this).val();
         var agentType = $(this).val();
         $('#flightId').val(flightId); // Set the value of the input field
@@ -757,7 +787,7 @@ require "../conn.php";
             flightId: flightId,
             agentType: agentType
           },
-          success: function(response) {
+          success: function (response) {
             var data = JSON.parse(response); // Parse the JSON response
             console.log(data);
 
@@ -770,7 +800,7 @@ require "../conn.php";
             updateTotalPaxMax();
 
           },
-          error: function(xhr, status, error) {
+          error: function (xhr, status, error) {
             console.error('Error fetching return flight:', error); // Log the error to console
           }
         });
@@ -781,7 +811,7 @@ require "../conn.php";
       $('#land').on('change', updateTotalPaxMax); // Trigger on "Land Only" checkbox toggle
 
       // Ensure that if the user manually enters a number greater than the max, it's automatically corrected
-      $('#totalPax').on('input', function() {
+      $('#totalPax').on('input', function () {
         var maxSeats = parseInt($(this).attr('max'));
         var currentPax = parseInt($(this).val());
 
@@ -794,7 +824,7 @@ require "../conn.php";
       });
 
       // New Book Now Button Click Event
-      $('#bookNowButton').click(function(event) {
+      $('#bookNowButton').click(function (event) {
         $('#selectedPackage').text($('#packageName').val());
         $('#selectedOrigin').text($('#origin').val());
         var selectedFlight = $("#flightDate option:selected").text();
@@ -856,7 +886,7 @@ require "../conn.php";
         }
 
         // Clear error messages when inputs are focused or changed
-        $('select, input').on('focus change', function() {
+        $('select, input').on('focus change', function () {
           const errorSpanId = `#${$(this).attr('id')}Error`;
           $(this).removeClass('is-invalid'); // Remove invalid class
           $(errorSpanId).text(''); // Clear error message
@@ -909,12 +939,12 @@ require "../conn.php";
       });
 
       // Automatically recalculate total price when flightDate or totalPax changes
-      $('#flightDate, #totalPax').on('input change', function() {
+      $('#flightDate, #totalPax').on('input change', function () {
         updateTotalPrice(); // Recalculate total price
       });
 
       // Recalculate total price when "land" checkbox is toggled
-      document.getElementById('land').addEventListener('change', function() {
+      document.getElementById('land').addEventListener('change', function () {
         updateTotalPrice(); // Recalculate total price when land is checked/unchecked
       });
 
@@ -970,7 +1000,7 @@ require "../conn.php";
 
       // Optional: Listen for changes in pax fields
       document.querySelectorAll('.pax').forEach((element) => {
-        element.addEventListener('input', function() {
+        element.addEventListener('input', function () {
           updateTotalPrice(); // Recalculate when pax value changes
         });
       });
@@ -997,7 +1027,7 @@ require "../conn.php";
               accId: accId
             }, // Send the flightId to the server
             dataType: 'json', // Specify that we're expecting JSON response
-            success: function(response) {
+            success: function (response) {
               if (response.flightId !== null) {
                 // Extract the maxSeats from the response
                 var maxSeats = response.maxSeats;
@@ -1029,7 +1059,7 @@ require "../conn.php";
                 $('#maxSeats').text('Available Seats for this Flight: N/A');
               }
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
               // Log any errors
               console.error('AJAX Error:', error);
             }
@@ -1047,6 +1077,6 @@ require "../conn.php";
     });
   </script>
 
+</body>
 
-  </body>
 </html>
