@@ -116,6 +116,10 @@ $current_date = date('D, F d, Y');
         <i class="fas fa-file-invoice"></i> Guest Information List
       </a>
 
+      <a href="../Client Section/client-roomingList.php" class="page-button my-0" data-page-name="Rooming List">
+        <i class="fas fa-file-invoice"></i> Rooming List
+      </a>
+
       <a href="../Client Section/client-requestHistory.php" class="page-button my-0" data-page-name="Request History">
         <i class="fas fa-file-invoice"></i> Request History
       </a>
