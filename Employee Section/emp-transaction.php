@@ -12,26 +12,41 @@
 
   <link rel="stylesheet" href="../Employee Section/assets/css/emp-transaction.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="../Employee Section/assets/css/emp-sidebar-navbar.css?v=<?php echo time(); ?>">
-
 </head>
 
 <body>
 
   <?php include '../Employee Section/includes/emp-sidebar.php' ?>
 
+  <?php
+  $statusTab = isset($_GET['status']) ? $_GET['status'] : '';
+  ?>
+
+
   <!-- Main Container -->
   <div class="main-container">
+
     <nav class="navbar navbar-expand-lg navbar-custom">
       <div class="container-fluid mx-1">
           <a class="navbar-brand" id="page-title" href="#">Transaction</a>
       </div>
     </nav>
 
-    <?php
-    $statusTab = isset($_GET['status']) ? $_GET['status'] : '';
-    ?>
-
     <div class="main-content">
+
+      <div class="tabs-wrapper">
+        <div class="navTabs-wrapper">
+          <ul class="nav nav-pills" id="pills-tab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Status</button>
+            </li>
+
+            <li class="nav-item" role="presentation">
+              <button class="nav-link " id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">On Due</button>
+            </li>
+          </ul>
+        </div>
+      </div>
 
       <div class="table-container">
 
@@ -285,9 +300,14 @@
       </div>
 
     </div>
+
   </div>
 
+
+  
   <?php include '../Employee Section/includes/emp-scripts.php' ?>
+
+
   
   <!-- For Button Tabs Status Sorting -->
   <script>

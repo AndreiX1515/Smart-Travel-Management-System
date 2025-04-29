@@ -24,7 +24,6 @@
   flex-wrap: nowrap;
   overflow: hidden;
   margin-bottom: 3px;
-
   /* border: 1px solid black; */
 }
 
@@ -105,8 +104,6 @@
   font-weight: bold;
   color: #333;
   border: 0;
-  /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border-radius: 5px;  */
 }
 
 .card .header {
@@ -202,6 +199,14 @@
   font-size: 22px; 
   font-weight: bold;
 }
+
+
+
+
+
+
+
+
 
 /* Card 4 */
 .card-body-currency {

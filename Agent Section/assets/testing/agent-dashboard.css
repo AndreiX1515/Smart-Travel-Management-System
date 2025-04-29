@@ -1,0 +1,759 @@
+/* Default: Standard screen size or zoom level */
+h1 {
+  font-size: 2.5rem;
+}
+h2 {
+  font-size: 2rem;
+}
+h3 {
+  font-size: 1.75rem;
+}
+h4 {
+  font-size: 1.5rem;
+}
+
+
+/* Default styles for larger screens */
+.parent {
+  display: flex;
+  width: 100%;
+  height: 100vh; /* Full height of the viewport */
+}
+
+
+/* =================== SIDEBAR STYLES ================== */
+
+/* Sidebar styles */
+.sidebar {
+  background-color: #343a40;
+  width: 250px; /* Fixed width for sidebar */
+  max-width: 250px; 
+  min-width: 250px; 
+  height: 100vh;
+  border-right: 1px solid #343a40; 
+  position: relative; 
+  padding: 0px;
+  box-sizing: border-box; 
+}
+
+/* Sidebar header styles */
+.sidebar .sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch; 
+  margin-bottom: 20px;
+  color: #343a40;
+  font-size: 24px;
+  font-weight: bold;
+  height: 6vh; 
+  border-bottom: 2px solid #485058;
+  padding: 0px 0px;
+  box-sizing: border-box; 
+  /* border: 1px solid white; */
+}
+
+/* Sidebar header logo styles */
+.sidebar .sidebar-header-logo {
+  width: 100%; 
+  display: flex;
+  align-items: center; 
+  justify-content: center; 
+  height: 100%; 
+  box-sizing: border-box;
+  /* border: 1px solid white;  */
+}
+
+
+.logo-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: auto;
+  border: 1px solid white;
+}
+
+.logo {
+  width: 40px;
+  height: 40px; 
+  height: auto; /* Maintain aspect ratio */
+}
+
+.logo-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-left: 10px; /* Space between logo and text */
+  color: #ffffff; /* Adjust text color if needed */
+  border: 1px solid white;
+}
+
+
+.logo-text h5 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #ffffff; /* Adjust text color if needed */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* MISCELLANEOUS STYLES */
+/* Show the sidebar when it's in the off-canvas state */
+.sidebar.open {
+  left: 0; /* Sidebar shown */
+}
+/* Hide the open button by default */
+#toggleSidebarBtn {
+  display: none;
+}
+
+
+#closeSidebarBtn {
+  position: absolute;
+  top: 4.2%; /* Center vertically */
+  left: 94%; 
+  width: 35px; /* Make the button larger */
+  height: 35px; /* Make the button circular */
+  background-color: gainsboro; /* Blue background */
+  border: none;
+  border-radius: 50%; /* Circular shape */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Hover effect for the button */
+#closeSidebarBtn:hover {
+  background-color: #5a6268; /* Darker gray on hover */
+  color: #ffffff;
+}
+
+/* Styling for the icon */
+#closeSidebarBtn i {
+  font-size: 18px; /* Adjust icon size */
+  color: #485058; /* Light icon color for contrast */
+}
+
+
+/* ================== MAIN CONTENT STYLES ================== */
+
+
+
+
+/* ================= NAVBAR STYLES ================== */
+
+/* Navbar styling */
+.navbar {
+  display: flex;
+  justify-content: flex-start;
+  align-items: stretch; 
+  flex-wrap: nowrap; 
+  gap: 5px;
+  background-color: #ffff;
+  height: 6vh; 
+  width: 100%;
+  color: white;
+  border-bottom: 2px solid gainsboro;
+  padding: 0px 0px;
+}
+
+
+.navbar .navbar-button-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%; /* Ensure the button container takes full height of parent */
+  gap: 0;
+  width: 10px; /* Fixed width for the button container */
+  flex-shrink: 0; /* Prevent shrinking */
+  padding: 0;
+  background-color: #ffff; /* Background color for the button container */
+   /* border: 1px solid black; */
+}
+
+.navbar .navbar-title-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0px 10px;
+  height: 100%; /* Ensure the title container takes full height of parent */
+  /* border: 1px solid black; */
+  margin-bottom: 2px;
+}
+
+.navbar .navbar-title {
+  display: flex;
+  justify-content: center;
+  align-items: center; /* Center vertically */
+  height: 100%; /* Ensure title takes full height */
+  /* border: 1px solid black; */
+}
+
+
+.navbar .navbar-title h5 {
+  font-size: 1rem;
+  color: rgb(19, 19, 19);
+  margin: 0;
+  margin-bottom: 2px;
+  padding: 0px 0px 0px 0px; /* Add some padding for spacing */
+}
+
+
+.hamburger-btn {
+  background: none;
+  border: none;
+  color: rgb(19, 19, 19);
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+
+/* Icon styling */
+.navbar-button-wrapper .hamburger-btn i {
+  font-size: 16px; /* Size of the icon */
+  color: #333; /* Icon color */
+  transition: color 0.3s ease;
+}
+
+
+/* Change icon color on hover */
+.hamburger-btn:hover i {
+  color: #007bff; /* Change icon color on hover */
+}
+
+/* Styling for the close button */
+#closeSidebarBtn {
+  display: none; /* Initially hide the close button */
+}
+
+/* Show close button when sidebar is open (you can toggle the visibility dynamically) */
+.sidebar-open #closeSidebarBtn {
+  display: flex; /* Show close button when sidebar is open */
+}
+
+/* Optional: Add transition effects when toggling */
+.sidebar-open .hamburger-btn {
+  display: none; /* Hide the hamburger button when sidebar is open */
+}
+
+
+
+
+
+
+
+
+
+/* Main content container */
+.main-content-container {
+  display: flex;
+  flex-direction: column; 
+  width: 100%;
+  height: 100vh; 
+  overflow-y: auto; 
+}
+
+/* Main content area */
+.main-content {
+  background-color: #ffffff;
+  flex-grow: 1; 
+  width: 100%; 
+  padding: 10px 10px 0px 10px;
+  overflow-y: auto; 
+}
+
+
+
+
+.content-wrapper {
+  /* border: 1px solid black; */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 92vh;
+  width: 100%;
+  /* border: 1px solid black; */
+}
+
+
+
+.header-counts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  justify-content: space-between;
+  align-items: stretch;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0px 0; /* Add some padding instead of fixed height */
+}
+
+
+/* Style for each card */
+.card {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  width: calc(25% - 5px);
+  height: auto; 
+  min-height: 150px; 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 0;
+}
+
+
+/* When the screen width is below 1000px, adjust to 3 or 4 cards per row */
+@media (max-width: 1000px) {
+  .card {
+    width: calc(50% - 5px); /* Adjust to 3 cards per row (33.33% width) */
+  }
+}
+
+/* When the screen width is below 768px, adjust to 2 cards per row */
+@media (max-width: 768px) {
+  .card {
+    width: calc(100%); /* Adjust to 2 cards per row (50% width) */
+  }
+}
+
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  color: #040316;
+  padding: 5px 10px;
+  font-size: 18px;
+  text-align: center;
+  width: 100%;
+  border: none;
+}
+
+.card-content {
+  padding: 0px 0px 0px 20px;           
+  font-size: 24px;
+  color: #333;
+  /* border: 1px solid black; */
+  width: 100%;   
+  box-sizing: border-box;  
+}
+
+/* Row settings for each child */
+.row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  width: 100%;
+  gap: 5px;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+  height: 4.5vh;
+}
+
+.col-md-6 {
+  padding: 0;
+}
+
+
+.columns {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0px;
+  box-sizing: border-box;
+  border: 1px solid black;
+  width: 49%; 
+  padding: 0 5px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); 
+  border-radius: 8px; 
+  background-color: #fff; 
+}
+
+
+.side-content-count {
+  margin-bottom: 3px;
+  /* border: 1px solid black; */
+}
+
+.count-number {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #116530; /* You can change to your preferred primary color */
+  margin: 0;
+}
+
+.side-content-label {
+  margin-top: 0;
+  /* border: 1px solid black; */
+}
+
+.count-label {
+  font-size: 1rem;
+  color: #555;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Media Query for smaller screens */
+@media (max-width: 768px) {
+  .header-counts {
+    flex-direction: column; /* Stack the child divs vertically */
+    height: auto; /* Adjust height on smaller screens */
+  }
+
+  .child {
+    width: 100%; /* Make child divs full width on smaller screens */
+    margin-bottom: 20px; /* Add space between stacked divs */
+  }
+}
+
+/* ================== PER CARD STYLES ================== */
+
+.primary-pill {
+  display: flex;
+  justify-content: flex-start;
+  align-items: last baseline  ;
+  padding: 0px 10px;
+  background-color: #0066ff; /* Primary color */
+  color: #fff;
+  border-radius: 5px;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  border: 1px solid black;
+  width: 50%;
+}
+
+.primary-pill .white-pill {
+  margin-top: 5px;
+}
+
+.accent-pill {
+  /* background-color: #ffcc00; 
+  color: #fff;
+  padding: 0px;
+  border-radius: 5px;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  border: 1px solid black; */
+  width: 50%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.card-icon {
+  font-size: 14px;
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 30%;
+  color: #ffffff;
+  border: 1px solid black;
+}
+
+/* Blue Icon for Total Transactions */
+.icon-blue {
+  background-color: #17a2b8;
+}
+
+/* Green Icon for Completed Transactions */
+.icon-green {
+  background-color: #28a745;
+}
+
+/* Yellow Icon for Pending Transactions */
+.icon-yellow {
+  background-color: #ffc107;
+  color: #333;
+}
+
+/* Red Icon for Cancelled Transactions */
+.icon-red {
+  background-color: #dc3545;
+}
+
+.icon-gray {
+  background-color: gray;
+}
+
+.side-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center align the text vertically */
+  border: 1px solid black;
+}
+
+.side-content h5 {
+  font-size: 20px; /* Reduced font size for the number */
+  font-weight: bold;
+  margin: 0;
+  color: #3a3535;
+  margin-bottom: -5px;
+}
+
+.side-content p {
+  font-size: 10px; /* Smaller font size for description */
+  font-weight: bold;
+  color: #747b85; /* Lighter gray for the description */
+  margin-bottom: 0;
+}
+
+.side-content .month-sales {
+  font-size: 22px; 
+  font-weight: bold;
+}
+
+
+
+
+
+
+
+
+
+
+/* ================== BODY STYLES ================== */
+
+
+
+
+
+
+
+/* Ensures body-wrapper takes up remaining space inside content-wrapper */
+.content-wrapper .body-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  height: 100%; /* Make the height 100% of its parent container (content-wrapper) */
+  padding: 0px 0px;
+  border: 1px solid gainsboro;
+  flex-grow: 1; /* Allow it to grow and fill the remaining space */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* === MEDIA QUERIES FOR OFF-CANVAS BELOW 1000PX ========== */
+
+@media (min-width: 1000px) {
+  #toggleSidebarBtn {
+    display: none;
+  }
+}
+
+@media (max-width: 1200px) {
+  #toggleSidebarBtn {
+    display: block;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: -250px;
+    height: 100vh;
+    z-index: 1000;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+  }
+
+  .sidebar.open {
+    left: 0;
+  }
+
+  .sidebar.open #closeSidebarBtn {
+    display: block;
+    margin-bottom: 15px;
+  }
+
+  .main-content {
+    width: 100%;
+    padding: 15px;
+  }
+
+  .navbar {
+    width: 100%;
+    padding: 0px 15px;
+  }
+  
+  .navbar .navbar-button-wrapper {
+    width: 30px;
+  }
+}
+
+/* ========== OTHER RESPONSIVE BREAKPOINTS ========== */
+
+/* Medium screens below 992px */
+@media (max-width: 999px) {
+  .navbar {
+    height: 6vh;
+    padding: 0px 10px;
+  }
+
+  .main-content {
+    padding: 10px;
+  }
+
+  .navbar .navbar-title-container {
+    width: 96%;
+    margin-left: 5px;
+  }
+
+  .navbar .navbar-btn-container {
+    width: 35px;
+  }
+
+  h1 { font-size: 2.75rem; }
+  h2 { font-size: 2.25rem; }
+  h3 { font-size: 2rem; }
+  h4 { font-size: 1.75rem; }
+}
+
+/* Smaller screens below 768px */
+@media (max-width: 768px) {
+  .parent {
+    flex-direction: column; /* Stack parent components vertically */
+  }
+
+  .navbar {
+    height: 6vh;
+    padding: 0px 10px;
+  }
+
+  .main-content-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100vh; /* Full viewport height */
+    overflow-y: auto; /* Allow vertical scrolling */
+    padding: 0px; /* No extra padding */
+  }
+
+  .main-content {
+    padding: 10px;
+    flex-grow: 1; /* Content fills the remaining space */
+    overflow-y: auto; /* Enable scrolling when content overflows */
+  }
+
+  .navbar .navbar-btn-container {
+    width: 35px; /* Adjust button container width */
+  }
+
+  h1 { font-size: 2.5rem; }
+  h2 { font-size: 2rem; }
+  h3 { font-size: 1.75rem; }
+  h4 { font-size: 1.5rem; }
+}
+
+
+
+
+
+/* Very small screens below 480px */
+@media (max-width: 480px) {
+  .navbar {
+    height: 6vh;
+  }
+
+  .main-content {
+    padding: 10px;
+  }
+
+  h1 { font-size: 2.25rem; }
+  h2 { font-size: 1.75rem; }
+  h3 { font-size: 1.5rem; }
+  h4 { font-size: 1.25rem; }
+}
+
+/* === HEIGHT-BASED ADJUSTMENTS FOR HEADINGS (for zoom & tall screens) ========== */
+@media (min-height: 900px) {
+  h1 { font-size: 3rem; }
+  h2 { font-size: 2.5rem; }
+  h3 { font-size: 2.25rem; }
+  h4 { font-size: 2rem; }
+}
+
+@media (min-height: 1000px) {
+  h1 { font-size: 3.25rem; }
+  h2 { font-size: 2.75rem; }
+  h3 { font-size: 2.5rem; }
+  h4 { font-size: 2.25rem; }
+}
+
+@media (min-height: 1100px) {
+  h1 { font-size: 3.5rem; }
+  h2 { font-size: 3rem; }
+  h3 { font-size: 2.75rem; }
+  h4 { font-size: 2.5rem; }
+}
+
+@media (max-height: 800px) {
+  h1 { font-size: 2.25rem; }
+  h2 { font-size: 1.75rem; }
+  h3 { font-size: 1.5rem; }
+  h4 { font-size: 1.25rem; }
+}
+
+@media (max-height: 700px) {
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.5rem; }
+  h3 { font-size: 1.25rem; }
+  h4 { font-size: 1.1rem; }
+}
