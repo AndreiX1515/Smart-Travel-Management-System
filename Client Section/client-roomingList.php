@@ -232,7 +232,7 @@ require "../conn.php";
           // Send AJAX request to insert room assignments
           $.ajax(
           {
-            url: '../Client Section/functions/client-addRoomingList.php',
+            url: '../Client Section/Functions/client-addRoomingList.php',
             type: 'POST',
             data: { 
               roomAssignments: JSON.stringify(roomAssignments),
