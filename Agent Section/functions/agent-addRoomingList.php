@@ -28,7 +28,63 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['roomAssignments']))
     $insertLuggageQuery = "INSERT INTO guestluggage (guestId, luggageType) VALUES (?, ?)";
     $insertLuggageStmt = $conn->prepare($insertLuggageQuery);
 
-    foreach ($roomAssignments as $room) 
+    // ======= START: Handle deleted guests =======
+
+    // Get all existing guestIds for each transactNo
+    $existingGuests = [];
+    $transactNos = array_unique(array_column($roomAssignments, 'transactNo'));
+
+    foreach ($transactNos as $transactNo)
+    {
+      $query = "SELECT guestId FROM roominglist WHERE transactNo = ?";
+      $stmt = $conn->prepare($query);
+      $stmt->bind_param("s", $transactNo);
+      $stmt->execute();
+      $result = $stmt->get_result();
+      
+      while ($row = $result->fetch_assoc()) {
+        $existingGuests[$transactNo][] = (int)$row['guestId'];
+      }
+      
+      $stmt->close();
+    }
+
+    // Build a map of currently submitted guestIds
+    $newAssignments = [];
+    foreach ($roomAssignments as $room) {
+      $newAssignments[$room['transactNo']][] = (int)$room['guestId'];
+    }
+
+    // 3. Identify and delete removed guests
+    foreach ($existingGuests as $transactNo => $guestIds) 
+    {
+      $assignedGuestIds = isset($newAssignments[$transactNo]) ? $newAssignments[$transactNo] : [];
+      
+      foreach ($guestIds as $guestId) 
+      {
+        if (!in_array($guestId, $assignedGuestIds)) 
+        {
+          // Delete guest from roominglist
+          $deleteQuery = "DELETE FROM roominglist WHERE transactNo = ? AND guestId = ?";
+          $deleteStmt = $conn->prepare($deleteQuery);
+          $deleteStmt->bind_param("si", $transactNo, $guestId);
+          $deleteStmt->execute();
+          $deleteStmt->close();
+
+          // (Optional) Also delete guest luggage if needed
+          $deleteLuggageQuery = "DELETE FROM guestluggage WHERE guestId = ?";
+          $deleteLuggageStmt = $conn->prepare($deleteLuggageQuery);
+          $deleteLuggageStmt->bind_param("i", $guestId);
+          $deleteLuggageStmt->execute();
+          $deleteLuggageStmt->close();
+        }
+      }
+    }
+
+    // ======= END: Handle deleted guests =======
+
+    // Now process inserts/updates for the current room assignments
+    foreach ($roomAssignments as $room)
     {
       $transactNo = $room['transactNo'];
       $guestId = (int) $room['guestId']; // Ensure integer type
@@ -78,7 +134,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['roomAssignments']))
         $checkLuggageStmt->fetch();
 
         // Free result after use
-        $checkLuggageStmt->free_result(); // Ensure the result is freed
+        $checkLuggageStmt->free_result();
 
         if ($count == 0) 
         {

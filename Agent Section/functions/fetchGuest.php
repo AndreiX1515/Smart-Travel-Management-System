@@ -19,9 +19,12 @@ if (isset($_POST['flightDate']) && isset($_POST['agentCode']))
                   JOIN `flight` f ON b.flightId = f.flightId
                   LEFT JOIN `guestluggage` l ON g.guestId = l.guestId
                   LEFT JOIN `concerndetails` cd ON l.luggageType = cd.concernDetailsId
-                  WHERE b.status = 'Confirmed' AND f.flightDepartureDate = ? AND b.agentCode = ?";
+                  WHERE b.status = 'Confirmed' 
+                    AND f.flightDepartureDate = ? 
+                    AND b.agentCode = ?
+                    AND r.roomNumber IS NOT NULL";
 
-  if ($stmtAssigned = $conn->prepare($sqlAssigned)) 
+  if ($stmtAssigned = $conn->prepare($sqlAssigned))
   {
     $stmtAssigned->bind_param("ss", $flightDate, $agentCode);
     $stmtAssigned->execute();
@@ -75,13 +78,13 @@ if (isset($_POST['flightDate']) && isset($_POST['agentCode']))
                   LEFT JOIN `roominglist` r ON g.guestId = r.guestId
                   WHERE b.status = 'Confirmed' AND f.flightDepartureDate = ? AND b.agentCode = ? AND r.guestId IS NULL";
 
-  if ($stmtUnassigned = $conn->prepare($sqlUnassigned)) 
+  if ($stmtUnassigned = $conn->prepare($sqlUnassigned))
   {
     $stmtUnassigned->bind_param("ss", $flightDate, $agentCode);
     $stmtUnassigned->execute();
     $resultUnassigned = $stmtUnassigned->get_result();
 
-    while ($row = $resultUnassigned->fetch_assoc()) 
+    while ($row = $resultUnassigned->fetch_assoc())
     {
       $unassignedGuests[] = [
         "id" => $row['guestId'],

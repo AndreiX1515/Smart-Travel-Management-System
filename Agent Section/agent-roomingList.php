@@ -174,33 +174,37 @@ require "../conn.php";
 
   <!-- Combined script working -->
   <script>
-    let guests = []; // Stores all guests fetched from PHP
-    let availableGuests = []; // Stores guests available for assignment
+    let guests = [];  // Stores all guests fetched from PHP
+    let availableGuests = [];  // Stores guests available for assignment
     let rooms = [];
     let removedLuggage = [];
-    // Store luggage to be deleted (for later backend request)
-    let luggageToDelete = [];
 
-    document.getElementById('saveAssignments').addEventListener('click', function() {
+    document.getElementById('saveAssignments').addEventListener('click', function () 
+    {
       let roomAssignments = [];
       let luggageAssignments = [];
 
-      // First, delete any flagged luggage items from the database
-      deleteLuggageFromDatabase();
-
-      // Then, proceed with saving the room assignments and luggage details
-      $.ajax({
+      $.ajax(
+      {
         url: '../Agent Section/functions/fetchMaxRoomNumber.php', // Create this PHP file
         type: 'GET',
         dataType: 'json',
-        success: function(response) {
+        success: function(response) 
+        {
           let maxRoomNumber = response.maxRoomNumber || 0; // Start from 0 if no existing data
 
-          rooms.forEach((room) => {
-            maxRoomNumber++; // Increment for the next room
+          let roomAssignments = [];
+          let luggageAssignments = [];
 
-            room.guests.forEach(guest => {
-              roomAssignments.push({
+          // Assign room numbers dynamically
+          rooms.forEach((room) => 
+          {
+            maxRoomNumber++; // Increment for the next room
+            
+            room.guests.forEach(guest => 
+            {
+              roomAssignments.push(
+              {
                 transactNo: guest.transactNo,
                 guestId: guest.id,
                 roomType: room.type,
@@ -210,7 +214,8 @@ require "../conn.php";
               // Collect luggage data for each guest
               let luggageItems = Array.from(document.querySelectorAll(`#luggageContainer-${guest.id} select`)).map(select => select.value);
               luggageItems.forEach(luggage => {
-                luggageAssignments.push({
+                luggageAssignments.push(
+                {
                   transactNo: guest.transactNo,
                   guestId: guest.id,
                   luggageId: luggage
@@ -220,16 +225,18 @@ require "../conn.php";
           });
 
           // Ensure there's data to send
-          if (roomAssignments.length === 0) {
+          if (roomAssignments.length === 0) 
+          {
             alert("No room assignments to save.");
             return;
           }
 
           // Send AJAX request to insert room assignments
-          $.ajax({
+          $.ajax(
+          {
             url: '../Agent Section/functions/agent-addRoomingList.php',
             type: 'POST',
-            data: {
+            data: { 
               roomAssignments: JSON.stringify(roomAssignments),
               luggageAssignments: JSON.stringify(luggageAssignments) // Include luggage data in the same request
             },
@@ -243,7 +250,8 @@ require "../conn.php";
             }
           });
         },
-        error: function(xhr, status, error) {
+        error: function(xhr, status, error) 
+        {
           console.error('Error fetching max room number:', error);
           alert("Failed to fetch max room number.");
         }
@@ -251,37 +259,38 @@ require "../conn.php";
     });
 
     // Fetch guests when flight date changes
-    $('#flightDate').on('change', function() {
-      document.getElementById('assignedRoomsTable').innerHTML = '';
+    $('#flightDate').on('change', function () 
+    {
       let flightDate = $(this).val();
       let agentCode = "<?php echo $agentCode; ?>";
       console.log("Luggage Options:", luggageOptions);
       $('#guestName').html('<option selected disabled>Loading guests...</option>');
 
-      if (flightDate) {
-        $.ajax({
-          url: '../Agent Section/functions/fetchGuest.php',
+      if (flightDate) 
+      {
+        $.ajax(
+        {
+          url: '../Agent Section/functions/fetchGuest.php', 
           type: 'POST',
-          data: {
-            flightDate: flightDate,
-            agentCode: agentCode
-          },
-          success: function(response) {
+          data: { flightDate: flightDate, agentCode: agentCode },
+          success: function (response) 
+          {
             console.log(response);
             let guestSelect = $('#guestName');
             guestSelect.empty(); // Clear existing options
 
             let data = JSON.parse(response);
-
+            
             // Populate assigned guests in room list
-            if (data.assignedGuests.length > 0) {
+            if (data.assignedGuests.length > 0)
+            {
               rooms = []; // Clear existing rooms before reloading
-              data.assignedGuests.forEach(guest => {
-                let room = {
+              data.assignedGuests.forEach(guest => 
+              {
+                let room = 
+                {
                   type: guest.roomType,
-                  guests: [{
-                    ...guest
-                  }],
+                  guests: [{ ...guest }],
                   roomNumber: guest.roomNumber
                 };
                 rooms.push(room);
@@ -290,47 +299,56 @@ require "../conn.php";
             }
 
             // Populate unassigned guests in select dropdown
-            if (data.unassignedGuests.length > 0) {
-              data.unassignedGuests.forEach(guest => {
+            if (data.unassignedGuests.length > 0) 
+            {
+              data.unassignedGuests.forEach(guest => 
+              {
                 guestSelect.append(new Option(guest.name, guest.id));
               });
 
               guests = data.unassignedGuests; // Store unassigned guests for reference
-            } else {
+            } 
+            else 
+            {
               $('#guestName').html('<option selected disabled>No guests found</option>');
             }
           },
-          error: function(xhr, status, error) {
+          error: function (xhr, status, error) 
+          {
             console.error('Error fetching guests:', error);
             $('#guestName').html('<option selected disabled>No guests found</option>');
           }
         });
-      } else {
+      } 
+      else 
+      {
         $('#guestName').html('<option selected disabled>Select a guest</option>');
       }
     });
 
-    function assignRoom() {
+    function assignRoom() 
+    {
       let guestSelect = document.getElementById('guestName');
-      let selectedGuests = Array.from(guestSelect.selectedOptions).map(opt => {
+      let selectedGuests = Array.from(guestSelect.selectedOptions).map(opt => 
+      {
         let guestData = guests.find(g => g.id == opt.value);
-        return {
-          ...guestData
-        };
+        return { ...guestData };
       });
 
       let roomType = document.getElementById('roomType').value;
       let minCapacity = getMinCapacity(roomType);
       let maxCapacity = getMaxCapacity(roomType);
 
-      if (selectedGuests.length < minCapacity || selectedGuests.length > maxCapacity) {
+      if (selectedGuests.length < minCapacity || selectedGuests.length > maxCapacity) 
+      {
         alert(`A ${roomType} room must have between ${minCapacity} and ${maxCapacity} guests.`);
         return;
       }
 
       // Fetch latest room number before assigning
       let transactNo = selectedGuests[0]?.transactNo; // Assuming all guests share the same transactNo
-      if (!transactNo) {
+      if (!transactNo) 
+      {
         alert("Error: Missing transaction number.");
         return;
       }
@@ -339,18 +357,19 @@ require "../conn.php";
       let alreadyAssigned = selectedGuests.some(guest =>
         rooms.some(room => room.guests.some(g => g.id == guest.id))
       );
-      if (alreadyAssigned) {
+      if (alreadyAssigned) 
+      {
         alert("One or more guests are already assigned to a room.");
         return;
       }
 
-      $.ajax({
+      $.ajax(
+      {
         url: '../Agent Section/functions/fetchMaxRoomNumber.php',
         type: 'POST',
-        data: {
-          transactNo: transactNo
-        },
-        success: function(response) {
+        data: { transactNo: transactNo },
+        success: function (response) 
+        {
           let lastRoomNumber = !isNaN(parseInt(response)) ? parseInt(response) : 0; // Default to 0 if no rooms exist
           let nextRoomNumber = lastRoomNumber + 1; // Increment for new room assignment
 
@@ -358,22 +377,20 @@ require "../conn.php";
           guests = guests.filter(g => !selectedGuests.some(sg => sg.id == g.id));
 
           // Add luggage types to selected guests before assigning to room
-          selectedGuests.forEach(guest => {
+          selectedGuests.forEach(guest => 
+          {
             // Assuming guestLuggage is a global object holding luggage types by guestId
             guest.luggageTypes = guestLuggage[guest.id] || [];
           });
 
-          let room = {
-            type: roomType,
-            guests: selectedGuests,
-            roomNumber: nextRoomNumber
-          };
+          let room = { type: roomType, guests: selectedGuests, roomNumber: nextRoomNumber };
           rooms.push(room);
 
           updateRoomList();
           updateGuestDropdown(); // Refresh guest dropdown after assignment
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) 
+        {
           console.error("Error fetching last room number:", error);
           alert("Failed to fetch room number.");
         }
@@ -381,22 +398,25 @@ require "../conn.php";
     }
 
     // Function to update the room list
-    function updateRoomList() {
+    function updateRoomList() 
+    {
       let assignedRoomsTable = document.getElementById('assignedRoomsTable');
       assignedRoomsTable.innerHTML = ''; // Clear the existing table
 
       let rowNumber = 1;
 
-      rooms.forEach((room, roomIndex) => {
+      rooms.forEach((room, roomIndex) => 
+      {
         let firstGuest = true;
 
-        room.guests.forEach((guest) => {
+        room.guests.forEach((guest) => 
+        {
           let row = assignedRoomsTable.insertRow();
           row.setAttribute("data-guest-id", guest.id);
           row.setAttribute("data-transact-no", guest.transactNo);
 
           // Get the count of luggage for the guest
-          let luggageCount = guest.luggageType.length;
+          let luggageCount = (guest.luggageType || []).length;
           console.log(`Guest ID: ${guest.id}, Number of Luggage: ${luggageCount}`);
 
           // Generate container with multiple luggage selects for each guest
@@ -404,15 +424,18 @@ require "../conn.php";
             <div id="luggageContainer-${guest.id}" class="luggage-group" data-guest-id="${guest.id}">
               <div id="luggageSelects-${guest.id}">`;
 
-          if (luggageCount > 0) {
-            for (let i = 0; i < luggageCount; i++) {
+          if (luggageCount > 0) 
+          {
+            for (let i = 0; i < luggageCount; i++) 
+            {
               luggageSelectGroup += `
                 <select class="form-control" name="luggageSelect-${guest.id}[]" 
                   style="width: 100%; display: block; margin-bottom: 5px;" 
-                  id="luggageSelect-${guest.id}-${i}" data-luggage-id="${guest.luggageType[i]}">
+                  id="luggageSelect-${guest.id}-${i}">
                   <option value="">Select Luggage</option>`;
 
-              luggageOptions.forEach(option => {
+              luggageOptions.forEach(option => 
+              {
                 const selected = option.concernDetailsId == guest.luggageType[i] ? 'selected' : '';
                 luggageSelectGroup += `<option value="${option.concernDetailsId}" ${selected}>${option.details}</option>`;
               });
@@ -423,9 +446,9 @@ require "../conn.php";
 
           luggageSelectGroup += `
             </div> <!-- end of luggageSelects container -->
-            <button type="button" class="btn btn-sm btn-primary mt-1" style="margin-top: 5px;" onclick="addLuggageSelect(${guest.id})">Add</button>
-            <button type="button" class="btn btn-sm btn-danger mt-1" style="margin-top: 5px; margin-left: 5px;" onclick="removeLuggageSelect(${guest.id})">Remove</button>
-          </div>`;
+              <button type="button" class="btn btn-sm btn-primary mt-1" style="margin-top: 5px;" onclick="addLuggageSelect(${guest.id})">Add</button>
+              <button type="button" class="btn btn-sm btn-danger mt-1" style="margin-top: 5px; margin-left: 5px;" onclick="removeLuggageSelect(${guest.id})">Remove</button>
+            </div>`;
 
           row.innerHTML = `
             <td style="text-align: center; vertical-align: middle;">${rowNumber++}</td>
@@ -454,7 +477,8 @@ require "../conn.php";
     }
 
     // Add a luggage select dropdown dynamically
-    function addLuggageSelect(guestId) {
+    function addLuggageSelect(guestId) 
+    {
       const container = document.getElementById(`luggageSelects-${guestId}`);
       const selectCount = container.querySelectorAll('select').length;
 
@@ -463,7 +487,6 @@ require "../conn.php";
       select.name = `luggageSelect-${guestId}[]`;
       select.id = `luggageSelect-${guestId}-${selectCount}`;
       select.style.cssText = 'width: 100%; display: block; margin-bottom: 5px;';
-      select.dataset.new = 'true'; // Flag as new luggage
 
       let defaultOption = document.createElement('option');
       defaultOption.value = '';
@@ -480,20 +503,24 @@ require "../conn.php";
       container.appendChild(select); // Append to the luggageSelects container
     }
 
-    function generateLuggageSelects(guestId) {
+    function generateLuggageSelects(guestId) 
+    {
       let html = "";
 
-      if (guestLuggage[guestId]) {
+      if (guestLuggage[guestId]) 
+      {
         // Ensure luggageIds are always an array
         let luggageIds = Array.isArray(guestLuggage[guestId]) ? guestLuggage[guestId] : [guestLuggage[guestId]];
 
         // Iterate through all luggage types assigned to the guest
-        luggageIds.forEach((luggageId, index) => {
+        luggageIds.forEach((luggageId, index) => 
+        {
           let select = `<select class="form-control" name="luggageSelect-${guestId}[]" style="width: 100%; display: block;" id="luggageSelect-${guestId}-${index}">
                           <option value="">Select Luggage</option>`;
 
           // Populate luggage options dynamically
-          luggageOptions.forEach(option => {
+          luggageOptions.forEach(option => 
+          {
             select += `<option value="${option.concernDetailsId}" ${option.concernDetailsId == luggageId ? 'selected' : ''}>${option.details}</option>`;
           });
 
@@ -506,55 +533,20 @@ require "../conn.php";
     }
 
     // Remove the last luggage select dropdown for a guest
-    function removeLuggageSelect(guestId) {
+    function removeLuggageSelect(guestId) 
+    {
       const container = document.getElementById(`luggageSelects-${guestId}`);
       const selects = container.querySelectorAll('select');
 
-      if (selects.length > 0) {
-        const lastSelect = selects[selects.length - 1];
-        if (lastSelect.dataset.new === 'true') {
-          // If it's newly added, just remove it from the DOM
-          container.removeChild(lastSelect);
-        } else {
-          // Handle case where the luggage has been saved in the database (store it for later deletion)
-          const luggageId = lastSelect.dataset.luggageId; // Get the luggage ID to be deleted
-          luggageToDelete.push({
-            guestId,
-            luggageId
-          }); // Store luggage to be deleted for later backend request
-          container.removeChild(lastSelect);
-        }
-
-        console.log(luggageToDelete);
+      if (selects.length > 0) 
+      {
+        container.removeChild(selects[selects.length - 1]);
       }
     }
 
-    // Function to handle deletion of luggage from the database
-    function deleteLuggageFromDatabase() {
-      // Send a request to the backend to delete the stored luggage
-      fetch('../Agent Section/functions/agent-removeLuggage.php', {
-          method: 'POST',
-          body: JSON.stringify({
-            luggageToDelete
-          }),
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        })
-        .then(response => response.json())
-        .then(data => {
-          if (data.status === 'success') {
-            console.log('Luggage deleted successfully');
-            luggageToDelete = []; // Clear the luggageToDelete array after successful deletion
-          } else {
-            console.log('Error deleting luggage');
-          }
-        })
-        .catch(error => console.error('Error:', error));
-    }
-
     // Remove a room and reassign the guests to the unassigned list
-    function removeRoom(index) {
+    function removeRoom(index) 
+    {
       let removedGuests = rooms[index].guests;
       guests = [...guests, ...removedGuests];
       updateGuestDropdown();
@@ -563,24 +555,30 @@ require "../conn.php";
     }
 
     // Update the guest dropdown
-    function updateGuestDropdown() {
+    function updateGuestDropdown() 
+    {
       let guestSelect = document.getElementById('guestName');
       guestSelect.innerHTML = '';
-      if (guests.length > 0) {
-        guests.forEach(guest => {
+      if (guests.length > 0) 
+      {
+        guests.forEach(guest => 
+        {
           let option = document.createElement('option');
           option.value = guest.id;
           option.textContent = guest.name;
           guestSelect.appendChild(option);
         });
-      } else {
+      } 
+      else 
+      {
         guestSelect.innerHTML = '<option selected disabled>No guests available</option>';
       }
       sortGuestDropdown();
     }
 
     // Sort the guest dropdown alphabetically
-    function sortGuestDropdown() {
+    function sortGuestDropdown() 
+    {
       let guestSelect = document.getElementById('guestName');
       let options = Array.from(guestSelect.options);
       options.sort((a, b) => a.textContent.localeCompare(b.textContent));
@@ -589,8 +587,10 @@ require "../conn.php";
     }
 
     // Get minimum capacity based on room type
-    function getMinCapacity(roomType) {
-      switch (roomType) {
+    function getMinCapacity(roomType) 
+    {
+      switch (roomType) 
+      {
         case 'twin':
         case 'double':
           return 1;
@@ -602,8 +602,10 @@ require "../conn.php";
     }
 
     // Get maximum capacity based on room type
-    function getMaxCapacity(roomType) {
-      switch (roomType) {
+    function getMaxCapacity(roomType) 
+    {
+      switch (roomType) 
+      {
         case 'twin':
         case 'double':
           return 2;
