@@ -28,46 +28,10 @@
 				<div class="search-wrapper">
 					<div class="search-input-wrapper">
 						<input type="text" id="search" placeholder="Search here..">
-						<!-- <span class="icon">🔍</span> -->
 					</div>
 				</div>
 
-
-				<!-- <div class="filter-field">
-					<label for="status">Status:</label> 
-					<div class="select-wrapper">
-						<select id="status">
-							<option value="All" disabled selected>Select Status</option>
-							<option value="Pending">Pending</option>
-							<option value="Confirmed">Confirmed</option>
-							<option value="Cancelled">Cancelled</option>
-						</select>
-					</div>
-				</div> -->
-
 				<div class="second-header-wrapper">
-					<div class="date-range-wrapper sorting-wrapper">
-						<div class="select-wrapper">
-							<select id="packages">
-								<option value="All" disabled selected>Select Packages</option>
-								<option value="Autumn Tour Package">Autumn Tour</option>
-								<option value="Summer Tour Package">Summer Tour</option>
-								<option value="Spring Tour Package">Spring Tour</option>
-								<option value="Winter Tour Package">Winter Tour</option>
-								<option value="Regular Tour Package">Regular Tour</option>
-								<option value="Busan Tour Package">Busan Tour</option>
-							</select>
-						</div>
-					</div>
-
-					<!-- <div class="date-range-wrapper flightbooking-wrapper">
-						<div class="date-range-inputs-wrapper">
-							<div class="input-with-icon">
-								<input type="text" class="datepicker" id="BookingStartDate" placeholder="Booking Date">
-								<i class="fas fa-calendar-alt calendar-icon"></i>
-							</div>
-						</div>
-					</div> -->
 
 					<div class="date-range-wrapper flightbooking-wrapper">
 						<div class="date-range-inputs-wrapper">
@@ -91,14 +55,15 @@
 				<table class="product-table" id="product-table">
 					<thead>
 						<tr>
-							<th>Transact No</th>
-              <th>Branch</th>
-              <th>Request Title</th>
-              <th>Request Details</th>
-              <th>Specific Details</th>
-              <th>Total Pax</th>
-              <th>Total Amount</th>
-              <th>Request Date</th>
+							<th>TRANSACT NO</th>
+              <th>BRANCH</th>
+              <th>REQUEST TITLE</th>
+              <th>REQUEST DETAILS</th>
+              <th>SPECIFIC DETAILS</th>
+              <th>TOTAL PAX</th>
+              <th>TOTAL AMOUNT</th>
+							<th style='display:none;'>RAW REQUEST DATE</th>
+              <th>REQUEST DATE</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -146,6 +111,7 @@
 									$title = $row['RequestTitle'] ?? 'Custom Request';
 									$details = $row['RequestDetails'] ?? $row['customRequest'];
 									$requestId = $row['requestId'];
+									$formattedRequestDate = date("F d, Y", strtotime($row['RequestDate']));
 
 									// Output table row with data-transactno attribute
 									echo "<tr data-transactno='{$row['TransactNo']}' data-requestid='{$requestId}' class='transaction-row'>
@@ -156,7 +122,8 @@
 													<td>{$row['details']}</td>
 													<td>{$row['TotalPax']}</td>
 													<td>{$row['requestCost']}</td>
-													<td>{$row['RequestDate']}</td>
+													<td style='display:none;'>{$row['RequestDate']}</td> <!-- hidden raw date -->
+													<td>{$formattedRequestDate}</td>
 												</tr>";
 								}
 							} 
@@ -179,39 +146,6 @@
 
 		</div>
 
-  </div>
-</div>
-
-<!-- Modal -->
-<div class="modal fade" id="transactionModal" tabindex="-1" aria-labelledby="transactionModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="transactionModalLabel">Transaction Details</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-			<form action="../Employee Section/functions/emp-requestUpdateAmount-code.php" method="POST">
-				<div class="modal-body">
-					<div class="mb-3">
-						<label for="transactNo" class="form-label fw-bold">Transaction Number:</label>
-						<span id="transactNo" class="text-primary"></span>
-					</div>
-
-					<input type="hidden" id="modalRequestId" name="requestId">
-
-					<div class="mb-3">
-						<label for="requestAmount" class="form-label">Enter Total Amount:</label>
-						<input type="number" id="requestAmount" name="requestAmount" class="form-control" placeholder="Enter amount in PHP" 
-							step="0.01" min="0" required>
-					</div>
-				</div>
-
-				<div class="modal-footer">
-					<button type="submit" name="updatePrice" class="btn btn-primary">Update Price</button>
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-				</div>
-			</form>
-    </div>
   </div>
 </div>
 
@@ -247,7 +181,7 @@
 			{
 				emptyTable: "No Transaction Records Available"
 			},
-			order: [[0, 'desc']],  // Default sorting by Transaction ID (descending)
+			order: [[7, 'asc']],  // Default sorting by Transaction ID (descending)
 			scrollX: false,
 			scrollY: '69vh',  // Set a fixed height for the table (adjust as necessary)
 			paging: true,  // Enable pagination
@@ -329,13 +263,13 @@
 		{
 			const selectedFlightDate = $(this).val();  // Get the selected value directly from the input field
 			console.log("Flight Date Filter:", selectedFlightDate);  // Log the selected flight date
-			table.column(3).search(selectedFlightDate || '').draw();  // Column 5 (index starts at 0)
+			table.column(7).search(selectedFlightDate || '').draw();  // Column 5 (index starts at 0)
 		});
 
 		// Apply datepicker and input validation for FlightStartDate
 		$("#FlightStartDate").datepicker(
 		{
-			dateFormat: "yy-mm-dd", // Set the format to MM-DD-YYYY
+			dateFormat: "mm-dd-yy", // Set the format to MM-DD-YYYY
 			showAnim: "fadeIn", // Optional: Adds a fade-in effect when the date picker is opened
 			changeMonth: true, // Allow the month to be changed from the dropdown
 			changeYear: true,  // Allow the year to be changed from the dropdown
@@ -346,7 +280,7 @@
 				$(this).val(dateText);
 				flightStartDate = dateText; // Store the selected date
 				console.log("FlightStartDate Selected Date (onSelect): " + dateText);
-				table.column(3).search(flightStartDate || '').draw();  // Column 5 (index starts at 0)
+				table.column(7).search(flightStartDate || '').draw();  // Column 5 (index starts at 0)
 			}
 		});
 
@@ -435,54 +369,6 @@
 			// Redraw the table
 			table.draw();
 		});
-	});
-</script>
-
-<script>
-	document.addEventListener('DOMContentLoaded', function () 
-	{
-		// Add click event listener to each table row
-		document.querySelectorAll('.transaction-row').forEach(row => 
-		{
-			row.addEventListener('click', function () 
-			{
-				const transactNo = this.getAttribute('data-transactno'); // Fetch the TransactNo
-				const requestId = this.getAttribute('data-requestid');
-				document.getElementById('transactNo').innerText = transactNo; // Update modal content
-				document.getElementById('modalRequestId').value = requestId;
-				const modal = new bootstrap.Modal(document.getElementById('transactionModal')); // Initialize modal
-				modal.show(); // Show modal
-			});
-		});
-	});
-</script>
-
-<script>
-	// DOM Elements
-	const toggleButton = document.getElementById('toggleButton');
-	const closeButton = document.getElementById('closeButton');
-	const hiddenDiv = document.getElementById('hiddenDiv');
-
-	// Toggle the hidden div and button text with an icon
-	toggleButton.addEventListener('click', function () 
-	{
-		if (hiddenDiv.style.display === 'none' || hiddenDiv.style.display === '') 
-		{
-			hiddenDiv.style.display = 'block';
-			toggleButton.innerHTML = '<i class="fas fa-times"></i> Close'; // Add "Close" icon and text
-		} 
-		else 
-		{
-			hiddenDiv.style.display = 'none';
-			toggleButton.innerHTML = ' <i class="fas fa-filter"></i> Filters'; // Add "Filters" icon and text
-		}
-	});
-
-	// Close the hidden div and reset the button text with an icon
-	closeButton.addEventListener('click', function () 
-	{
-		hiddenDiv.style.display = 'none';
-		toggleButton.innerHTML = '<i class="fas fa-filter"></i> Filters'; // Reset to "Filters" icon and text
 	});
 </script>
 
