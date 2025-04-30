@@ -307,24 +307,21 @@
     });
 </script>
 
-<!-- DataTables #product-table -->
+<!-- DataTables #remaining-table -->
 <script>
     $(document).ready(function () {
 
-        const table = $('#remaining-table').DataTable({
-            dom: 'rtip', // Use only the relevant table elements
+        const tableRemaining = $('#remaining-table').DataTable({
+            dom: 'rtip',
             language: {
                 emptyTable: "No Transaction Records Available"
             },
-            order: [
-                [2, 'asc']
-            ], // Default sorting by Transaction ID (descending)
+            order: [[2, 'asc']],
             scrollX: false,
-            paging: true, // Enable pagination
-            pageLength: 14, // Set the number of rows per page
+            paging: true,
+            pageLength: 14,
             autoWidth: false,
             autoHeight: false,
-
             columnDefs: [{
                 targets: [1, 3, 4, 5, 6, 7, 8],
                 orderable: false
@@ -333,157 +330,118 @@
 
         // Search Functionality
         $('#search').on('keyup', function () {
-            table.search(this.value).draw();
+            tableRemaining.search(this.value).draw();
         });
 
         // Update the custom pagination buttons and page info
         function updatePagination() {
-            const info = table.page.info();
+            const info = tableRemaining.page.info();
             const currentPage = info.page + 1;
             const totalPages = info.pages;
 
             $('#pageInfo').text(`Page ${currentPage} of ${totalPages}`);
 
             const isSinglePage = totalPages <= 1;
-
             $('#prevPage').prop('disabled', currentPage === 1 || isSinglePage);
             $('#nextPage').prop('disabled', currentPage === totalPages || isSinglePage);
         }
 
-
-        // Custom pagination button click events
         $('#prevPage').on('click', function () {
-            table.page('previous').draw('page');
+            tableRemaining.page('previous').draw('page');
             updatePagination();
         });
 
         $('#nextPage').on('click', function () {
-            table.page('next').draw('page');
+            tableRemaining.page('next').draw('page');
             updatePagination();
         });
 
-        // Initialize pagination on first load
         updatePagination();
-
-
-
 
         // Package Filter
         $('#packages').on('change', function () {
             const selectedPackage = $(this).val();
-            table.column(1).search(selectedPackage || '').draw();
+            tableRemaining.column(1).search(selectedPackage || '').draw();
         });
 
-        // Booking Date Filter with value change
+        // Booking Date Filter
         $('#BookingStartDate').on('change', function () {
-            const selectedBookingDate = $(this).val(); // Get the selected value directly from the input field
-            console.log("Booking Date Filter:", selectedBookingDate); // Log the selected booking date
-            table.column(3).search(selectedBookingDate || '').draw(); // Column 4 (index starts at 0)
+            const selectedBookingDate = $(this).val();
+            console.log("Booking Date Filter:", selectedBookingDate);
+            tableRemaining.column(3).search(selectedBookingDate || '').draw();
         });
 
-        // Flight Date Filter with value change
+        // Flight Date Filter
         $('#FlightStartDate').on('change', function () {
-            const selectedFlightDate = $(this).val(); // Get the selected value directly from the input field
-            console.log("Flight Date Filter:", selectedFlightDate); // Log the selected flight date
-            table.column(2).search(selectedFlightDate || '').draw(); // Column 5 (index starts at 0)
+            const selectedFlightDate = $(this).val();
+            console.log("Flight Date Filter:", selectedFlightDate);
+            tableRemaining.column(2).search(selectedFlightDate || '').draw();
         });
 
-        // Apply datepicker and input validation for FlightStartDate
+        // FlightStartDate Datepicker
         $("#FlightStartDate").datepicker({
-            dateFormat: "yy-mm-dd", // Set the format to MM-DD-YYYY
-            showAnim: "fadeIn", // Optional: Adds a fade-in effect when the date picker is opened
-            changeMonth: true, // Allow the month to be changed from the dropdown
-            changeYear: true, // Allow the year to be changed from the dropdown
-            yearRange: "1900:2100", // Set a range of years (optional)
+            dateFormat: "yy-mm-dd",
+            showAnim: "fadeIn",
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "1900:2100",
             onSelect: function (dateText) {
-                // When a date is selected, update the input field with the date
                 $(this).val(dateText);
-                flightStartDate = dateText; // Store the selected date
                 console.log("FlightStartDate Selected Date (onSelect): " + dateText);
-                table.column(2).search(flightStartDate || '').draw(); // Column 5 (index starts at 0)
+                tableRemaining.column(2).search(dateText || '').draw();
             }
         });
 
-
-        // Apply datepicker and input validation for BookingStartDate
+        // BookingStartDate Datepicker
         $("#BookingStartDate").datepicker({
-            dateFormat: "mm-dd-yy", // Set the format to MM-DD-YYYY
-            showAnim: "fadeIn", // Optional: Adds a fade-in effect when the date picker is opened
-            changeMonth: true, // Allow the month to be changed from the dropdown
-            changeYear: true, // Allow the year to be changed from the dropdown
-            yearRange: "1900:2100", // Set a range of years (optional)
+            dateFormat: "mm-dd-yy",
+            showAnim: "fadeIn",
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "1900:2100",
             onSelect: function (dateText) {
-                // When a date is selected, update the input field with the date
                 $(this).val(dateText);
-                bookingStartDate = dateText; // Store the selected date
-                console.log("FlightStartDate Selected Date (onSelect): " + dateText);
-                table.column(4).search(bookingStartDate || '').draw(); // Column 5 (index starts at 0)
+                console.log("BookingStartDate Selected Date (onSelect): " + dateText);
+                tableRemaining.column(4).search(dateText || '').draw();
             }
         });
 
         // BookingStartDate Input Validation and Formatting
         $("#BookingStartDate").on("input", function () {
-            var value = $(this).val();
+            var value = $(this).val().replace(/[^\d-]/g, '');
 
-            // Remove non-numeric and non-dash characters
-            value = value.replace(/[^\d-]/g, '');
-
-            // Automatically add dashes in the correct places if necessary
             if (value.length > 2 && value.charAt(2) !== '-') {
                 value = value.substring(0, 2) + '-' + value.substring(2);
             }
             if (value.length > 5 && value.charAt(5) !== '-') {
                 value = value.substring(0, 5) + '-' + value.substring(5);
             }
-
-            // Limit the total input length to 10 characters (MM-DD-YYYY)
             if (value.length > 10) {
                 value = value.substring(0, 10);
             }
 
-            // Update the input field value
             $(this).val(value);
-
-            // Reset or update the bookingStartDate variable
-            if (value === "") {
-                bookingStartDate = ""; // Reset the variable if the input is cleared
-            } else {
-                bookingStartDate = value; // Update the variable with the formatted value
-            }
-
-            // Update the table column search
-            table.column(5).search(bookingStartDate || '').draw(); // Column 5 (index starts at 0)
-
+            tableRemaining.column(5).search(value || '').draw();
             console.log("BookingStartDate Input Value (on input): " + value);
         });
 
         // Clear All Filters
         $('#clearSorting').on('click', function () {
-            // Clear search field
             $('#search').val('');
-            table.search('').draw();
+            tableRemaining.search('').draw();
 
-            // Reset status dropdown to "Select Status"
             $('#status').val('').trigger('change');
-
-            // Reset branch dropdown to "Select Branch"
             $('#packages').val('').trigger('change');
 
-            // Explicitly reset date filter variables
-            flightStartDate = '';
-            bookingStartDate = '';
-
-            // Clear date fields
             $('#BookingStartDate').val('').trigger('change');
             $('#FlightStartDate').val('').trigger('change');
 
-            // Reset DataTable filters & sorting
-            table.order([
-                [2, 'asc']
-            ]) // Default sort by first column (Transaction ID)
-                .search('') // Clear any search input
-                .columns().search('') // Reset all column filters
-                .draw(); // Redraw table to default state
+            tableRemaining.order([[2, 'asc']])
+                .search('')
+                .columns().search('')
+                .draw();
+
+            updatePagination();
         });
 
     });

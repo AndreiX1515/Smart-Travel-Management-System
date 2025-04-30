@@ -918,6 +918,142 @@
 
 
 
+/* ========== ON-DUE TABLE STYLES ========== */
+.ondue-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  table-layout: fixed;
+}
+
+.ondue-table thead {
+  overflow: hidden;
+}
+
+.ondue-table th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: #f4f4f4;
+  font-weight: bold;
+  text-align: left;
+  border: 1px solid #ddd;
+  font-size: 0.8em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.ondue-table td {
+  padding: 6px 10px;
+  text-align: left;
+  vertical-align: middle;
+  border-bottom: 1px solid #ddd;
+  font-size: 0.85em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ondue-table tr {
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.ondue-table tr:hover {
+  background-color: #f2f2f2;
+  color: #000;
+  cursor: pointer;
+}
+
+/* ===== COLUMN WIDTHS AND STYLES ===== */
+.ondue-table th:nth-child(1),
+.ondue-table td:nth-child(1) {
+  width: 8%; /* Transaction No */
+}
+
+.ondue-table th:nth-child(2),
+.ondue-table td:nth-child(2) {
+  width: 14%; /* Client Name */
+}
+
+.ondue-table th:nth-child(3),
+.ondue-table td:nth-child(3) {
+  width: 12%; /* Due Date */
+}
+
+.ondue-table th:nth-child(4),
+.ondue-table td:nth-child(4) {
+  width: 10%; /* Pax */
+  text-align: center;
+}
+
+.ondue-table th:nth-child(5),
+.ondue-table td:nth-child(5) {
+  width: 14%; /* Package Price */
+  text-align: center;
+  color: #007bff;
+  font-weight: 600;
+}
+
+.ondue-table th:nth-child(6),
+.ondue-table td:nth-child(6) {
+  width: 14%; /* Total Paid */
+  text-align: center;
+  color: #28a745;
+  font-weight: 600;
+}
+
+.ondue-table th:nth-child(7),
+.ondue-table td:nth-child(7) {
+  width: 14%; /* Remaining Balance */
+  text-align: center;
+  color: #dc3545;
+  font-weight: bold;
+}
+
+.ondue-table th:nth-child(8),
+.ondue-table td:nth-child(8) {
+  width: 8%; /* Status */
+  text-align: center;
+}
+
+/* ===== TABLE TOOLS & FILTERS ===== */
+.table-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.show-column span {
+  color: #000;
+  font-weight: 600;
+}
+
+.show-column select {
+  margin-left: 5px;
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-size: 0.85em;
+}
+
+/* ===== PAGINATION OVERRIDE ===== */
+.dataTables_paginate {
+  display: none;
+}
+
+.dataTables_length label,
+.dataTables_info {
+  display: none;
+}
+
+.dataTables_length select {
+  padding: 3px;
+  font-size: 12px;
+  border-radius: 3px;
+}
+
+
 
 
 

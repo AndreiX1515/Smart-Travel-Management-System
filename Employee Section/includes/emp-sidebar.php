@@ -63,7 +63,7 @@ $position = htmlspecialchars(strtoupper($empId));
 			</a>
 		</li>
 
-		<li class="nav-item transaction">
+		<!-- <li class="nav-item transaction">
 			<a class="nav-link page-button" href="../Employee Section/emp-requestHistory.php" data-page-name="Request History">
 				<div class="icon-wrapper">
 					<div class="icon"><i class="fa-solid fa-arrow-right-arrow-left"></i></div>
@@ -116,6 +116,62 @@ $position = htmlspecialchars(strtoupper($empId));
 					<span class="label" style="font-size: 14px;">Visa Requirements</span>
 				</div>
 			</a>
+		</li> -->
+
+
+		<!-- Table Operationals -->
+		<li class="nav-item dropdown">
+			<a class="nav-link page-button" href="#" data-bs-toggle="collapse" data-bs-target="#operationals" aria-expanded="false" aria-controls="operationals" data-page-name="Operationals">
+				<div class="icon-wrapper">
+				<div class="icon"><i class="fa-solid fa-industry"></i></div>
+
+				</div>
+				<div class="label-wrapper">
+					<span class="label">Operationals</span>
+				</div>
+			</a>
+
+			<div class="collapse" id="operationals">
+				<ul class="nav flex-column managebooking-menu-wrapper">
+					<li class="nav-item transaction">
+						<a class="nav-link page-button" href="../Employee Section/emp-roomingList.php" data-page-name="Rooming List">Rooming List</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link page-button" href="../Employee Section/emp-guestList.php" data-page-name="Guest List">Guest List</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link page-button" href="../Employee Section/emp-visaRequirementsTable.php" data-page-name="Visa Requirements">Visa Requirements</a>
+					</li>
+				</ul>
+			</div>
+
+		</li>
+
+		<!-- Table Histories -->
+		<li class="nav-item dropdown">
+			<a class="nav-link page-button" href="#" data-bs-toggle="collapse" data-bs-target="#tableHistories" aria-expanded="false" aria-controls="tableHistories" data-page-name="Operationals">
+				<div class="icon-wrapper">
+					<div class="icon"><i class="fa-solid fa-list"></i></div>
+
+				</div>
+				<div class="label-wrapper">
+					<span class="label">History</span>
+				</div>
+			</a>
+
+			<div class="collapse" id="tableHistories">
+				<ul class="nav flex-column managebooking-menu-wrapper">
+					<li class="nav-item transaction">
+						<a class="nav-link page-button" href="../Employee Section/emp-requestHistory.php" data-page-name="Request History">Request History</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link page-button" href="../Employee Section/emp-paymentHistory.php" data-page-name="Payment History">Request</a>
+					</li>
+
+					
+				</ul>
+			</div>
+
 		</li>
 
 		<li class="nav-item dropdown">
@@ -268,7 +324,6 @@ $position = htmlspecialchars(strtoupper($empId));
 		});
 	});
 </script>
-
 
 <!-- Change Password Modal -->
 <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">

@@ -143,7 +143,7 @@
     <div class="body-content-wrapper">
 
         <div class="table-wrapper">
-            <table class="product-table" id="product-table">
+            <table class="ondue-table" id="ondue-table">
                 <thead>
                     <tr>
                         <th>TRANSACT NO</th>
@@ -264,3 +264,196 @@
     </div>
 
 </div>
+
+
+
+<!-- For Button Tabs Status Sorting -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        // Get the status from the URL
+        let statusTab = "<?php echo isset($_GET['status']) ? $_GET['status'] : ''; ?>";
+        console.log("Status from URL:", statusTab); // Debugging
+
+        // Find all filter buttons
+        let buttons = document.querySelectorAll("#booking-filter-tabs .filter-btn");
+
+        // Remove 'active' class from all buttons
+        buttons.forEach(btn => btn.classList.remove("active"));
+
+        // Find the button that matches the status
+        let matchedButton = [...buttons].find(btn => btn.getAttribute("data-filter") === statusTab);
+
+        if (matchedButton) {
+            matchedButton.classList.add("active"); // Highlight the correct button
+            console.log("Activating button:", matchedButton.innerText);
+
+            setTimeout(() => {
+                matchedButton.click();
+            }, 3);
+
+        } else {
+            // Default to "All" if no match found
+            let defaultButton = document.querySelector("#booking-filter-tabs .filter-btn[data-filter='']");
+            if (defaultButton) {
+                defaultButton.classList.add("active");
+                console.log("Activating default button: All");
+
+                setTimeout(() => {
+                    defaultButton.click();
+                }, 100);
+            }
+        }
+
+        // Add click event listener to each button
+        buttons.forEach(button => {
+            button.addEventListener("click", function () {
+                // Remove active class from all buttons
+                buttons.forEach(btn => btn.classList.remove("active"));
+
+                // Add active class to the clicked button
+                this.classList.add("active");
+
+                let filterValue = this.getAttribute("data-filter");
+
+                // Apply DataTables filtering
+                if ($.fn.DataTable.isDataTable("#product-table")) {
+                    $('#product-table').DataTable().column(8).search(filterValue || '', true, false).draw();
+                }
+            });
+        });
+    });
+</script>
+
+<!-- DataTables #product-table -->
+<script>
+    $(document).ready(function () {
+        const tableProduct = $('#ondue-table').DataTable({
+            dom: 'rtip',
+            language: {
+                emptyTable: "No Transaction Records Available"
+            },
+            order: [[2, 'asc']],
+            scrollX: false,
+            paging: true,
+            pageLength: 14,
+            autoWidth: false,
+            autoHeight: false,
+            columnDefs: [{
+                targets: [1, 3, 4, 5, 6, 7, 8],
+                orderable: false
+            }]
+        });
+
+        const updatePagination = () => {
+            const info = tableProduct.page.info();
+            const currentPage = info.page + 1;
+            const totalPages = info.pages;
+
+            $('#pageInfo').text(`Page ${currentPage} of ${totalPages}`);
+            const isSinglePage = totalPages <= 1;
+
+            $('#prevPage').prop('disabled', currentPage === 1 || isSinglePage);
+            $('#nextPage').prop('disabled', currentPage === totalPages || isSinglePage);
+        };
+
+        // Pagination Controls
+        $('#prevPage').on('click', () => {
+            tableProduct.page('previous').draw('page');
+            updatePagination();
+        });
+
+        $('#nextPage').on('click', () => {
+            tableProduct.page('next').draw('page');
+            updatePagination();
+        });
+
+        // Search
+        $('#search').on('keyup', function () {
+            tableProduct.search(this.value).draw();
+            updatePagination();
+        });
+
+        // Filters
+        $('#packages').on('change', function () {
+            const val = $(this).val();
+            tableProduct.column(1).search(val || '').draw();
+            updatePagination();
+        });
+
+        $('#BookingStartDate').on('change', function () {
+            const val = $(this).val();
+            tableProduct.column(3).search(val || '').draw();
+            updatePagination();
+        });
+
+        $('#FlightStartDate').on('change', function () {
+            const val = $(this).val();
+            tableProduct.column(2).search(val || '').draw();
+            updatePagination();
+        });
+
+        // Datepickers
+        $("#FlightStartDate").datepicker({
+            dateFormat: "yy-mm-dd",
+            showAnim: "fadeIn",
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "1900:2100",
+            onSelect: function (dateText) {
+                $(this).val(dateText);
+                tableProduct.column(2).search(dateText || '').draw();
+                updatePagination();
+            }
+        });
+
+        $("#BookingStartDate").datepicker({
+            dateFormat: "mm-dd-yy",
+            showAnim: "fadeIn",
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "1900:2100",
+            onSelect: function (dateText) {
+                $(this).val(dateText);
+                tableProduct.column(4).search(dateText || '').draw();
+                updatePagination();
+            }
+        });
+
+        // Manual input formatter
+        $("#BookingStartDate").on("input", function () {
+            let value = $(this).val().replace(/[^\d-]/g, '');
+            if (value.length > 2 && value.charAt(2) !== '-') {
+                value = value.substring(0, 2) + '-' + value.substring(2);
+            }
+            if (value.length > 5 && value.charAt(5) !== '-') {
+                value = value.substring(0, 5) + '-' + value.substring(5);
+            }
+            if (value.length > 10) {
+                value = value.substring(0, 10);
+            }
+
+            $(this).val(value);
+            tableProduct.column(5).search(value || '').draw();
+            updatePagination();
+        });
+
+        // Clear All Filters
+        $('#clearSorting').on('click', function () {
+            $('#search, #BookingStartDate, #FlightStartDate').val('');
+            $('#status, #packages').val('').trigger('change');
+
+            tableProduct
+                .order([[2, 'asc']])
+                .search('')
+                .columns().search('')
+                .draw();
+
+            updatePagination();
+        });
+
+        // Initial call
+        updatePagination();
+    });
+</script>
+
