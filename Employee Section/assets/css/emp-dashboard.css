@@ -36,7 +36,7 @@
   box-sizing: border-box;
   padding: 0px 0; /* Add some padding instead of fixed height */
   height: auto;
-  border: 1px solid black;
+  /* border: 1px solid black; */
 }
 
 .header-counts .card {
@@ -356,7 +356,7 @@
   height: 5vh;
   margin: 10px 0px;
   padding: 5px 15px 5px 0px;
-  border: 1px solid black;
+  /* border: 1px solid black; */
 }
 
 /* ==================================== */
