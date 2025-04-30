@@ -87,87 +87,87 @@
 
 			</div>
 
-			<div class="table-container">
-				<table class="product-table" id="product-table">
-					<thead>
-						<tr>
-							<th>Transact No</th>
-              <th>Branch</th>
-              <th>Request Title</th>
-              <th>Request Details</th>
-              <th>Specific Details</th>
-              <th>Total Pax</th>
-              <th>Total Amount</th>
-              <th>Request Date</th>
-						</tr>
-					</thead>
-					<tbody>
-						<?php
-							$sql1 = "SELECT r.requestId, r.transactNo AS `TransactNo`,
-													c.concernTitle AS `RequestTitle`, cd.details AS `RequestDetails`, b.pax AS `TotalPax`,
-													r.requestCost as requestCost,
-													r.customRequest as customRequest, r.details as details, DATE_FORMAT(r.requestDate, '%m-%d-%Y') AS `RequestDate`, 
-													r.requestStatus AS `Status`
-												FROM request r
-												LEFT JOIN concern c ON r.concernId = c.concernId
-												LEFT JOIN concerndetails cd ON r.concernDetailsId = cd.concernDetailsId
-												LEFT JOIN booking b ON r.transactNo = b.transactNo
-												LEFT JOIN payment p ON b.transactNo = p.transactNo
-												LEFT JOIN branch br ON br.branchAgentCode = b.agentCode
-												WHERE r.requestStatus = 'Confirmed'
-												GROUP BY r.requestId";
+			<!-- Table  -->
+      <div class="table-container">
+            <table id="product-table" class="product-table">
+              <thead>
+                <tr>
+                  <th>TRANSACTION NO</th>
+                  <th>BRANCH</th>
+                  <th>AMOUNT</th>
+                  <th>PROOF OF PAYMENT</th>
+                  <th>PAYMENT DATE</th>
+                  <th>STATUS</th>
+                  <th>REMARKS</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php
+                  $sql1 = "SELECT b.transactNo, p.paymentId, p.amount, p.filePath, p.paymentDate, p.paymentStatus, p.paymentRemarks, br.branchName
+                          FROM `booking` b
+                          JOIN `payment` p ON b.transactNo = p.transactNo
+                          JOIN `branch` br ON br.branchAgentCode = b.agentCode
+                          ORDER BY p.paymentId ASC";
 
-							$res1 = $conn->query($sql1);
+                    // Execute the query
+                    $result1 = $conn->query($sql1);
 
-							if ($res1->num_rows > 0) 
-							{
-								while ($row = $res1->fetch_assoc()) 
-								{
-									// Determine the badge class based on the status
-									$status = $row['Status'];
-									$badgeClass = '';
-									switch ($status) 
-									{
-										case 'Confirmed':
-												$badgeClass = 'text-bg-success'; // Green for Confirmed
-												break;
-										case 'Submitted':
-												$badgeClass = 'text-bg-secondary'; // Gray for Submitted
-												break;
-										case 'Rejected':
-												$badgeClass = 'text-bg-danger'; // Red for Rejected
-												break;
-										default:
-												$badgeClass = 'text-bg-info'; // Blue for other statuses
-												break;
-									}
+                    // Check if query execution was successful
+                    if (!$result1) 
+                    {
+                      die("Query error: " . $conn->error);
+                    }
 
-									// Ensure that title and details are displayed properly
-									$title = $row['RequestTitle'] ?? 'Custom Request';
-									$details = $row['RequestDetails'] ?? $row['customRequest'];
-									$requestId = $row['requestId'];
+                    // Fetch results and display rows
+                    if ($result1->num_rows > 0) 
+                    {
+                      while ($row = $result1->fetch_assoc()) 
+                      {
+                        $amount = number_format($row['amount'], 2);
+                        $date = date("F d, Y", strtotime($row['paymentDate']));
+                        $remarks = !empty($row['paymentRemarks']) ? $row['paymentRemarks'] : 'N/A';
 
-									// Output table row with data-transactno attribute
-									echo "<tr data-transactno='{$row['TransactNo']}' data-requestid='{$requestId}' class='transaction-row'>
-													<td>{$row['TransactNo']}</td>
-													<td>{$row['TransactNo']}</td>
-													<td>{$title}</td>
-													<td>{$details}</td>
-													<td>{$row['details']}</td>
-													<td>{$row['TotalPax']}</td>
-													<td>{$row['requestCost']}</td>
-													<td>{$row['RequestDate']}</td>
-												</tr>";
-								}
-							} 
-							else 
-							{
-								echo "<tr><td colspan='9' style='text-align: center;'>No Requests Found</td></tr>";
-							}
-						?>
-					</tbody>
-				</table>
-			</div>
+                        $status = isset($row['paymentStatus']) ? $row['paymentStatus'] : 'Unknown';
+                        $statusClass = '';
+
+                        switch ($status) 
+                        {
+                          case 'Approved':
+                            $statusClass = 'bg-success text-white'; // Green background, white text
+                            break;
+                          case 'Rejected':
+                            $statusClass = 'bg-danger text-white'; // Red background, white text
+                            break;
+                          case 'Submitted':
+                            $statusClass = 'bg-warning text-dark';
+                            break;
+                          default:
+                            $statusClass = 'bg-secondary text-white';
+                        }
+
+                        echo "<tr>
+                                <td>" . $row['transactNo'] . "</td>
+                                <td>" . $row['branchName'] . "</td>
+                                <td>₱ " . $amount . "</td>
+                                <td>
+                                  <a href='functions/view-file.php?file=" . urlencode($row['filePath']) . "' target='_blank'>View File</a> 
+                                  <a href='functions/download.php?file=" . urlencode($row['filePath']) . "' target='_blank'>Download File</a> 
+                                </td>
+                                <td>" . $date . "</td>
+                                <td>
+                                  <span class='badge p-2 rounded-pill {$statusClass}'>
+                                    {$status}
+                                  </span>
+                                </td>
+                                <td>" . $remarks . "</td>
+                              </tr>";
+                      }
+                    }
+                  
+                ?>
+              </tbody>
+            </table>
+          </div>
 
 			<div class="table-footer">
 				<div class="pagination-controls">
