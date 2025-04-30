@@ -64,6 +64,39 @@ $position = htmlspecialchars(strtoupper($empId));
 		</li>
 
 		<li class="nav-item transaction">
+			<a class="nav-link page-button" href="../Employee Section/emp-requestHistory.php" data-page-name="Request History">
+				<div class="icon-wrapper">
+					<div class="icon"><i class="fa-solid fa-arrow-right-arrow-left"></i></div>
+				</div>
+				<div class="label-wrapper">
+					<span class="label">Request History</span>
+				</div>
+			</a>
+		</li>
+
+		<li class="nav-item transaction">
+			<a class="nav-link page-button" href="../Employee Section/emp-paymentHistory.php" data-page-name="Request History">
+				<div class="icon-wrapper">
+					<div class="icon"><i class="fa-solid fa-arrow-right-arrow-left"></i></div>
+				</div>
+				<div class="label-wrapper">
+					<span class="label">Payment History</span>
+				</div>
+			</a>
+		</li>
+
+		<li class="nav-item transaction">
+			<a class="nav-link page-button" href="../Employee Section/emp-roomingList.php" data-page-name="Rooming List">
+				<div class="icon-wrapper">
+					<div class="icon"><i class="fas fa-user"></i></div>
+				</div>
+				<div class="label-wrapper">
+					<span class="label">Rooming List</span>
+				</div>
+			</a>
+		</li>
+
+		<li class="nav-item transaction">
 			<a class="nav-link page-button" href="../Employee Section/emp-guestList.php" data-page-name="Guest List">
 				<div class="icon-wrapper">
 					<div class="icon"><i class="fas fa-user"></i></div>

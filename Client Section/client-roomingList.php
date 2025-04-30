@@ -9,28 +9,25 @@ require "../conn.php";
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Add Booking</title>
+  <title></title>
 
   <?php include "../Agent Section/includes/head.php"; ?>
 
-  <link rel="stylesheet" href="../Agent Section/assets/css/agent-roomingList.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="../Agent Section/assets/css/agent-transaction.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="../Agent Section/assets/css/navbar-sidebar.css?v=<?php echo time(); ?>">
 </head>
 
 <body>
+
   <div class="body-container">
-    <?php include "../Agent Section/includes/sidebar.php"; ?>
+    <?php include "../Client Section/Includes/client-sidebar.php"; ?>
 
     <div class="main-content-container">
       <div class="navbar">
-        <h5 class="title-page" id="page-title">Rooming List</h5>
+        <h5 class="title-page">Rooming List</h5>
       </div>
 
       <div class="main-content">
-        <!-- <div class="main-content-header">
-          <h5 class="text-center">Guest Room Assignment</h5>
-        </div> -->
-
         <div class="field-select-wrapper">
           <div class="row">
             <div class="col-md-6 columns ">
@@ -165,13 +162,14 @@ require "../conn.php";
           
 
         </div>
-
       </div>
     </div>
   </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <?php require "../Agent Section/includes/scripts.php"; ?>
+  
   <!-- Combined script working -->
   <script>
     let guests = [];  // Stores all guests fetched from PHP
@@ -186,7 +184,7 @@ require "../conn.php";
 
       $.ajax(
       {
-        url: '../Agent Section/functions/fetchMaxRoomNumber.php', // Create this PHP file
+        url: '../Client Section/Functions/fetchMaxRoomNumber.php', // Create this PHP file
         type: 'GET',
         dataType: 'json',
         success: function(response) 
@@ -234,7 +232,7 @@ require "../conn.php";
           // Send AJAX request to insert room assignments
           $.ajax(
           {
-            url: '../Agent Section/functions/agent-addRoomingList.php',
+            url: '../Client Section/Functions/client-addRoomingList.php',
             type: 'POST',
             data: { 
               roomAssignments: JSON.stringify(roomAssignments),
@@ -270,7 +268,7 @@ require "../conn.php";
       {
         $.ajax(
         {
-          url: '../Agent Section/functions/fetchGuest.php', 
+          url: '../Client Section/Functions/fetchGuest.php', 
           type: 'POST',
           data: { flightDate: flightDate, agentCode: agentCode },
           success: function (response) 
@@ -365,7 +363,7 @@ require "../conn.php";
 
       $.ajax(
       {
-        url: '../Agent Section/functions/fetchMaxRoomNumber.php',
+        url: '../Client Section/Functions/fetchMaxRoomNumber.php',
         type: 'POST',
         data: { transactNo: transactNo },
         success: function (response) 
@@ -617,253 +615,6 @@ require "../conn.php";
     }
   </script>
 
-  <!-- Dynamic addition of guest in the table as well as the request script
-  <script>
-    let guests = $("#guestName option").map(function() {
-        return { value: $(this).val(), text: $(this).text() };
-    }).get();  // Fetch guest details from PHP
-    let availableGuests = [...guests];  // Dynamic list for UI updates
-    let rooms = [];
-    let globalGuestIndex = 0; // 🔹 Unique index across all rooms
-
-    function updateGuestList()
-    {
-      let guestSelect = document.getElementById('guestName');
-      guestSelect.innerHTML = ''; // 🛑 Clear previous options
-
-      availableGuests.forEach(guest => 
-      {
-        let option = document.createElement('option');
-        option.value = guest.id;
-        option.textContent = guest.name;
-        guestSelect.appendChild(option);
-      });
-    }
-
-    function assignRoom() 
-    {
-      let guestSelect = document.getElementById('guestName');
-      let selectedGuests = Array.from(guestSelect.selectedOptions).map(opt => 
-      {
-        let guestData = guests.find(g => g.id == opt.value);  // Fetch full guest details
-        return { ...guestData }; // Return full guest object
-      });
-
-      let roomType = document.getElementById('roomType').value;
-
-      let minCapacity = getMinCapacity(roomType);
-      let maxCapacity = getMaxCapacity(roomType);
-
-      if (selectedGuests.length < minCapacity || selectedGuests.length > maxCapacity) 
-      {
-        alert(`A ${roomType} room must have between ${minCapacity} and ${maxCapacity} guests.`);
-        return;
-      }
-
-      // 🛑 Remove assigned guests from available list
-      availableGuests = availableGuests.filter(g => !selectedGuests.some(sg => sg.id == g.id));
-
-      // ✅ Remove selected guests from dropdown
-      selectedGuests.forEach(guest => 
-      {
-        let optionToRemove = guestSelect.querySelector(`option[value="${guest.id}"]`);
-        if (optionToRemove) 
-        {
-            optionToRemove.remove();
-        }
-      });
-
-      // Store assigned room
-      let room = { type: roomType, guests: selectedGuests };
-      rooms.push(room);
-
-      updateRoomList();
-    }
-
-    function updateRoomList() 
-    {
-      let assignedRoomsTable = document.getElementById('assignedRoomsTable');
-      assignedRoomsTable.innerHTML = '';  // Clear previous rows
-
-      let rowNumber = 1; // Initialize guest counter
-      globalGuestIndex = 0; // Reset when updating list
-
-      rooms.forEach((room, roomIndex) => 
-      {
-        let firstGuest = true; // Track the first row for rowspan effect
-
-        room.guests.forEach((guest) => 
-        {
-          let row = assignedRoomsTable.insertRow();
-
-          row.innerHTML = `
-            <td style="text-align: center; vertical-align: middle;">${rowNumber++}</td> 
-            <td style="text-align: center; vertical-align: middle;">${guest.age || "N/A"}</td> 
-            <td style="text-align: center; vertical-align: middle;">${guest.name.split(" ")[0]}</td> 
-            <td style="text-align: center; vertical-align: middle;">${guest.name.split(" ").slice(-1).join(" ")}</td> 
-            <td style="text-align: center; vertical-align: middle;">${guest.name}</td> 
-            <td style="text-align: center; vertical-align: middle;">${guest.dob || "N/A"}</td> 
-            <td style="text-align: center; vertical-align: middle;">${guest.nationality || "N/A"}</td> 
-            <td style="text-align: center; vertical-align: middle;">${guest.passport || "N/A"}</td> 
-            <td style="text-align: center; vertical-align: middle;">${guest.passportExp || "N/A"}</td> 
-            <td style="text-align: center; vertical-align: middle;">${guest.sex || "N/A"}</td> 
-            ${firstGuest ? `<td style="text-align: center;
-                  vertical-align: middle;" rowspan="${room.guests.length}">${room.type.toUpperCase()}</td>` : ''} 
-            <td style="text-align: center; vertical-align: middle; width: 200px; white-space: nowrap; overflow: hidden;">
-              <div id="luggageContainer-${globalGuestIndex}"></div> 
-              <button type="button" class="btn btn-success btn-sm" onclick="addLuggageSelect(${globalGuestIndex})">+</button>
-              <button type="button" class="btn btn-danger btn-sm" onclick="removeLuggageSelect(${globalGuestIndex})">-</button>
-            </td>
-            ${firstGuest ? `<td style="vertical-align: middle;" rowspan="${room.guests.length}">
-              <button style="display: block; margin: auto;" class="btn btn-danger btn-sm" onclick="removeRoom(${roomIndex})">
-                Remove
-              </button>
-            </td>` : ''}`;
-
-          firstGuest = false; // Prevent rowspan duplication in next guest rows
-          globalGuestIndex++; // 🔹 Increment for each guest across rooms
-        });
-      });
-    }
-
-    function addLuggageSelect(guestIndex) 
-    {
-      let container = document.getElementById(`luggageContainer-${guestIndex}`);
-
-      let select = document.createElement("select");
-      select.style.width = "100%";
-      select.style.display = "block"; // Ensures proper positioning
-      select.classList.add("form-control");;
-
-      luggageOptions.forEach(option => 
-      {
-        let opt = document.createElement("option");
-        opt.value = option.concernDetailsId;
-        opt.textContent = option.details;
-        select.appendChild(opt);
-      });
-
-      // Append to container (adds at the end)
-      container.appendChild(select);
-    }
-
-    // Function to remove last luggage select
-    function removeLuggageSelect(guestIndex) 
-    {
-      let container = document.getElementById(`luggageContainer-${guestIndex}`);
-      if (container.children.length > 0) 
-      {
-        container.removeChild(container.lastChild);
-      }
-    }
-
-    function removeRoom(index) 
-    {
-      let guestSelect = document.getElementById('guestName');
-
-      // Restore guests to available list
-      rooms[index].guests.forEach(guest => 
-      {
-        if (!availableGuests.some(g => g.id == guest.id)) 
-        {
-          availableGuests.push(guest);
-
-          // ✅ Add guest back to the dropdown
-          let option = document.createElement('option');
-          option.value = guest.id;
-          option.textContent = guest.name;
-          guestSelect.appendChild(option);
-        }
-      });
-
-      // Sort the dropdown after adding guests back
-      sortGuestDropdown();
-
-      // Remove the room from the list
-      rooms.splice(index, 1);
-      updateRoomList();
-    }
-
-    function sortGuestDropdown() 
-    {
-      let guestSelect = document.getElementById('guestName');
-      let options = Array.from(guestSelect.options);
-
-      options.sort((a, b) => a.textContent.localeCompare(b.textContent));
-
-      guestSelect.innerHTML = ''; // Clear existing options
-      options.forEach(option => guestSelect.appendChild(option)); // Append sorted options
-    }
-
-    function getMinCapacity(roomType) 
-    {
-      switch (roomType) 
-      {
-        case 'twin':
-        case 'double':
-          return 1; // Can be occupied by 1 or 2 guests
-        case 'triple':
-          return 2; // Must have at least 2 guests
-        default:
-          return 1;
-      }
-    }
-
-    function getMaxCapacity(roomType) 
-    {
-      switch (roomType) 
-      {
-        case 'twin':
-        case 'double':
-          return 2; // Max 2 guests
-        case 'triple':
-          return 3; // Max 3 guests
-        default:
-          return 1;
-      }
-    }
-
-    // ✅ Initialize guest list on page load
-    document.addEventListener("DOMContentLoaded", updateGuestList);
-  </script>
-
-  Dynamic Guest Info 
-  <script>
-    $('#flightDate').on('change', function () 
-    {
-      var flightDate = $(this).val();
-      var agentCode = "<?php echo $agentCode; ?>";
-      
-      // Clear guest dropdown while loading
-      $('#guestName').html('<option selected disabled>Loading guests...</option>');
-
-      if (flightDate) 
-      {
-        $.ajax(
-        {
-          url: '../Agent Section/functions/fetchGuest.php', // PHP file to handle request
-          type: 'POST',
-          data: { flightDate: flightDate,
-                  agentCode: agentCode},
-          success: function (response) 
-          {
-            console.log(response);
-            // Parse response and update guest dropdown
-            $('#guestName').html(response);
-          },
-          error: function (xhr, status, error) 
-          {
-            console.error('Error fetching guests:', error);
-            $('#guestName').html('<option selected disabled>No guests found</option>');
-          }
-        });
-      } 
-      else 
-      {
-        $('#guestName').html('<option selected disabled>Select a guest</option>'); // Reset if no flight date
-      }
-    });
-  </script> -->
 
   <!-- Generate to excel Script -->
   <script>
