@@ -62,22 +62,23 @@
               <th>SPECIFIC DETAILS</th>
               <th>TOTAL PAX</th>
               <th>TOTAL AMOUNT</th>
-							<th style='display:none;'>RAW REQUEST DATE</th>
               <th>REQUEST DATE</th>
+							<th>STATUS</th>
+              <th>REQUEST REMARKS</th>
+							<th style='display:none;'>RAW REQUEST DATE</th>
 						</tr>
 					</thead>
 					<tbody>
 						<?php
-							$sql1 = "SELECT r.requestId, r.transactNo AS `TransactNo`,
+							$sql1 = "SELECT r.requestId, r.transactNo AS `TransactNo`, br.branchName,
 													c.concernTitle AS `RequestTitle`, cd.details AS `RequestDetails`, b.pax AS `TotalPax`,
-													r.requestCost as requestCost,
-													r.customRequest as customRequest, r.details as details, DATE_FORMAT(r.requestDate, '%m-%d-%Y') AS `RequestDate`, 
+													r.requestCost as requestCost, r.requestRemarks,
+													r.customRequest as customRequest, r.details as details, r.requestDate, 
 													r.requestStatus AS `Status`
 												FROM request r
 												LEFT JOIN concern c ON r.concernId = c.concernId
 												LEFT JOIN concerndetails cd ON r.concernDetailsId = cd.concernDetailsId
 												LEFT JOIN booking b ON r.transactNo = b.transactNo
-												LEFT JOIN payment p ON b.transactNo = p.transactNo
 												LEFT JOIN branch br ON br.branchAgentCode = b.agentCode
 												WHERE r.requestStatus = 'Confirmed'
 												GROUP BY r.requestId";
@@ -111,19 +112,21 @@
 									$title = $row['RequestTitle'] ?? 'Custom Request';
 									$details = $row['RequestDetails'] ?? $row['customRequest'];
 									$requestId = $row['requestId'];
-									$formattedRequestDate = date("F d, Y", strtotime($row['RequestDate']));
+									$formattedRequestDate = date("F d, Y", strtotime($row['requestDate']));
 
 									// Output table row with data-transactno attribute
 									echo "<tr data-transactno='{$row['TransactNo']}' data-requestid='{$requestId}' class='transaction-row'>
 													<td>{$row['TransactNo']}</td>
-													<td>{$row['TransactNo']}</td>
+													<td>{$row['branchName']}</td>
 													<td>{$title}</td>
 													<td>{$details}</td>
 													<td>{$row['details']}</td>
 													<td>{$row['TotalPax']}</td>
 													<td>{$row['requestCost']}</td>
-													<td style='display:none;'>{$row['RequestDate']}</td> <!-- hidden raw date -->
 													<td>{$formattedRequestDate}</td>
+													<td>{$row['Status']}</td>
+													<td>{$row['requestRemarks']}</td>
+													<td style='display:none;'>{$row['requestDate']}</td> <!-- hidden raw date -->
 												</tr>";
 								}
 							} 
@@ -186,8 +189,8 @@
 			scrollY: '69vh',  // Set a fixed height for the table (adjust as necessary)
 			paging: true,  // Enable pagination
 			pageLength: 15,  // Set the number of rows per page
-			autoWidth: false,
-			autoHeight: false,  // Prevent automatic height adjustment
+			autoWidth: true,
+			autoHeight: true,  // Prevent automatic height adjustment
 
 			// Disable sorting for specific columns
 			columnDefs: 
@@ -263,13 +266,13 @@
 		{
 			const selectedFlightDate = $(this).val();  // Get the selected value directly from the input field
 			console.log("Flight Date Filter:", selectedFlightDate);  // Log the selected flight date
-			table.column(7).search(selectedFlightDate || '').draw();  // Column 5 (index starts at 0)
+			table.column(10).search(selectedFlightDate || '').draw();  // Column 5 (index starts at 0)
 		});
 
 		// Apply datepicker and input validation for FlightStartDate
 		$("#FlightStartDate").datepicker(
 		{
-			dateFormat: "mm-dd-yy", // Set the format to MM-DD-YYYY
+			dateFormat: "yy-mm-dd", // Set the format to MM-DD-YYYY
 			showAnim: "fadeIn", // Optional: Adds a fade-in effect when the date picker is opened
 			changeMonth: true, // Allow the month to be changed from the dropdown
 			changeYear: true,  // Allow the year to be changed from the dropdown
@@ -280,7 +283,7 @@
 				$(this).val(dateText);
 				flightStartDate = dateText; // Store the selected date
 				console.log("FlightStartDate Selected Date (onSelect): " + dateText);
-				table.column(7).search(flightStartDate || '').draw();  // Column 5 (index starts at 0)
+				table.column(10).search(flightStartDate || '').draw();  // Column 5 (index starts at 0)
 			}
 		});
 
