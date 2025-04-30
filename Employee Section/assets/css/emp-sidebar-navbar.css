@@ -15,21 +15,6 @@ body {
 }
 
 
-/* Add red background specifically for the "Add Booking" link
-.nav-item.add-booking .nav-link {
- background-color: rgba(255, 0, 0, 0.781); 
- color: white; 
- border-radius: 5px;
- transition: background-color 0.3s ease, color 0.3s ease; 
- margin: 5px; 
-}
-
-/* Change the background color on hover for "Add Booking" link 
-.nav-item.add-booking .nav-link:hover {
- background-color: rgba(139, 0, 0, 0.651); 
-} */
-
-
 /* Sidebar icons */
 .sidebar .icon {
   display: flex;
@@ -287,13 +272,6 @@ body {
 
 
 
-
-
-
-
-
-
-
 /*==========================
   Profile Dropdown Styling
 ===========================*/
@@ -344,6 +322,7 @@ body {
   display: flex;
   flex-direction: column;
   z-index: 1030;
+  border: 1px solid black;
 }
 
 /* Expand on hover */
@@ -477,27 +456,135 @@ body {
 
 
 /* ===================== */
-
-
-.navbar-custom {
- position: sticky; 
- top: 0; 
- z-index: 1020; 
- background-color: transparent; 
- height: 6vh;
- margin-left: 0;
- margin-bottom: 3px; 
- color: rgba(177, 177, 177, 0.774);
- transition: margin-left 0.3s ease; 
- border-bottom: .5px solid #ccc; 
- /* border: 1px solid black; */
+/* Navbar Styles */
+.navbar {
+  display: flex;
+  align-items: stretch; /* Stretch children vertically */
+  justify-content: flex-start; /* Align children to the start horizontally */
+  height: 5.5vh;
+  width: 100%;
+  padding: 0px 0px 0px; /* Remove excess padding for more precise layout */
+  position: fixed;
+  top: 0;
+  background-color: #ffffff;
+  z-index: 1000;
+  border-bottom: 1px solid gainsboro;
+  box-sizing: border-box;
+  /* border: 1px solid black; */
 }
 
-.navbar-custom .navbar-brand {
-  font-size: 18px;
-  font-weight: 600;
-  margin: 10px 0px;
+
+/* Wrapper for the whole header section */
+.page-header-wrapper {
+  display: flex;
+  align-items: stretch; 
+  gap: 10px;
+  height: 100%; 
+  width: 100%;
+  /* border: 1px solid black; */
+  box-sizing: border-box;
 }
+
+/* Section for back button or similar */
+.page-header-top {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  height: 100%;
+  /* border: 1px solid black; */
+  box-sizing: border-box;
+}
+
+/* Section for main header content */
+.page-header-content {
+  flex: 1; /* Take remaining space */
+  display: flex;
+  justify-content: flex-start; /* Align content to start */
+  align-items: center; /* Center vertically */
+  height: 100%;
+  /* border: 1px solid black; */
+  box-sizing: border-box;
+}
+
+
+
+
+
+
+
+
+
+/* Back button container */
+.back-btn-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+/* Back button style */
+.back-btn {
+  background: white;
+  color: #464646;
+  border: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.back-btn:hover {
+  background: #7c7c7c;
+  color: white;
+}
+
+/* Content section */
+
+
+
+.page-header-text {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  /* border: 1px solid black; */
+  /* margin-bottom: 5px;
+  margin-left: 5px; */
+}
+
+.page-header-text .header-title {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #333;
+  margin-left: 5px;
+  margin-top: 8px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* =========================== */
 
@@ -975,15 +1062,24 @@ body {
 
 /* Main container for table */
 .main-container {
-  padding: 0px 20px 0px 0px;
+  padding: 0px 0px 0px 5px;
   margin-left: 80px; /* Ensures the table is positioned next to the sidebar */
-  height: 100vh;
+  height: auto;
   position: relative; /* Ensure navbar is inside this container */
   background-color: rgba(245, 246, 248, 0.137);
   /* border: 1px solid #ccc; */
 }
 
-.main-content  {
-   padding: 0px 5px;
-   /* border: 1px solid black; */
+.main-content {
+  margin-top: 6vh;
+  padding: 0px 10px 0px 0px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  flex-grow: 1;
+  max-height: calc(100vh - 5.5vh); /* Adjust based on navbar height */
+  overflow-y: auto;
+  overflow-x: hidden;
+  box-sizing: border-box;
+  /* border: 1px solid black; */
 }

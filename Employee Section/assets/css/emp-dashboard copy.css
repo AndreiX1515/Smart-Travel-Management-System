@@ -1,64 +1,79 @@
-.header-counts {
+#info-table {
+  display: block;
   width: 100%;
-  padding: 5px 0px 5px 5px;
 }
 
-.header-counts h6 {
+.main-content .header h6 {
   margin: 0; /* Removes default margin */
-  text-align: left;
-  color: rgb(255, 255, 255); /* Sets the text color with reduced opacity */
-  font-size: 0.9rem; /* Adjusts font size */
-  font-weight: 500;
+  font-size: 1rem; /* Adjusts font size */
+  font-weight: 400;
   letter-spacing: 0.5px; /* Adds slight spacing between letters */
 }
 
+.main-content .counts-wrapper .card {
+  flex: 1;
+  background-color: #ffffff;
+  display: flex;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.header-counts {
+  width: 100%;
+  padding: 5px 0px 5px 5px;
+ }
+ 
+ 
+ .header-counts h6 {
+  margin: 0; /* Removes default margin */
+  text-align: left;
+  color: rgb(255, 255, 255); /* Sets the text color with reduced opacity */
+  font-size: .9rem; /* Adjusts font size */
+  font-weight: 500;
+  letter-spacing: 0.5px; /* Adds slight spacing between letters */
+ }
+ 
+
+
+
+
 .white-pill {
-  display: inline-block;
+  display: inline-block; 
   padding: 5px 15px 5px 10px;
-  font-size: 0.8rem;
+  font-size: .8rem;
   font-weight: 500;
   color: rgb(255, 255, 255);
-  background-color: #1f75fe;
-  border-radius: 0 50px 50px 0;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  letter-spacing: 0.5px;
-  text-align: left;
-  transition: box-shadow 0.3s ease, transform 0.2s ease;
+  background-color: #1F75FE; 
+  border-radius: 0 50px 50px 0; 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+  letter-spacing: 0.5px; 
+  text-align: left; 
+  transition: box-shadow 0.3s ease, transform 0.2s ease; 
 }
 
-.main-content .header-counts {
+.main-content .counts-wrapper {
   display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  justify-content: space-between;
-  align-items: stretch;
+  flex-direction: row;
+  gap: 5px; /* Gap between cards */
   width: 100%;
-  box-sizing: border-box;
-  padding: 0px 0; /* Add some padding instead of fixed height */
-  height: auto;
-  border: 1px solid black;
+  height: 16vh;
+  margin-bottom: 5px;
+  padding-top: 5px;
+  /* border: 1px solid black; */
 }
 
-.header-counts .card {
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  width: calc(25% - 5px);
-  height: auto;
-  min-height: 150px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  box-sizing: border-box;
-  padding: 5px 5px 0px 5px;
+.counts-wrapper .card {
+  background-color: #343a40;
 }
 
 .card .header {
-  padding: 5px 5px 5px 5px;
+  padding: 0px 3px 0px 3px;
   color: #4c4f52;
   /* border: 1px solid black; */
 }
+
+
 
 .row {
   display: flex;
@@ -70,23 +85,7 @@
   padding: 5px 15px;
 }
 
-.card-content-body .col-md-5 {
-  margin-bottom: 5px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-start;
-  flex: 1;
-  gap: 10px;
-  padding: 5px 10px; /* Reduced padding */
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Added box shadow */
-  border-radius: 8px; /* Optional: Slight rounding for a softer look */
-  background-color: #fff; /* Optional: Ensure the shadow is visible */
-  /* border: 1px solid rgb(104, 75, 75); */
-}
-
-.card-content-body .col-md-4 {
+.card-content .col-md-5 {
   margin-bottom: 5px;
   display: flex;
   flex-direction: row;
@@ -115,6 +114,13 @@
   background: rgba(0, 0, 0, 0.05); /* Light hover effect */
   transform: scale(1.05); /* Smooth scaling effect */
 }
+
+
+
+
+
+
+
 
 .card-icon {
   font-size: 14px; /* Smaller icon font size */
@@ -154,13 +160,11 @@
 }
 
 .side-content {
-  white-space: nowrap; /* Prevent text wrapping */
-  overflow: hidden; /* Hide overflowed content if any */
-  text-overflow: ellipsis; /* Add ellipsis if content is too long */
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* Optional: align text to the start */
+  justify-content: center; /* Center align the text vertically */
 }
+
 .side-content h5 {
   font-size: 20px; /* Reduced font size for the number */
   font-weight: bold;
@@ -175,90 +179,26 @@
   margin: 0;
 }
 
-.side-content .total-text {
-  font-size: 8px; /* Smaller font size for the total text */
-  font-weight: bold;
-  color: #747b85; /* Lighter gray for the description */
-  margin: 0;
-  flex-wrap: nowrap;
-}
-
 /* Card 4 */
-
-.card-currency-header {
-  display: flex;
-  justify-content: center; /* Center horizontally */
-  align-items: flex-start;
-  flex-wrap: nowrap; /* Prevent wrapping */
-  padding: 0;
-  width: 100%;
-  box-sizing: border-box;
-  /* border: 1px solid black; */
-}
-
-.card-name-wrapper {
-  width: calc(50% - 5px);
-  display: flex;
-  justify-content: center; /* Center contents inside each section */
-  align-items: center;
-  gap: 10px;
-  padding: 0 5px;
-  white-space: nowrap; /* Prevent text from wrapping */
-  box-sizing: border-box;
-  /* border: 1px solid #ccc; Optional: border for visual separation */
-}
-
-.accent-wrapper {
-  width: calc(50% - 5px);
-  display: flex;
-  justify-content: flex-end; /* Center contents inside each section */
-  align-items: center;
-  gap: 10px;
-  padding: 0 5px;
-  white-space: nowrap; /* Prevent text from wrapping */
-  box-sizing: border-box;
-  /* border: 1px solid #ccc; Optional: border for visual separation */
-}
-
-@media (max-width: 768px) {
-  .card-currency-header {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .card-name-wrapper,
-  .accent-wrapper {
-    width: 100%;
-    justify-content: center;
-  }
-}
-
-.currency-row {
-  display: flex;
-  justify-content: flex-start;
-  /* border: 1px solid black; */
-  width: 100%;
-}
-
 .card-body-currency {
   width: 100%;
   padding: 0px;
+  /* border: 1px solid black; */
 }
 
 /* Currency Cards Container */
 .currency-cards {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between; /* Even spacing */
-  align-items: center;
-  width: 100%;
-  gap: 10px;
+  flex-direction: row; /* Arrange cards horizontally */
+  gap: 5px; /* Spacing between cards */
+  justify-content: left; /* Align cards to the left */
+  align-items: center; /* Vertically center the cards */
 }
 
 /* Individual Currency Card */
 .currency-card {
-  flex: 1; /* Evenly distribute space */
-  height: 10vh;
+  width: 140px;
+  height: 10.5vh;
   padding: 0px;
   display: flex;
   flex-direction: column;
@@ -269,17 +209,8 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
   font-size: 16px;
   font-weight: bold;
-  color: #333;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-/* Optional: style the icon wrapper if it's between cards */
-.icon-wrapper {
-  font-size: 20px;
-  color: #333;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  color: #333; /* Text color */
+  transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth hover effect */
 }
 
 /* Flag Icon Wrapper */
@@ -355,18 +286,16 @@
   width: 100%;
   height: 5vh;
   margin: 10px 0px;
-  padding: 5px 15px 5px 0px;
-  border: 1px solid black;
+  padding: 0px 15px 0px 0px;
+  /* border: 1px solid black; */
 }
 
 /* ==================================== */
-
 .navTabs-wrapper {
-  width: 75%;
+  width: 50%;
   padding: 0px;
   /* margin: 10px 0px 10px 0px; */
   display: flex; /* Make the container a flexbox */
-  flex-wrap: nowrap;
   gap: 10px; /* Added gap between each nav item */
   /* border-radius: 15px; */
   /* border: 1px solid black; */
@@ -374,22 +303,23 @@
 
 .nav-pills {
   display: flex; /* Ensure the nav-pills are in a row */
-  justify-content: flex-start;
-  gap: 10px;
   padding: 0; /* Remove default padding */
+  margin-right: 15px; /* Remove default margin */
   list-style-type: none; /* Remove bullet points */
+}
+
+.nav-item {
+  margin-right: 10px; /* Added gap between nav items */
 }
 
 .navTabs-wrapper .nav-link {
   background-color: transparent; /* Transparent background */
-  padding: 5px 10px;
+  padding: 8px 14px;
   transition: all 0.3s ease;
   border-radius: 15px;
   border: 1px solid gainsboro;
-  /* color: black; */
+  color: black;
 }
-
-/* ===================================== */
 
 .navTabs-wrapper .nav-link:hover {
   border-color: #007bff; /* Change border color on hover */
@@ -411,7 +341,7 @@
 
 .content-heading {
   display: flex;
-  width: 25%;
+  width: 50%;
   flex-direction: row;
   justify-content: end;
   align-items: center;
@@ -435,8 +365,10 @@
   /* display: flex;
   flex-direction: column;
   gap: 10px; */
-/* border: 1px solid black; 
+  /* border: 1px solid black; 
 } */
+
+
 
 .header-wrapper {
   display: flex;
@@ -444,7 +376,7 @@
   width: 100%;
   height: 30vh;
   gap: 20px;
-  border: 1px solid black;
+  /* border: 1px solid black; */
 }
 
 /* =======================================*/
@@ -701,12 +633,13 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 38vh; /* Set fixed height for the confirm container */
+  height: 39vh;
 }
 
 .confirm-table-container {
   width: 100%;
-  height: 40vh; /* Adjust height for the confirm table */
+  height: 70%;
+
   overflow-x: auto;
   overflow-y: auto;
   border: 1px solid gainsboro;
@@ -757,10 +690,15 @@
   transition: background-color 0.3s ease-in-out;
 }
 
+
 .confirm-table tbody tr:hover {
   background-color: #b2ebf2;
   cursor: pointer;
 }
+
+
+
+
 
 /* General container for comment input and button */
 .comment-container {
@@ -979,6 +917,7 @@
   line-height: 1.15; /* Adjust line height */
 }
 
+
 /* ============================================= */
 
 .legend-guides {
@@ -1027,6 +966,7 @@
   align-items: center;
   justify-content: flex-end; /* Position button to the right */
 }
+
 
 /* ====================== */
 /* Info Table Container */
@@ -1108,12 +1048,17 @@
   color: #d9534f;
 }
 
+
+
+
+
 .pagination-controls {
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 20px 0;
 }
+
 
 /* Pagination Controls */
 .pagination-controls {
@@ -1143,371 +1088,138 @@
   color: #555;
 }
 
-/* Sticky table header */
-.info-table thead {
-  position: sticky; /* Make the header sticky */
-  top: 0;
-  z-index: 2;
-  padding: 3px 8px;
-  background-color: #dc3545;
-  color: #ffffff;
+
+
+
+
+
+
+
+.info-table-container {
+  display: flex;
+  position: relative;
+  height: 64.3vh; /* Fixed height for the container */
+  overflow-x: auto; /* Allow horizontal scrolling */
+  overflow-y: auto; /* Allow vertical scrolling */
+  /* border: 1px solid gainsboro; */
+  width: 100%; /* Ensure the container uses full width */
+  /* border: 1px solid black; */
+}
+
+
+.info-table, div.dataTables_wrapper {
   width: 100%;
-  border-collapse: collapse;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional shadow for visibility */
-}
-
-/* Header cell styling */
-.info-table thead th {
+  font-size: 12px;
+  background-color: #fff;
+  color: #000000 !important;
   text-align: center;
-  font-weight: bold;
-  border-right: 1px solid #e6e6e6;
-  padding: 3px 8px;
+  table-layout: fixed;
+  overflow-x: auto; /* Allow horizontal scrolling */
+  overflow-y: auto; /* Allow vertical scrolling */
+  display: block; /* Make the table a block-level element to allow scrolling */
 }
 
-/* Table body rows */
-.info-table tbody tr {
-  transition: none !important;
-  border-collapse: collapse;
+.info-table thead,
+div.dataTables_wrapper thead {
+  top: 0; /* Stick to the top of the container */
+  z-index: 10; /* Ensure the header stays above table content */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for better visibility */
 }
 
-/* Selected row */
-.info-table tbody tr.selected {
+/* Add style for highlighted row */
+div.dataTables_wrapper tbody tr.selected, .info-table tbody tr.selected {
   background-color: rgb(42, 204, 253) !important;
   color: black !important;
   font-weight: bold;
-  outline: 2px solid transparent;
-  border-spacing: 0;
 }
 
-/* Hover effect on rows */
-.info-table tbody tr:hover {
-  background-color: #dfdfdf;
-  cursor: pointer;
+/* Highlight selected header cell */
+div.dataTables_wrapper thead th.selected, .info-table thead th.selected {
+  background-color: #f1f1f1; /* Same as row highlight */
+  color: #000; /* Text color */
 }
 
-/* Table data cells */
-.info-table td {
+/* Styling for table data (td) */
+div.dataTables_wrapper td, .info-table td {
   padding: 10px 5px;
   text-align: center;
   font-size: 12px;
   color: #555;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #ddd; /* Border between rows */
+  border-left: 1px solid #ddd; /* Left border */
+  border-right: 1px solid #ddd; /* Right border */
+}
+
+/* Optional: Add a border to the first and last columns for consistency */
+div.dataTables_wrapper td:first-child, .info-table td:first-child {
   border-left: 1px solid #ddd;
-  border-right: 1px solid #ddd;
-  border-top: 1px solid #ddd;
 }
 
-/* First column left border */
-.info-table td:first-child {
-  border-left: 1px solid #ddd;
+/* Styling for the table header in both dataTables and info-table */
+div.dataTables_wrapper thead, .info-table thead {
+  position: sticky; /* Make the entire thead sticky */
+  top: 0; /* Stick the header to the top of the scrolling container */
+  z-index: 2; /* Ensure the header stays above table rows */
+  padding: 3px 8px; /* Adjust padding for better spacing */
+  background-color: #dc3545; 
+  color: #ffffff;
+  width: 100%; /* Ensure full width for the table */
+  border-collapse: collapse; /* Collapse borders to avoid misalignment */
 }
 
-/* Highlight selected header cell */
-.info-table thead th.selected {
-  background-color: #f1f1f1;
-  color: #000;
+/* Styling for each table header cell (th) */
+div.dataTables_wrapper thead th, .info-table thead th {
+  text-align: center; /* Center align the text */
+  font-weight: bold; /* Make the header text bold */
+  border-right: 1px solid #e6e6e6; /* Add right border between columns */
+  padding: 3px 8px; /* Adjust padding for better spacing */
 }
 
-/* Percent-based width adjustments for table headers */
-
-/* Wrapper for the table to enable both horizontal and vertical scrolling */
-.info-table-container {
-  position: relative;
-  height: 62vh;
-  width: 100%;
-  overflow-x: auto;
-  overflow-y: auto;
-  margin-bottom: 5px;
-  /* border: 1px solid black; */
+/* Ensure selected row does not change size */
+.info-table tbody tr, div.dataTables_wrapper tbody tr {
+  transition: none !important; /* Disable animations */
+  border-collapse: collapse; /* Prevent border spacing changes */
 }
 
-/* Wrapper around the table content to allow scroll */
-.info-table-wrapper {
-  width: max-content; /* Expand as needed */
-  height: 100%;
-  display: block;
+/* Selected row styling */
+.info-table tbody tr.selected, div.dataTables_wrapper tbody tr.selected {
+  background-color: rgb(42, 204, 253) !important; /* Highlight color */
+  color: black !important;
+  font-weight: bold;
+  outline: 2px solid transparent; /* Prevent shifting due to borders */
+  border-spacing: 0;
 }
 
-/* The table itself */
-.info-table {
-  font-size: 12px;
-  background-color: #fff;
-  color: #000;
-  text-align: center;
-  border-collapse: collapse;
-  table-layout: fixed; /* Important: respect th widths */
-  white-space: nowrap; /* Prevent header text wrapping */
+
+
+
+/* Optional: Change color on hover */
+.info-table tbody tr:hover, div.dataTables_wrapper tbody tr:hover {
+  background-color: #dfdfdf; /* Light hover effect */
+  cursor: pointer;
 }
 
-/* Styling for the first header row */
-.info-table thead tr.first-half th {
-  font-weight: 600;
-  text-align: center;
-  padding: 8px;
-  border: 1px solid #ddd;
-  white-space: nowrap;
+/* Hide the built-in DataTable pagination controls */
+.dataTables_paginate {
+  display: none;
 }
 
-/* Styling for second header row (sub-headers) */
-.info-table thead tr.second-half th {
-  font-size: 12px;
-  font-weight: 500;
-  padding: 6px 8px;
-  border: 1px solid #ddd;
-  white-space: nowrap;
+/* Hide the built-in DataTable length (rows per page) control */
+.dataTables_length {
+  display: none;
 }
 
-/* Stripe table rows */
-.info-table tbody tr:nth-child(even) {
-  background-color: #f9f9f9;
-}
-.info-table tbody tr:nth-child(odd) {
-  background-color: #fff;
-}
 
-/* Specific width assignments */
-.info-table tr.first-half th.red-white:first-child {
-  width: 40px; /* First blank column */
-}
 
-.info-table tr.first-half th.red-white:nth-child(2) {
-  width: 100px; /* TEAM OP */
-}
 
-.info-table tr.first-half th.red-white:nth-child(3) {
-  width: 80px; /* ORIGIN */
-}
 
-.info-table tr.first-half th.red-white:nth-child(4),
-.info-table tr.first-half th.red-white:nth-child(5) {
-  width: 250px; /* FLIGHT DATE Start/End */
-}
 
-.info-table tr.first-half th.red-white:nth-child(6),
-.info-table tr.first-half th.red-white:nth-child(7) {
-  width: 80px; /* SEATS */
-}
 
-.info-table tr.first-half th.red-white:nth-child(8) {
-  width: 90px; /* AIR + LAND */
-}
 
-.info-table tr.first-half th.red-white:nth-child(9) {
-  width: 100px; /* LAND ONLY */
-}
 
-.info-table tr.first-half th.red-white:nth-child(10),
-.info-table tr.first-half th.red-white:nth-child(11),
-.info-table tr.first-half th.red-white:nth-child(12) {
-  width: 120px; /* PRICES */
-}
 
-/* Dynamic agent headers */
-.info-table tr.first-half th.red-white:nth-child(n + 13) {
-  width: 180px; /* Dynamic agent branch headers */
-}
 
 /* Profile Icon */
 .profile-icon-visible {
   display: block !important;
-}
-
-@media (max-width: 1736px) {
-  .header-counts .card {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start; /* Align children (header, body) to top */
-  }
-
-  .header-counts .card > * {
-    flex-shrink: 0; /* Prevent shrinking */
-  }
-
-  .card-cancelled {
-    display: none !important;
-  }
-}
-
-/* When the screen width is below 1250px, adjust to 3 or 4 cards per row */
-@media (max-width: 1250px) {
-  /* Adjust card layout */
-  .header-counts {
-    gap: 8px;
-  }
-
-  .header-counts .card {
-    width: calc(50% - 5px); /* Adjust to 3 cards per row (33.33% width) */
-    margin-top: 5px;
-  }
-
-  /* Remove margin-top for the first card only */
-  .header-counts .card:first-child,
-  .header-counts .card:nth-child(2) {
-    margin-top: 0;
-  }
-
-  .card-cancelled {
-    display: flex !important;
-  }
-
-  /* =================================== */
-  /* Adjusting the table container and header wrapper for responsiveness */
-  .info-table-container {
-    height: 40vh; /* Ensure the table container doesn't overflow */
-    overflow-y: auto; /* Vertical scrolling for the container if content overflows */
-    padding: 5px 3px; /* Add padding to the container for better spacing */
-  }
-
-  /* Header wrapper styles for mobile */
-  .header-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 15px; /* Increase gap for better spacing between sections */
-    height: auto;
-    padding: 5px 3px; /* Add padding to avoid content touching the edges */
-  }
-
-  /* Request and Payment wrappers */
-  .header-wrapper .request-wrapper,
-  .header-wrapper .payment-wrapper {
-    width: 100%;
-    height: 38.5vh; /* Allow height to adjust dynamically */
-    margin-bottom: 25px; /* Adds more spacing between the request and payment sections */
-    display: flex;
-    flex-direction: column;
-    gap: 15px; /* Adds gap between nested elements */
-    border: 1px solid gainsboro; /* Light border around the table */
-  }
-
-  /* Ensuring tables inside request-wrapper and payment-wrapper adapt their height */
-  .request-table-container,
-  .payment-table-container {
-    width: 100%;
-    height: 100%; /* Allow height to adjust dynamically */
-    overflow-x: auto; /* Horizontal scrolling if the content exceeds */
-    overflow-y: auto; /* Vertical scrolling for longer tables */
-  }
-
-  .request-table,
-  .payment-table {
-    font-size: 12px; 
-  }
-
-  /* Table header styling for responsive tables */
-  .request-table th,
-  .payment-table th {
-    text-align: left;
-    padding: 12px; /* Increased padding for better readability */
-    font-size: 12px; /* Adjust font size for better readability */
-    background-color: #f8f9fa; /* Light background for table headers */
-    border-bottom: 2px solid #ddd; /* Subtle border for visual separation */
-  }
-
-  /* Table data styling */
-  .request-table td,
-  .payment-table td {
-    padding: 12px; /* Increased padding for better readability */
-    vertical-align: middle;
-    font-size: 12px; /* Adjust font size for better readability */
-    border-bottom: 1px solid #ddd; /* Subtle border for rows */
-  }
-
-  /* Responsive table cell behavior */
-  .request-table td,
-  .payment-table td {
-    word-wrap: break-word; /* Ensure long words wrap inside cells */
-    white-space: normal; /* Allow wrapping within table cells */
-  }
-
-  /* Table cell hover effect */
-  .request-table tr:hover,
-  .payment-table tr:hover {
-    background-color: #f1f1f1; /* Light hover effect for rows */
-  }
-
-  /* =================================== */
-  /* Confirm container and table styles */
-  .confirm-container {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 50vh; /* Set fixed height for the confirm container */
-    border: 1px solid gainsboro;
-    padding: 10px 0px 15px 0px;
-  }
-
-  .confirm-table-container {
-    width: 100%;
-    height: 40vh; /* Adjust height for the confirm table */
-    overflow-x: auto; /* Allow horizontal scrolling */
-    overflow-y: auto; /* Allow vertical scrolling */
-    border: 1px solid gainsboro; /* Light border around the table */
-    margin-top: 5px; /* Add margin above the table */
-  }
-
-  .confirm-table {
-    width: 100%;
-    height: auto;
-    font-size: 12px; /* Adjust font size */
-    font-weight: 500; /* Slightly bold the font */
-    text-align: left; /* Left-align text in the table */
-    background-color: transparent; /* Ensure background is transparent */
-    table-layout: auto; /* Allow column widths to adapt based on content */
-    border-collapse: collapse; /* Ensure borders collapse for cleaner look */
-  }
-  
-  .confirm-table th,
-  .confirm-table td {
-    white-space: nowrap; /* Prevent text wrapping */
-    padding: 10px; /* Add padding to cells */
-    border-bottom: 1px solid #ddd; /* Add bottom border */
-  }
-  
-
-
-
-}
-
-/* Responsive adjustments for small screens */
-@media (max-width: 768px) {
-  /* Stack tables vertically on smaller screens */
-  .request-table-container,
-  .payment-table-container {
-    height: auto;
-    margin-top: 5px;
-  }
-
-  /* Adjust header font size for small screens */
-  .request-table th,
-  .payment-table th {
-    font-size: 12px; /* Smaller font size on mobile */
-  }
-
-  /* Adjust table cell font size */
-  .request-table td,
-  .payment-table td {
-    font-size: 13px; /* Smaller font size on mobile */
-  }
-
-  /* Increase table container height for better visibility on smaller screens */
-  .info-table-container {
-    height: 50vh;
-  }
-}
-
-/* When the screen width is below 768px, adjust to 2 cards per row */
-@media (max-width: 768px) {
-  .header-counts {
-    gap: 10px;
-  }
-
-  .header-counts .card {
-    width: 100%; /* Full width or adjust as needed */
-    margin-top: 10px;
-  }
-
-  /* Remove margin-top for the first card only */
-  .header-counts .card:first-child {
-    margin-top: 0;
-  }
 }

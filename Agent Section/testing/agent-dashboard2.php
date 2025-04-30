@@ -25,6 +25,7 @@ session_start();
       </button>
 
       <div class="sidebar-header">
+        
         <div class="sidebar-header-logo">
           <div class="sidebar-header-logo">
             <div class="logo-wrapper">
@@ -35,10 +36,8 @@ session_start();
               <h5>SMART TRAVEL</h5>
             </div>
           </div>
-
-
-
         </div>
+
       </div>
 
 
@@ -176,6 +175,9 @@ session_start();
             </div>
 
           </div>
+
+
+          
 
           <div class="body-wrapper">
 

@@ -6,15 +6,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-
-
-// echo "<pre>";
-// print_r($_SESSION);
-// echo "</pre>";
-
 ?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -30,56 +22,39 @@ error_reporting(E_ALL);
   <?php include '../Employee Section/includes/emp-sidebar.php' ?>
 
   <!-- Main Container -->
-  <div class="main-container">
-
-    <div class="navbar">
-
-      <div class="page-header-wrapper">
-
-        <!-- <div class="page-header-top">
-          <div class="back-btn-wrapper">
-            <button class="back-btn" id="redirect-btn">
-              <i class="fas fa-chevron-left"></i>
-            </button>
-          </div>
-        </div> -->
-
-        <div class="page-header-content">
-          <div class="page-header-text">
-            <h5 class="header-title">Dashboard</h5>
-          </div>
+  <div class="main-container bg-body">
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container-fluid mx-1">
+            <a class="navbar-brand" id="page-title" href="#">Dashboard</a>
         </div>
-
-      </div>
-    </div>
+    </nav>
 
     <?php include '../Agent Section/functions/exchange-rate.php' ?>
 
     <div class="main-content">
 
-      <!-- Cards Count 1st Row -->
-      <div class="header-counts">
+      <?php
+      // echo "<pre>";
+      // print_r($_SESSION);
+      // echo "</pre>";
+      ?>
 
-        <!-- Card 1 -->
-        <div class="card">
+      <!-- Cards Count 1st Row -->
+      <div class="counts-wrapper">
+        <!-- CARD 1 - Current Transactions -->
+        <div class="card border-0">
           <div class="header">
             <h6 class="white-pill">Current Transaction</h6>
           </div>
 
-          <div class="card-content card-content-body">
-
+          <div class="card-content">
             <!-- Total and Confirmed Transaction Count -->
             <div class="row">
-
-              <div class="col-md-5 clickable-card"
-                onclick="window.location.href='../Employee Section/emp-transaction.php'">
-
+              <div class="col-md-5 d-flex flex-row clickable-card" onclick="window.location.href='../Employee Section/emp-transaction.php'">
                 <div class="card-icon icon-blue">
                   <i class="fas fa-calendar-alt"></i>
                 </div>
-
-                <div class="side-content">
-
+                <div class="side-content d-flex flex-column">
                   <?php
                   $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking WHERE MONTH(bookingDate) = MONTH(CURRENT_DATE()) 
                               AND YEAR(bookingDate) = YEAR(CURRENT_DATE())";
@@ -92,20 +67,16 @@ error_reporting(E_ALL);
                     $totalTransactions = 0;
                   }
                   ?>
-
                   <h5><?php echo $totalTransactions; ?></h5>
-                  <p class="total-text">TOTAL TRANSACTIONS</p>
+                  <p>TOTAL TRANSACTIONS</p>
                 </div>
-
               </div>
 
               <!-- Confirmed Transactions -->
-              <div class="col-md-5 clickable-card" onclick="redirectToAgentTransaction('Confirmed')">
-
+              <div class="col-md-5 d-flex flex-row clickable-card" onclick="redirectToAgentTransaction('Confirmed')">
                 <div class="card-icon icon-green">
                   <i class="fas fa-check-circle"></i>
                 </div>
-
                 <div class="side-content d-flex flex-column">
                   <?php
                   $confirmedTransactionsQuery = "SELECT COUNT(*) AS total FROM booking WHERE MONTH(bookingDate) = MONTH(CURRENT_DATE()) AND YEAR(bookingDate) = YEAR(CURRENT_DATE()) AND status = 'Confirmed'";
@@ -121,16 +92,14 @@ error_reporting(E_ALL);
                   <h5><?php echo $confirmedTransactions; ?></h5>
                   <p>CONFIRMED</p>
                 </div>
-
               </div>
-
             </div>
+
 
             <!-- Pending, and Cancelled Transaction Count -->
             <div class="row">
-
               <!-- Pending Transaction Count -->
-              <div class="col-md-4 clickable-card" onclick="redirectToAgentTransaction('Pending')">
+              <div class="col-md-5 d-flex flex-row clickable-card" onclick="redirectToAgentTransaction('Pending')">
                 <div class="card-icon icon-yellow">
                   <i class="fas fa-exclamation-triangle"></i>
                 </div>
@@ -151,7 +120,7 @@ error_reporting(E_ALL);
                 </div>
               </div>
 
-              <div class="col-md-4 clickable-card" onclick="redirectToAgentTransaction('Reserved')">
+              <div class="col-md-5 d-flex flex-row clickable-card" onclick="redirectToAgentTransaction('Reserved')">
                 <div class="card-icon bg-secondary">
                   <i class="fas fa-exclamation-triangle"></i>
                 </div>
@@ -173,7 +142,7 @@ error_reporting(E_ALL);
               </div>
 
               <!-- Cancelled Transaction Count -->
-              <div class="col-md-4 clickable-card card-cancelled" onclick="redirectToAgentTransaction('Cancelled')">
+              <div class="col-md-5 d-flex flex-row clickable-card" onclick="redirectToAgentTransaction('Cancelled')">
                 <div class="card-icon icon-red">
                   <i class="fas fa-times-circle"></i>
                 </div>
@@ -196,17 +165,16 @@ error_reporting(E_ALL);
               </div>
 
             </div>
-
           </div>
         </div>
 
-        <!-- Card 2 -->
-        <div class="card card-top">
+        <!-- CARD 2 - On Due -->
+        <div class="card border-0">
           <div class="header">
             <h6 class="white-pill">On Due</h6>
           </div>
 
-          <div class="card-content card-content-body">
+          <div class="card-content px-3">
             <!-- 5 Days and 10 Days Due Count -->
             <div class="row">
               <!-- 5 Days Due Count -->
@@ -337,13 +305,16 @@ error_reporting(E_ALL);
           </div>
         </div>
 
-        <!-- Card 3 -->
-        <div class="card card-top">
+        <!-- CARD 3 - Total Sales -->
+        <div class="card border-0">
           <div class="header">
             <h6 class="white-pill">Total Sales</h6>
           </div>
 
-          <div class="card-content card-content-body">
+          
+
+
+          <div class="card-content px-3">
             <div class="row">
               <div class="col-md-5 d-flex flex-row total-sales">
                 <div class="card-icon icon-blue">
@@ -351,7 +322,7 @@ error_reporting(E_ALL);
                 </div>
                 <div class="side-content d-flex flex-column">
                   <?php
-                  $currentMonthQuery = "SELECT SUM(b.totalPrice + IFNULL(r.requestCost, 0)) AS totalSales
+                    $currentMonthQuery = "SELECT SUM(b.totalPrice + IFNULL(r.requestCost, 0)) AS totalSales
                                           FROM booking b
                                           LEFT JOIN request r 
                                             ON r.transactNo = b.transactNo 
@@ -363,13 +334,13 @@ error_reporting(E_ALL);
                                             AND MONTH(b.bookingDate) = MONTH(CURRENT_DATE)
                                             AND YEAR(b.bookingDate) = YEAR(CURRENT_DATE)";
 
-                  // Execute the query
-                  $currentMonthResult = $conn->query($currentMonthQuery);
+                    // Execute the query
+                    $currentMonthResult = $conn->query($currentMonthQuery);
 
-                  // Check if the query returned a result
-                  $currentMonthTotal = isset($currentMonthRow['totalSales'])
-                    ? number_format((float) $currentMonthRow['totalSales'], 2)
-                    : '0.00';
+                    // Check if the query returned a result
+                    $currentMonthTotal = isset($currentMonthRow['totalSales']) 
+                      ? number_format((float)$currentMonthRow['totalSales'], 2) 
+                      : '0.00';
                   ?>
 
                   <h5 class="month-sales">₱ <?php echo $currentMonthTotal; ?></h5>
@@ -387,7 +358,7 @@ error_reporting(E_ALL);
                 </div>
                 <div class="side-content d-flex flex-column">
                   <?php
-                  $pastMonthQuery = "SELECT SUM(b.totalPrice + IFNULL(r.requestCost, 0)) AS totalSales
+                    $pastMonthQuery = "SELECT SUM(b.totalPrice + IFNULL(r.requestCost, 0)) AS totalSales
                                       FROM booking b
                                       LEFT JOIN request r ON r.transactNo = b.transactNo 
                                         AND r.requestStatus = 'Confirmed'
@@ -398,13 +369,13 @@ error_reporting(E_ALL);
                                         AND MONTH(b.bookingDate) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH)
                                         AND YEAR(b.bookingDate) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH)";
 
-                  // Execute the query
-                  $pastMonthResult = $conn->query($pastMonthQuery);
+                    // Execute the query
+                    $pastMonthResult = $conn->query($pastMonthQuery);
 
-                  // Check if the query returned a result
-                  $pastMonthTotal = ($pastMonthResult && $pastMonthResult->num_rows > 0)
-                    ? number_format($pastMonthResult->fetch_assoc()['totalSales'], 2)
-                    : "0.00";
+                    // Check if the query returned a result
+                    $pastMonthTotal = ($pastMonthResult && $pastMonthResult->num_rows > 0)
+                      ? number_format($pastMonthResult->fetch_assoc()['totalSales'], 2)
+                      : "0.00";
                   ?>
 
                   <h5 class="month-sales">₱ <?php echo $pastMonthTotal; ?></h5>
@@ -417,32 +388,76 @@ error_reporting(E_ALL);
           </div>
         </div>
 
-        <!-- Card 4 -->
-        <div class="card">
+        <!-- CARD 4 -->
+        <div class="card border-0">
+          <div class="header d-flex justify-content-between align-items-center">
+            <h6 class="white-pill">Daily Currency Conversion</h6>
+            <a href="" class="pill-button">View History</a>
+          </div>
 
-        
+          <div class="card-body-currency mt-2">
+            <div class="currency-cards">
+
+              <!-- USD CARD -->
+              <div class="currency-card">
+                <div class="flag-icon-wrapper">
+                  <img src="../Assets/Flags/english-flag.png" alt="">
+                  <h6 class="mt-2">USD</h6>
+                  <div class="currency-text-wrapper">
+                    <h5>$ 1</h5>
+                  </div>
+                </div>
+              </div>
+
+              <div class="icon-wrapper mx-2">
+                <i class="fas fa-exchange-alt"></i>
+              </div>
+
+              <!-- PHP CARD -->
+              <div class="currency-card">
+                <div class="flag-icon-wrapper">
+                  <img src="../Assets/Flags/philippines (2).png" alt="">
+                  <h6 class="mt-2">PHP</h6>
+                  <div class="currency-text-wrapper">
+                    <h5>₱ <?php echo number_format($usd_to_php, 2); ?></h5>
+                  </div>
+                </div>
+              </div>
+
+              <!-- KOR CARD -->
+              <div class="currency-card">
+                <div class="flag-icon-wrapper">
+                  <img src="../Assets/Flags/korean-flag.png" alt="">
+                  <h6 class="mt-2">KOR</h6>
+                  <div class="currency-text-wrapper">
+                    <h5>₩ <?php echo number_format($usd_to_krw, 0); ?></h5>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
         </div>
-
       </div>
 
       <div class="second-div">
-
         <div class="navTabs-wrapper">
-
           <ul class="nav nav-pills" id="pills-tab" role="tablist">
-
             <li class="nav-item" role="presentation">
-              <button class="nav-link active" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile"
-                type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Flight Seat
-                Tracker</button>
+              <button class="nav-link active" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Flight Seat Tracker</button>
             </li>
 
             <li class="nav-item" role="presentation">
-              <button class="nav-link" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home"
-                type="button" role="tab" aria-controls="pills-home" aria-selected="true">Payment and Requests</button>
+              <button class="nav-link " id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Payment and Requests</button>
             </li>
+
+            <!-- <li class="nav-item" role="presentation">
+            <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Contact</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="pills-disabled-tab" data-bs-toggle="pill" data-bs-target="#pills-disabled" type="button" role="tab" aria-controls="pills-disabled" aria-selected="false" disabled>Disabled</button>
+          </li> -->
           </ul>
-
         </div>
 
         <div class="content-heading">
@@ -453,14 +468,14 @@ error_reporting(E_ALL);
       <!-- Flight Seat Tracker Tab -->
       <div class="tab-content" id="pills-tabContent">
 
-        <!-- Flight Seat Tracker Tab -->
         <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
 
           <!-- Flight Seat Tracker Table -->
           <div class="info-table-container">
+
             <table class="info-table" id="info-table">
               <thead>
-                <tr class="first-half">
+                <tr>
                   <th rowspan="2" class="red-white"></th>
                   <th rowspan="2" class="red-white">TEAM OP</th>
                   <th rowspan="2" class="red-white">ORIGIN</th>
@@ -471,40 +486,46 @@ error_reporting(E_ALL);
                   <th rowspan="2" class="red-white">LAND ONLY</th>
                   <th rowspan="2" class="red-white">WHOLESALE PRICE</th>
                   <th rowspan="2" class="red-white">RETAIL PRICE</th>
-                  <th rowspan="2" class="red-white">LAND PRICE</th>
+                  <!-- <th rowspan="2" class="red-white" style="font-size: 10px; padding: 0px 5px">LAND ARRANGEMENT PRICE</th> -->
+                  <th rowspan="2" class="red-white" style="font-size: 10px; padding: 0px 5px">LAND PRICE</th>
 
                   <!-- Dynamic headers for agent columns -->
                   <?php
+                  // Fetch agent column headers dynamically
                   $sql = "SELECT branchName FROM branch WHERE branchAgentCode IS NOT NULL AND branchAgentCode != ''";
                   $result = $conn->query($sql);
 
                   while ($row = $result->fetch_assoc()) {
-                    // Output each agent column header with colspan=2 for "START" and "END"
-                    echo '<th colspan="2" 
-                            data-bs-toggle="tooltip" 
-                            title="' . htmlspecialchars($row['branchName']) . '" 
-                            style="background-color: #dc3545; color: #ffffff; font-weight: 500; font-size: 12px;">' . htmlspecialchars($row['branchName']) . '</th>';
+                    // Output the <th> element without background color or text color
+                    echo '<th 
+                      colspan="2" 
+                      data-bs-toggle="tooltip" 
+                      title="' . $row['branchName'] . '" 
+                      style="background-color: #dc3545; color: #ffffff; font-weight: 500;font-size: 12px;" >' . $row['branchName'] . '</th>';
                   }
                   ?>
                 </tr>
-                <tr class="second-half">
-                  <!-- Sub-headers for FLIGHT DATE -->
-                  <th class="red-white">START</th>
-                  <th class="red-white">END</th>
 
+                <tr style="top: -10px;">
+                  <th>START</th>
+                  <th>END</th>
+                  <!-- A1, A2, A3, A4, A5, A6, A7 Sub Headers -->
                   <!-- Dynamic sub-headers for agent columns -->
                   <?php
+                  // Fetch agent column headers dynamically
                   $sql = "SELECT branchName FROM branch WHERE branchAgentCode IS NOT NULL AND branchAgentCode != ''";
+
                   $result = $conn->query($sql);
 
                   while ($row = $result->fetch_assoc()) {
-                    // Output sub-headers for each dynamic agent column
-                    echo '<th style="background-color: #dc3545; color: #ffffff; font-weight: 500; font-size: 12px;">A.L</th>';
-                    echo '<th style="background-color: #dc3545; color: #ffffff; font-weight: 500; font-size: 12px;">L.O</th>';
+                    // Output the <th> elements without background color or text color
+                    echo '<th style="background-color: #dc3545; 
+                        color: #ffffff; font-weight: 500;font-size: 12px;">A.L</th>';
+                    echo '<th style="background-color: #dc3545; 
+                        color: #ffffff; font-weight: 500;font-size: 12px;">L.O</th>';
                   }
                   ?>
                 </tr>
-
               </thead>
 
               <tbody>
@@ -516,7 +537,7 @@ error_reporting(E_ALL);
                 $agentColumns = '';
 
                 while ($row = $result->fetch_assoc()) {
-
+                  
                   $agentCode = $row['branchAgentCode'];
                   $agentColumns .= "IFNULL(SUM(CASE WHEN b.bookingType = 'Package' 
                                         AND (b.status = 'Confirmed' OR b.status = 'Reserved')
@@ -575,7 +596,7 @@ error_reporting(E_ALL);
                 $result = $conn->query($sql);
 
                 // Step 4: Display the results in HTML table
-                
+
                 // class="form-check-input"
                 if ($result->num_rows > 0) {
                   // Fetch employee data and map Names to Employee IDs
@@ -583,7 +604,7 @@ error_reporting(E_ALL);
                   $employeeResult = $conn->query($employeeQuery);
 
                   $employeeMapping = []; // Array to store FullName => Employee ID mapping
-                
+
                   if ($employeeResult->num_rows > 0) {
                     while ($empRow = $employeeResult->fetch_assoc()) {
                       $employeeMapping[$empRow['fullName']] = $empRow['employeeId'];
@@ -637,21 +658,21 @@ error_reporting(E_ALL);
 
           <div class="info-footer">
             <div class="item-number-select">
-              <label for="rowsPerPage">Rows per page:</label>
-              <div class="select-container">
-                <select id="rowsPerPage" class="select-box">
-                  <option value="16">16</option>
-                  <option value="25">25</option>
-                  <option value="50">50</option>
-                  <option value="100">100</option>
-                </select>
-                <span class="arrow-down"></span> <!-- Arrow Icon -->
-              </div>
-
-              <button id="clear-btn" class="btn btn-secondary btn-sm" onclick="clearSelection()">
-                Reset
-              </button>
-
+                <label for="rowsPerPage">Rows per page:</label>
+                <div class="select-container">
+                    <select id="rowsPerPage" class="select-box">
+                        <option value="16">16</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                    <span class="arrow-down"></span> <!-- Arrow Icon -->
+                </div>
+                
+                  <button id="clear-btn" class="btn btn-secondary btn-sm" onclick="clearSelection()">
+                    Reset
+                  </button>
+                             
             </div>
 
             <div class="pagination-controls">
@@ -664,16 +685,13 @@ error_reporting(E_ALL);
         </div>
 
         <!-- Payment and Requests Table -->
-        <div class="tab-pane fade" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab"
-          tabindex="0">
+        <div class="tab-pane fade " id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
 
           <div class="tab-content">
-
             <div class="header-wrapper">
-
+              
               <!-- Request Table -->
               <div class="request-wrapper">
-
                 <div class="table-header">
                   <h6 class="white-pill">Requests</h6>
                 </div>
@@ -717,7 +735,7 @@ error_reporting(E_ALL);
                                   r.requestStatus = 'Submitted'
                                 ORDER BY 
                                   r.requestDate DESC";  // Order by request date
-                      
+
                       $res1 = $conn->query($sql1);
 
                       if ($res1->num_rows > 0) {
@@ -764,13 +782,12 @@ error_reporting(E_ALL);
 
               <!-- Payment Table -->
               <div class="payment-wrapper">
-
                 <div class="table-header">
                   <h6 class="white-pill">Payment</h6>
                 </div>
 
                 <div class="payment-table-container">
-                  <table class="payment-table table">
+                  <table class="payment-table table ">
                     <thead>
                       <tr>
                         <th>TRANSACTION NO</th>
@@ -805,7 +822,7 @@ error_reporting(E_ALL);
                                 JOIN branch br ON b.agentCode = br.branchAgentCode
                                 WHERE p.paymentStatus = 'Submitted'
                                 ORDER BY p.paymentDate DESC";  // Order by payment date
-                      
+
                       $res2 = $conn->query($sql2);
 
                       if ($res2->num_rows > 0) {
@@ -850,11 +867,11 @@ error_reporting(E_ALL);
             </div>
 
             <?php
-            // Function to render the confirmed transactions table
-            function renderConfirmedTransactionsTable($conn)
-            {
-              // Query to get confirmed transactions
-              $query1 = "SELECT b.*, f.flightDepartureDate AS Start, p.packageName, b.totalPrice AS PackagePrice, 
+              // Function to render the confirmed transactions table
+              function renderConfirmedTransactionsTable($conn)
+              {
+                // Query to get confirmed transactions
+                $query1 = "SELECT b.*, f.flightDepartureDate AS Start, p.packageName, b.totalPrice AS PackagePrice, 
                           f.returnDepartureDate AS End, CONCAT(a.lName, ', ', a.fName, 
                           IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1)), '')) AS agentName,
                           br.branchName as branchName, SUM(pa.amount) AS TotalAmountPaid, 
@@ -881,17 +898,15 @@ error_reporting(E_ALL);
                         LEFT JOIN request r ON r.transactNo = b.transactNo AND r.requestStatus = 'Confirmed'
                         WHERE status = 'Confirmed' GROUP BY b.transactNo";
 
-              $result = $conn->query($query1);
+                $result = $conn->query($query1);
 
-              // Check if the query returned any results
-              if ($result && $result->num_rows > 0) {
-                // Start the table HTML
-                echo '<div class="confirm-container">
-
+                // Check if the query returned any results
+                if ($result && $result->num_rows > 0) {
+                  // Start the table HTML
+                  echo '<div class="confirm-container">
                         <div class="table-header">
                           <h6 class="white-pill">Confirmed Transactions</h6>
                         </div>
-
                         <div class="table-container confirm-table-container">
                           <table class="confirm-table" id="confirm-table">
                             <thead>
@@ -909,37 +924,37 @@ error_reporting(E_ALL);
                             </thead>
                             <tbody>';
 
-                // Loop through each row and render the table rows
-                while ($row = $result->fetch_assoc()) {
-                  $packagePrice = $row['PackagePrice'] ?? 0;
-                  $requestTotal = $row['TotalRequestAmount'] ?? 0;
-                  $amountPaid = $row['TotalAmountPaid'] ?? 0;
-                  $balance = ($packagePrice + $requestTotal) - $amountPaid;
-                  $status = $row['status'];
-                  $formattedPP = '₱ ' . number_format($packagePrice, 2);
-                  $formattedAP = '₱' . number_format($amountPaid, 2);
-                  $formattedBal = '₱' . number_format($balance, 2);
+                  // Loop through each row and render the table rows
+                  while ($row = $result->fetch_assoc()) {
+                    $packagePrice = $row['PackagePrice'] ?? 0;
+                    $requestTotal = $row['TotalRequestAmount'] ?? 0;
+                    $amountPaid = $row['TotalAmountPaid'] ?? 0;
+                    $balance = ($packagePrice + $requestTotal) - $amountPaid;
+                    $status = $row['status'];
+                    $formattedPP = '₱ ' . number_format($packagePrice, 2);
+                    $formattedAP = '₱' . number_format($amountPaid, 2);
+                    $formattedBal = '₱' . number_format($balance, 2);
 
-                  // Define the pill status class based on the status value
-                  switch ($status) {
-                    case 'Confirmed':
-                      $pillClass = 'bg-success';
-                      break;
-                    case 'Cancelled':
-                      $pillClass = 'bg-danger';
-                      break;
-                    case 'Pending':
-                      $pillClass = 'bg-warning';
-                      break;
-                    case 'Rejected':
-                      $pillClass = 'bg-info';
-                      break;
-                    default:
-                      $pillClass = 'bg-secondary';
-                      break;
-                  }
+                    // Define the pill status class based on the status value
+                    switch ($status) {
+                      case 'Confirmed':
+                        $pillClass = 'bg-success';
+                        break;
+                      case 'Cancelled':
+                        $pillClass = 'bg-danger';
+                        break;
+                      case 'Pending':
+                        $pillClass = 'bg-warning';
+                        break;
+                      case 'Rejected':
+                        $pillClass = 'bg-info';
+                        break;
+                      default:
+                        $pillClass = 'bg-secondary';
+                        break;
+                    }
 
-                  echo "<tr data-id='{$row['transactNo']}'>
+                    echo "<tr data-id='{$row['transactNo']}'>
                             <td>{$row['transactNo']}</td>
                             <td>{$row['Account Name']}</td>
                             <td>{$row['Start']}</td>
@@ -962,21 +977,21 @@ error_reporting(E_ALL);
                                 <span class='badge $pillClass p-2'>{$status}</span>
                             </td>";
 
-                  // Fetching the comment from the database
-                  $transactNo = $row['transactNo'];
-                  $stmt = $conn->prepare('SELECT * FROM bookingcomments WHERE transactNo = ?');
-                  $stmt->bind_param('s', $transactNo);
-                  $stmt->execute();
-                  $resultComment = $stmt->get_result();
-                  $comment = $resultComment->fetch_assoc();
-                  $stmt->close();
+                    // Fetching the comment from the database
+                    $transactNo = $row['transactNo'];
+                    $stmt = $conn->prepare('SELECT * FROM bookingcomments WHERE transactNo = ?');
+                    $stmt->bind_param('s', $transactNo);
+                    $stmt->execute();
+                    $resultComment = $stmt->get_result();
+                    $comment = $resultComment->fetch_assoc();
+                    $stmt->close();
 
-                  echo "<td>";
-                  echo '<div class="comment-container" id="commentContainer' . $transactNo . '">';
+                    echo "<td>";
+                    echo '<div class="comment-container" id="commentContainer' . $transactNo . '">';
 
-                  // Check if a comment exists
-                  if ($comment && !empty($comment['comment'])) {
-                    echo '<div class="comment-exists">
+                    // Check if a comment exists
+                    if ($comment && !empty($comment['comment'])) {
+                      echo '<div class="comment-exists">
                                 <div class="comment-input">
                                     <input type="text" class="form-control" name="comment" id="commentInput' . $transactNo . '" value="' . htmlspecialchars($comment['comment']) . '" disabled>
                                 </div>
@@ -984,8 +999,8 @@ error_reporting(E_ALL);
                                     <button type="button" class="btn btn-warning editComment" data-id="' . $transactNo . '">Edit</button>
                                 </div>
                               </div>';
-                  } else {
-                    echo '<div class="no-comment">
+                    } else {
+                      echo '<div class="no-comment">
                                 <div class="comment-input">
                                     <input type="text" class="form-control" name="comment" id="commentInput' . $transactNo . '"  disabled>
                                 </div>
@@ -993,40 +1008,41 @@ error_reporting(E_ALL);
                                     <button type="button" class="btn btn-success addComment" data-id="' . $transactNo . '">Add</button>
                                 </div>
                               </div>';
-                  }
+                    }
 
-                  echo '<div class="button-container">
+                    echo '<div class="button-container">
                             <input type="text" class="recordId" value="' . $row['transactNo'] . '" hidden>
                             <button type="button" class="btn btn-primary submitAddComment" data-id="' . $transactNo . '" style="display: none;">Submit</button>
                             <button type="button" class="btn btn-primary submitEditComment" data-id="' . $transactNo . '" style="display: none;">Update</button>
-                            <button type="button" class="btn btn-danger deleteComment" data-id="' . $transactNo . '" style="display: none;">Remove</button>
+                            <button type="button" class="btn btn-danger deleteComment" data-id="' . $transactNo  . '" style="display: none;">Remove</button>
                             <button type="button" class="btn btn-danger cancelEditComment" data-id="' . $transactNo . '" style="display: none;">Cancel Edit</button>
                             <button type="button" class="btn btn-danger cancelAddComment" data-id="' . $transactNo . '" style="display: none;">Cancel Add</button>
                           </div>';
-                  echo '</div>'; // Close the comment-container div
-                  echo "</td>"; // Close the <td> tag
-                  echo "</tr>";
+                    echo '</div>'; // Close the comment-container div
+                    echo "</td>"; // Close the <td> tag
+                    echo "</tr>";
+                  }
+
+                  echo '</tbody></table></div></div>'; // End of table and div containers
+                } else {
+                  // No records found
+                  echo "<tr><td colspan='7'>No confirmed bookings found.</td></tr>";
                 }
 
-                echo '</tbody></table></div></div>'; // End of table and div containers
-              } else {
-                // No records found
-                echo "<tr><td colspan='7'>No confirmed bookings found.</td></tr>";
+                if ($result) {
+                  $result->free();
+                }
               }
 
-              if ($result) {
-                $result->free();
-              }
-            }
-
-            // Call the function to render the table
-            renderConfirmedTransactionsTable($conn);
+              // Call the function to render the table
+              renderConfirmedTransactionsTable($conn);
             ?>
           </div>
-
         </div>
 
-        
+        <!-- <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0"></div>
+      <div class="tab-pane fade" id="pills-disabled" role="tabpanel" aria-labelledby="pills-disabled-tab" tabindex="0"></div> -->
+
       </div>
 
     </div>
@@ -1051,9 +1067,11 @@ error_reporting(E_ALL);
     </div>
   </div>
 
+
   <?php include '../Employee Section/includes/emp-scripts.php' ?>
 
   <!-- for Card Counts Clickable -->
+
   <!-- <script>
     document.addEventListener("DOMContentLoaded", function() {
       // Get URL parameters
@@ -1067,12 +1085,14 @@ error_reporting(E_ALL);
     });
   </script> -->
 
+
   <!-- For Clickable Cards -->
   <script>
     function redirectToAgentTransaction(status) {
       window.location.href = `../Employee Section/emp-transaction.php?status=${status}`;
     }
   </script>
+
 
   <!-- Clear RowColNum -->
   <script>
@@ -1082,9 +1102,10 @@ error_reporting(E_ALL);
     }
   </script>
 
+
   <!-- JS for Checkbox -->
   <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
       let changes = {}; // Store changed checkbox values
 
       // Function to check if there are changes and toggle the Save button
@@ -1099,7 +1120,7 @@ error_reporting(E_ALL);
       // Function to get all checked flight IDs and log them
       function logCheckedFlightIds() {
         let checkedIds = [];
-        $('.status-checkbox:checked').each(function () {
+        $('.status-checkbox:checked').each(function() {
           checkedIds.push($(this).data('id'));
         });
         console.log("Checked Flight IDs:", checkedIds); // Log the checked flight IDs
@@ -1107,7 +1128,7 @@ error_reporting(E_ALL);
 
 
       // When a checkbox is toggled
-      $('.status-checkbox').on('change', function () {
+      $('.status-checkbox').on('change', function() {
         let flightId = $(this).data('id'); // Get flight ID
         let isChecked = $(this).is(':checked') ? 1 : 0; // Convert to 1 (checked) or 0 (unchecked)
 
@@ -1126,7 +1147,7 @@ error_reporting(E_ALL);
       });
 
       // Save Button Click Event
-      $('#saveChanges').on('click', function () {
+      $('#saveChanges').on('click', function() {
         if (Object.keys(changes).length === 0) return; // No changes to save
 
         $.ajax({
@@ -1135,12 +1156,12 @@ error_reporting(E_ALL);
           data: {
             updates: changes // Send updates as the payload
           },
-          success: function (response) {
+          success: function(response) {
             alert('Status updated successfully!');
             changes = {}; // Clear changes after saving
 
             // Update original values for the checkboxes
-            $('.status-checkbox').each(function () {
+            $('.status-checkbox').each(function() {
               $(this).data('original', $(this).is(':checked') ? 1 : 0);
             });
 
@@ -1156,27 +1177,27 @@ error_reporting(E_ALL);
             // Reload the page after saving (optional, if you want to reload instead of just refreshing the table)
             // location.reload(); 
           },
-          error: function () {
+          error: function() {
             alert('Error updating status.');
           }
         });
       });
 
       // Initialize original checkbox states
-      $('.status-checkbox').each(function () {
+      $('.status-checkbox').each(function() {
         $(this).data('original', $(this).is(':checked') ? 1 : 0);
       });
 
       toggleSaveButton(); // Ensure the button is hidden initially
     });
 
-    $('#pills-home-tab').on('click', function () {
+    $('#pills-home-tab').on('click', function() {
       $('#saveChanges').css('display', 'none'); // Hide Save button
       changes = {}; // Flush the changes array
       console.log("Changes array flushed:", changes); // Log the flushed array
 
       // Reset all checkboxes to their original state (untrigger non-changed checkboxes)
-      $('.status-checkbox').each(function () {
+      $('.status-checkbox').each(function() {
         let originalState = $(this).data('original') === 1; // Get the original state (true or false)
         $(this).prop('checked', originalState); // Set checkbox to its original state
       });
@@ -1185,7 +1206,7 @@ error_reporting(E_ALL);
 
   <!-- JS for Comment -->
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       function toggleCommentForm(transactNo, action) {
         const commentInput = document.getElementById('commentInput' + transactNo);
         const submitAddButton = document.querySelector('.submitAddComment[data-id="' + transactNo + '"]');
@@ -1222,14 +1243,14 @@ error_reporting(E_ALL);
       }
 
       document.querySelectorAll('.editComment').forEach(button => {
-        button.addEventListener('click', function () {
+        button.addEventListener('click', function() {
           const transactNo = this.getAttribute('data-id');
           toggleCommentForm(transactNo, 'edit');
         });
       });
 
       document.querySelectorAll('.addComment').forEach(button => {
-        button.addEventListener('click', function () {
+        button.addEventListener('click', function() {
           const transactNo = this.getAttribute('data-id');
           toggleCommentForm(transactNo, 'add');
         });
@@ -1237,9 +1258,9 @@ error_reporting(E_ALL);
     });
 
     // Handle click on delete button
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       document.querySelectorAll('.deleteComment').forEach(button => {
-        button.addEventListener('click', function () {
+        button.addEventListener('click', function() {
           const transactNo = this.getAttribute('data-id'); // Get the transactNo from the data-id attribute
           const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal')); // Use existing modal with id 'deleteModal'
 
@@ -1247,15 +1268,15 @@ error_reporting(E_ALL);
           deleteModal.show();
 
           // When the "Delete" button in the modal is clicked, send the delete request
-          document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
+          document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
             const formData = new FormData();
             formData.append('transactNo', transactNo); // Send the transactNo
 
             // Send the delete request via fetch
             fetch('../Employee Section/functions/emp-commentDelete.php', {
-              method: 'POST',
-              body: formData
-            })
+                method: 'POST',
+                body: formData
+              })
               .then(response => response.json())
               .then(data => {
                 if (data.status === 'success') {
@@ -1278,7 +1299,7 @@ error_reporting(E_ALL);
     });
 
     document.querySelectorAll('.submitAddComment').forEach(button => {
-      button.addEventListener('click', function () {
+      button.addEventListener('click', function() {
         const transactNo = this.getAttribute('data-id');
         const comment = document.getElementById('commentInput' + transactNo).value;
 
@@ -1293,7 +1314,7 @@ error_reporting(E_ALL);
               transactNo,
               comment
             },
-            success: function (response) {
+            success: function(response) {
               const jsonResponse = JSON.parse(response); // Parse the JSON response
               if (jsonResponse.status === 'success') {
                 alert('Comment added successfully!');
@@ -1308,7 +1329,7 @@ error_reporting(E_ALL);
                 alert(jsonResponse.message || 'Error adding comment.');
               }
             },
-            error: function (xhr, status, error) {
+            error: function(xhr, status, error) {
               alert('Error adding comment.');
             }
           });
@@ -1320,7 +1341,7 @@ error_reporting(E_ALL);
 
 
     document.querySelectorAll('.submitEditComment').forEach(button => {
-      button.addEventListener('click', function () {
+      button.addEventListener('click', function() {
         const transactNo = this.getAttribute('data-id');
         const comment = document.getElementById('commentInput' + transactNo).value;
 
@@ -1333,11 +1354,11 @@ error_reporting(E_ALL);
               comment
             },
 
-            success: function (response) {
+            success: function(response) {
               alert('Comment updated successfully!');
               location.reload();
             },
-            error: function (xhr, status, error) {
+            error: function(xhr, status, error) {
               alert('Error updating comment.');
             }
           });
@@ -1348,7 +1369,7 @@ error_reporting(E_ALL);
     });
 
     document.querySelectorAll('.cancelEditComment').forEach(button => {
-      button.addEventListener('click', function () {
+      button.addEventListener('click', function() {
         const transactNo = this.getAttribute('data-id');
         const commentInput = document.getElementById('commentInput' + transactNo);
         const editButton = document.querySelector('.editComment[data-id="' + transactNo + '"]');
@@ -1369,7 +1390,7 @@ error_reporting(E_ALL);
     });
 
     document.querySelectorAll('.cancelAddComment').forEach(button => {
-      button.addEventListener('click', function () {
+      button.addEventListener('click', function() {
         const transactNo = this.getAttribute('data-id');
         const commentInput = document.getElementById('commentInput' + transactNo);
         const editButton = document.querySelector('.editComment[data-id="' + transactNo + '"]');
@@ -1389,7 +1410,7 @@ error_reporting(E_ALL);
   </script>
 
 
-  <!-- <script>
+  <script>
     // Function to initialize or reinitialize the DataTable
     function initializeDataTable() {
       // Check if the table is already initialized
@@ -1532,10 +1553,9 @@ error_reporting(E_ALL);
       // Call the function to initialize the DataTable when the document is ready
       initializeDataTable();
     });
-  </script> -->
+  </script>
 
 
 
-</body>
-
+  </body>
 </html>
