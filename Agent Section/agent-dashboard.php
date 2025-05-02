@@ -578,8 +578,6 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                     </div>
                     <div class="side-content d-flex flex-column">
                       <?php
-                        // Assuming you already have a connection to your database
-
                         // Determine which query to run based on the agent's role
                         if ($agentRole != 'Head Agent') 
                         {
@@ -617,10 +615,14 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                         // Execute the query
                         $currentMonthResult = $conn->query($currentMonthQuery);
 
-                        // Check if the query returned a result
-                        $currentMonthTotal = isset($currentMonthRow['totalSales']) 
-                          ? number_format((float)$currentMonthRow['totalSales'], 2) 
-                          : '0.00';
+                        // Fetch result and handle nulls
+                        $currentMonthTotal = '0.00'; // Default value
+                        if ($currentMonthResult && $currentMonthResult->num_rows > 0) {
+                          $currentMonthRow = $currentMonthResult->fetch_assoc();
+                          $currentMonthTotal = isset($currentMonthRow['totalSales'])
+                            ? number_format((float) $currentMonthRow['totalSales'], 2)
+                            : '0.00';
+                        }
                       ?>
                       <h5>₱ <?php echo $currentMonthTotal; ?></h5>
                       <p>CURRENT MONTH</p>
@@ -636,8 +638,6 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                     </div>
                     <div class="side-content d-flex flex-column">
                       <?php
-                        // Assuming you already have a connection to your database
-
                         // Determine which query to run based on the agent's role
                         if ($agentRole != 'Head Agent') 
                         {
@@ -674,12 +674,13 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                         $pastMonthResult = $conn->query($pastMonthQuery);
 
                         // Check if the query returned a result
-                        $pastMonthTotal = isset($currentMonthRow['totalSales']) 
-                          ? number_format((float)$currentMonthRow['totalSales'], 2) 
-                          : '0.00';
-                        // $pastMonthTotal = ($pastMonthResult && $pastMonthResult->num_rows > 0)
-                        //   ? number_format($pastMonthResult->fetch_assoc()['totalSales'], 2)
-                        //   : "0.00";
+                        $pastMonthTotal = '0.00'; // Default value
+                        if ($pastMonthResult && $pastMonthResult->num_rows > 0) {
+                          $pastMonthRow = $pastMonthResult->fetch_assoc();
+                          $pastMonthTotal = isset($pastMonthRow['totalSales'])
+                            ? number_format((float) $pastMonthRow['totalSales'], 2)
+                            : '0.00';
+                        }
                       ?>
                       <h5>₱ <?php echo $pastMonthTotal; ?></h5>
                       <p>PAST MONTH</p>
