@@ -398,28 +398,30 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                     </div>
                     <div class="side-content d-flex flex-column">
                       <?php
-                      $currentMonthQuery = "SELECT SUM(b.totalPrice + IFNULL(r.requestCost, 0)) AS totalSales
-                                              FROM booking b
-                                              LEFT JOIN request r 
-                                                ON r.transactNo = b.transactNo 
-                                                AND r.requestStatus = 'Confirmed'
-                                                AND MONTH(r.requestDate) = MONTH(CURRENT_DATE)
-                                                AND YEAR(r.requestDate) = YEAR(CURRENT_DATE)
-                                              WHERE 
-                                                b.status = 'Confirmed' 
-                                                AND b.accountId = $accountId
-                                                AND MONTH(b.bookingDate) = MONTH(CURRENT_DATE)
-                                                AND YEAR(b.bookingDate) = YEAR(CURRENT_DATE)";
+                        $currentMonthQuery = "SELECT SUM(b.totalPrice + IFNULL(r.requestCost, 0)) AS totalSales
+                                                FROM booking b
+                                                LEFT JOIN request r 
+                                                  ON r.transactNo = b.transactNo 
+                                                  AND r.requestStatus = 'Confirmed'
+                                                  AND MONTH(r.requestDate) = MONTH(CURRENT_DATE)
+                                                  AND YEAR(r.requestDate) = YEAR(CURRENT_DATE)
+                                                WHERE 
+                                                  b.status = 'Confirmed' 
+                                                  AND b.accountId = $accountId
+                                                  AND MONTH(b.bookingDate) = MONTH(CURRENT_DATE)
+                                                  AND YEAR(b.bookingDate) = YEAR(CURRENT_DATE)";
 
-                      // Execute the query
-                      $currentMonthResult = $conn->query($currentMonthQuery);
+                        // Execute the query
+                        $currentMonthResult = $conn->query($currentMonthQuery);
 
-                      // Get and format the result
-                      $currentMonthTotal = 0; // Default value if no result found
-                      if ($currentMonthResult && $currentMonthResult->num_rows > 0) {
-                        $row = $currentMonthResult->fetch_assoc();
-                        $currentMonthTotal = (float) $row['totalSales']; // Cast to float
-                      }
+                        // Fetch result and handle nulls
+                        $currentMonthTotal = '0.00'; // Default value
+                        if ($currentMonthResult && $currentMonthResult->num_rows > 0) {
+                          $currentMonthRow = $currentMonthResult->fetch_assoc();
+                          $currentMonthTotal = isset($currentMonthRow['totalSales'])
+                            ? number_format((float) $currentMonthRow['totalSales'], 2)
+                            : '0.00';
+                        }
                       ?>
                       <h5>₱ <?php echo number_format($currentMonthTotal, 2); ?></h5>
                       <p>CURRENT MONTH</p>
@@ -435,24 +437,29 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                     </div>
                     <div class="side-content d-flex flex-column">
                       <?php
-                      $pastMonthQuery = "SELECT SUM(b.totalPrice + IFNULL(r.requestCost, 0)) AS totalSales
-                                          FROM booking b
-                                          LEFT JOIN request r ON r.transactNo = b.transactNo 
-                                            AND r.requestStatus = 'Confirmed'
-                                            AND MONTH(r.requestDate) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH)
-                                            AND YEAR(r.requestDate) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH)
-                                          WHERE 
-                                            b.status = 'Confirmed' 
-                                            AND b.accountId = $accountId
-                                            AND MONTH(b.bookingDate) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH)
-                                            AND YEAR(b.bookingDate) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH)";
+                        $pastMonthQuery = "SELECT SUM(b.totalPrice + IFNULL(r.requestCost, 0)) AS totalSales
+                                            FROM booking b
+                                            LEFT JOIN request r ON r.transactNo = b.transactNo 
+                                              AND r.requestStatus = 'Confirmed'
+                                              AND MONTH(r.requestDate) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH)
+                                              AND YEAR(r.requestDate) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH)
+                                            WHERE 
+                                              b.status = 'Confirmed' 
+                                              AND b.accountId = $accountId
+                                              AND MONTH(b.bookingDate) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH)
+                                              AND YEAR(b.bookingDate) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH)";
 
 
-                      $pastMonthResult = $conn->query($pastMonthQuery);
+                        $pastMonthResult = $conn->query($pastMonthQuery);
 
-                      $pastMonthTotal = ($pastMonthResult && $pastMonthResult->num_rows > 0)
-                        ? number_format($pastMonthResult->fetch_assoc()['totalSales'], 2)
-                        : "0.00";
+                        // Check if the query returned a result
+                        $pastMonthTotal = '0.00'; // Default value
+                        if ($pastMonthResult && $pastMonthResult->num_rows > 0) {
+                          $pastMonthRow = $pastMonthResult->fetch_assoc();
+                          $pastMonthTotal = isset($pastMonthRow['totalSales'])
+                            ? number_format((float) $pastMonthRow['totalSales'], 2)
+                            : '0.00';
+                        }
                       ?>
                       <h5>₱ <?php echo $pastMonthTotal; ?></h5>
                       <p>PAST MONTH</p>
