@@ -674,9 +674,12 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                         $pastMonthResult = $conn->query($pastMonthQuery);
 
                         // Check if the query returned a result
-                        $pastMonthTotal = ($pastMonthResult && $pastMonthResult->num_rows > 0)
-                          ? number_format($pastMonthResult->fetch_assoc()['totalSales'], 2)
-                          : "0.00";
+                        $pastMonthTotal = isset($currentMonthRow['totalSales']) 
+                          ? number_format((float)$currentMonthRow['totalSales'], 2) 
+                          : '0.00';
+                        // $pastMonthTotal = ($pastMonthResult && $pastMonthResult->num_rows > 0)
+                        //   ? number_format($pastMonthResult->fetch_assoc()['totalSales'], 2)
+                        //   : "0.00";
                       ?>
                       <h5>₱ <?php echo $pastMonthTotal; ?></h5>
                       <p>PAST MONTH</p>
