@@ -401,14 +401,10 @@ error_reporting(E_ALL);
                   // Execute the query
                   $pastMonthResult = $conn->query($pastMonthQuery);
 
+                  // Check if the query returned a result
                   $pastMonthTotal = isset($currentMonthRow['totalSales'])
                     ? number_format((float) $currentMonthRow['totalSales'], 2)
                     : '0.00';
-
-                  // Check if the query returned a result
-                  // $pastMonthTotal = ($pastMonthResult && $pastMonthResult->num_rows > 0)
-                  //   ? number_format($pastMonthResult->fetch_assoc()['totalSales'], 2)
-                  //   : "0.00";
                   ?>
 
                   <h5 class="month-sales">₱ <?php echo $pastMonthTotal; ?></h5>
