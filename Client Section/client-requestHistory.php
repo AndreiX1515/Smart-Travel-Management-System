@@ -84,7 +84,7 @@ require "../conn.php";
                               cd.details, cd.price, r.details as requestDetails
                             FROM `booking` b
                             JOIN `request` r ON b.transactNo = r.transactNo
-                            JOIN `concernDetails` cd ON r.concernDetailsId = cd.concernDetailsId
+                            JOIN `concerndetails` cd ON r.concerndetailsId = cd.concerndetailsId
                             WHERE b.accountId = $accountId
                             ORDER BY r.requestId ASC";
 
@@ -148,7 +148,7 @@ require "../conn.php";
                               cd.details, cd.price, r.details as requestDetails
                             FROM `booking` b
                             JOIN `request` r ON b.transactNo = r.transactNo
-                            JOIN `concernDetails` cd ON r.concernDetailsId = cd.concernDetailsId
+                            JOIN `concerndetails` cd ON r.concerndetailsId = cd.concerndetailsId
                             WHERE b.agentCode = '$agentCode'
                             ORDER BY r.requestId ASC";
 

@@ -165,7 +165,7 @@ $position = htmlspecialchars(strtoupper($empId));
 						<a class="nav-link page-button" href="../Employee Section/emp-requestHistory.php" data-page-name="Request History">Request History</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link page-button" href="../Employee Section/emp-paymentHistory.php" data-page-name="Payment History">Request</a>
+						<a class="nav-link page-button" href="../Employee Section/emp-paymentHistory.php" data-page-name="Payment History">Payment History</a>
 					</li>
 
 					
