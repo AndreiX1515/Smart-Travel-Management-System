@@ -1,62 +1,81 @@
 <?php
 session_start();
-require "../../../conn.php"; // DB connection
+require "../../../conn.php"; // Make sure path is correct on Hostinger
 
+// === CONFIGURATION === //
 $apiKey = '77dc42e0276c97b3f723a125'; // ExchangeRate-API key
 $base = 'USD';
 $target = 'PHP';
 $fallbackRate = 56.50;
-$provider = 'ExchangeRate-API';
+$primaryProvider = 'ExchangeRate-API';
+$fallbackProvider = 'Manual Fallback';
+date_default_timezone_set('Asia/Taipei');
 
-$logFile = __DIR__ . "/currency_rate_log.txt"; // Logs all activity
-date_default_timezone_set('Asia/Taipei'); // Set the timezone to Taipei
 $currentDate = date('Y-m-d');
 $currentTime = date('Y-m-d H:i:s');
 
-// Function to log messages
+// === LOGGING === //
+$logFile = __DIR__ . "/currency_rate_log.txt"; // Ensure write permissions
+
 function logMessage($message) {
     global $logFile;
     $timestamp = date("Y-m-d H:i:s");
     file_put_contents($logFile, "[$timestamp] $message\n", FILE_APPEND);
 }
 
-// Function to fetch exchange rate from API
-function fetchRate($apiKey, $base, $target) {
+// === API FETCH FUNCTION === //
+function fetchExchangeRate($apiKey, $base, $target) {
     $url = "https://v6.exchangerate-api.com/v6/$apiKey/pair/$base/$target";
-    $response = @file_get_contents($url);
-    return $response ? json_decode($response, true) : null;
+    $options = [
+        "http" => [
+            "method"  => "GET",
+            "timeout" => 5
+        ]
+    ];
+    $context = stream_context_create($options);
+    $response = @file_get_contents($url, false, $context);
+
+    if ($response !== false) {
+        $data = json_decode($response, true);
+        if (isset($data['result']) && $data['result'] === 'success') {
+            return $data['conversion_rate'];
+        }
+    }
+
+    return false; // API failed
 }
 
-// Echo current time to browser console
-echo "<script>console.log('Current Time: $currentTime');</script>";
+// === DEBUG TO CONSOLE === //
+echo "<script>console.log('Current Time (Taipei): $currentTime');</script>";
 
-// Fetch exchange rate from API
-$data = fetchRate($apiKey, $base, $target);
+// === MAIN LOGIC === //
+$rate = fetchExchangeRate($apiKey, $base, $target);
+$providerUsed = $rate ? $primaryProvider : $fallbackProvider;
 
-if ($data && $data['result'] === 'success') {
-    $rate = $data['conversion_rate'];
-
-    $insert = $conn->prepare("INSERT INTO currencyrates (base_currency, target_currency, exchange_rate, date_recorded, time_recorded, provider) VALUES (?, ?, ?, ?, ?, ?)");
-    $insert->bind_param("ssdsss", $base, $target, $rate, $currentDate, $currentTime, $provider);
-    $insert->execute();
-    $insert->close();
-
-    $message = "✅ USD to PHP rate saved: ₱$rate ($currentDate $currentTime)";
-    echo $message;
-    logMessage($message);
-} else {
-    // Fallback
+if (!$rate) {
     $rate = $fallbackRate;
-    $fallbackProvider = 'Fallback Manual Rate';
+    $message = "⚠️ API failed. Fallback rate ₱$rate used.";
+} else {
+    $message = "✅ Rate retrieved: USD to PHP = ₱$rate";
+}
 
-    $insert = $conn->prepare("INSERT INTO currencyrates (base_currency, target_currency, exchange_rate, date_recorded, time_recorded, provider) VALUES (?, ?, ?, ?, ?, ?)");
-    $insert->bind_param("ssdsss", $base, $target, $rate, $currentDate, $currentTime, $fallbackProvider);
+// === DB INSERT === //
+$insert = $conn->prepare("
+    INSERT INTO currencyrates 
+    (base_currency, target_currency, exchange_rate, date_recorded, time_recorded, provider) 
+    VALUES (?, ?, ?, ?, ?, ?)
+");
+
+if ($insert) {
+    $insert->bind_param("ssdsss", $base, $target, $rate, $currentDate, $currentTime, $providerUsed);
     $insert->execute();
     $insert->close();
 
-    $message = "⚠️ API failed. Inserted fallback rate ₱$rate for $currentDate at $currentTime.";
     echo $message;
-    logMessage($message);
+    logMessage("$message [$currentDate $currentTime]");
+} else {
+    echo "❌ Database error.";
+    logMessage("❌ Database error: " . $conn->error);
 }
 
 $conn->close();

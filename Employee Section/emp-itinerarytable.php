@@ -21,18 +21,33 @@
 
   <!-- Main Container -->
   <div class="main-container">
-    <nav class="navbar navbar-expand-lg navbar-custom">
-      <div class="container-fluid mx-1">
-          <a class="navbar-brand" id="page-title" href="#">Itinerary Table</a>
-      </div>
-    </nav>
 
+    <div class="navbar">
+      <div class="page-header-wrapper">
+
+        <!-- <div class="page-header-top">
+          <div class="back-btn-wrapper">
+            <button class="back-btn" id="redirect-btn">
+              <i class="fas fa-chevron-left"></i>
+            </button>
+          </div>
+        </div> -->
+
+        <div class="page-header-content">
+          <div class="page-header-text">
+            <h5 class="header-title">Itinerary</h5>
+          </div>
+        </div>
+
+      </div>
+    </div>
 
     <?php
     $statusTab = isset($_GET['status']) ? $_GET['status'] : '';
     ?>
 
     <div class="main-content">
+
       <div class="table-container">
 
         <div class="table-header">
@@ -83,6 +98,7 @@
           </div>
         </div>
 
+
         <div class="navpills-container">
           <div class="filter-tabs" id="booking-filter-tabs">
             <button class="filter-btn active" data-filter="">
@@ -98,7 +114,7 @@
               </span>
             </button>
 
-            <button class="filter-btn active" data-filter="">
+            <!-- <button class="filter-btn active" data-filter="">
               Available Itinerary
               <span class="badge-status-tab">
                 <h6>
@@ -109,59 +125,9 @@
                   ?>
                 </h6>
               </span>
-            </button>
-
-            <!-- <button class="filter-btn" data-filter="Pending">Pending
-              <span class="badge-status-tab">
-                <h6>
-                  <?php
-                  $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
-                  WHERE status = 'Pending'";
-                  $result = mysqli_query($conn, $sql);
-                  echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
-                  ?>
-                </h6>
-              </span>
-            </button>
-
-            <button class="filter-btn" data-filter="Reserved">Reserved
-              <span class="badge-status-tab">
-                <h6>
-                  <?php
-                  $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
-                  WHERE status = 'Reserved'";
-                  $result = mysqli_query($conn, $sql);
-                  echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
-                  ?>
-                </h6>
-              </span>
-            </button>
-
-            <button class="filter-btn" data-filter="Confirmed">Confirmed
-              <span class="badge-status-tab">
-                <h6>
-                  <?php
-                  $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
-                WHERE status = 'Confirmed'";
-                  $result = mysqli_query($conn, $sql);
-                  echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
-                  ?>
-                </h6>
-              </span>
-            </button>
-
-            <button class="filter-btn" data-filter="Cancelled">Cancelled
-              <span class="badge-status-tab">
-                <h6>
-                  <?php
-                  $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
-                  WHERE status = 'Cancelled'";
-                  $result = mysqli_query($conn, $sql);
-                  echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
-                  ?>
-                </h6>
-              </span>
             </button> -->
+
+            
           </div>
 
           <div class="create-itinerary-wrapper">
@@ -179,6 +145,7 @@
 
           </div>
         </div>
+
 
         <div class="itinerary-grid">
             <?php
@@ -246,22 +213,7 @@
             ?>
         </div>
 
-        <script>
-          document.addEventListener("DOMContentLoaded", function () {
-            document.addEventListener("click", function (event) {
-              let cardBody = event.target.closest(".it-card-body");
-              if (cardBody) {
-                let itineraryCard = cardBody.closest(".itinerary-card");
-                let itineraryId = itineraryCard ? itineraryCard.getAttribute("data-id") : null;
-                if (itineraryId) {
-                  window.location.href = `emp-itineraryDetails.php?id=${itineraryId}`;
-                }
-              }
-            });
-          });
-        </script>
-
-
+      
         <!-- <div class="table-footer">
           <div class="pagination-controls">
             <button id="prevPage" class="pagination-btn">Previous</button>
@@ -277,6 +229,22 @@
 
   <?php include '../Employee Section/includes/emp-scripts.php' ?>
 
+
+  <!-- Itinerary Card Clickable Script -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      document.addEventListener("click", function (event) {
+        let cardBody = event.target.closest(".it-card-body");
+        if (cardBody) {
+          let itineraryCard = cardBody.closest(".itinerary-card");
+          let itineraryId = itineraryCard ? itineraryCard.getAttribute("data-id") : null;
+          if (itineraryId) {
+            window.location.href = `emp-itineraryDetails.php?id=${itineraryId}`;
+          }
+        }
+      });
+    });
+  </script>
 
   <!-- For Button Tabs Status Sorting -->
   <script>

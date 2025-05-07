@@ -18,19 +18,32 @@
 
     <!-- Main Container -->
     <div class="main-container">
-        <nav class="navbar navbar-expand-lg navbar-custom">
-            <div class="back-button-wrapper">
-                <div class="back-button-container">
-                    <button class="back-button" onclick="window.location.href='../Employee Section/emp-itinerarytable.php';">
-                        <i class="fas fa-arrow-left"></i>
-                    </button>
-                </div>
-                <div class="title-container">
-                    <h5>Itinerary Details</h5>
-                </div>
-            </div>
-        </nav>
 
+        <div class="navbar">
+            <div class="page-header-wrapper">
+
+                <div class="page-header-top">
+                    <div class="back-btn-wrapper">
+                        <button class="back-btn" id="redirect-btn">
+                        <i class="fas fa-chevron-left"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="page-header-content">
+                    <div class="page-header-text">
+                        <h5 class="header-title">Itinerary Details</h5>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <script>
+        document.getElementById('redirect-btn').addEventListener('click', function () {
+            window.location.href = '../Employee Section/emp-itineraryTable.php'; // Replace with your actual URL
+        });
+        </script>
 
         <?php
         if (!isset($_GET['id'])) {
@@ -176,9 +189,7 @@
 
         </script> -->
 
-
         <div class="main-content">
-            <!-- HTML Form -->
             <input type="hidden" id="itineraryId" value="<?= htmlspecialchars($itineraryId); ?>" readonly>
 
             <div class="form-container">
@@ -400,6 +411,7 @@
             </div>
         </div>
     </div>
+
 
     <!-- Modal -->
     <div class="modal fade" id="templateNameModal" tabindex="-1" aria-labelledby="templateNameModalLabel" aria-hidden="true">
@@ -715,7 +727,7 @@
 
                             <!-- Hotels Section (Dynamic) -->
                             <div class="row mb-3">
-                                <div class="col-12">
+                                <div class="col-5">
                                     <label class="form-label fw-semibold">Hotels:</label>
                                     <div class="row">
                                         ${createMultipleSelectColumns(["Hotel", "Hotel"], "hotel-select", availableHotels, hotels)}
@@ -725,7 +737,7 @@
 
                             <!-- Itinerary Section (Dynamic) -->
                             <div class="row mb-3">
-                                <div class="col-12">
+                                <div class="col-5">
                                     <label class="form-label fw-semibold">Itinerary:</label>
                                     <div class="row">
                                         ${activities.map((activity, index) => {
@@ -736,9 +748,11 @@
                                                     <select class="form-select itinerary-select">
                                                         <option selected disabled>Select Activity ${index + 1}</option>
                                                         ${availableActivities.map((act, actIndex) => {
+
                                                             // console.log(`Adding Option ${actIndex + 1}:`, act);
                                                             return `<option value="${act}" ${String(act) === String(activity) ? "selected" : ""}>${act}</option>`;
                                                         }).join("")}
+                                                        
                                                     </select>
                                                 </div>
                                             `;
@@ -770,6 +784,81 @@
         });
     </script>
 
+    <script>
+        $('#submitTour').click(function() {
+            const itineraryId = $('#itineraryId').val();
+            const itineraryName = $('#itineraryName').val();
+            const urlProcessItinerary = '../Employee Section/functions/emp-itineraryProcess.php'; 
+            const urlGenerateItinerary = '../Employee Section/functions/Itinerary-template.php';
+
+            // Step 1: Validate Itinerary ID
+            if (!itineraryId) {
+                alert('Please enter a valid Itinerary ID.');
+                return;
+            }
+
+            // Step 2: Process the Itinerary and Save it Using AJAX
+            $.ajax({
+                url: urlProcessItinerary,  // URL to the backend PHP file
+                type: 'POST',
+                data: { itineraryId: itineraryId },  // Send the itineraryId to process the data
+                success: function(response) {
+                    try {
+                        const jsonResponse = JSON.parse(response);
+
+                        // Log the formatted JSON response for debugging
+                        console.log("Formatted JSON Response: ", JSON.stringify(jsonResponse, null, 2));
+
+                        if (jsonResponse.success) {
+                            const itineraryDetails = jsonResponse.itineraryDetails;
+                            const daysDetails = jsonResponse.daysDetails;
+
+                            // Step 4: Generate PDF after itinerary processing and pass both JSONs
+                            generateItineraryExcel(itineraryDetails, daysDetails, itineraryId, itineraryName)
+                        } else {
+                            alert(jsonResponse.message || 'Failed to process the itinerary.');
+                        }
+                    } catch (error) {
+                        console.error("Invalid JSON response:", error);
+                        alert('Error processing the itinerary. Please try again.');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("AJAX Error: ", error); // Log any errors in the AJAX request
+                    alert('An error occurred while processing the itinerary.');
+                }
+            });
+
+        });
+
+        // Excel Generation Script
+        function generateItineraryExcel(itineraryDetails, daysDetails, itineraryId, itineraryName) {
+            $.ajax({
+                url: '../Employee Section/functions/itinerary-template-excel.php',  // PHP script for Excel generation
+                type: 'POST',
+                data: {
+                    itineraryDetails: JSON.stringify(itineraryDetails),
+                    daysDetails: JSON.stringify(daysDetails),
+                    itineraryId: itineraryId
+                },
+                xhrFields: { responseType: 'blob' },  // Expecting binary data (Excel file)
+                success: function(blobResponse) {
+                    // Create a download link for the blob
+                    const blob = new Blob([blobResponse], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+                    const link = document.createElement('a');
+                    link.href = window.URL.createObjectURL(blob);
+                    link.download = `Itinerary_${itineraryName}.xlsx`;  // Set filename for download
+                    link.click();  // Simulate a click to trigger download
+
+                    console.log('Excel file generated successfully.');
+                },
+                error: function() {
+                    alert('Failed to generate the itinerary Excel file. Please try again.');
+                }
+            });
+        }
+    </script>
+
     <!-- JS Script for JSON (Array) console.log -->
     <script>
         document.addEventListener("change", function(event) {
@@ -797,205 +886,12 @@
                     Hotels: selectedHotels,
                     Itineraries: selectedItineraries
                 }, null, 2));
+
             }
         });
     </script>
 
-<script>
-    $('#submitTour').click(function() {
-        const itineraryId = $('#itineraryId').val();
-        const itineraryName = $('#itineraryName').val();
-        const urlProcessItinerary = '../Employee Section/functions/emp-itineraryProcess.php'; 
-        const urlGenerateItinerary = '../Employee Section/functions/Itinerary-template.php';
-
-        // Step 1: Validate Itinerary ID
-        if (!itineraryId) {
-            alert('Please enter a valid Itinerary ID.');
-            return;
-        }
-
-        // Step 2: Process the Itinerary and Save it Using AJAX
-        $.ajax({
-            url: urlProcessItinerary,  // URL to the backend PHP file
-            type: 'POST',
-            data: { itineraryId: itineraryId },  // Send the itineraryId to process the data
-            success: function(response) {
-                try {
-                    const jsonResponse = JSON.parse(response);
-
-                    // Log the formatted JSON response for debugging
-                    console.log("Formatted JSON Response: ", JSON.stringify(jsonResponse, null, 2));
-
-                    if (jsonResponse.success) {
-                        const itineraryDetails = jsonResponse.itineraryDetails;
-                        const daysDetails = jsonResponse.daysDetails;
-
-                        // Step 4: Generate PDF after itinerary processing and pass both JSONs
-                        generateItineraryExcel(itineraryDetails, daysDetails, itineraryId, itineraryName)
-                    } else {
-                        alert(jsonResponse.message || 'Failed to process the itinerary.');
-                    }
-                } catch (error) {
-                    console.error("Invalid JSON response:", error);
-                    alert('Error processing the itinerary. Please try again.');
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error("AJAX Error: ", error); // Log any errors in the AJAX request
-                alert('An error occurred while processing the itinerary.');
-            }
-        });
-
-    });
-
-    function generateItineraryExcel(itineraryDetails, daysDetails, itineraryId, itineraryName) {
-        $.ajax({
-            url: '../Employee Section/functions/itinerary-template-excel.php',  // PHP script for Excel generation
-            type: 'POST',
-            data: {
-                itineraryDetails: JSON.stringify(itineraryDetails),
-                daysDetails: JSON.stringify(daysDetails),
-                itineraryId: itineraryId
-            },
-            xhrFields: { responseType: 'blob' },  // Expecting binary data (Excel file)
-            success: function(blobResponse) {
-                // Create a download link for the blob
-                const blob = new Blob([blobResponse], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-                const link = document.createElement('a');
-                link.href = window.URL.createObjectURL(blob);
-                link.download = `Itinerary_${itineraryName}.xlsx`;  // Set filename for download
-                link.click();  // Simulate a click to trigger download
-
-                console.log('Excel file generated successfully.');
-            },
-            error: function() {
-                alert('Failed to generate the itinerary Excel file. Please try again.');
-            }
-        });
-    }
 
 
-
-
-
-</script>
-
-
-
-
-
-
-
-    <!-- <script>
-        document.getElementById("submitTour").addEventListener("click", function() {
-            $("#templateNameModal").modal("show");
-        });
-
-        // Function to proceed after entering the template name
-        function proceedWithSubmission() {
-            const templateName = document.getElementById("templateName")?.value.trim();
-
-            if (!templateName) {
-                alert("Please enter a template name before proceeding.");
-                return;
-            }
-
-            const itineraryData = [];
-
-            const selectedPackage = document.getElementById("packageSelect")?.value.trim() || "None";
-            const noOfDays = document.getElementById("select-days")?.value.trim() || "None";
-            const startDate = document.getElementById("PeriodStartDate")?.value.trim() || "None";
-            const endDate = document.getElementById("PeriodEndDate")?.value.trim() || "None";
-            const guideName = document.getElementById("guideName")?.value.trim() || "None";
-            const countryCode = document.getElementById("countryCode")?.value.trim() || "None";
-            const contactNumber = document.getElementById("contactNumber")?.value.trim() || "None";
-
-            const city1 = document.getElementById("city1")?.value.trim() || "None";
-            const hotel1 = document.getElementById("hotel1")?.value.trim() || "None";
-            const city2 = document.getElementById("city2")?.value.trim() || "None";
-            const hotel2 = document.getElementById("hotel2")?.value.trim() || "None";
-            const city3 = document.getElementById("city3")?.value.trim() || "None";
-            const hotel3 = document.getElementById("hotel3")?.value.trim() || "None";
-
-            document.querySelectorAll(".itinerary-card").forEach(dayCard => {
-                const day = dayCard.querySelector(".hotel-select")?.dataset.day || "Unknown";
-
-                const selectedAreas = [...dayCard.querySelectorAll(".area-select[data-day]")].map(area => area.value.trim()).filter(value => value !== "");
-                const selectedMealPlans = [...dayCard.querySelectorAll(".meal-plan-select[data-day]")].map(meal => meal.value.trim()).filter(value => value !== "");
-                const selectedHotels = [...dayCard.querySelectorAll(".hotel-select")].map(select => select.value.trim()).filter(value => value !== "");
-                const selectedItineraries = [...dayCard.querySelectorAll(".itinerary-select")].map(select => select.value.trim()).filter(value => value !== "");
-
-                itineraryData.push({
-                    day,
-                    areas: selectedAreas.length ? selectedAreas : ["None"],
-                    meal_plans: selectedMealPlans.length ? selectedMealPlans : ["None"],
-                    hotels: selectedHotels.length ? selectedHotels : ["None"],
-                    itineraries: selectedItineraries.length ? selectedItineraries : ["None"]
-                });
-            });
-
-            console.group("📌 Submitting Itinerary Data");
-            console.table({
-                selectedPackage,
-                startDate,
-                endDate,
-                guideName,
-                city1,
-                hotel1,
-                city2,
-                hotel2,
-                city3,
-                hotel3
-            });
-            console.table(itineraryData);
-            console.groupEnd();
-
-            const submitButton = document.getElementById("submitTour");
-            submitButton.disabled = true;
-
-            $.ajax({
-                url: "../Employee Section/functions/emp-saveItinerary.php",
-                type: "POST",
-                data: {
-                    noOfDays: noOfDays,
-                    package: selectedPackage,
-                    period_start: startDate,
-                    period_end: endDate,
-                    countryCode: countryCode,
-                    contactNumber: contactNumber,
-                    guide: guideName,
-                    city1: city1,
-                    hotel1: hotel1,
-                    city2: city2,
-                    hotel2: hotel2,
-                    city3: city3,
-                    hotel3: hotel3,
-                    itinerary: JSON.stringify(itineraryData),
-                    templateName: templateName // Pass only the template name
-                },
-                dataType: "json",
-                success: function(response) {
-                    submitButton.disabled = false;
-                    if (response.status === "success") {
-                        alert("Itinerary successfully created!");
-                        location.reload();
-                    } else {
-                        console.error("❌ Server Error:", response.message);
-                        alert("❌ Error saving itinerary: " + response.message);
-                    }
-                },
-                error: function(xhr, status, error) {
-                    submitButton.disabled = false;
-                    console.error("⚠️ AJAX Error:", error);
-                    console.error("⚠️ Response Text:", xhr.responseText);
-                    alert("An error occurred while saving the itinerary.");
-                }
-            });
-
-            $("#templateNameModal").modal("hide");
-        }
-    </script> -->
-
-</body>
-
+    </body>
 </html>
