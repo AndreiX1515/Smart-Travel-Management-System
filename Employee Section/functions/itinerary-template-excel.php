@@ -48,14 +48,17 @@ if (isset($_POST['itineraryDetails']) && isset($_POST['daysDetails'])) {
         $spreadsheet = IOFactory::load($templateFile);
         $sheet = $spreadsheet->getActiveSheet();
 
-        // === Set Page Margins === //
+        // === Set Page Size and Margins === //
+        $sheet->getPageSetup()->setPaperSize(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::PAPERSIZE_A4);
+
         $pageMargins = $sheet->getPageMargins();
-        $pageMargins->setTop(0.2);       // 0.5 inch top margin
-        $pageMargins->setBottom(0.75);    // 0.5 inch bottom margin
-        $pageMargins->setLeft(0.25);     // 0.75 inch left margin
-        $pageMargins->setRight(0.15);    // 0.75 inch right margin
+        $pageMargins->setTop(0.2);       // 0.2 inch top margin
+        $pageMargins->setBottom(0.75);   // 0.75 inch bottom margin
+        $pageMargins->setLeft(0.25);     // 0.25 inch left margin
+        $pageMargins->setRight(0.15);    // 0.15 inch right margin
         $pageMargins->setHeader(0.3);    // 0.3 inch header
         $pageMargins->setFooter(0.3);    // 0.3 inch footer
+
 
         // Header
 

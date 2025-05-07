@@ -640,7 +640,7 @@
 /* Grid Layout */
 .itinerary-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* Adjusted for better spacing */
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* wider min size for horizontal layout */
   gap: 15px;
   padding: 10px 0px;
   justify-content: center;
@@ -650,7 +650,7 @@
 .itinerary-card {
   position: relative;
   width: 100%;
-  aspect-ratio: 9 / 10; /* Maintains a balanced proportion */
+  height: 230px; /* rectangular and slightly horizontal */
   background: #ffffff;
   border: 1px solid #ddd;
   border-radius: 12px;
@@ -658,11 +658,11 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: 12px; /* Adjusted for better spacing */
+  padding: 12px;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-  max-width: 190px;
+  max-width: 100%;
 }
 
 /* Hover Effect */
@@ -686,12 +686,11 @@
   align-items: center;
   width: 100%;
   white-space: nowrap;
-  overflow: visible; /* Allows dropdown to be fully visible */
+  overflow: visible;
   padding: 0px 0px 6px 0px;
   border-bottom: 1px solid #ddd;
-  position: relative; /* Ensures dropdown aligns properly */
+  position: relative;
 }
-
 
 /* Header Left (File Type + Name) */
 .itinerary-info {
@@ -708,7 +707,7 @@
   padding: 5px 8px;
   border-radius: 5px;
   font-weight: bold;
-  flex-shrink: 0; /* Prevents shrinking */
+  flex-shrink: 0;
 }
 
 /* Itinerary Name */
@@ -716,7 +715,7 @@
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  max-width: 110px;
+  max-width: 160px;
 }
 
 .itinerary-name h6 {
@@ -729,10 +728,6 @@
   white-space: nowrap;
 }
 
-
-
-
-
 /* Options Dropdown */
 .options {
   position: relative;
@@ -740,15 +735,13 @@
   cursor: pointer;
 }
 
-/* Remove Bootstrap's Default Caret (Arrow) */
 .options .dropdown-toggle::after {
   display: none !important;
 }
 
-/* Ensure Dropdown Stays in Place */
 .options .dropdown-menu {
   position: absolute !important;
-  top: 0px !important; /* Moves it just below the three dots */
+  top: 0px !important;
   right: 0 !important;
   z-index: 9999 !important;
   min-width: 130px;
@@ -756,39 +749,31 @@
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
   padding: 5px 0;
-  background: white; /* Ensures proper background */
+  background: white;
   border: 1px solid #ddd;
 }
 
-/* Dropdown Item Styling */
 .options .dropdown-item {
   padding: 8px 14px;
   color: #333;
   transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
 }
 
-/* Default Hover Effect */
 .options .dropdown-item:hover,
 .options .dropdown-item:focus {
   background: #116530 !important;
   color: white !important;
 }
 
-/* Fix for Bootstrap Overriding Danger Text */
 .options .dropdown-item.text-danger {
   color: #dc3545 !important;
 }
 
-/* Ensure Red Background on Hover for Danger Items */
 .options .dropdown-item.text-danger:hover,
 .options .dropdown-item.text-danger:focus {
   background: #dc3545 !important;
   color: white !important;
 }
-
-
-
-
 
 /* Body */
 .it-card-body {
@@ -826,10 +811,7 @@
   color: #666;
   padding: 10px;
   flex-shrink: 0;
-  /* border-top: 1px solid #ddd; */
 }
-
-
 
 
 

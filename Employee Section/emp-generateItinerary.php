@@ -167,7 +167,7 @@
                                     <label for="flightDate">Tour Areas, Hotels <span class="text-danger"> *</span></label>
                                 </div>
                                 <div class="cityhotel-wrapper">
-                                    
+
                                     <div class="cityhotel-item">
                                         <div class="form-group d-flex flex-row align-items-center">
                                             <select class="form-select city-select" id="city1" name="city(1)" required>
@@ -801,6 +801,7 @@
             });
 
             console.group("📌 Submitting Itinerary Data");
+
             console.table({
                 selectedPackage,
                 startDate,
@@ -813,6 +814,7 @@
                 city3,
                 hotel3
             });
+            
             console.table(itineraryData);
             console.groupEnd();
 

@@ -8,8 +8,6 @@
     <?php include '../Employee Section/includes/emp-head.php' ?>
     <link rel="stylesheet" href="../Employee Section/assets/css/emp-sidebar-navbar.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="../Employee Section/assets/css/emp-generateItinerary.css?v=<?php echo time(); ?>">
-
-
 </head>
 
 <body>
@@ -149,9 +147,14 @@
             ];
         }
 
-        // Convert array to JSON
-        $jsonData = json_encode($itinerary);
-        echo "<script>console.log(" . json_encode($itinerary, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE) . ");</script>";
+        $jsonData = json_encode($itinerary, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+
+        // Output the data in the raw format in the browser's console
+        echo "<script>
+            console.log('Updated from DOM:', " . $jsonData . ");
+        </script>";
+
+
 
         ?>
 
@@ -193,6 +196,7 @@
             <input type="hidden" id="itineraryId" value="<?= htmlspecialchars($itineraryId); ?>" readonly>
 
             <div class="form-container">
+
                 <div class="card">
                     <div class="card-header">
                         <h5>Itinerary Details</h5>
@@ -302,12 +306,27 @@
                                 </div>
 
                                 <div class="form-group d-flex flex-row align-items-center">
-                                    <select class="form-select" id="countryCode" style="width: 80px;">
-                                        <option selected><?= $itinerary['countryCode']; ?></option>
-                                        <option value="+82">+82</option>
+                                    <!-- Country Code Dropdown -->
+                                    <select class="form-select" id="countryCode" style="width: 100px;">
+                                        <option value="" disabled selected>Select Country Code</option>
+                                        <option value="+82" <?= ($itinerary['countryCode'] == '+82') ? 'selected' : ''; ?>>+82</option>
+                                        <option value="+1" <?= ($itinerary['countryCode'] == '+1') ? 'selected' : ''; ?>>+1</option>
+                                        <option value="+44" <?= ($itinerary['countryCode'] == '+44') ? 'selected' : ''; ?>>+44</option>
+                                        <option value="+91" <?= ($itinerary['countryCode'] == '+91') ? 'selected' : ''; ?>>+91</option>
+                                        <option value="+63" <?= ($itinerary['countryCode'] == '+63') ? 'selected' : ''; ?>>+63</option>
+
+
+
+
+                                        <!-- Add more country codes as needed -->
                                     </select>
-                                    <input type="text" class="form-control ms-2" id="contactNumber" name="contactNumber" value="<?= $itinerary['contactNumber']; ?>" required>
+                                    
+                                    <!-- Contact Number Input -->
+                                    <input type="text" class="form-control ms-2" id="contactNumber" name="contactNumber" 
+                                        value="<?= htmlspecialchars($itinerary['contactNumber']); ?>" required placeholder="Enter Contact Number">
                                 </div>
+
+
 
                             </div>
 
@@ -407,6 +426,7 @@
             </div>
 
             <div class="form-footer">
+                <button type="button" class="btn btn-primary" id="submitEdit">Edit Itinerary</button> 
                 <button type="button" class="btn btn-primary" id="submitTour">Generate Itinerary</button>
             </div>
         </div>
@@ -579,15 +599,83 @@
 
     </script> -->
 
+
+
+    
     <!-- For Itinerary Card -->
     <script>
+
+        // ✅ Declare it globally
+        let liveItineraryData;
+
         document.addEventListener("DOMContentLoaded", function() {
             const itineraryContainer = document.getElementById("itinerary-container");
             const selectDays = document.getElementById("select-days");
             const formFooter = document.querySelector(".form-footer");
 
+
             let itineraryData = <?= json_encode($itinerary); ?>;
-            // console.log("Loaded itineraryData:", itineraryData);
+            liveItineraryData = JSON.parse(JSON.stringify(itineraryData)); // ✅ assign, don't declare
+
+            window.updateLiveItineraryData = function () {
+                const itineraryName = document.getElementById("itineraryName").value;
+                const packageSelect = document.getElementById("packageSelect").value;
+                const periodStart = document.getElementById("PeriodStartDate").value;
+                const periodEnd = document.getElementById("PeriodEndDate").value;
+                const guideName = document.getElementById("guideName").value;
+                const countryCode = document.getElementById("countryCode").value;
+                const contactNumber = document.getElementById("contactNumber").value;
+
+                const cities = [];
+                for (let i = 1; i <= 3; i++) {
+                    const city = document.getElementById(`city${i}`)?.value || "";
+                    const hotel = document.getElementById(`hotel${i}`)?.value || "";
+                    if (city && hotel) {
+                        cities.push({ city, hotel });
+                    }
+                }
+
+                const itineraryDetails = {
+                    itineraryId: 1,  // Assuming itineraryId is constant or comes from elsewhere
+                    itineraryName,
+                    packageName: packageSelect,
+                    periodStart,
+                    periodEnd,
+                    guideName,
+                    countryCode,
+                    contactNumber,
+                    cities,
+                    noOfDays: parseInt(selectDays.value)  // Moved noOfDays inside itineraryDetails
+                };
+
+                const daysDetails = [];
+                const cards = itineraryContainer.querySelectorAll(".itinerary-card");
+                cards.forEach((card, index) => {
+                    const areas = Array.from(card.querySelectorAll(".area-select")).map(sel => sel.value);
+                    const meals = Array.from(card.querySelectorAll(".meal-plan-select")).map(sel => sel.value);
+                    const hotels = Array.from(card.querySelectorAll(".hotel-select")).map(sel => sel.value);
+                    const activities = Array.from(card.querySelectorAll(".itinerary-select")).map(sel => sel.value);
+
+                    daysDetails.push({
+                        day: index + 1,
+                        areas,
+                        meals,
+                        hotels,
+                        activities
+                    });
+                });
+
+                // Assign the result to the global variable
+                liveItineraryData = {
+                    itineraryDetails,  // Updated sequence: itineraryDetails first
+                    daysDetails  // daysDetails second
+                };
+
+                console.log("Updated from DOM:", JSON.stringify(liveItineraryData, null, 2));
+            };
+
+
+
 
             // Ensure days exist as an array
             let days = Array.isArray(itineraryData.days) ? itineraryData.days : [];
@@ -672,12 +760,10 @@
             `;
             }
 
-
             // Function to create multiple select columns for hotels
             function createMultipleSelectColumns(labels, className, options, selectedValues = []) {
                 return labels.map((label, index) => createSelectColumn(label, className, options, selectedValues[index] || "", index + 1)).join("");
             }
-
 
             // Function to generate itinerary cards for each day
             function generateItineraryCards(days) {
@@ -727,7 +813,7 @@
 
                             <!-- Hotels Section (Dynamic) -->
                             <div class="row mb-3">
-                                <div class="col-5">
+                                <div class="col-6">
                                     <label class="form-label fw-semibold">Hotels:</label>
                                     <div class="row">
                                         ${createMultipleSelectColumns(["Hotel", "Hotel"], "hotel-select", availableHotels, hotels)}
@@ -771,18 +857,138 @@
                 formFooter.style.display = days ? "flex" : "none";
             }
 
+            function attachSelectChangeListeners() {
+                // Attach listener to ALL select elements within the itinerary card
+                document.querySelectorAll(".card select").forEach(select => {
+                    select.addEventListener("change", function () {
+                        // console.log(`Changed: ID=${this.id}, Class=${this.className}, New Value=${this.value}`);
+
+                        // If a city is selected, update the corresponding hotel select options
+                        if (this.classList.contains("city-select")) {
+                            const index = this.dataset.index;
+                            const selectedCity = this.value;
+
+                            const hotelSelect = document.getElementById(`hotel${parseInt(index) + 1}`);
+                            if (hotelSelect) {
+                                updateHotelOptions(selectedCity, hotelSelect);
+                            }
+                        }
+
+                        // Re-run live data update after every change
+                        updateLiveItineraryData();
+                    });
+                });
+
+                // Initial run to capture default state
+                updateLiveItineraryData();
+            }
+
+            function updateHotelOptions(selectedCity, hotelSelect) {
+                const hotelData = {
+                    "Seoul": ["Lotte Hotel Seoul", "Signiel Seoul", "The Shilla Seoul", "Grand Hyatt Seoul", "InterContinental Seoul COEX"],
+                    "Busan": ["Park Hyatt Busan", "Paradise Hotel Busan"],
+                    "Jeonju": ["Lahan Hotel Jeonju"],
+                    "Jeju": ["Maison Glad Jeju", "Ramada Plaza Jeju"]
+                };
+
+                const hotels = hotelData[selectedCity] || [];
+                hotelSelect.innerHTML = hotels.length ? "" : "<option disabled selected>No hotels available</option>";
+
+                hotels.forEach(hotel => {
+                    const option = document.createElement("option");
+                    option.value = hotel;
+                    option.textContent = hotel;
+                    hotelSelect.appendChild(option);
+                });
+            }
+
             // Event listener for days selection change
-            selectDays.addEventListener("change", function() {
+            selectDays.addEventListener("change", function () {
                 const selectedDays = parseInt(selectDays.value);
                 generateItineraryCards(selectedDays);
+
+                // Re-attach listeners after generating cards
+                setTimeout(() => {
+                    attachSelectChangeListeners();
+                }, 0);
             });
 
             // Initialize itinerary on page load if selectedValue is greater than 0
             if (selectedValue > 0) {
                 generateItineraryCards(selectedValue);
+
+                setTimeout(() => {
+                    attachSelectChangeListeners(); // Use the shared function
+                }, 0);
             }
+
         });
     </script>
+
+
+<script>
+
+
+    const submitButton = document.getElementById("submitEdit");
+    submitButton.disabled = true;
+
+    window.addEventListener("load", function () {
+        submitButton.disabled = false;
+    });
+
+    function proceedWithSubmission() {
+        // No updateLiveItineraryData() call — assumes liveItineraryData is already populated
+
+        if (typeof liveItineraryData === "undefined") {
+            alert("No itinerary data found.");
+            submitButton.disabled = false;
+            return;
+        }
+        
+        console.log("Sending the following liveItineraryData:", liveItineraryData);
+
+        $.ajax({
+            url: "../Employee Section/functions/emp-editItinerary.php",
+            type: "POST",
+            data: {
+                itinerary: JSON.stringify(liveItineraryData)
+            },
+            dataType: "json",
+            success: function(response) {
+                submitButton.disabled = false;
+                if (response.status === "success") {
+                    alert("Itinerary successfully edited!");
+                    window.location.href = "../Employee Section/emp-itinerarytable.php";
+                } else {
+                    alert("Error: " + response.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                submitButton.disabled = false;
+                console.error("AJAX Error:", error);
+                console.error("Response Text:", xhr.responseText);
+                alert("An error occurred while editing the itinerary.");
+            }
+        });
+    }
+
+    document.getElementById("submitEdit").addEventListener("click", proceedWithSubmission);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <script>
         $('#submitTour').click(function() {
@@ -863,9 +1069,10 @@
     <script>
         document.addEventListener("change", function(event) {
             if (event.target.matches(".area-select, .hotel-select, .meal-plan-select, .itinerary-select")) {
-                    const day = event.target.dataset.day;
-                    if (!day) {
-                        console.warn("data-day attribute is missing!");
+                const day = event.target.dataset.day;
+
+                if (!day) {
+                    console.warn("data-day attribute is missing!");
                     return;
                 }
 
@@ -886,7 +1093,6 @@
                     Hotels: selectedHotels,
                     Itineraries: selectedItineraries
                 }, null, 2));
-
             }
         });
     </script>
