@@ -365,6 +365,7 @@
         });
     </script>
 
+
     <!-- Data Fetch to Fields -->
     <script>
         document.addEventListener("DOMContentLoaded", () => {
@@ -516,6 +517,7 @@
             });
         });
     </script>
+
 
     <script>
         const selectDays = document.getElementById("select-days");
@@ -752,6 +754,7 @@
         });
     </script>
 
+    <!-- Form Submission Script -->
     <script>
         document.getElementById("submitTour").addEventListener("click", function() {
             $("#templateNameModal").modal("show");
@@ -814,7 +817,7 @@
                 city3,
                 hotel3
             });
-            
+
             console.table(itineraryData);
             console.groupEnd();
 

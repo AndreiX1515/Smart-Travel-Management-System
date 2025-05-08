@@ -45,30 +45,55 @@ try {
         exit;
     }
 
+
+
+
     $itineraryDetails = $liveItineraryData["itineraryDetails"];
     $daysDetails = $liveItineraryData["daysDetails"];
 
-    // Set template name (if itineraryId exists in the data, append " - Edited")
+    // Step 1: Normalize the original name
     $originalName = trim($itineraryDetails["itineraryName"] ?? "Untitled Itinerary");
-    $originalName = ucwords(strtolower($originalName));  // Capitalize first letter of each word
+    $originalName = ucwords(strtolower($originalName));
 
-
-    $templateName = $originalName;  // Start with the original name
-
-    // Check if itineraryId exists and if it already exists in the database
+    // Step 2: Check if itineraryId exists and if the record exists in the DB
     $itineraryIdFromJson = $itineraryDetails["itineraryId"] ?? null;
+    $isEdit = false;
 
     if ($itineraryIdFromJson) {
-        // Check if the itineraryId already exists in the database
         $stmtCheck = $conn->prepare("SELECT itineraryId FROM itineraries WHERE userId = ? AND itineraryId = ?");
         $stmtCheck->execute([$userId, $itineraryIdFromJson]);
         $existing = $stmtCheck->fetch();
 
         if ($existing) {
-            // If itineraryId exists, append " - Edited" to the itinerary name
-            $templateName = $originalName . " - Edited";
+            $isEdit = true;
         }
     }
+
+    // Step 3: Prepare base name
+    $baseName = $originalName;
+
+    // Prevent duplicate appending of " - Edited"
+    if ($isEdit) {
+        // Remove any existing " - Edited" and trim it
+        $baseName = preg_replace('/\s+-\s+Edited/i', '', $baseName);
+        $baseName .= " - Edited";
+    }
+
+    // Step 4: Check for name conflicts and append (1), (2), etc.
+    $templateName = $baseName;
+    $counter = 1;
+
+    $stmtCheckName = $conn->prepare("SELECT COUNT(*) FROM itineraries WHERE userId = ? AND itineraryName = ?");
+    $stmtCheckName->execute([$userId, $templateName]);
+    $nameCount = $stmtCheckName->fetchColumn();
+
+    while ($nameCount > 0) {
+        $templateName = $baseName . " ($counter)";
+        $stmtCheckName->execute([$userId, $templateName]);
+        $nameCount = $stmtCheckName->fetchColumn();
+        $counter++;
+    }
+
 
     // Start database transaction
     $conn->beginTransaction();
@@ -81,7 +106,7 @@ try {
 
     $stmtInsert->execute([
     $userId,
-    $itineraryDetails["itineraryName"] ?? '',
+    $templateName ?? '',
     $itineraryDetails["noOfDays"] ?? 0,
     $itineraryDetails["packageName"] ?? '',
     $itineraryDetails["periodStart"] ?? '',
@@ -97,9 +122,6 @@ try {
     $itineraryDetails["cities"][2]["hotel"] ?? ''  // hotel3
     ]);
 
-
-
-    
 
     $itineraryId = $conn->lastInsertId();
 
