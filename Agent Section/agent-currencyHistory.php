@@ -53,7 +53,6 @@ session_start();
 
         <div class="content-body">
           <div class="table-container">
-
             <table id="currency-table" class="currency-table">
               <thead>
                 <tr>
@@ -69,8 +68,10 @@ session_start();
                 </tr>
               </tbody>
             </table>
-
           </div>
+
+
+          
           <div class="table-footer">
             <div class="last-updated-wrapper">
               <h6>Last Updated: <span class="" id="lastUpdated"></span></h6>

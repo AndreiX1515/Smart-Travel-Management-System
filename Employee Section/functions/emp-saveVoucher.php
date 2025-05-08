@@ -18,24 +18,6 @@ try {
         exit;
     }
 
-    // Extract main itinerary details
-    $packageName = $_POST["package"];
-    $templateName = $_POST["templateName"];
-    $noOfDays = $_POST["noOfDays"];
-    $periodStart = $_POST["period_start"];
-    $periodEnd = $_POST["period_end"];
-    $countryCode = $_POST["countryCode"] ?? "";
-    $contactNumber = $_POST["contactNumber"] ?? "";
-    $guideName = $_POST["guide"] ?? "";
-    
-    // City & Hotel details
-    $city1 = $_POST["city1"] ?? "";
-    $hotel1 = $_POST["hotel1"] ?? "";
-    $city2 = $_POST["city2"] ?? "";
-    $hotel2 = $_POST["hotel2"] ?? "";
-    $city3 = $_POST["city3"] ?? "";
-    $hotel3 = $_POST["hotel3"] ?? "";
-
     // Decode JSON itinerary data
     $itineraryData = json_decode($_POST["itinerary"], true);
     if (!$itineraryData) {
@@ -43,21 +25,37 @@ try {
         exit;
     }
 
-    $userId = 1; 
-    $itineraryName = "Itinerary for $packageName"; // Default itinerary name
-    $conn->beginTransaction(); // Start transaction
+    $accountId = $_SESSION['accountId'] ?? 1; // Use session's accountId
+    $voucherCode = "VOUCHER-" . strtoupper(uniqid()); // Generate unique voucher code
+    
+    // Start database transaction
+    $conn->beginTransaction();
+    
+    // Insert into vouchers table
+    $stmtVoucher = $conn->prepare("INSERT INTO vouchers (accountId, voucherCode) VALUES (?, ?)");
+    $stmtVoucher->execute([$accountId, $voucherCode]);
+    $voucherId = $conn->lastInsertId(); // Get the inserted voucherId
 
+    // Check if voucher was successfully inserted
+    if (!$voucherId) {
+        throw new Exception("Voucher insertion failed.");
+    }
+    
+    // Prepare for itinerary insert
+    $itineraryName = "Itinerary for $voucherCode"; // Set itinerary name based on voucher code
+    $userId = 1; // This can be dynamically fetched from session
     $stmtItinerary = $conn->prepare("INSERT INTO itineraries 
     (userId, itineraryName, noOfDays, packageName, periodStart, periodEnd, guideName, countryCode, contactNumber, 
-     city1, hotel1, city2, hotel2, city3, hotel3) 
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+     city1, hotel1, city2, hotel2, city3, hotel3, voucherId) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
+    // Insert into itineraries table
     $stmtItinerary->execute([
-        $userId, $templateName, $noOfDays, $packageName, $periodStart, $periodEnd, $guideName, $countryCode, $contactNumber,
-        $city1, $hotel1, $city2, $hotel2, $city3, $hotel3
+        $userId, $itineraryName, $noOfDays, $packageName, $periodStart, $periodEnd, $guideName, $countryCode, $contactNumber,
+        $city1, $hotel1, $city2, $hotel2, $city3, $hotel3, $voucherId
     ]);
 
-    $itineraryId = $conn->lastInsertId();
+    $itineraryId = $conn->lastInsertId(); // Get inserted itinerary ID
     error_log("Inserted itinerary ID: " . $itineraryId);
 
     // Prepare reusable statements for itinerary details
@@ -68,7 +66,7 @@ try {
     $stmtActivity = $conn->prepare("INSERT INTO itineraryActivities (dayId, activityName) VALUES (?, ?)");
 
     // Process each day's itinerary
-    foreach ($itineraryData as $dayData) { // ✅ FIXED: Used $itineraryData instead of $itinerary
+    foreach ($itineraryData as $dayData) {
         $dayNumber = $dayData["day"] ?? 0;
         $areas = $dayData["areas"] ?? [];
         $hotels = $dayData["hotels"] ?? [];
@@ -115,6 +113,7 @@ try {
     error_log("❌ Database Error: " . $e->getMessage());
     echo json_encode(["status" => "error", "message" => "Database error: " . $e->getMessage()]);
 } catch (Exception $e) {
+    $conn->rollBack();
     error_log("❌ General Error: " . $e->getMessage());
     echo json_encode(["status" => "error", "message" => "Error: " . $e->getMessage()]);
 }

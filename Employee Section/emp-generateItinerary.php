@@ -16,11 +16,31 @@
 
     <!-- Main Container -->
     <div class="main-container">
-        <nav class="navbar navbar-expand-lg navbar-custom">
-            <div class="navbar-wrapper">
-                <a class="navbar-brand" id="page-title" href="#">Create Itinerary</a>
+        <div class="navbar">
+            <div class="page-header-wrapper">
+
+                <div class="page-header-top">
+                    <div class="back-btn-wrapper">
+                        <button class="back-btn" id="redirect-btn">
+                        <i class="fas fa-chevron-left"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="page-header-content">
+                    <div class="page-header-text">
+                        <h5 class="header-title">Itinerary Details</h5>
+                    </div>
+                </div>
+
             </div>
-        </nav>
+        </div>
+
+        <script>
+        document.getElementById('redirect-btn').addEventListener('click', function () {
+            window.location.href = '../Employee Section/emp-itineraryTable.php'; // Replace with your actual URL
+        });
+        </script>
 
         <div class="main-content">
             <div class="form-container">
@@ -44,6 +64,7 @@
                                 </div>
 
                                 <div class="form-group">
+
                                     <select class="form-select" id="packageSelect" name="packageSelect" required>
                                         <option selected disabled>Select Package Type</option>
                                         <?php
@@ -62,6 +83,7 @@
                                         }
                                         ?>
                                     </select>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -145,6 +167,7 @@
                                     <label for="flightDate">Tour Areas, Hotels <span class="text-danger"> *</span></label>
                                 </div>
                                 <div class="cityhotel-wrapper">
+
                                     <div class="cityhotel-item">
                                         <div class="form-group d-flex flex-row align-items-center">
                                             <select class="form-select city-select" id="city1" name="city(1)" required>
@@ -152,7 +175,9 @@
                                             </select>
                                         </div>
                                     </div>
+
                                     <div class="dash-separator">-></div>
+
                                     <div class="cityhotel-item">
                                         <div class="form-group d-flex flex-row align-items-center">
                                             <select class="form-select hotel-select" id="hotel1" name="hotel(1)" required>
@@ -160,6 +185,7 @@
                                             </select>
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
@@ -339,6 +365,7 @@
         });
     </script>
 
+
     <!-- Data Fetch to Fields -->
     <script>
         document.addEventListener("DOMContentLoaded", () => {
@@ -490,6 +517,7 @@
             });
         });
     </script>
+
 
     <script>
         const selectDays = document.getElementById("select-days");
@@ -726,6 +754,7 @@
         });
     </script>
 
+    <!-- Form Submission Script -->
     <script>
         document.getElementById("submitTour").addEventListener("click", function() {
             $("#templateNameModal").modal("show");
@@ -775,6 +804,7 @@
             });
 
             console.group("📌 Submitting Itinerary Data");
+
             console.table({
                 selectedPackage,
                 startDate,
@@ -787,6 +817,7 @@
                 city3,
                 hotel3
             });
+
             console.table(itineraryData);
             console.groupEnd();
 

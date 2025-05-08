@@ -7,7 +7,7 @@
     <title>Itinerary Details</title>
     <?php include '../Employee Section/includes/emp-head.php' ?>
     <link rel="stylesheet" href="../Employee Section/assets/css/emp-sidebar-navbar.css?v=<?php echo time(); ?>">
-    <link rel="stylesheet" href="../Employee Section/assets/css/emp-editItinerary.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="../Employee Section/assets/css/emp-generateItinerary.css?v=<?php echo time(); ?>">
 </head>
 
 <body>
@@ -398,13 +398,14 @@
                     </div>
                 </div>
 
-                <div class="card select-days-card">
+                <div class="card">
                     <div class="card-header">
                         <h5 class="fw-bold">No. of Days</h5>
                     </div>
 
                     <div class="card-body">
 
+                        <!-- Package Row -->
                         <div class="row">
                             <div class="columns col-md-3">
                                 <div class="form-group days-select-wrapper">
@@ -413,7 +414,7 @@
                                         <option value="<?= $noOfDays; ?>" selected>Day <?= $noOfDays; ?></option> <!-- Keeps preselected value -->
                                     </select>
 
-                                    <!-- <small class="form-text text-muted">Changing this will clear all your data on the fields.</small> -->
+                                    <small class="form-text text-muted">Changing this will clear all your data on the fields.</small>
                                 </div>
                             </div>
 
@@ -421,12 +422,14 @@
                     </div>
                 </div>
 
-                <div class="itinerary-container" id="itinerary-container"> </div>
+                <div class="itinerary-container" id="itinerary-container">
+
+                </div>
 
             </div>
 
             <div class="form-footer">
-                <button type="button" class="btn btn-primary" id="submitEdit" disabled>Submit Edit</button>
+                <button type="button" class="btn btn-primary" id="submitEdit">Edit Itinerary</button> 
                 <button type="button" class="btn btn-primary" id="submitTour">Generate Itinerary</button>
             </div>
 
@@ -607,10 +610,6 @@
         let liveItineraryData;
 
         document.addEventListener("DOMContentLoaded", function() {
-
-            document.getElementById('submitEdit').disabled = true;
-            document.getElementById('select-days').disabled = true;
-
             const itineraryContainer = document.getElementById("itinerary-container");
             const selectDays = document.getElementById("select-days");
             const formFooter = document.querySelector(".form-footer");
@@ -814,7 +813,7 @@
 
                             <!-- Hotels Section (Dynamic) -->
                             <div class="row mb-3">
-                                <div class="col-md-6">
+                                <div class="col-6">
                                     <label class="form-label fw-semibold">Hotels:</label>
                                     <div class="row">
                                         ${createMultipleSelectColumns(["Hotel", "Hotel"], "hotel-select", availableHotels, hotels)}
@@ -824,7 +823,7 @@
 
                             <!-- Itinerary Section (Dynamic) -->
                             <div class="row mb-3">
-                                <div class="col-md-9">
+                                <div class="col-5">
                                     <label class="form-label fw-semibold">Itinerary:</label>
                                     <div class="row">
                                         ${activities.map((activity, index) => {
@@ -859,15 +858,10 @@
             }
 
             function attachSelectChangeListeners() {
-                const editButton = document.getElementById("submitEdit");
-
                 // Attach listener to ALL select elements within the itinerary card
                 document.querySelectorAll(".card select").forEach(select => {
                     select.addEventListener("change", function () {
-                        // Enable the Edit button
-                        if (editButton.disabled) {
-                            editButton.disabled = false;
-                        }
+                        // console.log(`Changed: ID=${this.id}, Class=${this.className}, New Value=${this.value}`);
 
                         // If a city is selected, update the corresponding hotel select options
                         if (this.classList.contains("city-select")) {
@@ -935,16 +929,21 @@
     <!-- Edit Script -->
     <script>
         const submitButton = document.getElementById("submitEdit");
-        submitButton.disabled = true; // Keep disabled on load
+        submitButton.disabled = true;
+
+        window.addEventListener("load", function () {
+            submitButton.disabled = false;
+        });
 
         function proceedWithSubmission() {
+            // No updateLiveItineraryData() call — assumes liveItineraryData is already populated
+
             if (typeof liveItineraryData === "undefined") {
                 alert("No itinerary data found.");
+                submitButton.disabled = false;
                 return;
             }
-
-            submitButton.disabled = true; // Prevent multiple submissions
-
+            
             console.log("Sending the following liveItineraryData:", liveItineraryData);
 
             $.ajax({
@@ -955,19 +954,19 @@
                 },
                 dataType: "json",
                 success: function(response) {
+                    submitButton.disabled = false;
                     if (response.status === "success") {
                         alert("Itinerary successfully edited!");
                         window.location.href = "../Employee Section/emp-itinerarytable.php";
                     } else {
                         alert("Error: " + response.message);
-                        submitButton.disabled = false; // Re-enable on failure
                     }
                 },
                 error: function(xhr, status, error) {
+                    submitButton.disabled = false;
                     console.error("AJAX Error:", error);
                     console.error("Response Text:", xhr.responseText);
                     alert("An error occurred while editing the itinerary.");
-                    submitButton.disabled = false; // Re-enable on error
                 }
             });
         }
@@ -975,59 +974,84 @@
         document.getElementById("submitEdit").addEventListener("click", proceedWithSubmission);
     </script>
 
-    <!-- Generate Excel File -->
+    
     <script>
-        $('#submitTour').click(function () {
-            if (typeof liveItineraryData === 'undefined' || !liveItineraryData.itineraryDetails) {
-                alert('Itinerary data is not loaded.');
-                return;
-            }
+        $('#submitTour').click(function() {
+            const itineraryId = $('#itineraryId').val();
+            const itineraryName = $('#itineraryName').val();
+            const urlProcessItinerary = '../Employee Section/functions/emp-itineraryProcess.php'; 
+            const urlGenerateItinerary = '../Employee Section/functions/Itinerary-template.php';
 
-            const itineraryDetails = liveItineraryData.itineraryDetails;
-            const daysDetails = liveItineraryData.daysDetails;
-
-            const itineraryId = itineraryDetails.itineraryId || '';
-            const itineraryName = itineraryDetails.itineraryName || 'Untitled_Itinerary';
-
+            // Step 1: Validate Itinerary ID
             if (!itineraryId) {
-                alert('Itinerary ID is missing from the data.');
+                alert('Please enter a valid Itinerary ID.');
                 return;
             }
 
-            generateItineraryExcel(itineraryDetails, daysDetails, itineraryId, itineraryName);
+            // Step 2: Process the Itinerary and Save it Using AJAX
+            $.ajax({
+                url: urlProcessItinerary,  // URL to the backend PHP file
+                type: 'POST',
+                data: { itineraryId: itineraryId },  // Send the itineraryId to process the data
+                success: function(response) {
+                    try {
+                        const jsonResponse = JSON.parse(response);
+
+                        // Log the formatted JSON response for debugging
+                        console.log("Formatted JSON Response: ", JSON.stringify(jsonResponse, null, 2));
+
+                        if (jsonResponse.success) {
+                            const itineraryDetails = jsonResponse.itineraryDetails;
+                            const daysDetails = jsonResponse.daysDetails;
+
+                            // Step 4: Generate PDF after itinerary processing and pass both JSONs
+                            generateItineraryExcel(itineraryDetails, daysDetails, itineraryId, itineraryName)
+                        } else {
+                            alert(jsonResponse.message || 'Failed to process the itinerary.');
+                        }
+                    } catch (error) {
+                        console.error("Invalid JSON response:", error);
+                        alert('Error processing the itinerary. Please try again.');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("AJAX Error: ", error); // Log any errors in the AJAX request
+                    alert('An error occurred while processing the itinerary.');
+                }
+            });
+
         });
 
+        // Excel Generation Script
         function generateItineraryExcel(itineraryDetails, daysDetails, itineraryId, itineraryName) {
             $.ajax({
-                url: '../Employee Section/functions/itinerary-template-excel.php',
+                url: '../Employee Section/functions/itinerary-template-excel.php',  // PHP script for Excel generation
                 type: 'POST',
                 data: {
                     itineraryDetails: JSON.stringify(itineraryDetails),
                     daysDetails: JSON.stringify(daysDetails),
                     itineraryId: itineraryId
                 },
-                xhrFields: { responseType: 'blob' },
-                success: function (blobResponse) {
-                    const blob = new Blob([blobResponse], {
-                        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-                    });
+                xhrFields: { responseType: 'blob' },  // Expecting binary data (Excel file)
+                success: function(blobResponse) {
+                    // Create a download link for the blob
+                    const blob = new Blob([blobResponse], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
                     const link = document.createElement('a');
                     link.href = window.URL.createObjectURL(blob);
-                    link.download = `Itinerary_${itineraryName}.xlsx`;
-                    link.click();
+                    link.download = `Itinerary_${itineraryName}.xlsx`;  // Set filename for download
+                    link.click();  // Simulate a click to trigger download
 
                     console.log('Excel file generated successfully.');
                 },
-                error: function () {
+                error: function() {
                     alert('Failed to generate the itinerary Excel file. Please try again.');
                 }
             });
         }
     </script>
 
-
     <!-- JS Script for JSON (Array) console.log -->
-    <!-- <script>
+    <script>
         document.addEventListener("change", function(event) {
             if (event.target.matches(".area-select, .hotel-select, .meal-plan-select, .itinerary-select")) {
                 const day = event.target.dataset.day;
@@ -1056,7 +1080,8 @@
                 }, null, 2));
             }
         });
-    </script> -->
+    </script>
+
 
 
     </body>

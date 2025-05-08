@@ -674,7 +674,8 @@ $position = htmlspecialchars(strtoupper($empId));
 
 			let otp = '';
 			let newPassword = document.getElementById('newPassword').value;
-			let accountIdVerify = <?= $accountId; ?>;
+			let accountIdVerify = <?= isset($accountId) ? json_encode($accountId) : 'null'; ?>;
+  			console.log("Account ID:", accountIdVerify);
 
 
 			$('.otp-modal-input').each(function() {
@@ -706,7 +707,14 @@ $position = htmlspecialchars(strtoupper($empId));
 						console.log('OTP Verified Successfully'); // Debugging log
 
 						let newPassword = $('#newPassword').val();
-						let accountId = <?= $accountId; ?>;
+						let accountId = <?= isset($accountId) ? json_encode($accountId) : 'null'; ?>;
+
+						// Optional: Validate or use the ID
+						if (accountId !== null) {
+							console.log("Account ID:", accountId);
+						} else {
+							console.warn("Account ID is not set.");
+						}
 
 						if (!newPassword || newPassword.trim() === '') {
 							console.warn('New password is empty or invalid.');

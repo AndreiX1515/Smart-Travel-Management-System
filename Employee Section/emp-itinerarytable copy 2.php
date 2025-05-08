@@ -127,7 +127,7 @@
               </span>
             </button> -->
 
-
+            
           </div>
 
           <div class="create-itinerary-wrapper">
@@ -138,7 +138,7 @@
             </div>
 
             <script>
-              document.getElementById("createItinerary").addEventListener("click", function () {
+              document.getElementById("createItinerary").addEventListener("click", function() {
                 window.location.href = "../Employee Section/emp-generateItinerary.php"; // Change to your target page
               });
             </script>
@@ -148,74 +148,72 @@
 
 
         <div class="itinerary-grid">
-          <?php
-          if (!isset($conn)) {
-            die("Database connection error.");
-          }
-
-          $sql = "SELECT * FROM itineraries ORDER BY createdAt DESC;";
-          $result = $conn->query($sql);
-
-          if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-              $itineraryId = htmlspecialchars($row['itineraryId'] ?? '');
-              $packageName = htmlspecialchars($row['itineraryName'] ?? 'Untitled');
-              $createdAt = $row['createdAt'] ? (new DateTime($row['createdAt']))->format('F j, Y g:i A') : 'N/A';
-
-              // Determine an icon letter (e.g., "IT" for itinerary)
-              $iconLetter = strtoupper(substr($packageName, 0, 1));
-              ?>
-              <div class="itinerary-card" data-id="<?php echo $itineraryId; ?>">
-                <div class="card-content-wrap">
-                  <!-- Header Section -->
-                  <div class="it-card-header">
-                    <div class="itinerary-info">
-                      <span class="file-type">IT</span>
-                      <div class="itinerary-name">
-                        <h6><?php echo $packageName; ?></h6>
-                      </div>
-                    </div>
-
-                    <!-- Dropdown Options -->
-                    <div class="options dropdown">
-                      <button class="btn dropdown-toggle p-0 border-0 bg-transparent" type="button"
-                        data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fas fa-ellipsis-v"></i>
-                      </button>
-                      <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="#">View Details</a></li>
-                        <li><a class="dropdown-item" href="#">Edit</a></li>
-                        <li><a class="dropdown-item text-danger" href="#">Delete</a></li>
-                      </ul>
-                    </div>
-                  </div>
-
-                  <!-- Body Section -->
-                  <div class="it-card-body">
-                    <div class="itinerary-icon"><?php echo $iconLetter; ?></div>
-                  </div>
-
-                  <!-- Footer Section (Placeholder for future content) -->
-                  <div class="it-card-footer"></div>
-                </div>
-              </div>
-
-
-
-
-
-              <?php
-
+            <?php
+            if (!isset($conn)) {
+                die("Database connection error.");
             }
 
-          } else {
-            echo "<p class='no-records'>No itineraries found.</p>";
-          }
+            $sql = "SELECT * FROM itineraries ORDER BY createdAt DESC;";
+            $result = $conn->query($sql);
 
-          ?>
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    $itineraryId = htmlspecialchars($row['itineraryId'] ?? '');
+                    $packageName = htmlspecialchars($row['itineraryName'] ?? 'Untitled');
+                    $createdAt = $row['createdAt'] ? (new DateTime($row['createdAt']))->format('F j, Y g:i A') : 'N/A';
+
+                    // Determine an icon letter (e.g., "IT" for itinerary)
+                    $iconLetter = strtoupper(substr($packageName, 0, 1));
+            ?>
+                    <div class="itinerary-card" data-id="<?php echo $itineraryId; ?>">
+                      <div class="card-content-wrap">
+                          <!-- Header Section -->
+                          <div class="it-card-header">
+                              <div class="itinerary-info">
+                                  <span class="file-type">IT</span>
+                                  <div class="itinerary-name">
+                                      <h6><?php echo $packageName; ?></h6>
+                                  </div>
+                              </div>
+
+                              <!-- Dropdown Options -->
+                              <div class="options dropdown">
+                                  <button class="btn dropdown-toggle p-0 border-0 bg-transparent" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                      <i class="fas fa-ellipsis-v"></i>
+                                  </button>
+                                  <ul class="dropdown-menu dropdown-menu-end">
+                                      <li><a class="dropdown-item" href="#">View Details</a></li>
+                                      <li><a class="dropdown-item" href="#">Edit</a></li>
+                                      <li><a class="dropdown-item text-danger" href="#">Delete</a></li>
+                                  </ul>
+                              </div>
+                          </div>
+
+                          <!-- Body Section -->
+                          <div class="it-card-body">
+                              <div class="itinerary-icon"><?php echo $iconLetter; ?></div>
+                          </div>
+
+                          <!-- Footer Section (Placeholder for future content) -->
+                          <div class="it-card-footer"></div>
+                      </div>
+                  </div>
+
+
+
+
+            <?php
+
+                }
+
+            } else {
+                echo "<p class='no-records'>No itineraries found.</p>";
+            }
+
+            ?>
         </div>
 
-
+      
         <!-- <div class="table-footer">
           <div class="pagination-controls">
             <button id="prevPage" class="pagination-btn">Previous</button>
@@ -250,7 +248,7 @@
 
   <!-- For Button Tabs Status Sorting -->
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function() {
       // Get the status from the URL
       let statusTab = "<?php echo isset($_GET['status']) ? $_GET['status'] : ''; ?>";
       console.log("Status from URL:", statusTab); // Debugging
@@ -287,7 +285,7 @@
 
       // Add click event listener to each button
       buttons.forEach(button => {
-        button.addEventListener("click", function () {
+        button.addEventListener("click", function() {
           // Remove active class from all buttons
           buttons.forEach(btn => btn.classList.remove("active"));
 
@@ -307,9 +305,9 @@
 
   <!-- Row Click Selection-->
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      document.querySelectorAll("tr[data-url]").forEach(function (row) {
-        row.addEventListener("click", function () {
+    document.addEventListener("DOMContentLoaded", function() {
+      document.querySelectorAll("tr[data-url]").forEach(function(row) {
+        row.addEventListener("click", function() {
           const transactionNumber = row.getAttribute("data-url").split('=')[1]; // Extract transaction number from the URL
 
           console.log("Transaction Number: ", transactionNumber); // Debugging line
@@ -321,13 +319,13 @@
             data: {
               transaction_number: transactionNumber
             },
-            success: function (response) {
+            success: function(response) {
               console.log("Response: ", response); // Debugging line
 
               // Redirect to the next page after successfully setting the session
               window.location.href = row.getAttribute("data-url"); // Use the original URL stored in data-url attribute
             },
-            error: function (xhr, status, error) {
+            error: function(xhr, status, error) {
               console.error("AJAX Error: " + status + " " + error); // Enhanced error logging
             }
           });
