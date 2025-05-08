@@ -7,17 +7,15 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-if (isset($_POST['month']) && isset($_POST['year'])) 
+if (isset($_POST['flightId'])) 
 {
   // Get the selected filter values from the POST request
   $companyId = $_POST['companyId'];
-  $month = (int) $_POST['month'];
-  $year = (int) $_POST['year'];
+  $flightDepartureDate = $_POST['flightId'];
 
-  $totalRequestCostSum = 0;
-  $formattedTotalPriceSum = '0.00';
-  $formattedTotalRequestCostSum = '0.00';
-  $formattedTotalAmount = '0.00';
+  $formattedTotalPriceSum = "0.00";
+  $formattedTotalRequestCostSum = "0.00";
+  $formattedTotalAmount = "0.00";
 
   // Query to get the branchAgentCode
   $sql1 = "SELECT c.companyName, b.branchAgentCode
@@ -38,75 +36,97 @@ if (isset($_POST['month']) && isset($_POST['year']))
     $businessUnit = null;
   }
 
+  $flightIds = []; // Array to store matching flight IDs
+
+  $sqlFlights = "SELECT flightId FROM flight WHERE flightDepartureDate = '$flightDepartureDate'";
+  $resultFlights = $conn->query($sqlFlights);
+
+  while ($row = $resultFlights->fetch_assoc()) 
+  {
+    $flightIds[] = $row['flightId'];
+  }
+
+  // Convert flightIds array to a comma-separated string for SQL query
+  $flightIdsString = implode(',', $flightIds);
+
   $transactNumbers = [];
   $totalPriceSum = 0;
   $count = 1;
   $table1 = '';
   $tableData1 = [];
 
-  // 1st Table - Flight Data (Includes all flights with the same flightDepartureDate)
-  $sql3 = "SELECT b.flightId as flightId, b.pax, b.transactNo, CONCAT(f.flightDepartureDate, ' - ', f.returnArrivalDate) AS flightDates, 
-            CASE 
-              WHEN cl.clientRole = 'Wholeseller' 
-              THEN f.wholesalePrice 
-              ELSE f.flightPrice 
-            END AS flightPrice, b.totalPrice
-          FROM booking b
-          JOIN client cl ON b.accountType = 'Client' AND b.accountId = cl.accountId
-          JOIN company c ON cl.companyId = c.companyId
-          JOIN flight f ON b.flightId = f.flightId
-          WHERE MONTH(f.flightDepartureDate) = $month
-            AND YEAR(f.flightDepartureDate) = $year
-            AND b.status = 'Confirmed'
-            AND cl.companyId = $companyId
-          ORDER BY f.flightId";
-
-  $res3 = $conn->query($sql3);
-
-  if ($res3 && $res3->num_rows > 0) 
+  if (!empty($flightIdsString)) 
   {
-    while ($row = $res3->fetch_assoc()) 
+    // 1st Table - Flight Data (Includes all flights with the same flightDepartureDate)
+    $sql3 = "SELECT b.flightId as flightId, CONCAT(f.flightDepartureDate, ' - ', f.returnArrivalDate) AS flightDates, b.pax as pax, b.transactNo,
+              CASE 
+                WHEN cl.clientRole = 'Wholeseller' 
+                THEN f.wholesalePrice 
+                ELSE f.flightPrice 
+              END AS flightPrice, b.totalPrice as totalPrice
+            FROM booking b
+            JOIN client cl ON b.accountType = 'Client' AND b.accountId = cl.accountId
+            JOIN company c ON cl.companyId = c.companyId
+            JOIN flight f ON b.flightId = f.flightId
+            WHERE b.agentCode = '$businessUnit' 
+              AND f.flightId IN ($flightIdsString)  -- Fetch all flights with the same departure date
+              AND b.status = 'Confirmed'
+              AND cl.companyId = $companyId
+            ORDER BY f.flightId";
+
+    $res3 = $conn->query($sql3);
+
+    if ($res3 && $res3->num_rows > 0) 
     {
-      $transactNumbers[] = $row['transactNo'];
-      $totalPriceSum += $row['totalPrice'];
+      while ($row = $res3->fetch_assoc()) 
+      {
+        $transactNumbers[] = $row['transactNo'];
+        $totalPriceSum += $row['totalPrice'];
 
-      // Format prices
-      $formattedFlightPrice = number_format($row['flightPrice'], 2);
-      $formattedTotalPrice = number_format($row['totalPrice'], 2);
-      $formattedTotalPriceSum = number_format($totalPriceSum, 2);
+        // Format prices
+        $formattedFlightPrice = number_format($row['flightPrice'], 2);
+        $formattedTotalPrice = number_format($row['totalPrice'], 2);
+        $formattedTotalPriceSum = number_format($totalPriceSum, 2);
 
-      // Build table row
-      $table1 .= "<tr>
-                <td>$count</td>
-                <td>{$row['flightDates']}</td>
-                <td></td>
-                <td>₱ $formattedFlightPrice</td>
-                <td>{$row['pax']}</td>
-                <td></td>
-                <td>₱ $formattedTotalPrice</td>
-              </tr>";
+        // Build table row
+        $table1 .= "<tr>
+                      <td>$count</td>
+                      <td>{$row['flightDates']}</td>
+                      <td></td>
+                      <td>₱ $formattedFlightPrice</td>
+                      <td>{$row['pax']}</td>
+                      <td></td>
+                      <td>₱ $formattedTotalPrice</td>
+                    </tr>";
 
-      // Store table data for session
-      $tableData1[] = [
-      'no' => $count,
-      'contents' => $row['flightDates'],
-      'price' => $formattedFlightPrice,
-      'pax' => $row['pax'],
-      'total_usd' => '',
-      'total_php' => $formattedTotalPrice,
-      ];
+        // Store table data for session
+        $tableData1[] = [
+          'no' => $count,
+          'contents' => $row['flightDates'],
+          'flightId' => $row['flightId'],
+          'price' => $formattedFlightPrice,
+          'pax' => $row['pax'],
+          'total_usd' => '',
+          'total_php' => $formattedTotalPrice,
+        ];
 
-      $count++;
+        $count++;
+      }
+
+      // Store session variables
+      $_SESSION['tableData1'] = $tableData1;
+      $_SESSION['totalPriceSum'] = number_format($totalPriceSum, 2);
+    } 
+    else 
+    {
+      $_SESSION['totalPriceSum'] = "0.00";
+      $table1 = "<tr><td colspan='7'>No flight bookings found</td></tr>";
     }
-
-    // Store session variables
-    $_SESSION['tableData1'] = $tableData1;
-    $_SESSION['totalPriceSum'] = number_format($totalPriceSum, 2);
   } 
   else 
   {
     $_SESSION['totalPriceSum'] = "0.00";
-    $table1 = "<tr><td colspan='7'>No flight bookings found</td></tr>";
+    $table1 = "<tr><td colspan='7'>No flight data found</td></tr>";
   }
 
   $transactNoString = "'" . implode("','", $transactNumbers) . "'";
@@ -276,7 +296,7 @@ if (isset($_POST['month']) && isset($_POST['year']))
   $formattedBalance = number_format($balance, 2);
   $_SESSION['balance'] = $formattedBalance;
 
-  $dataAvailable = true;
+  $dataAvailable = false;
 
   // Check if there is any data in the result sets (flight, request, payment)
   if ($res3->num_rows > 0 || $res4->num_rows > 0) 
@@ -372,5 +392,4 @@ if (isset($_POST['month']) && isset($_POST['year']))
       'htmlContent' => $response
   ]);
 }
-
 ?>
