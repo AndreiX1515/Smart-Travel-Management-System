@@ -26,30 +26,30 @@
   <div class="main-container">
 
     <div class="navbar">
-          <div class="page-header-wrapper">
+      <div class="page-header-wrapper">
 
-              <div class="page-header-top">
-                  <div class="back-btn-wrapper">
-                      <button class="back-btn" id="redirect-btn">
-                      <i class="fas fa-chevron-left"></i>
-                      </button>
-                  </div>
-              </div>
-
-              <div class="page-header-content">
-                  <div class="page-header-text">
-                      <h5 class="header-title">Voucher</h5>
-                  </div>
-              </div>
-
+        <div class="page-header-top">
+          <div class="back-btn-wrapper">
+            <button class="back-btn" id="redirect-btn">
+              <i class="fas fa-chevron-left"></i>
+            </button>
           </div>
-      </div>
+        </div>
 
-        <script>
-        document.getElementById('redirect-btn').addEventListener('click', function () {
-            window.location.href = '../Employee Section/emp-voucherTable.php'; // Replace with your actual URL
-        });
-        </script>
+        <div class="page-header-content">
+          <div class="page-header-text">
+            <h5 class="header-title">Voucher</h5>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <script>
+      document.getElementById('redirect-btn').addEventListener('click', function () {
+        window.location.href = '../Employee Section/emp-voucherTable.php'; // Replace with your actual URL
+      });
+    </script>
 
     <div class="main-content">
       <div class="form-container">
@@ -67,22 +67,23 @@
                 <label for="voucherTo">To <span class="text-danger">*</span></label>
 
                 <select class="form-select" id="voucherTo" name="voucherTo" required>
-                    <option value="" disabled selected>Select Branch</option>
-                    <?php
-                    // Execute the SQL query
-                    $sql1 = "SELECT branchId, branchName FROM branch ORDER BY branchName ASC";
-                    $res1 = $conn->query($sql1);
+                  <option value="" disabled selected>Select Branch</option>
 
-                    // Check if there are results
-                    if ($res1->num_rows > 0) {
-                        // Loop through the results and generate options
-                        while ($row = $res1->fetch_assoc()) {
-                            echo "<option value='" . $row['branchName'] . "'>" . $row['branchName'] . "</option>";
-                        }
-                    } else {
-                        echo "<option value=''>No companies available</option>";
+                  <?php
+                  // Execute the SQL query
+                  $sql1 = "SELECT branchId, branchName FROM branch ORDER BY branchName ASC";
+                  $res1 = $conn->query($sql1);
+
+                  // Check if there are results
+                  if ($res1->num_rows > 0) {
+                    // Loop through the results and generate options
+                    while ($row = $res1->fetch_assoc()) {
+                      echo "<option value='" . $row['branchName'] . "'>" . $row['branchName'] . "</option>";
                     }
-                    ?>
+                  } else {
+                    echo "<option value=''>No companies available</option>";
+                  }
+                  ?>
                 </select>
               </div>
 
@@ -92,7 +93,7 @@
                 <select class="form-select" id="voucherFrom" name="voucherFrom" required>
                   <option disabled value="">Select Sender</option>
                   <option selected value="Smart Travel">Smart Travel</option>
-                  
+
                 </select>
               </div>
 
@@ -101,11 +102,26 @@
                 <label for="voucherTour">Tour <span class="text-danger">*</span></label>
                 <select class="form-select" id="voucherTour" name="voucherTour" required>
                   <option selected disabled value="">Select Package Type</option>
-                  <option value="Autumn Tour">Autumn Tour</option>
-                  <option value="Summer Tour">Summer Tour</option>
-                  <option value="Spring Tour">Spring </option>
-                  <option value="Winter Tour">Winter Tour</option>
+
+
+                  <?php
+                  // Execute the SQL query
+                  $sql1 = "SELECT packageId, packageName FROM package ORDER BY packageName ASC";
+                  $res1 = $conn->query($sql1);
+
+                  // Check if there are results
+                  if ($res1->num_rows > 0) {
+                    // Loop through the results and generate options
+                    while ($row = $res1->fetch_assoc()) {
+                      echo "<option value='" . $row['packageId'] . "'>" . $row['packageName'] . "</option>";
+                    }
+                  } else {
+                    echo "<option value=''>No companies available</option>";
+                  }
+                  ?>
                 </select>
+
+
               </div>
 
 
@@ -454,7 +470,8 @@
         <div class="card includes-header-card">
           <div class="card-header bg-secondary card-title includes-wrapper">
             <h5>Includes</h5>
-            <button id="addIncludeBtn" class="add-button btn btn-primary add-exclude-button">+</button> <!-- Unique ID -->
+            <button id="addIncludeBtn" class="add-button btn btn-primary add-exclude-button">+</button>
+            <!-- Unique ID -->
           </div>
         </div>
 
@@ -606,7 +623,6 @@
     }
   </script>
 
-
   <!-- Date and Hotel Section Functions and JSON generation Script -->
   <script>
     let cardCount = 0;
@@ -746,8 +762,6 @@
 
   </script>
 
-
-
   <!-- JSON generation for Air Details and Guide Meeting -->
   <script>
     function getAirDetails() {
@@ -814,8 +828,6 @@
       return airDetails;
     }
   </script>
-
-
 
   <!-- Includes Section Functions and JSON generation Script -->
   <script>
@@ -905,29 +917,29 @@
       newRow.setAttribute('data-index', includeCount);
 
       newRow.innerHTML = `
-      <div class="col-md-12">
-        <div class="label-container">
-          <label for="includesSelect${includeCount}" class="form-label">Includes ${includeCount}:</label>
-          <button type="button" class="btn btn-sm btn-danger remove-include" title="Remove">
-            <i class="fas fa-trash-alt"></i>
-          </button>
+        <div class="col-md-12">
+          <div class="label-container">
+            <label for="includesSelect${includeCount}" class="form-label">Includes ${includeCount}:</label>
+            <button type="button" class="btn btn-sm btn-danger remove-include" title="Remove">
+              <i class="fas fa-trash-alt"></i>
+            </button>
+          </div>
+          <div class="content-container">
+            <select class="form-select include-select" id="includesSelect${includeCount} required" name="includesSelect${includeCount}" required>
+              <option value="" selected disabled>Select Includes</option>
+              <option value="1">Hotel (4 nights with twin or triple sharing)</option>
+              <option value="2">Meals (4 times Lunch, 4 times Dinner)</option>
+              <option value="3">(Coach, Van), Admission as the itinerary, ENGLISH guide, etc.</option>
+              <option value="4">Airport Pick-up and Drop-off</option>
+              <option value="5">Souvenir Pack</option>
+              <option value="6">Travel Insurance</option>
+              <option value="others">Others</option>
+              <option value="0"> — No Includes — </option>
+            </select>
+            <input type="text" class="form-control custom-include-input d-none mt-2" placeholder="Please specify..." />
+          </div>
         </div>
-        <div class="content-container">
-          <select class="form-select include-select" id="includesSelect${includeCount}" name="includesSelect${includeCount}" required>
-            <option value="" selected disabled>Select Guide</option>
-            <option value="1">Hotel (4 nights with twin or triple sharing)</option>
-            <option value="2">Meals (4 times Lunch, 4 times Dinner)</option>
-            <option value="3">(Coach, Van), Admission as the itinerary, ENGLISH guide, etc.</option>
-            <option value="4">Airport Pick-up and Drop-off</option>
-            <option value="5">Souvenir Pack</option>
-            <option value="6">Travel Insurance</option>
-            <option value="others">Others</option>
-            <option value="0"> — No Additional Includes — </option>
-          </select>
-          <input type="text" class="form-control custom-include-input d-none mt-2" placeholder="Please specify..." />
-        </div>
-      </div>
-    `;
+      `;
 
       includesContainer.appendChild(newRow);
 
@@ -1157,16 +1169,16 @@
         return;
       }
 
-      // ✅ Combine all voucher-related data into one object
       const voucherPayload = {
+        templateName: templateName,
         voucherDetails: voucherDetails || {},
         cardsJSONData: cardsJSONData || {},
         includesData: includesData || {},
-        excludesData: excludesData || {},
+        excludesData: excludesData || {}
       };
 
-      // ✅ Debug log
       console.log("Voucher Payload to be submitted:", voucherPayload);
+
 
       $.ajax({
         url: "../Employee Section/functions/emp-saveVoucher.php",
@@ -1197,11 +1209,5 @@
   </script>
 
 
-
-
-
-
-
-</body>
-
+  </body>
 </html>
