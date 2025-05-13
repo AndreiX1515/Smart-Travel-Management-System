@@ -25,74 +25,142 @@
     </div>
 
     <div class="main-content">
-      <div class="content-wrapper">
-        <div class="content-body">
-          <div class="table-actions">
-            <div class="row">
+      <!-- Row for User Type and Filter Mode Radios -->
+      <div class="row">
+        <!-- User Type Radio Buttons -->
+        <div class="col-md-6 mb-3">
+          <label>User Type:</label><br>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="user-type" id="user-agent" value="agent" checked>
+            <label class="form-check-label" for="user-agent">Agent</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="user-type" id="user-client" value="client">
+            <label class="form-check-label" for="user-client">Client</label>
+          </div>
+        </div>
 
-              <!-- Agent/Client Filter -->
-              <div class="col-md-4 mb-3">
-                <div class="table-filters-container" id="name-container">
-                  <label for="name-filter">Agent/Client Name:</label>
-                  <select id="name-filter" name="name-filter" class="form-control">
-                    <option selected disabled>Select Agent/Client</option>
-                    <!-- PHP options here -->
-                  </select>
-                </div>
-              </div>
-
-              <!-- Month Filter -->
-              <div class="col-md-2 mb-3">
-                <div class="table-filters-container" id="month-container">
-                  <label for="month-filter">Month</label>
-                  <select id="month-filter" name="month-filter" class="form-control">
-                    <option selected disabled>Select month</option>
-                    <!-- Month options -->
-                  </select>
-                </div>
-              </div>
-
-              <!-- Year Filter -->
-              <div class="col-md-2 mb-3">
-                <div class="table-filters-container" id="year-container">
-                  <label for="year-filter">Year</label>
-                  <select id="year-filter" name="year-filter" class="form-control">
-                    <!-- JS will populate years -->
-                  </select>
-                </div>
-              </div>
-
-              <!-- Flight Date Filter -->
-              <div class="col-md-4 mb-3">
-                <div class="table-filters-container" id="flight-container">
-                  <label for="flight-filter">Select Flight Date:</label>
-                  <select id="flight-filter" name="flight-filter" onchange="toggleFilters()" class="form-control">
-                    <option selected disabled>Select Flight Date</option>
-                    <!-- PHP options here -->
-                  </select>
-                </div>
-              </div>
-
-            </div>
-
-            <!-- Buttons -->
-            <div class="row">
-              <div class="col-12 d-flex justify-content-end">
-                <div class="me-2">
-                  <button id="generate-soa-btn" class="btn btn-primary">Preview SOA</button>
-                </div>
-                <div>
-                  <button class="btn btn-primary" id="download-btn" disabled>Generate SoA</button>
-                </div>
-              </div>
-            </div>
-
-            <!-- Results -->
-            <div id="result-container" class="mt-3"></div>
-
+        <!-- Filter Mode Radio Buttons -->
+        <div class="col-md-6 mb-3">
+          <label>Filter Mode:</label><br>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="filter-mode" id="mode-flight" value="flight" checked>
+            <label class="form-check-label" for="mode-flight">By Flight</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="filter-mode" id="mode-month" value="month">
+            <label class="form-check-label" for="mode-month">By Month</label>
           </div>
         </div>
       </div>
+
+      <!-- Row for Select Dropdowns -->
+      <div class="row">
+        <!-- Left Column: Agent & Company -->
+        <div class="col-md-6">
+          <div class="row">
+            <!-- Agent Select -->
+            <div class="col-md-12 mb-3" id="agent-container">
+              <label for="agent-filter">Agent Name:</label>
+              <select id="agent-filter" name="agent-filter" class="form-control">
+                <option disabled selected>Select Agent</option>
+                <?php
+                  $agentQuery = "SELECT accountId, fName, mName, lName FROM agent WHERE agentCode = '$agentCode'";
+                  $agentResult = $conn->query($agentQuery);
+
+                  if ($agentResult->num_rows > 0) 
+                  {
+                    while ($row = $agentResult->fetch_assoc()) 
+                    {
+                      $fullName = $row['fName'] . ' ' . (!empty($row['mName']) ? substr($row['mName'], 0, 1) . '. ' : '') . $row['lName'];
+                      echo "<option value=\"{$row['accountId']}\">$fullName</option>";
+                    }
+                  } 
+                  else 
+                  {
+                    echo "<option disabled>No Agent available</option>";
+                  }
+                ?>
+              </select>
+            </div>
+
+            <!-- Travel Agency Select -->
+            <div class="col-md-12 mb-3" id="company-container" style="display:none;">
+              <label for="company-filter">Travel Agency:</label>
+              <select id="company-filter" name="company-filter" class="form-control">
+              <option disabled selected>Select Travel Agency</option>
+                <?php
+                  $companyQuery = "SELECT companyId, companyName FROM company WHERE branchId = $branchId";
+                  $companyResult = $conn->query($companyQuery);
+                  
+                  while ($row = $companyResult->fetch_assoc()) 
+                  {
+                    echo "<option value=\"{$row['companyId']}\">{$row['companyName']}</option>";
+                  }
+                ?>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Flight, Month, Year -->
+        <div class="col-md-6">
+          <div class="row">
+            <!-- Flight Date Select -->
+            <div class="col-md-12 mb-3 filter-flight" id="flight-container">
+              <label for="flight-filter">Select Flight Date:</label>
+              <select id="flight-filter" name="flight-filter" class="form-control">
+                <option value="Select Flight Date" selected disabled>Select Flight Date</option>
+                <?php
+                  $sql1 = "SELECT DISTINCT flightDepartureDate FROM flight ORDER BY flightDepartureDate ASC";
+                  $result = $conn->query($sql1);
+
+                  if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                      $formattedFlightDate = date("F j, Y", strtotime($row['flightDepartureDate']));
+                      echo "<option value='" . $row['flightDepartureDate'] . "'>" . $formattedFlightDate . "</option>";
+                    }
+                  } else {
+                    echo "<option value='' disabled>No flights available</option>";
+                  }
+                ?>
+              </select>
+            </div>
+
+            <!-- Month Select -->
+            <div class="col-md-6 mb-3 filter-month" id="month-container" style="display:none;">
+              <label for="month-filter">Month</label>
+              <select id="month-filter" name="month-filter" class="form-control">
+                <option value="Select month" selected disabled>Select month</option>
+              </select>
+            </div>
+
+            <!-- Year Select -->
+            <div class="col-md-6 mb-3 filter-month" id="year-container" style="display:none;">
+              <label for="year-filter">Year</label>
+              <select id="year-filter" name="year-filter" class="form-control">
+                <option value="Select year" selected disabled>Select year</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="row">
+        <div class="col-12 d-flex justify-content-end">
+          <div class="me-2">
+            <button id="generate-soa-btn" class="btn btn-primary">Preview SOA</button>
+          </div>
+          <div>
+            <button class="btn btn-primary" id="download-btn" disabled>Generate SoA</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div id="result-container" class="mt-3"></div>
+
     </div>
   </div>
 </div>
@@ -103,34 +171,194 @@
 <!-- JavaScript for Date Filters -->
 <script>
   const currentDate = new Date();
-  const currentMonthIndex = currentDate.getMonth(); // 0-based
+  const currentMonthIndex = currentDate.getMonth(); // 0-based: Jan = 0
   const currentYear = currentDate.getFullYear();
 
-  // Month select
+  // Get references to the dropdowns
   const monthSelect = document.getElementById('month-filter');
+  const yearSelect = document.getElementById('year-filter');
+
   const monthNames = [
     "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
   ];
-  monthSelect.value = monthNames[currentMonthIndex];
 
-  // Year select
-  const yearSelect = document.getElementById('year-filter');
+  // Populate Month Options
+  monthNames.forEach((month, index) => {
+    const option = document.createElement("option");
+    option.value = index + 1; // Value: 1 to 12
+    option.textContent = month;
+    monthSelect.appendChild(option);
+  });
+
+  // Populate Year Options (range: currentYear - 5 to currentYear + 5)
   for (let y = currentYear - 5; y <= currentYear + 5; y++) {
-    const option = document.createElement('option');
+    const option = document.createElement("option");
     option.value = y;
     option.textContent = y;
     yearSelect.appendChild(option);
   }
-  yearSelect.value = currentYear;
+</script>
+
+<!-- JS for user and mode filter -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () 
+  {
+    const userTypeRadios = document.getElementsByName("user-type");
+    const agentContainer = document.getElementById("agent-container");
+    const companyContainer = document.getElementById("company-container");
+
+    const flightFilters = document.querySelectorAll(".filter-flight");
+    const monthFilters = document.querySelectorAll(".filter-month");
+
+    const resultContainer = document.getElementById("result-container");
+
+    // Get select elements
+    const agentFilter = document.getElementById("agent-filter");
+    const companyFilter = document.getElementById("company-filter");
+    const flightFilter = document.getElementById("flight-filter");
+    const monthFilter = document.getElementById("month-filter");
+    const yearFilter = document.getElementById("year-filter");
+
+    function toggleUserType() 
+    {
+      const selectedType = document.querySelector('input[name="user-type"]:checked').value;
+
+      // Reset dropdowns
+      agentFilter.selectedIndex = 0;
+      companyFilter.selectedIndex = 0;
+      flightFilter.selectedIndex = 0;
+      monthFilter.selectedIndex = 0;
+      yearFilter.selectedIndex = 0;
+
+      if (selectedType === "agent") 
+      {
+        agentContainer.style.display = "block";
+        companyContainer.style.display = "none";
+        resultContainer.style.display = "none";
+      } 
+      else 
+      {
+        agentContainer.style.display = "none";
+        companyContainer.style.display = "block";
+        resultContainer.style.display = "none";
+      }
+    }
+
+    function toggleFilterMode() 
+    {
+      const selectedMode = document.querySelector('input[name="filter-mode"]:checked').value;
+
+      // Reset dropdowns
+      flightFilter.selectedIndex = 0;
+      monthFilter.selectedIndex = 0;
+      yearFilter.selectedIndex = 0;
+
+      if (selectedMode === "flight") 
+      {
+        flightFilters.forEach(el => el.style.display = "block");
+        monthFilters.forEach(el => el.style.display = "none");
+        resultContainer.style.display = "none";
+      } 
+      else 
+      {
+        flightFilters.forEach(el => el.style.display = "none");
+        monthFilters.forEach(el => el.style.display = "block");
+        resultContainer.style.display = "none";
+      }
+    }
+
+    // Event bindings
+    userTypeRadios.forEach(radio => radio.addEventListener('change', toggleUserType));
+    document.getElementsByName("filter-mode").forEach(radio => radio.addEventListener('change', toggleFilterMode));
+
+    // Initial state
+    toggleUserType();
+    toggleFilterMode();
+  });
+
+  document.getElementById('month-filter').addEventListener('change', function () {
+    console.log('Selected month:', this.value);
+  });
+
+  // Listen for changes in the year dropdown
+  document.getElementById('year-filter').addEventListener('change', function () {
+    console.log('Selected year:', this.value);
+  });
+
+  document.getElementById('company-filter').addEventListener('change', function () {
+    console.log('Company Id:', this.value);
+  });
+
+  document.getElementById('agent-filter').addEventListener('change', function () {
+    console.log('Account Id:', this.value);
+  });
 </script>
 
 <!-- Preview SoA -->
 <script>
   document.getElementById('generate-soa-btn').addEventListener('click', function() {
-    const companyId = document.getElementById('company-filter').value;
-    const month = document.getElementById('month-filter').value;
-    const year = document.getElementById('year-filter').value;
+    const agentSelect = document.getElementById('agent-filter');
+    const companySelect = document.getElementById('company-filter');
+    const monthFilter = document.getElementById('month-filter');
+    const yearFilter = document.getElementById('year-filter');
+    const flightFilter = document.getElementById('flight-filter');
+    const selectedText = flightFilter.options[flightFilter.selectedIndex].text;
+    console.log(selectedText);
+
+    const agentId = agentSelect && agentSelect.selectedIndex > 0 ? agentSelect.value : null;
+    const companyId = companySelect && companySelect.selectedIndex > 0 ? companySelect.value : null;
+
+    let url = '';
+    let data = '';
+
+    console.log(yearFilter.value);
+    console.log(monthFilter.value);
+    console.log(flightFilter.value);
+
+    // console.log(agentSelect);
+    // console.log(companySelect);
+
+    if (agentId && !companyId) {
+      data += `agentId=${agentId}`;
+    } else if (companyId && !agentId) {
+      data += `companyId=${companyId}`;
+    } else {
+      document.getElementById('result-container').innerHTML = '<p>Please select either an agent or a client, not both.</p>';
+      return;
+    }
+
+    // Determine whether to use the date filter or the flight filter
+    if (monthFilter.value !== "Select month" && yearFilter.value !== "Select year" && agentId !== null) 
+    {
+      // Use Month & Year (Orig Preview SoA)
+      url = '../Agent Section/functions/fetchSoaAgent.php';
+      data += `&month=${monthFilter.value}&year=${yearFilter.value}`;
+    } 
+    else if (flightFilter.value !== "Select Flight Date" && agentId !== null) 
+    {
+      // Use Flight ID (Flight Date Preview SoA)
+      url = '../Agent Section/functions/fetchSoAByFlightDateAgent.php';
+      data += `&flightId=${flightFilter.value}`;
+    } 
+    else if (monthFilter.value !== "Select month" && yearFilter.value !== "Select year" && companyId !== null) 
+    {
+      // Use Flight ID (Flight Date Preview SoA)
+      url = '../Agent Section/functions/fetchSoA.php';
+      data += `&month=${monthFilter.value}&year=${yearFilter.value}`;
+    } 
+    else if (flightFilter.value !== "Select Flight Date" && companyId !== null) 
+    {
+      // Use Flight ID (Flight Date Preview SoA)
+      url = '../Agent Section/functions/fetchSoAByFlightDate.php';
+      data += `&flightId=${flightFilter.value}`;
+    } 
+    else 
+    {
+      // Handle case where no filter is selected
+      document.getElementById('result-container').innerHTML = '<p>Please select valid filters.</p>';
+      return;
+    }
 
     // Disable the button while the request is in progress
     document.getElementById('generate-soa-btn').disabled = true;
@@ -141,10 +369,8 @@
 
     // Send data to PHP using AJAX
     const xhr = new XMLHttpRequest();
-    xhr.open('POST', '../Agent Section/functions/fetchSoA.php', true); // Replace with your PHP file name
+    xhr.open('POST', url, true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-    const data = `companyId=${companyId}&month=${month}&year=${year}`;
 
     xhr.onload = function() {
       // Re-enable the button after the request is complete
@@ -156,16 +382,20 @@
 
         if (response.dataAvailable) {
           // Update the result container with the HTML from the response
+          console.log(response);
+          resultContainer.style.display = "block";
           resultContainer.innerHTML = response.htmlContent;
           // Enable the download button if data is available
           document.getElementById('download-btn').disabled = false;
         } else {
           // If no data available, update the result container and disable the button
           resultContainer.innerHTML = '<p>No data found for the selected filters.</p>';
+          resultContainer.style.display = "block";
           document.getElementById('download-btn').disabled = true;
         }
       } else {
         // Handle errors in the request
+        resultContainer.style.display = "block";
         resultContainer.innerHTML = '<p>Error loading data. Please try again later.</p>';
         document.getElementById('download-btn').disabled = true;
       }
@@ -177,6 +407,8 @@
       document.getElementById('generate-soa-btn').disabled = false;
       document.getElementById('download-btn').disabled = true;
     };
+
+    console.log(data);
 
     // Send the data to the server
     xhr.send(data);
