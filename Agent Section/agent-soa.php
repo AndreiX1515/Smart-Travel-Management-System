@@ -84,18 +84,22 @@
               </select>
             </div>
 
+            <!-- <input type="text" value="<?php echo $branchId; ?>"> -->
             <!-- Travel Agency Select -->
             <div class="col-md-12 mb-3" id="company-container" style="display:none;">
               <label for="company-filter">Travel Agency:</label>
               <select id="company-filter" name="company-filter" class="form-control">
-              <option disabled selected>Select Travel Agency</option>
+                <option disabled selected>Select Travel Agency</option>
                 <?php
                   $companyQuery = "SELECT companyId, companyName FROM company WHERE branchId = $branchId";
                   $companyResult = $conn->query($companyQuery);
-                  
-                  while ($row = $companyResult->fetch_assoc()) 
-                  {
-                    echo "<option value=\"{$row['companyId']}\">{$row['companyName']}</option>";
+
+                  if ($companyResult->num_rows > 0) {
+                    while ($row = $companyResult->fetch_assoc()) {
+                      echo "<option value=\"{$row['companyId']}\">{$row['companyName']}</option>";
+                    }
+                  } else {
+                    echo "<option disabled>No Travel Agency available</option>";
                   }
                 ?>
               </select>
@@ -170,34 +174,35 @@
 
 <!-- JavaScript for Date Filters -->
 <script>
-  const currentDate = new Date();
-  const currentMonthIndex = currentDate.getMonth(); // 0-based: Jan = 0
-  const currentYear = currentDate.getFullYear();
+  document.addEventListener("DOMContentLoaded", function () {
+    const currentDate = new Date();
+    const currentMonthIndex = currentDate.getMonth(); // 0-based: Jan = 0
+    const currentYear = currentDate.getFullYear();
 
-  // Get references to the dropdowns
-  const monthSelect = document.getElementById('month-filter');
-  const yearSelect = document.getElementById('year-filter');
+    const monthSelect = document.getElementById('month-filter');
+    const yearSelect = document.getElementById('year-filter');
 
-  const monthNames = [
-    "January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
-  ];
+    const monthNames = [
+      "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+    ];
 
-  // Populate Month Options
-  monthNames.forEach((month, index) => {
-    const option = document.createElement("option");
-    option.value = index + 1; // Value: 1 to 12
-    option.textContent = month;
-    monthSelect.appendChild(option);
+    // Populate Month Options
+    monthNames.forEach((month, index) => {
+      const option = document.createElement("option");
+      option.value = index + 1;
+      option.textContent = month;
+      monthSelect.appendChild(option);
+    });
+
+    // Populate Year Options (range: currentYear - 5 to currentYear + 5)
+    for (let y = currentYear - 5; y <= currentYear + 5; y++) {
+      const option = document.createElement("option");
+      option.value = y;
+      option.textContent = y;
+      yearSelect.appendChild(option);
+    }
   });
-
-  // Populate Year Options (range: currentYear - 5 to currentYear + 5)
-  for (let y = currentYear - 5; y <= currentYear + 5; y++) {
-    const option = document.createElement("option");
-    option.value = y;
-    option.textContent = y;
-    yearSelect.appendChild(option);
-  }
 </script>
 
 <!-- JS for user and mode filter -->
@@ -220,7 +225,7 @@
     const monthFilter = document.getElementById("month-filter");
     const yearFilter = document.getElementById("year-filter");
 
-    function toggleUserType() 
+    function toggleUserType()
     {
       const selectedType = document.querySelector('input[name="user-type"]:checked').value;
 
@@ -231,14 +236,16 @@
       monthFilter.selectedIndex = 0;
       yearFilter.selectedIndex = 0;
 
-      if (selectedType === "agent") 
+      if (selectedType === "agent")
       {
+        console.log(selectedType);
         agentContainer.style.display = "block";
         companyContainer.style.display = "none";
         resultContainer.style.display = "none";
       } 
       else 
       {
+        console.log(selectedType);
         agentContainer.style.display = "none";
         companyContainer.style.display = "block";
         resultContainer.style.display = "none";
@@ -256,12 +263,14 @@
 
       if (selectedMode === "flight") 
       {
+        console.log(selectedMode);
         flightFilters.forEach(el => el.style.display = "block");
         monthFilters.forEach(el => el.style.display = "none");
         resultContainer.style.display = "none";
       } 
       else 
       {
+        console.log(selectedMode);
         flightFilters.forEach(el => el.style.display = "none");
         monthFilters.forEach(el => el.style.display = "block");
         resultContainer.style.display = "none";
