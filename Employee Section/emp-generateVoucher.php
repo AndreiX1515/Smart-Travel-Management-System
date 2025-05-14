@@ -233,7 +233,7 @@
                 </div>
               </div>
 
-              <div class="columns col-md-4">
+              <div class="columns col-md-2">
                 <div class="column-header">
                   <label for="arrivalDate">Date <span class="text-danger">*</span></label>
                 </div>
@@ -319,7 +319,7 @@
                 </div>
               </div>
 
-              <div class="columns col-md-4">
+              <div class="columns col-md-2">
                 <div class="column-header">
                   <label for="destinationDate">Date <span class="text-danger">*</span></label>
                 </div>
@@ -486,7 +486,7 @@
         <div class="card excludes-header-card">
           <div class="card-header bg-secondary card-title excludes-wrapper">
             <h5>Excludes</h5>
-            <button type="button" class="add-button btn btn-primary add-exclude-button">+</button>
+            <button id="addExcludeBtn" class="btn btn-primary">+</button>
             <!-- Add Exclude Button -->
           </div>
         </div>
@@ -629,7 +629,6 @@
     const maxCards = 3; // Maximum number of cards allowed
 
     document.addEventListener("DOMContentLoaded", function () {
-      console.log("Page loaded");
       addCard(); // Load the first card
     });
 
@@ -641,7 +640,7 @@
       }
 
       cardCount++;
-      console.log(`Adding card #${cardCount}`);
+      // console.log(`Adding card #${cardCount}`);
 
       const container = document.getElementById('cardsContainer');
       const card = document.createElement('div');
@@ -757,7 +756,7 @@
       // Assign to the global variable
       cardsJSONData = jsonData;
 
-      console.log("Sectioned Cards JSON:", JSON.stringify(cardsJSONData, null, 2));
+      // console.log("Sectioned Cards JSON:", JSON.stringify(cardsJSONData, null, 2));
     }
 
   </script>
@@ -974,6 +973,10 @@
       updateDisabledIncludeOptions();
     }
 
+
+
+
+
     // Function to update include labels and ids after removing an include
     function updateIncludeLabels() {
       const rows = document.querySelectorAll('.include-row');
@@ -999,160 +1002,182 @@
     window.addEventListener('DOMContentLoaded', initIncludesSection);
   </script>
 
-
   <!-- Excludes Section Functions and JSON generation Script -->
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const excludeConfig = {
-        count: 0,
-        max: 4,
-        container: document.getElementById('excludesContainer'),
-        addButton: document.querySelector('.add-exclude-button')
-      };
+    let excludeCount = 0;
+    const maxExcludes = 4;
 
-      const excludesData = {};
+    // Function to get the selected excludes from all rows
+    function getSelectedExcludes() {
+      const selectedValues = [];
+      const rows = document.querySelectorAll('.exclude-row');
 
-      // Function to retrieve selected excludes
-      function getSelectedExcludes() {
-        const selectedValues = [];
-        document.querySelectorAll('.exclude-row').forEach(row => {
-          const select = row.querySelector('select');
-          const input = row.querySelector('.custom-exclude-input');
-          const value = select.value === 'others' ? input.value.trim() : select.value;
-          selectedValues.push({ id: select.id, value });
-        });
-        return selectedValues;
-      }
-
-      // Function to update disabled options based on selections
-      function updateDisabledExcludes() {
-        const selectedValues = getSelectedExcludes().map(item => item.value);
-        document.querySelectorAll('.exclude-row select').forEach(select => {
-          select.querySelectorAll('option').forEach(option => {
-            if (
-              option.value !== select.value &&
-              selectedValues.includes(option.value) &&
-              option.value !== "" &&
-              option.value !== "others"
-            ) {
-              option.disabled = true;
-            } else {
-              option.disabled = false;
-            }
-          });
-        });
-      }
-
-      // Function to update labels and attributes
-      function updateExcludeLabels() {
-        document.querySelectorAll('.exclude-row').forEach((row, i) => {
-          const label = row.querySelector('label');
-          const select = row.querySelector('select');
-          const index = i + 1;
-          row.setAttribute('data-index', index);
-          label.setAttribute('for', `excludesSelect${index}`);
-          label.textContent = `Excludes ${index}:`;
-          select.setAttribute('id', `excludesSelect${index}`);
-          select.setAttribute('name', `excludesSelect${index}`);
-        });
-      }
-
-      function updateExcludesData() {
-        const selectedExcludes = getSelectedExcludes();
-
-        // Reassign new object to global variable
-        excludesData = {};
-
-        selectedExcludes.forEach((exclude, index) => {
-          const excludeIndex = index + 1;
-          excludesData[`excludes${excludeIndex}`] = { value: exclude.value };
-        });
-
-        console.log('Updated Excludes Data (JSON):', JSON.stringify(excludesData, null, 2));
-      }
-
-      // Function to create a new exclude row
-      function createExcludeRow() {
-        if (excludeConfig.count >= excludeConfig.max) return;
-
-        excludeConfig.count++;
-        const index = excludeConfig.count;
-
-        const row = document.createElement('div');
-        row.className = 'row exclude-row align-items-start mb-3';
-        row.setAttribute('data-index', index);
-
-        row.innerHTML = `
-          <div class="col-md-12">
-            <div class="label-container">
-              <label for="excludesSelect${index}" class="form-label">Excludes ${index}:</label>
-              <button type="button" class="btn btn-sm btn-danger remove-exclude" title="Remove">
-                <i class="fas fa-trash-alt"></i>
-              </button>
-            </div>
-            <div class="content-container">
-              <select class="form-select exclude-select mb-2" id="excludesSelect${index}" name="excludesSelect${index}" required>
-                <option value="" selected disabled>Select Exclude</option>
-                <option value="1">Flight (Round trip flight tickets)</option>
-                <option value="2">Visa Fees</option>
-                <option value="3">Meals (Meals outside the package)</option>
-                <option value="4">Personal Expenses</option>
-                <option value="5">Optional Tours</option>
-                <option value="others">Others</option>
-                <option value="0"> — No Excludes — </option>
-              </select>
-              <input type="text" class="form-control custom-exclude-input d-none" placeholder="Please specify..." />
-            </div>
-          </div>
-        `;
-
+      rows.forEach(row => {
         const select = row.querySelector('select');
-        const input = row.querySelector('.custom-exclude-input');
-        const removeBtn = row.querySelector('.remove-exclude');
+        const customInput = row.querySelector('.custom-exclude-input');
+        if (select.value === "others") {
+          selectedValues.push({ id: select.id, value: customInput.value.trim() });
+        } else {
+          selectedValues.push({ id: select.id, value: select.value });
+        }
+      });
 
-        // Event listener for select change
-        select.addEventListener('change', () => {
-          if (select.value === 'others') {
-            input.classList.remove('d-none');
-            input.focus();
+      return selectedValues;
+    }
+
+    // Function to update disabled options for excludes based on selected values
+    function updateDisabledExcludeOptions() {
+      const selectedValues = getSelectedExcludes();
+      const selects = document.querySelectorAll('.exclude-row select');
+
+      selects.forEach(currentSelect => {
+        const options = currentSelect.querySelectorAll('option');
+
+        options.forEach(option => {
+          if (
+            option.value !== currentSelect.value &&
+            selectedValues.some(item => item.value === option.value) &&
+            option.value !== "" &&
+            option.value !== "others" &&
+            option.value !== "0"
+          ) {
+            option.disabled = true;
           } else {
-            input.classList.add('d-none');
-          }
-          updateDisabledExcludes();
-          updateExcludesData();
-        });
-
-        // Event listener for input change
-        input.addEventListener('input', () => {
-          updateExcludesData();
-        });
-
-        // Event listener for remove button
-        removeBtn.addEventListener('click', () => {
-          row.remove();
-          excludeConfig.count--;
-          updateExcludeLabels();
-          updateDisabledExcludes();
-          updateExcludesData();
-        });
-
-        excludeConfig.container.appendChild(row);
-        updateDisabledExcludes();
-      }
-
-      // Initialize the Excludes section
-      function initExcludesSection() {
-        createExcludeRow();
-        excludeConfig.addButton?.addEventListener('click', () => {
-          if (excludeConfig.count < excludeConfig.max) {
-            createExcludeRow();
+            option.disabled = false;
           }
         });
-      }
+      });
+    }
 
+    // Function to update exclude labels and IDs
+    function updateExcludeLabels() {
+      const rows = document.querySelectorAll('.exclude-row');
+      rows.forEach((row, index) => {
+        const label = row.querySelector('label');
+        const select = row.querySelector('select');
+        const number = index + 1;
+        row.setAttribute('data-index', number);
+        label.setAttribute('for', `excludesSelect${number}`);
+        label.textContent = `Excludes ${number}:`;
+        select.setAttribute('id', `excludesSelect${number}`);
+        select.setAttribute('name', `excludesSelect${number}`);
+      });
+    }
+
+
+    function updateExcludesData() {
+      const excludeRows = document.querySelectorAll('.exclude-row');
+      excludesData = []; // This should be a global variable or accessible where you need it
+
+      excludeRows.forEach(row => {
+        const select = row.querySelector('select.exclude-select');
+        const customInput = row.querySelector('.custom-exclude-input');
+        const selectedValue = select.value;
+
+        // Skip if no selection or explicitly "No Excludes"
+        if (!selectedValue || selectedValue === "0") return;
+
+        // Handle "others"
+        if (selectedValue === "others") {
+          const customText = customInput.value.trim();
+          if (customText !== '') {
+            excludesData.push({
+              value: selectedValue,
+              label: customText
+            });
+          }
+        } else {
+          // Push standard exclude option
+          const selectedOption = select.options[select.selectedIndex];
+          excludesData.push({
+            value: selectedValue,
+            label: selectedOption.text
+          });
+        }
+      });
+    }
+
+    
+    // Function to add a new exclude row
+    function addExclude() {
+      if (excludeCount >= maxExcludes) return;
+
+      excludeCount++;
+      const excludesContainer = document.getElementById('excludesContainer');
+
+      const newRow = document.createElement('div');
+      newRow.className = 'row exclude-row align-items-start mb-1';
+      newRow.setAttribute('data-index', excludeCount);
+
+      newRow.innerHTML = `
+        <div class="col-md-12">
+          <div class="label-container d-flex justify-content-between align-items-center">
+            <label for="excludesSelect${excludeCount}" class="form-label">Excludes ${excludeCount}:</label>
+            <button type="button" class="btn btn-sm btn-danger remove-exclude" title="Remove">
+              <i class="fas fa-trash-alt"></i>
+            </button>
+          </div>
+          <div class="content-container">
+            <select class="form-select exclude-select" id="excludesSelect${excludeCount}" name="excludesSelect${excludeCount}">
+              <option value="" selected disabled>Select Exclude</option>
+              <option value="1">Flight (Round trip flight tickets)</option>
+              <option value="2">Visa Fees</option>
+              <option value="3">Meals (Meals outside the package)</option>
+              <option value="4">Personal Expenses</option>
+              <option value="5">Optional Tours</option>
+              <option value="others">Others</option>
+              <option value="0">— No Excludes —</option>
+            </select>
+            <input type="text" class="form-control custom-exclude-input d-none mt-2" placeholder="Please specify..." />
+          </div>
+        </div>
+      `;
+
+      excludesContainer.appendChild(newRow);
+
+      const selectEl = newRow.querySelector('select');
+      const customInput = newRow.querySelector('.custom-exclude-input');
+      const removeBtn = newRow.querySelector('.remove-exclude');
+
+      selectEl.addEventListener('change', () => {
+        if (selectEl.value === "others") {
+          customInput.classList.remove("d-none");
+          customInput.focus();
+        } else {
+          customInput.classList.add("d-none");
+        }
+
+        updateDisabledExcludeOptions();
+        updateExcludesData();
+      });
+
+      customInput.addEventListener('input', () => {
+        updateExcludesData();
+      });
+
+      removeBtn.addEventListener('click', () => {
+        newRow.remove();
+        excludeCount--;
+        updateExcludeLabels();
+        updateDisabledExcludeOptions();
+        updateExcludesData();
+      });
+
+      updateDisabledExcludeOptions();
+    }
+
+
+    // Initialize the section with one exclude field on page load
+    function initExcludesSection() {
+      addExclude(); // Automatically add the first exclude row
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('addExcludeBtn').addEventListener('click', addExclude);
       initExcludesSection();
     });
   </script>
+
 
   <!-- Voucher Form Submission Script -->
   <script>
@@ -1163,12 +1188,22 @@
     // Function to proceed after entering the template name
     function proceedWithSubmission() {
       const templateName = document.getElementById("templateName")?.value.trim();
+      const submitButton = document.getElementById("submitTour");
 
       if (!templateName) {
-        alert("Please enter a template name before proceeding.");
+        alert("⚠️ Please enter a template name before proceeding.");
         return;
       }
 
+      submitButton.disabled = true;
+
+      // ✅ Call functions to update each global data object
+      if (typeof collectVoucherDetails === 'function') collectVoucherDetails();   // Updates voucherDetails
+      if (typeof generateCardsJSON === 'function') generateCardsJSON();          // Updates cardsJSONData
+      if (typeof updateIncludesData === 'function') updateIncludesData();        // Updates includesData
+      if (typeof updateExcludesData === 'function') updateExcludesData();        // Updates excludesData
+
+      // ✅ Combine all data into a single payload
       const voucherPayload = {
         templateName: templateName,
         voucherDetails: voucherDetails || {},
@@ -1177,9 +1212,9 @@
         excludesData: excludesData || {}
       };
 
-      console.log("Voucher Payload to be submitted:", voucherPayload);
+      console.log("📦 Voucher Payload to be submitted:", voucherPayload);
 
-
+      // ✅ Submit via AJAX
       $.ajax({
         url: "../Employee Section/functions/emp-saveVoucher.php",
         type: "POST",
@@ -1189,25 +1224,29 @@
         dataType: "json",
         success: function (response) {
           submitButton.disabled = false;
+
           if (response.status === "success") {
-            alert("Itinerary successfully created!");
-            window.location.href = "../Employee Section/emp-itinerarytable.php";
+            alert("Voucher saved successfully!");
+            window.location.href = "../Employee Section/emp-vouchertable.php";
           } else {
-            alert("Error saving itinerary: " + response.message);
+            alert("❌ Failed to save itinerary:\n" + response.message);
           }
         },
         error: function (xhr, status, error) {
           submitButton.disabled = false;
-          console.error("AJAX Error:", error);
-          console.error("Response Text:", xhr.responseText);
-          alert("An error occurred while saving the itinerary.");
+          console.error("❌ AJAX Error:", error);
+          console.error("📄 Response Text:", xhr.responseText);
+          alert("❌ A server error occurred while saving the itinerary. Please try again or check the console for details.");
         }
       });
 
+      // ✅ Close the modal after submission
       $("#templateNameModal").modal("hide");
     }
   </script>
 
 
-  </body>
+
+</body>
+
 </html>

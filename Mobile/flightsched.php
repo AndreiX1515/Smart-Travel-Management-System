@@ -10,12 +10,10 @@ error_reporting(E_ALL);
 $email = $_SESSION['email'] ?? ''; // Use null coalescing operator to avoid undefined index
 $accId = $_SESSION['accountId'] ?? '';
 
-
 echo "<script>";
 echo "var sessionData = " . json_encode($_SESSION, JSON_PRETTY_PRINT) . ";";
 echo "console.log('Session Data:', sessionData);";
 echo "</script>";
-
 ?>
 
 <!DOCTYPE html>
@@ -137,7 +135,9 @@ echo "</script>";
                                 while ($row = $result->fetch_assoc()) {
                                     ?>
                                     <div class="flight-card" data-date="<?= htmlspecialchars($row['Start']) ?>">
+
                                         <div class="flight-info">
+
                                             <div class="flight-details">
                                                 <h3><?= htmlspecialchars($row['origin']) ?></h3>
                                             </div>
@@ -197,6 +197,7 @@ echo "</script>";
 
                                             </div>
                                         </div>
+
                                     </div>
                                     <?php
                                 }
