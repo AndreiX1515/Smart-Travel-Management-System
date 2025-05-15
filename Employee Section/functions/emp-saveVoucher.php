@@ -52,22 +52,26 @@ try {
   // 2️⃣ Insert into voucherDetails     
   $stmtDetails = $conn->prepare("INSERT INTO voucherDetails (
       voucherId, sentTo, sentFrom, tourType, attachment,
-      tourPeriodStart, tourPeriodEnd, noOfPax
-  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-
+      tourPeriodStart, tourPeriodEnd, guideName, noOfPax
+  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
   $stmtDetails->execute([
-    $voucherId,
-    $voucherDetails['to'] ?? '',
-    $voucherDetails['from'] ?? '',
-    $voucherDetails['tour'] ?? '',
-    $voucherDetails['attachment'] ?? '',
-    $voucherDetails['periodStart'] ?? null,
-    $voucherDetails['periodEnd'] ?? null,
-    $voucherDetails['paxCount'] ?? 0
+      $voucherId,
+      $voucherDetails['to'] ?? '',
+      $voucherDetails['from'] ?? '',
+      $voucherDetails['tour'] ?? '',
+      $voucherDetails['attachment'] ?? '',
+      $voucherDetails['periodStart'] ?? null,
+      $voucherDetails['periodEnd'] ?? null,
+      $voucherDetails['guide'] ?? 0,
+      $voucherDetails['paxCount'] ?? 0
   ]);
 
   $cardsJSONData = $payload['cardsJSONData'] ?? [];
+
+
+
+
 
   // 3️⃣ Insert into voucherHotels (loop through cardsJSONData)
   if (!empty($cardsJSONData)) {

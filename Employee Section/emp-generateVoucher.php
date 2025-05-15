@@ -15,7 +15,6 @@
   <!-- WickedPicker JS -->
   <script src="https://cdn.jsdelivr.net/npm/wickedpicker@0.4.1/dist/wickedpicker.min.js"></script>
 
-
 </head>
 
 <body>
@@ -172,6 +171,7 @@
           </div>
         </div>
 
+        <!-- Date and Hotels Title Card -->
         <div class="card">
           <div
             class="card-header bg-secondary card-title first-wrapper d-flex justify-content-between align-items-center text-white">
@@ -197,7 +197,9 @@
           <div class="card-body">
             <!-- Guides Row -->
             <div class="row">
+
               <div class="columns col-md-6">
+
                 <div class="column-header">
                   <label for="flightDate">Guide
                     <span class="text-danger"> *</span>
@@ -205,13 +207,26 @@
                 </div>
 
                 <div class="form-group">
-                  <select class="form-select" id="packageSelect" name="packageSelect" required>
+                  <select class="form-select" id="guideSelect" name="guideSelect" required>
                     <option selected disabled>Select Guide</option>
-                    <option value="John Kim<">John Kim</option>
-                    <option value="Anna Lee">Anna Lee</option>
-                    <option value="Minho Park">Minho Park</option>
+                    <?php
+                    $sql = "SELECT id, fName, mName, lName FROM employee WHERE branch = 'Korea'";
+                    $result = $conn->query($sql);
+                    if ($result && $result->num_rows > 0) {
+                      while ($row = $result->fetch_assoc()) {
+                        $employeeId = htmlspecialchars($row['id']);
+                        $fullName = htmlspecialchars(trim($row['fName'] . ' ' . $row['mName'] . ' ' . $row['lName']));
+                        echo "<option value=\"$employeeId\">$fullName</option>";
+                      }
+                    } else {
+                      echo "<option disabled>No guides available</option>";
+                    }
+                    ?>
                   </select>
                 </div>
+
+
+
               </div>
             </div>
           </div>
@@ -508,9 +523,9 @@
 
   </div>
 
+
   <!-- Modal -->
-  <div class="modal fade" id="templateNameModal" tabindex="-1" aria-labelledby="templateNameModalLabel"
-    aria-hidden="true">
+  <div class="modal fade" id="templateNameModal" tabindex="-1" aria-labelledby="templateNameModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -518,13 +533,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <p>Please enter a template name before proceeding:</p>
-
-          <!-- Template Name Input -->
-          <div class="mt-3">
-            <label for="templateName" class="form-label">Template Name:</label>
-            <input type="text" class="form-control" id="templateName" placeholder="Enter template name">
-          </div>
+          <input type="text" id="templateName" class="form-control" placeholder="Template Name">
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -616,7 +625,8 @@
         attachment: document.getElementById("voucherAttachment").value,
         periodStart: document.getElementById("voucherPeriodStart").value,
         periodEnd: document.getElementById("voucherPeriodEnd").value,
-        paxCount: document.getElementById("voucherPaxCount").value
+        paxCount: document.getElementById("voucherPaxCount").value,
+        guide: document.getElementById("guideSelect").value
       };
 
       console.log("Voucher Details JSON:", JSON.stringify(voucherDetails, null, 2));
@@ -1178,72 +1188,80 @@
     });
   </script>
 
-
-  <!-- Voucher Form Submission Script -->
   <script>
-    document.getElementById("submitTour").addEventListener("click", function () {
-      $("#templateNameModal").modal("show");
+  // Wait for DOM to be ready
+  document.addEventListener("DOMContentLoaded", function () {
+    // When Submit Voucher button is clicked
+    const submitBtn = document.getElementById("submitTour");
+    if (submitBtn) {
+      submitBtn.addEventListener("click", function () {
+        const modal = new bootstrap.Modal(document.getElementById("templateNameModal"));
+        modal.show();
+      });
+    }
+  });
+
+  // Function to handle actual submission
+  function proceedWithSubmission() {
+    const templateName = document.getElementById("templateName")?.value.trim();
+    const submitButton = document.getElementById("submitTour");
+
+    if (!templateName) {
+      alert("⚠️ Please enter a template name before proceeding.");
+      return;
+    }
+
+    // Disable to prevent double submit
+    if (submitButton) submitButton.disabled = true;
+
+    // Call your data collection functions if they exist
+    if (typeof collectVoucherDetails === 'function') collectVoucherDetails();
+    if (typeof generateCardsJSON === 'function') generateCardsJSON();
+    if (typeof updateIncludesData === 'function') updateIncludesData();
+    if (typeof updateExcludesData === 'function') updateExcludesData();
+
+    const voucherPayload = {
+      templateName: templateName,
+      voucherDetails: voucherDetails || {},
+      cardsJSONData: cardsJSONData || {},
+      includesData: includesData || {},
+      excludesData: excludesData || {}
+    };
+
+    console.log("📦 Voucher Payload to be submitted:", voucherPayload);
+
+    $.ajax({
+      url: "../Employee Section/functions/emp-saveVoucher.php",
+      type: "POST",
+      data: {
+        voucherPayload: JSON.stringify(voucherPayload)
+      },
+      dataType: "json",
+      success: function (response) {
+        if (submitButton) submitButton.disabled = false;
+
+        if (response.status === "success") {
+          alert("✅ Voucher saved successfully!");
+          window.location.href = "../Employee Section/emp-vouchertable.php";
+        } else {
+          alert("❌ Failed to save itinerary:\n" + response.message);
+        }
+      },
+      error: function (xhr, status, error) {
+        if (submitButton) submitButton.disabled = false;
+        console.error("❌ AJAX Error:", error);
+        console.error("📄 Response Text:", xhr.responseText);
+        alert("❌ A server error occurred while saving the itinerary.");
+      }
     });
 
-    // Function to proceed after entering the template name
-    function proceedWithSubmission() {
-      const templateName = document.getElementById("templateName")?.value.trim();
-      const submitButton = document.getElementById("submitTour");
+    // Hide modal
+    const modalElement = document.getElementById("templateNameModal");
+    const modalInstance = bootstrap.Modal.getInstance(modalElement);
+    if (modalInstance) modalInstance.hide();
+  }
+</script>
 
-      if (!templateName) {
-        alert("⚠️ Please enter a template name before proceeding.");
-        return;
-      }
-
-      submitButton.disabled = true;
-
-      // ✅ Call functions to update each global data object
-      if (typeof collectVoucherDetails === 'function') collectVoucherDetails();   // Updates voucherDetails
-      if (typeof generateCardsJSON === 'function') generateCardsJSON();          // Updates cardsJSONData
-      if (typeof updateIncludesData === 'function') updateIncludesData();        // Updates includesData
-      if (typeof updateExcludesData === 'function') updateExcludesData();        // Updates excludesData
-
-      // ✅ Combine all data into a single payload
-      const voucherPayload = {
-        templateName: templateName,
-        voucherDetails: voucherDetails || {},
-        cardsJSONData: cardsJSONData || {},
-        includesData: includesData || {},
-        excludesData: excludesData || {}
-      };
-
-      console.log("📦 Voucher Payload to be submitted:", voucherPayload);
-
-      // ✅ Submit via AJAX
-      $.ajax({
-        url: "../Employee Section/functions/emp-saveVoucher.php",
-        type: "POST",
-        data: {
-          voucherPayload: JSON.stringify(voucherPayload)
-        },
-        dataType: "json",
-        success: function (response) {
-          submitButton.disabled = false;
-
-          if (response.status === "success") {
-            alert("Voucher saved successfully!");
-            window.location.href = "../Employee Section/emp-vouchertable.php";
-          } else {
-            alert("❌ Failed to save itinerary:\n" + response.message);
-          }
-        },
-        error: function (xhr, status, error) {
-          submitButton.disabled = false;
-          console.error("❌ AJAX Error:", error);
-          console.error("📄 Response Text:", xhr.responseText);
-          alert("❌ A server error occurred while saving the itinerary. Please try again or check the console for details.");
-        }
-      });
-
-      // ✅ Close the modal after submission
-      $("#templateNameModal").modal("hide");
-    }
-  </script>
 
 
 

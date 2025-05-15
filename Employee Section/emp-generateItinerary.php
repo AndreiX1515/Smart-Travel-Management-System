@@ -307,6 +307,9 @@
         </div>
     </div>
 
+
+
+
     <!-- Modal -->
     <div class="modal fade" id="templateNameModal" tabindex="-1" aria-labelledby="templateNameModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -332,10 +335,9 @@
         </div>
     </div>
 
-
-
     <?php include '../Employee Section/includes/emp-scripts.php' ?>
 
+    
     <!-- Datepicker Script -->
     <script>
         $(document).ready(function() {
