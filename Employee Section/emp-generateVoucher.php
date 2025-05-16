@@ -60,6 +60,7 @@
           </div>
 
           <div class="card-body">
+
             <div class="row">
               <!-- To -->
               <div class="columns col-md-4">
@@ -129,7 +130,7 @@
 
             <div class="row mt-3">
               <!-- Attachment -->
-              <div class="columns col-md-3">
+              <div class="columns col-md-4">
                 <label for="voucherAttachment">Attachment <span class="text-danger">*</span></label>
                 <select class="form-select" id="voucherAttachment" name="voucherAttachment" required>
                   <option value="" selected disabled>Select Attachment</option>
@@ -156,49 +157,15 @@
               </div>
 
               <!-- Number of Pax -->
-              <div class="columns col-md-2">
+              <div class="columns col-md-4">
                 <label for="voucherPaxCount">No. of Pax <span class="text-danger">*</span></label>
                 <input type="text" class="form-control" id="voucherPaxCount" required>
               </div>
             </div>
-          </div>
-        </div>
 
-        <!-- Tour Condition Title Card -->
-        <div class="card">
-          <div class="card-header bg-primary card-title">
-            <h5>Tour Condition</h5>
-          </div>
-        </div>
-
-        <!-- Date and Hotels Title Card -->
-        <div class="card">
-          <div
-            class="card-header bg-secondary card-title first-wrapper d-flex justify-content-between align-items-center text-white">
-            <h5 class="mb-0">Date & Hotels</h5>
-            <button type="button" class="btn btn-success fw-bold" onclick="addCard()">
-              <i class="fas fa-plus"></i>
-            </button>
-          </div>
-        </div>
-
-        <!-- Container for Date & Hotel Cards -->
-        <div id="cardsContainer"></div>
-
-        <!-- Other Information Title Card -->
-        <div class="card">
-          <div class="card-header bg-secondary">
-            <h5>Other Informations</h5>
-          </div>
-        </div>
-
-        <!-- Select Guide -->
-        <div class="card">
-          <div class="card-body">
-            <!-- Guides Row -->
             <div class="row">
 
-              <div class="columns col-md-6">
+              <div class="columns col-md-8">
 
                 <div class="column-header">
                   <label for="flightDate">Guide
@@ -229,7 +196,27 @@
 
               </div>
             </div>
+
           </div>
+        </div>
+
+        <!-- Date and Hotels Title Card -->
+        <div class="card">
+          <div
+            class="card-header bg-secondary card-title first-wrapper d-flex justify-content-between align-items-center text-white">
+            <h5 class="mb-0">Date & Hotels</h5>
+            <button type="button" class="btn btn-success fw-bold" onclick="addCard()">
+              <i class="fas fa-plus"></i>
+            </button>
+          </div>
+
+          <div class="card-body">
+
+            <!-- Container for Date & Hotel Cards -->
+            <div id="cardsContainer"></div>
+
+          </div>
+
         </div>
 
         <!-- Air Schedule -->
@@ -240,26 +227,24 @@
 
           <div class="card-body">
 
-            <!-- Air Schedule -->
+            <!-- Departure #1 -->
             <div class="row">
               <div class="main-header">
                 <div class="header-container">
-                  <h6>Arrival</h6>
+                  <h6>Departure #1</h6>
                 </div>
               </div>
 
               <div class="columns col-md-2">
                 <div class="column-header">
-                  <label for="arrivalDate">Date <span class="text-danger">*</span></label>
+                  <label for="departure1Date">Date <span class="text-danger">*</span></label>
                 </div>
                 <div class="datepicker-wrapper">
                   <div class="form-group">
-                    <div class="date-range-inputs-wrapper">
-                      <div class="input-with-icon">
-                        <input type="text" class="datepicker" id="arrivalDate" name="arrivalDate"
-                          placeholder="Arrival Date" readonly>
-                        <i class="fas fa-calendar-alt calendar-icon"></i>
-                      </div>
+                    <div class="input-with-icon">
+                      <input type="text" class="datepicker" id="departure1Date" name="departure1Date"
+                        placeholder="Departure Date" readonly>
+                      <i class="fas fa-calendar-alt calendar-icon"></i>
                     </div>
                   </div>
                 </div>
@@ -267,10 +252,10 @@
 
               <div class="columns col-md-2">
                 <div class="column-header">
-                  <label for="arrivalFlight">Flight <span class="text-danger">*</span></label>
+                  <label for="departure1Flight">Flight <span class="text-danger">*</span></label>
                 </div>
                 <div class="form-group">
-                  <select class="form-select" id="arrivalFlight" name="arrivalFlight" required>
+                  <select class="form-select" id="departure1Flight" name="departure1Flight" required>
                     <option selected disabled>Select Flight</option>
                     <option value="KE123">KE123</option>
                     <option value="OZ456">OZ456</option>
@@ -281,25 +266,21 @@
 
               <div class="columns col-md-4">
                 <div class="column-header">
-                  <label for="arrivalOrigin">Origin - Destination <span class="text-danger">*</span></label>
+                  <label>Origin - Destination <span class="text-danger">*</span></label>
                 </div>
                 <div class="datepicker-wrapper d-flex align-items-center">
                   <div class="form-group">
-                    <select class="form-select" id="arrivalOrigin" name="arrivalOrigin" required>
+                    <select class="form-select" id="departure1Origin" name="departure1Origin" required>
                       <option selected disabled>Origin</option>
                       <option value="MNL">Manila</option>
                       <option value="ICN">Incheon</option>
-                      <option value="NRT">Narita</option>
-                      <option value="LAX">Los Angeles</option>
                     </select>
                   </div>
                   <div class="dash-separator px-2">→</div>
                   <div class="form-group">
-                    <select class="form-select" id="arrivalDestination" name="arrivalDestination" required>
+                    <select class="form-select" id="departure1Destination" name="departure1Destination" required>
                       <option selected disabled>Destination</option>
                       <option value="MNL">Manila</option>
-                      <option value="CEB">Cebu</option>
-                      <option value="BKK">Bangkok</option>
                       <option value="ICN">Incheon</option>
                     </select>
                   </div>
@@ -308,44 +289,43 @@
 
               <div class="columns col-md-4">
                 <div class="column-header">
-                  <label for="arrivalTimeStart">Arrival Time (Start - End) <span class="text-danger">*</span></label>
+                  <label>Departure (to Origin) Time - Arrival (to Destination) Time <span
+                      class="text-danger">*</span></label>
                 </div>
                 <div class="form-group d-flex flex-row gap-2">
                   <div class="input-with-icon timepicker">
-                    <input type="text" class="timepicker form-control-sm" id="arrivalTimeStart" name="arrivalTimeStart"
-                      placeholder="Pick a time" readonly required>
+                    <input type="text" class="timepicker form-control-sm" id="departure1DepartureTime"
+                      name="departure1DepartureTime" placeholder="Departure Time" readonly required>
                     <i class="fas fa-clock calendar-icon"></i>
                   </div>
                   <span class="align-self-center">to</span>
                   <div class="input-with-icon timepicker">
-                    <input type="text" class="timepicker form-control-sm" id="arrivalTimeEnd" name="arrivalTimeEnd"
-                      placeholder="Pick a time" readonly required>
+                    <input type="text" class="timepicker form-control-sm" id="departure1ArrivalTime"
+                      name="departure1ArrivalTime" placeholder="Arrival Time" readonly required>
                     <i class="fas fa-clock calendar-icon"></i>
                   </div>
                 </div>
               </div>
             </div>
 
-            <!-- Destination Section -->
+            <!-- Departure #2 -->
             <div class="row">
               <div class="main-header">
                 <div class="header-container">
-                  <h6>Destination</h6>
+                  <h6>Departure #2</h6>
                 </div>
               </div>
 
               <div class="columns col-md-2">
                 <div class="column-header">
-                  <label for="destinationDate">Date <span class="text-danger">*</span></label>
+                  <label for="departure2Date">Date <span class="text-danger">*</span></label>
                 </div>
                 <div class="datepicker-wrapper">
                   <div class="form-group">
-                    <div class="date-range-inputs-wrapper">
-                      <div class="input-with-icon">
-                        <input type="text" class="datepicker" id="destinationDate" name="destinationDate"
-                          placeholder="Destination Date" readonly>
-                        <i class="fas fa-calendar-alt calendar-icon"></i>
-                      </div>
+                    <div class="input-with-icon">
+                      <input type="text" class="datepicker" id="departure2Date" name="departure2Date"
+                        placeholder="Departure Date" readonly>
+                      <i class="fas fa-calendar-alt calendar-icon"></i>
                     </div>
                   </div>
                 </div>
@@ -353,10 +333,10 @@
 
               <div class="columns col-md-2">
                 <div class="column-header">
-                  <label for="destinationFlight">Flight <span class="text-danger">*</span></label>
+                  <label for="departure2Flight">Flight <span class="text-danger">*</span></label>
                 </div>
                 <div class="form-group">
-                  <select class="form-select" id="destinationFlight" name="destinationFlight" required>
+                  <select class="form-select" id="departure2Flight" name="departure2Flight" required>
                     <option selected disabled>Select Flight</option>
                     <option value="KE321">KE321</option>
                     <option value="OZ654">OZ654</option>
@@ -367,21 +347,20 @@
 
               <div class="columns col-md-4">
                 <div class="column-header">
-                  <label for="destinationOrigin">Origin - Destination <span class="text-danger">*</span></label>
+                  <label>Origin - Destination <span class="text-danger">*</span></label>
                 </div>
                 <div class="datepicker-wrapper d-flex align-items-center">
                   <div class="form-group">
-                    <select class="form-select" id="destinationOrigin" name="destinationOrigin" required>
+                    <select class="form-select" id="departure2Origin" name="departure2Origin" required>
                       <option selected disabled>Origin</option>
                       <option value="ICN">Incheon</option>
                       <option value="MNL">Manila</option>
                       <option value="CEB">Cebu</option>
-                      <option value="BKK">Bangkok</option>
                     </select>
                   </div>
                   <div class="dash-separator px-2">→</div>
                   <div class="form-group">
-                    <select class="form-select" id="destinationArrival" name="destinationArrival" required>
+                    <select class="form-select" id="departure2Destination" name="departure2Destination" required>
                       <option selected disabled>Destination</option>
                       <option value="MNL">Manila</option>
                       <option value="ICN">Incheon</option>
@@ -394,19 +373,19 @@
 
               <div class="columns col-md-4">
                 <div class="column-header">
-                  <label for="departureTimeStart">Departure Time (Start - End) <span
+                  <label>Departure (to Origin) Time - Arrival (to Destination) Time <span
                       class="text-danger">*</span></label>
                 </div>
                 <div class="form-group d-flex flex-row gap-2">
                   <div class="input-with-icon timepicker">
-                    <input type="text" class="timepicker form-control-sm" id="departureTimeStart"
-                      name="departureTimeStart" placeholder="Pick a time" readonly required>
+                    <input type="text" class="timepicker form-control-sm" id="departure2DepartureTime"
+                      name="departure2DepartureTime" placeholder="Departure Time" readonly required>
                     <i class="fas fa-clock calendar-icon"></i>
                   </div>
                   <span class="align-self-center">to</span>
                   <div class="input-with-icon timepicker">
-                    <input type="text" class="timepicker form-control-sm" id="departureTimeEnd" name="departureTimeEnd"
-                      placeholder="Pick a time" readonly required>
+                    <input type="text" class="timepicker form-control-sm" id="departure2ArrivalTime"
+                      name="departure2ArrivalTime" placeholder="Arrival Time" readonly required>
                     <i class="fas fa-clock calendar-icon"></i>
                   </div>
                 </div>
@@ -415,102 +394,33 @@
 
           </div>
         </div>
-
-        <!-- Guide Meeting
-        <div class="card">
-          <div class="card-header bg-secondary">
-            <h5>Guide Meeting</h5>
-          </div>
-
-          <div class="card-body">
-       
-            <div class="row">
-
-             
-              <div class="columns col-md-2">
-                <div class="column-header">
-                  <label for="PeriodStartDate">Date <span class="text-danger"> *</span></label>
-                </div>
-                <div class="datepicker-wrapper">
-                  <div class="form-group">
-                    <div class="date-range-inputs-wrapper">
-                      <div class="input-with-icon datepicker">
-                        <input type="text" class="datepicker" placeholder="Pick a date" readonly>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="columns col-md-2">
-                <div class="column-header">
-                  <label for="flightTime">
-                    Time <small class="time-format">(24H Format)</small>
-                    <span class="text-danger"> *</span>
-                  </label>
-                </div>
-
-
-
-                <div class="form-group">
-                  <div class="date-range-inputs-wrapper">
-                    <div class="input-with-icon timepicker">
-                      <input type="text" class="timepicker" placeholder="Pick a time" readonly>
-                      <i class="fas fa-clock calendar-icon"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-            
-              <div class="columns col-md-8">
-                <div class="column-header">
-                  <label for="packageSelect">Place
-                    <span class="text-danger"> *</span>
-                  </label>
-                </div>
-
-                <div class="form-group">
-                  <select class="form-select" id="packageSelect" name="packageSelect" required>
-                    <option selected disabled>Select Flight</option>
-                  </select>
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </div> -->
 
         <!-- Includes Header -->
         <div class="card includes-header-card">
           <div class="card-header bg-secondary card-title includes-wrapper">
             <h5>Includes</h5>
             <button id="addIncludeBtn" class="add-button btn btn-primary add-exclude-button">+</button>
-            <!-- Unique ID -->
           </div>
-        </div>
 
-        <!-- Include Cards Container -->
-        <div class="card include-cards">
           <div class="card-body" id="includesContainer">
             <!-- JS will generate .row elements here directly -->
           </div>
+
         </div>
 
         <!-- Excludes -->
         <div class="card excludes-header-card">
           <div class="card-header bg-secondary card-title excludes-wrapper">
             <h5>Excludes</h5>
-            <button id="addExcludeBtn" class="btn btn-primary">+</button>
+            <button id="addExcludeBtn" class="add-button btn btn-primary add-exclude-button">+</button>
             <!-- Add Exclude Button -->
           </div>
-        </div>
 
-        <div class="card excludes-cards">
           <div class="card-body">
             <!-- Excludes Rows (Dynamically added) -->
             <div id="excludesContainer"></div>
           </div>
+
         </div>
 
       </div>
@@ -523,9 +433,9 @@
 
   </div>
 
-
   <!-- Modal -->
-  <div class="modal fade" id="templateNameModal" tabindex="-1" aria-labelledby="templateNameModalLabel" aria-hidden="true">
+  <div class="modal fade" id="templateNameModal" tabindex="-1" aria-labelledby="templateNameModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -612,10 +522,12 @@
   <script>
     let voucherDetails = {};  // Voucher Details (Details Card)
     let cardsJSONData = {};   // Date and Hotels
+    let airScheduleDetails = {};      // Air Schedule
     let includesData = {};    // Includes
     let excludesData = {};    // Excludes
   </script>
 
+  <!-- Voucher Details -->
   <script>
     function updateVoucherDetails() {
       voucherDetails = {
@@ -633,151 +545,12 @@
     }
   </script>
 
-  <!-- Date and Hotel Section Functions and JSON generation Script -->
   <script>
-    let cardCount = 0;
-    const maxCards = 3; // Maximum number of cards allowed
-
-    document.addEventListener("DOMContentLoaded", function () {
-      addCard(); // Load the first card
-    });
-
-    function addCard() {
-      // Check if the card count is less than the max allowed cards
-      if (cardCount >= maxCards) {
-        alert("You can only add a maximum of 3 cards.");
-        return; // Stop adding more cards
-      }
-
-      cardCount++;
-      // console.log(`Adding card #${cardCount}`);
-
-      const container = document.getElementById('cardsContainer');
-      const card = document.createElement('div');
-      card.className = 'card mt-1';
-      card.setAttribute('data-card-id', cardCount);
-
-      card.innerHTML = `
-        <div class="card-header bg-secondary d-flex justify-content-between align-items-center text-white">
-          <h5 class="mb-0">Date & Hotel #${cardCount}</h5>
-          <button type="button" class="btn btn-sm btn-danger remove-card-btn">
-            <i class="fas fa-trash-alt"></i>
-          </button>
-        </div>
-        <div class="card-body tour-content">
-          <div class="row">
-            <div class="columns col-md-2">
-              <label>Date Range: <span class="text-danger">*</span></label>
-              <div class="form-group input-with-icon">
-                <input type="text" class="form-control datepicker" id="startDate${cardCount}" placeholder="Start" readonly>
-                <i class="fas fa-calendar-alt calendar-icon"></i>
-              </div>
-            </div>
-
-            <div class="columns col-md-2">
-              <label>&nbsp;</label>
-              <div class="form-group input-with-icon">
-                <input type="text" class="form-control datepicker" id="endDate${cardCount}" placeholder="End" readonly>
-                <i class="fas fa-calendar-alt calendar-icon"></i>
-              </div>
-            </div>
-
-            <div class="columns col-md-2">
-              <label>No. of Nights: <span class="text-danger">*</span></label>
-              <div class="form-group input-with-icon">
-                <input type="number" class="form-control" id="nightCount${cardCount}" placeholder="Enter number of nights" min="1">
-                <i class="fas fa-moon calendar-icon"></i>
-              </div>
-            </div>
-
-            <div class="columns col-md-3">
-              <label>City: <span class="text-danger">*</span></label>
-              <div class="form-group">
-                <select class="form-select" id="city${cardCount}" required>
-                  <option value="" disabled selected>Select City</option>
-                  <option value="Seoul">Seoul</option>
-                  <option value="Busan">Busan</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="columns col-md-3">
-              <label>Hotel: <span class="text-danger">*</span></label>
-              <div class="form-group">
-                <select class="form-select" id="hotel${cardCount}" required>
-                  <option value="" disabled selected>Select Hotel</option>
-                  <option value="Shilla Stay">Shilla Stay</option>
-                  <option value="Hotel PJ Myeongdong">Hotel PJ Myeongdong</option>
-                  <option value="ENA Suite Hotel Namdaemun">ENA Suite Hotel Namdaemun</option>
-                  <option value="Stanford Hotel Myeongdong">Stanford Hotel Myeongdong</option>
-                </select>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      `;
-
-      container.appendChild(card);
-
-      // Remove card logic
-      card.querySelector('.remove-card-btn').addEventListener('click', () => {
-        card.remove();
-        updateCardHeaders();
-        generateCardsJSON();
-      });
-
-      // Flatpickr for date pickers
-      flatpickr(`#startDate${cardCount}`, { dateFormat: "Y-m-d" });
-      flatpickr(`#endDate${cardCount}`, { dateFormat: "Y-m-d" });
-
-      // Update JSON whenever a card is added
-      generateCardsJSON();
-    }
-
-    function updateCardHeaders() {
-      const cards = document.querySelectorAll('#cardsContainer .card');
-      cards.forEach((card, index) => {
-        const header = card.querySelector('h5');
-        if (header) {
-          header.textContent = `Date & Hotel #${index + 1}`;
-        }
-      });
-    }
-
-    function generateCardsJSON() {
-      const cards = document.querySelectorAll('#cardsContainer .card');
-      const jsonData = {};
-
-      cards.forEach((card, index) => {
-        const cardId = card.getAttribute('data-card-id');
-
-        const cardDetails = {
-          startDate: document.getElementById(`startDate${cardId}`)?.value || '',
-          endDate: document.getElementById(`endDate${cardId}`)?.value || '',
-          nights: document.getElementById(`nightCount${cardId}`)?.value || '',
-          city: document.getElementById(`city${cardId}`)?.value || '',
-          hotel: document.getElementById(`hotel${cardId}`)?.value || ''
-        };
-
-        jsonData[`dateAndHotel${index + 1}`] = cardDetails;
-      });
-
-      // Assign to the global variable
-      cardsJSONData = jsonData;
-
-      // console.log("Sectioned Cards JSON:", JSON.stringify(cardsJSONData, null, 2));
-    }
-
-  </script>
-
-  <!-- JSON generation for Air Details and Guide Meeting -->
-  <script>
-    function getAirDetails() {
+    function getAirScheduleDetailsWithGuideMeeting() {
       // Utility: Add minutes to a date object
       const addMinutes = (date, minutes) => new Date(date.getTime() + minutes * 60000);
 
-      // Utility: Parse time string "HH:mm" to a Date object (using today’s date)
+      // Utility: Parse time string "HH:mm" to a Date object
       const parseTimeStringToDate = (timeString) => {
         const [hours, minutes] = timeString.split(':').map(Number);
         const now = new Date();
@@ -788,55 +561,209 @@
         return now;
       };
 
-      // Parse and adjust guide meeting time
-      const arrivalTimeStartValue = document.getElementById('arrivalTimeStart').value;
+      // Guide Meeting Info
+      const arrivalTimeStartValue = document.getElementById('departure1ArrivalTime').value;
       const currentTime = parseTimeStringToDate(arrivalTimeStartValue);
       const updatedTime = addMinutes(currentTime, 15);
 
-      // Format time to "HH:mm"
       const formattedTime = `${updatedTime.getHours().toString().padStart(2, '0')}:${updatedTime.getMinutes().toString().padStart(2, '0')}`;
+      const selectedPlace = document.getElementById('departure1Destination').value;
 
-      // Get selected guide meeting place
-      const selectedPlace = document.getElementById('arrivalDestination').value;
-
-      // Define selectable places
       const placeOptions = {
         'ICN': 'Incheon Airport (Terminal 1)',
         'Other': 'Custom Place'
-        // Add more options if needed
       };
 
       const guideMeetingPlace = placeOptions[selectedPlace] || 'Custom Place';
 
-      // Construct the air details object
-      const airDetails = {
-        arrival: {
-          date: document.getElementById('arrivalDate').value,
-          flight: document.getElementById('arrivalFlight').value,
-          origin: document.getElementById('arrivalOrigin').value,
-          destination: document.getElementById('arrivalDestination').value,
-          timeStart: arrivalTimeStartValue,
-          timeEnd: document.getElementById('arrivalTimeEnd').value
+      // Construct unified structure
+      const airScheduleDetails = {
+        departure1: {
+          flightDate: document.getElementById("departure1Date").value,
+          flightNumber: document.getElementById("departure1Flight").value,
+          origin: document.getElementById("departure1Origin").value,
+          destination: document.getElementById("departure1Destination").value,
+          departureTime: document.getElementById("departure1DepartureTime").value,
+          arrivalTime: document.getElementById("departure1ArrivalTime").value
         },
-        destination: {
-          date: document.getElementById('destinationDate').value,
-          flight: document.getElementById('destinationFlight').value,
-          origin: document.getElementById('destinationOrigin').value,
-          destination: document.getElementById('destinationArrival').value,
-          timeStart: document.getElementById('departureTimeStart').value,
-          timeEnd: document.getElementById('departureTimeEnd').value
+        departure2: {
+          flightDate: document.getElementById("departure2Date").value,
+          flightNumber: document.getElementById("departure2Flight").value,
+          origin: document.getElementById("departure2Origin").value,
+          destination: document.getElementById("departure2Destination").value,
+          departureTime: document.getElementById("departure2DepartureTime").value,
+          arrivalTime: document.getElementById("departure2ArrivalTime").value
         },
         guideMeeting: {
-          date: document.getElementById('arrivalDate').value,
+          date: document.getElementById("departure1Date").value,
           time: formattedTime,
           place: guideMeetingPlace
         }
       };
 
-      console.log("Air Details JSON:", airDetails);
-      return airDetails;
+      console.log("Unified Air Schedule with Guide Meeting:", airScheduleDetails);
+      return airScheduleDetails;
     }
   </script>
+
+
+
+  <!-- Date and Hotel Section Functions and JSON generation Script -->
+  <script>
+    let cardCount = 0;
+    const maxCards = 3;
+
+    document.addEventListener("DOMContentLoaded", function () {
+      // Add 2 cards by default on load
+      addCard();
+      addCard();
+    });
+
+    document.getElementById('addCardBtn').addEventListener('click', addCard);
+
+    function addCard() {
+      if (cardCount >= maxCards) {
+        alert("You can only add a maximum of 3 cards.");
+        return;
+      }
+
+      cardCount++;
+      const container = document.getElementById('cardsContainer');
+      const card = document.createElement('div');
+      card.className = 'mb-4';
+      card.setAttribute('data-card-id', cardCount);
+
+      card.innerHTML = `
+        <div class="col-12 mb-3 mt-3">
+          <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
+            <div>
+              <h6 class="fw-semibold text-uppercase text-muted m-0">Date and Hotels #${cardCount}</h6>
+            </div>
+            <div>
+              <button type="button" class="btn btn-sm text-white bg-danger border-0 px-2 py-1 remove-card-btn" title="Delete">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-4 align-items-end">
+
+          <!-- Date Range -->
+          <div class="col-12 col-md-5">
+            <label class="form-label">Date</label>
+            <div class="d-flex gap-2 align-items-center">
+              <div class="position-relative w-100">
+                <input type="text" class="form-control datepicker" id="PeriodStartDate${cardCount}" placeholder="Start" readonly>
+                <i class="fas fa-calendar-alt position-absolute text-muted" style="right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none;"></i>
+              </div>
+              <span class="mx-1 text-muted">→</span>
+              <div class="position-relative w-100">
+                <input type="text" class="form-control datepicker" id="PeriodEndDate${cardCount}" placeholder="End" readonly>
+                <i class="fas fa-calendar-alt position-absolute text-muted" style="right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none;"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- No. of Nights -->
+          <div class="col-6 col-md-2">
+            <label for="nights${cardCount}" class="form-label">No. of Nights</label>
+            <input type="text" class="form-control" id="nights${cardCount}" name="nights${cardCount}" value="">
+          </div>
+
+          <!-- City -->
+          <div class="col-6 col-md-2">
+            <label for="city${cardCount}" class="form-label">City</label>
+            <select class="form-control" id="city${cardCount}" name="city${cardCount}">
+              <option value="" selected disabled>Select City</option>
+              <option value="New York">New York</option>
+              <option value="Paris">Paris</option>
+              <option value="Tokyo">Tokyo</option>
+            </select>
+          </div>
+
+          <!-- Hotel -->
+          <div class="col-12 col-md-3">
+            <label for="hotel${cardCount}" class="form-label">Hotel</label>
+            <select class="form-control" id="hotel${cardCount}" name="hotel${cardCount}">
+              <option value="" selected disabled>Select Hotel</option>
+              <option value="Hotel A">Hotel A</option>
+              <option value="Hotel B">Hotel B</option>
+              <option value="Hotel C">Hotel C</option>
+            </select>
+          </div>
+
+        </div>
+      `;
+
+      container.appendChild(card);
+
+      // Initialize flatpickr on the new date inputs
+      flatpickr(`#PeriodStartDate${cardCount}`, { dateFormat: "Y-m-d" });
+      flatpickr(`#PeriodEndDate${cardCount}`, { dateFormat: "Y-m-d" });
+
+      // Attach delete button event
+      card.querySelector('.remove-card-btn').addEventListener('click', () => {
+        card.remove();
+        cardCount--;
+        updateCardHeaders();
+        generateCardsJSON();
+      });
+
+      generateCardsJSON();
+    }
+
+    function updateCardHeaders() {
+      const cards = document.querySelectorAll('#cardsContainer > .mb-4');
+      cards.forEach((card, index) => {
+        const header = card.querySelector('h6');
+        if (header) {
+          header.textContent = `Date and Hotels #${index + 1}`;
+          card.setAttribute('data-card-id', index + 1);
+
+          // Also update IDs of inputs/selects inside this card accordingly to keep consistent
+          const startDate = card.querySelector(`#PeriodStartDate${index + 2}`) || card.querySelector(`#PeriodStartDate${index + 1}`);
+          const endDate = card.querySelector(`#PeriodEndDate${index + 2}`) || card.querySelector(`#PeriodEndDate${index + 1}`);
+          const nights = card.querySelector(`#nights${index + 2}`) || card.querySelector(`#nights${index + 1}`);
+          const city = card.querySelector(`#city${index + 2}`) || card.querySelector(`#city${index + 1}`);
+          const hotel = card.querySelector(`#hotel${index + 2}`) || card.querySelector(`#hotel${index + 1}`);
+
+          // Update all input/select IDs and names inside the card accordingly
+          card.querySelectorAll('input, select').forEach(input => {
+            const baseId = input.id.replace(/[0-9]+$/, '');
+            input.id = baseId + (index + 1);
+            if (input.name) {
+              input.name = baseId + (index + 1);
+            }
+          });
+        }
+      });
+    }
+
+    function generateCardsJSON() {
+      const cards = document.querySelectorAll('#cardsContainer > .mb-4');
+      const jsonData = {};
+
+      cards.forEach((card, index) => {
+        const cardId = index + 1; // use updated numbering
+
+        const cardDetails = {
+          startDate: document.getElementById(`PeriodStartDate${cardId}`)?.value || '',
+          endDate: document.getElementById(`PeriodEndDate${cardId}`)?.value || '',
+          nights: document.getElementById(`nights${cardId}`)?.value || '',
+          city: document.getElementById(`city${cardId}`)?.value || '',
+          hotel: document.getElementById(`hotel${cardId}`)?.value || ''
+        };
+
+        jsonData[`dateAndHotel${cardId}`] = cardDetails;
+      });
+
+      // You can use cardsJSONData later
+      window.cardsJSONData = jsonData;
+      // console.log(JSON.stringify(cardsJSONData, null, 2));
+    }
+  </script>
+
 
   <!-- Includes Section Functions and JSON generation Script -->
   <script>
@@ -909,8 +836,6 @@
 
       console.log('Updated Includes Data (JSON):', JSON.stringify(includesData, null, 2));
 
-      // Assuming `getAirDetails()` and `updateVoucherDetails()` are defined elsewhere
-      getAirDetails();
       updateVoucherDetails();
     }
 
@@ -922,7 +847,7 @@
       const includesContainer = document.getElementById('includesContainer');
 
       const newRow = document.createElement('div');
-      newRow.className = 'row include-row align-items-start mb-1';
+      newRow.className = 'row include-row align-items-start mb-3';
       newRow.setAttribute('data-index', includeCount);
 
       newRow.innerHTML = `
@@ -1107,7 +1032,7 @@
       });
     }
 
-    
+
     // Function to add a new exclude row
     function addExclude() {
       if (excludeCount >= maxExcludes) return;
@@ -1116,7 +1041,7 @@
       const excludesContainer = document.getElementById('excludesContainer');
 
       const newRow = document.createElement('div');
-      newRow.className = 'row exclude-row align-items-start mb-1';
+      newRow.className = 'row exclude-row align-items-start mb-3';
       newRow.setAttribute('data-index', excludeCount);
 
       newRow.innerHTML = `
@@ -1189,78 +1114,80 @@
   </script>
 
   <script>
-  // Wait for DOM to be ready
-  document.addEventListener("DOMContentLoaded", function () {
-    // When Submit Voucher button is clicked
-    const submitBtn = document.getElementById("submitTour");
-    if (submitBtn) {
-      submitBtn.addEventListener("click", function () {
-        const modal = new bootstrap.Modal(document.getElementById("templateNameModal"));
-        modal.show();
-      });
-    }
-  });
-
-  // Function to handle actual submission
-  function proceedWithSubmission() {
-    const templateName = document.getElementById("templateName")?.value.trim();
-    const submitButton = document.getElementById("submitTour");
-
-    if (!templateName) {
-      alert("⚠️ Please enter a template name before proceeding.");
-      return;
-    }
-
-    // Disable to prevent double submit
-    if (submitButton) submitButton.disabled = true;
-
-    // Call your data collection functions if they exist
-    if (typeof collectVoucherDetails === 'function') collectVoucherDetails();
-    if (typeof generateCardsJSON === 'function') generateCardsJSON();
-    if (typeof updateIncludesData === 'function') updateIncludesData();
-    if (typeof updateExcludesData === 'function') updateExcludesData();
-
-    const voucherPayload = {
-      templateName: templateName,
-      voucherDetails: voucherDetails || {},
-      cardsJSONData: cardsJSONData || {},
-      includesData: includesData || {},
-      excludesData: excludesData || {}
-    };
-
-    console.log("📦 Voucher Payload to be submitted:", voucherPayload);
-
-    $.ajax({
-      url: "../Employee Section/functions/emp-saveVoucher.php",
-      type: "POST",
-      data: {
-        voucherPayload: JSON.stringify(voucherPayload)
-      },
-      dataType: "json",
-      success: function (response) {
-        if (submitButton) submitButton.disabled = false;
-
-        if (response.status === "success") {
-          alert("✅ Voucher saved successfully!");
-          window.location.href = "../Employee Section/emp-vouchertable.php";
-        } else {
-          alert("❌ Failed to save itinerary:\n" + response.message);
-        }
-      },
-      error: function (xhr, status, error) {
-        if (submitButton) submitButton.disabled = false;
-        console.error("❌ AJAX Error:", error);
-        console.error("📄 Response Text:", xhr.responseText);
-        alert("❌ A server error occurred while saving the itinerary.");
+    // Wait for DOM to be ready
+    document.addEventListener("DOMContentLoaded", function () {
+      // When Submit Voucher button is clicked
+      const submitBtn = document.getElementById("submitTour");
+      if (submitBtn) {
+        submitBtn.addEventListener("click", function () {
+          const modal = new bootstrap.Modal(document.getElementById("templateNameModal"));
+          modal.show();
+        });
       }
     });
 
-    // Hide modal
-    const modalElement = document.getElementById("templateNameModal");
-    const modalInstance = bootstrap.Modal.getInstance(modalElement);
-    if (modalInstance) modalInstance.hide();
-  }
-</script>
+    // Function to handle actual submission
+    function proceedWithSubmission() {
+      const templateName = document.getElementById("templateName")?.value.trim();
+      const submitButton = document.getElementById("submitTour");
+
+      if (!templateName) {
+        alert("⚠️ Please enter a template name before proceeding.");
+        return;
+      }
+
+      // Disable to prevent double submit
+      if (submitButton) submitButton.disabled = true;
+
+      // Call your data collection functions if they exist
+      if (typeof collectVoucherDetails === 'function') collectVoucherDetails();
+      if (typeof generateCardsJSON === 'function') generateCardsJSON();
+      if (typeof updateAirScheduleDetails === 'function') updateAirScheduleDetails();
+      if (typeof updateIncludesData === 'function') updateIncludesData();
+      if (typeof updateExcludesData === 'function') updateExcludesData();
+
+      const voucherPayload = {
+        templateName: templateName,
+        voucherDetails: voucherDetails || {},
+        airScheduleDetails: airScheduleDetails || {},
+        cardsJSONData: cardsJSONData || {},
+        includesData: includesData || {},
+        excludesData: excludesData || {}
+      };
+
+      console.log("📦 Voucher Payload to be submitted:", voucherPayload);
+
+      $.ajax({
+        url: "../Employee Section/functions/emp-saveVoucher.php",
+        type: "POST",
+        data: {
+          voucherPayload: JSON.stringify(voucherPayload)
+        },
+        dataType: "json",
+        success: function (response) {
+          if (submitButton) submitButton.disabled = false;
+
+          if (response.status === "success") {
+            alert("✅ Voucher saved successfully!");
+            window.location.href = "../Employee Section/emp-vouchertable.php";
+          } else {
+            alert("❌ Failed to save itinerary:\n" + response.message);
+          }
+        },
+        error: function (xhr, status, error) {
+          if (submitButton) submitButton.disabled = false;
+          console.error("❌ AJAX Error:", error);
+          console.error("📄 Response Text:", xhr.responseText);
+          alert("❌ A server error occurred while saving the itinerary.");
+        }
+      });
+
+      // Hide modal
+      const modalElement = document.getElementById("templateNameModal");
+      const modalInstance = bootstrap.Modal.getInstance(modalElement);
+      if (modalInstance) modalInstance.hide();
+    }
+  </script>
 
 
 

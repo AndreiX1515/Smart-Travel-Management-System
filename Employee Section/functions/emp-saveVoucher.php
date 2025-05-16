@@ -20,6 +20,7 @@ try {
   // Extract sections
   $templateName = $payload['templateName'] ?? '';
   $voucherDetails = $payload['voucherDetails'] ?? [];
+  $airScheduleDetails = $payload['airScheduleDetails'] ?? [];
   $cardsJSONData = $payload['cardsJSONData'] ?? [];
   $includesData = $payload['includesData'] ?? [];
   $excludesData = $payload['excludesData'] ?? [];
@@ -27,110 +28,117 @@ try {
   // Generate unique code & account ID
   $accountId = $_SESSION['accountId'] ?? 1;
 
-  // Begin transaction early
   $conn->beginTransaction();
 
   do {
-      $voucherCode = "VOUCHER-" . strtoupper(uniqid());
+    $voucherCode = "VOUCHER-" . strtoupper(uniqid());
+    $stmtCheck = $conn->prepare("SELECT COUNT(*) FROM vouchers WHERE voucherCode = ?");
+    $stmtCheck->execute([$voucherCode]);
+    $exists = $stmtCheck->fetchColumn();
+  } while ($exists > 0);
 
-      // Check if voucherCode already exists
-      $stmtCheck = $conn->prepare("SELECT COUNT(*) FROM vouchers WHERE voucherCode = ?");
-      $stmtCheck->execute([$voucherCode]);
-      $exists = $stmtCheck->fetchColumn();
-  } 
-  
-  while ($exists > 0); // Keep generating until unique
-
-  // Insert into vouchers table
+  // Insert into vouchers
   $stmtVoucher = $conn->prepare("INSERT INTO vouchers (accountId, voucherCode) VALUES (?, ?)");
   $stmtVoucher->execute([$accountId, $voucherCode]);
-
   $voucherId = $conn->lastInsertId();
 
-
-  
-  // 2️⃣ Insert into voucherDetails     
+  // Insert into voucherDetails
   $stmtDetails = $conn->prepare("INSERT INTO voucherDetails (
-      voucherId, sentTo, sentFrom, tourType, attachment,
-      tourPeriodStart, tourPeriodEnd, guideName, noOfPax
+    voucherId, sentTo, sentFrom, tourType, attachment,
+    tourPeriodStart, tourPeriodEnd, guideName, noOfPax
   ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-
   $stmtDetails->execute([
-      $voucherId,
-      $voucherDetails['to'] ?? '',
-      $voucherDetails['from'] ?? '',
-      $voucherDetails['tour'] ?? '',
-      $voucherDetails['attachment'] ?? '',
-      $voucherDetails['periodStart'] ?? null,
-      $voucherDetails['periodEnd'] ?? null,
-      $voucherDetails['guide'] ?? 0,
-      $voucherDetails['paxCount'] ?? 0
+    $voucherId,
+    $voucherDetails['to'] ?? '',
+    $voucherDetails['from'] ?? '',
+    $voucherDetails['tour'] ?? '',
+    $voucherDetails['attachment'] ?? '',
+    $voucherDetails['periodStart'] ?? null,
+    $voucherDetails['periodEnd'] ?? null,
+    $voucherDetails['guide'] ?? '',
+    $voucherDetails['paxCount'] ?? 0
   ]);
 
-  $cardsJSONData = $payload['cardsJSONData'] ?? [];
-
-
-
-
-
-  // 3️⃣ Insert into voucherHotels (loop through cardsJSONData)
+  // Insert into voucherDateAndHotels
   if (!empty($cardsJSONData)) {
-    // Prepare the insert query
-    $stmt = $conn->prepare("
-            INSERT INTO voucherDateAndHotels (
-                voucherId, startDate, endDate, nights, city, hotel
-            ) VALUES (?, ?, ?, ?, ?, ?)
-        ");
+    $stmt = $conn->prepare("INSERT INTO voucherDateAndHotels (
+      voucherId, startDate, endDate, nights, city, hotel
+    ) VALUES (?, ?, ?, ?, ?, ?)");
 
-    // Loop through each section in cardsJSONData (dateAndHotel1, dateAndHotel2, etc.)
     foreach ($cardsJSONData as $hotelKey => $hotelDetails) {
-
-      // Check if the key starts with 'dateAndHotel' (i.e., dateAndHotel1, dateAndHotel2, etc.)
       if (strpos($hotelKey, 'dateAndHotel') === 0) {
-        // Insert each section one by one into voucherDateAndHotels
         $stmt->execute([
-          $voucherId, // Reference to the voucherId
-          $hotelDetails['startDate'], // Start date for the hotel stay
-          $hotelDetails['endDate'], // End date for the hotel stay
-          $hotelDetails['nights'], // Number of nights
-          $hotelDetails['city'], // City for the hotel stay
-          $hotelDetails['hotel'] // Hotel name
+          $voucherId,
+          $hotelDetails['startDate'],
+          $hotelDetails['endDate'],
+          $hotelDetails['nights'],
+          $hotelDetails['city'],
+          $hotelDetails['hotel']
         ]);
       }
     }
-  } else {
-    
+  }
+
+  // ✅ Insert into voucherAirSchedules
+  if (!empty($airScheduleDetails)) {
+    $stmtAir = $conn->prepare("INSERT INTO voucherAirSchedules (
+      voucherId, flightSegment, flightDate, flightNumber,
+      origin, destination, departureTime, arrivalTime
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+
+    foreach ($airScheduleDetails as $segment => $flight) {
+      $stmtAir->execute([
+        $voucherId,
+        $segment,
+        $flight['flightDate'] ?? null,
+        $flight['flightNumber'] ?? '',
+        $flight['origin'] ?? '',
+        $flight['destination'] ?? '',
+        $flight['departureTime'] ?? '',
+        $flight['arrivalTime'] ?? ''
+      ]);
+    }
+  }
+
+
+  // After inserting voucherDateAndHotels and before commit
+
+  // Insert GuideMeeting if exists
+  $guideMeeting = $airScheduleDetails['guideMeeting'] ?? null;
+
+  if ($guideMeeting) {
+      $stmtGuide = $conn->prepare("INSERT INTO voucherGuideMeeting (voucherId, meetingDate, meetingTime, meetingPlace) VALUES (?, ?, ?, ?)");
+      $stmtGuide->execute([
+          $voucherId,
+          $guideMeeting['date'] ?? null,
+          $guideMeeting['time'] ?? null,
+          $guideMeeting['place'] ?? ''
+      ]);
   }
 
 
 
-  // 4️⃣ Insert into voucherIncludes
+  // Insert into voucherIncludes
   if (!empty($includesData)) {
     $stmtInclude = $conn->prepare("INSERT INTO voucherIncludes (voucherId, includeItemId) VALUES (?, ?)");
-
     foreach ($includesData as $includeItem) {
       $value = $includeItem['value'] ?? '';
-      // Skip if "No Includes" (value = 0) or blank
       if (!empty($value) && $value !== '0') {
         $stmtInclude->execute([$voucherId, $value]);
       }
     }
   }
 
-  // 5️⃣ Insert into voucherExcludes
+  // Insert into voucherExcludes
   if (!empty($excludesData)) {
     $stmtExclude = $conn->prepare("INSERT INTO voucherExcludes (voucherId, excludeItemId) VALUES (?, ?)");
-
     foreach ($excludesData as $excludeItem) {
       $value = $excludeItem['value'] ?? '';
-      // Skip if "No Excludes" (value = 0) or blank
       if (!empty($value) && $value !== '0') {
         $stmtExclude->execute([$voucherId, $value]);
       }
     }
   }
-
-
 
   $conn->commit();
   echo json_encode([
@@ -139,7 +147,6 @@ try {
     "voucherId" => $voucherId,
     "voucherCode" => $voucherCode
   ]);
-
 
 } catch (PDOException $e) {
   $conn->rollBack();

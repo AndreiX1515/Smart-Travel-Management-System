@@ -9,12 +9,14 @@
   <link rel="stylesheet" href="../Employee Section/assets/css/emp-sidebar-navbar.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="../Employee Section/assets/css/emp-editItinerary.css?v=<?php echo time(); ?>">
 
-  <!-- CSS -->
+  <!-- jQuery (required by WickedPicker) -->
+
+
+  <!-- WickedPicker CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/wickedpicker@0.4.3/dist/wickedpicker.min.css">
 
-  <!-- JS -->
+  <!-- WickedPicker JS -->
   <script src="https://cdn.jsdelivr.net/npm/wickedpicker@0.4.3/dist/wickedpicker.min.js"></script>
-
 
 
 </head>
@@ -132,37 +134,48 @@
 
     // Step 3: Fetch voucherIncludes
     $sqlIncludes = "
-                SELECT i.itemName 
-                FROM voucherIncludes vi
-                INNER JOIN voucherIncludeOptions i ON vi.includeItemId = i.includeItemId
-                WHERE vi.voucherId = ?
-            ";
+        SELECT i.includeItemId, i.itemName 
+        FROM voucherIncludes vi
+        INNER JOIN voucherIncludeOptions i ON vi.includeItemId = i.includeItemId
+        WHERE vi.voucherId = ?
+    ";
 
     $stmt = $conn->prepare($sqlIncludes);
     $stmt->bind_param("i", $voucherId);
     $stmt->execute();
     $result = $stmt->get_result();
 
+    $includesCounter = 1;
     while ($row = $result->fetch_assoc()) {
-      $voucher['includes'][] = $row['itemName'];
+      $voucher['includes']["includes{$includesCounter}"] = [
+        'value' => (string) $row['includeItemId'],
+        'label' => ($row['includeItemId'] === 'others') ? $row['itemName'] : ''
+      ];
+      $includesCounter++;
     }
 
     // Step 4: Fetch voucherExcludes
     $sqlExcludes = "
-                SELECT e.itemName 
-                FROM voucherExcludes ve
-                INNER JOIN voucherExcludeOptions e ON ve.excludeItemId = e.excludeItemId
-                WHERE ve.voucherId = ?
-            ";
+        SELECT e.excludeItemId, e.itemName 
+        FROM voucherExcludes ve
+        INNER JOIN voucherExcludeOptions e ON ve.excludeItemId = e.excludeItemId
+        WHERE ve.voucherId = ?
+    ";
 
     $stmt = $conn->prepare($sqlExcludes);
     $stmt->bind_param("i", $voucherId);
     $stmt->execute();
     $result = $stmt->get_result();
 
+    $excludesCounter = 1;
     while ($row = $result->fetch_assoc()) {
-      $voucher['excludes'][] = $row['itemName'];
+      $voucher['excludes']["excludes{$excludesCounter}"] = [
+        'value' => (string) $row['excludeItemId'],
+        'label' => ($row['excludeItemId'] === 'others') ? $row['itemName'] : ''
+      ];
+      $excludesCounter++;
     }
+
 
     // Output to browser console as JSON
     $jsonData = json_encode($voucher, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
@@ -177,16 +190,19 @@
 
         <!-- Voucher Details -->
         <div class="card mb-4 shadow-sm">
-          <div class="card-header bg-light border-bottom">
-            <h5 class="mb-0 text-primary">Voucher Details</h5>
+          <div class="card-header border-bottom">
+            <h5 class="mb-0">Voucher Details</h5>
           </div>
 
           <div class="card-body">
             <!-- Row 1: Voucher Name & Code -->
             <div class="row g-3 mb-3">
+
               <div class="col-12 col-md-6 col-lg-4">
                 <label for="itineraryName" class="form-label">Voucher Name</label>
-                <input type="text" class="form-control" id="itineraryName" name="itineraryName" value="<?= !empty($voucher['voucherName']) ? htmlspecialchars($voucher['voucherName'], ENT_QUOTES) : 'Untitled Voucher' ?>" readonly>
+                <input type="text" class="form-control" id="itineraryName" name="itineraryName"
+                  value="<?= !empty($voucher['voucherName']) ? htmlspecialchars($voucher['voucherName'], ENT_QUOTES) : 'Untitled Voucher' ?>"
+                  readonly>
               </div>
 
               <div class="col-12 col-md-6 col-lg-4">
@@ -194,6 +210,7 @@
                 <input type="text" class="form-control" id="voucherCode" name="voucherCode"
                   value="<?= $voucher['voucherCode']; ?>" readonly>
               </div>
+
             </div>
 
             <!-- Row 2: To, From, Package -->
@@ -262,26 +279,26 @@
               <div class="col-12 col-md-6 col-lg-4">
                 <label for="guideName" class="form-label">Guide <span class="text-danger">*</span></label>
                 <select class="form-select" id="guideName" name="guideName" required>
-                    <option disabled <?= empty($voucher['details']['guideName']) ? 'selected' : '' ?>>Select Guide</option>
-                    <?php
-                    $currentGuide = trim($itinerary['guideName'] ?? '');
-                    
-                    $sql = "SELECT id, fName, mName, lName FROM employee WHERE branch = 'Korea'";
-                    $result = $conn->query($sql);
+                  <option disabled <?= empty($voucher['details']['guideName']) ? 'selected' : '' ?>>Select Guide</option>
+                  <?php
+                  $currentGuide = trim($itinerary['guideName'] ?? '');
 
-                    if ($result && $result->num_rows > 0) {
-                      while ($row = $result->fetch_assoc()) {
-                        $employeeId = htmlspecialchars($row['id']);
-                        $fullName = trim($row['fName'] . ' ' . $row['mName'] . ' ' . $row['lName']);
-                        $fullNameEscaped = htmlspecialchars($fullName);
-                        $isSelected = ($currentGuide === $fullName) ? 'selected' : '';
-                        echo "<option value=\"$fullNameEscaped\" $isSelected>$fullNameEscaped</option>";
-                      }
-                    } else {
-                      echo "<option disabled>No guides available</option>";
+                  $sql = "SELECT id, fName, mName, lName FROM employee WHERE branch = 'Korea'";
+                  $result = $conn->query($sql);
+
+                  if ($result && $result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                      $employeeId = htmlspecialchars($row['id']);
+                      $fullName = trim($row['fName'] . ' ' . $row['mName'] . ' ' . $row['lName']);
+                      $fullNameEscaped = htmlspecialchars($fullName);
+                      $isSelected = ($currentGuide === $fullName) ? 'selected' : '';
+                      echo "<option value=\"$fullNameEscaped\" $isSelected>$fullNameEscaped</option>";
                     }
-                    ?>
-                  </select>
+                  } else {
+                    echo "<option disabled>No guides available</option>";
+                  }
+                  ?>
+                </select>
               </div>
 
               <div class="col-12 col-md-6 col-lg-4">
@@ -295,8 +312,8 @@
 
         <!-- Air Schedule -->
         <div class="card mb-2">
-          <div class="card-header bg-light d-flex align-items-center justify-content-between">
-            <h5 class="fw-bold mb-0 text-primary">
+          <div class="card-header">
+            <h5 class="fw-bold mb-0">
               <!-- <i class="fas fa-plane-departure me-2 text-secondary"></i> -->
               Air Schedule
             </h5>
@@ -307,21 +324,25 @@
             <!-- Arrival Section -->
             <div class="row mb-3">
 
+              <!-- Header -->
               <div class="col-12 mb-2">
-                <h6 class="fw-semibold text-uppercase text-muted border-bottom pb-1">Arrival</h6>
+                <h6 class="fw-semibold text-uppercase text-muted border-bottom pb-1">Departure #1</h6>
               </div>
 
+              <!-- Date -->
               <div class="col-md-6 col-lg-3 mb-3">
                 <label for="arrivalDate" class="form-label">Date </label>
 
                 <div class="input-with-icon">
                   <input type="text" class="datepicker" id="arrivalDate" name="arrivalDate" placeholder="Arrival Date"
+                    value="<?= !empty($voucher['voucherName']) ? htmlspecialchars($voucher['voucherName'], ENT_QUOTES) : 'Untitled Voucher' ?>"
                     readonly>
                   <i class="fas fa-calendar-alt calendar-icon"></i>
                 </div>
 
               </div>
 
+              <!-- Flights -->
               <div class="col-md-6 col-lg-3 mb-3">
 
                 <label for="arrivalFlight" class="form-label">Flight</label>
@@ -334,6 +355,7 @@
 
               </div>
 
+              <!-- Origin and Destination -->
               <div class="col-md-12 col-lg-6 mb-3">
                 <label class="form-label">Origin - Destination</label>
                 <div class="d-flex flex-column flex-sm-row gap-2">
@@ -344,7 +366,7 @@
                     <option value="NRT">Narita</option>
                     <option value="LAX">Los Angeles</option>
                   </select>
-                  <div class="dash-separator d-none d-sm-flex align-items-center px-2">→</div>
+                  <span class="align-self-center">-></span>
                   <select class="form-select" id="arrivalDestination" name="arrivalDestination" required>
                     <option selected disabled>Destination</option>
                     <option value="MNL">Manila</option>
@@ -355,18 +377,19 @@
                 </div>
               </div>
 
+              <!-- Departure - Arrival Time -->
               <div class="col-md-12 col-lg-6 mb-3">
-                <label for="arrivalTimeStart" class="form-label">Arrival Time (Start - End) </label>
+                <label for="arrivalTimeStart" class="form-label">Departure - Arrival Time</label>
                 <div class="d-flex flex-column flex-sm-row gap-2">
                   <div class="input-with-icon">
                     <input type="text" class="form-control timepicker" id="arrivalTimeStart" name="arrivalTimeStart"
-                      placeholder="Pick a time" readonly required>
+                      placeholder="Departure Time" readonly required>
                     <i class="fas fa-clock calendar-icon"></i>
                   </div>
-                  <span class="align-self-center">to</span>
+                  <span class="align-self-center">-></span>
                   <div class="input-with-icon">
                     <input type="text" class="form-control timepicker" id="arrivalTimeEnd" name="arrivalTimeEnd"
-                      placeholder="Pick a time" readonly required>
+                      placeholder="Arrival Time" readonly required>
                     <i class="fas fa-clock calendar-icon"></i>
                   </div>
                 </div>
@@ -376,8 +399,10 @@
 
             <!-- Destination Section -->
             <div class="row">
+
+              <!-- Header -->
               <div class="col-12 mb-2">
-                <h6 class="fw-semibold text-uppercase text-muted border-bottom pb-1">Destination</h6>
+                <h6 class="fw-semibold text-uppercase text-muted border-bottom pb-1">Departure #2</h6>
               </div>
 
               <div class="col-md-6 col-lg-3 mb-3">
@@ -409,7 +434,7 @@
                     <option value="CEB">Cebu</option>
                     <option value="BKK">Bangkok</option>
                   </select>
-                  <div class="dash-separator d-none d-sm-flex align-items-center px-2">→</div>
+                  <span class="align-self-center">-></span>
                   <select class="form-select" id="destinationArrival" name="destinationArrival" required>
                     <option selected disabled>Destination</option>
                     <option value="MNL">Manila</option>
@@ -421,18 +446,18 @@
               </div>
 
               <div class="col-md-12 col-lg-6 mb-3">
-                <label for="departureTimeStart" class="form-label">Departure Time (Start - End)</label>
+                <label for="departureTimeStart" class="form-label">Departure - Arrival Time</label>
 
                 <div class="d-flex flex-column flex-sm-row gap-2">
                   <div class="input-with-icon">
                     <input type="text" class="form-control timepicker" id="departureTimeStart" name="departureTimeStart"
-                      placeholder="Start" readonly required>
+                      placeholder="Departure Time" readonly required>
                     <i class="fas fa-clock calendar-icon"></i>
                   </div>
-                  <span class="align-self-center">to</span>
+                  <span class="align-self-center">-></span>
                   <div class="input-with-icon">
                     <input type="text" class="form-control timepicker" id="departureTimeEnd" name="departureTimeEnd"
-                      placeholder="End" readonly required>
+                      placeholder="Arrival Time" readonly required>
                     <i class="fas fa-clock calendar-icon"></i>
                   </div>
                 </div>
@@ -446,22 +471,42 @@
 
         <!-- Date and Hotels -->
         <div class="card">
-          <div class="card-header">
-            <h5 class="fw-bold">Date and Hotels</h5>
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="fw-bold mb-0">Date and Hotels</h5>
+            <button id="addDateHotelBtn" type="button" class="btn btn-sm btn-primary">Add Date & Hotel</button>
           </div>
+          <div class="card-body" id="dateHotelContainer"></div>
+        </div>
 
+        <!-- Includes Card -->
+        <div class="card includes-header-card">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="text-white mb-0">Includes</h5>
+            <button id="addIncludeBtn" class="btn btn-sm btn-light">
+              <i class="fas fa-plus"></i>
+            </button>
+          </div>
+          <div class="card-body" id="includesContainer"></div>
+        </div>
+
+        <!-- Excludes Card -->
+        <div class="card excludes-header-card">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="text-white mb-0">Excludes</h5>
+            <button id="addExcludeBtn" class="btn btn-sm btn-light">
+              <i class="fas fa-plus"></i>
+            </button>
+          </div>
           <div class="card-body">
-
-            <div id="dateHotelContainer"></div>
-
+            <div id="excludesContainer">
+              <!-- JS will generate .col-md-12 blocks here -->
+            </div>
           </div>
         </div>
 
 
+
       </div>
-
-
-
     </div>
 
     <!-- Form footer with both buttons -->
@@ -476,7 +521,6 @@
 
       <button type="button" class="btn btn-primary" id="submitTour">Generate Itinerary</button>
     </div>
-
 
   </div>
   </div>
@@ -510,9 +554,8 @@
   <?php include '../Employee Section/includes/emp-scripts.php' ?>
 
 
-
   <!-- Datepicker Script -->
-  <script>
+  <!-- <script>
     $(document).ready(function () {
       // Apply datepicker for PeriodStartDate
       $("#PeriodStartDate").datepicker({
@@ -538,597 +581,505 @@
         }
       });
     });
+  </script> -->
+
+  <!-- Timepicker & Datepicker General Script -->
+  <script>
+    // General initializer function (can be reused after injecting new fields)
+    function initFlatpickrFields() {
+      // Initialize date pickers
+      document.querySelectorAll("input.datepicker:not(.flatpickr-initialized)").forEach(function (element) {
+        flatpickr(element, {
+          dateFormat: "Y-m-d",
+          minDate: "today",
+          disableMobile: true,
+          appendTo: document.body,
+          position: "auto",
+          zIndex: 9999,
+          onOpen: function () {
+            const calendar = document.querySelector('.flatpickr-calendar');
+            if (calendar) {
+              calendar.style.position = 'absolute';
+              const inputRect = this.input.getBoundingClientRect();
+              calendar.style.top = `${inputRect.bottom + window.scrollY + 8}px`;
+            }
+          }
+        });
+        element.classList.add("flatpickr-initialized");
+      });
+
+      // Initialize time pickers
+      document.querySelectorAll("input.timepicker:not(.flatpickr-initialized)").forEach(function (element) {
+        flatpickr(element, {
+          enableTime: true,
+          noCalendar: true,
+          dateFormat: "H:i",
+          time_24hr: true,
+          disableMobile: true,
+          appendTo: document.body,
+          position: "auto",
+          zIndex: 9999,
+          onOpen: function () {
+            const timepicker = document.querySelector('.flatpickr-calendar');
+            if (timepicker) {
+              timepicker.style.position = 'absolute';
+              const inputRect = this.input.getBoundingClientRect();
+              timepicker.style.top = `${inputRect.bottom + window.scrollY + 8}px`;
+            }
+          }
+        });
+        element.classList.add("flatpickr-initialized");
+      });
+    }
+
+    // Initial call on DOM ready
+    document.addEventListener("DOMContentLoaded", initFlatpickrFields);
   </script>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      // Arrival time pickers
-      new WickedPicker('#arrivalTimeStart', { now: "12:00", twentyFour: false });
-      new WickedPicker('#arrivalTimeEnd', { now: "12:30", twentyFour: false });
 
-      // Departure time pickers
-      new WickedPicker('#departureTimeStart', { now: "14:00", twentyFour: false });
-      new WickedPicker('#departureTimeEnd', { now: "14:30", twentyFour: false });
-    });
-  </script>
+  <div class="card">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <h5 class="fw-bold mb-0">Date and Hotels</h5>
+    <button id="addDateHotelBtn" type="button" class="btn btn-sm btn-primary">Add Date & Hotel</button>
+  </div>
+  <div class="card-body" id="dateHotelContainer"></div>
+</div>
 
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const container = document.getElementById('dateHotelContainer');
+  const addBtn = document.getElementById('addDateHotelBtn');
+  const MAX_CARDS = 3;
 
-  <!-- FOR DATE AND HOTEL CARD -->
-  <script>
-    const voucher = <?= json_encode($voucher, JSON_UNESCAPED_UNICODE); ?>;
+  // Original data copy (immutable)
+  const originalData = <?= json_encode($voucher['dateAndHotels'] ?? [], JSON_UNESCAPED_UNICODE); ?>;
 
-    document.addEventListener('DOMContentLoaded', () => {
-      if (!voucher || !Array.isArray(voucher.dateAndHotels)) {
-        console.error('voucher.dateAndHotels is missing or not an array');
-        return;
-      }
+  // Working copy of data which can be modified
+  const voucherDateAndHotelsData = [...originalData];
 
-      const voucherDateAndHotels = voucher.dateAndHotels;
-      const container = document.getElementById('dateHotelContainer');
-      container.innerHTML = ''; // Clear existing content
+  function renderAll() {
+    container.innerHTML = '';
 
-      voucherDateAndHotels.forEach((item, index) => {
-        const num = index + 1;
+    voucherDateAndHotelsData.forEach((item, index) => {
+      const num = index + 1;
 
-        const wrapper = document.createElement('div');
-        wrapper.className = 'mb-4'; // Removed card-like styles
+      const card = document.createElement('div');
+      card.className = 'mb-4 date-hotel-card border rounded p-3';
+      card.dataset.index = index;
 
-        wrapper.innerHTML = `
-          
+      card.innerHTML = `
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h6 class="fw-semibold text-uppercase text-muted border-bottom pb-1 mb-0 flex-grow-1">
+            Date and Hotels #${num}
+          </h6>
+          <button type="button" class="btn btn-sm btn-danger btn-delete-datehotel ms-3" 
+            title="Delete this entry" style="flex-shrink: 0; height: 30px; width: 30px; line-height: 1; font-size: 18px; padding: 0;">
+            &times;
+          </button>
+        </div>
 
-          <div class="col-12 mb-3 mt-3">
-            <h6 class="fw-semibold text-uppercase text-muted border-bottom pb-1">Date and Hotels #${num}</h6>
-          </div>
-
-          <div class="row g-4 align-items-end">
-
-            <!-- Date Range -->
-            <div class="col-12 col-md-5">
-              <label class="form-label">Date</label>
-              <div class="d-flex gap-2 align-items-center">
-                
-                <!-- Start Date -->
-                <div class="position-relative w-100">
-                  <input type="text" class="form-control datepicker" id="PeriodStartDate${num}" 
-                    placeholder="Start" value="${item.startDate || ''}" readonly>
-                  <i class="fas fa-calendar-alt position-absolute text-muted"
-                    style="right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none;"></i>
-                </div>
-
-                <span class="mx-1 text-muted">→</span>
-
-                <!-- End Date -->
-                <div class="position-relative w-100">
-                  <input type="text" class="form-control datepicker" id="PeriodEndDate${num}" 
-                    placeholder="End" value="${item.endDate || ''}" readonly>
-                  <i class="fas fa-calendar-alt position-absolute text-muted"
-                    style="right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none;"></i>
-                </div>
+        <div class="row g-4 align-items-end">
+          <div class="col-12 col-md-5">
+            <label class="form-label">Date</label>
+            <div class="d-flex gap-2 align-items-center">
+              <div class="position-relative w-100">
+                <input type="text" class="form-control datepicker" id="PeriodStartDate${num}" 
+                  placeholder="Start" value="${item.startDate || ''}" readonly>
+                <i class="fas fa-calendar-alt position-absolute text-muted"
+                  style="right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none;"></i>
+              </div>
+              <span class="mx-1 text-muted">→</span>
+              <div class="position-relative w-100">
+                <input type="text" class="form-control datepicker" id="PeriodEndDate${num}" 
+                  placeholder="End" value="${item.endDate || ''}" readonly>
+                <i class="fas fa-calendar-alt position-absolute text-muted"
+                  style="right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none;"></i>
               </div>
             </div>
-
-            <!-- No. of Nights -->
-            <div class="col-6 col-md-2">
-              <label for="nights${num}" class="form-label">No. of Nights</label>
-              <input type="text" class="form-control" id="nights${num}" 
-                name="nights${num}" value="${item.nights || ''}" readonly>
-            </div>
-
-            <!-- City -->
-            <div class="col-6 col-md-2">
-              <label for="city${num}" class="form-label">City</label>
-              <input type="text" class="form-control" id="city${num}" 
-                name="city${num}" value="${item.city || ''}" readonly>
-            </div>
-
-            <!-- Hotel -->
-            <div class="col-12 col-md-3">
-              <label for="hotel${num}" class="form-label">Hotel</label>
-              <input type="text" class="form-control" id="hotel${num}" 
-                name="hotel${num}" value="${item.hotel || ''}" readonly>
-            </div>
-
           </div>
-        `;
 
-        container.appendChild(wrapper);
-      });
+          <div class="col-6 col-md-2">
+            <label for="nights${num}" class="form-label">No. of Nights</label>
+            <input type="text" class="form-control" id="nights${num}" name="nights${num}" 
+              value="${item.nights || ''}" readonly>
+          </div>
+
+          <div class="col-6 col-md-2">
+            <label for="city${num}" class="form-label">City</label>
+            <input type="text" class="form-control" id="city${num}" name="city${num}" 
+              value="${item.city || ''}" readonly>
+          </div>
+
+          <div class="col-12 col-md-3">
+            <label for="hotel${num}" class="form-label">Hotel</label>
+            <input type="text" class="form-control" id="hotel${num}" name="hotel${num}" 
+              value="${item.hotel || ''}" readonly>
+          </div>
+        </div>
+      `;
+
+      container.appendChild(card);
     });
+
+    // Delete buttons
+    container.querySelectorAll('.btn-delete-datehotel').forEach(button => {
+      button.onclick = () => {
+        const idx = Number(button.closest('.date-hotel-card').dataset.index);
+        voucherDateAndHotelsData.splice(idx, 1);
+        renderAll();
+      };
+    });
+
+    addBtn.disabled = voucherDateAndHotelsData.length >= MAX_CARDS;
+    initializeDatepickers();
+  }
+
+  function addNewDateHotel() {
+    if (voucherDateAndHotelsData.length >= MAX_CARDS) return;
+
+    // Find first original item not in voucherDateAndHotelsData (by some unique key, or index)
+    // Since your data may not have IDs, we'll do this by simple object reference equality (works if objects are unique)
+    let nextItem = null;
+    for (const origItem of originalData) {
+      // Check if this exact object or equivalent is already in current data
+      const exists = voucherDateAndHotelsData.some(d => JSON.stringify(d) === JSON.stringify(origItem));
+      if (!exists) {
+        nextItem = origItem;
+        break;
+      }
+    }
+
+    // If all original data used, fallback to empty object
+    if (!nextItem) nextItem = {};
+
+    voucherDateAndHotelsData.push(nextItem);
+    renderAll();
+  }
+
+  addBtn.onclick = addNewDateHotel;
+
+  function initializeDatepickers() {
+    // Your flatpickr or other datepicker init here
+    document.querySelectorAll('.datepicker').forEach(input => {
+      if (input._flatpickr) input._flatpickr.destroy();
+      flatpickr(input, { dateFormat: "Y-m-d", minDate: "today", disableMobile: true });
+    });
+  }
+
+  renderAll();
+});
+
+</script>
+
+
+
+
+
+  <!-- Inject dynamic includes JSON -->
+  <script>
+    let includesData = <?php echo json_encode($voucher['includes'], JSON_PRETTY_PRINT); ?>;
   </script>
 
-
-
-
-  <!-- For Itinerary Card -->
+  <!-- Keep the rest of the JS logic as is -->
   <script>
-    let liveItineraryData;
+    let maxIncludes = 4;
 
-    document.addEventListener("DOMContentLoaded", function () {
+    function renderIncludes() {
+      const container = document.getElementById('includesContainer');
+      container.innerHTML = '';
 
-      document.getElementById('submitEdit').disabled = true;
-      document.getElementById('select-days').disabled = true;
-
-      const itineraryContainer = document.getElementById("itinerary-container");
-      const selectDays = document.getElementById("select-days");
-      const formFooter = document.querySelector(".form-footer");
-
-      let itineraryData = <?= json_encode($itinerary); ?>;
-
-      liveItineraryData = JSON.parse(JSON.stringify(itineraryData)); // ✅ assign, don't declare
-
-
-      window.updateLiveItineraryData = function () {
-        const itineraryName = document.getElementById("itineraryName").value;
-        const packageSelect = document.getElementById("packageSelect").value;
-        const periodStart = document.getElementById("PeriodStartDate").value;
-        const periodEnd = document.getElementById("PeriodEndDate").value;
-        const guideName = document.getElementById("guideName").value;
-        const countryCode = document.getElementById("countryCode").value;
-        const contactNumber = document.getElementById("contactNumber").value;
-
-        const cities = [];
-        for (let i = 1; i <= 3; i++) {
-          const city = document.getElementById(`city${i}`)?.value || "";
-          const hotel = document.getElementById(`hotel${i}`)?.value || "";
-          if (city && hotel) {
-            cities.push({ city, hotel });
-          }
-        }
-
-        const itineraryDetails = {
-          itineraryId: 1,  // Assuming itineraryId is constant or comes from elsewhere
-          itineraryName,
-          packageName: packageSelect,
-          periodStart,
-          periodEnd,
-          guideName,
-          countryCode,
-          contactNumber,
-          cities,
-          noOfDays: parseInt(selectDays.value)  // Moved noOfDays inside itineraryDetails
-        };
-
-        const daysDetails = [];
-        const cards = itineraryContainer.querySelectorAll(".itinerary-card");
-        cards.forEach((card, index) => {
-          const areas = Array.from(card.querySelectorAll(".area-select")).map(sel => sel.value);
-          const meals = Array.from(card.querySelectorAll(".meal-plan-select")).map(sel => sel.value);
-          const hotels = Array.from(card.querySelectorAll(".hotel-select")).map(sel => sel.value);
-          const activities = Array.from(card.querySelectorAll(".itinerary-select")).map(sel => sel.value);
-
-          daysDetails.push({
-            day: index + 1,
-            areas,
-            meals,
-            hotels,
-            activities
-          });
-        });
-
-        // Assign the result to the global variable
-        liveItineraryData = {
-          itineraryDetails,  // Updated sequence: itineraryDetails first
-          daysDetails  // daysDetails second
-        };
-
-        console.log("Updated from DOM:", JSON.stringify(liveItineraryData, null, 2));
-      };
-
-
-      // Ensure days exist as an array
-      let days = Array.isArray(itineraryData.days) ? itineraryData.days : [];
-      let selectedValue = itineraryData.noOfDays || 0;
-
-      // Function to extract values while keeping order
-      const extractValues = (arr, key) => {
-        let values = [];
-
-        arr.forEach(day => {
-          if (day && Array.isArray(day[key])) {
-            day[key].forEach(item => {
-              if (!values.includes(item)) {
-                values.push(item); // Maintain order while ensuring uniqueness
-              }
-            });
-          }
-        });
-
-        return values;
-      };
-
-      // Korean Tour Data
-      const koreanTourAreas = ["Seoul", "Busan", "Jeju", "Incheon", "Gyeongju"];
-      const koreanMealPlans = ["Traditional Korean Cuisine", "Street Food Tour", "Seafood Specialty", "Vegetarian Option", "Luxury Fine Dining"];
-
-      const hotels = [
-        "Lotte Hotel Seoul", "Signiel Seoul", "The Shilla Seoul", "Grand Hyatt Seoul", "InterContinental Seoul COEX",
-        "Park Hyatt Busan", "Paradise Hotel Busan", "Lahan Hotel Jeonju", "Maison Glad Jeju", "Ramada Plaza Jeju"
-      ];
-
-      const itineraries = [
-        "Gyeongbokgung Palace Tour", "Myeongdong Shopping District", "Namsan Seoul Tower", "Bukchon Hanok Village",
-        "Dongdaemun Design Plaza", "Busan Gamcheon Culture Village", "Jeju Island Lava Tubes"
-      ];
-
-      // Extract ordered values from `days` while keeping original order
-      let availableAreas = [...extractValues(days, "areas"), ...koreanTourAreas.filter(area => !days.some(day => day.areas.includes(area)))];
-      let availableHotels = [...extractValues(days, "hotels"), ...hotels.filter(hotel => !days.some(day => day.hotels.includes(hotel)))];
-      let availableMeals = [...extractValues(days, "meals"), ...koreanMealPlans.filter(meal => !days.some(day => day.meals.includes(meal)))];
-      let availableActivities = [...extractValues(days, "activities"), ...itineraries];
-
-      // console.log("Ordered Available Areas:", availableAreas);
-      // console.log("Ordered Available Hotels:", availableHotels);
-      // console.log("Ordered Available Meal Plans:", availableMeals);
-      // console.log("Ordered Available Activities:", availableActivities);
-
-      // Populate Days Dropdown
-      selectDays.innerHTML = "";
-      for (let num = 1; num <= 5; num++) {
-        let option = document.createElement("option");
-        option.value = num;
-        option.textContent = `Day ${num}`;
-        if (num === selectedValue) option.selected = true;
-        selectDays.appendChild(option);
-      }
-
-      function createSelectColumn(label, className, options = [], selectedValue, index = 1) {
-        // console.log(`Creating select dropdown for: ${label} ${index}`);
-
-        if (!Array.isArray(options) || options.length === 0) {
-          // console.error("Options array is empty or undefined for:", label);
-          return `<div class="col-4"><label class="form-label fw-normal">${label} ${index}:</label><p style="color: red;">No options available</p></div>`;
-        }
-
-        // Ensure options are unique and sorted
-        let uniqueOptions = [...new Set(options)].sort();
-
-        // console.log("Final options before rendering:", uniqueOptions);
-
-        return `
-                <div class="col-4">
-                    <label class="form-label fw-normal">${label} ${index}:</label>
-                    <select class="form-select ${className}">
-                        <option selected disabled>Select ${label} ${index}</option>
-                        ${uniqueOptions.map(opt => {
-          // console.log(`Processing option: ${opt}`);
-          return `<option value="${opt}" ${String(opt) === String(selectedValue) ? "selected" : ""}>${opt}</option>`;
-        }).join("")}
-                    </select>
-                </div>
-            `;
-      }
-
-      // Function to create multiple select columns for hotels
-      function createMultipleSelectColumns(labels, className, options, selectedValues = []) {
-        return labels.map((label, index) => createSelectColumn(label, className, options, selectedValues[index] || "", index + 1)).join("");
-      }
-
-      // Function to generate itinerary cards for each day
-      function generateItineraryCards(days) {
-        itineraryContainer.innerHTML = "";
-
-        // console.log("Generating Itinerary for Days:", days);
-
-        for (let day = 1; day <= days; day++) {
-          let dayData = itineraryData.days.find(d => d.day == day) || {};
-
-          let areas = Array.isArray(dayData.areas) ? dayData.areas : [];
-          let hotels = Array.isArray(dayData.hotels) ? dayData.hotels : [];
-          let meals = Array.isArray(dayData.meals) ? dayData.meals : [];
-          let activities = Array.isArray(dayData.activities) ? dayData.activities : [];
-
-          // console.log(`\n=== Day ${day} Data ===`);
-          // console.log("Areas:", areas);
-          // console.log("Hotels:", hotels);
-          // console.log("Meals:", meals);
-          // console.log("Activities:", activities);
-
-          const card = document.createElement("div");
-          card.className = "card itinerary-card mb-3";
-          card.innerHTML = `
-                    <div class="card-header bg-primary text-white fw-bold">
-                        Day ${day}
-                    </div>
-
-                    <div class="card-body">
-                        <div class="container-fluid">
-                        
-                            <!-- Area Section (Dynamic) -->
-                            <div class="row mb-3">
-                                ${areas.map((area, index) => {
-            // console.log(`Creating Select for Area ${index + 1}:`, area);
-            return createSelectColumn("Area", "area-select", availableAreas, area, index + 1);
-          }).join("")}
-                            </div>
-
-                            <!-- Meal Plan Section (Dynamic) -->
-                            <div class="row mb-3">
-                                ${meals.map((meal, index) => {
-            // console.log(`Creating Select for Meal ${index + 1}:`, meal);
-            return createSelectColumn("Meal Plan", "meal-plan-select", availableMeals, meal, index + 1);
-          }).join("")}
-                            </div>
-
-                            <!-- Hotels Section (Dynamic) -->
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <label class="form-label fw-semibold">Hotels:</label>
-                                    <div class="row">
-                                        ${createMultipleSelectColumns(["Hotel", "Hotel"], "hotel-select", availableHotels, hotels)}
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Itinerary Section (Dynamic) -->
-                            <div class="row mb-3">
-                                <div class="col-md-9">
-                                    <label class="form-label fw-semibold">Itinerary:</label>
-                                    <div class="row">
-                                        ${activities.map((activity, index) => {
-            // console.log(`Rendering Activity Dropdown ${index + 1}:`, activity);
-
-            return `    
-                                                <div class="col-12 mb-2">
-                                                    <select class="form-select itinerary-select">
-                                                        <option selected disabled>Select Activity ${index + 1}</option>
-                                                        ${availableActivities.map((act, actIndex) => {
-
-              // console.log(`Adding Option ${actIndex + 1}:`, act);
-              return `<option value="${act}" ${String(act) === String(activity) ? "selected" : ""}>${act}</option>`;
-            }).join("")}
-                                                        
-                                                    </select>
-                                                </div>
-                                            `;
-          }).join("")}
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                `;
-          itineraryContainer.appendChild(card);
-        }
-
-
-        formFooter.style.display = days ? "flex" : "none";
-      }
-
-      function attachSelectChangeListeners() {
-        const editButton = document.getElementById("submitEdit");
-
-        // Attach listener to ALL select elements within the itinerary card
-        document.querySelectorAll(".card select").forEach(select => {
-          select.addEventListener("change", function () {
-            // Enable the Edit button
-            if (editButton.disabled) {
-              editButton.disabled = false;
-            }
-
-            // If a city is selected, update the corresponding hotel select options
-            if (this.classList.contains("city-select")) {
-              const index = this.dataset.index;
-              const selectedCity = this.value;
-
-              const hotelSelect = document.getElementById(`hotel${parseInt(index) + 1}`);
-              if (hotelSelect) {
-                updateHotelOptions(selectedCity, hotelSelect);
-              }
-            }
-
-            // Re-run live data update after every change
-            updateLiveItineraryData();
-          });
-        });
-
-        // Initial run to capture default state
-        updateLiveItineraryData();
-      }
-
-      function updateHotelOptions(selectedCity, hotelSelect) {
-        const hotelData = {
-          "Seoul": ["Lotte Hotel Seoul", "Signiel Seoul", "The Shilla Seoul", "Grand Hyatt Seoul", "InterContinental Seoul COEX"],
-          "Busan": ["Park Hyatt Busan", "Paradise Hotel Busan"],
-          "Jeonju": ["Lahan Hotel Jeonju"],
-          "Jeju": ["Maison Glad Jeju", "Ramada Plaza Jeju"]
-        };
-
-        const hotels = hotelData[selectedCity] || [];
-        hotelSelect.innerHTML = hotels.length ? "" : "<option disabled selected>No hotels available</option>";
-
-        hotels.forEach(hotel => {
-          const option = document.createElement("option");
-          option.value = hotel;
-          option.textContent = hotel;
-          hotelSelect.appendChild(option);
-        });
-      }
-
-      // Event listener for days selection change
-      selectDays.addEventListener("change", function () {
-        const selectedDays = parseInt(selectDays.value);
-        generateItineraryCards(selectedDays);
-
-        // Re-attach listeners after generating cards
-        setTimeout(() => {
-          attachSelectChangeListeners();
-        }, 0);
+      const keys = Object.keys(includesData).sort((a, b) => {
+        return Number(a.replace('includes', '')) - Number(b.replace('includes', ''));
       });
 
-      // Initialize itinerary on page load if selectedValue is greater than 0
-      if (selectedValue > 0) {
-        generateItineraryCards(selectedValue);
+      keys.forEach((key, idx) => {
+        const index = idx + 1;
+        const data = includesData[key];
+        const row = createIncludeRow(index, data);
+        container.appendChild(row);
+      });
 
-        setTimeout(() => {
-          attachSelectChangeListeners(); // Use the shared function
-        }, 0);
-      }
+      updateDisabledOptions();
+    }
 
-    });
-  </script>
+    // Create one row DOM element for Includes section
+    function createIncludeRow(index, data) {
+      const row = document.createElement('div');
+      row.className = 'include-row mb-3';
+      row.setAttribute('data-index', index);
+      row.innerHTML = `
+      <div class="d-flex justify-content-between align-items-center mb-1">
+        <label for="includesSelect${index}">Includes ${index}:</label>
+        <button type="button" class="btn btn-danger btn-sm remove-btn" title="Remove Includes ${index}">
+          <i class="fas fa-trash-alt"></i>
+        </button>
+      </div>
+      <select id="includesSelect${index}" name="includesSelect${index}" class="form-select" required>
+        <option value="" disabled ${!data.value ? 'selected' : ''}>Select Include</option>
+        <option value="1">Hotel (4 nights with twin or triple sharing)</option>
+        <option value="2">Meals (4 times Lunch, 4 times Dinner)</option>
+        <option value="3">(Coach, Van), Admission as the itinerary, ENGLISH guide, etc.</option>
+        <option value="4">Airport Pick-up and Drop-off</option>
+        <option value="5">Souvenir Pack</option>
+        <option value="6">Travel Insurance</option>
+        <option value="others">Others</option>
+        <option value="0">— No Includes —</option>
+      </select>
+      <input type="text" class="form-control mt-2 custom-input ${data.value === 'others' ? '' : 'd-none'}" placeholder="Please specify..." value="${data.label || ''}">
+    `;
 
-  <!-- Edit Script -->
-  <script>
-    const submitButton = document.getElementById("submitEdit");
-    submitButton.disabled = true; // Keep disabled on load
+      // Select and input elements for event handlers
+      const select = row.querySelector('select');
+      const customInput = row.querySelector('input.custom-input');
+      const removeBtn = row.querySelector('.remove-btn');
 
-    function proceedWithSubmission() {
-      if (typeof liveItineraryData === "undefined") {
-        alert("No itinerary data found.");
-        return;
-      }
+      // Set select value
+      select.value = data.value;
 
-      submitButton.disabled = true; // Prevent multiple submissions
-
-      console.log("Sending the following liveItineraryData:", liveItineraryData);
-
-      $.ajax({
-        url: "../Employee Section/functions/emp-editItinerary.php",
-        type: "POST",
-        data: {
-          itinerary: JSON.stringify(liveItineraryData)
-        },
-        dataType: "json",
-        success: function (response) {
-          if (response.status === "success") {
-            alert("Itinerary successfully edited!");
-            window.location.href = "../Employee Section/emp-itinerarytable.php";
-          } else {
-            alert("Error: " + response.message);
-            submitButton.disabled = false; // Re-enable on failure
-          }
-        },
-        error: function (xhr, status, error) {
-          console.error("AJAX Error:", error);
-          console.error("Response Text:", xhr.responseText);
-          alert("An error occurred while editing the itinerary.");
-          submitButton.disabled = false; // Re-enable on error
+      // Event: When select changes
+      select.addEventListener('change', () => {
+        if (select.value === 'others') {
+          customInput.classList.remove('d-none');
+        } else {
+          customInput.classList.add('d-none');
+          customInput.value = '';
         }
+        updateDataFromUI();
+        updateDisabledOptions();
+      });
+
+      // Event: When user types in custom input
+      customInput.addEventListener('input', () => {
+        updateDataFromUI();
+      });
+
+      // Event: Remove row
+      removeBtn.addEventListener('click', () => {
+        delete includesData[`includes${index}`];
+        reindexData(includesData, 'includes');
+        renderIncludes();
+      });
+
+      return row;
+    }
+
+    // Sync includesData JSON with current UI selects and inputs
+    function updateDataFromUI() {
+      includesData = {};
+      const rows = document.querySelectorAll('.include-row');
+      rows.forEach((row, i) => {
+        const idx = i + 1;
+        const select = row.querySelector('select');
+        const customInput = row.querySelector('input.custom-input');
+        const val = select.value;
+        const label = val === 'others' ? customInput.value.trim() : '';
+
+        includesData[`includes${idx}`] = { value: val, label: label };
       });
     }
 
-    document.getElementById("submitEdit").addEventListener("click", proceedWithSubmission);
-  </script>
-
-  <!-- Generate Itinerary File -->
-  <script>
-    $('#submitTour').click(function () {
-      const $submitTourBtn = $(this);
-
-      // Check if itinerary data is loaded
-      if (typeof liveItineraryData === 'undefined' || !liveItineraryData.itineraryDetails) {
-        alert('Itinerary data is not loaded.');
-        return;
-      }
-
-      const itineraryDetails = liveItineraryData.itineraryDetails;
-      const daysDetails = liveItineraryData.daysDetails;
-      const itineraryId = itineraryDetails.itineraryId || '';
-      const itineraryName = itineraryDetails.itineraryName || 'Untitled_Itinerary';
-      const format = $('#actionSelector').val(); // Get selected format: xlsx, pdf, both
-
-      // Validate itineraryId
-      if (!itineraryId) {
-        alert('Itinerary ID is missing from the data.');
-        return;
-      }
-
-      // Disable button and show loading state
-      $submitTourBtn.prop('disabled', true).text('Generating...');
-
-      // Handle generation based on selected format
-      if (format === 'xlsx' || format === 'pdf') {
-        generateItinerary(itineraryDetails, daysDetails, itineraryId, itineraryName, format, function () {
-          $submitTourBtn.prop('disabled', false).text('Generate Itinerary');
-        });
-      } else if (format === 'both') {
-        // Generate both formats sequentially (xlsx, then pdf)
-        generateItinerary(itineraryDetails, daysDetails, itineraryId, itineraryName, 'xlsx', function () {
-          generateItinerary(itineraryDetails, daysDetails, itineraryId, itineraryName, 'pdf', function () {
-            $submitTourBtn.prop('disabled', false).text('Generate Itinerary');
-          });
-        });
-      }
-    });
-
-    // Function to generate the itinerary file (XLSX or PDF)
-    function generateItinerary(itineraryDetails, daysDetails, itineraryId, itineraryName, format, callback) {
-      $.ajax({
-        url: '../Employee Section/functions/itinerary-template-excel.php',
-        type: 'POST',
-        data: {
-          itineraryDetails: JSON.stringify(itineraryDetails),
-          daysDetails: JSON.stringify(daysDetails),
-          itineraryId: itineraryId,
-          format: format
-        },
-        xhrFields: { responseType: 'blob' },
-        success: function (blobResponse) {
-          // Determine file extension and MIME type based on format
-          const fileExtension = format === 'pdf' ? 'pdf' : 'xlsx';
-          const mimeType = fileExtension === 'pdf'
-            ? 'application/pdf'
-            : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-
-          // Create a Blob object from the response
-          const blob = new Blob([blobResponse], { type: mimeType });
-
-          // Create a link to trigger file download
-          const link = document.createElement('a');
-          link.href = window.URL.createObjectURL(blob);
-          link.download = `Itinerary_${itineraryName}.${fileExtension}`;
-
-          // Append the link to the document and trigger click to start download
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-
-          // Log success and call callback function if provided
-          console.log(`${fileExtension.toUpperCase()} file generated successfully.`);
-          if (typeof callback === 'function') callback();
-        },
-        error: function () {
-          // Handle error during file generation
-          alert('Failed to generate the itinerary file. Please try again.');
-          if (typeof callback === 'function') callback();
-        }
+    // Re-index the keys of includesData after deletion to keep sequential keys
+    function reindexData(dataObj, prefix) {
+      const values = Object.values(dataObj);
+      includesData = {}; // reset global object
+      values.forEach((val, idx) => {
+        includesData[`${prefix}${idx + 1}`] = val;
       });
     }
+
+    // Disable options in other selects if already selected to avoid duplicates (except "others" and "0")
+    function updateDisabledOptions() {
+      const selectedVals = Object.values(includesData).map(d => d.value).filter(v => v !== '' && v !== 'others' && v !== '0');
+
+      document.querySelectorAll('.include-row select').forEach(select => {
+        const currentVal = select.value;
+        select.querySelectorAll('option').forEach(opt => {
+          if (opt.value === '' || opt.value === 'others' || opt.value === '0') {
+            opt.disabled = false;
+            return;
+          }
+          opt.disabled = selectedVals.includes(opt.value) && opt.value !== currentVal;
+        });
+      });
+    }
+
+    // Add new include row on button click
+    document.getElementById('addIncludeBtn').addEventListener('click', () => {
+      const count = Object.keys(includesData).length;
+      if (count >= maxIncludes) {
+        alert(`You can add maximum ${maxIncludes} Includes.`);
+        return;
+      }
+      includesData[`includes${count + 1}`] = { value: '', label: '' };
+      renderIncludes();
+    });
+
+    // Initial render on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      renderIncludes();
+    });
   </script>
 
 
-  <!-- JS Script for JSON (Array) console.log -->
-  <!-- <script>
-        document.addEventListener("change", function(event) {
-            if (event.target.matches(".area-select, .hotel-select, .meal-plan-select, .itinerary-select")) {
-                const day = event.target.dataset.day;
+  <!-- Inject dynamic excludes JSON from PHP -->
+  <script>
+    let excludesData = <?php echo json_encode($voucher['excludes'], JSON_PRETTY_PRINT); ?>;
+  </script>
 
-                if (!day) {
-                    console.warn("data-day attribute is missing!");
-                    return;
-                }
 
-                // Get ALL selected values for the specific day
-                const selectedAreas = [...document.querySelectorAll(`.area-select[data-day="${day}"]`)]
-                    .map(a => a.value || "None");
-                const selectedMealPlans = [...document.querySelectorAll(`.meal-plan-select[data-day="${day}"]`)]
-                    .map(m => m.value || "None");
-                const selectedHotels = [...document.querySelectorAll(`.hotel-select[data-day="${day}"]`)]
-                    .map(h => h.value || "None");
-                const selectedItineraries = [...document.querySelectorAll(`.itinerary-select[data-day="${day}"]`)]
-                    .map(i => i.value || "None");
+  <!-- EXCLUDES -->
+  <script>
+    let maxExcludes = 4;
 
-                console.log(JSON.stringify({
-                    Day: day,
-                    Areas: selectedAreas,
-                    MealPlans: selectedMealPlans,
-                    Hotels: selectedHotels,
-                    Itineraries: selectedItineraries
-                }, null, 2));
-            }
+    function renderExcludes() {
+      const container = document.getElementById('excludesContainer');
+      container.innerHTML = '';
+
+      const keys = Object.keys(excludesData).sort((a, b) => {
+        return Number(a.replace('excludes', '')) - Number(b.replace('excludes', ''));
+      });
+
+      keys.forEach((key, idx) => {
+        const index = idx + 1;
+        const data = excludesData[key];
+        const row = createExcludeRow(index, data);
+        container.appendChild(row);
+      });
+
+      updateDisabledExcludeOptions();
+    }
+
+    function createExcludeRow(index, data) {
+      const row = document.createElement('div');
+      row.className = 'exclude-row mb-3';
+      row.setAttribute('data-index', index);
+      row.innerHTML = `
+      <div class="d-flex justify-content-between align-items-center mb-1">
+        <label for="excludesSelect${index}">Excludes ${index}:</label>
+        <button type="button" class="btn btn-danger btn-sm remove-btn" title="Remove Excludes ${index}">
+          <i class="fas fa-trash-alt"></i>
+        </button>
+      </div>
+      <select id="excludesSelect${index}" name="excludesSelect${index}" class="form-select" required>
+        <option value="" disabled ${!data.value ? 'selected' : ''}>Select Exclude</option>
+        <option value="1">Personal expenses</option>
+        <option value="2">Visa Fees</option>
+        <option value="3">Optional Tours</option>
+        <option value="4">Tips and Gratuities</option>
+        <option value="others">Others</option>
+        <option value="0">— No Excludes —</option>
+      </select>
+      <input type="text" class="form-control mt-2 custom-input ${data.value === 'others' ? '' : 'd-none'}" placeholder="Please specify..." value="${data.label || ''}">
+    `;
+
+      const select = row.querySelector('select');
+      const customInput = row.querySelector('input.custom-input');
+      const removeBtn = row.querySelector('.remove-btn');
+
+      select.value = data.value;
+
+      select.addEventListener('change', () => {
+        if (select.value === 'others') {
+          customInput.classList.remove('d-none');
+        } else {
+          customInput.classList.add('d-none');
+          customInput.value = '';
+        }
+        updateExcludesDataFromUI();
+        updateDisabledExcludeOptions();
+      });
+
+      customInput.addEventListener('input', () => {
+        updateExcludesDataFromUI();
+      });
+
+      removeBtn.addEventListener('click', () => {
+        delete excludesData[`excludes${index}`];
+        reindexData(excludesData, 'excludes');
+        renderExcludes();
+      });
+
+      return row;
+    }
+
+    function updateExcludesDataFromUI() {
+      excludesData = {};
+      const rows = document.querySelectorAll('.exclude-row');
+      rows.forEach((row, i) => {
+        const idx = i + 1;
+        const select = row.querySelector('select');
+        const customInput = row.querySelector('input.custom-input');
+        const val = select.value;
+        const label = val === 'others' ? customInput.value.trim() : '';
+        excludesData[`excludes${idx}`] = { value: val, label: label };
+      });
+    }
+
+    function updateDisabledExcludeOptions() {
+      const selectedVals = Object.values(excludesData).map(d => d.value).filter(v => v !== '' && v !== 'others' && v !== '0');
+
+      document.querySelectorAll('.exclude-row select').forEach(select => {
+        const currentVal = select.value;
+        select.querySelectorAll('option').forEach(opt => {
+          if (opt.value === '' || opt.value === 'others' || opt.value === '0') {
+            opt.disabled = false;
+            return;
+          }
+          opt.disabled = selectedVals.includes(opt.value) && opt.value !== currentVal;
         });
-    </script> -->
+      });
+    }
+
+    document.getElementById('addExcludeBtn').addEventListener('click', () => {
+      const count = Object.keys(excludesData).length;
+      if (count >= maxExcludes) {
+        alert(`You can add maximum ${maxExcludes} Excludes.`);
+        return;
+      }
+      excludesData[`excludes${count + 1}`] = { value: '', label: '' };
+      renderExcludes();
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderExcludes();
+    });
+  </script>
+
+
+
+
+
+
+<!-- <script>
+  document.addEventListener("change", function(event) {
+  if (event.target.matches(".area-select, .hotel-select, .meal-plan-select, .itinerary-select")) {
+  const day = event.target.dataset.day;
+
+  if (!day) {
+  console.warn("data-day attribute is missing!");
+  return;
+  }
+
+  // Get ALL selected values for the specific day
+  const selectedAreas = [...document.querySelectorAll(`.area-select[data-day="${day}"]`)]
+  .map(a => a.value || "None");
+  const selectedMealPlans = [...document.querySelectorAll(`.meal-plan-select[data-day="${day}"]`)]
+  .map(m => m.value || "None");
+  const selectedHotels = [...document.querySelectorAll(`.hotel-select[data-day="${day}"]`)]
+  .map(h => h.value || "None");
+  const selectedItineraries = [...document.querySelectorAll(`.itinerary-select[data-day="${day}"]`)]
+  .map(i => i.value || "None");
+
+  console.log(JSON.stringify({
+  Day: day,
+  Areas: selectedAreas,
+  MealPlans: selectedMealPlans,
+  Hotels: selectedHotels,
+  Itineraries: selectedItineraries
+  }, null, 2));
+  }
+  });
+  </script> -->
 
 </body>
 
