@@ -62,27 +62,30 @@
 
     $voucherId = intval($_GET['id']); // Ensure it's an integer
     
-    // Step 1: Fetch core voucher info and details
     $sql = "
-            SELECT 
-                v.voucherId,
-                v.voucherName,
-                v.voucherCode,
-                v.accountId,
-                v.createdAt AS voucherCreatedAt,
-                d.sentTo,
-                d.sentFrom,
-                d.tourType,
-                d.attachment,
-                d.tourPeriodStart,
-                d.tourPeriodEnd,
-                d.guideName,
-                d.noOfPax,
-                d.createdAt AS detailCreatedAt
-            FROM vouchers v
-            LEFT JOIN voucherDetails d ON v.voucherId = d.voucherId
-            WHERE v.voucherId = ?
-        ";
+        SELECT 
+              v.voucherId,
+              v.voucherName,
+              v.voucherCode,
+              v.accountId,
+              v.itineraryId,
+              v.createdAt AS voucherCreatedAt,
+              d.sentTo,
+              d.sentFrom,
+              d.tourType,
+              d.attachment,
+              d.tourPeriodStart,
+              d.tourPeriodEnd,
+              d.noOfPax,
+              d.guideName,
+              d.createdAt AS detailCreatedAt,
+              e.countryCode AS employeeCountryCode,
+              e.contactNo AS employeeContactNo
+          FROM vouchers v
+          LEFT JOIN voucherDetails d ON v.voucherId = d.voucherId
+          LEFT JOIN employee e ON v.accountId = e.accountId
+          WHERE v.voucherId = ?
+    ";
 
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $voucherId);
@@ -93,11 +96,32 @@
       die("Voucher not found");
     }
 
+    // Combine voucherDetails contact
+    $contactFullDetail = '';
+    if (!empty($row['detailCountryCode']) && !empty($row['detailContactNo'])) {
+      $contactFullDetail = trim($row['detailCountryCode']) . ' ' . trim($row['detailContactNo']);
+    } elseif (!empty($row['detailContactNo'])) {
+      $contactFullDetail = trim($row['detailContactNo']);
+    } elseif (!empty($row['detailCountryCode'])) {
+      $contactFullDetail = trim($row['detailCountryCode']);
+    }
+
+    // Combine employee contact
+    $contactFullEmployee = '';
+    if (!empty($row['employeeCountryCode']) && !empty($row['employeeContactNo'])) {
+      $contactFullEmployee = trim($row['employeeCountryCode']) . ' ' . trim($row['employeeContactNo']);
+    } elseif (!empty($row['employeeContactNo'])) {
+      $contactFullEmployee = trim($row['employeeContactNo']);
+    } elseif (!empty($row['employeeCountryCode'])) {
+      $contactFullEmployee = trim($row['employeeCountryCode']);
+    }
+
     $voucher = [
       'voucherId' => $row['voucherId'],
       'voucherName' => $row['voucherName'],
       'voucherCode' => $row['voucherCode'],
       'accountId' => $row['accountId'],
+      'itineraryId' => $row['itineraryId'],
       'voucherCreatedAt' => $row['voucherCreatedAt'],
       'details' => [
         'sentTo' => $row['sentTo'],
@@ -106,22 +130,27 @@
         'attachment' => $row['attachment'],
         'tourPeriodStart' => $row['tourPeriodStart'],
         'tourPeriodEnd' => $row['tourPeriodEnd'],
-        'guideName' => $row['guideName'],
         'noOfPax' => $row['noOfPax'],
+        'guideName' => $row['guideName'],
+        'contact' => $contactFullDetail,        // voucherDetails contact
+        'employeeContact' => $contactFullEmployee, // employee contact added
         'detailCreatedAt' => $row['detailCreatedAt']
       ],
       'dateAndHotels' => [],
       'includes' => [],
-      'excludes' => []
+      'excludes' => [],
+      'airSchedules' => [],
+      'guideMeeting' => []
     ];
+
 
     // Step 2: Fetch voucherDateAndHotels
     $sqlDates = "
-                SELECT startDate, endDate, nights, city, hotel
-                FROM voucherDateAndHotels
-                WHERE voucherId = ?
-                ORDER BY startDate ASC
-            ";
+        SELECT startDate, endDate, nights, city, hotel
+        FROM voucherDateAndHotels
+        WHERE voucherId = ?
+        ORDER BY startDate ASC
+    ";
 
     $stmt = $conn->prepare($sqlDates);
     $stmt->bind_param("i", $voucherId);
@@ -176,11 +205,49 @@
       $excludesCounter++;
     }
 
+    // Step 5: Fetch Air Schedules
+    $sqlAirSchedules = "
+      SELECT 
+        flightSegment, 
+        flightDate, 
+        flightNumber, 
+        origin, 
+        destination, 
+        departureTime, 
+        arrivalTime 
+      FROM voucherAirSchedules
+      WHERE voucherId = ?
+      ORDER BY FIELD(flightSegment, 'departure1', 'departure2'), flightDate ASC
+    ";
 
-    // Output to browser console as JSON
-    $jsonData = json_encode($voucher, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-    echo "<script>console.log($jsonData);</script>";
+    $stmt = $conn->prepare($sqlAirSchedules);
+    $stmt->bind_param("i", $voucherId);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
+    while ($row = $result->fetch_assoc()) {
+      $voucher['airSchedules'][] = $row;
+    }
+
+    // Step 6: Fetch guideMeeting(s)
+    $sqlGuideMeeting = "
+      SELECT guideId, meetingDate, meetingTime, meetingPlace
+      FROM voucherguidemeeting
+      WHERE voucherId = ?
+    ";
+
+    $stmt = $conn->prepare($sqlGuideMeeting);
+    $stmt->bind_param("i", $voucherId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    while ($row = $result->fetch_assoc()) {
+      $voucher['guideMeeting'][] = $row;
+    }
+
+    // Output to browser console as JSON using JSON.stringify
+    $jsonData = json_encode($voucher, JSON_UNESCAPED_UNICODE);
+    echo "<script>console.log(JSON.stringify(" . $jsonData . ", null, 2));</script>";
     ?>
 
     <div class="main-content">
@@ -195,9 +262,9 @@
           </div>
 
           <div class="card-body">
+
             <!-- Row 1: Voucher Name & Code -->
             <div class="row g-3 mb-3">
-
               <div class="col-12 col-md-6 col-lg-4">
                 <label for="itineraryName" class="form-label">Voucher Name</label>
                 <input type="text" class="form-control" id="itineraryName" name="itineraryName"
@@ -208,36 +275,62 @@
               <div class="col-12 col-md-6 col-lg-4">
                 <label for="voucherCode" class="form-label">Voucher Code</label>
                 <input type="text" class="form-control" id="voucherCode" name="voucherCode"
-                  value="<?= $voucher['voucherCode']; ?>" readonly>
+                  value="<?= htmlspecialchars($voucher['voucherCode'], ENT_QUOTES); ?>" readonly>
               </div>
-
             </div>
 
             <!-- Row 2: To, From, Package -->
             <div class="row g-3 mb-3">
+
               <div class="col-12 col-md-6 col-lg-4">
                 <label class="form-label">To</label>
-                <input type="text" class="form-control" value="<?= $voucher['details']['sentTo']; ?>" readonly>
+                <select class="form-select" id="voucherTo" name="voucherTo" required>
+                  <option value="" disabled <?= empty($voucher['details']['sentTo']) ? 'selected' : '' ?>>Select Branch
+                  </option>
+
+                  <?php
+                  $selectedTo = $voucher['details']['sentTo'] ?? '';
+
+                  $sql1 = "SELECT branchId, branchName FROM branch ORDER BY branchName ASC";
+                  $res1 = $conn->query($sql1);
+
+                  if ($res1->num_rows > 0) {
+                    while ($row = $res1->fetch_assoc()) {
+                      $branchName = htmlspecialchars($row['branchName'], ENT_QUOTES);
+                      $isSelected = ($branchName === $selectedTo) ? 'selected' : '';
+                      echo "<option value='$branchName' $isSelected>$branchName</option>";
+                    }
+                  } else {
+                    echo "<option value=''>No branches available</option>";
+                  }
+                  ?>
+                </select>
               </div>
+
 
               <div class="col-12 col-md-6 col-lg-4">
                 <label class="form-label">From</label>
-                <input type="text" class="form-control" value="<?= $voucher['voucherCode']; ?>" readonly>
+                <select class="form-select" name="sentFrom" id="sentFrom">
+                  <option value="" disabled <?= empty($voucher['details']['sentFrom']) ? 'selected' : '' ?>>Select Sender
+                  </option>
+                  <option value="Agency A" <?= $voucher['details']['sentFrom'] == 'Agency A' ? 'selected' : '' ?>>Agency A
+                  </option>
+                  <option value="Agency B" <?= $voucher['details']['sentFrom'] == 'Agency B' ? 'selected' : '' ?>>Agency B
+                  </option>
+                  <!-- Add more options as needed -->
+                </select>
               </div>
 
               <div class="col-12 col-md-6 col-lg-4">
                 <label for="packageSelect" class="form-label">Package</label>
                 <select class="form-select" id="packageSelect" name="packageSelect" required>
                   <option value="" disabled>Select a package</option>
-
                   <?php
-                  // Fetch packageId and packageName
                   $sql1 = "SELECT packageId, packageName FROM package ORDER BY packageId ASC";
                   $res1 = $conn->query($sql1);
 
                   if ($res1->num_rows > 0) {
                     while ($row = $res1->fetch_assoc()) {
-                      // Check if this packageId matches voucher's packageId to mark selected
                       $selected = ($row['packageId'] == $voucher['packageId']) ? "selected" : "";
                       echo "<option value='" . htmlspecialchars($row['packageId'], ENT_QUOTES) . "' $selected>"
                         . htmlspecialchars($row['packageName'], ENT_QUOTES) . "</option>";
@@ -246,14 +339,11 @@
                     echo "<option value=''>No packages available</option>";
                   }
                   ?>
-
                 </select>
               </div>
-
-
             </div>
 
-            <!-- Row 3: Dates, Guide -->
+            <!-- Row 3: Dates, Guide, Pax -->
             <div class="row g-3">
               <div class="col-12 col-md-6 col-lg-4">
                 <label class="form-label">Tour Periods <span class="text-danger">*</span></label>
@@ -261,16 +351,14 @@
                   <!-- Start Date -->
                   <div class="input-with-icon position-relative w-100">
                     <input type="text" class="form-control pe-5 datepicker" id="PeriodStartDate" placeholder="Start"
-                      value="<?= $voucher['details']['tourPeriodStart']; ?>" readonly>
+                      value="<?= htmlspecialchars($voucher['details']['tourPeriodStart']) ?>" readonly>
                     <i class="fas fa-calendar-alt calendar-icon"></i>
                   </div>
-
                   <span class="mx-1">→</span>
-
                   <!-- End Date -->
                   <div class="input-with-icon position-relative w-100">
                     <input type="text" class="form-control pe-5 datepicker" id="PeriodEndDate" placeholder="End"
-                      value="<?= $voucher['details']['tourPeriodEnd']; ?>">
+                      value="<?= htmlspecialchars($voucher['details']['tourPeriodEnd']) ?>">
                     <i class="fas fa-calendar-alt calendar-icon"></i>
                   </div>
                 </div>
@@ -281,7 +369,8 @@
                 <select class="form-select" id="guideName" name="guideName" required>
                   <option disabled <?= empty($voucher['details']['guideName']) ? 'selected' : '' ?>>Select Guide</option>
                   <?php
-                  $currentGuide = trim($itinerary['guideName'] ?? '');
+                  // Current guide is stored as employee ID
+                  $currentGuideId = trim($voucher['details']['guideName'] ?? '');
 
                   $sql = "SELECT id, fName, mName, lName FROM employee WHERE branch = 'Korea'";
                   $result = $conn->query($sql);
@@ -291,8 +380,9 @@
                       $employeeId = htmlspecialchars($row['id']);
                       $fullName = trim($row['fName'] . ' ' . $row['mName'] . ' ' . $row['lName']);
                       $fullNameEscaped = htmlspecialchars($fullName);
-                      $isSelected = ($currentGuide === $fullName) ? 'selected' : '';
-                      echo "<option value=\"$fullNameEscaped\" $isSelected>$fullNameEscaped</option>";
+                      // Compare selected guide by employee id, cast to string for safe comparison
+                      $isSelected = ($currentGuideId === (string) $row['id']) ? 'selected' : '';
+                      echo "<option value=\"$employeeId\" $isSelected>$fullNameEscaped</option>";
                     }
                   } else {
                     echo "<option disabled>No guides available</option>";
@@ -301,106 +391,91 @@
                 </select>
               </div>
 
+
               <div class="col-12 col-md-6 col-lg-4">
                 <label class="form-label">No. of Pax</label>
-                <input type="text" class="form-control" value="<?= $voucher['details']['noOfPax']; ?>" readonly>
+                <input type="text" class="form-control" value="<?= htmlspecialchars($voucher['details']['noOfPax']); ?>"
+                  readonly>
               </div>
-
             </div>
+
           </div>
+
         </div>
 
         <!-- Air Schedule -->
         <div class="card mb-2">
           <div class="card-header">
-            <h5 class="fw-bold mb-0">
-              <!-- <i class="fas fa-plane-departure me-2 text-secondary"></i> -->
-              Air Schedule
-            </h5>
+            <h5 class="fw-bold mb-0">Air Schedule</h5>
           </div>
 
           <div class="card-body">
-
-            <!-- Arrival Section -->
+            <!-- Departure #1 -->
             <div class="row mb-3">
-
-              <!-- Header -->
               <div class="col-12 mb-2">
                 <h6 class="fw-semibold text-uppercase text-muted border-bottom pb-1">Departure #1</h6>
               </div>
 
-              <!-- Date -->
               <div class="col-md-6 col-lg-3 mb-3">
-                <label for="arrivalDate" class="form-label">Date </label>
-
+                <label for="arrivalDate" class="form-label">Date</label>
                 <div class="input-with-icon">
                   <input type="text" class="datepicker" id="arrivalDate" name="arrivalDate" placeholder="Arrival Date"
-                    value="<?= !empty($voucher['voucherName']) ? htmlspecialchars($voucher['voucherName'], ENT_QUOTES) : 'Untitled Voucher' ?>"
-                    readonly>
+                    value="2025-05-19" readonly>
                   <i class="fas fa-calendar-alt calendar-icon"></i>
                 </div>
-
               </div>
 
-              <!-- Flights -->
               <div class="col-md-6 col-lg-3 mb-3">
-
                 <label for="arrivalFlight" class="form-label">Flight</label>
                 <select class="form-select" id="arrivalFlight" name="arrivalFlight" required>
-                  <option selected disabled>Select Flight</option>
-                  <option value="KE123">KE123</option>
+                  <option disabled>Select Flight</option>
+                  <option value="KE123" selected>KE123</option>
                   <option value="OZ456">OZ456</option>
                   <option value="JL789">JL789</option>
                 </select>
-
               </div>
 
-              <!-- Origin and Destination -->
               <div class="col-md-12 col-lg-6 mb-3">
                 <label class="form-label">Origin - Destination</label>
                 <div class="d-flex flex-column flex-sm-row gap-2">
                   <select class="form-select" id="arrivalOrigin" name="arrivalOrigin" required>
-                    <option selected disabled>Origin</option>
-                    <option value="MNL">Manila</option>
+                    <option disabled>Origin</option>
+                    <option value="MNL" selected>Manila</option>
                     <option value="ICN">Incheon</option>
                     <option value="NRT">Narita</option>
                     <option value="LAX">Los Angeles</option>
                   </select>
                   <span class="align-self-center">-></span>
                   <select class="form-select" id="arrivalDestination" name="arrivalDestination" required>
-                    <option selected disabled>Destination</option>
+                    <option disabled>Destination</option>
                     <option value="MNL">Manila</option>
                     <option value="CEB">Cebu</option>
                     <option value="BKK">Bangkok</option>
-                    <option value="ICN">Incheon</option>
+                    <option value="ICN" selected>Incheon</option>
                   </select>
                 </div>
               </div>
 
-              <!-- Departure - Arrival Time -->
               <div class="col-md-12 col-lg-6 mb-3">
                 <label for="arrivalTimeStart" class="form-label">Departure - Arrival Time</label>
                 <div class="d-flex flex-column flex-sm-row gap-2">
                   <div class="input-with-icon">
                     <input type="text" class="form-control timepicker" id="arrivalTimeStart" name="arrivalTimeStart"
-                      placeholder="Departure Time" readonly required>
+                      value="12:30:00" placeholder="Departure Time" readonly required>
                     <i class="fas fa-clock calendar-icon"></i>
                   </div>
                   <span class="align-self-center">-></span>
                   <div class="input-with-icon">
                     <input type="text" class="form-control timepicker" id="arrivalTimeEnd" name="arrivalTimeEnd"
-                      placeholder="Arrival Time" readonly required>
+                      value="12:30:00" placeholder="Arrival Time" readonly required>
                     <i class="fas fa-clock calendar-icon"></i>
                   </div>
                 </div>
               </div>
-
             </div>
 
-            <!-- Destination Section -->
+            <!-- Departure #2 -->
             <div class="row">
-
-              <!-- Header -->
               <div class="col-12 mb-2">
                 <h6 class="fw-semibold text-uppercase text-muted border-bottom pb-1">Departure #2</h6>
               </div>
@@ -409,7 +484,7 @@
                 <label for="destinationDate" class="form-label">Date <span class="text-danger">*</span></label>
                 <div class="input-with-icon">
                   <input type="text" class="form-control datepicker" id="destinationDate" name="destinationDate"
-                    placeholder="Destination Date" readonly>
+                    value="2025-05-26" placeholder="Destination Date" readonly>
                   <i class="fas fa-calendar-alt calendar-icon"></i>
                 </div>
               </div>
@@ -417,8 +492,8 @@
               <div class="col-md-6 col-lg-3 mb-3">
                 <label for="destinationFlight" class="form-label">Flight <span class="text-danger">*</span></label>
                 <select class="form-select" id="destinationFlight" name="destinationFlight" required>
-                  <option selected disabled>Select Flight</option>
-                  <option value="KE321">KE321</option>
+                  <option disabled>Select Flight</option>
+                  <option value="KE321" selected>KE321</option>
                   <option value="OZ654">OZ654</option>
                   <option value="JL987">JL987</option>
                 </select>
@@ -428,16 +503,16 @@
                 <label class="form-label">Origin - Destination <span class="text-danger">*</span></label>
                 <div class="d-flex flex-column flex-sm-row gap-2">
                   <select class="form-select" id="destinationOrigin" name="destinationOrigin" required>
-                    <option selected disabled>Origin</option>
-                    <option value="ICN">Incheon</option>
+                    <option disabled>Origin</option>
+                    <option value="ICN" selected>Incheon</option>
                     <option value="MNL">Manila</option>
                     <option value="CEB">Cebu</option>
                     <option value="BKK">Bangkok</option>
                   </select>
                   <span class="align-self-center">-></span>
                   <select class="form-select" id="destinationArrival" name="destinationArrival" required>
-                    <option selected disabled>Destination</option>
-                    <option value="MNL">Manila</option>
+                    <option disabled>Destination</option>
+                    <option value="MNL" selected>Manila</option>
                     <option value="ICN">Incheon</option>
                     <option value="NRT">Narita</option>
                     <option value="LAX">Los Angeles</option>
@@ -447,26 +522,22 @@
 
               <div class="col-md-12 col-lg-6 mb-3">
                 <label for="departureTimeStart" class="form-label">Departure - Arrival Time</label>
-
                 <div class="d-flex flex-column flex-sm-row gap-2">
                   <div class="input-with-icon">
                     <input type="text" class="form-control timepicker" id="departureTimeStart" name="departureTimeStart"
-                      placeholder="Departure Time" readonly required>
+                      value="12:00:00" placeholder="Departure Time" readonly required>
                     <i class="fas fa-clock calendar-icon"></i>
                   </div>
                   <span class="align-self-center">-></span>
                   <div class="input-with-icon">
                     <input type="text" class="form-control timepicker" id="departureTimeEnd" name="departureTimeEnd"
-                      placeholder="Arrival Time" readonly required>
+                      value="12:00:00" placeholder="Arrival Time" readonly required>
                     <i class="fas fa-clock calendar-icon"></i>
                   </div>
                 </div>
               </div>
-
-
             </div>
           </div>
-
         </div>
 
         <!-- Date and Hotels -->
@@ -503,8 +574,6 @@
             </div>
           </div>
         </div>
-
-
 
       </div>
     </div>
@@ -553,42 +622,15 @@
 
   <?php include '../Employee Section/includes/emp-scripts.php' ?>
 
-
-  <!-- Datepicker Script -->
-  <!-- <script>
-    $(document).ready(function () {
-      // Apply datepicker for PeriodStartDate
-      $("#PeriodStartDate").datepicker({
-        dateFormat: "yy-mm-dd",
-        showAnim: "fadeIn",
-        changeMonth: true,
-        changeYear: true,
-        yearRange: "1900:2100",
-        onSelect: function (dateText) {
-          console.log("PeriodStartDate Selected: " + dateText);
-        }
-      });
-
-      // Apply datepicker for PeriodEndDate
-      $("#PeriodEndDate").datepicker({
-        dateFormat: "yy-mm-dd",
-        showAnim: "fadeIn",
-        changeMonth: true,
-        changeYear: true,
-        yearRange: "1900:2100",
-        onSelect: function (dateText) {
-          console.log("PeriodEndDate Selected: " + dateText);
-        }
-      });
-    });
-  </script> -->
-
   <!-- Timepicker & Datepicker General Script -->
   <script>
-    // General initializer function (can be reused after injecting new fields)
     function initFlatpickrFields() {
       // Initialize date pickers
       document.querySelectorAll("input.datepicker:not(.flatpickr-initialized)").forEach(function (element) {
+        const value = element.value.trim();
+        // Skip if the value is non-date or contains alphabetic characters (e.g., "TEST 1")
+        if (value && isNaN(Date.parse(value))) return;
+
         flatpickr(element, {
           dateFormat: "Y-m-d",
           minDate: "today",
@@ -610,6 +652,9 @@
 
       // Initialize time pickers
       document.querySelectorAll("input.timepicker:not(.flatpickr-initialized)").forEach(function (element) {
+        const value = element.value.trim();
+        if (value && !/^\d{1,2}:\d{2}$/.test(value)) return;
+
         flatpickr(element, {
           enableTime: true,
           noCalendar: true,
@@ -632,148 +677,134 @@
       });
     }
 
-    // Initial call on DOM ready
-    document.addEventListener("DOMContentLoaded", initFlatpickrFields);
   </script>
 
-
   <div class="card">
-  <div class="card-header d-flex justify-content-between align-items-center">
-    <h5 class="fw-bold mb-0">Date and Hotels</h5>
-    <button id="addDateHotelBtn" type="button" class="btn btn-sm btn-primary">Add Date & Hotel</button>
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h5 class="fw-bold mb-0">Date and Hotels</h5>
+      <button id="addDateHotelBtn" type="button" class="btn btn-sm btn-primary">Add Date & Hotel</button>
+    </div>
+    <div class="card-body" id="dateHotelContainer"></div>
   </div>
-  <div class="card-body" id="dateHotelContainer"></div>
-</div>
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const container = document.getElementById('dateHotelContainer');
-  const addBtn = document.getElementById('addDateHotelBtn');
-  const MAX_CARDS = 3;
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const container = document.getElementById('dateHotelContainer');
+      const addBtn = document.getElementById('addDateHotelBtn');
+      const MAX_CARDS = 3;
 
-  // Original data copy (immutable)
-  const originalData = <?= json_encode($voucher['dateAndHotels'] ?? [], JSON_UNESCAPED_UNICODE); ?>;
+      // Original immutable data from PHP
+      const originalData = <?= json_encode($voucher['dateAndHotels'] ?? [], JSON_UNESCAPED_UNICODE); ?>;
 
-  // Working copy of data which can be modified
-  const voucherDateAndHotelsData = [...originalData];
+      // Mutable working copy
+      const voucherDateAndHotelsData = [...originalData];
 
-  function renderAll() {
-    container.innerHTML = '';
+      function renderAll() {
+        container.innerHTML = '';
 
-    voucherDateAndHotelsData.forEach((item, index) => {
-      const num = index + 1;
+        voucherDateAndHotelsData.forEach((item, index) => {
+          const num = index + 1;
 
-      const card = document.createElement('div');
-      card.className = 'mb-4 date-hotel-card border rounded p-3';
-      card.dataset.index = index;
+          const card = document.createElement('div');
+          card.className = 'mb-4 date-hotel-card border rounded p-3';
+          card.dataset.index = index;
 
-      card.innerHTML = `
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <h6 class="fw-semibold text-uppercase text-muted border-bottom pb-1 mb-0 flex-grow-1">
-            Date and Hotels #${num}
-          </h6>
-          <button type="button" class="btn btn-sm btn-danger btn-delete-datehotel ms-3" 
-            title="Delete this entry" style="flex-shrink: 0; height: 30px; width: 30px; line-height: 1; font-size: 18px; padding: 0;">
-            &times;
-          </button>
-        </div>
+          card.innerHTML = `
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h6 class="fw-semibold text-uppercase text-muted border-bottom pb-1 mb-0 flex-grow-1">
+              Date and Hotels #${num}
+            </h6>
+            <button type="button" class="btn btn-sm btn-danger btn-delete-datehotel ms-3" 
+              title="Delete this entry" style="flex-shrink: 0; height: 30px; width: 30px; line-height: 1; font-size: 18px; padding: 0;">
+              &times;
+            </button>
+          </div>
 
-        <div class="row g-4 align-items-end">
-          <div class="col-12 col-md-5">
-            <label class="form-label">Date</label>
-            <div class="d-flex gap-2 align-items-center">
-              <div class="position-relative w-100">
-                <input type="text" class="form-control datepicker" id="PeriodStartDate${num}" 
-                  placeholder="Start" value="${item.startDate || ''}" readonly>
-                <i class="fas fa-calendar-alt position-absolute text-muted"
-                  style="right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none;"></i>
-              </div>
-              <span class="mx-1 text-muted">→</span>
-              <div class="position-relative w-100">
-                <input type="text" class="form-control datepicker" id="PeriodEndDate${num}" 
-                  placeholder="End" value="${item.endDate || ''}" readonly>
-                <i class="fas fa-calendar-alt position-absolute text-muted"
-                  style="right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none;"></i>
+          <div class="row g-4 align-items-end">
+            <div class="col-12 col-md-5">
+              <label class="form-label">Date</label>
+              <div class="d-flex gap-2 align-items-center">
+                <div class="position-relative w-100">
+                  <input type="text" class="form-control datepicker" id="PeriodStartDate${num}" 
+                    placeholder="Start" value="${item.startDate || ''}" readonly>
+                  <i class="fas fa-calendar-alt position-absolute text-muted"
+                    style="right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none;"></i>
+                </div>
+                <span class="mx-1 text-muted">→</span>
+                <div class="position-relative w-100">
+                  <input type="text" class="form-control datepicker" id="PeriodEndDate${num}" 
+                    placeholder="End" value="${item.endDate || ''}" readonly>
+                  <i class="fas fa-calendar-alt position-absolute text-muted"
+                    style="right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none;"></i>
+                </div>
               </div>
             </div>
+
+            <div class="col-6 col-md-2">
+              <label for="nights${num}" class="form-label">No. of Nights</label>
+              <input type="text" class="form-control" id="nights${num}" name="nights${num}" 
+                value="${item.nights || ''}" readonly>
+            </div>
+
+            <div class="col-6 col-md-2">
+              <label for="city${num}" class="form-label">City</label>
+              <input type="text" class="form-control" id="city${num}" name="city${num}" 
+                value="${item.city || ''}" readonly>
+            </div>
+
+            <div class="col-12 col-md-3">
+              <label for="hotel${num}" class="form-label">Hotel</label>
+              <input type="text" class="form-control" id="hotel${num}" name="hotel${num}" 
+                value="${item.hotel || ''}" readonly>
+            </div>
           </div>
+        `;
 
-          <div class="col-6 col-md-2">
-            <label for="nights${num}" class="form-label">No. of Nights</label>
-            <input type="text" class="form-control" id="nights${num}" name="nights${num}" 
-              value="${item.nights || ''}" readonly>
-          </div>
+          container.appendChild(card);
+        });
 
-          <div class="col-6 col-md-2">
-            <label for="city${num}" class="form-label">City</label>
-            <input type="text" class="form-control" id="city${num}" name="city${num}" 
-              value="${item.city || ''}" readonly>
-          </div>
-
-          <div class="col-12 col-md-3">
-            <label for="hotel${num}" class="form-label">Hotel</label>
-            <input type="text" class="form-control" id="hotel${num}" name="hotel${num}" 
-              value="${item.hotel || ''}" readonly>
-          </div>
-        </div>
-      `;
-
-      container.appendChild(card);
-    });
-
-    // Delete buttons
-    container.querySelectorAll('.btn-delete-datehotel').forEach(button => {
-      button.onclick = () => {
-        const idx = Number(button.closest('.date-hotel-card').dataset.index);
-        voucherDateAndHotelsData.splice(idx, 1);
-        renderAll();
-      };
-    });
-
-    addBtn.disabled = voucherDateAndHotelsData.length >= MAX_CARDS;
-    initializeDatepickers();
-  }
-
-  function addNewDateHotel() {
-    if (voucherDateAndHotelsData.length >= MAX_CARDS) return;
-
-    // Find first original item not in voucherDateAndHotelsData (by some unique key, or index)
-    // Since your data may not have IDs, we'll do this by simple object reference equality (works if objects are unique)
-    let nextItem = null;
-    for (const origItem of originalData) {
-      // Check if this exact object or equivalent is already in current data
-      const exists = voucherDateAndHotelsData.some(d => JSON.stringify(d) === JSON.stringify(origItem));
-      if (!exists) {
-        nextItem = origItem;
-        break;
+        bindDeleteEvents();
+        addBtn.disabled = voucherDateAndHotelsData.length >= MAX_CARDS;
+        initializeDatepickers();
       }
-    }
 
-    // If all original data used, fallback to empty object
-    if (!nextItem) nextItem = {};
+      function bindDeleteEvents() {
+        container.querySelectorAll('.btn-delete-datehotel').forEach(button => {
+          button.onclick = () => {
+            const idx = Number(button.closest('.date-hotel-card').dataset.index);
+            voucherDateAndHotelsData.splice(idx, 1);
+            renderAll();
+          };
+        });
+      }
 
-    voucherDateAndHotelsData.push(nextItem);
-    renderAll();
-  }
+      function addNewDateHotel() {
+        if (voucherDateAndHotelsData.length >= MAX_CARDS) return;
 
-  addBtn.onclick = addNewDateHotel;
+        let nextItem = originalData.find(orig =>
+          !voucherDateAndHotelsData.some(curr => JSON.stringify(curr) === JSON.stringify(orig))
+        ) || {};
 
-  function initializeDatepickers() {
-    // Your flatpickr or other datepicker init here
-    document.querySelectorAll('.datepicker').forEach(input => {
-      if (input._flatpickr) input._flatpickr.destroy();
-      flatpickr(input, { dateFormat: "Y-m-d", minDate: "today", disableMobile: true });
+        voucherDateAndHotelsData.push(nextItem);
+        renderAll();
+      }
+
+      function initializeDatepickers() {
+        document.querySelectorAll('.datepicker').forEach(input => {
+          if (input._flatpickr) input._flatpickr.destroy();
+          flatpickr(input, {
+            dateFormat: "Y-m-d",
+            minDate: "today",
+            disableMobile: true
+          });
+        });
+      }
+
+      addBtn.addEventListener('click', addNewDateHotel);
+
+      renderAll();
     });
-  }
-
-  renderAll();
-});
-
-</script>
-
-
-
-
+  </script>
 
   <!-- Inject dynamic includes JSON -->
   <script>
@@ -920,12 +951,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   </script>
 
-
   <!-- Inject dynamic excludes JSON from PHP -->
   <script>
     let excludesData = <?php echo json_encode($voucher['excludes'], JSON_PRETTY_PRINT); ?>;
   </script>
-
 
   <!-- EXCLUDES -->
   <script>
@@ -1046,11 +1075,92 @@ document.addEventListener('DOMContentLoaded', () => {
   </script>
 
 
+  <!-- Template Generation -->
+
+  <!-- Generate Voucher File -->
+  <script>
+    $('#submitVoucher').click(function () {
+      const $submitVoucherBtn = $(this);
+
+      // Check if voucher data is loaded
+      if (typeof liveVoucherData === 'undefined' || !liveVoucherData.voucherId) {
+        alert('Voucher data is not loaded.');
+        return;
+      }
+
+      const voucher = liveVoucherData;
+      const voucherId = voucher.voucherId || '';
+      const voucherName = voucher.voucherName || 'Untitled_Voucher';
+      const format = 'xlsx'; // Force XLSX only
+
+      // Validate voucherId
+      if (!voucherId) {
+        alert('Voucher ID is missing from the data.');
+        return;
+      }
+
+      // Disable button and show loading state
+      $submitVoucherBtn.prop('disabled', true).text('Generating...');
+
+      // Generate XLSX
+      generateVoucher(voucher, voucherId, voucherName, format, function () {
+        $submitVoucherBtn.prop('disabled', false).text('Generate Voucher');
+      });
+    });
+
+    // Function to generate the voucher file (XLSX only)
+    function generateVoucher(voucher, voucherId, voucherName, format, callback) {
+      $.ajax({
+        url: '../Employee Section/functions/voucher-template-excel.php', // PHP script to handle XLSX generation
+        type: 'POST',
+        data: {
+          voucher: JSON.stringify(voucher),
+          voucherId: voucherId,
+          format: format
+        },
+        xhrFields: { responseType: 'blob' },
+        
+        success: function (blobResponse) {
+          const mimeType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+          const fileExtension = 'xlsx';
+
+          const blob = new Blob([blobResponse], { type: mimeType });
+
+          const link = document.createElement('a');
+          link.href = window.URL.createObjectURL(blob);
+          link.download = `Voucher_${voucherName}.${fileExtension}`;
+
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+
+          console.log(`${fileExtension.toUpperCase()} file generated successfully.`);
+          if (typeof callback === 'function') callback();
+        },
+        error: function () {
+          alert('Failed to generate the XLSX file. Please try again.');
+          if (typeof callback === 'function') callback();
+        }
+      });
+    }
+  </script>
 
 
 
 
-<!-- <script>
+
+
+
+
+
+
+
+
+
+
+
+
+  <!-- <script>
   document.addEventListener("change", function(event) {
   if (event.target.matches(".area-select, .hotel-select, .meal-plan-select, .itinerary-select")) {
   const day = event.target.dataset.day;

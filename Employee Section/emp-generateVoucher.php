@@ -239,6 +239,7 @@
                 <div class="column-header">
                   <label for="departure1Date">Date <span class="text-danger">*</span></label>
                 </div>
+
                 <div class="datepicker-wrapper">
                   <div class="form-group">
                     <div class="input-with-icon">
@@ -248,12 +249,14 @@
                     </div>
                   </div>
                 </div>
+
               </div>
 
               <div class="columns col-md-2">
                 <div class="column-header">
                   <label for="departure1Flight">Flight <span class="text-danger">*</span></label>
                 </div>
+
                 <div class="form-group">
                   <select class="form-select" id="departure1Flight" name="departure1Flight" required>
                     <option selected disabled>Select Flight</option>
@@ -262,6 +265,7 @@
                     <option value="JL789">JL789</option>
                   </select>
                 </div>
+
               </div>
 
               <div class="columns col-md-4">
@@ -293,17 +297,21 @@
                       class="text-danger">*</span></label>
                 </div>
                 <div class="form-group d-flex flex-row gap-2">
+
                   <div class="input-with-icon timepicker">
                     <input type="text" class="timepicker form-control-sm" id="departure1DepartureTime"
                       name="departure1DepartureTime" placeholder="Departure Time" readonly required>
                     <i class="fas fa-clock calendar-icon"></i>
                   </div>
+
                   <span class="align-self-center">to</span>
+
                   <div class="input-with-icon timepicker">
                     <input type="text" class="timepicker form-control-sm" id="departure1ArrivalTime"
                       name="departure1ArrivalTime" placeholder="Arrival Time" readonly required>
                     <i class="fas fa-clock calendar-icon"></i>
                   </div>
+
                 </div>
               </div>
             </div>
@@ -434,20 +442,19 @@
   </div>
 
   <!-- Modal -->
-  <div class="modal fade" id="templateNameModal" tabindex="-1" aria-labelledby="templateNameModalLabel"
-    aria-hidden="true">
+  <div class="modal fade" id="templateNameModal" tabindex="-1" aria-labelledby="templateNameLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="templateNameModalLabel">Enter Template Name</h5>
+          <h5 class="modal-title" id="templateNameLabel">Enter Template Name</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <input type="text" id="templateName" class="form-control" placeholder="Template Name">
+          <input type="text" id="templateName" class="form-control" placeholder="Template Name" />
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-primary" onclick="proceedWithSubmission()">Proceed</button>
+          <button type="button" class="btn btn-primary" id="proceedButton">Proceed</button>
         </div>
       </div>
     </div>
@@ -520,17 +527,18 @@
 
   <!-- JSON Variables -->
   <script>
-    let voucherDetails = {};  // Voucher Details (Details Card)
-    let cardsJSONData = {};   // Date and Hotels
-    let airScheduleDetails = {};      // Air Schedule
-    let includesData = {};    // Includes
-    let excludesData = {};    // Excludes
+    let voucherDetails = {};
+    let cardsJSONData = {};
+    let airScheduleDetails = {};
+    let includesData = {};
+    let excludesData = {};
+
   </script>
 
   <!-- Voucher Details -->
   <script>
     function updateVoucherDetails() {
-      voucherDetails = {
+      const voucherDetails = {
         to: document.getElementById("voucherTo").value,
         from: document.getElementById("voucherFrom").value,
         tour: document.getElementById("voucherTour").value,
@@ -542,71 +550,10 @@
       };
 
       console.log("Voucher Details JSON:", JSON.stringify(voucherDetails, null, 2));
+      return voucherDetails;  // <--- RETURN HERE
     }
+
   </script>
-
-  <script>
-    function getAirScheduleDetailsWithGuideMeeting() {
-      // Utility: Add minutes to a date object
-      const addMinutes = (date, minutes) => new Date(date.getTime() + minutes * 60000);
-
-      // Utility: Parse time string "HH:mm" to a Date object
-      const parseTimeStringToDate = (timeString) => {
-        const [hours, minutes] = timeString.split(':').map(Number);
-        const now = new Date();
-        now.setHours(hours);
-        now.setMinutes(minutes);
-        now.setSeconds(0);
-        now.setMilliseconds(0);
-        return now;
-      };
-
-      // Guide Meeting Info
-      const arrivalTimeStartValue = document.getElementById('departure1ArrivalTime').value;
-      const currentTime = parseTimeStringToDate(arrivalTimeStartValue);
-      const updatedTime = addMinutes(currentTime, 15);
-
-      const formattedTime = `${updatedTime.getHours().toString().padStart(2, '0')}:${updatedTime.getMinutes().toString().padStart(2, '0')}`;
-      const selectedPlace = document.getElementById('departure1Destination').value;
-
-      const placeOptions = {
-        'ICN': 'Incheon Airport (Terminal 1)',
-        'Other': 'Custom Place'
-      };
-
-      const guideMeetingPlace = placeOptions[selectedPlace] || 'Custom Place';
-
-      // Construct unified structure
-      const airScheduleDetails = {
-        departure1: {
-          flightDate: document.getElementById("departure1Date").value,
-          flightNumber: document.getElementById("departure1Flight").value,
-          origin: document.getElementById("departure1Origin").value,
-          destination: document.getElementById("departure1Destination").value,
-          departureTime: document.getElementById("departure1DepartureTime").value,
-          arrivalTime: document.getElementById("departure1ArrivalTime").value
-        },
-        departure2: {
-          flightDate: document.getElementById("departure2Date").value,
-          flightNumber: document.getElementById("departure2Flight").value,
-          origin: document.getElementById("departure2Origin").value,
-          destination: document.getElementById("departure2Destination").value,
-          departureTime: document.getElementById("departure2DepartureTime").value,
-          arrivalTime: document.getElementById("departure2ArrivalTime").value
-        },
-        guideMeeting: {
-          date: document.getElementById("departure1Date").value,
-          time: formattedTime,
-          place: guideMeetingPlace
-        }
-      };
-
-      console.log("Unified Air Schedule with Guide Meeting:", airScheduleDetails);
-      return airScheduleDetails;
-    }
-  </script>
-
-
 
   <!-- Date and Hotel Section Functions and JSON generation Script -->
   <script>
@@ -619,7 +566,7 @@
       addCard();
     });
 
-    document.getElementById('addCardBtn').addEventListener('click', addCard);
+    // document.getElementById('addCardBtn').addEventListener('click', addCard);
 
     function addCard() {
       if (cardCount >= maxCards) {
@@ -649,9 +596,16 @@
 
         <div class="row g-4 align-items-end">
 
+          <div class="col-6 col-md-2">
+            <label for="nights${cardCount}" class="form-label">No. of Nights</label>
+            <input type="text" class="form-control" id="nights${cardCount}" name="nights${cardCount}" value="">
+          </div>
+
           <!-- Date Range -->
           <div class="col-12 col-md-5">
+
             <label class="form-label">Date</label>
+
             <div class="d-flex gap-2 align-items-center">
               <div class="position-relative w-100">
                 <input type="text" class="form-control datepicker" id="PeriodStartDate${cardCount}" placeholder="Start" readonly>
@@ -665,20 +619,12 @@
             </div>
           </div>
 
-          <!-- No. of Nights -->
-          <div class="col-6 col-md-2">
-            <label for="nights${cardCount}" class="form-label">No. of Nights</label>
-            <input type="text" class="form-control" id="nights${cardCount}" name="nights${cardCount}" value="">
-          </div>
-
           <!-- City -->
           <div class="col-6 col-md-2">
             <label for="city${cardCount}" class="form-label">City</label>
             <select class="form-control" id="city${cardCount}" name="city${cardCount}">
-              <option value="" selected disabled>Select City</option>
-              <option value="New York">New York</option>
-              <option value="Paris">Paris</option>
-              <option value="Tokyo">Tokyo</option>
+              <option value="" disabled>Select City</option>
+              <option value="INC" selected>Incheon</option>
             </select>
           </div>
 
@@ -740,12 +686,13 @@
       });
     }
 
+    // ✅ Ensure this helper returns correct JSON
     function generateCardsJSON() {
       const cards = document.querySelectorAll('#cardsContainer > .mb-4');
       const jsonData = {};
 
       cards.forEach((card, index) => {
-        const cardId = index + 1; // use updated numbering
+        const cardId = index + 1;
 
         const cardDetails = {
           startDate: document.getElementById(`PeriodStartDate${cardId}`)?.value || '',
@@ -758,12 +705,73 @@
         jsonData[`dateAndHotel${cardId}`] = cardDetails;
       });
 
-      // You can use cardsJSONData later
-      window.cardsJSONData = jsonData;
-      // console.log(JSON.stringify(cardsJSONData, null, 2));
+      return jsonData;
     }
+
   </script>
 
+  <!-- Air Details and Guide Meeting -->
+  <script>
+    function getAirScheduleDetailsWithGuideMeeting() {
+      // Utility: Add minutes to a date object
+      const addMinutes = (date, minutes) => new Date(date.getTime() + minutes * 60000);
+
+      // Utility: Parse time string "HH:mm" to a Date object
+      const parseTimeStringToDate = (timeString) => {
+        const [hours, minutes] = timeString.split(':').map(Number);
+        const now = new Date();
+        now.setHours(hours);
+        now.setMinutes(minutes);
+        now.setSeconds(0);
+        now.setMilliseconds(0);
+        return now;
+      };
+
+      // Guide Meeting Info
+      const arrivalTimeStartValue = document.getElementById('departure1ArrivalTime').value;
+      const currentTime = parseTimeStringToDate(arrivalTimeStartValue);
+      const updatedTime = addMinutes(currentTime, 15);
+
+      const formattedTime = `${updatedTime.getHours().toString().padStart(2, '0')}:${updatedTime.getMinutes().toString().padStart(2, '0')}`;
+      const selectedPlace = document.getElementById('departure1Destination').value;
+
+      const placeOptions = {
+        'ICN': 'Incheon Airport (Terminal 1)',
+        'Other': 'Custom Place'
+      };
+
+      const guideMeetingPlace = placeOptions[selectedPlace] || 'Custom Place';
+
+      // Construct unified structure
+      const airScheduleDetails = {
+        departure1: {
+          flightDate: document.getElementById("departure1Date").value,
+          flightNumber: document.getElementById("departure1Flight").value,
+          origin: document.getElementById("departure1Origin").value,
+          destination: document.getElementById("departure1Destination").value,
+          departureTime: document.getElementById("departure1DepartureTime").value,
+          arrivalTime: document.getElementById("departure1ArrivalTime").value
+        },
+        departure2: {
+          flightDate: document.getElementById("departure2Date").value,
+          flightNumber: document.getElementById("departure2Flight").value,
+          origin: document.getElementById("departure2Origin").value,
+          destination: document.getElementById("departure2Destination").value,
+          departureTime: document.getElementById("departure2DepartureTime").value,
+          arrivalTime: document.getElementById("departure2ArrivalTime").value
+        },
+        guideMeeting: {
+          guideId: document.getElementById("guideSelect").value,
+          date: document.getElementById("departure1Date").value,
+          time: formattedTime,
+          place: guideMeetingPlace
+        }
+      };
+
+      console.log("Unified Air Schedule with Guide Meeting:", airScheduleDetails);
+      return airScheduleDetails;
+    }
+  </script>
 
   <!-- Includes Section Functions and JSON generation Script -->
   <script>
@@ -814,30 +822,40 @@
 
     // Function to update the includes data object after each change
     function updateIncludesData() {
-      // Reset object by reassigning a new empty object
-      includesData = {};
+        includesData = {};  // reset object
 
-      const rows = document.querySelectorAll('.include-row');
+        const rows = document.querySelectorAll('.include-row');
 
-      rows.forEach((row, index) => {
-        const includeIndex = index + 1;
-        const select = row.querySelector('select');
-        const customInput = row.querySelector('.custom-include-input');
-        let value = "";
+        rows.forEach((row, index) => {
+          const includeIndex = index + 1;
+          const select = row.querySelector('select');
+          const customInput = row.querySelector('.custom-include-input');
+          let value = "";
+          let label = "";
 
-        if (select.value === "others") {
-          value = customInput.value.trim();
-        } else {
-          value = select.value;
-        }
+          if (select.value === "others") {
+            value = customInput.value.trim();
+            label = value;
+            if (label === "") return;  // skip empty "others"
+          } else {
+            value = select.value;
+            label = select.options[select.selectedIndex].text;
+          }
 
-        includesData[`includes${includeIndex}`] = { value: value };
-      });
+          includesData[`includes${includeIndex}`] = { 
+            value: value,
+            label: label
+          };
+        });
 
-      console.log('Updated Includes Data (JSON):', JSON.stringify(includesData, null, 2));
+        console.log('Updated Includes Data (JSON):', JSON.stringify(includesData, null, 2));
 
-      updateVoucherDetails();
-    }
+        updateVoucherDetails();
+
+        return includesData;  // return the updated object
+      }
+
+
 
     // Function to add a new include row
     function addInclude() {
@@ -907,10 +925,6 @@
 
       updateDisabledIncludeOptions();
     }
-
-
-
-
 
     // Function to update include labels and ids after removing an include
     function updateIncludeLabels() {
@@ -1002,9 +1016,10 @@
 
     function updateExcludesData() {
       const excludeRows = document.querySelectorAll('.exclude-row');
-      excludesData = []; // This should be a global variable or accessible where you need it
+      const excludesData = {};  // use object with keys
 
-      excludeRows.forEach(row => {
+      excludeRows.forEach((row, index) => {
+        const excludeIndex = index + 1;
         const select = row.querySelector('select.exclude-select');
         const customInput = row.querySelector('.custom-exclude-input');
         const selectedValue = select.value;
@@ -1012,25 +1027,29 @@
         // Skip if no selection or explicitly "No Excludes"
         if (!selectedValue || selectedValue === "0") return;
 
-        // Handle "others"
+        let label = "";
+
         if (selectedValue === "others") {
-          const customText = customInput.value.trim();
-          if (customText !== '') {
-            excludesData.push({
-              value: selectedValue,
-              label: customText
-            });
-          }
+          label = customInput.value.trim();
+          if (label === "") return;  // skip empty "others"
         } else {
-          // Push standard exclude option
-          const selectedOption = select.options[select.selectedIndex];
-          excludesData.push({
-            value: selectedValue,
-            label: selectedOption.text
-          });
+          label = select.options[select.selectedIndex].text;
         }
+
+        excludesData[`excludes${excludeIndex}`] = {
+          value: selectedValue,
+          label: label
+        };
       });
+
+      console.log('Updated Excludes Data (JSON):', JSON.stringify(excludesData, null, 2));
+
+      // Call any other update function if needed, e.g.:
+      // updateVoucherDetails();
+
+      return excludesData; // Return the object
     }
+
 
 
     // Function to add a new exclude row
@@ -1113,49 +1132,65 @@
     });
   </script>
 
+  <!-- Insertion Script -->
   <script>
-    // Wait for DOM to be ready
-    document.addEventListener("DOMContentLoaded", function () {
-      // When Submit Voucher button is clicked
+    document.addEventListener("DOMContentLoaded", () => {
       const submitBtn = document.getElementById("submitTour");
+      const proceedBtn = document.getElementById("proceedButton");
+
       if (submitBtn) {
-        submitBtn.addEventListener("click", function () {
+        submitBtn.addEventListener("click", () => {
+          console.log("🔹 Submit button clicked - showing template name modal");
           const modal = new bootstrap.Modal(document.getElementById("templateNameModal"));
           modal.show();
         });
       }
+
+      if (proceedBtn) {
+        proceedBtn.addEventListener("click", proceedWithSubmission);
+      }
     });
 
-    // Function to handle actual submission
     function proceedWithSubmission() {
-      const templateName = document.getElementById("templateName")?.value.trim();
+      const templateNameInput = document.getElementById("templateName");
+      const templateName = templateNameInput?.value.trim();
       const submitButton = document.getElementById("submitTour");
 
       if (!templateName) {
         alert("⚠️ Please enter a template name before proceeding.");
+        templateNameInput?.focus();
         return;
       }
 
-      // Disable to prevent double submit
-      if (submitButton) submitButton.disabled = true;
+      if (submitButton) {
+        submitButton.disabled = true;
+        console.log("⛔ Submit button disabled to prevent multiple submissions");
+      }
 
-      // Call your data collection functions if they exist
-      if (typeof collectVoucherDetails === 'function') collectVoucherDetails();
-      if (typeof generateCardsJSON === 'function') generateCardsJSON();
-      if (typeof updateAirScheduleDetails === 'function') updateAirScheduleDetails();
-      if (typeof updateIncludesData === 'function') updateIncludesData();
-      if (typeof updateExcludesData === 'function') updateExcludesData();
+      // Collect data if respective functions exist, else fallback to empty objects
+      const voucherDetails = (typeof updateVoucherDetails === "function") ? updateVoucherDetails() : {};
+      const cardsJSONData = (typeof generateCardsJSON === "function") ? generateCardsJSON() : {};
+      const airScheduleDetails = (typeof getAirScheduleDetailsWithGuideMeeting === "function") ? getAirScheduleDetailsWithGuideMeeting() : {};
+      const includesData = (typeof updateIncludesData === "function") ? updateIncludesData() : {};
+      const excludesData = (typeof updateExcludesData === "function") ? updateExcludesData() : {};
+
+      // Logging all data collected
+      console.log("🧾 Voucher Details JSON:\n", JSON.stringify(voucherDetails, null, 2));
+      console.log("📆 Cards JSON Data:\n", JSON.stringify(cardsJSONData, null, 2));
+      console.log("✈️ Air Schedule Details:\n", JSON.stringify(airScheduleDetails, null, 2));
+      console.log("✅ Includes Data:\n", JSON.stringify(includesData, null, 2));
+      console.log("❌ Excludes Data:\n", JSON.stringify(excludesData, null, 2));
 
       const voucherPayload = {
-        templateName: templateName,
-        voucherDetails: voucherDetails || {},
-        airScheduleDetails: airScheduleDetails || {},
-        cardsJSONData: cardsJSONData || {},
-        includesData: includesData || {},
-        excludesData: excludesData || {}
+        templateName,
+        voucherDetails,
+        airScheduleDetails,
+        cardsJSONData,
+        includesData,
+        excludesData
       };
 
-      console.log("📦 Voucher Payload to be submitted:", voucherPayload);
+      console.log("📦 Final Voucher Payload Object:\n", JSON.stringify(voucherPayload, null, 2));
 
       $.ajax({
         url: "../Employee Section/functions/emp-saveVoucher.php",
@@ -1164,32 +1199,38 @@
           voucherPayload: JSON.stringify(voucherPayload)
         },
         dataType: "json",
-        success: function (response) {
+        success: (response) => {
           if (submitButton) submitButton.disabled = false;
 
+          console.log("✅ Server Response:\n", JSON.stringify(response, null, 2));
+
           if (response.status === "success") {
-            alert("✅ Voucher saved successfully!");
-            window.location.href = "../Employee Section/emp-vouchertable.php";
+            alert(`Voucher Creation Success. Generating Template..`);
+            // Redirect to another page (replace URL with your desired destination)
+            // window.location.href = "../Employee Section/emp-voucherTable.php";  
           } else {
-            alert("❌ Failed to save itinerary:\n" + response.message);
+            alert("❌ Failed to save Voucher:\n" + (response.message || "Unknown error occurred."));
           }
+
         },
-        error: function (xhr, status, error) {
+        error: (xhr, status, error) => {
           if (submitButton) submitButton.disabled = false;
+
           console.error("❌ AJAX Error:", error);
-          console.error("📄 Response Text:", xhr.responseText);
-          alert("❌ A server error occurred while saving the itinerary.");
+          console.error("📄 Response Text:\n", xhr.responseText);
+          alert("❌ A server error occurred while saving the itinerary.\nPlease try again or contact support.");
         }
       });
 
-      // Hide modal
+      // Hide the modal after submission attempt
       const modalElement = document.getElementById("templateNameModal");
       const modalInstance = bootstrap.Modal.getInstance(modalElement);
-      if (modalInstance) modalInstance.hide();
+      if (modalInstance) {
+        modalInstance.hide();
+        console.log("🧩 Template name modal hidden");
+      }
     }
   </script>
-
-
 
 
 </body>

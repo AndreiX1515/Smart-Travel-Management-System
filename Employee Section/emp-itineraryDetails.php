@@ -1101,9 +1101,6 @@
     </script>
 
 
-
-
-
     <!-- JS Script for JSON (Array) console.log -->
     <!-- <script>
         document.addEventListener("change", function(event) {
