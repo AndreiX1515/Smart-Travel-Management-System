@@ -6,17 +6,18 @@ $email = $_SESSION['email'] ?? ''; // Use null coalescing operator to avoid unde
 $accId = $_SESSION['accountId'] ?? '';
 
 
-echo "<script>";
-echo "var sessionData = " . json_encode($_SESSION, JSON_PRETTY_PRINT) . ";";
-echo "console.log('Session Data:', sessionData);";
-echo "</script>";
+// echo "<script>";
+// echo "var sessionData = " . json_encode($_SESSION, JSON_PRETTY_PRINT) . ";";
+// echo "console.log('Session Data:', sessionData);";
+// echo "</script>";
 
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
+  <head>
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Booking</title>
@@ -25,14 +26,19 @@ echo "</script>";
 
   <link rel="stylesheet" href="../Mobile/assets/css/navbar-sidebar.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="../Mobile/assets/css/agent-addBooking.css?v=<?php echo time(); ?>">
+
 </head>
 
 <body>
 
+  <script>
+      var sessionData = <?= json_encode($_SESSION, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES); ?>;
+      console.log('Session Data:', sessionData);
+  </script>
+
+
   <div class="body-container">
     <?php include "../Mobile/includes/sidebar.php"; ?>
-
-
 
     <div class="main-content-container">
 
@@ -88,6 +94,23 @@ echo "</script>";
                   $flightDepartureDate = $row['flightDepartureDate'];
                   $flightPrice = $row['flightPrice'];
                   $wholesalePrice = $row['wholesalePrice'];
+                  
+                  ?>
+                  
+                   <script>
+                    console.log("packageId:", <?= json_encode($packageId) ?>);
+                    console.log("packageName:", <?= json_encode($packageName) ?>);
+                    console.log("packagePrice:", <?= json_encode($packagePrice) ?>);
+                    console.log("origin:", <?= json_encode($origin) ?>);
+                    console.log("year:", <?= json_encode($year) ?>);
+                    console.log("month:", <?= json_encode($month) ?>);
+                    console.log("flightDepartureDate:", <?= json_encode($flightDepartureDate) ?>);
+                    console.log("flightPrice:", <?= json_encode($flightPrice) ?>);
+                    console.log("wholesalePrice:", <?= json_encode($wholesalePrice) ?>);
+                  </script>
+                  
+                  <?php
+                  
                 }
               } else {
                 echo "No flight found with that ID.";
@@ -122,52 +145,50 @@ echo "</script>";
                       </div>
 
                       <select class="form-select" id="flightDate" name="flightDate" required>
-                        <option selected disabled>Select Flight Date</option>
-                        <?php
-                        // Ensure database connection exists
-                        if (!$conn) {
-                          die("<option disabled>Error: Database connection failed</option>");
-                        }
-
-                        // Ensure $packageId and $month are properly set
-                        if (isset($packageId, $month)) {
-                          // Use prepared statements for security
-                          $stmt = $conn->prepare("SELECT flightId, flightDepartureDate, flightPrice, wholesalePrice FROM flight WHERE packageId = ? AND MONTHNAME(flightDepartureDate) = ? ORDER BY flightDepartureDate ASC");
-
-                          if ($stmt) {
-                            // Bind parameters
-                            $stmt->bind_param("is", $packageId, $month);
-
-                            // Execute query
-                            $stmt->execute();
-                            $result = $stmt->get_result();
-
-                            // Loop through results
-                            while ($res1 = $result->fetch_assoc()) {
-                              $formattedRetailPrice = number_format($res1['flightPrice'], 2);
-                              $formattedWholesalePrice = number_format($res1['wholesalePrice'], 2);
-                              $dateFormatted = date('M j, Y', strtotime($res1['flightDepartureDate']));
-
-                              // Check selected option
-                              $selected = ($res1['flightDepartureDate'] == $flightDepartureDate) ? 'selected' : '';
-
-                              if ($agentType === 'Retailer') {
-                                echo "<option value='{$res1['flightId']}' {$selected}>$dateFormatted || Price: ₱ {$formattedRetailPrice}</option>";
-                              } else if ($agentType === 'Wholeseller') {
-                                echo "<option value='{$res1['flightId']}' {$selected}>$dateFormatted || Price: ₱ {$formattedWholesalePrice}</option>";
-                              }
-                            }
-
-                            // Close statement
-                            $stmt->close();
-                          } else {
-                            echo "<option disabled>Error: " . $conn->error . "</option>";
+                          <option selected disabled>Select Flight Date</option>
+                          <?php
+                          if (!$conn) {
+                            die("<option disabled>Error: Database connection failed</option>");
                           }
-                        } else {
-                          echo "<option disabled>Error: Invalid Package ID or Month</option>";
-                        }
-                        ?>
-                      </select>
+                        
+                          if (isset($packageId, $month)) {
+                            // Convert month name (e.g., "September") to month number if needed
+                            if (!is_numeric($month)) {
+                              $monthNumber = date('n', strtotime("1 $month"));
+                            } else {
+                              $monthNumber = (int)$month;
+                            }
+                        
+                            $stmt = $conn->prepare("SELECT flightId, flightDepartureDate, flightPrice, wholesalePrice FROM flight WHERE packageId = ? AND MONTH(flightDepartureDate) = ? ORDER BY flightDepartureDate ASC");
+                        
+                            if ($stmt) {
+                              $stmt->bind_param("ii", $packageId, $monthNumber);
+                              $stmt->execute();
+                              $result = $stmt->get_result();
+                        
+                              while ($res1 = $result->fetch_assoc()) {
+                                $formattedRetailPrice = number_format($res1['flightPrice'], 2);
+                                $formattedWholesalePrice = number_format($res1['wholesalePrice'], 2);
+                                $dateFormatted = date('M j, Y', strtotime($res1['flightDepartureDate']));
+                                $selected = ($res1['flightDepartureDate'] == $flightDepartureDate) ? 'selected' : '';
+                        
+                                if ($agentType === 'Retailer') {
+                                  echo "<option value='{$res1['flightId']}' {$selected}>$dateFormatted || Price: ₱ {$formattedRetailPrice}</option>";
+                                } else if ($agentType === 'Wholeseller') {
+                                  echo "<option value='{$res1['flightId']}' {$selected}>$dateFormatted || Price: ₱ {$formattedWholesalePrice}</option>";
+                                }
+                              }
+                        
+                              $stmt->close();
+                            } else {
+                              echo "<option disabled>Error: " . $conn->error . "</option>";
+                            }
+                          } else {
+                            echo "<option disabled>Error: Invalid Package ID or Month</option>";
+                          }
+                          ?>
+                        </select>
+
 
                       <span id="flightDateError" class="text-danger"></span>
 
@@ -692,8 +713,8 @@ echo "</script>";
         </form>
 
       </div>
-    </div>
 
+    </div>
   </div>
 
   <!-- Logout Confirmation Modal -->

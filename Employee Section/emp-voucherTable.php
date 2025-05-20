@@ -21,11 +21,26 @@
 
   <!-- Main Container -->
   <div class="main-container">
-    <nav class="navbar navbar-expand-lg navbar-custom">
-      <div class="container-fluid mx-1">
-          <a class="navbar-brand" id="page-title" href="#">Voucher</a>
+
+    <div class="navbar">
+      <div class="page-header-wrapper">
+
+        <!-- <div class="page-header-top">
+          <div class="back-btn-wrapper">
+            <button class="back-btn" id="redirect-btn">
+              <i class="fas fa-chevron-left"></i>
+            </button>
+          </div>
+        </div> -->
+
+        <div class="page-header-content">
+          <div class="page-header-text">
+            <h5 class="header-title">Voucher</h5>
+          </div>
+        </div>
+
       </div>
-    </nav>
+    </div>
 
     <?php
     $statusTab = isset($_GET['status']) ? $_GET['status'] : '';
@@ -187,7 +202,7 @@
                 let itineraryCard = cardBody.closest(".itinerary-card");
                 let itineraryId = itineraryCard ? itineraryCard.getAttribute("data-id") : null;
                 if (itineraryId) {
-                  window.location.href = `emp-itineraryDetails.php?id=${itineraryId}`;
+                  window.location.href = `emp-voucherDetails.php?id=${itineraryId}`;
                 }
               }
             });
@@ -204,6 +219,79 @@
         </div> -->
 
       </div>
+
+      <div class="itinerary-grid">
+          <?php
+          if (!isset($conn)) {
+            die("Database connection error.");
+          }
+
+          $sql = "SELECT * FROM vouchers ORDER BY createdAt DESC;";
+          $result = $conn->query($sql);
+
+          if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+              $itineraryId = htmlspecialchars($row['voucherId'] ?? '');
+              $packageName = htmlspecialchars($row['voucherName'] ?? 'Untitled');
+              $createdAt = $row['createdAt'] ? (new DateTime($row['createdAt']))->format('F j, Y g:i A') : 'N/A';
+
+              // Determine an icon letter (e.g., "IT" for itinerary)
+              $iconLetter = strtoupper(substr($packageName, 0, 1));
+              ?>
+
+              <div class="itinerary-card" data-id="<?php echo $itineraryId; ?>">
+                <div class="card-content-wrap">
+                  <!-- Header Section -->
+                  <div class="it-card-header">
+                    <div class="itinerary-info">
+                      <span class="file-type">IT</span>
+                      <div class="itinerary-name">
+                        <h6><?php echo $packageName; ?></h6>
+                      </div>
+                    </div>
+
+                    <!-- Dropdown Options -->
+                    <div class="options dropdown">
+                      <button class="btn dropdown-toggle p-0 border-0 bg-transparent" type="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-ellipsis-v"></i>
+                      </button>
+                      <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="#">View Details</a></li>
+                        <li><a class="dropdown-item" href="#">Edit</a></li>
+                        <li><a class="dropdown-item text-danger" href="#">Delete</a></li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <!-- Body Section -->
+                  <div class="it-card-body">
+                    <div class="itinerary-icon"><?php echo $iconLetter; ?></div>
+                  </div>
+
+                  <!-- Footer Section (Placeholder for future content) -->
+                  <div class="it-card-footer"></div>
+                </div>
+              </div>
+
+
+
+
+
+              <?php
+
+            }
+
+          } else {
+            echo "<p class='no-records'>No itineraries found.</p>";
+          }
+
+          ?>
+        </div>
+
+
+
+
 
     </div>
   </div>

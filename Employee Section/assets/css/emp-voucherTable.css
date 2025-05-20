@@ -22,7 +22,7 @@
   align-items: center;
   gap: 10px;
   padding: 5px 0px 5px 0px;
-  border: 1px solid black;
+  /* border: 1px solid black; */
 }
 
 .search-wrapper {
@@ -261,7 +261,7 @@
   padding: 0px 0px 0px 0px;
   background-color: transparent;
   margin-bottom: .5%;
-  border: 1px solid black;
+  /* border: 1px solid black; */
 }
 
 .filter-tabs {

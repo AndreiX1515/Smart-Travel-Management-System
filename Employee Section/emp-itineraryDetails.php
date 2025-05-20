@@ -249,6 +249,7 @@
 
                         <!-- Periods, Guide Row -->
                         <div class="row">
+                            
                             <!-- Flight Date Dropdown -->
                             <div class="columns col-md-4">
 
@@ -425,10 +426,48 @@
 
             </div>
 
+            <!-- Select at the top -->
+            
+
+            <!-- Form footer with both buttons -->
             <div class="form-footer">
-                <button type="button" class="btn btn-primary" id="submitEdit" disabled>Submit Edit</button>
+                <button type="button" class="btn btn-primary" id="submitEdit">Submit Edit</button>
+
+                <select id="actionSelector" class="form-select" style="width: 120px;">
+                    <option value="xlsx" selected>Excel (.xlsx)</option>
+                    <option value="pdf">PDF</option>
+                    <option value="both">Excel and PDF </option>
+                </select>
+
                 <button type="button" class="btn btn-primary" id="submitTour">Generate Itinerary</button>
             </div>
+
+            <!-- JavaScript to handle file format selection -->
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const actionSelector = document.getElementById('actionSelector');
+                    const submitEditBtn = document.getElementById('submitEdit');
+                    const submitTourBtn = document.getElementById('submitTour');
+
+                    // Initial check based on the selected option (default: XLSX)
+                    toggleButtons(actionSelector.value);
+
+                    // On change event
+                    actionSelector.addEventListener('change', function () {
+                        toggleButtons(this.value);
+                    });
+
+                    function toggleButtons(value) {
+                        if (value === 'xlsx') {
+                            submitTourBtn.innerText = 'Generate XLSX Itinerary'; // Update button text for XLSX
+                        } else {
+                            submitTourBtn.innerText = 'Generate PDF Itinerary'; // Update button text for PDF
+                        }
+                    }
+                });
+            </script>
+
+
 
         </div>
     </div>
@@ -975,9 +1014,12 @@
         document.getElementById("submitEdit").addEventListener("click", proceedWithSubmission);
     </script>
 
-    <!-- Generate Excel File -->
+    <!-- Generate Itinerary File -->
     <script>
         $('#submitTour').click(function () {
+            const $submitTourBtn = $(this);
+
+            // Check if itinerary data is loaded
             if (typeof liveItineraryData === 'undefined' || !liveItineraryData.itineraryDetails) {
                 alert('Itinerary data is not loaded.');
                 return;
@@ -985,41 +1027,74 @@
 
             const itineraryDetails = liveItineraryData.itineraryDetails;
             const daysDetails = liveItineraryData.daysDetails;
-
             const itineraryId = itineraryDetails.itineraryId || '';
             const itineraryName = itineraryDetails.itineraryName || 'Untitled_Itinerary';
+            const format = $('#actionSelector').val(); // Get selected format: xlsx, pdf, both
 
+            // Validate itineraryId
             if (!itineraryId) {
                 alert('Itinerary ID is missing from the data.');
                 return;
             }
 
-            generateItineraryExcel(itineraryDetails, daysDetails, itineraryId, itineraryName);
+            // Disable button and show loading state
+            $submitTourBtn.prop('disabled', true).text('Generating...');
+
+            // Handle generation based on selected format
+            if (format === 'xlsx' || format === 'pdf') {
+                generateItinerary(itineraryDetails, daysDetails, itineraryId, itineraryName, format, function () {
+                    $submitTourBtn.prop('disabled', false).text('Generate Itinerary');
+                });
+            } else if (format === 'both') {
+                // Generate both formats sequentially (xlsx, then pdf)
+                generateItinerary(itineraryDetails, daysDetails, itineraryId, itineraryName, 'xlsx', function () {
+                    generateItinerary(itineraryDetails, daysDetails, itineraryId, itineraryName, 'pdf', function () {
+                        $submitTourBtn.prop('disabled', false).text('Generate Itinerary');
+                    });
+                });
+            }
         });
 
-        function generateItineraryExcel(itineraryDetails, daysDetails, itineraryId, itineraryName) {
+        // Function to generate the itinerary file (XLSX or PDF)
+        function generateItinerary(itineraryDetails, daysDetails, itineraryId, itineraryName, format, callback) {
             $.ajax({
                 url: '../Employee Section/functions/itinerary-template-excel.php',
                 type: 'POST',
                 data: {
                     itineraryDetails: JSON.stringify(itineraryDetails),
                     daysDetails: JSON.stringify(daysDetails),
-                    itineraryId: itineraryId
+                    itineraryId: itineraryId,
+                    format: format
                 },
                 xhrFields: { responseType: 'blob' },
                 success: function (blobResponse) {
-                    const blob = new Blob([blobResponse], {
-                        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-                    });
+                    // Determine file extension and MIME type based on format
+                    const fileExtension = format === 'pdf' ? 'pdf' : 'xlsx';
+                    const mimeType = fileExtension === 'pdf'
+                        ? 'application/pdf'
+                        : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+
+                    // Create a Blob object from the response
+                    const blob = new Blob([blobResponse], { type: mimeType });
+
+                    // Create a link to trigger file download
                     const link = document.createElement('a');
                     link.href = window.URL.createObjectURL(blob);
-                    link.download = `Itinerary_${itineraryName}.xlsx`;
-                    link.click();
+                    link.download = `Itinerary_${itineraryName}.${fileExtension}`;
 
-                    console.log('Excel file generated successfully.');
+                    // Append the link to the document and trigger click to start download
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+
+                    // Log success and call callback function if provided
+                    console.log(`${fileExtension.toUpperCase()} file generated successfully.`);
+                    if (typeof callback === 'function') callback();
                 },
                 error: function () {
-                    alert('Failed to generate the itinerary Excel file. Please try again.');
+                    // Handle error during file generation
+                    alert('Failed to generate the itinerary file. Please try again.');
+                    if (typeof callback === 'function') callback();
                 }
             });
         }

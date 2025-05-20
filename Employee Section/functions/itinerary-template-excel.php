@@ -7,6 +7,7 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Writer\Pdf\Dompdf;
 
 // Ensure POST request contains itinerary and days details
 if (isset($_POST['itineraryDetails']) && isset($_POST['daysDetails'])) {
@@ -44,6 +45,11 @@ if (isset($_POST['itineraryDetails']) && isset($_POST['daysDetails'])) {
         // Load the template Excel file
         $templateFile = '../../Template/Itinerary Template.xlsx';  // Replace with the path to your template
         $spreadsheet = IOFactory::load($templateFile);
+
+        IOFactory::registerWriter('Pdf', Dompdf::class);
+
+
+        
         $sheet = $spreadsheet->getActiveSheet();
 
         // === Set Page Size and Margins === //

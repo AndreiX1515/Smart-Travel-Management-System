@@ -21,7 +21,6 @@
 }
 
 
-
 /* ================================ */
 
 .filters {
@@ -30,8 +29,6 @@
   gap: 15px;
   width: 100%;
 }
-
-
 
 
 .filter-month,
@@ -44,9 +41,6 @@
   padding: 5px;
   box-sizing: border-box;
 }
-
-
-
 
 
 .filter-button {
@@ -124,10 +118,6 @@
 }
 
 
-
-
-
-
 .clear-btn {
   display: flex;
   align-items: center;
@@ -151,6 +141,9 @@
 .clear-btn i {
   font-size: 14px;
 }
+
+
+
 
 
 
@@ -191,7 +184,7 @@
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
-  padding: 2rem 1.5rem .3rem 1.5rem;
+  padding: 1% 5%;
   background-color: white;
   position: fixed;
   top: 0;
@@ -229,7 +222,7 @@
   overflow-y: auto; 
   height: calc(94vh - 80px); 
   margin-top: 200px;
-  padding: 0px 25px;
+  padding: 1% 5%;
   /* border: 1px solid black; */
 }
 
@@ -238,7 +231,7 @@
   flex-direction: column;
   gap: 0.5rem;
   width: 100%;
-  padding: 10px;
+  padding: 10px 100px;
   margin: 0;
 }
 
@@ -254,7 +247,7 @@
   border: 1px solid rgba(0, 0, 0, 0.15);
   width: 100%;
   height: 25%; /* Reduced height */
-  padding: 15px;
+  padding: 0.5% 1% 0% 1%;
   margin-bottom: 10px; /* Slightly reduced margin */
   transition: all 0.3s ease;
   /* border: 1px solid black; */
@@ -267,7 +260,7 @@
   gap: 0px; /* Slightly reduced gap */
   width: 100%;
   /* border: 1px solid black; */
-  padding: 0px;
+
 
 }
 
@@ -488,16 +481,13 @@
 
 
 @media (max-width: 1610px) {
-  .flight-schedules .section-header {
-    padding: 2rem 1rem 0rem 1rem;
-  }
-
+  
   .section-main-content {
     flex-grow: 1;
     overflow-y: auto; 
     height: calc(94vh - 80px); 
     margin-top: 120px;
-    padding: 0px 10px;
+    padding: 0px 50px;
   }
 
   .flight-card {
@@ -526,12 +516,16 @@
 }
 
 @media (max-width: 1280px) {
+  .flight-schedules .section-header {
+    padding: 20px 40px 0px 30px;
+  }
+
   .section-main-content {
     flex-grow: 1;
     overflow-y: auto; 
     height: calc(94vh - 80px); 
-    margin-top: 100px;
-    padding: 0px 50px;
+    margin-top: 200px;
+    padding: 0px 30px 10px 30px;
   }
 
   .flight-card {
@@ -561,15 +555,15 @@
 
 @media (max-width: 820px) {
   .flight-schedules .section-header {
-    padding: 2rem 2.2rem 0rem 2.2rem;
+    padding: 20px 40px 0px 30px;
   }
 
   .section-main-content {
     flex-grow: 1;
     overflow-y: auto; 
     height: calc(94vh - 80px); 
-    margin-top: 120px;
-    padding: 0px 10px;
+    margin-top: 200px;
+    padding: 0px 50px 10px 50px;
   }
 
   .section-header {
@@ -606,8 +600,9 @@
 }
 
 @media (max-width: 780px) {
+
   .flight-schedules .section-header {
-    padding: 2rem 2.2rem 0rem 2.2rem;
+    padding: 20px 40px 0px 25px;
   }
 
   .section-main-content {
@@ -615,7 +610,7 @@
     overflow-y: auto; 
     height: calc(85.3vh - 80px); 
     margin-top: 190px;
-    padding: 0px 10px;
+    padding: 0px 25px;
   }
 
   .section-header {
@@ -626,215 +621,13 @@
   }
 }
 
-@media (max-width: 600px) {
-  .flight-schedules .section-header {
-    padding: 0;
-  }
-
-  .section-main-content {
-    margin-top: 200px;
-  }
-
-  .flight-card {
-    width: 100%;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .flight-details .details-header h3 {
-    font-size: 24px;
-  }
-
-  .container-header label {
-    font-size: 12px;
-  }
-
-  .flight-start {
-    justify-content: flex-start;
-    align-items: flex-start;
-    white-space: nowrap;
-    overflow-y: auto;
-    text-overflow: ellipsis; /* Optional: Adds "..." if text overflows */
-  }
-
-  .seats-info {
-    justify-content: flex-start;
-    align-items: flex-start;
-    white-space: nowrap;
-    overflow: auto;
-    text-overflow: ellipsis; /* Optional: Adds "..." if text overflows */
-  }
-
-
-  .flight-details p {
-    font-size: 11px;
-  }
-
-  .flight-date-wrapper {
-    text-align: center;
-  }
-
-  .flight-date-content {
-    flex-direction: column;
-    justify-content: left;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .flight-start {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: start;
-  /*border: 1px solid black;*/
-  }
-  
-  .flight-start label {
-    font-size: 14px;
-    font-weight: bolder;
-    color: black;
-  }
-  
-  .flight-start h5 {
-    font-size: 14px;
-    font-weight: 400;
-    color: black;
-  }
-
-  .book-now-container {
-    justify-content: center;
-  }
-
-  .section-header .header-info {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .filters-container {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    font-family: Arial, sans-serif;
-    color: #333;
-  }
-
-  .filters {
-    display: flex;
-    align-items: left;
-    justify-content: left;
-    gap: 20px;
-  }
-
-  .filter-group {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .filter-group label {
-    font-size: 14px;
-    font-weight: 500;
-    color: #555;
-    margin-bottom: 4px;
-  }
-
-  .filter-group select,
-  .filter-group input {
-    padding: 10px;
-    font-size: 14px;
-    border: 2px solid #ddd;
-    border-radius: 8px;
-    background-color: #fff;
-    color: #333;
-    transition: border-color 0.3s ease;
-    cursor: pointer;
-    appearance: none;
-  }
-
-  .filter-group select:hover,
-  .filter-group input:hover {
-    border-color: #8a8a8a;
-  }
-
-  .filter-group select:focus,
-  .filter-group input:focus {
-    border-color: #116530;
-    outline: none;
-    box-shadow: 0 0 5px rgba(17, 101, 48, 0.3);
-  }
-
-  .clear-btn {
-    margin-top: 25px;
-    padding: 10px 25px;
-    background-color: #116530;
-    color: white;
-    font-size: 14px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-  }
-
-  .clear-btn:hover {
-    background-color: #0e4a28;
-  }
-
-  .vertical-separator {
-    width: 2px;
-    background-color: #474747;
-    height: 100%;
-    margin: 0px 10px;
-    z-index: 2;
-  }
-
-  .flight-schedules {
-    padding: 0px 0px;
-  }
-
-  .flight-schedules .section-wrapper {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
-  }
-
-  .flight-schedules .section-header {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-  }
-
-  .section-header .header-info h3 {
-    font-size: 20px;
-  }
-}
-
-@media (max-width: 510px) {
-  .flight-schedules .section-header {
-    padding: 20px 10px 10px 10px;
-  }
-
-  .section-main-content {
-    margin-top: 200px;
-  }
-}
-
-
-@media (max-width: 410px) {
-  .flight-schedules .section-header {
-    padding: 2rem 1.1rem 0rem 1.1rem;
-  }
-
+@media (max-width: 610px) {
   .flight-card {
     width: 100%;
     flex-direction: column;
     align-items: center;
     padding: 0.5rem;
   }
-
-  .section-main-content {
-    margin-top: 200px;
-  }
-
 
   .flight-details .details-header h3 {
     font-size: 1.375rem; /* 22px → 1.375rem */
@@ -1022,3 +815,17 @@
     font-size: 1.125rem; /* 18px → 1.125rem */
   }
 }
+
+
+
+/* @media (max-width: 500px) {
+  .flight-schedules .section-header {
+    padding: 20px 25px 10px 25px;
+  }
+
+  .section-main-content {
+    margin-top: 200px;
+    padding: 20px 30px 10px 30px;
+  }
+
+} */
