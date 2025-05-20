@@ -123,9 +123,6 @@
 
 
               </div>
-
-
-
             </div>
 
             <div class="row mt-3">
@@ -235,23 +232,8 @@
                 </div>
               </div>
 
-              <div class="columns col-md-2">
-                <div class="column-header">
-                  <label for="departure1Date">Date <span class="text-danger">*</span></label>
-                </div>
 
-                <div class="datepicker-wrapper">
-                  <div class="form-group">
-                    <div class="input-with-icon">
-                      <input type="text" class="datepicker" id="departure1Date" name="departure1Date"
-                        placeholder="Departure Date" readonly>
-                      <i class="fas fa-calendar-alt calendar-icon"></i>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-
+              <!-- Flight -->
               <div class="columns col-md-2">
                 <div class="column-header">
                   <label for="departure1Flight">Flight <span class="text-danger">*</span></label>
@@ -268,6 +250,24 @@
 
               </div>
 
+              <!-- Date -->
+              <div class="columns col-md-2">
+                <div class="column-header">
+                  <label for="departure1Date">Date <span class="text-danger">*</span></label>
+                </div>
+
+                <div class="datepicker-wrapper">
+                  <div class="form-group">
+                    <div class="input-with-icon">
+                      <input type="text" class="datepicker" id="departure1Date" name="departure1Date"
+                        placeholder="Departure Date" readonly>
+                      <i class="fas fa-calendar-alt calendar-icon"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Origin - Destination -->
               <div class="columns col-md-4">
                 <div class="column-header">
                   <label>Origin - Destination <span class="text-danger">*</span></label>
@@ -276,25 +276,25 @@
                   <div class="form-group">
                     <select class="form-select" id="departure1Origin" name="departure1Origin" required>
                       <option selected disabled>Origin</option>
-                      <option value="MNL">Manila</option>
-                      <option value="ICN">Incheon</option>
+                      <option value="Manila">Manila</option>
+                      <option value="Incheon">Incheon</option>
                     </select>
                   </div>
                   <div class="dash-separator px-2">→</div>
                   <div class="form-group">
                     <select class="form-select" id="departure1Destination" name="departure1Destination" required>
                       <option selected disabled>Destination</option>
-                      <option value="MNL">Manila</option>
-                      <option value="ICN">Incheon</option>
+                      <option value="Manila">Manila</option>
+                      <option value="Incheon">Incheon</option>
                     </select>
                   </div>
                 </div>
               </div>
 
+              <!-- Departure Time - Arrival Time -->
               <div class="columns col-md-4">
                 <div class="column-header">
-                  <label>Departure (to Origin) Time - Arrival (to Destination) Time <span
-                      class="text-danger">*</span></label>
+                  <label>Departure Time - Arrival Time <span class="text-danger">*</span></label>
                 </div>
                 <div class="form-group d-flex flex-row gap-2">
 
@@ -324,6 +324,22 @@
                 </div>
               </div>
 
+              <!-- Flight -->
+              <div class="columns col-md-2">
+                <div class="column-header">
+                  <label for="departure2Flight">Flight <span class="text-danger">*</span></label>
+                </div>
+                <div class="form-group">
+                  <select class="form-select" id="departure2Flight" name="departure2Flight" required>
+                    <option selected disabled>Select Flight</option>
+                    <option value="KE321">KE321</option>
+                    <option value="OZ654">OZ654</option>
+                    <option value="JL987">JL987</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Date -->
               <div class="columns col-md-2">
                 <div class="column-header">
                   <label for="departure2Date">Date <span class="text-danger">*</span></label>
@@ -339,50 +355,35 @@
                 </div>
               </div>
 
-              <div class="columns col-md-2">
-                <div class="column-header">
-                  <label for="departure2Flight">Flight <span class="text-danger">*</span></label>
-                </div>
-                <div class="form-group">
-                  <select class="form-select" id="departure2Flight" name="departure2Flight" required>
-                    <option selected disabled>Select Flight</option>
-                    <option value="KE321">KE321</option>
-                    <option value="OZ654">OZ654</option>
-                    <option value="JL987">JL987</option>
-                  </select>
-                </div>
-              </div>
-
+              <!-- Origin - Destination -->
               <div class="columns col-md-4">
                 <div class="column-header">
                   <label>Origin - Destination <span class="text-danger">*</span></label>
                 </div>
+
                 <div class="datepicker-wrapper d-flex align-items-center">
                   <div class="form-group">
                     <select class="form-select" id="departure2Origin" name="departure2Origin" required>
                       <option selected disabled>Origin</option>
-                      <option value="ICN">Incheon</option>
-                      <option value="MNL">Manila</option>
-                      <option value="CEB">Cebu</option>
+                      <option value="Manila">Manila</option>
+                      <option value="Incheon">Incheon</option>
                     </select>
                   </div>
-                  <div class="dash-separator px-2">→</div>
+                  <span class="mx-1 text-muted">→</span>
                   <div class="form-group">
                     <select class="form-select" id="departure2Destination" name="departure2Destination" required>
                       <option selected disabled>Destination</option>
-                      <option value="MNL">Manila</option>
-                      <option value="ICN">Incheon</option>
-                      <option value="NRT">Narita</option>
-                      <option value="LAX">Los Angeles</option>
+                      <option value="Manila">Manila</option>
+                      <option value="Incheon">Incheon</option>
                     </select>
                   </div>
                 </div>
               </div>
 
+              <!-- Departure Time - Arrival Time -->
               <div class="columns col-md-4">
                 <div class="column-header">
-                  <label>Departure (to Origin) Time - Arrival (to Destination) Time <span
-                      class="text-danger">*</span></label>
+                  <label>Departure Time - Arrival Time <span class="text-danger">*</span></label>
                 </div>
                 <div class="form-group d-flex flex-row gap-2">
                   <div class="input-with-icon timepicker">
@@ -402,6 +403,104 @@
 
           </div>
         </div>
+
+
+        <script>
+          document.addEventListener("DOMContentLoaded", function () {
+
+            // Populate Departure 1 select with all flight codes
+            function populateDeparture1FlightSelect() {
+              fetch('../Employee Section/functions/fetchScripts/getFlightCode.php')
+                .then(res => res.json())
+                .then(flightCodes => {
+                  const select = document.getElementById('departure1Flight');
+                  select.innerHTML = '<option selected disabled>Select Flight</option>';
+                  flightCodes.forEach(code => {
+                    const option = document.createElement('option');
+                    option.value = code;
+                    option.textContent = code;
+                    select.appendChild(option);
+                  });
+                });
+            }
+
+            // Populate Departure 2 select with only the return flight code
+            function populateDeparture2FlightSelect(returnFlightCode) {
+              const select = document.getElementById('departure2Flight');
+              select.innerHTML = ''; // clear existing options
+
+              if (returnFlightCode) {
+                const option = document.createElement('option');
+                option.value = returnFlightCode;
+                option.textContent = returnFlightCode;
+                select.appendChild(option);
+                select.disabled = false;
+              } else {
+                select.innerHTML = '<option selected disabled>No Return Flight Available</option>';
+                select.disabled = true;
+              }
+            }
+
+            // Format time (remove seconds)
+            function formatTime(timeStr) {
+              if (!timeStr) return '';
+              const [hours, minutes] = timeStr.split(':');
+              return `${hours}:${minutes}`;
+            }
+
+            // Autofill departure fields based on number and whether it is return flight
+            function autofillDepartureFields(num, data, isReturn = false) {
+              document.getElementById(`departure${num}Origin`).value = isReturn ? (data.returnOrigin || '') : (data.origin || '');
+              document.getElementById(`departure${num}Date`).value = isReturn ? (data.returnDepartureDate || '') : (data.flightDepartureDate || '');
+              document.getElementById(`departure${num}DepartureTime`).value = isReturn ? formatTime(data.returnDepartureTime) : formatTime(data.flightDepartureTime);
+              document.getElementById(`departure${num}ArrivalTime`).value = isReturn ? formatTime(data.returnArrivalTime) : formatTime(data.flightArrivalTime);
+            }
+
+            // When Departure 1 flight changes
+            document.getElementById('departure1Flight').addEventListener('change', function () {
+              const flightCode = this.value;
+              if (!flightCode) return;
+
+              // Fetch full flight details for departure 1
+              fetch(`../Employee Section/functions/fetchScripts/getFlightDetails.php?flightCode=${encodeURIComponent(flightCode)}`)
+                .then(res => res.json())
+                .then(data => {
+                  console.log("Departure 1 flight data:", data);
+
+                  autofillDepartureFields(1, data, false);
+
+                  
+                  const returnFlightCode = data.returnFlightCode;
+
+                  // Populate Departure 2 select with only the returnFlightCode
+                  populateDeparture2FlightSelect(returnFlightCode);
+
+                  // Autofill Departure 2 fields immediately using the return flight data from the same response
+                  autofillDepartureFields(2, data, true);
+                });
+            });
+
+            // When Departure 2 flight changes (usually only one option anyway)
+            document.getElementById('departure2Flight').addEventListener('change', function () {
+              const flightCode = this.value;
+              if (!flightCode) return;
+
+              // Fetch flight details for return flight (departure 2)
+              fetch(`../Employee Section/functions/fetchScripts/getFlightDetails.php?flightCode=${encodeURIComponent(flightCode)}`)
+                .then(res => res.json())
+                .then(data => {
+                  console.log("Departure 2 flight data:", data);
+                  autofillDepartureFields(2, data, true);
+                });
+            });
+
+            // Initialize
+            populateDeparture1FlightSelect();
+            document.getElementById('departure2Flight').disabled = true;
+          });
+
+        </script>
+
 
         <!-- Includes Header -->
         <div class="card includes-header-card">
@@ -532,7 +631,6 @@
     let airScheduleDetails = {};
     let includesData = {};
     let excludesData = {};
-
   </script>
 
   <!-- Voucher Details -->
@@ -555,159 +653,173 @@
 
   </script>
 
-  <!-- Date and Hotel Section Functions and JSON generation Script -->
   <script>
     let cardCount = 0;
     const maxCards = 3;
+    let cities = [];
+    let hotelsList = [];
 
-    document.addEventListener("DOMContentLoaded", function () {
-      // Add 2 cards by default on load
-      addCard();
-      addCard();
+    document.addEventListener("DOMContentLoaded", () => {
+      fetch('../Employee Section/functions/fetchScripts/getHotels.php')
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`Network response was not OK (status: ${response.status})`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          cities = data.cities || [];
+          hotelsList = data.hotels || [];
+
+          // Add two cards initially
+          addCard();
+          addCard();
+        })
+        .catch(err => {
+          console.error('Failed to fetch hotels:', err);
+          alert('Error loading hotel data');
+        });
+
+      document.getElementById('addCardBtn').addEventListener('click', () => {
+        addCard();
+      });
     });
-
-    // document.getElementById('addCardBtn').addEventListener('click', addCard);
 
     function addCard() {
       if (cardCount >= maxCards) {
         alert("You can only add a maximum of 3 cards.");
         return;
       }
-
       cardCount++;
       const container = document.getElementById('cardsContainer');
+
       const card = document.createElement('div');
       card.className = 'mb-4';
       card.setAttribute('data-card-id', cardCount);
 
       card.innerHTML = `
-        <div class="col-12 mb-3 mt-3">
-          <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
-            <div>
-              <h6 class="fw-semibold text-uppercase text-muted m-0">Date and Hotels #${cardCount}</h6>
+      <div class="col-12 mb-3 mt-3">
+        <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
+          <div>
+            <h6 class="fw-semibold text-uppercase text-muted m-0">Date and Hotels #${cardCount}</h6>
+          </div>
+          <div>
+            <button type="button" class="btn btn-sm text-white bg-danger border-0 px-2 py-1 remove-card-btn" title="Delete">
+              <i class="fas fa-trash-alt"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-4 align-items-end">
+
+        <div class="col-6 col-md-2">
+          <label for="nights${cardCount}" class="form-label">No. of Nights</label>
+          <input type="text" class="form-control" id="nights${cardCount}" name="nights${cardCount}" value="">
+        </div>
+
+        <!-- Date Range -->
+        <div class="col-12 col-md-5">
+          <label class="form-label">Date</label>
+          <div class="d-flex gap-2 align-items-center">
+            <div class="position-relative w-100">
+              <input type="text" class="form-control datepicker" id="PeriodStartDate${cardCount}" placeholder="Start" readonly>
+              <i class="fas fa-calendar-alt position-absolute text-muted" style="right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none;"></i>
             </div>
-            <div>
-              <button type="button" class="btn btn-sm text-white bg-danger border-0 px-2 py-1 remove-card-btn" title="Delete">
-                <i class="fas fa-trash-alt"></i>
-              </button>
+            <span class="mx-1 text-muted">→</span>
+            <div class="position-relative w-100">
+              <input type="text" class="form-control datepicker" id="PeriodEndDate${cardCount}" placeholder="End" readonly>
+              <i class="fas fa-calendar-alt position-absolute text-muted" style="right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none;"></i>
             </div>
           </div>
         </div>
 
-        <div class="row g-4 align-items-end">
-
-          <div class="col-6 col-md-2">
-            <label for="nights${cardCount}" class="form-label">No. of Nights</label>
-            <input type="text" class="form-control" id="nights${cardCount}" name="nights${cardCount}" value="">
-          </div>
-
-          <!-- Date Range -->
-          <div class="col-12 col-md-5">
-
-            <label class="form-label">Date</label>
-
-            <div class="d-flex gap-2 align-items-center">
-              <div class="position-relative w-100">
-                <input type="text" class="form-control datepicker" id="PeriodStartDate${cardCount}" placeholder="Start" readonly>
-                <i class="fas fa-calendar-alt position-absolute text-muted" style="right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none;"></i>
-              </div>
-              <span class="mx-1 text-muted">→</span>
-              <div class="position-relative w-100">
-                <input type="text" class="form-control datepicker" id="PeriodEndDate${cardCount}" placeholder="End" readonly>
-                <i class="fas fa-calendar-alt position-absolute text-muted" style="right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none;"></i>
-              </div>
-            </div>
-          </div>
-
-          <!-- City -->
-          <div class="col-6 col-md-2">
-            <label for="city${cardCount}" class="form-label">City</label>
-            <select class="form-control" id="city${cardCount}" name="city${cardCount}">
-              <option value="" disabled>Select City</option>
-              <option value="INC" selected>Incheon</option>
-            </select>
-          </div>
-
-          <!-- Hotel -->
-          <div class="col-12 col-md-3">
-            <label for="hotel${cardCount}" class="form-label">Hotel</label>
-            <select class="form-control" id="hotel${cardCount}" name="hotel${cardCount}">
-              <option value="" selected disabled>Select Hotel</option>
-              <option value="Hotel A">Hotel A</option>
-              <option value="Hotel B">Hotel B</option>
-              <option value="Hotel C">Hotel C</option>
-            </select>
-          </div>
-
+        <!-- City -->
+        <div class="col-6 col-md-2">
+          <label for="city${cardCount}" class="form-label">City</label>
+          <select class="form-control city-select" id="city${cardCount}" name="city${cardCount}">
+            <option value="" disabled selected>Select City</option>
+            ${cities.map(city => `<option value="${city}">${city}</option>`).join('')}
+          </select>
         </div>
-      `;
+
+        <!-- Hotel -->
+        <div class="col-12 col-md-3">
+          <label for="hotel${cardCount}" class="form-label">Hotel</label>
+          <select class="form-control hotel-select" id="hotel${cardCount}" name="hotel${cardCount}" disabled>
+            <option value="" disabled selected>Select Hotel</option>
+          </select>
+        </div>
+
+      </div>
+    `;
 
       container.appendChild(card);
 
-      // Initialize flatpickr on the new date inputs
+      // Initialize flatpickr datepickers
       flatpickr(`#PeriodStartDate${cardCount}`, { dateFormat: "Y-m-d" });
       flatpickr(`#PeriodEndDate${cardCount}`, { dateFormat: "Y-m-d" });
 
-      // Attach delete button event
+      // Setup remove button event
       card.querySelector('.remove-card-btn').addEventListener('click', () => {
         card.remove();
         cardCount--;
         updateCardHeaders();
-        generateCardsJSON();
       });
 
-      generateCardsJSON();
+      // Setup city select change event to populate hotels based on city
+      const citySelect = card.querySelector('.city-select');
+      const hotelSelect = card.querySelector('.hotel-select');
+
+      citySelect.addEventListener('change', (e) => {
+        const selectedCity = e.target.value;
+        populateHotelsForCity(hotelSelect, selectedCity);
+      });
+    }
+
+    function populateHotelsForCity(hotelSelect, city) {
+      // Clear current options
+      hotelSelect.innerHTML = `<option value="" disabled selected>Select Hotel</option>`;
+
+      if (!city) {
+        hotelSelect.disabled = true;
+        return;
+      }
+
+      const filteredHotels = hotelsList.filter(hotel => hotel.hotelCity === city);
+
+      if (filteredHotels.length === 0) {
+        hotelSelect.disabled = true;
+        return;
+      }
+
+      filteredHotels.forEach(hotel => {
+        const option = document.createElement('option');
+        option.value = hotel.hotelId;
+        option.textContent = hotel.hotelName;
+        hotelSelect.appendChild(option);
+      });
+
+      hotelSelect.disabled = false;
     }
 
     function updateCardHeaders() {
-      const cards = document.querySelectorAll('#cardsContainer > .mb-4');
+      const cards = document.querySelectorAll('#cardsContainer > div[data-card-id]');
+      cardCount = cards.length;
       cards.forEach((card, index) => {
+        card.setAttribute('data-card-id', index + 1);
         const header = card.querySelector('h6');
         if (header) {
           header.textContent = `Date and Hotels #${index + 1}`;
-          card.setAttribute('data-card-id', index + 1);
-
-          // Also update IDs of inputs/selects inside this card accordingly to keep consistent
-          const startDate = card.querySelector(`#PeriodStartDate${index + 2}`) || card.querySelector(`#PeriodStartDate${index + 1}`);
-          const endDate = card.querySelector(`#PeriodEndDate${index + 2}`) || card.querySelector(`#PeriodEndDate${index + 1}`);
-          const nights = card.querySelector(`#nights${index + 2}`) || card.querySelector(`#nights${index + 1}`);
-          const city = card.querySelector(`#city${index + 2}`) || card.querySelector(`#city${index + 1}`);
-          const hotel = card.querySelector(`#hotel${index + 2}`) || card.querySelector(`#hotel${index + 1}`);
-
-          // Update all input/select IDs and names inside the card accordingly
-          card.querySelectorAll('input, select').forEach(input => {
-            const baseId = input.id.replace(/[0-9]+$/, '');
-            input.id = baseId + (index + 1);
-            if (input.name) {
-              input.name = baseId + (index + 1);
-            }
-          });
         }
+        card.querySelectorAll('input, select').forEach(el => {
+          const baseId = el.id.replace(/\d+$/, '');
+          const baseName = el.name.replace(/\d+$/, '');
+          el.id = baseId + (index + 1);
+          el.name = baseName + (index + 1);
+        });
       });
     }
-
-    // ✅ Ensure this helper returns correct JSON
-    function generateCardsJSON() {
-      const cards = document.querySelectorAll('#cardsContainer > .mb-4');
-      const jsonData = {};
-
-      cards.forEach((card, index) => {
-        const cardId = index + 1;
-
-        const cardDetails = {
-          startDate: document.getElementById(`PeriodStartDate${cardId}`)?.value || '',
-          endDate: document.getElementById(`PeriodEndDate${cardId}`)?.value || '',
-          nights: document.getElementById(`nights${cardId}`)?.value || '',
-          city: document.getElementById(`city${cardId}`)?.value || '',
-          hotel: document.getElementById(`hotel${cardId}`)?.value || ''
-        };
-
-        jsonData[`dateAndHotel${cardId}`] = cardDetails;
-      });
-
-      return jsonData;
-    }
-
   </script>
 
   <!-- Air Details and Guide Meeting -->
@@ -822,38 +934,38 @@
 
     // Function to update the includes data object after each change
     function updateIncludesData() {
-        includesData = {};  // reset object
+      includesData = {};  // reset object
 
-        const rows = document.querySelectorAll('.include-row');
+      const rows = document.querySelectorAll('.include-row');
 
-        rows.forEach((row, index) => {
-          const includeIndex = index + 1;
-          const select = row.querySelector('select');
-          const customInput = row.querySelector('.custom-include-input');
-          let value = "";
-          let label = "";
+      rows.forEach((row, index) => {
+        const includeIndex = index + 1;
+        const select = row.querySelector('select');
+        const customInput = row.querySelector('.custom-include-input');
+        let value = "";
+        let label = "";
 
-          if (select.value === "others") {
-            value = customInput.value.trim();
-            label = value;
-            if (label === "") return;  // skip empty "others"
-          } else {
-            value = select.value;
-            label = select.options[select.selectedIndex].text;
-          }
+        if (select.value === "others") {
+          value = customInput.value.trim();
+          label = value;
+          if (label === "") return;  // skip empty "others"
+        } else {
+          value = select.value;
+          label = select.options[select.selectedIndex].text;
+        }
 
-          includesData[`includes${includeIndex}`] = { 
-            value: value,
-            label: label
-          };
-        });
+        includesData[`includes${includeIndex}`] = {
+          value: value,
+          label: label
+        };
+      });
 
-        console.log('Updated Includes Data (JSON):', JSON.stringify(includesData, null, 2));
+      console.log('Updated Includes Data (JSON):', JSON.stringify(includesData, null, 2));
 
-        updateVoucherDetails();
+      updateVoucherDetails();
 
-        return includesData;  // return the updated object
-      }
+      return includesData;  // return the updated object
+    }
 
 
 

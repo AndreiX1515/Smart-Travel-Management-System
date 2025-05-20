@@ -117,24 +117,24 @@
     }
 
     $voucher = [
-      'voucherId' => $row['voucherId'],
-      'voucherName' => $row['voucherName'],
-      'voucherCode' => $row['voucherCode'],
-      'accountId' => $row['accountId'],
-      'itineraryId' => $row['itineraryId'],
-      'voucherCreatedAt' => $row['voucherCreatedAt'],
+      'voucherId' => $row['voucherId'] ?? null,
+      'voucherName' => $row['voucherName'] ?? null,
+      'voucherCode' => $row['voucherCode'] ?? null,
+      'accountId' => $row['accountId'] ?? null,
+      'itineraryId' => !empty($row['itineraryId']) ? $row['itineraryId'] : 0,
+      'voucherCreatedAt' => $row['voucherCreatedAt'] ?? null,
       'details' => [
-        'sentTo' => $row['sentTo'],
-        'sentFrom' => $row['sentFrom'],
-        'tourType' => $row['tourType'],
-        'attachment' => $row['attachment'],
-        'tourPeriodStart' => $row['tourPeriodStart'],
-        'tourPeriodEnd' => $row['tourPeriodEnd'],
-        'noOfPax' => $row['noOfPax'],
-        'guideName' => $row['guideName'],
-        'contact' => $contactFullDetail,        // voucherDetails contact
-        'employeeContact' => $contactFullEmployee, // employee contact added
-        'detailCreatedAt' => $row['detailCreatedAt']
+        'sentTo' => $row['sentTo'] ?? null,
+        'sentFrom' => $row['sentFrom'] ?? null,
+        'tourType' => $row['tourType'] ?? null,
+        'attachment' => $row['attachment'] ?? null,
+        'tourPeriodStart' => $row['tourPeriodStart'] ?? null,
+        'tourPeriodEnd' => $row['tourPeriodEnd'] ?? null,
+        'noOfPax' => $row['noOfPax'] ?? null,
+        'guideName' => $row['guideName'] ?? null,
+        'contact' => $contactFullDetail ?? null,
+        'employeeContact' => $contactFullEmployee ?? null,
+        'detailCreatedAt' => $row['detailCreatedAt'] ?? null,
       ],
       'dateAndHotels' => [],
       'includes' => [],
@@ -142,7 +142,6 @@
       'airSchedules' => [],
       'guideMeeting' => []
     ];
-
 
     // Step 2: Fetch voucherDateAndHotels
     $sqlDates = "
@@ -437,7 +436,8 @@
 
               <div class="col-md-12 col-lg-6 mb-3">
                 <label class="form-label">Origin - Destination</label>
-                <div class="d-flex flex-column flex-sm-row gap-2">
+                <div class="d-flex flex-column flex-sm-row align-items-center gap-2">
+                  <!-- Origin -->
                   <select class="form-select" id="arrivalOrigin" name="arrivalOrigin" required>
                     <option disabled>Origin</option>
                     <option value="MNL" selected>Manila</option>
@@ -445,7 +445,11 @@
                     <option value="NRT">Narita</option>
                     <option value="LAX">Los Angeles</option>
                   </select>
-                  <span class="align-self-center">-></span>
+
+                  <!-- Arrow Separator -->
+                  <div class="text-muted fw-bold fs-5 d-flex align-items-center justify-content-center">→</div>
+
+                  <!-- Destination -->
                   <select class="form-select" id="arrivalDestination" name="arrivalDestination" required>
                     <option disabled>Destination</option>
                     <option value="MNL">Manila</option>
@@ -456,21 +460,27 @@
                 </div>
               </div>
 
+
               <div class="col-md-12 col-lg-6 mb-3">
                 <label for="arrivalTimeStart" class="form-label">Departure - Arrival Time</label>
+
                 <div class="d-flex flex-column flex-sm-row gap-2">
                   <div class="input-with-icon">
                     <input type="text" class="form-control timepicker" id="arrivalTimeStart" name="arrivalTimeStart"
                       value="12:30:00" placeholder="Departure Time" readonly required>
                     <i class="fas fa-clock calendar-icon"></i>
                   </div>
-                  <span class="align-self-center">-></span>
+
+                  <!-- Arrow Separator -->
+                  <div class="text-muted fw-bold fs-5 d-flex align-items-center justify-content-center">→</div>
+
                   <div class="input-with-icon">
                     <input type="text" class="form-control timepicker" id="arrivalTimeEnd" name="arrivalTimeEnd"
                       value="12:30:00" placeholder="Arrival Time" readonly required>
                     <i class="fas fa-clock calendar-icon"></i>
                   </div>
                 </div>
+
               </div>
             </div>
 
@@ -509,7 +519,8 @@
                     <option value="CEB">Cebu</option>
                     <option value="BKK">Bangkok</option>
                   </select>
-                  <span class="align-self-center">-></span>
+                  <!-- Arrow Separator -->
+                  <div class="text-muted fw-bold fs-5 d-flex align-items-center justify-content-center">→</div>
                   <select class="form-select" id="destinationArrival" name="destinationArrival" required>
                     <option disabled>Destination</option>
                     <option value="MNL" selected>Manila</option>
@@ -528,7 +539,8 @@
                       value="12:00:00" placeholder="Departure Time" readonly required>
                     <i class="fas fa-clock calendar-icon"></i>
                   </div>
-                  <span class="align-self-center">-></span>
+                  <!-- Arrow Separator -->
+                  <div class="text-muted fw-bold fs-5 d-flex align-items-center justify-content-center">→</div>
                   <div class="input-with-icon">
                     <input type="text" class="form-control timepicker" id="departureTimeEnd" name="departureTimeEnd"
                       value="12:00:00" placeholder="Arrival Time" readonly required>
@@ -588,11 +600,14 @@
         <option value="both">Excel and PDF </option>
       </select>
 
-      <button type="button" class="btn btn-primary" id="submitTour">Generate Itinerary</button>
+      <button type="button" class="btn btn-primary" id="submitVoucher">Generate Itinerary</button>
     </div>
+
 
   </div>
   </div>
+
+
 
   <!-- Modal -->
   <div class="modal fade" id="templateNameModal" tabindex="-1" aria-labelledby="templateNameModalLabel"
@@ -687,52 +702,60 @@
     <div class="card-body" id="dateHotelContainer"></div>
   </div>
 
+  <!-- Date and Hotels Script -->
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const container = document.getElementById('dateHotelContainer');
-      const addBtn = document.getElementById('addDateHotelBtn');
-      const MAX_CARDS = 3;
+  document.addEventListener('DOMContentLoaded', () => {
+    const container = document.getElementById('dateHotelContainer');
+    const addBtn = document.getElementById('addDateHotelBtn');
+    const MAX_CARDS = 3;
 
-      // Original immutable data from PHP
-      const originalData = <?= json_encode($voucher['dateAndHotels'] ?? [], JSON_UNESCAPED_UNICODE); ?>;
+    const originalData = <?= json_encode($voucher['dateAndHotels'] ?? [], JSON_UNESCAPED_UNICODE); ?>;
+    const hotels = <?= json_encode($hotels ?? [], JSON_UNESCAPED_UNICODE); ?>;
 
-      // Mutable working copy
-      const voucherDateAndHotelsData = [...originalData];
+    const voucherDateAndHotelsData = [...originalData];
 
-      function renderAll() {
-        container.innerHTML = '';
+    console.log("Initial Voucher Data:", voucherDateAndHotelsData);
+    console.log("Hotels Data:", hotels);
 
-        voucherDateAndHotelsData.forEach((item, index) => {
-          const num = index + 1;
+    function renderAll() {
+      container.innerHTML = '';
 
-          const card = document.createElement('div');
-          card.className = 'mb-4 date-hotel-card border rounded p-3';
-          card.dataset.index = index;
+      voucherDateAndHotelsData.forEach((item, index) => {
+        const num = index + 1;
 
-          card.innerHTML = `
-          <div class="d-flex justify-content-between align-items-center mb-3">
-            <h6 class="fw-semibold text-uppercase text-muted border-bottom pb-1 mb-0 flex-grow-1">
+        const card = document.createElement('div');
+        card.className = 'mb-4 date-hotel-card';
+        card.dataset.index = index;
+
+        const cities = [...new Set(hotels.map(h => h.hotelCity))];
+        const filteredHotels = hotels.filter(h => h.hotelCity === item.city);
+
+        console.log(`Rendering Card #${num}`, item);
+
+        card.innerHTML = `
+          <div class="d-flex justify-content-between align-items-center border-bottom pb-1 pt-1 mb-2">
+            <h6 class="fw-semibold text-uppercase text-muted mb-0">
               Date and Hotels #${num}
             </h6>
-            <button type="button" class="btn btn-sm btn-danger btn-delete-datehotel ms-3" 
-              title="Delete this entry" style="flex-shrink: 0; height: 30px; width: 30px; line-height: 1; font-size: 18px; padding: 0;">
+            <button type="button" class="btn btn-danger btn-sm btn-delete-datehotel"
+              title="Delete this entry" style="padding: 0.25rem 0.4rem; font-size: 1rem; line-height: 1;">
               &times;
             </button>
           </div>
 
-          <div class="row g-4 align-items-end">
+          <div class="row g-3 align-items-end">
             <div class="col-12 col-md-5">
               <label class="form-label">Date</label>
               <div class="d-flex gap-2 align-items-center">
                 <div class="position-relative w-100">
-                  <input type="text" class="form-control datepicker" id="PeriodStartDate${num}" 
+                  <input type="text" class="form-control datepicker" id="PeriodStartDate${num}"
                     placeholder="Start" value="${item.startDate || ''}" readonly>
                   <i class="fas fa-calendar-alt position-absolute text-muted"
                     style="right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none;"></i>
                 </div>
-                <span class="mx-1 text-muted">→</span>
+                <span class="text-muted">→</span>
                 <div class="position-relative w-100">
-                  <input type="text" class="form-control datepicker" id="PeriodEndDate${num}" 
+                  <input type="text" class="form-control datepicker" id="PeriodEndDate${num}"
                     placeholder="End" value="${item.endDate || ''}" readonly>
                   <i class="fas fa-calendar-alt position-absolute text-muted"
                     style="right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none;"></i>
@@ -748,70 +771,76 @@
 
             <div class="col-6 col-md-2">
               <label for="city${num}" class="form-label">City</label>
-              <input type="text" class="form-control" id="city${num}" name="city${num}" 
-                value="${item.city || ''}" readonly>
+              <select class="form-select city-select" id="city${num}" name="city${num}">
+                <option value="">Select City</option>
+                ${cities.map(city => `<option value="${city}" ${item.city === city ? 'selected' : ''}>${city}</option>`).join('')}
+              </select>
             </div>
 
             <div class="col-12 col-md-3">
               <label for="hotel${num}" class="form-label">Hotel</label>
-              <input type="text" class="form-control" id="hotel${num}" name="hotel${num}" 
-                value="${item.hotel || ''}" readonly>
+              <select class="form-select hotel-select" id="hotel${num}" name="hotel${num}">
+                <option value="">Select Hotel</option>
+                ${filteredHotels.map(h => `<option value="${h.hotelName}" ${item.hotel === h.hotelName ? 'selected' : ''}>${h.hotelName}</option>`).join('')}
+              </select>
             </div>
           </div>
         `;
 
-          container.appendChild(card);
-        });
+        container.appendChild(card);
+      });
 
-        bindDeleteEvents();
-        addBtn.disabled = voucherDateAndHotelsData.length >= MAX_CARDS;
-        initializeDatepickers();
-      }
+      bindDeleteEvents();
+      addBtn.disabled = voucherDateAndHotelsData.length >= MAX_CARDS;
+      initializeDatepickers();
+    }
 
-      function bindDeleteEvents() {
-        container.querySelectorAll('.btn-delete-datehotel').forEach(button => {
-          button.onclick = () => {
-            const idx = Number(button.closest('.date-hotel-card').dataset.index);
-            voucherDateAndHotelsData.splice(idx, 1);
-            renderAll();
-          };
-        });
-      }
+    function bindDeleteEvents() {
+      container.querySelectorAll('.btn-delete-datehotel').forEach(button => {
+        button.onclick = () => {
+          const idx = Number(button.closest('.date-hotel-card').dataset.index);
+          voucherDateAndHotelsData.splice(idx, 1);
+          console.log("Deleted index:", idx);
+          renderAll();
+        };
+      });
+    }
 
-      function addNewDateHotel() {
-        if (voucherDateAndHotelsData.length >= MAX_CARDS) return;
+    function addNewDateHotel() {
+      if (voucherDateAndHotelsData.length >= MAX_CARDS) return;
 
-        let nextItem = originalData.find(orig =>
-          !voucherDateAndHotelsData.some(curr => JSON.stringify(curr) === JSON.stringify(orig))
-        ) || {};
+      let nextItem = originalData.find(orig =>
+        !voucherDateAndHotelsData.some(curr => JSON.stringify(curr) === JSON.stringify(orig))
+      ) || {};
 
-        voucherDateAndHotelsData.push(nextItem);
-        renderAll();
-      }
-
-      function initializeDatepickers() {
-        document.querySelectorAll('.datepicker').forEach(input => {
-          if (input._flatpickr) input._flatpickr.destroy();
-          flatpickr(input, {
-            dateFormat: "Y-m-d",
-            minDate: "today",
-            disableMobile: true
-          });
-        });
-      }
-
-      addBtn.addEventListener('click', addNewDateHotel);
-
+      console.log("Adding new item:", nextItem);
+      voucherDateAndHotelsData.push(nextItem);
       renderAll();
-    });
-  </script>
+    }
+
+    function initializeDatepickers() {
+      document.querySelectorAll('.datepicker').forEach(input => {
+        if (input._flatpickr) input._flatpickr.destroy();
+        flatpickr(input, {
+          dateFormat: "Y-m-d",
+          minDate: "today",
+          disableMobile: true
+        });
+      });
+    }
+
+    addBtn.addEventListener('click', addNewDateHotel);
+    renderAll();
+  });
+</script>
+
 
   <!-- Inject dynamic includes JSON -->
   <script>
     let includesData = <?php echo json_encode($voucher['includes'], JSON_PRETTY_PRINT); ?>;
   </script>
 
-  <!-- Keep the rest of the JS logic as is -->
+  <!-- Includes Fetch Script -->
   <script>
     let maxIncludes = 4;
 
@@ -841,9 +870,10 @@
       row.innerHTML = `
       <div class="d-flex justify-content-between align-items-center mb-1">
         <label for="includesSelect${index}">Includes ${index}:</label>
-        <button type="button" class="btn btn-danger btn-sm remove-btn" title="Remove Includes ${index}">
-          <i class="fas fa-trash-alt"></i>
+        <button type="button" class="btn btn-danger btn-sm remove-btn" title="Remove Includes ${index}" style="font-size: 1rem; line-height: 1;">
+          &times;
         </button>
+
       </div>
       <select id="includesSelect${index}" name="includesSelect${index}" class="form-select" required>
         <option value="" disabled ${!data.value ? 'selected' : ''}>Select Include</option>
@@ -985,9 +1015,10 @@
       row.innerHTML = `
       <div class="d-flex justify-content-between align-items-center mb-1">
         <label for="excludesSelect${index}">Excludes ${index}:</label>
-        <button type="button" class="btn btn-danger btn-sm remove-btn" title="Remove Excludes ${index}">
-          <i class="fas fa-trash-alt"></i>
+        <button type="button" class="btn btn-danger btn-sm remove-btn" title="Remove Includes ${index}" style="font-size: 1rem; line-height: 1;">
+          &times;
         </button>
+
       </div>
       <select id="excludesSelect${index}" name="excludesSelect${index}" class="form-select" required>
         <option value="" disabled ${!data.value ? 'selected' : ''}>Select Exclude</option>
@@ -1074,76 +1105,68 @@
     });
   </script>
 
-
-  <!-- Template Generation -->
-
   <!-- Generate Voucher File -->
   <script>
-    $('#submitVoucher').click(function () {
-      const $submitVoucherBtn = $(this);
+    $(document).ready(function () {
+      $('#submitVoucher').on('click', function () {
+        const $btn = $(this);
 
-      // Check if voucher data is loaded
-      if (typeof liveVoucherData === 'undefined' || !liveVoucherData.voucherId) {
-        alert('Voucher data is not loaded.');
-        return;
-      }
-
-      const voucher = liveVoucherData;
-      const voucherId = voucher.voucherId || '';
-      const voucherName = voucher.voucherName || 'Untitled_Voucher';
-      const format = 'xlsx'; // Force XLSX only
-
-      // Validate voucherId
-      if (!voucherId) {
-        alert('Voucher ID is missing from the data.');
-        return;
-      }
-
-      // Disable button and show loading state
-      $submitVoucherBtn.prop('disabled', true).text('Generating...');
-
-      // Generate XLSX
-      generateVoucher(voucher, voucherId, voucherName, format, function () {
-        $submitVoucherBtn.prop('disabled', false).text('Generate Voucher');
-      });
-    });
-
-    // Function to generate the voucher file (XLSX only)
-    function generateVoucher(voucher, voucherId, voucherName, format, callback) {
-      $.ajax({
-        url: '../Employee Section/functions/voucher-template-excel.php', // PHP script to handle XLSX generation
-        type: 'POST',
-        data: {
-          voucher: JSON.stringify(voucher),
-          voucherId: voucherId,
-          format: format
-        },
-        xhrFields: { responseType: 'blob' },
-        
-        success: function (blobResponse) {
-          const mimeType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-          const fileExtension = 'xlsx';
-
-          const blob = new Blob([blobResponse], { type: mimeType });
-
-          const link = document.createElement('a');
-          link.href = window.URL.createObjectURL(blob);
-          link.download = `Voucher_${voucherName}.${fileExtension}`;
-
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-
-          console.log(`${fileExtension.toUpperCase()} file generated successfully.`);
-          if (typeof callback === 'function') callback();
-        },
-        error: function () {
-          alert('Failed to generate the XLSX file. Please try again.');
-          if (typeof callback === 'function') callback();
+        // Retrieve voucher data from PHP
+        const voucherData = <?php echo json_encode($voucher, JSON_UNESCAPED_UNICODE); ?>;
+        if (!voucherData || typeof voucherData !== 'object') {
+          alert('Invalid voucher data.');
+          return;
         }
+
+        const voucherId = voucherData.voucherId || '';
+        const voucherName = voucherData.voucherName || 'Untitled_Voucher';
+        const fileFormat = 'xlsx';
+
+        // Disable button while generating
+        $btn.prop('disabled', true).text('Generating...');
+
+        // Trigger file generation
+        generateVoucherFile(voucherData, voucherId, voucherName, fileFormat, () => {
+          $btn.prop('disabled', false).text('Generate Voucher');
+        });
       });
-    }
+
+      function generateVoucherFile(voucher, id, name, format, callback) {
+        $.ajax({
+          url: '../Employee Section/functions/voucher-template-excel.php',
+          type: 'POST',
+          data: {
+            voucher: JSON.stringify(voucher),
+            voucherId: id,
+            format: format
+          },
+          xhrFields: { responseType: 'blob' },
+          success: function (responseBlob) {
+            const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+            const fileExt = 'xlsx';
+            const fileName = `Voucher_${name}.${fileExt}`;
+
+            const blob = new Blob([responseBlob], { type: fileType });
+            const downloadLink = document.createElement('a');
+            downloadLink.href = URL.createObjectURL(blob);
+            downloadLink.download = fileName;
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+
+            console.log(`${fileExt.toUpperCase()} file generated: ${fileName}`);
+            if (typeof callback === 'function') callback();
+          },
+          error: function (xhr, status, error) {
+            console.error('Error:', status, error);
+            alert('Failed to generate the voucher file. Please try again.');
+            if (typeof callback === 'function') callback();
+          }
+        });
+      }
+    });
   </script>
+
 
 
 
