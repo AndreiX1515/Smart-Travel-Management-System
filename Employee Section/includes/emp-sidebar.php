@@ -63,6 +63,63 @@ $position = htmlspecialchars(strtoupper($empId));
 			</a>
 		</li>
 
+		<li class="nav-item transaction">
+			<a class="nav-link page-button" href="../Employee Section/emp-requestHistory.php" data-page-name="Request History">
+				<div class="icon-wrapper">
+					<div class="icon"><i class="fa-solid fa-cart-plus"></i></div>
+				</div>
+				<div class="label-wrapper">
+					<span class="label">Request</span>
+				</div>
+			</a>
+		</li>
+
+		<li class="nav-item transaction">
+			<a class="nav-link page-button" href="../Employee Section/emp-paymentHistory.php" data-page-name="Payment History">
+				<div class="icon-wrapper">
+					<div class="icon"><i class="fa-solid fa-money-check-dollar"></i></div>
+				</div>
+				<div class="label-wrapper">
+					<span class="label">Payment</span>
+				</div>
+			</a>
+		</li>
+
+		<li class="nav-item transaction">
+			<a class="nav-link page-button" href="../Employee Section/emp-guestList.php" data-page-name="Guest List">
+				<div class="icon-wrapper">
+					<div class="icon"><i class="fa-solid fa-table-list"></i></div>
+				</div>
+				<div class="label-wrapper">
+					<span class="label">Guest List</span>
+				</div>
+			</a>
+		</li>
+
+		<li class="nav-item transaction">
+			<a class="nav-link page-button" href="../Employee Section/emp-roomingList.php" data-page-name="Rooming List">
+				<div class="icon-wrapper">
+					<div class="icon"><i class="fa-solid fa-newspaper"></i></div>
+				</div>
+				<div class="label-wrapper">
+					<span class="label">Rooming List</span>
+				</div>
+			</a>
+		</li>
+
+		<li class="nav-item transaction">
+			<a class="nav-link page-button" href="../Employee Section/emp-visaRequirementsTable.php" data-page-name="Visa Requirements">
+				<div class="icon-wrapper">
+					<div class="icon"><i class="fa-solid fa-passport"></i></div>
+				</div>
+				<div class="label-wrapper">
+					<span class="label">Visa Requirements</span>
+				</div>
+			</a>
+		</li>
+
+		
+
 		<!-- <li class="nav-item transaction">
 			<a class="nav-link page-button" href="../Employee Section/emp-requestHistory.php" data-page-name="Request History">
 				<div class="icon-wrapper">
@@ -120,7 +177,7 @@ $position = htmlspecialchars(strtoupper($empId));
 
 
 		<!-- Table Operationals -->
-		<li class="nav-item dropdown">
+		<!-- <li class="nav-item dropdown">
 			<a class="nav-link page-button" href="#" data-bs-toggle="collapse" data-bs-target="#operationals" aria-expanded="false" aria-controls="operationals" data-page-name="Operationals">
 				<div class="icon-wrapper">
 				<div class="icon"><i class="fa-solid fa-industry"></i></div>
@@ -145,10 +202,10 @@ $position = htmlspecialchars(strtoupper($empId));
 				</ul>
 			</div>
 
-		</li>
+		</li> -->
 
 		<!-- Table Histories -->
-		<li class="nav-item dropdown">
+		<!-- <li class="nav-item dropdown">
 			<a class="nav-link page-button" href="#" data-bs-toggle="collapse" data-bs-target="#tableHistories" aria-expanded="false" aria-controls="tableHistories" data-page-name="Operationals">
 				<div class="icon-wrapper">
 					<div class="icon"><i class="fa-solid fa-list"></i></div>
@@ -162,22 +219,46 @@ $position = htmlspecialchars(strtoupper($empId));
 			<div class="collapse" id="tableHistories">
 				<ul class="nav flex-column managebooking-menu-wrapper">
 					<li class="nav-item transaction">
-						<a class="nav-link page-button" href="../Employee Section/emp-requestHistory.php" data-page-name="Request History">Request History</a>
+						<a class="nav-link page-button" href="../Employee Section/emp-requestHistory.php" data-page-name="Request History">Request</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link page-button" href="../Employee Section/emp-paymentHistory.php" data-page-name="Payment History">Payment History</a>
+						<a class="nav-link page-button" href="../Employee Section/emp-paymentHistory.php" data-page-name="Payment History">Payment</a>
 					</li>
 
 					
 				</ul>
 			</div>
 
+		</li> -->
+
+		<!-- Data Entry -->
+		<li class="nav-item dropdown">
+			<a class="nav-link page-button" href="#" data-bs-toggle="collapse" data-bs-target="#dataEntry" aria-expanded="false" aria-controls="dataEntry" data-page-name="Operationals">
+				<div class="icon-wrapper">
+					<div class="icon"><i class="fa-solid fa-file-import"></i></div>
+				</div>
+				<div class="label-wrapper">
+					<span class="label">Data Entry</span>
+				</div>
+			</a>
+			<div class="collapse" id="dataEntry">
+				<ul class="nav flex-column dataEntry-menu-wrapper">
+					<li class="nav-item transaction">
+						<a class="nav-link page-button" href="../Employee Section/emp-requestList.php" data-page-name="Request List">Request</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link page-button" href="../Employee Section/emp-flightList.php" data-page-name="Flight List">Flight</a>
+					</li>
+
+				</ul>
+			</div>
 		</li>
 
+		<!-- For Approvals -->
 		<li class="nav-item dropdown">
 			<a class="nav-link page-button" href="#" data-bs-toggle="collapse" data-bs-target="#manageBookingMenu" aria-expanded="false" aria-controls="manageBookingMenu" data-page-name="Operationals">
 				<div class="icon-wrapper">
-					<div class="icon"><i class="fa-solid fa-thumbs-up"></i></div>
+					<div class="icon"><i class="fa-solid fa-list-check"></i></div>
 				</div>
 				<div class="label-wrapper">
 					<span class="label">For Approvals</span>
@@ -198,6 +279,7 @@ $position = htmlspecialchars(strtoupper($empId));
 			</div>
 		</li>
 
+		<!-- Reports -->
 		<li class="nav-item dropdown">
 			<a class="nav-link page-button" href="#" data-bs-toggle="collapse" data-bs-target="#reportMenu" aria-expanded="false" aria-controls="reportMenu" data-page-name="Reports">
 				<div class="icon-wrapper">
