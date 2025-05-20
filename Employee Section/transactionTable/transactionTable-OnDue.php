@@ -1,170 +1,186 @@
 <div class="table-container">
 
-    <div class="table-header">
-        <div class="search-wrapper">
-            <div class="search-input-wrapper">
-                <input type="text" id="search" placeholder="Search here..">
-            </div>
-        </div>
+  <div class="table-header">
 
-        <div class="second-header-wrapper">
-            <div class="date-range-wrapper flightbooking-wrapper">
-                <div class="date-range-inputs-wrapper">
-                    <div class="input-with-icon">
-                        <input type="text" class="datepicker" id="FlightStartDate" placeholder="Flight Date" readonly>
-                        <i class="fas fa-calendar-alt calendar-icon"></i>
-                    </div>
-                </div>
-            </div>
-
-            <div class="date-range-wrapper sorting-wrapper">
-                <div class="select-wrapper">
-                    <select id="packages">
-                        <option value="" disabled selected>Select Branch</option>
-                        <?php
-                        // Execute the SQL query
-                        $sql1 = "SELECT branchId, branchName FROM branch ORDER BY branchName ASC";
-                        $res1 = $conn->query($sql1);
-
-                        // Check if there are results
-                        if ($res1->num_rows > 0) {
-                            // Loop through the results and generate options
-                            while ($row = $res1->fetch_assoc()) {
-                                echo "<option value='" . $row['branchName'] . "'>" . $row['branchName'] . "</option>";
-                            }
-                        } else {
-                            echo "<option value=''>No companies available</option>";
-                        }
-                        ?>
-                    </select>
-                </div>
-            </div>
-
-            <div class="buttons-wrapper">
-                <button id="clearSorting" class="btn btn-secondary">
-                    Clear Filters
-                </button>
-            </div>
-        </div>
-
+    <!-- Search -->
+    <div class="search-wrapper">
+      <div class="search-input-wrapper">
+        <input type="text" id="search" placeholder="Search here..">
+      </div>
     </div>
 
-    <div class="navpills-container">
-        <div class="filter-tabs" id="booking-filter-tabs">
-            <!-- All Button -->
-            <button class="filter-btn active" data-filter="">
-                All
-                <span class="badge-status-tab">
-                    <h6>
-                        <?php
-                        $sql = "SELECT COUNT(*) AS totalBookings FROM booking;";
-                        $result = mysqli_query($conn, $sql);
-                        echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
-                        ?>
-                    </h6>
-                </span>
-            </button>
-
-            <!-- Pending Button -->
-            <button class="filter-btn" data-filter="Pending">Pending
-                <span class="badge-status-tab">
-                    <h6>
-                        <?php
-                        $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
-                    WHERE status = 'Pending'";
-                        $result = mysqli_query($conn, $sql);
-                        echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
-                        ?>
-                    </h6>
-                </span>
-            </button>
-
-            <!-- Reserved Button -->
-            <button class="filter-btn" data-filter="Reserved">Reserved
-                <span class="badge-status-tab">
-                    <h6>
-                        <?php
-                        $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
-                      WHERE status = 'Reserved'";
-                        $result = mysqli_query($conn, $sql);
-                        echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
-                        ?>
-                    </h6>
-                </span>
-            </button>
-
-            <!-- Confirmed Button -->
-            <button class="filter-btn" data-filter="Confirmed">Confirmed
-                <span class="badge-status-tab">
-                    <h6>
-                        <?php
-                        $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
-                    WHERE status = 'Confirmed'";
-                        $result = mysqli_query($conn, $sql);
-                        echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
-                        ?>
-                    </h6>
-                </span>
-            </button>
-
-            <!-- Cancelled Button -->
-            <button class="filter-btn" data-filter="Cancelled">Cancelled
-                <span class="badge-status-tab">
-                    <h6>
-                        <?php
-                        $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
-                    WHERE status = 'Cancelled'";
-                        $result = mysqli_query($conn, $sql);
-                        echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
-                        ?>
-                    </h6>
-                </span>
-            </button>
-
-            <!-- Remaining Balance Button -->
-            <button class="filter-btn remaining-balance" data-filter="Balanced">With Remaining Balance
-                <span class="badge-status-tab">
-                    <h6>
-                        <?php
-                        $sql = "SELECT COUNT(*) AS totalBookings, SUM(p.amount) AS sum
-                                FROM booking b
-                                JOIN payment p ON p.transactNo = b.transactNo;
-                                ";
-                        $result = mysqli_query($conn, $sql);
-                        echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
-                        ?>
-                    </h6>
-                </span>
-            </button>
-
+    <!-- Filter group -->
+    <div class="second-header-wrapper">
+      <div class="date-range-wrapper flightbooking-wrapper">
+        <div class="date-range-inputs-wrapper">
+          <div class="input-with-icon">
+            <input type="text" class="datepicker" id="FlightStartDate" placeholder="Flight Date" readonly>
+            <i class="fas fa-calendar-alt calendar-icon"></i>
+          </div>
         </div>
+      </div>
+
+      <div class="date-range-wrapper sorting-wrapper">
+        <div class="select-wrapper">
+          <select id="packages">
+            <option value="" disabled selected>Select Branch</option>
+            <?php
+              // Execute the SQL query
+              $sql1 = "SELECT branchId, branchName FROM branch ORDER BY branchName ASC";
+              $res1 = $conn->query($sql1);
+
+              // Check if there are results
+              if ($res1->num_rows > 0) 
+              {
+                // Loop through the results and generate options
+                while ($row = $res1->fetch_assoc()) 
+                {
+                  echo "<option value='" . $row['branchName'] . "'>" . $row['branchName'] . "</option>";
+                }
+              } 
+              else 
+              {
+                echo "<option value=''>No companies available</option>";
+              }
+            ?>
+          </select>
+        </div>
+      </div>
+
+      <div class="buttons-wrapper">
+        <button id="clearSorting" class="btn btn-secondary">
+          Clear Filters
+        </button>
+      </div>
     </div>
 
-    <div class="body-content-wrapper">
+  </div>
 
-        <div class="table-wrapper">
-            <table class="ondue-table" id="ondue-table">
-                <thead>
-                    <tr>
-                        <th>TRANSACT NO</th>
-                        <th>BRANCH</th>
-                        <th>FLIGHT DATE</th>
-                        <th>TOTAL PAX</th>
-                        <th>PACKAGE PRICE</th>
-                        <th>TOTAL REQUEST COST</th>
-                        <th>AMOUNT PAID</th>
-                        <th>BALANCE</th>
-                        <th>STATUS</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    // Ensure $conn is properly initialized
-                    if (!isset($conn)) {
-                        die("Database connection error.");
-                    }
+  <div class="navpills-container">
+    <div class="filter-tabs" id="booking-filter-tabs">
+      <!-- All Button -->
+      <button class="filter-btn active" data-filter="">
+        All
+        <span class="badge-status-tab">
+          <h6>
+            <?php
+              $sql = "SELECT COUNT(*) AS totalBookings FROM booking b
+                      JOIN flight f ON b.flightId = f.flightId
+                      WHERE f.flightDepartureDate < CURDATE()";
+              $result = mysqli_query($conn, $sql);
+              echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+            ?>
+          </h6>
+        </span>
+      </button>
 
-                    $sql = "SELECT b.transactNo, DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y') AS departureDate, f.returnDepartureDate AS returnDate, 
+      <!-- Pending Button -->
+      <button class="filter-btn" data-filter="Pending">Pending
+        <span class="badge-status-tab">
+          <h6>
+            <?php
+              $sql = "SELECT COUNT(*) AS totalBookings FROM booking b
+                      JOIN flight f ON b.flightId = f.flightId
+                      WHERE b.status = 'Pending' AND f.flightDepartureDate < CURDATE()";
+              $result = mysqli_query($conn, $sql);
+              echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+            ?>
+          </h6>
+        </span>
+      </button>
+
+      <!-- Reserved Button -->
+      <button class="filter-btn" data-filter="Reserved">Reserved
+        <span class="badge-status-tab">
+          <h6>
+            <?php
+              $sql = "SELECT COUNT(*) AS totalBookings FROM booking b
+                      JOIN flight f ON b.flightId = f.flightId
+                      WHERE b.status = 'Reserved' AND f.flightDepartureDate < CURDATE()";
+              $result = mysqli_query($conn, $sql);
+              echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+            ?>
+          </h6>
+        </span>
+      </button>
+
+      <!-- Confirmed Button -->
+      <button class="filter-btn" data-filter="Confirmed">Confirmed
+        <span class="badge-status-tab">
+          <h6>
+            <?php
+              $sql = "SELECT COUNT(*) AS totalBookings FROM booking b
+                      JOIN flight f ON b.flightId = f.flightId
+                      WHERE b.status = 'Confirmed' AND f.flightDepartureDate < CURDATE()";
+              $result = mysqli_query($conn, $sql);
+              echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+            ?>
+          </h6>
+        </span>
+      </button>
+
+      <!-- Cancelled Button -->
+      <button class="filter-btn" data-filter="Cancelled">Cancelled
+        <span class="badge-status-tab">
+          <h6>
+            <?php
+              $sql = "SELECT COUNT(*) AS totalBookings FROM booking b
+                      JOIN flight f ON b.flightId = f.flightId
+                      WHERE b.status = 'Cancelled' AND f.flightDepartureDate < CURDATE()";
+              $result = mysqli_query($conn, $sql);
+              echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+            ?>
+          </h6>
+        </span>
+      </button>
+
+      <!-- Remaining Balance Button -->
+      <button class="filter-btn remaining-balance" data-filter="Balanced">With Remaining Balance
+        <span class="badge-status-tab">
+          <h6>
+            <?php
+              $sql = "SELECT COUNT(*) AS totalBookings, SUM(p.amount) AS sum, b.totalPrice as totalPrice, SUM(r.requestCost) as requestCost
+                      FROM booking b
+                      JOIN flight f ON b.flightId = f.flightId
+                      JOIN request r ON r.transactNo = b.transactNo AND r.requestStatus = 'Confirmed'
+                      JOIN payment p ON p.transactNo = b.transactNo AND p.paymentStatus = 'Approved'
+                      WHERE f.flightDepartureDate < CURDATE()";
+              $result = mysqli_query($conn, $sql);
+              echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+            ?>
+          </h6>
+        </span>
+      </button>
+
+    </div>
+  </div>
+
+  <div class="body-content-wrapper">
+
+    <div class="table-wrapper">
+      <table class="ondue-table" id="ondue-table">
+        <thead>
+          <tr>
+            <th>TRANSACT NO</th>
+            <th>BRANCH</th>
+            <th>FLIGHT DATE</th>
+            <th>TOTAL PAX</th>
+            <th>PACKAGE PRICE</th>
+            <th>TOTAL REQUEST COST</th>
+            <th>AMOUNT PAID</th>
+            <th>BALANCE</th>
+            <th>STATUS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php
+            // Ensure $conn is properly initialized
+            if (!isset($conn)) 
+            {
+              die("Database connection error.");
+            }
+
+            $sql = "SELECT b.transactNo, DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y') AS departureDate, f.returnDepartureDate AS returnDate, 
                       b.status AS bookingStatus, CONCAT(f.flightDepartureDate, ' | ', f.returnDepartureDate) AS FlightDate, 
                       p.packageName AS PackageName, DATE_FORMAT(b.bookingDate, '%m.%d.%Y') AS BookingDate, b.pax AS TotalPax,  
                       b.totalPrice AS PackagePrice, br.branchName as branchName, COALESCE(SUM(pa.amount), 0) AS TotalAmountPaid,
@@ -191,269 +207,297 @@
                       p.packageName, b.bookingDate, b.pax, b.totalPrice, a.lName, a.fName, a.mName, br.branchName
                     ORDER BY CAST(SUBSTRING_INDEX(b.transactNo, '-', -1) AS UNSIGNED)";
 
-                    // Execute the query
-                    $result = $conn->query($sql);
+            // Execute the query
+            $result = $conn->query($sql);
 
-                    // Check if there are results
-                    if ($result->num_rows > 0) {
-                        while ($row = $result->fetch_assoc()) {
-                            // Safely handle null values
-                            $transactNo = htmlspecialchars($row['transactNo'] ?? '');
-                            $agentName = htmlspecialchars($row['agentName'] ?? '');
-                            $packageName = htmlspecialchars($row['PackageName'] ?? '');
-                            $departureDate = $row['departureDate'] ?? null;
-                            $returnDate = $row['returnDate'] ?? null;
-                            $bookingDate = htmlspecialchars($row['BookingDate'] ?? '');
-                            $totalPax = htmlspecialchars($row['TotalPax'] ?? 0);
-                            $packagePrice = $row['PackagePrice'] ?? 0;
-                            $requestTotal = $row['TotalRequestAmount'] ?? 0;
-                            $amountPaid = $row['TotalAmountPaid'] ?? 0;
-                            $balance = max(($packagePrice + $requestTotal) - $amountPaid, 0); // Prevent negative balances
-                            $status = htmlspecialchars($row['bookingStatus'] ?? 'Unknown');
+            // Check if there are results
+            if ($result->num_rows > 0) 
+            {
+              while ($row = $result->fetch_assoc()) 
+              {
+                // Safely handle null values
+                $transactNo = htmlspecialchars($row['transactNo'] ?? '');
+                $agentName = htmlspecialchars($row['agentName'] ?? '');
+                $packageName = htmlspecialchars($row['PackageName'] ?? '');
+                $departureDate = $row['departureDate'] ?? null;
+                $returnDate = $row['returnDate'] ?? null;
+                $bookingDate = htmlspecialchars($row['BookingDate'] ?? '');
+                $totalPax = htmlspecialchars($row['TotalPax'] ?? 0);
+                $packagePrice = $row['PackagePrice'] ?? 0;
+                $requestTotal = $row['TotalRequestAmount'] ?? 0;
+                $amountPaid = $row['TotalAmountPaid'] ?? 0;
+                $balance = max(($packagePrice + $requestTotal) - $amountPaid, 0); // Prevent negative balances
+                $status = htmlspecialchars($row['bookingStatus'] ?? 'Unknown');
 
-                            // Determine the status class
-                            $statusClass = match ($status) {
-                                "Pending" => "bg-warning text-dark",
-                                "Confirmed" => "bg-success text-white",
-                                "Cancelled" => "bg-danger text-white",
-                                "Reject" => "bg-secondary text-white",
-                                default => "bg-secondary text-white",
-                            };
+                // Determine the status class
+                $statusClass = match ($status) {
+                  "Pending" => "bg-warning text-dark",
+                  "Confirmed" => "bg-success text-white",
+                  "Cancelled" => "bg-danger text-white",
+                  "Reject" => "bg-secondary text-white",
+                  default => "bg-secondary text-white",};
 
-                            // Format dates
-                            // $formattedDepartureDate = $departureDate ? (new DateTime($departureDate))->format('F j, Y') : 'N/A';
-                            $formattedReturnDate = $returnDate ? (new DateTime($returnDate))->format('F j, Y') : 'N/A';
+                // Format dates
+                // $formattedDepartureDate = $departureDate ? (new DateTime($departureDate))->format('F j, Y') : 'N/A';
+                $formattedReturnDate = $returnDate ? (new DateTime($returnDate))->format('F j, Y') : 'N/A';
 
-                            // Securely encode URL
-                            $transactionUrl = htmlspecialchars("emp-transactionInfo.php?id=$transactNo");
+                // Securely encode URL
+                $transactionUrl = htmlspecialchars("emp-transactionInfo.php?id=$transactNo");
 
-                            // Output each row as a table row
-                            echo "<tr data-url='$transactionUrl'>";
-                            echo "<td>$transactNo</td>";
-                            echo "<td>" . htmlspecialchars($row['ACCOUNT NAME'] ?? '') . "</td>";
-                            echo "<td>$departureDate</td>";
-                            echo "<td class='fw-bold ps-3'>$totalPax</td>";
-                            echo "<td>₱ " . number_format($packagePrice, 2) . "</td>";
-                            echo "<td>₱ " . number_format($requestTotal, 2) . "</td>";
-                            echo "<td>₱ " . number_format($amountPaid, 2) . "</td>";
-                            echo "<td>₱ " . number_format($balance, 2) . "</td>";
-                            echo "<td> <span class='badge rounded-pill $statusClass p-2'>$status</span></td>";
-                            echo "</tr>";
-                        }
-                    } else {
-                        echo "<tr><td colspan='8' class='text-center'>No records found</td></tr>";
-                    }
-                    ?>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="table-footer">
-            <div class="last-update-wrapper">
-                <span>Last updated:</span>
-                <span>April 30, 2025 • 10:15 AM</span>
-            </div>
-
-            <div class="pagination-controls">
-                <button id="prevPage" class="pagination-btn">Previous</button>
-                <span id="pageInfo" class="page-info">Page 1 of 10</span>
-                <button id="nextPage" class="pagination-btn">Next</button>
-            </div>
-        </div>
-
+                // Output each row as a table row
+                echo "<tr data-url='$transactionUrl'>";
+                echo "<td>$transactNo</td>";
+                echo "<td>" . htmlspecialchars($row['ACCOUNT NAME'] ?? '') . "</td>";
+                echo "<td>$departureDate</td>";
+                echo "<td class='fw-bold ps-3'>$totalPax</td>";
+                echo "<td>₱ " . number_format($packagePrice, 2) . "</td>";
+                echo "<td>₱ " . number_format($requestTotal, 2) . "</td>";
+                echo "<td>₱ " . number_format($amountPaid, 2) . "</td>";
+                echo "<td>₱ " . number_format($balance, 2) . "</td>";
+                echo "<td> <span class='badge rounded-pill $statusClass p-2'>$status</span></td>";
+                echo "</tr>";
+              }
+            } 
+            else 
+            {
+              echo "<tr><td colspan='8' class='text-center'>No records found</td></tr>";
+            }
+          ?>
+        </tbody>
+      </table>
     </div>
+
+    <div class="table-footer">
+      <div class="last-update-wrapper">
+        <span>Last updated:</span>
+        <span>April 30, 2025 • 10:15 AM</span>
+      </div>
+
+      <div class="pagination-controls">
+        <button id="prevPage" class="pagination-btn">Previous</button>
+        <span id="pageInfo" class="page-info">Page 1 of 10</span>
+        <button id="nextPage" class="pagination-btn">Next</button>
+      </div>
+    </div>
+
+  </div>
 
 </div>
 
-
-
 <!-- For Button Tabs Status Sorting -->
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
+  document.addEventListener("DOMContentLoaded", function () 
+  {
+    // Get the status from the URL
+    let statusTab = "<?php echo isset($_GET['status']) ? $_GET['status'] : ''; ?>";
+    console.log("Status from URL:", statusTab); // Debugging
 
-        // Get the status from the URL
-        let statusTab = "<?php echo isset($_GET['status']) ? $_GET['status'] : ''; ?>";
-        console.log("Status from URL:", statusTab); // Debugging
+    // Find all filter buttons
+    let buttons = document.querySelectorAll("#booking-filter-tabs .filter-btn");
 
-        // Find all filter buttons
-        let buttons = document.querySelectorAll("#booking-filter-tabs .filter-btn");
+    // Remove 'active' class from all buttons
+    buttons.forEach(btn => btn.classList.remove("active"));
 
-        // Remove 'active' class from all buttons
+    // Find the button that matches the status
+    let matchedButton = [...buttons].find(btn => btn.getAttribute("data-filter") === statusTab);
+
+    if (matchedButton) 
+    {
+      matchedButton.classList.add("active"); // Highlight the correct button
+      console.log("Activating button:", matchedButton.innerText);
+
+      setTimeout(() => 
+      {
+        matchedButton.click();
+      }, 3);
+    } 
+    else 
+    {
+      // Default to "All" if no match found
+      let defaultButton = document.querySelector("#booking-filter-tabs .filter-btn[data-filter='']");
+      if (defaultButton)
+      {
+        defaultButton.classList.add("active");
+        console.log("Activating default button: All");
+
+        setTimeout(() => 
+        {
+          defaultButton.click();
+        }, 100);
+      }
+    }
+
+    // Add click event listener to each button
+    buttons.forEach(button => 
+    {
+      button.addEventListener("click", function ()
+      {
+        // Remove active class from all buttons
         buttons.forEach(btn => btn.classList.remove("active"));
 
-        // Find the button that matches the status
-        let matchedButton = [...buttons].find(btn => btn.getAttribute("data-filter") === statusTab);
+        // Add active class to the clicked button
+        this.classList.add("active");
 
-        if (matchedButton) {
-            matchedButton.classList.add("active"); // Highlight the correct button
-            console.log("Activating button:", matchedButton.innerText);
+        let filterValue = this.getAttribute("data-filter");
 
-            setTimeout(() => {
-                matchedButton.click();
-            }, 3);
-
-        } else {
-            // Default to "All" if no match found
-            let defaultButton = document.querySelector("#booking-filter-tabs .filter-btn[data-filter='']");
-            if (defaultButton) {
-                defaultButton.classList.add("active");
-                console.log("Activating default button: All");
-
-                setTimeout(() => {
-                    defaultButton.click();
-                }, 100);
-            }
+        // Apply DataTables filtering
+        if ($.fn.DataTable.isDataTable("#product-table")) 
+        {
+          $('#product-table').DataTable().column(8).search(filterValue || '', true, false).draw();
         }
-
-        // Add click event listener to each button
-        buttons.forEach(button => {
-            button.addEventListener("click", function () {
-                // Remove active class from all buttons
-                buttons.forEach(btn => btn.classList.remove("active"));
-
-                // Add active class to the clicked button
-                this.classList.add("active");
-
-                let filterValue = this.getAttribute("data-filter");
-
-                // Apply DataTables filtering
-                if ($.fn.DataTable.isDataTable("#product-table")) {
-                    $('#product-table').DataTable().column(8).search(filterValue || '', true, false).draw();
-                }
-            });
-        });
+      });
     });
+  });
 </script>
 
 <!-- DataTables #product-table -->
 <script>
-    $(document).ready(function () {
-        const tableProduct = $('#ondue-table').DataTable({
-            dom: 'rtip',
-            language: {
-                emptyTable: "No Transaction Records Available"
-            },
-            order: [[2, 'asc']],
-            scrollX: false,
-            paging: true,
-            pageLength: 14,
-            autoWidth: false,
-            autoHeight: false,
-            columnDefs: [{
-                targets: [1, 3, 4, 5, 6, 7, 8],
-                orderable: false
-            }]
-        });
-
-        const updatePagination = () => {
-            const info = tableProduct.page.info();
-            const currentPage = info.page + 1;
-            const totalPages = info.pages;
-
-            $('#pageInfo').text(`Page ${currentPage} of ${totalPages}`);
-            const isSinglePage = totalPages <= 1;
-
-            $('#prevPage').prop('disabled', currentPage === 1 || isSinglePage);
-            $('#nextPage').prop('disabled', currentPage === totalPages || isSinglePage);
-        };
-
-        // Pagination Controls
-        $('#prevPage').on('click', () => {
-            tableProduct.page('previous').draw('page');
-            updatePagination();
-        });
-
-        $('#nextPage').on('click', () => {
-            tableProduct.page('next').draw('page');
-            updatePagination();
-        });
-
-        // Search
-        $('#search').on('keyup', function () {
-            tableProduct.search(this.value).draw();
-            updatePagination();
-        });
-
-        // Filters
-        $('#packages').on('change', function () {
-            const val = $(this).val();
-            tableProduct.column(1).search(val || '').draw();
-            updatePagination();
-        });
-
-        $('#BookingStartDate').on('change', function () {
-            const val = $(this).val();
-            tableProduct.column(3).search(val || '').draw();
-            updatePagination();
-        });
-
-        $('#FlightStartDate').on('change', function () {
-            const val = $(this).val();
-            tableProduct.column(2).search(val || '').draw();
-            updatePagination();
-        });
-
-        // Datepickers
-        $("#FlightStartDate").datepicker({
-            dateFormat: "yy-mm-dd",
-            showAnim: "fadeIn",
-            changeMonth: true,
-            changeYear: true,
-            yearRange: "1900:2100",
-            onSelect: function (dateText) {
-                $(this).val(dateText);
-                tableProduct.column(2).search(dateText || '').draw();
-                updatePagination();
-            }
-        });
-
-        $("#BookingStartDate").datepicker({
-            dateFormat: "mm-dd-yy",
-            showAnim: "fadeIn",
-            changeMonth: true,
-            changeYear: true,
-            yearRange: "1900:2100",
-            onSelect: function (dateText) {
-                $(this).val(dateText);
-                tableProduct.column(4).search(dateText || '').draw();
-                updatePagination();
-            }
-        });
-
-        // Manual input formatter
-        $("#BookingStartDate").on("input", function () {
-            let value = $(this).val().replace(/[^\d-]/g, '');
-            if (value.length > 2 && value.charAt(2) !== '-') {
-                value = value.substring(0, 2) + '-' + value.substring(2);
-            }
-            if (value.length > 5 && value.charAt(5) !== '-') {
-                value = value.substring(0, 5) + '-' + value.substring(5);
-            }
-            if (value.length > 10) {
-                value = value.substring(0, 10);
-            }
-
-            $(this).val(value);
-            tableProduct.column(5).search(value || '').draw();
-            updatePagination();
-        });
-
-        // Clear All Filters
-        $('#clearSorting').on('click', function () {
-            $('#search, #BookingStartDate, #FlightStartDate').val('');
-            $('#status, #packages').val('').trigger('change');
-
-            tableProduct
-                .order([[2, 'asc']])
-                .search('')
-                .columns().search('')
-                .draw();
-
-            updatePagination();
-        });
-
-        // Initial call
-        updatePagination();
+  $(document).ready(function () 
+  {
+    const tableProduct = $('#ondue-table').DataTable(
+    {
+      dom: 'rtip',
+      language: 
+      {
+        emptyTable: "No Transaction Records Available"
+      },
+      order: [[2, 'asc']],
+      scrollX: false,
+      paging: true,
+      pageLength: 14,
+      autoWidth: false,
+      autoHeight: false,
+      columnDefs: [
+      {
+        targets: [1, 3, 4, 5, 6, 7, 8],
+        orderable: false
+      }]
     });
-</script>
 
+    const updatePagination = () => 
+    {
+      const info = tableProduct.page.info();
+      const currentPage = info.page + 1;
+      const totalPages = info.pages;
+
+      $('#pageInfo').text(`Page ${currentPage} of ${totalPages}`);
+      const isSinglePage = totalPages <= 1;
+
+      $('#prevPage').prop('disabled', currentPage === 1 || isSinglePage);
+      $('#nextPage').prop('disabled', currentPage === totalPages || isSinglePage);
+    };
+
+    // Pagination Controls
+    $('#prevPage').on('click', () => 
+    {
+      tableProduct.page('previous').draw('page');
+      updatePagination();
+    });
+
+    $('#nextPage').on('click', () => 
+    {
+      tableProduct.page('next').draw('page');
+      updatePagination();
+    });
+
+    // Search
+    $('#search').on('keyup', function () 
+    {
+      tableProduct.search(this.value).draw();
+      updatePagination();
+    });
+
+    // Filters
+    $('#packages').on('change', function () 
+    {
+      const val = $(this).val();
+      tableProduct.column(1).search(val || '').draw();
+      updatePagination();
+    });
+
+    $('#BookingStartDate').on('change', function () 
+    {
+      const val = $(this).val();
+      tableProduct.column(3).search(val || '').draw();
+      updatePagination();
+    });
+
+    $('#FlightStartDate').on('change', function () 
+    {
+      const val = $(this).val();
+      tableProduct.column(2).search(val || '').draw();
+      updatePagination();
+    });
+
+    // Datepickers
+    $("#FlightStartDate").datepicker(
+    {
+      dateFormat: "yy-mm-dd",
+      showAnim: "fadeIn",
+      changeMonth: true,
+      changeYear: true,
+      yearRange: "1900:2100",
+      onSelect: function (dateText) 
+      {
+        $(this).val(dateText);
+        tableProduct.column(2).search(dateText || '').draw();
+        updatePagination();
+      }
+    });
+
+    $("#BookingStartDate").datepicker(
+    {
+      dateFormat: "mm-dd-yy",
+      showAnim: "fadeIn",
+      changeMonth: true,
+      changeYear: true,
+      yearRange: "1900:2100",
+      onSelect: function (dateText) 
+      {
+        $(this).val(dateText);
+        tableProduct.column(4).search(dateText || '').draw();
+        updatePagination();
+      }
+    });
+
+    // Manual input formatter
+    $("#BookingStartDate").on("input", function () 
+    {
+      let value = $(this).val().replace(/[^\d-]/g, '');
+      if (value.length > 2 && value.charAt(2) !== '-') 
+      {
+        value = value.substring(0, 2) + '-' + value.substring(2);
+      }
+      if (value.length > 5 && value.charAt(5) !== '-') 
+      {
+        value = value.substring(0, 5) + '-' + value.substring(5);
+      }
+      if (value.length > 10) 
+      {
+        value = value.substring(0, 10);
+      }
+
+      $(this).val(value);
+      tableProduct.column(5).search(value || '').draw();
+      updatePagination();
+    });
+
+    // Clear All Filters
+    $('#clearSorting').on('click', function () 
+    {
+      $('#search, #BookingStartDate, #FlightStartDate').val('');
+      $('#status, #packages').val('').trigger('change');
+
+      tableProduct
+          .order([[2, 'asc']])
+          .search('')
+          .columns().search('')
+          .draw();
+
+      updatePagination();
+    });
+
+    // Initial call
+    updatePagination();
+  });
+</script>

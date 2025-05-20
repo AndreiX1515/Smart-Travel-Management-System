@@ -79,9 +79,9 @@
         <!-- Status Table -->
         <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
 
-           <?php 
-           include '../Employee Section/transactionTable/transactionTable-Status.php'; 
-           ?> 
+          <?php 
+            include '../Employee Section/transactionTable/transactionTable-Status.php'; 
+          ?> 
 
         </div>
 
@@ -89,7 +89,7 @@
         <div class="tab-pane fade" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
 
           <?php 
-          include '../Employee Section/transactionTable/transactionTable-OnDue.php'; 
+            include '../Employee Section/transactionTable/transactionTable-OnDue.php'; 
           ?>  
 
         </div>
@@ -98,7 +98,7 @@
         <div class="tab-pane fade" id="pills-remaining-balance" role="tabpanel" aria-labelledby="pills-remaining-balance-tab">
 
           <?php 
-          include '../Employee Section/transactionTable/transactionTable-RemainingBalance.php'; 
+            include '../Employee Section/transactionTable/transactionTable-RemainingBalance.php'; 
           ?>   
 
         </div>       
