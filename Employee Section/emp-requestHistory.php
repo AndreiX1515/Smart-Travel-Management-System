@@ -95,24 +95,26 @@
 									switch ($status) 
 									{
 										case 'Confirmed':
-												$badgeClass = 'text-bg-success'; // Green for Confirmed
-												break;
+											$badgeClass = 'text-bg-success'; // Green for Confirmed
+											break;
 										case 'Submitted':
-												$badgeClass = 'text-bg-secondary'; // Gray for Submitted
-												break;
+											$badgeClass = 'text-bg-secondary'; // Gray for Submitted
+											break;
 										case 'Rejected':
-												$badgeClass = 'text-bg-danger'; // Red for Rejected
-												break;
+											$badgeClass = 'text-bg-danger'; // Red for Rejected
+											break;
 										default:
-												$badgeClass = 'text-bg-info'; // Blue for other statuses
-												break;
+											$badgeClass = 'text-bg-info'; // Blue for other statuses
+											break;
 									}
 
 									// Ensure that title and details are displayed properly
 									$title = $row['RequestTitle'] ?? 'Custom Request';
 									$details = $row['RequestDetails'] ?? $row['customRequest'];
 									$requestId = $row['requestId'];
+									$formattedRequestCost = number_format($row['requestCost'], 2);
 									$formattedRequestDate = date("F d, Y", strtotime($row['requestDate']));
+									$formattedRequestDateFilter = date('Y-m-d', strtotime($row['requestDate']));
 
 									// Output table row with data-transactno attribute
 									echo "<tr data-transactno='{$row['TransactNo']}' data-requestid='{$requestId}' class='transaction-row'>
@@ -122,11 +124,11 @@
 													<td>{$details}</td>
 													<td>{$row['details']}</td>
 													<td>{$row['TotalPax']}</td>
-													<td>{$row['requestCost']}</td>
+													<td>₱ {$formattedRequestCost}</td>
 													<td>{$formattedRequestDate}</td>
 													<td>{$row['Status']}</td>
 													<td>{$row['requestRemarks']}</td>
-													<td style='display:none;'>{$row['requestDate']}</td> <!-- hidden raw date -->
+													<td style='display:none;'>{$formattedRequestDateFilter}</td> <!-- hidden raw date -->
 												</tr>";
 								}
 							} 
@@ -153,6 +155,10 @@
 </div>
 
 <?php include '../Employee Section/includes/emp-scripts.php' ?>
+<!-- Add in your <head> or before </body> -->
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+
 
 <!-- JQuery Datapicker -->
 <script>
@@ -177,199 +183,87 @@
 <script>
 	$(document).ready(function () 
 	{
-		const table = $('#product-table').DataTable(
-		{
-			dom: 'rtip',  // Use only the relevant table elements
-			language: 
-			{
-				emptyTable: "No Transaction Records Available"
-			},
-			order: [[7, 'asc']],  // Default sorting by Transaction ID (descending)
+		const table = $('#product-table').DataTable({
+			dom: 'rtip',
+			language: { emptyTable: "No Transaction Records Available" },
+			order: [[7, 'asc']], // Sort by Transaction ID
 			scrollX: false,
-			scrollY: '69vh',  // Set a fixed height for the table (adjust as necessary)
-			paging: true,  // Enable pagination
-			pageLength: 15,  // Set the number of rows per page
+			scrollY: '69vh',
+			paging: true,
+			pageLength: 20,
 			autoWidth: true,
-			autoHeight: true,  // Prevent automatic height adjustment
-
-			// Disable sorting for specific columns
-			columnDefs: 
-			[
+			columnDefs: [
 				{
-					targets: [1, 2, 3,  5, 6,], // Disable sorting for 2nd and 4th columns
+					targets: [1, 2, 3, 5, 6],
 					orderable: false
-				}
+				},
+				{ targets: 0, width: "120px" },
+				{ targets: 1, width: "160px", orderable: false },
+				{ targets: 2, width: "120px", orderable: false },
+				{ targets: 3, width: "140px", orderable: false },
+				{ targets: 4, width: "140px" },
+				{ targets: 5, width: "180px", orderable: false },
+				{ targets: 6, width: "150px", orderable: false },
+				{ targets: 7, width: "100px" },
+				{ targets: 8, width: "120px" },
+				{ targets: 9, width: "140px" },
+				{ targets: 10, width: "140px" }
 			]
 		});
 
-		// Search Functionality
-		$('#search').on('keyup', function () 
-		{
+		// Global search
+		$('#search').on('keyup', function () {
 			table.search(this.value).draw();
 		});
 
-		// Update the custom pagination buttons and page info
-		function updatePagination() 
-		{
+		// Custom Pagination Info
+		function updatePagination() {
 			const info = table.page.info();
-			const currentPage = info.page + 1; // Get current page number (1-indexed)
-			const totalPages = info.pages; // Get total pages
-
-			// Update page info text
-			$('#pageInfo').text(`Page ${currentPage} of ${totalPages}`);
-
-			// Enable/Disable prev and next buttons based on current page
-			$('#prevPage').prop('disabled', currentPage === 1);
-			$('#nextPage').prop('disabled', currentPage === totalPages);
+			$('#pageInfo').text(`Page ${info.page + 1} of ${info.pages}`);
+			$('#prevPage').prop('disabled', info.page === 0);
+			$('#nextPage').prop('disabled', info.page + 1 === info.pages);
 		}
 
-		// Custom pagination button click events
-		$('#prevPage').on('click', function() 
-		{
+		$('#prevPage').on('click', function () {
 			table.page('previous').draw('page');
 			updatePagination();
 		});
 
-		$('#nextPage').on('click', function() 
-		{
+		$('#nextPage').on('click', function () {
 			table.page('next').draw('page');
 			updatePagination();
 		});
 
-		// Initialize pagination on first load
-		updatePagination();
+		updatePagination(); // On load
 
-		// Status Filter
-		$('#status').on('change', function () 
-		{
-			const selectedStatus = $(this).val();
-			table.column(8).search(selectedStatus || '').draw();
+		// Flight Date Filter
+		$('#FlightStartDate').on('change', function () {
+			table.column(10).search($(this).val() || '').draw();
 		});
 
-		// Package Filter
-		$('#packages').on('change', function () 
-		{
-			const selectedPackage = $(this).val();
-			table.column(2).search(selectedPackage || '').draw();
-		});
-
-		// Booking Date Filter with value change
-		$('#BookingStartDate').on('change', function () 
-		{
-			const selectedBookingDate = $(this).val();  // Get the selected value directly from the input field
-			console.log("Booking Date Filter:", selectedBookingDate);  // Log the selected booking date
-			table.column(3).search(selectedBookingDate || '').draw();  // Column 4 (index starts at 0)
-		});
-
-		// Flight Date Filter with value change
-		$('#FlightStartDate').on('change', function () 
-		{
-			const selectedFlightDate = $(this).val();  // Get the selected value directly from the input field
-			console.log("Flight Date Filter:", selectedFlightDate);  // Log the selected flight date
-			table.column(10).search(selectedFlightDate || '').draw();  // Column 5 (index starts at 0)
-		});
-
-		// Apply datepicker and input validation for FlightStartDate
-		$("#FlightStartDate").datepicker(
-		{
-			dateFormat: "yy-mm-dd", // Set the format to MM-DD-YYYY
-			showAnim: "fadeIn", // Optional: Adds a fade-in effect when the date picker is opened
-			changeMonth: true, // Allow the month to be changed from the dropdown
-			changeYear: true,  // Allow the year to be changed from the dropdown
-			yearRange: "1900:2100", // Set a range of years (optional)
-			onSelect: function(dateText) 
-			{
-				// When a date is selected, update the input field with the date
+		// Datepickers
+		$("#FlightStartDate").datepicker({
+			dateFormat: "yy-mm-dd",
+			showAnim: "fadeIn",
+			changeMonth: true,
+			changeYear: true,
+			yearRange: "1900:2100",
+			onSelect: function (dateText) {
 				$(this).val(dateText);
-				flightStartDate = dateText; // Store the selected date
-				console.log("FlightStartDate Selected Date (onSelect): " + dateText);
-				table.column(10).search(flightStartDate || '').draw();  // Column 5 (index starts at 0)
+				table.column(10).search(dateText || '').draw();
 			}
 		});
 
-		// Apply datepicker and input validation for BookingStartDate
-		$("#BookingStartDate").datepicker(
-		{
-			dateFormat: "mm-dd-yy", // Set the format to MM-DD-YYYY
-			showAnim: "fadeIn", // Optional: Adds a fade-in effect when the date picker is opened
-			changeMonth: true, // Allow the month to be changed from the dropdown
-			changeYear: true,  // Allow the year to be changed from the dropdown
-			yearRange: "1900:2100", // Set a range of years (optional)
-			onSelect: function(dateText) 
-			{
-				// When a date is selected, update the input field with the date
-				$(this).val(dateText);
-				bookingStartDate = dateText; // Store the selected date
-				console.log("FlightStartDate Selected Date (onSelect): " + dateText);
-				table.column(4).search(bookingStartDate || '').draw();  // Column 5 (index starts at 0)
-			}
-		});
 
-		// BookingStartDate Input Validation and Formatting
-		$("#BookingStartDate").on("input", function () 
-		{
-			var value = $(this).val();
-
-			// Remove non-numeric and non-dash characters
-			value = value.replace(/[^\d-]/g, '');
-
-			// Automatically add dashes in the correct places if necessary
-			if (value.length > 2 && value.charAt(2) !== '-') 
-			{
-				value = value.substring(0, 2) + '-' + value.substring(2);
-			}
-			if (value.length > 5 && value.charAt(5) !== '-') 
-			{
-				value = value.substring(0, 5) + '-' + value.substring(5);
-			}
-
-			// Limit the total input length to 10 characters (MM-DD-YYYY)
-			if (value.length > 10) 
-			{
-				value = value.substring(0, 10);
-			}
-
-			// Update the input field value
-			$(this).val(value);
-
-			// Reset or update the bookingStartDate variable
-			if (value === "") 
-			{
-				bookingStartDate = ""; // Reset the variable if the input is cleared
-			} 
-			else 
-			{
-				bookingStartDate = value; // Update the variable with the formatted value
-			}
-
-			// Update the table column search
-			table.column(5).search(bookingStartDate || '').draw(); // Column 5 (index starts at 0)
-
-			console.log("BookingStartDate Input Value (on input): " + value);
-		});
-
-		// Clear All Filters
-		$('#clearSorting').on('click', function () 
-		{
-			// Clear search field
+		// Clear all filters
+		$('#clearSorting').on('click', function () {
 			$('#search').val('');
 			table.search('').draw();
 
-			// Clear status dropdown
-			$('#status').val('All').change();
+			$('#status, #packages').val('All').change();
 
-			// Clear packages dropdown
-			$('#packages').val('All').change();
+			$('#BookingStartDate, #FlightStartDate').val('').trigger('change');
 
-				// Explicitly reset the variables
-				flightStartDate = '';
-			bookingStartDate = '';
-
-			// Clear date fields
-			$('#BookingStartDate').val('').trigger('change'); // Reset and trigger input for BookingStartDate
-			$('#FlightStartDate').val('').trigger('change');  // Reset and trigger input for FlightStartDate
-
-			// Redraw the table
 			table.draw();
 		});
 	});
