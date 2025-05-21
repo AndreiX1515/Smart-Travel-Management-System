@@ -36,14 +36,6 @@ error_reporting(E_ALL);
 
       <div class="page-header-wrapper">
 
-        <!-- <div class="page-header-top">
-          <div class="back-btn-wrapper">
-            <button class="back-btn" id="redirect-btn">
-              <i class="fas fa-chevron-left"></i>
-            </button>
-          </div>
-        </div> -->
-
         <div class="page-header-content">
           <div class="page-header-text">
             <h5 class="header-title">Dashboard</h5>
@@ -63,7 +55,7 @@ error_reporting(E_ALL);
         <!-- Card 1 -->
         <div class="card">
           <div class="header">
-            <h6 class="white-pill">Current Transaction</h6>
+            <h6 class="white-pill">Active Transaction</h6>
           </div>
 
           <div class="card-content card-content-body">
@@ -79,16 +71,17 @@ error_reporting(E_ALL);
 
                 <div class="side-content">
                   <?php
-                  $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking WHERE MONTH(bookingDate) = MONTH(CURRENT_DATE()) 
-                AND YEAR(bookingDate) = YEAR(CURRENT_DATE())";
-                  $result = mysqli_query($conn, $totalTransactionsQuery);
+                    $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking b 
+                                              JOIN flight f ON b.flightId = f.flightId
+                                              WHERE f.flightDepartureDate >= CURDATE()";
+                    $result = mysqli_query($conn, $totalTransactionsQuery);
 
-                  if ($result) {
-                    $row = mysqli_fetch_assoc($result);
-                    $totalTransactions = $row['total'];
-                  } else {
-                    $totalTransactions = 0;
-                  }
+                    if ($result) {
+                      $row = mysqli_fetch_assoc($result);
+                      $totalTransactions = $row['total'];
+                    } else {
+                      $totalTransactions = 0;
+                    }
                   ?>
                   <h5><?php echo $totalTransactions; ?></h5>
                   <p class="total-text">TOTAL TRANSACTIONS</p>
@@ -106,7 +99,9 @@ error_reporting(E_ALL);
 
                 <div class="side-content d-flex flex-column">
                   <?php
-                  $confirmedTransactionsQuery = "SELECT COUNT(*) AS total FROM booking WHERE MONTH(bookingDate) = MONTH(CURRENT_DATE()) AND YEAR(bookingDate) = YEAR(CURRENT_DATE()) AND status = 'Confirmed'";
+                  $confirmedTransactionsQuery = "SELECT COUNT(*) AS total FROM booking b
+                                                JOIN flight f ON b.flightId = f.flightId
+                                                WHERE f.flightDepartureDate >= CURDATE() AND b.status = 'Confirmed'";
                   $result = mysqli_query($conn, $confirmedTransactionsQuery);
 
                   if ($result) {
@@ -133,7 +128,9 @@ error_reporting(E_ALL);
                 </div>
                 <div class="side-content d-flex flex-column">
                   <?php
-                  $pendingTransactionsQuery = "SELECT COUNT(*) AS total FROM booking WHERE MONTH(bookingDate) = MONTH(CURRENT_DATE()) AND YEAR(bookingDate) = YEAR(CURRENT_DATE()) AND status = 'Pending'";
+                  $pendingTransactionsQuery = "SELECT COUNT(*) AS total FROM booking b
+                                              JOIN flight f ON b.flightId = f.flightId
+                                              WHERE f.flightDepartureDate >= CURDATE() AND b.status = 'Pending'";
                   $result = mysqli_query($conn, $pendingTransactionsQuery);
 
                   if ($result) {
@@ -154,7 +151,9 @@ error_reporting(E_ALL);
                 </div>
                 <div class="side-content d-flex flex-column">
                   <?php
-                  $pendingTransactionsQuery = "SELECT COUNT(*) AS total FROM booking WHERE MONTH(bookingDate) = MONTH(CURRENT_DATE()) AND YEAR(bookingDate) = YEAR(CURRENT_DATE()) AND status = 'Reserved'";
+                  $pendingTransactionsQuery = "SELECT COUNT(*) AS total FROM booking b
+                                              JOIN flight f ON b.flightId = f.flightId
+                                              WHEREf.flightDepartureDate >= CURDATE() AND b.status = 'Reserved'";
                   $result = mysqli_query($conn, $pendingTransactionsQuery);
 
                   if ($result) {
@@ -176,8 +175,9 @@ error_reporting(E_ALL);
                 </div>
                 <div class="side-content d-flex flex-column">
                   <?php
-                  $cancelledTransactionsQuery = "SELECT COUNT(*) AS total FROM booking WHERE MONTH(bookingDate) = MONTH(CURRENT_DATE()) 
-                                                  AND YEAR(bookingDate) = YEAR(CURRENT_DATE()) AND status = 'Cancelled'";
+                  $cancelledTransactionsQuery = "SELECT COUNT(*) AS total FROM booking b
+                                                JOIN flight f ON b.flightId = f.flightId
+                                                WHERE f.flightDepartureDate >= CURDATE() AND b.status = 'Cancelled'";
                   $result = mysqli_query($conn, $cancelledTransactionsQuery);
 
                   if ($result) {
