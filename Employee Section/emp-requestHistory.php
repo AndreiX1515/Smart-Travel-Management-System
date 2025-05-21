@@ -36,7 +36,7 @@
 					<div class="date-range-wrapper flightbooking-wrapper">
 						<div class="date-range-inputs-wrapper">
 							<div class="input-with-icon">
-								<input type="text" class="datepicker" id="FlightStartDate" placeholder="Flight Date">
+								<input type="text" class="datepicker" id="FlightStartDate" placeholder="Request Date">
 								<i class="fas fa-calendar-alt calendar-icon"></i>
 							</div>
 						</div>
