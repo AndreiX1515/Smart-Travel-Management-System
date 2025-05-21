@@ -259,10 +259,10 @@
   width: 100%;
   border-bottom: 1px solid #ddd;
   /* border-radius: 8px; */
-  padding: 0px 0px 0px 0px;
+  padding: 0px 5px 0px 5px;
   background-color: transparent;
   margin-bottom: .5%;
-  /* border: 1px solid black; */
+  border: 1px solid black;
 }
 
 .filter-tabs {
@@ -640,11 +640,16 @@
 /* Grid Layout */
 .itinerary-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* wider min size for horizontal layout */
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 15px;
-  padding: 10px 0px;
+  padding: 10px 0;
   justify-content: center;
+  border: 1px solid black;
+  overflow-y: auto;
+
+  max-height: 100vh; /* adjust this height as needed */
 }
+
 
 /* Card Styling */
 .itinerary-card {

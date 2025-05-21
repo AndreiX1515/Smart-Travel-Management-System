@@ -142,6 +142,40 @@
   color: #ffffff; /* Default icon color */
 }
 
+
+.card-icon p {
+  font-size: 16px;
+  font-weight: 900;
+  color: #ffffff;
+  margin: 0;
+  text-shadow: 0 2px 2px rgba(0, 0, 0, 0.3); /* subtle downward shadow */
+  letter-spacing: 1px;
+}
+
+
+.month-icon-1 p {
+  font-size: 14px;
+  font-weight: 900;
+}
+
+
+.month-icon-2 p {
+  font-size: 10px;
+  font-weight: 900;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Blue Icon for Total Transactions */
 .icon-blue {
   background-color: #17a2b8; /* Light blue background */

@@ -1,3 +1,8 @@
+<?php
+$statusTab = isset($_GET['status']) ? $_GET['status'] : '';
+?>
+
+
 <div class="table-container">
 
     <div class="table-header">
@@ -9,27 +14,14 @@
         </div>
 
         <div class="second-header-wrapper">
-            <div class="date-range-wrapper flightbooking-wrapper">
-                <div class="date-range-inputs-wrapper">
-                    <div class="input-with-icon">
-                        <input type="text" class="datepicker" id="FlightStartDate" placeholder="Flight Date" readonly>
-                        <i class="fas fa-calendar-alt calendar-icon"></i>
-                    </div>
-                </div>
-            </div>
-
             <div class="date-range-wrapper sorting-wrapper">
                 <div class="select-wrapper">
                     <select id="packages">
                         <option value="" disabled selected>Select Branch</option>
                         <?php
-                        // Execute the SQL query
                         $sql1 = "SELECT branchId, branchName FROM branch ORDER BY branchName ASC";
                         $res1 = $conn->query($sql1);
-
-                        // Check if there are results
                         if ($res1->num_rows > 0) {
-                            // Loop through the results and generate options
                             while ($row = $res1->fetch_assoc()) {
                                 echo "<option value='" . $row['branchName'] . "'>" . $row['branchName'] . "</option>";
                             }
@@ -124,16 +116,13 @@ WHERE status = 'Reserved'";
                 </span>
             </button>
 
-           
-
         </div>
-
     </div>
 
     <div class="body-content-wrapper">
 
         <div class="table-wrapper">
-            <table class="product-table" id="product-table">
+            <table id="product-table" class="product-table display nowrap" style="width:100%">
                 <thead>
                     <tr>
                         <th>TRANSACT NO</th>
@@ -245,9 +234,9 @@ WHERE status = 'Reserved'";
             </div>
 
             <div class="pagination-controls">
-                <button id="prevPage" class="pagination-btn">Previous</button>
-                <span id="pageInfo" class="page-info">Page 1 of 10</span>
-                <button id="nextPage" class="pagination-btn">Next</button>
+                <span id="pageInfo"></span>
+                <button id="prevPage" class="btn btn-light">Previous</button>
+                <button id="nextPage" class="btn btn-light">Next</button>
             </div>
         </div>
 
@@ -258,58 +247,67 @@ WHERE status = 'Reserved'";
 <!-- For Button Tabs Status Sorting -->
 <script>
     document.addEventListener("DOMContentLoaded", function () {
+        const statusTabBtn = document.getElementById('pills-profile-tab'); // Tab trigger
+        const statusTabPane = document.getElementById('pills-profile');    // Tab content
 
-        // Get the status from the URL
-        let statusTab = "<?php echo isset($_GET['status']) ? $_GET['status'] : ''; ?>";
-        console.log("Status from URL:", statusTab); // Debugging
+        if (!statusTabBtn || !statusTabPane) return;
 
-        // Find all filter buttons
-        let buttons = document.querySelectorAll("#booking-filter-tabs .filter-btn");
+        function initStatusFilter() {
+            const status = "<?php echo isset($_GET['status']) ? $_GET['status'] : 'All'; ?>";
+            console.log("Status from URL:", status);
 
-        // Remove 'active' class from all buttons
-        buttons.forEach(btn => btn.classList.remove("active"));
+            const buttons = document.querySelectorAll("#booking-filter-tabs .filter-btn");
 
-        // Find the button that matches the status
-        let matchedButton = [...buttons].find(btn => btn.getAttribute("data-filter") === statusTab);
+            // Reset classes
+            buttons.forEach(btn => btn.classList.remove("active"));
 
-        if (matchedButton) {
-            matchedButton.classList.add("active"); // Highlight the correct button
-            console.log("Activating button:", matchedButton.innerText);
+            // Find matching button
+            const matchedButton = Array.from(buttons).find(btn =>
+                btn.getAttribute("data-filter") === status
+            );
 
-            setTimeout(() => {
-                matchedButton.click();
-            }, 3);
+            if (matchedButton) {
+                matchedButton.classList.add("active");
+                console.log("Activating button:", matchedButton.innerText);
+                setTimeout(() => matchedButton.click(), 10);
+            } else {
+                const defaultButton = document.querySelector("#booking-filter-tabs .filter-btn[data-filter='']");
+                if (defaultButton) {
+                    defaultButton.classList.add("active");
+                    console.log("Activating default button: All");
+                    setTimeout(() => defaultButton.click(), 100);
+                }
+            }
 
-        } else {
-            // Default to "All" if no match found
-            let defaultButton = document.querySelector("#booking-filter-tabs .filter-btn[data-filter='']");
-            if (defaultButton) {
-                defaultButton.classList.add("active");
-                console.log("Activating default button: All");
+            // Always bind click events freshly (no duplicate due to cleanup)
+            buttons.forEach(button => {
+                button.removeEventListener("click", handleClick); // Prevent double binding
+                button.addEventListener("click", handleClick);
+            });
 
-                setTimeout(() => {
-                    defaultButton.click();
-                }, 100);
+            function handleClick() {
+                buttons.forEach(btn => btn.classList.remove("active"));
+                this.classList.add("active");
+
+                const filterValue = this.getAttribute("data-filter");
+                if ($.fn.DataTable.isDataTable("#product-table")) {
+                    $('#product-table').DataTable()
+                        .column(8)
+                        .search(filterValue || '', true, false)
+                        .draw();
+                }
             }
         }
 
-        // Add click event listener to each button
-        buttons.forEach(button => {
-            button.addEventListener("click", function () {
-                // Remove active class from all buttons
-                buttons.forEach(btn => btn.classList.remove("active"));
-
-                // Add active class to the clicked button
-                this.classList.add("active");
-
-                let filterValue = this.getAttribute("data-filter");
-
-                // Apply DataTables filtering
-                if ($.fn.DataTable.isDataTable("#product-table")) {
-                    $('#product-table').DataTable().column(8).search(filterValue || '', true, false).draw();
-                }
-            });
+        // Bind tab show event
+        statusTabBtn.addEventListener('shown.bs.tab', function () {
+            initStatusFilter(); // Reinitialize on every show
         });
+
+        // Initialize if already active on page load
+        if (statusTabPane.classList.contains('active')) {
+            initStatusFilter();
+        }
     });
 </script>
 
@@ -370,63 +368,63 @@ WHERE status = 'Reserved'";
             tableProduct.column(1).search(selectedPackage || '').draw();
         });
 
-        $('#BookingStartDate').on('change', function () {
-            const selectedBookingDate = $(this).val();
-            console.log("Booking Date Filter:", selectedBookingDate);
-            tableProduct.column(3).search(selectedBookingDate || '').draw();
-        });
+        // $('#BookingStartDate').on('change', function () {
+        //     const selectedBookingDate = $(this).val();
+        //     console.log("Booking Date Filter:", selectedBookingDate);
+        //     tableProduct.column(3).search(selectedBookingDate || '').draw();
+        // });
 
-        $('#FlightStartDate').on('change', function () {
-            const selectedFlightDate = $(this).val();
-            console.log("Flight Date Filter:", selectedFlightDate);
-            tableProduct.column(2).search(selectedFlightDate || '').draw();
-        });
+        // $('#FlightStartDate').on('change', function () {
+        //     const selectedFlightDate = $(this).val();
+        //     console.log("Flight Date Filter:", selectedFlightDate);
+        //     tableProduct.column(2).search(selectedFlightDate || '').draw();
+        // });
 
-        // Datepickers
-        $("#FlightStartDate").datepicker({
-            dateFormat: "yy-mm-dd",
-            showAnim: "fadeIn",
-            changeMonth: true,
-            changeYear: true,
-            yearRange: "1900:2100",
-            onSelect: function (dateText) {
-                $(this).val(dateText);
-                console.log("FlightStartDate Selected Date:", dateText);
-                tableProduct.column(2).search(dateText || '').draw();
-            }
-        });
+        // // Datepickers
+        // $("#FlightStartDate").datepicker({
+        //     dateFormat: "yy-mm-dd",
+        //     showAnim: "fadeIn",
+        //     changeMonth: true,
+        //     changeYear: true,
+        //     yearRange: "1900:2100",
+        //     onSelect: function (dateText) {
+        //         $(this).val(dateText);
+        //         console.log("FlightStartDate Selected Date:", dateText);
+        //         tableProduct.column(2).search(dateText || '').draw();
+        //     }
+        // });
 
-        $("#BookingStartDate").datepicker({
-            dateFormat: "mm-dd-yy",
-            showAnim: "fadeIn",
-            changeMonth: true,
-            changeYear: true,
-            yearRange: "1900:2100",
-            onSelect: function (dateText) {
-                $(this).val(dateText);
-                console.log("BookingStartDate Selected Date:", dateText);
-                tableProduct.column(4).search(dateText || '').draw();
-            }
-        });
+        // $("#BookingStartDate").datepicker({
+        //     dateFormat: "mm-dd-yy",
+        //     showAnim: "fadeIn",
+        //     changeMonth: true,
+        //     changeYear: true,
+        //     yearRange: "1900:2100",
+        //     onSelect: function (dateText) {
+        //         $(this).val(dateText);
+        //         console.log("BookingStartDate Selected Date:", dateText);
+        //         tableProduct.column(4).search(dateText || '').draw();
+        //     }
+        // });
 
-        // BookingStartDate input formatting
-        $("#BookingStartDate").on("input", function () {
-            let value = $(this).val().replace(/[^\d-]/g, '');
+        // // BookingStartDate input formatting
+        // $("#BookingStartDate").on("input", function () {
+        //     let value = $(this).val().replace(/[^\d-]/g, '');
 
-            if (value.length > 2 && value.charAt(2) !== '-') {
-                value = value.substring(0, 2) + '-' + value.substring(2);
-            }
-            if (value.length > 5 && value.charAt(5) !== '-') {
-                value = value.substring(0, 5) + '-' + value.substring(5);
-            }
-            if (value.length > 10) {
-                value = value.substring(0, 10);
-            }
+        //     if (value.length > 2 && value.charAt(2) !== '-') {
+        //         value = value.substring(0, 2) + '-' + value.substring(2);
+        //     }
+        //     if (value.length > 5 && value.charAt(5) !== '-') {
+        //         value = value.substring(0, 5) + '-' + value.substring(5);
+        //     }
+        //     if (value.length > 10) {
+        //         value = value.substring(0, 10);
+        //     }
 
-            $(this).val(value);
-            tableProduct.column(5).search(value || '').draw();
-            console.log("BookingStartDate Input Value:", value);
-        });
+        //     $(this).val(value);
+        //     tableProduct.column(5).search(value || '').draw();
+        //     console.log("BookingStartDate Input Value:", value);
+        // });
 
         // Clear filters and reset table
         $('#clearSorting').on('click', function () {
@@ -447,6 +445,5 @@ WHERE status = 'Reserved'";
             updatePagination();
         });
 
-    });
+    }); 
 </script>
-
