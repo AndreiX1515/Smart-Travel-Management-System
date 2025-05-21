@@ -11,6 +11,7 @@ $onDue = isset($_GET['onDue']) ? $_GET['onDue'] : 'All';
       </div>
     </div>
 
+    <!-- Filter group -->
     <div class="second-header-wrapper">
       <div class="date-range-wrapper flightbooking-wrapper">
         <div class="date-range-inputs-wrapper">
@@ -26,19 +27,23 @@ $onDue = isset($_GET['onDue']) ? $_GET['onDue'] : 'All';
           <select id="packages">
             <option value="" disabled selected>Select Branch</option>
             <?php
-            // Execute the SQL query
-            $sql1 = "SELECT branchId, branchName FROM branch ORDER BY branchName ASC";
-            $res1 = $conn->query($sql1);
+              // Execute the SQL query
+              $sql1 = "SELECT branchId, branchName FROM branch ORDER BY branchName ASC";
+              $res1 = $conn->query($sql1);
 
-            // Check if there are results
-            if ($res1->num_rows > 0) {
-              // Loop through the results and generate options
-              while ($row = $res1->fetch_assoc()) {
-                echo "<option value='" . $row['branchName'] . "'>" . $row['branchName'] . "</option>";
+              // Check if there are results
+              if ($res1->num_rows > 0) 
+              {
+                // Loop through the results and generate options
+                while ($row = $res1->fetch_assoc()) 
+                {
+                  echo "<option value='" . $row['branchName'] . "'>" . $row['branchName'] . "</option>";
+                }
+              } 
+              else 
+              {
+                echo "<option value=''>No companies available</option>";
               }
-            } else {
-              echo "<option value=''>No companies available</option>";
-            }
             ?>
           </select>
         </div>
@@ -55,15 +60,32 @@ $onDue = isset($_GET['onDue']) ? $_GET['onDue'] : 'All';
 
   <div class="navpills-container">
     <div class="filter-tabs" id="booking-filter-tabs">
-
+      <!-- All Button -->
       <button class="filter-btn active" data-filter="">
         All
         <span class="badge-status-tab">
           <h6>
             <?php
-            $sql = "SELECT COUNT(*) AS totalBookings FROM booking;";
-            $result = mysqli_query($conn, $sql);
-            echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+              $sql = "SELECT COUNT(*) AS totalBookings FROM booking b
+                      JOIN flight f ON b.flightId = f.flightId
+                      WHERE f.flightDepartureDate < CURDATE()";
+              $result = mysqli_query($conn, $sql);
+              echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+            ?>
+          </h6>
+        </span>
+      </button>
+
+      <!-- Pending Button -->
+      <button class="filter-btn" data-filter="Pending">Pending
+        <span class="badge-status-tab">
+          <h6>
+            <?php
+              $sql = "SELECT COUNT(*) AS totalBookings FROM booking b
+                      JOIN flight f ON b.flightId = f.flightId
+                      WHERE b.status = 'Pending' AND f.flightDepartureDate < CURDATE()";
+              $result = mysqli_query($conn, $sql);
+              echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
             ?>
           </h6>
         </span>
@@ -160,12 +182,13 @@ $onDue = isset($_GET['onDue']) ? $_GET['onDue'] : 'All';
         </thead>
         <tbody>
           <?php
-          // Ensure $conn is properly initialized
-          if (!isset($conn)) {
-            die("Database connection error.");
-          }
+            // Ensure $conn is properly initialized
+            if (!isset($conn)) 
+            {
+              die("Database connection error.");
+            }
 
-          $sql = "SELECT b.transactNo, DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y') AS departureDate, f.returnDepartureDate AS returnDate, 
+            $sql = "SELECT b.transactNo, DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y') AS departureDate, f.returnDepartureDate AS returnDate, 
                       b.status AS bookingStatus, CONCAT(f.flightDepartureDate, ' | ', f.returnDepartureDate) AS FlightDate, 
                       p.packageName AS PackageName, DATE_FORMAT(b.bookingDate, '%m.%d.%Y') AS BookingDate, b.pax AS TotalPax,  
                       b.totalPrice AS PackagePrice, br.branchName as branchName, COALESCE(SUM(pa.amount), 0) AS TotalAmountPaid,
@@ -192,58 +215,61 @@ $onDue = isset($_GET['onDue']) ? $_GET['onDue'] : 'All';
                       p.packageName, b.bookingDate, b.pax, b.totalPrice, a.lName, a.fName, a.mName, br.branchName
                     ORDER BY CAST(SUBSTRING_INDEX(b.transactNo, '-', -1) AS UNSIGNED)";
 
-          // Execute the query
-          $result = $conn->query($sql);
+            // Execute the query
+            $result = $conn->query($sql);
 
-          // Check if there are results
-          if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-              // Safely handle null values
-              $transactNo = htmlspecialchars($row['transactNo'] ?? '');
-              $agentName = htmlspecialchars($row['agentName'] ?? '');
-              $packageName = htmlspecialchars($row['PackageName'] ?? '');
-              $departureDate = $row['departureDate'] ?? null;
-              $returnDate = $row['returnDate'] ?? null;
-              $bookingDate = htmlspecialchars($row['BookingDate'] ?? '');
-              $totalPax = htmlspecialchars($row['TotalPax'] ?? 0);
-              $packagePrice = $row['PackagePrice'] ?? 0;
-              $requestTotal = $row['TotalRequestAmount'] ?? 0;
-              $amountPaid = $row['TotalAmountPaid'] ?? 0;
-              $balance = max(($packagePrice + $requestTotal) - $amountPaid, 0); // Prevent negative balances
-              $status = htmlspecialchars($row['bookingStatus'] ?? 'Unknown');
+            // Check if there are results
+            if ($result->num_rows > 0) 
+            {
+              while ($row = $result->fetch_assoc()) 
+              {
+                // Safely handle null values
+                $transactNo = htmlspecialchars($row['transactNo'] ?? '');
+                $agentName = htmlspecialchars($row['agentName'] ?? '');
+                $packageName = htmlspecialchars($row['PackageName'] ?? '');
+                $departureDate = $row['departureDate'] ?? null;
+                $returnDate = $row['returnDate'] ?? null;
+                $bookingDate = htmlspecialchars($row['BookingDate'] ?? '');
+                $totalPax = htmlspecialchars($row['TotalPax'] ?? 0);
+                $packagePrice = $row['PackagePrice'] ?? 0;
+                $requestTotal = $row['TotalRequestAmount'] ?? 0;
+                $amountPaid = $row['TotalAmountPaid'] ?? 0;
+                $balance = max(($packagePrice + $requestTotal) - $amountPaid, 0); // Prevent negative balances
+                $status = htmlspecialchars($row['bookingStatus'] ?? 'Unknown');
 
-              // Determine the status class
-              $statusClass = match ($status) {
-                "Pending" => "bg-warning text-dark",
-                "Confirmed" => "bg-success text-white",
-                "Cancelled" => "bg-danger text-white",
-                "Reject" => "bg-secondary text-white",
-                default => "bg-secondary text-white",
-              };
+                // Determine the status class
+                $statusClass = match ($status) {
+                  "Pending" => "bg-warning text-dark",
+                  "Confirmed" => "bg-success text-white",
+                  "Cancelled" => "bg-danger text-white",
+                  "Reject" => "bg-secondary text-white",
+                  default => "bg-secondary text-white",};
 
-              // Format dates
-              // $formattedDepartureDate = $departureDate ? (new DateTime($departureDate))->format('F j, Y') : 'N/A';
-              $formattedReturnDate = $returnDate ? (new DateTime($returnDate))->format('F j, Y') : 'N/A';
+                // Format dates
+                // $formattedDepartureDate = $departureDate ? (new DateTime($departureDate))->format('F j, Y') : 'N/A';
+                $formattedReturnDate = $returnDate ? (new DateTime($returnDate))->format('F j, Y') : 'N/A';
 
-              // Securely encode URL
-              $transactionUrl = htmlspecialchars("emp-transactionInfo.php?id=$transactNo");
+                // Securely encode URL
+                $transactionUrl = htmlspecialchars("emp-transactionInfo.php?id=$transactNo");
 
-              // Output each row as a table row
-              echo "<tr data-url='$transactionUrl'>";
-              echo "<td>$transactNo</td>";
-              echo "<td>" . htmlspecialchars($row['ACCOUNT NAME'] ?? '') . "</td>";
-              echo "<td>$departureDate</td>";
-              echo "<td class='fw-bold ps-3'>$totalPax</td>";
-              echo "<td>₱ " . number_format($packagePrice, 2) . "</td>";
-              echo "<td>₱ " . number_format($requestTotal, 2) . "</td>";
-              echo "<td>₱ " . number_format($amountPaid, 2) . "</td>";
-              echo "<td>₱ " . number_format($balance, 2) . "</td>";
-              echo "<td> <span class='badge rounded-pill $statusClass p-2'>$status</span></td>";
-              echo "</tr>";
+                // Output each row as a table row
+                echo "<tr data-url='$transactionUrl'>";
+                echo "<td>$transactNo</td>";
+                echo "<td>" . htmlspecialchars($row['ACCOUNT NAME'] ?? '') . "</td>";
+                echo "<td>$departureDate</td>";
+                echo "<td class='fw-bold ps-3'>$totalPax</td>";
+                echo "<td>₱ " . number_format($packagePrice, 2) . "</td>";
+                echo "<td>₱ " . number_format($requestTotal, 2) . "</td>";
+                echo "<td>₱ " . number_format($amountPaid, 2) . "</td>";
+                echo "<td>₱ " . number_format($balance, 2) . "</td>";
+                echo "<td> <span class='badge rounded-pill $statusClass p-2'>$status</span></td>";
+                echo "</tr>";
+              }
+            } 
+            else 
+            {
+              echo "<tr><td colspan='8' class='text-center'>No records found</td></tr>";
             }
-          } else {
-            echo "<tr><td colspan='8' class='text-center'>No records found</td></tr>";
-          }
           ?>
         </tbody>
       </table>

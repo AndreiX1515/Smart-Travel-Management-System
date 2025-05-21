@@ -21,7 +21,7 @@
 
   <div class="main-content-container">
     <div class="navbar">
-      <h5 class="title-page" id="page-title">Dashboard</h5>
+      <h5 class="title-page" id="page-title">SOA</h5>
     </div>
 
     <div class="main-content">

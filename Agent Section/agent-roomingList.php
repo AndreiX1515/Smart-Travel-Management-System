@@ -111,10 +111,11 @@ require "../conn.php";
                 </div>
 
                 <div class="select-wrapper">
-                  <select id="roomType" class="form-control" onchange="updateGuestList()">
-                    <option value="twin">Twin Room (Max 2)</option>
-                    <option value="double">Double Room (Max 2)</option>
-                    <option value="triple">Triple Room (Min 2 - Max 3)</option>
+                  <select id="roomType" class="form-control">
+                    <option value="Single">Single Supplement (Max 1)</option>
+                    <option value="Twin">Twin Room (Max 2)</option>
+                    <option value="Double">Double Room (Max 2)</option>
+                    <option value="Triple">Triple Room (Min 2 - Max 3)</option>
                   </select>
                 </div>
               </div>
@@ -178,6 +179,13 @@ require "../conn.php";
     let availableGuests = [];  // Stores guests available for assignment
     let rooms = [];
     let removedLuggage = [];
+
+    const roomCapacities = {
+      Single: { min: 1, max: 1 },
+      Twin:   { min: 2, max: 2 },
+      Double: { min: 2, max: 2 },
+      Triple: { min: 3, max: 3 }, // Example: now Triple can have min 2 guests
+    };
 
     document.getElementById('saveAssignments').addEventListener('click', function () 
     {
@@ -591,11 +599,13 @@ require "../conn.php";
     {
       switch (roomType) 
       {
-        case 'twin':
-        case 'double':
+        case 'Single':
           return 1;
-        case 'triple':
+        case 'Twin':
+        case 'Double':
           return 2;
+        case 'Triple':
+          return 3;
         default:
           return 1;
       }
@@ -606,10 +616,12 @@ require "../conn.php";
     {
       switch (roomType) 
       {
-        case 'twin':
-        case 'double':
+        case 'Single':
+          return 1;
+        case 'Twin':
+        case 'Double':
           return 2;
-        case 'triple':
+        case 'Triple':
           return 3;
         default:
           return 1;
