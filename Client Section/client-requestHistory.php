@@ -24,7 +24,7 @@ require "../conn.php";
 
     <div class="main-content-container">
       <div class="navbar">
-        <h5 class="title-page">Guest Information List</h5>
+        <h5 class="title-page">Request</h5>
       </div>
 
       <?php
@@ -46,7 +46,7 @@ require "../conn.php";
               <div class="date-range-wrapper flightbooking-wrapper">
                 <div class="date-range-inputs-wrapper">
                   <div class="input-with-icon">
-                    <input type="text" class="datepicker" id="FlightStartDate" placeholder="Flight Date" readonly>
+                    <input type="text" class="datepicker" id="FlightStartDate" placeholder="Request Date" readonly>
                     <i class="fas fa-calendar-alt calendar-icon"></i>
                   </div>
                 </div>
