@@ -102,7 +102,7 @@
         <div class="navpills-container">
           <div class="filter-tabs" id="booking-filter-tabs">
             <button class="filter-btn active" data-filter="">
-              Created itinerary
+              Main Template Itinerary
               <span class="badge-status-tab">
                 <h6>
                   <?php

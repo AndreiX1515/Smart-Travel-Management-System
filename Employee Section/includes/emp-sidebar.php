@@ -8,8 +8,8 @@ error_reporting(E_ALL);
 // Initialize variables
 $accountId = $_SESSION['employee_accountId'] ?? '';
 $empId = $_SESSION['employee_employeeId'] ?? '';
-$firstName =  $_SESSION['employee_fName'] ?? '';
-$lastName =  $_SESSION['employee_lName'] ?? '';
+$firstName = $_SESSION['employee_fName'] ?? '';
+$lastName = $_SESSION['employee_lName'] ?? '';
 $middleName = $_SESSION['employee_mName'] ?? '';  // Middle name is optional
 $email = $_SESSION['email'] ?? '';
 $emailAddress = $_SESSION['employee_emailAddress'] ?? '';
@@ -26,7 +26,7 @@ $position = htmlspecialchars(strtoupper($empId));
 ?>
 
 
-<div class="sidebar">
+<div class="sidebar" id="sidebar">
 	<ul class="nav flex-column nav-logo-wrapper">
 		<li class="nav-item nav-logo-item-wrapper">
 			<a class="nav-link logo-link" href="#">
@@ -53,7 +53,8 @@ $position = htmlspecialchars(strtoupper($empId));
 		</li>
 
 		<li class="nav-item transaction">
-			<a class="nav-link page-button" href="../Employee Section/emp-transaction.php" data-page-name="Transactions">
+			<a class="nav-link page-button" href="../Employee Section/emp-transaction.php"
+				data-page-name="Transactions">
 				<div class="icon-wrapper">
 					<div class="icon"><i class="fa-solid fa-arrow-right-arrow-left"></i></div>
 				</div>
@@ -64,7 +65,8 @@ $position = htmlspecialchars(strtoupper($empId));
 		</li>
 
 		<li class="nav-item transaction">
-			<a class="nav-link page-button" href="../Employee Section/emp-requestHistory.php" data-page-name="Request History">
+			<a class="nav-link page-button" href="../Employee Section/emp-requestHistory.php"
+				data-page-name="Request History">
 				<div class="icon-wrapper">
 					<div class="icon"><i class="fa-solid fa-cart-plus"></i></div>
 				</div>
@@ -75,7 +77,8 @@ $position = htmlspecialchars(strtoupper($empId));
 		</li>
 
 		<li class="nav-item transaction">
-			<a class="nav-link page-button" href="../Employee Section/emp-paymentHistory.php" data-page-name="Payment History">
+			<a class="nav-link page-button" href="../Employee Section/emp-paymentHistory.php"
+				data-page-name="Payment History">
 				<div class="icon-wrapper">
 					<div class="icon"><i class="fa-solid fa-money-check-dollar"></i></div>
 				</div>
@@ -97,7 +100,8 @@ $position = htmlspecialchars(strtoupper($empId));
 		</li>
 
 		<li class="nav-item transaction">
-			<a class="nav-link page-button" href="../Employee Section/emp-roomingList.php" data-page-name="Rooming List">
+			<a class="nav-link page-button" href="../Employee Section/emp-roomingList.php"
+				data-page-name="Rooming List">
 				<div class="icon-wrapper">
 					<div class="icon"><i class="fa-solid fa-newspaper"></i></div>
 				</div>
@@ -108,7 +112,8 @@ $position = htmlspecialchars(strtoupper($empId));
 		</li>
 
 		<li class="nav-item transaction">
-			<a class="nav-link page-button" href="../Employee Section/emp-visaRequirementsTable.php" data-page-name="Visa Requirements">
+			<a class="nav-link page-button" href="../Employee Section/emp-visaRequirementsTable.php"
+				data-page-name="Visa Requirements">
 				<div class="icon-wrapper">
 					<div class="icon"><i class="fa-solid fa-passport"></i></div>
 				</div>
@@ -118,7 +123,7 @@ $position = htmlspecialchars(strtoupper($empId));
 			</a>
 		</li>
 
-		
+
 
 		<!-- <li class="nav-item transaction">
 			<a class="nav-link page-button" href="../Employee Section/emp-requestHistory.php" data-page-name="Request History">
@@ -174,7 +179,6 @@ $position = htmlspecialchars(strtoupper($empId));
 				</div>
 			</a>
 		</li> -->
-
 
 		<!-- Table Operationals -->
 		<!-- <li class="nav-item dropdown">
@@ -233,7 +237,8 @@ $position = htmlspecialchars(strtoupper($empId));
 
 		<!-- Data Entry -->
 		<li class="nav-item dropdown">
-			<a class="nav-link page-button" href="#" data-bs-toggle="collapse" data-bs-target="#dataEntry" aria-expanded="false" aria-controls="dataEntry" data-page-name="Operationals">
+			<a class="nav-link page-button" href="#" data-bs-toggle="collapse" data-bs-target="#dataEntry"
+				aria-expanded="false" aria-controls="dataEntry" data-page-name="Operationals">
 				<div class="icon-wrapper">
 					<div class="icon"><i class="fa-solid fa-file-import"></i></div>
 				</div>
@@ -244,10 +249,12 @@ $position = htmlspecialchars(strtoupper($empId));
 			<div class="collapse" id="dataEntry">
 				<ul class="nav flex-column dataEntry-menu-wrapper">
 					<li class="nav-item transaction">
-						<a class="nav-link page-button" href="../Employee Section/emp-requestList.php" data-page-name="Request List">Request</a>
+						<a class="nav-link page-button" href="../Employee Section/emp-requestList.php"
+							data-page-name="Request List">Request</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link page-button" href="../Employee Section/emp-flightList.php" data-page-name="Flight List">Flight</a>
+						<a class="nav-link page-button" href="../Employee Section/emp-flightList.php"
+							data-page-name="Flight List">Flight</a>
 					</li>
 
 				</ul>
@@ -256,7 +263,8 @@ $position = htmlspecialchars(strtoupper($empId));
 
 		<!-- For Approvals -->
 		<li class="nav-item dropdown">
-			<a class="nav-link page-button" href="#" data-bs-toggle="collapse" data-bs-target="#manageBookingMenu" aria-expanded="false" aria-controls="manageBookingMenu" data-page-name="Operationals">
+			<a class="nav-link page-button" href="#" data-bs-toggle="collapse" data-bs-target="#manageBookingMenu"
+				aria-expanded="false" aria-controls="manageBookingMenu" data-page-name="Operationals">
 				<div class="icon-wrapper">
 					<div class="icon"><i class="fa-solid fa-list-check"></i></div>
 				</div>
@@ -267,13 +275,16 @@ $position = htmlspecialchars(strtoupper($empId));
 			<div class="collapse" id="manageBookingMenu">
 				<ul class="nav flex-column managebooking-menu-wrapper">
 					<li class="nav-item transaction">
-						<a class="nav-link page-button" href="../Employee Section/emp-tablePending.php" data-page-name="For Approvals - Booking">No Downpayment</a>
+						<a class="nav-link page-button" href="../Employee Section/emp-tablePending.php"
+							data-page-name="For Approvals - Booking">No Downpayment</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link page-button" href="../Employee Section/emp-tableRequest.php" data-page-name="For Approvals - Request">Request</a>
+						<a class="nav-link page-button" href="../Employee Section/emp-tableRequest.php"
+							data-page-name="For Approvals - Request">Request</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link page-button" href="../Employee Section/emp-tablePayment.php" data-page-name="For Approvals - Payment">Payment</a>
+						<a class="nav-link page-button" href="../Employee Section/emp-tablePayment.php"
+							data-page-name="For Approvals - Payment">Payment</a>
 					</li>
 				</ul>
 			</div>
@@ -281,7 +292,8 @@ $position = htmlspecialchars(strtoupper($empId));
 
 		<!-- Reports -->
 		<li class="nav-item dropdown">
-			<a class="nav-link page-button" href="#" data-bs-toggle="collapse" data-bs-target="#reportMenu" aria-expanded="false" aria-controls="reportMenu" data-page-name="Reports">
+			<a class="nav-link page-button" href="#" data-bs-toggle="collapse" data-bs-target="#reportMenu"
+				aria-expanded="false" aria-controls="reportMenu" data-page-name="Reports">
 				<div class="icon-wrapper">
 					<div class="icon"><i class="fa-regular fa-file"></i></div>
 				</div>
@@ -293,16 +305,19 @@ $position = htmlspecialchars(strtoupper($empId));
 			<div class="collapse" id="reportMenu">
 				<ul class="nav flex-column report-menu-wrapper">
 					<li class="nav-item">
-						<a class="nav-link page-button open-new-tab" href="../Employee Section/emp-itinerarytable.php" data-page-name="Itinerary" data-url="">Itinerary</a>
+						<a class="nav-link page-button open-new-tab" href="../Employee Section/emp-itinerarytable.php"
+							data-page-name="Itinerary" data-url="">Itinerary</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link page-button open-new-tab" href="../Employee Section/emp-voucherTable.php" data-page-name="Voucher" data-url="">Voucher</a>
+						<a class="nav-link page-button open-new-tab" href="../Employee Section/emp-voucherTable.php"
+							data-page-name="Voucher" data-url="">Voucher</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link page-button" href="#" data-page-name="Ticket">Ticket</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link page-button" href="../Employee Section/emp-soa.php" data-page-name="SOA">SOA</a>
+						<a class="nav-link page-button" href="../Employee Section/emp-soa.php"
+							data-page-name="SOA">SOA</a>
 					</li>
 				</ul>
 			</div>
@@ -310,18 +325,24 @@ $position = htmlspecialchars(strtoupper($empId));
 
 	</ul>
 
+
 	<div class="logout">
+		<div class="separator"></div>
+
 		<div class="profile-section">
-			<div class="profile-left">
+			<div class="profile-left" id="profileLeft">
 				<div class="name" style="font-size: <?php echo (strlen($fullName) >= 13) ? '15px' : '17px'; ?>;">
 					<?php echo $fullName; ?>
 				</div>
-				<div class="empid fw-bold text-light" style="font-size: 14px;">EMP ID: <span class="fw-normal text-light"><?php echo $empId; ?></span></div>
+				<div class="empid fw-bold text-light" style="font-size: 14px;">
+					EMP ID: <span class="fw-normal text-light"><?php echo $empId; ?></span>
+				</div>
 			</div>
 			<div class="profile-icon profile-icon-visible">
 				<i class="fa-solid fa-user-circle"></i>
 			</div>
 		</div>
+
 
 		<div class="nav-item" id="raiseTicketWrapper">
 			<a class="nav-link" id="raiseTicket" href="#">
@@ -361,9 +382,32 @@ $position = htmlspecialchars(strtoupper($empId));
 				</div>
 			</a>
 		</div>
+
 	</div>
-	
+
 </div>
+
+<!-- Sidebar - Profile Transition -->
+
+<script>
+  const sidebar = document.getElementById('sidebar');
+  const profileLeft = document.getElementById('profileLeft');
+
+  sidebar.addEventListener('mouseenter', () => {
+    setTimeout(() => {
+      profileLeft.classList.add('show');
+    }, 160); // Wait for sidebar width animation to finish
+  });
+
+  sidebar.addEventListener('mouseleave', () => {
+    profileLeft.classList.remove('show');
+  });
+</script>
+
+
+
+
+
 
 <!-- Logout Modal -->
 <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
@@ -384,21 +428,22 @@ $position = htmlspecialchars(strtoupper($empId));
 	</div>
 </div>
 
+<!-- jQuery Script for Logout -->
 <script>
-	$(document).ready(function() {
-		$('#confirmLogout').click(function() {
+	$(document).ready(function () {
+		$('#confirmLogout').click(function () {
 			$.ajax({
 				url: '../Employee Section/functions/emp-logout.php',
 				type: 'GET',
 				dataType: 'json',
-				success: function(response) {
+				success: function (response) {
 					if (response.success) {
 						window.location.href = '../Agent Section/agentLogin.php';
 					} else {
 						alert(response.message);
 					}
 				},
-				error: function(jqXHR, textStatus, errorThrown) {
+				error: function (jqXHR, textStatus, errorThrown) {
 					console.error('AJAX Error:', textStatus, errorThrown);
 					alert('An unexpected error occurred. Please try again.');
 				}
@@ -408,13 +453,15 @@ $position = htmlspecialchars(strtoupper($empId));
 </script>
 
 <!-- Change Password Modal -->
-<div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+<div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel"
+	aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
 				<div class="modal-title-wrapper">
 					<h5 class="modal-title" id="changePasswordLabel">Change Password</h5>
-					<small class="modal-subtext">Ensure your new password is secure and different from previous ones.</small>
+					<small class="modal-subtext">Ensure your new password is secure and different from previous
+						ones.</small>
 				</div>
 				<div class="modal-close-wrapper">
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -425,19 +472,22 @@ $position = htmlspecialchars(strtoupper($empId));
 				<div class="modal-body">
 					<div class="mb-3">
 						<label for="currentPassword" class="form-label">Current Password</label>
-						<input type="password" class="form-control" id="currentPassword" name="currentPassword" placeholder="Enter current password">
+						<input type="password" class="form-control" id="currentPassword" name="currentPassword"
+							placeholder="Enter current password">
 						<small id="currentPasswordError" class="error-label text-danger"></small>
 					</div>
 
 					<div class="mb-3">
 						<label for="newPassword" class="form-label">New Password</label>
-						<input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="Enter new password" required>
+						<input type="password" class="form-control" id="newPassword" name="newPassword"
+							placeholder="Enter new password" required>
 						<small id="newPasswordError" class="error-label text-danger"></small>
 					</div>
 
 					<div class="mb-3">
 						<label for="confirmNewPassword" class="form-label">Confirm New Password</label>
-						<input type="password" class="form-control" id="confirmNewPassword" name="confirmNewPassword" placeholder="Re-enter new password" required>
+						<input type="password" class="form-control" id="confirmNewPassword" name="confirmNewPassword"
+							placeholder="Re-enter new password" required>
 						<small id="confirmPasswordError" class="error-label text-danger"></small>
 					</div>
 
@@ -454,7 +504,8 @@ $position = htmlspecialchars(strtoupper($empId));
 </div>
 
 <!-- OTP Verification Modal -->
-<div class="modal fade" id="otpVerificationModal" tabindex="-1" aria-labelledby="otpVerificationModalLabel" aria-hidden="true">
+<div class="modal fade" id="otpVerificationModal" tabindex="-1" aria-labelledby="otpVerificationModalLabel"
+	aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered ">
 		<div class="modal-content otp-modal-content">
 
@@ -469,7 +520,9 @@ $position = htmlspecialchars(strtoupper($empId));
 
 						<div class="header-body-content">
 							<h5 class="modal-title">Verify OTP</h5>
-							<p class="otp-subtext">To proceed with resetting your password, we’ve sent a verification code to your email address. <br> <span class="otp-email-mask">is****a8@gmail.com</span></p>
+							<p class="otp-subtext">To proceed with resetting your password, we’ve sent a verification
+								code to your email address. <br> <span class="otp-email-mask">is****a8@gmail.com</span>
+							</p>
 						</div>
 					</div>
 				</div>
@@ -493,7 +546,8 @@ $position = htmlspecialchars(strtoupper($empId));
 					</div>
 
 					<div class="otpResent-button-wrapper">
-						<p class="otp-resend-text">Didn’t receive code? </p> <a href="#" id="sendOtpBtn" class="otp-resend-link">Resend</a>
+						<p class="otp-resend-text">Didn’t receive code? </p> <a href="#" id="sendOtpBtn"
+							class="otp-resend-link">Resend</a>
 					</div>
 
 					<div id="otpAlert"></div>
@@ -505,7 +559,7 @@ $position = htmlspecialchars(strtoupper($empId));
 
 <!-- Change Password Modal Open Script -->
 <script>
-	document.getElementById('changePasswordLink').addEventListener('click', function(e) {
+	document.getElementById('changePasswordLink').addEventListener('click', function (e) {
 		e.preventDefault(); // Prevent default link behavior
 		var myModal = new bootstrap.Modal(document.getElementById('changePasswordModal'));
 		myModal.show();
@@ -514,7 +568,7 @@ $position = htmlspecialchars(strtoupper($empId));
 
 <!-- OTP Input Focus Script -->
 <script>
-	document.addEventListener("DOMContentLoaded", function() {
+	document.addEventListener("DOMContentLoaded", function () {
 		const otpInputs = document.querySelectorAll("#otpVerificationModal .otp-modal-input");
 
 		otpInputs.forEach((input, index) => {
@@ -535,7 +589,7 @@ $position = htmlspecialchars(strtoupper($empId));
 
 <!-- jQuery Script for Change Password Modal -->
 <script>
-	$(document).ready(function() {
+	$(document).ready(function () {
 
 		let currentPassword, newPassword, confirmNewPassword;
 
@@ -568,7 +622,7 @@ $position = htmlspecialchars(strtoupper($empId));
 			}).show();
 
 			// Hide the alert after 3.5 seconds (3500 milliseconds)
-			setTimeout(function() {
+			setTimeout(function () {
 				$('#otpAlert').fadeOut();
 			}, 3500);
 		}
@@ -602,7 +656,7 @@ $position = htmlspecialchars(strtoupper($empId));
 			}).show();
 
 			// Hide the alert after 3.5 seconds (3500 milliseconds)
-			setTimeout(function() {
+			setTimeout(function () {
 				$('#otpAlert').fadeOut();
 			}, 3500);
 		}
@@ -627,7 +681,7 @@ $position = htmlspecialchars(strtoupper($empId));
 				},
 
 				dataType: 'json',
-				success: function(response) {
+				success: function (response) {
 					if (response.status === 'success') {
 						console.log('OTP Sent:', response.otp);
 
@@ -642,7 +696,7 @@ $position = htmlspecialchars(strtoupper($empId));
 
 						showOtpAlert('OTP has been sent to your email address.', 'success');
 
-						setTimeout(function() {
+						setTimeout(function () {
 							$('#changePasswordModal').modal('hide');
 							$('#otpVerificationModal').modal('show');
 
@@ -665,7 +719,7 @@ $position = htmlspecialchars(strtoupper($empId));
 					}
 				},
 
-				error: function(xhr, status, error) {
+				error: function (xhr, status, error) {
 					console.log('AJAX Error:', error);
 					showOtpAlert('An error occurred while sending OTP. Please try again later.', 'error');
 				}
@@ -673,7 +727,7 @@ $position = htmlspecialchars(strtoupper($empId));
 		}
 
 		// Handle form submission for change password
-		$('#changePasswordForm').on('submit', function(e) {
+		$('#changePasswordForm').on('submit', function (e) {
 			e.preventDefault(); // Prevent default form submission
 
 			// Clear previous error messages and hide error labels
@@ -711,14 +765,14 @@ $position = htmlspecialchars(strtoupper($empId));
 					newPassword: newPassword
 				},
 
-				success: function(response) {
+				success: function (response) {
 					response = JSON.parse(response);
 
 					if (response.status === 'error') {
 						document.getElementById('currentPasswordError').textContent = response.message;
 						document.getElementById('currentPasswordError').style.display = 'block';
-					} 
-					
+					}
+
 					else if (response.status === 'success') {
 						const accountId = response.accountId;
 						const emailAddress = response.emailAddress;
@@ -736,14 +790,14 @@ $position = htmlspecialchars(strtoupper($empId));
 						}
 
 						// Proceed to send OTP
-						setTimeout(function() {
+						setTimeout(function () {
 							sendOtp(currentPassword, emailAddress); // Reusable OTP function
 						}, 500);
 					}
 
 				},
 
-				error: function(xhr, status, error) {
+				error: function (xhr, status, error) {
 					console.log('AJAX Error:', error);
 					showCPAlert('An error occurred while validating the password.', 'error');
 				}
@@ -751,16 +805,16 @@ $position = htmlspecialchars(strtoupper($empId));
 		});
 
 		// OTP verification form submission
-		$('#otpVerificationForm').on('submit', function(e) {
+		$('#otpVerificationForm').on('submit', function (e) {
 			e.preventDefault(); // Prevent normal form submission
 
 			let otp = '';
 			let newPassword = document.getElementById('newPassword').value;
 			let accountIdVerify = <?= isset($accountId) ? json_encode($accountId) : 'null'; ?>;
-  			console.log("Account ID:", accountIdVerify);
+			console.log("Account ID:", accountIdVerify);
 
 
-			$('.otp-modal-input').each(function() {
+			$('.otp-modal-input').each(function () {
 				otp += $(this).val();
 			});
 
@@ -783,7 +837,7 @@ $position = htmlspecialchars(strtoupper($empId));
 					accountId: accountIdVerify
 				},
 				dataType: 'json',
-				success: function(response) {
+				success: function (response) {
 					console.log('OTP verification response:', response); // Debugging log
 					if (response.status === 'success') {
 						console.log('OTP Verified Successfully'); // Debugging log
@@ -814,14 +868,14 @@ $position = htmlspecialchars(strtoupper($empId));
 								accountId: accountId
 							},
 							dataType: 'json',
-							success: function(res) {
+							success: function (res) {
 								console.log('Password change response:', res); // Debugging log
 								if (res.status === 'success') {
 									console.log('Password changed successfully'); // Debugging log
 
 									showOtpAlert(response.message, response.status);
 
-									setTimeout(function() {
+									setTimeout(function () {
 										console.log('Reloading the page...');
 										location.reload(); // Reload the page after 3 seconds
 									}, 3000);
@@ -835,7 +889,7 @@ $position = htmlspecialchars(strtoupper($empId));
 									});
 								}
 							},
-							error: function(xhr, status, error) {
+							error: function (xhr, status, error) {
 								console.error("AJAX Error (Password Change):", error);
 								console.log("Response Text (Password Change):", xhr.responseText);
 
@@ -856,7 +910,7 @@ $position = htmlspecialchars(strtoupper($empId));
 					}
 
 				},
-				error: function(xhr, status, error) {
+				error: function (xhr, status, error) {
 					console.error("AJAX Error (OTP Verification):", error);
 					console.log("Response Text (OTP Verification):", xhr.responseText);
 					$('#otpError').text('An error occurred during OTP verification. Please try again.');
@@ -866,7 +920,7 @@ $position = htmlspecialchars(strtoupper($empId));
 
 
 		// Resend OTP functionality
-		$('#sendOtpBtn').click(function(e) {
+		$('#sendOtpBtn').click(function (e) {
 			e.preventDefault();
 
 			const currentPassword = document.getElementById('currentPassword').value;

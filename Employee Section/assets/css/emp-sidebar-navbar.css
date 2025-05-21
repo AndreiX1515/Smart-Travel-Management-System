@@ -15,6 +15,21 @@ body {
 }
 
 
+/* MISC */
+
+.separator {
+    border-top: 1px solid rgba(220, 220, 220, 0.493);
+    margin: 0px 10px;
+  }
+
+
+
+
+
+
+
+
+
 /* Sidebar icons */
 .sidebar .icon {
   display: flex;
@@ -138,48 +153,62 @@ body {
 }
 
 
-/* Profile Section */
+
+
+
+
+.sidebar:hover {
+  width: 220px;
+}
+
 .profile-section {
- display: flex;
- justify-content: space-between;
- align-items: center;
- padding: 15px;
- margin: 10px;
- border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  margin: 10px;
+  border-radius: 5px;
+  background-color: transparent;
+  transition: background-color 0.3s ease;
 }
 
 .sidebar:hover .profile-section {
- background-color: #495057;
+  background-color: #495057;
 }
 
 .profile-left {
- display: flex;
- flex-direction: column;
- color: white;
- opacity: 0; /* Initially hidden */
- transition: opacity 0.3s ease; /* Smoothly show profile details */
+  display: none; /* Hidden by default */
+  flex-direction: column;
+  color: white;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
-.sidebar:hover .profile-left {
- opacity: 1;
+.profile-left.show {
+  display: flex;
+  opacity: 1;
 }
+
 
 .profile-left .name {
- font-size: 18px;
- font-weight: bold;
+  font-size: 18px;
+  font-weight: bold;
 }
 
 .profile-left .position {
- font-size: 14px;
+  font-size: 14px;
 }
 
 .profile-icon {
- font-size: 1.5rem;
- color: white;
- background-color: transparent;
- transition: none;
- margin-left: -5px;
+  font-size: 1.5rem;
+  color: white;
+  background-color: transparent;
+  margin-left: -5px;
 }
+
+
+
+
 
 
 
@@ -323,12 +352,20 @@ body {
   flex-direction: column;
   z-index: 1030;
   border: 1px solid black;
+  transition: width 0.3s ease;
+  overflow: hidden;
 }
 
 /* Expand on hover */
 .sidebar:hover {
   width: 220px;
 }
+
+
+
+
+
+
 
 
 
@@ -599,11 +636,11 @@ body {
 
 
 
+
+
+
+
 /* =========================== */
-
-
-
-
 /* Change Password Modal - Minimalist Style */
 #changePasswordModal .modal-content {
   border-radius: 8px;

@@ -10,7 +10,7 @@
 
   <?php include '../Employee Section/includes/emp-head.php' ?>
 
-  <link rel="stylesheet" href="../Employee Section/assets/css/emp-voucherTable.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="../Employee Section/assets/css/emp-itineraryTable.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="../Employee Section/assets/css/emp-sidebar-navbar.css?v=<?php echo time(); ?>">
 
 </head>
@@ -47,6 +47,7 @@
     ?>
 
     <div class="main-content">
+
       <div class="table-container">
 
         <div class="table-header">
@@ -100,7 +101,7 @@
         <div class="navpills-container">
           <div class="filter-tabs" id="booking-filter-tabs">
             <button class="filter-btn active" data-filter="">
-              Created itinerary
+              Main Template Voucher
               <span class="badge-status-tab">
                 <h6>
                   <?php
@@ -113,7 +114,7 @@
             </button>
 
             <button class="filter-btn active" data-filter="">
-              Available Itinerary
+              Created Voucher
               <span class="badge-status-tab">
                 <h6>
                   <?php
@@ -208,7 +209,6 @@
             });
           });
         </script>
-
 
         <!-- <div class="table-footer">
           <div class="pagination-controls">

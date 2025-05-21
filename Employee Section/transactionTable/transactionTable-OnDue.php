@@ -1,8 +1,10 @@
+<?php
+$onDue = isset($_GET['onDue']) ? $_GET['onDue'] : 'All';
+?>
+
 <div class="table-container">
 
   <div class="table-header">
-
-    <!-- Search -->
     <div class="search-wrapper">
       <div class="search-input-wrapper">
         <input type="text" id="search" placeholder="Search here..">
@@ -89,64 +91,70 @@
         </span>
       </button>
 
-      <!-- Reserved Button -->
-      <button class="filter-btn" data-filter="Reserved">Reserved
+      <button class="filter-btn active" data-filter="overdue">
+        Overdue
         <span class="badge-status-tab">
           <h6>
             <?php
-              $sql = "SELECT COUNT(*) AS totalBookings FROM booking b
-                      JOIN flight f ON b.flightId = f.flightId
-                      WHERE b.status = 'Reserved' AND f.flightDepartureDate < CURDATE()";
-              $result = mysqli_query($conn, $sql);
-              echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+            $sql = "SELECT COUNT(*) AS totalBookings FROM booking;";
+            $result = mysqli_query($conn, $sql);
+            echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
             ?>
           </h6>
         </span>
       </button>
 
-      <!-- Confirmed Button -->
-      <button class="filter-btn" data-filter="Confirmed">Confirmed
+      <!-- 5 Days (Default) -->
+      <button class="filter-btn" data-filter="5days">
+        5 Days
         <span class="badge-status-tab">
           <h6>
             <?php
-              $sql = "SELECT COUNT(*) AS totalBookings FROM booking b
-                      JOIN flight f ON b.flightId = f.flightId
-                      WHERE b.status = 'Confirmed' AND f.flightDepartureDate < CURDATE()";
-              $result = mysqli_query($conn, $sql);
-              echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+            $sql = "SELECT COUNT(*) AS totalBookings FROM booking";
+            $result = mysqli_query($conn, $sql);
+            echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
             ?>
           </h6>
         </span>
       </button>
 
-      <!-- Cancelled Button -->
-      <button class="filter-btn" data-filter="Cancelled">Cancelled
+      <!-- 10 Days -->
+      <button class="filter-btn" data-filter="10days">
+        10 Days
         <span class="badge-status-tab">
           <h6>
             <?php
-              $sql = "SELECT COUNT(*) AS totalBookings FROM booking b
-                      JOIN flight f ON b.flightId = f.flightId
-                      WHERE b.status = 'Cancelled' AND f.flightDepartureDate < CURDATE()";
-              $result = mysqli_query($conn, $sql);
-              echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+            $sql = "SELECT COUNT(*) AS totalBookings FROM booking WHERE status = 'Pending'";
+            $result = mysqli_query($conn, $sql);
+            echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
             ?>
           </h6>
         </span>
       </button>
 
-      <!-- Remaining Balance Button -->
-      <button class="filter-btn remaining-balance" data-filter="Balanced">With Remaining Balance
+      <!-- 20 Days -->
+      <button class="filter-btn" data-filter="20days">
+        20 Days
         <span class="badge-status-tab">
           <h6>
             <?php
-              $sql = "SELECT COUNT(*) AS totalBookings, SUM(p.amount) AS sum, b.totalPrice as totalPrice, SUM(r.requestCost) as requestCost
-                      FROM booking b
-                      JOIN flight f ON b.flightId = f.flightId
-                      JOIN request r ON r.transactNo = b.transactNo AND r.requestStatus = 'Confirmed'
-                      JOIN payment p ON p.transactNo = b.transactNo AND p.paymentStatus = 'Approved'
-                      WHERE f.flightDepartureDate < CURDATE()";
-              $result = mysqli_query($conn, $sql);
-              echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+            $sql = "SELECT COUNT(*) AS totalBookings FROM booking WHERE status = 'Reserved'";
+            $result = mysqli_query($conn, $sql);
+            echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+            ?>
+          </h6>
+        </span>
+      </button>
+
+      <!-- More than 30 Days -->
+      <button class="filter-btn" data-filter="30daysplus">
+        > 30 Days
+        <span class="badge-status-tab">
+          <h6>
+            <?php
+            $sql = "SELECT COUNT(*) AS totalBookings FROM booking WHERE status = 'Confirmed'";
+            $result = mysqli_query($conn, $sql);
+            echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
             ?>
           </h6>
         </span>
@@ -284,81 +292,117 @@
 
 </div>
 
-<!-- For Button Tabs Status Sorting -->
+
+<!-- For Button Tabs - On Due Sorting -->
 <script>
-  document.addEventListener("DOMContentLoaded", function () 
-  {
-    // Get the status from the URL
-    let statusTab = "<?php echo isset($_GET['status']) ? $_GET['status'] : ''; ?>";
-    console.log("Status from URL:", statusTab); // Debugging
+  document.addEventListener("DOMContentLoaded", function () {
+    const onDueTabBtn = document.getElementById('pills-home-tab');
+    const onDueTabPane = document.getElementById('pills-home');
 
-    // Find all filter buttons
-    let buttons = document.querySelectorAll("#booking-filter-tabs .filter-btn");
+    if (!onDueTabBtn || !onDueTabPane) return;
 
-    // Remove 'active' class from all buttons
-    buttons.forEach(btn => btn.classList.remove("active"));
+    function initOnDueFilter() {
+      const onDue = "<?php echo isset($_GET['onDue']) ? $_GET['onDue'] : '5 Days'; ?>";
+      console.log("onDue from URL:", onDue);
 
-    // Find the button that matches the status
-    let matchedButton = [...buttons].find(btn => btn.getAttribute("data-filter") === statusTab);
+      const buttons = document.querySelectorAll("#booking-filter-tabs .filter-btn");
 
-    if (matchedButton) 
-    {
-      matchedButton.classList.add("active"); // Highlight the correct button
-      console.log("Activating button:", matchedButton.innerText);
+      // Remove current active-tab
+      buttons.forEach(btn => btn.classList.remove("active-tab"));
 
-      setTimeout(() => 
-      {
-        matchedButton.click();
-      }, 3);
-    } 
-    else 
-    {
-      // Default to "All" if no match found
-      let defaultButton = document.querySelector("#booking-filter-tabs .filter-btn[data-filter='']");
-      if (defaultButton)
-      {
-        defaultButton.classList.add("active");
-        console.log("Activating default button: All");
+      // Find and activate the matching button
+      const matchedButton = Array.from(buttons).find(btn =>
+        btn.getAttribute("data-filter") === onDue
+      );
 
-        setTimeout(() => 
-        {
-          defaultButton.click();
-        }, 100);
+      if (matchedButton) {
+        matchedButton.classList.add("active-tab");
+        console.log("Activating button:", matchedButton.innerText);
+        setTimeout(() => matchedButton.click(), 10);
+      } else {
+        console.log("No matching filter button found.");
       }
+
+      // Rebind click events to prevent duplicates
+      buttons.forEach(button => {
+        button.removeEventListener("click", handleClick); // Prevent multiple bindings
+        button.addEventListener("click", handleClick);
+      });
+
+      function handleClick() {
+        buttons.forEach(btn => btn.classList.remove("active-tab"));
+        this.classList.add("active-tab");
+
+        const filterValue = this.getAttribute("data-filter")?.toLowerCase();
+
+        if ($.fn.DataTable.isDataTable("#ondue-table")) {
+          const table = $('#ondue-table').DataTable();
+
+          // Remove existing dueDateFilter
+          $.fn.dataTable.ext.search = $.fn.dataTable.ext.search.filter(f => f.name !== 'dueDateFilter');
+
+          // Add new custom filter for flight date
+          const dueDateFilter = function dueDateFilter(settings, data, dataIndex) {
+            const flightDateStr = data[2]; // Flight Date column (index 2)
+
+            if (!flightDateStr) return false; // exclude rows without flight date
+
+            const flightDate = new Date(flightDateStr);
+            if (isNaN(flightDate)) return false; // invalid date, exclude
+
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            flightDate.setHours(0, 0, 0, 0);
+
+            const diffInDays = Math.floor((flightDate - today) / (1000 * 60 * 60 * 24));
+
+            switch (filterValue) {
+              case "overdue":
+                return diffInDays < 0;  // flight date is before today
+              case "5days":
+                return diffInDays >= 0 && diffInDays <= 5;
+              case "10days":
+                return diffInDays >= 0 && diffInDays <= 10;
+              case "20days":
+                return diffInDays >= 0 && diffInDays <= 20;
+              case "30daysplus":
+                return diffInDays >= 31;
+              default:
+                return true; // show all rows if no filter
+            }
+          };
+
+          dueDateFilter.name = 'dueDateFilter';
+          $.fn.dataTable.ext.search.push(dueDateFilter);
+
+          table.draw();
+        }
+      }
+
+
+
+
     }
 
-    // Add click event listener to each button
-    buttons.forEach(button => 
-    {
-      button.addEventListener("click", function ()
-      {
-        // Remove active class from all buttons
-        buttons.forEach(btn => btn.classList.remove("active"));
-
-        // Add active class to the clicked button
-        this.classList.add("active");
-
-        let filterValue = this.getAttribute("data-filter");
-
-        // Apply DataTables filtering
-        if ($.fn.DataTable.isDataTable("#product-table")) 
-        {
-          $('#product-table').DataTable().column(8).search(filterValue || '', true, false).draw();
-        }
-      });
+    // Run filter logic every time the tab is shown
+    onDueTabBtn.addEventListener('shown.bs.tab', function () {
+      initOnDueFilter();
     });
+
+    // If the tab is already active on page load
+    if (onDueTabPane.classList.contains('active')) {
+      initOnDueFilter();
+    }
   });
 </script>
 
+
 <!-- DataTables #product-table -->
 <script>
-  $(document).ready(function () 
-  {
-    const tableProduct = $('#ondue-table').DataTable(
-    {
+  $(document).ready(function () {
+    const tableProduct = $('#ondue-table').DataTable({
       dom: 'rtip',
-      language: 
-      {
+      language: {
         emptyTable: "No Transaction Records Available"
       },
       order: [[2, 'asc']],
@@ -367,15 +411,13 @@
       pageLength: 14,
       autoWidth: false,
       autoHeight: false,
-      columnDefs: [
-      {
+      columnDefs: [{
         targets: [1, 3, 4, 5, 6, 7, 8],
         orderable: false
       }]
     });
 
-    const updatePagination = () => 
-    {
+    const updatePagination = () => {
       const info = tableProduct.page.info();
       const currentPage = info.page + 1;
       const totalPages = info.pages;
@@ -388,72 +430,62 @@
     };
 
     // Pagination Controls
-    $('#prevPage').on('click', () => 
-    {
+    $('#prevPage').on('click', () => {
       tableProduct.page('previous').draw('page');
       updatePagination();
     });
 
-    $('#nextPage').on('click', () => 
-    {
+    $('#nextPage').on('click', () => {
       tableProduct.page('next').draw('page');
       updatePagination();
     });
 
     // Search
-    $('#search').on('keyup', function () 
-    {
+    $('#search').on('keyup', function () {
       tableProduct.search(this.value).draw();
       updatePagination();
     });
 
     // Filters
-    $('#packages').on('change', function () 
-    {
+    $('#packages').on('change', function () {
       const val = $(this).val();
       tableProduct.column(1).search(val || '').draw();
       updatePagination();
     });
 
-    $('#BookingStartDate').on('change', function () 
-    {
+    $('#BookingStartDate').on('change', function () {
       const val = $(this).val();
       tableProduct.column(3).search(val || '').draw();
       updatePagination();
     });
 
-    $('#FlightStartDate').on('change', function () 
-    {
+    $('#FlightStartDate').on('change', function () {
       const val = $(this).val();
       tableProduct.column(2).search(val || '').draw();
       updatePagination();
     });
 
     // Datepickers
-    $("#FlightStartDate").datepicker(
-    {
+    $("#FlightStartDate").datepicker({
       dateFormat: "yy-mm-dd",
       showAnim: "fadeIn",
       changeMonth: true,
       changeYear: true,
       yearRange: "1900:2100",
-      onSelect: function (dateText) 
-      {
+      onSelect: function (dateText) {
         $(this).val(dateText);
         tableProduct.column(2).search(dateText || '').draw();
         updatePagination();
       }
     });
 
-    $("#BookingStartDate").datepicker(
-    {
+    $("#BookingStartDate").datepicker({
       dateFormat: "mm-dd-yy",
       showAnim: "fadeIn",
       changeMonth: true,
       changeYear: true,
       yearRange: "1900:2100",
-      onSelect: function (dateText) 
-      {
+      onSelect: function (dateText) {
         $(this).val(dateText);
         tableProduct.column(4).search(dateText || '').draw();
         updatePagination();
@@ -461,19 +493,15 @@
     });
 
     // Manual input formatter
-    $("#BookingStartDate").on("input", function () 
-    {
+    $("#BookingStartDate").on("input", function () {
       let value = $(this).val().replace(/[^\d-]/g, '');
-      if (value.length > 2 && value.charAt(2) !== '-') 
-      {
+      if (value.length > 2 && value.charAt(2) !== '-') {
         value = value.substring(0, 2) + '-' + value.substring(2);
       }
-      if (value.length > 5 && value.charAt(5) !== '-') 
-      {
+      if (value.length > 5 && value.charAt(5) !== '-') {
         value = value.substring(0, 5) + '-' + value.substring(5);
       }
-      if (value.length > 10) 
-      {
+      if (value.length > 10) {
         value = value.substring(0, 10);
       }
 
@@ -483,16 +511,15 @@
     });
 
     // Clear All Filters
-    $('#clearSorting').on('click', function () 
-    {
+    $('#clearSorting').on('click', function () {
       $('#search, #BookingStartDate, #FlightStartDate').val('');
       $('#status, #packages').val('').trigger('change');
 
       tableProduct
-          .order([[2, 'asc']])
-          .search('')
-          .columns().search('')
-          .draw();
+        .order([[2, 'asc']])
+        .search('')
+        .columns().search('')
+        .draw();
 
       updatePagination();
     });

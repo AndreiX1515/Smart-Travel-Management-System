@@ -19,7 +19,8 @@
   <?php include '../Employee Section/includes/emp-sidebar.php' ?>
 
   <?php
-  $statusTab = isset($_GET['status']) ? $_GET['status'] : '';
+    $tab = isset($_GET['tab']) ? $_GET['tab'] : 'status'; 
+
   ?>
 
   <!-- Main Container -->
@@ -28,13 +29,13 @@
     <div class="navbar">
       <div class="page-header-wrapper">
 
-        <!-- <div class="page-header-top">
+        <div class="page-header-top">
           <div class="back-btn-wrapper">
             <button class="back-btn" id="redirect-btn">
               <i class="fas fa-chevron-left"></i>
             </button>
           </div>
-        </div> -->
+        </div>
 
         <div class="page-header-content">
           <div class="page-header-text">
@@ -45,8 +46,48 @@
       </div>
     </div>
 
+    <script>
+      document.getElementById('redirect-btn').addEventListener('click', function () {
+          window.location.href = '../Employee Section/emp-dashboard.php'; // Replace with your actual URL
+      });
+    </script>
+
+
     <div class="main-content">
 
+      <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          // Function to get URL parameters
+          function getParameterByName(name) {
+            const url = window.location.href;
+            name = name.replace(/[\[\]]/g, '\\$&');
+            const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)');
+            const results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, ' '));
+          }
+
+          // Activate correct tab based on URL parameter
+          const tabParam = getParameterByName('tab');
+          const tabMap = {
+            status: 'pills-profile-tab',
+            onDue: 'pills-home-tab',
+            remainBal: 'pills-remaining-balance-tab'
+          };
+
+          if (tabParam && tabMap[tabParam]) {
+            const tabTriggerEl = document.getElementById(tabMap[tabParam]);
+            if (tabTriggerEl) {
+              const tab = new bootstrap.Tab(tabTriggerEl);
+              tab.show();
+            }
+          }
+
+        });
+      </script>
+
+      <!-- Main Container Tabs -->
       <div class="tabs-wrapper">
         <div class="navs-wrapper">
           <ul class="nav nav-pills" id="pills-tab" role="tablist">
