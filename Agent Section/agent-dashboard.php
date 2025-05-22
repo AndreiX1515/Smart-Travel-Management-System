@@ -286,9 +286,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                   </div>
 
                 </div>
-                
               </div>
-
             </div>
 
             <!-- CARD 2 - On Due -->
@@ -298,7 +296,6 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                   <h6 class="white-pill">On Due</h6>
                 </div>
               </div>
-
               <div class="card-content px-3">
                 <div class="row">
                   <!-- Due on 5 Days -->
@@ -343,7 +340,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                         }
                       ?>
                       <h5><?php echo $bookingsDueIn5Days; ?></h5>
-                      <p>5 DAYS</p>
+                      <p>5 DAYS BEFORE FLIGHT</p>
                     </div>
                   </div>
 
@@ -385,7 +382,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                         }
                       ?>
                       <h5><?php echo $bookingsDueIn15Days; ?></h5>
-                      <p>15 DAYS</p>
+                      <p>15 DAYS BEFORE FLIGHT</p>
                     </div>
                   </div>
                 </div>
@@ -433,7 +430,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                       }
                       ?>
                       <h5><?php echo $bookingsDueIn30Days; ?></h5>
-                      <p>30 DAYS</p>
+                      <p>30 DAYS BEFORE FLIGHT</p>
                     </div>
                   </div>
 
@@ -447,41 +444,41 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                         // Determine which query to run based on the agent's role
                         if ($agentRole != 'Head Agent') {
                           // Query for non-Head Agent, use accountId
-                          $days30Query = "SELECT COUNT(*) AS bookingsDueIn30Days FROM booking b 
+                          $daysMoreThan30Query  = "SELECT COUNT(*) AS bookingsOver30DaysAfterFlight FROM booking b 
                                             JOIN flight f ON b.flightId = f.flightId
                                             LEFT JOIN (SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) 
                                                       AS totalPaid FROM payment GROUP BY transactNo) p 
                                             ON b.transactNo = p.transactNo
-                                            WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) > 30
+                                            WHERE DATEDIFF(CURDATE(), f.flightDepartureDate) > 30
                                             AND (b.totalPrice > IFNULL(p.totalPaid, 0)) 
                                             AND b.accountId = '$accountId' 
                                             AND b.status = 'Confirmed'";
                         } else {
                           // Query for Head Agent, use agentCode
-                          $days30Query = "SELECT COUNT(*) AS bookingsDueIn30Days FROM booking b 
+                          $daysMoreThan30Query  = "SELECT COUNT(*) AS bookingsOver30DaysAfterFlight FROM booking b 
                                             JOIN flight f ON b.flightId = f.flightId
                                             LEFT JOIN (SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) 
                                                       AS totalPaid FROM payment GROUP BY transactNo) p 
                                             ON b.transactNo = p.transactNo
-                                            WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) > 30
+                                            WHERE DATEDIFF(CURDATE(), f.flightDepartureDate) > 30
                                             AND (b.totalPrice > IFNULL(p.totalPaid, 0)) 
                                             AND b.agentCode = '$agentCode' 
                                             AND b.status = 'Confirmed'";
                         }
 
                         // Execute the query
-                        $result = $conn->query($days30Query);
+                        $result = $conn->query($daysMoreThan30Query);
 
                         // Check if the query returned a result
                         if ($result->num_rows > 0) {
                           $row = $result->fetch_assoc();
-                          $bookingsDueIn30Days = $row['bookingsDueIn30Days'];
+                          $bookingsDueInMoreThan30Days  = $row['bookingsOver30DaysAfterFlight'];
                         } else {
-                          $bookingsDueIn30Days = 0;  // Default to 0 if no records found
+                          $bookingsDueInMoreThan30Days  = 0;  // Default to 0 if no records found
                         }
                       ?>
-                      <h5><?php echo $bookingsDueIn30Days; ?></h5>
-                      <p>30 DAYS</p>
+                      <h5><?php echo $bookingsDueInMoreThan30Days ; ?></h5>
+                      <p>OVERDUE BALANCE (30+ DAYS AFTER FLIGHT)</p>
                     </div>
                   </div>
                 </div>
