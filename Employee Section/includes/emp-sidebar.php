@@ -27,7 +27,8 @@ $position = htmlspecialchars(strtoupper($empId));
 
 
 <div class="sidebar" id="sidebar">
-	<ul class="nav flex-column nav-logo-wrapper">
+
+	<ul class="nav flex-column nav-logo-wrapper nav-logo-header">
 		<li class="nav-item nav-logo-item-wrapper">
 			<a class="nav-link logo-link" href="#">
 				<div class="logo-content">
@@ -325,9 +326,8 @@ $position = htmlspecialchars(strtoupper($empId));
 
 	</ul>
 
-
 	<div class="logout">
-		<div class="separator"></div>
+		<!-- <div class="separator"></div> -->
 
 		<div class="profile-section">
 			<div class="profile-left" id="profileLeft">
@@ -338,9 +338,9 @@ $position = htmlspecialchars(strtoupper($empId));
 					EMP ID: <span class="fw-normal text-light"><?php echo $empId; ?></span>
 				</div>
 			</div>
-			<div class="profile-icon profile-icon-visible">
+			<!-- <div class="profile-icon profile-icon-visible">
 				<i class="fa-solid fa-user-circle"></i>
-			</div>
+			</div> -->
 		</div>
 
 
@@ -387,28 +387,6 @@ $position = htmlspecialchars(strtoupper($empId));
 
 </div>
 
-<!-- Sidebar - Profile Transition -->
-
-<script>
-  const sidebar = document.getElementById('sidebar');
-  const profileLeft = document.getElementById('profileLeft');
-
-  sidebar.addEventListener('mouseenter', () => {
-    setTimeout(() => {
-      profileLeft.classList.add('show');
-    }, 160); // Wait for sidebar width animation to finish
-  });
-
-  sidebar.addEventListener('mouseleave', () => {
-    profileLeft.classList.remove('show');
-  });
-</script>
-
-
-
-
-
-
 <!-- Logout Modal -->
 <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
@@ -427,6 +405,24 @@ $position = htmlspecialchars(strtoupper($empId));
 		</div>
 	</div>
 </div>
+
+
+<!-- Sidebar - Profile Transition
+<script>
+  const sidebar = document.getElementById('sidebar');
+  const profileLeft = document.getElementById('profileLeft');
+
+  sidebar.addEventListener('mouseenter', () => {
+    setTimeout(() => {
+      profileLeft.classList.add('show');
+    }, 160); // Wait for sidebar width animation to finish
+  });
+
+  sidebar.addEventListener('mouseleave', () => {
+    profileLeft.classList.remove('show');
+  });
+</script> -->
+
 
 <!-- jQuery Script for Logout -->
 <script>
@@ -565,6 +561,7 @@ $position = htmlspecialchars(strtoupper($empId));
 		myModal.show();
 	});
 </script>
+
 
 <!-- OTP Input Focus Script -->
 <script>
@@ -962,31 +959,3 @@ $position = htmlspecialchars(strtoupper($empId));
 	});
 </script>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- <script>
-	document.addEventListener("DOMContentLoaded", function() {
-		// Add event listeners only to links with the "open-new-tab" class
-		document.querySelectorAll(".open-new-tab").forEach(function(button) {
-			button.addEventListener("click", function(event) {
-				event.preventDefault(); // Prevent the default link behavior
-				const url = button.getAttribute("data-url"); // Get the URL from the data-url attribute
-				window.open(url, '_blank'); // Open the URL in a new tab
-			});
-		});
-	});
-</script> -->

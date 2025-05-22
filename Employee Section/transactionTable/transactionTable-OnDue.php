@@ -1,5 +1,5 @@
 <?php
-$onDue = isset($_GET['onDue']) ? $_GET['onDue'] : 'All';
+$onDue = isset($_GET['onDue']) ? $_GET['onDue'] : 'all';
 ?>
 
 <div class="table-container">
@@ -61,7 +61,7 @@ $onDue = isset($_GET['onDue']) ? $_GET['onDue'] : 'All';
   <div class="navpills-container">
     <div class="filter-tabs" id="booking-filter-tabs">
       <!-- All Button -->
-      <button class="filter-btn active" data-filter="">
+      <button class="filter-btn active" data-filter="all">
         All
         <span class="badge-status-tab">
           <h6>
@@ -69,21 +69,6 @@ $onDue = isset($_GET['onDue']) ? $_GET['onDue'] : 'All';
               $sql = "SELECT COUNT(*) AS totalBookings FROM booking b
                       JOIN flight f ON b.flightId = f.flightId
                       WHERE f.flightDepartureDate < CURDATE()";
-              $result = mysqli_query($conn, $sql);
-              echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
-            ?>
-          </h6>
-        </span>
-      </button>
-
-      <!-- Pending Button -->
-      <button class="filter-btn" data-filter="Pending">Pending
-        <span class="badge-status-tab">
-          <h6>
-            <?php
-              $sql = "SELECT COUNT(*) AS totalBookings FROM booking b
-                      JOIN flight f ON b.flightId = f.flightId
-                      WHERE b.status = 'Pending' AND f.flightDepartureDate < CURDATE()";
               $result = mysqli_query($conn, $sql);
               echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
             ?>
@@ -164,7 +149,6 @@ $onDue = isset($_GET['onDue']) ? $_GET['onDue'] : 'All';
   </div>
 
   <div class="body-content-wrapper">
-
     <div class="table-wrapper">
       <table class="ondue-table" id="ondue-table">
         <thead>
@@ -302,7 +286,7 @@ $onDue = isset($_GET['onDue']) ? $_GET['onDue'] : 'All';
     if (!onDueTabBtn || !onDueTabPane) return;
 
     function initOnDueFilter() {
-      const onDue = "<?php echo isset($_GET['onDue']) ? $_GET['onDue'] : '5 Days'; ?>";
+      const onDue = "<?php echo isset($_GET['onDue']) ? $_GET['onDue'] : 'all'; ?>";
       console.log("onDue from URL:", onDue);
 
       const buttons = document.querySelectorAll("#booking-filter-tabs .filter-btn");
@@ -378,9 +362,6 @@ $onDue = isset($_GET['onDue']) ? $_GET['onDue'] : 'All';
           table.draw();
         }
       }
-
-
-
 
     }
 

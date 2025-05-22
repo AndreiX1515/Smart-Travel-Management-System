@@ -1,7 +1,6 @@
 <?php
-$statusTab = isset($_GET['status']) ? $_GET['status'] : '';
+$statusTab = isset($_GET['status']) ? $_GET['status'] : 'all';
 ?>
-
 
 <div class="table-container">
 
@@ -64,7 +63,7 @@ $statusTab = isset($_GET['status']) ? $_GET['status'] : '';
           <h6>
             <?php
             $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
-        WHERE status = 'Pending'";
+            WHERE status = 'Pending'";
             $result = mysqli_query($conn, $sql);
             echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
             ?>
@@ -78,7 +77,7 @@ $statusTab = isset($_GET['status']) ? $_GET['status'] : '';
           <h6>
             <?php
             $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
-WHERE status = 'Reserved'";
+            WHERE status = 'Reserved'";
             $result = mysqli_query($conn, $sql);
             echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
             ?>
@@ -118,7 +117,6 @@ WHERE status = 'Reserved'";
   </div>
 
   <div class="body-content-wrapper">
-
     <div class="table-wrapper">
       <table id="product-table" class="product-table display nowrap" style="width:100%">
         <thead>
@@ -153,20 +151,20 @@ WHERE status = 'Reserved'";
           WHEN cl.accountId IS NOT NULL 
               THEN CASE WHEN cl.companyId IS NOT NULL THEN cc.companyName ELSE br.branchName END
           ELSE 'Unknown'END AS `ACCOUNT NAME`
-      FROM booking b
-      JOIN branch br ON b.agentCode = br.branchAgentCode
-      JOIN flight f ON f.flightId = b.flightId
-      JOIN package p ON p.packageId = b.packageId
-      LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
-      LEFT JOIN company c ON a.companyId = c.companyId
-      LEFT JOIN client cl ON b.accountType = 'Client' AND b.accountId = cl.accountId
-      LEFT JOIN company cc ON cl.companyId = cc.companyId
-      LEFT JOIN payment pa ON pa.transactNo = b.transactNo AND pa.paymentStatus = 'Approved'
-      LEFT JOIN request r ON r.transactNo = b.transactNo AND r.requestStatus = 'Confirmed'
-      GROUP BY 
-          b.transactNo, f.flightDepartureDate, f.returnDepartureDate, b.status, 
-          p.packageName, b.bookingDate, b.pax, b.totalPrice, a.lName, a.fName, a.mName, br.branchName
-      ORDER BY CAST(SUBSTRING_INDEX(b.transactNo, '-', -1) AS UNSIGNED)";
+          FROM booking b
+          JOIN branch br ON b.agentCode = br.branchAgentCode
+          JOIN flight f ON f.flightId = b.flightId
+          JOIN package p ON p.packageId = b.packageId
+          LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
+          LEFT JOIN company c ON a.companyId = c.companyId
+          LEFT JOIN client cl ON b.accountType = 'Client' AND b.accountId = cl.accountId
+          LEFT JOIN company cc ON cl.companyId = cc.companyId
+          LEFT JOIN payment pa ON pa.transactNo = b.transactNo AND pa.paymentStatus = 'Approved'
+          LEFT JOIN request r ON r.transactNo = b.transactNo AND r.requestStatus = 'Confirmed'
+          GROUP BY 
+              b.transactNo, f.flightDepartureDate, f.returnDepartureDate, b.status, 
+              p.packageName, b.bookingDate, b.pax, b.totalPrice, a.lName, a.fName, a.mName, br.branchName
+          ORDER BY CAST(SUBSTRING_INDEX(b.transactNo, '-', -1) AS UNSIGNED)";
 
           // Execute the query
           $result = $conn->query($sql);
@@ -239,6 +237,7 @@ WHERE status = 'Reserved'";
     </div>
 
   </div>
+  
 </div>
 
 
@@ -251,7 +250,7 @@ WHERE status = 'Reserved'";
     if (!statusTabBtn || !statusTabPane) return;
 
     function initStatusFilter() {
-      const status = "<?php echo isset($_GET['status']) ? $_GET['status'] : 'All'; ?>";
+      const status = "<?php echo isset($_GET['status']) ? $_GET['status'] : 'all'; ?>";
       console.log("Status from URL:", status);
 
       const buttons = document.querySelectorAll("#booking-filter-tabs .filter-btn");
@@ -298,15 +297,15 @@ WHERE status = 'Reserved'";
     }
 
     // Bind tab show event
-    statusTabBtn.addEventListener('shown.bs.tab', function () {
-      initStatusFilter(); // Reinitialize on every show
-    });
+    // statusTabBtn.addEventListener('shown.bs.tab', function () {
+    //   initStatusFilter(); // Reinitialize on every show
+    // });
 
-    // Initialize if already active on page load
-    if (statusTabPane.classList.contains('active')) {
-      initStatusFilter();
-    }
-  });
+    // // Initialize if already active on page load
+    // if (statusTabPane.classList.contains('active')) {
+    //   initStatusFilter();
+    // }
+
   });
 </script>
 

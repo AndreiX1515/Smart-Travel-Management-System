@@ -18,10 +18,7 @@
 
   <?php include '../Employee Section/includes/emp-sidebar.php' ?>
 
-  <?php
-    $tab = isset($_GET['tab']) ? $_GET['tab'] : 'status'; 
-
-  ?>
+  <?php $tab = isset($_GET['tab']) ? $_GET['tab'] : 'status'; ?>
 
   <!-- Main Container -->
   <div class="main-container">
@@ -48,7 +45,7 @@
 
     <script>
       document.getElementById('redirect-btn').addEventListener('click', function () {
-          window.location.href = '../Employee Section/emp-dashboard.php'; // Replace with your actual URL
+        window.location.href = '../Employee Section/emp-dashboard.php'; // Replace with your actual URL
       });
     </script>
 
@@ -57,7 +54,6 @@
 
       <script>
         document.addEventListener("DOMContentLoaded", function () {
-          // Function to get URL parameters
           function getParameterByName(name) {
             const url = window.location.href;
             name = name.replace(/[\[\]]/g, '\\$&');
@@ -68,24 +64,47 @@
             return decodeURIComponent(results[2].replace(/\+/g, ' '));
           }
 
-          // Activate correct tab based on URL parameter
           const tabParam = getParameterByName('tab');
+
           const tabMap = {
-            status: 'pills-profile-tab',
-            onDue: 'pills-home-tab',
-            remainBal: 'pills-remaining-balance-tab'
+            status: {
+              tabId: 'pills-profile-tab',
+              defaultFilterValue: 'current'
+            },
+            onDue: {
+              tabId: 'pills-home-tab',
+              defaultFilterValue: 'all'
+            },
+            remainBal: {
+              tabId: 'pills-remaining-balance-tab',
+              defaultFilterValue: 'all'
+            }
           };
 
+          let targetTab = 'status'; // Default to STATUS if no ?tab=
           if (tabParam && tabMap[tabParam]) {
-            const tabTriggerEl = document.getElementById(tabMap[tabParam]);
-            if (tabTriggerEl) {
-              const tab = new bootstrap.Tab(tabTriggerEl);
-              tab.show();
-            }
+            targetTab = tabParam;
           }
 
+          const { tabId, defaultFilterValue } = tabMap[targetTab];
+          const tabTriggerEl = document.getElementById(tabId);
+
+          if (tabTriggerEl) {
+            const tab = new bootstrap.Tab(tabTriggerEl);
+            tab.show();
+
+            // Delay filter button click until after tab is activated
+            setTimeout(() => {
+              const defaultFilterBtn = document.querySelector(
+                `[data-filter="${defaultFilterValue}"]`
+              );
+              if (defaultFilterBtn) defaultFilterBtn.click();
+            }, 300);
+          }
         });
       </script>
+
+
 
       <!-- Main Container Tabs -->
       <div class="tabs-wrapper">
@@ -105,10 +124,11 @@
                 type="button" role="tab" aria-controls="pills-home" aria-selected="true">ON DUE</button>
             </li>
 
-             <!-- With Remaining Balance Tab -->
+            <!-- With Remaining Balance Tab -->
             <li class="nav-item" role="presentation">
-              <button class="nav-link" id="pills-remaining-balance-tab" data-bs-toggle="pill" data-bs-target="#pills-remaining-balance" 
-                type="button" role="tab" aria-controls="pills-remaining-balance" aria-selected="false">WITH REMAINING BALANCE</button>
+              <button class="nav-link" id="pills-remaining-balance-tab" data-bs-toggle="pill"
+                data-bs-target="#pills-remaining-balance" type="button" role="tab"
+                aria-controls="pills-remaining-balance" aria-selected="false">WITH REMAINING BALANCE</button>
             </li>
 
           </ul>
@@ -118,38 +138,38 @@
       <div class="tab-content" id="pills-tabContent">
 
         <!-- Status Table -->
-        <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
+        <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab"
+          tabindex="0">
 
-          <?php 
-            include '../Employee Section/transactionTable/transactionTable-Status.php'; 
-          ?> 
+          <?php
+          include '../Employee Section/transactionTable/transactionTable-Status.php';
+          ?>
 
         </div>
 
         <!-- On Due Table -->
         <div class="tab-pane fade" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
 
-          <?php 
-            include '../Employee Section/transactionTable/transactionTable-OnDue.php'; 
-          ?>  
+          <?php
+          include '../Employee Section/transactionTable/transactionTable-OnDue.php';
+          ?>
 
         </div>
 
         <!-- With Remaining Balance Table -->
-        <div class="tab-pane fade" id="pills-remaining-balance" role="tabpanel" aria-labelledby="pills-remaining-balance-tab">
+        <div class="tab-pane fade" id="pills-remaining-balance" role="tabpanel"
+          aria-labelledby="pills-remaining-balance-tab">
 
-          <?php 
-            include '../Employee Section/transactionTable/transactionTable-RemainingBalance.php'; 
-          ?>   
+          <?php
+          include '../Employee Section/transactionTable/transactionTable-RemainingBalance.php';
+          ?>
 
-        </div>       
+        </div>
 
       </div>
 
     </div>
 
-  </div>
-  </div>
   </div>
 
   <?php include '../Employee Section/includes/emp-scripts.php' ?>
@@ -185,7 +205,7 @@
     });
   </script>
 
-  
+
 
 </body>
 

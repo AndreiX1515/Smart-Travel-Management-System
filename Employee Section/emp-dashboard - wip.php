@@ -148,7 +148,7 @@ error_reporting(E_ALL);
                   <h5><?php echo $pendingTransactions; ?></h5>
                   <p>PENDING</p>
                 </div>
-
+                
               </div>
 
               <div class="col-md-4 clickable-card" onclick="redirectToTransactionStatus('Reserved')">
@@ -434,73 +434,77 @@ error_reporting(E_ALL);
             <div class="button-wrapper">
               <button class="btn btn-primary view-currency-btn" id="addCurrencyBtn"
                 onclick="window.location.href='../Employee Section/emp-currencyHistory.php';">
-                View History
+                View Currency History
               </button>
             </div>
           </div>
 
+
+
           <div class="card-content card-content-body">
 
-            <div class="currency-row">
+            <div class="row currency-row">
 
               <!-- USD Section -->
-              <div class="currency-card usd-card-wrapper">
-                <div class="flag-icon-wrapper">
-                  <img src="../Assets/Flags/english-flag.png" alt="US Flag">
-                  <div class="currency-text-wrapper">
-                    <h5 class="currency-value">$ 1</h5>
-                    <p class="currency-label">US DOLLAR</p>
+              <div class="col-md-3">
+                <div class="currency-card usd-card-wrapper">
+                  <div class="flag-icon-wrapper">
+                    <img src="../Assets/Flags/english-flag.png" alt="">
+                    <h6 class="mt-2">USD</h6>
+                    <div class="currency-text-wrapper">
+                      <h5>$ 1</h5>
+                    </div>
                   </div>
                 </div>
               </div>
 
-
               <!-- Exchange Icon -->
-              <div class="icon-container">
-                <div class="icon-wrapper-currency">
-                  <i class="fas fa-exchange-alt"></i>
-                </div>
+              <div class="col-md-1 icon-wrapper">
+                <i class="fas fa-exchange-alt"></i>
               </div>
 
               <!-- PHP-KR Section -->
-              <div class="php-kr-card-wrapper">
-                <div class="card-php-kr">
+              <div class="col-md-7">
+                <div class="php-kr-card-wrapper">
+                  <div class="card-php-kr">
 
-                  <div class="card-icon">
-                    <div class="flag-icon-wrapper">
-                      <img width="30px" height="30px" src="../Assets/Flags/korean-flag.png" alt="">
+                    <div class="card-icon">
+                      <div class="flag-icon-wrapper">
+                        <img width="30px" height="30px" src="../Assets/Flags/korean-flag.png" alt="">
+                      </div>
                     </div>
-                  </div>
 
-                  <div class="side-content d-flex flex-column ms-2">
-                    <h5 class="currency-text">₩ <?php echo number_format($usd_to_krw, 0); ?> </h5>
-                    <p>KOREAN WON</p>
-                  </div>
-
-                </div>
-
-                <div class="card-php-kr">
-                  <div class="card-icon">
-                    <div class="flag-icon-wrapper">
-                      <img width="30px" height="30px" src="../Assets/Flags/philippines (2).png" alt="">
+                    <div class="side-content d-flex flex-column ms-2">
+                      <h5 class="currency-text">₩ <?php echo number_format($usd_to_krw, 0); ?> </h5>
+                      <p>KOREAN WON</p>
                     </div>
+
                   </div>
 
-                  <div class="side-content d-flex flex-column ms-2">
-                    <h5 class="currency-text">₱ <?php echo number_format($usd_to_php, 2); ?></h5>
-                    <p>PHILIPPINE PESO</p>
-                  </div>
+                  <div class="card-php-kr">
 
+                    <div class="card-icon">
+                      <div class="flag-icon-wrapper">
+                        <img width="30px" height="30px" src="../Assets/Flags/philippines (2).png" alt="">
+                      </div>
+                    </div>
+
+                    <div class="side-content d-flex flex-column ms-2">
+                      <h5 class="currency-text">₱ <?php echo number_format($usd_to_php, 2); ?></h5>
+                      <p>PHILIPPINE PESO</p>
+                    </div>
+
+                  </div>
                 </div>
               </div>
 
             </div>
-            
+
           </div>
 
         </div>
-
       </div>
+
 
       <div class="second-div">
         <div class="navTabs-wrapper">

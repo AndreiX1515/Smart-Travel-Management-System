@@ -86,7 +86,7 @@
   justify-content: flex-start;
   flex: 1;
   gap: 10px;
-  padding: 8px 5px;
+  padding: 5px 6px;
   border: 1px solid #ccc; 
   border-radius: 6px; 
   background-color: #fff; /* Keep white for cleanliness */
@@ -102,7 +102,7 @@
   justify-content: flex-start;
   flex: 1;
   gap: 10px;
-  padding: 8px 5px;
+  padding: 5px 6px;
   border: 1px solid #ccc; /* Minimalist outlined border */
   border-radius: 6px; /* Slight rounding for clean look */
   background-color: #fff; /* Flat white background */
@@ -127,7 +127,7 @@
 
 .clickable-card:hover {
   background: rgba(0, 0, 0, 0.05); /* Light hover effect */
-  transform: scale(1.02); /* Smooth scaling effect */
+  transform: scale(1.05); /* Smooth scaling effect */
 }
 
 .card-icon {
@@ -237,9 +237,6 @@
 /* ==================================== */
 
 
-/* ===============================
-   CARD CONTAINER STYLES
-================================= */
 .card-4 {
   padding: 5px;
 }
@@ -249,16 +246,16 @@
   color: #4c4f52;
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  /* border: 1px solid black; */
 }
 
+/* Optional: title text spacing */
 .card-4 .title-wrapper h6 {
   margin: 0;
   font-weight: 600;
   font-size: 14px;
 }
 
+/* Specific button style inside card-4 */
 .card-4 .view-currency-btn {
   padding: 4px 10px;
   font-size: 12px;
@@ -274,249 +271,197 @@
 }
 
 
-
-
-/* === Container Body Styling === */
+/* Ensure content fills the rest */
 .card-4 .card-content-body {
+  padding: 0px 0px 5px 0px;
   overflow: hidden;
-  /* border: 1px solid black; */
-  box-sizing: border-box;
-  width: 100%;
-  padding: 12px 0px 5px 0px;
 }
 
-
-/* === Currency Row Flex Layout === */
-.currency-row {
+.card-4 .row {
+  height: 100%;
+  padding: 10px 0px 5px 0px !important;
   display: flex;
-  align-items: stretch;         /* Ensure full height alignment */
-  justify-content: center;      /* Horizontally center items */
-  width: 100%;
-  gap: 5px;                    /* Space between each card/icon */
-  box-sizing: border-box;
+  justify-content: space-between;
+  align-items: stretch; 
   /* border: 1px solid black; */
 }
 
-/* === USD Card Styling === */
-.usd-card-wrapper {
-  flex: 1;
+/* .card-4 .col-md-3,
+.card-4 .col-md-2,
+.card-4 .col-md-7 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+} */
+
+/* USD Section */
+.card-4 .usd-card-wrapper {
+  border: 1px solid #ccc; 
+  border-radius: 6px; 
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: bold;
-  color: #333;
-  box-sizing: border-box;
-  /* border: 1px solid black; */
 }
 
-/* === Exchange Icon Container === */
-.icon-container {
-  width: 50px;
-  min-width: 50px;
-  height: auto;
-  display: flex;
-  align-items: center;         /* Vertically center */
-  justify-content: center;     /* Horizontally center */
-  background-color: transparent;
+/* Icon */
+.card-4 .icon-wrapper {
   /* border: 1px solid black; */
-  box-sizing: border-box;
-}
-
-/* === Exchange Icon Wrapper === */
-.icon-wrapper-currency {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   font-size: 18px;
-  color: #495057;
+  color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 }
 
-/* === PHP & KRW Card Column === */
-.php-kr-card-wrapper {
-  flex: 1;
+/* PHP-KR Section */
+.card-4 .php-kr-card-wrapper {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 10px;
+  height: 100%;
+  width: 100%;
+  padding: 0px;
+  gap: 5px;
   box-sizing: border-box;
   /* border: 1px solid black; */
 }
 
-/* === PHP & KRW Individual Box Style === */
-.card-php-kr {
+.card-4 .card-php-kr {
+  flex: 1;
   display: flex;
   align-items: center;
-  justify-content: center;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  padding: 5px 10px;
-  height: 100%;
-  box-sizing: border-box;
-}
-
-
-
-
-
-
-/* === Responsive (Optional for mobile fix) === */
-@media (max-width: 768px) {
-  .currency-row {
-    flex-direction: column;
-  }
-
-  .icon-wrapper {
-    width: 100%;
-    min-width: auto;
-    height: 40px;
-  }
-}
-
-
-
-
-/* ===============================
-   FLAG WRAPPER FOR USD
-================================= */
-/* === Main Card Container === */
-.currency-card .flag-icon-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center; /* Vertically center contents */
-  padding: 8px 8px;
-  width: 100%;
-  box-sizing: border-box;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  text-align: center;
-}
-
-/* === Flag Image === */
-.currency-card .flag-icon-wrapper img {
-  width: 30px;
-  height: 30px;
-  object-fit: contain;
-  margin-bottom: 8px;
-}
-
-/* === Currency Code (e.g., USD) === */
-.currency-card .currency-code {
-  font-size: 13px;
-  margin-bottom: 5px;
-  color: #444;
-  letter-spacing: 1px;
-}
-
-/* === Currency Value (e.g., $1) === */
-.currency-text-wrapper .currency-value {
-  margin: 8px 0 4px;
-  font-size: 1rem;
-  font-weight: 700;
-}
-
-/* === Currency Label (e.g., US Dollar) === */
-.currency-text-wrapper .currency-label {
-  font-size: 0.6rem;
-  color: #666;
-  margin: 0;
-}
-
-
-
-
-
-.card-php-kr {
-  display: flex;
-  align-items: center;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+  border: 1px solid #ccc; 
+  border-radius: 6px; 
   padding: 5px 10px;
   width: 100%;
   box-sizing: border-box;
 }
 
-.card-php-kr .card-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 
-.card-php-kr .flag-icon-wrapper img {
-  width: 30px;
-  height: 30px;
-}
-
-.side-content {
-  display: flex;
-  flex-direction: column;
-  margin-left: 8px;
-}
-
-.side-content .currency-text {
-  font-size: 1rem;
-}
-
-/* ===============================
-   PILL BUTTON
-================================= */
-.pill-button {
-  display: inline-block;
-  padding: 4px 15px;
-  font-size: 10px;
-  color: #000;
-  background-color: #fff;
-  text-decoration: none;
-  border-radius: 30px;
-  text-align: center;
-  border: 1px solid #b9adad;
-  transition: background-color 0.3s ease, transform 0.2s ease, border-color 0.3s ease;
-}
-
-.pill-button:hover {
-  background-color: #f1f1f1;
-  border-color: #3b413d;
-}
-
-.pill-button:active {
-  transform: translateY(0);
-  background-color: #e0e0e0;
-}
-
-/* ===============================
-   IMAGE CONTAINER (Optional usage)
-================================= */
-.image-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  padding: 0;
-  margin: 0;
-}
-
-/* ===============================
-   RESPONSIVE DESIGN
-================================= */
+/* Responsive Fix */
 @media (max-width: 768px) {
   .card-4 .row {
     flex-direction: column;
     gap: 10px;
   }
 
-  .php-kr-card-wrapper {
-    height: auto;
-  }
-
   .card-4 .col-md-3,
   .card-4 .col-md-2,
   .card-4 .col-md-7 {
-    width: 100% !important;
+    width: 95% !important;
     height: auto;
   }
+
+  .card-4 .php-kr-card-wrapper {
+    height: auto;
+  }
+}
+
+
+/* Individual Currency Card */
+.currency-card {
+  width: 100%; 
+  height: 100%; 
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;
+}
+
+/* Flag Icon Wrapper */
+.currency-card .flag-icon-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 5px;
+  width: 100%; /* Ensure wrapper spans full card width */
+  box-sizing: border-box;
+}
+
+/* Flag Icon Styling */
+.currency-card .flag-icon-wrapper img {
+  width: 25px;
+  height: 25px;
+}
+
+.currency-card .flag-icon-wrapper h6 {
+  font-size: 12px;
+  margin: 5px 0 0;
+}
+
+.currency-text-wrapper h5 {
+  margin-top: 5px;
+  font-size: 1rem;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+
+.pill-button {
+  display: inline-block; /* Makes it behave like a button */
+  padding: 4px 15px; /* Adds padding for better button appearance */
+  font-size: 10px; /* Sets the font size */
+  color: #000; /* Black text color */
+  background-color: #ffffff; /* White background */
+  text-decoration: none; /* Removes underline from the link */
+  border-radius: 30px; /* Gives it a pill shape */
+  text-align: center; /* Centers the text */
+  border: 1px solid #b9adad; /* Light border to match the background */
+  transition: background-color 0.3s ease, transform 0.2s ease,
+    border-color 0.3s ease; /* Smooth transition for hover effects */
+}
+
+.pill-button:hover {
+  background-color: #f1f1f1; /* Light grey background on hover */
+  border-color: #3b413d; /* Change border color on hover */
+}
+
+.pill-button:active {
+  transform: translateY(0); /* Resets the transform on click */
+  background-color: #e0e0e0; /* Slightly darker background on click */
+}
+
+/* Icon Wrapper */
+.icon-wrapper {
+  width: 40px; /* Match the size proportionately */
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  font-size: 18px; /* Icon size */
+  color: #495057; /* Icon color */
+  transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth hover effect */
+}
+
+
+
+.image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 0px;
+  margin: 0px;
+  /* border: 1px solid black; */
+}
+
+
+
+.side-content .currency-text {
+  font-size: 1rem;
 }
 
 

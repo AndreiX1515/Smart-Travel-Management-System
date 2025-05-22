@@ -6,6 +6,11 @@
 }
 
 
+/* Global Reset */
+* {
+  box-sizing: border-box;
+}
+
 body {
   background-color: rgba(255, 255, 255, 0.137);
   margin: 0;
@@ -30,8 +35,9 @@ body {
 
 /* Main Container */
 .main-container {
+
   flex: 1;
-  padding: 0px 20px;
+  padding: 0px 15px;
   background-color: rgba(245, 246, 248, 0.137);
   display: flex;
   flex-direction: row;
@@ -56,14 +62,13 @@ body {
 
 
 
-
-
 /* ================ Miscellaneous ==================== */
 .separator {
     border-top: 1px solid rgba(220, 220, 220, 0.493);
     margin: 0px 10px;
   }
 /* ================ Sidebar ==================== */
+
 
 
 
@@ -1067,6 +1072,7 @@ body {
 
 /* ===================================== */
 
+/* Main container for table */
 
 
 

@@ -1,8 +1,8 @@
-.main-content {
+/* .main-content {
   display: flex;
   flex-direction: column;
-  height: 93.5vh; /* Full viewport height or container-defined */
-}
+  height: 93.5vh; 
+} */
 
 /* ==================================== */
 .tabs-wrapper {
@@ -180,7 +180,7 @@
 
 /* Table wrapper takes available vertical space */
 .table-wrapper {
-  height: 67.3vh;
+  height: 67.5vh;
   display: flex;
   flex-direction: column;
   background-color: transparent;
@@ -609,10 +609,11 @@
   font-weight: bold;
   text-align: left;
   border: 1px solid #ddd; /* Add side and bottom borders */
-  font-size: 0.8em; /* Compact font size */
+  font-size: 0.6em; /* Compact font size */
   white-space: nowrap; /* Prevent text wrapping */
   text-transform: uppercase; /* Uppercase text for headers */
   border-top: none; /* Remove top border so the thead's top border-radius is visible */
+  padding: 3px 6px;
 }
 
 .product-table thead {
@@ -621,7 +622,7 @@
 }
 
 .product-table td {
-  padding: 5px 8px;
+  padding: 3px 6px;
   text-align: left;
   vertical-align: middle;
   border-bottom: 1px solid #ddd;
