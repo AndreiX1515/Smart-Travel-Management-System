@@ -62,9 +62,7 @@ error_reporting(E_ALL);
 
             <!-- Total and Confirmed Transaction Count -->
             <div class="row">
-
               <div class="col-md-5 clickable-card" onclick="redirectToTransactionStatus('current')">
-
                 <div class="card-icon icon-blue">
                   <i class="fas fa-calendar-alt"></i>
                 </div>
@@ -86,40 +84,35 @@ error_reporting(E_ALL);
                   <h5><?php echo $totalTransactions; ?></h5>
                   <p class="total-text">TOTAL TRANSACTIONS</p>
                 </div>
-
               </div>
-
 
               <!-- Confirmed Transactions -->
               <div class="col-md-5 clickable-card" onclick="redirectToTransactionStatus('Confirmed')">
-
                 <div class="card-icon icon-green">
                   <i class="fas fa-check-circle"></i>
                 </div>
 
                 <div class="side-content d-flex flex-column">
                   <?php
-                  $confirmedTransactionsQuery = "SELECT COUNT(*) AS total FROM booking b
-                                                JOIN flight f ON b.flightId = f.flightId
-                                                WHERE f.flightDepartureDate >= CURDATE() AND b.status = 'Confirmed'";
-                  $result = mysqli_query($conn, $confirmedTransactionsQuery);
+                    $confirmedTransactionsQuery = "SELECT COUNT(*) AS total FROM booking b
+                                                  JOIN flight f ON b.flightId = f.flightId
+                                                  WHERE f.flightDepartureDate >= CURDATE() AND b.status = 'Confirmed'";
+                    $result = mysqli_query($conn, $confirmedTransactionsQuery);
 
-                  if ($result) {
-                    $row = mysqli_fetch_assoc($result);
-                    $confirmedTransactions = $row['total'];
-                  } else {
-                    $confirmedTransactions = 0;
-                  }
+                    if ($result) {
+                      $row = mysqli_fetch_assoc($result);
+                      $confirmedTransactions = $row['total'];
+                    } else {
+                      $confirmedTransactions = 0;
+                    }
                   ?>
                   <h5><?php echo $confirmedTransactions; ?></h5>
                   <p>CONFIRMED</p>
                 </div>
-
               </div>
-
             </div>
 
-            <!-- Pending, and Cancelled Transaction Count -->
+            <!-- Pending, Reserved, and Cancelled Transaction Count -->
             <div class="row">
               <!-- Pending Transaction Count -->
               <div class="col-md-4 clickable-card" onclick="redirectToTransactionStatus('Pending')">
@@ -128,40 +121,41 @@ error_reporting(E_ALL);
                 </div>
                 <div class="side-content d-flex flex-column">
                   <?php
-                  $pendingTransactionsQuery = "SELECT COUNT(*) AS total FROM booking b
-                                              JOIN flight f ON b.flightId = f.flightId
-                                              WHERE f.flightDepartureDate >= CURDATE() AND b.status = 'Pending'";
-                  $result = mysqli_query($conn, $pendingTransactionsQuery);
+                    $pendingTransactionsQuery = "SELECT COUNT(*) AS total FROM booking b
+                                                JOIN flight f ON b.flightId = f.flightId
+                                                WHERE f.flightDepartureDate >= CURDATE() AND b.status = 'Pending'";
+                    $result = mysqli_query($conn, $pendingTransactionsQuery);
 
-                  if ($result) {
-                    $row = mysqli_fetch_assoc($result);
-                    $pendingTransactions = $row['total'];
-                  } else {
-                    $pendingTransactions = 0;
-                  }
+                    if ($result) {
+                      $row = mysqli_fetch_assoc($result);
+                      $pendingTransactions = $row['total'];
+                    } else {
+                      $pendingTransactions = 0;
+                    }
                   ?>
                   <h5><?php echo $pendingTransactions; ?></h5>
                   <p>PENDING</p>
                 </div>
               </div>
 
+              <!-- Reserved Transaction Count -->
               <div class="col-md-4 clickable-card" onclick="redirectToTransactionStatus('Reserved')">
                 <div class="card-icon bg-secondary">
                   <i class="fas fa-exclamation-triangle"></i>
                 </div>
                 <div class="side-content d-flex flex-column">
                   <?php
-                  $pendingTransactionsQuery = "SELECT COUNT(*) AS total FROM booking b
-                                              JOIN flight f ON b.flightId = f.flightId
-                                              WHEREf.flightDepartureDate >= CURDATE() AND b.status = 'Reserved'";
-                  $result = mysqli_query($conn, $pendingTransactionsQuery);
+                    $pendingTransactionsQuery = "SELECT COUNT(*) AS total FROM booking b
+                                                JOIN flight f ON b.flightId = f.flightId
+                                                WHERE f.flightDepartureDate >= CURDATE() AND b.status = 'Reserved'";
+                    $result = mysqli_query($conn, $pendingTransactionsQuery);
 
-                  if ($result) {
-                    $row = mysqli_fetch_assoc($result);
-                    $pendingTransactions = $row['total'];
-                  } else {
-                    $pendingTransactions = 0;
-                  }
+                    if ($result) {
+                      $row = mysqli_fetch_assoc($result);
+                      $pendingTransactions = $row['total'];
+                    } else {
+                      $pendingTransactions = 0;
+                    }
                   ?>
                   <h5><?php echo $pendingTransactions; ?></h5>
                   <p>RESERVED</p>
@@ -175,23 +169,22 @@ error_reporting(E_ALL);
                 </div>
                 <div class="side-content d-flex flex-column">
                   <?php
-                  $cancelledTransactionsQuery = "SELECT COUNT(*) AS total FROM booking b
-                                                JOIN flight f ON b.flightId = f.flightId
-                                                WHERE f.flightDepartureDate >= CURDATE() AND b.status = 'Cancelled'";
-                  $result = mysqli_query($conn, $cancelledTransactionsQuery);
+                    $cancelledTransactionsQuery = "SELECT COUNT(*) AS total FROM booking b
+                                                  JOIN flight f ON b.flightId = f.flightId
+                                                  WHERE f.flightDepartureDate >= CURDATE() AND b.status = 'Cancelled'";
+                    $result = mysqli_query($conn, $cancelledTransactionsQuery);
 
-                  if ($result) {
-                    $row = mysqli_fetch_assoc($result);
-                    $cancelledTransactions = $row['total'];
-                  } else {
-                    $cancelledTransactions = 0;
-                  }
+                    if ($result) {
+                      $row = mysqli_fetch_assoc($result);
+                      $cancelledTransactions = $row['total'];
+                    } else {
+                      $cancelledTransactions = 0;
+                    }
                   ?>
                   <h5><?php echo $cancelledTransactions; ?></h5>
                   <p>CANCELLED</p>
                 </div>
               </div>
-
             </div>
 
           </div>
@@ -204,7 +197,7 @@ error_reporting(E_ALL);
           </div>
 
           <div class="card-content card-content-body">
-            <!-- 5 Days and 10 Days Due Count -->
+            <!-- 5 Days and 15 Days Due Count -->
             <div class="row">
               <!-- 5 Days Due Count -->
               <div class="col-md-5 clickable-card" onclick="redirectToTransactionOnDue('5days')">
@@ -214,122 +207,121 @@ error_reporting(E_ALL);
 
                 <div class="side-content d-flex flex-column">
                   <?php
-                  // Assuming $conn is your database connection
-                  $days5Query = "SELECT COUNT(*) AS `bookingsDueIn5Days` FROM booking b 
+                    // Assuming $conn is your database connection
+                    $days5Query = "SELECT COUNT(*) AS `bookingsDueIn5Days` FROM booking b 
                                   JOIN flight f ON b.flightId = f.flightId
                                   LEFT JOIN (SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) 
                                     AS totalPaid FROM payment GROUP BY transactNo) p ON b.transactNo = p.transactNo
-                                WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) <= 5 AND DATEDIFF(f.flightDepartureDate, CURDATE()) >= 0
-                                  AND (b.totalPrice > IFNULL(p.totalPaid, 0)) and b.status='Confirmed'";
+                                  WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) <= 5 AND DATEDIFF(f.flightDepartureDate, CURDATE()) >= 0
+                                    AND (b.totalPrice > IFNULL(p.totalPaid, 0)) and b.status='Confirmed'";
 
-                  $result = $conn->query($days5Query);
+                    $result = $conn->query($days5Query);
 
-                  // Check if the query returned a result
-                  if ($result->num_rows > 0) {
-                    $row = $result->fetch_assoc();
-                    $bookingsDueIn5Days = $row['bookingsDueIn5Days'];
-                  } else {
-                    $bookingsDueIn5Days = 0;  // Default to 0 if no records found
-                  }
+                    // Check if the query returned a result
+                    if ($result->num_rows > 0) {
+                      $row = $result->fetch_assoc();
+                      $bookingsDueIn5Days = $row['bookingsDueIn5Days'];
+                    } else {
+                      $bookingsDueIn5Days = 0;  // Default to 0 if no records found
+                    }
                   ?>
                   <h5><?php echo $bookingsDueIn5Days; ?></h5>
-                  <p>5 DAYS</p>
+                  <p>5 DAYS BEFORE FLIGHT</p>
                 </div>
               </div>
 
-              <!-- 10 Days Due Count -->
+              <!-- 15 Days Due Count -->
               <div class="col-md-5 clickable-card" onclick="redirectToTransactionOnDue('10days')">
                 <div class="card-icon bg-secondary">
-                  <p>10</p>
+                  <p>15</p>
                 </div>
                 <div class="side-content d-flex flex-column">
                   <?php
-                  // Assuming $conn is your database connection
-                  $days10Query = "SELECT COUNT(*) AS bookingsDueIn10Days FROM booking b
+                    // Assuming $conn is your database connection
+                    $days15Query = "SELECT COUNT(*) AS bookingsDueIn15Days FROM booking b
                                     JOIN flight f ON b.flightId = f.flightId
                                     LEFT JOIN (SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) 
                                     AS totalPaid FROM payment GROUP BY transactNo) p ON b.transactNo = p.transactNo
-                                  WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) BETWEEN 6 AND 10
-                                    AND (b.totalPrice > IFNULL(p.totalPaid, 0)) and b.status='Confirmed'";
+                                    WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) BETWEEN 6 AND 15
+                                      AND (b.totalPrice > IFNULL(p.totalPaid, 0)) and b.status='Confirmed'";
 
-                  $result = $conn->query($days10Query);
+                    $result = $conn->query($days15Query);
 
-                  // Check if the query returned a result
-                  if ($result->num_rows > 0) {
-                    $row = $result->fetch_assoc();
-                    $bookingsDueIn10Days = $row['bookingsDueIn10Days'];
-                  } else {
-                    $bookingsDueIn10Days = 0;  // Default to 0 if no records found
-                  }
+                    // Check if the query returned a result
+                    if ($result->num_rows > 0) {
+                      $row = $result->fetch_assoc();
+                      $bookingsDueIn15Days = $row['bookingsDueIn15Days'];
+                    } else {
+                      $bookingsDueIn15Days = 0;  // Default to 0 if no records found
+                    }
                   ?>
-                  <h5><?php echo $bookingsDueIn10Days; ?></h5>
-                  <p>10 DAYS</p>
+                  <h5><?php echo $bookingsDueIn15Days; ?></h5>
+                  <p>15 DAYS BEFORE FLIGHT</p>
                 </div>
               </div>
             </div>
 
-            <!-- 20 Days and 30 Days Due Count -->
+            <!-- 30 Days and more than 30 Days Due Count -->
             <div class="row">
 
-              <!-- 20 Days Due Count -->
+              <!-- 30 Days Due Count -->
               <div class="col-md-5 clickable-card" onclick="redirectToTransactionOnDue('20days')">
                 <div class="card-icon icon-blue month-icon-1">
-                  <p>20</p>
+                  <p>30</p>
                 </div>
                 <div class="side-content d-flex flex-column">
                   <?php
-                  // Assuming $conn is your database connection
-                  $days20Query = "SELECT COUNT(*) AS `bookingsDueIn20Days` FROM booking b 
-                                  JOIN flight f ON b.flightId = f.flightId
-                                  LEFT JOIN (SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) 
-                                            AS totalPaid FROM payment GROUP BY transactNo) p 
-                                  ON b.transactNo = p.transactNo
-                                  WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) BETWEEN 10 AND 20
-                                    AND (b.totalPrice > IFNULL(p.totalPaid, 0)) and b.status='Confirmed'";
+                    // Assuming $conn is your database connection
+                    $days30Query = "SELECT COUNT(*) AS `bookingsDueIn30Days` FROM booking b 
+                                    JOIN flight f ON b.flightId = f.flightId
+                                    LEFT JOIN (SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) 
+                                      AS totalPaid FROM payment GROUP BY transactNo) p 
+                                    ON b.transactNo = p.transactNo
+                                    WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) BETWEEN 15 AND 30
+                                      AND (b.totalPrice > IFNULL(p.totalPaid, 0)) and b.status='Confirmed'";
 
-                  $result = $conn->query($days20Query);
+                    $result = $conn->query($days30Query);
 
-                  // Check if the query returned a result
-                  if ($result->num_rows > 0) {
-                    $row = $result->fetch_assoc();
-                    $bookingsDueIn20Days = $row['bookingsDueIn20Days'];
-                  } else {
-                    $bookingsDueIn20Days = 0;  // Default to 0 if no records found
-                  }
+                    // Check if the query returned a result
+                    if ($result->num_rows > 0) {
+                      $row = $result->fetch_assoc();
+                      $bookingsDueIn30Days = $row['bookingsDueIn30Days'];
+                    } else {
+                      $bookingsDueIn30Days = 0;  // Default to 0 if no records found
+                    }
                   ?>
-                  <h5><?php echo $bookingsDueIn20Days; ?></h5>
-                  <p>20 DAYS</p>
+                  <h5><?php echo $bookingsDueIn30Days; ?></h5>
+                  <p>30 DAYS BEFORE FLIGHT</p>
                 </div>
               </div>
 
-              <!-- 30 Days Due Count -->
+              <!-- more than 30 Days Due Count -->
               <div class="col-md-5 clickable-card" onclick="redirectToTransactionOnDue('30daysplus')">
                 <div class="card-icon icon-green month-icon-2">
-                  <p> >30</p>
+                  <p>30</p>
                 </div>
                 <div class="side-content d-flex flex-column">
                   <?php
-                  // Assuming $conn is your database connection
-                  $days30Query = "SELECT COUNT(*) AS `bookingsDueIn30Days` FROM booking b 
+                    // Assuming $conn is your database connection
+                    $daysMoreThan30Query = "SELECT COUNT(*) AS `bookingsOver30DaysAfterFlight` FROM booking b 
                                     JOIN flight f ON b.flightId = f.flightId
                                     LEFT JOIN (SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) 
                                     AS totalPaid FROM payment GROUP BY transactNo) p ON b.transactNo = p.transactNo
-                                  WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) BETWEEN 20 AND 30
-                                    AND (b.totalPrice > IFNULL(p.totalPaid, 0)) AND b.status = 'Confirmed'";
+                                    WHERE DATEDIFF(CURDATE(), f.flightDepartureDate) > 30
+                                      AND (b.totalPrice > IFNULL(p.totalPaid, 0)) AND b.status = 'Confirmed'";
 
-                  $result = $conn->query($days30Query);
+                    $result = $conn->query($daysMoreThan30Query);
 
-                  // Check if the query returned a result
-                  if ($result->num_rows > 0) {
-                    $row = $result->fetch_assoc();
-                    $bookingsDueIn30Days = $row['bookingsDueIn30Days'];
-                  } else {
-                    $bookingsDueIn30Days = 0;  // Default to 0 if no records found
-                  }
+                    // Check if the query returned a result
+                    if ($result->num_rows > 0) {
+                      $row = $result->fetch_assoc();
+                      $bookingsDueInMoreThan30Days = $row['bookingsOver30DaysAfterFlight'];
+                    } else {
+                      $bookingsDueInMoreThan30Days = 0;  // Default to 0 if no records found
+                    }
                   ?>
-                  <h5><?php echo $bookingsDueIn30Days; ?></h5>
-                  <p>&gt; 30 DAYS</p>
-
+                  <h5><?php echo $bookingsDueInMoreThan30Days; ?></h5>
+                  <p>OVERDUE BALANCE (30+ DAYS AFTER FLIGHT)</p>
                 </div>
               </div>
             </div>
