@@ -28,14 +28,6 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
       <div class="navbar">
         <div class="page-header-wrapper">
 
-          <!-- <div class="page-header-top">
-            <div class="back-btn-wrapper">
-              <button class="back-btn" id="redirect-btn">
-                <i class="fas fa-chevron-left"></i>
-              </button>
-            </div>
-          </div> -->
-
           <div class="page-header-content">
             <div class="page-header-text">
               <h5 class="header-title">Dashboard</h5>
@@ -47,13 +39,6 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
 
       <div class="main-content">
         <div class="content-container">
-
-          <?php
-          // echo "<pre>";
-          // print_r($_SESSION);
-          // echo "</pre>";
-          ?>
-
           <!-- Cards First Row -->
           <div class="counts-wrapper">
 
@@ -61,7 +46,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
             <div class="card">
               <div class="header-counts">
                 <div class="primary-pill">
-                  <h6 class="white-pill">Current Monthly Transaction</h6>
+                  <h6 class="white-pill">Active Transaction</h6>
                 </div>
 
                 <div class="accent-pill mt-1">
@@ -80,20 +65,21 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                     </div>
                     <div class="side-content d-flex flex-column">
                       <?php
-                      // Get session variables
-                      // $accountId = $_SESSION['accountId'];
-                      $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking where accountId = '$accountId' AND MONTH(bookingDate) = MONTH(CURRENT_DATE()) AND YEAR(bookingDate) = YEAR(CURRENT_DATE())";
 
-                      // Execute the query
-                      $result = mysqli_query($conn, $totalTransactionsQuery);
+                        $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking b
+                                                  JOIN flight f ON b.flightId = f.flightId 
+                                                  WHERE b.accountId = '$accountId' AND f.flightDepartureDate >= CURDATE()";
 
-                      // Check if the query was successful and fetch the result
-                      if ($result) {
-                        $row = mysqli_fetch_assoc($result);
-                        $totalTransactions = $row['total'];
-                      } else {
-                        $totalTransactions = 0; // Default to 0 if query fails
-                      }
+                        // Execute the query
+                        $result = mysqli_query($conn, $totalTransactionsQuery);
+
+                        // Check if the query was successful and fetch the result
+                        if ($result) {
+                          $row = mysqli_fetch_assoc($result);
+                          $totalTransactions = $row['total'];
+                        } else {
+                          $totalTransactions = 0; // Default to 0 if query fails
+                        }
                       ?>
                       <h5><?php echo $totalTransactions; ?></h5>
                       <p>TOTAL</p>
@@ -108,20 +94,21 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                     </div>
                     <div class="side-content d-flex flex-column">
                       <?php
-                      // Get session variables
-                      // $accountId = $_SESSION['client_accountId'];
-                      $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking where status='Confirmed' and accountId = '$accountId' and MONTH(bookingDate) = MONTH(CURRENT_DATE()) AND YEAR(bookingDate) = YEAR(CURRENT_DATE())";
+                        $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking b
+                                                  JOIN flight f ON b.flightId = f.flightId
+                                                  WHERE b.status='Confirmed' AND b.accountId = '$accountId' 
+                                                  AND f.flightDepartureDate >= CURDATE()";
 
-                      // Execute the query
-                      $result = mysqli_query($conn, $totalTransactionsQuery);
+                        // Execute the query
+                        $result = mysqli_query($conn, $totalTransactionsQuery);
 
-                      // Check if the query was successful and fetch the result
-                      if ($result) {
-                        $row = mysqli_fetch_assoc($result);
-                        $totalTransactions = $row['total'];
-                      } else {
-                        $totalTransactions = 0; // Default to 0 if query fails
-                      }
+                        // Check if the query was successful and fetch the result
+                        if ($result) {
+                          $row = mysqli_fetch_assoc($result);
+                          $totalTransactions = $row['total'];
+                        } else {
+                          $totalTransactions = 0; // Default to 0 if query fails
+                        }
                       ?>
                       <h5><?php echo $totalTransactions; ?></h5>
                       <p>COMPLETED</p>
@@ -138,23 +125,20 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                     </div>
                     <div class="side-content d-flex flex-column">
                       <?php
-                      // Get session variables
-                      // $accountId = $_SESSION['accountId'];
-                      
-                      $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking 
-                                                    WHERE status = 'Pending' AND accountId = '$accountId' 
-                                                    AND MONTH(bookingDate) = MONTH(CURRENT_DATE()) 
-                                                    AND YEAR(bookingDate) = YEAR(CURRENT_DATE())";
-                      // Execute the query
-                      $result = mysqli_query($conn, $totalTransactionsQuery);
+                        $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking b
+                                                  JOIN flight f ON b.flightId = f.flightId
+                                                  WHERE b.status = 'Pending' AND b.accountId = '$accountId' 
+                                                  AND f.flightDepartureDate >= CURDATE()";
+                        // Execute the query
+                        $result = mysqli_query($conn, $totalTransactionsQuery);
 
-                      // Check if the query was successful and fetch the result
-                      if ($result) {
-                        $row = mysqli_fetch_assoc($result);
-                        $totalTransactions = $row['total'];
-                      } else {
-                        $totalTransactions = 0; // Default to 0 if query fails
-                      }
+                        // Check if the query was successful and fetch the result
+                        if ($result) {
+                          $row = mysqli_fetch_assoc($result);
+                          $totalTransactions = $row['total'];
+                        } else {
+                          $totalTransactions = 0; // Default to 0 if query fails
+                        }
                       ?>
                       <h5><?php echo $totalTransactions; ?></h5>
                       <p>PENDING</p>
@@ -167,23 +151,20 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                     </div>
                     <div class="side-content d-flex flex-column">
                       <?php
-                      // Get session variables
-                      // $accountId = $_SESSION['accountId'];
-                      
-                      $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking 
-                                                    WHERE status = 'Reserved' AND accountId = '$accountId' 
-                                                    AND MONTH(bookingDate) = MONTH(CURRENT_DATE()) 
-                                                    AND YEAR(bookingDate) = YEAR(CURRENT_DATE())";
-                      // Execute the query
-                      $result = mysqli_query($conn, $totalTransactionsQuery);
+                        $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking b
+                                                  JOIN flight f ON b.flightId = f.flightId
+                                                  WHERE b.status = 'Reserved' AND b.accountId = '$accountId' 
+                                                  AND f.flightDepartureDate >= CURDATE()";
+                        // Execute the query
+                        $result = mysqli_query($conn, $totalTransactionsQuery);
 
-                      // Check if the query was successful and fetch the result
-                      if ($result) {
-                        $row = mysqli_fetch_assoc($result);
-                        $totalTransactions = $row['total'];
-                      } else {
-                        $totalTransactions = 0; // Default to 0 if query fails
-                      }
+                        // Check if the query was successful and fetch the result
+                        if ($result) {
+                          $row = mysqli_fetch_assoc($result);
+                          $totalTransactions = $row['total'];
+                        } else {
+                          $totalTransactions = 0; // Default to 0 if query fails
+                        }
                       ?>
                       <h5><?php echo $totalTransactions; ?></h5>
                       <p>RESERVED</p>
@@ -198,23 +179,20 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                     </div>
                     <div class="side-content d-flex flex-column">
                       <?php
-                      // Get session variables
-                      // $accountId = $_SESSION['accountId'];
-                      
-                      $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking 
-                                                    WHERE status = 'Cancelled' AND accountId = '$accountId' 
-                                                    AND MONTH(bookingDate) = MONTH(CURRENT_DATE()) 
-                                                    AND YEAR(bookingDate) = YEAR(CURRENT_DATE())";
-                      // Execute the query
-                      $result = mysqli_query($conn, $totalTransactionsQuery);
+                        $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking b
+                                                  JOIN flight f ON b.flightId = f.flightId
+                                                  WHERE b.status = 'Cancelled' AND b.accountId = '$accountId' 
+                                                  AND f.flightDepartureDate >= CURDATE()";
+                        // Execute the query
+                        $result = mysqli_query($conn, $totalTransactionsQuery);
 
-                      // Check if the query was successful and fetch the result
-                      if ($result) {
-                        $row = mysqli_fetch_assoc($result);
-                        $totalTransactions = $row['total'];
-                      } else {
-                        $totalTransactions = 0; // Default to 0 if query fails
-                      }
+                        // Check if the query was successful and fetch the result
+                        if ($result) {
+                          $row = mysqli_fetch_assoc($result);
+                          $totalTransactions = $row['total'];
+                        } else {
+                          $totalTransactions = 0; // Default to 0 if query fails
+                        }
                       ?>
                       <h5><?php echo $totalTransactions; ?></h5>
                       <p>CANCELLED</p>
@@ -242,102 +220,93 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                     </div>
                     <div class="side-content d-flex flex-column">
                       <?php
-                      // Get session variables
-                      // $accountId = $_SESSION['accountId'];
-                      
-                      $days5Query = "SELECT COUNT(*) AS `bookingsDueIn5Days` FROM booking b 
-                                        JOIN flight f ON b.flightId = f.flightId
-                                        LEFT JOIN (SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) 
-                                                    AS totalPaid FROM payment GROUP BY transactNo) p ON b.transactNo = p.transactNo
-                                        WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) <= 5 
-                                        AND DATEDIFF(f.flightDepartureDate, CURDATE()) >= 0
-                                        AND (b.totalPrice > IFNULL(p.totalPaid, 0)) AND b.accountId = '$accountId' 
-                                        AND b.status = 'Confirmed'";
+                        $days5Query = "SELECT COUNT(*) AS `bookingsDueIn5Days` FROM booking b 
+                                      JOIN flight f ON b.flightId = f.flightId
+                                      LEFT JOIN (SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) 
+                                                  AS totalPaid FROM payment GROUP BY transactNo) p ON b.transactNo = p.transactNo
+                                      WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) <= 5 
+                                      AND DATEDIFF(f.flightDepartureDate, CURDATE()) >= 0
+                                      AND (b.totalPrice > IFNULL(p.totalPaid, 0)) AND b.accountId = '$accountId' 
+                                      AND b.status = 'Confirmed'";
 
-                      // Execute the query
-                      $result = $conn->query($days5Query);
+                        // Execute the query
+                        $result = $conn->query($days5Query);
 
-                      // Check if the query returned a result
-                      if ($result->num_rows > 0) {
-                        $row = $result->fetch_assoc();
-                        $bookingsDueIn5Days = $row['bookingsDueIn5Days'];
-                      } else {
-                        $bookingsDueIn5Days = 0;  // Default to 0 if no records found
-                      }
+                        // Check if the query returned a result
+                        if ($result->num_rows > 0) {
+                          $row = $result->fetch_assoc();
+                          $bookingsDueIn5Days = $row['bookingsDueIn5Days'];
+                        } else {
+                          $bookingsDueIn5Days = 0;  // Default to 0 if no records found
+                        }
                       ?>
                       <h5><?php echo $bookingsDueIn5Days; ?></h5>
-                      <p>5 DAYS</p>
+                      <p>5 DAYS BEFORE FLIGHT</p>
                     </div>
                   </div>
 
-                  <!-- Due on 10 Days -->
+                  <!-- Due on 15 Days -->
                   <div class="col-md-5 d-flex flex-row">
                     <div class="card-icon icon-green">
                       <i class="fas fa-check-circle"></i>
                     </div>
                     <div class="side-content d-flex flex-column">
                       <?php
-                      // Assuming you already have a connection to your database
-                      // $accountId = $_SESSION['accountId'];
-                      
-                      $days10Query = "SELECT COUNT(*) AS bookingsDueIn10Days FROM booking b
+                      $days15Query = "SELECT COUNT(*) AS bookingsDueIn15Days FROM booking b
                                           JOIN flight f ON b.flightId = f.flightId
                                           LEFT JOIN (SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) 
                                                     AS totalPaid FROM payment GROUP BY transactNo) p ON b.transactNo = p.transactNo
-                                          WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) BETWEEN 6 AND 10
+                                          WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) BETWEEN 6 AND 15
                                           AND (b.totalPrice > IFNULL(p.totalPaid, 0)) AND b.accountId = '$accountId' 
                                           AND b.status = 'Confirmed'";
 
                       // Execute the query
-                      $result = $conn->query($days10Query);
+                      $result = $conn->query($days15Query);
 
                       // Check if the query returned a result
                       if ($result->num_rows > 0) {
                         $row = $result->fetch_assoc();
-                        $bookingsDueIn10Days = $row['bookingsDueIn10Days'];
+                        $bookingsDueIn15Days = $row['bookingsDueIn15Days'];
                       } else {
-                        $bookingsDueIn10Days = 0;  // Default to 0 if no records found
+                        $bookingsDueIn15Days = 0;  // Default to 0 if no records found
                       }
                       ?>
-                      <h5><?php echo $bookingsDueIn10Days; ?></h5>
-                      <p>10 DAYS</p>
+                      <h5><?php echo $bookingsDueIn15Days; ?></h5>
+                      <p>15 DAYS BEFORE FLIGHT</p>
                     </div>
                   </div>
                 </div>
 
                 <div class="row">
-                  <!-- Due on 20 Days -->
+                  <!-- Due on 30 Days -->
                   <div class="col-md-5 d-flex flex-row">
                     <div class="card-icon icon-yellow">
                       <i class="fas fa-exclamation-triangle"></i>
                     </div>
                     <div class="side-content d-flex flex-column">
                       <?php
-                      // Assuming you already have a connection to your database
-                      // $accountId = $_SESSION['accountId'];
-                      
-                      $days20Query = "SELECT COUNT(*) AS bookingsDueIn20Days FROM booking b 
-                                          JOIN flight f ON b.flightId = f.flightId
-                                          LEFT JOIN (SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) 
-                                                    AS totalPaid FROM payment GROUP BY transactNo) p 
-                                          ON b.transactNo = p.transactNo
-                                          WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) BETWEEN 10 AND 20
-                                          AND (b.totalPrice > IFNULL(p.totalPaid, 0)) AND b.accountId = '$accountId' 
-                                          AND b.status = 'Confirmed'";
+                        $days30Query = "SELECT COUNT(*) AS bookingsDueIn30Days FROM booking b 
+                                            JOIN flight f ON b.flightId = f.flightId
+                                            LEFT JOIN (SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) 
+                                                      AS totalPaid FROM payment GROUP BY transactNo) p 
+                                            ON b.transactNo = p.transactNo
+                                            WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) BETWEEN 15 AND 30
+                                            AND (b.totalPrice > IFNULL(p.totalPaid, 0)) AND b.accountId = '$accountId' 
+                                            AND b.status = 'Confirmed'";
 
-                      // Execute the query
-                      $result = $conn->query($days20Query);
+                        // Execute the query
+                        $result = $conn->query($days30Query);
 
-                      // Check if the query returned a result
-                      if ($result->num_rows > 0) {
-                        $row = $result->fetch_assoc();
-                        $bookingsDueIn20Days = $row['bookingsDueIn20Days'];
-                      } else {
-                        $bookingsDueIn20Days = 0;  // Default to 0 if no records found
-                      }
+                        // Check if the query returned a result
+                        if ($result->num_rows > 0) {
+                          $row = $result->fetch_assoc();
+                          $bookingsDueIn30Days = $row['bookingsDueIn30Days'];
+                        } else {
+                          $bookingsDueIn30Days = 0;  // Default to 0 if no records found
+                        }
                       ?>
-                      <h5><?php echo $bookingsDueIn20Days; ?></h5>
-                      <p>20 DAYS</p>
+                      <h5><?php echo $bookingsDueIn30Days; ?></h5>
+                      <p>30 DAYS BEFORE FLIGHT</p>
                     </div>
                   </div>
 
@@ -348,31 +317,28 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                     </div>
                     <div class="side-content d-flex flex-column">
                       <?php
-                      // Assuming you already have a connection to your database
-                      // $accountId = $_SESSION['accountId'];
-                      
-                      $days30Query = "SELECT COUNT(*) AS bookingsDueIn30Days FROM booking b 
-                                          JOIN flight f ON b.flightId = f.flightId
-                                          LEFT JOIN (SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) 
-                                                    AS totalPaid FROM payment GROUP BY transactNo) p 
-                                          ON b.transactNo = p.transactNo
-                                          WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) BETWEEN 20 AND 30
-                                          AND (b.totalPrice > IFNULL(p.totalPaid, 0)) AND b.accountId = '$accountId' 
-                                          AND b.status = 'Confirmed'";
+                        $daysMoreThan30Query = "SELECT COUNT(*) AS bookingsOver30DaysAfterFlight FROM booking b 
+                                            JOIN flight f ON b.flightId = f.flightId
+                                            LEFT JOIN (SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) 
+                                                      AS totalPaid FROM payment GROUP BY transactNo) p 
+                                            ON b.transactNo = p.transactNo
+                                            WHERE DATEDIFF(CURDATE(), f.flightDepartureDate) > 30
+                                            AND (b.totalPrice > IFNULL(p.totalPaid, 0)) AND b.accountId = '$accountId' 
+                                            AND b.status = 'Confirmed'";
 
-                      // Execute the query
-                      $result = $conn->query($days30Query);
+                        // Execute the query
+                        $result = $conn->query($daysMoreThan30Query);
 
-                      // Check if the query returned a result
-                      if ($result->num_rows > 0) {
-                        $row = $result->fetch_assoc();
-                        $bookingsDueIn30Days = $row['bookingsDueIn30Days'];
-                      } else {
-                        $bookingsDueIn30Days = 0;  // Default to 0 if no records found
-                      }
+                        // Check if the query returned a result
+                        if ($result->num_rows > 0) {
+                          $row = $result->fetch_assoc();
+                          $bookingsDueInMoreThan30Days = $row['bookingsOver30DaysAfterFlight'];
+                        } else {
+                          $bookingsDueInMoreThan30Days = 0;  // Default to 0 if no records found
+                        }
                       ?>
-                      <h5><?php echo $bookingsDueIn30Days; ?></h5>
-                      <p>30 DAYS</p>
+                      <h5><?php echo $bookingsDueInMoreThan30Days; ?></h5>
+                      <p>OVERDUE BALANCE (30+ DAYS AFTER FLIGHT)</p>
                     </div>
                   </div>
                 </div>

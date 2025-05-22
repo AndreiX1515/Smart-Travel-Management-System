@@ -140,10 +140,11 @@
             </div>
 
             <div class="select-wrapper">
-              <select id="roomType" class="form-control" onchange="updateGuestList()">
-                <option value="twin">Twin Room (Max 2)</option>
-                <option value="double">Double Room (Max 2)</option>
-                <option value="triple">Triple Room (Min 2 - Max 3)</option>
+              <select id="roomType" class="form-control">
+                <option value="Single">Single Supplement (Max 1)</option>
+                <option value="Twin">Twin Room (Max 2)</option>
+                <option value="Double">Double Room (Max 2)</option>
+                <option value="Triple">Triple Room (Min 2 - Max 3)</option>
               </select>
             </div>
           </div>
@@ -642,11 +643,13 @@
     {
       switch (roomType) 
       {
-        case 'twin':
-        case 'double':
+        case 'Single':
           return 1;
-        case 'triple':
+        case 'Twin':
+        case 'Double':
           return 2;
+        case 'Triple':
+          return 3;
         default:
           return 1;
       }
@@ -657,10 +660,12 @@
     {
       switch (roomType) 
       {
-        case 'twin':
-        case 'double':
+        case 'Single':
+          return 1;
+        case 'Twin':
+        case 'Double':
           return 2;
-        case 'triple':
+        case 'Triple':
           return 3;
         default:
           return 1;

@@ -113,19 +113,19 @@ $current_date = date('D, F d, Y');
       </a>
 
       <a href="../Client Section/client-guestInformationList.php" class="page-button my-0" data-page-name="Guest Information List">
-        <i class="fas fa-file-invoice"></i> Guest Information List
+        <i class="fa-solid fa-table-list"></i> Guest List
       </a>
 
       <a href="../Client Section/client-roomingList.php" class="page-button my-0" data-page-name="Rooming List">
-        <i class="fas fa-file-invoice"></i> Rooming List
+        <i class="fa-solid fa-newspaper"></i> Rooming List
       </a>
 
       <a href="../Client Section/client-requestHistory.php" class="page-button my-0" data-page-name="Request History">
-        <i class="fas fa-file-invoice"></i> Request History
+        <i class="fa-solid fa-cart-plus"></i> Request
       </a>
 
       <a href="../Client Section/client-paymentHistory.php" class="page-button my-0" data-page-name="Payment History">
-        <i class="fas fa-file-invoice"></i> Payment History
+        <i class="fa-solid fa-money-check-dollar"></i> Payment
       </a>
 
       <a href="../Client Section/client-reports.php" class="page-button my-0" data-page-name="Sales Report">
