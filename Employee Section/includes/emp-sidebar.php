@@ -243,7 +243,7 @@ $position = htmlspecialchars(strtoupper($empId));
 					<div class="icon"><i class="fa-solid fa-file-import"></i></div>
 				</div>
 				<div class="label-wrapper">
-					<span class="label">Data Entry</span>
+					<span class="label">Set up</span>
 				</div>
 			</a>
 
