@@ -243,7 +243,7 @@
   </div>
 
   <?php include '../Employee Section/includes/emp-scripts.php' ?>
-  <?php include '../Global Assets/toast/script/toast.php' ?>
+  <!-- <?php include '../Global Assets/toast/script/toast.php' ?> -->
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {
