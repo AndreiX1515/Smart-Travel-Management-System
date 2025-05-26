@@ -13,14 +13,12 @@ body {
   display: flex;
   flex-direction: row;
   width: 100%;
-  height: 100vh;
-  overflow: hidden; /* Consider removing if vertical scroll is needed */
 }
 
 /* Sidebar Styling */
 .sidebar {
   height: 100vh;
-  width: 230px;
+  width: 220px;
   background-color: #343A40;
   display: flex;
   flex-direction: column;
@@ -31,51 +29,31 @@ body {
 /* Main Container */
 .main-container {
   flex: 1;
-  padding: 0px 20px;
+  padding: 0 15px 0 25px;
   background-color: rgba(245, 246, 248, 0.137);
   display: flex;
   flex-direction: row;
+  overflow: hidden;
 }
 
 /* Main Content */
 .main-content {
   margin-top: 6vh;
   width: 100%;
-  padding: 0px 10px 0px 0px;
+  padding: 0 10px 0 0;
   display: flex;
   flex-direction: column;
-  /* border: 1px solid black; */
+  overflow: hidden;
 }
-
-
-
-
-
-
-
-
-
-
-
 
 /* ================ Miscellaneous ==================== */
 .separator {
     border-top: 1px solid rgba(220, 220, 220, 0.493);
     margin: 0px 10px;
   }
+
+
 /* ================ Sidebar ==================== */
-
-
-
-
-
-
-/* Expand on hover
-.sidebar:hover {
-  width: 220px;
-} */
-
-
 /* Sidebar icons */
 .sidebar .icon {
   display: flex;
@@ -96,11 +74,6 @@ body {
   color: white;
 }
 
-
-/* .sidebar:hover .label {
-  opacity: 1;
-} */
-
 /* Sidebar logo styling */
 .sidebar-logo-section {
   display: flex;
@@ -120,15 +93,6 @@ body {
   padding: 0;
 }
 
-.nav-logo-header {
-  margin-bottom: 10px;
-}
-
-
-
-
-
-
 
 
 /* Logo link structure */
@@ -139,7 +103,7 @@ body {
   color: white;
   text-decoration: none;
   width: 100%;
-  padding: 10px 20px;
+  padding: 5px 20px;
   transition: background-color 0.3s ease;
 }
 
@@ -149,22 +113,15 @@ body {
 }
 
 
-
-
 .nav-logo-wrapper {
   margin-top: 10px;
 }
 
 .nav-logo-item-wrapper {
-  padding: 8px 0;
+  padding: 5px 0;
   display: flex;
   align-items: flex-start;
 }
-
-
-
-
-
 
 
 /* Logo content layout */
@@ -203,23 +160,10 @@ body {
   opacity: 1;
 }
 
-
-/* Show logo text only when sidebar is hovered/expanded */
-/* .sidebar:hover .logo-content span {
-  display: inline;
-  opacity: 1;
-} */
-
-
 /* Push logout to the bottom */
 .sidebar .logout {
   margin-top: auto;
 }
-
-
-/* .sidebar:hover {
-  width: 220px;
-} */
 
 .profile-section {
   display: flex;
@@ -231,14 +175,7 @@ body {
   background-color: transparent;
   transition: background-color 0.3s ease;
   border: 1px solid rgba(220, 220, 220, 0.493);
-  /* border-left: 0;
-  border-right: 0; */
 }
-
-/* .sidebar:hover .profile-section {
-  background-color: #495057;
-} */
-
 
 .profile-left {
   display: flex; /* Hidden by default */
@@ -314,7 +251,7 @@ body {
 .sidebar .collapse .nav-link {
   color: white;
   font-size: 14px;
-  padding: 8px 0px 8px 0px;
+  padding: 8px 10px 8px 0px;
   position: relative;
   text-decoration: none;
   border-radius: 4px;
@@ -322,6 +259,8 @@ body {
   display: block;
   transition: background-color 0.3s ease;
   /* border: 1px solid black; */
+  margin: 0;
+
 }
 
 /* Hover effect for dropdown items */
@@ -343,9 +282,9 @@ body {
 }
 
 
-
+/* 
 .managebooking-menu-wrapper .nav-item {
-  margin-bottom: 6px; /* or your preferred margin value */
+  margin-bottom: 0px; 
 }
 
 
@@ -355,13 +294,13 @@ body {
 
 
 .report-menu-wrapper .nav-item {
-  margin-bottom: 6px; /* or your preferred margin value */
+  margin-bottom: 0px; 
 }
 
 
 .report-menu-wrapper .nav-item:last-child {
   margin-bottom: 0px;
-}
+} */
 
 
 
@@ -417,8 +356,15 @@ body {
 .sidebar .nav-item {
   position: relative;
   width: 100%;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
+
+.collapse-nav-link {
+  margin-bottom: 0px;
+}
+
+
+
 
 /* Sidebar link styles */
 .sidebar .nav-link {
@@ -428,7 +374,7 @@ body {
   justify-content: flex-start;
   color: white;
   text-decoration: none;
-  padding: 5px 16px;
+  padding: 0px 15px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -436,6 +382,12 @@ body {
   border-radius: 4px;
   /* transition: background-color 0.3s ease, color 0.3s ease; */
   box-sizing: border-box; /* Ensure padding doesn't affect layout */
+  /* border: 1px solid rgba(220, 220, 220, 0.493); */
+}
+
+/* Adjust placement of the entire link slightly to the left */
+.sidebar .nav-item .nav-link {
+  padding-left: 10px;  /* Further reduced left padding to shift the item more to the left */
 }
 
 /* Hover effect */
@@ -485,12 +437,14 @@ body {
   align-items: center;
   flex-grow: 1;
   padding-left: 6px; /* Reduced padding for tighter left alignment */
+  /* border: 1px solid black; */
+  padding: 10px 3px;
 }
 
 /* Label text */
 .label {
   font-size: 0.85rem;
-  line-height: 1;
+  line-height: 1.1;
   white-space: nowrap;
   color: white;
 }
@@ -519,10 +473,10 @@ body {
   font-weight: 600;
 }
 
-/* Adjust placement of the entire link slightly to the left */
-.sidebar .nav-item .nav-link {
-  padding-left: 13px;  /* Further reduced left padding to shift the item more to the left */
-}
+
+
+
+
 
 /* 
 
@@ -545,6 +499,29 @@ body {
 
 
 
+
+/* Sidebar Logo*/
+
+.nav-logo-header {
+  width: 100%;
+  margin-top: 0px;
+  margin-bottom: 10px;
+  padding: 15px 0px 15px 0px;
+  padding-left: 4px;
+
+  display: flex;
+  justify-content: center; /* Horizontally center child elements */
+  align-items: center;      /* Vertically center child elements */
+  box-sizing: border-box;   /* Ensure padding is included in width */
+
+  /* border: 1px solid black; */
+}
+
+.nav-logo-wrapper a:hover {
+  background-color: transparent !important; 
+  color: inherit !important; 
+
+}
 
 
 
@@ -1068,6 +1045,85 @@ body {
 /* ===================================== */
 
 
+
+
+@media (max-width: 1736px) {
+
+
+
+}
+
+@media (max-width: 1580px) {
+  /* Sidebar */
+  .sidebar {
+    width: 200px;
+    overflow: hidden; /* Prevent sidebar scroll */
+    flex-shrink: 0;
+    /* background-color: #121212; */
+  }
+
+  .sidebar .label {
+    font-size: 12px;
+    color: white;
+    white-space: nowrap; /* Prevent label text from breaking */
+    overflow: hidden;
+    text-overflow: ellipsis; /* Adds '...' if text is too long */
+  }
+
+  /* Visa requirements labels inside the sidebar or elsewhere */
+  .visa-requirements .label {
+    font-size: 10px;
+    color: white;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Main container with vertical scroll and padding */
+  .main-container {
+    padding: 0 10px 0 20px;
+    height: 100vh; /* Makes it fill the screen */
+  }
+
+  /* Optional scrollbar style (modern browsers) */
+  .main-container::-webkit-scrollbar {
+    width: 3px;
+  }
+
+  .main-container::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+  }
+
+  /* Inner main content padding adjustment */
+  .main-content {
+    padding: 0 5px 0 0;
+    scroll-behavior: smooth; /* Smooth scrolling experience */
+    overflow-y: auto; /* Enables scrolling when content exceeds height */
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+}
+
+
+
+
+
+@media (max-width: 768px) {
+
+
+
+}
 
 
 
