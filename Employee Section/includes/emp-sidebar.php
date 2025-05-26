@@ -277,7 +277,7 @@ $position = htmlspecialchars(strtoupper($empId));
 				<ul class="nav flex-column managebooking-menu-wrapper">
 					<li class="nav-item transaction mb-0">
 						<a class="nav-link page-button" href="../Employee Section/emp-tablePending.php"
-							data-page-name="For Approvals - Booking">No Downpayment</a>
+							data-page-name="For Approvals - Booking">No Downpayment/ Reserve</a>
 					</li>
 					<li class="nav-item mb-0">
 						<a class="nav-link page-button" href="../Employee Section/emp-tableRequest.php"
