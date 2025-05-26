@@ -112,7 +112,7 @@ $position = htmlspecialchars(strtoupper($empId));
 			</a>
 		</li>
 
-		<li class="nav-item transaction">
+		<li class="nav-item visa-requirements">
 			<a class="nav-link page-button" href="../Employee Section/emp-visaRequirementsTable.php"
 				data-page-name="Visa Requirements">
 				<div class="icon-wrapper">
@@ -123,8 +123,6 @@ $position = htmlspecialchars(strtoupper($empId));
 				</div>
 			</a>
 		</li>
-
-
 
 		<!-- <li class="nav-item transaction">
 			<a class="nav-link page-button" href="../Employee Section/emp-requestHistory.php" data-page-name="Request History">
@@ -238,6 +236,7 @@ $position = htmlspecialchars(strtoupper($empId));
 
 		<!-- Data Entry -->
 		<li class="nav-item dropdown">
+
 			<a class="nav-link page-button" href="#" data-bs-toggle="collapse" data-bs-target="#dataEntry"
 				aria-expanded="false" aria-controls="dataEntry" data-page-name="Operationals">
 				<div class="icon-wrapper">
@@ -247,14 +246,15 @@ $position = htmlspecialchars(strtoupper($empId));
 					<span class="label">Data Entry</span>
 				</div>
 			</a>
+
 			<div class="collapse" id="dataEntry">
 				<ul class="nav flex-column dataEntry-menu-wrapper">
-					<li class="nav-item transaction">
+					<li class="nav-item transaction mb-0">
 						<a class="nav-link page-button" href="../Employee Section/emp-requestList.php"
 							data-page-name="Request List">Request</a>
 					</li>
-					<li class="nav-item">
-						<a class="nav-link page-button" href="../Employee Section/emp-flightList.php"
+					<li class="nav-item mb-0">
+						<a class="nav-link  page-button" href="../Employee Section/emp-flightList.php"
 							data-page-name="Flight List">Flight</a>
 					</li>
 
@@ -275,15 +275,15 @@ $position = htmlspecialchars(strtoupper($empId));
 			</a>
 			<div class="collapse" id="manageBookingMenu">
 				<ul class="nav flex-column managebooking-menu-wrapper">
-					<li class="nav-item transaction">
+					<li class="nav-item transaction mb-0">
 						<a class="nav-link page-button" href="../Employee Section/emp-tablePending.php"
 							data-page-name="For Approvals - Booking">No Downpayment</a>
 					</li>
-					<li class="nav-item">
+					<li class="nav-item mb-0">
 						<a class="nav-link page-button" href="../Employee Section/emp-tableRequest.php"
 							data-page-name="For Approvals - Request">Request</a>
 					</li>
-					<li class="nav-item">
+					<li class="nav-item mb-0">
 						<a class="nav-link page-button" href="../Employee Section/emp-tablePayment.php"
 							data-page-name="For Approvals - Payment">Payment</a>
 					</li>
@@ -293,7 +293,7 @@ $position = htmlspecialchars(strtoupper($empId));
 
 		<!-- Reports -->
 		<li class="nav-item dropdown">
-			<a class="nav-link page-button" href="#" data-bs-toggle="collapse" data-bs-target="#reportMenu"
+			<a class="nav-link page-button mb-0" href="#" data-bs-toggle="collapse" data-bs-target="#reportMenu"
 				aria-expanded="false" aria-controls="reportMenu" data-page-name="Reports">
 				<div class="icon-wrapper">
 					<div class="icon"><i class="fa-regular fa-file"></i></div>
@@ -305,18 +305,18 @@ $position = htmlspecialchars(strtoupper($empId));
 
 			<div class="collapse" id="reportMenu">
 				<ul class="nav flex-column report-menu-wrapper">
-					<li class="nav-item">
+					<li class="nav-item mb-0">
 						<a class="nav-link page-button open-new-tab" href="../Employee Section/emp-itinerarytable.php"
 							data-page-name="Itinerary" data-url="">Itinerary</a>
 					</li>
-					<li class="nav-item">
+					<li class="nav-item mb-0">
 						<a class="nav-link page-button open-new-tab" href="../Employee Section/emp-voucherTable.php"
 							data-page-name="Voucher" data-url="">Voucher</a>
 					</li>
-					<li class="nav-item">
+					<li class="nav-item mb-0">
 						<a class="nav-link page-button" href="#" data-page-name="Ticket">Ticket</a>
 					</li>
-					<li class="nav-item">
+					<li class="nav-item mb-0">
 						<a class="nav-link page-button" href="../Employee Section/emp-soa.php"
 							data-page-name="SOA">SOA</a>
 					</li>
