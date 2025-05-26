@@ -111,7 +111,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                         }
                       ?>
                       <h5><?php echo $totalTransactions; ?></h5>
-                      <p>COMPLETED</p>
+                      <p>CONFIRMED</p>
                     </div>
                   </div>
                 </div>
