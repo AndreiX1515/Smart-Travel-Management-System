@@ -225,10 +225,13 @@ require "../conn.php";
                         }
 
                         $packagePrice = $row['PackagePrice'] ?? 0;
+                        $formattedPackagePrice = number_format($packagePrice, 2);
                         $requestTotal = $row['TotalRequestAmount'] ?? 0;
+                        $formattedRequestTotal = number_format($requestTotal, 2);
                         $amountPaid = $row['TotalAmountPaid'] ?? 0;
+                        $formattedAmountPaid = number_format($amountPaid, 2);
                         $balance = max(($packagePrice + $requestTotal) - $amountPaid, 0); 
-                        
+                        $formattedBalance = number_format($balance, 2);
                         
                         // Prevent negative balances
                         // Booking Date
@@ -248,12 +251,12 @@ require "../conn.php";
                                 <td style='text-align: center; font-weight: bold;'>
                                   {$row['TOTAL PAX']}
                                 </td>
-                                <td>₱ {$row['PackagePrice']}</td>
-                                <td>₱ {$row['TotalRequestAmount']}</td>
+                                <td>₱ {$formattedPackagePrice}</td>
+                                <td>₱ {$formattedRequestTotal}</td>
                                 <td>
                                   <div class='d-flex flex-column'>
-                                    <span><strong>Amount Paid: </strong> ₱ " . $row['TotalAmountPaid'] . " </span>
-                                    <span><strong>Balance: </strong> ₱ " . $balance . "</span>
+                                    <span><strong>Amount Paid: </strong> ₱ " . $formattedAmountPaid . " </span>
+                                    <span><strong>Balance: </strong> ₱ " . $formattedBalance . "</span>
                                   </div>
                                 </td>
                                 <td>
@@ -265,7 +268,98 @@ require "../conn.php";
                       }
                     }
                   } 
-                  
+                  else
+                  {
+                    $sql1 = "SELECT b.transactNo AS `T.N`, p.packageName AS `PACKAGE`, DATE_FORMAT(b.bookingDate, '%m-%d-%Y') AS `TRANSACTION DATE`, 
+                              b.bookingType as bookingType, DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y') AS `FLIGHT DATE`, b.pax AS `TOTAL PAX`, 
+                              CONCAT(b.lName, ', ', b.fName, ' ', CASE WHEN b.mName = 'N/A' THEN '' 
+                              ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ', CASE WHEN b.suffix = 'N/A' THEN '' 
+                              ELSE b.suffix END) AS `CONTACT NAME`, br.branchName as branchName,
+                              b.email AS `CONTACT EMAIL`, CONCAT(b.countryCode, ' ', b.contactNo) AS `CONTACT PHONE`, b.status AS `STATUS`, 
+                              COALESCE(SUM(r.requestCost), 0) AS TotalRequestAmount, b.totalPrice AS PackagePrice, 
+                              COALESCE(SUM(pa.amount), 0) AS TotalAmountPaid
+                            FROM booking b
+                            LEFT JOIN flight f ON b.flightId = f.flightId
+                            LEFT JOIN package p ON b.packageId = p.packageId
+                            LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
+                            JOIN branch br ON b.agentCode = br.branchAgentCode
+                            LEFT JOIN payment pa ON pa.transactNo = b.transactNo AND pa.paymentStatus = 'Approved'
+                            LEFT JOIN request r ON r.transactNo = b.transactNo AND r.requestStatus = 'Confirmed'
+                            WHERE b.agentCode = '$agentCode'
+                            GROUP BY b.transactNo
+                            ORDER BY `FLIGHT DATE`";
+
+                    $res1 = $conn->query($sql1);
+
+                    if ($res1->num_rows > 0) 
+                    {
+                      while ($row = $res1->fetch_assoc()) 
+                      {
+                        $transactNo = $row['T.N'];
+                        $pax = $row['TOTAL PAX'];
+
+                        $status = isset($row['STATUS']) ? $row['STATUS'] : 'Unknown';
+                        $statusClass = '';
+
+                        switch ($status) 
+                        {
+                          case 'Confirmed':
+                            $statusClass = 'bg-success text-white'; // Green background, white text
+                            break;
+                          case 'Cancelled':
+                            $statusClass = 'bg-danger text-white'; // Red background, white text
+                            break;
+                          case 'Pending':
+                            $statusClass = 'bg-warning text-dark';
+                            break;
+                          default:
+                            $statusClass = 'bg-secondary text-white';
+                        }
+
+                        $packagePrice = $row['PackagePrice'] ?? 0;
+                        $formattedPackagePrice = number_format($packagePrice, 2);
+                        $requestTotal = $row['TotalRequestAmount'] ?? 0;
+                        $formattedRequestTotal = number_format($requestTotal, 2);
+                        $amountPaid = $row['TotalAmountPaid'] ?? 0;
+                        $formattedAmountPaid = number_format($amountPaid, 2);
+                        $balance = max(($packagePrice + $requestTotal) - $amountPaid, 0); 
+                        $formattedBalance = number_format($balance, 2);
+                        
+                        // Prevent negative balances
+                        // Booking Date
+                        // <td>{$row['TRANSACTION DATE']}</td>
+
+                        echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($transactNo) . "'>
+                                <td>{$transactNo}</td>
+                                <td>{$row['CONTACT NAME']}</td>
+                                <td> 
+                                  <div class='d-flex flex-column'>
+                                    <span><strong>Email: </strong>" . $row['CONTACT EMAIL'] . " </span>
+                                    <span><strong>Contact Number: </strong> " . $row['CONTACT PHONE'] . "</span>
+                                  </div>
+                                </td>
+                                <td>{$row['branchName']}</td>
+                                <td>{$row['FLIGHT DATE']}</td>
+                                <td style='text-align: center; font-weight: bold;'>
+                                  {$row['TOTAL PAX']}
+                                </td>
+                                <td>₱ {$formattedPackagePrice}</td>
+                                <td>₱ {$formattedRequestTotal}</td>
+                                <td>
+                                  <div class='d-flex flex-column'>
+                                    <span><strong>Amount Paid: </strong> ₱ " . $formattedAmountPaid . " </span>
+                                    <span><strong>Balance: </strong> ₱ " . $formattedBalance . "</span>
+                                  </div>
+                                </td>
+                                <td>
+                                  <span class='badge p-2 rounded-pill {$statusClass}'>
+                                    {$status}
+                                  </span>
+                                </td>
+                            </tr>";
+                      }
+                    }
+                  } 
 
                   if ($res1) 
                   {
