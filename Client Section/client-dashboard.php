@@ -720,74 +720,71 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                         </thead>
                         <tbody>
                           <?php
-                          // Assuming you already have a connection to your database
-                          // $accountId = $_SESSION['accountId'];
-                          
-                          $sql1 = "SELECT b.transactNo AS `T.N`, p.packageName AS `PACKAGE`, b.bookingType as bookingType,
-                                        CASE 
-                                          WHEN b.flightId IS NULL THEN 'Land Only'
-                                          ELSE CONCAT(DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y'), ' ', 
-                                                      DATE_FORMAT(f.flightDepartureTime, '%h:%i %p')) END AS `FLIGHT DATE`, 
-                                        b.pax AS `TOTAL PAX`,
-                                        CONCAT(b.lName, ', ', b.fName, ' ', 
-                                          CASE WHEN b.mName = 'N/A' THEN '' ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ',
-                                          CASE WHEN b.suffix = 'N/A' THEN '' ELSE b.suffix END ) AS `CONTACT NAME`, 
-                                        b.status AS `STATUS`,
-                                        CASE 
-                                          WHEN a.accountId IS NOT NULL 
-                                              THEN CASE WHEN a.companyId IS NOT NULL THEN c.companyName ELSE br.branchName END
-                                          WHEN cl.accountId IS NOT NULL 
-                                              THEN CASE WHEN cl.companyId IS NOT NULL THEN cc.companyName ELSE br.branchName END
-                                          ELSE 'Unknown' END AS `ACCOUNT NAME`
-                                        FROM booking b
-                                        LEFT JOIN flight f ON b.flightId = f.flightId
-                                        LEFT JOIN package p ON b.packageId = p.packageId
-                                        LEFT JOIN agent a ON b.accountId = a.accountId
-                                        LEFT JOIN company c ON a.companyId = c.companyId
-                                        LEFT JOIN client cl ON b.accountId = cl.accountId
-                                        LEFT JOIN company cc ON cl.companyId = cc.companyId
-                                        JOIN branch br ON b.agentCode = br.branchAgentCode
-                                        WHERE b.accountId = '$accountId' 
-                                        AND b.status = 'Pending' 
-                                        ORDER BY b.transactNo DESC";
+                            $sql1 = "SELECT b.transactNo AS `T.N`, p.packageName AS `PACKAGE`, b.bookingType as bookingType,
+                                          CASE 
+                                            WHEN b.flightId IS NULL THEN 'Land Only'
+                                            ELSE CONCAT(DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y'), ' ', 
+                                                        DATE_FORMAT(f.flightDepartureTime, '%h:%i %p')) END AS `FLIGHT DATE`, 
+                                          b.pax AS `TOTAL PAX`,
+                                          CONCAT(b.lName, ', ', b.fName, ' ', 
+                                            CASE WHEN b.mName = 'N/A' THEN '' ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ',
+                                            CASE WHEN b.suffix = 'N/A' THEN '' ELSE b.suffix END ) AS `CONTACT NAME`, 
+                                          b.status AS `STATUS`,
+                                          CASE 
+                                            WHEN a.accountId IS NOT NULL 
+                                                THEN CASE WHEN a.companyId IS NOT NULL THEN c.companyName ELSE br.branchName END
+                                            WHEN cl.accountId IS NOT NULL 
+                                                THEN CASE WHEN cl.companyId IS NOT NULL THEN cc.companyName ELSE br.branchName END
+                                            ELSE 'Unknown' END AS `ACCOUNT NAME`
+                                          FROM booking b
+                                          LEFT JOIN flight f ON b.flightId = f.flightId
+                                          LEFT JOIN package p ON b.packageId = p.packageId
+                                          LEFT JOIN agent a ON b.accountId = a.accountId
+                                          LEFT JOIN company c ON a.companyId = c.companyId
+                                          LEFT JOIN client cl ON b.accountId = cl.accountId
+                                          LEFT JOIN company cc ON cl.companyId = cc.companyId
+                                          JOIN branch br ON b.agentCode = br.branchAgentCode
+                                          WHERE b.accountId = '$accountId' AND f.flightDepartureDate >= CURDATE()
+                                          AND b.status = 'Pending' 
+                                          ORDER BY b.transactNo DESC";
 
-                          $res1 = $conn->query($sql1);
+                            $res1 = $conn->query($sql1);
 
-                          if ($res1->num_rows > 0) {
-                            while ($row = $res1->fetch_assoc()) {
-                              $status = htmlspecialchars($row['STATUS']);
-                              $badgeClass = '';
+                            if ($res1->num_rows > 0) {
+                              while ($row = $res1->fetch_assoc()) {
+                                $status = htmlspecialchars($row['STATUS']);
+                                $badgeClass = '';
 
-                              // Assign badge classes based on status
-                              switch ($status) {
-                                case 'Confirmed':
-                                  $badgeClass = 'bg-success text-white'; // Green
-                                  break;
-                                case 'Cancelled':
-                                  $badgeClass = 'bg-danger text-white'; // Red
-                                  break;
-                                case 'Pending':
-                                  $badgeClass = 'bg-warning text-dark'; // Yellow
-                                  break;
-                                case 'Reject':
-                                  $badgeClass = 'bg-danger text-white'; // Dark Red
-                                  break;
-                                default:
-                                  $badgeClass = 'bg-info text-white'; // Blue for other statuses
-                                  break;
+                                // Assign badge classes based on status
+                                switch ($status) {
+                                  case 'Confirmed':
+                                    $badgeClass = 'bg-success text-white'; // Green
+                                    break;
+                                  case 'Cancelled':
+                                    $badgeClass = 'bg-danger text-white'; // Red
+                                    break;
+                                  case 'Pending':
+                                    $badgeClass = 'bg-warning text-dark'; // Yellow
+                                    break;
+                                  case 'Reject':
+                                    $badgeClass = 'bg-danger text-white'; // Dark Red
+                                    break;
+                                  default:
+                                    $badgeClass = 'bg-info text-white'; // Blue for other statuses
+                                    break;
+                                }
+
+                                echo "
+                                  <tr data-url='client-transactionInfo.php?id=" . htmlspecialchars($row['T.N']) . "'>
+                                      <td>" . htmlspecialchars(substr($row['T.N'], 5)) . "</td>
+                                      <td>" . htmlspecialchars($row['ACCOUNT NAME']) . "</td>
+                                      <td>" . htmlspecialchars($row['FLIGHT DATE']) . "</td>
+                                      <td> <span class='badge " . $badgeClass . " p-2'>" . $status . "</span> </td>
+                                  </tr>";
                               }
-
-                              echo "
-                                <tr data-url='client-transactionInfo.php?id=" . htmlspecialchars($row['T.N']) . "'>
-                                    <td>" . htmlspecialchars(substr($row['T.N'], 5)) . "</td>
-                                    <td>" . htmlspecialchars($row['ACCOUNT NAME']) . "</td>
-                                    <td>" . htmlspecialchars($row['FLIGHT DATE']) . "</td>
-                                    <td> <span class='badge " . $badgeClass . " p-2'>" . $status . "</span> </td>
-                                </tr>";
+                            } else {
+                              echo "<tr><td colspan='8' style='text-align: left;'>No bookings as of the moment</td></tr>";
                             }
-                          } else {
-                            echo "<tr><td colspan='8' style='text-align: left;'>No bookings as of the moment</td></tr>";
-                          }
                           ?>
                         </tbody>
                       </table>
@@ -815,74 +812,72 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                         </thead>
                         <tbody>
                           <?php
-                          // Assuming you already have a connection to your database
-                          // $accountId = $_SESSION['accountId'];
-                          
-                          $sql1 = "SELECT r.transactNo AS `T.N`, c.concernTitle AS `Request`, COALESCE(cd.details, r.customRequest) AS `Details`, 
-                                        DATE_FORMAT(r.requestDate, '%m-%d-%Y') AS `Date`,  r.requestStatus AS `Status`, b.transactNo, 
-                                        CASE 
-                                          WHEN a.accountId IS NOT NULL 
-                                            THEN CASE WHEN a.companyId IS NOT NULL THEN co.companyName ELSE br.branchName END
-                                          WHEN cl.accountId IS NOT NULL 
-                                            THEN CASE WHEN cl.companyId IS NOT NULL THEN cc.companyName ELSE br.branchName END
-                                          ELSE 'Unknown' END AS `ACCOUNT NAME`
-                                      FROM request r
-                                      LEFT JOIN booking b ON r.transactNo = b.transactNo
-                                      LEFT JOIN concern c ON r.concernId = c.concernId
-                                      LEFT JOIN concerndetails cd ON r.concernDetailsId = cd.concernDetailsId
-                                      LEFT JOIN agent a ON b.accountId = a.accountId
-                                      LEFT JOIN company co ON a.companyId = co.companyId
-                                      LEFT JOIN client cl ON b.accountId = cl.accountId
-                                      LEFT JOIN company cc ON cl.companyId = cc.companyId
-                                      JOIN branch br ON b.agentCode = br.branchAgentCode
-                                      WHERE b.accountId = '$accountId' 
-                                      AND r.requestStatus = 'Submitted'
-                                      ORDER BY r.requestDate DESC";
+                            $sql1 = "SELECT r.transactNo AS `T.N`, c.concernTitle AS `Request`, COALESCE(cd.details, r.customRequest) AS `Details`, 
+                                          DATE_FORMAT(r.requestDate, '%m-%d-%Y') AS `Date`,  r.requestStatus AS `Status`, b.transactNo, 
+                                          CASE 
+                                            WHEN a.accountId IS NOT NULL 
+                                              THEN CASE WHEN a.companyId IS NOT NULL THEN co.companyName ELSE br.branchName END
+                                            WHEN cl.accountId IS NOT NULL 
+                                              THEN CASE WHEN cl.companyId IS NOT NULL THEN cc.companyName ELSE br.branchName END
+                                            ELSE 'Unknown' END AS `ACCOUNT NAME`
+                                        FROM request r
+                                        LEFT JOIN booking b ON r.transactNo = b.transactNo
+                                        LEFT JOIN flight f ON b.flightId = f.flightId
+                                        LEFT JOIN concern c ON r.concernId = c.concernId
+                                        LEFT JOIN concerndetails cd ON r.concernDetailsId = cd.concernDetailsId
+                                        LEFT JOIN agent a ON b.accountId = a.accountId
+                                        LEFT JOIN company co ON a.companyId = co.companyId
+                                        LEFT JOIN client cl ON b.accountId = cl.accountId
+                                        LEFT JOIN company cc ON cl.companyId = cc.companyId
+                                        JOIN branch br ON b.agentCode = br.branchAgentCode
+                                        WHERE b.accountId = '$accountId' AND f.flightDepartureDate >= CURDATE()
+                                        AND r.requestStatus = 'Submitted'
+                                        ORDER BY r.requestDate DESC";
 
-                          $res1 = $conn->query($sql1);
+                            $res1 = $conn->query($sql1);
 
-                          if ($res1 && $res1->num_rows > 0) {
-                            while ($row = $res1->fetch_assoc()) {
-                              $status = htmlspecialchars($row['Status']);
-                              $statusClass = '';
+                            if ($res1 && $res1->num_rows > 0) {
+                              while ($row = $res1->fetch_assoc()) {
+                                $status = htmlspecialchars($row['Status']);
+                                $statusClass = '';
 
-                              // Assign badge classes based on status
-                              switch ($status) {
-                                case 'Active':
-                                  $statusClass = 'badge bg-success text-white'; // Green
-                                  break;
-                                case 'Pending':
-                                  $statusClass = 'badge bg-warning text-dark'; // Yellow
-                                  break;
-                                case 'Inactive':
-                                  $statusClass = 'badge bg-danger text-white'; // Red
-                                  break;
-                                case 'To be confirmed':
-                                  $statusClass = 'badge bg-secondary text-white'; // Gray
-                                  break;
-                                case 'Submitted':
-                                  $statusClass = 'badge bg-warning text-dark'; // Orange
-                                  break;
-                                default:
-                                  $statusClass = 'badge bg-light text-dark'; // Light Gray
-                                  break;
+                                // Assign badge classes based on status
+                                switch ($status) {
+                                  case 'Active':
+                                    $statusClass = 'badge bg-success text-white'; // Green
+                                    break;
+                                  case 'Pending':
+                                    $statusClass = 'badge bg-warning text-dark'; // Yellow
+                                    break;
+                                  case 'Inactive':
+                                    $statusClass = 'badge bg-danger text-white'; // Red
+                                    break;
+                                  case 'To be confirmed':
+                                    $statusClass = 'badge bg-secondary text-white'; // Gray
+                                    break;
+                                  case 'Submitted':
+                                    $statusClass = 'badge bg-warning text-dark'; // Orange
+                                    break;
+                                  default:
+                                    $statusClass = 'badge bg-light text-dark'; // Light Gray
+                                    break;
+                                }
+
+                                echo "<tr data-url='client-transactionInfo.php?id=" . htmlspecialchars($row['T.N']) . "'>
+                                          <td>" . htmlspecialchars(substr($row['T.N'], 5)) . "</td> 
+                                          <td>" . htmlspecialchars($row['ACCOUNT NAME']) . "</td>
+                                          <td>" . htmlspecialchars($row['Request']) . "</td> 
+                                          <td>" . htmlspecialchars($row['Date']) . "</td> 
+                                          <td>
+                                            <span class='{$statusClass} p-2'>
+                                              " . $status . "
+                                            </span>
+                                          </td>
+                                        </tr>";
                               }
-
-                              echo "<tr data-url='client-transactionInfo.php?id=" . htmlspecialchars($row['T.N']) . "'>
-                                        <td>" . htmlspecialchars(substr($row['T.N'], 5)) . "</td> 
-                                        <td>" . htmlspecialchars($row['ACCOUNT NAME']) . "</td>
-                                        <td>" . htmlspecialchars($row['Request']) . "</td> 
-                                        <td>" . htmlspecialchars($row['Date']) . "</td> 
-                                        <td>
-                                          <span class='{$statusClass} p-2'>
-                                            " . $status . "
-                                          </span>
-                                        </td>
-                                      </tr>";
+                            } else {
+                              echo "<tr><td colspan='5' style='text-align: left;'>No requests at the moment.</td></tr>";
                             }
-                          } else {
-                            echo "<tr><td colspan='5' style='text-align: left;'>No requests at the moment.</td></tr>";
-                          }
                           ?>
                         </tbody>
                       </table>
@@ -910,84 +905,81 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                         </thead>
                         <tbody>
                           <?php
-                          // Assuming you already have a connection to your database
-                          // $accountId = $_SESSION['accountId'];
-                          
-                          $sql2 = "SELECT p.transactNo AS `Transaction No`, p.paymentTitle AS `Payment Title`, CONCAT(FORMAT(p.amount, 2)) AS `Amount`, DATE_FORMAT(p.paymentDate, '%m-%d-%Y') AS `Date`,  
-                                        p.paymentType AS `Payment Type`, p.paymentStatus, 
-                                        CASE 
-                                          WHEN a.accountId IS NOT NULL 
-                                            THEN CASE 
-                                              WHEN a.companyId IS NOT NULL THEN co.companyName 
-                                              ELSE br.branchName END
-                                          WHEN cl.accountId IS NOT NULL 
-                                            THEN CASE 
-                                              WHEN cl.companyId IS NOT NULL THEN cc.companyName 
-                                              ELSE br.branchName END
-                                          ELSE 'Unknown' END AS `Account Name`
-                                      FROM payment p
-                                      JOIN booking b ON p.transactNo = b.transactNo
-                                      LEFT JOIN agent a ON b.accountId = a.accountId
-                                      LEFT JOIN company co ON a.companyId = co.companyId
-                                      LEFT JOIN client cl ON b.accountId = cl.accountId
-                                      LEFT JOIN company cc ON cl.companyId = cc.companyId
-                                      LEFT JOIN branch br ON b.agentCode = br.branchAgentCode
-                                      WHERE b.accountId = $accountId
-                                      AND p.paymentStatus = 'Submitted'
-                                      ORDER BY p.paymentDate DESC";
+                            $sql2 = "SELECT p.transactNo AS `Transaction No`, p.paymentTitle AS `Payment Title`, CONCAT(FORMAT(p.amount, 2)) AS `Amount`, DATE_FORMAT(p.paymentDate, '%m-%d-%Y') AS `Date`,  
+                                          p.paymentType AS `Payment Type`, p.paymentStatus, 
+                                          CASE 
+                                            WHEN a.accountId IS NOT NULL 
+                                              THEN CASE 
+                                                WHEN a.companyId IS NOT NULL THEN co.companyName 
+                                                ELSE br.branchName END
+                                            WHEN cl.accountId IS NOT NULL 
+                                              THEN CASE 
+                                                WHEN cl.companyId IS NOT NULL THEN cc.companyName 
+                                                ELSE br.branchName END
+                                            ELSE 'Unknown' END AS `Account Name`
+                                        FROM payment p
+                                        JOIN booking b ON p.transactNo = b.transactNo
+                                        LEFT JOIN agent a ON b.accountId = a.accountId
+                                        LEFT JOIN company co ON a.companyId = co.companyId
+                                        LEFT JOIN client cl ON b.accountId = cl.accountId
+                                        LEFT JOIN company cc ON cl.companyId = cc.companyId
+                                        LEFT JOIN branch br ON b.agentCode = br.branchAgentCode
+                                        WHERE b.accountId = $accountId
+                                        AND p.paymentStatus = 'Submitted'
+                                        ORDER BY p.paymentDate DESC";
 
-                          $res2 = $conn->query($sql2);
+                            $res2 = $conn->query($sql2);
 
-                          if ($res2 && $res2->num_rows > 0) {
-                            while ($row = $res2->fetch_assoc()) {
-                              $status = htmlspecialchars($row['paymentStatus']);
-                              $badgeClass = '';
+                            if ($res2 && $res2->num_rows > 0) {
+                              while ($row = $res2->fetch_assoc()) {
+                                $status = htmlspecialchars($row['paymentStatus']);
+                                $badgeClass = '';
 
-                              // Assign badge classes based on payment status
-                              switch ($status) {
-                                case 'Submitted':
-                                  $badgeClass = 'badge bg-warning text-dark'; // Yellow
-                                  break;
-                                case 'Confirmed':
-                                  $badgeClass = 'badge bg-success'; // Green
-                                  break;
-                                case 'Pending':
-                                  $badgeClass = 'badge bg-danger'; // Red
-                                  break;
-                                default:
-                                  $badgeClass = 'badge bg-secondary'; // Gray
-                                  break;
+                                // Assign badge classes based on payment status
+                                switch ($status) {
+                                  case 'Submitted':
+                                    $badgeClass = 'badge bg-warning text-dark'; // Yellow
+                                    break;
+                                  case 'Confirmed':
+                                    $badgeClass = 'badge bg-success'; // Green
+                                    break;
+                                  case 'Pending':
+                                    $badgeClass = 'badge bg-danger'; // Red
+                                    break;
+                                  default:
+                                    $badgeClass = 'badge bg-secondary'; // Gray
+                                    break;
+                                }
+
+                                $rowTrans = htmlspecialchars(substr($row['Transaction No'], 5));
+
+                                echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($row['Transaction No']) . "'>
+                                          <td>{$rowTrans}</td>
+                                          <td>" . htmlspecialchars($row['Account Name'] ?? 'N/A', ENT_QUOTES, 'UTF-8') . "</td>
+
+
+                                          <td> 
+                                            <div class='td-content'>
+                                              <h6>Title: <span>" . htmlspecialchars($row['Payment Title']) . "</span></h6>
+                                              <h6>Type: <span>" . htmlspecialchars($row['Payment Type']) . "</span></h6>
+                                            </div>
+                                          </td>
+
+                                          <td> 
+                                            <div class='td-content d-flex flex-column align-items-left'>
+                                              <h6>Amount: <span>₱ " . htmlspecialchars($row['Amount']) . "</span></h6>
+                                              <h6>Date Submitted: <span>" . htmlspecialchars($row['Date']) . "</span></h6>
+                                            </div>
+                                          </td> 
+
+                                          <td>
+                                            <span class='{$badgeClass} p-2'>{$status}</span>
+                                          </td>
+                                        </tr>";
                               }
-
-                              $rowTrans = htmlspecialchars(substr($row['Transaction No'], 5));
-
-                              echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($row['Transaction No']) . "'>
-                                        <td>{$rowTrans}</td>
-                                        <td>" . htmlspecialchars($row['Account Name'] ?? 'N/A', ENT_QUOTES, 'UTF-8') . "</td>
-
-
-                                        <td> 
-                                          <div class='td-content'>
-                                            <h6>Title: <span>" . htmlspecialchars($row['Payment Title']) . "</span></h6>
-                                            <h6>Type: <span>" . htmlspecialchars($row['Payment Type']) . "</span></h6>
-                                          </div>
-                                        </td>
-
-                                        <td> 
-                                          <div class='td-content d-flex flex-column align-items-left'>
-                                            <h6>Amount: <span>₱ " . htmlspecialchars($row['Amount']) . "</span></h6>
-                                            <h6>Date Submitted: <span>" . htmlspecialchars($row['Date']) . "</span></h6>
-                                          </div>
-                                        </td> 
-
-                                        <td>
-                                          <span class='{$badgeClass} p-2'>{$status}</span>
-                                        </td>
-                                      </tr>";
+                            } else {
+                              echo "<tr><td colspan='5' style='text-align: left;'>No payments at the moment</td></tr>";
                             }
-                          } else {
-                            echo "<tr><td colspan='5' style='text-align: left;'>No payments at the moment</td></tr>";
-                          }
                           ?>
                         </tbody>
                       </table>
@@ -1022,103 +1014,100 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                         </thead>
                         <tbody>
                           <?php
-                          // Assuming you already have a connection to your database
-                          // $accountId = $_SESSION['accountId'];
-                          
-                          // Query to select all records from the booking table
-                          $query = "SELECT b.transactNo, b.flightId, b.pax, b.totalPrice AS packagePrice, 
-                                        CONCAT(DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y'), ' - ', DATE_FORMAT(f.returnDepartureDate, 
-                                        '%m-%d-%Y')) AS FlightDate, p.packageName AS packageName, br.branchName as branchName,
-                                        CONCAT(b.lName, ', ', b.fName, ' ', 
-                                            CASE WHEN b.mName = 'N/A' THEN '' ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ',
-                                            CASE WHEN b.suffix = 'N/A' THEN '' ELSE b.suffix END) AS contactName, 
-                                        IFNULL(req.totalRequestCost, 0) AS totalRequestCost, IFNULL(paid.totalPaidAmount, 0) AS totalPaidAmount,
-                                        b.status AS bookingStatus, b.bookingType, (b.totalPrice + IFNULL(req.totalRequestCost, 0)) AS TotalCost,
-                                        CASE 
-                                          WHEN a.accountId IS NOT NULL 
-                                            THEN CASE 
-                                              WHEN a.companyId IS NOT NULL THEN co.companyName 
-                                              ELSE br.branchName END
-                                          WHEN cl.accountId IS NOT NULL 
-                                            THEN CASE 
-                                              WHEN cl.companyId IS NOT NULL THEN cc.companyName 
-                                              ELSE br.branchName END
-                                        ELSE 'Unknown' END AS `Account Name`
-                                      FROM booking b
-                                      JOIN flight f ON b.flightId = f.flightId
-                                      LEFT JOIN package p ON b.packageId = p.packageId
-                                      JOIN branch br ON b.agentCode = br.branchAgentCode
-                                      LEFT JOIN agent a ON b.accountId = a.accountId
-                                      LEFT JOIN company co ON a.companyId = co.companyId
-                                      LEFT JOIN client cl ON b.accountId = cl.accountId
-                                      LEFT JOIN company cc ON cl.companyId = cc.companyId
-                                      LEFT JOIN 
-                                        (SELECT transactNo, SUM(amount) AS totalPaidAmount FROM payment
-                                          WHERE paymentStatus = 'Approved' GROUP BY transactNo) paid ON b.transactNo = paid.transactNo
-                                      LEFT JOIN 
-                                        (SELECT transactNo, SUM(requestCost) AS totalRequestCost FROM request
-                                          WHERE requestStatus = 'Confirmed' GROUP BY transactNo) req ON b.transactNo = req.transactNo
-                                      WHERE 
-                                        b.status = 'Confirmed' and b.accountId = '$accountId' and f.flightDepartureDate >= CURDATE()";
+                            // Query to select all records from the booking table
+                            $query = "SELECT b.transactNo, b.flightId, b.pax, b.totalPrice AS packagePrice, 
+                                      CONCAT(DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y'), ' - ', DATE_FORMAT(f.returnDepartureDate, 
+                                      '%m-%d-%Y')) AS FlightDate, p.packageName AS packageName, br.branchName as branchName,
+                                      CONCAT(b.lName, ', ', b.fName, ' ', 
+                                          CASE WHEN b.mName = 'N/A' THEN '' ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ',
+                                          CASE WHEN b.suffix = 'N/A' THEN '' ELSE b.suffix END) AS contactName, 
+                                      IFNULL(req.totalRequestCost, 0) AS totalRequestCost, IFNULL(paid.totalPaidAmount, 0) AS totalPaidAmount,
+                                      b.status AS bookingStatus, b.bookingType, (b.totalPrice + IFNULL(req.totalRequestCost, 0)) AS TotalCost,
+                                      CASE 
+                                        WHEN a.accountId IS NOT NULL 
+                                          THEN CASE 
+                                            WHEN a.companyId IS NOT NULL THEN co.companyName 
+                                            ELSE br.branchName END
+                                        WHEN cl.accountId IS NOT NULL 
+                                          THEN CASE 
+                                            WHEN cl.companyId IS NOT NULL THEN cc.companyName 
+                                            ELSE br.branchName END
+                                      ELSE 'Unknown' END AS `Account Name`
+                                    FROM booking b
+                                    JOIN flight f ON b.flightId = f.flightId
+                                    LEFT JOIN package p ON b.packageId = p.packageId
+                                    JOIN branch br ON b.agentCode = br.branchAgentCode
+                                    LEFT JOIN agent a ON b.accountId = a.accountId
+                                    LEFT JOIN company co ON a.companyId = co.companyId
+                                    LEFT JOIN client cl ON b.accountId = cl.accountId
+                                    LEFT JOIN company cc ON cl.companyId = cc.companyId
+                                    LEFT JOIN 
+                                      (SELECT transactNo, SUM(amount) AS totalPaidAmount FROM payment
+                                        WHERE paymentStatus = 'Approved' GROUP BY transactNo) paid ON b.transactNo = paid.transactNo
+                                    LEFT JOIN 
+                                      (SELECT transactNo, SUM(requestCost) AS totalRequestCost FROM request
+                                        WHERE requestStatus = 'Confirmed' GROUP BY transactNo) req ON b.transactNo = req.transactNo
+                                    WHERE 
+                                      b.status = 'Confirmed' and b.accountId = '$accountId' and f.flightDepartureDate >= CURDATE()";
 
-                          $result = $conn->query($query); // Execute the query
-                          
-                          // Check if there are results and populate the table
-                          if ($result && $result->num_rows > 0) {
-                            while ($row = $result->fetch_assoc()) {
-                              $bookingStatus = htmlspecialchars($row['bookingStatus']);
-                              $statusClass = '';
+                            $result = $conn->query($query); // Execute the query
+                            
+                            // Check if there are results and populate the table
+                            if ($result && $result->num_rows > 0) {
+                              while ($row = $result->fetch_assoc()) {
+                                $bookingStatus = htmlspecialchars($row['bookingStatus']);
+                                $statusClass = '';
 
-                              switch ($bookingStatus) {
-                                case 'Confirmed':
-                                  $statusClass = 'bg-success text-white';
-                                  break;
-                                case 'Pending':
-                                  $statusClass = 'bg-warning text-dark';
-                                  break;
-                                case 'Cancelled':
-                                  $statusClass = 'bg-danger text-white';
-                                  break;
-                                case 'To be confirmed':
-                                  $statusClass = 'bg-secondary text-white';
-                                  break;
-                                case 'Submitted':
-                                  $statusClass = 'bg-success text-white';
-                                  break;
+                                switch ($bookingStatus) {
+                                  case 'Confirmed':
+                                    $statusClass = 'bg-success text-white';
+                                    break;
+                                  case 'Pending':
+                                    $statusClass = 'bg-warning text-dark';
+                                    break;
+                                  case 'Cancelled':
+                                    $statusClass = 'bg-danger text-white';
+                                    break;
+                                  case 'To be confirmed':
+                                    $statusClass = 'bg-secondary text-white';
+                                    break;
+                                  case 'Submitted':
+                                    $statusClass = 'bg-success text-white';
+                                    break;
 
-                                default:
-                                  $statusClass = 'bg-light text-dark';
-                                  break;
+                                  default:
+                                    $statusClass = 'bg-light text-dark';
+                                    break;
+                                }
+
+                                $totalAmountPaid = $row['totalPaidAmount'];
+                                $totalAmountToBePaid = $row['packagePrice'] + $row['totalRequestCost']; // Total price + total request cost
+                                $balance = $totalAmountToBePaid - $totalAmountPaid; // Balance calculation
+                            
+                                // Determine if fully paid or not
+                                $status = ($totalAmountPaid == $totalAmountToBePaid) ? 'Fully Paid' : 'Not Paid';
+
+                                // Display table row
+                                echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($row['transactNo']) . "'>";
+                                echo "<td>" . htmlspecialchars(substr($row['transactNo'], 5)) . "</td>"; // TransactNo
+                                echo "<td>" . htmlspecialchars($row['Account Name']) . "</td>"; // Package Name
+                                echo "<td>" . htmlspecialchars($row['FlightDate']) . "</td>"; // Flight Date Range
+                                echo "<td>" . htmlspecialchars($row['pax']) . "</td>"; // Pax (Number of Passengers)
+                                echo "<td>" . htmlspecialchars($row['contactName']) . "</td>"; // Contact Name
+                                echo "<td>" . $row['bookingType'] . "</td>"; // Booking Type 
+                                echo "<td>₱ " . number_format($totalAmountPaid, 2) . "</td>"; // Total Amount Paid
+                                echo "<td>₱ " . number_format($balance, 2) . "</td>"; // Balance (Amount to be paid - Amount paid)
+                                echo "<td>
+                                          <span class='badge <?php echo $statusClass; ?> p-2'>
+                                              {$bookingStatus}
+                                          </span>
+                                      </td>";
+                                echo "</tr>";
                               }
-
-                              $totalAmountPaid = $row['totalPaidAmount'];
-                              $totalAmountToBePaid = $row['packagePrice'] + $row['totalRequestCost']; // Total price + total request cost
-                              $balance = $totalAmountToBePaid - $totalAmountPaid; // Balance calculation
-                          
-                              // Determine if fully paid or not
-                              $status = ($totalAmountPaid == $totalAmountToBePaid) ? 'Fully Paid' : 'Not Paid';
-
-                              // Display table row
-                              echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($row['transactNo']) . "'>";
-                              echo "<td>" . htmlspecialchars(substr($row['transactNo'], 5)) . "</td>"; // TransactNo
-                              echo "<td>" . htmlspecialchars($row['Account Name']) . "</td>"; // Package Name
-                              echo "<td>" . htmlspecialchars($row['FlightDate']) . "</td>"; // Flight Date Range
-                              echo "<td>" . htmlspecialchars($row['pax']) . "</td>"; // Pax (Number of Passengers)
-                              echo "<td>" . htmlspecialchars($row['contactName']) . "</td>"; // Contact Name
-                              echo "<td>" . $row['bookingType'] . "</td>"; // Booking Type 
-                              echo "<td>₱ " . number_format($totalAmountPaid, 2) . "</td>"; // Total Amount Paid
-                              echo "<td>₱ " . number_format($balance, 2) . "</td>"; // Balance (Amount to be paid - Amount paid)
-                              echo "<td>
-                                        <span class='badge <?php echo $statusClass; ?> p-2'>
-                                            {$bookingStatus}
-                                        </span>
-                                    </td>";
-                              echo "</tr>";
+                            } else {
+                              // Display a message if no records are found
+                              echo "<tr><td colspan='12'>No records found</td></tr>";
                             }
-                          } else {
-                            // Display a message if no records are found
-                            echo "<tr><td colspan='12'>No records found</td></tr>";
-                          }
                           ?>
                         </tbody>
                       </table>
