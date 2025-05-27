@@ -795,7 +795,7 @@ error_reporting(E_ALL);
                                   JOIN flight f ON b.flightId = f.flightId
                                   JOIN branch br ON b.agentCode = br.branchAgentCode
                                   WHERE 
-                                    r.requestStatus = 'Submitted'
+                                    r.requestStatus = 'Submitted' AND f.flightDepartureDate >= CURDATE()
                                   ORDER BY 
                                     r.requestDate DESC";  // Order by request date
                         
@@ -961,7 +961,7 @@ error_reporting(E_ALL);
                           JOIN package p ON b.packageId = p.packageId
                           LEFT JOIN payment pa ON pa.transactNo = b.transactNo AND pa.paymentStatus = 'Approved'
                           LEFT JOIN request r ON r.transactNo = b.transactNo AND r.requestStatus = 'Confirmed'
-                          WHERE status = 'Confirmed' GROUP BY b.transactNo";
+                          WHERE status = 'Confirmed' AND f.flightDepartureDate >= CURDATE() GROUP BY b.transactNo";
 
                 $result = $conn->query($query1);
 
