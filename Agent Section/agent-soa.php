@@ -171,6 +171,7 @@
 
 
 <?php require "../Agent Section/includes/scripts.php"; ?>
+<script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
 
 <!-- JavaScript for Date Filters -->
 <script>
@@ -424,8 +425,71 @@
   });
 </script>
 
-<!-- Generate SoA -->
+<!-- Generate SOA (excel) -->
 <script>
+  document.getElementById('download-btn').addEventListener('click', function() {
+    const companyId = document.getElementById('company-filter').value;
+    const month = document.getElementById('month-filter').value;
+    const year = document.getElementById('year-filter').value;
+
+    // Get current date in mm/dd/yyyy format
+    const currentDate = new Date();
+    const currentDateFormatted = (currentDate.getMonth() + 1).toString().padStart(2, '0') + '/' +
+      currentDate.getDate().toString().padStart(2, '0') + '/' +
+      currentDate.getFullYear();
+
+    // Step 1: Get SOA Number
+    const xhrAddSoA = new XMLHttpRequest();
+    xhrAddSoA.open('POST', '../Agent Section/functions/agent-addSoA.php', true);
+    xhrAddSoA.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhrAddSoA.responseType = 'json';
+
+    xhrAddSoA.onload = function() {
+      if (xhrAddSoA.status === 200 && xhrAddSoA.response.soanum) {
+        const soaNumber = xhrAddSoA.response.soanum;
+
+        // Step 2: Fetch data for Excel
+        const xhrExcel = new XMLHttpRequest();
+        xhrExcel.open('POST', '../Agent Section/functions/generateSoA.php', true);
+        xhrExcel.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhrExcel.responseType = 'json';
+
+        xhrExcel.onload = function() {
+          if (xhrExcel.status === 200 && Array.isArray(xhrExcel.response)) {
+            const soaData = xhrExcel.response;
+
+            // Step 3: Generate Excel
+            const ws = XLSX.utils.json_to_sheet(soaData);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "SOA");
+
+            XLSX.writeFile(wb, `Statement_of_Account_${soaNumber}.xlsx`);
+          } else {
+            alert("Failed to fetch SOA data for Excel export.");
+          }
+        };
+
+        xhrExcel.onerror = function() {
+          alert("An error occurred while fetching SOA data for Excel.");
+        };
+
+        xhrExcel.send(`companyId=${companyId}&month=${month}&year=${year}&currentDate=${currentDateFormatted}&soaNumber=${soaNumber}`);
+
+      } else {
+        alert("Failed to generate SOA number.");
+      }
+    };
+
+    xhrAddSoA.onerror = function() {
+      alert("An error occurred while inserting SOA data.");
+    };
+
+    xhrAddSoA.send(`companyId=${companyId}&month=${month}&year=${year}&currentDate=${currentDateFormatted}`);
+  });
+</script>
+
+<!-- Generate SoA (pdf)-->
+<!-- <script>
   document.getElementById('download-btn').addEventListener('click', function() {
     const companyId = document.getElementById('company-filter').value;
     const month = document.getElementById('month-filter').value;
@@ -492,7 +556,7 @@
     // Send the request with the necessary values for SOA number
     xhrAddSoA.send(`companyId=${companyId}&month=${month}&year=${year}&currentDate=${currentDateFormatted}`);
   });
-</script>
+</script> -->
 
 <!-- Modal -->
 <!-- <script>
