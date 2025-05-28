@@ -128,6 +128,10 @@ $current_date = date('D, F d, Y');
         <i class="fa-solid fa-money-check-dollar"></i> Payment
       </a>
 
+      <a href="../Agent Section/agent-clientPaymentHistory.php" class="page-button my-0" data-page-name="Payment History">
+        <i class="fa-solid fa-money-check-dollar"></i>Client Payment
+      </a>
+
       <a href="../Agent Section/agent-roomingList.php" class="page-button my-0" data-page-name="Rooming Assignment">
         <i class="fa-solid fa-newspaper"></i> Rooming List
       </a>
