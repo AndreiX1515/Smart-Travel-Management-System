@@ -183,6 +183,7 @@
 
 
   <?php require "../Agent Section/includes/scripts.php"; ?>
+  <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
 
   <!-- JavaScript for Date Filters -->
   <script>
@@ -424,6 +425,7 @@
     });
   </script>
 
+
   <!-- Generate SoA -->
   <script>
     document.getElementById('download-btn').addEventListener('click', function () {
@@ -431,68 +433,130 @@
       const month = document.getElementById('month-filter').value;
       const year = document.getElementById('year-filter').value;
 
-      // Get current date in mm/dd/yyyy format
       const currentDate = new Date();
-      const currentDateFormatted = (currentDate.getMonth() + 1).toString().padStart(2, '0') + '/' +
-        currentDate.getDate().toString().padStart(2, '0') + '/' +
-        currentDate.getFullYear();
+      const currentDateFormatted = `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1)
+        .toString()
+        .padStart(2, '0')}-${currentDate.getDate().toString().padStart(2, '0')}`;
 
-      // First, send the request to agent-addSoA.php to insert SOA data
+      // Step 1: Send the request to insert SOA data and get SOA number
       const xhrAddSoA = new XMLHttpRequest();
       xhrAddSoA.open('POST', '../Agent Section/functions/agent-addSoA.php', true);
       xhrAddSoA.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-      xhrAddSoA.responseType = 'json'; // Expect JSON response for the SOA number
+      xhrAddSoA.responseType = 'json';
 
       xhrAddSoA.onload = function () {
-        if (xhrAddSoA.status === 200) {
-          const response = xhrAddSoA.response;
+        if (xhrAddSoA.status === 200 && xhrAddSoA.response.soanum) {
+          const soaNumber = xhrAddSoA.response.soanum;
 
-          if (response.soanum) {
-            const soaNumber = response.soanum; // Get the generated SOA number
+          // Step 2: Fetch data for Excel
+          const xhrExcel = new XMLHttpRequest();
+          xhrExcel.open('POST', '../Agent Section/functions/generateSoA.php', true);
+          xhrExcel.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+          xhrExcel.responseType = 'json';
 
-            // Proceed to generate the SOA PDF
-            const xhrPdf = new XMLHttpRequest();
-            xhrPdf.open('POST', '../Agent Section/functions/generateSoA.php', true);
-            xhrPdf.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            xhrPdf.responseType = 'blob';
+          xhrExcel.onload = function () {
+            if (xhrExcel.status === 200 && Array.isArray(xhrExcel.response)) {
+              const soaData = xhrExcel.response;
 
-            xhrPdf.onload = function () {
-              if (xhrPdf.status === 200) {
-                // Create a link to download the PDF
-                const blob = new Blob([xhrPdf.response], {
-                  type: 'application/pdf'
-                });
-                const link = document.createElement('a');
-                link.href = window.URL.createObjectURL(blob);
-                link.download = `Statement_of_Account_${soaNumber}.pdf`;
-                link.click();
-              } else {
-                alert('Failed to generate the SOA PDF. Please try again.');
-              }
-            };
+              // Step 3: Generate Excel
+              const ws = XLSX.utils.json_to_sheet(soaData);
+              const wb = XLSX.utils.book_new();
+              XLSX.utils.book_append_sheet(wb, ws, "SOA");
 
-            xhrPdf.onerror = function () {
-              alert('An error occurred while generating the SOA PDF.');
-            };
+              XLSX.writeFile(wb, `Statement_of_Account_${soaNumber}.xlsx`);
+            } else {
+              alert("Failed to fetch SOA data for Excel export.");
+            }
+          };
 
-            // Send the request to generate the SOA PDF with the SOA number
-            xhrPdf.send(`companyId=${companyId}&month=${month}&year=${year}&currentDate=${currentDateFormatted}&soaNumber=${soaNumber}`);
-          } else {
-            alert('Failed to generate SOA Number. Please try again.');
-          }
+          xhrExcel.onerror = function () {
+            alert("An error occurred while fetching SOA data for Excel.");
+          };
+
+          xhrExcel.send(
+            `companyId=${companyId}&month=${month}&year=${year}&currentDate=${currentDateFormatted}&soaNumber=${soaNumber}`
+          );
         } else {
-          alert('Failed to insert SOA number. Server error: ' + xhrAddSoA.statusText);
+          alert("Failed to generate SOA number.");
         }
       };
 
       xhrAddSoA.onerror = function () {
-        alert('An error occurred while processing the request to insert SOA data.');
+        alert("An error occurred while inserting SOA data.");
       };
 
-      // Send the request with the necessary values for SOA number
-      xhrAddSoA.send(`companyId=${companyId}&month=${month}&year=${year}&currentDate=${currentDateFormatted}`);
+      xhrAddSoA.send(
+        `companyId=${companyId}&month=${month}&year=${year}&currentDate=${currentDateFormatted}`
+      );
     });
   </script>
+
+
+
+  <!-- <script>
+  //   document.getElementById('download-btn').addEventListener('click', function() {
+  //     const companyId = document.getElementById('company-filter').value;
+  //     const month = document.getElementById('month-filter').value;
+  //     const year = document.getElementById('year-filter').value;
+
+  //     // Get current date in mm/dd/yyyy format
+  //     const currentDate = new Date();
+  //     const currentDateFormatted = (currentDate.getMonth() + 1).toString().padStart(2, '0') + '/' +
+  //       currentDate.getDate().toString().padStart(2, '0') + '/' +
+  //       currentDate.getFullYear();
+
+  //     // First, send the request to agent-addSoA.php to insert SOA data
+  //     const xhrAddSoA = new XMLHttpRequest();
+  //     xhrAddSoA.open('POST', '../Agent Section/functions/agent-addSoA.php', true);
+  //     xhrAddSoA.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  //     xhrAddSoA.responseType = 'json'; // Expect JSON response for the SOA number
+
+  //           if (response.soanum) {
+  //             const soaNumber = response.soanum; // Get the generated SOA number
+
+  //             // Proceed to generate the SOA PDF
+  //             const xhrPdf = new XMLHttpRequest();
+  //             xhrPdf.open('POST', '../Agent Section/functions/generateSoA.php', true);
+  //             xhrPdf.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  //             xhrPdf.responseType = 'blob';
+
+  //             xhrPdf.onload = function () {
+  //               if (xhrPdf.status === 200) {
+  //                 // Create a link to download the PDF
+  //                 const blob = new Blob([xhrPdf.response], {
+  //                   type: 'application/pdf'
+  //                 });
+  //                 const link = document.createElement('a');
+  //                 link.href = window.URL.createObjectURL(blob);
+  //                 link.download = `Statement_of_Account_${soaNumber}.pdf`;
+  //                 link.click();
+  //               } else {
+  //                 alert('Failed to generate the SOA PDF. Please try again.');
+  //               }
+  //             };
+
+  //             xhrPdf.onerror = function () {
+  //               alert('An error occurred while generating the SOA PDF.');
+  //             };
+
+  //             // Send the request to generate the SOA PDF with the SOA number
+  //             xhrPdf.send(`companyId=${companyId}&month=${month}&year=${year}&currentDate=${currentDateFormatted}&soaNumber=${soaNumber}`);
+  //           } else {
+  //             alert('Failed to generate SOA Number. Please try again.');
+  //           }
+  //         } else {
+  //           alert('Failed to insert SOA number. Server error: ' + xhrAddSoA.statusText);
+  //         }
+  //       };
+
+  //       xhrAddSoA.onerror = function () {
+  //         alert('An error occurred while processing the request to insert SOA data.');
+  //       };
+
+  //     // Send the request with the necessary values for SOA number
+  //     xhrAddSoA.send(`companyId=${companyId}&month=${month}&year=${year}&currentDate=${currentDateFormatted}`);
+  //   });
+  // </script> -->
 
   <!-- Modal -->
   <!-- <script>
@@ -550,7 +614,7 @@
   });
 </script> -->
 
-<script>
+  <script>
   const table = $('#product-table').DataTable({
     dom: 'rtip',
     columnDefs: [{
@@ -598,7 +662,7 @@
     autoWidth: false,
     pageLength: 10, // Limit the number of rows per page to 8
   });
-</script>
+  </script>
 
 
 </body>

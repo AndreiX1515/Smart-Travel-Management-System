@@ -30,7 +30,7 @@
         <tbody>
           <?php
             $sql1 = "SELECT *, FORMAT(amount, 2) AS amount, DATE_FORMAT(paymentDate, '%m-%d-%Y') AS paymentDate 
-                      FROM payment 
+                      FROM paymentc
                       WHERE transactNo = '$transactionNumber'";
 
             $res1 = $conn->query($sql1);

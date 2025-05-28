@@ -23,7 +23,7 @@ if (isset($_POST['payment']))
 
   if (isset($_FILES['proofs']) && count($_FILES['proofs']['name']) > 0) 
   {
-    $uploadDir = $_SERVER['DOCUMENT_ROOT'] . "/SMART-TRAVEL-MANAGEMENT-SYSTEM/Files Uploads/Payment Uploads" . DIRECTORY_SEPARATOR . $transactNo . DIRECTORY_SEPARATOR;
+    $uploadDir = $_SERVER['DOCUMENT_ROOT'] . "/SMART-TRAVEL-MANAGEMENT-SYSTEM/Files Uploads/Client Payment Uploads" . DIRECTORY_SEPARATOR . $transactNo . DIRECTORY_SEPARATOR;
     $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'pdf'];
     $maxFileSize = 4 * 1024 * 1024; // 4MB per file
     $uploadedFiles = []; // Array to store file paths
@@ -72,7 +72,7 @@ if (isset($_POST['payment']))
       $conn->begin_transaction();
 
       // Insert payment information into the payment table, including file paths
-      $sql = "INSERT INTO payment (transactNo, accountId, paymentTitle, paymentType, amount, filePath, paymentDate, paymentStatus) 
+      $sql = "INSERT INTO paymentc (transactNo, accountId, paymentTitle, paymentType, amount, filePath, paymentDate, paymentStatus) 
               VALUES (?, ?, ?, ?, ?, ?, ?, 'Submitted')";
       $stmt = $conn->prepare($sql);
 

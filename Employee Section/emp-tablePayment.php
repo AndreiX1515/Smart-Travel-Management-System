@@ -244,7 +244,6 @@
 
   <?php include '../Employee Section/includes/emp-scripts.php' ?>
 
-
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       // Select all view and download links inside .viewdownloadfile-wrapper

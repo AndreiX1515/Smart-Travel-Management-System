@@ -97,7 +97,7 @@ require "../conn.php";
                               p.paymentRemarks
                             FROM `booking` b
                             JOIN `flight` f ON b.flightId = f.flightId
-                            JOIN `payment` p ON b.transactNo = p.transactNo
+                            JOIN `paymentc` p ON b.transactNo = p.transactNo
                             WHERE b.accountId = $accountId
                             ORDER BY p.paymentId ASC";
 

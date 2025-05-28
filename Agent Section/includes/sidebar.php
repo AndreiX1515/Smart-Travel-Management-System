@@ -231,6 +231,76 @@ $current_date = date('D, F d, Y');
               data-page-name="For Approvals - Payment">Payment</a>
           </li>
         </ul>
+      <a href="../Agent Section/agent-guestInformationList.php" class="page-button my-0" data-page-name="Guest Information List">
+        <i class="fa-solid fa-table-list"></i> Guest List
+      </a>
+
+      <a href="../Agent Section/agent-requestHistory.php" class="page-button my-0" data-page-name="Request History">
+        <i class="fa-solid fa-cart-plus"></i> Request
+      </a>
+
+      <a href="../Agent Section/agent-paymentHistory.php" class="page-button my-0" data-page-name="Payment History">
+        <i class="fa-solid fa-money-check-dollar"></i> Payment
+      </a>
+
+      <a href="../Agent Section/agent-clientPaymentHistory.php" class="page-button my-0" data-page-name="Payment History">
+        <i class="fa-solid fa-money-check-dollar"></i>Client Payment
+      </a>
+
+      <a href="../Agent Section/agent-roomingList.php" class="page-button my-0" data-page-name="Rooming Assignment">
+        <i class="fa-solid fa-newspaper"></i> Rooming List
+      </a>
+
+      <a href="../Agent Section/agent-soa.php" class="page-button my-0" data-page-name="Rooming Assignment">
+        <i class="fas fa-file-invoice"></i> SOA
+      </a>
+
+      <a href="../Agent Section/agent-reports.php" class="page-button my-0" data-page-name="Rooming Assignment">
+        <i class="fas fa-file-invoice"></i> Reports
+      </a>
+
+      <a href="../Agent Section/agent-FIT-table.php" class="page-button my-0" data-page-name="F.I.T - Transactions Table" style="font-size: 14px;">
+        <i class="fas fa-file-invoice"></i> F.I.T 
+      </a>  -->
+    </div>
+
+    <!-- <div class="section-title" onclick="toggleSubMenu('operational-submenu')">
+      Reports <span class="chevron-icon fas fa-chevron-down"></span>
+    </div>
+
+    <div class="submenu open" id="operational-submenu">
+      <a href="../Agent Section/agent-itenerary.php" class="page-button" data-page-name="Itinerary">
+        <i class="fas fa-map"></i> Itinerary
+      </a>
+
+      <a href="../Agent Section/agent-soa2.php" class="page-button" data-page-name="Statement of Accounts (SOA) - Packages">
+        <i class="fas fa-file-invoice-dollar"></i> SOA - Packages
+      </a>
+
+      <a href="../Agent Section/agent-fitSOA - rename.php" class="page-button" data-page-name="Statement of Accounts (SOA) - F.I.T">
+        <i class="fas fa-file-invoice-dollar"></i> SOA - F.I.T
+      </a>
+
+      <a href="../Agent Section/agent-ticket.php" class="page-button" data-page-name="Ticket">
+        <i class="fas fa-ticket"></i> Ticket
+      </a>
+
+      <a href="../Agent Section/agent-transactions.php" class="page-button" data-page-name="Voucher">
+        <i class="fas fa-gift"></i> Voucher
+      </a>
+    </div> -->
+
+    <!-- <a href="../Agent Section/agent-FIT-table.php" class="page-button my-0" data-page-name="F.I.T - Transactions Table" style="font-size: 14px;">
+          <i class="fas fa-file-invoice"></i> F.I.T 
+        </a> -->
+
+  </div>
+
+  <div class="profile-wrapper">
+    <div class="concern-section mb-4">
+
+      <div class="section-title" onclick="toggleSubMenu('concerntable-submenu')">
+        Concerns <span class="chevron-icon fas fa-chevron-down"></span>
       </div>
     </li> -->
 
