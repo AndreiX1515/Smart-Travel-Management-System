@@ -223,7 +223,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                         $days5Query = "SELECT COUNT(*) AS `bookingsDueIn5Days` FROM booking b 
                                       JOIN flight f ON b.flightId = f.flightId
                                       LEFT JOIN (SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) 
-                                                  AS totalPaid FROM payment GROUP BY transactNo) p ON b.transactNo = p.transactNo
+                                                  AS totalPaid FROM paymentc GROUP BY transactNo) p ON b.transactNo = p.transactNo
                                       WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) <= 5 
                                       AND DATEDIFF(f.flightDepartureDate, CURDATE()) >= 0
                                       AND (b.totalPrice > IFNULL(p.totalPaid, 0)) AND b.accountId = '$accountId' 
@@ -252,24 +252,24 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                     </div>
                     <div class="side-content d-flex flex-column">
                       <?php
-                      $days15Query = "SELECT COUNT(*) AS bookingsDueIn15Days FROM booking b
-                                          JOIN flight f ON b.flightId = f.flightId
-                                          LEFT JOIN (SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) 
-                                                    AS totalPaid FROM payment GROUP BY transactNo) p ON b.transactNo = p.transactNo
-                                          WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) BETWEEN 6 AND 15
-                                          AND (b.totalPrice > IFNULL(p.totalPaid, 0)) AND b.accountId = '$accountId' 
-                                          AND b.status = 'Confirmed'";
+                        $days15Query = "SELECT COUNT(*) AS bookingsDueIn15Days FROM booking b
+                                            JOIN flight f ON b.flightId = f.flightId
+                                            LEFT JOIN (SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) 
+                                                      AS totalPaid FROM paymentc GROUP BY transactNo) p ON b.transactNo = p.transactNo
+                                            WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) BETWEEN 6 AND 15
+                                            AND (b.totalPrice > IFNULL(p.totalPaid, 0)) AND b.accountId = '$accountId' 
+                                            AND b.status = 'Confirmed'";
 
-                      // Execute the query
-                      $result = $conn->query($days15Query);
+                        // Execute the query
+                        $result = $conn->query($days15Query);
 
-                      // Check if the query returned a result
-                      if ($result->num_rows > 0) {
-                        $row = $result->fetch_assoc();
-                        $bookingsDueIn15Days = $row['bookingsDueIn15Days'];
-                      } else {
-                        $bookingsDueIn15Days = 0;  // Default to 0 if no records found
-                      }
+                        // Check if the query returned a result
+                        if ($result->num_rows > 0) {
+                          $row = $result->fetch_assoc();
+                          $bookingsDueIn15Days = $row['bookingsDueIn15Days'];
+                        } else {
+                          $bookingsDueIn15Days = 0;  // Default to 0 if no records found
+                        }
                       ?>
                       <h5><?php echo $bookingsDueIn15Days; ?></h5>
                       <p>15 DAYS BEFORE FLIGHT</p>
@@ -288,7 +288,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                         $days30Query = "SELECT COUNT(*) AS bookingsDueIn30Days FROM booking b 
                                             JOIN flight f ON b.flightId = f.flightId
                                             LEFT JOIN (SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) 
-                                                      AS totalPaid FROM payment GROUP BY transactNo) p 
+                                                      AS totalPaid FROM paymentc GROUP BY transactNo) p 
                                             ON b.transactNo = p.transactNo
                                             WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) BETWEEN 15 AND 30
                                             AND (b.totalPrice > IFNULL(p.totalPaid, 0)) AND b.accountId = '$accountId' 
@@ -320,7 +320,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                         $daysMoreThan30Query = "SELECT COUNT(*) AS bookingsOver30DaysAfterFlight FROM booking b 
                                             JOIN flight f ON b.flightId = f.flightId
                                             LEFT JOIN (SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) 
-                                                      AS totalPaid FROM payment GROUP BY transactNo) p 
+                                                      AS totalPaid FROM paymentc GROUP BY transactNo) p 
                                             ON b.transactNo = p.transactNo
                                             WHERE DATEDIFF(CURDATE(), f.flightDepartureDate) > 30
                                             AND (b.totalPrice > IFNULL(p.totalPaid, 0)) AND b.accountId = '$accountId' 
@@ -917,7 +917,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                                                 WHEN cl.companyId IS NOT NULL THEN cc.companyName 
                                                 ELSE br.branchName END
                                             ELSE 'Unknown' END AS `Account Name`
-                                        FROM payment p
+                                        FROM paymentc p
                                         JOIN booking b ON p.transactNo = b.transactNo
                                         LEFT JOIN agent a ON b.accountId = a.accountId
                                         LEFT JOIN company co ON a.companyId = co.companyId
@@ -1042,7 +1042,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                                     LEFT JOIN client cl ON b.accountId = cl.accountId
                                     LEFT JOIN company cc ON cl.companyId = cc.companyId
                                     LEFT JOIN 
-                                      (SELECT transactNo, SUM(amount) AS totalPaidAmount FROM payment
+                                      (SELECT transactNo, SUM(amount) AS totalPaidAmount FROM paymentc
                                         WHERE paymentStatus = 'Approved' GROUP BY transactNo) paid ON b.transactNo = paid.transactNo
                                     LEFT JOIN 
                                       (SELECT transactNo, SUM(requestCost) AS totalRequestCost FROM request
