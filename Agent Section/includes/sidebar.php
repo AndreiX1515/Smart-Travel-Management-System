@@ -10,7 +10,7 @@ $agentId = $_SESSION['agentId'];
 $agentCode = $_SESSION['agentCode'];
 $agentRole = $_SESSION['agentRole'];
 $agentType = $_SESSION['agentType'];
-$fName =  $_SESSION['agent_fName'] ?? '';
+$fName = $_SESSION['agent_fName'] ?? '';
 $lName = $_SESSION['agent_lName'] ?? '';
 $mName = $_SESSION['agent_mName'] ?? '';
 $branchId = $_SESSION['agent_branchId'] ?? '';
@@ -62,7 +62,7 @@ if ($result2->num_rows > 0) {
     $stmt3->close();
   } else {
     $companyName = null; // No company assigned
-  } 
+  }
 } else {
   // Only set "No Branch" if branchName is still empty
   if (empty($branchName)) {
@@ -74,8 +74,8 @@ $stmt2->close();
 // Format the full name in Last Name, First Name, Middle Name format
 $fullName = htmlspecialchars(trim(
   $lName .                         // Always include last name
-    ($fName ? ', ' . $fName : '') .  // Add first name with a comma if it's not empty
-    ($mName ? ' ' . substr($mName, 0, 1) . '.' : '') // Add middle name initial if it's not empty
+  ($fName ? ', ' . $fName : '') .  // Add first name with a comma if it's not empty
+  ($mName ? ' ' . substr($mName, 0, 1) . '.' : '') // Add middle name initial if it's not empty
 ));
 
 // Remove any trailing commas or extra spaces
@@ -87,138 +87,214 @@ date_default_timezone_set('Asia/Taipei');
 $current_date = date('D, F d, Y');
 ?>
 
+
+
 <div class="sidebar" id="sidebar">
-  <div class="main-sidebar">
-    <div class="logo">
-      <img src="../Assets/Logos/logo.png" alt="Smart Travel Logo">
-    </div>
 
-    <div class="dashboard-title">Menu</div>
+  <ul class="nav flex-column nav-logo-wrapper nav-logo-header">
+    <li class="nav-item nav-logo-item-wrapper">
+      <a class="nav-link logo-link" href="#">
+        <div class="logo-content">
+          <div class="logo-backdrop">
+            <img src="../Assets/Logos/logo-tab.png" alt="Logo" class="sidebar-logo">
+          </div>
+          <span class="fw-bold">SMART TRAVEL</span>
+        </div>
+      </a>
+    </li>
+  </ul>
 
-    <a href="../Agent Section/agent-dashboard.php" class="page-button home my-0 mb-1 " data-page-name="Dashboard">
-      <i class="fas fa-home"></i> <span> Home </span>
-    </a>
+  <ul class="nav flex-column">
 
-    <!-- <a href="../Agent Section/agent-revisedAddbooking.php" class="page-button add-booking mb-1 my-0" data-page-name="Add Booking - Packages"> 
-      <i class="fa-solid fa-user-plus"></i> <span> Add Booking </span>
-    </a> -->
+    <li class="nav-item">
+      <a class="nav-link page-button" href="../Agent Section/agent-dashboard.php" data-page-name="Dashboard">
+        <div class="icon-wrapper">
+          <div class="icon"><i class="fa-solid fa-house"></i></div>
+        </div>
+        <div class="label-wrapper">
+          <span class="label">Dashboard</span>
+        </div>
+      </a>
+    </li>
 
-    <!-- <a href="../Agent Section/agent-FIT.php" class="page-button add-FIT mb-1 my-0" data-page-name="Add Booking - F.I.T">
-      <i class="fa-solid fa-user-plus"></i> <span> Add F.I.T </span>
-    </a> -->
+    <!-- Packages -->
+    <li class="nav-item transaction">
+      <a class="nav-link page-button" href="../Agent Section/agent-transactions.php" data-page-name="Packages">
+        <div class="icon-wrapper">
+          <div class="icon"><i class="fa-solid fa-box"></i></div>
+        </div>
+        <div class="label-wrapper">
+          <span class="label" style="font-size: 14px;">Packages</span>
+        </div>
+      </a>
+    </li>
 
-    <div class="section-title" onclick="toggleSubMenu('transactiontable-submenu')">
-      Transactions <span class="chevron-icon fas fa-chevron-down"></span>
-    </div>
+    <!-- Guest List -->
+    <li class="nav-item transaction">
+      <a class="nav-link page-button" href="../Agent Section/agent-guestInformationList.php" data-page-name="Guest List">
+        <div class="icon-wrapper">
+          <div class="icon"><i class="fa-solid fa-users"></i></div>
+        </div>
+        <div class="label-wrapper">
+          <span class="label" style="font-size: 14px;">Guest List</span>
+        </div>
+      </a>
+    </li>
 
-    <div class="submenu open" id="transactiontable-submenu">
-      <a href="../Agent Section/agent-transactions.php" class="page-button my-0" data-page-name="Packages - Transactions table">
-        <i class="fas fa-file-invoice"></i> Packages
+    <!-- Request -->
+    <li class="nav-item transaction">
+      <a class="nav-link page-button" href="../Agent Section/agent-requestHistory.php" data-page-name="Request">
+        <div class="icon-wrapper">
+          <div class="icon"><i class="fa-solid fa-envelope-open-text"></i></div>
+        </div>
+        <div class="label-wrapper">
+          <span class="label" style="font-size: 14px;">Request</span>
+        </div>
+      </a>
+    </li>
+
+    <!-- Payment -->
+    <li class="nav-item transaction">
+      <a class="nav-link page-button" href="../Agent Section/agent-paymentHistory.php" data-page-name="Payment">
+        <div class="icon-wrapper">
+          <div class="icon"><i class="fa-solid fa-money-bill-wave"></i></div>
+        </div>
+        <div class="label-wrapper">
+          <span class="label" style="font-size: 14px;">Payment</span>
+        </div>
+      </a>
+    </li>
+
+    <!-- Rooming List -->
+    <li class="nav-item transaction">
+      <a class="nav-link page-button" href="../Agent Section/agent-roomingList.php" data-page-name="Rooming List">
+        <div class="icon-wrapper">
+          <div class="icon"><i class="fa-solid fa-bed"></i></div>
+        </div>
+        <div class="label-wrapper">
+          <span class="label" style="font-size: 14px;">Rooming List</span>
+        </div>
+      </a>
+    </li>
+
+    <!-- SOA -->
+    <li class="nav-item transaction">
+      <a class="nav-link page-button" href="../Agent Section/agent-soa.php" data-page-name="SOA">
+        <div class="icon-wrapper">
+          <div class="icon"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+        </div>
+        <div class="label-wrapper">
+          <span class="label" style="font-size: 14px;">SOA</span>
+        </div>
+      </a>
+    </li>
+
+    <!-- Reports -->
+    <li class="nav-item transaction">
+      <a class="nav-link page-button" href="../Agent Section/agent-reports.php" data-page-name="Reports">
+        <div class="icon-wrapper">
+          <div class="icon"><i class="fa-solid fa-chart-line"></i></div>
+        </div>
+        <div class="label-wrapper">
+          <span class="label" style="font-size: 14px;">Reports</span>
+        </div>
+      </a>
+    </li>
+
+
+
+
+    <!-- Transactions -->
+    <!-- <li class="nav-item dropdown">
+      <a class="nav-link page-button" href="#" data-bs-toggle="collapse" data-bs-target="#manageBookingMenu"
+        aria-expanded="false" aria-controls="manageBookingMenu" data-page-name="Operationals">
+        <div class="icon-wrapper">
+          <div class="icon"><i class="fa-solid fa-arrow-right-arrow-left"></i></div>
+        </div>
+        <div class="label-wrapper">
+          <span class="label">Transactions</span>
+        </div>
       </a>
 
-      <a href="../Agent Section/agent-guestInformationList.php" class="page-button my-0" data-page-name="Guest Information List">
-        <i class="fa-solid fa-table-list"></i> Guest List
-      </a>
-
-      <a href="../Agent Section/agent-requestHistory.php" class="page-button my-0" data-page-name="Request History">
-        <i class="fa-solid fa-cart-plus"></i> Request
-      </a>
-
-      <a href="../Agent Section/agent-paymentHistory.php" class="page-button my-0" data-page-name="Payment History">
-        <i class="fa-solid fa-money-check-dollar"></i> Payment
-      </a>
-
-      <a href="../Agent Section/agent-roomingList.php" class="page-button my-0" data-page-name="Rooming Assignment">
-        <i class="fa-solid fa-newspaper"></i> Rooming List
-      </a>
-
-      <a href="../Agent Section/agent-soa.php" class="page-button my-0" data-page-name="Rooming Assignment">
-        <i class="fas fa-file-invoice"></i> SOA
-      </a>
-
-      <a href="../Agent Section/agent-reports.php" class="page-button my-0" data-page-name="Rooming Assignment">
-        <i class="fas fa-file-invoice"></i> Reports
-      </a>
-
-      <!-- <a href="../Agent Section/agent-FIT-table.php" class="page-button my-0" data-page-name="F.I.T - Transactions Table" style="font-size: 14px;">
-        <i class="fas fa-file-invoice"></i> F.I.T 
-      </a>  -->
-    </div>
-
-    <!-- <div class="section-title" onclick="toggleSubMenu('operational-submenu')">
-      Reports <span class="chevron-icon fas fa-chevron-down"></span>
-    </div>
-
-    <div class="submenu open" id="operational-submenu">
-      <a href="../Agent Section/agent-itenerary.php" class="page-button" data-page-name="Itinerary">
-        <i class="fas fa-map"></i> Itinerary
-      </a>
-
-      <a href="../Agent Section/agent-soa2.php" class="page-button" data-page-name="Statement of Accounts (SOA) - Packages">
-        <i class="fas fa-file-invoice-dollar"></i> SOA - Packages
-      </a>
-
-      <a href="../Agent Section/agent-fitSOA - rename.php" class="page-button" data-page-name="Statement of Accounts (SOA) - F.I.T">
-        <i class="fas fa-file-invoice-dollar"></i> SOA - F.I.T
-      </a>
-
-      <a href="../Agent Section/agent-ticket.php" class="page-button" data-page-name="Ticket">
-        <i class="fas fa-ticket"></i> Ticket
-      </a>
-
-      <a href="../Agent Section/agent-transactions.php" class="page-button" data-page-name="Voucher">
-        <i class="fas fa-gift"></i> Voucher
-      </a>
-    </div> -->
-
-    <!-- <a href="../Agent Section/agent-FIT-table.php" class="page-button my-0" data-page-name="F.I.T - Transactions Table" style="font-size: 14px;">
-          <i class="fas fa-file-invoice"></i> F.I.T 
-        </a> -->
-
-  </div>
-
-  <div class="profile-wrapper">
-    <div class="concern-section mb-4">
-
-      <div class="section-title" onclick="toggleSubMenu('concerntable-submenu')">
-        Concerns <span class="chevron-icon fas fa-chevron-down"></span>
+      <div class="collapse" id="manageBookingMenu">
+        <ul class="nav flex-column managebooking-menu-wrapper">
+          <li class="nav-item transaction mb-0">
+            <a class="nav-link page-button" href="../Employee Section/emp-tablePending.php"
+              data-page-name="For Approvals - Booking">No Downpayment</a>
+          </li>
+          <li class="nav-item mb-0">
+            <a class="nav-link page-button" href="../Employee Section/emp-tableRequest.php"
+              data-page-name="For Approvals - Request">Request</a>
+          </li>
+          <li class="nav-item mb-0">
+            <a class="nav-link page-button" href="../Employee Section/emp-tablePayment.php"
+              data-page-name="For Approvals - Payment">Payment</a>
+          </li>
+        </ul>
       </div>
+    </li> -->
 
-      <div class="submenu open" id="concerntable-submenu">
-        <a href="#" class="page-button my-0" data-bs-toggle="modal" data-bs-target="#raiseTicketModal">
-          <i class="fas fa-ticket-alt"></i> Raise a Ticket
-        </a>
+  </ul>
 
-        <a href="#" class="changePassword page-button my-0" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
-          <i class="fas fa-lock"></i> Change Password
-        </a>
-      </div>
+  <div class="logout">
+    <!-- <div class="separator"></div> -->
 
-      <?php include '../Agent Section/includes/logoutViewPassModal.php'; ?>
-
-    </div>
-
-    <!-- Profile Section -->
     <div class="profile-section">
-      <!-- <div class="profile-icon">
-        <i class="fas fa-user-circle"></i>
-      </div> -->
-      <div class="profile-details">
-        <h6 class="profile-name"><?php echo $fullName; ?></h>
-          <p class="profile-role mt-1">
-            <span><?php echo htmlspecialchars(!empty($companyName) ? $companyName : $branchName);  ?> </span>
-          </p>
+      <div class="profile-left" id="profileLeft">
+        <div class="name" style="font-size: <?php echo (strlen($fullName) >= 13) ? '14px' : '17px'; ?>;">
+          <?php echo $fullName; ?>
+        </div>
+        <div class="empid fw-bold text-light" style="font-size: 14px;">
+          Branch: <span class="fw-normal text-light"><?php echo $branchName; ?></span>
+        </div>
       </div>
+      <!-- <div class="profile-icon profile-icon-visible">
+        <i class="fa-solid fa-user-circle"></i>
+      </div> -->
     </div>
 
 
-    <div class="logout-wrapper">
-      <a href="#" class="page-button logout" data-page-name="" data-bs-toggle="modal" data-bs-target="#logoutModal">
-        <i class="fas fa-sign-out-alt"></i> <span>Logout</span>
+    <div class="nav-item" id="raiseTicketWrapper">
+      <a class="nav-link" id="raiseTicket" href="#">
+        <div class="icon-wrapper">
+          <div class="icon" id="raiseTicketIcon">
+            <i class="fas fa-ticket-alt"></i>
+          </div>
+        </div>
+        <div class="label-wrapper">
+          <span class="label">Raise Ticket</span>
+        </div>
+      </a>
+    </div>
+
+    <div class="nav-item">
+      <a class="nav-link" id="changePasswordLink" href="#">
+        <div class="icon-wrapper">
+          <div class="icon" id="changePasswordIcon">
+            <i class="fas fa-key"></i>
+          </div>
+        </div>
+        <div class="label-wrapper">
+          <span class="label">Change Password</span>
+        </div>
+      </a>
+    </div>
+
+    <div class="nav-item" id="logoutWrapper">
+      <a class="nav-link" id="logout-link" data-bs-toggle="modal" data-bs-target="#logoutModal">
+        <div class="icon-wrapper">
+          <div class="icon" id="logoutIcon">
+            <i class="fa-solid fa-right-from-bracket"></i>
+          </div>
+        </div>
+        <div class="label-wrapper">
+          <span class="label">Logout</span>
+        </div>
       </a>
     </div>
 
   </div>
+
 </div>
 
 
@@ -250,7 +326,8 @@ $current_date = date('D, F d, Y');
 
           <div class="alert alert-info mt-3" id="userCountContainer-note" style="display: none; font-size: 14px;">
             <p class="mb-1"><strong>Please provide user credentials using the template below:</strong></p>
-            <p class="mb-1"><strong>- Full Name <span style="font-weight: 400;">(First Name, Last Name, Middle Name, Suffix)</span>:</strong> </p>
+            <p class="mb-1"><strong>- Full Name <span style="font-weight: 400;">(First Name, Last Name, Middle Name,
+                  Suffix)</span>:</strong> </p>
             <p class="mb-1"><strong>- Company Name:</strong></p>
             <p class="mb-1"><strong>- Contact Number:</strong></p>
             <p class="mb-3"><strong>- Email:</strong></p>
@@ -261,7 +338,7 @@ $current_date = date('D, F d, Y');
 
           <!-- JS for Number of Users -->
           <script>
-            document.getElementById("concernType").addEventListener("change", function() {
+            document.getElementById("concernType").addEventListener("change", function () {
               var userCountContainer = document.getElementById("userCountContainer");
               var userCountContainerNote = document.getElementById("userCountContainer-note");
               var ticketPriority = document.getElementById("ticketPriority");
@@ -381,7 +458,7 @@ $current_date = date('D, F d, Y');
 <!-- <script>
 $(document).ready(function () {
     let accountId = 
-    <?php 
+    <?php
     // echo $accountId; 
     ?>;
 
@@ -483,8 +560,8 @@ $(document).ready(function () {
 
 <!-- Ticket Submission Script -->
 <script>
-  $(document).ready(function() {
-    $("#ticketForm").submit(function(event) {
+  $(document).ready(function () {
+    $("#ticketForm").submit(function (event) {
       event.preventDefault(); // Prevent default form submission
 
       console.log("Form submission triggered."); // Debugging
@@ -519,10 +596,10 @@ $(document).ready(function () {
         url: "../Agent Section/functions/agent-processTicket.php", // Change to your server-side script
         data: formData,
         dataType: "json",
-        beforeSend: function() {
+        beforeSend: function () {
           console.log("AJAX request is about to be sent..."); // Debugging
         },
-        success: function(response) {
+        success: function (response) {
           console.log("AJAX success response:", response); // Debugging
 
           if (response.status === "success") {
@@ -545,7 +622,7 @@ $(document).ready(function () {
             console.error("Server returned an error:", response.message); // Debugging
           }
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
           alert("An error occurred while submitting the ticket.");
           console.error("AJAX error:", status, error); // Debugging
           console.log("Response Text:", xhr.responseText); // Debugging
@@ -554,7 +631,7 @@ $(document).ready(function () {
     });
 
     // Show/Hide Fields Based on Concern Selection
-    $("#concernType").change(function() {
+    $("#concernType").change(function () {
       console.log("Concern type changed to:", $(this).val()); // Debugging
 
       if ($(this).val() === "Request for Additional User") {
@@ -592,7 +669,7 @@ $(document).ready(function () {
   }
 
   // Optionally: Automatically open the submenu when the page loads (Transaction submenu is open by default in this case)
-  document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('DOMContentLoaded', function () {
     const transactionSubmenu = document.getElementById('transactiontable-submenu');
     const transactionChevron = document.querySelector('#transactiontable-submenu').previousElementSibling.querySelector('.chevron-icon');
 
@@ -601,4 +678,3 @@ $(document).ready(function () {
     transactionChevron.style.transform = 'rotate(180deg)';
   });
 </script>
-

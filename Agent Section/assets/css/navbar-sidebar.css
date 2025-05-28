@@ -1,492 +1,613 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap');
+
 
 * {
-  font-family: "Poppins", sans-serif;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+ font-family: 'Inter', 'Helvetica Neue', 'Segoe UI', Arial, sans-serif;
 }
+
 
 body {
-  background-color: #ffffff;
-  font-size: 16px;
-  color: #333333;
+  background-color: rgba(255, 255, 255, 0.137);
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
 }
-
-/* Headings */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-weight: 600;
-  color: #333333;
-  margin-bottom: 10px;
-}
-
-h1 {
-  font-size: 2.5em;
-}
-
-h2 {
-  font-size: 2em;
-}
-
-h3 {
-  font-size: 1.75em;
-}
-
-/* Links */
-a {
-  text-decoration: none;
-  color: #007bff;
-}
-
-a:hover {
-  color: #0056b3;
-}
-
 
 /* Main Container */
-.body-container {
+.main-container {
+  flex: 1;
+  padding: 0 15px 0 25px;
+  background-color: rgba(245, 246, 248, 0.137);
   display: flex;
-  justify-content: space-between;
-  width: 100%; /* Full width of the viewport */
-  height: 100vh; /* Full height of the viewport */
-  box-sizing: border-box; /* Ensure padding doesn't overflow */
-  padding: 0px; /* Remove padding to prevent unnecessary spacing */
+  flex-direction: row;
   overflow: hidden;
-  background-color: #343a40;
 }
 
 /* Sidebar Styling */
 .sidebar {
-  width: 10%; /* Sidebar takes up 12% of the width */
-  height: 100vh; /* Full height of the viewport */
-  padding: 0px 13px;
-  box-sizing: border-box;
-  background-color: #343a40;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between; /* Pushes the profile to the bottom */
-}
-
-/* Sidebar Logo */
-.sidebar .logo {
-  margin-top: 20px;
-  /* border: 1px solid black; */
-  margin-bottom: 15px;
-}
-
-/* Sidebar img */
-.sidebar img {
-  width: 100%;
-  object-fit: contain;
-  padding: 15px 30px 15px 15px;
-}
-
-.main-sidebar .dashboard-title {
-  color: #858585; /* Lighter gray text for section titles */
-  font-size: 0.85rem;
-  color: #858585; /* Lighter gray text for section titles */
-  font-weight: 500;
-  text-transform: uppercase;
-  margin-bottom: 10px;
-}
-
-/* Section Titles */
-.sidebar .section-title {
-  font-size: 0.85rem;
-  color: #858585; /* Lighter gray text for section titles */
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin: 25px 0 0px;
-  cursor: pointer;
-  padding: 5px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  transition: background-color 0.2s ease;
-  /* border: 1px solid black; */
-}
-
-/* Chevron Icon */
-.chevron-icon {
-  transition: transform 0.3s ease;
-}
-
-.sidebar .section-title .chevron-icon {
-  font-size: 0.9rem;
-  color: #adb5bd; /* Default chevron color */
-}
-
-/* Links inside the Sidebar */
-.sidebar a {
-  display: flex;
-  align-items: center;
-  padding: 10px 12px;
-  border-radius: 6px;
-  color: #e9ecef; /* Light color for links */
-  text-decoration: none;
-  font-size: 0.85rem;
-  transition: background-color 0.2s ease, color 0.2s ease;
-}
-
-.sidebar a:hover {
-  background-color: #495057; /* Darker background on hover */
-  color: #ffffff; /* White text on hover */
-}
-
-
-/* Submenu styles */
-.sidebar .submenu.open + .section-title .chevron-icon {
-  transform: rotate(180deg); /* Rotate the chevron when submenu is open */
-}
-
-/* Links inside Submenu */
-.sidebar .submenu a {
-  display: flex;
-  align-items: left;
-  padding: 10px 5px;
-  border-radius: 6px;
-  color: #e9ecef; /* Light color for submenu links */
-  text-decoration: none;
-  font-size: 0.85rem;
-  transition: background-color 0.2s ease, color 0.2s ease;
-  /* border: 1px solid black; */
-}
-
-.sidebar .submenu a:hover {
-  background-color: #495057; /* Darker background on hover */
-  color: #ffffff; /* White text on hover */
-}
-
-/* Home Button */
-.sidebar .home {
-  padding: 10px 12px;
-  border-radius: 6px;
-  border: 1px solid #dcdcdc; /* Soft gray border */
-  color: #333333; /* Dark text for better contrast */
-  background-color: #f5f5f5; /* Light gray background */
-  text-decoration: none;
-  font-size: 0.85rem;
-  font-weight: 600;
-  text-align: center;
-  transition: background-color 0.2s ease, color 0.2s ease, border 0.2s ease;
-}
-
-.sidebar .home i {
-  color: #474747; /* Light text on hover */
-}
-
-.sidebar .home:hover {
-  background-color: #e0e0e0; /* Slightly darker gray on hover */
-  color: #ffffff; /* Light text on hover */
-  border: 1px solid #b0b0b0; /* Darker border on hover */
-}
-
-/* Add Booking Button */
-.sidebar .add-booking {
-  padding: 10px 12px;
-  border-radius: 6px;
-  color: #ffffff;
-  background-color: #c62828; /* Deep red background */
-  text-decoration: none;
-  font-size: 0.95rem;
-  font-weight: 600;
-  text-align: center;
-  transition: background-color 0.2s ease, color 0.2s ease;
-}
-
-.sidebar .add-booking i {
-  color: #ffffff;
-  margin-right: 8px;
-}
-
-.sidebar .add-booking:hover {
-  background-color: #b71c1c; /* Darker red on hover */
-  color: #e9ecef; /* Light text on hover */
-}
-
-/* Add FIT Button */
-.sidebar .add-FIT {
-  padding: 10px 12px;
-  border-radius: 6px;
-  color: #ffffff;
-  background-color: #0163d4; /* Turquoise background */
-  text-decoration: none;
-  font-size: 0.95rem;
-  font-weight: 600;
-  text-align: center;
-  transition: background-color 0.2s ease, color 0.2s ease;
-}
-
-.sidebar .add-FIT:hover {
-  background-color: #00648c; /* Darker turquoise on hover */
-  color: #e9ecef; /* Light text on hover */
-}
-
-.sidebar .add-FIT i {
-  color: #ffffff;
-  margin-right: 8px;
-}
-
-/* Icon styles */
-.sidebar i {
-  margin-right: 8px;
-  color: #adb5bd; /* Lighter gray icons */
-}
-
-/* Submenu visibility */
-.sidebar .submenu {
-  display: none;
-  padding-left: 0px;
-  margin-top: 10px;
-}
-
-.sidebar .submenu.open {
-  display: block;
-}
-
-
-/* Profile Section */
-.sidebar .profile-section {
-  display: flex;
-  gap: 2px;
-  justify-content: left; /* Push items to opposite ends */
-  align-items: center; /* Vertically align content */
-  padding: 5px 10px 5px 10px;
-  background-color: #495057; /* Dark gray background */
-  border-radius: 8px;
-  margin: 10px 0;
-  height: 8vh; /* Adjust height dynamically */
-}
-
-.sidebar .profile-wrapper {
-  display: flex;
-  flex-direction: column;
-  margin: 5px 0px 10px 0px;
-  /* border: 1px solid black; */
-}
-
-.sidebar .profile-section .profile-icon {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  /* border: 1px solid black; */
-  padding: 20px 0px;
-}
-
-.sidebar .profile-section .profile-icon i {
-  font-size: 36px; /* Adjust icon size */
-  color: #ffffff;
-}
-
-.sidebar .profile-section .profile-details {
-  width: 100%;
-  display: flex;
-  flex-direction: column; /* Stack items vertically */
-  justify-content: left; /* Align vertically */
-  align-items: start;
-  color: #ffffff;
-  line-height: 1; /* Adjust line spacing for better readability */
-  margin: 0;
-  padding: 10px 0px;
-  /* border: 1px solid black; */
-}
-
-.sidebar .profile-section .profile-details .profile-name {
-  font-size: 12px;
-  font-weight: bold;
-  margin: 0;
-  color: #ffffff;
-}
-
-.sidebar .profile-section .profile-details .profile-role {
-  font-size: 12px;
-  color: #adb5bd;
-  margin: 0;
-}
-
-.logout-wrapper {
-  width: 100%; /* Full width */
-}
-
-
-
-
-.page-button.logout {
-  display: flex; /* Use flexbox to align icon and text */
-  align-items: center; /* Vertically center the icon and text */
-  padding: 10px 15px; /* Adjust padding as needed */
-  text-align: left; /* Align text to the left */
-  background-color: #343a40; /* Dark background color */
-  color: #ffffff; /* White text */
-  border: 1px solid rgba(220, 220, 220, 0.822); /* Light border */
-  text-decoration: none; /* Remove underline */
-  font-size: 16px;
-  border-radius: 5px; /* Rounded corners */
-  margin-bottom: 10px;
-}
-
-.page-button.logout i {
-  margin-right: 10px; /* Add space between icon and text */
-}
-
-.page-button.logout:hover {
-  background-color: #495057; /* Lighter shade of the main color (#343a40) */
-  color: white; /* White text on hover */
-}
-
-/* Main Content Styling */
-.main-content-container {
-  width: 90%;
   height: 100vh;
-  margin: 10px 0px;
-  box-sizing: border-box;
-  overflow-y: auto;
-  border-top-left-radius: 15px;
-  border: 1px solid gainsboro;
+  width: 220px;
+  background-color: #343A40;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 1000;
+  padding: 0px 0px;
+}
+
+/* Main Content */
+.main-content {
+  margin-top: 6vh;
+  width: 100%;
+  padding: 0 10px 0 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  gap: 0px; /* Add spacing between internal sections */
+}
+
+
+.content-container {
   display: flex;
   flex-direction: column;
   gap: 5px;
-  background-color: #ffffff;
-  padding: .7% 1%;
-}
-
-.main-content {
-  width: 100%;
-  height: 92vh;
-  margin-top: 6vh;
   /* border: 1px solid black; */
 }
 
 
-/* Navbar Styles */
+
+
+
+
+
 .navbar {
   display: flex;
-  align-items: center;
-  justify-content: start;
-  height: 7vh;
-  width: 87.5%;
-  padding: 15px 0px 15px 0px;
+  align-items: stretch; /* Stretch children vertically */
+  justify-content: flex-start; /* Align children to the start horizontally */
+  height: 6vh;
+  width: 100%;
+  padding: 0px 0px; /* Remove excess padding for more precise layout */
   position: fixed;
-  top: 11px;
-  background-color: white;
+  top: 0;
+  background-color: #ffffff;
   z-index: 1000;
+  /* border-bottom: 1px solid gainsboro; */
+  /* border: 1px solid black; */
+  box-sizing: border-box;
   /* border: 1px solid black; */
 }
 
 
-/* Navbar Title Styles */
-.navbar-title {
-  font-size: 0.85rem;
-  color: #6c757d; /* Muted section title */
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-top: 7px;
-  /* margin: 15px 30px 0 0; */
-  cursor: pointer;
-  padding: 10px;
-  transition: background-color 0.2s ease;
+
+
+/* ================ Miscellaneous ==================== */
+.separator {
+    border-top: 1px solid rgba(220, 220, 220, 0.493);
+    margin: 0px 10px;
+  }
+
+
+/* ================ Sidebar ==================== */
+/* Sidebar icons */
+.sidebar .icon {
+  display: flex;
+  justify-content: center; /* Center icons horizontally */
+  align-items: center; /* Center icons vertically */
+  height: 50px;
+  width: 50px;
+  color: white;
+  font-size: 20px;
+  /* transition: transform 0.3s ease, color 0.3s ease; Smooth icon transition */
 }
 
-/* Navbar Title Text Color */
-.navbar-title h5 {
-  color: rgb(58, 58, 58);
+/* Sidebar labels */
+.sidebar .label {
+  opacity: 1;
+  margin-left: 10px;
+  font-size: 14px;
+  color: white;
 }
 
-
-.navbar-back-wrapper {
+/* Sidebar logo styling */
+.sidebar-logo-section {
   display: flex;
   align-items: center;
-  gap: 12px;
+  justify-content: flex-start;
+  color: white;
+  width: 100%;
+  white-space: nowrap;
+  margin-bottom: 15px;
 }
 
-.back-button {
+.sidebar .nav-item {
+  position: relative;
+  width: 100%;
+  margin-bottom: 6px;
+  /* border: 1px solid black; */
+  padding: 0;
+}
+
+
+
+/* Logo link structure */
+.nav-link.logo-link {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  color: white;
+  text-decoration: none;
+  width: 100%;
+  padding: 5px 20px;
+  transition: background-color 0.3s ease;
+}
+
+.nav-link.logo-link:hover {
+  background-color: #495057;
+  cursor: default;
+}
+
+
+.nav-logo-wrapper {
+  margin-top: 10px;
+}
+
+.nav-logo-item-wrapper {
+  padding: 5px 0;
+  display: flex;
+  align-items: flex-start;
+}
+
+
+/* Logo content layout */
+.logo-content {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  width: 100%;
+  margin-left: 2.5px;
+}
+
+/* Icon container */
+.logo-backdrop {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
+  min-width: 35px;
+}
+
+/* Logo image */
+.sidebar-logo {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+/* Logo text (default hidden) */
+.logo-content span {
+  display: inline;
+  font-size: 0.85rem;
+  line-height: 1;
+  font-weight: bold;
+  color: white;
+  white-space: nowrap;
+  opacity: 1;
+}
+
+/* Push logout to the bottom */
+.sidebar .logout {
+  margin-top: auto;
+}
+
+.profile-section {
+  display: flex;
+  /* justify-content: space-between; */
+  align-items: flex-start;
+  padding: 10px 15px;
+  margin: 10px 5px;
+  border-radius: 5px;
   background-color: transparent;
-  color: #444;
+  transition: background-color 0.3s ease;
+  border: 1px solid rgba(220, 220, 220, 0.493);
+}
+
+.profile-left {
+  display: flex; /* Hidden by default */
+  flex-direction: column;
+  color: white;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.profile-left.show {
+  display: flex;
+  opacity: 1;
+}
+
+
+.profile-left .name {
   font-size: 18px;
-  text-decoration: none;
-  border: 1px solid #ccc;
-  transition: all 0.3s ease;
+  font-weight: bold;
 }
 
-.back-button:hover {
-  background-color: #444;
-  color: #fff;
-  transform: scale(1.05);
-}
-
-.page-title {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 500;
-  color: #222;
-}
-
-
-.header-title {
-  font-size: 1.1rem;
-  color: #3a3a3a;
-  font-weight: 600;
-  margin: 0;
-}
-
-.header-description {
+.profile-left .position {
   font-size: 14px;
-  color: #555;
+}
+
+.profile-icon {
+  font-size: 1.5rem;
+  color: white;
+  background-color: transparent;
+  margin-left: -5px;
+}
+
+
+
+
+
+
+
+/*==========================
+  Sidebar Dropdown Styling
+===========================*/
+
+/* Dropdown toggle (e.g., parent item) */
+.sidebar .nav-item .dropdown-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+  padding: 10px 16px;
+  cursor: pointer;
+  color: white;
+  width: 100%;
+  background: none;
+  border: none;
+}
+
+/* Dropdown container */
+.sidebar .collapse {
+  display: none;
+  background-color: #495057;
+  padding-left: 10%;
+  margin-left: 0% !important;
+  border: none;
+  height: auto;
+  overflow: hidden;
+}
+
+/* Show dropdown on hover */
+.sidebar .nav-item.dropdown:hover .collapse {
+  display: block;
+}
+
+/* Dropdown item links */
+.sidebar .collapse .nav-link {
+  color: white;
+  font-size: 14px;
+  padding: 8px 10px 8px 0px;
+  position: relative;
+  text-decoration: none;
+  border-radius: 4px;
+  width: 100%;
+  display: block;
+  transition: background-color 0.3s ease;
+  /* border: 1px solid black; */
   margin: 0;
+
+}
+
+/* Hover effect for dropdown items */
+.sidebar .collapse .nav-link:hover {
+  background-color: #6c757d;
+}
+
+/* Red accent bar on hover */
+.sidebar .collapse .nav-link:hover::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 5px;
+  background-color: red;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+
+
+/* 
+.managebooking-menu-wrapper .nav-item {
+  margin-bottom: 0px; 
+}
+
+
+.managebooking-menu-wrapper .nav-item:last-child {
+  margin-bottom: 0px;
+}
+
+
+.report-menu-wrapper .nav-item {
+  margin-bottom: 0px; 
+}
+
+
+.report-menu-wrapper .nav-item:last-child {
+  margin-bottom: 0px;
+} */
+
+
+
+/*==========================
+  Profile Dropdown Styling
+===========================*/
+
+/* Remove default arrow from profile dropdown */
+.profile-dropdown .dropdown-toggle::after {
+  display: none;
+}
+
+/* Profile icon style */
+.profile-icon {
+  font-size: 1.5rem;
+  color: #ffffff;
+}
+
+/* Align dropdown menu to the right */
+.dropdown-menu-end {
+  right: 0;
+  left: auto;
+}
+
+/* Limit dropdown width and handle overflow */
+.dropdown-menu {
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Hide profile details when sidebar is collapsed
+.sidebar:not(:hover) .profile-left {
+  display: none;
+}
+ */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Sidebar container item */
+.sidebar .nav-item {
+  position: relative;
+  width: 100%;
+  margin-bottom: 4px;
+}
+
+.collapse-nav-link {
+  margin-bottom: 0px;
 }
 
 
 
-/* ✅ Responsive Tweaks */
-@media (max-width: 600px) {
-  .navbar {
-    padding: 8px 12px;
-  }
 
-  .back-button {
-    width: 32px;
-    height: 32px;
-    font-size: 16px;
-  }
+/* Sidebar link styles */
+.sidebar .nav-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  color: white;
+  text-decoration: none;
+  padding: 0px 15px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  border-radius: 4px;
+  /* transition: background-color 0.3s ease, color 0.3s ease; */
+  box-sizing: border-box; /* Ensure padding doesn't affect layout */
+  /* border: 1px solid rgba(220, 220, 220, 0.493); */
+}
 
-  .page-title {
-    font-size: 16px;
-  }
+/* Adjust placement of the entire link slightly to the left */
+.sidebar .nav-item .nav-link {
+  padding-left: 10px;  /* Further reduced left padding to shift the item more to the left */
+}
+
+/* Hover effect */
+.sidebar .nav-link:hover {
+  background-color: #495057;
+}
+
+/* Icon wrapper alignment */
+.icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 35px;
+}
+
+.icon-wrapper {
+  width: 40px; /* Match the size proportionately */
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  font-size: 18px; /* Icon size */
+  color: #495057; /* Icon color */
+  /* transition: transform 0.2s ease, box-shadow 0.2s ease; Smooth hover effect */
+}
+
+/* Icon styling - refined (no circle or padding) */
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  width: auto;
+  height: auto;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.icon i {
+  font-size: 16px;
+}
+
+/* Label wrapper */
+.label-wrapper {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  padding-left: 6px; /* Reduced padding for tighter left alignment */
+  /* border: 1px solid black; */
+  padding: 10px 3px;
+}
+
+/* Label text */
+.label {
+  font-size: 0.85rem;
+  line-height: 1.1;
+  white-space: nowrap;
+  color: white;
+}
+
+/* Individual icon colors */
+#raiseTicketIcon i {
+  color: #116530;
+}
+
+#changePasswordIcon i {
+  color: #ff9800;
+}
+
+/* Ensuring a smaller font size for the label in #changePasswordIcon */
+#changePasswordIcon .label-wrapper .label {
+  font-size: 0.65rem !important;  /* Force the smaller font size */
+}
+
+#logoutIcon i {
+  color: #dc3545;
+}
+
+/* Active link (optional) */
+.sidebar .nav-link.active {
+  background-color: #11653033;
+  font-weight: 600;
 }
 
 
+
+
+
+
+/* 
+
+.nav-logo-item-wrapper:hover {
+  background-color: transparent !important; 
+  cursor: default !important; 
+}
+
+
+.nav-logo-wrapper .logo-link:hover {
+  background-color: transparent !important; 
+  color: inherit !important; 
+}
+
+
+.logout .nav-item:hover {
+  background-color: #495057; 
+  cursor: pointer; 
+} */
+
+
+
+
+/* Sidebar Logo*/
+
+.nav-logo-header {
+  width: 100%;
+  margin-top: 0px;
+  margin-bottom: 10px;
+  padding: 15px 0px 15px 0px;
+  padding-left: 4px;
+
+  display: flex;
+  justify-content: center; /* Horizontally center child elements */
+  align-items: center;      /* Vertically center child elements */
+  box-sizing: border-box;   /* Ensure padding is included in width */
+
+  /* border: 1px solid black; */
+}
+
+.nav-logo-wrapper a:hover {
+  background-color: transparent !important; 
+  color: inherit !important; 
+
+}
+
+
+
+
+
+
+
+
+
+
+
+/* ===================== */
+/* Navbar Styles */
 
 
 
 /* Wrapper for the whole header section */
 .page-header-wrapper {
-  height: 100%; /* Ensures the wrapper takes up full height */
   display: flex;
+  align-items: stretch; 
   gap: 10px;
+  height: 100%; 
+  width: 100%;
   /* border: 1px solid black; */
+  box-sizing: border-box;
 }
 
-/* Top row with the back button */
+/* Section for back button or similar */
 .page-header-top {
-  height: 100%; /* Stretches to fill the wrapper */
   display: flex;
-  align-items: flex-end;
-  justify-content: center;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  height: 100%;
   /* border: 1px solid black; */
+  box-sizing: border-box;
 }
+
+/* Section for main header content */
+.page-header-content {
+  flex: 1; /* Take remaining space */
+  display: flex;
+  justify-content: flex-start; /* Align content to start */
+  align-items: center; /* Center vertically */
+  height: 100%;
+  /* border: 1px solid black; */
+  box-sizing: border-box;
+}
+
 
 /* Back button container */
 .back-btn-wrapper {
@@ -516,46 +637,29 @@ a:hover {
   color: white;
 }
 
+
 /* Content section */
-.page-header-content {
-  width: 100%;
-  height: 100%; /* Adapt full height of parent */
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  /* border: 1px solid black; */
-  box-sizing: border-box; /* Ensures padding and border don't exceed height */
-}
-
-
 .page-header-text {
   display: flex;
   flex-direction: column;
   gap: 5px;
   /* border: 1px solid black; */
-  margin-bottom: 5px;
+  /* margin-bottom: 5px;
+  margin-left: 5px; */
+}
+
+.page-header-text .header-title {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #333;
   margin-left: 5px;
+  margin-top: 8px;
 }
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/* =========================== */
 /* Change Password Modal - Minimalist Style */
 #changePasswordModal .modal-content {
   border-radius: 8px;
@@ -724,12 +828,6 @@ a:hover {
   font-weight: 600;
 }
 
-
-
-
-
-
-
 #messageAlert {
   display: none;
   justify-content: center;
@@ -739,7 +837,7 @@ a:hover {
   font-size: 14px;
   font-weight: 500; 
   width: 100%; 
-  margin: 15px 0px 5px 0px; 
+  margin: 5px 0px 5px 0px; 
   background-color: #f0f0f0; 
   color: #333;
   border: 1px solid #ddd; 
@@ -757,7 +855,6 @@ a:hover {
   opacity: 0;
   transform: translateY(-10px); /* Hide with a slight upward motion */
 }
-
 
 
 #otpAlert {
@@ -787,17 +884,6 @@ a:hover {
   opacity: 0;
   transform: translateY(-10px); /* Hide with a slight upward motion */
 }
-
-
-
-
-
-
-
-
-
-
-
 
 #otpFieldContainer {
   display: flex;
@@ -888,10 +974,6 @@ a:hover {
 }
 
 
-
-
-
-
 .header-body-wrapper .header-body-content {
   display: flex;
   flex-direction: column;
@@ -913,9 +995,6 @@ a:hover {
   font-weight: bold;
   color: #333;
 }
-
-
-
 
 
 #otpVerificationModal .otp-modal-container {
@@ -941,8 +1020,6 @@ a:hover {
   box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
 }
 
-
-
 #otpVerificationModal .otp-verify-btn {
   width: 80%; /* Make the button slightly smaller by reducing width */
   background-color: #007bff;
@@ -958,9 +1035,6 @@ a:hover {
 #otpVerificationModal .otp-verify-btn:hover {
   background-color: #0056b3; /* Darker shade on hover */
 }
-
-
-
 
 #otpVerificationModal .otp-resend-text {
   font-size: 14px;
@@ -979,8 +1053,6 @@ a:hover {
 }
 
 
-
-
 #otpVerificationModal .otpResent-button-wrapper {
   display: flex;
   justify-content: center;
@@ -991,186 +1063,106 @@ a:hover {
 }
 
 
+/* ===================================== */
 
 
 
 
+@media (max-width: 1736px) {
 
 
 
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* Responsive Styles
-@media (max-width: 1440px) {
-  .card-header h4 {
-    font-size: 26px;
-  }
-  .text-danger {
-    font-size: 11px;
-  }
-  .form-group label {
-    font-size: 15px;
-    margin-left: 5px;
-  }
-  .price-wrapper .card-body {
-    padding: 8px 12px;
-  }
+@media (max-width: 1580px) {
+  /* Sidebar */
   .sidebar {
-    display: none;
+    width: 200px;
+    overflow: hidden; /* Prevent sidebar scroll */
+    flex-shrink: 0;
+    /* background-color: #121212; */
   }
+
+  .sidebar .label {
+    font-size: 12px;
+    color: white;
+    white-space: nowrap; /* Prevent label text from breaking */
+    overflow: hidden;
+    text-overflow: ellipsis; /* Adds '...' if text is too long */
+  }
+
+  /* Visa requirements labels inside the sidebar or elsewhere */
+  .visa-requirements .label {
+    font-size: 10px;
+    color: white;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Main container with vertical scroll and padding */
+  .main-container {
+    padding: 0 10px 0 20px;
+    height: 100vh; /* Makes it fill the screen */
+  }
+
+  /* Optional scrollbar style (modern browsers) */
+  .main-container::-webkit-scrollbar {
+    width: 3px;
+  }
+
+  .main-container::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+  }
+
+  /* Inner main content padding adjustment */
   .main-content {
-    margin-left: 0;
-    width: 100%;
+    padding: 0 0px 0 0;
+    scroll-behavior: smooth; /* Smooth scrolling experience */
+    overflow-y: auto; /* Enables scrolling when content exceeds height */
   }
-  .main-content-container {
-    border-top-left-radius: 0;
-    border: 1px solid gainsboro;
-  }
-  .navbar-middle {
-    display: block;
-  }
-  .navbar-toggler {
-    display: none;
-  }
-  .navbar-nav {
-    display: flex;
-    text-align: left;
-    margin: 0 15px;
-  }
-  .navbar-collapse .navbar-nav {
-    display: none;
-  }
-  .navbar-nav .nav-item {
-    padding: 8px 0;
-  }
-  .navbar-nav .nav-link {
-    font-size: 17px;
-  }
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
-@media (max-width: 1280px) {
-  .card-header h4 {
-    font-size: 22px;
-  }
-  .text-danger {
-    font-size: 10px;
-  }
-  .form-group label {
-    font-size: 14px;
-  }
-  .price-wrapper .card-body {
-    padding: 7px 10px;
-  }
-  .navbar-nav .nav-link {
-    font-size: 16px;
-  }
-}
-
-@media (max-width: 1024px) {
-  .card-header h4 {
-    font-size: 20px;
-  }
-  .text-danger {
-    font-size: 10px;
-  }
-  .form-group label {
-    font-size: 13px;
-  }
-  .price-wrapper .card-body {
-    padding: 7px 10px;
-  }
-}
-
-@media (max-width: 991px) {
-  .main-content-container {
-    width: 100%;
-  }
-  .navbar {
-    width: 100%;
-  }
-  .navbar-middle {
-    display: none;
-  }
-  .navbar-nav {
-    display: block;
-    text-align: center;
-    margin: 15px;
-  }
-  .navbar-nav .nav-item {
-    padding: 8px 0;
-  }
-  .navbar-nav .nav-link {
-    font-size: 15px;
-  }
-}
 
 @media (max-width: 768px) {
-  .card-header h4 {
-    font-size: 20px;
-  }
-  .text-danger {
-    font-size: 10px;
-  }
-  .form-group label {
-    font-size: 13px;
-  }
-  .card-body {
-    padding: 8px 15px;
-  }
-  .navbar-nav .nav-link {
-    font-size: 14px;
-  }
 }
 
-@media (max-width: 600px) {
-  .card-header h4 {
-    font-size: 20px;
-  }
-  .text-danger {
-    font-size: 9px;
-  }
-  .form-group label {
-    font-size: 12px;
-  }
-  .card-body {
-    padding: 6px 12px;
-  }
-  .navbar-nav .nav-link {
-    font-size: 13px;
-  }
-}
 
-@media (max-width: 480px) {
-  .card-header h4 {
-    font-size: 18px;
-  }
-  .text-danger {
-    font-size: 8px;
-  }
-  .form-group label {
-    font-size: 11px;
-  }
-  .card-body {
-    padding: 5px 10px;
-  }
-  .navbar-nav .nav-item {
-    padding: 6px 0;
-  }
-  .navbar-nav .nav-link {
-    font-size: 12px;
-  }
-} */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

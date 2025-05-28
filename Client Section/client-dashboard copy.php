@@ -16,43 +16,47 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
 
   <link rel="stylesheet" href="../Agent Section/assets/css/agent-dashboard.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="../Agent Section/assets/css/navbar-sidebar.css?v=<?php echo time(); ?>">
-
-  <?php include '../Agent Section/functions/exchange-rate.php' ?>
 </head>
 
 <body>
+
 
   <?php include "../Client Section/Includes/client-sidebar.php"; ?>
 
   <div class="main-container">
 
     <div class="navbar">
-
       <div class="page-header-wrapper">
+
+        <!-- <div class="page-header-top">
+            <div class="back-btn-wrapper">
+              <button class="back-btn" id="redirect-btn">
+                <i class="fas fa-chevron-left"></i>
+              </button>
+            </div>
+          </div> -->
+
         <div class="page-header-content">
           <div class="page-header-text">
-            <h5 class="header-title">Dashboard</h5>
-            <!-- Optional description -->
-            <!-- <p class="header-description">Overview & analytics</p> -->
+            <h5 class="header-title">Transaction</h5>
           </div>
         </div>
-      </div>
 
+      </div>
     </div>
 
     <div class="main-content">
 
       <div class="content-container">
 
-        <!-- Cards Count 1st Row -->
-        <div class="header-counts">
+        <!-- Cards First Row -->
+        <div class="counts-wrapper">
 
-          <!-- Card 1 -->
+          <!-- CARD 1 Current Transaction Counts-->
           <div class="card">
-
-            <div class="counts-header">
-              <div class="title-wrapper">
-                <h6 class="">Active Transaction</h6>
+            <div class="header-counts">
+              <div class="primary-pill">
+                <h6 class="white-pill">Active Transaction</h6>
               </div>
 
               <div class="accent-pill mt-1">
@@ -60,18 +64,18 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
               </div>
             </div>
 
-            <div class="card-content card-content-body">
-
-              <!-- Total and Confirmed Transaction Count -->
+            <div class="card-content px-3">
+              <!-- Total Transaction, and Completed Transaction -->
               <div class="row">
 
-                <div class="col-md-5 clickable-card" onclick="redirectToTransactionStatus('current')">
+                <!-- Total Transaction Card -->
+                <div class="col-md-5 d-flex flex-row clickable-card"
+                  onclick="window.location.href='../Client Section/client-transactions.php'">
                   <div class="card-icon icon-blue">
                     <i class="fas fa-calendar-alt"></i>
                   </div>
-
-                  <div class="side-content">
-                     <?php
+                  <div class="side-content d-flex flex-column">
+                    <?php
 
                     $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking b
                                                   JOIN flight f ON b.flightId = f.flightId 
@@ -90,16 +94,14 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                     ?>
                     <h5><?php echo $totalTransactions; ?></h5>
                     <p>TOTAL</p>
-
                   </div>
                 </div>
 
-                <!-- Confirmed Transactions -->
-                <div class="col-md-5 clickable-card" onclick="redirectToTransactionStatus('Confirmed')">
+                <!-- Confirmed Transaction -->
+                <div class="col-md-5 d-flex flex-row clickable-card" onclick="redirectToAgentTransaction('Confirmed')">
                   <div class="card-icon icon-green">
                     <i class="fas fa-check-circle"></i>
                   </div>
-
                   <div class="side-content d-flex flex-column">
                     <?php
                     $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking b
@@ -122,19 +124,16 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                     <p>COMPLETED</p>
                   </div>
                 </div>
-
               </div>
 
-              <!-- Pending, Reserved, and Cancelled Transaction Count -->
+              <!-- Pending, and Cancelled Transaction -->
               <div class="row">
 
-                <!-- Pending Transaction Count -->
-                <div class="col-md-4 clickable-card" onclick="redirectToTransactionStatus('Pending')">
-
+                <!-- Pending Transaction -->
+                <div class="col-md-5 d-flex flex-row clickable-card" onclick="redirectToAgentTransaction('Pending')">
                   <div class="card-icon icon-yellow">
                     <i class="fas fa-exclamation-triangle"></i>
                   </div>
-
                   <div class="side-content d-flex flex-column">
                     <?php
                     $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking b
@@ -155,11 +154,9 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                     <h5><?php echo $totalTransactions; ?></h5>
                     <p>PENDING</p>
                   </div>
-
                 </div>
 
-                <!-- Reserved Transaction Count -->
-                <div class="col-md-4 clickable-card" onclick="redirectToTransactionStatus('Reserved')">
+                <div class="col-md-5 d-flex flex-row clickable-card" onclick="redirectToAgentTransaction('Reserved')">
                   <div class="card-icon bg-secondary">
                     <i class="fas fa-exclamation-triangle"></i>
                   </div>
@@ -185,8 +182,8 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                   </div>
                 </div>
 
-                <!-- Cancelled Transaction Count -->
-                <div class="col-md-4 clickable-card card-cancelled" onclick="redirectToTransactionStatus('Cancelled')">
+                <!-- Total Cancelled Transaction -->
+                <div class="col-md-5 d-flex flex-row clickable-card" onclick="redirectToAgentTransaction('Cancelled')">
                   <div class="card-icon icon-red">
                     <i class="fas fa-times-circle"></i>
                   </div>
@@ -213,28 +210,24 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                 </div>
 
               </div>
-
             </div>
           </div>
 
-          <!-- Card 2 -->
-          <div class="card card-top">
-            <div class="counts-header">
-              <div class="title-wrapper">
-                <h6 class="">On Due</h6>
+          <!-- CARD 2 - On Due -->
+          <div class="card">
+            <div class="header-counts">
+              <div class="primary-pill">
+                <h6 class="white-pill">On Due</h6>
               </div>
-
             </div>
 
-            <div class="card-content card-content-body">
-              <!-- 5 Days and 15 Days Due Count -->
+            <div class="card-content px-3">
               <div class="row">
-                <!-- 5 Days Due Count -->
-                <div class="col-md-5 clickable-card" onclick="redirectToTransactionOnDue('5days')">
-                  <div class="card-icon icon-red">
-                    <p>5</p>
+                <!-- Due on 5 Days -->
+                <div class="col-md-5 d-flex flex-row">
+                  <div class="card-icon icon-blue">
+                    <i class="fas fa-calendar-alt"></i>
                   </div>
-
                   <div class="side-content d-flex flex-column">
                     <?php
                     $days5Query = "SELECT COUNT(*) AS `bookingsDueIn5Days` FROM booking b 
@@ -262,10 +255,10 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                   </div>
                 </div>
 
-                <!-- 15 Days Due Count -->
-                <div class="col-md-5 clickable-card" onclick="redirectToTransactionOnDue('10days')">
-                  <div class="card-icon bg-secondary">
-                    <p>15</p>
+                <!-- Due on 15 Days -->
+                <div class="col-md-5 d-flex flex-row">
+                  <div class="card-icon icon-green">
+                    <i class="fas fa-check-circle"></i>
                   </div>
                   <div class="side-content d-flex flex-column">
                     <?php
@@ -294,16 +287,12 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                 </div>
               </div>
 
-              <!-- 30 Days and more than 30 Days Due Count -->
               <div class="row">
-
-                <!-- 30 Days Due Count -->
-                <div class="col-md-5 clickable-card" onclick="redirectToTransactionOnDue('20days')">
-
-                  <div class="card-icon icon-blue">
-                    <p>30</p>
+                <!-- Due on 30 Days -->
+                <div class="col-md-5 d-flex flex-row">
+                  <div class="card-icon icon-yellow">
+                    <i class="fas fa-exclamation-triangle"></i>
                   </div>
-
                   <div class="side-content d-flex flex-column">
                     <?php
                     $days30Query = "SELECT COUNT(*) AS bookingsDueIn30Days FROM booking b 
@@ -329,17 +318,13 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                     <h5><?php echo $bookingsDueIn30Days; ?></h5>
                     <p>30 DAYS BEFORE FLIGHT</p>
                   </div>
-
                 </div>
 
-                <!-- more than 30 Days Due Count -->
-                <div class="col-md-5 clickable-card" onclick="redirectToTransactionOnDue('30daysplus')">
-
-                  <div class="card-icon icon-blue">
-                    <i class="fas fa-chevron-right"></i>
+                <!-- Due on 30 Days -->
+                <div class="col-md-5 d-flex flex-row">
+                  <div class="card-icon icon-red">
+                    <i class="fas fa-times-circle"></i>
                   </div>
-
-
                   <div class="side-content d-flex flex-column">
                     <?php
                     $daysMoreThan30Query = "SELECT COUNT(*) AS bookingsOver30DaysAfterFlight FROM booking b 
@@ -363,45 +348,44 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                     }
                     ?>
                     <h5><?php echo $bookingsDueInMoreThan30Days; ?></h5>
-                    <p>MORE THAN A MONTH</p>
+                    <p>OVERDUE BALANCE (30+ DAYS AFTER FLIGHT)</p>
                   </div>
-
                 </div>
-
               </div>
 
             </div>
           </div>
 
-          <!-- Card 3 -->
-          <div class="card card-top">
-            <div class="counts-header">
-              <div class="title-wrapper">
-                <h6 class="">Total Sales</h6>
-              </div>
+          <!-- CARD 3 - Total Sales -->
+          <div class="card">
 
+            <div class="header-counts">
+              <div class="primary-pill">
+                <h6 class="white-pill">Current Monthly Transaction</h6>
+              </div>
             </div>
 
-            <div class="card-content card-content-body">
+            <div class="card-content px-3">
               <div class="row">
-                <div class="col-md-5 d-flex flex-row total-sales">
-                  <div class="card-icon icon-blue">
-                    <i class="fas fa-calendar-alt"></i>
+                <!-- Current Month Sales -->
+                <div class="col-md-5 d-flex flex-row">
+                  <div class="card-icon icon-gray">
+                    <i class="fas fa-check-circle"></i>
                   </div>
                   <div class="side-content d-flex flex-column">
                     <?php
                     $currentMonthQuery = "SELECT SUM(b.totalPrice + IFNULL(r.requestCost, 0)) AS totalSales
-                    FROM booking b
-                    LEFT JOIN request r 
-                      ON r.transactNo = b.transactNo 
-                      AND r.requestStatus = 'Confirmed'
-                      AND MONTH(r.requestDate) = MONTH(CURRENT_DATE)
-                      AND YEAR(r.requestDate) = YEAR(CURRENT_DATE)
-                    WHERE 
-                      b.status = 'Confirmed' 
-                      AND b.accountId = $accountId
-                      AND MONTH(b.bookingDate) = MONTH(CURRENT_DATE)
-                      AND YEAR(b.bookingDate) = YEAR(CURRENT_DATE)";
+                                                FROM booking b
+                                                LEFT JOIN request r 
+                                                  ON r.transactNo = b.transactNo 
+                                                  AND r.requestStatus = 'Confirmed'
+                                                  AND MONTH(r.requestDate) = MONTH(CURRENT_DATE)
+                                                  AND YEAR(r.requestDate) = YEAR(CURRENT_DATE)
+                                                WHERE 
+                                                  b.status = 'Confirmed' 
+                                                  AND b.accountId = $accountId
+                                                  AND MONTH(b.bookingDate) = MONTH(CURRENT_DATE)
+                                                  AND YEAR(b.bookingDate) = YEAR(CURRENT_DATE)";
 
                     // Execute the query
                     $currentMonthResult = $conn->query($currentMonthQuery);
@@ -422,6 +406,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
               </div>
 
               <div class="row">
+                <!-- Past Month Sales -->
                 <div class="col-md-5 d-flex flex-row total-sales">
                   <div class="card-icon icon-red">
                     <i class="fas fa-calendar-alt"></i>
@@ -459,115 +444,114 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
               </div>
 
             </div>
-
           </div>
 
-          <!-- Card 4 -->
-          <div class="card card-4">
-            <div class="counts-header">
-              <div class="title-wrapper">
-                <h6 class="">Currency Conversion</h6>
+          <?php include '../Agent Section/functions/exchange-rate.php' ?>
+
+          <!-- CARD 4 -->
+          <div class="card">
+
+            <div class="header-counts mb-2">
+              <div class="primary-pill">
+                <h6 class="white-pill">Currency Conversion</h6>
               </div>
 
               <div class="accent-pill">
-                <button class="btn btn-primary view-currency-btn" id="addCurrencyBtn"
-                  onclick="window.location.href='../Employee Section/emp-currencyHistory.php';">
-                  View History
-                </button>
+                <a href="#" class="pill-button">View History</a>
               </div>
             </div>
 
-            <div class="card-content card-content-body">
-
-              <div class="currency-row">
-
-                <!-- USD Section -->
-                <div class="currency-card usd-card-wrapper">
+            <div class="card-body-currency">
+              <div class="currency-cards">
+                <div class="currency-card">
                   <div class="flag-icon-wrapper">
-                    <img src="../Assets/Flags/english-flag.png" alt="US Flag">
+                    <img src="../Assets/Flags/english-flag.png" alt="">
+                    <h6 class="mt-2">USD</h6>
                     <div class="currency-text-wrapper">
-                      <h5 class="currency-value">$ 1</h5>
-                      <p class="currency-label">US DOLLAR</p>
+                      <h5>$ 1</h5>
                     </div>
                   </div>
                 </div>
 
-                <!-- Exchange Icon -->
-                <div class="icon-container">
-                  <div class="icon-wrapper-currency">
-                    <i class="fas fa-exchange-alt"></i>
+                <div class="icon-wrapper mx-2">
+                  <i class="fas fa-exchange-alt"></i>
+                </div>
+
+                <div class="currency-card">
+                  <div class="flag-icon-wrapper">
+                    <img src="../Assets/Flags/philippines (2).png" alt="">
+                    <h6 class="mt-2">PHP</h6>
+                    <div class="currency-text-wrapper">
+                      <h5>₱ <?php echo number_format($usd_to_php, 2); ?></h5>
+                    </div>
                   </div>
                 </div>
 
-                <!-- PHP-KR Section -->
-                <div class="php-kr-card-wrapper">
-
-                  <div class="card-php-kr">
-                    <div class="card-icon kr-icon-wrapper">
-                      <div class="flag-icon-wrapper">
-                        <img width="30px" height="30px" src="../Assets/Flags/korean-flag.png" alt="">
-                      </div>
+                <div class="currency-card">
+                  <div class="flag-icon-wrapper">
+                    <img src="../Assets/Flags/korean-flag.png" alt="">
+                    <h6 class="mt-2">KOR</h6>
+                    <div class="currency-text-wrapper">
+                      <h5>₩ <?php echo number_format($usd_to_krw, 0); ?></h5>
                     </div>
-
-                    <div class="side-content d-flex flex-column">
-                      <h5 class="currency-text">₩ <?php echo number_format($usd_to_krw, 0); ?> </h5>
-                      <p>KOREAN WON</p>
-                    </div>
-                  </div>
-
-                  <div class="card-php-kr">
-                    <div class="card-icon">
-                      <div class="flag-icon-wrapper">
-                        <img width="30px" height="30px" src="../Assets/Flags/philippines (2).png" alt="">
-                      </div>
-                    </div>
-
-                    <div class="side-content d-flex flex-column">
-                      <h5 class="currency-text">₱ <?php echo number_format($usd_to_php, 2); ?></h5>
-                      <p>PHILIPPINE PESO</p>
-                    </div>
-
                   </div>
                 </div>
 
+                <!-- <div class="currency-card">
+                  <div class="flag-icon-wrapper">
+                    <img src="../assets/images/Flags/european.png" alt="">
+                      <h6 class="mt-2">EUR</h6>
+                      <div class="currency-text-wrapper">
+                      <h6>€ 
+                        <?php
+                        // echo number_format($usd_to_euro, 2); 
+                        ?></h6>
+                    </div>
+                  </div>
+                </div> -->
               </div>
-
             </div>
-
           </div>
+
         </div>
 
-        <div class="second-div">
-          <div class="navTabs-wrapper">
+        <div class="tabs-wrapper">
+          <div class="tabs-list-wrapper">
             <ul class="nav nav-pills" id="pills-tab" role="tablist">
-
               <li class="nav-item" role="presentation">
                 <button class="nav-link active" id="pills-profile-tab" data-bs-toggle="pill"
                   data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile"
-                  aria-selected="false">Flight Seat
-                  Tracker</button>
+                  aria-selected="false">Flight Seats Tracker</button>
               </li>
 
               <li class="nav-item" role="presentation">
-                <button class="nav-link" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home"
-                  type="button" role="tab" aria-controls="pills-home" aria-selected="true">Payment and Requests</button>
+                <button class="nav-link " id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home"
+                  type="button" role="tab" aria-controls="pills-home" aria-selected="true">Pending and
+                  Requests</button>
               </li>
+
+              <!-- <li class="nav-item" role="presentation">
+                <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">F.I.T</button>
+              </li> -->
+
+              <!-- <li class="nav-item" role="presentation">
+                <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Confirmed</button>
+              </li> -->
             </ul>
           </div>
 
-          <div class="content-heading">
-            <div class="tabs-sorting-wrapper">
-              <div class="second-header-wrapper">
-                <div class="date-range-wrapper flightbooking-wrapper">
-                  <div class="date-range-inputs-wrapper">
-                    <div class="input-with-icon">
-                      <input type="text" class="datepicker" id="FlightStartDate" placeholder="Flight Date" readonly>
-                      <i class="fas fa-calendar-alt calendar-icon"></i>
-                    </div>
+          <div class="tabs-sorting-wrapper">
+            <div class="second-header-wrapper">
+              <div class="date-range-wrapper flightbooking-wrapper">
+                <div class="date-range-inputs-wrapper">
+                  <div class="input-with-icon">
+                    <input type="text" class="datepicker" id="FlightStartDate" placeholder="Flight Date" readonly>
+                    <i class="fas fa-calendar-alt calendar-icon"></i>
                   </div>
                 </div>
+              </div>
 
-                <!-- <div class="date-range-wrapper sorting-wrapper">
+              <!-- <div class="date-range-wrapper sorting-wrapper">
                       <div class="select-wrapper">
                         <select id="packages">
                           <option value="All" disabled selected>Select Branch</option>
@@ -591,13 +575,12 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                     </div> -->
 
 
-                <div class="buttons-wrapper">
-                  <button id="clearSorting" class="btn btn-secondary">
-                    Clear Filters
-                  </button>
-                </div>
-
+              <div class="buttons-wrapper">
+                <button id="clearSorting" class="btn btn-secondary">
+                  Clear Filters
+                </button>
               </div>
+
             </div>
           </div>
 
@@ -605,35 +588,40 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
 
         <div class="tab-content" id="pills-tabContent">
 
-          <!-- Flight Seat - Booking Tab -->
-          <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
+          <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab"
+            tabindex="0">
 
-            <div class="tab-pane-content">
-              
+            <div class="flight-seat-container">
               <!-- Flight Seat -->
               <div class="one">
+                <div class="body-flight">
+                  <div class="confirm-table-container-flight">
+                    <table id="info-table" class="info-table">
+                      <thead>
+                        <tr>
+                          <!-- <th rowspan="2">TEAM OP</th> -->
+                          <th rowspan="2">ORIGIN</th>
+                          <th colspan="2" class="text-center">FLIGHT DATE</th> <!-- Flight Date columns -->
+                          <!-- <th rowspan="2">FLIGHT SEAT</th> -->
+                          <th rowspan="2">AVAILABLE SEATS</th>
+                          <th rowspan="2">ADDITIONAL SEATS</th>
+                          <th rowspan="2">PRICE</th>
+                          <th rowspan="2"></th>
 
-                <div class="table-wrapper confirm-table-container-flight">
-                  <table id="info-table" class="info-table">
-                    <thead>
-                      <tr>
-                        <th rowspan="2">ORIGIN</th>
-                        <th colspan="2" class="text-center">FLIGHT DATE</th>
-                        <th rowspan="2"></th>
-                        <th rowspan="2">AVAILABLE SEATS</th>
-                        <th rowspan="2">ADDITIONAL SEATS</th>
-                        <th rowspan="2">PRICE</th>
-                      </tr>
+                          <!-- <th rowspan="2">AIR + LAND</th>
+                          <th rowspan="2">LAND ONLY</th>
+                          <th rowspan="2">WHOLESALE PRICE</th>
+                          <th rowspan="2">RETAIL PRICE</th> 
+                          <th rowspan="2">LAND PRICE</th> -->
 
-                      <tr style="top: -8px">
-                        <th>START</th>
-                        <th>END</th>
-                      </tr>
-
-                    </thead>
-
-                    <tbody>
-                      <?php
+                        </tr>
+                        <tr style="top: -8px">
+                          <th>START</th>
+                          <th>END</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <?php
                         $sql = "SELECT DISTINCT a.agentCode AS agentCode, a.agentType AS agentType
                                     FROM agent a
                                     WHERE a.agentCode IS NOT NULL AND a.agentCode != ''";
@@ -702,47 +690,41 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                           echo "<tr><td colspan='7' class='text-center'>No records found</td></tr>";
                         }
                         ?>
-                    </tbody>
-                  </table>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
-
               </div>
 
               <div class="flight-seat-footer">
                 <div class="pagination-controls">
                   <button id="prevPage" class="pagination-btn">Previous</button>
-                  <div id="pageNumbers" class="page-numbers"></div> <!-- Optional, can be removed -->
                   <button id="nextPage" class="pagination-btn">Next</button>
                 </div>
               </div>
 
             </div>
-
           </div>
 
-          <!-- Pending/Request Container -->
-          <div class="tab-pane fade" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
-
-            <div class="tab-pane-content">
-
-              <div class="header-wrapper">
-
-                <!-- Pending Transactions table -->
-                <div class="pending-wrapper">
-                  <div class="table-header">
-                    <div class="title-wrapper">
-                      <h6 class="">Pending</h6>
-                    </div>
+          <div class="tab-pane fade " id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
+            <div class="second-row-container">
+              <!-- Pending Transactions table -->
+              <div class="one">
+                <div class="header d-flex justify-content-between align-items-center">
+                  <h6 class="white-pill">Pending</h6>
+                  <div class="view-booking-container">
                   </div>
+                </div>
 
-                  <div class="table-wrapper unconfirm-table-container">
-                    <table class="table unconfirm-table">
+                <div class="body">
+                  <div class="table-container unconfirm-table-container">
+                    <table class="unconfirm-table">
                       <thead>
                         <tr>
-                          <th>Transact No.</th>
-                          <th>Name</th>
-                          <th>Flight Date</th>
-                          <th>Status</th>
+                          <th>NO.</th>
+                          <th>NAME</th>
+                          <th>FLIGHT DATE</th>
+                          <th>STATUS</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -820,20 +802,20 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                     </table>
                   </div>
                 </div>
+              </div>
 
-                <!-- Requests table -->
-                <div class="request-wrapper">
-                  <div class="table-header">
-                    <div class="title-wrapper">
-                      <h6 class="">Requests</h6>
-                    </div>
-                  </div>
+              <!-- Requests table -->
+              <div class="two">
+                <div class="header d-flex justify-content-between align-items-center">
+                  <h6 class="white-pill">Requests</h6>
+                </div>
 
-                  <div class="table-wrapper request-table-container">
-                    <table class="table request-table">
+                <div class="body">
+                  <div class="table-container request-table-container">
+                    <table class="request-table">
                       <thead>
                         <tr>
-                          <th>Transact No.</th>
+                          <th>No.</th>
                           <th>Name</th>
                           <th>Request</th>
                           <th>Date Requested</th>
@@ -915,17 +897,17 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                     </table>
                   </div>
                 </div>
+              </div>
 
-                <!-- Payment table -->
-                <div class="payment-wrapper">
-                  <div class="table-header">
-                    <div class="title-wrapper">
-                      <h6 class="">Payment</h6>
-                    </div>
-                  </div>
+              <!-- Payment table -->
+              <div class="three">
+                <div class="header d-flex justify-content-between align-items-center">
+                  <h6 class="white-pill">Payment</h6>
+                </div>
 
-                  <div class="table-wrapper payment-table-container">
-                    <table class="table payment-table">
+                <div class="body">
+                  <div class="table-container pending-payment-container">
+                    <table class="pending-payment-table">
                       <thead>
                         <tr>
                           <th>NO.</th>
@@ -1020,35 +1002,35 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                     </table>
                   </div>
                 </div>
-
               </div>
 
-              <!-- Confirmed Table -->
-              <div class="confirm-container">
+            </div>
 
-                <div class="table-header">
-                  <div class="title-wrapper">
-                    <h6 class="">Confirm Transactions</h6>
-                  </div>
+            <!-- Confirmed Table -->
+            <div class="confirm-container">
+              <div class="one">
+                <div class="header d-flex justify-content-between align-items-center">
+                  <h6 class="white-pill">Confirmed</h6>
                 </div>
 
-                <div class="table-wrapper confirm-table-container">
-                  <table class="table confirm-table">
-                    <thead>
-                      <tr>
-                        <th>TRANSACT NO.</th>
-                        <th>NAME</th>
-                        <th>FLIGHT DATE</th>
-                        <th>TOTAL PAX.</th>
-                        <th>CONTACT NAME</th>
-                        <th>BOOKING TYPE</th>
-                        <th>AMOUNT PAID</th>
-                        <th>BALANCE</th>
-                        <th>STATUS</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <?php
+                <div class="body">
+                  <div class="table-container confirm-table-container">
+                    <table class="confirm-table">
+                      <thead>
+                        <tr>
+                          <th>NO.</th>
+                          <th>NAME</th>
+                          <th>FLIGHT DATE</th>
+                          <th>TOTAL PAX.</th>
+                          <th>CONTACT NAME</th>
+                          <th>BOOKING TYPE</th>
+                          <th>AMOUNT PAID</th>
+                          <th>BALANCE</th>
+                          <th>STATUS</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <?php
                         // Assuming you already have a connection to your database
                         // $accountId = $_SESSION['accountId'];
                         
@@ -1147,21 +1129,82 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                           echo "<tr><td colspan='12'>No records found</td></tr>";
                         }
                         ?>
-                    </tbody>
-                  </table>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
-
             </div>
 
           </div>
 
+          <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab"
+            tabindex="0">
+
+            <!-- FIT Table -->
+            <div class="fit-container">
+              <div class="one">
+                <div class="header d-flex justify-content-between align-items-center">
+                  <h6 class="white-pill">F.I.T</h6>
+                </div>
+
+                <div class="body">
+                  <div class="fit-table-container">
+                    <table class="fit-table">
+                      <thead>
+                        <tr>
+                          <th>TRANSACT NO.</th>
+                          <th>HOTEL NAME</th>
+                          <th>ROOM TYPE</th>
+                          <th>NUMBER OF ROOMS</th>
+                          <th>NUMBER OF GUESTS</th>
+                          <th>TRIP DURATION</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <?php
+                        // $accountId = $_SESSION['accountId'];
+                        // $agentCode = $_SESSION['agentCode'];
+                        // $agentRole = $_SESSION['agentRole'];
+                        
+                        $sql1 = "SELECT f.transactionNo as transactNo, f.nights as noOfNights, h.hotelName as hotelName,
+                                      r.rooms as roomName, f.rooms as noOfRooms, f.pax as pax
+                                    FROM fit f
+                                    JOIN fithotel h ON f.hotelId = h.hotelId
+                                    JOIN fitrooms r ON f.roomId = r.roomId";
+                        $res1 = $conn->query($sql1);
+
+                        if ($res1->num_rows > 0) {
+                          while ($row = $res1->fetch_assoc()) {
+                            echo "<tr>";
+                            echo "<td>" . htmlspecialchars($row['transactNo']) . "</td>";
+                            echo "<td>" . htmlspecialchars($row['hotelName']) . "</td>";
+                            echo "<td>" . htmlspecialchars($row['roomName']) . "</td>";
+                            echo "<td>" . htmlspecialchars($row['noOfRooms']) . "</td>";
+                            echo "<td>" . htmlspecialchars($row['pax']) . "</td>";
+                            echo "<td>" . htmlspecialchars($row['noOfNights']) . " Night(s)</td>";
+                            echo "</tr>";
+                          }
+                        } else {
+                          echo "<tr><td colspan='6' class='text-center'>No Records Found</td></tr>";
+                        }
+                        ?>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">
+            </div> -->
         </div>
 
       </div>
-
     </div>
-    
+
   </div>
 
 

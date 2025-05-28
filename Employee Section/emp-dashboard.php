@@ -6,12 +6,9 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-
-
 // echo "<pre>";
 // print_r($_SESSION);
 // echo "</pre>";
-
 ?>
 
 
@@ -54,14 +51,19 @@ error_reporting(E_ALL);
 
         <!-- Card 1 -->
         <div class="card">
-          <div class="header">
-            <h6 class="white-pill">Active Transaction</h6>
+
+          <div class="counts-header">
+            <div class="title-wrapper">
+              <h6 class="">Active Transaction</h6>
+            </div>
+
           </div>
 
           <div class="card-content card-content-body">
 
             <!-- Total and Confirmed Transaction Count -->
             <div class="row">
+
               <div class="col-md-5 clickable-card" onclick="redirectToTransactionStatus('current')">
                 <div class="card-icon icon-blue">
                   <i class="fas fa-calendar-alt"></i>
@@ -69,17 +71,17 @@ error_reporting(E_ALL);
 
                 <div class="side-content">
                   <?php
-                    $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking b 
+                  $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking b 
                                               JOIN flight f ON b.flightId = f.flightId
                                               WHERE f.flightDepartureDate >= CURDATE()";
-                    $result = mysqli_query($conn, $totalTransactionsQuery);
+                  $result = mysqli_query($conn, $totalTransactionsQuery);
 
-                    if ($result) {
-                      $row = mysqli_fetch_assoc($result);
-                      $totalTransactions = $row['total'];
-                    } else {
-                      $totalTransactions = 0;
-                    }
+                  if ($result) {
+                    $row = mysqli_fetch_assoc($result);
+                    $totalTransactions = $row['total'];
+                  } else {
+                    $totalTransactions = 0;
+                  }
                   ?>
                   <h5><?php echo $totalTransactions; ?></h5>
                   <p class="total-text">TOTAL TRANSACTIONS</p>
@@ -94,26 +96,28 @@ error_reporting(E_ALL);
 
                 <div class="side-content d-flex flex-column">
                   <?php
-                    $confirmedTransactionsQuery = "SELECT COUNT(*) AS total FROM booking b
+                  $confirmedTransactionsQuery = "SELECT COUNT(*) AS total FROM booking b
                                                   JOIN flight f ON b.flightId = f.flightId
                                                   WHERE f.flightDepartureDate >= CURDATE() AND b.status = 'Confirmed'";
-                    $result = mysqli_query($conn, $confirmedTransactionsQuery);
+                  $result = mysqli_query($conn, $confirmedTransactionsQuery);
 
-                    if ($result) {
-                      $row = mysqli_fetch_assoc($result);
-                      $confirmedTransactions = $row['total'];
-                    } else {
-                      $confirmedTransactions = 0;
-                    }
+                  if ($result) {
+                    $row = mysqli_fetch_assoc($result);
+                    $confirmedTransactions = $row['total'];
+                  } else {
+                    $confirmedTransactions = 0;
+                  }
                   ?>
                   <h5><?php echo $confirmedTransactions; ?></h5>
                   <p>CONFIRMED</p>
                 </div>
               </div>
+
             </div>
 
             <!-- Pending, Reserved, and Cancelled Transaction Count -->
             <div class="row">
+
               <!-- Pending Transaction Count -->
               <div class="col-md-4 clickable-card" onclick="redirectToTransactionStatus('Pending')">
 
@@ -123,17 +127,17 @@ error_reporting(E_ALL);
 
                 <div class="side-content d-flex flex-column">
                   <?php
-                    $pendingTransactionsQuery = "SELECT COUNT(*) AS total FROM booking b
+                  $pendingTransactionsQuery = "SELECT COUNT(*) AS total FROM booking b
                                                 JOIN flight f ON b.flightId = f.flightId
                                                 WHERE f.flightDepartureDate >= CURDATE() AND b.status = 'Pending'";
-                    $result = mysqli_query($conn, $pendingTransactionsQuery);
+                  $result = mysqli_query($conn, $pendingTransactionsQuery);
 
-                    if ($result) {
-                      $row = mysqli_fetch_assoc($result);
-                      $pendingTransactions = $row['total'];
-                    } else {
-                      $pendingTransactions = 0;
-                    }
+                  if ($result) {
+                    $row = mysqli_fetch_assoc($result);
+                    $pendingTransactions = $row['total'];
+                  } else {
+                    $pendingTransactions = 0;
+                  }
                   ?>
                   <h5><?php echo $pendingTransactions; ?></h5>
                   <p>PENDING</p>
@@ -148,17 +152,17 @@ error_reporting(E_ALL);
                 </div>
                 <div class="side-content d-flex flex-column">
                   <?php
-                    $pendingTransactionsQuery = "SELECT COUNT(*) AS total FROM booking b
+                  $pendingTransactionsQuery = "SELECT COUNT(*) AS total FROM booking b
                                                 JOIN flight f ON b.flightId = f.flightId
                                                 WHERE f.flightDepartureDate >= CURDATE() AND b.status = 'Reserved'";
-                    $result = mysqli_query($conn, $pendingTransactionsQuery);
+                  $result = mysqli_query($conn, $pendingTransactionsQuery);
 
-                    if ($result) {
-                      $row = mysqli_fetch_assoc($result);
-                      $pendingTransactions = $row['total'];
-                    } else {
-                      $pendingTransactions = 0;
-                    }
+                  if ($result) {
+                    $row = mysqli_fetch_assoc($result);
+                    $pendingTransactions = $row['total'];
+                  } else {
+                    $pendingTransactions = 0;
+                  }
                   ?>
                   <h5><?php echo $pendingTransactions; ?></h5>
                   <p>RESERVED</p>
@@ -172,22 +176,23 @@ error_reporting(E_ALL);
                 </div>
                 <div class="side-content d-flex flex-column">
                   <?php
-                    $cancelledTransactionsQuery = "SELECT COUNT(*) AS total FROM booking b
+                  $cancelledTransactionsQuery = "SELECT COUNT(*) AS total FROM booking b
                                                   JOIN flight f ON b.flightId = f.flightId
                                                   WHERE f.flightDepartureDate >= CURDATE() AND b.status = 'Cancelled'";
-                    $result = mysqli_query($conn, $cancelledTransactionsQuery);
+                  $result = mysqli_query($conn, $cancelledTransactionsQuery);
 
-                    if ($result) {
-                      $row = mysqli_fetch_assoc($result);
-                      $cancelledTransactions = $row['total'];
-                    } else {
-                      $cancelledTransactions = 0;
-                    }
+                  if ($result) {
+                    $row = mysqli_fetch_assoc($result);
+                    $cancelledTransactions = $row['total'];
+                  } else {
+                    $cancelledTransactions = 0;
+                  }
                   ?>
                   <h5><?php echo $cancelledTransactions; ?></h5>
                   <p>CANCELLED</p>
                 </div>
               </div>
+
             </div>
 
           </div>
@@ -195,8 +200,11 @@ error_reporting(E_ALL);
 
         <!-- Card 2 -->
         <div class="card card-top">
-          <div class="header">
-            <h6 class="white-pill">On Due</h6>
+          <div class="counts-header">
+            <div class="title-wrapper">
+              <h6 class="">On Due</h6>
+            </div>
+
           </div>
 
           <div class="card-content card-content-body">
@@ -204,29 +212,29 @@ error_reporting(E_ALL);
             <div class="row">
               <!-- 5 Days Due Count -->
               <div class="col-md-5 clickable-card" onclick="redirectToTransactionOnDue('5days')">
-                <div class="card-icon icon-red">
-                  <p>5</p>
+                <div class="card-icon icon-blue">
+                  <i class="fas fa-calendar-alt"></i>
                 </div>
 
                 <div class="side-content d-flex flex-column">
                   <?php
-                    // Assuming $conn is your database connection
-                    $days5Query = "SELECT COUNT(*) AS `bookingsDueIn5Days` FROM booking b 
+                  // Assuming $conn is your database connection
+                  $days5Query = "SELECT COUNT(*) AS `bookingsDueIn5Days` FROM booking b 
                                   JOIN flight f ON b.flightId = f.flightId
                                   LEFT JOIN (SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) 
                                     AS totalPaid FROM payment GROUP BY transactNo) p ON b.transactNo = p.transactNo
                                   WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) <= 5 AND DATEDIFF(f.flightDepartureDate, CURDATE()) >= 0
                                     AND (b.totalPrice > IFNULL(p.totalPaid, 0)) and b.status='Confirmed'";
 
-                    $result = $conn->query($days5Query);
+                  $result = $conn->query($days5Query);
 
-                    // Check if the query returned a result
-                    if ($result->num_rows > 0) {
-                      $row = $result->fetch_assoc();
-                      $bookingsDueIn5Days = $row['bookingsDueIn5Days'];
-                    } else {
-                      $bookingsDueIn5Days = 0;  // Default to 0 if no records found
-                    }
+                  // Check if the query returned a result
+                  if ($result->num_rows > 0) {
+                    $row = $result->fetch_assoc();
+                    $bookingsDueIn5Days = $row['bookingsDueIn5Days'];
+                  } else {
+                    $bookingsDueIn5Days = 0;  // Default to 0 if no records found
+                  }
                   ?>
                   <h5><?php echo $bookingsDueIn5Days; ?></h5>
                   <p>5 DAYS BEFORE FLIGHT</p>
@@ -235,28 +243,30 @@ error_reporting(E_ALL);
 
               <!-- 15 Days Due Count -->
               <div class="col-md-5 clickable-card" onclick="redirectToTransactionOnDue('10days')">
-                <div class="card-icon bg-secondary">
-                  <p>15</p>
+
+                <div class="card-icon icon-blue">
+                  <i class="fas fa-calendar-alt"></i>
                 </div>
+
                 <div class="side-content d-flex flex-column">
                   <?php
-                    // Assuming $conn is your database connection
-                    $days15Query = "SELECT COUNT(*) AS bookingsDueIn15Days FROM booking b
+                  // Assuming $conn is your database connection
+                  $days15Query = "SELECT COUNT(*) AS bookingsDueIn15Days FROM booking b
                                     JOIN flight f ON b.flightId = f.flightId
                                     LEFT JOIN (SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) 
                                     AS totalPaid FROM payment GROUP BY transactNo) p ON b.transactNo = p.transactNo
                                     WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) BETWEEN 6 AND 15
                                       AND (b.totalPrice > IFNULL(p.totalPaid, 0)) and b.status='Confirmed'";
 
-                    $result = $conn->query($days15Query);
+                  $result = $conn->query($days15Query);
 
-                    // Check if the query returned a result
-                    if ($result->num_rows > 0) {
-                      $row = $result->fetch_assoc();
-                      $bookingsDueIn15Days = $row['bookingsDueIn15Days'];
-                    } else {
-                      $bookingsDueIn15Days = 0;  // Default to 0 if no records found
-                    }
+                  // Check if the query returned a result
+                  if ($result->num_rows > 0) {
+                    $row = $result->fetch_assoc();
+                    $bookingsDueIn15Days = $row['bookingsDueIn15Days'];
+                  } else {
+                    $bookingsDueIn15Days = 0;  // Default to 0 if no records found
+                  }
                   ?>
                   <h5><?php echo $bookingsDueIn15Days; ?></h5>
                   <p>15 DAYS BEFORE FLIGHT</p>
@@ -271,13 +281,13 @@ error_reporting(E_ALL);
               <div class="col-md-5 clickable-card" onclick="redirectToTransactionOnDue('20days')">
 
                 <div class="card-icon icon-blue">
-                  <p>30</p>
+                  <i class="fas fa-calendar-alt"></i>
                 </div>
 
                 <div class="side-content d-flex flex-column">
                   <?php
-                    // Assuming $conn is your database connection
-                    $days30Query = "SELECT COUNT(*) AS `bookingsDueIn30Days` FROM booking b 
+                  // Assuming $conn is your database connection
+                  $days30Query = "SELECT COUNT(*) AS `bookingsDueIn30Days` FROM booking b 
                                     JOIN flight f ON b.flightId = f.flightId
                                     LEFT JOIN (SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) 
                                       AS totalPaid FROM payment GROUP BY transactNo) p 
@@ -285,49 +295,49 @@ error_reporting(E_ALL);
                                     WHERE DATEDIFF(f.flightDepartureDate, CURDATE()) BETWEEN 15 AND 30
                                       AND (b.totalPrice > IFNULL(p.totalPaid, 0)) and b.status='Confirmed'";
 
-                    $result = $conn->query($days30Query);
+                  $result = $conn->query($days30Query);
 
-                    // Check if the query returned a result
-                    if ($result->num_rows > 0) {
-                      $row = $result->fetch_assoc();
-                      $bookingsDueIn30Days = $row['bookingsDueIn30Days'];
-                    } else {
-                      $bookingsDueIn30Days = 0;  // Default to 0 if no records found
-                    }
+                  // Check if the query returned a result
+                  if ($result->num_rows > 0) {
+                    $row = $result->fetch_assoc();
+                    $bookingsDueIn30Days = $row['bookingsDueIn30Days'];
+                  } else {
+                    $bookingsDueIn30Days = 0;  // Default to 0 if no records found
+                  }
                   ?>
                   <h5><?php echo $bookingsDueIn30Days; ?></h5>
                   <p>30 DAYS BEFORE FLIGHT</p>
                 </div>
-                
+
               </div>
 
               <!-- more than 30 Days Due Count -->
               <div class="col-md-5 clickable-card" onclick="redirectToTransactionOnDue('30daysplus')">
 
                 <div class="card-icon icon-blue">
-                  <i class="fas fa-chevron-right"></i>
+                  <i class="fas fa-calendar-alt"></i>
                 </div>
 
 
                 <div class="side-content d-flex flex-column">
                   <?php
-                    // Assuming $conn is your database connection
-                    $daysMoreThan30Query = "SELECT COUNT(*) AS `bookingsOver30DaysAfterFlight` FROM booking b 
+                  // Assuming $conn is your database connection
+                  $daysMoreThan30Query = "SELECT COUNT(*) AS `bookingsOver30DaysAfterFlight` FROM booking b 
                                     JOIN flight f ON b.flightId = f.flightId
                                     LEFT JOIN (SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) 
                                     AS totalPaid FROM payment GROUP BY transactNo) p ON b.transactNo = p.transactNo
                                     WHERE DATEDIFF(CURDATE(), f.flightDepartureDate) > 30
                                       AND (b.totalPrice > IFNULL(p.totalPaid, 0)) AND b.status = 'Confirmed'";
 
-                    $result = $conn->query($daysMoreThan30Query);
+                  $result = $conn->query($daysMoreThan30Query);
 
-                    // Check if the query returned a result
-                    if ($result->num_rows > 0) {
-                      $row = $result->fetch_assoc();
-                      $bookingsDueInMoreThan30Days = $row['bookingsOver30DaysAfterFlight'];
-                    } else {
-                      $bookingsDueInMoreThan30Days = 0;  // Default to 0 if no records found
-                    }
+                  // Check if the query returned a result
+                  if ($result->num_rows > 0) {
+                    $row = $result->fetch_assoc();
+                    $bookingsDueInMoreThan30Days = $row['bookingsOver30DaysAfterFlight'];
+                  } else {
+                    $bookingsDueInMoreThan30Days = 0;  // Default to 0 if no records found
+                  }
                   ?>
                   <h5><?php echo $bookingsDueInMoreThan30Days; ?></h5>
                   <p>MORE THAN A MONTH</p>
@@ -342,8 +352,11 @@ error_reporting(E_ALL);
 
         <!-- Card 3 -->
         <div class="card card-top">
-          <div class="header">
-            <h6 class="white-pill">Total Sales</h6>
+          <div class="counts-header">
+            <div class="title-wrapper">
+              <h6 class="">Total Sales</h6>
+            </div>
+
           </div>
 
           <div class="card-content card-content-body">
@@ -421,14 +434,14 @@ error_reporting(E_ALL);
             </div>
 
           </div>
-
         </div>
 
         <!-- Card 4 -->
         <div class="card card-4">
-          <div class="header">
+
+          <div class="counts-header">
             <div class="title-wrapper">
-              <h6 class="white-pill">Currency History</h6>
+              <h6 class="">Currency History</h6>
             </div>
 
             <div class="button-wrapper">
@@ -441,7 +454,7 @@ error_reporting(E_ALL);
 
           <div class="card-content card-content-body">
 
-            <div class="currency-row">
+            <div class="row currency-row">
 
               <!-- USD Section -->
               <div class="currency-card usd-card-wrapper">
@@ -453,7 +466,6 @@ error_reporting(E_ALL);
                   </div>
                 </div>
               </div>
-
 
               <!-- Exchange Icon -->
               <div class="icon-container">
@@ -494,7 +506,7 @@ error_reporting(E_ALL);
               </div>
 
             </div>
-            
+
           </div>
 
         </div>
@@ -502,8 +514,8 @@ error_reporting(E_ALL);
       </div>
 
       <div class="second-div">
-        <div class="navTabs-wrapper">
 
+        <div class="navTabs-wrapper">
           <ul class="nav nav-pills" id="pills-tab" role="tablist">
 
             <li class="nav-item" role="presentation">
@@ -518,20 +530,19 @@ error_reporting(E_ALL);
                 type="button" role="tab" aria-controls="pills-home" aria-selected="true">Payment and Requests</button>
             </li>
           </ul>
-
         </div>
 
         <div class="content-heading">
           <button class="btn btn-primary saveBtn" id="saveChanges">Save</button>
         </div>
+        
       </div>
 
       <!-- Flight Seat Tracker Tab -->
       <div class="tab-content" id="pills-tabContent">
 
         <!-- Flight Seat Tracker Tab -->
-        <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab"
-          tabindex="0">
+        <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
 
           <div class="info-table-wrapper">
             <!-- Flight Seat Tracker Table -->
@@ -711,7 +722,7 @@ error_reporting(E_ALL);
                   ?>
                 </tbody>
 
-                
+
               </table>
             </div>
 
@@ -746,6 +757,7 @@ error_reporting(E_ALL);
 
         </div>
 
+
         <!-- Payment and Requests Table -->
         <div class="tab-pane fade" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
 
@@ -757,9 +769,11 @@ error_reporting(E_ALL);
               <div class="request-wrapper">
 
                 <div class="table-header">
-                  <h6 class="">Requests</h6>
+                  <div class="title-wrapper">
+                    <h6 class="">Request</h6>
+                  </div>
                 </div>
-
+                  
                 <div class="table-wrapper request-table-container">
                   <table class="request-table table">
                     <thead>
@@ -775,7 +789,7 @@ error_reporting(E_ALL);
                     </thead>
                     <tbody>
                       <?php
-                        $sql1 = "SELECT r.transactNo AS `T.N`, c.concernTitle AS `Request`, 
+                      $sql1 = "SELECT r.transactNo AS `T.N`, c.concernTitle AS `Request`, 
                                     DATE_FORMAT(r.requestDate, '%m.%d.%Y') AS `Date`,
                                     r.requestStatus, b.agentCode, CONCAT(a.lName, ', ', a.fName, 
                                     IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1)), '')) AS agentName,
@@ -799,32 +813,32 @@ error_reporting(E_ALL);
                                     r.requestStatus = 'Submitted'
                                   ORDER BY 
                                     r.requestDate DESC";  // Order by request date
-                        
-                        $res1 = $conn->query($sql1);
+                      
+                      $res1 = $conn->query($sql1);
 
-                        if ($res1->num_rows > 0) {
-                          while ($row = $res1->fetch_assoc()) {
-                            $statusClass = '';
-                            switch ($row['requestStatus']) {
-                              case 'Confirmed':
-                                $statusClass = 'badge bg-success'; // Green pill for "Approved"
-                                break;
-                              case 'Pending':
-                                $statusClass = 'badge bg-primary'; // Yellow pill for "Pending"
-                                break;
-                              case 'Rejected':
-                                $statusClass = 'badge bg-danger'; // Red pill for "Rejected"
-                                break;
-                              case 'Submitted':
-                                $statusClass = 'badge bg-warning text-dark'; // Red pill for "Rejected"
-                                break;
-                              default:
-                                $statusClass = 'badge bg-secondary'; // Grey pill for unknown statuses
-                                break;
-                            }
+                      if ($res1->num_rows > 0) {
+                        while ($row = $res1->fetch_assoc()) {
+                          $statusClass = '';
+                          switch ($row['requestStatus']) {
+                            case 'Confirmed':
+                              $statusClass = 'badge bg-success'; // Green pill for "Approved"
+                              break;
+                            case 'Pending':
+                              $statusClass = 'badge bg-primary'; // Yellow pill for "Pending"
+                              break;
+                            case 'Rejected':
+                              $statusClass = 'badge bg-danger'; // Red pill for "Rejected"
+                              break;
+                            case 'Submitted':
+                              $statusClass = 'badge bg-warning text-dark'; // Red pill for "Rejected"
+                              break;
+                            default:
+                              $statusClass = 'badge bg-secondary'; // Grey pill for unknown statuses
+                              break;
+                          }
 
-                            // Echo table row with dynamically styled pills
-                            echo "<tr>
+                          // Echo table row with dynamically styled pills
+                          echo "<tr>
                                       <td>{$row['T.N']}</td>
                                       <td>{$row['flightDepartureDate']}</td>
                                       <td>{$row['ACCOUNT NAME']}</td>
@@ -833,10 +847,10 @@ error_reporting(E_ALL);
                                       <td>{$row['requestCost']}</td>
                                       <td><span class='{$statusClass} p-2'>{$row['requestStatus']}</span></td>
                                     </tr>";
-                          }
-                        } else {
-                          echo "<tr><td colspan='7' style='text-align: center; font-size: 10px;'>NO CURRENT REQUEST AS OF THE MOMENT</td></tr>";
                         }
+                      } else {
+                        echo "<tr><td colspan='7' style='text-align: center; font-size: 10px;'>NO CURRENT REQUEST AS OF THE MOMENT</td></tr>";
+                      }
                       ?>
                     </tbody>
                   </table>
@@ -848,7 +862,9 @@ error_reporting(E_ALL);
               <div class="payment-wrapper">
 
                 <div class="table-header">
-                  <h6 class="">Payment</h6>
+                  <div class="title-wrapper">
+                    <h6 class="">Payment</h6>
+                  </div>
                 </div>
 
                 <div class="table-wrapper payment-table-container">
@@ -933,11 +949,11 @@ error_reporting(E_ALL);
 
             <!-- Confirm Transaction Table -->
             <?php
-              // Function to render the confirmed transactions table
-              function renderConfirmedTransactionsTable($conn)
-              {
-                // Query to get confirmed transactions
-                $query1 = "SELECT b.*, f.flightDepartureDate AS Start, p.packageName, b.totalPrice AS PackagePrice, 
+            // Function to render the confirmed transactions table
+            function renderConfirmedTransactionsTable($conn)
+            {
+              // Query to get confirmed transactions
+              $query1 = "SELECT b.*, f.flightDepartureDate AS Start, p.packageName, b.totalPrice AS PackagePrice, 
                             f.returnDepartureDate AS End, CONCAT(a.lName, ', ', a.fName, 
                             IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1)), '')) AS agentName,
                             br.branchName as branchName, SUM(pa.amount) AS TotalAmountPaid, 
@@ -964,15 +980,17 @@ error_reporting(E_ALL);
                           LEFT JOIN request r ON r.transactNo = b.transactNo AND r.requestStatus = 'Confirmed'
                           WHERE status = 'Confirmed' GROUP BY b.transactNo";
 
-                $result = $conn->query($query1);
+              $result = $conn->query($query1);
 
-                // Check if the query returned any results
-                if ($result && $result->num_rows > 0) {
-                  // Start the table HTML
-                  echo '<div class="confirm-container">
+              // Check if the query returned any results
+              if ($result && $result->num_rows > 0) {
+                // Start the table HTML
+                echo '<div class="confirm-container">
 
                           <div class="table-header">
-                            <h6 class="">Confirmed Transactions</h6>
+                            <div class="title-wrapper">
+                              <h6 class="">Confirmed</h6>
+                            </div>
                           </div>
 
                           <div class="table-wrapper confirm-table-container">
@@ -992,37 +1010,37 @@ error_reporting(E_ALL);
                               </thead>
                               <tbody>';
 
-                  // Loop through each row and render the table rows
-                  while ($row = $result->fetch_assoc()) {
-                    $packagePrice = $row['PackagePrice'] ?? 0;
-                    $requestTotal = $row['TotalRequestAmount'] ?? 0;
-                    $amountPaid = $row['TotalAmountPaid'] ?? 0;
-                    $balance = ($packagePrice + $requestTotal) - $amountPaid;
-                    $status = $row['status'];
-                    $formattedPP = '₱ ' . number_format($packagePrice, 2);
-                    $formattedAP = '₱' . number_format($amountPaid, 2);
-                    $formattedBal = '₱' . number_format($balance, 2);
+                // Loop through each row and render the table rows
+                while ($row = $result->fetch_assoc()) {
+                  $packagePrice = $row['PackagePrice'] ?? 0;
+                  $requestTotal = $row['TotalRequestAmount'] ?? 0;
+                  $amountPaid = $row['TotalAmountPaid'] ?? 0;
+                  $balance = ($packagePrice + $requestTotal) - $amountPaid;
+                  $status = $row['status'];
+                  $formattedPP = '₱ ' . number_format($packagePrice, 2);
+                  $formattedAP = '₱' . number_format($amountPaid, 2);
+                  $formattedBal = '₱' . number_format($balance, 2);
 
-                    // Define the pill status class based on the status value
-                    switch ($status) {
-                      case 'Confirmed':
-                        $pillClass = 'bg-success';
-                        break;
-                      case 'Cancelled':
-                        $pillClass = 'bg-danger';
-                        break;
-                      case 'Pending':
-                        $pillClass = 'bg-warning';
-                        break;
-                      case 'Rejected':
-                        $pillClass = 'bg-info';
-                        break;
-                      default:
-                        $pillClass = 'bg-secondary';
-                        break;
-                    }
+                  // Define the pill status class based on the status value
+                  switch ($status) {
+                    case 'Confirmed':
+                      $pillClass = 'bg-success';
+                      break;
+                    case 'Cancelled':
+                      $pillClass = 'bg-danger';
+                      break;
+                    case 'Pending':
+                      $pillClass = 'bg-warning';
+                      break;
+                    case 'Rejected':
+                      $pillClass = 'bg-info';
+                      break;
+                    default:
+                      $pillClass = 'bg-secondary';
+                      break;
+                  }
 
-                    echo "<tr data-id='{$row['transactNo']}'>
+                  echo "<tr data-id='{$row['transactNo']}'>
                               <td>{$row['transactNo']}</td>
                               <td>{$row['Account Name']}</td>
                               <td>{$row['Start']}</td>
@@ -1045,21 +1063,21 @@ error_reporting(E_ALL);
                                   <span class='badge $pillClass p-2'>{$status}</span>
                               </td>";
 
-                    // Fetching the comment from the database
-                    $transactNo = $row['transactNo'];
-                    $stmt = $conn->prepare('SELECT * FROM bookingcomments WHERE transactNo = ?');
-                    $stmt->bind_param('s', $transactNo);
-                    $stmt->execute();
-                    $resultComment = $stmt->get_result();
-                    $comment = $resultComment->fetch_assoc();
-                    $stmt->close();
+                  // Fetching the comment from the database
+                  $transactNo = $row['transactNo'];
+                  $stmt = $conn->prepare('SELECT * FROM bookingcomments WHERE transactNo = ?');
+                  $stmt->bind_param('s', $transactNo);
+                  $stmt->execute();
+                  $resultComment = $stmt->get_result();
+                  $comment = $resultComment->fetch_assoc();
+                  $stmt->close();
 
-                    echo "<td>";
-                    echo '<div class="comment-container" id="commentContainer' . $transactNo . '">';
+                  echo "<td>";
+                  echo '<div class="comment-container" id="commentContainer' . $transactNo . '">';
 
-                    // Check if a comment exists
-                    if ($comment && !empty($comment['comment'])) {
-                      echo '<div class="comment-exists">
+                  // Check if a comment exists
+                  if ($comment && !empty($comment['comment'])) {
+                    echo '<div class="comment-exists">
                                   <div class="comment-input">
                                       <input type="text" class="form-control" name="comment" id="commentInput' . $transactNo . '" value="' . htmlspecialchars($comment['comment']) . '" disabled>
                                   </div>
@@ -1067,8 +1085,8 @@ error_reporting(E_ALL);
                                       <button type="button" class="btn btn-warning editComment" data-id="' . $transactNo . '">Edit</button>
                                   </div>
                                 </div>';
-                    } else {
-                      echo '<div class="no-comment">
+                  } else {
+                    echo '<div class="no-comment">
                                   <div class="comment-input">
                                       <input type="text" class="form-control" name="comment" id="commentInput' . $transactNo . '"  disabled>
                                   </div>
@@ -1076,9 +1094,9 @@ error_reporting(E_ALL);
                                       <button type="button" class="btn btn-success addComment" data-id="' . $transactNo . '">Add</button>
                                   </div>
                                 </div>';
-                    }
+                  }
 
-                    echo '<div class="button-container">
+                  echo '<div class="button-container">
                               <input type="text" class="recordId" value="' . $row['transactNo'] . '" hidden>
                               <button type="button" class="btn btn-primary submitAddComment" data-id="' . $transactNo . '" style="display: none;">Submit</button>
                               <button type="button" class="btn btn-primary submitEditComment" data-id="' . $transactNo . '" style="display: none;">Update</button>
@@ -1086,24 +1104,24 @@ error_reporting(E_ALL);
                               <button type="button" class="btn btn-danger cancelEditComment" data-id="' . $transactNo . '" style="display: none;">Cancel Edit</button>
                               <button type="button" class="btn btn-danger cancelAddComment" data-id="' . $transactNo . '" style="display: none;">Cancel Add</button>
                             </div>';
-                    echo '</div>'; // Close the comment-container div
-                    echo "</td>"; // Close the <td> tag
-                    echo "</tr>";
-                  }
-
-                  echo '</tbody></table></div></div>'; // End of table and div containers
-                } else {
-                  // No records found
-                  echo "<tr><td colspan='7'>No confirmed bookings found.</td></tr>";
+                  echo '</div>'; // Close the comment-container div
+                  echo "</td>"; // Close the <td> tag
+                  echo "</tr>";
                 }
 
-                if ($result) {
-                  $result->free();
-                }
+                echo '</tbody></table></div></div>'; // End of table and div containers
+              } else {
+                // No records found
+                echo "<tr><td colspan='7'>No confirmed bookings found.</td></tr>";
               }
 
-              // Call the function to render the table
-              renderConfirmedTransactionsTable($conn);
+              if ($result) {
+                $result->free();
+              }
+            }
+
+            // Call the function to render the table
+            renderConfirmedTransactionsTable($conn);
             ?>
 
           </div>
@@ -1113,8 +1131,8 @@ error_reporting(E_ALL);
 
       </div>
 
-
     </div>
+
   </div>
 
   <!-- Comment Delete Modal -->
@@ -1154,7 +1172,6 @@ error_reporting(E_ALL);
 
   <!-- For Clickable Cards -->
   <script>
-
     function redirectToTransactionStatus(status) {
       window.location.href = `../Employee Section/emp-transaction.php?tab=status&status=${status}`;
     }
@@ -1166,7 +1183,6 @@ error_reporting(E_ALL);
     // function redirectToTransactionRemainingBalance(Remaining) {
     //   window.location.href = `../Employee Section/emp-transaction.php?tab=remainBal&remainBal=${Remaining}`;
     // }
-
   </script>
 
   <!-- Clear RowColNum -->
@@ -1482,7 +1498,6 @@ error_reporting(E_ALL);
       });
     });
   </script>
-
 
   <!-- <script>
     // Function to initialize or reinitialize the DataTable
