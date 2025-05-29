@@ -51,7 +51,6 @@ error_reporting(E_ALL);
 
         <!-- Card 1 -->
         <div class="card">
-
           <div class="counts-header">
             <div class="title-wrapper">
               <h6 class="">Active Transaction</h6>
@@ -66,7 +65,7 @@ error_reporting(E_ALL);
 
               <div class="col-md-5 clickable-card" onclick="redirectToTransactionStatus('current')">
                 <div class="card-icon icon-blue">
-                  <i class="fas fa-calendar-alt"></i>
+                  <i class="fas fa-exchange-alt"></i>
                 </div>
 
                 <div class="side-content">
@@ -213,7 +212,7 @@ error_reporting(E_ALL);
               <!-- 5 Days Due Count -->
               <div class="col-md-5 clickable-card" onclick="redirectToTransactionOnDue('5days')">
                 <div class="card-icon icon-blue">
-                  <i class="fas fa-calendar-alt"></i>
+                  <i class="fas fa-calendar-check"></i>
                 </div>
 
                 <div class="side-content d-flex flex-column">
@@ -245,7 +244,7 @@ error_reporting(E_ALL);
               <div class="col-md-5 clickable-card" onclick="redirectToTransactionOnDue('10days')">
 
                 <div class="card-icon icon-blue">
-                  <i class="fas fa-calendar-alt"></i>
+                  <i class="fas fa-calendar-check"></i>
                 </div>
 
                 <div class="side-content d-flex flex-column">
@@ -281,7 +280,7 @@ error_reporting(E_ALL);
               <div class="col-md-5 clickable-card" onclick="redirectToTransactionOnDue('20days')">
 
                 <div class="card-icon icon-blue">
-                  <i class="fas fa-calendar-alt"></i>
+                  <i class="fas fa-calendar-check"></i>
                 </div>
 
                 <div class="side-content d-flex flex-column">
@@ -315,7 +314,7 @@ error_reporting(E_ALL);
               <div class="col-md-5 clickable-card" onclick="redirectToTransactionOnDue('30daysplus')">
 
                 <div class="card-icon icon-blue">
-                  <i class="fas fa-calendar-alt"></i>
+                  <i class="fas fa-calendar-check"></i>
                 </div>
 
 

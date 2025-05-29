@@ -52,7 +52,6 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
 
         <!-- Cards Count 1st Row -->
         <div class="header-counts">
-
           <!-- Card 1 -->
           <div class="card">
             <div class="counts-header">
@@ -208,7 +207,6 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
 
           </div>
 
-
           <!-- Card 2 -->
           <div class="card card-top">
             <div class="counts-header">
@@ -339,7 +337,6 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
               
             </div>
           </div>
-
 
           <!-- Card 3 -->
           <div class="card card-top">
@@ -588,10 +585,10 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                       <tr>
                         <th rowspan="2">ORIGIN</th>
                         <th colspan="2" class="text-center">FLIGHT DATE</th>
-                        <th rowspan="2"></th>
                         <th rowspan="2">AVAILABLE SEATS</th>
                         <th rowspan="2">ADDITIONAL SEATS</th>
                         <th rowspan="2">PRICE</th>
+                        <th rowspan="2"></th>
                       </tr>
 
                       <tr style="top: -8px">
@@ -1154,7 +1151,6 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
       console.log("Redirecting with status:", status);
       window.location.href = `../Client Section/client-transactions.php?status=${encodeURIComponent(status)}`;
     }
-
   </script>
 
   <script>
@@ -1169,12 +1165,12 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
         pageLength: 9,
         scrollY: '62.8vh',
         scrollCollapse: true,
-        autoWidth: false,
         columnDefs: [{
           targets: "_all",
           className: "text-center"
         }]
       });
+
 
       // ✅ Simple Prev/Next pagination only
       function updatePaginationControls() {

@@ -18,8 +18,6 @@
 
   <?php include '../Employee Section/includes/emp-sidebar.php' ?>
 
-  <?php $tab = isset($_GET['tab']) ? $_GET['tab'] : 'status'; ?>
-
   <!-- Main Container -->
   <div class="main-container">
 
@@ -49,6 +47,7 @@
       });
     </script>
 
+    <?php $tab = isset($_GET['tab']) ? $_GET['tab'] : 'status'; ?>
 
     <div class="main-content">
 
