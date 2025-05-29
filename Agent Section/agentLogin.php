@@ -36,7 +36,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['flightid'])) {
         <i class="fas fa-arrow-left"></i> <span> Back to Flight Schedules </span>
     </a>
 
-
     <main class="main-container">
         <div class="login-container">
             <div class="logo">
@@ -210,13 +209,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['flightid'])) {
                             
                             return; // Stop further execution
                         }
-
+                        
 
                         // Handle redirection based on account type
                         switch (data.accountType) {
                             case 'agent':
                                 console.log("Agent login successful.");
-                                alert("Welcome back, Agent!");
 
                                 if (flightid) {
                                     console.log("Redirecting Agent to booking page.");

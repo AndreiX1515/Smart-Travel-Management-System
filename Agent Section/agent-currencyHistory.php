@@ -16,14 +16,15 @@ session_start();
 </head>
 
 <body>
-  <div class="body-container">
-    <?php include "../Agent Section/includes/sidebar.php"; ?>
 
-    <div class="main-content-container">
-      <div class="navbar">
-        <div class="page-header-wrapper">
+  <?php include "../Agent Section/includes/sidebar.php"; ?>
 
-          <div class="page-header-top">
+  <div class="main-container">
+
+    <div class="navbar">
+      <div class="page-header-wrapper">
+
+        <div class="page-header-top">
             <div class="back-btn-wrapper">
               <button class="back-btn" id="redirect-btn">
                 <i class="fas fa-chevron-left"></i>
@@ -31,64 +32,64 @@ session_start();
             </div>
           </div>
 
-          <div class="page-header-content">
-            <div class="page-header-text">
-              <h5 class="header-title">Currency History (USD - PHP)</h5>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-      <script>
-        document.getElementById("redirect-btn").addEventListener("click", function () {
-          window.location.href = "../Agent Section/agent-dashboard.php";
-        });
-      </script>
-
-      <div class="main-content">
-        <div class="content-header">
-
-        </div>
-
-        <div class="content-body">
-          <div class="table-container">
-            <table id="currency-table" class="currency-table">
-              <thead>
-                <tr>
-                  <th>Currency</th>
-                  <th>Rate</th>
-                  <!-- <th>Percentage Difference</th> -->
-                  <th>Date and Time Recorded</th>
-                </tr>
-              </thead>
-              <tbody id="currency-body">
-                <tr>
-                  <td colspan="4">Loading...</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-
-          
-          <div class="table-footer">
-            <div class="last-updated-wrapper">
-              <h6>Last Updated: <span class="" id="lastUpdated"></span></h6>
-            </div>
-
-            <div class="pagination-controls">
-              <button id="prevPage" class="pagination-btn">Previous</button>
-              <span id="pageInfo" class="page-info">Page 1 of 10</span>
-              <button id="nextPage" class="pagination-btn">Next</button>
-            </div>
+        <div class="page-header-content">
+          <div class="page-header-text">
+            <h5 class="header-title">Transaction</h5>
           </div>
         </div>
-
 
       </div>
     </div>
+
+    <script>
+      document.getElementById("redirect-btn").addEventListener("click", function () {
+        window.location.href = "../Agent Section/agent-dashboard.php";
+      });
+    </script>
+
+    <div class="main-content">
+      <div class="content-header">
+
+      </div>
+
+      <div class="content-body">
+        <div class="table-container">
+          <table id="currency-table" class="currency-table">
+            <thead>
+              <tr>
+                <th>Currency</th>
+                <th>Rate</th>
+                <!-- <th>Percentage Difference</th> -->
+                <th>Date and Time Recorded</th>
+              </tr>
+            </thead>
+            <tbody id="currency-body">
+              <tr>
+                <td colspan="4">Loading...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+
+
+        <div class="table-footer">
+          <div class="last-updated-wrapper">
+            <h6>Last Updated: <span class="" id="lastUpdated"></span></h6>
+          </div>
+
+          <div class="pagination-controls">
+            <button id="prevPage" class="pagination-btn">Previous</button>
+            <span id="pageInfo" class="page-info">Page 1 of 10</span>
+            <button id="nextPage" class="pagination-btn">Next</button>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
   </div>
+
 
 
   <?php require "../Agent Section/includes/scripts.php"; ?>

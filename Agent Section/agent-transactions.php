@@ -19,11 +19,12 @@ require "../conn.php";
 </head>
 
 <body>
-
-  <div class="body-container">
     <?php include "../Agent Section/includes/sidebar.php"; ?>
 
-    <div class="main-content-container">
+    <?php $statusTab = isset($_GET['status']) ? $_GET['status'] : ''; ?>
+
+    <div class="main-container">
+
       <div class="navbar">
         <div class="page-header-wrapper">
 
@@ -44,121 +45,118 @@ require "../conn.php";
         </div>
       </div>
 
-      <?php
-        $statusTab = isset($_GET['status']) ? $_GET['status'] : '';
-      ?>
-
       <div class="main-content">
-        <div class="table-wrapper">
 
-          <div class="table-header">
-            <div class="search-wrapper">
-              <div class="search-input-wrapper">
-                <input type="text" id="search" placeholder="Search here..">
-              </div>
-            </div>
+        <div class="content-container">
 
-            <div class="second-header-wrapper">
-              <div class="date-range-wrapper sorting-wrapper">
-                <div class="select-wrapper">
-                  <select id="packages">
-                    <option value="All" disabled selected>Select Branch</option>
-                    <?php
-                    // Execute the SQL query
-                    $sql1 = "SELECT branchId, branchName FROM branch ORDER BY branchName ASC";
-                    $res1 = $conn->query($sql1);
-
-                    // Check if there are results
-                    if ($res1->num_rows > 0) {
-                      // Loop through the results and generate options
-                      while ($row = $res1->fetch_assoc()) {
-                        echo "<option value='" . $row['branchName'] . "'>" . $row['branchName'] . "</option>";
-                      }
-                    } else {
-                      echo "<option value=''>No companies available</option>";
-                    }
-                    ?>
-                  </select>
+          <div class="table-wrapper">
+            <div class="table-header">
+              <div class="search-wrapper">
+                <div class="search-input-wrapper">
+                  <input type="text" id="search" placeholder="Search here..">
                 </div>
               </div>
 
-              <div class="date-range-wrapper flightbooking-wrapper">
-                <div class="date-range-inputs-wrapper">
-                  <div class="input-with-icon">
-                    <input type="text" class="datepicker" id="FlightStartDate" placeholder="Flight Date" readonly>
-                    <i class="fas fa-calendar-alt calendar-icon"></i>
+              <div class="second-header-wrapper">
+                <div class="date-range-wrapper sorting-wrapper">
+                  <div class="select-wrapper">
+                    <select id="packages">
+                      <option value="All" disabled selected>Select Branch</option>
+                      <?php
+                      // Execute the SQL query
+                      $sql1 = "SELECT branchId, branchName FROM branch ORDER BY branchName ASC";
+                      $res1 = $conn->query($sql1);
+
+                      // Check if there are results
+                      if ($res1->num_rows > 0) {
+                        // Loop through the results and generate options
+                        while ($row = $res1->fetch_assoc()) {
+                          echo "<option value='" . $row['branchName'] . "'>" . $row['branchName'] . "</option>";
+                        }
+                      } else {
+                        echo "<option value=''>No companies available</option>";
+                      }
+                      ?>
+                    </select>
                   </div>
                 </div>
+
+                <div class="date-range-wrapper flightbooking-wrapper">
+                  <div class="date-range-inputs-wrapper">
+                    <div class="input-with-icon">
+                      <input type="text" class="datepicker" id="FlightStartDate" placeholder="Flight Date" readonly>
+                      <i class="fas fa-calendar-alt calendar-icon"></i>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="buttons-wrapper">
+                  <button id="clearSorting" class="btn btn-secondary">
+                    Clear
+                  </button>
+                </div>
               </div>
 
-              <div class="buttons-wrapper">
-                <button id="clearSorting" class="btn btn-secondary">
-                  Clear
-                </button>
-              </div>
             </div>
 
-          </div>
-
-          <div class="navpills-container">
-            <ul class="filter-tabs" id="booking-filter-tabs">
-              <li class="active" data-filter="">All
-                <span class="badge">
-                  <?php
-                  $sql = "SELECT COUNT(*) AS totalBookings FROM booking WHERE accountId = $accountId";
-                  $result = mysqli_query($conn, $sql);
-                  echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
-                  ?>
-                </span>
-              </li>
-
-              <li data-filter="Pending">Pending
-                <span class="badge">
-                  <?php
-                  $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
-                WHERE accountId = $accountId AND status = 'Pending'";
-                  $result = mysqli_query($conn, $sql);
-                  echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
-                  ?>
-                </span>
-              </li>
-
-              <li data-filter="Reserved">Reserved
-                <span class="badge">
-                  <?php
-                  $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
-                WHERE accountId = $accountId AND status = 'Reserved'";
-                  $result = mysqli_query($conn, $sql);
-                  echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
-                  ?>
-                </span>
-              </li>
-
-              <li data-filter="Confirmed">Confirmed
-                <span class="badge">
-                  <?php
-                  $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
-                WHERE accountId = $accountId AND status = 'Confirmed'";
-                  $result = mysqli_query($conn, $sql);
-                  echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
-                  ?>
-                </span>
-              </li>
-
-              <li data-filter="Cancelled">Cancelled
-                <span class="badge">
-                  <?php
-                    $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
-                            WHERE accountId = $accountId AND status = 'Cancelled'";
+            <div class="navpills-container">
+              <ul class="filter-tabs" id="booking-filter-tabs">
+                <li class="active" data-filter="">All
+                  <span class="badge">
+                    <?php
+                    $sql = "SELECT COUNT(*) AS totalBookings FROM booking WHERE accountId = $accountId";
                     $result = mysqli_query($conn, $sql);
                     echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
-                  ?>
-                </span>
-              </li>
-            </ul>
-          </div>
+                    ?>
+                  </span>
+                </li>
 
-          <div class="table-container">
+                <li data-filter="Pending">Pending
+                  <span class="badge">
+                    <?php
+                    $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
+                  WHERE accountId = $accountId AND status = 'Pending'";
+                    $result = mysqli_query($conn, $sql);
+                    echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+                    ?>
+                  </span>
+                </li>
+
+                <li data-filter="Reserved">Reserved
+                  <span class="badge">
+                    <?php
+                    $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
+                  WHERE accountId = $accountId AND status = 'Reserved'";
+                    $result = mysqli_query($conn, $sql);
+                    echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+                    ?>
+                  </span>
+                </li>
+
+                <li data-filter="Confirmed">Confirmed
+                  <span class="badge">
+                    <?php
+                    $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
+                  WHERE accountId = $accountId AND status = 'Confirmed'";
+                    $result = mysqli_query($conn, $sql);
+                    echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+                    ?>
+                  </span>
+                </li>
+
+                <li data-filter="Cancelled">Cancelled
+                  <span class="badge">
+                    <?php
+                      $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
+                              WHERE accountId = $accountId AND status = 'Cancelled'";
+                      $result = mysqli_query($conn, $sql);
+                      echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+                    ?>
+                  </span>
+                </li>
+              </ul>
+
+              <div class="table-container">
             <table id="product-table" class="product-table">
               <thead>
                 <tr>
@@ -377,12 +375,141 @@ require "../conn.php";
               <span id="pageInfo" class="page-info">Page 1 of 10</span>
               <button id="nextPage" class="pagination-btn">Next</button>
             </div>
+
+            <div class="table-container">
+              <table id="product-table" class="product-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Contact Person Info</th>
+                    <th>Contact Details</th>
+                    <th>Branch Name</th>
+                    <th>Flight Date</th>
+                    <th>Total Pax</th>
+                    <th>Package Price</th>
+                    <th>Total Req. Cost</th>
+                    <th>Amt. Paid Balance</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php
+                    if ($agentRole != 'Head Agent') 
+                    {
+                      $sql1 = "SELECT b.transactNo AS `T.N`, p.packageName AS `PACKAGE`, DATE_FORMAT(b.bookingDate, '%m-%d-%Y') AS `TRANSACTION DATE`, 
+                                b.bookingType as bookingType, DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y') AS `FLIGHT DATE`, b.pax AS `TOTAL PAX`, 
+                                CONCAT(b.lName, ', ', b.fName, ' ', CASE WHEN b.mName = 'N/A' THEN '' 
+                                ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ', CASE WHEN b.suffix = 'N/A' THEN '' 
+                                ELSE b.suffix END) AS `CONTACT NAME`, br.branchName as branchName,
+                                b.email AS `CONTACT EMAIL`, CONCAT(b.countryCode, ' ', b.contactNo) AS `CONTACT PHONE`, b.status AS `STATUS`, 
+                                COALESCE(SUM(r.requestCost), 0) AS TotalRequestAmount, b.totalPrice AS PackagePrice, 
+                                COALESCE(SUM(pa.amount), 0) AS TotalAmountPaid
+                              FROM booking b
+                              LEFT JOIN flight f ON b.flightId = f.flightId
+                              LEFT JOIN package p ON b.packageId = p.packageId
+                              LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
+                              JOIN branch br ON b.agentCode = br.branchAgentCode
+                              LEFT JOIN payment pa ON pa.transactNo = b.transactNo AND pa.paymentStatus = 'Approved'
+                              LEFT JOIN request r ON r.transactNo = b.transactNo AND r.requestStatus = 'Confirmed'
+                              WHERE b.accountId = $accountId
+                              GROUP BY b.transactNo
+                              ORDER BY `FLIGHT DATE`";
+
+                      $res1 = $conn->query($sql1);
+
+                      if ($res1->num_rows > 0) 
+                      {
+                        while ($row = $res1->fetch_assoc()) 
+                        {
+                          $transactNo = $row['T.N'];
+                          $pax = $row['TOTAL PAX'];
+
+                          $status = isset($row['STATUS']) ? $row['STATUS'] : 'Unknown';
+                          $statusClass = '';
+
+                          switch ($status) 
+                          {
+                            case 'Confirmed':
+                              $statusClass = 'bg-success text-white'; // Green background, white text
+                              break;
+                            case 'Cancelled':
+                              $statusClass = 'bg-danger text-white'; // Red background, white text
+                              break;
+                            case 'Pending':
+                              $statusClass = 'bg-warning text-dark';
+                              break;
+                            default:
+                              $statusClass = 'bg-secondary text-white';
+                          }
+
+                          $packagePrice = $row['PackagePrice'] ?? 0;
+                          $requestTotal = $row['TotalRequestAmount'] ?? 0;
+                          $amountPaid = $row['TotalAmountPaid'] ?? 0;
+                          $balance = max(($packagePrice + $requestTotal) - $amountPaid, 0); 
+                          
+                          
+                          // Prevent negative balances
+                          // Booking Date
+                          // <td>{$row['TRANSACTION DATE']}</td>
+
+                          echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($transactNo) . "'>
+                                  <td>{$transactNo}</td>
+                                  <td>{$row['CONTACT NAME']}</td>
+                                  <td> 
+                                    <div class='d-flex flex-column'>
+                                      <span><strong>Email: </strong>" . $row['CONTACT EMAIL'] . " </span>
+                                      <span><strong>Contact Number: </strong> " . $row['CONTACT PHONE'] . "</span>
+                                    </div>
+                                  </td>
+                                  <td>{$row['branchName']}</td>
+                                  <td>{$row['FLIGHT DATE']}</td>
+                                  <td style='text-align: center; font-weight: bold;'>
+                                    {$row['TOTAL PAX']}
+                                  </td>
+                                  <td>₱ {$row['PackagePrice']}</td>
+                                  <td>₱ {$row['TotalRequestAmount']}</td>
+                                  <td>
+                                    <div class='d-flex flex-column'>
+                                      <span><strong>Amount Paid: </strong> ₱ " . $row['TotalAmountPaid'] . " </span>
+                                      <span><strong>Balance: </strong> ₱ " . $balance . "</span>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <span class='badge p-2 rounded-pill {$statusClass}'>
+                                      {$status}
+                                    </span>
+                                  </td>
+                              </tr>";
+                        }
+                      }
+                    } 
+                    
+
+                    if ($res1) 
+                    {
+                      $res1->free();
+                    }
+                  ?>
+                </tbody>
+              </table>
+            </div>
+
+
+            <div class="table-footer">
+              <div class="pagination-controls">
+                <button id="prevPage" class="pagination-btn">Previous</button>
+                <span id="pageInfo" class="page-info">Page 1 of 10</span>
+                <button id="nextPage" class="pagination-btn">Next</button>
+              </div>
+            </div>
+
           </div>
 
         </div>
       </div>
+
     </div>
-  </div>
+ 
 
   <!-- Modal for Update Booking -->
   <div class="modal fade" id="updateBookingModal" tabindex="-1" aria-labelledby="updateBookingModalLabel" aria-hidden="true">

@@ -16,91 +16,99 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
 
   <link rel="stylesheet" href="../Agent Section/assets/css/agent-dashboard.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="../Agent Section/assets/css/navbar-sidebar.css?v=<?php echo time(); ?>">
+
+  <?php include '../Agent Section/functions/exchange-rate.php' ?>
 </head>
 
 <body>
 
-  <div class="body-container">
-    <?php include "../Client Section/Includes/client-sidebar.php"; ?>
+  <?php include "../Client Section/Includes/client-sidebar.php"; ?>
 
-    <div class="main-content-container">
+  <div class="main-container">
 
-      <div class="navbar">
-        <div class="page-header-wrapper">
+    <div class="navbar">
 
-          <div class="page-header-content">
-            <div class="page-header-text">
-              <h5 class="header-title">Dashboard</h5>
-            </div>
+      <div class="page-header-wrapper">
+        <div class="page-header-content">
+          <div class="page-header-text">
+            <h5 class="header-title">Dashboard</h5>
+            <!-- Optional description -->
+            <!-- <p class="header-description">Overview & analytics</p> -->
           </div>
-
         </div>
       </div>
 
-      <div class="main-content">
-        <div class="content-container">
-          <!-- Cards First Row -->
-          <div class="counts-wrapper">
+    </div>
 
-            <!-- CARD 1 Current Transaction Counts-->
-            <div class="card">
-              <div class="header-counts">
-                <div class="primary-pill">
-                  <h6 class="white-pill">Active Transaction</h6>
-                </div>
+    <div class="main-content">
 
-                <div class="accent-pill mt-1">
-                  <h6 class="accent-pill"><?php echo date('F, Y'); ?></h6>
-                </div>
+      <div class="content-container">
+
+        <!-- Cards Count 1st Row -->
+        <div class="header-counts">
+
+          <!-- Card 1 -->
+          <div class="card">
+
+            <div class="counts-header">
+              <div class="title-wrapper">
+                <h6 class="">Active Transaction</h6>
               </div>
 
-              <div class="card-content px-3">
-                <!-- Total Transaction, and Completed Transaction -->
-                <div class="row">
-                  <!-- Total Transaction Card -->
-                  <div class="col-md-5 d-flex flex-row clickable-card"
-                    onclick="window.location.href='../Client Section/client-transactions.php'">
-                    <div class="card-icon icon-blue">
-                      <i class="fas fa-calendar-alt"></i>
-                    </div>
-                    <div class="side-content d-flex flex-column">
-                      <?php
+              <div class="accent-pill mt-1">
+                <h6 class="accent-pill"><?php echo date('F, Y'); ?></h6>
+              </div>
+            </div>
 
-                        $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking b
+            <div class="card-content card-content-body">
+
+              <!-- Total and Confirmed Transaction Count -->
+              <div class="row">
+
+                <div class="col-md-5 clickable-card" onclick="redirectToTransactionStatus('current')">
+                  <div class="card-icon icon-blue">
+                    <i class="fas fa-calendar-alt"></i>
+                  </div>
+
+                  <div class="side-content">
+                     <?php
+
+                    $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking b
                                                   JOIN flight f ON b.flightId = f.flightId 
                                                   WHERE b.accountId = '$accountId' AND f.flightDepartureDate >= CURDATE()";
 
-                        // Execute the query
-                        $result = mysqli_query($conn, $totalTransactionsQuery);
+                    // Execute the query
+                    $result = mysqli_query($conn, $totalTransactionsQuery);
 
-                        // Check if the query was successful and fetch the result
-                        if ($result) {
-                          $row = mysqli_fetch_assoc($result);
-                          $totalTransactions = $row['total'];
-                        } else {
-                          $totalTransactions = 0; // Default to 0 if query fails
-                        }
-                      ?>
-                      <h5><?php echo $totalTransactions; ?></h5>
-                      <p>TOTAL</p>
-                    </div>
+                    // Check if the query was successful and fetch the result
+                    if ($result) {
+                      $row = mysqli_fetch_assoc($result);
+                      $totalTransactions = $row['total'];
+                    } else {
+                      $totalTransactions = 0; // Default to 0 if query fails
+                    }
+                    ?>
+                    <h5><?php echo $totalTransactions; ?></h5>
+                    <p>TOTAL</p>
+
+                  </div>
+                </div>
+
+                <!-- Confirmed Transactions -->
+                <div class="col-md-5 clickable-card" onclick="redirectToTransactionStatus('Confirmed')">
+                  <div class="card-icon icon-green">
+                    <i class="fas fa-check-circle"></i>
                   </div>
 
-                  <!-- Confirmed Transaction -->
-                  <div class="col-md-5 d-flex flex-row clickable-card"
-                    onclick="redirectToAgentTransaction('Confirmed')">
-                    <div class="card-icon icon-green">
-                      <i class="fas fa-check-circle"></i>
-                    </div>
-                    <div class="side-content d-flex flex-column">
-                      <?php
-                        $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking b
+                  <div class="side-content d-flex flex-column">
+                    <?php
+                    $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking b
                                                   JOIN flight f ON b.flightId = f.flightId
                                                   WHERE b.status='Confirmed' AND b.accountId = '$accountId' 
                                                   AND f.flightDepartureDate >= CURDATE()";
 
-                        // Execute the query
-                        $result = mysqli_query($conn, $totalTransactionsQuery);
+                    // Execute the query
+                    $result = mysqli_query($conn, $totalTransactionsQuery);
 
                         // Check if the query was successful and fetch the result
                         if ($result) {
@@ -116,111 +124,121 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                   </div>
                 </div>
 
-                <!-- Pending, and Cancelled Transaction -->
-                <div class="row">
-                  <!-- Pending Transaction -->
-                  <div class="col-md-5 d-flex flex-row clickable-card" onclick="redirectToAgentTransaction('Pending')">
-                    <div class="card-icon icon-yellow">
-                      <i class="fas fa-exclamation-triangle"></i>
-                    </div>
-                    <div class="side-content d-flex flex-column">
-                      <?php
-                        $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking b
+              </div>
+
+              <!-- Pending, Reserved, and Cancelled Transaction Count -->
+              <div class="row">
+
+                <!-- Pending Transaction Count -->
+                <div class="col-md-4 clickable-card" onclick="redirectToTransactionStatus('Pending')">
+
+                  <div class="card-icon icon-yellow">
+                    <i class="fas fa-exclamation-triangle"></i>
+                  </div>
+
+                  <div class="side-content d-flex flex-column">
+                    <?php
+                    $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking b
                                                   JOIN flight f ON b.flightId = f.flightId
                                                   WHERE b.status = 'Pending' AND b.accountId = '$accountId' 
                                                   AND f.flightDepartureDate >= CURDATE()";
-                        // Execute the query
-                        $result = mysqli_query($conn, $totalTransactionsQuery);
+                    // Execute the query
+                    $result = mysqli_query($conn, $totalTransactionsQuery);
 
-                        // Check if the query was successful and fetch the result
-                        if ($result) {
-                          $row = mysqli_fetch_assoc($result);
-                          $totalTransactions = $row['total'];
-                        } else {
-                          $totalTransactions = 0; // Default to 0 if query fails
-                        }
-                      ?>
-                      <h5><?php echo $totalTransactions; ?></h5>
-                      <p>PENDING</p>
-                    </div>
+                    // Check if the query was successful and fetch the result
+                    if ($result) {
+                      $row = mysqli_fetch_assoc($result);
+                      $totalTransactions = $row['total'];
+                    } else {
+                      $totalTransactions = 0; // Default to 0 if query fails
+                    }
+                    ?>
+                    <h5><?php echo $totalTransactions; ?></h5>
+                    <p>PENDING</p>
                   </div>
 
-                  <div class="col-md-5 d-flex flex-row clickable-card" onclick="redirectToAgentTransaction('Reserved')">
-                    <div class="card-icon bg-secondary">
-                      <i class="fas fa-exclamation-triangle"></i>
-                    </div>
-                    <div class="side-content d-flex flex-column">
-                      <?php
-                        $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking b
+                </div>
+
+                <!-- Reserved Transaction Count -->
+                <div class="col-md-4 clickable-card" onclick="redirectToTransactionStatus('Reserved')">
+                  <div class="card-icon bg-secondary">
+                    <i class="fas fa-exclamation-triangle"></i>
+                  </div>
+                  <div class="side-content d-flex flex-column">
+                    <?php
+                    $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking b
                                                   JOIN flight f ON b.flightId = f.flightId
                                                   WHERE b.status = 'Reserved' AND b.accountId = '$accountId' 
                                                   AND f.flightDepartureDate >= CURDATE()";
-                        // Execute the query
-                        $result = mysqli_query($conn, $totalTransactionsQuery);
+                    // Execute the query
+                    $result = mysqli_query($conn, $totalTransactionsQuery);
 
-                        // Check if the query was successful and fetch the result
-                        if ($result) {
-                          $row = mysqli_fetch_assoc($result);
-                          $totalTransactions = $row['total'];
-                        } else {
-                          $totalTransactions = 0; // Default to 0 if query fails
-                        }
-                      ?>
-                      <h5><?php echo $totalTransactions; ?></h5>
-                      <p>RESERVED</p>
-                    </div>
+                    // Check if the query was successful and fetch the result
+                    if ($result) {
+                      $row = mysqli_fetch_assoc($result);
+                      $totalTransactions = $row['total'];
+                    } else {
+                      $totalTransactions = 0; // Default to 0 if query fails
+                    }
+                    ?>
+                    <h5><?php echo $totalTransactions; ?></h5>
+                    <p>RESERVED</p>
                   </div>
+                </div>
 
-                  <!-- Total Cancelled Transaction -->
-                  <div class="col-md-5 d-flex flex-row clickable-card"
-                    onclick="redirectToAgentTransaction('Cancelled')">
-                    <div class="card-icon icon-red">
-                      <i class="fas fa-times-circle"></i>
-                    </div>
-                    <div class="side-content d-flex flex-column">
-                      <?php
-                        $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking b
+                <!-- Cancelled Transaction Count -->
+                <div class="col-md-4 clickable-card card-cancelled" onclick="redirectToTransactionStatus('Cancelled')">
+                  <div class="card-icon icon-red">
+                    <i class="fas fa-times-circle"></i>
+                  </div>
+                  <div class="side-content d-flex flex-column">
+                    <?php
+                    $totalTransactionsQuery = "SELECT COUNT(*) AS total FROM booking b
                                                   JOIN flight f ON b.flightId = f.flightId
                                                   WHERE b.status = 'Cancelled' AND b.accountId = '$accountId' 
                                                   AND f.flightDepartureDate >= CURDATE()";
-                        // Execute the query
-                        $result = mysqli_query($conn, $totalTransactionsQuery);
+                    // Execute the query
+                    $result = mysqli_query($conn, $totalTransactionsQuery);
 
-                        // Check if the query was successful and fetch the result
-                        if ($result) {
-                          $row = mysqli_fetch_assoc($result);
-                          $totalTransactions = $row['total'];
-                        } else {
-                          $totalTransactions = 0; // Default to 0 if query fails
-                        }
-                      ?>
-                      <h5><?php echo $totalTransactions; ?></h5>
-                      <p>CANCELLED</p>
-                    </div>
+                    // Check if the query was successful and fetch the result
+                    if ($result) {
+                      $row = mysqli_fetch_assoc($result);
+                      $totalTransactions = $row['total'];
+                    } else {
+                      $totalTransactions = 0; // Default to 0 if query fails
+                    }
+                    ?>
+                    <h5><?php echo $totalTransactions; ?></h5>
+                    <p>CANCELLED</p>
                   </div>
-
                 </div>
+
               </div>
+
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="card card-top">
+            <div class="counts-header">
+              <div class="title-wrapper">
+                <h6 class="">On Due</h6>
+              </div>
+
             </div>
 
-            <!-- CARD 2 - On Due -->
-            <div class="card">
-              <div class="header-counts">
-                <div class="primary-pill">
-                  <h6 class="white-pill">On Due</h6>
-                </div>
-              </div>
+            <div class="card-content card-content-body">
+              <!-- 5 Days and 15 Days Due Count -->
+              <div class="row">
+                <!-- 5 Days Due Count -->
+                <div class="col-md-5 clickable-card" onclick="redirectToTransactionOnDue('5days')">
+                  <div class="card-icon icon-red">
+                    <p>5</p>
+                  </div>
 
-              <div class="card-content px-3">
-                <div class="row">
-                  <!-- Due on 5 Days -->
-                  <div class="col-md-5 d-flex flex-row">
-                    <div class="card-icon icon-blue">
-                      <i class="fas fa-calendar-alt"></i>
-                    </div>
-                    <div class="side-content d-flex flex-column">
-                      <?php
-                        $days5Query = "SELECT COUNT(*) AS `bookingsDueIn5Days` FROM booking b 
+                  <div class="side-content d-flex flex-column">
+                    <?php
+                    $days5Query = "SELECT COUNT(*) AS `bookingsDueIn5Days` FROM booking b 
                                       JOIN flight f ON b.flightId = f.flightId
                                       LEFT JOIN (SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) 
                                                   AS totalPaid FROM paymentc GROUP BY transactNo) p ON b.transactNo = p.transactNo
@@ -229,29 +247,29 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                                       AND (b.totalPrice > IFNULL(p.totalPaid, 0)) AND b.accountId = '$accountId' 
                                       AND b.status = 'Confirmed'";
 
-                        // Execute the query
-                        $result = $conn->query($days5Query);
+                    // Execute the query
+                    $result = $conn->query($days5Query);
 
-                        // Check if the query returned a result
-                        if ($result->num_rows > 0) {
-                          $row = $result->fetch_assoc();
-                          $bookingsDueIn5Days = $row['bookingsDueIn5Days'];
-                        } else {
-                          $bookingsDueIn5Days = 0;  // Default to 0 if no records found
-                        }
-                      ?>
-                      <h5><?php echo $bookingsDueIn5Days; ?></h5>
-                      <p>5 DAYS BEFORE FLIGHT</p>
-                    </div>
+                    // Check if the query returned a result
+                    if ($result->num_rows > 0) {
+                      $row = $result->fetch_assoc();
+                      $bookingsDueIn5Days = $row['bookingsDueIn5Days'];
+                    } else {
+                      $bookingsDueIn5Days = 0;  // Default to 0 if no records found
+                    }
+                    ?>
+                    <h5><?php echo $bookingsDueIn5Days; ?></h5>
+                    <p>5 DAYS BEFORE FLIGHT</p>
                   </div>
+                </div>
 
-                  <!-- Due on 15 Days -->
-                  <div class="col-md-5 d-flex flex-row">
-                    <div class="card-icon icon-green">
-                      <i class="fas fa-check-circle"></i>
-                    </div>
-                    <div class="side-content d-flex flex-column">
-                      <?php
+                <!-- 15 Days Due Count -->
+                <div class="col-md-5 clickable-card" onclick="redirectToTransactionOnDue('10days')">
+                  <div class="card-icon bg-secondary">
+                    <p>15</p>
+                  </div>
+                  <div class="side-content d-flex flex-column">
+                    <?php
                         $days15Query = "SELECT COUNT(*) AS bookingsDueIn15Days FROM booking b
                                             JOIN flight f ON b.flightId = f.flightId
                                             LEFT JOIN (SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) 
@@ -273,19 +291,25 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                       ?>
                       <h5><?php echo $bookingsDueIn15Days; ?></h5>
                       <p>15 DAYS BEFORE FLIGHT</p>
+
                     </div>
                   </div>
                 </div>
+              </div>
 
-                <div class="row">
-                  <!-- Due on 30 Days -->
-                  <div class="col-md-5 d-flex flex-row">
-                    <div class="card-icon icon-yellow">
-                      <i class="fas fa-exclamation-triangle"></i>
-                    </div>
-                    <div class="side-content d-flex flex-column">
-                      <?php
-                        $days30Query = "SELECT COUNT(*) AS bookingsDueIn30Days FROM booking b 
+              <!-- 30 Days and more than 30 Days Due Count -->
+              <div class="row">
+
+                <!-- 30 Days Due Count -->
+                <div class="col-md-5 clickable-card" onclick="redirectToTransactionOnDue('20days')">
+
+                  <div class="card-icon icon-blue">
+                    <p>30</p>
+                  </div>
+
+                  <div class="side-content d-flex flex-column">
+                    <?php
+                    $days30Query = "SELECT COUNT(*) AS bookingsDueIn30Days FROM booking b 
                                             JOIN flight f ON b.flightId = f.flightId
                                             LEFT JOIN (SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) 
                                                       AS totalPaid FROM paymentc GROUP BY transactNo) p 
@@ -294,30 +318,34 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                                             AND (b.totalPrice > IFNULL(p.totalPaid, 0)) AND b.accountId = '$accountId' 
                                             AND b.status = 'Confirmed'";
 
-                        // Execute the query
-                        $result = $conn->query($days30Query);
+                    // Execute the query
+                    $result = $conn->query($days30Query);
 
-                        // Check if the query returned a result
-                        if ($result->num_rows > 0) {
-                          $row = $result->fetch_assoc();
-                          $bookingsDueIn30Days = $row['bookingsDueIn30Days'];
-                        } else {
-                          $bookingsDueIn30Days = 0;  // Default to 0 if no records found
-                        }
-                      ?>
-                      <h5><?php echo $bookingsDueIn30Days; ?></h5>
-                      <p>30 DAYS BEFORE FLIGHT</p>
-                    </div>
+                    // Check if the query returned a result
+                    if ($result->num_rows > 0) {
+                      $row = $result->fetch_assoc();
+                      $bookingsDueIn30Days = $row['bookingsDueIn30Days'];
+                    } else {
+                      $bookingsDueIn30Days = 0;  // Default to 0 if no records found
+                    }
+                    ?>
+                    <h5><?php echo $bookingsDueIn30Days; ?></h5>
+                    <p>30 DAYS BEFORE FLIGHT</p>
                   </div>
 
-                  <!-- Due on 30 Days -->
-                  <div class="col-md-5 d-flex flex-row">
-                    <div class="card-icon icon-red">
-                      <i class="fas fa-times-circle"></i>
-                    </div>
-                    <div class="side-content d-flex flex-column">
-                      <?php
-                        $daysMoreThan30Query = "SELECT COUNT(*) AS bookingsOver30DaysAfterFlight FROM booking b 
+                </div>
+
+                <!-- more than 30 Days Due Count -->
+                <div class="col-md-5 clickable-card" onclick="redirectToTransactionOnDue('30daysplus')">
+
+                  <div class="card-icon icon-blue">
+                    <i class="fas fa-chevron-right"></i>
+                  </div>
+
+
+                  <div class="side-content d-flex flex-column">
+                    <?php
+                    $daysMoreThan30Query = "SELECT COUNT(*) AS bookingsOver30DaysAfterFlight FROM booking b 
                                             JOIN flight f ON b.flightId = f.flightId
                                             LEFT JOIN (SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) 
                                                       AS totalPaid FROM paymentc GROUP BY transactNo) p 
@@ -326,36 +354,45 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                                             AND (b.totalPrice > IFNULL(p.totalPaid, 0)) AND b.accountId = '$accountId' 
                                             AND b.status = 'Confirmed'";
 
-                        // Execute the query
-                        $result = $conn->query($daysMoreThan30Query);
+                    // Execute the query
+                    $result = $conn->query($daysMoreThan30Query);
 
-                        // Check if the query returned a result
-                        if ($result->num_rows > 0) {
-                          $row = $result->fetch_assoc();
-                          $bookingsDueInMoreThan30Days = $row['bookingsOver30DaysAfterFlight'];
-                        } else {
-                          $bookingsDueInMoreThan30Days = 0;  // Default to 0 if no records found
-                        }
-                      ?>
-                      <h5><?php echo $bookingsDueInMoreThan30Days; ?></h5>
-                      <p>OVERDUE BALANCE (30+ DAYS AFTER FLIGHT)</p>
-                    </div>
+                    // Check if the query returned a result
+                    if ($result->num_rows > 0) {
+                      $row = $result->fetch_assoc();
+                      $bookingsDueInMoreThan30Days = $row['bookingsOver30DaysAfterFlight'];
+                    } else {
+                      $bookingsDueInMoreThan30Days = 0;  // Default to 0 if no records found
+                    }
+                    ?>
+                    <h5><?php echo $bookingsDueInMoreThan30Days; ?></h5>
+                    <p>MORE THAN A MONTH</p>
                   </div>
+
                 </div>
 
               </div>
+
+            </div>
+          </div>
+
+          <div class="counts-header">
+              <div class="title-wrapper">
+                <h6 class="">Total Sales</h6>
+              </div>
+
             </div>
 
-            <!-- CARD 3 - Total Sales -->
-            <div class="card">
-
-              <div class="header-counts">
-                <div class="primary-pill">
-                  <h6 class="white-pill">Total Sales</h6>
+          <!-- Card 3 -->
+          <div class="card card-top">
+            
+              <div class="counts-header">
+                <div class="title-wrapper">
+                  <h6 class="">Total Sales</h6>
                 </div>
               </div>
 
-              <div class="card-content px-3">
+              <div class="card-content card-content-body">
                 <div class="row">
                   <!-- Current Month Sales -->
                   <div class="col-md-5 d-flex flex-row">
@@ -417,7 +454,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                                             AND MONTH(r.requestDate) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH)
                                             AND YEAR(r.requestDate) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH)), 0) AS totalSales";
 
-                        $pastMonthResult = $conn->query($pastMonthQuery);
+                    $pastMonthResult = $conn->query($pastMonthQuery);
 
                         // Store as float for formatting at output
                         $pastMonthTotal = 0.00;
@@ -433,104 +470,106 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                     </div>
                   </div>
                 </div>
-
-              </div>
-            </div>
-
-            <?php include '../Agent Section/functions/exchange-rate.php' ?>
-
-            <!-- CARD 4 -->
-            <div class="card">
-
-              <div class="header-counts mb-2">
-                <div class="primary-pill">
-                  <h6 class="white-pill">Daily Currency Conversion</h6>
-                </div>
-
-                <div class="accent-pill">
-                  <a href="#" class="pill-button">View History</a>
-                </div>
               </div>
 
-              <div class="card-body-currency">
-                <div class="currency-cards">
-                  <div class="currency-card">
-                    <div class="flag-icon-wrapper">
-                      <img src="../Assets/Flags/english-flag.png" alt="">
-                      <h6 class="mt-2">USD</h6>
-                      <div class="currency-text-wrapper">
-                        <h5>$ 1</h5>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="icon-wrapper mx-2">
-                    <i class="fas fa-exchange-alt"></i>
-                  </div>
-
-                  <div class="currency-card">
-                    <div class="flag-icon-wrapper">
-                      <img src="../Assets/Flags/philippines (2).png" alt="">
-                      <h6 class="mt-2">PHP</h6>
-                      <div class="currency-text-wrapper">
-                        <h5>₱ <?php echo number_format($usd_to_php, 2); ?></h5>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="currency-card">
-                    <div class="flag-icon-wrapper">
-                      <img src="../Assets/Flags/korean-flag.png" alt="">
-                      <h6 class="mt-2">KOR</h6>
-                      <div class="currency-text-wrapper">
-                        <h5>₩ <?php echo number_format($usd_to_krw, 0); ?></h5>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- <div class="currency-card">
-                  <div class="flag-icon-wrapper">
-                    <img src="../assets/images/Flags/european.png" alt="">
-                      <h6 class="mt-2">EUR</h6>
-                      <div class="currency-text-wrapper">
-                      <h6>€ 
-                        <?php
-                        // echo number_format($usd_to_euro, 2); 
-                        ?></h6>
-                    </div>
-                  </div>
-                </div> -->
-                </div>
-              </div>
             </div>
 
           </div>
 
-          <div class="tabs-wrapper">
-            <div class="tabs-list-wrapper">
-              <ul class="nav nav-pills" id="pills-tab" role="tablist">
-                <li class="nav-item" role="presentation">
-                  <button class="nav-link active" id="pills-profile-tab" data-bs-toggle="pill"
-                    data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile"
-                    aria-selected="false">Flight Seats Tracker</button>
-                </li>
+          <!-- Card 4 -->
+          <div class="card card-4">
+            <div class="counts-header">
+              <div class="title-wrapper">
+                <h6 class="">Currency Conversion</h6>
+              </div>
 
-                <li class="nav-item" role="presentation">
-                  <button class="nav-link " id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home"
-                    type="button" role="tab" aria-controls="pills-home" aria-selected="true">Pending and
-                    Requests</button>
-                </li>
-
-                <!-- <li class="nav-item" role="presentation">
-                <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">F.I.T</button>
-              </li> -->
-
-                <!-- <li class="nav-item" role="presentation">
-                <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Confirmed</button>
-              </li> -->
-              </ul>
+              <div class="accent-pill">
+                <button class="btn btn-primary view-currency-btn" id="addCurrencyBtn"
+                  onclick="window.location.href='../Employee Section/emp-currencyHistory.php';">
+                  View History
+                </button>
+              </div>
             </div>
 
+            <div class="card-content card-content-body">
+
+              <div class="currency-row">
+
+                <!-- USD Section -->
+                <div class="currency-card usd-card-wrapper">
+                  <div class="flag-icon-wrapper">
+                    <img src="../Assets/Flags/english-flag.png" alt="US Flag">
+                    <div class="currency-text-wrapper">
+                      <h5 class="currency-value">$ 1</h5>
+                      <p class="currency-label">US DOLLAR</p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Exchange Icon -->
+                <div class="icon-container">
+                  <div class="icon-wrapper-currency">
+                    <i class="fas fa-exchange-alt"></i>
+                  </div>
+                </div>
+
+                <!-- PHP-KR Section -->
+                <div class="php-kr-card-wrapper">
+
+                  <div class="card-php-kr">
+                    <div class="card-icon kr-icon-wrapper">
+                      <div class="flag-icon-wrapper">
+                        <img width="30px" height="30px" src="../Assets/Flags/korean-flag.png" alt="">
+                      </div>
+                    </div>
+
+                    <div class="side-content d-flex flex-column">
+                      <h5 class="currency-text">₩ <?php echo number_format($usd_to_krw, 0); ?> </h5>
+                      <p>KOREAN WON</p>
+                    </div>
+                  </div>
+
+                  <div class="card-php-kr">
+                    <div class="card-icon">
+                      <div class="flag-icon-wrapper">
+                        <img width="30px" height="30px" src="../Assets/Flags/philippines (2).png" alt="">
+                      </div>
+                    </div>
+
+                    <div class="side-content d-flex flex-column">
+                      <h5 class="currency-text">₱ <?php echo number_format($usd_to_php, 2); ?></h5>
+                      <p>PHILIPPINE PESO</p>
+                    </div>
+
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+        <div class="second-div">
+          <div class="navTabs-wrapper">
+            <ul class="nav nav-pills" id="pills-tab" role="tablist">
+
+              <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="pills-profile-tab" data-bs-toggle="pill"
+                  data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile"
+                  aria-selected="false">Flight Seat
+                  Tracker</button>
+              </li>
+
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home"
+                  type="button" role="tab" aria-controls="pills-home" aria-selected="true">Payment and Requests</button>
+              </li>
+            </ul>
+          </div>
+
+          <div class="content-heading">
             <div class="tabs-sorting-wrapper">
               <div class="second-header-wrapper">
                 <div class="date-range-wrapper flightbooking-wrapper">
@@ -574,64 +613,60 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
 
               </div>
             </div>
-
           </div>
 
-          <div class="tab-content" id="pills-tabContent">
+        </div>
 
-            <div class="tab-pane fade show active" id="pills-profile" role="tabpanel"
-              aria-labelledby="pills-profile-tab" tabindex="0">
+        <div class="tab-content" id="pills-tabContent">
 
-              <div class="flight-seat-container">
-                <!-- Flight Seat -->
-                <div class="one">
-                  <div class="body-flight">
-                    <div class="confirm-table-container-flight">
-                      <table id="info-table" class="info-table">
-                        <thead>
-                          <tr>
-                            <!-- <th rowspan="2">TEAM OP</th> -->
-                            <th rowspan="2">ORIGIN</th>
-                            <th colspan="2" class="text-center">FLIGHT DATE</th> <!-- Flight Date columns -->
-                            <!-- <th rowspan="2">FLIGHT SEAT</th> -->
-                            <th rowspan="2">AVAILABLE SEATS</th>
-                            <th rowspan="2">ADDITIONAL SEATS</th>
-                            <th rowspan="2">PRICE</th>
-                            <th rowspan="2"></th>
+          <!-- Flight Seat - Booking Tab -->
+          <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
 
-                            <!-- <th rowspan="2">AIR + LAND</th>
-                          <th rowspan="2">LAND ONLY</th>
-                          <th rowspan="2">WHOLESALE PRICE</th>
-                          <th rowspan="2">RETAIL PRICE</th> 
-                          <th rowspan="2">LAND PRICE</th> -->
+            <div class="tab-pane-content">
+              
+              <!-- Flight Seat -->
+              <div class="one">
 
-                          </tr>
-                          <tr style="top: -8px">
-                            <th>START</th>
-                            <th>END</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <?php
-                          $sql = "SELECT DISTINCT a.agentCode AS agentCode, a.agentType AS agentType
+                <div class="table-wrapper confirm-table-container-flight">
+                  <table id="info-table" class="info-table">
+                    <thead>
+                      <tr>
+                        <th rowspan="2">ORIGIN</th>
+                        <th colspan="2" class="text-center">FLIGHT DATE</th>
+                        <th rowspan="2"></th>
+                        <th rowspan="2">AVAILABLE SEATS</th>
+                        <th rowspan="2">ADDITIONAL SEATS</th>
+                        <th rowspan="2">PRICE</th>
+                      </tr>
+
+                      <tr style="top: -8px">
+                        <th>START</th>
+                        <th>END</th>
+                      </tr>
+
+                    </thead>
+
+                    <tbody>
+                      <?php
+                        $sql = "SELECT DISTINCT a.agentCode AS agentCode, a.agentType AS agentType
                                     FROM agent a
                                     WHERE a.agentCode IS NOT NULL AND a.agentCode != ''";
-                          $result = $conn->query($sql);
+                        $result = $conn->query($sql);
 
-                          $agentColumns = '';
-                          while ($row = $result->fetch_assoc()) {
-                            $agentColumns .= "IFNULL(SUM(CASE WHEN b.bookingType = 'Package' AND (b.status = 'Confirmed' OR b.status = 
+                        $agentColumns = '';
+                        while ($row = $result->fetch_assoc()) {
+                          $agentColumns .= "IFNULL(SUM(CASE WHEN b.bookingType = 'Package' AND (b.status = 'Confirmed' OR b.status = 
                                                   'Reserved') AND b.agentCode = '$agentCode' AND a.agentType = 'Retailer' 
                                                   THEN b.pax ELSE 0 END), 0) AS `{$agentCode}_AL`,
 
                                                 IFNULL(SUM(CASE WHEN b.bookingType = 'Package' AND (b.status = 'Confirmed' OR b.status = 
                                                   'Reserved')AND b.agentCode = '$agentCode' AND a.agentType = 'Wholeseller' 
                                                   THEN b.pax ELSE 0 END), 0) AS `{$agentCode}_LO`, ";
-                          }
+                        }
 
-                          $agentColumns = rtrim($agentColumns, ', ');
+                        $agentColumns = rtrim($agentColumns, ', ');
 
-                          $sql = "SELECT CONCAT(e.lName, ', ', e.fName, 
+                        $sql = "SELECT CONCAT(e.lName, ', ', e.fName, 
                                       IF(e.mName IS NOT NULL AND e.mName != '', CONCAT(' ', LEFT(e.mName, 1)), '')) AS TeamOP,
                                       f.origin, f.flightId as flightId, f.flightDepartureDate AS Start, f.returnDepartureDate AS End, 
                                       f.availSeats AS FlightSeat, 
@@ -660,8 +695,8 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                                       f.availSeats, f.wholesalePrice, f.flightPrice, p.packagePrice
                                   ORDER BY f.flightDepartureDate";
 
-                          // Step 3: Execute the query
-                          $result = $conn->query($sql);
+                        // Step 3: Execute the query
+                        $result = $conn->query($sql);
 
                           // Step 4: Display the results in HTML table
                           if ($result->num_rows > 0) {
@@ -680,36 +715,45 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                           } else {
                             echo "<tr><td colspan='7' class='text-center'>No records found</td></tr>";
                           }
-                          ?>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="flight-seat-footer">
-                  <div class="pagination-controls">
-                    <button id="prevPage" class="pagination-btn">Previous</button>
-                    <button id="nextPage" class="pagination-btn">Next</button>
-                  </div>
+                        } else {
+                          echo "<tr><td colspan='7' class='text-center'>No records found</td></tr>";
+                        }
+                        ?>
+                    </tbody>
+                  </table>
                 </div>
 
               </div>
+
+              <div class="flight-seat-footer">
+                <div class="pagination-controls">
+                  <button id="prevPage" class="pagination-btn">Previous</button>
+                  <div id="pageNumbers" class="page-numbers"></div> <!-- Optional, can be removed -->
+                  <button id="nextPage" class="pagination-btn">Next</button>
+                </div>
+              </div>
+
             </div>
 
-            <div class="tab-pane fade " id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
-              <div class="second-row-container">
+          </div>
+
+          <!-- Pending/Request Container -->
+          <div class="tab-pane fade" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
+
+            <div class="tab-pane-content">
+
+              <div class="header-wrapper">
+
                 <!-- Pending Transactions table -->
-                <div class="one">
-                  <div class="header d-flex justify-content-between align-items-center">
-                    <h6 class="white-pill">Pending</h6>
-                    <div class="view-booking-container">
+                <div class="pending-wrapper">
+                  <div class="table-header">
+                    <div class="title-wrapper">
+                      <h6 class="">Pending</h6>
                     </div>
                   </div>
 
-                  <div class="body">
-                    <div class="table-container unconfirm-table-container">
-                      <table class="unconfirm-table">
+                 <div class="table-wrapper unconfirm-table-container">
+                    <table class="table unconfirm-table">
                         <thead>
                           <tr>
                             <th>NO.</th>
@@ -793,14 +837,15 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                 </div>
 
                 <!-- Requests table -->
-                <div class="two">
-                  <div class="header d-flex justify-content-between align-items-center">
-                    <h6 class="white-pill">Requests</h6>
+                <div class="request-wrapper">
+                  <div class="table-header">
+                    <div class="title-wrapper">
+                      <h6 class="">Requests</h6>
+                    </div>
                   </div>
 
-                  <div class="body">
-                    <div class="table-container request-table-container">
-                      <table class="request-table">
+                  <div class="table-wrapper request-table-container">
+                    <table class="table request-table">
                         <thead>
                           <tr>
                             <th>No.</th>
@@ -886,14 +931,15 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                 </div>
 
                 <!-- Payment table -->
-                <div class="three">
-                  <div class="header d-flex justify-content-between align-items-center">
-                    <h6 class="white-pill">Payment</h6>
+                <div class="payment-wrapper">
+                  <div class="table-header">
+                    <div class="title-wrapper">
+                      <h6 class="">Payment</h6>
+                    </div>
                   </div>
 
-                  <div class="body">
-                    <div class="table-container pending-payment-container">
-                      <table class="pending-payment-table">
+                    <div class="table-wrapper payment-table-container">
+                      <table class="table payment-table">
                         <thead>
                           <tr>
                             <th>NO.</th>
@@ -991,14 +1037,15 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
 
               <!-- Confirmed Table -->
               <div class="confirm-container">
-                <div class="one">
-                  <div class="header d-flex justify-content-between align-items-center">
-                    <h6 class="white-pill">Confirmed</h6>
-                  </div>
 
-                  <div class="body">
-                    <div class="table-container confirm-table-container">
-                      <table class="confirm-table">
+                <div class="table-header">
+                  <div class="title-wrapper">
+                    <h6 class="">Confirm Transactions</h6>
+                  </div>
+                </div>
+ 
+                 <div class="table-wrapper confirm-table-container">
+                  <table class="table confirm-table">
                         <thead>
                           <tr>
                             <th>NO.</th>
@@ -1118,75 +1165,17 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
 
             </div>
 
-            <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab"
-              tabindex="0">
-
-              <!-- FIT Table -->
-              <div class="fit-container">
-                <div class="one">
-                  <div class="header d-flex justify-content-between align-items-center">
-                    <h6 class="white-pill">F.I.T</h6>
-                  </div>
-
-                  <div class="body">
-                    <div class="fit-table-container">
-                      <table class="fit-table">
-                        <thead>
-                          <tr>
-                            <th>TRANSACT NO.</th>
-                            <th>HOTEL NAME</th>
-                            <th>ROOM TYPE</th>
-                            <th>NUMBER OF ROOMS</th>
-                            <th>NUMBER OF GUESTS</th>
-                            <th>TRIP DURATION</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <?php
-                          // $accountId = $_SESSION['accountId'];
-                          // $agentCode = $_SESSION['agentCode'];
-                          // $agentRole = $_SESSION['agentRole'];
-                          
-                          $sql1 = "SELECT f.transactionNo as transactNo, f.nights as noOfNights, h.hotelName as hotelName,
-                                      r.rooms as roomName, f.rooms as noOfRooms, f.pax as pax
-                                    FROM fit f
-                                    JOIN fithotel h ON f.hotelId = h.hotelId
-                                    JOIN fitrooms r ON f.roomId = r.roomId";
-                          $res1 = $conn->query($sql1);
-
-                          if ($res1->num_rows > 0) {
-                            while ($row = $res1->fetch_assoc()) {
-                              echo "<tr>";
-                              echo "<td>" . htmlspecialchars($row['transactNo']) . "</td>";
-                              echo "<td>" . htmlspecialchars($row['hotelName']) . "</td>";
-                              echo "<td>" . htmlspecialchars($row['roomName']) . "</td>";
-                              echo "<td>" . htmlspecialchars($row['noOfRooms']) . "</td>";
-                              echo "<td>" . htmlspecialchars($row['pax']) . "</td>";
-                              echo "<td>" . htmlspecialchars($row['noOfNights']) . " Night(s)</td>";
-                              echo "</tr>";
-                            }
-                          } else {
-                            echo "<tr><td colspan='6' class='text-center'>No Records Found</td></tr>";
-                          }
-                          ?>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-
-            <!-- <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">
-            </div> -->
           </div>
 
         </div>
-      </div>
-    </div>
 
+      </div>
+
+    </div>
+    
   </div>
+
+
 
 
 

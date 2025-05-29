@@ -36,15 +36,29 @@ body {
   overflow: hidden;
 }
 
-/* Main Content */
-.main-content {
-  margin-top: 6vh;
-  width: 100%;
-  padding: 0 10px 0 0;
+
+
+
+
+.navbar {
   display: flex;
-  flex-direction: column;
-  overflow: hidden;
+  align-items: stretch; /* Stretch children vertically */
+  justify-content: flex-start; /* Align children to the start horizontally */
+  height: 6vh;
+  width: 100%;
+  padding: 0px 0px; /* Remove excess padding for more precise layout */
+  position: fixed;
+  top: 0;
+  background-color: #ffffff;
+  z-index: 1000;
+  /* border-bottom: 1px solid gainsboro; */
+  /* border: 1px solid black; */
+  box-sizing: border-box;
+  /* border: 1px solid black; */
 }
+
+
+
 
 /* ================ Miscellaneous ==================== */
 .separator {
@@ -535,22 +549,7 @@ body {
 
 /* ===================== */
 /* Navbar Styles */
-.navbar {
-  display: flex;
-  align-items: stretch; /* Stretch children vertically */
-  justify-content: flex-start; /* Align children to the start horizontally */
-  height: 6vh;
-  width: 100%;
-  padding: 0px 0px; /* Remove excess padding for more precise layout */
-  position: fixed;
-  top: 0;
-  background-color: #ffffff;
-  z-index: 1000;
-  /* border-bottom: 1px solid gainsboro; */
-  /* border: 1px solid black; */
-  box-sizing: border-box;
-  /* border: 1px solid black; */
-}
+
 
 
 /* Wrapper for the whole header section */
@@ -1097,7 +1096,7 @@ body {
 
   /* Inner main content padding adjustment */
   .main-content {
-    padding: 0 5px 0 0;
+    padding: 0 0px 0 0;
     scroll-behavior: smooth; /* Smooth scrolling experience */
     overflow-y: auto; /* Enables scrolling when content exceeds height */
   }

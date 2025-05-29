@@ -19,20 +19,31 @@ require "../conn.php";
 
 <body>
 
-  <div class="body-container">
+
+
     <?php include "../Client Section/Includes/client-sidebar.php"; ?>
 
-    <div class="main-content-container">
-      <div class="navbar">
-        <div class="page-header-wrapper">
-          <div class="page-header-content">
-            <div class="page-header-text">
-              <h5 class="header-title">Sales Report</h5>
-            </div>
-          </div>
+    <div class="main-container">
 
+      <div class="navbar">
+      <div class="page-header-wrapper">
+
+        <div class="page-header-top">
+          <div class="back-btn-wrapper">
+            <button class="back-btn" id="redirect-btn">
+              <i class="fas fa-chevron-left"></i>
+            </button>
+          </div>
         </div>
+
+        <div class="page-header-content">
+          <div class="page-header-text">
+            <h5 class="header-title">Transactions</h5>
+          </div>
+        </div>
+
       </div>
+    </div>
 
       <div class="main-content">
         <form method="POST" id="reportForm">
@@ -132,7 +143,7 @@ require "../conn.php";
 
       </div>
     </div>
-  </div>
+
 
   <!-- Optional Script to Toggle Selectors -->
   <script>
