@@ -387,66 +387,104 @@ $position = htmlspecialchars(strtoupper($empId));
 
 </div>
 
-<!-- Logout Modal -->
-<div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+
+
+<!-- Raise Ticket -->
+<!-- Raise Ticket Modal -->
+<div class="modal fade" id="raiseTicketModal" tabindex="-1" aria-labelledby="raiseTicketModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
+
 			<div class="modal-header">
-				<h5 class="modal-title" id="logoutModalLabel">Logout Confirmation</h5>
+				<h5 class="modal-title" id="raiseTicketModalLabel"> Raise a Ticket</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
+			
 			<div class="modal-body">
-				Are you sure you want to logout?
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-				<button type="button" class="btn btn-danger" id="confirmLogout">Yes, Logout</button>
+				<form id="ticketForm">
+					<div class="mb-3">
+						<label for="concernType" class="form-label">Concern</label>
+						<select class="form-select" id="concernType" required>
+							<option value="" selected disabled>Select Concern</option>
+							<option value="Request for Additional User">Request for Additional User</option>
+						</select>
+
+						<!-- Hidden input field for Number of Users -->
+						<div id="userCountContainer" style="display: none; margin-top: 10px;">
+							<label for="numUsers" class="form-label">Number of Users</label>
+							<input type="number" class="form-control" id="numUsers" min="1"
+								placeholder="Enter number of users">
+
+						</div>
+					</div>
+
+					<div class="alert alert-info mt-3" id="userCountContainer-note"
+						style="display: none; font-size: 14px;">
+						<p class="mb-1"><strong>Please provide user credentials using the template below:</strong></p>
+						<p class="mb-1"><strong>- Full Name <span style="font-weight: 400;">(First Name, Last Name,
+									Middle Name,
+									Suffix)</span>:</strong> </p>
+						<p class="mb-1"><strong>- Company Name:</strong></p>
+						<p class="mb-1"><strong>- Contact Number:</strong></p>
+						<p class="mb-3"><strong>- Email:</strong></p>
+						<p class="mb-0"><strong>Note:</strong> A default password will be assigned initially.</p>
+					</div>
+
+
+
+					<!-- JS for Number of Users -->
+					<script>
+						document.getElementById("concernType").addEventListener("change", function () {
+							var userCountContainer = document.getElementById("userCountContainer");
+							var userCountContainerNote = document.getElementById("userCountContainer-note");
+							var ticketPriority = document.getElementById("ticketPriority");
+							if (this.value === "Request for Additional User") {
+								userCountContainer.style.display = "block";
+								userCountContainerNote.style.display = "block";
+								ticketPriority.style.display = "hidden";
+							} else {
+								userCountContainer.style.display = "none";
+								userCountContainerNote.style.display = "none";
+								ticketPriority.style.display = "block";
+							}
+						});
+					</script>
+
+
+					<div class="mb-3">
+						<label for="ticketDescription" class="form-label">Description</label>
+						<textarea class="form-control" id="ticketDescription" rows="4" required></textarea>
+					</div>
+					<div class="mb-3" id="ticketPriority" style="display: hidden;">
+						<label for="ticketPriority" class="form-label">Priority</label>
+						<select class="form-select" id="ticketPriority">
+							<option value="" disabled selected>Select Severity</option>
+							<option value="low">Low</option>
+							<option value="medium" selected>Medium</option>
+							<option value="high">High</option>
+						</select>
+					</div>
+					<!-- <div class="mb-3">
+							<label for="ticketAttachment" class="form-label">Attachment (Optional)</label>
+							<input type="file" class="form-control" id="ticketAttachment">
+						</div> -->
+					<button type="submit" class="btn btn-success w-100"> Submit Ticket</button>
+				</form>
 			</div>
 		</div>
 	</div>
 </div>
 
 
-<!-- Sidebar - Profile Transition
 <script>
-  const sidebar = document.getElementById('sidebar');
-  const profileLeft = document.getElementById('profileLeft');
-
-  sidebar.addEventListener('mouseenter', () => {
-    setTimeout(() => {
-      profileLeft.classList.add('show');
-    }, 160); // Wait for sidebar width animation to finish
+  document.getElementById('raiseTicket').addEventListener('click', function (e) {
+    e.preventDefault();
+    const raiseModal = new bootstrap.Modal(document.getElementById('raiseTicketModal'));
+    raiseModal.show();
   });
-
-  sidebar.addEventListener('mouseleave', () => {
-    profileLeft.classList.remove('show');
-  });
-</script> -->
-
-
-<!-- jQuery Script for Logout -->
-<script>
-	$(document).ready(function () {
-		$('#confirmLogout').click(function () {
-			$.ajax({
-				url: '../Employee Section/functions/emp-logout.php',
-				type: 'GET',
-				dataType: 'json',
-				success: function (response) {
-					if (response.success) {
-						window.location.href = '../Agent Section/agentLogin.php';
-					} else {
-						alert(response.message);
-					}
-				},
-				error: function (jqXHR, textStatus, errorThrown) {
-					console.error('AJAX Error:', textStatus, errorThrown);
-					alert('An unexpected error occurred. Please try again.');
-				}
-			});
-		});
-	});
 </script>
+
+
 
 <!-- Change Password Modal -->
 <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel"
@@ -561,7 +599,6 @@ $position = htmlspecialchars(strtoupper($empId));
 		myModal.show();
 	});
 </script>
-
 
 <!-- OTP Input Focus Script -->
 <script>
@@ -956,6 +993,67 @@ $position = htmlspecialchars(strtoupper($empId));
 			showOtpAlert('Resending OTP. Please wait...', 'success');
 		});
 
+	});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Logout Modal -->
+<div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="logoutModalLabel">Logout Confirmation</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				Are you sure you want to logout?
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+				<button type="button" class="btn btn-danger" id="confirmLogout">Yes, Logout</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- jQuery Script for Logout -->
+<script>
+	$(document).ready(function () {
+		$('#confirmLogout').click(function () {
+			$.ajax({
+				url: '../Employee Section/functions/emp-logout.php',
+				type: 'GET',
+				dataType: 'json',
+				success: function (response) {
+					if (response.success) {
+						window.location.href = '../Agent Section/agentLogin.php';
+					} else {
+						alert(response.message);
+					}
+				},
+				error: function (jqXHR, textStatus, errorThrown) {
+					console.error('AJAX Error:', textStatus, errorThrown);
+					alert('An unexpected error occurred. Please try again.');
+				}
+			});
+		});
 	});
 </script>
 
