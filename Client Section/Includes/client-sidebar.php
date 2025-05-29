@@ -392,6 +392,38 @@ $current_date = date('D, F d, Y');
   </div>
 </div>
 
+<script>
+	$(document).ready(function () {
+		$('#logoutButton').click(function () {
+			$.ajax({
+				url: '../Client Section/Functions/client-logout.php',
+				type: 'GET',
+				dataType: 'json',
+				success: function (response) {
+					if (response.success) {
+						window.location.href = '../Agent Section/agentLogin.php';
+					} else {
+						alert(response.message);
+					}
+				},
+				error: function (jqXHR, textStatus, errorThrown) {
+					console.error('AJAX Error:', textStatus, errorThrown);
+					alert('An unexpected error occurred. Please try again.');
+				}
+			});
+		});
+	});
+</script>
+
+
+
+
+
+
+
+
+
+
 <!-- Change Password Modal -->
 <!-- <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -643,7 +675,7 @@ $(document).ready(function () {
 </script>
 
 
-<script>
+<!-- <script>
   function toggleSubMenu(submenuId) {
     const submenu = document.getElementById(submenuId);
     const sectionTitle = submenu.previousElementSibling;
@@ -671,4 +703,4 @@ $(document).ready(function () {
     transactionSubmenu.classList.add('open');
     transactionChevron.style.transform = 'rotate(180deg)';
   });
-</script>
+</script> -->
