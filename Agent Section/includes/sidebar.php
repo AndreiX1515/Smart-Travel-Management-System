@@ -200,6 +200,18 @@ $current_date = date('D, F d, Y');
       </a>
     </li>
 
+    <!-- Reports -->
+    <li class="nav-item transaction">
+      <a class="nav-link page-button" href="../Agent Section/agent-reports.php" data-page-name="Reports">
+        <div class="icon-wrapper">
+          <div class="icon"><i class="fa-solid fa-chart-line"></i></div>
+        </div>
+        <div class="label-wrapper">
+          <span class="label" style="font-size: 14px;">Reports</span>
+        </div>
+      </a>
+    </li>
+
   </div>
     
   <div class="logout">
@@ -348,21 +360,50 @@ $current_date = date('D, F d, Y');
 <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
+
       <div class="modal-header">
         <h5 class="modal-title" id="logoutModalLabel">Confirm Logout</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
+
       <div class="modal-body">
         Are you sure you want to logout?
       </div>
+
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
         <a href="#" class="btn btn-danger" id="logoutButton">Logout</a>
-
       </div>
+
     </div>
   </div>
 </div>
+
+
+<script>
+	$(document).ready(function () {
+		$('#logoutButton').click(function () {
+			$.ajax({
+				url: '../Agent Section/functions/agent-logout.php',
+				type: 'GET',
+				dataType: 'json',
+				success: function (response) {
+					if (response.success) {
+						window.location.href = '../Agent Section/agentLogin.php';
+					} else {
+						alert(response.message);
+					}
+				},
+				error: function (jqXHR, textStatus, errorThrown) {
+					console.error('AJAX Error:', textStatus, errorThrown);
+					alert('An unexpected error occurred. Please try again.');
+				}
+			});
+		});
+	});
+</script>
+
+
 
 <!-- Change Password Modal -->
 <!-- <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordLabel" aria-hidden="true">
@@ -523,6 +564,15 @@ $(document).ready(function () {
 });
 </script> -->
 
+
+<script>
+  document.getElementById('raiseTicket').addEventListener('click', function (e) {
+    e.preventDefault();
+    const raiseModal = new bootstrap.Modal(document.getElementById('raiseTicketModal'));
+    raiseModal.show();
+  });
+</script>
+
 <!-- Ticket Submission Script -->
 <script>
   $(document).ready(function () {
@@ -614,7 +664,7 @@ $(document).ready(function () {
   });
 </script>
 
-<script>
+<!-- <script>
   function toggleSubMenu(submenuId) {
     const submenu = document.getElementById(submenuId);
     const sectionTitle = submenu.previousElementSibling;
@@ -642,4 +692,4 @@ $(document).ready(function () {
     transactionSubmenu.classList.add('open');
     transactionChevron.style.transform = 'rotate(180deg)';
   });
-</script>
+</script> -->
