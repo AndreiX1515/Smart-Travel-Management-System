@@ -95,23 +95,23 @@ require "../conn.php";
             <tbody>
               <?php
               $sql1 = "SELECT b.transactNo AS `T.N`, p.packageName AS `PACKAGE`, DATE_FORMAT(b.bookingDate, '%m-%d-%Y') AS `TRANSACTION DATE`, 
-                            b.bookingType as bookingType, DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y') AS `FLIGHT DATE`, b.pax AS `TOTAL PAX`, 
-                            CONCAT(b.lName, ', ', b.fName, ' ', CASE WHEN b.mName = 'N/A' THEN '' 
-                            ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ', CASE WHEN b.suffix = 'N/A' THEN '' 
-                            ELSE b.suffix END) AS `CONTACT NAME`, br.branchName as branchName,
-                            b.email AS `CONTACT EMAIL`, CONCAT(b.countryCode, ' ', b.contactNo) AS `CONTACT PHONE`, b.status AS `STATUS`, 
-                            COALESCE(SUM(r.requestCost), 0) AS TotalRequestAmount, b.totalPrice AS PackagePrice, 
-                            COALESCE(SUM(pa.amount), 0) AS TotalAmountPaid
-                          FROM booking b
-                          LEFT JOIN flight f ON b.flightId = f.flightId
-                          LEFT JOIN package p ON b.packageId = p.packageId
-                          LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
-                          JOIN branch br ON b.agentCode = br.branchAgentCode
-                          LEFT JOIN payment pa ON pa.transactNo = b.transactNo AND pa.paymentStatus = 'Approved'
-                          LEFT JOIN request r ON r.transactNo = b.transactNo AND r.requestStatus = 'Confirmed'
-                          WHERE b.accountId = $accountId 
-                          GROUP BY b.transactNo
-                          ORDER BY b.transactNo DESC";
+                        b.bookingType as bookingType, DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y') AS `FLIGHT DATE`, b.pax AS `TOTAL PAX`, 
+                        CONCAT(b.lName, ', ', b.fName, ' ', CASE WHEN b.mName = 'N/A' THEN '' 
+                        ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ', CASE WHEN b.suffix = 'N/A' THEN '' 
+                        ELSE b.suffix END) AS `CONTACT NAME`, br.branchName as branchName,
+                        b.email AS `CONTACT EMAIL`, CONCAT(b.countryCode, ' ', b.contactNo) AS `CONTACT PHONE`, b.status AS `STATUS`, 
+                        COALESCE(SUM(r.requestCost), 0) AS TotalRequestAmount, b.totalPrice AS PackagePrice, 
+                        COALESCE(SUM(pa.amount), 0) AS TotalAmountPaid
+                      FROM booking b
+                      LEFT JOIN flight f ON b.flightId = f.flightId
+                      LEFT JOIN package p ON b.packageId = p.packageId
+                      LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
+                      JOIN branch br ON b.agentCode = br.branchAgentCode
+                      LEFT JOIN paymentc pa ON pa.transactNo = b.transactNo AND pa.paymentStatus = 'Approved'
+                      LEFT JOIN request r ON r.transactNo = b.transactNo AND r.requestStatus = 'Confirmed'
+                      WHERE b.accountId = $accountId 
+                      GROUP BY b.transactNo
+                      ORDER BY b.transactNo DESC";
 
               $res1 = $conn->query($sql1);
 
