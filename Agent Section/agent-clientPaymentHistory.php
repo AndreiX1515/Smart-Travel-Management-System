@@ -137,15 +137,10 @@ require "../conn.php";
                             </tr>";
                     }
                   }
-                  else 
-                  {
-                    echo "<tr><td colspan='7' class='text-center'>No payment records found.</td></tr>";
-                  }
                 ?>
               </tbody>
             </table>
           </div>
-
 
           <div class="table-footer">
             <div class="pagination-controls">
@@ -225,194 +220,39 @@ require "../conn.php";
   <script>
     $(document).ready(function () 
     {
-      const table = $('#product-table').DataTable(
-      {
-        dom: 'rtip',  // Use only the relevant table elements
-        language: 
-        {
-          emptyTable: "No Transaction Records Available"
-        },
-        order: [[4, 'asc']],  // Default sorting by Transaction ID (descending)
-        scrollX: false,
-        scrollY: '69vh',  // Set a fixed height for the table (adjust as necessary)
-        paging: true,  // Enable pagination
-        pageLength: 15,  // Set the number of rows per page
-        autoWidth: false,
-        autoHeight: false,  // Prevent automatic height adjustment
-
-        // Disable sorting for specific columns
-        columnDefs: 
-        [
-          {
-            targets: [1, 2, 3,  5, 6,], // Disable sorting for 2nd and 4th columns
-            orderable: false
+      const table = $('#product-table').DataTable({
+        columnDefs: [
+          { targets: 6, visible: false }
+        ],
+        order: [[6, 'desc']],
+        responsive: true,
+        pageLength: 10,
+        searching: false, // ❌ disable built-in search bar
+        language: {
+          emptyTable: "No payment records found.",
+          lengthMenu: "Show _MENU_ entries",
+          info: "Showing _START_ to _END_ of _TOTAL_ payments",
+          paginate: {
+            first: "First",
+            last: "Last",
+            next: "→",
+            previous: "←"
           }
-        ]
+        }
       });
 
-      // Search Functionality
+      // ✅ 2. Link your custom search input
       $('#search').on('keyup', function () 
       {
         table.search(this.value).draw();
       });
 
-      // Update the custom pagination buttons and page info
-      function updatePagination() 
-      {
-        const info = table.page.info();
-        const currentPage = info.page + 1; // Get current page number (1-indexed)
-        const totalPages = info.pages; // Get total pages
-
-        // Update page info text
-        $('#pageInfo').text(`Page ${currentPage} of ${totalPages}`);
-
-        // Enable/Disable prev and next buttons based on current page
-        $('#prevPage').prop('disabled', currentPage === 1);
-        $('#nextPage').prop('disabled', currentPage === totalPages);
-      }
-
-      // Custom pagination button click events
-      $('#prevPage').on('click', function() 
-      {
-        table.page('previous').draw('page');
-        updatePagination();
-      });
-
-      $('#nextPage').on('click', function() 
-      {
-        table.page('next').draw('page');
-        updatePagination();
-      });
-
-      // Initialize pagination on first load
-      updatePagination();
-
-      // Status Filter
-      $('#status').on('change', function () 
-      {
-        const selectedStatus = $(this).val();
-        table.column(8).search(selectedStatus || '').draw();
-      });
-
-
-      // Booking Date Filter with value change
-      $('#BookingStartDate').on('change', function () 
-      {
-        const selectedBookingDate = $(this).val();  // Get the selected value directly from the input field
-        console.log("Booking Date Filter:", selectedBookingDate);  // Log the selected booking date
-        table.column(3).search(selectedBookingDate || '').draw();  // Column 4 (index starts at 0)
-      });
-
-      // Flight Date Filter with value change
-      $('#FlightStartDate').on('change', function () 
-      {
-        const selectedFlightDate = $(this).val();  // Get the selected value directly from the input field
-        console.log("Flight Date Filter:", selectedFlightDate);  // Log the selected flight date
-        table.column(6).search(selectedFlightDate || '').draw();  // Column 5 (index starts at 0)
-      });
-
-      // Apply datepicker and input validation for FlightStartDate
-      $("#FlightStartDate").datepicker(
-      {
-        dateFormat: "yy-mm-dd", // Set the format to MM-DD-YYYY
-        showAnim: "fadeIn", // Optional: Adds a fade-in effect when the date picker is opened
-        changeMonth: true, // Allow the month to be changed from the dropdown
-        changeYear: true,  // Allow the year to be changed from the dropdown
-        yearRange: "1900:2100", // Set a range of years (optional)
-        onSelect: function(dateText) 
-        {
-          // When a date is selected, update the input field with the date
-          $(this).val(dateText);
-          flightStartDate = dateText; // Store the selected date
-          console.log("FlightStartDate Selected Date (onSelect): " + dateText);
-          table.column(6).search(flightStartDate || '').draw();  // Column 5 (index starts at 0)
-        }
-      });
-
-      // Apply datepicker and input validation for BookingStartDate
-      $("#BookingStartDate").datepicker(
-      {
-        dateFormat: "mm-dd-yy", // Set the format to MM-DD-YYYY
-        showAnim: "fadeIn", // Optional: Adds a fade-in effect when the date picker is opened
-        changeMonth: true, // Allow the month to be changed from the dropdown
-        changeYear: true,  // Allow the year to be changed from the dropdown
-        yearRange: "1900:2100", // Set a range of years (optional)
-        onSelect: function(dateText) 
-        {
-          // When a date is selected, update the input field with the date
-          $(this).val(dateText);
-          bookingStartDate = dateText; // Store the selected date
-          console.log("FlightStartDate Selected Date (onSelect): " + dateText);
-          table.column(4).search(bookingStartDate || '').draw();  // Column 5 (index starts at 0)
-        }
-      });
-
-      // BookingStartDate Input Validation and Formatting
-      $("#BookingStartDate").on("input", function () 
-      {
-        var value = $(this).val();
-
-        // Remove non-numeric and non-dash characters
-        value = value.replace(/[^\d-]/g, '');
-
-        // Automatically add dashes in the correct places if necessary
-        if (value.length > 2 && value.charAt(2) !== '-') 
-        {
-          value = value.substring(0, 2) + '-' + value.substring(2);
-        }
-        if (value.length > 5 && value.charAt(5) !== '-') 
-        {
-          value = value.substring(0, 5) + '-' + value.substring(5);
-        }
-
-        // Limit the total input length to 10 characters (MM-DD-YYYY)
-        if (value.length > 10) 
-        {
-          value = value.substring(0, 10);
-        }
-
-        // Update the input field value
-        $(this).val(value);
-
-        // Reset or update the bookingStartDate variable
-        if (value === "") 
-        {
-          bookingStartDate = ""; // Reset the variable if the input is cleared
-        } 
-        else 
-        {
-          bookingStartDate = value; // Update the variable with the formatted value
-        }
-
-        // Update the table column search
-        table.column(5).search(bookingStartDate || '').draw(); // Column 5 (index starts at 0)
-
-        console.log("BookingStartDate Input Value (on input): " + value);
-      });
-
-      // Clear All Filters
+      // Optional: Clear sorting button
       $('#clearSorting').on('click', function () 
       {
-        // Clear search field
+        table.order([[6, 'desc']]).search('').draw();
         $('#search').val('');
-        table.search('').draw();
-
-        // Clear status dropdown
-        $('#status').val('All').change();
-
-        // Clear packages dropdown
-        $('#packages').val('All').change();
-
-          // Explicitly reset the variables
-          flightStartDate = '';
-        bookingStartDate = '';
-
-        // Clear date fields
-        $('#BookingStartDate').val('').trigger('change'); // Reset and trigger input for BookingStartDate
-        $('#FlightStartDate').val('').trigger('change');  // Reset and trigger input for FlightStartDate
-
-        // Redraw the table
-        table.draw();
+        $('#FlightStartDate').val('');
       });
     });
   </script>
@@ -439,34 +279,34 @@ require "../conn.php";
   <script>
     $(document).ready(function() 
     {
-        $("#paymentForm").submit(function(event) {
-            event.preventDefault(); // Prevent default form submission
+      $("#paymentForm").submit(function(event) {
+        event.preventDefault(); // Prevent default form submission
 
-            $.ajax({
-                url: "../Agent Section/functions/agent-clientPaymentHistory-code.php",
-                type: "POST",
-                data: $(this).serialize(), // Serialize form data
-                dataType: "json",
-                success: function(response) {
-                    if (response.status === "success") {
-                        localStorage.setItem("flashMessage", response.statusLabel); // Show friendly label
-                        localStorage.setItem("flashType", (response.paymentStatus === "Approved") ? "success" : "error"); 
-                    } else {
-                        localStorage.setItem("flashMessage", response.message);
-                        localStorage.setItem("flashType", "error");
-                    }
+        $.ajax({
+          url: "../Agent Section/functions/agent-clientPaymentHistory-code.php",
+          type: "POST",
+          data: $(this).serialize(), // Serialize form data
+          dataType: "json",
+          success: function(response) {
+            if (response.status === "success") {
+                localStorage.setItem("flashMessage", response.statusLabel); // Show friendly label
+                localStorage.setItem("flashType", (response.paymentStatus === "Approved") ? "success" : "error"); 
+            } else {
+                localStorage.setItem("flashMessage", response.message);
+                localStorage.setItem("flashType", "error");
+            }
 
-                    // Redirect after setting the message
-                    window.location.href = "../Agent Section/agent-clientPaymentHistory.php";
-                },
+            // Redirect after setting the message
+            window.location.href = "../Agent Section/agent-clientPaymentHistory.php";
+          },
 
-                error: function() {
-                    localStorage.setItem("flashMessage", "An error occurred. Please try again.");
-                    localStorage.setItem("flashType", "error");
-                    window.location.href = "nextpage.php"; 
-                }
-            });
+          error: function() {
+              localStorage.setItem("flashMessage", "An error occurred. Please try again.");
+              localStorage.setItem("flashType", "error");
+              window.location.href = "nextpage.php"; 
+          }
         });
+      });
     });
   </script>
 
