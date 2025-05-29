@@ -104,8 +104,7 @@ $current_date = date('D, F d, Y');
     </li>
   </ul>
 
-  <ul class="nav flex-column">
-
+  <div class="nav flex-column">
     <li class="nav-item">
       <a class="nav-link page-button" href="../Agent Section/agent-dashboard.php" data-page-name="Dashboard">
         <div class="icon-wrapper">
@@ -201,114 +200,10 @@ $current_date = date('D, F d, Y');
       </a>
     </li>
 
-
-
-
-    <!-- Transactions -->
-    <!-- <li class="nav-item dropdown">
-      <a class="nav-link page-button" href="#" data-bs-toggle="collapse" data-bs-target="#manageBookingMenu"
-        aria-expanded="false" aria-controls="manageBookingMenu" data-page-name="Operationals">
-        <div class="icon-wrapper">
-          <div class="icon"><i class="fa-solid fa-arrow-right-arrow-left"></i></div>
-        </div>
-        <div class="label-wrapper">
-          <span class="label">Transactions</span>
-        </div>
-      </a>
-
-      <div class="collapse" id="manageBookingMenu">
-        <ul class="nav flex-column managebooking-menu-wrapper">
-          <li class="nav-item transaction mb-0">
-            <a class="nav-link page-button" href="../Employee Section/emp-tablePending.php"
-              data-page-name="For Approvals - Booking">No Downpayment</a>
-          </li>
-          <li class="nav-item mb-0">
-            <a class="nav-link page-button" href="../Employee Section/emp-tableRequest.php"
-              data-page-name="For Approvals - Request">Request</a>
-          </li>
-          <li class="nav-item mb-0">
-            <a class="nav-link page-button" href="../Employee Section/emp-tablePayment.php"
-              data-page-name="For Approvals - Payment">Payment</a>
-          </li>
-        </ul>
-      <a href="../Agent Section/agent-guestInformationList.php" class="page-button my-0" data-page-name="Guest Information List">
-        <i class="fa-solid fa-table-list"></i> Guest List
-      </a>
-
-      <a href="../Agent Section/agent-requestHistory.php" class="page-button my-0" data-page-name="Request History">
-        <i class="fa-solid fa-cart-plus"></i> Request
-      </a>
-
-      <a href="../Agent Section/agent-paymentHistory.php" class="page-button my-0" data-page-name="Payment History">
-        <i class="fa-solid fa-money-check-dollar"></i> Payment
-      </a>
-
-      <a href="../Agent Section/agent-clientPaymentHistory.php" class="page-button my-0" data-page-name="Payment History">
-        <i class="fa-solid fa-money-check-dollar"></i>Client Payment
-      </a>
-
-      <a href="../Agent Section/agent-roomingList.php" class="page-button my-0" data-page-name="Rooming Assignment">
-        <i class="fa-solid fa-newspaper"></i> Rooming List
-      </a>
-
-      <a href="../Agent Section/agent-soa.php" class="page-button my-0" data-page-name="Rooming Assignment">
-        <i class="fas fa-file-invoice"></i> SOA
-      </a>
-
-      <a href="../Agent Section/agent-reports.php" class="page-button my-0" data-page-name="Rooming Assignment">
-        <i class="fas fa-file-invoice"></i> Reports
-      </a>
-
-      <a href="../Agent Section/agent-FIT-table.php" class="page-button my-0" data-page-name="F.I.T - Transactions Table" style="font-size: 14px;">
-        <i class="fas fa-file-invoice"></i> F.I.T 
-      </a>  -->
-    </div>
-
-    <!-- <div class="section-title" onclick="toggleSubMenu('operational-submenu')">
-      Reports <span class="chevron-icon fas fa-chevron-down"></span>
-    </div>
-
-    <div class="submenu open" id="operational-submenu">
-      <a href="../Agent Section/agent-itenerary.php" class="page-button" data-page-name="Itinerary">
-        <i class="fas fa-map"></i> Itinerary
-      </a>
-
-      <a href="../Agent Section/agent-soa2.php" class="page-button" data-page-name="Statement of Accounts (SOA) - Packages">
-        <i class="fas fa-file-invoice-dollar"></i> SOA - Packages
-      </a>
-
-      <a href="../Agent Section/agent-fitSOA - rename.php" class="page-button" data-page-name="Statement of Accounts (SOA) - F.I.T">
-        <i class="fas fa-file-invoice-dollar"></i> SOA - F.I.T
-      </a>
-
-      <a href="../Agent Section/agent-ticket.php" class="page-button" data-page-name="Ticket">
-        <i class="fas fa-ticket"></i> Ticket
-      </a>
-
-      <a href="../Agent Section/agent-transactions.php" class="page-button" data-page-name="Voucher">
-        <i class="fas fa-gift"></i> Voucher
-      </a>
-    </div> -->
-
-    <!-- <a href="../Agent Section/agent-FIT-table.php" class="page-button my-0" data-page-name="F.I.T - Transactions Table" style="font-size: 14px;">
-          <i class="fas fa-file-invoice"></i> F.I.T 
-        </a> -->
-
   </div>
-
-  <div class="profile-wrapper">
-    <div class="concern-section mb-4">
-
-      <div class="section-title" onclick="toggleSubMenu('concerntable-submenu')">
-        Concerns <span class="chevron-icon fas fa-chevron-down"></span>
-      </div>
-    </li> -->
-
-  </ul>
-
+    
   <div class="logout">
     <!-- <div class="separator"></div> -->
-
     <div class="profile-section">
       <div class="profile-left" id="profileLeft">
         <div class="name" style="font-size: <?php echo (strlen($fullName) >= 13) ? '14px' : '17px'; ?>;">
