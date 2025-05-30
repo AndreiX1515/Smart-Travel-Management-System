@@ -96,7 +96,6 @@
               </select>
             </div>
 
-            <!-- <input type="text" value="<?php echo $branchId; ?>"> -->
             <!-- Travel Agency Select -->
             <div class="col-md-12 mb-3" id="company-container" style="display:none;">
               <label for="company-filter">Travel Agency:</label>
@@ -175,7 +174,11 @@
       </div>
 
       <!-- Results -->
-      <div id="result-container" class="mt-3"></div>
+      <div id="result-container" class="mt-3">
+        
+      </div>
+
+      
 
     </div>
 
@@ -183,7 +186,12 @@
 
 
   <?php require "../Agent Section/includes/scripts.php"; ?>
-  <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+  <!-- jQuery (if not already included) -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <!-- SheetJS XLSX library -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+
 
   <!-- JavaScript for Date Filters -->
   <script>
@@ -396,7 +404,14 @@
             resultContainer.style.display = "block";
             resultContainer.innerHTML = response.htmlContent;
             // Enable the download button if data is available
-            document.getElementById('download-btn').disabled = false;
+            // Attach export listener AFTER the content is injected
+            const downloadBtn = document.getElementById('download-btn');
+            if (downloadBtn) {
+              downloadBtn.disabled = false;
+              downloadBtn.onclick = function () {
+                exportSOAToExcel(response.soaNumber); // Assuming you have this ID or pass it here
+              };
+            }
           } else {
             // If no data available, update the result container and disable the button
             resultContainer.innerHTML = '<p>No data found for the selected filters.</p>';
@@ -425,9 +440,109 @@
     });
   </script>
 
-
-  <!-- Generate SoA -->
+  <!-- Generate SOA (excel)-->
   <script>
+    document.getElementById('download-btn').addEventListener('click', function () {
+      const agentId = document.getElementById('agent-filter').value;
+      const companyId = document.getElementById('company-filter').value;
+      const flightDate = document.getElementById('flight-filter').value;
+      const month = document.getElementById('month-filter').value;
+      const year = document.getElementById('year-filter').value;
+
+      const isAgentSelected = agentId && agentId !== "Select Agent";
+      const isCompanySelected = companyId && companyId !== "Select Travel Agency";
+      const isFlightSelected = flightDate && flightDate !== "Select Flight Date";
+      const isMonthYearSelected = month && month !== "Select month" && year && year !== "Select year";
+
+      // Validate Agent/Company
+      if ((isAgentSelected && isCompanySelected) || (!isAgentSelected && !isCompanySelected)) {
+        alert("Please select either an Agent OR a Travel Agency.");
+        return;
+      }
+
+      // Validate Flight OR Month+Year
+      if ((isFlightSelected && isMonthYearSelected) || (!isFlightSelected && !isMonthYearSelected)) {
+        alert("Please select either a Flight Date OR a Month and Year.");
+        return;
+      }
+
+      const currentDate = new Date();
+      const currentDateFormatted = `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}-${currentDate.getDate().toString().padStart(2, '0')}`;
+
+      let accountType = isAgentSelected ? "agent" : "company";
+      let accountId = isAgentSelected ? agentId : companyId;
+
+      // Step 1: Request SOA number
+      const xhrAddSoA = new XMLHttpRequest();
+      xhrAddSoA.open('POST', '../Agent Section/functions/agent-addSoA.php', true);
+      xhrAddSoA.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+      xhrAddSoA.responseType = 'json';
+
+      xhrAddSoA.onload = function () {
+        if (xhrAddSoA.status === 200 && xhrAddSoA.response && xhrAddSoA.response.soanum) {
+          const soaNumber = xhrAddSoA.response.soanum;
+
+          // Step 2: Generate Excel from your SOA table
+          exportSOAToExcel(soaNumber);
+
+        } else {
+          alert("Failed to generate SOA number.");
+        }
+      };
+
+      xhrAddSoA.onerror = function () {
+        alert("An error occurred while inserting SOA data.");
+      };
+
+      xhrAddSoA.send(
+        `accountType=${accountType}&accountId=${accountId}&flightDate=${flightDate}&month=${month}&year=${year}&currentDate=${currentDateFormatted}`
+      );
+    });
+
+    function exportSOAToExcel(soaNumber) {
+      const table = document.getElementById("soaTable");
+      const tbodyRows = table?.querySelectorAll("tbody tr");
+
+      if (!table || !tbodyRows || tbodyRows.length === 0) {
+        alert("No SOA data available to export.");
+        return;
+      }
+
+      let data = [];
+
+      // Extract headers
+      const thead = table.querySelector("thead");
+      if (thead) {
+        const headers = Array.from(thead.rows[0].cells).map(cell => cell.innerText.trim());
+        data.push(headers);
+      }
+
+      // Extract rows
+      tbodyRows.forEach(row => {
+        const rowData = Array.from(row.cells).map(cell => {
+          const selects = cell.querySelectorAll("select");
+          if (selects.length > 0) {
+            return Array.from(selects).map(s => s.options[s.selectedIndex]?.text || "").join(", ");
+          } else {
+            return cell.innerText.trim();
+          }
+        });
+        data.push(rowData);
+      });
+
+      // Generate and download Excel
+      const ws = XLSX.utils.aoa_to_sheet(data);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "SOA");
+      XLSX.writeFile(wb, `SOA-${soaNumber}.xlsx`);
+    }
+
+  </script>
+
+
+
+  <!-- Generate SOA (pdf) -->
+  <!-- <script>
     document.getElementById('download-btn').addEventListener('click', function () {
       const companyId = document.getElementById('company-filter').value;
       const month = document.getElementById('month-filter').value;
@@ -489,9 +604,7 @@
         `companyId=${companyId}&month=${month}&year=${year}&currentDate=${currentDateFormatted}`
       );
     });
-  </script>
-
-
+  </script> -->
 
   <!-- <script>
   //   document.getElementById('download-btn').addEventListener('click', function() {
@@ -577,7 +690,7 @@
     const modal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
     modal.hide();
   }
-</script> -->
+  </script> -->
 
   <!-- Row Select -->
   <!-- <script>
@@ -612,9 +725,9 @@
       });
     });
   });
-</script> -->
+  </script> -->
 
-  <script>
+  <!-- <script>
   const table = $('#product-table').DataTable({
     dom: 'rtip',
     columnDefs: [{
@@ -662,7 +775,7 @@
     autoWidth: false,
     pageLength: 10, // Limit the number of rows per page to 8
   });
-  </script>
+  </script> -->
 
 
 </body>
