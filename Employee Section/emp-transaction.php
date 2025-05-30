@@ -103,8 +103,6 @@
         });
       </script>
 
-
-
       <!-- Main Container Tabs -->
       <div class="tabs-wrapper">
         <div class="navs-wrapper">
@@ -168,7 +166,6 @@
       </div>
 
     </div>
-
   </div>
 
   <?php include '../Employee Section/includes/emp-scripts.php' ?>
@@ -203,7 +200,6 @@
       });
     });
   </script>
-
 
 
 </body>

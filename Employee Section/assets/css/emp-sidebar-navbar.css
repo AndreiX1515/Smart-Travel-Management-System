@@ -38,15 +38,17 @@ body {
 
 /* Main Content */
 .main-content {
-  margin-top: 5.2vh;
+  margin-top: 6vh;
+  height: 93vh;
   width: 100%;
-  padding: 0 10px 0 0;
+  padding: 0px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
   gap: 0px; /* Add spacing between internal sections */
-}
 
+  /* border: 1px solid black; */
+}
 
 
 .navbar {
@@ -60,12 +62,10 @@ body {
   top: 0;
   background-color: #ffffff;
   z-index: 1000;
-  /* border-bottom: 1px solid gainsboro; */
-  /* border: 1px solid black; */
+
   box-sizing: border-box;
   /* border: 1px solid black; */
 }
-
 
 
 
@@ -472,6 +472,15 @@ body {
   color: white;
 }
 
+
+
+
+
+
+
+
+
+
 /* Individual icon colors */
 #raiseTicketIcon i {
   color: #116530;
@@ -644,203 +653,264 @@ body {
 
 
 
-/* =========================== */
-/* Change Password Modal - Minimalist Style */
-#changePasswordModal .modal-content {
-  border-radius: 8px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+/* ================================ */
+/* Raise Ticket Modal - Styling */
+
+/* Modal Dialog Custom Sizing */
+#raiseTicketModal .modal-dialog {
+  max-width: 500px;
+  margin: .75rem auto;
+}
+
+/* Modal Content Styling */
+#raiseTicketModal .modal-content {
+  border-radius: 10px;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
   border: none;
-  overflow: hidden;
+  background-color: #ffffff;
 }
 
 /* Modal Header */
-#changePasswordModal .modal-header {
+#raiseTicketModal .modal-header {
+  background-color: #116530;
+  color: #ffffff;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  padding: 15px 20px 15px 15px;
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  background-color: #fff;
-  color: #333;
-  font-weight: 600;
-  padding: 15px;
-  border-bottom: none;
+  align-items: center;
+  gap: 10px;
 }
 
-/* Title Wrapper */
+#raiseTicketModal .modal-title {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+#raiseTicketModal .btn-close {
+  background-color: transparent; /* Transparent background */
+  color: #ffffff;                /* White color for the icon */
+  opacity: 1;                    /* Make sure it's fully visible */
+  filter: invert(1);             /* Makes default Bootstrap close icon white */
+}
+
+#raiseTicketModal .btn-close:hover {
+  opacity: 0.8;
+  transform: scale(1);
+}
+
+
+/* Modal Body */
+#raiseTicketModal .modal-body {
+  padding: 25px;
+}
+
+/* Form Elements */
+#raiseTicketModal .form-label {
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+#raiseTicketModal .form-select,
+#raiseTicketModal .form-control {
+  border-radius: 6px;
+  padding: 10px;
+  font-size: 15px;
+}
+
+/* Hidden container styles */
+#userCountContainer {
+  margin-top: 10px;
+}
+
+/* Info Alert */
+#userCountContainer-note {
+  font-size: 14px;
+  background-color: #e9f7ff;
+  border-left: 4px solid #0d6efd;
+  padding: 15px;
+  margin-top: 15px;
+  border-radius: 5px;
+}
+
+/* Ticket Priority Section */
+#ticketPriority {
+  margin-top: 15px;
+}
+
+#ticketPriority select {
+  padding: 10px;
+}
+
+/* Submit Button */
+#raiseTicketModal .btn-success {
+  font-weight: 600;
+  font-size: 16px;
+  border-radius: 6px;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+  #raiseTicketModal .modal-dialog {
+    margin: 1rem;
+  }
+
+  #raiseTicketModal .modal-body {
+    padding: 20px 15px;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+/* =========================== */
+/* =========================== */
+/*================================= */
+/* Change Password Modal - Styling */
+
+#changePasswordModal .modal-dialog {
+  max-width: 500px;
+  margin: 1.75rem auto;
+}
+
+#changePasswordModal .modal-content {
+  background-color: #ffffff;
+  border-radius: 10px;
+  border: none;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+#changePasswordModal .modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 20px;
+  border-bottom: 1px solid #f0f0f0;
+  background-color: #ff9800; /* Updated to orange */
+}
+
+/* Title container */
 #changePasswordModal .modal-title-wrapper {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  width: 90%;
-  padding: 0 5px;
 }
 
-/* Modal Subtitle */
-#changePasswordModal .modal-title-wrapper small {
-  font-size: 12px;
-  line-height: 1.2;
-  color: #666;
+/* Title text */
+#changePasswordModal .modal-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+  color: #ffffff; /* Enhanced contrast */
+}
+
+/* Subtitle / subtext */
+#changePasswordModal .modal-subtext {
+  font-size: 0.85rem;
+  color: #ffffff; /* Light for better readability */
   margin-top: 4px;
 }
 
-/* Close Button Wrapper */
+/* Close button wrapper */
 #changePasswordModal .modal-close-wrapper {
-  display: flex;
-  width: 10%;
+  padding-left: 15px;
 }
 
-/* Close Button Styling */
+/* Close button styling */
 #changePasswordModal .btn-close {
-  opacity: 0.6;
-  transition: opacity 0.2s ease-in-out;
-}
-
-#changePasswordModal .btn-close:hover {
+  background-color: transparent;
+  filter: brightness(0) invert(1); /* Ensures icon stays white */
   opacity: 1;
+  transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
-/* Modal Title */
-#changePasswordModal .modal-title {
-  font-size: 16px;
-  display: flex;
-  align-items: center;
+/* Optional hover effect for close button */
+#changePasswordModal .btn-close:hover {
+  opacity: 0.8;
+  transform: scale(1.1);
 }
 
-#changePasswordModal .modal-title i {
-  margin-right: 8px;
-}
 
-/* Modal Body */
+
+
+/* Modal body */
 #changePasswordModal .modal-body {
   padding: 20px;
 }
 
-/* Form Labels */
+/* Input field styling */
 #changePasswordModal .form-label {
   font-weight: 500;
-  color: #333;
   margin-bottom: 5px;
 }
 
-/* Form Controls */
 #changePasswordModal .form-control {
   border-radius: 5px;
-  border: 1px solid #ddd;
-  padding: 12px;
-  font-size: 14px;
-  transition: border-color 0.3s, box-shadow 0.3s;
+  border: 1px solid #ced4da;
+  padding: 10px;
+  font-size: 0.95rem;
 }
 
 #changePasswordModal .form-control:focus {
-  border-color: #116530;
-  box-shadow: 0 0 5px rgba(17, 101, 48, 0.3);
-  outline: none;
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
 }
 
+/* Error text */
+#changePasswordModal .error-label {
+  font-size: 0.85rem;
+  margin-top: 4px;
+  display: block;
+}
 
+/* Message alert area */
+#changePasswordModal #messageAlert {
+  margin-top: 10px;
+  font-size: 0.9rem;
+}
 
-
-/* Modal Footer */
+/* Modal footer */
 #changePasswordModal .modal-footer {
-  border-top: none;
+  padding: 15px 20px;
+  border-top: 1px solid #dee2e6;
   display: flex;
-  justify-content: space-between; /* Ensures buttons are aligned horizontally */
-  align-items: stretch; /* Stretches button height to match the main div */
-  padding: 10px 20px;
+  justify-content: flex-end;
   gap: 10px;
-  width: 100%;
 }
 
-/* Button Wrapper */
-#changePasswordModal .footer-button-wrapper {
-  display: flex;
-  width: 100%; /* Ensures buttons take full width */
-  gap: 10px; /* Adds spacing between buttons */
-}
-
-/* Buttons */
-#changePasswordModal .btn-secondary,
 #changePasswordModal .btn-primary {
-  flex: 1; /* Ensures equal width for both buttons */
-  border: none;
-  padding: 12px;
+  background-color: #0d6efd;
+  border-color: #0d6efd;
   font-weight: 500;
-  transition: background-color 0.3s, transform 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Secondary Button */
-#changePasswordModal .btn-secondary {
-  background-color: #ccc;
-  color: #333;
-}
-
-#changePasswordModal .btn-secondary:hover {
-  background-color: #bbb;
-  transform: scale(1.02);
-}
-
-/* Primary (Success) Button */
-#changePasswordModal .btn-primary {
-  background-color: #116530;
-  color: #fff;
 }
 
 #changePasswordModal .btn-primary:hover {
-  background-color: #0e4b28;
+  background-color: #0b5ed7;
+  border-color: #0a58ca;
+}
+
+#changePasswordModal .btn-secondary {
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+
+#changePasswordModal .btn-secondary:hover {
+  background-color: #5c636a;
+  border-color: #545b62;
 }
 
 
 
-
-
-
-
-/* Error & Success Labels */
-.error-label, .success-label {
-  display: none;
-  font-size: 12px;
-  margin-top: 6px;
-}
-
-.error-label {
-  color: #d9534f;
-}
-
-.success-label {
-  color: #28a745;
-  font-weight: 600;
-}
-
-#messageAlert {
-  display: none;
-  justify-content: center;
-  align-items: center; 
-  padding: 12px 20px; 
-  border-radius: 8px; 
-  font-size: 14px;
-  font-weight: 500; 
-  width: 100%; 
-  margin: 5px 0px 5px 0px; 
-  background-color: #f0f0f0; 
-  color: #333;
-  border: 1px solid #ddd; 
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); 
-  transition: opacity 0.3s ease, transform 0.3s ease; 
-}
-
-#messageAlert.show {
-  display: flex;
-  opacity: 1;
-  transform: translateY(0); /* Show with a slight upward motion */
-}
-
-#messageAlert.hide {
-  opacity: 0;
-  transform: translateY(-10px); /* Hide with a slight upward motion */
-}
-
+/* =========================== */
 
 #otpAlert {
   display: none;
@@ -892,172 +962,326 @@ body {
 }
 
 
-/* ========== OTP Verification Modal ========== */
-#otpVerificationModal .otp-modal-content {
+/* OTP Verification Modal */
+#otpVerificationModal .modal-content {
   border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-  border-bottom: none;
   padding: 20px;
-  text-align: center;
-  width: 500px;
-  max-height: 80vh; /* Limit the maximum height to 80% of the viewport height */
-  height: auto; /* Allow height to adjust based on content */
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start; /* Align items at the top */
-  align-items: center;
-  overflow-y: auto; /* Allow scrolling if content overflows */
+  border: none;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.15);
 }
 
-
-#otpVerificationModal .otp-modal-header {
-  border-bottom: none;
-  text-align: center;
+/* Header Content */
+#otpVerificationModal .otp-header {
   display: flex;
-  flex-direction: column;
   align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
 }
-
-
-.header-body-wrapper .otp-header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  padding: 0px 0px;
-  /* border: 1px solid black; */
-}
-
-
 #otpVerificationModal .otp-icon-wrapper {
+  width: 45px;
+  height: 45px;
+  background-color: #116530;
+  border-radius: 50%;
   display: flex;
-  justify-content: center;
   align-items: center;
-  padding: 0px;
-}
-
-#otpVerificationModal .otp-icon {
-  background-color: #007bff;
-  color: white;
-  font-size: 24px;
-  padding: 10px;
-  border-radius: 14px;
-  display: flex;
   justify-content: center;
-  align-items: center;
-  margin-bottom: 10px;
-  width: 50px; /* Fixed width */
-  height: 50px; /* Fixed height to maintain circle shape */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Adding box shadow */
 }
-
-
 #otpVerificationModal .otp-icon i {
-  margin: 0; /* Remove any default margins from the icon */
-  color: white;
+  color: #fff;
+  font-size: 18px;
 }
-
-
-.header-body-wrapper .header-body-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  padding: 0;
-  /* border: 1px solid black; */
+#otpVerificationModal .header-body-content h5 {
+  margin: 0;
+  font-weight: 600;
 }
-
 #otpVerificationModal .otp-subtext {
-  font-size: 14px;
-  color: #6c757d;
+  font-size: 13px;
+  color: #555;
   margin-top: 5px;
-  
 }
 
-#otpVerificationModal .otp-email-mask {
-  font-weight: bold;
-  color: #333;
-}
-
-
+/* OTP Field Layout */
 #otpVerificationModal .otp-modal-container {
   display: flex;
   justify-content: center;
-  gap: 12px;
-  /* border: 1px solid black; */
+  gap: 10px;
+  margin-bottom: 10px;
 }
-
 #otpVerificationModal .otp-modal-input {
-  width: 50px;
-  height: 50px;
-  font-size: 20px;
+  width: 40px;
+  height: 48px;
   text-align: center;
-  border: 2px solid #ccc;
-  border-radius: 8px;
-  outline: none;
-  transition: all 0.3s ease-in-out;
+  font-size: 18px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
-
 #otpVerificationModal .otp-modal-input:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+  border-color: #116530;
+  box-shadow: 0 0 5px rgba(17, 101, 48, 0.4);
+  outline: none;
 }
 
+/* OTP Error Message */
+#otpVerificationModal .error-label {
+  display: block;
+  color: #d9534f;
+  font-size: 13px;
+  text-align: center;
+  margin-bottom: 10px;
+}
 
-
+/* Verify Button */
+#otpVerificationModal .verify-button-wrapper {
+  margin-top: 10px;
+}
 #otpVerificationModal .otp-verify-btn {
-  width: 80%; /* Make the button slightly smaller by reducing width */
-  background-color: #007bff;
-  margin-top: 10px;
+  width: 100%;
+  background-color: #116530;
+  color: #fff;
+  padding: 12px;
   border: none;
-  padding: 8px 16px; /* Reduce padding to make the button smaller */
-  font-size: 16px; /* Slightly smaller font size */
-  border-radius: 8px;
-  color: white; /* Ensure text is white for visibility */
-  cursor: pointer; /* Change cursor to pointer on hover */
+  border-radius: 6px;
+  font-weight: 500;
+  transition: background-color 0.3s, transform 0.2s;
 }
-
 #otpVerificationModal .otp-verify-btn:hover {
-  background-color: #0056b3; /* Darker shade on hover */
+  background-color: #0e4b28;
+  transform: scale(1.02);
 }
 
-#otpVerificationModal .otp-resend-text {
-  font-size: 14px;
-  margin-top: 10px;
-  color: #6c757d;
-}
-
-#otpVerificationModal .otp-resend-link {
-  color: #007bff;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-#otpVerificationModal .otp-resend-link:hover {
-  text-decoration: underline;
-}
-
-
+/* Resend Link */
 #otpVerificationModal .otpResent-button-wrapper {
   display: flex;
   justify-content: center;
-  align-items: first baseline;
+  align-items: center;
+  margin-top: 15px;
+  font-size: 13px;
+}
+#otpVerificationModal .otp-resend-text {
+  margin: 0;
+  color: #555;
+}
+#otpVerificationModal .otp-resend-link {
+  margin-left: 5px;
+  color: #116530;
+  text-decoration: underline;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+#otpVerificationModal .otp-resend-link:hover {
+  color: #0e4b28;
+}
+
+/* OTP Alert Box */
+#otpAlert {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
   width: 100%;
-  margin-top: 10px;
-  /* border: 1px solid black; */
+  margin: 15px 0 5px 0;
+  background-color: #f0f0f0;
+  color: #333;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+#otpAlert.show {
+  display: flex;
+  opacity: 1;
+  transform: translateY(0);
+}
+#otpAlert.hide {
+  opacity: 0;
+  transform: translateY(-10px);
 }
 
 
-/* ===================================== */
+
+
+/* =========================== */
+/* Logout Confirmation Modal - Minimalist Style */
+#logoutModal .modal-content {
+  border-radius: 6px;
+  border: none;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.15);
+}
+
+/* Modal Header */
+#logoutModal .modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: none;
+  
+  padding: 8px 15px;
+  /* border: 1px solid black; */
+}
+
+/* Modal Title */
+#logoutModal .modal-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Close Button */
+#logoutModal .btn-close {
+  opacity: 0.6;
+  transition: opacity 0.2s ease-in-out;
+  filter: invert(1); /* Makes the default SVG white */
+}
+#logoutModal .btn-close:hover {
+  opacity: 1;
+}
+
+
+/* Modal Body */
+#logoutModal .modal-body {
+  font-size: 15px;
+  padding: 35px 15px;
+  color: #444;
+  text-align: center;
+  /* border: 1px solid black; */
+
+  font-size: 16px;
+  font-weight: 500;
+} 
+
+
+
+/* Modal Footer */
+#logoutModal .modal-footer {
+  border-top: 1px solid #dee2e6; /* soft top border */
+  padding: 3px 12px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+
+/* Cancel Button */
+#logoutModal .btn-secondary {
+  background-color: #ccc;
+  color: #333;
+  border: none;
+  padding: 8px 16px;
+  font-weight: 500;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+
+#logoutModal .btn-secondary:hover {
+  background-color: #bbb;
+}
+
+/* Logout Button */
+#logoutModal .btn-danger {
+  background-color: #d9534f;
+  border: none;
+  color: #fff;
+  padding: 8px 16px;
+  font-weight: 500;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+#logoutModal .btn-danger:hover {
+  background-color: #c9302c;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 
 @media (max-width: 1736px) {
-
-
 
 }
 

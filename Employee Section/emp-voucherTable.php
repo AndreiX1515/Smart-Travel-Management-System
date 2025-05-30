@@ -10,7 +10,7 @@
 
   <?php include '../Employee Section/includes/emp-head.php' ?>
 
-  <link rel="stylesheet" href="../Employee Section/assets/css/emp-itineraryTable.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="../Employee Section/assets/css/emp-voucherTable.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="../Employee Section/assets/css/emp-sidebar-navbar.css?v=<?php echo time(); ?>">
 
 </head>
@@ -50,258 +50,187 @@
 
       <div class="table-container">
 
-        <div class="table-header">
-          <!-- <div class="search-wrapper">
-            <div class="search-input-wrapper">
-              <input type="text" id="search" placeholder="Search here..">
+        <div class="second-div">
+          <div class="navTabs-wrapper">
+            <div class="nav-inner-wrapper">
+              <ul class="nav nav-pills" id="pills-tab" role="tablist">
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link active" id="pills-profile-tab" data-bs-toggle="pill"
+                    data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile"
+                    aria-selected="false">Voucher Templates</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home"
+                    type="button" role="tab" aria-controls="pills-home" aria-selected="true">Created Templates</button>
+                </li>
+              </ul>
             </div>
-          </div> -->
+          </div>
 
-          <div class="second-header-wrapper">
-            <!-- <div class="date-range-wrapper flightbooking-wrapper">
-              <div class="date-range-inputs-wrapper">
-                <div class="input-with-icon">
-                  <input type="text" class="datepicker" id="FlightStartDate" placeholder="Flight Date" readonly>
-                  <i class="fas fa-calendar-alt calendar-icon"></i>
-                </div>
-              </div>
+          <div class="content-heading">
+            <div class="content-inner-wrapper">
+              <button id="createVoucher" class="btn btn-primary">Create Voucher</button>
             </div>
-
-            <div class="date-range-wrapper sorting-wrapper">
-              <div class="select-wrapper">
-                <select id="packages">
-                  <option value="" disabled selected>Select Branch</option>
-                  <?php
-                  // Execute the SQL query
-                  $sql1 = "SELECT branchId, branchName FROM branch ORDER BY branchName ASC";
-                  $res1 = $conn->query($sql1);
-
-                  // Check if there are results
-                  if ($res1->num_rows > 0) {
-                    // Loop through the results and generate options
-                    while ($row = $res1->fetch_assoc()) {
-                      echo "<option value='" . $row['branchName'] . "'>" . $row['branchName'] . "</option>";
-                    }
-                  } else {
-                    echo "<option value=''>No companies available</option>";
-                  }
-                  ?>
-                </select>
-              </div>
-            </div>
-
-            <div class="buttons-wrapper">
-              <button id="clearSorting" class="btn btn-secondary">
-                Clear Filters
-              </button>
-            </div> -->
           </div>
         </div>
 
-        <div class="navpills-container">
-          <div class="filter-tabs" id="booking-filter-tabs">
-            <button class="filter-btn active" data-filter="">
-              Main Template Voucher
-              <span class="badge-status-tab">
-                <h6>
-                  <?php
-                  $sql = "SELECT COUNT(*) AS totalBookings FROM itineraries;";
-                  $result = mysqli_query($conn, $sql);
-                  echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
-                  ?>
-                </h6>
-              </span>
-            </button>
+        <!-- Flight Seat Tracker Tab -->
+        <div class="tab-content" id="pills-tabContent">
 
-            <button class="filter-btn active" data-filter="">
-              Created Voucher
-              <span class="badge-status-tab">
-                <h6>
-                  <?php
-                  $sql = "SELECT COUNT(*) AS totalBookings FROM itineraries;";
-                  $result = mysqli_query($conn, $sql);
-                  echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
-                  ?>
-                </h6>
-              </span>
-            </button>
+          <!-- Flight Seat Tracker Tab -->
+          <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab"
+            tabindex="0">
+            <!-- Main voucher content -->
+            <div class="itinerary-grid">
+              <?php
+              $sql = "SELECT * FROM vouchers ORDER BY createdAt DESC;";
+              $result = $conn->query($sql);
 
-            <!-- <button class="filter-btn" data-filter="Pending">Pending
-              <span class="badge-status-tab">
-                <h6>
-                  <?php
-                  $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
-                  WHERE status = 'Pending'";
-                  $result = mysqli_query($conn, $sql);
-                  echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+              if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                  $itineraryId = htmlspecialchars($row['voucherId'] ?? '');
+                  $packageName = htmlspecialchars($row['voucherName'] ?? 'Untitled');
+                  $createdAt = $row['createdAt'] ? (new DateTime($row['createdAt']))->format('F j, Y g:i A') : 'N/A';
+                  $iconLetter = strtoupper(substr($packageName, 0, 1));
                   ?>
-                </h6>
-              </span>
-            </button>
+                  <div class="itinerary-card" data-id="<?php echo $itineraryId; ?>">
+                    <div class="card-content-wrap">
+                      <div class="it-card-header">
+                        <div class="itinerary-info">
+                          <span class="file-type">IT</span>
+                          <div class="itinerary-name">
+                            <h6><?php echo $packageName; ?></h6>
+                          </div>
+                        </div>
+                        <div class="options dropdown">
+                          <button class="btn dropdown-toggle p-0 border-0 bg-transparent" type="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-ellipsis-v"></i>
+                          </button>
+                          <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#">View Details</a></li>
+                            <li><a class="dropdown-item" href="#">Edit</a></li>
+                            <li><a class="dropdown-item text-danger" href="#">Delete</a></li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div class="it-card-body">
+                        <div class="itinerary-icon"><?php echo $iconLetter; ?></div>
+                      </div>
+                      <div class="it-card-footer"></div>
+                    </div>
+                  </div>
+                  <?php
+                }
+              } else {
+                echo "<p class='no-records'>No itineraries found.</p>";
+              }
+              ?>
+            </div>
 
-            <button class="filter-btn" data-filter="Reserved">Reserved
-              <span class="badge-status-tab">
-                <h6>
-                  <?php
-                  $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
-                  WHERE status = 'Reserved'";
-                  $result = mysqli_query($conn, $sql);
-                  echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
-                  ?>
-                </h6>
-              </span>
-            </button>
 
-            <button class="filter-btn" data-filter="Confirmed">Confirmed
-              <span class="badge-status-tab">
-                <h6>
-                  <?php
-                  $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
-                WHERE status = 'Confirmed'";
-                  $result = mysqli_query($conn, $sql);
-                  echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
-                  ?>
-                </h6>
-              </span>
-            </button>
-
-            <button class="filter-btn" data-filter="Cancelled">Cancelled
-              <span class="badge-status-tab">
-                <h6>
-                  <?php
-                  $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
-                  WHERE status = 'Cancelled'";
-                  $result = mysqli_query($conn, $sql);
-                  echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
-                  ?>
-                </h6>
-              </span>
-            </button> -->
           </div>
+
+
+          <!-- Payment and Requests Table -->
+          <div class="tab-pane fade" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
+
+
+          </div>
+        </div>
+
+        <!-- <div class="navpills-container">
+
+          <ul class="filter-tabs nav nav-tabs" id="booking-filter-tabs" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="filter-btn nav-link active" id="main-tab" data-bs-toggle="tab" data-bs-target="#main"
+                type="button" role="tab" aria-controls="main" aria-selected="true">
+                Main Template Voucher
+                <span class="badge-status-tab">
+                  <h6>
+                    <?php
+                    $sql = "SELECT COUNT(*) AS totalBookings FROM itineraries;";
+                    $result = mysqli_query($conn, $sql);
+                    echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+                    ?>
+                  </h6>
+                </span>
+              </button>
+            </li>
+
+            <li class="nav-item" role="presentation">
+              <button class="filter-btn nav-link" id="created-tab" data-bs-toggle="tab" data-bs-target="#created"
+                type="button" role="tab" aria-controls="created" aria-selected="false">
+                Created Voucher
+                <span class="badge-status-tab">
+                  <h6>
+                    <?php
+                    $sql = "SELECT COUNT(*) AS totalBookings FROM itineraries;";
+                    $result = mysqli_query($conn, $sql);
+                    echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+                    ?>
+                  </h6>
+                </span>
+              </button>
+            </li>
+          </ul>
 
           <div class="create-itinerary-wrapper">
-            <div class="buttons-wrapper">
-              <button id="createVoucher" class="btn btn-primary">
-                Create Voucher
-              </button>
-            </div>
-
-            <script>
-              document.getElementById("createVoucher").addEventListener("click", function() {
-                window.location.href = "../Employee Section/emp-generateVoucher.php"; // Change to your target page
-              });
-            </script>
 
           </div>
         </div>
 
-        <script>
-          document.addEventListener("DOMContentLoaded", function () {
-            document.addEventListener("click", function (event) {
-              let cardBody = event.target.closest(".it-card-body");
-              if (cardBody) {
-                let itineraryCard = cardBody.closest(".itinerary-card");
-                let itineraryId = itineraryCard ? itineraryCard.getAttribute("data-id") : null;
-                if (itineraryId) {
-                  window.location.href = `emp-voucherDetails.php?id=${itineraryId}`;
-                }
-              }
-            });
-          });
-        </script>
+        <div class="tab-content" id="bookingTabContent">
+          <div class="tab-pane fade show active" id="main" role="tabpanel" aria-labelledby="main-tab">
 
-        <!-- <div class="table-footer">
-          <div class="pagination-controls">
-            <button id="prevPage" class="pagination-btn">Previous</button>
-            <span id="pageInfo" class="page-info">Page 1 of 10</span>
-            <button id="nextPage" class="pagination-btn">Next</button>
+          </div>
+
+          <div class="tab-pane fade" id="created" role="tabpanel" aria-labelledby="created-tab">
+            <p>This is the Created Voucher tab content.</p>
           </div>
         </div> -->
 
       </div>
 
-      <div class="itinerary-grid">
-          <?php
-          if (!isset($conn)) {
-            die("Database connection error.");
-          }
-
-          $sql = "SELECT * FROM vouchers ORDER BY createdAt DESC;";
-          $result = $conn->query($sql);
-
-          if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-              $itineraryId = htmlspecialchars($row['voucherId'] ?? '');
-              $packageName = htmlspecialchars($row['voucherName'] ?? 'Untitled');
-              $createdAt = $row['createdAt'] ? (new DateTime($row['createdAt']))->format('F j, Y g:i A') : 'N/A';
-
-              // Determine an icon letter (e.g., "IT" for itinerary)
-              $iconLetter = strtoupper(substr($packageName, 0, 1));
-              ?>
-
-              <div class="itinerary-card" data-id="<?php echo $itineraryId; ?>">
-                <div class="card-content-wrap">
-                  <!-- Header Section -->
-                  <div class="it-card-header">
-                    <div class="itinerary-info">
-                      <span class="file-type">IT</span>
-                      <div class="itinerary-name">
-                        <h6><?php echo $packageName; ?></h6>
-                      </div>
-                    </div>
-
-                    <!-- Dropdown Options -->
-                    <div class="options dropdown">
-                      <button class="btn dropdown-toggle p-0 border-0 bg-transparent" type="button"
-                        data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fas fa-ellipsis-v"></i>
-                      </button>
-                      <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="#">View Details</a></li>
-                        <li><a class="dropdown-item" href="#">Edit</a></li>
-                        <li><a class="dropdown-item text-danger" href="#">Delete</a></li>
-                      </ul>
-                    </div>
-                  </div>
-
-                  <!-- Body Section -->
-                  <div class="it-card-body">
-                    <div class="itinerary-icon"><?php echo $iconLetter; ?></div>
-                  </div>
-
-                  <!-- Footer Section (Placeholder for future content) -->
-                  <div class="it-card-footer"></div>
-                </div>
-              </div>
-
-
-
-
-
-              <?php
-
-            }
-
-          } else {
-            echo "<p class='no-records'>No itineraries found.</p>";
-          }
-
-          ?>
-        </div>
-
-
-
-
-
     </div>
   </div>
 
+  <!-- <div class="table-footer">
+    <div class="pagination-controls">
+      <button id="prevPage" class="pagination-btn">Previous</button>
+      <span id="pageInfo" class="page-info">Page 1 of 10</span>
+      <button id="nextPage" class="pagination-btn">Next</button>
+    </div>
+  </div> -->
+
   <?php include '../Employee Section/includes/emp-scripts.php' ?>
 
+  <!-- Create Voucher Page Redirect -->
+  <script>
+    document.getElementById("createVoucher").addEventListener("click", function () {
+      window.location.href = "../Employee Section/emp-generateVoucher.php";
+    });
+  </script>
+
+  <!-- For Itinerary Card Click -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      document.addEventListener("click", function (event) {
+        let cardBody = event.target.closest(".it-card-body");
+        if (cardBody) {
+          let itineraryCard = cardBody.closest(".itinerary-card");
+          let itineraryId = itineraryCard ? itineraryCard.getAttribute("data-id") : null;
+          if (itineraryId) {
+            window.location.href = `emp-voucherDetails.php?id=${itineraryId}`;
+          }
+        }
+      });
+    });
+  </script>
 
   <!-- For Button Tabs Status Sorting -->
   <script>
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
       // Get the status from the URL
       let statusTab = "<?php echo isset($_GET['status']) ? $_GET['status'] : ''; ?>";
       console.log("Status from URL:", statusTab); // Debugging
@@ -338,7 +267,7 @@
 
       // Add click event listener to each button
       buttons.forEach(button => {
-        button.addEventListener("click", function() {
+        button.addEventListener("click", function () {
           // Remove active class from all buttons
           buttons.forEach(btn => btn.classList.remove("active"));
 
@@ -358,9 +287,9 @@
 
   <!-- Row Click Selection-->
   <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      document.querySelectorAll("tr[data-url]").forEach(function(row) {
-        row.addEventListener("click", function() {
+    document.addEventListener("DOMContentLoaded", function () {
+      document.querySelectorAll("tr[data-url]").forEach(function (row) {
+        row.addEventListener("click", function () {
           const transactionNumber = row.getAttribute("data-url").split('=')[1]; // Extract transaction number from the URL
 
           console.log("Transaction Number: ", transactionNumber); // Debugging line
@@ -372,13 +301,13 @@
             data: {
               transaction_number: transactionNumber
             },
-            success: function(response) {
+            success: function (response) {
               console.log("Response: ", response); // Debugging line
 
               // Redirect to the next page after successfully setting the session
               window.location.href = row.getAttribute("data-url"); // Use the original URL stored in data-url attribute
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
               console.error("AJAX Error: " + status + " " + error); // Enhanced error logging
             }
           });
@@ -389,7 +318,7 @@
 
   <!-- DataTables #product-table -->
   <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
       const table = $('#product-table').DataTable({
         dom: 'rtip', // Use only the relevant table elements
         language: {
@@ -413,7 +342,7 @@
       });
 
       // Search Functionality
-      $('#search').on('keyup', function() {
+      $('#search').on('keyup', function () {
         table.search(this.value).draw();
       });
 
@@ -432,12 +361,12 @@
       }
 
       // Custom pagination button click events
-      $('#prevPage').on('click', function() {
+      $('#prevPage').on('click', function () {
         table.page('previous').draw('page');
         updatePagination();
       });
 
-      $('#nextPage').on('click', function() {
+      $('#nextPage').on('click', function () {
         table.page('next').draw('page');
         updatePagination();
       });
@@ -446,20 +375,20 @@
       updatePagination();
 
       // Package Filter
-      $('#packages').on('change', function() {
+      $('#packages').on('change', function () {
         const selectedPackage = $(this).val();
         table.column(1).search(selectedPackage || '').draw();
       });
 
       // Booking Date Filter with value change
-      $('#BookingStartDate').on('change', function() {
+      $('#BookingStartDate').on('change', function () {
         const selectedBookingDate = $(this).val(); // Get the selected value directly from the input field
         console.log("Booking Date Filter:", selectedBookingDate); // Log the selected booking date
         table.column(3).search(selectedBookingDate || '').draw(); // Column 4 (index starts at 0)
       });
 
       // Flight Date Filter with value change
-      $('#FlightStartDate').on('change', function() {
+      $('#FlightStartDate').on('change', function () {
         const selectedFlightDate = $(this).val(); // Get the selected value directly from the input field
         console.log("Flight Date Filter:", selectedFlightDate); // Log the selected flight date
         table.column(3).search(selectedFlightDate || '').draw(); // Column 5 (index starts at 0)
@@ -472,7 +401,7 @@
         changeMonth: true, // Allow the month to be changed from the dropdown
         changeYear: true, // Allow the year to be changed from the dropdown
         yearRange: "1900:2100", // Set a range of years (optional)
-        onSelect: function(dateText) {
+        onSelect: function (dateText) {
           // When a date is selected, update the input field with the date
           $(this).val(dateText);
           flightStartDate = dateText; // Store the selected date
@@ -489,7 +418,7 @@
         changeMonth: true, // Allow the month to be changed from the dropdown
         changeYear: true, // Allow the year to be changed from the dropdown
         yearRange: "1900:2100", // Set a range of years (optional)
-        onSelect: function(dateText) {
+        onSelect: function (dateText) {
           // When a date is selected, update the input field with the date
           $(this).val(dateText);
           bookingStartDate = dateText; // Store the selected date
@@ -499,7 +428,7 @@
       });
 
       // BookingStartDate Input Validation and Formatting
-      $("#BookingStartDate").on("input", function() {
+      $("#BookingStartDate").on("input", function () {
         var value = $(this).val();
 
         // Remove non-numeric and non-dash characters
@@ -536,7 +465,7 @@
 
 
       // Clear All Filters
-      $('#clearSorting').on('click', function() {
+      $('#clearSorting').on('click', function () {
         // Clear search field
         $('#search').val('');
         table.search('').draw();
@@ -557,8 +486,8 @@
 
         // Reset DataTable filters & sorting
         table.order([
-            [0, 'desc']
-          ]) // Default sort by first column (Transaction ID)
+          [0, 'desc']
+        ]) // Default sort by first column (Transaction ID)
           .search('') // Clear any search input
           .columns().search('') // Reset all column filters
           .draw(); // Redraw table to default state

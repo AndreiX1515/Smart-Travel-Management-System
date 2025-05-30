@@ -1038,6 +1038,57 @@
 }
 
 
+/* ============================
+   Table Column Width Adjustments
+============================ */
+.confirm-table th:nth-child(1),
+.confirm-table td:nth-child(1) {
+  width: 4%; /* Transaction No. */
+}
+
+.confirm-table th:nth-child(2),
+.confirm-table td:nth-child(2) {
+  width: 8%; /* Agent Name */
+}
+
+.confirm-table th:nth-child(3),
+.confirm-table td:nth-child(3) {
+  width: 4%; /* Package */
+}
+
+.confirm-table th:nth-child(4),
+.confirm-table td:nth-child(4) {
+  width: 4%; /* Flight Date */
+  text-align: center;
+}
+
+.confirm-table th:nth-child(5),
+.confirm-table td:nth-child(5) {
+  width: 5%; /* Total Pax */
+  text-align: center;
+}
+
+.confirm-table th:nth-child(6),
+.confirm-table td:nth-child(6) {
+  width: 5%; /* Booking Type */
+}
+
+.confirm-table th:nth-child(7),
+.confirm-table td:nth-child(7) {
+  width: 5%; /* Comment */
+}
+
+.confirm-table th:nth-child(8),
+.confirm-table td:nth-child(8) {
+  width: 2%; /* Total Pax */
+  text-align: center;
+}
+
+.confirm-table th:nth-child(9),
+.confirm-table td:nth-child(9) {
+  width: 20%; /* Comment */
+  border-left: 1px solid gainsboro;
+}
 
 /* General container for comment input and button */
 .comment-container {
@@ -1180,58 +1231,8 @@
   opacity: 0.8;
 }
 
+/* ===================================== */
 
-/* ============================
-   Table Column Width Adjustments
-============================ */
-.confirm-table th:nth-child(1),
-.confirm-table td:nth-child(1) {
-  width: 4%; /* Transaction No. */
-}
-
-.confirm-table th:nth-child(2),
-.confirm-table td:nth-child(2) {
-  width: 8%; /* Agent Name */
-}
-
-.confirm-table th:nth-child(3),
-.confirm-table td:nth-child(3) {
-  width: 4%; /* Package */
-}
-
-.confirm-table th:nth-child(4),
-.confirm-table td:nth-child(4) {
-  width: 4%; /* Flight Date */
-  text-align: center;
-}
-
-.confirm-table th:nth-child(5),
-.confirm-table td:nth-child(5) {
-  width: 5%; /* Total Pax */
-  text-align: center;
-}
-
-.confirm-table th:nth-child(6),
-.confirm-table td:nth-child(6) {
-  width: 5%; /* Booking Type */
-}
-
-.confirm-table th:nth-child(7),
-.confirm-table td:nth-child(7) {
-  width: 5%; /* Comment */
-}
-
-.confirm-table th:nth-child(8),
-.confirm-table td:nth-child(8) {
-  width: 2%; /* Total Pax */
-  text-align: center;
-}
-
-.confirm-table th:nth-child(9),
-.confirm-table td:nth-child(9) {
-  width: 20%; /* Comment */
-  border-left: 1px solid gainsboro;
-}
 
 
 
@@ -1526,7 +1527,7 @@
 }
 
 .info-table-container {
-  height: 67.8vh;
+  height: 72vh;
   overflow-x: auto;
   overflow-y: auto;
   width: 100%;

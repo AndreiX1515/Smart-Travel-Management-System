@@ -50,6 +50,7 @@ require "../conn.php";
       <div class="content-container">
 
         <div class="table-wrapper">
+          
           <div class="table-header">
             
             <div class="search-wrapper">

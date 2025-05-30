@@ -52,6 +52,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
 
         <!-- Cards Count 1st Row -->
         <div class="header-counts">
+
           <!-- Card 1 -->
           <div class="card">
             <div class="counts-header">
@@ -220,9 +221,11 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
               <div class="row">
                 <!-- 5 Days Due Count -->
                 <div class="col-md-5 clickable-card" onclick="redirectToTransactionOnDue('5days')">
-                  <div class="card-icon icon-red">
-                    <p>5</p>
+
+                  <div class="card-icon icon-blue">
+                    <i class="fas fa-calendar-check"></i>
                   </div>
+
                   <div class="side-content">
                     <?php
                     $days5Query = "
@@ -249,9 +252,11 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
 
                 <!-- 15 Days Due Count -->
                 <div class="col-md-5 clickable-card" onclick="redirectToTransactionOnDue('15days')">
-                  <div class="card-icon bg-secondary">
-                    <p>15</p>
+
+                  <div class="card-icon icon-blue">
+                    <i class="fas fa-calendar-check"></i>
                   </div>
+
                   <div class="side-content">
                     <?php
                     $days15Query = "
@@ -280,9 +285,11 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
               <div class="row">
                 <!-- 30 Days Due Count -->
                 <div class="col-md-5 clickable-card" onclick="redirectToTransactionOnDue('30days')">
+
                   <div class="card-icon icon-blue">
-                    <p>30</p>
+                    <i class="fas fa-calendar-check"></i>
                   </div>
+
                   <div class="side-content">
                     <?php
                     $days30Query = "
@@ -308,23 +315,25 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
 
                 <!-- More than 30 Days Due Count -->
                 <div class="col-md-5 clickable-card" onclick="redirectToTransactionOnDue('30daysplus')">
+
                   <div class="card-icon icon-blue">
-                    <i class="fas fa-chevron-right"></i>
+                    <i class="fas fa-calendar-check"></i>
                   </div>
+
                   <div class="side-content">
                     <?php
                     $daysMoreThan30Query = "
-            SELECT COUNT(*) AS bookingsOver30DaysAfterFlight 
-            FROM booking b 
-            JOIN flight f ON b.flightId = f.flightId
-            LEFT JOIN (
-              SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) AS totalPaid 
-              FROM paymentc GROUP BY transactNo
-            ) p ON b.transactNo = p.transactNo
-            WHERE DATEDIFF(CURDATE(), f.flightDepartureDate) > 30
-              AND (b.totalPrice > IFNULL(p.totalPaid, 0)) 
-              AND b.accountId = '$accountId' 
-              AND b.status = 'Confirmed'";
+                      SELECT COUNT(*) AS bookingsOver30DaysAfterFlight 
+                      FROM booking b 
+                      JOIN flight f ON b.flightId = f.flightId
+                      LEFT JOIN (
+                        SELECT transactNo, SUM(CASE WHEN paymentStatus = 'Approved' THEN amount ELSE 0 END) AS totalPaid 
+                        FROM paymentc GROUP BY transactNo
+                      ) p ON b.transactNo = p.transactNo
+                      WHERE DATEDIFF(CURDATE(), f.flightDepartureDate) > 30
+                        AND (b.totalPrice > IFNULL(p.totalPaid, 0)) 
+                        AND b.accountId = '$accountId' 
+                        AND b.status = 'Confirmed'";
 
                     $result = $conn->query($daysMoreThan30Query);
                     $bookingsDueInMoreThan30Days = ($result->num_rows > 0) ? $result->fetch_assoc()['bookingsOver30DaysAfterFlight'] : 0;
@@ -334,7 +343,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                   </div>
                 </div>
               </div>
-              
+
             </div>
           </div>
 
@@ -1157,50 +1166,19 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
     $(document).ready(function () {
       const table = $('#info-table').DataTable({
         dom: 'rtip',
+        paging: false, // Disable pagination
         language: {
           emptyTable: "No Transaction Records Available"
         },
         order: [[0, 'desc']],
-        paging: true,
-        pageLength: 9,
-        scrollY: '62.8vh',
-        scrollCollapse: true,
+        autoWidth: false,
         columnDefs: [{
           targets: "_all",
           className: "text-center"
         }]
       });
 
-
-      // ✅ Simple Prev/Next pagination only
-      function updatePaginationControls() {
-        const info = table.page.info();
-        const currentPage = info.page + 1;
-        const totalPages = info.pages;
-
-        // Disable/enable based on current page
-        $('#prevPage').prop('disabled', currentPage === 1);
-        $('#nextPage').prop('disabled', currentPage === totalPages);
-      }
-
-      // ✅ When DataTable is redrawn
-      table.on('draw', function () {
-        updatePaginationControls();
-      });
-
-      // ✅ Navigation event handlers
-      $('#prevPage').on('click', function () {
-        table.page('previous').draw('page');
-      });
-
-      $('#nextPage').on('click', function () {
-        table.page('next').draw('page');
-      });
-
-
-
-      // ===================================================================== //
-
+      // 🔍 Text Search
       $('#search').on('keyup', function () {
         table.search(this.value).draw();
       });
@@ -1211,13 +1189,14 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
         table.column(3).search(selectedPackage || '').draw();
       });
 
+      // 📅 Date Picker for FlightStartDate
       $("#FlightStartDate").datepicker({
         dateFormat: "yy-mm-dd",
         showAnim: "fadeIn",
         changeMonth: true,
         changeYear: true,
         yearRange: "1900:2100",
-        appendTo: "body", // Moves the datepicker outside any restrictive containers
+        appendTo: "body",
         beforeShow: function (input, inst) {
           setTimeout(function () {
             inst.dpDiv.css({
@@ -1232,16 +1211,14 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
         }
       });
 
-
-      // 🔹 Flight Date Change Event
+      // 🔹 Flight Date Filter on Change
       $('#FlightStartDate').on('change', function () {
         const selectedFlightDate = $(this).val();
         console.log("Flight Date Filter:", selectedFlightDate);
         table.column(1).search(selectedFlightDate || '').draw();
       });
 
-      // 🔹 Clear All Filters
-      // Clear Sorting & Reset Price Filter
+      // 🔄 Clear All Filters
       $('#clearSorting').on('click', function () {
         $('#search').val('');
         table.search('').draw();
@@ -1251,32 +1228,10 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
         $('#FlightStartDate').datepicker("setDate", null);
         table.column(1).search('').draw();
 
-        // Reset Price Filter
         $("#priceRange").slider("values", [0, 10000]);
         $("#min_price").val(0);
         $("#max_price").val(10000);
         table.draw();
-      });
-    });
-  </script>
-
-  <!-- Clickable rows script -->
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      document.querySelectorAll("tr[data-url]").forEach(function (row) {
-        row.addEventListener("click", function () {
-          window.location.href = row.getAttribute("data-url");
-        });
-      });
-    });
-
-    // Add event listener to each row for redirection
-    const rows = document.querySelectorAll("tr[data-url]");
-
-    rows.forEach(row => {
-      row.addEventListener("click", function () {
-        const url = row.getAttribute("data-url");
-        window.location.href = url; // Redirect to the specified URL
       });
     });
   </script>

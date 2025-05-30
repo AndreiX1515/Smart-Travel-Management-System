@@ -2,7 +2,7 @@
 .info-container {
   width: 100%;
   background-color: #f6f6f6;
-  border-radius: 10px;
+  /* border-radius: 10px; */
   height: 5vh;
   display: flex;
   flex-direction: row;
@@ -35,7 +35,6 @@
 }
 
 /* Title Wrapper */
-
 .title-wrapper {
   display: flex;
   align-items: center;
@@ -1444,57 +1443,21 @@
   font-weight: bolder;
 }
 
-/* ====================== */
 
-/* Table styles */
-.table-container {
-  width: 100%;
-  padding: 0;
-  overflow-x: auto;
-  margin-bottom: 20px;
-  display: block;
-  border: 1px solid gainsboro;
-}
 
-.table-container::-webkit-scrollbar {
-  width: 6px; /* Increased scrollbar width */
-  height: 6px; /* Increased scrollbar height for horizontal scroll */
-}
-
-.table-container::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.3); /* Scrollbar thumb color */
-  border-radius: 6px; /* Increased border radius for a more rounded thumb */
-}
-
-.table-container::-webkit-scrollbar-track {
-  background-color: rgba(0, 0, 0, 0.1); /* Scrollbar track color */
-}
-
-/* Flight Seat Container */
-.flight-seat-container {
+/* .search-wrapper {
   display: flex;
   flex-direction: column;
-  position: relative;
-  height: 70vh;
-  overflow-x: auto;
-  overflow-y: auto;
-  /* border: 1px solid gainsboro; */
-  /* border: 1px solid black; */
-}
-
-.search-wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 8px; /* Increased gap for better spacing */
-  background-color: #f0f0f0; /* Slightly darker background */
-  border-radius: 10px; /* Soft rounded edges */
+  gap: 8px; 
+  background-color: #f0f0f0; 
+  border-radius: 10px; 
 }
 
 .search-input-wrapper {
   display: flex;
   align-items: center;
-  width: 320px; /* Slightly wider */
-  height: 45px; /* Increased height */
+  width: 320px; 
+  height: 45px; 
   padding: 10px 15px;
   border-radius: 8px;
   background-color: #e9e9e9e5;
@@ -1503,33 +1466,34 @@
 }
 
 .search-input-wrapper:hover {
-  background-color: #d6d6d6; /* Slight hover effect */
+  background-color: #d6d6d6; 
 }
 
 .search-input-wrapper input {
   flex: 1;
   border: none;
   font-size: 16px;
-  color: #222; /* Darker text for better contrast */
+  color: #222; 
   background-color: transparent;
   outline: none;
   padding: 0;
 }
 
 .search-input-wrapper input::placeholder {
-  color: #777; /* Slightly darker placeholder */
+  color: #777; 
 }
 
 .search-input-wrapper .icon {
   color: #555;
-  font-size: 20px; /* Slightly larger */
+  font-size: 20px; 
   margin-left: 12px;
   transition: 0.3s ease-in-out;
 }
 
 .search-input-wrapper:hover .icon {
-  color: #333; /* Darker color on hover */
-}
+  color: #333; 
+} */
+
 
 /* ======== Payment, Request, Confirm Wrapper Styles ======== */
 /* Tabbed Content */
@@ -1539,212 +1503,12 @@
   width: 100%;
   height: 70vh;
   gap: 5px;
-  /* border: 1px solid black; */
   padding: 0;
   box-sizing: border-box;
   overflow: hidden;
-  /* border: 1px solid black; */
-}
 
-/* ======================================= */
-/* General Table Styles */
-/* ======================================= */
-.table-header {
-  height: 4vh;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: start;
-  padding: 0 2px;
-  font-weight: bold;
 
   /* border: 1px solid black; */
-}
-
-.table-wrapper {
-  flex: 1; /* Grow to fill remaining space */
-  overflow-y: auto;
-  font-size: 12px;
-  text-align: left;
-  display: flex;
-  flex-direction: column;
-  padding: 0;
-  background-color: #ffffff;
-  border: 1px solid #e0e0e0;
-}
-
-/* Tab Pane Content */
-.tab-pane-content {
-  height: 100%;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 0;
-  box-sizing: border-box;
-  /* border: 1px solid black; */
-}
-
-/* Header Section */
-.header-wrapper {
-  display: flex;
-  width: 100%;
-  height: 35vh;
-  gap: 10px;
-  padding: 0;
-  box-sizing: border-box;
-
-  /* border-bottom: 1px solid black; */
-}
-
-/* Shared Wrapper Styles */
-.request-wrapper,
-.payment-wrapper,
-.pending-wrapper {
-  flex: 1 1 0; /* Grow, shrink, base 0 = equal share */
-  height: 100%; /* Full height of parent */
-  display: flex;
-  flex-direction: column;
-  padding: 0;
-  box-sizing: border-box;
-  /* border: 1px solid black; */
-}
-
-/* Confirm Section */
-.confirm-container {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 34vh;
-  gap: 0px;
-  padding: 0;
-  box-sizing: border-box;
-
-  /* border-bottom: 1px solid black; */
-}
-
-.confirm-table-container {
-  flex: 1; /* Takes full remaining height inside .confirm-container */
-  width: 100%;
-  position: relative;
-  overflow-y: auto;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  background-color: #fff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-
-  /* border: 1px solid black; */
-}
-
-/* --------------------------------------- */
-/* Table Container */
-.table-container {
-  width: 100%;
-  flex-grow: 1;
-  overflow-y: auto;
-  overflow-x: auto;
-  display: block;
-}
-
-/* --------------------------------------- */
-/* Table Base Styles */
-
-.table-container .table {
-  width: 100%;
-  border-collapse: separate; /* allow border-radius on tr */
-  font-size: 10px;
-  background-color: transparent;
-  white-space: nowrap;
-  table-layout: auto;
-  overflow-x: auto;
-  overflow-y: auto;
-  margin: 0;
-  font-family: inherit; /* inherit from container */
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-}
-
-/* --------------------------------------- */
-/* Table Head Styles */
-
-.table thead {
-  background-color: #dc3546e0; /* gainsboro */
-  color: #3a3a3a; /* Darker gray for contrast */
-  position: sticky;
-  top: 0;
-  z-index: 1;
-  text-align: left;
-  user-select: none;
-  font-family: inherit;
-}
-
-.table thead th {
-  vertical-align: top;
-  font-size: 0.65rem;
-  font-weight: 500;
-  padding: 5px 8px;
-  text-transform: uppercase;
-  color: #ffffff; /* Matches text color */
-  background-color: #dc3546e0; /* Same as thead */
-  font-family: inherit;
-}
-
-/* ... rest of your styles keep font-family: inherit; where needed ... */
-
-.table tbody tr {
-  /* Remove individual side borders for cleaner border-radius */
-  border-left: none;
-  border-right: none;
-  border-radius: 6px;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
-  background-color: white;
-  font-family: inherit;
-  /* To enable border-radius on table rows, override default display */
-  display: table-row;
-}
-
-.table tbody tr:hover {
-  background-color: #464646; /* darker gray background */
-  color: #111827; /* darker text */
-  cursor: pointer;
-  box-shadow: 0 0 0 1.5px #d1d5db inset; /* subtle inner border effect */
-}
-
-
-
-
-.table tbody td,
-.table tbody th {
-  color: #374151;
-  vertical-align: middle;
-  font-size: 0.75rem;
-  padding: 3px 8px;
-  white-space: nowrap;
-  border-bottom: 1px solid #e5e7eb;
-  border-left: 1px solid #e5e7eb;
-  border-right: 1px solid #e5e7eb;
-  font-family: inherit;
-  transition: background-color 0.2s ease, color 0.2s ease; /* smooth transition */
-}
-
-
-
-
-
-
-
-.table tbody tr td:first-child,
-.table tbody tr th:first-child {
-  border-left: none;
-}
-
-
-.table tbody tr td:last-child,
-.table tbody tr th:last-child {
-  border-right: none;
 }
 
 
@@ -1757,7 +1521,7 @@
 /* Card Container Styling */
 .flight-seat-container .one {
   width: 100%;
-  height: 66vh;
+  height: 67vh;
   background-color: #fff;
   overflow: hidden;
   border: 1px solid gainsboro;
@@ -1859,39 +1623,272 @@
 /* -------------------------------------
    TABLE: General Structure & Base Style
 -------------------------------------- */
+.table-header {
+  height: 4vh;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  padding: 0 2px;
+  font-weight: bold;
 
-/* Info Table */
-/* Container for Confirm Table */
-.confirm-table-container-flight {
-  width: 100%;
-  height: 63.7vh;
-  overflow: auto;
-  display: block;
-  position: relative;
   /* border: 1px solid black; */
 }
 
+.table-wrapper {
+  flex: 1; /* Grow to fill remaining space */
+  overflow-y: auto;
+  font-size: 12px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+}
+
+/* Tab Pane Content */
+.tab-pane-content {
+  height: 100%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0;
+  box-sizing: border-box;
+  /* border: 1px solid black; */
+}
+
+/* Header Section */
+.header-wrapper {
+  display: flex;
+  width: 100%;
+  height: 35vh;
+  gap: 10px;
+  padding: 0;
+  box-sizing: border-box;
+
+  /* border-bottom: 1px solid black; */
+}
+
+/* Shared Wrapper Styles */
+.request-wrapper,
+.payment-wrapper,
+.pending-wrapper {
+  flex: 1 1 0; /* Grow, shrink, base 0 = equal share */
+  height: 100%; /* Full height of parent */
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  box-sizing: border-box;
+  /* border: 1px solid black; */
+}
+
+/* Confirm Section */
+.confirm-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 34vh;
+  gap: 0px;
+  padding: 0;
+  box-sizing: border-box;
+  /* border-bottom: 1px solid black; */
+}
+
+.confirm-table-container {
+  flex: 1; 
+  width: 100%;
+  position: relative;
+  overflow-y: auto;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+
+  /* border: 1px solid black; */
+}
+
+
+/* --------------------------------------- */
+/* Table Base Styles */
+
+.table-wrapper .table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 10px;
+  background-color: transparent;
+  white-space: nowrap;
+  table-layout: auto;
+  overflow-x: auto;
+  overflow-y: auto;
+  margin: 0;
+  font-family: inherit; /* inherit from container */
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+/* --------------------------------------- */
+/* Table Head Styles */
+
+.table thead {
+  background-color: #dc3546e0; /* gainsboro */
+  color: #3a3a3a; /* Darker gray for contrast */
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  text-align: left;
+  user-select: none;
+  font-family: inherit;
+}
+
+.table thead th {
+  vertical-align: top;
+  font-size: 0.65rem;
+  font-weight: 500;
+  padding: 5px 8px;
+  text-transform: uppercase;
+  color: #ffffff; /* Matches text color */
+  background-color: #dc3546e0; /* Same as thead */
+  font-family: inherit;
+}
+
+
+.table tbody tr {
+  border-left: none;
+  border-right: none;
+  border-radius: 6px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  background-color: white;
+  font-family: inherit;
+  display: table-row;
+}
+
+.table tbody tr:hover {
+  background-color: #464646; /* darker gray background */
+  color: #111827; /* darker text */
+  cursor: pointer;
+  box-shadow: 0 0 0 1.5px #d1d5db inset;
+}
+
+.table tbody td,
+.table tbody th {
+  color: #374151;
+  vertical-align: middle;
+  font-size: 0.75rem;
+  padding: 3px 8px;
+  white-space: nowrap;
+  border-bottom: .5px solid #e5e7eb;
+  border-left: .5px solid #e5e7eb;
+  border-right: .5px solid #e5e7eb;
+  font-family: inherit;
+  transition: background-color 0.2s ease, color 0.2s ease; /* smooth transition */
+}
+
+
+
+
+.table tbody tr td:first-child,
+.table tbody tr th:first-child {
+  border-left: none;
+}
+
+
+.table tbody tr td:last-child,
+.table tbody tr th:last-child {
+  border-right: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* ============================================================
+   Confirm Table Container: Scrollable and Responsive
+============================================================ */
+.confirm-table-container-flight {
+  width: 100%;
+  height: 70vh;
+  overflow: auto;
+  position: relative;
+  display: block;
+  background-color: #fdfdfd;
+  border: 1px solid #dee2e6;
+  /* border-radius: 6px; */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* ============================================================
+   Info Table: All Attributes
+============================================================ */
 .info-table {
   width: 100%;
   table-layout: fixed;
   border-collapse: collapse;
-  font-family: system-ui, sans-serif;
-  font-size: 14px; /* Slightly smaller base font */
-  background-color: #fff;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 18px;
   color: #111;
-  overflow: hidden;
-  height: auto;
+  caption-side: top;
+  border-spacing: 0;
+  empty-cells: show;
 }
 
-/* -------------------------------------
-   TABLE BODY: Cell Styling
--------------------------------------- */
-.info-table td {
-  padding: 10px 8px; /* Tighter cell padding */
-  border-bottom: 1px solid #f1f3f5;
-  border-left: 1px solid #dee2e6;
-  border-right: 1px solid #dee2e6;
-  font-size: 14px;
+/* ============================================================
+   Table Column Group (if used)
+============================================================ */
+.info-table colgroup col {
+  width: auto;
+}
+
+/* ============================================================
+   Table Header (Thead)
+============================================================ */
+.info-table thead {
+  color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.info-table thead th {
+  padding: 8px 8px;
+  font-weight: 600;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ============================================================
+   Table Body (Tbody)
+============================================================ */
+.info-table tbody tr {
+  height: 28px; /* Tighter rows */
+  transition: background-color 0.2s ease;
+}
+
+.info-table tbody tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+.info-table tbody tr:hover {
+  background-color: #e9f5ec;
+}
+
+.info-table tbody td {
+  padding: 6px 6px; /* Smaller padding */
+  border-left: .5px solid #dee2e6;
+  border-right: .5px solid #dee2e6;
+  border-bottom: .5px solid #f1f3f5;
+  font-size: 12px;
   color: #333;
   text-align: center;
   white-space: nowrap;
@@ -1900,23 +1897,21 @@
   vertical-align: middle;
 }
 
-/* -------------------------------------
-   TABLE BODY: Row Height and Striping
--------------------------------------- */
-.info-table tbody tr {
-  height: 45px; /* Reduced height for tighter rows */
-}
-
-.info-table tbody tr:nth-child(even) {
-  background-color: #f8f9fa;
-}
-
-/* -------------------------------------
-   MARGIN BELOW TABLE (if any element follows)
--------------------------------------- */
+/* ============================================================
+   Margin Below Table (for spacing with next elements)
+============================================================ */
 .info-table + * {
   margin-top: 1rem;
 }
+
+
+
+
+
+
+
+
+
 
 /* -------------------------------------
    COLUMN WIDTHS: Adjusted for compact layout
@@ -1982,17 +1977,32 @@
   cursor: not-allowed;
 }
 
+
+
+
+
+
+
+
+
+
 /* ================== */
 /* Unconfirmed Table */
+
+.unconfirm-table-container {
+  width: 100%;
+  height: 100%;
+  overflow-x: auto;
+  overflow-y: auto;
+  box-sizing: border-box;
+  border: 1px solid #e0e0e0; /* optional */
+}
+
 .unconfirm-table {
   width: 100%;
   border-collapse: collapse;
-  font-family: Arial, sans-serif;
-  font-size: 12px;
-  line-height: 1;
   white-space: nowrap;
-  background-color: transparent;
-  table-layout: auto;
+  font-size: 12px;
 }
 
 /* Table Header */
@@ -2037,7 +2047,10 @@
   padding: 0;
 } */
 
-/* ================== */
+
+
+
+
 /* ================== */
 /* Request Table Container */
 .request-table-container {
@@ -2094,9 +2107,13 @@
   padding: 0;
 } */
 
+
+
+
+
+
 /* ================== */
 /* Payment Table */
-
 .payment-table-container {
   width: 100%;
   height: 100%;
@@ -2153,108 +2170,52 @@
   font-size: 12px;
 }
 
-/* Optional: Force inner content to stretch fully
-.payment-table th > *,
-.payment-table td > * {
-  display: flex;
-  width: 100%;
-  height: 100%;
-  align-items: stretch;
-  justify-content: stretch;
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-} */
+
+
 
 /* ======================================= */
 /* Confirm Table Container */
-.confirm-table-container {
-  width: 100%;
+
+
+
+/* Request Table Container */
+/* .request-table-container {
   height: 100%;
-  position: relative;
-  overflow-y: auto;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  background-color: #fff;
+  overflow: auto;
+}
+
+
+.request-table {
+  width: 100%;
+  border-collapse: collapse;
+  white-space: nowrap;
+  font-size: 12px;
+} */
+
+
+
+
+
+
+
+
+
+.confirm-table-container {
+  height: 100%;
+  overflow: auto;
 }
 
 .confirm-table {
   width: 100%;
   border-collapse: collapse;
-  font-family: Arial, sans-serif;
-  font-size: 14px;
   white-space: nowrap;
-  overflow-x: auto;
-  overflow-y: auto;
-  border-radius: 10px;
-}
-
-.confirm-table thead {
-  background-color: #dc3545;
-  color: #ffffff;
-  text-align: left;
-  position: sticky;
-  top: 0;
-  z-index: 1;
-}
-
-.confirm-table thead th {
   font-size: 12px;
-  padding: 4px 8px;
-  font-weight: bold;
-  color: #ffffff;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-  border-left: 1px solid rgba(0, 0, 0, 0.2); /* Left border */
-  border-right: 1px solid rgba(0, 0, 0, 0.2); /* Right border */
 }
 
-/* Remove left border from the first column and right border from the last column in body */
-.confirm-table thead th:first-child {
-  border-left: none;
-}
 
-.confirm-table thead th:last-child {
-  border-right: none;
-}
 
-.confirm-table tbody td {
-  padding: 4px 8px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-  border-left: 1px solid rgba(0, 0, 0, 0.2); /* Left border */
-  border-right: 1px solid rgba(0, 0, 0, 0.2); /* Right border */
-  color: #555;
-  font-weight: 600;
-}
 
-/* Remove left border from the first column and right border from the last column in body */
-.confirm-table tbody td:first-child {
-  border-left: none;
-}
 
-.confirm-table tbody td:last-child {
-  border-right: none;
-}
-
-.confirm-table tbody tr {
-  background-color: transparent;
-  transition: background-color 0.3s;
-  font-size: 12px;
-  font-weight: bold;
-}
-
-.confirm-table tbody tr:hover {
-  background-color: #b2ebf2; /* Light blue background on hover */
-}
-
-.confirm-table tbody tr:first-child {
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-}
-
-.confirm-table tbody tr:last-child {
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
-}
 
 /* Adjust column widths */
 .confirm-table th:nth-child(1),
@@ -2286,7 +2247,7 @@
 .confirm-table th:nth-child(6),
 .confirm-table td:nth-child(6) {
   width: 15%; /* BOOKING TYPE */
-  text-align: center;
+  text-align: left;
 }
 
 .confirm-table th:nth-child(7),
@@ -2301,7 +2262,7 @@
 
 .confirm-table th:nth-child(9),
 .confirm-table td:nth-child(9) {
-  width: 10%; /* STATUS */
+  width: 6%; /* STATUS */
   text-align: center;
 }
 
@@ -2318,18 +2279,20 @@
   background-color: transparent;
   transition: background-color 0.3s;
   font-size: 12px;
-  font-weight: bold;
+  font-weight: 500;
+  padding: 0;
 }
 
-.confirm-table tbody tr:first-child {
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-}
 
-.confirm-table tbody tr:last-child {
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
-}
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2428,6 +2391,26 @@
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

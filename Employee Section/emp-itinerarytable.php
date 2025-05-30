@@ -215,7 +215,6 @@
           ?>
         </div>
 
-
         <!-- <div class="table-footer">
           <div class="pagination-controls">
             <button id="prevPage" class="pagination-btn">Previous</button>
