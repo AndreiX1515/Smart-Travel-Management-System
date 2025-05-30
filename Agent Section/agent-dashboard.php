@@ -1436,6 +1436,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                         <th>STATUS</th>
                       </tr>
                     </thead>
+
                     <tbody>
                       <?php
                       if ($agentRole != 'Head Agent') {
@@ -1620,10 +1621,10 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                             echo "<td>₱ " . number_format($totalAmountPaid, 2) . "</td>"; // Total Amount Paid
                             echo "<td>₱ " . number_format($balance, 2) . "</td>"; // Balance (Amount to be paid - Amount paid)
                             echo "<td>
-                                                    <span class='badge <?php echo $statusClass; ?> p-2'>
-                                                        {$bookingStatus}
-                                                    </span>
-                                                </td>";
+                                    <span class='badge <?php echo $statusClass; ?> p-2'>
+                                        {$bookingStatus}
+                                    </span>
+                                  </td>";
                             echo "</tr>";
                           }
                         } else {
