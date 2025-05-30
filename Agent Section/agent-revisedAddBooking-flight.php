@@ -20,29 +20,36 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
 </head>
 
 <body>
-  <div class="body-container">
+
     <?php include "../Agent Section/includes/sidebar.php"; ?>
 
-    <div class="main-content-container">
+    <div class="main-container">
+
       <div class="navbar">
         <div class="page-header-wrapper">
 
-          <!-- <div class="page-header-top">
+          <div class="page-header-top">
             <div class="back-btn-wrapper">
-              <button class="back-btn" id="logout-btn">
+              <button class="back-btn" id="redirect-btn">
                 <i class="fas fa-chevron-left"></i>
               </button>
             </div>
-          </div> -->
+          </div>
 
           <div class="page-header-content">
             <div class="page-header-text">
-              <h5 class="header-title">Add Booking</h5>
+              <h5 class="header-title">Booking</h5>
             </div>
           </div>
 
         </div>
       </div>
+
+      <script>
+        document.getElementById('redirect-btn').addEventListener('click', function () {
+          window.location.href = '../Agent Section/agent-dashboard.php'; // Replace with your actual URL
+        });
+      </script>
 
       <div class="main-content">
 
@@ -604,8 +611,6 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
 
       </div>
     </div>
-
-  </div>
 
   <?php require "../Agent Section/includes/scripts.php"; ?>
 

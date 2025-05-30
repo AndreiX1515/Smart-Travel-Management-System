@@ -981,7 +981,7 @@
 
 .confirm-table-container {
   width: 100%;
-  height: 32vh;
+  height: 31vh;
   overflow-x: auto;
   overflow-y: auto;
   border: 1px solid gainsboro;
@@ -1322,38 +1322,40 @@
 /* General Table Styles */
 /* ======================================= */
 /* Apply to your wrapper or globally */
-.table-wrapper::-webkit-scrollbar,
+/* .table-wrapper::-webkit-scrollbar,
 .payment-wrapper::-webkit-scrollbar {
-  width: 6px; /* Slimmer scrollbar */
-  height: 6px; /* Optional for horizontal */
+  width: 6px; 
+  height: 6px; /
 }
 
 .table-wrapper::-webkit-scrollbar-track,
 .payment-wrapper::-webkit-scrollbar-track {
-  background: transparent; /* Or use #f1f1f1 for visible track */
+  background: transparent; 
 }
 
 .table-wrapper::-webkit-scrollbar-thumb,
 .payment-wrapper::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.2); /* Subtle thumb */
-  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.2); 
   transition: background-color 0.3s;
 }
 
 .table-wrapper::-webkit-scrollbar-thumb:hover,
 .payment-wrapper::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(0, 0, 0, 0.4); /* Slightly darker on hover */
-}
+  background-color: rgba(0, 0, 0, 0.4); 
+} */
 
-/* ======== Payment, Request, Confirm Wrapper Styles ======== */
+
+
+
+/* ===== Payment, Request, Confirm Wrapper Styles ====== */
 
 /* Tabbed Content */
 .tab-content {
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 72vh; /* Fill parent if needed */
-  gap: 5px; /* Dynamic spacing between children */
+  height: 72vh; 
+  gap: 5px; 
   /* border: 1px solid black; */
 }
 
@@ -1390,7 +1392,8 @@
 
 /* Confirm Section */
 .confirm-container {
-  flex: 1; 
+   
+  height: 45vh;
   display: flex;
   flex-direction: column;
   padding: 0px 0px 0px 0px;
@@ -1419,7 +1422,6 @@
 
 .table-container .table {
   width: 100%;
-  border-collapse: separate; /* allow border-radius on tr */
   font-size: 12px;
   background-color: transparent;
   white-space: nowrap;
@@ -1472,7 +1474,6 @@
 .table tbody tr {
   border-left: 1.5px solid #d1d5db;
   border-right: 1.5px solid #d1d5db;
-  border-radius: 6px;
   transition: background-color 0.3s ease, border-color 0.3s ease;
   background-color: white;
 }
@@ -1536,6 +1537,7 @@
   padding-bottom: 15px;
 }
 
+
 /* Table Structure */
 .info-table {
   font-size: 12px;
@@ -1547,6 +1549,7 @@
   white-space: nowrap;
   padding-bottom: 10px;
 }
+
 
 /* ============================= */
 /* HEADER & FOOTER SECTIONS */
@@ -1642,25 +1645,40 @@
 
 
 /* ============================= */
-/* TABLE HEADER STYLES */
+/* TABLE BASE STYLES */
+/* ============================= */
+
+
+
+
+
+
+/* ============================= */
+/* INFO TABLE - HEADER STYLES   */
 /* ============================= */
 
 .info-table thead {
   position: sticky;
   top: 0;
   z-index: 2;
-  padding: 3px 8px;
   background-color: #dc3545;
   color: #ffffff;
-  width: 100%;
+  border-bottom: 1px solid #dc3545;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .info-table thead th {
+  padding: 10px 8px;
+  font-weight: 600;
+  font-size: 10px;
   text-align: center;
-  font-weight: bold;
-  border-right: 1px solid #e6e6e6;
-  padding: 3px 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border-right: 0.1px solid gainsboro;
+  border: 1px solid #ccc;
+  line-height: 1;
+  height: 26px;
 }
 
 .info-table thead th.selected {
@@ -1668,13 +1686,11 @@
   color: #000;
 }
 
-/* First and second row headers */
+/* Multi-row header support */
 .info-table thead tr.first-half th {
   font-weight: 600;
-  text-align: center;
   padding: 8px;
   border: 1px solid #ddd;
-  white-space: nowrap;
 }
 
 .info-table thead tr.second-half th {
@@ -1682,17 +1698,20 @@
   font-weight: 500;
   padding: 6px 8px;
   border: 1px solid #ddd;
-  white-space: nowrap;
 }
 
-
 /* ============================= */
-/* TABLE BODY STYLES */
+/* INFO TABLE - BODY STYLES     */
 /* ============================= */
 
 .info-table tbody tr {
-  transition: none !important;
-  border-collapse: collapse;
+  height: 26px;
+  transition: background-color 0.2s ease;
+}
+
+.info-table tbody tr:hover {
+  background-color: #f1f1f1;
+  cursor: pointer;
 }
 
 .info-table tbody tr.selected {
@@ -1700,63 +1719,118 @@
   color: black !important;
   font-weight: bold;
   outline: 2px solid transparent;
-  border-spacing: 0;
-}
-
-.info-table tbody tr:hover {
-  background-color: #dfdfdf;
-  cursor: pointer;
-}
-
-.info-table td {
-  padding: 10px 5px;
-  text-align: center;
-  font-size: 12px;
-  color: #555;
-  border: 1px solid #ddd;
-}
-
-.info-table td:first-child {
-  border-left: 1px solid #ddd;
 }
 
 .info-table tbody tr:nth-child(even) {
-  background-color: #f9f9f9;
+  background-color: #f8f9fa;
 }
 
 .info-table tbody tr:nth-child(odd) {
   background-color: #fff;
 }
 
+.info-table tbody td {
+  padding: 6px;
+  font-size: 12px;
+  color: #333;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+  border: 0.5px solid #dee2e6;
+  border-bottom: 0.5px solid #f1f3f5;
+}
+
+/* Fix left-most cell border */
+.info-table td:first-child {
+  border-left: 1px solid #ddd;
+}
 
 /* ============================= */
-/* TABLE COLUMN WIDTHS */
+/* ROWSPAN / COLSPAN SUPPORT    */
+/* ============================= */
+
+.info-table td[rowspan],
+.info-table td[colspan],
+.info-table th[rowspan],
+.info-table th[colspan] {
+  padding: 6px 8px;
+  text-align: center;
+  vertical-align: middle;
+  border: 0.5px solid #dee2e6;
+  border-bottom: 0.5px solid #f1f3f5;
+}
+
+/* ============================= */
+/* TABLE CONTAINER              */
+/* ============================= */
+
+.info-table-container {
+  height: 72vh;
+  overflow-x: auto;
+  overflow-y: auto;
+  width: 100%;
+  border: 1px solid lightgray;
+  box-sizing: border-box;
+  padding-bottom: 15px;
+  position: relative;
+}
+
+/* ============================= */
+/* BASE TABLE STRUCTURE         */
+/* ============================= */
+
+.info-table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  empty-cells: show;
+  caption-side: top;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 16px;
+  color: #111;
+  background-color: #fff;
+}
+
+/* Prevent wrapping in both header and body */
+.info-table th,
+.info-table td {
+  white-space: auto;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+}
+
+/* ============================= */
+/* COLUMN WIDTH DEFINITIONS     */
 /* ============================= */
 
 .info-table tr.first-half th.red-white:first-child {
-  width: 40px;
+  width: 30px;
 }
 
 .info-table tr.first-half th.red-white:nth-child(2) {
-  width: 100px;
+  width: 8%;
 }
 
 .info-table tr.first-half th.red-white:nth-child(3) {
-  width: 80px;
+  width: 85px;
 }
 
-.info-table tr.first-half th.red-white:nth-child(4),
+.info-table tr.first-half th.red-white:nth-child(4) {
+  width: 200px;
+}
+
 .info-table tr.first-half th.red-white:nth-child(5) {
-  width: 250px;
+  width: 70px;
 }
 
 .info-table tr.first-half th.red-white:nth-child(6),
 .info-table tr.first-half th.red-white:nth-child(7) {
-  width: 80px;
+  width: 70px;
 }
 
 .info-table tr.first-half th.red-white:nth-child(8) {
-  width: 90px;
+  width: 70px;
 }
 
 .info-table tr.first-half th.red-white:nth-child(9) {
@@ -1766,12 +1840,24 @@
 .info-table tr.first-half th.red-white:nth-child(10),
 .info-table tr.first-half th.red-white:nth-child(11),
 .info-table tr.first-half th.red-white:nth-child(12) {
-  width: 120px;
+  width: 100px;
 }
 
 .info-table tr.first-half th.red-white:nth-child(n + 13) {
-  width: 180px;
+  width: 250px;
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1934,7 +2020,7 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 50vh;
+    /* height: 50vh; */
     padding: 10px 0 15px;
   }
 }

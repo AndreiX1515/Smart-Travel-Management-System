@@ -63,9 +63,9 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                 <h6 class="">Active Transaction</h6>
               </div>
 
-              <div class="accent-pill mt-1">
+              <!-- <div class="accent-pill mt-1">
                 <h6 class="accent-pill"><?php echo date('F, Y'); ?></h6>
-              </div>
+              </div> -->
             </div>
 
 
@@ -646,7 +646,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
 
               <div class="accent-pill">
                 <button class="btn btn-primary view-currency-btn" id="addCurrencyBtn"
-                  onclick="window.location.href='../Employee Section/emp-currencyHistory.php';">
+                  onclick="window.location.href='../Agent Section/agent-currencyHistory.php';">
                   View History
                 </button>
               </div>
@@ -790,7 +790,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
             <!-- Flight Seat -->
             <div class="one">
 
-              <div class="confirm-table-container-flight">
+              <div class="table-wrapper confirm-table-container-flight">
                 <table id="info-table" class="table info-table">
 
                   <thead>

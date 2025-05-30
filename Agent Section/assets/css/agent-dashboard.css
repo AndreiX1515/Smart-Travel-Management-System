@@ -26,7 +26,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 0 0px;
-  min-height: 30px; /* Make height adaptive but with a sensible minimum */
+  min-height: 30px; 
   background-color: #fdfdfd;
   color: #333;
   font-size: 12px;
@@ -1600,25 +1600,6 @@
   display: none !important;
 }
 
-/* -------------------------------------
-   TABLE HEADER: Red, Non-sticky
--------------------------------------- */
-.info-table thead {
-  background-color: #dc3545;
-  color: #fff;
-  border-bottom: 1px solid #dc3545;
-}
-
-.info-table th {
-  padding: 10px 8px; /* Tighter padding */
-  font-weight: 600;
-  font-size: 11px; /* Slightly smaller header font */
-  text-align: center;
-  white-space: nowrap;
-  border-right: 1px solid rgba(216, 216, 216, 0.486);
-  line-height: 1.2;
-  height: 26px;
-}
 
 /* -------------------------------------
    TABLE: General Structure & Base Style
@@ -1759,7 +1740,6 @@
 .table tbody tr {
   border-left: none;
   border-right: none;
-  border-radius: 6px;
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
   background-color: white;
   font-family: inherit;
@@ -1827,22 +1807,25 @@
 }
 
 /* ============================================================
-   Info Table: All Attributes
+   Info Table: Base Setup
 ============================================================ */
 .info-table {
   width: 100%;
   table-layout: fixed;
   border-collapse: collapse;
+  border-spacing: 0;
+  empty-cells: show;
+  caption-side: top;
+
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   font-size: 18px;
   color: #111;
-  caption-side: top;
-  border-spacing: 0;
-  empty-cells: show;
+
+  background-color: #fff;
 }
 
 /* ============================================================
-   Table Column Group (if used)
+   Optional Column Group
 ============================================================ */
 .info-table colgroup col {
   width: auto;
@@ -1852,42 +1835,45 @@
    Table Header (Thead)
 ============================================================ */
 .info-table thead {
-  color: #fff;
   position: sticky;
   top: 0;
   z-index: 2;
+  background-color: #dc3545;
+  color: #fff;
+  border-bottom: 1px solid #dc3545;
 }
 
 .info-table thead th {
-  padding: 8px 8px;
+  padding: 10px 8px;
   font-weight: 600;
+  font-size: 11px;
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  border-right: .1px solid gainsboro;
+  line-height: 1;
+  height: 26px;
 }
 
 /* ============================================================
    Table Body (Tbody)
 ============================================================ */
 .info-table tbody tr {
-  height: 28px; /* Tighter rows */
+  height: 26px; /* Slightly smaller than before */
   transition: background-color 0.2s ease;
 }
 
 .info-table tbody tr:nth-child(even) {
-  background-color: #f8f9fa;
+  background-color: #f8f9fa; /* Alternating row color */
 }
 
 .info-table tbody tr:hover {
-  background-color: #e9f5ec;
+  background-color: #f1f1f1; /* Slight dark hover */
 }
 
 .info-table tbody td {
-  padding: 6px 6px; /* Smaller padding */
-  border-left: .5px solid #dee2e6;
-  border-right: .5px solid #dee2e6;
-  border-bottom: .5px solid #f1f3f5;
+  padding: 6px 6px;
   font-size: 12px;
   color: #333;
   text-align: center;
@@ -1895,21 +1881,34 @@
   overflow: hidden;
   text-overflow: ellipsis;
   vertical-align: middle;
+
+  border-left: 0.5px solid #dee2e6;
+  border-right: 0.5px solid #dee2e6;
+  border-bottom: 0.5px solid #f1f3f5;
 }
 
 /* ============================================================
-   Margin Below Table (for spacing with next elements)
+   Support for Rowspan and Colspan Cells
+============================================================ */
+.info-table td[rowspan],
+.info-table td[colspan],
+.info-table th[rowspan],
+.info-table th[colspan] {
+  padding: 6px 8px;
+  text-align: center;
+  vertical-align: middle;
+  border-left: 0.5px solid #dee2e6;
+  border-right: 0.5px solid #dee2e6;
+  border-bottom: 0.5px solid #f1f3f5;
+}
+
+
+/* ============================================================
+   Footer or Additional Element Spacing
 ============================================================ */
 .info-table + * {
   margin-top: 1rem;
 }
-
-
-
-
-
-
-
 
 
 
@@ -1952,7 +1951,7 @@
 
 .btn-bookNow {
   padding: 4px 10px;
-  font-size: 12px;
+  font-size: 10px;
   /* background-color: #dc3545; */
   color: rgb(46, 46, 46);
   font-weight: 600;

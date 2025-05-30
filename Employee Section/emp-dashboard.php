@@ -533,18 +533,19 @@ error_reporting(E_ALL);
         <div class="content-heading">
           <button class="btn btn-primary saveBtn" id="saveChanges">Save</button>
         </div>
-        
+
       </div>
 
       <!-- Flight Seat Tracker Tab -->
       <div class="tab-content" id="pills-tabContent">
 
         <!-- Flight Seat Tracker Tab -->
-        <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
+        <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab"
+          tabindex="0">
 
           <div class="info-table-wrapper">
             <!-- Flight Seat Tracker Table -->
-            <div class="info-table-container">
+            <div class="table-wrapper info-table-container">
               <table class="info-table" id="info-table">
                 <thead>
                   <tr class="first-half">
@@ -689,7 +690,7 @@ error_reporting(E_ALL);
                       $rowColor = !empty($row['colorCode']) ? $row['colorCode'] : "#FFFFFF";
 
                       echo '<tr>';
-                      echo '<td class="fw-bold" style="font-size: 12px; background-color: ' . $rowColor . '; ">
+                      echo '<td class="fw-bold" style="font-size: 12px; background-color: ' . $rowColor . ';">
                               <input type="checkbox" class="status-checkbox row-checkbox" data-id="' . $flight_id . '" 
                                     data-status="' . $chkStatus . '" ' . ($chkStatus == 1 ? 'checked' : '') . '>
                               </td>';
@@ -751,7 +752,6 @@ error_reporting(E_ALL);
             </div> -->
 
           </div>
-
         </div>
 
 
@@ -770,7 +770,7 @@ error_reporting(E_ALL);
                     <h6 class="">Request</h6>
                   </div>
                 </div>
-                  
+
                 <div class="table-wrapper request-table-container">
                   <table class="request-table table">
                     <thead>
@@ -947,66 +947,64 @@ error_reporting(E_ALL);
             <!-- Confirm Transaction Table -->
             <?php
             // Function to render the confirmed transactions table
-            function renderConfirmedTransactionsTable($conn)
-            {
+            function renderConfirmedTransactionsTable($conn) {
               // Query to get confirmed transactions
               $query1 = "SELECT b.*, f.flightDepartureDate AS Start, p.packageName, b.totalPrice AS PackagePrice, 
-                            f.returnDepartureDate AS End, CONCAT(a.lName, ', ', a.fName, 
-                            IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1)), '')) AS agentName,
-                            br.branchName as branchName, SUM(pa.amount) AS TotalAmountPaid, 
-                            COALESCE(SUM(r.requestCost), 0) AS TotalRequestAmount,
-                            CASE 
-                              WHEN a.accountId IS NOT NULL 
-                                THEN CASE 
-                                  WHEN a.companyId IS NOT NULL THEN co.companyName 
-                                  ELSE br.branchName END
-                              WHEN cl.accountId IS NOT NULL 
-                                THEN CASE 
-                                  WHEN cl.companyId IS NOT NULL THEN cc.companyName 
-                                  ELSE br.branchName END
-                            ELSE 'Unknown' END AS `Account Name`
-                          FROM booking b 
-                          LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
-                          LEFT JOIN company co ON a.companyId = co.companyId
-                          LEFT JOIN client cl ON b.accountType = 'Client' AND b.accountId = cl.accountId
-                          LEFT JOIN company cc ON cl.companyId = cc.companyId
-                          JOIN branch br ON b.agentCode = br.branchAgentCode
-                          JOIN flight f ON b.flightId = f.flightId
-                          JOIN package p ON b.packageId = p.packageId
-                          LEFT JOIN payment pa ON pa.transactNo = b.transactNo AND pa.paymentStatus = 'Approved'
-                          LEFT JOIN request r ON r.transactNo = b.transactNo AND r.requestStatus = 'Confirmed'
-                          WHERE status = 'Confirmed' AND f.flightDepartureDate >= CURDATE() GROUP BY b.transactNo";
+                f.returnDepartureDate AS End, CONCAT(a.lName, ', ', a.fName, 
+                IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1)), '')) AS agentName,
+                br.branchName as branchName, SUM(pa.amount) AS TotalAmountPaid, 
+                COALESCE(SUM(r.requestCost), 0) AS TotalRequestAmount,
+                CASE 
+                  WHEN a.accountId IS NOT NULL 
+                    THEN CASE 
+                      WHEN a.companyId IS NOT NULL THEN co.companyName 
+                      ELSE br.branchName END
+                  WHEN cl.accountId IS NOT NULL 
+                    THEN CASE 
+                      WHEN cl.companyId IS NOT NULL THEN cc.companyName 
+                      ELSE br.branchName END
+                ELSE 'Unknown' END AS `Account Name`
+              FROM booking b 
+              LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
+              LEFT JOIN company co ON a.companyId = co.companyId
+              LEFT JOIN client cl ON b.accountType = 'Client' AND b.accountId = cl.accountId
+              LEFT JOIN company cc ON cl.companyId = cc.companyId
+              JOIN branch br ON b.agentCode = br.branchAgentCode
+              JOIN flight f ON b.flightId = f.flightId
+              JOIN package p ON b.packageId = p.packageId
+              LEFT JOIN payment pa ON pa.transactNo = b.transactNo AND pa.paymentStatus = 'Approved'
+              LEFT JOIN request r ON r.transactNo = b.transactNo AND r.requestStatus = 'Confirmed'
+              WHERE status = 'Confirmed' AND f.flightDepartureDate >= CURDATE() 
+              GROUP BY b.transactNo";
 
               $result = $conn->query($query1);
 
-              // Check if the query returned any results
+              // Start the table HTML
+              echo '<div class="confirm-container">
+              <div class="table-header">
+                <div class="title-wrapper">
+                  <h6 class="">Confirmed Transactions</h6>
+                </div>
+              </div>
+
+              <div class="table-wrapper confirm-table-container">
+                <table class="confirm-table table info-table" id="confirm-table">
+                  <thead>
+                    <tr>
+                      <th>TRANSACTION NO.</th>
+                      <th>AGENT NAME</th>
+                      <th>FLIGHT DATE</th>
+                      <th>TOTAL PAX.</th>
+                      <th>BOOKING TYPE</th>
+                      <th>PACKAGE PRICE</th>
+                      <th>AMOUNT INFO</th>
+                      <th>STATUS</th>
+                      <th>COMMENT</th>
+                    </tr>
+                  </thead>
+                  <tbody>';
+
               if ($result && $result->num_rows > 0) {
-                // Start the table HTML
-                echo '<div class="confirm-container">
-
-                          <div class="table-header">
-                            <div class="title-wrapper">
-                              <h6 class="">Confirmed Transactions</h6>
-                            </div>
-                          </div>
-
-                          <div class="table-wrapper confirm-table-container">
-                            <table class="confirm-table table" id="confirm-table">
-                              <thead>
-                                <tr>
-                                  <th>TRANSACTION NO.</th>
-                                  <th>AGENT NAME</th>
-                                  <th>FLIGHT DATE</th>
-                                  <th>TOTAL PAX.</th>
-                                  <th>BOOKING TYPE</th>
-                                  <th>PACKAGE PRICE</th>
-                                  <th>AMOUNT INFO</th>
-                                  <th>STATUS</th>
-                                  <th>COMMENT</th>
-                                </tr>
-                              </thead>
-                              <tbody>';
-
                 // Loop through each row and render the table rows
                 while ($row = $result->fetch_assoc()) {
                   $packagePrice = $row['PackagePrice'] ?? 0;
@@ -1038,29 +1036,21 @@ error_reporting(E_ALL);
                   }
 
                   echo "<tr data-id='{$row['transactNo']}'>
-                              <td>{$row['transactNo']}</td>
-                              <td>{$row['Account Name']}</td>
-                              <td>{$row['Start']}</td>
-                              <td>{$row['pax']}</td>
-                              <td>{$row['bookingType']}</td>
-                              <td>{$formattedPP}</td>
-                              <td>
-                                  <div class='payment-info'>
-                                      <div class='payment-row'>
-                                          <span class='label'>Amount Paid:</span>
-                                          <span class='value'>{$formattedAP}</span>
-                                      </div>
-                                      <div class='payment-row'>
-                                          <span class='label'>Balance:</span>
-                                          <span class='value'>{$formattedBal} </span>
-                                      </div>
-                                  </div>
-                              </td>
-                              <td>
-                                  <span class='badge $pillClass p-2'>{$status}</span>
-                              </td>";
+              <td>{$row['transactNo']}</td>
+              <td>{$row['Account Name']}</td>
+              <td>{$row['Start']}</td>
+              <td>{$row['pax']}</td>
+              <td>{$row['bookingType']}</td>
+              <td>{$formattedPP}</td>
+              <td>
+                <div class='payment-info'>
+                  <div class='payment-row'><span class='label'>Amount Paid:</span><span class='value'>{$formattedAP}</span></div>
+                  <div class='payment-row'><span class='label'>Balance:</span><span class='value'>{$formattedBal}</span></div>
+                </div>
+              </td>
+              <td><span class='badge $pillClass p-2'>{$status}</span></td>";
 
-                  // Fetching the comment from the database
+                  // Fetch comment
                   $transactNo = $row['transactNo'];
                   $stmt = $conn->prepare('SELECT * FROM bookingcomments WHERE transactNo = ?');
                   $stmt->bind_param('s', $transactNo);
@@ -1069,53 +1059,46 @@ error_reporting(E_ALL);
                   $comment = $resultComment->fetch_assoc();
                   $stmt->close();
 
-                  echo "<td>";
-                  echo '<div class="comment-container" id="commentContainer' . $transactNo . '">';
+                  echo "<td>
+                          <div class='comment-container' id='commentContainer{$transactNo}'>";
+                              if ($comment && !empty($comment['comment'])) {
+                                echo "<div class='comment-exists'>
+                            <div class='comment-input'><input type='text' class='form-control' id='commentInput{$transactNo}' value='" . htmlspecialchars($comment['comment']) . "' disabled></div>
+                            <div class='edit-button'><button type='button' class='btn btn-warning editComment' data-id='{$transactNo}'>Edit</button></div>
+                          </div>";
+                              } else {
+                                echo "<div class='no-comment'>
+                            <div class='comment-input'><input type='text' class='form-control' id='commentInput{$transactNo}' disabled></div>
+                            <div class='add-button'><button type='button' class='btn btn-success addComment' data-id='{$transactNo}'>Add</button></div>
+                          </div>";
+                              }
 
-                  // Check if a comment exists
-                  if ($comment && !empty($comment['comment'])) {
-                    echo '<div class="comment-exists">
-                                  <div class="comment-input">
-                                      <input type="text" class="form-control" name="comment" id="commentInput' . $transactNo . '" value="' . htmlspecialchars($comment['comment']) . '" disabled>
-                                  </div>
-                                  <div class="edit-button">
-                                      <button type="button" class="btn btn-warning editComment" data-id="' . $transactNo . '">Edit</button>
-                                  </div>
-                                </div>';
-                  } else {
-                    echo '<div class="no-comment">
-                                  <div class="comment-input">
-                                      <input type="text" class="form-control" name="comment" id="commentInput' . $transactNo . '"  disabled>
-                                  </div>
-                                  <div class="add-button">
-                                      <button type="button" class="btn btn-success addComment" data-id="' . $transactNo . '">Add</button>
-                                  </div>
-                                </div>';
-                  }
-
-                  echo '<div class="button-container">
-                              <input type="text" class="recordId" value="' . $row['transactNo'] . '" hidden>
-                              <button type="button" class="btn btn-primary submitAddComment" data-id="' . $transactNo . '" style="display: none;">Submit</button>
-                              <button type="button" class="btn btn-primary submitEditComment" data-id="' . $transactNo . '" style="display: none;">Update</button>
-                              <button type="button" class="btn btn-danger deleteComment" data-id="' . $transactNo . '" style="display: none;">Remove</button>
-                              <button type="button" class="btn btn-danger cancelEditComment" data-id="' . $transactNo . '" style="display: none;">Cancel Edit</button>
-                              <button type="button" class="btn btn-danger cancelAddComment" data-id="' . $transactNo . '" style="display: none;">Cancel Add</button>
-                            </div>';
-                  echo '</div>'; // Close the comment-container div
-                  echo "</td>"; // Close the <td> tag
-                  echo "</tr>";
+                              echo "<div class='button-container'>
+                          <input type='text' class='recordId' value='{$transactNo}' hidden>
+                          <button type='button' class='btn btn-primary submitAddComment' data-id='{$transactNo}' style='display:none;'>Submit</button>
+                          <button type='button' class='btn btn-primary submitEditComment' data-id='{$transactNo}' style='display:none;'>Update</button>
+                          <button type='button' class='btn btn-danger deleteComment' data-id='{$transactNo}' style='display:none;'>Remove</button>
+                          <button type='button' class='btn btn-danger cancelEditComment' data-id='{$transactNo}' style='display:none;'>Cancel Edit</button>
+                          <button type='button' class='btn btn-danger cancelAddComment' data-id='{$transactNo}' style='display:none;'>Cancel Add</button>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>";
+                  
                 }
 
-                echo '</tbody></table></div></div>'; // End of table and div containers
               } else {
-                // No records found
-                echo "<tr><td colspan='7'>No confirmed bookings found.</td></tr>";
+                // Output the empty row message if no data
+                echo '<tr><td colspan="9" class="text-center">NO CONFIRMED BOOKING AS OF THE MOMENT</td></tr>';
               }
 
-              if ($result) {
+              echo '</tbody></table></div></div>'; // Close table and containers
+            
+              if ($result)
                 $result->free();
-              }
             }
+            
+
 
             // Call the function to render the table
             renderConfirmedTransactionsTable($conn);
@@ -1149,6 +1132,7 @@ error_reporting(E_ALL);
   </div>
 
   <?php include '../Employee Section/includes/emp-scripts.php' ?>
+
 
   <!-- for Card Counts Clickable -->
   <!-- <script>
