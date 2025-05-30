@@ -63,7 +63,8 @@
   overflow-y: hidden;
   border: 1px solid gainsboro;
   border-bottom: none;
-  border-top: none; /* Connect smoothly with active tab */
+  border-left: none;
+  border-right: none;
   background-color: #fff;
 }
 
@@ -119,7 +120,7 @@
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  padding: 0px 10px;
+  padding: 0px 0px;
   gap: 5px;
   box-sizing: border-box;
 
@@ -180,14 +181,13 @@
 
 /* Table wrapper takes available vertical space */
 .table-wrapper {
-  height: 67.5vh;
+  height: 63vh;
   display: flex;
   flex-direction: column;
   background-color: transparent;
   overflow: hidden;
   box-sizing: border-box;
   border: 1px solid gainsboro;
-  border-bottom: none;
 }
 
 /* Scrollable content inside table-wrapper */
@@ -212,12 +212,9 @@
   justify-content: space-between;
   align-items: center;
   gap: 10px;
-  padding: 10px 10px;
+  padding: 10px 5px 10px 0px;
   height: 6vh;
   margin-top: 10px;
-  border: 1px solid gainsboro;
-  
-  border-radius: 15px;
 }
 
 .search-wrapper {
@@ -569,28 +566,7 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* ========== PRODUCT TABLE ========== */
-
 /* Table Styles for Product Table */
 .product-table {
   width: 100%;

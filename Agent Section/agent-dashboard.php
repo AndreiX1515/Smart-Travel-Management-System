@@ -12,7 +12,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard</title>
+  <title>Agent - Dashboard</title>
 
   <?php include "../Agent Section/includes/head.php"; ?>
 
@@ -303,8 +303,8 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
               <div class="row">
                 <!-- 5 Days Due Count -->
                 <div class="col-md-5 clickable-card" onclick="redirectToTransactionOnDue('5days')">
-                  <div class="card-icon icon-red">
-                    <p>5</p>
+                  <div class="card-icon icon-blue">
+                    <i class="fas fa-calendar-check"></i>
                   </div>
 
                   <div class="side-content d-flex flex-column">
@@ -350,9 +350,11 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
 
                 <!-- 15 Days Due Count -->
                 <div class="col-md-5 clickable-card" onclick="redirectToTransactionOnDue('10days')">
-                  <div class="card-icon bg-secondary">
-                    <p>15</p>
+
+                  <div class="card-icon icon-blue">
+                    <i class="fas fa-calendar-check"></i>
                   </div>
+
                   <div class="side-content d-flex flex-column">
                     <?php
                     // Determine which query to run based on the agent's role
@@ -398,7 +400,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                 <div class="col-md-5 clickable-card" onclick="redirectToTransactionOnDue('20days')">
 
                   <div class="card-icon icon-blue">
-                    <p>30</p>
+                    <i class="fas fa-calendar-check"></i>
                   </div>
 
                   <div class="side-content d-flex flex-column">
@@ -447,7 +449,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                 <div class="col-md-5 clickable-card" onclick="redirectToTransactionOnDue('30daysplus')">
 
                   <div class="card-icon icon-blue">
-                    <i class="fas fa-chevron-right"></i>
+                    <i class="fas fa-calendar-check"></i>
                   </div>
 
 
@@ -789,11 +791,12 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
             <div class="one">
 
               <div class="confirm-table-container-flight">
-                <table id="info-table" class=" table info-table">
+                <table id="info-table" class="table info-table">
+
                   <thead>
                     <tr>
                       <th rowspan="2">ORIGIN</th>
-                      <th colspan="2" class="text-center">FLIGHT DATE</th> <!-- Flight Date columns -->
+                      <th colspan="2" class="text-center">FLIGHT DATE</th>
                       <th rowspan="2">AVAILABLE SEATS</th>
                       <th rowspan="2">ADDITIONAL SEATS</th>
                       <th rowspan="2">PRICE</th>
@@ -804,7 +807,6 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                       <th>START</th>
                       <th>END</th>
                     </tr>
-
                   </thead>
 
                   <tbody>
@@ -866,7 +868,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                         echo '<td class="fw-bolder">' . $row['AdditionalSeats'] . '</td>';
                         echo '<td>₱ ' . number_format($row['RetailPrice'], 2) . '</td>';
                         echo '<td>
-                              <a href="../Agent Section/agent-revisedAddBooking-flight.php?flightid=' . urlencode($row['flightId']) . '" class="btn btn-outline-primary">Book Now</a></td>';
+                              <a href="../Agent Section/agent-revisedAddBooking-flight.php?flightid=' . urlencode($row['flightId']) . '" class="btn btn-outline-primary btn-sm">Book Now</a></td>';
                         echo '</tr>';
                       }
                     } else {
@@ -877,13 +879,13 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                 </table>
               </div>
 
-              <div class="flight-seat-footer">
+              <!-- <div class="flight-seat-footer">
                 <div class="pagination-controls">
                   <button id="prevPage" class="pagination-btn">Previous</button>
-                  <div id="pageNumbers" class="page-numbers"></div> <!-- Optional, can be removed -->
+                  <div id="pageNumbers" class="page-numbers"></div>
                   <button id="nextPage" class="pagination-btn">Next</button>
                 </div>
-              </div>
+              </div> -->
 
             </div>
 
@@ -1407,6 +1409,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                     </table>
                   </div>
                 </div>
+                
               </div>
 
               <!-- Confirmed Table -->
@@ -1520,10 +1523,10 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                             echo "<td>₱ " . number_format($totalAmountPaid, 2) . "</td>"; // Total Amount Paid
                             echo "<td>₱ " . number_format($balance, 2) . "</td>"; // Balance (Amount to be paid - Amount paid)
                             echo "<td>
-                                                    <span class='badge <?php echo $statusClass; ?> p-2'>
-                                                        {$bookingStatus}
-                                                    </span>
-                                                </td>";
+                                      <span class='badge <?php echo $statusClass; ?> p-2'>
+                                          {$bookingStatus}
+                                      </span>
+                                    </td>";
                             echo "</tr>";
                           }
                         } else {
@@ -1674,6 +1677,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
     });
   </script>
 
+  <!-- Card Clickable Redirect Script -->
   <script>
     function redirectToAgentTransaction(status) {
       console.log("Redirecting with status:", status);
@@ -1682,111 +1686,79 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
   </script>
 
   <script>
-    $(document).ready(function () {
-      const table = $('#info-table').DataTable({
-        dom: 'rtip',
-        language: {
-          emptyTable: "No Transaction Records Available"
-        },
-        order: [[0, 'desc']],
-        paging: true,
-        pageLength: 9,
-        scrollCollapse: true,
-        autoWidth: false,
-        columnDefs: [{
-          targets: "_all",
-          className: "text-center"
-        }]
-      });
-
-      // ✅ Simple Prev/Next pagination only
-      function updatePaginationControls() {
-        const info = table.page.info();
-        const currentPage = info.page + 1;
-        const totalPages = info.pages;
-
-        // Disable/enable based on current page
-        $('#prevPage').prop('disabled', currentPage === 1);
-        $('#nextPage').prop('disabled', currentPage === totalPages);
-      }
-
-      // ✅ When DataTable is redrawn
-      table.on('draw', function () {
-        updatePaginationControls();
-      });
-
-      // ✅ Navigation event handlers
-      $('#prevPage').on('click', function () {
-        table.page('previous').draw('page');
-      });
-
-      $('#nextPage').on('click', function () {
-        table.page('next').draw('page');
-      });
-
-
-
-      // ===================================================================== //
-
-      $('#search').on('keyup', function () {
-        table.search(this.value).draw();
-      });
-
-      // 🔹 Package Filter
-      $('#packages').on('change', function () {
-        const selectedPackage = $(this).val();
-        table.column(3).search(selectedPackage || '').draw();
-      });
-
-      $("#FlightStartDate").datepicker({
-        dateFormat: "yy-mm-dd",
-        showAnim: "fadeIn",
-        changeMonth: true,
-        changeYear: true,
-        yearRange: "1900:2100",
-        appendTo: "body", // Moves the datepicker outside any restrictive containers
-        beforeShow: function (input, inst) {
-          setTimeout(function () {
-            inst.dpDiv.css({
-              top: $(input).offset().top + $(input).outerHeight(),
-              left: $(input).offset().left
-            });
-          }, 0);
-        },
-        onSelect: function (dateText) {
-          console.log("FlightStartDate Selected:", dateText);
-          table.column(1).search(dateText || '').draw();
-        }
-      });
-
-
-      // 🔹 Flight Date Change Event
-      $('#FlightStartDate').on('change', function () {
-        const selectedFlightDate = $(this).val();
-        console.log("Flight Date Filter:", selectedFlightDate);
-        table.column(1).search(selectedFlightDate || '').draw();
-      });
-
-      // 🔹 Clear All Filters
-      // Clear Sorting & Reset Price Filter
-      $('#clearSorting').on('click', function () {
-        $('#search').val('');
-        table.search('').draw();
-
-        $('#packages').val('All').change();
-
-        $('#FlightStartDate').datepicker("setDate", null);
-        table.column(1).search('').draw();
-
-        // Reset Price Filter
-        $("#priceRange").slider("values", [0, 10000]);
-        $("#min_price").val(0);
-        $("#max_price").val(10000);
-        table.draw();
-      });
+  $(document).ready(function () {
+    const table = $('#info-table').DataTable({
+      dom: 'rtip',
+      paging: false, // Disable pagination
+      language: {
+        emptyTable: "No Transaction Records Available"
+      },
+      order: [[0, 'desc']],
+      autoWidth: false,
+      columnDefs: [{
+        targets: "_all",
+        className: "text-center"
+      }]
     });
+
+    // 🔍 Text Search
+    $('#search').on('keyup', function () {
+      table.search(this.value).draw();
+    });
+
+    // 🔹 Package Filter
+    $('#packages').on('change', function () {
+      const selectedPackage = $(this).val();
+      table.column(3).search(selectedPackage || '').draw();
+    });
+
+    // 📅 Date Picker for FlightStartDate
+    $("#FlightStartDate").datepicker({
+      dateFormat: "yy-mm-dd",
+      showAnim: "fadeIn",
+      changeMonth: true,
+      changeYear: true,
+      yearRange: "1900:2100",
+      appendTo: "body",
+      beforeShow: function (input, inst) {
+        setTimeout(function () {
+          inst.dpDiv.css({
+            top: $(input).offset().top + $(input).outerHeight(),
+            left: $(input).offset().left
+          });
+        }, 0);
+      },
+      onSelect: function (dateText) {
+        console.log("FlightStartDate Selected:", dateText);
+        table.column(1).search(dateText || '').draw();
+      }
+    });
+
+    // 🔹 Flight Date Filter on Change
+    $('#FlightStartDate').on('change', function () {
+      const selectedFlightDate = $(this).val();
+      console.log("Flight Date Filter:", selectedFlightDate);
+      table.column(1).search(selectedFlightDate || '').draw();
+    });
+
+    // 🔄 Clear All Filters
+    $('#clearSorting').on('click', function () {
+      $('#search').val('');
+      table.search('').draw();
+
+      $('#packages').val('All').change();
+
+      $('#FlightStartDate').datepicker("setDate", null);
+      table.column(1).search('').draw();
+
+      $("#priceRange").slider("values", [0, 10000]);
+      $("#min_price").val(0);
+      $("#max_price").val(10000);
+      table.draw();
+    });
+  });
   </script>
 
-</body>
 
+  </body>
 </html>

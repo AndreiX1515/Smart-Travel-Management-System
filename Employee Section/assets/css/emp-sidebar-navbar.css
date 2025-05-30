@@ -39,12 +39,15 @@ body {
 /* Main Content */
 .main-content {
   margin-top: 6vh;
+  height: 93vh;
   width: 100%;
-  padding: 0 10px 0 0;
+  padding: 0px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
   gap: 0px; /* Add spacing between internal sections */
+
+  /* border: 1px solid black; */
 }
 
 
@@ -59,8 +62,7 @@ body {
   top: 0;
   background-color: #ffffff;
   z-index: 1000;
-  /* border-bottom: 1px solid gainsboro; */
-  /* border: 1px solid black; */
+
   box-sizing: border-box;
   /* border: 1px solid black; */
 }

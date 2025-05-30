@@ -5,6 +5,7 @@ $statusTab = isset($_GET['status']) ? $_GET['status'] : 'all';
 <div class="table-container">
 
   <div class="table-header">
+
     <div class="search-wrapper">
       <div class="search-input-wrapper">
         <input type="text" id="search" placeholder="Search here..">
@@ -37,6 +38,7 @@ $statusTab = isset($_GET['status']) ? $_GET['status'] : 'all';
         </button>
       </div>
     </div>
+    
   </div>
 
   <div class="navpills-container">
@@ -114,6 +116,7 @@ $statusTab = isset($_GET['status']) ? $_GET['status'] : 'all';
       </button>
 
     </div>
+
   </div>
 
   <div class="body-content-wrapper">
@@ -323,7 +326,7 @@ $statusTab = isset($_GET['status']) ? $_GET['status'] : 'all';
         order: [[2, 'asc']],
         scrollX: false,
         paging: true,
-        pageLength: 14,
+        pageLength: 13,
         autoWidth: false,
         autoHeight: false,
         columnDefs: [{

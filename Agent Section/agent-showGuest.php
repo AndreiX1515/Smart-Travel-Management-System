@@ -16,7 +16,7 @@ error_reporting(E_ALL);
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard</title>
+  <title>Transaction Information</title>
 
   <?php include "../Agent Section/includes/head.php"; ?>
 
@@ -26,7 +26,6 @@ error_reporting(E_ALL);
 
 <body>
 
-  <div class="body-container">
     <?php include "../Agent Section/includes/sidebar.php"; ?>
 
     <?php
@@ -49,7 +48,7 @@ error_reporting(E_ALL);
     $maskedPassword = '••••••••••';
     ?>
 
-    <div class="main-content-container">
+    <div class="main-container">
 
       <div class="navbar">
         <div class="page-header-wrapper">
@@ -331,7 +330,7 @@ error_reporting(E_ALL);
       </div>
       
   </div>
-</div>
+
 
 <!-- Modal Structure -->
 <div class="modal fade" id="cancelTransactionModal" tabindex="-1" aria-labelledby="cancelTransactionModalLabel" aria-hidden="true">

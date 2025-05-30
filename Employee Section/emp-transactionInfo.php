@@ -22,11 +22,16 @@ session_start();
   <!-- Main Container -->
   <div class="main-container">
 
-    <nav class="navbar navbar-expand-lg navbar-custom mt-2">
-      <div class="back-button-wrapper">
-        <button class="back-button" onclick="window.location.href='../Employee Section/emp-transaction.php';">
-          <i class="fas fa-arrow-left"></i>
-        </button>
+    <div class="navbar">
+      <div class="page-header-wrapper">
+
+        <div class="page-header-top">
+          <div class="back-btn-wrapper">
+            <button class="back-btn" id="redirect-btn">
+              <i class="fas fa-chevron-left"></i>
+            </button>
+          </div>
+        </div>
 
         <?php
         if (isset($_GET['id'])) {
@@ -35,13 +40,20 @@ session_start();
         }
         ?>
 
-        <div class="title">
-          <h1>TRANSACTION ID: <?php echo $transactionId; ?></h1>
+        <div class="page-header-content">
+          <div class="page-header-text">
+            <h5 class="header-title">Transaction ID: <span class="fw-normal"><?php echo $transactionId; ?></span></h5>
+          </div>
         </div>
 
-        <!-- Navbar items and functionality can be added here -->
       </div>
-    </nav>
+    </div>
+
+    <script>
+      document.getElementById('redirect-btn').addEventListener('click', function () {
+        window.location.href = '../Employee Section/emp-transaction.php'; // Replace with your actual URL
+      });
+    </script>
 
     <div class="main-content">
       <div class="content-container">
@@ -280,7 +292,6 @@ session_start();
       </div>
     </div>
   </div>
-
 
   <?php include '../Employee Section/includes/emp-scripts.php' ?>
 

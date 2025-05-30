@@ -16,7 +16,7 @@ error_reporting(E_ALL);
 <html lang="en">
 
 <head>
-  <title>Dashboard</title>
+  <title>Employee - Dashboard</title>
   <?php include '../Employee Section/includes/emp-head.php' ?>
   <link rel="stylesheet" href="../Employee Section/assets/css/emp-dashboard.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="../Employee Section/assets/css/emp-sidebar-navbar.css?v=<?php echo time(); ?>">
@@ -724,7 +724,6 @@ error_reporting(E_ALL);
               </table>
             </div>
 
-
             <!-- <div class="info-footer">
               <div class="item-number-select">
                 <label for="rowsPerPage">Rows per page:</label>
@@ -987,7 +986,7 @@ error_reporting(E_ALL);
 
                           <div class="table-header">
                             <div class="title-wrapper">
-                              <h6 class="">Confirmed</h6>
+                              <h6 class="">Confirmed Transactions</h6>
                             </div>
                           </div>
 
@@ -1126,11 +1125,8 @@ error_reporting(E_ALL);
 
         </div>
 
-
       </div>
-
     </div>
-
   </div>
 
   <!-- Comment Delete Modal -->

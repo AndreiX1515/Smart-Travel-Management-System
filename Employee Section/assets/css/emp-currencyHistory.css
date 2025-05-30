@@ -1,17 +1,9 @@
-.main-container {
-  padding: 0px 10px;
-}
-
-.main-content {
-  padding: 5px 0px 15px 0px;
-  box-sizing: border-box;
-}
-
 .currency-history-wrapper {
-  height: 100vh;
+  height: auto;
   display: flex;
   gap: 5px;
   flex-direction: column;
+  /* border: 1px solid black; */
 }
 
 .currency-history-header {
@@ -54,7 +46,7 @@
   }
   
   .currency-history-table-wrapper .currency-history-table-body {
-    flex: 1;
+    height: 59vh;
     overflow-y: auto;
     background-color: #ffffff;
     border: 1px solid #e0e0e0;
