@@ -208,7 +208,7 @@ $statusTab = isset($_GET['status']) ? $_GET['status'] : 'all';
               // Output each row as a table row
               echo "<tr data-url='$transactionUrl'>";
               echo "<td>$transactNo</td>";
-              echo "<td>" . htmlspecialchars($row['ACCOUNT NAME'] ?? '') . "</td>";
+              echo "<td>" . htmlspecialchars($row['branchName'] ?? '') . "</td>";
               echo "<td>$departureDate</td>";
               echo "<td class='fw-bold ps-3'>$totalPax</td>";
               echo "<td>₱ " . number_format($packagePrice, 2) . "</td>";
