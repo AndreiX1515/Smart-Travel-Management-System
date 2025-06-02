@@ -27,6 +27,7 @@
                 <th style="width: 10%;">Return Date</th>
                 <th style="width: 8%;">Wholesale Price</th>
                 <th style="width: 8%;">Flight Price</th>
+                <th style="width: 8%;">Land Price</th>
                 <th style="width: 8%;">Available Seats</th>
                 <th>Actions</th>
               </tr>
@@ -157,6 +158,7 @@
                 <td><input type="date" name="returnDate[]" class="form-control return-date" required readonly></td>
                 <td><input type="number" name="wholesalePrice[]" step="0.01" class="form-control" min="1" required></td>
                 <td><input type="number" name="flightPrice[]" step="0.01" class="form-control" min="1" required></td>
+                <td><input type="number" name="landPrice[]" step="0.01" class="form-control" min="1" required></td>
                 <td><input type="number" name="availSeats[]" class="form-control" min="1" required></td>
                 <td>
                   <button type="button" class="btn btn-success btn-sm addRow">+</button>

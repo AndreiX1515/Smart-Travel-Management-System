@@ -77,6 +77,7 @@
               <tr>
                 <th>TRANSACT NO.</th>
                 <th>BRANCH</th>
+                <th>FLIGHT DATE</th>
                 <th>REQUEST TITLE</th>
                 <th>REQUEST DETAILS</th>
                 <th>SPECIFIC DETAILS</th>
@@ -93,7 +94,7 @@
                         c.concernTitle AS `RequestTitle`, cd.details AS `RequestDetails`, b.pax AS `TotalPax`,
                         r.requestCost as requestCost,
                         r.customRequest as customRequest, r.details as details, DATE_FORMAT(r.requestDate, '%m-%d-%Y') AS `RequestDate`, 
-                        r.requestStatus AS `Status`, br.branchName as branchName,
+                        r.requestStatus AS `Status`, br.branchName as branchName, f.flightDepartureDate AS `FlightDate`,
                         CASE 
                           WHEN a.accountId IS NOT NULL 
                             THEN CASE WHEN a.companyId IS NOT NULL THEN co.companyName ELSE br.branchName END
@@ -104,6 +105,7 @@
                       LEFT JOIN concern c ON r.concernId = c.concernId
                       LEFT JOIN concerndetails cd ON r.concernDetailsId = cd.concernDetailsId
                       LEFT JOIN booking b ON r.transactNo = b.transactNo
+                      JOIN flight f ON b.flightId = f.flightId
                       JOIN branch br ON b.agentCode = br.branchAgentCode
                       LEFT JOIN payment p ON b.transactNo = p.transactNo
                       LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
@@ -138,16 +140,19 @@
                   // Ensure that title and details are displayed properly
                   $title = $row['RequestTitle'] ?? 'Custom Request';
                   $details = $row['RequestDetails'] ?? $row['customRequest'];
+                  $flightDate = $row['FlightDate'] ?? 'N/A';
+                  $formattedFlightDate = date('Y.m.d', strtotime($flightDate));
 
                   // Output table row with data-transactno attribute
                   echo "<tr class='request-row' data-requestId='{$row['requestId']}'>
                           <td>{$row['TransactNo']}</td>
-                          <td>{$row['ACCOUNT NAME']}</td>
+                          <td>{$row['branchName']}</td>
+                          <td>{$formattedFlightDate}</td>
                           <td>{$title}</td>
                           <td>{$details}</td>
                           <td>{$row['details']}</td>
                           <td>{$row['TotalPax']}</td>
-                          <td>{$row['requestCost']}</td>
+                          <td>₱ {$row['requestCost']}</td>
                           <td>{$row['RequestDate']}</td>
                         </tr>";
                 }
@@ -265,35 +270,37 @@
 
   </script>
 
-
-
-
-
   <!-- DataTables #product-table -->
   <script>
     $(document).ready(function() {
       const table = $('#product-table').DataTable({
-        dom: 'rtip', // Use only the relevant table elements
-        language: {
-          emptyTable: "No Transaction Records Available"
-        },
-        order: [
-          [0, 'desc']
-        ], // Default sorting by Transaction ID (descending)
-        scrollX: false,
-        scrollY: '76.5vh', // Set a fixed height for the table (adjust as necessary)
-        paging: true, // Enable pagination
-        pageLength: 15, // Set the number of rows per page
-        autoWidth: false,
-        autoHeight: false, // Prevent automatic height adjustment
+  dom: 'rtip',
+  language: {
+    emptyTable: "No Transaction Records Available"
+  },
+  order: [[8, 'desc']], // Sort by Request Date
+  scrollX: false,
+  scrollY: '76.5vh',
+  paging: true,
+  pageLength: 15,
+  autoWidth: false,
+  autoHeight: false,
+  columnDefs: [
+    // Set fixed widths for each column
+    { targets: 0, width: '130px' }, // TRANSACT NO.
+    { targets: 1, width: '120px' }, // BRANCH
+    { targets: 2, width: '110px' }, // FLIGHT DATE
+    { targets: 3, width: '160px' }, // REQUEST TITLE
+    { targets: 4, width: '200px' }, // REQUEST DETAILS
+    { targets: 5, width: '200px' }, // SPECIFIC DETAILS
+    { targets: 6, width: '90px' },  // TOTAL PAX
+    { targets: 7, width: '120px' }, // TOTAL AMOUNT
+    { targets: 8, width: '110px' }, // REQUEST DATE
 
-        // Disable sorting for specific columns
-        columnDefs: [{
-          targets: [1, 2, 3, 5, 6, ], // Disable sorting for 2nd and 4th columns
-          orderable: false
-        }]
-      });
-
+    // Disable sorting on some columns if needed
+    { targets: [0, 1, 3, 4, 5], orderable: false }
+  ]
+});
 
       // Search Functionality
       $('#search').on('keyup', function() {
@@ -328,30 +335,17 @@
       // Initialize pagination on first load
       updatePagination();
 
-      // Status Filter
-      $('#status').on('change', function() {
-        const selectedStatus = $(this).val();
-        table.column(8).search(selectedStatus || '').draw();
-      });
-
       // Package Filter
-      $('#packages').on('change', function() {
-        const selectedPackage = $(this).val();
-        table.column(2).search(selectedPackage || '').draw();
-      });
-
-      // Booking Date Filter with value change
-      $('#BookingStartDate').on('change', function() {
-        const selectedBookingDate = $(this).val(); // Get the selected value directly from the input field
-        console.log("Booking Date Filter:", selectedBookingDate); // Log the selected booking date
-        table.column(3).search(selectedBookingDate || '').draw(); // Column 4 (index starts at 0)
+      $('#packages').on('change', function () {
+        const branch = this.value === 'All' ? '' : this.value;
+        table.column(1).search(branch).draw(); // index 3 = Branch column
       });
 
       // Flight Date Filter with value change
       $('#FlightStartDate').on('change', function() {
         const selectedFlightDate = $(this).val(); // Get the selected value directly from the input field
         console.log("Flight Date Filter:", selectedFlightDate); // Log the selected flight date
-        table.column(3).search(selectedFlightDate || '').draw(); // Column 5 (index starts at 0)
+        table.column(2).search(selectedFlightDate || '').draw(); // Column 5 (index starts at 0)
       });
 
       // Apply datepicker and input validation for FlightStartDate
@@ -366,61 +360,8 @@
           $(this).val(dateText);
           flightStartDate = dateText; // Store the selected date
           console.log("FlightStartDate Selected Date (onSelect): " + dateText);
-          table.column(3).search(flightStartDate || '').draw(); // Column 5 (index starts at 0)
+          table.column(2).search(flightStartDate || '').draw(); // Column 5 (index starts at 0)
         }
-      });
-
-
-      // Apply datepicker and input validation for BookingStartDate
-      $("#BookingStartDate").datepicker({
-        dateFormat: "mm-dd-yy", // Set the format to MM-DD-YYYY
-        showAnim: "fadeIn", // Optional: Adds a fade-in effect when the date picker is opened
-        changeMonth: true, // Allow the month to be changed from the dropdown
-        changeYear: true, // Allow the year to be changed from the dropdown
-        yearRange: "1900:2100", // Set a range of years (optional)
-        onSelect: function(dateText) {
-          // When a date is selected, update the input field with the date
-          $(this).val(dateText);
-          bookingStartDate = dateText; // Store the selected date
-          console.log("FlightStartDate Selected Date (onSelect): " + dateText);
-          table.column(4).search(bookingStartDate || '').draw(); // Column 5 (index starts at 0)
-        }
-      });
-
-      // BookingStartDate Input Validation and Formatting
-      $("#BookingStartDate").on("input", function() {
-        var value = $(this).val();
-
-        // Remove non-numeric and non-dash characters
-        value = value.replace(/[^\d-]/g, '');
-
-        // Automatically add dashes in the correct places if necessary
-        if (value.length > 2 && value.charAt(2) !== '-') {
-          value = value.substring(0, 2) + '-' + value.substring(2);
-        }
-        if (value.length > 5 && value.charAt(5) !== '-') {
-          value = value.substring(0, 5) + '-' + value.substring(5);
-        }
-
-        // Limit the total input length to 10 characters (MM-DD-YYYY)
-        if (value.length > 10) {
-          value = value.substring(0, 10);
-        }
-
-        // Update the input field value
-        $(this).val(value);
-
-        // Reset or update the bookingStartDate variable
-        if (value === "") {
-          bookingStartDate = ""; // Reset the variable if the input is cleared
-        } else {
-          bookingStartDate = value; // Update the variable with the formatted value
-        }
-
-        // Update the table column search
-        table.column(5).search(bookingStartDate || '').draw(); // Column 5 (index starts at 0)
-
-        console.log("BookingStartDate Input Value (on input): " + value);
       });
 
       // Clear All Filters
@@ -437,68 +378,61 @@
 
         // Explicitly reset the variables
         flightStartDate = '';
-        bookingStartDate = '';
 
-        // Clear date fields
-        $('#BookingStartDate').val('').trigger('change'); // Reset and trigger input for BookingStartDate
         $('#FlightStartDate').val('').trigger('change'); // Reset and trigger input for FlightStartDate
-
-
 
         // Redraw the table
         table.draw();
       });
 
-
     });
   </script>
 
-
   <?php
-  // Fetch the status from the session
-  $statusMessage = isset($_SESSION['status']) ? $_SESSION['status'] : '';
+    // Fetch the status from the session
+    $statusMessage = isset($_SESSION['status']) ? $_SESSION['status'] : '';
 
-  // Set default toast color, and check if status is "Submitted", "Confirmed", or "Rejected"
-  $toastColor = 'text-bg-primary'; // Default color
+    // Set default toast color, and check if status is "Submitted", "Confirmed", or "Rejected"
+    $toastColor = 'text-bg-primary'; // Default color
 
-  // Check for specific status messages and set the appropriate toast color
-  if (isset($_SESSION['status'])) {
-    if (strpos($_SESSION['status'], 'Cancelled') !== false) {
-      // Change to red for "Cancelled" status
-      $toastColor = 'text-bg-danger';
-    } elseif (strpos($_SESSION['status'], 'Submitted') !== false) {
-      // Blue color for "Submitted" status
-      $toastColor = 'text-bg-secondary';
-    } elseif (strpos($_SESSION['status'], 'Confirmed') !== false) {
-      // Green color for "Confirmed" status
-      $toastColor = 'text-bg-success';
-    } elseif (strpos($_SESSION['status'], 'Rejected') !== false) {
-      // Red color for "Rejected" status
-      $toastColor = 'text-bg-danger';
+    // Check for specific status messages and set the appropriate toast color
+    if (isset($_SESSION['status'])) {
+      if (strpos($_SESSION['status'], 'Cancelled') !== false) {
+        // Change to red for "Cancelled" status
+        $toastColor = 'text-bg-danger';
+      } elseif (strpos($_SESSION['status'], 'Submitted') !== false) {
+        // Blue color for "Submitted" status
+        $toastColor = 'text-bg-secondary';
+      } elseif (strpos($_SESSION['status'], 'Confirmed') !== false) {
+        // Green color for "Confirmed" status
+        $toastColor = 'text-bg-success';
+      } elseif (strpos($_SESSION['status'], 'Rejected') !== false) {
+        // Red color for "Rejected" status
+        $toastColor = 'text-bg-danger';
+      }
+    } elseif (isset($_SESSION['toastColor'])) {
+      // Use session-defined toast color if available
+      $toastColor = $_SESSION['toastColor'];
     }
-  } elseif (isset($_SESSION['toastColor'])) {
-    // Use session-defined toast color if available
-    $toastColor = $_SESSION['toastColor'];
-  }
 
 
-  if (!empty($statusMessage)) {
-    // You can use this status message in a toast or somewhere else
-    echo '<div class="toast-container position-fixed top-0 end-0 p-3">
-            <div id="statusToast" class="toast align-items-center ' . $toastColor . ' border-0" role="alert" aria-live="assertive" aria-atomic="true">
-                <div class="d-flex">
-                    <div class="toast-body">
-                        ' . htmlspecialchars($statusMessage) . '
-                    </div>
-                    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-                </div>
-            </div>
-          </div>';
+    if (!empty($statusMessage)) {
+      // You can use this status message in a toast or somewhere else
+      echo '<div class="toast-container position-fixed top-0 end-0 p-3">
+              <div id="statusToast" class="toast align-items-center ' . $toastColor . ' border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                  <div class="d-flex">
+                      <div class="toast-body">
+                          ' . htmlspecialchars($statusMessage) . '
+                      </div>
+                      <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                  </div>
+              </div>
+            </div>';
 
-    // After displaying the status message, unset session variables
-    unset($_SESSION['status']);
-    unset($_SESSION['toastColor']);
-  }
+      // After displaying the status message, unset session variables
+      unset($_SESSION['status']);
+      unset($_SESSION['toastColor']);
+    }
   ?>
 
   <script>
@@ -536,9 +470,6 @@
       });
     });
   </script>
-
-
-
 
 </body>
 

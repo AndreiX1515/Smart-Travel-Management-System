@@ -135,7 +135,7 @@
                     $filePath = $row['filePath'] ?? ''; // Ensure it's not NULL
                     $transactNo = $row['transactNo'] ?? '';
                     $requirementId = $row['requirementId'] ?? '';
-                    $departureDate = $row['flightDepartureDate'] ?? '';
+                    $formmattedDepartureDate = date('Y.m.d', strtotime($row['flightDepartureDate']));;
 
                     // Initialize guest data if not set
                     if (!isset($filesByGuest[$guestId])) 
@@ -143,7 +143,7 @@
                       $filesByGuest[$guestId] = [
                         'guestName' => $row['guestName'],
                         'transactNo' => $transactNo, // Store per guest
-                        'departureDate' => $departureDate,
+                        'departureDate' => $formmattedDepartureDate,
                         'files' => []
                       ];
                     }
@@ -267,9 +267,6 @@
         columnDefs: [{
           targets: [1, 2, 3, 5, 6, ], // Disable sorting for 2nd and 4th columns
           orderable: false
-        },
-        {
-         targets: [0, 1], visible: false 
         }]
       });
 
