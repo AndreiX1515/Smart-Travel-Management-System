@@ -161,7 +161,7 @@ $onDue = isset($_GET['onDue']) ? $_GET['onDue'] : 'all';
             <th>TOTAL REQUEST COST</th>
             <th>AMOUNT PAID</th>
             <th>BALANCE</th>
-            <th>STATUS</th>
+            <!-- <th>STATUS</th> -->
           </tr>
         </thead>
         <tbody>

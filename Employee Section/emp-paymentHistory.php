@@ -10,7 +10,8 @@ session_start();
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Employee - Transactions</title>
 	<?php include '../Employee Section/includes/emp-head.php' ?>
-	<link rel="stylesheet" href="../Employee Section/assets/css/emp-transactionRequestPayment.css?v=<?php echo time(); ?>">
+	<link rel="stylesheet"
+		href="../Employee Section/assets/css/emp-transactionRequestPayment.css?v=<?php echo time(); ?>">
 	<link rel="stylesheet" href="../Employee Section/assets/css/emp-sidebar-navbar.css?v=<?php echo time(); ?>">
 </head>
 
@@ -24,22 +25,28 @@ session_start();
 		<div class="navbar">
 			<div class="page-header-wrapper">
 
-				<!-- <div class="page-header-top">
+				<div class="page-header-top">
 					<div class="back-btn-wrapper">
 						<button class="back-btn" id="redirect-btn">
-						<i class="fas fa-chevron-left"></i>
+							<i class="fas fa-chevron-left"></i>
 						</button>
 					</div>
-				</div> -->
+				</div>
 
 				<div class="page-header-content">
 					<div class="page-header-text">
-						<h5 class="header-title">Request</h5>
+						<h5 class="header-title">Payment</h5>
 					</div>
 				</div>
 
 			</div>
 		</div>
+
+		<script>
+			document.getElementById('redirect-btn').addEventListener('click', function () {
+				window.location.href = '../Employee Section/emp-dashboard.php'; // Replace with your actual URL
+			});
+		</script>
 
 		<div class="main-content">
 			<div class="table-container">
@@ -274,5 +281,6 @@ session_start();
 	</script>
 
 
-	</body>
+</body>
+
 </html>

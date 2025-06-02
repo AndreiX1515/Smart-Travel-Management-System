@@ -320,8 +320,6 @@
             scrollX: false,
             paging: true,
             pageLength: 14,
-            autoWidth: false,
-            autoHeight: false,
             columnDefs: [{
                 targets: [1, 3, 4, 5, 6, 7, 8],
                 orderable: false

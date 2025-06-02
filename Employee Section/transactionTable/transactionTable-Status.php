@@ -120,8 +120,9 @@ $statusTab = isset($_GET['status']) ? $_GET['status'] : 'all';
   </div>
 
   <div class="body-content-wrapper">
+
     <div class="table-wrapper">
-      <table id="product-table" class="product-table display nowrap" style="width:100%">
+      <table id="product-table" class="product-table">
         <thead>
           <tr>
             <th>TRANSACT NO</th>
@@ -135,6 +136,7 @@ $statusTab = isset($_GET['status']) ? $_GET['status'] : 'all';
             <th>STATUS</th>
           </tr>
         </thead>
+
         <tbody>
           <?php
           // Ensure $conn is properly initialized
@@ -223,6 +225,7 @@ $statusTab = isset($_GET['status']) ? $_GET['status'] : 'all';
           }
           ?>
         </tbody>
+        
       </table>
     </div>
 
@@ -326,7 +329,7 @@ $statusTab = isset($_GET['status']) ? $_GET['status'] : 'all';
         order: [[2, 'asc']],
         scrollX: false,
         paging: true,
-        pageLength: 13,
+        pageLength: 14,
         autoWidth: false,
         autoHeight: false,
         columnDefs: [{
