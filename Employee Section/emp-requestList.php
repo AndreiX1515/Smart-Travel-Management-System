@@ -65,10 +65,11 @@
 
               if ($res1->num_rows > 0) {
                 while ($row = $res1->fetch_assoc()) {
+                  $formattedPrice = number_format($row['price'], 2);
                   echo "<tr>
                           <td>" . htmlspecialchars($row['concernTitle']) . "</td>
                           <td>" . htmlspecialchars($row['details']) . "</td>
-                          <td>" . htmlspecialchars($row['price']) . "</td>
+                          <td>₱ " . htmlspecialchars($formattedPrice) . "</td>
                         </tr>";
                 }
               } else {

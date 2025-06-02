@@ -78,18 +78,21 @@ session_start();
 							<tr>
 								<th>TRANSACTION NO</th>
 								<th>BRANCH</th>
+								<th>FLIGHT DATE</th>
 								<th>AMOUNT</th>
 								<th>PROOF OF PAYMENT</th>
 								<th>PAYMENT DATE</th>
 								<th>STATUS</th>
 								<th>REMARKS</th>
-								<th style='display:none;'>RAW PAYMENT DATE</th>
+								<th style="display: none;">RAW PAYMENT DATE</th>
 							</tr>
 						</thead>
 						<tbody>
 							<?php
-							$sql1 = "SELECT b.transactNo, p.paymentId, p.amount, p.filePath, p.paymentDate, p.paymentStatus, p.paymentRemarks, br.branchName
+							$sql1 = "SELECT b.transactNo, p.paymentId, p.amount, p.filePath, p.paymentDate, p.paymentStatus, p.paymentRemarks, 
+												br.branchName, f.flightDepartureDate AS flightDate
 											FROM `booking` b
+											JOIN flight f ON b.flightId = f.flightId
 											JOIN `payment` p ON b.transactNo = p.transactNo
 											JOIN `branch` br ON br.branchAgentCode = b.agentCode
 											ORDER BY p.paymentId ASC";
@@ -106,7 +109,7 @@ session_start();
 							if ($result1->num_rows > 0) {
 								while ($row = $result1->fetch_assoc()) {
 									$amount = number_format($row['amount'], 2);
-									$date = date("F d, Y", strtotime($row['paymentDate']));
+									$date = date("m.d.Y", strtotime($row['paymentDate']));
 									$remarks = !empty($row['paymentRemarks']) ? $row['paymentRemarks'] : 'N/A';
 
 									$status = isset($row['paymentStatus']) ? $row['paymentStatus'] : 'Unknown';
@@ -126,9 +129,14 @@ session_start();
 											$statusClass = 'bg-secondary text-white';
 									}
 
+									$flightDate = $row['flightDate'];
+									$formattedFlightDate = date('Y.m.d', strtotime($flightDate));;
+									$fomattedPaymentDate = date('Y-m-d', strtotime($row['paymentDate']));
+
 									echo "<tr>
 													<td>" . $row['transactNo'] . "</td>
 													<td>" . $row['branchName'] . "</td>
+													<td>" . $formattedFlightDate . "</td>
 													<td>₱ " . $amount . "</td>
 													<td>
 														<a href='functions/view-file.php?file=" . urlencode($row['filePath']) . "' target='_blank'>View File</a> 
@@ -141,7 +149,7 @@ session_start();
 														</span>
 													</td>
 													<td>" . $remarks . "</td>
-													<td style='display:none;'>" . $row['paymentDate'] . "</td>
+													<td style='display: none;'>" . $fomattedPaymentDate . "</td>
 												</tr>";
 								}
 							}
@@ -202,7 +210,7 @@ session_start();
 				autoHeight: false,
 				columnDefs: [
 					{
-						targets: [1, 2, 3, 5, 6], // Disable sorting for selected columns
+						targets: [1, 3, 6], // Disable sorting for selected columns
 						orderable: false
 					}
 				]
@@ -222,7 +230,7 @@ session_start();
 				yearRange: "1900:2100",
 				onSelect: function (dateText) {
 					$(this).val(dateText);
-					table.column(7).search(dateText || '').draw(); // 8th column: RAW payment date
+					table.column(8).search(dateText || '').draw(); // 8th column: RAW payment date
 				}
 			});
 

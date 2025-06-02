@@ -683,6 +683,9 @@ error_reporting(E_ALL);
                       $flight_id = $row['flightId'];
                       $chkStatus = $row['is_active'];
 
+                      $formattedStartDate = date('Y.m.d', strtotime($row['Start']));
+                      $formattedEndDate = date('Y.m.d', strtotime($row['End']));
+
                       // Get Employee Name from TeamOP
                       $employeeName = isset($row['TeamOP']) ? trim($row['TeamOP']) : "";
 
@@ -698,8 +701,8 @@ error_reporting(E_ALL);
                       echo '<td class="" style="font-size: 12px; white-space: nowrap; background-color: ' . htmlspecialchars($rowColor) . '; font-weight: bold;">' . htmlspecialchars($employeeName) . '</td>';
 
                       echo '<td>' . htmlspecialchars($row['origin']) . '</td>';
-                      echo '<td>' . htmlspecialchars($row['Start']) . '</td>';
-                      echo '<td>' . htmlspecialchars($row['End']) . '</td>';
+                      echo '<td>' . htmlspecialchars($formattedStartDate) . '</td>';
+                      echo '<td>' . htmlspecialchars($formattedEndDate) . '</td>';
                       echo '<td>' . htmlspecialchars($row['AvailSeats']) . '</td>';
                       echo '<td>' . htmlspecialchars($row['AdditionalSeats']) . '</td>';
                       echo '<td>' . htmlspecialchars($row['Air+Land']) . '</td>';
@@ -790,7 +793,7 @@ error_reporting(E_ALL);
                                   DATE_FORMAT(r.requestDate, '%m.%d.%Y') AS `Date`,
                                   r.requestStatus, b.agentCode, CONCAT(a.lName, ', ', a.fName, 
                                   IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1)), '')) AS agentName,
-                                  DATE_FORMAT(f.flightDepartureDate, '%m.%d.%Y') AS `flightDepartureDate`, br.branchName as branchName,
+                                  DATE_FORMAT(f.flightDepartureDate, '%Y.%m.%d') AS `flightDepartureDate`, br.branchName as branchName,
                                   CASE 
                                     WHEN a.accountId IS NOT NULL 
                                       THEN CASE WHEN a.companyId IS NOT NULL THEN co.companyName ELSE br.branchName END
@@ -885,7 +888,7 @@ error_reporting(E_ALL);
                                   CONCAT(FORMAT(p.amount, 2)) AS `Amount`, DATE_FORMAT(p.paymentDate, '%m.%d.%Y') AS `Date`, 
                                   p.paymentType AS `Payment Type`, p.paymentStatus, b.agentCode, CONCAT(a.lName, ', ', a.fName, 
                                   IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1)), '')) AS agentName,
-                                  DATE_FORMAT(f.flightDepartureDate, '%m.%d.%Y') AS `flightDepartureDate`, br.branchName as branchName,
+                                  DATE_FORMAT(f.flightDepartureDate, '%Y.%m.%d') AS `flightDepartureDate`, br.branchName as branchName,
                                   CASE 
                                     WHEN a.accountId IS NOT NULL 
                                       THEN CASE WHEN a.companyId IS NOT NULL THEN c.companyName ELSE br.branchName END
@@ -1017,6 +1020,7 @@ error_reporting(E_ALL);
                     $formattedPP = '₱ ' . number_format($packagePrice, 2);
                     $formattedAP = '₱' . number_format($amountPaid, 2);
                     $formattedBal = '₱' . number_format($balance, 2);
+                    $formattedFlightDate = date('Y.m.d', strtotime($row['Start']));
 
                     // Define the pill status class based on the status value
                     switch ($status) {
@@ -1040,7 +1044,7 @@ error_reporting(E_ALL);
                     echo "<tr data-id='{$row['transactNo']}'>
                             <td>{$row['transactNo']}</td>
                             <td>{$row['branchName']}</td>
-                            <td>{$row['Start']}</td>
+                            <td>{$formattedFlightDate}</td>
                             <td>{$row['pax']}</td>
                             <td>{$row['bookingType']}</td>
                             <td>{$formattedPP}</td>

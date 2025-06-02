@@ -100,6 +100,7 @@
               <tr>
                 <th>TRANSACT NO.</th>
                 <th>BRANCH</th>
+                <th>FLIGHT DATE</th>
                 <th>PAYMENT TITLE</th>
                 <th>PAYMENT TYPE</th>
                 <th>AMOUNT</th>
@@ -114,7 +115,7 @@
                             IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1), '.'), '')) AS agentName, 
                         p.paymentTitle, p.paymentType, FORMAT(p.amount, 2) AS amount, 
                         p.filePath, DATE_FORMAT(p.paymentDate, '%M %d, %Y') AS paymentDate, p.paymentStatus, 
-                        br.branchName as branchName,
+                        br.branchName as branchName, f.flightDepartureDate AS flightDate,
                         CASE 
                           WHEN a.accountId IS NOT NULL 
                             THEN CASE WHEN a.companyId IS NOT NULL THEN c.companyName ELSE br.branchName END
@@ -123,6 +124,7 @@
                           ELSE 'Unknown'END AS `ACCOUNT NAME`
                       FROM payment p
                       LEFT JOIN booking b ON p.transactNo = b.transactNo
+                      JOIN flight f ON b.flightId = f.flightId
                       JOIN branch br ON b.agentCode = br.branchAgentCode
                       LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
                       LEFT JOIN company c ON a.companyId = c.companyId
@@ -146,21 +148,14 @@
                     $paymentTypeClass = 'badge bg-secondary';
                   }
 
-                  // try 
-                  // {
-                  //   // Create a DateTime object and format the date to "January 1, 2000"
-                  //   $date = new DateTime($rawPaymentDate);
-                  //   $formattedDate = $date->format('F j, Y');
-                  // } catch (Exception $e) 
-                  // {
-                  //   // Handle the exception if the date is invalid
-                  //   $formattedDate = 'Invalid date';
-                  // }
+                  $flightDate = $row['flightDate'] ?? 'N/A'; // Handle null flight date
+                  $formattedFlightDate = date('Y.m.d', strtotime($flightDate));;
 
                   // Output table row with data-transactno attribute
                   echo "<tr class='transaction-row' data-paymentId='{$row['paymentId']}'>
                           <td>{$row['transactNo']}</td>
-                          <td>{$row['ACCOUNT NAME']}</td>
+                          <td>{$row['branchName']}</td>
+                          <td>{$formattedFlightDate}</td>
                           <td>{$row['paymentTitle']}</td>
                           <td><span class='$paymentTypeClass p-2'>$paymentTypeValue</span></td>
                           <td>₱ {$row['amount']}</td>

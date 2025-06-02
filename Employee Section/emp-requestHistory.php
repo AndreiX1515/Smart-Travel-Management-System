@@ -79,6 +79,7 @@ session_start();
               <tr>
                 <th>TRANSACT NO</th>
                 <th>BRANCH</th>
+                <th>FLIGHT DATE</th>
                 <th>REQUEST TITLE</th>
                 <th>REQUEST DETAILS</th>
                 <th>SPECIFIC DETAILS</th>
@@ -96,11 +97,12 @@ session_start();
 													c.concernTitle AS `RequestTitle`, cd.details AS `RequestDetails`, b.pax AS `TotalPax`,
 													r.requestCost as requestCost, r.requestRemarks,
 													r.customRequest as customRequest, r.details as details, r.requestDate, 
-													r.requestStatus AS `Status`
+													r.requestStatus AS `Status`, f.flightDepartureDate AS `FlightDate`
 												FROM request r
 												LEFT JOIN concern c ON r.concernId = c.concernId
 												LEFT JOIN concerndetails cd ON r.concernDetailsId = cd.concernDetailsId
 												LEFT JOIN booking b ON r.transactNo = b.transactNo
+                        JOIN flight f ON b.flightId = f.flightId
 												LEFT JOIN branch br ON br.branchAgentCode = b.agentCode
 												WHERE r.requestStatus = 'Confirmed'
 												GROUP BY r.requestId";
@@ -132,14 +134,16 @@ session_start();
                   $details = $row['RequestDetails'] ?? $row['customRequest'];
                   $requestId = $row['requestId'];
                   $formattedRequestCost = number_format($row['requestCost'], 2);
-                  $formattedRequestDate = date("F d, Y", strtotime($row['requestDate']));
+                  $formattedRequestDate = date("m.d.Y", strtotime($row['requestDate']));
                   $formattedRequestDateFilter = date('Y-m-d', strtotime($row['requestDate']));
+                  $formattedFlightDate = date('Y.m.d', strtotime($row['FlightDate']));
 
                   // Output table row with data-transactno attribute
                   echo "<tr data-transactno='{$row['TransactNo']}' data-requestid='{$requestId}' class='transaction-row'>
 													<td>{$row['TransactNo']}</td>
 													<td>{$row['branchName']}</td>
-													<td>{$title}</td>
+													<td>{$formattedFlightDate}</td>
+                          <td>{$title}</td>
 													<td>{$details}</td>
 													<td>{$row['details']}</td>
 													<td>{$row['TotalPax']}</td>
@@ -200,28 +204,30 @@ session_start();
       const table = $('#product-table').DataTable({
         dom: 'rtip',
         language: { emptyTable: "No Transaction Records Available" },
-        order: [[7, 'asc']], // Sort by Transaction ID
+        order: [[0, 'asc']], // Sort by Transaction ID
         scrollX: false,
         scrollY: '69vh',
         paging: true,
         pageLength: 20,
-        autoWidth: true,
+        autoWidth: false,
         columnDefs: [
           {
             targets: [1, 2, 3, 5, 6],
             orderable: false
           },
-          { targets: 0, width: "120px" },
-          { targets: 1, width: "160px", orderable: false },
-          { targets: 2, width: "120px", orderable: false },
-          { targets: 3, width: "140px", orderable: false },
-          { targets: 4, width: "140px" },
-          { targets: 5, width: "180px", orderable: false },
-          { targets: 6, width: "150px", orderable: false },
-          { targets: 7, width: "100px" },
-          { targets: 8, width: "120px" },
-          { targets: 9, width: "140px" },
-          { targets: 10, width: "140px" }
+          { targets: 0, width: "120px" }, // TRANSACT NO
+          { targets: 1, width: "150px" }, // BRANCH
+          { targets: 2, width: "130px" }, // FLIGHT DATE
+          { targets: 3, width: "160px" }, // REQUEST TITLE
+          { targets: 4, width: "180px" }, // REQUEST DETAILS
+          { targets: 5, width: "160px" }, // SPECIFIC DETAILS
+          { targets: 6, width: "80px" },  // TOTAL PAX
+          { targets: 7, width: "120px" }, // TOTAL AMOUNT
+          { targets: 8, width: "130px" }, // REQUEST DATE
+          { targets: 9, width: "120px" }, // STATUS
+          { targets: 10, width: "160px" }, // REQUEST REMARKS
+          { targets: 11, visible: false }, // RAW REQUEST DATE
+          { targets: [1,2,3,5,6,9,10], orderable: false }
         ]
       });
 
@@ -252,7 +258,7 @@ session_start();
 
       // Flight Date Filter
       $('#FlightStartDate').on('change', function () {
-        table.column(10).search($(this).val() || '').draw();
+        table.column(11).search($(this).val() || '').draw();
       });
 
       // Datepickers
@@ -264,7 +270,7 @@ session_start();
         yearRange: "1900:2100",
         onSelect: function (dateText) {
           $(this).val(dateText);
-          table.column(10).search(dateText || '').draw();
+          table.column(11).search(dateText || '').draw();
         }
       });
 

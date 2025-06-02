@@ -23,12 +23,13 @@
 				<th>Flight Date</th>
 				<th>Wholesale Price</th>
 				<th>Retail Price</th>
+				<th>Land Price</th>
 				<th>Available Seats</th>
 			</tr>
 		</thead>
 		<tbody>
 			<?php
-				$sql1 = "SELECT f.* , e.fName as fName, e.mName as mName, e.lName as lName, p.packageName as packageName
+				$sql1 = "SELECT f.* , e.fName as fName, e.mName as mName, e.lName as lName, p.packageName as packageName, f.landPrice as landPrice
 									FROM flight f
 									LEFT JOIN employee e ON f.employeeId = e.employeeId
 									JOIN package p ON f.packageId = p.packageId";
@@ -44,6 +45,7 @@
 						$mName = $row['mName'] ?? null;
 						$lName = $row['lName'] ?? null;
 						$wholesaleFormatted = number_format($row['wholesalePrice'], 2);
+						$landPriceFormatted = number_format($row['landPrice'], 2);
 						$flightFormatted = number_format($row['flightPrice'], 2);
 						if (empty($fName) && empty($lName)) 
 						{
@@ -58,6 +60,7 @@
 										<td>" . $departureDate ." - ". $returnDate. "</td>
 										<td>₱ " . $wholesaleFormatted . "</td>
 										<td>₱ " . $flightFormatted . "</td>
+										<td>₱ " . $landPriceFormatted . "</td>
 										<td>" . $row['availSeats'] . "</td>
 									</tr>";
 					}

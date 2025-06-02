@@ -14,6 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
   $returnDates = $_POST['returnDate'] ?? [];
   $wholesalePrices = $_POST['wholesalePrice'] ?? [];
   $flightPrices = $_POST['flightPrice'] ?? [];
+  $landPrices = $_POST['landPrice'] ?? [];
   $availSeats  = $_POST['availSeats'] ?? [];
 
   $rowCount = count($employeeIds);
@@ -29,9 +30,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
   $stmt = $conn->prepare("INSERT INTO flight (
       packageId, employeeId, origin, flightName, flightCode, flightDepartureDate, flightDepartureTime,
       flightArrivalDate, flightArrivalTime, returnFlightName, returnFlightCode, returnDepartureDate, 
-      returnDepartureTime, returnArrivalDate, returnArrivalTime, wholesalePrice, flightPrice, availSeats
+      returnDepartureTime, returnArrivalDate, returnArrivalTime, wholesalePrice, flightPrice, landPrice, availSeats
     ) VALUES (
-      ?, ?, ?, ?, ?, ?, '05:45:00', ?, '10:45:00', ?, ?, ?, '12:45:00', ?, '04:00:00', ?, ?, ?
+      ?, ?, ?, ?, ?, ?, '05:45:00', ?, '10:45:00', ?, ?, ?, '12:45:00', ?, '04:00:00', ?, ?, ?, ?
     )");
 
   if (!$stmt) {
@@ -68,6 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
     $returnDate = $returnDates[$i];
     $wholesalePrice = floatval($wholesalePrices[$i]);
     $flightPrice = floatval($flightPrices[$i]);
+    $landPrice = floatval($landPrices[$i]);
     $seats = intval($availSeats[$i]);
 
     // Derived names
@@ -75,10 +77,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
     $returnName = "DEST - $origin";
 
     // Bind and execute
-    $stmt->bind_param('sssssssssssddi',
+    $stmt->bind_param('sssssssssssdddi',
       $packageId, $employeeId, $origin, $flightName, $departureCode, $departureDate,
       $departureDate, $returnName, $returnCode, $returnDate, $returnDate,
-      $wholesalePrice, $flightPrice, $seats
+      $wholesalePrice, $flightPrice, $landPrice, $seats
     );
 
     if ($stmt->execute()) {

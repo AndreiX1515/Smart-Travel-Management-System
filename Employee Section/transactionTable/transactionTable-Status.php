@@ -18,15 +18,15 @@ $statusTab = isset($_GET['status']) ? $_GET['status'] : 'all';
           <select id="packages">
             <option value="" disabled selected>Select Branch</option>
             <?php
-            $sql1 = "SELECT branchId, branchName FROM branch ORDER BY branchName ASC";
-            $res1 = $conn->query($sql1);
-            if ($res1->num_rows > 0) {
-              while ($row = $res1->fetch_assoc()) {
-                echo "<option value='" . $row['branchName'] . "'>" . $row['branchName'] . "</option>";
+              $sql1 = "SELECT branchId, branchName FROM branch ORDER BY branchName ASC";
+              $res1 = $conn->query($sql1);
+              if ($res1->num_rows > 0) {
+                while ($row = $res1->fetch_assoc()) {
+                  echo "<option value='" . $row['branchName'] . "'>" . $row['branchName'] . "</option>";
+                }
+              } else {
+                echo "<option value=''>No companies available</option>";
               }
-            } else {
-              echo "<option value=''>No companies available</option>";
-            }
             ?>
           </select>
         </div>
@@ -51,9 +51,9 @@ $statusTab = isset($_GET['status']) ? $_GET['status'] : 'all';
         <span class="badge-status-tab">
           <h6>
             <?php
-            $sql = "SELECT COUNT(*) AS totalBookings FROM booking;";
-            $result = mysqli_query($conn, $sql);
-            echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+              $sql = "SELECT COUNT(*) AS totalBookings FROM booking;";
+              $result = mysqli_query($conn, $sql);
+              echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
             ?>
           </h6>
         </span>
@@ -64,10 +64,10 @@ $statusTab = isset($_GET['status']) ? $_GET['status'] : 'all';
         <span class="badge-status-tab">
           <h6>
             <?php
-            $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
-            WHERE status = 'Pending'";
-            $result = mysqli_query($conn, $sql);
-            echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+              $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
+                      WHERE status = 'Pending'";
+              $result = mysqli_query($conn, $sql);
+              echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
             ?>
           </h6>
         </span>
@@ -78,10 +78,10 @@ $statusTab = isset($_GET['status']) ? $_GET['status'] : 'all';
         <span class="badge-status-tab">
           <h6>
             <?php
-            $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
-            WHERE status = 'Reserved'";
-            $result = mysqli_query($conn, $sql);
-            echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+              $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
+                      WHERE status = 'Reserved'";
+              $result = mysqli_query($conn, $sql);
+              echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
             ?>
           </h6>
         </span>
@@ -92,10 +92,10 @@ $statusTab = isset($_GET['status']) ? $_GET['status'] : 'all';
         <span class="badge-status-tab">
           <h6>
             <?php
-            $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
-        WHERE status = 'Confirmed'";
-            $result = mysqli_query($conn, $sql);
-            echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+              $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
+                      WHERE status = 'Confirmed'";
+              $result = mysqli_query($conn, $sql);
+              echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
             ?>
           </h6>
         </span>
@@ -106,10 +106,10 @@ $statusTab = isset($_GET['status']) ? $_GET['status'] : 'all';
         <span class="badge-status-tab">
           <h6>
             <?php
-            $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
-        WHERE status = 'Cancelled'";
-            $result = mysqli_query($conn, $sql);
-            echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+              $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
+                      WHERE status = 'Cancelled'";
+              $result = mysqli_query($conn, $sql);
+              echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
             ?>
           </h6>
         </span>
@@ -132,95 +132,98 @@ $statusTab = isset($_GET['status']) ? $_GET['status'] : 'all';
             <th>TOTAL REQUEST COST</th>
             <th>AMOUNT PAID</th>
             <th>BALANCE</th>
+            <th>BOOKING DATE</th>
             <th>STATUS</th>
           </tr>
         </thead>
         <tbody>
           <?php
-          // Ensure $conn is properly initialized
-          if (!isset($conn)) {
-            die("Database connection error.");
-          }
-
-          $sql = "SELECT b.transactNo, DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y') AS departureDate, f.returnDepartureDate AS returnDate, 
-          b.status AS bookingStatus, CONCAT(f.flightDepartureDate, ' | ', f.returnDepartureDate) AS FlightDate, 
-          p.packageName AS PackageName, DATE_FORMAT(b.bookingDate, '%m.%d.%Y') AS BookingDate, b.pax AS TotalPax,  
-          b.totalPrice AS PackagePrice, br.branchName as branchName, COALESCE(SUM(pa.amount), 0) AS TotalAmountPaid,
-          CONCAT(a.lName, ', ', a.fName, ' ', IFNULL(CONCAT(SUBSTRING(a.mName, 1, 1), '.'), '')) AS agentName,
-          COALESCE(SUM(r.requestCost), 0) AS TotalRequestAmount,
-          CASE 
-          WHEN a.accountId IS NOT NULL 
-              THEN CASE WHEN a.companyId IS NOT NULL THEN c.companyName ELSE br.branchName END
-          WHEN cl.accountId IS NOT NULL 
-              THEN CASE WHEN cl.companyId IS NOT NULL THEN cc.companyName ELSE br.branchName END
-          ELSE 'Unknown'END AS `ACCOUNT NAME`
-          FROM booking b
-          JOIN branch br ON b.agentCode = br.branchAgentCode
-          JOIN flight f ON f.flightId = b.flightId
-          JOIN package p ON p.packageId = b.packageId
-          LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
-          LEFT JOIN company c ON a.companyId = c.companyId
-          LEFT JOIN client cl ON b.accountType = 'Client' AND b.accountId = cl.accountId
-          LEFT JOIN company cc ON cl.companyId = cc.companyId
-          LEFT JOIN payment pa ON pa.transactNo = b.transactNo AND pa.paymentStatus = 'Approved'
-          LEFT JOIN request r ON r.transactNo = b.transactNo AND r.requestStatus = 'Confirmed'
-          GROUP BY 
-              b.transactNo, f.flightDepartureDate, f.returnDepartureDate, b.status, 
-              p.packageName, b.bookingDate, b.pax, b.totalPrice, a.lName, a.fName, a.mName, br.branchName
-          ORDER BY CAST(SUBSTRING_INDEX(b.transactNo, '-', -1) AS UNSIGNED)";
-
-          // Execute the query
-          $result = $conn->query($sql);
-
-          // Check if there are results
-          if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-              // Safely handle null values
-              $transactNo = htmlspecialchars($row['transactNo'] ?? '');
-              $agentName = htmlspecialchars($row['agentName'] ?? '');
-              $packageName = htmlspecialchars($row['PackageName'] ?? '');
-              $departureDate = $row['departureDate'] ?? null;
-              $returnDate = $row['returnDate'] ?? null;
-              $bookingDate = htmlspecialchars($row['BookingDate'] ?? '');
-              $totalPax = htmlspecialchars($row['TotalPax'] ?? 0);
-              $packagePrice = $row['PackagePrice'] ?? 0;
-              $requestTotal = $row['TotalRequestAmount'] ?? 0;
-              $amountPaid = $row['TotalAmountPaid'] ?? 0;
-              $balance = max(($packagePrice + $requestTotal) - $amountPaid, 0); // Prevent negative balances
-              $status = htmlspecialchars($row['bookingStatus'] ?? 'Unknown');
-
-              // Determine the status class
-              $statusClass = match ($status) {
-                "Pending" => "bg-warning text-dark",
-                "Confirmed" => "bg-success text-white",
-                "Cancelled" => "bg-danger text-white",
-                "Reject" => "bg-secondary text-white",
-                default => "bg-secondary text-white",
-              };
-
-              // Format dates
-              // $formattedDepartureDate = $departureDate ? (new DateTime($departureDate))->format('F j, Y') : 'N/A';
-              $formattedReturnDate = $returnDate ? (new DateTime($returnDate))->format('F j, Y') : 'N/A';
-
-              // Securely encode URL
-              $transactionUrl = htmlspecialchars("emp-transactionInfo.php?id=$transactNo");
-
-              // Output each row as a table row
-              echo "<tr data-url='$transactionUrl'>";
-              echo "<td>$transactNo</td>";
-              echo "<td>" . htmlspecialchars($row['branchName'] ?? '') . "</td>";
-              echo "<td>$departureDate</td>";
-              echo "<td class='fw-bold ps-3'>$totalPax</td>";
-              echo "<td>₱ " . number_format($packagePrice, 2) . "</td>";
-              echo "<td>₱ " . number_format($requestTotal, 2) . "</td>";
-              echo "<td>₱ " . number_format($amountPaid, 2) . "</td>";
-              echo "<td>₱ " . number_format($balance, 2) . "</td>";
-              echo "<td> <span class='badge rounded-pill $statusClass p-2'>$status</span></td>";
-              echo "</tr>";
+            // Ensure $conn is properly initialized
+            if (!isset($conn)) {
+              die("Database connection error.");
             }
-          } else {
-            echo "<tr><td colspan='8' class='text-center'>No records found</td></tr>";
-          }
+
+            $sql = "SELECT b.transactNo, DATE_FORMAT(f.flightDepartureDate, '%Y.%m.%d') AS departureDate, f.returnDepartureDate AS returnDate, 
+                      b.status AS bookingStatus, CONCAT(f.flightDepartureDate, ' | ', f.returnDepartureDate) AS FlightDate, 
+                      p.packageName AS PackageName, b.bookingDate, b.pax AS TotalPax,  
+                      b.totalPrice AS PackagePrice, br.branchName as branchName, COALESCE(SUM(pa.amount), 0) AS TotalAmountPaid,
+                      CONCAT(a.lName, ', ', a.fName, ' ', IFNULL(CONCAT(SUBSTRING(a.mName, 1, 1), '.'), '')) AS agentName,
+                      COALESCE(SUM(r.requestCost), 0) AS TotalRequestAmount,
+                      CASE 
+                      WHEN a.accountId IS NOT NULL 
+                          THEN CASE WHEN a.companyId IS NOT NULL THEN c.companyName ELSE br.branchName END
+                      WHEN cl.accountId IS NOT NULL 
+                          THEN CASE WHEN cl.companyId IS NOT NULL THEN cc.companyName ELSE br.branchName END
+                      ELSE 'Unknown'END AS `ACCOUNT NAME`
+                    FROM booking b
+                    JOIN branch br ON b.agentCode = br.branchAgentCode
+                    JOIN flight f ON f.flightId = b.flightId
+                    JOIN package p ON p.packageId = b.packageId
+                    LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
+                    LEFT JOIN company c ON a.companyId = c.companyId
+                    LEFT JOIN client cl ON b.accountType = 'Client' AND b.accountId = cl.accountId
+                    LEFT JOIN company cc ON cl.companyId = cc.companyId
+                    LEFT JOIN payment pa ON pa.transactNo = b.transactNo AND pa.paymentStatus = 'Approved'
+                    LEFT JOIN request r ON r.transactNo = b.transactNo AND r.requestStatus = 'Confirmed'
+                    GROUP BY 
+                        b.transactNo, f.flightDepartureDate, f.returnDepartureDate, b.status, 
+                        p.packageName, b.bookingDate, b.pax, b.totalPrice, a.lName, a.fName, a.mName, br.branchName
+                    ORDER BY CAST(SUBSTRING_INDEX(b.transactNo, '-', -1) AS UNSIGNED)";
+
+            // Execute the query
+            $result = $conn->query($sql);
+
+            // Check if there are results
+            if ($result->num_rows > 0) {
+              while ($row = $result->fetch_assoc()) {
+                // Safely handle null values
+                $transactNo = htmlspecialchars($row['transactNo'] ?? '');
+                $agentName = htmlspecialchars($row['agentName'] ?? '');
+                $packageName = htmlspecialchars($row['PackageName'] ?? '');
+                $departureDate = $row['departureDate'] ?? null;
+                $returnDate = $row['returnDate'] ?? null;
+                $bookingDate = htmlspecialchars($row['BookingDate'] ?? '');
+                $totalPax = htmlspecialchars($row['TotalPax'] ?? 0);
+                $packagePrice = $row['PackagePrice'] ?? 0;
+                $requestTotal = $row['TotalRequestAmount'] ?? 0;
+                $amountPaid = $row['TotalAmountPaid'] ?? 0;
+                $balance = max(($packagePrice + $requestTotal) - $amountPaid, 0); // Prevent negative balances
+                $status = htmlspecialchars($row['bookingStatus'] ?? 'Unknown');
+
+                // Determine the status class
+                $statusClass = match ($status) {
+                  "Pending" => "bg-warning text-dark",
+                  "Confirmed" => "bg-success text-white",
+                  "Cancelled" => "bg-danger text-white",
+                  "Reject" => "bg-secondary text-white",
+                  default => "bg-secondary text-white",
+                };
+
+                // Format dates
+                // $formattedDepartureDate = $departureDate ? (new DateTime($departureDate))->format('F j, Y') : 'N/A';
+                $formattedReturnDate = $returnDate ? (new DateTime($returnDate))->format('F j, Y') : 'N/A';
+                $formattedBookingDate = date('m.d.Y', strtotime($row['bookingDate']));
+
+                // Securely encode URL
+                $transactionUrl = htmlspecialchars("emp-transactionInfo.php?id=$transactNo");
+
+                // Output each row as a table row
+                echo "<tr data-url='$transactionUrl'>";
+                echo "<td>$transactNo</td>";
+                echo "<td>" . htmlspecialchars($row['branchName'] ?? '') . "</td>";
+                echo "<td>$departureDate</td>";
+                echo "<td class='fw-bold ps-3'>$totalPax</td>";
+                echo "<td>₱ " . number_format($packagePrice, 2) . "</td>";
+                echo "<td>₱ " . number_format($requestTotal, 2) . "</td>";
+                echo "<td>₱ " . number_format($amountPaid, 2) . "</td>";
+                echo "<td>₱ " . number_format($balance, 2) . "</td>";
+                echo "<td>" . $formattedBookingDate . "</td>";
+                echo "<td> <span class='badge rounded-pill $statusClass p-2'>$status</span></td>";
+                echo "</tr>";
+              }
+            } else {
+              echo "<tr><td colspan='8' class='text-center'>No records found</td></tr>";
+            }
           ?>
         </tbody>
       </table>
@@ -329,10 +332,21 @@ $statusTab = isset($_GET['status']) ? $_GET['status'] : 'all';
         pageLength: 13,
         autoWidth: false,
         autoHeight: false,
-        columnDefs: [{
-          targets: [1, 3, 4, 5, 6, 7, 8],
-          orderable: false
-        }]
+        columnDefs: [
+          { targets: 0, width: '140px' }, // TRANSACT NO
+          { targets: 1, width: '120px' }, // BRANCH
+          { targets: 2, width: '110px' }, // FLIGHT DATE
+          { targets: 3, width: '90px' },  // TOTAL PAX
+          { targets: 4, width: '120px' }, // PACKAGE PRICE
+          { targets: 5, width: '150px' }, // TOTAL REQUEST COST
+          { targets: 6, width: '120px' }, // AMOUNT PAID
+          { targets: 7, width: '110px' }, // BALANCE
+          { targets: 8, width: '110px' }, // BOOKING DATE
+          { targets: 9, width: '100px' }, // STATUS
+
+          // Disable sorting where needed
+          { targets: [1, 3, 4, 5, 6, 7], orderable: false }
+        ]
       });
 
     // Search
@@ -371,76 +385,12 @@ $statusTab = isset($_GET['status']) ? $_GET['status'] : 'all';
       tableProduct.column(1).search(selectedPackage || '').draw();
     });
 
-    $('#BookingStartDate').on('change', function () {
-      const selectedBookingDate = $(this).val();
-      console.log("Booking Date Filter:", selectedBookingDate);
-      tableProduct.column(3).search(selectedBookingDate || '').draw();
-    });
-
-    $('#FlightStartDate').on('change', function () {
-      const selectedFlightDate = $(this).val();
-      console.log("Flight Date Filter:", selectedFlightDate);
-      tableProduct.column(2).search(selectedFlightDate || '').draw();
-    });
-
-    // Datepickers
-    $("#FlightStartDate").datepicker(
-      {
-        dateFormat: "yy-mm-dd",
-        showAnim: "fadeIn",
-        changeMonth: true,
-        changeYear: true,
-        yearRange: "1900:2100",
-        onSelect: function (dateText) {
-          $(this).val(dateText);
-          console.log("FlightStartDate Selected Date:", dateText);
-          tableProduct.column(2).search(dateText || '').draw();
-        }
-      });
-
-    $("#BookingStartDate").datepicker(
-      {
-        dateFormat: "mm-dd-yy",
-        showAnim: "fadeIn",
-        changeMonth: true,
-        changeYear: true,
-        yearRange: "1900:2100",
-        onSelect: function (dateText) {
-          $(this).val(dateText);
-          console.log("BookingStartDate Selected Date:", dateText);
-          tableProduct.column(4).search(dateText || '').draw();
-        }
-      });
-
-    // BookingStartDate input formatting
-    $("#BookingStartDate").on("input", function () {
-      let value = $(this).val().replace(/[^\d-]/g, '');
-
-      if (value.length > 2 && value.charAt(2) !== '-') {
-        value = value.substring(0, 2) + '-' + value.substring(2);
-      }
-      if (value.length > 5 && value.charAt(5) !== '-') {
-        value = value.substring(0, 5) + '-' + value.substring(5);
-      }
-      if (value.length > 10) {
-        value = value.substring(0, 10);
-      }
-
-      $(this).val(value);
-      tableProduct.column(5).search(value || '').draw();
-      console.log("BookingStartDate Input Value:", value);
-    });
-
     // Clear filters and reset table
     $('#clearSorting').on('click', function () {
       $('#search').val('');
       tableProduct.search('').draw();
 
-      $('#status').val('').trigger('change');
       $('#packages').val('').trigger('change');
-
-      $('#BookingStartDate').val('').trigger('change');
-      $('#FlightStartDate').val('').trigger('change');
 
       tableProduct.order([[2, 'asc']])
         .search('')
