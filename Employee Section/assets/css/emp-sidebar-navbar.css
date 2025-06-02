@@ -43,7 +43,7 @@ body {
   width: 100%;
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
+  overflow-y: hidden;
   gap: 0px; /* Add spacing between internal sections */
 
   /* border: 1px solid black; */
