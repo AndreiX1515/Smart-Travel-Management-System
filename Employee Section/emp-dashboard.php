@@ -786,68 +786,70 @@ error_reporting(E_ALL);
                     </thead>
                     <tbody>
                       <?php
-                      $sql1 = "SELECT r.transactNo AS `T.N`, c.concernTitle AS `Request`, 
-                                    DATE_FORMAT(r.requestDate, '%m.%d.%Y') AS `Date`,
-                                    r.requestStatus, b.agentCode, CONCAT(a.lName, ', ', a.fName, 
-                                    IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1)), '')) AS agentName,
-                                    DATE_FORMAT(f.flightDepartureDate, '%m.%d.%Y') AS `flightDepartureDate`, br.branchName as branchName,
-                                    CASE 
-                                      WHEN a.accountId IS NOT NULL 
-                                        THEN CASE WHEN a.companyId IS NOT NULL THEN co.companyName ELSE br.branchName END
-                                      WHEN cl.accountId IS NOT NULL 
-                                        THEN CASE WHEN cl.companyId IS NOT NULL THEN cc.companyName ELSE br.branchName END
-                                      ELSE 'Unknown'END AS `ACCOUNT NAME`, r.pax as pax, r.requestCost as requestCost
-                                  FROM request r
-                                  JOIN booking b ON r.transactNo = b.transactNo
-                                  JOIN concern c ON r.concernId = c.concernId
-                                  LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
-                                  LEFT JOIN company co ON a.companyId = co.companyId
-                                  LEFT JOIN client cl ON b.accountType = 'Client' AND b.accountId = cl.accountId
-                                  LEFT JOIN company cc ON cl.companyId = cc.companyId
-                                  JOIN flight f ON b.flightId = f.flightId
-                                  JOIN branch br ON b.agentCode = br.branchAgentCode
-                                  WHERE 
-                                    r.requestStatus = 'Submitted' AND f.flightDepartureDate >= CURDATE()
-                                  ORDER BY 
-                                    r.requestDate DESC";  // Order by request date
-                      
-                      $res1 = $conn->query($sql1);
+                        $sql1 = "SELECT r.transactNo AS `T.N`, c.concernTitle AS `Request`, 
+                                  DATE_FORMAT(r.requestDate, '%m.%d.%Y') AS `Date`,
+                                  r.requestStatus, b.agentCode, CONCAT(a.lName, ', ', a.fName, 
+                                  IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1)), '')) AS agentName,
+                                  DATE_FORMAT(f.flightDepartureDate, '%m.%d.%Y') AS `flightDepartureDate`, br.branchName as branchName,
+                                  CASE 
+                                    WHEN a.accountId IS NOT NULL 
+                                      THEN CASE WHEN a.companyId IS NOT NULL THEN co.companyName ELSE br.branchName END
+                                    WHEN cl.accountId IS NOT NULL 
+                                      THEN CASE WHEN cl.companyId IS NOT NULL THEN cc.companyName ELSE br.branchName END
+                                    ELSE 'Unknown'END AS `ACCOUNT NAME`, r.pax as pax, r.requestCost as requestCost
+                                FROM request r
+                                JOIN booking b ON r.transactNo = b.transactNo
+                                JOIN concern c ON r.concernId = c.concernId
+                                LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
+                                LEFT JOIN company co ON a.companyId = co.companyId
+                                LEFT JOIN client cl ON b.accountType = 'Client' AND b.accountId = cl.accountId
+                                LEFT JOIN company cc ON cl.companyId = cc.companyId
+                                JOIN flight f ON b.flightId = f.flightId
+                                JOIN branch br ON b.agentCode = br.branchAgentCode
+                                WHERE 
+                                  r.requestStatus = 'Submitted' AND f.flightDepartureDate >= CURDATE()
+                                ORDER BY 
+                                  r.requestDate DESC";  // Order by request date
+                        
+                        $res1 = $conn->query($sql1);
 
-                      if ($res1->num_rows > 0) {
-                        while ($row = $res1->fetch_assoc()) {
-                          $statusClass = '';
-                          switch ($row['requestStatus']) {
-                            case 'Confirmed':
-                              $statusClass = 'badge bg-success'; // Green pill for "Approved"
-                              break;
-                            case 'Pending':
-                              $statusClass = 'badge bg-primary'; // Yellow pill for "Pending"
-                              break;
-                            case 'Rejected':
-                              $statusClass = 'badge bg-danger'; // Red pill for "Rejected"
-                              break;
-                            case 'Submitted':
-                              $statusClass = 'badge bg-warning text-dark'; // Red pill for "Rejected"
-                              break;
-                            default:
-                              $statusClass = 'badge bg-secondary'; // Grey pill for unknown statuses
-                              break;
+                        if ($res1->num_rows > 0) {
+                          while ($row = $res1->fetch_assoc()) {
+                            $statusClass = '';
+                            switch ($row['requestStatus']) {
+                              case 'Confirmed':
+                                $statusClass = 'badge bg-success'; // Green pill for "Approved"
+                                break;
+                              case 'Pending':
+                                $statusClass = 'badge bg-primary'; // Yellow pill for "Pending"
+                                break;
+                              case 'Rejected':
+                                $statusClass = 'badge bg-danger'; // Red pill for "Rejected"
+                                break;
+                              case 'Submitted':
+                                $statusClass = 'badge bg-warning text-dark'; // Red pill for "Rejected"
+                                break;
+                              default:
+                                $statusClass = 'badge bg-secondary'; // Grey pill for unknown statuses
+                                break;
+                            }
+                            $requestCost = $row['requestCost'] ?? '0.00'; // Default to '0.00' if requestCost is null
+                            $formattedRequestCost = number_format((float) $requestCost, 2);
+
+                            // Echo table row with dynamically styled pills
+                            echo "<tr>
+                                    <td>{$row['T.N']}</td>
+                                    <td>{$row['flightDepartureDate']}</td>
+                                    <td>{$row['branchName']}</td>
+                                    <td>{$row['Request']}</td>
+                                    <td>{$row['pax']}</td>
+                                    <td>₱ $formattedRequestCost</td>
+                                    <td><span class='{$statusClass} p-2'>{$row['requestStatus']}</span></td>
+                                  </tr>";
                           }
-
-                          // Echo table row with dynamically styled pills
-                          echo "<tr>
-                                      <td>{$row['T.N']}</td>
-                                      <td>{$row['flightDepartureDate']}</td>
-                                      <td>{$row['ACCOUNT NAME']}</td>
-                                      <td>{$row['Request']}</td>
-                                      <td>{$row['pax']}</td>
-                                      <td>{$row['requestCost']}</td>
-                                      <td><span class='{$statusClass} p-2'>{$row['requestStatus']}</span></td>
-                                    </tr>";
+                        } else {
+                          echo "<tr><td colspan='7' style='text-align: center; font-size: 10px;'>NO CURRENT REQUEST AS OF THE MOMENT</td></tr>";
                         }
-                      } else {
-                        echo "<tr><td colspan='7' style='text-align: center; font-size: 10px;'>NO CURRENT REQUEST AS OF THE MOMENT</td></tr>";
-                      }
                       ?>
                     </tbody>
                   </table>
@@ -926,7 +928,7 @@ error_reporting(E_ALL);
                           echo "<tr>
                                     <td>{$row['Transaction No']}</td>
                                     <td>{$row['flightDepartureDate']}</td>
-                                    <td>{$row['ACCOUNT NAME']}</td>
+                                    <td>{$row['branchName']}</td>
                                     <td>{$row['Payment Type']}</td>
                                     <td>₱ {$row['Amount']}</td>
                                     <td><span class='{$statusClass} p-2'>{$row['paymentStatus']}</span></td>
@@ -946,162 +948,160 @@ error_reporting(E_ALL);
 
             <!-- Confirm Transaction Table -->
             <?php
-            // Function to render the confirmed transactions table
-            function renderConfirmedTransactionsTable($conn) {
-              // Query to get confirmed transactions
-              $query1 = "SELECT b.*, f.flightDepartureDate AS Start, p.packageName, b.totalPrice AS PackagePrice, 
-                f.returnDepartureDate AS End, CONCAT(a.lName, ', ', a.fName, 
-                IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1)), '')) AS agentName,
-                br.branchName as branchName, SUM(pa.amount) AS TotalAmountPaid, 
-                COALESCE(SUM(r.requestCost), 0) AS TotalRequestAmount,
-                CASE 
-                  WHEN a.accountId IS NOT NULL 
-                    THEN CASE 
-                      WHEN a.companyId IS NOT NULL THEN co.companyName 
-                      ELSE br.branchName END
-                  WHEN cl.accountId IS NOT NULL 
-                    THEN CASE 
-                      WHEN cl.companyId IS NOT NULL THEN cc.companyName 
-                      ELSE br.branchName END
-                ELSE 'Unknown' END AS `Account Name`
-              FROM booking b 
-              LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
-              LEFT JOIN company co ON a.companyId = co.companyId
-              LEFT JOIN client cl ON b.accountType = 'Client' AND b.accountId = cl.accountId
-              LEFT JOIN company cc ON cl.companyId = cc.companyId
-              JOIN branch br ON b.agentCode = br.branchAgentCode
-              JOIN flight f ON b.flightId = f.flightId
-              JOIN package p ON b.packageId = p.packageId
-              LEFT JOIN payment pa ON pa.transactNo = b.transactNo AND pa.paymentStatus = 'Approved'
-              LEFT JOIN request r ON r.transactNo = b.transactNo AND r.requestStatus = 'Confirmed'
-              WHERE status = 'Confirmed' AND f.flightDepartureDate >= CURDATE() 
-              GROUP BY b.transactNo";
+              // Function to render the confirmed transactions table
+              function renderConfirmedTransactionsTable($conn) {
+                // Query to get confirmed transactions
+                $query1 = "SELECT b.*, f.flightDepartureDate AS Start, p.packageName, b.totalPrice AS PackagePrice, 
+                  f.returnDepartureDate AS End, CONCAT(a.lName, ', ', a.fName, 
+                  IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1)), '')) AS agentName,
+                  br.branchName as branchName, SUM(pa.amount) AS TotalAmountPaid, 
+                  COALESCE(SUM(r.requestCost), 0) AS TotalRequestAmount,
+                  CASE 
+                    WHEN a.accountId IS NOT NULL 
+                      THEN CASE 
+                        WHEN a.companyId IS NOT NULL THEN co.companyName 
+                        ELSE br.branchName END
+                    WHEN cl.accountId IS NOT NULL 
+                      THEN CASE 
+                        WHEN cl.companyId IS NOT NULL THEN cc.companyName 
+                        ELSE br.branchName END
+                  ELSE 'Unknown' END AS `Account Name`
+                FROM booking b 
+                LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
+                LEFT JOIN company co ON a.companyId = co.companyId
+                LEFT JOIN client cl ON b.accountType = 'Client' AND b.accountId = cl.accountId
+                LEFT JOIN company cc ON cl.companyId = cc.companyId
+                JOIN branch br ON b.agentCode = br.branchAgentCode
+                JOIN flight f ON b.flightId = f.flightId
+                JOIN package p ON b.packageId = p.packageId
+                LEFT JOIN payment pa ON pa.transactNo = b.transactNo AND pa.paymentStatus = 'Approved'
+                LEFT JOIN request r ON r.transactNo = b.transactNo AND r.requestStatus = 'Confirmed'
+                WHERE status = 'Confirmed' AND f.flightDepartureDate >= CURDATE() 
+                GROUP BY b.transactNo";
 
-              $result = $conn->query($query1);
+                $result = $conn->query($query1);
 
-              // Start the table HTML
-              echo '<div class="confirm-container">
-              <div class="table-header">
-                <div class="title-wrapper">
-                  <h6 class="">Confirmed Transactions</h6>
+                // Start the table HTML
+                echo '<div class="confirm-container">
+                <div class="table-header">
+                  <div class="title-wrapper">
+                    <h6 class="">Confirmed Transactions</h6>
+                  </div>
                 </div>
-              </div>
 
-              <div class="table-wrapper confirm-table-container">
-                <table class="confirm-table table info-table" id="confirm-table">
-                  <thead>
-                    <tr>
-                      <th>TRANSACTION NO.</th>
-                      <th>AGENT NAME</th>
-                      <th>FLIGHT DATE</th>
-                      <th>TOTAL PAX.</th>
-                      <th>BOOKING TYPE</th>
-                      <th>PACKAGE PRICE</th>
-                      <th>AMOUNT INFO</th>
-                      <th>STATUS</th>
-                      <th>COMMENT</th>
-                    </tr>
-                  </thead>
-                  <tbody>';
+                <div class="table-wrapper confirm-table-container">
+                  <table class="confirm-table table info-table" id="confirm-table">
+                    <thead>
+                      <tr>
+                        <th>TRANSACTION NO.</th>
+                        <th>AGENT NAME</th>
+                        <th>FLIGHT DATE</th>
+                        <th>TOTAL PAX.</th>
+                        <th>BOOKING TYPE</th>
+                        <th>PACKAGE PRICE</th>
+                        <th>AMOUNT INFO</th>
+                        <th>STATUS</th>
+                        <th>COMMENT</th>
+                      </tr>
+                    </thead>
+                    <tbody>';
 
-              if ($result && $result->num_rows > 0) {
-                // Loop through each row and render the table rows
-                while ($row = $result->fetch_assoc()) {
-                  $packagePrice = $row['PackagePrice'] ?? 0;
-                  $requestTotal = $row['TotalRequestAmount'] ?? 0;
-                  $amountPaid = $row['TotalAmountPaid'] ?? 0;
-                  $balance = ($packagePrice + $requestTotal) - $amountPaid;
-                  $status = $row['status'];
-                  $formattedPP = '₱ ' . number_format($packagePrice, 2);
-                  $formattedAP = '₱' . number_format($amountPaid, 2);
-                  $formattedBal = '₱' . number_format($balance, 2);
+                if ($result && $result->num_rows > 0) {
+                  // Loop through each row and render the table rows
+                  while ($row = $result->fetch_assoc()) {
+                    $packagePrice = $row['PackagePrice'] ?? 0;
+                    $requestTotal = $row['TotalRequestAmount'] ?? 0;
+                    $amountPaid = $row['TotalAmountPaid'] ?? 0;
+                    $balance = ($packagePrice + $requestTotal) - $amountPaid;
+                    $status = $row['status'];
+                    $formattedPP = '₱ ' . number_format($packagePrice, 2);
+                    $formattedAP = '₱' . number_format($amountPaid, 2);
+                    $formattedBal = '₱' . number_format($balance, 2);
 
-                  // Define the pill status class based on the status value
-                  switch ($status) {
-                    case 'Confirmed':
-                      $pillClass = 'bg-success';
-                      break;
-                    case 'Cancelled':
-                      $pillClass = 'bg-danger';
-                      break;
-                    case 'Pending':
-                      $pillClass = 'bg-warning';
-                      break;
-                    case 'Rejected':
-                      $pillClass = 'bg-info';
-                      break;
-                    default:
-                      $pillClass = 'bg-secondary';
-                      break;
+                    // Define the pill status class based on the status value
+                    switch ($status) {
+                      case 'Confirmed':
+                        $pillClass = 'bg-success';
+                        break;
+                      case 'Cancelled':
+                        $pillClass = 'bg-danger';
+                        break;
+                      case 'Pending':
+                        $pillClass = 'bg-warning';
+                        break;
+                      case 'Rejected':
+                        $pillClass = 'bg-info';
+                        break;
+                      default:
+                        $pillClass = 'bg-secondary';
+                        break;
+                    }
+
+                    echo "<tr data-id='{$row['transactNo']}'>
+                            <td>{$row['transactNo']}</td>
+                            <td>{$row['branchName']}</td>
+                            <td>{$row['Start']}</td>
+                            <td>{$row['pax']}</td>
+                            <td>{$row['bookingType']}</td>
+                            <td>{$formattedPP}</td>
+                            <td>
+                              <div class='payment-info'>
+                                <div class='payment-row'><span class='label'>Amount Paid:</span><span class='value'>{$formattedAP}</span></div>
+                                <div class='payment-row'><span class='label'>Balance:</span><span class='value'>{$formattedBal}</span></div>
+                              </div>
+                            </td>
+                            <td><span class='badge $pillClass p-2'>{$status}</span></td>";
+
+                    // Fetch comment
+                    $transactNo = $row['transactNo'];
+                    $stmt = $conn->prepare('SELECT * FROM bookingcomments WHERE transactNo = ?');
+                    $stmt->bind_param('s', $transactNo);
+                    $stmt->execute();
+                    $resultComment = $stmt->get_result();
+                    $comment = $resultComment->fetch_assoc();
+                    $stmt->close();
+
+                    echo "<td>
+                            <div class='comment-container' id='commentContainer{$transactNo}'>";
+                                if ($comment && !empty($comment['comment'])) {
+                                  echo "<div class='comment-exists'>
+                              <div class='comment-input'><input type='text' class='form-control' id='commentInput{$transactNo}' value='" . htmlspecialchars($comment['comment']) . "' disabled></div>
+                              <div class='edit-button'><button type='button' class='btn btn-warning editComment' data-id='{$transactNo}'>Edit</button></div>
+                            </div>";
+                                } else {
+                                  echo "<div class='no-comment'>
+                              <div class='comment-input'><input type='text' class='form-control' id='commentInput{$transactNo}' disabled></div>
+                              <div class='add-button'><button type='button' class='btn btn-success addComment' data-id='{$transactNo}'>Add</button></div>
+                            </div>";
+                                }
+
+                                echo "<div class='button-container'>
+                            <input type='text' class='recordId' value='{$transactNo}' hidden>
+                            <button type='button' class='btn btn-primary submitAddComment' data-id='{$transactNo}' style='display:none;'>Submit</button>
+                            <button type='button' class='btn btn-primary submitEditComment' data-id='{$transactNo}' style='display:none;'>Update</button>
+                            <button type='button' class='btn btn-danger deleteComment' data-id='{$transactNo}' style='display:none;'>Remove</button>
+                            <button type='button' class='btn btn-danger cancelEditComment' data-id='{$transactNo}' style='display:none;'>Cancel Edit</button>
+                            <button type='button' class='btn btn-danger cancelAddComment' data-id='{$transactNo}' style='display:none;'>Cancel Add</button>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>";
+                    
                   }
 
-                  echo "<tr data-id='{$row['transactNo']}'>
-              <td>{$row['transactNo']}</td>
-              <td>{$row['Account Name']}</td>
-              <td>{$row['Start']}</td>
-              <td>{$row['pax']}</td>
-              <td>{$row['bookingType']}</td>
-              <td>{$formattedPP}</td>
-              <td>
-                <div class='payment-info'>
-                  <div class='payment-row'><span class='label'>Amount Paid:</span><span class='value'>{$formattedAP}</span></div>
-                  <div class='payment-row'><span class='label'>Balance:</span><span class='value'>{$formattedBal}</span></div>
-                </div>
-              </td>
-              <td><span class='badge $pillClass p-2'>{$status}</span></td>";
-
-                  // Fetch comment
-                  $transactNo = $row['transactNo'];
-                  $stmt = $conn->prepare('SELECT * FROM bookingcomments WHERE transactNo = ?');
-                  $stmt->bind_param('s', $transactNo);
-                  $stmt->execute();
-                  $resultComment = $stmt->get_result();
-                  $comment = $resultComment->fetch_assoc();
-                  $stmt->close();
-
-                  echo "<td>
-                          <div class='comment-container' id='commentContainer{$transactNo}'>";
-                              if ($comment && !empty($comment['comment'])) {
-                                echo "<div class='comment-exists'>
-                            <div class='comment-input'><input type='text' class='form-control' id='commentInput{$transactNo}' value='" . htmlspecialchars($comment['comment']) . "' disabled></div>
-                            <div class='edit-button'><button type='button' class='btn btn-warning editComment' data-id='{$transactNo}'>Edit</button></div>
-                          </div>";
-                              } else {
-                                echo "<div class='no-comment'>
-                            <div class='comment-input'><input type='text' class='form-control' id='commentInput{$transactNo}' disabled></div>
-                            <div class='add-button'><button type='button' class='btn btn-success addComment' data-id='{$transactNo}'>Add</button></div>
-                          </div>";
-                              }
-
-                              echo "<div class='button-container'>
-                          <input type='text' class='recordId' value='{$transactNo}' hidden>
-                          <button type='button' class='btn btn-primary submitAddComment' data-id='{$transactNo}' style='display:none;'>Submit</button>
-                          <button type='button' class='btn btn-primary submitEditComment' data-id='{$transactNo}' style='display:none;'>Update</button>
-                          <button type='button' class='btn btn-danger deleteComment' data-id='{$transactNo}' style='display:none;'>Remove</button>
-                          <button type='button' class='btn btn-danger cancelEditComment' data-id='{$transactNo}' style='display:none;'>Cancel Edit</button>
-                          <button type='button' class='btn btn-danger cancelAddComment' data-id='{$transactNo}' style='display:none;'>Cancel Add</button>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>";
-                  
+                } else {
+                  // Output the empty row message if no data
+                  echo '<tr><td colspan="9" class="text-center">NO CONFIRMED BOOKING AS OF THE MOMENT</td></tr>';
                 }
 
-              } else {
-                // Output the empty row message if no data
-                echo '<tr><td colspan="9" class="text-center">NO CONFIRMED BOOKING AS OF THE MOMENT</td></tr>';
+                echo '</tbody></table></div></div>'; // Close table and containers
+              
+                if ($result)
+                  $result->free();
               }
 
-              echo '</tbody></table></div></div>'; // Close table and containers
-            
-              if ($result)
-                $result->free();
-            }
-            
-
-
-            // Call the function to render the table
-            renderConfirmedTransactionsTable($conn);
+              // Call the function to render the table
+              renderConfirmedTransactionsTable($conn);
             ?>
 
           </div>
