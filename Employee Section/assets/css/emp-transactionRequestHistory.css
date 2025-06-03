@@ -311,8 +311,8 @@ html, body {
 
 
 
+/* FOR REQUEST COL WIDTH */
 
-/* Column Widths Based on Headers - in px */
 .product-table th:nth-child(1),
 .product-table td:nth-child(1) {
   width: 96px; /* ~8% of 1200px */
@@ -374,6 +374,82 @@ html, body {
 .product-table td:nth-child(12) {
   display: none;
 }
+
+
+/* PAYMENT COL WIDTH */
+.payment-table th:nth-child(1),
+.payment-table td:nth-child(1) {
+  width: 70px; /* TRANSACTION NO */
+}
+
+.payment-table th:nth-child(2),
+.payment-table td:nth-child(2) {
+  width: 130px; /* BRANCH */
+}
+
+.payment-table th:nth-child(3),
+.payment-table td:nth-child(3) {
+  width: 60px; /* FLIGHT DATE */
+}
+
+.payment-table th:nth-child(4),
+.payment-table td:nth-child(4) {
+  width: 80px; /* AMOUNT */
+  text-align: center;
+}
+
+.payment-table th:nth-child(5),
+.payment-table td:nth-child(5) {
+  width: 70px; /* PROOF OF PAYMENT */
+}
+
+.payment-table th:nth-child(6),
+.payment-table td:nth-child(6) {
+  width: 40px; /* PAYMENT DATE */
+}
+
+.payment-table th:nth-child(7),
+.payment-table td:nth-child(7) {
+  width: 40px; /* STATUS */
+  text-align: center;
+}
+
+.payment-table th:nth-child(8),
+.payment-table td:nth-child(8) {
+  width: 180px; /* REMARKS */
+}
+
+.payment-table th:nth-child(9),
+.payment-table td:nth-child(9) {
+  display: none; /* RAW PAYMENT DATE (hidden) */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /* Remove all unneeded DataTables elements for minimalist display */

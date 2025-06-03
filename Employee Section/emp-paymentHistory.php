@@ -101,7 +101,7 @@ session_start();
 
 				<div class="table-content-body">
 					<div class="table-container">
-						<table id="product-table" class="table product-table">
+						<table id="payment-table" class="table payment-table">
 							<thead>
 								<tr>
 									<th>TRANSACTION NO</th>
@@ -200,12 +200,9 @@ session_start();
 
 											if ($remarks !== 'N/A') {
 												echo "<td>
-														<span class='badge p-2 rounded-pill {$remarksClass}'>
-															{$remarksFormatted}
-														</span>
-													</td>";
+														$remarks
+													  </td>";
 											} else {
-												
 												echo "<td></td>";
 											}
 
@@ -261,7 +258,7 @@ session_start();
 	<!-- DataTables #product-table -->
 	<script>
 		$(document).ready(function () {
-			const table = $('#product-table').DataTable({
+			const table = $('#payment-table').DataTable({
 				dom: 'rtip',
 				language: {
 					emptyTable: "No Transaction Records Available"
@@ -274,22 +271,9 @@ session_start();
 				autoHeight: false,
 				columnDefs: [
 					{
-						targets: [1, 2, 3, 5, 6],
+						targets: [1, 3, 6], // Disable sorting for selected columns
 						orderable: false
-					},
-					{ targets: 0, width: "40px" },   // TRANSACT NO
-					{ targets: 1, width: "10px" },   // BRANCH
-					{ targets: 2, width: "130px" },   // FLIGHT DATE
-					{ targets: 3, width: "160px" },   // REQUEST TITLE
-					{ targets: 4, width: "180px" },   // REQUEST DETAILS
-					{ targets: 5, width: "160px" },   // SPECIFIC DETAILS
-					{ targets: 6, width: "80px", className: "text-center" },    // TOTAL PAX
-					{ targets: 7, width: "120px", className: "text-center" },   // TOTAL AMOUNT
-					{ targets: 8, width: "130px" },   // REQUEST DATE
-					{ targets: 9, width: "120px" },   // STATUS
-					{ targets: 10, width: "160px" },  // REQUEST REMARKS
-					{ targets: 11, visible: false },  // RAW REQUEST DATE (hidden)
-					{ targets: [1, 2, 3, 5, 6, 9, 10], orderable: false }
+					}
 				]
 			});
 
@@ -307,7 +291,7 @@ session_start();
 				yearRange: "1900:2100",
 				onSelect: function (dateText) {
 					$(this).val(dateText);
-					table.column(8).search(dateText || '').draw(); // 8th column: RAW payment date
+					table.column(8).search(dateText || '').draw(); 
 				}
 			});
 
