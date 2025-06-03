@@ -167,8 +167,8 @@ require "../conn.php";
 
         <form id="paymentForm">
           <div class="modal-body">
-            <input type="" id="paymentIdInput" name="paymentId">
-            <input type="" id="accId" name="accId" value="<?php echo $_SESSION['agent_accountId']; ?>">
+            <input type="hidden" id="paymentIdInput" name="paymentId">
+            <input type="hidden" id="accId" name="accId" value="<?php echo $_SESSION['agent_accountId']; ?>">
 
             <div class="mb-4">
               <label for="paymentStatus" class="form-label fw-bold">Request Status:</label>

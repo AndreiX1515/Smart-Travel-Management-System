@@ -82,6 +82,7 @@ require "../conn.php";
 						<thead>
 							<tr>
 								<th>TRANSACTION NO</th>
+								<th>FLIGHT DATE</th>
 								<th>AMOUNT</th>
 								<th>PROOF OF PAYMENT</th>
 								<th>PAYMENT DATE</th>
@@ -93,8 +94,9 @@ require "../conn.php";
 						<tbody>
 							<?php
 							if ($agentRole != 'Head Agent') {
-								$sql1 = "SELECT b.transactNo, p.paymentId, p.amount, p.filePath, p.paymentDate, p.paymentStatus, p.paymentRemarks
+								$sql1 = "SELECT b.transactNo, p.paymentId, p.amount, p.filePath, p.paymentDate, p.paymentStatus, p.paymentRemarks, f.flightDepartureDate
                             FROM `booking` b
+														JOIN flight f ON b.flightId = f.flightId
                             JOIN `payment` p ON b.transactNo = p.transactNo
                             WHERE b.accountId = $accountId
                             ORDER BY p.paymentId ASC";
@@ -114,6 +116,8 @@ require "../conn.php";
 										$date = date("F d, Y", strtotime($row['paymentDate']));
 										$remarks = !empty($row['paymentRemarks']) ? $row['paymentRemarks'] : 'N/A';
 
+										$formattedFlightDate = date("Y.m.d", strtotime($row['flightDepartureDate']));
+
 										$status = isset($row['paymentStatus']) ? $row['paymentStatus'] : 'Unknown';
 										$statusClass = '';
 
@@ -133,6 +137,7 @@ require "../conn.php";
 
 										echo "<tr>
                                 <td>" . $row['transactNo'] . "</td>
+																<td>" . $formattedFlightDate . "</td>
                                 <td>₱ " . $amount . "</td>
                                 <td>
                                   <a href='functions/view-file.php?file=" . urlencode($row['filePath']) . "' target='_blank'>View File</a> 
@@ -150,8 +155,9 @@ require "../conn.php";
 									}
 								}
 							} else {
-								$sql1 = "SELECT b.transactNo, p.paymentId, p.amount, p.filePath, p.paymentDate, p.paymentStatus, p.paymentRemarks
+								$sql1 = "SELECT b.transactNo, p.paymentId, p.amount, p.filePath, p.paymentDate, p.paymentStatus, p.paymentRemarks, f.flightDepartureDate
                             FROM `booking` b
+														JOIN flight f ON b.flightId = f.flightId
                             JOIN `payment` p ON b.transactNo = p.transactNo
                             WHERE b.agentCode = '$agentCode'
                             ORDER BY p.paymentId ASC";
@@ -171,6 +177,8 @@ require "../conn.php";
 										$date = date("F d, Y", strtotime($row['paymentDate']));
 										$remarks = !empty($row['paymentRemarks']) ? $row['paymentRemarks'] : 'N/A';
 
+										$formattedFlightDate = date("Y.m.d", strtotime($row['flightDepartureDate']));
+
 										$status = isset($row['paymentStatus']) ? $row['paymentStatus'] : 'Unknown';
 										$statusClass = '';
 
@@ -190,6 +198,7 @@ require "../conn.php";
 
 										echo "<tr>
                                 <td>" . $row['transactNo'] . "</td>
+																<td>" . $formattedFlightDate . "</td>
                                 <td>₱ " . $amount . "</td>
                                 <td>
                                   <a href='functions/view-file.php?file=" . urlencode($row['filePath']) . "' target='_blank'>View File</a> 

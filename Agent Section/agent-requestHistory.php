@@ -84,6 +84,7 @@ require "../conn.php";
               <thead>
                 <tr>
                   <th>TRANSACT NO</th>
+                  <th>FLIGHT DATE</th>
                   <th>REQUEST DETAILS</th>
                   <th>SPECIFIC DETAILS</th>
                   <th>TOTAL PAX</th>
@@ -99,8 +100,9 @@ require "../conn.php";
                   if ($agentRole != 'Head Agent')
                   {
                     $sql1 = "SELECT b.transactNo, r.requestId, r.pax, r.requestCost, r.requestDate, r.requestStatus, r.requestRemarks,
-                              cd.details, cd.price, r.details as requestDetails
+                              cd.details, cd.price, r.details as requestDetails, f.flightDepartureDate
                             FROM `booking` b
+                            JOIN flight f ON b.flightId = f.flightId
                             JOIN `request` r ON b.transactNo = r.transactNo
                             JOIN `concerndetails` cd ON r.concerndetailsId = cd.concerndetailsId
                             WHERE b.accountId = $accountId
@@ -124,6 +126,8 @@ require "../conn.php";
                         $date = date("F d, Y", strtotime($row['requestDate']));
                         $remarks = !empty($row['requestRemarks']) ? $row['requestRemarks'] : 'N/A';
 
+                        $formattedFlightDate = date("Y.m.d", strtotime($row['flightDepartureDate']));
+
                         $status = isset($row['requestStatus']) ? $row['requestStatus'] : 'Unknown';
                         $statusClass = '';
 
@@ -144,6 +148,7 @@ require "../conn.php";
 
                         echo "<tr>
                                 <td>" . $row['transactNo'] . "</td>
+                                <td>" . $formattedFlightDate . "</td>
                                 <td>" . $row['details'] . "</td>
                                 <td>" . $row['requestDetails'] . "</td>
                                 <td>" . $row['pax'] . "</td>
@@ -164,8 +169,9 @@ require "../conn.php";
                   else
                   {
                     $sql1 = "SELECT b.transactNo, r.requestId, r.pax, r.requestCost, r.requestDate, r.requestStatus, r.requestRemarks,
-                              cd.details, cd.price, r.details as requestDetails
+                              cd.details, cd.price, r.details as requestDetails, f.flightDepartureDate
                             FROM `booking` b
+                            JOIN flight f ON b.flightId = f.flightId
                             JOIN `request` r ON b.transactNo = r.transactNo
                             JOIN `concerndetails` cd ON r.concerndetailsId = cd.concerndetailsId
                             WHERE b.agentCode = '$agentCode'
@@ -189,6 +195,8 @@ require "../conn.php";
                         $date = date("F d, Y", strtotime($row['requestDate']));
                         $remarks = !empty($row['requestRemarks']) ? $row['requestRemarks'] : 'N/A';
 
+                        $formattedFlightDate = date("Y.m.d", strtotime($row['flightDepartureDate']));
+
                         $status = isset($row['requestStatus']) ? $row['requestStatus'] : 'Unknown';
                         $statusClass = '';
 
@@ -209,6 +217,7 @@ require "../conn.php";
 
                         echo "<tr>
                                 <td>" . $row['transactNo'] . "</td>
+                                <td>" . $formattedFlightDate . "</td>
                                 <td>" . $row['details'] . "</td>
                                 <td>" . $row['requestDetails'] . "</td>
                                 <td>" . $row['pax'] . "</td>
