@@ -201,7 +201,6 @@ require "../conn.php";
                       }
                     }
                   }
-                  
                 ?>
               </tbody>
             </table>
@@ -223,6 +222,24 @@ require "../conn.php";
 
 
   <?php require "../Agent Section/includes/scripts.php"; ?>
+
+  
+
+  <!-- Data tables script -->
+   <script>
+  $(document).ready(function () {
+    $('#product-table').DataTable({
+      "pageLength": 10,
+      "lengthChange": true,
+      "searching": false,  // 🔍 Disable search bar
+      "ordering": true,
+      "order": [[10, 'asc']],  // Sort by "Departure Date" column (11th column = index 10)
+      "columnDefs": [
+        { "orderable": false, "targets": [2, 4] } // Disable sorting on Given Name and Fullname
+      ]
+    });
+  });
+</script>
 
 </body>
 

@@ -177,6 +177,18 @@ $current_date = date('D, F d, Y');
       </a>
     </li>
 
+    <!-- Client Payment -->
+    <li class="nav-item transaction">
+      <a class="nav-link page-button" href="../Agent Section/agent-clientPaymentHistory.php" data-page-name="Rooming List">
+        <div class="icon-wrapper">
+          <div class="icon"><i class="fa-solid fa-bed"></i></div>
+        </div>
+        <div class="label-wrapper">
+          <span class="label" style="font-size: 14px;">Client Payments List</span>
+        </div>
+      </a>
+    </li>
+
     <!-- SOA -->
     <li class="nav-item transaction">
       <a class="nav-link page-button" href="../Agent Section/agent-soa.php" data-page-name="SOA">
