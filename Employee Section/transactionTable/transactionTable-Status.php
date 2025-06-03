@@ -246,7 +246,7 @@ $statusTab = isset($_GET['status']) ? $_GET['status'] : 'all';
     </div>
 
   </div>
-  
+
 </div>
 
 
@@ -267,7 +267,7 @@ $statusTab = isset($_GET['status']) ? $_GET['status'] : 'all';
       // Reset classes
       buttons.forEach(btn => btn.classList.remove("active"));
 
-      // Find matching button
+      // Find and activate matching button
       const matchedButton = Array.from(buttons).find(btn =>
         btn.getAttribute("data-filter") === status
       );
@@ -285,9 +285,9 @@ $statusTab = isset($_GET['status']) ? $_GET['status'] : 'all';
         }
       }
 
-      // Always bind click events freshly (no duplicate due to cleanup)
+      // Rebind click events to avoid duplication
       buttons.forEach(button => {
-        button.removeEventListener("click", handleClick); // Prevent double binding
+        button.removeEventListener("click", handleClick);
         button.addEventListener("click", handleClick);
       });
 
@@ -296,25 +296,27 @@ $statusTab = isset($_GET['status']) ? $_GET['status'] : 'all';
         this.classList.add("active");
 
         const filterValue = this.getAttribute("data-filter");
+
         if ($.fn.DataTable.isDataTable("#product-table")) {
+          console.log(filterValue);
+
           $('#product-table').DataTable()
-            .column(8)
+            .column(9) // STATUS column
             .search(filterValue || '', true, false)
             .draw();
         }
       }
     }
 
-    // Bind tab show event
-    // statusTabBtn.addEventListener('shown.bs.tab', function () {
-    //   initStatusFilter(); // Reinitialize on every show
-    // });
+    // Bind tab show event correctly
+    statusTabBtn.addEventListener('shown.bs.tab', function () {
+      initStatusFilter();
+    });
 
-    // // Initialize if already active on page load
-    // if (statusTabPane.classList.contains('active')) {
-    //   initStatusFilter();
-    // }
-
+    // Initialize if already active
+    if (statusTabPane.classList.contains('active')) {
+      initStatusFilter();
+    }
   });
 </script>
 
@@ -336,17 +338,6 @@ $statusTab = isset($_GET['status']) ? $_GET['status'] : 'all';
         autoWidth: false,
         autoHeight: false,
         columnDefs: [
-          { targets: 0, width: '140px' }, // TRANSACT NO
-          { targets: 1, width: '120px' }, // BRANCH
-          { targets: 2, width: '110px' }, // FLIGHT DATE
-          { targets: 3, width: '90px' },  // TOTAL PAX
-          { targets: 4, width: '120px' }, // PACKAGE PRICE
-          { targets: 5, width: '150px' }, // TOTAL REQUEST COST
-          { targets: 6, width: '120px' }, // AMOUNT PAID
-          { targets: 7, width: '110px' }, // BALANCE
-          { targets: 8, width: '110px' }, // BOOKING DATE
-          { targets: 9, width: '100px' }, // STATUS
-
           // Disable sorting where needed
           { targets: [1, 3, 4, 5, 6, 7], orderable: false }
         ]
@@ -381,12 +372,6 @@ $statusTab = isset($_GET['status']) ? $_GET['status'] : 'all';
     });
 
     updatePagination();
-
-    // Filters
-    $('#packages').on('change', function () {
-      const selectedPackage = $(this).val();
-      tableProduct.column(1).search(selectedPackage || '').draw();
-    });
 
     // Clear filters and reset table
     $('#clearSorting').on('click', function () {
@@ -467,7 +452,13 @@ $statusTab = isset($_GET['status']) ? $_GET['status'] : 'all';
     //     console.log("BookingStartDate Input Value:", value);
     // });
 
+
+
+
+
     // Clear filters and reset table
+    
+    
     $('#clearSorting').on('click', function () {
       $('#search').val('');
       tableProduct.search('').draw();
@@ -475,8 +466,8 @@ $statusTab = isset($_GET['status']) ? $_GET['status'] : 'all';
       $('#status').val('').trigger('change');
       $('#packages').val('').trigger('change');
 
-      $('#BookingStartDate').val('').trigger('change');
-      $('#FlightStartDate').val('').trigger('change');
+      // $('#BookingStartDate').val('').trigger('change');
+      // $('#FlightStartDate').val('').trigger('change');
 
       tableProduct.order([[2, 'asc']])
         .search('')
@@ -488,3 +479,4 @@ $statusTab = isset($_GET['status']) ? $_GET['status'] : 'all';
 
   }); 
 </script>
+

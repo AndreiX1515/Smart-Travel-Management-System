@@ -589,40 +589,40 @@
 /* Column width adjustments */
 .product-table th:nth-child(1),
 .product-table td:nth-child(1) {
-  width: 8%; /* Transact No */
+  width: 6%; /* Transact No */
 }
 
 .product-table th:nth-child(2),
 .product-table td:nth-child(2) {
-  width: 14%; /* Agent Name */
+  width: 15%; /* Branch */
 }
 
 .product-table th:nth-child(3),
 .product-table td:nth-child(3) {
-  width: 12%; /* Flight Date */
+  width: 6%; /* Flight Date */
 }
 
 .product-table th:nth-child(4),
 .product-table td:nth-child(4) {
-  width: 8%; /* Total Pax */
+  width: 4%; /* Total Pax */
   text-align: center;
 }
 
 .product-table th:nth-child(5),
 .product-table td:nth-child(5) {
-  width: 12%; /* Package Price */
+  width: 10%; /* Package Price */
   text-align: center;
 }
 
 .product-table th:nth-child(6),
 .product-table td:nth-child(6) {
-  width: 14%; /* Total Request Cost */
+  width: 10%; /* Total Request Cost */
   text-align: center;
 }
 
 .product-table th:nth-child(7),
 .product-table td:nth-child(7) {
-  width: 12%; /* Amount Paid */
+  width: 10%; /* Amount Paid */
   text-align: center;
 }
 
@@ -634,9 +634,19 @@
 
 .product-table th:nth-child(9),
 .product-table td:nth-child(9) {
-  width: 6%; /* Status */
+  width: 6%; /* Booking Date */
   text-align: center;
 }
+
+.product-table th:nth-child(10),
+.product-table td:nth-child(10) {
+  width: 4%; /* Status */
+  text-align: center;
+}
+
+
+
+
 
 /* Table Actions (buttons, etc.) */
 .table-actions {

@@ -1,0 +1,539 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.main-content {
+  display: flex;
+  flex-direction: column;
+  padding: 0px 0px;
+  box-sizing: border-box;
+
+  /* border: 1px solid black; */
+}
+
+.page-content {
+  flex: 1 0 auto;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  /* border: 1px solid black; */
+}
+
+.table-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+
+  /* border: 1px solid black; */
+}
+
+.table-content-header {
+  height: 5vh;
+  padding: 10px 0px 0px 0px;
+  display: flex;
+  justify-content: space-between;
+  box-sizing: border-box;
+
+  /* border: 1px solid black; */
+}
+
+.table-content-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+  /* border: 1px solid black; */
+}
+
+
+.table-container {
+  border: 1px solid gainsboro;
+  overflow-y: auto;
+  /* border: 1px solid black; */
+}
+
+
+
+
+
+.table-footer {
+  height: 6vh;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 5px 20px;
+  margin-top: 5px;
+  box-sizing: border-box;
+  border: 1px solid gainsboro;
+
+  /* border: 1px solid black; */
+}
+
+
+
+/* FOR TABLE-CONTENT-HEADER */
+
+
+/* SEARCH WRAPPER */
+.search-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.search-input-wrapper {
+  display: flex;
+  align-items: center;
+  width: 300px;
+  height: 40px;
+  border: 1px solid #ccc;
+  background-color: transparent;
+  border-radius: 4px;
+}
+
+.search-input-wrapper input {
+  flex: 1;
+  border: none;
+  font-size: 16px;
+  color: #333;
+  background-color: transparent;
+  outline: none;
+  padding: 0 10px;
+}
+
+.search-input-wrapper input::placeholder {
+  color: #999;
+}
+
+.search-input-wrapper .icon {
+  color: #666;
+  font-size: 16px;
+  margin-left: 10px;
+}
+
+
+
+/* SECOND-HEADER-WRAPPER */
+
+.second-header-wrapper {
+  display: flex;
+  gap: 12px;
+  justify-content: left;
+  align-items: center;
+  height: auto;
+}
+
+/* General Filter Container */
+.filter-container {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Date Section */
+.filter-date-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: flex-start;
+}
+
+.filter-date-wrapper label {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.filter-date-inputs {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+
+/* Input with Calendar Icon */
+.filter-input-with-icon {
+  position: relative;
+  width: 200px;
+  border: 1px solid gainsboro;
+  border-radius: 4px;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+}
+
+.filter-input-with-icon input {
+  width: 100%;
+  height: 32px;
+  padding: 10px 35px 10px 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: transparent;
+  color: #333;
+  font-size: 14px;
+  outline: none;
+}
+
+.filter-input-with-icon input::placeholder {
+  color: #999;
+}
+
+.filter-calendar-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  color: #6c757d;
+  pointer-events: none;
+}
+
+/* Flat input without hover border effect */
+.filter-input-with-icon input:hover,
+.filter-input-with-icon input:focus {
+  border: none;
+  box-shadow: none;
+  background-color: transparent;
+  cursor: text;
+}
+
+
+/* Button Area */
+.filter-buttons {
+  display: flex;
+  align-items: center;
+}
+
+
+
+
+
+
+.btn-material {
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border: 1px solid #2980b9;
+  background-color: #2980b9;  /* flat blue */
+  color: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-material:hover {
+  background-color: #1f5c8a; /* darker blue on hover */
+}
+
+.btn-material:active {
+  background-color: #16608c;
+}
+
+/* Reset icon: simple circular arrow using SVG */
+.btn-material .reset-icon {
+  width: 14px;
+  height: 14px;
+  fill: #fff;
+}
+
+
+
+
+
+
+
+
+/* FOR TABLE-CONTENT-BODY*/
+
+
+
+
+
+/* GENERAL TABLE STYLING */
+.table {
+  width: 100%;
+  height: auto;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-family: sans-serif;
+  font-size: 0.75em;
+}
+
+/* Header Styling */
+.table th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: #e6e6e6;
+  font-weight: bold;
+  text-align: left;
+  border: 1px solid #ddd;
+  font-size: 0.9em;
+  white-space: nowrap;
+  text-transform: uppercase;
+  padding: 8px;
+}
+
+/* Body Styling */
+.table td {
+  border: 1px solid #ddd;
+  text-align: left;
+  vertical-align: middle;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 1.025em;
+  padding: 8px;
+}
+
+/* Hover effect */
+.table tr:hover {
+  background-color: #f9f9f9;
+  cursor: pointer;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* Column Widths Based on Headers - in px */
+.product-table th:nth-child(1),
+.product-table td:nth-child(1) {
+  width: 96px; /* ~8% of 1200px */
+}
+
+.product-table th:nth-child(2),
+.product-table td:nth-child(2) {
+  width: 120px; /* ~10% */
+}
+
+.product-table th:nth-child(3),
+.product-table td:nth-child(3) {
+  width: 120px;
+}
+
+.product-table th:nth-child(4),
+.product-table td:nth-child(4) {
+  width: 144px; /* ~12% */
+}
+
+.product-table th:nth-child(5),
+.product-table td:nth-child(5) {
+  width: 168px; /* ~14% */
+}
+
+.product-table th:nth-child(6),
+.product-table td:nth-child(6) {
+  width: 144px;
+}
+
+.product-table th:nth-child(7),
+.product-table td:nth-child(7) {
+  width: 72px; /* ~6% */
+  text-align: center;
+}
+
+.product-table th:nth-child(8),
+.product-table td:nth-child(8) {
+  width: 96px; /* ~8% */
+  text-align: center;
+}
+
+.product-table th:nth-child(9),
+.product-table td:nth-child(9) {
+  width: 120px; /* ~10% */
+}
+
+.product-table th:nth-child(10),
+.product-table td:nth-child(10) {
+  width: 72px; /* ~6% */
+}
+
+.product-table th:nth-child(11),
+.product-table td:nth-child(11) {
+  width: 168px; /* ~14% */
+}
+
+.product-table th:nth-child(12),
+.product-table td:nth-child(12) {
+  display: none;
+}
+
+
+/* Remove all unneeded DataTables elements for minimalist display */
+.dataTables_paginate,
+.dataTables_length label,
+.dataTables_info {
+  display: none !important;
+}
+
+/* Keep minimal pagination controls if needed */
+.dataTables_paginate .paginate_button {
+  padding: 3px 6px;
+  margin: 0 2px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  font-size: 12px;
+}
+
+.dataTables_paginate .paginate_button:hover {
+  background-color: #0056b3;
+}
+
+.dataTables_paginate .paginate_button.disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* FOR TABLE-FOOTER */
+.pagination-btn {
+  background-color: #ffffff; /* White background */
+  border: 1px solid #ddd; /* Light border for buttons */
+  border-radius: 5px; /* Rounded corners */
+  padding: 8px 15px; /* Button padding */
+  font-size: 14px; /* Button font size */
+  font-weight: normal; /* Normal text weight */
+  color: #333; /* Dark text color */
+  cursor: pointer; /* Pointer cursor on hover */
+  margin: 0 5px; /* Space between buttons */
+}
+
+/* Style for the page info */
+.page-info {
+  font-size: 14px;
+  color: #333; /* Dark text for page info */
+  margin: 0 10px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

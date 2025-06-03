@@ -1,9 +1,4 @@
-<?php
-$onDue = isset($_GET['onDue']) ? $_GET['onDue'] : 'all';
-?>
-
 <div class="table-container">
-
   <div class="table-header">
     <div class="search-wrapper">
       <div class="search-input-wrapper">
@@ -266,122 +261,110 @@ $onDue = isset($_GET['onDue']) ? $_GET['onDue'] : 'all';
       </div>
 
       <div class="pagination-controls">
-        <button id="prevPage" class="pagination-btn">Previous</button>
-        <span id="pageInfo" class="page-info">Page 1 of 10</span>
-        <button id="nextPage" class="pagination-btn">Next</button>
+        <button id="onduePrevPage" class="pagination-btn">Previous</button>
+        <span id="onduePageInfo" class="page-info">Page 1 of 10</span>
+        <button id="ondueNextPage" class="pagination-btn">Next</button>
       </div>
     </div>
 
   </div>
-
 </div>
 
 
-<!-- For Button Tabs - On Due Sorting -->
+<!-- Enhanced Script for Button Tabs - On Due Sorting -->
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     const onDueTabBtn = document.getElementById('pills-home-tab');
     const onDueTabPane = document.getElementById('pills-home');
+    const buttons = document.querySelectorAll("#booking-filter-tabs .filter-btn");
 
-    if (!onDueTabBtn || !onDueTabPane) return;
+    if (!onDueTabBtn || !onDueTabPane || !buttons.length) return;
+
+    const onDue = "<?php echo isset($_GET['onDue']) ? $_GET['onDue'] : 'all'; ?>";
+    console.log("onDue from URL:", onDue);
+
+    // Initialize on tab shown
+    onDueTabBtn.addEventListener('shown.bs.tab', () => {
+      requestAnimationFrame(initOnDueFilter);
+    });
+
+    // Also run on load if already active
+    if (onDueTabPane.classList.contains('active')) {
+      requestAnimationFrame(initOnDueFilter);
+    }
 
     function initOnDueFilter() {
-      const onDue = "<?php echo isset($_GET['onDue']) ? $_GET['onDue'] : 'all'; ?>";
-      console.log("onDue from URL:", onDue);
-
-      const buttons = document.querySelectorAll("#booking-filter-tabs .filter-btn");
-
-      // Remove current active-tab
+      // Reset all active-tab classes
       buttons.forEach(btn => btn.classList.remove("active-tab"));
 
-      // Find and activate the matching button
       const matchedButton = Array.from(buttons).find(btn =>
         btn.getAttribute("data-filter") === onDue
       );
 
       if (matchedButton) {
         matchedButton.classList.add("active-tab");
-        console.log("Activating button:", matchedButton.innerText);
-        setTimeout(() => matchedButton.click(), 10);
+        console.log("Activating filter button:", matchedButton.innerText);
+        matchedButton.click(); // Trigger handler
       } else {
-        console.log("No matching filter button found.");
+        console.warn("No matching filter button found for:", onDue);
       }
 
-      // Rebind click events to prevent duplicates
+      // Clean old and reattach new event listeners
       buttons.forEach(button => {
-        button.removeEventListener("click", handleClick); // Prevent multiple bindings
-        button.addEventListener("click", handleClick);
+        button.removeEventListener("click", handleClick);
+        button.addEventListener("click", handleClick, { passive: true });
       });
-
-      function handleClick() {
-        buttons.forEach(btn => btn.classList.remove("active-tab"));
-        this.classList.add("active-tab");
-
-        const filterValue = this.getAttribute("data-filter")?.toLowerCase();
-
-        if ($.fn.DataTable.isDataTable("#ondue-table")) {
-          const table = $('#ondue-table').DataTable();
-
-          // Remove existing dueDateFilter
-          $.fn.dataTable.ext.search = $.fn.dataTable.ext.search.filter(f => f.name !== 'dueDateFilter');
-
-          // Add new custom filter for flight date
-          const dueDateFilter = function dueDateFilter(settings, data, dataIndex) {
-            const flightDateStr = data[2]; // Flight Date column (index 2)
-
-            if (!flightDateStr) return false; // exclude rows without flight date
-
-            const flightDate = new Date(flightDateStr);
-            if (isNaN(flightDate)) return false; // invalid date, exclude
-
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-            flightDate.setHours(0, 0, 0, 0);
-
-            const diffInDays = Math.floor((flightDate - today) / (1000 * 60 * 60 * 24));
-
-            switch (filterValue) {
-              case "overdue":
-                return diffInDays < 0;  // flight date is before today
-              case "5days":
-                return diffInDays >= 0 && diffInDays <= 5;
-              case "10days":
-                return diffInDays >= 0 && diffInDays <= 10;
-              case "20days":
-                return diffInDays >= 0 && diffInDays <= 20;
-              case "30daysplus":
-                return diffInDays >= 31;
-              default:
-                return true; // show all rows if no filter
-            }
-          };
-
-          dueDateFilter.name = 'dueDateFilter';
-          $.fn.dataTable.ext.search.push(dueDateFilter);
-
-          table.draw();
-        }
-      }
-
     }
 
-    // Run filter logic every time the tab is shown
-    onDueTabBtn.addEventListener('shown.bs.tab', function () {
-      initOnDueFilter();
-    });
+    function handleClick(event) {
+      buttons.forEach(btn => btn.classList.remove("active-tab"));
+      this.classList.add("active-tab");
 
-    // If the tab is already active on page load
-    if (onDueTabPane.classList.contains('active')) {
-      initOnDueFilter();
+      const filterValue = this.getAttribute("data-filter")?.toLowerCase() || "";
+
+      if (!$.fn.DataTable.isDataTable("#ondue-table")) return;
+
+      const table = $('#ondue-table').DataTable();
+
+      // Clear old filters with name 'dueDateFilter'
+      $.fn.dataTable.ext.search = $.fn.dataTable.ext.search.filter(fn => fn.name !== 'dueDateFilter');
+
+      const dueDateFilter = function dueDateFilter(settings, data) {
+        const dateStr = data[2]; // Assumes date is in column index 2
+        if (!dateStr) return false;
+
+        const flightDate = new Date(dateStr);
+        if (isNaN(flightDate)) return false;
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        flightDate.setHours(0, 0, 0, 0);
+
+        const diffInDays = Math.floor((flightDate - today) / (1000 * 60 * 60 * 24));
+
+        switch (filterValue) {
+          case "overdue": return diffInDays < 0;
+          case "5days": return diffInDays >= 0 && diffInDays <= 5;
+          case "10days": return diffInDays >= 0 && diffInDays <= 10;
+          case "20days": return diffInDays >= 0 && diffInDays <= 20;
+          case "30daysplus": return diffInDays >= 31;
+          default: return true;
+        }
+      };
+
+      dueDateFilter.name = 'dueDateFilter';
+      $.fn.dataTable.ext.search.push(dueDateFilter);
+
+      table.draw();
     }
   });
 </script>
 
 
-<!-- DataTables #product-table -->
+<!-- DataTables #ondue-table -->
 <script>
   $(document).ready(function () {
-    const tableProduct = $('#ondue-table').DataTable({
+    const ondueTable = $('#ondue-table').DataTable({
       dom: 'rtip',
       language: {
         emptyTable: "No Transaction Records Available"
@@ -398,114 +381,77 @@ $onDue = isset($_GET['onDue']) ? $_GET['onDue'] : 'all';
       }]
     });
 
-    const updatePagination = () => {
-      const info = tableProduct.page.info();
+    const updateOnduePagination = () => {
+      const info = ondueTable.page.info();
       const currentPage = info.page + 1;
       const totalPages = info.pages;
 
-      $('#pageInfo').text(`Page ${currentPage} of ${totalPages}`);
+      $('#onduePageInfo').text(`Page ${currentPage} of ${totalPages}`);
       const isSinglePage = totalPages <= 1;
 
-      $('#prevPage').prop('disabled', currentPage === 1 || isSinglePage);
-      $('#nextPage').prop('disabled', currentPage === totalPages || isSinglePage);
+      $('#onduePrevPage').prop('disabled', currentPage === 1 || isSinglePage);
+      $('#ondueNextPage').prop('disabled', currentPage === totalPages || isSinglePage);
     };
 
     // Pagination Controls
-    $('#prevPage').on('click', () => {
-      tableProduct.page('previous').draw('page');
-      updatePagination();
+    $('#onduePrevPage').on('click', () => {
+      ondueTable.page('previous').draw('page');
+      updateOnduePagination();
     });
 
-    $('#nextPage').on('click', () => {
-      tableProduct.page('next').draw('page');
-      updatePagination();
+    $('#ondueNextPage').on('click', () => {
+      ondueTable.page('next').draw('page');
+      updateOnduePagination();
     });
 
     // Search
-    $('#search').on('keyup', function () {
-      tableProduct.search(this.value).draw();
-      updatePagination();
+    $('#ondueSearch').on('keyup', function () {
+      ondueTable.search(this.value).draw();
+      updateOnduePagination();
     });
 
     // Filters
-    $('#packages').on('change', function () {
+    $('#onduePackagesFilter').on('change', function () {
       const val = $(this).val();
-      tableProduct.column(1).search(val || '').draw();
-      updatePagination();
+      ondueTable.column(1).search(val || '').draw();
+      updateOnduePagination();
     });
 
-    $('#BookingStartDate').on('change', function () {
-      const val = $(this).val();
-      tableProduct.column(3).search(val || '').draw();
-      updatePagination();
-    });
+    // // Flight Date filter using Flatpickr
+    // const ondueFlightDateInput = document.getElementById("ondueFlightStartDate");
 
-    $('#FlightStartDate').on('change', function () {
-      const val = $(this).val();
-      tableProduct.column(2).search(val || '').draw();
-      updatePagination();
-    });
+    // flatpickr(ondueFlightDateInput, {
+    //   dateFormat: "Y-m-d",
+    //   allowInput: true,
+    //   onChange: function (selectedDates, dateStr, instance) {
+    //     ondueTable.column(2).search(dateStr || '').draw();
+    //     updateOnduePagination();
+    //   }
+    // });
 
-    // Datepickers
-    $("#FlightStartDate").datepicker({
-      dateFormat: "yy-mm-dd",
-      showAnim: "fadeIn",
-      changeMonth: true,
-      changeYear: true,
-      yearRange: "1900:2100",
-      onSelect: function (dateText) {
-        $(this).val(dateText);
-        tableProduct.column(2).search(dateText || '').draw();
-        updatePagination();
-      }
-    });
-
-    $("#BookingStartDate").datepicker({
-      dateFormat: "mm-dd-yy",
-      showAnim: "fadeIn",
-      changeMonth: true,
-      changeYear: true,
-      yearRange: "1900:2100",
-      onSelect: function (dateText) {
-        $(this).val(dateText);
-        tableProduct.column(4).search(dateText || '').draw();
-        updatePagination();
-      }
-    });
-
-    // Manual input formatter
-    $("#BookingStartDate").on("input", function () {
-      let value = $(this).val().replace(/[^\d-]/g, '');
-      if (value.length > 2 && value.charAt(2) !== '-') {
-        value = value.substring(0, 2) + '-' + value.substring(2);
-      }
-      if (value.length > 5 && value.charAt(5) !== '-') {
-        value = value.substring(0, 5) + '-' + value.substring(5);
-      }
-      if (value.length > 10) {
-        value = value.substring(0, 10);
-      }
-
-      $(this).val(value);
-      tableProduct.column(5).search(value || '').draw();
-      updatePagination();
-    });
+    // // Manual input fallback
+    // ondueFlightDateInput.addEventListener('input', function () {
+    //   const val = this.value;
+    //   ondueTable.column(2).search(val || '').draw();
+    //   updateOnduePagination();
+    // });
 
     // Clear All Filters
-    $('#clearSorting').on('click', function () {
-      $('#search, #BookingStartDate, #FlightStartDate').val('');
-      $('#status, #packages').val('').trigger('change');
+    $('#ondueClearFilters').on('click', function () {
+      $('#ondueSearch, #ondueBookingStartDate, #ondueFlightStartDate').val('');
+      $('#ondueStatusFilter, #onduePackagesFilter').val('').trigger('change');
 
-      tableProduct
+      ondueTable
         .order([[2, 'asc']])
         .search('')
         .columns().search('')
         .draw();
 
-      updatePagination();
+      updateOnduePagination();
     });
 
     // Initial call
-    updatePagination();
+    updateOnduePagination();
   });
 </script>
+

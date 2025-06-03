@@ -250,7 +250,7 @@
 </div>
 
 
-<!-- For Button Tabs Status Sorting -->
+<!-- For Button Tabs Status Sorting (NavTabs) -->
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         // Get the status from the URL
@@ -268,7 +268,7 @@
 
         if (matchedButton) {
             matchedButton.classList.add("active"); // Highlight the correct button
-            console.log("Activating button:", matchedButton.innerText);
+            // console.log("Activating button:", matchedButton.innerText);
 
             setTimeout(() => {
                 matchedButton.click();
@@ -300,7 +300,7 @@
 
                 // Apply DataTables filtering
                 if ($.fn.DataTable.isDataTable("#product-table")) {
-                    $('#product-table').DataTable().column(8).search(filterValue || '', true, false).draw();
+                    $('#product-table').DataTable().column(9).search(filterValue || '', true, false).draw();
                 }
             });
         });
@@ -362,66 +362,66 @@
             tableRemaining.column(1).search(selectedPackage || '').draw();
         });
 
-        // Booking Date Filter
-        $('#BookingStartDate').on('change', function () {
-            const selectedBookingDate = $(this).val();
-            console.log("Booking Date Filter:", selectedBookingDate);
-            tableRemaining.column(3).search(selectedBookingDate || '').draw();
-        });
+        // // Booking Date Filter
+        // $('#BookingStartDate').on('change', function () {
+        //     const selectedBookingDate = $(this).val();
+        //     console.log("Booking Date Filter:", selectedBookingDate);
+        //     tableRemaining.column(3).search(selectedBookingDate || '').draw();
+        // });
 
-        // Flight Date Filter
-        $('#FlightStartDate').on('change', function () {
-            const selectedFlightDate = $(this).val();
-            console.log("Flight Date Filter:", selectedFlightDate);
-            tableRemaining.column(2).search(selectedFlightDate || '').draw();
-        });
+        // // Flight Date Filter
+        // $('#FlightStartDate').on('change', function () {
+        //     const selectedFlightDate = $(this).val();
+        //     console.log("Flight Date Filter:", selectedFlightDate);
+        //     tableRemaining.column(2).search(selectedFlightDate || '').draw();
+        // });
 
-        // FlightStartDate Datepicker
-        $("#FlightStartDate").datepicker({
-            dateFormat: "yy-mm-dd",
-            showAnim: "fadeIn",
-            changeMonth: true,
-            changeYear: true,
-            yearRange: "1900:2100",
-            onSelect: function (dateText) {
-                $(this).val(dateText);
-                console.log("FlightStartDate Selected Date (onSelect): " + dateText);
-                tableRemaining.column(2).search(dateText || '').draw();
-            }
-        });
+        // // FlightStartDate Datepicker
+        // $("#FlightStartDate").datepicker({
+        //     dateFormat: "yy-mm-dd",
+        //     showAnim: "fadeIn",
+        //     changeMonth: true,
+        //     changeYear: true,
+        //     yearRange: "1900:2100",
+        //     onSelect: function (dateText) {
+        //         $(this).val(dateText);
+        //         console.log("FlightStartDate Selected Date (onSelect): " + dateText);
+        //         tableRemaining.column(2).search(dateText || '').draw();
+        //     }
+        // });
 
-        // BookingStartDate Datepicker
-        $("#BookingStartDate").datepicker({
-            dateFormat: "mm-dd-yy",
-            showAnim: "fadeIn",
-            changeMonth: true,
-            changeYear: true,
-            yearRange: "1900:2100",
-            onSelect: function (dateText) {
-                $(this).val(dateText);
-                console.log("BookingStartDate Selected Date (onSelect): " + dateText);
-                tableRemaining.column(4).search(dateText || '').draw();
-            }
-        });
+        // // BookingStartDate Datepicker
+        // $("#BookingStartDate").datepicker({
+        //     dateFormat: "mm-dd-yy",
+        //     showAnim: "fadeIn",
+        //     changeMonth: true,
+        //     changeYear: true,
+        //     yearRange: "1900:2100",
+        //     onSelect: function (dateText) {
+        //         $(this).val(dateText);
+        //         console.log("BookingStartDate Selected Date (onSelect): " + dateText);
+        //         tableRemaining.column(4).search(dateText || '').draw();
+        //     }
+        // });
 
-        // BookingStartDate Input Validation and Formatting
-        $("#BookingStartDate").on("input", function () {
-            var value = $(this).val().replace(/[^\d-]/g, '');
+        // // BookingStartDate Input Validation and Formatting
+        // $("#BookingStartDate").on("input", function () {
+        //     var value = $(this).val().replace(/[^\d-]/g, '');
 
-            if (value.length > 2 && value.charAt(2) !== '-') {
-                value = value.substring(0, 2) + '-' + value.substring(2);
-            }
-            if (value.length > 5 && value.charAt(5) !== '-') {
-                value = value.substring(0, 5) + '-' + value.substring(5);
-            }
-            if (value.length > 10) {
-                value = value.substring(0, 10);
-            }
+        //     if (value.length > 2 && value.charAt(2) !== '-') {
+        //         value = value.substring(0, 2) + '-' + value.substring(2);
+        //     }
+        //     if (value.length > 5 && value.charAt(5) !== '-') {
+        //         value = value.substring(0, 5) + '-' + value.substring(5);
+        //     }
+        //     if (value.length > 10) {
+        //         value = value.substring(0, 10);
+        //     }
 
-            $(this).val(value);
-            tableRemaining.column(5).search(value || '').draw();
-            console.log("BookingStartDate Input Value (on input): " + value);
-        });
+        //     $(this).val(value);
+        //     tableRemaining.column(5).search(value || '').draw();
+        //     console.log("BookingStartDate Input Value (on input): " + value);
+        // });
 
         // Clear All Filters
         $('#clearSorting').on('click', function () {

@@ -1266,7 +1266,7 @@ error_reporting(E_ALL);
     $('#pills-home-tab').on('click', function () {
       $('#saveChanges').css('display', 'none'); // Hide Save button
       changes = {}; // Flush the changes array
-      console.log("Changes array flushed:", changes); // Log the flushed array
+      // console.log("Changes array flushed:", changes); // Log the flushed array
 
       // Reset all checkboxes to their original state (untrigger non-changed checkboxes)
       $('.status-checkbox').each(function () {

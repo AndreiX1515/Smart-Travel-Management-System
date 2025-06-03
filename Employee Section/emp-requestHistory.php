@@ -10,9 +10,14 @@ session_start();
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Employee - Transactions</title>
   <?php include '../Employee Section/includes/emp-head.php' ?>
-  <link rel="stylesheet"
-    href="../Employee Section/assets/css/emp-transactionRequestPayment.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="../Employee Section/assets/css/emp-transactionRequestHistory.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="../Employee Section/assets/css/emp-sidebar-navbar.css?v=<?php echo time(); ?>">
+
+  <!-- Include Flatpickr -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+
 </head>
 
 <body>
@@ -49,129 +54,148 @@ session_start();
     </script>
 
     <div class="main-content">
-      <div class="table-container">
 
-        <div class="table-header">
-          <div class="search-wrapper">
+      <div class="page-content">
+
+        <div class="table-content-header">
+
+           <div class="search-wrapper">
             <div class="search-input-wrapper">
-              <input type="text" id="search" placeholder="Search here..">
+              <i class="fas fa-search icon"></i>
+              <input type="text" id="search" placeholder="Search...">
             </div>
           </div>
 
           <div class="second-header-wrapper">
 
-            <div class="date-range-wrapper flightbooking-wrapper">
-              <div class="date-range-inputs-wrapper">
-                <div class="input-with-icon">
-                  <input type="text" class="datepicker" id="FlightStartDate" placeholder="Request Date">
-                  <i class="fas fa-calendar-alt calendar-icon"></i>
+            <div class="filter-container">
+
+              <div class="filter-date-wrapper">
+
+                <div class="filter-date-inputs">
+
+                  <div class="filter-input-with-icon">
+                   <input type="text" id="FlightStartDate" class="filter-input" placeholder="Flight Date">
+
+                    <i class="fas fa-calendar-alt filter-calendar-icon"></i>
+                  </div>
+
                 </div>
+
               </div>
+
+              <div class="filter-buttons">
+                <button id="clearSorting" class="btn-material">
+                  <svg class="reset-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M12 4V1L8 5l4 4V6a6 6 0 1 1-6 6H4a8 8 0 1 0 8-8z"/>
+                  </svg>
+                </button>
+              </div>
+
             </div>
 
-            <div class="buttons-wrapper">
-              <button id="clearSorting" class="btn btn-secondary">
-                Clear Filters
-              </button>
-            </div>
+
           </div>
 
         </div>
 
-        <div class="table-container">
-          <table class="product-table" id="product-table">
-            <thead>
-              <tr>
-                <th>TRANSACT NO</th>
-                <th>BRANCH</th>
-                <th>FLIGHT DATE</th>
-                <th>REQUEST TITLE</th>
-                <th>REQUEST DETAILS</th>
-                <th>SPECIFIC DETAILS</th>
-                <th>TOTAL PAX</th>
-                <th>TOTAL AMOUNT</th>
-                <th>REQUEST DATE</th>
-                <th>STATUS</th>
-                <th>REQUEST REMARKS</th>
-                <th style='display:none;'>RAW REQUEST DATE</th>
-              </tr>
-            </thead>
-            <tbody>
-              <?php
-              $sql1 = "SELECT r.requestId, r.transactNo AS `TransactNo`, br.branchName,
-													c.concernTitle AS `RequestTitle`, cd.details AS `RequestDetails`, b.pax AS `TotalPax`,
-													r.requestCost as requestCost, r.requestRemarks,
-													r.customRequest as customRequest, r.details as details, r.requestDate, 
-													r.requestStatus AS `Status`, f.flightDepartureDate AS `FlightDate`
-												FROM request r
-												LEFT JOIN concern c ON r.concernId = c.concernId
-												LEFT JOIN concerndetails cd ON r.concernDetailsId = cd.concernDetailsId
-												LEFT JOIN booking b ON r.transactNo = b.transactNo
-                        JOIN flight f ON b.flightId = f.flightId
-												LEFT JOIN branch br ON br.branchAgentCode = b.agentCode
-												WHERE r.requestStatus = 'Confirmed'
-												GROUP BY r.requestId";
+        <div class="table-content-body">
+          <div class="table-container">
+            <table class="table product-table" id="product-table">
+              <thead>
+                <tr>
+                  <th>TRANSACT NO</th>
+                  <th>BRANCH</th>
+                  <th>FLIGHT DATE</th>
+                  <th>REQUEST TITLE</th>
+                  <th>REQUEST DETAILS</th>
+                  <th>SPECIFIC DETAILS</th>
+                  <th>TOTAL PAX</th>
+                  <th>TOTAL AMOUNT</th>
+                  <th>REQUEST DATE</th>
+                  <th>STATUS</th>
+                  <th>REQUEST REMARKS</th>
+                  <th>RAW REQUEST DATE</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php
+                $sql1 = "SELECT r.requestId, r.transactNo AS `TransactNo`, br.branchName,
+                            c.concernTitle AS `RequestTitle`, cd.details AS `RequestDetails`, b.pax AS `TotalPax`,
+                            r.requestCost as requestCost, r.requestRemarks,
+                            r.customRequest as customRequest, r.details as details, r.requestDate, 
+                            r.requestStatus AS `Status`, f.flightDepartureDate AS `FlightDate`
+                          FROM request r
+                          LEFT JOIN concern c ON r.concernId = c.concernId
+                          LEFT JOIN concerndetails cd ON r.concernDetailsId = cd.concernDetailsId
+                          LEFT JOIN booking b ON r.transactNo = b.transactNo
+                          JOIN flight f ON b.flightId = f.flightId
+                          LEFT JOIN branch br ON br.branchAgentCode = b.agentCode
+                          WHERE r.requestStatus = 'Confirmed'
+                          GROUP BY r.requestId";
 
-              $res1 = $conn->query($sql1);
+                $res1 = $conn->query($sql1);
 
-              if ($res1->num_rows > 0) {
-                while ($row = $res1->fetch_assoc()) {
-                  // Determine the badge class based on the status
-                  $status = $row['Status'];
-                  $badgeClass = '';
-                  switch ($status) {
-                    case 'Confirmed':
-                      $badgeClass = 'text-bg-success'; // Green for Confirmed
-                      break;
-                    case 'Submitted':
-                      $badgeClass = 'text-bg-secondary'; // Gray for Submitted
-                      break;
-                    case 'Rejected':
-                      $badgeClass = 'text-bg-danger'; // Red for Rejected
-                      break;
-                    default:
-                      $badgeClass = 'text-bg-info'; // Blue for other statuses
-                      break;
+                if ($res1->num_rows > 0) {
+                  while ($row = $res1->fetch_assoc()) {
+                    // Determine the badge class based on the status
+                    $status = $row['Status'];
+                    $badgeClass = '';
+                    switch ($status) {
+                      case 'Confirmed':
+                        $badgeClass = 'text-bg-success'; // Green for Confirmed
+                        break;
+                      case 'Submitted':
+                        $badgeClass = 'text-bg-secondary'; // Gray for Submitted
+                        break;
+                      case 'Rejected':
+                        $badgeClass = 'text-bg-danger'; // Red for Rejected
+                        break;
+                      default:
+                        $badgeClass = 'text-bg-info'; // Blue for other statuses
+                        break;
+                    }
+
+                    // Ensure that title and details are displayed properly
+                    $title = $row['RequestTitle'] ?? 'Custom Request';
+                    $details = $row['RequestDetails'] ?? $row['customRequest'];
+                    $requestId = $row['requestId'];
+                    $formattedRequestCost = number_format($row['requestCost'], 2);
+                    $formattedRequestDate = date("m.d.Y", strtotime($row['requestDate']));
+                    $formattedRequestDateFilter = date('Y-m-d', strtotime($row['requestDate']));
+                    $formattedFlightDate = date('Y.m.d', strtotime($row['FlightDate']));
+
+                    // Output table row with data-transactno attribute
+                    echo "<tr data-transactno='{$row['TransactNo']}' data-requestid='{$requestId}' class='transaction-row'>
+                            <td>{$row['TransactNo']}</td>
+                            <td>{$row['branchName']}</td>
+                            <td>{$formattedFlightDate}</td>
+                            <td>{$title}</td>
+                            <td>{$details}</td>
+                            <td>{$row['details']}</td>
+                            <td>{$row['TotalPax']}</td>
+                            <td>₱ {$formattedRequestCost}</td>
+                            <td>{$formattedRequestDate}</td>
+                            <td>{$row['Status']}</td>
+                            <td>{$row['requestRemarks']}</td>
+                            <td style='display:none;'>{$formattedRequestDateFilter}</td> 
+                            <!-- hidden raw date -->
+                          </tr>";
                   }
-
-                  // Ensure that title and details are displayed properly
-                  $title = $row['RequestTitle'] ?? 'Custom Request';
-                  $details = $row['RequestDetails'] ?? $row['customRequest'];
-                  $requestId = $row['requestId'];
-                  $formattedRequestCost = number_format($row['requestCost'], 2);
-                  $formattedRequestDate = date("m.d.Y", strtotime($row['requestDate']));
-                  $formattedRequestDateFilter = date('Y-m-d', strtotime($row['requestDate']));
-                  $formattedFlightDate = date('Y.m.d', strtotime($row['FlightDate']));
-
-                  // Output table row with data-transactno attribute
-                  echo "<tr data-transactno='{$row['TransactNo']}' data-requestid='{$requestId}' class='transaction-row'>
-													<td>{$row['TransactNo']}</td>
-													<td>{$row['branchName']}</td>
-													<td>{$formattedFlightDate}</td>
-                          <td>{$title}</td>
-													<td>{$details}</td>
-													<td>{$row['details']}</td>
-													<td>{$row['TotalPax']}</td>
-													<td>₱ {$formattedRequestCost}</td>
-													<td>{$formattedRequestDate}</td>
-													<td>{$row['Status']}</td>
-													<td>{$row['requestRemarks']}</td>
-													<td style='display:none;'>{$formattedRequestDateFilter}</td> <!-- hidden raw date -->
-												</tr>";
+                } else {
+                  echo "<tr><td colspan='9' style='text-align: center;'>NO REQUESTS AS OF THE MOMENT</td></tr>";
                 }
-              } else {
-                echo "<tr><td colspan='9' style='text-align: center;'>No Requests Found</td></tr>";
-              }
-              ?>
-            </tbody>
-          </table>
-        </div>
+                ?>
+              </tbody>
+            </table>
+          </div>
 
-        <div class="table-footer">
-          <div class="pagination-controls">
-            <button id="prevPage" class="pagination-btn">Previous</button>
-            <span id="pageInfo" class="page-info">Page 1 of 10</span>
-            <button id="nextPage" class="pagination-btn">Next</button>
+          <div class="table-footer">
+            <div class="pagination-controls">
+              <button id="prevPage" class="pagination-btn">Previous</button>
+              <span id="pageInfo" class="page-info">Page 1 of 10</span>
+              <button id="nextPage" class="pagination-btn">Next</button>
+            </div>
           </div>
         </div>
 
@@ -182,8 +206,10 @@ session_start();
   </div>
 
   <?php include '../Employee Section/includes/emp-scripts.php' ?>
-  <!-- Add in your <head> or before </body> -->
+
+
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
   <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
 
 
@@ -232,7 +258,7 @@ session_start();
           { targets: 9, width: "120px" }, // STATUS
           { targets: 10, width: "160px" }, // REQUEST REMARKS
           { targets: 11, visible: false }, // RAW REQUEST DATE
-          { targets: [1,2,3,5,6,9,10], orderable: false }
+          { targets: [1, 2, 3, 5, 6, 9, 10], orderable: false }
         ]
       });
 
@@ -261,23 +287,28 @@ session_start();
 
       updatePagination(); // On load
 
+
+
       // Flight Date Filter
       $('#FlightStartDate').on('change', function () {
         table.column(11).search($(this).val() || '').draw();
       });
 
       // Datepickers
-      $("#FlightStartDate").datepicker({
-        dateFormat: "yy-mm-dd",
-        showAnim: "fadeIn",
-        changeMonth: true,
-        changeYear: true,
-        yearRange: "1900:2100",
-        onSelect: function (dateText) {
-          $(this).val(dateText);
-          table.column(11).search(dateText || '').draw();
+      flatpickr("#FlightStartDate", {
+        dateFormat: "Y-m-d", // Same as "yy-mm-dd"
+        allowInput: true,
+        defaultDate: null,
+        onChange: function (selectedDates, dateStr) {
+          // Trigger DataTables filter on column 11
+          $('#FlightStartDate').val(dateStr);
+          table.column(11).search(dateStr || '').draw();
         }
       });
+
+
+
+
 
 
       // Clear all filters

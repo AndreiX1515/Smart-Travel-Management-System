@@ -11,8 +11,14 @@ session_start();
 	<title>Employee - Transactions</title>
 	<?php include '../Employee Section/includes/emp-head.php' ?>
 	<link rel="stylesheet"
-		href="../Employee Section/assets/css/emp-transactionRequestPayment.css?v=<?php echo time(); ?>">
+		href="../Employee Section/assets/css/emp-transactionRequestHistory.css?v=<?php echo time(); ?>">
 	<link rel="stylesheet" href="../Employee Section/assets/css/emp-sidebar-navbar.css?v=<?php echo time(); ?>">
+
+	<!-- Include Flatpickr -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+
 </head>
 
 <body>
@@ -49,98 +55,134 @@ session_start();
 		</script>
 
 		<div class="main-content">
-			<div class="table-container">
 
-				<div class="table-header">
+			<div class="page-content">
+
+				<div class="table-content-header">
+
 					<div class="search-wrapper">
 						<div class="search-input-wrapper">
-							<input type="text" id="search" placeholder="Search here..">
+							<i class="fas fa-search icon"></i>
+							<input type="text" id="search" placeholder="Search...">
 						</div>
 					</div>
 
 					<div class="second-header-wrapper">
-						<div class="date-range-wrapper flightbooking-wrapper">
-							<div class="date-range-inputs-wrapper">
-								<div class="input-with-icon">
-									<input type="text" class="datepicker" id="FlightStartDate"
-										placeholder="Payment Date">
-									<i class="fas fa-calendar-alt calendar-icon"></i>
-								</div>
-							</div>
-						</div>
 
-						<div class="buttons-wrapper">
-							<button id="clearSorting" class="btn btn-secondary">
-								Clear Filters
-							</button>
+						<div class="filter-container">
+
+							<div class="filter-date-wrapper">
+
+								<div class="filter-date-inputs">
+
+									<div class="filter-input-with-icon">
+										<input type="text" id="FlightStartDate" class="filter-input"
+											placeholder="Flight Date">
+
+										<i class="fas fa-calendar-alt filter-calendar-icon"></i>
+									</div>
+
+								</div>
+
+							</div>
+
+							<div class="filter-buttons">
+								<button id="clearSorting" class="btn-material">
+									<svg class="reset-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+										<path d="M12 4V1L8 5l4 4V6a6 6 0 1 1-6 6H4a8 8 0 1 0 8-8z" />
+									</svg>
+								</button>
+							</div>
+
 						</div>
 					</div>
 
 				</div>
 
-				<!-- Table  -->
-				<div class="table-container">
-					<table id="product-table" class="product-table">
-						<thead>
-							<tr>
-								<th>TRANSACTION NO</th>
-								<th>BRANCH</th>
-								<th>FLIGHT DATE</th>
-								<th>AMOUNT</th>
-								<th>PROOF OF PAYMENT</th>
-								<th>PAYMENT DATE</th>
-								<th>STATUS</th>
-								<th>REMARKS</th>
-								<th style="display: none;">RAW PAYMENT DATE</th>
-							</tr>
-						</thead>
-						<tbody>
-							<?php
-							$sql1 = "SELECT b.transactNo, p.paymentId, p.amount, p.filePath, p.paymentDate, p.paymentStatus, p.paymentRemarks, 
-												br.branchName, f.flightDepartureDate AS flightDate
+				<div class="table-content-body">
+					<div class="table-container">
+						<table id="product-table" class="table product-table">
+							<thead>
+								<tr>
+									<th>TRANSACTION NO</th>
+									<th>BRANCH</th>
+									<th>FLIGHT DATE</th>
+									<th>AMOUNT</th>
+									<th>PROOF OF PAYMENT</th>
+									<th>PAYMENT DATE</th>
+									<th>STATUS</th>
+									<th>REMARKS</th>
+									<th style="display: none;">RAW PAYMENT DATE</th>
+								</tr>
+							</thead>
+							<tbody>
+								<?php
+									$sql1 = "SELECT b.transactNo, p.paymentId, p.amount, p.filePath, p.paymentDate, p.paymentStatus, p.paymentRemarks, 
+											br.branchName, f.flightDepartureDate AS flightDate
 											FROM `booking` b
 											JOIN flight f ON b.flightId = f.flightId
 											JOIN `payment` p ON b.transactNo = p.transactNo
 											JOIN `branch` br ON br.branchAgentCode = b.agentCode
 											ORDER BY p.paymentId ASC";
 
-							// Execute the query
-							$result1 = $conn->query($sql1);
+									// Execute the query
+									$result1 = $conn->query($sql1);
 
-							// Check if query execution was successful
-							if (!$result1) {
-								die("Query error: " . $conn->error);
-							}
-
-							// Fetch results and display rows
-							if ($result1->num_rows > 0) {
-								while ($row = $result1->fetch_assoc()) {
-									$amount = number_format($row['amount'], 2);
-									$date = date("m.d.Y", strtotime($row['paymentDate']));
-									$remarks = !empty($row['paymentRemarks']) ? $row['paymentRemarks'] : 'N/A';
-
-									$status = isset($row['paymentStatus']) ? $row['paymentStatus'] : 'Unknown';
-									$statusClass = '';
-
-									switch ($status) {
-										case 'Approved':
-											$statusClass = 'bg-success text-white'; // Green background, white text
-											break;
-										case 'Rejected':
-											$statusClass = 'bg-danger text-white'; // Red background, white text
-											break;
-										case 'Submitted':
-											$statusClass = 'bg-warning text-dark';
-											break;
-										default:
-											$statusClass = 'bg-secondary text-white';
+									// Check if query execution was successful
+									if (!$result1) {
+										die("Query error: " . $conn->error);
 									}
 
-									$flightDate = $row['flightDate'];
-									$formattedFlightDate = date('Y.m.d', strtotime($flightDate));;
-									$fomattedPaymentDate = date('Y-m-d', strtotime($row['paymentDate']));
+									// Fetch results and display rows
+									if ($result1->num_rows > 0) {
+										while ($row = $result1->fetch_assoc()) {
+											$amount = number_format($row['amount'], 2);
+											$date = date("m.d.Y", strtotime($row['paymentDate']));
+											
+											$status = isset($row['paymentStatus']) ? $row['paymentStatus'] : 'Unknown';
+											$statusClass = '';
 
-									echo "<tr>
+											switch ($status) {
+												case 'Approved':
+													$statusClass = 'bg-success text-white'; // Green background, white text
+													break;
+												case 'Rejected':
+													$statusClass = 'bg-danger text-white'; // Red background, white text
+													break;
+												case 'Submitted':
+													$statusClass = 'bg-warning text-dark';
+													break;
+												default:
+													$statusClass = 'bg-secondary text-white';
+											}
+
+											$remarks = !empty($row['paymentRemarks']) ? $row['paymentRemarks'] : 'N/A';
+											$remarksClass = '';
+
+											// Format remarks - uppercase first character
+											$remarksFormatted = ucfirst(strtolower($remarks));
+
+											switch ($remarksFormatted) {
+												case 'Good':
+													$remarksClass = 'bg-success text-white'; // Green background, white text
+													break;
+												case 'Rejected':
+													$remarksClass = 'bg-danger text-white'; // Red background, white text
+													break;
+												case 'Submitted':
+													$remarksClass = 'bg-warning text-dark';
+													break;
+												default:
+													$remarksClass = 'bg-secondary text-white';
+											}
+
+											
+
+											$flightDate = $row['flightDate'];
+											$formattedFlightDate = date('Y.m.d', strtotime($flightDate));
+											$fomattedPaymentDate = date('Y-m-d', strtotime($row['paymentDate']));
+
+											echo "<tr>
 													<td>" . $row['transactNo'] . "</td>
 													<td>" . $row['branchName'] . "</td>
 													<td>" . $formattedFlightDate . "</td>
@@ -154,35 +196,51 @@ session_start();
 														<span class='badge p-2 rounded-pill {$statusClass}'>
 															{$status}
 														</span>
-													</td>
-													<td>" . $remarks . "</td>
-													<td style='display: none;'>" . $fomattedPaymentDate . "</td>
-												</tr>";
-								}
-							}
-							?>
-						</tbody>
-					</table>
-				</div>
+													</td>";
 
-				<div class="table-footer">
-					<div class="pagination-controls">
-						<button id="prevPage" class="pagination-btn">Previous</button>
-						<span id="pageInfo" class="page-info">Page 1 of 10</span>
-						<button id="nextPage" class="pagination-btn">Next</button>
+											if ($remarks !== 'N/A') {
+												echo "<td>
+														<span class='badge p-2 rounded-pill {$remarksClass}'>
+															{$remarksFormatted}
+														</span>
+													</td>";
+											} else {
+												
+												echo "<td></td>";
+											}
+
+											echo "  <td style='display: none;'>" . $fomattedPaymentDate . "</td>
+												</tr>";
+										}
+									}
+									?>
+
+							</tbody>
+						</table>
+
+					</div>
+
+					<div class="table-footer">
+						<div class="pagination-controls">
+							<button id="prevPage" class="pagination-btn">Previous</button>
+							<span id="pageInfo" class="page-info">Page 1 of 10</span>
+							<button id="nextPage" class="pagination-btn">Next</button>
+						</div>
 					</div>
 				</div>
 
 			</div>
 
 		</div>
+
 	</div>
 
-	<?php include '../Employee Section/includes/emp-scripts.php' ?>\
-	<!-- Add in your <head> or before </body> -->
-	<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-	<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+	<?php include '../Employee Section/includes/emp-scripts.php' ?>
 
+
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
+	<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
 
 	<!-- JQuery Datapicker -->
 	<script>
@@ -209,17 +267,29 @@ session_start();
 					emptyTable: "No Transaction Records Available"
 				},
 				order: [[4, 'asc']], // Sort by payment date
-				scrollY: '69vh',
 				scrollX: false,
 				paging: true,
-				pageLength: 15,
+				pageLength: 17,
 				autoWidth: false,
 				autoHeight: false,
 				columnDefs: [
 					{
-						targets: [1, 3, 6], // Disable sorting for selected columns
+						targets: [1, 2, 3, 5, 6],
 						orderable: false
-					}
+					},
+					{ targets: 0, width: "40px" },   // TRANSACT NO
+					{ targets: 1, width: "10px" },   // BRANCH
+					{ targets: 2, width: "130px" },   // FLIGHT DATE
+					{ targets: 3, width: "160px" },   // REQUEST TITLE
+					{ targets: 4, width: "180px" },   // REQUEST DETAILS
+					{ targets: 5, width: "160px" },   // SPECIFIC DETAILS
+					{ targets: 6, width: "80px", className: "text-center" },    // TOTAL PAX
+					{ targets: 7, width: "120px", className: "text-center" },   // TOTAL AMOUNT
+					{ targets: 8, width: "130px" },   // REQUEST DATE
+					{ targets: 9, width: "120px" },   // STATUS
+					{ targets: 10, width: "160px" },  // REQUEST REMARKS
+					{ targets: 11, visible: false },  // RAW REQUEST DATE (hidden)
+					{ targets: [1, 2, 3, 5, 6, 9, 10], orderable: false }
 				]
 			});
 
@@ -287,6 +357,8 @@ session_start();
 			input.focus(); // Refocus on the input
 		}
 	</script>
+
+
 
 
 </body>
