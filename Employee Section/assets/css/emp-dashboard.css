@@ -41,7 +41,7 @@
   display: flex;
   align-items: center;
   padding: 6px 10px;
-  background-color: rgba(52, 58, 64, 0.75); /* Dark gray with 75% opacity for translucency */
+  background-color: #17a2b8; /* Dark gray with 75% opacity for translucency */
   border-radius: 8px;
   width: auto;
 }
@@ -281,30 +281,61 @@
 
 
 
+/* Base Icon Styling */
+.icon {
+  color: #fff; /* Default white text */
+  padding: 10px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 16px;
+  width: 40px;
+  height: 40px;
+  transition: transform 0.2s ease;
+}
+
+.icon:hover {
+  transform: scale(1.05);
+}
+
 /* Blue Icon for Total Transactions */
 .icon-blue {
-  background-color: #17a2b8; /* Light blue background */
+  background-color: #17a2b8; /* Light blue */
+  color: #ffffff;
 }
 
 /* Green Icon for Completed Transactions */
 .icon-green {
-  background-color: #28a745; /* Green background */
+  background-color: #28a745; /* Green */
+  color: #ffffff;
 }
 
 /* Yellow Icon for Pending Transactions */
 .icon-yellow {
-  background-color: #ffc107; /* Yellow background */
-  color: #333; /* Darker color for contrast */
+  background-color: #ffc107; /* Yellow */
+  color: #333333; /* Dark for contrast */
 }
 
 /* Red Icon for Cancelled Transactions */
 .icon-red {
-  background-color: #dc3545; /* Red background */
+  background-color: #dc3545; /* Red */
+  color: #ffffff;
 }
 
+/* Gray Icon for Neutral/Inactive States */
 .icon-gray {
-  background-color: gray; /* Gray background */
+  background-color: #6c757d; /* Bootstrap gray */
+  color: #ffffff;
 }
+
+/* Orange Icon for Special Status */
+.icon-orange {
+  background-color: #ff9900; /* Bright orange */
+  color: #333333; /* Dark for contrast */
+}
+
 
 .side-content {
   white-space: nowrap; /* Prevent text wrapping */
@@ -360,22 +391,24 @@
 
 /* .card-4 .title-wrapper h6 {
   margin: 0;
-  font-weight: 600;
+  font-weight: 600; 
   font-size: 14px;
 } */
 
 .card-4 .view-currency-btn {
-  padding: 4px 10px;
+  padding: 5px 10px;
   font-size: 10px;
-  border-radius: 5px;
-  background-color: #116530;
+  border-radius: 6px;
+  background-color: #007bff; /* Bootstrap Blue */
   border: none;
-  color: #fff;
-  transition: background-color 0.3s ease;
+  color: #ffffff;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .card-4 .view-currency-btn:hover {
-  background-color: #0d4d28;
+  background-color: #0056b3; /* Darker blue for hover */
 }
 
 

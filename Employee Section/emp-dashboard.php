@@ -55,7 +55,6 @@ error_reporting(E_ALL);
             <div class="title-wrapper">
               <h6 class="">Active Transaction</h6>
             </div>
-
           </div>
 
           <div class="card-content card-content-body">
@@ -64,7 +63,7 @@ error_reporting(E_ALL);
             <div class="row">
 
               <div class="col-md-5 clickable-card" onclick="redirectToTransactionStatus('current')">
-                <div class="card-icon icon-blue">
+                <div class="card-icon icon-orange">
                   <i class="fas fa-exchange-alt"></i>
                 </div>
 
@@ -211,7 +210,7 @@ error_reporting(E_ALL);
             <div class="row">
               <!-- 5 Days Due Count -->
               <div class="col-md-5 clickable-card" onclick="redirectToTransactionOnDue('5days')">
-                <div class="card-icon icon-blue">
+                <div class="card-icon icon-red">
                   <i class="fas fa-calendar-check"></i>
                 </div>
 
@@ -243,7 +242,7 @@ error_reporting(E_ALL);
               <!-- 15 Days Due Count -->
               <div class="col-md-5 clickable-card" onclick="redirectToTransactionOnDue('10days')">
 
-                <div class="card-icon icon-blue">
+                <div class="card-icon icon-red">
                   <i class="fas fa-calendar-check"></i>
                 </div>
 
@@ -279,7 +278,7 @@ error_reporting(E_ALL);
               <!-- 30 Days Due Count -->
               <div class="col-md-5 clickable-card" onclick="redirectToTransactionOnDue('20days')">
 
-                <div class="card-icon icon-blue">
+                <div class="card-icon icon-red">
                   <i class="fas fa-calendar-check"></i>
                 </div>
 
@@ -313,7 +312,7 @@ error_reporting(E_ALL);
               <!-- more than 30 Days Due Count -->
               <div class="col-md-5 clickable-card" onclick="redirectToTransactionOnDue('30daysplus')">
 
-                <div class="card-icon icon-blue">
+                <div class="card-icon icon-red">
                   <i class="fas fa-calendar-check"></i>
                 </div>
 
@@ -525,7 +524,7 @@ error_reporting(E_ALL);
 
             <li class="nav-item" role="presentation">
               <button class="nav-link" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home"
-                type="button" role="tab" aria-controls="pills-home" aria-selected="true">Payment and Requests</button>
+                type="button" role="tab" aria-controls="pills-home" aria-selected="true">Booking and Requests</button>
             </li>
           </ul>
         </div>
@@ -865,7 +864,7 @@ error_reporting(E_ALL);
 
                 <div class="table-header">
                   <div class="title-wrapper">
-                    <h6 class="">Payment</h6>
+                    <h6 class="">Booking</h6>
                   </div>
                 </div>
 
@@ -1114,6 +1113,7 @@ error_reporting(E_ALL);
 
       </div>
     </div>
+    
   </div>
 
   <!-- Comment Delete Modal -->
