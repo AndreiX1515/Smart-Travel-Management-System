@@ -171,13 +171,14 @@ require "../conn.php";
                     <th>Package Price</th>
                     <th>Total Req. Cost</th>
                     <th>Amt. Paid Balance</th>
+                    <th>Booking Date</th>
                     <th>Status</th>
                   </tr>
                 </thead>
                 <tbody>
                   <?php
                   if ($agentRole != 'Head Agent') {
-                    $sql1 = "SELECT b.transactNo AS `T.N`, p.packageName AS `PACKAGE`, DATE_FORMAT(b.bookingDate, '%m-%d-%Y') AS `TRANSACTION DATE`, 
+                    $sql1 = "SELECT b.transactNo AS `T.N`, p.packageName AS `PACKAGE`, b.bookingDate, 
                               b.bookingType as bookingType, DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y') AS `FLIGHT DATE`, b.pax AS `TOTAL PAX`, 
                               CONCAT(b.lName, ', ', b.fName, ' ', CASE WHEN b.mName = 'N/A' THEN '' 
                               ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ', CASE WHEN b.suffix = 'N/A' THEN '' 
@@ -229,6 +230,8 @@ require "../conn.php";
                         $balance = max(($packagePrice + $requestTotal) - $amountPaid, 0);
                         $formattedBalance = number_format($balance, 2);
 
+                        $formattedBookingDate = date('Y.m.d', strtotime($row['bookingDate']));
+
                         // Prevent negative balances
                         // Booking Date
                         // <td>{$row['TRANSACTION DATE']}</td>
@@ -255,6 +258,7 @@ require "../conn.php";
                                     <span><strong>Balance: </strong> ₱ " . $formattedBalance . "</span>
                                   </div>
                                 </td>
+                                <td>{$formattedBookingDate}</td>
                                 <td>
                                   <span class='badge p-2 rounded-pill {$statusClass}'>
                                     {$status}
@@ -264,7 +268,7 @@ require "../conn.php";
                       }
                     }
                   } else {
-                    $sql1 = "SELECT b.transactNo AS `T.N`, p.packageName AS `PACKAGE`, DATE_FORMAT(b.bookingDate, '%m-%d-%Y') AS `TRANSACTION DATE`, 
+                    $sql1 = "SELECT b.transactNo AS `T.N`, p.packageName AS `PACKAGE`, b.bookingDate, 
                               b.bookingType as bookingType, DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y') AS `FLIGHT DATE`, b.pax AS `TOTAL PAX`, 
                               CONCAT(b.lName, ', ', b.fName, ' ', CASE WHEN b.mName = 'N/A' THEN '' 
                               ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ', CASE WHEN b.suffix = 'N/A' THEN '' 
@@ -316,6 +320,8 @@ require "../conn.php";
                         $balance = max(($packagePrice + $requestTotal) - $amountPaid, 0);
                         $formattedBalance = number_format($balance, 2);
 
+                        $formattedBookingDate = date('Y.m.d', strtotime($row['bookingDate']));
+
                         // Prevent negative balances
                         // Booking Date
                         // <td>{$row['TRANSACTION DATE']}</td>
@@ -342,6 +348,7 @@ require "../conn.php";
                                     <span><strong>Balance: </strong> ₱ " . $formattedBalance . "</span>
                                   </div>
                                 </td>
+                                <td>{$formattedBookingDate}</td>
                                 <td>
                                   <span class='badge p-2 rounded-pill {$statusClass}'>
                                     {$status}
@@ -714,26 +721,35 @@ require "../conn.php";
   <!-- DataTables #product-table -->
   <script>
     $(document).ready(function () {
-      const table = $('#product-table').DataTable(
-        {
-          dom: 'rtip',
-          language: {
-            emptyTable: "No Transaction Records Available"
-          },
-          order: [[4, 'asc']],
-          scrollX: false, // Ensure no horizontal scroll
-          scrollY: '66.1vh',
-          paging: true,
-          pageLength: 11,
-          autoWidth: false, // Disable auto width to use custom widths
-          autoHeight: false,
-          columnDefs: [
-            {
-              targets: [1, 2, 3, 5, 6],
-              orderable: false
-            }
-          ]
-        });
+      $('#product-table').DataTable({
+        dom: 'rtip',
+        language: {
+          emptyTable: "No Transaction Records Available"
+        },
+        order: [[4, 'asc']], // Sorting by flight date
+        scrollX: true, // Enable horizontal scroll if needed
+        scrollY: '66.1vh',
+        paging: true,
+        pageLength: 11,
+        autoWidth: false,
+        columnDefs: [
+          { targets: 0, width: '100px' }, // ID
+          { targets: 1, width: '200px' }, // Contact Person Info
+          { targets: 2, width: '240px' }, // Contact Details
+          { targets: 3, width: '160px' }, // Branch Name
+          { targets: 4, width: '140px' }, // Flight Date
+          { targets: 5, width: '80px' },  // Total Pax
+          { targets: 6, width: '120px' }, // Package Price
+          { targets: 7, width: '130px' }, // Total Req. Cost
+          { targets: 8, width: '230px' }, // Amt. Paid & Balance
+          { targets: 9, width: '140px' }, // Booking Date
+          { targets: 10, width: '100px' }, // Status
+          {
+            targets: [1, 2, 3, 5, 6],
+            orderable: false
+          }
+        ]
+      });
 
       // Search Functionality
       $('#search').on('keyup', function () {

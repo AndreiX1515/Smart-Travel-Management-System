@@ -226,20 +226,32 @@ require "../conn.php";
   
 
   <!-- Data tables script -->
-   <script>
-  $(document).ready(function () {
-    $('#product-table').DataTable({
-      "pageLength": 10,
-      "lengthChange": true,
-      "searching": false,  // 🔍 Disable search bar
-      "ordering": true,
-      "order": [[10, 'asc']],  // Sort by "Departure Date" column (11th column = index 10)
-      "columnDefs": [
-        { "orderable": false, "targets": [2, 4] } // Disable sorting on Given Name and Fullname
-      ]
+  <script>
+    $(document).ready(function () {
+      $('#product-table').DataTable({
+        "pageLength": 10,
+        "lengthChange": true,
+        "searching": false,
+        "ordering": true,
+        "order": [[10, 'asc']],  // Sort by "Departure Date"
+        "columnDefs": [
+          { "orderable": false, "targets": [2, 4] }, // Disable sort for Given Name & Fullname
+          { "width": "120px", "targets": 0 }, // Transaction No
+          { "width": "50px", "targets": 1 },  // Age
+          { "width": "120px", "targets": 2 }, // Given Name
+          { "width": "120px", "targets": 3 }, // Surname
+          { "width": "180px", "targets": 4 }, // Fullname
+          { "width": "100px", "targets": 5 }, // DOB
+          { "width": "80px", "targets": 6 },  // Nationality
+          { "width": "130px", "targets": 7 }, // Passport
+          { "width": "100px", "targets": 8 }, // D of E
+          { "width": "50px", "targets": 9 },  // Sex
+          { "width": "130px", "targets": 10 } // Departure Date
+        ],
+        "autoWidth": false // Important to prevent DataTables from overriding widths
+      });
     });
-  });
-</script>
+  </script>
 
 </body>
 
