@@ -20,13 +20,36 @@ require "../conn.php";
 
 <body>
 
-  <div class="body-container">
+ 
     <?php include "../Agent Section/includes/sidebar.php"; ?>
 
-    <div class="main-content-container">
+    <div class="main-container">
+
       <div class="navbar">
-        <h5 class="title-page">Client Payments</h5>
+        <div class="page-header-wrapper">
+
+          <div class="page-header-top">
+            <div class="back-btn-wrapper">
+              <button class="back-btn" id="redirect-btn">
+                <i class="fas fa-chevron-left"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="page-header-content">
+            <div class="page-header-text">
+              <h5 class="header-title">Client Payments</h5>
+            </div>
+          </div>
+
+        </div>
       </div>
+
+      <script>
+        document.getElementById('redirect-btn').addEventListener('click', function () {
+          window.location.href = '../Agent Section/agent-dashboard.php'; // Replace with your actual URL
+        });
+      </script>
 
       <?php
         $statusTab = isset($_GET['status']) ? $_GET['status'] : '';
@@ -153,7 +176,7 @@ require "../conn.php";
         </div>
       </div>
     </div>
-  </div>
+
 
   <!-- Payment Status Modal-->
   <div class="modal fade" id="transactionModal" tabindex="-1" aria-labelledby="transactionModalLabel" aria-hidden="true">
