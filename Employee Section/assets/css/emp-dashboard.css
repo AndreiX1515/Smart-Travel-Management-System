@@ -1518,11 +1518,18 @@
   color: #374151;
   vertical-align: middle;
   font-size: 0.75rem;
-  padding: 4px 8px;
+  padding: 3px 8px;
   white-space: nowrap;
-  border-bottom: 1px solid #e5e7eb;
-  border-left: 1px solid #e5e7eb;
-  border-right: 1px solid #e5e7eb;
+  border-bottom: 0.5px solid #e5e7eb;
+  border-left: 0.5px solid #e5e7eb;
+  border-right: 0.5px solid #e5e7eb;
+  font-family: inherit;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Hover effect for table rows */
+.table tbody tr:hover td {
+  background-color: #e6e6e6; /* Soft gray highlight */
 }
 
 
@@ -1823,62 +1830,105 @@
   font-size: 16px;
   color: #111;
   background-color: #fff;
+  width: 100%;
+  table-layout: auto;
 }
 
-/* Prevent wrapping in both header and body */
 .info-table th,
 .info-table td {
-  white-space: auto;
+  white-space: nowrap;
   padding: 8px 12px;
   border: 1px solid #ccc;
+  vertical-align: middle;
+  text-align: center;
+  transition: background-color 0.2s ease;
 }
+
+/* Highlight cells with rowspan */
+.info-table td[rowspan],
+.info-table th[rowspan] {
+  font-weight: 500;
+
+
+ 
+}
+
+/* Highlight cells with colspan */
+.info-table td[colspan],
+.info-table th[colspan] {
+  font-weight: 500;
+
+}
+
 
 /* ============================= */
 /* COLUMN WIDTH DEFINITIONS     */
 /* ============================= */
 
-.info-table tr.first-half th.red-white:first-child {
+/* ============================= */
+/* COLUMN WIDTH DEFINITIONS     */
+/* ============================= */
+
+/* ============================= */
+/* COLUMN WIDTH DEFINITIONS     */
+/* ============================= */
+
+.info-table tr.first-half th:first-child,
+.info-table tbody td:first-child {
   width: 30px;
 }
 
-.info-table tr.first-half th.red-white:nth-child(2) {
+.info-table tr.first-half th:nth-child(2),
+.info-table tbody td:nth-child(2) {
   width: 8%;
 }
 
-.info-table tr.first-half th.red-white:nth-child(3) {
-  width: 85px;
+.info-table tr.first-half th:nth-child(3),
+.info-table tbody td:nth-child(3) {
+  width: 80px;
 }
 
-.info-table tr.first-half th.red-white:nth-child(4) {
-  width: 200px;
+.info-table tr.first-half th:nth-child(4),
+.info-table tbody td:nth-child(4) {
+  width: 170px;
 }
 
-.info-table tr.first-half th.red-white:nth-child(5) {
+.info-table tr.first-half th:nth-child(5),
+.info-table tbody td:nth-child(5) {
   width: 70px;
 }
 
-.info-table tr.first-half th.red-white:nth-child(6),
-.info-table tr.first-half th.red-white:nth-child(7) {
+.info-table tr.first-half th:nth-child(6),
+.info-table tr.first-half th:nth-child(7),
+.info-table tbody td:nth-child(6),
+.info-table tbody td:nth-child(7) {
   width: 70px;
 }
 
-.info-table tr.first-half th.red-white:nth-child(8) {
+.info-table tr.first-half th:nth-child(8),
+.info-table tbody td:nth-child(8) {
   width: 70px;
 }
 
-.info-table tr.first-half th.red-white:nth-child(9) {
+.info-table tr.first-half th:nth-child(9),
+.info-table tbody td:nth-child(9) {
   width: 100px;
 }
 
-.info-table tr.first-half th.red-white:nth-child(10),
-.info-table tr.first-half th.red-white:nth-child(11),
-.info-table tr.first-half th.red-white:nth-child(12) {
+.info-table tr.first-half th:nth-child(10),
+.info-table tr.first-half th:nth-child(11),
+.info-table tr.first-half th:nth-child(12),
+.info-table tbody td:nth-child(10),
+.info-table tbody td:nth-child(11),
+.info-table tbody td:nth-child(12) {
   width: 100px;
 }
 
-.info-table tr.first-half th.red-white:nth-child(n + 13) {
+.info-table tr.first-half th:nth-child(n + 13),
+.info-table tbody td:nth-child(n + 13) {
   width: 250px;
 }
+
 
 
 

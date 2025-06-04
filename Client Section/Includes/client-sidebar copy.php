@@ -5,18 +5,18 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-$accountId = $_SESSION['client_accountId'];
-$agentId = $_SESSION['clientId'] ?? null;
-$agentCode = $_SESSION['clientCode'] ?? null;
-$agentRole = $_SESSION['clientRole'] ?? null;
-$agentType = $_SESSION['clientType'] ?? null;
-$fName =  $_SESSION['client_fName'] ?? null;
-$lName = $_SESSION['client_lName'] ?? null;
-$mName = $_SESSION['client_mName'] ?? null;
-$branchId = $_SESSION['client_branchId'] ?? null;
-$email = $_SESSION['client_email'] ?? null;
-$emailAddress = $_SESSION['client_emailAddress'] ?? null;
-$password = $_SESSION['client_password'] ?? null;
+$accountId = $_SESSION['client_accountId'] ?? '';
+$agentId = $_SESSION['clientId'] ?? '';
+$agentCode = $_SESSION['clientCode'] ?? '';
+$agentRole = $_SESSION['clientRole'] ?? '';
+$agentType = $_SESSION['clientType'] ?? '';
+$fName =  $_SESSION['client_fName'] ?? '';
+$lName = $_SESSION['client_lName'] ?? '';
+$mName = $_SESSION['client_mName'] ?? '';
+$branchId = $_SESSION['client_branchId'] ?? '';
+$email = $_SESSION['client_email'] ?? '';
+$emailAddress = $_SESSION['client_emailAddress'] ?? '';
+$password = $_SESSION['client_password'] ?? '';
 
 // Fetch Branch Name
 $sql1 = "SELECT branchName FROM branch WHERE branchId = ?";

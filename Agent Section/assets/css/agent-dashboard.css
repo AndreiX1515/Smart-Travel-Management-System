@@ -39,12 +39,7 @@
   display: flex;
   align-items: center;
   padding: 6px 10px;
-  background-color: rgba(
-    52,
-    58,
-    64,
-    0.75
-  ); /* Dark gray with 75% opacity for translucency */
+  background-color: #17a2b8; /* Dark gray with 75% opacity for translucency */
   border-radius: 8px;
   width: auto;
 }
@@ -523,30 +518,67 @@
   font-weight: 900;
 }
 
+
+
+
+
+/* Base Icon Styling */
+/* Base Icon Styling */
+.icon {
+  color: #fff; /* Default white text */
+  padding: 10px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 16px;
+  width: 40px;
+  height: 40px;
+  transition: transform 0.2s ease;
+}
+
+.icon:hover {
+  transform: scale(1.05);
+}
+
 /* Blue Icon for Total Transactions */
 .icon-blue {
-  background-color: #17a2b8; /* Light blue background */
+  background-color: #17a2b8; /* Light blue */
+  color: #ffffff;
 }
 
 /* Green Icon for Completed Transactions */
 .icon-green {
-  background-color: #28a745; /* Green background */
+  background-color: #28a745; /* Green */
+  color: #ffffff;
 }
 
 /* Yellow Icon for Pending Transactions */
 .icon-yellow {
-  background-color: #ffc107; /* Yellow background */
-  color: #333; /* Darker color for contrast */
+  background-color: #ffc107; /* Yellow */
+  color: #333333; /* Dark for contrast */
 }
 
 /* Red Icon for Cancelled Transactions */
 .icon-red {
-  background-color: #dc3545; /* Red background */
+  background-color: #dc3545; /* Red */
+  color: #ffffff;
 }
 
+/* Gray Icon for Neutral/Inactive States */
 .icon-gray {
-  background-color: gray; /* Gray background */
+  background-color: #6c757d; /* Bootstrap gray */
+  color: #ffffff;
 }
+
+/* Orange Icon for Special Status */
+.icon-orange {
+  background-color: #ff9900; /* Bright orange */
+  color: #333333; /* Dark for contrast */
+}
+
+
 
 .side-content {
   white-space: nowrap; /* Prevent text wrapping */
@@ -1760,12 +1792,18 @@
   font-size: 0.75rem;
   padding: 3px 8px;
   white-space: nowrap;
-  border-bottom: .5px solid #e5e7eb;
-  border-left: .5px solid #e5e7eb;
-  border-right: .5px solid #e5e7eb;
+  border-bottom: 0.5px solid #e5e7eb;
+  border-left: 0.5px solid #e5e7eb;
+  border-right: 0.5px solid #e5e7eb;
   font-family: inherit;
-  transition: background-color 0.2s ease, color 0.2s ease; /* smooth transition */
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
+
+/* Hover effect for table rows */
+.table tbody tr:hover td {
+  background-color: #e6e6e6; /* Soft gray highlight */
+}
+
 
 
 
@@ -1860,16 +1898,16 @@
    Table Body (Tbody)
 ============================================================ */
 .info-table tbody tr {
-  height: 26px; /* Slightly smaller than before */
+  height: 10px; /* Slightly smaller than before */
   transition: background-color 0.2s ease;
 }
 
 .info-table tbody tr:nth-child(even) {
-  background-color: #f8f9fa; /* Alternating row color */
+  background-color: #e6e6e6; /* Alternating row color */
 }
 
 .info-table tbody tr:hover {
-  background-color: #f1f1f1; /* Slight dark hover */
+  background-color: #e0e0e0; /* Slight dark hover */
 }
 
 .info-table tbody td {
@@ -1886,6 +1924,13 @@
   border-right: 0.5px solid #dee2e6;
   border-bottom: 0.5px solid #f1f3f5;
 }
+
+/* Hover effect */
+.info-table tbody tr:hover td {
+  background-color: #f8f9fa; /* Light gray on hover */
+  cursor: default; /* Optional: change cursor on hover */
+}
+
 
 /* ============================================================
    Support for Rowspan and Colspan Cells
@@ -1917,12 +1962,12 @@
 -------------------------------------- */
 .info-table th:nth-child(1),
 .info-table td:nth-child(1) {
-  width: 7%;
+  width: 4%;
 }
 
 .info-table th:nth-child(2),
 .info-table td:nth-child(2) {
-  width: 15%;
+  width: 10%;
 }
 
 .info-table th:nth-child(3),
@@ -1942,7 +1987,7 @@
 
 .info-table th:nth-child(6),
 .info-table td:nth-child(6) {
-  width: 4%;
+  width: 2%;
 }
 
 /* -------------------------------------
@@ -1950,20 +1995,22 @@
 -------------------------------------- */
 
 .btn-bookNow {
-  padding: 4px 10px;
-  font-size: 10px;
-  /* background-color: #dc3545; */
-  color: rgb(46, 46, 46);
-  font-weight: 600;
-  border: 1px solid #dc3545;
+  padding: 5px 15px; /* Normal button size */
+  font-size: 12.5px;
+  color: #4b4b4b;
+  font-weight: 500;
+  text-decoration: none; /* Remove underline */
+  border: 1px solid #0d6efd;
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.2s ease;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
+
 .btn-bookNow:hover {
-  background-color: #c82333;
+  background-color: #0d6efd;
+  color: white;
 }
 
 .btn-bookNow:active {

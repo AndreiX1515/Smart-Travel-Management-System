@@ -75,7 +75,7 @@ session_start();
 
 								<div class="filter-date-inputs">
 
-									<div class="filter-input-with-icon">
+									<div class="filter-input-with-icon--input">
 										<input type="text" id="FlightStartDate" class="filter-input"
 											placeholder="Flight Date">
 
@@ -284,14 +284,14 @@ session_start();
 
 			// Flight Date Filter (RAW value from hidden column)
 			$('#FlightStartDate').datepicker({
-				dateFormat: "yy-mm-dd",
+				dateFormat: "yy.mm.dd",
 				showAnim: "fadeIn",
 				changeMonth: true,
 				changeYear: true,
 				yearRange: "1900:2100",
 				onSelect: function (dateText) {
 					$(this).val(dateText);
-					table.column(8).search(dateText || '').draw(); 
+					table.column(2).search(dateText || '').draw(); 
 				}
 			});
 

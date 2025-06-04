@@ -1,7 +1,5 @@
 <?php
 session_start();
-require "../conn.php";
-
 ?>
 
 <!DOCTYPE html>
@@ -10,155 +8,178 @@ require "../conn.php";
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title></title>
-
-  <?php include "../Agent Section/includes/head.php"; ?>
-
-  <link rel="stylesheet" href="../Agent Section/assets/css/agent-transaction.css?v=<?php echo time(); ?>">
+  <title>Employee - Transactions</title>
+  <?php include '../Employee Section/includes/emp-head.php' ?>
+  <link rel="stylesheet" href="../Agent Section/assets/css/agent-transaction .css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="../Agent Section/assets/css/navbar-sidebar.css?v=<?php echo time(); ?>">
+
+  <!-- Include Flatpickr -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
 </head>
 
 <body>
+
   <?php include "../Agent Section/includes/sidebar.php"; ?>
 
-  <?php $statusTab = isset($_GET['status']) ? $_GET['status'] : ''; ?>
-
+  <!-- Main Container -->
   <div class="main-container">
 
     <div class="navbar">
       <div class="page-header-wrapper">
 
-        <!-- <div class="page-header-top">
-            <div class="back-btn-wrapper">
-              <button class="back-btn" id="redirect-btn">
-                <i class="fas fa-chevron-left"></i>
-              </button>
-            </div>
-          </div> -->
+        <div class="page-header-top">
+          <div class="back-btn-wrapper">
+            <button class="back-btn" id="redirect-btn">
+              <i class="fas fa-chevron-left"></i>
+            </button>
+          </div>
+        </div>
 
         <div class="page-header-content">
           <div class="page-header-text">
-            <h5 class="header-title">Transaction</h5>
+            <h5 class="header-title">Request</h5>
           </div>
         </div>
 
       </div>
     </div>
 
+    <script>
+      document.getElementById('redirect-btn').addEventListener('click', function () {
+        window.location.href = '../Employee Section/emp-dashboard.php'; // Replace with your actual URL
+      });
+    </script>
+
     <div class="main-content">
 
-      <div class="content-container">
+      <div class="page-content">
 
-          <div class="table-header">
+        <div class="table-content-header">
 
-            <div class="search-wrapper">
-              <div class="search-input-wrapper">
-                <input type="text" id="search" placeholder="Search here..">
-              </div>
+          <div class="search-wrapper">
+            <div class="search-input-wrapper">
+              <i class="fas fa-search icon"></i>
+              <input type="text" id="search" placeholder="Search...">
             </div>
+          </div>
 
-            <div class="second-header-wrapper">
-              <div class="date-range-wrapper sorting-wrapper">
-                <div class="select-wrapper">
-                  <select id="packages">
-                    <option value="All" disabled selected>Select Branch</option>
-                    <?php
-                    // Execute the SQL query
-                    $sql1 = "SELECT branchId, branchName FROM branch ORDER BY branchName ASC";
-                    $res1 = $conn->query($sql1);
+          <div class="second-header-wrapper">
 
-                    // Check if there are results
-                    if ($res1->num_rows > 0) {
-                      // Loop through the results and generate options
-                      while ($row = $res1->fetch_assoc()) {
-                        echo "<option value='" . $row['branchName'] . "'>" . $row['branchName'] . "</option>";
-                      }
-                    } else {
-                      echo "<option value=''>No companies available</option>";
-                    }
-                    ?>
-                  </select>
-                </div>
-              </div>
+            <div class="filter-container">
 
-              <div class="date-range-wrapper flightbooking-wrapper">
-                <div class="date-range-inputs-wrapper">
-                  <div class="input-with-icon">
-                    <input type="text" class="datepicker" id="FlightStartDate" placeholder="Flight Date" readonly>
-                    <i class="fas fa-calendar-alt calendar-icon"></i>
+              <div class="filter-date-wrapper">
+
+                <div class="filter-date-inputs">
+
+                  <div class="filter-input-with-icon--input">
+                    <input type="text" id="FlightStartDate" class="filter-input" placeholder="Flight Date" readonly>
+
+                    <i class="fas fa-calendar-alt filter-calendar-icon"></i>
                   </div>
+
                 </div>
+
               </div>
 
-              <div class="buttons-wrapper">
-                <button id="clearSorting" class="btn btn-secondary">
-                  Clear
+              <div class="filter-buttons">
+                <button id="clearSorting" class="btn-material">
+                  <svg class="reset-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M12 4V1L8 5l4 4V6a6 6 0 1 1-6 6H4a8 8 0 1 0 8-8z" />
+                  </svg>
                 </button>
               </div>
+
             </div>
 
+
           </div>
 
-          <div class="navpills-container">
-            <ul class="filter-tabs" id="booking-filter-tabs">
-              <li class="active" data-filter="">All
-                <span class="badge">
+        </div>
+
+        <div class="navpills-container">
+
+          <div class="filter-tabs" id="booking-filter-tabs">
+
+            <!-- All Button -->
+            <button class="filter-btn active" data-filter="">
+              All
+              <span class="badge-status-tab">
+                <h6>
                   <?php
-                  $sql = "SELECT COUNT(*) AS totalBookings FROM booking WHERE accountId = $accountId";
+                  $sql = "SELECT COUNT(*) AS totalBookings FROM booking;";
                   $result = mysqli_query($conn, $sql);
                   echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
                   ?>
-                </span>
-              </li>
+                </h6>
+              </span>
+            </button>
 
-              <li data-filter="Pending">Pending
-                <span class="badge">
+            <!-- Pending Button -->
+            <button class="filter-btn" data-filter="Pending">Pending
+              <span class="badge-status-tab">
+                <h6>
                   <?php
                   $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
-                  WHERE accountId = $accountId AND status = 'Pending'";
+                      WHERE status = 'Pending'";
                   $result = mysqli_query($conn, $sql);
                   echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
                   ?>
-                </span>
-              </li>
+                </h6>
+              </span>
+            </button>
 
-              <li data-filter="Reserved">Reserved
-                <span class="badge">
+            <!-- Reserved Button -->
+            <button class="filter-btn" data-filter="Reserved">Reserved
+              <span class="badge-status-tab">
+                <h6>
                   <?php
                   $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
-                  WHERE accountId = $accountId AND status = 'Reserved'";
+                      WHERE status = 'Reserved'";
                   $result = mysqli_query($conn, $sql);
                   echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
                   ?>
-                </span>
-              </li>
+                </h6>
+              </span>
+            </button>
 
-              <li data-filter="Confirmed">Confirmed
-                <span class="badge">
+            <!-- Confirmed Button -->
+            <button class="filter-btn" data-filter="Confirmed">Confirmed
+              <span class="badge-status-tab">
+                <h6>
                   <?php
                   $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
-                  WHERE accountId = $accountId AND status = 'Confirmed'";
+                      WHERE status = 'Confirmed'";
                   $result = mysqli_query($conn, $sql);
                   echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
                   ?>
-                </span>
-              </li>
+                </h6>
+              </span>
+            </button>
 
-              <li data-filter="Cancelled">Cancelled
-                <span class="badge">
+            <!-- Cancelled Button -->
+            <button class="filter-btn" data-filter="Cancelled">Cancelled
+              <span class="badge-status-tab">
+                <h6>
                   <?php
                   $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
-                              WHERE accountId = $accountId AND status = 'Cancelled'";
+                      WHERE status = 'Cancelled'";
                   $result = mysqli_query($conn, $sql);
                   echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
                   ?>
-                </span>
-              </li>
-            </ul>
+                </h6>
+              </span>
+            </button>
+
           </div>
+
+        </div>
+
+        <div class="table-content-body">
 
           <div class="table-container">
-            <table id="product-table" class="table product-table">
+            <table id="product-table" class="product-table">
               <thead>
                 <tr>
                   <th>ID</th>
@@ -178,23 +199,23 @@ require "../conn.php";
                 <?php
                 if ($agentRole != 'Head Agent') {
                   $sql1 = "SELECT b.transactNo AS `T.N`, p.packageName AS `PACKAGE`, b.bookingDate, 
-                            b.bookingType as bookingType, DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y') AS `FLIGHT DATE`, b.pax AS `TOTAL PAX`, 
-                            CONCAT(b.lName, ', ', b.fName, ' ', CASE WHEN b.mName = 'N/A' THEN '' 
-                            ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ', CASE WHEN b.suffix = 'N/A' THEN '' 
-                            ELSE b.suffix END) AS `CONTACT NAME`, br.branchName as branchName,
-                            b.email AS `CONTACT EMAIL`, CONCAT(b.countryCode, ' ', b.contactNo) AS `CONTACT PHONE`, b.status AS `STATUS`, 
-                            COALESCE(SUM(r.requestCost), 0) AS TotalRequestAmount, b.totalPrice AS PackagePrice, 
-                            COALESCE(SUM(pa.amount), 0) AS TotalAmountPaid
-                          FROM booking b
-                          LEFT JOIN flight f ON b.flightId = f.flightId
-                          LEFT JOIN package p ON b.packageId = p.packageId
-                          LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
-                          JOIN branch br ON b.agentCode = br.branchAgentCode
-                          LEFT JOIN payment pa ON pa.transactNo = b.transactNo AND pa.paymentStatus = 'Approved'
-                          LEFT JOIN request r ON r.transactNo = b.transactNo AND r.requestStatus = 'Confirmed'
-                          WHERE b.accountId = $accountId
-                          GROUP BY b.transactNo
-                          ORDER BY `FLIGHT DATE`";
+                              b.bookingType as bookingType, DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y') AS `FLIGHT DATE`, b.pax AS `TOTAL PAX`, 
+                              CONCAT(b.lName, ', ', b.fName, ' ', CASE WHEN b.mName = 'N/A' THEN '' 
+                              ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ', CASE WHEN b.suffix = 'N/A' THEN '' 
+                              ELSE b.suffix END) AS `CONTACT NAME`, br.branchName as branchName,
+                              b.email AS `CONTACT EMAIL`, CONCAT(b.countryCode, ' ', b.contactNo) AS `CONTACT PHONE`, b.status AS `STATUS`, 
+                              COALESCE(SUM(r.requestCost), 0) AS TotalRequestAmount, b.totalPrice AS PackagePrice, 
+                              COALESCE(SUM(pa.amount), 0) AS TotalAmountPaid
+                            FROM booking b
+                            LEFT JOIN flight f ON b.flightId = f.flightId
+                            LEFT JOIN package p ON b.packageId = p.packageId
+                            LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
+                            JOIN branch br ON b.agentCode = br.branchAgentCode
+                            LEFT JOIN payment pa ON pa.transactNo = b.transactNo AND pa.paymentStatus = 'Approved'
+                            LEFT JOIN request r ON r.transactNo = b.transactNo AND r.requestStatus = 'Confirmed'
+                            WHERE b.accountId = $accountId
+                            GROUP BY b.transactNo
+                            ORDER BY `FLIGHT DATE`";
 
                   $res1 = $conn->query($sql1);
 
@@ -236,55 +257,55 @@ require "../conn.php";
                       // <td>{$row['TRANSACTION DATE']}</td>
                 
                       echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($transactNo) . "'>
-                              <td>{$transactNo}</td>
-                              <td>{$row['CONTACT NAME']}</td>
-                              <td> 
-                                <div class='d-flex flex-column'>
-                                  <span><strong>Email: </strong>" . $row['CONTACT EMAIL'] . " </span>
-                                  <span><strong>Contact Number: </strong> " . $row['CONTACT PHONE'] . "</span>
-                                </div>
-                              </td>
-                              <td>{$row['branchName']}</td>
-                              <td>{$row['FLIGHT DATE']}</td>
-                              <td style='text-align: center; font-weight: bold;'>
-                                {$row['TOTAL PAX']}
-                              </td>
-                              <td>₱ {$formattedPackagePrice}</td>
-                              <td>₱ {$formattedRequestTotal}</td>
-                              <td>
-                                <div class='d-flex flex-column'>
-                                  <span><strong>Amount Paid: </strong> ₱ " . $formattedAmountPaid . " </span>
-                                  <span><strong>Balance: </strong> ₱ " . $formattedBalance . "</span>
-                                </div>
-                              </td>
-                              <td>{$formattedBookingDate}</td>
-                              <td>
-                                <span class='badge p-2 rounded-pill {$statusClass}'>
-                                  {$status}
-                                </span>
-                              </td>
-                          </tr>";
+                                <td>{$transactNo}</td>
+                                <td>{$row['CONTACT NAME']}</td>
+                                <td> 
+                                  <div class='d-flex flex-column'>
+                                    <span><strong>Email: </strong>" . $row['CONTACT EMAIL'] . " </span>
+                                    <span><strong>Contact Number: </strong> " . $row['CONTACT PHONE'] . "</span>
+                                  </div>
+                                </td>
+                                <td>{$row['branchName']}</td>
+                                <td>{$row['FLIGHT DATE']}</td>
+                                <td style='text-align: center; font-weight: bold;'>
+                                  {$row['TOTAL PAX']}
+                                </td>
+                                <td>₱ {$formattedPackagePrice}</td>
+                                <td>₱ {$formattedRequestTotal}</td>
+                                <td>
+                                  <div class='d-flex flex-column'>
+                                    <span><strong>Amount Paid: </strong> ₱ " . $formattedAmountPaid . " </span>
+                                    <span><strong>Balance: </strong> ₱ " . $formattedBalance . "</span>
+                                  </div>
+                                </td>
+                                <td>{$formattedBookingDate}</td>
+                                <td>
+                                  <span class='badge p-2 rounded-pill {$statusClass}'>
+                                    {$status}
+                                  </span>
+                                </td>
+                            </tr>";
                     }
                   }
                 } else {
                   $sql1 = "SELECT b.transactNo AS `T.N`, p.packageName AS `PACKAGE`, b.bookingDate, 
-                            b.bookingType as bookingType, DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y') AS `FLIGHT DATE`, b.pax AS `TOTAL PAX`, 
-                            CONCAT(b.lName, ', ', b.fName, ' ', CASE WHEN b.mName = 'N/A' THEN '' 
-                            ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ', CASE WHEN b.suffix = 'N/A' THEN '' 
-                            ELSE b.suffix END) AS `CONTACT NAME`, br.branchName as branchName,
-                            b.email AS `CONTACT EMAIL`, CONCAT(b.countryCode, ' ', b.contactNo) AS `CONTACT PHONE`, b.status AS `STATUS`, 
-                            COALESCE(SUM(r.requestCost), 0) AS TotalRequestAmount, b.totalPrice AS PackagePrice, 
-                            COALESCE(SUM(pa.amount), 0) AS TotalAmountPaid
-                          FROM booking b
-                          LEFT JOIN flight f ON b.flightId = f.flightId
-                          LEFT JOIN package p ON b.packageId = p.packageId
-                          LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
-                          JOIN branch br ON b.agentCode = br.branchAgentCode
-                          LEFT JOIN payment pa ON pa.transactNo = b.transactNo AND pa.paymentStatus = 'Approved'
-                          LEFT JOIN request r ON r.transactNo = b.transactNo AND r.requestStatus = 'Confirmed'
-                          WHERE b.agentCode = '$agentCode'
-                          GROUP BY b.transactNo
-                          ORDER BY `FLIGHT DATE`";
+                              b.bookingType as bookingType, DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y') AS `FLIGHT DATE`, b.pax AS `TOTAL PAX`, 
+                              CONCAT(b.lName, ', ', b.fName, ' ', CASE WHEN b.mName = 'N/A' THEN '' 
+                              ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ', CASE WHEN b.suffix = 'N/A' THEN '' 
+                              ELSE b.suffix END) AS `CONTACT NAME`, br.branchName as branchName,
+                              b.email AS `CONTACT EMAIL`, CONCAT(b.countryCode, ' ', b.contactNo) AS `CONTACT PHONE`, b.status AS `STATUS`, 
+                              COALESCE(SUM(r.requestCost), 0) AS TotalRequestAmount, b.totalPrice AS PackagePrice, 
+                              COALESCE(SUM(pa.amount), 0) AS TotalAmountPaid
+                            FROM booking b
+                            LEFT JOIN flight f ON b.flightId = f.flightId
+                            LEFT JOIN package p ON b.packageId = p.packageId
+                            LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
+                            JOIN branch br ON b.agentCode = br.branchAgentCode
+                            LEFT JOIN payment pa ON pa.transactNo = b.transactNo AND pa.paymentStatus = 'Approved'
+                            LEFT JOIN request r ON r.transactNo = b.transactNo AND r.requestStatus = 'Confirmed'
+                            WHERE b.agentCode = '$agentCode'
+                            GROUP BY b.transactNo
+                            ORDER BY `FLIGHT DATE`";
 
                   $res1 = $conn->query($sql1);
 
@@ -326,34 +347,34 @@ require "../conn.php";
                       // <td>{$row['TRANSACTION DATE']}</td>
                 
                       echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($transactNo) . "'>
-                              <td>{$transactNo}</td>
-                              <td>{$row['CONTACT NAME']}</td>
-                              <td> 
-                                <div class='d-flex flex-column'>
-                                  <span><strong>Email: </strong>" . $row['CONTACT EMAIL'] . " </span>
-                                  <span><strong>Contact Number: </strong> " . $row['CONTACT PHONE'] . "</span>
-                                </div>
-                              </td>
-                              <td>{$row['branchName']}</td>
-                              <td>{$row['FLIGHT DATE']}</td>
-                              <td style='text-align: center; font-weight: bold;'>
-                                {$row['TOTAL PAX']}
-                              </td>
-                              <td>₱ {$formattedPackagePrice}</td>
-                              <td>₱ {$formattedRequestTotal}</td>
-                              <td>
-                                <div class='d-flex flex-column'>
-                                  <span><strong>Amount Paid: </strong> ₱ " . $formattedAmountPaid . " </span>
-                                  <span><strong>Balance: </strong> ₱ " . $formattedBalance . "</span>
-                                </div>
-                              </td>
-                              <td>{$formattedBookingDate}</td>
-                              <td>
-                                <span class='badge p-2 rounded-pill {$statusClass}'>
-                                  {$status}
-                                </span>
-                              </td>
-                          </tr>";
+                                <td>{$transactNo}</td>
+                                <td>{$row['CONTACT NAME']}</td>
+                                <td> 
+                                  <div class='d-flex flex-column'>
+                                    <span><strong>Email: </strong>" . $row['CONTACT EMAIL'] . " </span>
+                                    <span><strong>Contact Number: </strong> " . $row['CONTACT PHONE'] . "</span>
+                                  </div>
+                                </td>
+                                <td>{$row['branchName']}</td>
+                                <td>{$row['FLIGHT DATE']}</td>
+                                <td style='text-align: center; font-weight: bold;'>
+                                  {$row['TOTAL PAX']}
+                                </td>
+                                <td>₱ {$formattedPackagePrice}</td>
+                                <td>₱ {$formattedRequestTotal}</td>
+                                <td>
+                                  <div class='d-flex flex-column'>
+                                    <span><strong>Amount Paid: </strong> ₱ " . $formattedAmountPaid . " </span>
+                                    <span><strong>Balance: </strong> ₱ " . $formattedBalance . "</span>
+                                  </div>
+                                </td>
+                                <td>{$formattedBookingDate}</td>
+                                <td>
+                                  <span class='badge p-2 rounded-pill {$statusClass}'>
+                                    {$status}
+                                  </span>
+                                </td>
+                            </tr>";
                     }
                   }
                 }
@@ -374,13 +395,13 @@ require "../conn.php";
             </div>
           </div>
 
-        
+        </div>
 
       </div>
+
     </div>
 
   </div>
-</div>
 
 
   <!-- Modal for Update Booking -->
@@ -649,6 +670,32 @@ require "../conn.php";
     </div>
   </div>
 
+
+  <?php include '../Employee Section/includes/emp-scripts.php' ?>
+
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+
+
+
+  <!-- JQuery Datapicker -->
+  <script>
+    document.addEventListener("scroll", function () {
+      const searchBar = document.querySelector(".search-bar");
+      const scrollPosition = window.scrollY;
+
+      // Add or remove the upward adjustment class based on scroll position
+      if (scrollPosition > 70) { // Adjust the threshold as needed
+        searchBar.classList.add("scrolled-upward");
+      }
+      else {
+        searchBar.classList.remove("scrolled-upward");
+      }
+    });
+  </script>
+
+
+
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       // Get the status from the URL
@@ -707,7 +754,7 @@ require "../conn.php";
 
           // Apply DataTables filtering (assuming your table uses DataTables)
           if ($.fn.DataTable.isDataTable("#product-table")) {
-            $('#product-table').DataTable().column(10).search(filterValue || '', true, false).draw();
+            $('#product-table').DataTable().column(9).search(filterValue || '', true, false).draw();
           }
         });
       });
@@ -717,24 +764,35 @@ require "../conn.php";
   <!-- DataTables #product-table -->
   <script>
     $(document).ready(function () {
-       var table = $('#product-table').DataTable({ // <-- FIXED HERE
-          dom: 'rtip',
-          language: {
-            emptyTable: "No Transaction Records Available"
-          },
-          order: [[4, 'asc']],
-          scrollX: true,
-          scrollY: '68.5vh',
-          paging: true,
-          pageLength: 12,
-          autoWidth: false,
-          columnDefs: [
-            {
-              targets: [1, 2, 3, 5, 6],
-              orderable: false
-            }
-          ]
-        });
+      $('#product-table').DataTable({
+        dom: 'rtip',
+        language: {
+          emptyTable: "No Transaction Records Available"
+        },
+        order: [[4, 'asc']], // Sorting by flight date
+        scrollX: true, // Enable horizontal scroll if needed
+        scrollY: '66.1vh',
+        paging: true,
+        pageLength: 11,
+        autoWidth: false,
+        columnDefs: [
+          { targets: 0, width: '100px' }, // ID
+          { targets: 1, width: '200px' }, // Contact Person Info
+          { targets: 2, width: '240px' }, // Contact Details
+          { targets: 3, width: '160px' }, // Branch Name
+          { targets: 4, width: '140px' }, // Flight Date
+          { targets: 5, width: '80px' },  // Total Pax
+          { targets: 6, width: '120px' }, // Package Price
+          { targets: 7, width: '130px' }, // Total Req. Cost
+          { targets: 8, width: '230px' }, // Amt. Paid & Balance
+          { targets: 9, width: '140px' }, // Booking Date
+          { targets: 10, width: '100px' }, // Status
+          {
+            targets: [1, 2, 3, 5, 6],
+            orderable: false
+          }
+        ]
+      });
 
       // Search Functionality
       $('#search').on('keyup', function () {
@@ -995,6 +1053,29 @@ require "../conn.php";
   </script>
 
   <?php require "../Agent Section/includes/scripts.php"; ?>
+
+
+
+
+
+
+
+  <script>
+    function toggleClearButton(input) {
+      const clearButton = input.nextElementSibling; // Get the button next to the input
+      clearButton.style.display = input.value ? "block" : "none";
+    }
+
+    // Clear the input field
+    function clearInput(button) {
+      const input = button.previousElementSibling; // Get the input field before the button
+      input.value = "";
+      button.style.display = "none"; // Hide the clear button
+      input.focus(); // Refocus on the input
+    }
+  </script>
+
+
 
 </body>
 

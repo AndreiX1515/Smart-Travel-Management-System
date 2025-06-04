@@ -50,19 +50,13 @@ body {
   gap: 0px; /* Add spacing between internal sections */
 }
 
-
 .content-container {
   display: flex;
   flex-direction: column;
   gap: 5px;
+
   /* border: 1px solid black; */
 }
-
-
-
-
-
-
 
 .navbar {
   display: flex;
@@ -75,9 +69,13 @@ body {
   top: 0;
   background-color: #ffffff;
   z-index: 1000;
+  box-sizing: border-box;
+
+
   /* border-bottom: 1px solid gainsboro; */
   /* border: 1px solid black; */
-  box-sizing: border-box;
+
+
   /* border: 1px solid black; */
 }
 

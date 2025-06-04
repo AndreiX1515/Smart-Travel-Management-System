@@ -70,8 +70,8 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
               <div class="row">
 
                 <div class="col-md-5 clickable-card" onclick="redirectToTransactionStatus('current')">
-                  <div class="card-icon icon-blue">
-                    <i class="fas fa-calendar-alt"></i>
+                  <div class="card-icon icon-orange">
+                    <i class="fas fa-exchange-alt"></i>
                   </div>
 
                   <div class="side-content">
@@ -580,7 +580,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
               <div class="one">
 
                 <div class="table-wrapper confirm-table-container-flight">
-                  <table id="info-table" class="info-table">
+                  <table id="info-table" class="table info-table">
                     <thead>
                       <tr>
                         <th rowspan="2">ORIGIN</th>
@@ -665,11 +665,11 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                             echo '<td class="fw-bolder">' . $row['AdditionalSeats'] . '</td>';
                             echo '<td>₱ ' . number_format($row['RetailPrice'], 2) . '</td>';
                             echo '<td>
-                                <a href="../Client Section/client-addBooking-flight.php?flightid=' . urlencode($row['flightId']) . '" class="btn btn-outline-primary">Book Now</a></td>';
+                                <a href="../Client Section/client-addBooking-flight.php?flightid=' . urlencode($row['flightId']) . '" class="btn-bookNow">Book Now</a></td>';
                             echo '</tr>';
                           }
                         } else {
-                          echo "<tr><td colspan='7' class='text-center'>No records found</td></tr>";
+                          echo "<tr><td colspan='12' class='text-center'>No records found</td></tr>";
                         }
                       ?>
                     </tbody>
@@ -894,7 +894,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                 <div class="payment-wrapper">
                   <div class="table-header">
                     <div class="title-wrapper">
-                      <h6 class="">Payment</h6>
+                      <h6 class="">Bookings</h6>
                     </div>
                   </div>
 

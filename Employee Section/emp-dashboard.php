@@ -63,6 +63,7 @@ error_reporting(E_ALL);
             <div class="row">
 
               <div class="col-md-5 clickable-card" onclick="redirectToTransactionStatus('current')">
+
                 <div class="card-icon icon-orange">
                   <i class="fas fa-exchange-alt"></i>
                 </div>
@@ -598,7 +599,7 @@ error_reporting(E_ALL);
                 <tbody id="info-table">
                   <?php
                   $sql = "SELECT branchName, branchAgentCode 
-                            FROM branch WHERE branchAgentCode IS NOT NULL AND branchAgentCode != ''";
+                          FROM branch WHERE branchAgentCode IS NOT NULL AND branchAgentCode != ''";
                   $result = $conn->query($sql);
 
                   $agentColumns = '';
@@ -755,7 +756,6 @@ error_reporting(E_ALL);
 
           </div>
         </div>
-
 
         <!-- Payment and Requests Table -->
         <div class="tab-pane fade" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
@@ -1112,8 +1112,8 @@ error_reporting(E_ALL);
         </div>
 
       </div>
+
     </div>
-    
   </div>
 
   <!-- Comment Delete Modal -->

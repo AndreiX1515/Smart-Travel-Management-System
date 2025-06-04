@@ -41,7 +41,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
 
         <div class="page-header-content">
           <div class="page-header-text">
-            <h5 class="header-title">Transaction</h5>
+            <h5 class="header-title">Dashboard</h5>
           </div>
         </div>
 
@@ -75,9 +75,11 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                 <!-- Total Transaction Card -->
                 <div class="col-md-5 d-flex flex-row clickable-card"
                   onclick="window.location.href='../Agent Section/agent-transactions.php'">
-                  <div class="card-icon icon-blue">
-                    <i class="fas fa-calendar-alt"></i>
+
+                  <div class="card-icon icon-orange">
+                    <i class="fas fa-exchange-alt text-black"></i>
                   </div>
+
                   <div class="side-content d-flex flex-column">
                     <?php
                       // Determine which query to run based on the agent's role
@@ -302,7 +304,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
               <div class="row">
                 <!-- 5 Days Due Count -->
                 <div class="col-md-5 clickable-card" onclick="redirectToTransactionOnDue('5days')">
-                  <div class="card-icon icon-blue">
+                  <div class="card-icon icon-red">
                     <i class="fas fa-calendar-check"></i>
                   </div>
 
@@ -350,7 +352,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                 <!-- 15 Days Due Count -->
                 <div class="col-md-5 clickable-card" onclick="redirectToTransactionOnDue('10days')">
 
-                  <div class="card-icon icon-blue">
+                  <div class="card-icon icon-red">
                     <i class="fas fa-calendar-check"></i>
                   </div>
 
@@ -398,7 +400,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                 <!-- 30 Days Due Count -->
                 <div class="col-md-5 clickable-card" onclick="redirectToTransactionOnDue('20days')">
 
-                  <div class="card-icon icon-blue">
+                  <div class="card-icon icon-red">
                     <i class="fas fa-calendar-check"></i>
                   </div>
 
@@ -447,7 +449,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                 <!-- more than 30 Days Due Count -->
                 <div class="col-md-5 clickable-card" onclick="redirectToTransactionOnDue('30daysplus')">
 
-                  <div class="card-icon icon-blue">
+                  <div class="card-icon icon-red">
                     <i class="fas fa-calendar-check"></i>
                   </div>
 
@@ -870,7 +872,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                           echo '<td class="fw-bolder">' . $row['AdditionalSeats'] . '</td>';
                           echo '<td>₱ ' . number_format($row['RetailPrice'], 2) . '</td>';
                           echo '<td>
-                                <a href="../Agent Section/agent-revisedAddBooking-flight.php?flightid=' . urlencode($row['flightId']) . '" class="btn btn-outline-primary btn-sm">Book Now</a></td>';
+                                <a href="../Agent Section/agent-revisedAddBooking-flight.php?flightid=' . urlencode($row['flightId']) . '" class="btn-bookNow">Book Now</a></td>';
                           echo '</tr>';
                         }
                       } else {
@@ -984,7 +986,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                                         </tr>";
                             }
                           } else {
-                            echo "<tr><td colspan='8' style='text-align: left;'>No bookings as of the moment</td></tr>";
+                            echo "<tr><td colspan='12' style='text-align: center; font-size: 10px; font-weight: 500;'>NO PENDING TRANSACTION AS OF THE MOMENT</td></tr>";
                           }
                         } else {
                           $sql1 = "SELECT b.transactNo AS `T.N`,  p.packageName AS `PACKAGE`, b.bookingType as bookingType,
@@ -1054,7 +1056,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                                         </tr>";
                             }
                           } else {
-                            echo "<tr><td colspan='8' style='text-align: left;'>No bookings as of the moment</td></tr>";
+                            echo "<tr><td colspan='12' style='text-align: center; font-size: 10px; font-weight: 500;'>NO PENDING TRANSACTION AS OF THE MOMENT</td></tr>";
                           }
                         }
                         ?>
@@ -1155,7 +1157,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                                     </tr>";
                             }
                           } else {
-                            echo "<tr><td colspan='5' style='text-align: left;'>No requests at the moment.</td></tr>";
+                            echo "<tr><td colspan='12' style='text-align: center; font-size: 10px; font-weight: 500;'>NO REQUEST AS OF THE MOMENT</td></tr>";
                           }
                         } else {
                           $sql1 = "SELECT r.transactNo AS `T.N`, c.concernTitle AS `Request`, COALESCE(cd.details, r.customRequest) AS `Details`, 
@@ -1230,7 +1232,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                                                 </tr>";
                             }
                           } else {
-                            echo "<tr><td colspan='5' style='text-align: left;'>No requests at the moment.</td></tr>";
+                            echo "<tr><td colspan='12' style='text-align: center; font-size: 10px; font-weight: 500;'>NO REQUEST AS OF THE MOMENT</td></tr>";
                           }
                         }
                         ?>
@@ -1243,7 +1245,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                 <div class="payment-wrapper">
                   <div class="table-header">
                     <div class="title-wrapper">
-                      <h6 class="">Payment</h6>
+                      <h6 class="">Bookings</h6>
                     </div>
                   </div>
 
@@ -1338,7 +1340,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                                     </tr>";
                             }
                           } else {
-                            echo "<tr><td colspan='5' style='text-align: left;'>No payments at the moment</td></tr>";
+                            echo "<tr><td colspan='12' style='text-align: center; font-size: 10px; font-weight: 500;'>NO PAYMENT AS OF THE MOMENT</td></tr>";
                           }
                         } else {
                           $sql2 = "SELECT p.transactNo AS `Transaction No`, p.paymentTitle AS `Payment Title`, 
@@ -1418,7 +1420,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                                                 </tr>";
                             }
                           } else {
-                            echo "<tr><td colspan='5' style='text-align: left;'>No payments at the moment</td></tr>";
+                            echo "<tr><td colspan='12' style='text-align: center; font-size: 10px; font-weight: 500;'>NO BOOKING AS OF THE MOMENT</td></tr>";
                           }
                         }
                         ?>
@@ -1434,7 +1436,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
 
                 <div class="table-header">
                   <div class="title-wrapper">
-                    <h6 class="">Confirm Transactions</h6>
+                    <h6 class="">Confirmed Transactions</h6>
                   </div>
                 </div>
 
@@ -1549,7 +1551,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                             }
                           } else {
                             // Display a message if no records are found
-                            echo "<tr><td colspan='12'>No records found</td></tr>";
+                            echo "<tr><td colspan='12' style='text-align: center; font-size: 9px; font-weight: 500;'>NO CONFIRMED TRANSACTION AS OF THE MOMENT</td></tr>";
                           }
                         } else {
                           // Query to select all records from the booking table
@@ -1646,7 +1648,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                             }
                           } else {
                             // Display a message if no records are found
-                            echo "<tr><td colspan='12'>No records found.</td></tr>";
+                            echo "<tr><td colspan='12' style='text-align: center; font-size: 9px; font-weight: 500;'>NO CONFIRMED TRANSACTION AS OF THE MOMENT</td></tr>";
                           }
                         }
                       ?>

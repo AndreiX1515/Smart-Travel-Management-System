@@ -74,8 +74,8 @@ session_start();
 
                 <div class="filter-date-inputs">
 
-                  <div class="filter-input-with-icon">
-                   <input type="text" id="FlightStartDate" class="filter-input" placeholder="Flight Date">
+                  <div class="filter-input-with-icon--input">
+                   <input type="text" id="FlightStartDate" class="filter-input" placeholder="Flight Date" readonly>
 
                     <i class="fas fa-calendar-alt filter-calendar-icon"></i>
                   </div>
