@@ -86,7 +86,7 @@ require "../conn.php";
 
           <!-- Table  -->
           <div class="table-container">
-            <table id="product-table" class="product-table">
+            <table id="product-table" class="table product-table">
               <thead>
                 <tr>
                   <th>TRANSACTION NO</th>
@@ -241,8 +241,7 @@ require "../conn.php";
 
   <!-- DataTables #product-table -->
   <script>
-    $(document).ready(function () 
-    {
+    $(document).ready(function () {
       const table = $('#product-table').DataTable({
         columnDefs: [
           { targets: 6, visible: false }
@@ -250,9 +249,9 @@ require "../conn.php";
         order: [[6, 'desc']],
         responsive: true,
         pageLength: 10,
-        searching: false, // ❌ disable built-in search bar
+        searching: false, 
         language: {
-          emptyTable: "No payment records found.",
+          emptyTable: "NO PAYMENT RECORDS FOUND",
           lengthMenu: "Show _MENU_ entries",
           info: "Showing _START_ to _END_ of _TOTAL_ payments",
           paginate: {
@@ -263,6 +262,7 @@ require "../conn.php";
           }
         }
       });
+
 
       // ✅ 2. Link your custom search input
       $('#search').on('keyup', function () 

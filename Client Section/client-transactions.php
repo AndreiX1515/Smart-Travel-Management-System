@@ -76,7 +76,7 @@ require "../conn.php";
         </div>
 
         <div class="table-container">
-          <table id="product-table" class="product-table">
+          <table id="product-table" class="table product-table">
             <thead>
               <tr>
                 <th>Transaction ID</th>

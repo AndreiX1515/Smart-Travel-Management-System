@@ -396,7 +396,6 @@ session_start();
           </div>
 
         </div>
-
       </div>
 
     </div>
@@ -670,13 +669,10 @@ session_start();
     </div>
   </div>
 
-
   <?php include '../Employee Section/includes/emp-scripts.php' ?>
 
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
   <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
-
-
 
   <!-- JQuery Datapicker -->
   <script>
@@ -693,8 +689,6 @@ session_start();
       }
     });
   </script>
-
-
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {

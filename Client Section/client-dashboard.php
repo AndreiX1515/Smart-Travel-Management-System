@@ -70,7 +70,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
               <div class="row">
 
                 <div class="col-md-5 clickable-card" onclick="redirectToTransactionStatus('current')">
-                  <div class="card-icon icon-orange">
+                  <div class="card-icon icon-orange text-black">
                     <i class="fas fa-exchange-alt"></i>
                   </div>
 
@@ -222,7 +222,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                 <!-- 5 Days Due Count -->
                 <div class="col-md-5 clickable-card" onclick="redirectToTransactionOnDue('5days')">
 
-                  <div class="card-icon icon-blue">
+                  <div class="card-icon icon-red">
                     <i class="fas fa-calendar-check"></i>
                   </div>
 
@@ -251,7 +251,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                 <!-- 15 Days Due Count -->
                 <div class="col-md-5 clickable-card" onclick="redirectToTransactionOnDue('15days')">
 
-                  <div class="card-icon icon-blue">
+                  <div class="card-icon icon-red">
                     <i class="fas fa-calendar-check"></i>
                   </div>
 
@@ -281,7 +281,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                 <!-- 30 Days Due Count -->
                 <div class="col-md-5 clickable-card" onclick="redirectToTransactionOnDue('30days')">
 
-                  <div class="card-icon icon-blue">
+                  <div class="card-icon icon-red">
                     <i class="fas fa-calendar-check"></i>
                   </div>
 
@@ -310,7 +310,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                 <!-- More than 30 Days Due Count -->
                 <div class="col-md-5 clickable-card" onclick="redirectToTransactionOnDue('30daysplus')">
 
-                  <div class="card-icon icon-blue">
+                  <div class="card-icon icon-red">
                     <i class="fas fa-calendar-check"></i>
                   </div>
 
@@ -1199,7 +1199,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
 
       // 📅 Date Picker for FlightStartDate
       $("#FlightStartDate").datepicker({
-        dateFormat: "yy-mm-dd",
+        dateFormat: "yy.mm.dd",
         showAnim: "fadeIn",
         changeMonth: true,
         changeYear: true,
