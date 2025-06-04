@@ -195,8 +195,8 @@ require "../conn.php";
 
             <div class="mb-4">
               <label for="paymentStatus" class="form-label fw-bold">Request Status:</label>
-              <select id="paymentStatus" name="paymentStatus" class="form-select" required>
-                <option selected disabled value="">Select Option</option>
+              <select id="paymentStatus" name="paymentStatus" class="form-select">
+                <option disabled selected>Select Option</option>
                 <option value="Approved">Approved</option>
                 <option value="Rejected">Rejected</option>
               </select>
