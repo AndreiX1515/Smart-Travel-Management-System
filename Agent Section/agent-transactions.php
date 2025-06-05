@@ -104,9 +104,16 @@ require "../conn.php";
               <li class="active" data-filter="">All
                 <span class="badge">
                   <?php
-                  $sql = "SELECT COUNT(*) AS totalBookings FROM booking WHERE accountId = $accountId";
-                  $result = mysqli_query($conn, $sql);
-                  echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+                    if ($agentRole != 'Head Agent') {
+                      $sql = "SELECT COUNT(*) AS totalBookings FROM booking WHERE accountId = $accountId";
+                      $result = mysqli_query($conn, $sql);
+                      echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+                    }
+                    else {
+                      $sql = "SELECT COUNT(*) AS totalBookings FROM booking WHERE agentCode = '$agentCode'";
+                      $result = mysqli_query($conn, $sql);
+                      echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+                    }
                   ?>
                 </span>
               </li>
@@ -114,10 +121,18 @@ require "../conn.php";
               <li data-filter="Pending">Pending
                 <span class="badge">
                   <?php
-                  $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
-                  WHERE accountId = $accountId AND status = 'Pending'";
-                  $result = mysqli_query($conn, $sql);
-                  echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+                    if ($agentRole != 'Head Agent') {
+                      $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
+                              WHERE accountId = $accountId AND status = 'Pending'";
+                      $result = mysqli_query($conn, $sql);
+                      echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+                    }
+                    else {
+                      $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
+                              WHERE agentCode = '$agentCode' AND status = 'Pending'";
+                      $result = mysqli_query($conn, $sql);
+                      echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+                    }
                   ?>
                 </span>
               </li>
@@ -125,10 +140,18 @@ require "../conn.php";
               <li data-filter="Reserved">Reserved
                 <span class="badge">
                   <?php
-                  $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
-                  WHERE accountId = $accountId AND status = 'Reserved'";
-                  $result = mysqli_query($conn, $sql);
-                  echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+                    if ($agentRole != 'Head Agent') {
+                      $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
+                              WHERE accountId = $accountId AND status = 'Reserved'";
+                      $result = mysqli_query($conn, $sql);
+                      echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+                    }
+                    else {
+                      $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
+                              WHERE agentCode = '$agentCode' AND status = 'Reserved'";
+                      $result = mysqli_query($conn, $sql);
+                      echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+                    }
                   ?>
                 </span>
               </li>
@@ -136,10 +159,18 @@ require "../conn.php";
               <li data-filter="Confirmed">Confirmed
                 <span class="badge">
                   <?php
-                  $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
-                  WHERE accountId = $accountId AND status = 'Confirmed'";
-                  $result = mysqli_query($conn, $sql);
-                  echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+                    if ($agentRole != 'Head Agent') {
+                      $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
+                              WHERE accountId = $accountId AND status = 'Confirmed'";
+                      $result = mysqli_query($conn, $sql);
+                      echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+                    }
+                    else {
+                      $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
+                              WHERE agentCode = '$agentCode' AND status = 'Confirmed'";
+                      $result = mysqli_query($conn, $sql);
+                      echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+                    }
                   ?>
                 </span>
               </li>
@@ -147,10 +178,19 @@ require "../conn.php";
               <li data-filter="Cancelled">Cancelled
                 <span class="badge">
                   <?php
-                  $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
+                    if ($agentRole != 'Head Agent') {
+                      $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
                               WHERE accountId = $accountId AND status = 'Cancelled'";
-                  $result = mysqli_query($conn, $sql);
-                  echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+                      $result = mysqli_query($conn, $sql);
+                      echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+                    }
+                    else {
+                      $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
+                              WHERE agentCode = '$agentCode' AND status = 'Cancelled'";
+                      $result = mysqli_query($conn, $sql);
+                      echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+                    }
+                  
                   ?>
                 </span>
               </li>
@@ -283,8 +323,7 @@ require "../conn.php";
                           LEFT JOIN payment pa ON pa.transactNo = b.transactNo AND pa.paymentStatus = 'Approved'
                           LEFT JOIN request r ON r.transactNo = b.transactNo AND r.requestStatus = 'Confirmed'
                           WHERE b.agentCode = '$agentCode'
-                          GROUP BY b.transactNo
-                          ORDER BY `FLIGHT DATE`";
+                          GROUP BY b.transactNo";
 
                   $res1 = $conn->query($sql1);
 
@@ -722,7 +761,7 @@ require "../conn.php";
           language: {
             emptyTable: "No Transaction Records Available"
           },
-          order: [[4, 'asc']],
+          order: [[9, 'asc']],
           scrollX: true,
           scrollY: '68.5vh',
           paging: true,
