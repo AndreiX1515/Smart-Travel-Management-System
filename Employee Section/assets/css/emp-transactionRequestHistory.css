@@ -47,6 +47,8 @@ html, body {
   flex-direction: column;
   justify-content: space-between;
   box-sizing: border-box;
+
+
   /* border: 1px solid black; */
 }
 
@@ -65,11 +67,10 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  padding: 0px 20px 10px 20px;
+  padding: 0px 20px 0px 20px;
   box-sizing: border-box;
   border: 1px solid gainsboro;
   border-top: none;
-  /* border: 1px solid black; */
 }
 
 
@@ -343,31 +344,32 @@ html, body {
 
 
 
-/* FOR REQUEST COL WIDTH */
+/* FOR REQUEST COL WIDTH - REQUEST HISTORY */
 
 .product-table th:nth-child(1),
 .product-table td:nth-child(1) {
-  width: 96px; /* ~8% of 1200px */
+  width: 80px; /* ~8% of 1200px */
 }
 
 .product-table th:nth-child(2),
 .product-table td:nth-child(2) {
-  width: 120px; /* ~10% */
+  width: 150px; /* ~10% */
 }
 
 .product-table th:nth-child(3),
 .product-table td:nth-child(3) {
-  width: 120px;
+  width: 80px;
+  text-wrap: auto;
 }
 
 .product-table th:nth-child(4),
 .product-table td:nth-child(4) {
-  width: 144px; /* ~12% */
+  width: 120px; /* ~12% */
 }
 
 .product-table th:nth-child(5),
 .product-table td:nth-child(5) {
-  width: 168px; /* ~14% */
+  width: 90px; /* ~14% */
 }
 
 .product-table th:nth-child(6),
@@ -377,24 +379,24 @@ html, body {
 
 .product-table th:nth-child(7),
 .product-table td:nth-child(7) {
-  width: 72px; /* ~6% */
+  width: 50px; /* ~6% */
   text-align: center;
 }
 
 .product-table th:nth-child(8),
 .product-table td:nth-child(8) {
-  width: 96px; /* ~8% */
-  text-align: center;
+  width: 70px; /* ~8% */
 }
 
 .product-table th:nth-child(9),
 .product-table td:nth-child(9) {
-  width: 120px; /* ~10% */
+  width: 70px; /* ~10% */
 }
 
 .product-table th:nth-child(10),
 .product-table td:nth-child(10) {
   width: 72px; /* ~6% */
+  text-align: center;
 }
 
 .product-table th:nth-child(11),
@@ -458,72 +460,142 @@ html, body {
 
 
 
+.table-scroll-wrapper {
+  overflow-x: auto;
+  width: 100%;
+}
+
+
+
+
 /* FOR GUEST LIST TABLE */
+
+
+.guestList-table {
+  width: 985px; /* sum of all column widths below */
+  table-layout: fixed;
+}
+
+/* TRANSACTION NO */
 .guestList-table th:nth-child(1),
 .guestList-table td:nth-child(1) {
-  width: 90px; /* TRANSACTION NO */
+  width: 75px;
 }
 
+/* FULLNAME */
 .guestList-table th:nth-child(2),
 .guestList-table td:nth-child(2) {
-  width: 40px; /* AGE */
-  text-align: center;
+  width: 140px;
 }
 
+/* AGE */
 .guestList-table th:nth-child(3),
 .guestList-table td:nth-child(3) {
-  width: 120px; /* GIVEN NAME */
+  width: 30px;
 }
 
+/* D.O.B */
 .guestList-table th:nth-child(4),
 .guestList-table td:nth-child(4) {
-  width: 120px; /* SURNAME */
+  width: 80px;
 }
 
+/* NATIONALITY */
 .guestList-table th:nth-child(5),
 .guestList-table td:nth-child(5) {
-  width: 168px; /* FULLNAME */
+  width: 80px;
 }
 
+/* PASSPORT ID */
 .guestList-table th:nth-child(6),
 .guestList-table td:nth-child(6) {
-  width: 120px; /* DOB */
+  width: 120px;
 }
 
+/* DATE OF EXP. */
 .guestList-table th:nth-child(7),
 .guestList-table td:nth-child(7) {
-  width: 80px; /* NAT */
-  text-align: center;
+  width: 100px;
 }
 
+/* SEX */
 .guestList-table th:nth-child(8),
 .guestList-table td:nth-child(8) {
-  width: 130px; /* PASSPORT */
+  width: 60px;
+  
 }
 
+/* ROOMING */
 .guestList-table th:nth-child(9),
 .guestList-table td:nth-child(9) {
-  width: 100px; /* D of E (Date of Expiry) */
+  width: 130px;
 }
 
+/* DEPARTURE DATE */
 .guestList-table th:nth-child(10),
 .guestList-table td:nth-child(10) {
-  width: 60px; /* SEX */
-  text-align: center;
-}
-
-.guestList-table th:nth-child(11),
-.guestList-table td:nth-child(11) {
-  width: 130px; /* ROOMING */
-}
-
-.guestList-table th:nth-child(12),
-.guestList-table td:nth-child(12) {
-  width: 130px; /* DEPARTURE DATE */
+  width: 130px;
 }
 
 
 
+
+
+/* FOR GUEST LIST TABLE */
+
+/* GUEST ID */
+.visa-table th:nth-child(1),
+.visa-table td:nth-child(1) {
+  width: 40px;
+}
+
+/* DEPARTURE DATE */
+.visa-table th:nth-child(2),
+.visa-table td:nth-child(2) {
+  width: 65px;
+}
+
+/* TRANSACTION NO. */
+.visa-table th:nth-child(3),
+.visa-table td:nth-child(3) {
+  width: 65px;
+}
+
+/* GUEST NAME */
+.visa-table th:nth-child(4),
+.visa-table td:nth-child(4) {
+  width: 80px;
+}
+
+/* PASSPORT */
+.visa-table th:nth-child(5),
+.visa-table td:nth-child(5) {
+  width: 120px;
+}
+
+/* PERMIT */
+.visa-table th:nth-child(6),
+.visa-table td:nth-child(6) {
+  width: 120px;
+}
+
+/* VALID ID */
+.visa-table th:nth-child(7),
+.visa-table td:nth-child(7) {
+  width: 120px;
+}
+
+/* CERTIFICATE */
+.visa-table th:nth-child(8),
+.visa-table td:nth-child(8) {
+  width: 120px;
+}
+
+/* GUARANTEED LETTER */
+.visa-table th:nth-child(9),
+.visa-table td:nth-child(9) {
+  width: 120px;
+}
 
 
 

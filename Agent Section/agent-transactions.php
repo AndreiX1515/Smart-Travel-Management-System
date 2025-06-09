@@ -26,24 +26,30 @@ require "../conn.php";
   <div class="main-container">
 
     <div class="navbar">
-      <div class="page-header-wrapper">
+			<div class="page-header-wrapper">
 
-        <!-- <div class="page-header-top">
-            <div class="back-btn-wrapper">
-              <button class="back-btn" id="redirect-btn">
-                <i class="fas fa-chevron-left"></i>
-              </button>
-            </div>
-          </div> -->
+				<div class="page-header-top">
+					<div class="back-btn-wrapper">
+						<button class="back-btn" id="redirect-btn">
+							<i class="fas fa-chevron-left"></i>
+						</button>
+					</div>
+				</div>
 
-        <div class="page-header-content">
-          <div class="page-header-text">
-            <h5 class="header-title">Transaction</h5>
-          </div>
-        </div>
+				<div class="page-header-content">
+					<div class="page-header-text">
+						<h5 class="header-title">Bookings</h5>
+					</div>
+				</div>
 
-      </div>
-    </div>
+			</div>
+		</div>
+
+		<script>
+			document.getElementById('redirect-btn').addEventListener('click', function () {
+				window.location.href = '../Agent Section/agent-dashboard.php'; // Replace with your actual URL
+			});
+		</script>
 
     <div class="main-content">
 
@@ -158,212 +164,214 @@ require "../conn.php";
           </div>
 
           <div class="table-container">
-            <table id="product-table" class="table product-table">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Contact Person Info</th>
-                  <th>Contact Details</th>
-                  <th>Branch Name</th>
-                  <th>Flight Date</th>
-                  <th>Total Pax</th>
-                  <th>Package Price</th>
-                  <th>Total Req. Cost</th>
-                  <th>Amt. Paid Balance</th>
-                  <th>Booking Date</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                <?php
-                if ($agentRole != 'Head Agent') {
-                  $sql1 = "SELECT b.transactNo AS `T.N`, p.packageName AS `PACKAGE`, b.bookingDate, 
-                            b.bookingType as bookingType, DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y') AS `FLIGHT DATE`, b.pax AS `TOTAL PAX`, 
-                            CONCAT(b.lName, ', ', b.fName, ' ', CASE WHEN b.mName = 'N/A' THEN '' 
-                            ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ', CASE WHEN b.suffix = 'N/A' THEN '' 
-                            ELSE b.suffix END) AS `CONTACT NAME`, br.branchName as branchName,
-                            b.email AS `CONTACT EMAIL`, CONCAT(b.countryCode, ' ', b.contactNo) AS `CONTACT PHONE`, b.status AS `STATUS`, 
-                            COALESCE(SUM(r.requestCost), 0) AS TotalRequestAmount, b.totalPrice AS PackagePrice, 
-                            COALESCE(SUM(pa.amount), 0) AS TotalAmountPaid
-                          FROM booking b
-                          LEFT JOIN flight f ON b.flightId = f.flightId
-                          LEFT JOIN package p ON b.packageId = p.packageId
-                          LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
-                          JOIN branch br ON b.agentCode = br.branchAgentCode
-                          LEFT JOIN payment pa ON pa.transactNo = b.transactNo AND pa.paymentStatus = 'Approved'
-                          LEFT JOIN request r ON r.transactNo = b.transactNo AND r.requestStatus = 'Confirmed'
-                          WHERE b.accountId = $accountId
-                          GROUP BY b.transactNo
-                          ORDER BY `FLIGHT DATE`";
+            <div class="table-scroll-wrapper">
+              <table id="product-table" class="table product-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Contact Person Info</th>
+                    <th>Contact Details</th>
+                    <th>Branch Name</th>
+                    <th>Flight Date</th>
+                    <th>Total Pax</th>
+                    <th>Package Price</th>
+                    <th>Total Req. Cost</th>
+                    <th>Amt. Paid Balance</th>
+                    <th>Booking Date</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php
+                  if ($agentRole != 'Head Agent') {
+                    $sql1 = "SELECT b.transactNo AS `T.N`, p.packageName AS `PACKAGE`, b.bookingDate, 
+                              b.bookingType as bookingType, DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y') AS `FLIGHT DATE`, b.pax AS `TOTAL PAX`, 
+                              CONCAT(b.lName, ', ', b.fName, ' ', CASE WHEN b.mName = 'N/A' THEN '' 
+                              ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ', CASE WHEN b.suffix = 'N/A' THEN '' 
+                              ELSE b.suffix END) AS `CONTACT NAME`, br.branchName as branchName,
+                              b.email AS `CONTACT EMAIL`, CONCAT(b.countryCode, ' ', b.contactNo) AS `CONTACT PHONE`, b.status AS `STATUS`, 
+                              COALESCE(SUM(r.requestCost), 0) AS TotalRequestAmount, b.totalPrice AS PackagePrice, 
+                              COALESCE(SUM(pa.amount), 0) AS TotalAmountPaid
+                            FROM booking b
+                            LEFT JOIN flight f ON b.flightId = f.flightId
+                            LEFT JOIN package p ON b.packageId = p.packageId
+                            LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
+                            JOIN branch br ON b.agentCode = br.branchAgentCode
+                            LEFT JOIN payment pa ON pa.transactNo = b.transactNo AND pa.paymentStatus = 'Approved'
+                            LEFT JOIN request r ON r.transactNo = b.transactNo AND r.requestStatus = 'Confirmed'
+                            WHERE b.accountId = $accountId
+                            GROUP BY b.transactNo
+                            ORDER BY `FLIGHT DATE`";
 
-                  $res1 = $conn->query($sql1);
+                    $res1 = $conn->query($sql1);
 
-                  if ($res1->num_rows > 0) {
-                    while ($row = $res1->fetch_assoc()) {
-                      $transactNo = $row['T.N'];
-                      $pax = $row['TOTAL PAX'];
+                    if ($res1->num_rows > 0) {
+                      while ($row = $res1->fetch_assoc()) {
+                        $transactNo = $row['T.N'];
+                        $pax = $row['TOTAL PAX'];
 
-                      $status = isset($row['STATUS']) ? $row['STATUS'] : 'Unknown';
-                      $statusClass = '';
+                        $status = isset($row['STATUS']) ? $row['STATUS'] : 'Unknown';
+                        $statusClass = '';
 
-                      switch ($status) {
-                        case 'Confirmed':
-                          $statusClass = 'bg-success text-white'; // Green background, white text
-                          break;
-                        case 'Cancelled':
-                          $statusClass = 'bg-danger text-white'; // Red background, white text
-                          break;
-                        case 'Pending':
-                          $statusClass = 'bg-warning text-dark';
-                          break;
-                        default:
-                          $statusClass = 'bg-secondary text-white';
+                        switch ($status) {
+                          case 'Confirmed':
+                            $statusClass = 'bg-success text-white'; // Green background, white text
+                            break;
+                          case 'Cancelled':
+                            $statusClass = 'bg-danger text-white'; // Red background, white text
+                            break;
+                          case 'Pending':
+                            $statusClass = 'bg-warning text-dark';
+                            break;
+                          default:
+                            $statusClass = 'bg-secondary text-white';
+                        }
+
+                        $packagePrice = $row['PackagePrice'] ?? 0;
+                        $formattedPackagePrice = number_format($packagePrice, 2);
+                        $requestTotal = $row['TotalRequestAmount'] ?? 0;
+                        $formattedRequestTotal = number_format($requestTotal, 2);
+                        $amountPaid = $row['TotalAmountPaid'] ?? 0;
+                        $formattedAmountPaid = number_format($amountPaid, 2);
+                        $balance = max(($packagePrice + $requestTotal) - $amountPaid, 0);
+                        $formattedBalance = number_format($balance, 2);
+
+                        $formattedBookingDate = date('Y.m.d', strtotime($row['bookingDate']));
+
+                        // Prevent negative balances
+                        // Booking Date
+                        // <td>{$row['TRANSACTION DATE']}</td>
+                  
+                        echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($transactNo) . "'>
+                                <td>{$transactNo}</td>
+                                <td>{$row['CONTACT NAME']}</td>
+                                <td> 
+                                  <div class='d-flex flex-column'>
+                                    <span><strong>Email: </strong>" . $row['CONTACT EMAIL'] . " </span>
+                                    <span><strong>Contact Number: </strong> " . $row['CONTACT PHONE'] . "</span>
+                                  </div>
+                                </td>
+                                <td>{$row['branchName']}</td>
+                                <td>{$row['FLIGHT DATE']}</td>
+                                <td style='text-align: center; font-weight: bold;'>
+                                  {$row['TOTAL PAX']}
+                                </td>
+                                <td>₱ {$formattedPackagePrice}</td>
+                                <td>₱ {$formattedRequestTotal}</td>
+                                <td>
+                                  <div class='d-flex flex-column'>
+                                    <span><strong>Amount Paid: </strong> ₱ " . $formattedAmountPaid . " </span>
+                                    <span><strong>Balance: </strong> ₱ " . $formattedBalance . "</span>
+                                  </div>
+                                </td>
+                                <td>{$formattedBookingDate}</td>
+                                <td>
+                                  <span class='badge p-2 rounded-pill {$statusClass}'>
+                                    {$status}
+                                  </span>
+                                </td>
+                            </tr>";
                       }
+                    }
+                  } else {
+                    $sql1 = "SELECT b.transactNo AS `T.N`, p.packageName AS `PACKAGE`, b.bookingDate, 
+                              b.bookingType as bookingType, DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y') AS `FLIGHT DATE`, b.pax AS `TOTAL PAX`, 
+                              CONCAT(b.lName, ', ', b.fName, ' ', CASE WHEN b.mName = 'N/A' THEN '' 
+                              ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ', CASE WHEN b.suffix = 'N/A' THEN '' 
+                              ELSE b.suffix END) AS `CONTACT NAME`, br.branchName as branchName,
+                              b.email AS `CONTACT EMAIL`, CONCAT(b.countryCode, ' ', b.contactNo) AS `CONTACT PHONE`, b.status AS `STATUS`, 
+                              COALESCE(SUM(r.requestCost), 0) AS TotalRequestAmount, b.totalPrice AS PackagePrice, 
+                              COALESCE(SUM(pa.amount), 0) AS TotalAmountPaid
+                            FROM booking b
+                            LEFT JOIN flight f ON b.flightId = f.flightId
+                            LEFT JOIN package p ON b.packageId = p.packageId
+                            LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
+                            JOIN branch br ON b.agentCode = br.branchAgentCode
+                            LEFT JOIN payment pa ON pa.transactNo = b.transactNo AND pa.paymentStatus = 'Approved'
+                            LEFT JOIN request r ON r.transactNo = b.transactNo AND r.requestStatus = 'Confirmed'
+                            WHERE b.agentCode = '$agentCode'
+                            GROUP BY b.transactNo
+                            ORDER BY `FLIGHT DATE`";
 
-                      $packagePrice = $row['PackagePrice'] ?? 0;
-                      $formattedPackagePrice = number_format($packagePrice, 2);
-                      $requestTotal = $row['TotalRequestAmount'] ?? 0;
-                      $formattedRequestTotal = number_format($requestTotal, 2);
-                      $amountPaid = $row['TotalAmountPaid'] ?? 0;
-                      $formattedAmountPaid = number_format($amountPaid, 2);
-                      $balance = max(($packagePrice + $requestTotal) - $amountPaid, 0);
-                      $formattedBalance = number_format($balance, 2);
+                    $res1 = $conn->query($sql1);
 
-                      $formattedBookingDate = date('Y.m.d', strtotime($row['bookingDate']));
+                    if ($res1->num_rows > 0) {
+                      while ($row = $res1->fetch_assoc()) {
+                        $transactNo = $row['T.N'];
+                        $pax = $row['TOTAL PAX'];
 
-                      // Prevent negative balances
-                      // Booking Date
-                      // <td>{$row['TRANSACTION DATE']}</td>
-                
-                      echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($transactNo) . "'>
-                              <td>{$transactNo}</td>
-                              <td>{$row['CONTACT NAME']}</td>
-                              <td> 
-                                <div class='d-flex flex-column'>
-                                  <span><strong>Email: </strong>" . $row['CONTACT EMAIL'] . " </span>
-                                  <span><strong>Contact Number: </strong> " . $row['CONTACT PHONE'] . "</span>
-                                </div>
-                              </td>
-                              <td>{$row['branchName']}</td>
-                              <td>{$row['FLIGHT DATE']}</td>
-                              <td style='text-align: center; font-weight: bold;'>
-                                {$row['TOTAL PAX']}
-                              </td>
-                              <td>₱ {$formattedPackagePrice}</td>
-                              <td>₱ {$formattedRequestTotal}</td>
-                              <td>
-                                <div class='d-flex flex-column'>
-                                  <span><strong>Amount Paid: </strong> ₱ " . $formattedAmountPaid . " </span>
-                                  <span><strong>Balance: </strong> ₱ " . $formattedBalance . "</span>
-                                </div>
-                              </td>
-                              <td>{$formattedBookingDate}</td>
-                              <td>
-                                <span class='badge p-2 rounded-pill {$statusClass}'>
-                                  {$status}
-                                </span>
-                              </td>
-                          </tr>";
+                        $status = isset($row['STATUS']) ? $row['STATUS'] : 'Unknown';
+                        $statusClass = '';
+
+                        switch ($status) {
+                          case 'Confirmed':
+                            $statusClass = 'bg-success text-white'; // Green background, white text
+                            break;
+                          case 'Cancelled':
+                            $statusClass = 'bg-danger text-white'; // Red background, white text
+                            break;
+                          case 'Pending':
+                            $statusClass = 'bg-warning text-dark';
+                            break;
+                          default:
+                            $statusClass = 'bg-secondary text-white';
+                        }
+
+                        $packagePrice = $row['PackagePrice'] ?? 0;
+                        $formattedPackagePrice = number_format($packagePrice, 2);
+                        $requestTotal = $row['TotalRequestAmount'] ?? 0;
+                        $formattedRequestTotal = number_format($requestTotal, 2);
+                        $amountPaid = $row['TotalAmountPaid'] ?? 0;
+                        $formattedAmountPaid = number_format($amountPaid, 2);
+                        $balance = max(($packagePrice + $requestTotal) - $amountPaid, 0);
+                        $formattedBalance = number_format($balance, 2);
+
+                        $formattedBookingDate = date('Y.m.d', strtotime($row['bookingDate']));
+
+                        // Prevent negative balances
+                        // Booking Date
+                        // <td>{$row['TRANSACTION DATE']}</td>
+                  
+                        echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($transactNo) . "'>
+                                <td>{$transactNo}</td>
+                                <td>{$row['CONTACT NAME']}</td>
+                                <td> 
+                                  <div class='d-flex flex-column'>
+                                    <span><strong>Email: </strong>" . $row['CONTACT EMAIL'] . " </span>
+                                    <span><strong>Contact Number: </strong> " . $row['CONTACT PHONE'] . "</span>
+                                  </div>
+                                </td>
+                                <td>{$row['branchName']}</td>
+                                <td>{$row['FLIGHT DATE']}</td>
+                                <td style='text-align: center; font-weight: bold;'>
+                                  {$row['TOTAL PAX']}
+                                </td>
+                                <td>₱ {$formattedPackagePrice}</td>
+                                <td>₱ {$formattedRequestTotal}</td>
+                                <td>
+                                  <div class='d-flex flex-column'>
+                                    <span><strong>Amount Paid: </strong> ₱ " . $formattedAmountPaid . " </span>
+                                    <span><strong>Balance: </strong> ₱ " . $formattedBalance . "</span>
+                                  </div>
+                                </td>
+                                <td>{$formattedBookingDate}</td>
+                                <td>
+                                  <span class='badge p-2 rounded-pill {$statusClass}'>
+                                    {$status}
+                                  </span>
+                                </td>
+                            </tr>";
+                      }
                     }
                   }
-                } else {
-                  $sql1 = "SELECT b.transactNo AS `T.N`, p.packageName AS `PACKAGE`, b.bookingDate, 
-                            b.bookingType as bookingType, DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y') AS `FLIGHT DATE`, b.pax AS `TOTAL PAX`, 
-                            CONCAT(b.lName, ', ', b.fName, ' ', CASE WHEN b.mName = 'N/A' THEN '' 
-                            ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ', CASE WHEN b.suffix = 'N/A' THEN '' 
-                            ELSE b.suffix END) AS `CONTACT NAME`, br.branchName as branchName,
-                            b.email AS `CONTACT EMAIL`, CONCAT(b.countryCode, ' ', b.contactNo) AS `CONTACT PHONE`, b.status AS `STATUS`, 
-                            COALESCE(SUM(r.requestCost), 0) AS TotalRequestAmount, b.totalPrice AS PackagePrice, 
-                            COALESCE(SUM(pa.amount), 0) AS TotalAmountPaid
-                          FROM booking b
-                          LEFT JOIN flight f ON b.flightId = f.flightId
-                          LEFT JOIN package p ON b.packageId = p.packageId
-                          LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
-                          JOIN branch br ON b.agentCode = br.branchAgentCode
-                          LEFT JOIN payment pa ON pa.transactNo = b.transactNo AND pa.paymentStatus = 'Approved'
-                          LEFT JOIN request r ON r.transactNo = b.transactNo AND r.requestStatus = 'Confirmed'
-                          WHERE b.agentCode = '$agentCode'
-                          GROUP BY b.transactNo
-                          ORDER BY `FLIGHT DATE`";
 
-                  $res1 = $conn->query($sql1);
-
-                  if ($res1->num_rows > 0) {
-                    while ($row = $res1->fetch_assoc()) {
-                      $transactNo = $row['T.N'];
-                      $pax = $row['TOTAL PAX'];
-
-                      $status = isset($row['STATUS']) ? $row['STATUS'] : 'Unknown';
-                      $statusClass = '';
-
-                      switch ($status) {
-                        case 'Confirmed':
-                          $statusClass = 'bg-success text-white'; // Green background, white text
-                          break;
-                        case 'Cancelled':
-                          $statusClass = 'bg-danger text-white'; // Red background, white text
-                          break;
-                        case 'Pending':
-                          $statusClass = 'bg-warning text-dark';
-                          break;
-                        default:
-                          $statusClass = 'bg-secondary text-white';
-                      }
-
-                      $packagePrice = $row['PackagePrice'] ?? 0;
-                      $formattedPackagePrice = number_format($packagePrice, 2);
-                      $requestTotal = $row['TotalRequestAmount'] ?? 0;
-                      $formattedRequestTotal = number_format($requestTotal, 2);
-                      $amountPaid = $row['TotalAmountPaid'] ?? 0;
-                      $formattedAmountPaid = number_format($amountPaid, 2);
-                      $balance = max(($packagePrice + $requestTotal) - $amountPaid, 0);
-                      $formattedBalance = number_format($balance, 2);
-
-                      $formattedBookingDate = date('Y.m.d', strtotime($row['bookingDate']));
-
-                      // Prevent negative balances
-                      // Booking Date
-                      // <td>{$row['TRANSACTION DATE']}</td>
-                
-                      echo "<tr data-url='agent-showGuest.php?id=" . htmlspecialchars($transactNo) . "'>
-                              <td>{$transactNo}</td>
-                              <td>{$row['CONTACT NAME']}</td>
-                              <td> 
-                                <div class='d-flex flex-column'>
-                                  <span><strong>Email: </strong>" . $row['CONTACT EMAIL'] . " </span>
-                                  <span><strong>Contact Number: </strong> " . $row['CONTACT PHONE'] . "</span>
-                                </div>
-                              </td>
-                              <td>{$row['branchName']}</td>
-                              <td>{$row['FLIGHT DATE']}</td>
-                              <td style='text-align: center; font-weight: bold;'>
-                                {$row['TOTAL PAX']}
-                              </td>
-                              <td>₱ {$formattedPackagePrice}</td>
-                              <td>₱ {$formattedRequestTotal}</td>
-                              <td>
-                                <div class='d-flex flex-column'>
-                                  <span><strong>Amount Paid: </strong> ₱ " . $formattedAmountPaid . " </span>
-                                  <span><strong>Balance: </strong> ₱ " . $formattedBalance . "</span>
-                                </div>
-                              </td>
-                              <td>{$formattedBookingDate}</td>
-                              <td>
-                                <span class='badge p-2 rounded-pill {$statusClass}'>
-                                  {$status}
-                                </span>
-                              </td>
-                          </tr>";
-                    }
+                  if ($res1) {
+                    $res1->free();
                   }
-                }
-
-                if ($res1) {
-                  $res1->free();
-                }
-                ?>
-              </tbody>
-            </table>
+                  ?>
+                </tbody>
+              </table>
+            </div>
           </div>
 
           <div class="table-footer">
@@ -374,9 +382,8 @@ require "../conn.php";
             </div>
           </div>
 
-        
-
       </div>
+
     </div>
 
   </div>
@@ -724,7 +731,6 @@ require "../conn.php";
           },
           order: [[4, 'asc']],
           scrollX: true,
-          scrollY: '68.5vh',
           paging: true,
           pageLength: 12,
           autoWidth: false,

@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Employee - Transaction</title>
   <?php include '../Employee Section/includes/emp-head.php' ?>
-  <link rel="stylesheet" href="../Employee Section/assets/css/emp-transactionGuestList.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="../Employee Section/assets/css/emp-transactionRequestHistory.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="../Employee Section/assets/css/emp-sidebar-navbar.css?v=<?php echo time(); ?>">
 
 </head>
@@ -19,102 +19,98 @@
 
   <!-- Main Container -->
   <div class="main-container">
-    <?php include '../Employee Section/includes/emp-navbar.php' ?>
+
+    <div class="navbar">
+      <div class="page-header-wrapper">
+
+        <div class="page-header-top">
+          <div class="back-btn-wrapper">
+            <button class="back-btn" id="redirect-btn">
+              <i class="fas fa-chevron-left"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="page-header-content">
+          <div class="page-header-text">
+            <h5 class="header-title">Visa Requirements</h5>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <script>
+      document.getElementById('redirect-btn').addEventListener('click', function () {
+        window.location.href = '../Employee Section/emp-dashboard.php'; // Replace with your actual URL
+      });
+    </script>
 
     <div class="main-content">
-      <div class="table-container">
 
-        <div class="table-header">
+      <div class="page-content">
+
+        <div class="table-content-header">
+
           <div class="search-wrapper">
             <div class="search-input-wrapper">
-              <input type="text" id="search" placeholder="Search here..">
+              <i class="fas fa-search icon"></i>
+              <input type="text" id="search" placeholder="Search...">
             </div>
           </div>
 
-          <!-- <div class="filter-field">
-                <!-- <label for="status">Status:</label> 
-                <div class="select-wrapper">
-                  <select id="status">
-                    <option value="All" disabled selected>Select Status</option>
-                    <option value="Pending">Pending</option>
-                    <option value="Confirmed">Confirmed</option>
-                    <option value="Cancelled">Cancelled</option>
-                  </select>
-                </div>
-              </div> -->
-
           <div class="second-header-wrapper">
-            <div class="date-range-wrapper sorting-wrapper">
-              <div class="select-wrapper">
-                <select id="packages">
-                  <option value="All" disabled selected>Select Branch</option>
-                  <?php
-                    // Execute the SQL query
-                    $sql1 = "SELECT branchId, branchName FROM branch ORDER BY branchName ASC";
-                    $res1 = $conn->query($sql1);
 
-                    // Check if there are results
-                    if ($res1->num_rows > 0) 
-                    {
-                      // Loop through the results and generate options
-                      while ($row = $res1->fetch_assoc()) 
-                      {
-                        echo "<option value='" . $row['branchName'] . "'>" . $row['branchName'] . "</option>";
-                      }
-                    } 
-                    else 
-                    {
-                      echo "<option value=''>No companies available</option>";
-                    }
-                  ?>
-                </select>
-              </div>
-            </div>
+            <div class="filter-container">
 
-            <!-- <div class="date-range-wrapper flightbooking-wrapper">
-            <div class="date-range-inputs-wrapper">
-              <div class="input-with-icon">
-                <input type="text" class="datepicker" id="BookingStartDate" placeholder="Booking Date">
-                <i class="fas fa-calendar-alt calendar-icon"></i>
-              </div>
-            </div>
-          </div> -->
+              <div class="filter-date-wrapper">
 
-            <div class="date-range-wrapper flightbooking-wrapper">
-              <div class="date-range-inputs-wrapper">
-                <div class="input-with-icon">
-                  <input type="text" class="datepicker" id="FlightStartDate" placeholder="Flight Date">
-                  <i class="fas fa-calendar-alt calendar-icon"></i>
+                <div class="filter-date-inputs">
+
+                  <div class="filter-input-with-icon--input">
+                    <input type="text" id="FlightStartDate" class="filter-input" placeholder="Flight Date" readonly>
+
+                    <i class="fas fa-calendar-alt filter-calendar-icon"></i>
+                  </div>
+
                 </div>
+
               </div>
+
+              <div class="filter-buttons">
+                <button id="clearSorting" class="btn-material">
+                  <svg class="reset-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M12 4V1L8 5l4 4V6a6 6 0 1 1-6 6H4a8 8 0 1 0 8-8z" />
+                  </svg>
+                </button>
+              </div>
+
             </div>
 
-            <div class="buttons-wrapper">
-              <button id="clearSorting" class="btn btn-secondary">
-                Clear Filters
-              </button>
-            </div>
+
           </div>
 
         </div>
 
-        <div class="table-container">
-          <table class="product-table" id="product-table">
-            <thead>
-              <tr>
-                <th>GUEST ID</th>
-                <th>DEPARTURE DATE</th>
-                <th>TRANSACTION NO.</th>
-                <th>GUEST NAME</th>
-                <th>PASSPORT</th>
-                <th>PERMIT</th>
-                <th>VALID ID</th>
-                <th>CERTIFICATE</th>
-                <th>GUARANTEED LETTER</th>
-              </tr>
-            </thead>
-            <tbody>
-              <?php
+        <div class="table-content-body">
+
+          <div class="table-container">
+            <table class="table visa-table" id="visa-table">
+              <thead>
+                <tr>
+                  <th>GUEST ID</th>
+                  <th>DEPARTURE DATE</th>
+                  <th>TRANSACTION NO.</th>
+                  <th>GUEST NAME</th>
+                  <th>PASSPORT</th>
+                  <th>PERMIT</th>
+                  <th>VALID ID</th>
+                  <th>CERTIFICATE</th>
+                  <th>GUARANTEED LETTER</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php
                 $sql1 = "SELECT v.requirementId, v.transactNo, v.guestId, v.fileType, v.filePath, f.flightDepartureDate,
                           CONCAT(g.fName, ' ', IF(g.mName = 'N/A' OR g.mName IS NULL, '', CONCAT(SUBSTRING(g.mName, 1, 1), '. ')), 
                           g.lName, IF(g.suffix = 'N/A' OR g.suffix IS NULL, '', CONCAT(' ', g.suffix))) AS guestName
@@ -126,20 +122,18 @@
                 $res1 = $conn->query($sql1);
 
                 $filesByGuest = [];
-                if ($res1->num_rows > 0) 
-                {
-                  while ($row = $res1->fetch_assoc()) 
-                  {
+                if ($res1->num_rows > 0) {
+                  while ($row = $res1->fetch_assoc()) {
                     $guestId = $row['guestId'] ?? '';
                     $fileType = $row['fileType'] ?? '';
                     $filePath = $row['filePath'] ?? ''; // Ensure it's not NULL
                     $transactNo = $row['transactNo'] ?? '';
                     $requirementId = $row['requirementId'] ?? '';
-                    $formmattedDepartureDate = date('Y.m.d', strtotime($row['flightDepartureDate']));;
+                    $formmattedDepartureDate = date('Y.m.d', strtotime($row['flightDepartureDate']));
+                    ;
 
                     // Initialize guest data if not set
-                    if (!isset($filesByGuest[$guestId])) 
-                    {
+                    if (!isset($filesByGuest[$guestId])) {
                       $filesByGuest[$guestId] = [
                         'guestName' => $row['guestName'],
                         'transactNo' => $transactNo, // Store per guest
@@ -156,10 +150,8 @@
                   }
                 }
 
-                if (!empty($filesByGuest)) 
-                {
-                  foreach ($filesByGuest as $guestId => $guestData) 
-                  {
+                if (!empty($filesByGuest)) {
+                  foreach ($filesByGuest as $guestId => $guestData) {
                     echo "<tr>
                             <td>{$guestId}</td>
                             <td>{$guestData['departureDate']}</td>
@@ -170,16 +162,14 @@
                     $fileTypes = ['passport', 'permit', 'validId', 'certificate', 'guaranteedLetter'];
 
                     // Generate table columns dynamically based on available/missing files
-                    foreach ($fileTypes as $fileType) 
-                    {
+                    foreach ($fileTypes as $fileType) {
                       echo "<td>";
 
-                      if (!empty($guestData['files'][$fileType])) 
-                      {
+                      if (!empty($guestData['files'][$fileType])) {
                         foreach ($guestData['files'][$fileType] as $file)  // ✅ Now correctly accessing both
                         {
                           $filePath = !empty($file['filePath']) ? $file['filePath'] : ''; // Ensure no NULL values
-
+                
                           echo "<div >
                                   <a class='btn btn-info btn-sm' 
                                     href='../Agent Section/functions/view-file.php?file=" . urlencode($filePath) . "' target='_blank'>View File</a> 
@@ -189,9 +179,7 @@
 
                                 </div>";
                         }
-                      } 
-                      else 
-                      {
+                      } else {
                         echo "No files Uploaded";
                       }
 
@@ -200,26 +188,35 @@
 
                     echo "</tr>";
                   }
-                } 
-                else 
-                {
+                } else {
                   echo "<tr><td colspan='8' style='text-align: center;'>No Visa Requirements</td></tr>";
                 }
-              ?>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="table-footer">
-          <div class="pagination-controls">
-            <button id="prevPage" class="pagination-btn">Previous</button>
-            <span id="pageInfo" class="page-info">Page 1 of 10</span>
-            <button id="nextPage" class="pagination-btn">Next</button>
+                ?>
+              </tbody>
+            </table>
           </div>
+
+          <div class="table-footer">
+            <div class="pagination-controls">
+              <button id="prevPage" class="pagination-btn">Previous</button>
+              <span id="pageInfo" class="page-info">Page 1 of 10</span>
+              <button id="nextPage" class="pagination-btn">Next</button>
+            </div>
+          </div>
+
         </div>
 
       </div>
+
     </div>
+
+
+
+
+
+
+
+    
   </div>
 
 
@@ -228,18 +225,15 @@
 
   <!-- JQuery Datapicker -->
   <script>
-    document.addEventListener("scroll", function() 
-    {
+    document.addEventListener("scroll", function () {
       const searchBar = document.querySelector(".search-bar");
       const scrollPosition = window.scrollY;
 
       // Add or remove the upward adjustment class based on scroll position
-      if (scrollPosition > 70) 
-      { // Adjust the threshold as needed
+      if (scrollPosition > 70) { // Adjust the threshold as needed
         searchBar.classList.add("scrolled-upward");
-      } 
-      else 
-      {
+      }
+      else {
         searchBar.classList.remove("scrolled-upward");
       }
     });
@@ -247,7 +241,7 @@
 
   <!-- DataTables #product-table -->
   <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
       const table = $('#product-table').DataTable({
         dom: 'rtip', // Use only the relevant table elements
         language: {
@@ -265,14 +259,14 @@
 
         // Disable sorting for specific columns
         columnDefs: [{
-          targets: [1, 2, 3, 5, 6, ], // Disable sorting for 2nd and 4th columns
+          targets: [1, 2, 3, 5, 6,], // Disable sorting for 2nd and 4th columns
           orderable: false
         }]
       });
 
 
       // Search Functionality
-      $('#search').on('keyup', function() {
+      $('#search').on('keyup', function () {
         table.search(this.value).draw();
       });
 
@@ -291,12 +285,12 @@
       }
 
       // Custom pagination button click events
-      $('#prevPage').on('click', function() {
+      $('#prevPage').on('click', function () {
         table.page('previous').draw('page');
         updatePagination();
       });
 
-      $('#nextPage').on('click', function() {
+      $('#nextPage').on('click', function () {
         table.page('next').draw('page');
         updatePagination();
       });
@@ -305,26 +299,26 @@
       updatePagination();
 
       // Status Filter
-      $('#status').on('change', function() {
+      $('#status').on('change', function () {
         const selectedStatus = $(this).val();
         table.column(8).search(selectedStatus || '').draw();
       });
 
       // Package Filter
-      $('#packages').on('change', function() {
+      $('#packages').on('change', function () {
         const selectedPackage = $(this).val();
         table.column(2).search(selectedPackage || '').draw();
       });
 
       // Booking Date Filter with value change
-      $('#BookingStartDate').on('change', function() {
+      $('#BookingStartDate').on('change', function () {
         const selectedBookingDate = $(this).val(); // Get the selected value directly from the input field
         console.log("Booking Date Filter:", selectedBookingDate); // Log the selected booking date
         table.column(3).search(selectedBookingDate || '').draw(); // Column 4 (index starts at 0)
       });
 
       // Flight Date Filter with value change
-      $('#FlightStartDate').on('change', function() {
+      $('#FlightStartDate').on('change', function () {
         const selectedFlightDate = $(this).val(); // Get the selected value directly from the input field
         console.log("Flight Date Filter:", selectedFlightDate); // Log the selected flight date
         table.column(1).search(selectedFlightDate || '').draw(); // Column 5 (index starts at 0)
@@ -337,7 +331,7 @@
         changeMonth: true, // Allow the month to be changed from the dropdown
         changeYear: true, // Allow the year to be changed from the dropdown
         yearRange: "1900:2100", // Set a range of years (optional)
-        onSelect: function(dateText) {
+        onSelect: function (dateText) {
           // When a date is selected, update the input field with the date
           $(this).val(dateText);
           flightStartDate = dateText; // Store the selected date
@@ -354,7 +348,7 @@
         changeMonth: true, // Allow the month to be changed from the dropdown
         changeYear: true, // Allow the year to be changed from the dropdown
         yearRange: "1900:2100", // Set a range of years (optional)
-        onSelect: function(dateText) {
+        onSelect: function (dateText) {
           // When a date is selected, update the input field with the date
           $(this).val(dateText);
           bookingStartDate = dateText; // Store the selected date
@@ -364,7 +358,7 @@
       });
 
       // BookingStartDate Input Validation and Formatting
-      $("#BookingStartDate").on("input", function() {
+      $("#BookingStartDate").on("input", function () {
         var value = $(this).val();
 
         // Remove non-numeric and non-dash characters
@@ -400,7 +394,7 @@
       });
 
       // Clear All Filters
-      $('#clearSorting').on('click', function() {
+      $('#clearSorting').on('click', function () {
         // Clear search field
         $('#search').val('');
         table.search('').draw();
@@ -434,7 +428,7 @@
     let lastScrollTop = 0;
     const header = document.querySelector('.table-wrapper thead');
 
-    window.addEventListener('scroll', function() {
+    window.addEventListener('scroll', function () {
       let currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
       if (currentScrollTop > lastScrollTop) {
@@ -453,9 +447,9 @@
 
   <!-- Clickable table rows script -->
   <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      document.querySelectorAll("tr[data-url]").forEach(function(row) {
-        row.addEventListener("click", function() {
+    document.addEventListener("DOMContentLoaded", function () {
+      document.querySelectorAll("tr[data-url]").forEach(function (row) {
+        row.addEventListener("click", function () {
           window.location.href = row.getAttribute("data-url");
         });
       });
@@ -464,7 +458,7 @@
     const rows = document.querySelectorAll("tr[data-url]");
 
     rows.forEach(row => {
-      row.addEventListener("click", function() {
+      row.addEventListener("click", function () {
         const url = row.getAttribute("data-url");
         window.location.href = url; // Redirect to the specified URL
       });

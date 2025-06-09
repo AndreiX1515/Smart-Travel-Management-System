@@ -1889,7 +1889,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  border-right: .1px solid gainsboro;
+  /* border-right: .1px solid gainsboro; */
   line-height: 1;
   height: 26px;
 }
@@ -1902,13 +1902,13 @@
   transition: background-color 0.2s ease;
 }
 
-.info-table tbody tr:nth-child(even) {
-  background-color: #e6e6e6; /* Alternating row color */
+/* .info-table tbody tr:nth-child(even) {
+  background-color: #e6e6e6; 
 }
 
 .info-table tbody tr:hover {
-  background-color: #e0e0e0; /* Slight dark hover */
-}
+  background-color: #e0e0e0; 
+} */
 
 .info-table tbody td {
   padding: 6px 6px;
@@ -1936,15 +1936,13 @@
    Support for Rowspan and Colspan Cells
 ============================================================ */
 .info-table td[rowspan],
-.info-table td[colspan],
-.info-table th[rowspan],
-.info-table th[colspan] {
+.info-table td[colspan]
+ {
   padding: 6px 8px;
   text-align: center;
   vertical-align: middle;
   border-left: 0.5px solid #dee2e6;
   border-right: 0.5px solid #dee2e6;
-  border-bottom: 0.5px solid #f1f3f5;
 }
 
 
@@ -2080,6 +2078,14 @@
   width: 1%;
 }
 
+.unconfirm-table th:nth-child(5),
+.unconfirm-table td:nth-child(5) {
+  width: 1%;
+}
+
+
+
+
 /* Optional: Force inner content to stretch fully */
 /* .unconfirm-table th > *,
 .unconfirm-table td > * {
@@ -2140,6 +2146,11 @@
   width: 5%;
 }
 
+.request-table th:nth-child(6),
+.request-table td:nth-child(6) {
+  width: 2%;
+}
+
 /* Make content inside cells fill full height and width */
 /* .request-table th > *,
 .request-table td > * {
@@ -2198,6 +2209,21 @@
   width: 15%;
 }
 
+.payment-table th:nth-child(5),
+.payment-table td:nth-child(5) {
+  width: 15%;
+}
+
+.payment-table th:nth-child(6),
+.payment-table td:nth-child(6) {
+  width: 15%;
+}
+
+
+
+
+
+
 .td-content {
   display: flex;
   flex-direction: column;
@@ -2222,30 +2248,6 @@
 /* ======================================= */
 /* Confirm Table Container */
 
-
-
-/* Request Table Container */
-/* .request-table-container {
-  height: 100%;
-  overflow: auto;
-}
-
-
-.request-table {
-  width: 100%;
-  border-collapse: collapse;
-  white-space: nowrap;
-  font-size: 12px;
-} */
-
-
-
-
-
-
-
-
-
 .confirm-table-container {
   height: 100%;
   overflow: auto;
@@ -2257,11 +2259,6 @@
   white-space: nowrap;
   font-size: 12px;
 }
-
-
-
-
-
 
 /* Adjust column widths */
 .confirm-table th:nth-child(1),
@@ -2311,6 +2308,7 @@
   width: 6%; /* STATUS */
   text-align: center;
 }
+
 
 /* Remove left border from the first column and right border from the last column in body */
 .confirm-table tbody td:first-child {

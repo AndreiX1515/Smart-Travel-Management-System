@@ -1389,6 +1389,8 @@
   width: 100%;
   height: 72vh; 
   gap: 5px; 
+
+
   /* border: 1px solid black; */
 }
 
@@ -1396,10 +1398,11 @@
 .header-wrapper {
   display: flex;
   width: 100%;
-  height: 30vh; /* Slightly reduced for better overall balance */
+  height: 30vh;
   gap: 10px;
-  /* border: 1px solid black; */
   padding: 0;
+
+  /* border: 1px solid black; */
 }
 
 
@@ -1468,8 +1471,8 @@
 /* Table Head Styles */
 
 .table thead {
-  background-color: #dc3546e0; /* gainsboro */
-  color: #3a3a3a;             /* Darker gray for contrast */
+  background-color: #dc3546e0; 
+  color: #3a3a3a;             
   position: sticky;
   top: 0;
   z-index: 1;
@@ -1479,14 +1482,15 @@
 
 .table thead th {
   vertical-align: top;
-  /* border-left: 1.5px solid #000000;
-  border-right: 1.5px solid #000000; */
   font-size: 0.65rem;
   font-weight: 500;
   padding: 6px 8px;
   text-transform: uppercase;
-  color: #ffffff;              /* Matches text color */
-  background-color: #dc3546e0;; /* Same as thead */
+  color: #ffffff;              
+  background-color: #dc3546e0;; 
+
+  /* border-left: 1.5px solid #000000;
+  border-right: 1.5px solid #000000; */
 }
 
 
@@ -1536,66 +1540,64 @@
 
 
 
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* ============================= */
-        /* INFO TABLE */
+/* INFO TABLE STYLES            */
 /* ============================= */
 
-/* Table Containers */
 .info-table-wrapper {
-  height: 100%;
   display: flex;
   flex-direction: column;
   gap: 5px;
+  height: 100%;
   box-sizing: border-box;
+  overflow: hidden;
+
+  border: 1px solid gainsboro;
 }
+
+/* ============================= */
+/* INFO TABLE - CONTAINER       */
+/* ============================= */
 
 .info-table-container {
-  height: 72vh;
+  width: 100%;
+  height: 71.3vh; 
   overflow-x: auto;
   overflow-y: auto;
-  width: 100%;
-  border: 1px solid lightgray;
-  box-sizing: border-box;
   padding-bottom: 15px;
+  box-sizing: border-box;
+  position: relative;
 }
 
 
-/* Table Structure */
+/* ============================= */
+/* INFO TABLE - STRUCTURE       */
+/* ============================= */
+
 .info-table {
-  font-size: 12px;
+  width: auto;
+  height: 100%;
+  font-size: 16px;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: #111;
   background-color: #fff;
-  color: #000;
   text-align: center;
   border-collapse: collapse;
+  border-spacing: 0;
+  empty-cells: show;
+  caption-side: top;
   table-layout: fixed;
   white-space: nowrap;
-  padding-bottom: 10px;
 }
+
+
+
 
 
 /* ============================= */
 /* HEADER & FOOTER SECTIONS */
 /* ============================= */
 
-/* Footer below table */
 .info-footer {
   display: flex;
   justify-content: space-between;
@@ -1676,21 +1678,6 @@
 .clear-btn:hover {
   color: #d9534f;
 }
-
-
-
-
-
-
-
-
-/* ============================= */
-/* TABLE BASE STYLES */
-/* ============================= */
-
-
-
-
 
 
 /* ============================= */
@@ -1802,38 +1789,6 @@
   border-bottom: 0.5px solid #f1f3f5;
 }
 
-/* ============================= */
-/* TABLE CONTAINER              */
-/* ============================= */
-
-.info-table-container {
-  height: 72vh;
-  overflow-x: auto;
-  overflow-y: auto;
-  width: 100%;
-  border: 1px solid lightgray;
-  box-sizing: border-box;
-  padding-bottom: 15px;
-  position: relative;
-}
-
-/* ============================= */
-/* BASE TABLE STRUCTURE         */
-/* ============================= */
-
-.info-table {
-  border-collapse: collapse;
-  border-spacing: 0;
-  empty-cells: show;
-  caption-side: top;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  font-size: 16px;
-  color: #111;
-  background-color: #fff;
-  width: 100%;
-  table-layout: auto;
-}
-
 .info-table th,
 .info-table td {
   white-space: nowrap;
@@ -1865,14 +1820,6 @@
 /* COLUMN WIDTH DEFINITIONS     */
 /* ============================= */
 
-/* ============================= */
-/* COLUMN WIDTH DEFINITIONS     */
-/* ============================= */
-
-/* ============================= */
-/* COLUMN WIDTH DEFINITIONS     */
-/* ============================= */
-
 .info-table tr.first-half th:first-child,
 .info-table tbody td:first-child {
   width: 30px;
@@ -1895,38 +1842,43 @@
 
 .info-table tr.first-half th:nth-child(5),
 .info-table tbody td:nth-child(5) {
-  width: 70px;
+  width: 80px;
+  text-wrap: auto;
 }
 
 .info-table tr.first-half th:nth-child(6),
 .info-table tr.first-half th:nth-child(7),
 .info-table tbody td:nth-child(6),
 .info-table tbody td:nth-child(7) {
-  width: 70px;
+  width: 80px;
+  text-wrap: auto;
 }
 
 .info-table tr.first-half th:nth-child(8),
 .info-table tbody td:nth-child(8) {
-  width: 70px;
+  width: 80px;
+  text-wrap: auto;
 }
 
 .info-table tr.first-half th:nth-child(9),
 .info-table tbody td:nth-child(9) {
-  width: 100px;
+  width: 120px;
+ 
 }
 
 .info-table tr.first-half th:nth-child(10),
 .info-table tr.first-half th:nth-child(11),
 .info-table tr.first-half th:nth-child(12),
 .info-table tbody td:nth-child(10),
-.info-table tbody td:nth-child(11),
-.info-table tbody td:nth-child(12) {
-  width: 100px;
+.info-table tbody td:nth-child(11) {
+  width: 120px;
+ 
 }
 
-.info-table tr.first-half th:nth-child(n + 13),
-.info-table tbody td:nth-child(n + 13) {
-  width: 250px;
+.info-table tr.first-half th:nth-child(n + 12),
+.info-table tbody td:nth-child(n + 12) {
+  width: 100px;
+  font-size: 0.8rem;
 }
 
 
@@ -2034,7 +1986,6 @@
 
   .info-table-container,
   .confirm-table-container {
-    height: 50vh;
     overflow-y: auto;
     padding: 0px 0px;
   }
@@ -2140,9 +2091,9 @@
     font-size: 13px;
   }
 
-  .info-table-container {
+  /* .info-table-container {
     height: 50vh;
-  }
+  } */
 }
 
 

@@ -13,7 +13,6 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['flightid'])) {
     $_SESSION['flightid'] = htmlspecialchars($_POST['flightid']);
 }
-
 ?>
 
 <!DOCTYPE html>

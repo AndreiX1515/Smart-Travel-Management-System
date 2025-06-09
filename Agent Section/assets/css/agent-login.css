@@ -5,16 +5,19 @@ body {
   flex-direction: column;
   height: 100vh;
   margin: 0;
-  background-color: #ced4da; /* Light gray background */
   font-family: "Roboto", Arial, Helvetica, sans-serif;
-  background-image: linear-gradient(
-    to left bottom,
-    #051937,
-    #004d7a,
-    #008793,
-    #00bf72,
-    #a8eb12
+
+  background: #dc3546e0;
+  background: linear-gradient(
+    217deg,
+    rgba(220, 53, 70, 1) 0%,
+    rgba(220, 53, 70, 0.83) 28%,
+    rgba(52, 58, 64, 1) 78%
   );
+  background-blend-mode: screen;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
 .navbar {
@@ -24,6 +27,7 @@ body {
 
 /* Back to Homepage button */
 .back-btn {
+  display: none;
   position: absolute;
   top: 20px;
   left: 20px;
@@ -53,30 +57,30 @@ body {
   align-items: center;
   min-height: 100vh;
 
-  background: radial-gradient(circle, #eaccc6 10%, #87d3e6 50%, #2bc0e4 100%);
+  background: radial-gradient(circle, #343a40 10%, #f8f9fa 50%, #dc3546e0 100%);
   background: -moz-radial-gradient(
     circle,
-    #eaccc6 10%,
-    #87d3e6 50%,
-    #2bc0e4 100%
+    #343a40 10%,
+    #f8f9fa 50%,
+    #dc3546e0 100%
   );
   background: -webkit-radial-gradient(
     circle,
-    #eaccc6 10%,
-    #87d3e6 50%,
-    #2bc0e4 100%
+    #343a40 10%,
+    #f8f9fa 50%,
+    #dc3546e0 100%
   );
   background: -o-radial-gradient(
     circle,
-    #eaccc6 30%,
-    #87d3e6 50%,
-    #2bc0e4 100%
+    #343a40 10%,
+    #f8f9fa 50%,
+    #dc3546e0 100%
   );
   background: -ms-radial-gradient(
     circle,
-    #eaccc6 30%,
-    #87d3e6 50%,
-    #2bc0e4 100%
+    #343a40 10%,
+    #f8f9fa 50%,
+    #dc3546e0 100%
   );
 }
 
@@ -145,9 +149,6 @@ body {
   width: 80px;
   height: auto;
 }
-
-
-
 
 /* Form Inputs with Glassmorphism */
 .form-floating input {
@@ -296,15 +297,12 @@ body {
   align-items: center;
 }
 
-
-
 /* Header text */
 .header-container p {
   font-size: 12px;
   font-weight: 500;
   color: #6c757d;
 }
-
 
 /* Responsive Styles */
 @media (max-width: 1440px) {
@@ -406,8 +404,6 @@ body {
     top: 10px;
     left: 10px;
   }
-
-  
 }
 
 @media (max-width: 600px) {
@@ -437,7 +433,6 @@ body {
   .back-btn span {
     display: none;
   }
-  
 }
 
 @media (max-width: 480px) {
@@ -464,17 +459,16 @@ body {
     align-items: center;
     justify-content: center;
     text-align: center;
-    }
+  }
 
-    .back-btn i {
-      font-size: 20px; /* Increased size for better visibility */
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+  .back-btn i {
+    font-size: 20px; /* Increased size for better visibility */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
-    .back-btn span {
-        display: none;
-    }
-
+  .back-btn span {
+    display: none;
+  }
 }

@@ -129,14 +129,12 @@ session_start();
 							<thead>
 								<tr>
 									<th>TRANSACTION NO</th>
-									<th>AGE</th>
-									<th>GIVEN NAME</th>
-									<th>SURNAME</th>
 									<th>FULLNAME</th>
-									<th>DOB</th>
-									<th>NAT</th>
-									<th>PASSPORT</th>
-									<th>D of E</th>
+									<th>AGE</th>
+									<th>D.O.B</th>
+									<th>NATIONALITY</th>
+									<th>PASSPORT ID</th>
+									<th>DATE OF EXP.</th>
 									<th>SEX</th>
 									<th>ROOMING</th>
 									<th>DEPARTURE DATE</th>
@@ -177,17 +175,20 @@ session_start();
 										// Sanitize and format guest name
 										$guestName = $row['fName'] . ' ' . $row['suffix'] . ' ' . $row['lName'];
 
+
 										// Format dates
 										$birthdate = !empty($row['birthdate']) ? date('Y M d', strtotime($row['birthdate'])) : 'N/A';
+
+
 										$departureDate = !empty($row['flightDepartureDate']) ? date('Y-m-d', strtotime($row['flightDepartureDate'])) : 'N/A';
 
 										echo "<tr>
 												<td>" . $row['transactNo'] . "</td>
-												<td>" . $row['age'] . "</td>
-												<td>" . ($row['fName'] ?? '') . ' ' . ($row['suffix'] ?? '') . "</td>
-												<td>" . $row['lName'] . "</td>
 												<td>" . $guestName . "</td>
+												<td>" . $row['age'] . "</td>
+
 												<td>" . $birthdate . "</td>
+											
 												<td>" . $row['nationality'] . "</td>
 												<td>" . $row['passportNo'] . "</td>
 												<td>" . $row['passportExp'] . "</td>

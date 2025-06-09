@@ -100,6 +100,7 @@ session_start();
         </div>
 
         <div class="table-content-body">
+
           <div class="table-container">
             <table class="table product-table" id="product-table">
               <thead>
@@ -197,6 +198,7 @@ session_start();
               <button id="nextPage" class="pagination-btn">Next</button>
             </div>
           </div>
+
         </div>
 
       </div>
@@ -209,7 +211,6 @@ session_start();
 
 
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-
   <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
 
 
@@ -237,7 +238,6 @@ session_start();
         language: { emptyTable: "No Transaction Records Available" },
         order: [[0, 'asc']], // Sort by Transaction ID
         scrollX: false,
-        scrollY: '69vh',
         paging: true,
         pageLength: 20,
         autoWidth: false,
@@ -246,18 +246,6 @@ session_start();
             targets: [1, 2, 3, 5, 6],
             orderable: false
           },
-          { targets: 0, width: "120px" }, // TRANSACT NO
-          { targets: 1, width: "150px" }, // BRANCH
-          { targets: 2, width: "130px" }, // FLIGHT DATE
-          { targets: 3, width: "160px" }, // REQUEST TITLE
-          { targets: 4, width: "180px" }, // REQUEST DETAILS
-          { targets: 5, width: "160px" }, // SPECIFIC DETAILS
-          { targets: 6, width: "80px" },  // TOTAL PAX
-          { targets: 7, width: "120px" }, // TOTAL AMOUNT
-          { targets: 8, width: "130px" }, // REQUEST DATE
-          { targets: 9, width: "120px" }, // STATUS
-          { targets: 10, width: "160px" }, // REQUEST REMARKS
-          { targets: 11, visible: false }, // RAW REQUEST DATE
           { targets: [1, 2, 3, 5, 6, 9, 10], orderable: false }
         ]
       });
@@ -341,7 +329,5 @@ session_start();
   </script>
 
 
-
-</body>
-
+  </body>
 </html>

@@ -60,9 +60,9 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                 <h6 class="">Active Transaction</h6>
               </div>
 
-              <div class="accent-pill mt-1">
+              <!-- <div class="accent-pill mt-1">
                 <h6 class="accent-pill"><?php echo date('F, Y'); ?></h6>
-              </div>
+              </div> -->
             </div>
 
             <div class="card-content card-content-body">
@@ -580,7 +580,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
               <div class="one">
 
                 <div class="table-wrapper confirm-table-container-flight">
-                  <table id="info-table" class="table info-table">
+                  <table id="info-table" class="info-table">
                     <thead>
                       <tr>
                         <th rowspan="2">ORIGIN</th>
@@ -784,7 +784,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                                     </tr>";
                             }
                           } else {
-                            echo "<tr><td colspan='8' style='text-align: left;'>No bookings as of the moment</td></tr>";
+                            echo "<tr><td colspan='12' style='text-align: center; font-size: 10px; font-weight: 500;'>NO TRANSACTION AS OF THE MOMENT</td></tr>";
                           }
                         ?>
                       </tbody>
@@ -882,7 +882,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                                     </tr>";
                             }
                           } else {
-                            echo "<tr><td colspan='5' style='text-align: left;'>No requests at the moment.</td></tr>";
+                            echo "<tr><td colspan='12' style='text-align: center; font-size: 10px; font-weight: 500;'>NO REQUEST AS OF THE MOMENT</td></tr>";
                           }
                         ?>
                       </tbody>
@@ -988,7 +988,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                                   </tr>";
                           }
                         } else {
-                          echo "<tr><td colspan='5' style='text-align: left;'>No payments at the moment</td></tr>";
+                          echo "<tr><td colspan='12' style='text-align: center; font-size: 10px; font-weight: 500;'>NO PAYMENT AS OF THE MOMENT</td></tr>";
                         }
                         ?>
                       </tbody>
@@ -1108,15 +1108,15 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                             echo "<td>₱ " . number_format($totalAmountPaid, 2) . "</td>"; // Total Amount Paid
                             echo "<td>₱ " . number_format($balance, 2) . "</td>"; // Balance (Amount to be paid - Amount paid)
                             echo "<td>
-                                                  <span class='badge <?php echo $statusClass; ?> p-2'>
-                                                      {$bookingStatus}
-                                                  </span>
-                                              </td>";
+                                      <span class='badge <?php echo $statusClass; ?> p-2'>
+                                          {$bookingStatus}
+                                      </span>
+                                  </td>";
                             echo "</tr>";
                           }
                         } else {
                           // Display a message if no records are found
-                          echo "<tr><td colspan='12'>No records found</td></tr>";
+                          echo "<tr><td colspan='12' style='text-align: center; font-size: 9px; font-weight: 500;'>NO CONFIRMED TRANSACTION AS OF THE MOMENT</td></tr>";
                         }
                       ?>
                     </tbody>

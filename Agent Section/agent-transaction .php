@@ -179,7 +179,7 @@ session_start();
         <div class="table-content-body">
 
           <div class="table-container">
-            <table id="product-table" class="product-table">
+            <table id="product-table" class="table product-table">
               <thead>
                 <tr>
                   <th>ID</th>
@@ -770,17 +770,6 @@ session_start();
         pageLength: 11,
         autoWidth: false,
         columnDefs: [
-          { targets: 0, width: '100px' }, // ID
-          { targets: 1, width: '200px' }, // Contact Person Info
-          { targets: 2, width: '240px' }, // Contact Details
-          { targets: 3, width: '160px' }, // Branch Name
-          { targets: 4, width: '140px' }, // Flight Date
-          { targets: 5, width: '80px' },  // Total Pax
-          { targets: 6, width: '120px' }, // Package Price
-          { targets: 7, width: '130px' }, // Total Req. Cost
-          { targets: 8, width: '230px' }, // Amt. Paid & Balance
-          { targets: 9, width: '140px' }, // Booking Date
-          { targets: 10, width: '100px' }, // Status
           {
             targets: [1, 2, 3, 5, 6],
             orderable: false
