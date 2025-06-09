@@ -110,9 +110,16 @@ require "../conn.php";
               <li class="active" data-filter="">All
                 <span class="badge">
                   <?php
-                  $sql = "SELECT COUNT(*) AS totalBookings FROM booking WHERE accountId = $accountId";
-                  $result = mysqli_query($conn, $sql);
-                  echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+                    if ($agentRole != 'Head Agent') {
+                      $sql = "SELECT COUNT(*) AS totalBookings FROM booking WHERE accountId = $accountId";
+                      $result = mysqli_query($conn, $sql);
+                      echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+                    }
+                    else {
+                      $sql = "SELECT COUNT(*) AS totalBookings FROM booking WHERE agentCode = '$agentCode'";
+                      $result = mysqli_query($conn, $sql);
+                      echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+                    }
                   ?>
                 </span>
               </li>
@@ -120,10 +127,18 @@ require "../conn.php";
               <li data-filter="Pending">Pending
                 <span class="badge">
                   <?php
-                  $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
-                  WHERE accountId = $accountId AND status = 'Pending'";
-                  $result = mysqli_query($conn, $sql);
-                  echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+                    if ($agentRole != 'Head Agent') {
+                      $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
+                              WHERE accountId = $accountId AND status = 'Pending'";
+                      $result = mysqli_query($conn, $sql);
+                      echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+                    }
+                    else {
+                      $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
+                              WHERE agentCode = '$agentCode' AND status = 'Pending'";
+                      $result = mysqli_query($conn, $sql);
+                      echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+                    }
                   ?>
                 </span>
               </li>
@@ -131,10 +146,18 @@ require "../conn.php";
               <li data-filter="Reserved">Reserved
                 <span class="badge">
                   <?php
-                  $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
-                  WHERE accountId = $accountId AND status = 'Reserved'";
-                  $result = mysqli_query($conn, $sql);
-                  echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+                    if ($agentRole != 'Head Agent') {
+                      $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
+                              WHERE accountId = $accountId AND status = 'Reserved'";
+                      $result = mysqli_query($conn, $sql);
+                      echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+                    }
+                    else {
+                      $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
+                              WHERE agentCode = '$agentCode' AND status = 'Reserved'";
+                      $result = mysqli_query($conn, $sql);
+                      echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+                    }
                   ?>
                 </span>
               </li>
@@ -142,10 +165,18 @@ require "../conn.php";
               <li data-filter="Confirmed">Confirmed
                 <span class="badge">
                   <?php
-                  $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
-                  WHERE accountId = $accountId AND status = 'Confirmed'";
-                  $result = mysqli_query($conn, $sql);
-                  echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+                    if ($agentRole != 'Head Agent') {
+                      $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
+                              WHERE accountId = $accountId AND status = 'Confirmed'";
+                      $result = mysqli_query($conn, $sql);
+                      echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+                    }
+                    else {
+                      $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
+                              WHERE agentCode = '$agentCode' AND status = 'Confirmed'";
+                      $result = mysqli_query($conn, $sql);
+                      echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+                    }
                   ?>
                 </span>
               </li>
@@ -153,10 +184,19 @@ require "../conn.php";
               <li data-filter="Cancelled">Cancelled
                 <span class="badge">
                   <?php
-                  $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
+                    if ($agentRole != 'Head Agent') {
+                      $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
                               WHERE accountId = $accountId AND status = 'Cancelled'";
-                  $result = mysqli_query($conn, $sql);
-                  echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+                      $result = mysqli_query($conn, $sql);
+                      echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+                    }
+                    else {
+                      $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
+                              WHERE agentCode = '$agentCode' AND status = 'Cancelled'";
+                      $result = mysqli_query($conn, $sql);
+                      echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+                    }
+                  
                   ?>
                 </span>
               </li>
@@ -274,24 +314,23 @@ require "../conn.php";
                       }
                     }
                   } else {
-                    $sql1 = "SELECT b.transactNo AS `T.N`, p.packageName AS `PACKAGE`, b.bookingDate, 
-                              b.bookingType as bookingType, DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y') AS `FLIGHT DATE`, b.pax AS `TOTAL PAX`, 
-                              CONCAT(b.lName, ', ', b.fName, ' ', CASE WHEN b.mName = 'N/A' THEN '' 
-                              ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ', CASE WHEN b.suffix = 'N/A' THEN '' 
-                              ELSE b.suffix END) AS `CONTACT NAME`, br.branchName as branchName,
-                              b.email AS `CONTACT EMAIL`, CONCAT(b.countryCode, ' ', b.contactNo) AS `CONTACT PHONE`, b.status AS `STATUS`, 
-                              COALESCE(SUM(r.requestCost), 0) AS TotalRequestAmount, b.totalPrice AS PackagePrice, 
-                              COALESCE(SUM(pa.amount), 0) AS TotalAmountPaid
-                            FROM booking b
-                            LEFT JOIN flight f ON b.flightId = f.flightId
-                            LEFT JOIN package p ON b.packageId = p.packageId
-                            LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
-                            JOIN branch br ON b.agentCode = br.branchAgentCode
-                            LEFT JOIN payment pa ON pa.transactNo = b.transactNo AND pa.paymentStatus = 'Approved'
-                            LEFT JOIN request r ON r.transactNo = b.transactNo AND r.requestStatus = 'Confirmed'
-                            WHERE b.agentCode = '$agentCode'
-                            GROUP BY b.transactNo
-                            ORDER BY `FLIGHT DATE`";
+                     $sql1 = "SELECT b.transactNo AS `T.N`, p.packageName AS `PACKAGE`, b.bookingDate, 
+                            b.bookingType as bookingType, DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y') AS `FLIGHT DATE`, b.pax AS `TOTAL PAX`, 
+                            CONCAT(b.lName, ', ', b.fName, ' ', CASE WHEN b.mName = 'N/A' THEN '' 
+                            ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ', CASE WHEN b.suffix = 'N/A' THEN '' 
+                            ELSE b.suffix END) AS `CONTACT NAME`, br.branchName as branchName,
+                            b.email AS `CONTACT EMAIL`, CONCAT(b.countryCode, ' ', b.contactNo) AS `CONTACT PHONE`, b.status AS `STATUS`, 
+                            COALESCE(SUM(r.requestCost), 0) AS TotalRequestAmount, b.totalPrice AS PackagePrice, 
+                            COALESCE(SUM(pa.amount), 0) AS TotalAmountPaid
+                          FROM booking b
+                          LEFT JOIN flight f ON b.flightId = f.flightId
+                          LEFT JOIN package p ON b.packageId = p.packageId
+                          LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
+                          JOIN branch br ON b.agentCode = br.branchAgentCode
+                          LEFT JOIN payment pa ON pa.transactNo = b.transactNo AND pa.paymentStatus = 'Approved'
+                          LEFT JOIN request r ON r.transactNo = b.transactNo AND r.requestStatus = 'Confirmed'
+                          WHERE b.agentCode = '$agentCode'
+                          GROUP BY b.transactNo";
 
                     $res1 = $conn->query($sql1);
 
@@ -363,11 +402,8 @@ require "../conn.php";
                             </tr>";
                       }
                     }
-                  }
-
-                  if ($res1) {
-                    $res1->free();
-                  }
+                  
+                } 
                   ?>
                 </tbody>
               </table>
@@ -729,7 +765,7 @@ require "../conn.php";
           language: {
             emptyTable: "No Transaction Records Available"
           },
-          order: [[4, 'asc']],
+          order: [[9, 'asc']],
           scrollX: true,
           paging: true,
           pageLength: 12,

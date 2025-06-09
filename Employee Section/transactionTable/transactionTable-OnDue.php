@@ -63,7 +63,7 @@
             <?php
               $sql = "SELECT COUNT(*) AS totalBookings FROM booking b
                       JOIN flight f ON b.flightId = f.flightId
-                      WHERE f.flightDepartureDate < CURDATE()";
+                      WHERE b.status = 'Confirmed' AND f.flightDepartureDate < CURDATE()";
               $result = mysqli_query($conn, $sql);
               echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
             ?>
@@ -71,7 +71,7 @@
         </span>
       </button>
 
-      <button class="filter-btn active" data-filter="overdue">
+      <!-- <button class="filter-btn active" data-filter="overdue">
         Overdue
         <span class="badge-status-tab">
           <h6>
@@ -82,7 +82,7 @@
             ?>
           </h6>
         </span>
-      </button>
+      </button> -->
 
       <!-- 5 Days (Default) -->
       <button class="filter-btn" data-filter="5days">
@@ -90,9 +90,11 @@
         <span class="badge-status-tab">
           <h6>
             <?php
-            $sql = "SELECT COUNT(*) AS totalBookings FROM booking";
-            $result = mysqli_query($conn, $sql);
-            echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+              $sql = "SELECT COUNT(*) AS totalBookings FROM booking b
+                      JOIN flight f ON b.flightId = f.flightId 
+                      WHERE b.status = 'Confirmed' AND DATEDIFF(f.flightDepartureDate, CURDATE()) <= 5";
+              $result = mysqli_query($conn, $sql);
+              echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
             ?>
           </h6>
         </span>
@@ -104,9 +106,11 @@
         <span class="badge-status-tab">
           <h6>
             <?php
-            $sql = "SELECT COUNT(*) AS totalBookings FROM booking WHERE status = 'Pending'";
-            $result = mysqli_query($conn, $sql);
-            echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+              $sql = "SELECT COUNT(*) AS totalBookings FROM booking b 
+                      JOIN flight f ON b.flightId = f.flightId 
+                      WHERE b.status = 'Confirmed' AND DATEDIFF(f.flightDepartureDate, CURDATE()) BETWEEN 6 AND 10";
+              $result = mysqli_query($conn, $sql);
+              echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
             ?>
           </h6>
         </span>
@@ -118,9 +122,11 @@
         <span class="badge-status-tab">
           <h6>
             <?php
-            $sql = "SELECT COUNT(*) AS totalBookings FROM booking WHERE status = 'Reserved'";
-            $result = mysqli_query($conn, $sql);
-            echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+              $sql = "SELECT COUNT(*) AS totalBookings FROM booking b 
+                      JOIN flight f ON b.flightId = f.flightId 
+                      WHERE b.status = 'Confirmed' AND DATEDIFF(f.flightDepartureDate, CURDATE()) BETWEEN 11 AND 20";
+              $result = mysqli_query($conn, $sql);
+              echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
             ?>
           </h6>
         </span>
@@ -132,9 +138,11 @@
         <span class="badge-status-tab">
           <h6>
             <?php
-            $sql = "SELECT COUNT(*) AS totalBookings FROM booking WHERE status = 'Confirmed'";
-            $result = mysqli_query($conn, $sql);
-            echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
+              $sql = "SELECT COUNT(*) AS totalBookings FROM booking b 
+                      JOIN flight f ON b.flightId = f.flightId 
+                      WHERE b.status = 'Confirmed' AND DATEDIFF(f.flightDepartureDate, CURDATE()) > 30";
+              $result = mysqli_query($conn, $sql);
+              echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
             ?>
           </h6>
         </span>
@@ -343,10 +351,9 @@
         const diffInDays = Math.floor((flightDate - today) / (1000 * 60 * 60 * 24));
 
         switch (filterValue) {
-          case "overdue": return diffInDays < 0;
-          case "5days": return diffInDays >= 0 && diffInDays <= 5;
-          case "10days": return diffInDays >= 0 && diffInDays <= 10;
-          case "20days": return diffInDays >= 0 && diffInDays <= 20;
+          case "5days": return diffInDays <= 5;
+          case "10days": return diffInDays >= 6 && diffInDays <= 10;
+          case "20days": return diffInDays >= 11 && diffInDays <= 20;
           case "30daysplus": return diffInDays >= 31;
           default: return true;
         }
