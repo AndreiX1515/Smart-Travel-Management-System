@@ -62,15 +62,22 @@
                           <td>{$row['paymentTitle']}</td>
                           <td>{$row['paymentType']}</td>
                           <td>₱ {$row['amount']}</td>
-                          <td>
-                              <a href='functions/view-file.php?file=" . urlencode($row['filePath']) . "' target='_blank'>View File</a> 
-                              <a href='functions/download.php?file=" . urlencode($row['filePath']) . "' target='_blank'>Download File</a> 
-                          </td>
-                          <td>{$row['paymentDate']}</td>
-                          <td>
-                              <span class='badge rounded-pill {$badgeClass} py-2'> {$status} </span>
-                          </td>
-                        </tr>";
+                          <td>";
+
+                            if (!empty($row['filePath'])) {
+                                $encodedFile = urlencode($row['filePath']);
+                                echo "<a href='functions/view-file.php?file={$encodedFile}' target='_blank'>View File</a> 
+                                      <a href='functions/download.php?file={$encodedFile}' target='_blank'>Download File</a>";
+                            } else {
+                                echo "<span class='text-muted'>No File Uploaded</span>";
+                            }
+
+                          echo "    </td>
+                                  <td>{$row['paymentDate']}</td>
+                                  <td>
+                                      <span class='badge rounded-pill {$badgeClass} py-2'> {$status} </span>
+                                  </td>
+                                </tr>";
               }
             } 
             else 

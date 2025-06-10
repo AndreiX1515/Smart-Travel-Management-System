@@ -45,10 +45,10 @@ session_start();
     </div>
 
     <?php
-    // Check if 'id' is passed in the URL
-    if (isset($_GET['id'])) {
-      $transactionNumber = htmlspecialchars($_GET['id']);
-    }
+      // Check if 'id' is passed in the URL
+      if (isset($_GET['id'])) {
+        $transactionNumber = htmlspecialchars($_GET['id']);
+      }
     ?>
 
 
@@ -361,27 +361,34 @@ session_start();
 
       <!-- Mobile-friendly & Centered -->
       <div class="modal-content pay-later-modal">
-        <!-- Warning Icon -->
-        <div class="modal-body text-center">
-          <div class="pay-later-warning-icon">
-            <div class="circle"></div>
-            <div class="exclamation"></div>
+        <form id="reservedBooking" enctype="multipart/form-data">
+          <input type="hidden" value="<?php echo $_SESSION['agent_accountId']; ?>" name="agentAccountId">
+          <input type="hidden" value="<?php echo $transactionNumber; ?>" name="transactNo">
+
+          <input type="hidden" name="downpayment" value="0">
+          <input type="hidden" name="paymentTitle" value="No Downpayment">
+
+          <!-- Warning Icon -->
+          <div class="modal-body text-center">
+            <div class="pay-later-warning-icon">
+              <div class="circle"></div>
+              <div class="exclamation"></div>
+            </div>
           </div>
-        </div>
 
-        <!-- Main Content -->
-        <div class="modal-body pay-later-body">
-          <p>Your booking will be placed under <strong>"Reserved"</strong> status.</p>
-          <p class="pay-later-secondary">Failure to complete the payment within the given timeframe may result in
-            cancellation.</p>
-        </div>
+          <!-- Main Content -->
+          <div class="modal-body pay-later-body">
+            <p>Your booking will be placed under <strong>"Reserved"</strong> status.</p>
+            <p class="pay-later-secondary">Failure to complete the payment within the given timeframe may result in
+              cancellation.</p>
+          </div>
 
-        <!-- Footer -->
-        <div class="modal-footer pay-later-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-success" id="confirmLogout" data-bs-toggle="modal"
-            data-bs-target="#successModal">Confirm</button>
-        </div>
+          <!-- Footer -->
+          <div class="modal-footer pay-later-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-success">Confirm</button>
+          </div>
+        </form>
       </div>
 
     </div>
@@ -449,44 +456,85 @@ session_start();
   <!-- Script for Pay Later Modal -->
   <script>
     $(document).ready(function () {
-      $("#confirmLogout").click(function (event) {
-        event.preventDefault(); // Prevent default modal opening behavior
+      $("#reservedBooking").on("submit", function (event) {
+        event.preventDefault(); // Prevent default form submission
 
-        let hasErrors = false;
-        let requiredField = $("#requiredField").val().trim(); // Replace with actual input field ID
+        $('#message-payment').html(''); // Clear previous messages
+        $(".error-text").remove(); // Remove previous error messages
 
-        // Clear previous errors
-        $(".error-text").text("");
+        let downpayment = $("input[name='downpayment']").val().trim();
+        let paymentTitle = $("input[name='paymentTitle']").val().trim();
 
-        // Validate Required Field
-        if (requiredField === "") {
-          $("#requiredFieldError").text("This field is required.");
-          hasErrors = true;
-        }
+        let formData = new FormData(this);
+        formData.append('pay', '1'); // Add identifier for processing
 
-        if (!hasErrors) {
-          // No errors, proceed with showing the modal
-          $("#payLaterModal").modal("hide");
-          $("#successModal").modal("show");
-        }
+        $.ajax({
+          // 
+          url: "../Agent Section/functions/agent-addBookingReserved-code.php",
+          type: "POST",
+          data: formData,
+          contentType: false,
+          processData: false,
+          beforeSend: function () {
+            $('#message-payment').html('<div class="alert alert-info">Processing payment...</div>');
+          },
+          success: function (response) {
+            console.log("Server Response:", response);
+
+            let res;
+
+            try {
+              res = typeof response === "string" ? JSON.parse(response) : response;
+
+              if (res.status === "success") {
+                let bookingStatus = res.bookingStatus; // Get bookingStatus from response
+                let transactionNumber = res.transactionNumber; // Get transactionNumber
+
+                // ✅ If "Pay Later", show Reserved modal
+                if (bookingStatus === "Pay Later") {
+                  $("#successModalLater").modal("show");
+
+                  // ✅ Otherwise, show Booked modal
+                } else {
+                  $("#successModal").modal("show");
+                }
+
+              } else {
+                $('#message-payment').html('<div class="alert alert-danger">' + res.message + '</div>');
+                console.error("Payment Error:", res.message);
+              }
+            } catch (error) {
+              $('#message-payment').html('<div class="alert alert-danger">Unexpected error. Please try again.</div>');
+              console.error("JSON Parse Error:", error);
+            }
+          },
+          error: function (xhr, status, error) {
+            $('#message-payment').html('<div class="alert alert-danger">Error processing payment. Please try again.</div>');
+            console.error("AJAX Error:", status, error);
+          }
+        });
       });
 
-      // ✅ Redirect on "Got it" Click with 1-second delay
-      $("#okButton").click(function () {
-        setTimeout(function () {
-          window.location.href = "../Agent Section/agent-showGuest.php?id=<?= $transactionNumber ?>";
-        }, 1000); // 1 second = 1000ms
+      // ✅ Ensure modal allows closing by clicking outside or pressing ESC
+      $("#successModalLater").modal({
+        backdrop: true,  // Allow closing by clicking outside
+        keyboard: true   // Allow closing with ESC key
       });
 
-      // ✅ Optional: Redirect if modal is closed manually with 1-second delay
-      $("#successModal").on("hidden.bs.modal", function () {
+      // ✅ Redirect when "Got it" is clicked
+      $("#okButtonLater").on("click", function () {
+        $("#successModalLater").modal("hide"); // Ensure modal hides first
         setTimeout(function () {
           window.location.href = "../Agent Section/agent-showGuest.php?id=<?= $transactionNumber ?>";
-        }, 1000);
+        }, 500); // Small delay for a smooth transition
+      });
+
+      // ✅ Redirect when modal is closed (by clicking outside or pressing ESC)
+      $("#successModalLater").on("hidden.bs.modal", function () {
+        window.location.href = "../Agent Section/agent-showGuest.php?id=<?= $transactionNumber ?>";
       });
     });
   </script>
-
 
   <!-- Script for Pay Now -->
   <script>
