@@ -7,7 +7,7 @@
 
   if (isset($_POST['bookNow'])) 
   {
-    $accountId = $_SESSION['accountId'];
+    $accountId = (int) $_POST['accountId'];
     $agentId = $_SESSION['agentId'];
     $agentCode = $_SESSION['agentCode'];
     $packageName = $_POST['packageName'];

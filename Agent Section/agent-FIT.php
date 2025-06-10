@@ -45,142 +45,144 @@ require "../conn.php";
                 <h4>Booking Details</h4>
               </div>
 
-                <div class="card-body">
-                  <div class="row">
-                    <div class="columns col-md-6">
-                      <div class="form-group">
-                        <label for="packageName">Package <span class="text-danger fw-bold"> *</span></label>
-                        <select class="form-select" id="packageName" name="packageName" required>
-                          <option selected disabled>Select Package</option>
-                          <?php
-                            $sql1 = mysqli_query($conn, "SELECT packageId, packageName FROM fitpackage ORDER BY packageName ASC");
-                            while($res1 = mysqli_fetch_array($sql1)) 
-                            { 
-                              echo "<option value='{$res1['packageId']}'>{$res1['packageName']}</option>";
-                            }
-                          ?>
-                        </select>
+              <input type="" name="accountId" value="<?php echo $_SESSION['agent_accountId']; ?>">
 
-                        <span id="packageNameError" class="text-danger"></span> <!-- Error message -->
+              <div class="card-body">
+                <div class="row">
+                  <div class="columns col-md-6">
+                    <div class="form-group">
+                      <label for="packageName">Package <span class="text-danger fw-bold"> *</span></label>
+                      <select class="form-select" id="packageName" name="packageName" required>
+                        <option selected disabled>Select Package</option>
+                        <?php
+                          $sql1 = mysqli_query($conn, "SELECT packageId, packageName FROM fitpackage ORDER BY packageName ASC");
+                          while($res1 = mysqli_fetch_array($sql1)) 
+                          { 
+                            echo "<option value='{$res1['packageId']}'>{$res1['packageName']}</option>";
+                          }
+                        ?>
+                      </select>
 
-                      </div>
-                    </div>
+                      <span id="packageNameError" class="text-danger"></span> <!-- Error message -->
 
-                    <div class="columns col-md-6">
-                      <div class="form-group">
-                        <label for="nights">No. of Nights <span class="text-danger fw-bold">*</span></label>
-                        <select class="form-select" id="nights" name="nights" required>
-                          <option selected disabled>Select No. of Nights</option>
-                          <option value="3">3 Nights</option>
-                          <option value="4">4 Nights</option>
-                          <option value="5">5 Nights</option>
-                        </select>
-                        <span id="nightsError" class="text-danger"></span>
-                      </div>
                     </div>
                   </div>
 
-
-                  <div class="row">
-                    <div class="columns col-md-6">
-                      <div class="form-group">
-                        <label for="hotels">Hotels <span class="text-danger fw-bold"> *</span></label>
-
-                        <select class="form-select" id="hotels" name="hotels" required>
-                          <option selected disabled>Select Hotel</option>
-                          <?php
-                            $sql1 = mysqli_query($conn, "SELECT hotelId, hotelName FROM fithotel ORDER BY hotelName ASC");
-                            while($res1 = mysqli_fetch_array($sql1)) 
-                            { 
-                              echo "<option value='{$res1['hotelId']}'>{$res1['hotelName']}</option>";
-                            }
-                          ?>
-                          <!-- <option value="Smart Hotel" data-price="80">Smart Hotel - $80/night + $20 on Friday & Saturday</option>
-                          <option value="Marina Bay Hotel" data-price="100">Marina Bay Hotel - $100/night + $20 on Friday & Saturday</option> -->
-                        </select>
-
-                        <span id="hotelsError" class="text-danger"></span>
-                      </div>
+                  <div class="columns col-md-6">
+                    <div class="form-group">
+                      <label for="nights">No. of Nights <span class="text-danger fw-bold">*</span></label>
+                      <select class="form-select" id="nights" name="nights" required>
+                        <option selected disabled>Select No. of Nights</option>
+                        <option value="3">3 Nights</option>
+                        <option value="4">4 Nights</option>
+                        <option value="5">5 Nights</option>
+                      </select>
+                      <span id="nightsError" class="text-danger"></span>
                     </div>
+                  </div>
+                </div>
 
-                    <div class="columns col-md-6">
-                      <div class="form-group">
-                        <label for="room">Rooms <span class="text-danger fw-bold">*</span></label>
-                        <select class="form-select" id="room" name="room" required>
-                          <option selected disabled>Select Room</option>
-                          
-                        </select>
-                        <span id="roomError" class="text-danger"></span>
-                      </div>
+
+                <div class="row">
+                  <div class="columns col-md-6">
+                    <div class="form-group">
+                      <label for="hotels">Hotels <span class="text-danger fw-bold"> *</span></label>
+
+                      <select class="form-select" id="hotels" name="hotels" required>
+                        <option selected disabled>Select Hotel</option>
+                        <?php
+                          $sql1 = mysqli_query($conn, "SELECT hotelId, hotelName FROM fithotel ORDER BY hotelName ASC");
+                          while($res1 = mysqli_fetch_array($sql1)) 
+                          { 
+                            echo "<option value='{$res1['hotelId']}'>{$res1['hotelName']}</option>";
+                          }
+                        ?>
+                        <!-- <option value="Smart Hotel" data-price="80">Smart Hotel - $80/night + $20 on Friday & Saturday</option>
+                        <option value="Marina Bay Hotel" data-price="100">Marina Bay Hotel - $100/night + $20 on Friday & Saturday</option> -->
+                      </select>
+
+                      <span id="hotelsError" class="text-danger"></span>
                     </div>
                   </div>
 
-                  <div class="row">
-                    <div class="columns col-md-6">
-                      <div class="form-group">
-                        <label for="dayPicker">Select Day <span class="text-danger fw-bold"> *</span></label>
-                        <input type="date" class="form-control" id="dayPicker" name="dayPicker" required>
-                        <span id="packageNameError" class="text-danger"></span> <!-- Error message for package -->
-                      </div>
-                    </div>
-
-                    <div class="columns col-md-6">
-                      <div class="form-group">
-                        <label for="returnDate">Return Date <span class="text-danger fw-bold"> *</span></label>
-                        <input type="date" class="form-control" id="returnDate" name="returnDate" readonly>
-                        <span id="packageNameError" class="text-danger"></span> <!-- Error message for package -->
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="row">
-                    <div class="columns col-md-6">
-                      <div class="form-group">
-                        <label>No. of Rooms<span class="text-danger fw-bold"> *</span></label>
-                        <label id="roomsError" class="text-danger fs-6 d-none"></label> <!-- Error message for rooms -->
-                        <input type="number" class="form-control" id="rooms" name="rooms" placeholder="Enter No of Rooms" min="1" required>
-                      </div>
-                    </div>
-
-                    <div class="columns col-md-6">
-                      <div class="form-group">
-                        <label>Pax<span class="text-danger fw-bold"> *</span></label>
+                  <div class="columns col-md-6">
+                    <div class="form-group">
+                      <label for="room">Rooms <span class="text-danger fw-bold">*</span></label>
+                      <select class="form-select" id="room" name="room" required>
+                        <option selected disabled>Select Room</option>
                         
-                        <label id="paxError" class="text-danger d-none"></label> 
-                        <!-- Error message -->
-
-                        <input type="number" class="form-control" id="paxRequest" name="pax" placeholder="Enter pax" min="1" required>
-
-                      </div>
+                      </select>
+                      <span id="roomError" class="text-danger"></span>
                     </div>
                   </div>
                 </div>
 
-                <!-- Prices -->
-                <div class="card-footer">
-                  <div class="row">
-                    <div class="columns col-md-4">
-                      <h5>
-                          Additional Cost (Rooms): $ <span id="additionalRoomCost">0.00</span>
-                      </h5>
+                <div class="row">
+                  <div class="columns col-md-6">
+                    <div class="form-group">
+                      <label for="dayPicker">Select Day <span class="text-danger fw-bold"> *</span></label>
+                      <input type="date" class="form-control" id="dayPicker" name="dayPicker" required>
+                      <span id="packageNameError" class="text-danger"></span> <!-- Error message for package -->
                     </div>
+                  </div>
 
-                    <div class="columns col-md-4">
-                      <h5>
-                          Price: $ <span id="totalPrice">0.00</span>
-                      </h5>
+                  <div class="columns col-md-6">
+                    <div class="form-group">
+                      <label for="returnDate">Return Date <span class="text-danger fw-bold"> *</span></label>
+                      <input type="date" class="form-control" id="returnDate" name="returnDate" readonly>
+                      <span id="packageNameError" class="text-danger"></span> <!-- Error message for package -->
                     </div>
-
-                    <div class="columns col-md-4">
-                      <h5>
-                          Price in PHP: ₱ <span id="totalPricePhp">0.00</span>
-                      </h5>
-                    </div>
-
-                    <input type="hidden" id="roomPrice" name="roomPrice" placeholder="Room Price in USD">
-
                   </div>
                 </div>
+
+                <div class="row">
+                  <div class="columns col-md-6">
+                    <div class="form-group">
+                      <label>No. of Rooms<span class="text-danger fw-bold"> *</span></label>
+                      <label id="roomsError" class="text-danger fs-6 d-none"></label> <!-- Error message for rooms -->
+                      <input type="number" class="form-control" id="rooms" name="rooms" placeholder="Enter No of Rooms" min="1" required>
+                    </div>
+                  </div>
+
+                  <div class="columns col-md-6">
+                    <div class="form-group">
+                      <label>Pax<span class="text-danger fw-bold"> *</span></label>
+                      
+                      <label id="paxError" class="text-danger d-none"></label> 
+                      <!-- Error message -->
+
+                      <input type="number" class="form-control" id="paxRequest" name="pax" placeholder="Enter pax" min="1" required>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Prices -->
+              <div class="card-footer">
+                <div class="row">
+                  <div class="columns col-md-4">
+                    <h5>
+                        Additional Cost (Rooms): $ <span id="additionalRoomCost">0.00</span>
+                    </h5>
+                  </div>
+
+                  <div class="columns col-md-4">
+                    <h5>
+                        Price: $ <span id="totalPrice">0.00</span>
+                    </h5>
+                  </div>
+
+                  <div class="columns col-md-4">
+                    <h5>
+                        Price in PHP: ₱ <span id="totalPricePhp">0.00</span>
+                    </h5>
+                  </div>
+
+                  <input type="hidden" id="roomPrice" name="roomPrice" placeholder="Room Price in USD">
+
+                </div>
+              </div>
             </div>
 
             <div class="card contact-person-details">
@@ -253,7 +255,7 @@ require "../conn.php";
 
                       <div class="input-group">
                         <select name="countryCode" id="countryCode" class="form-select" required>
-                          <option disabled selected>Country Code</option>
+                          <option disabled>Country Code</option>
                           <option value="+93">Afghanistan (+93)</option>
                           <option value="+355">Albania (+355)</option>
                           <option value="+213">Algeria (+213)</option>
@@ -385,7 +387,7 @@ require "../conn.php";
                           <option value="+675">Papua New Guinea (+675)</option>
                           <option value="+595">Paraguay (+595)</option>
                           <option value="+51">Peru (+51)</option>
-                          <option value="+63">Philippines (+63)</option>
+                          <option value="+63" selected>Philippines (+63)</option>
                           <option value="+48">Poland (+48)</option>
                           <option value="+351">Portugal (+351)</option>
                           <option value="+974">Qatar (+974)</option>
