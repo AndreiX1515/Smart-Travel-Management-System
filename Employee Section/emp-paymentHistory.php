@@ -183,20 +183,28 @@ session_start();
 											$fomattedPaymentDate = date('Y-m-d', strtotime($row['paymentDate']));
 
 											echo "<tr>
-													<td>" . $row['transactNo'] . "</td>
-													<td>" . $row['branchName'] . "</td>
-													<td>" . $formattedFlightDate . "</td>
-													<td>₱ " . $amount . "</td>
-													<td>
-														<a href='functions/view-file.php?file=" . urlencode($row['filePath']) . "' target='_blank'>View File</a> 
-														<a href='functions/download.php?file=" . urlencode($row['filePath']) . "' target='_blank'>Download File</a> 
-													</td>
-													<td>" . $date . "</td>
-													<td>
-														<span class='badge p-2 rounded-pill {$statusClass}'>
-															{$status}
-														</span>
-													</td>";
+															<td>{$row['transactNo']}</td>
+															<td>{$row['branchName']}</td>
+															<td>{$formattedFlightDate}</td>
+															<td>₱ {$amount}</td>
+															<td>";
+
+																if (!empty($row['filePath'])) {
+																		$encodedFile = urlencode($row['filePath']);
+																		echo "<a href='functions/view-file.php?file={$encodedFile}' target='_blank'>View File</a> 
+																					<a href='functions/download.php?file={$encodedFile}' target='_blank'>Download File</a>";
+																} else {
+																		echo "<span class='text-muted'>No File Uploaded</span>";
+																}
+
+											echo "  </td>
+															<td>{$date}</td>
+															<td>
+																<span class='badge p-2 rounded-pill {$statusClass}'>
+																		{$status}
+																</span>
+															</td>
+														</tr>";
 
 											if ($remarks !== 'N/A') {
 												echo "<td>
