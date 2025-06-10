@@ -68,6 +68,20 @@ $position = htmlspecialchars(strtoupper($empId));
 		</li>
 
 		<li class="nav-item transaction">
+			<a class="nav-link page-button" href="../Employee Section/emp-tableFIT.php"
+				data-page-name="Transactions">
+				<div class="icon-wrapper">
+					<div class="icon">
+						<i class="fa-solid fa-calendar-check"></i>
+					</div>
+				</div>
+				<div class="label-wrapper">
+					<span class="label">FIT</span>
+				</div>
+			</a>
+		</li>
+
+		<li class="nav-item transaction">
 			<a class="nav-link page-button" href="../Employee Section/emp-requestHistory.php"
 				data-page-name="Request History">
 				<div class="icon-wrapper">
@@ -290,6 +304,10 @@ $position = htmlspecialchars(strtoupper($empId));
 					<li class="nav-item mb-0">
 						<a class="nav-link page-button" href="../Employee Section/emp-tablePayment.php"
 							data-page-name="For Approvals - Payment">Payment</a>
+					</li>
+					<li class="nav-item mb-0">
+						<a class="nav-link page-button" href="../Employee Section/emp-paymentFIT.php"
+							data-page-name="For Approvals - FIT Payment">FIT Payment</a>
 					</li>
 				</ul>
 			</div>
