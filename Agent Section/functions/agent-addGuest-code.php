@@ -38,8 +38,8 @@
     $stmt = $conn->prepare("INSERT INTO `guest` 
       (`transactNo`, `fName`, `lName`, `mName`, `suffix`, `birthdate`, `age`, `sex`, `nationality`, 
       `countryCode`, `contactNo`, `countryCode2`, `contactNo2`, `emailAdd`, `addressLine1`, `addressLine2`, 
-      `city`, `state`, `zipCode`, `country`, `passportNo`, `passportIssuedDate`, `passportExp`) 
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+      `city`, `state`, `zipCode`, `country`, `passportNo`, `passportExp`) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
     // Loop through each entry in the arrays and bind parameters for each iteration
     foreach ($fNames as $index => $fName) 
@@ -67,12 +67,12 @@
       $country = $countries[$index];
 
       // Bind parameters using 'ssssssisssssssssssssss', adjusting for the correct data types
-      $stmt->bind_param("ssssssissssssssssssssss", 
+      $stmt->bind_param("ssssssisssssssssssssss", 
         $transactNo, $fName, $lName, $mName, $suffix, 
         $birthdate, $age, $sex, $nationality, 
         $countryCode1, $contactNo1, $countryCode2, $contactNo2, 
         $email, $addressLine1, $addressLine2, $city, 
-        $state, $zipCode, $country, $passportNo, $passportIssuedDate, $passportExp);
+        $state, $zipCode, $country, $passportNo, $passportExp);
 
       // Execute the statement
       if (!$stmt->execute()) 
