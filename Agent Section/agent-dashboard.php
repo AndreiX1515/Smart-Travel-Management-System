@@ -731,6 +731,10 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                   type="button" role="tab" aria-controls="pills-home" aria-selected="true">Payment and
                   Requests</button>
               </li>
+
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">F.I.T</button>
+              </li>
             </ul>
           </div>
 
@@ -895,6 +899,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
 
           </div>
 
+          <!-- Request, Booking, and Confirmed tables -->
           <div class="tab-pane fade" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
 
             <div class="tab-pane-content">
@@ -1660,6 +1665,65 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
             </div>
           </div>
 
+          <!-- FIT Booking -->
+          <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">
+
+            <!-- FIT Table -->
+            <div class="fit-container">
+              <div class="one">
+                <div class="header d-flex justify-content-between align-items-center">
+                  <h6 class="white-pill">F.I.T</h6>
+                </div>
+                
+                <div class="body">
+                  <div class="fit-table-container">
+                    <table class="fit-table">
+                      <thead>
+                        <tr>
+                          <th>TRANSACT NO.</th>
+                          <th>HOTEL NAME</th>
+                          <th>ROOM TYPE</th>
+                          <th>NUMBER OF ROOMS</th>
+                          <th>NUMBER OF GUESTS</th>
+                          <th>TRIP DURATION</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <?php
+                          $sql1 = "SELECT f.transactionNo as transactNo, f.nights as noOfNights, h.hotelName as hotelName,
+                                      r.rooms as roomName, f.rooms as noOfRooms, f.pax as pax
+                                    FROM fit f
+                                    JOIN fithotel h ON f.hotelId = h.hotelId
+                                    JOIN fitrooms r ON f.roomId = r.roomId";
+                          $res1 = $conn->query($sql1);
+
+                          if ($res1->num_rows > 0) 
+                          {
+                            while ($row = $res1->fetch_assoc()) 
+                            {
+                              echo "<tr>";
+                              echo "<td>" . htmlspecialchars($row['transactNo']) . "</td>";
+                              echo "<td>" . htmlspecialchars($row['hotelName']) . "</td>";
+                              echo "<td>" . htmlspecialchars($row['roomName']) . "</td>";
+                              echo "<td>" . htmlspecialchars($row['noOfRooms']) . "</td>";
+                              echo "<td>" . htmlspecialchars($row['pax']) . "</td>";
+                              echo "<td>" . htmlspecialchars($row['noOfNights']) . " Night(s)</td>";
+                              echo "</tr>";
+                            }
+                          }
+                          else 
+                          {
+                            echo "<tr><td colspan='6' class='text-center'>No Records Found</td></tr>";
+                          }
+                        ?>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
         </div>
 
       </div>
