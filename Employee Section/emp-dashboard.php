@@ -546,13 +546,14 @@ error_reporting(E_ALL);
           <div class="info-table-wrapper">
             <!-- Flight Seat Tracker Table -->
             <div class="table-wrapper info-table-container">
-              <table class="info-table" id="info-table">
+
+              <table class="table info-table" id="info-table">
                 <thead>
                   <tr class="first-half">
                     <th rowspan="2" class="red-white"></th>
                     <th rowspan="2" class="red-white">TEAM OP</th>
                     <th rowspan="2" class="red-white">ORIGIN</th>
-                    <th colspan="2" class="red-white">FLIGHT DATE</th> <!-- Flight Date columns -->
+                    <th colspan="2" class="red-white">FLIGHT DATE</th>
                     <th rowspan="2" class="red-white" style="font-size: 10px;">AVAILABLE SEATS</th>
                     <th rowspan="2" class="red-white" style="font-size: 10px;">ADDITIONAL SEATS</th>
                     <th rowspan="2" class="red-white">AIR + LAND</th>
@@ -567,19 +568,20 @@ error_reporting(E_ALL);
                     $result = $conn->query($sql);
 
                     while ($row = $result->fetch_assoc()) {
-                      // Output each agent column header with colspan=2 for "START" and "END"
-                      echo '<th colspan="2" 
-                              data-bs-toggle="tooltip" 
-                              title="' . htmlspecialchars($row['branchName']) . '" 
-                              style="background-color: #dc3545; color: #ffffff; font-weight: 500; font-size: 12px;">' . htmlspecialchars($row['branchName']) . '</th>';
+
+                    // Output each agent column header with colspan=2 for "START" and "END"
+                    echo '<th colspan="2" 
+                          data-bs-toggle="tooltip" 
+                          title="' . htmlspecialchars($row['branchName']) . '" 
+                          style="background-color: #dc3545; color: #ffffff; font-weight: 500; font-size: 12px;">' . htmlspecialchars($row['branchName']) . '</th>';
                     }
                     ?>
                   </tr>
 
                   <tr class="second-half">
                     <!-- Sub-headers for FLIGHT DATE -->
-                    <th class="red-white">START</th>
-                    <th class="red-white">END</th>
+                    <th class="red-white" style="font-size: 10px;">START</th>
+                    <th class="red-white" style="font-size: 10px;">END</th>
 
                     <!-- Dynamic sub-headers for agent columns -->
                     <?php
@@ -626,9 +628,9 @@ error_reporting(E_ALL);
                   // Main query
                   $sql = "SELECT f.flightId, f.is_active, f.origin, f.flightDepartureDate AS Start, f.returnDepartureDate AS End,
                               CONCAT(
-                                  IF(e.lName IS NOT NULL AND e.lName != '', CONCAT(e.lName, ', '), ''),
-                                  e.fName,
-                                  IF(e.mName IS NOT NULL AND e.mName != '' AND e.lName IS NOT NULL AND e.lName != '', CONCAT(' ', LEFT(e.mName, 1)), '')
+                              IF(e.lName IS NOT NULL AND e.lName != '', CONCAT(e.lName, ', '), ''),
+                              e.fName,
+                              IF(e.mName IS NOT NULL AND e.mName != '' AND e.lName IS NOT NULL AND e.lName != '', CONCAT(' ', LEFT(e.mName, 1)), '')
                               ) AS TeamOP,
                               e.colorCode, 
                               f.availSeats AS FlightSeat, 
@@ -992,7 +994,7 @@ error_reporting(E_ALL);
                 </div>
 
                 <div class="table-wrapper confirm-table-container">
-                  <table class="confirm-table table info-table" id="confirm-table">
+                  <table class="table confirm-table" id="confirm-table">
                     <thead>
                       <tr>
                         <th>TRANSACTION NO.</th>
@@ -1625,9 +1627,6 @@ error_reporting(E_ALL);
       initializeDataTable();
     });
   </script> -->
-
-
-
 </body>
 
 </html>

@@ -115,10 +115,10 @@ $current_date = date('D, F d, Y');
     <li class="nav-item transaction">
       <a class="nav-link page-button" href="../Client Section/client-transactions.php" data-page-name="Packages">
         <div class="icon-wrapper">
-          <div class="icon"><i class="fa-solid fa-box"></i></div>
+          <div class="icon"><i class="fa-solid fa-calendar-check"></i></div>
         </div>
         <div class="label-wrapper">
-          <span class="label" style="font-size: 14px;">Packages</span>
+          <span class="label" style="font-size: 14px;">Bookings</span>
         </div>
       </a>
     </li>
@@ -128,7 +128,7 @@ $current_date = date('D, F d, Y');
       <a class="nav-link page-button" href="../Client Section/client-guestInformationList.php"
         data-page-name="Guest List">
         <div class="icon-wrapper">
-          <div class="icon"><i class="fa-solid fa-users"></i></div>
+          <div class="icon"><i class="fa-solid fa-table-list"></i></div>
         </div>
         <div class="label-wrapper">
           <span class="label" style="font-size: 14px;">Guest List</span>
@@ -140,7 +140,7 @@ $current_date = date('D, F d, Y');
     <li class="nav-item transaction">
       <a class="nav-link page-button" href="../Client Section/client-requestHistory.php" data-page-name="Request">
         <div class="icon-wrapper">
-          <div class="icon"><i class="fa-solid fa-envelope-open-text"></i></div>
+          <div class="icon"><i class="fa-solid fa-clipboard-list"></i></div>
         </div>
         <div class="label-wrapper">
           <span class="label" style="font-size: 14px;">Request</span>

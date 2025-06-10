@@ -792,7 +792,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
             <div class="one">
 
               <div class="table-wrapper confirm-table-container-flight">
-                <table id="info-table" class="table info-table">
+                <table id="info-table" class="info-table">
 
                   <thead>
                     <tr>
@@ -986,7 +986,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                                         </tr>";
                             }
                           } else {
-                            echo "<tr><td colspan='12' style='text-align: center; font-size: 10px; font-weight: 500;'>NO PENDING TRANSACTION AS OF THE MOMENT</td></tr>";
+                            echo "<tr><td colspan='12' style='text-align: center; font-size: 10px; font-weight: 500;'>NO TRANSACTION AS OF THE MOMENT</td></tr>";
                           }
                         } else {
                           $sql1 = "SELECT b.transactNo AS `T.N`,  p.packageName AS `PACKAGE`, b.bookingType as bookingType,
@@ -1056,7 +1056,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                                         </tr>";
                             }
                           } else {
-                            echo "<tr><td colspan='12' style='text-align: center; font-size: 10px; font-weight: 500;'>NO PENDING TRANSACTION AS OF THE MOMENT</td></tr>";
+                            echo "<tr><td colspan='12' style='text-align: center; font-size: 10px; font-weight: 500;'>NO TRANSACTION AS OF THE MOMENT</td></tr>";
                           }
                         }
                         ?>
@@ -1420,7 +1420,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                                                 </tr>";
                             }
                           } else {
-                            echo "<tr><td colspan='12' style='text-align: center; font-size: 10px; font-weight: 500;'>NO BOOKING AS OF THE MOMENT</td></tr>";
+                            echo "<tr><td colspan='12' style='text-align: center; font-size: 10px; font-weight: 500;'>NO PAYMENT AS OF THE MOMENT</td></tr>";
                           }
                         }
                         ?>

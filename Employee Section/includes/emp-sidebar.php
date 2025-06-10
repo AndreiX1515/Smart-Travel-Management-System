@@ -57,10 +57,12 @@ $position = htmlspecialchars(strtoupper($empId));
 			<a class="nav-link page-button" href="../Employee Section/emp-transaction.php"
 				data-page-name="Transactions">
 				<div class="icon-wrapper">
-					<div class="icon"><i class="fa-solid fa-arrow-right-arrow-left"></i></div>
+					<div class="icon">
+						<i class="fa-solid fa-calendar-check"></i>
+					</div>
 				</div>
 				<div class="label-wrapper">
-					<span class="label">Transactions</span>
+					<span class="label">Bookings</span>
 				</div>
 			</a>
 		</li>
@@ -69,7 +71,9 @@ $position = htmlspecialchars(strtoupper($empId));
 			<a class="nav-link page-button" href="../Employee Section/emp-requestHistory.php"
 				data-page-name="Request History">
 				<div class="icon-wrapper">
-					<div class="icon"><i class="fa-solid fa-cart-plus"></i></div>
+					<div class="icon">
+						<i class="fa-solid fa-clipboard-list"></i>
+					</div>
 				</div>
 				<div class="label-wrapper">
 					<span class="label">Request</span>
@@ -81,7 +85,7 @@ $position = htmlspecialchars(strtoupper($empId));
 			<a class="nav-link page-button" href="../Employee Section/emp-paymentHistory.php"
 				data-page-name="Payment History">
 				<div class="icon-wrapper">
-					<div class="icon"><i class="fa-solid fa-money-check-dollar"></i></div>
+					<div class="icon"><i class="fa-solid fa-money-bill-wave"></i></div>
 				</div>
 				<div class="label-wrapper">
 					<span class="label">Payment</span>
@@ -291,8 +295,58 @@ $position = htmlspecialchars(strtoupper($empId));
 			</div>
 		</li>
 
+
+		<li class="nav-item visa-requirements">
+			<a class="nav-link page-button" href="../Employee Section/emp-itinerarytable.php"
+				data-page-name="Visa Requirements">
+				<div class="icon-wrapper">
+					<div class="icon"><i class="fa-solid fa-passport"></i></div>
+				</div>
+				<div class="label-wrapper">
+					<span class="label">Itineraries</span>
+				</div>
+			</a>
+		</li>
+
+		<li class="nav-item visa-requirements">
+			<a class="nav-link page-button" href="../Employee Section/emp-voucherTable.php"
+				data-page-name="Visa Requirements">
+				<div class="icon-wrapper">
+					<div class="icon"><i class="fa-solid fa-passport"></i></div>
+				</div>
+				<div class="label-wrapper">
+					<span class="label">Vouchers</span>
+				</div>
+			</a>
+		</li>
+
+		<li class="nav-item visa-requirements">
+			<a class="nav-link page-button" href="#"
+				data-page-name="Visa Requirements">
+				<div class="icon-wrapper">
+					<div class="icon"><i class="fa-solid fa-passport"></i></div>
+				</div>
+				<div class="label-wrapper">
+					<span class="label">Tickets</span>
+				</div>
+			</a>
+		</li>
+
+		<li class="nav-item visa-requirements">
+			<a class="nav-link page-button" href="../Employee Section/emp-soa.php"
+				data-page-name="Visa Requirements">
+				<div class="icon-wrapper">
+					<div class="icon"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+				</div>
+				<div class="label-wrapper">
+					<span class="label">SOA</span>
+				</div>
+			</a>
+		</li>
+
+
 		<!-- Reports -->
-		<li class="nav-item dropdown">
+		<!-- <li class="nav-item dropdown">
 			<a class="nav-link page-button mb-0" href="#" data-bs-toggle="collapse" data-bs-target="#reportMenu"
 				aria-expanded="false" aria-controls="reportMenu" data-page-name="Reports">
 				<div class="icon-wrapper">
@@ -322,7 +376,7 @@ $position = htmlspecialchars(strtoupper($empId));
 					</li>
 				</ul>
 			</div>
-		</li>
+		</li> -->
 
 	</ul>
 
