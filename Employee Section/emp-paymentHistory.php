@@ -117,7 +117,7 @@ session_start();
 							</thead>
 							<tbody>
 								<?php
-									$sql1 = "SELECT b.transactNo, p.paymentId, p.amount, p.filePath, p.paymentDate, p.paymentStatus, p.paymentRemarks, 
+								$sql1 = "SELECT b.transactNo, p.paymentId, p.amount, p.filePath, p.paymentDate, p.paymentStatus, p.paymentRemarks, 
 											br.branchName, f.flightDepartureDate AS flightDate
 											FROM `booking` b
 											JOIN flight f ON b.flightId = f.flightId
@@ -125,100 +125,95 @@ session_start();
 											JOIN `branch` br ON br.branchAgentCode = b.agentCode
 											ORDER BY p.paymentId ASC";
 
-									// Execute the query
-									$result1 = $conn->query($sql1);
+								// Execute the query
+								$result1 = $conn->query($sql1);
 
-									// Check if query execution was successful
-									if (!$result1) {
-										die("Query error: " . $conn->error);
-									}
+								// Check if query execution was successful
+								if (!$result1) {
+									die("Query error: " . $conn->error);
+								}
 
-									// Fetch results and display rows
-									if ($result1->num_rows > 0) {
-										while ($row = $result1->fetch_assoc()) {
-											$amount = number_format($row['amount'], 2);
-											$date = date("m.d.Y", strtotime($row['paymentDate']));
-											
-											$status = isset($row['paymentStatus']) ? $row['paymentStatus'] : 'Unknown';
-											$statusClass = '';
+								// Fetch results and display rows
+								if ($result1->num_rows > 0) {
+									while ($row = $result1->fetch_assoc()) {
+										$amount = number_format($row['amount'], 2);
+										$date = date("m.d.Y", strtotime($row['paymentDate']));
 
-											switch ($status) {
-												case 'Approved':
-													$statusClass = 'bg-success text-white'; // Green background, white text
-													break;
-												case 'Rejected':
-													$statusClass = 'bg-danger text-white'; // Red background, white text
-													break;
-												case 'Submitted':
-													$statusClass = 'bg-warning text-dark';
-													break;
-												default:
-													$statusClass = 'bg-secondary text-white';
-											}
+										$status = isset($row['paymentStatus']) ? $row['paymentStatus'] : 'Unknown';
+										$statusClass = '';
 
-											$remarks = !empty($row['paymentRemarks']) ? $row['paymentRemarks'] : 'N/A';
-											$remarksClass = '';
-
-											// Format remarks - uppercase first character
-											$remarksFormatted = ucfirst(strtolower($remarks));
-
-											switch ($remarksFormatted) {
-												case 'Good':
-													$remarksClass = 'bg-success text-white'; // Green background, white text
-													break;
-												case 'Rejected':
-													$remarksClass = 'bg-danger text-white'; // Red background, white text
-													break;
-												case 'Submitted':
-													$remarksClass = 'bg-warning text-dark';
-													break;
-												default:
-													$remarksClass = 'bg-secondary text-white';
-											}
-
-											
-
-											$flightDate = $row['flightDate'];
-											$formattedFlightDate = date('Y.m.d', strtotime($flightDate));
-											$fomattedPaymentDate = date('Y-m-d', strtotime($row['paymentDate']));
-
-											echo "<tr>
-															<td>{$row['transactNo']}</td>
-															<td>{$row['branchName']}</td>
-															<td>{$formattedFlightDate}</td>
-															<td>₱ {$amount}</td>
-															<td>";
-
-																if (!empty($row['filePath'])) {
-																		$encodedFile = urlencode($row['filePath']);
-																		echo "<a href='functions/view-file.php?file={$encodedFile}' target='_blank'>View File</a> 
-																					<a href='functions/download.php?file={$encodedFile}' target='_blank'>Download File</a>";
-																} else {
-																		echo "<span class='text-muted'>No File Uploaded</span>";
-																}
-
-											echo "  </td>
-															<td>{$date}</td>
-															<td>
-																<span class='badge p-2 rounded-pill {$statusClass}'>
-																		{$status}
-																</span>
-															</td>
-														</tr>";
-
-											if ($remarks !== 'N/A') {
-												echo "<td>
-														$remarks
-													  </td>";
-											} else {
-												echo "<td></td>";
-											}
-
-											echo "  <td style='display: none;'>" . $fomattedPaymentDate . "</td>
-												</tr>";
+										switch ($status) {
+											case 'Approved':
+												$statusClass = 'bg-success text-white';
+												break;
+											case 'Rejected':
+												$statusClass = 'bg-danger text-white';
+												break;
+											case 'Submitted':
+												$statusClass = 'bg-warning text-dark';
+												break;
+											default:
+												$statusClass = 'bg-secondary text-white';
 										}
+
+										$remarks = !empty($row['paymentRemarks']) ? $row['paymentRemarks'] : 'N/A';
+										$remarksFormatted = ucfirst(strtolower($remarks));
+										$remarksClass = '';
+
+										switch ($remarksFormatted) {
+											case 'Good':
+												$remarksClass = 'bg-success text-white';
+												break;
+											case 'Rejected':
+												$remarksClass = 'bg-danger text-white';
+												break;
+											case 'Submitted':
+												$remarksClass = 'bg-warning text-dark';
+												break;
+											default:
+												$remarksClass = 'bg-secondary text-white';
+										}
+
+										$flightDate = $row['flightDate'];
+										$formattedFlightDate = date('Y.m.d', strtotime($flightDate));
+										$formattedPaymentDate = date('Y-m-d', strtotime($row['paymentDate']));
+
+										echo "<tr>
+												<td>{$row['transactNo']}</td>
+												<td>{$row['branchName']}</td>
+												<td>{$formattedFlightDate}</td>
+												<td>₱ {$amount}</td>
+											<td>";
+
+										if (!empty($row['filePath'])) {
+											$encodedFile = urlencode($row['filePath']);
+											echo "<a href='functions/view-file.php?file={$encodedFile}' target='_blank'>View File</a> 
+												  <a href='functions/download.php?file={$encodedFile}' target='_blank'>Download File</a>";
+
+										} else {
+											echo "<span class='text-muted'>No File Uploaded</span>";
+										}
+
+										echo "</td>
+												<td>{$date}</td>
+												<td>
+													<span class='badge p-2 rounded-pill {$statusClass}'>
+														{$status}
+													</span>
+												</td>";
+
+										if ($remarks !== 'N/A') {
+											echo "<td>{$remarks}</td>";
+										} else {
+											echo "<td></td>";
+										}
+
+									echo "<td style='display: none;'>{$formattedPaymentDate}</td>
+									</tr>";
 									}
-									?>
+								}
+
+								?>
 
 							</tbody>
 						</table>
@@ -299,7 +294,7 @@ session_start();
 				yearRange: "1900:2100",
 				onSelect: function (dateText) {
 					$(this).val(dateText);
-					table.column(2).search(dateText || '').draw(); 
+					table.column(2).search(dateText || '').draw();
 				}
 			});
 
