@@ -77,20 +77,45 @@
 }
 
 .main-content {
-  flex: 1; /* Allows it to take available space */
+  flex: 1;
   overflow-x: auto;
   display: flex;
   flex-direction: column;
   gap: 0px;
-
+  min-height: 0; /* Allow children to handle overflow properly */
 }
 
-.form-container{
+.form-container-wrapper {
   display: flex;
   flex-direction: column;
   gap: 10px;
   margin-top: 1vh;
+  overflow-y: auto;
+  border: 1px solid black;
+  flex: 1;
+  min-height: 0;
+  max-height: 100vh; /* You can adjust this based on your layout */
+  padding-right: 10px;
 }
+
+/* Prevent any child from shrinking unexpectedly */
+.form-container-wrapper > * {
+  flex-shrink: 0;
+}
+
+.itinerary-container {
+  width: 100%;
+  height: auto;
+  flex: none; /* Prevent it from stretching and taking full space */
+}
+
+.itinerary-card {
+  width: 100%;
+  background-color: #ffffff;
+  flex-shrink: 0;
+}
+
+
 
 .form-footer {
   background-color: white;
@@ -99,30 +124,13 @@
   gap: 10px;
   padding: 10px 20px;
   border: 1px solid gainsboro;
+
   border-radius: 0 0 8px 8px; /* Matches form-container’s style */
+
+  border: 1px solid black;
 }
 
 
-.itinerary-container {
-  flex: 1; /* Takes up remaining space */
-  width: 100%;
-  height: auto; /* Adjust height dynamically */
-}
-
-.itinerary-card {
-  width: 100%;
-  background-color: #ffffff;
-  
-}
-
-/* .form-footer {
-  background-color: white;
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  padding: 15px 20px;
-  border: 1px solid gainsboro;
-} */
 
 /* Card - General */
 .card {
@@ -188,12 +196,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: auto;
-  height: 100%;
-  font-size: 18px;
+  flex: 0 0 auto;
+  padding: 0 8px;
   font-weight: bold;
-  padding: 0 15px;
+  font-size: 18px;
+  white-space: nowrap;
+  user-select: none;
   border: none;
+  height: 100%;
 }
 
 
