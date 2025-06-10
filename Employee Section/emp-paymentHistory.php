@@ -214,7 +214,6 @@ session_start();
 								}
 
 								?>
-
 							</tbody>
 						</table>
 

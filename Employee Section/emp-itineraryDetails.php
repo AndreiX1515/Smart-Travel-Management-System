@@ -155,44 +155,10 @@
              </script>";
         ?>
 
-        <!-- <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const urlParams = new URLSearchParams(window.location.search);
-            const itineraryId = urlParams.get("id");
-
-            if (itineraryId) {
-                fetch(`../Employee Section/functions/emp-fetchItineraryDetails.php?id=${itineraryId}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.error) {
-                            console.error(data.error);
-                        } else {
-                            document.getElementById("packageSelect").value = data.packageName;
-                            document.getElementById("PeriodStartDate").value = data.periodStart;
-                            document.getElementById("PeriodEndDate").value = data.periodEnd;
-                            document.getElementById("guideName").value = data.guideName;
-                            document.getElementById("countryCode").value = data.countryCode;
-                            document.getElementById("contactNumber").value = data.contactNumber;
-                            document.getElementById("city1").value = data.city1;
-                            document.getElementById("hotel1").value = data.hotel1;
-                            document.getElementById("city2").value = data.city2;
-                            document.getElementById("hotel2").value = data.hotel2;
-                            document.getElementById("city3").value = data.city3;
-                            document.getElementById("hotel3").value = data.hotel3;
-                            document.getElementById("select-days").value = data.noOfDays;
-                        }
-                    })
-                    .catch(error => console.error("Error fetching itinerary:", error));
-            }
-        });
-
-
-        </script> -->
-
         <div class="main-content">
             <input type="hidden" id="itineraryId" value="<?= htmlspecialchars($itineraryId); ?>" readonly>
 
-            <div class="form-container">
+            <div class="form-container-wrapper">
 
                 <div class="card">
                     <div class="card-header">
@@ -292,10 +258,31 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <select class="form-select" id="guideName" name="flightDate" required>
-                                        <option selected><?= $itinerary['guideName']; ?></option>
+                                    <select class="form-select" id="guideName" name="guideName" required onchange="updateContact(this)">
+                                        <?php
+                                        $selectedGuide = $itinerary['guideName'];
+                                        $query = "SELECT accountId, fName, lName, mName, contactNo, countryCode FROM employee WHERE isTourGuide = 1";
+                                        $result = mysqli_query($conn, $query);
+
+                                        while ($row = mysqli_fetch_assoc($result)) {
+                                            $accountId = $row['accountId'];
+                                            $fName = $row['fName'];
+                                            $lName = $row['lName'];
+                                            $mName = $row['mName'];
+                                            $contactNo = $row['contactNo'];
+                                            $countryCode = $row['countryCode'];
+
+                                            $middleInitial = !empty($mName) ? strtoupper(substr($mName, 0, 1)) . '.' : '';
+                                            $fullName = $lName . ', ' . $fName . ($middleInitial ? ' ' . $middleInitial : '');
+
+                                            $isSelected = ($selectedGuide == $fullName) ? 'selected' : '';
+
+                                            echo "<option value=\"$accountId\" data-contact=\"$contactNo\" data-code=\"$countryCode\" $isSelected>$fullName</option>";
+                                        }
+                                        ?>
                                     </select>
                                 </div>
+
                             </div>
 
                             <div class="columns col-md-4">
@@ -340,12 +327,12 @@
 
                         <!-- Tour Areas, Hotels -->
                         <?php
-                        $cities = ["Seoul", "Busan", "Jeonju", "Jeju"];
+                        $cities = ["Seoul", "Gyeonggi-do", "Incheon", "Jeju"];
                         $hotels = [
-                            "Seoul" => ["Lotte Hotel Seoul", "Signiel Seoul", "The Shilla Seoul", "Grand Hyatt Seoul", "InterContinental Seoul COEX"],
-                            "Busan" => ["Park Hyatt Busan", "Paradise Hotel Busan"],
-                            "Jeonju" => ["Lahan Hotel Jeonju"],
-                            "Jeju" => ["Maison Glad Jeju", "Ramada Plaza Jeju"]
+                            "Seoul" => ["Smart Stay Hotel"],
+                            "Gyeonggi-do" => ["Ramada Hotel", "Marina Bay Hotel"],
+                            "Incheon" => ["Air Sky Hotel", "Royal Emporium"],
+                            "Jeju" => ["Tamara Hotel"]
                         ];
 
                         for ($i = 0; $i < 3; $i++) {
@@ -529,117 +516,7 @@
         });
     </script>
 
-    <!-- First Card Script -->
-    <!-- <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            // Cities and Hotels Data
-            const cities = ["Seoul", "Busan", "Jeonju", "Jeju"];
-            const hotels = {
-                "Seoul": ["Lotte Hotel Seoul", "Signiel Seoul", "The Shilla Seoul", "Grand Hyatt Seoul", "InterContinental Seoul COEX"],
-                "Busan": ["Park Hyatt Busan", "Paradise Hotel Busan"],
-                "Jeonju": ["Lahan Hotel Jeonju"],
-                "Jeju": ["Maison Glad Jeju", "Ramada Plaza Jeju"]
-            };
-
-            // Populate existing city dropdowns
-            document.querySelectorAll(".city-select").forEach((select) => {
-                const storedValue = select.getAttribute("data-selected"); // Get selected value from PHP
-                populateDropdown(select, cities, "Select City", storedValue);
-                select.addEventListener("change", () => updateHotelDropdown(select));
-            });
-
-            // Load stored hotel selections from localStorage
-            loadStoredHotels();
-
-            // Function to populate dropdowns (City or Hotel)
-            function populateDropdown(select, optionList, placeholderText, selectedValue = "") {
-                if (!select) return;
-
-                select.innerHTML = `<option disabled>${placeholderText}</option>`;
-                optionList.forEach(optionValue => {
-                    const option = document.createElement("option");
-                    option.value = optionValue;
-                    option.textContent = optionValue;
-                    if (optionValue === selectedValue) {
-                        option.selected = true;
-                    }
-                    select.appendChild(option);
-                });
-            }
-
-            // Function to update hotel dropdown based on city selection
-            function updateHotelDropdown(citySelect) {
-                const row = citySelect.closest(".row"); // Get parent row
-                const hotelSelect = row.querySelector(".hotel-select"); // Find corresponding hotel select
-
-                if (!hotelSelect) return;
-
-                const selectedCity = citySelect.value;
-                hotelSelect.innerHTML = `<option selected disabled>Select Hotel</option>`; // Reset hotels
-
-                if (hotels[selectedCity]) {
-                    populateDropdown(hotelSelect, hotels[selectedCity], "Select Hotel");
-                }
-
-                console.log(`City Selected: ${selectedCity}`);
-            }
-
-            // Function to load stored hotels from localStorage
-            function loadStoredHotels() {
-                const storedHotels = JSON.parse(localStorage.getItem("selectedHotels")) || {};
-                document.querySelectorAll(".row").forEach((row) => {
-                    const citySelect = row.querySelector(".city-select");
-                    const hotelSelect = row.querySelector(".hotel-select");
-
-                    if (citySelect && hotelSelect) {
-                        const selectedCity = citySelect.value;
-                        if (selectedCity && hotels[selectedCity]) {
-                            populateDropdown(hotelSelect, hotels[selectedCity], "Select Hotel");
-                            if (storedHotels[selectedCity]) {
-                                hotelSelect.value = storedHotels[selectedCity];
-                            }
-                        }
-                    }
-                });
-            }
-
-            // Save selected hotels to localStorage
-            document.body.addEventListener("change", (event) => {
-                if (event.target.classList.contains("hotel-select")) {
-                    const row = event.target.closest(".row");
-                    const citySelect = row.querySelector(".city-select");
-                    if (!citySelect) return;
-
-                    const selectedCity = citySelect.value;
-                    const selectedHotel = event.target.value;
-
-                    let storedHotels = JSON.parse(localStorage.getItem("selectedHotels")) || {};
-                    storedHotels[selectedCity] = selectedHotel;
-                    localStorage.setItem("selectedHotels", JSON.stringify(storedHotels));
-
-                    console.log(`Saved: City - ${selectedCity}, Hotel - ${selectedHotel}`);
-                }
-            });
-
-            // MutationObserver for dynamically added elements
-            const observer = new MutationObserver(() => {
-                document.querySelectorAll(".city-select").forEach((select) => {
-                    if (!select.hasAttribute("data-initialized")) {
-                        select.setAttribute("data-initialized", "true");
-                        select.addEventListener("change", () => updateHotelDropdown(select));
-                    }
-                });
-            });
-
-            observer.observe(document.body, {
-                childList: true,
-                subtree: true
-            });
-        });
-
-    </script> -->
-
-
+   
     <!-- For Itinerary Card -->
     <script>
         
@@ -740,11 +617,11 @@
 
             // Korean Tour Data
             const koreanTourAreas = ["Seoul", "Busan", "Jeju", "Incheon", "Gyeongju"];
+
             const koreanMealPlans = ["Traditional Korean Cuisine", "Street Food Tour", "Seafood Specialty", "Vegetarian Option", "Luxury Fine Dining"];
 
             const hotels = [
-                "Lotte Hotel Seoul", "Signiel Seoul", "The Shilla Seoul", "Grand Hyatt Seoul", "InterContinental Seoul COEX",
-                "Park Hyatt Busan", "Paradise Hotel Busan", "Lahan Hotel Jeonju", "Maison Glad Jeju", "Ramada Plaza Jeju"
+                "Smart Stay Hotel", "Ramada Hotel", "Marina Bay Hotel", "Air Sky Hotel", "Royal Emporium Hotel", "Tamara Hotel"
             ];
 
             const itineraries = [
@@ -788,7 +665,7 @@
 
                 return `
                 <div class="col-4">
-                    <label class="form-label fw-normal">${label} ${index}:</label>
+                    <label class="form-label fw-normal">${label}:</label>
                     <select class="form-select ${className}">
                         <option selected disabled>Select ${label} ${index}</option>
                         ${uniqueOptions.map(opt => {
@@ -844,12 +721,29 @@
                             </div>
 
                             <!-- Meal Plan Section (Dynamic) -->
+
                             <div class="row mb-3">
-                                ${meals.map((meal, index) => {
-                                    // console.log(`Creating Select for Meal ${index + 1}:`, meal);
-                                    return createSelectColumn("Meal Plan", "meal-plan-select", availableMeals, meal, index + 1);
-                                }).join("")}
+                                ${
+                                day === 1
+                                    ? `
+                                    <div class="col-4">
+                                        <label class="form-label fw-semibold">Snack:</label>
+                                        <select class="form-select meal-plan-select" data-day="${day}" disabled>
+                                            <option selected>Snack</option>
+                                        </select>
+                                    </div>`
+                                    : ["Breakfast", "Lunch", "Dinner"].map((mealLabel, index) => {
+                                        return createSelectColumn(
+                                            mealLabel,
+                                            "meal-plan-select",
+                                            availableMeals,
+                                            meals[index], // you can adjust this based on your meals array structure
+                                            index + 1
+                                        );
+                                    }).join("")
+                                }
                             </div>
+
 
                             <!-- Hotels Section (Dynamic) -->
                             <div class="row mb-3">
@@ -930,9 +824,9 @@
 
             function updateHotelOptions(selectedCity, hotelSelect) {
                 const hotelData = {
-                    "Seoul": ["Lotte Hotel Seoul", "Signiel Seoul", "The Shilla Seoul", "Grand Hyatt Seoul", "InterContinental Seoul COEX"],
-                    "Busan": ["Park Hyatt Busan", "Paradise Hotel Busan"],
-                    "Jeonju": ["Lahan Hotel Jeonju"],
+                    "Seoul": ["Smart Stay Hotel"],
+                    "Gyeonggi-do": ["Ramada Hotel", "Marina Bay Hotel"],
+                    "Incheon": ["Air Sky Hotel", "Royal Emporium Hotel"],
                     "Jeju": ["Maison Glad Jeju", "Ramada Plaza Jeju"]
                 };
 

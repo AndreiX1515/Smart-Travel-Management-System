@@ -262,7 +262,7 @@
   padding: 0px 5px 0px 5px;
   background-color: transparent;
   margin-bottom: .5%;
-  border: 1px solid black;
+  /* border: 1px solid black; */
 }
 
 .filter-tabs {
@@ -644,10 +644,11 @@
   gap: 15px;
   padding: 10px 0;
   justify-content: center;
-  border: 1px solid black;
   overflow-y: auto;
 
   max-height: 100vh; /* adjust this height as needed */
+
+  /* border: 1px solid black; */
 }
 
 

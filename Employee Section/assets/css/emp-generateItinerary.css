@@ -91,11 +91,13 @@
   gap: 10px;
   margin-top: 1vh;
   overflow-y: auto;
-  border: 1px solid black;
   flex: 1;
   min-height: 0;
-  max-height: 100vh; /* You can adjust this based on your layout */
+  max-height: 95vh; /* You can adjust this based on your layout */
   padding-right: 10px;
+  
+
+  /* border: 1px solid black; */
 }
 
 /* Prevent any child from shrinking unexpectedly */
@@ -123,11 +125,10 @@
   justify-content: flex-end;
   gap: 10px;
   padding: 10px 20px;
-  border: 1px solid gainsboro;
-
   border-radius: 0 0 8px 8px; /* Matches form-container’s style */
 
-  border: 1px solid black;
+  border: 1px solid gainsboro;
+  /* border: 1px solid black; */
 }
 
 
@@ -137,7 +138,7 @@
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border: none;
+  border: 1px solid gainsboro;
 }
 
 .card-header {
@@ -532,6 +533,230 @@ select.form-control:focus {
 }
 
 
+/* ======================== */
+/* 🟢 Flatpickr Calendar Styling */
+/* ======================== */
 
+.flatpickr-calendar {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 0.85rem;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+  position: absolute;
+  z-index: 9999;
+  height: auto;
+  padding: 5px;
+  box-sizing: border-box;
+  background-color: #ffffff;
+  transition: transform 0.3s ease;
+}
+
+.flatpickr-months {
+  display: flex;
+  justify-content: center; /* Center the content horizontally */
+  align-items: stretch; /* Center the content vertically */
+  position: relative; /* Keep position relative for better control */
+  height: 50; /* Ensure the height adapts to the content */
+  gap: 5px; /* Ensure there's space between elements (month, year, prev, next) */
+  border-bottom: 1px solid gainsboro;
+  margin-bottom: 5px;
+}
+
+/* Style for the month and year select fields */
+.flatpickr-month {
+  font-size: .75rem;
+  font-weight: bold;
+  color: #116530;
+  border-radius: 4px; 
+  background-color: white; 
+  padding: 6px 12px;
+  height: auto; /* Ensure the height adapts to the content */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* border: 1px solid black;  */
+}
+
+/* Center month and year, add gap */
+.flatpickr-current-month {
+  display: flex;  
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 12px;  
+}
+
+/* Style for the month dropdown select */
+.flatpickr-monthDropdown-months {
+  border: 1px solid #ccc;
+  padding: 5px 6px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  appearance: none;
+  background-color: #fff;
+  text-align: start;
+}
+
+
+/* Style for the year input field */
+.flatpickr-current-month input{
+  border: 1px solid #ccc;
+  padding: 3px 6px;
+  width: 80px; /* Increased width */
+  border-radius: 4px;
+  font-size: 0.80rem;
+  appearance: none;
+  background-color: #fff;
+  text-align: flex-start;
+}
+
+
+/* ======================== */
+/* 📅 Calendar Button Customization */
+/* ======================== */
+
+/* General styling for previous and next month buttons */
+.flatpickr-prev-month,
+.flatpickr-next-month {
+  font-size: 1rem;
+  color: #116530;
+  padding: 4px 10px;
+  border-radius: 4px;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin: 0 5px; /* Uniform space between prev/next and month/year */
+}
+
+
+.flatpickr-prev-month {
+  left: 20px;
+}
+
+.flatpickr-next-month {
+  right: 20px;
+}
+
+.flatpickr-prev-month:hover,
+.flatpickr-next-month:hover {
+  color: #007b3e;
+  cursor: pointer;
+}
+
+/* ======================== */
+/* 🗓️ Days Styling */
+/* ======================== */
+
+.flatpickr-day {
+  padding: 8px;
+  margin: 2px;
+  border-radius: 15px;
+  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  width: 30px;
+  box-sizing: border-box;
+}
+
+.flatpickr-day.selected,
+.flatpickr-day.startRange,
+.flatpickr-day.endRange {
+  background-color: #116530 !important;
+  color: white;
+  transform: scale(1.1);
+}
+
+.flatpickr-day:hover {
+  background-color: #f1f1f1;
+  cursor: pointer;
+}
+
+.flatpickr-day.disabled:hover {
+  background-color: transparent !important;
+  cursor: not-allowed;
+}
+
+
+/* ======================== */
+/* 📅 Date Range Styling */
+/* ======================== */
+
+/* Styling for start and end date of range */
+.flatpickr-day.startRange,
+.flatpickr-day.endRange {
+  background-color: #f1f1f1 !important;
+  color: #116530 !important;
+}
+
+/* ======================== */
+/* 🟢 Flatpickr General Enhancements */
+/* ======================== */
+
+/* General enhancement for better usability */
+.flatpickr-calendar .flatpickr-day.selected:hover {
+  background-color: #116530 !important;
+  transform: scale(1.1); /* Slight zoom effect when selected */
+}
+
+
+/* ======================== */
+/* 🕒 Time Picker Container - Clean Minimalist Look */
+/* ======================== */
+
+.flatpickr-time {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background-color: #ffffff;
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 0.9rem;
+}
+
+/* Time Picker Inputs: Hour, Minute, Second */
+.flatpickr-time input {
+  border: 1px solid gainsboro;
+  font-size: 0.85rem;
+  padding: 6px 10px;
+  text-align: center;
+  background-color: #f8f9fa;
+}
+
+/* Time Separator */
+.flatpickr-time-separator {
+  font-size: 1.2rem;
+  color: #6c757d;
+  padding: 0 2px;
+  user-select: none;
+}
+
+/* AM/PM Input (12hr mode only) */
+.flatpickr-am-pm {
+  border-radius: 6px;
+  border: 1px solid #ced4da;
+  padding: 6px 10px;
+  font-weight: 500;
+  background-color: #f8f9fa;
+  text-transform: uppercase;
+}
+
+/* Responsive adjustment */
+@media (max-width: 480px) {
+  .flatpickr-time {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .flatpickr-time input {
+    width: 48%;
+  }
+}
 
 

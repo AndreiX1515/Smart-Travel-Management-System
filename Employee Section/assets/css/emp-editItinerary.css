@@ -79,40 +79,58 @@
 .main-content {
   display: flex;
   flex-direction: column;
-  height: 90vh; /* Use viewport height */
-  gap: 10px; /* spacing between form-container and form-footer */
+  height: auto; /* Use viewport height */
   background-color: #fff; /* Optional */
-  border-radius: 8px;
   box-sizing: border-box;
-}
 
-/* Scrollable middle section */
-.form-container {
-  flex: 1;
-  overflow-y: auto;
-  background-color: #f9f9f9;
   /* border: 1px solid black; */
-  padding-top: 5px;
-  padding-right: 10px;
 }
 
-
-
-
-
-/* Footer stays at the bottom */
-.form-footer {
-  height: 5vh;
-  min-height: 60px;
-  background-color: white;
+.form-container-wrapper {
   display: flex;
-  justify-content: flex-end; /* Align contents to the right */
-  align-items: center;
+  flex-direction: column;
   gap: 10px;
-  padding: 15px 20px;
-  border-top: 1px solid gainsboro;
-  border-radius: 0 0 8px 8px;
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+  max-height: 95vh; /* You can adjust this based on your layout */
+  padding-right: 10px;
+  
+
+  /* border: 1px solid black; */
 }
+
+/* Prevent any child from shrinking unexpectedly */
+.form-container-wrapper > * {
+  flex-shrink: 0;
+}
+
+.itinerary-container {
+  width: 100%;
+  height: auto;
+  flex: none; /* Prevent it from stretching and taking full space */
+}
+
+.itinerary-card {
+  width: 100%;
+  background-color: #ffffff;
+  flex-shrink: 0;
+}
+
+
+
+.form-footer {
+  background-color: white;
+  display: flex; /* Hidden by default */
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 10px 20px;
+  border-radius: 0 0 8px 8px; /* Matches form-container’s style */
+
+  border: 1px solid gainsboro;
+  /* border: 1px solid black; */
+}
+
 
 
 
@@ -149,11 +167,11 @@
 }
 
 .card-header {
-  background-color: #343A40;
+  background-color: #0d6efd;
   color: white;
   font-size: 1rem;
   font-weight: 600;
-  padding: 15px 25px;
+  padding: 15px 20px;
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -163,7 +181,7 @@
 
 .card-header h5 {
   margin: 0;
-  font-size: 1.1rem;
+  font-size: 0.95rem;
   font-weight: bold;
 }
 
@@ -601,10 +619,17 @@ select.form-control:focus {
 .itinerary-card .card-header {
   background-color: #116530;
   color: white;
-  font-size: 18px;
+  font-size: 0.95rem;
   font-weight: bold;
-  padding: 15px 25px;
+  padding: 15px 20px;
 }
+
+
+
+
+
+
+
 
 /* Card Body */
 .itinerary-card .card-body {
