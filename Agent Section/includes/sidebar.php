@@ -116,6 +116,30 @@ $current_date = date('D, F d, Y');
       </a>
     </li>
 
+    <!-- Add FIT Bookings -->
+    <li class="nav-item">
+      <a class="nav-link page-button" href="../Agent Section/agent-FIT.php" data-page-name="FIT Bookings">
+        <div class="icon-wrapper">
+          <div class="icon"><i class="fa-solid fa-house"></i></div>
+        </div>
+        <div class="label-wrapper">
+          <span class="label">Book FIT</span>
+        </div>
+      </a>
+    </li>
+
+    <!-- FIT Bookings -->
+    <li class="nav-item">
+      <a class="nav-link page-button" href="../Agent Section/agent-FIT-table.php" data-page-name="FIT Bookings">
+        <div class="icon-wrapper">
+          <div class="icon"><i class="fa-solid fa-house"></i></div>
+        </div>
+        <div class="label-wrapper">
+          <span class="label">FIT Bookings Record</span>
+        </div>
+      </a>
+    </li>
+
     <!-- Packages -->
     <li class="nav-item transaction">
       <a class="nav-link page-button" href="../Agent Section/agent-transactions.php" data-page-name="Packages">

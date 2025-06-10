@@ -18,8 +18,7 @@
   <?php include '../Employee Section/includes/emp-navbar.php' ?>
 
   <div class="main-content">
-    <div class="table-container">
-
+    <div class="table-wrapper">
       <div class="table-header">
         <div class="search-wrapper">
           <div class="search-input-wrapper">
@@ -28,41 +27,20 @@
           </div>
         </div>
 
-        <!-- <div class="filter-field">
-                <!-- <label for="status">Status:</label> 
-                <div class="select-wrapper">
-                  <select id="status">
-                    <option value="All" disabled selected>Select Status</option>
-                    <option value="Pending">Pending</option>
-                    <option value="Confirmed">Confirmed</option>
-                    <option value="Cancelled">Cancelled</option>
-                  </select>
-                </div>
-              </div> -->
-
         <div class="second-header-wrapper">
           <div class="date-range-wrapper sorting-wrapper">
             <div class="select-wrapper">
               <select id="packages">
-                  <option value="All" disabled selected>Select Packages</option>
-                  <option value="Autumn Tour Package">Autumn Tour</option>
-                  <option value="Summer Tour Package">Summer Tour</option>
-                  <option value="Spring Tour Package">Spring Tour</option>
-                  <option value="Winter Tour Package">Winter Tour</option>
-                  <option value="Regular Tour Package">Regular Tour</option>
-                  <option value="Busan Tour Package">Busan Tour</option>
+                <option value="All" disabled selected>Select Packages</option>
+                <option value="Autumn Tour Package">Autumn Tour</option>
+                <option value="Summer Tour Package">Summer Tour</option>
+                <option value="Spring Tour Package">Spring Tour</option>
+                <option value="Winter Tour Package">Winter Tour</option>
+                <option value="Regular Tour Package">Regular Tour</option>
+                <option value="Busan Tour Package">Busan Tour</option>
               </select>
             </div>
           </div>
-
-          <!-- <div class="date-range-wrapper flightbooking-wrapper">
-            <div class="date-range-inputs-wrapper">
-              <div class="input-with-icon">
-                <input type="text" class="datepicker" id="BookingStartDate" placeholder="Booking Date">
-                <i class="fas fa-calendar-alt calendar-icon"></i>
-              </div>
-            </div>
-          </div> -->
 
           <div class="date-range-wrapper flightbooking-wrapper">
             <div class="date-range-inputs-wrapper">
@@ -75,138 +53,170 @@
 
           <div class="buttons-wrapper">
             <button id="clearSorting" class="btn btn-secondary">
-                Clear Filters
+              Clear Filters
             </button>
           </div>
         </div>
 
       </div>
 
-      <div class="table-container">
-        <table class="product-table" id="product-table">
-          <thead class="table-light">
-            <tr>
-              <th>TRANSACT NO.</th>
-              <th>HOTEL NAME</th>
-              <th>ROOM TYPE</th>
-              <th>NUMBER OF ROOMS</th>
-              <th>NUMBER OF GUESTS</th>
-              <th>TRIP DURATION</th>
-              <th>PAYMENT TYPE</th>
-              <th>AMOUNT</th>
-              <th>PROOF OF PAYMENT</th>
-              <th>PAYMENT DATE</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php
-              $sql1 = "SELECT p.paymentId as paymentId, f.transactionNo as transactNo, p.paymentType as paymentType, p.amount as amount, 
-                          p.filePath as filePath, h.hotelName as hotelName, r.rooms as roomName, f.rooms as rooms, f.pax as pax,
-                          CONCAT(DATE_FORMAT(f.startDate, '%Y-%m-%d'), ' to ', DATE_FORMAT(f.returnDate, '%Y-%m-%d')) AS tripDuration,
-                          p.paymentDate as paymentDate
-                        FROM fit f
-                        JOIN fithotel h ON h.hotelId = f.hotelId
-                        JOIN fitrooms r ON r.roomId = f.roomId
-                        JOIN fitpayment p ON p.transactNo = f.transactionNo
-                        WHERE p.paymentStatus = 'Submitted'";
+      <div class="navpills-container">
+        <ul class="nav nav-pills nav-underline" id="pills-tab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">
+              All <span class="badge">88</span>
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">
+              Pending <span class="badge">61</span>
+            </button>
+          </li>
 
-              $res1 = $conn->query($sql1);
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">
+              Confirmed <span class="badge">27</span>
+            </button>
+          </li>
 
-              if ($res1->num_rows > 0) 
-              {
-                while ($row = $res1->fetch_assoc()) 
-                {
-                  // Define the payment type class for styling
-                  $paymentTypeClass = $row['paymentType'] === 'Partial Payment' ? 'badge bg-warning text-dark' : 
-                                      ($row['paymentType'] === 'Full Payment' ? 'badge bg-success' : 'badge bg-secondary');
-
-                  // Format the payment date
-                  $rawPaymentDate = $row['paymentDate'];
-                  $formattedDate = (new DateTime($rawPaymentDate))->format('F j, Y');
-
-                  // Output table row
-                  echo "<tr class='transaction-row' data-paymentId='{$row['paymentId']}'>
-                          <td>{$row['transactNo']}</td>
-                          <td>{$row['hotelName']}</td>
-                          <td>{$row['roomName']}</td>
-                          <td>{$row['rooms']}</td>
-                          <td>{$row['pax']}</td>
-                          <td>{$row['tripDuration']}</td>
-                          <td><span class='$paymentTypeClass p-2'>{$row['paymentType']}</span></td>
-                          <td>₱ " . number_format($row['amount'], 2) . "</td>
-                          <td>
-                            <a class='btn btn-sm btn-primary' href='../Agent Section/functions/view-file.php?file=" . urlencode($row['filePath']) . "' target='_blank'>View</a>
-                            <a class='btn btn-sm btn-secondary' href='../Agent Section/functions/download.php?file=" . urlencode($row['filePath']) . "' target='_blank'>Download</a>
-                          </td>
-                          <td>$formattedDate</td>
-                        </tr>";
-                }
-              } 
-              else 
-              {
-                echo "<tr><td colspan='10' class='text-center'>No Payments Found</td></tr>";
-              }
-            ?>
-          </tbody>
-        </table>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">
+              Cancelled <span class="badge">27</span>
+            </button>
+          </li>
+        </ul>
       </div>
 
-      <div class="table-footer">
-        <div class="pagination-controls">
-          <button id="prevPage" class="pagination-btn">Previous</button>
-          <span id="pageInfo" class="page-info">Page 1 of 10</span>
-          <button id="nextPage" class="pagination-btn">Next</button>
-        </div>
-      </div>
+      <!-- Tab Content -->
+      <div class="tab-content mt-4" id="pills-tabContent">
+        <div class="tab-pane fade show active" id="pills-home" role="tabpanel">
+          <div class="table-responsive table-container">
+            <table id="fitBookingTable" class="table-bordered product-table align-middle text-center">
+              <thead>
+                <tr>
+                  <th>Transaction No</th>
+                  <th>Contact Details</th>
+                  <th>Package Name</th>
+                  <th>No. of Nights</th>
+                  <th>Hotel Details</th>
+                  <th>Check-in/out</th>
+                  <th>Guests</th>
+                  <th>Price (₱)</th>
+                  <th>Transaction Date</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php
+                  $sql1 = "SELECT f.transactionNo AS `Transaction No`, 
+                                  CONCAT(f.lName, ', ', f.fName, ' ', 
+                                        IF(f.mName IS NOT NULL AND f.mName != '', CONCAT(LEFT(f.mName, 1), '.'), ''), 
+                                        IF(f.suffix IS NOT NULL AND f.suffix != 'N/A', CONCAT(' ', f.suffix), '')) AS `Contact Name`,
+                                  CONCAT(f.countryCode, ' ', f.contactNo) AS `Contact Details`,
+                                  fp.packageName AS `Package Name`, DATEDIFF(f.returnDate, f.startDate) AS `No. of Nights`,
+                                  fh.hotelName AS `Hotel Name`, fr.rooms AS `Room Type`, f.startDate AS `Check-in Date`,
+                                  f.returnDate AS `Check-out Date`, f.pax AS `Total Guests`, f.phpPrice AS `Price`,
+                                  f.bookingDate AS `Transaction Date`, f.status AS `Status`
+                              FROM fit f
+                              JOIN fitpackage fp ON fp.packageId = f.packageId
+                              JOIN fithotel fh ON fh.hotelId = f.hotelId
+                              JOIN fitrooms fr ON fr.roomId = f.roomId";
 
-    </div>
+                  $res1 = $conn->query($sql1);
 
-  </div>
-</div>
+                  if ($res1->num_rows > 0) {
+                    while ($row = $res1->fetch_assoc()) {
+                      $transactNo = $row['Transaction No'];
+                      $statusClass = match($row['Status']) {
+                        'Confirmed' => 'bg-success text-white',
+                        'Cancelled' => 'bg-danger text-white',
+                        'Pending'   => 'bg-warning text-dark',
+                        default     => 'bg-secondary text-white',
+                      };
 
-<!-- Payment Status Modal-->
-<div class="modal fade" id="transactionModal" tabindex="-1" aria-labelledby="transactionModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Transaction Details - ID: <span id="transactionModalLabel"></span></h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <form action="../Employee Section/functions/emp-tableFITPayment-code.php" method="POST">
-        <div class="modal-body">
-          <input type="hidden" id="paymentIdInput" name="paymentId">
-          
-          <!-- Request Status Section -->
-          <div class="mb-4">
-            <!-- Request Status Dropdown -->
-            <label for="paymentStatus" class="form-label fw-bold">Request Status:</label>
-            <select id="paymentStatus" name="paymentStatus" class="form-select">
-              <option selected disabled>Select Option</option>
-              <option value="Approved">Approved</option>
-              <option value="Rejected">Rejected</option>
-            </select>
+                      echo "<tr data-url='agent-showFITBooking.php?id=" . htmlspecialchars($transactNo) . "'>
+                              <td>{$transactNo}</td>
+                              <td>
+                                <div class='text-start'>
+                                  <p><strong>Contact Name:</strong> {$row['Contact Name']}</p>
+                                  <p><strong>Phone Number:</strong> {$row['Contact Details']}</p>
+                                </div>
+                              </td>
+                              <td>{$row['Package Name']}</td>
+                              <td>{$row['No. of Nights']}</td>
+                              <td>
+                                <div class='text-start'>
+                                  <p><strong>Hotel:</strong> {$row['Hotel Name']}</p>
+                                  <p><strong>Room Type:</strong> {$row['Room Type']}</p>
+                                </div>
+                              </td>
+                              <td>
+                                <div class='text-start'>
+                                  <p><strong>Check In:</strong> {$row['Check-in Date']}</p>
+                                  <p><strong>Check Out:</strong> {$row['Check-out Date']}</p>
+                                </div>
+                              </td>
+                              <td><strong>{$row['Total Guests']}</strong></td>
+                              <td>₱" . number_format($row['Price'], 2) . "</td>
+                              <td>{$row['Transaction Date']}</td>
+                              <td><span class='badge p-2 rounded-pill {$statusClass}'>{$row['Status']}</span></td>
+                            </tr>";
+                    }
+                  } else {
+                    echo "<tr><td colspan='10'>No bookings found</td></tr>";
+                  }
+                ?>
+              </tbody>
+            </table>
           </div>
 
-          <div class="mb-4">
-            <!-- Remarks Input -->
-            <label for="paymentRemarks" class="form-label fw-bold">Remarks:</label>
-            <input type="text" id="paymentRemarks" name="paymentRemarks" class="form-control" 
-              placeholder="Enter remarks or additional comments here">
+          <!-- Pagination Controls -->
+          <div class="table-footer mt-3 d-flex justify-content-between align-items-center">
+            <button id="prevPage" class="btn btn-outline-primary">Previous</button>
+            <span id="pageInfo" class="page-info">Page 1 of 10</span>
+            <button id="nextPage" class="btn btn-outline-primary">Next</button>
           </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="submit" name="updatePaymentStatus" class="btn btn-primary">Update Status</button>
+
+        <!-- Other Tab Content -->
+        <div class="tab-pane fade" id="pills-profile" role="tabpanel">Pending Table Here</div>
+        <div class="tab-pane fade" id="pills-confirmed" role="tabpanel">Confirmed Table Here</div>
+        <div class="tab-pane fade" id="pills-cancelled" role="tabpanel">Cancelled Table Her
         </div>
-      </form>
+
+      </div>
     </div>
   </div>
 </div>
 
 <?php include '../Employee Section/includes/emp-scripts.php' ?>
 
-<!-- Row Click Selection JS -->
+<!-- Data tables Script-->
 <script>
+  $(document).ready(function () {
+  $('#fitBookingTable').DataTable({
+    autoWidth: false,
+    searching: false, // ✅ disables the search bar
+    columnDefs: [
+      { width: '10%', targets: 0 },  // Transaction No
+      { width: '15%', targets: 1 },  // Contact Details
+      { width: '12%', targets: 2 },  // Package Name
+      { width: '8%', targets: 3 },   // Nights
+      { width: '15%', targets: 4 },  // Hotel Details
+      { width: '15%', targets: 5 },  // Check-in/out
+      { width: '5%', targets: 6 },   // Guests
+      { width: '10%', targets: 7 },  // Price
+      { width: '10%', targets: 8 },  // Transaction Date
+      { width: '10%', targets: 9 }   // Status
+    ],
+    scrollX: true
+  });
+});
+
+</script>
+
+<!-- Row Click Selection JS -->
+<!-- <script>
 document.addEventListener("DOMContentLoaded", function() {
   document.querySelectorAll("tr[data-url]").forEach(function(row) {
       row.addEventListener("click", function() {
@@ -232,310 +242,7 @@ document.addEventListener("DOMContentLoaded", function() {
       });
   });
 });
-</script>
-
-<!-- JQuery Datapicker -->
-<script>
-  document.addEventListener("scroll", function () {
-  const searchBar = document.querySelector(".search-bar");
-  const scrollPosition = window.scrollY;
-
-  // Add or remove the upward adjustment class based on scroll position
-  if (scrollPosition > 70) { // Adjust the threshold as needed
-    searchBar.classList.add("scrolled-upward");
-  } else {
-    searchBar.classList.remove("scrolled-upward");
-  }
-});
-</script>
-
-<!-- DataTables #product-table -->
-<script>
-$(document).ready(function () {
-      const table = $('#product-table').DataTable({
-        dom: 'rtip',  // Use only the relevant table elements
-        language: {
-            emptyTable: "No Transaction Records Available"
-        },
-        order: [[0, 'desc']],  // Default sorting by Transaction ID (descending)
-        scrollX: false,
-        scrollY: '69vh',  // Set a fixed height for the table (adjust as necessary)
-        paging: true,  // Enable pagination
-        pageLength: 15,  // Set the number of rows per page
-        autoWidth: false,
-        autoHeight: false,  // Prevent automatic height adjustment
-
-        // Disable sorting for specific columns
-        columnDefs: [
-          {
-            targets: [1, 2, 3,  5, 6,], // Disable sorting for 2nd and 4th columns
-            orderable: false
-          }
-        ]
-    });
-
-
-    // Search Functionality
-    $('#search').on('keyup', function () {
-        table.search(this.value).draw();
-    });
-
-    // Update the custom pagination buttons and page info
-    function updatePagination() {
-      const info = table.page.info();
-      const currentPage = info.page + 1; // Get current page number (1-indexed)
-      const totalPages = info.pages; // Get total pages
-
-      // Update page info text
-      $('#pageInfo').text(`Page ${currentPage} of ${totalPages}`);
-
-      // Enable/Disable prev and next buttons based on current page
-      $('#prevPage').prop('disabled', currentPage === 1);
-      $('#nextPage').prop('disabled', currentPage === totalPages);
-    }
-
-    // Custom pagination button click events
-    $('#prevPage').on('click', function() {
-      table.page('previous').draw('page');
-      updatePagination();
-    });
-
-    $('#nextPage').on('click', function() {
-      table.page('next').draw('page');
-      updatePagination();
-    });
-
-    // Initialize pagination on first load
-    updatePagination();
-
-    // Status Filter
-    $('#status').on('change', function () {
-        const selectedStatus = $(this).val();
-        table.column(8).search(selectedStatus || '').draw();
-    });
-
-    // Package Filter
-    $('#packages').on('change', function () {
-        const selectedPackage = $(this).val();
-        table.column(2).search(selectedPackage || '').draw();
-    });
-
-    // Booking Date Filter with value change
-    $('#BookingStartDate').on('change', function () {
-      const selectedBookingDate = $(this).val();  // Get the selected value directly from the input field
-      console.log("Booking Date Filter:", selectedBookingDate);  // Log the selected booking date
-      table.column(3).search(selectedBookingDate || '').draw();  // Column 4 (index starts at 0)
-    });
-
-    // Flight Date Filter with value change
-    $('#FlightStartDate').on('change', function () {
-      const selectedFlightDate = $(this).val();  // Get the selected value directly from the input field
-      console.log("Flight Date Filter:", selectedFlightDate);  // Log the selected flight date
-      table.column(3).search(selectedFlightDate || '').draw();  // Column 5 (index starts at 0)
-    });
-
-    // Apply datepicker and input validation for FlightStartDate
-    $("#FlightStartDate").datepicker({
-        dateFormat: "yy-mm-dd", // Set the format to MM-DD-YYYY
-        showAnim: "fadeIn", // Optional: Adds a fade-in effect when the date picker is opened
-        changeMonth: true, // Allow the month to be changed from the dropdown
-        changeYear: true,  // Allow the year to be changed from the dropdown
-        yearRange: "1900:2100", // Set a range of years (optional)
-        onSelect: function(dateText) {
-            // When a date is selected, update the input field with the date
-            $(this).val(dateText);
-            flightStartDate = dateText; // Store the selected date
-            console.log("FlightStartDate Selected Date (onSelect): " + dateText);
-            table.column(3).search(flightStartDate || '').draw();  // Column 5 (index starts at 0)
-        }
-    });
-
-
-    // Apply datepicker and input validation for BookingStartDate
-    $("#BookingStartDate").datepicker({
-        dateFormat: "mm-dd-yy", // Set the format to MM-DD-YYYY
-        showAnim: "fadeIn", // Optional: Adds a fade-in effect when the date picker is opened
-        changeMonth: true, // Allow the month to be changed from the dropdown
-        changeYear: true,  // Allow the year to be changed from the dropdown
-        yearRange: "1900:2100", // Set a range of years (optional)
-        onSelect: function(dateText) {
-            // When a date is selected, update the input field with the date
-            $(this).val(dateText);
-            bookingStartDate = dateText; // Store the selected date
-            console.log("FlightStartDate Selected Date (onSelect): " + dateText);
-            table.column(4).search(bookingStartDate || '').draw();  // Column 5 (index starts at 0)
-        }
-    });
-
-    // BookingStartDate Input Validation and Formatting
-    $("#BookingStartDate").on("input", function () {
-        var value = $(this).val();
-
-        // Remove non-numeric and non-dash characters
-        value = value.replace(/[^\d-]/g, '');
-
-        // Automatically add dashes in the correct places if necessary
-        if (value.length > 2 && value.charAt(2) !== '-') {
-            value = value.substring(0, 2) + '-' + value.substring(2);
-        }
-        if (value.length > 5 && value.charAt(5) !== '-') {
-            value = value.substring(0, 5) + '-' + value.substring(5);
-        }
-
-        // Limit the total input length to 10 characters (MM-DD-YYYY)
-        if (value.length > 10) {
-            value = value.substring(0, 10);
-        }
-
-        // Update the input field value
-        $(this).val(value);
-
-        // Reset or update the bookingStartDate variable
-        if (value === "") {
-            bookingStartDate = ""; // Reset the variable if the input is cleared
-        } else {
-            bookingStartDate = value; // Update the variable with the formatted value
-        }
-
-        // Update the table column search
-        table.column(5).search(bookingStartDate || '').draw(); // Column 5 (index starts at 0)
-
-        console.log("BookingStartDate Input Value (on input): " + value);
-    });
-
-    // Clear All Filters
-    $('#clearSorting').on('click', function () {
-        // Clear search field
-        $('#search').val('');
-        table.search('').draw();
-
-        // Clear status dropdown
-        $('#status').val('All').change();
-
-        // Clear packages dropdown
-        $('#packages').val('All').change();
-
-         // Explicitly reset the variables
-         flightStartDate = '';
-        bookingStartDate = '';
-
-        // Clear date fields
-        $('#BookingStartDate').val('').trigger('change'); // Reset and trigger input for BookingStartDate
-        $('#FlightStartDate').val('').trigger('change');  // Reset and trigger input for FlightStartDate
-
-       
-
-        // Redraw the table
-        table.draw();
-    });
-
-
-});
-</script>
-
-
-
-
-
-
-
-
-<?php
-  // Fetch the status from the session
-  $statusMessage = isset($_SESSION['status']) ? $_SESSION['status'] : '';
-
-  // Set default toast color, and check if status is "Cancelled"
-  $toastColor = 'text-bg-primary'; // Default color
-  if (isset($_SESSION['status']) && strpos($_SESSION['status'], 'Cancelled') !== false) 
-  {
-    $toastColor = 'text-bg-danger'; // Change to red for "Cancelled" status
-  } 
-  elseif (isset($_SESSION['toastColor'])) 
-  {
-    $toastColor = $_SESSION['toastColor']; // Use session-defined toast color
-  }
-
-
-  if (!empty($statusMessage))
-  {
-    // You can use this status message in a toast or somewhere else
-    echo '<div class="toast-container position-fixed top-0 end-0 p-3">
-            <div id="statusToast" class="toast align-items-center ' . $toastColor . ' border-0" role="alert" aria-live="assertive" aria-atomic="true">
-              <div class="d-flex">
-                <div class="toast-body">
-                  ' . htmlspecialchars($statusMessage) . '
-                </div>
-                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-              </div>
-            </div>
-          </div>';
-    
-    // After displaying the status message, unset session variables
-    unset($_SESSION['status']);
-    unset($_SESSION['toastColor']);
-  }
-?>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function () 
-  {
-    // Automatically display the toast if it exists
-    const toastElement = document.getElementById('statusToast');
-    if (toastElement) 
-    {
-      const toast = new bootstrap.Toast(toastElement);
-      toast.show();
-    }
-  });
-</script>
-
-<script>
-  document.querySelectorAll('.viewdownloadfile-wrapper a').forEach((link) => 
-  {
-    link.addEventListener('click', (event) => 
-    {
-      if (link.textContent.trim() === 'View File') 
-      {
-        // Close the modal
-        const modal = document.getElementById('transactionModal');
-        const bootstrapModal = bootstrap.Modal.getInstance(modal); // Get the active modal instance
-        if (bootstrapModal) 
-        {
-          bootstrapModal.hide(); // Close the modal
-        }
-      }
-    });
-  });
-</script>
-
-<script>
-  // Wait for the DOM to be fully loaded
-  document.addEventListener('DOMContentLoaded', function() 
-  {
-    // Get all the rows with the class 'transaction-row'
-    const rows = document.querySelectorAll('.transaction-row');
-    
-    rows.forEach(row => 
-    {
-      // Add click event listener to each row
-      row.addEventListener('click', function() 
-      {
-        // Get the transaction number (data attribute)
-        const paymentId = row.getAttribute('data-paymentId');
-        
-        // Set the transaction number in the modal
-        document.getElementById('paymentIdInput').value = paymentId;
-        document.getElementById('transactionModalLabel').textContent = paymentId
-        // Show the modal (using Bootstrap modal)
-        const modal = new bootstrap.Modal(document.getElementById('transactionModal'));
-        modal.show();
-      });
-    });
-  });
-</script>
-
-
-
+</script> -->
 
 </body>
 </html>

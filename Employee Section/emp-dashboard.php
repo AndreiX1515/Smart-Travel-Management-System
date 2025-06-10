@@ -527,6 +527,11 @@ error_reporting(E_ALL);
               <button class="nav-link" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home"
                 type="button" role="tab" aria-controls="pills-home" aria-selected="true">Booking and Requests</button>
             </li>
+
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="pills-fit-tab" data-bs-toggle="pill" data-bs-target="#pills-fit"
+                type="button" role="tab" aria-controls="pills-fit" aria-selected="true">FIT</button>
+            </li>
           </ul>
         </div>
 
@@ -1113,6 +1118,65 @@ error_reporting(E_ALL);
 
         </div>
 
+        <!-- FIT Booking -->
+         <div class="tab-pane fade" id="pills-fit" role="tabpanel" aria-labelledby="pills-fit-tab" tabindex="0">
+
+          <div class="tab-content ">
+
+            <div class="header-wrapper">
+              <!-- FIT Table -->
+              <div class="container-fluid">
+                <div class="card">
+                  <div class="card-header d-flex justify-content-between align-items-center bg-primary text-white">
+                    <h6 class="mb-0">F.I.T</h6>
+                  </div>
+                  
+                  <div class="card-body p-0">
+                    <div class="table-responsive">
+                      <table class="table table-bordered table-hover table-sm mb-0">
+                        <thead class="table-light text-center">
+                          <tr>
+                            <th>TRANSACT NO.</th>
+                            <th>HOTEL NAME</th>
+                            <th>ROOM TYPE</th>
+                            <th>NUMBER OF ROOMS</th>
+                            <th>NUMBER OF GUESTS</th>
+                            <th>TRIP DURATION</th>
+                          </tr>
+                        </thead>
+                        <tbody class="text-center">
+                          <?php
+                            $sql1 = "SELECT f.transactionNo AS transactNo, f.nights AS noOfNights, h.hotelName AS hotelName,
+                                        r.rooms AS roomName, f.rooms AS noOfRooms, f.pax AS pax
+                                      FROM fit f
+                                      JOIN fithotel h ON f.hotelId = h.hotelId
+                                      JOIN fitrooms r ON f.roomId = r.roomId";
+                            $res1 = $conn->query($sql1);
+
+                            if ($res1->num_rows > 0) {
+                              while ($row = $res1->fetch_assoc()) {
+                                echo "<tr>";
+                                echo "<td>" . htmlspecialchars($row['transactNo']) . "</td>";
+                                echo "<td>" . htmlspecialchars($row['hotelName']) . "</td>";
+                                echo "<td>" . htmlspecialchars($row['roomName']) . "</td>";
+                                echo "<td>" . htmlspecialchars($row['noOfRooms']) . "</td>";
+                                echo "<td>" . htmlspecialchars($row['pax']) . "</td>";
+                                echo "<td>" . htmlspecialchars($row['noOfNights']) . " Night(s)</td>";
+                                echo "</tr>";
+                              }
+                            } else {
+                              echo "<tr><td colspan='6' class='text-center text-muted'>No Records Found</td></tr>";
+                            }
+                          ?>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
     </div>
