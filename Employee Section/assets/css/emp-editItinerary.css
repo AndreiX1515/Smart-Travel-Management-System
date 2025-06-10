@@ -197,22 +197,19 @@
 
 /* Dash separator */
 .dash-separator {
-  flex: 0 0 auto; /* Fixed size */
-  white-space: nowrap;
-  padding: 0 8px;
-  font-weight: bold;
-  font-size: 1.2rem;
-  user-select: none;
-
-  /* Center contents */
   display: flex;
   align-items: center;
   justify-content: center;
-  width: auto;
-  height: 100%;
+  flex: 0 0 auto;
+  padding: 0 8px;
+  font-weight: bold;
+  font-size: 18px;
+  white-space: nowrap;
+  user-select: none;
   border: none;
-  font-size: 18px; /* Slightly bigger font */
+  height: 100%;
 }
+
 
 
 

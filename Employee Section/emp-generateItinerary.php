@@ -16,13 +16,14 @@
 
     <!-- Main Container -->
     <div class="main-container">
+
         <div class="navbar">
             <div class="page-header-wrapper">
 
                 <div class="page-header-top">
                     <div class="back-btn-wrapper">
                         <button class="back-btn" id="redirect-btn">
-                        <i class="fas fa-chevron-left"></i>
+                            <i class="fas fa-chevron-left"></i>
                         </button>
                     </div>
                 </div>
@@ -37,13 +38,15 @@
         </div>
 
         <script>
-        document.getElementById('redirect-btn').addEventListener('click', function () {
-            window.location.href = '../Employee Section/emp-itineraryTable.php'; // Replace with your actual URL
-        });
+            document.getElementById('redirect-btn').addEventListener('click', function () {
+                window.location.href = '../Employee Section/emp-itineraryTable.php'; // Replace with your actual URL
+            });
         </script>
 
+
         <div class="main-content">
-            <div class="form-container">
+
+            <div class="form-container-wrapper">
 
                 <!-- Itinerary Details Card -->
                 <div class="card">
@@ -83,13 +86,14 @@
                                         }
                                         ?>
                                     </select>
-                                    
+
                                 </div>
                             </div>
                         </div>
 
                         <!-- Periods, Guide Row -->
                         <div class="row">
+
                             <!-- Flight Date Dropdown -->
                             <div class="columns col-md-4">
 
@@ -103,7 +107,8 @@
                                     <div class="form-group">
                                         <div class="date-range-inputs-wrapper">
                                             <div class="input-with-icon">
-                                                <input type="text" class="datepicker" id="PeriodStartDate" placeholder="Start" readonly>
+                                                <input type="text" class="datepicker" id="PeriodStartDate"
+                                                    placeholder="Start" readonly>
                                                 <i class="fas fa-calendar-alt calendar-icon"></i>
                                             </div>
                                         </div>
@@ -115,7 +120,8 @@
                                     <div class="form-group">
                                         <div class="date-range-inputs-wrapper">
                                             <div class="input-with-icon">
-                                                <input type="text" class="datepicker" id="PeriodEndDate" placeholder="End" readonly>
+                                                <input type="text" class="datepicker" id="PeriodEndDate"
+                                                    placeholder="End" readonly>
                                                 <i class="fas fa-calendar-alt calendar-icon"></i>
                                             </div>
                                         </div>
@@ -134,37 +140,69 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <select class="form-select" id="guideName" name="flightDate" required>
+                                    <select class="form-select" id="guideName" name="guideName" required onchange="updateContact(this)">
                                         <option selected disabled>Select Guide</option>
-                                        <option value="John Doe">John Doe</option>
+                                        <?php
+                                        $query = "SELECT accountId, fName, lName, mName, contactNo, countryCode FROM employee WHERE isTourGuide = 1";
+                                        $result = mysqli_query($conn, $query);
+
+                                        while ($row = mysqli_fetch_assoc($result)) {
+                                            $accountId = $row['accountId'];
+                                            $fName = $row['fName'];
+                                            $lName = $row['lName'];
+                                            $mName = $row['mName'];
+                                            $contactNo = $row['contactNo'];
+                                            $countryCode = $row['countryCode'];
+
+                                            $middleInitial = !empty($mName) ? strtoupper(substr($mName, 0, 1)) . '.' : '';
+                                            $fullName = $lName . ', ' . $fName . ($middleInitial ? ' ' . $middleInitial : '');
+
+                                            // Embed contactNo and countryCode as data attributes
+                                            echo "<option value=\"$accountId\" data-contact=\"$contactNo\" data-code=\"$countryCode\">$fullName</option>";
+                                        }
+                                        ?>
                                     </select>
                                 </div>
+
+
                             </div>
+
+
+                            <script>
+                            function updateContact(selectElement) {
+                                const selectedOption = selectElement.options[selectElement.selectedIndex];
+                                const contact = selectedOption.getAttribute('data-contact');
+                                const code = selectedOption.getAttribute('data-code');
+
+                                if (contact && code) {
+                                    document.getElementById('countryCode').value = code;
+                                    document.getElementById('contactNumber').value = contact;
+                                }
+                            }
+                            </script>
+
 
                             <div class="columns col-md-4">
                                 <div class="column-header">
-                                    <label for="flightDate">Contact Number
-                                        <span class="text-danger"> *</span>
-                                    </label>
+                                    <label for="contactNumber">Contact Number <span class="text-danger">*</span></label>
                                 </div>
-
                                 <div class="form-group d-flex flex-row align-items-center">
-                                    <select class="form-select" id="countryCode" style="width: 80px;">
+                                    <select class="form-select" id="countryCode" style="width: 80px;" disabled>
                                         <option value="+63" selected>+63</option>
                                         <option value="+82">+82</option>
                                     </select>
-                                    <input type="text" class="form-control ms-2" id="contactNumber" name="contactNumber" min="1" placeholder="9***********" required>
+                                    <input type="text" class="form-control ms-2" id="contactNumber" name="contactNumber"
+                                        placeholder="9***********" disabled>
                                 </div>
-
                             </div>
-
                         </div>
 
                         <!-- Tour Areas, Hotels -->
                         <div class="row">
                             <div class="columns col-md-8">
                                 <div class="column-header">
-                                    <label for="flightDate">Tour Areas, Hotels <span class="text-danger"> *</span></label>
+                                    <label for="flightDate">Tour Areas, Hotels <span class="text-danger">
+                                            *</span></label>
                                 </div>
                                 <div class="cityhotel-wrapper">
 
@@ -180,7 +218,8 @@
 
                                     <div class="cityhotel-item">
                                         <div class="form-group d-flex flex-row align-items-center">
-                                            <select class="form-select hotel-select" id="hotel1" name="hotel(1)" required>
+                                            <select class="form-select hotel-select" id="hotel1" name="hotel(1)"
+                                                required>
                                                 <option selected disabled>Select Hotel</option>
                                             </select>
                                         </div>
@@ -203,7 +242,8 @@
                                     <div class="dash-separator">-></div>
                                     <div class="cityhotel-item">
                                         <div class="form-group d-flex flex-row align-items-center">
-                                            <select class="form-select hotel-select" id="hotel2" name="hotel(2)" required>
+                                            <select class="form-select hotel-select" id="hotel2" name="hotel(2)"
+                                                required>
                                                 <option selected disabled>Select Hotel</option>
                                             </select>
                                         </div>
@@ -225,7 +265,8 @@
                                     <div class="dash-separator">-></div>
                                     <div class="cityhotel-item">
                                         <div class="form-group d-flex flex-row align-items-center">
-                                            <select class="form-select hotel-select" id="hotel3" name="hotel(3)" required>
+                                            <select class="form-select hotel-select" id="hotel3" name="hotel(3)"
+                                                required>
                                                 <option selected disabled>Select Hotel</option>
                                             </select>
                                         </div>
@@ -233,42 +274,6 @@
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Hotel -->
-                        <!-- <div class="row">
-                            <div class="column-header mb-2">
-                                <label for="flightDate">Hotel
-                                    <span class="text-danger"> *</span>
-                                </label>
-                            </div>
-
-                            
-                            <div class="columns col-md-4">
-                                <div class="form-group">
-                                    <select class="form-select hotel-select" id="hotel1" name="hotel1" required>
-                                        <option selected disabled>Select Hotel (1)</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="columns col-md-4">
-                                <div class="form-group">
-                                    <select class="form-select hotel-select" id="hotel2" name="hotel2" required>
-                                        <option selected disabled>Select Hotel (2)</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="columns col-md-4">
-                                <div class="form-group">
-                                    <select class="form-select hotel-select" id="hotel3" name="hotel3" required>
-                                        <option selected disabled>Select Hotel (3)</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                        </div> -->
-
                     </div>
                 </div>
 
@@ -288,7 +293,8 @@
                                     <select class="form-select" id="select-days" name="numberOfDays" required disabled>
                                         <option selected disabled>Select Number of Days</option>
                                     </select>
-                                    <small class="form-text text-muted">Changing this will clear all your data on the fields.</small>
+                                    <small class="form-text text-muted">Changing this will clear all your data on the
+                                        fields.</small>
                                 </div>
                             </div>
 
@@ -296,9 +302,8 @@
                     </div>
                 </div>
 
-                <div class="itinerary-container" id="itinerary-container">
+                <div class="itinerary-container" id="itinerary-container"> </div>
 
-                </div>
             </div>
 
             <div class="form-footer">
@@ -307,11 +312,9 @@
         </div>
     </div>
 
-
-
-
     <!-- Modal -->
-    <div class="modal fade" id="templateNameModal" tabindex="-1" aria-labelledby="templateNameModalLabel" aria-hidden="true">
+    <div class="modal fade" id="templateNameModal" tabindex="-1" aria-labelledby="templateNameModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -337,10 +340,10 @@
 
     <?php include '../Employee Section/includes/emp-scripts.php' ?>
 
-    
+
     <!-- Datepicker Script -->
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             // Apply datepicker for PeriodStartDate
             $("#PeriodStartDate").datepicker({
                 dateFormat: "yy-mm-dd",
@@ -348,7 +351,7 @@
                 changeMonth: true,
                 changeYear: true,
                 yearRange: "1900:2100",
-                onSelect: function(dateText) {
+                onSelect: function (dateText) {
                     console.log("PeriodStartDate Selected: " + dateText);
                 }
             });
@@ -360,7 +363,7 @@
                 changeMonth: true,
                 changeYear: true,
                 yearRange: "1900:2100",
-                onSelect: function(dateText) {
+                onSelect: function (dateText) {
                     console.log("PeriodEndDate Selected: " + dateText);
                 }
             });
@@ -372,12 +375,13 @@
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             // Cities and Hotels Data
-            const cities = ["Seoul", "Busan", "Jeonju", "Jeju"];
+            const cities = ["Seoul", "Gyeonggi-do", "Incheon", "Jeju"];
+
             const hotels = {
-                "Seoul": ["Lotte Hotel Seoul", "Signiel Seoul", "The Shilla Seoul", "Grand Hyatt Seoul", "InterContinental Seoul COEX"],
-                "Busan": ["Park Hyatt Busan", "Paradise Hotel Busan"],
-                "Jeonju": ["Lahan Hotel Jeonju"],
-                "Jeju": ["Maison Glad Jeju", "Ramada Plaza Jeju"]
+                "Seoul": ["Smart Stay Hotel"],
+                "Gyeonggi-do": ["Ramada Hotel", "Marina Bay Hotel"],
+                "Incheon": ["Air Sky Hotel", "Royal Emporium"],
+                "Jeju": ["Tamara Hotel"]
             };
 
             const selectedHotels = {}; // To track selected hotels for each row
@@ -524,109 +528,112 @@
     <script>
         const selectDays = document.getElementById("select-days");
         const itineraryContainer = document.getElementById("itinerary-container");
-        const formFooter = document.querySelector(".form-footer"); // Select the form-footer
+        const formFooter = document.querySelector(".form-footer");
         const submitBtn = document.getElementById("submit-itinerary");
 
         // Korean Tour Data
-        const koreanTourAreas = ["Seoul", "Busan", "Jeju", "Incheon", "Gyeongju"];
+        const koreanTourAreas = ["Seoul", "Gyeonggi-do", "Incheon", "Jeju"];
 
-        const koreanMealPlans = ["Traditional Korean Cuisine", "Street Food Tour", "Seafood Specialty", "Vegetarian Option", "Luxury Fine Dining"];
-
-        const hotels = [
-            "", // Blank state
-            "Lotte Hotel Seoul",
-            "Signiel Seoul",
-            "The Shilla Seoul",
-            "Grand Hyatt Seoul",
-            "InterContinental Seoul COEX",
-            "Park Hyatt Busan",
-            "Paradise Hotel Busan",
-            "Lahan Hotel Jeonju",
-            "Maison Glad Jeju",
-            "Ramada Plaza Jeju"
+        const koreanMealPlans = [
+            "Traditional Korean Cuisine",
+            "Street Food Tour",
+            "Seafood Specialty",
+            "Vegetarian Option",
+            "Luxury Fine Dining"
         ];
 
+        const hotelsByArea = {
+            "Seoul": ["Smart Stay Hotel"],
+            "Gyeonggi-do": ["Ramada Hotel", "Marina Bay Hotel"],
+            "Incheon": ["Air Sky Hotel", "Royal Emporium Hotel"],
+            "Jeju": ["Tamara Hotel"]
+        };
 
-        const itineraries = [
-            "Gyeongbokgung Palace Tour",
-            "Myeongdong Shopping District",
-            "Namsan Seoul Tower",
-            "Bukchon Hanok Village",
-            "Dongdaemun Design Plaza",
-            "Busan Gamcheon Culture Village",
-            "Jeju Island Lava Tubes"
-        ];
+        const itinerariesByDay = {
+            1: [
+                "Arrive at Incheon Airport, transfer to the hotel",
+                "Check in and freshen up at the hotel",
+                "Namsan Seoul Tower",
+                "Bukchon Hanok Village"
+            ],
+            2: [
+                "Dongdaemun Design Plaza",
+                "Lotte World Adventure",
+                "Han River Cruise",
+                "Itaewon Culture Walk",
+                "Gyeongbokgung Palace Tour"
+            ],
+            3: [
+                "Busan Gamcheon Culture Village",
+                "Haeundae Beach",
+                "Busan Tower",
+                "Jagalchi Fish Market",
+                "Dongbaekseom Island"
+            ],
+            4: [
+                "Jeju Island Lava Tubes",
+                "Manjanggul Cave",
+                "Seongsan Ilchulbong Peak",
+                "Jeju Folk Village",
+                "Hallim Park"
+            ],
+            5: [
+                "Nami Island Day Trip",
+                "Petite France",
+                "The Garden of Morning Calm",
+                "Korean Folk Village",
+                "COEX Mall & Aquarium"
+            ]
+        };
+
+
+
+
 
         const totalDays = 5;
+
         const selectedValues = {
             area: {},
             hotel: {},
             itinerary: {}
         };
 
-        // Add options to the dropdown for 5 days
+        // Populate dropdown for selecting number of days
         for (let num = 1; num <= totalDays; num++) {
             let option = document.createElement("option");
             option.value = num;
             option.textContent = `Day ${num}`;
             selectDays.appendChild(option);
         }
-
-        // Set the default selected option to Day 5
-        selectDays.value = 5; // Default to Day 5
+        selectDays.value = 5;
 
         const selectedDays = parseInt(selectDays.value);
-        itineraryContainer.innerHTML = ""; // Clear previous content
+        itineraryContainer.innerHTML = "";
 
-        // Function to update dropdown options based on selected values
-        function updateDropdownOptions() {
-            // Loop through all days
-            for (let day = 1; day <= selectedDays; day++) {
-                const areaSelects = document.querySelectorAll(`.area-select[data-day="${day}"]`);
-                const hotelSelects = document.querySelectorAll(`.hotel-select[data-day="${day}"]`);
-                const itinerarySelects = document.querySelectorAll(`.itinerary-select[data-day="${day}"]`);
-
-                // Disable selected areas in other dropdowns
-                areaSelects.forEach(select => {
-                    select.querySelectorAll('option').forEach(option => {
-                        option.disabled = selectedValues.area[day]?.includes(option.value);
-                    });
-                });
-
-                // Disable selected hotels in other dropdowns
-                hotelSelects.forEach(select => {
-                    select.querySelectorAll('option').forEach(option => {
-                        option.disabled = selectedValues.hotel[day]?.includes(option.value);
-                    });
-                });
-
-                // Disable selected itineraries in other dropdowns
-                itinerarySelects.forEach(select => {
-                    select.querySelectorAll('option').forEach(option => {
-                        option.disabled = selectedValues.itinerary[day]?.includes(option.value);
-                    });
-                });
-            }
-        }
-
-        // Function to render the itinerary for selected days
+        // Render itinerary cards for each day
         for (let day = 1; day <= selectedDays; day++) {
             const card = document.createElement("div");
-            card.className = "card itinerary-card mb-3"; // Bootstrap margin-bottom for spacing
+            card.className = "card itinerary-card mb-3";
 
+            // Conditional layout based on day
             card.innerHTML = `
                 <div class="card-header bg-primary text-white fw-bold">Day ${day}</div>
                 <div class="card-body">
                     <div class="container-fluid">
+
+                        <!-- Area Selection -->
                         <div class="row mb-3">
-                            ${day === 1 
-                                ? `<div class="col-4">
+                            ${
+                                day === 1
+                                ? `
+                                <div class="col-4">
                                     <label class="form-label fw-semibold">Area:</label>    
-                                    <select class="form-select area-select" data-day="${day}" required>
-                                        <option selected disabled>Select Area</option>
-                                        ${koreanTourAreas.map(area => `<option value="${area}">${area}</option>`).join("")}
+                                    <select class="form-select area-select" data-day="${day}" disabled>
+                                        <option selected>Incheon</option>
+                                    }
                                     </select>
                                 </div>`
+
                                 : ["Area 1", "Area 2", "Area 3"].map(areaLabel => `
                                     <div class="col-4">
                                         <label class="form-label fw-semibold">${areaLabel}:</label>    
@@ -639,15 +646,19 @@
                             }
                         </div>
 
+                        <!-- Meal Plans -->
                         <div class="row mb-3">
-                            ${day === 1 
-                                ? `<div class="col-4">
+                            ${
+                                day === 1
+                                ? `
+                                <div class="col-4">
                                     <label class="form-label fw-semibold">Meal Plan:</label>
-                                    <select class="form-select meal-plan-select" data-day="${day}" required>
-                                        <option selected disabled>Select Meal Plan</option>
-                                        ${koreanMealPlans.map(meal => `<option value="${meal}">${meal}</option>`).join("")}
+                                    <select class="form-select meal-plan-select" data-day="${day}" disabled>
+                                        <option selected>Snack</option>
                                     </select>
                                 </div>`
+
+
                                 : ["Breakfast", "Lunch", "Dinner"].map(mealLabel => `
                                     <div class="col-4">
                                         <label class="form-label fw-semibold">${mealLabel}:</label>
@@ -660,45 +671,50 @@
                             }
                         </div>
 
+                        <!-- Hotels (based on selected areas) -->
                         <div class="row mb-3">
                             <div class="col-12">
                                 <label class="form-label fw-semibold">Hotels:</label>
                                 <div class="row">
-                                    ${["Hotel 1", "Hotel 2"].map(hotelLabel => `
-                                        <div class="col-md-4 col-sm-12 mb-2">
-                                            <select class="form-select hotel-select" data-day="${day}" required>
-                                                <option selected disabled>Select ${hotelLabel}</option>
-                                                ${hotels.map(hotel => `<option value="${hotel}">${hotel}</option>`).join("")}
-                                            </select>
-                                        </div>
-                                    `).join("")}
+                                    ${["Hotel 1", "Hotel 2"].map(hotelLabel => {
+                                        const hotelOptions = day === 1
+                                            ? ["Air Sky Hotel", "Royal Emporium Hotel"].map(hotel => `<option value="${hotel}">${hotel}</option>`).join("")
+                                            : "<!-- Options will be dynamically added based on area selections -->";
+
+                                        return `
+                                            <div class="col-md-4 col-sm-12 mb-2">
+                                                <select class="form-select hotel-select" data-day="${day}" required>
+                                                    <option selected disabled>Select ${hotelLabel}</option>
+                                                    ${hotelOptions}
+                                                </select>
+                                            </div>`;
+                                    }).join("")}
+
                                 </div>
                             </div>
                         </div>
 
+
+                        <!-- Itineraries -->
                         <div class="row mb-3">
                             <div class="col-12">
                                 <label class="form-label fw-semibold">Itinerary:</label>
                             </div>
-                            ${day === 1 
-                                ? [1, 2, 3, 4].map(num => `
-                                    <div class="col-12 mb-2">
-                                        <select class="form-select itinerary-select" data-day="${day}" required>
-                                            <option selected disabled>Select Itinerary ${num}</option>
-                                            ${itineraries.map(itinerary => `<option value="${itinerary}">${itinerary}</option>`).join("")}
-                                        </select>
-                                    </div>
-                                `).join("")
-                                : [1, 2, 3, 4, 5, 6, 7].map(num => `
-                                    <div class="col-12 mb-2">
-                                        <select class="form-select itinerary-select" data-day="${day}" required>
-                                            <option selected disabled>Select Itinerary ${num}</option>
-                                            ${itineraries.map(itinerary => `<option value="${itinerary}">${itinerary}</option>`).join("")}
-                                        </select>
-                                    </div>
-                                `).join("")
-                            }
+                            ${ (day === 1 ? [1, 2, 3, 4] : [1, 2, 3, 4, 5]).map(num => `
+                                <div class="col-12 mb-2">
+                                    <select class="form-select itinerary-select" data-day="${day}" required>
+                                        <option selected disabled>Select Itinerary ${num}</option>
+                                        ${
+                                            (itinerariesByDay[day] || []).map(itinerary => `
+                                                <option value="${itinerary}">${itinerary}</option>
+                                            `).join("")
+                                        }
+                                    </select>
+                                </div>
+                            `).join("")}
                         </div>
+
+
 
                     </div>
                 </div>
@@ -707,11 +723,30 @@
             itineraryContainer.appendChild(card);
         }
 
+        // Event Delegation: Update hotel options based on selected area(s)
+        document.addEventListener("change", function (e) {
+            if (e.target.classList.contains("area-select")) {
+                const day = e.target.getAttribute("data-day");
+                const selectedAreas = Array.from(document.querySelectorAll(`.area-select[data-day="${day}"]`))
+                    .map(select => select.value)
+                    .filter(val => val !== "Select Area" && val !== "");
+
+                const allHotels = selectedAreas.flatMap(area => hotelsByArea[area] || []);
+                const hotelSelects = document.querySelectorAll(`.hotel-select[data-day="${day}"]`);
+
+                hotelSelects.forEach(hotelSelect => {
+                    const currentValue = hotelSelect.value;
+                    hotelSelect.innerHTML = `<option selected disabled>Select Hotel</option>` +
+                        allHotels.concat("No Hotel").map(hotel => `<option value="${hotel}" ${hotel === currentValue ? "selected" : ""}>${hotel}</option>`).join("");
+                });
+            }
+        });
+
 
         // Hide the form-footer when itinerary is cleared
         formFooter.style.display = selectedDays ? "flex" : "none";
 
-        document.getElementById("submit-itinerary").addEventListener("click", function(event) {
+        document.getElementById("submit-itinerary").addEventListener("click", function (event) {
             const selects = document.querySelectorAll(".form-select");
             let isValid = true;
 
@@ -737,7 +772,7 @@
         });
 
         // Event listener to handle selection changes
-        document.addEventListener("change", function(event) {
+        document.addEventListener("change", function (event) {
             if (event.target.matches(".area-select, .hotel-select, .itinerary-select")) {
                 const day = event.target.dataset.day;
                 const selectedValue = event.target.value;
@@ -758,7 +793,7 @@
 
     <!-- Form Submission Script -->
     <script>
-        document.getElementById("submitTour").addEventListener("click", function() {
+        document.getElementById("submitTour").addEventListener("click", function () {
             $("#templateNameModal").modal("show");
         });
 
@@ -847,7 +882,7 @@
                     templateName: templateName // Pass only the template name
                 },
                 dataType: "json",
-                success: function(response) {
+                success: function (response) {
                     submitButton.disabled = false;
                     if (response.status === "success") {
                         alert("Itinerary successfully created!");
@@ -856,7 +891,7 @@
                         alert("Error saving itinerary: " + response.message);
                     }
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     submitButton.disabled = false;
                     console.error("AJAX Error:", error);
                     console.error("Response Text:", xhr.responseText);

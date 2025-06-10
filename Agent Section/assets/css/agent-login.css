@@ -100,7 +100,7 @@ body {
   width: 520px; /* Optimal size */
   padding: 40px; /* Improved spacing */
   border-radius: 20px; /* Smooth, rounder edges */
-  background: rgba(255, 255, 255, 0.2); /* Softer transparency */
+  background: #faf9f6a1; /* Softer transparency */
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); /* More depth */
   backdrop-filter: blur(20px); /* Stronger glass effect */
   border: 1px solid rgba(255, 255, 255, 0.3);
@@ -126,7 +126,7 @@ body {
   width: 140px;
   height: 140px; /* Ensuring a balanced aspect ratio */
   border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.822); /* Light circular background */
+  /* background-color: rgba(255, 255, 255, 0.822);  */
   padding: 10px;
   margin-bottom: 30px;
 }
@@ -154,7 +154,7 @@ body {
 .form-floating input {
   padding-right: 45px;
   border-radius: 12px; /* Rounder edges */
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.808);
   background: rgba(255, 255, 255, 0.35); /* Brightened background */
   font-size: 17px; /* Slightly larger font */
   padding: 16px;
@@ -242,7 +242,7 @@ body {
   font-weight: bold;
   border-radius: 6px;
   border: none;
-  background-color: #116530;
+  background-color: #0d6efd;
   color: white;
   transition: background-color 0.3s ease;
 }
