@@ -152,27 +152,31 @@
                   $formattedFlightDate = date('Y.m.d', strtotime($flightDate));;
 
                   // Output table row with data-transactno attribute
-                  echo "<tr class='transaction-row' data-paymentId='{$row['paymentId']}'>
+                 echo "<tr class='transaction-row' data-paymentId='{$row['paymentId']}'>
                           <td>{$row['transactNo']}</td>
                           <td>{$row['branchName']}</td>
                           <td>{$formattedFlightDate}</td>
                           <td>{$row['paymentTitle']}</td>
                           <td><span class='$paymentTypeClass p-2'>$paymentTypeValue</span></td>
                           <td>₱ {$row['amount']}</td>
+                          <td class='viewdownloadfile-wrapper'>";
 
-                          
-                          <td class='viewdownloadfile-wrapper'>
-                              <a class='btn-view' href='../Agent Section/functions/view-file.php?file=" .  urlencode($row['filePath']) . "' target='_blank'>
-                                  <i class='fas fa-eye'></i>
-                              </a>
-                              <a class='btn-download' href='../Agent Section/functions/download.php?file=" .  urlencode($row['filePath']) . "' target='_blank'>
-                                  <i class='fas fa-download'></i>
-                              </a>
-                          </td>
+                            if (!empty($row['filePath'])) {
+                              $encodedFile = urlencode($row['filePath']);
+                              echo "  <a class='btn-view' href='../Agent Section/functions/view-file.php?file={$encodedFile}' target='_blank'>
+                                        <i class='fas fa-eye'></i>
+                                      </a>
+                                      <a class='btn-download' href='../Agent Section/functions/download.php?file={$encodedFile}' target='_blank'>
+                                        <i class='fas fa-download'></i>
+                                      </a>";
+                            } else {
+                              echo "<span class='text-muted'>No File</span>";
+                            }
 
+                  echo "  </td>
+                          <td>{$row['paymentDate']}</td>
+                        </tr>";
 
-                          <td> {$row['paymentDate']} </td>
-                      </tr>";
                 }
               } else {
                 echo "<tr><td colspan='8' style='text-align: center;'>No Payments Found</td></tr>";
