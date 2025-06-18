@@ -146,7 +146,7 @@
             <div class="col-md-6 mb-3 filter-month" id="month-container" style="display:none;">
               <label for="month-filter">Month</label>
               <select id="month-filter" name="month-filter" class="form-control">
-                <option value="Select month" selected disabled>Select month</option>
+                <option value="" selected disabled>Select month</option>
               </select>
             </div>
 
@@ -154,7 +154,7 @@
             <div class="col-md-6 mb-3 filter-month" id="year-container" style="display:none;">
               <label for="year-filter">Year</label>
               <select id="year-filter" name="year-filter" class="form-control">
-                <option value="Select year" selected disabled>Select year</option>
+                <option value="" selected disabled>Select year</option>
               </select>
             </div>
           </div>
@@ -167,18 +167,77 @@
           <div class="me-2">
             <button id="generate-soa-btn" class="btn btn-primary">Preview SOA</button>
           </div>
-          <div>
+          <!-- <div>
             <button class="btn btn-primary" id="download-btn" disabled>Generate SoA</button>
-          </div>
+          </div> -->
         </div>
       </div>
 
-      <!-- Results -->
-      <div id="result-container" class="mt-3">
-        
+      <div id="soaWrapper" class="container-fluid p-4 border rounded bg-white shadow-sm mt-4" style="display: none; overflow-x: auto;">
+
+
+        <table id="soaTable" class="product-table w-100">
+          <thead>
+            <tr>
+              <th>No.</th>
+              <th>Contents</th>
+              <th>$ Price</th>
+              <th>₱ Price</th>
+              <th>PAX</th>
+              <th>$ Total</th>
+              <th>₱ Total</th>
+            </tr>
+          </thead>
+
+          <tbody id="soaFlightsBody">
+            <!-- Flight rows will be inserted here -->
+          </tbody>
+          <tbody>
+            <tr id="soaFlights" class="table-subtotal bg-light fw-bold">
+              <td colspan="5" class="text-end">Subtotal:</td>
+              <td><span class="subtotal-usd"></span></td>
+              <td><span class="subtotal-php"></span></td>
+            </tr>
+          </tbody>
+
+          <tbody id="soaRequestsBody">
+            <!-- Request rows will be inserted here -->
+          </tbody>
+          <tbody>
+            <tr id="soaRequests" class="table-subtotal bg-light fw-bold">
+              <td colspan="5" class="text-end">Subtotal:</td>
+              <td><span class="subtotal-usd"></span></td>
+              <td><span class="subtotal-php"></span></td>
+            </tr>
+          </tbody>
+
+          <tbody id="soaPaymentsBody">
+            <!-- Payment rows will be inserted here -->
+          </tbody>
+          <tbody>
+            <tr id="soaPayments" class="table-subtotal bg-light fw-bold">
+              <td colspan="5" class="text-end">Subtotal:</td>
+              <td><span class="subtotal-usd"></span></td>
+              <td><span class="subtotal-php"></span></td>
+            </tr>
+          </tbody>
+
+          <tfoot>
+            <tr id="soaBalance" class="bg-secondary text-white fw-bold">
+              <td colspan="5" class="text-end">BALANCE:</td>
+              <td><span id="balanceUSD"></span></td>
+              <td><span id="balancePHP"></span></td>
+            </tr>
+          </tfoot>
+        </table>
+
+        <div class="d-flex justify-content-end mt-3">
+          <button id="download-btn" class="btn btn-success btn-sm" disabled>Download</button>
+        </div>
       </div>
 
-      
+
+
 
     </div>
 
@@ -187,11 +246,10 @@
 
   <?php require "../Agent Section/includes/scripts.php"; ?>
   <!-- jQuery (if not already included) -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
 
   <!-- SheetJS XLSX library -->
-  <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
-
+  <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
 
   <!-- JavaScript for Date Filters -->
   <script>
@@ -236,8 +294,6 @@
       const flightFilters = document.querySelectorAll(".filter-flight");
       const monthFilters = document.querySelectorAll(".filter-month");
 
-      const resultContainer = document.getElementById("result-container");
-
       // Get select elements
       const agentFilter = document.getElementById("agent-filter");
       const companyFilter = document.getElementById("company-filter");
@@ -259,13 +315,11 @@
           console.log(selectedType);
           agentContainer.style.display = "block";
           companyContainer.style.display = "none";
-          resultContainer.style.display = "none";
         }
         else {
           console.log(selectedType);
           agentContainer.style.display = "none";
           companyContainer.style.display = "block";
-          resultContainer.style.display = "none";
         }
       }
 
@@ -281,13 +335,11 @@
           console.log(selectedMode);
           flightFilters.forEach(el => el.style.display = "block");
           monthFilters.forEach(el => el.style.display = "none");
-          resultContainer.style.display = "none";
         }
         else {
           console.log(selectedMode);
           flightFilters.forEach(el => el.style.display = "none");
           monthFilters.forEach(el => el.style.display = "block");
-          resultContainer.style.display = "none";
         }
       }
 
@@ -320,226 +372,400 @@
 
   <!-- Preview SoA -->
   <script>
-    document.getElementById('generate-soa-btn').addEventListener('click', function () {
+    document.getElementById('generate-soa-btn').addEventListener('click', function () 
+    {
       const agentSelect = document.getElementById('agent-filter');
       const companySelect = document.getElementById('company-filter');
       const monthFilter = document.getElementById('month-filter');
       const yearFilter = document.getElementById('year-filter');
       const flightFilter = document.getElementById('flight-filter');
-      const selectedText = flightFilter.options[flightFilter.selectedIndex].text;
-      console.log(selectedText);
 
       const agentId = agentSelect && agentSelect.selectedIndex > 0 ? agentSelect.value : null;
       const companyId = companySelect && companySelect.selectedIndex > 0 ? companySelect.value : null;
+      const flightId = flightFilter && flightFilter.value !== "Select Flight Date" && flightFilter.value !== "" ? flightFilter.value : null;
+      const month = monthFilter && monthFilter.value !== "" ? monthFilter.value : null;
+      const year = yearFilter && yearFilter.value !== "" ? yearFilter.value : null;
 
       let url = '';
-      let data = '';
-
-      console.log(yearFilter.value);
-      console.log(monthFilter.value);
-      console.log(flightFilter.value);
-
-      // console.log(agentSelect);
-      // console.log(companySelect);
+      let params = new URLSearchParams();
 
       if (agentId && !companyId) {
-        data += `agentId=${agentId}`;
+        params.append('agentId', agentId);
+        if (month && year) {
+          url = '../Agent Section/functions/fetchSoaAgent.php';
+          params.append('month', month);
+          params.append('year', year);
+        } else if (flightId) {
+          url = '../Agent Section/functions/fetchSoAByFlightDateAgent.php';
+          params.append('flightId', flightId);
+        } else {
+          alert("Please select a flight or month/year for the agent.");
+          return;
+        }
       } else if (companyId && !agentId) {
-        data += `companyId=${companyId}`;
+        params.append('companyId', companyId);
+        if (month && year) {
+          url = '../Agent Section/functions/fetchSoA.php';
+          params.append('month', month);
+          params.append('year', year);
+        } else if (flightId) {
+          url = '../Agent Section/functions/fetchSoAByFlightDate.php';
+          params.append('flightId', flightId);
+        } else {
+          alert("Please select a flight or month/year for the company.");
+          return;
+        }
       } else {
-        document.getElementById('result-container').innerHTML = '<p>Please select either an agent or a client, not both.</p>';
+        alert("Please select either an Agent or a Company (not both).");
         return;
       }
 
-      // Determine whether to use the date filter or the flight filter
-      if (monthFilter.value !== "Select month" && yearFilter.value !== "Select year" && agentId !== null) {
-        // Use Month & Year (Orig Preview SoA)
-        url = '../Agent Section/functions/fetchSoaAgent.php';
-        data += `&month=${monthFilter.value}&year=${yearFilter.value}`;
-      }
-      else if (flightFilter.value !== "Select Flight Date" && agentId !== null) {
-        // Use Flight ID (Flight Date Preview SoA)
-        url = '../Agent Section/functions/fetchSoAByFlightDateAgent.php';
-        data += `&flightId=${flightFilter.value}`;
-      }
-      else if (monthFilter.value !== "Select month" && yearFilter.value !== "Select year" && companyId !== null) {
-        // Use Flight ID (Flight Date Preview SoA)
-        url = '../Agent Section/functions/fetchSoA.php';
-        data += `&month=${monthFilter.value}&year=${yearFilter.value}`;
-      }
-      else if (flightFilter.value !== "Select Flight Date" && companyId !== null) {
-        // Use Flight ID (Flight Date Preview SoA)
-        url = '../Agent Section/functions/fetchSoAByFlightDate.php';
-        data += `&flightId=${flightFilter.value}`;
-      }
-      else {
-        // Handle case where no filter is selected
-        document.getElementById('result-container').innerHTML = '<p>Please select valid filters.</p>';
-        return;
-      }
+      const generateBtn = document.getElementById('generate-soa-btn');
+      generateBtn.disabled = true;
 
-      // Disable the button while the request is in progress
-      document.getElementById('generate-soa-btn').disabled = true;
+      const soaWrapper = document.getElementById('soaWrapper');
+      document.getElementById('soaFlightsBody').innerHTML = '<tr><td colspan="7">Loading Flights...</td></tr>';
+      document.getElementById('soaRequestsBody').innerHTML = '<tr><td colspan="7">Loading Requests...</td></tr>';
+      document.getElementById('soaPaymentsBody').innerHTML = '<tr><td colspan="7">Loading Payments...</td></tr>';
+      soaWrapper.style.display = 'block';
 
-      // Show a loading indicator
-      const resultContainer = document.getElementById('result-container');
-      resultContainer.innerHTML = '<p>Loading...</p>';
+      $.ajax({
+        url: url,
+        method: 'POST',
+        data: Object.fromEntries(params),
+        dataType: 'json', // ✅ This tells jQuery to parse JSON response
+        success: function(data) {
+          generateBtn.disabled = false;
 
-      // Send data to PHP using AJAX
-      const xhr = new XMLHttpRequest();
-      xhr.open('POST', url, true);
-      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+          console.log("Response data:", data); // Debugging line
 
-      xhr.onload = function () {
-        // Re-enable the button after the request is complete
-        document.getElementById('generate-soa-btn').disabled = false;
+          if (data.dataAvailable) {
+            // Flights Section
+            $('#soaFlightsBody').html(data.flights.rows);
+            $('#soaFlights .subtotal-php').text('₱ ' + data.flights.subtotalPHP || '0.00');
+            $('#soaFlights .subtotal-usd').text(data.flights.subtotalUSD || '0.00');
 
-        if (xhr.status === 200) {
-          // Parse the JSON response
-          const response = JSON.parse(xhr.responseText);
+            // Requests Section
+            $('#soaRequestsBody').html(data.requests.rows);
+            $('#soaRequests .subtotal-php').text('₱ ' + data.requests.subtotalPHP || '0.00');
+            $('#soaRequests .subtotal-usd').text(data.requests.subtotalUSD || '0.00');
 
-          if (response.dataAvailable) {
-            // Update the result container with the HTML from the response
-            console.log(response);
-            resultContainer.style.display = "block";
-            resultContainer.innerHTML = response.htmlContent;
-            // Enable the download button if data is available
-            // Attach export listener AFTER the content is injected
+            // Payments Section
+            $('#soaPaymentsBody').html(data.payments.rows);
+            $('#soaPayments .subtotal-php').text('₱ ' + data.payments.subtotalPHP || '0.00');
+            $('#soaPayments .subtotal-usd').text(data.payments.subtotalUSD || '0.00');
+
+            // Balance Section
+            $('#balancePHP').text('₱ ' + data.balance.php || '0.00');
+            $('#balanceUSD').text('$ ' + data.balance.usd || '0.00');
+
+            // Enable download button
             const downloadBtn = document.getElementById('download-btn');
             if (downloadBtn) {
               downloadBtn.disabled = false;
-              downloadBtn.onclick = function () {
-                exportSOAToExcel(response.soaNumber); // Assuming you have this ID or pass it here
-              };
+              // downloadBtn.onclick = () => exportSOAToExcel(data.soaNumber); // if provided
             }
+
+            // console.log("Data fetched successfully:", data);
           } else {
-            // If no data available, update the result container and disable the button
-            resultContainer.innerHTML = '<p>No data found for the selected filters.</p>';
-            resultContainer.style.display = "block";
-            document.getElementById('download-btn').disabled = true;
+            displayNoData(); // Handle no data state
           }
-        } else {
-          // Handle errors in the request
-          resultContainer.style.display = "block";
-          resultContainer.innerHTML = '<p>Error loading data. Please try again later.</p>';
-          document.getElementById('download-btn').disabled = true;
+        },
+        error: function(xhr, status, error) {
+          generateBtn.disabled = false;
+          displayError("Error: " + error);
+          console.error("AJAX error:", status, error);
         }
-      };
-
-      xhr.onerror = function () {
-        // Handle network errors
-        resultContainer.innerHTML = '<p>Network error. Please check your connection and try again.</p>';
-        document.getElementById('generate-soa-btn').disabled = false;
-        document.getElementById('download-btn').disabled = true;
-      };
-
-      console.log(data);
-
-      // Send the data to the server
-      xhr.send(data);
-    });
-  </script>
-
-  <!-- Generate SOA (excel)-->
-  <script>
-    document.getElementById('download-btn').addEventListener('click', function () {
-      const agentId = document.getElementById('agent-filter').value;
-      const companyId = document.getElementById('company-filter').value;
-      const flightDate = document.getElementById('flight-filter').value;
-      const month = document.getElementById('month-filter').value;
-      const year = document.getElementById('year-filter').value;
-
-      const isAgentSelected = agentId && agentId !== "Select Agent";
-      const isCompanySelected = companyId && companyId !== "Select Travel Agency";
-      const isFlightSelected = flightDate && flightDate !== "Select Flight Date";
-      const isMonthYearSelected = month && month !== "Select month" && year && year !== "Select year";
-
-      // Validate Agent/Company
-      if ((isAgentSelected && isCompanySelected) || (!isAgentSelected && !isCompanySelected)) {
-        alert("Please select either an Agent OR a Travel Agency.");
-        return;
-      }
-
-      // Validate Flight OR Month+Year
-      if ((isFlightSelected && isMonthYearSelected) || (!isFlightSelected && !isMonthYearSelected)) {
-        alert("Please select either a Flight Date OR a Month and Year.");
-        return;
-      }
-
-      const currentDate = new Date();
-      const currentDateFormatted = `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}-${currentDate.getDate().toString().padStart(2, '0')}`;
-
-      let accountType = isAgentSelected ? "agent" : "company";
-      let accountId = isAgentSelected ? agentId : companyId;
-
-      // Step 1: Request SOA number
-      const xhrAddSoA = new XMLHttpRequest();
-      xhrAddSoA.open('POST', '../Agent Section/functions/agent-addSoA.php', true);
-      xhrAddSoA.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-      xhrAddSoA.responseType = 'json';
-
-      xhrAddSoA.onload = function () {
-        if (xhrAddSoA.status === 200 && xhrAddSoA.response && xhrAddSoA.response.soanum) {
-          const soaNumber = xhrAddSoA.response.soanum;
-
-          // Step 2: Generate Excel from your SOA table
-          exportSOAToExcel(soaNumber);
-
-        } else {
-          alert("Failed to generate SOA number.");
-        }
-      };
-
-      xhrAddSoA.onerror = function () {
-        alert("An error occurred while inserting SOA data.");
-      };
-
-      xhrAddSoA.send(
-        `accountType=${accountType}&accountId=${accountId}&flightDate=${flightDate}&month=${month}&year=${year}&currentDate=${currentDateFormatted}`
-      );
-    });
-
-    function exportSOAToExcel(soaNumber) {
-      const table = document.getElementById("soaTable");
-      const tbodyRows = table?.querySelectorAll("tbody tr");
-
-      if (!table || !tbodyRows || tbodyRows.length === 0) {
-        alert("No SOA data available to export.");
-        return;
-      }
-
-      let data = [];
-
-      // Extract headers
-      const thead = table.querySelector("thead");
-      if (thead) {
-        const headers = Array.from(thead.rows[0].cells).map(cell => cell.innerText.trim());
-        data.push(headers);
-      }
-
-      // Extract rows
-      tbodyRows.forEach(row => {
-        const rowData = Array.from(row.cells).map(cell => {
-          const selects = cell.querySelectorAll("select");
-          if (selects.length > 0) {
-            return Array.from(selects).map(s => s.options[s.selectedIndex]?.text || "").join(", ");
-          } else {
-            return cell.innerText.trim();
-          }
-        });
-        data.push(rowData);
       });
 
-      // Generate and download Excel
-      const ws = XLSX.utils.aoa_to_sheet(data);
-      const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, "SOA");
-      XLSX.writeFile(wb, `SOA-${soaNumber}.xlsx`);
-    }
 
+      function displayNoData() {
+        document.getElementById('soaFlightsBody').innerHTML =
+          '<tr><td colspan="7">No data found for the selected filters.</td></tr>';
+        document.getElementById('soaRequestsBody').innerHTML = '';
+        document.getElementById('soaPaymentsBody').innerHTML = '';
+        document.getElementById('balancePHP').innerText = '₱ 0.00';
+        document.getElementById('balanceUSD').innerText = '0.00';
+        document.getElementById('download-btn').disabled = true;
+      }
+
+      function displayError(message) {
+        document.getElementById('soaFlightsBody').innerHTML =
+          `<tr><td colspan="7">${message}</td></tr>`;
+        document.getElementById('soaRequestsBody').innerHTML = '';
+        document.getElementById('soaPaymentsBody').innerHTML = '';
+        document.getElementById('balancePHP').innerText = '₱ 0.00';
+        document.getElementById('balanceUSD').innerText = '0.00';
+        document.getElementById('download-btn').disabled = true;
+      }
+    });
   </script>
 
+  <!-- Generate SOA (Excel) -->
+<script>
+  document.getElementById('download-btn').addEventListener('click', function () {
+    console.log("Download button clicked");
+    const agentId = document.getElementById('agent-filter').value;
+    const companyId = document.getElementById('company-filter').value;
+    const flightDate = document.getElementById('flight-filter').value;
+    const month = document.getElementById('month-filter').value;
+    const year = document.getElementById('year-filter').value;
 
+    const isAgentSelected = agentId && agentId !== "Select Agent";
+    const isCompanySelected = companyId && companyId !== "Select Travel Agency";
+    const isFlightSelected = flightDate && flightDate !== "Select Flight Date";
+    const isMonthYearSelected = month && month !== "Select month" && year && year !== "Select year";
+
+    // Validate Agent/Company
+    if ((isAgentSelected && isCompanySelected) || (!isAgentSelected && !isCompanySelected)) {
+      alert("Please select either an Agent OR a Travel Agency.");
+      return;
+    }
+
+    // Validate Flight OR Month+Year
+    if ((isFlightSelected && isMonthYearSelected) || (!isFlightSelected && !isMonthYearSelected)) {
+      alert("Please select either a Flight Date OR a Month and Year.");
+      return;
+    }
+
+    const currentDate = new Date();
+    const currentDateFormatted = `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}-${currentDate.getDate().toString().padStart(2, '0')}`;
+
+    const accountType = isAgentSelected ? "agent" : "company";
+    const accountId = isAgentSelected ? agentId : companyId;
+
+    // Step 1: Request SOA number
+    const xhrAddSoA = new XMLHttpRequest();
+    xhrAddSoA.open('POST', '../Agent Section/functions/agent-addSoA.php', true);
+    xhrAddSoA.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhrAddSoA.responseType = 'json';
+
+    xhrAddSoA.onload = function () {
+      if (xhrAddSoA.status === 200 && xhrAddSoA.response && xhrAddSoA.response.soanum) {
+        const soaNumber = xhrAddSoA.response.soanum;
+        // Step 2: Generate Excel with the SOA number
+        exportSOAToExcel(soaNumber);
+      } else {
+        alert("Failed to generate SOA number.");
+      }
+    };
+
+    xhrAddSoA.onerror = function () {
+      alert("An error occurred while inserting SOA data.");
+    };
+
+    xhrAddSoA.send(
+      `accountType=${accountType}&accountId=${accountId}&flightDate=${flightDate}&month=${month}&year=${year}&currentDate=${currentDateFormatted}`
+    );
+  });
+
+  function generateSOAExport() {
+    // Get the value of the selected agent or travel agency
+    
+
+    // Call the export function with the necessary parameters
+    exportSOAToExcel(soaNumber, billTo, soaGeneratedBy, formattedDate);
+
+    console.log("Bill To: ", billTo);
+    console.log("Generated By: ", soaGeneratedBy);
+    console.log("Date Generated: ", formattedDate);
+    console.log("SOA Number:", soaNumber);
+  }
+
+  function exportSOAToExcel(soaNumber) {
+    const table = document.getElementById("soaTable");
+    if (!table) {
+      alert("No SOA data available to export.");
+      return;
+    }
+
+    const agentSelect = document.getElementById('agent-filter');
+    const companySelect = document.getElementById('company-filter');
+
+    let billTo = '';
+    if (agentSelect && agentSelect.selectedIndex > 0) {
+      billTo = agentSelect.options[agentSelect.selectedIndex].text;
+    } else if (companySelect && companySelect.selectedIndex > 0) {
+      billTo = companySelect.options[companySelect.selectedIndex].text;
+    }
+
+    const soaGeneratedBy = <?php echo json_encode($companyName."/ ". $fName ?? ''); ?>;
+
+    const today = new Date();
+    const formattedDate = (today.getMonth() + 1).toString().padStart(2, '0') + '/' +
+                          today.getDate().toString().padStart(2, '0') + '/' +
+                          today.getFullYear();
+
+    const title = [`STATEMENT OF ACCOUNT`];
+    const billToLine = [`BILL TO: ${billTo || 'N/A'}`];
+    const fromAndDateLine = [`FROM: ${soaGeneratedBy || 'N/A'}     Date: ${formattedDate}`];
+
+    const ws_data = [];
+
+    // Title
+    // const title = [`Statement of Account - ${soaNumber}`];
+    // Title and header info
+    ws_data.push(title);
+    ws_data.push([]); // Empty row
+    ws_data.push(billToLine);
+    ws_data.push(fromAndDateLine);
+    ws_data.push([]); // Another empty row before table header
+
+    // Header
+    const header = ["No.", "Contents", "$ Price", "₱ Price", "PAX", "$ Total", "₱ Total"];
+    ws_data.push(header);
+
+    const rows = table.querySelectorAll("tbody tr, tfoot tr");
+    rows.forEach(row => {
+      const isSubtotal = row.classList.contains("table-subtotal");
+      const isBalance = row.id === "soaBalance";
+
+      if (isSubtotal || isBalance) {
+        const label = isBalance ? "BALANCE:" : "Subtotal:";
+        let usd = row.querySelector(".subtotal-usd")?.textContent.trim() || row.querySelector("#balanceUSD")?.textContent.trim();
+        let php = row.querySelector(".subtotal-php")?.textContent.trim() || row.querySelector("#balancePHP")?.textContent.trim();
+        const amount = php || usd || "";
+
+        const mergedRow = [label, "", "", "", "", "", amount];
+        ws_data.push(mergedRow);
+      } else {
+        const cells = Array.from(row.querySelectorAll("td")).map(cell => cell.textContent.trim());
+        if (cells.length === 1 && row.cells[0].colSpan === 7) return;
+        if (cells.length > 0) ws_data.push(cells);
+      }
+    });
+
+    // Prepare merges early
+    const merges = [];
+
+    // Merge title row A1:G1
+    merges.push({ s: { r: 0, c: 0 }, e: { r: 0, c: 6 } });
+
+    // Add account info section
+    const accountInfoStartRow = ws_data.length;
+    const accountInfo = [
+      "ACCOUNT INFORMATION",
+      "Bank Name : B D O (Zuellig Branch MAKATI AVENUE)",
+      "Name of Account : KIM HYUNG SUB (Nick name  Jedkim )",
+      "Peso Account No. 007800151678",
+      "US Dollar Account No : 107800113512"
+    ];
+
+    accountInfo.forEach((line, i) => {
+      const rowIdx = accountInfoStartRow + i;
+      ws_data.push([line]);
+      merges.push({ s: { r: rowIdx, c: 0 }, e: { r: rowIdx, c: 6 } });
+    });
+
+    // Create worksheet
+    const ws = XLSX.utils.aoa_to_sheet(ws_data);
+
+    // Styling subtotal and balance rows
+    ws_data.forEach((row, rIdx) => {
+      const isSubtotal = row[0] === "Subtotal:";
+      const isBalance = row[0] === "BALANCE:";
+
+      if (isSubtotal) {
+        // Merge PAX (E) to Total USD (F)
+        merges.push({ s: { r: rIdx, c: 4 }, e: { r: rIdx, c: 5 } });
+
+        // Write label
+        const labelCell = XLSX.utils.encode_cell({ r: rIdx, c: 4 });
+        ws[labelCell] = {
+          t: "s",
+          v: "Subtotal:",
+          s: {
+            alignment: { horizontal: "right" },
+            font: { bold: true },
+            border: borderStyle()
+          }
+        };
+
+        // Amount cell
+        const amountCell = XLSX.utils.encode_cell({ r: rIdx, c: 6 });
+        if (ws[amountCell]) {
+          ws[amountCell].s = {
+            alignment: { horizontal: "right" },
+            font: { bold: true },
+            border: borderStyle()
+          };
+        }
+
+        // Clear duplicate in col A if needed
+        const colA = XLSX.utils.encode_cell({ r: rIdx, c: 0 });
+        if (ws[colA]?.v === "Subtotal:") delete ws[colA];
+      }
+
+      if (isBalance) {
+        // Merge A to E
+        merges.push({ s: { r: rIdx, c: 0 }, e: { r: rIdx, c: 4 } });
+
+        const labelCell = XLSX.utils.encode_cell({ r: rIdx, c: 0 });
+        ws[labelCell] = {
+          t: "s",
+          v: "BALANCE:",
+          s: {
+            alignment: { horizontal: "right" },
+            font: { bold: true },
+            border: borderStyle()
+          }
+        };
+
+        const amountCell = XLSX.utils.encode_cell({ r: rIdx, c: 6 });
+        if (ws[amountCell]) {
+          ws[amountCell].s = {
+            alignment: { horizontal: "right" },
+            font: { bold: true },
+            border: borderStyle()
+          };
+        }
+      }
+    });
+
+    // Style account info section
+    accountInfo.forEach((line, i) => {
+      const rowIdx = accountInfoStartRow + i;
+      const cellRef = XLSX.utils.encode_cell({ r: rowIdx, c: 0 });
+
+      if (!ws[cellRef]) ws[cellRef] = { t: "s", v: line };
+
+      ws[cellRef].s = {
+        font: { bold: i === 0 },
+        alignment: { horizontal: "left" }
+      };
+    });
+
+    // Apply border to all non-empty cells
+    Object.keys(ws).forEach(cell => {
+      if (cell[0] === '!') return;
+      if (!ws[cell].s) ws[cell].s = {};
+      if (!ws[cell].s.border) {
+        ws[cell].s.border = borderStyle();
+      }
+    });
+
+    // Merge and column width
+    ws["!merges"] = merges;
+    ws["!cols"] = [
+      { wch: 5 }, { wch: 30 }, { wch: 15 }, { wch: 15 },
+      { wch: 5 }, { wch: 20 }, { wch: 20 }
+    ];
+
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "SOA");
+
+    XLSX.writeFile(wb, `Statement_of_Account_${soaNumber || 'Export'}.xlsx`, { cellStyles: true });
+
+    function borderStyle() {
+      return {
+        top: { style: "thin", color: { rgb: "000000" } },
+        bottom: { style: "thin", color: { rgb: "000000" } },
+        left: { style: "thin", color: { rgb: "000000" } },
+        right: { style: "thin", color: { rgb: "000000" } }
+      };
+    }
+  }
+</script>
 
   <!-- Generate SOA (pdf) -->
   <!-- <script>
