@@ -262,11 +262,11 @@ error_reporting(E_ALL);
                         </div>
                       </div>
 
-                      <div class="columns col-md-4">
-                        <div class="form-group">
-                          <label for="passportIssued">Date Issued: <span class="text-danger fw-bold">*</span></label>
-                          <input type="date" name="passportIssued[]" class="form-control" required>
-                          <span id="passportIssuedError" class="text-danger"></span> <!-- Error message for Passport No -->
+                      <div class="col-md-4">
+                        <div class="form-group mb-3">
+                          <label class="mb-2" for="passportIssuedDate">Issued Date: <span class="text-danger fw-bold">*</span> <span id="issuedPassportDate" class="text-danger"></span></label>
+                          <input type="date" name="passportIssuedDate[]" class="form-control" required>
+                          <span id="passportIssuedDateError" class="text-danger"></span> <!-- Error message for Passport Exp -->
                         </div>
                       </div>
 
@@ -833,6 +833,7 @@ error_reporting(E_ALL);
     {
       let isValid = true; // Initialize isValid flag
       let allExpPassportValid = true; // Initialize flag for expPassportSpan validation
+      let allIssuedPassportValid = true; // Initialize flag for issuedPassportSpan validation
 
       // Validate Primary Guest fields
       $('.guest-form').each(function (index) 
@@ -848,6 +849,7 @@ error_reporting(E_ALL);
           { name: 'sex', error: 'Sex is required.', isSelect: true },
           { name: 'nationality', error: 'Nationality is required.' },
           { name: 'passportNo', error: 'Passport number is required.' },
+          { name: 'passportIssuedDate', error: 'Passport Issued Date is required.' },
           { name: 'passportExp', error: 'Passport expiration date is required.' },
           { name: 'countryCode', error: 'Country Code is required.', isSelect: true },
           { name: 'contactNo', error: 'Contact number is required.' },
@@ -885,8 +887,14 @@ error_reporting(E_ALL);
         // Check expPassportSpan for this form
         const expPassportSpan = $(this).find('span[id^="expPassport"]');
         if (expPassportSpan.text().trim() !== '')
-          {
+        {
           allExpPassportValid = false; // Mark as invalid if any expPassportSpan is not empty
+        }
+
+        const issuedPassportSpan = $(this).find('span[id^="issuedPassportDate"]');
+        if (issuedPassportSpan.text().trim() !== '')
+        {
+          allIssuedPassportValid = false; // Mark as invalid if any expPassportSpan is not empty
         }
       });
 

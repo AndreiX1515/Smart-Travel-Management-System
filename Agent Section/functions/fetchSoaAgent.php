@@ -290,7 +290,7 @@ if (isset($_POST['month']) && isset($_POST['year']))
 
   // Build HTML response
   $response = "
-      <table class='product-table'>
+      <table id='soaTable' class='product-table'>
         <thead>
           <tr>
             <th>No.</th>

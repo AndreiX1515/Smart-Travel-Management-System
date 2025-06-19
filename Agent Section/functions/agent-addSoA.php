@@ -2,19 +2,19 @@
 require "../../conn.php";
 session_start();
 
-// Validate and sanitize inputs
-$monthInput = isset($_POST['month']) ? $_POST['month'] : null;
-$year = isset($_POST['year']) ? $_POST['year'] : null;
-$flightId = isset($_POST['flightId']) ? intval($_POST['flightId']) : null;
-$currentDate = isset($_POST['currentDate']) ? $_POST['currentDate'] : null;
+	// Validate and sanitize inputs
+	$flightDate = (isset($_POST['flight-filter']) && $_POST['flight-filter'] !== "Select Flight Date" && $_POST['flight-filter'] !== "") 
+			? $_POST['flight-filter'] : null;
 
-// echo $
+	$monthInput = (isset($_POST['month-filter']) && $_POST['month-filter'] !== "")
+    ? $_POST['month-filter']
+    : null;
 
-// // Basic validation
-// if (!$monthInput || !$year || !$flightId) {
-//     echo json_encode(['error' => 'Missing required data.']);
-//     exit;
-// }
+	$year = (isset($_POST['year-filter']) && $_POST['year-filter'] !== "")
+    ? $_POST['year-filter']
+    : date('Y'); // fallback to current year
+	$currentDate = isset($_POST['currentDate']) ? $_POST['currentDate'] : null;
+
 
 $month = date('m', strtotime($monthInput));
 $dateGenerated = date('Y-m-d H:i:s');
@@ -34,7 +34,7 @@ if (!$result5) {
 $row = $result5->fetch_assoc();
 $newSoANo = ($row && $row['lastSoAId'] !== null) ? $row['lastSoAId'] + 1 : 1;
 $formattedCounter = str_pad($newSoANo, 5, '0', STR_PAD_LEFT);
-$soaNo = 'SMT-' . $year . '-' . $formattedCounter;
+$soaNo = 'SMT-' . $formattedCounter;
 
 // Insert SOA with flightId
 $sql6 = "INSERT INTO soa (soaNo, branchId, month, flightId, dateGenerated, status)
@@ -48,7 +48,7 @@ if (!$stmt6) {
 }
 
 $status = 'Partially Paid';
-$stmt6->bind_param('siisss', $soaNo, $accountId, $month, $flightId, $dateGenerated, $status);
+$stmt6->bind_param('siisss', $soaNo, $accountId, $month, $flightDate, $dateGenerated, $status);
 
 if ($stmt6->execute()) {
     $conn->commit();

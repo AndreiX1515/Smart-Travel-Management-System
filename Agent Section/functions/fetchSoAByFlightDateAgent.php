@@ -287,91 +287,41 @@ if (isset($_POST['flightId']))
   }
 
   // Build HTML response
-  $response = "
-      <table class='product-table'>
-        <thead>
-          <tr>
-            <th>No.</th>
-            <th>Contents</th>
-            <th>Price (USD)</th>
-            <th>Price (PHP)</th>
-            <th>PAX</th>
-            <th>Total (USD)</th>
-            <th>Total (PHP)</th>
-          </tr>
-        </thead>
-        <tbody>
-          $table1
-        </tbody>
-      </table>
-      <div class='subtotal-container'>
-        <div class='balance'>
-          <span>SUBTOTAL: </span>
-        </div>
-        <div class='subtotal-item-usd'>
-          <span>USD:</span>
-          <span class='subtotal-usd'></span>
-        </div>
-        <div class='subtotal-item-php'>
-          <span>PHP:</span>
-          <span class='subtotal-php'>₱ " . $formattedTotalPriceSum . "</span>
-        </div>
-      </div>
-      <table class='product-table'>
-        <tbody>
-          $table2
-        </tbody>
-      </table>
-      <div class='subtotal-container'>
-        <div class='balance'>
-          <span>SUBTOTAL: </span>
-        </div>
-        <div class='subtotal-item-usd'>
-          <span>USD:</span>
-          <span class='subtotal-usd'></span>
-        </div>
-        <div class='subtotal-item-php'>
-          <span>PHP:</span>
-          <span class='subtotal-php'>₱ " . $formattedTotalRequestCostSum . "</span>
-        </div>
-      </div>
-      <table class='product-table'>
-        <tbody>
-          $table3
-        </tbody>
-      </table>
-      <div class='subtotal-container'>
-        <div class='balance'>
-          <span>SUBTOTAL: </span>
-        </div>
-        <div class='subtotal-item-usd'>
-          <span>USD:</span>
-          <span class='subtotal-usd'></span>
-        </div>
-        <div class='subtotal-item-php'>
-          <span>PHP:</span>
-          <span class='subtotal-php'>₱ " . $formattedTotalAmount . "</span>
-        </div>
-      </div>
-      <div class='balance-container'>
-        <div class='balance'>
-          <span>BALANCE:</span>
-        </div>
-        <div class='balanceUSD'>
-          <span>USD:</span>
-          <span class='subtotal-usd'></span>
-        </div>
-        <div class='balancePHP'>
-          <span>PHP:</span>
-          <span class='subtotal-php'>₱ " . $formattedBalance . "</span>
-        </div>
-      </div>
-      ";
+  // Example variables for formatted subtotals — make sure these are calculated correctly before this point
+  // $table1, $table2, $table3 = rows
+  // $formattedTotalPriceSum, $formattedTotalRequestCostSum, $formattedTotalAmount, $formattedBalance = subtotal values
 
-  // Send JSON response
-  echo json_encode([
+  $response = [
     'dataAvailable' => $dataAvailable,
-      'htmlContent' => $response
-  ]);
+
+    // Only send the rows and subtotals
+    'flights' => [
+      'rows' => $table1,
+      'subtotalPHP' => $formattedTotalPriceSum,
+      'subtotalUSD' => '' // Add USD if available
+    ],
+
+    'requests' => [
+      'rows' => $table2,
+      'subtotalPHP' => $formattedTotalRequestCostSum,
+      'subtotalUSD' => ''
+    ],
+
+    'payments' => [
+      'rows' => $table3,
+      'subtotalPHP' => $formattedTotalAmount,
+      'subtotalUSD' => ''
+    ],
+
+    'balance' => [
+      'php' => $formattedBalance,
+      'usd' => '' // Add USD if you want
+    ]
+  ];
+
+  // echo $response;
+
+  echo json_encode($response);
+
 }
 ?>

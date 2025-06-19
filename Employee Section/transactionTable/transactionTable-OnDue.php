@@ -8,6 +8,15 @@
 
     <!-- Filter group -->
     <div class="second-header-wrapper">
+      <div>
+        <form method="GET">
+          <input type="checkbox" id="showAll" name="showAll" value="1"
+            <?= isset($_GET['showAll']) ? 'checked' : '' ?>
+            onchange="this.form.submit()">
+          <label for="showAll">Show All Transactions</label>
+        </form>
+      </div>
+
       <div class="date-range-wrapper flightbooking-wrapper">
         <div class="date-range-inputs-wrapper">
           <div class="input-with-icon">

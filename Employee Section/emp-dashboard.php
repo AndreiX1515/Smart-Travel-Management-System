@@ -1008,8 +1008,7 @@ error_reporting(E_ALL);
                         <th>TOTAL PAX.</th>
                         <th>BOOKING TYPE</th>
                         <th>PACKAGE PRICE</th>
-                        <th>AMOUNT INFO</th>
-                        <th>STATUS</th>
+                        <th>AMOUNT INFO</th> 
                         <th>COMMENT</th>
                       </tr>
                     </thead>
@@ -1022,10 +1021,12 @@ error_reporting(E_ALL);
                     $requestTotal = $row['TotalRequestAmount'] ?? 0;
                     $amountPaid = $row['TotalAmountPaid'] ?? 0;
                     $balance = ($packagePrice + $requestTotal) - $amountPaid;
+                    $totalAmount = $packagePrice + $requestTotal;
                     $status = $row['status'];
                     $formattedPP = '₱ ' . number_format($packagePrice, 2);
                     $formattedAP = '₱' . number_format($amountPaid, 2);
                     $formattedBal = '₱' . number_format($balance, 2);
+                    $formattedTA = '₱' . number_format($totalAmount, 2);
                     $formattedFlightDate = date('Y.m.d', strtotime($row['Start']));
 
                     // Define the pill status class based on the status value
@@ -1056,11 +1057,11 @@ error_reporting(E_ALL);
                             <td>{$formattedPP}</td>
                             <td>
                               <div class='payment-info'>
+                                <div class='payment-row'><span class='label'>Total Amount:</span><span class='value'>{$formattedTA}</span></div>
                                 <div class='payment-row'><span class='label'>Amount Paid:</span><span class='value'>{$formattedAP}</span></div>
                                 <div class='payment-row'><span class='label'>Balance:</span><span class='value'>{$formattedBal}</span></div>
                               </div>
-                            </td>
-                            <td><span class='badge $pillClass p-2'>{$status}</span></td>";
+                            </td>";
 
                     // Fetch comment
                     $transactNo = $row['transactNo'];

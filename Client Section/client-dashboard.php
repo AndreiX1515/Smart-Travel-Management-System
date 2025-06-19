@@ -695,6 +695,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
 
             <div class="tab-pane-content">
 
+              <!-- Booking, Payment, Request  -->
               <div class="header-wrapper">
 
                 <!-- Pending Transactions table -->
@@ -1017,9 +1018,9 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                         <th>TOTAL PAX.</th>
                         <th>CONTACT NAME</th>
                         <th>BOOKING TYPE</th>
+                        <th>TOTAL AMOUNT</th>
                         <th>AMOUNT PAID</th>
                         <th>BALANCE</th>
-                        <th>STATUS</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -1105,13 +1106,9 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                             echo "<td>" . htmlspecialchars($row['pax']) . "</td>"; // Pax (Number of Passengers)
                             echo "<td>" . htmlspecialchars($row['contactName']) . "</td>"; // Contact Name
                             echo "<td>" . $row['bookingType'] . "</td>"; // Booking Type 
+                            echo "<td>₱ " . number_format($totalAmountToBePaid, 2) . "</td>"; // Total Amount (Package Price + Request Cost)
                             echo "<td>₱ " . number_format($totalAmountPaid, 2) . "</td>"; // Total Amount Paid
                             echo "<td>₱ " . number_format($balance, 2) . "</td>"; // Balance (Amount to be paid - Amount paid)
-                            echo "<td>
-                                      <span class='badge <?php echo $statusClass; ?> p-2'>
-                                          {$bookingStatus}
-                                      </span>
-                                  </td>";
                             echo "</tr>";
                           }
                         } else {

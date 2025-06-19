@@ -1551,9 +1551,9 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                         <th>TOTAL PAX.</th>
                         <th>CONTACT NAME</th>
                         <th>BOOKING TYPE</th>
+                        <th>TOTAL AMOUNT</th>
                         <th>AMOUNT PAID</th>
                         <th>BALANCE</th>
-                        <th>STATUS</th>
                       </tr>
                     </thead>
 
@@ -1640,14 +1640,10 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                               echo "<td>" . htmlspecialchars($row['FlightDate']) . "</td>"; // Flight Date Range
                               echo "<td>" . htmlspecialchars($row['pax']) . "</td>"; // Pax (Number of Passengers)
                               echo "<td>" . htmlspecialchars($row['contactName']) . "</td>"; // Contact Name
-                              echo "<td>" . $row['bookingType'] . "</td>"; // Booking Type 
+                              echo "<td>" . $row['bookingType'] . "</td>"; // Booking Type
+                              echo "<td>₱ " . number_format($totalAmountToBePaid, 2) . "</td>"; // Total Amount (Package Price + Request Cost)
                               echo "<td>₱ " . number_format($totalAmountPaid, 2) . "</td>"; // Total Amount Paid
                               echo "<td>₱ " . number_format($balance, 2) . "</td>"; // Balance (Amount to be paid - Amount paid)
-                              echo "<td>
-                                        <span class='badge <?php echo $statusClass; ?> p-2'>
-                                            {$bookingStatus}
-                                        </span>
-                                      </td>";
                               echo "</tr>";
                             }
                           } else {
@@ -1657,41 +1653,41 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                         } else {
                           // Query to select all records from the booking table
                           $query = "SELECT b.transactNo, b.flightId, b.pax, b.totalPrice AS packagePrice, 
-                                                      CONCAT(DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y'), ' - ', DATE_FORMAT(f.returnDepartureDate, 
-                                                      '%m-%d-%Y')) AS FlightDate, p.packageName AS packageName, br.branchName as branchName,
-                                                      CONCAT(b.lName, ', ', b.fName, ' ', 
-                                                        CASE WHEN b.mName = 'N/A' THEN '' ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ',
-                                                        CASE WHEN b.suffix = 'N/A' THEN '' ELSE b.suffix END) AS contactName, 
-                                                      IFNULL(req.totalRequestCost, 0) AS totalRequestCost, IFNULL(paid.totalPaidAmount, 0) AS totalPaidAmount,
-                                                      b.status AS bookingStatus, b.bookingType, (b.totalPrice + IFNULL(req.totalRequestCost, 0)) AS TotalCost,
-                                                      CASE 
-                                                        WHEN a.accountId IS NOT NULL 
-                                                          THEN CASE 
-                                                            WHEN a.companyId IS NOT NULL THEN co.companyName 
-                                                            ELSE br.branchName END
-                                                        WHEN cl.accountId IS NOT NULL 
-                                                          THEN CASE 
-                                                            WHEN cl.companyId IS NOT NULL THEN cc.companyName 
-                                                            ELSE br.branchName END
-                                                      ELSE 'Unknown' END AS `Account Name`
-                                                    FROM booking b
-                                                    JOIN flight f ON b.flightId = f.flightId
-                                                    LEFT JOIN package p ON b.packageId = p.packageId
-                                                    JOIN branch br ON b.agentCode = br.branchAgentCode
-                                                    LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
-                                                    LEFT JOIN company co ON a.companyId = co.companyId
-                                                    LEFT JOIN client cl ON b.accountType = 'Client' AND b.accountId = cl.accountId
-                                                    LEFT JOIN company cc ON cl.companyId = cc.companyId
-                                                    LEFT JOIN 
-                                                      (SELECT transactNo, SUM(amount) AS totalPaidAmount FROM payment
-                                                        WHERE paymentStatus = 'Approved' GROUP BY transactNo) paid ON b.transactNo = paid.transactNo
-                                                    LEFT JOIN 
-                                                      (SELECT transactNo, SUM(requestCost) AS totalRequestCost FROM request
-                                                        WHERE requestStatus = 'Confirmed' GROUP BY transactNo) req ON b.transactNo = req.transactNo
-                                                    WHERE 
-                                                      b.status = 'Confirmed' AND b.agentCode = '$agentCode' AND f.flightDepartureDate >= CURDATE()
-                                                      AND (COALESCE(co.companyId, '') = COALESCE('$companyId', '') 
-                                                      OR COALESCE(cc.companyId, '') = COALESCE('$companyId', ''))";
+                                      CONCAT(DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y'), ' - ', DATE_FORMAT(f.returnDepartureDate, 
+                                      '%m-%d-%Y')) AS FlightDate, p.packageName AS packageName, br.branchName as branchName,
+                                      CONCAT(b.lName, ', ', b.fName, ' ', 
+                                        CASE WHEN b.mName = 'N/A' THEN '' ELSE CONCAT(SUBSTRING(b.mName, 1, 1), '.') END, ' ',
+                                        CASE WHEN b.suffix = 'N/A' THEN '' ELSE b.suffix END) AS contactName, 
+                                      IFNULL(req.totalRequestCost, 0) AS totalRequestCost, IFNULL(paid.totalPaidAmount, 0) AS totalPaidAmount,
+                                      b.status AS bookingStatus, b.bookingType, (b.totalPrice + IFNULL(req.totalRequestCost, 0)) AS TotalCost,
+                                      CASE 
+                                        WHEN a.accountId IS NOT NULL 
+                                          THEN CASE 
+                                            WHEN a.companyId IS NOT NULL THEN co.companyName 
+                                            ELSE br.branchName END
+                                        WHEN cl.accountId IS NOT NULL 
+                                          THEN CASE 
+                                            WHEN cl.companyId IS NOT NULL THEN cc.companyName 
+                                            ELSE br.branchName END
+                                      ELSE 'Unknown' END AS `Account Name`
+                                    FROM booking b
+                                    JOIN flight f ON b.flightId = f.flightId
+                                    LEFT JOIN package p ON b.packageId = p.packageId
+                                    JOIN branch br ON b.agentCode = br.branchAgentCode
+                                    LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
+                                    LEFT JOIN company co ON a.companyId = co.companyId
+                                    LEFT JOIN client cl ON b.accountType = 'Client' AND b.accountId = cl.accountId
+                                    LEFT JOIN company cc ON cl.companyId = cc.companyId
+                                    LEFT JOIN 
+                                      (SELECT transactNo, SUM(amount) AS totalPaidAmount FROM payment
+                                        WHERE paymentStatus = 'Approved' GROUP BY transactNo) paid ON b.transactNo = paid.transactNo
+                                    LEFT JOIN 
+                                      (SELECT transactNo, SUM(requestCost) AS totalRequestCost FROM request
+                                        WHERE requestStatus = 'Confirmed' GROUP BY transactNo) req ON b.transactNo = req.transactNo
+                                    WHERE 
+                                      b.status = 'Confirmed' AND b.agentCode = '$agentCode' AND f.flightDepartureDate >= CURDATE()
+                                      AND (COALESCE(co.companyId, '') = COALESCE('$companyId', '') 
+                                      OR COALESCE(cc.companyId, '') = COALESCE('$companyId', ''))";
 
                           $result = $conn->query($query); // Execute the query
                         
@@ -1738,13 +1734,9 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                               echo "<td>" . htmlspecialchars($row['pax']) . "</td>"; // Pax (Number of Passengers)
                               echo "<td>" . htmlspecialchars($row['contactName']) . "</td>"; // Contact Name
                               echo "<td>" . $row['bookingType'] . "</td>"; // Booking Type 
+                              echo "<td>₱ " . number_format($totalAmountToBePaid, 2) . "</td>"; // Total Amount (Package Price + Request Cost)
                               echo "<td>₱ " . number_format($totalAmountPaid, 2) . "</td>"; // Total Amount Paid
                               echo "<td>₱ " . number_format($balance, 2) . "</td>"; // Balance (Amount to be paid - Amount paid)
-                              echo "<td>
-                                      <span class='badge <?php echo $statusClass; ?> p-2'>
-                                          {$bookingStatus}
-                                      </span>
-                                    </td>";
                               echo "</tr>";
                             }
                           } else {
