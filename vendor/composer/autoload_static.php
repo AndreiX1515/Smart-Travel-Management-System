@@ -6,6 +6,14 @@ namespace Composer\Autoload;
 
 class ComposerStaticInit2185d2f99bcd56787481d9357a5972d3
 {
+    public static $files = array (
+        '72142d7b40a3a0b14e91825290b5ad82' => __DIR__ . '/..' . '/cakephp/core/functions.php',
+        '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
+        '948ad5488880985ff1c06721a4e447fe' => __DIR__ . '/..' . '/cakephp/utility/bootstrap.php',
+        '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
+        '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
+    );
+
     public static $prefixLengthsPsr4 = array (
         'Z' => 
         array (
@@ -16,11 +24,16 @@ class ComposerStaticInit2185d2f99bcd56787481d9357a5972d3
             'Svg\\' => 4,
             'Sabberworm\\CSS\\' => 15,
         ),
+        'R' => 
+        array (
+            'Rootscratch\\PSGC\\' => 17,
+        ),
         'P' => 
         array (
             'Psr\\SimpleCache\\' => 16,
             'Psr\\Http\\Message\\' => 17,
             'Psr\\Http\\Client\\' => 16,
+            'Psr\\Container\\' => 14,
             'PhpOffice\\PhpSpreadsheet\\' => 25,
             'PHPMailer\\PHPMailer\\' => 20,
         ),
@@ -28,6 +41,20 @@ class ComposerStaticInit2185d2f99bcd56787481d9357a5972d3
         array (
             'Matrix\\' => 7,
             'Masterminds\\' => 12,
+        ),
+        'L' => 
+        array (
+            'League\\Container\\' => 17,
+        ),
+        'J' => 
+        array (
+            'Jaydoesphp\\PSGCphp\\' => 19,
+        ),
+        'G' => 
+        array (
+            'GuzzleHttp\\Psr7\\' => 16,
+            'GuzzleHttp\\Promise\\' => 19,
+            'GuzzleHttp\\' => 11,
         ),
         'F' => 
         array (
@@ -41,6 +68,8 @@ class ComposerStaticInit2185d2f99bcd56787481d9357a5972d3
         array (
             'Composer\\Pcre\\' => 14,
             'Complex\\' => 8,
+            'Cake\\Utility\\' => 13,
+            'Cake\\Core\\' => 10,
         ),
     );
 
@@ -57,6 +86,10 @@ class ComposerStaticInit2185d2f99bcd56787481d9357a5972d3
         array (
             0 => __DIR__ . '/..' . '/sabberworm/php-css-parser/src',
         ),
+        'Rootscratch\\PSGC\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/rootscratch/psgc/src',
+        ),
         'Psr\\SimpleCache\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/simple-cache/src',
@@ -69,6 +102,10 @@ class ComposerStaticInit2185d2f99bcd56787481d9357a5972d3
         'Psr\\Http\\Client\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/http-client/src',
+        ),
+        'Psr\\Container\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/container/src',
         ),
         'PhpOffice\\PhpSpreadsheet\\' => 
         array (
@@ -86,6 +123,26 @@ class ComposerStaticInit2185d2f99bcd56787481d9357a5972d3
         array (
             0 => __DIR__ . '/..' . '/masterminds/html5/src',
         ),
+        'League\\Container\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/league/container/src',
+        ),
+        'Jaydoesphp\\PSGCphp\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/jaydoesphp/psgc-php/src',
+        ),
+        'GuzzleHttp\\Psr7\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/guzzlehttp/psr7/src',
+        ),
+        'GuzzleHttp\\Promise\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/guzzlehttp/promises/src',
+        ),
+        'GuzzleHttp\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/guzzlehttp/guzzle/src',
+        ),
         'FontLib\\' => 
         array (
             0 => __DIR__ . '/..' . '/dompdf/php-font-lib/src/FontLib',
@@ -101,6 +158,14 @@ class ComposerStaticInit2185d2f99bcd56787481d9357a5972d3
         'Complex\\' => 
         array (
             0 => __DIR__ . '/..' . '/markbaker/complex/classes/src',
+        ),
+        'Cake\\Utility\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/cakephp/utility',
+        ),
+        'Cake\\Core\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/cakephp/core',
         ),
     );
 

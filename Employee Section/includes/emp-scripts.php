@@ -1,7 +1,7 @@
 
 
 
-<script>
+<!-- <script>
     document.addEventListener('DOMContentLoaded', function () {
         // Enable tooltips for all elements with the 'data-bs-toggle="tooltip"' attribute
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
@@ -25,4 +25,4 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
-</script>
+</script> -->

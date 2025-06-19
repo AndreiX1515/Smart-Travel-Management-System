@@ -741,12 +741,16 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
           <div class="content-heading">
             <div class="tabs-sorting-wrapper">
               <div class="second-header-wrapper">
+
+
                 <div class="date-range-wrapper flightbooking-wrapper">
                   <div class="date-range-inputs-wrapper">
+
                     <div class="input-with-icon">
                       <input type="text" class="datepicker" id="FlightStartDate" placeholder="Flight Date" readonly>
                       <i class="fas fa-calendar-alt calendar-icon"></i>
                     </div>
+
                   </div>
                 </div>
 
@@ -773,10 +777,9 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                       </div>
                     </div> -->
 
-
                 <div class="buttons-wrapper">
-                  <button id="clearSorting" class="btn btn-secondary">
-                    Clear Filters
+                  <button id="clearSorting" class="btn btn-outline-secondary">
+                    <i class="fas fa-undo"></i>
                   </button>
                 </div>
 
@@ -983,12 +986,12 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                               $formattedFlightDepartureDate = date('Y.m.d', strtotime($row['FLIGHT DATE']));
 
                               echo "
-                                        <tr data-url='agent-showGuest.php?id=" . htmlspecialchars($row['T.N']) . "'>
-                                            <td>" . htmlspecialchars(substr($row['T.N'], 5)) . "</td>
-                                            <td>" . htmlspecialchars($row['ACCOUNT NAME']) . "</td>
-                                            <td>" . $formattedFlightDepartureDate . "</td>
-                                            <td> <span class='badge " . $badgeClass . " p-2'>" . $status . "</span> </td>
-                                        </tr>";
+                                  <tr class='open-offcanvas' data-id='" . htmlspecialchars($row['T.N']) . "'>
+                                      <td>" . htmlspecialchars(substr($row['T.N'], 5)) . "</td>
+                                      <td>" . htmlspecialchars($row['ACCOUNT NAME']) . "</td>
+                                      <td>" . $formattedFlightDepartureDate . "</td>
+                                      <td> <span class='badge " . $badgeClass . " p-2'>" . $status . "</span> </td>
+                                  </tr>";
                             }
                           } else {
                             echo "<tr><td colspan='12' style='text-align: center; font-size: 10px; font-weight: 500;'>NO TRANSACTION AS OF THE MOMENT</td></tr>";
@@ -1069,6 +1072,99 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                     </table>
                   </div>
                 </div>
+
+                
+               <!-- General Purpose Right Offcanvas -->
+                <div class="offcanvas offcanvas-end custom-offcanvas" tabindex="-1" id="pendingOffCanvass" aria-labelledby="generalOffcanvasLabel">
+                  <div class="offcanvas-header border-bottom text-white">
+                    <h6 class="offcanvas-title fw-semibold" id="generalOffcanvasLabel">Transaction #: <span class="fw-normal" id="transaction-number"></span></h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                  </div>
+
+                  <div class="offcanvas-body">
+                    <div class="transaction-info mb-3">
+                      <!-- <label class="form-label text-secondary">Transaction #</label>
+                      <div class="form-control bg-light" id="transaction-number">N/A</div> -->
+                    </div>
+
+                    <!-- Dynamic content area -->
+                    <div id="generalOffcanvasContent">
+                      <!-- You can inject AJAX-loaded HTML here -->
+                    </div>
+                  </div>
+                </div>
+
+
+                <style>
+                  .custom-offcanvas {
+                    width: 400px; /* adjust based on your layout */
+                    background-color: #343A40;
+                    box-shadow: -4px 0 10px rgba(0, 0, 0, 0.1);
+                  }
+
+                  .custom-offcanvas .offcanvas-header {
+                    background-color: #343A40;
+                    padding: 1rem 1.25rem;
+                  }
+
+                  .custom-offcanvas .offcanvas-body {
+                    padding: 1.25rem;
+                    overflow-y: auto;
+                    max-height: calc(100vh - 56px); /* Header height adjustment */
+                  }
+
+                  .transaction-info .form-control {
+                    border: 1px solid #ced4da;
+                    font-weight: 500;
+                    color: #212529;
+                  }
+
+                  #generalOffcanvasContent {
+                    margin-top: 20px;
+                  }
+
+                  .btn-close {
+                    filter: invert(1);
+                  }
+
+                </style>
+
+
+
+                <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                  const offcanvasElement = document.getElementById('pendingOffCanvass');
+                  const offcanvasInstance = new bootstrap.Offcanvas(offcanvasElement);
+                  const transactionSpan = document.getElementById('transaction-number');
+
+                  document.querySelectorAll('.open-offcanvas').forEach(row => {
+                    row.addEventListener('click', async () => {
+                      const transactionId = row.getAttribute('data-id');
+                      transactionSpan.textContent = transactionId;
+
+                      // OPTIONAL: fetch more details here via AJAX if needed
+                      // const response = await fetch(`agent-showGuest.php?id=${transactionId}`);
+                      // const data = await response.text();
+                      // document.querySelector('.offcanvas-body').innerHTML = data;
+
+                      offcanvasInstance.show();
+                    });
+                  });
+                });
+                </script>
+        
+        
+
+
+
+
+
+
+
+
+
+
+
 
                 <!-- Requests table -->
                 <div class="request-wrapper">
@@ -1798,7 +1894,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
 
     // 📅 Date Picker for FlightStartDate
     $("#FlightStartDate").datepicker({
-      dateFormat: "yy-mm-dd",
+      dateFormat: "yy.mm.dd",
       showAnim: "fadeIn",
       changeMonth: true,
       changeYear: true,
@@ -1806,9 +1902,13 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
       appendTo: "body",
       beforeShow: function (input, inst) {
         setTimeout(function () {
+          const inputOffset = $(input).offset();
+          const dpWidth = inst.dpDiv.outerWidth();
+          const inputWidth = $(input).outerWidth();
+
           inst.dpDiv.css({
-            top: $(input).offset().top + $(input).outerHeight(),
-            left: $(input).offset().left
+            top: inputOffset.top + $(input).outerHeight(),
+            left: inputOffset.left - dpWidth 
           });
         }, 0);
       },
@@ -1817,6 +1917,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
         table.column(1).search(dateText || '').draw();
       }
     });
+
 
     // 🔹 Flight Date Filter on Change
     $('#FlightStartDate').on('change', function () {

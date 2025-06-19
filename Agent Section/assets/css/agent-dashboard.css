@@ -128,7 +128,7 @@
   width: 100%;
   height: clamp(45px, 4vh, 80px); /* Min: 45px, Prefers: 6vh, Max: 80px */
   margin: 0px 0px;
-  padding: 0;
+  padding: 0px 25px 0px 0px;
 
   /* border: 1px solid black; */
 }
@@ -348,18 +348,58 @@
 
 /* Ensure the datepicker is above the table header */
 .ui-datepicker {
-  z-index: 9999 !important; /* Bring it to the top */
+  z-index: 9999 !important;
   position: absolute !important;
   background: white;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   border: 1px solid #ccc;
   padding: 5px;
+  
 }
+
+.datepicker {
+  cursor: pointer;
+  user-select: none;
+  pointer-events: auto;
+}
+
+/* Prevent focus and keyboard navigation */
+.datepicker * {
+  outline: none !important;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Make date links non-focusable */
+.datepicker td a {
+  display: block;
+  padding: 5px;
+  text-align: center;
+  border-radius: 4px;
+  color: black;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  pointer-events: none; /* Disable interaction (optional) */
+}
+
+/* Optional: Allow hover styling but not interaction */
+.datepicker td a:hover {
+  background-color: #116530;
+  color: white;
+  cursor: default;
+}
+
+
+
+
+
+
+
 
 .buttons-wrapper {
   display: flex;
   justify-content: left;
   align-items: center;
+
   /* border: 1px solid black; */
 }
 

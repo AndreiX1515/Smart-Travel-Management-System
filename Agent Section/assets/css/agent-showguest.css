@@ -1,30 +1,52 @@
+.show-guest-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 90vh;
+}
 
- .show-guest-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    /* border: 1px solid black; */
-    height: 89vh;
- }
-
- .header {
+.header {
   display: flex;
   flex-direction: row;
   gap: 10px;
-  width: 100%; /* Keep the same width */
-  height: 30vh;
+  width: 100%;
+  height: 33vh;
   background-color: transparent;
-  border-radius: 8px;
   box-sizing: border-box;
   /* border: 1px solid black; */
 }
+
+.pills-tab-container {
+  display: flex;
+  align-items: center;
+
+
+
+  width: 100%;
+  height: 8vh;
+  /* border: 1px solid black; */
+}
+
+.transaction-body {
+  width: 100%;
+  flex: 1; 
+  border: 1px solid gainsboro;
+  background-color: #ffffff;
+  box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  /* border: 1px solid black; */
+}
+
 
 .transaction-info {
  display: flex;
  flex-direction: column;
  width: 50%; 
  padding: 15px; 
- border: 1px solid #e9edf0;
+ border: 1px solid gainsboro;
  background-color: transparent;
  border-radius: 8px;
  box-sizing: border-box;
@@ -172,7 +194,7 @@
   flex-direction: column;
   width: 50%;
   padding: 15px;
-  border: 1px solid #e9edf0;
+  border: 1px solid gainsboro;
   background-color: transparent;
   border-radius: 8px;
   box-sizing: border-box;
@@ -186,85 +208,280 @@
 
 
  
+/* ======================================= */
 
 
-.transaction-body {
-  width: 100%;
-  height: 53vh;
-  border: 1px solid gainsboro; /* Light, soft border color for a minimalist look */
-  border-radius: 8px; /* Rounded corners for a modern, clean look */
-  background-color: #ffffff; /* Flat white background */
-  box-shadow: none; /* Removing any shadow for a flatter appearance */
-  /* padding: 15px 10px; */
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  /* border: 1px solid black; */
-}
+
+
+
+
+
+
+
+
+
+
+
+
 
 .tab-content {
   width: 100%;
   height: 53vh;
-  padding: 10px;
+  /* border: 1px solid black; */
+}
+
+/* =============================== */
+.pills-tab-container {
+  width: 100%;
   /* border: 1px solid black; */
 }
 
 
-.pills-tab-container {
-  width: 100%;
-}
-
 .pills-tab-container .nav-pills {
   display: flex;
-  gap: 10px; 
+  gap: 10px;
 }
 
 .pills-tab-container .nav-item .nav-link {
-  background-color: #007bff;
-  color: white;
-  border: none; 
-  border-radius: 15px; 
-  padding: 8px 15px; 
-  font-size: 0.87em; 
+  background-color: transparent;
+  color: #6c757d;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  padding: 6px 15px;
+  font-size: 0.85em;
   font-weight: 500;
-  transition: background-color 0.3s ease; 
+  transition: background-color 0.3s, color 0.3s;
 }
 
 .pills-tab-container .nav-item .nav-link.active {
-  background-color: #0056b3; 
-}
-
-.pills-tab-container .nav-item .nav-link:not(.active) {
-  background-color: transparent; 
-  color: #6c757d; 
-  border: 1px solid #ccc; 
+  background-color: #0056b3;
+  color: white;
+  border: 1px solid #0056b3; /* Match border to background to avoid shift */
 }
 
 .pills-tab-container .nav-item .nav-link:hover {
-  background-color: #0069d9; 
+  background-color: #0069d9;
   color: white;
+  border: 1px solid #0069d9;
 }
 
 .pills-tab-container .nav-item .nav-link:focus {
-  box-shadow: none; 
+  box-shadow: none;
 }
 
 
 
+
+
+
+/* =================================== */
+/* Transaction Body - General Format */
 
 .tabs-wrapper {
   display: flex;
   flex-direction: column;
+  height: 100%;       
+  width: 100%;        
+  overflow: hidden;
+  box-sizing: border-box;
+
   /* border: 1px solid black; */
 }
 
 .tabs-wrapper .table-header {
   display: flex;
-  justify-content: end;
-  gap: 10px;
+  justify-content: flex-end;
+  height: 6vh;
+  padding: 10px 10px;
+  gap: 5px;
+  box-sizing: border-box;
+
   /* border: 1px solid black; */
-  padding: 8px 0px;
 }
+
+/* Wrapper between header and container */
+.table-wrapper-container {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  box-sizing: border-box;
+}
+
+/* Container that wraps the actual table */
+.table-container {
+  flex: 1;
+  width: 100%;
+  padding: 5px 10px;
+  overflow-y: auto;
+  overflow-x: auto;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Table styling */
+.product-table {
+  width: 100%;              
+  min-width: 100%;          
+  border-collapse: collapse;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+
+  overflow: auto;
+}
+
+/* Header Styling */
+.product-table th {
+  position: sticky; /* Keep header fixed during scrolling */
+  top: 0;
+  z-index: 1; /* Ensure header stays on top of content */
+  background-color: #e6e6e6; /* Light background for headers */
+  font-weight: bold;
+  text-align: left;
+  border: 1px solid #ddd; /* Add side and bottom borders */
+  font-size: 0.8em; /* Compact font size */
+  white-space: nowrap; /* Prevent text wrapping */
+  text-transform: uppercase; /* Uppercase text for headers */
+  padding: 10px 12px;
+}
+
+
+/* Table Cell Styling */
+.product-table td {
+  padding: 15px 12px; /* Smaller padding for compact layout */
+  text-align: left; /* Align text to the left */
+  vertical-align: middle; /* Center-align content vertically */
+  border-bottom: 1px solid #ddd; /* Subtle border for row separation */
+  font-size: 0.9em; /* Compact font size */
+  white-space: nowrap; /* Prevent text wrapping */
+  overflow: hidden; /* Hide overflowing content */
+  text-overflow: ellipsis; /* Add ellipsis for truncated content */
+}
+
+/* Hover effect for table rows */
+.product-table tr {
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.product-table tr:hover {
+  background-color: #f2f2f2; /* Subtle hover effect */
+  color: #000; /* Ensure hover text color contrast */
+  cursor: pointer;
+}
+
+/* Custom scrollbar styling */
+.product-table::-webkit-scrollbar {
+ width: 5px; /* Set a smaller width for the scrollbar */
+}
+
+.product-table::-webkit-scrollbar-track {
+ background: #f1f1f1; /* Track color */
+}
+
+.product-table::-webkit-scrollbar-thumb {
+ background: #888; /* Thumb color */
+ border-radius: 10px;
+}
+
+.product-table::-webkit-scrollbar-thumb:hover {
+ background: #555; /* Thumb color on hover */
+}
+
+
+/* Table status badges */
+.td-status-confirmed {
+ font-weight: 600;
+ color: #fff;
+ background-color: green;
+ padding: 5px 10px;
+ border-radius: 15px;
+ text-align: center;
+ display: inline-block;
+}
+
+.td-status-pending {
+ font-weight: 600;
+ color: #fff;
+ background-color: orange;
+ padding: 5px 10px;
+ border-radius: 15px;
+ text-align: center;
+ display: inline-block;
+}
+
+/* Action button styling */
+.action-button {
+ color: #4e4e4e;
+ font-size: 1.2rem;
+ background: none;
+ border: none;
+ cursor: pointer;
+ /* transition: color 0.3s, transform 0.2s; */
+}
+
+.action-button:hover {
+ color: #116530;
+ /* transform: scale(1.5); */
+}
+
+.action-button:active {
+ color: #0a4e25;
+ /* transform: scale(1.3); */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -369,15 +586,6 @@
   background-color: #0056b3;
  }
  
- /* Table container styling */
- .table-container {
-  display: flex;
-  flex-direction: column;
-  height: 90%;
-  overflow-y: hidden;
-  box-sizing: border-box;
-  /* border: 1px solid black */
- }
 
 .table-actions {
   display: flex;
@@ -398,112 +606,18 @@
  }
  
 
-/* Table styling */
-.product-table {
- width: 100%;
- border-collapse: collapse;
- margin-top: 15px;
- overflow-x: auto; /* Enable horizontal scrolling if content overflows */
-}
-
-/* Header Styling */
-.product-table th {
-  position: sticky; /* Keep header fixed during scrolling */
-  top: 0;
-  z-index: 1; /* Ensure header stays on top of content */
-  background-color: #e6e6e6; /* Light background for headers */
-  font-weight: bold;
-  text-align: left;
-  border: 1px solid #ddd; /* Add side and bottom borders */
-  font-size: 0.8em; /* Compact font size */
-  white-space: nowrap; /* Prevent text wrapping */
-  text-transform: uppercase; /* Uppercase text for headers */
-  padding: 10px 12px;
-}
 
 
-/* Table Cell Styling */
-.product-table td {
-  padding: 15px 12px; /* Smaller padding for compact layout */
-  text-align: left; /* Align text to the left */
-  vertical-align: middle; /* Center-align content vertically */
-  border-bottom: 1px solid #ddd; /* Subtle border for row separation */
-  font-size: 0.9em; /* Compact font size */
-  white-space: nowrap; /* Prevent text wrapping */
-  overflow: hidden; /* Hide overflowing content */
-  text-overflow: ellipsis; /* Add ellipsis for truncated content */
-}
-
-/* Hover effect for table rows */
-.product-table tr {
-  transition: background-color 0.3s, color 0.3s;
-}
-
-.product-table tr:hover {
-  background-color: #f2f2f2; /* Subtle hover effect */
-  color: #000; /* Ensure hover text color contrast */
-  cursor: pointer;
-}
-
-/* Custom scrollbar styling */
-.product-table::-webkit-scrollbar {
- width: 5px; /* Set a smaller width for the scrollbar */
-}
-
-.product-table::-webkit-scrollbar-track {
- background: #f1f1f1; /* Track color */
-}
-
-.product-table::-webkit-scrollbar-thumb {
- background: #888; /* Thumb color */
- border-radius: 10px;
-}
-
-.product-table::-webkit-scrollbar-thumb:hover {
- background: #555; /* Thumb color on hover */
-}
 
 
-/* Table status badges */
-.td-status-confirmed {
- font-weight: 600;
- color: #fff;
- background-color: green;
- padding: 5px 10px;
- border-radius: 15px;
- text-align: center;
- display: inline-block;
-}
 
-.td-status-pending {
- font-weight: 600;
- color: #fff;
- background-color: orange;
- padding: 5px 10px;
- border-radius: 15px;
- text-align: center;
- display: inline-block;
-}
 
-/* Action button styling */
-.action-button {
- color: #4e4e4e;
- font-size: 1.2rem;
- background: none;
- border: none;
- cursor: pointer;
- transition: color 0.3s, transform 0.2s;
-}
 
-.action-button:hover {
- color: #116530;
- transform: scale(1.5);
-}
 
-.action-button:active {
- color: #0a4e25;
- transform: scale(1.3);
-}
+
+
+
+ /* ============================ */
 
 /* Pagination styles */
 .pagination {

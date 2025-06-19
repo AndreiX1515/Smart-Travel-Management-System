@@ -1,51 +1,50 @@
 <!-- Guest Table -->
 <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
+
   <div class="tabs-wrapper">
+
     <div class="table-header">
       <?php
-        // Check if 'id' is passed in the URL
-        if (isset($_GET['id'])) 
-        {
-          $transactionNumber = htmlspecialchars($_GET['id']);
-          $_SESSION['transaction_number'] = $transactionNumber;
-        }
+      // Check if 'id' is passed in the URL
+      if (isset($_GET['id'])) {
+        $transactionNumber = htmlspecialchars($_GET['id']);
+        $_SESSION['transaction_number'] = $transactionNumber;
+      }
 
-        // Run the query to get guest count and pax
-        $query2 = "SELECT COALESCE(COUNT(g.transactNo), 0) AS guest_count, 
+      // Run the query to get guest count and pax
+      $query2 = "SELECT COALESCE(COUNT(g.transactNo), 0) AS guest_count, 
                           b.pax AS pax 
                         FROM booking b
                         LEFT JOIN guest g ON g.transactNo = b.transactNo 
                         WHERE b.transactNo = '$transactionNumber'";
 
-        $query3 = "SELECT COALESCE(COUNT(v.transactNo), 0) AS visa_count, 
+      $query3 = "SELECT COALESCE(COUNT(v.transactNo), 0) AS visa_count, 
                           b.pax AS pax 
                         FROM booking b
                         LEFT JOIN visarequirements v ON v.transactNo = b.transactNo 
                         WHERE b.transactNo = '$transactionNumber'";
 
-        $result2 = $conn->query($query2);
-        $result3 = $conn->query($query3);
+      $result2 = $conn->query($query2);
+      $result3 = $conn->query($query3);
 
-        // Check if the query returned results
-        if ($result2 && $result2->num_rows > 0) 
-        {
-          // Fetch the result
-          $row2 = $result2->fetch_assoc();
-          $guest_count = $row2['guest_count'];
-          $pax2 = $row2['pax'];
-        }
+      // Check if the query returned results
+      if ($result2 && $result2->num_rows > 0) {
+        // Fetch the result
+        $row2 = $result2->fetch_assoc();
+        $guest_count = $row2['guest_count'];
+        $pax2 = $row2['pax'];
+      }
 
-        if ($result3 && $result3->num_rows > 0) 
-        {
-          // Fetch the result
-          $row3 = $result3->fetch_assoc();
-          $visa_count = $row3['visa_count'];
-          $pax3 = $row3['pax'];
-        }
+      if ($result3 && $result3->num_rows > 0) {
+        // Fetch the result
+        $row3 = $result3->fetch_assoc();
+        $visa_count = $row3['visa_count'];
+        $pax3 = $row3['pax'];
+      }
 
-        // Determine whether to disable the button
-        $disable_button = ($guest_count >= $pax2) ? 'disabled' : ''; // Disable if guest_count >= pax
-        $disable_button2 = ($visa_count >= $pax3) ? 'disabled' : ''; // Disable if guest_count >= pax
+      // Determine whether to disable the button
+      $disable_button = ($guest_count >= $pax2) ? 'disabled' : ''; // Disable if guest_count >= pax
+      $disable_button2 = ($visa_count >= $pax3) ? 'disabled' : ''; // Disable if guest_count >= pax
       ?>
 
       <!-- Add Guest Button -->
@@ -69,27 +68,28 @@
 
 
     <div class="table-container">
-      <table class="product-table">
-        <thead>
-          <tr>
-            <th>GUEST ID</th>
-            <th>NAME</th>
-            <th>BIRTHDATE</th>
-            <th>AGE</th>
-            <th>SEX</th>
-            <th>NATIONALITY</th>
-            <th>CONTACT NO.</th>
-            <th>OTHER CONTACT NO.</th>
-            <th>EMAIL</th>
-            <th>ADDRESS</th>
-            <th>PASSPORT NO.</th>
-            <th>PASSPORT ISSUED DATE</th>
-            <th>PASSPORT EXP.</th>
-            <th>VISA STATUS</th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php
+      <div class="table-wrapper-container">
+        <table class="product-table">
+          <thead>
+            <tr>
+              <th>GUEST ID</th>
+              <th>NAME</th>
+              <th>BIRTHDATE</th>
+              <th>AGE</th>
+              <th>SEX</th>
+              <th>NATIONALITY</th>
+              <th>CONTACT NO.</th>
+              <th>OTHER CONTACT NO.</th>
+              <th>EMAIL</th>
+              <th>ADDRESS</th>
+              <th>PASSPORT NO.</th>
+              <th>PASSPORT ISSUED DATE</th>
+              <th>PASSPORT EXP.</th>
+              <th>VISA STATUS</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php
             $sql1 = "SELECT *, DATE_FORMAT(birthdate, '%M %d, %Y') AS birthdate, CONCAT(countryCode, ' ', contactNo) AS contactNo,
                     CASE 
                       WHEN countryCode2 IS NULL OR contactNo2 IS NULL THEN 'N/A'
@@ -104,17 +104,14 @@
 
             $res1 = $conn->query($sql1);
 
-            if ($res1->num_rows > 0) 
-            {
-              while ($row = $res1->fetch_assoc()) 
-              {
+            if ($res1->num_rows > 0) {
+              while ($row = $res1->fetch_assoc()) {
                 // Define the full name variable with suffix
                 // Define the full name without suffix first
                 $fullName = $row['fName'] . ' ' . $row['mName'] . ' ' . $row['lName'];
 
                 // Append suffix only if it is not "N/A"
-                if (!empty($row['suffix']) && $row['suffix'] !== 'N/A') 
-                {
+                if (!empty($row['suffix']) && $row['suffix'] !== 'N/A') {
                   $fullName .= ' ' . $row['suffix']; // Append suffix if it exists and is not "N/A"
                 }
 
@@ -149,17 +146,19 @@
                           <td>{$row['visaStatus']}</td>
                         </tr>";
               }
-            } 
-            else 
-            {
+            } else {
               echo "<tr><td colspan='100' style='text-align: center;'>No Guest found</td></tr>";
             }
-          ?>
-        </tbody>
-      </table>
+            ?>
+          </tbody>
+        </table>
+
+      </div>
     </div>
 
   </div>
+
+  
 </div>
 
 <!-- Attach Visa Requirements Modal -->
@@ -173,9 +172,11 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
 
-      <form action="../Agent Section/functions/agent-addVisaRequirements-code.php" method="POST" enctype="multipart/form-data">
+      <form action="../Agent Section/functions/agent-addVisaRequirements-code.php" method="POST"
+        enctype="multipart/form-data">
         <div class="modal-body">
-          <input type="hidden" name="transaction_number" value="<?php echo htmlspecialchars($_SESSION['transaction_number'] ?? ''); ?>">
+          <input type="hidden" name="transaction_number"
+            value="<?php echo htmlspecialchars($_SESSION['transaction_number'] ?? ''); ?>">
           <input type="hidden" name="accId" value="<?php echo $accountId; ?>">
 
           <!-- Select Guest -->
@@ -184,25 +185,21 @@
             <select class="form-select" id="guestSelect" onchange="addGuestFields(this)">
               <option selected disabled>-- Select Guest --</option>
               <?php
-                if ($res1) 
-                {
-                  $query1 = "SELECT g.guestId, CONCAT(g.lName, ', ', g.fName, ' ', 
+              if ($res1) {
+                $query1 = "SELECT g.guestId, CONCAT(g.lName, ', ', g.fName, ' ', 
                               CASE WHEN g.suffix = 'N/A' THEN '' ELSE g.suffix END, ' ',
                               CASE WHEN g.mName = 'N/A' THEN '' ELSE CONCAT(SUBSTRING(g.mName, 1, 1), '.') END) AS FULLNAME 
                             FROM guest g
                             WHERE g.transactNo = '$transactionNumber'";
-                  $res1 = mysqli_query($conn, $query1);
-                  while ($row = mysqli_fetch_assoc($res1)) 
-                  {
-                    $guestId = $row['guestId'];
-                    $fullName = htmlspecialchars($row['FULLNAME']);
-                    echo "<option value='$guestId'>$fullName</option>";
-                  }
-                } 
-                else 
-                {
-                  echo "<option value=''>No guests available</option>";
+                $res1 = mysqli_query($conn, $query1);
+                while ($row = mysqli_fetch_assoc($res1)) {
+                  $guestId = $row['guestId'];
+                  $fullName = htmlspecialchars($row['FULLNAME']);
+                  echo "<option value='$guestId'>$fullName</option>";
                 }
+              } else {
+                echo "<option value=''>No guests available</option>";
+              }
               ?>
             </select>
           </div>
@@ -224,13 +221,11 @@
 <script>
   let addedGuests = new Set();
 
-  function addGuestFields(selectElement) 
-  {
+  function addGuestFields(selectElement) {
     const guestId = selectElement.value;
     const guestName = selectElement.options[selectElement.selectedIndex].text;
 
-    if (!guestId || addedGuests.has(guestId)) 
-    {
+    if (!guestId || addedGuests.has(guestId)) {
       alert("Guest already added or invalid selection.");
       return;
     }
@@ -265,20 +260,17 @@
     allGuestFieldsContainer.insertAdjacentHTML("beforeend", guestFieldsHTML);
   }
 
-  function showFileInput(selectElement, guestId) 
-  {
+  function showFileInput(selectElement, guestId) {
     const fileInputsContainer = document.getElementById(`fileInputs-${guestId}`);
 
-    if (!fileInputsContainer) 
-    {
+    if (!fileInputsContainer) {
       console.error(`Error: File input container not found for guestId: ${guestId}`);
       return;
     }
 
     const selectedValue = selectElement.value;
 
-    if (!selectedValue) 
-    {
+    if (!selectedValue) {
       alert("Please select a document type.");
       return;
     }
@@ -294,8 +286,7 @@
     fileInputsContainer.insertAdjacentHTML("beforeend", fileInputHTML);
   }
 
-  function removeGuestFields(guestId) 
-  {
+  function removeGuestFields(guestId) {
     document.getElementById(`guestFields-${guestId}`).remove();
     addedGuests.delete(guestId);
   }
@@ -442,12 +433,10 @@
 
 <!-- Working Properly Reset Modal When Closed -->
 <script>
-  document.addEventListener("DOMContentLoaded", function () 
-  {
+  document.addEventListener("DOMContentLoaded", function () {
     const visaModal = document.getElementById("visaModal");
 
-    visaModal.addEventListener("hidden.bs.modal", function () 
-    {
+    visaModal.addEventListener("hidden.bs.modal", function () {
       // Reset the form
       document.querySelector("#visaModal form").reset();
 
@@ -455,15 +444,13 @@
       const allGuestFieldsContainer = document.getElementById("allGuestFields");
       const guestSelectWrapper = document.querySelector("#allGuestFields .mb-4"); // Keeps the select field
       allGuestFieldsContainer.innerHTML = ""; // Clear everything first
-      if (guestSelectWrapper) 
-      {
+      if (guestSelectWrapper) {
         allGuestFieldsContainer.appendChild(guestSelectWrapper); // Restore select field
       }
 
       // Re-enable all previously disabled dropdown options
       const guestSelect = document.getElementById("guestSelect");
-      for (let i = 0; i < guestSelect.options.length; i++) 
-      {
+      for (let i = 0; i < guestSelect.options.length; i++) {
         guestSelect.options[i].disabled = false;
       }
 
@@ -586,9 +573,9 @@
 
 <!-- Specific Row Clickable Script -->
 <script>
-  document.addEventListener("DOMContentLoaded", function() {
-    document.querySelectorAll("tr[data-url]").forEach(function(row) {
-      row.addEventListener("click", function() {
+  document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll("tr[data-url]").forEach(function (row) {
+      row.addEventListener("click", function () {
         window.location.href = row.getAttribute("data-url");
       });
     });
@@ -597,7 +584,7 @@
   const rows = document.querySelectorAll("tr[data-url]");
 
   rows.forEach(row => {
-    row.addEventListener("click", function() {
+    row.addEventListener("click", function () {
       const url = row.getAttribute("data-url");
       window.location.href = url; // Redirect to the specified URL
     });

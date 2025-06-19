@@ -43,7 +43,7 @@ if (isset($_POST['itineraryDetails']) && isset($_POST['daysDetails'])) {
 
     try {
         // Load the template Excel file
-        $templateFile = '../../Template/Itinerary Template.xlsx';  // Replace with the path to your template
+        $templateFile = '../../Template/Itinerary Template 2.xlsx';  // Replace with the path to your template
         $spreadsheet = IOFactory::load($templateFile);
 
         IOFactory::registerWriter('Pdf', Dompdf::class);
@@ -57,7 +57,7 @@ if (isset($_POST['itineraryDetails']) && isset($_POST['daysDetails'])) {
 
         $pageMargins = $sheet->getPageMargins();
         $pageMargins->setTop(0.2);       // 0.2 inch top margin
-        $pageMargins->setBottom(0.75);   // 0.75 inch bottom margin
+        $pageMargins->setBottom(0.30);   // 0.75 inch bottom margin
         $pageMargins->setLeft(0.25);     // 0.25 inch left margin
         $pageMargins->setRight(0.15);    // 0.15 inch right margin
         $pageMargins->setHeader(0.3);    // 0.3 inch header
@@ -102,7 +102,7 @@ if (isset($_POST['itineraryDetails']) && isset($_POST['daysDetails'])) {
         $sheet->setCellValue('C6', $formattedPeriod);
 
         // $sheet->setCellValue('A3', $itineraryDetails['periodEnd']);
-        $sheet->setCellValue('I6', $itineraryDetails['guideName']);
+        $sheet->setCellValue('H6', $itineraryDetails['guideName']);
 
 
 
@@ -120,7 +120,7 @@ if (isset($_POST['itineraryDetails']) && isset($_POST['daysDetails'])) {
         );
         
         // Set the formatted number in Excel cell I7
-        $sheet->setCellValue('I7', $formattedNumber);
+        $sheet->setCellValue('H7', $formattedNumber);
         
 
 
@@ -151,8 +151,8 @@ if (isset($_POST['itineraryDetails']) && isset($_POST['daysDetails'])) {
             echo "Day 1 Hotels: <br>";
 
             // Define the starting cells for columns G and J
-            $hotelCellG = 'D21';  // First loop will use column G
-            $hotelCellJ = 'G21';  // Second loop will use column J
+            $hotelCellG = 'E21';  // First loop will use column G
+            $hotelCellJ = 'H21';  // Second loop will use column J
 
             // Check if hotels are set for Day 1 and loop through them
             if (isset($dayData['hotels'])) {
@@ -212,7 +212,7 @@ if (isset($_POST['itineraryDetails']) && isset($_POST['daysDetails'])) {
         function setDay1Meals($sheet, $dayData)
         {
             echo "Day 1 Meals: <br>";
-            $mealCell = 'J16';  // Example starting cell for meals in Excel
+            $mealCell = 'K16';  // Example starting cell for meals in Excel
 
             // Check if meals are set for Day 1 and loop through them
             if (isset($dayData['meals'])) {
@@ -264,8 +264,8 @@ if (isset($_POST['itineraryDetails']) && isset($_POST['daysDetails'])) {
             echo "Day 2 Hotels: <br>";
 
             // Define the starting cells for columns G and J
-            $hotelCellG = 'D31';  // First loop will use column G
-            $hotelCellJ = 'G31';  // Second loop will use column J
+            $hotelCellG = 'E30';  // First loop will use column G
+            $hotelCellJ = 'H30';  // Second loop will use column J
 
             // Check if hotels are set for Day 2 and loop through them
             if (isset($dayData['hotels'])) {
@@ -319,26 +319,35 @@ if (isset($_POST['itineraryDetails']) && isset($_POST['daysDetails'])) {
 
 
         // Function to display and set values for Meals on Day 2
-        function setDay2Meals($sheet, $dayData)
+       function setDay2Meals($sheet, $dayData)
         {
             echo "Day 2 Meals: <br>";
 
-            $column = 'J';      // Fixed column
-            $startRow = 23;     // Starting row
-            $rowIncrement = 3;  // Add 3 to row each loop
+            $column = 'L';
+            $startRow = 22;
 
-            // Check if meals are set for Day 2 and loop through them
             if (isset($dayData['meals'])) {
                 foreach ($dayData['meals'] as $index => $meal) {
-                    $currentRow = $startRow + ($index * $rowIncrement);
-                    $cell = $column . $currentRow;
+                    if ($index === 0) {
+                        $currentRow = $startRow; // 22
+                    } elseif ($index === 1) {
+                        $currentRow = $startRow + 3; // 25
+                    } else {
+                        $currentRow = $startRow + 3 + (($index - 1) * 2); // 27, 29, 31...
+                    }
 
-                    // Set the meal value and echo
+                    $cell = $column . $currentRow;
                     $sheet->setCellValue($cell, trim($meal));
                     echo ($index + 1) . ". " . trim($meal) . " -> $cell<br>";
                 }
             }
         }
+
+
+
+
+
+
 
         // Call the functions for Day 2 (assuming $sheet and $day2 are defined and available)
         setDay2Areas($sheet, $day2);
@@ -352,7 +361,7 @@ if (isset($_POST['itineraryDetails']) && isset($_POST['daysDetails'])) {
         {
             echo "Day 3 Areas: <br>";
             $column = 'B';
-            $row = 32;
+            $row = 31;
 
             if (isset($dayData['areas'])) {
                 foreach ($dayData['areas'] as $index => $area) {
@@ -367,8 +376,8 @@ if (isset($_POST['itineraryDetails']) && isset($_POST['daysDetails'])) {
         function setDay3Hotels($sheet, $dayData)
         {
             echo "Day 3 Hotels: <br>";
-            $hotelCellG = 'D40';
-            $hotelCellJ = 'G40';
+            $hotelCellG = 'E39';
+            $hotelCellJ = 'H39';
             $counter = 0;
 
             if (isset($dayData['hotels'])) {
@@ -391,7 +400,7 @@ if (isset($_POST['itineraryDetails']) && isset($_POST['daysDetails'])) {
         function setDay3Activities($sheet, $dayData)
         {
             echo "Day 3 Activities: <br>";
-            $activityCell = 'D32';
+            $activityCell = 'D31';
 
             if (isset($dayData['activities'])) {
                 foreach ($dayData['activities'] as $index => $activity) {
@@ -406,18 +415,28 @@ if (isset($_POST['itineraryDetails']) && isset($_POST['daysDetails'])) {
         function setDay3Meals($sheet, $dayData)
         {
             echo "Day 3 Meals: <br>";
-            $column = 'J';
-            $startRow = 33;
-            $rowIncrement = 3;
+
+            $column = 'L';
+            $startRow = 31;
 
             if (isset($dayData['meals'])) {
                 foreach ($dayData['meals'] as $index => $meal) {
-                    $cell = $column . ($startRow + ($index * $rowIncrement));
+                    if ($index === 0) {
+                        $currentRow = $startRow; // 31
+                    } elseif ($index === 1) {
+                        $currentRow = $startRow + 3; // 34
+                    } else {
+                        $currentRow = $startRow + 3 + (($index - 1) * 2); // 36, 38, 40...
+                    }
+
+                    $cell = $column . $currentRow;
                     $sheet->setCellValue($cell, trim($meal));
                     echo ($index + 1) . ". " . trim($meal) . " -> $cell<br>";
                 }
             }
         }
+
+
 
         setDay3Areas($sheet, $day3);
         setDay3Hotels($sheet, $day3);
@@ -430,7 +449,7 @@ if (isset($_POST['itineraryDetails']) && isset($_POST['daysDetails'])) {
         {
             echo "Day 4 Areas: <br>";
             $column = 'B';
-            $row = 41;
+            $row = 40;
 
             if (isset($dayData['areas'])) {
                 foreach ($dayData['areas'] as $index => $area) {
@@ -445,8 +464,8 @@ if (isset($_POST['itineraryDetails']) && isset($_POST['daysDetails'])) {
         function setDay4Hotels($sheet, $dayData)
         {
             echo "Day 4 Hotels: <br>";
-            $hotelCellG = 'D50';
-            $hotelCellJ = 'G50';
+            $hotelCellG = 'E48';
+            $hotelCellJ = 'H48';
             $counter = 0;
 
             if (isset($dayData['hotels'])) {
@@ -469,7 +488,7 @@ if (isset($_POST['itineraryDetails']) && isset($_POST['daysDetails'])) {
         function setDay4Activities($sheet, $dayData)
         {
             echo "Day 4 Activities: <br>";
-            $activityCell = 'D41';
+            $activityCell = 'D40';
 
             if (isset($dayData['activities'])) {
                 foreach ($dayData['activities'] as $index => $activity) {
@@ -484,18 +503,28 @@ if (isset($_POST['itineraryDetails']) && isset($_POST['daysDetails'])) {
         function setDay4Meals($sheet, $dayData)
         {
             echo "Day 4 Meals: <br>";
-            $column = 'J';
-            $startRow = 42;
-            $rowIncrement = 3;
+
+            $column = 'L';
+            $startRow = 40;
 
             if (isset($dayData['meals'])) {
                 foreach ($dayData['meals'] as $index => $meal) {
-                    $cell = $column . ($startRow + ($index * $rowIncrement));
+                    if ($index === 0) {
+                        $currentRow = $startRow; // 40
+                    } elseif ($index === 1) {
+                        $currentRow = $startRow + 3; // 43
+                    } else {
+                        $currentRow = $startRow + 3 + (($index - 1) * 2); // 45, 47, 49...
+                    }
+
+                    $cell = $column . $currentRow;
                     $sheet->setCellValue($cell, trim($meal));
                     echo ($index + 1) . ". " . trim($meal) . " -> $cell<br>";
                 }
             }
         }
+
+
 
         setDay4Areas($sheet, $day4);
         setDay4Hotels($sheet, $day4);
@@ -508,7 +537,7 @@ if (isset($_POST['itineraryDetails']) && isset($_POST['daysDetails'])) {
         {
             echo "Day 5 Areas: <br>";
             $column = 'B';
-            $row = 51;
+            $row = 49;
 
             if (isset($dayData['areas'])) {
                 foreach ($dayData['areas'] as $index => $area) {
@@ -523,8 +552,8 @@ if (isset($_POST['itineraryDetails']) && isset($_POST['daysDetails'])) {
         function setDay5Hotels($sheet, $dayData)
         {
             echo "Day 5 Hotels: <br>";
-            $hotelCellG = 'D60';
-            $hotelCellJ = 'G60';
+            $hotelCellG = 'E57';
+            $hotelCellJ = 'H57';
             $counter = 0;
 
             if (isset($dayData['hotels'])) {
@@ -547,7 +576,7 @@ if (isset($_POST['itineraryDetails']) && isset($_POST['daysDetails'])) {
         function setDay5Activities($sheet, $dayData)
         {
             echo "Day 5 Activities: <br>";
-            $activityCell = 'D51';
+            $activityCell = 'D49';
 
             if (isset($dayData['activities'])) {
                 foreach ($dayData['activities'] as $index => $activity) {
@@ -562,18 +591,29 @@ if (isset($_POST['itineraryDetails']) && isset($_POST['daysDetails'])) {
         function setDay5Meals($sheet, $dayData)
         {
             echo "Day 5 Meals: <br>";
-            $column = 'J';
-            $startRow = 52;
-            $rowIncrement = 3;
+
+            $column = 'L';
+            $startRow = 49;
 
             if (isset($dayData['meals'])) {
                 foreach ($dayData['meals'] as $index => $meal) {
-                    $cell = $column . ($startRow + ($index * $rowIncrement));
+                    if ($index === 0) {
+                        $currentRow = $startRow; // 49
+                    } elseif ($index === 1) {
+                        $currentRow = $startRow + 3; // 52
+                    } else {
+                        $currentRow = $startRow + 3 + (($index - 1) * 2); // 54, 56, 58...
+                    }
+
+                    $cell = $column . $currentRow;
                     $sheet->setCellValue($cell, trim($meal));
                     echo ($index + 1) . ". " . trim($meal) . " -> $cell<br>";
                 }
             }
         }
+
+
+
 
 
         setDay5Areas($sheet, $day5);
@@ -585,7 +625,7 @@ if (isset($_POST['itineraryDetails']) && isset($_POST['daysDetails'])) {
         {
             echo "Day 6: <br>";
             $column = 'D';
-            $startRow = 61;
+            $startRow = 58;
 
             // === Dynamic departure info ===
             $departureFlight = isset($dayData['flight']) ? trim($dayData['flight']) : '5J185'; // Original: $departureFlight = '5J185';

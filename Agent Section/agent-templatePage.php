@@ -11,64 +11,59 @@ session_start();
 
   <?php include "../Agent Section/includes/head.php"; ?>
 
-  <link rel="stylesheet" href="../Agent Section/assets/css/agent-dashboard copy 3.css?v=<?php echo time(); ?>">
-  <link rel="stylesheet" href="../Agent Section/assets/css/navbar-sidebar copy.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="../Agent Section/assets/css/navbar-sidebar.css?v=<?php echo time(); ?>">
 </head>
 <body>
 
-<div class="body-container">
-  <?php include "../Agent Section/includes/sidebar copy.php"; ?>
+  <?php include "../Agent Section/includes/sidebar.php"; ?>
 
-  <div class="main-content-container">
+  <div class="main-container">
+
     <div class="navbar">
-      <h5 class="title-page">Transactions</h5>
-    </div>
+
+			<div class="page-header-wrapper">
+
+        <div class="first-half">
+          <div class="page-header-top">
+            <div class="back-btn-wrapper">
+              <button class="back-btn" id="redirect-btn">
+                <i class="fas fa-chevron-left"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="page-header-content">
+            <div class="page-header-text">
+              <h5 class="header-title">Add Guest</h5>
+            </div>
+          </div>
+        </div>
+				
+        <div class="second-half">
+          
+        </div>
+
+			</div>
+		</div>
+
+		<script>
+			document.getElementById('redirect-btn').addEventListener('click', function () {
+				window.location.href = '../Agent Section/agent-showGuest.php'; // Replace with your actual URL
+			});
+		</script>
 
     <div class="main-content">
       
 
     </div>
+
+
   </div>
 
-</div>
+
 
 
 <?php require "../Agent Section/includes/scripts.php"; ?>
-
-<script>
-function toggleSubMenu(submenuId) {
-    const submenu = document.getElementById(submenuId);
-    const sectionTitle = submenu.previousElementSibling;
-    const chevron = sectionTitle.querySelector('.chevron-icon'); 
-
-    // Check if the submenu is already open
-    const isOpen = submenu.classList.contains('open');
-
-    // If it's open, we need to close it, and reset the chevron
-    if (isOpen) {
-        submenu.classList.remove('open');
-        chevron.style.transform = 'rotate(0deg)';
-    } else {
-        // First, close all open submenus and reset all chevrons
-        const allSubmenus = document.querySelectorAll('.submenu');
-        const allChevrons = document.querySelectorAll('.chevron-icon');
-        
-        allSubmenus.forEach(sub => {
-            sub.classList.remove('open');
-        });
-
-        allChevrons.forEach(chev => {
-            chev.style.transform = 'rotate(0deg)';
-        });
-
-        // Now, open the current submenu and rotate its chevron
-        submenu.classList.add('open');
-        chevron.style.transform = 'rotate(180deg)';
-    }
-}
-
-
-</script>
 
   </body>
 </html>

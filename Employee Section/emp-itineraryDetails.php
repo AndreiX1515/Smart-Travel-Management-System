@@ -23,7 +23,7 @@
                 <div class="page-header-top">
                     <div class="back-btn-wrapper">
                         <button class="back-btn" id="redirect-btn">
-                        <i class="fas fa-chevron-left"></i>
+                            <i class="fas fa-chevron-left"></i>
                         </button>
                     </div>
                 </div>
@@ -38,9 +38,9 @@
         </div>
 
         <script>
-        document.getElementById('redirect-btn').addEventListener('click', function () {
-            window.location.href = '../Employee Section/emp-itineraryTable.php'; // Replace with your actual URL
-        });
+            document.getElementById('redirect-btn').addEventListener('click', function () {
+                window.location.href = '../Employee Section/emp-itineraryTable.php'; // Replace with your actual URL
+            });
         </script>
 
         <?php
@@ -49,7 +49,7 @@
         }
 
         $itineraryId = intval($_GET['id']); // Ensure it's an integer
-
+        
         // Fetch itinerary details
         $sql = "SELECT itineraryName, noOfDays, packageName, periodStart, periodEnd, guideName, countryCode, contactNumber, city1, hotel1, city2, hotel2, city3, hotel3 FROM itineraries
         WHERE itineraryId = ?";
@@ -166,7 +166,7 @@
                     </div>
 
                     <div class="card-body">
-                        
+
                         <!-- Package Row -->
                         <div class="row mb-2">
 
@@ -178,7 +178,8 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <input type="text" class="form-control" id="itineraryName" name="itineraryName" value="<?= $itinerary['itineraryName']; ?>" required>
+                                    <input type="text" class="form-control" id="itineraryName" name="itineraryName"
+                                        value="<?= $itinerary['itineraryName']; ?>" required>
                                 </div>
                             </div>
 
@@ -215,7 +216,7 @@
 
                         <!-- Periods, Guide Row -->
                         <div class="row">
-                            
+
                             <!-- Flight Date Dropdown -->
                             <div class="columns col-md-4">
 
@@ -229,7 +230,9 @@
                                     <div class="form-group">
                                         <div class="date-range-inputs-wrapper">
                                             <div class="input-with-icon">
-                                                <input type="text" class="datepicker" id="PeriodStartDate" placeholder="Start" value="<?= $itinerary['periodStart']; ?>" readonly>
+                                                <input type="text" class="datepicker" id="PeriodStartDate"
+                                                    placeholder="Start" value="<?= $itinerary['periodStart']; ?>"
+                                                    readonly>
                                                 <i class="fas fa-calendar-alt calendar-icon"></i>
                                             </div>
                                         </div>
@@ -241,7 +244,8 @@
                                     <div class="form-group">
                                         <div class="date-range-inputs-wrapper">
                                             <div class="input-with-icon">
-                                                <input type="text" class="datepicker" id="PeriodEndDate" placeholder="End" value="<?= $itinerary['periodEnd']; ?>" readonly>
+                                                <input type="text" class="datepicker" id="PeriodEndDate"
+                                                    placeholder="End" value="<?= $itinerary['periodEnd']; ?>" readonly>
                                                 <i class="fas fa-calendar-alt calendar-icon"></i>
                                             </div>
                                         </div>
@@ -258,7 +262,8 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <select class="form-select" id="guideName" name="guideName" required onchange="updateContact(this)">
+                                    <select class="form-select" id="guideName" name="guideName" required
+                                        onchange="updateContact(this)">
                                         <?php
                                         $selectedGuide = $itinerary['guideName'];
                                         $query = "SELECT accountId, fName, lName, mName, contactNo, countryCode FROM employee WHERE isTourGuide = 1";
@@ -277,7 +282,7 @@
 
                                             $isSelected = ($selectedGuide == $fullName) ? 'selected' : '';
 
-                                            echo "<option value=\"$accountId\" data-contact=\"$contactNo\" data-code=\"$countryCode\" $isSelected>$fullName</option>";
+                                            echo "<option value=\"$fullName\" data-contact=\"$contactNo\" data-code=\"$countryCode\" $isSelected>$fullName</option>";
                                         }
                                         ?>
                                     </select>
@@ -296,25 +301,25 @@
                                     <!-- Country Code Dropdown -->
                                     <select class="form-select" id="countryCode" style="width: 100px;">
                                         <option value="" disabled selected>Select Country Code</option>
-                                        <option value="+82" <?= ($itinerary['countryCode'] == '+82') ? 'selected' : ''; ?>>+82</option>
-                                        <option value="+1" <?= ($itinerary['countryCode'] == '+1') ? 'selected' : ''; ?>>+1</option>
-                                        <option value="+44" <?= ($itinerary['countryCode'] == '+44') ? 'selected' : ''; ?>>+44</option>
-                                        <option value="+91" <?= ($itinerary['countryCode'] == '+91') ? 'selected' : ''; ?>>+91</option>
-                                        <option value="+63" <?= ($itinerary['countryCode'] == '+63') ? 'selected' : ''; ?>>+63</option>
-
-
-
+                                        <option value="+82" <?= ($itinerary['countryCode'] == '+82') ? 'selected' : ''; ?>>
+                                            +82</option>
+                                        <option value="+1" <?= ($itinerary['countryCode'] == '+1') ? 'selected' : ''; ?>>+1
+                                        </option>
+                                        <option value="+44" <?= ($itinerary['countryCode'] == '+44') ? 'selected' : ''; ?>>
+                                            +44</option>
+                                        <option value="+91" <?= ($itinerary['countryCode'] == '+91') ? 'selected' : ''; ?>>
+                                            +91</option>
+                                        <option value="+63" <?= ($itinerary['countryCode'] == '+63') ? 'selected' : ''; ?>>
+                                            +63</option>
 
                                         <!-- Add more country codes as needed -->
                                     </select>
-                                    
+
                                     <!-- Contact Number Input -->
-                                    <input type="text" class="form-control ms-2" id="contactNumber" name="contactNumber" 
-                                        value="<?= htmlspecialchars($itinerary['contactNumber']); ?>" required placeholder="Enter Contact Number">
+                                    <input type="text" class="form-control ms-2" id="contactNumber" name="contactNumber"
+                                        value="<?= htmlspecialchars($itinerary['contactNumber']); ?>" required
+                                        placeholder="Enter Contact Number">
                                 </div>
-
-
-
                             </div>
 
                         </div>
@@ -325,7 +330,6 @@
                             </label>
                         </div>
 
-                        <!-- Tour Areas, Hotels -->
                         <?php
                         $cities = ["Seoul", "Gyeonggi-do", "Incheon", "Jeju"];
                         $hotels = [
@@ -340,49 +344,62 @@
                             $hotelKey = "hotel" . ($i + 1);
                             $selectedCity = $itinerary['cities'][$i]['city'] ?? "";
                             $selectedHotel = $itinerary['cities'][$i]['hotel'] ?? "";
-                        ?>
+                            ?>
 
-                        <div class="row">
-                            <div class="columns col-md-8">
-                                <div class="cityhotel-wrapper">
-                                    <div class="cityhotel-item">
-                                        <div class="form-group d-flex flex-row align-items-center">
-                                            <select class="form-select city-select" id="<?= $cityKey ?>" name="city(<?= $i + 1 ?>)" data-index="<?= $i ?>" required>
-                                                <?php foreach ($cities as $city) : ?>
-                                                    <option value="<?= $city ?>" <?= ($city === $selectedCity) ? 'selected' : '' ?>><?= $city ?></option>
-                                                <?php endforeach; ?>
-                                            </select>
-                                        </div>
-                                    </div>
+                            <div class="row">
+                                <div class="columns col-md-8">
+                                    <div class="cityhotel-wrapper">
+                                        <!-- City dropdown -->
+                                        <div class="cityhotel-item">
+                                            <div class="form-group d-flex flex-row align-items-center">
+                                                <select class="form-select city-select" id="<?= $cityKey ?>"
+                                                    name="city(<?= $i + 1 ?>)" data-index="<?= $i ?>" required>
+                                                    <option value="" disabled <?= (!isset($selectedCity) || $selectedCity === "") ? 'selected' : '' ?>>Select City</option>
 
-                                    <div class="dash-separator">-></div>
-
-                                    <div class="cityhotel-item">
-                                        <div class="form-group d-flex flex-row align-items-center">
-                                            <select class="form-select hotel-select" id="<?= $hotelKey ?>" name="hotel(<?= $i + 1 ?>)" required>
-                                                <option disabled <?= empty($selectedHotel) ? 'selected' : '' ?>>Select Hotel</option>
-                                                <?php if (!empty($selectedCity) && isset($hotels[$selectedCity])) : ?>
-                                                    <?php foreach ($hotels[$selectedCity] as $hotel) : ?>
-                                                        <option value="<?= $hotel ?>" <?= ($hotel === $selectedHotel) ? 'selected' : '' ?>><?= $hotel ?></option>
+                                                    <?php foreach ($cities as $city): ?>
+                                                        <option value="<?= $city ?>" <?= (isset($selectedCity) && $selectedCity === $city) ? 'selected' : '' ?>>
+                                                            <?= $city ?>
+                                                        </option>
                                                     <?php endforeach; ?>
-                                                <?php endif; ?>
-                                            </select>
+                                                </select>
+                                            </div>
+                                        </div>
+
+
+
+
+                                        <div class="dash-separator">-></div>
+
+                                        <!-- Hotel dropdown -->
+                                        <div class="cityhotel-item">
+                                            <div class="form-group d-flex flex-row align-items-center">
+                                                <select class="form-select hotel-select" id="<?= $hotelKey ?>"
+                                                    name="hotel(<?= $i + 1 ?>)" required>
+                                                    <option disabled <?= empty($selectedHotel) ? 'selected' : '' ?>>Select
+                                                        Hotel</option>
+                                                    <?php
+                                                    if (!empty($selectedCity) && isset($hotels[$selectedCity])):
+                                                        foreach ($hotels[$selectedCity] as $hotel): ?>
+                                                            <option value="<?= $hotel ?>" <?= ($hotel === $selectedHotel) ? 'selected' : '' ?>><?= $hotel ?></option>
+                                                        <?php endforeach;
+                                                    endif;
+                                                    ?>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <script>
-                            document.addEventListener("DOMContentLoaded", function() {
-                                let selectedCity<?= $i ?> = document.getElementById("<?= $cityKey ?>").value;
-                                // console.log("Selected City <?= $i + 1 ?>:", selectedCity<?= $i ?>);
-                            });
-                        </script>
 
-                        <?php 
+                            <script>
+                                document.addEventListener("DOMContentLoaded", function () {
+                                    let selectedCity<?= $i ?> = document.getElementById("<?= $cityKey ?>").value;
+                                    // console.log("Selected City <?= $i + 1 ?>:", selectedCity<?= $i ?>);
+                                });
+                            </script>
 
-                        } ?>
+                        <?php } ?>
                     </div>
                 </div>
 
@@ -398,7 +415,8 @@
                                 <div class="form-group days-select-wrapper">
                                     <label for="flightDate">No. of days<span class="text-danger"> *</span></label>
                                     <select class="form-select" id="select-days" name="numberOfDays" required>
-                                        <option value="<?= $noOfDays; ?>" selected>Day <?= $noOfDays; ?></option> <!-- Keeps preselected value -->
+                                        <option value="<?= $noOfDays; ?>" selected>Day <?= $noOfDays; ?></option>
+                                        <!-- Keeps preselected value -->
                                     </select>
 
                                     <!-- <small class="form-text text-muted">Changing this will clear all your data on the fields.</small> -->
@@ -414,7 +432,7 @@
             </div>
 
             <!-- Select at the top -->
-            
+
 
             <!-- Form footer with both buttons -->
             <div class="form-footer">
@@ -461,7 +479,8 @@
 
 
     <!-- Modal -->
-    <div class="modal fade" id="templateNameModal" tabindex="-1" aria-labelledby="templateNameModalLabel" aria-hidden="true">
+    <div class="modal fade" id="templateNameModal" tabindex="-1" aria-labelledby="templateNameModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -489,7 +508,7 @@
 
     <!-- Datepicker Script -->
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             // Apply datepicker for PeriodStartDate
             $("#PeriodStartDate").datepicker({
                 dateFormat: "yy-mm-dd",
@@ -497,7 +516,7 @@
                 changeMonth: true,
                 changeYear: true,
                 yearRange: "1900:2100",
-                onSelect: function(dateText) {
+                onSelect: function (dateText) {
                     console.log("PeriodStartDate Selected: " + dateText);
                 }
             });
@@ -509,20 +528,20 @@
                 changeMonth: true,
                 changeYear: true,
                 yearRange: "1900:2100",
-                onSelect: function(dateText) {
+                onSelect: function (dateText) {
                     console.log("PeriodEndDate Selected: " + dateText);
                 }
             });
         });
     </script>
 
-   
+
     <!-- For Itinerary Card -->
     <script>
-        
+
         let liveItineraryData;
 
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
 
             document.getElementById('submitEdit').disabled = true;
             document.getElementById('select-days').disabled = true;
@@ -651,36 +670,44 @@
             }
 
             function createSelectColumn(label, className, options = [], selectedValue, index = 1) {
-                // console.log(`Creating select dropdown for: ${label} ${index}`);
-
                 if (!Array.isArray(options) || options.length === 0) {
-                    // console.error("Options array is empty or undefined for:", label);
-                    return `<div class="col-4"><label class="form-label fw-normal">${label} ${index}:</label><p style="color: red;">No options available</p></div>`;
+                    return `
+                        <div class="col-4">
+                            <label class="form-label fw-normal">${label} ${index}:</label>
+                            <p style="color: red;">No options available</p>
+                        </div>
+                    `;
                 }
 
                 // Ensure options are unique and sorted
                 let uniqueOptions = [...new Set(options)].sort();
 
-                // console.log("Final options before rendering:", uniqueOptions);
+                // Determine whether to show placeholder as selected
+                const isPlaceholderSelected = !selectedValue || selectedValue === "null";
 
                 return `
-                <div class="col-4">
-                    <label class="form-label fw-normal">${label}:</label>
-                    <select class="form-select ${className}">
-                        <option selected disabled>Select ${label} ${index}</option>
-                        ${uniqueOptions.map(opt => {
-                            // console.log(`Processing option: ${opt}`);
-                            return `<option value="${opt}" ${String(opt) === String(selectedValue) ? "selected" : ""}>${opt}</option>`;
-                        }).join("")}
-                    </select>
-                </div>
-            `;
+                    <div class="col-4">
+                        <label class="form-label fw-normal">${label}:</label>
+                        <select class="form-select ${className}" name="${label.toLowerCase().replace(/\s+/g, '_')}_${index}" required>
+                            <option value="" disabled ${isPlaceholderSelected ? "selected" : ""}>Select ${label} ${index}</option>
+                            ${uniqueOptions.map(opt => `
+                                <option value="${opt}" ${String(opt) === String(selectedValue) ? "selected" : ""}>${opt}</option>
+                            `).join("")}
+                            <option value="no-hotel" ${selectedValue === "no-hotel" ? "selected" : ""}>No Hotel</option>
+                        </select>
+                    </div>
+                `;
             }
+
 
             // Function to create multiple select columns for hotels
             function createMultipleSelectColumns(labels, className, options, selectedValues = []) {
-                return labels.map((label, index) => createSelectColumn(label, className, options, selectedValues[index] || "", index + 1)).join("");
+                return labels.map((label, index) => {
+                    const selected = selectedValues[index] === undefined ? "" : selectedValues[index];
+                    return createSelectColumn(label, className, options, selected, index + 1);
+                }).join("");
             }
+
 
             // Function to generate itinerary cards for each day
             function generateItineraryCards(days) {
@@ -717,34 +744,34 @@
                                 ${areas.map((area, index) => {
                                     // console.log(`Creating Select for Area ${index + 1}:`, area);
                                     return createSelectColumn("Area", "area-select", availableAreas, area, index + 1);
-                                }).join("")}
+                                    }).join("")}
                             </div>
 
                             <!-- Meal Plan Section (Dynamic) -->
 
                             <div class="row mb-3">
-                                ${
-                                day === 1
-                                    ? `
+                                ${day === 1
+                            ? `
                                     <div class="col-4">
                                         <label class="form-label fw-semibold">Snack:</label>
                                         <select class="form-select meal-plan-select" data-day="${day}" disabled>
                                             <option selected>Snack</option>
                                         </select>
                                     </div>`
-                                    : ["Breakfast", "Lunch", "Dinner"].map((mealLabel, index) => {
-                                        return createSelectColumn(
-                                            mealLabel,
-                                            "meal-plan-select",
-                                            availableMeals,
-                                            meals[index], // you can adjust this based on your meals array structure
-                                            index + 1
-                                        );
-                                    }).join("")
-                                }
+                            : ["Breakfast", "Lunch", "Dinner"].map((mealLabel, index) => {
+                                return createSelectColumn(
+                                    mealLabel,
+                                    "meal-plan-select",
+                                    availableMeals,
+                                    meals[index], // you can adjust this based on your meals array structure
+                                    index + 1
+                                );
+                            }).join("")
+                        }
                             </div>
 
 
+                            
                             <!-- Hotels Section (Dynamic) -->
                             <div class="row mb-3">
                                 <div class="col-md-6">
@@ -755,31 +782,38 @@
                                 </div>
                             </div>
 
+
+
+
                             <!-- Itinerary Section (Dynamic) -->
                             <div class="row mb-3">
                                 <div class="col-md-9">
                                     <label class="form-label fw-semibold">Itinerary:</label>
                                     <div class="row">
-                                        ${activities.map((activity, index) => {
-                                            // console.log(`Rendering Activity Dropdown ${index + 1}:`, activity);
+                                    ${(day === 1 ? [...Array(4)] : [...Array(7)]).map((_, index) => {
+                                        const selectedActivity = activities[index] || "";
+                                        const placeholderOption = `<option value="" disabled ${!selectedActivity ? "selected" : ""}>Select Itinerary Activity ${index + 1}</option>`;
 
-                                            return `    
-                                                <div class="col-12 mb-2">
-                                                    <select class="form-select itinerary-select">
-                                                        <option selected disabled>Select Activity ${index + 1}</option>
-                                                        ${availableActivities.map((act, actIndex) => {
+                                        const options = availableActivities.map(act => {
+                                            const isSelected = String(act) === String(selectedActivity) ? "selected" : "";
+                                            return `<option value="${act}" ${isSelected}>${act}</option>`;
+                                        }).join("");
 
-                                                            // console.log(`Adding Option ${actIndex + 1}:`, act);
-                                                            return `<option value="${act}" ${String(act) === String(activity) ? "selected" : ""}>${act}</option>`;
-                                                        }).join("")}
-                                                        
-                                                    </select>
+                                        return `
+                                            <div class="col-12 mb-2">
+                                                <select class="form-select itinerary-select" data-day="${day}">
+                                                    ${placeholderOption}
+                                                    ${options}
+                                                </select>
+                                            </div>
+                                                    `;
+                                        }).join("")
+                                        }
                                                 </div>
-                                            `;
-                                        }).join("")}
-                                    </div>
-                                </div>
-                            </div>
+                                            </div>
+                                        </div>
+
+
 
                         </div>
                     </div>
@@ -887,7 +921,7 @@
                     itinerary: JSON.stringify(liveItineraryData)
                 },
                 dataType: "json",
-                success: function(response) {
+                success: function (response) {
                     if (response.status === "success") {
                         alert("Itinerary successfully edited!");
                         window.location.href = "../Employee Section/emp-itinerarytable.php";
@@ -896,7 +930,7 @@
                         submitButton.disabled = false; // Re-enable on failure
                     }
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     console.error("AJAX Error:", error);
                     console.error("Response Text:", xhr.responseText);
                     alert("An error occurred while editing the itinerary.");
@@ -939,6 +973,7 @@
                 generateItinerary(itineraryDetails, daysDetails, itineraryId, itineraryName, format, function () {
                     $submitTourBtn.prop('disabled', false).text('Generate Itinerary');
                 });
+
             } else if (format === 'both') {
                 // Generate both formats sequentially (xlsx, then pdf)
                 generateItinerary(itineraryDetails, daysDetails, itineraryId, itineraryName, 'xlsx', function () {
@@ -1028,5 +1063,6 @@
     </script> -->
 
 
-    </body>
+</body>
+
 </html>

@@ -27,7 +27,9 @@ try {
     $countryCode = $_POST["countryCode"] ?? "";
     $contactNumber = $_POST["contactNumber"] ?? "";
     $guideName = $_POST["guide"] ?? "";
-    
+    $guideAccountId = $_POST["guideAccountId"] ?? "";
+
+
     // City & Hotel details
     $city1 = $_POST["city1"] ?? "";
     $hotel1 = $_POST["hotel1"] ?? "";
@@ -48,12 +50,12 @@ try {
     $conn->beginTransaction(); // Start transaction
 
     $stmtItinerary = $conn->prepare("INSERT INTO itineraries 
-    (userId, itineraryName, noOfDays, packageName, periodStart, periodEnd, guideName, countryCode, contactNumber, 
+    (userId, itineraryName, noOfDays, packageName, periodStart, periodEnd, accountId, guideName, countryCode, contactNumber, 
      city1, hotel1, city2, hotel2, city3, hotel3) 
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
     $stmtItinerary->execute([
-        $userId, $templateName, $noOfDays, $packageName, $periodStart, $periodEnd, $guideName, $countryCode, $contactNumber,
+        $userId, $templateName, $noOfDays, $packageName, $periodStart, $periodEnd, $guideAccountId, $guideName, $countryCode, $contactNumber,
         $city1, $hotel1, $city2, $hotel2, $city3, $hotel3
     ]);
 

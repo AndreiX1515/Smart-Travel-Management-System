@@ -17,31 +17,18 @@ error_reporting(E_ALL);
 
   <?php include "../Agent Section/includes/head.php"; ?>
 
-  <link rel="stylesheet" href="../Agent Section/assets/css/agent-addGuest.css?v=<?php echo time(); ?>">
+
   <link rel="stylesheet" href="../Agent Section/assets/css/navbar-sidebar.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="../Agent Section/assets/css/agent-addGuest.css?v=<?php echo time(); ?>">
 </head>
 <body>
 
-<div class="body-container">
+
   <?php include "../Agent Section/includes/sidebar.php"; ?>
 
-  <div class="main-content-container">
-    <div class="navbar">
-      <div class="backbutton-wrapper">
-        <div class="back-button-wrapper">
-          <a href="../Agent Section/agent-showGuest.php?id=<?= $_SESSION['transaction_number'] ?>" class="back-button-link">
-              <i class="fa-solid fa-arrow-left"></i>
-          </a>
-        </div>
+  <div class="main-container">
 
-        <div class="page-name-wrapper">
-            <h5>Add Guest Information</h5>
-        </div>
-
-      </div>
-    </div>
-
-    <?php 
+   <?php 
       // Check if the transaction number is set in the session
       if (isset($_SESSION['transaction_number'])) 
       {
@@ -52,18 +39,6 @@ error_reporting(E_ALL);
         echo "No transaction number found.";
       }
     ?>
-
-    <?php 
-      if(isset($_SESSION['status'])):
-    ?>
-      <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        <strong>Hey!</strong> <?= $_SESSION['status']; ?>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-    <?php 
-      unset($_SESSION['status']);
-      endif;
-    ?>  
 
     <!-- PHP to fetch the pax count -->
     <?php
@@ -101,30 +76,74 @@ error_reporting(E_ALL);
       $availablePax = $_SESSION['pax'] - $guestCount;
     ?>
 
-    <div class="main-content">
-      <div class="addguest-wrapper">
-        <div class="wrapper-header">
+    <div class="navbar">
+
+			<div class="page-header-wrapper">
+
+        <div class="first-half">
+          <div class="page-header-top">
+            <div class="back-btn-wrapper">
+              <button class="back-btn" id="redirect-btn">
+                <i class="fas fa-chevron-left"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="page-header-content">
+            <div class="page-header-text">
+              <h5 class="header-title">Add Guest</h5>
+            </div>
+          </div>
+        </div>
+				
+        <div class="second-half">
           <div class="transaction-wrapper">
-            <h6 class="fw-bold">Transaction No: <span class="fw-normal"><?php echo $transactionNumber ?></span></h6>
+            <div class="transaction-item">
+              <h6 class="fw-bold">Transaction No: <span class="fw-normal"><?php echo $transactionNumber ?></span></h6>
+            </div>
+            <div class="transaction-item">
+              <h6 class="fw-bold">Flight Date: <span class="fw-normal"><?php echo $flightdate; ?></span></h6>
+            </div>
+          </div>
+        </div>
+
+			</div>
+		</div>
+
+		<script>
+			document.getElementById('redirect-btn').addEventListener('click', function () {
+				window.location.href = '../Agent Section/agent-showGuest.php'; // Replace with your actual URL
+			});
+		</script>
+
+    <div class="main-content">
+
+      <div class="addguest-wrapper">
+
+        <div class="wrapper-header">
+
+          <div class="transaction-wrapper">
+            
             <h6 class="fw-bold">Total Pax: <span class="fw-normal"><?php echo $_SESSION['pax']; ?></span></h6>
             <h6 class="fw-bold">Available Pax: <span class="fw-normal"><?php echo $availablePax; ?></span></h6>
-            <h6 class="fw-bold">Flight Date: <span class="fw-normal"><?php echo $flightdate; ?></span></h6>
+            
           </div>
 
           <div>
             <button id="addGuestFormButton" type="button" class="btn btn-primary">Add Guest Information Form</button>
           </div>
+
         </div>
 
         <div class="wrapper-body">
-          <!-- Dynamically generate Guest Information Cards based on pax -->
+
           <form class="card-form" action="../Agent Section/functions/agent-addGuest-code.php" id="guestForm" method="POST">
             <input type="hidden" name="transactNo" value="<?php echo $transactionNumber; ?>">
 
             <!-- Guest Forms Container -->
             <div class="guestInfo-wrapper" id="guestFormsContainer">
               <!-- Default initial form -->
-              <div class="card guest-form">
+              <div class="card">
 
                 <div class="card-header">
                   <h5 class="">Guest Information 1</h5>
@@ -743,14 +762,18 @@ error_reporting(E_ALL);
                 </div>
 
               </div>
+
             </div>
 
-            <div class="card-footer">
-              <button type="submit" class="btn btn-primary" id="addGuest" name="addGuestInformation">Save Guest Information</button>
-            </div>
+           
 
           </form> 
+        </div>
 
+        <div class="wrapper-footer">
+           <div class="card-footer">
+              <button type="submit" class="btn btn-primary" id="addGuest" name="addGuestInformation">Save Guest Information</button>
+            </div>
         </div>
 
       </div>
@@ -758,8 +781,6 @@ error_reporting(E_ALL);
 
     </div>
   </div>
-
-</div>
 
 
 <?php require "../Agent Section/includes/scripts.php"; ?>

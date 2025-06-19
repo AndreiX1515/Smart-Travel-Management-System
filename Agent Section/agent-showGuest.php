@@ -122,13 +122,14 @@ error_reporting(E_ALL);
             $price = $row1['totalPrice'];
             $flightId = $row1['flightId']; // Fetch flightId
 
-            // Construct the full name using the conditions for middle name and suffix
+
             $fullName = $lName . ", " . $fName . " " .
-              ($suffix !== 'N/A' ? $suffix . " " : "") .  // Add space after suffix only if it's not 'N/A'
-              ($mName !== 'N/A' ? substr($mName, 0, 1) . ". " : "");  // Add middle initial with dot only if it's not 'N/A'
+              ($suffix !== 'N/A' ? $suffix . " " : "") .  
+              ($mName !== 'N/A' ? substr($mName, 0, 1) . ". " : ""); 
+
             $contactNo = $countryCode . $contact;
 
-            // Check if flightId is NULL and set flightDate accordingly
+
             if (is_null($flightId)) 
             {
               $flightDate = "Land Package Only";
@@ -167,6 +168,7 @@ error_reporting(E_ALL);
         <div class="show-guest-wrapper">
           
           <div class="header">
+
             <div class="transaction-info">
               <div class="transaction-header">
                 <h5 class="">Transaction Information: </h5>
@@ -292,8 +294,10 @@ error_reporting(E_ALL);
 
               </div>
             </div>
+            
           </div>
 
+          
           <div class="pills-tab-container">
             <ul class="nav nav-pills" id="pills-tab" role="tablist">
               <li class="nav-item" role="presentation">
