@@ -124,11 +124,11 @@
             </li>
 
             <!-- With Remaining Balance Tab -->
-            <li class="nav-item" role="presentation">
+            <!-- <li class="nav-item" role="presentation">
               <button class="nav-link" id="pills-remaining-balance-tab" data-bs-toggle="pill"
                 data-bs-target="#pills-remaining-balance" type="button" role="tab"
                 aria-controls="pills-remaining-balance" aria-selected="false">WITH REMAINING BALANCE</button>
-            </li>
+            </li> -->
 
           </ul>
         </div>
@@ -141,7 +141,7 @@
           tabindex="0">
 
           <?php
-          include '../Employee Section/transactionTable/transactionTable-Status.php';
+            include '../Employee Section/transactionTable/transactionTable-Status.php';
           ?>
 
         </div>
@@ -150,7 +150,7 @@
         <div class="tab-pane fade" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
 
           <?php
-          include '../Employee Section/transactionTable/transactionTable-OnDue.php';
+            include '../Employee Section/transactionTable/transactionTable-OnDue.php';
           ?>
 
         </div>

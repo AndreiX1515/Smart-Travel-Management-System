@@ -1,5 +1,7 @@
 <?php
 $statusTab = isset($_GET['status']) ? $_GET['status'] : 'all';
+$showAll = isset($_GET['showAll']) && $_GET['showAll'] == '1';
+$dateFilter = $showAll ? '' : "f.flightDepartureDate > CURDATE()";
 ?>
 
 <div class="table-container">
@@ -10,6 +12,15 @@ $statusTab = isset($_GET['status']) ? $_GET['status'] : 'all';
       <div class="search-input-wrapper">
         <input type="text" id="search" placeholder="Search here..">
       </div>
+    </div>
+
+    <div>
+      <form method="GET">
+        <input type="checkbox" id="showAll" name="showAll" value="1"
+          <?= isset($_GET['showAll']) ? 'checked' : '' ?>
+          onchange="this.form.submit()">
+        <label for="showAll">Show All Transactions</label>
+      </form>
     </div>
 
     <div class="second-header-wrapper">
@@ -51,7 +62,10 @@ $statusTab = isset($_GET['status']) ? $_GET['status'] : 'all';
         <span class="badge-status-tab">
           <h6>
             <?php
-              $sql = "SELECT COUNT(*) AS totalBookings FROM booking;";
+              $sql = "SELECT COUNT(*) AS totalBookings 
+                      FROM booking b 
+                      JOIN flight f ON f.flightId = b.flightId 
+                      WHERE 1 " . ($dateFilter ? "AND $dateFilter" : "");
               $result = mysqli_query($conn, $sql);
               echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
             ?>
@@ -64,8 +78,10 @@ $statusTab = isset($_GET['status']) ? $_GET['status'] : 'all';
         <span class="badge-status-tab">
           <h6>
             <?php
-              $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
-                      WHERE status = 'Pending'";
+              $sql = "SELECT COUNT(*) AS totalBookings 
+                      FROM booking b 
+                      JOIN flight f ON f.flightId = b.flightId 
+                      WHERE b.status = 'Pending' " . ($dateFilter ? "AND $dateFilter" : "");
               $result = mysqli_query($conn, $sql);
               echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
             ?>
@@ -78,8 +94,10 @@ $statusTab = isset($_GET['status']) ? $_GET['status'] : 'all';
         <span class="badge-status-tab">
           <h6>
             <?php
-              $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
-                      WHERE status = 'Reserved'";
+              $sql = "SELECT COUNT(*) AS totalBookings 
+                      FROM booking b 
+                      JOIN flight f ON f.flightId = b.flightId 
+                      WHERE b.status = 'Reserved' " . ($dateFilter ? "AND $dateFilter" : "");
               $result = mysqli_query($conn, $sql);
               echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
             ?>
@@ -92,8 +110,10 @@ $statusTab = isset($_GET['status']) ? $_GET['status'] : 'all';
         <span class="badge-status-tab">
           <h6>
             <?php
-              $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
-                      WHERE status = 'Confirmed'";
+              $sql = "SELECT COUNT(*) AS totalBookings 
+                      FROM booking b 
+                      JOIN flight f ON f.flightId = b.flightId 
+                      WHERE b.status = 'Confirmed' " . ($dateFilter ? "AND $dateFilter" : "");
               $result = mysqli_query($conn, $sql);
               echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
             ?>
@@ -106,8 +126,10 @@ $statusTab = isset($_GET['status']) ? $_GET['status'] : 'all';
         <span class="badge-status-tab">
           <h6>
             <?php
-              $sql = "SELECT COUNT(*) AS totalBookings FROM booking 
-                      WHERE status = 'Cancelled'";
+              $sql = "SELECT COUNT(*) AS totalBookings 
+                      FROM booking b 
+                      JOIN flight f ON f.flightId = b.flightId 
+                      WHERE b.status = 'Cancelled' " . ($dateFilter ? "AND $dateFilter" : "");
               $result = mysqli_query($conn, $sql);
               echo ($result) ? mysqli_fetch_assoc($result)['totalBookings'] : 0;
             ?>
@@ -145,6 +167,11 @@ $statusTab = isset($_GET['status']) ? $_GET['status'] : 'all';
               die("Database connection error.");
             }
 
+            $whereClauses = [];
+            if ($dateFilter) $whereClauses[] = $dateFilter;
+
+            $where = count($whereClauses) ? 'WHERE ' . implode(' AND ', $whereClauses) : '';
+
             $sql = "SELECT b.transactNo, DATE_FORMAT(f.flightDepartureDate, '%Y.%m.%d') AS departureDate, f.returnDepartureDate AS returnDate, 
                       b.status AS bookingStatus, CONCAT(f.flightDepartureDate, ' | ', f.returnDepartureDate) AS FlightDate, 
                       p.packageName AS PackageName, b.bookingDate, b.pax AS TotalPax,  
@@ -167,6 +194,7 @@ $statusTab = isset($_GET['status']) ? $_GET['status'] : 'all';
                     LEFT JOIN company cc ON cl.companyId = cc.companyId
                     LEFT JOIN payment pa ON pa.transactNo = b.transactNo AND pa.paymentStatus = 'Approved'
                     LEFT JOIN request r ON r.transactNo = b.transactNo AND r.requestStatus = 'Confirmed'
+                    $where
                     GROUP BY 
                         b.transactNo, f.flightDepartureDate, f.returnDepartureDate, b.status, 
                         p.packageName, b.bookingDate, b.pax, b.totalPrice, a.lName, a.fName, a.mName, br.branchName
@@ -226,6 +254,8 @@ $statusTab = isset($_GET['status']) ? $_GET['status'] : 'all';
             } else {
               echo "<tr><td colspan='8' class='text-center'>No records found</td></tr>";
             }
+
+            echo "<!-- DEBUG: Total rows = " . ($result->num_rows ?? 0) . " -->";
           ?>
         </tbody>
         
@@ -323,160 +353,74 @@ $statusTab = isset($_GET['status']) ? $_GET['status'] : 'all';
 <!-- DataTables #product-table -->
 <script>
   $(document).ready(function () {
+    // Destroy previous instance if it exists
+    if ($.fn.DataTable.isDataTable('#product-table')) {
+      $('#product-table').DataTable().destroy();
+    }
 
-    const tableProduct = $('#product-table').DataTable(
-      {
-        dom: 'rtip',
-        language:
-        {
-          emptyTable: "No Transaction Records Available"
-        },
-        order: [[2, 'asc']],
-        scrollX: false,
-        paging: true,
-        pageLength: 14,
-        autoWidth: false,
-        autoHeight: false,
-        columnDefs: [
-          // Disable sorting where needed
-          { targets: [1, 3, 4, 5, 6, 7], orderable: false }
-        ]
-      });
-
-    // Search
-    $('#search').on('keyup', function () {
-      tableProduct.search(this.value).draw();
+    const tableProduct = $('#product-table').DataTable({
+      dom: 'rtip',
+      language: {
+        emptyTable: "No Transaction Records Available"
+      },
+      order: [[2, 'asc']],
+      scrollX: false,
+      paging: true,
+      pageLength: 14,
+      autoWidth: false,
+      autoHeight: false,
+      columnDefs: [
+        { targets: [1, 3, 4, 5, 6, 7], orderable: false }
+      ]
     });
 
-    // Update custom pagination info
+    // Always recalculate pagination correctly
     function updatePagination() {
       const info = tableProduct.page.info();
       const currentPage = info.page + 1;
       const totalPages = info.pages;
 
       $('#pageInfo').text(`Page ${currentPage} of ${totalPages}`);
-      const isSinglePage = totalPages <= 1;
-
-      $('#prevPage').prop('disabled', currentPage === 1 || isSinglePage);
-      $('#nextPage').prop('disabled', currentPage === totalPages || isSinglePage);
+      $('#prevPage').prop('disabled', currentPage === 1 || totalPages <= 1);
+      $('#nextPage').prop('disabled', currentPage === totalPages || totalPages <= 1);
     }
 
-    $('#prevPage').on('click', function () {
-      tableProduct.page('previous').draw('page');
+    tableProduct.on('draw', function () {
       updatePagination();
     });
+
+    tableProduct.draw();
 
     $('#nextPage').on('click', function () {
+      tableProduct.one('draw', updatePagination); // Wait until draw completes
       tableProduct.page('next').draw('page');
-      updatePagination();
     });
 
-    updatePagination();
+    $('#prevPage').on('click', function () {
+      tableProduct.one('draw', updatePagination); // Wait until draw completes
+      tableProduct.page('previous').draw('page');
+    });
 
-    // Clear filters and reset table
+    $('#search').on('keyup', function () {
+      tableProduct.search(this.value).draw();
+    });
+
     $('#clearSorting').on('click', function () {
       $('#search').val('');
       tableProduct.search('').draw();
 
       $('#packages').val('').trigger('change');
+      $('#status').val('').trigger('change');
 
       tableProduct.order([[2, 'asc']])
-        .search('')
         .columns().search('')
         .draw();
-
-      updatePagination();
     });
 
-    // Filters
     $('#packages').on('change', function () {
       const selectedPackage = $(this).val();
       tableProduct.column(1).search(selectedPackage || '').draw();
     });
+  });
 
-    // $('#BookingStartDate').on('change', function () {
-    //     const selectedBookingDate = $(this).val();
-    //     console.log("Booking Date Filter:", selectedBookingDate);
-    //     tableProduct.column(3).search(selectedBookingDate || '').draw();
-    // });
-
-    // $('#FlightStartDate').on('change', function () {
-    //     const selectedFlightDate = $(this).val();
-    //     console.log("Flight Date Filter:", selectedFlightDate);
-    //     tableProduct.column(2).search(selectedFlightDate || '').draw();
-    // });
-
-    // // Datepickers
-    // $("#FlightStartDate").datepicker({
-    //     dateFormat: "yy-mm-dd",
-    //     showAnim: "fadeIn",
-    //     changeMonth: true,
-    //     changeYear: true,
-    //     yearRange: "1900:2100",
-    //     onSelect: function (dateText) {
-    //         $(this).val(dateText);
-    //         console.log("FlightStartDate Selected Date:", dateText);
-    //         tableProduct.column(2).search(dateText || '').draw();
-    //     }
-    // });
-
-    // $("#BookingStartDate").datepicker({
-    //     dateFormat: "mm-dd-yy",
-    //     showAnim: "fadeIn",
-    //     changeMonth: true,
-    //     changeYear: true,
-    //     yearRange: "1900:2100",
-    //     onSelect: function (dateText) {
-    //         $(this).val(dateText);
-    //         console.log("BookingStartDate Selected Date:", dateText);
-    //         tableProduct.column(4).search(dateText || '').draw();
-    //     }
-    // });
-
-    // // BookingStartDate input formatting
-    // $("#BookingStartDate").on("input", function () {
-    //     let value = $(this).val().replace(/[^\d-]/g, '');
-
-    //     if (value.length > 2 && value.charAt(2) !== '-') {
-    //         value = value.substring(0, 2) + '-' + value.substring(2);
-    //     }
-    //     if (value.length > 5 && value.charAt(5) !== '-') {
-    //         value = value.substring(0, 5) + '-' + value.substring(5);
-    //     }
-    //     if (value.length > 10) {
-    //         value = value.substring(0, 10);
-    //     }
-
-    //     $(this).val(value);
-    //     tableProduct.column(5).search(value || '').draw();
-    //     console.log("BookingStartDate Input Value:", value);
-    // });
-
-
-
-
-
-    // Clear filters and reset table
-    
-    
-    $('#clearSorting').on('click', function () {
-      $('#search').val('');
-      tableProduct.search('').draw();
-
-      $('#status').val('').trigger('change');
-      $('#packages').val('').trigger('change');
-
-      // $('#BookingStartDate').val('').trigger('change');
-      // $('#FlightStartDate').val('').trigger('change');
-
-      tableProduct.order([[2, 'asc']])
-        .search('')
-        .columns().search('')
-        .draw();
-
-      updatePagination();
-    });
-
-  }); 
 </script>
-
