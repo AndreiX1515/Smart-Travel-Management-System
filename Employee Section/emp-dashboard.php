@@ -1008,8 +1008,7 @@ error_reporting(E_ALL);
                         <th>TOTAL PAX.</th>
                         <th>BOOKING TYPE</th>
                         <th>PACKAGE PRICE</th>
-                        <th>AMOUNT INFO</th>
-                        // 
+                        <th>AMOUNT INFO</th> 
                         <th>COMMENT</th>
                       </tr>
                     </thead>
