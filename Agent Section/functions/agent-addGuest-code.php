@@ -18,7 +18,7 @@
     $nationalities = $_POST['nationality']; 
     $passportNos = array_map('strtoupper', $_POST['passportNo']);
     $passportExps = $_POST['passportExp'];
-    $passportIssuedDates = $_POST['passportIssued'];
+    $passportIssuedDates = $_POST['passportIssuedDate'];
     $countryCode1st = $_POST['countryCode']; 
     $contactNo1st = $_POST['contactNo'];
     $countryCode2nd = $_POST['2ndcountryCode'];
@@ -38,8 +38,8 @@
     $stmt = $conn->prepare("INSERT INTO `guest` 
       (`transactNo`, `fName`, `lName`, `mName`, `suffix`, `birthdate`, `age`, `sex`, `nationality`, 
       `countryCode`, `contactNo`, `countryCode2`, `contactNo2`, `emailAdd`, `addressLine1`, `addressLine2`, 
-      `city`, `state`, `zipCode`, `country`, `passportNo`, `passportExp`) 
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+      `city`, `state`, `zipCode`, `country`, `passportNo`, `passportIssuedDate`, `passportExp`) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
     // Loop through each entry in the arrays and bind parameters for each iteration
     foreach ($fNames as $index => $fName) 
@@ -52,7 +52,7 @@
       $sex = $sexes[$index];
       $nationality = $nationalities[$index];
       $passportNo = $passportNos[$index];
-      $passportIssuedDate = $passportIssuedDates[$index];
+      $passportIssuedDates = $passportIssuedDates[$index];
       $passportExp = $passportExps[$index];
       $countryCode1 = $countryCode1st[$index];
       $contactNo1 = $contactNo1st[$index];
@@ -67,12 +67,12 @@
       $country = $countries[$index];
 
       // Bind parameters using 'ssssssisssssssssssssss', adjusting for the correct data types
-      $stmt->bind_param("ssssssisssssssssssssss", 
+      $stmt->bind_param("ssssssissssssssssssssss", 
         $transactNo, $fName, $lName, $mName, $suffix, 
         $birthdate, $age, $sex, $nationality, 
         $countryCode1, $contactNo1, $countryCode2, $contactNo2, 
         $email, $addressLine1, $addressLine2, $city, 
-        $state, $zipCode, $country, $passportNo, $passportExp);
+        $state, $zipCode, $country, $passportNo, $passportIssuedDates, $passportExp);
 
       // Execute the statement
       if (!$stmt->execute()) 
