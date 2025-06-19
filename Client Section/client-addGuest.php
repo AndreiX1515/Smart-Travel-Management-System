@@ -22,25 +22,12 @@ error_reporting(E_ALL);
 </head>
 <body>
 
-<div class="body-container">
+
   <?php include "../Client Section/Includes/client-sidebar.php"; ?>
 
-  <div class="main-content-container">
-    <div class="navbar">
-      <div class="backbutton-wrapper">
-        <div class="back-button-wrapper">
-          <a href="../Client Section/client-transactionInfo.php?id=<?= $_SESSION['transaction_number'] ?>" class="back-button-link">
-            <i class="fa-solid fa-arrow-left"></i>
-          </a>
-        </div>
+  <div class="main-container">
 
-        <div class="page-name-wrapper">
-            <h5>Add Guest Information</h5>
-        </div>
-
-      </div>
-    </div>
-
+    
     <?php 
       // Check if the transaction number is set in the session
       if (isset($_SESSION['transaction_number'])) 
@@ -101,10 +88,54 @@ error_reporting(E_ALL);
       $availablePax = $_SESSION['pax'] - $guestCount;
     ?>
 
-    <div class="main-content">
+    <div class="navbar">
+
+			<div class="page-header-wrapper">
+
+        <div class="first-half">
+          <div class="page-header-top">
+            <div class="back-btn-wrapper">
+              <button class="back-btn" id="redirect-btn">
+                <i class="fas fa-chevron-left"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="page-header-content">
+            <div class="page-header-text">
+              <h5 class="header-title">Add Guest</h5>
+            </div>
+          </div>
+        </div>
+				
+        <div class="second-half">
+          <div class="transaction-wrapper">
+            <div class="transaction-item">
+              <h6 class="fw-bold">Transaction No: <span class="fw-normal"><?php echo $transactionNumber ?></span></h6>
+            </div>
+            <div class="transaction-item">
+              <h6 class="fw-bold">Flight Date: <span class="fw-normal"><?php echo $flightdate; ?></span></h6>
+            </div>
+          </div>
+        </div>
+
+			</div>
+		</div>
+
+		<script>
+			document.getElementById('redirect-btn').addEventListener('click', function () {
+				window.location.href = '../Client Section/client-transactionInfo.php'; // Replace with your actual URL
+			});
+		</script>
+
+
+     <div class="main-content">
+
       <div class="addguest-wrapper">
+
         <div class="wrapper-header">
-            <div class="transaction-wrapper">
+
+          <div class="transaction-wrapper">
               <h6 class="fw-bold">Transaction No: <span class="fw-normal"><?php echo $transactionNumber ?></span></h6>
               <h6 class="fw-bold">Total Pax: <span class="fw-normal"><?php echo $_SESSION['pax']; ?></span></h6>
               <h6 class="fw-bold">Available Pax: <span class="fw-normal"><?php echo $availablePax; ?></span></h6>
@@ -114,6 +145,7 @@ error_reporting(E_ALL);
             <div>
               <button id="addGuestFormButton" type="button" class="btn btn-primary">Add Guest Information Form</button>
             </div>
+
         </div>
 
         <div class="wrapper-body">
@@ -745,21 +777,25 @@ error_reporting(E_ALL);
               </div>
             </div>
 
-            <div class="card-footer">
+        </div>
+
+        <div class="wrapper-footer">
+           <div class="card-footer">
               <button type="submit" class="btn btn-primary" id="addGuest" name="addGuestInformation">Save Guest Information</button>
             </div>
 
           </form> 
-
         </div>
 
       </div>
       
 
-    </div>
+     </div>
+
+
+    
   </div>
 
-</div>
 
 
 <?php require "../Agent Section/includes/scripts.php"; ?>

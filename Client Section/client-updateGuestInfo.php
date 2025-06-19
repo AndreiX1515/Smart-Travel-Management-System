@@ -26,6 +26,7 @@
 </head>
 
 <body>
+  
   <div class="main-content" id="mainContent">
     <?php 
       include '../Client Section/Includes/client-navbar.php'; 
