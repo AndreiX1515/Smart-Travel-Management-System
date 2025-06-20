@@ -17,8 +17,8 @@
     $sexes = $_POST['sex'];
     $nationalities = $_POST['nationality']; 
     $passportNos = array_map('strtoupper', $_POST['passportNo']);
-    $passportExps = $_POST['passportExp'];
-    $passportIssuedDates = $_POST['passportIssuedDate'];
+    $passportIssuedDates = $_POST['passportIssuedDate']; 
+    $passportExps = $_POST['passportExp']; 
     $countryCode1st = $_POST['countryCode']; 
     $contactNo1st = $_POST['contactNo'];
     $countryCode2nd = $_POST['2ndcountryCode'];
@@ -52,7 +52,7 @@
       $sex = $sexes[$index];
       $nationality = $nationalities[$index];
       $passportNo = $passportNos[$index];
-      $passportIssuedDates = $passportIssuedDates[$index];
+      $passportIssuedDate = $passportIssuedDates[$index];
       $passportExp = $passportExps[$index];
       $countryCode1 = $countryCode1st[$index];
       $contactNo1 = $contactNo1st[$index];
@@ -72,7 +72,7 @@
         $birthdate, $age, $sex, $nationality, 
         $countryCode1, $contactNo1, $countryCode2, $contactNo2, 
         $email, $addressLine1, $addressLine2, $city, 
-        $state, $zipCode, $country, $passportNo, $passportIssuedDates, $passportExp);
+        $state, $zipCode, $country, $passportNo, $passportIssuedDate, $passportExp);
 
       // Execute the statement
       if (!$stmt->execute()) 

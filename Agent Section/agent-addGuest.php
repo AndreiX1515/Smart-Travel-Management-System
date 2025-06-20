@@ -143,7 +143,7 @@ error_reporting(E_ALL);
             <!-- Guest Forms Container -->
             <div class="guestInfo-wrapper" id="guestFormsContainer">
               <!-- Default initial form -->
-              <div class="card">
+              <div class="card guest-form">
 
                 <div class="card-header">
                   <h5 class="">Guest Information 1</h5>
@@ -252,7 +252,7 @@ error_reporting(E_ALL);
                       </div>
                     </div>
 
-                    <!--Guest Passport No, and Expiration-->
+                    <!--Guest Passport No, Passport IssuedDate, and Expiration-->
                     <div class="row">
                       <div class="columns col-md-4">
                         <div class="form-group">
@@ -762,18 +762,13 @@ error_reporting(E_ALL);
                 </div>
 
               </div>
-
             </div>
 
-           
-
-          </form> 
-        </div>
-
-        <div class="wrapper-footer">
-           <div class="card-footer">
+            <div class="card-footer">
               <button type="submit" class="btn btn-primary" id="addGuest" name="addGuestInformation">Save Guest Information</button>
             </div>
+
+          </form>
         </div>
 
       </div>
@@ -851,7 +846,7 @@ error_reporting(E_ALL);
           { name: 'nationality', error: 'Nationality is required.' },
           { name: 'passportNo', error: 'Passport number is required.' },
           { name: 'passportIssuedDate', error: 'Passport Issued Date is required.' },
-          { name: 'passportExp', error: 'Passport expiration date is required.' },
+          { name: 'passportExp', error: 'Passport Expiration date is required.' },
           { name: 'countryCode', error: 'Country Code is required.', isSelect: true },
           { name: 'contactNo', error: 'Contact number is required.' },
           { name: 'email', error: 'Email is required.' },
