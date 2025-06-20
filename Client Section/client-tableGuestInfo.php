@@ -141,6 +141,7 @@
                       <td>{$emailAdd}</td>
                       <td>{$address}</td>
                       <td>{$passportNo}</td>
+                      <td>{$passportIssuedDate}</td>
                       <td>{$passportExp}</td>
                       <td>{$row['visaStatus']}</td>
                     </tr>";
