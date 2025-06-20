@@ -57,9 +57,9 @@ if (isset($_POST['itineraryDetails']) && isset($_POST['daysDetails'])) {
 
         $pageMargins = $sheet->getPageMargins();
         $pageMargins->setTop(0.2);       // 0.2 inch top margin
-        $pageMargins->setBottom(0.30);   // 0.75 inch bottom margin
-        $pageMargins->setLeft(0.25);     // 0.25 inch left margin
-        $pageMargins->setRight(0.15);    // 0.15 inch right margin
+        $pageMargins->setBottom(0.1);   // 0.75 inch bottom margin
+        $pageMargins->setLeft(0.1);     // 0.25 inch left margin
+        $pageMargins->setRight(0.1);    // 0.15 inch right margin
         $pageMargins->setHeader(0.3);    // 0.3 inch header
         $pageMargins->setFooter(0.3);    // 0.3 inch footer
 
@@ -228,8 +228,6 @@ if (isset($_POST['itineraryDetails']) && isset($_POST['daysDetails'])) {
         setDay1Hotels($sheet, $day1);
         setDay1Activities($sheet, $day1);
         setDay1Meals($sheet, $day1);
-
-
 
         // Day 2
         // Function to display and set values for Areas on Day 2

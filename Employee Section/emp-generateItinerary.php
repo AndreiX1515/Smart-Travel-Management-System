@@ -399,8 +399,6 @@
 		});
 	</script> -->
 
-
-
 	<!-- Datepicker Script -->
 	<script>
 		$(document).ready(function () {
