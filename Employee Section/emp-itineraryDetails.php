@@ -46,12 +46,14 @@
 			</div>
 		</div>
 
+		<!-- Navbar Back Script -->
 		<script>
 			document.getElementById('redirect-btn').addEventListener('click', function () {
 				window.location.href = '../Employee Section/emp-itineraryTable.php'; // Replace with your actual URL
 			});
 		</script>
 
+		<!-- DB Query for Itinerary Details based on Itinerary ID -->
 		<?php
 		if (!isset($_GET['id'])) {
 			die("Invalid Itinerary ID");
@@ -354,66 +356,96 @@
 							$hotelKey = "hotel" . ($i + 1);
 							$selectedCity = $itinerary['cities'][$i]['city'] ?? "";
 							$selectedHotel = $itinerary['cities'][$i]['hotel'] ?? "";
-							?>
+						?>
 
-							<div class="row">
+							<div class="row mb-3 cityhotel-row">
 								<div class="columns col-md-8">
-									<div class="cityhotel-wrapper">
+									<div class="cityhotel-wrapper d-flex flex-row align-items-center gap-2">
+
 										<!-- City dropdown -->
 										<div class="cityhotel-item">
 											<div class="form-group d-flex flex-row align-items-center">
-												<select class="form-select city-select" id="<?= $cityKey ?>" name="city(<?= $i + 1 ?>)"
-													data-index="<?= $i ?>" required>
-													<option value="" disabled <?= (!isset($selectedCity) || $selectedCity === "") ? 'selected' : '' ?>>
-														Select City</option>
-
+												<select class="form-select city-select" id="<?= $cityKey ?>" name="city(<?= $i + 1 ?>)" data-index="<?= $i ?>" required>
+													<option value="" disabled <?= empty($selectedCity) ? 'selected' : '' ?>>Select City</option>
 													<?php foreach ($cities as $city): ?>
-														<option value="<?= $city ?>" <?= (isset($selectedCity) && $selectedCity === $city) ? 'selected' : '' ?>>
-															<?= $city ?>
-														</option>
+														<option value="<?= $city ?>" <?= $selectedCity === $city ? 'selected' : '' ?>><?= $city ?></option>
 													<?php endforeach; ?>
 												</select>
 											</div>
 										</div>
-
-
-
 
 										<div class="dash-separator">-></div>
 
 										<!-- Hotel dropdown -->
 										<div class="cityhotel-item">
 											<div class="form-group d-flex flex-row align-items-center">
-												<select class="form-select hotel-select" id="<?= $hotelKey ?>" name="hotel(<?= $i + 1 ?>)"
-													required>
-													<option disabled <?= empty($selectedHotel) ? 'selected' : '' ?>>Select
-														Hotel</option>
+												<select class="form-select hotel-select" id="<?= $hotelKey ?>" name="hotel(<?= $i + 1 ?>)" required>
+													<option value="" disabled <?= empty($selectedHotel) ? 'selected' : '' ?>>Select Hotel</option>
+
 													<?php
-													if (!empty($selectedCity) && isset($hotels[$selectedCity])):
+													if (!empty($selectedCity) && isset($hotels[$selectedCity])) {
 														foreach ($hotels[$selectedCity] as $hotel): ?>
-															<option value="<?= $hotel ?>" <?= ($hotel === $selectedHotel) ? 'selected' : '' ?>><?= $hotel ?>
-															</option>
+															<option value="<?= $hotel ?>" <?= $selectedHotel === $hotel ? 'selected' : '' ?>><?= $hotel ?></option>
 														<?php endforeach;
-													endif;
+													}
 													?>
 												</select>
 											</div>
 										</div>
+
+										<!-- Trash button -->
+										<button type="button" class="btn btn-danger btn-sm remove-cityhotel <?= ($selectedCity || $selectedHotel) ? '' : 'd-none' ?>">
+											<i class="fas fa-trash-alt"></i>
+										</button>
+
 									</div>
 								</div>
 							</div>
 
+						<?php } ?>
+
+
 
 							<script>
-								document.addEventListener("DOMContentLoaded", function () {
-									let selectedCity<?= $i ?> = document.getElementById("<?= $cityKey ?>").value;
-									// console.log("Selected City <?= $i + 1 ?>:", selectedCity<?= $i ?>);
+								document.addEventListener('change', function (e) {
+									// Show/Hide Trash Icon for City/Hotel Combo Row
+									if (e.target.classList.contains('city-select') || e.target.classList.contains('hotel-select')) {
+										const row = e.target.closest('.cityhotel-row');
+										const city = row.querySelector('.city-select')?.value;
+										const hotel = row.querySelector('.hotel-select')?.value;
+										const trashBtn = row.querySelector('.remove-cityhotel');
+
+										if (trashBtn) {
+											trashBtn.classList.toggle('d-none', !(city || hotel));
+										}
+									}
+								});
+
+								document.addEventListener('click', function (e) {
+									const btn = e.target.closest('.remove-cityhotel');
+									if (btn) {
+										const row = btn.closest('.cityhotel-row');
+										const citySelect = row.querySelector('.city-select');
+										const hotelSelect = row.querySelector('.hotel-select');
+
+										if (citySelect) {
+											citySelect.selectedIndex = 0; // Reset to placeholder
+											citySelect.dispatchEvent(new Event("change"));
+										}
+
+										if (hotelSelect) {
+											hotelSelect.selectedIndex = 0; // Reset to placeholder
+											hotelSelect.dispatchEvent(new Event("change"));
+										}
+
+										btn.classList.add('d-none');
+									}
 								});
 							</script>
 
-						<?php } ?>
 					</div>
 				</div>
+
 
 				<div class="card select-days-card">
 					<div class="card-header">
@@ -484,8 +516,6 @@
 				});
 			</script>
 
-
-
 		</div>
 	</div>
 
@@ -513,7 +543,6 @@
 			</div>
 		</div>
 	</div>
-
 
 	<?php include '../Employee Section/includes/emp-scripts.php' ?>
 
@@ -571,20 +600,34 @@
 	<script>
 
 		let liveItineraryData;
+		const originalJsonData = <?= json_encode($jsonData) ?>;
+		const originalJsonString = JSON.stringify(sortKeys(originalJsonData));
+
+		// Utility to deeply sort object keys for comparison
+		function sortKeys(obj) {
+			if (Array.isArray(obj)) {
+				return obj.map(sortKeys);
+			} else if (obj !== null && typeof obj === 'object') {
+				return Object.keys(obj).sort().reduce((acc, key) => {
+					acc[key] = sortKeys(obj[key]);
+					return acc;
+				}, {});
+			}
+			return obj;
+		}
 
 		document.addEventListener("DOMContentLoaded", function () {
-
-			document.getElementById('submitEdit').disabled = true;
-			document.getElementById('select-days').disabled = true;
-
+			const submitEditBtn = document.getElementById('submitEdit');
+			const generateBtn = document.getElementById('submitTour');
+			const selectDays = document.getElementById('select-days');
 			const itineraryContainer = document.getElementById("itinerary-container");
-			const selectDays = document.getElementById("select-days");
-			const formFooter = document.querySelector(".form-footer");
+
+			submitEditBtn.disabled = true;
+			selectDays.disabled = true;
+			if (generateBtn) generateBtn.disabled = true;
 
 			let itineraryData = <?= json_encode($itinerary); ?>;
-
-			liveItineraryData = JSON.parse(JSON.stringify(itineraryData)); // ✅ assign, don't declare
-
+			liveItineraryData = JSON.parse(JSON.stringify(itineraryData)); // Clone
 
 			window.updateLiveItineraryData = function () {
 				const itineraryName = document.getElementById("itineraryName").value;
@@ -626,10 +669,7 @@
 					let hotels = Array.from(card.querySelectorAll(".hotel-select")).map(sel => sel.value);
 					const activities = Array.from(card.querySelectorAll(".itinerary-select")).map(sel => sel.value);
 
-					// ✅ Ensure exactly 2 hotel entries
 					while (hotels.length < 2) hotels.push("");
-
-					// ✅ Ensure exactly 3 area entries
 					while (areas.length < 3) areas.push("");
 
 					daysDetails.push({
@@ -641,15 +681,34 @@
 					});
 				});
 
-
-				// Assign the result to the global variable
+				// Update global reference
 				liveItineraryData = {
-					itineraryDetails,  // Updated sequence: itineraryDetails first
-					daysDetails  // daysDetails second
+					itineraryDetails,
+					daysDetails
 				};
 
-				console.log("Updated from DOM:", JSON.stringify(liveItineraryData, null, 2));
+				// const currentString = JSON.stringify(sortKeys(liveItineraryData));
+				// const originalSorted = JSON.stringify(sortKeys(originalJsonData));
+				// const isSame = currentString === originalSorted;
+
+				// Update button states
+				// if (generateBtn) generateBtn.disabled = isSame;
+				// if (submitEditBtn) submitEditBtn.disabled = isSame;
+
+				console.log(JSON.stringify(liveItineraryData, null, 2));
 			};
+
+
+			document.addEventListener("DOMContentLoaded", function () {
+				document.getElementById('submitEdit').disabled = true;
+				document.getElementById('select-days').disabled = true;
+
+				// Disable "Generate Itinerary" initially if no changes
+				const generateBtn = document.getElementById("submitTour");
+				if (generateBtn) {
+					generateBtn.disabled = true;
+				}
+			});
 
 
 			// Ensure days exist as an array
@@ -674,24 +733,94 @@
 			};
 
 
-			// Korean Tour Data
+
+
+			// Areas
 			const koreanTourAreas = ["Seoul", "Busan", "Jeju", "Incheon", "Gyeongju"];
 
-			const koreanMealPlans = ["Traditional Korean Cuisine", "Street Food Tour", "Seafood Specialty", "Vegetarian Option", "Luxury Fine Dining"];
+			// Area-specific Hotels
+			const koreanHotels = {
+				"Seoul": ["Smart Stay Hotel", "Royal Emporium Hotel"],
+				"Busan": ["Marina Bay Hotel", "Ramada Hotel"],
+				"Jeju": ["Tamara Hotel", "Smart Stay Hotel"],
+				"Incheon": ["Air Sky Hotel", "Royal Emporium Hotel"],
+				"Gyeongju": ["Ramada Hotel"]
+			};
 
-			const hotels = [
-				"Smart Stay Hotel", "Ramada Hotel", "Marina Bay Hotel", "Air Sky Hotel", "Royal Emporium Hotel", "Tamara Hotel"
-			];
+			// Meal Plans → Each meal type has multiple meal options
+			const koreanMealPlans = {
+				"Breakfast": [
+					"Korean Traditional Breakfast Set",
+					"Continental Breakfast",
+					"Buffet Style Breakfast"
+				],
+				"Lunch": [
+					"Bibimbap Set",
+					"Street Food Sampler",
+					"Seafood Hotpot",
+					"Vegetarian Bulgogi"
+				],
+				"Dinner": [
+					"Korean BBQ Experience",
+					"Luxury Fine Dining",
+					"Seafood Specialty Platter",
+					"Hot Stone Grill"
+				]
+			};
 
-			const itineraries = [
-				"Gyeongbokgung Palace Tour", "Myeongdong Shopping District", "Namsan Seoul Tower", "Bukchon Hanok Village", "Dongdaemun Design Plaza", "Busan Gamcheon Culture Village", "Jeju Island Lava Tubes"
-			];
+			// Area-specific Itinerary Activities
+			const itinerariesByArea = {
+				"Seoul": [
+					"Gyeongbokgung Palace Tour",
+					"Myeongdong Shopping District",
+					"Namsan Seoul Tower",
+					"Bukchon Hanok Village",
+					"Dongdaemun Design Plaza"
+				],
+				"Busan": [
+					"Busan Gamcheon Culture Village",
+					"Haeundae Beach Visit",
+					"Jagalchi Fish Market Tour"
+				],
+				"Jeju": [
+					"Jeju Island Lava Tubes",
+					"Seongsan Ilchulbong Peak",
+					"Manjanggul Cave"
+				],
+				"Incheon": [
+					"Incheon Chinatown Walk",
+					"Songdo Central Park Tour"
+				],
+				"Gyeongju": [
+					"Bulguksa Temple Visit",
+					"Cheomseongdae Observatory Tour"
+				]
+			};
+
+
 
 			// Extract ordered values from `days` while keeping original order
-			let availableAreas = [...extractValues(days, "areas"), ...koreanTourAreas.filter(area => !days.some(day => day.areas.includes(area)))];
-			let availableHotels = [...extractValues(days, "hotels"), ...hotels.filter(hotel => !days.some(day => day.hotels.includes(hotel)))];
-			let availableMeals = [...extractValues(days, "meals"), ...koreanMealPlans.filter(meal => !days.some(day => day.meals.includes(meal)))];
-			let availableActivities = [...extractValues(days, "activities"), ...itineraries];
+
+			// ✅ Available Areas
+			let availableAreas = [
+				...extractValues(days, "areas"),
+				...koreanTourAreas.filter(area => !days.some(day => (day.areas || []).includes(area)))
+			];
+
+			// ✅ Available Hotels (flatten from area-specific hotels)
+			let existingHotels = extractValues(days, "hotels");
+			let allHotels = Object.values(koreanHotels).flat();
+			let availableHotels = [...existingHotels, ...allHotels.filter(h => !existingHotels.includes(h))];
+
+			// ✅ Available Meals (flatten from meal types)
+			let existingMeals = extractValues(days, "meals");
+			let allMeals = Object.values(koreanMealPlans).flat();
+			let availableMeals = [...existingMeals, ...allMeals.filter(m => !existingMeals.includes(m))];
+
+			// ✅ Available Itinerary Activities (flatten from itineraries by area)
+			let existingActivities = extractValues(days, "activities");
+			let allActivities = Object.values(itinerariesByArea).flat();
+			let availableActivities = [...existingActivities, ...allActivities.filter(a => !existingActivities.includes(a))];
 
 			// console.log("Ordered Available Areas:", availableAreas);
 			// console.log("Ordered Available Hotels:", availableHotels);
@@ -711,7 +840,6 @@
 
 
 			// FOR ITINERARY SELECTS IN CARDS
-
 			// Handle itinerary value changes
 			document.addEventListener('change', function (e) {
 				if (e.target.classList.contains('itinerary-select')) {
@@ -751,7 +879,6 @@
 				}
 			});
 
-
 			// FOR HOTELS SELECTS IN CARDS
 			document.addEventListener('change', function (e) {
 				if (e.target.classList.contains('hotel-select')) {
@@ -771,6 +898,7 @@
 					}
 				}
 			});
+
 
 			document.addEventListener('click', function (e) {
 				const btn = e.target.closest('.remove-hotel-select');
@@ -882,58 +1010,64 @@
 			});
 
 
-
-
-
-
-
-
-			
-
-
-
-
-
-
-
-
-
-
-
-
-
 			// FOR SUBMIT EDIT BUTTON
+			function deepEqual(obj1, obj2) {
+				return JSON.stringify(sortKeys(obj1)) === JSON.stringify(sortKeys(obj2));
+			}
+
+			function sortKeys(obj) {
+				if (Array.isArray(obj)) {
+					return obj.map(sortKeys);
+				} else if (obj !== null && typeof obj === 'object') {
+					return Object.keys(obj).sort().reduce((result, key) => {
+						result[key] = sortKeys(obj[key]);
+						return result;
+					}, {});
+				}
+				return obj;
+			}
+
+			// Main listener attachment
 			function attachSelectChangeListeners() {
 				const editButton = document.getElementById("submitEdit");
+				const generateButton = document.getElementById("submitTour");
 
-				// Attach listener to ALL select elements within the itinerary card
+				// Attach listener to all selects inside cards
 				document.querySelectorAll(".card select").forEach(select => {
 					select.addEventListener("change", function () {
-						// Enable the Edit button
-						if (editButton.disabled) {
+						// Always re-run the live data sync
+						updateLiveItineraryData();
+
+						// Enable the Edit button if not already
+						if (editButton && editButton.disabled) {
 							editButton.disabled = false;
 						}
 
-						// If a city is selected, update the corresponding hotel select options
+						// If city is selected, update hotel dropdown
 						if (this.classList.contains("city-select")) {
 							const index = this.dataset.index;
 							const selectedCity = this.value;
-
 							const hotelSelect = document.getElementById(`hotel${parseInt(index) + 1}`);
 							if (hotelSelect) {
 								updateHotelOptions(selectedCity, hotelSelect);
 							}
 						}
 
-						// Re-run live data update after every change
-						updateLiveItineraryData();
+						// Compare and toggle Generate button (based on reversion to original)
+						if (generateButton) {
+							const isReverted = deepEqual(liveItineraryData, originalJsonData);
+							generateButton.disabled = isReverted;
+						}
 					});
 				});
 
-				// Initial run to capture default state
+				// Initial update
 				updateLiveItineraryData();
-			}
 
+				if (generateButton) {
+					generateButton.disabled = deepEqual(liveItineraryData, originalJsonData);
+				}
+			}
 
 
 			// Itinerary Area Select Column
@@ -967,6 +1101,7 @@
 
 				return `
 					<div class="col-4 d-flex align-items-end meal-plan-select-item">
+
 						<div class="w-100 me-2">
 							<label class="form-label fw-normal">${label}:</label>
 							<select class="form-select meal-plan-select" name="${label.toLowerCase()}_${index}">
@@ -976,6 +1111,7 @@
 								`).join("")}
 							</select>
 						</div>
+
 						<button type="button" class="btn btn-danger btn-sm mt-4 remove-meal-plan-select ${selectedValue ? "" : "d-none"}">
 							<i class="fas fa-trash-alt"></i>
 						</button>
@@ -1012,6 +1148,7 @@
 			function createItinerarySelectColumn(selectedValue, day, index = 1) {
 				const uniqueOptions = [...new Set(availableActivities)].sort();
 				const isPlaceholderSelected = !selectedValue || selectedValue === "null";
+
 
 				return `
 					<div class="col-12 mb-2 d-flex align-items-center itinerary-item">

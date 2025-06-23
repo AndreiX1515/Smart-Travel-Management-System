@@ -8,24 +8,33 @@ $data = [
     'hotels' => []
 ];
 
-// Get distinct cities
-$sqlCities = "SELECT DISTINCT hotelCity FROM hotel ORDER BY hotelCity";
+// Get all distinct area names (to use as "cities")
+$sqlCities = "SELECT DISTINCT areaName FROM itinerarydataarea ORDER BY areaName";
 $resultCities = $conn->query($sqlCities);
 
 if ($resultCities) {
     while ($row = $resultCities->fetch_assoc()) {
-        $data['cities'][] = $row['hotelCity'];
+        $data['cities'][] = $row['areaName'];
     }
     $resultCities->free();
 } else {
     http_response_code(500);
-    echo json_encode(['error' => 'Failed to fetch cities']);
+    echo json_encode(['error' => 'Failed to fetch areas']);
     $conn->close();
     exit();
 }
 
-// Get all hotels (hotelId, hotelName, hotelCity)
-$sqlHotels = "SELECT hotelId, hotelName, hotelCity FROM hotel ORDER BY hotelCity, hotelName";
+// Get all hotels with area they belong to (via junction table)
+$sqlHotels = "
+    SELECT 
+        h.hotelId, 
+        h.hotelName, 
+        a.areaName AS hotelCity
+    FROM hotels h
+    JOIN itinerarydatahotels ih ON ih.hotelId = h.hotelId
+    JOIN itinerarydataarea a ON a.areaId = ih.areaId
+    ORDER BY a.areaName, h.hotelName
+";
 $resultHotels = $conn->query($sqlHotels);
 
 if ($resultHotels) {
@@ -33,7 +42,6 @@ if ($resultHotels) {
         $data['hotels'][] = $row;
     }
     $resultHotels->free();
-    
 } else {
     http_response_code(500);
     echo json_encode(['error' => 'Failed to fetch hotels']);

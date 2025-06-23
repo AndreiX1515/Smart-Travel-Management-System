@@ -777,15 +777,14 @@ error_reporting(E_ALL);
               </div>
             </div>
 
-        </div>
-
-        <div class="wrapper-footer">
-           <div class="card-footer">
+            <div class="card-footer">
               <button type="submit" class="btn btn-primary" id="addGuest" name="addGuestInformation">Save Guest Information</button>
             </div>
 
-          </form> 
+          </form>
         </div>
+
+        
 
       </div>
       

@@ -784,6 +784,17 @@ select.form-control:focus {
 }
 
 
+/* .btn-disabled {
+  background-color: #5a5a5a !important;
+  border-color: #5a5a5a !important;
+  cursor: not-allowed !important;
+  pointer-events: none;
+  opacity: 0.7;
+} */
+
+
+
+
 .includes-wrapper {
   display: flex;
   justify-content: space-between;
