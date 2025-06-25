@@ -2,15 +2,45 @@
 require '../../conn.php';  // Ensure database connection is included
 require '../../vendor/autoload.php';  // Ensure Composer autoloader is included
 
-
-
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
+
 if (isset($_POST['voucher'])) {
+
   $voucher = json_decode($_POST['voucher'], true);
 
+
+
+
+
+
   try {
+
+    // Date and Hotels
+    $dateAndHotels = $voucher['dateAndHotels'] ?? [];
+
+    // Choose template based on number of date/hotel entries
+    switch (count($dateAndHotels)) {
+        case 1:
+            $templateFile = '../../Template/Voucher Template 1.xlsx';
+            break;
+        case 2:
+            $templateFile = '../../Template/Voucher Template 2.xlsx';
+            break;
+        case 3:
+        default:
+            $templateFile = '../../Template/Voucher Template.xlsx';
+            break;
+    }
+
+
+    // To be fixed the route of below code based on selected template
+    // If you have different templates for 1, 2, or 3 entries,
+
+
+
+
     $templateFile = '../../Template/Voucher Template.xlsx';
 
     if (!file_exists($templateFile)) {
@@ -24,11 +54,16 @@ if (isset($_POST['voucher'])) {
     $sheet->getPageSetup()->setPaperSize(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::PAPERSIZE_A4);
     $sheet->getPageMargins()
       ->setTop(0.2)
-      ->setBottom(0.75)
-      ->setLeft(0.25)
-      ->setRight(0.15)
-      ->setHeader(0.3)
-      ->setFooter(0.3);
+      ->setBottom(0.2)
+      ->setLeft(0.2)
+      ->setRight(0.2)
+      ->setHeader(0.25)
+      ->setFooter(0.25);
+
+
+
+
+
 
     // ==================== HEADER FIELDS =================================== //
     $voucherCode = $voucher['voucherCode'] ?? [];
@@ -45,7 +80,7 @@ if (isset($_POST['voucher'])) {
 
     $sheet->setCellValue('B5', strtoupper($details['sentTo'] ?? ''));
     $sheet->setCellValue('B6', strtoupper($details['sentFrom'] ?? ''));
-    $sheet->setCellValue('C5', $details['tourType'] ?? '');
+    $sheet->setCellValue('B7', strtoupper($details['tourType'] ?? ''));
 
     $sheet->setCellValue('H5', strtoupper($details['attachment'] ?? ''));
 
@@ -70,7 +105,10 @@ if (isset($_POST['voucher'])) {
     // $sheet->setCellValue('F7', '');
 
     $totalPax = $details['noOfPax'] . ' ' . 'PAX';
+
     $sheet->setCellValue('H7', $totalPax ?? '');
+
+
 
     // Get packageName based on tourType (which holds packageId)
     $packageName = '';
@@ -105,16 +143,20 @@ if (isset($_POST['voucher'])) {
     $sheet->setCellValue('B7', strtoupper($displayName . ' KOREA TOUR 5D/4N'));
 
 
+
+
+
     // ==================== BODY FIELDS =================================== //
     
-    // Date and Hotels
-    $dateAndHotels = $voucher['dateAndHotels'] ?? [];
-
     $cellMap = [
         ['start' => 'C12', 'end' => 'C15', 'nights' => 'E12', 'city' => 'F12', 'hotel' => 'H12'],
         ['start' => 'C18', 'end' => 'C21', 'nights' => 'E18', 'city' => 'F18', 'hotel' => 'H18'],
         ['start' => 'C24', 'end' => 'C27', 'nights' => 'E24', 'city' => 'F24', 'hotel' => 'H24'],
     ];
+
+
+
+
 
     $maxItems = min(3, count($dateAndHotels));
 
@@ -130,6 +172,14 @@ if (isset($_POST['voucher'])) {
         $sheet->setCellValue($map['nights'], $item['nights'] ?? '');
         $sheet->setCellValue($map['city'], strtoupper($item['city'] ?? ''));
         $sheet->setCellValue($map['hotel'], strtoupper($item['hotel'] ?? ''));
+
+        // Hotel Details to be Add
+
+
+
+
+
+
     }
 
 

@@ -17,12 +17,12 @@ try {
     exit;
   }
 
-  // Extract sections from JSON
+  // Extract data
   $templateName        = $payload['templateName'] ?? '';
   $voucherDetails      = $payload['voucherDetails'] ?? [];
   $airScheduleDetails  = $payload['airScheduleDetails'] ?? [];
   $guideMeeting        = $airScheduleDetails['guideMeeting'] ?? null;
-  unset($airScheduleDetails['guideMeeting']); // Remove guideMeeting from air segments
+  unset($airScheduleDetails['guideMeeting']);
   $cardsJSONData       = $payload['cardsJSONData'] ?? [];
   $includesData        = $payload['includesData'] ?? [];
   $excludesData        = $payload['excludesData'] ?? [];
@@ -31,7 +31,7 @@ try {
 
   $conn->beginTransaction();
 
-  // Generate unique voucherCode
+  // Generate unique code
   do {
     $voucherCode = "VOUCHER-" . strtoupper(uniqid());
     $stmtCheck = $conn->prepare("SELECT COUNT(*) FROM vouchers WHERE voucherCode = ?");
@@ -44,33 +44,24 @@ try {
     VALUES (?, ?, ?)
   ");
   if (!$stmtVoucher->execute([$templateName, $accountId, $voucherCode])) {
-    $errorInfo = $stmtVoucher->errorInfo();
-    throw new Exception("Failed to insert voucher: " . implode(" | ", $errorInfo));
+    throw new Exception("Failed to insert into `vouchers`.");
   }
-
   $voucherId = $conn->lastInsertId();
 
-  // Validate and sanitize guideName as integer or null
-  $guideName = null;
-  if (isset($voucherDetails['guide'])) {
-    $guideName = filter_var($voucherDetails['guide'], FILTER_VALIDATE_INT);
-    if ($guideName === false) {
-      $guideName = null;
-    }
-  }
+  // Handle guide
+  $guideName = isset($voucherDetails['guide']) && filter_var($voucherDetails['guide'], FILTER_VALIDATE_INT) ? $voucherDetails['guide'] : null;
 
-  // Validate date fields
-  $periodStart = isset($voucherDetails['periodStart']) && validateDate($voucherDetails['periodStart']) ? $voucherDetails['periodStart'] : null;
-  $periodEnd = isset($voucherDetails['periodEnd']) && validateDate($voucherDetails['periodEnd']) ? $voucherDetails['periodEnd'] : null;
+  $periodStart = validateDate($voucherDetails['periodStart']) ? $voucherDetails['periodStart'] : null;
+  $periodEnd = validateDate($voucherDetails['periodEnd']) ? $voucherDetails['periodEnd'] : null;
 
-  // Insert voucherDetails
+  // Insert voucher details
   $stmtDetails = $conn->prepare("
     INSERT INTO voucherDetails (
       voucherId, sentTo, sentFrom, tourType, attachment,
-      tourPeriodStart, tourPeriodEnd, guideName, noOfPax
+      tourPeriodStart, tourPeriodEnd, guideId, noOfPax
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
   ");
-  $success = $stmtDetails->execute([
+  if (!$stmtDetails->execute([
     $voucherId,
     $voucherDetails['to'] ?? '',
     $voucherDetails['from'] ?? '',
@@ -80,27 +71,11 @@ try {
     $periodEnd,
     $guideName,
     $voucherDetails['paxCount'] ?? 0
-  ]);
-
-  if (!$success) {
-    $errorInfo = $stmtDetails->errorInfo();
-    throw new Exception("Failed to insert voucherDetails: " . implode(" | ", $errorInfo));
+  ])) {
+    throw new Exception("Failed to insert into `voucherDetails`.");
   }
 
-  // // Fetch the inserted voucherDetails row for confirmation / response
-  // $stmtFetchDetails = $conn->prepare("SELECT * FROM voucherDetails WHERE voucherId = ?");
-  // $stmtFetchDetails->execute([$voucherId]);
-  // $insertedVoucherDetails = $stmtFetchDetails->fetch(PDO::FETCH_ASSOC);
-  // if (!$insertedVoucherDetails) {
-  //   throw new Exception("Failed to fetch inserted voucherDetails.");
-  // }
-
-
-
-
-
-
-  // Insert hotel and date info
+  // Insert date & hotels
   if (!empty($cardsJSONData)) {
     $stmtHotel = $conn->prepare("
       INSERT INTO voucherDateAndHotels (
@@ -109,19 +84,21 @@ try {
     ");
     foreach ($cardsJSONData as $key => $data) {
       if (strpos($key, 'dateAndHotel') === 0) {
-        $stmtHotel->execute([
+        if (!$stmtHotel->execute([
           $voucherId,
           $data['startDate'],
           $data['endDate'],
           $data['nights'],
           $data['city'],
           $data['hotel']
-        ]);
+        ])) {
+          throw new Exception("Failed to insert into `voucherDateAndHotels`.");
+        }
       }
     }
   }
 
-  // Insert flight schedule
+  // Insert air schedule
   if (!empty($airScheduleDetails)) {
     $stmtAir = $conn->prepare("
       INSERT INTO voucherAirSchedules (
@@ -130,9 +107,9 @@ try {
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     ");
     foreach ($airScheduleDetails as $segment => $flight) {
-      $enumSegment = strtolower(str_replace(['#', ' '], '', $segment)); // normalize
+      $enumSegment = strtolower(str_replace(['#', ' '], '', $segment));
       if (in_array($enumSegment, ['departure1', 'departure2'])) {
-        $stmtAir->execute([
+        if (!$stmtAir->execute([
           $voucherId,
           $enumSegment,
           $flight['flightDate'] ?? null,
@@ -141,55 +118,58 @@ try {
           $flight['destination'] ?? '',
           $flight['departureTime'] ?? null,
           $flight['arrivalTime'] ?? null
-        ]);
+        ])) {
+          throw new Exception("Failed to insert into `voucherAirSchedules`.");
+        }
       }
     }
   }
 
-  // Insert guide meeting
+  // Insert guide meeting if exists
   if (!empty($guideMeeting)) {
     $stmtGuide = $conn->prepare("
       INSERT INTO voucherGuideMeeting (
         voucherId, guideId, meetingDate, meetingTime, meetingPlace
       ) VALUES (?, ?, ?, ?, ?)
     ");
-    $stmtGuide->execute([
+    if (!$stmtGuide->execute([
       $voucherId,
       $guideMeeting['guideId'] ?? null,
       $guideMeeting['date'] ?? null,
       $guideMeeting['time'] ?? null,
       $guideMeeting['place'] ?? ''
-    ]);
+    ])) {
+      throw new Exception("Failed to insert into `voucherGuideMeeting`.");
+    }
   }
 
   // Insert includes
   if (!empty($includesData)) {
-    $stmtInclude = $conn->prepare("
-      INSERT INTO voucherIncludes (voucherId, includeItemId)
-      VALUES (?, ?)
-    ");
+    $stmtInclude = $conn->prepare("INSERT INTO voucherIncludes (voucherId, includeItemId) VALUES (?, ?)");
     foreach ($includesData as $item) {
       $val = $item['value'] ?? '';
       if (!empty($val) && $val !== '0') {
-        $stmtInclude->execute([$voucherId, $val]);
+        if (!$stmtInclude->execute([$voucherId, $val])) {
+          throw new Exception("Failed to insert into `voucherIncludes`.");
+        }
       }
     }
   }
 
   // Insert excludes
   if (!empty($excludesData)) {
-    $stmtExclude = $conn->prepare("
-      INSERT INTO voucherExcludes (voucherId, excludeItemId)
-      VALUES (?, ?)
-    ");
+    $stmtExclude = $conn->prepare("INSERT INTO voucherExcludes (voucherId, excludeItemId) VALUES (?, ?)");
     foreach ($excludesData as $item) {
       $val = $item['value'] ?? '';
       if (!empty($val) && $val !== '0') {
-        $stmtExclude->execute([$voucherId, $val]);
+        if (!$stmtExclude->execute([$voucherId, $val])) {
+          throw new Exception("Failed to insert into `voucherExcludes`.");
+        }
       }
     }
   }
 
+  // All good
   $conn->commit();
 
   echo json_encode([
@@ -201,15 +181,11 @@ try {
   ]);
 
 } catch (PDOException $e) {
-  if ($conn->inTransaction()) {
-    $conn->rollBack();
-  }
+  if ($conn->inTransaction()) $conn->rollBack();
   error_log("DB Error: " . $e->getMessage());
   echo json_encode(["status" => "error", "message" => "Database error: " . $e->getMessage()]);
 } catch (Exception $e) {
-  if ($conn->inTransaction()) {
-    $conn->rollBack();
-  }
+  if ($conn->inTransaction()) $conn->rollBack();
   error_log("General Error: " . $e->getMessage());
   echo json_encode(["status" => "error", "message" => "Error: " . $e->getMessage()]);
 }
@@ -217,7 +193,7 @@ try {
 exit;
 
 
-// Helper function to validate date string in 'Y-m-d' format
+// Helper function to validate date
 function validateDate($date, $format = 'Y-m-d') {
   if (!$date) return false;
   $d = DateTime::createFromFormat($format, $date);
