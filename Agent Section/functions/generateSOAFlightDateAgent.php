@@ -53,7 +53,7 @@ $spreadsheet = new Spreadsheet();
 $sheet = $spreadsheet->getActiveSheet();
 $sheet->setTitle("SOA-" . $soaNumber);
 $sheet->getDefaultRowDimension()->setRowHeight(21.75);
-$spreadsheet->getDefaultStyle()->getFont()->setName('Arial');
+$spreadsheet->getDefaultStyle()->getFont()->setName('Arial')->setSize(14);
 
 $logo = new Drawing();
 $logo->setName('Company Logo');
@@ -111,8 +111,8 @@ $combinedSubtotal = number_format(
 $sheet->setCellValue("A$rowNum", $serial++);
 $sheet->mergeCells("E$rowNum:F$rowNum")->setCellValue("E$rowNum", 'Sub Total');
 $sheet->setCellValue("G$rowNum", $combinedSubtotal);
-$sheet->getStyle("A$rowNum:G$rowNum")->getFont()->setBold(true)->setSize(14);
-$sheet->getStyle("E$rowNum:G$rowNum")->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setRGB('FFF2CC');
+$sheet->getStyle("B$rowNum:G$rowNum")->getFont()->setBold(true)->setSize(14);
+$sheet->getStyle("A$rowNum:G$rowNum")->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setRGB('FFF2CC');
 $rowNum++;
 
 foreach ($payments as $row) {
@@ -129,8 +129,8 @@ foreach ($payments as $row) {
 $sheet->setCellValue("A$rowNum", $serial++);
 $sheet->mergeCells("E$rowNum:F$rowNum")->setCellValue("E$rowNum", 'Sub Total');
 $sheet->setCellValue("G$rowNum", "-₱ $paymentSubtotalPHP");
-$sheet->getStyle("A$rowNum:G$rowNum")->getFont()->setBold(true)->setSize(14);
-$sheet->getStyle("E$rowNum:G$rowNum")->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setRGB('FFF2CC');
+$sheet->getStyle("B$rowNum:G$rowNum")->getFont()->setBold(true)->setSize(14);
+$sheet->getStyle("A$rowNum:G$rowNum")->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setRGB('FFF2CC');
 $sheet->getStyle("G$rowNum")->getFont()->getColor()->setRGB('FF0000');
 $rowNum++;
 
