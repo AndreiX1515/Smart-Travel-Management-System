@@ -48,11 +48,13 @@
       </div>
     </div>
 
+    <!-- Redirect Button Script -->
     <script>
       document.getElementById('redirect-btn').addEventListener('click', function () {
         window.location.href = '../Employee Section/emp-voucherTable.php'; // Replace with your actual URL
       });
     </script>
+
 
     <!-- Data Fetch JSON Script -->
     <?php
@@ -64,28 +66,28 @@
     
     $sql = "
         SELECT 
-              v.voucherId,
-              v.voucherName,
-              v.voucherCode,
-              v.accountId,
-              v.itineraryId,
-              v.createdAt AS voucherCreatedAt,
-              d.sentTo,
-              d.sentFrom,
-              d.tourType,
-              d.attachment,
-              d.tourPeriodStart,
-              d.tourPeriodEnd,
-              d.noOfPax,
-              d.guideName,
-              d.createdAt AS detailCreatedAt,
-              e.countryCode AS employeeCountryCode,
-              e.contactNo AS employeeContactNo
-          FROM vouchers v
-          LEFT JOIN voucherDetails d ON v.voucherId = d.voucherId
-          LEFT JOIN employee e ON v.accountId = e.accountId
-          WHERE v.voucherId = ?
+            v.voucherId,
+            v.voucherName,
+            v.voucherCode,
+            v.accountId,
+            v.itineraryId,
+            v.createdAt AS voucherCreatedAt,
+            d.sentTo,
+            d.sentFrom,
+            d.tourType,
+            d.attachment,
+            d.tourPeriodStart,
+            d.tourPeriodEnd,
+            d.guideId,
+            d.noOfPax,
+            e.countryCode AS employeeCountryCode,
+            e.contactNo AS employeeContactNo
+        FROM vouchers v
+        LEFT JOIN voucherDetails d ON v.voucherId = d.voucherId
+        LEFT JOIN employee e ON v.accountId = e.accountId
+        WHERE v.voucherId = ?
     ";
+
 
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $voucherId);
@@ -96,15 +98,21 @@
       die("Voucher not found");
     }
 
+ 
+
     // Combine voucherDetails contact
     $contactFullDetail = '';
-    if (!empty($row['detailCountryCode']) && !empty($row['detailContactNo'])) {
-      $contactFullDetail = trim($row['detailCountryCode']) . ' ' . trim($row['detailContactNo']);
-    } elseif (!empty($row['detailContactNo'])) {
+
+    // if (!empty($row['detailCountryCode']) && !empty($row['detailContactNo'])) {
+    //   $contactFullDetail = trim($row['detailCountryCode']) . ' ' . trim($row['detailContactNo']);
+    // } 
+
+    if (!empty($row['detailContactNo'])) {
       $contactFullDetail = trim($row['detailContactNo']);
     } elseif (!empty($row['detailCountryCode'])) {
       $contactFullDetail = trim($row['detailCountryCode']);
     }
+
 
     // Combine employee contact
     $contactFullEmployee = '';
@@ -131,10 +139,9 @@
         'tourPeriodStart' => $row['tourPeriodStart'] ?? null,
         'tourPeriodEnd' => $row['tourPeriodEnd'] ?? null,
         'noOfPax' => $row['noOfPax'] ?? null,
-        'guideName' => $row['guideName'] ?? null,
+        'guideName' => $row['guideId'] ?? null,
         'contact' => $contactFullDetail ?? null,
         'employeeContact' => $contactFullEmployee ?? null,
-        'detailCreatedAt' => $row['detailCreatedAt'] ?? null,
       ],
       'dateAndHotels' => [],
       'includes' => [],

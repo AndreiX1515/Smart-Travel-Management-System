@@ -29,7 +29,6 @@ try {
     $guideName = $_POST["guide"] ?? "";
     $guideAccountId = $_POST["guideAccountId"] ?? "";
 
-
     // City & Hotel details
     $city1 = $_POST["city1"] ?? "";
     $hotel1 = $_POST["hotel1"] ?? "";

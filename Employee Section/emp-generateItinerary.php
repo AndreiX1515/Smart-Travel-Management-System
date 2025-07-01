@@ -236,7 +236,6 @@
 
 
 							<!-- Tour Areas, Hotels -->
-
 							<!-- Tour Areas, Hotels Dropdowns - 1 -->
 							<div class="row">
 
