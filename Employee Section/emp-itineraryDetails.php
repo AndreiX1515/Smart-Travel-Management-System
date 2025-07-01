@@ -54,16 +54,30 @@
 		</script>
 
 		<!-- DB Query for Itinerary Details based on Itinerary ID -->
+		<!-- DB Query for Itinerary Details based on Itinerary ID -->
 		<?php
 		if (!isset($_GET['id'])) {
 			die("Invalid Itinerary ID");
 		}
 
-		$itineraryId = intval($_GET['id']); // Ensure it's an integer
-		
-		// Fetch itinerary details
-		$sql = "SELECT itineraryName, noOfDays, packageName, periodStart, periodEnd, guideName, countryCode, contactNumber, city1, hotel1, city2, hotel2, city3, hotel3 FROM itineraries
-        WHERE itineraryId = ?";
+		$itineraryId = intval($_GET['id']); // Sanitize input
+
+		// Fetch itinerary main details with guide info
+		$sql = "
+			SELECT 
+				i.itineraryName,
+				i.noOfDays,
+				i.packageId,
+				i.periodStart,
+				i.periodEnd,
+				e.fName AS guideFirstName,
+				e.lName AS guideLastName,
+				e.countryCode,
+				e.contactNo
+			FROM itineraries i
+			LEFT JOIN employee e ON i.guideId = e.id
+			WHERE i.itineraryId = ?
+		";
 
 		$stmt = $conn->prepare($sql);
 		$stmt->bind_param("i", $itineraryId);
@@ -74,58 +88,72 @@
 			die("Itinerary not found");
 		}
 
+		// Format guide full name
+		$guideName = isset($row['guideFirstName'], $row['guideLastName']) 
+			? trim($row['guideFirstName'] . ' ' . $row['guideLastName']) 
+			: '';
+
 		$itinerary = [
 			'itineraryId' => $itineraryId,
 			'itineraryName' => $row['itineraryName'],
 			'noOfDays' => $row['noOfDays'],
-			'packageName' => $row['packageName'],
+			'packageId' => $row['packageId'],
 			'periodStart' => $row['periodStart'],
 			'periodEnd' => $row['periodEnd'],
-			'guideName' => $row['guideName'],
-			'countryCode' => $row['countryCode'],
-			'contactNumber' => $row['contactNumber'],
-			'cities' => [
-				['city' => $row['city1'], 'hotel' => $row['hotel1']],
-				['city' => $row['city2'], 'hotel' => $row['hotel2']],
-				['city' => $row['city3'], 'hotel' => $row['hotel3']]
-			],
+			'guideName' => $guideName,
+			'countryCode' => $row['countryCode'] ?? '',
+			'contactNumber' => $row['contactNo'] ?? '',
+			'cities' => [],
 			'days' => []
 		];
 
-		// Fetch days, areas, hotels, activities, and meal plans
+		// ✅ Fetch cities & hotels from itinerarytourareashotels
+		$sqlCityHotel = "SELECT city, hotel FROM itinerarytourareashotels WHERE itineraryId = ? ORDER BY orderNo ASC";
+		$stmt = $conn->prepare($sqlCityHotel);
+		$stmt->bind_param("i", $itineraryId);
+		$stmt->execute();
+		$result = $stmt->get_result();
+
+		while ($rowCity = $result->fetch_assoc()) {
+			$itinerary['cities'][] = [
+				'city' => $rowCity['city'],
+				'hotel' => $rowCity['hotel']
+			];
+		}
+
+		// ✅ Fetch daily itinerary breakdown
 		$sqlDays = "
-                SELECT 
-                    d.dayId, 
-                    d.dayNumber, 
-                    COALESCE(a.areas, '') AS areas,
-                    COALESCE(h.hotels, '') AS hotels,
-                    COALESCE(act.activities, '') AS activities,
-                    COALESCE(mp.meals, '') AS meals
-                FROM itinerarydays d
-                LEFT JOIN (
-                    SELECT dayId, GROUP_CONCAT(DISTINCT areaName ORDER BY itineraryAreaId ASC SEPARATOR ', ') AS areas
-                    FROM itineraryareas 
-                    GROUP BY dayId
-                ) a ON d.dayId = a.dayId
-                LEFT JOIN (
-                    SELECT dayId, GROUP_CONCAT(DISTINCT hotelName ORDER BY hotelId ASC SEPARATOR ', ') AS hotels
-                    FROM itineraryhotels 
-                    GROUP BY dayId
-                ) h ON d.dayId = h.dayId
-                LEFT JOIN (
-                    SELECT dayId, GROUP_CONCAT(activityName ORDER BY activityId ASC SEPARATOR ', ') AS activities
-                    FROM itineraryactivities 
-                    GROUP BY dayId
-                ) act ON d.dayId = act.dayId
-                LEFT JOIN (
-                    SELECT dayId, GROUP_CONCAT(DISTINCT mealPlan ORDER BY mealId ASC SEPARATOR ', ') AS meals
-                    FROM itinerarymealplans 
-                    GROUP BY dayId
-                ) mp ON d.dayId = mp.dayId
-                WHERE d.itineraryId = ?
-                GROUP BY d.dayId, d.dayNumber
-                ORDER BY d.dayNumber ASC;
-                ";
+			SELECT 
+				d.dayId, 
+				d.dayNumber, 
+				COALESCE(a.areas, '') AS areas,
+				COALESCE(h.hotels, '') AS hotels,
+				COALESCE(act.activities, '') AS activities,
+				COALESCE(mp.meals, '') AS meals
+			FROM itinerarydays d
+			LEFT JOIN (
+				SELECT dayId, GROUP_CONCAT(DISTINCT areaName ORDER BY itineraryAreaId ASC SEPARATOR ',') AS areas
+				FROM itineraryareas 
+				GROUP BY dayId
+			) a ON d.dayId = a.dayId
+			LEFT JOIN (
+				SELECT dayId, GROUP_CONCAT(DISTINCT hotelName ORDER BY hotelId ASC SEPARATOR ',') AS hotels
+				FROM itineraryhotels 
+				GROUP BY dayId
+			) h ON d.dayId = h.dayId
+			LEFT JOIN (
+				SELECT dayId, GROUP_CONCAT(activityName ORDER BY activityId ASC SEPARATOR ',') AS activities
+				FROM itineraryactivities 
+				GROUP BY dayId
+			) act ON d.dayId = act.dayId
+			LEFT JOIN (
+				SELECT dayId, GROUP_CONCAT(DISTINCT mealPlan ORDER BY mealId ASC SEPARATOR ',') AS meals
+				FROM itinerarymealplans 
+				GROUP BY dayId
+			) mp ON d.dayId = mp.dayId
+			WHERE d.itineraryId = ?
+			ORDER BY d.dayNumber ASC
+		";
 
 		$stmt = $conn->prepare($sqlDays);
 		$stmt->bind_param("i", $itineraryId);
@@ -133,38 +161,22 @@
 		$result = $stmt->get_result();
 
 		while ($day = $result->fetch_assoc()) {
-			$areas = $day['areas'] ? explode(',', $day['areas']) : [];
-			$hotels = $day['hotels'] ? explode(',', $day['hotels']) : [];
-			$meals = $day['meals'] ? explode(',', $day['meals']) : [];
-
-			// Log if arrays are empty
-			if (empty($areas)) {
-				echo "<script>console.log('No areas found for day " . $day['dayNumber'] . "');</script>";
-			}
-			if (empty($hotels)) {
-				echo "<script>console.log('No hotels found for day " . $day['dayNumber'] . "');</script>";
-			}
-			if (empty($meals)) {
-				echo "<script>console.log('No meals found for day " . $day['dayNumber'] . "');</script>";
-			}
-
-			// Store day data in itinerary array
 			$itinerary['days'][] = [
 				'day' => $day['dayNumber'],
-				'areas' => $areas,
-				'hotels' => $hotels,
-				'activities' => $day['activities'] ? explode(',', $day['activities']) : [],
-				'meals' => $meals
+				'areas' => $day['areas'] ? array_map('trim', explode(',', $day['areas'])) : [],
+				'hotels' => $day['hotels'] ? array_map('trim', explode(',', $day['hotels'])) : [],
+				'activities' => $day['activities'] ? array_map('trim', explode(',', $day['activities'])) : [],
+				'meals' => $day['meals'] ? array_map('trim', explode(',', $day['meals'])) : []
 			];
 		}
 
+		// Output to console
 		$jsonData = json_encode($itinerary, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 
-		// Output the data in the raw format in the browser's console
-		echo "<script>
-                console.log($jsonData);
-             </script>";
+		echo "<script>console.log($jsonData);</script>";
 		?>
+
+
 
 		<div class="main-content">
 			<input type="hidden" id="itineraryId" value="<?= htmlspecialchars($itineraryId); ?>" readonly>
@@ -197,32 +209,34 @@
 
 							<div class="columns col-md-4">
 								<div class="column-header">
-									<label for="flightDate">Package
+									<label for="packageSelect">Package
 										<span class="text-danger"> *</span>
 									</label>
 								</div>
 
 								<div class="form-group">
 									<select class="form-select" id="packageSelect" name="packageSelect" required>
-										<option selected><?= $itinerary['packageName']; ?></option>
 										<?php
-										// Execute the SQL query
-										$sql1 = "SELECT packageName FROM package ORDER BY packageId ASC";
+										$selectedPackageId = $itinerary['packageId'];
+
+										// Fetch all packages
+										$sql1 = "SELECT packageId, packageName FROM package ORDER BY packageId ASC";
 										$res1 = $conn->query($sql1);
 
-										// Check if there are results
 										if ($res1->num_rows > 0) {
-											// Loop through the results and generate option
 											while ($row = $res1->fetch_assoc()) {
-												echo "<option value='" . $row['packageName'] . "'>" . $row['packageName'] . "</option>";
+												$selected = ($row['packageId'] == $selectedPackageId) ? 'selected' : '';
+												echo "<option value='{$row['packageId']}' $selected>{$row['packageName']}</option>";
 											}
 										} else {
-											echo "<option value=''>No companies available</option>";
+											echo "<option value=''>No packages available</option>";
 										}
 										?>
 									</select>
 								</div>
 							</div>
+
+
 						</div>
 
 						<!-- Periods, Guide Row -->

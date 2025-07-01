@@ -1,31 +1,32 @@
-/* Navbar Custom Styling */
 .navbar-custom {
-  background-color: #ffffff; /* White background */
-  padding: 0px 15px; /* Adjusted padding */
-  border-bottom: 1px solid #ddd; /* Subtle border */
+  background-color: #ffffff; 
+  padding: 0px 15px; 
+  border-bottom: 1px solid #ddd; 
+
   /* border: 1px solid black; */
 }
 
 /* Back Button Wrapper */
 .back-button-wrapper {
   display: flex;
-  align-items: last baseline; /* Align items along their text baseline */
-  justify-content: start; /* Aligns items to the left */
-  gap: 15px; /* Space between button and title */
-  /* border: 1px solid black; */
+  align-items: last baseline; 
+  justify-content: start; 
+  gap: 15px; 
   width: 100%;
+
+  /* border: 1px solid black; */
 }
 
 /* Back Button Styling */
 .back-button {
-  background-color: #ffffff; /* White background */
+  background-color: #ffffff; 
   border: none;
-  border-radius: 50%; /* Circular button */
-  padding: 10px; /* Ensures perfect circular shape */
+  border-radius: 50%; 
+  padding: 10px; 
   font-size: 18px;
-  color: #333; /* Dark color for the arrow */
+  color: #333;
   cursor: pointer;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
   display: flex;
   align-items: center;
   justify-content: center;
@@ -33,7 +34,7 @@
 
 /* Back Button Hover Effect */
 .back-button:hover {
-  background-color: #f0f0f0; /* Slight hover effect */
+  background-color: #f0f0f0;
 }
 
 /* Title Styling */
@@ -41,15 +42,8 @@
   font-size: 18px;
   font-weight: 600;
   color: #303030;
-  margin: 0; /* Removes default margin */
+  margin: 0; 
 }
-
-
-
-
-
-
-
 
 
 
@@ -58,7 +52,6 @@
 
 
 /* =========================== */
-
 .main-container {
   display: flex;
   flex-direction: column;
@@ -104,12 +97,6 @@
 }
 
 
-
-
-
-
-
-
 /* Card - General */
 .card {
   border-radius: 8px;
@@ -153,7 +140,7 @@
 .columns {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 7px;
   margin-bottom: 0px;
   /* border: 1px solid black; */
 }
@@ -706,6 +693,7 @@ select.form-control:focus {
   /* border: 1px solid black; */
   /* border-bottom: 1px solid gainsboro; */
   margin-bottom: 10px;
+  border: 1px solid black;
 }
 
 
@@ -729,12 +717,11 @@ select.form-control:focus {
 }
 
 .header-container {
+  padding: 5px 5px; /* more balanced spacing inside */
   /* border: 1px solid black; */
-  /* border-bottom: 1px solid gainsboro; */
+  border-bottom: 1px solid gainsboro;
   background-color: #fff; /* optional: separates from main-header */
   width: 100%;
-
-  /* border: 1px solid black; */
 }
 
 
@@ -1083,46 +1070,6 @@ select.form-control:focus {
   background-color: #f8f9fa;
   text-transform: uppercase;
 }
-
-
-
-
-
-
-/* Minimalist card header styling */
-.dnh-header {
-  padding-bottom: 0.25rem;
-  /* border-bottom: 1px solid #dee2e6; */
-}
-
-/* Pill-style badge for the section title */
-.dnh-badge {
-  background-color: #6c757d; /* Bootstrap secondary */
-  color: #ffffff;
-  font-weight: 600;
-  font-size: 0.775rem;
-  padding: 6px 14px;
-  border-radius: 12px; /* pill */
-  display: inline-block;
-}
-
-/* Optional: Card container styling */
-.dnh-hotel {
-  border: 1px solid #ced4da;
-  border-radius: 8px;
-  padding: 1rem;
-  background-color: #ffffff;
-}
-
-
-
-
-
-
-
-
-
-
 
 /* Responsive adjustment */
 @media (max-width: 480px) {

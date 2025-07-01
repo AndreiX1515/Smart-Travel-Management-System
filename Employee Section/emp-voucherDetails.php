@@ -4,20 +4,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Itinerary Details</title>
+  <title>Generate Voucher</title>
   <?php include '../Employee Section/includes/emp-head.php' ?>
   <link rel="stylesheet" href="../Employee Section/assets/css/emp-sidebar-navbar.css?v=<?php echo time(); ?>">
-  <link rel="stylesheet" href="../Employee Section/assets/css/emp-editItinerary.css?v=<?php echo time(); ?>">
-
-  <!-- jQuery (required by WickedPicker) -->
-
+  <link rel="stylesheet" href="../Employee Section/assets/css/emp-generateVoucher.css?v=<?php echo time(); ?>">
 
   <!-- WickedPicker CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/wickedpicker@0.4.3/dist/wickedpicker.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/wickedpicker@0.4.1/dist/wickedpicker.min.css">
 
   <!-- WickedPicker JS -->
-  <script src="https://cdn.jsdelivr.net/npm/wickedpicker@0.4.3/dist/wickedpicker.min.js"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/wickedpicker@0.4.1/dist/wickedpicker.min.js"></script>
 
 </head>
 
@@ -48,13 +44,11 @@
       </div>
     </div>
 
-    <!-- Redirect Button Script -->
     <script>
       document.getElementById('redirect-btn').addEventListener('click', function () {
         window.location.href = '../Employee Section/emp-voucherTable.php'; // Replace with your actual URL
       });
     </script>
-
 
     <!-- Data Fetch JSON Script -->
     <?php
@@ -64,8 +58,7 @@
 
     $voucherId = intval($_GET['id']); // Ensure it's an integer
     
-    $sql = "
-        SELECT 
+    $sql = "SELECT 
             v.voucherId,
             v.voucherName,
             v.voucherCode,
@@ -88,7 +81,6 @@
         WHERE v.voucherId = ?
     ";
 
-
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $voucherId);
     $stmt->execute();
@@ -99,7 +91,6 @@
     }
 
  
-
     // Combine voucherDetails contact
     $contactFullDetail = '';
 
@@ -153,7 +144,7 @@
     // Step 2: Fetch voucherDateAndHotels
     $sqlDates = "
         SELECT startDate, endDate, nights, city, hotel
-        FROM voucherDateAndHotels
+        FROM voucherDateHotels
         WHERE voucherId = ?
         ORDER BY startDate ASC
     ";
@@ -169,9 +160,9 @@
 
     // Step 3: Fetch voucherIncludes
     $sqlIncludes = "
-        SELECT i.includeItemId, i.itemName 
+        SELECT i.includesId, i.itemName 
         FROM voucherIncludes vi
-        INNER JOIN voucherIncludeOptions i ON vi.includeItemId = i.includeItemId
+        INNER JOIN voucherIncludeOptions i ON vi.includeItemId = i.includesId
         WHERE vi.voucherId = ?
     ";
 
@@ -182,18 +173,19 @@
 
     $includesCounter = 1;
     while ($row = $result->fetch_assoc()) {
-      $voucher['includes']["includes{$includesCounter}"] = [
-        'value' => (string) $row['includeItemId'],
-        'label' => ($row['includeItemId'] === 'others') ? $row['itemName'] : ''
-      ];
-      $includesCounter++;
+        $voucher['includes']["includes{$includesCounter}"] = [
+            'value' => (string) $row['includesId'],
+            'label' => ($row['includesId'] === 'others') ? $row['itemName'] : ''
+        ];
+        $includesCounter++;
     }
+
 
     // Step 4: Fetch voucherExcludes
     $sqlExcludes = "
-        SELECT e.excludeItemId, e.itemName 
+        SELECT e.excludesId, e.itemName 
         FROM voucherExcludes ve
-        INNER JOIN voucherExcludeOptions e ON ve.excludeItemId = e.excludeItemId
+        INNER JOIN voucherExcludeOptions e ON ve.excludeItemId = e.excludesId
         WHERE ve.voucherId = ?
     ";
 
@@ -204,11 +196,11 @@
 
     $excludesCounter = 1;
     while ($row = $result->fetch_assoc()) {
-      $voucher['excludes']["excludes{$excludesCounter}"] = [
-        'value' => (string) $row['excludeItemId'],
-        'label' => ($row['excludeItemId'] === 'others') ? $row['itemName'] : ''
-      ];
-      $excludesCounter++;
+        $voucher['excludes']["excludes{$excludesCounter}"] = [
+            'value' => (string) $row['excludesId'],
+            'label' => ($row['excludesId'] === 'others') ? $row['itemName'] : ''
+        ];
+        $excludesCounter++;
     }
 
     // Step 5: Fetch Air Schedules
@@ -253,370 +245,579 @@
 
     // Output to browser console as JSON using JSON.stringify
     $jsonData = json_encode($voucher, JSON_UNESCAPED_UNICODE);
-    echo "<script>console.log(JSON.stringify(" . $jsonData . ", null, 2));</script>";
+    echo "<script>console.log(JSON.stringify(".$jsonData.", null, 2));</script>";
     ?>
 
     <div class="main-content">
-      <input type="hidden" id="itineraryId" value="<?= htmlspecialchars($itineraryId); ?>" readonly>
-
       <div class="form-container">
 
-        <!-- Voucher Details -->
-        <div class="card mb-4 shadow-sm">
-          <div class="card-header border-bottom">
-            <h5 class="mb-0">Voucher Details</h5>
-          </div>
+        <form id="voucherDetailSubmit" class="d-flex flex-column gap-3">
+          <input type="hidden" id="itineraryId" value="<?= htmlspecialchars($itineraryId); ?>" readonly>
 
-          <div class="card-body">
+          <!-- To/From -->
+          <div class="card">
 
-            <!-- Row 1: Voucher Name & Code -->
-            <div class="row g-3 mb-3">
-              <div class="col-12 col-md-6 col-lg-4">
-                <label for="itineraryName" class="form-label">Voucher Name</label>
-                <input type="text" class="form-control" id="itineraryName" name="itineraryName"
+            <div class="card-body">
+
+              <div class="row">
+
+                <!-- Voucher Name -->
+                <div class="columns col-md-3">
+                  <label>Voucher Name<span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" id="itineraryName" name="itineraryName"
                   value="<?= !empty($voucher['voucherName']) ? htmlspecialchars($voucher['voucherName'], ENT_QUOTES) : 'Untitled Voucher' ?>"
                   readonly>
-              </div>
+                </div>
 
-              <div class="col-12 col-md-6 col-lg-4">
-                <label for="voucherCode" class="form-label">Voucher Code</label>
-                <input type="text" class="form-control" id="voucherCode" name="voucherCode"
+                <!-- Voucher Code -->
+                <div class="columns col-md-3">
+                  <label>Voucher Code<span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" id="voucherCode" name="voucherCode"
                   value="<?= htmlspecialchars($voucher['voucherCode'], ENT_QUOTES); ?>" readonly>
+                </div>
+
+                <!-- Voucher Code -->
+                <div class="columns col-md-3">
+                  <label>Associated to Itinerary</label>
+                  
+                    <select class="form-select" id="itineraryId" name="itineraryId">
+                      <option value="" disabled selected>Select Itinerary</option>
+                      <?php
+                      $sql = "SELECT itineraryId, itineraryName FROM itineraries ORDER BY createdAt DESC";
+                      $result = $conn->query($sql);
+                      if ($result && $result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                          echo "<option value='" . $row['itineraryId'] . "'>" . htmlspecialchars($row['itineraryName']) . "</option>";
+                        }
+                      } else {
+                        echo "<option value=''>No itineraries available</option>";
+                      }
+                      ?>
+                    </select>
+                </div>
+
               </div>
+
+              <div class="row">
+
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Connect to Itinerary -->
+          <!-- <div class="card">
+            <div class="card-header bg-secondary">
+              <h5>Connect to Current itinerary (Optional)</h5>
             </div>
 
-            <!-- Row 2: To, From, Package -->
-            <div class="row g-3 mb-3">
+            <div class="card-body">
+              <div class="row">
 
-              <div class="col-12 col-md-6 col-lg-4">
-                <label class="form-label">To</label>
-                <select class="form-select" id="voucherTo" name="voucherTo" required>
-                  <option value="" disabled <?= empty($voucher['details']['sentTo']) ? 'selected' : '' ?>>Select Branch
-                  </option>
+                <div class="columns col-md-3">
+                  <div class="column-header">
+                    <label for="departure1Date"></label>
+                  </div>
 
-                  <?php
-                  $selectedTo = $voucher['details']['sentTo'] ?? '';
+                  <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" id="toggleItinerarySelect">
+                    <label class="form-check-label" for="toggleItinerarySelect">
+                      Connect to Current itinerary:
+                    </label>
+                  </div>
+                </div>
 
-                  $sql1 = "SELECT branchId, branchName FROM branch ORDER BY branchName ASC";
-                  $res1 = $conn->query($sql1);
-
-                  if ($res1->num_rows > 0) {
-                    while ($row = $res1->fetch_assoc()) {
-                      $branchName = htmlspecialchars($row['branchName'], ENT_QUOTES);
-                      $isSelected = ($branchName === $selectedTo) ? 'selected' : '';
-                      echo "<option value='$branchName' $isSelected>$branchName</option>";
+                <div class="columns col-md-6" id="itinerarySelectWrapper" style="display: none;">
+                  <select class="form-select mt-1" id="itineraryId" name="itineraryId">
+                    <option value="" disabled selected>Select Itinerary</option>
+                    <?php
+                    $sql = "SELECT itineraryId, itineraryName FROM itineraries ORDER BY createdAt DESC";
+                    $result = $conn->query($sql);
+                    if ($result && $result->num_rows > 0) {
+                      while ($row = $result->fetch_assoc()) {
+                        echo "<option value='" . $row['itineraryId'] . "'>" . htmlspecialchars($row['itineraryName']) . "</option>";
+                      }
+                    } else {
+                      echo "<option value=''>No itineraries available</option>";
                     }
-                  } else {
-                    echo "<option value=''>No branches available</option>";
-                  }
-                  ?>
-                </select>
+                    ?>
+                  </select>
+
+                </div>
+
               </div>
 
+            </div>
+          </div> -->
 
-              <div class="col-12 col-md-6 col-lg-4">
-                <label class="form-label">From</label>
-                <select class="form-select" name="sentFrom" id="sentFrom">
-                  <option value="" disabled <?= empty($voucher['details']['sentFrom']) ? 'selected' : '' ?>>Select Sender
-                  </option>
-                  <option value="Agency A" <?= $voucher['details']['sentFrom'] == 'Agency A' ? 'selected' : '' ?>>Agency A
-                  </option>
-                  <option value="Agency B" <?= $voucher['details']['sentFrom'] == 'Agency B' ? 'selected' : '' ?>>Agency B
-                  </option>
-                  <!-- Add more options as needed -->
-                </select>
-              </div>
+          <!-- Voucher Details Card -->
+          <div class="card">
+            <div class="card-header">
+              <h5>Voucher Details</h5>
+            </div>
 
-              <div class="col-12 col-md-6 col-lg-4">
-                <label for="packageSelect" class="form-label">Package</label>
-                <select class="form-select" id="packageSelect" name="packageSelect" required>
-                  <option value="" disabled>Select a package</option>
-                  <?php
-                  $sql1 = "SELECT packageId, packageName FROM package ORDER BY packageId ASC";
-                  $res1 = $conn->query($sql1);
+            <div class="card-body">
 
-                  if ($res1->num_rows > 0) {
-                    while ($row = $res1->fetch_assoc()) {
-                      $selected = ($row['packageId'] == $voucher['packageId']) ? "selected" : "";
-                      echo "<option value='" . htmlspecialchars($row['packageId'], ENT_QUOTES) . "' $selected>"
-                        . htmlspecialchars($row['packageName'], ENT_QUOTES) . "</option>";
+              <div class="row">
+
+                <!-- To -->
+                <div class="columns col-md-4">
+                  <label>To <span class="text-danger">*</span></label>
+
+                  <select class="form-select" id="voucherTo" name="voucherTo" required>
+                    <option value="" disabled selected>Select Branch</option>
+
+                    <?php
+                    // Execute the SQL query
+                    $sql1 = "SELECT branchId, branchName FROM branch ORDER BY branchName ASC";
+                    $res1 = $conn->query($sql1);
+
+                    // Check if there are results
+                    if ($res1->num_rows > 0) {
+                      // Loop through the results and generate options
+                      while ($row = $res1->fetch_assoc()) {
+                        echo "<option value='" . $row['branchName'] . "'>" . $row['branchName'] . "</option>";
+                      }
+                    } else {
+                      echo "<option value=''>No companies available</option>";
                     }
-                  } else {
-                    echo "<option value=''>No packages available</option>";
-                  }
-                  ?>
-                </select>
-              </div>
-            </div>
-
-            <!-- Row 3: Dates, Guide, Pax -->
-            <div class="row g-3">
-              <div class="col-12 col-md-6 col-lg-4">
-                <label class="form-label">Tour Periods <span class="text-danger">*</span></label>
-                <div class="d-flex align-items-center gap-2">
-                  <!-- Start Date -->
-                  <div class="input-with-icon position-relative w-100">
-                    <input type="text" class="form-control pe-5 datepicker" id="PeriodStartDate" placeholder="Start"
-                      value="<?= htmlspecialchars($voucher['details']['tourPeriodStart']) ?>" readonly>
-                    <i class="fas fa-calendar-alt calendar-icon"></i>
-                  </div>
-                  <span class="mx-1">→</span>
-                  <!-- End Date -->
-                  <div class="input-with-icon position-relative w-100">
-                    <input type="text" class="form-control pe-5 datepicker" id="PeriodEndDate" placeholder="End"
-                      value="<?= htmlspecialchars($voucher['details']['tourPeriodEnd']) ?>">
-                    <i class="fas fa-calendar-alt calendar-icon"></i>
-                  </div>
+                    ?>
+                  </select>
                 </div>
-              </div>
 
-              <div class="col-12 col-md-6 col-lg-4">
-                <label for="guideName" class="form-label">Guide <span class="text-danger">*</span></label>
-                <select class="form-select" id="guideName" name="guideName" required>
-                  <option disabled <?= empty($voucher['details']['guideName']) ? 'selected' : '' ?>>Select Guide</option>
-                  <?php
-                  // Current guide is stored as employee ID
-                  $currentGuideId = trim($voucher['details']['guideName'] ?? '');
+                <!-- From -->
+                <div class="columns col-md-4">
+                  <label for="voucherFrom">From <span class="text-danger">*</span></label>
+                  <select class="form-select" id="voucherFrom" name="voucherFrom" required>
+                    <option disabled value="">Select Sender</option>
+                    <option selected value="Smart Travel">Smart Travel</option>
 
-                  $sql = "SELECT id, fName, mName, lName FROM employee WHERE branch = 'Korea'";
-                  $result = $conn->query($sql);
+                  </select>
+                </div>
 
-                  if ($result && $result->num_rows > 0) {
-                    while ($row = $result->fetch_assoc()) {
-                      $employeeId = htmlspecialchars($row['id']);
-                      $fullName = trim($row['fName'] . ' ' . $row['mName'] . ' ' . $row['lName']);
-                      $fullNameEscaped = htmlspecialchars($fullName);
-                      // Compare selected guide by employee id, cast to string for safe comparison
-                      $isSelected = ($currentGuideId === (string) $row['id']) ? 'selected' : '';
-                      echo "<option value=\"$employeeId\" $isSelected>$fullNameEscaped</option>";
+                <!-- Number of Pax -->
+                <div class="columns col-md-4">
+                  <label for="voucherPaxCount">No. of Pax <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" id="voucherPaxCount" required>
+                </div>
+
+              </div>      
+
+              <!-- First Row -->
+              <div class="row">
+
+                <!-- Tour Type -->
+                <div class="columns col-md-6">
+                  <label for="voucherTour">Tour <span class="text-danger">*</span></label>
+                  <select class="form-select" id="voucherTour" name="voucherTour" required>
+                    <option selected disabled value="">Select Package Type</option>
+
+
+                    <?php
+                    // Execute the SQL query
+                    $sql1 = "SELECT packageId, packageName FROM package ORDER BY packageName ASC";
+                    $res1 = $conn->query($sql1);
+
+                    // Check if there are results
+                    if ($res1->num_rows > 0) {
+                      // Loop through the results and generate options
+                      while ($row = $res1->fetch_assoc()) {
+                        echo "<option value='" . $row['packageId'] . "'>" . $row['packageName'] . "</option>";
+                      }
+                    } else {
+                      echo "<option value=''>No companies available</option>";
                     }
-                  } else {
-                    echo "<option disabled>No guides available</option>";
-                  }
-                  ?>
-                </select>
-              </div>
-
-
-              <div class="col-12 col-md-6 col-lg-4">
-                <label class="form-label">No. of Pax</label>
-                <input type="text" class="form-control" value="<?= htmlspecialchars($voucher['details']['noOfPax']); ?>"
-                  readonly>
-              </div>
-            </div>
-
-          </div>
-
-        </div>
-
-        <!-- Air Schedule -->
-        <div class="card mb-2">
-          <div class="card-header">
-            <h5 class="fw-bold mb-0">Air Schedule</h5>
-          </div>
-
-          <div class="card-body">
-            <!-- Departure #1 -->
-            <div class="row mb-3">
-              <div class="col-12 mb-2">
-                <h6 class="fw-semibold text-uppercase text-muted border-bottom pb-1">Departure #1</h6>
-              </div>
-
-              <div class="col-md-6 col-lg-3 mb-3">
-                <label for="arrivalDate" class="form-label">Date</label>
-                <div class="input-with-icon">
-                  <input type="text" class="datepicker" id="arrivalDate" name="arrivalDate" placeholder="Arrival Date"
-                    value="2025-05-19" readonly>
-                  <i class="fas fa-calendar-alt calendar-icon"></i>
-                </div>
-              </div>
-
-              <div class="col-md-6 col-lg-3 mb-3">
-                <label for="arrivalFlight" class="form-label">Flight</label>
-                <select class="form-select" id="arrivalFlight" name="arrivalFlight" required>
-                  <option disabled>Select Flight</option>
-                  <option value="KE123" selected>KE123</option>
-                  <option value="OZ456">OZ456</option>
-                  <option value="JL789">JL789</option>
-                </select>
-              </div>
-
-              <div class="col-md-12 col-lg-6 mb-3">
-                <label class="form-label">Origin - Destination</label>
-                <div class="d-flex flex-column flex-sm-row align-items-center gap-2">
-                  <!-- Origin -->
-                  <select class="form-select" id="arrivalOrigin" name="arrivalOrigin" required>
-                    <option disabled>Origin</option>
-                    <option value="MNL" selected>Manila</option>
-                    <option value="ICN">Incheon</option>
-                    <option value="NRT">Narita</option>
-                    <option value="LAX">Los Angeles</option>
+                    ?>
                   </select>
 
-                  <!-- Arrow Separator -->
-                  <div class="text-muted fw-bold fs-5 d-flex align-items-center justify-content-center">→</div>
 
-                  <!-- Destination -->
-                  <select class="form-select" id="arrivalDestination" name="arrivalDestination" required>
-                    <option disabled>Destination</option>
-                    <option value="MNL">Manila</option>
-                    <option value="CEB">Cebu</option>
-                    <option value="BKK">Bangkok</option>
-                    <option value="ICN" selected>Incheon</option>
-                  </select>
                 </div>
-              </div>
 
+                <!-- Attachment
+                <div class="columns col-md-4">
+                  <label for="voucherAttachment">Attachment <span class="text-danger">*</span></label>
+                  <select class="form-select" id="voucherAttachment" name="voucherAttachment" required>
+                    <option value="" selected disabled>Select Attachment</option>
+                    <option value="voucher">Voucher</option>
+                    <option value="itinerary">Itinerary</option>
+                    <option value="voucher_and_itinerary">Voucher and Itinerary</option>
+                  </select>
+                </div> -->
 
-              <div class="col-md-12 col-lg-6 mb-3">
-                <label for="arrivalTimeStart" class="form-label">Departure - Arrival Time</label>
-
-                <div class="d-flex flex-column flex-sm-row gap-2">
-                  <div class="input-with-icon">
-                    <input type="text" class="form-control timepicker" id="arrivalTimeStart" name="arrivalTimeStart"
-                      value="12:30:00" placeholder="Departure Time" readonly required>
-                    <i class="fas fa-clock calendar-icon"></i>
-                  </div>
-
-                  <!-- Arrow Separator -->
-                  <div class="text-muted fw-bold fs-5 d-flex align-items-center justify-content-center">→</div>
-
-                  <div class="input-with-icon">
-                    <input type="text" class="form-control timepicker" id="arrivalTimeEnd" name="arrivalTimeEnd"
-                      value="12:30:00" placeholder="Arrival Time" readonly required>
-                    <i class="fas fa-clock calendar-icon"></i>
+                <!-- Tour Period -->
+                <div class="columns col-md-6">
+                  <label for="voucherPeriodStart">Tour Periods <span class="text-danger">*</span></label>
+                  <div class="datepicker-wrapper d-flex align-items-center">
+                    <div class="input-with-icon me-2">
+                      <input type="text" class="datepicker" id="voucherPeriodStart" placeholder="Start" readonly>
+                      <i class="fas fa-calendar-alt calendar-icon"></i>
+                    </div>
+                    <span class="mx-2">→</span>
+                    <div class="input-with-icon">
+                      <input type="text" class="datepicker" id="voucherPeriodEnd" placeholder="End" readonly>
+                      <i class="fas fa-calendar-alt calendar-icon"></i>
+                    </div>
                   </div>
                 </div>
 
               </div>
-            </div>
 
-            <!-- Departure #2 -->
-            <div class="row">
-              <div class="col-12 mb-2">
-                <h6 class="fw-semibold text-uppercase text-muted border-bottom pb-1">Departure #2</h6>
-              </div>
+              <!-- Second Row -->
+              <div class="row">
 
-              <div class="col-md-6 col-lg-3 mb-3">
-                <label for="destinationDate" class="form-label">Date <span class="text-danger">*</span></label>
-                <div class="input-with-icon">
-                  <input type="text" class="form-control datepicker" id="destinationDate" name="destinationDate"
-                    value="2025-05-26" placeholder="Destination Date" readonly>
-                  <i class="fas fa-calendar-alt calendar-icon"></i>
-                </div>
-              </div>
+                <!-- Guide Dropdown -->
+                <div class="columns col-md-6">
+                  <label for="guideSelect">Guide <span class="text-danger">*</span></label>
+                  <select class="form-select" id="guideSelect" name="guideSelect" required>
+                    <option selected disabled value="">Select Guide</option>
 
-              <div class="col-md-6 col-lg-3 mb-3">
-                <label for="destinationFlight" class="form-label">Flight <span class="text-danger">*</span></label>
-                <select class="form-select" id="destinationFlight" name="destinationFlight" required>
-                  <option disabled>Select Flight</option>
-                  <option value="KE321" selected>KE321</option>
-                  <option value="OZ654">OZ654</option>
-                  <option value="JL987">JL987</option>
-                </select>
-              </div>
+                    <?php
+                    $sql = "SELECT accountId AS guideAccountId, fName, mName, lName, contactNo, countryCode FROM employee WHERE isTourGuide = 1 ORDER BY lName, fName ASC";
+                    $res = $conn->query($sql);
 
-              <div class="col-md-12 col-lg-6 mb-3">
-                <label class="form-label">Origin - Destination <span class="text-danger">*</span></label>
-                <div class="d-flex flex-column flex-sm-row gap-2">
-                  <select class="form-select" id="destinationOrigin" name="destinationOrigin" required>
-                    <option disabled>Origin</option>
-                    <option value="ICN" selected>Incheon</option>
-                    <option value="MNL">Manila</option>
-                    <option value="CEB">Cebu</option>
-                    <option value="BKK">Bangkok</option>
-                  </select>
-                  <!-- Arrow Separator -->
-                  <div class="text-muted fw-bold fs-5 d-flex align-items-center justify-content-center">→</div>
-                  <select class="form-select" id="destinationArrival" name="destinationArrival" required>
-                    <option disabled>Destination</option>
-                    <option value="MNL" selected>Manila</option>
-                    <option value="ICN">Incheon</option>
-                    <option value="NRT">Narita</option>
-                    <option value="LAX">Los Angeles</option>
+                    if ($res && $res->num_rows > 0) {
+                      while ($row = $res->fetch_assoc()) {
+                        $guideAccountId = htmlspecialchars($row['guideAccountId']);
+                        $fName = $row['fName'];
+                        $mName = $row['mName'];
+                        $lName = $row['lName'];
+                        $contactNo = htmlspecialchars($row['contactNo']);
+                        $countryCode = htmlspecialchars($row['countryCode']);
+
+                        $middle = !empty($mName) ? ' ' . $mName : '';
+                        $displayName = htmlspecialchars("$lName, $fName$middle", ENT_QUOTES);
+
+                        echo "<option 
+                              value='$guideAccountId' 
+                              data-name='$displayName' 
+                              data-contact='$contactNo' 
+                              data-code='$countryCode'>
+                              $displayName
+                            </option>";
+                      }
+                    } else {
+                      echo "<option disabled>No available tour guides</option>";
+                    }
+                    ?>
                   </select>
                 </div>
+
+                <!-- Guide Contact Info -->
+                <div class="columns col-md-6">
+                  <label for="contactNumber">Guide Contact <span class="text-danger">*</span></label>
+                  <div class="form-group d-flex flex-row align-items-center">
+                    <select class="form-select" id="countryCode" style="width: 80px;" disabled>
+                      <option value="+63">+63</option>
+                      <option value="+82">+82</option>
+                    </select>
+                    <input type="text" class="form-control ms-2" id="contactNumber" name="contactNumber"
+                      placeholder="9***********" disabled>
+                  </div>
+                </div>
+
+                <!-- Single Unified Script -->
+                <script>
+                  document.addEventListener("DOMContentLoaded", function () {
+                    const guideSelect = document.getElementById('guideSelect');
+                    const contactInput = document.getElementById('contactNumber');
+                    const codeSelect = document.getElementById('countryCode');
+
+                    function fillGuideContact() {
+                      const selected = guideSelect.options[guideSelect.selectedIndex];
+                      if (selected && selected.value !== "") {
+                        contactInput.value = selected.dataset.contact || '';
+                        codeSelect.value = selected.dataset.code || '+63';
+                      } else {
+                        contactInput.value = '';
+                        codeSelect.value = '+63';
+                      }
+                    }
+
+                    guideSelect.addEventListener('change', fillGuideContact);
+
+                    // Pre-fill on load if already selected
+                    if (guideSelect.value) {
+                      fillGuideContact();
+                    }
+                  });
+                </script>
+
               </div>
 
-              <div class="col-md-12 col-lg-6 mb-3">
-                <label for="departureTimeStart" class="form-label">Departure - Arrival Time</label>
-                <div class="d-flex flex-column flex-sm-row gap-2">
-                  <div class="input-with-icon">
-                    <input type="text" class="form-control timepicker" id="departureTimeStart" name="departureTimeStart"
-                      value="12:00:00" placeholder="Departure Time" readonly required>
-                    <i class="fas fa-clock calendar-icon"></i>
+
+
+            </div>
+          </div>
+
+          <!-- Date and Hotels -->
+          <div class="card">
+
+            <div class="card-header d-flex justify-content-between align-items-center">
+              <h5 class="fw-bold mb-0">Date and Hotels</h5>
+              <button id="addDateHotelBtn" type="button" class="add-button btn btn-primary add-exclude-button">+</button>
+            </div>
+
+            <div class="card-body">
+              <div id="dateHotelContainer"></div>
+            </div>
+
+          </div>
+
+          <!-- Air Schedule -->
+          <div class="card">
+            <div class="card-header">
+              <h5>Air Schedule</h5>
+            </div>
+
+            <div class="card-body">
+
+              <!-- Departure #1 -->
+              <div class="row">
+                
+                <div class="main-header">
+                  <div class="header-container">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <span class="dnh-badge text-uppercase">
+                        Departure Flight
+                      </span>
+
+                      <!-- <button type="button" class="btn btn-sm text-white bg-danger border-0 px-2 py-1 remove-card-btn" title="Delete">
+                        <i class="fas fa-trash-alt"></i>
+                      </button> -->
+
+                    </div>
                   </div>
-                  <!-- Arrow Separator -->
-                  <div class="text-muted fw-bold fs-5 d-flex align-items-center justify-content-center">→</div>
-                  <div class="input-with-icon">
-                    <input type="text" class="form-control timepicker" id="departureTimeEnd" name="departureTimeEnd"
-                      value="12:00:00" placeholder="Arrival Time" readonly required>
-                    <i class="fas fa-clock calendar-icon"></i>
+                </div>
+
+                <!-- Flight -->
+                <div class="columns col-md-2">
+                  <div class="column-header">
+                    <label for="departure1Flight">Flight <span class="text-danger">*</span></label>
+                  </div>
+
+                  <div class="form-group">
+                    <select class="form-select" id="departure1Flight" name="departure1Flight" required>
+                      <option value="" selected disabled>Select Flight</option>
+                      <option value="KE123">KE123</option>
+                      <option value="OZ456">OZ456</option>
+                      <option value="JL789">JL789</option>
+                    </select>
+                  </div>
+
+                </div>
+
+                <!-- Date -->
+                <div class="columns col-md-2">
+                  <div class="column-header">
+                    <label for="departure1Date">Date <span class="text-danger">*</span></label>
+                  </div>
+
+                  <div class="datepicker-wrapper">
+                    <div class="form-group">
+                      <div class="input-with-icon">
+                        <input type="text" class="datepicker" id="departure1Date" name="departure1Date"
+                          placeholder="Departure Date" readonly>
+                        <i class="fas fa-calendar-alt calendar-icon"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Origin - Destination -->
+                <div class="columns col-md-4">
+                  <div class="column-header">
+                    <label>Origin - Destination <span class="text-danger">*</span></label>
+                  </div>
+                  <div class="datepicker-wrapper d-flex align-items-center">
+                    <div class="form-group">
+                      <select class="form-select" id="departure1Origin" name="departure1Origin" required>
+                        <option value="" selected disabled>Origin</option>
+                        <option value="MNL">Manila</option>
+                        <option value="ICN">Incheon</option>
+                      </select>
+                    </div>
+                    <div class="dash-separator px-2">→</div>
+                    <div class="form-group">
+                      <select class="form-select" id="departure1Destination" name="departure1Destination" required>
+                        <option value="" selected disabled>Destination</option>
+                        <option value="MNL">Manila</option>
+                        <option value="ICN">Incheon</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Departure Time - Arrival Time -->
+                <div class="columns col-md-4">
+                  <div class="column-header">
+                    <label>Departure Time - Arrival Time <span class="text-danger">*</span></label>
+                  </div>
+                  <div class="form-group d-flex flex-row gap-2">
+
+                    <div class="input-with-icon timepicker">
+                      <input type="text" class="timepicker form-control-sm" id="departure1DepartureTime"
+                        name="departure1DepartureTime" placeholder="Departure Time" readonly required>
+                      <i class="fas fa-clock calendar-icon"></i>
+                    </div>
+
+                    <span class="align-self-center">to</span>
+
+                    <div class="input-with-icon timepicker">
+                      <input type="text" class="timepicker form-control-sm" id="departure1ArrivalTime"
+                        name="departure1ArrivalTime" placeholder="Arrival Time" readonly required>
+                      <i class="fas fa-clock calendar-icon"></i>
+                    </div>
+
                   </div>
                 </div>
               </div>
+
+              <!-- Returning Date -->
+              <div class="row">
+
+                <div class="main-header">
+                  <div class="header-container">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <span class="dnh-badge text-uppercase">
+                        Returning Flight
+                      </span>
+
+                      <!-- <button type="button" class="btn btn-sm text-white bg-danger border-0 px-2 py-1 remove-card-btn" title="Delete">
+                        <i class="fas fa-trash-alt"></i>
+                      </button> -->
+
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Flight -->
+                <div class="columns col-md-2">
+                  <div class="column-header">
+                    <label for="departure2Flight">Flight <span class="text-danger">*</span></label>
+                  </div>
+                  <div class="form-group">
+                    <select class="form-select" id="departure2Flight" name="departure2Flight" required>
+                      <option value="" selected disabled>Select Flight</option>
+                      <option value="KE321">KE321</option>
+                      <option value="OZ654">OZ654</option>
+                      <option value="JL987">JL987</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Date -->
+                <div class="columns col-md-2">
+                  <div class="column-header">
+                    <label for="departure2Date">Date <span class="text-danger">*</span></label>
+                  </div>
+                  <div class="datepicker-wrapper">
+                    <div class="form-group">
+                      <div class="input-with-icon">
+                        <input type="text" class="datepicker" id="departure2Date" name="departure2Date"
+                          placeholder="Returning Date" readonly>
+                        <i class="fas fa-calendar-alt calendar-icon"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Origin - Destination -->
+                <div class="columns col-md-4">
+                  <div class="column-header">
+                    <label>Origin - Destination <span class="text-danger">*</span></label>
+                  </div>
+
+                  <div class="datepicker-wrapper d-flex align-items-center">
+                    <div class="form-group">
+                      <select class="form-select" id="departure2Origin" name="departure2Origin" required>
+                        <option value="" selected disabled>Origin</option>
+                        <option value="MNL">Manila</option>
+                        <option value="ICN">Incheon</option>
+                      </select>
+                    </div>
+                    <span class="mx-1 text-muted">→</span>
+                    <div class="form-group">
+                      <select class="form-select" id="departure2Destination" name="departure2Destination" required>
+                        <option value="" selected disabled>Destination</option>
+                        <option value="MNL">Manila</option>
+                        <option value="ICN">Incheon</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Departure Time - Arrival Time -->
+                <div class="columns col-md-4">
+                  <div class="column-header">
+                    <label>Departure Time - Arrival Time <span class="text-danger">*</span></label>
+                  </div>
+                  <div class="form-group d-flex flex-row gap-2">
+                    <div class="input-with-icon timepicker">
+                      <input type="text" class="timepicker form-control-sm" id="departure2DepartureTime"
+                        name="departure2DepartureTime" placeholder="Departure Time" readonly required>
+                      <i class="fas fa-clock calendar-icon"></i>
+                    </div>
+                    <span class="align-self-center">to</span>
+                    <div class="input-with-icon timepicker">
+                      <input type="text" class="timepicker form-control-sm" id="departure2ArrivalTime"
+                        name="departure2ArrivalTime" placeholder="Arrival Time" readonly required>
+                      <i class="fas fa-clock calendar-icon"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
             </div>
           </div>
-        </div>
 
-        <!-- Date and Hotels -->
-        <div class="card">
-          <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="fw-bold mb-0">Date and Hotels</h5>
-            <button id="addDateHotelBtn" type="button" class="btn btn-sm btn-primary">Add Date & Hotel</button>
-          </div>
-          <div class="card-body" id="dateHotelContainer"></div>
-        </div>
-
-        <!-- Includes Card -->
-        <div class="card includes-header-card">
-          <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="text-white mb-0">Includes</h5>
-            <button id="addIncludeBtn" class="btn btn-sm btn-light">
-              <i class="fas fa-plus"></i>
-            </button>
-          </div>
-          <div class="card-body" id="includesContainer"></div>
-        </div>
-
-        <!-- Excludes Card -->
-        <div class="card excludes-header-card">
-          <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="text-white mb-0">Excludes</h5>
-            <button id="addExcludeBtn" class="btn btn-sm btn-light">
-              <i class="fas fa-plus"></i>
-            </button>
-          </div>
-          <div class="card-body">
-            <div id="excludesContainer">
-              <!-- JS will generate .col-md-12 blocks here -->
+          <!-- Includes Header -->
+          <div class="card includes-header-card">
+            <div class="card-header bg-secondary card-title includes-wrapper">
+              <h5>Includes</h5>
+              <button type="button" id="addIncludeBtn" class="add-button btn btn-primary add-exclude-button">+</button>
             </div>
-          </div>
-        </div>
 
+            <div class="card-body" id="includesContainer">
+              <!-- JS will generate .row elements here directly -->
+            </div>
+
+          </div>
+
+          <!-- Excludes -->
+          <div class="card excludes-header-card">
+            <div class="card-header bg-secondary card-title excludes-wrapper">
+              <h5>Excludes</h5>
+              <button type="button" id="addExcludeBtn" class="add-button btn btn-primary add-exclude-button">+</button>
+              <!-- Add Exclude Button -->
+            </div>
+
+            <div class="card-body">
+              <!-- Excludes Rows (Dynamically added) -->
+              <div id="excludesContainer"></div>
+            </div>
+
+          </div>
       </div>
+
+      <!-- Form footer with both buttons -->
+      <div class="form-footer">
+        <button type="button" class="btn btn-primary" id="submitEdit">Submit Edit</button>
+
+        <select id="actionSelector" class="form-select" style="width: 120px;">
+          <option value="xlsx" selected>Excel (.xlsx)</option>
+          <option value="pdf">PDF</option>
+          <option value="both">Excel and PDF </option>
+        </select>
+
+        <button type="button" class="btn btn-primary" id="submitVoucher">Generate Itinerary</button>
+
+        </form>
+      </div>
+
     </div>
-
-    <!-- Form footer with both buttons -->
-    <div class="form-footer">
-      <button type="button" class="btn btn-primary" id="submitEdit">Submit Edit</button>
-
-      <select id="actionSelector" class="form-select" style="width: 120px;">
-        <option value="xlsx" selected>Excel (.xlsx)</option>
-        <option value="pdf">PDF</option>
-        <option value="both">Excel and PDF </option>
-      </select>
-
-      <button type="button" class="btn btn-primary" id="submitVoucher">Generate Itinerary</button>
-    </div>
-
-
-  </div>
   </div>
 
-
-
-  <!-- Modal -->
+  <!-- Modal - For Template Name -->
   <div class="modal fade" id="templateNameModal" tabindex="-1" aria-labelledby="templateNameModalLabel"
     aria-hidden="true">
     <div class="modal-dialog">
@@ -701,20 +902,23 @@
 
   </script>
 
-  <div class="card">
+  <!-- <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
       <h5 class="fw-bold mb-0">Date and Hotels</h5>
       <button id="addDateHotelBtn" type="button" class="btn btn-sm btn-primary">Add Date & Hotel</button>
     </div>
-    <div class="card-body" id="dateHotelContainer"></div>
-  </div>
+
+    <div class="card-body" id="dateHotelContainer">
+
+    </div>
+  </div> -->
 
   <!-- Date and Hotels Script -->
   <script>
   document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('dateHotelContainer');
     const addBtn = document.getElementById('addDateHotelBtn');
-    const MAX_CARDS = 3;
+    const maxCards = 3;
 
     const originalData = <?= json_encode($voucher['dateAndHotels'] ?? [], JSON_UNESCAPED_UNICODE); ?>;
     const hotels = <?= json_encode($hotels ?? [], JSON_UNESCAPED_UNICODE); ?>;
@@ -727,67 +931,71 @@
     function renderAll() {
       container.innerHTML = '';
 
+      const cities = [...new Set(hotels.map(h => h.hotelCity))];
+      let cardCount = voucherDateAndHotelsData.length;
+
       voucherDateAndHotelsData.forEach((item, index) => {
         const num = index + 1;
+        const isFirstCard = num === 1;
+        const filteredHotels = hotels.filter(h => h.hotelCity === item.city);
 
         const card = document.createElement('div');
         card.className = 'mb-4 date-hotel-card';
-        card.dataset.index = index;
-
-        const cities = [...new Set(hotels.map(h => h.hotelCity))];
-        const filteredHotels = hotels.filter(h => h.hotelCity === item.city);
-
-        console.log(`Rendering Card #${num}`, item);
+        card.setAttribute('data-card-id', num);
 
         card.innerHTML = `
-          <div class="d-flex justify-content-between align-items-center border-bottom pb-1 pt-1 mb-2">
-            <h6 class="fw-semibold text-uppercase text-muted mb-0">
-              Date and Hotels #${num}
-            </h6>
-            <button type="button" class="btn btn-danger btn-sm btn-delete-datehotel"
-              title="Delete this entry" style="padding: 0.25rem 0.4rem; font-size: 1rem; line-height: 1;">
-              &times;
-            </button>
-          </div>
+          
+            <div class="header-container">
+              <div class="d-flex justify-content-between align-items-center">
+                <span class="dnh-badge text-uppercase">
+                  Date and Hotels #${num}
+                </span>
 
-          <div class="row g-3 align-items-end">
+                <button type="button" class="btn btn-sm text-white bg-danger border-0 px-2 py-1 btn-delete-datehotel" title="Delete">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+       
+
+          <div class="row g-4 align-items-end">
             <div class="col-12 col-md-5">
               <label class="form-label">Date</label>
               <div class="d-flex gap-2 align-items-center">
                 <div class="position-relative w-100">
-                  <input type="text" class="form-control datepicker" id="PeriodStartDate${num}"
-                    placeholder="Start" value="${item.startDate || ''}" readonly>
-                  <i class="fas fa-calendar-alt position-absolute text-muted"
-                    style="right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none;"></i>
+                  <input type="text" class="form-control datepicker" id="PeriodStartDate${num}" value="${item.startDate || ''}" placeholder="Start" readonly>
+                  <input type="text" class="required-start hidden-required-field" name="requiredStartDate${num}" ${isFirstCard ? 'required' : ''} style="position:absolute; left:-9999px; width:1px; height:1px; opacity:0;" value="${item.startDate || ''}">
+                  <i class="fas fa-calendar-alt position-absolute text-muted" style="right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none;"></i>
                 </div>
-                <span class="text-muted">→</span>
+
+                <span class="mx-1 text-muted">→</span>
+
                 <div class="position-relative w-100">
-                  <input type="text" class="form-control datepicker" id="PeriodEndDate${num}"
-                    placeholder="End" value="${item.endDate || ''}" readonly>
-                  <i class="fas fa-calendar-alt position-absolute text-muted"
-                    style="right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none;"></i>
+                  <input type="text" class="form-control datepicker" id="PeriodEndDate${num}" value="${item.endDate || ''}" placeholder="End" readonly>
+                  <input type="text" class="required-end hidden-required-field" name="requiredEndDate${num}" ${isFirstCard ? 'required' : ''} style="position:absolute; left:-9999px; width:1px; height:1px; opacity:0;" value="${item.endDate || ''}">
+                  <i class="fas fa-calendar-alt position-absolute text-muted" style="right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none;"></i>
                 </div>
               </div>
             </div>
 
             <div class="col-6 col-md-2">
-              <label for="nights${num}" class="form-label">No. of Nights</label>
-              <input type="text" class="form-control" id="nights${num}" name="nights${num}" 
-                value="${item.nights || ''}" readonly>
+              <label class="form-label" for="nights${num}">No. of Nights</label>
+              <input type="text" class="form-control" id="nights${num}" name="nights${num}" ${isFirstCard ? 'required' : ''} value="${item.nights || ''}">
             </div>
 
             <div class="col-6 col-md-2">
-              <label for="city${num}" class="form-label">City</label>
-              <select class="form-select city-select" id="city${num}" name="city${num}">
-                <option value="">Select City</option>
+              <label class="form-label" for="city${num}">City</label>
+              <select class="form-control city-select" id="city${num}" name="city${num}" ${isFirstCard ? 'required' : ''}>
+                <option value="" disabled ${!item.city ? 'selected' : ''}>Select City</option>
                 ${cities.map(city => `<option value="${city}" ${item.city === city ? 'selected' : ''}>${city}</option>`).join('')}
               </select>
             </div>
 
             <div class="col-12 col-md-3">
-              <label for="hotel${num}" class="form-label">Hotel</label>
-              <select class="form-select hotel-select" id="hotel${num}" name="hotel${num}">
-                <option value="">Select Hotel</option>
+              <label class="form-label" for="hotel${num}">Hotel</label>
+              <select class="form-control hotel-select" id="hotel${num}" name="hotel${num}" ${isFirstCard ? 'required' : ''} ${!item.city ? 'disabled' : ''}>
+                <option value="" disabled ${!item.hotel ? 'selected' : ''}>Select Hotel</option>
                 ${filteredHotels.map(h => `<option value="${h.hotelName}" ${item.hotel === h.hotelName ? 'selected' : ''}>${h.hotelName}</option>`).join('')}
               </select>
             </div>
@@ -795,36 +1003,104 @@
         `;
 
         container.appendChild(card);
+
+        // Flatpickr + Night calculation
+        const startInput = document.getElementById(`PeriodStartDate${num}`);
+        const endInput = document.getElementById(`PeriodEndDate${num}`);
+        const nightsInput = document.getElementById(`nights${num}`);
+        const citySelect = document.getElementById(`city${num}`);
+        const hotelSelect = document.getElementById(`hotel${num}`);
+        const hiddenStart = document.querySelector(`[name="requiredStartDate${num}"]`);
+        const hiddenEnd = document.querySelector(`[name="requiredEndDate${num}"]`);
+
+        function calculateNights() {
+          const startDate = new Date(startInput.value);
+          const endDate = new Date(endInput.value);
+          if (startInput.value && endInput.value && endDate > startDate) {
+            const diff = Math.round((endDate - startDate) / (1000 * 60 * 60 * 24));
+            nightsInput.value = diff;
+          } else {
+            nightsInput.value = "";
+          }
+        }
+
+        flatpickr(startInput, {
+          dateFormat: "Y-m-d",
+          minDate: "today",
+          disableMobile: true,
+          defaultDate: item.startDate || null,
+          onChange: (selectedDates, dateStr) => {
+            if (hiddenStart) hiddenStart.value = dateStr;
+            calculateNights();
+          }
+        });
+
+        flatpickr(endInput, {
+          dateFormat: "Y-m-d",
+          minDate: "today",
+          disableMobile: true,
+          defaultDate: item.endDate || null,
+          onChange: (selectedDates, dateStr) => {
+            if (hiddenEnd) hiddenEnd.value = dateStr;
+            calculateNights();
+          }
+        });
+
+        citySelect.addEventListener('change', e => {
+          const selectedCity = e.target.value;
+          populateHotelsForCity(hotelSelect, selectedCity);
+        });
+
+        hotelSelect.addEventListener('change', () => {
+          cardsJSONData = generateCardsJSON();
+          console.log("Updated JSON:", JSON.stringify(cardsJSONData, null, 2));
+        });
+
+        card.querySelector('.btn-delete-datehotel').addEventListener('click', () => {
+          if (num === 1) {
+            startInput._flatpickr.clear();
+            endInput._flatpickr.clear();
+            nightsInput.value = "";
+            citySelect.value = "";
+            hotelSelect.innerHTML = `<option value="" disabled selected>Select Hotel</option>`;
+            hotelSelect.disabled = true;
+            if (hiddenStart) hiddenStart.value = "";
+            if (hiddenEnd) hiddenEnd.value = "";
+          } else {
+            voucherDateAndHotelsData.splice(index, 1);
+            renderAll();
+          }
+        });
       });
 
-      bindDeleteEvents();
-      addBtn.disabled = voucherDateAndHotelsData.length >= MAX_CARDS;
-      initializeDatepickers();
-    }
-
-    function bindDeleteEvents() {
-      container.querySelectorAll('.btn-delete-datehotel').forEach(button => {
-        button.onclick = () => {
-          const idx = Number(button.closest('.date-hotel-card').dataset.index);
-          voucherDateAndHotelsData.splice(idx, 1);
-          console.log("Deleted index:", idx);
-          renderAll();
-        };
-      });
+      // Add button state
+      if (voucherDateAndHotelsData.length >= maxCards) {
+        addBtn.classList.add('btn-disabled');
+        addBtn.setAttribute('data-locked', 'true');
+      } else {
+        addBtn.classList.remove('btn-disabled');
+        addBtn.removeAttribute('data-locked');
+      }
     }
 
     function addNewDateHotel() {
-      if (voucherDateAndHotelsData.length >= MAX_CARDS) return;
+      if (voucherDateAndHotelsData.length >= maxCards) return;
 
       let nextItem = originalData.find(orig =>
         !voucherDateAndHotelsData.some(curr => JSON.stringify(curr) === JSON.stringify(orig))
-      ) || {};
+      ) || {
+        startDate: '',
+        endDate: '',
+        nights: '',
+        city: '',
+        hotel: ''
+      };
 
-      console.log("Adding new item:", nextItem);
       voucherDateAndHotelsData.push(nextItem);
       renderAll();
     }
 
+    // Optional if you ever re-render flatpickr outside renderAll
     function initializeDatepickers() {
       document.querySelectorAll('.datepicker').forEach(input => {
         if (input._flatpickr) input._flatpickr.destroy();
@@ -839,8 +1115,7 @@
     addBtn.addEventListener('click', addNewDateHotel);
     renderAll();
   });
-</script>
-
+  </script>
 
   <!-- Inject dynamic includes JSON -->
   <script>
@@ -875,13 +1150,13 @@
       row.className = 'include-row mb-3';
       row.setAttribute('data-index', index);
       row.innerHTML = `
-      <div class="d-flex justify-content-between align-items-center mb-1">
+      <div class="d-flex justify-content-between align-items-center">
         <label for="includesSelect${index}">Includes ${index}:</label>
         <button type="button" class="btn btn-danger btn-sm remove-btn" title="Remove Includes ${index}" style="font-size: 1rem; line-height: 1;">
           &times;
         </button>
-
       </div>
+      
       <select id="includesSelect${index}" name="includesSelect${index}" class="form-select" required>
         <option value="" disabled ${!data.value ? 'selected' : ''}>Select Include</option>
         <option value="1">Hotel (4 nights with twin or triple sharing)</option>
@@ -1175,52 +1450,5 @@
   </script>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <!-- <script>
-  document.addEventListener("change", function(event) {
-  if (event.target.matches(".area-select, .hotel-select, .meal-plan-select, .itinerary-select")) {
-  const day = event.target.dataset.day;
-
-  if (!day) {
-  console.warn("data-day attribute is missing!");
-  return;
-  }
-
-  // Get ALL selected values for the specific day
-  const selectedAreas = [...document.querySelectorAll(`.area-select[data-day="${day}"]`)]
-  .map(a => a.value || "None");
-  const selectedMealPlans = [...document.querySelectorAll(`.meal-plan-select[data-day="${day}"]`)]
-  .map(m => m.value || "None");
-  const selectedHotels = [...document.querySelectorAll(`.hotel-select[data-day="${day}"]`)]
-  .map(h => h.value || "None");
-  const selectedItineraries = [...document.querySelectorAll(`.itinerary-select[data-day="${day}"]`)]
-  .map(i => i.value || "None");
-
-  console.log(JSON.stringify({
-  Day: day,
-  Areas: selectedAreas,
-  MealPlans: selectedMealPlans,
-  Hotels: selectedHotels,
-  Itineraries: selectedItineraries
-  }, null, 2));
-  }
-  });
-  </script> -->
-
-</body>
-
+  </body>
 </html>

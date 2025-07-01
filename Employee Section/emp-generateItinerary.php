@@ -105,12 +105,12 @@
 											<option value="" selected disabled>Select Package Type</option>
 											<?php
 											// Execute the SQL query
-											$sql1 = "SELECT packageName FROM package ORDER BY packageId ASC";
+											$sql1 = "SELECT packageName, packageId FROM package ORDER BY packageId ASC";
 											$res1 = $conn->query($sql1);
 
 											if ($res1->num_rows > 0) {
 												while ($row = $res1->fetch_assoc()) {
-													echo "<option value='" . $row['packageName'] . "'>" . $row['packageName'] . "</option>";
+													echo "<option value='" . $row['packageId'] . "'>" . $row['packageName'] . "</option>";
 												}
 											} else {
 												echo "<option value=''>No companies available</option>";
@@ -399,7 +399,7 @@
 	</script> -->
 
 	<!-- Datepicker Script -->
-	<script>
+	<!-- <script>
 		$(document).ready(function () {
 			// Common configuration for datepickers
 			function initDatepicker(selector) {
@@ -430,7 +430,7 @@
 			initDatepicker("#PeriodStartDate");
 			initDatepicker("#PeriodEndDate");
 		});
-	</script>
+	</script> -->
 
 
 	<!-- Timepicker & Datepicker General Script -->
@@ -628,7 +628,6 @@
 
 
 	<!-- Dropdown Script -->
-
 	<script>
 		const selectDays = document.getElementById("select-days");
 		const itineraryContainer = document.getElementById("itinerary-container");
@@ -913,6 +912,32 @@
 			itineraryContainer.appendChild(card);
 		}
 
+		function updateDropdownOptions() {
+			["area", "hotel", "itinerary"].forEach(category => {
+				for (const day in selectedValues[category]) {
+					const allSelected = selectedValues[category][day].filter(val => val !== "");
+
+					// Get all selects of that category for the current day
+					const selects = document.querySelectorAll(`.${category}-select[data-day="${day}"]`);
+
+					selects.forEach(select => {
+						const currentVal = select.value;
+
+						Array.from(select.options).forEach(option => {
+							// Skip placeholder
+							if (option.value === "" || (option.disabled && option.selected)) return;
+
+							// Disable if already selected elsewhere and not the current one
+							if (allSelected.includes(option.value) && option.value !== currentVal) {
+								option.disabled = true;
+							} else {
+								option.disabled = false;
+							}
+						});
+					});
+				}
+			});
+		}
 
 		// Event Delegation: Update hotel options based on selected area(s)
 		document.addEventListener("change", function (e) {
@@ -947,8 +972,6 @@
 			}
 		});
 
-
-
 		// Hide the form-footer when itinerary is cleared
 		formFooter.style.display = selectedDays ? "flex" : "none";
 
@@ -957,7 +980,7 @@
 			if (event.target.matches(".area-select, .hotel-select, .itinerary-select")) {
 				const day = event.target.dataset.day;
 				const selectedValue = event.target.value;
-				const className = event.target.className.split(" ")[1].split("-")[0]; // Extract area, hotel or itinerary from class name
+				const className = event.target.className.split(" ")[1].split("-")[0]; // Extract area, hotel or itinerary
 
 				if (!selectedValues[className][day]) {
 					selectedValues[className][day] = [];
@@ -990,173 +1013,168 @@
 		});
 
 
+
 	</script>
 
 
 
 	<!-- Form Submission Script -->
-	<!-- Form Submission Script -->
-<script>
-	document.addEventListener("DOMContentLoaded", function () {
-		const form = document.getElementById("itineraryGenerate");
-		const submitBtn = document.getElementById("submitTour");
-		const modalEl = document.getElementById("templateNameModal");
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+			const form = document.getElementById("itineraryGenerate");
+			const submitBtn = document.getElementById("submitTour");
+			const modalEl = document.getElementById("templateNameModal");
 
-		// Revalidate submit button on input or change
-		form.addEventListener("input", toggleSubmitButton);
-		form.addEventListener("change", toggleSubmitButton);
+			// Revalidate submit button on input or change
+			form.addEventListener("input", toggleSubmitButton);
+			form.addEventListener("change", toggleSubmitButton);
 
-		function toggleSubmitButton() {
-			console.log("🔄 Checking form validity...");
-			submitBtn.disabled = !form.checkValidity();
-		}
+			function toggleSubmitButton() {
+				console.log("🔄 Checking form validity...");
+				submitBtn.disabled = !form.checkValidity();
+			}
 
-		// Handle submit button click
-		submitBtn.addEventListener("click", function (e) {
-			e.preventDefault();
+			// Handle submit button click
+			submitBtn.addEventListener("click", function (e) {
+				e.preventDefault();
+
+				if (!form.checkValidity()) {
+					form.reportValidity();
+					return;
+				}
+
+				// Show modal using Bootstrap 5 Modal API
+				if (modalEl) {
+					const modal = new bootstrap.Modal(modalEl);
+					modal.show();
+				} else {
+					console.error("❌ Modal element not found!");
+				}
+			});
+		});
+
+		function proceedWithSubmission() {
+			const form = document.getElementById("itineraryGenerate");
 
 			if (!form.checkValidity()) {
 				form.reportValidity();
 				return;
 			}
 
-			// Show modal using Bootstrap 5 Modal API
-			if (modalEl) {
-				const modal = new bootstrap.Modal(modalEl);
-				modal.show();
-			} else {
-				console.error("❌ Modal element not found!");
+			const templateName = document.getElementById("templateName")?.value.trim();
+			if (!templateName) {
+				alert("⚠️ Please enter a template name before proceeding.");
+				return;
 			}
-		});
-	});
 
-	function proceedWithSubmission() {
-		const form = document.getElementById("itineraryGenerate");
+			// Collect top-level inputs
+			const selectedPackage = document.getElementById("packageSelect")?.value.trim() ?? null;
+			const noOfDays = document.getElementById("select-days")?.value.trim() ?? null;
+			const startDate = document.getElementById("PeriodStartDate")?.value.trim() ?? null;
+			const endDate = document.getElementById("PeriodEndDate")?.value.trim() ?? null;
+			const guideName = document.getElementById("guideName")?.value.trim() ?? null;
+			const countryCode = document.getElementById("countryCode")?.value.trim() ?? null;
+			const contactNumber = document.getElementById("contactNumber")?.value.trim() ?? null;
 
-		if (!form.checkValidity()) {
-			form.reportValidity();
-			return;
-		}
+			const guideSelect = document.getElementById("guideName");
+			const guideaccountId = guideSelect?.selectedOptions[0]?.getAttribute("data-accountid")?.trim() ?? null;
 
-		const templateName = document.getElementById("templateName")?.value.trim();
-		if (!templateName) {
-			alert("⚠️ Please enter a template name before proceeding.");
-			return;
-		}
+			// ✅ Build city/hotel JSON object
+			const cityHotelsData = {};
+			for (let i = 1; i <= 3; i++) {
+				const city = document.getElementById(`city${i}`)?.value.trim() ?? "";
+				const hotel = document.getElementById(`hotel${i}`)?.value.trim() ?? "";
 
-		// Collect top-level inputs
-		const selectedPackage = document.getElementById("packageSelect")?.value.trim() ?? null;
-		const noOfDays = document.getElementById("select-days")?.value.trim() ?? null;
-		const startDate = document.getElementById("PeriodStartDate")?.value.trim() ?? null;
-		const endDate = document.getElementById("PeriodEndDate")?.value.trim() ?? null;
-		const guideName = document.getElementById("guideName")?.value.trim() ?? null;
-		const countryCode = document.getElementById("countryCode")?.value.trim() ?? null;
-		const contactNumber = document.getElementById("contactNumber")?.value.trim() ?? null;
-
-		const guideSelect = document.getElementById("guideName");
-		const accountId = guideSelect?.selectedOptions[0]?.getAttribute("data-accountid")?.trim() ?? null;
-
-		const city1 = document.getElementById("city1")?.value.trim() ?? null;
-		const hotel1 = document.getElementById("hotel1")?.value.trim() ?? null;
-		const city2 = document.getElementById("city2")?.value.trim() ?? null;
-		const hotel2 = document.getElementById("hotel2")?.value.trim() ?? null;
-		const city3 = document.getElementById("city3")?.value.trim() ?? null;
-		const hotel3 = document.getElementById("hotel3")?.value.trim() ?? null;
-
-
-		// Collect itinerary data
-		const itineraryData = [];
-
-		document.querySelectorAll(".itinerary-card").forEach(dayCard => {
-			const day = dayCard.querySelector(".hotel-select")?.dataset.day || "Unknown";
-
-			const selectedAreas = [...dayCard.querySelectorAll(".area-select[data-day]")]
-				.map(area => area.value.trim())
-				.filter(value => value !== "");
-
-			const selectedMealPlans = [...dayCard.querySelectorAll(".meal-plan-select[data-day]")]
-				.map(meal => meal.value.trim())
-				.filter(value => value !== "");
-
-			const selectedHotels = [...dayCard.querySelectorAll(".hotel-select")]
-				.map(select => select.value.trim())
-				.filter(value => value !== "");
-
-			const selectedItineraries = [...dayCard.querySelectorAll(".itinerary-select")]
-				.map(select => select.value.trim())
-				.filter(value => value !== "");
-
-			itineraryData.push({
-				day,
-				areas: selectedAreas.length ? selectedAreas : [""],
-				meal_plans: selectedMealPlans.length ? selectedMealPlans : [""],
-				hotels: selectedHotels.length ? selectedHotels : [""],
-				itineraries: selectedItineraries.length ? selectedItineraries : [""]
-			});
-		});
-
-		// Console Output
-		console.group("📦 Submitting Itinerary");
-		console.table({
-			selectedPackage, noOfDays, startDate, endDate, guideName, accountId,
-			countryCode, contactNumber,
-			city1, hotel1, city2, hotel2, city3, hotel3
-		});
-		console.table(itineraryData);
-		console.groupEnd();
-
-		// Disable submit button during AJAX
-		const submitButton = document.getElementById("submitTour");
-		submitButton.disabled = true;
-
-		// AJAX Submit
-		$.ajax({
-			url: "../Employee Section/functions/emp-saveItinerary.php",
-			type: "POST",
-			data: {
-				noOfDays: noOfDays,
-				package: selectedPackage,
-				period_start: startDate,
-				period_end: endDate,
-				countryCode: countryCode,
-				contactNumber: contactNumber,
-				guideAccountId: accountId,
-				guide: guideName,
-				city1: city1,
-				hotel1: hotel1,
-				city2: city2,
-				hotel2: hotel2,
-				city3: city3,
-				hotel3: hotel3,
-				itinerary: JSON.stringify(itineraryData),
-				templateName: templateName
-			},
-			dataType: "json",
-			success: function (response) {
-				submitButton.disabled = false;
-
-				if (response.status === "success") {
-					alert("Itinerary successfully created! Redirecting to Itinerary Table");
-					window.location.href = "../Employee Section/emp-itinerarytable.php";
-				} else {
-					alert("Error saving itinerary: " + response.message);
+				if (city || hotel) {
+					cityHotelsData[`city${i}`] = city;
+					cityHotelsData[`hotel${i}`] = hotel;
 				}
-			},
-			error: function (xhr, status, error) {
-				submitButton.disabled = false;
-				console.error("AJAX Error:", error);
-				console.error("Response Text:", xhr.responseText);
-				alert("An error occurred while saving the itinerary.");
 			}
-		});
 
-		// Close modal using Bootstrap 5 API
-		const modalInstance = bootstrap.Modal.getInstance(document.getElementById("templateNameModal"));
-		if (modalInstance) {
-			modalInstance.hide();
+			// ✅ Collect itinerary details
+			const itineraryData = [];
+
+			document.querySelectorAll(".itinerary-card").forEach(dayCard => {
+				const day = dayCard.querySelector(".hotel-select")?.dataset.day || "Unknown";
+
+				const selectedAreas = [...dayCard.querySelectorAll(".area-select[data-day]")]
+					.map(area => area.value.trim()).filter(Boolean);
+
+				const selectedMealPlans = [...dayCard.querySelectorAll(".meal-plan-select[data-day]")]
+					.map(meal => meal.value.trim()).filter(Boolean);
+
+				const selectedHotels = [...dayCard.querySelectorAll(".hotel-select")]
+					.map(select => select.value.trim()).filter(Boolean);
+
+				const selectedItineraries = [...dayCard.querySelectorAll(".itinerary-select")]
+					.map(select => select.value.trim()).filter(Boolean);
+
+				itineraryData.push({
+					day,
+					areas: selectedAreas.length ? selectedAreas : [""],
+					meal_plans: selectedMealPlans.length ? selectedMealPlans : [""],
+					hotels: selectedHotels.length ? selectedHotels : [""],
+					itineraries: selectedItineraries.length ? selectedItineraries : [""]
+				});
+			});
+
+			// 📦 Debug Output
+			console.group("📦 Submitting Itinerary");
+			console.table({ selectedPackage, noOfDays, startDate, endDate, guideName, countryCode, contactNumber });
+			console.log("🏨 City/Hotel JSON:", cityHotelsData);
+			console.log("🗓️ Itinerary Data:", itineraryData);
+			console.groupEnd();
+
+			// Disable button during AJAX
+			const submitButton = document.getElementById("submitTour");
+			submitButton.disabled = true;
+
+			// ✅ AJAX submission
+			$.ajax({
+				url: "../Employee Section/functions/emp-saveItinerary.php",
+				type: "POST",
+				data: {
+					templateName,
+					package: selectedPackage,
+					noOfDays,
+					period_start: startDate,
+					period_end: endDate,
+					countryCode,
+					contactNumber,
+					guide: guideName,
+					guideAccountId: guideaccountId,
+					userId: <?php echo $accountId ?? 0?>, // Assuming user_id is set in session
+					cityHotels: JSON.stringify(cityHotelsData), // ✅ New structure
+					itinerary: JSON.stringify(itineraryData)   // ✅ Structured per day
+				},
+
+				dataType: "json",
+				success: function (response) {
+					submitButton.disabled = false;
+
+					if (response.status === "success") {
+						alert("✅ Itinerary successfully created! Redirecting...");
+						window.location.href = "../Employee Section/emp-itinerarytable.php";
+					} else {
+						alert("❌ Error saving itinerary: " + response.message);
+					}
+				},
+				error: function (xhr, status, error) {
+					submitButton.disabled = false;
+					console.error("❌ AJAX Error:", error);
+					console.error("Response Text:", xhr.responseText);
+					alert("An error occurred while saving the itinerary.");
+				}
+			});
+
+			// Close modal (Bootstrap 5)
+			const modalInstance = bootstrap.Modal.getInstance(document.getElementById("templateNameModal"));
+			if (modalInstance) {
+				modalInstance.hide();
+			}
 		}
-	}
-</script>
+
+	</script>
 
 
 
