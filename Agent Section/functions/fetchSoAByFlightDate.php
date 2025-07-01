@@ -9,19 +9,18 @@ error_reporting(E_ALL);
 
 if (isset($_POST['flightId'])) 
 {
-  // Get the selected filter values from the POST request
   $companyId = $_POST['companyId'];
   $flightDepartureDate = $_POST['flightId'];
 
   $formattedTotalPriceSum = "0.00";
   $formattedTotalRequestCostSum = "0.00";
   $formattedTotalAmount = "0.00";
+  $formattedBalance = "0.00";
 
-  // Query to get the branchAgentCode
   $sql1 = "SELECT c.companyName, b.branchAgentCode
-          FROM company c 
-          JOIN branch b ON c.branchId = b.branchId
-          WHERE c.companyId = $companyId";
+           FROM company c 
+           JOIN branch b ON c.branchId = b.branchId
+           WHERE c.companyId = $companyId";
   $result = $conn->query($sql1);
 
   $businessUnit = "";
@@ -29,15 +28,14 @@ if (isset($_POST['flightId']))
   {
     $row = $result->fetch_assoc();
     $businessUnit = $row['branchAgentCode'];
-    $_SESSION['companyName'] = $row['companyName']; // Store the branch name in the session
+    $_SESSION['companyName'] = $row['companyName'];
   }
   else
   {
     $businessUnit = null;
   }
 
-  $flightIds = []; // Array to store matching flight IDs
-
+  $flightIds = [];
   $sqlFlights = "SELECT flightId FROM flight WHERE flightDepartureDate = '$flightDepartureDate'";
   $resultFlights = $conn->query($sqlFlights);
 
@@ -46,9 +44,7 @@ if (isset($_POST['flightId']))
     $flightIds[] = $row['flightId'];
   }
 
-  // Convert flightIds array to a comma-separated string for SQL query
   $flightIdsString = implode(',', $flightIds);
-
   $transactNumbers = [];
   $totalPriceSum = 0;
   $count = 1;
@@ -57,22 +53,20 @@ if (isset($_POST['flightId']))
 
   if (!empty($flightIdsString)) 
   {
-    // 1st Table - Flight Data (Includes all flights with the same flightDepartureDate)
     $sql3 = "SELECT b.flightId as flightId, CONCAT(f.flightDepartureDate, ' - ', f.returnArrivalDate) AS flightDates, b.pax as pax, b.transactNo,
-              CASE 
-                WHEN cl.clientRole = 'Wholeseller' 
-                THEN f.wholesalePrice 
-                ELSE f.flightPrice 
-              END AS flightPrice, b.totalPrice as totalPrice
-            FROM booking b
-            JOIN client cl ON b.accountType = 'Client' AND b.accountId = cl.accountId
-            JOIN company c ON cl.companyId = c.companyId
-            JOIN flight f ON b.flightId = f.flightId
-            WHERE b.agentCode = '$businessUnit' 
-              AND f.flightId IN ($flightIdsString)  -- Fetch all flights with the same departure date
-              AND b.status = 'Confirmed'
-              AND cl.companyId = $companyId
-            ORDER BY f.flightId";
+                CASE 
+                  WHEN cl.clientRole = 'Wholeseller' THEN f.wholesalePrice 
+                  ELSE f.flightPrice 
+                END AS flightPrice, b.totalPrice as totalPrice
+              FROM booking b
+              JOIN client cl ON b.accountType = 'Client' AND b.accountId = cl.accountId
+              JOIN company c ON cl.companyId = c.companyId
+              JOIN flight f ON b.flightId = f.flightId
+              WHERE b.agentCode = '$businessUnit' 
+                AND f.flightId IN ($flightIdsString)
+                AND b.status = 'Confirmed'
+                AND cl.companyId = $companyId
+              ORDER BY f.flightId";
 
     $res3 = $conn->query($sql3);
 
@@ -83,12 +77,10 @@ if (isset($_POST['flightId']))
         $transactNumbers[] = $row['transactNo'];
         $totalPriceSum += $row['totalPrice'];
 
-        // Format prices
         $formattedFlightPrice = number_format($row['flightPrice'], 2);
         $formattedTotalPrice = number_format($row['totalPrice'], 2);
         $formattedTotalPriceSum = number_format($totalPriceSum, 2);
 
-        // Build table row
         $table1 .= "<tr>
                       <td>$count</td>
                       <td>{$row['flightDates']}</td>
@@ -99,7 +91,6 @@ if (isset($_POST['flightId']))
                       <td>₱ $formattedTotalPrice</td>
                     </tr>";
 
-        // Store table data for session
         $tableData1[] = [
           'no' => $count,
           'contents' => $row['flightDates'],
@@ -113,9 +104,28 @@ if (isset($_POST['flightId']))
         $count++;
       }
 
-      // Store session variables
+      $table1 .= "<tr>
+        <td>$count</td>
+        <td><strong>Subtotal:</strong></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td><strong>₱ $formattedTotalPriceSum</strong></td>
+      </tr>";
+
+      $tableData1[] = [
+        'no' => $count,
+        'contents' => 'Subtotal:',
+        'price' => '',
+        'pax' => '',
+        'total_usd' => '',
+        'total_php' => $formattedTotalPriceSum
+      ];
+
+      $count++;
       $_SESSION['tableData1'] = $tableData1;
-      $_SESSION['totalPriceSum'] = number_format($totalPriceSum, 2);
+      $_SESSION['totalPriceSum'] = $formattedTotalPriceSum;
     } 
     else 
     {
@@ -133,13 +143,11 @@ if (isset($_POST['flightId']))
 
   $totalCostSum = 0;
   $handlingFeeCount = 0;
-  $handlingFeeTotal = 0;  // Default to 0 if no handling fees
-  $totalFinal = 0;  // Default to 0
+  $handlingFeeTotal = 0;
   $totalRequestCostSum = 0;
   $table2 = '';
   $tableData2 = [];
 
-  // 2nd Table - Request Data
   $sql4 = "SELECT b.flightId, cd.details, cd.price, SUM(r.pax) AS pax, SUM(r.requestCost) AS requestCost,
             COUNT(CASE WHEN r.handlingFee != 0 THEN 1 ELSE NULL END) AS handlingFeeCount
           FROM `request` r
@@ -149,7 +157,6 @@ if (isset($_POST['flightId']))
           WHERE r.requestStatus = 'Confirmed' AND r.transactNo IN ($transactNoString)
           GROUP BY b.flightId, cd.details, cd.price, r.concernDetailsId";
 
-  // Execute the query
   $res4 = $conn->query($sql4);
 
   if ($res4->num_rows > 0) 
@@ -173,18 +180,17 @@ if (isset($_POST['flightId']))
                   </tr>";
 
       $tableData2[] = [
-      'no' => $count,  // Sequential number for requests
-      'contents' => $row['details'],  // Request details
-      'price' => $formattedRequestPrice,  // Formatted request price in PHP
-      'pax' => $row['pax'],  // Number of passengers for the request
-      'total_usd' => '',  // No USD conversion for requests
-      'total_php' => $formattedRequestCost,  // Total request cost in PHP
+        'no' => $count,
+        'contents' => $row['details'],
+        'price' => $formattedRequestPrice,
+        'pax' => $row['pax'],
+        'total_usd' => '',
+        'total_php' => $formattedRequestCost,
       ];
 
       $count++;
     }
 
-    // Add the Handling Fee row only if there are handling fees
     if ($handlingFeeCount > 0) 
     {
       $handlingFeeTotal = $handlingFeeCount * 100;
@@ -200,40 +206,57 @@ if (isset($_POST['flightId']))
                     <td>₱ $formattedHandlingFeeTotal</td>
                   </tr>";
 
-      // Add handling fee to the tableData2 array
       $tableData2[] = [
-      'no' => $count,
-      'contents' => 'Handling Fee',
-      'price' => '100.00',
-      'pax' => $handlingFeeCount,
-      'total_usd' => '',
-      'total_php' => $formattedHandlingFeeTotal,
+        'no' => $count,
+        'contents' => 'Handling Fee',
+        'price' => '100.00',
+        'pax' => $handlingFeeCount,
+        'total_usd' => '',
+        'total_php' => $formattedHandlingFeeTotal,
       ];
 
       $totalRequestCostSum = $totalCostSum + $handlingFeeTotal;
     } 
     else 
     {
-      // If no handling fee, set totalRequestCostSum to totalCostSum
       $totalRequestCostSum = $totalCostSum;
     }
 
     $formattedTotalRequestCostSum = number_format($totalRequestCostSum, 2);
 
+    $table2 .= "<tr>
+      <td>$count</td>
+      <td><strong>Subtotal:</strong></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><strong>₱ $formattedRequestCostSum</strong></td>
+    </tr>";
+
+    $tableData2[] = [
+      'no' => $count,
+      'contents' => 'Subtotal:',
+      'price' => '',
+      'pax' => '',
+      'total_usd' => '',
+      'total_php' => $formattedRequestCostSum
+    ];
+
+    $count++;
     $_SESSION['tableData2'] = $tableData2;
     $_SESSION['totalRequestCost'] = $formattedTotalRequestCostSum;
   } 
   else 
   {
     $table2 = "<tr><td colspan='7'>No request data found</td></tr>";
-    $_SESSION['totalRequestCost'] = "0.00";  // Default value if no data
+    $_SESSION['totalRequestCost'] = "0.00";
   }
 
   $table3 = "";
-  $totalAmount = 0; // To calculate the total payment amount
-  $tableData3 = []; // Array to store table3 data
+  $totalAmount = 0;
+  $tableData3 = [];
 
-  // 3rd Table - Payment Data
   $sql5 = "SELECT DISTINCT p.transactNo AS transactNo, p.paymentType AS paymentType, p.amount AS amount, 
               DATE(p.paymentDate) AS paymentDate
             FROM payment p
@@ -247,17 +270,10 @@ if (isset($_POST['flightId']))
   {
     while ($row = $res5->fetch_assoc()) 
     {
-      // Accumulate the total payment amount
       $totalAmount += $row['amount'];
-      $formattedTotalAmount = number_format($totalAmount, 2);
-
-      // Format the payment amount
       $formattedAmount = number_format($row['amount'], 2);
-
-      // Format the payment date as "Month DD, YYYY"
       $formattedDate = DateTime::createFromFormat('Y-m-d', $row['paymentDate'])->format('F d, Y');
 
-      // Build the table row
       $table3 .= "<tr>
                     <td>$count</td>
                     <td>{$row['paymentType']} - $formattedDate</td>
@@ -268,128 +284,97 @@ if (isset($_POST['flightId']))
                     <td>₱ $formattedAmount</td>
                   </tr>";
 
-      // Add row data to the tableData3 array
       $tableData3[] = [
-          'no' => $count,
-          'contents' => $row['paymentType'] . ' - ' . $formattedDate,
-          'price' => '', 
-          'pax' => '',
-          'total_usd' => '',
-          'total_php' => $formattedAmount 
+        'no' => $count,
+        'contents' => $row['paymentType'] . ' - ' . $formattedDate,
+        'price' => '', 
+        'pax' => '',
+        'total_usd' => '',
+        'total_php' => $formattedAmount 
       ];
 
-      $count++; // Increment row counter
+      $count++;
     }
 
-    // Store table data and total amount in the session
+    $formattedTotalAmount = number_format($totalAmount, 2);
+    $table3 .= "<tr>
+      <td>$count</td>
+      <td><strong>Subtotal:</strong></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><strong>₱ $formattedTotalAmount</strong></td>
+    </tr>";
+
+    $tableData3[] = [
+      'no' => $count,
+      'contents' => 'Subtotal:',
+      'price' => '',
+      'pax' => '',
+      'total_usd' => '',
+      'total_php' => $formattedTotalAmount
+    ];
+
+    $count++;
+    $balance = ($totalPriceSum + $totalRequestCostSum) - $totalAmount;
+    $formattedBalance = number_format($balance, 2);
+    $_SESSION['balance'] = $formattedBalance;
+
+    $table3 .= "<tr id='soaBalance' class='bg-secondary text-white fw-bold'>
+      <td>$count</td>
+      <td><strong>BALANCE:</strong></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>₱ $formattedBalance</td>
+    </tr>";
+
+    $tableData3[] = [
+      'no' => $count,
+      'contents' => 'BALANCE:',
+      'price' => '',
+      'pax' => '',
+      'total_usd' => '',
+      'total_php' => $formattedBalance
+    ];
+
     $_SESSION['tableData3'] = $tableData3;
-    $_SESSION['totalAmount'] = $formattedTotalAmount; // Store formatted total amount
+    $_SESSION['totalAmount'] = $formattedTotalAmount;
   } 
   else 
   {
     $table3 = "<tr><td colspan='7'>No Payment data found</td></tr>";
     $_SESSION['tableData3'] = [];
-    $_SESSION['totalAmount'] = "0.00"; // Default value
+    $_SESSION['totalAmount'] = "0.00";
   }
 
-  $balance = ($totalPriceSum + $totalRequestCostSum) - $totalAmount;
-  $formattedBalance = number_format($balance, 2);
-  $_SESSION['balance'] = $formattedBalance;
-
-  $dataAvailable = false;
-
-  // Check if there is any data in the result sets (flight, request, payment)
-  if ($res3->num_rows > 0 || $res4->num_rows > 0) 
-  {
-    $dataAvailable = true;
-  }
-
-  // Build HTML response
-  $response = "
-      <table class='product-table'>
-        <thead>
-          <tr>
-            <th>No.</th>
-            <th>Contents</th>
-            <th>Price (USD)</th>
-            <th>Price (PHP)</th>
-            <th>PAX</th>
-            <th>Total (USD)</th>
-            <th>Total (PHP)</th>
-          </tr>
-        </thead>
-        <tbody>
-          $table1
-        </tbody>
-      </table>
-      <div class='subtotal-container'>
-        <div class='balance'>
-          <span>SUBTOTAL: </span>
-        </div>
-        <div class='subtotal-item-usd'>
-          <span>USD:</span>
-          <span class='subtotal-usd'></span>
-        </div>
-        <div class='subtotal-item-php'>
-          <span>PHP:</span>
-          <span class='subtotal-php'>₱ " . $formattedTotalPriceSum . "</span>
-        </div>
-      </div>
-      <table class='product-table'>
-        <tbody>
-          $table2
-        </tbody>
-      </table>
-      <div class='subtotal-container'>
-        <div class='balance'>
-          <span>SUBTOTAL: </span>
-        </div>
-        <div class='subtotal-item-usd'>
-          <span>USD:</span>
-          <span class='subtotal-usd'></span>
-        </div>
-        <div class='subtotal-item-php'>
-          <span>PHP:</span>
-          <span class='subtotal-php'>₱ " . $formattedTotalRequestCostSum . "</span>
-        </div>
-      </div>
-      <table class='product-table'>
-        <tbody>
-          $table3
-        </tbody>
-      </table>
-      <div class='subtotal-container'>
-        <div class='balance'>
-          <span>SUBTOTAL: </span>
-        </div>
-        <div class='subtotal-item-usd'>
-          <span>USD:</span>
-          <span class='subtotal-usd'></span>
-        </div>
-        <div class='subtotal-item-php'>
-          <span>PHP:</span>
-          <span class='subtotal-php'>₱ " . $formattedTotalAmount . "</span>
-        </div>
-      </div>
-      <div class='balance-container'>
-        <div class='balance'>
-          <span>BALANCE:</span>
-        </div>
-        <div class='balanceUSD'>
-          <span>USD:</span>
-          <span class='subtotal-usd'></span>
-        </div>
-        <div class='balancePHP'>
-          <span>PHP:</span>
-          <span class='subtotal-php'>₱ " . $formattedBalance . "</span>
-        </div>
-      </div>
-      ";
-
-  // Send JSON response
   echo json_encode([
-    'dataAvailable' => $dataAvailable,
-      'htmlContent' => $response
+    'dataAvailable' => true,
+    'flights' => [
+      'rows' => $table1,
+      'tableData' => $tableData1,
+      'subtotalPHP' => $formattedTotalPriceSum
+    ],
+    'requests' => [
+      'rows' => $table2,
+      'tableData' => $tableData2,
+      'subtotalPHP' => $formattedTotalRequestCostSum
+    ],
+    'payments' => [
+      'rows' => $table3,
+      'tableData' => $tableData3,
+      'subtotalPHP' => $formattedTotalAmount
+    ],
+    'balance' => [
+      'php' => $formattedBalance
+    ],
+    'summary' => [
+      'totalFlightCost' => $formattedTotalPriceSum,
+      'totalRequestCost' => $formattedTotalRequestCostSum,
+      'totalPayments' => $formattedTotalAmount,
+      'balance' => $formattedBalance
+    ]
   ]);
-}
-?>
+}?>
