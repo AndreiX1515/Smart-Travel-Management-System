@@ -15,9 +15,9 @@ try {
     }
 
     // Extract top-level POST data
-    $userId = $_POST["userId"] ?? 0; // Default to 1 if not set
+    $userId = $_POST["userId"] ?? 0;
     $packageName = $_POST["package"];
-    $templateName = $_POST["templateName"];
+    $templateName = trim($_POST["templateName"]);
     $noOfDays = $_POST["noOfDays"];
     $periodStart = $_POST["period_start"];
     $periodEnd = $_POST["period_end"];
@@ -34,9 +34,19 @@ try {
         exit;
     }
 
+    // Check if the itinerary name already exists
+    $checkStmt = $conn->prepare("SELECT COUNT(*) FROM itineraries WHERE itineraryName = ?");
+    $checkStmt->execute([$templateName]);
+    $nameExists = $checkStmt->fetchColumn();
+
+    if ($nameExists > 0) {
+        echo json_encode(["status" => "exists", "message" => "Template name already exists. Please choose another one."]);
+        exit;
+    }
+
     $conn->beginTransaction();
 
-    // Insert into itineraries table
+    // Insert into itineraries
     $stmtItinerary = $conn->prepare("INSERT INTO itineraries 
         (itineraryName, isConnectToVoucher, noOfDays, packageId, periodStart, periodEnd, guideId, createdBy, createdAt)
         VALUES (?, 0, ?, ?, ?, ?, ?, ?, NOW())");
@@ -45,13 +55,10 @@ try {
         $templateName, $noOfDays, $packageName, $periodStart, $periodEnd, $guideAccountId, $userId
     ]);
 
-
-
-    
     $itineraryId = $conn->lastInsertId();
     error_log("📝 Created itinerary ID: $itineraryId");
 
-    // Insert city/hotel pairs
+    // Insert into itineraryTourAreasHotels
     $stmtCityHotel = $conn->prepare("INSERT INTO itinerarytourareashotels (itineraryId, orderNo, city, hotel) VALUES (?, ?, ?, ?)");
     for ($i = 1; $i <= 3; $i++) {
         $city = $cityHotels["city$i"] ?? "";
@@ -62,14 +69,13 @@ try {
         }
     }
 
-    // Prepare day detail inserts
-    $stmtDay = $conn->prepare("INSERT INTO itineraryDays (itineraryId, dayNumber) VALUES (?, ?)");
-    $stmtArea = $conn->prepare("INSERT INTO itineraryAreas (itineraryId, dayId, areaName) VALUES (?, ?, ?)");
-    $stmtHotel = $conn->prepare("INSERT INTO itineraryHotels (dayId, hotelName) VALUES (?, ?)");
-    $stmtMeal = $conn->prepare("INSERT INTO itineraryMealPlans (dayId, mealPlan) VALUES (?, ?)");
-    $stmtActivity = $conn->prepare("INSERT INTO itineraryActivities (dayId, activityName) VALUES (?, ?)");
+    // Prepare day & detail inserts
+    $stmtDay = $conn->prepare("INSERT INTO itinerarydays (itineraryId, dayNumber) VALUES (?, ?)");
+    $stmtArea = $conn->prepare("INSERT INTO itineraryareas (itineraryId, dayId, areaName) VALUES (?, ?, ?)");
+    $stmtHotel = $conn->prepare("INSERT INTO itineraryhotels (itineraryId, dayId, hotelName) VALUES (?, ?, ?)");
+    $stmtMeal = $conn->prepare("INSERT INTO itinerarymealplans (itineraryId, dayId, mealId) VALUES (?, ?, ?)");
+    $stmtActivity = $conn->prepare("INSERT INTO itineraryactivities (itineraryId, dayId, activityName) VALUES (?, ?, ?)");
 
-    // Process each itinerary day
     foreach ($itineraryData as $dayData) {
         $dayNumber = $dayData["day"] ?? 0;
         $areas = $dayData["areas"] ?? [];
@@ -86,16 +92,33 @@ try {
         }
 
         foreach ($hotels as $hotel) {
-            $stmtHotel->execute([$dayId, $hotel]);
+            $stmtHotel->execute([$itineraryId, $dayId, $hotel]);
         }
 
         foreach ($meals as $meal) {
-            $stmtMeal->execute([$dayId, $meal]);
+            if (!is_numeric($meal)) {
+                error_log("⚠️ Skipping non-numeric meal value: " . var_export($meal, true));
+                continue;
+            }
+
+            $intMeal = (int)$meal;
+
+            // Skip if zero or less (assuming no mealId = 0 exists)
+            if ($intMeal <= 0) {
+                error_log("⚠️ Skipping invalid mealId (<= 0): $intMeal");
+                continue;
+            }
+
+            error_log("🍽️ Inserting mealId: $intMeal for dayId: $dayId");
+            $stmtMeal->execute([$itineraryId, $dayId, $intMeal]);
         }
+
+
+
 
         foreach ($activities as $activity) {
             if (!empty($activity)) {
-                $stmtActivity->execute([$dayId, $activity]);
+                $stmtActivity->execute([$itineraryId, $dayId, $activity]);
             }
         }
     }

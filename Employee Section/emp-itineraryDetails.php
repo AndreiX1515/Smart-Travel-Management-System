@@ -121,38 +121,39 @@
 			];
 		}
 
-		// ✅ Fetch daily itinerary breakdown
+		// Fetch days, areas, hotels, activities, and meal plans
 		$sqlDays = "
-			SELECT 
-				d.dayId, 
-				d.dayNumber, 
-				COALESCE(a.areas, '') AS areas,
-				COALESCE(h.hotels, '') AS hotels,
-				COALESCE(act.activities, '') AS activities,
-				COALESCE(mp.meals, '') AS meals
-			FROM itinerarydays d
-			LEFT JOIN (
-				SELECT dayId, GROUP_CONCAT(DISTINCT areaName ORDER BY itineraryAreaId ASC SEPARATOR ',') AS areas
-				FROM itineraryareas 
-				GROUP BY dayId
-			) a ON d.dayId = a.dayId
-			LEFT JOIN (
-				SELECT dayId, GROUP_CONCAT(DISTINCT hotelName ORDER BY hotelId ASC SEPARATOR ',') AS hotels
-				FROM itineraryhotels 
-				GROUP BY dayId
-			) h ON d.dayId = h.dayId
-			LEFT JOIN (
-				SELECT dayId, GROUP_CONCAT(activityName ORDER BY activityId ASC SEPARATOR ',') AS activities
-				FROM itineraryactivities 
-				GROUP BY dayId
-			) act ON d.dayId = act.dayId
-			LEFT JOIN (
-				SELECT dayId, GROUP_CONCAT(DISTINCT mealPlan ORDER BY mealId ASC SEPARATOR ',') AS meals
-				FROM itinerarymealplans 
-				GROUP BY dayId
-			) mp ON d.dayId = mp.dayId
-			WHERE d.itineraryId = ?
-			ORDER BY d.dayNumber ASC
+		SELECT 
+			d.dayId, 
+			d.dayNumber, 
+			COALESCE(a.areas, '') AS areas,
+			COALESCE(h.hotels, '') AS hotels,
+			COALESCE(act.activities, '') AS activities,
+			COALESCE(mp.meals, '') AS meals
+		FROM itinerarydays d
+		LEFT JOIN (
+			SELECT dayId, GROUP_CONCAT(DISTINCT areaName ORDER BY itineraryAreaId ASC SEPARATOR ', ') AS areas
+			FROM itineraryareas 
+			GROUP BY dayId
+		) a ON d.dayId = a.dayId
+		LEFT JOIN (
+			SELECT dayId, GROUP_CONCAT(DISTINCT hotelName ORDER BY hotelId ASC SEPARATOR ', ') AS hotels
+			FROM itineraryhotels 
+			GROUP BY dayId
+		) h ON d.dayId = h.dayId
+		LEFT JOIN (
+			SELECT dayId, GROUP_CONCAT(activityName ORDER BY activityId ASC SEPARATOR ', ') AS activities
+			FROM itineraryactivities 
+			GROUP BY dayId
+		) act ON d.dayId = act.dayId
+		LEFT JOIN (
+			SELECT dayId, GROUP_CONCAT(DISTINCT mealPlan ORDER BY mealId ASC SEPARATOR ', ') AS meals
+			FROM itinerarymealplans 
+			GROUP BY dayId
+		) mp ON d.dayId = mp.dayId
+		WHERE d.itineraryId = ?
+		GROUP BY d.dayId, d.dayNumber
+		ORDER BY d.dayNumber ASC;
 		";
 
 		$stmt = $conn->prepare($sqlDays);
@@ -161,19 +162,37 @@
 		$result = $stmt->get_result();
 
 		while ($day = $result->fetch_assoc()) {
+			$areas = $day['areas'] ? explode(',', $day['areas']) : [];
+			$hotels = $day['hotels'] ? explode(',', $day['hotels']) : [];
+			$meals = $day['meals'] ? explode(',', $day['meals']) : [];
+
+			// Log if arrays are empty
+			if (empty($areas)) {
+				echo "<script>console.log('No areas found for day " . $day['dayNumber'] . "');</script>";
+			}
+			if (empty($hotels)) {
+				echo "<script>console.log('No hotels found for day " . $day['dayNumber'] . "');</script>";
+			}
+			if (empty($meals)) {
+				echo "<script>console.log('No meals found for day " . $day['dayNumber'] . "');</script>";
+			}
+
+			// Store day data in itinerary array
 			$itinerary['days'][] = [
 				'day' => $day['dayNumber'],
-				'areas' => $day['areas'] ? array_map('trim', explode(',', $day['areas'])) : [],
-				'hotels' => $day['hotels'] ? array_map('trim', explode(',', $day['hotels'])) : [],
-				'activities' => $day['activities'] ? array_map('trim', explode(',', $day['activities'])) : [],
-				'meals' => $day['meals'] ? array_map('trim', explode(',', $day['meals'])) : []
+				'areas' => $areas,
+				'hotels' => $hotels,
+				'activities' => $day['activities'] ? explode(',', $day['activities']) : [],
+				'meals' => $meals
 			];
 		}
 
-		// Output to console
 		$jsonData = json_encode($itinerary, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 
-		echo "<script>console.log($jsonData);</script>";
+		// Output the data in the raw format in the browser's console
+		echo "<script>
+                console.log($jsonData);
+             </script>";
 		?>
 
 
