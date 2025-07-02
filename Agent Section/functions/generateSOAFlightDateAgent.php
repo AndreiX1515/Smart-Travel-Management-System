@@ -59,7 +59,9 @@ $logo = new Drawing();
 $logo->setName('Company Logo');
 $logo->setDescription('Company Logo');
 $logo->setPath('../../Template/SMT-MANILA-LOGO.png');
-$logo->setHeight(70);
+$logo->setResizeProportional(false);
+$logo->setHeight(150); // height in pixels
+$logo->setWidth(1000); // width in pixels
 $logo->setCoordinates('B1');
 $logo->setOffsetX(10);
 $logo->setOffsetY(5);
@@ -210,13 +212,13 @@ for ($i = $accountInfoStart; $i <= $accountInfoEnd; $i++) {
   }
 }
 
-$sheet->getColumnDimension('A')->setWidth(6.5);
-$sheet->getColumnDimension('B')->setWidth(67);
-$sheet->getColumnDimension('C')->setWidth(13);
-$sheet->getColumnDimension('D')->setWidth(19);
-$sheet->getColumnDimension('E')->setWidth(7);
-$sheet->getColumnDimension('F')->setWidth(15);
-$sheet->getColumnDimension('G')->setWidth(21.5);
+$sheet->getColumnDimension('A')->setWidth(3);
+$sheet->getColumnDimension('B')->setWidth(40);
+$sheet->getColumnDimension('C')->setWidth(12);
+$sheet->getColumnDimension('D')->setWidth(12);
+$sheet->getColumnDimension('E')->setWidth(5);
+$sheet->getColumnDimension('F')->setWidth(12);
+$sheet->getColumnDimension('G')->setWidth(12);
 
 $currencyFormatPeso = '#,##0.00';
 $currencyFormatUSD = '"$"#,##0.00';
