@@ -39,6 +39,9 @@ $fromCompany = $input['fromCompany'] ?? '';
 $generationDate = date('m/d/Y');
 $soaNumber = $input['soaNumber'] ?? 'SOA_Unknown';
 $data = $input['data'] ?? [];
+$month = $input['month'] ?? '';
+$year = $input['year'] ?? '';
+$monthYearLabel = ($month && $year) ? strtoupper(date('F', mktime(0, 0, 0, $month, 1))) . " $year" : '';
 
 $flights = htmlTableRowsToArray($data['flights']['rows'] ?? '');
 $requests = htmlTableRowsToArray($data['requests']['rows'] ?? '');
@@ -67,7 +70,7 @@ $logo->setOffsetX(10);
 $logo->setOffsetY(5);
 $logo->setWorksheet($sheet);
 
-$sheet->mergeCells('A6:G7')->setCellValue('A6', 'STATEMENT OF ACCOUNT');
+$sheet->mergeCells('A6:G7')->setCellValue('A6', 'STATEMENT OF ACCOUNT' . ($monthYearLabel ? " - $monthYearLabel" : ''));
 $sheet->getStyle('A6')->getFont()->setBold(true)->setSize(28);
 $sheet->getStyle('A6')->getAlignment()->setHorizontal('center');
 $sheet->getStyle('A6:G7')->getAlignment()->setVertical('center');
@@ -156,58 +159,21 @@ $sheet->getStyle("A$headerRow:G$tableEndRow")->applyFromArray([
 ]);
 
 $sheet->mergeCells("A$rowNum:G$rowNum")->setCellValue("A$rowNum", 'ACCOUNT INFORMATION');
-$sheet->getStyle("A$rowNum")->getFont()->setSize(14);
-$sheet->getStyle("A$rowNum")->getFont()->setBold(true);
+$sheet->getStyle("A$rowNum")->getFont()->setSize(14)->setBold(true);
 $rowNum++;
-
-$sheet->mergeCells("A$rowNum:G$rowNum")->setCellValue("A$rowNum", 'Bank Name : B D O (Zuellig Branch MAKATI AVENUE)');
-$sheet->getStyle("A$rowNum")->getFont()->setSize(14);
-$rowNum++;
-
-$sheet->mergeCells("A$rowNum:G$rowNum")->setCellValue("A$rowNum", 'Name of Account : KIM HYUNG SUB (Nick name  Jedkim )');
-$sheet->getStyle("A$rowNum")->getFont()->setSize(14);
-$rowNum++;
-
-$sheet->mergeCells("A$rowNum:G$rowNum")->setCellValue("A$rowNum", 'Peso Account No.: 007800151678');
-$sheet->getStyle("A$rowNum")->getFont()->setSize(14);
-$rowNum++;
-
-$sheet->mergeCells("A$rowNum:G$rowNum")->setCellValueExplicit("A$rowNum", 'US Dollar Account No : 107800113512', \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
-$sheet->getStyle("A$rowNum")->getFont()->setSize(14);
-$rowNum++;
+$sheet->mergeCells("A$rowNum:G$rowNum")->setCellValue("A$rowNum", 'Bank Name : B D O (Zuellig Branch MAKATI AVENUE)'); $rowNum++;
+$sheet->mergeCells("A$rowNum:G$rowNum")->setCellValue("A$rowNum", 'Name of Account : KIM HYUNG SUB (Nick name  Jedkim )'); $rowNum++;
+$sheet->mergeCells("A$rowNum:G$rowNum")->setCellValue("A$rowNum", 'Peso Account No.: 007800151678'); $rowNum++;
+$sheet->mergeCells("A$rowNum:G$rowNum")->setCellValueExplicit("A$rowNum", 'US Dollar Account No : 107800113512', \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING); $rowNum++;
 
 $accountInfoStart = $rowNum - 5;
 $accountInfoEnd = $rowNum - 1;
-
 for ($i = $accountInfoStart; $i <= $accountInfoEnd; $i++) {
   foreach (range('A', 'G') as $col) {
     $cell = $col . $i;
-
-    $borders = [
-      'left' => [
-        'borderStyle' => Border::BORDER_THIN,
-        'color' => ['argb' => '000000'],
-      ],
-      'right' => [
-        'borderStyle' => Border::BORDER_THIN,
-        'color' => ['argb' => '000000'],
-      ]
-    ];
-
-    if ($i === $accountInfoStart) {
-      $borders['top'] = [
-        'borderStyle' => Border::BORDER_THIN,
-        'color' => ['argb' => '000000'],
-      ];
-    }
-
-    if ($i === $accountInfoEnd) {
-      $borders['bottom'] = [
-        'borderStyle' => Border::BORDER_THIN,
-        'color' => ['argb' => '000000'],
-      ];
-    }
-
+    $borders = ['left' => ['borderStyle' => Border::BORDER_THIN], 'right' => ['borderStyle' => Border::BORDER_THIN]];
+    if ($i === $accountInfoStart) $borders['top'] = ['borderStyle' => Border::BORDER_THIN];
+    if ($i === $accountInfoEnd) $borders['bottom'] = ['borderStyle' => Border::BORDER_THIN];
     $sheet->getStyle($cell)->applyFromArray(['borders' => $borders]);
   }
 }
@@ -225,12 +191,11 @@ $currencyFormatUSD = '"$"#,##0.00';
 $sheet->getStyle("D$headerRow:D$rowNum")->getNumberFormat()->setFormatCode($currencyFormatPeso);
 $sheet->getStyle("F$headerRow:F$rowNum")->getNumberFormat()->setFormatCode($currencyFormatUSD);
 $sheet->getStyle("G$headerRow:G$rowNum")->getNumberFormat()->setFormatCode($currencyFormatPeso);
-
 $sheet->getStyle("B$headerRow:E$rowNum")->getAlignment()->setHorizontal('left');
 $sheet->getStyle("F$headerRow:G$rowNum")->getAlignment()->setHorizontal('right');
 
 header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-header("Content-Disposition: attachment; filename=SOA_$soaNumber.xlsx");
+header("Content-Disposition: attachment; filename=SOA_{$soaNumber}_{$month}_{$year}.xlsx");
 header('Cache-Control: max-age=0');
 $writer = new Xlsx($spreadsheet);
 $writer->save('php://output');

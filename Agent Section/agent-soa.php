@@ -167,6 +167,9 @@
           <div class="me-2">
             <button id="generate-soa-btn" class="btn btn-primary">Preview SOA</button>
           </div>
+          <div class="me-2">
+            <button id="reset-filter-btn" class="btn btn-secondary">Reset Filters</button>
+          </div>
           <!-- <div>
             <button class="btn btn-primary" id="download-btn" disabled>Generate SoA</button>
           </div> -->
@@ -405,6 +408,38 @@
 
     document.getElementById('agent-filter').addEventListener('change', function () {
       console.log('Account Id:', this.value);
+    });
+  </script>
+
+  <!-- Reset Filter Script -->
+  <script>
+    document.getElementById('reset-filter-btn').addEventListener('click', function () {
+      // Reset user type
+      document.querySelectorAll('input[name="user-type"]').forEach(r => r.checked = false);
+      document.getElementById('agent-container').style.display = 'none';
+      document.getElementById('company-container').style.display = 'none';
+
+      // Reset filter mode
+      document.querySelectorAll('input[name="filter-mode"]').forEach(r => r.checked = false);
+      document.querySelectorAll('.filter-flight, .filter-month').forEach(el => el.style.display = 'none');
+
+      // Reset dropdowns
+      ['agent-filter', 'company-filter', 'flight-filter', 'month-filter', 'year-filter'].forEach(id => {
+        const select = document.getElementById(id);
+        if (select) select.selectedIndex = 0;
+      });
+
+      // Clear preview
+      document.getElementById('soaFlightsBody').innerHTML = '';
+      document.getElementById('soaPaymentsBody').innerHTML = '';
+      document.getElementById('balancePHP').innerText = '₱ 0.00';
+      document.getElementById('balanceUSD').innerText = '0.00';
+      document.getElementById('soaWrapper').style.display = 'none';
+      document.getElementById('download-btn').disabled = true;
+
+      // Clear global preview data
+      soaPreviewData = null;
+      if (typeof filterModeUsed !== 'undefined') filterModeUsed = null;
     });
   </script>
 
@@ -708,8 +743,8 @@
       const agentSelect = document.getElementById('agent-filter');
       const companySelect = document.getElementById('company-filter');
 
-      const agentId = document.getElementById('agent-filter').value;
-      const companyId = document.getElementById('company-filter').value;
+      const agentId = agentSelect.value;
+      const companyId = companySelect.value;
       const flightDate = document.getElementById('flight-filter').value;
       const month = document.getElementById('month-filter').value;
       const year = document.getElementById('year-filter').value;
@@ -741,18 +776,25 @@
         if (xhrAddSoA.status === 200 && xhrAddSoA.response?.soanum) {
           const soaNumber = xhrAddSoA.response.soanum;
 
-          // STEP 2: Send the preview JSON to PHPSpreadsheet backend
-          fetch('../Agent Section/functions/generateSOAFlightDateAgent.php', {
+          // STEP 2: Determine correct PHP generator file
+          const selectedFilterMode = document.querySelector('input[name="filter-mode"]:checked')?.value;
+
+          const phpFile = selectedFilterMode === "monthly"
+            ? '../Agent Section/functions/generateSOAMonthlyAgent.php'
+            : '../Agent Section/functions/generateSoAFlightDateAgent.php';
+
+          // STEP 3: Send the preview JSON to PHPSpreadsheet backend
+          fetch(phpFile, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({
               soaNumber: soaNumber,
-              data: soaPreviewData, // ✅ send stored preview data
+              data: soaPreviewData,
               accountName: accountName,
               fromName: fromName,
-              fromCompany: fromCompany 
+              fromCompany: fromCompany
             })
           })
             .then(response => response.blob())
@@ -781,6 +823,7 @@
       xhrAddSoA.send(`accountType=${accountType}&accountId=${accountId}&flightDate=${flightDate}&month=${month}&year=${year}&currentDate=${currentDateFormatted}`);
     });
   </script>
+
 
   <!-- Generate SOA (pdf) -->
   <!-- <script>
