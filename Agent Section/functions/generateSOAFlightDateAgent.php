@@ -112,7 +112,7 @@ $combinedSubtotal = number_format(
 
 $sheet->setCellValue("A$rowNum", $serial++);
 $sheet->mergeCells("E$rowNum:F$rowNum")->setCellValue("E$rowNum", 'Sub Total');
-$sheet->setCellValue("G$rowNum", $combinedSubtotal);
+$sheet->setCellValue("G$rowNum", "₱ $combinedSubtotal");
 $sheet->getStyle("B$rowNum:G$rowNum")->getFont()->setBold(true)->setSize(14);
 $sheet->getStyle("A$rowNum:G$rowNum")->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setRGB('FFF2CC');
 $rowNum++;
