@@ -27,13 +27,15 @@ $count = 1;
 $table1 = '';
 $table2 = '';
 $table3 = '';
+$tableData1 = [];
+$tableData2 = [];
+$tableData3 = [];
 
 $formattedTotalPriceSum = "0.00";
 $formattedTotalRequestCostSum = "0.00";
 $formattedTotalAmount = "0.00";
 $formattedBalance = "0.00";
 
-// Get business unit
 $sql1 = "SELECT b.branchAgentCode FROM company c JOIN branch b ON c.branchId = b.branchId WHERE c.companyId = ?";
 $stmt1 = $conn->prepare($sql1);
 $stmt1->bind_param("i", $companyId);
@@ -74,10 +76,20 @@ while ($row = $res3->fetch_assoc()) {
   $totalPriceSum += $row['totalPrice'];
   $formattedFlightPrice = number_format($row['flightPrice'], 2);
   $formattedTotalPrice = number_format($row['totalPrice'], 2);
-  $formattedTotalPriceSum = number_format($totalPriceSum, 2);
   $table1 .= "<tr><td>$count</td><td>{$row['flightDates']}</td><td></td><td>₱ $formattedFlightPrice</td><td>{$row['pax']}</td><td></td><td>₱ $formattedTotalPrice</td></tr>";
+  $tableData1[] = [
+    'no' => $count,
+    'contents' => $row['flightDates'],
+    'flightId' => $row['flightId'],
+    'price' => $formattedFlightPrice,
+    'pax' => $row['pax'],
+    'total_usd' => '',
+    'total_php' => $formattedTotalPrice
+  ];
   $count++;
 }
+$_SESSION['tableData1'] = $tableData1;
+$_SESSION['totalPriceSum'] = number_format($totalPriceSum, 2);
 
 $transactNoString = "'" . implode("','", array_map([$conn, 'real_escape_string'], $transactNumbers)) . "'";
 
@@ -96,16 +108,33 @@ while ($row = $res4->fetch_assoc()) {
   $formattedRequestPrice = number_format($row['price'], 2);
   $formattedRequestCost = number_format($row['requestCost'], 2);
   $table2 .= "<tr><td>$count</td><td>{$row['details']}</td><td></td><td>₱ $formattedRequestPrice</td><td>{$row['pax']}</td><td></td><td>₱ $formattedRequestCost</td></tr>";
+  $tableData2[] = [
+    'no' => $count,
+    'contents' => $row['details'],
+    'price' => $formattedRequestPrice,
+    'pax' => $row['pax'],
+    'total_usd' => '',
+    'total_php' => $formattedRequestCost
+  ];
   $count++;
 }
 
 if ($handlingFeeCount > 0) {
   $handlingFeeTotal = $handlingFeeCount * 100;
   $table2 .= "<tr><td>$count</td><td>Handling Fee</td><td></td><td>₱ 100.00</td><td>$handlingFeeCount</td><td></td><td>₱ " . number_format($handlingFeeTotal, 2) . "</td></tr>";
+  $tableData2[] = [
+    'no' => $count,
+    'contents' => 'Handling Fee',
+    'price' => '100.00',
+    'pax' => $handlingFeeCount,
+    'total_usd' => '',
+    'total_php' => number_format($handlingFeeTotal, 2)
+  ];
   $count++;
 }
 $totalRequestCostSum = $totalCostSum + $handlingFeeTotal;
-$formattedTotalRequestCostSum = number_format($totalRequestCostSum, 2);
+$_SESSION['tableData2'] = $tableData2;
+$_SESSION['totalRequestCost'] = number_format($totalRequestCostSum, 2);
 
 $sql5 = "SELECT p.paymentType, p.amount, p.paymentDate FROM payment p
          JOIN booking b ON p.transactNo = b.transactNo
@@ -117,35 +146,44 @@ while ($row = $res5->fetch_assoc()) {
   $formattedAmount = number_format($row['amount'], 2);
   $formattedDate = date("F d, Y", strtotime($row['paymentDate']));
   $table3 .= "<tr><td>$count</td><td>{$row['paymentType']} - {$formattedDate}</td><td></td><td></td><td></td><td></td><td>₱ $formattedAmount</td></tr>";
+  $tableData3[] = [
+    'no' => $count,
+    'contents' => $row['paymentType'] . ' - ' . $formattedDate,
+    'price' => '',
+    'pax' => '',
+    'total_usd' => '',
+    'total_php' => $formattedAmount
+  ];
   $count++;
 }
-$formattedTotalAmount = number_format($totalAmount, 2);
+$_SESSION['tableData3'] = $tableData3;
+$_SESSION['totalAmount'] = number_format($totalAmount, 2);
+
 $balance = ($totalPriceSum + $totalRequestCostSum) - $totalAmount;
-$formattedBalance = number_format($balance, 2);
+$_SESSION['balance'] = number_format($balance, 2);
 
 $response = [
   'dataAvailable' => ($res3->num_rows > 0 || $res4->num_rows > 0 || $res5->num_rows > 0),
   'flights' => [
     'rows' => $table1,
-    'subtotalPHP' => $formattedTotalPriceSum,
+    'subtotalPHP' => number_format($totalPriceSum, 2),
     'subtotalUSD' => ''
   ],
   'requests' => [
     'rows' => $table2,
-    'subtotalPHP' => $formattedTotalRequestCostSum,
+    'subtotalPHP' => number_format($totalRequestCostSum, 2),
     'subtotalUSD' => ''
   ],
   'payments' => [
     'rows' => $table3,
-    'subtotalPHP' => $formattedTotalAmount,
+    'subtotalPHP' => number_format($totalAmount, 2),
     'subtotalUSD' => ''
   ],
   'balance' => [
-    'php' => $formattedBalance,
+    'php' => number_format($balance, 2),
     'usd' => ''
   ]
 ];
 
 echo json_encode($response, JSON_UNESCAPED_UNICODE);
 exit;
-?>
