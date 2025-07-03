@@ -72,7 +72,7 @@ try {
     // Prepare day & detail inserts
     $stmtDay = $conn->prepare("INSERT INTO itinerarydays (itineraryId, dayNumber) VALUES (?, ?)");
     $stmtArea = $conn->prepare("INSERT INTO itineraryareas (itineraryId, dayId, areaName) VALUES (?, ?, ?)");
-    $stmtHotel = $conn->prepare("INSERT INTO itineraryhotels (itineraryId, dayId, hotelName) VALUES (?, ?, ?)");
+    $stmtHotel = $conn->prepare("INSERT INTO itineraryhotels (itineraryId, dayId, hotelId) VALUES (?, ?, ?)");
     $stmtMeal = $conn->prepare("INSERT INTO itinerarymealplans (itineraryId, dayId, mealId) VALUES (?, ?, ?)");
     $stmtActivity = $conn->prepare("INSERT INTO itineraryactivities (itineraryId, dayId, activityName) VALUES (?, ?, ?)");
 

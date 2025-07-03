@@ -604,17 +604,147 @@
 			const formFooter = document.querySelector(".form-footer");
 			const totalDays = 5;
 
-			const koreanTourAreas = ["Seoul", "Gyeonggi-do", "Incheon", "Jeju"];
 
-			const hotelsByArea = {
-				"Seoul": ["Smart Stay Hotel"],
-				"Gyeonggi-do": ["Ramada Hotel", "Marina Bay Hotel"],
-				"Incheon": ["Air Sky Hotel", "Royal Emporium Hotel", "Smart Stay Hotel"],
-				"Jeju": ["Tamara Hotel"]
+			const selectedValues = {
+				area: {},
+				hotel: {},
+				itinerary: {}
 			};
 
-			let koreanMealPlans = {};
 
+			// ========= For Areas Data Fetching and Rendering ========= 
+			let koreanTourAreas = [];
+
+			// Load Areas From DB
+			loadTourAreas();
+
+			function loadTourAreas() {
+				fetch('../Employee Section/functions/fetchScripts/getAreas.php')
+					.then(res => res.json())
+					.then(data => {
+						if (data.status === 'success') {
+							koreanTourAreas = data.data; // flat array of area names
+							console.log("Areas Loaded:", JSON.stringify(koreanTourAreas, null, 2));
+
+
+							renderAreaSelects(); // ⬅️ render only after data is ready
+						} else {
+							alert("⚠️ Failed to load tour areas.");
+						}
+					})
+					.catch(err => {
+						console.error("❌ Area fetch error:", err);
+						alert("An error occurred while loading tour areas.");
+					});
+			}
+
+			function renderAreaSelects() {
+				const selects = document.querySelectorAll(".area-select");
+
+				selects.forEach(select => {
+					const currentValue = select.value;
+
+					// Clear current options
+					select.innerHTML = `<option value="" disabled selected>Select Area</option>`;
+
+					koreanTourAreas.forEach(area => {
+						const option = document.createElement("option");
+						option.value = area;
+						option.textContent = area;
+
+						if (area === currentValue) {
+							option.selected = true;
+						}
+
+						select.appendChild(option);
+					});
+				});
+			}
+
+
+			// ========= For Hotels Data Fetching and Rendering ========= 
+
+			let hotelsByArea = {};
+
+			// Load Hotels From DB (Structured: areaName => [ { hotelId, hotelName }, ... ])
+			loadHotelsFromDB();
+
+			function loadHotelsFromDB() {
+				fetch('../Employee Section/functions/fetchScripts/getHotelsByArea.php')
+					.then(res => res.json())
+					.then(data => {
+						if (data.status === 'success') {
+							hotelsByArea = data.data;
+							console.log("✅ Hotels Loaded:", JSON.stringify(hotelsByArea, null, 2));
+							renderHotelSelects();
+							setupAreaChangeListener(); // 🔁 Setup listener after hotels are loaded
+						} else {
+							alert("⚠️ Failed to load hotels data.");
+						}
+					})
+					.catch(err => {
+						console.error("❌ Hotel data fetch error:", err);
+						alert("An error occurred while loading hotels.");
+					});
+			}
+
+			// Render hotel <select> options based on current data-area
+			function renderHotelSelects() {
+				const hotelSelects = document.querySelectorAll(".hotel-select");
+
+				hotelSelects.forEach((select) => {
+					const area = select.dataset.area;
+					const currentValue = select.value;
+
+					if (!area || !hotelsByArea[area]) return;
+
+					select.innerHTML = `<option value="" disabled selected>Select ${select.name?.replace(/_/g, " ").replace(/\d/g, "") || "Hotel"}</option>`;
+
+					hotelsByArea[area].forEach(hotel => {
+						const option = document.createElement("option");
+						option.value = hotel.hotelId;
+						option.textContent = hotel.hotelName;
+
+						if (hotel.hotelId == currentValue) {
+							option.selected = true;
+						}
+
+						select.appendChild(option);
+					});
+				});
+			}
+
+			// ========= Auto-bind hotel-selects to area-selects =========
+
+			function setupAreaChangeListener() {
+				const areaSelects = document.querySelectorAll(".area-select");
+
+				areaSelects.forEach(areaSelect => {
+					areaSelect.addEventListener("change", () => {
+						const selectedArea = areaSelect.value;
+						const day = areaSelect.dataset.day;
+
+						// Target all hotel-selects sharing this day
+						const hotelSelects = document.querySelectorAll(`.hotel-select[data-day="${day}"]`);
+
+						hotelSelects.forEach(hotelSelect => {
+							hotelSelect.dataset.area = selectedArea || "";
+						});
+
+						renderHotelSelects(); // Update hotel dropdowns
+					});
+				});
+			}
+
+
+
+
+
+
+
+
+
+			// ========= For Itinerary Activities Data Fetching and Rendering ========= 
 			const allItineraries = [
 				"Arrival at Incheon Airport - Flight: 5J118 (MNL-ICN)",
 				"Meeting and Greeting with an English-speaking guide",
@@ -628,13 +758,12 @@
 				"Experience making Kimbop"
 			];
 
-			const selectedValues = {
-				area: {},
-				hotel: {},
-				itinerary: {}
-			};
 
 
+
+
+			// ========= For Meal Plan Data Fetching and Rendering ========= 
+			let koreanMealPlans = {};
 
 			// Meal Plans Data Fetch
 			loadMealPlansFromDB();
@@ -685,15 +814,6 @@
 					});
 				});
 			}
-
-
-
-
-
-
-
-
-
 
 
 
@@ -808,18 +928,35 @@
 									<label class="form-label fw-semibold">Hotels:</label>
 									<div class="row">
 										${["Hotel 1", "Hotel 2"].map((label, i) => {
-											const hotelOptions = day === 1
-												? ["Air Sky Hotel", "Royal Emporium Hotel", "Smart Stay Hotel"]
-													.map(h => `<option value="${h}">${h}</option>`).join("")
-												: "";
+											const incheonHotels = hotelsByArea["Incheon"] || [];
+
+											// Build options for Day 1 only
+											const hotelOptions =
+												day === 1
+													? incheonHotels
+															.map((hotel, index) => `
+																<option value="${hotel.hotelId}">
+																	Select Hotel ${index + 1} - ${hotel.hotelName}
+																</option>
+															`).join("")
+													: "";
 
 											return `
 												<div class="col-md-6 col-sm-12 mb-2 d-flex align-items-center gap-2">
-													<select class="form-select hotel-select" id="hotel${day}_${i}" data-day="${day}" data-index="${day}_${i}" name="hotel_${day}_${i}" ${i === 0 ? 'required' : ''}>
-														<option disabled selected value="">Select ${label}</option>
+													<select class="form-select hotel-select"
+														id="hotel${day}_${i}"
+														data-day="${day}"
+														data-index="${day}_${i}"
+														${day === 1 ? `data-area="Incheon"` : ""}
+														name="hotel_${day}_${i}" 
+														${i === 0 ? 'required' : ''}>
+														<option disabled selected value="">
+															Select Hotel ${i + 1}
+														</option>
 														${hotelOptions}
 													</select>
-													<button type="button" class="btn btn-sm btn-danger text-light  hotel-trash"
+
+													<button type="button" class="btn btn-sm btn-danger text-light hotel-trash"
 														id="trash-hotel${day}_${i}"
 														onclick="resetHotel('${day}_${i}')"
 														title="Reset Hotel"
@@ -832,6 +969,9 @@
 									</div>
 								</div>
 							</div>
+
+
+
 
 
 
@@ -1010,6 +1150,7 @@
 
 		// Area Delete Logic
 		document.addEventListener("DOMContentLoaded", () => {
+
 			// Show/hide trash button for areas
 			function checkAreaTrashVisibility() {
 				document.querySelectorAll(".area-select").forEach(select => {
@@ -1039,6 +1180,7 @@
 			};
 		});
 
+
 		// Form validation for required selects
 		document.getElementById("submitTour").addEventListener("click", function (event) {
 			const requiredSelects = document.querySelectorAll("select.form-select[required]");
@@ -1057,7 +1199,6 @@
 				alert("Itinerary successfully created!");
 			}
 		});
-
 	</script>
 
 	<!-- Form Submission Script -->
@@ -1077,7 +1218,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
 		if (isValid) {
 			const json = collectFormData();
+
 			console.log("✅ Form is now valid. 'Generate' button enabled.");
+
 			console.group("📦 Validated Form Data");
 			console.log("Template Name:", json.templateName);
 			console.log("Selected Package:", json.selectedPackage);
@@ -1090,6 +1233,11 @@ document.addEventListener("DOMContentLoaded", function () {
 			console.log("Contact Number:", json.contactNumber);
 			console.log("🏨 City/Hotel JSON:", json.cityHotelsData);
 			console.log("🗓️ Itinerary Data JSON:", json.itineraryData);
+
+			console.groupEnd();
+
+			console.group("📝 Stringified JSON Output");
+			console.log(JSON.stringify(json, null, 2));
 			console.groupEnd();
 		}
 	}
