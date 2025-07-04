@@ -1,401 +1,222 @@
 <?php
-// Connect to your database
-require "../../conn.php"; // Include the DB connection
+require "../../conn.php";
 session_start();
 
+header('Content-Type: application/json');
 ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+
+// Validate inputs
+// if (!isset($_POST['flightId']) || !isset($_POST['companyId'])) {
+//   echo json_encode(['dataAvailable' => false, 'error' => 'Missing flightId or companyId']);
+//   exit;
+// }
 
 if (isset($_POST['companyId']) && isset($_POST['flightId'])) 
 {
-  // Get the selected filter values from the POST request
-  $companyId = $_POST['companyId'];
-  $flightId = $_POST['flightId'];
+  $flightDepartureDate = $_POST['flightId'];
+$branchId = (int) $_POST['companyId'];
 
-  $formattedTotalPriceSum = "0.00";
-  $formattedTotalRequestCostSum = "0.00";
-  $formattedTotalAmount = "0.00";
+// Initialize variables
+$flightIds = [];
+$transactNumbers = [];
+$totalPriceSum = 0;
+$totalCostSum = 0;
+$handlingFeeCount = 0;
+$handlingFeeTotal = 0;
+$totalAmount = 0;
+$count = 1;
 
-  // Query to get the branchAgentCode
-  $sql1 = "SELECT branchAgentCode, branchName FROM branch WHERE branchId = $companyId";
-  $result = $conn->query($sql1);
+$table1 = '';
+$table2 = '';
+$table3 = '';
+$tableData1 = [];
+$tableData2 = [];
+$tableData3 = [];
 
-  $businessUnit = "";
-  if ($result && $result->num_rows > 0) 
-  {
-    $row = $result->fetch_assoc();
-    $businessUnit = $row['branchAgentCode'];
-    $_SESSION['branchName'] = $row['branchName']; // Store the branch name in the session
-  } 
-  else 
-  {
-    $businessUnit = null;
-  }
+// Get branchAgentCode from branch
+$sql1 = "SELECT branchAgentCode FROM branch WHERE branchId = ?";
+$stmt1 = $conn->prepare($sql1);
+$stmt1->bind_param("i", $branchId);
+$stmt1->execute();
+$result1 = $stmt1->get_result();
+$businessUnit = ($result1 && $row = $result1->fetch_assoc()) ? $row['branchAgentCode'] : null;
 
-  $flightDepartureDate = "";
-  $flightIds = []; // Array to store matching flight IDs
-
-  // Step 1: Get the flightDepartureDate of the selected flight
-  $sql2 = "SELECT flightDepartureDate FROM flight WHERE flightId = $flightId";
-  $result2 = $conn->query($sql2);
-
-  if ($result2 && $result2->num_rows > 0) 
-  {
-    $row = $result2->fetch_assoc();
-    $flightDepartureDate = $row['flightDepartureDate'];
-
-    // Step 2: Fetch all flightIds that have the same flightDepartureDate
-    $sqlFlights = "SELECT flightId FROM flight WHERE flightDepartureDate = '$flightDepartureDate'";
-    $resultFlights = $conn->query($sqlFlights);
-
-    while ($row = $resultFlights->fetch_assoc()) 
-    {
-      $flightIds[] = $row['flightId'];
-    }
-  }
-
-  // Convert flightIds array to a comma-separated string for SQL query
-  $flightIdsString = implode(',', $flightIds);
-
-  $totalPriceSum = 0;
-  $count = 1;
-  $table1 = '';
-  $tableData1 = [];
-
-  if (!empty($flightIdsString)) 
-  {
-    // 1st Table - Flight Data (Includes all flights with the same flightDepartureDate)
-    $sql3 = "SELECT b.flightId as flightId, CONCAT(f.flightDepartureDate, ' - ', f.returnArrivalDate) AS flightDates, b.pax as pax,
-              CASE 
-                WHEN a.agentRole = 'Wholeseller' OR cl.clientRole = 'Wholeseller' 
-                THEN f.wholesalePrice 
-                ELSE f.flightPrice 
-              END AS flightPrice, b.totalPrice as totalPrice
-            FROM booking b
-            LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
-            LEFT JOIN client cl ON b.accountType = 'Client' AND b.accountId = cl.accountId
-            JOIN flight f ON b.flightId = f.flightId
-            WHERE b.agentCode = '$businessUnit' 
-              AND f.flightId IN ($flightIdsString)  -- Fetch all flights with the same departure date
-              AND b.status = 'Confirmed'
-            ORDER BY f.flightId";
-
-    $res3 = $conn->query($sql3);
-
-    if ($res3 && $res3->num_rows > 0) 
-    {
-      while ($row = $res3->fetch_assoc()) 
-      {
-        $totalPriceSum += $row['totalPrice'];
-
-        // Format prices
-        $formattedFlightPrice = number_format($row['flightPrice'], 2);
-        $formattedTotalPrice = number_format($row['totalPrice'], 2);
-        $formattedTotalPriceSum = number_format($totalPriceSum, 2);
-
-        // Build table row
-        $table1 .= "<tr>
-                      <td>$count</td>
-                      <td>{$row['flightDates']}</td>
-                      <td></td>
-                      <td>₱ $formattedFlightPrice</td>
-                      <td>{$row['pax']}</td>
-                      <td></td>
-                      <td>₱ $formattedTotalPrice</td>
-                    </tr>";
-
-        // Store table data for session
-        $tableData1[] = [
-          'no' => $count,
-          'contents' => $row['flightDates'],
-          'flightId' => $row['flightId'],
-          'price' => $formattedFlightPrice,
-          'pax' => $row['pax'],
-          'total_usd' => '',
-          'total_php' => $formattedTotalPrice,
-        ];
-
-        $count++;
-      }
-
-      // Store session variables
-      $_SESSION['tableData1'] = $tableData1;
-      $_SESSION['totalPriceSum'] = number_format($totalPriceSum, 2);
-    } 
-    else 
-    {
-      $_SESSION['totalPriceSum'] = "0.00";
-      $table1 = "<tr><td colspan='7'>No flight bookings found</td></tr>";
-    }
-  } 
-  else 
-  {
-    $_SESSION['totalPriceSum'] = "0.00";
-    $table1 = "<tr><td colspan='7'>No flight data found</td></tr>";
-  }
-
-  $totalCostSum = 0;
-  $handlingFeeCount = 0;
-  $handlingFeeTotal = 0;  // Default to 0 if no handling fees
-  $totalFinal = 0;  // Default to 0
-  $totalRequestCostSum = 0;
-  $table2 = '';
-  $tableData2 = [];
-
-  // 2nd Table - Request Data
-  $sql4 = "SELECT b.flightId, cd.details, cd.price, SUM(r.pax) AS pax, SUM(r.requestCost) AS requestCost,
-            COUNT(CASE WHEN r.handlingFee != 0 THEN 1 ELSE NULL END) AS handlingFeeCount
-          FROM `request` r
-          JOIN concerndetails cd ON r.concernDetailsId = cd.concernDetailsId
-          JOIN booking b ON r.transactNo = b.transactNo
-          JOIN flight f ON b.flightId = f.flightId
-          WHERE r.requestStatus = 'Confirmed' AND f.flightId IN ($flightIdsString)
-          AND b.agentCode = '$businessUnit' 
-          GROUP BY b.flightId, cd.details, cd.price, r.concernDetailsId";
-
-  // Execute the query
-  $res4 = $conn->query($sql4);
-
-  if ($res4->num_rows > 0) 
-  {
-    while ($row = $res4->fetch_assoc()) 
-    {
-      $handlingFeeCount += $row['handlingFeeCount'];
-      $totalCostSum += $row['requestCost'];
-      $formattedRequestPrice = number_format($row['price'], 2);
-      $formattedRequestCost = number_format($row['requestCost'], 2);
-      $formattedRequestCostSum = number_format($totalCostSum, 2);
-
-      $table2 .= "<tr>
-                    <td>$count</td>
-                    <td>{$row['details']}</td>
-                    <td></td>
-                    <td>₱ $formattedRequestPrice</td>
-                    <td>{$row['pax']}</td>
-                    <td></td>
-                    <td>₱ $formattedRequestCost</td>
-                  </tr>";
-
-      $tableData2[] = [
-      'no' => $count,  // Sequential number for requests
-      'contents' => $row['details'],  // Request details
-      'price' => $formattedRequestPrice,  // Formatted request price in PHP
-      'pax' => $row['pax'],  // Number of passengers for the request
-      'total_usd' => '',  // No USD conversion for requests
-      'total_php' => $formattedRequestCost,  // Total request cost in PHP
-      ];
-
-      $count++;
-    }
-
-    // Add the Handling Fee row only if there are handling fees
-    if ($handlingFeeCount > 0) 
-    {
-      $handlingFeeTotal = $handlingFeeCount * 100;
-      $formattedHandlingFeeTotal = number_format($handlingFeeTotal, 2);
-
-      $table2 .= "<tr>
-                    <td>$count</td>
-                    <td>Handling Fee</td>
-                    <td></td>
-                    <td>₱ 100.00</td>
-                    <td>$handlingFeeCount</td>
-                    <td></td>
-                    <td>₱ $formattedHandlingFeeTotal</td>
-                  </tr>";
-
-      // Add handling fee to the tableData2 array
-      $tableData2[] = [
-      'no' => $count,
-      'contents' => 'Handling Fee',
-      'price' => '100.00',
-      'pax' => $handlingFeeCount,
-      'total_usd' => '',
-      'total_php' => $formattedHandlingFeeTotal,
-      ];
-
-      $totalRequestCostSum = $totalCostSum + $handlingFeeTotal;
-    } 
-    else 
-    {
-      // If no handling fee, set totalRequestCostSum to totalCostSum
-      $totalRequestCostSum = $totalCostSum;
-    }
-
-    $formattedTotalRequestCostSum = number_format($totalRequestCostSum, 2);
-
-    $_SESSION['tableData2'] = $tableData2;
-    $_SESSION['totalRequestCost'] = $formattedTotalRequestCostSum;
-  } 
-  else 
-  {
-    $table2 = "<tr><td colspan='7'>No request data found</td></tr>";
-    $_SESSION['totalRequestCost'] = "0.00";  // Default value if no data
-  }
-
-  $table3 = "";
-  $totalAmount = 0; // To calculate the total payment amount
-  $tableData3 = []; // Array to store table3 data
-
-  // 3rd Table - Payment Data
-  $sql5 = "SELECT DISTINCT p.transactNo AS transactNo, p.paymentType AS paymentType, p.amount AS amount, 
-              DATE(p.paymentDate) AS paymentDate
-            FROM payment p
-            JOIN booking b ON b.transactNo = p.transactNo
-            JOIN flight f ON b.flightId = f.flightId
-            WHERE p.paymentStatus = 'Approved' AND f.flightId IN ($flightIdsString)
-                AND b.agentCode = '$businessUnit'";
-
-  $res5 = $conn->query($sql5);
-
-  if ($res5->num_rows > 0) 
-  {
-    while ($row = $res5->fetch_assoc()) 
-    {
-      // Accumulate the total payment amount
-      $totalAmount += $row['amount'];
-      $formattedTotalAmount = number_format($totalAmount, 2);
-
-      // Format the payment amount
-      $formattedAmount = number_format($row['amount'], 2);
-
-      // Format the payment date as "Month DD, YYYY"
-      $formattedDate = DateTime::createFromFormat('Y-m-d', $row['paymentDate'])->format('F d, Y');
-
-      // Build the table row
-      $table3 .= "<tr>
-                    <td>$count</td>
-                    <td>{$row['paymentType']} - $formattedDate</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>₱ $formattedAmount</td>
-                  </tr>";
-
-      // Add row data to the tableData3 array
-      $tableData3[] = [
-          'no' => $count,
-          'contents' => $row['paymentType'] . ' - ' . $formattedDate,
-          'price' => '', 
-          'pax' => '',
-          'total_usd' => '',
-          'total_php' => $formattedAmount 
-      ];
-
-      $count++; // Increment row counter
-    }
-
-    // Store table data and total amount in the session
-    $_SESSION['tableData3'] = $tableData3;
-    $_SESSION['totalAmount'] = $formattedTotalAmount; // Store formatted total amount
-  } 
-  else 
-  {
-    $table3 = "<tr><td colspan='7'>No Payment data found</td></tr>";
-    $_SESSION['tableData3'] = [];
-    $_SESSION['totalAmount'] = "0.00"; // Default value
-  }
-
-  $balance = ($totalPriceSum + $totalRequestCostSum) - $totalAmount;
-  $formattedBalance = number_format($balance, 2);
-  $_SESSION['balance'] = $formattedBalance;
-
-  $dataAvailable = false;
-
-  // Check if there is any data in the result sets (flight, request, payment)
-  if ($res3->num_rows > 0 || $res4->num_rows > 0) 
-  {
-    $dataAvailable = true;
-  }
-
-  // Build HTML response
-  $response = "
-      <table class='product-table'>
-        <thead>
-          <tr>
-            <th>No.</th>
-            <th>Contents</th>
-            <th>Price (USD)</th>
-            <th>Price (PHP)</th>
-            <th>PAX</th>
-            <th>Total (USD)</th>
-            <th>Total (PHP)</th>
-          </tr>
-        </thead>
-        <tbody>
-          $table1
-        </tbody>
-      </table>
-      <div class='subtotal-container'>
-        <div class='balance'>
-          <span>SUBTOTAL: </span>
-        </div>
-        <div class='subtotal-item-usd'>
-          <span>USD:</span>
-          <span class='subtotal-usd'></span>
-        </div>
-        <div class='subtotal-item-php'>
-          <span>PHP:</span>
-          <span class='subtotal-php'>₱ " . $formattedTotalPriceSum . "</span>
-        </div>
-      </div>
-      <table class='product-table'>
-        <tbody>
-          $table2
-        </tbody>
-      </table>
-      <div class='subtotal-container'>
-        <div class='balance'>
-          <span>SUBTOTAL: </span>
-        </div>
-        <div class='subtotal-item-usd'>
-          <span>USD:</span>
-          <span class='subtotal-usd'></span>
-        </div>
-        <div class='subtotal-item-php'>
-          <span>PHP:</span>
-          <span class='subtotal-php'>₱ " . $formattedTotalRequestCostSum . "</span>
-        </div>
-      </div>
-      <table class='product-table'>
-        <tbody>
-          $table3
-        </tbody>
-      </table>
-      <div class='subtotal-container'>
-        <div class='balance'>
-          <span>SUBTOTAL: </span>
-        </div>
-        <div class='subtotal-item-usd'>
-          <span>USD:</span>
-          <span class='subtotal-usd'></span>
-        </div>
-        <div class='subtotal-item-php'>
-          <span>PHP:</span>
-          <span class='subtotal-php'>₱ " . $formattedTotalAmount . "</span>
-        </div>
-      </div>
-      <div class='balance-container'>
-        <div class='balance'>
-          <span>BALANCE:</span>
-        </div>
-        <div class='balanceUSD'>
-          <span>USD:</span>
-          <span class='subtotal-usd'></span>
-        </div>
-        <div class='balancePHP'>
-          <span>PHP:</span>
-          <span class='subtotal-php'>₱ " . $formattedBalance . "</span>
-        </div>
-      </div>
-      ";
-
-  // Send JSON response
-  echo json_encode([
-    'dataAvailable' => $dataAvailable,
-      'htmlContent' => $response
-  ]);
+if (!$businessUnit) {
+  echo json_encode(['dataAvailable' => false, 'error' => 'Invalid Branch']);
+  exit;
 }
+
+// Fetch all flight IDs with same departure date
+$sqlFlights = "SELECT flightId FROM flight WHERE flightDepartureDate = ?";
+$stmtFlights = $conn->prepare($sqlFlights);
+$stmtFlights->bind_param("s", $flightDepartureDate);
+$stmtFlights->execute();
+$resultFlights = $stmtFlights->get_result();
+
+while ($row = $resultFlights->fetch_assoc()) {
+  $flightIds[] = $row['flightId'];
+}
+
+if (empty($flightIds)) {
+  echo json_encode(['dataAvailable' => false, 'error' => 'No flights found for the given date']);
+  exit;
+}
+
+// Build dynamic placeholders for IN clause
+$placeholders = implode(',', array_fill(0, count($flightIds), '?'));
+$sql3 = "SELECT b.flightId, CONCAT(f.flightDepartureDate, ' - ', f.returnArrivalDate) AS flightDates, b.pax, b.transactNo,
+        CASE WHEN a.agentRole = 'Wholeseller' OR cl.clientRole = 'Wholeseller' THEN f.wholesalePrice ELSE f.flightPrice END AS flightPrice, 
+        b.totalPrice
+        FROM booking b
+        LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
+        LEFT JOIN client cl ON b.accountType = 'Client' AND b.accountId = cl.accountId
+        JOIN flight f ON b.flightId = f.flightId
+        WHERE b.agentCode = ? AND b.status = 'Confirmed' AND f.flightId IN ($placeholders)";
+$stmt3 = $conn->prepare($sql3);
+
+$params = array_merge([$businessUnit], $flightIds);
+$types = str_repeat('i', count($flightIds));
+$stmt3->bind_param("s$types", ...$params);
+$stmt3->execute();
+$res3 = $stmt3->get_result();
+
+while ($row = $res3->fetch_assoc()) {
+  $transactNumbers[] = $row['transactNo'];
+  $totalPriceSum += $row['totalPrice'];
+  $formattedFlightPrice = number_format($row['flightPrice'], 2);
+  $formattedTotalPrice = number_format($row['totalPrice'], 2);
+  $table1 .= "<tr><td>$count</td><td>{$row['flightDates']}</td><td></td><td>₱ $formattedFlightPrice</td><td>{$row['pax']}</td><td></td><td>₱ $formattedTotalPrice</td></tr>";
+  $tableData1[] = [
+    'no' => $count,
+    'contents' => $row['flightDates'],
+    'flightId' => $row['flightId'],
+    'price' => $formattedFlightPrice,
+    'pax' => $row['pax'],
+    'total_usd' => '',
+    'total_php' => $formattedTotalPrice
+  ];
+  $count++;
+}
+$_SESSION['tableData1'] = $tableData1;
+$_SESSION['totalPriceSum'] = number_format($totalPriceSum, 2);
+
+// Handle empty transactions
+if (empty($transactNumbers)) {
+  echo json_encode([
+    'dataAvailable' => ($res3->num_rows > 0),
+    'flights' => ['rows' => $table1, 'subtotalPHP' => number_format($totalPriceSum, 2)],
+    'requests' => ['rows' => '', 'subtotalPHP' => '0.00'],
+    'payments' => ['rows' => '', 'subtotalPHP' => '0.00'],
+    'balance' => ['php' => number_format($totalPriceSum, 2)]
+  ]);
+  exit;
+}
+
+$transactPlaceholders = "'" . implode("','", array_map([$conn, 'real_escape_string'], $transactNumbers)) . "'";
+
+// Request Table
+$sql4 = "SELECT cd.details, cd.price, SUM(r.pax) AS pax, SUM(r.requestCost) AS requestCost,
+         COUNT(CASE WHEN r.handlingFee != 0 THEN 1 ELSE NULL END) AS handlingFeeCount
+         FROM request r
+         JOIN concerndetails cd ON r.concernDetailsId = cd.concernDetailsId
+         JOIN booking b ON r.transactNo = b.transactNo
+         WHERE r.requestStatus = 'Confirmed' AND r.transactNo IN ($transactPlaceholders)
+         GROUP BY cd.details, cd.price";
+$res4 = $conn->query($sql4);
+
+while ($row = $res4->fetch_assoc()) {
+  $totalCostSum += $row['requestCost'];
+  $handlingFeeCount += $row['handlingFeeCount'];
+  $formattedRequestPrice = number_format($row['price'], 2);
+  $formattedRequestCost = number_format($row['requestCost'], 2);
+  $table2 .= "<tr><td>$count</td><td>{$row['details']}</td><td></td><td>₱ $formattedRequestPrice</td><td>{$row['pax']}</td><td></td><td>₱ $formattedRequestCost</td></tr>";
+  $tableData2[] = [
+    'no' => $count,
+    'contents' => $row['details'],
+    'price' => $formattedRequestPrice,
+    'pax' => $row['pax'],
+    'total_usd' => '',
+    'total_php' => $formattedRequestCost
+  ];
+  $count++;
+}
+
+// Add handling fee row if applicable
+if ($handlingFeeCount > 0) {
+  $handlingFeeTotal = $handlingFeeCount * 100;
+  $table2 .= "<tr><td>$count</td><td>Handling Fee</td><td></td><td>₱ 100.00</td><td>$handlingFeeCount</td><td></td><td>₱ " . number_format($handlingFeeTotal, 2) . "</td></tr>";
+  $tableData2[] = [
+    'no' => $count,
+    'contents' => 'Handling Fee',
+    'price' => '100.00',
+    'pax' => $handlingFeeCount,
+    'total_usd' => '',
+    'total_php' => number_format($handlingFeeTotal, 2)
+  ];
+  $count++;
+}
+
+$totalRequestCostSum = $totalCostSum + $handlingFeeTotal;
+$_SESSION['tableData2'] = $tableData2;
+$_SESSION['totalRequestCost'] = number_format($totalRequestCostSum, 2);
+
+// Payment Table
+$sql5 = "SELECT p.paymentType, p.amount, p.paymentDate FROM payment p
+         JOIN booking b ON p.transactNo = b.transactNo
+         WHERE p.paymentStatus = 'Approved' AND p.transactNo IN ($transactPlaceholders)";
+$res5 = $conn->query($sql5);
+
+while ($row = $res5->fetch_assoc()) {
+  $totalAmount += $row['amount'];
+  $formattedAmount = number_format($row['amount'], 2);
+  $formattedDate = date("F d, Y", strtotime($row['paymentDate']));
+  $table3 .= "<tr><td>$count</td><td>{$row['paymentType']} - {$formattedDate}</td><td></td><td></td><td></td><td></td><td>₱ $formattedAmount</td></tr>";
+  $tableData3[] = [
+    'no' => $count,
+    'contents' => $row['paymentType'] . ' - ' . $formattedDate,
+    'price' => '',
+    'pax' => '',
+    'total_usd' => '',
+    'total_php' => $formattedAmount
+  ];
+  $count++;
+}
+$_SESSION['tableData3'] = $tableData3;
+$_SESSION['totalAmount'] = number_format($totalAmount, 2);
+
+// Final Balance
+$balance = ($totalPriceSum + $totalRequestCostSum) - $totalAmount;
+$_SESSION['balance'] = number_format($balance, 2);
+
+// Response
+$response = [
+  'dataAvailable' => ($res3->num_rows > 0 || $res4->num_rows > 0 || $res5->num_rows > 0),
+  'flights' => [
+    'rows' => $table1,
+    'subtotalPHP' => number_format($totalPriceSum, 2),
+    'subtotalUSD' => ''
+  ],
+  'requests' => [
+    'rows' => $table2,
+    'subtotalPHP' => number_format($totalRequestCostSum, 2),
+    'subtotalUSD' => ''
+  ],
+  'payments' => [
+    'rows' => $table3,
+    'subtotalPHP' => number_format($totalAmount, 2),
+    'subtotalUSD' => ''
+  ],
+  'balance' => [
+    'php' => number_format($balance, 2),
+    'usd' => ''
+  ]
+];
+
+echo json_encode($response, JSON_UNESCAPED_UNICODE);
+exit;
+
+}
+
+
 ?>

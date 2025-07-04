@@ -1,76 +1,63 @@
 <?php
-require "../../conn.php"; // Include the DB connection
+require "../../conn.php";
 session_start();
 
-if (isset($_POST['companyId']) && isset($_POST['month']) && isset($_POST['year']) && isset($_POST['currentDate'])) 
-{
-	// Get data from the POST request
-	$companyId = $_POST['companyId'];
-	$month = date('m', strtotime($_POST['month']));
-	$year = $_POST['year'];
-	$currentDate = $_POST['currentDate']; // Current date sent from the client
+// Validate and sanitize inputs
+$flightDate = (isset($_POST['flightDate']) && $_POST['flightDate'] !== "Select Flight Date" && $_POST['flightDate'] !== "")
+    ? $_POST['flightDate'] : null;
 
-	// Begin the transaction
-	$conn->begin_transaction();
+$monthInput = (isset($_POST['month']) && $_POST['month'] !== "") ? $_POST['month'] : null;
+$year = (isset($_POST['year']) && $_POST['year'] !== "") ? $_POST['year'] : date('Y');
+$currentDate = isset($_POST['currentDate']) ? $_POST['currentDate'] : date('Y-m-d');
+$accountId = isset($_POST['accountId']) ? (int)$_POST['accountId'] : null;
 
-	// Fetch the last SOA number for the current year
-	$sql5 = "SELECT MAX(id) AS lastSoAId FROM soa";
-	$result5 = $conn->query($sql5);
-
-	if (!$result5) 
-	{
-		// Handle the error if fetching the last SOA number fails
-		$conn->rollback();
-		echo json_encode(['error' => "Error fetching last SOA number."]);
-		exit(0);
-	}
-
-	// Get the next SOA number
-	$row = $result5->fetch_assoc();
-	$newSoANo = ($row && $row['lastSoAId'] !== null) ? $row['lastSoAId'] + 1 : 1;
-	$formattedCounter = str_pad($newSoANo, 5, '0', STR_PAD_LEFT);
-	$soaNo = 'SMT-' . $year . '-' . $formattedCounter;
-
-	// Set the current date and time for the `dateGenerated` field
-	$dateGenerated = date('Y-m-d H:i:s'); // Format: YYYY-MM-DD HH:MM:SS
-
-	// Prepare the SQL for insertion
-	$sql6 = "INSERT INTO soa (soaNo, branchId, month, dateGenerated, status)
-					VALUES (?, ?, ?, ?, ?)";
-	$stmt6 = $conn->prepare($sql6);
-
-	if (!$stmt6) 
-	{
-		// Handle the error if statement preparation fails
-		$conn->rollback();
-		echo json_encode(['error' => "Error preparing SQL statement."]);
-		exit(0);
-	}
-
-	// Bind parameters to the prepared statement
-	$status = 'Partially Paid';
-	$stmt6->bind_param('siiss', $soaNo, $companyId, $month, $dateGenerated, $status);
-
-	// Execute the statement
-	if ($stmt6->execute()) 
-	{
-		// Commit the transaction
-		$conn->commit();
-
-		// Send the SOA number back to the client
-		echo json_encode(['soanum' => $soaNo]);
-
-	} 
-	else 
-	{
-		// Rollback the transaction if the execution fails
-		$conn->rollback();
-		echo json_encode(['error' => "Error inserting SOA number."]);
-	}
-
-	// Close the statement and the connection
-	$stmt6->close();
-	$conn->close();
+if (!$accountId) {
+    echo json_encode(['error' => 'Missing or invalid accountId']);
+    exit;
 }
 
+$month = $monthInput ? date('m', strtotime($monthInput)) : null;
+$dateGenerated = date('Y-m-d H:i:s');
+
+$conn->begin_transaction();
+
+// Fetch last SOA number
+$sqlLast = "SELECT MAX(id) AS lastSoAId FROM soa";
+$resultLast = $conn->query($sqlLast);
+
+if (!$resultLast) {
+    $conn->rollback();
+    echo json_encode(['error' => "Error fetching last SOA number."]);
+    exit;
+}
+
+$row = $resultLast->fetch_assoc();
+$newSoANo = ($row && $row['lastSoAId'] !== null) ? $row['lastSoAId'] + 1 : 1;
+$formattedCounter = str_pad($newSoANo, 5, '0', STR_PAD_LEFT);
+$soaNo = 'SMT-' . $formattedCounter;
+
+// Insert new SOA record
+$sqlInsert = "INSERT INTO soa (soaNo, branchId, month, flightId, dateGenerated, status)
+              VALUES (?, ?, ?, ?, ?, ?)";
+$stmtInsert = $conn->prepare($sqlInsert);
+
+if (!$stmtInsert) {
+    $conn->rollback();
+    echo json_encode(['error' => "Error preparing SQL statement."]);
+    exit;
+}
+
+$status = 'Partially Paid';
+$stmtInsert->bind_param('siisss', $soaNo, $accountId, $month, $flightDate, $dateGenerated, $status);
+
+if ($stmtInsert->execute()) {
+    $conn->commit();
+    echo json_encode(['soanum' => $soaNo]);
+} else {
+    $conn->rollback();
+    echo json_encode(['error' => "Error inserting SOA number."]);
+}
+
+$stmtInsert->close();
+$conn->close();
 ?>

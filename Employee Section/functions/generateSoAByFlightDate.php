@@ -1,515 +1,206 @@
 <?php
-require_once('../../tcpdf/tcpdf.php');
-session_start();
+require '../../vendor/autoload.php';
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Settings;
+use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 
-// ini_set('display_errors', 1);
-// ini_set('display_startup_errors', 1);
-// error_reporting(E_ALL);
+Settings::setLocale('en_PH');
 
-// Get the selected filter values from the POST request
-$formattedDate = $_POST['currentDate'];
-$soaNumber = $_POST['soaNumber'];
-$flightDate = $_POST['flightDate'];
+function htmlTableRowsToArray($html) {
+  $rows = [];
+  if (empty($html)) return $rows;
 
+  libxml_use_internal_errors(true);
+  $dom = new DOMDocument();
+  $dom->loadHTML('<?xml encoding="UTF-8"><table>' . $html . '</table>');
+  $trs = $dom->getElementsByTagName('tr');
 
-$space = "";
-
-class PDF extends TCPDF 
-{
-  private $yPosition;
-  private $branchName = '';
-  private $formattedDate = '';
-  private $monthName = '';
-  private $soaNumber = '';
-
-  public function setBranchName($branchName) 
-  {
-    $this->branchName = $branchName;
-  }
-
-  public function setUpdateDate($formattedDate)
-  {
-    $this->formattedDate = $formattedDate;
-  }
-
-  public function setDateRange($monthName)
-  {
-    $this->monthName = $monthName;
-  }
-
-  public function setSoANo($soaNumber)
-  {
-    $this->soaNumber = $soaNumber;
-  }
-
-  // Header function
-  public function Header() 
-  {
-    if ($this->getPage() == 1) 
-    { // Check if it's the first page
-      // Add logo
-      $this->Image('../../Assets/Logos/SMART LOGO 2 (2).jpg', 10, 10, 65, 13); // Adjust 'logo.png' path, position, and size as needed
-      $this->Ln(30); // Adds 30mm of vertical space
-
-      // Voucher title
-      $this->SetFillColor(211, 211, 211); // Set the fill color
-      $this->SetTextColor(0, 0, 0); // Text color
-      $this->SetFont('Helvetica', 'B', 12, true);
-      $this->Cell(0, 10, 'STATEMENT OF ACCOUNT (SOA)', 'LRTB', 1, 'C', true);
-
-      // Add TO, ATTACHMENT, etc.
-      $this->SetFont('Helvetica', '', 10, true);
-      $this->SetXY(10, 43);
-      $this->Cell(30, 8, 'SOA NO.:', 1, 0, 'C');
-      $this->Cell(70, 8, $this->soaNumber, 1, 0, 'C');
-      $this->Cell(30, 8, 'DATE RANGE:', 1, 0, 'C');
-      $this->Cell(60, 8, $this->monthName, 1, 1, 'C');
-
-      $this->SetXY(10, 51);
-      $this->Cell(30, 8, 'BILL TO:', 1, 0, 'C');
-      $this->Cell(70, 8, $this->branchName, 1, 0, 'C');
-      $this->Cell(30, 8, 'FROM:', 1, 0, 'C');
-      $this->Cell(60, 8, 'Smart Travel', 1, 1, 'C');
-
-      $this->SetXY(110, 59);
-
-      $this->Cell(30, 8, 'UPDATE DATE:', 1, 0, 'C');
-      $this->Cell(60, 8, $this->formattedDate, 1, 1, 'C');
-
-      // Add a bit of space before starting the table
-      $this->Ln(2); 
+  foreach ($trs as $tr) {
+    $cols = [];
+    foreach ($tr->getElementsByTagName('td') as $td) {
+      $text = html_entity_decode($td->nodeValue, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+      $text = str_replace('â±', '₱', $text);
+      $cols[] = trim($text);
+    }
+    if (!empty($cols)) {
+      $rows[] = $cols;
     }
   }
-
-  // Table Header function
-  public function tableHeader() 
-  {
-    $this->SetFont('Helvetica', 'B', 10);
-
-    // Add some space after the hotel info table (to prevent overlap)
-    $this->Ln(2);
-
-    // Set the X and Y for the header
-    $this->SetXY(10, 69);
-
-    $this->SetFont('Helvetica', 'B', 10, true);
-    $this->SetFillColor(255, 255, 255); // White background
-    $this->SetTextColor(0, 0, 0); // Black text color
-
-    // Render header cells
-    $this->Cell(10, 6, 'NO.', 1, 0, 'C', true); 
-    $this->Cell(55, 6, " ".'CONTENTS', 1, 0, 'L', true);
-    $this->Cell(27, 6, 'Price (USD)', 1, 0, 'C', true);
-    $this->Cell(27, 6, 'Price (PHP)', 1, 0, 'C', true);
-    $this->Cell(10, 6, 'PAX', 1, 0, 'C', true);
-    $this->Cell(30.5, 6, 'TOTAL (USD)', 1, 0, 'C', true);
-    $this->Cell(30.5, 6, 'TOTAL (PHP)', 1, 1, 'C', true);
-
-    $this->SetFont('Helvetica', '', 10, true);
-    // Reset text color
-    $this->SetTextColor(0, 0, 0);
-  }
-
-  public function tableContent($tableData, $yPosition) 
-  {
-    $this->SetFont('Helvetica', 'B', 10);
-
-    // Add some space after the hotel info table (to prevent overlap)
-    $this->Ln(2);
-
-    // Set the X and Y for the header
-    $this->SetXY(10, $yPosition);
-
-    // Header cells
-    $this->SetFont('Helvetica', '', 10, true);
-    $this->SetFillColor(255, 255, 255); // White background
-    $this->SetTextColor(0, 0, 0); // Black text color
-
-    $col1 = 10;
-    $col2 = 55;
-    $col3 = 27;
-    $col4 = 10;
-    $col5 = 30.5;
-    $col6 = 30.5;
-
-    // Reset text color
-    $this->SetTextColor(0, 0, 0);
-  
-    // Loop through content rows and adjust Y position
-    foreach ($tableData as $row) 
-    {
-      // Set the X and Y for each row based on the current Y position
-      $this->SetXY(10, $yPosition);
-
-      // Render cells with data
-      $this->Cell($col1, 7, $row['no'], 1, 0, 'C');
-      $this->Cell($col2, 7, " ".$row['contents'], 1, 0, 'L');
-      $this->Cell($col3, 7, " ", 1, 0, 'C');
-      $this->Cell($col3, 7, $row['price'], 1, 0, 'C');
-      $this->Cell($col4, 7, $row['pax'], 1, 0, 'C');
-      $this->Cell($col5, 7, $row['total_usd'], 1, 0, 'R');
-      $this->Cell($col6, 7, $row['total_php'], 1, 1, 'R');
-
-      // Increment Y position for the next row
-      $yPosition += 7;
-    }
-
-    // Return the final Y position for reference
-    return $yPosition;
-  }
-  
-  public function tableContentSubTotal($subTotal, $yPosition) 
-  {
-    $this->SetFont('Helvetica', 'B', 10);
-
-    // Add some space after the previous content (to prevent overlap)
-    $this->Ln(2);
-
-    // Set the X and Y for the header based on passed Y position
-    $this->SetXY(10, $yPosition);
-
-    // Header cells
-    $this->SetFont('Helvetica', 'B', 10, true);
-    
-    $this->SetFillColor(211, 211, 211); // Set the fill color
-    $this->SetTextColor(0, 0, 0); // Black text color
-
-    // Render subtotal cells
-    $this->Cell(92, 7, '', 1, 0, 'C', true);
-
-
-    $this->SetFont('Helvetica', 'B', 7.5, true);
-
-    $this->Cell(37, 7, "  ".'SUB TOTAL: ', 1, 0, 'L', true);
-
-    $this->SetFont('Helvetica', 'B', 10, true);
-
-    $this->Cell(30.5, 7, " ", 1, 0, 'R', true);  // Dynamically use the $subTotal variable
-    $this->Cell(30.5, 7, $subTotal, 1, 0, 'R', true);  // Dynamically use the $subTotal variable
-
-    // Reset text color
-    $this->SetFont('Helvetica', '', 10, true);
-    $this->SetFillColor(255, 255, 255); // White background
-    $this->SetTextColor(0, 0, 0);
-
-    // Return the final Y position for reference (add 7 for the row height)
-    return $yPosition + 7;
-  }
-  
-  public function tableRequest($tableData2, $yPosition) 
-  {
-    $this->SetFont('Helvetica', 'B', 10);
-
-    // Add some space after the hotel info table (to prevent overlap)
-    $this->Ln(2);
-
-    // Set the X and Y for the header
-    $this->SetXY(10, $yPosition);
-
-    // Header cells
-    $this->SetFont('Helvetica', '', 10, true);
-    $this->SetFillColor(255, 255, 255); // White background
-    $this->SetTextColor(0, 0, 0); // Black text color
-
-    $col1 = 10;
-    $col2 = 55;
-    $col3 = 27;
-    $col4 = 10;
-    $col5 = 30.5;
-    $col6 = 30.5;
-
-    // Reset text color
-    $this->SetTextColor(0, 0, 0);
-  
-    // Loop through content rows and adjust Y position
-    foreach ($tableData2 as $row) 
-    {
-      // Set the X and Y for each row based on the current Y position
-      $this->SetXY(10, $yPosition);
-
-      // Render cells with data
-      $this->Cell($col1, 7, $row['no'], 1, 0, 'C');
-      $this->Cell($col2, 7, "  " . $row['contents'], 1, 0, 'L');
-      $this->Cell($col3, 7, " ", 1, 0, 'C');
-      $this->Cell($col3, 7, $row['price'], 1, 0, 'C');
-      $this->Cell($col4, 7, $row['pax'], 1, 0, 'C');
-      $this->Cell($col5, 7, $row['total_usd'], 1, 0, 'R');
-      $this->Cell($col6, 7, $row['total_php'], 1, 1, 'R');
-
-      // Increment Y position for the next row
-      $yPosition += 7;
-    }
-
-    // Return the final Y position for reference
-    return $yPosition;
-  }
-  
-  public function tableContentSubTotal2($totalRequestCost, $yPosition) 
-  {
-    $this->SetFont('Helvetica', 'B', 10);
-
-    // Add some space after the previous content (to prevent overlap)
-    $this->Ln(2);
-
-    // Set the X and Y for the header based on passed Y position
-    $this->SetXY(10, $yPosition);
-
-    // Header cells
-    $this->SetFont('Helvetica', '', 10, true);
-    $this->SetFillColor(211, 211, 211); // Set the fill color
-    $this->SetTextColor(0, 0, 0); // Black text color
-
-    // Render subtotal cells
-    $this->Cell(92, 7, '', 1, 0, 'C', true);
-    $this->SetFont('Helvetica', 'B', 7, true);
-
-    $this->Cell(37, 7, "  " . 'TOTAL REQUEST COST: ', 1, 0, 'L', true);
-
-    $this->SetFont('Helvetica', 'B', 10, true);
-
-    $this->Cell(30.5, 7, " ", 1, 0, 'R', true);
-    $this->Cell(30.5, 7, $totalRequestCost, 1, 0, 'R', true);
-
-    // Reset text color
-    $this->SetFillColor(255, 255, 255); // White background
-    $this->SetTextColor(0, 0, 0);
-
-    // Return the final Y position for reference (add 10 for the row height)
-    return $yPosition + 7;
-  }
-
-  public function tablePayment($tableData3, $yPosition) 
-  {
-    $this->SetFont('Helvetica', 'B', 8.5);
-    
-    // Add some space after the previous content (to prevent overlap)
-    $this->Ln(2);
-    
-    // Set the X and Y for the header based on passed Y position
-    $this->SetXY(10, $yPosition);
-    
-    // Header cells
-    $this->SetFont('Helvetica', '', 10, true);
-    $this->SetFillColor(255, 255, 255); // White background
-    $this->SetTextColor(0, 0, 0); // Black text color
-    
-    $col1 = 10;
-    $col2 = 55;
-    $col3 = 27;
-    $col4 = 10;
-    $col5 = 30.5;
-    $col6 = 30.5;
-
-    // Reset text color
-    $this->SetTextColor(0, 0, 0);
-    
-    // Loop through content rows and adjust Y position
-    foreach ($tableData3 as $row) 
-    {
-      // Set the X and Y for each row based on the current Y position
-      $this->SetXY(10, $yPosition);
-  
-      // Render cells with data
-      $this->Cell($col1, 7, $row['no'], 1, 0, 'C');
-      $this->Cell($col2, 7, "  " . $row['contents'], 1, 0, 'L');
-      $this->Cell($col3, 7, $row['price'], 1, 0, 'C');
-      $this->Cell($col3, 7, $row['price'], 1, 0, 'C');
-      $this->Cell($col4, 7, $row['pax'], 1, 0, 'C');
-      $this->Cell($col5, 7, $row['total_usd'], 1, 0, 'R');
-      $this->Cell($col6, 7, $row['total_php'], 1, 1, 'R');
-  
-      // Increment Y position for the next row
-      $yPosition += 7;
-    }
-    
-    // Return the final Y position for reference
-    return $yPosition;
-  }
-
-  public function tableContentSubTotal3($totalAmount, $yPosition) 
-  {
-    $this->SetFont('Helvetica', 'B', 10);
-
-    // Add some space after the previous content (to prevent overlap)
-    $this->Ln(2);
-
-    // Set the X and Y for the header based on passed Y position
-    $this->SetXY(10, $yPosition);
-
-    // Header cells
-    $this->SetFont('Helvetica', 'B', 10, true);
-    $this->SetFillColor(211, 211, 211); // Set the fill color
-    $this->SetTextColor(0, 0, 0); // Black text color
-
-    // Render subtotal cells
-    $this->Cell(92, 7, '', 1, 0, 'C', true);
-    $this->SetFont('Helvetica', 'B', 8, true);
-    $this->Cell(37, 7, "  " . 'TOTAL PAYMENT: ', 1, 0, 'L', true);
-    $this->SetFont('Helvetica', 'B', 10, true);
-    $this->Cell(30.5, 7, " ", 1, 0, 'R', true);
-    $this->Cell(30.5, 7, $totalAmount, 1, 0, 'R', true);
-
-    // Reset text color and font
-    $this->SetFont('Helvetica', '', 10); // Reset to normal weight
-    $this->SetFillColor(255, 255, 255); // White background
-    $this->SetTextColor(0, 0, 0);
-
-    // Return the final Y position for reference (add 10 for the row height)
-    return $yPosition + 7;
-  }
-    
-  public function tableBalance($balance, $yPosition) 
-  {
-    $this->SetFont('Helvetica', 'B', 10);
-
-    // Add some space after the previous content (to prevent overlap)
-    $this->Ln(2);
-
-    // Set the X and Y for the header based on passed Y position
-    $this->SetXY(10, $yPosition);
-
-    // Header cells
-    $this->SetFont('Helvetica', 'B', 10); // Set font to bold ('B')
-    $this->SetFillColor(211, 211, 211); // Set the fill color
-    $this->SetTextColor(0, 0, 0); // Black text color
-
-    // Render header cells for Balance table
-    $this->Cell(92, 7, '', 1, 0, 'C', true); 
-    $this->SetFont('Helvetica', 'B', 8);
-    $this->Cell(37, 7, "  " . 'BALANCE: ', 1, 0, 'L', true); 
-    $this->SetFont('Helvetica', 'B', 10);
-    $this->Cell(30.5, 7, $balance, 1, 0, 'R', true);
-    $this->Cell(30.5, 7, $balance, 1, 0, 'R', true);  
-
-    // Reset text color and font
-    $this->SetFont('Helvetica', '', 10); // Reset to normal weight
-    $this->SetFillColor(255, 255, 255); // White background
-    $this->SetTextColor(0, 0, 0);
-
-    // Return the final Y position for reference (add 7 for the row height)
-    return $yPosition + 11;
-  }
-
-  public function accountInfo($yPosition) 
-  {
-    $this->SetFont('Helvetica', 'B', 10);
-
-    // Add some space after the previous content (to prevent overlap)
-    $this->Ln(2);
-
-    // Set the X and Y for the header based on passed Y position
-    $this->SetXY(10, $yPosition);
-
-    // Header cells
-    $this->SetFont('Helvetica', '', 10, true);
-    $this->SetFillColor(255, 255, 255); // White background
-    $this->SetTextColor(0, 0, 0); // Black text color   
-
-    // Render header cells for Balance table using MultiCell
-    $this->SetFont('Helvetica', 'B', 10, true);
-    // Render MultiCell with no bottom border
-    $this->MultiCell(190, 4, 'ACCOUNT INFORMATION', 'LTR', 'L', true);
-    $this->SetFont('Helvetica', '', 10, true);
-    $this->MultiCell(190, 7, 
-    "    " . 'Bank Name: Banco De Oro (BDO) - Zuellig Branch Makati Avenue
-    Name of Account: Hyung Sub Kim (Nickname: Jed Kim)
-    Peso Account No.: 007800203252
-    US Dollar Account No.: 107800113512','LBR', 'L', true);
-
-    // Reset text color
-    $this->SetTextColor(0, 0, 0);
-
-    // Return the final Y position for reference (add 7 for the row height)
-    return $yPosition + 7;
+  return $rows;
+}
+
+$input = json_decode(file_get_contents('php://input'), true);
+$accountName = $input['accountName'] ?? 'Unknown Recipient';
+$fromName = $input['fromName'] ?? 'Smart Travel';
+$fromCompany = $input['fromCompany'] ?? 'Smart Travel';
+$generationDate = date('m/d/Y');
+$soaNumber = $input['soaNumber'] ?? 'SOA_Unknown';
+$data = $input['data'] ?? [];
+
+$flights = htmlTableRowsToArray($data['flights']['rows'] ?? '');
+$requests = htmlTableRowsToArray($data['requests']['rows'] ?? '');
+$payments = htmlTableRowsToArray($data['payments']['rows'] ?? '');
+$balancePHP = $data['balance']['php'] ?? '0.00';
+$balanceUSD = $data['balance']['usd'] ?? '0.00';
+$flightSubtotalPHP = $data['flights']['subtotalPHP'] ?? '0.00';
+$requestSubtotalPHP = $data['requests']['subtotalPHP'] ?? '0.00';
+$paymentSubtotalPHP = $data['payments']['subtotalPHP'] ?? '0.00';
+
+$spreadsheet = new Spreadsheet();
+$sheet = $spreadsheet->getActiveSheet();
+$sheet->setTitle("SOA-" . $soaNumber);
+$sheet->getDefaultRowDimension()->setRowHeight(21.75);
+$spreadsheet->getDefaultStyle()->getFont()->setName('Arial')->setSize(14);
+
+// Company Logo
+$logo = new Drawing();
+$logo->setName('Company Logo');
+$logo->setDescription('Company Logo');
+$logo->setPath('../../Template/SMT-MANILA-LOGO.png');
+$logo->setResizeProportional(false);
+$logo->setHeight(150);
+$logo->setWidth(1000);
+$logo->setCoordinates('B1');
+$logo->setOffsetX(10);
+$logo->setOffsetY(5);
+$logo->setWorksheet($sheet);
+
+// Header
+$sheet->mergeCells('A6:G7')->setCellValue('A6', 'STATEMENT OF ACCOUNT');
+$sheet->getStyle('A6')->getFont()->setBold(true)->setSize(28);
+$sheet->getStyle('A6')->getAlignment()->setHorizontal('center');
+$sheet->getStyle('A6:G7')->getAlignment()->setVertical('center');
+$rowNum = 9;
+
+$sheet->mergeCells("A$rowNum:G$rowNum")->setCellValue("A$rowNum", "BILL TO: $accountName");
+$sheet->getStyle("A$rowNum")->getFont()->setSize(16);
+$rowNum++;
+
+$sheet->mergeCells("A$rowNum:D$rowNum")->setCellValue("A$rowNum", "FROM: $fromCompany / $fromName");
+$sheet->mergeCells("E$rowNum:G$rowNum")->setCellValue("E$rowNum", "Date: $generationDate");
+$sheet->getStyle("A$rowNum:G$rowNum")->getFont()->setSize(16);
+$rowNum++;
+
+// Table Header
+$sheet->fromArray(['No', 'Contents', '$ Price', '₱ Price', 'PAX', '$ Total', '₱ Total'], null, "A$rowNum");
+$headerRow = $rowNum;
+$sheet->getStyle("A$rowNum:G$rowNum")->getFont()->setBold(true)->setSize(16);
+$sheet->getStyle("A$rowNum:G$rowNum")->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setRGB('D9E1F2');
+$rowNum++;
+
+$serial = 1;
+foreach ($flights as $row) {
+  $row[0] = $serial++;
+  $sheet->fromArray($row, null, "A$rowNum");
+  $sheet->getStyle("A$rowNum:G$rowNum")->getFont()->setSize(14);
+  $rowNum++;
+}
+
+foreach ($requests as $row) {
+  $row[0] = $serial++;
+  $sheet->fromArray($row, null, "A$rowNum");
+  $sheet->getStyle("A$rowNum:G$rowNum")->getFont()->setSize(14);
+  $rowNum++;
+}
+
+// Subtotal for flights + requests
+$combinedSubtotal = number_format(
+  floatval(str_replace(',', '', $flightSubtotalPHP)) + floatval(str_replace(',', '', $requestSubtotalPHP)),
+  2, '.', ','
+);
+$sheet->setCellValue("A$rowNum", $serial++);
+$sheet->mergeCells("E$rowNum:F$rowNum")->setCellValue("E$rowNum", 'Sub Total');
+$sheet->setCellValue("G$rowNum", "₱ $combinedSubtotal");
+$sheet->getStyle("B$rowNum:G$rowNum")->getFont()->setBold(true)->setSize(14);
+$sheet->getStyle("A$rowNum:G$rowNum")->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setRGB('FFF2CC');
+$rowNum++;
+
+// Payments (shown negative)
+foreach ($payments as $row) {
+  $row[0] = $serial++;
+  if (isset($row[6])) $row[6] = '-' . $row[6];
+  $sheet->fromArray($row, null, "A$rowNum");
+  $sheet->getStyle("A$rowNum:G$rowNum")->getFont()->setSize(14);
+  $sheet->getStyle("G$rowNum")->getFont()->getColor()->setRGB('FF0000');
+  $rowNum++;
+}
+
+// Subtotal for payments
+$sheet->setCellValue("A$rowNum", $serial++);
+$sheet->mergeCells("E$rowNum:F$rowNum")->setCellValue("E$rowNum", 'Sub Total');
+$sheet->setCellValue("G$rowNum", "-₱ $paymentSubtotalPHP");
+$sheet->getStyle("B$rowNum:G$rowNum")->getFont()->setBold(true)->setSize(14);
+$sheet->getStyle("A$rowNum:G$rowNum")->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setRGB('FFF2CC');
+$sheet->getStyle("G$rowNum")->getFont()->getColor()->setRGB('FF0000');
+$rowNum++;
+
+// Final Balance
+$sheet->mergeCells("A$rowNum:E$rowNum")->setCellValue("A$rowNum", 'BALANCE');
+$sheet->getStyle("A$rowNum")->getAlignment()->setHorizontal('center');
+$sheet->setCellValue("G$rowNum", "-₱ $balancePHP");
+$sheet->getStyle("A$rowNum:G$rowNum")->getFont()->setBold(true)->setSize(14);
+$sheet->getStyle("A$rowNum:G$rowNum")->getFont()->getColor()->setRGB('FF0000');
+$sheet->getStyle("A$rowNum:G$rowNum")->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setRGB('FFD966');
+$tableEndRow = $rowNum;
+$rowNum++;
+
+// Border styles
+$sheet->getStyle("A$headerRow:G$tableEndRow")->applyFromArray([
+  'borders' => [
+    'allBorders' => [
+      'borderStyle' => Border::BORDER_THIN,
+      'color' => ['argb' => '000000'],
+    ]
+  ]
+]);
+
+// Bank info
+$sheet->mergeCells("A$rowNum:G$rowNum")->setCellValue("A$rowNum", 'ACCOUNT INFORMATION');
+$sheet->getStyle("A$rowNum")->getFont()->setSize(14)->setBold(true); $rowNum++;
+$sheet->mergeCells("A$rowNum:G$rowNum")->setCellValue("A$rowNum", 'Bank Name : B D O (Zuellig Branch MAKATI AVENUE)'); $rowNum++;
+$sheet->mergeCells("A$rowNum:G$rowNum")->setCellValue("A$rowNum", 'Name of Account : KIM HYUNG SUB (Nick name  Jedkim )'); $rowNum++;
+$sheet->mergeCells("A$rowNum:G$rowNum")->setCellValue("A$rowNum", 'Peso Account No.: 007800151678'); $rowNum++;
+$sheet->mergeCells("A$rowNum:G$rowNum")->setCellValueExplicit("A$rowNum", 'US Dollar Account No : 107800113512', \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING); $rowNum++;
+
+// Bank info borders
+$accountInfoStart = $rowNum - 5;
+$accountInfoEnd = $rowNum - 1;
+for ($i = $accountInfoStart; $i <= $accountInfoEnd; $i++) {
+  foreach (range('A', 'G') as $col) {
+    $cell = $col . $i;
+    $borders = ['left' => ['borderStyle' => Border::BORDER_THIN]];
+    if ($i === $accountInfoStart) $borders['top'] = ['borderStyle' => Border::BORDER_THIN];
+    if ($i === $accountInfoEnd) $borders['bottom'] = ['borderStyle' => Border::BORDER_THIN];
+    $borders['right'] = ['borderStyle' => Border::BORDER_THIN];
+    $sheet->getStyle($cell)->applyFromArray(['borders' => $borders]);
   }
 }
 
-// Create a new PDF instance and add pages as needed
-$pdf = new PDF();
+// Format and layout
+$sheet->getColumnDimension('A')->setWidth(3);
+$sheet->getColumnDimension('B')->setWidth(40);
+$sheet->getColumnDimension('C')->setWidth(12);
+$sheet->getColumnDimension('D')->setWidth(12);
+$sheet->getColumnDimension('E')->setWidth(5);
+$sheet->getColumnDimension('F')->setWidth(12);
+$sheet->getColumnDimension('G')->setWidth(12);
 
-$tableData = $_SESSION['tableData1'];
-$totalPriceSum = $_SESSION['totalPriceSum'];
-$tableData2 = $_SESSION['tableData2'];
-$totalRequestCost = $_SESSION['totalRequestCost'];
-$tableData3 =  $_SESSION['tableData3'];
-$totalAmount = $_SESSION['totalAmount'];
-$balance = $_SESSION['balance'];
-$branchName = $_SESSION['branchName'];
+$currencyFormatPeso = '#,##0.00';
+$currencyFormatUSD = '"$"#,##0.00';
+$sheet->getStyle("D$headerRow:D$rowNum")->getNumberFormat()->setFormatCode($currencyFormatPeso);
+$sheet->getStyle("F$headerRow:F$rowNum")->getNumberFormat()->setFormatCode($currencyFormatUSD);
+$sheet->getStyle("G$headerRow:G$rowNum")->getNumberFormat()->setFormatCode($currencyFormatPeso);
 
-// Set margins
-$pdf->SetMargins(10, 10, 10); // Adjust to provide consistent spacing
-$pdf->SetAutoPageBreak(TRUE, 10); // Set bottom margin to 10mm
+$sheet->getStyle("B$headerRow:E$rowNum")->getAlignment()->setHorizontal('left');
+$sheet->getStyle("F$headerRow:G$rowNum")->getAlignment()->setHorizontal('right');
 
-// Set the branch name
-$pdf->setBranchName($branchName);
-$pdf->setDateRange($flightDate);
-$pdf->setUpdateDate($formattedDate);
-$pdf->setSoANo($soaNumber);
-$pdf->AddPage();
-$pdf->tableHeader();
-
-// Get the initial Y position after rendering the header
-$yPosition = 61; // Set the starting position for the first table
-
-// Define the max Y position
-$maxYPosition = 277; // 297mm - 10mm (top margin) - 10mm (bottom margin)
-
-// Pass the Y position to tableContent and get the updated position
-$yPosition = $pdf->tableContent($tableData, $yPosition);
-
-// Check if Y position exceeds maxYPosition and add a new page if necessary
-if ($yPosition > $maxYPosition) {
-  $pdf->AddPage(); // Create a new page
-  $yPosition = 75; // Reset Y position for the new page
-}
-
-// Pass the updated Y position to tableContentSubTotal and get the final position
-$yPosition = $pdf->tableContentSubTotal($totalPriceSum, $yPosition);
-
-// Pass the final Y position to tablePayment and get the final position
-$yPosition = $pdf->tableRequest($tableData2, $yPosition);
-if ($yPosition > $maxYPosition) {
-  $pdf->AddPage();
-  $yPosition = 75;
-}
-
-// Pass the final Y position to tableContentSubTotal2 and get the final position
-$yPosition = $pdf->tableContentSubTotal2($totalRequestCost, $yPosition);
-
-// Pass the final Y position to tablePayment and get the final position
-$yPosition = $pdf->tablePayment($tableData3, $yPosition);
-if ($yPosition > $maxYPosition) {
-  $pdf->AddPage();
-  $yPosition = 75;
-}
-
-// Pass the final Y position to tableContentSubTotal2 and get the final position
-$yPosition = $pdf->tableContentSubTotal3($totalAmount, $yPosition);
-
-// Pass the updated Y position to tableBalance and get the final position
-$yPosition = $pdf->tableBalance($balance, $yPosition);
-if ($yPosition > $maxYPosition) {
-  $pdf->AddPage();
-  $yPosition = 75;
-}
-
-$yPosition = $pdf->accountInfo($yPosition);
-if ($yPosition > $maxYPosition) {
-  $pdf->AddPage();
-  $yPosition = 75;
-}
-
-ob_clean();
-// Output the PDF
-$pdf->Output('itinerary-Winter.pdf', 'I');
-
-// Clear session variables after the PDF is output
-unset($_SESSION['tableData1']);
-unset($_SESSION['totalPriceSum']);
-unset($_SESSION['tableData2']);
-unset($_SESSION['totalRequestCost']);
-unset($_SESSION['tableData3']);
-unset($_SESSION['totalAmount']);
-unset($_SESSION['balance']);
-unset($_SESSION['branchName']);
-?>
+// Output Excel file
+header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+header("Content-Disposition: attachment; filename=SOA_$soaNumber.xlsx");
+header('Cache-Control: max-age=0');
+$writer = new Xlsx($spreadsheet);
+$writer->save('php://output');
+exit;
