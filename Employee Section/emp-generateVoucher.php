@@ -78,7 +78,7 @@
                     if ($res1->num_rows > 0) {
                       // Loop through the results and generate options
                       while ($row = $res1->fetch_assoc()) {
-                        echo "<option value='" . $row['branchName'] . "'>" . $row['branchName'] . "</option>";
+                        echo "<option value='" . $row['branchId'] . "'>" . $row['branchName'] . "</option>";
                       }
                     } else {
                       echo "<option value=''>No companies available</option>";
@@ -807,11 +807,10 @@
         : "Voucher";
 
       const voucherDetails = {
-        to: document.getElementById("voucherTo").value,
+        toId: document.getElementById("voucherTo").value,
         from: document.getElementById("voucherFrom").value,
         tour: document.getElementById("voucherTour").value,
         attachment: attachmentValue,
-        isConnectToItinerary: isToggled ? 1 : 0,
         itineraryId: isToggled ? selectedItineraryId : null,
         periodStart: document.getElementById("voucherPeriodStart").value,
         periodEnd: document.getElementById("voucherPeriodEnd").value,
@@ -947,8 +946,9 @@
             <label class="form-label" for="city${cardCount}">City</label>
             <select class="form-control city-select" id="city${cardCount}" name="city${cardCount}" ${isFirstCard ? 'required' : ''}>
               <option value="" disabled selected>Select City</option>
-              ${cities.map(city => `<option value="${city}">${city}</option>`).join('')}
+              ${cities.map(city => `<option value="${city.areaId}">${city.areaName}</option>`).join('')}
             </select>
+
           </div>
 
           <div class="col-12 col-md-3">
@@ -968,6 +968,7 @@
       const hiddenEnd = document.querySelector(`[name="requiredEndDate${cardCount}"]`);
       const nightsInput = document.getElementById(`nights${cardCount}`);
 
+      // Initialize the nights input to empty
       function calculateNights() {
         const startDate = new Date(startInput.value);
         const endDate = new Date(endInput.value);
@@ -999,20 +1000,79 @@
         }
       });
 
+
+
+      // City -> hotel Dynamic Data
       const citySelect = card.querySelector('.city-select');
       const hotelSelect = card.querySelector('.hotel-select');
 
+      // Event listener: on city (areaId) change
       citySelect.addEventListener('change', (e) => {
-        const selectedCity = e.target.value;
-        populateHotelsForCity(hotelSelect, selectedCity);
+        const selectedAreaId = parseInt(e.target.value);
+        populateHotelsForCity(hotelSelect, selectedAreaId);
       });
 
+      // Event listener: on hotel change
       hotelSelect.addEventListener('change', () => {
         cardsJSONData = generateCardsJSON();
-        console.log("Voucher Details:", JSON.stringify(voucherDetails, null, 2));
         console.log("Date and Hotels:", JSON.stringify(cardsJSONData, null, 2));
       });
 
+      // console.log("Voucher Details:", JSON.stringify(voucherDetails, null, 2));
+
+      // Helper: Populate hotels based on selected areaId
+      function populateHotelsForCity(hotelSelect, areaId) {
+        hotelSelect.innerHTML = `<option value="" disabled selected>Select Hotel</option>`;
+
+        if (!areaId || isNaN(areaId)) {
+          hotelSelect.disabled = true;
+          return;
+        }
+
+        const matches = hotelsList.filter(hotel => parseInt(hotel.areaId) === areaId);
+        if (matches.length === 0) {
+          hotelSelect.disabled = true;
+          return;
+        }
+
+        matches.forEach(hotel => {
+          const opt = document.createElement('option');
+          opt.value = hotel.hotelId;
+          opt.textContent = hotel.hotelName;
+          hotelSelect.appendChild(opt);
+        });
+
+        hotelSelect.disabled = false;
+      }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      // Delete Card Button
       card.querySelector('.remove-card-btn').addEventListener('click', () => {
         const index = parseInt(card.getAttribute('data-card-id'));
         if (index === 1) {
@@ -1043,29 +1103,7 @@
     }
 
 
-    function populateHotelsForCity(hotelSelect, city) {
-      hotelSelect.innerHTML = `<option value="" disabled selected>Select Hotel</option>`;
-      if (!city) {
-        hotelSelect.disabled = true;
-        return;
-      }
-
-      const matches = hotelsList.filter(h => h.hotelCity === city);
-      if (matches.length === 0) {
-        hotelSelect.disabled = true;
-        return;
-      }
-
-      matches.forEach(hotel => {
-        const opt = document.createElement('option');
-        opt.value = hotel.hotelId;
-        opt.textContent = hotel.hotelName;
-        hotelSelect.appendChild(opt);
-      });
-
-      hotelSelect.disabled = false;
-    }
-
+    
     function updateCardHeaders() {
       const cards = document.querySelectorAll('#cardsContainer > div[data-card-id]');
       cardCount = cards.length;

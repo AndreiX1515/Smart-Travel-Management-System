@@ -54,7 +54,6 @@
 		</script>
 
 		<!-- DB Query for Itinerary Details based on Itinerary ID -->
-		<!-- DB Query for Itinerary Details based on Itinerary ID -->
 		<?php
 		if (!isset($_GET['id'])) {
 			die("Invalid Itinerary ID");
@@ -62,22 +61,27 @@
 
 		$itineraryId = intval($_GET['id']); // Sanitize input
 
-		// Fetch itinerary main details with guide info
+		// Fetch itinerary main details with guide info and voucher info
 		$sql = "
 			SELECT 
+				i.itineraryId,
 				i.itineraryName,
 				i.noOfDays,
 				i.packageId,
 				i.periodStart,
 				i.periodEnd,
+				i.voucherId,
+				v.voucherCode,
 				e.fName AS guideFirstName,
 				e.lName AS guideLastName,
 				e.countryCode,
 				e.contactNo
 			FROM itineraries i
-			LEFT JOIN employee e ON i.guideId = e.id
+			LEFT JOIN employee e ON i.guideId = e.accountId
+			LEFT JOIN vouchers v ON i.voucherId = v.voucherId
 			WHERE i.itineraryId = ?
 		";
+
 
 		$stmt = $conn->prepare($sql);
 		$stmt->bind_param("i", $itineraryId);
@@ -94,7 +98,7 @@
 			: '';
 
 		$itinerary = [
-			'itineraryId' => $itineraryId,
+			'itineraryId' => $row['itineraryId'],
 			'itineraryName' => $row['itineraryName'],
 			'noOfDays' => $row['noOfDays'],
 			'packageId' => $row['packageId'],
@@ -103,9 +107,12 @@
 			'guideName' => $guideName,
 			'countryCode' => $row['countryCode'] ?? '',
 			'contactNumber' => $row['contactNo'] ?? '',
+			'voucherId' => $row['voucherId'] ?? null,
+			'voucherCode' => $row['voucherCode'] ?? null,
 			'cities' => [],
 			'days' => []
 		];
+
 
 		// ✅ Fetch cities & hotels from itinerarytourareashotels
 		$sqlCityHotel = "SELECT city, hotel FROM itinerarytourareashotels WHERE itineraryId = ? ORDER BY orderNo ASC";
@@ -123,40 +130,64 @@
 
 		// Fetch days, areas, hotels, activities, and meal plans
 		$sqlDays = "
-		SELECT 
-			d.dayId, 
-			d.dayNumber, 
-			COALESCE(a.areas, '') AS areas,
-			COALESCE(h.hotels, '') AS hotels,
-			COALESCE(act.activities, '') AS activities,
-			COALESCE(mp.meals, '') AS meals
-		FROM itinerarydays d
-		LEFT JOIN (
-			SELECT dayId, GROUP_CONCAT(DISTINCT areaName ORDER BY itineraryAreaId ASC SEPARATOR ', ') AS areas
-			FROM itineraryareas 
-			GROUP BY dayId
-		) a ON d.dayId = a.dayId
-		LEFT JOIN (
-			SELECT ih.dayId, 
-				GROUP_CONCAT(DISTINCT dh.hotelName ORDER BY ih.hotelId ASC SEPARATOR ', ') AS hotels
-			FROM itineraryhotels ih
-			LEFT JOIN itineraryDataHotels dh ON ih.hotelId = dh.hotelId
-			GROUP BY ih.dayId
-		) h ON d.dayId = h.dayId
+			SELECT 
+				d.dayId, 
+				d.dayNumber, 
 
-		LEFT JOIN (
-			SELECT dayId, GROUP_CONCAT(activityName ORDER BY activityId ASC SEPARATOR ', ') AS activities
-			FROM itineraryactivities 
-			GROUP BY dayId
-		) act ON d.dayId = act.dayId
-		LEFT JOIN (
-			SELECT dayId, GROUP_CONCAT(DISTINCT mealPlan ORDER BY mealId ASC SEPARATOR ', ') AS meals
-			FROM itinerarymealplans 
-			GROUP BY dayId
-		) mp ON d.dayId = mp.dayId
-		WHERE d.itineraryId = ?
-		GROUP BY d.dayId, d.dayNumber
-		ORDER BY d.dayNumber ASC;
+				-- Areas per day
+				COALESCE(a.areas, '') AS areas,
+
+				-- Hotels per day
+				COALESCE(h.hotels, '') AS hotels,
+
+				-- Activities per day
+				COALESCE(act.activities, '') AS activities,
+
+				-- Meals per day
+				COALESCE(mp.meals, '') AS meals
+
+			FROM itineraryDays d
+
+			-- Join: Areas
+			LEFT JOIN (
+				SELECT 
+					dayId, 
+					GROUP_CONCAT(DISTINCT areaName ORDER BY itineraryAreaId ASC SEPARATOR ',') AS areas
+				FROM itineraryAreas
+				GROUP BY dayId
+			) a ON d.dayId = a.dayId
+
+			-- Join: Hotels (from hotels table via itineraryHotels)
+			LEFT JOIN (
+				SELECT 
+					ih.dayId, 
+					GROUP_CONCAT(DISTINCT h.hotelName ORDER BY h.hotelName ASC SEPARATOR ',') AS hotels
+				FROM itineraryHotels ih
+				INNER JOIN hotels h ON ih.hotelId = h.hotelId
+				GROUP BY ih.dayId
+			) h ON d.dayId = h.dayId
+
+			-- Join: Activities
+			LEFT JOIN (
+				SELECT 
+					dayId, 
+					GROUP_CONCAT(activityName ORDER BY activityId ASC SEPARATOR ',') AS activities
+				FROM itineraryActivities
+				GROUP BY dayId
+			) act ON d.dayId = act.dayId
+
+			-- Join: Meals (link mealId to mealName)
+			LEFT JOIN (
+				SELECT 
+					imp.dayId, 
+					GROUP_CONCAT(DISTINCT md.mealName ORDER BY md.mealId ASC SEPARATOR ',') AS meals
+				FROM itineraryMealPlans imp
+				INNER JOIN itineraryDataMealPlan md ON imp.mealId = md.mealId
+				GROUP BY imp.dayId
+			) mp ON d.dayId = mp.dayId
+
+			WHERE d.itineraryId = ?
+			ORDER BY d.dayNumber ASC;
 		";
 
 		$stmt = $conn->prepare($sqlDays);
@@ -194,11 +225,11 @@
 
 		// Output the data in the raw format in the browser's console
 		echo "<script>
-                console.log($jsonData);
-             </script>";
+				console.log('Database Itinerary Data:');
+				console.log(JSON.stringify($jsonData, null, 2));
+			</script>";
+
 		?>
-
-
 
 		<div class="main-content">
 			<input type="hidden" id="itineraryId" value="<?= htmlspecialchars($itineraryId); ?>" readonly>
@@ -394,7 +425,7 @@
 							$selectedHotel = $itinerary['cities'][$i]['hotel'] ?? "";
 						?>
 
-							<div class="row mb-3 cityhotel-row">
+							<div class="row mb-1 cityhotel-row">
 								<div class="columns col-md-8">
 									<div class="cityhotel-wrapper d-flex flex-row align-items-center gap-2">
 
@@ -482,7 +513,6 @@
 					</div>
 				</div>
 
-
 				<div class="card select-days-card">
 					<div class="card-header">
 						<h5 class="fw-bold">No. of Days</h5>
@@ -516,16 +546,32 @@
 
 			<!-- Form footer with both buttons -->
 			<div class="form-footer">
-				<button type="button" class="btn btn-primary" id="submitEdit">Submit Edit</button>
 
-				<select id="actionSelector" class="form-select" style="width: 120px;">
+				<div class="itinerary-footer-first">
+					<p class="mb-0 text-muted">
+						Connected to Voucher: 
+						<span class="fw-bold"><?= $itinerary['voucherCode'] ?? "--"; ?></span>
+					</p>
+				</div>
+
+
+				<div class="itinerary-footer-second">
+					<!-- Right side content -->
+					<button type="button" class="btn btn-primary btn-sm" id="submitEdit">Submit Edit</button>
+
+					<select id="actionSelector" class="form-select" style="width: 120px;">
 					<option value="xlsx" selected>Excel (.xlsx)</option>
-					<option value="pdf">PDF</option>
-					<option value="both">Excel and PDF </option>
-				</select>
+					<option value="pdf" disabled>PDF</option>
+					<option value="both" disabled>Excel & PDF</option>
+					</select>
 
-				<button type="button" class="btn btn-primary" id="submitTour">Generate Itinerary</button>
+					<button type="button" class="btn btn-primary btn-sm disabled" id="submitTourAndVoucher">Generate Itinerary & Voucher</button>
+
+					<button type="button" class="btn btn-primary btn-sm" id="submitTour"></button>
+				</div>
+
 			</div>
+
 
 			<!-- JavaScript to handle file format selection -->
 			<script>
@@ -544,9 +590,13 @@
 
 					function toggleButtons(value) {
 						if (value === 'xlsx') {
-							submitTourBtn.innerText = 'Generate XLSX Itinerary'; // Update button text for XLSX
+							submitTourBtn.innerText = 'Generate Itinerary - Excel'; // Update button text for XLSX
+						}
+						else if (value === 'both') {
+							submitTourBtn.innerText = 'Generate Itinerary - Excel & PDF'; // Update button text for XLSX
+
 						} else {
-							submitTourBtn.innerText = 'Generate PDF Itinerary'; // Update button text for PDF
+							submitTourBtn.innerText = 'Generate Itinerary - PDF'; // Update button text for PDF
 						}
 					}
 				});
@@ -554,7 +604,6 @@
 
 		</div>
 	</div>
-
 
 	<!-- Modal - Template Name -->
 	<div class="modal fade" id="templateNameModal" tabindex="-1" aria-labelledby="templateNameModalLabel"
@@ -579,6 +628,7 @@
 			</div>
 		</div>
 	</div>
+
 
 	<?php include '../Employee Section/includes/emp-scripts.php' ?>
 
@@ -666,6 +716,7 @@
 			liveItineraryData = JSON.parse(JSON.stringify(itineraryData)); // Clone
 
 			window.updateLiveItineraryData = function () {
+				const itineraryId = document.getElementById("itineraryId").value;
 				const itineraryName = document.getElementById("itineraryName").value;
 				const packageSelect = document.getElementById("packageSelect").value;
 				const periodStart = document.getElementById("PeriodStartDate").value;
@@ -684,7 +735,7 @@
 				}
 
 				const itineraryDetails = {
-					itineraryId: 1,
+					itineraryId,
 					itineraryName,
 					packageName: packageSelect,
 					periodStart,
@@ -767,9 +818,6 @@
 
 				return values;
 			};
-
-
-
 
 			// Areas
 			const koreanTourAreas = ["Seoul", "Busan", "Jeju", "Incheon", "Gyeongju"];
@@ -1229,28 +1277,34 @@
 
 								<!-- Meal Plan Section -->
 								<div class="row mb-3">
-									${day === 1
-										? `<div class="col-4"><label class="form-label fw-semibold">Snack:</label><select class="form-select" disabled><option selected>Snack</option></select></div>`
-										: ["Breakfast", "Lunch", "Dinner"].map((label, index) => createMealSelectColumn(label, meals[index], index + 1)).join("")
-									}
+								${day === 1
+									? `<div class="col-4">
+										<label class="form-label fw-semibold">Snack:</label>
+										<select class="form-select meal-plan-select" data-day="${day}" disabled>
+										<option value="Snacks" selected>Snacks</option>
+										</select>
+									</div>`
+									: ["Breakfast", "Lunch", "Dinner"].map((label, index) => createMealSelectColumn(label, meals[index], index + 1)).join("")
+								}
 								</div>
 
+
 								<!-- Hotel Section -->
-									<div class="row mb-3">
-										<div class="col-md-12">
-											<label class="form-label fw-semibold">Hotels:</label>
-											<div class="row" id="hotels-day-${day}">
-												${(() => {
-													const output = [];
-													for (let i = 0; i < 2; i++) {
-														const value = hotels[i] || "";
-														output.push(createHotelSelectColumn(value, i + 1));
-													}
-													return output.join("");
-												})()}
-											</div>
+								<div class="row mb-3">
+									<div class="col-md-12">
+										<label class="form-label fw-semibold">Hotels:</label>
+										<div class="row" id="hotels-day-${day}">
+											${(() => {
+												const output = [];
+												for (let i = 0; i < 2; i++) {
+													const value = hotels[i] || "";
+													output.push(createHotelSelectColumn(value, i + 1));
+												}
+												return output.join("");
+											})()}
 										</div>
 									</div>
+								</div>
 
 
 
@@ -1277,6 +1331,7 @@
 
 
 			function updateHotelOptions(selectedCity, hotelSelect) {
+
 				const hotelData = {
 					"Seoul": ["Smart Stay Hotel"],
 					"Gyeonggi-do": ["Ramada Hotel", "Marina Bay Hotel"],
@@ -1285,15 +1340,15 @@
 				};
 
 				const hotels = hotelData[selectedCity] || [];
-				hotelSelect.innerHTML = hotels.length ? "" : "<option disabled selected>No hotels available</option>";
+					hotelSelect.innerHTML = hotels.length ? "" : "<option disabled selected>No hotels available</option>";
 
-				hotels.forEach(hotel => {
-					const option = document.createElement("option");
-					option.value = hotel;
-					option.textContent = hotel;
-					hotelSelect.appendChild(option);
-				});
-			}
+					hotels.forEach(hotel => {
+						const option = document.createElement("option");
+						option.value = hotel;
+						option.textContent = hotel;
+						hotelSelect.appendChild(option);
+					});
+				}	
 
 			// Event listener for days selection change
 			selectDays.addEventListener("change", function () {
@@ -1301,10 +1356,13 @@
 				generateItineraryCards(selectedDays);
 
 				// Re-attach listeners after generating cards
-				setTimeout(() => {
+				setTimeout(() => {z
 					attachSelectChangeListeners();
 				}, 0);
 			});
+
+
+
 
 			// Initialize itinerary on page load if selectedValue is greater than 0
 			if (selectedValue > 0) {
@@ -1388,11 +1446,6 @@
 			});
 		});
 	</script>
-
-
-
-
-
 
 	<!-- Generate Itinerary File -->
 	<script>

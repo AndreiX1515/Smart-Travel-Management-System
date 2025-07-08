@@ -8,13 +8,16 @@ $data = [
     'hotels' => []
 ];
 
-// Get all distinct area names (to use as "cities")
-$sqlCities = "SELECT DISTINCT areaName FROM itinerarydataarea ORDER BY areaName";
+// Fetch all unique area IDs and names (used as "cities")
+$sqlCities = "SELECT DISTINCT areaId, areaName FROM itinerarydataarea ORDER BY areaName";
 $resultCities = $conn->query($sqlCities);
 
 if ($resultCities) {
     while ($row = $resultCities->fetch_assoc()) {
-        $data['cities'][] = $row['areaName'];
+        $data['cities'][] = [
+            'areaId' => $row['areaId'],
+            'areaName' => $row['areaName']
+        ];
     }
     $resultCities->free();
 } else {
@@ -24,12 +27,13 @@ if ($resultCities) {
     exit();
 }
 
-// Get all hotels with area they belong to (via junction table)
+// Fetch hotels with the corresponding area they belong to
 $sqlHotels = "
     SELECT 
         h.hotelId, 
         h.hotelName, 
-        a.areaName AS hotelCity
+        a.areaId,
+        a.areaName
     FROM hotels h
     JOIN itinerarydatahotels ih ON ih.hotelId = h.hotelId
     JOIN itinerarydataarea a ON a.areaId = ih.areaId
@@ -39,7 +43,11 @@ $resultHotels = $conn->query($sqlHotels);
 
 if ($resultHotels) {
     while ($row = $resultHotels->fetch_assoc()) {
-        $data['hotels'][] = $row;
+        $data['hotels'][] = [
+            'hotelId' => $row['hotelId'],
+            'hotelName' => $row['hotelName'],
+            'areaId' => $row['areaId']
+        ];
     }
     $resultHotels->free();
 } else {

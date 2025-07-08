@@ -25,13 +25,13 @@
     <div class="navbar">
       <div class="page-header-wrapper">
 
-        <!-- <div class="page-header-top">
+        <div class="page-header-top">
           <div class="back-btn-wrapper">
             <button class="back-btn" id="redirect-btn">
               <i class="fas fa-chevron-left"></i>
             </button>
           </div>
-        </div> -->
+        </div>
 
         <div class="page-header-content">
           <div class="page-header-text">
@@ -41,6 +41,12 @@
 
       </div>
     </div>
+
+    <script>
+			document.getElementById('redirect-btn').addEventListener('click', function () {
+				window.location.href = '../Employee Section/emp-dashboard.php'; // Replace with your actual URL
+			});
+		</script>
 
     <?php
     $statusTab = isset($_GET['status']) ? $_GET['status'] : '';
@@ -206,7 +212,6 @@
             <p>This is the Created Voucher tab content.</p>
           </div>
         </div> -->
-
       </div>
 
     </div>

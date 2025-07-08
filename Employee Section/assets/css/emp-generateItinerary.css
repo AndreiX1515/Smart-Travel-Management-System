@@ -115,15 +115,82 @@
 
 .form-footer {
   background-color: white;
-  display: flex; /* Hidden by default */
-  justify-content: flex-end;
-  gap: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* or center depending on your button alignment */
   padding: 10px 20px;
-  border-radius: 0 0 8px 8px; /* Matches form-container’s style */
-
+  gap: 10px;
+  border-radius: 0 0 8px 8px;
   border: 1px solid gainsboro;
-  /* border: 1px solid black; */
+  flex-wrap: nowrap; /* prevent vertical stacking */
 }
+
+
+.itinerary-footer-first {
+  flex: 0 0 35%;
+  box-sizing: border-box;
+}
+
+.itinerary-footer-second {
+  flex: 0 0 65%;
+  box-sizing: border-box;
+}
+
+
+
+/* .itinerary-footer-first h6 {
+  font-size: 1rem;
+  margin-bottom: 4px;
+} */
+
+
+.itinerary-footer-first p {
+  font-size: 1rem;
+  color: #6c757d;
+  margin: 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Optional: align right-side content */
+.itinerary-footer-second {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+#actionSelector {
+  min-width: 120px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
