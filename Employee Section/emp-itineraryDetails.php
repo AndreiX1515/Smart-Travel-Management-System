@@ -137,10 +137,13 @@
 			GROUP BY dayId
 		) a ON d.dayId = a.dayId
 		LEFT JOIN (
-			SELECT dayId, GROUP_CONCAT(DISTINCT hotelName ORDER BY hotelId ASC SEPARATOR ', ') AS hotels
-			FROM itineraryhotels 
-			GROUP BY dayId
+			SELECT ih.dayId, 
+				GROUP_CONCAT(DISTINCT dh.hotelName ORDER BY ih.hotelId ASC SEPARATOR ', ') AS hotels
+			FROM itineraryhotels ih
+			LEFT JOIN itineraryDataHotels dh ON ih.hotelId = dh.hotelId
+			GROUP BY ih.dayId
 		) h ON d.dayId = h.dayId
+
 		LEFT JOIN (
 			SELECT dayId, GROUP_CONCAT(activityName ORDER BY activityId ASC SEPARATOR ', ') AS activities
 			FROM itineraryactivities 
