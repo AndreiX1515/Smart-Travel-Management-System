@@ -484,7 +484,7 @@
 
             const phpFile = selectedFilterMode === "monthly"
               ? '../Employee Section/functions/generateSOAMonthly.php'
-              : '../Employee Section/functions/generateSOAByFlightDate.php';
+              : '../Employee Section/functions/generateSoAByFlightDate.php';
 
             // STEP 3: Send preview data to backend for Excel generation
             fetch(phpFile, {
