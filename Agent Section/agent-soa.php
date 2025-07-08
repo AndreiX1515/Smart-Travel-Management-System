@@ -723,7 +723,7 @@
 
           const phpFile = selectedFilterMode === "monthly"
             ? '../Agent Section/functions/generateSOAMonthlyAgent.php'
-            : '../Agent Section/functions/generateSoAFlightDateAgent.php';
+            : '../Agent Section/functions/generateSOAFlightDateAgent.php';
 
           // STEP 3: Send the preview JSON to PHPSpreadsheet backend
           fetch(phpFile, {
