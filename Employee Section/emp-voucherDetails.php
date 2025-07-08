@@ -1094,8 +1094,8 @@ document.addEventListener('DOMContentLoaded', () => {
               <option value="" disabled ${!selectedHotelId ? 'selected' : ''}>Select Hotel</option>
               ${hotelsList
                 .filter(h => h.areaId == selectedCityId)
-.map(h => `<option value="${h.hotelId}" ${h.hotelId == selectedHotelId ? 'selected' : ''}>${h.hotelName}</option>`)
-}
+                .map(h => `<option value="${h.hotelId}" ${h.hotelId == selectedHotelId ? 'selected' : ''}>${h.hotelName}</option>`)
+                }
             </select>
           </div>
 
