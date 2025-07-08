@@ -190,6 +190,91 @@
       window.addEventListener("DOMContentLoaded", updateFilterDisplay);
     </script>
 
+    <!-- Reset Filter Script -->
+    <script>
+      document.getElementById("reset-filter-btn").addEventListener("click", function () {
+        // Reset all dropdowns to their default (disabled) option
+        const dropdowns = ["company-filter", "flight-filter", "month-filter", "year-filter"];
+        dropdowns.forEach(id => {
+          const select = document.getElementById(id);
+          if (select) select.selectedIndex = 0;
+        });
+
+        // Reset filter mode to default: Flight Date
+        const flightRadio = document.getElementById("filterByFlight");
+        if (flightRadio) {
+          flightRadio.checked = true;
+        }
+
+        // Toggle filter section visibility
+        document.querySelectorAll(".filter-flight").forEach(el => el.style.display = "block");
+        document.querySelectorAll(".filter-month").forEach(el => el.style.display = "none");
+
+        // Optionally reset SOA display if present
+        const soaWrapper = document.getElementById("soaWrapper");
+        if (soaWrapper) {
+          document.getElementById("soaFlightsBody").innerHTML = "";
+          document.getElementById("soaPaymentsBody").innerHTML = "";
+          document.getElementById("balancePHP").innerText = "₱ 0.00";
+          document.getElementById("balanceUSD").innerText = "0.00";
+          soaWrapper.style.display = "none";
+        }
+
+        // Disable download button if exists
+        const downloadBtn = document.getElementById("download-btn");
+        if (downloadBtn) downloadBtn.disabled = true;
+
+        console.log("✅ Filters reset to default.");
+      });
+    </script>
+
+    <!-- Debug Script when changing values -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const companyFilter = document.getElementById("company-filter");
+        const flightFilter = document.getElementById("flight-filter");
+        const monthFilter = document.getElementById("month-filter");
+        const yearFilter = document.getElementById("year-filter");
+
+        const filterByFlight = document.getElementById("filterByFlight");
+        const filterByMonth = document.getElementById("filterByMonth");
+
+        function logCurrentSelection() {
+          console.clear();
+          const filterMode = document.querySelector('input[name="filterMode"]:checked')?.value;
+          const selectedCompany = companyFilter?.value;
+          const selectedFlight = flightFilter?.value;
+          const selectedMonth = monthFilter?.value;
+          const selectedYear = yearFilter?.value;
+
+          console.log("===== DEBUG LOG =====");
+          console.log("Filter Mode:", filterMode);
+          console.log("Company ID:", selectedCompany);
+          console.log("Flight Date:", selectedFlight);
+          console.log("Month:", selectedMonth);
+          console.log("Year:", selectedYear);
+          console.log("======================");
+        }
+
+        // Bind change listeners
+        [companyFilter, flightFilter, monthFilter, yearFilter].forEach(el => {
+          if (el) {
+            el.addEventListener('change', logCurrentSelection);
+          }
+        });
+
+        [filterByFlight, filterByMonth].forEach(el => {
+          el.addEventListener('change', () => {
+            console.log("Changed filter mode to:", el.value);
+            logCurrentSelection();
+          });
+        });
+
+        // Trigger log on page load
+        logCurrentSelection();
+      });
+    </script>
+
     <!-- Preview SOA New -->
     <script>
       let soaPreviewData = null;
@@ -351,7 +436,6 @@
       });
     </script>
 
-
     <!-- Generate SOA (Excel) for Employee -->
     <script>
       document.getElementById('download-btn').addEventListener('click', function () {
@@ -442,11 +526,6 @@
         xhrAddSoA.send(`accountType=${accountType}&accountId=${accountId}&flightDate=${flightDate}&month=${month}&year=${year}&currentDate=${currentDateFormatted}`);
       });
     </script>
-
-
-
-
-
 
     <!-- Working Merge Preview SOA -->
     <!-- <script>
