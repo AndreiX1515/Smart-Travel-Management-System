@@ -34,8 +34,8 @@ function htmlTableRowsToArray($html) {
 
 $input = json_decode(file_get_contents('php://input'), true);
 $accountName = $input['accountName'] ?? 'Unknown Recipient';
-$fromName = $input['fromName'] ?? 'Smart Travel';
-$fromCompany = $input['fromCompany'] ?? 'Smart Travel';
+$fromName = $input['fromName'] ?? 'Unknown Employee';
+$fromCompany = $input['fromCompany'] ?? '';
 $generationDate = date('m/d/Y');
 $soaNumber = $input['soaNumber'] ?? 'SOA_Unknown';
 $data = $input['data'] ?? [];
@@ -55,7 +55,6 @@ $sheet->setTitle("SOA-" . $soaNumber);
 $sheet->getDefaultRowDimension()->setRowHeight(21.75);
 $spreadsheet->getDefaultStyle()->getFont()->setName('Arial')->setSize(14);
 
-// Company Logo
 $logo = new Drawing();
 $logo->setName('Company Logo');
 $logo->setDescription('Company Logo');
@@ -68,7 +67,6 @@ $logo->setOffsetX(10);
 $logo->setOffsetY(5);
 $logo->setWorksheet($sheet);
 
-// Header
 $sheet->mergeCells('A6:G7')->setCellValue('A6', 'STATEMENT OF ACCOUNT');
 $sheet->getStyle('A6')->getFont()->setBold(true)->setSize(28);
 $sheet->getStyle('A6')->getAlignment()->setHorizontal('center');
@@ -84,7 +82,6 @@ $sheet->mergeCells("E$rowNum:G$rowNum")->setCellValue("E$rowNum", "Date: $genera
 $sheet->getStyle("A$rowNum:G$rowNum")->getFont()->setSize(16);
 $rowNum++;
 
-// Table Header
 $sheet->fromArray(['No', 'Contents', '$ Price', '₱ Price', 'PAX', '$ Total', '₱ Total'], null, "A$rowNum");
 $headerRow = $rowNum;
 $sheet->getStyle("A$rowNum:G$rowNum")->getFont()->setBold(true)->setSize(16);
@@ -92,25 +89,20 @@ $sheet->getStyle("A$rowNum:G$rowNum")->getFill()->setFillType(Fill::FILL_SOLID)-
 $rowNum++;
 
 $serial = 1;
-foreach ($flights as $row) {
+foreach (array_merge($flights, $requests) as $row) {
   $row[0] = $serial++;
   $sheet->fromArray($row, null, "A$rowNum");
   $sheet->getStyle("A$rowNum:G$rowNum")->getFont()->setSize(14);
   $rowNum++;
 }
 
-foreach ($requests as $row) {
-  $row[0] = $serial++;
-  $sheet->fromArray($row, null, "A$rowNum");
-  $sheet->getStyle("A$rowNum:G$rowNum")->getFont()->setSize(14);
-  $rowNum++;
-}
-
-// Subtotal for flights + requests
 $combinedSubtotal = number_format(
   floatval(str_replace(',', '', $flightSubtotalPHP)) + floatval(str_replace(',', '', $requestSubtotalPHP)),
-  2, '.', ','
+  2,
+  '.',
+  ','
 );
+
 $sheet->setCellValue("A$rowNum", $serial++);
 $sheet->mergeCells("E$rowNum:F$rowNum")->setCellValue("E$rowNum", 'Sub Total');
 $sheet->setCellValue("G$rowNum", "₱ $combinedSubtotal");
@@ -118,17 +110,17 @@ $sheet->getStyle("B$rowNum:G$rowNum")->getFont()->setBold(true)->setSize(14);
 $sheet->getStyle("A$rowNum:G$rowNum")->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setRGB('FFF2CC');
 $rowNum++;
 
-// Payments (shown negative)
 foreach ($payments as $row) {
   $row[0] = $serial++;
-  if (isset($row[6])) $row[6] = '-' . $row[6];
+  if (isset($row[6])) {
+    $row[6] = '-' . $row[6];
+  }
   $sheet->fromArray($row, null, "A$rowNum");
   $sheet->getStyle("A$rowNum:G$rowNum")->getFont()->setSize(14);
   $sheet->getStyle("G$rowNum")->getFont()->getColor()->setRGB('FF0000');
   $rowNum++;
 }
 
-// Subtotal for payments
 $sheet->setCellValue("A$rowNum", $serial++);
 $sheet->mergeCells("E$rowNum:F$rowNum")->setCellValue("E$rowNum", 'Sub Total');
 $sheet->setCellValue("G$rowNum", "-₱ $paymentSubtotalPHP");
@@ -137,7 +129,6 @@ $sheet->getStyle("A$rowNum:G$rowNum")->getFill()->setFillType(Fill::FILL_SOLID)-
 $sheet->getStyle("G$rowNum")->getFont()->getColor()->setRGB('FF0000');
 $rowNum++;
 
-// Final Balance
 $sheet->mergeCells("A$rowNum:E$rowNum")->setCellValue("A$rowNum", 'BALANCE');
 $sheet->getStyle("A$rowNum")->getAlignment()->setHorizontal('center');
 $sheet->setCellValue("G$rowNum", "-₱ $balancePHP");
@@ -147,7 +138,6 @@ $sheet->getStyle("A$rowNum:G$rowNum")->getFill()->setFillType(Fill::FILL_SOLID)-
 $tableEndRow = $rowNum;
 $rowNum++;
 
-// Border styles
 $sheet->getStyle("A$headerRow:G$tableEndRow")->applyFromArray([
   'borders' => [
     'allBorders' => [
@@ -157,36 +147,13 @@ $sheet->getStyle("A$headerRow:G$tableEndRow")->applyFromArray([
   ]
 ]);
 
-// Bank info
-$sheet->mergeCells("A$rowNum:G$rowNum")->setCellValue("A$rowNum", 'ACCOUNT INFORMATION');
-$sheet->getStyle("A$rowNum")->getFont()->setSize(14)->setBold(true); $rowNum++;
-$sheet->mergeCells("A$rowNum:G$rowNum")->setCellValue("A$rowNum", 'Bank Name : B D O (Zuellig Branch MAKATI AVENUE)'); $rowNum++;
-$sheet->mergeCells("A$rowNum:G$rowNum")->setCellValue("A$rowNum", 'Name of Account : KIM HYUNG SUB (Nick name  Jedkim )'); $rowNum++;
-$sheet->mergeCells("A$rowNum:G$rowNum")->setCellValue("A$rowNum", 'Peso Account No.: 007800151678'); $rowNum++;
-$sheet->mergeCells("A$rowNum:G$rowNum")->setCellValueExplicit("A$rowNum", 'US Dollar Account No : 107800113512', \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING); $rowNum++;
-
-// Bank info borders
-$accountInfoStart = $rowNum - 5;
-$accountInfoEnd = $rowNum - 1;
-for ($i = $accountInfoStart; $i <= $accountInfoEnd; $i++) {
-  foreach (range('A', 'G') as $col) {
-    $cell = $col . $i;
-    $borders = ['left' => ['borderStyle' => Border::BORDER_THIN]];
-    if ($i === $accountInfoStart) $borders['top'] = ['borderStyle' => Border::BORDER_THIN];
-    if ($i === $accountInfoEnd) $borders['bottom'] = ['borderStyle' => Border::BORDER_THIN];
-    $borders['right'] = ['borderStyle' => Border::BORDER_THIN];
-    $sheet->getStyle($cell)->applyFromArray(['borders' => $borders]);
-  }
-}
-
-// Format and layout
 $sheet->getColumnDimension('A')->setWidth(3);
 $sheet->getColumnDimension('B')->setWidth(40);
 $sheet->getColumnDimension('C')->setWidth(12);
 $sheet->getColumnDimension('D')->setWidth(12);
 $sheet->getColumnDimension('E')->setWidth(5);
-$sheet->getColumnDimension('F')->setWidth(12);
-$sheet->getColumnDimension('G')->setWidth(12);
+$sheet->getColumnDimension('F')->setWidth(15);
+$sheet->getColumnDimension('G')->setWidth(15);
 
 $currencyFormatPeso = '#,##0.00';
 $currencyFormatUSD = '"$"#,##0.00';
@@ -197,7 +164,6 @@ $sheet->getStyle("G$headerRow:G$rowNum")->getNumberFormat()->setFormatCode($curr
 $sheet->getStyle("B$headerRow:E$rowNum")->getAlignment()->setHorizontal('left');
 $sheet->getStyle("F$headerRow:G$rowNum")->getAlignment()->setHorizontal('right');
 
-// Output Excel file
 header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 header("Content-Disposition: attachment; filename=SOA_$soaNumber.xlsx");
 header('Cache-Control: max-age=0');

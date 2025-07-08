@@ -178,61 +178,6 @@
 
       <div id="soaWrapper" class="container-fluid p-4 border rounded bg-white shadow-sm mt-4" style="display: none; overflow-x: auto;">
 
-        <!-- <table id="soaTable" class="product-table w-100">
-          <thead>
-            <tr>
-              <th>No.</th>
-              <th>Contents</th>
-              <th>$ Price</th>
-              <th>₱ Price</th>
-              <th>PAX</th>
-              <th>$ Total</th>
-              <th>₱ Total</th>
-            </tr>
-          </thead>
-
-          <tbody id="soaFlightsBody">
-            <!-- Flight rows will be inserted here
-          </tbody>
-          <tbody>
-            <tr id="soaFlights" class="table-subtotal bg-light fw-bold">
-              <td class="text-end">Subtotal:</td>
-              <td><span class="subtotal-usd"></span></td>
-              <td><span class="subtotal-php"></span></td>
-            </tr>
-          </tbody>
-
-          <tbody id="soaRequestsBody">
-            <!-- Request rows will be inserted here
-          </tbody>
-          <tbody>
-            <tr id="soaRequests" class="table-subtotal bg-light fw-bold">
-              <td class="text-end">Subtotal:</td>
-              <td><span class="subtotal-usd"></span></td>
-              <td><span class="subtotal-php"></span></td>
-            </tr>
-          </tbody>
-
-          <tbody id="soaPaymentsBody">
-            <!-- Payment rows will be inserted here
-          </tbody>
-          <tbody>
-            <tr id="soaPayments" class="table-subtotal bg-light fw-bold">
-              <td class="text-end">Subtotal:</td>
-              <td><span class="subtotal-usd"></span></td>
-              <td><span class="subtotal-php"></span></td>
-            </tr>
-          </tbody>
-
-          <tfoot>
-            <tr id="soaBalance" class="bg-secondary text-white fw-bold">
-              <td class="text-end">BALANCE:</td>
-              <td><span id="balanceUSD"></span></td>
-              <td><span id="balancePHP"></span></td>
-            </tr>
-          </tfoot>
-        </table> -->
-
         <table id="soaTable" class="product-table w-100">
           <thead>
             <tr>
@@ -276,9 +221,6 @@
           <button id="download-btn" class="btn btn-success btn-sm" disabled>Download</button>
         </div>
       </div>
-
-
-
 
     </div>
 
@@ -781,7 +723,7 @@
 
           const phpFile = selectedFilterMode === "monthly"
             ? '../Agent Section/functions/generateSOAMonthlyAgent.php'
-            : '../Agent Section/functions/generateSoAFlightDateAgent.php';
+            : '../Agent Section/functions/generateSOAFlightDateAgent.php';
 
           // STEP 3: Send the preview JSON to PHPSpreadsheet backend
           fetch(phpFile, {
