@@ -18,9 +18,21 @@ if (isset($_GET['id'])) {
     $id = intval($_GET['id']);
     log_debug("Received ID: $id");
 
-    // Prepare and execute the query safely
-    $stmt = $conn->prepare("SELECT * FROM itineraries WHERE itineraryId = ?");
-    
+    // Prepare query with JOIN to employee table (using guideId = accountId)
+    $query = "
+        SELECT 
+            i.*, 
+            e.fName AS guideFName,
+            e.lName AS guideLName,
+            e.mName AS guideMName,
+            e.contactNo AS contactNumber,
+            e.countryCode AS countryCode
+        FROM itineraries i
+        LEFT JOIN employee e ON e.accountId = i.guideId
+        WHERE i.itineraryId = ?
+    ";
+
+    $stmt = $conn->prepare($query);
     if ($stmt) {
         $stmt->bind_param("i", $id);
         $stmt->execute();
@@ -28,7 +40,11 @@ if (isset($_GET['id'])) {
 
         if ($result && $result->num_rows > 0) {
             $row = $result->fetch_assoc();
-            log_debug("Itinerary found: " . json_encode($row));
+
+            // Optional: format full guide name
+            $row['guideFullName'] = trim($row['guideLName'] . ', ' . $row['guideFName'] . ' ' . $row['guideMName']);
+
+            log_debug("Itinerary with guide info: " . json_encode($row));
             echo json_encode($row);
         } else {
             log_debug("No itinerary found with ID: $id");

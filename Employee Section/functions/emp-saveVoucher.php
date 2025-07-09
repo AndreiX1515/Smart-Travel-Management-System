@@ -31,9 +31,7 @@ try {
   // Extract structured data
   $templateName        = trim($payload['templateName'] ?? '');
   $airScheduleDetails  = $payload['airScheduleDetails'] ?? [];
-  $guideMeeting        = $airScheduleDetails['guideMeeting'] ?? null;
-  unset($airScheduleDetails['guideMeeting']);
-
+  $guideMeeting        = $payload['guideMeeting'] ?? [];
   $cardsJSONData       = $payload['cardsJSONData'] ?? [];
   $includesData        = $payload['includesData'] ?? [];
   $excludesData        = $payload['excludesData'] ?? [];
@@ -154,24 +152,32 @@ try {
     }
   }
 
-  foreach ($airScheduleDetails as $segment => $flight) {
-    $enumSegment = strtolower(str_replace(['#', ' '], '', $segment));
-    if (in_array($enumSegment, ['departureflight', 'returningflight', 'connectingflight'])) {
-      $stmtAir->execute([
-        $voucherId,
-        $enumSegment,
-        $flight['flightDate'] ?? null,
-        trim($flight['flightNumber'] ?? ''),
-        trim($flight['origin'] ?? ''),
-        trim($flight['destination'] ?? ''),
-        $flight['departureTime'] ?? null,
-        $flight['arrivalTime'] ?? null
-      ]);
-      error_log("Inserted air schedule segment: $enumSegment");
+  // Insert air schedule segments
+  if (!empty($airScheduleDetails) && is_array($airScheduleDetails)) {
+    foreach ($airScheduleDetails as $segment => $flight) {
+      $enumSegment = strtolower(str_replace(['#', ' '], '', $segment));
+
+      if (in_array($enumSegment, ['departureflight', 'returningflight', 'connectingflight'])) {
+        $stmtAir->execute([
+          $voucherId,
+          $enumSegment,
+          $flight['flightDate'] ?? null,
+          trim($flight['flightNumber'] ?? ''),
+          trim($flight['origin'] ?? ''),
+          trim($flight['destination'] ?? ''),
+          $flight['departureTime'] ?? null,
+          $flight['arrivalTime'] ?? null
+        ]);
+
+        error_log("✅ Inserted air schedule segment: $enumSegment");
+      } else {
+        error_log("⚠️ Skipped unknown segment: $enumSegment");
+      }
     }
   }
 
-  if (!empty($guideMeeting)) {
+  // Insert guide meeting data
+  if (!empty($guideMeeting) && is_array($guideMeeting)) {
     $stmtGuide->execute([
       $voucherId,
       $guideMeeting['guideId'] ?? null,
@@ -179,9 +185,9 @@ try {
       $guideMeeting['time'] ?? null,
       trim($guideMeeting['place'] ?? '')
     ]);
-    error_log("Inserted guide meeting data");
-  }
 
+    error_log("✅ Inserted guide meeting data");
+  }
 
 
   foreach ($includesData as $item) {

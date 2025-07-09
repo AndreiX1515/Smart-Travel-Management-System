@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Generate Voucher</title>
+  <title>Voucher Details</title>
   <?php include '../Employee Section/includes/emp-head.php' ?>
   <link rel="stylesheet" href="../Employee Section/assets/css/emp-sidebar-navbar.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="../Employee Section/assets/css/emp-generateVoucher.css?v=<?php echo time(); ?>">
@@ -167,6 +167,7 @@
       $voucher['dateAndHotels'][] = $row;
     }
 
+
     // Step 3: Fetch voucherIncludes
     $sqlIncludes = "
         SELECT i.includesId, i.itemName 
@@ -189,6 +190,7 @@
       $includesCounter++;
     }
 
+
     // Step 4: Fetch voucherExcludes
     $sqlExcludes = "
         SELECT e.excludesId, e.itemName 
@@ -210,6 +212,7 @@
       ];
       $excludesCounter++;
     }
+
 
     // Step 5: Fetch Air Schedules
     $sqlAirSchedules = "
@@ -237,7 +240,13 @@
 
     // Step 6: Fetch guideMeeting(s)
     $sqlGuideMeeting = "
-      SELECT guideId, meetingDate, meetingTime, meetingPlace
+      SELECT 
+        meetingId,
+        voucherId,
+        guideId,
+        meetingDate,
+        meetingTime,
+        meetingPlace
       FROM voucherguidemeeting
       WHERE voucherId = ?
     ";
@@ -248,7 +257,14 @@
     $result = $stmt->get_result();
 
     while ($row = $result->fetch_assoc()) {
-      $voucher['guideMeeting'][] = $row;
+      $voucher['guideMeeting'][] = [
+        'meetingId' => $row['meetingId'],
+        'voucherId' => $row['voucherId'],
+        'guideId' => $row['guideId'],
+        'meetingDate' => $row['meetingDate'],
+        'meetingTime' => $row['meetingTime'],
+        'meetingPlace' => $row['meetingPlace']
+      ];
     }
 
     // Output to browser console as JSON using JSON.stringify
@@ -310,8 +326,6 @@
                     ?>
                   </select>
                 </div>
-
-
 
               </div>
 
@@ -613,22 +627,37 @@
               <h5>Air Schedule</h5>
             </div>
 
-            <div class="card-body">
+            <?php
+            // Fetch flights from DB where active
+            $flightQuery = "SELECT flightCode, returnFlightCode FROM flight WHERE is_active = 1";
+            $flightResult = $conn->query($flightQuery);
 
+            $departureCodes = [];
+            $returnCodes = [];
+
+            if ($flightResult && $flightResult->num_rows > 0) {
+              while ($row = $flightResult->fetch_assoc()) {
+                if (!empty($row['flightCode'])) {
+                  $departureCodes[] = htmlspecialchars($row['flightCode']);
+                }
+                if (!empty($row['returnFlightCode'])) {
+                  $returnCodes[] = htmlspecialchars($row['returnFlightCode']);
+                }
+              }
+
+              // Remove duplicates
+              $departureCodes = array_unique($departureCodes);
+              $returnCodes = array_unique($returnCodes);
+            }
+            ?>
+
+            <div class="card-body">
               <!-- Departure #1 -->
               <div class="row">
-
                 <div class="main-header">
                   <div class="header-container">
                     <div class="d-flex justify-content-between align-items-center">
-                      <span class="dnh-badge text-uppercase">
-                        Departure Flight
-                      </span>
-
-                      <!-- <button type="button" class="btn btn-sm text-white bg-danger border-0 px-2 py-1 remove-card-btn" title="Delete">
-                        <i class="fas fa-trash-alt"></i>
-                      </button> -->
-
+                      <span class="dnh-badge text-uppercase">Departure Flight</span>
                     </div>
                   </div>
                 </div>
@@ -638,16 +667,14 @@
                   <div class="column-header">
                     <label for="departure1Flight">Flight <span class="text-danger">*</span></label>
                   </div>
-
                   <div class="form-group">
                     <select class="form-select" id="departure1Flight" name="departure1Flight" required>
                       <option value="" selected disabled>Select Flight</option>
-                      <option value="KE123">KE123</option>
-                      <option value="OZ456">OZ456</option>
-                      <option value="JL789">JL789</option>
+                      <?php foreach ($departureCodes as $code): ?>
+                        <option value="<?= $code ?>"><?= $code ?></option>
+                      <?php endforeach; ?>
                     </select>
                   </div>
-
                 </div>
 
                 <!-- Date -->
@@ -655,7 +682,6 @@
                   <div class="column-header">
                     <label for="departure1Date">Date <span class="text-danger">*</span></label>
                   </div>
-
                   <div class="datepicker-wrapper">
                     <div class="form-group">
                       <div class="input-with-icon">
@@ -697,39 +723,27 @@
                     <label>Departure Time - Arrival Time <span class="text-danger">*</span></label>
                   </div>
                   <div class="form-group d-flex flex-row gap-2">
-
                     <div class="input-with-icon timepicker">
                       <input type="text" class="timepicker form-control-sm" id="departure1DepartureTime"
                         name="departure1DepartureTime" placeholder="Departure Time" readonly required>
                       <i class="fas fa-clock calendar-icon"></i>
                     </div>
-
                     <span class="align-self-center">to</span>
-
                     <div class="input-with-icon timepicker">
                       <input type="text" class="timepicker form-control-sm" id="departure1ArrivalTime"
                         name="departure1ArrivalTime" placeholder="Arrival Time" readonly required>
                       <i class="fas fa-clock calendar-icon"></i>
                     </div>
-
                   </div>
                 </div>
               </div>
 
-              <!-- Returning Date -->
+              <!-- Returning Flight -->
               <div class="row">
-
                 <div class="main-header">
                   <div class="header-container">
                     <div class="d-flex justify-content-between align-items-center">
-                      <span class="dnh-badge text-uppercase">
-                        Returning Flight
-                      </span>
-
-                      <!-- <button type="button" class="btn btn-sm text-white bg-danger border-0 px-2 py-1 remove-card-btn" title="Delete">
-                        <i class="fas fa-trash-alt"></i>
-                      </button> -->
-
+                      <span class="dnh-badge text-uppercase">Returning Flight</span>
                     </div>
                   </div>
                 </div>
@@ -742,9 +756,9 @@
                   <div class="form-group">
                     <select class="form-select" id="departure2Flight" name="departure2Flight" required>
                       <option value="" selected disabled>Select Flight</option>
-                      <option value="KE321">KE321</option>
-                      <option value="OZ654">OZ654</option>
-                      <option value="JL987">JL987</option>
+                      <?php foreach ($returnCodes as $code): ?>
+                        <option value="<?= $code ?>"><?= $code ?></option>
+                      <?php endforeach; ?>
                     </select>
                   </div>
                 </div>
@@ -770,7 +784,6 @@
                   <div class="column-header">
                     <label>Origin - Destination <span class="text-danger">*</span></label>
                   </div>
-
                   <div class="datepicker-wrapper d-flex align-items-center">
                     <div class="form-group">
                       <select class="form-select" id="departure2Origin" name="departure2Origin" required>
@@ -841,6 +854,7 @@
             </div>
 
           </div>
+
       </div>
 
       <!-- Form footer with both buttons -->
@@ -859,6 +873,7 @@
       </div>
 
     </div>
+
   </div>
 
   <!-- Modal - For Template Name -->
@@ -953,6 +968,7 @@
       });
     });
   </script>
+
   <!-- <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
       <h5 class="fw-bold mb-0">Date and Hotels</h5>
@@ -993,235 +1009,287 @@
 
 
 
+
+
+
   <!-- Date and Hotels Script -->
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const container = document.getElementById('dateHotelContainer');
-  const addBtn = document.getElementById('addDateHotelBtn');
-  const maxCards = 3;
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const container = document.getElementById('dateHotelContainer');
+      const addBtn = document.getElementById('addDateHotelBtn');
+      const maxCards = 3;
 
-  const originalData = <?= json_encode($voucher['dateAndHotels'] ?? [], JSON_UNESCAPED_UNICODE); ?>;
-  const voucherDateAndHotelsData = [...originalData];
+      const originalData = <?= json_encode($voucher['dateAndHotels'] ?? [], JSON_UNESCAPED_UNICODE); ?>;
+      const voucherDateAndHotelsData = [...originalData];
 
-  let cities = [];
-  let hotelsList = [];
+      let cities = [];
+      let hotelsList = [];
 
-  // console.log("Initial Voucher Data:", voucherDateAndHotelsData);
+      // console.log("Initial Voucher Data:", voucherDateAndHotelsData);
 
-  fetch('../Employee Section/functions/fetchScripts/getHotels.php')
-    .then(response => {
-      if (!response.ok) throw new Error(`Network error: ${response.status}`);
-      return response.json();
-    })
-    .then(data => {
-      // console.log("✅ Raw fetched data:", data);
+      fetch('../Employee Section/functions/fetchScripts/getHotels.php')
+        .then(response => {
+          if (!response.ok) throw new Error(`Network error: ${response.status}`);
+          return response.json();
+        })
+        .then(data => {
+          // console.log("✅ Raw fetched data:", data);
 
-      cities = data.cities || [];
-      hotelsList = data.hotels || [];
-
-
-      console.log(JSON.stringify(cities, null, 2));
-      console.log(JSON.stringify(hotelsList, null, 2));
-
-      renderAll();
-      addBtn.addEventListener('click', addNewDateHotel);
-    })
-    .catch(err => {
-      console.error('❌ Failed to fetch hotels:', err);
-      alert('Error loading hotel data');
-  });
+          cities = data.cities || [];
+          hotelsList = data.hotels || [];
 
 
-  function renderAll() {
-    container.innerHTML = '';
+          console.log(JSON.stringify(cities, null, 2));
+          console.log(JSON.stringify(hotelsList, null, 2));
 
-    voucherDateAndHotelsData.forEach((item, index) => {
-      const num = index + 1;
-      const isFirstCard = num === 1;
-      const selectedCityId = item.city;
-      const selectedHotelId = item.hotel;
+          renderAll();
+          addBtn.addEventListener('click', addNewDateHotel);
+        })
+        .catch(err => {
+          console.error('❌ Failed to fetch hotels:', err);
+          alert('Error loading hotel data');
+        });
 
-      const filteredHotels = hotelsList.filter(h => h.hotelCity == selectedCityId);
 
-      const card = document.createElement('div');
-      card.className = 'mb-4 date-hotel-card';
-      card.setAttribute('data-card-id', num);
+      function renderAll() {
+        container.innerHTML = '';
 
-      card.innerHTML = `
-        <div class="header-container">
-          <div class="d-flex justify-content-between align-items-center">
-            <span class="dnh-badge text-uppercase">Date and Hotels #${num}</span>
-            <button type="button" class="btn btn-sm text-white bg-danger border-0 px-2 py-1 btn-delete-datehotel" title="Delete">
-              <i class="fas fa-trash-alt"></i>
-            </button>
-          </div>
-        </div>
+        voucherDateAndHotelsData.forEach((item, index) => {
+          const num = index + 1;
+          const isFirstCard = num === 1;
+          const selectedCityId = item.city;
+          const selectedHotelId = item.hotel;
 
-        <div class="row g-4 align-items-end">
-          <div class="col-12 col-md-5">
-            <label class="form-label">Date</label>
-            <div class="d-flex gap-2 align-items-center">
-              <div class="position-relative w-100">
-                <input type="text" class="form-control datepicker" id="PeriodStartDate${num}" value="${item.startDate || ''}" placeholder="Start" readonly>
-                <input type="text" class="required-start hidden-required-field" name="requiredStartDate${num}" ${isFirstCard ? 'required' : ''} style="position:absolute; left:-9999px; width:1px; height:1px; opacity:0;" value="${item.startDate || ''}">
-              </div>
-              <span class="mx-1 text-muted">→</span>
-              <div class="position-relative w-100">
-                <input type="text" class="form-control datepicker" id="PeriodEndDate${num}" value="${item.endDate || ''}" placeholder="End" readonly>
-                <input type="text" class="required-end hidden-required-field" name="requiredEndDate${num}" ${isFirstCard ? 'required' : ''} style="position:absolute; left:-9999px; width:1px; height:1px; opacity:0;" value="${item.endDate || ''}">
+          const filteredHotels = hotelsList.filter(h => h.hotelCity == selectedCityId);
+
+          const card = document.createElement('div');
+          card.className = 'mb-4 date-hotel-card';
+          card.setAttribute('data-card-id', num);
+
+          card.innerHTML = `
+            <div class="header-container">
+              <div class="d-flex justify-content-between align-items-center">
+                <span class="dnh-badge text-uppercase">Date and Hotels #${num}</span>
+                <button type="button" class="btn btn-sm text-white bg-danger border-0 px-2 py-1 btn-delete-datehotel" title="Delete">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
               </div>
             </div>
-          </div>
 
-          <div class="col-6 col-md-2">
-            <label class="form-label" for="nights${num}">No. of Nights</label>
-            <input type="text" class="form-control" id="nights${num}" name="nights${num}" value="${item.nights || ''}" ${isFirstCard ? 'required' : ''}>
-          </div>
+            <div class="row g-4 align-items-end">
+              <div class="col-12 col-md-5">
+                <label class="form-label">Date</label>
+                <div class="d-flex gap-2 align-items-center">
+                  <div class="position-relative w-100">
+                    <input type="text" class="form-control datepicker" id="PeriodStartDate${num}" value="${item.startDate || ''}" placeholder="Start" readonly>
+                    <input type="text" class="required-start hidden-required-field" name="requiredStartDate${num}" ${isFirstCard ? 'required' : ''} style="position:absolute; left:-9999px; width:1px; height:1px; opacity:0;" value="${item.startDate || ''}">
+                  </div>
+                  <span class="mx-1 text-muted">→</span>
+                  <div class="position-relative w-100">
+                    <input type="text" class="form-control datepicker" id="PeriodEndDate${num}" value="${item.endDate || ''}" placeholder="End" readonly>
+                    <input type="text" class="required-end hidden-required-field" name="requiredEndDate${num}" ${isFirstCard ? 'required' : ''} style="position:absolute; left:-9999px; width:1px; height:1px; opacity:0;" value="${item.endDate || ''}">
+                  </div>
+                </div>
+              </div>
 
-          <div class="col-6 col-md-2">
-            <label class="form-label" for="city${num}">City</label>
-            <select class="form-control city-select" id="city${num}" name="city${num}" ${isFirstCard ? 'required' : ''}>
-              <option value="" disabled ${!selectedCityId ? 'selected' : ''}>Select City</option>
-              ${cities.map(city => `
-                <option value="${city.areaId}" ${city.areaId == selectedCityId ? 'selected' : ''}>${city.areaName}</option>
-              `).join('')}
-            </select>
-          </div>
+              <div class="col-6 col-md-2">
+                <label class="form-label" for="nights${num}">No. of Nights</label>
+                <input type="text" class="form-control" id="nights${num}" name="nights${num}" value="${item.nights || ''}" ${isFirstCard ? 'required' : ''}>
+              </div>
 
-          <div class="col-12 col-md-3">
-            <label class="form-label" for="hotel${num}">Hotel</label>
-            <select class="form-control hotel-select" id="hotel${num}" name="hotel${num}" ${isFirstCard ? 'required' : ''} ${!selectedCityId ? 'disabled' : ''}>
-              <option value="" disabled ${!selectedHotelId ? 'selected' : ''}>Select Hotel</option>
-              ${hotelsList
-                .filter(h => h.areaId == selectedCityId)
-                .map(h => `<option value="${h.hotelId}" ${h.hotelId == selectedHotelId ? 'selected' : ''}>${h.hotelName}</option>`)
-                }
-            </select>
-          </div>
+              <div class="col-6 col-md-2">
+                <label class="form-label" for="city${num}">City</label>
+                <select class="form-control city-select" id="city${num}" name="city${num}" ${isFirstCard ? 'required' : ''}>
+                  <option value="" disabled ${!selectedCityId ? 'selected' : ''}>Select City</option>
+                  ${cities.map(city => `
+                    <option value="${city.areaId}" ${city.areaId == selectedCityId ? 'selected' : ''}>${city.areaName}</option>
+                  `).join('')}
+                </select>
+              </div>
+
+              <div class="col-12 col-md-3">
+                <label class="form-label" for="hotel${num}">Hotel</label>
+                <select class="form-control hotel-select" id="hotel${num}" name="hotel${num}" ${isFirstCard ? 'required' : ''} ${!selectedCityId ? 'disabled' : ''}>
+                  <option value="" disabled ${!selectedHotelId ? 'selected' : ''}>Select Hotel</option>
+                  ${hotelsList
+              .filter(h => h.areaId == selectedCityId)
+              .map(h => `<option value="${h.hotelId}" ${h.hotelId == selectedHotelId ? 'selected' : ''}>${h.hotelName}</option>`)
+            }
+                </select>
+              </div>
+
+            </div>
+          `;
+
+          container.appendChild(card);
+
+          // Setup inputs
+          const startInput = document.getElementById(`PeriodStartDate${num}`);
+          const endInput = document.getElementById(`PeriodEndDate${num}`);
+          const nightsInput = document.getElementById(`nights${num}`);
+          const citySelect = document.getElementById(`city${num}`);
+          const hotelSelect = document.getElementById(`hotel${num}`);
+          const hiddenStart = document.querySelector(`[name="requiredStartDate${num}"]`);
+          const hiddenEnd = document.querySelector(`[name="requiredEndDate${num}"]`);
+
+          function calculateNights() {
+            const start = new Date(startInput.value);
+            const end = new Date(endInput.value);
+            if (start && end && end > start) {
+              nightsInput.value = Math.round((end - start) / (1000 * 60 * 60 * 24));
+            } else {
+              nightsInput.value = "";
+            }
+          }
+
+          flatpickr(startInput, {
+            dateFormat: "Y-m-d",
+            minDate: "today",
+            disableMobile: true,
+            defaultDate: item.startDate || null,
+            onChange: (_, dateStr) => {
+              if (hiddenStart) hiddenStart.value = dateStr;
+              calculateNights();
+            }
+          });
+
+          flatpickr(endInput, {
+            dateFormat: "Y-m-d",
+            minDate: "today",
+            disableMobile: true,
+            defaultDate: item.endDate || null,
+            onChange: (_, dateStr) => {
+              if (hiddenEnd) hiddenEnd.value = dateStr;
+              calculateNights();
+            }
+          });
+
+
+          citySelect.addEventListener('change', (e) => {
+            const selectedCityId = e.target.value;
+            item.city = selectedCityId;
+
+            const hotelsForCity = hotelsList.filter(h => h.areaId == selectedCityId);
+
+            hotelSelect.innerHTML = `<option value="" disabled selected>Select Hotel</option>` +
+              hotelsForCity.map(h => `<option value="${h.hotelId}">${h.hotelName}</option>`).join('');
+
+            hotelSelect.disabled = false;
+            item.hotel = ''; // Reset hotel
+          });
 
 
 
-        </div>
-      `;
+          hotelSelect.addEventListener('change', () => {
+            item.hotel = hotelSelect.value;
+            console.log("✅ Updated JSON:", JSON.stringify(voucherDateAndHotelsData, null, 2));
+          });
 
-      container.appendChild(card);
 
-      // Setup inputs
-      const startInput = document.getElementById(`PeriodStartDate${num}`);
-      const endInput = document.getElementById(`PeriodEndDate${num}`);
-      const nightsInput = document.getElementById(`nights${num}`);
-      const citySelect = document.getElementById(`city${num}`);
-      const hotelSelect = document.getElementById(`hotel${num}`);
-      const hiddenStart = document.querySelector(`[name="requiredStartDate${num}"]`);
-      const hiddenEnd = document.querySelector(`[name="requiredEndDate${num}"]`);
 
-      function calculateNights() {
-        const start = new Date(startInput.value);
-        const end = new Date(endInput.value);
-        if (start && end && end > start) {
-          nightsInput.value = Math.round((end - start) / (1000 * 60 * 60 * 24));
+          card.querySelector('.btn-delete-datehotel').addEventListener('click', () => {
+            if (num === 1) {
+              startInput._flatpickr.clear();
+              endInput._flatpickr.clear();
+              nightsInput.value = "";
+              citySelect.value = "";
+              hotelSelect.innerHTML = `<option value="" disabled selected>Select Hotel</option>`;
+              hotelSelect.disabled = true;
+              if (hiddenStart) hiddenStart.value = "";
+              if (hiddenEnd) hiddenEnd.value = "";
+            } else {
+              voucherDateAndHotelsData.splice(index, 1);
+              renderAll();
+            }
+          });
+
+        });
+
+        // Add button state
+        if (voucherDateAndHotelsData.length >= maxCards) {
+          addBtn.classList.add('btn-disabled');
+          addBtn.setAttribute('data-locked', 'true');
         } else {
-          nightsInput.value = "";
+          addBtn.classList.remove('btn-disabled');
+          addBtn.removeAttribute('data-locked');
         }
       }
 
-      flatpickr(startInput, {
-        dateFormat: "Y-m-d",
-        minDate: "today",
-        disableMobile: true,
-        defaultDate: item.startDate || null,
-        onChange: (_, dateStr) => {
-          if (hiddenStart) hiddenStart.value = dateStr;
-          calculateNights();
-        }
-      });
-
-      flatpickr(endInput, {
-        dateFormat: "Y-m-d",
-        minDate: "today",
-        disableMobile: true,
-        defaultDate: item.endDate || null,
-        onChange: (_, dateStr) => {
-          if (hiddenEnd) hiddenEnd.value = dateStr;
-          calculateNights();
-        }
-      });
-
-
-
-      citySelect.addEventListener('change', (e) => {
-        const selectedCityId = e.target.value;
-        item.city = selectedCityId;
-
-        const hotelsForCity = hotelsList.filter(h => h.areaId == selectedCityId);
-
-        hotelSelect.innerHTML = `<option value="" disabled selected>Select Hotel</option>` +
-          hotelsForCity.map(h => `<option value="${h.hotelId}">${h.hotelName}</option>`).join('');
-
-        hotelSelect.disabled = false;
-        item.hotel = ''; // Reset hotel
-      });
-
-      hotelSelect.addEventListener('change', () => {
-        item.hotel = hotelSelect.value;
-        console.log("✅ Updated JSON:", JSON.stringify(voucherDateAndHotelsData, null, 2));
-      });
-
-      card.querySelector('.btn-delete-datehotel').addEventListener('click', () => {
-        if (num === 1) {
-          startInput._flatpickr.clear();
-          endInput._flatpickr.clear();
-          nightsInput.value = "";
-          citySelect.value = "";
-          hotelSelect.innerHTML = `<option value="" disabled selected>Select Hotel</option>`;
-          hotelSelect.disabled = true;
-          if (hiddenStart) hiddenStart.value = "";
-          if (hiddenEnd) hiddenEnd.value = "";
-        } else {
-          voucherDateAndHotelsData.splice(index, 1);
-          renderAll();
-        }
-      });
-
-
-
-
+      function addNewDateHotel() {
+        if (voucherDateAndHotelsData.length >= maxCards) return;
+        voucherDateAndHotelsData.push({
+          startDate: '',
+          endDate: '',
+          nights: '',
+          city: '',
+          hotel: ''
+        });
+        renderAll();
+      }
     });
-
-    // Add button state
-    if (voucherDateAndHotelsData.length >= maxCards) {
-      addBtn.classList.add('btn-disabled');
-      addBtn.setAttribute('data-locked', 'true');
-    } else {
-      addBtn.classList.remove('btn-disabled');
-      addBtn.removeAttribute('data-locked');
-    }
-  }
-
-  function addNewDateHotel() {
-    if (voucherDateAndHotelsData.length >= maxCards) return;
-    voucherDateAndHotelsData.push({
-      startDate: '',
-      endDate: '',
-      nights: '',
-      city: '',
-      hotel: ''
-    });
-    renderAll();
-  }
-});
-</script>
-
-
-
-  <!-- Inject dynamic includes JSON -->
-  <script>
-    let includesData = <?php echo json_encode($voucher['includes'], JSON_PRETTY_PRINT); ?>;
   </script>
 
-  <!-- Includes Fetch Script -->
+
+  <!-- Air Schedule Script -->
   <script>
+    // Inject the PHP airSchedules array into JavaScript
+    const airSchedules = <?= json_encode($voucher['airSchedules'] ?? [], JSON_UNESCAPED_UNICODE); ?>;
+
+    // Function to populate air schedule form fields
+    function populateAirScheduleFields(data = []) {
+      data.forEach(schedule => {
+        const {
+          flightSegment,
+          flightDate,
+          flightNumber,
+          origin,
+          destination,
+          departureTime,
+          arrivalTime
+        } = schedule;
+
+        if (flightSegment === "departureFlight") {
+          document.getElementById("departure1Date").value = flightDate;
+          document.getElementById("departure1Flight").value = flightNumber;
+          document.getElementById("departure1Origin").value = origin;
+          document.getElementById("departure1Destination").value = destination;
+          document.getElementById("departure1DepartureTime").value = departureTime;
+          document.getElementById("departure1ArrivalTime").value = arrivalTime;
+        }
+
+        if (flightSegment === "returningFlight") {
+          document.getElementById("departure2Date").value = flightDate;
+          document.getElementById("departure2Flight").value = flightNumber;
+          document.getElementById("departure2Origin").value = origin;
+          document.getElementById("departure2Destination").value = destination;
+          document.getElementById("departure2DepartureTime").value = departureTime;
+          document.getElementById("departure2ArrivalTime").value = arrivalTime;
+        }
+      });
+    }
+
+    // Call this on page load
+    document.addEventListener("DOMContentLoaded", () => {
+      if (Array.isArray(airSchedules)) {
+        populateAirScheduleFields(airSchedules);
+      }
+    });
+  </script>
+
+
+  <!-- Includes -->
+  <script>
+    let includesData = <?php echo json_encode($voucher['includes'], JSON_PRETTY_PRINT); ?>;
     let maxIncludes = 4;
+    let includeOptions = [];
+    let includeCount = 0;
+
+    // Fetch options once
+    async function fetchIncludeOptions() {
+      const res = await fetch('../Employee Section/functions/fetchScripts/getIncludeOptions.php');
+      includeOptions = await res.json();
+      renderIncludes();
+    }
 
     function renderIncludes() {
       const container = document.getElementById('includesContainer');
@@ -1230,6 +1298,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const keys = Object.keys(includesData).sort((a, b) => {
         return Number(a.replace('includes', '')) - Number(b.replace('includes', ''));
       });
+
+      includeCount = keys.length;
 
       keys.forEach((key, idx) => {
         const index = idx + 1;
@@ -1241,7 +1311,6 @@ document.addEventListener('DOMContentLoaded', () => {
       updateDisabledOptions();
     }
 
-    // Create one row DOM element for Includes section
     function createIncludeRow(index, data) {
       const row = document.createElement('div');
       row.className = 'include-row mb-3';
@@ -1249,37 +1318,42 @@ document.addEventListener('DOMContentLoaded', () => {
       row.innerHTML = `
       <div class="d-flex justify-content-between align-items-center">
         <label for="includesSelect${index}">Includes ${index}:</label>
-        <button type="button" class="btn btn-danger btn-sm remove-btn" title="Remove Includes ${index}" style="font-size: 1rem; line-height: 1;">
-          &times;
+        <button type="button" class="btn btn-sm btn-danger remove-include" title="Remove">
+          <i class="fas fa-trash-alt"></i>
         </button>
       </div>
-      
-      <select id="includesSelect${index}" name="includesSelect${index}" class="form-select" required>
+
+      <select id="includesSelect${index}" name="includesSelect${index}" class="form-select include-select" required>
         <option value="" disabled ${!data.value ? 'selected' : ''}>Select Include</option>
-        <option value="1">Hotel (4 nights with twin or triple sharing)</option>
-        <option value="2">Meals (4 times Lunch, 4 times Dinner)</option>
-        <option value="3">(Coach, Van), Admission as the itinerary, ENGLISH guide, etc.</option>
-        <option value="4">Airport Pick-up and Drop-off</option>
-        <option value="5">Souvenir Pack</option>
-        <option value="6">Travel Insurance</option>
-        <option value="others">Others</option>
-        <option value="0">— No Includes —</option>
       </select>
       <input type="text" class="form-control mt-2 custom-input ${data.value === 'others' ? '' : 'd-none'}" placeholder="Please specify..." value="${data.label || ''}">
     `;
 
-      // Select and input elements for event handlers
       const select = row.querySelector('select');
       const customInput = row.querySelector('input.custom-input');
-      const removeBtn = row.querySelector('.remove-btn');
+      const removeBtn = row.querySelector('.remove-include');
 
-      // Set select value
-      select.value = data.value;
+      // Populate options
+      includeOptions.forEach(opt => {
+        const option = document.createElement('option');
+        option.value = opt.includesId;
+        option.textContent = opt.itemName;
+        select.appendChild(option);
+      });
 
-      // Event: When select changes
+      // Set initial value
+      if (data.value) {
+        select.value = data.value;
+        if (data.value === 'others') {
+          customInput.classList.remove('d-none');
+        }
+      }
+
+      // Event: select change
       select.addEventListener('change', () => {
         if (select.value === 'others') {
           customInput.classList.remove('d-none');
+          customInput.focus();
         } else {
           customInput.classList.add('d-none');
           customInput.value = '';
@@ -1288,22 +1362,45 @@ document.addEventListener('DOMContentLoaded', () => {
         updateDisabledOptions();
       });
 
-      // Event: When user types in custom input
+      // Event: input
       customInput.addEventListener('input', () => {
         updateDataFromUI();
       });
 
-      // Event: Remove row
+      // Event: remove
       removeBtn.addEventListener('click', () => {
-        delete includesData[`includes${index}`];
-        reindexData(includesData, 'includes');
-        renderIncludes();
+        const rowIndex = parseInt(row.getAttribute('data-index'));
+        if (rowIndex === 1 && includeCount === 1) {
+          select.value = "";
+          customInput.value = "";
+          customInput.classList.add("d-none");
+        } else {
+          row.remove();
+          includeCount--;
+          updateIncludeLabels();
+        }
+
+        updateDataFromUI();
+        updateDisabledOptions();
       });
 
       return row;
     }
 
-    // Sync includesData JSON with current UI selects and inputs
+    function updateIncludeLabels() {
+      const rows = document.querySelectorAll('.include-row');
+      rows.forEach((row, index) => {
+        const label = row.querySelector('label');
+        const select = row.querySelector('select');
+        const number = index + 1;
+        row.setAttribute('data-index', number);
+        label.setAttribute('for', `includesSelect${number}`);
+        label.textContent = `Includes ${number}:`;
+        select.setAttribute('id', `includesSelect${number}`);
+        select.setAttribute('name', `includesSelect${number}`);
+      });
+    }
+
     function updateDataFromUI() {
       includesData = {};
       const rows = document.querySelectorAll('.include-row');
@@ -1313,61 +1410,60 @@ document.addEventListener('DOMContentLoaded', () => {
         const customInput = row.querySelector('input.custom-input');
         const val = select.value;
         const label = val === 'others' ? customInput.value.trim() : '';
-
         includesData[`includes${idx}`] = { value: val, label: label };
       });
     }
 
-    // Re-index the keys of includesData after deletion to keep sequential keys
-    function reindexData(dataObj, prefix) {
-      const values = Object.values(dataObj);
-      includesData = {}; // reset global object
-      values.forEach((val, idx) => {
-        includesData[`${prefix}${idx + 1}`] = val;
-      });
-    }
-
-    // Disable options in other selects if already selected to avoid duplicates (except "others" and "0")
     function updateDisabledOptions() {
-      const selectedVals = Object.values(includesData).map(d => d.value).filter(v => v !== '' && v !== 'others' && v !== '0');
+      const selectedVals = Object.values(includesData)
+        .map(d => d.value)
+        .filter(v => v && v !== 'others');
 
       document.querySelectorAll('.include-row select').forEach(select => {
         const currentVal = select.value;
         select.querySelectorAll('option').forEach(opt => {
-          if (opt.value === '' || opt.value === 'others' || opt.value === '0') {
+          if (opt.value === '' || opt.value === 'others') {
             opt.disabled = false;
-            return;
+          } else {
+            opt.disabled = selectedVals.includes(opt.value) && opt.value !== currentVal;
           }
-          opt.disabled = selectedVals.includes(opt.value) && opt.value !== currentVal;
         });
       });
     }
 
-    // Add new include row on button click
     document.getElementById('addIncludeBtn').addEventListener('click', () => {
       const count = Object.keys(includesData).length;
       if (count >= maxIncludes) {
         alert(`You can add maximum ${maxIncludes} Includes.`);
         return;
       }
+
       includesData[`includes${count + 1}`] = { value: '', label: '' };
+      includeCount++;
       renderIncludes();
     });
 
-    // Initial render on page load
-    document.addEventListener('DOMContentLoaded', () => {
-      renderIncludes();
-    });
+    document.addEventListener('DOMContentLoaded', fetchIncludeOptions);
   </script>
 
-  <!-- Inject dynamic excludes JSON from PHP -->
+
+  <!-- Excludes -->
   <script>
     let excludesData = <?php echo json_encode($voucher['excludes'], JSON_PRETTY_PRINT); ?>;
-  </script>
-
-  <!-- EXCLUDES -->
-  <script>
     let maxExcludes = 4;
+    let excludeOptions = [];
+    let excludeCount = 0;
+
+    // Fetch exclude options once
+    async function fetchExcludeOptions() {
+      const res = await fetch('../Employee Section/functions/fetchScripts/getExcludeOptions.php');
+      excludeOptions = await res.json();
+
+      // Add "Others" at the end
+      excludeOptions.push({ excludesId: 'others', itemName: 'Others' });
+
+      renderExcludes();
+    }
 
     function renderExcludes() {
       const container = document.getElementById('excludesContainer');
@@ -1376,6 +1472,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const keys = Object.keys(excludesData).sort((a, b) => {
         return Number(a.replace('excludes', '')) - Number(b.replace('excludes', ''));
       });
+
+      excludeCount = keys.length;
 
       keys.forEach((key, idx) => {
         const index = idx + 1;
@@ -1394,32 +1492,42 @@ document.addEventListener('DOMContentLoaded', () => {
       row.innerHTML = `
       <div class="d-flex justify-content-between align-items-center mb-1">
         <label for="excludesSelect${index}">Excludes ${index}:</label>
-        <button type="button" class="btn btn-danger btn-sm remove-btn" title="Remove Includes ${index}" style="font-size: 1rem; line-height: 1;">
-          &times;
+        <button type="button" class="btn btn-sm btn-danger remove-exclude" title="Remove">
+          <i class="fas fa-trash-alt"></i>
         </button>
-
       </div>
-      <select id="excludesSelect${index}" name="excludesSelect${index}" class="form-select" required>
+
+      <select id="excludesSelect${index}" name="excludesSelect${index}" class="form-select exclude-select" required>
         <option value="" disabled ${!data.value ? 'selected' : ''}>Select Exclude</option>
-        <option value="1">Personal expenses</option>
-        <option value="2">Visa Fees</option>
-        <option value="3">Optional Tours</option>
-        <option value="4">Tips and Gratuities</option>
-        <option value="others">Others</option>
-        <option value="0">— No Excludes —</option>
       </select>
       <input type="text" class="form-control mt-2 custom-input ${data.value === 'others' ? '' : 'd-none'}" placeholder="Please specify..." value="${data.label || ''}">
     `;
 
       const select = row.querySelector('select');
       const customInput = row.querySelector('input.custom-input');
-      const removeBtn = row.querySelector('.remove-btn');
+      const removeBtn = row.querySelector('.remove-exclude');
 
-      select.value = data.value;
+      // Populate select
+      excludeOptions.forEach(opt => {
+        const option = document.createElement('option');
+        option.value = opt.excludesId;
+        option.textContent = opt.itemName;
+        select.appendChild(option);
+      });
 
+      // Set selected value
+      if (data.value) {
+        select.value = data.value;
+        if (data.value === 'others') {
+          customInput.classList.remove('d-none');
+        }
+      }
+
+      // Events
       select.addEventListener('change', () => {
         if (select.value === 'others') {
           customInput.classList.remove('d-none');
+          customInput.focus();
         } else {
           customInput.classList.add('d-none');
           customInput.value = '';
@@ -1433,12 +1541,36 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       removeBtn.addEventListener('click', () => {
-        delete excludesData[`excludes${index}`];
-        reindexData(excludesData, 'excludes');
-        renderExcludes();
+        const rowIndex = parseInt(row.getAttribute('data-index'));
+        if (rowIndex === 1 && excludeCount === 1) {
+          select.value = "";
+          customInput.value = "";
+          customInput.classList.add("d-none");
+        } else {
+          row.remove();
+          excludeCount--;
+          updateExcludeLabels();
+        }
+
+        updateExcludesDataFromUI();
+        updateDisabledExcludeOptions();
       });
 
       return row;
+    }
+
+    function updateExcludeLabels() {
+      const rows = document.querySelectorAll('.exclude-row');
+      rows.forEach((row, index) => {
+        const label = row.querySelector('label');
+        const select = row.querySelector('select');
+        const number = index + 1;
+        row.setAttribute('data-index', number);
+        label.setAttribute('for', `excludesSelect${number}`);
+        label.textContent = `Excludes ${number}:`;
+        select.setAttribute('id', `excludesSelect${number}`);
+        select.setAttribute('name', `excludesSelect${number}`);
+      });
     }
 
     function updateExcludesDataFromUI() {
@@ -1455,16 +1587,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateDisabledExcludeOptions() {
-      const selectedVals = Object.values(excludesData).map(d => d.value).filter(v => v !== '' && v !== 'others' && v !== '0');
+      const selectedVals = Object.values(excludesData).map(d => d.value).filter(v => v && v !== 'others');
 
       document.querySelectorAll('.exclude-row select').forEach(select => {
         const currentVal = select.value;
         select.querySelectorAll('option').forEach(opt => {
-          if (opt.value === '' || opt.value === 'others' || opt.value === '0') {
+          if (opt.value === '' || opt.value === 'others') {
             opt.disabled = false;
-            return;
+          } else {
+            opt.disabled = selectedVals.includes(opt.value) && opt.value !== currentVal;
           }
-          opt.disabled = selectedVals.includes(opt.value) && opt.value !== currentVal;
         });
       });
     }
@@ -1475,14 +1607,17 @@ document.addEventListener('DOMContentLoaded', () => {
         alert(`You can add maximum ${maxExcludes} Excludes.`);
         return;
       }
+
       excludesData[`excludes${count + 1}`] = { value: '', label: '' };
+      excludeCount++;
       renderExcludes();
     });
 
-    document.addEventListener('DOMContentLoaded', () => {
-      renderExcludes();
-    });
+    document.addEventListener('DOMContentLoaded', fetchExcludeOptions);
   </script>
+
+
+
 
   <!-- Generate Voucher File -->
   <script>

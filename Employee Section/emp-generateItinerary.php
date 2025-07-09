@@ -54,6 +54,62 @@
 			<div class="form-container-wrapper">
 				<form id="itineraryGenerate" class="d-flex flex-column gap-3">
 
+					<!-- Connect to Flight -->
+					<div class="card">
+						<div class="card-header bg-primary">
+							<h5>Flight</h5>
+						</div>
+
+						<div class="card-body">
+							<div class="row align-items-center">
+								<!-- Flight Dropdown -->
+								<div class="col-md-6" id="flightSelectWrapper">
+									<label for="flightId" class="form-label">Select Flight <span class="text-danger">*</span></label>
+									<select class="form-select" id="flightId" name="flightId">
+										<option value="" disabled selected>Select Flight</option>
+
+										<?php
+										$query = "SELECT * FROM flight WHERE is_active = 1";
+										$result = $conn->query($query);
+
+										if ($result && $result->num_rows > 0):
+											while ($row = $result->fetch_assoc()):
+												$flightId = htmlspecialchars($row['flightId']);
+												$flightCode = htmlspecialchars($row['flightCode']);
+												$flightName = htmlspecialchars($row['flightName']);
+												$departureDate = htmlspecialchars($row['flightDepartureDate']);
+
+												// Encode the whole row as JSON and escape it for the HTML attribute
+												$flightDataJson = htmlspecialchars(json_encode($row), ENT_QUOTES, 'UTF-8');
+										?>
+											<option 
+												value="<?= $flightId ?>" 
+												data-flight='<?= $flightDataJson ?>'>
+												<?= $flightCode ?> – <?= $flightName ?> (<?= $departureDate ?>)
+											</option>
+										<?php
+											endwhile;
+										else:
+										?>
+											<option disabled>No active flights available</option>
+										<?php endif; ?>
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+					<script>
+						document.getElementById('flightId').addEventListener('change', function () {
+							const selectedOption = this.options[this.selectedIndex];
+							const flightData = JSON.parse(selectedOption.dataset.flight);
+							console.log(JSON.stringify(flightData, null, 2));
+						});
+					</script>
+
+
+
 					<!-- Connect to Voucher -->
 					<div class="card">
 						<div class="card-header bg-primary">
@@ -325,7 +381,6 @@
 
 
 							<!-- Tour Areas, Hotels -->
-
 							<div class="row">
 								<div class="columns col-md-12">
 									<div class="column-header">

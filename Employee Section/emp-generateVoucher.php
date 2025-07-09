@@ -55,10 +55,50 @@
 
         <form id="voucherForm" class="d-flex flex-column gap-3">
 
-          <!-- To/From -->
+          <!-- General Info -->
           <div class="card">
 
+            <div class="card-header bg-primary">
+              <h5>General Information</h5>
+            </div>
+
             <div class="card-body">
+
+              <div class="row align-items-center">
+
+                <!-- Flight Dropdown -->
+                <div class="col-md-6" id="flightSelectWrapper">
+                  <label for="flightId" class="form-label">Select Flight <span class="text-danger">*</span></label>
+                  <select class="form-select" id="flightId" name="flightId">
+                    <option value="" disabled selected>Select Flight</option>
+
+                    <?php
+                    $query = "SELECT * FROM flight WHERE is_active = 1";
+                    $result = $conn->query($query);
+
+                    if ($result && $result->num_rows > 0):
+                      while ($row = $result->fetch_assoc()):
+                        $flightId = htmlspecialchars($row['flightId']);
+                        $flightCode = htmlspecialchars($row['flightCode']);
+                        $flightName = htmlspecialchars($row['flightName']);
+                        $departureDate = htmlspecialchars($row['flightDepartureDate']);
+
+                        // Encode the whole row as JSON and escape it for the HTML attribute
+                        $flightDataJson = htmlspecialchars(json_encode($row), ENT_QUOTES, 'UTF-8');
+                        ?>
+                        <option value="<?= $flightId ?>" data-flight='<?= $flightDataJson ?>'>
+                          <?= $flightCode ?> – <?= $flightName ?> (<?= $departureDate ?>)
+                        </option>
+                        <?php
+                      endwhile;
+                    else:
+                      ?>
+                      <option disabled>No active flights available</option>
+                    <?php endif; ?>
+                  </select>
+                </div>
+
+              </div>
 
               <div class="row">
 
@@ -105,6 +145,7 @@
 
               </div>
 
+
             </div>
 
           </div>
@@ -116,8 +157,8 @@
             </div>
 
             <div class="card-body">
-              <div class="row">
 
+              <div class="row">
                 <div class="columns col-md-3">
                   <div class="column-header">
                     <label for="departure1Date"></label>
@@ -129,7 +170,6 @@
                       Connect to Current itinerary:
                     </label>
                   </div>
-
                 </div>
 
                 <div class="columns col-md-6" id="itinerarySelectWrapper" style="display: none;">
@@ -194,15 +234,15 @@
                 </div>
 
                 <!-- Attachment
-              <div class="columns col-md-4">
-                <label for="voucherAttachment">Attachment <span class="text-danger">*</span></label>
-                <select class="form-select" id="voucherAttachment" name="voucherAttachment" required>
-                  <option value="" selected disabled>Select Attachment</option>
-                  <option value="voucher">Voucher</option>
-                  <option value="itinerary">Itinerary</option>
-                  <option value="voucher_and_itinerary">Voucher and Itinerary</option>
-                </select>
-              </div> -->
+                <div class="columns col-md-4">
+                  <label for="voucherAttachment">Attachment <span class="text-danger">*</span></label>
+                  <select class="form-select" id="voucherAttachment" name="voucherAttachment" required>
+                    <option value="" selected disabled>Select Attachment</option>
+                    <option value="voucher">Voucher</option>
+                    <option value="itinerary">Itinerary</option>
+                    <option value="voucher_and_itinerary">Voucher and Itinerary</option>
+                  </select>
+                </div> -->
 
                 <!-- Tour Period -->
                 <div class="columns col-md-6">
@@ -232,7 +272,10 @@
                     <option selected disabled value="">Select Guide</option>
 
                     <?php
-                    $sql = "SELECT accountId AS guideAccountId, fName, mName, lName, contactNo, countryCode FROM employee WHERE isTourGuide = 1 ORDER BY lName, fName ASC";
+                    $sql = "SELECT accountId AS guideAccountId, fName, mName, lName, contactNo, countryCode 
+                            FROM employee 
+                            WHERE isTourGuide = 1 
+                            ORDER BY lName, fName ASC";
                     $res = $conn->query($sql);
 
                     if ($res && $res->num_rows > 0) {
@@ -248,12 +291,11 @@
                         $displayName = htmlspecialchars("$lName, $fName$middle", ENT_QUOTES);
 
                         echo "<option 
-                              value='$guideAccountId' 
-                              data-name='$displayName' 
-                              data-contact='$contactNo' 
-                              data-code='$countryCode'>
-                              $displayName
-                            </option>";
+                                value='$guideAccountId' 
+                                data-contact='$contactNo' 
+                                data-code='$countryCode'>
+                                $displayName
+                              </option>";
                       }
                     } else {
                       echo "<option disabled>No available tour guides</option>";
@@ -266,7 +308,7 @@
                 <div class="columns col-md-6">
                   <label for="contactNumber">Guide Contact <span class="text-danger">*</span></label>
                   <div class="form-group d-flex flex-row align-items-center">
-                    <select class="form-select" id="countryCode" style="width: 80px;" disabled>
+                    <select class="form-select" id="countryCode" name="countryCode" style="width: 80px;" disabled>
                       <option value="+63">+63</option>
                       <option value="+82">+82</option>
                     </select>
@@ -275,36 +317,39 @@
                   </div>
                 </div>
 
-                <!-- Single Unified Script -->
+                <!-- Unified Script for Auto-Updating Contact -->
                 <script>
                   document.addEventListener("DOMContentLoaded", function () {
                     const guideSelect = document.getElementById('guideSelect');
                     const contactInput = document.getElementById('contactNumber');
                     const codeSelect = document.getElementById('countryCode');
 
-                    function fillGuideContact() {
+                    function updateGuideContact() {
                       const selected = guideSelect.options[guideSelect.selectedIndex];
-                      if (selected && selected.value !== "") {
-                        contactInput.value = selected.dataset.contact || '';
-                        codeSelect.value = selected.dataset.code || '+63';
-                      } else {
-                        contactInput.value = '';
-                        codeSelect.value = '+63';
-                      }
+                      const contact = selected.getAttribute('data-contact') || '';
+                      const code = selected.getAttribute('data-code') || '+63';
+
+                      // Temporarily enable to set value, then disable again
+                      codeSelect.disabled = false;
+                      contactInput.disabled = false;
+
+                      codeSelect.value = code;
+                      contactInput.value = contact;
+
+                      codeSelect.disabled = true;
+                      contactInput.disabled = true;
                     }
 
-                    guideSelect.addEventListener('change', fillGuideContact);
+                    guideSelect.addEventListener('change', updateGuideContact);
 
-                    // Pre-fill on load if already selected
+                    // Prefill if already selected on page load
                     if (guideSelect.value) {
-                      fillGuideContact();
+                      updateGuideContact();
                     }
                   });
                 </script>
 
               </div>
-
-
 
             </div>
           </div>
@@ -332,6 +377,32 @@
               <h5>Air Schedule</h5>
             </div>
 
+
+            <?php
+            // Fetch flights from DB where active
+            $flightQuery = "SELECT flightCode, returnFlightCode FROM flight WHERE is_active = 1";
+            $flightResult = $conn->query($flightQuery);
+
+            $departureCodes = [];
+            $returnCodes = [];
+
+            if ($flightResult && $flightResult->num_rows > 0) {
+              while ($row = $flightResult->fetch_assoc()) {
+                if (!empty($row['flightCode'])) {
+                  $departureCodes[] = htmlspecialchars($row['flightCode']);
+                }
+                if (!empty($row['returnFlightCode'])) {
+                  $returnCodes[] = htmlspecialchars($row['returnFlightCode']);
+                }
+              }
+
+              // Remove duplicates just in case
+              $departureCodes = array_unique($departureCodes);
+              $returnCodes = array_unique($returnCodes);
+            }
+            ?>
+
+
             <div class="card-body">
 
               <!-- Departure #1 -->
@@ -343,21 +414,18 @@
                 </div>
 
 
-                <!-- Flight -->
                 <div class="columns col-md-2">
                   <div class="column-header">
                     <label for="departure1Flight">Flight <span class="text-danger">*</span></label>
                   </div>
-
                   <div class="form-group">
                     <select class="form-select" id="departure1Flight" name="departure1Flight" required>
                       <option value="" selected disabled>Select Flight</option>
-                      <option value="KE123">KE123</option>
-                      <option value="OZ456">OZ456</option>
-                      <option value="JL789">JL789</option>
+                      <?php foreach ($departureCodes as $code): ?>
+                        <option value="<?= $code ?>"><?= $code ?></option>
+                      <?php endforeach; ?>
                     </select>
                   </div>
-
                 </div>
 
                 <!-- Date -->
@@ -442,12 +510,13 @@
                   <div class="form-group">
                     <select class="form-select" id="departure2Flight" name="departure2Flight" required>
                       <option value="" selected disabled>Select Flight</option>
-                      <option value="KE321">KE321</option>
-                      <option value="OZ654">OZ654</option>
-                      <option value="JL987">JL987</option>
+                      <?php foreach ($returnCodes as $code): ?>
+                        <option value="<?= $code ?>"><?= $code ?></option>
+                      <?php endforeach; ?>
                     </select>
                   </div>
                 </div>
+
 
                 <!-- Date -->
                 <div class="columns col-md-2">
@@ -582,20 +651,20 @@
         });
       }
 
-      // Initialize all datepickers with custom configuration
+      // Initialize all datepickers with custom configuration (ALLOW PAST DATES)
       initFlatpickr("input.datepicker", {
         dateFormat: "Y-m-d",
-        minDate: "today",
+        // minDate: "today", ← ❌ Remove or comment out to allow past dates
         disableMobile: true,
-        appendTo: document.body, // Attach calendar to the body
-        position: "auto", // Auto position for flexibility
-        zIndex: 9999, // Ensure calendar stays on top
+        appendTo: document.body,
+        position: "auto",
+        zIndex: 9999,
         onOpen: function () {
           const calendar = document.querySelector('.flatpickr-calendar');
           if (calendar) {
             calendar.style.position = 'absolute';
             const inputRect = this.input.getBoundingClientRect();
-            calendar.style.top = `${inputRect.bottom + window.scrollY + 8}px`; // Position it below the input field
+            calendar.style.top = `${inputRect.bottom + window.scrollY + 8}px`;
           }
         }
       });
@@ -604,27 +673,25 @@
       initFlatpickr("input.timepicker", {
         enableTime: true,
         noCalendar: true,
-        dateFormat: "H:i", // 24-hour format
+        dateFormat: "H:i",
         time_24hr: true,
         disableMobile: true,
-        appendTo: document.body, // Attach timepicker to the body
-        position: "auto", // Auto position for flexibility
-        zIndex: 9999, // Ensure timepicker stays on top
+        appendTo: document.body,
+        position: "auto",
+        zIndex: 9999,
         onOpen: function () {
           const timepicker = document.querySelector('.flatpickr-calendar');
           if (timepicker) {
             timepicker.style.position = 'absolute';
             const inputRect = this.input.getBoundingClientRect();
-            timepicker.style.top = `${inputRect.bottom + window.scrollY + 8}px`; // Position it below the input field
+            timepicker.style.top = `${inputRect.bottom + window.scrollY + 8}px`;
           }
         }
       });
-
-      
     });
   </script>
 
-  <!-- JavaScript to Initialize Timepicker -->
+  <!-- JavaScript to Initialize Timepicker
   <script>
     $(document).ready(function () {
       $('#flightTime').wickedpicker({
@@ -635,160 +702,169 @@
         placement: 'top' // Attempt to show above input
       });
     });
+  </script> -->
+
+
+  <!-- JS for Flight Selection -->
+  <script>
+    document.getElementById('flightId').addEventListener('change', function () {
+      const selectedOption = this.options[this.selectedIndex];
+
+      if (!selectedOption || !selectedOption.value) {
+        console.warn("⚠️ No flight selected.");
+        return;
+      }
+
+      const selectedFlightId = selectedOption.value;
+      console.log("Selected Flight ID:", selectedFlightId);
+
+      // ✅ Parse JSON from custom attribute (not using data-*)
+      const flightJson = selectedOption.getAttribute('data-flight');
+
+      const flightDetails = JSON.parse(flightJson);
+
+      // ✅ Console log in pretty JSON format
+      console.log("🛫 Selected Flight Data (JSON):\n", JSON.stringify(flightDetails, null, 2));
+
+      // Call your form-populating logic
+      fillFlightFields(flightDetails);
+    });
+
+    function fillFlightFields(flight) {
+      if (!flight) {
+        console.warn("⚠️ No flight data provided.");
+        return;
+      }
+
+      console.log("📝 Populating form with flight data:", flight);
+
+      // Departure Flight
+      document.getElementById("departure1Flight").value = flight.flightCode || "";
+      document.getElementById("departure1Date").value = flight.flightDepartureDate || "";
+      document.getElementById("departure1Origin").value = flight.origin === "Manila" ? "MNL" : "ICN";
+      document.getElementById("departure1Destination").value = flight.origin === "Manila" ? "ICN" : "MNL";
+      document.getElementById("departure1DepartureTime").value = flight.flightDepartureTime || "";
+      document.getElementById("departure1ArrivalTime").value = flight.flightArrivalTime || "";
+
+      // Returning Flight
+      document.getElementById("departure2Flight").value = flight.returnFlightCode || "";
+      document.getElementById("departure2Date").value = flight.returnDepartureDate || "";
+      document.getElementById("departure2Origin").value = flight.origin === "Manila" ? "ICN" : "MNL";
+      document.getElementById("departure2Destination").value = flight.origin === "Manila" ? "MNL" : "ICN";
+      document.getElementById("departure2DepartureTime").value = flight.returnDepartureTime || "";
+      document.getElementById("departure2ArrivalTime").value = flight.returnArrivalTime || "";
+    }
   </script>
 
-
-  <!-- JS for Itinerary Toggle -->
+  <!-- JS for Itinerary Toggle (with fetch + JSON console.log) -->
   <script>
-    let isToggled = false; // Declare globally so it's accessible in both scopes
+      let isToggled = false;
+      document.addEventListener("DOMContentLoaded", function () {
+        const toggle = document.getElementById("toggleItinerarySelect");
+        const itinerarySelectWrapper = document.getElementById("itinerarySelectWrapper");
+        const itinerarySelect = document.getElementById("itineraryId");
 
-    document.addEventListener("DOMContentLoaded", function () {
-      const toggle = document.getElementById("toggleItinerarySelect");
-      const itinerarySelectWrapper = document.getElementById("itinerarySelectWrapper");
-      const itinerarySelect = document.getElementById("itineraryId");
-
-      toggle.addEventListener("change", function () {
-        if (this.checked) {
-          // console.log("🟢 Toggle ON: Showing itinerary select");
-
-
-          itinerarySelectWrapper.style.display = "block";
-          itinerarySelect.disabled = false;
-          itinerarySelect.setAttribute("required", "required");
-          disableItineraryRequirement(true);
-
-          isToggled = true;
-
-          // console.log("📦 isToggled =", isToggled);
-
-        }
-
-        else {
-          itinerarySelectWrapper.style.display = "none";
-          itinerarySelect.disabled = true;
-          itinerarySelect.removeAttribute("required");
-          itinerarySelect.value = "";
-          disableItineraryRequirement(false);
-
-          isToggled = false;
-
-          // console.log("🔘 Toggle OFF → isToggled =", isToggled);
-        }
-      });
-
-
-
-      itinerarySelect.addEventListener("change", function () {
-        const itineraryId = this.value;
-
-        console.log("Itinerary ID:", itineraryId);
-
-        if (!itineraryId) {
-          console.warn("⚠️ No itinerary ID selected.");
-          return;
-        }
-
-        fetch(`../Employee Section/functions/get-itinerary.php?id=${itineraryId}`)
-          .then(response => {
-            // console.log("Fetch response status:", response.status);
-
-            if (!response.ok) {
-              throw new Error(`Server responded with status ${response.status}`);
-            }
-
-            return response.json();
-          })
-
-          .then(data => {
-
-            console.log("Fetched itinerary data:", JSON.stringify(data, null, 2));
-
-            if (data.error) {
-              console.error("Server returned an error:", data.error);
-              return;
-            }
-
-            populateItineraryForm(data);
-          })
-
-          .catch(err => {
-            console.error("Fetch failed:", err);
-          });
-      });
-
-
-      // Enable or disable required status
-      function disableItineraryRequirement(disable) {
-        document.querySelectorAll(".itinerary-select").forEach(sel => {
-          if (disable) {
-            sel.removeAttribute("required");
+        toggle.addEventListener("change", function () {
+          if (this.checked) {
+            itinerarySelectWrapper.style.display = "block";
+            itinerarySelect.disabled = false;
+            itinerarySelect.required = true;
+            disableItineraryRequirement(true);
+            isToggled = true;
           } else {
-            sel.setAttribute("required", "required");
+            itinerarySelectWrapper.style.display = "none";
+            itinerarySelect.disabled = true;
+            itinerarySelect.required = false;
+            itinerarySelect.value = "";
+            disableItineraryRequirement(false);
+            isToggled = false;
           }
         });
-      }
 
-      // Fill form with itinerary values
-      function populateItineraryForm(data) {
-        if (!data) {
-          console.warn("⚠️ No data received for itinerary");
-          return;
-        }
-
-        const safeSet = (id, value) => {
-          const el = document.getElementById(id);
-          if (el) el.value = value || "";
-          else console.warn(`⚠️ Element with ID '${id}' not found`);
-        };
-
-        safeSet("voucherPeriodStart", data.periodStart);
-        safeSet("voucherPeriodEnd", data.periodEnd);
-        safeSet("guideSelect", data.accountId);
-        safeSet("countryCode", data.countryCode);
-        safeSet("contactNumber", data.contactNumber);
-
-
-        // safeSet("itineraryName", data.itineraryName);
-        // safeSet("city1", data.city1);
-        // safeSet("hotel1", data.hotel1);
-        // safeSet("city2", data.city2);
-        // safeSet("hotel2", data.hotel2);
-        // safeSet("city3", data.city3);
-        // safeSet("hotel3", data.hotel3);
-        // safeSet("select-days", data.noOfDays);
-
-
-        // ✅ Manually select correct option in the voucherTour dropdown
-        const voucherSelect = document.getElementById("voucherTour");
-        if (voucherSelect) {
-          const matchingOption = [...voucherSelect.options].find(opt => opt.value == data.packageId);
-          if (matchingOption) {
-            voucherSelect.value = matchingOption.value;
-          } else {
-            console.warn("⚠️ No matching option in #voucherTour for packageId:", data.packageId);
-            voucherSelect.selectedIndex = 0; // fallback to "Select Package Type"
+        itinerarySelect.addEventListener("change", function () {
+          const itineraryId = this.value;
+          if (!itineraryId) {
+            console.warn("⚠️ No itinerary ID selected.");
+            return;
           }
-        } else {
-          console.warn("⚠️ #voucherTour select not found");
+
+          console.log("Selected Itinerary ID:", itineraryId);
+
+          fetch(`../Employee Section/functions/get-itinerary.php?id=${itineraryId}`)
+            .then(response => {
+              if (!response.ok) {
+                throw new Error(`Server responded with status ${response.status}`);
+              }
+              return response.json();
+            })
+            .then(data => {
+              if (data.error) {
+                console.error("Server returned an error:", data.error);
+                return;
+              }
+
+              // ✅ Pretty JSON log
+              console.log("📋 Fetched Itinerary Data (JSON):\n", JSON.stringify(data, null, 2));
+
+              populateItineraryForm(data);
+            })
+            .catch(err => {
+              console.error("❌ Fetch failed:", err);
+            });
+        });
+
+        function disableItineraryRequirement(disable) {
+          document.querySelectorAll(".itinerary-select").forEach(sel => {
+            if (disable) sel.removeAttribute("required");
+            else sel.setAttribute("required", "required");
+          });
         }
 
-        // Optional: regenerate itinerary day cards
-        if (typeof generateItineraryCards === "function") {
-          generateItineraryCards(parseInt(data.noOfDays));
-        }
+        function populateItineraryForm(data) {
+          const safeSet = (id, value) => {
+            const el = document.getElementById(id);
+            if (el) el.value = value || "";
+            else console.warn(`⚠️ Element #${id} not found`);
+          };
 
-        if (typeof updateLiveItineraryData === "function") {
-          updateLiveItineraryData();
+          safeSet("voucherPeriodStart", data.periodStart);
+          safeSet("voucherPeriodEnd", data.periodEnd);
+          safeSet("guideSelect", data.guideId);
+          safeSet("countryCode", data.countryCode);
+          safeSet("contactNumber", data.contactNumber);
+
+          const voucherSelect = document.getElementById("voucherTour");
+          if (voucherSelect) {
+            const match = [...voucherSelect.options].find(opt => opt.value == data.packageId);
+            voucherSelect.value = match ? match.value : "";
+          }
+
+          if (typeof generateItineraryCards === "function") {
+            generateItineraryCards(parseInt(data.noOfDays));
+          }
+
+          if (typeof updateLiveItineraryData === "function") {
+            updateLiveItineraryData();
+          }
+
         }
-      }
-    });
+  });
   </script>
+
+
+
+
+
+
+
+
 
   <!-- JSON Variables -->
   <script>
     let voucherDetails = {};
     let cardsJSONData = {};
     let airScheduleDetails = {};
+    let guideMeeting = {};
     let includesData = {};
     let excludesData = {};
   </script>
@@ -821,8 +897,6 @@
       return voucherDetails;
     }
   </script>
-
-
 
   <!-- Date & Hotels Data Fetch -->
   <script>
@@ -982,7 +1056,7 @@
 
       flatpickr(startInput, {
         dateFormat: "Y-m-d",
-        minDate: "today",
+        // minDate: "today",
         disableMobile: true,
         onChange: function (selectedDates, dateStr) {
           if (hiddenStart) hiddenStart.value = dateStr;
@@ -992,7 +1066,7 @@
 
       flatpickr(endInput, {
         dateFormat: "Y-m-d",
-        minDate: "today",
+        // minDate: "today",
         disableMobile: true,
         onChange: function (selectedDates, dateStr) {
           if (hiddenEnd) hiddenEnd.value = dateStr;
@@ -1047,31 +1121,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
       // Delete Card Button
       card.querySelector('.remove-card-btn').addEventListener('click', () => {
         const index = parseInt(card.getAttribute('data-card-id'));
@@ -1102,8 +1151,6 @@
       }
     }
 
-
-    
     function updateCardHeaders() {
       const cards = document.querySelectorAll('#cardsContainer > div[data-card-id]');
       cardCount = cards.length;
@@ -1123,6 +1170,7 @@
       });
     }
   </script>
+
 
   <!-- Flight Details Fetch Script - JSON generation -->
   <script>
@@ -1260,6 +1308,7 @@
     });
   </script>
 
+
   <!-- Air Details and Guide Meeting - JSON generation Script -->
   <script>
     function getAirScheduleDetailsWithGuideMeeting() {
@@ -1277,53 +1326,76 @@
         return now;
       };
 
-      // Guide Meeting Info
-      const arrivalTimeStartValue = document.getElementById('departure1ArrivalTime').value;
-      const currentTime = parseTimeStringToDate(arrivalTimeStartValue);
+      // Get values from DOM
+      const departure1Date = document.getElementById("departure1Date").value;
+      const departure1Flight = document.getElementById("departure1Flight").value;
+      const departure1Origin = document.getElementById("departure1Origin").value;
+      const departure1Destination = document.getElementById("departure1Destination").value;
+      const departure1DepartureTime = document.getElementById("departure1DepartureTime").value;
+      const departure1ArrivalTime = document.getElementById("departure1ArrivalTime").value;
+
+      const departure2Date = document.getElementById("departure2Date").value;
+      const departure2Flight = document.getElementById("departure2Flight").value;
+      const departure2Origin = document.getElementById("departure2Origin").value;
+      const departure2Destination = document.getElementById("departure2Destination").value;
+      const departure2DepartureTime = document.getElementById("departure2DepartureTime").value;
+      const departure2ArrivalTime = document.getElementById("departure2ArrivalTime").value;
+
+      const guideId = document.getElementById("guideSelect").value;
+
+      // Compute Guide Meeting Time (15 minutes after arrival)
+      const currentTime = parseTimeStringToDate(departure1ArrivalTime);
       const updatedTime = addMinutes(currentTime, 15);
-
       const formattedTime = `${updatedTime.getHours().toString().padStart(2, '0')}:${updatedTime.getMinutes().toString().padStart(2, '0')}`;
-      const selectedPlace = document.getElementById('departure1Destination').value;
 
+      // Determine meeting place
       const placeOptions = {
         'ICN': 'Incheon Airport (Terminal 1)',
         'Other': 'Custom Place'
       };
+      const guideMeetingPlace = placeOptions[departure1Destination] || 'Custom Place';
 
-      const guideMeetingPlace = placeOptions[selectedPlace] || 'Custom Place';
-
-      // Construct unified structure
+      // ✈️ Air Schedule (only flights)
       const airScheduleDetails = {
-        departure1: {
-          flightDate: document.getElementById("departure1Date").value,
-          flightNumber: document.getElementById("departure1Flight").value,
-          origin: document.getElementById("departure1Origin").value,
-          destination: document.getElementById("departure1Destination").value,
-          departureTime: document.getElementById("departure1DepartureTime").value,
-          arrivalTime: document.getElementById("departure1ArrivalTime").value
+        departureflight: {
+          flightDate: departure1Date,
+          flightNumber: departure1Flight,
+          origin: departure1Origin,
+          destination: departure1Destination,
+          departureTime: departure1DepartureTime,
+          arrivalTime: departure1ArrivalTime
         },
-        departure2: {
-          flightDate: document.getElementById("departure2Date").value,
-          flightNumber: document.getElementById("departure2Flight").value,
-          origin: document.getElementById("departure2Origin").value,
-          destination: document.getElementById("departure2Destination").value,
-          departureTime: document.getElementById("departure2DepartureTime").value,
-          arrivalTime: document.getElementById("departure2ArrivalTime").value
-        },
-        guideMeeting: {
-          guideId: document.getElementById("guideSelect").value,
-          date: document.getElementById("departure1Date").value,
-          time: formattedTime,
-          place: guideMeetingPlace
+        returningflight: {
+          flightDate: departure2Date,
+          flightNumber: departure2Flight,
+          origin: departure2Origin,
+          destination: departure2Destination,
+          departureTime: departure2DepartureTime,
+          arrivalTime: departure2ArrivalTime
         }
       };
 
+      // 👨‍✈️ Guide Meeting (separate object)
+      const guideMeeting = {
+        guideId: guideId,
+        date: departure1Date,
+        time: formattedTime,
+        place: guideMeetingPlace
+      };
 
-      console.log("Air Schedule with Guide Meeting: \n", JSON.stringify(airScheduleDetails, null, 2));
+      // Log output
+      console.log("✈️ Air Schedule:\n", JSON.stringify(airScheduleDetails, null, 2));
+      console.log("👨‍✈️ Guide Meeting:\n", JSON.stringify(guideMeeting, null, 2));
 
-      return airScheduleDetails;
+      // Return both separately
+      return {
+        airScheduleDetails,
+        guideMeeting
+      };
     }
   </script>
+
+
 
   <!-- Includes Section Functions and JSON generation Script -->
   <script>
@@ -1372,7 +1444,6 @@
       });
     }
 
-
     // Function to update the includes data object after each change
     function updateIncludesData() {
       const includeRows = document.querySelectorAll('.include-row');
@@ -1419,18 +1490,12 @@
       return structuredIncludesList;
     }
 
-
-
-
-
-
     // Function to add a new include row
     function addInclude() {
       if (includeCount >= maxIncludes) return;
 
       includeCount++;
       const includesContainer = document.getElementById('includesContainer');
-      const isFirst = includeCount === 1;
 
       const newRow = document.createElement('div');
       newRow.className = 'row include-row align-items-start mb-3';
@@ -1439,12 +1504,14 @@
       // Build the base structure
       newRow.innerHTML = `
         <div class="col-md-12">
+        
           <div class="label-container d-flex justify-content-between align-items-center">
             <label for="includesSelect${includeCount}" class="form-label">Includes ${includeCount}:</label>
             <button type="button" class="btn btn-sm btn-danger remove-include" title="Remove">
               <i class="fas fa-trash-alt"></i>
             </button>
           </div>
+
           <div class="content-container">
             <select class="form-select include-select" id="includesSelect${includeCount}" name="includesSelect${includeCount}">
               <option value="" selected disabled>Select Includes</option>
@@ -1470,16 +1537,11 @@
             option.textContent = opt.itemName;
             selectEl.appendChild(option);
           });
-
-          // Add the "Others" option at the end
-          const othersOption = document.createElement('option');
-          othersOption.value = "1";
-          othersOption.textContent = "Others";
-          selectEl.appendChild(othersOption);
-        });
+      });
 
       selectEl.addEventListener('change', () => {
-        if (selectEl.value === "1") {
+        const selectedText = selectEl.options[selectEl.selectedIndex]?.text?.toLowerCase();
+        if (selectedText === 'others') {
           customInput.classList.remove("d-none");
           customInput.focus();
         } else {
@@ -1494,7 +1556,6 @@
       customInput.addEventListener('input', () => {
         updateIncludesData();
       });
-
 
       if (removeBtn) {
         removeBtn.addEventListener('click', () => {
@@ -1516,6 +1577,7 @@
 
       updateDisabledIncludeOptions();
     }
+
 
     // Function to update include labels and ids after removing an include
     function updateIncludeLabels() {
@@ -1541,6 +1603,7 @@
     document.getElementById('addIncludeBtn').addEventListener('click', addInclude);
     window.addEventListener('DOMContentLoaded', initIncludesSection);
   </script>
+
 
   <!-- Excludes Section Functions and JSON generation Script -->
   <script>
@@ -1665,7 +1728,6 @@
       newRow.className = 'row exclude-row align-items-start mb-3';
       newRow.setAttribute('data-index', excludeCount);
 
-      // Build the base structure with empty select
       newRow.innerHTML = `
         <div class="col-md-12">
           <div class="label-container d-flex justify-content-between align-items-center">
@@ -1674,6 +1736,7 @@
               <i class="fas fa-trash-alt"></i>
             </button>
           </div>
+
           <div class="content-container">
             <select class="form-select exclude-select" id="excludesSelect${excludeCount}" name="excludesSelect${excludeCount}">
               <option value="" selected disabled>Select Exclude</option>
@@ -1692,7 +1755,6 @@
       // Fetch and populate exclude options
       fetch('../Employee Section/functions/fetchScripts/getExcludeOptions.php')
         .then(res => res.json())
-
         .then(options => {
           options.forEach(opt => {
             const option = document.createElement('option');
@@ -1700,19 +1762,16 @@
             option.textContent = opt.itemName;
             selectEl.appendChild(option);
           });
-
-          const othersOption = document.createElement('option');
-          othersOption.value = "1";
-          othersOption.textContent = "Others";
-          selectEl.appendChild(othersOption);
         });
 
       selectEl.addEventListener('change', () => {
-        if (selectEl.value === "1") {
+        const selectedText = selectEl.options[selectEl.selectedIndex]?.text?.toLowerCase();
+        if (selectedText === 'others') {
           customInput.classList.remove("d-none");
           customInput.focus();
         } else {
           customInput.classList.add("d-none");
+          customInput.value = '';
         }
 
         updateDisabledExcludeOptions();
@@ -1745,6 +1804,7 @@
     }
 
 
+
     // Initialize the section with one exclude field on page load
     function initExcludesSection() {
       addExclude(); // Automatically add the first exclude row
@@ -1755,6 +1815,9 @@
       initExcludesSection();
     });
   </script>
+
+
+
 
 
 
@@ -1822,18 +1885,24 @@
 
       const voucherDetails = (typeof updateVoucherDetails === "function") ? updateVoucherDetails() : {};
       const cardsJSONData = (typeof generateCardsJSON === "function") ? generateCardsJSON() : {};
-      const airScheduleDetails = (typeof getAirScheduleDetailsWithGuideMeeting === "function") ? getAirScheduleDetailsWithGuideMeeting() : {};
+      const airAndGuide = (typeof getAirScheduleDetailsWithGuideMeeting === "function") ? getAirScheduleDetailsWithGuideMeeting() : {};
       const includesData = (typeof updateIncludesData === "function") ? updateIncludesData() : {};
       const excludesData = (typeof updateExcludesData === "function") ? updateExcludesData() : {};
+
+      // Separate the two parts returned from getAirScheduleDetailsWithGuideMeeting
+      const airScheduleDetails = airAndGuide.airScheduleDetails || {};
+      const guideMeeting = airAndGuide.guideMeeting || {};
 
       const voucherPayload = {
         templateName,
         voucherDetails,
         cardsJSONData,
         airScheduleDetails,
+        guideMeeting,
         includesData,
         excludesData
       };
+
 
 
       console.log("For Insertion:\n", JSON.stringify(voucherPayload, null, 2));
@@ -1872,5 +1941,6 @@
 
 
 
-  </body>
+</body>
+
 </html>
