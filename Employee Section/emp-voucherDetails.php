@@ -5,7 +5,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Voucher Details</title>
+
   <?php include '../Employee Section/includes/emp-head.php' ?>
+
   <link rel="stylesheet" href="../Employee Section/assets/css/emp-sidebar-navbar.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="../Employee Section/assets/css/emp-generateVoucher.css?v=<?php echo time(); ?>">
 
@@ -64,6 +66,7 @@
             v.voucherCode,
             v.accountId,
             v.itineraryId,
+            v.flightId,
             v.createdAt AS voucherCreatedAt,
 
             d.sentToId,
@@ -129,6 +132,7 @@
       'voucherCode' => $row['voucherCode'] ?? null,
       'accountId' => $row['accountId'] ?? null,
       'itineraryId' => !empty($row['itineraryId']) ? $row['itineraryId'] : 0,
+      'flightId' => !empty($row['flightId']) ? $row['flightId'] : 0,
       'voucherCreatedAt' => $row['voucherCreatedAt'] ?? null,
       'details' => [
         'sentTo' => $row['sentTo'] ?? null,
@@ -222,12 +226,13 @@
         flightNumber, 
         origin, 
         destination, 
-        departureTime, 
-        arrivalTime 
+        TIME_FORMAT(departureTime, '%H:%i') AS departureTime, 
+        TIME_FORMAT(arrivalTime, '%H:%i') AS arrivalTime
       FROM voucherAirSchedules
       WHERE voucherId = ?
       ORDER BY FIELD(flightSegment, 'departure1', 'departure2'), flightDate ASC
     ";
+
 
     $stmt = $conn->prepare($sqlAirSchedules);
     $stmt->bind_param("i", $voucherId);
@@ -289,7 +294,7 @@
                 <!-- Voucher Name -->
                 <div class="columns col-md-3">
                   <label>Voucher Name<span class="text-danger">*</span></label>
-                  <input type="text" class="form-control" id="itineraryName" name="itineraryName"
+                  <input type="text" class="form-control" id="voucherName" name="itineraryName"
                     value="<?= !empty($voucher['voucherName']) ? htmlspecialchars($voucher['voucherName'], ENT_QUOTES) : 'Untitled Voucher' ?>"
                     readonly>
                 </div>
@@ -304,8 +309,9 @@
                 <!-- Associated to Itinerary -->
                 <div class="columns col-md-3">
                   <label>Associated to Itinerary</label>
-                  <select class="form-select" id="itineraryId" name="itineraryId">
-                    <option value="" disabled selected>Select Itinerary</option>
+                  <select class="form-select" id="itinerarySelect" name="itineraryId">
+                    <option value="" disabled <?= empty($selectedItineraryId) ? 'selected' : '' ?>>Select Itinerary</option>
+
 
                     <?php
                     $selectedItineraryId = $voucher['itineraryId'] ?? '';
@@ -324,6 +330,43 @@
                       echo "<option value=''>No itineraries available</option>";
                     }
                     ?>
+                  </select>
+                </div>
+
+                <!-- Associated to Flight -->
+                <div class="col-md-3" id="flightSelectWrapper">
+                  <label for="flightId" class="form-label">Associated to Flight<span
+                      class="text-danger">*</span></label>
+                  <select class="form-select" id="flightId" name="flightId">
+                    <option value="" disabled <?= empty($voucher['flightId']) ? 'selected' : '' ?>>Select Flight</option>
+
+                    <?php
+                    $selectedFlightId = $voucher['flightId'] ?? '';
+
+                    $query = "SELECT * FROM flight WHERE is_active = 1";
+                    $result = $conn->query($query);
+
+                    if ($result && $result->num_rows > 0):
+                      while ($row = $result->fetch_assoc()):
+                        $flightId = htmlspecialchars($row['flightId']);
+                        $flightCode = htmlspecialchars($row['flightCode']);
+                        $flightName = htmlspecialchars($row['flightName']);
+                        $departureDate = htmlspecialchars($row['flightDepartureDate']);
+
+                        $flightDataJson = htmlspecialchars(json_encode($row), ENT_QUOTES, 'UTF-8');
+
+                        // Check if this flight is selected
+                        $isSelected = ($selectedFlightId == $flightId) ? 'selected' : '';
+                        ?>
+                        <option value="<?= $flightId ?>" data-flight='<?= $flightDataJson ?>' <?= $isSelected ?>>
+                          <?= $flightCode ?> – <?= $flightName ?> (<?= $departureDate ?>)
+                        </option>
+                        <?php
+                      endwhile;
+                    else:
+                      ?>
+                      <option disabled>No active flights available</option>
+                    <?php endif; ?>
                   </select>
                 </div>
 
@@ -362,15 +405,15 @@
                   <select class="form-select mt-1" id="itineraryId" name="itineraryId">
                     <option value="" disabled selected>Select Itinerary</option>
                     <?php
-                    $sql = "SELECT itineraryId, itineraryName FROM itineraries ORDER BY createdAt DESC";
-                    $result = $conn->query($sql);
-                    if ($result && $result->num_rows > 0) {
-                      while ($row = $result->fetch_assoc()) {
-                        echo "<option value='" . $row['itineraryId'] . "'>" . htmlspecialchars($row['itineraryName']) . "</option>";
-                      }
-                    } else {
-                      echo "<option value=''>No itineraries available</option>";
-                    }
+                    // $sql = "SELECT itineraryId, itineraryName FROM itineraries ORDER BY createdAt DESC";
+                    // $result = $conn->query($sql);
+                    // if ($result && $result->num_rows > 0) {
+                    //   while ($row = $result->fetch_assoc()) {
+                    //     echo "<option value='" . $row['itineraryId'] . "'>" . htmlspecialchars($row['itineraryName']) . "</option>";
+                    //   }
+                    // } else {
+                    //   echo "<option value=''>No itineraries available</option>";
+                    // }
                     ?>
                   </select>
 
@@ -380,6 +423,7 @@
 
             </div>
           </div> -->
+
 
           <!-- Voucher Details Card -->
           <div class="card">
@@ -416,7 +460,6 @@
                     ?>
                   </select>
                 </div>
-
 
                 <!-- From --> <!-- Smart Travel by default -->
                 <div class="columns col-md-4">
@@ -980,6 +1023,7 @@
     </div>
   </div> -->
 
+  <!-- PHP Fetch of Area and Hotel Values -->
   <?php
   $cityOptions = [];
   $cityHotelMap = [];
@@ -1007,25 +1051,190 @@
   }
   ?>
 
-
-
-
-
-
-  <!-- Date and Hotels Script -->
+  <!-- Global variable -->
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
+    let voucherDateAndHotelsData = [];
+    let cities = [];
+    let hotelsList = [];
+
+    // Renders all existing data cards
+    function renderAll() {
       const container = document.getElementById('dateHotelContainer');
-      const addBtn = document.getElementById('addDateHotelBtn');
+
       const maxCards = 3;
 
+      container.innerHTML = '';
+
+      voucherDateAndHotelsData.forEach((item, index) => {
+        const num = index + 1;
+        const isFirstCard = num === 1;
+        const selectedCityId = item.city;
+        const selectedHotelId = item.hotel;
+
+        const filteredHotels = hotelsList.filter(h => h.hotelCity == selectedCityId);
+
+        const card = document.createElement('div');
+        card.className = 'mb-4 date-hotel-card';
+        card.setAttribute('data-card-id', num);
+
+        card.innerHTML = `
+          <div class="header-container">
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="dnh-badge text-uppercase">Date and Hotels #${num}</span>
+              <button type="button" class="btn btn-sm text-white bg-danger border-0 px-2 py-1 btn-delete-datehotel" title="Delete">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="row g-4 align-items-end">
+            <div class="col-12 col-md-5">
+              <label class="form-label">Date</label>
+              <div class="d-flex gap-2 align-items-center">
+                <div class="position-relative w-100">
+                  <input type="text" class="form-control datepicker" id="PeriodStartDate${num}" value="${item.startDate || ''}" placeholder="Start" readonly>
+                  <input type="text" class="required-start hidden-required-field" name="requiredStartDate${num}" ${isFirstCard ? 'required' : ''} style="position:absolute; left:-9999px; width:1px; height:1px; opacity:0;" value="${item.startDate || ''}">
+                </div>
+                
+                <span class="mx-1 text-muted">→</span>
+                <div class="position-relative w-100">
+                  <input type="text" class="form-control datepicker" id="PeriodEndDate${num}" value="${item.endDate || ''}" placeholder="End" readonly>
+                  <input type="text" class="required-end hidden-required-field" name="requiredEndDate${num}" ${isFirstCard ? 'required' : ''} style="position:absolute; left:-9999px; width:1px; height:1px; opacity:0;" value="${item.endDate || ''}">
+                </div>
+              </div>
+            </div>
+
+            <div class="col-6 col-md-2">
+              <label class="form-label" for="nights${num}">No. of Nights</label>
+              <input type="text" class="form-control" id="nights${num}" name="nights${num}" value="${item.nights || ''}" ${isFirstCard ? 'required' : ''}>
+            </div>
+
+            <div class="col-6 col-md-2">
+              <label class="form-label" for="city${num}">City</label>
+              <select class="form-control city-select" id="city${num}" name="city${num}" ${isFirstCard ? 'required' : ''}>
+                <option value="" disabled ${!selectedCityId ? 'selected' : ''}>Select City</option>
+                ${cities.map(city => `
+                  <option value="${city.areaId}" ${city.areaId == selectedCityId ? 'selected' : ''}>${city.areaName}</option>
+                `).join('')}
+              </select>
+            </div>
+
+            <div class="col-12 col-md-3">
+              <label class="form-label" for="hotel${num}">Hotel</label>
+              <select class="form-control hotel-select" id="hotel${num}" name="hotel${num}" ${isFirstCard ? 'required' : ''} ${!selectedCityId ? 'disabled' : ''}>
+                <option value="" disabled ${!selectedHotelId ? 'selected' : ''}>Select Hotel</option>
+                ${hotelsList.filter(h => h.areaId == selectedCityId)
+                  .map(h => `<option value="${h.hotelId}" ${h.hotelId == selectedHotelId ? 'selected' : ''}>${h.hotelName}</option>`)}
+              </select>
+            </div>
+          </div>
+        `;
+
+        container.appendChild(card);
+
+        // Inputs setup
+        const startInput = document.getElementById(`PeriodStartDate${num}`);
+        const endInput = document.getElementById(`PeriodEndDate${num}`);
+        const nightsInput = document.getElementById(`nights${num}`);
+        const citySelect = document.getElementById(`city${num}`);
+        const hotelSelect = document.getElementById(`hotel${num}`);
+        const hiddenStart = document.querySelector(`[name="requiredStartDate${num}"]`);
+        const hiddenEnd = document.querySelector(`[name="requiredEndDate${num}"]`);
+
+        function calculateNights() {
+          const start = new Date(startInput.value);
+          const end = new Date(endInput.value);
+          if (start && end && end > start) {
+            nightsInput.value = Math.round((end - start) / (1000 * 60 * 60 * 24));
+          } else {
+            nightsInput.value = "";
+          }
+        }
+
+        flatpickr(startInput, {
+          dateFormat: "Y-m-d",
+          minDate: "today",
+          disableMobile: true,
+          defaultDate: item.startDate || null,
+          onChange: (_, dateStr) => {
+            if (hiddenStart) hiddenStart.value = dateStr;
+            calculateNights();
+          }
+        });
+
+        flatpickr(endInput, {
+          dateFormat: "Y-m-d",
+          minDate: "today",
+          disableMobile: true,
+          defaultDate: item.endDate || null,
+          onChange: (_, dateStr) => {
+            if (hiddenEnd) hiddenEnd.value = dateStr;
+            calculateNights();
+          }
+        });
+
+        citySelect.addEventListener('change', (e) => {
+          const selectedCityId = e.target.value;
+          item.city = selectedCityId;
+          const hotelsForCity = hotelsList.filter(h => h.areaId == selectedCityId);
+          hotelSelect.innerHTML = `<option value="" disabled selected>Select Hotel</option>` +
+            hotelsForCity.map(h => `<option value="${h.hotelId}">${h.hotelName}</option>`).join('');
+          hotelSelect.disabled = false;
+          item.hotel = '';
+        });
+
+        hotelSelect.addEventListener('change', () => {
+          item.hotel = hotelSelect.value;
+          console.log("✅ Updated JSON:", JSON.stringify(voucherDateAndHotelsData, null, 2));
+        });
+
+        card.querySelector('.btn-delete-datehotel').addEventListener('click', () => {
+          if (num === 1) {
+            startInput._flatpickr.clear();
+            endInput._flatpickr.clear();
+            nightsInput.value = "";
+            citySelect.value = "";
+            hotelSelect.innerHTML = `<option value="" disabled selected>Select Hotel</option>`;
+            hotelSelect.disabled = true;
+            hiddenStart.value = "";
+            hiddenEnd.value = "";
+          } else {
+            voucherDateAndHotelsData.splice(index, 1);
+            renderAll();
+          }
+        });
+      });
+
+      // Button state
+      const addBtn = document.getElementById('addDateHotelBtn');
+      if (voucherDateAndHotelsData.length >= maxCards) {
+        addBtn.classList.add('btn-disabled');
+        addBtn.setAttribute('data-locked', 'true');
+      } else {
+        addBtn.classList.remove('btn-disabled');
+        addBtn.removeAttribute('data-locked');
+      }
+    }
+
+    // Function to add new card
+    function addNewDateHotel() {
+      const maxCards = 3;
+      if (voucherDateAndHotelsData.length >= maxCards) return;
+      voucherDateAndHotelsData.push({
+        startDate: '',
+        endDate: '',
+        nights: '',
+        city: '',
+        hotel: ''
+      });
+      renderAll();
+      updateLiveVoucherData(); // to remove
+    }
+
+    // DOM Ready
+    document.addEventListener('DOMContentLoaded', () => {
       const originalData = <?= json_encode($voucher['dateAndHotels'] ?? [], JSON_UNESCAPED_UNICODE); ?>;
-      const voucherDateAndHotelsData = [...originalData];
-
-      let cities = [];
-      let hotelsList = [];
-
-      // console.log("Initial Voucher Data:", voucherDateAndHotelsData);
+      voucherDateAndHotelsData = [...originalData];
 
       fetch('../Employee Section/functions/fetchScripts/getHotels.php')
         .then(response => {
@@ -1033,202 +1242,18 @@
           return response.json();
         })
         .then(data => {
-          // console.log("✅ Raw fetched data:", data);
-
           cities = data.cities || [];
           hotelsList = data.hotels || [];
-
-
-          console.log(JSON.stringify(cities, null, 2));
-          console.log(JSON.stringify(hotelsList, null, 2));
-
           renderAll();
-          addBtn.addEventListener('click', addNewDateHotel);
+
+          document.getElementById('addDateHotelBtn').addEventListener('click', addNewDateHotel);
         })
         .catch(err => {
           console.error('❌ Failed to fetch hotels:', err);
           alert('Error loading hotel data');
         });
-
-
-      function renderAll() {
-        container.innerHTML = '';
-
-        voucherDateAndHotelsData.forEach((item, index) => {
-          const num = index + 1;
-          const isFirstCard = num === 1;
-          const selectedCityId = item.city;
-          const selectedHotelId = item.hotel;
-
-          const filteredHotels = hotelsList.filter(h => h.hotelCity == selectedCityId);
-
-          const card = document.createElement('div');
-          card.className = 'mb-4 date-hotel-card';
-          card.setAttribute('data-card-id', num);
-
-          card.innerHTML = `
-            <div class="header-container">
-              <div class="d-flex justify-content-between align-items-center">
-                <span class="dnh-badge text-uppercase">Date and Hotels #${num}</span>
-                <button type="button" class="btn btn-sm text-white bg-danger border-0 px-2 py-1 btn-delete-datehotel" title="Delete">
-                  <i class="fas fa-trash-alt"></i>
-                </button>
-              </div>
-            </div>
-
-            <div class="row g-4 align-items-end">
-              <div class="col-12 col-md-5">
-                <label class="form-label">Date</label>
-                <div class="d-flex gap-2 align-items-center">
-                  <div class="position-relative w-100">
-                    <input type="text" class="form-control datepicker" id="PeriodStartDate${num}" value="${item.startDate || ''}" placeholder="Start" readonly>
-                    <input type="text" class="required-start hidden-required-field" name="requiredStartDate${num}" ${isFirstCard ? 'required' : ''} style="position:absolute; left:-9999px; width:1px; height:1px; opacity:0;" value="${item.startDate || ''}">
-                  </div>
-                  <span class="mx-1 text-muted">→</span>
-                  <div class="position-relative w-100">
-                    <input type="text" class="form-control datepicker" id="PeriodEndDate${num}" value="${item.endDate || ''}" placeholder="End" readonly>
-                    <input type="text" class="required-end hidden-required-field" name="requiredEndDate${num}" ${isFirstCard ? 'required' : ''} style="position:absolute; left:-9999px; width:1px; height:1px; opacity:0;" value="${item.endDate || ''}">
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-6 col-md-2">
-                <label class="form-label" for="nights${num}">No. of Nights</label>
-                <input type="text" class="form-control" id="nights${num}" name="nights${num}" value="${item.nights || ''}" ${isFirstCard ? 'required' : ''}>
-              </div>
-
-              <div class="col-6 col-md-2">
-                <label class="form-label" for="city${num}">City</label>
-                <select class="form-control city-select" id="city${num}" name="city${num}" ${isFirstCard ? 'required' : ''}>
-                  <option value="" disabled ${!selectedCityId ? 'selected' : ''}>Select City</option>
-                  ${cities.map(city => `
-                    <option value="${city.areaId}" ${city.areaId == selectedCityId ? 'selected' : ''}>${city.areaName}</option>
-                  `).join('')}
-                </select>
-              </div>
-
-              <div class="col-12 col-md-3">
-                <label class="form-label" for="hotel${num}">Hotel</label>
-                <select class="form-control hotel-select" id="hotel${num}" name="hotel${num}" ${isFirstCard ? 'required' : ''} ${!selectedCityId ? 'disabled' : ''}>
-                  <option value="" disabled ${!selectedHotelId ? 'selected' : ''}>Select Hotel</option>
-                  ${hotelsList
-              .filter(h => h.areaId == selectedCityId)
-              .map(h => `<option value="${h.hotelId}" ${h.hotelId == selectedHotelId ? 'selected' : ''}>${h.hotelName}</option>`)
-            }
-                </select>
-              </div>
-
-            </div>
-          `;
-
-          container.appendChild(card);
-
-          // Setup inputs
-          const startInput = document.getElementById(`PeriodStartDate${num}`);
-          const endInput = document.getElementById(`PeriodEndDate${num}`);
-          const nightsInput = document.getElementById(`nights${num}`);
-          const citySelect = document.getElementById(`city${num}`);
-          const hotelSelect = document.getElementById(`hotel${num}`);
-          const hiddenStart = document.querySelector(`[name="requiredStartDate${num}"]`);
-          const hiddenEnd = document.querySelector(`[name="requiredEndDate${num}"]`);
-
-          function calculateNights() {
-            const start = new Date(startInput.value);
-            const end = new Date(endInput.value);
-            if (start && end && end > start) {
-              nightsInput.value = Math.round((end - start) / (1000 * 60 * 60 * 24));
-            } else {
-              nightsInput.value = "";
-            }
-          }
-
-          flatpickr(startInput, {
-            dateFormat: "Y-m-d",
-            minDate: "today",
-            disableMobile: true,
-            defaultDate: item.startDate || null,
-            onChange: (_, dateStr) => {
-              if (hiddenStart) hiddenStart.value = dateStr;
-              calculateNights();
-            }
-          });
-
-          flatpickr(endInput, {
-            dateFormat: "Y-m-d",
-            minDate: "today",
-            disableMobile: true,
-            defaultDate: item.endDate || null,
-            onChange: (_, dateStr) => {
-              if (hiddenEnd) hiddenEnd.value = dateStr;
-              calculateNights();
-            }
-          });
-
-
-          citySelect.addEventListener('change', (e) => {
-            const selectedCityId = e.target.value;
-            item.city = selectedCityId;
-
-            const hotelsForCity = hotelsList.filter(h => h.areaId == selectedCityId);
-
-            hotelSelect.innerHTML = `<option value="" disabled selected>Select Hotel</option>` +
-              hotelsForCity.map(h => `<option value="${h.hotelId}">${h.hotelName}</option>`).join('');
-
-            hotelSelect.disabled = false;
-            item.hotel = ''; // Reset hotel
-          });
-
-
-
-          hotelSelect.addEventListener('change', () => {
-            item.hotel = hotelSelect.value;
-            console.log("✅ Updated JSON:", JSON.stringify(voucherDateAndHotelsData, null, 2));
-          });
-
-
-
-          card.querySelector('.btn-delete-datehotel').addEventListener('click', () => {
-            if (num === 1) {
-              startInput._flatpickr.clear();
-              endInput._flatpickr.clear();
-              nightsInput.value = "";
-              citySelect.value = "";
-              hotelSelect.innerHTML = `<option value="" disabled selected>Select Hotel</option>`;
-              hotelSelect.disabled = true;
-              if (hiddenStart) hiddenStart.value = "";
-              if (hiddenEnd) hiddenEnd.value = "";
-            } else {
-              voucherDateAndHotelsData.splice(index, 1);
-              renderAll();
-            }
-          });
-
-        });
-
-        // Add button state
-        if (voucherDateAndHotelsData.length >= maxCards) {
-          addBtn.classList.add('btn-disabled');
-          addBtn.setAttribute('data-locked', 'true');
-        } else {
-          addBtn.classList.remove('btn-disabled');
-          addBtn.removeAttribute('data-locked');
-        }
-      }
-
-      function addNewDateHotel() {
-        if (voucherDateAndHotelsData.length >= maxCards) return;
-        voucherDateAndHotelsData.push({
-          startDate: '',
-          endDate: '',
-          nights: '',
-          city: '',
-          hotel: ''
-        });
-        renderAll();
-      }
     });
   </script>
-
 
   <!-- Air Schedule Script -->
   <script>
@@ -1275,7 +1300,6 @@
       }
     });
   </script>
-
 
   <!-- Includes -->
   <script>
@@ -1374,6 +1398,7 @@
           select.value = "";
           customInput.value = "";
           customInput.classList.add("d-none");
+          
         } else {
           row.remove();
           includeCount--;
@@ -1382,6 +1407,7 @@
 
         updateDataFromUI();
         updateDisabledOptions();
+        
       });
 
       return row;
@@ -1445,7 +1471,6 @@
 
     document.addEventListener('DOMContentLoaded', fetchIncludeOptions);
   </script>
-
 
   <!-- Excludes -->
   <script>
@@ -1618,68 +1643,227 @@
 
 
 
-
-  <!-- Generate Voucher File -->
   <script>
-    $(document).ready(function () {
-      $('#submitVoucher').on('click', function () {
-        const $btn = $(this);
-
-        // Retrieve voucher data from PHP
-        const voucherData = <?php echo json_encode($voucher, JSON_UNESCAPED_UNICODE); ?>;
-        if (!voucherData || typeof voucherData !== 'object') {
-          alert('Invalid voucher data.');
-          return;
-        }
-
-        const voucherId = voucherData.voucherId || '';
-        const voucherName = voucherData.voucherName || 'Untitled_Voucher';
-        const fileFormat = 'xlsx';
-
-        // Disable button while generating
-        $btn.prop('disabled', true).text('Generating...');
-
-        // Trigger file generation
-        generateVoucherFile(voucherData, voucherId, voucherName, fileFormat, () => {
-          $btn.prop('disabled', false).text('Generate Voucher');
-        });
-      });
-
-      function generateVoucherFile(voucher, id, name, format, callback) {
-        $.ajax({
-          url: '../Employee Section/functions/voucher-template-excel.php',
-          type: 'POST',
-          data: {
-            voucher: JSON.stringify(voucher),
-            voucherId: id,
-            format: format
-          },
-          xhrFields: { responseType: 'blob' },
-          success: function (responseBlob) {
-            const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-            const fileExt = 'xlsx';
-            const fileName = `Voucher_${name}.${fileExt}`;
-
-            const blob = new Blob([responseBlob], { type: fileType });
-            const downloadLink = document.createElement('a');
-            downloadLink.href = URL.createObjectURL(blob);
-            downloadLink.download = fileName;
-            document.body.appendChild(downloadLink);
-            downloadLink.click();
-            document.body.removeChild(downloadLink);
-
-            console.log(`${fileExt.toUpperCase()} file generated: ${fileName}`);
-            if (typeof callback === 'function') callback();
-          },
-          error: function (xhr, status, error) {
-            console.error('Error:', status, error);
-            alert('Failed to generate the voucher file. Please try again.');
-            if (typeof callback === 'function') callback();
-          }
-        });
-      }
-    });
+    document.addEventListener('input', (e) => {
+    if (e.target.matches('#voucherName, #voucherCode, .form-control, .form-select')) {
+      updateLiveVoucherData();
+    }
+  }); 
   </script>
+
+<!-- Field Values JSON -->
+<script>
+  const serverVoucherId = <?= json_encode($voucher['voucherId']) ?>;
+  const serverAccountId = <?= json_encode($voucher['accountId']) ?>;
+
+  // 🔄 Extract all date + hotel entries
+  function extractDateAndHotelsJSON() {
+    const data = [];
+    const cards = document.querySelectorAll('.date-hotel-card');
+
+    cards.forEach(card => {
+      const num = card.getAttribute('data-card-id');
+
+      const startDate = document.getElementById(`PeriodStartDate${num}`)?.value || '';
+      const endDate = document.getElementById(`PeriodEndDate${num}`)?.value || '';
+      const nights = document.getElementById(`nights${num}`)?.value || '';
+      const city = document.getElementById(`city${num}`)?.value || '';
+      const hotel = document.getElementById(`hotel${num}`)?.value || '';
+
+      data.push({ startDate, endDate, nights, city, hotel });
+    });
+
+    return data;
+  }
+
+  // ✅ Build and return liveVoucherData with array-based includes/excludes
+  function buildLiveVoucherData() {
+    const liveVoucherData = {
+      voucherId: serverVoucherId,
+      voucherName: document.getElementById('voucherName')?.value || '',
+      voucherCode: document.getElementById('voucherCode')?.value || '',
+      accountId: serverAccountId,
+      itineraryId: parseInt(document.getElementById('itinerarySelect')?.value) || null,
+      flightId: parseInt(document.getElementById('flightId')?.value) || null,
+
+      details: {
+        sentTo: document.getElementById('voucherTo')?.value || null,
+        sentFrom: document.getElementById('voucherFrom')?.value || '',
+        noOfPax: parseInt(document.getElementById('voucherPaxCount')?.value) || 0,
+        tourType: document.getElementById('voucherTour')?.value || '',
+        tourPeriodStart: document.getElementById('voucherPeriodStart')?.value || '',
+        tourPeriodEnd: document.getElementById('voucherPeriodEnd')?.value || '',
+        guideId: parseInt(document.getElementById('guideSelect')?.value) || null,
+        countryCode: document.getElementById('countryCode')?.value || '',
+        contactNo: document.getElementById('contactNumber')?.value || ''
+      },
+
+      dateAndHotels: extractDateAndHotelsJSON(),
+
+      // ✅ Ensure includes/excludes are passed as arrays (not objects)
+      includes: Array.isArray(includesData) ? includesData : Object.values(includesData || {}),
+      excludes: Array.isArray(excludesData) ? excludesData : Object.values(excludesData || {}),
+
+      airSchedules: [
+        {
+          flightSegment: 'departureFlight',
+          flightCode: document.getElementById('departure1Flight')?.value || '',
+          flightDate: document.getElementById('departure1Date')?.value || '',
+          flightNumber: document.getElementById('departure1Flight')?.value || '',
+          origin: document.getElementById('departure1Origin')?.value || '',
+          destination: document.getElementById('departure1Destination')?.value || '',
+          departureTime: document.getElementById('departure1DepartureTime')?.value || '',
+          arrivalTime: document.getElementById('departure1ArrivalTime')?.value || ''
+        },
+        {
+          flightSegment: 'returningFlight',
+          flightDate: document.getElementById('departure2Date')?.value || '',
+          flightNumber: document.getElementById('departure2Flight')?.value || '',
+          origin: document.getElementById('departure2Origin')?.value || '',
+          destination: document.getElementById('departure2Destination')?.value || '',
+          departureTime: document.getElementById('departure2DepartureTime')?.value || '',
+          arrivalTime: document.getElementById('departure2ArrivalTime')?.value || ''
+        }
+      ],
+
+      guideMeeting: [
+        (function () {
+          const arrivalTime = document.getElementById('departure1ArrivalTime')?.value || '';
+          const arrivalDateRaw = document.getElementById('departure1Date')?.value || '';
+          const meetingTime = arrivalTime;
+          const meetingPlace = document.getElementById('departure1Destination')?.value || '';
+          const guideId = parseInt(document.getElementById('guideSelect')?.value) || null;
+
+          let finalMeetingDate = arrivalDateRaw;
+
+          // ⏱ Handle time overflow (e.g., "24:30")
+          const timeParts = arrivalTime.split(':');
+          const hour = parseInt(timeParts[0], 10);
+          const minute = parseInt(timeParts[1] || '0', 10);
+
+          if (!isNaN(hour) && hour >= 24 && arrivalDateRaw) {
+            const originalDate = new Date(arrivalDateRaw);
+            originalDate.setDate(originalDate.getDate() + 1);
+            finalMeetingDate = originalDate.toISOString().split('T')[0];
+          }
+
+          return {
+            voucherId: serverVoucherId,
+            guideId,
+            meetingTime,
+            meetingPlace,
+            meetingDate: finalMeetingDate
+          };
+        })()
+      ]
+    };
+
+    // ✅ Console logs preserved
+    console.log('Final liveVoucherData:');
+    console.log(JSON.stringify(liveVoucherData, null, 2));
+
+
+
+
+    // console.log('📦 Payload size:', JSON.stringify(liveVoucherData).length, 'characters');
+
+    return liveVoucherData;
+  }
+
+  function updateLiveVoucherData() {
+    window.liveVoucherData = buildLiveVoucherData();
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+      updateLiveVoucherData();
+    }, 100);
+  });
+</script>
+
+
+<!-- Generate Voucher File -->
+<script>
+  $(document).ready(function () {
+    $('#submitVoucher').on('click', function () {
+      const $btn = $(this);
+
+      // 🛠 Build the voucher data
+      let voucherData;
+      try {
+        voucherData = buildLiveVoucherData();
+      } catch (e) {
+        console.error('❌ Failed to build voucher data:', e);
+        alert('Error building voucher data. Please review your form inputs.');
+        return;
+      }
+
+      if (!voucherData || typeof voucherData !== 'object') {
+        alert('Invalid voucher data structure.');
+        return;
+      }
+
+      // ⚠️ Extra payload size check (server limit protection)
+      const estimatedSize = JSON.stringify(voucherData).length;
+      if (estimatedSize > 50000) {
+        alert(`Voucher data too large (${estimatedSize} chars). Please simplify.`);
+        return;
+      }
+
+      const voucherName = (voucherData.voucherName || 'Untitled_Voucher').replace(/\s+/g, '_');
+      const fileFormat = 'xlsx';
+
+      // 🔒 Disable the button while processing
+      $btn.prop('disabled', true).text('Generating...');
+
+      // 📤 Build FormData payload
+      const formData = new FormData();
+      formData.append('voucher', JSON.stringify(voucherData));
+      formData.append('format', fileFormat);
+
+      // 📡 Send to backend
+      $.ajax({
+        url: '../Employee Section/functions/voucher-template-excel.php',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        xhrFields: { responseType: 'blob' },
+
+        success: function (blob) {
+          const fileName = `Voucher_${voucherName}.${fileFormat}`;
+          const downloadBlob = new Blob([blob], {
+            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+          });
+
+          const downloadLink = document.createElement('a');
+          downloadLink.href = URL.createObjectURL(downloadBlob);
+          downloadLink.download = fileName;
+          document.body.appendChild(downloadLink);
+          downloadLink.click();
+          document.body.removeChild(downloadLink);
+
+          console.log(`✅ File downloaded: ${fileName}`);
+          console.log('📦 Sent voucherData:', voucherData);
+        },
+
+        error: function (xhr, status, error) {
+          console.error('❌ Error generating voucher:', error);
+          console.error('📩 Response:', xhr.responseText);
+          alert('❌ Failed to generate the voucher. See console for technical info.');
+        },
+
+        complete: function () {
+          $btn.prop('disabled', false).text('Generate Voucher');
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
 
 
 </body>

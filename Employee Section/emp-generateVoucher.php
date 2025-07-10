@@ -688,6 +688,7 @@
           }
         }
       });
+      
     });
   </script>
 
@@ -888,6 +889,7 @@
         tour: document.getElementById("voucherTour").value,
         attachment: attachmentValue,
         itineraryId: isToggled ? selectedItineraryId : null,
+        flightId: document.getElementById("flightId").value,
         periodStart: document.getElementById("voucherPeriodStart").value,
         periodEnd: document.getElementById("voucherPeriodEnd").value,
         paxCount: document.getElementById("voucherPaxCount").value,
@@ -1815,11 +1817,6 @@
       initExcludesSection();
     });
   </script>
-
-
-
-
-
 
 
   <!-- Insertion Script -->

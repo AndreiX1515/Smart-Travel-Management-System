@@ -1,0 +1,1355 @@
+Array
+(
+    [voucherId] => 25
+    [voucherName] => testttt2
+    [voucherCode] => VOUCHER-686F25BBF011A
+    [accountId] => 1
+    [itineraryId] => 26
+    [flightId] => 121
+    [details] => Array
+        (
+            [sentTo] => APD
+            [sentFrom] => Smart Travel
+            [noOfPax] => 42
+            [tourType] => 1
+            [tourPeriodStart] => 2025-07-07
+            [tourPeriodEnd] => 2025-07-12
+            [guideId] => 74
+            [countryCode] => +82
+            [contactNo] => 999999999
+        )
+
+    [dateAndHotels] => Array
+        (
+            [0] => Array
+                (
+                    [startDate] => 2025-07-10
+                    [endDate] => 2025-07-12
+                    [nights] => 2
+                    [city] => 4
+                    [hotel] => 1
+                )
+
+        )
+
+    [includes] => Array
+        (
+            [includes1] => Array
+                (
+                    [value] => 3
+                    [label] => 
+                )
+
+        )
+
+    [excludes] => Array
+        (
+            [excludes1] => Array
+                (
+                    [value] => 2
+                    [label] => 
+                )
+
+        )
+
+    [airSchedules] => Array
+        (
+            [0] => Array
+                (
+                    [flightSegment] => departureFlight
+                    [flightCode] => 5J188
+                    [flightDate] => 2025-04-26
+                    [flightNumber] => 5J188
+                    [origin] => MNL
+                    [destination] => ICN
+                    [departureTime] => 05:45
+                    [arrivalTime] => 10:45
+                )
+
+            [1] => Array
+                (
+                    [flightSegment] => returningFlight
+                    [flightDate] => 2025-05-01
+                    [flightNumber] => 5J187
+                    [origin] => ICN
+                    [destination] => MNL
+                    [departureTime] => 12:45
+                    [arrivalTime] => 04:00
+                )
+
+        )
+
+    [guideMeeting] => Array
+        (
+            [0] => Array
+                (
+                    [voucherId] => 25
+                    [guideId] => 74
+                    [meetingTime] => 10:45
+                    [meetingPlace] => ICN
+                    [meetingDate] => 2025-04-26
+                )
+
+        )
+
+)
+Script started at 2025-07-10 08:18:49
+Received raw JSON:
+{"voucherId":25,"voucherName":"testttt2","voucherCode":"VOUCHER-686F25BBF011A","accountId":1,"itineraryId":26,"flightId":121,"details":{"sentTo":"APD","sentFrom":"Smart Travel","noOfPax":42,"tourType":"1","tourPeriodStart":"2025-07-07","tourPeriodEnd":"2025-07-12","guideId":74,"countryCode":"+82","contactNo":"999999999"},"dateAndHotels":[{"startDate":"2025-07-10","endDate":"2025-07-12","nights":"2","city":"4","hotel":"1"}],"includes":{"includes1":{"value":"3","label":""}},"excludes":{"excludes1":{"value":"2","label":""}},"airSchedules":[{"flightSegment":"departureFlight","flightCode":"5J188","flightDate":"2025-04-26","flightNumber":"5J188","origin":"MNL","destination":"ICN","departureTime":"05:45","arrivalTime":"10:45"},{"flightSegment":"returningFlight","flightDate":"2025-05-01","flightNumber":"5J187","origin":"ICN","destination":"MNL","departureTime":"12:45","arrivalTime":"04:00"}],"guideMeeting":[{"voucherId":25,"guideId":74,"meetingTime":"10:45","meetingPlace":"ICN","meetingDate":"2025-04-26"}]}
+Decoded voucher:
+Array
+(
+    [voucherId] => 25
+    [voucherName] => testttt2
+    [voucherCode] => VOUCHER-686F25BBF011A
+    [accountId] => 1
+    [itineraryId] => 26
+    [flightId] => 121
+    [details] => Array
+        (
+            [sentTo] => APD
+            [sentFrom] => Smart Travel
+            [noOfPax] => 42
+            [tourType] => 1
+            [tourPeriodStart] => 2025-07-07
+            [tourPeriodEnd] => 2025-07-12
+            [guideId] => 74
+            [countryCode] => +82
+            [contactNo] => 999999999
+        )
+
+    [dateAndHotels] => Array
+        (
+            [0] => Array
+                (
+                    [startDate] => 2025-07-10
+                    [endDate] => 2025-07-12
+                    [nights] => 2
+                    [city] => 4
+                    [hotel] => 1
+                )
+
+        )
+
+    [includes] => Array
+        (
+            [includes1] => Array
+                (
+                    [value] => 3
+                    [label] => 
+                )
+
+        )
+
+    [excludes] => Array
+        (
+            [excludes1] => Array
+                (
+                    [value] => 2
+                    [label] => 
+                )
+
+        )
+
+    [airSchedules] => Array
+        (
+            [0] => Array
+                (
+                    [flightSegment] => departureFlight
+                    [flightCode] => 5J188
+                    [flightDate] => 2025-04-26
+                    [flightNumber] => 5J188
+                    [origin] => MNL
+                    [destination] => ICN
+                    [departureTime] => 05:45
+                    [arrivalTime] => 10:45
+                )
+
+            [1] => Array
+                (
+                    [flightSegment] => returningFlight
+                    [flightDate] => 2025-05-01
+                    [flightNumber] => 5J187
+                    [origin] => ICN
+                    [destination] => MNL
+                    [departureTime] => 12:45
+                    [arrivalTime] => 04:00
+                )
+
+        )
+
+    [guideMeeting] => Array
+        (
+            [0] => Array
+                (
+                    [voucherId] => 25
+                    [guideId] => 74
+                    [meetingTime] => 10:45
+                    [meetingPlace] => ICN
+                    [meetingDate] => 2025-04-26
+                )
+
+        )
+
+)
+Loading template: ../../Template/Voucher Template - 1.xlsx
+Exception: Unknown column 'includeItemId' in 'where clause'
+Trace: #0 C:\xampp\htdocs\Smart-Travel-Management-System\Employee Section\functions\voucher-template-excel.php(153): mysqli->prepare('SELECT itemName...')
+#1 {main}
+Script started at 2025-07-10 08:22:10
+Received raw JSON:
+{"voucherId":25,"voucherName":"testttt2","voucherCode":"VOUCHER-686F25BBF011A","accountId":1,"itineraryId":26,"flightId":121,"details":{"sentTo":"APD","sentFrom":"Smart Travel","noOfPax":42,"tourType":"1","tourPeriodStart":"2025-07-07","tourPeriodEnd":"2025-07-12","guideId":74,"countryCode":"+82","contactNo":"999999999"},"dateAndHotels":[{"startDate":"2025-07-10","endDate":"2025-07-12","nights":"2","city":"4","hotel":"1"}],"includes":{"includes1":{"value":"3","label":""}},"excludes":{"excludes1":{"value":"2","label":""}},"airSchedules":[{"flightSegment":"departureFlight","flightCode":"5J188","flightDate":"2025-04-26","flightNumber":"5J188","origin":"MNL","destination":"ICN","departureTime":"05:45","arrivalTime":"10:45"},{"flightSegment":"returningFlight","flightDate":"2025-05-01","flightNumber":"5J187","origin":"ICN","destination":"MNL","departureTime":"12:45","arrivalTime":"04:00"}],"guideMeeting":[{"voucherId":25,"guideId":74,"meetingTime":"10:45","meetingPlace":"ICN","meetingDate":"2025-04-26"}]}
+Decoded voucher:
+Array
+(
+    [voucherId] => 25
+    [voucherName] => testttt2
+    [voucherCode] => VOUCHER-686F25BBF011A
+    [accountId] => 1
+    [itineraryId] => 26
+    [flightId] => 121
+    [details] => Array
+        (
+            [sentTo] => APD
+            [sentFrom] => Smart Travel
+            [noOfPax] => 42
+            [tourType] => 1
+            [tourPeriodStart] => 2025-07-07
+            [tourPeriodEnd] => 2025-07-12
+            [guideId] => 74
+            [countryCode] => +82
+            [contactNo] => 999999999
+        )
+
+    [dateAndHotels] => Array
+        (
+            [0] => Array
+                (
+                    [startDate] => 2025-07-10
+                    [endDate] => 2025-07-12
+                    [nights] => 2
+                    [city] => 4
+                    [hotel] => 1
+                )
+
+        )
+
+    [includes] => Array
+        (
+            [includes1] => Array
+                (
+                    [value] => 3
+                    [label] => 
+                )
+
+        )
+
+    [excludes] => Array
+        (
+            [excludes1] => Array
+                (
+                    [value] => 2
+                    [label] => 
+                )
+
+        )
+
+    [airSchedules] => Array
+        (
+            [0] => Array
+                (
+                    [flightSegment] => departureFlight
+                    [flightCode] => 5J188
+                    [flightDate] => 2025-04-26
+                    [flightNumber] => 5J188
+                    [origin] => MNL
+                    [destination] => ICN
+                    [departureTime] => 05:45
+                    [arrivalTime] => 10:45
+                )
+
+            [1] => Array
+                (
+                    [flightSegment] => returningFlight
+                    [flightDate] => 2025-05-01
+                    [flightNumber] => 5J187
+                    [origin] => ICN
+                    [destination] => MNL
+                    [departureTime] => 12:45
+                    [arrivalTime] => 04:00
+                )
+
+        )
+
+    [guideMeeting] => Array
+        (
+            [0] => Array
+                (
+                    [voucherId] => 25
+                    [guideId] => 74
+                    [meetingTime] => 10:45
+                    [meetingPlace] => ICN
+                    [meetingDate] => 2025-04-26
+                )
+
+        )
+
+)
+Loading template: ../../Template/Voucher Template - 1.xlsx
+Exception: Unknown column 'includeItemId' in 'where clause'
+Trace: #0 C:\xampp\htdocs\Smart-Travel-Management-System\Employee Section\functions\voucher-template-excel.php(158): mysqli->prepare('SELECT itemName...')
+#1 {main}
+Script started at 2025-07-10 08:25:44
+Received raw JSON:
+{"voucherId":25,"voucherName":"testttt2","voucherCode":"VOUCHER-686F25BBF011A","accountId":1,"itineraryId":26,"flightId":121,"details":{"sentTo":"APD","sentFrom":"Smart Travel","noOfPax":42,"tourType":"1","tourPeriodStart":"2025-07-07","tourPeriodEnd":"2025-07-12","guideId":74,"countryCode":"+82","contactNo":"999999999"},"dateAndHotels":[{"startDate":"2025-07-10","endDate":"2025-07-12","nights":"2","city":"4","hotel":"1"}],"includes":{"includes1":{"value":"3","label":""}},"excludes":{"excludes1":{"value":"2","label":""}},"airSchedules":[{"flightSegment":"departureFlight","flightCode":"5J188","flightDate":"2025-04-26","flightNumber":"5J188","origin":"MNL","destination":"ICN","departureTime":"05:45","arrivalTime":"10:45"},{"flightSegment":"returningFlight","flightDate":"2025-05-01","flightNumber":"5J187","origin":"ICN","destination":"MNL","departureTime":"12:45","arrivalTime":"04:00"}],"guideMeeting":[{"voucherId":25,"guideId":74,"meetingTime":"10:45","meetingPlace":"ICN","meetingDate":"2025-04-26"}]}
+Decoded voucher:
+Array
+(
+    [voucherId] => 25
+    [voucherName] => testttt2
+    [voucherCode] => VOUCHER-686F25BBF011A
+    [accountId] => 1
+    [itineraryId] => 26
+    [flightId] => 121
+    [details] => Array
+        (
+            [sentTo] => APD
+            [sentFrom] => Smart Travel
+            [noOfPax] => 42
+            [tourType] => 1
+            [tourPeriodStart] => 2025-07-07
+            [tourPeriodEnd] => 2025-07-12
+            [guideId] => 74
+            [countryCode] => +82
+            [contactNo] => 999999999
+        )
+
+    [dateAndHotels] => Array
+        (
+            [0] => Array
+                (
+                    [startDate] => 2025-07-10
+                    [endDate] => 2025-07-12
+                    [nights] => 2
+                    [city] => 4
+                    [hotel] => 1
+                )
+
+        )
+
+    [includes] => Array
+        (
+            [includes1] => Array
+                (
+                    [value] => 3
+                    [label] => 
+                )
+
+        )
+
+    [excludes] => Array
+        (
+            [excludes1] => Array
+                (
+                    [value] => 2
+                    [label] => 
+                )
+
+        )
+
+    [airSchedules] => Array
+        (
+            [0] => Array
+                (
+                    [flightSegment] => departureFlight
+                    [flightCode] => 5J188
+                    [flightDate] => 2025-04-26
+                    [flightNumber] => 5J188
+                    [origin] => MNL
+                    [destination] => ICN
+                    [departureTime] => 05:45
+                    [arrivalTime] => 10:45
+                )
+
+            [1] => Array
+                (
+                    [flightSegment] => returningFlight
+                    [flightDate] => 2025-05-01
+                    [flightNumber] => 5J187
+                    [origin] => ICN
+                    [destination] => MNL
+                    [departureTime] => 12:45
+                    [arrivalTime] => 04:00
+                )
+
+        )
+
+    [guideMeeting] => Array
+        (
+            [0] => Array
+                (
+                    [voucherId] => 25
+                    [guideId] => 74
+                    [meetingTime] => 10:45
+                    [meetingPlace] => ICN
+                    [meetingDate] => 2025-04-26
+                )
+
+        )
+
+)
+Loading template: ../../Template/Voucher Template - 1.xlsx
+Exception: Unknown column 'includeItemId' in 'where clause'
+Trace: #0 C:\xampp\htdocs\Smart-Travel-Management-System\Employee Section\functions\voucher-template-excel.php(158): mysqli->prepare('SELECT itemName...')
+#1 {main}
+Script started at 2025-07-10 08:35:35
+Received raw JSON:
+{"voucherId":25,"voucherName":"testttt2","voucherCode":"VOUCHER-686F25BBF011A","accountId":1,"itineraryId":26,"flightId":121,"details":{"sentTo":"APD","sentFrom":"Smart Travel","noOfPax":42,"tourType":"1","tourPeriodStart":"2025-07-07","tourPeriodEnd":"2025-07-12","guideId":74,"countryCode":"+82","contactNo":"999999999"},"dateAndHotels":[{"startDate":"2025-07-10","endDate":"2025-07-12","nights":"2","city":"4","hotel":"1"}],"includes":{"includes1":{"value":"3","label":""}},"excludes":{"excludes1":{"value":"2","label":""}},"airSchedules":[{"flightSegment":"departureFlight","flightCode":"5J188","flightDate":"2025-04-26","flightNumber":"5J188","origin":"MNL","destination":"ICN","departureTime":"05:45","arrivalTime":"10:45"},{"flightSegment":"returningFlight","flightDate":"2025-05-01","flightNumber":"5J187","origin":"ICN","destination":"MNL","departureTime":"12:45","arrivalTime":"04:00"}],"guideMeeting":[{"voucherId":25,"guideId":74,"meetingTime":"10:45","meetingPlace":"ICN","meetingDate":"2025-04-26"}]}
+Decoded voucher:
+Array
+(
+    [voucherId] => 25
+    [voucherName] => testttt2
+    [voucherCode] => VOUCHER-686F25BBF011A
+    [accountId] => 1
+    [itineraryId] => 26
+    [flightId] => 121
+    [details] => Array
+        (
+            [sentTo] => APD
+            [sentFrom] => Smart Travel
+            [noOfPax] => 42
+            [tourType] => 1
+            [tourPeriodStart] => 2025-07-07
+            [tourPeriodEnd] => 2025-07-12
+            [guideId] => 74
+            [countryCode] => +82
+            [contactNo] => 999999999
+        )
+
+    [dateAndHotels] => Array
+        (
+            [0] => Array
+                (
+                    [startDate] => 2025-07-10
+                    [endDate] => 2025-07-12
+                    [nights] => 2
+                    [city] => 4
+                    [hotel] => 1
+                )
+
+        )
+
+    [includes] => Array
+        (
+            [includes1] => Array
+                (
+                    [value] => 3
+                    [label] => 
+                )
+
+        )
+
+    [excludes] => Array
+        (
+            [excludes1] => Array
+                (
+                    [value] => 2
+                    [label] => 
+                )
+
+        )
+
+    [airSchedules] => Array
+        (
+            [0] => Array
+                (
+                    [flightSegment] => departureFlight
+                    [flightCode] => 5J188
+                    [flightDate] => 2025-04-26
+                    [flightNumber] => 5J188
+                    [origin] => MNL
+                    [destination] => ICN
+                    [departureTime] => 05:45
+                    [arrivalTime] => 10:45
+                )
+
+            [1] => Array
+                (
+                    [flightSegment] => returningFlight
+                    [flightDate] => 2025-05-01
+                    [flightNumber] => 5J187
+                    [origin] => ICN
+                    [destination] => MNL
+                    [departureTime] => 12:45
+                    [arrivalTime] => 04:00
+                )
+
+        )
+
+    [guideMeeting] => Array
+        (
+            [0] => Array
+                (
+                    [voucherId] => 25
+                    [guideId] => 74
+                    [meetingTime] => 10:45
+                    [meetingPlace] => ICN
+                    [meetingDate] => 2025-04-26
+                )
+
+        )
+
+)
+Loading template: ../../Template/Voucher Template - 1.xlsx
+Exception: Unknown column 'includeItemId' in 'where clause'
+Trace: #0 C:\xampp\htdocs\Smart-Travel-Management-System\Employee Section\functions\voucher-template-excel.php(158): mysqli->prepare('SELECT itemName...')
+#1 {main}
+Script started at 2025-07-10 08:41:40
+Received raw JSON:
+{"voucherId":25,"voucherName":"testttt2","voucherCode":"VOUCHER-686F25BBF011A","accountId":1,"itineraryId":26,"flightId":121,"details":{"sentTo":"APD","sentFrom":"Smart Travel","noOfPax":42,"tourType":"1","tourPeriodStart":"2025-07-07","tourPeriodEnd":"2025-07-12","guideId":74,"countryCode":"+82","contactNo":"999999999"},"dateAndHotels":[{"startDate":"2025-07-10","endDate":"2025-07-12","nights":"2","city":"4","hotel":"1"}],"includes":{"includes1":{"value":"3","label":""}},"excludes":{"excludes1":{"value":"2","label":""}},"airSchedules":[{"flightSegment":"departureFlight","flightCode":"5J188","flightDate":"2025-04-26","flightNumber":"5J188","origin":"MNL","destination":"ICN","departureTime":"05:45","arrivalTime":"10:45"},{"flightSegment":"returningFlight","flightDate":"2025-05-01","flightNumber":"5J187","origin":"ICN","destination":"MNL","departureTime":"12:45","arrivalTime":"04:00"}],"guideMeeting":[{"voucherId":25,"guideId":74,"meetingTime":"10:45","meetingPlace":"ICN","meetingDate":"2025-04-26"}]}
+Decoded voucher:
+Array
+(
+    [voucherId] => 25
+    [voucherName] => testttt2
+    [voucherCode] => VOUCHER-686F25BBF011A
+    [accountId] => 1
+    [itineraryId] => 26
+    [flightId] => 121
+    [details] => Array
+        (
+            [sentTo] => APD
+            [sentFrom] => Smart Travel
+            [noOfPax] => 42
+            [tourType] => 1
+            [tourPeriodStart] => 2025-07-07
+            [tourPeriodEnd] => 2025-07-12
+            [guideId] => 74
+            [countryCode] => +82
+            [contactNo] => 999999999
+        )
+
+    [dateAndHotels] => Array
+        (
+            [0] => Array
+                (
+                    [startDate] => 2025-07-10
+                    [endDate] => 2025-07-12
+                    [nights] => 2
+                    [city] => 4
+                    [hotel] => 1
+                )
+
+        )
+
+    [includes] => Array
+        (
+            [includes1] => Array
+                (
+                    [value] => 3
+                    [label] => 
+                )
+
+        )
+
+    [excludes] => Array
+        (
+            [excludes1] => Array
+                (
+                    [value] => 2
+                    [label] => 
+                )
+
+        )
+
+    [airSchedules] => Array
+        (
+            [0] => Array
+                (
+                    [flightSegment] => departureFlight
+                    [flightCode] => 5J188
+                    [flightDate] => 2025-04-26
+                    [flightNumber] => 5J188
+                    [origin] => MNL
+                    [destination] => ICN
+                    [departureTime] => 05:45
+                    [arrivalTime] => 10:45
+                )
+
+            [1] => Array
+                (
+                    [flightSegment] => returningFlight
+                    [flightDate] => 2025-05-01
+                    [flightNumber] => 5J187
+                    [origin] => ICN
+                    [destination] => MNL
+                    [departureTime] => 12:45
+                    [arrivalTime] => 04:00
+                )
+
+        )
+
+    [guideMeeting] => Array
+        (
+            [0] => Array
+                (
+                    [voucherId] => 25
+                    [guideId] => 74
+                    [meetingTime] => 10:45
+                    [meetingPlace] => ICN
+                    [meetingDate] => 2025-04-26
+                )
+
+        )
+
+)
+Loading template: ../../Template/Voucher Template - 1.xlsx
+Exception: Unknown column 'includeItemId' in 'where clause'
+Trace: #0 C:\xampp\htdocs\Smart-Travel-Management-System\Employee Section\functions\voucher-template-excel.php(158): mysqli->prepare('SELECT itemName...')
+#1 {main}
+Script started at 2025-07-10 08:47:01
+Received raw JSON:
+{"voucherId":25,"voucherName":"testttt2","voucherCode":"VOUCHER-686F25BBF011A","accountId":1,"itineraryId":26,"flightId":121,"details":{"sentTo":"APD","sentFrom":"Smart Travel","noOfPax":42,"tourType":"1","tourPeriodStart":"2025-07-07","tourPeriodEnd":"2025-07-12","guideId":74,"countryCode":"+82","contactNo":"999999999"},"dateAndHotels":[{"startDate":"2025-07-10","endDate":"2025-07-12","nights":"2","city":"4","hotel":"1"}],"includes":[{"value":"3","label":""}],"excludes":[{"value":"2","label":""}],"airSchedules":[{"flightSegment":"departureFlight","flightCode":"5J188","flightDate":"2025-04-26","flightNumber":"5J188","origin":"MNL","destination":"ICN","departureTime":"05:45","arrivalTime":"10:45"},{"flightSegment":"returningFlight","flightDate":"2025-05-01","flightNumber":"5J187","origin":"ICN","destination":"MNL","departureTime":"12:45","arrivalTime":"04:00"}],"guideMeeting":[{"voucherId":25,"guideId":74,"meetingTime":"10:45","meetingPlace":"ICN","meetingDate":"2025-04-26"}]}
+Decoded voucher:
+Array
+(
+    [voucherId] => 25
+    [voucherName] => testttt2
+    [voucherCode] => VOUCHER-686F25BBF011A
+    [accountId] => 1
+    [itineraryId] => 26
+    [flightId] => 121
+    [details] => Array
+        (
+            [sentTo] => APD
+            [sentFrom] => Smart Travel
+            [noOfPax] => 42
+            [tourType] => 1
+            [tourPeriodStart] => 2025-07-07
+            [tourPeriodEnd] => 2025-07-12
+            [guideId] => 74
+            [countryCode] => +82
+            [contactNo] => 999999999
+        )
+
+    [dateAndHotels] => Array
+        (
+            [0] => Array
+                (
+                    [startDate] => 2025-07-10
+                    [endDate] => 2025-07-12
+                    [nights] => 2
+                    [city] => 4
+                    [hotel] => 1
+                )
+
+        )
+
+    [includes] => Array
+        (
+            [0] => Array
+                (
+                    [value] => 3
+                    [label] => 
+                )
+
+        )
+
+    [excludes] => Array
+        (
+            [0] => Array
+                (
+                    [value] => 2
+                    [label] => 
+                )
+
+        )
+
+    [airSchedules] => Array
+        (
+            [0] => Array
+                (
+                    [flightSegment] => departureFlight
+                    [flightCode] => 5J188
+                    [flightDate] => 2025-04-26
+                    [flightNumber] => 5J188
+                    [origin] => MNL
+                    [destination] => ICN
+                    [departureTime] => 05:45
+                    [arrivalTime] => 10:45
+                )
+
+            [1] => Array
+                (
+                    [flightSegment] => returningFlight
+                    [flightDate] => 2025-05-01
+                    [flightNumber] => 5J187
+                    [origin] => ICN
+                    [destination] => MNL
+                    [departureTime] => 12:45
+                    [arrivalTime] => 04:00
+                )
+
+        )
+
+    [guideMeeting] => Array
+        (
+            [0] => Array
+                (
+                    [voucherId] => 25
+                    [guideId] => 74
+                    [meetingTime] => 10:45
+                    [meetingPlace] => ICN
+                    [meetingDate] => 2025-04-26
+                )
+
+        )
+
+)
+Loading template: ../../Template/Voucher Template - 1.xlsx
+Exception: Unknown column 'includeItemId' in 'where clause'
+Trace: #0 C:\xampp\htdocs\Smart-Travel-Management-System\Employee Section\functions\voucher-template-excel.php(158): mysqli->prepare('SELECT itemName...')
+#1 {main}
+Script started at 2025-07-10 08:51:20
+Received raw JSON:
+{"voucherId":25,"voucherName":"testttt2","voucherCode":"VOUCHER-686F25BBF011A","accountId":1,"itineraryId":26,"flightId":121,"details":{"sentTo":"APD","sentFrom":"Smart Travel","noOfPax":42,"tourType":"1","tourPeriodStart":"2025-07-07","tourPeriodEnd":"2025-07-12","guideId":74,"countryCode":"+82","contactNo":"999999999"},"dateAndHotels":[{"startDate":"2025-07-10","endDate":"2025-07-12","nights":"2","city":"4","hotel":"1"}],"includes":[{"value":"3","label":""}],"excludes":[{"value":"2","label":""}],"airSchedules":[{"flightSegment":"departureFlight","flightCode":"5J188","flightDate":"2025-04-26","flightNumber":"5J188","origin":"MNL","destination":"ICN","departureTime":"05:45","arrivalTime":"10:45"},{"flightSegment":"returningFlight","flightDate":"2025-05-01","flightNumber":"5J187","origin":"ICN","destination":"MNL","departureTime":"12:45","arrivalTime":"04:00"}],"guideMeeting":[{"voucherId":25,"guideId":74,"meetingTime":"10:45","meetingPlace":"ICN","meetingDate":"2025-04-26"}]}
+Decoded voucher:
+Array
+(
+    [voucherId] => 25
+    [voucherName] => testttt2
+    [voucherCode] => VOUCHER-686F25BBF011A
+    [accountId] => 1
+    [itineraryId] => 26
+    [flightId] => 121
+    [details] => Array
+        (
+            [sentTo] => APD
+            [sentFrom] => Smart Travel
+            [noOfPax] => 42
+            [tourType] => 1
+            [tourPeriodStart] => 2025-07-07
+            [tourPeriodEnd] => 2025-07-12
+            [guideId] => 74
+            [countryCode] => +82
+            [contactNo] => 999999999
+        )
+
+    [dateAndHotels] => Array
+        (
+            [0] => Array
+                (
+                    [startDate] => 2025-07-10
+                    [endDate] => 2025-07-12
+                    [nights] => 2
+                    [city] => 4
+                    [hotel] => 1
+                )
+
+        )
+
+    [includes] => Array
+        (
+            [0] => Array
+                (
+                    [value] => 3
+                    [label] => 
+                )
+
+        )
+
+    [excludes] => Array
+        (
+            [0] => Array
+                (
+                    [value] => 2
+                    [label] => 
+                )
+
+        )
+
+    [airSchedules] => Array
+        (
+            [0] => Array
+                (
+                    [flightSegment] => departureFlight
+                    [flightCode] => 5J188
+                    [flightDate] => 2025-04-26
+                    [flightNumber] => 5J188
+                    [origin] => MNL
+                    [destination] => ICN
+                    [departureTime] => 05:45
+                    [arrivalTime] => 10:45
+                )
+
+            [1] => Array
+                (
+                    [flightSegment] => returningFlight
+                    [flightDate] => 2025-05-01
+                    [flightNumber] => 5J187
+                    [origin] => ICN
+                    [destination] => MNL
+                    [departureTime] => 12:45
+                    [arrivalTime] => 04:00
+                )
+
+        )
+
+    [guideMeeting] => Array
+        (
+            [0] => Array
+                (
+                    [voucherId] => 25
+                    [guideId] => 74
+                    [meetingTime] => 10:45
+                    [meetingPlace] => ICN
+                    [meetingDate] => 2025-04-26
+                )
+
+        )
+
+)
+Loading template: ../../Template/Voucher Template - 1.xlsx
+Exception: Unknown column 'includeItemId' in 'where clause'
+Trace: #0 C:\xampp\htdocs\Smart-Travel-Management-System\Employee Section\functions\voucher-template-excel.php(158): mysqli->prepare('SELECT itemName...')
+#1 {main}
+Script started at 2025-07-10 08:56:16
+Received raw JSON:
+{"voucherId":25,"voucherName":"testttt2","voucherCode":"VOUCHER-686F25BBF011A","accountId":1,"itineraryId":26,"flightId":121,"details":{"sentTo":"APD","sentFrom":"Smart Travel","noOfPax":42,"tourType":"1","tourPeriodStart":"2025-07-07","tourPeriodEnd":"2025-07-12","guideId":74,"countryCode":"+82","contactNo":"999999999"},"dateAndHotels":[{"startDate":"2025-07-10","endDate":"2025-07-12","nights":"2","city":"4","hotel":"1"}],"includes":[{"value":"3","label":""}],"excludes":[{"value":"2","label":""}],"airSchedules":[{"flightSegment":"departureFlight","flightCode":"5J188","flightDate":"2025-04-26","flightNumber":"5J188","origin":"MNL","destination":"ICN","departureTime":"05:45","arrivalTime":"10:45"},{"flightSegment":"returningFlight","flightDate":"2025-05-01","flightNumber":"5J187","origin":"ICN","destination":"MNL","departureTime":"12:45","arrivalTime":"04:00"}],"guideMeeting":[{"voucherId":25,"guideId":74,"meetingTime":"10:45","meetingPlace":"ICN","meetingDate":"2025-04-26"}]}
+Decoded voucher:
+Array
+(
+    [voucherId] => 25
+    [voucherName] => testttt2
+    [voucherCode] => VOUCHER-686F25BBF011A
+    [accountId] => 1
+    [itineraryId] => 26
+    [flightId] => 121
+    [details] => Array
+        (
+            [sentTo] => APD
+            [sentFrom] => Smart Travel
+            [noOfPax] => 42
+            [tourType] => 1
+            [tourPeriodStart] => 2025-07-07
+            [tourPeriodEnd] => 2025-07-12
+            [guideId] => 74
+            [countryCode] => +82
+            [contactNo] => 999999999
+        )
+
+    [dateAndHotels] => Array
+        (
+            [0] => Array
+                (
+                    [startDate] => 2025-07-10
+                    [endDate] => 2025-07-12
+                    [nights] => 2
+                    [city] => 4
+                    [hotel] => 1
+                )
+
+        )
+
+    [includes] => Array
+        (
+            [0] => Array
+                (
+                    [value] => 3
+                    [label] => 
+                )
+
+        )
+
+    [excludes] => Array
+        (
+            [0] => Array
+                (
+                    [value] => 2
+                    [label] => 
+                )
+
+        )
+
+    [airSchedules] => Array
+        (
+            [0] => Array
+                (
+                    [flightSegment] => departureFlight
+                    [flightCode] => 5J188
+                    [flightDate] => 2025-04-26
+                    [flightNumber] => 5J188
+                    [origin] => MNL
+                    [destination] => ICN
+                    [departureTime] => 05:45
+                    [arrivalTime] => 10:45
+                )
+
+            [1] => Array
+                (
+                    [flightSegment] => returningFlight
+                    [flightDate] => 2025-05-01
+                    [flightNumber] => 5J187
+                    [origin] => ICN
+                    [destination] => MNL
+                    [departureTime] => 12:45
+                    [arrivalTime] => 04:00
+                )
+
+        )
+
+    [guideMeeting] => Array
+        (
+            [0] => Array
+                (
+                    [voucherId] => 25
+                    [guideId] => 74
+                    [meetingTime] => 10:45
+                    [meetingPlace] => ICN
+                    [meetingDate] => 2025-04-26
+                )
+
+        )
+
+)
+Loading template: ../../Template/Voucher Template - 1.xlsx
+Exception: Unknown column 'includeItemId' in 'where clause'
+Trace: #0 C:\xampp\htdocs\Smart-Travel-Management-System\Employee Section\functions\voucher-template-excel.php(176): mysqli->prepare('SELECT itemName...')
+#1 {main}
+Script started at 2025-07-10 08:59:39
+Received raw JSON:
+{"voucherId":25,"voucherName":"testttt2","voucherCode":"VOUCHER-686F25BBF011A","accountId":1,"itineraryId":26,"flightId":121,"details":{"sentTo":"APD","sentFrom":"Smart Travel","noOfPax":42,"tourType":"1","tourPeriodStart":"2025-07-07","tourPeriodEnd":"2025-07-12","guideId":74,"countryCode":"+82","contactNo":"999999999"},"dateAndHotels":[{"startDate":"2025-07-10","endDate":"2025-07-12","nights":"2","city":"4","hotel":"1"}],"includes":[{"value":"3","label":""}],"excludes":[{"value":"2","label":""}],"airSchedules":[{"flightSegment":"departureFlight","flightCode":"5J188","flightDate":"2025-04-26","flightNumber":"5J188","origin":"MNL","destination":"ICN","departureTime":"05:45","arrivalTime":"10:45"},{"flightSegment":"returningFlight","flightDate":"2025-05-01","flightNumber":"5J187","origin":"ICN","destination":"MNL","departureTime":"12:45","arrivalTime":"04:00"}],"guideMeeting":[{"voucherId":25,"guideId":74,"meetingTime":"10:45","meetingPlace":"ICN","meetingDate":"2025-04-26"}]}
+Decoded voucher:
+Array
+(
+    [voucherId] => 25
+    [voucherName] => testttt2
+    [voucherCode] => VOUCHER-686F25BBF011A
+    [accountId] => 1
+    [itineraryId] => 26
+    [flightId] => 121
+    [details] => Array
+        (
+            [sentTo] => APD
+            [sentFrom] => Smart Travel
+            [noOfPax] => 42
+            [tourType] => 1
+            [tourPeriodStart] => 2025-07-07
+            [tourPeriodEnd] => 2025-07-12
+            [guideId] => 74
+            [countryCode] => +82
+            [contactNo] => 999999999
+        )
+
+    [dateAndHotels] => Array
+        (
+            [0] => Array
+                (
+                    [startDate] => 2025-07-10
+                    [endDate] => 2025-07-12
+                    [nights] => 2
+                    [city] => 4
+                    [hotel] => 1
+                )
+
+        )
+
+    [includes] => Array
+        (
+            [0] => Array
+                (
+                    [value] => 3
+                    [label] => 
+                )
+
+        )
+
+    [excludes] => Array
+        (
+            [0] => Array
+                (
+                    [value] => 2
+                    [label] => 
+                )
+
+        )
+
+    [airSchedules] => Array
+        (
+            [0] => Array
+                (
+                    [flightSegment] => departureFlight
+                    [flightCode] => 5J188
+                    [flightDate] => 2025-04-26
+                    [flightNumber] => 5J188
+                    [origin] => MNL
+                    [destination] => ICN
+                    [departureTime] => 05:45
+                    [arrivalTime] => 10:45
+                )
+
+            [1] => Array
+                (
+                    [flightSegment] => returningFlight
+                    [flightDate] => 2025-05-01
+                    [flightNumber] => 5J187
+                    [origin] => ICN
+                    [destination] => MNL
+                    [departureTime] => 12:45
+                    [arrivalTime] => 04:00
+                )
+
+        )
+
+    [guideMeeting] => Array
+        (
+            [0] => Array
+                (
+                    [voucherId] => 25
+                    [guideId] => 74
+                    [meetingTime] => 10:45
+                    [meetingPlace] => ICN
+                    [meetingDate] => 2025-04-26
+                )
+
+        )
+
+)
+Loading template: ../../Template/Voucher Template - 1.xlsx
+Excel file output success at 2025-07-10 08:59:39
+Script started at 2025-07-10 09:18:06
+Received raw JSON:
+{"voucherId":25,"voucherName":"testttt2","voucherCode":"VOUCHER-686F25BBF011A","accountId":1,"itineraryId":26,"flightId":121,"details":{"sentTo":"APD","sentFrom":"Smart Travel","noOfPax":42,"tourType":"1","tourPeriodStart":"2025-07-07","tourPeriodEnd":"2025-07-12","guideId":74,"countryCode":"+82","contactNo":"999999999"},"dateAndHotels":[{"startDate":"2025-07-10","endDate":"2025-07-12","nights":"2","city":"4","hotel":"1"}],"includes":[{"value":"3","label":""}],"excludes":[{"value":"2","label":""}],"airSchedules":[{"flightSegment":"departureFlight","flightCode":"5J188","flightDate":"2025-04-26","flightNumber":"5J188","origin":"MNL","destination":"ICN","departureTime":"05:45","arrivalTime":"10:45"},{"flightSegment":"returningFlight","flightDate":"2025-05-01","flightNumber":"5J187","origin":"ICN","destination":"MNL","departureTime":"12:45","arrivalTime":"04:00"}],"guideMeeting":[{"voucherId":25,"guideId":74,"meetingTime":"10:45","meetingPlace":"ICN","meetingDate":"2025-04-26"}]}
+Decoded voucher:
+Array
+(
+    [voucherId] => 25
+    [voucherName] => testttt2
+    [voucherCode] => VOUCHER-686F25BBF011A
+    [accountId] => 1
+    [itineraryId] => 26
+    [flightId] => 121
+    [details] => Array
+        (
+            [sentTo] => APD
+            [sentFrom] => Smart Travel
+            [noOfPax] => 42
+            [tourType] => 1
+            [tourPeriodStart] => 2025-07-07
+            [tourPeriodEnd] => 2025-07-12
+            [guideId] => 74
+            [countryCode] => +82
+            [contactNo] => 999999999
+        )
+
+    [dateAndHotels] => Array
+        (
+            [0] => Array
+                (
+                    [startDate] => 2025-07-10
+                    [endDate] => 2025-07-12
+                    [nights] => 2
+                    [city] => 4
+                    [hotel] => 1
+                )
+
+        )
+
+    [includes] => Array
+        (
+            [0] => Array
+                (
+                    [value] => 3
+                    [label] => 
+                )
+
+        )
+
+    [excludes] => Array
+        (
+            [0] => Array
+                (
+                    [value] => 2
+                    [label] => 
+                )
+
+        )
+
+    [airSchedules] => Array
+        (
+            [0] => Array
+                (
+                    [flightSegment] => departureFlight
+                    [flightCode] => 5J188
+                    [flightDate] => 2025-04-26
+                    [flightNumber] => 5J188
+                    [origin] => MNL
+                    [destination] => ICN
+                    [departureTime] => 05:45
+                    [arrivalTime] => 10:45
+                )
+
+            [1] => Array
+                (
+                    [flightSegment] => returningFlight
+                    [flightDate] => 2025-05-01
+                    [flightNumber] => 5J187
+                    [origin] => ICN
+                    [destination] => MNL
+                    [departureTime] => 12:45
+                    [arrivalTime] => 04:00
+                )
+
+        )
+
+    [guideMeeting] => Array
+        (
+            [0] => Array
+                (
+                    [voucherId] => 25
+                    [guideId] => 74
+                    [meetingTime] => 10:45
+                    [meetingPlace] => ICN
+                    [meetingDate] => 2025-04-26
+                )
+
+        )
+
+)
+Loading template: ../../Template/Voucher Template - 1.xlsx
+Excel file output success at 2025-07-10 09:18:06
+Script started at 2025-07-10 09:19:20
+Received raw JSON:
+{"voucherId":25,"voucherName":"testttt2","voucherCode":"VOUCHER-686F25BBF011A","accountId":1,"itineraryId":26,"flightId":121,"details":{"sentTo":"APD","sentFrom":"Smart Travel","noOfPax":42,"tourType":"1","tourPeriodStart":"2025-07-07","tourPeriodEnd":"2025-07-12","guideId":74,"countryCode":"+82","contactNo":"999999999"},"dateAndHotels":[{"startDate":"2025-07-10","endDate":"2025-07-12","nights":"2","city":"4","hotel":"1"}],"includes":[{"value":"3","label":""}],"excludes":[{"value":"2","label":""}],"airSchedules":[{"flightSegment":"departureFlight","flightCode":"5J188","flightDate":"2025-04-26","flightNumber":"5J188","origin":"MNL","destination":"ICN","departureTime":"05:45","arrivalTime":"10:45"},{"flightSegment":"returningFlight","flightDate":"2025-05-01","flightNumber":"5J187","origin":"ICN","destination":"MNL","departureTime":"12:45","arrivalTime":"04:00"}],"guideMeeting":[{"voucherId":25,"guideId":74,"meetingTime":"10:45","meetingPlace":"ICN","meetingDate":"2025-04-26"}]}
+Decoded voucher:
+Array
+(
+    [voucherId] => 25
+    [voucherName] => testttt2
+    [voucherCode] => VOUCHER-686F25BBF011A
+    [accountId] => 1
+    [itineraryId] => 26
+    [flightId] => 121
+    [details] => Array
+        (
+            [sentTo] => APD
+            [sentFrom] => Smart Travel
+            [noOfPax] => 42
+            [tourType] => 1
+            [tourPeriodStart] => 2025-07-07
+            [tourPeriodEnd] => 2025-07-12
+            [guideId] => 74
+            [countryCode] => +82
+            [contactNo] => 999999999
+        )
+
+    [dateAndHotels] => Array
+        (
+            [0] => Array
+                (
+                    [startDate] => 2025-07-10
+                    [endDate] => 2025-07-12
+                    [nights] => 2
+                    [city] => 4
+                    [hotel] => 1
+                )
+
+        )
+
+    [includes] => Array
+        (
+            [0] => Array
+                (
+                    [value] => 3
+                    [label] => 
+                )
+
+        )
+
+    [excludes] => Array
+        (
+            [0] => Array
+                (
+                    [value] => 2
+                    [label] => 
+                )
+
+        )
+
+    [airSchedules] => Array
+        (
+            [0] => Array
+                (
+                    [flightSegment] => departureFlight
+                    [flightCode] => 5J188
+                    [flightDate] => 2025-04-26
+                    [flightNumber] => 5J188
+                    [origin] => MNL
+                    [destination] => ICN
+                    [departureTime] => 05:45
+                    [arrivalTime] => 10:45
+                )
+
+            [1] => Array
+                (
+                    [flightSegment] => returningFlight
+                    [flightDate] => 2025-05-01
+                    [flightNumber] => 5J187
+                    [origin] => ICN
+                    [destination] => MNL
+                    [departureTime] => 12:45
+                    [arrivalTime] => 04:00
+                )
+
+        )
+
+    [guideMeeting] => Array
+        (
+            [0] => Array
+                (
+                    [voucherId] => 25
+                    [guideId] => 74
+                    [meetingTime] => 10:45
+                    [meetingPlace] => ICN
+                    [meetingDate] => 2025-04-26
+                )
+
+        )
+
+)
+Loading template: ../../Template/Voucher Template - 1.xlsx
+Excel file output success at 2025-07-10 09:19:20
+Script started at 2025-07-10 09:20:27
+Received raw JSON:
+{"voucherId":25,"voucherName":"testttt2","voucherCode":"VOUCHER-686F25BBF011A","accountId":1,"itineraryId":26,"flightId":121,"details":{"sentTo":"APD","sentFrom":"Smart Travel","noOfPax":42,"tourType":"1","tourPeriodStart":"2025-07-07","tourPeriodEnd":"2025-07-12","guideId":74,"countryCode":"+82","contactNo":"999999999"},"dateAndHotels":[{"startDate":"2025-07-10","endDate":"2025-07-12","nights":"2","city":"4","hotel":"1"}],"includes":[{"value":"3","label":""}],"excludes":[{"value":"2","label":""}],"airSchedules":[{"flightSegment":"departureFlight","flightCode":"5J188","flightDate":"2025-04-26","flightNumber":"5J188","origin":"MNL","destination":"ICN","departureTime":"05:45","arrivalTime":"10:45"},{"flightSegment":"returningFlight","flightDate":"2025-05-01","flightNumber":"5J187","origin":"ICN","destination":"MNL","departureTime":"12:45","arrivalTime":"04:00"}],"guideMeeting":[{"voucherId":25,"guideId":74,"meetingTime":"10:45","meetingPlace":"ICN","meetingDate":"2025-04-26"}]}
+Decoded voucher:
+Array
+(
+    [voucherId] => 25
+    [voucherName] => testttt2
+    [voucherCode] => VOUCHER-686F25BBF011A
+    [accountId] => 1
+    [itineraryId] => 26
+    [flightId] => 121
+    [details] => Array
+        (
+            [sentTo] => APD
+            [sentFrom] => Smart Travel
+            [noOfPax] => 42
+            [tourType] => 1
+            [tourPeriodStart] => 2025-07-07
+            [tourPeriodEnd] => 2025-07-12
+            [guideId] => 74
+            [countryCode] => +82
+            [contactNo] => 999999999
+        )
+
+    [dateAndHotels] => Array
+        (
+            [0] => Array
+                (
+                    [startDate] => 2025-07-10
+                    [endDate] => 2025-07-12
+                    [nights] => 2
+                    [city] => 4
+                    [hotel] => 1
+                )
+
+        )
+
+    [includes] => Array
+        (
+            [0] => Array
+                (
+                    [value] => 3
+                    [label] => 
+                )
+
+        )
+
+    [excludes] => Array
+        (
+            [0] => Array
+                (
+                    [value] => 2
+                    [label] => 
+                )
+
+        )
+
+    [airSchedules] => Array
+        (
+            [0] => Array
+                (
+                    [flightSegment] => departureFlight
+                    [flightCode] => 5J188
+                    [flightDate] => 2025-04-26
+                    [flightNumber] => 5J188
+                    [origin] => MNL
+                    [destination] => ICN
+                    [departureTime] => 05:45
+                    [arrivalTime] => 10:45
+                )
+
+            [1] => Array
+                (
+                    [flightSegment] => returningFlight
+                    [flightDate] => 2025-05-01
+                    [flightNumber] => 5J187
+                    [origin] => ICN
+                    [destination] => MNL
+                    [departureTime] => 12:45
+                    [arrivalTime] => 04:00
+                )
+
+        )
+
+    [guideMeeting] => Array
+        (
+            [0] => Array
+                (
+                    [voucherId] => 25
+                    [guideId] => 74
+                    [meetingTime] => 10:45
+                    [meetingPlace] => ICN
+                    [meetingDate] => 2025-04-26
+                )
+
+        )
+
+)
+Loading template: ../../Template/Voucher Template - 1.xlsx
+Excel file output success at 2025-07-10 09:20:27
+ExportVoucher1Day started at 2025-07-10 09:55:28
+Excel file output success at 2025-07-10 09:55:28
+ExportVoucher1Day started at 2025-07-10 10:01:07
+Excel file output success at 2025-07-10 10:01:07
+ExportVoucher1Day started at 2025-07-10 10:04:32
+Excel file output success at 2025-07-10 10:04:32
+ExportVoucher1Day started at 2025-07-10 10:06:32
+Excel file output success at 2025-07-10 10:06:32
+ExportVoucher1Day started at 2025-07-10 10:07:50
+Excel file output success at 2025-07-10 10:07:50
+ExportVoucher1Day started at 2025-07-10 10:08:35
+Excel file output success at 2025-07-10 10:08:35
+ExportVoucher1Day started at 2025-07-10 10:12:02
+Excel file output success at 2025-07-10 10:12:02
+ExportVoucher1Day started at 2025-07-10 10:12:49
+Excel file output success at 2025-07-10 10:12:50
+ExportVoucher1Day started at 2025-07-10 10:15:00
+Excel file output success at 2025-07-10 10:15:00
+ExportVoucher1Day started at 2025-07-10 10:15:30
+Excel file output success at 2025-07-10 10:15:30
+ExportVoucher1Day started at 2025-07-10 10:32:00
+Excel file output success at 2025-07-10 10:32:00
+ExportVoucher1Day started at 2025-07-10 10:35:41
+Excel file output success at 2025-07-10 10:35:41
+ExportVoucher1Day started at 2025-07-10 10:39:55
+Excel file output success at 2025-07-10 10:39:55
+ExportVoucher1Day started at 2025-07-10 10:41:42
+Excel file output success at 2025-07-10 10:41:42
+ExportVoucher1Day started at 2025-07-10 10:42:48
+Excel file output success at 2025-07-10 10:42:48
+ExportVoucher1Day started at 2025-07-10 10:43:29
+Excel file output success at 2025-07-10 10:43:29

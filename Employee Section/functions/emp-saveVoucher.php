@@ -60,8 +60,8 @@ try {
   $stmtCheck = $conn->prepare("SELECT COUNT(*) FROM vouchers WHERE voucherCode = ?");
 
   $stmtVoucher = $conn->prepare("
-    INSERT INTO vouchers (voucherName, accountId, voucherCode, itineraryId) 
-    VALUES (?, ?, ?, ?)
+    INSERT INTO vouchers (voucherName, accountId, voucherCode, itineraryId, flightId) 
+    VALUES (?, ?, ?, ?, ?)
   ");
 
   $stmtDetails = $conn->prepare("INSERT INTO voucherDetails (
@@ -107,11 +107,17 @@ try {
     : null;
 
 
+  $flightId = isset($voucherDetails['flightId']) && is_numeric($voucherDetails['flightId']) 
+    ? (int)$voucherDetails['flightId'] 
+    : null;
+
+
   if (!$stmtVoucher->execute([
     $templateName,
     (int)$accountId,
     $voucherCode,
-    $itineraryId
+    $itineraryId,
+    $flightId
   ])) {
     error_log("Failed to insert into vouchers.");
     throw new Exception("Failed to insert into `vouchers`.");
