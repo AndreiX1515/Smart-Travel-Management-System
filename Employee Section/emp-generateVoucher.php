@@ -58,7 +58,7 @@
           <!-- General Info -->
           <div class="card">
 
-            <div class="card-header bg-primary">
+            <div class="card-header bg-secondary">
               <h5>General Information</h5>
             </div>
 
@@ -688,7 +688,7 @@
           }
         }
       });
-      
+
     });
   </script>
 
@@ -758,98 +758,99 @@
   </script>
 
   <!-- JS for Itinerary Toggle (with fetch + JSON console.log) -->
+
   <script>
-      let isToggled = false;
-      document.addEventListener("DOMContentLoaded", function () {
-        const toggle = document.getElementById("toggleItinerarySelect");
-        const itinerarySelectWrapper = document.getElementById("itinerarySelectWrapper");
-        const itinerarySelect = document.getElementById("itineraryId");
+    let isToggled = false;
 
-        toggle.addEventListener("change", function () {
-          if (this.checked) {
-            itinerarySelectWrapper.style.display = "block";
-            itinerarySelect.disabled = false;
-            itinerarySelect.required = true;
-            disableItineraryRequirement(true);
-            isToggled = true;
-          } else {
-            itinerarySelectWrapper.style.display = "none";
-            itinerarySelect.disabled = true;
-            itinerarySelect.required = false;
-            itinerarySelect.value = "";
-            disableItineraryRequirement(false);
-            isToggled = false;
-          }
-        });
+    document.addEventListener("DOMContentLoaded", function () {
+      const toggle = document.getElementById("toggleItinerarySelect");
+      const itinerarySelectWrapper = document.getElementById("itinerarySelectWrapper");
+      const itinerarySelect = document.getElementById("itineraryId");
 
-        itinerarySelect.addEventListener("change", function () {
-          const itineraryId = this.value;
-          if (!itineraryId) {
-            console.warn("⚠️ No itinerary ID selected.");
-            return;
-          }
+      toggle.addEventListener("change", function () {
+        if (this.checked) {
+          itinerarySelectWrapper.style.display = "block";
+          itinerarySelect.disabled = false;
+          itinerarySelect.required = true;
+          disableItineraryRequirement(true);
+          isToggled = true;
+        } else {
+          itinerarySelectWrapper.style.display = "none";
+          itinerarySelect.disabled = true;
+          itinerarySelect.required = false;
+          itinerarySelect.value = "";
+          disableItineraryRequirement(false);
+          isToggled = false;
+        }
+      });
 
-          console.log("Selected Itinerary ID:", itineraryId);
+      itinerarySelect.addEventListener("change", function () {
+        const itineraryId = this.value;
+        if (!itineraryId) {
+          console.warn("⚠️ No itinerary ID selected.");
+          return;
+        }
 
-          fetch(`../Employee Section/functions/get-itinerary.php?id=${itineraryId}`)
-            .then(response => {
-              if (!response.ok) {
-                throw new Error(`Server responded with status ${response.status}`);
-              }
-              return response.json();
-            })
-            .then(data => {
-              if (data.error) {
-                console.error("Server returned an error:", data.error);
-                return;
-              }
+        console.log("Selected Itinerary ID:", itineraryId);
 
-              // ✅ Pretty JSON log
-              console.log("📋 Fetched Itinerary Data (JSON):\n", JSON.stringify(data, null, 2));
+        fetch(`../Employee Section/functions/get-itinerary.php?id=${itineraryId}`)
+          .then(response => {
+            if (!response.ok) {
+              throw new Error(`Server responded with status ${response.status}`);
+            }
+            return response.json();
+          })
+          .then(data => {
+            if (data.error) {
+              console.error("Server returned an error:", data.error);
+              return;
+            }
 
-              populateItineraryForm(data);
-            })
-            .catch(err => {
-              console.error("❌ Fetch failed:", err);
-            });
-        });
+            // ✅ Pretty JSON log
+            console.log("📋 Fetched Itinerary Data (JSON):\n", JSON.stringify(data, null, 2));
 
-        function disableItineraryRequirement(disable) {
-          document.querySelectorAll(".itinerary-select").forEach(sel => {
-            if (disable) sel.removeAttribute("required");
-            else sel.setAttribute("required", "required");
+            populateItineraryForm(data);
+          })
+          .catch(err => {
+            console.error("❌ Fetch failed:", err);
           });
+      });
+
+      function disableItineraryRequirement(disable) {
+        document.querySelectorAll(".itinerary-select").forEach(sel => {
+          if (disable) sel.removeAttribute("required");
+          else sel.setAttribute("required", "required");
+        });
+      }
+
+      function populateItineraryForm(data) {
+        const safeSet = (id, value) => {
+          const el = document.getElementById(id);
+          if (el) el.value = value || "";
+          else console.warn(`⚠️ Element #${id} not found`);
+        };
+
+        safeSet("voucherPeriodStart", data.periodStart);
+        safeSet("voucherPeriodEnd", data.periodEnd);
+        safeSet("guideSelect", data.guideId);
+        safeSet("countryCode", data.countryCode);
+        safeSet("contactNumber", data.contactNumber);
+
+        const voucherSelect = document.getElementById("voucherTour");
+        if (voucherSelect) {
+          const match = [...voucherSelect.options].find(opt => opt.value == data.packageId);
+          voucherSelect.value = match ? match.value : "";
         }
 
-        function populateItineraryForm(data) {
-          const safeSet = (id, value) => {
-            const el = document.getElementById(id);
-            if (el) el.value = value || "";
-            else console.warn(`⚠️ Element #${id} not found`);
-          };
-
-          safeSet("voucherPeriodStart", data.periodStart);
-          safeSet("voucherPeriodEnd", data.periodEnd);
-          safeSet("guideSelect", data.guideId);
-          safeSet("countryCode", data.countryCode);
-          safeSet("contactNumber", data.contactNumber);
-
-          const voucherSelect = document.getElementById("voucherTour");
-          if (voucherSelect) {
-            const match = [...voucherSelect.options].find(opt => opt.value == data.packageId);
-            voucherSelect.value = match ? match.value : "";
-          }
-
-          if (typeof generateItineraryCards === "function") {
-            generateItineraryCards(parseInt(data.noOfDays));
-          }
-
-          if (typeof updateLiveItineraryData === "function") {
-            updateLiveItineraryData();
-          }
-
+        if (typeof generateItineraryCards === "function") {
+          generateItineraryCards(parseInt(data.noOfDays));
         }
-  });
+
+        if (typeof updateLiveItineraryData === "function") {
+          updateLiveItineraryData();
+        }
+      }
+    });
   </script>
 
 
@@ -1539,7 +1540,7 @@
             option.textContent = opt.itemName;
             selectEl.appendChild(option);
           });
-      });
+        });
 
       selectEl.addEventListener('change', () => {
         const selectedText = selectEl.options[selectEl.selectedIndex]?.text?.toLowerCase();

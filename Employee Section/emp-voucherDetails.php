@@ -217,7 +217,6 @@
       $excludesCounter++;
     }
 
-
     // Step 5: Fetch Air Schedules
     $sqlAirSchedules = "
       SELECT 
@@ -310,7 +309,8 @@
                 <div class="columns col-md-3">
                   <label>Associated to Itinerary</label>
                   <select class="form-select" id="itinerarySelect" name="itineraryId">
-                    <option value="" disabled <?= empty($selectedItineraryId) ? 'selected' : '' ?>>Select Itinerary</option>
+                    <option value="" disabled <?= empty($selectedItineraryId) ? 'selected' : '' ?>>Select Itinerary
+                    </option>
 
 
                     <?php
@@ -423,7 +423,6 @@
 
             </div>
           </div> -->
-
 
           <!-- Voucher Details Card -->
           <div class="card">
@@ -906,8 +905,8 @@
 
         <select id="actionSelector" class="form-select" style="width: 120px;">
           <option value="xlsx" selected>Excel (.xlsx)</option>
-          <option value="pdf">PDF</option>
-          <option value="both">Excel and PDF </option>
+          <option value="pdf" disabled>PDF</option>
+          <option value="both" disabled>Excel and PDF </option>
         </select>
 
         <button type="button" class="btn btn-primary" id="submitVoucher">Generate Itinerary</button>
@@ -928,6 +927,7 @@
           <h5 class="modal-title" id="templateNameModalLabel">Enter Template Name</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
+
         <div class="modal-body">
           <p>Please enter a template name before proceeding:</p>
 
@@ -937,10 +937,12 @@
             <input type="text" class="form-control" id="templateName" placeholder="Enter template name">
           </div>
         </div>
+
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
           <button type="button" class="btn btn-primary" onclick="proceedWithSubmission()">Proceed</button>
         </div>
+
       </div>
     </div>
   </div>
@@ -1011,17 +1013,6 @@
       });
     });
   </script>
-
-  <!-- <div class="card">
-    <div class="card-header d-flex justify-content-between align-items-center">
-      <h5 class="fw-bold mb-0">Date and Hotels</h5>
-      <button id="addDateHotelBtn" type="button" class="btn btn-sm btn-primary">Add Date & Hotel</button>
-    </div>
-
-    <div class="card-body" id="dateHotelContainer">
-
-    </div>
-  </div> -->
 
   <!-- PHP Fetch of Area and Hotel Values -->
   <?php
@@ -1124,7 +1115,7 @@
               <select class="form-control hotel-select" id="hotel${num}" name="hotel${num}" ${isFirstCard ? 'required' : ''} ${!selectedCityId ? 'disabled' : ''}>
                 <option value="" disabled ${!selectedHotelId ? 'selected' : ''}>Select Hotel</option>
                 ${hotelsList.filter(h => h.areaId == selectedCityId)
-                  .map(h => `<option value="${h.hotelId}" ${h.hotelId == selectedHotelId ? 'selected' : ''}>${h.hotelName}</option>`)}
+            .map(h => `<option value="${h.hotelId}" ${h.hotelId == selectedHotelId ? 'selected' : ''}>${h.hotelName}</option>`)}
               </select>
             </div>
           </div>
@@ -1153,7 +1144,7 @@
 
         flatpickr(startInput, {
           dateFormat: "Y-m-d",
-          minDate: "today",
+          // minDate: "today",
           disableMobile: true,
           defaultDate: item.startDate || null,
           onChange: (_, dateStr) => {
@@ -1164,7 +1155,7 @@
 
         flatpickr(endInput, {
           dateFormat: "Y-m-d",
-          minDate: "today",
+          // minDate: "today",
           disableMobile: true,
           defaultDate: item.endDate || null,
           onChange: (_, dateStr) => {
@@ -1398,7 +1389,7 @@
           select.value = "";
           customInput.value = "";
           customInput.classList.add("d-none");
-          
+
         } else {
           row.remove();
           includeCount--;
@@ -1407,7 +1398,7 @@
 
         updateDataFromUI();
         updateDisabledOptions();
-        
+
       });
 
       return row;
@@ -1642,149 +1633,185 @@
   </script>
 
 
-
+  <!-- Console.log -->
   <script>
     document.addEventListener('input', (e) => {
-    if (e.target.matches('#voucherName, #voucherCode, .form-control, .form-select')) {
-      updateLiveVoucherData();
-    }
-  }); 
+      if (e.target.matches('#voucherName, #voucherCode, .form-control, .form-select')) {
+        updateLiveVoucherData();
+      }
+    }); 
   </script>
 
-<!-- Field Values JSON -->
-<script>
-  const serverVoucherId = <?= json_encode($voucher['voucherId']) ?>;
-  const serverAccountId = <?= json_encode($voucher['accountId']) ?>;
+  <!-- Field Values JSON -->
+  <script>
+    const serverVoucherId = <?= json_encode($voucher['voucherId']) ?>;
+    const serverAccountId = <?= json_encode($voucher['accountId']) ?>;
 
-  // 🔄 Extract all date + hotel entries
-  function extractDateAndHotelsJSON() {
-    const data = [];
-    const cards = document.querySelectorAll('.date-hotel-card');
+    // 🔄 Extract all date + hotel entries
+    function extractDateAndHotelsJSON() {
+      const data = [];
+      const cards = document.querySelectorAll('.date-hotel-card');
 
-    cards.forEach(card => {
-      const num = card.getAttribute('data-card-id');
+      cards.forEach(card => {
+        const num = card.getAttribute('data-card-id');
 
-      const startDate = document.getElementById(`PeriodStartDate${num}`)?.value || '';
-      const endDate = document.getElementById(`PeriodEndDate${num}`)?.value || '';
-      const nights = document.getElementById(`nights${num}`)?.value || '';
-      const city = document.getElementById(`city${num}`)?.value || '';
-      const hotel = document.getElementById(`hotel${num}`)?.value || '';
+        const startDate = document.getElementById(`PeriodStartDate${num}`)?.value || '';
+        const endDate = document.getElementById(`PeriodEndDate${num}`)?.value || '';
+        const nights = document.getElementById(`nights${num}`)?.value || '';
+        const city = document.getElementById(`city${num}`)?.value || '';
+        const hotel = document.getElementById(`hotel${num}`)?.value || '';
 
-      data.push({ startDate, endDate, nights, city, hotel });
-    });
+        data.push({ startDate, endDate, nights, city, hotel });
+      });
 
-    return data;
-  }
+      return data;
+    }
 
-  // ✅ Build and return liveVoucherData with array-based includes/excludes
-  function buildLiveVoucherData() {
-    const liveVoucherData = {
-      voucherId: serverVoucherId,
-      voucherName: document.getElementById('voucherName')?.value || '',
-      voucherCode: document.getElementById('voucherCode')?.value || '',
-      accountId: serverAccountId,
-      itineraryId: parseInt(document.getElementById('itinerarySelect')?.value) || null,
-      flightId: parseInt(document.getElementById('flightId')?.value) || null,
+    // ✅ Build and return liveVoucherData with array-based includes/excludes
+    function buildLiveVoucherData() {
+      const liveVoucherData = {
+        voucherId: serverVoucherId,
+        voucherName: document.getElementById('voucherName')?.value || '',
+        voucherCode: document.getElementById('voucherCode')?.value || '',
+        accountId: serverAccountId,
+        itineraryId: parseInt(document.getElementById('itinerarySelect')?.value) || null,
+        flightId: parseInt(document.getElementById('flightId')?.value) || null,
 
-      details: {
-        sentTo: document.getElementById('voucherTo')?.value || null,
-        sentFrom: document.getElementById('voucherFrom')?.value || '',
-        noOfPax: parseInt(document.getElementById('voucherPaxCount')?.value) || 0,
-        tourType: document.getElementById('voucherTour')?.value || '',
-        tourPeriodStart: document.getElementById('voucherPeriodStart')?.value || '',
-        tourPeriodEnd: document.getElementById('voucherPeriodEnd')?.value || '',
-        guideId: parseInt(document.getElementById('guideSelect')?.value) || null,
-        countryCode: document.getElementById('countryCode')?.value || '',
-        contactNo: document.getElementById('contactNumber')?.value || ''
-      },
-
-      dateAndHotels: extractDateAndHotelsJSON(),
-
-      // ✅ Ensure includes/excludes are passed as arrays (not objects)
-      includes: Array.isArray(includesData) ? includesData : Object.values(includesData || {}),
-      excludes: Array.isArray(excludesData) ? excludesData : Object.values(excludesData || {}),
-
-      airSchedules: [
-        {
-          flightSegment: 'departureFlight',
-          flightCode: document.getElementById('departure1Flight')?.value || '',
-          flightDate: document.getElementById('departure1Date')?.value || '',
-          flightNumber: document.getElementById('departure1Flight')?.value || '',
-          origin: document.getElementById('departure1Origin')?.value || '',
-          destination: document.getElementById('departure1Destination')?.value || '',
-          departureTime: document.getElementById('departure1DepartureTime')?.value || '',
-          arrivalTime: document.getElementById('departure1ArrivalTime')?.value || ''
+        details: {
+          sentTo: document.getElementById('voucherTo')?.value || null,
+          sentFrom: document.getElementById('voucherFrom')?.value || '',
+          noOfPax: parseInt(document.getElementById('voucherPaxCount')?.value) || 0,
+          tourType: document.getElementById('voucherTour')?.value || '',
+          tourPeriodStart: document.getElementById('voucherPeriodStart')?.value || '',
+          tourPeriodEnd: document.getElementById('voucherPeriodEnd')?.value || '',
+          guideId: parseInt(document.getElementById('guideSelect')?.value) || null,
+          countryCode: document.getElementById('countryCode')?.value || '',
+          contactNo: document.getElementById('contactNumber')?.value || ''
         },
-        {
-          flightSegment: 'returningFlight',
-          flightDate: document.getElementById('departure2Date')?.value || '',
-          flightNumber: document.getElementById('departure2Flight')?.value || '',
-          origin: document.getElementById('departure2Origin')?.value || '',
-          destination: document.getElementById('departure2Destination')?.value || '',
-          departureTime: document.getElementById('departure2DepartureTime')?.value || '',
-          arrivalTime: document.getElementById('departure2ArrivalTime')?.value || ''
-        }
-      ],
 
-      guideMeeting: [
-        (function () {
-          const arrivalTime = document.getElementById('departure1ArrivalTime')?.value || '';
-          const arrivalDateRaw = document.getElementById('departure1Date')?.value || '';
-          const meetingTime = arrivalTime;
-          const meetingPlace = document.getElementById('departure1Destination')?.value || '';
-          const guideId = parseInt(document.getElementById('guideSelect')?.value) || null;
+        dateAndHotels: extractDateAndHotelsJSON(),
 
-          let finalMeetingDate = arrivalDateRaw;
+        // ✅ Ensure includes/excludes are passed as arrays (not objects)
+        includes: Array.isArray(includesData) ? includesData : Object.values(includesData || {}),
+        excludes: Array.isArray(excludesData) ? excludesData : Object.values(excludesData || {}),
 
-          // ⏱ Handle time overflow (e.g., "24:30")
-          const timeParts = arrivalTime.split(':');
-          const hour = parseInt(timeParts[0], 10);
-          const minute = parseInt(timeParts[1] || '0', 10);
-
-          if (!isNaN(hour) && hour >= 24 && arrivalDateRaw) {
-            const originalDate = new Date(arrivalDateRaw);
-            originalDate.setDate(originalDate.getDate() + 1);
-            finalMeetingDate = originalDate.toISOString().split('T')[0];
+        airSchedules: [
+          {
+            flightSegment: 'departureFlight',
+            flightCode: document.getElementById('departure1Flight')?.value || '',
+            flightDate: document.getElementById('departure1Date')?.value || '',
+            flightNumber: document.getElementById('departure1Flight')?.value || '',
+            origin: document.getElementById('departure1Origin')?.value || '',
+            destination: document.getElementById('departure1Destination')?.value || '',
+            departureTime: document.getElementById('departure1DepartureTime')?.value || '',
+            arrivalTime: document.getElementById('departure1ArrivalTime')?.value || ''
+          },
+          {
+            flightSegment: 'returningFlight',
+            flightDate: document.getElementById('departure2Date')?.value || '',
+            flightNumber: document.getElementById('departure2Flight')?.value || '',
+            origin: document.getElementById('departure2Origin')?.value || '',
+            destination: document.getElementById('departure2Destination')?.value || '',
+            departureTime: document.getElementById('departure2DepartureTime')?.value || '',
+            arrivalTime: document.getElementById('departure2ArrivalTime')?.value || ''
           }
+        ],
 
-          return {
-            voucherId: serverVoucherId,
-            guideId,
-            meetingTime,
-            meetingPlace,
-            meetingDate: finalMeetingDate
-          };
-        })()
-      ]
-    };
+        guideMeeting: [
+          (function () {
+            const arrivalTime = document.getElementById('departure1ArrivalTime')?.value || '';
+            const arrivalDateRaw = document.getElementById('departure1Date')?.value || '';
+            const meetingTime = arrivalTime;
+            const meetingPlace = document.getElementById('departure1Destination')?.value || '';
+            const guideId = parseInt(document.getElementById('guideSelect')?.value) || null;
 
-    // ✅ Console logs preserved
-    console.log('Final liveVoucherData:');
-    console.log(JSON.stringify(liveVoucherData, null, 2));
+            let finalMeetingDate = arrivalDateRaw;
+
+            // ⏱ Handle time overflow (e.g., "24:30")
+            const timeParts = arrivalTime.split(':');
+            const hour = parseInt(timeParts[0], 10);
+            const minute = parseInt(timeParts[1] || '0', 10);
+
+            if (!isNaN(hour) && hour >= 24 && arrivalDateRaw) {
+              const originalDate = new Date(arrivalDateRaw);
+              originalDate.setDate(originalDate.getDate() + 1);
+              finalMeetingDate = originalDate.toISOString().split('T')[0];
+            }
+
+            return {
+              voucherId: serverVoucherId,
+              guideId,
+              meetingTime,
+              meetingPlace,
+              meetingDate: finalMeetingDate
+            };
+          })()
+        ]
+      };
+
+      // ✅ Console logs preserved
+      console.log('Final liveVoucherData:');
+      console.log(JSON.stringify(liveVoucherData, null, 2));
 
 
 
 
-    // console.log('📦 Payload size:', JSON.stringify(liveVoucherData).length, 'characters');
+      // console.log('📦 Payload size:', JSON.stringify(liveVoucherData).length, 'characters');
 
-    return liveVoucherData;
-  }
+      return liveVoucherData;
+    }
 
-  function updateLiveVoucherData() {
-    window.liveVoucherData = buildLiveVoucherData();
-  }
+    function updateLiveVoucherData() {
+      window.liveVoucherData = buildLiveVoucherData();
+    }
 
-  document.addEventListener('DOMContentLoaded', () => {
-    setTimeout(() => {
-      updateLiveVoucherData();
-    }, 100);
-  });
-</script>
+    document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => {
+        updateLiveVoucherData();
+      }, 100);
+    });
+  </script>
 
 
-<!-- Generate Voucher File -->
+  <!-- Generate Voucher File -->
 <script>
   $(document).ready(function () {
+
+    $(document).ready(function () {
+      $('#submitEdit').on('click', function () {
+        // Ensure latest liveVoucherData is updated before submission
+        updateLiveVoucherData(); // builds and assigns window.liveVoucherData
+
+        console.log("For Insertion:\n", JSON.stringify(liveVoucherData, null, 2));
+
+        $.ajax({
+          url: "../Employee Section/functions/emp-editVoucher.php",
+          type: "POST",
+          data: {
+            voucherPayload: JSON.stringify(liveVoucherData),
+            templateName: <?= json_encode($voucher['voucherName']) ?>
+          },
+          dataType: "json",
+          success: (response) => {
+            console.log("Server Response: \n", JSON.stringify(response, null, 2));
+
+            if (response.status === "success") {
+              alert("Voucher saved successfully. Generating template...");
+              // window.location.href = "../Employee Section/emp-Table.php";
+            } else {
+              alert("Failed to save Voucher: \n" + (response.message || "Unknown error occurred."));
+            }
+          },
+          error: (xhr, status, error) => {
+            console.error("❌ AJAX Error:", error);
+            console.error("📄 Response Text:\n", xhr.responseText);
+            alert("❌ Server error. Please try again later.");
+          }
+        });
+      });
+    });
+
+    // Step 3: Generate voucher file (Excel download)
     $('#submitVoucher').on('click', function () {
       const $btn = $(this);
 
@@ -1858,8 +1885,13 @@
         }
       });
     });
+
+    // Make proceedWithSubmission globally accessible (optional)
+    window.proceedWithSubmission = proceedWithSubmission;
+
   });
 </script>
+
 
 
 
