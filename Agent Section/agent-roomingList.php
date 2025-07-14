@@ -26,14 +26,6 @@ require "../conn.php";
       <div class="navbar">
         <div class="page-header-wrapper">
 
-          <!-- <div class="page-header-top">
-            <div class="back-btn-wrapper">
-              <button class="back-btn" id="redirect-btn">
-                <i class="fas fa-chevron-left"></i>
-              </button>
-            </div>
-          </div> -->
-
           <div class="page-header-content">
             <div class="page-header-text">
               <h5 class="header-title">Rooming List</h5>
@@ -44,9 +36,6 @@ require "../conn.php";
       </div>
 
       <div class="main-content">
-        <!-- <div class="main-content-header">
-          <h5 class="text-center">Guest Room Assignment</h5>
-        </div> -->
 
         <div class="field-select-wrapper">
           <div class="row">
@@ -60,21 +49,20 @@ require "../conn.php";
                 <select id="flightDate" class="form-control" required>
                   <option disabled selected>Select a Flight Date</option>
                   <?php
-                  $sql1 = "SELECT DISTINCT flightDepartureDate FROM flight ORDER BY flightDepartureDate ASC";
-                  $result = $conn->query($sql1);
+                    $sql1 = "SELECT DISTINCT flightDepartureDate FROM flight ORDER BY flightDepartureDate ASC";
+                    $result = $conn->query($sql1);
 
-                  if ($result->num_rows > 0) {
-                    while ($row = $result->fetch_assoc()) {
-                      $formattedFlightDate = date("F j, Y", strtotime($row['flightDepartureDate']));
-                      echo "<option value='" . $row['flightDepartureDate'] . "'>" . $formattedFlightDate . "</option>";
+                    if ($result->num_rows > 0) {
+                      while ($row = $result->fetch_assoc()) {
+                        $formattedFlightDate = date("F j, Y", strtotime($row['flightDepartureDate']));
+                        echo "<option value='" . $row['flightDepartureDate'] . "'>" . $formattedFlightDate . "</option>";
+                      }
+                    } else {
+                      echo "<option value='' disabled>No flights available</option>";
                     }
-                  } else {
-                    echo "<option value='' disabled>No flights available</option>";
-                  }
                   ?>
                 </select>
               </div>
-
             </div>
           </div>
 
@@ -88,34 +76,34 @@ require "../conn.php";
               <div class="select-wrapper">
                 <select id="guestName" class="form-control" multiple></select>
                 <?php
-                $luggageOptions = [];
-                $guestLuggage = []; // Stores guestId → selected luggage mapping
+                  $luggageOptions = [];
+                  $guestLuggage = []; // Stores guestId → selected luggage mapping
 
-                // Fetch luggage options
-                $query = "SELECT concernDetailsId, details FROM concerndetails";
-                $result = $conn->query($query);
-                if ($result->num_rows > 0) {
-                  while ($row = $result->fetch_assoc()) {
-                    $luggageOptions[] = $row;
+                  // Fetch luggage options
+                  $query = "SELECT concernDetailsId, details FROM concerndetails";
+                  $result = $conn->query($query);
+                  if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                      $luggageOptions[] = $row;
+                    }
                   }
-                }
 
-                // Fetch stored luggage selections for each guest
-                $query = "SELECT g.guestId, cd.concernDetailsId 
-                          FROM guestluggage g
-                          JOIN concerndetails cd ON g.luggageType = cd.concernDetailsId"; // Adjust your table name
-                $result = $conn->query($query);
-                if ($result->num_rows > 0) {
-                  while ($row = $result->fetch_assoc()) {
-                    $guestLuggage[$row['guestId']] = $row['concernDetailsId'];
+                  // Fetch stored luggage selections for each guest
+                  $query = "SELECT g.guestId, cd.concernDetailsId 
+                            FROM guestluggage g
+                            JOIN concerndetails cd ON g.luggageType = cd.concernDetailsId"; // Adjust your table name
+                  $result = $conn->query($query);
+                  if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                      $guestLuggage[$row['guestId']] = $row['concernDetailsId'];
+                    }
                   }
-                }
 
-                // Pass data to JavaScript
-                echo "<script>
-                        let luggageOptions = " . json_encode($luggageOptions) . ";
-                        let guestLuggage = " . json_encode($guestLuggage) . ";
-                      </script>";
+                  // Pass data to JavaScript
+                  echo "<script>
+                          let luggageOptions = " . json_encode($luggageOptions) . ";
+                          let guestLuggage = " . json_encode($guestLuggage) . ";
+                        </script>";
                 ?>
               </div>
 
@@ -138,6 +126,7 @@ require "../conn.php";
               </div>
 
               <div class="assign-btn-wrapper">
+                <button id="resetFilter" class="btn btn-secondary">Reset Filter</button>
                 <button class="btn btn-primary" onclick="assignRoom()">Assign</button>
               </div>
 
@@ -151,37 +140,37 @@ require "../conn.php";
           </div>
           
           <div class="table-container">
-            <table class="assigned-rooms-table">
-                <thead class="thead-dark">
-                  <tr>
-                    <th>#</th>
-                    <th>AGE</th>
-                    <th>GIVEN NAME</th>
-                    <th>SURNAME</th>
-                    <th>FULLNAME</th>
-                    <th>DOB</th>
-                    <th>NATIONALITY</th>
-                    <th>PASSPORT</th>
-                    <th>EXPIRATION DATE</th>
-                    <th>SEX</th>
-                    <th>ROOMING</th>
-                    <th>LUGGAGE (AIR TICKET)</th>
-                    <th></th>
-                  </tr>
-                </thead>
-
-                <tbody id="assignedRoomsTable"></tbody>
-              </table>
-
+            <table class="assigned-rooms-table table table-bordered">
+              <thead class="thead-dark">
+                <tr>
+                  <th>#</th>
+                  <th>AGE</th>
+                  <th>MS/MR</th>
+                  <th>GIVEN NAME</th>
+                  <th>SURNAME</th>
+                  <th>FULL NAME</th>
+                  <th>DOB</th>
+                  <th>NAT.</th>
+                  <th>PASSPORT</th>
+                  <th>I of E<br><small>Issue of Date</small></th>
+                  <th>D of E<br><small>Expiry of Date</small></th>
+                  <th colspan="2">SEX</th>
+                  <th colspan="2">ROOMING</th>
+                  <th>TIPPING</th>
+                  <th>LUGGAGE<br>(AIR TICKET)</th>
+                  <th>REMARKS<br><small>(Separate air time, wheelchair, etc)</small></th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="assignedRoomsTable"></tbody>
+            </table>
           </div>
           
           <div class="table-footer">
             <button class="btn btn-success btn-sm" onclick="generateExcel()">Download</button>
             <button class="btn btn-success btn-sm" id="saveAssignments">Save</button>
           </div>
-
-          
-
+        
         </div>
 
       </div>
@@ -189,12 +178,36 @@ require "../conn.php";
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
+  <!-- Reset Filter Script -->
+  <script>
+    document.getElementById("resetFilter").addEventListener("click", function () {
+      // Reset flightDate select to default
+      const flightDate = document.getElementById("flightDate");
+      if (flightDate) flightDate.selectedIndex = 0;
+
+      // Clear and reset guestName multiple select
+      const guestName = document.getElementById("guestName");
+      if (guestName) {
+        guestName.innerHTML = '<option selected disabled>No guests available</option>';
+      }
+
+      // Optional: clear any rooms assigned in memory
+      rooms = [];
+      updateRoomList();
+
+      // Optional: clear guests array
+      guests = [];
+      updateGuestDropdown();
+    });
+  </script>
+
   <!-- Combined script working -->
   <script>
     let guests = [];  // Stores all guests fetched from PHP
     let availableGuests = [];  // Stores guests available for assignment
     let rooms = [];
     let removedLuggage = [];
+    let flightDetails = null;
 
     const roomCapacities = {
       Single: { min: 1, max: 1 },
@@ -203,43 +216,46 @@ require "../conn.php";
       Triple: { min: 3, max: 3 }, // Example: now Triple can have min 2 guests
     };
 
-    document.getElementById('saveAssignments').addEventListener('click', function () 
-    {
+    document.getElementById('saveAssignments').addEventListener('click', function () {
       let roomAssignments = [];
       let luggageAssignments = [];
 
-      $.ajax(
-      {
-        url: '../Agent Section/functions/fetchMaxRoomNumber.php', // Create this PHP file
+      $.ajax({
+        url: '../Agent Section/functions/fetchMaxRoomNumber.php',
         type: 'GET',
         dataType: 'json',
-        success: function(response) 
-        {
-          let maxRoomNumber = response.maxRoomNumber || 0; // Start from 0 if no existing data
+        success: function (response) {
+          let maxRoomNumber = response.maxRoomNumber || 0;
 
-          let roomAssignments = [];
-          let luggageAssignments = [];
+          rooms.forEach((room) => {
+            maxRoomNumber++; // Increment for each room
 
-          // Assign room numbers dynamically
-          rooms.forEach((room) => 
-          {
-            maxRoomNumber++; // Increment for the next room
-            
-            room.guests.forEach(guest => 
-            {
-              roomAssignments.push(
-              {
+            room.guests.forEach(guest => {
+              // ✅ Get tipping value
+              const tippingSelect = document.querySelector(`[name="tipping-${guest.id}"]`);
+              const tippingValue = tippingSelect ? tippingSelect.value : '';
+
+              // ✅ Get remarks value
+              const remarksTextarea = document.querySelector(`[name="remarks-${guest.id}"]`);
+              const remarksValue = remarksTextarea ? remarksTextarea.value.trim() : '';
+
+              // ✅ Push room assignment with tipping and remarks
+              roomAssignments.push({
                 transactNo: guest.transactNo,
                 guestId: guest.id,
                 roomType: room.type,
-                roomNumber: maxRoomNumber // Assign based on fetched maxRoomNumber
+                roomNumber: maxRoomNumber,
+                tipping: tippingValue,
+                remarks: remarksValue
               });
 
-              // Collect luggage data for each guest
-              let luggageItems = Array.from(document.querySelectorAll(`#luggageContainer-${guest.id} select`)).map(select => select.value);
+              // ✅ Collect luggage data
+              const luggageItems = Array.from(document.querySelectorAll(`#luggageContainer-${guest.id} select`))
+                .map(select => select.value)
+                .filter(val => val !== ""); // Only push non-empty
+
               luggageItems.forEach(luggage => {
-                luggageAssignments.push(
-                {
+                luggageAssignments.push({
                   transactNo: guest.transactNo,
                   guestId: guest.id,
                   luggageId: luggage
@@ -248,34 +264,30 @@ require "../conn.php";
             });
           });
 
-          // Ensure there's data to send
-          if (roomAssignments.length === 0) 
-          {
+          if (roomAssignments.length === 0) {
             alert("No room assignments to save.");
             return;
           }
 
-          // Send AJAX request to insert room assignments
-          $.ajax(
-          {
+          // ✅ POST to save with new tipping + remarks
+          $.ajax({
             url: '../Agent Section/functions/agent-addRoomingList.php',
             type: 'POST',
-            data: { 
+            data: {
               roomAssignments: JSON.stringify(roomAssignments),
-              luggageAssignments: JSON.stringify(luggageAssignments) // Include luggage data in the same request
+              luggageAssignments: JSON.stringify(luggageAssignments)
             },
-            success: function(response) {
+            success: function (response) {
               console.log(response);
               alert("Room assignments and luggage details saved successfully!");
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
               console.error('Error saving data:', error);
               alert("Failed to save room assignments and luggage details.");
             }
           });
         },
-        error: function(xhr, status, error) 
-        {
+        error: function (xhr, status, error) {
           console.error('Error fetching max room number:', error);
           alert("Failed to fetch max room number.");
         }
@@ -304,30 +316,41 @@ require "../conn.php";
             guestSelect.empty(); // Clear existing options
 
             let data = JSON.parse(response);
+            flightDetails = data.flightDetails || {};
+
+            // 👇 Preserve manually entered luggage before clearing rooms
+            preserveLuggageSelections();
             
             // Populate assigned guests in room list
             if (data.assignedGuests.length > 0)
             {
-              rooms = []; // Clear existing rooms before reloading
-              data.assignedGuests.forEach(guest => 
-              {
-                let room = 
-                {
-                  type: guest.roomType,
-                  guests: [{ ...guest }],
-                  roomNumber: guest.roomNumber
-                };
-                rooms.push(room);
-              });
-              updateRoomList();
-            }
+                rooms = []; // Clear existing rooms before reloading
+
+                data.assignedGuests.forEach(guest => {
+                  let existingRoom = rooms.find(room =>
+                    room.roomNumber === guest.roomNumber && room.type === guest.roomType
+                  );
+
+                  if (existingRoom) {
+                    existingRoom.guests.push({ ...guest });
+                  } else {
+                    rooms.push({
+                      type: guest.roomType,
+                      roomNumber: guest.roomNumber,
+                      guests: [{ ...guest }]
+                    });
+                  }
+                });
+
+                updateRoomList();
+              }
 
             // Populate unassigned guests in select dropdown
             if (data.unassignedGuests.length > 0) 
             {
               data.unassignedGuests.forEach(guest => 
               {
-                guestSelect.append(new Option(guest.name, guest.id));
+                guestSelect.append(new Option(guest.fullName, guest.id));
               });
 
               guests = data.unassignedGuests; // Store unassigned guests for reference
@@ -421,75 +444,102 @@ require "../conn.php";
       });
     }
 
+    function preserveLuggageSelections() {
+      rooms.forEach(room => {
+        room.guests.forEach(guest => {
+          const selects = document.querySelectorAll(`#luggageContainer-${guest.id} select`);
+          if (selects.length > 0) {
+            guest.luggageType = Array.from(selects).map(select => select.value).filter(Boolean);
+          }
+        });
+      });
+    }
+
     // Function to update the room list
-    function updateRoomList() 
-    {
-      let assignedRoomsTable = document.getElementById('assignedRoomsTable');
+    function updateRoomList() {
+      const assignedRoomsTable = document.getElementById('assignedRoomsTable');
       assignedRoomsTable.innerHTML = ''; // Clear the existing table
 
       let rowNumber = 1;
+      let roomDisplayNumber = 1;
+      let femaleIndex = 1;
+      let maleIndex = 1;
 
-      rooms.forEach((room, roomIndex) => 
-      {
+      // Sort rooms by roomNumber to ensure consistent display
+      const sortedRooms = [...rooms].sort((a, b) => a.roomNumber - b.roomNumber);
+
+      sortedRooms.forEach((room, roomIndex) => {
         let firstGuest = true;
 
-        room.guests.forEach((guest) => 
-        {
-          let row = assignedRoomsTable.insertRow();
+        // Sort guests inside the room by fullName (optional for consistency)
+        room.guests.sort((a, b) => (a.fullName || "").localeCompare(b.fullName || ""));
+
+        room.guests.forEach((guest) => {
+          const row = assignedRoomsTable.insertRow();
           row.setAttribute("data-guest-id", guest.id);
           row.setAttribute("data-transact-no", guest.transactNo);
 
-          // Get the count of luggage for the guest
-          let luggageCount = (guest.luggageType || []).length;
-          console.log(`Guest ID: ${guest.id}, Number of Luggage: ${luggageCount}`);
+          const luggageCount = (guest.luggageType || []).length;
 
-          // Generate container with multiple luggage selects for each guest
+          // Generate luggage select group
           let luggageSelectGroup = `
             <div id="luggageContainer-${guest.id}" class="luggage-group" data-guest-id="${guest.id}">
               <div id="luggageSelects-${guest.id}">`;
 
-          if (luggageCount > 0) 
-          {
-            for (let i = 0; i < luggageCount; i++) 
-            {
-              luggageSelectGroup += `
-                <select class="form-control" name="luggageSelect-${guest.id}[]" 
-                  style="width: 100%; display: block; margin-bottom: 5px;" 
-                  id="luggageSelect-${guest.id}-${i}">
-                  <option value="">Select Luggage</option>`;
+          for (let i = 0; i < luggageCount; i++) {
+            luggageSelectGroup += `
+              <select class="form-control" name="luggageSelect-${guest.id}[]" 
+                style="width: 100%; display: block; margin-bottom: 5px;" 
+                id="luggageSelect-${guest.id}-${i}">
+                <option value="">Select Luggage</option>`;
 
-              luggageOptions.forEach(option => 
-              {
-                const selected = option.concernDetailsId == guest.luggageType[i] ? 'selected' : '';
-                luggageSelectGroup += `<option value="${option.concernDetailsId}" ${selected}>${option.details}</option>`;
-              });
+            luggageOptions.forEach(option => {
+              const selected = option.concernDetailsId == guest.luggageType[i] ? 'selected' : '';
+              luggageSelectGroup += `<option value="${option.concernDetailsId}" ${selected}>${option.details}</option>`;
+            });
 
-              luggageSelectGroup += `</select>`;
-            }
+            luggageSelectGroup += `</select>`;
           }
 
           luggageSelectGroup += `
-            </div> <!-- end of luggageSelects container -->
+              </div>
               <button type="button" class="btn btn-sm btn-primary mt-1" style="margin-top: 5px;" onclick="addLuggageSelect(${guest.id})">Add</button>
               <button type="button" class="btn btn-sm btn-danger mt-1" style="margin-top: 5px; margin-left: 5px;" onclick="removeLuggageSelect(${guest.id})">Remove</button>
             </div>`;
 
+          // Determine MS/MR title and indexed gender label
+          const isFemale = guest.sex?.toLowerCase() === 'female';
+          const title = isFemale ? 'MS' : 'MR';
+          const sexLabel = isFemale ? `F\t${femaleIndex++}` : `M\t${maleIndex++}`;
+
           row.innerHTML = `
             <td style="text-align: center; vertical-align: middle;">${rowNumber++}</td>
             <td style="text-align: center; vertical-align: middle;">${guest.age || "N/A"}</td>
-            <td style="text-align: center; vertical-align: middle;">${guest.name.split(" ")[0]}</td>
-            <td style="text-align: center; vertical-align: middle;">${guest.name.split(" ").slice(-1).join(" ")}</td>
-            <td style="text-align: center; vertical-align: middle;">${guest.name}</td>
+            <td style="text-align: center; vertical-align: middle;">${title}</td>
+            <td style="text-align: center; vertical-align: middle;">${(guest.fName ?? 'N/A')}${guest.suffix && guest.suffix !== 'N/A' ? ' ' + guest.suffix : ''}</td>
+            <td style="text-align: center; vertical-align: middle;">${guest.lName || "N/A"}</td>
+            <td style="text-align: center; vertical-align: middle;">${guest.fullName || `${guest.fName || ""} ${guest.lName || ""}`}</td>
             <td style="text-align: center; vertical-align: middle;">${guest.dob || "N/A"}</td>
             <td style="text-align: center; vertical-align: middle;">${guest.nationality || "N/A"}</td>
             <td style="text-align: center; vertical-align: middle;">${guest.passport || "N/A"}</td>
+            <td style="text-align: center; vertical-align: middle;">${guest.passportIssued || "N/A"}</td>
             <td style="text-align: center; vertical-align: middle;">${guest.passportExp || "N/A"}</td>
             <td style="text-align: center; vertical-align: middle;">${guest.sex || "N/A"}</td>
-            ${firstGuest ? `<td style="text-align: center;" class="room-type" rowspan="${room.guests.length}">${room.type.toUpperCase()}</td>` : ''} 
+            <td style="text-align: center; vertical-align: middle;">${guest.genderValue || ""}</td>
+            ${firstGuest ? `<td style="text-align: center; vertical-align: middle;" rowspan="${room.guests.length}">${roomDisplayNumber}</td>` : ''}
+            ${firstGuest ? `<td style="text-align: center;" class="room-type" rowspan="${room.guests.length}">${room.type.toUpperCase()}</td>` : ''}
             <td style="text-align: center; vertical-align: middle;">
-              ${luggageSelectGroup}
+              <select name="tipping-${guest.id}" class="form-control">
+                <option value="">Select</option>
+                <option value="In Korea" ${guest.tip === 'In Korea' ? 'selected' : ''}>In Korea</option>
+                <option value="In Manila" ${guest.tip === 'In Manila' ? 'selected' : ''}>In Manila</option>
+              </select>
             </td>
-            ${firstGuest ? `<td style="vertical-align: middle;" rowspan="${room.guests.length}"> 
+            <td style="text-align: center; vertical-align: middle;">${luggageSelectGroup}</td>
+            <td style="text-align: center; vertical-align: middle;">
+              <textarea name="remarks-${guest.id}" class="form-control" rows="2" style="resize: vertical; width: 100%;">${guest.remarks || ''}</textarea>
+            </td>
+            ${firstGuest ? `<td style="vertical-align: middle;" rowspan="${room.guests.length}">
               <button style="display: block; margin: auto;" class="btn btn-danger btn-sm" onclick="removeRoom(${roomIndex})">
                 Remove
               </button>
@@ -497,6 +547,8 @@ require "../conn.php";
 
           firstGuest = false;
         });
+
+        roomDisplayNumber++;
       });
     }
 
@@ -589,7 +641,7 @@ require "../conn.php";
         {
           let option = document.createElement('option');
           option.value = guest.id;
-          option.textContent = guest.name;
+          option.textContent = guest.fullName;
           guestSelect.appendChild(option);
         });
       } 
@@ -644,6 +696,88 @@ require "../conn.php";
       }
     }
   </script>
+
+  <!-- Generate to excel Script -->
+  <script>
+    function generateExcel() {
+      if (!rooms || rooms.length === 0) {
+        alert("No room assignments available to export.");
+        return;
+      }
+
+      // ✅ Pull latest values from the form into `rooms`
+      syncGuestFormDataIntoRooms();
+
+      const flightDate = document.getElementById("flightDate").value || "unknown-date";
+      const travelAgency = "<?php echo $companyName ?? 'Unknown Company'; ?>";
+
+      const formattedRooms = rooms.map(room => ({
+        ...room,
+        guests: room.guests.map(guest => ({
+          ...guest,
+          luggageText: getLuggageTextFromIds(guest.luggageType || [])
+        }))
+      }));
+
+      const payload = {
+        rooms: formattedRooms,
+        flightDate,
+        travelAgency,
+        flightDetails
+      };
+
+      // 🔍 Log the payload you're sending to the backend
+      console.log("Sending rooming list payload to backend:", payload);
+
+      fetch('../Agent Section/functions/generateRoomingList.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      })
+      .then(response => {
+        if (!response.ok) throw new Error("Failed to generate Excel file.");
+        return response.blob();
+      })
+      .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `RoomingList_${flightDate}.xlsx`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+      })
+      .catch(error => {
+        console.error("Error exporting to Excel:", error);
+        alert("Something went wrong while generating the Excel file.");
+      });
+    }
+
+    function getLuggageTextFromIds(luggageIds) {
+      if (!Array.isArray(luggageIds)) return [];
+
+      return luggageIds.map(id => {
+        let match = luggageOptions.find(opt => opt.concernDetailsId == id);
+        return match ? match.details : id; // fallback to ID if not found
+      });
+    }
+
+    function syncGuestFormDataIntoRooms() {
+      rooms.forEach(room => {
+        room.guests.forEach(guest => {
+          const tipSelect = document.querySelector(`[name="tipping-${guest.id}"]`);
+          const remarksTextarea = document.querySelector(`[name="remarks-${guest.id}"]`);
+
+          if (tipSelect) guest.tip = tipSelect.value;
+          if (remarksTextarea) guest.remarks = remarksTextarea.value;
+        });
+      });
+    }
+  </script>
+
 
   <!-- Dynamic addition of guest in the table as well as the request script
   <script>
@@ -892,66 +1026,6 @@ require "../conn.php";
       }
     });
   </script> -->
-
-  <!-- Generate to excel Script -->
-  <script>
-    let exportMode = false; // Global flag
-
-    function generateExcel() {
-      let table = document.getElementById("assignedRoomsTable");
-
-      if (!table || table.rows.length === 0) {
-        alert("No data available to export.");
-        return;
-      }
-
-      let data = [];
-      let thead = table.querySelector("thead");
-
-      if (thead) {
-        let headers = Array.from(thead.rows[0].cells).map(cell => cell.innerText.trim());
-        data.push(headers); // Add headers
-      } else {
-        data.push(["#", "AGE", "GIVEN NAME", "SURNAME", "FULLNAME", "DOB", "NAT", "PASSPORT", "D of E", "SEX", "ROOMING", "LUGGAGE (AIR TICKET)"]);
-      }
-
-      let rows = table.querySelectorAll("tbody tr");
-      rows.forEach(row => {
-        let rowData = [];
-        let cells = row.cells;
-
-        for (let j = 0; j < cells.length - 1; j++) { // Exclude last empty column
-          let cell = cells[j];
-          let selects = cell.querySelectorAll("select");
-
-          if (selects.length > 0) {
-            let selectedTexts = Array.from(selects).map(select => select.options[select.selectedIndex].text);
-            rowData.push(selectedTexts.join(", "));
-          } else {
-            rowData.push(cell.innerText.trim());
-          }
-        }
-
-        data.push(rowData);
-      });
-
-      let ws = XLSX.utils.aoa_to_sheet(data);
-      let wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, "Room Assignments");
-      XLSX.writeFile(wb, `room_assignments_${new Date().toISOString().slice(0, 10)}.xlsx`);
-    }
-
-    // Ensure this script runs after the DOM is ready
-    $(document).ready(function() {
-      $('#exportToExcel').on('click', function() {
-        exportMode = true;
-        updateRoomList(); // Remove buttons
-        generateExcel(); // Export to Excel
-        exportMode = false;
-        updateRoomList(); // Restore buttons
-      });
-    });
-  </script>
 
 </body>
 

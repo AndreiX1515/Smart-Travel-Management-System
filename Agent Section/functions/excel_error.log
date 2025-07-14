@@ -1,0 +1,45 @@
+[09-Jul-2025 09:41:54 Europe/Berlin] PHP Fatal error:  Uncaught Error: Class "PhpOffice\PhpSpreadsheet\Spreadsheet" not found in C:\xampp\htdocs\Smart-Travel-Management-System\Agent Section\functions\generateRoomingList.php:20
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\Smart-Travel-Management-System\Agent Section\functions\generateRoomingList.php on line 20
+[09-Jul-2025 09:42:03 Europe/Berlin] PHP Fatal error:  Uncaught Error: Class "PhpOffice\PhpSpreadsheet\Spreadsheet" not found in C:\xampp\htdocs\Smart-Travel-Management-System\Agent Section\functions\generateRoomingList.php:20
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\Smart-Travel-Management-System\Agent Section\functions\generateRoomingList.php on line 20
+[09-Jul-2025 09:44:22 Europe/Berlin] PHP Warning:  Undefined variable $flightDate in C:\xampp\htdocs\Smart-Travel-Management-System\Agent Section\functions\generateRoomingList.php on line 20
+[09-Jul-2025 09:44:22 Europe/Berlin] PHP Warning:  Undefined variable $writer in C:\xampp\htdocs\Smart-Travel-Management-System\Agent Section\functions\generateRoomingList.php on line 23
+[09-Jul-2025 09:44:22 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function save() on null in C:\xampp\htdocs\Smart-Travel-Management-System\Agent Section\functions\generateRoomingList.php:23
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\Smart-Travel-Management-System\Agent Section\functions\generateRoomingList.php on line 23
+[09-Jul-2025 09:44:26 Europe/Berlin] PHP Warning:  Undefined variable $flightDate in C:\xampp\htdocs\Smart-Travel-Management-System\Agent Section\functions\generateRoomingList.php on line 20
+[09-Jul-2025 09:44:26 Europe/Berlin] PHP Warning:  Undefined variable $writer in C:\xampp\htdocs\Smart-Travel-Management-System\Agent Section\functions\generateRoomingList.php on line 23
+[09-Jul-2025 09:44:26 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function save() on null in C:\xampp\htdocs\Smart-Travel-Management-System\Agent Section\functions\generateRoomingList.php:23
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\Smart-Travel-Management-System\Agent Section\functions\generateRoomingList.php on line 23
+[09-Jul-2025 09:44:28 Europe/Berlin] PHP Warning:  Undefined variable $flightDate in C:\xampp\htdocs\Smart-Travel-Management-System\Agent Section\functions\generateRoomingList.php on line 20
+[09-Jul-2025 09:44:28 Europe/Berlin] PHP Warning:  Undefined variable $writer in C:\xampp\htdocs\Smart-Travel-Management-System\Agent Section\functions\generateRoomingList.php on line 23
+[09-Jul-2025 09:44:28 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function save() on null in C:\xampp\htdocs\Smart-Travel-Management-System\Agent Section\functions\generateRoomingList.php:23
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\Smart-Travel-Management-System\Agent Section\functions\generateRoomingList.php on line 23
+[09-Jul-2025 09:44:33 Europe/Berlin] PHP Fatal error:  Uncaught Error: Class "PhpOffice\PhpSpreadsheet\Spreadsheet" not found in C:\xampp\htdocs\Smart-Travel-Management-System\Agent Section\functions\generateRoomingList.php:20
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\Smart-Travel-Management-System\Agent Section\functions\generateRoomingList.php on line 20
+[09-Jul-2025 09:44:54 Europe/Berlin] PHP Warning:  Undefined variable $writer in C:\xampp\htdocs\Smart-Travel-Management-System\Agent Section\functions\generateRoomingList.php on line 94
+[09-Jul-2025 09:44:54 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function save() on null in C:\xampp\htdocs\Smart-Travel-Management-System\Agent Section\functions\generateRoomingList.php:94
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\Smart-Travel-Management-System\Agent Section\functions\generateRoomingList.php on line 94
+[09-Jul-2025 09:44:57 Europe/Berlin] PHP Warning:  Undefined variable $writer in C:\xampp\htdocs\Smart-Travel-Management-System\Agent Section\functions\generateRoomingList.php on line 94
+[09-Jul-2025 09:44:57 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function save() on null in C:\xampp\htdocs\Smart-Travel-Management-System\Agent Section\functions\generateRoomingList.php:94
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\Smart-Travel-Management-System\Agent Section\functions\generateRoomingList.php on line 94
+[09-Jul-2025 09:44:58 Europe/Berlin] PHP Warning:  Undefined variable $writer in C:\xampp\htdocs\Smart-Travel-Management-System\Agent Section\functions\generateRoomingList.php on line 94
+[09-Jul-2025 09:44:58 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function save() on null in C:\xampp\htdocs\Smart-Travel-Management-System\Agent Section\functions\generateRoomingList.php:94
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\Smart-Travel-Management-System\Agent Section\functions\generateRoomingList.php on line 94
