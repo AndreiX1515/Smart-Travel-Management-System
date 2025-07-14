@@ -1,4 +1,5 @@
 <?php
+require '../../conn.php';  // Ensure the database connection is included
 require '../../vendor/autoload.php';  // Ensure Composer's autoloader is included
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -48,8 +49,6 @@ if (isset($_POST['itineraryDetails']) && isset($_POST['daysDetails'])) {
 
         IOFactory::registerWriter('Pdf', Dompdf::class);
 
-
-        
         $sheet = $spreadsheet->getActiveSheet();
 
         // === Set Page Size and Margins === //
@@ -65,8 +64,46 @@ if (isset($_POST['itineraryDetails']) && isset($_POST['daysDetails'])) {
 
 
         // Header
+
+
         // =========== Package Name =========== //
-        $sheet->setCellValue('A9', strtoupper($itineraryDetails['packageName']));
+        function formatPackageName($name) {
+            $words = preg_split('/\s+/', trim($name));
+
+            // Return first two words if more than one exists, else just the first
+            if (count($words) >= 2) {
+                return "{$words[0]} {$words[1]}";
+            }
+
+            return $words[0] ?? '';
+        }
+
+        // ✅ Fetch and format package name using packageId from itineraryDetails
+        $displayName = '';
+        $fullPackageName = '';
+
+        if (!empty($itineraryDetails['packageName'])) {
+            $packageId = (int) $itineraryDetails['packageName'];
+
+            $stmt = $conn->prepare("SELECT packageName FROM package WHERE packageId = ?");
+            $stmt->bind_param("i", $packageId);
+
+            if ($stmt->execute()) {
+                $stmt->bind_result($fetchedPackageName);
+                if ($stmt->fetch()) {
+                    $fullPackageName = $fetchedPackageName;
+                    $displayName = $fetchedPackageName;
+                }
+            }
+
+            $stmt->close();
+        }
+
+        // ✅ Compose final title with suffix
+        $formattedItineraryTitle = strtoupper($displayName . ' - KOREA TOUR 5D/4N');
+
+        // ✅ Output formatted name to A9
+        $sheet->setCellValue('A9', $formattedItineraryTitle);
 
         // =========== Hotels =========== //
         $startRow = 11; // Starting row
@@ -103,9 +140,6 @@ if (isset($_POST['itineraryDetails']) && isset($_POST['daysDetails'])) {
 
         // $sheet->setCellValue('A3', $itineraryDetails['periodEnd']);
         $sheet->setCellValue('H6', $itineraryDetails['guideName']);
-
-
-
 
 
 
@@ -234,26 +268,33 @@ if (isset($_POST['itineraryDetails']) && isset($_POST['daysDetails'])) {
         function setDay2Areas($sheet, $dayData)
         {
             echo "Day 2 Areas: <br>";
-            $column = 'B'; // Keep column fixed
-            $row = 22;     // Starting row
+            $column = 'B';
 
-            // Check if areas are set for Day 2 and loop through them
-            if (isset($dayData['areas'])) {
-                foreach ($dayData['areas'] as $index => $area) {
-                    // Convert area to uppercase
+            if (isset($dayData['areas']) && is_array($dayData['areas'])) {
+                // Filter out empty strings
+                $nonEmptyAreas = array_filter($dayData['areas'], function ($area) {
+                    return trim($area) !== '';
+                });
+
+                $count = count($nonEmptyAreas);
+
+                // Determine starting row
+                $row = ($count === 1) ? 25 : 22;
+
+                foreach ($nonEmptyAreas as $index => $area) {
                     $uppercaseArea = strtoupper(trim($area));
-
-                    // Construct full cell reference (e.g., "B23", "B26", etc.)
                     $cell = $column . $row;
 
-                    // Set value for areas and echo to the console
                     $sheet->setCellValue($cell, $uppercaseArea);
-                    echo ($index + 1) . ". " . $uppercaseArea . "<br>";
+                    echo ($index + 1) . ". " . $uppercaseArea . " -> $cell<br>";
 
-                    $row += 3;  // Add 3 to the row number for next item
+                    $row += 3;  // Move to next row with +3 spacing
                 }
             }
         }
+
+
+
 
 
         // Function to display and set values for Hotels on Day 2
@@ -359,17 +400,31 @@ if (isset($_POST['itineraryDetails']) && isset($_POST['daysDetails'])) {
         {
             echo "Day 3 Areas: <br>";
             $column = 'B';
-            $row = 31;
 
-            if (isset($dayData['areas'])) {
-                foreach ($dayData['areas'] as $index => $area) {
+            if (isset($dayData['areas']) && is_array($dayData['areas'])) {
+                // Filter out empty or whitespace-only areas
+                $nonEmptyAreas = array_filter($dayData['areas'], function ($area) {
+                    return trim($area) !== '';
+                });
+
+                $count = count($nonEmptyAreas);
+
+                // Determine starting row
+                $row = ($count === 1) ? 34 : 31;
+
+                foreach ($nonEmptyAreas as $index => $area) {
+                    $uppercaseArea = strtoupper(trim($area));
                     $cell = $column . $row;
-                    $sheet->setCellValue($cell, strtoupper(trim($area)));
-                    echo ($index + 1) . ". " . strtoupper(trim($area)) . "<br>";
+
+                    $sheet->setCellValue($cell, $uppercaseArea);
+                    echo ($index + 1) . ". " . $uppercaseArea . " -> $cell<br>";
+
                     $row += 3;
                 }
             }
         }
+
+
 
         function setDay3Hotels($sheet, $dayData)
         {
@@ -447,17 +502,31 @@ if (isset($_POST['itineraryDetails']) && isset($_POST['daysDetails'])) {
         {
             echo "Day 4 Areas: <br>";
             $column = 'B';
-            $row = 40;
 
-            if (isset($dayData['areas'])) {
-                foreach ($dayData['areas'] as $index => $area) {
+            if (isset($dayData['areas']) && is_array($dayData['areas'])) {
+                // Remove empty or whitespace-only values
+                $nonEmptyAreas = array_filter($dayData['areas'], function ($area) {
+                    return trim($area) !== '';
+                });
+
+                $count = count($nonEmptyAreas);
+
+                // Start at B43 if only 1, otherwise start at B40
+                $row = ($count === 1) ? 43 : 40;
+
+                foreach ($nonEmptyAreas as $index => $area) {
+                    $uppercaseArea = strtoupper(trim($area));
                     $cell = $column . $row;
-                    $sheet->setCellValue($cell, strtoupper(trim($area)));
-                    echo ($index + 1) . ". " . strtoupper(trim($area)) . "<br>";
+
+                    $sheet->setCellValue($cell, $uppercaseArea);
+                    echo ($index + 1) . ". " . $uppercaseArea . " -> $cell<br>";
+
                     $row += 3;
                 }
             }
         }
+
+
 
         function setDay4Hotels($sheet, $dayData)
         {
@@ -535,17 +604,31 @@ if (isset($_POST['itineraryDetails']) && isset($_POST['daysDetails'])) {
         {
             echo "Day 5 Areas: <br>";
             $column = 'B';
-            $row = 49;
 
-            if (isset($dayData['areas'])) {
-                foreach ($dayData['areas'] as $index => $area) {
+            if (isset($dayData['areas']) && is_array($dayData['areas'])) {
+                // Filter out empty/whitespace-only values
+                $nonEmptyAreas = array_filter($dayData['areas'], function ($area) {
+                    return trim($area) !== '';
+                });
+
+                $count = count($nonEmptyAreas);
+
+                // Start at B52 if only 1 area, else start at B49
+                $row = ($count === 1) ? 52 : 49;
+
+                foreach ($nonEmptyAreas as $index => $area) {
+                    $uppercaseArea = strtoupper(trim($area));
                     $cell = $column . $row;
-                    $sheet->setCellValue($cell, strtoupper(trim($area)));
-                    echo ($index + 1) . ". " . strtoupper(trim($area)) . "<br>";
+
+                    $sheet->setCellValue($cell, $uppercaseArea);
+                    echo ($index + 1) . ". " . $uppercaseArea . " -> $cell<br>";
+
                     $row += 3;
                 }
             }
         }
+
+
 
         function setDay5Hotels($sheet, $dayData)
         {

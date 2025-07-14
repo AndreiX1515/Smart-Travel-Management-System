@@ -6,7 +6,6 @@ try {
     $stmt = $conn->prepare("
         SELECT 
             ida.areaName,
-            h.hotelId,
             h.hotelName
         FROM itinerarydatahotels idh
         INNER JOIN hotels h ON idh.hotelId = h.hotelId
@@ -20,16 +19,15 @@ try {
 
     foreach ($results as $row) {
         $area = $row['areaName'];
+        $hotelName = $row['hotelName'];
+
         if (!isset($grouped[$area])) {
             $grouped[$area] = [];
         }
 
-        // Prevent duplicates
-        if (!in_array($row['hotelId'], array_column($grouped[$area], 'hotelId'))) {
-            $grouped[$area][] = [
-                'hotelId' => $row['hotelId'],
-                'hotelName' => $row['hotelName']
-            ];
+        // Avoid duplicates
+        if (!in_array($hotelName, $grouped[$area])) {
+            $grouped[$area][] = $hotelName;
         }
     }
 

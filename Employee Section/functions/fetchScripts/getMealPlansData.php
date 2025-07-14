@@ -19,7 +19,8 @@ try {
     $structured = [
         'breakfast' => [],
         'lunch' => [],
-        'dinner' => []
+        'dinner' => [],
+        'snack' => []
     ];
 
     foreach ($meals as $meal) {
