@@ -43,10 +43,10 @@
     </div>
 
     <script>
-			document.getElementById('redirect-btn').addEventListener('click', function () {
-				window.location.href = '../Employee Section/emp-dashboard.php'; // Replace with your actual URL
-			});
-		</script>
+      document.getElementById('redirect-btn').addEventListener('click', function () {
+        window.location.href = '../Employee Section/emp-dashboard.php'; // Replace with your actual URL
+      });
+    </script>
 
     <?php
     $statusTab = isset($_GET['status']) ? $_GET['status'] : '';
@@ -67,7 +67,8 @@
                 </li>
                 <li class="nav-item" role="presentation">
                   <button class="nav-link" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home"
-                    type="button" role="tab" aria-controls="pills-home" aria-selected="true">Created Itinerary Templates</button>
+                    type="button" role="tab" aria-controls="pills-home" aria-selected="true">Created Itinerary
+                    Templates</button>
                 </li>
               </ul>
             </div>
@@ -86,6 +87,85 @@
           <!-- Flight Seat Tracker Tab -->
           <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab"
             tabindex="0">
+
+            <!-- Main voucher content -->
+            <div class="itinerary-grid">
+              <?php
+              $sql = "SELECT * FROM itineraries WHERE isMainTemplate = 1 ORDER BY createdAt DESC;";
+
+              $result = $conn->query($sql);
+
+              if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                  $itineraryId = htmlspecialchars($row['itineraryId'] ?? '');
+                  $packageName = htmlspecialchars($row['itineraryName'] ?? 'Untitled');
+                  $createdAt = $row['createdAt'] ? (new DateTime($row['createdAt']))->format('F j, Y g:i A') : 'N/A';
+
+                  // Determine an icon letter (e.g., "IT" for itinerary)
+                  $iconLetter = strtoupper(substr($packageName, 0, 1));
+                  ?>
+                  <div class="itinerary-card" data-id="<?php echo $itineraryId; ?>">
+                    <div class="card-content-wrap">
+
+                      <!-- Header Section -->
+                      <div class="it-card-header">
+
+                        <div class="itinerary-info">
+                          <div class="itinerary-name">
+                            <h6><?php echo $packageName; ?></h6>
+                          </div>
+
+                          <div class="status-container">
+                            <span class="badge-type">IT</span>
+                          </div>
+                        </div>
+
+                        <!-- Dropdown Options -->
+                        <div class="options dropdown">
+                          <button class="btn dropdown-toggle p-0 border-0 bg-transparent" type="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-ellipsis-v"></i>
+                          </button>
+
+                          <ul class="dropdown-menu dropdown-menu-end">
+                            <!-- <li><a class="dropdown-item" href="#">View Details</a></li>
+                            <li><a class="dropdown-item" href="#">Edit</a></li> -->
+                            <li><a class="dropdown-item text-danger" href="#">Delete</a></li>
+                          </ul>
+                        </div>
+
+                      </div>
+
+                      <!-- Body Section -->
+                      <div class="it-card-body">
+                        <div class="itinerary-icon itinerary-bg-body"><?php echo $iconLetter; ?></div>
+                      </div>
+
+                      <!-- Footer Section (Placeholder for future content) -->
+                      <!-- <div class="it-card-footer"></div> -->
+                    </div>
+                  </div>
+
+
+
+
+
+                  <?php
+
+                }
+
+              } else {
+                echo "<p class='no-records'>No Itinerary Templates Found.</p>";
+              }
+
+              ?>
+            </div>
+
+          </div>
+
+          <!-- Payment and Requests Table -->
+          <div class="tab-pane fade" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
+
             <!-- Main voucher content -->
             <div class="itinerary-grid">
               <?php
@@ -103,12 +183,17 @@
                   ?>
                   <div class="itinerary-card" data-id="<?php echo $itineraryId; ?>">
                     <div class="card-content-wrap">
+
                       <!-- Header Section -->
                       <div class="it-card-header">
+
                         <div class="itinerary-info">
-                          <span class="file-type">IT</span>
                           <div class="itinerary-name">
                             <h6><?php echo $packageName; ?></h6>
+                          </div>
+
+                          <div class="status-container">
+                            <span class="badge-type">IT</span>
                           </div>
                         </div>
 
@@ -118,12 +203,14 @@
                             data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fas fa-ellipsis-v"></i>
                           </button>
+
                           <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="#">View Details</a></li>
                             <li><a class="dropdown-item" href="#">Edit</a></li>
                             <li><a class="dropdown-item text-danger" href="#">Delete</a></li>
                           </ul>
                         </div>
+
                       </div>
 
                       <!-- Body Section -->
@@ -132,7 +219,7 @@
                       </div>
 
                       <!-- Footer Section (Placeholder for future content) -->
-                      <div class="it-card-footer"></div>
+                      <!-- <div class="it-card-footer"></div> -->
                     </div>
                   </div>
 
@@ -151,15 +238,8 @@
               ?>
             </div>
 
-
           </div>
 
-
-          <!-- Payment and Requests Table -->
-          <div class="tab-pane fade" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
-
-
-          </div>
         </div>
 
         <!-- <div class="navpills-container">

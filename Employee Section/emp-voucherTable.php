@@ -25,13 +25,13 @@
     <div class="navbar">
       <div class="page-header-wrapper">
 
-        <!-- <div class="page-header-top">
+        <div class="page-header-top">
           <div class="back-btn-wrapper">
             <button class="back-btn" id="redirect-btn">
               <i class="fas fa-chevron-left"></i>
             </button>
           </div>
-        </div> -->
+        </div>
 
         <div class="page-header-content">
           <div class="page-header-text">
@@ -41,6 +41,16 @@
 
       </div>
     </div>
+
+    <script>
+			document.getElementById('redirect-btn').addEventListener('click', function () {
+				window.location.href = '../Employee Section/emp-dashboard.php'; // Replace with your actual URL
+			});
+		</script>
+
+
+
+
 
     <?php
     $statusTab = isset($_GET['status']) ? $_GET['status'] : '';
@@ -54,15 +64,18 @@
           <div class="navTabs-wrapper">
             <div class="nav-inner-wrapper">
               <ul class="nav nav-pills" id="pills-tab" role="tablist">
+
                 <li class="nav-item" role="presentation">
                   <button class="nav-link active" id="pills-profile-tab" data-bs-toggle="pill"
                     data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile"
-                    aria-selected="false">Voucher Templates</button>
+                    aria-selected="false">Vouchers</button>
                 </li>
-                <li class="nav-item" role="presentation">
+
+                <!-- <li class="nav-item" role="presentation">
                   <button class="nav-link" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home"
                     type="button" role="tab" aria-controls="pills-home" aria-selected="true">Created Templates</button>
-                </li>
+                </li> -->
+
               </ul>
             </div>
           </div>
@@ -95,29 +108,43 @@
                   ?>
                   <div class="itinerary-card" data-id="<?php echo $itineraryId; ?>">
                     <div class="card-content-wrap">
+                      
+                      <!-- Header Section -->
                       <div class="it-card-header">
+
                         <div class="itinerary-info">
-                          <span class="file-type">IT</span>
                           <div class="itinerary-name">
                             <h6><?php echo $packageName; ?></h6>
                           </div>
+
+                          <div class="status-container">
+                            <span class="badge-type voucher-badge">VC</span>
+                          </div>
                         </div>
+
+                        <!-- Dropdown Options -->
                         <div class="options dropdown">
                           <button class="btn dropdown-toggle p-0 border-0 bg-transparent" type="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fas fa-ellipsis-v"></i>
                           </button>
+
                           <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="#">View Details</a></li>
-                            <li><a class="dropdown-item" href="#">Edit</a></li>
+                            <!-- <li><a class="dropdown-item" href="#">View Details</a></li>
+                            <li><a class="dropdown-item" href="#">Edit</a></li> -->
                             <li><a class="dropdown-item text-danger" href="#">Delete</a></li>
                           </ul>
                         </div>
+
                       </div>
+
+                      <!-- Body Section -->
                       <div class="it-card-body">
-                        <div class="itinerary-icon"><?php echo $iconLetter; ?></div>
+                        <div class="itinerary-icon bg-primary text-light"><?php echo $iconLetter; ?></div>
                       </div>
-                      <div class="it-card-footer"></div>
+
+                      <!-- Footer Section (Placeholder for future content) -->
+                      <!-- <div class="it-card-footer"></div> -->
                     </div>
                   </div>
                   <?php

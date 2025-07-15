@@ -565,7 +565,7 @@
 			// Initialize all datepickers with custom configuration
 			initFlatpickr("input.datepicker", {
 				dateFormat: "Y-m-d",
-				minDate: "today",
+				// minDate: "today",
 				disableMobile: true,
 				appendTo: document.body, // Attach calendar to the body
 				position: "auto", // Auto position for flexibility
@@ -785,7 +785,7 @@
 					.then(data => {
 						if (data.status === 'success') {
 							koreanTourAreas = data.data; // flat array of area names
-							// console.log("Areas Loaded:", JSON.stringify(koreanTourAreas, null, 2));
+							console.log("Areas Loaded:", JSON.stringify(koreanTourAreas, null, 2));
 
 
 							renderAreaSelects(); // ⬅️ render only after data is ready
@@ -804,28 +804,35 @@
 
 				selects.forEach(select => {
 					const currentValue = select.value;
+					const disabled = select.disabled;
+					const areaLabel = select.getAttribute("name") || "Area";
+
+					// Skip if it's a disabled Incheon select (e.g., day 1 default)
+					if (disabled) return;
 
 					// Clear current options
-					select.innerHTML = `<option value="" disabled selected>Select Area</option>`;
+					select.innerHTML = `<option value="" disabled selected>Select ${areaLabel.replace(/_/g, " ").replace(/\d/g, "")}</option>`;
 
+					// Append Korean areas
 					koreanTourAreas.forEach(area => {
-						const option = document.createElement("option");
-						option.value = area;
-						option.textContent = area;
+					const option = document.createElement("option");
+					option.value = area;
+					option.textContent = area;
 
-						if (area === currentValue) {
-							option.selected = true;
-						}
+					if (area === currentValue) {
+						option.selected = true;
+					}
 
-						select.appendChild(option);
+					select.appendChild(option);
 					});
 				});
-			}
+				}
+
 
 
 			// ========= For Hotels Data Fetching and Rendering ========= 
 
-			let hotelsByArea = {}; // Format: { areaName: [ { hotelId, hotelName }, ... ] }
+			let hotelsByArea = {}; // Format: { areaName: [ "Hotel Name", ... ] }
 
 			loadHotelsFromDB();
 
@@ -833,15 +840,23 @@
 				fetch('../Employee Section/functions/fetchScripts/getHotelsByArea.php')
 					.then(res => res.json())
 					.then(data => {
-						if (data.status === 'success') {
-							hotelsByArea = data.data;
+						console.log("Fetched hotel data:", data);
 
-							// console.log("✅ Hotels Loaded:", JSON.stringify(hotelsByArea, null, 2));
+						const isValidObject = data.status === 'success' &&
+											data.data &&
+											typeof data.data === 'object' &&
+											!Array.isArray(data.data);
 
-							renderHotelSelectsOnLoad();
-						} else {
-							alert("⚠️ Failed to load hotels data.");
+						if (!isValidObject || Object.keys(data.data).length === 0) {
+							console.warn("⚠️ Invalid or empty hotel data format received.");
+							alert("⚠️ Failed to load valid hotel data.");
+							return;
 						}
+
+						hotelsByArea = data.data;
+						console.log("✅ Hotels Loaded:", JSON.stringify(hotelsByArea, null, 2));
+
+						renderHotelSelectsOnLoad();
 					})
 					.catch(err => {
 						console.error("❌ Hotel data fetch error:", err);
@@ -854,19 +869,31 @@
 				const hotelSelects = document.querySelectorAll(".hotel-select");
 
 				hotelSelects.forEach((select) => {
-					const area = select.dataset.area;
+					const area = select.dataset.area?.trim();
 					const currentValue = select.value;
 
-					if (!area || !hotelsByArea[area]) return;
+					if (!area) return;
+
+					// Match the area case-insensitively
+					const matchingKey = Object.keys(hotelsByArea).find(
+						key => key.trim().toLowerCase() === area.toLowerCase()
+					);
+
+					const hotelList = matchingKey ? hotelsByArea[matchingKey] : [];
+
+					if (!hotelList.length) {
+						console.warn(`⚠️ No hotel list found for area "${area}"`);
+						return;
+					}
 
 					select.innerHTML = `<option value="" disabled selected>Select ${select.name?.replace(/_/g, " ").replace(/\d/g, "") || "Hotel"}</option>`;
 
-					hotelsByArea[area].forEach(hotel => {
+					hotelList.forEach(hotelName => {
 						const option = document.createElement("option");
-						option.value = hotel.hotelId;
-						option.textContent = hotel.hotelName;
+						option.value = hotelName;
+						option.textContent = hotelName;
 
-						if (hotel.hotelId == currentValue) {
+						if (hotelName === currentValue) {
 							option.selected = true;
 						}
 
@@ -874,6 +901,10 @@
 					});
 				});
 			}
+
+
+
+
 
 			// ========= Delegated Listener for Itinerary and Area Selects =========
 
@@ -886,35 +917,47 @@
 
 				// Area => Hotels (on same day only)
 				if (e.target.classList.contains("area-select")) {
-					const selectedArea = e.target.value;
 					const day = e.target.dataset.day;
 
-					// Update hotel-selects that belong to this day only
-					const hotelSelects = document.querySelectorAll(`.hotel-select[data-day="${day}"]`);
+					// 1️⃣ Collect all selected areas for that day
+					const areaSelects = document.querySelectorAll(`.area-select[data-day="${day}"]`);
+					const selectedAreas = Array.from(areaSelects)
+						.map(sel => sel.value?.trim())
+						.filter(val => val && val !== "");
 
-					hotelSelects.forEach(hotelSelect => {
-						hotelSelect.dataset.area = selectedArea || "";
-						const currentValue = hotelSelect.value;
+					// 2️⃣ Collect hotels from all selected areas
+					let combinedHotels = [];
+					const addedHotelIds = new Set(); // Avoid duplicates
 
-						const normalizedArea = selectedArea.trim().toLowerCase();
-						const matchingKey = Object.keys(hotelsByArea).find(key => key.toLowerCase() === normalizedArea);
-						const hotelOptions = matchingKey ? hotelsByArea[matchingKey] : [];
-
-						if (hotelOptions.length === 0) {
-							console.warn(`⚠️ No hotels mapped for area "${selectedArea}"`);
-							return;
+					selectedAreas.forEach(area => {
+						const normalizedKey = Object.keys(hotelsByArea).find(
+							k => k.toLowerCase() === area.toLowerCase()
+						);
+						if (normalizedKey && hotelsByArea[normalizedKey]) {
+							hotelsByArea[normalizedKey].forEach(hotel => {
+								if (!addedHotelIds.has(hotel.hotelId)) {
+									combinedHotels.push(hotel);
+									addedHotelIds.add(hotel.hotelId);
+								}
+							});
 						}
-
-						hotelSelect.innerHTML =
-							`<option selected disabled value="">Select Hotel</option>` +
-							hotelOptions.map(hotel => `
-							<option value="${hotel}" ${hotel === currentValue ? "selected" : ""}>
-								${hotel}
-							</option>
-						`).join("");
 					});
 
+					// 3️⃣ Update hotel selects for that day
+					const hotelSelects = document.querySelectorAll(`.hotel-select[data-day="${day}"]`);
+					hotelSelects.forEach(hotelSelect => {
+						const currentValue = hotelSelect.value;
+						hotelSelect.innerHTML =
+							`<option selected disabled value="">Select Hotel</option>` +
+							combinedHotels.map(hotel => `
+								<option value="${hotel.hotelId}" ${hotel.hotelId == currentValue ? "selected" : ""}>
+									${hotel.hotelName}
+								</option>
+							`).join("");
+					});
 				}
+
+
 			});
 
 			// ========= Utility: Disable already-chosen itinerary values =========
@@ -966,6 +1009,7 @@
 
 			// ========= For Meal Plan Data Fetching and Rendering ========= 
 			let koreanMealPlans = {};
+			
 
 			// Meal Plans Data Fetch
 			loadMealPlansFromDB();
@@ -1019,9 +1063,6 @@
 
 
 
-
-
-
 			// Populate days dropdown
 			for (let num = 1; num <= totalDays; num++) {
 				const option = document.createElement("option");
@@ -1051,10 +1092,10 @@
 								<div class="col-4">
 								<label class="form-label fw-semibold">Area:</label>    
 								<select class="form-select area-select" data-day="${day}" disabled>
-									<option value"Incheon" selected>Incheon</option>
+									<option value="Incheon" selected>Incheon</option>
 								</select>
 								</div>` :
-						["Area 1", "Area 2", "Area 3"].map((label, i) => `
+								["Area 1", "Area 2", "Area 3"].map((label, i) => `
 								<div class="col-4 mb-2">
 									<label class="form-label fw-semibold">${label}</label>
 									<div class="d-flex align-items-center gap-2">
@@ -1067,59 +1108,57 @@
 										<option value="" selected disabled>Select ${label}</option>
 										${koreanTourAreas.map(a => `<option value="${a}">${a}</option>`).join("")}
 									</select>
-
 									<button type="button"
 											class="btn btn-sm btn-danger text-light area-trash"
 											id="trash-area${day}_area${i + 1}"
-											onclick="resetArea('${day}_area${i + 1}')"
+											onclick="resetArea('area${day}_area${i + 1}')"
 											title="Reset Area"
 											style="display: none;">
 										<i class="fas fa-trash-alt"></i>
 									</button>
-
 									</div>
 								</div>
 								`).join("")
-					}
+							}
 							</div>
-
 
 							<!-- Hotels -->
 							<div class="row mb-3">
-								<div class="col-12">
-									<label class="form-label fw-semibold">Hotels:</label>
-									<div class="row">
-										${["Hotel 1", "Hotel 2"].map((label, i) => {
-						const hotelOptions = day === 1
-							? ["Air Sky Hotel", "Smart Stay Hotel"]
-								.map(h => `<option value="${h}">${h}</option>`).join("")
-							: "";
+							<div class="col-12">
+								<label class="form-label fw-semibold">Hotels:</label>
+								<div class="row">
+								${["Hotel 1", "Hotel 2"].map((label, i) => {
+									const hotelOptions = day === 1
+									? ["Air Sky Hotel", "Smart Stay Hotel"].map(h => `<option value="${h}">${h}</option>`).join("")
+									: "";
 
-						return `
-												<div class="col-md-6 col-sm-12 mb-2 d-flex align-items-center gap-2">
-													<select class="form-select hotel-select" 
-														id="hotel${day}_${i}" 
-														data-day="${day}" 
-														data-index="${day}_${i}" 
-														name="hotel_${day}_${i}" 
-														${i === 0 ? 'required' : ''}>
-														<option disabled selected value="">Select ${label}</option>
-														${hotelOptions}
-													</select>
-													<button type="button" 
-														class="btn btn-sm btn-danger text-light hotel-trash"
-														id="trash-hotel${day}_${i}"
-														onclick="resetHotel('${day}_${i}')"
-														title="Reset Hotel"
-														style="display: none;">
-														<i class="fas fa-trash-alt"></i>
-													</button>
-												</div>
-											`;
-					}).join("")}
+									return `
+									<div class="col-md-6 col-sm-12 mb-2 d-flex align-items-center gap-2">
+										<select class="form-select hotel-select" 
+												id="hotel${day}_${i}" 
+												data-day="${day}" 
+												data-index="${day}_${i}" 
+												name="hotel_${day}_${i}" 
+												${i === 0 ? 'required' : ''}>
+										<option disabled selected value="">Select ${label}</option>
+										${hotelOptions}
+										</select>
+										<button type="button" 
+												class="btn btn-sm btn-danger text-light hotel-trash"
+												id="trash-hotel${day}_${i}"
+												onclick="resetHotel('${day}_${i}')"
+												title="Reset Hotel"
+												style="display: none;">
+										<i class="fas fa-trash-alt"></i>
+										</button>
 									</div>
+									`;
+								}).join("")}
 								</div>
 							</div>
+							</div>
+
+
 
 
 							<!-- Meals -->
@@ -1229,6 +1268,7 @@
 			}
 		});
 
+
 		// Hotel Delete Logic
 		document.addEventListener("DOMContentLoaded", () => {
 			// Show/hide trash button for hotels
@@ -1293,7 +1333,6 @@
 
 		// Area Delete Logic
 		document.addEventListener("DOMContentLoaded", () => {
-
 			// Show/hide trash button for areas
 			function checkAreaTrashVisibility() {
 				document.querySelectorAll(".area-select").forEach(select => {
@@ -1315,13 +1354,15 @@
 
 			// Reset handler
 			window.resetArea = function (index) {
-				const select = document.getElementById(`area${index}`);
+				// index = e.g., area2_area2
+				const select = document.querySelector(`.area-select[data-index="${index}"]`);
 				if (select) {
 					select.selectedIndex = 0;
 					checkAreaTrashVisibility();
 				}
 			};
 		});
+
 
 
 		// Form validation for required selects

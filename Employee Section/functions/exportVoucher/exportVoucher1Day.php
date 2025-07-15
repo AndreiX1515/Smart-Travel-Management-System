@@ -206,16 +206,6 @@ try {
 
 
 
-
-
-
-
-
-
-
-
-
-
     // Contact Info
     $sheet->setCellValue('I10', $details['contact'] ?? '');
     $sheet->setCellValue('J11', $details['employeeContact'] ?? '');
