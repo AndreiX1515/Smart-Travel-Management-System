@@ -1721,13 +1721,12 @@
           (function () {
             const arrivalTime = document.getElementById('departure1ArrivalTime')?.value || '';
             const arrivalDateRaw = document.getElementById('departure1Date')?.value || '';
-            const meetingTime = arrivalTime;
-            const meetingPlace = document.getElementById('departure1Destination')?.value || '';
+            const departure1Destination = document.getElementById('departure1Destination')?.value || '';
             const guideId = parseInt(document.getElementById('guideSelect')?.value) || null;
 
             let finalMeetingDate = arrivalDateRaw;
 
-            // ⏱ Handle time overflow (e.g., "24:30")
+            // Handle time overflow (e.g., "24:30")
             const timeParts = arrivalTime.split(':');
             const hour = parseInt(timeParts[0], 10);
             const minute = parseInt(timeParts[1] || '0', 10);
@@ -1738,23 +1737,28 @@
               finalMeetingDate = originalDate.toISOString().split('T')[0];
             }
 
+            // Map destination to readable meeting place
+            const placeOptions = {
+              'ICN': 'Incheon Airport (Terminal 1)',
+              'Other': 'Custom Place'
+            };
+            const meetingPlace = placeOptions[departure1Destination] || 'Custom Place';
+
             return {
               voucherId: serverVoucherId,
               guideId,
-              meetingTime,
+              meetingTime: arrivalTime,
               meetingPlace,
               meetingDate: finalMeetingDate
             };
           })()
         ]
+
       };
 
       // ✅ Console logs preserved
       console.log('Final liveVoucherData:');
       console.log(JSON.stringify(liveVoucherData, null, 2));
-
-
-
 
       // console.log('📦 Payload size:', JSON.stringify(liveVoucherData).length, 'characters');
 

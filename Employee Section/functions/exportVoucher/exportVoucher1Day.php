@@ -65,7 +65,7 @@ try {
 
     // Dates & Hotels
     $cellMap = [
-        ['start' => 'C12', 'end' => 'C16', 'nights' => 'E12', 'city' => 'F12', 'hotel' => 'H12']
+        ['start' => 'C12', 'end' => 'C15', 'nights' => 'E12', 'city' => 'F12', 'hotel' => 'H12']
     ];
 
     foreach ($dateAndHotels as $i => $item) {
