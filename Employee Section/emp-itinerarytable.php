@@ -121,18 +121,18 @@
                         </div>
 
                         <!-- Dropdown Options -->
-                        <div class="options dropdown">
+                        <!-- <div class="options dropdown">
                           <button class="btn dropdown-toggle p-0 border-0 bg-transparent" type="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fas fa-ellipsis-v"></i>
                           </button>
 
                           <ul class="dropdown-menu dropdown-menu-end">
-                            <!-- <li><a class="dropdown-item" href="#">View Details</a></li>
-                            <li><a class="dropdown-item" href="#">Edit</a></li> -->
+                            <li><a class="dropdown-item" href="#">View Details</a></li>
+                            <li><a class="dropdown-item" href="#">Edit</a></li>
                             <li><a class="dropdown-item text-danger" href="#">Delete</a></li>
                           </ul>
-                        </div>
+                        </div> -->
 
                       </div>
 
@@ -145,11 +145,6 @@
                       <!-- <div class="it-card-footer"></div> -->
                     </div>
                   </div>
-
-
-
-
-
                   <?php
 
                 }
@@ -163,13 +158,13 @@
 
           </div>
 
-          <!-- Payment and Requests Table -->
+
           <div class="tab-pane fade" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
 
             <!-- Main voucher content -->
             <div class="itinerary-grid">
               <?php
-              $sql = "SELECT * FROM itineraries ORDER BY createdAt DESC;";
+              $sql = "SELECT * FROM itineraries WHERE isMainTemplate IS NULL ORDER BY createdAt DESC;";
               $result = $conn->query($sql);
 
               if ($result->num_rows > 0) {
@@ -205,8 +200,8 @@
                           </button>
 
                           <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="#">View Details</a></li>
-                            <li><a class="dropdown-item" href="#">Edit</a></li>
+                            <!-- <li><a class="dropdown-item" href="#">View Details</a></li> -->
+                            <!-- <li><a class="dropdown-item" href="#">Edit</a></li> -->
                             <li><a class="dropdown-item text-danger" href="#">Delete</a></li>
                           </ul>
                         </div>
