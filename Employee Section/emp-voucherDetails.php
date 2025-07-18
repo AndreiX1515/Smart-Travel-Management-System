@@ -1642,6 +1642,8 @@
     }); 
   </script>
 
+
+
   <!-- Field Values JSON -->
   <script>
     const serverVoucherId = <?= json_encode($voucher['voucherId']) ?>;
@@ -1721,13 +1723,12 @@
           (function () {
             const arrivalTime = document.getElementById('departure1ArrivalTime')?.value || '';
             const arrivalDateRaw = document.getElementById('departure1Date')?.value || '';
-            const meetingTime = arrivalTime;
-            const meetingPlace = document.getElementById('departure1Destination')?.value || '';
+            const departure1Destination = document.getElementById('departure1Destination')?.value || '';
             const guideId = parseInt(document.getElementById('guideSelect')?.value) || null;
 
             let finalMeetingDate = arrivalDateRaw;
 
-            // ⏱ Handle time overflow (e.g., "24:30")
+            // Handle time overflow (e.g., "24:30")
             const timeParts = arrivalTime.split(':');
             const hour = parseInt(timeParts[0], 10);
             const minute = parseInt(timeParts[1] || '0', 10);
@@ -1738,23 +1739,28 @@
               finalMeetingDate = originalDate.toISOString().split('T')[0];
             }
 
+            // Map destination to readable meeting place
+            const placeOptions = {
+              'ICN': 'Incheon Airport (Terminal 1)',
+              'Other': 'Custom Place'
+            };
+            const meetingPlace = placeOptions[departure1Destination] || 'Custom Place';
+
             return {
               voucherId: serverVoucherId,
               guideId,
-              meetingTime,
+              meetingTime: arrivalTime,
               meetingPlace,
               meetingDate: finalMeetingDate
             };
           })()
         ]
+
       };
 
       // ✅ Console logs preserved
       console.log('Final liveVoucherData:');
       console.log(JSON.stringify(liveVoucherData, null, 2));
-
-
-
 
       // console.log('📦 Payload size:', JSON.stringify(liveVoucherData).length, 'characters');
 
@@ -1773,124 +1779,125 @@
   </script>
 
 
+
+
   <!-- Generate Voucher File -->
-<script>
-  $(document).ready(function () {
-
+  <script>
     $(document).ready(function () {
-      $('#submitEdit').on('click', function () {
-        // Ensure latest liveVoucherData is updated before submission
-        updateLiveVoucherData(); // builds and assigns window.liveVoucherData
+      // === Event Binding ===
+      $('#submitEdit').on('click', handleVoucherSave);
+      $('#submitVoucher').on('click', handleVoucherGenerate);
 
-        console.log("For Insertion:\n", JSON.stringify(liveVoucherData, null, 2));
+      // === Handler: Save Voucher ===
+      function handleVoucherSave() {
+        
+        updateLiveVoucherData(); // builds and assigns window.liveVoucherData
+        const voucherPayload = JSON.stringify(window.liveVoucherData);
+        const templateName = <?= json_encode($voucher['voucherName']) ?>;
+
+        console.log("📝 For Insertion:\n", voucherPayload);
 
         $.ajax({
           url: "../Employee Section/functions/emp-editVoucher.php",
           type: "POST",
           data: {
-            voucherPayload: JSON.stringify(liveVoucherData),
-            templateName: <?= json_encode($voucher['voucherName']) ?>
+            voucherPayload,
+            templateName
           },
           dataType: "json",
-          success: (response) => {
-            console.log("Server Response: \n", JSON.stringify(response, null, 2));
+          success: function (response) {
+            console.log("✅ Server Response:\n", JSON.stringify(response, null, 2));
 
             if (response.status === "success") {
               alert("Voucher saved successfully. Generating template...");
               // window.location.href = "../Employee Section/emp-Table.php";
             } else {
-              alert("Failed to save Voucher: \n" + (response.message || "Unknown error occurred."));
+              alert("❌ Failed to save Voucher: \n" + (response.message || "Unknown error occurred."));
             }
           },
-          error: (xhr, status, error) => {
+          error: function (xhr, status, error) {
             console.error("❌ AJAX Error:", error);
             console.error("📄 Response Text:\n", xhr.responseText);
             alert("❌ Server error. Please try again later.");
           }
         });
-      });
-    });
-
-    // Step 3: Generate voucher file (Excel download)
-    $('#submitVoucher').on('click', function () {
-      const $btn = $(this);
-
-      // 🛠 Build the voucher data
-      let voucherData;
-      try {
-        voucherData = buildLiveVoucherData();
-      } catch (e) {
-        console.error('❌ Failed to build voucher data:', e);
-        alert('Error building voucher data. Please review your form inputs.');
-        return;
       }
 
-      if (!voucherData || typeof voucherData !== 'object') {
-        alert('Invalid voucher data structure.');
-        return;
-      }
+      // === Handler: Generate Voucher Excel ===
+      function handleVoucherGenerate() {
+        const $btn = $('#submitVoucher');
+        let voucherData;
 
-      // ⚠️ Extra payload size check (server limit protection)
-      const estimatedSize = JSON.stringify(voucherData).length;
-      if (estimatedSize > 50000) {
-        alert(`Voucher data too large (${estimatedSize} chars). Please simplify.`);
-        return;
-      }
-
-      const voucherName = (voucherData.voucherName || 'Untitled_Voucher').replace(/\s+/g, '_');
-      const fileFormat = 'xlsx';
-
-      // 🔒 Disable the button while processing
-      $btn.prop('disabled', true).text('Generating...');
-
-      // 📤 Build FormData payload
-      const formData = new FormData();
-      formData.append('voucher', JSON.stringify(voucherData));
-      formData.append('format', fileFormat);
-
-      // 📡 Send to backend
-      $.ajax({
-        url: '../Employee Section/functions/voucher-template-excel.php',
-        type: 'POST',
-        data: formData,
-        contentType: false,
-        processData: false,
-        xhrFields: { responseType: 'blob' },
-
-        success: function (blob) {
-          const fileName = `Voucher_${voucherName}.${fileFormat}`;
-          const downloadBlob = new Blob([blob], {
-            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-          });
-
-          const downloadLink = document.createElement('a');
-          downloadLink.href = URL.createObjectURL(downloadBlob);
-          downloadLink.download = fileName;
-          document.body.appendChild(downloadLink);
-          downloadLink.click();
-          document.body.removeChild(downloadLink);
-
-          console.log(`✅ File downloaded: ${fileName}`);
-          console.log('📦 Sent voucherData:', voucherData);
-        },
-
-        error: function (xhr, status, error) {
-          console.error('❌ Error generating voucher:', error);
-          console.error('📩 Response:', xhr.responseText);
-          alert('❌ Failed to generate the voucher. See console for technical info.');
-        },
-
-        complete: function () {
-          $btn.prop('disabled', false).text('Generate Voucher');
+        try {
+          voucherData = buildLiveVoucherData();
+        } catch (err) {
+          console.error('❌ Failed to build voucher data:', err);
+          alert('Error building voucher data. Please review your form inputs.');
+          return;
         }
-      });
+
+        if (!voucherData || typeof voucherData !== 'object') {
+          alert('Invalid voucher data structure.');
+          return;
+        }
+
+        const estimatedSize = JSON.stringify(voucherData).length;
+        if (estimatedSize > 50000) {
+          alert(`Voucher data too large (${estimatedSize} chars). Please simplify.`);
+          return;
+        }
+
+        const voucherName = (voucherData.voucherName || 'Untitled_Voucher').replace(/\s+/g, '_');
+        const fileFormat = 'xlsx';
+
+        $btn.prop('disabled', true).text('Generating...');
+
+        const formData = new FormData();
+        formData.append('voucher', JSON.stringify(voucherData));
+        formData.append('format', fileFormat);
+
+        $.ajax({
+          url: '../Employee Section/functions/voucher-template-excel.php',
+          type: 'POST',
+          data: formData,
+          contentType: false,
+          processData: false,
+          xhrFields: { responseType: 'blob' },
+
+          success: function (blob) {
+            const fileName = `Voucher_${voucherName}.${fileFormat}`;
+            const downloadBlob = new Blob([blob], {
+              type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            });
+
+            const downloadLink = document.createElement('a');
+            downloadLink.href = URL.createObjectURL(downloadBlob);
+            downloadLink.download = fileName;
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+
+            console.log(`✅ File downloaded: ${fileName}`);
+            console.log('📦 Sent voucherData:', voucherData);
+          },
+
+          error: function (xhr, status, error) {
+            console.error('❌ Error generating voucher:', error);
+            console.error('📩 Response:', xhr.responseText);
+            alert('❌ Failed to generate the voucher. See console for technical info.');
+          },
+
+          complete: function () {
+            $btn.prop('disabled', false).text('Generate Voucher');
+          }
+        });
+      }
+
+      // Optional: Make globally accessible
+      window.proceedWithSubmission = proceedWithSubmission;
     });
+  </script>
 
-    // Make proceedWithSubmission globally accessible (optional)
-    window.proceedWithSubmission = proceedWithSubmission;
-
-  });
-</script>
 
 
 

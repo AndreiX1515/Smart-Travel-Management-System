@@ -1356,6 +1356,7 @@
         'ICN': 'Incheon Airport (Terminal 1)',
         'Other': 'Custom Place'
       };
+      
       const guideMeetingPlace = placeOptions[departure1Destination] || 'Custom Place';
 
       // ✈️ Air Schedule (only flights)

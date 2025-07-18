@@ -60,7 +60,7 @@
 							<h5>Flight</h5>
 						</div>
 
-						<div class="card-body">
+						<div class="card-body mb-3">
 							<div class="row align-items-center">
 								<!-- Flight Dropdown -->
 								<div class="col-md-6" id="flightSelectWrapper">
@@ -158,6 +158,7 @@
 							</div>
 
 							<div class="row align-items-center">
+
 								<!-- Voucher Dropdown -->
 								<div class="col-md-6" id="voucherSelectWrapper" style="display: none;">
 									<label for="voucherId" class="form-label">Select Voucher</label>
@@ -211,8 +212,7 @@
 							<div class="row">
 
 								<!-- Country Dropdown -->
-
-								<div class="columns col-md-4">
+								<div class="columns col-md-6">
 									<div class="column-header">
 										<label for="countrySelect">Country
 											<span class="text-danger"> *</span>
@@ -236,7 +236,7 @@
 								</div>
 
 								<!-- Package Dropdown -->
-								<div class="columns col-md-4">
+								<div class="columns col-md-6">
 									<div class="column-header">
 										<label for="flightDate">Package
 											<span class="text-danger"> *</span>
@@ -266,11 +266,12 @@
 
 							</div>
 
+
 							<!-- Periods, Guide Row -->
 							<div class="row">
 
 								<!-- Flight Date Datepicker -->
-								<div class="columns col-md-4">
+								<div class="columns col-md-6">
 
 									<div class="column-header">
 										<label for="flightDate">Periods
@@ -312,7 +313,7 @@
 								</div>
 
 								<!-- Guide Dropdown -->
-								<div class="columns col-md-4">
+								<div class="columns col-md-6">
 									<div class="column-header">
 										<label for="flightDate">Guide
 											<span class="text-danger"> *</span>
@@ -320,7 +321,7 @@
 									</div>
 
 									<div class="form-group">
-										<select class="form-select" id="guideName" name="guideName" required
+										<select class="form-select" id="guideName" name="guideName"
 											onchange="updateContact(this)">
 											<option value="" selected disabled>Select Guide</option>
 											<?php
@@ -362,7 +363,7 @@
 								</script>
 
 								<!-- Guide Contact Number -->
-								<div class="columns col-md-4">
+								<div class="columns col-md-4 d-none">
 									<div class="column-header">
 										<label for="contactNumber">Contact Number <span
 												class="text-danger">*</span></label>
@@ -471,7 +472,7 @@
 						<div class="card-body">
 							<!-- Package Row -->
 							<div class="row">
-								<div class="columns col-md-3">
+								<div class="columns col-md-4">
 									<div class="form-group days-select-wrapper">
 										<label for="flightDate">No. of days<span class="text-danger"> *</span></label>
 										<select class="form-select" id="select-days" name="numberOfDays" required
@@ -811,7 +812,7 @@
 					if (disabled) return;
 
 					// Clear current options
-					select.innerHTML = `<option value="" disabled selected>Select ${areaLabel.replace(/_/g, " ").replace(/\d/g, "")}</option>`;
+					select.innerHTML = `<option value="" disabled selected>Select Area</option>`;
 
 					// Append Korean areas
 					koreanTourAreas.forEach(area => {
@@ -826,7 +827,7 @@
 					select.appendChild(option);
 					});
 				});
-				}
+			}
 
 
 
