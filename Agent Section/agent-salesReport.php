@@ -113,10 +113,10 @@
               <select class="form-select" name="year" id="year">
                 <option selected disabled>Select Year</option>
                 <?php
-                $currentYear = date("Y");
-                for ($i = $currentYear; $i >= $currentYear - 10; $i--) {
-                  echo "<option value=\"$i\">$i</option>";
-                }
+                  $currentYear = date("Y");
+                  for ($i = $currentYear; $i >= $currentYear - 10; $i--) {
+                    echo "<option value=\"$i\">$i</option>";
+                  }
                 ?>
               </select>
             </div>
@@ -127,17 +127,17 @@
               <select class="form-select" name="selectedAgent" id="agentSelect">
                 <option value="all">All Agents</option>
                 <?php
-                $agentQuery = "SELECT agentId, fName, mName, lName FROM agent WHERE agentCode = '$agentCode'";
-                $agentResult = $conn->query($agentQuery);
+                  $agentQuery = "SELECT agentId, fName, mName, lName FROM agent WHERE agentCode = '$agentCode'";
+                  $agentResult = $conn->query($agentQuery);
 
-                if ($agentResult->num_rows > 0) {
-                  while ($row = $agentResult->fetch_assoc()) {
-                    $fullName = $row['fName'] . ' ' . (!empty($row['mName']) ? substr($row['mName'], 0, 1) . '. ' : '') . $row['lName'];
-                    echo "<option value=\"{$row['agentId']}\">$fullName</option>";
+                  if ($agentResult->num_rows > 0) {
+                    while ($row = $agentResult->fetch_assoc()) {
+                      $fullName = $row['fName'] . ' ' . (!empty($row['mName']) ? substr($row['mName'], 0, 1) . '. ' : '') . $row['lName'];
+                      echo "<option value=\"{$row['agentId']}\">$fullName</option>";
+                    }
+                  } else {
+                    echo "<option disabled>No agents available</option>";
                   }
-                } else {
-                  echo "<option disabled>No agents available</option>";
-                }
                 ?>
               </select>
             </div>
@@ -148,13 +148,13 @@
               <select class="form-select" name="selectedClient" id="clientSelect">
                 <option value="all">All Clients</option>
                 <?php
-                $clientQuery = "SELECT clientId, fName, mName, lName FROM client WHERE clientCode = '$agentCode'";
-                $clientResult = $conn->query($clientQuery);
+                  $clientQuery = "SELECT clientId, fName, mName, lName FROM client WHERE clientCode = '$agentCode'";
+                  $clientResult = $conn->query($clientQuery);
 
-                while ($row = $clientResult->fetch_assoc()) {
-                  $fullName = $row['fName'] . ' ' . (!empty($row['mName']) ? substr($row['mName'], 0, 1) . '. ' : '') . $row['lName'];
-                  echo "<option value=\"{$row['clientId']}\">$fullName</option>";
-                }
+                  while ($row = $clientResult->fetch_assoc()) {
+                    $fullName = $row['fName'] . ' ' . (!empty($row['mName']) ? substr($row['mName'], 0, 1) . '. ' : '') . $row['lName'];
+                    echo "<option value=\"{$row['clientId']}\">$fullName</option>";
+                  }
                 ?>
               </select>
             </div>
@@ -367,21 +367,21 @@
           data: data,
           dataType: 'json',
           success: function (response) {
-  console.log('✅ Server Response:', response);
+            console.log('✅ Server Response:', response);
 
-  if (response.data && response.data.length > 0) {
-    console.log('✅ Report Data:', response.data);
-    renderReportTable(response.data);
-    setReportData(response.data); // ✅ Fix: Now export will work
-    $('#dataTable').show();
-    $('#downloadReport').show();
-  } else {
-    console.warn('⚠️ No data returned or empty result:', response);
-    alert(response.error || 'No data found for the selected filters.');
-    $('#dataTable').hide();
-    $('#downloadReport').hide();
-  }
-},
+            if (response.data && response.data.length > 0) {
+              console.log('✅ Report Data:', response.data);
+              renderReportTable(response.data);
+              setReportData(response.data); // ✅ Fix: Now export will work
+              $('#dataTable').show();
+              $('#downloadReport').show();
+            } else {
+              console.warn('⚠️ No data returned or empty result:', response);
+              alert(response.error || 'No data found for the selected filters.');
+              $('#dataTable').hide();
+              $('#downloadReport').hide();
+            }
+          },
           error: function (xhr, status, error) {
             console.error('❌ AJAX Error:', error);
             console.log('❌ XHR:', xhr);
@@ -401,7 +401,7 @@
             <tr style="font-weight: bold;">
               <td>${record.flightDate}</td>
               <td>${record.pax}</td>
-              <td>₱ ${record.amount}</td>
+              <td>${record.amount}</td>
             </tr>
           `;
           tbody.append(bookingRow);
@@ -413,7 +413,7 @@
                 <tr class="request-row" style="color: #666;">
                   <td style="padding-left: 30px;">↳ ${request.type}</td>
                   <td>${request.pax}</td>
-                  <td>₱ ${request.amount}</td>
+                  <td>${request.amount}</td>
                 </tr>
               `;
               tbody.append(requestRow);
@@ -441,12 +441,32 @@
         return;
       }
 
-      const reportType = document.querySelector('input[name="filter-mode"]:checked')?.value || "flight";
-      const reportFor = document.querySelector('input[name="report-for"]:checked')?.value || "agent";
+      const reportType = document.querySelector('input[name="reportType"]:checked')?.value || "invalid";
+      const reportFor = document.querySelector('input[name="reportFor"]:checked')?.value || "invalid";
 
       const flightDate = document.getElementById("flight-filter")?.value || "";
       const month = document.getElementById("month-filter")?.value || "";
       const year = document.getElementById("year-filter")?.value || "";
+
+      const agentSelect = document.getElementById("agentSelect");
+      const clientSelect = document.getElementById("clientSelect");
+
+      let selectedName = "";
+
+      if (reportFor === "agent" && agentSelect.value !== "all") {
+        selectedName = agentSelect.options[agentSelect.selectedIndex]?.text;
+      } else if (reportFor === "client" && clientSelect.value !== "all") {
+        selectedName = clientSelect.options[clientSelect.selectedIndex]?.text;
+      }
+
+      console.log("Report Type:", reportType);
+      console.log("Report For:", reportFor);
+      console.log("Client select value:", clientSelect.value);
+console.log("Client selected index:", clientSelect.selectedIndex);
+console.log("Client selected name:", clientSelect.options[clientSelect.selectedIndex]?.text);
+
+
+      console.log("Selected Name for Report:", selectedName);
 
       const payload = {
         reportData: reportData,
@@ -454,7 +474,8 @@
         reportFor: reportFor,
         flightDate: flightDate,
         month: month,
-        year: year
+        year: year,
+        selectedName: selectedName // ✅ Pass agent or client name here
       };
 
       console.log("[DEBUG] Sending report payload to PHP:", payload);

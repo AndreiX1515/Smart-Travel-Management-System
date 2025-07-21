@@ -1,22 +1,26 @@
 <?php
 require '../../vendor/autoload.php';
-
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Settings;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
+
+Settings::setLocale('en_PH');
 
 // ✅ Decode POSTed JSON
 $input = json_decode(file_get_contents('php://input'), true);
 
 if (!$input || !isset($input['reportData']) || !is_array($input['reportData'])) {
-    http_response_code(400);
-    echo 'Missing or invalid report data.';
-    exit;
+  http_response_code(400);
+  echo 'Missing or invalid report data.';
+  exit;
 }
 
 $reportData = $input['reportData'];
-$reportFor = $input['reportFor'] ?? 'Unknown';
+$reportFor = $input['reportFor'] ?? 'agent';
+$selectedName = $input['selectedName'] ?? '';
 $generationDate = date('m/d/Y');
 
 // Create Spreadsheet
@@ -33,13 +37,13 @@ $sheet->getStyle("A$rowNum")->getFont()->setBold(true)->setSize(18);
 $sheet->getStyle("A$rowNum")->getAlignment()->setHorizontal('center');
 $rowNum++;
 
-$sheet->mergeCells("A$rowNum:E$rowNum")->setCellValue("A$rowNum", "Prepared For: $reportFor");
+$sheet->mergeCells("A$rowNum:E$rowNum")->setCellValue("A$rowNum", "Prepared For: $selectedName");
 $rowNum++;
 $sheet->mergeCells("A$rowNum:E$rowNum")->setCellValue("A$rowNum", "Date Generated: $generationDate");
 $rowNum += 2;
 
 // Table Headers
-$headers = ['NAME', 'FLIGHT DATE', 'PAX', 'AMOUNT', 'REQUEST TYPE', 'REQ PAX', 'REQ AMOUNT'];
+$headers = ['FLIGHT DATE', 'PAX', 'AMOUNT', 'REQUEST TYPE', 'REQ PAX', 'REQ AMOUNT'];
 $sheet->fromArray($headers, null, "A$rowNum");
 
 $headerRow = $rowNum;
@@ -47,28 +51,28 @@ $rowNum++;
 
 // Table Body
 foreach ($reportData as $entry) {
-    $name = $entry['name'] ?? '';
-    $flightDate = $entry['flightDate'] ?? '';
-    $pax = $entry['pax'] ?? '';
-    $amount = $entry['amount'] ?? '';
-    $requests = $entry['requests'] ?? [];
+  $name = $entry['name'] ?? '';
+  $flightDate = $entry['flightDate'] ?? '';
+  $pax = $entry['pax'] ?? '';
+  $amount = $entry['amount'] ?? '';
+  $requests = $entry['requests'] ?? [];
 
-    if (empty($requests)) {
-        // No request — output one row
-        $sheet->fromArray([$name, $flightDate, $pax, $amount, '', '', ''], null, "A$rowNum");
-        $rowNum++;
-    } else {
-        // With requests — multiple rows per request
-        foreach ($requests as $req) {
-            $reqType = $req['type'] ?? '';
-            $reqPax = $req['pax'] ?? '';
-            $reqAmount = $req['amount'] ?? '';
-            $sheet->fromArray([$name, $flightDate, $pax, $amount, $reqType, $reqPax, $reqAmount], null, "A$rowNum");
-            $rowNum++;
-            // Clear repeated info to avoid redundancy in display (optional)
-            $name = $flightDate = $pax = $amount = '';
-        }
+  if (empty($requests)) {
+    // No request — output one row
+    $sheet->fromArray([$flightDate, $pax, $amount, '', '', ''], null, "A$rowNum");
+    $rowNum++;
+  } else {
+    // With requests — multiple rows per request
+    foreach ($requests as $req) {
+      $reqType = $req['type'] ?? '';
+      $reqPax = $req['pax'] ?? '';
+      $reqAmount = $req['amount'] ?? '';
+      $sheet->fromArray([$flightDate, $pax, $amount, $reqType, $reqPax, $reqAmount], null, "A$rowNum");
+      $rowNum++;
+      // Clear repeated info to avoid redundancy in display (optional)
+      $name = $flightDate = $pax = $amount = '';
     }
+  }
 }
 
 // Format table
@@ -78,12 +82,12 @@ $lastCol = chr(64 + $colCount);
 
 // Auto width
 foreach (range('A', $lastCol) as $col) {
-    $sheet->getColumnDimension($col)->setAutoSize(true);
+  $sheet->getColumnDimension($col)->setAutoSize(true);
 }
 
 // Borders and header fill
 $sheet->getStyle("A$headerRow:$lastCol$lastRow")->applyFromArray([
-    'borders' => ['allBorders' => ['borderStyle' => Border::BORDER_THIN]]
+  'borders' => ['allBorders' => ['borderStyle' => Border::BORDER_THIN]]
 ]);
 $sheet->getStyle("A$headerRow:$lastCol$headerRow")->getFont()->setBold(true);
 $sheet->getStyle("A$headerRow:$lastCol$headerRow")->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setRGB('D9E1F2');
