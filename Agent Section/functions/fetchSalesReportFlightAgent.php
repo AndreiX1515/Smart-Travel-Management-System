@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'name' => $agentFullName,
             'flightDate' => $flightRange,
             'pax' => (int)$row['bookingPax'],
-            'amount' => number_format($row['totalPrice'], 2),
+            'amount' => '₱ ' . number_format($row['totalPrice'], 2),
             'requests' => []
           ];
         }
@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           $reportData[$txn]['requests'][] = [
             'type' => $row['details'],
             'pax' => (int)$row['requestPax'],
-            'amount' => number_format($row['requestCost'], 2)
+            'amount' => '₱ ' . number_format($row['requestCost'], 2)
           ];
         }
       }
