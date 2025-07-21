@@ -227,7 +227,7 @@ $current_date = date('D, F d, Y');
 
     <!-- Reports -->
     <li class="nav-item transaction">
-      <a class="nav-link page-button" href="../Agent Section/agent-reports.php" data-page-name="Reports">
+      <a class="nav-link page-button" href="../Agent Section/agent-salesReport.php" data-page-name="Reports">
         <div class="icon-wrapper">
           <div class="icon"><i class="fa-solid fa-chart-line"></i></div>
         </div>
