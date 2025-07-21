@@ -54,6 +54,11 @@
 
     <div class="main-content">
 
+      <div id="notification-banner" class="notification-banner">
+        <span id="notification-message">Itinerary deleted successfully.</span>
+        <div class="loader"></div>
+      </div>
+
       <div class="table-container">
 
         <div class="second-div">
@@ -84,7 +89,7 @@
         <!-- Flight Seat Tracker Tab -->
         <div class="tab-content" id="pills-tabContent">
 
-          <!-- Flight Seat Tracker Tab -->
+          <!-- Main Template Modals Tab -->
           <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab"
             tabindex="0">
 
@@ -158,7 +163,7 @@
 
           </div>
 
-
+          <!-- Created Itinerary Templates Tab -->
           <div class="tab-pane fade" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
 
             <!-- Main voucher content -->
@@ -173,20 +178,16 @@
                   $packageName = htmlspecialchars($row['itineraryName'] ?? 'Untitled');
                   $createdAt = $row['createdAt'] ? (new DateTime($row['createdAt']))->format('F j, Y g:i A') : 'N/A';
 
-                  // Determine an icon letter (e.g., "IT" for itinerary)
                   $iconLetter = strtoupper(substr($packageName, 0, 1));
                   ?>
                   <div class="itinerary-card" data-id="<?php echo $itineraryId; ?>">
                     <div class="card-content-wrap">
-
                       <!-- Header Section -->
                       <div class="it-card-header">
-
                         <div class="itinerary-info">
                           <div class="itinerary-name">
                             <h6><?php echo $packageName; ?></h6>
                           </div>
-
                           <div class="status-container">
                             <span class="badge-type">IT</span>
                           </div>
@@ -198,38 +199,28 @@
                             data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fas fa-ellipsis-v"></i>
                           </button>
-
                           <ul class="dropdown-menu dropdown-menu-end">
-                            <!-- <li><a class="dropdown-item" href="#">View Details</a></li> -->
-                            <!-- <li><a class="dropdown-item" href="#">Edit</a></li> -->
-                            <li><a class="dropdown-item text-danger" href="#">Delete</a></li>
+                            <li>
+                              <a class="dropdown-item text-danger delete-itinerary" href="#"
+                                data-id="<?php echo $itineraryId; ?>">
+                                Delete
+                              </a>
+                            </li>
                           </ul>
                         </div>
-
                       </div>
 
                       <!-- Body Section -->
                       <div class="it-card-body">
                         <div class="itinerary-icon"><?php echo $iconLetter; ?></div>
                       </div>
-
-                      <!-- Footer Section (Placeholder for future content) -->
-                      <!-- <div class="it-card-footer"></div> -->
                     </div>
                   </div>
-
-
-
-
-
                   <?php
-
                 }
-
               } else {
                 echo "<p class='no-records'>No itineraries found.</p>";
               }
-
               ?>
             </div>
 
@@ -292,22 +283,104 @@
     </div>
   </div>
 
-  <!-- <div class="table-footer">
-    <div class="pagination-controls">
-      <button id="prevPage" class="pagination-btn">Previous</button>
-      <span id="pageInfo" class="page-info">Page 1 of 10</span>
-      <button id="nextPage" class="pagination-btn">Next</button>
+ 
+  <!-- Delete Confirmation Modal -->
+  <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow">
+        <div class="modal-header bg-danger text-white">
+          <h5 class="modal-title" id="deleteConfirmLabel">Confirm Deletion</h5>
+          <button type="button" class="btn-close btn-close-white ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Are you sure you want to delete this itinerary? This action cannot be undone.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+        </div>
+      </div>
     </div>
-  </div> -->
+  </div>
+
 
   <?php include '../Employee Section/includes/emp-scripts.php' ?>
 
+  
   <!-- Create Voucher Page Redirect -->
   <script>
     document.getElementById("createItinerary").addEventListener("click", function () {
       window.location.href = "../Employee Section/emp-generateItinerary.php";
     });
   </script>
+
+  
+  <!-- Delete Itinerary Script -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const modal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+      let itineraryToDelete = null;
+
+      document.querySelectorAll(".delete-itinerary").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          e.preventDefault();
+          itineraryToDelete = btn.getAttribute("data-id");
+          modal.show();
+        });
+      });
+
+      document.getElementById("confirmDeleteBtn").addEventListener("click", () => {
+        if (itineraryToDelete) {
+          fetch("../Employee Section/functions/emp-itineraryDelete.php", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: `itineraryId=${encodeURIComponent(itineraryToDelete)}`
+          })
+          .then(res => res.text())
+          .then(response => {
+            const card = document.querySelector(`.itinerary-card[data-id="${itineraryToDelete}"]`);
+            if (card) card.remove();
+            
+            showNotification(`Itinerary ID: ${itineraryToDelete} successfully deleted`);
+            modal.hide();
+          })
+          .catch(err => console.error("Delete failed", err));
+        }
+      });
+
+      function showNotification(message, duration = 3000) {
+        const banner = document.getElementById("notification-banner");
+        const messageSpan = document.getElementById("notification-message");
+
+        messageSpan.textContent = message;
+        banner.classList.remove("hide");
+        banner.classList.add("show");
+
+        const loader = banner.querySelector(".loader");
+        loader.style.animation = "none";
+        loader.offsetHeight;
+        loader.style.animation = `loaderAnim ${duration}ms linear forwards`;
+
+        setTimeout(() => {
+          banner.classList.remove("show");
+          banner.classList.add("hide");
+        }, duration);
+      }
+    });
+
+  </script>
+
+
+
+
+
+
+
+
+
+
 
   <!-- For Button Tabs Status Sorting -->
   <script>
@@ -381,8 +454,6 @@
       });
     });
   </script>
-
-
 
   <!-- Row Click Selection-->
   <script>

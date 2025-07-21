@@ -1,22 +1,36 @@
 <?php
-require_once '../../../conn copy.php';
+// Set content type to JSON and disable output buffering
 header('Content-Type: application/json');
 
+
+// Import DB connection
+require_once '../../../conn copy.php'; // Adjust path if needed
+
 try {
-    // Fetch areaName as a flat array
-    $stmt = $conn->prepare("SELECT areaName FROM itinerarydataarea ORDER BY areaName ASC");
+    $stmt = $conn->prepare("SELECT DISTINCT areaName FROM itinerarydataarea ORDER BY areaName ASC");
     $stmt->execute();
+    $areas = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
-    $areaNames = $stmt->fetchAll(PDO::FETCH_COLUMN); // Returns: ["Incheon", "Jeju", "Seoul", ...]
+    if (empty($areas)) {
+        echo json_encode([
+            'status' => 'error',
+            'message' => 'No areas found.'
+        ]);
+    } else {
+        echo json_encode([
+            'status' => 'success',
+            'data' => $areas
+        ]);
+    }
 
-    echo json_encode([
-        'status' => 'success',
-        'data' => $areaNames
-    ]);
-} catch (Exception $e) {
-    // Handle and return any error in JSON
+} catch (PDOException $e) {
     echo json_encode([
         'status' => 'error',
-        'message' => 'Error fetching areas: ' . $e->getMessage()
+        'message' => 'Database error: ' . $e->getMessage()
+    ]);
+} catch (Exception $e) {
+    echo json_encode([
+        'status' => 'error',
+        'message' => 'General error: ' . $e->getMessage()
     ]);
 }
