@@ -426,7 +426,6 @@
 
   <!-- Script Generate to Excel File -->
   <script>
-
     // This is called after fetching/rendering the report
     function setReportData(data) {
       reportData = data;
@@ -462,8 +461,8 @@
       console.log("Report Type:", reportType);
       console.log("Report For:", reportFor);
       console.log("Client select value:", clientSelect.value);
-console.log("Client selected index:", clientSelect.selectedIndex);
-console.log("Client selected name:", clientSelect.options[clientSelect.selectedIndex]?.text);
+      console.log("Client selected index:", clientSelect.selectedIndex);
+      console.log("Client selected name:", clientSelect.options[clientSelect.selectedIndex]?.text);
 
 
       console.log("Selected Name for Report:", selectedName);
