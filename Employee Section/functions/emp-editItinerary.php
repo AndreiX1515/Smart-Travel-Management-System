@@ -8,16 +8,15 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-function validateItineraryData($data) {
-    // Basic format validation (if necessary)
+// ========== VALIDATION FUNCTION ==========
+function validateItineraryData($data)
+{
     $itineraryDetails = $data['itineraryDetails'];
 
-    // Validate number of days (must be a positive integer if present)
     if (isset($itineraryDetails["noOfDays"]) && !is_numeric($itineraryDetails["noOfDays"])) {
         return ["status" => "error", "message" => "Invalid number of days."];
     }
 
-    // Validate period start and end dates
     if (isset($itineraryDetails["periodStart"]) && empty($itineraryDetails["periodStart"])) {
         return ["status" => "error", "message" => "Invalid start date."];
     }
@@ -26,138 +25,161 @@ function validateItineraryData($data) {
         return ["status" => "error", "message" => "Invalid end date."];
     }
 
-    return null; // No issues, data is valid
+    return null;
 }
 
-try {
-    if (!isset($_POST["itinerary"])) {
-        echo json_encode(["status" => "error", "message" => "Missing itinerary data."]);
-        exit;
+// ========== CHECK POST INPUT ==========
+if (!isset($_POST["itinerary"])) {
+    echo json_encode(["status" => "error", "message" => "Missing itinerary data."]);
+    exit;
+}
+
+$userId = 1; // Replace this with session ID in production
+$liveItineraryData = json_decode($_POST["itinerary"], true);
+
+
+
+// ========== RUN VALIDATION ==========
+$validationResponse = validateItineraryData($liveItineraryData);
+if ($validationResponse !== null) {
+    echo json_encode($validationResponse);
+    exit;
+}
+
+
+
+
+// ========== ASSIGN VARIABLES ==========
+$itineraryDetails = $liveItineraryData["itineraryDetails"];
+$daysDetails = $liveItineraryData["daysDetails"];
+
+$originalName = trim($itineraryDetails["itineraryName"] ?? "Untitled Itinerary");
+$originalName = ucwords(strtolower($originalName));
+
+$itineraryIdFromJson = $itineraryDetails["itineraryId"] ?? null;
+$isEdit = false;
+
+if ($itineraryIdFromJson) {
+    $stmtCheck = $conn->prepare("SELECT itineraryId FROM itineraries WHERE itineraryId = ?");
+    $stmtCheck->execute([$itineraryIdFromJson]); // wrap in array
+    $existing = $stmtCheck->fetch();
+
+    if ($existing) {
+        $isEdit = true;
     }
+}
 
-    $userId = 1; // Replace with session-based user ID in production
-    $liveItineraryData = json_decode($_POST["itinerary"], true);
-
-    // Run the validation layer (still checks format)
-    $validationResponse = validateItineraryData($liveItineraryData);
-    if ($validationResponse !== null) {
-        echo json_encode($validationResponse);
-        exit;
-    }
+// Add userId for specific user itineraries
+// $stmtCheck = $conn->prepare("SELECT itineraryId FROM itineraries WHERE userId = ? AND itineraryId = ?");
+// $stmtCheck->execute([$userId, $itineraryIdFromJson]);
 
 
 
+// Handle " - Edited" appending
+$baseName = $originalName;
+if ($isEdit) {
+    $baseName = preg_replace('/\s+-\s+Edited/i', '', $baseName);
+    $baseName .= " - Edited";
+}
 
-    $itineraryDetails = $liveItineraryData["itineraryDetails"];
-    $daysDetails = $liveItineraryData["daysDetails"];
+// Ensure uniqueness
+$templateName = $baseName;
+$counter = 1;
 
-    // Step 1: Normalize the original name
-    $originalName = trim($itineraryDetails["itineraryName"] ?? "Untitled Itinerary");
-    $originalName = ucwords(strtolower($originalName));
 
-    // Step 2: Check if itineraryId exists and if the record exists in the DB
-    $itineraryIdFromJson = $itineraryDetails["itineraryId"] ?? null;
-    $isEdit = false;
+$stmtCheckName = $conn->prepare("SELECT COUNT(*) FROM itineraries WHERE itineraryName = ?");
+$stmtCheckName->execute([$templateName]);
+$nameCount = $stmtCheckName->fetchColumn();
 
-    if ($itineraryIdFromJson) {
-        $stmtCheck = $conn->prepare("SELECT itineraryId FROM itineraries WHERE userId = ? AND itineraryId = ?");
-        $stmtCheck->execute([$userId, $itineraryIdFromJson]);
-        $existing = $stmtCheck->fetch();
 
-        if ($existing) {
-            $isEdit = true;
-        }
-    }
-
-    // Step 3: Prepare base name
-    $baseName = $originalName;
-
-    // Prevent duplicate appending of " - Edited"
-    if ($isEdit) {
-        // Remove any existing " - Edited" and trim it
-        $baseName = preg_replace('/\s+-\s+Edited/i', '', $baseName);
-        $baseName .= " - Edited";
-    }
-
-    // Step 4: Check for name conflicts and append (1), (2), etc.
-    $templateName = $baseName;
-    $counter = 1;
-
-    $stmtCheckName = $conn->prepare("SELECT COUNT(*) FROM itineraries WHERE userId = ? AND itineraryName = ?");
-    $stmtCheckName->execute([$userId, $templateName]);
+while ($nameCount > 0) {
+    $templateName = $baseName . " ($counter)";
+    $stmtCheckName->execute([$templateName]);
     $nameCount = $stmtCheckName->fetchColumn();
+    $counter++;
+}
 
-    while ($nameCount > 0) {
-        $templateName = $baseName . " ($counter)";
-        $stmtCheckName->execute([$userId, $templateName]);
-        $nameCount = $stmtCheckName->fetchColumn();
-        $counter++;
-    }
-
-
-    // Start database transaction
+// ========== BEGIN DB TRANSACTION ==========
+try {
     $conn->beginTransaction();
 
-    // Insert into the itineraries table
+    // Insert itinerary into `itineraries`
     $stmtInsert = $conn->prepare("
-    INSERT INTO itineraries (userId, itineraryName, noOfDays, packageName, periodStart, periodEnd, guideName, countryCode, contactNumber, city1, hotel1, city2, hotel2, city3, hotel3)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO itineraries (
+            itineraryName, noOfDays, packageId,
+            periodStart, periodEnd, guideId
+        ) VALUES (?, ?, ?, ?, ?, ?)
     ");
 
     $stmtInsert->execute([
-    $userId,
-    $templateName ?? '',
-    $itineraryDetails["noOfDays"] ?? 0,
-    $itineraryDetails["packageName"] ?? '',
-    $itineraryDetails["periodStart"] ?? '',
-    $itineraryDetails["periodEnd"] ?? '',
-    $itineraryDetails["guideName"] ?? '',
-    $itineraryDetails["countryCode"] ?? '',
-    $itineraryDetails["contactNumber"]?? '',
-    $itineraryDetails["cities"][0]["city"] ?? '',  // city1
-    $itineraryDetails["cities"][0]["hotel"] ?? '', // hotel1
-    $itineraryDetails["cities"][1]["city"] ?? '',  // city2
-    $itineraryDetails["cities"][1]["hotel"] ?? '', // hotel2
-    $itineraryDetails["cities"][2]["city"] ?? '',  // city3
-    $itineraryDetails["cities"][2]["hotel"] ?? ''  // hotel3
+        $templateName ?? '',
+        $itineraryDetails["noOfDays"] ?? 0,
+        $itineraryDetails["packageId"] ?? '',
+        $itineraryDetails["periodStart"] ?? '',
+        $itineraryDetails["periodEnd"] ?? '',
+        $itineraryDetails["guideId"] ?? '',
     ]);
-
 
     $itineraryId = $conn->lastInsertId();
 
-    // Prepare reusable statements for day-wise data
-    $stmtDay = $conn->prepare("INSERT INTO itineraryDays (itineraryId, dayNumber) VALUES (?, ?)");
-    $stmtArea = $conn->prepare("INSERT INTO itineraryAreas (itineraryId, dayId, areaName) VALUES (?, ?, ?)");
-    $stmtHotel = $conn->prepare("INSERT INTO itineraryHotels (dayId, hotelName) VALUES (?, ?)");
-    $stmtMeal = $conn->prepare("INSERT INTO itineraryMealPlans (dayId, mealPlan) VALUES (?, ?)");
-    $stmtActivity = $conn->prepare("INSERT INTO itineraryActivities (dayId, activityName) VALUES (?, ?)");
+    // Insert into itineraryTourAreasHotels (city1-3 and hotel1-3)
+    $stmtTourAH = $conn->prepare("
+        INSERT INTO itineraryTourAreasHotels (itineraryId, orderNo, city, hotel, createdAt)
+        VALUES (?, ?, ?, ?, NOW())
+    ");
 
-    // Insert days and activities
+    $cities = $itineraryDetails["cities"] ?? [];
+    foreach ($cities as $index => $pair) {
+        $city = $pair["city"] ?? '';
+        $hotel = $pair["hotel"] ?? '';
+        if (!empty($city) || !empty($hotel)) {
+            $stmtTourAH->execute([
+                $itineraryId,
+                $index + 1,
+                trim($city),
+                trim($hotel)
+            ]);
+        }
+    }
+
+    // Prepare reusable insert statements
+    $stmtDay      = $conn->prepare("INSERT INTO itineraryDays (itineraryId, dayNumber) VALUES (?, ?)");
+    $stmtArea     = $conn->prepare("INSERT INTO itineraryAreas (itineraryId, dayId, areaName) VALUES (?, ?, ?)");
+    $stmtHotel    = $conn->prepare("INSERT INTO itineraryHotels (itineraryId, dayId, hotelId) VALUES (?, ?, ?)");
+    $stmtMeal     = $conn->prepare("INSERT INTO itineraryMealPlans (itineraryId, dayId, mealId) VALUES (?, ?, ?)");
+    $stmtActivity = $conn->prepare("INSERT INTO itineraryActivities (itineraryId, dayId, activityName) VALUES (?, ?, ?)");
+
     foreach ($daysDetails as $dayData) {
-        $dayNumber = $dayData["day"] ?? 0;
-        $areas = $dayData["areas"] ?? [];
-        $hotels = $dayData["hotels"] ?? [];
-        $meals = $dayData["meals"] ?? [];
+        $dayNumber  = $dayData["day"] ?? 0;
+        $areas      = $dayData["areas"] ?? [];
+        $hotels     = $dayData["hotels"] ?? [];
+        $meals      = $dayData["meals"] ?? [];
         $activities = $dayData["activities"] ?? [];
 
         $stmtDay->execute([$itineraryId, $dayNumber]);
         $dayId = $conn->lastInsertId();
 
         foreach ($areas as $area) {
-            $stmtArea->execute([$itineraryId, $dayId, trim($area)]);
+            if (!empty(trim($area))) {
+                $stmtArea->execute([$itineraryId, $dayId, trim($area)]);
+            }
         }
 
         foreach ($hotels as $hotel) {
-            $stmtHotel->execute([$dayId, trim($hotel)]);
+            if (!empty(trim($hotel))) {
+                $stmtHotel->execute([$itineraryId, $dayId, trim($hotel)]);
+            }
         }
 
         foreach ($meals as $meal) {
-            $stmtMeal->execute([$dayId, trim($meal)]);
+            if (!empty(trim($meal))) {
+                $stmtMeal->execute([$itineraryId, $dayId, trim($meal)]);
+            }
         }
 
         foreach ($activities as $activity) {
             if (!empty(trim($activity))) {
-                $stmtActivity->execute([$dayId, trim($activity)]);
+                $stmtActivity->execute([$itineraryId, $dayId, trim($activity)]);
             }
         }
     }
@@ -165,13 +187,21 @@ try {
     $conn->commit();
     echo json_encode(["status" => "success", "message" => "Itinerary saved successfully!"]);
 
+} catch (Exception $e) {
+    $conn->rollBack();
+    echo json_encode(["status" => "error", "message" => "Error saving itinerary: " . $e->getMessage()]);
+
 } catch (PDOException $e) {
     $conn->rollBack();
-    error_log("❌ DB Error: " . $e->getMessage());
     echo json_encode(["status" => "error", "message" => "Database error: " . $e->getMessage()]);
+
 } catch (Exception $e) {
+    if ($conn->inTransaction()) {
+        $conn->rollBack();
+    }
     error_log("❌ General Error: " . $e->getMessage());
     echo json_encode(["status" => "error", "message" => "Error: " . $e->getMessage()]);
 }
+
 exit;
 ?>

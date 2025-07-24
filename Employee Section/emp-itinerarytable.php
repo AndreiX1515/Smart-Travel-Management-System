@@ -125,20 +125,7 @@
                           </div>
                         </div>
 
-                        <!-- Dropdown Options -->
-                        <!-- <div class="options dropdown">
-                          <button class="btn dropdown-toggle p-0 border-0 bg-transparent" type="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-ellipsis-v"></i>
-                          </button>
-
-                          <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="#">View Details</a></li>
-                            <li><a class="dropdown-item" href="#">Edit</a></li>
-                            <li><a class="dropdown-item text-danger" href="#">Delete</a></li>
-                          </ul>
-                        </div> -->
-
+                        <!-- Paste dropdown options here to add delete -->
                       </div>
 
                       <!-- Body Section -->
@@ -169,7 +156,7 @@
             <!-- Main voucher content -->
             <div class="itinerary-grid">
               <?php
-              $sql = "SELECT * FROM itineraries WHERE isMainTemplate IS NULL ORDER BY createdAt DESC;";
+              $sql = "SELECT * FROM itineraries WHERE isMainTemplate = 0 OR isMainTemplate IS NULL ORDER BY createdAt DESC;";
               $result = $conn->query($sql);
 
               if ($result->num_rows > 0) {
@@ -201,8 +188,7 @@
                           </button>
                           <ul class="dropdown-menu dropdown-menu-end">
                             <li>
-                              <a class="dropdown-item text-danger delete-itinerary" href="#"
-                                data-id="<?php echo $itineraryId; ?>">
+                              <a class="dropdown-item text-danger delete-itinerary" href="#" data-id="<?php echo $itineraryId; ?>" data-id="<?php echo $packageName; ?>">
                                 Delete
                               </a>
                             </li>
@@ -210,10 +196,11 @@
                         </div>
                       </div>
 
-                      <!-- Body Section -->
+                     <!-- Body Section -->
                       <div class="it-card-body">
-                        <div class="itinerary-icon"><?php echo $iconLetter; ?></div>
+                        <div class="itinerary-icon itinerary-bg-body"><?php echo $iconLetter; ?></div>
                       </div>
+                      
                     </div>
                   </div>
                   <?php
@@ -289,7 +276,9 @@
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content border-0 shadow">
         <div class="modal-header bg-danger text-white">
-          <h5 class="modal-title" id="deleteConfirmLabel">Confirm Deletion</h5>
+          <h5 class="modal-title" id="deleteConfirmLabel">
+            Confirm Deletion <small class="text-light" id="itineraryIdLabel"></small>
+          </h5>
           <button type="button" class="btn-close btn-close-white ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -325,6 +314,21 @@
         btn.addEventListener("click", (e) => {
           e.preventDefault();
           itineraryToDelete = btn.getAttribute("data-id");
+
+          // 🔁 Update modal header to show itinerary ID
+          const modalTitle = document.getElementById('deleteConfirmLabel');
+          const labelSpan = document.getElementById('itineraryIdLabel');
+          if (labelSpan) {
+            labelSpan.textContent = `(ID: ${itineraryToDelete})`;
+          } else {
+            // In case <span> isn't in DOM yet
+            const span = document.createElement('span');
+            span.id = 'itineraryIdLabel';
+            span.className = 'text-light';
+            span.textContent = `(ID: ${itineraryToDelete})`;
+            modalTitle.appendChild(span);
+          }
+
           modal.show();
         });
       });
@@ -342,7 +346,7 @@
           .then(response => {
             const card = document.querySelector(`.itinerary-card[data-id="${itineraryToDelete}"]`);
             if (card) card.remove();
-            
+
             showNotification(`Itinerary ID: ${itineraryToDelete} successfully deleted`);
             modal.hide();
           })
@@ -369,8 +373,8 @@
         }, duration);
       }
     });
-
   </script>
+
 
 
 

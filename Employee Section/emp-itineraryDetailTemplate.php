@@ -336,7 +336,7 @@
 
 							<div class="columns col-md-4">
 								<div class="column-header">
-									<label for="guideName">Guide
+									<label for="flightDate">Guide
 										<span class="text-danger"> *</span>
 									</label>
 								</div>
@@ -344,8 +344,7 @@
 								<div class="form-group">
 									<select class="form-select" id="guideName" name="guideName" required onchange="updateContact(this)">
 										<?php
-										$selectedGuideId = $itinerary['guideId']; // Change this to use the actual ID
-
+										$selectedGuide = $itinerary['guideName'];
 										$query = "SELECT accountId, fName, lName, mName, contactNo, countryCode FROM employee WHERE isTourGuide = 1";
 										$result = mysqli_query($conn, $query);
 
@@ -360,15 +359,15 @@
 											$middleInitial = !empty($mName) ? strtoupper(substr($mName, 0, 1)) . '.' : '';
 											$fullName = $lName . ', ' . $fName . ($middleInitial ? ' ' . $middleInitial : '');
 
-											$isSelected = ($selectedGuideId == $accountId) ? 'selected' : '';
+											$isSelected = ($selectedGuide == $fullName) ? 'selected' : '';
 
-											echo "<option value=\"$accountId\" data-contact=\"$contactNo\" data-code=\"$countryCode\" $isSelected>$fullName</option>";
+											echo "<option value=\"$fullName\" data-contact=\"$contactNo\" data-code=\"$countryCode\" $isSelected>$fullName</option>";
 										}
 										?>
 									</select>
 								</div>
-							</div>
 
+							</div>
 
 							<div class="columns col-md-4">
 								<div class="column-header">
@@ -717,12 +716,12 @@
 			liveItineraryData = JSON.parse(JSON.stringify(itineraryData)); // Clone
 
 			window.updateLiveItineraryData = function () {
-				const itineraryId = parseInt(document.getElementById("itineraryId").value);
+				const itineraryId = document.getElementById("itineraryId").value;
 				const itineraryName = document.getElementById("itineraryName").value;
-				const packageId = parseInt(document.getElementById("packageSelect").value);
+				const packageSelect = document.getElementById("packageSelect").value;
 				const periodStart = document.getElementById("PeriodStartDate").value;
 				const periodEnd = document.getElementById("PeriodEndDate").value;
-				const guideId = parseInt(document.getElementById("guideName").value);
+				const guideName = document.getElementById("guideName").value;
 				const countryCode = document.getElementById("countryCode").value;
 				const contactNumber = document.getElementById("contactNumber").value;
 
@@ -738,16 +737,15 @@
 				const itineraryDetails = {
 					itineraryId,
 					itineraryName,
-					packageId,
+					packageName: packageSelect,
 					periodStart,
 					periodEnd,
-					guideId,
+					guideName,
 					countryCode,
 					contactNumber,
 					cities,
 					noOfDays: parseInt(selectDays.value)
 				};
-
 
 				const daysDetails = [];
 				const cards = itineraryContainer.querySelectorAll(".itinerary-card");
