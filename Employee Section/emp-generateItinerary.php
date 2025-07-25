@@ -479,9 +479,7 @@
 											disabled>
 											<option selected disabled>Select Number of Days</option>
 										</select>
-										<small class="form-text text-muted">Changing this will clear all your data on
-											the
-											fields.</small>
+										<small class="form-text text-muted">Changing this will clear all your data on the fields.</small>
 									</div>
 								</div>
 							</div>
@@ -982,9 +980,6 @@
 
 
 
-
-
-
 			// ========= For Itinerary Activities Data Fetching and Rendering ========= 
 			const allItineraries = [
 				"Arrival at Incheon Airport - Flight: 5J118 (MNL-ICN)",
@@ -998,11 +993,6 @@
 				"Korea Produce Jewel Amethyst Shop", "Jamsil Seokchon Lake (Cherry Blossom)", "Gimpo Hyundai Outlet",
 				"Experience making Kimbop"
 			];
-
-
-
-
-
 
 
 
@@ -1125,38 +1115,42 @@
 
 							<!-- Hotels -->
 							<div class="row mb-3">
-							<div class="col-12">
-								<label class="form-label fw-semibold">Hotels:</label>
-								<div class="row">
-								${["Hotel 1", "Hotel 2"].map((label, i) => {
-									const hotelOptions = day === 1
-									? ["Air Sky Hotel", "Smart Stay Hotel"].map(h => `<option value="${h}">${h}</option>`).join("")
-									: "";
+								<div class="col-12">
+									<label class="form-label fw-semibold">Hotels:</label>
+									<div class="row">
+									${["Hotel 1", "Hotel 2"].map((label, i) => {
+										const hotelOptions = day === 1
+										? [
+											{ id: 1, name: "Smart Stay Hotel"},
+											{ id: 4, name: "Air Sky Hotel" }
+											].map(hotel => `<option value="${hotel.id}">${hotel.name}</option>`).join("")
+										: "";
 
-									return `
-									<div class="col-md-6 col-sm-12 mb-2 d-flex align-items-center gap-2">
-										<select class="form-select hotel-select" 
-												id="hotel${day}_${i}" 
-												data-day="${day}" 
-												data-index="${day}_${i}" 
-												name="hotel_${day}_${i}" 
-												${i === 0 ? 'required' : ''}>
-										<option disabled selected value="">Select ${label}</option>
-										${hotelOptions}
-										</select>
-										<button type="button" 
-												class="btn btn-sm btn-danger text-light hotel-trash"
-												id="trash-hotel${day}_${i}"
-												onclick="resetHotel('${day}_${i}')"
-												title="Reset Hotel"
-												style="display: none;">
-										<i class="fas fa-trash-alt"></i>
-										</button>
+
+										return `
+										<div class="col-md-6 col-sm-12 mb-2 d-flex align-items-center gap-2">
+											<select class="form-select hotel-select" 
+													id="hotel${day}_${i}" 
+													data-day="${day}" 
+													data-index="${day}_${i}" 
+													name="hotel_${day}_${i}" 
+													${i === 0 ? 'required' : ''}>
+											<option disabled selected value="">Select ${label}</option>
+											${hotelOptions}
+											</select>
+											<button type="button" 
+													class="btn btn-sm btn-danger text-light hotel-trash"
+													id="trash-hotel${day}_${i}"
+													onclick="resetHotel('${day}_${i}')"
+													title="Reset Hotel"
+													style="display: none;">
+											<i class="fas fa-trash-alt"></i>
+											</button>
+										</div>
+										`;
+									}).join("")}
 									</div>
-									`;
-								}).join("")}
 								</div>
-							</div>
 							</div>
 
 
@@ -1464,7 +1458,7 @@
 					.map(meal => parseInt(meal.value.trim(), 10)).filter(Number.isInteger);
 
 				const selectedHotels = [...dayCard.querySelectorAll(".hotel-select")]
-					.map(select => select.value.trim()).filter(Boolean);
+					.map(select => parseInt(select.value.trim(), 10)).filter(Boolean);
 
 				const selectedItineraries = [...dayCard.querySelectorAll(".itinerary-select")]
 					.map(select => select.value.trim()).filter(Boolean);

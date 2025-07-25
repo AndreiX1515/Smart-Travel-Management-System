@@ -46,6 +46,7 @@ try {
 
     // 🧠 Extract and normalize voucher-related fields from POST
     $isConnectToVoucher = isset($_POST["isConnectToVoucher"]) && $_POST["isConnectToVoucher"] === "true";
+
     $voucherId = isset($_POST["voucherId"]) ? (int) $_POST["voucherId"] : 0;
 
     // ✅ Check if the voucher is already linked (only if both are valid)
@@ -91,7 +92,7 @@ try {
             $userId
         ]);
 
-        
+
     } else {
         error_log("🟡 Inserting itinerary WITHOUT voucher (isConnectToVoucher = false)");
 
@@ -117,24 +118,18 @@ try {
     $itineraryId = (int) $conn->lastInsertId();
     error_log("📝 Created itinerary ID: $itineraryId");
 
-    // 🔁 Update the voucher to link to this itinerary
-    if ($isConnectToVoucher === true && $voucherId > 0) {
-        $stmtUpdateVoucher = $conn->prepare("
-        UPDATE vouchers
-        SET itineraryId = ?, isConnectToItinerary = 1
-        WHERE voucherId = ?
-    ");
-        $stmtUpdateVoucher->execute([$itineraryId, $voucherId]);
+    // // 🔁 Update the voucher to link to this itinerary
+    // if ($isConnectToVoucher === true && $voucherId > 0) {
+    //     $stmtUpdateVoucher = $conn->prepare("
+    //     UPDATE vouchers
+    //     SET itineraryId = ?, isConnectToItinerary = 1
+    //     WHERE voucherId = ?
+    // ");
+    //     $stmtUpdateVoucher->execute([$itineraryId, $voucherId]);
 
-        $rowsAffected = $stmtUpdateVoucher->rowCount();
-        error_log("🔗 Voucher $voucherId now linked to itinerary $itineraryId (rows affected: $rowsAffected)");
-    }
-
-
-
-
-
-
+    //     $rowsAffected = $stmtUpdateVoucher->rowCount();
+    //     error_log("🔗 Voucher $voucherId now linked to itinerary $itineraryId (rows affected: $rowsAffected)");
+    // }
 
 
     // Insert into itineraryTourAreasHotels
@@ -148,10 +143,10 @@ try {
         }
     }
 
-    // Prepare day & detail inserts
+    // Prepare insert statements
     $stmtDay = $conn->prepare("INSERT INTO itinerarydays (itineraryId, dayNumber) VALUES (?, ?)");
     $stmtArea = $conn->prepare("INSERT INTO itineraryareas (itineraryId, dayId, areaName) VALUES (?, ?, ?)");
-    $stmtHotel = $conn->prepare("INSERT INTO itineraryhotels (itineraryId, dayId, hotelId) VALUES (?, ?, ?)");
+    $stmtHotel = $conn->prepare("INSERT INTO itineraryhotels (itineraryId, dayId, hotelId, createdAt) VALUES (?, ?, ?, NOW())");
     $stmtMeal = $conn->prepare("INSERT INTO itinerarymealplans (itineraryId, dayId, mealId) VALUES (?, ?, ?)");
     $stmtActivity = $conn->prepare("INSERT INTO itineraryactivities (itineraryId, dayId, activityName) VALUES (?, ?, ?)");
 
@@ -161,8 +156,9 @@ try {
         if (empty($hotelNames))
             return [];
 
+        $hotelNames = array_map('strtolower', $hotelNames); // normalize
         $placeholders = implode(',', array_fill(0, count($hotelNames), '?'));
-        $query = "SELECT hotelId, hotelName FROM hotels WHERE hotelName IN ($placeholders)";
+        $query = "SELECT hotelId, LOWER(hotelName) as hotelName FROM hotels WHERE LOWER(hotelName) IN ($placeholders)";
         $stmt = $conn->prepare($query);
 
         if (!$stmt) {
@@ -175,7 +171,7 @@ try {
 
         $hotelMap = [];
         foreach ($result as $row) {
-            $hotelMap[$row['hotelName']] = $row['hotelId'];
+            $hotelMap[$row['hotelName']] = (int) $row['hotelId'];
         }
 
         $converted = [];
@@ -187,16 +183,19 @@ try {
             }
         }
 
+        error_log("🔁 Final hotel IDs: " . json_encode($converted));
         return $converted;
     }
+
+
 
 
     foreach ($itineraryData as $dayData) {
         $dayNumber = $dayData["day"] ?? 0;
         $areas = $dayData["areas"] ?? [];
         $meals = $dayData["meal_plans"] ?? [];
+        $hotelIds = array_filter($dayData["hotels"] ?? [], fn($v) => is_numeric($v) && $v > 0);
         $activities = $dayData["itineraries"] ?? [];
-        $hotelNames = array_map('trim', $dayData["hotels"] ?? []);
 
         // Insert day
         $stmtDay->execute([$itineraryId, $dayNumber]);
@@ -208,13 +207,16 @@ try {
             $stmtArea->execute([$itineraryId, $dayId, $area]);
         }
 
-        // Convert hotel names to IDs and insert
-        $hotelIds = getHotelIdsFromNames($conn, $hotelNames);
+        // Insert hotels (directly as IDs)
         foreach ($hotelIds as $hotelId) {
-            $stmtHotel->execute([$itineraryId, $dayId, $hotelId]);
+            error_log("🏨 Inserting hotelId $hotelId for dayId $dayId, itineraryId $itineraryId");
+            $ok = $stmtHotel->execute([$itineraryId, $dayId, $hotelId]);
+            if (!$ok) {
+                error_log("❌ Hotel insert failed: " . json_encode($stmtHotel->errorInfo()));
+            }
         }
 
-        // Insert valid meals
+        // Insert meals
         foreach ($meals as $meal) {
             if (!is_numeric($meal)) {
                 error_log("⚠️ Skipping non-numeric meal value: " . var_export($meal, true));
@@ -226,18 +228,17 @@ try {
                 error_log("🍽️ Inserting mealId: $intMeal for dayId: $dayId");
                 $stmtMeal->execute([$itineraryId, $dayId, $intMeal]);
             } else {
-                error_log("⚠️ Skipping invalid mealId (<= 0): $intMeal");
+                error_log("⚠️ Invalid mealId (<= 0): $intMeal");
             }
         }
 
         // Insert activities
         foreach ($activities as $activity) {
-            if (!empty($activity)) {
+            if (!empty(trim($activity))) {
                 $stmtActivity->execute([$itineraryId, $dayId, $activity]);
             }
         }
     }
-
 
     $conn->commit();
     echo json_encode(["status" => "success", "message" => "Itinerary saved successfully!"]);
