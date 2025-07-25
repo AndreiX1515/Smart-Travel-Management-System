@@ -1,15 +1,11 @@
 <?php
-// Set content type to JSON and disable output buffering
 header('Content-Type: application/json');
-
-
-// Import DB connection
-require_once '../../../conn copy.php'; // Adjust path if needed
+require_once '../../../conn copy.php';
 
 try {
-    $stmt = $conn->prepare("SELECT DISTINCT areaName FROM itinerarydataarea ORDER BY areaName ASC");
+    $stmt = $conn->prepare("SELECT DISTINCT areaId, areaName FROM itinerarydataarea ORDER BY areaName ASC");
     $stmt->execute();
-    $areas = $stmt->fetchAll(PDO::FETCH_COLUMN);
+    $areas = $stmt->fetchAll(PDO::FETCH_ASSOC); // fetch both areaId and areaName
 
     if (empty($areas)) {
         echo json_encode([
