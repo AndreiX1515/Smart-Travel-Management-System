@@ -22,3 +22,7 @@
 [24-Jul-2025 09:04:47 Europe/Berlin] 📥 POST request received
 [24-Jul-2025 09:04:47 Europe/Berlin] ✅ Received itineraryId: 43
 [24-Jul-2025 09:04:48 Europe/Berlin] 🗑️ Successfully deleted itineraryId: 43
+[24-Jul-2025 10:47:59 Europe/Berlin] 🔍 Incoming DELETE request
+[24-Jul-2025 10:47:59 Europe/Berlin] 📥 POST request received
+[24-Jul-2025 10:47:59 Europe/Berlin] ✅ Received itineraryId: 15
+[24-Jul-2025 10:47:59 Europe/Berlin] 🗑️ Successfully deleted itineraryId: 15

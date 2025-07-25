@@ -1,13 +1,5 @@
 <?php
-
 header('Content-Type: application/json');
-
-// // Enable full error reporting for debugging
-// error_reporting(E_ALL);
-// ini_set('display_errors', 1);
-
-
-// Import DB connection
 require_once '../../../conn copy.php';
 
 try {
@@ -15,21 +7,16 @@ try {
         throw new Exception("❌ Database connection is not established.");
     }
 
-    // Prepare the SQL query
     $sql = "
         SELECT 
-            ida.areaName, h.hotelId, h.hotelName
+            ida.areaId, ida.areaName, h.hotelId, h.hotelName
         FROM itinerarydatahotels idh
         INNER JOIN hotels h ON idh.hotelId = h.hotelId
         INNER JOIN itinerarydataarea ida ON idh.areaId = ida.areaId
-        ORDER BY ida.areaName, h.hotelName
+        ORDER BY ida.areaId, h.hotelName
     ";
 
     $stmt = $conn->prepare($sql);
-    if (!$stmt) {
-        throw new Exception("❌ Failed to prepare SQL statement.");
-    }
-
     $stmt->execute();
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -40,17 +27,17 @@ try {
     $grouped = [];
 
     foreach ($results as $row) {
-        $area = $row['areaName'];
+        $areaId = $row['areaId'];
         $hotelId = $row['hotelId'];
         $hotelName = $row['hotelName'];
 
-        if (!isset($grouped[$area])) {
-            $grouped[$area] = [];
+        if (!isset($grouped[$areaId])) {
+            $grouped[$areaId] = [];
         }
 
-        // Avoid duplicates based on hotelId
-        if (!array_filter($grouped[$area], fn($h) => $h['hotelId'] == $hotelId)) {
-            $grouped[$area][] = [
+        // Prevent duplicates
+        if (!array_filter($grouped[$areaId], fn($h) => $h['hotelId'] == $hotelId)) {
+            $grouped[$areaId][] = [
                 'hotelId' => $hotelId,
                 'hotelName' => $hotelName
             ];
@@ -61,12 +48,14 @@ try {
         'status' => 'success',
         'data' => $grouped
     ]);
+
 } catch (PDOException $pdoEx) {
     echo json_encode([
         'status' => 'error',
         'type' => 'PDOException',
         'message' => $pdoEx->getMessage()
     ]);
+    
 } catch (Exception $ex) {
     echo json_encode([
         'status' => 'error',

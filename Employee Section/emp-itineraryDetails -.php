@@ -246,7 +246,7 @@
 						<!-- Package Row -->
 						<div class="row mb-2">
 
-							<div class="columns col-md-4">
+							<div class="columns col-md-5">
 								<div class="column-header">
 									<label for="flightDate">Itinerary Name:
 										<span class="text-danger"> *</span>
@@ -260,7 +260,7 @@
 							</div>
 
 
-							<div class="columns col-md-4">
+							<div class="columns col-md-5">
 								<div class="column-header">
 									<label for="packageSelect">Package
 										<span class="text-danger"> *</span>
@@ -288,14 +288,14 @@
 									</select>
 								</div>
 							</div>
-
-
 						</div>
+
 
 						<!-- Periods, Guide Row -->
 						<div class="row">
+
 							<!-- Flight Date Dropdown -->
-							<div class="columns col-md-4">
+							<div class="columns col-md-5">
 								<div class="column-header">
 									<label for="flightDate">Periods
 										<span class="text-danger"> *</span>
@@ -332,11 +332,10 @@
 								</div>
 							</div>
 
-
-
-							<div class="columns col-md-4">
+							
+							<div class="columns col-md-5">
 								<div class="column-header">
-									<label for="flightDate">Guide
+									<label for="guideName">Guide
 										<span class="text-danger"> *</span>
 									</label>
 								</div>
@@ -344,7 +343,8 @@
 								<div class="form-group">
 									<select class="form-select" id="guideName" name="guideName" required onchange="updateContact(this)">
 										<?php
-										$selectedGuide = $itinerary['guideName'];
+										$selectedGuideId = $itinerary['guideId']; // Change this to use the actual ID
+
 										$query = "SELECT accountId, fName, lName, mName, contactNo, countryCode FROM employee WHERE isTourGuide = 1";
 										$result = mysqli_query($conn, $query);
 
@@ -359,17 +359,17 @@
 											$middleInitial = !empty($mName) ? strtoupper(substr($mName, 0, 1)) . '.' : '';
 											$fullName = $lName . ', ' . $fName . ($middleInitial ? ' ' . $middleInitial : '');
 
-											$isSelected = ($selectedGuide == $fullName) ? 'selected' : '';
+											$isSelected = ($selectedGuideId == $accountId) ? 'selected' : '';
 
-											echo "<option value=\"$fullName\" data-contact=\"$contactNo\" data-code=\"$countryCode\" $isSelected>$fullName</option>";
+											echo "<option value=\"$accountId\" data-contact=\"$contactNo\" data-code=\"$countryCode\" $isSelected>$fullName</option>";
 										}
 										?>
 									</select>
 								</div>
-
 							</div>
 
-							<div class="columns col-md-4">
+							<!-- Guide Contact Number -->
+							<div class="columns col-md-4" hidden>
 								<div class="column-header">
 									<label for="flightDate">Contact Number
 										<span class="text-danger"> *</span>
@@ -425,90 +425,88 @@
 							$selectedHotel = $itinerary['cities'][$i]['hotel'] ?? "";
 						?>
 
-							<div class="row mb-1 cityhotel-row">
-								<div class="columns col-md-8">
-									<div class="cityhotel-wrapper d-flex flex-row align-items-center gap-2">
+						<div class="row mb-1 cityhotel-row">
+							<div class="columns col-md-10">
+								<div class="cityhotel-wrapper d-flex flex-row align-items-center gap-2">
 
-										<!-- City dropdown -->
-										<div class="cityhotel-item">
-											<div class="form-group d-flex flex-row align-items-center">
-												<select class="form-select city-select" id="<?= $cityKey ?>" name="city(<?= $i + 1 ?>)" data-index="<?= $i ?>" required>
-													<option value="" disabled <?= empty($selectedCity) ? 'selected' : '' ?>>Select City</option>
-													<?php foreach ($cities as $city): ?>
-														<option value="<?= $city ?>" <?= $selectedCity === $city ? 'selected' : '' ?>><?= $city ?></option>
-													<?php endforeach; ?>
-												</select>
-											</div>
+									<!-- City dropdown -->
+									<div class="cityhotel-item">
+										<div class="form-group d-flex flex-row align-items-center">
+											<select class="form-select city-select" id="<?= $cityKey ?>" name="city(<?= $i + 1 ?>)" data-index="<?= $i ?>" required>
+												<option value="" disabled <?= empty($selectedCity) ? 'selected' : '' ?>>Select City</option>
+												<?php foreach ($cities as $city): ?>
+													<option value="<?= $city ?>" <?= $selectedCity === $city ? 'selected' : '' ?>><?= $city ?></option>
+												<?php endforeach; ?>
+											</select>
 										</div>
-
-										<div class="dash-separator">-></div>
-
-										<!-- Hotel dropdown -->
-										<div class="cityhotel-item">
-											<div class="form-group d-flex flex-row align-items-center">
-												<select class="form-select hotel-select" id="<?= $hotelKey ?>" name="hotel(<?= $i + 1 ?>)" required>
-													<option value="" disabled <?= empty($selectedHotel) ? 'selected' : '' ?>>Select Hotel</option>
-
-													<?php
-													if (!empty($selectedCity) && isset($hotels[$selectedCity])) {
-														foreach ($hotels[$selectedCity] as $hotel): ?>
-															<option value="<?= $hotel ?>" <?= $selectedHotel === $hotel ? 'selected' : '' ?>><?= $hotel ?></option>
-														<?php endforeach;
-													}
-													?>
-												</select>
-											</div>
-										</div>
-
-										<!-- Trash button -->
-										<button type="button" class="btn btn-danger btn-sm remove-cityhotel <?= ($selectedCity || $selectedHotel) ? '' : 'd-none' ?>">
-											<i class="fas fa-trash-alt"></i>
-										</button>
-
 									</div>
+
+									<div class="dash-separator">-></div>
+
+									<!-- Hotel dropdown -->
+									<div class="cityhotel-item">
+										<div class="form-group d-flex flex-row align-items-center">
+											<select class="form-select hotel-select" id="<?= $hotelKey ?>" name="hotel(<?= $i + 1 ?>)" required>
+												<option value="" disabled <?= empty($selectedHotel) ? 'selected' : '' ?>>Select Hotel</option>
+
+												<?php
+												if (!empty($selectedCity) && isset($hotels[$selectedCity])) {
+													foreach ($hotels[$selectedCity] as $hotel): ?>
+														<option value="<?= $hotel ?>" <?= $selectedHotel === $hotel ? 'selected' : '' ?>><?= $hotel ?></option>
+													<?php endforeach;
+												}
+												?>
+											</select>
+										</div>
+									</div>
+
+									<!-- Trash button -->
+									<button type="button" class="btn btn-danger btn-sm remove-cityhotel <?= ($selectedCity || $selectedHotel) ? '' : 'd-none' ?>">
+										<i class="fas fa-trash-alt"></i>
+									</button>
+
 								</div>
 							</div>
+						</div>
 
 						<?php } ?>
 
+						<script>
+							document.addEventListener('change', function (e) {
+								// Show/Hide Trash Icon for City/Hotel Combo Row
+								if (e.target.classList.contains('city-select') || e.target.classList.contains('hotel-select')) {
+									const row = e.target.closest('.cityhotel-row');
+									const city = row.querySelector('.city-select')?.value;
+									const hotel = row.querySelector('.hotel-select')?.value;
+									const trashBtn = row.querySelector('.remove-cityhotel');
 
-
-							<script>
-								document.addEventListener('change', function (e) {
-									// Show/Hide Trash Icon for City/Hotel Combo Row
-									if (e.target.classList.contains('city-select') || e.target.classList.contains('hotel-select')) {
-										const row = e.target.closest('.cityhotel-row');
-										const city = row.querySelector('.city-select')?.value;
-										const hotel = row.querySelector('.hotel-select')?.value;
-										const trashBtn = row.querySelector('.remove-cityhotel');
-
-										if (trashBtn) {
-											trashBtn.classList.toggle('d-none', !(city || hotel));
-										}
+									if (trashBtn) {
+										trashBtn.classList.toggle('d-none', !(city || hotel));
 									}
-								});
+								}
+							});
 
-								document.addEventListener('click', function (e) {
-									const btn = e.target.closest('.remove-cityhotel');
-									if (btn) {
-										const row = btn.closest('.cityhotel-row');
-										const citySelect = row.querySelector('.city-select');
-										const hotelSelect = row.querySelector('.hotel-select');
+							document.addEventListener('click', function (e) {
+								const btn = e.target.closest('.remove-cityhotel');
+								if (btn) {
+									const row = btn.closest('.cityhotel-row');
+									const citySelect = row.querySelector('.city-select');
+									const hotelSelect = row.querySelector('.hotel-select');
 
-										if (citySelect) {
-											citySelect.selectedIndex = 0; // Reset to placeholder
-											citySelect.dispatchEvent(new Event("change"));
-										}
-
-										if (hotelSelect) {
-											hotelSelect.selectedIndex = 0; // Reset to placeholder
-											hotelSelect.dispatchEvent(new Event("change"));
-										}
-
-										btn.classList.add('d-none');
+									if (citySelect) {
+										citySelect.selectedIndex = 0; // Reset to placeholder
+										citySelect.dispatchEvent(new Event("change"));
 									}
-								});
-							</script>
+
+									if (hotelSelect) {
+										hotelSelect.selectedIndex = 0; // Reset to placeholder
+										hotelSelect.dispatchEvent(new Event("change"));
+									}
+
+									btn.classList.add('d-none');
+								}
+							});
+						</script>
 
 					</div>
 				</div>
@@ -684,7 +682,6 @@
 
 	<!-- For Itinerary Card -->
 	<script>
-
 		let liveItineraryData;
 		const originalJsonData = <?= json_encode($jsonData) ?>;
 		const originalJsonString = JSON.stringify(sortKeys(originalJsonData));
@@ -716,12 +713,12 @@
 			liveItineraryData = JSON.parse(JSON.stringify(itineraryData)); // Clone
 
 			window.updateLiveItineraryData = function () {
-				const itineraryId = document.getElementById("itineraryId").value;
+				const itineraryId = parseInt(document.getElementById("itineraryId").value);
 				const itineraryName = document.getElementById("itineraryName").value;
-				const packageSelect = document.getElementById("packageSelect").value;
+				const packageId = parseInt(document.getElementById("packageSelect").value);
 				const periodStart = document.getElementById("PeriodStartDate").value;
 				const periodEnd = document.getElementById("PeriodEndDate").value;
-				const guideName = document.getElementById("guideName").value;
+				const guideId = parseInt(document.getElementById("guideName").value);
 				const countryCode = document.getElementById("countryCode").value;
 				const contactNumber = document.getElementById("contactNumber").value;
 
@@ -737,15 +734,16 @@
 				const itineraryDetails = {
 					itineraryId,
 					itineraryName,
-					packageName: packageSelect,
+					packageId,
 					periodStart,
 					periodEnd,
-					guideName,
+					guideId,
 					countryCode,
 					contactNumber,
 					cities,
 					noOfDays: parseInt(selectDays.value)
 				};
+
 
 				const daysDetails = [];
 				const cards = itineraryContainer.querySelectorAll(".itinerary-card");
@@ -818,6 +816,10 @@
 
 				return values;
 			};
+
+
+
+
 
 			// Areas
 			const koreanTourAreas = ["Seoul", "Busan", "Jeju", "Incheon", "Gyeongju"];
@@ -1250,6 +1252,8 @@
 			}
 
 
+
+
 			// CARDS RENDERING FUNCTION
 			function generateItineraryCards(days) {
 				itineraryContainer.innerHTML = "";
@@ -1533,6 +1537,10 @@
 			});
 		}
 	</script>
+
+
+
+
 
 </body>
 
