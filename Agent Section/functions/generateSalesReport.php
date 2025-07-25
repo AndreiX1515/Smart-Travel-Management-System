@@ -21,6 +21,8 @@ if (!$input || !isset($input['reportData']) || !is_array($input['reportData'])) 
 $reportData = $input['reportData'];
 $reportFor = $input['reportFor'] ?? 'agent';
 $selectedName = $input['selectedName'] ?? '';
+$totalRequestAmount = $input['totalRequestAmount'];
+$totalFlightAmount = $input['totalFlightAmount'];
 $generationDate = date('m/d/Y');
 
 // Create Spreadsheet
@@ -91,6 +93,17 @@ $sheet->getStyle("A$headerRow:$lastCol$lastRow")->applyFromArray([
 ]);
 $sheet->getStyle("A$headerRow:$lastCol$headerRow")->getFont()->setBold(true);
 $sheet->getStyle("A$headerRow:$lastCol$headerRow")->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setRGB('D9E1F2');
+
+// ➕ TOTAL ROW (for AMOUNT and REQ AMOUNT)
+$totalRow = $rowNum;
+$sheet->setCellValue("B$totalRow", "TOTAL");
+$sheet->setCellValue("C$totalRow", $totalFlightAmount);
+$sheet->setCellValue("F$totalRow", $totalRequestAmount);
+$sheet->getStyle("B$totalRow:F$totalRow")->getFont()->setBold(true);
+$sheet->getStyle("B$totalRow:F$totalRow")->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setRGB('FFF2CC');
+$sheet->getStyle("B$totalRow:F$totalRow")->applyFromArray([
+  'borders' => ['allBorders' => ['borderStyle' => Border::BORDER_THIN]]
+]);
 
 // Output Excel
 $filename = "Sales_Report_" . date('Ymd_His') . ".xlsx";

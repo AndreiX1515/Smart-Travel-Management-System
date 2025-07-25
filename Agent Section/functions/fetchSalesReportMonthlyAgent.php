@@ -10,6 +10,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $month = $_POST['month'] ?? '';
   $year = $_POST['year'] ?? '';
   $agentIdSelect = $_POST['selectedAgent'] ?? '';
+  $totalFlightAmount = 0;
+  $totalRequestAmount = 0;
 
   if (!empty($month) && !empty($year) && !empty($agentIdSelect)) {
     // Step 1: Get matching flightId(s) for the given month and year
@@ -64,6 +66,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'amount' => '₱ ' . number_format($row['totalPrice'], 2),
             'requests' => []
           ];
+
+          $totalFlightAmount += (float)$row['totalPrice'];
         }
 
         if (!empty($row['details'])) {
@@ -72,10 +76,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'pax' => (int)$row['requestPax'],
             'amount' => '₱ ' . number_format($row['requestCost'], 2)
           ];
+
+          $totalRequestAmount += (float)$row['requestCost'];
         }
       }
 
       $response['data'] = array_values($reportData);
+      $response['totalFlightAmount'] = '₱ ' . number_format($totalFlightAmount, 2);
+      $response['totalRequestAmount'] = '₱ ' . number_format($totalRequestAmount, 2);
     }
   } else {
     $response['error'] = 'Missing month, year, or agent selection.';

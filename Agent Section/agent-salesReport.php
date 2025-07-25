@@ -372,7 +372,11 @@
             if (response.data && response.data.length > 0) {
               console.log('✅ Report Data:', response.data);
               renderReportTable(response.data);
-              setReportData(response.data); // ✅ Fix: Now export will work
+              setReportData(response.data, response.totalRequestAmount, response.totalFlightAmount); // Set report data for export
+
+              console.log('📊 Total Request Amount:', response.totalRequestAmount);
+              console.log('📊 Total Flight Amount:', response.totalFlightAmount);
+
               $('#dataTable').show();
               $('#downloadReport').show();
             } else {
@@ -427,9 +431,18 @@
   <!-- Script Generate to Excel File -->
   <script>
     // This is called after fetching/rendering the report
-    function setReportData(data) {
+    function setReportData(data, totalRequestAmount, totalFlightAmount) {
       reportData = data;
-      console.log("[DEBUG] Report data set:", reportData);
+      sendTotalRequestAmount = totalRequestAmount;
+      sendTotalFlightAmount = totalFlightAmount;
+
+      console.log("[DEBUG] Report data set:", {
+        reportData,
+        sendTotalRequestAmount,
+        sendTotalFlightAmount
+      });
+
+      // Show the download button
       document.getElementById('downloadReport').style.display = 'inline-block';
     }
 
@@ -469,6 +482,8 @@
 
       const payload = {
         reportData: reportData,
+        totalRequestAmount: sendTotalRequestAmount,
+        totalFlightAmount: sendTotalFlightAmount,
         reportType: reportType,
         reportFor: reportFor,
         flightDate: flightDate,
