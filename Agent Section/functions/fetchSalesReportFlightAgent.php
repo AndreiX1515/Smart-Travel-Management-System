@@ -10,6 +10,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $flightDate = $_POST['flightDate'] ?? '';
   $agentIdSelect = $_POST['selectedAgent'] ?? '';
 
+  $totalFlightAmount = 0;
+  $totalRequestAmount = 0;
+
   if (!empty($flightDate) && !empty($agentIdSelect)) {
     // Step 1: Get matching flightId(s)
     $stmt = $conn->prepare("SELECT flightId FROM flight WHERE flightDepartureDate = ?");
@@ -63,6 +66,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'amount' => '₱ ' . number_format($row['totalPrice'], 2),
             'requests' => []
           ];
+
+          $totalFlightAmount += (float)$row['totalPrice'];
         }
 
         // Add request if present
@@ -72,11 +77,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'pax' => (int)$row['requestPax'],
             'amount' => '₱ ' . number_format($row['requestCost'], 2)
           ];
+
+          $totalRequestAmount += (float)$row['requestCost'];
         }
       }
 
       // Reset keys for clean JSON
       $response['data'] = array_values($reportData);
+      $response['totalFlightAmount'] = '₱ ' . number_format($totalFlightAmount, 2);
+      $response['totalRequestAmount'] = '₱ ' . number_format($totalRequestAmount, 2);
     }
   } else {
     $response['error'] = 'Missing flight date or agent selection.';

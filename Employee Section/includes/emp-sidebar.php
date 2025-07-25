@@ -362,6 +362,17 @@ $position = htmlspecialchars(strtoupper($empId));
 			</a>
 		</li>
 
+		<li class="nav-item visa-requirements">
+			<a class="nav-link page-button" href="../Employee Section/emp-salesReport.php"
+				data-page-name="Visa Requirements">
+				<div class="icon-wrapper">
+					<div class="icon"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+				</div>
+				<div class="label-wrapper">
+					<span class="label">Sales Report</span>
+				</div>
+			</a>
+		</li>
 
 		<!-- Reports -->
 		<!-- <li class="nav-item dropdown">

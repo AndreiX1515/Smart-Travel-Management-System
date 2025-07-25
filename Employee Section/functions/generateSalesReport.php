@@ -5,11 +5,9 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Settings;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
-use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 
 Settings::setLocale('en_PH');
 
-// ✅ Decode POSTed JSON
 $input = json_decode(file_get_contents('php://input'), true);
 
 if (!$input || !isset($input['reportData']) || !is_array($input['reportData'])) {
@@ -19,13 +17,12 @@ if (!$input || !isset($input['reportData']) || !is_array($input['reportData'])) 
 }
 
 $reportData = $input['reportData'];
-$reportFor = $input['reportFor'] ?? 'agent';
-$selectedName = $input['selectedName'] ?? '';
+$branchName = $input['branchName'];
 $totalRequestAmount = $input['totalRequestAmount'];
 $totalFlightAmount = $input['totalFlightAmount'];
 $generationDate = date('m/d/Y');
 
-// Create Spreadsheet
+
 $spreadsheet = new Spreadsheet();
 $sheet = $spreadsheet->getActiveSheet();
 $sheet->setTitle("Sales Report");
@@ -39,7 +36,7 @@ $sheet->getStyle("A$rowNum")->getFont()->setBold(true)->setSize(18);
 $sheet->getStyle("A$rowNum")->getAlignment()->setHorizontal('center');
 $rowNum++;
 
-$sheet->mergeCells("A$rowNum:E$rowNum")->setCellValue("A$rowNum", "Prepared For: $selectedName");
+$sheet->mergeCells("A$rowNum:E$rowNum")->setCellValue("A$rowNum", "Prepared For: $branchName");
 $rowNum++;
 $sheet->mergeCells("A$rowNum:E$rowNum")->setCellValue("A$rowNum", "Date Generated: $generationDate");
 $rowNum += 2;
@@ -53,26 +50,22 @@ $rowNum++;
 
 // Table Body
 foreach ($reportData as $entry) {
-  $name = $entry['name'] ?? '';
   $flightDate = $entry['flightDate'] ?? '';
   $pax = $entry['pax'] ?? '';
   $amount = $entry['amount'] ?? '';
   $requests = $entry['requests'] ?? [];
 
   if (empty($requests)) {
-    // No request — output one row
     $sheet->fromArray([$flightDate, $pax, $amount, '', '', ''], null, "A$rowNum");
     $rowNum++;
   } else {
-    // With requests — multiple rows per request
     foreach ($requests as $req) {
       $reqType = $req['type'] ?? '';
       $reqPax = $req['pax'] ?? '';
       $reqAmount = $req['amount'] ?? '';
       $sheet->fromArray([$flightDate, $pax, $amount, $reqType, $reqPax, $reqAmount], null, "A$rowNum");
       $rowNum++;
-      // Clear repeated info to avoid redundancy in display (optional)
-      $name = $flightDate = $pax = $amount = '';
+      $flightDate = $pax = $amount = ''; // Avoid redundancy
     }
   }
 }

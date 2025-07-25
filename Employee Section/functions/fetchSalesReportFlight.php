@@ -7,16 +7,13 @@ ini_set('display_errors', 1);
 $response = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $month = $_POST['month'] ?? '';
-  $year = $_POST['year'] ?? '';
-  $agentIdSelect = $_POST['selectedAgent'] ?? '';
-  $totalFlightAmount = 0;
-  $totalRequestAmount = 0;
+  $flightDate = $_POST['flightDate'] ?? '';
+  $branchCode = $_POST['branchCode'] ?? '';
 
-  if (!empty($month) && !empty($year) && !empty($agentIdSelect)) {
-    // Step 1: Get matching flightId(s) for the given month and year
-    $stmt = $conn->prepare("SELECT flightId FROM flight WHERE MONTH(flightDepartureDate) = ? AND YEAR(flightDepartureDate) = ?");
-    $stmt->bind_param("ii", $month, $year);
+  if (!empty($flightDate) && !empty($branchCode)) {
+    // Step 1: Get matching flightId(s)
+    $stmt = $conn->prepare("SELECT flightId FROM flight WHERE flightDepartureDate = ?");
+    $stmt->bind_param("s", $flightDate);
     $stmt->execute();
     $result = $stmt->get_result();
 
@@ -27,30 +24,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->close();
 
     if (empty($flightIds)) {
-      $response['error'] = "No flights found for the selected month.";
+      $response['error'] = "No flights found for the selected date.";
     } else {
-      // Step 2: Get agent bookings with requests
+      // Step 2: Get bookings and requests
       $placeholders = implode(',', array_fill(0, count($flightIds), '?'));
       $types = str_repeat('i', count($flightIds)) . 's';
 
       $sql = "SELECT b.transactNo, b.pax AS bookingPax, b.totalPrice, f.flightDepartureDate, f.returnArrivalDate,
-                     a.fName, a.mName, a.lName,
+                      IFNULL(a.fName, c.fName) AS fName, IFNULL(a.mName, c.mName) AS mName, IFNULL(a.lName, c.lName) AS lName, b.accountType,
                      r.pax AS requestPax, r.requestCost, cd.details
               FROM booking b
               JOIN flight f ON f.flightId = b.flightId
-              JOIN agent a ON a.accountId = b.accountId
+              LEFT JOIN agent a ON a.accountId = b.accountId
+              LEFT JOIN client c ON c.accountId = b.accountId
               LEFT JOIN request r ON r.transactNo = b.transactNo
               LEFT JOIN concerndetails cd ON cd.concernDetailsId = r.concernDetailsId
-              WHERE b.flightId IN ($placeholders) AND a.agentId = ? AND b.accountType = 'Agent'
-                AND (b.status = 'Confirmed' OR b.status = 'Reserved') AND r.requestStatus = 'Confirmed'";
+              WHERE b.flightId IN ($placeholders) AND b.agentCode = ? AND (b.status= 'Confirmed' OR b.status='Reserved') 
+                AND r.requestStatus = 'Confirmed'";
 
       $stmt = $conn->prepare($sql);
-      $params = array_merge($flightIds, [$agentIdSelect]);
+      $params = array_merge($flightIds, [$branchCode]);
       $stmt->bind_param($types, ...$params);
       $stmt->execute();
       $result = $stmt->get_result();
 
       $reportData = [];
+      $totalFlightAmount = 0;
+      $totalRequestAmount = 0;
 
       while ($row = $result->fetch_assoc()) {
         $txn = $row['transactNo'];
@@ -61,6 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
           $reportData[$txn] = [
             'name' => $agentFullName,
+            'accountType' => $row['accountType'],
             'flightDate' => $flightRange,
             'pax' => (int)$row['bookingPax'],
             'amount' => '₱ ' . number_format($row['totalPrice'], 2),
@@ -86,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $response['totalRequestAmount'] = '₱ ' . number_format($totalRequestAmount, 2);
     }
   } else {
-    $response['error'] = 'Missing month, year, or agent selection.';
+    $response['error'] = 'Missing flight date or agent selection.';
   }
 } else {
   $response['error'] = 'Invalid request method.';
